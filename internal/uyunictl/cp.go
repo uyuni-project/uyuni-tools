@@ -2,7 +2,6 @@ package uyunictl
 
 import (
 	"log"
-	"os/exec"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -19,8 +18,8 @@ One of them can be prefixed with 'server:' to indicate the path is within the se
 		command, podName := utils.GetPodName()
 		commandArgs := []string{}
 		extraArgs := []string{}
-		src := strings.Replace(args[0], "server:", podName, 1)
-		dst := strings.Replace(args[1], "server:", podName, 1)
+		src := strings.Replace(args[0], "server:", podName+":", 1)
+		dst := strings.Replace(args[1], "server:", podName+":", 1)
 
 		switch command {
 		case "podman":
@@ -29,14 +28,10 @@ One of them can be prefixed with 'server:' to indicate the path is within the se
 			commandArgs = []string{"cp", "-c", "uyuni", src, dst}
 			extraArgs = []string{"-c", "uyuni", "--"}
 		default:
-			log.Fatalf("Unknown container kind: %s", command)
+			log.Fatalf("Unknown container kind: %s\n", command)
 		}
 
-		cp := exec.Command(command, commandArgs...)
-		err := cp.Run()
-		if err != nil {
-			log.Fatalf("Failed to copy file: %s", err)
-		}
+		utils.RunCmd(command, commandArgs, "Failed to copy file", Verbose)
 
 		if user != "" && strings.HasPrefix(args[1], "server:") {
 			execArgs := []string{"exec", podName}
@@ -45,12 +40,8 @@ One of them can be prefixed with 'server:' to indicate the path is within the se
 			if group != "" {
 				owner = user + ":" + group
 			}
-			execArgs = append(execArgs, "chown", owner, src, dst)
-			chown := exec.Command(command, execArgs...)
-			err = chown.Run()
-			if err != nil {
-				log.Fatalf("Failed to change file owner: %s", err)
-			}
+			execArgs = append(execArgs, "chown", owner, strings.Replace(args[1], "server:", "", 1))
+			utils.RunCmd(command, execArgs, "Failed to change file owner", Verbose)
 		}
 	},
 }

@@ -10,6 +10,9 @@ var rootCmd = &cobra.Command{
 	Version: "0.0.1",
 }
 
+var Verbose bool
+
 func Execute() {
+	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
 	rootCmd.Execute()
 }

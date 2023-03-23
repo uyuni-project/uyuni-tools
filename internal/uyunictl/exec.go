@@ -1,9 +1,11 @@
 package uyunictl
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/internal/utils"
@@ -25,7 +27,11 @@ var execCmd = &cobra.Command{
 			log.Fatalf("Unknown container kind: %s", command)
 		}
 
-		runCmd := exec.Command(command, append(commandArgs, args...)...)
+		allArgs := append(commandArgs, args...)
+		if Verbose {
+			fmt.Printf("> Running: %s %s\n", command, strings.Join(allArgs, " "))
+		}
+		runCmd := exec.Command(command, allArgs...)
 		runCmd.Stderr = os.Stderr
 		runCmd.Stdout = os.Stdout
 		err := runCmd.Run()
