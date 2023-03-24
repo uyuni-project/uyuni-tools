@@ -20,20 +20,35 @@ var execCmd = &cobra.Command{
 
 		switch command {
 		case "podman":
-			commandArgs = []string{"exec", podName, "sh", "-c"}
+			commandArgs = []string{"exec", podName}
 		case "kubectl":
-			commandArgs = []string{"exec", podName, "-c", "uyuni", "--", "sh", "-c"}
+			commandArgs = []string{"exec", podName, "-c", "uyuni", "--"}
 		default:
 			log.Fatalf("Unknown container kind: %s", command)
 		}
 
-		allArgs := append(commandArgs, args...)
-		if Verbose {
-			fmt.Printf("> Running: %s %s\n", command, strings.Join(allArgs, " "))
+		newEnv := []string{}
+		for _, env := range envs {
+			if !strings.Contains(env, "=") {
+				if value, set := os.LookupEnv(env); set {
+					newEnv = append(newEnv, fmt.Sprintf("%s=%s", env, value))
+				}
+			} else {
+				newEnv = append(newEnv, env)
+			}
 		}
-		runCmd := exec.Command(command, allArgs...)
+		if len(newEnv) > 0 {
+			commandArgs = append(commandArgs, "env")
+			commandArgs = append(commandArgs, newEnv...)
+		}
+		commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
+		if Verbose {
+			fmt.Printf("> Running: %s %s\n", command, strings.Join(commandArgs, " "))
+		}
+		runCmd := exec.Command(command, commandArgs...)
 		runCmd.Stderr = os.Stderr
 		runCmd.Stdout = os.Stdout
+
 		err := runCmd.Run()
 		if err != nil {
 			if exitErr, ok := err.(*exec.ExitError); ok {
@@ -45,6 +60,9 @@ var execCmd = &cobra.Command{
 	},
 }
 
+var envs []string
+
 func init() {
+	execCmd.Flags().StringArrayVarP(&envs, "env", "e", []string{}, "environment variables to pass to the command")
 	rootCmd.AddCommand(execCmd)
 }
