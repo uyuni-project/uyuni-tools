@@ -1,6 +1,7 @@
 package uyunictl
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -46,11 +47,28 @@ var execCmd = &cobra.Command{
 			fmt.Printf("> Running: %s %s\n", command, strings.Join(commandArgs, " "))
 		}
 		runCmd := exec.Command(command, commandArgs...)
-		runCmd.Stderr = os.Stderr
 		runCmd.Stdout = os.Stdout
 
-		err := runCmd.Run()
+		// Filter out kubectl line about terminated exit code
+		stderr, err := runCmd.StderrPipe()
 		if err != nil {
+			log.Fatal(err)
+		}
+		if err = runCmd.Start(); err != nil {
+			log.Fatal(err)
+		}
+		scanner := bufio.NewScanner(stderr)
+		for scanner.Scan() {
+			line := scanner.Text()
+			if !strings.HasPrefix(line, "command terminated with exit code") {
+				fmt.Fprintln(os.Stderr, line)
+			}
+		}
+
+		if scanner.Err() != nil {
+			log.Fatal(scanner.Err())
+		}
+		if err = runCmd.Wait(); err != nil {
 			if exitErr, ok := err.(*exec.ExitError); ok {
 				os.Exit(exitErr.ExitCode())
 			} else {
