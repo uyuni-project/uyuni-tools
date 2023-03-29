@@ -17,15 +17,18 @@ var execCmd = &cobra.Command{
 	Short: "execute commands inside the uyuni containers using 'sh -c'",
 	Run: func(cmd *cobra.Command, args []string) {
 		command, podName := utils.GetPodName()
-		commandArgs := []string{}
 
-		switch command {
-		case "podman":
-			commandArgs = []string{"exec", podName}
-		case "kubectl":
-			commandArgs = []string{"exec", podName, "-c", "uyuni", "--"}
-		default:
-			log.Fatalf("Unknown container kind: %s", command)
+		commandArgs := []string{"exec"}
+		if interactive {
+			commandArgs = append(commandArgs, "-i")
+		}
+		if tty {
+			commandArgs = append(commandArgs, "-t")
+		}
+		commandArgs = append(commandArgs, podName)
+
+		if command == "kubectl" {
+			commandArgs = append(commandArgs, "-c", "uyuni", "--")
 		}
 
 		newEnv := []string{}
@@ -48,6 +51,7 @@ var execCmd = &cobra.Command{
 		}
 		runCmd := exec.Command(command, commandArgs...)
 		runCmd.Stdout = os.Stdout
+		runCmd.Stdin = os.Stdin
 
 		// Filter out kubectl line about terminated exit code
 		stderr, err := runCmd.StderrPipe()
@@ -79,8 +83,12 @@ var execCmd = &cobra.Command{
 }
 
 var envs []string
+var interactive bool
+var tty bool
 
 func init() {
 	execCmd.Flags().StringArrayVarP(&envs, "env", "e", []string{}, "environment variables to pass to the command")
+	execCmd.Flags().BoolVarP(&interactive, "interactive", "i", false, "Pass stdin to the container")
+	execCmd.Flags().BoolVarP(&tty, "tty", "t", false, "Stdin is a TTY")
 	rootCmd.AddCommand(execCmd)
 }
