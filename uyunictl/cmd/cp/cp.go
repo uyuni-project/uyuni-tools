@@ -42,7 +42,7 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 
 	switch command {
 	case "podman":
-		commandArgs = []string{"cp", podName, src, dst}
+		commandArgs = []string{"cp", src, dst}
 	case "kubectl":
 		commandArgs = []string{"cp", "-c", "uyuni", src, dst}
 		extraArgs = []string{"-c", "uyuni", "--"}
