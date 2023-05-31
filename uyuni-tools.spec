@@ -56,11 +56,11 @@ tar -zxf %{SOURCE1}
 %build
 export GOFLAGS=-mod=vendor
 %goprep %{provider_prefix}
-%gobuild ...
+%gobuild -o %{gobuilddir}/bin/$(basename $cmd) %{goipath}/$cmd
 
 %install
-%goinstall
-%gosrc
+install -m 0755 -vd                     %{buildroot}%{_bindir}
+install -m 0755 -vp %{gobuilddir}/bin/* %{buildroot}%{_bindir}/
 
 %gofilelist
 
