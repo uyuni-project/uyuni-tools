@@ -1,6 +1,7 @@
 #!/bin/bash
-set -e
+#TODO this should be copied in /usr/local/bin/uyuni-tools
 
+set -e
 UYUNI_SHORTFORM=${UYUNI_FQDN%%.*}
 #TODO parse this folder from option.json
 for folder in /var/lib/pgsql \
