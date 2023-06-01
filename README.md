@@ -9,3 +9,9 @@
 
 `go build -o ./bin ./...` will produce the binaries in the root folder.
 Alternatively, if you have `podman` installed you can run the `build.sh` script to build binaries compatible with SLE 15 SP4 or openSUSE Leap 15.4.
+
+
+## Start and Migration
+* copy options.json to /etc/uyuni-tools/options.json
+* copy setup-migration-container.sh to /usr/local/bin/uyuni-tools/setup-migration-container.sh
+* uyuniadm start --help or uyuniadm migrate --help contains all the info to run the commands
