@@ -28,7 +28,7 @@ var migrateCmd = &cobra.Command{
 		opt := readJsonOpt(configJsonFilename)
 		//TODO to allow uyuniadm to handle more than one container, we should find another way to pass the env variable
 		//option from argument and specific for migrate container
-		entrypoint := "/usr/local/bin/uyuni-tools/setup-migration-container.sh"
+		entrypoint := "/var/lib/uyuni-tools/setup-migration-container.sh"
 		opt.Entrypoint = &entrypoint
 		opt.Name = uyuniContainer.name
 		opt.ConmonPIDFile = opt.Name + ".pid"
@@ -37,7 +37,7 @@ var migrateCmd = &cobra.Command{
 		//TODO we don't want to mount this folder
 		opt.Volume = append(opt.Volume, filepath.Dir(sshAuthSocket)+":"+filepath.Dir(sshAuthSocket))
 		//TODO we don't want to mount this folder
-		opt.Volume = append(opt.Volume, "/usr/local/bin/uyuni-tools/:/usr/local/bin/uyuni-tools/")
+		opt.Volume = append(opt.Volume, "/var/lib/uyuni-tools/:/var/lib/uyuni-tools/")
 
 		getImage(ctx, image.String())
 		createContainer(opt, image.String())

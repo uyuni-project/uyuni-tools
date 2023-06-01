@@ -13,5 +13,5 @@ Alternatively, if you have `podman` installed you can run the `build.sh` script 
 
 ## Start and Migration
 * copy options.json to /etc/uyuni-tools/options.json
-* copy setup-migration-container.sh to /usr/local/bin/uyuni-tools/setup-migration-container.sh
+* copy setup-migration-container.sh to /var/lib/uyuni-tools/setup-migration-container.sh
 * uyuniadm start --help or uyuniadm migrate --help contains all the info to run the commands
