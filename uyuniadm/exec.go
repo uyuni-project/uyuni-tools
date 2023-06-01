@@ -33,11 +33,10 @@ func getContext(socket string) context.Context {
 }
 
 func init() {
-	rootCmd.AddCommand(fooCmd)
 	rootCmd.AddCommand(migrateCmd)
 	rootCmd.AddCommand(startCmd)
 	rootCmd.AddCommand(stopCmd)
-  //TODO argument should be set somewhere else
+	//TODO argument should be set somewhere else
 	//start
 	setFromArgument(startCmd, &configJsonFilename, "config", "/etc/uyuni-tools/options.json", "Config JSON Filename", true)
 	setFromArgument(startCmd, &uyuniContainer.name, "name", "", "Container Name", true)
