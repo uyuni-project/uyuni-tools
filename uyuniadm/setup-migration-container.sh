@@ -2,7 +2,7 @@
 set -e
 
 UYUNI_SHORTFORM=${UYUNI_FQDN%%.*}
-
+#TODO parse this folder from option.json
 for folder in /var/lib/pgsql \
               /var/cache \
               /var/spacewalk \

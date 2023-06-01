@@ -51,10 +51,16 @@ var migrateCmd = &cobra.Command{
 	},
 }
 
-//TODO to allow uyuniadm to handle more than one container, we should find another way to pass the env variable
-//TODO do not hardcore env variable
+/*TODO to allow uyuniadm to handle more than one container, we should find another way to pass the env variable
+*  - do not hardcore env variable
+*  - Possible solution: option.json as single point of truth for env variable:
+*    - we parse all the env variable from option.json
+*    - each run of uyuniadm would save the variable with a unique prefix
+*    - before passing options to createContainer, we assign values of env variable to container (removing prefix)
+*  - this function should be uniq for all commands
+ */
 func setEnvMigrateParam() {
-	os.Setenv("REMOTE_USER", source.user )
+	os.Setenv("REMOTE_USER", source.user)
 	os.Setenv("UYUNI_FQDN", source.hostname)
 	os.Setenv("CERT_CITY", cert.city)
 	os.Setenv("CERT_COUNTRY", cert.country)
