@@ -13,7 +13,7 @@ func NewUyunictlCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:     "uyunictl",
 		Short:   "Uyuni control tool",
-		Long:    "Uyuni control tool used to help user managing uyuni servers on k8s and podman",
+		Long:    "Uyuni control tool used to help user managing Uyuni and SUSE Manager Servers mainly through its API",
 		Version: "0.0.1",
 	}
 
