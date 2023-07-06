@@ -1,15 +1,18 @@
 package main
 
 import (
-	"github.com/spf13/cobra"
+	"os"
+
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd"
 )
 
-var rootCmd = &cobra.Command{
-	Use:     "uyuniadm",
-	Short:   "Uyuni setup tool",
-	Version: "0.0.1",
+// Run runs the `uyunictl` root command
+func Run() error {
+	return cmd.NewUyuniadmCommand().Execute()
 }
 
 func main() {
-	rootCmd.Execute()
+	if err := Run(); err != nil {
+		os.Exit(1)
+	}
 }
