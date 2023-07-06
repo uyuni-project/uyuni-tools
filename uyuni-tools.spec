@@ -17,7 +17,7 @@
 
 %global provider        github
 %global provider_tld    com
-%global org             mbussolotto
+%global org             uyuni-project 
 %global project         uyuni-tools
 %global provider_prefix %{provider}.%{provider_tld}/%{org}/%{project}
 
@@ -61,12 +61,8 @@ go build -o ./bin ./uyuniadm/
 go build -o ./bin ./uyunictl/ 
 
 %install
-install -m 0755 -vd                     %{buildroot}%{_bindir}
+install -m 0755 -vd %{buildroot}%{_bindir}
 install -m 0755 -vp ./bin/* %{buildroot}%{_bindir}/
-mkdir -p %{buildroot}%{_sysconfdir}/%{project}/
-install -m 0755 -vp ./uyuniadm/options.json  %{buildroot}%{_sysconfdir}/%{project}/options.json
-mkdir -p %{buildroot}%{_sharedstatedir}/%{project}/
-install -m 0755 -vp ./uyuniadm/setup-migration-container.sh %{buildroot}%{_sharedstatedir}/%{project}/setup-migration-container.sh
 
 %gofilelist
 
@@ -82,7 +78,5 @@ install -m 0755 -vp ./uyuniadm/setup-migration-container.sh %{buildroot}%{_share
 
 /usr/bin/uyuniadm
 /usr/bin/uyunictl
-%config(noreplace) %{_sysconfdir}/%{project}/options.json
-%config(noreplace) %{_sharedstatedir}/%{project}/setup-migration-container.sh
 
 %changelog
