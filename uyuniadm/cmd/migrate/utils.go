@@ -15,7 +15,7 @@ func getSshAuthSocket() string {
 	return path
 }
 
-func generateMigrationScript(sourceFqdn string) string {
+func generateMigrationScript(sourceFqdn string, kubernetes bool) string {
 	scriptDir, err := os.MkdirTemp("", "uyuniadm-*")
 	if err != nil {
 		log.Fatalf("Failed to create temporary directory: %s\n", err)
@@ -29,14 +29,22 @@ do
 done;
 rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
+
+{{ if .Kubernetes }}
+echo 'server.no_ssl = 1' >> /etc/rhn/rhn.conf;
+sed 's/address=[^:]*:/address=uyuni:/' -i /etc/rhn/taskomatic.conf;
+sed 's/address=[^:]*:/address=uyuni:/' -i /etc/sysconfig/tomcat;
+{{ end }}
 echo "DONE"`
 
 	model := struct {
 		Volumes    map[string]string
 		SourceFqdn string
+		Kubernetes bool
 	}{
 		Volumes:    VOLUMES,
 		SourceFqdn: sourceFqdn,
+		Kubernetes: kubernetes,
 	}
 
 	file, err := os.OpenFile(filepath.Join(scriptDir, "migrate.sh"), os.O_WRONLY|os.O_CREATE, 0555)

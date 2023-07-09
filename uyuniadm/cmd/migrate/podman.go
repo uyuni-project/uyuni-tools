@@ -28,7 +28,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra
 		volumesArgs = append(volumesArgs, "-v", volumeName+":"+containerPath)
 	}
 
-	scriptDir := generateMigrationScript(args[0])
+	scriptDir := generateMigrationScript(args[0], false)
 	defer os.RemoveAll(scriptDir)
 
 	podmanArgs := []string{
