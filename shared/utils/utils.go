@@ -5,6 +5,10 @@ import (
 	"log"
 	"os/exec"
 	"strings"
+	"syscall"
+
+	"github.com/spf13/viper"
+	"golang.org/x/term"
 )
 
 func GetCommand() string {
@@ -56,5 +60,18 @@ func RunCmd(command string, args []string, errMessage string, verbose bool) {
 	cmd := exec.Command(command, args...)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		log.Fatalf("%s:\n  %s\n", errMessage, strings.ReplaceAll(string(out[:]), "\n", "\n  "))
+	}
+}
+
+func AskPasswordIfMissing(viper *viper.Viper, key string, prompt string) {
+	value := viper.GetString(key)
+	if value == "" {
+		fmt.Print(prompt)
+		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+		if err != nil {
+			log.Fatalf("Failed to read password: %s\n", err)
+		}
+		viper.Set(key, string(bytePassword))
+		fmt.Println()
 	}
 }

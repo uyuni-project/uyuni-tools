@@ -1,5 +1,6 @@
 package types
 
 type GlobalFlags struct {
-	Verbose bool
+	Verbose    bool
+	ConfigPath string
 }

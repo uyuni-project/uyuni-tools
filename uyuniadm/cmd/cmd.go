@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/migrate"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/setup"
 )
 
 // NewCommand returns a new cobra.Command implementing the root command for kinder
@@ -17,8 +18,10 @@ func NewUyuniadmCommand() *cobra.Command {
 	}
 
 	rootCmd.PersistentFlags().BoolVarP(&globalFlags.Verbose, "verbose", "v", false, "verbose output")
+	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", "configuration file path")
 
 	rootCmd.AddCommand(migrate.NewCommand(globalFlags))
+	rootCmd.AddCommand(setup.NewCommand(globalFlags))
 
 	return rootCmd
 }
