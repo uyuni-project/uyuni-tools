@@ -39,7 +39,7 @@ func runMigrationJob(tmpPath string, flags *flagpole, verbose bool) {
 	sshKnownhostsPath := filepath.Join(homedir, ".ssh", "known_hosts")
 
 	volumes := make(map[string]volume)
-	for name, path := range VOLUMES {
+	for name, path := range utils.VOLUMES {
 		volumes[name] = volume{Path: path}
 	}
 	volumes["ssh-auth-socket"] = volume{HostPath: sshAuthSocket, Path: "/tmp/ssh_auth_sock"}

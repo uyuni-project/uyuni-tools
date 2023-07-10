@@ -8,8 +8,9 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) {
@@ -23,61 +24,27 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra
 	sshConfigPath := filepath.Join(homedir, ".ssh", "config")
 	sshKnownhostsPath := filepath.Join(homedir, ".ssh", "known_hosts")
 
-	volumesArgs := []string{}
-	for volumeName, containerPath := range VOLUMES {
-		volumesArgs = append(volumesArgs, "-v", volumeName+":"+containerPath)
-	}
-
 	scriptDir := generateMigrationScript(args[0], false)
 	defer os.RemoveAll(scriptDir)
 
-	podmanArgs := []string{
-		"run",
-		"--name", "uyuni-migration",
-		"--rm",
-		"--tz=local",
-		"--cap-add", "NET_RAW",
-		"--tmpfs", "/run",
-		"-v", "cgroup:/sys/fs/cgroup:rw",
+	extraArgs := []string{
 		"-e", "SSH_AUTH_SOCK",
 		"-v", filepath.Dir(sshAuthSocket) + ":" + filepath.Dir(sshAuthSocket),
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
 	}
 
 	if _, err = os.Stat(sshConfigPath); err == nil {
-		podmanArgs = append(podmanArgs, "-v", sshConfigPath+":/root/.ssh/config")
+		extraArgs = append(extraArgs, "-v", sshConfigPath+":/root/.ssh/config")
 
 	}
 
 	if _, err = os.Stat(sshKnownhostsPath); err == nil {
-		podmanArgs = append(podmanArgs, "-v", sshKnownhostsPath+":/root/.ssh/known_hosts")
+		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/root/.ssh/known_hosts")
 	}
-
-	podmanArgs = append(podmanArgs, volumesArgs...)
-
-	podmanArgs = append(podmanArgs,
-		flags.Image+":"+flags.ImageTag,
-		"/var/lib/uyuni-tools/migrate.sh",
-	)
 
 	log.Println("Migrating server")
-
-	podmanCmd := exec.Command("podman", podmanArgs...)
-
-	if globalFlags.Verbose {
-		log.Printf("Running command: podman %s\n", strings.Join(podmanArgs, " "))
-		podmanCmd.Stdout = os.Stdout
-		podmanCmd.Stderr = os.Stderr
-	}
-
-	if err = podmanCmd.Start(); err != nil {
-		log.Fatalf("Failed to start migration container: %s\n", err)
-	}
-
-	// Wait for the migration to finish and report errors
-	if err = podmanCmd.Wait(); err != nil {
-		log.Fatalf("Failed to wait for container to finish: %s\n", err)
-	}
+	runContainer("uyuni-migration", flags.Image, flags.ImageTag, extraArgs,
+		[]string{"/var/lib/uyuni-tools/migrate.sh"}, []string{}, globalFlags.Verbose)
 
 	// Setup the systemd service configuration options
 	config := podman.ReadConfig()
@@ -98,4 +65,45 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra
 	}
 
 	log.Println("Server migrated")
+}
+
+func runContainer(name string, image string, tag string, extraArgs []string, cmd []string, env []string, verbose bool) {
+
+	podmanArgs := []string{
+		"run",
+		"--name", name,
+		"--rm",
+		"--cap-add", "NET_RAW",
+		"--tmpfs", "/run",
+		"-v", "cgroup:/sys/fs/cgroup:rw",
+	}
+
+	podmanArgs = append(podmanArgs, extraArgs...)
+
+	volumesArgs := []string{}
+	for volumeName, containerPath := range utils.VOLUMES {
+		volumesArgs = append(volumesArgs, "-v", volumeName+":"+containerPath)
+	}
+	podmanArgs = append(podmanArgs, volumesArgs...)
+
+	podmanArgs = append(podmanArgs, image+":"+tag)
+	podmanArgs = append(podmanArgs, cmd...)
+
+	podmanCmd := exec.Command("podman", podmanArgs...)
+
+	if verbose {
+		log.Printf("Running command: podman %s\n", strings.Join(podmanArgs, " "))
+	}
+	podmanCmd.Stdout = os.Stdout
+	podmanCmd.Stderr = os.Stderr
+
+	podmanCmd.Env = append(podmanCmd.Environ(), env...)
+	if err := podmanCmd.Start(); err != nil {
+		log.Fatalf("Failed to start %s container: %s\n", name, err)
+	}
+
+	// Wait for the migration to finish and report errors
+	if err := podmanCmd.Wait(); err != nil {
+		log.Fatalf("Failed to wait for container to finish: %s\n", err)
+	}
 }

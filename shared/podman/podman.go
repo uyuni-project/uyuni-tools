@@ -1,6 +1,7 @@
 package podman
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"regexp"
@@ -24,7 +25,11 @@ func WriteConfig(config []byte) {
 
 func UpdateConfigValue(config []byte, key string, value string) []byte {
 	var matcher = regexp.MustCompile(key + ` ?=.*`)
-	return matcher.ReplaceAll(config, []byte(key+"="+value))
+	newConfig := fmt.Sprintf("%s=%s", key, value)
+	if matcher.Match(config) {
+		return matcher.ReplaceAll(config, []byte(newConfig))
+	}
+	return append(config, []byte(newConfig+"\n")...)
 }
 
 func getServiceConfig() string {
