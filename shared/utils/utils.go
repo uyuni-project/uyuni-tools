@@ -75,3 +75,12 @@ func AskPasswordIfMissing(viper *viper.Viper, key string, prompt string) {
 		fmt.Println()
 	}
 }
+
+// Get the timezone set on the machine running the tool
+func GetLocalTimezone() string {
+	out, err := exec.Command("timedatectl", "show", "--value", "-p", "Timezone").Output()
+	if err != nil {
+		log.Fatalf("Failed to run timedatectl show --value -p Timezone: %s\n", err)
+	}
+	return string(out)
+}

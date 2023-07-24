@@ -23,7 +23,14 @@ func waitForSystemStart(viper *viper.Viper, globalFlags *types.GlobalFlags) {
 
 	config = podman.UpdateConfigValue(config, "NAMESPACE", filepath.Dir(viper.GetString("image")))
 	config = podman.UpdateConfigValue(config, "TAG", viper.GetString("tag"))
-	config = podman.UpdateConfigValue(config, "TZ", viper.GetString("tz"))
+
+	tz := viper.GetString("tz")
+
+	// Use the host timezone if the user didn't define one
+	if tz == "" {
+		tz = utils.GetLocalTimezone()
+	}
+	config = podman.UpdateConfigValue(config, "TZ", tz)
 
 	podman.WriteConfig(config)
 

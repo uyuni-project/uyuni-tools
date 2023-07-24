@@ -50,7 +50,7 @@ NOTE: for now installing on a remote cluster or podman is not supported yet!
 	setupCmd.Flags().String("image", "registry.opensuse.org/uyuni/server", "Image")
 	setupCmd.Flags().String("tag", "latest", "Tag Image")
 
-	setupCmd.Flags().String("tz", "Etc/UTC", "Time zone to set on the server")
+	setupCmd.Flags().String("tz", "Etc/UTC", "Time zone to set on the server. Defaults to the host timezone")
 	setupCmd.Flags().String("email", "admin@example.com", "Manager E-Mail")
 	setupCmd.Flags().String("emailfrom", "admin@example.com", "E-Mail sending the notifications")
 	setupCmd.Flags().String("mirrorPath", "", "Path to mirrored packages mounted on the host")
