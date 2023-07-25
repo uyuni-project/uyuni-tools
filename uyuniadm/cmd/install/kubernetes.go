@@ -1,4 +1,4 @@
-package setup
+package install
 
 import (
 	"github.com/spf13/cobra"
@@ -6,6 +6,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func setupForKubernetes(viper *viper.Viper, globalFlags *types.GlobalFlags, cmd *cobra.Command, args []string) {
+func installForKubernetes(viper *viper.Viper, globalFlags *types.GlobalFlags, cmd *cobra.Command, args []string) {
 	// TODO Implement me
 }

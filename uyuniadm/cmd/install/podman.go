@@ -1,11 +1,10 @@
-package setup
+package install
 
 import (
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -19,24 +18,15 @@ import (
 
 func waitForSystemStart(viper *viper.Viper, globalFlags *types.GlobalFlags) {
 	// Setup the systemd service configuration options
-	config := podman.ReadConfig()
-
-	config = podman.UpdateConfigValue(config, "NAMESPACE", filepath.Dir(viper.GetString("image")))
-	config = podman.UpdateConfigValue(config, "TAG", viper.GetString("tag"))
-
 	tz := viper.GetString("tz")
 
 	// Use the host timezone if the user didn't define one
 	if tz == "" {
 		tz = utils.GetLocalTimezone()
 	}
-	config = podman.UpdateConfigValue(config, "TZ", tz)
 
-	podman.WriteConfig(config)
-
-	if globalFlags.Verbose {
-		log.Printf("Wrote configuration:\n%s\n", config)
-	}
+	image := fmt.Sprintf("%s:%s", viper.GetString("image"), viper.GetString("tag"))
+	podman.GenerateSystemdService(tz, image, globalFlags.Verbose)
 
 	log.Println("Waiting for the server to start...")
 	// Start the service
@@ -45,7 +35,7 @@ func waitForSystemStart(viper *viper.Viper, globalFlags *types.GlobalFlags) {
 	}
 
 	// Wait for the system to be up
-	for i := 0; i < 30; i++ {
+	for i := 0; i < 60; i++ {
 		cmd := exec.Command("podman", "exec", "uyuni-server", "systemctl", "is-active", "-q", "multi-user.target")
 		cmd.Run()
 		if cmd.ProcessState.ExitCode() == 0 {
@@ -53,10 +43,10 @@ func waitForSystemStart(viper *viper.Viper, globalFlags *types.GlobalFlags) {
 		}
 		time.Sleep(1 * time.Second)
 	}
-	log.Fatalf("Server didn't start within 30s")
+	log.Fatalf("Server didn't start within 60s")
 }
 
-func setupForPodman(viper *viper.Viper, globalFlags *types.GlobalFlags, cmd *cobra.Command, args []string) {
+func installForPodman(viper *viper.Viper, globalFlags *types.GlobalFlags, cmd *cobra.Command, args []string) {
 	waitForSystemStart(viper, globalFlags)
 
 	env := []string{

@@ -32,6 +32,8 @@ done;
 rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 
+ssh {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
+
 {{ if .Kubernetes }}
 echo 'server.no_ssl = 1' >> /etc/rhn/rhn.conf;
 sed 's/address=[^:]*:/address=uyuni:/' -i /etc/rhn/taskomatic.conf;
