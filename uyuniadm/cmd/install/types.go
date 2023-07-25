@@ -1,4 +1,4 @@
-package setup
+package install
 
 type certificate struct {
 	useExistingCertificate bool

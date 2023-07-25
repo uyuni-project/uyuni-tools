@@ -1,6 +1,8 @@
 package migrate
 
 import (
+	"bytes"
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -8,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -46,18 +49,18 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra
 	runContainer("uyuni-migration", flags.Image, flags.ImageTag, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}, []string{}, globalFlags.Verbose)
 
-	// Setup the systemd service configuration options
-	config := podman.ReadConfig()
-
-	config = podman.UpdateConfigValue(config, "NAMESPACE", filepath.Dir(flags.Image))
-	config = podman.UpdateConfigValue(config, "TAG", flags.ImageTag)
-
-	// TODO More values to write like UYUNI_FQDN?
-	podman.WriteConfig(config)
-
-	if globalFlags.Verbose {
-		log.Printf("Wrote configuration:\n%s\n", config)
+	// Read the extracted data
+	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))
+	if err != nil {
+		log.Fatalf("Failed to read data extracted from source host")
 	}
+	viper.SetConfigType("env")
+	viper.ReadConfig(bytes.NewBuffer(data))
+	tz := viper.GetString("Timezone")
+
+	image := fmt.Sprintf("%s:%s", flags.Image, flags.ImageTag)
+
+	podman.GenerateSystemdService(tz, image, globalFlags.Verbose)
 
 	// Start the service
 	if err = exec.Command("systemctl", "enable", "--now", "uyuni-server").Run(); err != nil {
@@ -69,22 +72,12 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra
 
 func runContainer(name string, image string, tag string, extraArgs []string, cmd []string, env []string, verbose bool) {
 
-	podmanArgs := []string{
-		"run",
-		"--name", name,
-		"--rm",
-		"--cap-add", "NET_RAW",
-		"--tmpfs", "/run",
-		"-v", "cgroup:/sys/fs/cgroup:rw",
-	}
-
+	podmanArgs := append([]string{"run"}, podman.GetCommonParams(name)...)
 	podmanArgs = append(podmanArgs, extraArgs...)
 
-	volumesArgs := []string{}
 	for volumeName, containerPath := range utils.VOLUMES {
-		volumesArgs = append(volumesArgs, "-v", volumeName+":"+containerPath)
+		podmanArgs = append(podmanArgs, "-v", volumeName+":"+containerPath)
 	}
-	podmanArgs = append(podmanArgs, volumesArgs...)
 
 	podmanArgs = append(podmanArgs, image+":"+tag)
 	podmanArgs = append(podmanArgs, cmd...)
