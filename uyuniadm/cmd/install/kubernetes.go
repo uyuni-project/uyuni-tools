@@ -167,6 +167,8 @@ spec:
 }
 
 func extractCaCertToConfig(verbose bool) {
+	// TODO Replace with [trust-manager](https://cert-manager.io/docs/projects/trust-manager/) to automate this
+
 	log.Println("Extracting CA certificate to a configmap")
 	// Skip extracting if the configmap is already present
 	out, err := exec.Command("kubectl", "get", "configmap", "uyuni-ca", "-o=jsonpath={.data.ca\\.crt}").Output()

@@ -60,7 +60,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra
 
 	image := fmt.Sprintf("%s:%s", flags.Image, flags.ImageTag)
 
-	podman.GenerateSystemdService(tz, image, globalFlags.Verbose)
+	podman.GenerateSystemdService(tz, image, viper.GetStringSlice("podman.arg"), globalFlags.Verbose)
 
 	// Start the service
 	if err = exec.Command("systemctl", "enable", "--now", "uyuni-server").Run(); err != nil {
