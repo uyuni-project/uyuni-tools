@@ -31,6 +31,8 @@ The install command assumes the following:
   * podman or kubectl is installed locally
   * if kubectl is installed, a working kubeconfig should be set to connect to the cluster to deploy to
 
+When installing on kubernetes, the helm values file will be overridden with the values from the uyuniadm parameters or configuration.
+
 NOTE: for now installing on a remote cluster or podman is not supported!
 `,
 		Args: cobra.ExactArgs(1),
@@ -84,6 +86,10 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 
 	installCmd.Flags().String("scc-user", "", "SUSE Customer Center username")
 	installCmd.Flags().String("scc-password", "", "SUSE Customer Center password")
+
+	installCmd.Flags().String("helm-namespace", "default", "Kubernetes namespace to install uyuni to")
+	installCmd.Flags().String("helm-chart", "oci://registry.opensuse.org/uyuni/proxy", "URL to the uyuni helm chart")
+	installCmd.Flags().String("helm-values", "", "Path to a values YAML file to use for helm install")
 
 	return installCmd
 }
