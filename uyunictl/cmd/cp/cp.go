@@ -1,9 +1,6 @@
 package cp
 
 import (
-	"log"
-	"strings"
-
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -34,32 +31,5 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 }
 
 func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) {
-	command, podName := utils.GetPodName()
-	commandArgs := []string{}
-	extraArgs := []string{}
-	src := strings.Replace(args[0], "server:", podName+":", 1)
-	dst := strings.Replace(args[1], "server:", podName+":", 1)
-
-	switch command {
-	case "podman":
-		commandArgs = []string{"cp", src, dst}
-	case "kubectl":
-		commandArgs = []string{"cp", "-c", "uyuni", src, dst}
-		extraArgs = []string{"-c", "uyuni", "--"}
-	default:
-		log.Fatalf("Unknown container kind: %s\n", command)
-	}
-
-	utils.RunCmd(command, commandArgs, "Failed to copy file", globalFlags.Verbose)
-
-	if flags.User != "" && strings.HasPrefix(args[1], "server:") {
-		execArgs := []string{"exec", podName}
-		execArgs = append(execArgs, extraArgs...)
-		owner := flags.User
-		if flags.Group != "" {
-			owner = flags.User + ":" + flags.Group
-		}
-		execArgs = append(execArgs, "chown", owner, strings.Replace(args[1], "server:", "", 1))
-		utils.RunCmd(command, execArgs, "Failed to change file owner", globalFlags.Verbose)
-	}
+	utils.Copy(globalFlags, args[0], args[1], flags.User, flags.Group)
 }
