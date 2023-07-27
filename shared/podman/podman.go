@@ -22,7 +22,7 @@ func GetExposedPorts() []string {
 
 const ServicePath = "/usr/lib/systemd/system/uyuni-server.service"
 
-func GenerateSystemdService(tz string, image string, verbose bool) {
+func GenerateSystemdService(tz string, image string, podmanArgs []string, verbose bool) {
 
 	_, err := os.Stat(ServicePath)
 	if err == nil {
@@ -93,7 +93,7 @@ WantedBy=multi-user.target default.target
 	}{
 
 		Volumes:  utils.VOLUMES,
-		Args:     fmt.Sprintf(commonArgs, "uyuni-server"),
+		Args:     fmt.Sprintf(commonArgs, "uyuni-server") + " " + strings.Join(podmanArgs, " "),
 		Ports:    GetExposedPorts(),
 		Timezone: tz,
 		Image:    image,

@@ -17,15 +17,8 @@ import (
 
 func waitForSystemStart(viper *viper.Viper, globalFlags *types.GlobalFlags) {
 	// Setup the systemd service configuration options
-	tz := viper.GetString("tz")
-
-	// Use the host timezone if the user didn't define one
-	if tz == "" {
-		tz = utils.GetLocalTimezone()
-	}
-
 	image := fmt.Sprintf("%s:%s", viper.GetString("image"), viper.GetString("tag"))
-	podman.GenerateSystemdService(tz, image, globalFlags.Verbose)
+	podman.GenerateSystemdService(viper.GetString("tz"), image, viper.GetStringSlice("podman.arg"), globalFlags.Verbose)
 
 	log.Println("Waiting for the server to start...")
 	// Start the service
