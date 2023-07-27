@@ -7,7 +7,6 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -34,16 +33,7 @@ func waitForSystemStart(viper *viper.Viper, globalFlags *types.GlobalFlags) {
 		log.Fatalf("Failed to enable uyuni-server systemd service: %s\n", err)
 	}
 
-	// Wait for the system to be up
-	for i := 0; i < 60; i++ {
-		cmd := exec.Command("podman", "exec", "uyuni-server", "systemctl", "is-active", "-q", "multi-user.target")
-		cmd.Run()
-		if cmd.ProcessState.ExitCode() == 0 {
-			return
-		}
-		time.Sleep(1 * time.Second)
-	}
-	log.Fatalf("Server didn't start within 60s")
+	utils.WaitForServer()
 }
 
 func installForPodman(viper *viper.Viper, globalFlags *types.GlobalFlags, cmd *cobra.Command, args []string) {

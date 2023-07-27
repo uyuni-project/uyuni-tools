@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/spf13/viper"
 	"golang.org/x/term"
@@ -51,6 +52,21 @@ func GetPodName() (string, string) {
 		}
 	}
 	return command, pod
+}
+
+// WaitForServer waits at most 60s for multi-user systemd target to be reached.
+func WaitForServer() {
+	cmd, podName := GetPodName()
+	// Wait for the system to be up
+	for i := 0; i < 60; i++ {
+		cmd := exec.Command(cmd, "exec", podName, "--", "systemctl", "is-active", "-q", "multi-user.target")
+		cmd.Run()
+		if cmd.ProcessState.ExitCode() == 0 {
+			return
+		}
+		time.Sleep(1 * time.Second)
+	}
+	log.Fatalf("Server didn't start within 60s")
 }
 
 func RunCmd(command string, args []string, errMessage string, verbose bool) {
