@@ -34,20 +34,21 @@ func GetCommand() string {
 	return command
 }
 
-func GetPodName() (string, string) {
+func GetPodName(fail bool) (string, string) {
 	command := GetCommand()
 	pod := "uyuni-server"
 
 	switch command {
 	case "podman":
 		if out, _ := exec.Command("podman", "ps", "-q", "-f", "name="+pod).Output(); len(out) == 0 {
-			log.Fatalf("Container %s is not running on podman", pod)
+			if fail {
+				log.Fatalf("Container %s is not running on podman", pod)
+			}
 		}
 	case "kubectl":
 		podCmd := exec.Command("kubectl", "get", "pod", "-lapp=uyuni", "-o=jsonpath={.items[0].metadata.name}")
 		podName, err := podCmd.Output()
 		if err == nil {
-			command = "kubectl"
 			pod = string(podName[:])
 		}
 	}
@@ -56,12 +57,12 @@ func GetPodName() (string, string) {
 
 // WaitForServer waits at most 60s for multi-user systemd target to be reached.
 func WaitForServer() {
-	cmd, podName := GetPodName()
 	// Wait for the system to be up
 	for i := 0; i < 60; i++ {
-		cmd := exec.Command(cmd, "exec", podName, "--", "systemctl", "is-active", "-q", "multi-user.target")
-		cmd.Run()
-		if cmd.ProcessState.ExitCode() == 0 {
+		cmd, podName := GetPodName(false)
+		testCmd := exec.Command(cmd, "exec", podName, "--", "systemctl", "is-active", "-q", "multi-user.target")
+		testCmd.Run()
+		if testCmd.ProcessState.ExitCode() == 0 {
 			return
 		}
 		time.Sleep(1 * time.Second)

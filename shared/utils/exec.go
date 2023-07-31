@@ -12,7 +12,7 @@ import (
 )
 
 func Exec(globalFlags *types.GlobalFlags, interactive bool, tty bool, env []string, args ...string) {
-	command, podName := GetPodName()
+	command, podName := GetPodName(true)
 
 	commandArgs := []string{"exec"}
 	if interactive {
