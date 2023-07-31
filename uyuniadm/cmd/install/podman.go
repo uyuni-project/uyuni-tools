@@ -29,7 +29,21 @@ func waitForSystemStart(viper *viper.Viper, globalFlags *types.GlobalFlags) {
 	utils.WaitForServer()
 }
 
+func pullImage(viper *viper.Viper) {
+	image := fmt.Sprintf("%s:%s", viper.GetString("image"), viper.GetString("tag"))
+	log.Printf("Running podman pull %s\n", image)
+	cmd := exec.Command("podman", "pull", image)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("Failed to pull image: %s\n", err)
+	}
+}
+
 func installForPodman(viper *viper.Viper, globalFlags *types.GlobalFlags, cmd *cobra.Command, args []string) {
+	pullImage(viper)
+
 	waitForSystemStart(viper, globalFlags)
 
 	env := []string{
