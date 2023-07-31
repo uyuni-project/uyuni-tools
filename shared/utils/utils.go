@@ -60,8 +60,14 @@ func WaitForServer() {
 	// Wait for the system to be up
 	for i := 0; i < 60; i++ {
 		cmd, podName := GetPodName(false)
-		testCmd := exec.Command(cmd, "exec", podName, "--", "systemctl", "is-active", "-q", "multi-user.target")
+		args := []string{"exec", podName}
+		if cmd == "kubectl" {
+			args = append(args, "--")
+		}
+		args = append(args, "systemctl", "is-active", "-q", "multi-user.target")
+		testCmd := exec.Command(cmd, args...)
 		testCmd.Run()
+		log.Printf("Ran %s %s: %d\n", cmd, strings.Join(args, " "), testCmd.ProcessState.ExitCode())
 		if testCmd.ProcessState.ExitCode() == 0 {
 			return
 		}
