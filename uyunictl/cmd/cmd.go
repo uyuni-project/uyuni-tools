@@ -19,6 +19,8 @@ func NewUyunictlCommand() *cobra.Command {
 
 	rootCmd.PersistentFlags().BoolVarP(&globalFlags.Verbose, "verbose", "v", false, "verbose output")
 
+	// TODO Add --namespace parameter for kubernetes ?
+
 	rootCmd.AddCommand(exec.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
 
