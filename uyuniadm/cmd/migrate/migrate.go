@@ -44,11 +44,5 @@ NOTE: for now installing on a remote cluster or podman is not supported yet!
 	migrateCmd.Flags().StringVar(&flags.Image, "image", "registry.opensuse.org/uyuni/server", "Image")
 	migrateCmd.Flags().StringVar(&flags.ImageTag, "tag", "latest", "Tag Image")
 
-	migrateCmd.Flags().StringArray("podman-arg", []string{}, "Extra arguments to pass to podman")
-
-	migrateCmd.Flags().String("helm-namespace", "default", "Kubernetes namespace to install uyuni to")
-	migrateCmd.Flags().String("helm-chart", "oci://registry.opensuse.org/uyuni/proxy", "URL to the uyuni helm chart")
-	migrateCmd.Flags().String("helm-values", "", "Path to a values YAML file to use for helm install")
-
 	return migrateCmd
 }

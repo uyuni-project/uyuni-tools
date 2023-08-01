@@ -58,10 +58,27 @@ func installSslCertificates(viper *viper.Viper, fqdn string, globalFlags *types.
 	// Install cert-manager if needed
 	if !isDeploymentReady("", "cert-manager") {
 		log.Println("Installing cert-manager")
-		certManagerRepo := "https://charts.jetstack.io"
+		repo := ""
+		chart := viper.GetString("helm.certmanager.chart")
+		version := viper.GetString("helm.certmanager.version")
+		namespace := viper.GetString("helm.certmanager.namespace")
+
+		args := []string{
+			"--set", "installCRDs=true",
+			"--set-json", "global.commonLabels={\"installedby\": \"uyuniadm\"}",
+		}
+		extraValues := viper.GetString("helm.certmanager.values")
+		if extraValues != "" {
+			args = append(args, "-f", extraValues)
+		}
+
+		// Use upstream chart if nothing defined
+		if chart == "" {
+			repo = "https://charts.jetstack.io"
+			chart = "cert-manager"
+		}
 		// The installedby label will be used to only uninstall what we installed
-		helmInstall(globalFlags, "cert-manager", &certManagerRepo, "cert-manager", "cert-manager",
-			"--set", "installCRDs=true", "--set-json", "global.commonLabels={\"installedby\": \"uyuniadm\"}")
+		helmInstall(globalFlags, namespace, repo, "cert-manager", chart, version, args...)
 	}
 
 	// Wait for cert-manager to be ready
@@ -200,7 +217,7 @@ func uyuniInstall(viper *viper.Viper, fqdn string, globalFlags *types.GlobalFlag
 	// TODO Parametrize the ca issuer value?
 	helmParams := []string{"--set-json", "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"}
 
-	extraValues := viper.GetString("helm.values")
+	extraValues := viper.GetString("helm.uyuni.values")
 	if extraValues != "" {
 		helmParams = append(helmParams, "-f", extraValues)
 	}
@@ -211,14 +228,16 @@ func uyuniInstall(viper *viper.Viper, fqdn string, globalFlags *types.GlobalFlag
 		"--set", "timezone="+viper.GetString("tz"),
 		"--set", "fqdn="+fqdn)
 
-	namespace := viper.GetString("helm.namespace")
-	chart := viper.GetString("helm.chart")
-	helmInstall(globalFlags, namespace, nil, HELM_APP_NAME, chart, helmParams...)
+	namespace := viper.GetString("helm.uyuni.namespace")
+	chart := viper.GetString("helm.uyuni.chart")
+	version := viper.GetString("helm.uyuni.version")
+	helmInstall(globalFlags, namespace, "", HELM_APP_NAME, chart, version, helmParams...)
 }
 
 // helmInstall runs helm install.
-// If repo is non nil, the --repo parameter will be passed.
-func helmInstall(globalFlags *types.GlobalFlags, namespace string, repo *string, name string, chart string, args ...string) {
+// If repo is not empty, the --repo parameter will be passed.
+// If version is not empty, the --version parameter will be passed.
+func helmInstall(globalFlags *types.GlobalFlags, namespace string, repo string, name string, chart string, version string, args ...string) {
 	helmArgs := []string{
 		"install",
 		"-n", namespace,
@@ -226,8 +245,11 @@ func helmInstall(globalFlags *types.GlobalFlags, namespace string, repo *string,
 		name,
 		chart,
 	}
-	if repo != nil {
-		helmArgs = append(helmArgs, "--repo", *repo)
+	if repo != "" {
+		helmArgs = append(helmArgs, "--repo", repo)
+	}
+	if version != "" {
+		helmArgs = append(helmArgs, "--version", version)
 	}
 	helmArgs = append(helmArgs, args...)
 	errorMessage := fmt.Sprintf("Failed to install helm chart %s in namespace %s", chart, namespace)
