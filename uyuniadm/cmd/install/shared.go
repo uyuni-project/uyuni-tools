@@ -8,10 +8,22 @@ import (
 	"text/template"
 
 	"github.com/spf13/viper"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 const SETUP_NAME = "setup.sh"
+
+func runSetup(viper *viper.Viper, globalFlags *types.GlobalFlags, fqdn string, env map[string]string) {
+	tmpFolder := generateSetupScript(viper, fqdn, env)
+	defer os.RemoveAll(tmpFolder)
+
+	utils.Copy(globalFlags, filepath.Join(tmpFolder, SETUP_NAME), "server:/tmp/setup.sh", "root", "root")
+
+	utils.Exec(globalFlags, false, false, []string{}, "/tmp/setup.sh")
+
+	log.Println("Server set up")
+}
 
 // generateSetupScript creates a temporary folder with the setup script to execute in the container.
 // The script exports all the needed environment variables and calls uyuni's mgr-setup.
@@ -102,4 +114,11 @@ rm $0`
 	}
 
 	return scriptDir
+}
+
+func boolToString(value bool) string {
+	if value {
+		return "Y"
+	}
+	return "N"
 }
