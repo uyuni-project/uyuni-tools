@@ -23,7 +23,6 @@
 
 
 Name:           %{project}
-Version:        1688743864.cf2e523
 Release:        0
 Summary:        Tools for managing uyuni container
 License:        Apache-2.0
