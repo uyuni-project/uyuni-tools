@@ -108,6 +108,6 @@ func checkParameters(cmd *cobra.Command, viper *viper.Viper, flags *flagpole, co
 	}
 
 	if viper.GetString("fromEmail") == "" {
-		utils.AskIfMissing(viper, "fromEmail", cmd.Flag("fromEmail").Usage)
+		utils.AskIfMissing(viper, "emailfrom", cmd.Flag("emailfrom").Usage)
 	}
 }

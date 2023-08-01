@@ -43,13 +43,8 @@ func installForKubernetes(viper *viper.Viper, globalFlags *types.GlobalFlags, cm
 	envs := map[string]string{
 		"NO_SSL": "Y",
 	}
-	tmpFolder := generateSetupScript(viper, args[0], envs)
-	defer os.RemoveAll(tmpFolder)
 
-	utils.Copy(globalFlags, filepath.Join(tmpFolder, SETUP_NAME), "server:/tmp/setup.sh", "root", "root")
-
-	// Run the setup script
-	utils.Exec(globalFlags, false, false, []string{}, "/tmp/setup.sh")
+	runSetup(viper, globalFlags, args[0], envs)
 }
 
 // Install cert-manager and its CRDs using helm in the cert-manager namespace if needed
