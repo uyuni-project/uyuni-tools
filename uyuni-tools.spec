@@ -57,8 +57,7 @@ tar -zxf %{SOURCE1}
 %build
 export GOFLAGS=-mod=vendor
 %goprep %{provider_prefix}
-go build -o ./bin ./uyuniadm/ 
-go build -o ./bin ./uyunictl/ 
+mkdir -p bin && go build -o ./bin ./...
 
 %install
 install -m 0755 -vd %{buildroot}%{_bindir}
@@ -71,12 +70,10 @@ install -m 0755 -vp ./bin/* %{buildroot}%{_bindir}/
 %files
 
 %defattr(-,root,root)
-%dir %{_sysconfdir}/%{project}/
-%dir %{_sharedstatedir}/%{project}/
 %doc README.md
 %license LICENSE
 
-/usr/bin/uyuniadm
-/usr/bin/uyunictl
+%{_bindir}/uyuniadm
+%{_bindir}/uyunictl
 
 %changelog
