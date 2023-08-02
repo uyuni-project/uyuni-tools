@@ -70,7 +70,7 @@ ExecStart=/usr/bin/podman run \
 	-v {{ $name }}:{{ $path }} \
 	{{- end }}
 	-e TZ=${TZ} \
-	--network {{ .Network }}\
+	--network {{ .Network }} \
 	${UYUNI_IMAGE}
 ExecStop=/usr/bin/podman stop \
 	--ignore -t 10 \
@@ -117,23 +117,62 @@ WantedBy=multi-user.target default.target
 func setupNetwork(verbose bool) {
 	log.Printf("Setting up %s network\n", UYUNI_NETWORK)
 
+	ipv6Enabled := isIpv6Enabled()
+
 	// Check if the uyuni network exists and is IPv6 enabled
 	hasIpv6, err := exec.Command("podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UYUNI_NETWORK).Output()
-	if err == nil && string(hasIpv6) != "true" {
-		log.Printf("%s network is defined but doesn't have IPv6, skipping IPv6 enabling\n", UYUNI_NETWORK)
+	if err == nil {
+		if string(hasIpv6) != "true" && ipv6Enabled {
+			log.Printf("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it\n", UYUNI_NETWORK)
+			message := fmt.Sprintf("Failed to remove %s podman network", UYUNI_NETWORK)
+			utils.RunCmd("podman", []string{"network", "rm", UYUNI_NETWORK}, message, verbose)
+		} else {
+			log.Printf("Reusing existing %s network\n", UYUNI_NETWORK)
+			return
+		}
 	}
 
 	message := fmt.Sprintf("Failed to create %s network with IPv6 enabled", UYUNI_NETWORK)
 
 	args := []string{"network", "create"}
-	// Check if the networkd backend is netavark
-	if backend, err := exec.Command("podman", "info", "--format", "{{.Host.NetworkBackend}}").Output(); err != nil {
-		log.Fatalf("Failed to find podman's network backend: %s\n", err)
-	} else if string(backend) != "netavark" {
-		log.Printf("Podman's network backend is not netavark, skipping IPv6 enabling on %s network\n", UYUNI_NETWORK)
-	} else {
-		args = append(args, "--ipv6")
+	if ipv6Enabled {
+		// An IPv6 network on a host where IPv6 is disabled doesn't work: don't try it.
+		// Check if the networkd backend is netavark
+		out, err := exec.Command("podman", "info", "--format", "{{.Host.NetworkBackend}}").Output()
+		backend := strings.Trim(string(out), "\n")
+		if err != nil {
+			log.Fatalf("Failed to find podman's network backend: %s\n", err)
+		} else if backend != "netavark" {
+			log.Printf("Podman's network backend (%s) is not netavark, skipping IPv6 enabling on %s network\n", backend, UYUNI_NETWORK)
+		} else {
+			args = append(args, "--ipv6")
+		}
 	}
 	args = append(args, UYUNI_NETWORK)
 	utils.RunCmd("podman", args, message, verbose)
+}
+
+func isIpv6Enabled() bool {
+
+	files := []string{
+		"/sys/module/ipv6/parameters/disable",
+		"/proc/sys/net/ipv6/conf/default/disable_ipv6",
+		"/proc/sys/net/ipv6/conf/all/disable_ipv6",
+	}
+
+	for _, file := range files {
+		// Mind that we are checking disable files, the semantic is inverted
+		if getFileBoolean(file) {
+			return false
+		}
+	}
+	return true
+}
+
+func getFileBoolean(file string) bool {
+	out, err := os.ReadFile(file)
+	if err != nil {
+		log.Fatalf("Failed to read file %s: %s\n", file, err)
+	}
+	return string(out[:]) != "0"
 }
