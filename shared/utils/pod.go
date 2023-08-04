@@ -12,6 +12,7 @@ var VOLUMES = map[string]string{
 	"srv-www-pub":         "/srv/www/htdocs/pub",
 	"srv-www-cobbler":     "/srv/www/cobbler",
 	"srv-www-osimages":    "/srv/www/os-images",
+	"srv-www-distributions": "/srv/www/distributions",
 	"srv-tftpboot":        "/srv/tftpboot",
 	"srv-formulametadata": "/srv/formula_metadata",
 	"srv-pillar":          "/srv/pillar",

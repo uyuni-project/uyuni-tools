@@ -42,3 +42,24 @@ func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string
 		RunRawCmd(command, execArgs, true)
 	}
 }
+
+func TestExistence(dstpath string) bool {
+	command, podName := GetPodName(true)
+	commandArgs := []string{"exec", podName}
+
+	switch command {
+	case "podman":
+		commandArgs = append(commandArgs, "test", "-e", dstpath)
+	case "kubectl":
+		commandArgs = append(commandArgs, "-c", "uyuni", "test", "-e", dstpath)
+	default:
+		log.Fatalf("Unknown container kind: %s\n", command)
+	}
+	cmd := exec.Command(command, commandArgs...)
+	err := cmd.Run()
+	var exerr *exec.ExitError
+	if errors.As(err, &exerr) {
+		return false
+	}
+	return true
+}
