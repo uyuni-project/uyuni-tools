@@ -5,6 +5,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/cp"
 	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/exec"
+	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/distcp"
 )
 
 // NewCommand returns a new cobra.Command implementing the root command for kinder
@@ -23,6 +24,7 @@ func NewUyunictlCommand() *cobra.Command {
 
 	rootCmd.AddCommand(exec.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
+	rootCmd.AddCommand(distcp.NewCommand(globalFlags))
 
 	return rootCmd
 }

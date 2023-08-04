@@ -1,7 +1,9 @@
 package utils
 
 import (
+        "errors"
 	"log"
+	"os/exec"
 	"strings"
 
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -39,4 +41,25 @@ func Copy(globalFlags *types.GlobalFlags, src string, dst string, user string, g
 		execArgs = append(execArgs, "chown", owner, strings.Replace(dst, "server:", "", 1))
 		RunCmd(command, execArgs, "Failed to change file owner", globalFlags.Verbose)
 	}
+}
+
+func TestExistence(dstpath string) bool {
+	command, podName := GetPodName(true)
+	commandArgs := []string{"exec", podName}
+
+	switch command {
+	case "podman":
+		commandArgs = append(commandArgs, "test", "-e", dstpath)
+	case "kubectl":
+		commandArgs = append(commandArgs, "-c", "uyuni", "test", "-e", dstpath)
+	default:
+		log.Fatalf("Unknown container kind: %s\n", command)
+	}
+	cmd := exec.Command(command, commandArgs...)
+	err := cmd.Run()
+	var exerr *exec.ExitError
+	if errors.As(err, &exerr) {
+		return false
+	}
+	return true
 }
