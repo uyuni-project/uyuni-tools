@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 	"text/template"
 
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+const UYUNI_NETWORK = "uyuni"
 const commonArgs = "--name %s --rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
 
 func GetCommonParams(containerName string) []string {
@@ -23,6 +25,8 @@ func GetExposedPorts() []string {
 const ServicePath = "/usr/lib/systemd/system/uyuni-server.service"
 
 func GenerateSystemdService(tz string, image string, podmanArgs []string, verbose bool) {
+
+	setupNetwork(verbose)
 
 	_, err := os.Stat(ServicePath)
 	if err == nil {
@@ -66,6 +70,7 @@ ExecStart=/usr/bin/podman run \
 	-v {{ $name }}:{{ $path }} \
 	{{- end }}
 	-e TZ=${TZ} \
+	--network {{ .Network }}\
 	${UYUNI_IMAGE}
 ExecStop=/usr/bin/podman stop \
 	--ignore -t 10 \
@@ -90,6 +95,7 @@ WantedBy=multi-user.target default.target
 		Ports    []string
 		Timezone string
 		Image    string
+		Network  string
 	}{
 
 		Volumes:  utils.VOLUMES,
@@ -97,6 +103,7 @@ WantedBy=multi-user.target default.target
 		Ports:    GetExposedPorts(),
 		Timezone: tz,
 		Image:    image,
+		Network:  UYUNI_NETWORK,
 	}
 
 	t := template.Must(template.New("service").Parse(serviceTemplate))
@@ -105,4 +112,28 @@ WantedBy=multi-user.target default.target
 	}
 
 	utils.RunCmd("systemctl", []string{"daemon-reload"}, "Failed to reload systemd daemon", verbose)
+}
+
+func setupNetwork(verbose bool) {
+	log.Printf("Setting up %s network\n", UYUNI_NETWORK)
+
+	// Check if the uyuni network exists and is IPv6 enabled
+	hasIpv6, err := exec.Command("podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UYUNI_NETWORK).Output()
+	if err == nil && string(hasIpv6) != "true" {
+		log.Printf("%s network is defined but doesn't have IPv6, skipping IPv6 enabling\n", UYUNI_NETWORK)
+	}
+
+	message := fmt.Sprintf("Failed to create %s network with IPv6 enabled", UYUNI_NETWORK)
+
+	args := []string{"network", "create"}
+	// Check if the networkd backend is netavark
+	if backend, err := exec.Command("podman", "info", "--format", "{{.Host.NetworkBackend}}").Output(); err != nil {
+		log.Fatalf("Failed to find podman's network backend: %s\n", err)
+	} else if string(backend) != "netavark" {
+		log.Printf("Podman's network backend is not netavark, skipping IPv6 enabling on %s network\n", UYUNI_NETWORK)
+	} else {
+		args = append(args, "--ipv6")
+	}
+	args = append(args, UYUNI_NETWORK)
+	utils.RunCmd("podman", args, message, verbose)
 }
