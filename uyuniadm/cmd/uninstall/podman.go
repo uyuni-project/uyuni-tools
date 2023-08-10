@@ -61,6 +61,19 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 		os.Remove(podman.ServicePath)
 	}
 
+	// Remove the network
+	cmd := exec.Command("podman", "network", "exists", "uyuni")
+	err := cmd.Run()
+	if err != nil {
+		log.Println("Network uyuni already removed")
+		return
+	}
+	if dryRun {
+		log.Println("Would run podman network rm uyuni")
+	} else {
+		utils.RunCmd("podman", []string{"network", "rm", "uyuni"}, "Failed to remove network uyuni", globalFlags.Verbose)
+	}
+
 	// Reload systemd daemon
 	if dryRun {
 		log.Println("Would run systemctl daemon-reload")
