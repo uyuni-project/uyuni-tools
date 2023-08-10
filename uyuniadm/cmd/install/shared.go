@@ -5,11 +5,11 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-	"text/template"
 
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 )
 
 const SETUP_NAME = "setup.sh"
@@ -86,30 +86,12 @@ func generateSetupScript(viper *viper.Viper, fqdn string, extraEnv map[string]st
 		log.Fatalf("Failed to create temporary directory: %s\n", err)
 	}
 
-	const scriptTemplate = `#!/bin/sh
-{{- range $name, $value := .Env }}
-export {{ $name }}={{ $value }}
-{{- end }}
-
-/usr/lib/susemanager/bin/mgr-setup -s -n
-
-# clean before leaving
-rm $0`
-
-	model := struct {
-		Env map[string]string
-	}{
+	dataTemplate := templates.MgrSetupScriptTemplateData{
 		Env: env,
 	}
 
-	file, err := os.OpenFile(filepath.Join(scriptDir, SETUP_NAME), os.O_WRONLY|os.O_CREATE, 0555)
-	if err != nil {
-		log.Fatalf("Fail to open setup script: %s\n", err)
-	}
-	defer file.Close()
-
-	t := template.Must(template.New("script").Parse(scriptTemplate))
-	if err = t.Execute(file, model); err != nil {
+	scriptPath := filepath.Join(scriptDir, SETUP_NAME)
+	if err = utils.WriteTemplateToFile(dataTemplate, scriptPath, 0555, true); err != nil {
 		log.Fatalf("Failed to generate setup script: %s\n", err)
 	}
 
