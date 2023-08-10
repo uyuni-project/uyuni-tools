@@ -23,7 +23,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			run(globalFlags, flags, cmd, args)
 		},
 	}
-	execCmd.Flags().StringArrayVarP(&flags.Envs, "env", "e", []string{}, "environment variables to pass to the command")
+	execCmd.Flags().StringSliceVarP(&flags.Envs, "env", "e", []string{}, "environment variables to pass to the command, separated by commas")
 	execCmd.Flags().BoolVarP(&flags.Interactive, "interactive", "i", false, "Pass stdin to the container")
 	execCmd.Flags().BoolVarP(&flags.Tty, "tty", "t", false, "Stdin is a TTY")
 	return execCmd

@@ -35,7 +35,7 @@ func NewUyuniadmCommand() *cobra.Command {
 }
 
 func addCommonFlags(cmd *cobra.Command) {
-	cmd.Flags().StringArray("podman-arg", []string{}, "Extra arguments to pass to podman")
+	cmd.Flags().StringSlice("podman-arg", []string{}, "Extra arguments to pass to podman, separated by commas")
 
 	cmd.Flags().String("helm-uyuni-namespace", "default", "Kubernetes namespace where to install uyuni")
 	cmd.Flags().String("helm-uyuni-chart", "oci://registry.opensuse.org/uyuni/server", "URL to the uyuni helm chart")
