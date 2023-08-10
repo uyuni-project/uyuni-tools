@@ -9,13 +9,13 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"text/template"
 	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 )
 
 const HELM_APP_NAME = "uyuni"
@@ -79,53 +79,6 @@ func installSslCertificates(viper *viper.Viper, fqdn string, globalFlags *types.
 	// Wait for cert-manager to be ready
 	waitForDeployment("", "cert-manager-webhook", "webhook")
 
-	// Deploy self-signed issuer
-	const issuerTemplate = `apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  name: uyuni-issuer
-  namespace: default
-spec:
-  selfSigned: {}
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: uyuni-ca
-  namespace: default
-spec:
-  isCA: true
-  subject:
-    countries: ["{{ .Country }}"]
-    provinces: ["{{ .State }}"]
-    localities: ["{{ .City }}"]
-    organizations: ["{{ .Org }}"]
-    organizationalUnits: ["{{ .OrgUnit }}"]
-  emailAddresses:
-    - {{ .Email }}
-  commonName: {{ .Fqdn }}
-  dnsNames:
-    - {{ .Fqdn }}
-  secretName: uyuni-ca
-  privateKey:
-    algorithm: ECDSA
-    size: 256
-  issuerRef:
-    name: uyuni-issuer
-    kind: Issuer
-    group: cert-manager.io
----
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  name: uyuni-ca-issuer
-  namespace: default
-spec:
-  ca:
-    secretName:
-      uyuni-ca
-`
-
 	log.Println("Creating issuer for self signed SSL certificate authority")
 	crdsDir, err := os.MkdirTemp("", "uyuniadm-*")
 	if err != nil {
@@ -134,21 +87,8 @@ spec:
 	defer os.RemoveAll(crdsDir)
 
 	issuerPath := filepath.Join(crdsDir, "issuer.yaml")
-	file, err := os.OpenFile(issuerPath, os.O_WRONLY|os.O_CREATE, 0500)
-	if err != nil {
-		log.Fatalf("Fail to open %s file for writing: %s\n", issuerPath, err)
-	}
-	defer file.Close()
 
-	model := struct {
-		Country string
-		State   string
-		City    string
-		Org     string
-		OrgUnit string
-		Email   string
-		Fqdn    string
-	}{
+	issuerData := templates.IssuerTemplateData{
 		Country: viper.GetString("cert.country"),
 		State:   viper.GetString("cert.state"),
 		City:    viper.GetString("cert.city"),
@@ -158,8 +98,7 @@ spec:
 		Fqdn:    fqdn,
 	}
 
-	t := template.Must(template.New("issuer").Parse(issuerTemplate))
-	if err = t.Execute(file, model); err != nil {
+	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
 		log.Fatalf("Failed to generate issuer definition: %s\n", err)
 	}
 

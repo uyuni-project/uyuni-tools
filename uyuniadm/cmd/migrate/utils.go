@@ -4,9 +4,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"text/template"
 
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 )
 
 func getSshAuthSocket() string {
@@ -23,42 +23,14 @@ func generateMigrationScript(sourceFqdn string, kubernetes bool) string {
 		log.Fatalf("Failed to create temporary directory: %s\n", err)
 	}
 
-	const scriptTemplate = `#!/bin/bash
-set -e
-for folder in {{range .Volumes}}{{.}} {{end}};
-do
-  rsync -e "ssh -A " --rsync-path='sudo rsync' -avz {{.SourceFqdn}}:$folder/ $folder;
-done;
-rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
-ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
-
-ssh {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
-
-{{ if .Kubernetes }}
-echo 'server.no_ssl = 1' >> /etc/rhn/rhn.conf;
-sed 's/address=[^:]*:/address=uyuni:/' -i /etc/rhn/taskomatic.conf;
-sed 's/address=[^:]*:/address=uyuni:/' -i /etc/sysconfig/tomcat;
-{{ end }}
-echo "DONE"`
-
-	model := struct {
-		Volumes    map[string]string
-		SourceFqdn string
-		Kubernetes bool
-	}{
+	data := templates.MigrateScriptTemplateData{
 		Volumes:    utils.VOLUMES,
 		SourceFqdn: sourceFqdn,
 		Kubernetes: kubernetes,
 	}
 
-	file, err := os.OpenFile(filepath.Join(scriptDir, "migrate.sh"), os.O_WRONLY|os.O_CREATE, 0555)
-	if err != nil {
-		log.Fatalf("Fail to open migration script: %s\n", err)
-	}
-	defer file.Close()
-
-	t := template.Must(template.New("script").Parse(scriptTemplate))
-	if err = t.Execute(file, model); err != nil {
+	scriptPath := filepath.Join(scriptDir, "migrate.sh")
+	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
 		log.Fatalf("Failed to generate migration script: %s\n", err)
 	}
 
