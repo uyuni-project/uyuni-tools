@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
@@ -20,23 +19,23 @@ import (
 
 const HELM_APP_NAME = "uyuni"
 
-func installForKubernetes(viper *viper.Viper, globalFlags *types.GlobalFlags, cmd *cobra.Command, args []string) {
+func installForKubernetes(globalFlags *types.GlobalFlags, flags *InstallFlags, cmd *cobra.Command, args []string) {
 	fqdn := args[0]
-	if viper.GetBool("cert.useexisting") {
+	if flags.Cert.UseExisting {
 		// TODO Check that we have the expected secret and config in place
 	} else {
 		// Install cert-manager and a self-signed issuer ready for use
-		installSslCertificates(viper, fqdn, globalFlags)
+		installSslCertificates(globalFlags, flags, fqdn)
 	}
 
 	// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
 	extractCaCertToConfig(globalFlags.Verbose)
 
 	// Deploy the helm chart
-	uyuniInstall(viper, fqdn, globalFlags)
+	uyuniInstall(globalFlags, flags, fqdn)
 
 	// Wait for the pod to be started
-	waitForDeployment(viper.GetString("helm.namespace"), HELM_APP_NAME, "uyuni")
+	waitForDeployment(flags.Helm.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
 	utils.WaitForServer()
 
 	// Create setup script + env variables and copy it to the container
@@ -44,25 +43,25 @@ func installForKubernetes(viper *viper.Viper, globalFlags *types.GlobalFlags, cm
 		"NO_SSL": "Y",
 	}
 
-	runSetup(viper, globalFlags, args[0], envs)
+	runSetup(globalFlags, flags, args[0], envs)
 }
 
 // Install cert-manager and its CRDs using helm in the cert-manager namespace if needed
 // and then create a self-signed CA and issuers.
-func installSslCertificates(viper *viper.Viper, fqdn string, globalFlags *types.GlobalFlags) {
+func installSslCertificates(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn string) {
 	// Install cert-manager if needed
 	if !isDeploymentReady("", "cert-manager") {
 		log.Println("Installing cert-manager")
 		repo := ""
-		chart := viper.GetString("helm.certmanager.chart")
-		version := viper.GetString("helm.certmanager.version")
-		namespace := viper.GetString("helm.certmanager.namespace")
+		chart := flags.Helm.CertManager.Chart
+		version := flags.Helm.CertManager.Version
+		namespace := flags.Helm.CertManager.Namespace
 
 		args := []string{
 			"--set", "installCRDs=true",
 			"--set-json", "global.commonLabels={\"installedby\": \"uyuniadm\"}",
 		}
-		extraValues := viper.GetString("helm.certmanager.values")
+		extraValues := flags.Helm.CertManager.Values
 		if extraValues != "" {
 			args = append(args, "-f", extraValues)
 		}
@@ -89,12 +88,12 @@ func installSslCertificates(viper *viper.Viper, fqdn string, globalFlags *types.
 	issuerPath := filepath.Join(crdsDir, "issuer.yaml")
 
 	issuerData := templates.IssuerTemplateData{
-		Country: viper.GetString("cert.country"),
-		State:   viper.GetString("cert.state"),
-		City:    viper.GetString("cert.city"),
-		Org:     viper.GetString("cert.org"),
-		OrgUnit: viper.GetString("cert.ou"),
-		Email:   viper.GetString("cert.email"),
+		Country: flags.Cert.Country,
+		State:   flags.Cert.State,
+		City:    flags.Cert.City,
+		Org:     flags.Cert.Org,
+		OrgUnit: flags.Cert.OU,
+		Email:   flags.Cert.Email,
 		Fqdn:    fqdn,
 	}
 
@@ -144,27 +143,27 @@ func extractCaCertToConfig(verbose bool) {
 	utils.RunCmd("kubectl", []string{"create", "configmap", "uyuni-ca", valueArg}, message, verbose)
 }
 
-func uyuniInstall(viper *viper.Viper, fqdn string, globalFlags *types.GlobalFlags) {
+func uyuniInstall(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn string) {
 	log.Println("Installing Uyuni")
 
 	// The issuer annotation is before the user's value to allow it to be overwritten for now.
 	// TODO Parametrize the ca issuer value?
 	helmParams := []string{"--set-json", "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"}
 
-	extraValues := viper.GetString("helm.uyuni.values")
+	extraValues := flags.Helm.Uyuni.Values
 	if extraValues != "" {
 		helmParams = append(helmParams, "-f", extraValues)
 	}
 
 	// The values computed from the command line need to be last to override what could be in the extras
 	helmParams = append(helmParams,
-		"--set", fmt.Sprintf("images.server=%s:%s", viper.GetString("image"), viper.GetString("tag")),
-		"--set", "timezone="+viper.GetString("tz"),
+		"--set", fmt.Sprintf("images.server=%s:%s", flags.Image.Name, flags.Image.Tag),
+		"--set", "timezone="+flags.TZ,
 		"--set", "fqdn="+fqdn)
 
-	namespace := viper.GetString("helm.uyuni.namespace")
-	chart := viper.GetString("helm.uyuni.chart")
-	version := viper.GetString("helm.uyuni.version")
+	namespace := flags.Helm.Uyuni.Namespace
+	chart := flags.Helm.Uyuni.Chart
+	version := flags.Helm.Uyuni.Version
 	helmInstall(globalFlags, namespace, "", HELM_APP_NAME, chart, version, helmParams...)
 }
 

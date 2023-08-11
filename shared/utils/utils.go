@@ -10,7 +10,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/spf13/viper"
 	"golang.org/x/term"
 )
 
@@ -89,29 +88,27 @@ func RunCmd(command string, args []string, errMessage string, verbose bool) {
 
 const PROMPT_END = ": "
 
-func AskPasswordIfMissing(viper *viper.Viper, key string, prompt string) {
-	value := viper.GetString(key)
-	if value == "" {
+func AskPasswordIfMissing(value *string, prompt string) {
+	if *value == "" {
 		fmt.Print(prompt + PROMPT_END)
 		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 		if err != nil {
 			log.Fatalf("Failed to read password: %s\n", err)
 		}
-		viper.Set(key, string(bytePassword))
+		*value = string(bytePassword)
 		fmt.Println()
 	}
 }
 
-func AskIfMissing(viper *viper.Viper, key string, prompt string) {
-	value := viper.GetString(key)
-	if value == "" {
+func AskIfMissing(value *string, prompt string) {
+	if *value == "" {
 		fmt.Print(prompt + PROMPT_END)
 		reader := bufio.NewReader(os.Stdin)
-		value, err := reader.ReadString('\n')
+		newValue, err := reader.ReadString('\n')
 		if err != nil {
 			log.Fatalf("Failed to read input: %s\n", err)
 		}
-		viper.Set(key, value)
+		*value = newValue
 		fmt.Println()
 	}
 }

@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
@@ -14,8 +13,8 @@ import (
 
 const SETUP_NAME = "setup.sh"
 
-func runSetup(viper *viper.Viper, globalFlags *types.GlobalFlags, fqdn string, env map[string]string) {
-	tmpFolder := generateSetupScript(viper, fqdn, env)
+func runSetup(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn string, env map[string]string) {
+	tmpFolder := generateSetupScript(flags, fqdn, env)
 	defer os.RemoveAll(tmpFolder)
 
 	utils.Copy(globalFlags, filepath.Join(tmpFolder, SETUP_NAME), "server:/tmp/setup.sh", "root", "root")
@@ -28,7 +27,7 @@ func runSetup(viper *viper.Viper, globalFlags *types.GlobalFlags, fqdn string, e
 // generateSetupScript creates a temporary folder with the setup script to execute in the container.
 // The script exports all the needed environment variables and calls uyuni's mgr-setup.
 // Podman or kubernetes-specific variables can be passed using extraEnv parameter.
-func generateSetupScript(viper *viper.Viper, fqdn string, extraEnv map[string]string) string {
+func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]string) string {
 	localHostValues := []string{
 		"localhost",
 		"127.0.0.1",
@@ -36,44 +35,44 @@ func generateSetupScript(viper *viper.Viper, fqdn string, extraEnv map[string]st
 		fqdn,
 	}
 
-	localDb := utils.Contains(localHostValues, viper.GetString("db.host"))
+	localDb := utils.Contains(localHostValues, flags.Db.Host)
 
-	dbHost := viper.GetString("db.host")
-	reportdbHost := viper.GetString("reportdb.host")
+	dbHost := flags.Db.Host
+	reportdbHost := flags.ReportDb.Host
 
 	if localDb {
 		// For now the setup script expects the localhost value for local DB
 		// but the FQDN is required for the report db even if it's local
 		dbHost = "localhost"
-		if viper.GetString("reportdb.host") == "" {
+		if reportdbHost == "" {
 			reportdbHost = fqdn
 		}
 	}
 	env := map[string]string{
 		"UYUNI_FQDN":            fqdn,
-		"MANAGER_USER":          viper.GetString("db.user"),
-		"MANAGER_PASS":          viper.GetString("db.password"),
-		"MANAGER_ADMIN_EMAIL":   viper.GetString("email"),
-		"MANAGER_MAIL_FROM":     viper.GetString("emailFrom"),
-		"MANAGER_ENABLE_TFTP":   boolToString(viper.GetBool("enableTftp")),
+		"MANAGER_USER":          flags.Db.User,
+		"MANAGER_PASS":          flags.Db.Password,
+		"MANAGER_ADMIN_EMAIL":   flags.Email,
+		"MANAGER_MAIL_FROM":     flags.EmailFrom,
+		"MANAGER_ENABLE_TFTP":   boolToString(flags.Tftp),
 		"LOCAL_DB":              boolToString(localDb),
-		"MANAGER_DB_NAME":       viper.GetString("db.name"),
+		"MANAGER_DB_NAME":       flags.Db.Name,
 		"MANAGER_DB_HOST":       dbHost,
-		"MANAGER_DB_PORT":       strconv.Itoa(viper.GetInt("db.port")),
-		"MANAGER_DB_PROTOCOL":   viper.GetString("db.protocol"),
-		"REPORT_DB_NAME":        viper.GetString("reportdb.name"),
+		"MANAGER_DB_PORT":       strconv.Itoa(flags.Db.Port),
+		"MANAGER_DB_PROTOCOL":   flags.Db.Protocol,
+		"REPORT_DB_NAME":        flags.ReportDb.Name,
 		"REPORT_DB_HOST":        reportdbHost,
-		"REPORT_DB_PORT":        strconv.Itoa(viper.GetInt("reportdb.port")),
-		"REPORT_DB_USER":        viper.GetString("reportdb.user"),
-		"REPORT_DB_PASS":        viper.GetString("reportdb.password"),
-		"EXTERNALDB_ADMIN_USER": viper.GetString("db.admin.user"),
-		"EXTERNALDB_ADMIN_PASS": viper.GetString("db.admin.password"),
-		"EXTERNALDB_PROVIDER":   viper.GetString("db.provider"),
-		"ISS_PARENT":            viper.GetString("issParent"),
-		"MIRROR_PATH":           viper.GetString("mirrorPath"),
+		"REPORT_DB_PORT":        strconv.Itoa(flags.ReportDb.Port),
+		"REPORT_DB_USER":        flags.ReportDb.User,
+		"REPORT_DB_PASS":        flags.ReportDb.Password,
+		"EXTERNALDB_ADMIN_USER": flags.Db.Admin.User,
+		"EXTERNALDB_ADMIN_PASS": flags.Db.Admin.Password,
+		"EXTERNALDB_PROVIDER":   flags.Db.Provider,
+		"ISS_PARENT":            flags.IssParent,
+		"MIRROR_PATH":           flags.MirrorPath,
 		"ACTIVATE_SLP":          "N", // Deprecated, will be removed soon
-		"SCC_USER":              viper.GetString("scc.user"),
-		"SCC_PASS":              viper.GetString("scc.password"),
+		"SCC_USER":              flags.Scc.User,
+		"SCC_PASS":              flags.Scc.Password,
 	}
 
 	// Add the extra environment variables
