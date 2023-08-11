@@ -57,7 +57,7 @@ NOTE: for now installing on a remote cluster or podman is not supported yet!
 Usage:
   uyuniadm migrate [source server FQDN] [flags]
 ```
-For more information about flags uyuniadm migrate --help
+For more information about flags `uyuniadm migrate --help`
 
 #### SSH Configuration Example
 1. In the destination server, add to `~/.ssh/config` :
