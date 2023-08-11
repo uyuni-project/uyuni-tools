@@ -122,3 +122,32 @@ Usage:
   uyunictl exec '[command-to-run --with-args]' [flags]
 ```
 For more information about flags `uyunictl exec --help`
+
+## Configuration File Example
+All the commands can accept flags or yaml configuration file (using the option `-c`). This is an example of configuration file:
+```
+db:
+  password: YOUR_DB_PASSWORD
+cert:
+  password: YOUR_DB_PASSWORD
+scc:
+  user: YOUR_SCC_USER
+  password: YOUR_SCC_PASSWORD
+email: YOUR_MAIL
+emailFrom: YOUR_MAIL
+image: YOUR_IMAGE_REGISTRY
+
+helm:
+  uyuni:
+    chart: oci://OCI_REGISTRY
+    values: /root/chart-values.yaml
+podman:
+  arg:
+    - -p
+    - 8000:8000
+    - -p
+    - 8001:8001
+    - ""
+```
+
+
