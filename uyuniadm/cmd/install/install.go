@@ -8,21 +8,9 @@ import (
 	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
-type flagpole struct {
-	image       string
-	imageTag    string
-	timeZone    string
-	manager     manager
-	reportDB    database
-	cert        certificate
-	enableTftp  bool
-	sccUser     string
-	sccPassword string
-}
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	flags := &flagpole{}
-
+	
 	installCmd := &cobra.Command{
 		Use:   "install [fqdn]",
 		Short: "install a new server from scratch",
@@ -40,7 +28,7 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 		Run: func(cmd *cobra.Command, args []string) {
 			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
 			command := utils.GetCommand()
-			checkParameters(cmd, viper, flags, command)
+			checkParameters(cmd, viper, command)
 			switch command {
 			case "podman":
 				installForPodman(viper, globalFlags, cmd, args)
@@ -92,11 +80,11 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 	return installCmd
 }
 
-func checkParameters(cmd *cobra.Command, viper *viper.Viper, flags *flagpole, command string) {
+func checkParameters(cmd *cobra.Command, viper *viper.Viper, command string) {
 	utils.AskPasswordIfMissing(viper, "db.password", cmd.Flag("db-password").Usage)
 
 	// Since we use cert-manager for self-signed certificates on kubernetes we don't need password for it
-	if !flags.cert.useExistingCertificate && command == "podman" {
+	if !viper.GetBool("cert.useexisting") && command == "podman" {
 		utils.AskPasswordIfMissing(viper, "cert.password", cmd.Flag("cert-password").Usage)
 	}
 
