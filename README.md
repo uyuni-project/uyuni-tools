@@ -2,8 +2,8 @@
 
 **These tools are work in progress**
 
-* `uyunictl` aims at providing utility functions for day-to-day operations against a containerized Uyuni server
-* `uyuniadm` aims at helping deployment and setup of a containerized Uyuni server
+* `uyuniadm` used to help user administer uyuni servers on k8s and podma
+* `uyunictl` used to help user managing Uyuni and SUSE Manager Servers mainly through its API
 
 ## Building
 
@@ -11,5 +11,84 @@
 Alternatively, if you have `podman` installed you can run the `build.sh` script to build binaries compatible with SLE 15 SP4 or openSUSE Leap 15.4.
 
 
-## Start and Migration
-* uyuniadm start --help or uyuniadm migrate --help contains all the info to run the commands
+## Uyuniadm usage
+
+Available Commands:
+  * **help**: Help about any command
+  * **install**: install a new server from scratch
+  * **migrate**: migrate a remote server to containers
+  * **uninstall**: uninstall a server
+
+For more information about flags `uyuniadm --help`
+
+### Uyuniadm install
+
+Install a new server from scratch
+
+The install command assumes the following:
+  * podman or kubectl is installed locally
+  * if kubectl is installed, a working kubeconfig should be set to connect to the cluster to deploy to
+
+When installing on kubernetes, the helm values file will be overridden with the values from the uyuniadm parameters or configuration.
+
+NOTE: for now installing on a remote cluster or podman is not supported!
+
+```
+Usage:
+  uyuniadm install [fqdn] [flags]
+```
+
+For more information about flags `uyuniadm install --help`
+
+### Uyuniadm migrate
+
+Migrate a remote server to containers
+
+This migration command assumes a few things:
+  * the SSH configuration for the source server is complete, including user and
+    all needed options to connect to the machine,
+  * an SSH agent is started and the key to use to connect to the server is added to it,
+  * podman or kubectl is installed locally
+  * if kubectl is installed, a working kubeconfig should be set to connect to the cluster to deploy to
+
+NOTE: for now installing on a remote cluster or podman is not supported yet!
+
+```
+Usage:
+  uyuniadm migrate [source server FQDN] [flags]
+```
+
+For more information about flags `uyuniadm migrate --help`
+
+### Uyuniadm uninstall
+
+Uninstall a server
+
+For more information about flags `uyuniadm uninstall --help`
+
+
+## Uyunictl usage
+Available Commands:
+  * **cp**: copy files to and from the containers
+  * **exec**: execute commands inside the uyuni containers using 'sh -c'
+  * **help**: Help about any command
+
+### Uyunictl cp
+
+Takes a source and destination parameters. One of them can be prefixed with 'server:' to indicate the path is within the server pod.
+
+```
+Usage:
+  uyunictl cp [path/to/source.file] [path/to/desination.file] [flags]
+```
+For more information about flags `uyunictl cp --help`
+
+### Uyunictl exec
+
+Execute commands inside the uyuni containers using 'sh -c'
+
+```
+Usage:
+  uyunictl exec '[command-to-run --with-args]' [flags]
+```
+For more information about flags `uyunictl exec --help`

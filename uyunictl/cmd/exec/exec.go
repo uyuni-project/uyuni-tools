@@ -18,7 +18,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 	execCmd := &cobra.Command{
 		Use:   "exec '[command-to-run --with-args]'",
-		Short: "execute commands inside the uyuni containers using 'sh -c'",
+		Short: "Execute commands inside the uyuni containers using 'sh -c'",
 		Run: func(cmd *cobra.Command, args []string) {
 			run(globalFlags, flags, cmd, args)
 		},

@@ -17,7 +17,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	cpCmd := &cobra.Command{
 		Use:   "cp [path/to/source.file] [path/to/desination.file]",
 		Short: "copy files to and from the containers",
-		Long: `copy takes a source and destination parameters.
+		Long: `Takes a source and destination parameters.
 	One of them can be prefixed with 'server:' to indicate the path is within the server pod.`,
 		Args: cobra.ExactArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
