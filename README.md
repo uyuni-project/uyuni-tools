@@ -89,6 +89,10 @@ For more information about flags `uyuniadm migrate --help`
 ### Uyuniadm uninstall
 
 Uninstall a server
+```
+Usage:
+  uyuniadm uninstall [flags]
+```
 
 For more information about flags `uyuniadm uninstall --help`
 
