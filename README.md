@@ -104,7 +104,7 @@ Takes a source and destination parameters. One of them can be prefixed with 'ser
 
 ```
 Usage:
-  uyunictl cp [path/to/source.file] [path/to/desination.file] [flags]
+  uyunictl cp [path/to/source.file] [path/to/destination.file] [flags]
 ```
 For more information about flags `uyunictl cp --help`
 
