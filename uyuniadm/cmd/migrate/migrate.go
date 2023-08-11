@@ -1,19 +1,21 @@
 package migrate
 
 import (
+	"log"
+
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
-type flagpole struct {
-	Image    string
-	ImageTag string
+type MigrateFlags struct {
+	Podman cmd_utils.PodmanFlags
+	Helm   cmd_utils.HelmFlags
+	Image  cmd_utils.ImageFlags `mapstructure:",squash"`
 }
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	flags := &flagpole{}
 
 	migrateCmd := &cobra.Command{
 		Use:   "migrate [source server FQDN]",
@@ -31,12 +33,18 @@ NOTE: for now installing on a remote cluster or podman is not supported yet!
 `,
 		Args: cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
+			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
+			var flags MigrateFlags
+			if err := viper.Unmarshal(&flags); err != nil {
+				log.Fatalf("Failed to Unmarshal configuration: %s\n", err)
+			}
+
 			command := utils.GetCommand()
 			switch command {
 			case "podman":
-				migrateToPodman(globalFlags, flags, cmd, args)
+				migrateToPodman(globalFlags, &flags, cmd, args)
 			case "kubectl":
-				migrateToKubernetes(globalFlags, flags, cmd, args)
+				migrateToKubernetes(globalFlags, &flags, cmd, args)
 			}
 		},
 	}

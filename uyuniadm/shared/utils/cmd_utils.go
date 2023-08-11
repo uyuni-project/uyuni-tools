@@ -2,6 +2,27 @@ package utils
 
 import "github.com/spf13/cobra"
 
+type PodmanFlags struct {
+	Args []string `mapstructure:"arg"`
+}
+
+type ChartFlags struct {
+	Namespace string
+	Chart     string
+	Version   string
+	Values    string
+}
+
+type HelmFlags struct {
+	Uyuni       ChartFlags
+	CertManager ChartFlags
+}
+
+type ImageFlags struct {
+	Name string `mapstructure:"image"`
+	Tag  string
+}
+
 func AddPodmanInstallFlag(cmd *cobra.Command) {
 	cmd.Flags().StringSlice("podman-arg", []string{}, "Extra arguments to pass to podman")
 }

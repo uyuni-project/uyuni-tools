@@ -16,7 +16,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/podman"
 )
 
-func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) {
+func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *cobra.Command, args []string) {
 	sshAuthSocket := getSshAuthSocket()
 
 	// Find ssh config to mount it in the container
@@ -46,7 +46,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra
 	}
 
 	log.Println("Migrating server")
-	runContainer("uyuni-migration", flags.Image, flags.ImageTag, extraArgs,
+	runContainer("uyuni-migration", flags.Image.Name, flags.Image.Tag, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}, []string{}, globalFlags.Verbose)
 
 	// Read the extracted data
@@ -58,9 +58,9 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra
 	viper.ReadConfig(bytes.NewBuffer(data))
 	tz := viper.GetString("Timezone")
 
-	image := fmt.Sprintf("%s:%s", flags.Image, flags.ImageTag)
+	fullImage := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 
-	podman.GenerateSystemdService(tz, image, viper.GetStringSlice("podman.arg"), globalFlags.Verbose)
+	podman.GenerateSystemdService(tz, fullImage, viper.GetStringSlice("podman.arg"), globalFlags.Verbose)
 
 	// Start the service
 	if err = exec.Command("systemctl", "enable", "--now", "uyuni-server").Run(); err != nil {

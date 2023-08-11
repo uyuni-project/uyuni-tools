@@ -8,16 +8,15 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/podman"
 )
 
-func waitForSystemStart(viper *viper.Viper, globalFlags *types.GlobalFlags) {
+func waitForSystemStart(globalFlags *types.GlobalFlags, flags *InstallFlags) {
 	// Setup the systemd service configuration options
-	image := fmt.Sprintf("%s:%s", viper.GetString("image"), viper.GetString("tag"))
-	podman.GenerateSystemdService(viper.GetString("tz"), image, viper.GetStringSlice("podman.arg"), globalFlags.Verbose)
+	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
+	podman.GenerateSystemdService(flags.TZ, image, flags.Podman.Args, globalFlags.Verbose)
 
 	log.Println("Waiting for the server to start...")
 	// Start the service
@@ -28,8 +27,8 @@ func waitForSystemStart(viper *viper.Viper, globalFlags *types.GlobalFlags) {
 	utils.WaitForServer()
 }
 
-func pullImage(viper *viper.Viper) {
-	image := fmt.Sprintf("%s:%s", viper.GetString("image"), viper.GetString("tag"))
+func pullImage(flags *InstallFlags) {
+	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 	log.Printf("Running podman pull %s\n", image)
 	cmd := exec.Command("podman", "pull", image)
 	cmd.Stdout = os.Stdout
@@ -40,26 +39,26 @@ func pullImage(viper *viper.Viper) {
 	}
 }
 
-func installForPodman(viper *viper.Viper, globalFlags *types.GlobalFlags, cmd *cobra.Command, args []string) {
-	pullImage(viper)
+func installForPodman(globalFlags *types.GlobalFlags, flags *InstallFlags, cmd *cobra.Command, args []string) {
+	pullImage(flags)
 
-	waitForSystemStart(viper, globalFlags)
+	waitForSystemStart(globalFlags, flags)
 
 	env := map[string]string{}
-	if viper.GetBool("cert.useexisting") {
+	if flags.Cert.UseExisting {
 		// TODO Get existing certificates path and mount them
 		// Set CA_CERT, SERVER_CERT, SERVER_KEY or run the rhn-ssl-check tool in a container
 		// The SERVER_CERT needs to get the intermediate keys
 	} else {
-		env["CERT_O"] = viper.GetString("cert.org")
-		env["CERT_OU"] = viper.GetString("cert.ou")
-		env["CERT_CITY"] = viper.GetString("cert.city")
-		env["CERT_STATE"] = viper.GetString("cert.state")
-		env["CERT_COUNTRY"] = viper.GetString("cert.country")
-		env["CERT_EMAIL"] = viper.GetString("cert.email")
-		env["CERT_CNAMES"] = strings.Join(append([]string{args[0]}, viper.GetStringSlice("cert.cnames")...), ",")
-		env["CERT_PASS"] = viper.GetString("cert.password")
+		env["CERT_O"] = flags.Cert.Org
+		env["CERT_OU"] = flags.Cert.OU
+		env["CERT_CITY"] = flags.Cert.City
+		env["CERT_STATE"] = flags.Cert.State
+		env["CERT_COUNTRY"] = flags.Cert.Country
+		env["CERT_EMAIL"] = flags.Cert.Email
+		env["CERT_CNAMES"] = strings.Join(append([]string{args[0]}, flags.Cert.Cnames...), ",")
+		env["CERT_PASS"] = flags.Cert.Password
 	}
 
-	runSetup(viper, globalFlags, args[0], env)
+	runSetup(globalFlags, flags, args[0], env)
 }

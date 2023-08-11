@@ -1,16 +1,63 @@
 package install
 
 import (
+	"log"
+
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
+type DbFlags struct {
+	Host     string
+	Name     string
+	Port     int
+	User     string
+	Password string
+	Protocol string
+	Provider string
+	Admin    struct {
+		User     string
+		Password string
+	}
+}
+
+type SslCertFlags struct {
+	UseExisting bool
+	Cnames      []string `mapstructure:"cname"`
+	Country     string
+	State       string
+	City        string
+	Org         string
+	OU          string
+	Password    string
+	Email       string
+}
+
+type SccFlags struct {
+	User     string
+	Password string
+}
+
+type InstallFlags struct {
+	TZ         string
+	Email      string
+	EmailFrom  string
+	IssParent  string
+	MirrorPath string
+	Tftp       bool
+	Db         DbFlags
+	ReportDb   DbFlags
+	Cert       SslCertFlags
+	Scc        SccFlags
+	Image      cmd_utils.ImageFlags `mapstructure:",squash"`
+	Podman     cmd_utils.PodmanFlags
+	Helm       cmd_utils.HelmFlags
+}
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	
+
 	installCmd := &cobra.Command{
 		Use:   "install [fqdn]",
 		Short: "install a new server from scratch",
@@ -27,13 +74,17 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 		Args: cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
+			var flags InstallFlags
+			if err := viper.Unmarshal(&flags); err != nil {
+				log.Fatalf("Failed to unmarshall configuration: %s\n", err)
+			}
 			command := utils.GetCommand()
-			checkParameters(cmd, viper, command)
+			checkParameters(cmd, &flags, command)
 			switch command {
 			case "podman":
-				installForPodman(viper, globalFlags, cmd, args)
+				installForPodman(globalFlags, &flags, cmd, args)
 			case "kubectl":
-				installForKubernetes(viper, globalFlags, cmd, args)
+				installForKubernetes(globalFlags, &flags, cmd, args)
 			}
 		},
 	}
@@ -80,24 +131,19 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 	return installCmd
 }
 
-func checkParameters(cmd *cobra.Command, viper *viper.Viper, command string) {
-	utils.AskPasswordIfMissing(viper, "db.password", cmd.Flag("db-password").Usage)
+func checkParameters(cmd *cobra.Command, flags *InstallFlags, command string) {
+	utils.AskPasswordIfMissing(&flags.Db.Password, cmd.Flag("db-password").Usage)
 
 	// Since we use cert-manager for self-signed certificates on kubernetes we don't need password for it
-	if !viper.GetBool("cert.useexisting") && command == "podman" {
-		utils.AskPasswordIfMissing(viper, "cert.password", cmd.Flag("cert-password").Usage)
+	if !flags.Cert.UseExisting && command == "podman" {
+		utils.AskPasswordIfMissing(&flags.Cert.Password, cmd.Flag("cert-password").Usage)
 	}
 
 	// Use the host timezone if the user didn't define one
-	if viper.GetString("tz") == "" {
-		viper.Set("tz", utils.GetLocalTimezone())
+	if flags.TZ == "" {
+		flags.TZ = utils.GetLocalTimezone()
 	}
 
-	if viper.GetString("email") == "" {
-		utils.AskIfMissing(viper, "email", cmd.Flag("email").Usage)
-	}
-
-	if viper.GetString("fromEmail") == "" {
-		utils.AskIfMissing(viper, "emailfrom", cmd.Flag("emailfrom").Usage)
-	}
+	utils.AskIfMissing(&flags.Email, cmd.Flag("email").Usage)
+	utils.AskIfMissing(&flags.EmailFrom, cmd.Flag("emailfrom").Usage)
 }

@@ -11,18 +11,18 @@ import (
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 )
 
-func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) {
+func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *cobra.Command, args []string) {
 	scriptDir := generateMigrationScript(args[0], true)
 	defer os.RemoveAll(scriptDir)
 
-	runMigrationJob(scriptDir, flags, globalFlags.Verbose)
+	runMigrationJob(flags, scriptDir, globalFlags.Verbose)
 
 	// TODO Watch the logs and wait for the end of the job
 
 	// TODO prepare the values.yaml and deploy helm chart
 }
 
-func runMigrationJob(tmpPath string, flags *flagpole, verbose bool) {
+func runMigrationJob(flags *MigrateFlags, tmpPath string, verbose bool) {
 	sshAuthSocket := getSshAuthSocket()
 
 	// Find ssh config to mount it in the container
@@ -43,8 +43,8 @@ func runMigrationJob(tmpPath string, flags *flagpole, verbose bool) {
 
 	templateData := templates.KubernetesMigrateJobTemplateData{
 		Volumes: volumes,
-		Image:   flags.Image,
-		Tag:     flags.ImageTag,
+		Image:   flags.Image.Name,
+		Tag:     flags.Image.Tag,
 	}
 
 	// TODO PVCs and PVs need to be ready before this
