@@ -62,13 +62,11 @@ For more information about flags `uyuniadm migrate --help`
 #### SSH Configuration Example
 1. In the destination server, add to `~/.ssh/config` :
    ```
-   Host YOUR_HOST
+   Host SOURCE_HOSTNAME
     Hostname SOURCE_HOSTNAME
     StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
     Port 22
     User SOURCE_USER
-    IdentitiesOnly yes
     ```
 2. If you already have a key, run:
 
