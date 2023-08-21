@@ -22,7 +22,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 This migration command assumes a few things:
   * the SSH configuration for the source server is complete, including user and
     all needed options to connect to the machine,
-  * the SSH configuration should stored in $HOME/.ssh, including the keys
   * an SSH agent is started and the key to use to connect to the server is added to it,
   * podman or kubectl is installed locally
   * if kubectl is installed, a working kubeconfig should be set to connect to the cluster to deploy to
