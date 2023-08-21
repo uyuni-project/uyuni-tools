@@ -2,7 +2,7 @@
 
 **These tools are work in progress**
 
-* `uyuniadm` used to help user administer uyuni servers on k8s and podma
+* `uyuniadm` used to help user administer uyuni servers on k8s and podman
 * `uyunictl` used to help user managing Uyuni and SUSE Manager Servers mainly through its API
 
 ## Building
