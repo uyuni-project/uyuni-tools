@@ -69,7 +69,6 @@ func WaitForServer() {
 		args = append(args, "systemctl", "is-active", "-q", "multi-user.target")
 		testCmd := exec.Command(cmd, args...)
 		testCmd.Run()
-		log.Printf("Ran %s %s: %d\n", cmd, strings.Join(args, " "), testCmd.ProcessState.ExitCode())
 		if testCmd.ProcessState.ExitCode() == 0 {
 			return
 		}
