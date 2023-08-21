@@ -19,15 +19,15 @@ import (
 func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) {
 	sshAuthSocket := getSshAuthSocket()
 
-	sourceFqdn := args[0]
-
 	// Find ssh config to mount it in the container
 	homedir, err := os.UserHomeDir()
 	if err != nil {
 		log.Fatal("Failed to find home directory to look for SSH config")
 	}
-	sshPath := filepath.Join(homedir, ".ssh")
-	scriptDir := generateMigrationScript(sourceFqdn, false)
+	sshConfigPath := filepath.Join(homedir, ".ssh", "config")
+	sshKnownhostsPath := filepath.Join(homedir, ".ssh", "known_hosts")
+
+	scriptDir := generateMigrationScript(args[0], false)
 	defer os.RemoveAll(scriptDir)
 
 	extraArgs := []string{
@@ -36,9 +36,13 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
 	}
 
-	if _, err = os.Stat(sshPath); err == nil {
-		extraArgs = append(extraArgs, "-v", sshPath+":/root/.ssh")
+	if _, err = os.Stat(sshConfigPath); err == nil {
+		extraArgs = append(extraArgs, "-v", sshConfigPath+":/root/.ssh/config")
 
+	}
+
+	if _, err = os.Stat(sshKnownhostsPath); err == nil {
+		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/root/.ssh/known_hosts")
 	}
 
 	log.Println("Migrating server")
@@ -56,10 +60,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra
 
 	image := fmt.Sprintf("%s:%s", flags.Image, flags.ImageTag)
 
-	podmanMigrateArgs := viper.GetStringSlice("podman.arg")
-	podmanMigrateArgs = append(podmanMigrateArgs, "--hostname="+sourceFqdn)
-
-	podman.GenerateSystemdService(tz, image, podmanMigrateArgs, globalFlags.Verbose)
+	podman.GenerateSystemdService(tz, image, viper.GetStringSlice("podman.arg"), globalFlags.Verbose)
 
 	// Start the service
 	if err = exec.Command("systemctl", "enable", "--now", "uyuni-server").Run(); err != nil {
