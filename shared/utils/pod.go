@@ -26,5 +26,6 @@ var VOLUMES = map[string]string{
 	"etc-cobbler":         "/etc/cobbler",
 	"etc-sysconfig":       "/etc/sysconfig",
 	"etc-tls":             "/etc/pki/tls",
+	"etc-postfix":         "/etc/postfix",
 	"ca-cert":             "/etc/pki/trust/anchors/",
 }
