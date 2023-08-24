@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
 type flagpole struct {
@@ -40,9 +41,9 @@ NOTE: for now installing on a remote cluster or podman is not supported yet!
 		},
 	}
 
-	// TODO We probably want to move these default values to a config file
-	migrateCmd.Flags().StringVar(&flags.Image, "image", "registry.opensuse.org/uyuni/server", "Image")
-	migrateCmd.Flags().StringVar(&flags.ImageTag, "tag", "latest", "Tag Image")
+	cmd_utils.AddImageFlag(migrateCmd)
+	cmd_utils.AddPodmanInstallFlag(migrateCmd)
+	cmd_utils.AddHelmInstallFlag(migrateCmd)
 
 	return migrateCmd
 }
