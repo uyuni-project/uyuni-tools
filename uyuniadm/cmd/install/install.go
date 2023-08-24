@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
 type flagpole struct {
@@ -49,9 +50,6 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 		},
 	}
 
-	installCmd.Flags().String("image", "registry.opensuse.org/uyuni/server", "Image")
-	installCmd.Flags().String("tag", "latest", "Tag Image")
-
 	installCmd.Flags().String("tz", "Etc/UTC", "Time zone to set on the server. Defaults to the host timezone")
 	installCmd.Flags().String("email", "admin@example.com", "Administrator e-mail")
 	installCmd.Flags().String("emailfrom", "admin@example.com", "E-Mail sending the notifications")
@@ -86,6 +84,10 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 
 	installCmd.Flags().String("scc-user", "", "SUSE Customer Center username")
 	installCmd.Flags().String("scc-password", "", "SUSE Customer Center password")
+
+	cmd_utils.AddImageFlag(installCmd)
+	cmd_utils.AddPodmanInstallFlag(installCmd)
+	cmd_utils.AddHelmInstallFlag(installCmd)
 
 	return installCmd
 }
