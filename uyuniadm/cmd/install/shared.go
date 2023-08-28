@@ -41,11 +41,9 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 	reportdbHost := flags.ReportDb.Host
 
 	if localDb {
-		// For now the setup script expects the localhost value for local DB
-		// but the FQDN is required for the report db even if it's local
 		dbHost = "localhost"
 		if reportdbHost == "" {
-			reportdbHost = fqdn
+			reportdbHost = "localhost"
 		}
 	}
 	env := map[string]string{
