@@ -124,3 +124,14 @@ func GetLocalTimezone() string {
 	}
 	return string(out)
 }
+
+// Check if a given path exists
+func FileExists(path string) bool {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true
+	} else if !os.IsNotExist(err) {
+		log.Fatalf("Failed to stat %s file: %s\n", path, err)
+	}
+	return false
+}
