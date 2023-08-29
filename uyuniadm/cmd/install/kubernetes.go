@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 )
 
@@ -21,18 +22,38 @@ const HELM_APP_NAME = "uyuni"
 
 func installForKubernetes(globalFlags *types.GlobalFlags, flags *InstallFlags, cmd *cobra.Command, args []string) {
 	fqdn := args[0]
+
+	// Check the kubernetes cluster setup
+	clusterInfos := kubernetes.CheckCluster()
+
+	// If installing on k3s, install the traefik helm config in manifests
+	isK3s := clusterInfos.IsK3s()
+	IsRke2 := clusterInfos.IsRke2()
+	var kubeconfig string
+	if isK3s {
+		kubernetes.InstallK3sTraefikConfig()
+		// If the user didn't provide a KUBECONFIG value or file, use the k3s default
+		kubeconfigPath := os.ExpandEnv("${HOME}/.kube/config")
+		if os.Getenv("KUBECONFIG") == "" || !utils.FileExists(kubeconfigPath) {
+			kubeconfig = "/etc/rancher/k3s/k3s.yaml"
+		}
+	} else if IsRke2 {
+		// Since even kubectl doesn't work without a trick on rke2, we assume the user has set kubeconfig
+		kubernetes.InstallRke2NginxConfig(flags.Helm.Uyuni.Namespace)
+	}
+
 	if flags.Cert.UseExisting {
 		// TODO Check that we have the expected secret and config in place
 	} else {
 		// Install cert-manager and a self-signed issuer ready for use
-		installSslCertificates(globalFlags, flags, fqdn)
+		installSslCertificates(globalFlags, flags, kubeconfig, fqdn)
 	}
 
 	// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
 	extractCaCertToConfig(globalFlags.Verbose)
 
 	// Deploy the helm chart
-	uyuniInstall(globalFlags, flags, fqdn)
+	uyuniInstall(globalFlags, flags, kubeconfig, fqdn, clusterInfos.Ingress)
 
 	// Wait for the pod to be started
 	waitForDeployment(flags.Helm.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
@@ -48,7 +69,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *InstallFlags, c
 
 // Install cert-manager and its CRDs using helm in the cert-manager namespace if needed
 // and then create a self-signed CA and issuers.
-func installSslCertificates(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn string) {
+func installSslCertificates(globalFlags *types.GlobalFlags, flags *InstallFlags, kubeconfig, fqdn string) {
 	// Install cert-manager if needed
 	if !isDeploymentReady("", "cert-manager") {
 		log.Println("Installing cert-manager")
@@ -72,7 +93,7 @@ func installSslCertificates(globalFlags *types.GlobalFlags, flags *InstallFlags,
 			chart = "cert-manager"
 		}
 		// The installedby label will be used to only uninstall what we installed
-		helmInstall(globalFlags, namespace, repo, "cert-manager", chart, version, args...)
+		helmInstall(globalFlags, kubeconfig, namespace, repo, "cert-manager", chart, version, args...)
 	}
 
 	// Wait for cert-manager to be ready
@@ -143,12 +164,16 @@ func extractCaCertToConfig(verbose bool) {
 	utils.RunCmd("kubectl", []string{"create", "configmap", "uyuni-ca", valueArg}, message, verbose)
 }
 
-func uyuniInstall(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn string) {
+func uyuniInstall(globalFlags *types.GlobalFlags, flags *InstallFlags, kubeconfig string, fqdn string, ingress string) {
 	log.Println("Installing Uyuni")
 
 	// The issuer annotation is before the user's value to allow it to be overwritten for now.
+	// Same for the guessed ingress: let the user override it in case we got it wrong.
 	// TODO Parametrize the ca issuer value?
-	helmParams := []string{"--set-json", "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"}
+	helmParams := []string{
+		"--set-json", "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}",
+		"--set", "ingress=" + ingress,
+	}
 
 	extraValues := flags.Helm.Uyuni.Values
 	if extraValues != "" {
@@ -164,13 +189,13 @@ func uyuniInstall(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn stri
 	namespace := flags.Helm.Uyuni.Namespace
 	chart := flags.Helm.Uyuni.Chart
 	version := flags.Helm.Uyuni.Version
-	helmInstall(globalFlags, namespace, "", HELM_APP_NAME, chart, version, helmParams...)
+	helmInstall(globalFlags, kubeconfig, namespace, "", HELM_APP_NAME, chart, version, helmParams...)
 }
 
 // helmInstall runs helm install.
 // If repo is not empty, the --repo parameter will be passed.
 // If version is not empty, the --version parameter will be passed.
-func helmInstall(globalFlags *types.GlobalFlags, namespace string, repo string, name string, chart string, version string, args ...string) {
+func helmInstall(globalFlags *types.GlobalFlags, kubeconfig string, namespace string, repo string, name string, chart string, version string, args ...string) {
 	helmArgs := []string{
 		"install",
 		"-n", namespace,
@@ -178,6 +203,10 @@ func helmInstall(globalFlags *types.GlobalFlags, namespace string, repo string, 
 		name,
 		chart,
 	}
+	if kubeconfig != "" {
+		helmArgs = append(helmArgs, "--kubeconfig", kubeconfig)
+	}
+
 	if repo != "" {
 		helmArgs = append(helmArgs, "--repo", repo)
 	}
@@ -213,6 +242,7 @@ func waitForDeployment(namespace string, name string, appName string) {
 	// List the Pulled events from the pod as we may not see the Pulling if the image was already downloaded
 	waitForPulledImage(namespace, podName)
 
+	log.Printf("Waiting for %s deployment to be ready in %s namespace\n", name, namespace)
 	// Wait for a replica to be ready
 	for i := 0; i < 60; i++ {
 		// TODO Look for pod failures
@@ -225,6 +255,7 @@ func waitForDeployment(namespace string, name string, appName string) {
 }
 
 func waitForPulledImage(namespace string, podName string) {
+	log.Printf("Waiting for image of %s pod in %s namespace to be pulled\n", podName, namespace)
 	pulledArgs := []string{"get", "event",
 		"-o", "jsonpath={.items[?(@.reason==\"Pulled\")].message}",
 		"--field-selector", "involvedObject.name=" + podName}

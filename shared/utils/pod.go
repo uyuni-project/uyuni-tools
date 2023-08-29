@@ -29,3 +29,33 @@ var VOLUMES = map[string]string{
 	"etc-postfix":         "/etc/postfix",
 	"ca-cert":             "/etc/pki/trust/anchors/",
 }
+
+type PortMap struct {
+	Name     string
+	Exposed  int
+	Port     int
+	Protocol string
+}
+
+func newPortMap(name string, exposed int, port int) PortMap {
+	return PortMap{
+		Name:    name,
+		Exposed: exposed,
+		Port:    port,
+	}
+}
+
+var TCP_PORTS = []PortMap{
+	newPortMap("postgres", 5432, 5432),
+	newPortMap("salt-publish", 4505, 4505),
+	newPortMap("salt-request", 4506, 4506),
+	newPortMap("cobbler", 25151, 25151),
+	newPortMap("tomcat-debug", 8000, 8080),
+	newPortMap("tasko-debug", 8001, 8081),
+	newPortMap("psql-metrics", 9187, 9187),
+	newPortMap("node-metrics", 9101, 9101),
+}
+
+var UDP_PORTS = []PortMap{
+	newPortMap("tftp", 69, 69),
+}
