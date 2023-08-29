@@ -36,12 +36,12 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
 	}
 
-	if _, err = os.Stat(sshConfigPath); err == nil {
+	if utils.FileExists(sshConfigPath) {
 		extraArgs = append(extraArgs, "-v", sshConfigPath+":/root/.ssh/config")
 
 	}
 
-	if _, err = os.Stat(sshKnownhostsPath); err == nil {
+	if utils.FileExists(sshKnownhostsPath) {
 		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/root/.ssh/known_hosts")
 	}
 
