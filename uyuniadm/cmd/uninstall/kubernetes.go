@@ -3,15 +3,27 @@ package uninstall
 import (
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
 )
 
 func uninstallForKubernetes(globalFlags *types.GlobalFlags, dryRun bool) {
+	clusterInfos := kubernetes.CheckCluster()
+	kubeconfigPath := os.ExpandEnv("${HOME}/.kube/config")
+
+	var kubeconfig string
+	// On k3s, if the user didn't provide a KUBECONFIG value or file, use the k3s default
+	if clusterInfos.IsK3s() && (os.Getenv("KUBECONFIG") == "" || !utils.FileExists(kubeconfigPath)) {
+		kubeconfig = "/etc/rancher/k3s/k3s.yaml"
+	}
+
 	// Uninstall uyuni
-	namespace := helmUninstall("uyuni", "", dryRun, globalFlags.Verbose)
+	namespace := helmUninstall(kubeconfig, "uyuni", "", dryRun, globalFlags.Verbose)
 
 	// Remove the remaining configmap and secrets
 	if namespace != "" {
@@ -33,10 +45,20 @@ func uninstallForKubernetes(globalFlags *types.GlobalFlags, dryRun bool) {
 	}
 
 	// Uninstall cert-manager if we installed it
-	helmUninstall("cert-manager", "-linstalledby=uyuniadm", dryRun, globalFlags.Verbose)
+	helmUninstall(kubeconfig, "cert-manager", "-linstalledby=uyuniadm", dryRun, globalFlags.Verbose)
+
+	// Remove the K3s Traefik config
+	if clusterInfos.IsK3s() {
+		kubernetes.UninstallK3sTraefikConfig(dryRun)
+	}
+
+	// Remove the rke2 nginx config
+	if clusterInfos.IsRke2() {
+		kubernetes.UninstallRke2NginxConfig(dryRun)
+	}
 }
 
-func helmUninstall(deployment string, filter string, dryRun bool, verbose bool) string {
+func helmUninstall(kubeconfig string, deployment string, filter string, dryRun bool, verbose bool) string {
 	jsonpath := fmt.Sprintf("jsonpath={.items[?(@.metadata.name==\"%s\")].metadata.namespace}", deployment)
 	args := []string{"get", "-A", "deploy", "-o", jsonpath}
 	if filter != "" {
@@ -50,12 +72,18 @@ func helmUninstall(deployment string, filter string, dryRun bool, verbose bool) 
 	}
 	namespace := string(out)
 	if namespace != "" {
+		helmArgs := []string{}
+		if kubeconfig != "" {
+			helmArgs = append(helmArgs, "--kubeconfig", kubeconfig)
+		}
+		helmArgs = append(helmArgs, "uninstall", "-n", namespace, deployment)
+
 		if dryRun {
-			log.Printf("Would run helm uninstall %s\n", deployment)
+			log.Printf("Would run helm %s\n", strings.Join(helmArgs, " "))
 		} else {
 			log.Printf("Uninstalling %s\n", deployment)
-			message := "Failed to run helm uninstall " + deployment
-			utils.RunCmd("helm", []string{"uninstall", "-n", namespace, deployment}, message, verbose)
+			message := "Failed to run helm " + strings.Join(helmArgs, " ")
+			utils.RunCmd("helm", helmArgs, message, verbose)
 		}
 	}
 	return namespace
