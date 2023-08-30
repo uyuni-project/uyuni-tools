@@ -61,4 +61,6 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *InstallFlags, cmd *
 	}
 
 	runSetup(globalFlags, flags, args[0], env)
+
+	podman.EnablePodmanSocket(globalFlags.Verbose)
 }
