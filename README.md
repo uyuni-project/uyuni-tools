@@ -101,6 +101,19 @@ Available Commands:
   * **exec**: execute commands inside the uyuni containers using 'sh -c'
   * **help**: Help about any command
 
+Using `uyunictl` to access a remote cluster requires `kubectl` to be configured to connect to it before hand.
+
+In order to connect to a remote `podman`, ensure the `podman.socket` systemd unit is active on the server by running `systemctl enable --now podman.socket`.
+Then configure the Podman connection on the client machine:
+
+```
+podman system connection add <name> ssh://root@<host.fqdn>
+```
+
+Then export `CONTAINER_CONNECTION=<name>` before running `uyunictl`.
+Note that passing `--identity <file>` may be needed to tell SSH which key to use to connect to the podman host.
+
+
 ### Uyunictl cp
 
 Takes a source and destination parameters. One of them can be prefixed with 'server:' to indicate the path is within the server pod.

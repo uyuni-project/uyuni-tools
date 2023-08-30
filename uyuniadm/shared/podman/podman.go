@@ -104,3 +104,7 @@ func getFileBoolean(file string) bool {
 	}
 	return string(out[:]) != "0"
 }
+
+func EnablePodmanSocket(verbose bool) {
+	utils.RunCmd("systemctl", []string{"enable", "--now", "podman.socket"}, "Failed to enable podman.socket unit", verbose)
+}

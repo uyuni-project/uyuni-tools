@@ -68,6 +68,8 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 	}
 
 	log.Println("Server migrated")
+
+	podman.EnablePodmanSocket(globalFlags.Verbose)
 }
 
 func runContainer(name string, image string, tag string, extraArgs []string, cmd []string, env []string, verbose bool) {
