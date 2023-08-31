@@ -18,6 +18,8 @@ func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string
 	dstExpanded := strings.Replace(dst, "server:", podName+":", 1)
 
 	switch command {
+	case "podman-remote":
+		fallthrough
 	case "podman":
 		commandArgs = []string{"cp", srcExpanded, dstExpanded}
 	case "kubectl":
