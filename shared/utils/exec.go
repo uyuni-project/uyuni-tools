@@ -11,8 +11,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func Exec(globalFlags *types.GlobalFlags, interactive bool, tty bool, env []string, args ...string) {
-	command, podName := GetPodName(true)
+func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty bool, env []string, args ...string) {
+	command, podName := GetPodName(globalFlags, backend, true)
 
 	commandArgs := []string{"exec"}
 	if interactive {

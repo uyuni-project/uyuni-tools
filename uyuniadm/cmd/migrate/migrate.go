@@ -39,7 +39,7 @@ NOTE: for now installing on a remote cluster or podman is not supported yet!
 				log.Fatalf("Failed to Unmarshal configuration: %s\n", err)
 			}
 
-			command := utils.GetCommand()
+			command := utils.GetCommand("")
 			switch command {
 			case "podman":
 				migrateToPodman(globalFlags, &flags, cmd, args)

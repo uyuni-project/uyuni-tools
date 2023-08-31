@@ -15,7 +15,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			dryRun, _ := cmd.Flags().GetBool("dry-run")
 			purge, _ := cmd.Flags().GetBool("purge-volumes")
 
-			command := utils.GetCommand()
+			command := utils.GetCommand("")
 			switch command {
 			case "podman":
 				uninstallForPodman(globalFlags, dryRun, purge)

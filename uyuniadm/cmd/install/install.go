@@ -78,7 +78,7 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 			if err := viper.Unmarshal(&flags); err != nil {
 				log.Fatalf("Failed to unmarshall configuration: %s\n", err)
 			}
-			command := utils.GetCommand()
+			command := utils.GetCommand("")
 			checkParameters(cmd, &flags, command)
 			switch command {
 			case "podman":
