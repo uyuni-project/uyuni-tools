@@ -5,5 +5,5 @@ import (
 )
 
 func AddBackendFlag(cmd *cobra.Command) {
-	cmd.Flags().String("backend", "", "tool to use to reach the container. Possible values: 'podman', 'kubectl'. Default guesses which to use.")
+	cmd.Flags().String("backend", "", "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use.")
 }

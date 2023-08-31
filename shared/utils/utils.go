@@ -20,6 +20,8 @@ func GetCommand(backend string) string {
 	switch backend {
 	case "podman":
 		fallthrough
+	case "podman-remote":
+		fallthrough
 	case "kubectl":
 		command = backend
 		if _, err := exec.LookPath(command); err != nil {
@@ -36,11 +38,15 @@ func GetCommand(backend string) string {
 			}
 		}
 
-		// Search for podman
-		if _, err := exec.LookPath("podman"); err == nil {
-			return "podman"
+		// Search for other backends
+		bins := []string{"podman", "podman-remote"}
+		for _, bin := range bins {
+			if _, err := exec.LookPath(bin); err == nil {
+				return bin
+			}
 		}
-		log.Fatal("Neither podman nor kubectl are available")
+
+		log.Fatal("Neither podman, podman-remote nor kubectl is available")
 	default:
 		log.Fatalf("Unsupported backend %s\n", backend)
 	}
@@ -52,8 +58,10 @@ func GetPodName(globalFlags *types.GlobalFlags, backend string, fail bool) (stri
 	pod := "uyuni-server"
 
 	switch command {
+	case "podman-remote":
+		fallthrough
 	case "podman":
-		if out, _ := exec.Command("podman", "ps", "-q", "-f", "name="+pod).Output(); len(out) == 0 {
+		if out, _ := exec.Command(command, "ps", "-q", "-f", "name="+pod).Output(); len(out) == 0 {
 			if fail {
 				log.Fatalf("Container %s is not running on podman", pod)
 			}
