@@ -67,10 +67,12 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 		"EXTERNALDB_ADMIN_PASS": flags.Db.Admin.Password,
 		"EXTERNALDB_PROVIDER":   flags.Db.Provider,
 		"ISS_PARENT":            flags.IssParent,
-		"MIRROR_PATH":           flags.MirrorPath,
 		"ACTIVATE_SLP":          "N", // Deprecated, will be removed soon
 		"SCC_USER":              flags.Scc.User,
 		"SCC_PASS":              flags.Scc.Password,
+	}
+	if flags.MirrorPath != "" {
+		env["MIRROR_PATH"] = "/mirror"
 	}
 
 	// Add the extra environment variables
