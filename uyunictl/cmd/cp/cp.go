@@ -1,14 +1,18 @@
 package cp
 
 import (
+	"log"
+
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/uyunictl/shared/utils"
 )
 
 type flagpole struct {
-	User  string
-	Group string
+	User    string
+	Group   string
+	Backend string
 }
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -21,15 +25,21 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	One of them can be prefixed with 'server:' to indicate the path is within the server pod.`,
 		Args: cobra.ExactArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
+			viper := utils.ReadConfig(globalFlags.ConfigPath, "ctlconfig", cmd)
+			if err := viper.Unmarshal(&flags); err != nil {
+				log.Fatalf("Failed to unmarshall configuration: %s\n", err)
+			}
 			run(globalFlags, flags, cmd, args)
 		},
 	}
 
-	cpCmd.Flags().StringVar(&flags.User, "user", "", "User or UID to set on the destination file")
-	cpCmd.Flags().StringVar(&flags.Group, "group", "", "Group or GID to set on the destination file")
+	cpCmd.Flags().String("user", "", "User or UID to set on the destination file")
+	cpCmd.Flags().String("group", "", "Group or GID to set on the destination file")
+
+	cmd_utils.AddBackendFlag(cpCmd)
 	return cpCmd
 }
 
 func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) {
-	utils.Copy(globalFlags, args[0], args[1], flags.User, flags.Group)
+	utils.Copy(globalFlags, flags.Backend, args[0], args[1], flags.User, flags.Group)
 }

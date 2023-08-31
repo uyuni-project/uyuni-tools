@@ -24,7 +24,7 @@ func waitForSystemStart(globalFlags *types.GlobalFlags, flags *InstallFlags) {
 		log.Fatalf("Failed to enable uyuni-server systemd service: %s\n", err)
 	}
 
-	utils.WaitForServer()
+	utils.WaitForServer(globalFlags, "")
 }
 
 func pullImage(flags *InstallFlags) {

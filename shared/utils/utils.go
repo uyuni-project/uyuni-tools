@@ -10,33 +10,45 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"golang.org/x/term"
 )
 
-func GetCommand() string {
+func GetCommand(backend string) string {
 	command := ""
 
-	_, err := exec.LookPath("kubectl")
-	if err == nil {
-		if err = exec.Command("kubectl", "get", "pod").Run(); err != nil {
-			log.Print("kubectl not configured to connect to a cluster, ignoring")
-		} else {
-			command = "kubectl"
+	switch backend {
+	case "podman":
+		fallthrough
+	case "kubectl":
+		command = backend
+		if _, err := exec.LookPath(command); err != nil {
+			log.Fatalf("Backend command not found in PATH: %s\n", command)
 		}
-	}
+	case "":
+		// Check kubectl with a timeout in case the configured cluster is not responding
+		_, err := exec.LookPath("kubectl")
+		if err == nil {
+			if err = exec.Command("kubectl", "--request-timeout=30s", "get", "pod").Run(); err != nil {
+				log.Print("kubectl not configured to connect to a cluster, ignoring")
+			} else {
+				return "kubectl"
+			}
+		}
 
-	if _, err = exec.LookPath("podman"); err == nil {
-		command = "podman"
-	}
-
-	if command == "" {
+		// Search for podman
+		if _, err := exec.LookPath("podman"); err == nil {
+			return "podman"
+		}
 		log.Fatal("Neither podman nor kubectl are available")
+	default:
+		log.Fatalf("Unsupported backend %s\n", backend)
 	}
 	return command
 }
 
-func GetPodName(fail bool) (string, string) {
-	command := GetCommand()
+func GetPodName(globalFlags *types.GlobalFlags, backend string, fail bool) (string, string) {
+	command := GetCommand(backend)
 	pod := "uyuni-server"
 
 	switch command {
@@ -57,10 +69,10 @@ func GetPodName(fail bool) (string, string) {
 }
 
 // WaitForServer waits at most 60s for multi-user systemd target to be reached.
-func WaitForServer() {
+func WaitForServer(globalFlags *types.GlobalFlags, backend string) {
 	// Wait for the system to be up
 	for i := 0; i < 60; i++ {
-		cmd, podName := GetPodName(false)
+		cmd, podName := GetPodName(globalFlags, backend, false)
 		args := []string{"exec", podName}
 		if cmd == "kubectl" {
 			args = append(args, "--")

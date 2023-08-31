@@ -10,8 +10,8 @@ import (
 // Copy transfers a file to or from the container.
 // Prefix one of src or dst parameters with `server:` to designate the path is in the container
 // user and group parameters are used to set the owner of a file transfered in the container.
-func Copy(globalFlags *types.GlobalFlags, src string, dst string, user string, group string) {
-	command, podName := GetPodName(true)
+func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string, user string, group string) {
+	command, podName := GetPodName(globalFlags, backend, true)
 	var commandArgs []string
 	extraArgs := []string{}
 	srcExpanded := strings.Replace(src, "server:", podName+":", 1)

@@ -57,7 +57,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *InstallFlags, c
 
 	// Wait for the pod to be started
 	waitForDeployment(flags.Helm.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
-	utils.WaitForServer()
+	utils.WaitForServer(globalFlags, "")
 
 	// Create setup script + env variables and copy it to the container
 	envs := map[string]string{
