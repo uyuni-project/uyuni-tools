@@ -16,7 +16,13 @@ import (
 func waitForSystemStart(globalFlags *types.GlobalFlags, flags *InstallFlags) {
 	// Setup the systemd service configuration options
 	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
-	podman.GenerateSystemdService(flags.TZ, image, flags.Podman.Args, globalFlags.Verbose)
+
+	podmanArgs := flags.Podman.Args
+	if flags.MirrorPath != "" {
+		podmanArgs = append(podmanArgs, "-v", flags.MirrorPath+":/mirror")
+	}
+
+	podman.GenerateSystemdService(flags.TZ, image, podmanArgs, globalFlags.Verbose)
 
 	log.Println("Waiting for the server to start...")
 	// Start the service

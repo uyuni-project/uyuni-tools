@@ -186,6 +186,11 @@ func uyuniInstall(globalFlags *types.GlobalFlags, flags *InstallFlags, kubeconfi
 		"--set", "timezone="+flags.TZ,
 		"--set", "fqdn="+fqdn)
 
+	if flags.MirrorPath != "" {
+		// TODO Handle claims for multi-node clusters
+		helmParams = append(helmParams, "--set", "mirror.hostPath="+flags.MirrorPath)
+	}
+
 	namespace := flags.Helm.Uyuni.Namespace
 	chart := flags.Helm.Uyuni.Chart
 	version := flags.Helm.Uyuni.Version
