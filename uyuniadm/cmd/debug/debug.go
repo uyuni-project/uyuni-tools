@@ -8,8 +8,8 @@ import (
 )
 
 type flagpole struct {
-	Enable     bool
-	Restart		bool
+	Enable			bool
+	Restart			bool
 }
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
