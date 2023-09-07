@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/debug"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/install"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/migrate"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/uninstall"
@@ -36,6 +37,7 @@ func NewUyuniadmCommand() *cobra.Command {
 	rootCmd.AddCommand(installCmd)
 
 	rootCmd.AddCommand(uninstall.NewCommand(globalFlags))
+	rootCmd.AddCommand(debug.NewCommand(globalFlags))
 
 	return rootCmd
 }
