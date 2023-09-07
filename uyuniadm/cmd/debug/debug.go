@@ -49,6 +49,6 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 		log.Printf("Running spacewalk-service restart. Changes will be applied after restart ")
 		utils.Exec(globalFlags, "", false, false, []string{}, "spacewalk-service restart")
 	} else {
-		log.Printf("Configuration files changes but not applied. Please restart spacewalk-service to apply them")
+		log.Printf("Configuration files changed but not applied. Please restart spacewalk-service to apply them")
 	}
 }
