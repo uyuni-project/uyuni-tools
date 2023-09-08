@@ -3,7 +3,6 @@ package uninstall
 import (
 	"fmt"
 	"log"
-	"os"
 	"os/exec"
 	"strings"
 
@@ -14,13 +13,7 @@ import (
 
 func uninstallForKubernetes(globalFlags *types.GlobalFlags, dryRun bool) {
 	clusterInfos := kubernetes.CheckCluster()
-	kubeconfigPath := os.ExpandEnv("${HOME}/.kube/config")
-
-	var kubeconfig string
-	// On k3s, if the user didn't provide a KUBECONFIG value or file, use the k3s default
-	if clusterInfos.IsK3s() && (os.Getenv("KUBECONFIG") == "" || !utils.FileExists(kubeconfigPath)) {
-		kubeconfig = "/etc/rancher/k3s/k3s.yaml"
-	}
+	kubeconfig := clusterInfos.GetKubeconfig()
 
 	// Uninstall uyuni
 	namespace := helmUninstall(kubeconfig, "uyuni", "", dryRun, globalFlags.Verbose)

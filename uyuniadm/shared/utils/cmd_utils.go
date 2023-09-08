@@ -23,6 +23,18 @@ type ImageFlags struct {
 	Tag  string
 }
 
+type SslCertFlags struct {
+	UseExisting bool
+	Cnames      []string `mapstructure:"cname"`
+	Country     string
+	State       string
+	City        string
+	Org         string
+	OU          string
+	Password    string
+	Email       string
+}
+
 func AddPodmanInstallFlag(cmd *cobra.Command) {
 	cmd.Flags().StringSlice("podman-arg", []string{}, "Extra arguments to pass to podman")
 }
