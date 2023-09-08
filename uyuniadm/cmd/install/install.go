@@ -23,18 +23,6 @@ type DbFlags struct {
 	}
 }
 
-type SslCertFlags struct {
-	UseExisting bool
-	Cnames      []string `mapstructure:"cname"`
-	Country     string
-	State       string
-	City        string
-	Org         string
-	OU          string
-	Password    string
-	Email       string
-}
-
 type SccFlags struct {
 	User     string
 	Password string
@@ -49,7 +37,7 @@ type InstallFlags struct {
 	Tftp       bool
 	Db         DbFlags
 	ReportDb   DbFlags
-	Cert       SslCertFlags
+	Cert       cmd_utils.SslCertFlags
 	Scc        SccFlags
 	Image      cmd_utils.ImageFlags `mapstructure:",squash"`
 	Podman     cmd_utils.PodmanFlags

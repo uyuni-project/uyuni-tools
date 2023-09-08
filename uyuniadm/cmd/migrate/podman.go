@@ -1,7 +1,6 @@
 package migrate
 
 import (
-	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -17,15 +16,9 @@ import (
 )
 
 func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *cobra.Command, args []string) {
+	// Find the SSH Socket and paths for the migration
 	sshAuthSocket := getSshAuthSocket()
-
-	// Find ssh config to mount it in the container
-	homedir, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal("Failed to find home directory to look for SSH config")
-	}
-	sshConfigPath := filepath.Join(homedir, ".ssh", "config")
-	sshKnownhostsPath := filepath.Join(homedir, ".ssh", "known_hosts")
+	sshConfigPath, sshKnownhostsPath := getSshPaths()
 
 	scriptDir := generateMigrationScript(args[0], false)
 	defer os.RemoveAll(scriptDir)
@@ -36,12 +29,11 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
 	}
 
-	if utils.FileExists(sshConfigPath) {
+	if sshConfigPath != "" {
 		extraArgs = append(extraArgs, "-v", sshConfigPath+":/root/.ssh/config")
-
 	}
 
-	if utils.FileExists(sshKnownhostsPath) {
+	if sshKnownhostsPath != "" {
 		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/root/.ssh/known_hosts")
 	}
 
@@ -50,20 +42,13 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}, []string{}, globalFlags.Verbose)
 
 	// Read the extracted data
-	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))
-	if err != nil {
-		log.Fatalf("Failed to read data extracted from source host")
-	}
-	viper.SetConfigType("env")
-	viper.ReadConfig(bytes.NewBuffer(data))
-	tz := viper.GetString("Timezone")
-
+	tz := readTimezone(scriptDir)
 	fullImage := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 
 	podman.GenerateSystemdService(tz, fullImage, viper.GetStringSlice("podman.arg"), globalFlags.Verbose)
 
 	// Start the service
-	if err = exec.Command("systemctl", "enable", "--now", "uyuni-server").Run(); err != nil {
+	if err := exec.Command("systemctl", "enable", "--now", "uyuni-server").Run(); err != nil {
 		log.Fatalf("Failed to enable uyuni-server systemd service: %s\n", err)
 	}
 

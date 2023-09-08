@@ -4,12 +4,9 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"strconv"
 	"strings"
-	"time"
 
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 )
 
 type ClusterInfos struct {
@@ -23,6 +20,20 @@ func (infos ClusterInfos) IsK3s() bool {
 
 func (infos ClusterInfos) IsRke2() bool {
 	return strings.Contains(infos.KubeletVersion, "rke2")
+}
+
+// GetKubeconfig returns the path to the default kubeconfig file or "" if none.
+func (infos ClusterInfos) GetKubeconfig() string {
+	var kubeconfig string
+	if infos.IsK3s() {
+		// If the user didn't provide a KUBECONFIG value or file, use the k3s default
+		kubeconfigPath := os.ExpandEnv("${HOME}/.kube/config")
+		if os.Getenv("KUBECONFIG") == "" || !utils.FileExists(kubeconfigPath) {
+			kubeconfig = "/etc/rancher/k3s/k3s.yaml"
+		}
+	}
+	// Since even kubectl doesn't work without a trick on rke2, we assume the user has set kubeconfig
+	return kubeconfig
 }
 
 func CheckCluster() ClusterInfos {
@@ -68,79 +79,4 @@ func guessIngress() string {
 	}
 
 	return ingress
-}
-
-const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/k3s-traefik-config.yaml"
-
-func InstallK3sTraefikConfig() {
-	log.Println("Installing K3s Traefik configuration")
-
-	data := templates.K3sTraefikConfigTemplateData{
-		TcpPorts: utils.TCP_PORTS,
-		UdpPorts: utils.UDP_PORTS,
-	}
-	if err := utils.WriteTemplateToFile(data, k3sTraefikConfigPath, 0600, false); err != nil {
-		log.Fatalf("Failed to write K3s Traefik configuration: %s\n", err)
-	}
-
-	// Wait for traefik to be back
-	log.Println("Waiting for Traefik to be reloaded")
-	for i := 0; i < 60; i++ {
-		out, err := exec.Command("kubectl", "get", "job", "-A",
-			"-o", "jsonpath={.status.completionTime}", "helm-install-traefik").Output()
-		if err == nil {
-			completionTime, err := time.Parse(time.RFC3339, string(out))
-			if err == nil && time.Since(completionTime).Seconds() < 60 {
-				break
-			}
-		}
-	}
-}
-
-func UninstallK3sTraefikConfig(dryRun bool) {
-	uninstallFile(k3sTraefikConfigPath, dryRun)
-}
-
-const rke2NginxConfigPath = "/var/lib/rancher/rke2/server/manifests/rke2-ingress-nginx-config.yaml"
-
-func InstallRke2NginxConfig(namespace string) {
-	log.Println("Installing RKE2 Nginx configuration")
-
-	data := templates.Rke2NginxConfigTemplateData{
-		Namespace: namespace,
-		TcpPorts:  utils.TCP_PORTS,
-		UdpPorts:  utils.UDP_PORTS,
-	}
-	if err := utils.WriteTemplateToFile(data, rke2NginxConfigPath, 0600, false); err != nil {
-		log.Fatalf("Failed to write Rke2 nginx configuration: %s\n", err)
-	}
-
-	// Wait for the nginx controller to be back
-	log.Println("Waiting for Nginx controller to be reloaded")
-	for i := 0; i < 60; i++ {
-		out, err := exec.Command("kubectl", "get", "daemonset", "-A",
-			"-o", "jsonpath={.status.numberReady}", "rke2-ingress-nginx-controller").Output()
-		if err == nil {
-			if count, err := strconv.Atoi(string(out)); err == nil && count > 0 {
-				break
-			}
-		}
-	}
-}
-
-func UninstallRke2NginxConfig(dryRun bool) {
-	uninstallFile(rke2NginxConfigPath, dryRun)
-}
-
-func uninstallFile(path string, dryRun bool) {
-	if utils.FileExists(path) {
-		if dryRun {
-			log.Printf("Would remove file %s\n", path)
-		} else {
-			log.Printf("Removing file %s\n", path)
-			if err := os.Remove(path); err != nil {
-				log.Printf("Failed to remove file %s: %s\n", path, err)
-			}
-		}
-	}
 }

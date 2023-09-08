@@ -5,12 +5,24 @@ import (
 	"text/template"
 )
 
-// Deploy self-signed issuer
-const issuerTemplate = `apiVersion: cert-manager.io/v1
+// Deploy self-signed issuer or CA Certificate and key
+const issuerTemplate = `{{if and .Certificate .Key -}}
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/tls
+metadata:
+  name: uyuni-ca
+  namespace: {{ .Namespace }}
+data:
+  ca.crt: {{ .RootCa }}
+  tls.crt: {{ .Certificate }}
+  tls.key: {{ .Key }}
+{{- else }}
+apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: uyuni-issuer
-  namespace: default
+  namespace: {{ .Namespace }}
 spec:
   selfSigned: {}
 ---
@@ -18,17 +30,31 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: uyuni-ca
-  namespace: default
+  namespace: {{ .Namespace }}
 spec:
   isCA: true
+{{- if or .Country .State .City .Org .OrgUnit }}
   subject:
+	{{- if .Country }}
     countries: ["{{ .Country }}"]
+	{{- end }}
+	{{- if .State }}
     provinces: ["{{ .State }}"]
+	{{- end }}
+	{{- if .City }}
     localities: ["{{ .City }}"]
+	{{- end }}
+	{{- if .Org }}
     organizations: ["{{ .Org }}"]
+	{{- end }}
+	{{- if .OrgUnit }}
     organizationalUnits: ["{{ .OrgUnit }}"]
+	{{- end }}
+{{- end }}
+{{- if .Email }}
   emailAddresses:
     - {{ .Email }}
+{{- end }}
   commonName: {{ .Fqdn }}
   dnsNames:
     - {{ .Fqdn }}
@@ -40,12 +66,13 @@ spec:
     name: uyuni-issuer
     kind: Issuer
     group: cert-manager.io
+{{- end }}
 ---
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: uyuni-ca-issuer
-  namespace: default
+  namespace: {{ .Namespace }}
 spec:
   ca:
     secretName:
@@ -53,13 +80,17 @@ spec:
 `
 
 type IssuerTemplateData struct {
-	Country string
-	State   string
-	City    string
-	Org     string
-	OrgUnit string
-	Email   string
-	Fqdn    string
+	Namespace   string
+	Country     string
+	State       string
+	City        string
+	Org         string
+	OrgUnit     string
+	Email       string
+	Fqdn        string
+	RootCa      string
+	Certificate string
+	Key         string
 }
 
 func (data IssuerTemplateData) Render(wr io.Writer) error {

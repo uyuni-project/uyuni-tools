@@ -1,58 +1,96 @@
 package migrate
 
 import (
+	"encoding/base64"
 	"log"
 	"os"
-	"path/filepath"
+	"os/exec"
+	"path"
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
 func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *cobra.Command, args []string) {
-	scriptDir := generateMigrationScript(args[0], true)
+	fqdn := args[0]
+
+	// Find the SSH Socket and paths for the migration
+	sshAuthSocket := getSshAuthSocket()
+	sshConfigPath, sshKnownhostsPath := getSshPaths()
+
+	// Prepare the migration script and folder
+	scriptDir := generateMigrationScript(fqdn, true)
 	defer os.RemoveAll(scriptDir)
 
-	runMigrationJob(flags, scriptDir, globalFlags.Verbose)
+	// Install Uyuni with generated CA cert
+	var sslFlags cmd_utils.SslCertFlags
+	sslFlags.UseExisting = false
 
-	// TODO Watch the logs and wait for the end of the job
+	// We don't need the SSL certs at this point of the migration
+	clusterInfos := kubernetes.CheckCluster()
 
-	// TODO prepare the values.yaml and deploy helm chart
+	kubernetes.Deploy(globalFlags, &flags.Image, &flags.Helm, &sslFlags, &clusterInfos, fqdn,
+		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
+		"--set", "migration.ssh.configPath="+sshConfigPath,
+		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
+		"--set", "migration.dataPath="+scriptDir)
+
+	// Run the actual migration
+	runMigration(globalFlags, flags, scriptDir)
+
+	tz := readTimezone(scriptDir)
+
+	helmArgs := []string{
+		"--reset-values",
+		"--set", "timezone=" + tz,
+	}
+
+	// TODO Update uyuni-ca secret with the source CA cert and key
+	kubeconfig := clusterInfos.GetKubeconfig()
+	helmArgs = append(helmArgs, setupSsl(globalFlags, flags, kubeconfig, scriptDir)...)
+
+	// Update the installation in non-migration mode
+
+	// As we upgrade the helm instance without the migration parameters the SSL certificate will be used
+	kubernetes.UyuniUpgrade(globalFlags, &flags.Image, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 }
 
-func runMigrationJob(flags *MigrateFlags, tmpPath string, verbose bool) {
-	sshAuthSocket := getSshAuthSocket()
+func runMigration(globalFlags *types.GlobalFlags, flags *MigrateFlags, tmpPath string) {
+	log.Println("Migrating server")
+	utils.Exec(globalFlags, "", false, false, []string{}, "/var/lib/uyuni-tools/migrate.sh")
+}
 
-	// Find ssh config to mount it in the container
-	homedir, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal("Failed to find home directory to look for SSH config")
+// updateIssuer replaces the temporary SSL certificate issuer with the source server CA.
+// Return additional helm args to use the SSL certificates
+func setupSsl(globalFlags *types.GlobalFlags, flags *MigrateFlags, kubeconfig string, scriptDir string) []string {
+	caCert := path.Join(scriptDir, "RHN-ORG-TRUSTED-SSL-CERT")
+	caKey := path.Join(scriptDir, "RHN-ORG-PRIVATE-SSL-KEY")
+
+	if utils.FileExists(caCert) && utils.FileExists(caKey) {
+		// Convert the key file to RSA format for kubectl to handle it
+		cmd := exec.Command("openssl", "rsa", "-in", caKey, "-passin", "env:pass")
+		cmd.Env = append(cmd.Env, "pass=spacewalk") // TODO Parametrize!
+		out, err := cmd.Output()
+		if err != nil {
+			log.Fatalf("Failed to convert CA private key to RSA: %s\n", err)
+		}
+		key := base64.StdEncoding.EncodeToString(out)
+
+		// Strip down the certificate text part
+		out, err = exec.Command("openssl", "x509", "-in", caCert).Output()
+		if err != nil {
+			log.Fatalf("Failed to strip text part of CA certificate: %s\n", err)
+		}
+		cert := base64.StdEncoding.EncodeToString(out)
+		ca := kubernetes.TlsCert{RootCa: cert, Certificate: cert, Key: key}
+
+		sslFlags := cmd_utils.SslCertFlags{UseExisting: false}
+		return kubernetes.DeployCertificate(globalFlags, &flags.Helm, &sslFlags, &ca, kubeconfig, "")
+	} else {
+		// TODO Handle third party certificates and CA
 	}
-	sshConfigPath := filepath.Join(homedir, ".ssh", "config")
-	sshKnownhostsPath := filepath.Join(homedir, ".ssh", "known_hosts")
-
-	volumes := make(map[string]templates.Volume)
-	for name, path := range utils.VOLUMES {
-		volumes[name] = templates.Volume{Path: path}
-	}
-	volumes["ssh-auth-socket"] = templates.Volume{HostPath: sshAuthSocket, Path: "/tmp/ssh_auth_sock"}
-	volumes["ssh-config"] = templates.Volume{HostPath: sshConfigPath, Path: "/root/.ssh/config"}
-	volumes["ssh-known-hosts"] = templates.Volume{HostPath: sshKnownhostsPath, Path: "/root/.ssh/known_hosts"}
-
-	templateData := templates.KubernetesMigrateJobTemplateData{
-		Volumes: volumes,
-		Image:   flags.Image.Name,
-		Tag:     flags.Image.Tag,
-	}
-
-	// TODO PVCs and PVs need to be ready before this
-
-	migrationYamlPath := filepath.Join(tmpPath, "migration-job.yaml")
-	if err = utils.WriteTemplateToFile(templateData, migrationYamlPath, 0600, true); err != nil {
-		log.Fatalf("Failed to generate migration job description: %s\n", err)
-	}
-
-	utils.RunCmd("kubectl", []string{"apply", "-f", migrationYamlPath}, "Failed to start migration job", verbose)
+	return []string{}
 }

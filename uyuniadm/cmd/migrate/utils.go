@@ -1,10 +1,12 @@
 package migrate
 
 import (
+	"bytes"
 	"log"
 	"os"
 	"path/filepath"
 
+	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 )
@@ -17,14 +19,44 @@ func getSshAuthSocket() string {
 	return path
 }
 
+// getSshPaths returns the user SSH config and known_hosts paths
+func getSshPaths() (string, string) {
+	// Find ssh config to mount it in the container
+	homedir, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal("Failed to find home directory to look for SSH config")
+	}
+	sshConfigPath := filepath.Join(homedir, ".ssh", "config")
+	sshKnownhostsPath := filepath.Join(homedir, ".ssh", "known_hosts")
+
+	if !utils.FileExists(sshConfigPath) {
+		sshConfigPath = ""
+	}
+
+	if !utils.FileExists(sshKnownhostsPath) {
+		sshKnownhostsPath = ""
+	}
+
+	return sshConfigPath, sshKnownhostsPath
+}
+
 func generateMigrationScript(sourceFqdn string, kubernetes bool) string {
 	scriptDir, err := os.MkdirTemp("", "uyuniadm-*")
 	if err != nil {
 		log.Fatalf("Failed to create temporary directory: %s\n", err)
 	}
 
+	volumes := map[string]string{}
+	for name, path := range utils.VOLUMES {
+		// We cannot synchronize the CA certs volume for kubernetes as
+		// it is a read-only mount from a ConfigMap.
+		if !kubernetes || path != "/etc/pki/trust/anchors" {
+			volumes[name] = path
+		}
+	}
+
 	data := templates.MigrateScriptTemplateData{
-		Volumes:    utils.VOLUMES,
+		Volumes:    volumes,
 		SourceFqdn: sourceFqdn,
 		Kubernetes: kubernetes,
 	}
@@ -35,4 +67,14 @@ func generateMigrationScript(sourceFqdn string, kubernetes bool) string {
 	}
 
 	return scriptDir
+}
+
+func readTimezone(scriptDir string) string {
+	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))
+	if err != nil {
+		log.Fatalf("Failed to read data extracted from source host")
+	}
+	viper.SetConfigType("env")
+	viper.ReadConfig(bytes.NewBuffer(data))
+	return viper.GetString("Timezone")
 }
