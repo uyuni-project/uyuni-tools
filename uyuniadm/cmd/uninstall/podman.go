@@ -78,6 +78,7 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 	if dryRun {
 		log.Println("Would run systemctl daemon-reload")
 	} else {
+		utils.RunCmd("systemctl", []string{"reset-failed"}, "Failed to reload systemd daemon", globalFlags.Verbose)
 		utils.RunCmd("systemctl", []string{"daemon-reload"}, "Failed to reload systemd daemon", globalFlags.Verbose)
 	}
 }
