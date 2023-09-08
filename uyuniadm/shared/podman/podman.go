@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 
 	"github.com/rs/zerolog/log"
@@ -19,7 +20,16 @@ func GetCommonParams(containerName string) []string {
 }
 
 func GetExposedPorts() []string {
-	return []string{"443", "80", "4505", "4506", "69", "25151", "5432", "9100", "9187", "9800"}
+
+	ports := []string{"443", "80"}
+	for _, portMap := range utils.TCP_PORTS {
+		ports = append(ports, strconv.Itoa(portMap.Port))
+	}
+	for _, portMap := range utils.UDP_PORTS {
+		ports = append(ports, strconv.Itoa(portMap.Port))
+	}
+
+	return ports
 }
 
 const ServicePath = "/etc/systemd/system/uyuni-server.service"
