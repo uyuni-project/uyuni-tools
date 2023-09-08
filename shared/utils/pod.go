@@ -45,6 +45,7 @@ func newPortMap(name string, exposed int, port int) PortMap {
 	}
 }
 
+// The port names should be less than 15 characters long and lowercased for traefik to eat them
 var TCP_PORTS = []PortMap{
 	newPortMap("postgres", 5432, 5432),
 	newPortMap("salt-publish", 4505, 4505),
@@ -52,8 +53,9 @@ var TCP_PORTS = []PortMap{
 	newPortMap("cobbler", 25151, 25151),
 	newPortMap("tomcat-debug", 8000, 8080),
 	newPortMap("tasko-debug", 8001, 8081),
-	newPortMap("psql-metrics", 9187, 9187),
-	newPortMap("node-metrics", 9101, 9101),
+	newPortMap("psql-mtrx", 9187, 9187),
+	newPortMap("tasko-jmx-mtrx", 5556, 5556),
+	newPortMap("tomcat-jmx-mtrx", 5557, 5557),
 }
 
 var UDP_PORTS = []PortMap{
