@@ -20,12 +20,14 @@ Environment=UYUNI_IMAGE={{ .Image }}
 Environment=TZ={{ .Timezone }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-server.pid %t/%n.ctr-id
+ExecStartPre=/usr/bin/podman rm --ignore --force {{ NamePrefix }}-server
 ExecStart=/usr/bin/podman run \
 	--conmon-pidfile %t/uyuni-server.pid \
 	--cidfile=%t/%n.ctr-id \
 	--cgroups=no-conmon \
 	--sdnotify=conmon \
 	-d \
+	--name {{ NamePrefix }}-server
 	{{ .Args }} \
 	{{- range .Ports }}
 	-p {{ . }}:{{ . }} \
@@ -54,12 +56,13 @@ WantedBy=multi-user.target default.target
 `
 
 type PodmanServiceTemplateData struct {
-	Volumes  map[string]string
-	Args     string
-	Ports    []string
-	Timezone string
-	Image    string
-	Network  string
+	Volumes    map[string]string
+	NamePrefix string
+	Args       string
+	Ports      []string
+	Timezone   string
+	Image      string
+	Network    string
 }
 
 func (data PodmanServiceTemplateData) Render(wr io.Writer) error {
