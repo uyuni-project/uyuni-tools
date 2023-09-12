@@ -20,7 +20,7 @@ Environment=UYUNI_IMAGE={{ .Image }}
 Environment=TZ={{ .Timezone }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-server.pid %t/%n.ctr-id
-ExecStartPre=/usr/bin/podman rm --ignore --force {{ NamePrefix }}-server
+ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ NamePrefix }}-server
 ExecStart=/usr/bin/podman run \
 	--conmon-pidfile %t/uyuni-server.pid \
 	--cidfile=%t/%n.ctr-id \
