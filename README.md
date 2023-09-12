@@ -162,3 +162,21 @@ podman:
 ```
 
 
+# Podman Deployment Example 
+ 
+Requirements for the Host OS:
+  - Use Leap 15.5
+  - Have podman installed
+  - Have a valid FQDN for the machine
+
+Create a file "/root/uyuniadm.yaml" with the following content:
+
+```
+db:
+  password: spacewalk
+cert:
+  password: spacewalk
+image: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server
+```
+
+Then run `uyuniadm install --config /root/uyuniadm.yaml MACHINE-FQDN`
