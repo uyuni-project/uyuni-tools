@@ -12,7 +12,7 @@ import (
 )
 
 const UYUNI_NETWORK = "uyuni"
-const commonArgs = "--name %s --rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
+const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
 
 func GetCommonParams(containerName string) []string {
 	return strings.Split(fmt.Sprintf(commonArgs, containerName), " ")
@@ -29,12 +29,13 @@ func GenerateSystemdService(tz string, image string, podmanArgs []string, verbos
 	setupNetwork(verbose)
 
 	data := templates.PodmanServiceTemplateData{
-		Volumes:  utils.VOLUMES,
-		Args:     fmt.Sprintf(commonArgs, "uyuni-server") + " " + strings.Join(podmanArgs, " "),
-		Ports:    GetExposedPorts(),
-		Timezone: tz,
-		Image:    image,
-		Network:  UYUNI_NETWORK,
+		Volumes:    utils.VOLUMES,
+		NamePrefix: "uyuni",
+		Args:       commonArgs + " " + strings.Join(podmanArgs, " "),
+		Ports:      GetExposedPorts(),
+		Timezone:   tz,
+		Image:      image,
+		Network:    UYUNI_NETWORK,
 	}
 	if err := utils.WriteTemplateToFile(data, ServicePath, 0555, false); err != nil {
 		log.Fatalf("Failed to generate systemd service unit file: %s\n", err)
