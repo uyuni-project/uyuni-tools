@@ -27,8 +27,8 @@ ExecStart=/usr/bin/podman run \
 	--cgroups=no-conmon \
 	--sdnotify=conmon \
 	-d \
-	--name {{ .NamePrefix }}-server
-	--hostname {{ .NamePrefix }}-server
+	--name {{ .NamePrefix }}-server \
+	--hostname {{ .NamePrefix }}-server \
 	{{ .Args }} \
 	{{- range .Ports }}
 	-p {{ . }}:{{ . }} \
