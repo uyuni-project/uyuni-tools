@@ -3,13 +3,13 @@ package utils
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
 	"syscall"
 	"time"
 
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"golang.org/x/term"
 )
@@ -25,14 +25,14 @@ func GetCommand(backend string) string {
 	case "kubectl":
 		command = backend
 		if _, err := exec.LookPath(command); err != nil {
-			log.Fatalf("Backend command not found in PATH: %s\n", command)
+			log.Fatal().Msgf("Backend command not found in PATH: %s", command)
 		}
 	case "":
 		// Check kubectl with a timeout in case the configured cluster is not responding
 		_, err := exec.LookPath("kubectl")
 		if err == nil {
 			if err = exec.Command("kubectl", "--request-timeout=30s", "get", "pod").Run(); err != nil {
-				log.Print("kubectl not configured to connect to a cluster, ignoring")
+				log.Info().Msg("kubectl not configured to connect to a cluster, ignoring")
 			} else {
 				return "kubectl"
 			}
@@ -46,9 +46,9 @@ func GetCommand(backend string) string {
 			}
 		}
 
-		log.Fatal("Neither podman, podman-remote nor kubectl is available")
+		log.Fatal().Msg("Neither podman, podman-remote nor kubectl is available")
 	default:
-		log.Fatalf("Unsupported backend %s\n", backend)
+		log.Fatal().Msgf("Unsupported backend %s", backend)
 	}
 	return command
 }
@@ -63,7 +63,7 @@ func GetPodName(globalFlags *types.GlobalFlags, backend string, fail bool) (stri
 	case "podman":
 		if out, _ := exec.Command(command, "ps", "-q", "-f", "name="+pod).Output(); len(out) == 0 {
 			if fail {
-				log.Fatalf("Container %s is not running on podman", pod)
+				log.Fatal().Msgf("Container %s is not running on podman", pod)
 			}
 		}
 	case "kubectl":
@@ -93,16 +93,15 @@ func WaitForServer(globalFlags *types.GlobalFlags, backend string) {
 		}
 		time.Sleep(1 * time.Second)
 	}
-	log.Fatalf("Server didn't start within 60s")
+	log.Fatal().Msgf("Server didn't start within 60s")
 }
 
 func RunCmd(command string, args []string, errMessage string, verbose bool) {
-	if verbose {
-		fmt.Printf("> Running: %s %s\n", command, strings.Join(args, " "))
-	}
+	log.Debug().Msgf("> Running: %s %s", command, strings.Join(args, " "))
+	
 	cmd := exec.Command(command, args...)
 	if out, err := cmd.CombinedOutput(); err != nil {
-		log.Fatalf("%s:\n  %s\n", errMessage, strings.ReplaceAll(string(out[:]), "\n", "\n  "))
+		log.Fatal().Msgf("%s:\n  %s", errMessage, strings.ReplaceAll(string(out[:]), "\n", "\n  "))
 	}
 }
 
@@ -113,7 +112,7 @@ func AskPasswordIfMissing(value *string, prompt string) {
 		fmt.Print(prompt + PROMPT_END)
 		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 		if err != nil {
-			log.Fatalf("Failed to read password: %s\n", err)
+			log.Fatal().Err(err).Msgf("Failed to read password")
 		}
 		*value = string(bytePassword)
 		fmt.Println()
@@ -126,7 +125,7 @@ func AskIfMissing(value *string, prompt string) {
 		reader := bufio.NewReader(os.Stdin)
 		newValue, err := reader.ReadString('\n')
 		if err != nil {
-			log.Fatalf("Failed to read input: %s\n", err)
+			log.Fatal().Err(err).Msgf("Failed to read input")
 		}
 		*value = newValue
 		fmt.Println()
@@ -137,7 +136,7 @@ func AskIfMissing(value *string, prompt string) {
 func GetLocalTimezone() string {
 	out, err := exec.Command("timedatectl", "show", "--value", "-p", "Timezone").Output()
 	if err != nil {
-		log.Fatalf("Failed to run timedatectl show --value -p Timezone: %s\n", err)
+		log.Fatal().Err(err).Msgf("Failed to run timedatectl show --value -p Timezone")
 	}
 	return string(out)
 }
@@ -148,7 +147,7 @@ func FileExists(path string) bool {
 	if err == nil {
 		return true
 	} else if !os.IsNotExist(err) {
-		log.Fatalf("Failed to stat %s file: %s\n", path, err)
+		log.Fatal().Err(err).Msgf("Failed to stat %s file", path)
 	}
 	return false
 }

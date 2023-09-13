@@ -2,8 +2,8 @@ package kubernetes
 
 import (
 	"fmt"
-	"log"
-
+	
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
@@ -54,7 +54,7 @@ func UyuniUpgrade(globalFlags *types.GlobalFlags, imageFlags *cmd_utils.ImageFla
 	helmFlags *cmd_utils.HelmFlags, kubeconfig string,
 	fqdn string, ingress string, helmArgs ...string) {
 
-	log.Println("Installing Uyuni")
+	log.Info().Msg("Installing Uyuni")
 
 	// The guessed ingress is passed before the user's value to let the user override it in case we got it wrong.
 	helmParams := []string{

@@ -1,9 +1,9 @@
 package utils
 
 import (
-	"log"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -26,7 +26,7 @@ func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string
 		commandArgs = []string{"cp", "-c", "uyuni", srcExpanded, dstExpanded}
 		extraArgs = []string{"-c", "uyuni", "--"}
 	default:
-		log.Fatalf("Unknown container kind: %s\n", command)
+		log.Fatal().Msgf("Unknown container kind: %s", command)
 	}
 
 	RunCmd(command, commandArgs, "Failed to copy file", globalFlags.Verbose)

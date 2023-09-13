@@ -1,11 +1,11 @@
 package utils
 
 import (
-	"log"
 	"os"
 	"path"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -21,7 +21,7 @@ func ReadConfig(configPath string, configFilename string, cmd *cobra.Command) *v
 	v.SetConfigName(configFilename)
 
 	if configPath != "" {
-		log.Printf("Using config file %s\n", configPath)
+		log.Info().Msgf("Using config file %s", configPath)
 		v.SetConfigFile(configPath)
 	} else {
 		xdgConfigHome := os.Getenv("XDG_CONFIG_HOME")
@@ -38,7 +38,7 @@ func ReadConfig(configPath string, configFilename string, cmd *cobra.Command) *v
 		// It's okay if there isn't a config file
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 			// TODO Provide help on the config file format
-			log.Fatalf("Failed to parse configuration file %s: %s", v.ConfigFileUsed(), err)
+			log.Fatal().Err(err).Msgf("Failed to parse configuration file %s", v.ConfigFileUsed())
 		}
 	}
 
@@ -56,7 +56,7 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) {
 	cmd.Flags().VisitAll(func(f *pflag.Flag) {
 		configName := strings.ReplaceAll(f.Name, "-", ".")
 		if err := v.BindPFlag(configName, f); err != nil {
-			log.Fatalf("Failed to bind %s config to parameter %s: %s\n", configName, f.Name, err)
+			log.Fatal().Err(err).Msgf("Failed to bind %s config to parameter %s", configName, f.Name)
 		}
 	})
 }

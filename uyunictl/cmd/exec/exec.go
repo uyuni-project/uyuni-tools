@@ -1,8 +1,7 @@
 package exec
 
 import (
-	"log"
-
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -26,7 +25,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			viper := utils.ReadConfig(globalFlags.ConfigPath, "ctlconfig", cmd)
 			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatalf("Failed to unmarshall configuration: %s\n", err)
+				log.Fatal().Err(err).Msgf("Failed to unmarshall configuration")
 			}
 			run(globalFlags, flags, cmd, args)
 		},

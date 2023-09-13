@@ -2,11 +2,11 @@ package podman
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 )
@@ -38,13 +38,13 @@ func GenerateSystemdService(tz string, image string, podmanArgs []string, verbos
 		Network:    UYUNI_NETWORK,
 	}
 	if err := utils.WriteTemplateToFile(data, ServicePath, 0555, false); err != nil {
-		log.Fatalf("Failed to generate systemd service unit file: %s\n", err)
+		log.Fatal().Err(err).Msg("Failed to generate systemd service unit file")
 	}
 	utils.RunCmd("systemctl", []string{"daemon-reload"}, "Failed to reload systemd daemon", verbose)
 }
 
 func setupNetwork(verbose bool) {
-	log.Printf("Setting up %s network\n", UYUNI_NETWORK)
+	log.Info().Msgf("Setting up %s network", UYUNI_NETWORK)
 
 	ipv6Enabled := isIpv6Enabled()
 
@@ -52,11 +52,11 @@ func setupNetwork(verbose bool) {
 	hasIpv6, err := exec.Command("podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UYUNI_NETWORK).Output()
 	if err == nil {
 		if string(hasIpv6) != "true" && ipv6Enabled {
-			log.Printf("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it\n", UYUNI_NETWORK)
+			log.Info().Msgf("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it", UYUNI_NETWORK)
 			message := fmt.Sprintf("Failed to remove %s podman network", UYUNI_NETWORK)
 			utils.RunCmd("podman", []string{"network", "rm", UYUNI_NETWORK}, message, verbose)
 		} else {
-			log.Printf("Reusing existing %s network\n", UYUNI_NETWORK)
+			log.Info().Msgf("Reusing existing %s network", UYUNI_NETWORK)
 			return
 		}
 	}
@@ -70,9 +70,9 @@ func setupNetwork(verbose bool) {
 		out, err := exec.Command("podman", "info", "--format", "{{.Host.NetworkBackend}}").Output()
 		backend := strings.Trim(string(out), "\n")
 		if err != nil {
-			log.Fatalf("Failed to find podman's network backend: %s\n", err)
+			log.Fatal().Err(err).Msgf("Failed to find podman's network backend")
 		} else if backend != "netavark" {
-			log.Printf("Podman's network backend (%s) is not netavark, skipping IPv6 enabling on %s network\n", backend, UYUNI_NETWORK)
+			log.Info().Msgf("Podman's network backend (%s) is not netavark, skipping IPv6 enabling on %s network", backend, UYUNI_NETWORK)
 		} else {
 			args = append(args, "--ipv6")
 		}
@@ -101,7 +101,7 @@ func isIpv6Enabled() bool {
 func getFileBoolean(file string) bool {
 	out, err := os.ReadFile(file)
 	if err != nil {
-		log.Fatalf("Failed to read file %s: %s\n", file, err)
+		log.Fatal().Err(err).Msgf("Failed to read file %s", file)
 	}
 	return string(out[:]) != "0"
 }
