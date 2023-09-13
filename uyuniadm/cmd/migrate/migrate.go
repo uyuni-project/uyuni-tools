@@ -1,8 +1,7 @@
 package migrate
 
 import (
-	"log"
-
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -36,7 +35,7 @@ NOTE: for now installing on a remote cluster or podman is not supported yet!
 			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
 			var flags MigrateFlags
 			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatalf("Failed to Unmarshal configuration: %s\n", err)
+				log.Fatal().Err(err).Msg("Failed to Unmarshal configuration")
 			}
 
 			command := utils.GetCommand("")

@@ -3,11 +3,11 @@ package utils
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -43,7 +43,7 @@ func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty 
 	}
 	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
 	if globalFlags.Verbose {
-		fmt.Printf("> Running: %s %s\n", command, strings.Join(commandArgs, " "))
+		log.Info().Msgf(" Running: %s %s", command, strings.Join(commandArgs, " "))
 	}
 	runCmd := exec.Command(command, commandArgs...)
 	runCmd.Stdout = os.Stdout
@@ -52,10 +52,10 @@ func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty 
 	// Filter out kubectl line about terminated exit code
 	stderr, err := runCmd.StderrPipe()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err).Msg("error running command")
 	}
 	if err = runCmd.Start(); err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err).Msg("error running command")
 	}
 	scanner := bufio.NewScanner(stderr)
 	for scanner.Scan() {
@@ -66,13 +66,13 @@ func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty 
 	}
 
 	if scanner.Err() != nil {
-		log.Fatal(scanner.Err())
+		log.Fatal().Err(scanner.Err()).Msg("error running command")
 	}
 	if err = runCmd.Wait(); err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
 			os.Exit(exitErr.ExitCode())
 		} else {
-			log.Fatal(err)
+			log.Fatal().Err(err).Msg("error running command")
 		}
 	}
 }

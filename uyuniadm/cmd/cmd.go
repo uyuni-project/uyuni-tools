@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -22,6 +23,7 @@ func NewUyuniadmCommand() *cobra.Command {
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		utils.SetLogLevel(globalFlags.LogLevel)
+		log.Info().Msgf("Executing command: %s", cmd.Name())
 	}
 
 	rootCmd.PersistentFlags().BoolVarP(&globalFlags.Verbose, "verbose", "v", false, "verbose output")

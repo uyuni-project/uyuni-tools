@@ -1,11 +1,11 @@
 package install
 
 import (
-	"log"
 	"os"
 	"path/filepath"
 	"strconv"
 
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
@@ -21,7 +21,7 @@ func runSetup(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn string, 
 
 	utils.Exec(globalFlags, "", false, false, []string{}, "/tmp/setup.sh")
 
-	log.Println("Server set up")
+	log.Info().Msg("Server set up")
 }
 
 // generateSetupScript creates a temporary folder with the setup script to execute in the container.
@@ -82,7 +82,7 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 
 	scriptDir, err := os.MkdirTemp("", "uyuniadm-*")
 	if err != nil {
-		log.Fatalf("Failed to create temporary directory: %s\n", err)
+		log.Fatal().Err(err).Msg("Failed to create temporary directory")
 	}
 
 	dataTemplate := templates.MgrSetupScriptTemplateData{
@@ -91,7 +91,7 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 
 	scriptPath := filepath.Join(scriptDir, SETUP_NAME)
 	if err = utils.WriteTemplateToFile(dataTemplate, scriptPath, 0555, true); err != nil {
-		log.Fatalf("Failed to generate setup script: %s\n", err)
+		log.Fatal().Err(err).Msg("Failed to generate setup script")
 	}
 
 	return scriptDir

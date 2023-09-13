@@ -1,8 +1,8 @@
 package install
 
 import (
-	"log"
-
+	
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -64,7 +64,7 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
 			var flags InstallFlags
 			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatalf("Failed to unmarshall configuration: %s\n", err)
+				log.Fatal().Err(err).Msgf("Failed to unmarshall configuration")
 			}
 			command := utils.GetCommand("")
 			checkParameters(cmd, &flags, command)

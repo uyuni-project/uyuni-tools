@@ -2,13 +2,13 @@ package kubernetes
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -35,7 +35,7 @@ func waitForDeployment(namespace string, name string, appName string) {
 	// List the Pulled events from the pod as we may not see the Pulling if the image was already downloaded
 	waitForPulledImage(namespace, podName)
 
-	log.Printf("Waiting for %s deployment to be ready in %s namespace\n", name, namespace)
+	log.Info().Msgf("Waiting for %s deployment to be ready in %s namespace\n", name, namespace)
 	// Wait for a replica to be ready
 	for i := 0; i < 60; i++ {
 		// TODO Look for pod failures
@@ -44,11 +44,11 @@ func waitForDeployment(namespace string, name string, appName string) {
 		}
 		time.Sleep(1 * time.Second)
 	}
-	log.Fatalf("Failed to find a ready replica for deployment %s in namespace %s after 60s\n", name, namespace)
+	log.Fatal().Msgf("Failed to find a ready replica for deployment %s in namespace %s after 60s", name, namespace)
 }
 
 func waitForPulledImage(namespace string, podName string) {
-	log.Printf("Waiting for image of %s pod in %s namespace to be pulled\n", podName, namespace)
+	log.Info().Msgf("Waiting for image of %s pod in %s namespace to be pulled", podName, namespace)
 	pulledArgs := []string{"get", "event",
 		"-o", "jsonpath={.items[?(@.reason==\"Pulled\")].message}",
 		"--field-selector", "involvedObject.name=" + podName}
@@ -62,19 +62,19 @@ func waitForPulledImage(namespace string, podName string) {
 		// Look for events indicating an image pull issue
 		out, err := exec.Command("kubectl", failedArgs...).Output()
 		if err != nil {
-			log.Fatalf("Failed to get failed events for pod %s: %s", podName, err)
+			log.Fatal().Err(err).Msgf("Failed to get failed events for pod %s", podName)
 		}
 		lines := strings.Split(string(out), "\n")
 		for _, line := range lines {
 			if strings.HasPrefix(line, "Failed to pull image") {
-				log.Fatalln(err)
+				log.Fatal().Err(err).Msg("Failed to pull image")
 			}
 		}
 
 		// Has the image pull finished?
 		out, err = exec.Command("kubectl", pulledArgs...).Output()
 		if err != nil {
-			log.Fatalf("Failed to get events for pod %s: %s\n", podName, err)
+			log.Fatal().Err(err).Msgf("Failed to get events for pod %s", podName)
 		}
 		if len(out) > 0 {
 			break
@@ -113,11 +113,11 @@ func addNamespace(args []string, namespace string) []string {
 func uninstallFile(path string, dryRun bool) {
 	if utils.FileExists(path) {
 		if dryRun {
-			log.Printf("Would remove file %s\n", path)
+			log.Info().Msgf("Would remove file %s", path)
 		} else {
-			log.Printf("Removing file %s\n", path)
+			log.Info().Msgf("Removing file %s", path)
 			if err := os.Remove(path); err != nil {
-				log.Printf("Failed to remove file %s: %s\n", path, err)
+				log.Info().Err(err).Msgf("Failed to remove file %s", path)
 			}
 		}
 	}

@@ -1,11 +1,11 @@
 package kubernetes
 
 import (
-	"log"
 	"os"
 	"os/exec"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -41,13 +41,13 @@ func CheckCluster() ClusterInfos {
 	// Get the kubelet version
 	hostname, err := os.Hostname()
 	if err != nil {
-		log.Fatalf("Failed to get node hostname: %s\n", err)
+		log.Fatal().Err(err).Msgf("Failed to get node hostname")
 	}
 
 	out, err := exec.Command("kubectl", "get", "node",
 		"-o", "jsonpath={.status.nodeInfo.kubeletVersion}", hostname).Output()
 	if err != nil {
-		log.Fatalf("Failed to get kubelet version for node %s: %s\n", hostname, err)
+		log.Fatal().Err(err).Msgf("Failed to get kubelet version for node %s", hostname)
 	}
 
 	var infos ClusterInfos
@@ -70,7 +70,7 @@ func guessIngress() string {
 	out, err := exec.Command("kubectl", "get", "pod", "-A",
 		"-o", "jsonpath={range .items[*]}{.spec.containers[*].args[0]}{.spec.containers[*].command}{end}").Output()
 	if err != nil {
-		log.Fatalf("Failed to get get pod commands to look for nginx controller: %s", err)
+		log.Fatal().Err(err).Msgf("Failed to get get pod commands to look for nginx controller")
 	}
 
 	const nginxController = "/nginx-ingress-controller"

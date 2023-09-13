@@ -2,11 +2,11 @@ package migrate
 
 import (
 	"encoding/base64"
-	"log"
 	"os"
 	"os/exec"
 	"path"
 
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -59,7 +59,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *MigrateFlags, cm
 }
 
 func runMigration(globalFlags *types.GlobalFlags, flags *MigrateFlags, tmpPath string) {
-	log.Println("Migrating server")
+	log.Info().Msg("Migrating server")
 	utils.Exec(globalFlags, "", false, false, []string{}, "/var/lib/uyuni-tools/migrate.sh")
 }
 
@@ -75,14 +75,14 @@ func setupSsl(globalFlags *types.GlobalFlags, flags *MigrateFlags, kubeconfig st
 		cmd.Env = append(cmd.Env, "pass=spacewalk") // TODO Parametrize!
 		out, err := cmd.Output()
 		if err != nil {
-			log.Fatalf("Failed to convert CA private key to RSA: %s\n", err)
+			log.Fatal().Err(err).Msg("Failed to convert CA private key to RSA")
 		}
 		key := base64.StdEncoding.EncodeToString(out)
 
 		// Strip down the certificate text part
 		out, err = exec.Command("openssl", "x509", "-in", caCert).Output()
 		if err != nil {
-			log.Fatalf("Failed to strip text part of CA certificate: %s\n", err)
+			log.Fatal().Err(err).Msg("Failed to strip text part of CA certificate")
 		}
 		cert := base64.StdEncoding.EncodeToString(out)
 		ca := kubernetes.TlsCert{RootCa: cert, Certificate: cert, Key: key}

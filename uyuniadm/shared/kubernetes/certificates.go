@@ -3,12 +3,12 @@ package kubernetes
 import (
 	"encoding/base64"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"time"
 
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
@@ -30,10 +30,10 @@ func installSslIssuers(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 	// Install cert-manager if needed
 	installCertManager(globalFlags, helmFlags, kubeconfig)
 
-	log.Println("Creating SSL certificate issuer")
+	log.Info().Msg("Creating SSL certificate issuer")
 	crdsDir, err := os.MkdirTemp("", "uyuniadm-*")
 	if err != nil {
-		log.Fatalf("Failed to create temporary directory: %s\n", err)
+		log.Fatal().Err(err).Msgf("Failed to create temporary directory")
 	}
 	defer os.RemoveAll(crdsDir)
 
@@ -54,7 +54,7 @@ func installSslIssuers(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 	}
 
 	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
-		log.Fatalf("Failed to generate issuer definition: %s\n", err)
+		log.Fatal().Err(err).Msgf("Failed to generate issuer definition")
 	}
 
 	utils.RunCmd("kubectl", []string{"apply", "-f", issuerPath},
@@ -69,13 +69,13 @@ func installSslIssuers(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 		}
 		time.Sleep(1 * time.Second)
 	}
-	log.Fatalln("Issuer didn't turn ready after 60s")
+	log.Fatal().Msg("Issuer didn't turn ready after 60s")
 	return []string{}
 }
 
 func installCertManager(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.HelmFlags, kubeconfig string) {
 	if !isDeploymentReady("", "cert-manager") {
-		log.Println("Installing cert-manager")
+		log.Info().Msg("Installing cert-manager")
 		repo := ""
 		chart := helmFlags.CertManager.Chart
 		version := helmFlags.CertManager.Version
@@ -107,26 +107,26 @@ func extractCaCertToConfig(verbose bool) {
 	// TODO Replace with [trust-manager](https://cert-manager.io/docs/projects/trust-manager/) to automate this
 	const jsonPath = "-o=jsonpath={.data.ca\\.crt}"
 
-	log.Println("Extracting CA certificate to a configmap")
+	log.Info().Msg("Extracting CA certificate to a configmap")
 	// Skip extracting if the configmap is already present
 	out, err := exec.Command("kubectl", "get", "configmap", "uyuni-ca", jsonPath).Output()
-	log.Printf("CA cert: %s\n", string(out))
+	log.Info().Msgf("CA cert: %s", string(out))
 	if err == nil && len(out) > 0 {
-		log.Println("uyuni-ca configmap already existing, skipping extraction")
+		log.Info().Msg("uyuni-ca configmap already existing, skipping extraction")
 		return
 	}
 
 	out, err = exec.Command("kubectl", "get", "secret", "uyuni-ca", jsonPath).Output()
 	if err != nil {
-		log.Fatalf("Failed to get uyuni-ca certificate: %s\n", err)
+		log.Fatal().Err(err).Msgf("Failed to get uyuni-ca certificate")
 	}
 
 	decoded, err := base64.StdEncoding.DecodeString(string(out))
 	if err != nil {
-		log.Fatalf("Failed to base64 decode CA certificate: %s", err)
+		log.Fatal().Err(err).Msgf("Failed to base64 decode CA certificate")
 	}
 
-	message := fmt.Sprintf("Failed to create uyuni-ca config map from certificate: %s\n", err)
+	message := fmt.Sprintf("Failed to create uyuni-ca config map from certificate: %s", err)
 	valueArg := "--from-literal=ca.crt=" + string(decoded)
 	utils.RunCmd("kubectl", []string{"create", "configmap", "uyuni-ca", valueArg}, message, verbose)
 }

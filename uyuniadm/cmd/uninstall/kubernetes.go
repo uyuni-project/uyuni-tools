@@ -2,10 +2,10 @@ package uninstall
 
 import (
 	"fmt"
-	"log"
 	"os/exec"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
@@ -21,18 +21,18 @@ func uninstallForKubernetes(globalFlags *types.GlobalFlags, dryRun bool) {
 	// Remove the remaining configmap and secrets
 	if namespace != "" {
 		if dryRun {
-			log.Printf("Would run kubectl delete -n %s configmap uyuni-ca\n", namespace)
-			log.Printf("Would run kubectl delete -n %s secret uyuni-ca uyuni-cert\n", namespace)
+			log.Info().Msgf("Would run kubectl delete -n %s configmap uyuni-ca", namespace)
+			log.Info().Msgf("Would run kubectl delete -n %s secret uyuni-ca uyuni-cert", namespace)
 		} else {
-			log.Printf("Running kubectl delete -n %s configmap uyuni-ca\n", namespace)
+			log.Info().Msgf("Running kubectl delete -n %s configmap uyuni-ca", namespace)
 			if err := exec.Command("kubectl", "delete", "-n", namespace, "configmap", "uyuni-ca").Run(); err != nil {
-				log.Printf("Failed deleting config map: %s\n", err)
+				log.Info().Err(err).Msgf("Failed deleting config map")
 			}
 
-			log.Printf("Running kubectl delete -n %s secret uyuni-ca uyuni-cert\n", namespace)
+			log.Info().Msgf("Running kubectl delete -n %s secret uyuni-ca uyuni-cert", namespace)
 			err := exec.Command("kubectl", "delete", "-n", namespace, "secret", "uyuni-ca", "uyuni-cert").Run()
 			if err != nil {
-				log.Printf("Failed deleting config map: %s\n", err)
+				log.Info().Err(err).Msgf("Failed deleting config map")
 			}
 		}
 	}
@@ -61,7 +61,7 @@ func helmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 	cmd := exec.Command("kubectl", args...)
 	out, err := cmd.Output()
 	if err != nil {
-		log.Printf("Failed to find %s's namespace, skipping removal: %s\n", deployment, err)
+		log.Info().Err(err).Msgf("Failed to find %s's namespace, skipping removal", deployment)
 	}
 	namespace := string(out)
 	if namespace != "" {
@@ -72,9 +72,9 @@ func helmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 		helmArgs = append(helmArgs, "uninstall", "-n", namespace, deployment)
 
 		if dryRun {
-			log.Printf("Would run helm %s\n", strings.Join(helmArgs, " "))
+			log.Info().Msgf("Would run helm %s", strings.Join(helmArgs, " "))
 		} else {
-			log.Printf("Uninstalling %s\n", deployment)
+			log.Info().Msgf("Uninstalling %s", deployment)
 			message := "Failed to run helm " + strings.Join(helmArgs, " ")
 			utils.RunCmd("helm", helmArgs, message, verbose)
 		}

@@ -2,12 +2,12 @@ package migrate
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -37,7 +37,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/root/.ssh/known_hosts")
 	}
 
-	log.Println("Migrating server")
+	log.Info().Msg("Migrating server")
 	runContainer("uyuni-migration", flags.Image.Name, flags.Image.Tag, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}, []string{}, globalFlags.Verbose)
 
@@ -49,10 +49,10 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 
 	// Start the service
 	if err := exec.Command("systemctl", "enable", "--now", "uyuni-server").Run(); err != nil {
-		log.Fatalf("Failed to enable uyuni-server systemd service: %s\n", err)
+		log.Fatal().Err(err).Msgf("Failed to enable uyuni-server systemd service")
 	}
 
-	log.Println("Server migrated")
+	log.Info().Msg("Server migrated")
 
 	podman.EnablePodmanSocket(globalFlags.Verbose)
 }
@@ -72,18 +72,18 @@ func runContainer(name string, image string, tag string, extraArgs []string, cmd
 	podmanCmd := exec.Command("podman", podmanArgs...)
 
 	if verbose {
-		log.Printf("Running command: podman %s\n", strings.Join(podmanArgs, " "))
+		log.Info().Msgf("Running command: podman %s", strings.Join(podmanArgs, " "))
 	}
 	podmanCmd.Stdout = os.Stdout
 	podmanCmd.Stderr = os.Stderr
 
 	podmanCmd.Env = append(podmanCmd.Environ(), env...)
 	if err := podmanCmd.Start(); err != nil {
-		log.Fatalf("Failed to start %s container: %s\n", name, err)
+		log.Fatal().Err(err).Msgf("Failed to start %s container", name)
 	}
 
 	// Wait for the migration to finish and report errors
 	if err := podmanCmd.Wait(); err != nil {
-		log.Fatalf("Failed to wait for container to finish: %s\n", err)
+		log.Fatal().Err(err).Msgf("Failed to wait for container to finish")
 	}
 }

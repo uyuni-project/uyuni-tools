@@ -2,11 +2,11 @@ package install
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -24,10 +24,10 @@ func waitForSystemStart(globalFlags *types.GlobalFlags, flags *InstallFlags) {
 
 	podman.GenerateSystemdService(flags.TZ, image, podmanArgs, globalFlags.Verbose)
 
-	log.Println("Waiting for the server to start...")
+	log.Info().Msg("Waiting for the server to start...")
 	// Start the service
 	if err := exec.Command("systemctl", "enable", "--now", "uyuni-server").Run(); err != nil {
-		log.Fatalf("Failed to enable uyuni-server systemd service: %s\n", err)
+		log.Fatal().Err(err).Msg("Failed to enable uyuni-server systemd service")
 	}
 
 	utils.WaitForServer(globalFlags, "")
@@ -35,13 +35,13 @@ func waitForSystemStart(globalFlags *types.GlobalFlags, flags *InstallFlags) {
 
 func pullImage(flags *InstallFlags) {
 	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
-	log.Printf("Running podman pull %s\n", image)
+	log.Info().Msgf("Running podman pull %s", image)
 	cmd := exec.Command("podman", "pull", image)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
 	if err := cmd.Run(); err != nil {
-		log.Fatalf("Failed to pull image: %s\n", err)
+		log.Fatal().Err(err).Msg("Failed to pull image")
 	}
 }
 
