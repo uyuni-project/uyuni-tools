@@ -22,7 +22,7 @@ func GetExposedPorts() []string {
 	return []string{"443", "80", "4505", "4506", "69", "25151", "5432", "9100", "9187", "9800"}
 }
 
-const ServicePath = "/usr/lib/systemd/system/uyuni-server.service"
+const ServicePath = "/etc/systemd/system/uyuni-server.service"
 
 func GenerateSystemdService(tz string, image string, podmanArgs []string, verbose bool) {
 
