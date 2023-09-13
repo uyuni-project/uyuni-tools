@@ -37,5 +37,5 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 	if utils.TestExistence(dstpath) {
 		log.Fatalf("Distribution already exists: %s\n", dstpath)
 	}
-	utils.Copy(globalFlags, args[0], "server:" + dstpath, flags.User, flags.Group)
+	utils.Copy(globalFlags, args[0], "server:"+dstpath, flags.User, flags.Group)
 }

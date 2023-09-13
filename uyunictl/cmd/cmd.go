@@ -6,8 +6,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/cp"
-	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/exec"
 	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/distcp"
+	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/exec"
 )
 
 // NewCommand returns a new cobra.Command implementing the root command for kinder
