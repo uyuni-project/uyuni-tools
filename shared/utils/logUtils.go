@@ -3,7 +3,6 @@ package utils
 import (
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -12,13 +11,13 @@ import (
 
 func LogInit(appName string) {
 	zerolog.CallerMarshalFunc = logCallerMarshalFunction
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 
 	consoleWritter := zerolog.NewConsoleWriter()
-	consoleWritter.TimeFormat = time.RFC3339
 
-	multi := zerolog.MultiLevelWriter(consoleWritter, getFileWriter())
-
-	log.Logger = zerolog.New(multi).With().Timestamp().Caller().Logger()
+	fileWritter := getFileWriter()
+	multi := zerolog.MultiLevelWriter(consoleWritter, fileWritter)
+	log.Logger = zerolog.New(multi).With().Timestamp().Logger()
 	log.Info().Msgf("welcome to %s", appName)
 }
 
@@ -37,6 +36,9 @@ func SetLogLevel(logLevel string) {
 	level, err := zerolog.ParseLevel(logLevel)
 	if err != nil {
 		level = zerolog.InfoLevel
+	}
+	if level <= zerolog.DebugLevel {
+		log.Logger = log.Logger.With().Caller().Logger()
 	}
 	zerolog.SetGlobalLevel(level)
 }
