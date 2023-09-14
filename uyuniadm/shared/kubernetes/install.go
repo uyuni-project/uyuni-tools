@@ -2,7 +2,7 @@ package kubernetes
 
 import (
 	"fmt"
-	
+
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -45,7 +45,7 @@ func DeployCertificate(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 	}
 
 	// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
-	extractCaCertToConfig(globalFlags.Verbose)
+	extractCaCertToConfig()
 
 	return helmArgs
 }

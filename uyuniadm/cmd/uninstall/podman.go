@@ -12,25 +12,49 @@ import (
 )
 
 func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool) {
+
+	// Disable the service
 	// Check if there is an uyuni-server service
 	if err := exec.Command("systemctl", "list-unit-files", "uyuni-server.service").Run(); err != nil {
-		log.Fatal().Msg("Systemd has no uyuni-server.service unit, nothing to uninstall")
-	}
-
-	// Force stop the pod
-	if out, _ := exec.Command("podman", "ps", "-q", "-f", "name=uyuni-server").Output(); len(out) > 0 {
+		log.Debug().Msg("Systemd has no uyuni-server.service unit")
+	} else {
 		if dryRun {
-			log.Info().Msgf("Would run podman kill uyuni-server")
+			log.Info().Msgf("Would run systemctl disable --now uyuni-server")
+			log.Debug().Msgf("Woud remove %s", podman.ServicePath)
 		} else {
-			utils.RunCmd("podman", []string{"kill", "uyuni-server"}, "Failed to kill the server", globalFlags.Verbose)
+			log.Debug().Msg("Desable uyuni-server service")
+			// disable server
+			err := utils.RunRawCmd("systemctl", []string{"disable", "--now", "uyuni-server"}, true)
+			if err != nil {
+				log.Error().Err(err).Msg("Failed to disable server")
+			}
+
+			// Remove the service unit
+			log.Debug().Msgf("Remove %s", podman.ServicePath)
+			os.Remove(podman.ServicePath)
 		}
 	}
 
-	// Disable the service
-	if dryRun {
-		log.Info().Msgf("Would run systemctl disable --now uyuni-server")
+	// Force stop the pod
+	if out, _ := exec.Command("podman", "ps", "-a", "-q", "-f", "name=uyuni-server").Output(); len(out) > 0 {
+		if dryRun {
+			log.Debug().Msgf("Would run podman kill uyuni-server for container id: %s", out)
+			log.Debug().Msgf("Would run podman remove uyuni-server for container id: %s", out)
+		} else {
+			log.Debug().Msgf("Run podman kill uyuni-server for container id: %s", out)
+			err := utils.RunRawCmd("podman", []string{"kill", "uyuni-server"}, true)
+			if err != nil {
+				log.Debug().Err(err).Msg("Failed to kill the server")
+
+				log.Debug().Msgf("Run podman remove uyuni-server for container id: %s", out)
+				err = utils.RunRawCmd("podman", []string{"rm", "uyuni-server"}, true)
+				if err != nil {
+					log.Debug().Err(err).Msg("Error removing container")
+				}
+			}
+		}
 	} else {
-		utils.RunCmd("systemctl", []string{"disable", "--now", "uyuni-server"}, "Failed to disable server", globalFlags.Verbose)
+		log.Debug().Msg("Container already remove")
 	}
 
 	// Remove the volumes
@@ -44,23 +68,16 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 			cmd.Run()
 			if cmd.ProcessState.ExitCode() == 0 {
 				if dryRun {
-					log.Info().Msgf("Would run podman volume rm %s", volume)
+					log.Debug().Msgf("Would run podman volume rm %s", volume)
 				} else {
 					errorMessage := fmt.Sprintf("Failed to remove volume %s", volume)
-					utils.RunCmd("podman", []string{"volume", "rm", volume}, errorMessage, globalFlags.Verbose)
+					err := utils.RunRawCmd("podman", []string{"volume", "rm", volume}, true)
+					if err != nil {
+						log.Error().Err(err).Msg(errorMessage)
+					}
 				}
 			}
 		}
-	}
-
-	// Remove the service unit
-	if dryRun {
-		log.Info().Msgf("Woud remove %s", podman.ServicePath)
-	} else {
-		if globalFlags.Verbose {
-			log.Info().Msgf("Remove %s", podman.ServicePath)
-		}
-		os.Remove(podman.ServicePath)
 	}
 
 	// Remove the network
@@ -68,19 +85,31 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 	err := cmd.Run()
 	if err != nil {
 		log.Info().Msgf("Network uyuni already removed")
-		return
-	}
-	if dryRun {
-		log.Info().Msgf("Would run podman network rm uyuni")
 	} else {
-		utils.RunCmd("podman", []string{"network", "rm", "uyuni"}, "Failed to remove network uyuni", globalFlags.Verbose)
+		if dryRun {
+			log.Info().Msgf("Would run podman network rm uyuni")
+		} else {
+			err := utils.RunRawCmd("podman", []string{"network", "rm", "uyuni"}, true)
+			if err != nil {
+				log.Error().Msg("Failed to remove network uyuni")
+			} else {
+				log.Debug().Msg("Network removed")
+			}
+		}
 	}
 
 	// Reload systemd daemon
 	if dryRun {
+		log.Info().Msg("Would run systemctl reset-failed")
 		log.Info().Msg("Would run systemctl daemon-reload")
 	} else {
-		utils.RunCmd("systemctl", []string{"reset-failed"}, "Failed to reload systemd daemon", globalFlags.Verbose)
-		utils.RunCmd("systemctl", []string{"daemon-reload"}, "Failed to reload systemd daemon", globalFlags.Verbose)
+		err := utils.RunRawCmd("systemctl", []string{"reset-failed"}, true)
+		if err != nil {
+			log.Error().Err(err).Msg("Failed to reset-failed systemd")
+		}
+		err = utils.RunRawCmd("systemctl", []string{"daemon-reload"}, true)
+		if err != nil {
+			log.Error().Err(err).Msg("Failed to reload systemd daemon")
+		}
 	}
 }

@@ -29,7 +29,7 @@ func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string
 		log.Fatal().Msgf("Unknown container kind: %s", command)
 	}
 
-	RunCmd(command, commandArgs, "Failed to copy file", globalFlags.Verbose)
+	RunRawCmd(command, commandArgs, true)
 
 	if user != "" && strings.HasPrefix(dst, "server:") {
 		execArgs := []string{"exec", podName}
@@ -39,6 +39,6 @@ func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string
 			owner = user + ":" + group
 		}
 		execArgs = append(execArgs, "chown", owner, strings.Replace(dst, "server:", "", 1))
-		RunCmd(command, execArgs, "Failed to change file owner", globalFlags.Verbose)
+		RunRawCmd(command, execArgs, true)
 	}
 }

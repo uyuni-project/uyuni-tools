@@ -57,8 +57,10 @@ func installSslIssuers(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 		log.Fatal().Err(err).Msgf("Failed to generate issuer definition")
 	}
 
-	utils.RunCmd("kubectl", []string{"apply", "-f", issuerPath},
-		"Failed to create issuer", globalFlags.Verbose)
+	err = utils.RunRawCmd("kubectl", []string{"apply", "-f", issuerPath}, true)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to create issuer")
+	}
 
 	// Wait for issuer to be ready
 	for i := 0; i < 60; i++ {
@@ -103,7 +105,7 @@ func installCertManager(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Hel
 	waitForDeployment("", "cert-manager-webhook", "webhook")
 }
 
-func extractCaCertToConfig(verbose bool) {
+func extractCaCertToConfig() {
 	// TODO Replace with [trust-manager](https://cert-manager.io/docs/projects/trust-manager/) to automate this
 	const jsonPath = "-o=jsonpath={.data.ca\\.crt}"
 
@@ -128,5 +130,8 @@ func extractCaCertToConfig(verbose bool) {
 
 	message := fmt.Sprintf("Failed to create uyuni-ca config map from certificate: %s", err)
 	valueArg := "--from-literal=ca.crt=" + string(decoded)
-	utils.RunCmd("kubectl", []string{"create", "configmap", "uyuni-ca", valueArg}, message, verbose)
+	err = utils.RunRawCmd("kubectl", []string{"create", "configmap", "uyuni-ca", valueArg}, true)
+	if err != nil {
+		log.Fatal().Err(err).Msg(message)
+	}
 }

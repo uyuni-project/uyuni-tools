@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"strings"
 	"syscall"
 	"time"
 
@@ -94,15 +93,6 @@ func WaitForServer(globalFlags *types.GlobalFlags, backend string) {
 		time.Sleep(1 * time.Second)
 	}
 	log.Fatal().Msgf("Server didn't start within 60s")
-}
-
-func RunCmd(command string, args []string, errMessage string, verbose bool) {
-	log.Debug().Msgf("> Running: %s %s", command, strings.Join(args, " "))
-	
-	cmd := exec.Command(command, args...)
-	if out, err := cmd.CombinedOutput(); err != nil {
-		log.Fatal().Msgf("%s:\n  %s", errMessage, strings.ReplaceAll(string(out[:]), "\n", "\n  "))
-	}
 }
 
 const PROMPT_END = ": "
