@@ -34,9 +34,9 @@ func GetExposedPorts() []string {
 
 const ServicePath = "/etc/systemd/system/uyuni-server.service"
 
-func GenerateSystemdService(tz string, image string, podmanArgs []string, verbose bool) {
+func GenerateSystemdService(tz string, image string, podmanArgs []string) {
 
-	setupNetwork(verbose)
+	setupNetwork()
 
 	data := templates.PodmanServiceTemplateData{
 		Volumes:    utils.VOLUMES,
@@ -50,10 +50,10 @@ func GenerateSystemdService(tz string, image string, podmanArgs []string, verbos
 	if err := utils.WriteTemplateToFile(data, ServicePath, 0555, false); err != nil {
 		log.Fatal().Err(err).Msg("Failed to generate systemd service unit file")
 	}
-	utils.RunCmd("systemctl", []string{"daemon-reload"}, "Failed to reload systemd daemon", verbose)
+	utils.RunRawCmd("systemctl", []string{"daemon-reload"}, true)
 }
 
-func setupNetwork(verbose bool) {
+func setupNetwork() {
 	log.Info().Msgf("Setting up %s network", UYUNI_NETWORK)
 
 	ipv6Enabled := isIpv6Enabled()
@@ -64,7 +64,11 @@ func setupNetwork(verbose bool) {
 		if string(hasIpv6) != "true" && ipv6Enabled {
 			log.Info().Msgf("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it", UYUNI_NETWORK)
 			message := fmt.Sprintf("Failed to remove %s podman network", UYUNI_NETWORK)
-			utils.RunCmd("podman", []string{"network", "rm", UYUNI_NETWORK}, message, verbose)
+			err := utils.RunRawCmd("podman", []string{"network", "rm", UYUNI_NETWORK,
+				"--log-level", log.Logger.GetLevel().String()}, true)
+			if err != nil {
+				log.Fatal().Err(err).Msg(message)
+			}
 		} else {
 			log.Info().Msgf("Reusing existing %s network", UYUNI_NETWORK)
 			return
@@ -88,7 +92,10 @@ func setupNetwork(verbose bool) {
 		}
 	}
 	args = append(args, UYUNI_NETWORK)
-	utils.RunCmd("podman", args, message, verbose)
+	err = utils.RunRawCmd("podman", args, true)
+	if err != nil {
+		log.Fatal().Err(err).Msg(message)
+	}
 }
 
 func isIpv6Enabled() bool {
@@ -116,6 +123,9 @@ func getFileBoolean(file string) bool {
 	return string(out[:]) != "0"
 }
 
-func EnablePodmanSocket(verbose bool) {
-	utils.RunCmd("systemctl", []string{"enable", "--now", "podman.socket"}, "Failed to enable podman.socket unit", verbose)
+func EnablePodmanSocket() {
+	err := utils.RunRawCmd("systemctl", []string{"enable", "--now", "podman.socket"}, true)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to enable podman.socket unit")
+	}
 }

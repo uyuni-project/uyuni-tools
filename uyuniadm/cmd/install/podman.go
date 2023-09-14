@@ -22,7 +22,7 @@ func waitForSystemStart(globalFlags *types.GlobalFlags, flags *InstallFlags) {
 		podmanArgs = append(podmanArgs, "-v", flags.MirrorPath+":/mirror")
 	}
 
-	podman.GenerateSystemdService(flags.TZ, image, podmanArgs, globalFlags.Verbose)
+	podman.GenerateSystemdService(flags.TZ, image, podmanArgs)
 
 	log.Info().Msg("Waiting for the server to start...")
 	// Start the service
@@ -68,5 +68,5 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *InstallFlags, cmd *
 
 	runSetup(globalFlags, flags, args[0], env)
 
-	podman.EnablePodmanSocket(globalFlags.Verbose)
+	podman.EnablePodmanSocket()
 }

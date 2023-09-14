@@ -39,13 +39,13 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 
 	log.Info().Msg("Migrating server")
 	runContainer("uyuni-migration", flags.Image.Name, flags.Image.Tag, extraArgs,
-		[]string{"/var/lib/uyuni-tools/migrate.sh"}, []string{}, globalFlags.Verbose)
+		[]string{"/var/lib/uyuni-tools/migrate.sh"}, []string{})
 
 	// Read the extracted data
 	tz := readTimezone(scriptDir)
 	fullImage := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 
-	podman.GenerateSystemdService(tz, fullImage, viper.GetStringSlice("podman.arg"), globalFlags.Verbose)
+	podman.GenerateSystemdService(tz, fullImage, viper.GetStringSlice("podman.arg"))
 
 	// Start the service
 	if err := exec.Command("systemctl", "enable", "--now", "uyuni-server").Run(); err != nil {
@@ -54,10 +54,10 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 
 	log.Info().Msg("Server migrated")
 
-	podman.EnablePodmanSocket(globalFlags.Verbose)
+	podman.EnablePodmanSocket()
 }
 
-func runContainer(name string, image string, tag string, extraArgs []string, cmd []string, env []string, verbose bool) {
+func runContainer(name string, image string, tag string, extraArgs []string, cmd []string, env []string) {
 
 	podmanArgs := append([]string{"run"}, podman.GetCommonParams(name)...)
 	podmanArgs = append(podmanArgs, extraArgs...)
@@ -71,9 +71,8 @@ func runContainer(name string, image string, tag string, extraArgs []string, cmd
 
 	podmanCmd := exec.Command("podman", podmanArgs...)
 
-	if verbose {
-		log.Info().Msgf("Running command: podman %s", strings.Join(podmanArgs, " "))
-	}
+	log.Info().Msgf("Running command: podman %s", strings.Join(podmanArgs, " "))
+
 	podmanCmd.Stdout = os.Stdout
 	podmanCmd.Stderr = os.Stderr
 

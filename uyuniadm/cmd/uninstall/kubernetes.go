@@ -16,7 +16,7 @@ func uninstallForKubernetes(globalFlags *types.GlobalFlags, dryRun bool) {
 	kubeconfig := clusterInfos.GetKubeconfig()
 
 	// Uninstall uyuni
-	namespace := helmUninstall(kubeconfig, "uyuni", "", dryRun, globalFlags.Verbose)
+	namespace := helmUninstall(kubeconfig, "uyuni", "", dryRun)
 
 	// Remove the remaining configmap and secrets
 	if namespace != "" {
@@ -38,7 +38,7 @@ func uninstallForKubernetes(globalFlags *types.GlobalFlags, dryRun bool) {
 	}
 
 	// Uninstall cert-manager if we installed it
-	helmUninstall(kubeconfig, "cert-manager", "-linstalledby=uyuniadm", dryRun, globalFlags.Verbose)
+	helmUninstall(kubeconfig, "cert-manager", "-linstalledby=uyuniadm", dryRun)
 
 	// Remove the K3s Traefik config
 	if clusterInfos.IsK3s() {
@@ -51,7 +51,7 @@ func uninstallForKubernetes(globalFlags *types.GlobalFlags, dryRun bool) {
 	}
 }
 
-func helmUninstall(kubeconfig string, deployment string, filter string, dryRun bool, verbose bool) string {
+func helmUninstall(kubeconfig string, deployment string, filter string, dryRun bool) string {
 	jsonpath := fmt.Sprintf("jsonpath={.items[?(@.metadata.name==\"%s\")].metadata.namespace}", deployment)
 	args := []string{"get", "-A", "deploy", "-o", jsonpath}
 	if filter != "" {
@@ -76,7 +76,10 @@ func helmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 		} else {
 			log.Info().Msgf("Uninstalling %s", deployment)
 			message := "Failed to run helm " + strings.Join(helmArgs, " ")
-			utils.RunCmd("helm", helmArgs, message, verbose)
+			err := utils.RunRawCmd("helm", helmArgs, true)
+			if err != nil {
+				log.Fatal().Err(err).Msg(message)
+			}
 		}
 	}
 	return namespace

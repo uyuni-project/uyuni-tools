@@ -24,7 +24,7 @@ func LogInit(appName string) {
 
 	fileWritter := getFileWriter()
 	multi := zerolog.MultiLevelWriter(&consoleFiteredWriter, fileWritter)
-	log.Logger = zerolog.New(multi).With().Timestamp().Logger()
+	log.Logger = zerolog.New(multi).With().Timestamp().Stack().Logger()
 	log.Info().Msgf("welcome to %s", appName)
 }
 
