@@ -35,19 +35,21 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 
 	// Remove the volumes
 	if purge {
+		volumes := []string{"cgroup"}
 		for volume := range utils.VOLUMES {
-			if dryRun {
-				log.Info().Msgf("Would run podman volume rm %s", volume)
-			} else {
-				errorMessage := fmt.Sprintf("Failed to remove volume %s", volume)
-				utils.RunCmd("podman", []string{"volume", "rm", volume}, errorMessage, globalFlags.Verbose)
-			}
+			volumes = append(volumes, volume)
 		}
-
-		if dryRun {
-			log.Info().Msgf("Would run podman volume rm cgroup")
-		} else {
-			utils.RunCmd("podman", []string{"volume", "rm", "cgroup"}, "Failed to remove volume cgroup", globalFlags.Verbose)
+		for _, volume := range volumes {
+			cmd := exec.Command("podman", "volume", "exists", volume)
+			cmd.Run()
+			if cmd.ProcessState.ExitCode() == 0 {
+				if dryRun {
+					log.Info().Msgf("Would run podman volume rm %s", volume)
+				} else {
+					errorMessage := fmt.Sprintf("Failed to remove volume %s", volume)
+					utils.RunCmd("podman", []string{"volume", "rm", volume}, errorMessage, globalFlags.Verbose)
+				}
+			}
 		}
 	}
 
