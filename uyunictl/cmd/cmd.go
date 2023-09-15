@@ -22,7 +22,7 @@ func NewUyunictlCommand() *cobra.Command {
 
 	rootCmd.PersistentFlags().BoolVarP(&globalFlags.Verbose, "verbose", "v", false, "verbose output")
 	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", "configuration file path")
-	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "info", "application log level (trace|debug|info|warn|error|fatal|panic)")
+	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "", "application log level (trace|debug|info|warn|error|fatal|panic)")
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		utils.SetLogLevel(globalFlags.LogLevel)
