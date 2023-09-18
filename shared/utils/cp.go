@@ -43,8 +43,8 @@ func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string
 	}
 }
 
-func TestExistence(dstpath string) bool {
-	command, podName := GetPodName(true)
+func TestExistence(globalFlags *types.GlobalFlags, backend string, dstpath string) bool {
+	command, podName := GetPodName(globalFlags, backend, true)
 	commandArgs := []string{"exec", podName}
 
 	switch command {
