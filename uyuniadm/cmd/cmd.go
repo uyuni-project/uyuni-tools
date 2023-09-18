@@ -27,7 +27,7 @@ func NewUyuniadmCommand() *cobra.Command {
 	}
 
 	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", "configuration file path")
-	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "", "application log level (trace|debug|info|warn|error|fatal|panic)")
+	rootCmd.PersistentFlags().StringVarP(&globalFlags.LogLevel, "log-level", "l", "", "application log level (trace|debug|info|warn|error|fatal|panic)")
 
 	migrateCmd := migrate.NewCommand(globalFlags)
 	rootCmd.AddCommand(migrateCmd)
