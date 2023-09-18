@@ -37,7 +37,7 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 	}
 
 	// Force stop the pod
-	if out, _ := exec.Command("podman", "ps", "-a", "-q", "-f", "name=uyuni-server").Output(); len(out) > 0 {
+	if out, _ := utils.RunCmdOutput("podman", "ps", "-a", "-q", "-f", "name=uyuni-server"); len(out) > 0 {
 		if dryRun {
 			log.Debug().Msgf("Would run podman kill uyuni-server for container id: %s", out)
 			log.Debug().Msgf("Would run podman remove uyuni-server for container id: %s", out)

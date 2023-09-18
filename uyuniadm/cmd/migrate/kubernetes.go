@@ -80,7 +80,7 @@ func setupSsl(globalFlags *types.GlobalFlags, flags *MigrateFlags, kubeconfig st
 		key := base64.StdEncoding.EncodeToString(out)
 
 		// Strip down the certificate text part
-		out, err = exec.Command("openssl", "x509", "-in", caCert).Output()
+		out, err = utils.RunCmdOutput("openssl", "x509", "-in", caCert)
 		if err != nil {
 			log.Fatal().Err(err).Msg("Failed to strip text part of CA certificate")
 		}

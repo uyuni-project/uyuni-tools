@@ -60,14 +60,14 @@ func GetPodName(globalFlags *types.GlobalFlags, backend string, fail bool) (stri
 	case "podman-remote":
 		fallthrough
 	case "podman":
-		if out, _ := exec.Command(command, "ps", "-q", "-f", "name="+pod).Output(); len(out) == 0 {
+
+		if out, _ := RunCmdOutput(command, "ps", "-q", "-f", "name="+pod); len(out) == 0 {
 			if fail {
 				log.Fatal().Msgf("Container %s is not running on podman", pod)
 			}
 		}
 	case "kubectl":
-		podCmd := exec.Command("kubectl", "get", "pod", "-lapp=uyuni", "-o=jsonpath={.items[0].metadata.name}")
-		podName, err := podCmd.Output()
+		podName, err := RunCmdOutput("kubectl", "get", "pod", "-lapp=uyuni", "-o=jsonpath={.items[0].metadata.name}")
 		if err == nil {
 			pod = string(podName[:])
 		}
@@ -124,7 +124,8 @@ func AskIfMissing(value *string, prompt string) {
 
 // Get the timezone set on the machine running the tool
 func GetLocalTimezone() string {
-	out, err := exec.Command("timedatectl", "show", "--value", "-p", "Timezone").Output()
+
+	out, err := RunCmdOutput("timedatectl", "show", "--value", "-p", "Timezone")
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to run timedatectl show --value -p Timezone")
 	}

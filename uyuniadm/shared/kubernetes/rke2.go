@@ -1,7 +1,6 @@
 package kubernetes
 
 import (
-	"os/exec"
 	"strconv"
 
 	"github.com/rs/zerolog/log"
@@ -26,8 +25,8 @@ func InstallRke2NginxConfig(namespace string) {
 	// Wait for the nginx controller to be back
 	log.Info().Msg("Waiting for Nginx controller to be reloaded")
 	for i := 0; i < 60; i++ {
-		out, err := exec.Command("kubectl", "get", "daemonset", "-A",
-			"-o", "jsonpath={.status.numberReady}", "rke2-ingress-nginx-controller").Output()
+		out, err := utils.RunCmdOutput("kubectl", "get", "daemonset", "-A",
+			"-o", "jsonpath={.status.numberReady}", "rke2-ingress-nginx-controller")
 		if err == nil {
 			if count, err := strconv.Atoi(string(out)); err == nil && count > 0 {
 				break
