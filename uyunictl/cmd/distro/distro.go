@@ -1,7 +1,10 @@
 package distro
 
 import (
+	"errors"
 	"log"
+	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -34,7 +37,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			if err := viper.Unmarshal(&flags); err != nil {
 				log.Fatalf("Failed to unmarshall configuration: %s\n", err)
 			}
-			distCp(globalFlags, flags, cmd, args)
+			distCp(globalFlags, flags, cmd, args[1], args[0])
 		},
 	}
 
@@ -42,10 +45,31 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return distroCmd
 }
 
-func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) {
-	dstpath := "/srv/www/distributions/" + args[1]
+func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, distroName string, source string) {
+	if _, err := os.Stat(source); errors.Is(err, os.ErrNotExist) {
+		log.Fatalf("Source %s does not exists", source)
+	}
+
+	srcdir := source
+	if strings.HasSuffix(source, ".iso") {
+		srcdir, err := os.MkdirTemp("", "uyuni-tools")
+		if err != nil {
+			log.Fatal(err)
+		}
+		mount_cmd := []string{
+			"/bin/mount",
+			"-o loop",
+			source,
+			srcdir,
+		}
+		utils.RunCmd("/bin/sudo", mount_cmd, "Unable to mount iso file. Mount manually and try again", globalFlags.Verbose)
+		defer os.Remove(srcdir)
+	}
+
+	dstpath := "/srv/www/distributions/" + distroName
 	if utils.TestExistence(globalFlags, flags.Backend, dstpath) {
 		log.Fatalf("Distribution already exists: %s\n", dstpath)
 	}
-	utils.Copy(globalFlags, flags.Backend, args[0], "server:"+dstpath, "tomcat", "susemanager")
+
+	utils.Copy(globalFlags, flags.Backend, srcdir, "server:"+dstpath, "tomcat", "susemanager")
 }
