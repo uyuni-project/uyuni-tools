@@ -57,12 +57,12 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command,
 			log.Fatal(err)
 		}
 		mount_cmd := []string{
-			"/bin/mount",
+			"/usr/bin/mount",
 			"-o loop",
 			source,
 			srcdir,
 		}
-		utils.RunCmd("/bin/sudo", mount_cmd, "Unable to mount iso file. Mount manually and try again", globalFlags.Verbose)
+		utils.RunCmd("/usr/bin/sudo", mount_cmd, "Unable to mount iso file. Mount manually and try again", globalFlags.Verbose)
 		defer os.Remove(srcdir)
 	}
 
