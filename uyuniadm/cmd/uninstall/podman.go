@@ -15,7 +15,8 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 
 	// Disable the service
 	// Check if there is an uyuni-server service
-	if err := exec.Command("systemctl", "list-unit-files", "uyuni-server.service").Run(); err != nil {
+
+	if err := utils.RunRawCmd("systemctl", []string{"list-unit-files", "uyuni-server.service"}, true); err != nil {
 		log.Debug().Msg("Systemd has no uyuni-server.service unit")
 	} else {
 		if dryRun {
@@ -81,8 +82,7 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 	}
 
 	// Remove the network
-	cmd := exec.Command("podman", "network", "exists", "uyuni")
-	err := cmd.Run()
+	err := utils.RunRawCmd("podman", []string{"network", "exists", "uyuni"}, false)
 	if err != nil {
 		log.Info().Msgf("Network uyuni already removed")
 	} else {

@@ -11,7 +11,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty bool, env []string, args ...string) {
+func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty bool, outputToLog bool, env []string, args ...string) {
 	command, podName := GetPodName(globalFlags, backend, true)
 
 	commandArgs := []string{"exec"}
@@ -43,7 +43,7 @@ func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty 
 	}
 	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
 
-	err := RunRawCmd(command, commandArgs, false)
+	err := RunRawCmd(command, commandArgs, outputToLog)
 	if err != nil {
 		log.Fatal().Err(err).Msg("error running the command")
 	}

@@ -3,9 +3,7 @@ package migrate
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"strings"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -39,7 +37,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 
 	log.Info().Msg("Migrating server")
 	runContainer("uyuni-migration", flags.Image.Name, flags.Image.Tag, extraArgs,
-		[]string{"/var/lib/uyuni-tools/migrate.sh"}, []string{})
+		[]string{"/var/lib/uyuni-tools/migrate.sh"})
 
 	// Read the extracted data
 	tz := readTimezone(scriptDir)
@@ -48,7 +46,8 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 	podman.GenerateSystemdService(tz, fullImage, viper.GetStringSlice("podman.arg"))
 
 	// Start the service
-	if err := exec.Command("systemctl", "enable", "--now", "uyuni-server").Run(); err != nil {
+
+	if err := utils.RunRawCmd("systemctl", []string{"enable", "--now", "uyuni-server"}, true); err != nil {
 		log.Fatal().Err(err).Msgf("Failed to enable uyuni-server systemd service")
 	}
 
@@ -57,7 +56,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 	podman.EnablePodmanSocket()
 }
 
-func runContainer(name string, image string, tag string, extraArgs []string, cmd []string, env []string) {
+func runContainer(name string, image string, tag string, extraArgs []string, cmd []string) {
 
 	podmanArgs := append([]string{"run"}, podman.GetCommonParams(name)...)
 	podmanArgs = append(podmanArgs, extraArgs...)
@@ -69,20 +68,9 @@ func runContainer(name string, image string, tag string, extraArgs []string, cmd
 	podmanArgs = append(podmanArgs, image+":"+tag)
 	podmanArgs = append(podmanArgs, cmd...)
 
-	podmanCmd := exec.Command("podman", podmanArgs...)
+	err := utils.RunRawCmd("podman", podmanArgs, false)
 
-	log.Info().Msgf("Running command: podman %s", strings.Join(podmanArgs, " "))
-
-	podmanCmd.Stdout = os.Stdout
-	podmanCmd.Stderr = os.Stderr
-
-	podmanCmd.Env = append(podmanCmd.Environ(), env...)
-	if err := podmanCmd.Start(); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to start %s container", name)
-	}
-
-	// Wait for the migration to finish and report errors
-	if err := podmanCmd.Wait(); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to wait for container to finish")
+	if err != nil {
+		log.Fatal().Err(err).Msgf("Failed to run %s container", name)
 	}
 }
