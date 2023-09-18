@@ -3,6 +3,7 @@ package install
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
 )
 
@@ -32,4 +33,8 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *InstallFlags, c
 	}
 
 	runSetup(globalFlags, flags, args[0], envs)
+
+	// The CA needs to be added to the database for Kickstart use.
+	utils.Exec(globalFlags, "kubectl", false, false, []string{},
+		"/usr/bin/rhn-ssl-dbstore", "--ca-cert=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT")
 }
