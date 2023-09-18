@@ -2,6 +2,7 @@ package distro
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -45,25 +46,40 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return distroCmd
 }
 
+func umountAndRemove(mountpoint string, verbosity bool) {
+	umount_cmd := []string{
+		"/usr/bin/umount",
+		mountpoint,
+	}
+
+	utils.RunCmd("/usr/bin/sudo", umount_cmd, fmt.Sprintf("Unable to unmount iso file, leaving %s intact", mountpoint), verbosity)
+
+	os.Remove(mountpoint)
+}
+
 func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, distroName string, source string) {
+	log.Printf("Copying distribution %s\n", distroName)
 	if _, err := os.Stat(source); errors.Is(err, os.ErrNotExist) {
 		log.Fatalf("Source %s does not exists", source)
 	}
 
 	srcdir := source
 	if strings.HasSuffix(source, ".iso") {
-		srcdir, err := os.MkdirTemp("", "uyuni-tools")
+		log.Println("Source is an iso file")
+		tmpdir, err := os.MkdirTemp("", "uyuni-tools")
 		if err != nil {
 			log.Fatal(err)
 		}
+		srcdir = tmpdir
+		defer umountAndRemove(srcdir, globalFlags.Verbose)
+
 		mount_cmd := []string{
 			"/usr/bin/mount",
-			"-o loop",
+			"-o", "ro,loop",
 			source,
 			srcdir,
 		}
 		utils.RunCmd("/usr/bin/sudo", mount_cmd, "Unable to mount iso file. Mount manually and try again", globalFlags.Verbose)
-		defer os.Remove(srcdir)
 	}
 
 	dstpath := "/srv/www/distributions/" + distroName
@@ -72,4 +88,6 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command,
 	}
 
 	utils.Copy(globalFlags, flags.Backend, srcdir, "server:"+dstpath, "tomcat", "susemanager")
+
+	log.Println("Distribution copied")
 }
