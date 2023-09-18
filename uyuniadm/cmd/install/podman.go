@@ -2,8 +2,6 @@ package install
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/rs/zerolog/log"
@@ -26,7 +24,8 @@ func waitForSystemStart(globalFlags *types.GlobalFlags, flags *InstallFlags) {
 
 	log.Info().Msg("Waiting for the server to start...")
 	// Start the service
-	if err := exec.Command("systemctl", "enable", "--now", "uyuni-server").Run(); err != nil {
+
+	if err := utils.RunRawCmd("systemctl", []string{"enable", "--now", "uyuni-server"}, true); err != nil {
 		log.Fatal().Err(err).Msg("Failed to enable uyuni-server systemd service")
 	}
 
@@ -36,11 +35,9 @@ func waitForSystemStart(globalFlags *types.GlobalFlags, flags *InstallFlags) {
 func pullImage(flags *InstallFlags) {
 	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 	log.Info().Msgf("Running podman pull %s", image)
-	cmd := exec.Command("podman", "pull", image)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
 
-	if err := cmd.Run(); err != nil {
+	err := utils.RunRawCmd("podman", []string{"pull", image}, false)
+	if err != nil {
 		log.Fatal().Err(err).Msg("Failed to pull image")
 	}
 }

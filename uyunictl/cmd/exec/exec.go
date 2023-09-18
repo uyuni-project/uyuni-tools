@@ -39,5 +39,5 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 }
 
 func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) {
-	utils.Exec(globalFlags, flags.Backend, flags.Interactive, flags.Tty, flags.Envs, args...)
+	utils.Exec(globalFlags, flags.Backend, flags.Interactive, flags.Tty, false, flags.Envs, args...)
 }

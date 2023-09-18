@@ -19,7 +19,7 @@ func runSetup(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn string, 
 
 	utils.Copy(globalFlags, "", filepath.Join(tmpFolder, SETUP_NAME), "server:/tmp/setup.sh", "root", "root")
 
-	utils.Exec(globalFlags, "", false, false, []string{}, "/tmp/setup.sh")
+	utils.Exec(globalFlags, "", false, false, true, []string{}, "/tmp/setup.sh")
 
 	log.Info().Msg("Server set up")
 }

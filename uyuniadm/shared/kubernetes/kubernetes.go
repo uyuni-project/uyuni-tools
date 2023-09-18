@@ -61,7 +61,7 @@ func guessIngress() string {
 	var ingress string
 
 	// Check for a traefik resource
-	err := exec.Command("kubectl", "explain", "ingressroutetcp").Run()
+	err := utils.RunRawCmd("kubectl", []string{"explain", "ingressroutetcp"}, false)
 	if err == nil {
 		ingress = "traefik"
 	}

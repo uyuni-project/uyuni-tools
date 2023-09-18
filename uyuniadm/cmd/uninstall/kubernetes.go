@@ -25,12 +25,13 @@ func uninstallForKubernetes(globalFlags *types.GlobalFlags, dryRun bool) {
 			log.Info().Msgf("Would run kubectl delete -n %s secret uyuni-ca uyuni-cert", namespace)
 		} else {
 			log.Info().Msgf("Running kubectl delete -n %s configmap uyuni-ca", namespace)
-			if err := exec.Command("kubectl", "delete", "-n", namespace, "configmap", "uyuni-ca").Run(); err != nil {
+			if err := utils.RunRawCmd("kubectl", []string{"delete", "-n", namespace, "configmap", "uyuni-ca"}, false); err != nil {
 				log.Info().Err(err).Msgf("Failed deleting config map")
 			}
 
 			log.Info().Msgf("Running kubectl delete -n %s secret uyuni-ca uyuni-cert", namespace)
-			err := exec.Command("kubectl", "delete", "-n", namespace, "secret", "uyuni-ca", "uyuni-cert").Run()
+
+			err := utils.RunRawCmd("kubectl", []string{"delete", "-n", namespace, "secret", "uyuni-ca", "uyuni-cert"}, false)
 			if err != nil {
 				log.Info().Err(err).Msgf("Failed deleting config map")
 			}
@@ -58,8 +59,7 @@ func helmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 		args = append(args, filter)
 	}
 
-	cmd := exec.Command("kubectl", args...)
-	out, err := cmd.Output()
+	out, err := exec.Command("kubectl", args...).Output()
 	if err != nil {
 		log.Info().Err(err).Msgf("Failed to find %s's namespace, skipping removal", deployment)
 	}
