@@ -7,9 +7,24 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
+
+type outputLogWriter struct {
+	logger zerolog.Logger
+}
+
+func (l outputLogWriter) Write(p []byte) (n int, err error) {
+	n = len(p)
+	if n > 0 && p[n-1] == '\n' {
+		// Trim CR added by stdlog.
+		p = p[0 : n-1]
+	}
+	l.logger.Debug().CallerSkipFrame(1).Msg(string(p))
+	return
+}
 
 func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty bool, outputToLog bool, env []string, args ...string) {
 	command, podName := GetPodName(globalFlags, backend, true)
@@ -49,7 +64,6 @@ func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty 
 	}
 }
 
-// should we call fatal or let the caller do it?
 func RunRawCmd(command string, args []string, outputToLog bool) error {
 
 	log.Debug().Msgf(" Running: %s %s", command, strings.Join(args, " "))
@@ -57,7 +71,7 @@ func RunRawCmd(command string, args []string, outputToLog bool) error {
 	runCmd := exec.Command(command, args...)
 	runCmd.Stdin = os.Stdin
 	if outputToLog {
-		runCmd.Stdout = log.Logger
+		runCmd.Stdout = outputLogWriter{log.Logger}
 	} else {
 		runCmd.Stdout = os.Stdout
 	}
@@ -78,9 +92,10 @@ func RunRawCmd(command string, args []string, outputToLog bool) error {
 	scanner := bufio.NewScanner(stderr)
 	for scanner.Scan() {
 		line := scanner.Text()
+		// needed because of kubernetes installation, to ignore the stderr
 		if !strings.HasPrefix(line, "command terminated with exit code") {
 			if outputToLog {
-				log.Error().Msg(line)
+				log.Debug().Msg(line)
 			} else {
 				fmt.Fprintln(os.Stderr, line)
 			}
@@ -104,14 +119,13 @@ func RunRawCmd(command string, args []string, outputToLog bool) error {
 
 func RunCmdOutput(command string, args ...string) ([]byte, error) {
 
-	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
+	log.Debug().Msgf(" Running: %s %s", command, strings.Join(args, " "))
 
 	output, err := exec.Command(command, args...).Output()
 	if err != nil {
-		log.Debug().Err(err).Msgf("Error running command: '%s'", output)
-	} else {
-		log.Debug().Msgf("Command output:  '%s'", output)
+		log.Debug().Err(err).Msgf("Command returned Error: %s", output)
+	} else if len(output) > 0 {
+		log.Debug().Msgf("Command output: %s", output)
 	}
 	return output, err
-
 }

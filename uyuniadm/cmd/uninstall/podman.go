@@ -79,6 +79,7 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 				}
 			}
 		}
+		log.Debug().Msg("All volumes removed")
 	}
 
 	// Remove the network

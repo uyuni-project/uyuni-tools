@@ -59,6 +59,10 @@ func logCallerMarshalFunction(pc uintptr, file string, line int) string {
 	paths := strings.Split(file, "/")
 	callerFile := file
 	foundSubDir := false
+	if strings.HasSuffix(file, "/io/io.go") {
+		return "Cmd output"
+	}
+
 	for _, currentPath := range paths {
 		if foundSubDir {
 			if callerFile != "" {

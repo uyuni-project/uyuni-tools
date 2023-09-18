@@ -3,6 +3,7 @@ package podman
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 
@@ -37,6 +38,7 @@ func GenerateSystemdService(tz string, image string, podmanArgs []string) {
 
 	setupNetwork()
 
+	log.Info().Msg("Enabling system service")
 	data := templates.PodmanServiceTemplateData{
 		Volumes:    utils.VOLUMES,
 		NamePrefix: "uyuni",
@@ -49,7 +51,8 @@ func GenerateSystemdService(tz string, image string, podmanArgs []string) {
 	if err := utils.WriteTemplateToFile(data, ServicePath, 0555, false); err != nil {
 		log.Fatal().Err(err).Msg("Failed to generate systemd service unit file")
 	}
-	utils.RunRawCmd("systemctl", []string{"daemon-reload"}, true)
+
+	utils.RunRawCmd("systemctl", []string{"daemon-reload"}, false)
 }
 
 func setupNetwork() {
@@ -57,20 +60,25 @@ func setupNetwork() {
 
 	ipv6Enabled := isIpv6Enabled()
 
-	// Check if the uyuni network exists and is IPv6 enabled
-	hasIpv6, err := utils.RunCmdOutput("podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UYUNI_NETWORK)
-	if err == nil {
-		if string(hasIpv6) != "true" && ipv6Enabled {
-			log.Info().Msgf("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it", UYUNI_NETWORK)
-			message := fmt.Sprintf("Failed to remove %s podman network", UYUNI_NETWORK)
-			err := utils.RunRawCmd("podman", []string{"network", "rm", UYUNI_NETWORK,
-				"--log-level", log.Logger.GetLevel().String()}, true)
-			if err != nil {
-				log.Fatal().Err(err).Msg(message)
+	testNetworkCmd := exec.Command("podman", "network")
+	testNetworkCmd.Run()
+	// check if network exists before trying to get the IPV6 information
+	if testNetworkCmd.ProcessState.ExitCode() == 0 {
+		// Check if the uyuni network exists and is IPv6 enabled
+		hasIpv6, err := utils.RunCmdOutput("podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UYUNI_NETWORK)
+		if err == nil {
+			if string(hasIpv6) != "true" && ipv6Enabled {
+				log.Info().Msgf("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it", UYUNI_NETWORK)
+				message := fmt.Sprintf("Failed to remove %s podman network", UYUNI_NETWORK)
+				err := utils.RunRawCmd("podman", []string{"network", "rm", UYUNI_NETWORK,
+					"--log-level", log.Logger.GetLevel().String()}, false)
+				if err != nil {
+					log.Fatal().Err(err).Msg(message)
+				}
+			} else {
+				log.Info().Msgf("Reusing existing %s network", UYUNI_NETWORK)
+				return
 			}
-		} else {
-			log.Info().Msgf("Reusing existing %s network", UYUNI_NETWORK)
-			return
 		}
 	}
 
@@ -91,7 +99,7 @@ func setupNetwork() {
 		}
 	}
 	args = append(args, UYUNI_NETWORK)
-	err = utils.RunRawCmd("podman", args, true)
+	err := utils.RunRawCmd("podman", args, true)
 	if err != nil {
 		log.Fatal().Err(err).Msg(message)
 	}
