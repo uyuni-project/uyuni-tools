@@ -53,12 +53,10 @@ func TestExistence(globalFlags *types.GlobalFlags, backend string, dstpath strin
 	case "kubectl":
 		commandArgs = append(commandArgs, "-c", "uyuni", "test", "-e", dstpath)
 	default:
-		log.Fatalf("Unknown container kind: %s\n", command)
+		log.Fatal().Msgf("Unknown container kind: %s\n", command)
 	}
-	cmd := exec.Command(command, commandArgs...)
-	err := cmd.Run()
-	var exerr *exec.ExitError
-	if errors.As(err, &exerr) {
+
+	if err := RunRawCmd(command, commandArgs, true); err != nil {
 		return false
 	}
 	return true
