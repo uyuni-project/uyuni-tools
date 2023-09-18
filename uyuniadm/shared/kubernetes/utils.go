@@ -3,7 +3,6 @@ package kubernetes
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 	"time"
@@ -23,7 +22,7 @@ func waitForDeployment(namespace string, name string, appName string) {
 	cmdArgs = addNamespace(cmdArgs, namespace)
 
 	for i := 0; i < 60; i++ {
-		out, err := exec.Command("kubectl", cmdArgs...).Output()
+		out, err := utils.RunCmdOutput("kubectl", cmdArgs...)
 		if err == nil {
 			podName = string(out)
 			break
@@ -60,7 +59,7 @@ func waitForPulledImage(namespace string, podName string) {
 	failedArgs = addNamespace(failedArgs, namespace)
 	for {
 		// Look for events indicating an image pull issue
-		out, err := exec.Command("kubectl", failedArgs...).Output()
+		out, err := utils.RunCmdOutput("kubectl", failedArgs...)
 		if err != nil {
 			log.Fatal().Err(err).Msgf("Failed to get failed events for pod %s", podName)
 		}
@@ -72,7 +71,7 @@ func waitForPulledImage(namespace string, podName string) {
 		}
 
 		// Has the image pull finished?
-		out, err = exec.Command("kubectl", pulledArgs...).Output()
+		out, err = utils.RunCmdOutput("kubectl", pulledArgs...)
 		if err != nil {
 			log.Fatal().Err(err).Msgf("Failed to get events for pod %s", podName)
 		}
@@ -91,7 +90,7 @@ func isDeploymentReady(namespace string, name string) bool {
 	args := []string{"get", "-o", jsonpath, "deploy"}
 	args = addNamespace(args, namespace)
 
-	out, err := exec.Command("kubectl", args...).Output()
+	out, err := utils.RunCmdOutput("kubectl", args...)
 	// kubectl errors out if the deployment or namespace doesn't exist
 	if err == nil {
 		if replicas, _ := strconv.Atoi(string(out)); replicas > 0 {

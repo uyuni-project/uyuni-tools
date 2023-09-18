@@ -2,7 +2,6 @@ package kubernetes
 
 import (
 	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/rs/zerolog/log"
@@ -44,8 +43,8 @@ func CheckCluster() ClusterInfos {
 		log.Fatal().Err(err).Msgf("Failed to get node hostname")
 	}
 
-	out, err := exec.Command("kubectl", "get", "node",
-		"-o", "jsonpath={.status.nodeInfo.kubeletVersion}", hostname).Output()
+	out, err := utils.RunCmdOutput("kubectl", "get", "node",
+		"-o", "jsonpath={.status.nodeInfo.kubeletVersion}", hostname)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to get kubelet version for node %s", hostname)
 	}
@@ -67,8 +66,8 @@ func guessIngress() string {
 	}
 
 	// Look for a pod running the nginx-ingress-controller: there is no other common way to find out
-	out, err := exec.Command("kubectl", "get", "pod", "-A",
-		"-o", "jsonpath={range .items[*]}{.spec.containers[*].args[0]}{.spec.containers[*].command}{end}").Output()
+	out, err := utils.RunCmdOutput("kubectl", "get", "pod", "-A",
+		"-o", "jsonpath={range .items[*]}{.spec.containers[*].args[0]}{.spec.containers[*].command}{end}")
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to get get pod commands to look for nginx controller")
 	}

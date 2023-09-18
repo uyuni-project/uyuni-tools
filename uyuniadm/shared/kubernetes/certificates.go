@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"time"
 
@@ -64,8 +63,8 @@ func installSslIssuers(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 
 	// Wait for issuer to be ready
 	for i := 0; i < 60; i++ {
-		out, err := exec.Command("kubectl", "get", "-o=jsonpath={.status.conditions[*].type}",
-			"issuer", "uyuni-ca-issuer").Output()
+		out, err := utils.RunCmdOutput("kubectl", "get", "-o=jsonpath={.status.conditions[*].type}",
+			"issuer", "uyuni-ca-issuer")
 		if err == nil && string(out) == "Ready" {
 			return []string{"--set-json", "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"}
 		}
@@ -111,14 +110,14 @@ func extractCaCertToConfig() {
 
 	log.Info().Msg("Extracting CA certificate to a configmap")
 	// Skip extracting if the configmap is already present
-	out, err := exec.Command("kubectl", "get", "configmap", "uyuni-ca", jsonPath).Output()
+	out, err := utils.RunCmdOutput("kubectl", "get", "configmap", "uyuni-ca", jsonPath)
 	log.Info().Msgf("CA cert: %s", string(out))
 	if err == nil && len(out) > 0 {
 		log.Info().Msg("uyuni-ca configmap already existing, skipping extraction")
 		return
 	}
 
-	out, err = exec.Command("kubectl", "get", "secret", "uyuni-ca", jsonPath).Output()
+	out, err = utils.RunCmdOutput("kubectl", "get", "secret", "uyuni-ca", jsonPath)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to get uyuni-ca certificate")
 	}

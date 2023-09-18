@@ -1,7 +1,6 @@
 package kubernetes
 
 import (
-	"os/exec"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -25,8 +24,8 @@ func InstallK3sTraefikConfig() {
 	// Wait for traefik to be back
 	log.Info().Msg("Waiting for Traefik to be reloaded")
 	for i := 0; i < 60; i++ {
-		out, err := exec.Command("kubectl", "get", "job", "-A",
-			"-o", "jsonpath={.status.completionTime}", "helm-install-traefik").Output()
+		out, err := utils.RunCmdOutput("kubectl", "get", "job", "-A",
+			"-o", "jsonpath={.status.completionTime}", "helm-install-traefik")
 		if err == nil {
 			completionTime, err := time.Parse(time.RFC3339, string(out))
 			if err == nil && time.Since(completionTime).Seconds() < 60 {

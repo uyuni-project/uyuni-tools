@@ -52,8 +52,6 @@ func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty 
 // should we call fatal or let the caller cal it?
 func RunRawCmd(command string, args []string, outputToLog bool) error {
 
-	// TODO think if we should log all command or just the sub-command part
-	// most problematic part can be the flags
 	log.Debug().Msgf(" Running: %s %s", command, strings.Join(args, " "))
 
 	runCmd := exec.Command(command, args...)
@@ -102,4 +100,18 @@ func RunRawCmd(command string, args []string, outputToLog bool) error {
 		return err
 	}
 	return nil
+}
+
+func RunCmdOutput(command string, args ...string) ([]byte, error) {
+
+	log.Debug().Msgf(" Running: %s %s", command, strings.Join(args, " "))
+
+	output, err := exec.Command(command, args...).Output()
+	if err != nil {
+		log.Error().Err(err).Msgf("Error running command: %s", output)
+	} else {
+		log.Debug().Msgf("Command output:  %s", output)
+	}
+	return output, err
+
 }

@@ -2,7 +2,6 @@ package uninstall
 
 import (
 	"fmt"
-	"os/exec"
 	"strings"
 
 	"github.com/rs/zerolog/log"
@@ -59,7 +58,7 @@ func helmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 		args = append(args, filter)
 	}
 
-	out, err := exec.Command("kubectl", args...).Output()
+	out, err := utils.RunCmdOutput("kubectl", args...)
 	if err != nil {
 		log.Info().Err(err).Msgf("Failed to find %s's namespace, skipping removal", deployment)
 	}

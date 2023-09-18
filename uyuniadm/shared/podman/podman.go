@@ -3,7 +3,6 @@ package podman
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 
@@ -59,7 +58,7 @@ func setupNetwork() {
 	ipv6Enabled := isIpv6Enabled()
 
 	// Check if the uyuni network exists and is IPv6 enabled
-	hasIpv6, err := exec.Command("podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UYUNI_NETWORK).Output()
+	hasIpv6, err := utils.RunCmdOutput("podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UYUNI_NETWORK)
 	if err == nil {
 		if string(hasIpv6) != "true" && ipv6Enabled {
 			log.Info().Msgf("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it", UYUNI_NETWORK)
@@ -81,7 +80,7 @@ func setupNetwork() {
 	if ipv6Enabled {
 		// An IPv6 network on a host where IPv6 is disabled doesn't work: don't try it.
 		// Check if the networkd backend is netavark
-		out, err := exec.Command("podman", "info", "--format", "{{.Host.NetworkBackend}}").Output()
+		out, err := utils.RunCmdOutput("podman", "info", "--format", "{{.Host.NetworkBackend}}")
 		backend := strings.Trim(string(out), "\n")
 		if err != nil {
 			log.Fatal().Err(err).Msgf("Failed to find podman's network backend")
