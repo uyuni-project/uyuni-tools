@@ -6,7 +6,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/cp"
-	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/distcp"
+	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/distro"
 	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/exec"
 )
 
@@ -33,7 +33,7 @@ func NewUyunictlCommand() *cobra.Command {
 
 	rootCmd.AddCommand(exec.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
-	rootCmd.AddCommand(distcp.NewCommand(globalFlags))
+	rootCmd.AddCommand(distro.NewCommand(globalFlags))
 
 	return rootCmd
 }
