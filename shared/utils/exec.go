@@ -108,9 +108,9 @@ func RunCmdOutput(command string, args ...string) ([]byte, error) {
 
 	output, err := exec.Command(command, args...).Output()
 	if err != nil {
-		log.Error().Err(err).Msgf("Error running command: %s", output)
+		log.Debug().Err(err).Msgf("Error running command: '%s'", output)
 	} else {
-		log.Debug().Msgf("Command output:  %s", output)
+		log.Debug().Msgf("Command output:  '%s'", output)
 	}
 	return output, err
 
