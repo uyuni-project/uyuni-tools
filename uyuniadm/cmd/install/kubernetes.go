@@ -35,6 +35,6 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *InstallFlags, c
 	runSetup(globalFlags, flags, args[0], envs)
 
 	// The CA needs to be added to the database for Kickstart use.
-	utils.Exec(globalFlags, "kubectl", false, false, []string{},
+	utils.Exec(globalFlags, "kubectl", false, false, true, []string{},
 		"/usr/bin/rhn-ssl-dbstore", "--ca-cert=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT")
 }
