@@ -43,7 +43,7 @@ func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string
 	}
 }
 
-func TestExistence(globalFlags *types.GlobalFlags, backend string, dstpath string) bool {
+func TestExistenceInPod(globalFlags *types.GlobalFlags, backend string, dstpath string) bool {
 	command, podName := GetPodName(globalFlags, backend, true)
 	commandArgs := []string{"exec", podName}
 
@@ -56,7 +56,7 @@ func TestExistence(globalFlags *types.GlobalFlags, backend string, dstpath strin
 		log.Fatal().Msgf("Unknown container kind: %s\n", command)
 	}
 
-	if err := RunRawCmd(command, commandArgs, true); err != nil {
+	if _, err := RunCmdOutput(command, commandArgs...); err != nil {
 		return false
 	}
 	return true
