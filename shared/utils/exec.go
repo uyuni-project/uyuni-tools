@@ -26,7 +26,8 @@ func (l outputLogWriter) Write(p []byte) (n int, err error) {
 	return
 }
 
-func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty bool, outputToLog bool, env []string, args ...string) {
+func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty bool, 
+	outputToLog bool, env []string, args ...string) error{
 	command, podName := GetPodName(globalFlags, backend, true)
 
 	commandArgs := []string{"exec"}
@@ -58,10 +59,8 @@ func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty 
 	}
 	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
 
-	err := RunRawCmd(command, commandArgs, outputToLog)
-	if err != nil {
-		log.Fatal().Err(err).Msg("error running the command")
-	}
+	return RunRawCmd(command, commandArgs, outputToLog)
+	
 }
 
 func RunRawCmd(command string, args []string, outputToLog bool) error {
