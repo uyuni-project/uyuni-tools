@@ -30,7 +30,7 @@ func GetCommand(backend string) string {
 		// Check kubectl with a timeout in case the configured cluster is not responding
 		_, err := exec.LookPath("kubectl")
 		if err == nil {
-			if err = RunRawCmd("kubectl", []string{"--request-timeout=30s", "get", "pod"}, false); err != nil {
+			if _, err = RunCmdOutput("kubectl", "--request-timeout=30s", "get", "pod"); err != nil {
 				log.Info().Msg("kubectl not configured to connect to a cluster, ignoring")
 			} else {
 				return "kubectl"

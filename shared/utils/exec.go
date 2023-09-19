@@ -49,7 +49,7 @@ func Exec(globalFlags *types.GlobalFlags, backend string, interactive bool, tty 
 	}
 }
 
-// should we call fatal or let the caller cal it?
+// should we call fatal or let the caller do it?
 func RunRawCmd(command string, args []string, outputToLog bool) error {
 
 	log.Debug().Msgf(" Running: %s %s", command, strings.Join(args, " "))
@@ -104,7 +104,7 @@ func RunRawCmd(command string, args []string, outputToLog bool) error {
 
 func RunCmdOutput(command string, args ...string) ([]byte, error) {
 
-	log.Debug().Msgf(" Running: %s %s", command, strings.Join(args, " "))
+	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	output, err := exec.Command(command, args...).Output()
 	if err != nil {
