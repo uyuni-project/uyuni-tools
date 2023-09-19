@@ -60,7 +60,10 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *MigrateFlags, cm
 
 func runMigration(globalFlags *types.GlobalFlags, flags *MigrateFlags, tmpPath string) {
 	log.Info().Msg("Migrating server")
-	utils.Exec(globalFlags, "", false, false, true, []string{}, "/var/lib/uyuni-tools/migrate.sh")
+	err := utils.Exec(globalFlags, "", false, false, true, []string{}, "/var/lib/uyuni-tools/migrate.sh")
+	if err != nil {
+		log.Fatal().Err(err).Msg("error running the migration script")
+	}
 }
 
 // updateIssuer replaces the temporary SSL certificate issuer with the source server CA.
