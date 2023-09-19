@@ -63,6 +63,7 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *InstallFlags, cmd *
 		env["CERT_PASS"] = flags.Cert.Password
 	}
 
+	log.Info().Msg("run setup command in the container")
 	runSetup(globalFlags, flags, args[0], env)
 
 	podman.EnablePodmanSocket()
