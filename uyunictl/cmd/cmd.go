@@ -12,7 +12,6 @@ import (
 
 // NewCommand returns a new cobra.Command implementing the root command for kinder
 func NewUyunictlCommand() *cobra.Command {
-	utils.LogInit()
 	globalFlags := &types.GlobalFlags{}
 	rootCmd := &cobra.Command{
 		Use:     "uyunictl",
@@ -25,6 +24,7 @@ func NewUyunictlCommand() *cobra.Command {
 	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "", "application log level (trace|debug|info|warn|error|fatal|panic)")
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
+		utils.LogInit("uyunictl", cmd.Name() != "exec")
 		utils.SetLogLevel(globalFlags.LogLevel)
 		log.Info().Msgf("Executing command: %s", cmd.Name())
 	}
