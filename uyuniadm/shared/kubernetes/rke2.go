@@ -3,6 +3,7 @@ package kubernetes
 import (
 	"strconv"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
@@ -25,7 +26,7 @@ func InstallRke2NginxConfig(namespace string) {
 	// Wait for the nginx controller to be back
 	log.Info().Msg("Waiting for Nginx controller to be reloaded")
 	for i := 0; i < 60; i++ {
-		out, err := utils.RunCmdOutput("kubectl", "get", "daemonset", "-A",
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "daemonset", "-A",
 			"-o", "jsonpath={.status.numberReady}", "rke2-ingress-nginx-controller")
 		if err == nil {
 			if count, err := strconv.Atoi(string(out)); err == nil && count > 0 {

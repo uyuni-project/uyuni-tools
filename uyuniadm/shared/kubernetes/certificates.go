@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -56,14 +57,14 @@ func installSslIssuers(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 		log.Fatal().Err(err).Msgf("Failed to generate issuer definition")
 	}
 
-	err = utils.RunRawCmd("kubectl", []string{"apply", "-f", issuerPath}, true)
+	err = utils.RunCmd("kubectl", "apply", "-f", issuerPath)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed to create issuer")
 	}
 
 	// Wait for issuer to be ready
 	for i := 0; i < 60; i++ {
-		out, err := utils.RunCmdOutput("kubectl", "get", "-o=jsonpath={.status.conditions[*].type}",
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "-o=jsonpath={.status.conditions[*].type}",
 			"issuer", "uyuni-ca-issuer")
 		if err == nil && string(out) == "Ready" {
 			return []string{"--set-json", "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"}
@@ -110,14 +111,14 @@ func extractCaCertToConfig() {
 
 	log.Info().Msg("Extracting CA certificate to a configmap")
 	// Skip extracting if the configmap is already present
-	out, err := utils.RunCmdOutput("kubectl", "get", "configmap", "uyuni-ca", jsonPath)
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "configmap", "uyuni-ca", jsonPath)
 	log.Info().Msgf("CA cert: %s", string(out))
 	if err == nil && len(out) > 0 {
 		log.Info().Msg("uyuni-ca configmap already existing, skipping extraction")
 		return
 	}
 
-	out, err = utils.RunCmdOutput("kubectl", "get", "secret", "uyuni-ca", jsonPath)
+	out, err = utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "secret", "uyuni-ca", jsonPath)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to get uyuni-ca certificate")
 	}
@@ -129,7 +130,7 @@ func extractCaCertToConfig() {
 
 	message := fmt.Sprintf("Failed to create uyuni-ca config map from certificate: %s", err)
 	valueArg := "--from-literal=ca.crt=" + string(decoded)
-	err = utils.RunRawCmd("kubectl", []string{"create", "configmap", "uyuni-ca", valueArg}, true)
+	err = utils.RunCmd("kubectl", "create", "configmap", "uyuni-ca", valueArg)
 	if err != nil {
 		log.Fatal().Err(err).Msg(message)
 	}

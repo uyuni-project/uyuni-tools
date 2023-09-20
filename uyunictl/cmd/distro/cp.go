@@ -4,6 +4,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -16,7 +17,7 @@ func umountAndRemove(mountpoint string) {
 		mountpoint,
 	}
 
-	if err := utils.RunRawCmd("/usr/bin/sudo", umount_cmd, true); err != nil {
+	if err := utils.RunCmd("/usr/bin/sudo", umount_cmd...); err != nil {
 		log.Fatal().Err(err).Msgf("Unable to unmount iso file, leaving %s intact", mountpoint)
 	}
 
@@ -50,7 +51,7 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command,
 			source,
 			srcdir,
 		}
-		if out, err := utils.RunCmdOutput("/usr/bin/sudo", mount_cmd...); err != nil {
+		if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "/usr/bin/sudo", mount_cmd...); err != nil {
 			log.Debug().Msgf("output %s", out)
 			log.Error().Err(err).Msg("Unable to mount iso file. Mount manually and try again")
 			return

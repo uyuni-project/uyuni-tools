@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -16,7 +17,7 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 	// Disable the service
 	// Check if there is an uyuni-server service
 
-	if err := utils.RunRawCmd("systemctl", []string{"list-unit-files", "uyuni-server.service"}, true); err != nil {
+	if err := utils.RunCmd("systemctl", "list-unit-files", "uyuni-server.service"); err != nil {
 		log.Debug().Msg("Systemd has no uyuni-server.service unit")
 	} else {
 		if dryRun {
@@ -25,7 +26,7 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 		} else {
 			log.Debug().Msg("Desable uyuni-server service")
 			// disable server
-			err := utils.RunRawCmd("systemctl", []string{"disable", "--now", "uyuni-server"}, true)
+			err := utils.RunCmd("systemctl", "disable", "--now", "uyuni-server")
 			if err != nil {
 				log.Error().Err(err).Msg("Failed to disable server")
 			}
@@ -37,18 +38,18 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 	}
 
 	// Force stop the pod
-	if out, _ := utils.RunCmdOutput("podman", "ps", "-a", "-q", "-f", "name=uyuni-server"); len(out) > 0 {
+	if out, _ := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "-a", "-q", "-f", "name=uyuni-server"); len(out) > 0 {
 		if dryRun {
 			log.Debug().Msgf("Would run podman kill uyuni-server for container id: %s", out)
 			log.Debug().Msgf("Would run podman remove uyuni-server for container id: %s", out)
 		} else {
 			log.Debug().Msgf("Run podman kill uyuni-server for container id: %s", out)
-			err := utils.RunRawCmd("podman", []string{"kill", "uyuni-server"}, true)
+			err := utils.RunCmd("podman", "kill", "uyuni-server")
 			if err != nil {
 				log.Debug().Err(err).Msg("Failed to kill the server")
 
 				log.Debug().Msgf("Run podman remove uyuni-server for container id: %s", out)
-				err = utils.RunRawCmd("podman", []string{"rm", "uyuni-server"}, true)
+				err = utils.RunCmd("podman", "rm", "uyuni-server")
 				if err != nil {
 					log.Debug().Err(err).Msg("Error removing container")
 				}
@@ -72,7 +73,7 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 					log.Debug().Msgf("Would run podman volume rm %s", volume)
 				} else {
 					errorMessage := fmt.Sprintf("Failed to remove volume %s", volume)
-					err := utils.RunRawCmd("podman", []string{"volume", "rm", volume}, true)
+					err := utils.RunCmd("podman", "volume", "rm", volume)
 					if err != nil {
 						log.Error().Err(err).Msg(errorMessage)
 					}
@@ -83,14 +84,14 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 	}
 
 	// Remove the network
-	err := utils.RunRawCmd("podman", []string{"network", "exists", "uyuni"}, false)
+	err := utils.RunCmd("podman", "network", "exists", "uyuni")
 	if err != nil {
 		log.Info().Msgf("Network uyuni already removed")
 	} else {
 		if dryRun {
 			log.Info().Msgf("Would run podman network rm uyuni")
 		} else {
-			err := utils.RunRawCmd("podman", []string{"network", "rm", "uyuni"}, true)
+			err := utils.RunCmd("podman", "network", "rm", "uyuni")
 			if err != nil {
 				log.Error().Msg("Failed to remove network uyuni")
 			} else {
@@ -104,11 +105,11 @@ func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool)
 		log.Info().Msg("Would run systemctl reset-failed")
 		log.Info().Msg("Would run systemctl daemon-reload")
 	} else {
-		err := utils.RunRawCmd("systemctl", []string{"reset-failed"}, true)
+		err := utils.RunCmd("systemctl", "reset-failed")
 		if err != nil {
 			log.Error().Err(err).Msg("Failed to reset-failed systemd")
 		}
-		err = utils.RunRawCmd("systemctl", []string{"daemon-reload"}, true)
+		err = utils.RunCmd("systemctl", "daemon-reload")
 		if err != nil {
 			log.Error().Err(err).Msg("Failed to reload systemd daemon")
 		}

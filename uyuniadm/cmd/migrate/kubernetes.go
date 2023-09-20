@@ -6,12 +6,13 @@ import (
 	"os/exec"
 	"path"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
+	adm_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
 func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *cobra.Command, args []string) {
@@ -26,7 +27,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *MigrateFlags, cm
 	defer os.RemoveAll(scriptDir)
 
 	// Install Uyuni with generated CA cert
-	var sslFlags cmd_utils.SslCertFlags
+	var sslFlags adm_utils.SslCertFlags
 	sslFlags.UseExisting = false
 
 	// We don't need the SSL certs at this point of the migration
@@ -60,7 +61,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *MigrateFlags, cm
 
 func runMigration(globalFlags *types.GlobalFlags, flags *MigrateFlags, tmpPath string) {
 	log.Info().Msg("Migrating server")
-	err := utils.Exec(globalFlags, "", false, false, true, []string{}, "/var/lib/uyuni-tools/migrate.sh")
+	err := adm_utils.ExecCommand(zerolog.DebugLevel, globalFlags, "", "/var/lib/uyuni-tools/migrate.sh")
 	if err != nil {
 		log.Fatal().Err(err).Msg("error running the migration script")
 	}
@@ -83,14 +84,14 @@ func setupSsl(globalFlags *types.GlobalFlags, flags *MigrateFlags, kubeconfig st
 		key := base64.StdEncoding.EncodeToString(out)
 
 		// Strip down the certificate text part
-		out, err = utils.RunCmdOutput("openssl", "x509", "-in", caCert)
+		out, err = utils.RunCmdOutput(zerolog.DebugLevel, "openssl", "x509", "-in", caCert)
 		if err != nil {
 			log.Fatal().Err(err).Msg("Failed to strip text part of CA certificate")
 		}
 		cert := base64.StdEncoding.EncodeToString(out)
 		ca := kubernetes.TlsCert{RootCa: cert, Certificate: cert, Key: key}
 
-		sslFlags := cmd_utils.SslCertFlags{UseExisting: false}
+		sslFlags := adm_utils.SslCertFlags{UseExisting: false}
 		return kubernetes.DeployCertificate(globalFlags, &flags.Helm, &sslFlags, &ca, kubeconfig, "")
 	} else {
 		// TODO Handle third party certificates and CA

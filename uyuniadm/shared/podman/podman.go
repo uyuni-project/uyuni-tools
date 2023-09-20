@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
@@ -52,7 +53,7 @@ func GenerateSystemdService(tz string, image string, podmanArgs []string) {
 		log.Fatal().Err(err).Msg("Failed to generate systemd service unit file")
 	}
 
-	utils.RunRawCmd("systemctl", []string{"daemon-reload"}, false)
+	utils.RunCmd("systemctl", "daemon-reload")
 }
 
 func setupNetwork() {
@@ -60,18 +61,18 @@ func setupNetwork() {
 
 	ipv6Enabled := isIpv6Enabled()
 
-	testNetworkCmd := exec.Command("podman", "network")
+	testNetworkCmd := exec.Command("podman", "network", "exists", UYUNI_NETWORK)
 	testNetworkCmd.Run()
 	// check if network exists before trying to get the IPV6 information
 	if testNetworkCmd.ProcessState.ExitCode() == 0 {
 		// Check if the uyuni network exists and is IPv6 enabled
-		hasIpv6, err := utils.RunCmdOutput("podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UYUNI_NETWORK)
+		hasIpv6, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UYUNI_NETWORK)
 		if err == nil {
 			if string(hasIpv6) != "true" && ipv6Enabled {
 				log.Info().Msgf("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it", UYUNI_NETWORK)
 				message := fmt.Sprintf("Failed to remove %s podman network", UYUNI_NETWORK)
-				err := utils.RunRawCmd("podman", []string{"network", "rm", UYUNI_NETWORK,
-					"--log-level", log.Logger.GetLevel().String()}, false)
+				err := utils.RunCmd("podman", "network", "rm", UYUNI_NETWORK,
+					"--log-level", log.Logger.GetLevel().String())
 				if err != nil {
 					log.Fatal().Err(err).Msg(message)
 				}
@@ -88,7 +89,7 @@ func setupNetwork() {
 	if ipv6Enabled {
 		// An IPv6 network on a host where IPv6 is disabled doesn't work: don't try it.
 		// Check if the networkd backend is netavark
-		out, err := utils.RunCmdOutput("podman", "info", "--format", "{{.Host.NetworkBackend}}")
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "info", "--format", "{{.Host.NetworkBackend}}")
 		backend := strings.Trim(string(out), "\n")
 		if err != nil {
 			log.Fatal().Err(err).Msgf("Failed to find podman's network backend")
@@ -99,7 +100,7 @@ func setupNetwork() {
 		}
 	}
 	args = append(args, UYUNI_NETWORK)
-	err := utils.RunRawCmd("podman", args, true)
+	err := utils.RunCmd("podman", args...)
 	if err != nil {
 		log.Fatal().Err(err).Msg(message)
 	}
@@ -131,7 +132,7 @@ func getFileBoolean(file string) bool {
 }
 
 func EnablePodmanSocket() {
-	err := utils.RunRawCmd("systemctl", []string{"enable", "--now", "podman.socket"}, true)
+	err := utils.RunCmd("systemctl", "enable", "--now", "podman.socket")
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed to enable podman.socket unit")
 	}

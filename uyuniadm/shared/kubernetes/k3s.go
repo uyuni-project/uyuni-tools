@@ -3,6 +3,7 @@ package kubernetes
 import (
 	"time"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
@@ -24,7 +25,7 @@ func InstallK3sTraefikConfig() {
 	// Wait for traefik to be back
 	log.Info().Msg("Waiting for Traefik to be reloaded")
 	for i := 0; i < 60; i++ {
-		out, err := utils.RunCmdOutput("kubectl", "get", "job", "-A",
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "job", "-A",
 			"-o", "jsonpath={.status.completionTime}", "helm-install-traefik")
 		if err == nil {
 			completionTime, err := time.Parse(time.RFC3339, string(out))

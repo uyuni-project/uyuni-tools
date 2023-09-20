@@ -3,6 +3,7 @@ package utils
 import (
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
@@ -29,7 +30,7 @@ func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string
 		log.Fatal().Msgf("Unknown container kind: %s", command)
 	}
 
-	RunRawCmd(command, commandArgs, true)
+	RunCmdStdMapping(command, commandArgs...)
 
 	if user != "" && strings.HasPrefix(dst, "server:") {
 		execArgs := []string{"exec", podName}
@@ -39,7 +40,7 @@ func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string
 			owner = user + ":" + group
 		}
 		execArgs = append(execArgs, "chown", owner, strings.Replace(dst, "server:", "", 1))
-		RunRawCmd(command, execArgs, true)
+		RunCmdStdMapping(command, execArgs...)
 	}
 }
 
@@ -56,7 +57,7 @@ func TestExistenceInPod(globalFlags *types.GlobalFlags, backend string, dstpath 
 		log.Fatal().Msgf("Unknown container kind: %s\n", command)
 	}
 
-	if _, err := RunCmdOutput(command, commandArgs...); err != nil {
+	if _, err := RunCmdOutput(zerolog.DebugLevel, command, commandArgs...); err != nil {
 		return false
 	}
 	return true

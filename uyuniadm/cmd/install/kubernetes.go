@@ -1,11 +1,12 @@
 package install
 
 import (
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
+	adm_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
 func installForKubernetes(globalFlags *types.GlobalFlags, flags *InstallFlags, cmd *cobra.Command, args []string) {
@@ -36,7 +37,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *InstallFlags, c
 	runSetup(globalFlags, flags, args[0], envs)
 
 	// The CA needs to be added to the database for Kickstart use.
-	err := utils.Exec(globalFlags, "kubectl", false, false, true, []string{},
+	err := adm_utils.ExecCommand(zerolog.DebugLevel, globalFlags, "kubectl",
 		"/usr/bin/rhn-ssl-dbstore", "--ca-cert=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT")
 	if err != nil {
 		log.Fatal().Err(err).Msg("Error storing the SSL CA certificate in database")

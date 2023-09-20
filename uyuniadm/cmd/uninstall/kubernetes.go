@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -24,13 +25,13 @@ func uninstallForKubernetes(globalFlags *types.GlobalFlags, dryRun bool) {
 			log.Info().Msgf("Would run kubectl delete -n %s secret uyuni-ca uyuni-cert", namespace)
 		} else {
 			log.Info().Msgf("Running kubectl delete -n %s configmap uyuni-ca", namespace)
-			if err := utils.RunRawCmd("kubectl", []string{"delete", "-n", namespace, "configmap", "uyuni-ca"}, false); err != nil {
+			if err := utils.RunCmd("kubectl", "delete", "-n", namespace, "configmap", "uyuni-ca"); err != nil {
 				log.Info().Err(err).Msgf("Failed deleting config map")
 			}
 
 			log.Info().Msgf("Running kubectl delete -n %s secret uyuni-ca uyuni-cert", namespace)
 
-			err := utils.RunRawCmd("kubectl", []string{"delete", "-n", namespace, "secret", "uyuni-ca", "uyuni-cert"}, false)
+			err := utils.RunCmd("kubectl", "delete", "-n", namespace, "secret", "uyuni-ca", "uyuni-cert")
 			if err != nil {
 				log.Info().Err(err).Msgf("Failed deleting config map")
 			}
@@ -58,7 +59,7 @@ func helmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 		args = append(args, filter)
 	}
 
-	out, err := utils.RunCmdOutput("kubectl", args...)
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
 	if err != nil {
 		log.Info().Err(err).Msgf("Failed to find %s's namespace, skipping removal", deployment)
 	}
@@ -75,7 +76,7 @@ func helmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 		} else {
 			log.Info().Msgf("Uninstalling %s", deployment)
 			message := "Failed to run helm " + strings.Join(helmArgs, " ")
-			err := utils.RunRawCmd("helm", helmArgs, true)
+			err := utils.RunCmd("helm", helmArgs...)
 			if err != nil {
 				log.Fatal().Err(err).Msg(message)
 			}

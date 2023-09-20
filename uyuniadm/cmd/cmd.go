@@ -12,7 +12,7 @@ import (
 
 // NewCommand returns a new cobra.Command implementing the root command for kinder
 func NewUyuniadmCommand() *cobra.Command {
-	utils.LogInit("uyuniadm")
+	utils.LogInit()
 	globalFlags := &types.GlobalFlags{}
 	rootCmd := &cobra.Command{
 		Use:     "uyuniadm",
