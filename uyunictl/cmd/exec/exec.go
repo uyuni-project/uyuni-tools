@@ -1,13 +1,12 @@
 package exec
 
 import (
-	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
 
-	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -77,55 +76,49 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 		commandArgs = append(commandArgs, newEnv...)
 	}
 	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
-	err := RunRawCmd(command, commandArgs, false)
+	err := RunRawCmd(command, commandArgs)
 	if err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
+			log.Info().Err(err).Msg("Command failed")
 			os.Exit(exitErr.ExitCode())
 		}
 	}
+	log.Info().Msg("Command returned with exit code 0")
 }
 
-func RunRawCmd(command string, args []string, outputToLog bool) error {
+type copyWriter struct {
+	Stream io.Writer
+}
 
-	log.Debug().Msgf(" Running: %s %s", command, strings.Join(args, " "))
+func (l copyWriter) Write(p []byte) (n int, err error) {
+	// Filter out kubectl line about terminated exit code
+	if !strings.HasPrefix(string(p), "command terminated with exit code") {
+		l.Stream.Write(p)
+
+		n = len(p)
+		if n > 0 && p[n-1] == '\n' {
+			// Trim CR added by stdlog.
+			p = p[0 : n-1]
+		}
+		log.Debug().Msg(string(p))
+	}
+	return
+}
+
+func RunRawCmd(command string, args []string) error {
+
+	log.Info().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	runCmd := exec.Command(command, args...)
 	runCmd.Stdin = os.Stdin
-	if outputToLog {
-		runCmd.Stdout = utils.OutputLogWriter{Logger: log.Logger, LogLevel: zerolog.DebugLevel}
-	} else {
-		runCmd.Stdout = os.Stdout
-	}
 
-	// Filter out kubectl line about terminated exit code
-	stderr, err := runCmd.StderrPipe()
-	if err != nil {
-		log.Debug().Err(err).Msg("error starting stderr processor for command")
-		return err
-	}
-	defer stderr.Close()
+	runCmd.Stdout = copyWriter{Stream: os.Stdout}
+	runCmd.Stderr = copyWriter{Stream: os.Stderr}
 
-	if err = runCmd.Start(); err != nil {
+	if err := runCmd.Start(); err != nil {
 		log.Debug().Err(err).Msg("error starting command")
 		return err
 	}
 
-	scanner := bufio.NewScanner(stderr)
-	for scanner.Scan() {
-		line := scanner.Text()
-		// needed because of kubernetes installation, to ignore the stderr
-		if !strings.HasPrefix(line, "command terminated with exit code") {
-			if outputToLog {
-				log.Debug().Msg(line)
-			} else {
-				fmt.Fprintln(os.Stderr, line)
-			}
-		}
-	}
-
-	if scanner.Err() != nil {
-		log.Debug().Msg("error scanning stderr")
-		return scanner.Err()
-	}
 	return runCmd.Wait()
 }
