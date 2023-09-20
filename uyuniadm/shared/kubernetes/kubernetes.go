@@ -4,6 +4,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -43,7 +44,7 @@ func CheckCluster() ClusterInfos {
 		log.Fatal().Err(err).Msgf("Failed to get node hostname")
 	}
 
-	out, err := utils.RunCmdOutput("kubectl", "get", "node",
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "node",
 		"-o", "jsonpath={.status.nodeInfo.kubeletVersion}", hostname)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to get kubelet version for node %s", hostname)
@@ -60,13 +61,13 @@ func guessIngress() string {
 	var ingress string
 
 	// Check for a traefik resource
-	err := utils.RunRawCmd("kubectl", []string{"explain", "ingressroutetcp"}, false)
+	err := utils.RunCmd("kubectl", "explain", "ingressroutetcp")
 	if err == nil {
 		ingress = "traefik"
 	}
 
 	// Look for a pod running the nginx-ingress-controller: there is no other common way to find out
-	out, err := utils.RunCmdOutput("kubectl", "get", "pod", "-A",
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-A",
 		"-o", "jsonpath={range .items[*]}{.spec.containers[*].args[0]}{.spec.containers[*].command}{end}")
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to get get pod commands to look for nginx controller")

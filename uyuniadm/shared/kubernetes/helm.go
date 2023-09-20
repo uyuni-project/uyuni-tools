@@ -44,7 +44,7 @@ func helmUpgrade(globalFlags *types.GlobalFlags, kubeconfig string, namespace st
 		command = "install"
 	}
 	errorMessage := fmt.Sprintf("Failed to %s helm chart %s in namespace %s", command, chart, namespace)
-	err := utils.RunRawCmd("helm", helmArgs, true)
+	err := utils.RunCmd("helm", helmArgs...)
 	if err != nil {
 		log.Fatal().Err(err).Msg(errorMessage)
 	}

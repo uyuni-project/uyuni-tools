@@ -25,7 +25,7 @@ func waitForSystemStart(globalFlags *types.GlobalFlags, flags *InstallFlags) {
 	log.Info().Msg("Waiting for the server to start...")
 	// Start the service
 
-	if err := utils.RunRawCmd("systemctl", []string{"enable", "--now", "uyuni-server"}, true); err != nil {
+	if err := utils.RunCmd("systemctl", "enable", "--now", "uyuni-server"); err != nil {
 		log.Fatal().Err(err).Msg("Failed to enable uyuni-server systemd service")
 	}
 
@@ -36,7 +36,7 @@ func pullImage(flags *InstallFlags) {
 	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 	log.Info().Msgf("Running podman pull %s", image)
 
-	err := utils.RunRawCmd("podman", []string{"pull", image}, false)
+	err := utils.RunCmdStdMapping("podman", "pull", image)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed to pull image")
 	}

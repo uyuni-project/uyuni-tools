@@ -47,7 +47,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 
 	// Start the service
 
-	if err := utils.RunRawCmd("systemctl", []string{"enable", "--now", "uyuni-server"}, true); err != nil {
+	if err := utils.RunCmd("systemctl", "enable", "--now", "uyuni-server"); err != nil {
 		log.Fatal().Err(err).Msgf("Failed to enable uyuni-server systemd service")
 	}
 
@@ -68,7 +68,7 @@ func runContainer(name string, image string, tag string, extraArgs []string, cmd
 	podmanArgs = append(podmanArgs, image+":"+tag)
 	podmanArgs = append(podmanArgs, cmd...)
 
-	err := utils.RunRawCmd("podman", podmanArgs, false)
+	err := utils.RunCmd("podman", podmanArgs...)
 
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to run %s container", name)

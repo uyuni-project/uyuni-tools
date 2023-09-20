@@ -1,6 +1,13 @@
 package exec
 
 import (
+	"bufio"
+	"fmt"
+	"os"
+	"os/exec"
+	"strings"
+
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -39,8 +46,86 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 }
 
 func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) {
-	err := utils.Exec(globalFlags, flags.Backend, flags.Interactive, flags.Tty, false, flags.Envs, args...)
-	if err != nil {
-		log.Debug().Err(err).Msg("error running the command")
+
+	command, podName := utils.GetPodName(globalFlags, flags.Backend, true)
+
+	commandArgs := []string{"exec"}
+	if flags.Interactive {
+		commandArgs = append(commandArgs, "-i")
 	}
+	if flags.Tty {
+		commandArgs = append(commandArgs, "-t")
+	}
+	commandArgs = append(commandArgs, podName)
+
+	if command == "kubectl" {
+		commandArgs = append(commandArgs, "-c", "uyuni", "--")
+	}
+
+	newEnv := []string{}
+	for _, envValue := range flags.Envs {
+		if !strings.Contains(envValue, "=") {
+			if value, set := os.LookupEnv(envValue); set {
+				newEnv = append(newEnv, fmt.Sprintf("%s=%s", envValue, value))
+			}
+		} else {
+			newEnv = append(newEnv, envValue)
+		}
+	}
+	if len(newEnv) > 0 {
+		commandArgs = append(commandArgs, "env")
+		commandArgs = append(commandArgs, newEnv...)
+	}
+	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
+	err := RunRawCmd(command, commandArgs, false)
+	if err != nil {
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			os.Exit(exitErr.ExitCode())
+		}
+	}
+}
+
+func RunRawCmd(command string, args []string, outputToLog bool) error {
+
+	log.Debug().Msgf(" Running: %s %s", command, strings.Join(args, " "))
+
+	runCmd := exec.Command(command, args...)
+	runCmd.Stdin = os.Stdin
+	if outputToLog {
+		runCmd.Stdout = utils.OutputLogWriter{Logger: log.Logger, LogLevel: zerolog.DebugLevel}
+	} else {
+		runCmd.Stdout = os.Stdout
+	}
+
+	// Filter out kubectl line about terminated exit code
+	stderr, err := runCmd.StderrPipe()
+	if err != nil {
+		log.Debug().Err(err).Msg("error starting stderr processor for command")
+		return err
+	}
+	defer stderr.Close()
+
+	if err = runCmd.Start(); err != nil {
+		log.Debug().Err(err).Msg("error starting command")
+		return err
+	}
+
+	scanner := bufio.NewScanner(stderr)
+	for scanner.Scan() {
+		line := scanner.Text()
+		// needed because of kubernetes installation, to ignore the stderr
+		if !strings.HasPrefix(line, "command terminated with exit code") {
+			if outputToLog {
+				log.Debug().Msg(line)
+			} else {
+				fmt.Fprintln(os.Stderr, line)
+			}
+		}
+	}
+
+	if scanner.Err() != nil {
+		log.Debug().Msg("error scanning stderr")
+		return scanner.Err()
+	}
+	return runCmd.Wait()
 }

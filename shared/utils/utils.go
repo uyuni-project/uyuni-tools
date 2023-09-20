@@ -8,6 +8,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"golang.org/x/term"
@@ -30,7 +31,7 @@ func GetCommand(backend string) string {
 		// Check kubectl with a timeout in case the configured cluster is not responding
 		_, err := exec.LookPath("kubectl")
 		if err == nil {
-			if _, err = RunCmdOutput("kubectl", "--request-timeout=30s", "get", "pod"); err != nil {
+			if _, err = RunCmdOutput(zerolog.DebugLevel, "kubectl", "--request-timeout=30s", "get", "pod"); err != nil {
 				log.Info().Msg("kubectl not configured to connect to a cluster, ignoring")
 			} else {
 				return "kubectl"
@@ -61,13 +62,13 @@ func GetPodName(globalFlags *types.GlobalFlags, backend string, fail bool) (stri
 		fallthrough
 	case "podman":
 
-		if out, _ := RunCmdOutput(command, "ps", "-q", "-f", "name="+pod); len(out) == 0 {
+		if out, _ := RunCmdOutput(zerolog.DebugLevel, command, "ps", "-q", "-f", "name="+pod); len(out) == 0 {
 			if fail {
 				log.Fatal().Msgf("Container %s is not running on podman", pod)
 			}
 		}
 	case "kubectl":
-		podName, err := RunCmdOutput("kubectl", "get", "pod", "-lapp=uyuni", "-o=jsonpath={.items[0].metadata.name}")
+		podName, err := RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-lapp=uyuni", "-o=jsonpath={.items[0].metadata.name}")
 		if err == nil {
 			pod = string(podName[:])
 		}
@@ -125,7 +126,7 @@ func AskIfMissing(value *string, prompt string) {
 // Get the timezone set on the machine running the tool
 func GetLocalTimezone() string {
 
-	out, err := RunCmdOutput("timedatectl", "show", "--value", "-p", "Timezone")
+	out, err := RunCmdOutput(zerolog.DebugLevel, "timedatectl", "show", "--value", "-p", "Timezone")
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to run timedatectl show --value -p Timezone")
 	}
