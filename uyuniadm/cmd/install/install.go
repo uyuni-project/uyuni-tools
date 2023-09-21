@@ -76,7 +76,7 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 		},
 	}
 
-	installCmd.Flags().String("tz", "Etc/UTC", "Time zone to set on the server. Defaults to the host timezone")
+	installCmd.Flags().String("tz", "", "Time zone to set on the server. Defaults to the host timezone")
 	installCmd.Flags().String("email", "admin@example.com", "Administrator e-mail")
 	installCmd.Flags().String("emailfrom", "admin@example.com", "E-Mail sending the notifications")
 	installCmd.Flags().String("mirrorPath", "", "Path to mirrored packages mounted on the host")
