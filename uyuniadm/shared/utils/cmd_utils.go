@@ -1,6 +1,12 @@
 package utils
 
-import "github.com/spf13/cobra"
+import (
+	"github.com/spf13/cobra"
+)
+
+var DefaultImage = "registry.opensuse.org/uyuni/server"
+var DefaultTag = "latest"
+var DefaultChart = "oci://registry.opensuse.org/uyuni/server"
 
 type PodmanFlags struct {
 	Args []string `mapstructure:"arg"`
@@ -41,7 +47,7 @@ func AddPodmanInstallFlag(cmd *cobra.Command) {
 
 func AddHelmInstallFlag(cmd *cobra.Command) {
 	cmd.Flags().String("helm-uyuni-namespace", "default", "Kubernetes namespace where to install uyuni")
-	cmd.Flags().String("helm-uyuni-chart", "oci://registry.opensuse.org/uyuni/server", "URL to the uyuni helm chart")
+	cmd.Flags().String("helm-uyuni-chart", DefaultChart, "URL to the uyuni helm chart")
 	cmd.Flags().String("helm-uyuni-version", "", "Version of the uyuni helm chart")
 	cmd.Flags().String("helm-uyuni-values", "", "Path to a values YAML file to use for Uyuni helm install")
 	cmd.Flags().String("helm-certmanager-namespace", "cert-manager", "Kubernetes namespace where to install cert-manager")
@@ -51,6 +57,6 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 }
 
 func AddImageFlag(cmd *cobra.Command) {
-	cmd.Flags().String("image", "registry.opensuse.org/uyuni/server", "Image")
-	cmd.Flags().String("tag", "latest", "Tag Image")
+	cmd.Flags().String("image", DefaultImage, "Image")
+	cmd.Flags().String("tag", DefaultTag, "Tag Image")
 }
