@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"strconv"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -20,16 +19,14 @@ func GetCommonParams(containerName string) []string {
 	return strings.Split(fmt.Sprintf(commonArgs, containerName), " ")
 }
 
-func GetExposedPorts() []string {
+func GetExposedPorts() []utils.PortMap {
 
-	ports := []string{"443", "80"}
-	for _, portMap := range utils.TCP_PORTS {
-		ports = append(ports, strconv.Itoa(portMap.Port))
+	ports := []utils.PortMap{
+		utils.NewPortMap("https", 443, 443),
+		utils.NewPortMap("http", 80, 80),
 	}
-	for _, portMap := range utils.UDP_PORTS {
-		ports = append(ports, strconv.Itoa(portMap.Port))
-	}
-
+	ports = append(ports, utils.TCP_PORTS...)
+	ports = append(ports, utils.UDP_PORTS...)
 	return ports
 }
 
