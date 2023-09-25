@@ -21,10 +21,6 @@
 %global project         uyuni-tools
 %global provider_prefix %{provider}.%{provider_tld}/%{org}/%{project}
 
-%define _tag   %{!?_default_tag:latest}
-%define _image %{!?_default_image:"registry.opensuse.org/uyuni/server"}
-%define _chart %{!?_default_chart:"oci://registry.opensuse.org/uyuni/server"}
-
 Name:           %{project}
 Version:        0.0.1
 Release:        0
@@ -62,6 +58,22 @@ export GOFLAGS=-mod=vendor
 %goprep %{provider_prefix}
 mkdir -p bin
 ADM_PATH=%{provider_prefix}/uyuniadm/shared/utils
+
+tag=%{!?_default_tag:latest}
+%if "%{?_default_tag}" != ""
+    tag='%{_default_tag}'
+%endif
+
+image=registry.opensuse.org/uyuni/server
+%if "%{?_default_image}" != ""
+  image='%{_default_image}'
+%endif
+
+chart=oci://registry.opensuse.org/uyuni/server
+%if "%{?_default_chart}" != ""
+  chart='%{_default_chart}'
+%endif
+
 go build \
     -ldflags "-X ${ADM_PATH}.DefaultImage=%{_image} -X ${ADM_PATH}.DefaultTag=%{_tag} -X ${ADM_PATH}.DefaultChart=%{_chart}" \
     -o ./bin ./...

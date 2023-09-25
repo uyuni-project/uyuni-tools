@@ -10,6 +10,17 @@
 `go build -o ./bin ./...` will produce the binaries in the root folder.
 Alternatively, if you have `podman` installed you can run the `build.sh` script to build binaries compatible with SLE 15 SP4 or openSUSE Leap 15.4.
 
+### Building in Open Build Service
+
+In order to adjust the image, tag and chart to the project the package is built in, add the following at the end of the project configuration:
+
+```
+Macros:
+%_default_tag yourtag
+%_default_image theregistry.org/path/to/the/server
+%_default_chart oci://theregistry.org/path/to/the/chart
+:Macros
+```
 
 ## Uyuniadm usage
 
