@@ -113,6 +113,7 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 	installCmd.Flags().String("scc-password", "", "SUSE Customer Center password")
 
 	installCmd.Flags().Bool("debug", false, "Enable debugging features")
+	installCmd.Flags().MarkHidden("debug")
 
 	cmd_utils.AddImageFlag(installCmd)
 	cmd_utils.AddPodmanInstallFlag(installCmd)
