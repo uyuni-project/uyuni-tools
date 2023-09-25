@@ -1,4 +1,4 @@
-package install
+package shared
 
 import (
 	"os"
@@ -15,7 +15,7 @@ import (
 
 const SETUP_NAME = "setup.sh"
 
-func runSetup(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn string, env map[string]string) {
+func RunSetup(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn string, env map[string]string) {
 	tmpFolder := generateSetupScript(flags, fqdn, env)
 	defer os.RemoveAll(tmpFolder)
 
