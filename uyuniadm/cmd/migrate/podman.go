@@ -43,7 +43,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 	tz := readTimezone(scriptDir)
 	fullImage := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 
-	podman.GenerateSystemdService(tz, fullImage, viper.GetStringSlice("podman.arg"))
+	podman.GenerateSystemdService(tz, fullImage, false, viper.GetStringSlice("podman.arg"))
 
 	// Start the service
 

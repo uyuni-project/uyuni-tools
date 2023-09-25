@@ -11,11 +11,17 @@ import (
 
 const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/k3s-traefik-config.yaml"
 
-func InstallK3sTraefikConfig() {
+func InstallK3sTraefikConfig(debug bool) {
 	log.Info().Msg("Installing K3s Traefik configuration")
 
+	tcpPorts := []utils.PortMap{}
+	tcpPorts = append(tcpPorts, utils.TCP_PORTS...)
+	if debug {
+		tcpPorts = append(tcpPorts, utils.DEBUG_PORTS...)
+	}
+
 	data := templates.K3sTraefikConfigTemplateData{
-		TcpPorts: utils.TCP_PORTS,
+		TcpPorts: tcpPorts,
 		UdpPorts: utils.UDP_PORTS,
 	}
 	if err := utils.WriteTemplateToFile(data, k3sTraefikConfigPath, 0600, false); err != nil {
