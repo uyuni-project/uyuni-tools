@@ -19,7 +19,7 @@ func GetCommonParams(containerName string) []string {
 	return strings.Split(fmt.Sprintf(commonArgs, containerName), " ")
 }
 
-func GetExposedPorts() []utils.PortMap {
+func GetExposedPorts(debug bool) []utils.PortMap {
 
 	ports := []utils.PortMap{
 		utils.NewPortMap("https", 443, 443),
@@ -27,12 +27,17 @@ func GetExposedPorts() []utils.PortMap {
 	}
 	ports = append(ports, utils.TCP_PORTS...)
 	ports = append(ports, utils.UDP_PORTS...)
+
+	if debug {
+		ports = append(ports, utils.DEBUG_PORTS...)
+	}
+
 	return ports
 }
 
 const ServicePath = "/etc/systemd/system/uyuni-server.service"
 
-func GenerateSystemdService(tz string, image string, podmanArgs []string) {
+func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []string) {
 
 	setupNetwork()
 
@@ -41,7 +46,7 @@ func GenerateSystemdService(tz string, image string, podmanArgs []string) {
 		Volumes:    utils.VOLUMES,
 		NamePrefix: "uyuni",
 		Args:       commonArgs + " " + strings.Join(podmanArgs, " "),
-		Ports:      GetExposedPorts(),
+		Ports:      GetExposedPorts(debug),
 		Timezone:   tz,
 		Image:      image,
 		Network:    UYUNI_NETWORK,

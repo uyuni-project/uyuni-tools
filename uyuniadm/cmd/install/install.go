@@ -38,6 +38,7 @@ type InstallFlags struct {
 	ReportDb   DbFlags
 	Cert       cmd_utils.SslCertFlags
 	Scc        SccFlags
+	Debug      bool
 	Image      cmd_utils.ImageFlags `mapstructure:",squash"`
 	Podman     cmd_utils.PodmanFlags
 	Helm       cmd_utils.HelmFlags
@@ -110,6 +111,8 @@ NOTE: for now installing on a remote cluster or podman is not supported!
 
 	installCmd.Flags().String("scc-user", "", "SUSE Customer Center username")
 	installCmd.Flags().String("scc-password", "", "SUSE Customer Center password")
+
+	installCmd.Flags().Bool("debug", false, "Enable debugging features")
 
 	cmd_utils.AddImageFlag(installCmd)
 	cmd_utils.AddPodmanInstallFlag(installCmd)

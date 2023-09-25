@@ -53,11 +53,15 @@ var TCP_PORTS = []PortMap{
 	NewPortMap("salt-publish", 4505, 4505),
 	NewPortMap("salt-request", 4506, 4506),
 	NewPortMap("cobbler", 25151, 25151),
-	NewPortMap("tomcat-debug", 8000, 8080),
-	NewPortMap("tasko-debug", 8001, 8081),
 	NewPortMap("psql-mtrx", 9187, 9187),
 	NewPortMap("tasko-jmx-mtrx", 5556, 5556),
 	NewPortMap("tomcat-jmx-mtrx", 5557, 5557),
+}
+
+var DEBUG_PORTS = []PortMap{
+	// We can't expose on port 8000 since traefik already uses it
+	NewPortMap("tomcat-debug", 8002, 8002),
+	NewPortMap("tasko-debug", 8001, 8001),
 }
 
 var UDP_PORTS = []PortMap{

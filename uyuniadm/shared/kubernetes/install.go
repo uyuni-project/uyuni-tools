@@ -13,13 +13,13 @@ const HELM_APP_NAME = "uyuni"
 
 func Deploy(globalFlags *types.GlobalFlags, imageFlags *cmd_utils.ImageFlags,
 	helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, clusterInfos *ClusterInfos,
-	fqdn string, helmArgs ...string) {
+	fqdn string, debug bool, helmArgs ...string) {
 
 	// If installing on k3s, install the traefik helm config in manifests
 	isK3s := clusterInfos.IsK3s()
 	IsRke2 := clusterInfos.IsRke2()
 	if isK3s {
-		InstallK3sTraefikConfig()
+		InstallK3sTraefikConfig(debug)
 	} else if IsRke2 {
 		InstallRke2NginxConfig(helmFlags.Uyuni.Namespace)
 	}

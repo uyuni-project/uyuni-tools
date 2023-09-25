@@ -33,7 +33,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *MigrateFlags, cm
 	// We don't need the SSL certs at this point of the migration
 	clusterInfos := kubernetes.CheckCluster()
 
-	kubernetes.Deploy(globalFlags, &flags.Image, &flags.Helm, &sslFlags, &clusterInfos, fqdn,
+	kubernetes.Deploy(globalFlags, &flags.Image, &flags.Helm, &sslFlags, &clusterInfos, fqdn, false,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
