@@ -1,4 +1,4 @@
-package install
+package podman
 
 import (
 	"fmt"
@@ -8,10 +8,11 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/podman"
 )
 
-func waitForSystemStart(globalFlags *types.GlobalFlags, flags *InstallFlags) {
+func waitForSystemStart(globalFlags *types.GlobalFlags, flags *podmanInstallFlags) {
 	// Setup the systemd service configuration options
 	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 
@@ -32,7 +33,7 @@ func waitForSystemStart(globalFlags *types.GlobalFlags, flags *InstallFlags) {
 	utils.WaitForServer(globalFlags, "")
 }
 
-func pullImage(flags *InstallFlags) {
+func pullImage(flags *podmanInstallFlags) {
 	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 	log.Info().Msgf("Running podman pull %s", image)
 
@@ -42,7 +43,7 @@ func pullImage(flags *InstallFlags) {
 	}
 }
 
-func installForPodman(globalFlags *types.GlobalFlags, flags *InstallFlags, cmd *cobra.Command, args []string) {
+func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags, cmd *cobra.Command, args []string) {
 	pullImage(flags)
 
 	waitForSystemStart(globalFlags, flags)
@@ -64,7 +65,7 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *InstallFlags, cmd *
 	}
 
 	log.Info().Msg("run setup command in the container")
-	runSetup(globalFlags, flags, args[0], env)
+	shared.RunSetup(globalFlags, &flags.InstallFlags, args[0], env)
 
 	podman.EnablePodmanSocket()
 }

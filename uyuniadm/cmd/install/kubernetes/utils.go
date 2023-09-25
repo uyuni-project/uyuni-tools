@@ -1,15 +1,18 @@
-package install
+package kubernetes
 
 import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
 	adm_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
-func installForKubernetes(globalFlags *types.GlobalFlags, flags *InstallFlags, cmd *cobra.Command, args []string) {
+func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInstallFlags,
+	cmd *cobra.Command, args []string) {
+
 	fqdn := args[0]
 
 	helmArgs := []string{"--set", "timezone=" + flags.TZ}
@@ -37,7 +40,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *InstallFlags, c
 		"NO_SSL": "Y",
 	}
 
-	runSetup(globalFlags, flags, args[0], envs)
+	shared.RunSetup(globalFlags, &flags.InstallFlags, args[0], envs)
 
 	// The CA needs to be added to the database for Kickstart use.
 	err := adm_utils.ExecCommand(zerolog.DebugLevel, globalFlags, "kubectl",
