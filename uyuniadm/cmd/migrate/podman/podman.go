@@ -41,7 +41,6 @@ NOTE: for now installing on a remote podman is not supported yet!
 		},
 	}
 
-	cmd_utils.AddImageFlag(migrateCmd)
 	shared.AddMigrateFlags(migrateCmd)
 	cmd_utils.AddPodmanInstallFlag(migrateCmd)
 
