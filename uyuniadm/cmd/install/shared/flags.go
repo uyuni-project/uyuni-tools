@@ -25,6 +25,10 @@ type SccFlags struct {
 	Password string
 }
 
+type DebugFlags struct {
+	Java bool
+}
+
 type InstallFlags struct {
 	TZ         string
 	Email      string
@@ -36,7 +40,7 @@ type InstallFlags struct {
 	ReportDb   DbFlags
 	Cert       cmd_utils.SslCertFlags
 	Scc        SccFlags
-	Debug      bool
+	Debug      DebugFlags
 	Image      cmd_utils.ImageFlags `mapstructure:",squash"`
 }
 
@@ -93,6 +97,6 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().String("scc-user", "", "SUSE Customer Center username")
 	cmd.Flags().String("scc-password", "", "SUSE Customer Center password")
 
-	cmd.Flags().Bool("debug", false, "Enable debugging features")
+	cmd.Flags().Bool("debug-java", false, "Enable tomcat and taskomatic remote debugging")
 	cmd_utils.AddImageFlag(cmd)
 }

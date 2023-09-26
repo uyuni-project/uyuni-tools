@@ -22,7 +22,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInsta
 		// TODO Handle claims for multi-node clusters
 		helmArgs = append(helmArgs, "--set", "mirror.hostPath="+flags.MirrorPath)
 	}
-	if flags.Debug {
+	if flags.Debug.Java {
 		helmArgs = append(helmArgs, "--set", "exposeJavaDebug=true")
 	}
 
@@ -35,7 +35,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInsta
 	helmArgs = append(helmArgs, sslArgs...)
 
 	// Deploy Uyuni and wait for it to be up
-	kubernetes.Deploy(globalFlags, &flags.Image, &flags.Helm, &flags.Cert, &clusterInfos, fqdn, flags.Debug, helmArgs...)
+	kubernetes.Deploy(globalFlags, &flags.Image, &flags.Helm, &flags.Cert, &clusterInfos, fqdn, flags.Debug.Java, helmArgs...)
 
 	// Create setup script + env variables and copy it to the container
 	envs := map[string]string{

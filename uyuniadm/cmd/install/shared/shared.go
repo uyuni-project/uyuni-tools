@@ -91,7 +91,8 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 	}
 
 	dataTemplate := templates.MgrSetupScriptTemplateData{
-		Env: env,
+		Env:       env,
+		DebugJava: flags.Debug.Java,
 	}
 
 	scriptPath := filepath.Join(scriptDir, SETUP_NAME)
