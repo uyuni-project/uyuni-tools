@@ -16,7 +16,10 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	}
 
 	installCmd.AddCommand(podman.NewCommand(globalFlags))
-	installCmd.AddCommand(kubernetes.NewCommand(globalFlags))
+
+	if kubernetesCmd := kubernetes.NewCommand(globalFlags); kubernetesCmd != nil {
+		installCmd.AddCommand(kubernetesCmd)
+	}
 
 	return installCmd
 }

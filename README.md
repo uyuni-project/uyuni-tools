@@ -22,6 +22,12 @@ Macros:
 :Macros
 ```
 
+### Disabling features at build time
+
+To disable features at build time pass the `-tags` paramter with the following values in a comma-separated list:
+
+* `nok8s`: will disable kubernetes support
+
 ## Uyuniadm usage
 
 Available Commands:

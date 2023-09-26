@@ -1,3 +1,5 @@
+//go:build !nok8s
+
 package kubernetes
 
 import (
