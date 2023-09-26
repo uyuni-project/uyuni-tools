@@ -1,18 +1,11 @@
 package migrate
 
 import (
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/migrate/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/migrate/podman"
 )
-
-type MigrateFlags struct {
-	Podman cmd_utils.PodmanFlags
-	Helm   cmd_utils.HelmFlags
-	Image  cmd_utils.ImageFlags `mapstructure:",squash"`
-}
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
@@ -30,27 +23,10 @@ This migration command assumes a few things:
 
 NOTE: for now installing on a remote cluster or podman is not supported yet!
 `,
-		Args: cobra.ExactArgs(1),
-		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
-			var flags MigrateFlags
-			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msg("Failed to Unmarshal configuration")
-			}
-
-			command := utils.GetCommand("")
-			switch command {
-			case "podman":
-				migrateToPodman(globalFlags, &flags, cmd, args)
-			case "kubectl":
-				migrateToKubernetes(globalFlags, &flags, cmd, args)
-			}
-		},
 	}
 
-	cmd_utils.AddImageFlag(migrateCmd)
-	cmd_utils.AddPodmanInstallFlag(migrateCmd)
-	cmd_utils.AddHelmInstallFlag(migrateCmd)
+	migrateCmd.AddCommand(podman.NewCommand(globalFlags))
+	migrateCmd.AddCommand(kubernetes.NewCommand(globalFlags))
 
 	return migrateCmd
 }

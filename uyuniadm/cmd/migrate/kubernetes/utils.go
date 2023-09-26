@@ -1,4 +1,4 @@
-package migrate
+package kubernetes
 
 import (
 	"encoding/base64"
@@ -11,19 +11,20 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
 	adm_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
-func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *cobra.Command, args []string) {
+func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, cmd *cobra.Command, args []string) {
 	fqdn := args[0]
 
 	// Find the SSH Socket and paths for the migration
-	sshAuthSocket := getSshAuthSocket()
-	sshConfigPath, sshKnownhostsPath := getSshPaths()
+	sshAuthSocket := shared.GetSshAuthSocket()
+	sshConfigPath, sshKnownhostsPath := shared.GetSshPaths()
 
 	// Prepare the migration script and folder
-	scriptDir := generateMigrationScript(fqdn, true)
+	scriptDir := shared.GenerateMigrationScript(fqdn, true)
 	defer os.RemoveAll(scriptDir)
 
 	// Install Uyuni with generated CA cert
@@ -42,7 +43,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *MigrateFlags, cm
 	// Run the actual migration
 	runMigration(globalFlags, flags, scriptDir)
 
-	tz := readTimezone(scriptDir)
+	tz := shared.ReadTimezone(scriptDir)
 
 	helmArgs := []string{
 		"--reset-values",
@@ -59,7 +60,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *MigrateFlags, cm
 	kubernetes.UyuniUpgrade(globalFlags, &flags.Image, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 }
 
-func runMigration(globalFlags *types.GlobalFlags, flags *MigrateFlags, tmpPath string) {
+func runMigration(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, tmpPath string) {
 	log.Info().Msg("Migrating server")
 	err := adm_utils.ExecCommand(zerolog.DebugLevel, globalFlags, "", "/var/lib/uyuni-tools/migrate.sh")
 	if err != nil {
@@ -69,7 +70,7 @@ func runMigration(globalFlags *types.GlobalFlags, flags *MigrateFlags, tmpPath s
 
 // updateIssuer replaces the temporary SSL certificate issuer with the source server CA.
 // Return additional helm args to use the SSL certificates
-func setupSsl(globalFlags *types.GlobalFlags, flags *MigrateFlags, kubeconfig string, scriptDir string) []string {
+func setupSsl(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, kubeconfig string, scriptDir string) []string {
 	caCert := path.Join(scriptDir, "RHN-ORG-TRUSTED-SSL-CERT")
 	caKey := path.Join(scriptDir, "RHN-ORG-PRIVATE-SSL-KEY")
 

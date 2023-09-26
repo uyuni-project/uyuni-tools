@@ -1,4 +1,4 @@
-package migrate
+package shared
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 )
 
-func getSshAuthSocket() string {
+func GetSshAuthSocket() string {
 	path := os.Getenv("SSH_AUTH_SOCK")
 	if len(path) == 0 {
 		log.Fatal().Msg("SSH_AUTH_SOCK is not defined, start an ssh agent and try again")
@@ -20,7 +20,7 @@ func getSshAuthSocket() string {
 }
 
 // getSshPaths returns the user SSH config and known_hosts paths
-func getSshPaths() (string, string) {
+func GetSshPaths() (string, string) {
 	// Find ssh config to mount it in the container
 	homedir, err := os.UserHomeDir()
 	if err != nil {
@@ -40,7 +40,7 @@ func getSshPaths() (string, string) {
 	return sshConfigPath, sshKnownhostsPath
 }
 
-func generateMigrationScript(sourceFqdn string, kubernetes bool) string {
+func GenerateMigrationScript(sourceFqdn string, kubernetes bool) string {
 	scriptDir, err := os.MkdirTemp("", "uyuniadm-*")
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to create temporary directory")
@@ -69,7 +69,7 @@ func generateMigrationScript(sourceFqdn string, kubernetes bool) string {
 	return scriptDir
 }
 
-func readTimezone(scriptDir string) string {
+func ReadTimezone(scriptDir string) string {
 	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))
 	if err != nil {
 		log.Fatal().Msgf("Failed to read data extracted from source host")
