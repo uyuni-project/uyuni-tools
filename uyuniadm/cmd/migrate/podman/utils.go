@@ -1,4 +1,4 @@
-package migrate
+package podman
 
 import (
 	"fmt"
@@ -10,15 +10,16 @@ import (
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/podman"
 )
 
-func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *cobra.Command, args []string) {
+func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, cmd *cobra.Command, args []string) {
 	// Find the SSH Socket and paths for the migration
-	sshAuthSocket := getSshAuthSocket()
-	sshConfigPath, sshKnownhostsPath := getSshPaths()
+	sshAuthSocket := shared.GetSshAuthSocket()
+	sshConfigPath, sshKnownhostsPath := shared.GetSshPaths()
 
-	scriptDir := generateMigrationScript(args[0], false)
+	scriptDir := shared.GenerateMigrationScript(args[0], false)
 	defer os.RemoveAll(scriptDir)
 
 	extraArgs := []string{
@@ -40,7 +41,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *MigrateFlags, cmd *c
 		[]string{"/var/lib/uyuni-tools/migrate.sh"})
 
 	// Read the extracted data
-	tz := readTimezone(scriptDir)
+	tz := shared.ReadTimezone(scriptDir)
 	fullImage := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 
 	podman.GenerateSystemdService(tz, fullImage, false, viper.GetStringSlice("podman.arg"))
