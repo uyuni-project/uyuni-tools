@@ -16,7 +16,10 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	}
 
 	migrateCmd.AddCommand(podman.NewCommand(globalFlags))
-	migrateCmd.AddCommand(kubernetes.NewCommand(globalFlags))
+
+	if kubernetesCmd := kubernetes.NewCommand(globalFlags); kubernetesCmd != nil {
+		migrateCmd.AddCommand(kubernetesCmd)
+	}
 
 	return migrateCmd
 }
