@@ -9,8 +9,12 @@ const podmanMigrationScriptTemplate = `#!/bin/bash
 set -e
 for folder in {{ range .Volumes }}{{ . }} {{ end }};
 do
-  echo "Copying $folder..."
-  rsync -e "ssh -A " --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:$folder/ $folder;
+  if ssh -A {{ .SourceFqdn }} test -e $folder; then
+    echo "Copying $folder..."
+    rsync -e "ssh -A " --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:$folder/ $folder;
+  else
+    echo "Skipping missing $folder..."
+  fi
 done;
 rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
