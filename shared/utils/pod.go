@@ -60,8 +60,9 @@ var TCP_PORTS = []PortMap{
 
 var DEBUG_PORTS = []PortMap{
 	// We can't expose on port 8000 since traefik already uses it
-	NewPortMap("tomcat-debug", 8002, 8002),
+	NewPortMap("tomcat-debug", 8003, 8003),
 	NewPortMap("tasko-debug", 8001, 8001),
+	NewPortMap("search-debug", 8002, 8002),
 }
 
 var UDP_PORTS = []PortMap{
