@@ -75,7 +75,7 @@ chart=oci://registry.opensuse.org/uyuni/server
 %endif
 
 go build \
-    -ldflags "-X ${ADM_PATH}.DefaultImage=%{_image} -X ${ADM_PATH}.DefaultTag=%{_tag} -X ${ADM_PATH}.DefaultChart=%{_chart}" \
+    -ldflags "-X ${ADM_PATH}.DefaultImage=${image} -X ${ADM_PATH}.DefaultTag=${tag} -X ${ADM_PATH}.DefaultChart=${chart}" \
     -o ./bin ./...
 
 %install
