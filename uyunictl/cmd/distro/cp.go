@@ -31,7 +31,7 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command,
 	}
 
 	dstpath := "/srv/www/distributions/" + distroName
-	if utils.TestExistenceInPod(globalFlags, flags.Backend, dstpath) {
+	if utils.TestExistenceInPod(flags.Backend, dstpath) {
 		log.Fatal().Msgf("Distribution already exists: %s\n", dstpath)
 	}
 
@@ -58,7 +58,7 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command,
 		}
 	}
 
-	utils.Copy(globalFlags, flags.Backend, srcdir, "server:"+dstpath, "tomcat", "susemanager")
+	utils.Copy(flags.Backend, srcdir, "server:"+dstpath, "tomcat", "susemanager")
 
 	log.Info().Msg("Distribution has been copied")
 }

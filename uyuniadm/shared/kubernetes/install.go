@@ -29,7 +29,7 @@ func Deploy(globalFlags *types.GlobalFlags, imageFlags *cmd_utils.ImageFlags,
 
 	// Wait for the pod to be started
 	waitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
-	utils.WaitForServer(globalFlags, "")
+	utils.WaitForServer("")
 }
 
 func DeployCertificate(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.HelmFlags,

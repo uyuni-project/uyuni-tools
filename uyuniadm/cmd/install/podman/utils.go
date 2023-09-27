@@ -30,7 +30,7 @@ func waitForSystemStart(globalFlags *types.GlobalFlags, flags *podmanInstallFlag
 		log.Fatal().Err(err).Msg("Failed to enable uyuni-server systemd service")
 	}
 
-	utils.WaitForServer(globalFlags, "")
+	utils.WaitForServer("")
 }
 
 func pullImage(flags *podmanInstallFlags) {

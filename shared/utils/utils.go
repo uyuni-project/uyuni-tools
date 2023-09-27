@@ -10,7 +10,6 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"golang.org/x/term"
 )
 
@@ -53,7 +52,7 @@ func GetCommand(backend string) string {
 	return command
 }
 
-func GetPodName(globalFlags *types.GlobalFlags, backend string, fail bool) (string, string) {
+func GetPodName(backend string, fail bool) (string, string) {
 	command := GetCommand(backend)
 	pod := "uyuni-server"
 
@@ -77,10 +76,10 @@ func GetPodName(globalFlags *types.GlobalFlags, backend string, fail bool) (stri
 }
 
 // WaitForServer waits at most 60s for multi-user systemd target to be reached.
-func WaitForServer(globalFlags *types.GlobalFlags, backend string) {
+func WaitForServer(backend string) {
 	// Wait for the system to be up
 	for i := 0; i < 60; i++ {
-		cmd, podName := GetPodName(globalFlags, backend, false)
+		cmd, podName := GetPodName(backend, false)
 		args := []string{"exec", podName}
 		if cmd == "kubectl" {
 			args = append(args, "--")

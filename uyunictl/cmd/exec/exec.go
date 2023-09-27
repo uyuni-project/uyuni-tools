@@ -33,7 +33,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			if err := viper.Unmarshal(&flags); err != nil {
 				log.Fatal().Err(err).Msgf("Failed to unmarshall configuration")
 			}
-			run(globalFlags, flags, cmd, args)
+			run(flags, cmd, args)
 		},
 	}
 	execCmd.Flags().StringSliceP("env", "e", []string{}, "environment variables to pass to the command, separated by commas")
@@ -44,9 +44,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return execCmd
 }
 
-func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) {
-
-	command, podName := utils.GetPodName(globalFlags, flags.Backend, true)
+func run(flags *flagpole, cmd *cobra.Command, args []string) {
+	command, podName := utils.GetPodName(flags.Backend, true)
 
 	commandArgs := []string{"exec"}
 	if flags.Interactive {
