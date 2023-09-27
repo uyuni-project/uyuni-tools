@@ -10,6 +10,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/api"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/cp"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/distro"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/exec"
@@ -43,6 +44,7 @@ func NewUyunictlCommand() *cobra.Command {
 		}
 	}
 
+	rootCmd.AddCommand(api.NewCommand(globalFlags))
 	rootCmd.AddCommand(exec.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
 	rootCmd.AddCommand(distro.NewCommand(globalFlags))

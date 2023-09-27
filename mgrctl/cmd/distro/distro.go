@@ -7,8 +7,11 @@ package distro
 import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+
+	cmd_utils "github.com/uyuni-project/uyuni-tools/uyunictl/shared/utils"
 )
 
 type flagpole struct {
@@ -17,6 +20,7 @@ type flagpole struct {
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	flags := &flagpole{}
+	apiFlags := &api.ConnectionDetails{}
 
 	distroCmd := &cobra.Command{
 		Use:     "distribution",
@@ -41,6 +45,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
+	cmd_utils.AddAPIFlags(distroCmd, apiFlags)
 	distroCmd.AddCommand(cpCmd)
 	return distroCmd
 }
