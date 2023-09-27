@@ -19,9 +19,9 @@ func RunSetup(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn string, 
 	tmpFolder := generateSetupScript(flags, fqdn, env)
 	defer os.RemoveAll(tmpFolder)
 
-	utils.Copy(globalFlags, "", filepath.Join(tmpFolder, SETUP_NAME), "server:/tmp/setup.sh", "root", "root")
+	utils.Copy("", filepath.Join(tmpFolder, SETUP_NAME), "server:/tmp/setup.sh", "root", "root")
 
-	err := adm_utils.ExecCommand(zerolog.InfoLevel, globalFlags, "", "/tmp/setup.sh")
+	err := adm_utils.ExecCommand(zerolog.InfoLevel, "", "/tmp/setup.sh")
 	if err != nil {
 		log.Fatal().Err(err).Msg("error running the setup script")
 	}

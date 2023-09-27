@@ -28,7 +28,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			if err := viper.Unmarshal(&flags); err != nil {
 				log.Fatal().Err(err).Msgf("Failed to unmarshall configuration")
 			}
-			run(globalFlags, flags, cmd, args)
+			run(flags, cmd, args)
 		},
 	}
 
@@ -39,6 +39,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return cpCmd
 }
 
-func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) {
-	utils.Copy(globalFlags, flags.Backend, args[0], args[1], flags.User, flags.Group)
+func run(flags *flagpole, cmd *cobra.Command, args []string) {
+	utils.Copy(flags.Backend, args[0], args[1], flags.User, flags.Group)
 }

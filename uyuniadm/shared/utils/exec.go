@@ -6,12 +6,11 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func ExecCommand(logLevel zerolog.Level, globalFlags *types.GlobalFlags, backend string, args ...string) error {
-	command, podName := utils.GetPodName(globalFlags, backend, true)
+func ExecCommand(logLevel zerolog.Level, backend string, args ...string) error {
+	command, podName := utils.GetPodName(backend, true)
 
 	commandArgs := []string{"exec", podName}
 

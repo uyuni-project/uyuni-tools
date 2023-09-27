@@ -64,7 +64,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 
 func runMigration(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, tmpPath string) {
 	log.Info().Msg("Migrating server")
-	err := adm_utils.ExecCommand(zerolog.DebugLevel, globalFlags, "", "/var/lib/uyuni-tools/migrate.sh")
+	err := adm_utils.ExecCommand(zerolog.DebugLevel, "", "/var/lib/uyuni-tools/migrate.sh")
 	if err != nil {
 		log.Fatal().Err(err).Msg("error running the migration script")
 	}

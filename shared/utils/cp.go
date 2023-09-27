@@ -5,14 +5,13 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 // Copy transfers a file to or from the container.
 // Prefix one of src or dst parameters with `server:` to designate the path is in the container
 // user and group parameters are used to set the owner of a file transfered in the container.
-func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string, user string, group string) {
-	command, podName := GetPodName(globalFlags, backend, true)
+func Copy(backend string, src string, dst string, user string, group string) {
+	command, podName := GetPodName(backend, true)
 	var commandArgs []string
 	extraArgs := []string{}
 	srcExpanded := strings.Replace(src, "server:", podName+":", 1)
@@ -44,8 +43,8 @@ func Copy(globalFlags *types.GlobalFlags, backend string, src string, dst string
 	}
 }
 
-func TestExistenceInPod(globalFlags *types.GlobalFlags, backend string, dstpath string) bool {
-	command, podName := GetPodName(globalFlags, backend, true)
+func TestExistenceInPod(backend string, dstpath string) bool {
+	command, podName := GetPodName(backend, true)
 	commandArgs := []string{"exec", podName}
 
 	switch command {
