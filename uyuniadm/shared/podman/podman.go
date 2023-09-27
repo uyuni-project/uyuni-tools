@@ -15,8 +15,8 @@ import (
 const UYUNI_NETWORK = "uyuni"
 const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
 
-func GetCommonParams(containerName string) []string {
-	return strings.Split(fmt.Sprintf(commonArgs, containerName), " ")
+func GetCommonParams() []string {
+	return strings.Split(commonArgs, " ")
 }
 
 func GetExposedPorts(debug bool) []utils.PortMap {

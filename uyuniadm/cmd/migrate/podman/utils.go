@@ -59,7 +59,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 func runContainer(name string, image string, tag string, extraArgs []string, cmd []string) {
 
-	podmanArgs := append([]string{"run"}, podman.GetCommonParams(name)...)
+	podmanArgs := append([]string{"run", "--name", name}, podman.GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
 
 	for volumeName, containerPath := range utils.VOLUMES {
@@ -69,7 +69,7 @@ func runContainer(name string, image string, tag string, extraArgs []string, cmd
 	podmanArgs = append(podmanArgs, image+":"+tag)
 	podmanArgs = append(podmanArgs, cmd...)
 
-	err := utils.RunCmd("podman", podmanArgs...)
+	err := utils.RunCmdStdMapping("podman", podmanArgs...)
 
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to run %s container", name)
