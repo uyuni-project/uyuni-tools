@@ -11,21 +11,16 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
-
-type TlsCert struct {
-	RootCa      string
-	Certificate string
-	Key         string
-}
 
 // Install cert-manager and its CRDs using helm in the cert-manager namespace if needed
 // and then create a self-signed CA and issuers.
 // Returns helm arguments to be added to use the issuer
 func installSslIssuers(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.HelmFlags,
-	sslFlags *cmd_utils.SslCertFlags, tlsCert *TlsCert, kubeconfig, fqdn string) []string {
+	sslFlags *cmd_utils.SslCertFlags, rootCa string, tlsCert *ssl.SslPair, kubeconfig, fqdn string) []string {
 
 	// Install cert-manager if needed
 	installCertManager(globalFlags, helmFlags, kubeconfig)
@@ -48,9 +43,9 @@ func installSslIssuers(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 		OrgUnit:     sslFlags.OU,
 		Email:       sslFlags.Email,
 		Fqdn:        fqdn,
-		RootCa:      tlsCert.RootCa,
+		RootCa:      rootCa,
 		Key:         tlsCert.Key,
-		Certificate: tlsCert.Certificate,
+		Certificate: tlsCert.Cert,
 	}
 
 	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {

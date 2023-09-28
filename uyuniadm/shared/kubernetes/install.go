@@ -6,6 +6,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/ssl"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
@@ -33,14 +34,14 @@ func Deploy(globalFlags *types.GlobalFlags, imageFlags *cmd_utils.ImageFlags,
 }
 
 func DeployCertificate(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.HelmFlags,
-	sslFlags *cmd_utils.SslCertFlags, ca *TlsCert, kubeconfig string, fqdn string) []string {
+	sslFlags *cmd_utils.SslCertFlags, rootCa string, ca *ssl.SslPair, kubeconfig string, fqdn string) []string {
 
 	helmArgs := []string{}
 	if sslFlags.UseExisting {
 		// TODO Check that we have the expected secret and config in place
 	} else {
 		// Install cert-manager and a self-signed issuer ready for use
-		issuerArgs := installSslIssuers(globalFlags, helmFlags, sslFlags, ca, kubeconfig, fqdn)
+		issuerArgs := installSslIssuers(globalFlags, helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn)
 		helmArgs = append(helmArgs, issuerArgs...)
 	}
 
