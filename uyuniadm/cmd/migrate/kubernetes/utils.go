@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/ssl"
 	adm_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
@@ -92,10 +93,10 @@ func setupSsl(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, kub
 			log.Fatal().Err(err).Msg("Failed to strip text part of CA certificate")
 		}
 		cert := base64.StdEncoding.EncodeToString(out)
-		ca := kubernetes.TlsCert{RootCa: cert, Certificate: cert, Key: key}
+		ca := ssl.SslPair{Cert: cert, Key: key}
 
 		sslFlags := adm_utils.SslCertFlags{UseExisting: false}
-		return kubernetes.DeployCertificate(globalFlags, &flags.Helm, &sslFlags, &ca, kubeconfig, "")
+		return kubernetes.DeployCertificate(globalFlags, &flags.Helm, &sslFlags, cert, &ca, kubeconfig, "")
 	} else {
 		// TODO Handle third party certificates and CA
 	}

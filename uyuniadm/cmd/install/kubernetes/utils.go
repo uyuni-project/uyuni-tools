@@ -9,6 +9,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/ssl"
 	adm_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
 
@@ -30,8 +31,8 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInsta
 	clusterInfos := kubernetes.CheckCluster()
 
 	// Deploy the SSL CA or server certificate
-	ca := kubernetes.TlsCert{}
-	sslArgs := kubernetes.DeployCertificate(globalFlags, &flags.Helm, &flags.Ssl, &ca, clusterInfos.GetKubeconfig(), fqdn)
+	ca := ssl.SslPair{}
+	sslArgs := kubernetes.DeployCertificate(globalFlags, &flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn)
 	helmArgs = append(helmArgs, sslArgs...)
 
 	// Deploy Uyuni and wait for it to be up
