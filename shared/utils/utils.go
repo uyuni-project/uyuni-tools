@@ -52,9 +52,11 @@ func GetCommand(backend string) string {
 	return command
 }
 
+const PODMAN_CONTAINER = "uyuni-server"
+
 func GetPodName(backend string, fail bool) (string, string) {
 	command := GetCommand(backend)
-	pod := "uyuni-server"
+	pod := PODMAN_CONTAINER
 
 	switch command {
 	case "podman-remote":
