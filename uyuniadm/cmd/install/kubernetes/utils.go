@@ -31,11 +31,11 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInsta
 
 	// Deploy the SSL CA or server certificate
 	ca := kubernetes.TlsCert{}
-	sslArgs := kubernetes.DeployCertificate(globalFlags, &flags.Helm, &flags.Cert, &ca, clusterInfos.GetKubeconfig(), fqdn)
+	sslArgs := kubernetes.DeployCertificate(globalFlags, &flags.Helm, &flags.Ssl, &ca, clusterInfos.GetKubeconfig(), fqdn)
 	helmArgs = append(helmArgs, sslArgs...)
 
 	// Deploy Uyuni and wait for it to be up
-	kubernetes.Deploy(globalFlags, &flags.Image, &flags.Helm, &flags.Cert, &clusterInfos, fqdn, flags.Debug.Java, helmArgs...)
+	kubernetes.Deploy(globalFlags, &flags.Image, &flags.Helm, &flags.Ssl, &clusterInfos, fqdn, flags.Debug.Java, helmArgs...)
 
 	// Create setup script + env variables and copy it to the container
 	envs := map[string]string{

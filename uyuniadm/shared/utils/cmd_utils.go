@@ -2,6 +2,7 @@ package utils
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/ssl"
 )
 
 var DefaultImage = "registry.opensuse.org/uyuni/server"
@@ -39,6 +40,8 @@ type SslCertFlags struct {
 	OU          string
 	Password    string
 	Email       string
+	Ca          ssl.CaChain
+	Server      ssl.SslPair
 }
 
 func AddPodmanInstallFlag(cmd *cobra.Command) {

@@ -48,24 +48,30 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 
 	waitForSystemStart(globalFlags, flags)
 
-	env := map[string]string{}
-	if flags.Cert.UseExisting {
-		// TODO Get existing certificates path and mount them
-		// Set CA_CERT, SERVER_CERT, SERVER_KEY or run the rhn-ssl-check tool in a container
-		// The SERVER_CERT needs to get the intermediate keys
-	} else {
-		env["CERT_O"] = flags.Cert.Org
-		env["CERT_OU"] = flags.Cert.OU
-		env["CERT_CITY"] = flags.Cert.City
-		env["CERT_STATE"] = flags.Cert.State
-		env["CERT_COUNTRY"] = flags.Cert.Country
-		env["CERT_EMAIL"] = flags.Cert.Email
-		env["CERT_CNAMES"] = strings.Join(append([]string{args[0]}, flags.Cert.Cnames...), ",")
-		env["CERT_PASS"] = flags.Cert.Password
+	caPassword := flags.Ssl.Password
+	if flags.Ssl.UseExisting {
+		// We need to have a password for the generated CA, even though it will be thrown away after install
+		caPassword = "dummy"
+	}
+
+	env := map[string]string{
+		"CERT_O":       flags.Ssl.Org,
+		"CERT_OU":      flags.Ssl.OU,
+		"CERT_CITY":    flags.Ssl.City,
+		"CERT_STATE":   flags.Ssl.State,
+		"CERT_COUNTRY": flags.Ssl.Country,
+		"CERT_EMAIL":   flags.Ssl.Email,
+		"CERT_CNAMES":  strings.Join(append([]string{args[0]}, flags.Ssl.Cnames...), ","),
+		"CERT_PASS":    caPassword,
 	}
 
 	log.Info().Msg("run setup command in the container")
+
 	shared.RunSetup(globalFlags, &flags.InstallFlags, args[0], env)
+
+	if flags.Ssl.UseExisting {
+		podman.UpdateSslCertificate(&flags.Ssl.Ca, &flags.Ssl.Server)
+	}
 
 	podman.EnablePodmanSocket()
 }
