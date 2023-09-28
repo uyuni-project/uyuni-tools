@@ -5,6 +5,42 @@
 * `uyuniadm` used to help user administer uyuni servers on k8s and podman
 * `uyunictl` used to help user managing Uyuni and SUSE Manager Servers mainly through its API
 
+# Deployment rolling release
+
+**NOTE:** This is rolling releases, meaning they can break at any time. Do not use it in product (yet!)
+
+## For podment deployment
+Requirement:
+  - Opensuse Leap 15.4 or 15.5
+  - podman installed
+
+Add uyuni-tool repository:
+```
+zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/ServerContainer/openSUSE_Leap_15.4/ uyuni-tools
+```
+
+Install uyuni-tool package: `zypper in uyuni-tools`
+
+Run `uyuniadm` command to install uyuni server on podman:
+```
+uyuniadm install podman --image registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server <MACHINE_FQDN>
+```
+
+**NOTE**: rolling image url is: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server
+
+
+Other sub-cammands are also available. Explore the tool with the help command.
+
+A tool named `uyunictl` is also available with usefull commands.
+
+## k3s deployment
+
+For Look at a more details documentation at:
+
+https://github.com/uyuni-project/uyuni/tree/server-container/containers/doc/server-kubernetes
+
+# Technical documentation
+
 ## Building
 
 `go build -o ./bin ./...` will produce the binaries in the root folder.
