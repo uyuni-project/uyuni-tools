@@ -144,3 +144,12 @@ func FileExists(path string) bool {
 	}
 	return false
 }
+
+// Returns the content of a file and exit if there was an error.
+func ReadFile(file string) []byte {
+	out, err := os.ReadFile(file)
+	if err != nil {
+		log.Fatal().Err(err).Msgf("Failed to read file %s", file)
+	}
+	return out
+}

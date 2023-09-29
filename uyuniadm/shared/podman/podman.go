@@ -2,7 +2,6 @@ package podman
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
 	"path"
 	"strings"
@@ -128,11 +127,7 @@ func isIpv6Enabled() bool {
 }
 
 func getFileBoolean(file string) bool {
-	out, err := os.ReadFile(file)
-	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to read file %s", file)
-	}
-	return string(out[:]) != "0"
+	return string(utils.ReadFile(file)) != "0"
 }
 
 func EnablePodmanSocket() {

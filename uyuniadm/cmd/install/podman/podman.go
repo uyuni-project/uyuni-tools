@@ -40,11 +40,5 @@ NOTE: for now installing on a remote podman is not supported!
 	shared.AddInstallFlags(podmanCmd)
 	cmd_utils.AddPodmanInstallFlag(podmanCmd)
 
-	// TODO Move to shared when kubernetes implementation is ready
-	podmanCmd.Flags().StringSlice("ssl-ca-intermediate", []string{}, "Intermediate CA certificate path")
-	podmanCmd.Flags().String("ssl-ca-root", "", "Root CA certificate path")
-	podmanCmd.Flags().String("ssl-server-cert", "", "Server certificate path")
-	podmanCmd.Flags().String("ssl-server-key", "", "Server key path")
-
 	return podmanCmd
 }

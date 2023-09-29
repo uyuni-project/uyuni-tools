@@ -38,7 +38,10 @@ func DeployCertificate(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 
 	helmArgs := []string{}
 	if sslFlags.UseExisting {
-		// TODO Check that we have the expected secret and config in place
+		// Deploy the SSL Certificate secret and CA configmap
+		serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
+		serverKey := utils.ReadFile(sslFlags.Server.Key)
+		installTlsSecret(helmFlags.Uyuni.Namespace, serverCrt, serverKey, rootCaCrt)
 	} else {
 		// Install cert-manager and a self-signed issuer ready for use
 		issuerArgs := installSslIssuers(globalFlags, helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn)
