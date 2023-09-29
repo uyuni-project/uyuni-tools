@@ -93,6 +93,10 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().String("ssl-ou", "SUSE", "SSL certificate organization unit")
 	cmd.Flags().String("ssl-password", "", "Password for the CA certificate to generate")
 	cmd.Flags().String("ssl-email", "ca-admin@example.com", "SSL certificate E-Mail")
+	cmd.Flags().StringSlice("ssl-ca-intermediate", []string{}, "Intermediate CA certificate path")
+	cmd.Flags().String("ssl-ca-root", "", "Root CA certificate path")
+	cmd.Flags().String("ssl-server-cert", "", "Server certificate path")
+	cmd.Flags().String("ssl-server-key", "", "Server key path")
 
 	cmd.Flags().String("scc-user", "", "SUSE Customer Center username")
 	cmd.Flags().String("scc-password", "", "SUSE Customer Center password")

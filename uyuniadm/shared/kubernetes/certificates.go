@@ -2,7 +2,6 @@ package kubernetes
 
 import (
 	"encoding/base64"
-	"fmt"
 	"os"
 	"path/filepath"
 	"time"
@@ -15,6 +14,34 @@ import (
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
 )
+
+func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) {
+	crdsDir, err := os.MkdirTemp("", "uyuniadm-*")
+	if err != nil {
+		log.Fatal().Err(err).Msgf("Failed to create temporary directory")
+	}
+	defer os.RemoveAll(crdsDir)
+
+	secretPath := filepath.Join(crdsDir, "secret.yaml")
+	log.Info().Msg("Creating SSL server certificate secret")
+	tlsSecretData := templates.TlsSecretTemplateData{
+		Namespace:   namespace,
+		Name:        "uyuni-cert",
+		Certificate: base64.StdEncoding.EncodeToString(serverCrt),
+		Key:         base64.StdEncoding.EncodeToString(serverKey),
+		RootCa:      base64.StdEncoding.EncodeToString(rootCaCrt),
+	}
+
+	if err = utils.WriteTemplateToFile(tlsSecretData, secretPath, 0500, true); err != nil {
+		log.Fatal().Err(err).Msg("Failed to generate uyuni-crt secret definition")
+	}
+	err = utils.RunCmd("kubectl", "apply", "-f", secretPath)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to create uyuni-crt TLS secret")
+	}
+
+	createCaConfig(rootCaCrt)
+}
 
 // Install cert-manager and its CRDs using helm in the cert-manager namespace if needed
 // and then create a self-signed CA and issuers.
@@ -123,10 +150,12 @@ func extractCaCertToConfig() {
 		log.Fatal().Err(err).Msgf("Failed to base64 decode CA certificate")
 	}
 
-	message := fmt.Sprintf("Failed to create uyuni-ca config map from certificate: %s", err)
-	valueArg := "--from-literal=ca.crt=" + string(decoded)
-	err = utils.RunCmd("kubectl", "create", "configmap", "uyuni-ca", valueArg)
-	if err != nil {
-		log.Fatal().Err(err).Msg(message)
+	createCaConfig(decoded)
+}
+
+func createCaConfig(ca []byte) {
+	valueArg := "--from-literal=ca.crt=" + string(ca)
+	if err := utils.RunCmd("kubectl", "create", "configmap", "uyuni-ca", valueArg); err != nil {
+		log.Fatal().Err(err).Msg("Failed to create uyuni-ca config map from certificate")
 	}
 }
