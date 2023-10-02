@@ -48,6 +48,21 @@ BuildRequires:       libgpgme-devel
 %description
 Tools for managing uyuni container.
 
+%package -n uyuniadm
+Summary:      Command line tool to install and update Uyuni
+
+%description -n uyuniadm
+uyuniadm is a convenient tool to install and update Uyuni components as containers running
+either on podman or a kubernetes cluster.
+
+%package -n uyunictl
+Summary:      Command line tool to perform day-to-day operations on Uyuni
+
+%description -n uyunictl
+uyunictl is a tool helping with dayly tasks on Uyuni components running as containers
+either on podman or a kubernetes cluster.
+
+
 %prep
 %autosetup
 tar -zxf %{SOURCE1}
@@ -86,13 +101,20 @@ install -m 0755 -vp ./bin/* %{buildroot}%{_bindir}/
 
 %define _release_dir  %{_builddir}/%{project}-%{version}/release
 
-%files
+%files -n uyuniadm
 
 %defattr(-,root,root)
 %doc README.md
 %license LICENSE
 
 %{_bindir}/uyuniadm
+
+%files -n uyunictl
+
+%defattr(-,root,root)
+%doc README.md
+%license LICENSE
+
 %{_bindir}/uyunictl
 
 %changelog
