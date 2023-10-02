@@ -1,0 +1,96 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            67:63:f5:29:af:44:ba:79:ef:dd:dc:bf:bb:ab:3e:36:22:b8:71:28
+        Signature Algorithm: sha384WithRSAEncryption
+        Issuer: C=DE, ST=STATE, O=ORG, OU=ORGUNIT, CN=TeamCA
+        Validity
+            Not Before: Oct  2 13:09:12 2023 GMT
+            Not After : Oct  1 13:09:12 2024 GMT
+        Subject: C=DE, ST=STATE, O=ORG, OU=ORGUNIT, CN=uyuni-server-cert
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:83:51:78:0e:31:92:ea:d9:51:6e:9d:02:ed:d8:
+                    55:dc:53:5f:7e:0c:a5:26:df:e1:c1:86:e0:38:9d:
+                    67:59:e2:42:21:37:4d:5d:2c:f7:28:f1:d4:7f:00:
+                    91:e4:0e:fa:eb:c8:bb:2d:f2:cd:37:62:5e:94:67:
+                    83:0a:e0:69:4d:86:f4:39:be:1b:59:ec:64:65:41:
+                    0c:5a:3a:7e:4b:98:8e:62:4c:4b:2c:b7:68:3c:36:
+                    e2:ea:7e:58:70:e7:3e:7e:0a:b4:7f:32:b7:d0:0f:
+                    15:b4:ac:24:ce:a8:f4:13:9e:62:44:7d:f6:3e:fd:
+                    a5:67:5a:3d:67:54:40:89:6f:51:f0:4a:60:35:d4:
+                    51:27:ca:bb:a1:5e:32:12:a5:3f:b4:e3:d0:7d:9e:
+                    b2:84:4f:4e:84:db:52:00:9e:46:bf:c8:31:3b:79:
+                    30:09:fe:ba:01:b7:3e:c4:9b:c4:cc:18:8b:f0:42:
+                    fd:88:71:8c:d6:4c:d2:99:c8:7a:bf:7e:d6:dc:18:
+                    d2:97:57:ca:0c:0c:66:52:2e:38:1c:8a:56:13:44:
+                    a5:84:3d:95:70:e5:aa:94:2f:59:48:3d:22:74:8d:
+                    f8:5d:ef:42:9c:e1:cf:ca:f5:24:d8:a8:8c:4e:1d:
+                    75:9d:ac:15:a9:6f:f7:81:ab:5e:11:61:f7:8f:e3:
+                    a5:c1
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Key Usage: 
+                Digital Signature, Key Encipherment
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication, TLS Web Client Authentication
+            Netscape Cert Type: 
+                SSL Server
+            Netscape Comment: 
+                SSL Generated Certificate
+            X509v3 Subject Key Identifier: 
+                FD:F8:AA:26:08:7F:F7:FA:92:1E:68:3F:4A:29:54:E5:7A:A6:0D:42
+            X509v3 Authority Key Identifier: 
+                keyid:62:00:25:E4:EE:70:E5:37:2D:1E:9E:AE:4E:B7:3E:FC:62:08:BF:27
+                DirName:/C=DE/ST=STATE/O=ORG/OU=ORGUNIT/CN=OrgCa
+                serial:67:63:F5:29:AF:44:BA:79:EF:DD:DC:BF:BB:AB:3E:36:22:B8:71:27
+            X509v3 Subject Alternative Name: 
+                DNS:*.example.com
+    Signature Algorithm: sha384WithRSAEncryption
+    Signature Value:
+        24:4e:b4:4d:29:e6:ad:12:e6:39:9d:95:0e:fc:b7:af:e3:55:
+        60:cc:f2:57:1c:38:05:fb:1f:8c:95:40:40:b3:23:c3:11:1b:
+        5f:7b:99:01:0d:fe:3a:05:7e:d0:b1:9a:c8:fc:6a:78:41:fb:
+        3f:5a:6a:26:0d:dd:2e:f3:ab:d5:16:45:99:51:3e:94:87:3a:
+        a7:67:e4:25:43:c9:1a:e5:84:df:15:ba:f3:11:64:99:1d:22:
+        0e:44:35:9c:9b:52:e8:b0:a8:a9:04:d2:4b:cf:10:14:35:6c:
+        1f:a3:ec:81:4f:2b:98:c0:02:8a:b9:03:50:f3:97:25:25:05:
+        ba:c4:e0:5b:b2:34:7e:d3:d6:e1:69:d8:72:38:9e:0a:50:f6:
+        25:d0:97:c3:58:37:49:40:08:11:9d:39:b1:4b:4d:e9:18:08:
+        38:9d:b5:b4:a2:8b:d8:24:94:b3:b5:41:e9:17:b8:22:17:6e:
+        70:33:a2:a3:ee:8e:ae:be:ee:c4:dd:6c:2c:c2:ae:8b:31:8f:
+        5d:ca:9d:01:83:5d:89:59:cf:f6:30:3a:59:4d:17:82:ab:6e:
+        a3:bf:4d:61:98:9a:f6:29:20:9b:eb:c5:3a:cd:06:b6:82:8c:
+        24:34:65:60:12:6d:4b:ca:e6:91:0a:58:c8:97:22:89:f5:f4:
+        3f:16:33:4e
+-----BEGIN CERTIFICATE-----
+MIIEdDCCA1ygAwIBAgIUZ2P1Ka9Eunnv3dy/u6s+NiK4cSgwDQYJKoZIhvcNAQEM
+BQAwTjELMAkGA1UEBhMCREUxDjAMBgNVBAgMBVNUQVRFMQwwCgYDVQQKDANPUkcx
+EDAOBgNVBAsMB09SR1VOSVQxDzANBgNVBAMMBlRlYW1DQTAeFw0yMzEwMDIxMzA5
+MTJaFw0yNDEwMDExMzA5MTJaMFkxCzAJBgNVBAYTAkRFMQ4wDAYDVQQIDAVTVEFU
+RTEMMAoGA1UECgwDT1JHMRAwDgYDVQQLDAdPUkdVTklUMRowGAYDVQQDDBF1eXVu
+aS1zZXJ2ZXItY2VydDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAINR
+eA4xkurZUW6dAu3YVdxTX34MpSbf4cGG4DidZ1niQiE3TV0s9yjx1H8AkeQO+uvI
+uy3yzTdiXpRngwrgaU2G9Dm+G1nsZGVBDFo6fkuYjmJMSyy3aDw24up+WHDnPn4K
+tH8yt9APFbSsJM6o9BOeYkR99j79pWdaPWdUQIlvUfBKYDXUUSfKu6FeMhKlP7Tj
+0H2esoRPToTbUgCeRr/IMTt5MAn+ugG3PsSbxMwYi/BC/YhxjNZM0pnIer9+1twY
+0pdXygwMZlIuOByKVhNEpYQ9lXDlqpQvWUg9InSN+F3vQpzhz8r1JNiojE4ddZ2s
+Falv94GrXhFh94/jpcECAwEAAaOCAT0wggE5MAkGA1UdEwQCMAAwCwYDVR0PBAQD
+AgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjARBglghkgBhvhCAQEE
+BAMCBkAwKAYJYIZIAYb4QgENBBsWGVNTTCBHZW5lcmF0ZWQgQ2VydGlmaWNhdGUw
+HQYDVR0OBBYEFP34qiYIf/f6kh5oP0opVOV6pg1CMIGJBgNVHSMEgYEwf4AUYgAl
+5O5w5TctHp6uTrc+/GIIvyehUaRPME0xCzAJBgNVBAYTAkRFMQ4wDAYDVQQIDAVT
+VEFURTEMMAoGA1UECgwDT1JHMRAwDgYDVQQLDAdPUkdVTklUMQ4wDAYDVQQDDAVP
+cmdDYYIUZ2P1Ka9Eunnv3dy/u6s+NiK4cScwGAYDVR0RBBEwD4INKi5leGFtcGxl
+LmNvbTANBgkqhkiG9w0BAQwFAAOCAQEAJE60TSnmrRLmOZ2VDvy3r+NVYMzyVxw4
+BfsfjJVAQLMjwxEbX3uZAQ3+OgV+0LGayPxqeEH7P1pqJg3dLvOr1RZFmVE+lIc6
+p2fkJUPJGuWE3xW68xFkmR0iDkQ1nJtS6LCoqQTSS88QFDVsH6PsgU8rmMACirkD
+UPOXJSUFusTgW7I0ftPW4WnYcjieClD2JdCXw1g3SUAIEZ05sUtN6RgIOJ21tKKL
+2CSUs7VB6Re4IhducDOio+6Orr7uxN1sLMKuizGPXcqdAYNdiVnP9jA6WU0Xgqtu
+o79NYZia9ikgm+vFOs0GtoKMJDRlYBJtS8rmkQpYyJciifX0PxYzTg==
+-----END CERTIFICATE-----
