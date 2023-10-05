@@ -75,6 +75,7 @@ chart=oci://registry.opensuse.org/uyuni/server
 %endif
 
 go build \
+    -tags netgo \
     -ldflags "-X ${ADM_PATH}.DefaultImage=${image} -X ${ADM_PATH}.DefaultTag=${tag} -X ${ADM_PATH}.DefaultChart=${chart}" \
     -o ./bin ./...
 
