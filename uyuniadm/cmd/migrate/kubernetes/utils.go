@@ -98,7 +98,15 @@ func setupSsl(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, kub
 		sslFlags := adm_utils.SslCertFlags{}
 		return kubernetes.DeployCertificate(globalFlags, &flags.Helm, &sslFlags, cert, &ca, kubeconfig, "")
 	} else {
-		// TODO Handle third party certificates and CA
+		// Handle third party certificates and CA
+		sslFlags := adm_utils.SslCertFlags{
+			Ca: ssl.CaChain{Root: caCert},
+			Server: ssl.SslPair{
+				Key:  path.Join(scriptDir, "spacewalk.key"),
+				Cert: path.Join(scriptDir, "spacewalk.crt"),
+			},
+		}
+		kubernetes.DeployExistingCertificate(globalFlags, &flags.Helm, &sslFlags, kubeconfig)
 	}
 	return []string{}
 }
