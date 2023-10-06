@@ -192,5 +192,5 @@ func UpdateSslCertificate(chain *ssl.CaChain, serverPair *ssl.SslPair) {
 
 	// The services need to be restarted
 	log.Info().Msg("Restarting services after updating the certificate")
-	utils.RunCmdStdMapping("uyunictl", "exec", utils.PODMAN_CONTAINER, "spacewalk-service", "restart")
+	utils.RunCmdStdMapping("podman", "exec", utils.PODMAN_CONTAINER, "spacewalk-service", "restart")
 }

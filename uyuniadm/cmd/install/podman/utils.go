@@ -49,7 +49,7 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 	waitForSystemStart(globalFlags, flags)
 
 	caPassword := flags.Ssl.Password
-	if flags.Ssl.UseExisting {
+	if flags.Ssl.UseExisting() {
 		// We need to have a password for the generated CA, even though it will be thrown away after install
 		caPassword = "dummy"
 	}
@@ -69,7 +69,7 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 
 	shared.RunSetup(globalFlags, &flags.InstallFlags, args[0], env)
 
-	if flags.Ssl.UseExisting {
+	if flags.Ssl.UseExisting() {
 		podman.UpdateSslCertificate(&flags.Ssl.Ca, &flags.Ssl.Server)
 	}
 

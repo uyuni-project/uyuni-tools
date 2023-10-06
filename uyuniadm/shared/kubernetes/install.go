@@ -37,7 +37,7 @@ func DeployCertificate(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 	sslFlags *cmd_utils.SslCertFlags, rootCa string, ca *ssl.SslPair, kubeconfig string, fqdn string) []string {
 
 	helmArgs := []string{}
-	if sslFlags.UseExisting {
+	if sslFlags.UseExisting() {
 		// Deploy the SSL Certificate secret and CA configmap
 		serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
 		serverKey := utils.ReadFile(sslFlags.Server.Key)
