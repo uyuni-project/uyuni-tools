@@ -46,17 +46,8 @@ func GenerateMigrationScript(sourceFqdn string, kubernetes bool) string {
 		log.Fatal().Err(err).Msgf("Failed to create temporary directory")
 	}
 
-	volumes := map[string]string{}
-	for name, path := range utils.VOLUMES {
-		// We cannot synchronize the CA certs volume for kubernetes as
-		// it is a read-only mount from a ConfigMap.
-		if !kubernetes || path != "/etc/pki/trust/anchors" {
-			volumes[name] = path
-		}
-	}
-
 	data := templates.MigrateScriptTemplateData{
-		Volumes:    volumes,
+		Volumes:    utils.VOLUMES,
 		SourceFqdn: sourceFqdn,
 		Kubernetes: kubernetes,
 	}

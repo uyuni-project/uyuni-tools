@@ -38,20 +38,29 @@ func DeployCertificate(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 
 	helmArgs := []string{}
 	if sslFlags.UseExisting() {
-		// Deploy the SSL Certificate secret and CA configmap
-		serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
-		serverKey := utils.ReadFile(sslFlags.Server.Key)
-		installTlsSecret(helmFlags.Uyuni.Namespace, serverCrt, serverKey, rootCaCrt)
+		DeployExistingCertificate(globalFlags, helmFlags, sslFlags, kubeconfig)
 	} else {
 		// Install cert-manager and a self-signed issuer ready for use
 		issuerArgs := installSslIssuers(globalFlags, helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn)
 		helmArgs = append(helmArgs, issuerArgs...)
+
+		// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
+		extractCaCertToConfig()
 	}
+
+	return helmArgs
+}
+
+func DeployExistingCertificate(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.HelmFlags,
+	sslFlags *cmd_utils.SslCertFlags, kubeconfig string) {
+
+	// Deploy the SSL Certificate secret and CA configmap
+	serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
+	serverKey := utils.ReadFile(sslFlags.Server.Key)
+	installTlsSecret(helmFlags.Uyuni.Namespace, serverCrt, serverKey, rootCaCrt)
 
 	// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
 	extractCaCertToConfig()
-
-	return helmArgs
 }
 
 func UyuniUpgrade(globalFlags *types.GlobalFlags, imageFlags *cmd_utils.ImageFlags,
