@@ -30,9 +30,8 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 	scriptDir := shared.GenerateMigrationScript(fqdn, true)
 	defer os.RemoveAll(scriptDir)
 
-	// Install Uyuni with generated CA cert
+	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
 	var sslFlags adm_utils.SslCertFlags
-	sslFlags.UseExisting = false
 
 	// We don't need the SSL certs at this point of the migration
 	clusterInfos := kubernetes.CheckCluster()
@@ -95,7 +94,8 @@ func setupSsl(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, kub
 		cert := base64.StdEncoding.EncodeToString(out)
 		ca := ssl.SslPair{Cert: cert, Key: key}
 
-		sslFlags := adm_utils.SslCertFlags{UseExisting: false}
+		// An empty struct means no third party certificate
+		sslFlags := adm_utils.SslCertFlags{}
 		return kubernetes.DeployCertificate(globalFlags, &flags.Helm, &sslFlags, cert, &ca, kubeconfig, "")
 	} else {
 		// TODO Handle third party certificates and CA

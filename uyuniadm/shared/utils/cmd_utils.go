@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/ssl"
 )
@@ -31,17 +32,27 @@ type ImageFlags struct {
 }
 
 type SslCertFlags struct {
-	UseExisting bool
-	Cnames      []string `mapstructure:"cname"`
-	Country     string
-	State       string
-	City        string
-	Org         string
-	OU          string
-	Password    string
-	Email       string
-	Ca          ssl.CaChain
-	Server      ssl.SslPair
+	Cnames   []string `mapstructure:"cname"`
+	Country  string
+	State    string
+	City     string
+	Org      string
+	OU       string
+	Password string
+	Email    string
+	Ca       ssl.CaChain
+	Server   ssl.SslPair
+}
+
+func (f *SslCertFlags) UseExisting() bool {
+	return f.Server.Cert != "" && f.Server.Key != "" && f.Ca.Root != ""
+}
+
+// Checks that all the required flags are passed if using 3rd party certificates.
+func (f *SslCertFlags) CheckParameters() {
+	if !f.UseExisting() && (f.Server.Cert != "" || f.Server.Key != "" || f.Ca.Root != "") {
+		log.Fatal().Msg("Server certificate, key and root CA need to be all provided")
+	}
 }
 
 func AddPodmanInstallFlag(cmd *cobra.Command) {
