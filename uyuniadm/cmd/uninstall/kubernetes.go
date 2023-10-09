@@ -20,20 +20,31 @@ func uninstallForKubernetes(globalFlags *types.GlobalFlags, dryRun bool) {
 
 	// Remove the remaining configmap and secrets
 	if namespace != "" {
+
+		_, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "-n", namespace, "get", "secret", "uyuni-ca")
+		caSecret := "uyuni-ca"
+		if err != nil {
+			caSecret = ""
+		}
+
 		if dryRun {
 			log.Info().Msgf("Would run kubectl delete -n %s configmap uyuni-ca", namespace)
-			log.Info().Msgf("Would run kubectl delete -n %s secret uyuni-ca uyuni-cert", namespace)
+			log.Info().Msgf("Would run kubectl delete -n %s secret uyuni-cert %s", namespace, caSecret)
 		} else {
 			log.Info().Msgf("Running kubectl delete -n %s configmap uyuni-ca", namespace)
 			if err := utils.RunCmd("kubectl", "delete", "-n", namespace, "configmap", "uyuni-ca"); err != nil {
 				log.Info().Err(err).Msgf("Failed deleting config map")
 			}
 
-			log.Info().Msgf("Running kubectl delete -n %s secret uyuni-ca uyuni-cert", namespace)
+			log.Info().Msgf("Running kubectl delete -n %s secret uyuni-cert %s", namespace, caSecret)
 
-			err := utils.RunCmd("kubectl", "delete", "-n", namespace, "secret", "uyuni-ca", "uyuni-cert")
+			args := []string{"delete", "-n", namespace, "secret", "uyuni-cert"}
+			if caSecret != "" {
+				args = append(args, caSecret)
+			}
+			err := utils.RunCmd("kubectl", args...)
 			if err != nil {
-				log.Info().Err(err).Msgf("Failed deleting config map")
+				log.Info().Err(err).Msgf("Failed deleting secret")
 			}
 		}
 	}
