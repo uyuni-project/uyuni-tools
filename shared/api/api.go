@@ -38,9 +38,8 @@ func AddAPIFlags(cmd *cobra.Command, conn *ConnectionDetails, optional bool) {
 	cmd.PersistentFlags().StringVar(&conn.CAcert, "cacert", "", "Path to a cert file of the CA")
 	cmd.PersistentFlags().BoolVar(&conn.Insecure, "insecure", false, "If set, server certificate will not be checked for validity")
 
-	// If host is not suplied, we try to take it from container using exec
-	// The rest are mandatory
 	if optional {
+		cmd.MarkFlagRequired("server")
 		cmd.MarkFlagRequired("username")
 		cmd.MarkFlagRequired("password")
 	}
