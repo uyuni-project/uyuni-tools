@@ -158,15 +158,17 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, apiFlags *api.Conne
 
 	log.Info().Msg("Distribution has been copied")
 
-	distro := distribution{
-		BasePath: dstpath,
-	}
-	if err := detectDistro(srcdir, &distro); err != nil {
-		log.Error().Msg(err.Error())
-		return
-	}
+	if apiFlags.User != "" {
+		distro := distribution{
+			BasePath: dstpath,
+		}
+		if err := detectDistro(srcdir, &distro); err != nil {
+			log.Error().Msg(err.Error())
+			return
+		}
 
-	if err := registerDistro(apiFlags, &distro); err != nil {
-		log.Error().Msg(err.Error())
+		if err := registerDistro(apiFlags, &distro); err != nil {
+			log.Error().Msg(err.Error())
+		}
 	}
 }
