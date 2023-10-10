@@ -14,7 +14,7 @@ import (
 
 func runGet(globalFlags *types.GlobalFlags, flags *api.ConnectionDetails, cmd *cobra.Command, args []string) {
 	log.Debug().Msgf("Running GET command %s", args[0])
-	client := api.Init(flags.Host)
+	client := api.Init(flags)
 
 	if flags.User != "" && flags.Password != "" {
 		if err := client.Login(flags.User, flags.Password); err != nil {

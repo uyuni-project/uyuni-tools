@@ -14,14 +14,10 @@ import (
 
 func runPost(globalFlags *types.GlobalFlags, flags *api.ConnectionDetails, cmd *cobra.Command, args []string) {
 	log.Debug().Msgf("Running POST command %s", args[0])
-	client := api.Init(flags.Host)
+	client := api.Init(flags)
 
-	if flags.User != "" && flags.Password != "" {
-		if err := client.Login(flags.User, flags.Password); err != nil {
-			log.Fatal().Err(err).Msg("Unable to login to the server")
-		}
-	} else {
-		log.Fatal().Msg("Missing login user and/or password options")
+	if err := client.Login(flags.User, flags.Password); err != nil {
+		log.Fatal().Err(err).Msg("Unable to login to the server")
 	}
 
 	path := args[0]
