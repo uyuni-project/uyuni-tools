@@ -99,7 +99,7 @@ func detectDistro(path string, distro *distribution) error {
 }
 
 func registerDistro(connection *api.ConnectionDetails, distro *distribution) error {
-	client := api.Init(connection.Host)
+	client := api.Init(connection)
 	if err := client.Login(connection.User, connection.Password); err != nil {
 		log.Error().Msg("Unable to login and register the distribution. Manual distro registration is required.")
 		return err
@@ -120,7 +120,7 @@ func registerDistro(connection *api.ConnectionDetails, distro *distribution) err
 	return nil
 }
 
-func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, distroName string, source string) {
+func distCp(globalFlags *types.GlobalFlags, flags *flagpole, apiFlags *api.ConnectionDetails, cmd *cobra.Command, distroName string, source string) {
 	cnx := utils.NewConnection(flags.Backend)
 	log.Info().Msgf("Copying distribution %s\n", distroName)
 	if !utils.FileExists(source) {
@@ -166,12 +166,7 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command,
 		return
 	}
 
-	conn := &api.ConnectionDetails{
-		Host:     cmd.Flag("host").Value.String(),
-		User:     cmd.Flag("user").Value.String(),
-		Password: cmd.Flag("password").Value.String(),
-	}
-	if err := registerDistro(conn, &distro); err != nil {
+	if err := registerDistro(apiFlags, &distro); err != nil {
 		log.Error().Msg(err.Error())
 	}
 }

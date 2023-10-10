@@ -1,7 +1,12 @@
 package api
 
 import (
+	"crypto/tls"
+	"crypto/x509"
+	"os"
+
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 
 	"bytes"
 	"encoding/json"
@@ -19,9 +24,26 @@ type HTTPClient struct {
 }
 
 type ConnectionDetails struct {
-	Host     string
+	Server   string
 	User     string
 	Password string
+	CAcert   string
+	Insecure bool
+}
+
+func AddAPIFlags(cmd *cobra.Command, conn *ConnectionDetails, optional bool) {
+	cmd.PersistentFlags().StringVar(&conn.Server, "server", "", "FQDN of the server to connect to")
+	cmd.PersistentFlags().StringVar(&conn.User, "username", "", "API user username")
+	cmd.PersistentFlags().StringVar(&conn.Password, "password", "", "Password for the API user")
+	cmd.PersistentFlags().StringVar(&conn.CAcert, "cacert", "", "Path to a cert file of the CA")
+	cmd.PersistentFlags().BoolVar(&conn.Insecure, "insecure", false, "If set, server certificate will not be checked for validity")
+
+	// If host is not suplied, we try to take it from container using exec
+	// The rest are mandatory
+	if optional {
+		cmd.MarkFlagRequired("username")
+		cmd.MarkFlagRequired("password")
+	}
 }
 
 func prettyPrint(v interface{}) string {
@@ -41,6 +63,7 @@ func (c *HTTPClient) sendRequest(req *http.Request) (*http.Response, error) {
 	}
 
 	log.Trace().Msg(prettyPrint(req.Header))
+	log.Trace().Msg(prettyPrint(req.Body))
 
 	res, err := c.Client.Do(req)
 	if err != nil {
@@ -62,11 +85,28 @@ func (c *HTTPClient) sendRequest(req *http.Request) (*http.Response, error) {
 	return res, nil
 }
 
-func Init(fqdn string) *HTTPClient {
+func Init(conn *ConnectionDetails) *HTTPClient {
+	caCertPool, err := x509.SystemCertPool()
+	if err != nil {
+		log.Warn().Msg(err.Error())
+	}
+	if conn.CAcert != "" {
+		caCert, err := os.ReadFile(conn.CAcert)
+		if err != nil {
+			log.Fatal().Msg(err.Error())
+		}
+		caCertPool.AppendCertsFromPEM(caCert)
+	}
 	client := &HTTPClient{
-		BaseURL: fmt.Sprintf("https://%s%s", fqdn, ROOT_PATH_APIv1),
+		BaseURL: fmt.Sprintf("https://%s%s", conn.Server, ROOT_PATH_APIv1),
 		Client: &http.Client{
 			Timeout: time.Minute,
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					RootCAs:            caCertPool,
+					InsecureSkipVerify: conn.Insecure,
+				},
+			},
 		},
 	}
 	return client

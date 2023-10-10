@@ -10,8 +10,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-
-	cmd_utils "github.com/uyuni-project/uyuni-tools/uyunictl/shared/utils"
 )
 
 type flagpole struct {
@@ -41,11 +39,11 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			if err := viper.Unmarshal(&flags); err != nil {
 				log.Fatal().Err(err).Msg("Failed to unmarshall configuration")
 			}
-			distCp(globalFlags, flags, cmd, args[1], args[0])
+			distCp(globalFlags, flags, apiFlags, cmd, args[1], args[0])
 		},
 	}
 
-	cmd_utils.AddAPIFlags(distroCmd, apiFlags)
+	api.AddAPIFlags(distroCmd, apiFlags, true)
 	distroCmd.AddCommand(cpCmd)
 	return distroCmd
 }
