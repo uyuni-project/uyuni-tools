@@ -33,9 +33,9 @@ Source1:        vendor.tar.gz
 BuildRequires:  golang-packaging
 BuildRequires:  coreutils
 %if 0%{?rhel}
-BuildRequires:  golang >= 1.19
+BuildRequires:  golang >= 1.20
 %else
-BuildRequires:  golang(API) >= 1.19
+BuildRequires:  golang(API) >= 1.20
 %endif
 BuildRequires:  rsyslog
 
