@@ -46,7 +46,7 @@ func pullImage(flags *podmanInstallFlags) {
 
 func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags, cmd *cobra.Command, args []string) {
 	fqdn := getFqdn(args)
-	log.Debug().Msgf("seting up server with the fqdn '%s'", fqdn)
+	log.Info().Msgf("setting up server with the FQDN '%s'", fqdn)
 
 	pullImage(flags)
 
