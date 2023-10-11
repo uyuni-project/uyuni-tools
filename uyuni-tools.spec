@@ -21,6 +21,9 @@
 %global project         uyuni-tools
 %global provider_prefix %{provider}.%{provider_tld}/%{org}/%{project}
 
+%global image           registry.opensuse.org/uyuni/server
+%global chart           oci://registry.opensuse.org/uyuni/server
+
 Name:           %{project}
 Version:        0.0.1
 Release:        0
@@ -79,12 +82,12 @@ tag=%{!?_default_tag:latest}
     tag='%{_default_tag}'
 %endif
 
-image=registry.opensuse.org/uyuni/server
+image=%{image}
 %if "%{?_default_image}" != ""
   image='%{_default_image}'
 %endif
 
-chart=oci://registry.opensuse.org/uyuni/server
+chart=%{chart}
 %if "%{?_default_chart}" != ""
   chart='%{_default_chart}'
 %endif
