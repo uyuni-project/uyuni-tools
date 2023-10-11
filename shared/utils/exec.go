@@ -42,7 +42,7 @@ func RunCmdStdMapping(command string, args ...string) error {
 func RunCmdOutput(logLevel zerolog.Level, command string, args ...string) ([]byte, error) {
 	logger := log.Logger.WithLevel(logLevel)
 
-	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
+	logger.Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	output, err := exec.Command(command, args...).Output()
 	if err != nil {

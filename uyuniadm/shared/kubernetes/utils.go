@@ -60,7 +60,7 @@ func waitForPulledImage(namespace string, podName string) {
 	failedArgs = addNamespace(failedArgs, namespace)
 	for {
 		// Look for events indicating an image pull issue
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", failedArgs...)
+		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", failedArgs...)
 		if err != nil {
 			log.Fatal().Err(err).Msgf("Failed to get failed events for pod %s", podName)
 		}
@@ -72,7 +72,7 @@ func waitForPulledImage(namespace string, podName string) {
 		}
 
 		// Has the image pull finished?
-		out, err = utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", pulledArgs...)
+		out, err = utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", pulledArgs...)
 		if err != nil {
 			log.Fatal().Err(err).Msgf("Failed to get events for pod %s", podName)
 		}
@@ -91,7 +91,7 @@ func isDeploymentReady(namespace string, name string) bool {
 	args := []string{"get", "-o", jsonpath, "deploy"}
 	args = addNamespace(args, namespace)
 
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
+	out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", args...)
 	// kubectl errors out if the deployment or namespace doesn't exist
 	if err == nil {
 		if replicas, _ := strconv.Atoi(string(out)); replicas > 0 {
