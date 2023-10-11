@@ -25,7 +25,7 @@ The install podman command assumes podman is installed locally
 
 NOTE: for now installing on a remote podman is not supported!
 `,
-		Args: cobra.ExactArgs(1),
+		Args: cobra.MaximumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
 			var flags podmanInstallFlags
