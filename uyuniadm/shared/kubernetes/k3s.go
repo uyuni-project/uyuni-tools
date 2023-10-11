@@ -31,7 +31,7 @@ func InstallK3sTraefikConfig(debug bool) {
 	// Wait for traefik to be back
 	log.Info().Msg("Waiting for Traefik to be reloaded")
 	for i := 0; i < 60; i++ {
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "job", "-A",
+		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "get", "job", "-A",
 			"-o", "jsonpath={.status.completionTime}", "helm-install-traefik")
 		if err == nil {
 			completionTime, err := time.Parse(time.RFC3339, string(out))
