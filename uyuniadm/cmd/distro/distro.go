@@ -13,7 +13,9 @@ import (
 )
 
 type flagpole struct {
-	Backend string
+	Backend      string
+	ChannelLabel string
+	ProductMap   map[string]map[string]types.Distribution
 }
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -28,18 +30,27 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	}
 
 	cpCmd := &cobra.Command{
-		Use:   "copy [path/to/source] [distribution name]",
-		Short: "copy distribution files from iso to the container",
-		Long: `takes a path to iso file or directory with mounted iso and copies it into the container.
-	Distribution name specifies the destination directory under /srv/www/distributions.`,
+		Use:   "copy path-to-source distribution-name [channel-label]",
+		Short: "Copy distribution files from iso to the container",
+		Long: `Takes a path to iso file or directory with mounted iso and copies it into the container.
+
+Distribution name specifies the destination directory under /srv/www/distributions.
+
+Optional channel label specify which parent channel to associate with the distribution. Only when API details are provided and auto registration is done.`,
 		Args:    cobra.ExactArgs(2),
 		Aliases: []string{"cp"},
 		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "ctlconfig", cmd)
+			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
 			if err := viper.Unmarshal(&flags); err != nil {
 				log.Fatal().Err(err).Msg("Failed to unmarshall configuration")
 			}
-			distCp(globalFlags, flags, apiFlags, cmd, args[1], args[0])
+			var channelLabel string
+			if len(args) == 3 {
+				channelLabel = args[2]
+			} else {
+				channelLabel = ""
+			}
+			distCp(globalFlags, flags, apiFlags, cmd, args[1], args[0], channelLabel)
 		},
 	}
 
