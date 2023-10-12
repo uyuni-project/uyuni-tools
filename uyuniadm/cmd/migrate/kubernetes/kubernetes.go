@@ -14,6 +14,7 @@ import (
 type kubernetesMigrateFlags struct {
 	shared.MigrateFlags `mapstructure:",squash"`
 	Helm                cmd_utils.HelmFlags
+	Ssl                 cmd_utils.SslCertFlags
 }
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -29,6 +30,10 @@ This migration command assumes a few things:
   * an SSH agent is started and the key to use to connect to the server is added to it,
   * kubectl is installed locally
   * A working kubeconfig should be set to connect to the cluster to deploy to
+
+When migrating a server with a automatically generate SSL Root CA certificate, the private key
+password will be required to convert it to RSA in order to be converted into a kubernetes secret.
+This is not needed if the source server does not have a generated SSL CA certificate.
 
 NOTE: for now installing on a remote cluster is not supported yet!
 `,
@@ -46,6 +51,7 @@ NOTE: for now installing on a remote cluster is not supported yet!
 
 	shared.AddMigrateFlags(migrateCmd)
 	cmd_utils.AddHelmInstallFlag(migrateCmd)
+	migrateCmd.Flags().String("ssl-password", "", "SSL CA generated private key password")
 
 	return migrateCmd
 }
