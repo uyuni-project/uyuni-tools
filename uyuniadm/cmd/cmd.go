@@ -17,7 +17,7 @@ func NewUyuniadmCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:     "uyuniadm",
 		Short:   "Uyuni administration tool",
-		Long:    "Uyuni administration tool used to help user administer uyuni servers on k8s and podman",
+		Long:    "Uyuni administration tool used to help user administer uyuni servers on kubernetes and podman",
 		Version: "0.0.1",
 	}
 
