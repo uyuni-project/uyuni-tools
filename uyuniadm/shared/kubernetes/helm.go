@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -13,7 +12,7 @@ import (
 // To perform an installation, set the install parameter to true: helm would get the --install parameter.
 // If repo is not empty, the --repo parameter will be passed.
 // If version is not empty, the --version parameter will be passed.
-func helmUpgrade(globalFlags *types.GlobalFlags, kubeconfig string, namespace string, install bool,
+func helmUpgrade(kubeconfig string, namespace string, install bool,
 	repo string, name string, chart string, version string, args ...string) {
 
 	helmArgs := []string{

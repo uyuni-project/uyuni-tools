@@ -8,7 +8,6 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
@@ -46,11 +45,11 @@ func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, root
 // Install cert-manager and its CRDs using helm in the cert-manager namespace if needed
 // and then create a self-signed CA and issuers.
 // Returns helm arguments to be added to use the issuer
-func installSslIssuers(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.HelmFlags,
-	sslFlags *cmd_utils.SslCertFlags, rootCa string, tlsCert *ssl.SslPair, kubeconfig, fqdn string) []string {
+func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, rootCa string,
+	tlsCert *ssl.SslPair, kubeconfig, fqdn string) []string {
 
 	// Install cert-manager if needed
-	installCertManager(globalFlags, helmFlags, kubeconfig)
+	installCertManager(helmFlags, kubeconfig)
 
 	log.Info().Msg("Creating SSL certificate issuer")
 	crdsDir, err := os.MkdirTemp("", "uyuniadm-*")
@@ -97,7 +96,7 @@ func installSslIssuers(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 	return []string{}
 }
 
-func installCertManager(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.HelmFlags, kubeconfig string) {
+func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string) {
 	if !isDeploymentReady("", "cert-manager") {
 		log.Info().Msg("Installing cert-manager")
 		repo := ""
@@ -120,7 +119,7 @@ func installCertManager(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Hel
 			chart = "cert-manager"
 		}
 		// The installedby label will be used to only uninstall what we installed
-		helmUpgrade(globalFlags, kubeconfig, namespace, true, repo, "cert-manager", chart, version, args...)
+		helmUpgrade(kubeconfig, namespace, true, repo, "cert-manager", chart, version, args...)
 	}
 
 	// Wait for cert-manager to be ready

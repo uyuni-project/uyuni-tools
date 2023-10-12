@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/ssl"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
@@ -12,7 +11,7 @@ import (
 
 const HELM_APP_NAME = "uyuni"
 
-func Deploy(globalFlags *types.GlobalFlags, imageFlags *cmd_utils.ImageFlags,
+func Deploy(cnx *utils.Connection, imageFlags *cmd_utils.ImageFlags,
 	helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, clusterInfos *ClusterInfos,
 	fqdn string, debug bool, helmArgs ...string) {
 
@@ -26,22 +25,22 @@ func Deploy(globalFlags *types.GlobalFlags, imageFlags *cmd_utils.ImageFlags,
 	}
 
 	// Install the uyuni server helm chart
-	UyuniUpgrade(globalFlags, imageFlags, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
+	UyuniUpgrade(imageFlags, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
 
 	// Wait for the pod to be started
 	waitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
-	utils.WaitForServer("")
+	cnx.WaitForServer()
 }
 
-func DeployCertificate(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.HelmFlags,
-	sslFlags *cmd_utils.SslCertFlags, rootCa string, ca *ssl.SslPair, kubeconfig string, fqdn string) []string {
+func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, rootCa string,
+	ca *ssl.SslPair, kubeconfig string, fqdn string) []string {
 
 	helmArgs := []string{}
 	if sslFlags.UseExisting() {
-		DeployExistingCertificate(globalFlags, helmFlags, sslFlags, kubeconfig)
+		DeployExistingCertificate(helmFlags, sslFlags, kubeconfig)
 	} else {
 		// Install cert-manager and a self-signed issuer ready for use
-		issuerArgs := installSslIssuers(globalFlags, helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn)
+		issuerArgs := installSslIssuers(helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn)
 		helmArgs = append(helmArgs, issuerArgs...)
 
 		// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
@@ -51,8 +50,7 @@ func DeployCertificate(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.Helm
 	return helmArgs
 }
 
-func DeployExistingCertificate(globalFlags *types.GlobalFlags, helmFlags *cmd_utils.HelmFlags,
-	sslFlags *cmd_utils.SslCertFlags, kubeconfig string) {
+func DeployExistingCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, kubeconfig string) {
 
 	// Deploy the SSL Certificate secret and CA configmap
 	serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
@@ -63,8 +61,7 @@ func DeployExistingCertificate(globalFlags *types.GlobalFlags, helmFlags *cmd_ut
 	extractCaCertToConfig()
 }
 
-func UyuniUpgrade(globalFlags *types.GlobalFlags, imageFlags *cmd_utils.ImageFlags,
-	helmFlags *cmd_utils.HelmFlags, kubeconfig string,
+func UyuniUpgrade(imageFlags *cmd_utils.ImageFlags, helmFlags *cmd_utils.HelmFlags, kubeconfig string,
 	fqdn string, ingress string, helmArgs ...string) {
 
 	log.Info().Msg("Installing Uyuni")
@@ -89,5 +86,5 @@ func UyuniUpgrade(globalFlags *types.GlobalFlags, imageFlags *cmd_utils.ImageFla
 	namespace := helmFlags.Uyuni.Namespace
 	chart := helmFlags.Uyuni.Chart
 	version := helmFlags.Uyuni.Version
-	helmUpgrade(globalFlags, kubeconfig, namespace, true, "", HELM_APP_NAME, chart, version, helmParams...)
+	helmUpgrade(kubeconfig, namespace, true, "", HELM_APP_NAME, chart, version, helmParams...)
 }

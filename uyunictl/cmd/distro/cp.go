@@ -25,13 +25,14 @@ func umountAndRemove(mountpoint string) {
 }
 
 func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, distroName string, source string) {
+	cnx := utils.NewConnection(flags.Backend)
 	log.Info().Msgf("Copying distribution %s\n", distroName)
 	if !utils.FileExists(source) {
 		log.Fatal().Msgf("Source %s does not exists", source)
 	}
 
 	dstpath := "/srv/www/distributions/" + distroName
-	if utils.TestExistenceInPod(flags.Backend, dstpath) {
+	if utils.TestExistenceInPod(cnx, dstpath) {
 		log.Fatal().Msgf("Distribution already exists: %s\n", dstpath)
 	}
 
@@ -58,7 +59,7 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command,
 		}
 	}
 
-	utils.Copy(flags.Backend, srcdir, "server:"+dstpath, "tomcat", "susemanager")
+	utils.Copy(cnx, srcdir, "server:"+dstpath, "tomcat", "susemanager")
 
 	log.Info().Msg("Distribution has been copied")
 }

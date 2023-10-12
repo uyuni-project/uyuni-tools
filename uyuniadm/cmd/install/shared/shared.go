@@ -7,7 +7,6 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/uyuniadm/shared/utils"
@@ -15,13 +14,13 @@ import (
 
 const SETUP_NAME = "setup.sh"
 
-func RunSetup(globalFlags *types.GlobalFlags, flags *InstallFlags, fqdn string, env map[string]string) {
+func RunSetup(cnx *utils.Connection, flags *InstallFlags, fqdn string, env map[string]string) {
 	tmpFolder := generateSetupScript(flags, fqdn, env)
 	defer os.RemoveAll(tmpFolder)
 
-	utils.Copy("", filepath.Join(tmpFolder, SETUP_NAME), "server:/tmp/setup.sh", "root", "root")
+	utils.Copy(cnx, filepath.Join(tmpFolder, SETUP_NAME), "server:/tmp/setup.sh", "root", "root")
 
-	err := adm_utils.ExecCommand(zerolog.InfoLevel, "", "/tmp/setup.sh")
+	err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/tmp/setup.sh")
 	if err != nil {
 		log.Fatal().Err(err).Msg("error running the setup script")
 	}
