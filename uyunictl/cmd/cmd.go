@@ -29,8 +29,6 @@ func NewUyunictlCommand() *cobra.Command {
 		log.Info().Msgf("Executing command: %s", cmd.Name())
 	}
 
-	// TODO Add --namespace parameter for kubernetes ?
-
 	rootCmd.AddCommand(exec.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
 	rootCmd.AddCommand(distro.NewCommand(globalFlags))
