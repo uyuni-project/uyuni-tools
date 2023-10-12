@@ -166,3 +166,11 @@ func TestOrderCasChain2(t *testing.T) {
 		t.Errorf("Invalid root CA certificate, got:\n:%s", rootCert)
 	}
 }
+
+func TestGetRsaKey(t *testing.T) {
+	actual := string(GetRsaKey("testdata/RootCA.key", "secret"))
+	if !strings.HasPrefix(actual, "-----BEGIN PRIVATE KEY-----\nMIIEugIBADANBgkqhkiG9w0BAQEFAAS") ||
+		!strings.HasSuffix(actual, "DKY9SmW6QD+RJwbMc4M=\n-----END PRIVATE KEY-----\n") {
+		t.Errorf("Unexpected generated RSA key: %s", actual)
+	}
+}

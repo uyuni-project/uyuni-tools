@@ -5,7 +5,6 @@ package kubernetes
 import (
 	"encoding/base64"
 	"os"
-	"os/exec"
 	"path"
 
 	"github.com/rs/zerolog"
@@ -75,17 +74,10 @@ func setupSsl(flags *kubernetesMigrateFlags, kubeconfig string, scriptDir string
 	caKey := path.Join(scriptDir, "RHN-ORG-PRIVATE-SSL-KEY")
 
 	if utils.FileExists(caCert) && utils.FileExists(caKey) {
-		// Convert the key file to RSA format for kubectl to handle it
-		cmd := exec.Command("openssl", "rsa", "-in", caKey, "-passin", "env:pass")
-		cmd.Env = append(cmd.Env, "pass=spacewalk") // TODO Parametrize!
-		out, err := cmd.Output()
-		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to convert CA private key to RSA")
-		}
-		key := base64.StdEncoding.EncodeToString(out)
+		key := base64.StdEncoding.EncodeToString(ssl.GetRsaKey(caKey, flags.Ssl.Password))
 
 		// Strip down the certificate text part
-		out, err = utils.RunCmdOutput(zerolog.DebugLevel, "openssl", "x509", "-in", caCert)
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "openssl", "x509", "-in", caCert)
 		if err != nil {
 			log.Fatal().Err(err).Msg("Failed to strip text part of CA certificate")
 		}

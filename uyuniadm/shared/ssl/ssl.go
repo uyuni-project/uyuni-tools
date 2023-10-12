@@ -242,3 +242,19 @@ func optionalFile(file string) {
 		log.Fatal().Msgf("%s file is not accessible", file)
 	}
 }
+
+// Converts an SSL key to RSA.
+func GetRsaKey(keyPath string, password string) []byte {
+	// Kubernetes only handles RSA private TLS keys, convert and strip password
+	caPassword := password
+	utils.AskIfMissing(&caPassword, "Source server SSL CA private key password")
+
+	// Convert the key file to RSA format for kubectl to handle it
+	cmd := exec.Command("openssl", "rsa", "-in", keyPath, "-passin", "env:pass")
+	cmd.Env = append(cmd.Env, "pass="+caPassword)
+	out, err := cmd.Output()
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to convert CA private key to RSA")
+	}
+	return out
+}
