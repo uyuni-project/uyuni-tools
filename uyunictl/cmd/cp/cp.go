@@ -40,5 +40,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 }
 
 func run(flags *flagpole, cmd *cobra.Command, args []string) {
-	utils.Copy(flags.Backend, args[0], args[1], flags.User, flags.Group)
+	cnx := utils.NewConnection(flags.Backend)
+	utils.Copy(cnx, args[0], args[1], flags.User, flags.Group)
 }

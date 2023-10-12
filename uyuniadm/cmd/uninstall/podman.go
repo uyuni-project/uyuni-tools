@@ -7,12 +7,11 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/podman"
 )
 
-func uninstallForPodman(globalFlags *types.GlobalFlags, dryRun bool, purge bool) {
+func uninstallForPodman(dryRun bool, purge bool) {
 
 	// Disable the service
 	// Check if there is an uyuni-server service

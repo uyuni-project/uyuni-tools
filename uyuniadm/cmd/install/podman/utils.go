@@ -13,7 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/podman"
 )
 
-func waitForSystemStart(globalFlags *types.GlobalFlags, flags *podmanInstallFlags) {
+func waitForSystemStart(cnx *utils.Connection, flags *podmanInstallFlags) {
 	// Setup the systemd service configuration options
 	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 
@@ -31,7 +31,7 @@ func waitForSystemStart(globalFlags *types.GlobalFlags, flags *podmanInstallFlag
 		log.Fatal().Err(err).Msg("Failed to enable uyuni-server systemd service")
 	}
 
-	utils.WaitForServer("")
+	cnx.WaitForServer()
 }
 
 func pullImage(flags *podmanInstallFlags) {
@@ -50,7 +50,8 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 
 	pullImage(flags)
 
-	waitForSystemStart(globalFlags, flags)
+	cnx := utils.NewConnection("podman")
+	waitForSystemStart(cnx, flags)
 
 	caPassword := flags.Ssl.Password
 	if flags.Ssl.UseExisting() {
@@ -71,10 +72,10 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 
 	log.Info().Msg("run setup command in the container")
 
-	shared.RunSetup(globalFlags, &flags.InstallFlags, fqdn, env)
+	shared.RunSetup(cnx, &flags.InstallFlags, fqdn, env)
 
 	if flags.Ssl.UseExisting() {
-		podman.UpdateSslCertificate(&flags.Ssl.Ca, &flags.Ssl.Server)
+		podman.UpdateSslCertificate(cnx, &flags.Ssl.Ca, &flags.Ssl.Server)
 	}
 
 	podman.EnablePodmanSocket()

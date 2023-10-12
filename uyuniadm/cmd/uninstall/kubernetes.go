@@ -6,12 +6,11 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
 )
 
-func uninstallForKubernetes(globalFlags *types.GlobalFlags, dryRun bool) {
+func uninstallForKubernetes(dryRun bool) {
 	clusterInfos := kubernetes.CheckCluster()
 	kubeconfig := clusterInfos.GetKubeconfig()
 

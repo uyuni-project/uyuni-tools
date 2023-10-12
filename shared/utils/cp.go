@@ -10,12 +10,20 @@ import (
 // Copy transfers a file to or from the container.
 // Prefix one of src or dst parameters with `server:` to designate the path is in the container
 // user and group parameters are used to set the owner of a file transfered in the container.
-func Copy(backend string, src string, dst string, user string, group string) {
-	command, podName := GetPodName(backend, true)
+func Copy(cnx *Connection, src string, dst string, user string, group string) {
+	podName, err := cnx.GetPodName()
+	if err != nil {
+		log.Fatal().Err(err)
+	}
 	var commandArgs []string
 	extraArgs := []string{}
 	srcExpanded := strings.Replace(src, "server:", podName+":", 1)
 	dstExpanded := strings.Replace(dst, "server:", podName+":", 1)
+
+	command, err := cnx.GetCommand()
+	if err != nil {
+		log.Fatal().Err(err)
+	}
 
 	switch command {
 	case "podman-remote":
@@ -43,9 +51,17 @@ func Copy(backend string, src string, dst string, user string, group string) {
 	}
 }
 
-func TestExistenceInPod(backend string, dstpath string) bool {
-	command, podName := GetPodName(backend, true)
+func TestExistenceInPod(cnx *Connection, dstpath string) bool {
+	podName, err := cnx.GetPodName()
+	if err != nil {
+		log.Fatal().Err(err)
+	}
 	commandArgs := []string{"exec", podName}
+
+	command, err := cnx.GetCommand()
+	if err != nil {
+		log.Fatal().Err(err)
+	}
 
 	switch command {
 	case "podman":

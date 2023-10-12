@@ -9,10 +9,18 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func ExecCommand(logLevel zerolog.Level, backend string, args ...string) error {
-	command, podName := utils.GetPodName(backend, true)
+func ExecCommand(logLevel zerolog.Level, cnx *utils.Connection, args ...string) error {
+	podName, err := cnx.GetPodName()
+	if err != nil {
+		log.Fatal().Err(err)
+	}
 
 	commandArgs := []string{"exec", podName}
+
+	command, err := cnx.GetCommand()
+	if err != nil {
+		log.Fatal().Err(err)
+	}
 
 	if command == "kubectl" {
 		commandArgs = append(commandArgs, "-c", "uyuni", "--")

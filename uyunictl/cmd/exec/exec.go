@@ -45,7 +45,16 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 }
 
 func run(flags *flagpole, cmd *cobra.Command, args []string) {
-	command, podName := utils.GetPodName(flags.Backend, true)
+	cnx := utils.NewConnection(flags.Backend)
+	podName, err := cnx.GetPodName()
+	if err != nil {
+		log.Fatal().Err(err)
+	}
+
+	command, err := cnx.GetCommand()
+	if err != nil {
+		log.Fatal().Err(err)
+	}
 
 	commandArgs := []string{"exec"}
 	if flags.Interactive {
@@ -75,7 +84,7 @@ func run(flags *flagpole, cmd *cobra.Command, args []string) {
 		commandArgs = append(commandArgs, newEnv...)
 	}
 	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
-	err := RunRawCmd(command, commandArgs)
+	err = RunRawCmd(command, commandArgs)
 	if err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
 			log.Info().Err(err).Msg("Command failed")

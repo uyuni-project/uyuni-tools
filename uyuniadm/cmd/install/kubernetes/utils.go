@@ -7,6 +7,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/ssl"
@@ -15,6 +16,7 @@ import (
 
 func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInstallFlags,
 	cmd *cobra.Command, args []string) {
+	cnx := utils.NewConnection("kubectl")
 
 	fqdn := args[0]
 
@@ -32,21 +34,21 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInsta
 
 	// Deploy the SSL CA or server certificate
 	ca := ssl.SslPair{}
-	sslArgs := kubernetes.DeployCertificate(globalFlags, &flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn)
+	sslArgs := kubernetes.DeployCertificate(&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn)
 	helmArgs = append(helmArgs, sslArgs...)
 
 	// Deploy Uyuni and wait for it to be up
-	kubernetes.Deploy(globalFlags, &flags.Image, &flags.Helm, &flags.Ssl, &clusterInfos, fqdn, flags.Debug.Java, helmArgs...)
+	kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &flags.Ssl, &clusterInfos, fqdn, flags.Debug.Java, helmArgs...)
 
 	// Create setup script + env variables and copy it to the container
 	envs := map[string]string{
 		"NO_SSL": "Y",
 	}
 
-	shared.RunSetup(globalFlags, &flags.InstallFlags, args[0], envs)
+	shared.RunSetup(cnx, &flags.InstallFlags, args[0], envs)
 
 	// The CA needs to be added to the database for Kickstart use.
-	err := adm_utils.ExecCommand(zerolog.DebugLevel, "kubectl",
+	err := adm_utils.ExecCommand(zerolog.DebugLevel, cnx,
 		"/usr/bin/rhn-ssl-dbstore", "--ca-cert=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT")
 	if err != nil {
 		log.Fatal().Err(err).Msg("Error storing the SSL CA certificate in database")

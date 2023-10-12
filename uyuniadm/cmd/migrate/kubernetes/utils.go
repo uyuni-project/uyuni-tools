@@ -20,6 +20,7 @@ import (
 )
 
 func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, cmd *cobra.Command, args []string) {
+	cnx := utils.NewConnection("kubectl")
 	fqdn := args[0]
 
 	// Find the SSH Socket and paths for the migration
@@ -36,14 +37,14 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 	// We don't need the SSL certs at this point of the migration
 	clusterInfos := kubernetes.CheckCluster()
 
-	kubernetes.Deploy(globalFlags, &flags.Image, &flags.Helm, &sslFlags, &clusterInfos, fqdn, false,
+	kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &sslFlags, &clusterInfos, fqdn, false,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
 		"--set", "migration.dataPath="+scriptDir)
 
 	// Run the actual migration
-	runMigration(globalFlags, flags, scriptDir)
+	runMigration(cnx, flags, scriptDir)
 
 	tz := shared.ReadTimezone(scriptDir)
 
@@ -52,19 +53,16 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 		"--set", "timezone=" + tz,
 	}
 
-	// TODO Update uyuni-ca secret with the source CA cert and key
 	kubeconfig := clusterInfos.GetKubeconfig()
-	helmArgs = append(helmArgs, setupSsl(globalFlags, flags, kubeconfig, scriptDir)...)
-
-	// Update the installation in non-migration mode
+	helmArgs = append(helmArgs, setupSsl(flags, kubeconfig, scriptDir)...)
 
 	// As we upgrade the helm instance without the migration parameters the SSL certificate will be used
-	kubernetes.UyuniUpgrade(globalFlags, &flags.Image, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	kubernetes.UyuniUpgrade(&flags.Image, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 }
 
-func runMigration(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, tmpPath string) {
+func runMigration(cnx *utils.Connection, flags *kubernetesMigrateFlags, tmpPath string) {
 	log.Info().Msg("Migrating server")
-	err := adm_utils.ExecCommand(zerolog.DebugLevel, "", "/var/lib/uyuni-tools/migrate.sh")
+	err := adm_utils.ExecCommand(zerolog.DebugLevel, cnx, "/var/lib/uyuni-tools/migrate.sh")
 	if err != nil {
 		log.Fatal().Err(err).Msg("error running the migration script")
 	}
@@ -72,7 +70,7 @@ func runMigration(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags,
 
 // updateIssuer replaces the temporary SSL certificate issuer with the source server CA.
 // Return additional helm args to use the SSL certificates
-func setupSsl(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, kubeconfig string, scriptDir string) []string {
+func setupSsl(flags *kubernetesMigrateFlags, kubeconfig string, scriptDir string) []string {
 	caCert := path.Join(scriptDir, "RHN-ORG-TRUSTED-SSL-CERT")
 	caKey := path.Join(scriptDir, "RHN-ORG-PRIVATE-SSL-KEY")
 
@@ -96,7 +94,7 @@ func setupSsl(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, kub
 
 		// An empty struct means no third party certificate
 		sslFlags := adm_utils.SslCertFlags{}
-		return kubernetes.DeployCertificate(globalFlags, &flags.Helm, &sslFlags, cert, &ca, kubeconfig, "")
+		return kubernetes.DeployCertificate(&flags.Helm, &sslFlags, cert, &ca, kubeconfig, "")
 	} else {
 		// Handle third party certificates and CA
 		sslFlags := adm_utils.SslCertFlags{
@@ -106,7 +104,7 @@ func setupSsl(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, kub
 				Cert: path.Join(scriptDir, "spacewalk.crt"),
 			},
 		}
-		kubernetes.DeployExistingCertificate(globalFlags, &flags.Helm, &sslFlags, kubeconfig)
+		kubernetes.DeployExistingCertificate(&flags.Helm, &sslFlags, kubeconfig)
 	}
 	return []string{}
 }

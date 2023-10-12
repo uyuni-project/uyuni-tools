@@ -137,7 +137,7 @@ func EnablePodmanSocket() {
 	}
 }
 
-func UpdateSslCertificate(chain *ssl.CaChain, serverPair *ssl.SslPair) {
+func UpdateSslCertificate(cnx *utils.Connection, chain *ssl.CaChain, serverPair *ssl.SslPair) {
 	ssl.CheckPaths(chain, serverPair)
 
 	// Copy the CAs, certificate and key to the container
@@ -162,15 +162,15 @@ func UpdateSslCertificate(chain *ssl.CaChain, serverPair *ssl.SslPair) {
 		"--server-key-file", serverKeyPath,
 	}
 
-	utils.Copy("podman", chain.Root, "server:"+rootCaPath, "root", "root")
-	utils.Copy("podman", serverPair.Cert, "server:"+serverCrtPath, "root", "root")
-	utils.Copy("podman", serverPair.Key, "server:"+serverKeyPath, "root", "root")
+	utils.Copy(cnx, chain.Root, "server:"+rootCaPath, "root", "root")
+	utils.Copy(cnx, serverPair.Cert, "server:"+serverCrtPath, "root", "root")
+	utils.Copy(cnx, serverPair.Key, "server:"+serverKeyPath, "root", "root")
 
 	for i, ca := range chain.Intermediate {
 		caFilename := fmt.Sprintf("ca-%d.crt", i)
 		caPath := path.Join(certDir, caFilename)
 		args = append(args, "--intermediate-ca-file", caPath)
-		utils.Copy("podman", ca, "server:"+caPath, "root", "root")
+		utils.Copy(cnx, ca, "server:"+caPath, "root", "root")
 	}
 
 	// Check and install then using mgr-ssl-cert-setup
@@ -184,7 +184,7 @@ func UpdateSslCertificate(chain *ssl.CaChain, serverPair *ssl.SslPair) {
 	}
 
 	const sslbuildPath = "/root/ssl-build"
-	if utils.TestExistenceInPod("podman", sslbuildPath) {
+	if utils.TestExistenceInPod(cnx, sslbuildPath) {
 		if err := utils.RunCmd("podman", "exec", utils.PODMAN_CONTAINER, "rm", "-rf", sslbuildPath); err != nil {
 			log.Error().Err(err).Msg("Failed to remove now useless ssl-build folder in the container")
 		}

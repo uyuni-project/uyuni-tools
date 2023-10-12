@@ -1,6 +1,7 @@
 package uninstall
 
 import (
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -15,12 +16,17 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			dryRun, _ := cmd.Flags().GetBool("dry-run")
 			purge, _ := cmd.Flags().GetBool("purge-volumes")
 
-			command := utils.GetCommand("")
+			// TODO Change to subcommands like other uyuniadm commands
+			cnx := utils.NewConnection("")
+			command, err := cnx.GetCommand()
+			if err != nil {
+				log.Fatal().Err(err)
+			}
 			switch command {
 			case "podman":
-				uninstallForPodman(globalFlags, dryRun, purge)
+				uninstallForPodman(dryRun, purge)
 			case "kubectl":
-				uninstallForKubernetes(globalFlags, dryRun)
+				uninstallForKubernetes(dryRun)
 			}
 		},
 	}
