@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -44,6 +45,9 @@ func pullImage(flags *podmanInstallFlags) {
 }
 
 func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags, cmd *cobra.Command, args []string) {
+	fqdn := getFqdn(args)
+	log.Info().Msgf("setting up server with the FQDN '%s'", fqdn)
+
 	pullImage(flags)
 
 	waitForSystemStart(globalFlags, flags)
@@ -61,17 +65,29 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 		"CERT_STATE":   flags.Ssl.State,
 		"CERT_COUNTRY": flags.Ssl.Country,
 		"CERT_EMAIL":   flags.Ssl.Email,
-		"CERT_CNAMES":  strings.Join(append([]string{args[0]}, flags.Ssl.Cnames...), ","),
+		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, flags.Ssl.Cnames...), ","),
 		"CERT_PASS":    caPassword,
 	}
 
 	log.Info().Msg("run setup command in the container")
 
-	shared.RunSetup(globalFlags, &flags.InstallFlags, args[0], env)
+	shared.RunSetup(globalFlags, &flags.InstallFlags, fqdn, env)
 
 	if flags.Ssl.UseExisting() {
 		podman.UpdateSslCertificate(&flags.Ssl.Ca, &flags.Ssl.Server)
 	}
 
 	podman.EnablePodmanSocket()
+}
+
+func getFqdn(args []string) string {
+	if len(args) == 1 {
+		return args[0]
+	} else {
+		fqdn_b, err := utils.RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
+		if err != nil {
+			log.Fatal().Err(err).Msg("Failed to compute server FQDN")
+		}
+		return string(fqdn_b)
+	}
 }
