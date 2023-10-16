@@ -1,3 +1,5 @@
+//go:build !nok8s
+
 package uninstall
 
 import (
@@ -9,6 +11,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/shared/kubernetes"
 )
+
+const kubernetesBuilt = true
 
 func uninstallForKubernetes(dryRun bool) {
 	clusterInfos := kubernetes.CheckCluster()
@@ -94,3 +98,10 @@ func helmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 	}
 	return namespace
 }
+
+const kubernetesHelp = `
+Note that removing the volumes could also be handled automatically depending on the StorageClass used
+when installed on a kubernetes cluster.
+
+For instance on a default K3S install, the local-path-provider storage volumes will
+be automatically removed when deleting the deployment even if --purge-volumes argument is not used.`
