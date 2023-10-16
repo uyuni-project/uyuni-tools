@@ -18,6 +18,8 @@ func uninstallForKubernetes(dryRun bool) {
 	clusterInfos := kubernetes.CheckCluster()
 	kubeconfig := clusterInfos.GetKubeconfig()
 
+	// TODO Find all the PVs related to the server if we want to delete them
+
 	// Uninstall uyuni
 	namespace := helmUninstall(kubeconfig, "uyuni", "", dryRun)
 
@@ -51,6 +53,10 @@ func uninstallForKubernetes(dryRun bool) {
 			}
 		}
 	}
+
+	// TODO Remove the PVs or wait for their automatic removal if purge is requested
+	// Also wait if the PVs are dynamic with Delete reclaim policy but the user didn't ask to purge them
+	// Since some storage plugins don't handle Delete policy, we may need to check for error events to avoid infinite loop
 
 	// Uninstall cert-manager if we installed it
 	helmUninstall(kubeconfig, "cert-manager", "-linstalledby=uyuniadm", dryRun)
