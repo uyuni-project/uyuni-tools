@@ -46,10 +46,10 @@ func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, root
 // and then create a self-signed CA and issuers.
 // Returns helm arguments to be added to use the issuer
 func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, rootCa string,
-	tlsCert *ssl.SslPair, kubeconfig, fqdn string) []string {
+	tlsCert *ssl.SslPair, kubeconfig, fqdn string, imagePullPolicy string) []string {
 
 	// Install cert-manager if needed
-	installCertManager(helmFlags, kubeconfig)
+	installCertManager(helmFlags, kubeconfig, imagePullPolicy)
 
 	log.Info().Msg("Creating SSL certificate issuer")
 	crdsDir, err := os.MkdirTemp("", "uyuniadm-*")
@@ -96,7 +96,7 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	return []string{}
 }
 
-func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string) {
+func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, imagePullPolicy string) {
 	if !isDeploymentReady("", "cert-manager") {
 		log.Info().Msg("Installing cert-manager")
 		repo := ""
@@ -107,6 +107,7 @@ func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string) {
 		args := []string{
 			"--set", "installCRDs=true",
 			"--set-json", "global.commonLabels={\"installedby\": \"uyuniadm\"}",
+			"--set", "images.pullPolicy=" + GetPullPolicy(imagePullPolicy),
 		}
 		extraValues := helmFlags.CertManager.Values
 		if extraValues != "" {

@@ -27,8 +27,9 @@ type HelmFlags struct {
 }
 
 type ImageFlags struct {
-	Name string `mapstructure:"image"`
-	Tag  string
+	Name       string `mapstructure:"image"`
+	Tag        string `mapstructure:"tag"`
+	PullPolicy string `mapstructure:"pullPolicy"`
 }
 
 type SslCertFlags struct {
@@ -73,4 +74,12 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("image", DefaultImage, "Image")
 	cmd.Flags().String("tag", DefaultTag, "Tag Image")
+
+	// Podman:
+	//   Never, just check and fail if needed
+	//   IfNotPresent, check and pull
+	//   Always, pull without checking
+	// Kubernetes -> set helm values
+	cmd.Flags().String("pullPolicy", "IfNotPresent",
+		"set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'")
 }
