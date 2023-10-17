@@ -33,14 +33,14 @@ func Deploy(cnx *utils.Connection, imageFlags *cmd_utils.ImageFlags,
 }
 
 func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, rootCa string,
-	ca *ssl.SslPair, kubeconfig string, fqdn string) []string {
+	ca *ssl.SslPair, kubeconfig string, fqdn string, imagePullPolicy string) []string {
 
 	helmArgs := []string{}
 	if sslFlags.UseExisting() {
 		DeployExistingCertificate(helmFlags, sslFlags, kubeconfig)
 	} else {
 		// Install cert-manager and a self-signed issuer ready for use
-		issuerArgs := installSslIssuers(helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn)
+		issuerArgs := installSslIssuers(helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn, imagePullPolicy)
 		helmArgs = append(helmArgs, issuerArgs...)
 
 		// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
@@ -79,6 +79,7 @@ func UyuniUpgrade(imageFlags *cmd_utils.ImageFlags, helmFlags *cmd_utils.HelmFla
 	// The values computed from the command line need to be last to override what could be in the extras
 	helmParams = append(helmParams,
 		"--set", fmt.Sprintf("images.server=%s:%s", imageFlags.Name, imageFlags.Tag),
+		"--set", "pullPolicy="+GetPullPolicy(imageFlags.PullPolicy),
 		"--set", "fqdn="+fqdn)
 
 	helmParams = append(helmParams, helmArgs...)

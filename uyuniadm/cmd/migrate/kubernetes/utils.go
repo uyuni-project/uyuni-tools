@@ -86,7 +86,7 @@ func setupSsl(flags *kubernetesMigrateFlags, kubeconfig string, scriptDir string
 
 		// An empty struct means no third party certificate
 		sslFlags := adm_utils.SslCertFlags{}
-		return kubernetes.DeployCertificate(&flags.Helm, &sslFlags, cert, &ca, kubeconfig, "")
+		return kubernetes.DeployCertificate(&flags.Helm, &sslFlags, cert, &ca, kubeconfig, "", flags.Image.PullPolicy)
 	} else {
 		// Handle third party certificates and CA
 		sslFlags := adm_utils.SslCertFlags{

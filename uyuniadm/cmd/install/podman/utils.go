@@ -34,21 +34,11 @@ func waitForSystemStart(cnx *utils.Connection, flags *podmanInstallFlags) {
 	cnx.WaitForServer()
 }
 
-func pullImage(flags *podmanInstallFlags) {
-	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
-	log.Info().Msgf("Running podman pull %s", image)
-
-	err := utils.RunCmdStdMapping("podman", "pull", image)
-	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to pull image")
-	}
-}
-
 func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags, cmd *cobra.Command, args []string) {
 	fqdn := getFqdn(args)
 	log.Info().Msgf("setting up server with the FQDN '%s'", fqdn)
 
-	pullImage(flags)
+	podman.PrepareImage(&flags.Image)
 
 	cnx := utils.NewConnection("podman")
 	waitForSystemStart(cnx, flags)

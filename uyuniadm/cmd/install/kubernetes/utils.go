@@ -34,7 +34,8 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInsta
 
 	// Deploy the SSL CA or server certificate
 	ca := ssl.SslPair{}
-	sslArgs := kubernetes.DeployCertificate(&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn)
+	sslArgs := kubernetes.DeployCertificate(&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
+		flags.Image.PullPolicy)
 	helmArgs = append(helmArgs, sslArgs...)
 
 	// Deploy Uyuni and wait for it to be up

@@ -122,3 +122,16 @@ func uninstallFile(path string, dryRun bool) {
 		}
 	}
 }
+
+func GetPullPolicy(name string) string {
+	policies := map[string]string{
+		"always":       "Always",
+		"never":        "Never",
+		"ifnotpresent": "IfNotPresent",
+	}
+	policy := policies[strings.ToLower(name)]
+	if policy == "" {
+		log.Fatal().Msgf("%s is not a valid image pull policy value", name)
+	}
+	return policy
+}

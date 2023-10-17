@@ -36,6 +36,8 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/root/.ssh/known_hosts")
 	}
 
+	podman.PrepareImage(&flags.Image)
+
 	log.Info().Msg("Migrating server")
 	runContainer("uyuni-migration", flags.Image.Name, flags.Image.Tag, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"})
