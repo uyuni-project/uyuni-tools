@@ -7,11 +7,17 @@ import (
 
 const podmanMigrationScriptTemplate = `#!/bin/bash
 set -e
+SSH_CONFIG=""
+if test -e /tmp/ssh_config; then
+  SSH_CONFIG="-F /tmp/ssh_config"
+fi
+SSH="ssh -A $SSH_CONFIG "
+SCP="scp -A $SSH_CONFIG "
 for folder in {{ range .Volumes }}{{ . }} {{ end }};
 do
   if ssh -A {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."
-    rsync -e "ssh -A " --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:$folder/ $folder;
+    rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:$folder/ $folder;
   else
     echo "Skipping missing $folder..."
   fi
@@ -20,7 +26,7 @@ rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 
 echo "Extracting time zone..."
-ssh {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
+$SSH {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
 
 {{ if .Kubernetes }}
 echo "Altering configuration for kubernetes..."
@@ -58,8 +64,8 @@ cp /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /var/lib/uyuni-tools/RH
 
 if test "extractedSSL" != "1"; then
   # For third party certificates, the CA chain is in the certificate file.
-  scp -A {{ .SourceFqdn }}:/etc/pki/tls/private/spacewalk.key /var/lib/uyuni-tools/
-  scp -A {{ .SourceFqdn }}:/etc/pki/tls/certs/spacewalk.crt /var/lib/uyuni-tools/
+  $SCP {{ .SourceFqdn }}:/etc/pki/tls/private/spacewalk.key /var/lib/uyuni-tools/
+  $SCP {{ .SourceFqdn }}:/etc/pki/tls/certs/spacewalk.crt /var/lib/uyuni-tools/
 fi
 
 echo "Removing useless ssl-build folder..."

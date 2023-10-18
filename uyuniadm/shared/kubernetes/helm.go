@@ -3,6 +3,7 @@ package kubernetes
 import (
 	"fmt"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -43,7 +44,7 @@ func helmUpgrade(kubeconfig string, namespace string, install bool,
 		command = "install"
 	}
 	errorMessage := fmt.Sprintf("Failed to %s helm chart %s in namespace %s", command, chart, namespace)
-	err := utils.RunCmd("helm", helmArgs...)
+	_, err := utils.RunCmdOutput(zerolog.DebugLevel, "helm", helmArgs...)
 	if err != nil {
 		log.Fatal().Err(err).Msg(errorMessage)
 	}

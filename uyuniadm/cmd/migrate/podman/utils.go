@@ -29,11 +29,11 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 
 	if sshConfigPath != "" {
-		extraArgs = append(extraArgs, "-v", sshConfigPath+":/root/.ssh/config")
+		extraArgs = append(extraArgs, "-v", sshConfigPath+":/tmp/ssh_config")
 	}
 
 	if sshKnownhostsPath != "" {
-		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/root/.ssh/known_hosts")
+		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/etc/ssh/ssh_known_hosts")
 	}
 
 	podman.PrepareImage(&flags.Image)
