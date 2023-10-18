@@ -17,12 +17,19 @@
 
 %global provider        github
 %global provider_tld    com
-%global org             uyuni-project 
+%global org             uyuni-project
 %global project         uyuni-tools
 %global provider_prefix %{provider}.%{provider_tld}/%{org}/%{project}
 
 %global image           registry.opensuse.org/uyuni/server
 %global chart           oci://registry.opensuse.org/uyuni/server
+
+%if 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 12 || 0%{?ubuntu} >= 2204
+%define adm_build    1
+%else
+%define adm_build    0
+%endif
+
 
 Name:           %{project}
 Version:        0.0.1
@@ -33,30 +40,25 @@ Group:          System/Management
 URL:            https://%{provider_prefix}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        vendor.tar.gz
-BuildRequires:  golang-packaging
 BuildRequires:  coreutils
-%if 0%{?rhel}
-BuildRequires:  golang >= 1.20
-%else
+%if 0%{?suse_version}
 BuildRequires:  golang(API) >= 1.20
+%else
+BuildRequires:  golang >= 1.18
 %endif
-BuildRequires:  rsyslog
-
-BuildRequires:       gpgme
-BuildRequires:       device-mapper-devel
-BuildRequires:       libbtrfs-devel
-BuildRequires:       libgpgme-devel
 
 
 %description
 Tools for managing uyuni container.
 
+%if %{adm_build}
 %package -n uyuniadm
 Summary:      Command line tool to install and update Uyuni
 
 %description -n uyuniadm
 uyuniadm is a convenient tool to install and update Uyuni components as containers running
 either on podman or a kubernetes cluster.
+%endif
 
 %package -n uyunictl
 Summary:      Command line tool to perform day-to-day operations on Uyuni
@@ -73,9 +75,8 @@ tar -zxf %{SOURCE1}
 
 %build
 export GOFLAGS=-mod=vendor
-%goprep %{provider_prefix}
 mkdir -p bin
-ADM_PATH=%{provider_prefix}/uyuniadm/shared/utils
+ADM_PATH="%{provider_prefix}/uyuniadm/shared/utils"
 
 tag=%{!?_default_tag:latest}
 %if "%{?_default_tag}" != ""
@@ -96,28 +97,26 @@ go build \
     -ldflags "-X ${ADM_PATH}.DefaultImage=${image} -X ${ADM_PATH}.DefaultTag=${tag} -X ${ADM_PATH}.DefaultChart=${chart}" \
     -o ./bin ./...
 
+%if ! %{adm_build}
+rm ./bin/uyuniadm
+%endif
+
 %install
 install -m 0755 -vd %{buildroot}%{_bindir}
 install -m 0755 -vp ./bin/* %{buildroot}%{_bindir}/
 
-%gofilelist
-
-%define _release_dir  %{_builddir}/%{project}-%{version}/release
-
+%if %{adm_build}
 %files -n uyuniadm
-
 %defattr(-,root,root)
 %doc README.md
 %license LICENSE
-
 %{_bindir}/uyuniadm
+%endif
 
 %files -n uyunictl
-
 %defattr(-,root,root)
 %doc README.md
 %license LICENSE
-
 %{_bindir}/uyunictl
 
 %changelog
