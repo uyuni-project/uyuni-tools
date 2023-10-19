@@ -1,0 +1,122 @@
+#!/bin/sh
+#
+# Use $OSCRC ot pass an osc configfile containing required credentials
+# (otherwise ~/.config/osc/oscrc)
+
+set -ex
+
+OBS_PROJ=${OBS_PROJ:-systemsmanagement:Uyuni:Master:ContainerUtils}
+OSCAPI=${OSCAPI:-https://api.opensuse.org}
+OSCRC=${OSCRC:-$HOME/.config/osc/oscrc}
+
+PKG_NAME="uyuni-tools"
+REGISTRY=registry.opensuse.org
+PUSH2OBS_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-push-to-obs
+OSC="osc -A ${OSCAPI} -c /tmp/.oscrc"
+
+cat > /tmp/push-2-obs.sh << EOF
+#!/bin/sh
+set -x
+
+function diff_tarballs() {
+  left="\$1"
+  right="\$2"
+
+  for f in "\$left" "\$right"; do
+    if test ! -f "\$f"; then
+      echo "File \$f doesn't exist"
+      return 1
+    fi
+  done
+
+  mkdir /tmp/{L,R}
+  tar xf "\$left" -C /tmp/L
+  tar xf "\$right" -C /tmp/R
+
+  result=1
+  if diff -r /tmp/L/. /tmp/R/.; then
+    echo "Content \$left and \$right are the same"
+    result=0
+  else
+    echo "Content \$left and \$right differs"
+  fi
+
+  rm -rf /tmp/{L,R}
+  return \$result
+}
+
+PUSH_DIR=/tmp/push
+mkdir -p \$PUSH_DIR
+cd \$PUSH_DIR
+$OSC co -u "$OBS_PROJ" "$PKG_NAME" 2>/tmp/log || {
+  if grep 'does not exist in project' /tmp/log || grep '404: Not Found' /tmp/log; then
+    test -d "$OBS_PROJ" || ( mkdir "$OBS_PROJ"; cd "$OBS_PROJ"; $OSC init "$OBS_PROJ"; )
+    ( set -e; cd "$OBS_PROJ"; $OSC mkpac "$PKG_NAME"; )
+  else
+    cat /tmp/log
+    rm /tmp/log
+    exit 1
+  fi
+}
+
+LAST_TAG=$(git describe --tags --abbrev=0)
+BUILD_DIR=/tmp/build
+
+cd /src
+mkdir \$BUILD_DIR
+cp ${PKG_NAME}.spec \$PUSH_DIR/${OBS_PROJ}/${PKG_NAME}
+cp ${PKG_NAME}.changes \$PUSH_DIR/${OBS_PROJ}/${PKG_NAME}
+
+mkdir -p \${BUILD_DIR}/${OBS_PROJ}/${PKG_NAME}
+git archive --prefix ${PKG_NAME}-\${LAST_TAG}/ -o \${BUILD_DIR}/${OBS_PROJ}/${PKG_NAME}/${PKG_NAME}-\${LAST_TAG}.tar.gz HEAD && echo "tarball created"
+PUSH_TARBALL="\${PUSH_DIR}/${OBS_PROJ}/${PKG_NAME}/${PKG_NAME}-\${LAST_TAG}.tar.gz"
+BUILD_TARBALL="\${BUILD_DIR}/${OBS_PROJ}/${PKG_NAME}/${PKG_NAME}-\${LAST_TAG}.tar.gz"
+diff_tarballs \$PUSH_TARBALL \$BUILD_TARBALL
+source_diff="\$?"
+
+go mod vendor && tar czvf /tmp/build/${OBS_PROJ}/${PKG_NAME}/vendor.tar.gz vendor >/dev/null && echo "vendor.tar.gz created"
+rm -rf vendor
+PUSH_VENDOR=\${PUSH_DIR}/${OBS_PROJ}/${PKG_NAME}/vendor.tar.gz
+BUILD_VENDOR=\${BUILD_DIR}/${OBS_PROJ}/${PKG_NAME}/vendor.tar.gz
+
+diff_tarballs \$PUSH_VENDOR \$BUILD_VENDOR
+vendor_diff="\$?"
+
+if test "x\$vendor_diff" == "x1"; then
+  cp \$BUILD_VENDOR \$PUSH_VENDOR
+fi
+
+cd \$PUSH_DIR/${OBS_PROJ}/${PKG_NAME}
+sed "s/^Version: .*$/Version:        \${LAST_TAG}/" -i $PKG_NAME.spec
+
+if test "x\$source_diff" == "x1"; then
+  cp \$BUILD_TARBALL \$PUSH_TARBALL
+  OLD_TARBALL=\$(ls -trh ${PKG_NAME}*tar.gz | head -n-1)
+  if test -n "\${OLD_TARBALL}"; then
+    echo \${OLD_TARBALL} | xargs $OSC rm
+  fi
+fi
+$OSC ar
+$OSC ci -m "Update"
+EOF
+chmod a+x /tmp/push-2-obs.sh
+
+# Mounting ssh-agent socket can be needed to avoid entering the SSH key password or when using hardware keys.
+# SSH connection may be required by some open build service] instances.
+SSH_AGENT_MOUNT=
+if test "x${SSH_AUTH_SOCK}" != "x"; then
+  SSH_AGENT_MOUNT="--mount type=bind,source=${SSH_AUTH_SOCK},target=/tmp/ssh-auth-sock --env SSH_AUTH_SOCK=/tmp/ssh-auth-sock"
+fi
+
+podman pull $REGISTRY/$PUSH2OBS_CONTAINER
+
+podman run --rm=true \
+  --env PROJECT_NAME=${PROJECT_NAME} \
+  --env PACKAGE_NAME=${PACKAGE_NAME} \
+  --env OSCAPI=${OSCAPI} \
+  --mount type=bind,source=${OSCRC},target=/tmp/.oscrc \
+  --mount type=bind,source=/tmp/push-2-obs.sh,target=/tmp/push-2-obs.sh \
+  --mount type=bind,source=${PWD},target=/src \
+  --mount type=bind,source=${HOME}/.ssh,target=/root/.ssh \
+  $SSH_AGENT_MOUNT \
+  $REGISTRY/$PUSH2OBS_CONTAINER /tmp/push-2-obs.sh
