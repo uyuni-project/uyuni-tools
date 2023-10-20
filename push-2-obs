@@ -14,6 +14,18 @@ REGISTRY=registry.opensuse.org
 PUSH2OBS_CONTAINER=systemsmanagement/uyuni/master/docker/containers/uyuni-push-to-obs
 OSC="osc -A ${OSCAPI} -c /tmp/.oscrc"
 
+PODMAN=podman
+which podman >/dev/null 2>&1
+if test "x$?" != "x0"; then
+  which docker >/dev/null 2>&1
+  if test "x$?" != "x0"; then
+    PODMAN=docker
+  else
+    echo "Requires either podman or docker to be installed"
+    exit 1
+  fi
+fi
+
 cat > /tmp/push-2-obs.sh << EOF
 #!/bin/sh
 set -x
@@ -108,9 +120,9 @@ if test "x${SSH_AUTH_SOCK}" != "x"; then
   SSH_AGENT_MOUNT="--mount type=bind,source=${SSH_AUTH_SOCK},target=/tmp/ssh-auth-sock --env SSH_AUTH_SOCK=/tmp/ssh-auth-sock"
 fi
 
-podman pull $REGISTRY/$PUSH2OBS_CONTAINER
+$PODMAN pull $REGISTRY/$PUSH2OBS_CONTAINER
 
-podman run --rm=true \
+$PODMAN run --rm=true \
   --env PROJECT_NAME=${PROJECT_NAME} \
   --env PACKAGE_NAME=${PACKAGE_NAME} \
   --env OSCAPI=${OSCAPI} \
