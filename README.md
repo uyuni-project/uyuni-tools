@@ -19,10 +19,10 @@ So you would need to build it locally.*
 
 Add uyuni-tool repository:
 ```
-zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/ServerContainer/openSUSE_Leap_15.4/ uyuni-tools
+zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/ContainerUtils/openSUSE_15.5/ uyuni-container-utils
 ```
 
-Install uyuni-tool package: `zypper in uyuni-tools`
+Install `uyuniadm` package: `zypper in uyuniadm`
 
 Run `uyuniadm` command to install uyuni server on podman:
 ```
