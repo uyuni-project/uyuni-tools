@@ -82,6 +82,7 @@ cp ${PKG_NAME}.spec \$PUSH_DIR/${OBS_PROJ}/${PKG_NAME}
 cp ${PKG_NAME}.changes \$PUSH_DIR/${OBS_PROJ}/${PKG_NAME}
 
 mkdir -p \${BUILD_DIR}/${OBS_PROJ}/${PKG_NAME}
+git config --global --add safe.directory /src
 git archive --prefix ${PKG_NAME}-\${LAST_TAG}/ -o \${BUILD_DIR}/${OBS_PROJ}/${PKG_NAME}/${PKG_NAME}-\${LAST_TAG}.tar.gz HEAD && echo "tarball created"
 PUSH_TARBALL="\${PUSH_DIR}/${OBS_PROJ}/${PKG_NAME}/${PKG_NAME}-\${LAST_TAG}.tar.gz"
 BUILD_TARBALL="\${BUILD_DIR}/${OBS_PROJ}/${PKG_NAME}/${PKG_NAME}-\${LAST_TAG}.tar.gz"
