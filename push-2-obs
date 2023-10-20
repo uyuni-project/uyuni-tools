@@ -3,7 +3,7 @@
 # Use $OSCRC ot pass an osc configfile containing required credentials
 # (otherwise ~/.config/osc/oscrc)
 
-set -ex
+set -x
 
 OBS_PROJ=${OBS_PROJ:-systemsmanagement:Uyuni:Master:ContainerUtils}
 OSCAPI=${OSCAPI:-https://api.opensuse.org}
@@ -25,6 +25,8 @@ if test "x$?" != "x0"; then
     PODMAN=docker
   fi
 fi
+
+set -e
 
 cat > /tmp/push-2-obs.sh << EOF
 #!/bin/sh
