@@ -44,7 +44,11 @@ BuildRequires:  coreutils
 %if 0%{?suse_version}
 BuildRequires:  golang(API) >= 1.20
 %else
+%if 0%{?ubuntu}
+BuildRequires:  golang >= golang-1.18
+%else
 BuildRequires:  golang >= 1.18
+%endif
 %endif
 
 
