@@ -93,7 +93,12 @@ chart=%{chart}
   chart='%{_default_chart}'
 %endif
 
-go build \
+go_path=
+%if "%{?_go_bin}" != ""
+  go_path='%{_go_bin}/'
+%endif
+
+${go_path}go build \
     -ldflags "-X ${ADM_PATH}.DefaultImage=${image} -X ${ADM_PATH}.DefaultTag=${tag} -X ${ADM_PATH}.DefaultChart=${chart}" \
     -o ./bin ./...
 
