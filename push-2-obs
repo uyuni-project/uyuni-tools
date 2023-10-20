@@ -19,10 +19,10 @@ which podman >/dev/null 2>&1
 if test "x$?" != "x0"; then
   which docker >/dev/null 2>&1
   if test "x$?" != "x0"; then
-    PODMAN=docker
-  else
     echo "Requires either podman or docker to be installed"
     exit 1
+  else
+    PODMAN=docker
   fi
 fi
 
