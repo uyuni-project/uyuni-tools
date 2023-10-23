@@ -20,6 +20,7 @@
 %global org             uyuni-project
 %global project         uyuni-tools
 %global provider_prefix %{provider}.%{provider_tld}/%{org}/%{project}
+%global productname     Uyuni
 
 %global image           registry.opensuse.org/uyuni/server
 %global chart           oci://registry.opensuse.org/uyuni/server
@@ -34,7 +35,7 @@
 Name:           %{project}
 Version:        0.0.1
 Release:        0
-Summary:        Tools for managing uyuni container
+Summary:        Tools for managing %{productname} container
 License:        Apache-2.0
 Group:          System/Management
 URL:            https://%{provider_prefix}
@@ -61,19 +62,19 @@ Tools for managing uyuni container.
 
 %if %{adm_build}
 %package -n uyuniadm
-Summary:      Command line tool to install and update Uyuni
+Summary:      Command line tool to install and update %{productname}
 
 %description -n uyuniadm
-uyuniadm is a convenient tool to install and update Uyuni components as containers running
-either on podman or a kubernetes cluster.
+uyuniadm is a convenient tool to install and update %{productname} components as containers running
+either on Podman or a Kubernetes cluster.
 %endif
 
 %package -n uyunictl
-Summary:      Command line tool to perform day-to-day operations on Uyuni
+Summary:      Command line tool to perform day-to-day operations on %{productname}
 
 %description -n uyunictl
-uyunictl is a tool helping with dayly tasks on Uyuni components running as containers
-either on podman or a kubernetes cluster.
+uyunictl is a tool helping with dayly tasks on %{productname} components running as containers
+either on Podman or a Kubernetes cluster.
 
 
 %prep
