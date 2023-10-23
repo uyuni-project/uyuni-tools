@@ -24,7 +24,7 @@
 %global image           registry.opensuse.org/uyuni/server
 %global chart           oci://registry.opensuse.org/uyuni/server
 
-%if 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 12 || 0%{?ubuntu} >= 2204
+%if 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 12 || 0%{?ubuntu} >= 2004
 %define adm_build    1
 %else
 %define adm_build    0
@@ -41,16 +41,20 @@ URL:            https://%{provider_prefix}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        vendor.tar.gz
 BuildRequires:  coreutils
+# Get the proper Go version on different distros
 %if 0%{?suse_version}
 BuildRequires:  golang(API) >= 1.20
-%else
+%endif
 %if 0%{?ubuntu}
-BuildRequires:  golang >= golang-1.18
-%else
-BuildRequires:  golang >= 1.18
+%define go_version      1.20
+BuildRequires:  golang-%{go_version}
 %endif
+%if 0%{?debian}
+BuildRequires:  golang >= 1.20
 %endif
-
+%if 0%{?fedora} || 0%{?rhel}
+BuildRequires:  golang >= 1.19
+%endif
 
 %description
 Tools for managing uyuni container.
@@ -98,8 +102,12 @@ chart=%{chart}
 %endif
 
 go_path=
-%if "%{?_go_bin}" != ""
-  go_path='%{_go_bin}/'
+%if 0%{?ubuntu}
+  go_path=/usr/lib/go-%{go_version}/bin/
+%else
+  %if "%{?_go_bin}" != ""
+    go_path='%{_go_bin}/'
+  %endif
 %endif
 
 ${go_path}go build \
