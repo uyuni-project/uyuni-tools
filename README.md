@@ -2,55 +2,55 @@
 
 **These tools are work in progress**
 
-* `uyuniadm` used to help user administer uyuni servers on k8s and podman
-* `uyunictl` used to help user managing Uyuni and SUSE Manager Servers mainly through its API
+* `uyuniadm` used to help user administer Uyuni servers on K8s and Podman
+* `uyunictl` used to help user managing Uyuni servers mainly through its API
 
 # Deployment rolling release
 
 **NOTE:** This is rolling releases, meaning it can be broken at any time. Do not use it in production (yet!)
 
-## For podman deployment
+## For Podman deployment
 Requirement:
-  - Opensuse Leap 15.4 or 15.5
-  - podman installed
+  - openSUSE Leap 15.5
+  - Podman installed
 
-*Note that other distros with a recent podman installed could work, but for now the tool is not packaged for them in OBS.
+*Note that other distros with a recent Podman installed could work, but for now the tool is not packaged for them in OBS.
 So you would need to build it locally.*
 
 Add uyuni-tool repository:
 ```
-zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/ContainerUtils/openSUSE_15.5/ uyuni-container-utils
+zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/ContainerUtils/openSUSE_Leap_15.5/ uyuni-container-utils
 ```
 
 Install `uyuniadm` package: `zypper in uyuniadm`
 
-Run `uyuniadm` command to install uyuni server on podman:
+Run `uyuniadm` command to install Uyuni server on Podman:
 ```
 uyuniadm install podman <MACHINE_FQDN>
 ```
 
-If you built `uyuni-tools` on your machine, add the `--image registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server` option to the install command.
+If you build `uyuni-tools` on your machine, add the `--image registry.opensuse.org/systemsmanagement/uyuni/stable/containers/uyuni/server` option to the install command.
 This is not needed when using the package from OBS as it defaulting with this image at build time.
 
-**NOTE**: rolling image url is: registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server
+**NOTE**: rolling image url is: registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server
 
 
-Other sub-cammands are also available. Explore the tool with the help command.
+Other sub-commands are also available. Explore the tool with the help command.
 
-A tool named `uyunictl` is also available with usefull commands.
+A tool named `uyunictl` is also available with useful commands.
 
-## k3s deployment
+## K3s deployment
 
 For Look at a more details documentation at:
 
-https://github.com/uyuni-project/uyuni/tree/server-container/containers/doc/server-kubernetes
+https://github.com/uyuni-project/uyuni/tree/master/containers/doc/server-kubernetes
 
-# Technical documentation
+# Development documentation
 
 ## Building
 
 `go build -o ./bin ./...` will produce the binaries in the root folder.
-Alternatively, if you have `podman` installed you can run the `build.sh` script to build binaries compatible with SLE 15 SP4 or openSUSE Leap 15.4.
+Alternatively, if you have `podman` installed you can run the `build.sh` script to build binaries compatible with openSUSE Leap 15.5.
 
 ### Building in Open Build Service
 
@@ -66,6 +66,6 @@ Macros:
 
 ### Disabling features at build time
 
-To disable features at build time pass the `-tags` paramter with the following values in a comma-separated list:
+To disable features at build time pass the `-tags` parameter with the following values in a comma-separated list:
 
-* `nok8s`: will disable kubernetes support
+* `nok8s`: will disable Kubernetes support
