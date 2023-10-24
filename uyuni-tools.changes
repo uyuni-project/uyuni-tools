@@ -1,1 +1,6 @@
-- First draft
+-------------------------------------------------------------------
+Tue Oct 24 13:24:46 UTC 2023 - Michele Bussolotto <michele.bussolotto@suse.com>
+
+- Initial packaging of uyuni-tools 0.0.3
+  * Create uyuniadm and uyunictl packages
+  * Make it possible to build uyuniadm only on specific distro
