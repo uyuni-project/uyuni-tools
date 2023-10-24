@@ -20,11 +20,12 @@
 %global org             uyuni-project
 %global project         uyuni-tools
 %global provider_prefix %{provider}.%{provider_tld}/%{org}/%{project}
+%global productname     Uyuni
 
 %global image           registry.opensuse.org/uyuni/server
 %global chart           oci://registry.opensuse.org/uyuni/server
 
-%if 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 12 || 0%{?ubuntu} >= 2204
+%if 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 12 || 0%{?ubuntu} >= 2004
 %define adm_build    1
 %else
 %define adm_build    0
@@ -34,42 +35,46 @@
 Name:           %{project}
 Version:        0.0.1
 Release:        0
-Summary:        Tools for managing uyuni container
+Summary:        Tools for managing %{productname} container
 License:        Apache-2.0
 Group:          System/Management
 URL:            https://%{provider_prefix}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        vendor.tar.gz
 BuildRequires:  coreutils
+# Get the proper Go version on different distros
 %if 0%{?suse_version}
 BuildRequires:  golang(API) >= 1.20
-%else
+%endif
 %if 0%{?ubuntu}
-BuildRequires:  golang >= golang-1.18
-%else
-BuildRequires:  golang >= 1.18
+%define go_version      1.20
+BuildRequires:  golang-%{go_version}
 %endif
+%if 0%{?debian}
+BuildRequires:  golang >= 1.20
 %endif
-
+%if 0%{?fedora} || 0%{?rhel}
+BuildRequires:  golang >= 1.19
+%endif
 
 %description
 Tools for managing uyuni container.
 
 %if %{adm_build}
 %package -n uyuniadm
-Summary:      Command line tool to install and update Uyuni
+Summary:      Command line tool to install and update %{productname}
 
 %description -n uyuniadm
-uyuniadm is a convenient tool to install and update Uyuni components as containers running
-either on podman or a kubernetes cluster.
+uyuniadm is a convenient tool to install and update %{productname} components as containers running
+either on Podman or a Kubernetes cluster.
 %endif
 
 %package -n uyunictl
-Summary:      Command line tool to perform day-to-day operations on Uyuni
+Summary:      Command line tool to perform day-to-day operations on %{productname}
 
 %description -n uyunictl
-uyunictl is a tool helping with dayly tasks on Uyuni components running as containers
-either on podman or a kubernetes cluster.
+uyunictl is a tool helping with dayly tasks on %{productname} components running as containers
+either on Podman or a Kubernetes cluster.
 
 
 %prep
@@ -98,8 +103,12 @@ chart=%{chart}
 %endif
 
 go_path=
-%if "%{?_go_bin}" != ""
-  go_path='%{_go_bin}/'
+%if 0%{?ubuntu}
+  go_path=/usr/lib/go-%{go_version}/bin/
+%else
+  %if "%{?_go_bin}" != ""
+    go_path='%{_go_bin}/'
+  %endif
 %endif
 
 ${go_path}go build \
