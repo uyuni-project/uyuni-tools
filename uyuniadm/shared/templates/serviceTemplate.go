@@ -20,6 +20,7 @@ RequiresMountsFor=%t/containers
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Environment=UYUNI_IMAGE={{ .Image }}
 Environment=TZ={{ .Timezone }}
+Environment=SYSTEMD_COLORS=1
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-server.pid %t/%n.ctr-id
 ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-server
