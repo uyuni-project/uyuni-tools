@@ -26,7 +26,7 @@ Install `uyuniadm` package: `zypper in uyuniadm`
 
 Run `uyuniadm` command to install Uyuni server on Podman:
 ```
-uyuniadm install podman <MACHINE_FQDN>
+uyuniadm install podman
 ```
 
 If you build `uyuni-tools` on your machine, add the `--image registry.opensuse.org/systemsmanagement/uyuni/stable/containers/uyuni/server` option to the install command.
