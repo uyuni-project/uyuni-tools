@@ -18,7 +18,7 @@ func NewUyuniadmCommand() *cobra.Command {
 		Use:     "uyuniadm",
 		Short:   "Uyuni administration tool",
 		Long:    "Uyuni administration tool used to help user administer uyuni servers on kubernetes and podman",
-		Version: "0.0.1",
+		Version: "0.1.0",
 	}
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
