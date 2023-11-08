@@ -8,7 +8,7 @@ import (
 
 var DefaultImage = "registry.opensuse.org/uyuni/server"
 var DefaultTag = "latest"
-var DefaultChart = "oci://registry.opensuse.org/uyuni/server"
+var DefaultChart = "oci://registry.opensuse.org/uyuni/server-helm"
 
 type PodmanFlags struct {
 	Args []string `mapstructure:"arg"`
