@@ -7,6 +7,7 @@ package cmd
 import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/completion"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/uyunictl/cmd/cp"
@@ -36,6 +37,7 @@ func NewUyunictlCommand() *cobra.Command {
 	rootCmd.AddCommand(exec.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
 	rootCmd.AddCommand(distro.NewCommand(globalFlags))
+	rootCmd.AddCommand(completion.NewCommand(globalFlags))
 
 	return rootCmd
 }
