@@ -58,7 +58,24 @@ https://github.com/uyuni-project/uyuni/tree/master/containers/doc/server-kuberne
 ## Building
 
 `go build -o ./bin ./...` will produce the binaries in the root folder with `0.0.0` as version.
-Alternatively, you can run the `build.sh` script to build binaries with version computed from the last git tag and offset from it.
+
+To produce shell completion scripts for a given shell you can run:
+
+- `./bin/uyuniadm completion <shell> > $COMPLETION_FILE` for uyuniadm
+- `./bin/uyunictl error completion <shell> > $COMPLETION_FILE` for uyunictl
+
+You'll then need to source the resulting script(s).
+
+As an example, to enable bash completion for uyuniadm:
+
+`./bin/uyuniadm completion bash > ./bin/completion`
+
+`. ./bin/completion`
+
+The supported shells are: bash, zsh and fish.
+
+Alternatively, if you have `podman` installed you can run the `build.sh` script to build binaries compatible with any x86_64 linux.
+The version will be computed from the last git tag and offset from it.
 
 ### Building in Open Build Service
 
