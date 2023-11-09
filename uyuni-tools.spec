@@ -31,6 +31,15 @@
 %define adm_build    0
 %endif
 
+%define name_adm uyuniadm
+%define name_ctl uyunictl
+
+# Completion files
+%if 0%{?debian} || 0%{?ubuntu}
+%define _zshdir %{_datarootdir}/zsh/vendor-completions
+%else
+%define _zshdir %{_datarootdir}/zsh/site-functions
+%endif
 
 Name:           %{project}
 Version:        0.1.0
@@ -42,6 +51,11 @@ URL:            https://%{provider_prefix}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        vendor.tar.gz
 BuildRequires:  coreutils
+BuildRequires:  bash-completion
+%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+BuildRequires:  fish
+%endif
+BuildRequires:  zsh
 # Get the proper Go version on different distros
 %if 0%{?suse_version}
 BuildRequires:  golang(API) >= 1.20
@@ -61,21 +75,108 @@ BuildRequires:  golang >= 1.19
 Tools for managing uyuni container.
 
 %if %{adm_build}
-%package -n uyuniadm
+%package -n %{name_adm} 
 Summary:      Command line tool to install and update %{productname}
 
-%description -n uyuniadm
-uyuniadm is a convenient tool to install and update %{productname} components as containers running
+%description -n %{name_adm}
+%{name_adm} is a convenient tool to install and update %{productname} components as containers running
 either on Podman or a Kubernetes cluster.
 %endif
 
-%package -n uyunictl
+%package -n %{name_ctl}
 Summary:      Command line tool to perform day-to-day operations on %{productname}
 
-%description -n uyunictl
-uyunictl is a tool helping with dayly tasks on %{productname} components running as containers
+%description -n %{name_ctl}
+%{name_ctl} is a tool helping with dayly tasks on %{productname} components running as containers
 either on Podman or a Kubernetes cluster.
 
+%package -n %{name_adm}-bash-completion
+Summary:        Bash Completion for %{name_adm}
+Group:          System/Shells
+Requires:       %{name_adm} = %{version}
+%if 0%{?suse_version} >= 150000
+Supplements:    (%{name_adm} and bash-completion)
+%else
+Supplements:    bash-completion
+%endif
+BuildArch:      noarch
+
+%description -n %{name_adm}-bash-completion
+Bash command line completion support for %{name_adm}.
+
+%package -n %{name_adm}-zsh-completion
+Summary:        Zsh Completion for %{name_adm}
+Group:          System/Shells
+Requires:       %{name_adm} = %{version}
+%if 0%{?suse_version} >= 150000
+Supplements:    (%{name_adm} and zsh)
+%else
+Supplements:    zsh
+%endif
+BuildArch:      noarch
+
+%description -n %{name_adm}-zsh-completion
+Zsh command line completion support for %{name_adm}.
+
+%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%package -n %{name_adm}-fish-completion
+Summary:        Fish Completion for %{name_adm}
+Group:          System/Shells
+Requires:       %{name_adm} = %{version}
+%if 0%{?suse_version} >= 150000
+Supplements:    (%{name_adm} and fish)
+%else
+Supplements:    fish
+%endif
+BuildArch:      noarch
+
+%description -n %{name_adm}-fish-completion
+Fish command line completion support for %{name_adm}.
+%endif
+
+%package -n %{name_ctl}-bash-completion
+Summary:        Bash Completion for %{name_ctl}
+Group:          System/Shells
+Requires:       %{name_ctl} = %{version}
+%if 0%{?suse_version} >= 150000
+Supplements:    (%{name_ctl} and bash-completion)
+%else
+Supplements:    bash-completion
+%endif
+BuildArch:      noarch
+
+%description -n %{name_ctl}-bash-completion
+Bash command line completion support for %{name_ctl}.
+
+%package -n %{name_ctl}-zsh-completion
+Summary:        Zsh Completion for %{name_ctl}
+Group:          System/Shells
+Requires:       %{name_ctl} = %{version}
+%if 0%{?suse_version} >= 150000
+Supplements:    (%{name_ctl} and zsh)
+%else
+Supplements:    zsh
+%endif
+BuildArch:      noarch
+
+%description -n %{name_ctl}-zsh-completion
+Zsh command line completion support for %{name_ctl}.
+
+%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%package -n %{name_ctl}-fish-completion
+Summary:        Fish Completion for %{name_ctl}
+Group:          System/Shells
+Requires:       %{name_ctl} = %{version}
+%if 0%{?suse_version} >= 150000
+Supplements:    (%{name_ctl} and fish)
+%else
+Supplements:    fish
+%endif
+BuildArch:      noarch
+
+%description -n %{name_ctl}-fish-completion
+Fish command line completion support for %{name_ctl}.
+%endif
 
 %prep
 %autosetup
@@ -85,7 +186,7 @@ tar -zxf %{SOURCE1}
 %build
 export GOFLAGS=-mod=vendor
 mkdir -p bin
-ADM_PATH="%{provider_prefix}/uyuniadm/shared/utils"
+ADM_PATH="%{provider_prefix}/%{name_adm}/shared/utils"
 UTILS_PATH="%{provider_prefix}/shared/utils"
 
 tag=%{!?_default_tag:latest}
@@ -135,25 +236,68 @@ GOLD_FLAGS="-B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n') ${GOLD_FLAGS}
 ${go_path}go build ${go_tags} -ldflags "${GOLD_FLAGS}" -o ./bin ./...
 
 %if ! %{adm_build}
-rm ./bin/uyuniadm
+rm ./bin/%{name_adm}
 %endif
 
 %install
 install -m 0755 -vd %{buildroot}%{_bindir}
 install -m 0755 -vp ./bin/* %{buildroot}%{_bindir}/
 
-%if %{adm_build}
-%files -n uyuniadm
-%defattr(-,root,root)
-%doc README.md
-%license LICENSE
-%{_bindir}/uyuniadm
+# Completion files
+mkdir -p %{buildroot}%{_datarootdir}/bash-completion/completions/
+mkdir -p %{buildroot}%{_zshdir}
+
+%{buildroot}/%{_bindir}/%{name_ctl} completion bash > %{buildroot}%{_datarootdir}/bash-completion/completions/%{name_ctl}
+%{buildroot}/%{_bindir}/%{name_ctl} completion zsh > %{buildroot}%{_zshdir}/_%{name_ctl}
+
+%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
+%{buildroot}/%{_bindir}/%{name_ctl} completion fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/%{name_ctl}.fish
 %endif
 
-%files -n uyunictl
+%if %{adm_build}
+%{buildroot}/%{_bindir}/%{name_adm} completion bash > %{buildroot}%{_datarootdir}/bash-completion/completions/%{name_adm}
+%{buildroot}/%{_bindir}/%{name_adm} completion zsh > %{buildroot}%{_zshdir}/_%{name_adm}
+
+%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%{buildroot}/%{_bindir}/%{name_adm} completion fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/%{name_adm}.fish
+%endif
+%endif
+
+%if %{adm_build}
+%files -n %{name_adm}
 %defattr(-,root,root)
 %doc README.md
 %license LICENSE
-%{_bindir}/uyunictl
+%{_bindir}/%{name_adm}
+
+%files -n %{name_adm}-bash-completion
+%{_datarootdir}/bash-completion/completions/%{name_adm}
+
+%files -n %{name_adm}-zsh-completion
+%{_zshdir}/_%{name_adm}
+
+%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%files -n %{name_adm}-fish-completion
+%{_datarootdir}/fish/vendor_completions.d/%{name_adm}.fish
+%endif
+%endif
+
+%files -n %{name_ctl} 
+%defattr(-,root,root)
+%doc README.md
+%license LICENSE
+%{_bindir}/%{name_ctl}
+
+%files -n %{name_ctl}-bash-completion
+%{_datarootdir}/bash-completion/completions/%{name_ctl}
+
+%files -n %{name_ctl}-zsh-completion
+%{_zshdir}/_%{name_ctl}
+
+%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%files -n %{name_ctl}-fish-completion
+%{_datarootdir}/fish/vendor_completions.d/%{name_ctl}.fish
+%endif
 
 %changelog
