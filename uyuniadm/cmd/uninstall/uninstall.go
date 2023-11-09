@@ -25,7 +25,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			cnx := utils.NewConnection(backend)
 			command, err := cnx.GetCommand()
 			if err != nil {
-				log.Fatal().Err(err)
+				log.Fatal().Err(err).Msg("Failed to determine suitable backend")
 			}
 			switch command {
 			case "podman":

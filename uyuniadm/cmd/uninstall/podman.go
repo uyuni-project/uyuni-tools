@@ -21,9 +21,9 @@ func uninstallForPodman(dryRun bool, purge bool) {
 	} else {
 		if dryRun {
 			log.Info().Msgf("Would run systemctl disable --now uyuni-server")
-			log.Debug().Msgf("Woud remove %s", podman.ServicePath)
+			log.Debug().Msgf("Would remove %s", podman.ServicePath)
 		} else {
-			log.Debug().Msg("Desable uyuni-server service")
+			log.Debug().Msg("Disable uyuni-server service")
 			// disable server
 			err := utils.RunCmd("systemctl", "disable", "--now", "uyuni-server")
 			if err != nil {
@@ -32,7 +32,9 @@ func uninstallForPodman(dryRun bool, purge bool) {
 
 			// Remove the service unit
 			log.Debug().Msgf("Remove %s", podman.ServicePath)
-			os.Remove(podman.ServicePath)
+			if err := os.Remove(podman.ServicePath); err != nil {
+				log.Error().Err(err).Msg("Failed to remove uyuni-server.service")
+			}
 		}
 	}
 
@@ -55,7 +57,7 @@ func uninstallForPodman(dryRun bool, purge bool) {
 			}
 		}
 	} else {
-		log.Debug().Msg("Container already remove")
+		log.Debug().Msg("Container already removed")
 	}
 
 	// Remove the volumes
