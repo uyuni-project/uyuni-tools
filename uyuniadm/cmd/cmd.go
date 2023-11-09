@@ -5,11 +5,15 @@
 package cmd
 
 import (
+	"os"
+	"path"
+
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/completion"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/install"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/migrate"
 	"github.com/uyuni-project/uyuni-tools/uyuniadm/cmd/uninstall"
@@ -17,18 +21,24 @@ import (
 
 // NewCommand returns a new cobra.Command implementing the root command for kinder
 func NewUyuniadmCommand() *cobra.Command {
-	utils.LogInit("uyuniadm", true)
 	globalFlags := &types.GlobalFlags{}
+	name := path.Base(os.Args[0])
 	rootCmd := &cobra.Command{
-		Use:     "uyuniadm",
+		Use:     name,
 		Short:   "Uyuni administration tool",
 		Long:    "Uyuni administration tool used to help user administer uyuni servers on kubernetes and podman",
 		Version: utils.Version,
 	}
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
+		utils.LogInit(true)
 		utils.SetLogLevel(globalFlags.LogLevel)
-		log.Info().Msgf("Executing command: %s", cmd.Name())
+
+		// do not log if running the completion cmd as the output is redirected to create a file to source
+		if cmd.Name() != "completion" {
+			log.Info().Msgf("Welcome to %s", name)
+			log.Info().Msgf("Executing command: %s", cmd.Name())
+		}
 	}
 
 	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", "configuration file path")
