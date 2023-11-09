@@ -14,7 +14,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-func LogInit(appName string, logToConsole bool) {
+func LogInit(logToConsole bool) {
 	zerolog.CallerMarshalFunc = logCallerMarshalFunction
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 
@@ -26,7 +26,6 @@ func LogInit(appName string, logToConsole bool) {
 
 	multi := zerolog.MultiLevelWriter(writers...)
 	log.Logger = zerolog.New(multi).With().Timestamp().Stack().Logger()
-	log.Info().Msgf("Welcome to %s", appName)
 }
 
 func getFileWriter() *lumberjack.Logger {
