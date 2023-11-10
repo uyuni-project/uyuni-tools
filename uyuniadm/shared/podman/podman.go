@@ -38,14 +38,15 @@ func GetExposedPorts(debug bool) []utils.PortMap {
 	return ports
 }
 
-const ServicePath = "/etc/systemd/system/uyuni-server.service"
+const ServicePath = "/etc/containers/systemd/uyuni-server.container"
+const NetworkPath = "/etc/containers/systemd/uyuni.network"
 
 func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []string) {
 
 	setupNetwork()
 
 	log.Info().Msg("Enabling system service")
-	data := templates.PodmanServiceTemplateData{
+	containerData := templates.PodmanContainerTemplateData{
 		Volumes:    utils.VOLUMES,
 		NamePrefix: "uyuni",
 		Args:       commonArgs + " " + strings.Join(podmanArgs, " "),
@@ -54,8 +55,15 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 		Image:      image,
 		Network:    UYUNI_NETWORK,
 	}
-	if err := utils.WriteTemplateToFile(data, ServicePath, 0555, false); err != nil {
-		log.Fatal().Err(err).Msg("Failed to generate systemd service unit file")
+	if err := utils.WriteTemplateToFile(containerData, ServicePath, 0555, false); err != nil {
+		log.Fatal().Err(err).Msg("Failed to generate systemd container unit file")
+	}
+
+	networkData := templates.PodmanNetworkTemplateData{
+		Network: UYUNI_NETWORK,
+	}
+	if err := utils.WriteTemplateToFile(networkData, NetworkPath, 0555, false); err != nil {
+		log.Fatal().Err(err).Msg("Failed to generate systemd network unit file")
 	}
 
 	utils.RunCmd("systemctl", "daemon-reload")
