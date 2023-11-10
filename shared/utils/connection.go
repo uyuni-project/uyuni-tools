@@ -31,7 +31,6 @@ func NewConnection(backend string) *Connection {
 func (c *Connection) GetCommand() (string, error) {
 	var err error
 	if c.command == "" {
-		command := ""
 
 		switch c.backend {
 		case "podman":
@@ -39,8 +38,8 @@ func (c *Connection) GetCommand() (string, error) {
 		case "podman-remote":
 			fallthrough
 		case "kubectl":
-			if _, err = exec.LookPath(command); err != nil {
-				err = fmt.Errorf("backend command not found in PATH: %s", command)
+			if _, err = exec.LookPath(c.backend); err != nil {
+				err = fmt.Errorf("backend command not found in PATH: %s", c.backend)
 			}
 			c.command = c.backend
 		case "":
