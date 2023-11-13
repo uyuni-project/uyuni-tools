@@ -5,7 +5,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/uyunictl/shared/utils"
 )
 
 type flagpole struct {
@@ -35,7 +34,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	cpCmd.Flags().String("user", "", "User or UID to set on the destination file")
 	cpCmd.Flags().String("group", "susemanager", "Group or GID to set on the destination file")
 
-	cmd_utils.AddBackendFlag(cpCmd)
+	utils.AddBackendFlag(cpCmd)
 	return cpCmd
 }
 

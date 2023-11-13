@@ -19,7 +19,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 			backend := "podman"
 			if kubernetesBuilt {
-				backend = ""
+				backend, _ = cmd.Flags().GetString("backend")
 			}
 
 			cnx := utils.NewConnection(backend)
@@ -37,6 +37,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	}
 	uninstallCmd.Flags().BoolP("dry-run", "n", false, "Only show what would be done")
 	uninstallCmd.Flags().Bool("purge-volumes", false, "Also remove the volume")
+
+	utils.AddBackendFlag(uninstallCmd)
 
 	return uninstallCmd
 }
