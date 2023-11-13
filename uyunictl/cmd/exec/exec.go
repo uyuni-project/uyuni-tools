@@ -11,7 +11,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/uyunictl/shared/utils"
 )
 
 type flagpole struct {
@@ -40,7 +39,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	execCmd.Flags().BoolP("interactive", "i", false, "Pass stdin to the container")
 	execCmd.Flags().BoolP("tty", "t", false, "Stdin is a TTY")
 
-	cmd_utils.AddBackendFlag(execCmd)
+	utils.AddBackendFlag(execCmd)
 	return execCmd
 }
 
