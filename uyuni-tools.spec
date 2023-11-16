@@ -25,7 +25,7 @@
 %global image           registry.opensuse.org/uyuni/server
 %global chart           oci://registry.opensuse.org/uyuni/server-helm
 
-%if 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 12 || 0%{?ubuntu} >= 2004
+%if 0%{?suse_version} >= 1600 || 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 12 || 0%{?ubuntu} >= 2004
 %define adm_build    1
 %else
 %define adm_build    0
