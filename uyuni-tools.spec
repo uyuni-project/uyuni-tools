@@ -111,9 +111,21 @@ go_path=
   %endif
 %endif
 
-${go_path}go build \
-    -ldflags "-X ${ADM_PATH}.DefaultImage=${image} -X ${ADM_PATH}.DefaultTag=${tag} -X ${ADM_PATH}.DefaultChart=${chart}" \
-    -o ./bin ./...
+GOLD_FLAGS="-X ${ADM_PATH}.DefaultImage=${image} -X ${ADM_PATH}.DefaultTag=${tag} -X ${ADM_PATH}.DefaultChart=${chart}"
+
+# Workaround for rpm on Fedora and EL clones not able to handle go's compressed debug symbols
+# Found compressed .debug_aranges section, not attempting dwz compression
+%if 0%{?rhel} >= 8 || 0%{?fedora} >= 38
+GOLD_FLAGS="-compressdwarf=false ${GOLD_FLAGS}"
+%endif
+
+# Workaround for missing build-id on Fedora
+# error: Missing build-id in [...]
+%if 0%{?fedora} >= 38
+GOLD_FLAGS="-B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n') ${GOLD_FLAGS}"
+%endif
+
+${go_path}go build -ldflags "${GOLD_FLAGS}" -o ./bin ./...
 
 %if ! %{adm_build}
 rm ./bin/uyuniadm
