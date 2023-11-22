@@ -17,17 +17,36 @@ import (
 
 const ROOT_PATH_APIv1 = "/rhn/manager/api"
 
+// HTTP Client is an API entrypoint
 type HTTPClient struct {
-	BaseURL    string
-	Client     *http.Client
+
+	// URL to the API endpoint of the target host
+	BaseURL string
+
+	// net/http client
+	Client *http.Client
+
+	// Authentication cookie storage
 	AuthCookie *http.Cookie
 }
 
+// Connection details for initial API connection
 type ConnectionDetails struct {
-	Server   string
-	User     string
+
+	// FQDN of the target host.
+	Server string
+
+	// User to login under.
+	User string
+
+	// Password for the user.
 	Password string
-	CAcert   string
+
+	// CA certificate used for target host validation.
+	// Provided certificate is used together with system certificates.
+	CAcert string
+
+	// Disable certificate validation, unsecure and not recommended.
 	Insecure bool
 }
 
@@ -77,14 +96,22 @@ func (c *HTTPClient) sendRequest(req *http.Request) (*http.Response, error) {
 		if err = json.NewDecoder(res.Body).Decode(&errResponse); err == nil {
 			return nil, fmt.Errorf(errResponse["message"])
 		}
-		return nil, fmt.Errorf("Unknown error: %d", res.StatusCode)
+		return nil, fmt.Errorf("unknown error: %d", res.StatusCode)
 	}
 	log.Debug().Msgf("Received response with code %d", res.StatusCode)
 
 	return res, nil
 }
 
-func Init(conn *ConnectionDetails) *HTTPClient {
+// Init returns a HTTPClient object for further API use.
+//
+// Provided connectionDetails must have Server specified with FQDN to the
+// target host.
+//
+// Optionaly connectionDetails can have user name and password set and Init
+// will try to login to the host.
+// caCert can be set to use custom CA certificate to validate target host
+func Init(conn *ConnectionDetails) (*HTTPClient, error) {
 	caCertPool, err := x509.SystemCertPool()
 	if err != nil {
 		log.Warn().Msg(err.Error())
@@ -108,18 +135,23 @@ func Init(conn *ConnectionDetails) *HTTPClient {
 			},
 		},
 	}
-	return client
+
+	if len(conn.User) > 0 {
+		err = client.login(conn)
+	}
+	return client, err
 }
 
-func (c *HTTPClient) Login(username string, password string) error {
+func (c *HTTPClient) login(conn *ConnectionDetails) error {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, "auth/login")
 	data := map[string]string{
-		"login":    username,
-		"password": password,
+		"login":    conn.User,
+		"password": conn.Password,
 	}
 	jsonData, err := json.Marshal(data)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Unable to create login data")
+		log.Error().Err(err).Msg("Unable to create login data")
+		return err
 	}
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
@@ -136,7 +168,7 @@ func (c *HTTPClient) Login(username string, password string) error {
 		return err
 	}
 	if !response["success"].(bool) {
-		log.Error().Msgf("%s", response["messages"])
+		return fmt.Errorf(response["messages"].(string))
 	}
 
 	cookies := res.Cookies()
@@ -148,12 +180,18 @@ func (c *HTTPClient) Login(username string, password string) error {
 	}
 
 	if c.AuthCookie == nil {
-		log.Fatal().Msg("Auth cookie not found in login response")
+		return fmt.Errorf("auth cookie not found in login response")
 	}
 
 	return nil
 }
 
+// Post issues a POST HTTP request to the API target
+//
+// `path` specifies an API endpoint
+// `data` contains a map of values to add to the POST query. `data` are serialized to the JSON
+//
+// returns a deserialized JSON data to the map
 func (c *HTTPClient) Post(path string, data map[string]interface{}) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	jsonData, err := json.Marshal(data)
@@ -181,6 +219,11 @@ func (c *HTTPClient) Post(path string, data map[string]interface{}) (map[string]
 	return response, nil
 }
 
+// Get issues GET HTTP request to the API target
+//
+// `path` specifies API endpoint together with query options
+//
+// returns a deserialized JSON data to the map
 func (c *HTTPClient) Get(path string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	req, err := http.NewRequest("GET", url, nil)

@@ -30,8 +30,8 @@ func umountAndRemove(mountpoint string) {
 }
 
 func registerDistro(connection *api.ConnectionDetails, distro *types.Distribution) error {
-	client := api.Init(connection)
-	if err := client.Login(connection.User, connection.Password); err != nil {
+	client, err := api.Init(connection)
+	if err != nil {
 		log.Error().Msg("Unable to login and register the distribution. Manual distro registration is required.")
 		return err
 	}
@@ -42,7 +42,7 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 		"installType":  distro.InstallType,
 	}
 
-	_, err := client.Post("kickstart/tree/create", data)
+	_, err = client.Post("kickstart/tree/create", data)
 	if err != nil {
 		log.Error().Msg("Unable to register the distribution. Manual distro registration is required.")
 		return err

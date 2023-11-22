@@ -14,12 +14,10 @@ import (
 
 func runGet(globalFlags *types.GlobalFlags, flags *api.ConnectionDetails, cmd *cobra.Command, args []string) {
 	log.Debug().Msgf("Running GET command %s", args[0])
-	client := api.Init(flags)
+	client, err := api.Init(flags)
 
-	if flags.User != "" && flags.Password != "" {
-		if err := client.Login(flags.User, flags.Password); err != nil {
-			log.Fatal().Err(err).Msg("Unable to login to the server")
-		}
+	if err != nil {
+		log.Fatal().Err(err).Msg("Unable to login to the server")
 	}
 	path := args[0]
 	options := args[1:]
