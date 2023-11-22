@@ -51,7 +51,7 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 	return nil
 }
 
-func distCp(globalFlags *types.GlobalFlags, flags *flagpole, apiFlags *api.ConnectionDetails, cmd *cobra.Command, distroName string, source string, channelLabel string) {
+func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, distroName string, source string, channelLabel string) {
 	cnx := utils.NewConnection(flags.Backend)
 	log.Info().Msgf("Copying distribution %s\n", distroName)
 	if !utils.FileExists(source) {
@@ -89,7 +89,7 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, apiFlags *api.Conne
 
 	log.Info().Msg("Distribution has been copied")
 
-	if apiFlags.User != "" {
+	if flags.User != "" {
 		distro := types.Distribution{
 			BasePath: dstpath,
 		}
@@ -98,7 +98,7 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, apiFlags *api.Conne
 			return
 		}
 
-		if err := registerDistro(apiFlags, &distro); err != nil {
+		if err := registerDistro(&flags.ConnectionDetails, &distro); err != nil {
 			log.Error().Msg(err.Error())
 		}
 	}

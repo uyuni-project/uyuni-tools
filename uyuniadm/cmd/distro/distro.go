@@ -16,11 +16,11 @@ type flagpole struct {
 	Backend      string
 	ChannelLabel string
 	ProductMap   map[string]map[string]types.Distribution
+	api.ConnectionDetails
 }
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	flags := &flagpole{}
-	apiFlags := &api.ConnectionDetails{}
 
 	distroCmd := &cobra.Command{
 		Use:     "distribution",
@@ -50,11 +50,11 @@ Optional channel label specify which parent channel to associate with the distri
 			} else {
 				channelLabel = ""
 			}
-			distCp(globalFlags, flags, apiFlags, cmd, args[1], args[0], channelLabel)
+			distCp(globalFlags, flags, cmd, args[1], args[0], channelLabel)
 		},
 	}
 
-	api.AddAPIFlags(distroCmd, apiFlags, true)
+	api.AddAPIFlags(distroCmd, true)
 	distroCmd.AddCommand(cpCmd)
 	return distroCmd
 }

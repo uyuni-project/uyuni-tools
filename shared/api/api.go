@@ -50,12 +50,12 @@ type ConnectionDetails struct {
 	Insecure bool
 }
 
-func AddAPIFlags(cmd *cobra.Command, conn *ConnectionDetails, optional bool) {
-	cmd.PersistentFlags().StringVar(&conn.Server, "server", "", "FQDN of the server to connect to")
-	cmd.PersistentFlags().StringVar(&conn.User, "username", "", "API user username")
-	cmd.PersistentFlags().StringVar(&conn.Password, "password", "", "Password for the API user")
-	cmd.PersistentFlags().StringVar(&conn.CAcert, "cacert", "", "Path to a cert file of the CA")
-	cmd.PersistentFlags().BoolVar(&conn.Insecure, "insecure", false, "If set, server certificate will not be checked for validity")
+func AddAPIFlags(cmd *cobra.Command, optional bool) {
+	cmd.PersistentFlags().String("server", "", "FQDN of the server to connect to")
+	cmd.PersistentFlags().String("user", "", "API user username")
+	cmd.PersistentFlags().String("password", "", "Password for the API user")
+	cmd.PersistentFlags().String("cacert", "", "Path to a cert file of the CA")
+	cmd.PersistentFlags().Bool("insecure", false, "If set, server certificate will not be checked for validity")
 
 	if optional {
 		cmd.MarkFlagRequired("server")
