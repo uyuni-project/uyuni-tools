@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+
+      - name: Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+
+      - name: Install dependencies
+        run: |
+          go get ./...
+
+      - name: Compute version
+        run: |
+          tag=$(git describe --tags --abbrev=0 | cut -f 3 -d '-')
+          offset=$(git rev-list --count ${tag})
+          echo "VERSION=$tag-$offset" >> "$GITHUB_ENV"
+
+      - name: Build
+        run: |
+          mkdir -p ./bin
+          go build \
+            -tags netgo \
+            -ldflags "-X github.com/uyuni-project/uyuni-tools/shared/utils.Version=${{ env.VERSION }}" \
+            -o ./bin \
+            ./...
+
+      - name: Test with the Go CLI
+        run: go test ./...
+
+      - name: Upload binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: binaries
+          path: ./bin/*
