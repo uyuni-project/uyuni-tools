@@ -102,6 +102,11 @@ chart=%{chart}
   chart='%{_default_chart}'
 %endif
 
+go_tags=""
+%if "%{?_uyuni_tools_tags}" != ""
+  go_tags="-tags %{_uyuni_tools_tags}"
+%endif
+
 go_path=
 %if 0%{?ubuntu}
   go_path=/usr/lib/go-%{go_version}/bin/
@@ -125,7 +130,7 @@ GOLD_FLAGS="-compressdwarf=false ${GOLD_FLAGS}"
 GOLD_FLAGS="-B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n') ${GOLD_FLAGS}"
 %endif
 
-${go_path}go build -ldflags "${GOLD_FLAGS}" -o ./bin ./...
+${go_path}go build ${go_tags} -ldflags "${GOLD_FLAGS}" -o ./bin ./...
 
 %if ! %{adm_build}
 rm ./bin/uyuniadm
