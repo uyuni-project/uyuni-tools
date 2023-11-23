@@ -86,6 +86,7 @@ tar -zxf %{SOURCE1}
 export GOFLAGS=-mod=vendor
 mkdir -p bin
 ADM_PATH="%{provider_prefix}/uyuniadm/shared/utils"
+UTILS_PATH="%{provider_prefix}/shared/utils"
 
 tag=%{!?_default_tag:latest}
 %if "%{?_default_tag}" != ""
@@ -117,6 +118,7 @@ go_path=
 %endif
 
 GOLD_FLAGS="-X ${ADM_PATH}.DefaultImage=${image} -X ${ADM_PATH}.DefaultTag=${tag} -X ${ADM_PATH}.DefaultChart=${chart}"
+GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.Version=%{version}"
 
 # Workaround for rpm on Fedora and EL clones not able to handle go's compressed debug symbols
 # Found compressed .debug_aranges section, not attempting dwz compression

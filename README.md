@@ -49,8 +49,8 @@ https://github.com/uyuni-project/uyuni/tree/master/containers/doc/server-kuberne
 
 ## Building
 
-`go build -o ./bin ./...` will produce the binaries in the root folder.
-Alternatively, if you have `podman` installed you can run the `build.sh` script to build binaries compatible with openSUSE Leap 15.5.
+`go build -o ./bin ./...` will produce the binaries in the root folder with `0.0.0` as version.
+Alternatively, you can run the `build.sh` script to build binaries with version computed from the last git tag and offset from it.
 
 ### Building in Open Build Service
 
