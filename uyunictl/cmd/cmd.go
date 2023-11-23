@@ -17,7 +17,7 @@ func NewUyunictlCommand() *cobra.Command {
 		Use:     "uyunictl",
 		Short:   "Uyuni control tool",
 		Long:    "Uyuni control tool used to help user managing Uyuni and SUSE Manager Servers mainly through its API",
-		Version: "0.1.0",
+		Version: utils.Version,
 	}
 
 	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", "configuration file path")
