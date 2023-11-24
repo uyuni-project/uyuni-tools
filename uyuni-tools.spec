@@ -33,8 +33,8 @@
 
 
 Name:           %{project}
-Version:        0.0.1
-Release:        0
+Version:        0.1.0
+Release:        1
 Summary:        Tools for managing %{productname} container
 License:        Apache-2.0
 Group:          System/Management
