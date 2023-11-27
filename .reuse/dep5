@@ -1,0 +1,38 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: uyuni-tools
+Upstream-Contact: Uyuni Project <>
+Source: https://github.com/uyuni-project/uyuni-tools
+
+# Sample paragraph, commented out:
+#
+# Files: src/*
+# Copyright: $YEAR $NAME <$CONTACT>
+# License: ...
+
+Files: uyuniadm/shared/ssl/testdata/*
+Copyright: 2023 SUSE LLC
+License: Apache-2.0
+
+Files: go.mod
+Copyright: 2023 SUSE LLC
+License: Apache-2.0
+
+Files: go.sum
+Copyright: 2023 SUSE LLC
+License: Apache-2.0
+
+Files: uyuni-tools.changes* 
+Copyright: 2023 SUSE LLC
+License: Apache-2.0
+
+Files: uyuni-tools.spec
+Copyright: 2023 SUSE LLC
+License: Apache-2.0
+
+Files: .tito/tito.props
+Copyright: 2023 SUSE LLC
+License: Apache-2.0
+
+Files: .tito/packages/*
+Copyright: 2023 SUSE LLC
+License: Apache-2.0

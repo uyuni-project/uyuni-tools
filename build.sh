@@ -1,5 +1,9 @@
 #!/usr/bin/bash
 
+# SPDX-FileCopyrightText: 2023 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 mkdir -p ./bin
 
 tag=$(git describe --tags --abbrev=0 | cut -f 3 -d '-')
