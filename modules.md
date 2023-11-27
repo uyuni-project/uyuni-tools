@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2023 SUSE LLC
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
 The goal of this content is to set a high-level overview of each tool available.
 
 For tools that depend on the backend we should explicitly specify which one we want to use. Backend can also be defined in the configuration file to be used by the user.

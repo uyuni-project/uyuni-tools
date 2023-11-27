@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 SUSE LLC
+//
+// SPDX-License-Identifier: Apache-2.0
+
 package utils
 
 // This map should match the volumes mapping from the container definition in both
