@@ -11,7 +11,7 @@
 
 ## For Podman deployment
 Requirement:
-  - openSUSE Leap 15.5
+  - openSUSE Leap Micro 15.5
   - Podman installed
 
 *Note that other distros with a recent Podman installed could work, but for now the tool is not packaged for them in OBS.
@@ -19,10 +19,10 @@ So you would need to build it locally.*
 
 Add uyuni-tool repository:
 ```
-zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/ContainerUtils/openSUSE_Leap_15.5/ uyuni-container-utils
+zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/ContainerUtils/openSUSE_Leap_Micro_5.5/ uyuni-container-utils
 ```
 
-Install `uyuniadm` package: `zypper in uyuniadm`
+Install `uyuniadm` package: `transactional-update pkg install uyuniadm`
 
 Run `uyuniadm` command to install Uyuni server on Podman:
 ```
