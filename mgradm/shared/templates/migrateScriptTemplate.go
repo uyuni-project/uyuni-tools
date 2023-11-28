@@ -17,15 +17,42 @@ if test -e /tmp/ssh_config; then
 fi
 SSH="ssh -A $SSH_CONFIG "
 SCP="scp -A $SSH_CONFIG "
+
+echo "Stopping spacewalk service..."
+$SSH {{ .SourceFqdn }} "spacewalk-service stop ; systemctl start postgresql.service"
+
+$SSH {{ .SourceFqdn }} \
+ "echo \"COPY (SELECT MIN(CONCAT(org_id, '-', label)) AS target, base_path FROM rhnKickstartableTree GROUP BY base_path) TO STDOUT WITH CSV;\" \
+ |spacewalk-sql --select-mode - " > distros
+
+echo "Stopping posgresql service..."
+$SSH {{ .SourceFqdn }} "systemctl stop postgresql.service"
+
+while IFS="," read -r target path ; do
+    echo "-/ $path"
+done < distros > exclude_list
+
 for folder in {{ range .Volumes }}{{ . }} {{ end }};
 do
   if $SSH {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."
-    rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:$folder/ $folder;
+    rsync -e "$SSH" --rsync-path='sudo rsync' -avz -f "merge exclude_list" {{ .SourceFqdn }}:$folder/ $folder;
   else
     echo "Skipping missing $folder..."
   fi
 done;
+
+echo "Migrating auto-installable distributions..."
+while IFS="," read -r target path ; do
+  if $SSH -A {{ .SourceFqdn }} test -e $path; then
+    echo "Copying distribution $target from $path"
+    mkdir -p "/srv/www/distributions/$target"
+    rsync -e "$SSH" --rsync-path='sudo rsync' -avz "{{ .SourceFqdn }}:$path/" "/srv/www/distributions/$target"
+  else
+    echo "Skipping missing distribution $path..."
+  fi
+done < distros
+
 rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 
