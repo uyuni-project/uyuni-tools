@@ -15,7 +15,7 @@ SSH="ssh -A $SSH_CONFIG "
 SCP="scp -A $SSH_CONFIG "
 for folder in {{ range .Volumes }}{{ . }} {{ end }};
 do
-  if ssh -A {{ .SourceFqdn }} test -e $folder; then
+  if $SSH {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."
     rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:$folder/ $folder;
   else
