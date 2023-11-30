@@ -32,6 +32,11 @@ ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/
 echo "Extracting time zone..."
 $SSH {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
 
+echo "Altering configuration for domain resolution..."
+sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/rhn/rhn.conf;
+sed 's/server\.jabber_server/java\.hostname/' -i /etc/rhn/rhn.conf;
+sed 's/client_use_localhost: false/client_use_localhost: true/' -i /etc/cobbler/settings.yaml;
+
 {{ if .Kubernetes }}
 echo "Altering configuration for kubernetes..."
 echo 'server.no_ssl = 1' >> /etc/rhn/rhn.conf;
