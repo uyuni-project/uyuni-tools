@@ -40,6 +40,15 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/etc/ssh/ssh_known_hosts")
 	}
 
+	if utils.GetSELinuxMode() == "Enforcing" {
+		customSELinuxPolicyPodmanLabel, customSELinuxPolicyPath := shared.GetCustomSELinuxPolicyDetails("uyuni")
+		shared.InstallCustomSELinuxPolicy(customSELinuxPolicyPath)
+		if customSELinuxPolicyPath != "" {
+			log.Debug().Msgf("customSELinuxPolicyPodmanLabel: %s", customSELinuxPolicyPodmanLabel)
+			extraArgs = append(extraArgs, "--security-opt", customSELinuxPolicyPodmanLabel)
+		}
+	}
+
 	podman.PrepareImage(&flags.Image)
 
 	log.Info().Msg("Migrating server")
