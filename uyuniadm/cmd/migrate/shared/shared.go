@@ -23,7 +23,7 @@ func GetSshAuthSocket() string {
 	return path
 }
 
-// getSshPaths returns the user SSH config and known_hosts paths
+// GetSshPaths returns the user SSH config and known_hosts paths
 func GetSshPaths() (string, string) {
 	// Find ssh config to mount it in the container
 	homedir, err := os.UserHomeDir()
@@ -42,6 +42,55 @@ func GetSshPaths() (string, string) {
 	}
 
 	return sshConfigPath, sshKnownhostsPath
+}
+
+// GetCustomSELinuxPolicyDetails returns the custom SELinux policy path and the Podman label
+func GetCustomSELinuxPolicyDetails(productName string) (string, string) {
+	podmanLabel := "label=type:" + productName + "-selinux-policy.process"
+
+	fileName := productName + "-selinux-policy.cil"
+	homedir, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal().Msgf("Failed to find home directory to look for %s", fileName)
+	}
+	filePath := filepath.Join(homedir, fileName)
+
+	return podmanLabel, filePath
+}
+
+// InstallCustomSELinuxPolicy make use of semodule command to install the custom policy
+func InstallCustomSELinuxPolicy(policyPath string) {
+	if !utils.FileExists(policyPath) {
+		log.Fatal().Msgf("Failed to load the SELinux policy: %s", policyPath)
+	}
+
+	udicaTemplatesPath := "/usr/share/udica/templates"
+	if !utils.FileExists(udicaTemplatesPath) {
+		log.Fatal().Msgf("Udica SELinux templates are not present on: %s\n"+
+			"Please install Udica before continue: https://github.com/containers/udica",
+			udicaTemplatesPath)
+	}
+
+	udicaBaseContainerPolicy := filepath.Join(udicaTemplatesPath, "base_container.cil")
+	udicaHomeContainerPolicy := filepath.Join(udicaTemplatesPath, "home_container.cil")
+	udicaTmpContainerPolicy := filepath.Join(udicaTemplatesPath, "tmp_container.cil")
+	udicaNetContainerPolicy := filepath.Join(udicaTemplatesPath, "net_container.cil")
+	udicaLogContainerPolicy := filepath.Join(udicaTemplatesPath, "log_container.cil")
+	udicaConfigContainerPolicy := filepath.Join(udicaTemplatesPath, "config_container.cil")
+	udicaTTYContainerPolicy := filepath.Join(udicaTemplatesPath, "tty_container.cil")
+	udicaVirtContainerPolicy := filepath.Join(udicaTemplatesPath, "virt_container.cil")
+	udicaXContainerPolicy := filepath.Join(udicaTemplatesPath, "x_container.cil")
+
+	errInstall := utils.RunCmdStdMapping("semodule",
+		"-i", policyPath, udicaBaseContainerPolicy,
+		udicaHomeContainerPolicy, udicaTmpContainerPolicy,
+		udicaNetContainerPolicy, udicaLogContainerPolicy,
+		udicaConfigContainerPolicy, udicaTTYContainerPolicy,
+		udicaVirtContainerPolicy, udicaXContainerPolicy)
+
+	if errInstall != nil {
+		log.Fatal().Err(errInstall).Msg("Custom SELinux policies can't be installed.")
+	}
 }
 
 func GenerateMigrationScript(sourceFqdn string, kubernetes bool) string {

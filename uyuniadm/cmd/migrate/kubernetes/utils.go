@@ -40,6 +40,8 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 	// We don't need the SSL certs at this point of the migration
 	clusterInfos := kubernetes.CheckCluster()
 
+	//TODO: check if we need to handle SELinux policies, as we do in podman
+
 	kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &sslFlags, &clusterInfos, fqdn, false,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
