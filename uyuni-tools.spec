@@ -31,8 +31,8 @@
 %define adm_build    0
 %endif
 
-%define name_adm uyuniadm
-%define name_ctl uyunictl
+%define name_adm mgradm
+%define name_ctl mgrctl
 
 # Completion files
 %if 0%{?debian} || 0%{?ubuntu}

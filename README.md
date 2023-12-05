@@ -10,8 +10,8 @@ SPDX-License-Identifier: Apache-2.0
 
 **These tools are work in progress**
 
-* `uyuniadm` used to help user administer Uyuni servers on K8s and Podman
-* `uyunictl` used to help user managing Uyuni servers mainly through its API
+* `mgradm` used to help user administer Uyuni servers on K8s and Podman
+* `mgrctl` used to help user managing Uyuni servers mainly through its API
 
 # Deployment rolling release
 
@@ -30,11 +30,11 @@ Add uyuni-tool repository:
 zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/ContainerUtils/openSUSE_Leap_Micro_5.5/ uyuni-container-utils
 ```
 
-Install `uyuniadm` package: `transactional-update pkg install uyuniadm`
+Install `mgradm` package: `transactional-update pkg install mgradm`
 
-Run `uyuniadm` command to install Uyuni server on Podman:
+Run `mgradm` command to install Uyuni server on Podman:
 ```
-uyuniadm install podman
+mgradm install podman
 ```
 
 If you build `uyuni-tools` on your machine, add the `--image registry.opensuse.org/systemsmanagement/uyuni/stable/containers/uyuni/server` option to the install command.
@@ -45,7 +45,7 @@ This is not needed when using the package from OBS as it defaulting with this im
 
 Other sub-commands are also available. Explore the tool with the help command.
 
-A tool named `uyunictl` is also available with useful commands.
+A tool named `mgrctl` is also available with useful commands.
 
 ## K3s deployment
 
@@ -61,14 +61,14 @@ https://github.com/uyuni-project/uyuni/tree/master/containers/doc/server-kuberne
 
 To produce shell completion scripts for a given shell you can run:
 
-- `./bin/uyuniadm completion <shell> > $COMPLETION_FILE` for uyuniadm
-- `./bin/uyunictl error completion <shell> > $COMPLETION_FILE` for uyunictl
+- `./bin/mgradm completion <shell> > $COMPLETION_FILE` for mgradm
+- `./bin/mgrctl error completion <shell> > $COMPLETION_FILE` for mgrctl
 
 You'll then need to source the resulting script(s).
 
-As an example, to enable bash completion for uyuniadm:
+As an example, to enable bash completion for mgradm:
 
-`./bin/uyuniadm completion bash > ./bin/completion`
+`./bin/mgradm completion bash > ./bin/completion`
 
 `. ./bin/completion`
 

@@ -17,7 +17,7 @@ go build -tags netgo -o ./bin ./...
 for shell in "bash" "zsh" "fish"; do
     COMPLETION_FILE="./bin/completion.${shell}"
 
-    # generate and source shell completion scripts for uyuniadm and uyunictl
-    ./bin/uyuniadm completion ${shell} > "${COMPLETION_FILE}"
-    ./bin/uyunictl completion ${shell} >> "${COMPLETION_FILE}"
+    # generate and source shell completion scripts for mgradm and mgrctl
+    ./bin/mgradm completion ${shell} > "${COMPLETION_FILE}"
+    ./bin/mgrctl completion ${shell} >> "${COMPLETION_FILE}"
 done
