@@ -33,6 +33,7 @@
 
 %define name_adm mgradm
 %define name_ctl mgrctl
+%define name_pxy mgrpxy
 
 # Completion files
 %if 0%{?debian} || 0%{?ubuntu}
@@ -85,6 +86,14 @@ Summary:      Command line tool to install and update %{productname}
 either on Podman or a Kubernetes cluster.
 
 
+%package -n %{name_pxy} 
+Summary:      Command line tool to install and update %{productname} proxy
+
+%description -n %{name_pxy}
+%{name_pxy} is a convenient tool to install and update %{productname} proxy components as containers
+running either on Podman or a Kubernetes cluster.
+
+
 %package -n %{name_adm}-bash-completion
 Summary:        Bash Completion for %{name_adm}
 Group:          System/Shells
@@ -115,6 +124,37 @@ BuildArch:      noarch
 %description -n %{name_adm}-zsh-completion
 Zsh command line completion support for %{name_adm}.
 
+
+%package -n %{name_pxy}-bash-completion
+Summary:        Bash Completion for %{name_pxy}
+Group:          System/Shells
+Requires:       %{name_pxy} = %{version}
+%if 0%{?suse_version} >= 150000
+Supplements:    (%{name_pxy} and bash-completion)
+%else
+Supplements:    bash-completion
+%endif
+BuildArch:      noarch
+
+%description -n %{name_pxy}-bash-completion
+Bash command line completion support for %{name_pxy}.
+
+
+%package -n %{name_pxy}-zsh-completion
+Summary:        Zsh Completion for %{name_pxy}
+Group:          System/Shells
+Requires:       %{name_pxy} = %{version}
+%if 0%{?suse_version} >= 150000
+Supplements:    (%{name_pxy} and zsh)
+%else
+Supplements:    zsh
+%endif
+BuildArch:      noarch
+
+%description -n %{name_pxy}-zsh-completion
+Zsh command line completion support for %{name_pxy}.
+
+
 %if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %package -n %{name_adm}-fish-completion
 Summary:        Fish Completion for %{name_adm}
@@ -130,6 +170,22 @@ BuildArch:      noarch
 
 %description -n %{name_adm}-fish-completion
 Fish command line completion support for %{name_adm}.
+
+
+%package -n %{name_pxy}-fish-completion
+Summary:        Fish Completion for %{name_pxy}
+Group:          System/Shells
+Requires:       %{name_pxy} = %{version}
+%if 0%{?suse_version} >= 150000
+Supplements:    (%{name_pxy} and fish)
+%else
+Supplements:    fish
+%endif
+BuildArch:      noarch
+
+%description -n %{name_pxy}-fish-completion
+Fish command line completion support for %{name_pxy}.
+
 %endif
 
 %endif
@@ -249,6 +305,7 @@ ${go_path}go build ${go_tags} -ldflags "${GOLD_FLAGS}" -o ./bin ./...
 
 %if ! %{adm_build}
 rm ./bin/%{name_adm}
+rm ./bin/%{name_pxy}
 %endif
 
 
@@ -269,12 +326,18 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %endif
 
 %if %{adm_build}
+
 %{buildroot}/%{_bindir}/%{name_adm} completion bash > %{buildroot}%{_datarootdir}/bash-completion/completions/%{name_adm}
 %{buildroot}/%{_bindir}/%{name_adm} completion zsh > %{buildroot}%{_zshdir}/_%{name_adm}
 
+%{buildroot}/%{_bindir}/%{name_pxy} completion bash > %{buildroot}%{_datarootdir}/bash-completion/completions/%{name_pxy}
+%{buildroot}/%{_bindir}/%{name_pxy} completion zsh > %{buildroot}%{_zshdir}/_%{name_pxy}
+
 %if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %{buildroot}/%{_bindir}/%{name_adm} completion fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/%{name_adm}.fish
+%{buildroot}/%{_bindir}/%{name_pxy} completion fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/%{name_pxy}.fish
 %endif
+
 %endif
 
 %if %{adm_build}
@@ -297,6 +360,27 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %files -n %{name_adm}-fish-completion
 %{_datarootdir}/fish/vendor_completions.d/%{name_adm}.fish
+%endif
+
+
+%files -n %{name_pxy}
+%defattr(-,root,root)
+%doc README.md
+%license LICENSE
+%{_bindir}/%{name_pxy}
+
+
+%files -n %{name_pxy}-bash-completion
+%{_datarootdir}/bash-completion/completions/%{name_pxy}
+
+
+%files -n %{name_pxy}-zsh-completion
+%{_zshdir}/_%{name_pxy}
+
+
+%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%files -n %{name_pxy}-fish-completion
+%{_datarootdir}/fish/vendor_completions.d/%{name_pxy}.fish
 %endif
 
 %endif

@@ -19,4 +19,5 @@ for shell in "bash" "zsh" "fish"; do
     # generate and source shell completion scripts for mgradm and mgrctl
     ./bin/mgradm completion ${shell} > "${COMPLETION_FILE}"
     ./bin/mgrctl completion ${shell} >> "${COMPLETION_FILE}"
+    ./bin/mgrpxy completion ${shell} >> "${COMPLETION_FILE}"
 done
