@@ -9,8 +9,9 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/k3s-traefik-config.yaml"
@@ -18,7 +19,7 @@ const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/k3s-traefik-
 func InstallK3sTraefikConfig(debug bool) {
 	log.Info().Msg("Installing K3s Traefik configuration")
 
-	tcpPorts := []utils.PortMap{}
+	tcpPorts := []types.PortMap{}
 	tcpPorts = append(tcpPorts, utils.TCP_PORTS...)
 	if debug {
 		tcpPorts = append(tcpPorts, utils.DEBUG_PORTS...)

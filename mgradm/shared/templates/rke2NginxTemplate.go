@@ -8,7 +8,7 @@ import (
 	"io"
 	"text/template"
 
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 const rke2NginxConfigTemplate = `apiVersion: helm.cattle.io/v1
@@ -33,8 +33,8 @@ spec:
 
 type Rke2NginxConfigTemplateData struct {
 	Namespace string
-	TcpPorts  []utils.PortMap
-	UdpPorts  []utils.PortMap
+	TcpPorts  []types.PortMap
+	UdpPorts  []types.PortMap
 }
 
 func (data Rke2NginxConfigTemplateData) Render(wr io.Writer) error {

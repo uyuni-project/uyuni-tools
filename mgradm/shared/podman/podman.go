@@ -13,10 +13,10 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 const UYUNI_NETWORK = "uyuni"
@@ -26,9 +26,9 @@ func GetCommonParams() []string {
 	return strings.Split(commonArgs, " ")
 }
 
-func GetExposedPorts(debug bool) []utils.PortMap {
+func GetExposedPorts(debug bool) []types.PortMap {
 
-	ports := []utils.PortMap{
+	ports := []types.PortMap{
 		utils.NewPortMap("https", 443, 443),
 		utils.NewPortMap("http", 80, 80),
 	}
@@ -202,7 +202,7 @@ func UpdateSslCertificate(cnx *utils.Connection, chain *ssl.CaChain, serverPair 
 }
 
 // Ensure the container image is pulled or pull it if the pull policy allows it
-func PrepareImage(flags *adm_utils.ImageFlags) {
+func PrepareImage(flags *types.ImageFlags) {
 	image := fmt.Sprintf("%s:%s", flags.Name, flags.Tag)
 	log.Info().Msgf("Ensure image %s is available", image)
 

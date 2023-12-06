@@ -14,7 +14,6 @@ import (
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -60,7 +59,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	tz, oldPgVersion, newPgVersion := shared.ReadContainerData(scriptDir)
 
 	if oldPgVersion != newPgVersion {
-		var migrationImage adm_utils.ImageFlags
+		var migrationImage types.ImageFlags
 		migrationImage.Name = flags.MigrationImage.Name
 		if migrationImage.Name == "" {
 			migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, oldPgVersion, newPgVersion)

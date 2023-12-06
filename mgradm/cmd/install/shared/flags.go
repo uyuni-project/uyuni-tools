@@ -6,6 +6,7 @@ package shared
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 )
@@ -45,7 +46,7 @@ type InstallFlags struct {
 	Ssl        cmd_utils.SslCertFlags
 	Scc        SccFlags
 	Debug      DebugFlags
-	Image      cmd_utils.ImageFlags `mapstructure:",squash"`
+	Image      types.ImageFlags `mapstructure:",squash"`
 }
 
 func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
