@@ -32,12 +32,6 @@ type HelmFlags struct {
 	CertManager ChartFlags
 }
 
-type ImageFlags struct {
-	Name       string `mapstructure:"image"`
-	Tag        string `mapstructure:"tag"`
-	PullPolicy string `mapstructure:"pullPolicy"`
-}
-
 type SslCertFlags struct {
 	Cnames   []string `mapstructure:"cname"`
 	Country  string

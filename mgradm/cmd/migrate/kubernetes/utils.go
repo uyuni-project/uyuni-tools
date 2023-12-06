@@ -61,7 +61,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 	}
 
 	if oldPgVersion != newPgVersion {
-		var migrationImage adm_utils.ImageFlags
+		var migrationImage types.ImageFlags
 		migrationImage.Name = flags.MigrationImage.Name
 		if migrationImage.Name == "" {
 			migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, oldPgVersion, newPgVersion)

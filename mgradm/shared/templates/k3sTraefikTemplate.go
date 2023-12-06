@@ -8,7 +8,7 @@ import (
 	"io"
 	"text/template"
 
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 const k3sTraefikConfigTemplate = `apiVersion: helm.cattle.io/v1
@@ -36,8 +36,8 @@ spec:
 `
 
 type K3sTraefikConfigTemplateData struct {
-	TcpPorts []utils.PortMap
-	UdpPorts []utils.PortMap
+	TcpPorts []types.PortMap
+	UdpPorts []types.PortMap
 }
 
 func (data K3sTraefikConfigTemplateData) Render(wr io.Writer) error {

@@ -6,15 +6,16 @@ package shared
 
 import (
 	"github.com/spf13/cobra"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 type MigrateFlags struct {
-	Image          cmd_utils.ImageFlags `mapstructure:",squash"`
-	MigrationImage cmd_utils.ImageFlags `mapstructure:"migration"`
+	Image          types.ImageFlags `mapstructure:",squash"`
+	MigrationImage types.ImageFlags `mapstructure:"migration"`
 }
 
 func AddMigrateFlags(cmd *cobra.Command) {
-	cmd_utils.AddImageFlag(cmd)
-	cmd_utils.AddMigrationImageFlag(cmd)
+	utils.AddImageFlag(cmd)
+	utils.AddMigrationImageFlag(cmd)
 }
