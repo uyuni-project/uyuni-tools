@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -49,7 +50,8 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		}
 	}
 
-	podman.PrepareImage(&flags.Image)
+	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
+	podman_utils.PrepareImage(image, flags.Image.PullPolicy)
 
 	log.Info().Msg("Migrating server")
 	runContainer("uyuni-migration", flags.Image.Name, flags.Image.Tag, extraArgs,
@@ -66,7 +68,9 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		}
 		migrationImage.Tag = flags.MigrationImage.Tag
 		log.Info().Msgf("Using migration image %s:%s", migrationImage.Name, migrationImage.Tag)
-		podman.PrepareImage(&migrationImage)
+
+		image := fmt.Sprintf("%s:%s", migrationImage.Name, migrationImage.Tag)
+		podman_utils.PrepareImage(image, flags.Image.PullPolicy)
 		shared.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
 		runContainer("uyuni-pg-migration", migrationImage.Name, migrationImage.Tag, extraArgs,
 			[]string{"/var/lib/uyuni-tools/migrate.sh"})
@@ -88,7 +92,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	log.Info().Msg("Server migrated")
 
-	podman.EnablePodmanSocket()
+	podman_utils.EnablePodmanSocket()
 }
 
 func runContainer(name string, image string, tag string, extraArgs []string, cmd []string) {

@@ -5,9 +5,7 @@
 package podman
 
 import (
-	"bytes"
 	"fmt"
-	"os/exec"
 	"path"
 	"strings"
 
@@ -15,11 +13,11 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-const UYUNI_NETWORK = "uyuni"
 const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
 
 func GetCommonParams() []string {
@@ -46,7 +44,7 @@ const ServicePath = "/etc/systemd/system/uyuni-server.service"
 
 func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []string) {
 
-	setupNetwork()
+	podman.SetupNetwork()
 
 	log.Info().Msg("Enabling system service")
 	data := templates.PodmanServiceTemplateData{
@@ -56,91 +54,13 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 		Ports:      GetExposedPorts(debug),
 		Timezone:   tz,
 		Image:      image,
-		Network:    UYUNI_NETWORK,
+		Network:    podman.UyuniNetwork,
 	}
 	if err := utils.WriteTemplateToFile(data, ServicePath, 0555, false); err != nil {
 		log.Fatal().Err(err).Msg("Failed to generate systemd service unit file")
 	}
 
 	utils.RunCmd("systemctl", "daemon-reload")
-}
-
-func setupNetwork() {
-	log.Info().Msgf("Setting up %s network", UYUNI_NETWORK)
-
-	ipv6Enabled := isIpv6Enabled()
-
-	testNetworkCmd := exec.Command("podman", "network", "exists", UYUNI_NETWORK)
-	testNetworkCmd.Run()
-	// check if network exists before trying to get the IPV6 information
-	if testNetworkCmd.ProcessState.ExitCode() == 0 {
-		// Check if the uyuni network exists and is IPv6 enabled
-		hasIpv6, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UYUNI_NETWORK)
-		if err == nil {
-			if string(hasIpv6) != "true" && ipv6Enabled {
-				log.Info().Msgf("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it", UYUNI_NETWORK)
-				message := fmt.Sprintf("Failed to remove %s podman network", UYUNI_NETWORK)
-				err := utils.RunCmd("podman", "network", "rm", UYUNI_NETWORK,
-					"--log-level", log.Logger.GetLevel().String())
-				if err != nil {
-					log.Fatal().Err(err).Msg(message)
-				}
-			} else {
-				log.Info().Msgf("Reusing existing %s network", UYUNI_NETWORK)
-				return
-			}
-		}
-	}
-
-	message := fmt.Sprintf("Failed to create %s network with IPv6 enabled", UYUNI_NETWORK)
-
-	args := []string{"network", "create"}
-	if ipv6Enabled {
-		// An IPv6 network on a host where IPv6 is disabled doesn't work: don't try it.
-		// Check if the networkd backend is netavark
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "info", "--format", "{{.Host.NetworkBackend}}")
-		backend := strings.Trim(string(out), "\n")
-		if err != nil {
-			log.Fatal().Err(err).Msgf("Failed to find podman's network backend")
-		} else if backend != "netavark" {
-			log.Info().Msgf("Podman's network backend (%s) is not netavark, skipping IPv6 enabling on %s network", backend, UYUNI_NETWORK)
-		} else {
-			args = append(args, "--ipv6")
-		}
-	}
-	args = append(args, UYUNI_NETWORK)
-	err := utils.RunCmd("podman", args...)
-	if err != nil {
-		log.Fatal().Err(err).Msg(message)
-	}
-}
-
-func isIpv6Enabled() bool {
-
-	files := []string{
-		"/sys/module/ipv6/parameters/disable",
-		"/proc/sys/net/ipv6/conf/default/disable_ipv6",
-		"/proc/sys/net/ipv6/conf/all/disable_ipv6",
-	}
-
-	for _, file := range files {
-		// Mind that we are checking disable files, the semantic is inverted
-		if getFileBoolean(file) {
-			return false
-		}
-	}
-	return true
-}
-
-func getFileBoolean(file string) bool {
-	return string(utils.ReadFile(file)) != "0"
-}
-
-func EnablePodmanSocket() {
-	err := utils.RunCmd("systemctl", "enable", "--now", "podman.socket")
-	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to enable podman.socket unit")
-	}
 }
 
 func UpdateSslCertificate(cnx *utils.Connection, chain *ssl.CaChain, serverPair *ssl.SslPair) {
@@ -199,43 +119,4 @@ func UpdateSslCertificate(cnx *utils.Connection, chain *ssl.CaChain, serverPair 
 	// The services need to be restarted
 	log.Info().Msg("Restarting services after updating the certificate")
 	utils.RunCmdStdMapping("podman", "exec", utils.PODMAN_CONTAINER, "spacewalk-service", "restart")
-}
-
-// Ensure the container image is pulled or pull it if the pull policy allows it
-func PrepareImage(flags *types.ImageFlags) {
-	image := fmt.Sprintf("%s:%s", flags.Name, flags.Tag)
-	log.Info().Msgf("Ensure image %s is available", image)
-
-	needsPull := checkImage(image, flags.PullPolicy)
-	if needsPull {
-		pullImage(image)
-	}
-}
-
-func checkImage(image string, pullPolicy string) bool {
-	if strings.ToLower(pullPolicy) == "always" {
-		return true
-	}
-
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", "--quiet", image)
-	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to check if image %s has already been pulled", image)
-	}
-
-	if len(bytes.TrimSpace(out)) == 0 {
-		if pullPolicy == "Never" {
-			log.Fatal().Msgf("Image %s is not available and cannot be pulled due to policy", image)
-		}
-		return true
-	}
-	return false
-}
-
-func pullImage(image string) {
-	log.Info().Msgf("Running podman pull %s", image)
-
-	err := utils.RunCmdStdMapping("podman", "pull", image)
-	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to pull image")
-	}
 }
