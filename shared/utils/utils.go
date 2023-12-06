@@ -87,3 +87,9 @@ func GetSELinuxMode() string {
 		return ""
 	}
 }
+
+// Get the value of a file containing a boolean.
+// This is handy for files from the kernel API
+func GetFileBoolean(file string) bool {
+	return string(ReadFile(file)) != "0"
+}

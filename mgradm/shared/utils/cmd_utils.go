@@ -16,10 +16,6 @@ import (
 
 var DefaultImage = path.Join(utils.DefaultNamespace, "server")
 
-type PodmanFlags struct {
-	Args []string `mapstructure:"arg"`
-}
-
 type ChartFlags struct {
 	Namespace string
 	Chart     string
@@ -54,10 +50,6 @@ func (f *SslCertFlags) CheckParameters() {
 	if !f.UseExisting() && (f.Server.Cert != "" || f.Server.Key != "" || f.Ca.Root != "") {
 		log.Fatal().Msg("Server certificate, key and root CA need to be all provided")
 	}
-}
-
-func AddPodmanInstallFlag(cmd *cobra.Command) {
-	cmd.Flags().StringSlice("podman-arg", []string{}, "Extra arguments to pass to podman")
 }
 
 func AddHelmInstallFlag(cmd *cobra.Command) {

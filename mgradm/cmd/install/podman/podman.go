@@ -8,14 +8,14 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type podmanInstallFlags struct {
 	shared.InstallFlags `mapstructure:",squash"`
-	Podman              cmd_utils.PodmanFlags
+	Podman              podman.PodmanFlags
 }
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -42,7 +42,7 @@ NOTE: for now installing on a remote podman is not supported!
 	}
 
 	shared.AddInstallFlags(podmanCmd)
-	cmd_utils.AddPodmanInstallFlag(podmanCmd)
+	podman.AddPodmanInstallFlag(podmanCmd)
 
 	return podmanCmd
 }
