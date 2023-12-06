@@ -35,3 +35,16 @@ var VOLUMES = map[string]string{
 	"etc-postfix":           "/etc/postfix",
 	"ca-cert":               "/etc/pki/trust/anchors",
 }
+
+var PROXY_HTTPD_VOLUMES = map[string]string{
+	"uyuni-proxy-rhn-cache": "/var/cache/rhn",
+	"uyuni-proxy-tftpboot":  "/srv/tftpboot",
+}
+
+var PROXY_SQUID_VOLUMES = map[string]string{
+	"uyuni-proxy-squid-cache": "/var/cache/squid",
+}
+
+var PROXY_TFTPD_VOLUMES = map[string]string{
+	"uyuni-proxy-tftpboot": "/srv/tftpboot:ro",
+}
