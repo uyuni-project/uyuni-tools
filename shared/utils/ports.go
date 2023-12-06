@@ -40,3 +40,11 @@ var UDP_PORTS = []types.PortMap{
 		Protocol: "udp",
 	},
 }
+
+var PROXY_TCP_PORTS = []types.PortMap{
+	NewPortMap("ssh", 8022, 22),
+	NewPortMap("https", 443, 443),
+	NewPortMap("http", 80, 8080),
+	NewPortMap("salt-publish", 4505, 4505),
+	NewPortMap("salt-request", 4506, 4506),
+}

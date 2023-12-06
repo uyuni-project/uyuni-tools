@@ -16,7 +16,7 @@ If the new sub-command needs access to the host OS of direct access to a running
 
 Commands in MGRCTL should use the API only. 
 
-Any command to manage the proxy deployment must be placed in MGRPROXY.
+Any command to manage the proxy deployment must be placed in MGRPXY.
 
 MGRDEV is focused on utility commands to be used during the development process.
 
@@ -54,7 +54,7 @@ Examples of sub-commands are `cp` and `exec`.
 **Sub-commands Naming:** verb -> backend
 
 
-## MGRPROXY
+## MGRPXY
 
 **Goals and definition:**
 Install and manage a containerized Uyuni Proxy. This new command is a proposal to solve the problem of managing the Proxy using the same tool that manages the server, and how that can lead to confusion and errors.
