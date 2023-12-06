@@ -74,21 +74,16 @@ BuildRequires:  golang >= 1.19
 %description
 Tools for managing uyuni container.
 
+
 %if %{adm_build}
+
 %package -n %{name_adm} 
 Summary:      Command line tool to install and update %{productname}
 
 %description -n %{name_adm}
 %{name_adm} is a convenient tool to install and update %{productname} components as containers running
 either on Podman or a Kubernetes cluster.
-%endif
 
-%package -n %{name_ctl}
-Summary:      Command line tool to perform day-to-day operations on %{productname}
-
-%description -n %{name_ctl}
-%{name_ctl} is a tool helping with dayly tasks on %{productname} components running as containers
-either on Podman or a Kubernetes cluster.
 
 %package -n %{name_adm}-bash-completion
 Summary:        Bash Completion for %{name_adm}
@@ -104,6 +99,7 @@ BuildArch:      noarch
 %description -n %{name_adm}-bash-completion
 Bash command line completion support for %{name_adm}.
 
+
 %package -n %{name_adm}-zsh-completion
 Summary:        Zsh Completion for %{name_adm}
 Group:          System/Shells
@@ -114,6 +110,7 @@ Supplements:    (%{name_adm} and zsh)
 Supplements:    zsh
 %endif
 BuildArch:      noarch
+
 
 %description -n %{name_adm}-zsh-completion
 Zsh command line completion support for %{name_adm}.
@@ -130,9 +127,21 @@ Supplements:    fish
 %endif
 BuildArch:      noarch
 
+
 %description -n %{name_adm}-fish-completion
 Fish command line completion support for %{name_adm}.
 %endif
+
+%endif
+
+
+%package -n %{name_ctl}
+Summary:      Command line tool to perform day-to-day operations on %{productname}
+
+%description -n %{name_ctl}
+%{name_ctl} is a tool helping with dayly tasks on %{productname} components running as containers
+either on Podman or a Kubernetes cluster.
+
 
 %package -n %{name_ctl}-bash-completion
 Summary:        Bash Completion for %{name_ctl}
@@ -148,6 +157,7 @@ BuildArch:      noarch
 %description -n %{name_ctl}-bash-completion
 Bash command line completion support for %{name_ctl}.
 
+
 %package -n %{name_ctl}-zsh-completion
 Summary:        Zsh Completion for %{name_ctl}
 Group:          System/Shells
@@ -161,6 +171,7 @@ BuildArch:      noarch
 
 %description -n %{name_ctl}-zsh-completion
 Zsh command line completion support for %{name_ctl}.
+
 
 %if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %package -n %{name_ctl}-fish-completion
@@ -177,6 +188,7 @@ BuildArch:      noarch
 %description -n %{name_ctl}-fish-completion
 Fish command line completion support for %{name_ctl}.
 %endif
+
 
 %prep
 %autosetup
@@ -239,6 +251,7 @@ ${go_path}go build ${go_tags} -ldflags "${GOLD_FLAGS}" -o ./bin ./...
 rm ./bin/%{name_adm}
 %endif
 
+
 %install
 install -m 0755 -vd %{buildroot}%{_bindir}
 install -m 0755 -vp ./bin/* %{buildroot}%{_bindir}/
@@ -265,23 +278,29 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %endif
 
 %if %{adm_build}
+
 %files -n %{name_adm}
 %defattr(-,root,root)
 %doc README.md
 %license LICENSE
 %{_bindir}/%{name_adm}
 
+
 %files -n %{name_adm}-bash-completion
 %{_datarootdir}/bash-completion/completions/%{name_adm}
 
+
 %files -n %{name_adm}-zsh-completion
 %{_zshdir}/_%{name_adm}
+
 
 %if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %files -n %{name_adm}-fish-completion
 %{_datarootdir}/fish/vendor_completions.d/%{name_adm}.fish
 %endif
+
 %endif
+
 
 %files -n %{name_ctl} 
 %defattr(-,root,root)
@@ -289,11 +308,14 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %license LICENSE
 %{_bindir}/%{name_ctl}
 
+
 %files -n %{name_ctl}-bash-completion
 %{_datarootdir}/bash-completion/completions/%{name_ctl}
 
+
 %files -n %{name_ctl}-zsh-completion
 %{_zshdir}/_%{name_ctl}
+
 
 %if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %files -n %{name_ctl}-fish-completion
