@@ -69,13 +69,7 @@ func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("image", DefaultImage, "Image")
 	cmd.Flags().String("tag", utils.DefaultTag, "Tag Image")
 
-	// Podman:
-	//   Never, just check and fail if needed
-	//   IfNotPresent, check and pull
-	//   Always, pull without checking
-	// Kubernetes -> set helm values
-	cmd.Flags().String("pullPolicy", "IfNotPresent",
-		"set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'")
+	utils.AddPullPolicyFlag(cmd)
 }
 
 func AddMigrationImageFlag(cmd *cobra.Command) {
