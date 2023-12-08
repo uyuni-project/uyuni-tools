@@ -11,8 +11,7 @@ offset=$(git rev-list --count ${tag})
 
 VERSION_NAME=github.com/uyuni-project/uyuni-tools/shared/utils.Version
 
-go build -tags netgo -ldflags "-X ${VERSION_NAME}=${tag}-${offset}" -o ./bin ./...
-go build -tags netgo -o ./bin ./...
+CGO_ENABLED=0 go build -ldflags "-X ${VERSION_NAME}=${tag}-${offset}" -o ./bin ./...
 
 for shell in "bash" "zsh" "fish"; do
     COMPLETION_FILE="./bin/completion.${shell}"
