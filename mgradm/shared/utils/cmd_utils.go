@@ -5,14 +5,16 @@
 package utils
 
 import (
+	"fmt"
+	"path"
+
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var DefaultImage = "registry.opensuse.org/uyuni/server"
-var DefaultTag = "latest"
-var DefaultChart = "oci://registry.opensuse.org/uyuni/server-helm"
+var DefaultImage = path.Join(utils.DefaultNamespace, "server")
 
 type PodmanFlags struct {
 	Args []string `mapstructure:"arg"`
@@ -65,8 +67,10 @@ func AddPodmanInstallFlag(cmd *cobra.Command) {
 }
 
 func AddHelmInstallFlag(cmd *cobra.Command) {
+	defaultChart := fmt.Sprintf("oci://%s/server-helm", utils.DefaultNamespace)
+
 	cmd.Flags().String("helm-uyuni-namespace", "default", "Kubernetes namespace where to install uyuni")
-	cmd.Flags().String("helm-uyuni-chart", DefaultChart, "URL to the uyuni helm chart")
+	cmd.Flags().String("helm-uyuni-chart", defaultChart, "URL to the uyuni helm chart")
 	cmd.Flags().String("helm-uyuni-version", "", "Version of the uyuni helm chart")
 	cmd.Flags().String("helm-uyuni-values", "", "Path to a values YAML file to use for Uyuni helm install")
 	cmd.Flags().String("helm-certmanager-namespace", "cert-manager", "Kubernetes namespace where to install cert-manager")
@@ -77,7 +81,7 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 
 func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("image", DefaultImage, "Image")
-	cmd.Flags().String("tag", DefaultTag, "Tag Image")
+	cmd.Flags().String("tag", utils.DefaultTag, "Tag Image")
 
 	// Podman:
 	//   Never, just check and fail if needed
@@ -90,5 +94,5 @@ func AddImageFlag(cmd *cobra.Command) {
 
 func AddMigrationImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("migration-image", "", "Migration image")
-	cmd.Flags().String("migration-tag", DefaultTag, "Migration image tag")
+	cmd.Flags().String("migration-tag", utils.DefaultTag, "Migration image tag")
 }

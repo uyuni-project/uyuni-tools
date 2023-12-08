@@ -8,6 +8,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var DefaultNamespace = "registry.opensuse.org/uyuni"
+var DefaultTag = "latest"
+
 // This variable needs to be set a build time using git tags
 var Version = "0.0.0"
 
