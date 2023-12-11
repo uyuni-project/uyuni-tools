@@ -11,21 +11,15 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 var DefaultImage = path.Join(utils.DefaultNamespace, "server")
 
-type ChartFlags struct {
-	Namespace string
-	Chart     string
-	Version   string
-	Values    string
-}
-
 type HelmFlags struct {
-	Uyuni       ChartFlags
-	CertManager ChartFlags
+	Uyuni       types.ChartFlags
+	CertManager types.ChartFlags
 }
 
 type SslCertFlags struct {
