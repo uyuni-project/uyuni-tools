@@ -10,12 +10,13 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInstallFlags,
@@ -34,7 +35,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInsta
 	}
 
 	// Check the kubernetes cluster setup
-	clusterInfos := kubernetes.CheckCluster()
+	clusterInfos := shared_kubernetes.CheckCluster()
 
 	// Deploy the SSL CA or server certificate
 	ca := ssl.SslPair{}

@@ -93,3 +93,17 @@ func GetSELinuxMode() string {
 func GetFileBoolean(file string) bool {
 	return string(ReadFile(file)) != "0"
 }
+
+// Uninstalls a file.
+func UninstallFile(path string, dryRun bool) {
+	if FileExists(path) {
+		if dryRun {
+			log.Info().Msgf("Would remove file %s", path)
+		} else {
+			log.Info().Msgf("Removing file %s", path)
+			if err := os.Remove(path); err != nil {
+				log.Info().Err(err).Msgf("Failed to remove file %s", path)
+			}
+		}
+	}
+}
