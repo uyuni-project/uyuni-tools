@@ -19,6 +19,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -39,7 +40,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 	var sslFlags adm_utils.SslCertFlags
 
 	// We don't need the SSL certs at this point of the migration
-	clusterInfos := kubernetes.CheckCluster()
+	clusterInfos := shared_kubernetes.CheckCluster()
 
 	kubeconfig := clusterInfos.GetKubeconfig()
 	//TODO: check if we need to handle SELinux policies, as we do in podman

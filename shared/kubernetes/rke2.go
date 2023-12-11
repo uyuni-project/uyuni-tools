@@ -9,19 +9,19 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 )
 
 const rke2NginxConfigPath = "/var/lib/rancher/rke2/server/manifests/rke2-ingress-nginx-config.yaml"
 
-func InstallRke2NginxConfig(namespace string) {
+func InstallRke2NginxConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap, namespace string) {
 	log.Info().Msg("Installing RKE2 Nginx configuration")
 
-	data := templates.Rke2NginxConfigTemplateData{
+	data := Rke2NginxConfigTemplateData{
 		Namespace: namespace,
-		TcpPorts:  utils.TCP_PORTS,
-		UdpPorts:  utils.UDP_PORTS,
+		TcpPorts:  tcpPorts,
+		UdpPorts:  udpPorts,
 	}
 	if err := utils.WriteTemplateToFile(data, rke2NginxConfigPath, 0600, false); err != nil {
 		log.Fatal().Err(err).Msgf("Failed to write Rke2 nginx configuration")
@@ -41,5 +41,5 @@ func InstallRke2NginxConfig(namespace string) {
 }
 
 func UninstallRke2NginxConfig(dryRun bool) {
-	uninstallFile(rke2NginxConfigPath, dryRun)
+	utils.UninstallFile(rke2NginxConfigPath, dryRun)
 }

@@ -12,14 +12,14 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 )
 
 const kubernetesBuilt = true
 
 func uninstallForKubernetes(dryRun bool) {
-	clusterInfos := kubernetes.CheckCluster()
+	clusterInfos := shared_kubernetes.CheckCluster()
 	kubeconfig := clusterInfos.GetKubeconfig()
 
 	// TODO Find all the PVs related to the server if we want to delete them
@@ -67,12 +67,12 @@ func uninstallForKubernetes(dryRun bool) {
 
 	// Remove the K3s Traefik config
 	if clusterInfos.IsK3s() {
-		kubernetes.UninstallK3sTraefikConfig(dryRun)
+		shared_kubernetes.UninstallK3sTraefikConfig(dryRun)
 	}
 
 	// Remove the rke2 nginx config
 	if clusterInfos.IsRke2() {
-		kubernetes.UninstallRke2NginxConfig(dryRun)
+		shared_kubernetes.UninstallRke2NginxConfig(dryRun)
 	}
 }
 

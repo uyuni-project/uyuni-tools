@@ -8,16 +8,17 @@ import (
 	"fmt"
 
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 const HELM_APP_NAME = "uyuni"
 
 func Deploy(cnx *utils.Connection, imageFlags *types.ImageFlags,
-	helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, clusterInfos *ClusterInfos,
+	helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, clusterInfos *kubernetes.ClusterInfos,
 	fqdn string, debug bool, helmArgs ...string) {
 
 	// If installing on k3s, install the traefik helm config in manifests
@@ -26,14 +27,14 @@ func Deploy(cnx *utils.Connection, imageFlags *types.ImageFlags,
 	if isK3s {
 		InstallK3sTraefikConfig(debug)
 	} else if IsRke2 {
-		InstallRke2NginxConfig(helmFlags.Uyuni.Namespace)
+		kubernetes.InstallRke2NginxConfig(utils.TCP_PORTS, utils.UDP_PORTS, helmFlags.Uyuni.Namespace)
 	}
 
 	// Install the uyuni server helm chart
 	UyuniUpgrade(imageFlags, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
 
 	// Wait for the pod to be started
-	waitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
+	kubernetes.WaitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
 	cnx.WaitForServer()
 }
 
@@ -84,7 +85,7 @@ func UyuniUpgrade(imageFlags *types.ImageFlags, helmFlags *cmd_utils.HelmFlags, 
 	// The values computed from the command line need to be last to override what could be in the extras
 	helmParams = append(helmParams,
 		"--set", fmt.Sprintf("images.server=%s:%s", imageFlags.Name, imageFlags.Tag),
-		"--set", "pullPolicy="+GetPullPolicy(imageFlags.PullPolicy),
+		"--set", "pullPolicy="+kubernetes.GetPullPolicy(imageFlags.PullPolicy),
 		"--set", "fqdn="+fqdn)
 
 	helmParams = append(helmParams, helmArgs...)
@@ -92,5 +93,5 @@ func UyuniUpgrade(imageFlags *types.ImageFlags, helmFlags *cmd_utils.HelmFlags, 
 	namespace := helmFlags.Uyuni.Namespace
 	chart := helmFlags.Uyuni.Chart
 	version := helmFlags.Uyuni.Version
-	helmUpgrade(kubeconfig, namespace, true, "", HELM_APP_NAME, chart, version, helmParams...)
+	kubernetes.HelmUpgrade(kubeconfig, namespace, true, "", HELM_APP_NAME, chart, version, helmParams...)
 }

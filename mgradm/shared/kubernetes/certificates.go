@@ -12,10 +12,11 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) {
@@ -101,7 +102,7 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 }
 
 func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, imagePullPolicy string) {
-	if !isDeploymentReady("", "cert-manager") {
+	if !kubernetes.IsDeploymentReady("", "cert-manager") {
 		log.Info().Msg("Installing cert-manager")
 		repo := ""
 		chart := helmFlags.CertManager.Chart
@@ -111,7 +112,7 @@ func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, image
 		args := []string{
 			"--set", "installCRDs=true",
 			"--set-json", "global.commonLabels={\"installedby\": \"mgradm\"}",
-			"--set", "images.pullPolicy=" + GetPullPolicy(imagePullPolicy),
+			"--set", "images.pullPolicy=" + kubernetes.GetPullPolicy(imagePullPolicy),
 		}
 		extraValues := helmFlags.CertManager.Values
 		if extraValues != "" {
@@ -124,11 +125,11 @@ func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, image
 			chart = "cert-manager"
 		}
 		// The installedby label will be used to only uninstall what we installed
-		helmUpgrade(kubeconfig, namespace, true, repo, "cert-manager", chart, version, args...)
+		kubernetes.HelmUpgrade(kubeconfig, namespace, true, repo, "cert-manager", chart, version, args...)
 	}
 
 	// Wait for cert-manager to be ready
-	waitForDeployment("", "cert-manager-webhook", "webhook")
+	kubernetes.WaitForDeployment("", "cert-manager-webhook", "webhook")
 }
 
 func extractCaCertToConfig() {
