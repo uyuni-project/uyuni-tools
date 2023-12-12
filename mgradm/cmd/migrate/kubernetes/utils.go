@@ -8,18 +8,19 @@ package kubernetes
 
 import (
 	"encoding/base64"
+	"fmt"
 	"os"
 	"path"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, cmd *cobra.Command, args []string) {
@@ -40,6 +41,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 	// We don't need the SSL certs at this point of the migration
 	clusterInfos := kubernetes.CheckCluster()
 
+	kubeconfig := clusterInfos.GetKubeconfig()
 	//TODO: check if we need to handle SELinux policies, as we do in podman
 
 	kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &sslFlags, &clusterInfos, fqdn, false,
@@ -51,14 +53,31 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 	// Run the actual migration
 	runMigration(cnx, flags, scriptDir)
 
-	tz := shared.ReadTimezone(scriptDir)
+	tz, oldPgVersion, newPgVersion := shared.ReadContainerData(scriptDir)
 
 	helmArgs := []string{
 		"--reset-values",
 		"--set", "timezone=" + tz,
 	}
 
-	kubeconfig := clusterInfos.GetKubeconfig()
+	if oldPgVersion != newPgVersion {
+		var migrationImage adm_utils.ImageFlags
+		migrationImage.Name = flags.MigrationImage.Name
+		if migrationImage.Name == "" {
+			migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, oldPgVersion, newPgVersion)
+		}
+		migrationImage.Tag = flags.MigrationImage.Tag
+		log.Info().Msgf("Using migration image %s:%s", migrationImage.Name, migrationImage.Tag)
+		shared.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
+
+		kubernetes.UyuniUpgrade(&migrationImage, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+		runMigration(cnx, flags, scriptDir)
+	}
+
+	shared.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
+	kubernetes.UyuniUpgrade(&flags.Image, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	runMigration(cnx, flags, scriptDir)
+
 	helmArgs = append(helmArgs, setupSsl(flags, kubeconfig, scriptDir)...)
 
 	// As we upgrade the helm instance without the migration parameters the SSL certificate will be used
@@ -67,7 +86,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 
 func runMigration(cnx *utils.Connection, flags *kubernetesMigrateFlags, tmpPath string) {
 	log.Info().Msg("Migrating server")
-	err := adm_utils.ExecCommand(zerolog.DebugLevel, cnx, "/var/lib/uyuni-tools/migrate.sh")
+	err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/migrate.sh")
 	if err != nil {
 		log.Fatal().Err(err).Msg("error running the migration script")
 	}

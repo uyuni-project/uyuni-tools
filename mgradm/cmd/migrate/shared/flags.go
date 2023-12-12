@@ -10,9 +10,11 @@ import (
 )
 
 type MigrateFlags struct {
-	Image cmd_utils.ImageFlags `mapstructure:",squash"`
+	Image          cmd_utils.ImageFlags `mapstructure:",squash"`
+	MigrationImage cmd_utils.ImageFlags `mapstructure:"migration"`
 }
 
 func AddMigrateFlags(cmd *cobra.Command) {
 	cmd_utils.AddImageFlag(cmd)
+	cmd_utils.AddMigrationImageFlag(cmd)
 }

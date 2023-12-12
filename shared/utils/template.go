@@ -24,7 +24,7 @@ func WriteTemplateToFile(template Template, path string, perm os.FileMode, overw
 	}
 
 	// Write the configuration
-	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, perm)
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, perm)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to open %s for writing", path)
 	}
