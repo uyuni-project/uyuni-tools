@@ -10,6 +10,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+const ServerContainerName = "uyuni-server"
+
 type PodmanFlags struct {
 	Args []string `mapstructure:"arg"`
 }

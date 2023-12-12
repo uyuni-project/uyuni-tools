@@ -25,7 +25,7 @@ import (
 )
 
 func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, cmd *cobra.Command, args []string) {
-	cnx := utils.NewConnection("kubectl")
+	cnx := utils.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 	fqdn := args[0]
 
 	// Find the SSH Socket and paths for the migration

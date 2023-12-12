@@ -12,6 +12,8 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
+	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -52,7 +54,7 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 }
 
 func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, distroName string, source string, channelLabel string) {
-	cnx := utils.NewConnection(flags.Backend)
+	cnx := utils.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	log.Info().Msgf("Copying distribution %s\n", distroName)
 	if !utils.FileExists(source) {
 		log.Fatal().Msgf("Source %s does not exists", source)
