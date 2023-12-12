@@ -46,7 +46,7 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 	shared_podman.PrepareImage(image, flags.Image.PullPolicy)
 
-	cnx := utils.NewConnection("podman")
+	cnx := utils.NewConnection("podman", shared_podman.ServerContainerName, "")
 	waitForSystemStart(cnx, flags)
 
 	caPassword := flags.Ssl.Password

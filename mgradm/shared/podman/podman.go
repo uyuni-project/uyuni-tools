@@ -68,7 +68,7 @@ func UpdateSslCertificate(cnx *utils.Connection, chain *ssl.CaChain, serverPair 
 
 	// Copy the CAs, certificate and key to the container
 	const certDir = "/tmp/uyuni-tools"
-	if err := utils.RunCmd("podman", "exec", utils.PODMAN_CONTAINER, "mkdir", "-p", certDir); err != nil {
+	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "mkdir", "-p", certDir); err != nil {
 		log.Fatal().Err(err).Msg("Failed to create temporary folder on container to copy certificates to")
 	}
 
@@ -80,7 +80,7 @@ func UpdateSslCertificate(cnx *utils.Connection, chain *ssl.CaChain, serverPair 
 
 	args := []string{
 		"exec",
-		utils.PODMAN_CONTAINER,
+		podman.ServerContainerName,
 		"mgr-ssl-cert-setup",
 		"-vvv",
 		"--root-ca-file", rootCaPath,
@@ -105,18 +105,18 @@ func UpdateSslCertificate(cnx *utils.Connection, chain *ssl.CaChain, serverPair 
 	}
 
 	// Clean the copied files and the now useless ssl-build
-	if err := utils.RunCmd("podman", "exec", utils.PODMAN_CONTAINER, "rm", "-rf", certDir); err != nil {
+	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", certDir); err != nil {
 		log.Error().Err(err).Msg("Failed to remove copied certificate files in the container")
 	}
 
 	const sslbuildPath = "/root/ssl-build"
 	if utils.TestExistenceInPod(cnx, sslbuildPath) {
-		if err := utils.RunCmd("podman", "exec", utils.PODMAN_CONTAINER, "rm", "-rf", sslbuildPath); err != nil {
+		if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", sslbuildPath); err != nil {
 			log.Error().Err(err).Msg("Failed to remove now useless ssl-build folder in the container")
 		}
 	}
 
 	// The services need to be restarted
 	log.Info().Msg("Restarting services after updating the certificate")
-	utils.RunCmdStdMapping("podman", "exec", utils.PODMAN_CONTAINER, "spacewalk-service", "restart")
+	utils.RunCmdStdMapping("podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
 }

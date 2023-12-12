@@ -15,6 +15,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+const ServerFilter = "-lapp=uyuni"
+
 // waitForDeployment waits at most 60s for a kubernetes deployment to have at least one replica.
 // See [isDeploymentReady] for more details.
 func WaitForDeployment(namespace string, name string, appName string) {

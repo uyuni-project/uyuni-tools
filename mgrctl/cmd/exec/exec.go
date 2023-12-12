@@ -13,6 +13,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -48,7 +50,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 }
 
 func run(flags *flagpole, cmd *cobra.Command, args []string) {
-	cnx := utils.NewConnection(flags.Backend)
+	cnx := utils.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	podName, err := cnx.GetPodName()
 	if err != nil {
 		log.Fatal().Err(err)

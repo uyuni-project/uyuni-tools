@@ -11,8 +11,9 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func uninstallForPodman(dryRun bool, purge bool) {
@@ -43,18 +44,19 @@ func uninstallForPodman(dryRun bool, purge bool) {
 	}
 
 	// Force stop the pod
-	if out, _ := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "-a", "-q", "-f", "name=uyuni-server"); len(out) > 0 {
+	containerName := shared_podman.ServerContainerName
+	if out, _ := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "-a", "-q", "-f", "name="+containerName); len(out) > 0 {
 		if dryRun {
-			log.Debug().Msgf("Would run podman kill uyuni-server for container id: %s", out)
-			log.Debug().Msgf("Would run podman remove uyuni-server for container id: %s", out)
+			log.Debug().Msgf("Would run podman kill %s for container id: %s", containerName, out)
+			log.Debug().Msgf("Would run podman remove %s for container id: %s", containerName, out)
 		} else {
-			log.Debug().Msgf("Run podman kill uyuni-server for container id: %s", out)
-			err := utils.RunCmd("podman", "kill", "uyuni-server")
+			log.Debug().Msgf("Run podman kill %s for container id: %s", containerName, out)
+			err := utils.RunCmd("podman", "kill", containerName)
 			if err != nil {
 				log.Debug().Err(err).Msg("Failed to kill the server")
 
-				log.Debug().Msgf("Run podman remove uyuni-server for container id: %s", out)
-				err = utils.RunCmd("podman", "rm", "uyuni-server")
+				log.Debug().Msgf("Run podman remove %s for container id: %s", containerName, out)
+				err = utils.RunCmd("podman", "rm", containerName)
 				if err != nil {
 					log.Debug().Err(err).Msg("Error removing container")
 				}

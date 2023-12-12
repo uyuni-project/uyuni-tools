@@ -7,6 +7,8 @@ package uninstall
 import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -26,7 +28,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 				backend, _ = cmd.Flags().GetString("backend")
 			}
 
-			cnx := utils.NewConnection(backend)
+			cnx := utils.NewConnection(backend, podman.ServerContainerName, kubernetes.ServerFilter)
 			command, err := cnx.GetCommand()
 			if err != nil {
 				log.Fatal().Err(err).Msg("Failed to determine suitable backend")
