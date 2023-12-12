@@ -12,10 +12,11 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, cmd *cobra.Command, args []string) {
@@ -56,7 +57,26 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		[]string{"/var/lib/uyuni-tools/migrate.sh"})
 
 	// Read the extracted data
-	tz := shared.ReadTimezone(scriptDir)
+	tz, oldPgVersion, newPgVersion := shared.ReadContainerData(scriptDir)
+
+	if oldPgVersion != newPgVersion {
+		var migrationImage adm_utils.ImageFlags
+		migrationImage.Name = flags.MigrationImage.Name
+		if migrationImage.Name == "" {
+			migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, oldPgVersion, newPgVersion)
+		}
+		migrationImage.Tag = flags.MigrationImage.Tag
+		log.Info().Msgf("Using migration image %s:%s", migrationImage.Name, migrationImage.Tag)
+		podman.PrepareImage(&migrationImage)
+		shared.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
+		runContainer("uyuni-pg-migration", migrationImage.Name, migrationImage.Tag, extraArgs,
+			[]string{"/var/lib/uyuni-tools/migrate.sh"})
+	}
+
+	shared.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
+	runContainer("uyuni-migration", flags.Image.Name, flags.Image.Tag, extraArgs,
+		[]string{"/var/lib/uyuni-tools/migrate.sh"})
+
 	fullImage := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 
 	podman.GenerateSystemdService(tz, fullImage, false, viper.GetStringSlice("podman.arg"))

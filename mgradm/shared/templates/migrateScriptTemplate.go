@@ -9,7 +9,7 @@ import (
 	"text/template"
 )
 
-const podmanMigrationScriptTemplate = `#!/bin/bash
+const migrationScriptTemplate = `#!/bin/bash
 set -e
 SSH_CONFIG=""
 if test -e /tmp/ssh_config; then
@@ -58,6 +58,10 @@ ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/
 
 echo "Extracting time zone..."
 $SSH {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
+
+echo "Extracting postgresql versions..."
+echo "new_pg_version=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1)" >> /var/lib/uyuni-tools/data
+echo "old_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)" >> /var/lib/uyuni-tools/data
 
 echo "Altering configuration for domain resolution..."
 sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/rhn/rhn.conf;
@@ -110,6 +114,7 @@ rm -rf /root/ssl-build
 # The content of this folder will be a RO mount from a configmap
 rm /etc/pki/trust/anchors/*
 {{ end }}
+
 echo "DONE"`
 
 type MigrateScriptTemplateData struct {
@@ -119,6 +124,6 @@ type MigrateScriptTemplateData struct {
 }
 
 func (data MigrateScriptTemplateData) Render(wr io.Writer) error {
-	t := template.Must(template.New("script").Parse(podmanMigrationScriptTemplate))
+	t := template.Must(template.New("script").Parse(migrationScriptTemplate))
 	return t.Execute(wr, data)
 }

@@ -87,3 +87,8 @@ func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("pullPolicy", "IfNotPresent",
 		"set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'")
 }
+
+func AddMigrationImageFlag(cmd *cobra.Command) {
+	cmd.Flags().String("migration-image", "", "Migration image")
+	cmd.Flags().String("migration-tag", DefaultTag, "Migration image tag")
+}
