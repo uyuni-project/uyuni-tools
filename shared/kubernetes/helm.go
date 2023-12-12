@@ -6,7 +6,9 @@ package kubernetes
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -50,4 +52,38 @@ func HelmUpgrade(kubeconfig string, namespace string, install bool,
 	if err := utils.RunCmdStdMapping("helm", helmArgs...); err != nil {
 		log.Fatal().Err(err).Msg(errorMessage)
 	}
+}
+
+// HelmUninstall runs the helm uninstall command to remove a deployment.
+func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun bool) string {
+	jsonpath := fmt.Sprintf("jsonpath={.items[?(@.metadata.name==\"%s\")].metadata.namespace}", deployment)
+	args := []string{"get", "-A", "deploy", "-o", jsonpath}
+	if filter != "" {
+		args = append(args, filter)
+	}
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
+	if err != nil {
+		log.Info().Err(err).Msgf("Failed to find %s's namespace, skipping removal", deployment)
+	}
+	namespace := string(out)
+	if namespace != "" {
+		helmArgs := []string{}
+		if kubeconfig != "" {
+			helmArgs = append(helmArgs, "--kubeconfig", kubeconfig)
+		}
+		helmArgs = append(helmArgs, "uninstall", "-n", namespace, deployment)
+
+		if dryRun {
+			log.Info().Msgf("Would run helm %s", strings.Join(helmArgs, " "))
+		} else {
+			log.Info().Msgf("Uninstalling %s", deployment)
+			message := "Failed to run helm " + strings.Join(helmArgs, " ")
+			err := utils.RunCmd("helm", helmArgs...)
+			if err != nil {
+				log.Fatal().Err(err).Msg(message)
+			}
+		}
+	}
+	return namespace
 }
