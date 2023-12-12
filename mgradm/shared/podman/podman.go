@@ -40,8 +40,6 @@ func GetExposedPorts(debug bool) []types.PortMap {
 	return ports
 }
 
-const ServicePath = "/etc/systemd/system/uyuni-server.service"
-
 func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []string) {
 
 	podman.SetupNetwork()
@@ -56,7 +54,7 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 		Image:      image,
 		Network:    podman.UyuniNetwork,
 	}
-	if err := utils.WriteTemplateToFile(data, ServicePath, 0555, false); err != nil {
+	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, false); err != nil {
 		log.Fatal().Err(err).Msg("Failed to generate systemd service unit file")
 	}
 

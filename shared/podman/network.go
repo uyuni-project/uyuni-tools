@@ -83,3 +83,23 @@ func isIpv6Enabled() bool {
 	}
 	return true
 }
+
+// DeleteNetwork deletes the uyuni podman network.
+// If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
+func DeleteNetwork(dryRun bool) {
+	err := utils.RunCmd("podman", "network", "exists", UyuniNetwork)
+	if err != nil {
+		log.Info().Msgf("Network %s already removed", UyuniNetwork)
+	} else {
+		if dryRun {
+			log.Info().Msgf("Would run podman network rm %s", UyuniNetwork)
+		} else {
+			err := utils.RunCmd("podman", "network", "rm", UyuniNetwork)
+			if err != nil {
+				log.Error().Msgf("Failed to remove network %s", UyuniNetwork)
+			} else {
+				log.Info().Msg("Network removed")
+			}
+		}
+	}
+}
