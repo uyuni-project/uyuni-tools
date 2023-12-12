@@ -16,6 +16,7 @@ import (
 )
 
 const ServerFilter = "-lapp=uyuni"
+const ProxyFilter = "-lapp=uyuni-proxy"
 
 // waitForDeployment waits at most 60s for a kubernetes deployment to have at least one replica.
 // See [isDeploymentReady] for more details.

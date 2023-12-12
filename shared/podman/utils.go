@@ -11,6 +11,7 @@ import (
 )
 
 const ServerContainerName = "uyuni-server"
+const ProxyContainerName = "uyuni-proxy-httpd"
 
 type PodmanFlags struct {
 	Args []string `mapstructure:"arg"`
