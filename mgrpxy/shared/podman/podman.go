@@ -74,7 +74,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 	}
 	generateSystemdFile(dataTftpd, "tftpd")
 
-	utils.RunCmd("systemctl", "daemon-reload")
+	podman.ReloadDaemon(false)
 }
 
 func generateSystemdFile(template utils.Template, service string) {

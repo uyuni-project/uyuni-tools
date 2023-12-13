@@ -30,11 +30,7 @@ func waitForSystemStart(cnx *utils.Connection, flags *podmanInstallFlags) {
 	podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, podmanArgs)
 
 	log.Info().Msg("Waiting for the server to start...")
-	// Start the service
-
-	if err := utils.RunCmd("systemctl", "enable", "--now", "uyuni-server"); err != nil {
-		log.Fatal().Err(err).Msg("Failed to enable uyuni-server systemd service")
-	}
+	shared_podman.EnableService("uyuni-server")
 
 	cnx.WaitForServer()
 }

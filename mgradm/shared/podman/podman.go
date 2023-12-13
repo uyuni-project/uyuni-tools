@@ -58,7 +58,7 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 		log.Fatal().Err(err).Msg("Failed to generate systemd service unit file")
 	}
 
-	utils.RunCmd("systemctl", "daemon-reload")
+	podman.ReloadDaemon(false)
 }
 
 func UpdateSslCertificate(cnx *utils.Connection, chain *ssl.CaChain, serverPair *ssl.SslPair) {

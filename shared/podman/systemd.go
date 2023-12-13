@@ -6,6 +6,7 @@ package podman
 
 import (
 	"os"
+	"os/exec"
 	"path"
 
 	"github.com/rs/zerolog/log"
@@ -67,5 +68,26 @@ func ReloadDaemon(dryRun bool) {
 		if err != nil {
 			log.Error().Err(err).Msg("Failed to reload systemd daemon")
 		}
+	}
+}
+
+// IsServiceRunning returns whether the systemd service is started or not.
+func IsServiceRunning(service string) bool {
+	cmd := exec.Command("systemctl", "is-active", "-q", service)
+	cmd.Run()
+	return cmd.ProcessState.ExitCode() == 0
+}
+
+// RestartService restarts the systemd service.
+func RestartService(service string) {
+	if err := utils.RunCmd("systemctl", "restart", service); err != nil {
+		log.Fatal().Err(err).Msgf("Failed to restart systemd %s.service", service)
+	}
+}
+
+// EnableService enables and starts a systemd service.
+func EnableService(service string) {
+	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
+		log.Fatal().Err(err).Msgf("Failed to enable %s systemd service", service)
 	}
 }
