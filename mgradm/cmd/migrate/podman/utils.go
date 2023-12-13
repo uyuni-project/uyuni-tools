@@ -85,10 +85,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	podman.GenerateSystemdService(tz, fullImage, false, viper.GetStringSlice("podman.arg"))
 
 	// Start the service
-
-	if err := utils.RunCmd("systemctl", "enable", "--now", "uyuni-server"); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to enable uyuni-server systemd service")
-	}
+	podman_utils.EnableService("uyuni-server")
 
 	log.Info().Msg("Server migrated")
 

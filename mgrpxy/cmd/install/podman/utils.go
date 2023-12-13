@@ -18,8 +18,11 @@ import (
 
 // Start the proxy services.
 func startPod() {
-	if err := shared_utils.RunCmd("systemctl", "enable", "--now", "uyuni-proxy-pod"); err != nil {
-		log.Fatal().Err(err).Msg("Failed to enable uyuni-proxy-pod systemd service")
+	const servicePod = "uyuni-proxy-pod"
+	if shared_podman.IsServiceRunning(servicePod) {
+		shared_podman.RestartService(servicePod)
+	} else {
+		shared_podman.EnableService(servicePod)
 	}
 }
 
