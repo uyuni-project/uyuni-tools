@@ -74,7 +74,7 @@ func guessIngress() string {
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-A",
 		"-o", "jsonpath={range .items[*]}{.spec.containers[*].args[0]}{.spec.containers[*].command}{end}")
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to get get pod commands to look for nginx controller")
+		log.Fatal().Err(err).Msgf("Failed to get pod commands to look for nginx controller")
 	}
 
 	const nginxController = "/nginx-ingress-controller"
