@@ -60,11 +60,13 @@ func run(flags *flagpole, cmd *cobra.Command, args []string) {
 	}
 
 	commandArgs := []string{"exec"}
+	envs := []string{}
 	if flags.Interactive {
 		commandArgs = append(commandArgs, "-i")
 	}
 	if flags.Tty {
 		commandArgs = append(commandArgs, "-t")
+		envs = append(envs, "TERM")
 	}
 	commandArgs = append(commandArgs, podName)
 
@@ -73,7 +75,7 @@ func run(flags *flagpole, cmd *cobra.Command, args []string) {
 	}
 
 	newEnv := []string{}
-	for _, envValue := range flags.Envs {
+	for _, envValue := range envs {
 		if !strings.Contains(envValue, "=") {
 			if value, set := os.LookupEnv(envValue); set {
 				newEnv = append(newEnv, fmt.Sprintf("%s=%s", envValue, value))
