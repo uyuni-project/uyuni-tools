@@ -26,6 +26,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 
 	ports := []types.PortMap{}
 	ports = append(ports, utils.PROXY_TCP_PORTS...)
+	ports = append(ports, utils.PROXY_PODMAN_PORTS...)
 	ports = append(ports, utils.UDP_PORTS...)
 
 	// Pod
