@@ -6,6 +6,8 @@ package utils
 
 import (
 	"io"
+	"os"
+	"path"
 	"strconv"
 	"strings"
 
@@ -29,8 +31,21 @@ func LogInit(logToConsole bool) {
 }
 
 func getFileWriter() *lumberjack.Logger {
+	const globalLogPath = "/var/log/"
+	logPath := globalLogPath
+
+	if file, err := os.OpenFile(globalLogPath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0600); err != nil {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			logPath = "./"
+		}
+		logPath = home
+	} else {
+		file.Close()
+	}
+
 	fileLogger := &lumberjack.Logger{
-		Filename:   "/var/log/uyuni-tools.log",
+		Filename:   path.Join(logPath, "uyuni-tools.log"),
 		MaxSize:    5,
 		MaxBackups: 5,
 		MaxAge:     90,
