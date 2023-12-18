@@ -61,6 +61,7 @@ func run(flags *flagpole, cmd *cobra.Command, args []string) {
 
 	commandArgs := []string{"exec"}
 	envs := []string{}
+	envs = append(envs, flags.Envs...)
 	if flags.Interactive {
 		commandArgs = append(commandArgs, "-i")
 	}
