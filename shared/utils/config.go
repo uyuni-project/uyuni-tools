@@ -30,7 +30,11 @@ func ReadConfig(configPath string, configFilename string, cmd *cobra.Command) *v
 	} else {
 		xdgConfigHome := os.Getenv("XDG_CONFIG_HOME")
 		if xdgConfigHome == "" {
-			xdgConfigHome = path.Join(os.Getenv("HOME"), ".config")
+			home, err := os.UserHomeDir()
+			if err != nil {
+				log.Err(err).Msg("Failed to find home directory")
+			}
+			xdgConfigHome = path.Join(home, ".config")
 		}
 		v.AddConfigPath(path.Join(xdgConfigHome, appName))
 		v.AddConfigPath(".")
