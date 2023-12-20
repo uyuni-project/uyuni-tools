@@ -54,17 +54,20 @@ type ConnectionDetails struct {
 	Insecure bool
 }
 
+// AddAPIFlags is a helper to include api details for the provided command tree.
+//
+// If the api support is only optional for the command, set optional parameter to true
 func AddAPIFlags(cmd *cobra.Command, optional bool) {
-	cmd.PersistentFlags().String("server", "", "FQDN of the server to connect to")
-	cmd.PersistentFlags().String("user", "", "API user username")
-	cmd.PersistentFlags().String("password", "", "Password for the API user")
-	cmd.PersistentFlags().String("cacert", "", "Path to a cert file of the CA")
-	cmd.PersistentFlags().Bool("insecure", false, "If set, server certificate will not be checked for validity")
+	cmd.PersistentFlags().String("api-server", "", "FQDN of the server to connect to")
+	cmd.PersistentFlags().String("api-user", "", "API user username")
+	cmd.PersistentFlags().String("api-password", "", "Password for the API user")
+	cmd.PersistentFlags().String("api-cacert", "", "Path to a cert file of the CA")
+	cmd.PersistentFlags().Bool("api-insecure", false, "If set, server certificate will not be checked for validity")
 
-	if optional {
-		cmd.MarkFlagRequired("server")
-		cmd.MarkFlagRequired("username")
-		cmd.MarkFlagRequired("password")
+	if !optional {
+		cmd.MarkFlagRequired("api-server")
+		cmd.MarkFlagRequired("api-username")
+		cmd.MarkFlagRequired("api-password")
 	}
 }
 

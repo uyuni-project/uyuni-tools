@@ -13,10 +13,10 @@ import (
 )
 
 type flagpole struct {
-	Backend      string
-	ChannelLabel string
-	ProductMap   map[string]map[string]types.Distribution
-	api.ConnectionDetails
+	Backend           string
+	ChannelLabel      string
+	ProductMap        map[string]map[string]types.Distribution
+	ConnectionDetails api.ConnectionDetails `mapstructure:"api"`
 }
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {

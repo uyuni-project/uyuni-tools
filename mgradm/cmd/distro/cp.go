@@ -89,7 +89,7 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command,
 
 	log.Info().Msg("Distribution has been copied")
 
-	if flags.User != "" {
+	if flags.ConnectionDetails.User != "" {
 		distro := types.Distribution{
 			BasePath: dstpath,
 		}
