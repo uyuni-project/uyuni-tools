@@ -52,9 +52,8 @@ func NewUyuniadmCommand() *cobra.Command {
 	rootCmd.AddCommand(installCmd)
 
 	rootCmd.AddCommand(uninstall.NewCommand(globalFlags))
-	rootCmd.AddCommand(completion.NewCommand(globalFlags))
-
 	rootCmd.AddCommand(distro.NewCommand(globalFlags))
+	rootCmd.AddCommand(completion.NewCommand(globalFlags))
 
 	return rootCmd
 }
