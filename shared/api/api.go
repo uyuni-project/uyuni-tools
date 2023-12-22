@@ -11,6 +11,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 
 	"bytes"
 	"encoding/json"
@@ -144,6 +145,9 @@ func Init(conn *ConnectionDetails) (*HTTPClient, error) {
 	}
 
 	if len(conn.User) > 0 {
+		if len(conn.Password) == 0 {
+			utils.AskPasswordIfMissing(&conn.Password, "API server password")
+		}
 		err = client.login(conn)
 	}
 	return client, err
