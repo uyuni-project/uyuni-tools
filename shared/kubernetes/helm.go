@@ -6,6 +6,7 @@ package kubernetes
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"os/exec"
 	"strings"
@@ -58,6 +59,11 @@ func HelmUpgrade(kubeconfig string, namespace string, install bool,
 
 // HelmUninstall runs the helm uninstall command to remove a deployment.
 func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun bool) string {
+	helmArgs := []string{}
+	if kubeconfig != "" {
+		helmArgs = append(helmArgs, "--kubeconfig", kubeconfig)
+	}
+
 	jsonpath := fmt.Sprintf("jsonpath={.items[?(@.metadata.name==\"%s\")].metadata.namespace}", deployment)
 	args := []string{"get", "-A", "deploy", "-o", jsonpath}
 	if filter != "" {
@@ -68,12 +74,26 @@ func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 	if err != nil {
 		log.Info().Err(err).Msgf("Failed to find %s's namespace, skipping removal", deployment)
 	}
+
 	namespace := string(out)
-	if namespace != "" {
-		helmArgs := []string{}
-		if kubeconfig != "" {
-			helmArgs = append(helmArgs, "--kubeconfig", kubeconfig)
+	if namespace == "" {
+		log.Debug().Msgf("Pod is not running, trying to find the namespace using the helm release")
+		args = append(helmArgs, "list", "-aA", "-f", deployment, "-o", "json")
+		out, err = utils.RunCmdOutput(zerolog.DebugLevel, "helm", args...)
+		if err != nil {
+			log.Info().Err(err).Msgf("Failed to detect %s's namespace using helm", deployment)
 		}
+		var data []releaseInfo
+		if err = json.Unmarshal(out, &data); err != nil {
+			log.Error().Err(err).Msgf("Helm provided an invalid JSON output")
+		}
+
+		if len(data) == 1 {
+			namespace = data[0].Namespace
+		}
+	}
+
+	if namespace != "" {
 		helmArgs = append(helmArgs, "uninstall", "-n", namespace, deployment)
 
 		if dryRun {
@@ -102,4 +122,8 @@ func HasHelmRelease(release string, kubeconfig string) bool {
 		return len(bytes.TrimSpace(out)) != 0 && err != nil
 	}
 	return false
+}
+
+type releaseInfo struct {
+	Namespace string `mapstructure:"namespace"`
 }
