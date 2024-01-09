@@ -8,6 +8,7 @@ package utils
 // the helm chart and the systemctl services definitions
 var VOLUMES = map[string]string{
 	"var-lib-cobbler":       "/var/lib/cobbler",
+	"var-salt":              "/var/lib/salt",
 	"var-pgsql":             "/var/lib/pgsql",
 	"var-cache":             "/var/cache",
 	"var-spacewalk":         "/var/spacewalk",
