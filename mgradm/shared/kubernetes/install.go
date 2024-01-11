@@ -5,6 +5,8 @@
 package kubernetes
 
 import (
+	"fmt"
+
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -18,7 +20,7 @@ const HELM_APP_NAME = "uyuni"
 
 func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 	helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, clusterInfos *kubernetes.ClusterInfos,
-	fqdn string, debug bool, helmArgs ...string) {
+	fqdn string, debug bool, helmArgs ...string) error {
 
 	// If installing on k3s, install the traefik helm config in manifests
 	isK3s := clusterInfos.IsK3s()
@@ -29,12 +31,19 @@ func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 		kubernetes.InstallRke2NginxConfig(utils.TCP_PORTS, utils.UDP_PORTS, helmFlags.Uyuni.Namespace)
 	}
 
+	serverImage, err := utils.ComputeImage(imageFlags.Name, imageFlags.Tag)
+	if err != nil {
+		return fmt.Errorf("Failed to compute image URL")
+	}
+
 	// Install the uyuni server helm chart
-	UyuniUpgrade(imageFlags, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
+	UyuniUpgrade(serverImage, imageFlags.PullPolicy, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
 
 	// Wait for the pod to be started
 	kubernetes.WaitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
 	cnx.WaitForServer()
+
+	return nil
 }
 
 func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, rootCa string,
@@ -66,8 +75,8 @@ func DeployExistingCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_uti
 	extractCaCertToConfig()
 }
 
-func UyuniUpgrade(imageFlags *types.ImageFlags, helmFlags *cmd_utils.HelmFlags, kubeconfig string,
-	fqdn string, ingress string, helmArgs ...string) {
+func UyuniUpgrade(serverImage string, pullPolicy string, helmFlags *cmd_utils.HelmFlags, kubeconfig string,
+	fqdn string, ingress string, helmArgs ...string) error {
 
 	log.Info().Msg("Installing Uyuni")
 
@@ -82,13 +91,9 @@ func UyuniUpgrade(imageFlags *types.ImageFlags, helmFlags *cmd_utils.HelmFlags, 
 	}
 
 	// The values computed from the command line need to be last to override what could be in the extras
-	serverImage, err := utils.ComputeImage(imageFlags.Name, imageFlags.Tag)
-	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to compute image URL")
-	}
 	helmParams = append(helmParams,
 		"--set", "images.server="+serverImage,
-		"--set", "pullPolicy="+kubernetes.GetPullPolicy(imageFlags.PullPolicy),
+		"--set", "pullPolicy="+kubernetes.GetPullPolicy(pullPolicy),
 		"--set", "fqdn="+fqdn)
 
 	helmParams = append(helmParams, helmArgs...)
@@ -96,5 +101,5 @@ func UyuniUpgrade(imageFlags *types.ImageFlags, helmFlags *cmd_utils.HelmFlags, 
 	namespace := helmFlags.Uyuni.Namespace
 	chart := helmFlags.Uyuni.Chart
 	version := helmFlags.Uyuni.Version
-	kubernetes.HelmUpgrade(kubeconfig, namespace, true, "", HELM_APP_NAME, chart, version, helmParams...)
+	return kubernetes.HelmUpgrade(kubeconfig, namespace, true, "", HELM_APP_NAME, chart, version, helmParams...)
 }

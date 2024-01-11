@@ -18,6 +18,10 @@ import (
 const ServerFilter = "-lapp=uyuni"
 const ProxyFilter = "-lapp=uyuni-proxy"
 
+type KubernetesFlags struct {
+	Args []string `mapstructure:"arg"`
+}
+
 // waitForDeployment waits at most 60s for a kubernetes deployment to have at least one replica.
 // See [isDeploymentReady] for more details.
 func WaitForDeployment(namespace string, name string, appName string) {
@@ -107,6 +111,24 @@ func IsDeploymentReady(namespace string, name string) bool {
 	return false
 }
 
+func ReplicasTo(replica uint) error {
+	args := []string{"scale", "deploy", "uyuni", "--replicas"}
+
+	args = append(args, fmt.Sprint(replica))
+
+	_, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
+	if err != nil {
+		return fmt.Errorf("Cannot run kubectl %s: %s", args, err)
+	}
+	//FIXME
+	//err = waitForReplica(replica)
+	//if err != nil {
+	//	return fmt.Errorf("Replica to %d failed: %s", replica, err)
+	//}
+
+	return err
+}
+
 func addNamespace(args []string, namespace string) []string {
 	if namespace != "" {
 		args = append(args, "-n", namespace)
@@ -139,10 +161,16 @@ func RunPod(podname string, image string, pullPolicy string, command string, arg
 	if err != nil {
 		return fmt.Errorf("Cannot run %s using image %s: %s", command, image, err)
 	}
+	err = waitForPod(podname)
+	if err != nil {
+		return fmt.Errorf("Deleting pod %s. Status fails with error %s", podname, err)
+	}
+
+	defer deletePod(podname)
 	return nil
 }
 
-func DeletePod(podname string) (string, error) {
+func deletePod(podname string) (string, error) {
 	arguments := []string{"delete", "pod", podname}
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", arguments...)
@@ -153,8 +181,9 @@ func DeletePod(podname string) (string, error) {
 	return string(out), nil
 }
 
-func WaitForPod(podname string, status string) error {
-	waitSeconds := 60
+func waitForPod(podname string) error {
+	status := "Succeeded"
+	waitSeconds := 120
 
 	log.Debug().Msgf("Checking status for %s pod. Waiting %s seconds until status is %s", podname, strconv.Itoa(waitSeconds), status)
 
@@ -163,24 +192,21 @@ func WaitForPod(podname string, status string) error {
 	var err error
 	for i := 0; i < waitSeconds; i++ {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
-		log.Debug().Msgf("%s status is %s", podname, out)
+		outStr := strings.TrimSuffix(string(out), "\n")
 		if err != nil {
 			return fmt.Errorf("Cannot execute %s: %s", strings.Join(cmdArgs, string(" ")), err)
 		}
-
-		if strings.ToUpper(string(out)) == strings.ToUpper(status+"\n") {
+		if strings.ToUpper(outStr) == strings.ToUpper(status) {
 			log.Debug().Msgf("%s pod status is %s", podname, status)
-			break
+			return nil
 		}
+		log.Debug().Msgf("Pod %s status is %s in %d seconds.", podname, string(out), i)
 		time.Sleep(1 * time.Second)
 	}
-	if err != nil {
-		return fmt.Errorf("Pod %s status is not %s in %s seconds: %s", podname, status, strconv.Itoa(waitSeconds), err)
-	}
-	return nil
+	return fmt.Errorf("Pod %s status is not %s in %s seconds: %s", podname, status, strconv.Itoa(waitSeconds), err)
 }
 
-func GetNode(appName string) string {
+func GetNode(appName string) (string, error) {
 	nodeName := ""
 	cmdArgs := []string{"get", "pod", "-lapp=" + appName, "-o", "jsonpath={.items[*].spec.nodeName}"}
 	for i := 0; i < 60; i++ {
@@ -193,7 +219,7 @@ func GetNode(appName string) string {
 	if len(nodeName) > 0 {
 		log.Debug().Msgf("Node name for app %s is: %s", appName, nodeName)
 	} else {
-		log.Warn().Msgf("Cannot find Node name for app %s", appName)
+		return "", fmt.Errorf("Cannot find Node name for app %s", appName)
 	}
-	return nodeName
+	return nodeName, nil
 }

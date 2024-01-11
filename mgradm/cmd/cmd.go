@@ -23,6 +23,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/stop"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/support"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/uninstall"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade"
 )
 
 // NewCommand returns a new cobra.Command implementing the root command for kinder
@@ -67,6 +68,7 @@ func NewUyuniadmCommand() *cobra.Command {
 	rootCmd.AddCommand(restart.NewCommand(globalFlags))
 	rootCmd.AddCommand(stop.NewCommand(globalFlags))
 	rootCmd.AddCommand(inspect.NewCommand(globalFlags))
+	rootCmd.AddCommand(upgrade.NewCommand(globalFlags))
 
 	return rootCmd
 }

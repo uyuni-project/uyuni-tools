@@ -25,8 +25,11 @@ test -d /usr/lib/postgresql$OLD_VERSION/bin
 echo "Create a backup at /var/lib/pgsql/data-pg$OLD_VERSION..."
 mv /var/lib/pgsql/data /var/lib/pgsql/data-pg$OLD_VERSION
 echo "Create new database directory..."
-mkdir /var/lib/pgsql/data
-chown postgres:postgres /var/lib/pgsql/data
+mkdir -p /var/lib/pgsql/data
+chown -R postgres:postgres /var/lib/pgsql
+echo "Enforce key permission"
+chown -R postgres:postgres /etc/pki/tls/private/pg-spacewalk.key
+chown -R postgres:postgres /etc/pki/tls/certs/spacewalk.crt
 
 echo "Initialize new postgresql $NEW_VERSION database..."
 . /etc/sysconfig/postgresql 2>/dev/null # Load locale for SUSE
