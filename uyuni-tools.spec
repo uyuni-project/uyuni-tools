@@ -43,7 +43,7 @@
 %endif
 
 Name:           %{project}
-Version:        0.1.0
+Version:        0.1.1
 Release:        1
 Summary:        Tools for managing %{productname} container
 License:        Apache-2.0

@@ -1,4 +1,17 @@
-- Build uyuniadm also for Tumbleweed and ALP
+-------------------------------------------------------------------
+Thu Jan 11 16:49:18 CET 2024 - marina.latini@suse.com
+
+- version 0.1.1-1
+  * Use tito for releasing
+  * Use the latest git tag as version instead of hardcoding it
+  * Comply to reuse.software rules for license documentation
+  * Add shell autocompletions
+  * Rename the tools to mgradm and mgrctl
+  * Add postgres migration
+  * Add migration of autoinstallable distributions
+  * Add mgrpxy tool with install and uninstall subcommands
+  * Merge /srv/www/ volumes and add one for /var/lib/salt
+  * Build uyuniadm also for Tumbleweed and ALP
 
 -------------------------------------------------------------------
 Tue Oct 24 13:24:46 UTC 2023 - Michele Bussolotto <michele.bussolotto@suse.com>
