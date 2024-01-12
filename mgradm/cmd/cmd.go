@@ -17,6 +17,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/distro"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/support"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/uninstall"
 )
 
@@ -55,6 +56,7 @@ func NewUyuniadmCommand() *cobra.Command {
 	rootCmd.AddCommand(uninstall.NewCommand(globalFlags))
 	rootCmd.AddCommand(distro.NewCommand(globalFlags))
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
+	rootCmd.AddCommand(support.NewCommand(globalFlags))
 
 	return rootCmd
 }
