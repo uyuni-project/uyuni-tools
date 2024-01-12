@@ -5,7 +5,6 @@
 package api
 
 import (
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -28,12 +27,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Use:   "get path [parameters]...",
 		Short: "Call API GET request",
 		Long:  "Takes an API path and optional parameters and then issues GET request with the specified path and parameters. If user and password are provided, calls login before API call",
-		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "ctlconfig", cmd)
-			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msgf("Failed to unmarshall configuration")
-			}
-			runGet(globalFlags, &flags.ConnectionDetails, cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, runGet)
 		},
 	}
 
@@ -41,12 +36,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Use:   "post path parameters...",
 		Short: "Call API POST request",
 		Long:  "Takes an API path and parameters and then issues POST request with the specified path and parameters. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs.",
-		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "ctlconfig", cmd)
-			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msgf("Failed to unmarshall configuration")
-			}
-			runPost(globalFlags, &flags.ConnectionDetails, cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, runPost)
 		},
 	}
 

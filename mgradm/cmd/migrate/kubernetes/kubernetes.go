@@ -7,12 +7,11 @@
 package kubernetes
 
 import (
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type kubernetesMigrateFlags struct {
@@ -42,14 +41,9 @@ This is not needed if the source server does not have a generated SSL CA certifi
 NOTE: for now installing on a remote cluster is not supported yet!
 `,
 		Args: cobra.ExactArgs(1),
-		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
+		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesMigrateFlags
-			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msg("Failed to Unmarshal configuration")
-			}
-
-			migrateToKubernetes(globalFlags, &flags, cmd, args)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, migrateToKubernetes)
 		},
 	}
 

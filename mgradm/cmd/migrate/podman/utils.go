@@ -19,7 +19,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, cmd *cobra.Command, args []string) {
+func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, cmd *cobra.Command, args []string) error {
 	// Find the SSH Socket and paths for the migration
 	sshAuthSocket := shared.GetSshAuthSocket()
 	sshConfigPath, sshKnownhostsPath := shared.GetSshPaths()
@@ -86,6 +86,8 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	log.Info().Msg("Server migrated")
 
 	podman_utils.EnablePodmanSocket()
+
+	return nil
 }
 
 func runContainer(name string, image string, extraArgs []string, cmd []string) {

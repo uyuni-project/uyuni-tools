@@ -5,7 +5,6 @@
 package distro
 
 import (
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -20,7 +19,7 @@ type flagpole struct {
 }
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	flags := &flagpole{}
+	var flags flagpole
 
 	distroCmd := &cobra.Command{
 		Use:     "distribution",
@@ -39,18 +38,8 @@ Distribution name specifies the destination directory under /srv/www/distributio
 Optional channel label specify which parent channel to associate with the distribution. Only when API details are provided and auto registration is done.`,
 		Args:    cobra.ExactArgs(2),
 		Aliases: []string{"cp"},
-		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
-			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msg("Failed to unmarshall configuration")
-			}
-			var channelLabel string
-			if len(args) == 3 {
-				channelLabel = args[2]
-			} else {
-				channelLabel = ""
-			}
-			distCp(globalFlags, flags, cmd, args[1], args[0], channelLabel)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, distroCp)
 		},
 	}
 

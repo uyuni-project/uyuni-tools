@@ -24,7 +24,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags, cmd *cobra.Command, args []string) {
+func migrateToKubernetes(
+	globalFlags *types.GlobalFlags,
+	flags *kubernetesMigrateFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
 	cnx := utils.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 	fqdn := args[0]
 
@@ -87,6 +92,7 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 
 	// As we upgrade the helm instance without the migration parameters the SSL certificate will be used
 	kubernetes.UyuniUpgrade(&flags.Image, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	return nil
 }
 
 func runMigration(cnx *utils.Connection, flags *kubernetesMigrateFlags, tmpPath string) {

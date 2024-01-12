@@ -5,6 +5,8 @@
 package cp
 
 import (
+	"fmt"
+
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
@@ -28,12 +30,17 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Long: `Takes a source and destination parameters.
 	One of them can be prefixed with 'server:' to indicate the path is within the server pod.`,
 		Args: cobra.ExactArgs(2),
-		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "ctlconfig", cmd)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			viper, err := utils.ReadConfig(globalFlags.ConfigPath, "ctlconfig", cmd)
+			if err != nil {
+				return err
+			}
 			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msgf("Failed to unmarshall configuration")
+				log.Error().Err(err).Msgf("Failed to unmarshall configuration")
+				return fmt.Errorf("failed to unmarshall configuration: %s", err)
 			}
 			run(flags, cmd, args)
+			return nil
 		},
 	}
 

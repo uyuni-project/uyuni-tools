@@ -28,17 +28,13 @@ type flagpole struct {
 
 // NewCommand returns a new cobra.Command for exec
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	flags := &flagpole{}
+	var flags flagpole
 
 	execCmd := &cobra.Command{
 		Use:   "exec '[command-to-run --with-args]'",
 		Short: "Execute commands inside the uyuni containers using 'sh -c'",
-		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "ctlconfig", cmd)
-			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msgf("Failed to unmarshall configuration")
-			}
-			run(flags, cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 	execCmd.Flags().StringSliceP("env", "e", []string{}, "environment variables to pass to the command, separated by commas")
@@ -49,7 +45,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return execCmd
 }
 
-func run(flags *flagpole, cmd *cobra.Command, args []string) {
+func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) error {
 	cnx := utils.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	podName, err := cnx.GetPodName()
 	if err != nil {
@@ -100,6 +96,8 @@ func run(flags *flagpole, cmd *cobra.Command, args []string) {
 		}
 	}
 	log.Info().Msg("Command returned with exit code 0")
+
+	return nil
 }
 
 type copyWriter struct {

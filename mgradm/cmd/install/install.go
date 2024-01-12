@@ -6,15 +6,15 @@ package install
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 	installCmd := &cobra.Command{
-		Use:   "install [fqdn]",
+		Use:   "install",
 		Short: "install a new server from scratch",
 		Long:  "Install a new server from scratch",
 	}

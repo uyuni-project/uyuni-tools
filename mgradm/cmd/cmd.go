@@ -25,10 +25,11 @@ func NewUyuniadmCommand() *cobra.Command {
 	globalFlags := &types.GlobalFlags{}
 	name := path.Base(os.Args[0])
 	rootCmd := &cobra.Command{
-		Use:     name,
-		Short:   "Uyuni administration tool",
-		Long:    "Uyuni administration tool used to help user administer uyuni servers on kubernetes and podman",
-		Version: utils.Version,
+		Use:          name,
+		Short:        "Uyuni administration tool",
+		Long:         "Uyuni administration tool used to help user administer uyuni servers on kubernetes and podman",
+		Version:      utils.Version,
+		SilenceUsage: true, // Don't show usage help on errors
 	}
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
