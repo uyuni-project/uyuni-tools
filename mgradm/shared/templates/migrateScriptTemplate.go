@@ -32,6 +32,18 @@ while IFS="," read -r target path ; do
     echo "-/ $path"
 done < distros > exclude_list
 
+# exclude all config files which already exist and are not marked noreplace
+rpm -qa --qf '[%{fileflags},%{filenames}\n]' |grep ",/etc/" | while IFS="," read -r flags path ; do
+    # config(noreplace) is 1<<4 (from lib/rpmlib.h)
+    if [ $(( $flags & 16 )) -eq 0 -a -f "$path" ] ; then
+        echo "-/ $path" >> exclude_list
+    fi
+done
+
+# exclude schema migration files
+echo "-/ /etc/sysconfig/rhn/reportdb-schema-upgrade" >> exclude_list
+echo "-/ /etc/sysconfig/rhn/schema-upgrade" >> exclude_list
+
 for folder in {{ range .Volumes }}{{ . }} {{ end }};
 do
   if $SSH {{ .SourceFqdn }} test -e $folder; then
@@ -41,6 +53,9 @@ do
     echo "Skipping missing $folder..."
   fi
 done;
+
+sed -i -e 's|appBase="webapps"|appBase="/usr/share/susemanager/www/tomcat/webapps"|' /etc/tomcat/server.xml
+sed -i -e 's|DocumentRoot\s*"/srv/www/htdocs"|DocumentRoot "/usr/share/susemanager/www/htdocs"|' /etc/apache2/vhosts.d/vhost-ssl.conf
 
 echo "Migrating auto-installable distributions..."
 while IFS="," read -r target path ; do
