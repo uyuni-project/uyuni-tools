@@ -7,12 +7,11 @@
 package kubernetes
 
 import (
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type kubernetesInstallFlags struct {
@@ -36,14 +35,9 @@ The helm values file will be overridden with the values from the mgradm paramete
 NOTE: for now installing on a remote cluster is not supported!
 `,
 		Args: cobra.ExactArgs(1),
-		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
+		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesInstallFlags
-			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msgf("Failed to unmarshall configuration")
-			}
-			flags.CheckParameters(cmd, "kubectl")
-			installForKubernetes(globalFlags, &flags, cmd, args)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, installForKubernetes)
 		},
 	}
 

@@ -5,6 +5,7 @@
 package utils
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"strings"
@@ -18,7 +19,7 @@ import (
 const envPrefix = "UYUNI"
 const appName = "uyuni-tools"
 
-func ReadConfig(configPath string, configFilename string, cmd *cobra.Command) *viper.Viper {
+func ReadConfig(configPath string, configFilename string, cmd *cobra.Command) (*viper.Viper, error) {
 	v := viper.New()
 
 	v.SetConfigType("yaml")
@@ -33,20 +34,25 @@ func ReadConfig(configPath string, configFilename string, cmd *cobra.Command) *v
 			home, err := os.UserHomeDir()
 			if err != nil {
 				log.Err(err).Msg("Failed to find home directory")
+			} else {
+				xdgConfigHome = path.Join(home, ".config")
 			}
-			xdgConfigHome = path.Join(home, ".config")
 		}
-		v.AddConfigPath(path.Join(xdgConfigHome, appName))
+		if xdgConfigHome != "" {
+			v.AddConfigPath(path.Join(xdgConfigHome, appName))
+		}
 		v.AddConfigPath(".")
 	}
 
-	bindFlags(cmd, v)
+	if err := bindFlags(cmd, v); err != nil {
+		return nil, err
+	}
 
 	if err := v.ReadInConfig(); err != nil {
 		// It's okay if there isn't a config file
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 			// TODO Provide help on the config file format
-			log.Fatal().Err(err).Msgf("Failed to parse configuration file %s", v.ConfigFileUsed())
+			return nil, fmt.Errorf("failed to parse configuration file %s: %s", v.ConfigFileUsed(), err)
 		}
 	}
 
@@ -56,15 +62,21 @@ func ReadConfig(configPath string, configFilename string, cmd *cobra.Command) *v
 
 	v.AutomaticEnv()
 
-	return v
+	return v, nil
 }
 
 // Bind each cobra flag to its associated viper configuration (config file and environment variable)
-func bindFlags(cmd *cobra.Command, v *viper.Viper) {
+func bindFlags(cmd *cobra.Command, v *viper.Viper) error {
+	var errors []error
 	cmd.Flags().VisitAll(func(f *pflag.Flag) {
 		configName := strings.ReplaceAll(f.Name, "-", ".")
 		if err := v.BindPFlag(configName, f); err != nil {
-			log.Fatal().Err(err).Msgf("Failed to bind %s config to parameter %s", configName, f.Name)
+			errors = append(errors, fmt.Errorf("failed to bind %s config to parameter %s: %s", configName, f.Name, err))
 		}
 	})
+
+	if len(errors) > 0 {
+		return errors[0]
+	}
+	return nil
 }

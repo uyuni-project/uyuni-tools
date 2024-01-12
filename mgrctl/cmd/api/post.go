@@ -16,9 +16,9 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func runPost(globalFlags *types.GlobalFlags, flags *api.ConnectionDetails, cmd *cobra.Command, args []string) {
+func runPost(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
 	log.Debug().Msgf("Running POST command %s", args[0])
-	client, err := api.Init(flags)
+	client, err := api.Init(&flags.ConnectionDetails)
 
 	if err != nil {
 		log.Fatal().Err(err).Msg("Unable to login to the server")
@@ -44,8 +44,7 @@ func runPost(globalFlags *types.GlobalFlags, flags *api.ConnectionDetails, cmd *
 
 	res, err := client.Post(path, data)
 	if err != nil {
-		log.Error().Err(err).Msgf("Error in query %s", path)
-		return
+		return fmt.Errorf("error in query %s: %s", path, err)
 	}
 
 	if !res["success"].(bool) {
@@ -56,4 +55,6 @@ func runPost(globalFlags *types.GlobalFlags, flags *api.ConnectionDetails, cmd *
 		log.Fatal().Err(err)
 	}
 	fmt.Print(out)
+
+	return nil
 }

@@ -26,7 +26,7 @@ func startPod() {
 	}
 }
 
-func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallFlags, cmd *cobra.Command, args []string) {
+func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallFlags, cmd *cobra.Command, args []string) error {
 	configPath := utils.GetConfigPath(args)
 	if err := unpackConfig(configPath); err != nil {
 		log.Fatal().Err(err).Msgf("Failed to extract proxy config from %s file", configPath)
@@ -42,6 +42,7 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallF
 	podman.GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags.Podman.Args)
 
 	startPod()
+	return nil
 }
 
 func getContainerImage(flags *podmanProxyInstallFlags, name string) string {

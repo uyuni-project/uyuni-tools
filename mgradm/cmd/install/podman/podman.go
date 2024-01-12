@@ -5,7 +5,6 @@
 package podman
 
 import (
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -30,14 +29,9 @@ The install podman command assumes podman is installed locally
 NOTE: for now installing on a remote podman is not supported!
 `,
 		Args: cobra.ExactArgs(1),
-		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
+		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanInstallFlags
-			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msgf("Failed to unmarshall configuration")
-			}
-			flags.CheckParameters(cmd, "podman")
-			installForPodman(globalFlags, &flags, cmd, args)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, installForPodman)
 		},
 	}
 

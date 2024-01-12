@@ -5,7 +5,6 @@
 package podman
 
 import (
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -34,14 +33,9 @@ This migration command assumes a few things:
 NOTE: for now installing on a remote podman is not supported yet!
 `,
 		Args: cobra.ExactArgs(1),
-		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
+		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanMigrateFlags
-			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msg("Failed to Unmarshal configuration")
-			}
-
-			migrateToPodman(globalFlags, &flags, cmd, args)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, migrateToPodman)
 		},
 	}
 

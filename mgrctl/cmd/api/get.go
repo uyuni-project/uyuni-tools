@@ -16,9 +16,9 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func runGet(globalFlags *types.GlobalFlags, flags *api.ConnectionDetails, cmd *cobra.Command, args []string) {
+func runGet(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
 	log.Debug().Msgf("Running GET command %s", args[0])
-	client, err := api.Init(flags)
+	client, err := api.Init(&flags.ConnectionDetails)
 
 	if err != nil {
 		log.Fatal().Err(err).Msg("Unable to login to the server")
@@ -38,4 +38,6 @@ func runGet(globalFlags *types.GlobalFlags, flags *api.ConnectionDetails, cmd *c
 		log.Fatal().Err(err)
 	}
 	fmt.Print(string(out))
+
+	return nil
 }

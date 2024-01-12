@@ -35,7 +35,13 @@ func waitForSystemStart(cnx *utils.Connection, flags *podmanInstallFlags) {
 	cnx.WaitForServer()
 }
 
-func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags, cmd *cobra.Command, args []string) {
+func installForPodman(
+	globalFlags *types.GlobalFlags,
+	flags *podmanInstallFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	flags.CheckParameters(cmd, "podman")
 	fqdn := getFqdn(args)
 	log.Info().Msgf("setting up server with the FQDN '%s'", fqdn)
 
@@ -74,6 +80,7 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 	}
 
 	shared_podman.EnablePodmanSocket()
+	return nil
 }
 
 func getFqdn(args []string) string {

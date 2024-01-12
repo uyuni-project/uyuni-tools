@@ -19,8 +19,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInstallFlags,
-	cmd *cobra.Command, args []string) {
+func installForKubernetes(globalFlags *types.GlobalFlags,
+	flags *kubernetesInstallFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	flags.CheckParameters(cmd, "kubectl")
 	cnx := utils.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 
 	fqdn := args[0]
@@ -59,4 +63,5 @@ func installForKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesInsta
 	if err != nil {
 		log.Fatal().Err(err).Msg("Error storing the SSL CA certificate in database")
 	}
+	return nil
 }

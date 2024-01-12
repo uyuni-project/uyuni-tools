@@ -5,7 +5,11 @@
 package utils
 
 import (
+	"fmt"
+
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 var DefaultNamespace = "registry.opensuse.org/uyuni"
@@ -13,6 +17,26 @@ var DefaultTag = "latest"
 
 // This variable needs to be set a build time using git tags
 var Version = "0.0.0"
+
+// CommandHelper parses the configuration file into the flags and runs the fn function.
+// This function should be passed to Command's RunE.
+func CommandHelper[T interface{}](
+	globalFlags *types.GlobalFlags,
+	cmd *cobra.Command,
+	args []string,
+	flags *T,
+	fn func(*types.GlobalFlags, *T, *cobra.Command, []string) error,
+) error {
+	viper, err := ReadConfig(globalFlags.ConfigPath, "uyuni-tools.yaml", cmd)
+	if err != nil {
+		return err
+	}
+	if err := viper.Unmarshal(&flags); err != nil {
+		log.Error().Err(err).Msgf("Failed to unmarshall configuration")
+		return fmt.Errorf("failed to unmarshall configuration: %s", err)
+	}
+	return fn(globalFlags, flags, cmd, args)
+}
 
 func AddBackendFlag(cmd *cobra.Command) {
 	cmd.Flags().String("backend", "", "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use.")

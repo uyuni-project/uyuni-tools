@@ -18,7 +18,7 @@ import (
 
 func installForKubernetes(globalFlags *types.GlobalFlags,
 	flags *kubernetesProxyInstallFlags, cmd *cobra.Command, args []string,
-) {
+) error {
 	// Unpack the tarball
 	configPath := utils.GetConfigPath(args)
 
@@ -48,4 +48,6 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	// Install the uyuni proxy helm chart
 	kubernetes.Deploy(&flags.ProxyInstallFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
 		"--set", "ingress="+clusterInfos.Ingress)
+
+	return nil
 }

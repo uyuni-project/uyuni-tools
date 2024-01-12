@@ -53,7 +53,21 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 	return nil
 }
 
-func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, distroName string, source string, channelLabel string) {
+func distroCp(
+	globalFlags *types.GlobalFlags,
+	flags *flagpole,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	distroName := args[1]
+	source := args[0]
+
+	var channelLabel string
+	if len(args) == 3 {
+		channelLabel = args[2]
+	} else {
+		channelLabel = ""
+	}
 	cnx := utils.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	log.Info().Msgf("Copying distribution %s\n", distroName)
 	if !utils.FileExists(source) {
@@ -96,12 +110,12 @@ func distCp(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command,
 			BasePath: dstpath,
 		}
 		if err := detectDistro(srcdir, channelLabel, flags, &distro); err != nil {
-			log.Error().Msg(err.Error())
-			return
+			return err
 		}
 
 		if err := registerDistro(&flags.ConnectionDetails, &distro); err != nil {
 			log.Error().Msg(err.Error())
 		}
 	}
+	return nil
 }

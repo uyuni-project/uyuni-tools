@@ -5,7 +5,6 @@
 package kubernetes
 
 import (
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/kubernetes"
 	pxy_utils "github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
@@ -33,13 +32,9 @@ The install kubernetes command assumes kubectl is installed locally.
 NOTE: for now installing on a remote kubernetes cluster is not supported!
 `,
 		Args: cobra.ExactArgs(1),
-		Run: func(cmd *cobra.Command, args []string) {
-			viper := utils.ReadConfig(globalFlags.ConfigPath, "admconfig", cmd)
+		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesProxyInstallFlags
-			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msgf("Failed to unmarshall configuration")
-			}
-			installForKubernetes(globalFlags, &flags, cmd, args)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, installForKubernetes)
 		},
 	}
 
