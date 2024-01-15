@@ -35,8 +35,9 @@ jobs:
 
       - name: Compute version
         run: |
-          tag=$(git describe --tags --abbrev=0 | cut -f 3 -d '-')
-          offset=$(git rev-list --count ${tag})
+          tag=$(git describe --tags --abbrev=0)
+          version=$(git describe --tags --abbrev=0 | cut -f 3 -d '-')
+          offset=$(git rev-list --count ${tag}..)
           echo "VERSION=$tag-$offset" >> "$GITHUB_ENV"
 
       - name: Build
