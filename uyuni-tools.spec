@@ -22,8 +22,7 @@
 %global provider_prefix %{provider}.%{provider_tld}/%{org}/%{project}
 %global productname     Uyuni
 
-%global image           registry.opensuse.org/uyuni/server
-%global chart           oci://registry.opensuse.org/uyuni/server-helm
+%global namespace       registry.opensuse.org/uyuni
 
 %if 0%{?suse_version} >= 1600 || 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 12 || 0%{?ubuntu} >= 2004
 %define adm_build    1
@@ -254,7 +253,6 @@ tar -zxf %{SOURCE1}
 %build
 export GOFLAGS=-mod=vendor
 mkdir -p bin
-ADM_PATH="%{provider_prefix}/%{name_adm}/shared/utils"
 UTILS_PATH="%{provider_prefix}/shared/utils"
 
 tag=%{!?_default_tag:latest}
@@ -262,14 +260,9 @@ tag=%{!?_default_tag:latest}
     tag='%{_default_tag}'
 %endif
 
-image=%{image}
-%if "%{?_default_image}" != ""
-  image='%{_default_image}'
-%endif
-
-chart=%{chart}
-%if "%{?_default_chart}" != ""
-  chart='%{_default_chart}'
+image=%{namespace}
+%if "%{?_default_namespace}" != ""
+  namespace='%{_default_namespace}'
 %endif
 
 go_tags=""
@@ -286,7 +279,7 @@ go_path=
   %endif
 %endif
 
-GOLD_FLAGS="-X ${ADM_PATH}.DefaultImage=${image} -X ${ADM_PATH}.DefaultTag=${tag} -X ${ADM_PATH}.DefaultChart=${chart}"
+GOLD_FLAGS="-X ${UTILS_PATH}.DefaultNamespace=${namespace} -X ${UTILS_PATH}.DefaultTag=${tag}"
 GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.Version=%{version}"
 
 # Workaround for rpm on Fedora and EL clones not able to handle go's compressed debug symbols
