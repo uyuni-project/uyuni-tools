@@ -8,6 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -15,7 +16,7 @@ import (
 
 const HELM_APP_NAME = "uyuni"
 
-func Deploy(cnx *utils.Connection, imageFlags *types.ImageFlags,
+func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 	helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, clusterInfos *kubernetes.ClusterInfos,
 	fqdn string, debug bool, helmArgs ...string) {
 

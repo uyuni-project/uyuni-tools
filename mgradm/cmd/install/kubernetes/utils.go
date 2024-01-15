@@ -10,13 +10,13 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
+	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func installForKubernetes(globalFlags *types.GlobalFlags,
@@ -25,7 +25,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	args []string,
 ) error {
 	flags.CheckParameters(cmd, "kubectl")
-	cnx := utils.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
+	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 
 	fqdn := args[0]
 
@@ -55,7 +55,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 		"NO_SSL": "Y",
 	}
 
-	shared.RunSetup(cnx, &flags.InstallFlags, args[0], envs)
+	install_shared.RunSetup(cnx, &flags.InstallFlags, args[0], envs)
 
 	// The CA needs to be added to the database for Kickstart use.
 	err := adm_utils.ExecCommand(zerolog.DebugLevel, cnx,

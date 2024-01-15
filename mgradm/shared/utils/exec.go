@@ -10,10 +10,11 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func ExecCommand(logLevel zerolog.Level, cnx *utils.Connection, args ...string) error {
+func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string) error {
 	podName, err := cnx.GetPodName()
 	if err != nil {
 		log.Fatal().Err(err)
