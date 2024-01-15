@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 15 11:08:45 CET 2024 - marina.latini@suse.com
+
+- version 0.1.2-1
+  * Adapt the build tags also in the spec file
+
+-------------------------------------------------------------------
 Thu Jan 11 16:49:18 CET 2024 - marina.latini@suse.com
 
 - version 0.1.1-1
