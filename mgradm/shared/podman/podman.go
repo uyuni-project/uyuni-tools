@@ -13,6 +13,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -61,7 +62,7 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 	podman.ReloadDaemon(false)
 }
 
-func UpdateSslCertificate(cnx *utils.Connection, chain *ssl.CaChain, serverPair *ssl.SslPair) {
+func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair *ssl.SslPair) {
 	ssl.CheckPaths(chain, serverPair)
 
 	// Copy the CAs, certificate and key to the container
@@ -86,15 +87,15 @@ func UpdateSslCertificate(cnx *utils.Connection, chain *ssl.CaChain, serverPair 
 		"--server-key-file", serverKeyPath,
 	}
 
-	utils.Copy(cnx, chain.Root, "server:"+rootCaPath, "root", "root")
-	utils.Copy(cnx, serverPair.Cert, "server:"+serverCrtPath, "root", "root")
-	utils.Copy(cnx, serverPair.Key, "server:"+serverKeyPath, "root", "root")
+	cnx.Copy(chain.Root, "server:"+rootCaPath, "root", "root")
+	cnx.Copy(serverPair.Cert, "server:"+serverCrtPath, "root", "root")
+	cnx.Copy(serverPair.Key, "server:"+serverKeyPath, "root", "root")
 
 	for i, ca := range chain.Intermediate {
 		caFilename := fmt.Sprintf("ca-%d.crt", i)
 		caPath := path.Join(certDir, caFilename)
 		args = append(args, "--intermediate-ca-file", caPath)
-		utils.Copy(cnx, ca, "server:"+caPath, "root", "root")
+		cnx.Copy(ca, "server:"+caPath, "root", "root")
 	}
 
 	// Check and install then using mgr-ssl-cert-setup
@@ -108,7 +109,7 @@ func UpdateSslCertificate(cnx *utils.Connection, chain *ssl.CaChain, serverPair 
 	}
 
 	const sslbuildPath = "/root/ssl-build"
-	if utils.TestExistenceInPod(cnx, sslbuildPath) {
+	if cnx.TestExistenceInPod(sslbuildPath) {
 		if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", sslbuildPath); err != nil {
 			log.Error().Err(err).Msg("Failed to remove now useless ssl-build folder in the container")
 		}

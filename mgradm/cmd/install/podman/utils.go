@@ -11,14 +11,15 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
+	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func waitForSystemStart(cnx *utils.Connection, flags *podmanInstallFlags) {
+func waitForSystemStart(cnx *shared.Connection, flags *podmanInstallFlags) {
 	// Setup the systemd service configuration options
 	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 
@@ -51,7 +52,7 @@ func installForPodman(
 	}
 	shared_podman.PrepareImage(image, flags.Image.PullPolicy)
 
-	cnx := utils.NewConnection("podman", shared_podman.ServerContainerName, "")
+	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 	waitForSystemStart(cnx, flags)
 
 	caPassword := flags.Ssl.Password
@@ -73,7 +74,7 @@ func installForPodman(
 
 	log.Info().Msg("run setup command in the container")
 
-	shared.RunSetup(cnx, &flags.InstallFlags, fqdn, env)
+	install_shared.RunSetup(cnx, &flags.InstallFlags, fqdn, env)
 
 	if flags.Ssl.UseExisting() {
 		podman.UpdateSslCertificate(cnx, &flags.Ssl.Ca, &flags.Ssl.Server)

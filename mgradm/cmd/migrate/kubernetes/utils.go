@@ -15,10 +15,11 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
+	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -30,15 +31,15 @@ func migrateToKubernetes(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	cnx := utils.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
+	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 	fqdn := args[0]
 
 	// Find the SSH Socket and paths for the migration
-	sshAuthSocket := shared.GetSshAuthSocket()
-	sshConfigPath, sshKnownhostsPath := shared.GetSshPaths()
+	sshAuthSocket := migration_shared.GetSshAuthSocket()
+	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
 	// Prepare the migration script and folder
-	scriptDir := shared.GenerateMigrationScript(fqdn, true)
+	scriptDir := migration_shared.GenerateMigrationScript(fqdn, true)
 	defer os.RemoveAll(scriptDir)
 
 	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
@@ -59,7 +60,7 @@ func migrateToKubernetes(
 	// Run the actual migration
 	runMigration(cnx, flags, scriptDir)
 
-	tz, oldPgVersion, newPgVersion := shared.ReadContainerData(scriptDir)
+	tz, oldPgVersion, newPgVersion := migration_shared.ReadContainerData(scriptDir)
 
 	helmArgs := []string{
 		"--reset-values",
@@ -78,13 +79,13 @@ func migrateToKubernetes(
 			log.Fatal().Err(err).Msg("Failed to compute image URL")
 		}
 		log.Info().Msgf("Using migration image %s", migrationImageUrl)
-		shared.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
+		migration_shared.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
 
 		kubernetes.UyuniUpgrade(&migrationImage, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 		runMigration(cnx, flags, scriptDir)
 	}
 
-	shared.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
+	migration_shared.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
 	kubernetes.UyuniUpgrade(&flags.Image, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 	runMigration(cnx, flags, scriptDir)
 
@@ -95,7 +96,7 @@ func migrateToKubernetes(
 	return nil
 }
 
-func runMigration(cnx *utils.Connection, flags *kubernetesMigrateFlags, tmpPath string) {
+func runMigration(cnx *shared.Connection, flags *kubernetesMigrateFlags, tmpPath string) {
 	log.Info().Msg("Migrating server")
 	err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/migrate.sh")
 	if err != nil {

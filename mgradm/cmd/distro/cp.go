@@ -11,6 +11,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -68,14 +69,14 @@ func distroCp(
 	} else {
 		channelLabel = ""
 	}
-	cnx := utils.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	log.Info().Msgf("Copying distribution %s\n", distroName)
 	if !utils.FileExists(source) {
 		log.Fatal().Msgf("Source %s does not exists", source)
 	}
 
 	dstpath := "/srv/www/distributions/" + distroName
-	if utils.TestExistenceInPod(cnx, dstpath) {
+	if cnx.TestExistenceInPod(dstpath) {
 		log.Fatal().Msgf("Distribution already exists: %s\n", dstpath)
 	}
 
@@ -101,7 +102,7 @@ func distroCp(
 		}
 	}
 
-	utils.Copy(cnx, srcdir, "server:"+dstpath, "tomcat", "susemanager")
+	cnx.Copy(srcdir, "server:"+dstpath, "tomcat", "susemanager")
 
 	log.Info().Msg("Distribution has been copied")
 

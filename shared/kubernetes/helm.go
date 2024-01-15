@@ -5,7 +5,9 @@
 package kubernetes
 
 import (
+	"bytes"
 	"fmt"
+	"os/exec"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -86,4 +88,18 @@ func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 		}
 	}
 	return namespace
+}
+
+// HasHelmRelease returns whether a helm release is installed or not, even if it failed.
+func HasHelmRelease(release string, kubeconfig string) bool {
+	if _, err := exec.LookPath("helm"); err == nil {
+		args := []string{}
+		if kubeconfig != "" {
+			args = append(args, "--kubeconfig", kubeconfig)
+		}
+		args = append(args, "list", "-aAq", "--no-headers", "-f", release)
+		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "helm", args...)
+		return len(bytes.TrimSpace(out)) != 0 && err != nil
+	}
+	return false
 }
