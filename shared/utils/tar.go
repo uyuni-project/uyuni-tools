@@ -7,6 +7,7 @@ package utils
 import (
 	"archive/tar"
 	"compress/gzip"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -68,5 +69,63 @@ func ExtractTarGz(tarballPath string, dstPath string) error {
 		}
 	}
 
+	return nil
+}
+
+// Object holding a .tar.gz to write it to a file.
+type TarGz struct {
+	fileWriter *os.File
+	tarWriter  *tar.Writer
+	gzipWriter *gzip.Writer
+}
+
+// NewTarGz create a targz object with writers opened.
+// A successful call should be followed with a close.
+func NewTarGz(path string) (*TarGz, error) {
+	var targz TarGz
+	var err error
+	targz.fileWriter, err = os.Create(path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to write tar.gz to %s: %s", path, err)
+	}
+
+	targz.gzipWriter = gzip.NewWriter(targz.fileWriter)
+	targz.tarWriter = tar.NewWriter(targz.gzipWriter)
+	return &targz, nil
+}
+
+// Close stops all the writers.
+func (t *TarGz) Close() {
+	t.tarWriter.Close()
+	t.gzipWriter.Close()
+	t.fileWriter.Close()
+}
+
+// AddFile adds the file at filepath to the archive as entrypath.
+func (t *TarGz) AddFile(filepath string, entrypath string) error {
+	file, err := os.Open(filepath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	info, err := file.Stat()
+	if err != nil {
+		return err
+	}
+
+	header, err := tar.FileInfoHeader(info, info.Name())
+	if err != nil {
+		return err
+	}
+
+	header.Name = entrypath
+	if err = t.tarWriter.WriteHeader(header); err != nil {
+		return err
+	}
+
+	if _, err = io.Copy(t.tarWriter, file); err != nil {
+		return err
+	}
 	return nil
 }
