@@ -134,6 +134,30 @@ func (c *Connection) GetPodName() (string, error) {
 	return c.podName, err
 }
 
+// Exec runs command inside the container within an sh shell.
+func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
+	if c.podName == "" {
+		if _, err := c.GetPodName(); c.podName == "" {
+			return nil, fmt.Errorf("the container is not running, %s %s command not executed: %s",
+				command, strings.Join(args, " "), err)
+		}
+	}
+
+	cmd, cmdErr := c.GetCommand()
+	if cmdErr != nil {
+		return nil, cmdErr
+	}
+
+	cmdArgs := []string{"exec", c.podName}
+	if cmd == "kubectl" {
+		cmdArgs = append(cmdArgs, "-c", "uyuni", "--")
+	}
+	shellArgs := append([]string{command}, args...)
+	cmdArgs = append(cmdArgs, shellArgs...)
+
+	return utils.RunCmdOutput(zerolog.DebugLevel, cmd, cmdArgs...)
+}
+
 // WaitForServer waits at most 60s for multi-user systemd target to be reached.
 func (c *Connection) WaitForServer() {
 	// Wait for the system to be up
