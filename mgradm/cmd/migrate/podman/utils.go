@@ -28,6 +28,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	defer os.RemoveAll(scriptDir)
 
 	extraArgs := []string{
+		"--security-opt", "label:disable",
 		"-e", "SSH_AUTH_SOCK",
 		"-v", filepath.Dir(sshAuthSocket) + ":" + filepath.Dir(sshAuthSocket),
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
@@ -39,15 +40,6 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	if sshKnownhostsPath != "" {
 		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/etc/ssh/ssh_known_hosts")
-	}
-
-	if utils.GetSELinuxMode() == "Enforcing" {
-		customSELinuxPolicyPodmanLabel, customSELinuxPolicyPath := shared.GetCustomSELinuxPolicyDetails("uyuni")
-		shared.InstallCustomSELinuxPolicy(customSELinuxPolicyPath)
-		if customSELinuxPolicyPath != "" {
-			log.Debug().Msgf("customSELinuxPolicyPodmanLabel: %s", customSELinuxPolicyPodmanLabel)
-			extraArgs = append(extraArgs, "--security-opt", customSELinuxPolicyPodmanLabel)
-		}
 	}
 
 	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
