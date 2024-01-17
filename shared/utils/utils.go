@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -91,20 +90,6 @@ func ReadFile(file string) []byte {
 		log.Fatal().Err(err).Msgf("Failed to read file %s", file)
 	}
 	return out
-}
-
-// Get SELinux mode
-func GetSELinuxMode() string {
-	_, err := exec.LookPath("getenforce")
-	if err == nil {
-		output, _ := RunCmdOutput(zerolog.Disabled, "getenforce")
-		mode := strings.TrimSpace(string(output))
-		log.Debug().Msgf("SELinux mode: %s", mode)
-		return mode
-	} else {
-		log.Debug().Msg("SELinux is not present")
-		return ""
-	}
 }
 
 // Get the value of a file containing a boolean.
