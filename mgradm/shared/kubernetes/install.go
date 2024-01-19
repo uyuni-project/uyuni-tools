@@ -5,8 +5,6 @@
 package kubernetes
 
 import (
-	"fmt"
-
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -83,8 +81,12 @@ func UyuniUpgrade(imageFlags *types.ImageFlags, helmFlags *cmd_utils.HelmFlags, 
 	}
 
 	// The values computed from the command line need to be last to override what could be in the extras
+	serverImage, err := utils.ComputeImage(imageFlags.Name, imageFlags.Tag)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to compute image URL")
+	}
 	helmParams = append(helmParams,
-		"--set", fmt.Sprintf("images.server=%s:%s", imageFlags.Name, imageFlags.Tag),
+		"--set", serverImage,
 		"--set", "pullPolicy="+kubernetes.GetPullPolicy(imageFlags.PullPolicy),
 		"--set", "fqdn="+fqdn)
 

@@ -39,7 +39,10 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 	fqdn := getFqdn(args)
 	log.Info().Msgf("setting up server with the FQDN '%s'", fqdn)
 
-	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
+	image, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to compute image URL")
+	}
 	shared_podman.PrepareImage(image, flags.Image.PullPolicy)
 
 	cnx := utils.NewConnection("podman", shared_podman.ServerContainerName, "")

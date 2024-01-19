@@ -68,7 +68,11 @@ func migrateToKubernetes(globalFlags *types.GlobalFlags, flags *kubernetesMigrat
 			migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, oldPgVersion, newPgVersion)
 		}
 		migrationImage.Tag = flags.MigrationImage.Tag
-		log.Info().Msgf("Using migration image %s:%s", migrationImage.Name, migrationImage.Tag)
+		migrationImageUrl, err := utils.ComputeImage(migrationImage.Name, flags.Image.Tag)
+		if err != nil {
+			log.Fatal().Err(err).Msg("Failed to compute image URL")
+		}
+		log.Info().Msgf("Using migration image %s", migrationImageUrl)
 		shared.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
 
 		kubernetes.UyuniUpgrade(&migrationImage, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
