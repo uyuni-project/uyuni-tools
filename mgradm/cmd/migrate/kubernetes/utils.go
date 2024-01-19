@@ -10,6 +10,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
+	"os/exec"
 	"path"
 
 	"github.com/rs/zerolog"
@@ -31,6 +32,11 @@ func migrateToKubernetes(
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	for _, binary := range []string{"kubectl", "helm"} {
+		if _, err := exec.LookPath(binary); err != nil {
+			log.Fatal().Err(err).Msgf("install %s before running this command", binary)
+		}
+	}
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 	fqdn := args[0]
 

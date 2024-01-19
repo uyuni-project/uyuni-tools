@@ -6,6 +6,7 @@ package podman
 
 import (
 	"fmt"
+	"os/exec"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -43,6 +44,10 @@ func installForPodman(
 	args []string,
 ) error {
 	flags.CheckParameters(cmd, "podman")
+	if _, err := exec.LookPath("podman"); err != nil {
+		log.Fatal().Err(err).Msg("install podman before running this command")
+	}
+
 	fqdn := getFqdn(args)
 	log.Info().Msgf("setting up server with the FQDN '%s'", fqdn)
 

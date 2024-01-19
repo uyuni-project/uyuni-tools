@@ -6,6 +6,7 @@ package podman
 
 import (
 	"os"
+	"os/exec"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -27,6 +28,10 @@ func startPod() {
 }
 
 func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallFlags, cmd *cobra.Command, args []string) error {
+	if _, err := exec.LookPath("podman"); err != nil {
+		log.Fatal().Err(err).Msgf("install podman before running this command")
+	}
+
 	configPath := utils.GetConfigPath(args)
 	if err := unpackConfig(configPath); err != nil {
 		log.Fatal().Err(err).Msgf("Failed to extract proxy config from %s file", configPath)
