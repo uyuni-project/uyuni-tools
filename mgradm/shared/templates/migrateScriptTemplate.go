@@ -68,9 +68,7 @@ sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/r
 sed 's/server\.jabber_server/java\.hostname/' -i /etc/rhn/rhn.conf;
 sed 's/client_use_localhost: false/client_use_localhost: true/' -i /etc/cobbler/settings.yaml;
 
-{{ if .Kubernetes }}
-echo "Altering configuration for kubernetes..."
-echo 'server.no_ssl = 1' >> /etc/rhn/rhn.conf;
+echo "Altering configuration for container environment..."
 sed 's/address=[^:]*:/address=*:/' -i /etc/rhn/taskomatic.conf;
 
 if test ! -f /etc/tomcat/conf.d/remote_debug.conf -a -f /etc/sysconfig/tomcat; then
@@ -79,6 +77,8 @@ fi
 
 sed 's/address=[^:]*:/address=*:/' -i /etc/tomcat/conf.d/remote_debug.conf
 
+{{ if .Kubernetes }}
+echo 'server.no_ssl = 1' >> /etc/rhn/rhn.conf;
 echo "Extracting SSL certificate and authority"
 extractedSSL=
 if test -d /root/ssl-build; then
