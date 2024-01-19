@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"syscall"
 
@@ -46,6 +47,20 @@ func AskIfMissing(value *string, prompt string) {
 		*value = newValue
 		fmt.Println()
 	}
+}
+
+// ComputeImage assembles the container image from its name and tag.
+func ComputeImage(name string, tag string) (string, error) {
+	imageValid := regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
+	submatches := imageValid.FindStringSubmatch(name)
+	if submatches == nil {
+		return "", fmt.Errorf("invalid image name: %s", name)
+	}
+	if submatches[2] == "" {
+		// No tag provided in the URL name, append the one passed
+		return fmt.Sprintf("%s:%s", name, tag), nil
+	}
+	return name, nil
 }
 
 // Get the timezone set on the machine running the tool

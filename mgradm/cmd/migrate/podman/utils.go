@@ -50,11 +50,14 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		}
 	}
 
-	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
-	podman_utils.PrepareImage(image, flags.Image.PullPolicy)
+	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to compute image URL")
+	}
+	podman_utils.PrepareImage(serverImage, flags.Image.PullPolicy)
 
 	log.Info().Msg("Migrating server")
-	runContainer("uyuni-migration", flags.Image.Name, flags.Image.Tag, extraArgs,
+	runContainer("uyuni-migration", serverImage, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"})
 
 	// Read the extracted data
@@ -69,20 +72,21 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		migrationImage.Tag = flags.MigrationImage.Tag
 		log.Info().Msgf("Using migration image %s:%s", migrationImage.Name, migrationImage.Tag)
 
-		image := fmt.Sprintf("%s:%s", migrationImage.Name, migrationImage.Tag)
+		image, err := utils.ComputeImage(migrationImage.Name, migrationImage.Tag)
+		if err != nil {
+			log.Fatal().Err(err).Msg("Failed to compute image URL")
+		}
 		podman_utils.PrepareImage(image, flags.Image.PullPolicy)
 		shared.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
-		runContainer("uyuni-pg-migration", migrationImage.Name, migrationImage.Tag, extraArgs,
+		runContainer("uyuni-pg-migration", image, extraArgs,
 			[]string{"/var/lib/uyuni-tools/migrate.sh"})
 	}
 
 	shared.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
-	runContainer("uyuni-migration", flags.Image.Name, flags.Image.Tag, extraArgs,
+	runContainer("uyuni-migration", serverImage, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"})
 
-	fullImage := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
-
-	podman.GenerateSystemdService(tz, fullImage, false, viper.GetStringSlice("podman.arg"))
+	podman.GenerateSystemdService(tz, serverImage, false, viper.GetStringSlice("podman.arg"))
 
 	// Start the service
 	podman_utils.EnableService("uyuni-server")
@@ -92,7 +96,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	podman_utils.EnablePodmanSocket()
 }
 
-func runContainer(name string, image string, tag string, extraArgs []string, cmd []string) {
+func runContainer(name string, image string, extraArgs []string, cmd []string) {
 
 	podmanArgs := append([]string{"run", "--name", name}, podman.GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
@@ -101,7 +105,7 @@ func runContainer(name string, image string, tag string, extraArgs []string, cmd
 		podmanArgs = append(podmanArgs, "-v", volumeName+":"+containerPath)
 	}
 
-	podmanArgs = append(podmanArgs, image+":"+tag)
+	podmanArgs = append(podmanArgs, image)
 	podmanArgs = append(podmanArgs, cmd...)
 
 	err := utils.RunCmdStdMapping("podman", podmanArgs...)

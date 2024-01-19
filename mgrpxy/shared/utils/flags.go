@@ -55,7 +55,11 @@ func (f *ProxyInstallFlags) GetContainerImage(name string) string {
 		}
 	}
 
-	return fmt.Sprintf("%s:%s", image, tag)
+	imageUrl, err := utils.ComputeImage(image, tag)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to compute image URL")
+	}
+	return imageUrl
 }
 
 func AddInstallFlags(cmd *cobra.Command) {
