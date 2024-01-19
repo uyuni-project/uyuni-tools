@@ -7,6 +7,7 @@ package podman
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/rs/zerolog/log"
@@ -20,6 +21,10 @@ import (
 )
 
 func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, cmd *cobra.Command, args []string) error {
+	if _, err := exec.LookPath("podman"); err != nil {
+		log.Fatal().Err(err).Msg("install podman before running this command")
+	}
+
 	// Find the SSH Socket and paths for the migration
 	sshAuthSocket := shared.GetSshAuthSocket()
 	sshConfigPath, sshKnownhostsPath := shared.GetSshPaths()

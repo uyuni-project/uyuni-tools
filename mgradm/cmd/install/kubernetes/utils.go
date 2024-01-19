@@ -7,6 +7,8 @@
 package kubernetes
 
 import (
+	"os/exec"
+
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -24,6 +26,12 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	for _, binary := range []string{"kubectl", "helm"} {
+		if _, err := exec.LookPath(binary); err != nil {
+			log.Fatal().Err(err).Msgf("install %s before running this command", binary)
+		}
+	}
+
 	flags.CheckParameters(cmd, "kubectl")
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 
