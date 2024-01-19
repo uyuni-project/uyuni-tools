@@ -9,7 +9,7 @@ Code for building packages in SUSE that need generated code not tracked in git.
 import os
 
 from tito.builder import Builder
-from tito.common import  info_out, run_command
+from tito.common import  info_out, run_command, debug
 
 class SuseGitExtraGenerationBuilder(Builder):
 
@@ -28,3 +28,13 @@ class SuseGitExtraGenerationBuilder(Builder):
             run_command("cp %s %s/" % (os.path.join(setup_file_dir, filename), self.rpmbuild_sourcedir), True)
             self.sources.append(os.path.join(self.rpmbuild_sourcedir, filename))
 
+        source_push = os.path.join(setup_file_dir, "push.sh")
+        if os.path.exists(source_push):
+            push_path = os.path.join(self.rpmbuild_sourcedir, "push.sh")
+            run_command("cp %s %s/" % (source_push, self.rpmbuild_sourcedir), True)
+            self.sources.append(push_path)
+
+            run_command(f"sed '/^URL: .*$/aSource10000: push.sh' -i {self.spec_file}")
+            cleanup = f"\nsed '/^Source10000: push.sh/d' -i $SRPM_PKG_DIR/{self.spec_file_name}"
+            with open(push_path, "a") as fd:
+                fd.write(cleanup)
