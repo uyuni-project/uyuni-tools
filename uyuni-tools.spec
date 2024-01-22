@@ -279,8 +279,14 @@ go_path=
   %endif
 %endif
 
-GOLD_FLAGS="-X ${UTILS_PATH}.DefaultNamespace=${namespace} -X ${UTILS_PATH}.DefaultTag=${tag}"
-GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.Version=%{version}"
+GOLD_FLAGS="-X ${UTILS_PATH}.Version=%{version}"
+if test -n "${namespace}"; then
+    GOLD_FLAGS="-X ${UTILS_PATH}.DefaultNamespace=${namespace} -X ${UTILS_PATH}.DefaultTag=${tag}"
+fi
+
+if test -n "${tag}"; then
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultTag=${tag}"
+fi
 
 # Workaround for rpm on Fedora and EL clones not able to handle go's compressed debug symbols
 # Found compressed .debug_aranges section, not attempting dwz compression
