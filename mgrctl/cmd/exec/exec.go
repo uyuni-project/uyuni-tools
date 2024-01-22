@@ -63,6 +63,7 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 	envs = append(envs, flags.Envs...)
 	if flags.Interactive {
 		commandArgs = append(commandArgs, "-i")
+		envs = append(envs, "ENV=/etc/sh.shrc.local")
 	}
 	if flags.Tty {
 		commandArgs = append(commandArgs, "-t")
