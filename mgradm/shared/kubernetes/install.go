@@ -87,7 +87,7 @@ func UyuniUpgrade(imageFlags *types.ImageFlags, helmFlags *cmd_utils.HelmFlags, 
 		log.Fatal().Err(err).Msg("Failed to compute image URL")
 	}
 	helmParams = append(helmParams,
-		"--set", serverImage,
+		"--set", "images.server="+serverImage,
 		"--set", "pullPolicy="+kubernetes.GetPullPolicy(imageFlags.PullPolicy),
 		"--set", "fqdn="+fqdn)
 
