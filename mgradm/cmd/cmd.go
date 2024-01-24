@@ -33,6 +33,8 @@ func NewUyuniadmCommand() *cobra.Command {
 		SilenceUsage: true, // Don't show usage help on errors
 	}
 
+	rootCmd.SetUsageTemplate(utils.GetUsageWithConfigHelpTemplate(rootCmd.UsageTemplate()))
+
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		utils.LogInit(true)
 		utils.SetLogLevel(globalFlags.LogLevel)

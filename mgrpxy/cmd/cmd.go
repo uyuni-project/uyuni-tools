@@ -28,6 +28,8 @@ func NewUyuniproxyCommand() *cobra.Command {
 		Version: utils.Version,
 	}
 
+	rootCmd.SetUsageTemplate(utils.GetUsageWithConfigHelpTemplate(rootCmd.UsageTemplate()))
+
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		utils.LogInit(true)
 		utils.SetLogLevel(globalFlags.LogLevel)
