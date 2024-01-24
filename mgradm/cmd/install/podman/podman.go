@@ -28,7 +28,7 @@ The install podman command assumes podman is installed locally
 
 NOTE: for now installing on a remote podman is not supported!
 `,
-		Args: cobra.ExactArgs(1),
+		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanInstallFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, installForPodman)
