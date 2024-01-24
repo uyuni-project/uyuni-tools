@@ -32,7 +32,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	One of them can be prefixed with 'server:' to indicate the path is within the server pod.`,
 		Args: cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			viper, err := utils.ReadConfig(globalFlags.ConfigPath, "ctlconfig", cmd)
+			viper, err := utils.ReadConfig(globalFlags.ConfigPath, cmd)
 			if err != nil {
 				return err
 			}

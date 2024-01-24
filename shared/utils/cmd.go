@@ -27,7 +27,7 @@ func CommandHelper[T interface{}](
 	flags *T,
 	fn func(*types.GlobalFlags, *T, *cobra.Command, []string) error,
 ) error {
-	viper, err := ReadConfig(globalFlags.ConfigPath, "uyuni-tools.yaml", cmd)
+	viper, err := ReadConfig(globalFlags.ConfigPath, cmd)
 	if err != nil {
 		return err
 	}

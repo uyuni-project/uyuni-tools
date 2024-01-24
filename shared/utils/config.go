@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 	"strings"
+	"text/template"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -18,8 +19,9 @@ import (
 
 const envPrefix = "UYUNI"
 const appName = "uyuni-tools"
+const configFilename = "config.yaml"
 
-func ReadConfig(configPath string, configFilename string, cmd *cobra.Command) (*viper.Viper, error) {
+func ReadConfig(configPath string, cmd *cobra.Command) (*viper.Viper, error) {
 	v := viper.New()
 
 	v.SetConfigType("yaml")
@@ -79,4 +81,56 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) error {
 		return errors[0]
 	}
 	return nil
+}
+
+const configTemplate = `
+Configuration:
+
+  All the non-global flags can alternatively be passed as configuration.
+  
+  The configuration file is a YAML file with entries matching the flag name.
+  The name of a flag is the part after the '--' of the command line parameter.
+  Every '_' character in the flag name means a nested property.
+  
+  For instance the '--tz CEST' and '--ssl-password secret' will be mapped to
+  this YAML configuration:
+  
+      tz: CEST
+  	  ssl:
+  	    password: secret
+  
+  The configuration file will be searched in the following places and order:
+  · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}
+  · $HOME/.config/{{ .Name }}/{{ .ConfigFile }}
+  · $PWD/{{ .ConfigFile }}
+  · the value of the --config flag
+
+
+Environment variables:
+
+  All the non-global flags can also be passed as environment variables.
+  
+  The environment variable name is the flag name with '-' replaced by with '_'
+  and the {{ .EnvPrefix }} prefix.
+  
+  For example the '--tz CEST' flag will be mapped to '{{ .EnvPrefix }}_TZ'
+  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD' 
+`
+
+// GetUsageWithConfigHelpTemplate returns the usage template with the configuration help added.
+func GetUsageWithConfigHelpTemplate(usageTemplate string) string {
+	t := template.Must(template.New("help").Parse(configTemplate))
+	var helpBuilder strings.Builder
+	t.Execute(&helpBuilder, configTemplateData{
+		EnvPrefix:  envPrefix,
+		Name:       appName,
+		ConfigFile: configFilename,
+	})
+	return usageTemplate + helpBuilder.String()
+}
+
+type configTemplateData struct {
+	EnvPrefix  string
+	ConfigFile string
+	Name       string
 }
