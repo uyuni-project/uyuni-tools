@@ -6,9 +6,9 @@ package shared
 
 import (
 	"github.com/spf13/cobra"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 )
 
 type DbFlags struct {
@@ -67,6 +67,10 @@ func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 
 	utils.AskIfMissing(&flags.Email, cmd.Flag("email").Usage)
 	utils.AskIfMissing(&flags.EmailFrom, cmd.Flag("emailfrom").Usage)
+}
+
+func AddInspectFlags(cmd *cobra.Command) {
+	cmd_utils.AddImageFlag(cmd)
 }
 
 func AddInstallFlags(cmd *cobra.Command) {
