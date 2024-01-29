@@ -128,3 +128,62 @@ func GetPullPolicy(name string) string {
 	}
 	return policy
 }
+
+func SetReplicas(replica uint) bool {
+	args := []string{"scale", "deploy", "uyuni", "--replicas"}
+
+	args = append(args, fmt.Sprint(replica))
+
+	out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", args...)
+	if err != nil {
+		if replicas, _ := strconv.Atoi(string(out)); replicas > 0 {
+			return true
+		}
+	}
+	return false
+}
+
+func RunPod(podname string, image string, command string, args ...string) {
+	arguments := []string{"run", podname, "--image", image}
+
+	arguments = append(arguments, args...)
+	arguments = append(arguments, "--command", "--", command)
+	err := utils.RunCmdStdMapping("kubectl", arguments...)
+
+	if err != nil {
+		log.Fatal().Err(err).Msgf("Cannot run %s using image %s", command, image)
+	}
+}
+
+func DeletePod(podname string) string {
+	arguments := []string{"delete", "pod", podname}
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", arguments...)
+
+	if err != nil {
+		log.Fatal().Err(err).Msgf("Cannot %s", arguments)
+	}
+	return string(out)
+}
+
+func WaitForPod(podname string, status string) {
+	waitSeconds := 60
+
+	log.Debug().Msgf("Checking status for %s pod. Waiting %s seconds until status is %s", podname, strconv.Itoa(waitSeconds), status)
+
+	cmdArgs := []string{"get", "pod", podname, "--output=custom-columns=STATUS:.status.phase", "--no-headers"}
+
+	for i := 0; i < waitSeconds; i++ {
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
+		log.Debug().Msgf("Output is %s", out)
+
+		if strings.ToUpper(string(out)) == strings.ToUpper(status+"\n") {
+			log.Debug().Msgf("%s pod status is %s", podname, status)
+			break
+		}
+		if err != nil {
+			log.Fatal().Err(err).Msgf("Pod %s does not %s in %s seconds", podname, out, strconv.Itoa(waitSeconds))
+		}
+		time.Sleep(1 * time.Second)
+	}
+}

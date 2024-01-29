@@ -4,7 +4,20 @@
 
 package types
 
-type Inspect struct {
+type InspectData struct {
 	Variable string
-	Command  string
+	CLI      string
+}
+
+type InspectFile struct {
+	Directory string
+	Basename  string
+	Commands  []InspectData
+}
+
+func InspectDataConstructor(variable string, cli string) InspectData {
+	return InspectData{
+		Variable: variable,
+		CLI:      cli,
+	}
 }

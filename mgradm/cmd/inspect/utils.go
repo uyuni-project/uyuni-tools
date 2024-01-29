@@ -19,19 +19,11 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func InspectData(variable string, command string) types.Inspect {
-	return types.Inspect{
-		Variable: variable,
-		Command:  command,
-	}
-}
-
-var Values = []types.Inspect{
-	InspectData("uyuni_release", "cat /etc/*release | grep 'Uyuni release' | cut -d ' ' -f3"),
-	InspectData("suma_release", "cat /etc/*release | grep 'SUSE Manager release' | cut -d ' ' -f4"),
-	InspectData("new_pg_version", "rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1"),
-	//InspectData("old_pg_version", "cat /var/lib/pgsql/data/PG_VERSION"),
-	//InspectData("Timezone", "timedatectl show -p Timezone"),
+var Values = []types.InspectData{
+	types.InspectDataConstructor("uyuni_release", "cat /etc/*release | grep 'Uyuni release' | cut -d ' ' -f3"),
+	types.InspectDataConstructor("suma_release", "cat /etc/*release | grep 'SUSE Manager release' | cut -d ' ' -f4"),
+	types.InspectDataConstructor("new_pg_version", "rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1"),
+	types.InspectDataConstructor("old_pg_version", "cat /var/lib/pgsql/data/PG_VERSION"),
 }
 
 // The port names should be less than 15 characters long and lowercased for traefik to eat them

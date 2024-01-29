@@ -18,9 +18,9 @@ type podmanInspectFlags struct {
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 	podmanCmd := &cobra.Command{
-		Use:   "podman ",
+		Use:   "podman",
 		Short: "inspect podman image",
-		Long: `Extract information from podman image
+		Long: `Extract information from podman image and/or deployment
 `,
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

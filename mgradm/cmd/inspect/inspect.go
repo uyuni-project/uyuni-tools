@@ -6,6 +6,7 @@ package inspect
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
@@ -18,15 +19,15 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 	inspectCmd := &cobra.Command{
 		Use:   "inspect",
-		Short: "inspect image",
-		Long:  "Extract information from image",
+		Short: "inspect",
+		Long:  "Extract information from image or deployment",
 	}
 
 	inspectCmd.AddCommand(podman.NewCommand(globalFlags))
 
-	//if kubernetesCmd := kubernetes.NewCommand(globalFlags); kubernetesCmd != nil {
-	//	inspectCmd.AddCommand(kubernetesCmd)
-	//}
+	if kubernetesCmd := kubernetes.NewCommand(globalFlags); kubernetesCmd != nil {
+		inspectCmd.AddCommand(kubernetesCmd)
+	}
 
 	return inspectCmd
 }
