@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-tools
 #
-# Copyright (c) 2023 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -14,6 +14,7 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+
 
 %global provider        github
 %global provider_tld    com
@@ -50,9 +51,9 @@ Group:          System/Management
 URL:            https://%{provider_prefix}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        vendor.tar.gz
-BuildRequires:  coreutils
 BuildRequires:  bash-completion
-%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+BuildRequires:  coreutils
+%if 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 BuildRequires:  fish
 %endif
 BuildRequires:  zsh
@@ -77,21 +78,19 @@ Tools for managing uyuni container.
 
 %if %{adm_build}
 
-%package -n %{name_adm} 
-Summary:      Command line tool to install and update %{productname}
+%package -n %{name_adm}
+Summary:        Command line tool to install and update %{productname}
 
 %description -n %{name_adm}
 %{name_adm} is a convenient tool to install and update %{productname} components as containers running
 either on Podman or a Kubernetes cluster.
 
-
-%package -n %{name_pxy} 
-Summary:      Command line tool to install and update %{productname} proxy
+%package -n %{name_pxy}
+Summary:        Command line tool to install and update %{productname} proxy
 
 %description -n %{name_pxy}
 %{name_pxy} is a convenient tool to install and update %{productname} proxy components as containers
 running either on Podman or a Kubernetes cluster.
-
 
 %package -n %{name_adm}-bash-completion
 Summary:        Bash Completion for %{name_adm}
@@ -107,7 +106,6 @@ BuildArch:      noarch
 %description -n %{name_adm}-bash-completion
 Bash command line completion support for %{name_adm}.
 
-
 %package -n %{name_adm}-zsh-completion
 Summary:        Zsh Completion for %{name_adm}
 Group:          System/Shells
@@ -119,10 +117,8 @@ Supplements:    zsh
 %endif
 BuildArch:      noarch
 
-
 %description -n %{name_adm}-zsh-completion
 Zsh command line completion support for %{name_adm}.
-
 
 %package -n %{name_pxy}-bash-completion
 Summary:        Bash Completion for %{name_pxy}
@@ -137,7 +133,6 @@ BuildArch:      noarch
 
 %description -n %{name_pxy}-bash-completion
 Bash command line completion support for %{name_pxy}.
-
 
 %package -n %{name_pxy}-zsh-completion
 Summary:        Zsh Completion for %{name_pxy}
@@ -154,7 +149,7 @@ BuildArch:      noarch
 Zsh command line completion support for %{name_pxy}.
 
 
-%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%if 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %package -n %{name_adm}-fish-completion
 Summary:        Fish Completion for %{name_adm}
 Group:          System/Shells
@@ -166,10 +161,8 @@ Supplements:    fish
 %endif
 BuildArch:      noarch
 
-
 %description -n %{name_adm}-fish-completion
 Fish command line completion support for %{name_adm}.
-
 
 %package -n %{name_pxy}-fish-completion
 Summary:        Fish Completion for %{name_pxy}
@@ -189,14 +182,12 @@ Fish command line completion support for %{name_pxy}.
 
 %endif
 
-
 %package -n %{name_ctl}
-Summary:      Command line tool to perform day-to-day operations on %{productname}
+Summary:        Command line tool to perform day-to-day operations on %{productname}
 
 %description -n %{name_ctl}
 %{name_ctl} is a tool helping with dayly tasks on %{productname} components running as containers
 either on Podman or a Kubernetes cluster.
-
 
 %package -n %{name_ctl}-bash-completion
 Summary:        Bash Completion for %{name_ctl}
@@ -211,7 +202,6 @@ BuildArch:      noarch
 
 %description -n %{name_ctl}-bash-completion
 Bash command line completion support for %{name_ctl}.
-
 
 %package -n %{name_ctl}-zsh-completion
 Summary:        Zsh Completion for %{name_ctl}
@@ -228,7 +218,7 @@ BuildArch:      noarch
 Zsh command line completion support for %{name_ctl}.
 
 
-%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%if 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %package -n %{name_ctl}-fish-completion
 Summary:        Fish Completion for %{name_ctl}
 Group:          System/Shells
@@ -244,11 +234,9 @@ BuildArch:      noarch
 Fish command line completion support for %{name_ctl}.
 %endif
 
-
 %prep
 %autosetup
 tar -zxf %{SOURCE1}
-
 
 %build
 export GOFLAGS=-mod=vendor
@@ -307,7 +295,6 @@ rm ./bin/%{name_adm}
 rm ./bin/%{name_pxy}
 %endif
 
-
 %install
 install -m 0755 -vd %{buildroot}%{_bindir}
 install -m 0755 -vp ./bin/* %{buildroot}%{_bindir}/
@@ -319,7 +306,7 @@ mkdir -p %{buildroot}%{_zshdir}
 %{buildroot}/%{_bindir}/%{name_ctl} completion bash > %{buildroot}%{_datarootdir}/bash-completion/completions/%{name_ctl}
 %{buildroot}/%{_bindir}/%{name_ctl} completion zsh > %{buildroot}%{_zshdir}/_%{name_ctl}
 
-%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%if 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %{buildroot}/%{_bindir}/%{name_ctl} completion fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/%{name_ctl}.fish
 %endif
@@ -332,7 +319,7 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %{buildroot}/%{_bindir}/%{name_pxy} completion bash > %{buildroot}%{_datarootdir}/bash-completion/completions/%{name_pxy}
 %{buildroot}/%{_bindir}/%{name_pxy} completion zsh > %{buildroot}%{_zshdir}/_%{name_pxy}
 
-%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%if 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %{buildroot}/%{_bindir}/%{name_adm} completion fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/%{name_adm}.fish
 %{buildroot}/%{_bindir}/%{name_pxy} completion fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/%{name_pxy}.fish
 %endif
@@ -347,20 +334,16 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %license LICENSE
 %{_bindir}/%{name_adm}
 
-
 %files -n %{name_adm}-bash-completion
 %{_datarootdir}/bash-completion/completions/%{name_adm}
-
 
 %files -n %{name_adm}-zsh-completion
 %{_zshdir}/_%{name_adm}
 
-
-%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%if 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %files -n %{name_adm}-fish-completion
 %{_datarootdir}/fish/vendor_completions.d/%{name_adm}.fish
 %endif
-
 
 %files -n %{name_pxy}
 %defattr(-,root,root)
@@ -368,39 +351,32 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %license LICENSE
 %{_bindir}/%{name_pxy}
 
-
 %files -n %{name_pxy}-bash-completion
 %{_datarootdir}/bash-completion/completions/%{name_pxy}
-
 
 %files -n %{name_pxy}-zsh-completion
 %{_zshdir}/_%{name_pxy}
 
-
-%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%if 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %files -n %{name_pxy}-fish-completion
 %{_datarootdir}/fish/vendor_completions.d/%{name_pxy}.fish
 %endif
 
 %endif
 
-
-%files -n %{name_ctl} 
+%files -n %{name_ctl}
 %defattr(-,root,root)
 %doc README.md
 %license LICENSE
 %{_bindir}/%{name_ctl}
 
-
 %files -n %{name_ctl}-bash-completion
 %{_datarootdir}/bash-completion/completions/%{name_ctl}
-
 
 %files -n %{name_ctl}-zsh-completion
 %{_zshdir}/_%{name_ctl}
 
-
-%if 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+%if 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 %files -n %{name_ctl}-fish-completion
 %{_datarootdir}/fish/vendor_completions.d/%{name_ctl}.fish
 %endif
