@@ -95,9 +95,9 @@ Configuration:
   For instance the '--tz CEST' and '--ssl-password secret' will be mapped to
   this YAML configuration:
   
-      tz: CEST
-  	  ssl:
-  	    password: secret
+    tz: CEST
+    ssl:
+      password: secret
   
   The configuration file will be searched in the following places and order:
   · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}
