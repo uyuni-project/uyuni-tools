@@ -187,3 +187,21 @@ func WaitForPod(podname string, status string) {
 		time.Sleep(1 * time.Second)
 	}
 }
+
+func GetNode(appName string) string {
+	nodeName := ""
+	cmdArgs := []string{"get", "pod", "-lapp=" + appName, "-o", "jsonpath={.items[*].spec.nodeName}"}
+	for i := 0; i < 60; i++ {
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
+		if err == nil {
+			nodeName = string(out)
+			break
+		}
+	}
+	if len(nodeName) > 0 {
+		log.Debug().Msgf("Node name for app %s is: %s", appName, nodeName)
+	} else {
+		log.Warn().Msgf("Cannot find Node name for app %s", appName)
+	}
+	return nodeName
+}
