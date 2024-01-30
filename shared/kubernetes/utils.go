@@ -143,8 +143,8 @@ func SetReplicas(replica uint) bool {
 	return false
 }
 
-func RunPod(podname string, image string, command string, args ...string) {
-	arguments := []string{"run", podname, "--image", image}
+func RunPod(podname string, image string, pullPolicy string, command string, args ...string) {
+	arguments := []string{"run", podname, "--image", image, "--image-pull-policy", pullPolicy}
 
 	arguments = append(arguments, args...)
 	arguments = append(arguments, "--command", "--", command)

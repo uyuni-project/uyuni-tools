@@ -21,20 +21,25 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func inspectForKubernetes(
+func inspectKubernetes(
 	globalFlags *types.GlobalFlags,
 	flags *kubernetesInspectFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to compute image URL")
+	}
+	_, err = InspectKubernetes(serverImage, flags.Image.PullPolicy)
+	return err
+}
+
+func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string, error) {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
 			log.Fatal().Err(err).Msgf("install %s before running this command", binary)
 		}
-	}
-	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
-	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to compute image URL")
 	}
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
@@ -59,7 +64,7 @@ func inspectForKubernetes(
 		overridesArgs = []string{"--override-type=strategic", "--overrides", `{"apiVersion":"v1","spec":{"nodeName":"` + nodeName + `","restartPolicy":"Never","containers":[{"name":` + strconv.Quote(podName) + `,"image":` + strconv.Quote(serverImage) + `,"volumeMounts":[{"mountPath":"/var/lib/pgsql","name":"var-pgsql"},{"mountPath":"` + inspect_shared.InspectOutputFile.Directory + `","name":"var-lib-uyuni-tools"}]}],"volumes":[{"name":"var-pgsql","persistentVolumeClaim":{"claimName":"var-pgsql"}},{"name":"var-lib-uyuni-tools","hostPath":{"path":` + strconv.Quote(scriptDir) + `,"type":"Directory"}}]}}`}
 	}
 
-	shared_kubernetes.RunPod(podName, serverImage, command, overridesArgs...)
+	shared_kubernetes.RunPod(podName, serverImage, pullPolicy, command, overridesArgs...)
 
 	shared_kubernetes.WaitForPod(podName, "Succeeded")
 
@@ -73,5 +78,5 @@ func inspectForKubernetes(
 	}
 
 	log.Info().Msgf("\n%s", string(prettyInspectOutput))
-	return err
+	return inspectResult, err
 }

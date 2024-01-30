@@ -29,7 +29,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesInspectFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, inspectForKubernetes)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, inspectKubernetes)
 		},
 	}
 

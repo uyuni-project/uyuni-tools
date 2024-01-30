@@ -11,10 +11,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-type inspectFlags struct {
-	Image types.ImageFlags `mapstructure:",squash"`
-}
-
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 	inspectCmd := &cobra.Command{

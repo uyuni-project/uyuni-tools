@@ -25,7 +25,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanInspectFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, inspectImagePodman)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, inspectPodman)
 		},
 	}
 

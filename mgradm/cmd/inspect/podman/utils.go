@@ -18,13 +18,22 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// The port names should be less than 15 characters long and lowercased for traefik to eat them
-func inspectImagePodman(
+func inspectPodman(
 	globalFlags *types.GlobalFlags,
 	flags *podmanInspectFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to compute image URL")
+	}
+
+	_, err = InspectPodman(serverImage, flags.Image.PullPolicy)
+	return err
+}
+
+func InspectPodman(serverImage string, pullPolicy string) (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 
@@ -35,13 +44,7 @@ func inspectImagePodman(
 	extraArgs := []string{
 		"-v", scriptDir + ":" + inspect_shared.InspectOutputFile.Directory,
 	}
-
-	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
-	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to compute image URL")
-	}
-
-	shared_podman.PrepareImage(serverImage, flags.Image.PullPolicy)
+	shared_podman.PrepareImage(serverImage, pullPolicy)
 
 	shared.GenerateInspectScript(scriptDir)
 
@@ -56,6 +59,6 @@ func inspectImagePodman(
 	}
 
 	log.Info().Msgf("\n%s", string(prettyInspectOutput))
-	return err
+	return inspectResult, err
 
 }
