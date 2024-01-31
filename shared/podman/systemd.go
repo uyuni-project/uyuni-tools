@@ -78,11 +78,26 @@ func IsServiceRunning(service string) bool {
 	return cmd.ProcessState.ExitCode() == 0
 }
 
+// CmdService send a command to the systemd service.
+func CmdService(service string, cmd string) {
+	if err := utils.RunCmd("systemctl", cmd, service); err != nil {
+		log.Fatal().Err(err).Msgf("Failed to %s systemd %s.service", cmd, service)
+	}
+}
+
 // RestartService restarts the systemd service.
 func RestartService(service string) {
-	if err := utils.RunCmd("systemctl", "restart", service); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to restart systemd %s.service", service)
-	}
+	CmdService(service, "restart")
+}
+
+// StopService stop the systemd service.
+func StopService(service string) {
+	CmdService(service, "stop")
+}
+
+// StopService stop the systemd service.
+func StartService(service string) {
+	CmdService(service, "start")
 }
 
 // EnableService enables and starts a systemd service.
@@ -90,4 +105,31 @@ func EnableService(service string) {
 	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
 		log.Fatal().Err(err).Msgf("Failed to enable %s systemd service", service)
 	}
+}
+
+// Create new conf file
+func GenerateSystemdConfFile(serviceName string, section string, body string) {
+	systemdFilePath := GetServicePath(serviceName)
+	log.Info().Msgf("systemdFilePath: %s", systemdFilePath)
+
+	systemdConfFolder := systemdFilePath + ".d"
+	log.Info().Msgf("systemdConfFolder: %s", systemdConfFolder)
+	if err := os.MkdirAll(systemdConfFolder, 0750); err != nil {
+		log.Fatal().Err(err).Msgf("Failed to create %s folder", systemdConfFolder)
+	}
+
+	systemdConfFilePath := path.Join(systemdConfFolder, section+".conf")
+
+	log.Info().Msgf("systemdConfFilePath: %s", systemdConfFilePath)
+
+	if utils.FileExists(systemdConfFilePath) {
+		log.Warn().Msgf("File %s already exists. It will be override", systemdConfFilePath)
+	}
+
+	content := []byte("[" + section + "]" + "\n" + body + "\n")
+
+	if err := os.WriteFile(systemdConfFilePath, content, 0644); err != nil {
+		log.Fatal().Err(err).Msgf("Cannot write %s file", systemdConfFilePath)
+	}
+
 }

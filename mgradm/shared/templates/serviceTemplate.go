@@ -22,7 +22,6 @@ RequiresMountsFor=%t/containers
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-Environment=UYUNI_IMAGE={{ .Image }}
 Environment=TZ={{ .Timezone }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-server.pid %t/%n.ctr-id
