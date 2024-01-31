@@ -175,7 +175,7 @@ func WaitForPod(podname string, status string) {
 
 	for i := 0; i < waitSeconds; i++ {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
-		log.Debug().Msgf("Output is %s", out)
+		log.Debug().Msgf("%s status is %s", podname, out)
 
 		if strings.ToUpper(string(out)) == strings.ToUpper(status+"\n") {
 			log.Debug().Msgf("%s pod status is %s", podname, status)
