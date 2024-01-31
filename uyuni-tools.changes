@@ -1,4 +1,16 @@
-* FQDN optional in command install for podman
+-------------------------------------------------------------------
+Wed Jan 31 14:56:34 CET 2024 - rosuna@suse.com
+
+- version 0.1.3-1
+  * Add configuration help
+  * Add a warning message for interactive shell
+  * Accept image URLs with the tag already appended
+  * Add mgradm supportconfig command
+  * Verify if podman, kubectl or helm are installed before using them
+  * Add migration of config files
+  * Disable SELinux relabeling by Podman for migration container.
+    Fixes SELinux access problems for SSH agent socket.
+  * FQDN optional in command install for Podman
 
 -------------------------------------------------------------------
 Mon Jan 15 11:08:45 CET 2024 - marina.latini@suse.com
