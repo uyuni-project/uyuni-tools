@@ -69,10 +69,6 @@ func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 	utils.AskIfMissing(&flags.EmailFrom, cmd.Flag("emailfrom").Usage)
 }
 
-func AddInspectFlags(cmd *cobra.Command) {
-	cmd_utils.AddImageFlag(cmd)
-}
-
 func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().String("tz", "", "Time zone to set on the server. Defaults to the host timezone")
 	cmd.Flags().String("email", "admin@example.com", "Administrator e-mail")

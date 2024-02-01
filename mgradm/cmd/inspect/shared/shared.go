@@ -12,10 +12,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -33,10 +31,6 @@ var InspectOutputFile = types.InspectFile{
 }
 
 var InspectScriptFilename = "inspect.sh"
-
-func AddInspectFlags(cmd *cobra.Command) {
-	cmd_utils.AddImageFlag(cmd)
-}
 
 func GenerateInspectScript(scriptDir string) error {
 
