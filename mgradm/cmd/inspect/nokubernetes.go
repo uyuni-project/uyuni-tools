@@ -4,7 +4,7 @@
 
 //go:build nok8s
 
-package kubernetes
+package inspect
 
 import (
 	"github.com/spf13/cobra"

@@ -4,7 +4,7 @@
 
 //go:build !nok8s
 
-package kubernetes
+package inspect
 
 import (
 	"encoding/json"
@@ -13,29 +13,14 @@ import (
 	"strconv"
 
 	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
 
 	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func inspectKubernetes(
-	globalFlags *types.GlobalFlags,
-	flags *kubernetesInspectFlags,
-	cmd *cobra.Command,
-	args []string,
-) error {
-	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
-	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to compute image URL")
-	}
-	_, err = InspectKubernetes(serverImage, flags.Image.PullPolicy)
-	return err
-}
+var kubernetesBuilt = true
 
-func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string, error) {
+func inspectKubernetes(serverImage string, pullPolicy string) (map[string]string, error) {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
 			log.Fatal().Err(err).Msgf("install %s before running this command", binary)

@@ -52,6 +52,9 @@ func ComputeImage(name string, tag string) (string, error) {
 	}
 	if submatches[2] == "" {
 		// No tag provided in the URL name, append the one passed
+		if len(tag) <= 0 {
+			return name, fmt.Errorf("Tag missing on %s", name)
+		}
 		return fmt.Sprintf("%s:%s", name, tag), nil
 	}
 	return name, nil
