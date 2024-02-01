@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"path"
@@ -87,7 +88,7 @@ func CmdService(service string, cmd string) error {
 }
 
 // RestartService restarts the systemd service.
-func RestartService(service string) {
+func RestartService(service string) error {
 	return CmdService(service, "restart")
 }
 
