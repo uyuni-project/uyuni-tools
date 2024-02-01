@@ -88,7 +88,7 @@ func CmdService(service string, cmd string) error {
 
 // RestartService restarts the systemd service.
 func RestartService(service string) {
-	CmdService(service, "restart")
+	return CmdService(service, "restart")
 }
 
 // StopService stop the systemd service.
