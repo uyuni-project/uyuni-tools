@@ -97,8 +97,8 @@ func StopService(service string) error {
 }
 
 // StopService stop the systemd service.
-func StartService(service string) {
-	CmdService(service, "start")
+func StartService(service string) error {
+	return CmdService(service, "start")
 }
 
 // EnableService enables and starts a systemd service.
