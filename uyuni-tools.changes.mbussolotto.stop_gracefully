@@ -1,0 +1,1 @@
+- Stop podman gracefully (stopping spacewalk-service and postgresql)
