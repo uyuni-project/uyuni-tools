@@ -132,5 +132,6 @@ func GenerateSystemdConfFile(serviceName string, section string, body string) er
 	if err := os.WriteFile(systemdConfFilePath, content, 0644); err != nil {
 		fmt.Errorf("Cannot write %s file: %s", systemdConfFilePath, err)
 	}
+	return nil
 
 }
