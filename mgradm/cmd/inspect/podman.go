@@ -6,6 +6,7 @@ package inspect
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 
 	"github.com/rs/zerolog/log"
@@ -22,7 +23,7 @@ func inspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 	defer os.RemoveAll(scriptDir)
 
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to create temporary directory")
+		return map[string]string{}, fmt.Errorf("Failed to create temporary directory %s", err)
 	}
 
 	extraArgs := []string{
@@ -36,11 +37,16 @@ func inspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 	podman.RunContainer("uyuni-inspect", serverImage, extraArgs,
 		[]string{inspect_shared.InspectOutputFile.Directory + "/" + inspect_shared.InspectScriptFilename})
 
-	inspectResult := shared.ReadInspectData(scriptDir)
+	inspectResult, err := shared.ReadInspectData(scriptDir)
+
+	if err != nil {
+		return map[string]string{}, fmt.Errorf("Cannot inspect data. %s", err)
+	}
+
 	prettyInspectOutput, err := json.MarshalIndent(inspectResult, "", "  ")
 
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Cannot print inspect result")
+		return map[string]string{}, fmt.Errorf("Cannot print inspect result %s", err)
 	}
 
 	log.Info().Msgf("\n%s", string(prettyInspectOutput))

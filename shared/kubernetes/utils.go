@@ -143,7 +143,7 @@ func SetReplicas(replica uint) bool {
 	return false
 }
 
-func RunPod(podname string, image string, pullPolicy string, command string, args ...string) {
+func RunPod(podname string, image string, pullPolicy string, command string, args ...string) error {
 	arguments := []string{"run", podname, "--image", image, "--image-pull-policy", pullPolicy}
 
 	arguments = append(arguments, args...)
@@ -151,41 +151,47 @@ func RunPod(podname string, image string, pullPolicy string, command string, arg
 	err := utils.RunCmdStdMapping("kubectl", arguments...)
 
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Cannot run %s using image %s", command, image)
+		return fmt.Errorf("Cannot run %s using image %s: %s", command, image, err)
 	}
+	return nil
 }
 
-func DeletePod(podname string) string {
+func DeletePod(podname string) (string, error) {
 	arguments := []string{"delete", "pod", podname}
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", arguments...)
 
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Cannot %s", arguments)
+		return "", fmt.Errorf("Cannot delete pod %s: %s", podname, err)
 	}
-	return string(out)
+	return string(out), nil
 }
 
-func WaitForPod(podname string, status string) {
+func WaitForPod(podname string, status string) error {
 	waitSeconds := 60
 
 	log.Debug().Msgf("Checking status for %s pod. Waiting %s seconds until status is %s", podname, strconv.Itoa(waitSeconds), status)
 
 	cmdArgs := []string{"get", "pod", podname, "--output=custom-columns=STATUS:.status.phase", "--no-headers"}
 
+	var err error
 	for i := 0; i < waitSeconds; i++ {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
 		log.Debug().Msgf("%s status is %s", podname, out)
+		if err != nil {
+			return fmt.Errorf("Cannot execute %s: %s", strings.Join(cmdArgs, string(" ")), err)
+		}
 
 		if strings.ToUpper(string(out)) == strings.ToUpper(status+"\n") {
 			log.Debug().Msgf("%s pod status is %s", podname, status)
 			break
 		}
-		if err != nil {
-			log.Fatal().Err(err).Msgf("Pod %s does not %s in %s seconds", podname, out, strconv.Itoa(waitSeconds))
-		}
 		time.Sleep(1 * time.Second)
 	}
+	if err != nil {
+		return fmt.Errorf("Pod %s status is not %s in %s seconds: %s", podname, status, strconv.Itoa(waitSeconds), err)
+	}
+	return nil
 }
 
 func GetNode(appName string) string {

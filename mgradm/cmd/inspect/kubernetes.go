@@ -8,6 +8,7 @@ package inspect
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"os/exec"
 	"strconv"
@@ -23,7 +24,7 @@ var kubernetesBuilt = true
 func inspectKubernetes(serverImage string, pullPolicy string) (map[string]string, error) {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
-			log.Fatal().Err(err).Msgf("install %s before running this command", binary)
+			return map[string]string{}, fmt.Errorf("install %s before running this command. %s", binary, err)
 		}
 	}
 
@@ -31,7 +32,7 @@ func inspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 	defer os.RemoveAll(scriptDir)
 
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to create temporary directory")
+		return map[string]string{}, fmt.Errorf("Failed to create temporary directory. %s", err)
 	}
 
 	inspect_shared.GenerateInspectScript(scriptDir)
@@ -53,13 +54,16 @@ func inspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 
 	shared_kubernetes.WaitForPod(podName, "Succeeded")
 
-	inspectResult := inspect_shared.ReadInspectData(scriptDir)
+	inspectResult, err := inspect_shared.ReadInspectData(scriptDir)
+	if err != nil {
+		return map[string]string{}, fmt.Errorf("Cannot inspect data. %s", err)
+	}
 
 	shared_kubernetes.DeletePod(podName)
 
 	prettyInspectOutput, err := json.MarshalIndent(inspectResult, "", "  ")
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Cannot print inspect result")
+		return map[string]string{}, fmt.Errorf("Cannot print inspect result. %s", err)
 	}
 
 	log.Info().Msgf("\n%s", string(prettyInspectOutput))

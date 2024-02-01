@@ -6,6 +6,7 @@ package shared
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -37,7 +38,7 @@ func AddInspectFlags(cmd *cobra.Command) {
 	cmd_utils.AddImageFlag(cmd)
 }
 
-func GenerateInspectScript(scriptDir string) {
+func GenerateInspectScript(scriptDir string) error {
 
 	data := templates.InspectTemplateData{
 		Param:      inspectValues,
@@ -46,11 +47,12 @@ func GenerateInspectScript(scriptDir string) {
 
 	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to generate inspect script")
+		return fmt.Errorf("Failed to generate inspect script: %s", err)
 	}
+	return nil
 }
 
-func ReadInspectData(scriptDir string) map[string]string {
+func ReadInspectData(scriptDir string) (map[string]string, error) {
 	path := filepath.Join(scriptDir, "data")
 
 	log.Debug().Msgf("Trying to read %s", path)
@@ -58,7 +60,7 @@ func ReadInspectData(scriptDir string) map[string]string {
 	data, err := os.ReadFile(path)
 
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Cannot parse file")
+		return map[string]string{}, fmt.Errorf("Cannot parse file %s: %s", path, err)
 	}
 
 	inspectResult := make(map[string]string)
@@ -71,5 +73,5 @@ func ReadInspectData(scriptDir string) map[string]string {
 			inspectResult[v.Variable] = viper.GetString(v.Variable)
 		}
 	}
-	return inspectResult
+	return inspectResult, nil
 }
