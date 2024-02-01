@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -25,7 +25,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			purge, _ := cmd.Flags().GetBool("purge-volumes")
 
 			backend := "podman"
-			if kubernetesBuilt {
+			if utils.KubernetesBuilt {
 				backend, _ = cmd.Flags().GetString("backend")
 			}
 
@@ -45,7 +45,9 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	uninstallCmd.Flags().BoolP("dry-run", "n", false, "Only show what would be done")
 	uninstallCmd.Flags().Bool("purge-volumes", false, "Also remove the volume")
 
-	utils.AddBackendFlag(uninstallCmd)
+	if utils.KubernetesBuilt {
+		utils.AddBackendFlag(uninstallCmd)
+	}
 
 	return uninstallCmd
 }

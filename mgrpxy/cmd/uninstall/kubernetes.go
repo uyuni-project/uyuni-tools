@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,8 +7,6 @@ package uninstall
 import (
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 )
-
-const kubernetesBuilt = true
 
 func uninstallForKubernetes(dryRun bool) {
 	clusterInfos := kubernetes.CheckCluster()
