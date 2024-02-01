@@ -79,10 +79,11 @@ func IsServiceRunning(service string) bool {
 }
 
 // CmdService send a command to the systemd service.
-func CmdService(service string, cmd string) {
+func CmdService(service string, cmd string) error {
 	if err := utils.RunCmd("systemctl", cmd, service); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to %s systemd %s.service", cmd, service)
+		return fmt.Errorf("Failed to %s systemd %s.service: %s", cmd, service, err)
 	}
+	return nil
 }
 
 // RestartService restarts the systemd service.
