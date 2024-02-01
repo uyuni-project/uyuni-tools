@@ -116,7 +116,7 @@ func GenerateSystemdConfFile(serviceName string, section string, body string) er
 	systemdConfFolder := systemdFilePath + ".d"
 	log.Info().Msgf("systemdConfFolder: %s", systemdConfFolder)
 	if err := os.MkdirAll(systemdConfFolder, 0750); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to create %s folder", systemdConfFolder)
+		return fmt.Errorf("Failed to create %s folder: %s", systemdConfFolder, err)
 	}
 
 	systemdConfFilePath := path.Join(systemdConfFolder, section+".conf")
