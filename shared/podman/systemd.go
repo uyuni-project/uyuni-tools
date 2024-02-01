@@ -92,8 +92,8 @@ func RestartService(service string) {
 }
 
 // StopService stop the systemd service.
-func StopService(service string) {
-	CmdService(service, "stop")
+func StopService(service string) error {
+	return CmdService(service, "stop")
 }
 
 // StopService stop the systemd service.
