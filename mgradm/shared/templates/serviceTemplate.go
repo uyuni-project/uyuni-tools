@@ -47,7 +47,7 @@ ExecStart=/usr/bin/podman run \
 	${UYUNI_IMAGE}
 ExecStop=/usr/bin/podman exec \
     uyuni-server \
-    /bin/bash -c 'systemctl stop postgresql && spacewalk-service stop'
+    /bin/bash -c 'spacewalk-service stop && systemctl stop postgresql'
 ExecStop=/usr/bin/podman stop \
 	--ignore -t 10 \
 	--cidfile=%t/%n.ctr-id
