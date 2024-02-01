@@ -1,12 +1,10 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 //go:build nok8s
 
 package uninstall
-
-const kubernetesBuilt = false
 
 func uninstallForKubernetes(dryRun bool) {
 }
