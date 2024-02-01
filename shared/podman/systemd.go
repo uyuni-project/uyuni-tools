@@ -109,7 +109,7 @@ func EnableService(service string) {
 }
 
 // Create new conf file
-func GenerateSystemdConfFile(serviceName string, section string, body string) {
+func GenerateSystemdConfFile(serviceName string, section string, body string) error {
 	systemdFilePath := GetServicePath(serviceName)
 	log.Info().Msgf("systemdFilePath: %s", systemdFilePath)
 
