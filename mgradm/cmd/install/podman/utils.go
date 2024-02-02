@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -32,7 +32,7 @@ func waitForSystemStart(cnx *shared.Connection, flags *podmanInstallFlags) {
 	podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, podmanArgs)
 
 	log.Info().Msg("Waiting for the server to start...")
-	shared_podman.EnableService("uyuni-server")
+	shared_podman.EnableService(shared_podman.ServerService)
 
 	cnx.WaitForServer()
 }
