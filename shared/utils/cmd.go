@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -18,6 +18,9 @@ var DefaultTag = "latest"
 // This variable needs to be set a build time using git tags
 var Version = "0.0.0"
 
+// CommandFunc is a function to be executed by a Cobra command.
+type CommandFunc[F interface{}] func(*types.GlobalFlags, *F, *cobra.Command, []string) error
+
 // CommandHelper parses the configuration file into the flags and runs the fn function.
 // This function should be passed to Command's RunE.
 func CommandHelper[T interface{}](
@@ -25,7 +28,7 @@ func CommandHelper[T interface{}](
 	cmd *cobra.Command,
 	args []string,
 	flags *T,
-	fn func(*types.GlobalFlags, *T, *cobra.Command, []string) error,
+	fn CommandFunc[T],
 ) error {
 	viper, err := ReadConfig(globalFlags.ConfigPath, cmd)
 	if err != nil {

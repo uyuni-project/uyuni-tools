@@ -13,6 +13,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/pflag"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -257,4 +258,33 @@ func (c *Connection) TestExistenceInPod(dstpath string) bool {
 		return false
 	}
 	return true
+}
+
+// ChoosePodmanOrKubernetes selects either the podman or the kubernetes function based on the backend.
+// This function automatically detects the backend if compiled with kubernetes support and the backend flag is not passed.
+func ChoosePodmanOrKubernetes[F interface{}](
+	flags *pflag.FlagSet,
+	podmanFn utils.CommandFunc[F],
+	kubernetesFn utils.CommandFunc[F],
+) (utils.CommandFunc[F], error) {
+
+	backend := "podman"
+	if utils.KubernetesBuilt {
+		backend, _ = flags.GetString("backend")
+	}
+
+	cnx := NewConnection(backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	command, err := cnx.GetCommand()
+	if err != nil {
+		return nil, fmt.Errorf("failed to determine suitable backend")
+	}
+	switch command {
+	case "podman":
+		return podmanFn, nil
+	case "kubectl":
+		return kubernetesFn, nil
+	}
+
+	// Should never happen if the commands are the same than those handled in GetCommand()
+	return nil, fmt.Errorf("no supported backend found")
 }
