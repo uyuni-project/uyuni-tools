@@ -9,18 +9,25 @@ package uninstall
 import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func uninstallForKubernetes(dryRun bool) {
+func uninstallForKubernetes(
+	globalFlags *types.GlobalFlags,
+	flags *uninstallFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
 	clusterInfos := kubernetes.CheckCluster()
 	kubeconfig := clusterInfos.GetKubeconfig()
 
 	// TODO Find all the PVs related to the server if we want to delete them
 
 	// Uninstall uyuni
-	namespace := kubernetes.HelmUninstall(kubeconfig, "uyuni", "", dryRun)
+	namespace := kubernetes.HelmUninstall(kubeconfig, "uyuni", "", flags.DryRun)
 
 	// Remove the remaining configmap and secrets
 	if namespace != "" {
@@ -31,7 +38,7 @@ func uninstallForKubernetes(dryRun bool) {
 			caSecret = ""
 		}
 
-		if dryRun {
+		if flags.DryRun {
 			log.Info().Msgf("Would run kubectl delete -n %s configmap uyuni-ca", namespace)
 			log.Info().Msgf("Would run kubectl delete -n %s secret uyuni-cert %s", namespace, caSecret)
 		} else {
@@ -58,17 +65,18 @@ func uninstallForKubernetes(dryRun bool) {
 	// Since some storage plugins don't handle Delete policy, we may need to check for error events to avoid infinite loop
 
 	// Uninstall cert-manager if we installed it
-	kubernetes.HelmUninstall(kubeconfig, "cert-manager", "-linstalledby=mgradm", dryRun)
+	kubernetes.HelmUninstall(kubeconfig, "cert-manager", "-linstalledby=mgradm", flags.DryRun)
 
 	// Remove the K3s Traefik config
 	if clusterInfos.IsK3s() {
-		kubernetes.UninstallK3sTraefikConfig(dryRun)
+		kubernetes.UninstallK3sTraefikConfig(flags.DryRun)
 	}
 
 	// Remove the rke2 nginx config
 	if clusterInfos.IsRke2() {
-		kubernetes.UninstallRke2NginxConfig(dryRun)
+		kubernetes.UninstallRke2NginxConfig(flags.DryRun)
 	}
+	return nil
 }
 
 const kubernetesHelp = kubernetes.UninstallHelp

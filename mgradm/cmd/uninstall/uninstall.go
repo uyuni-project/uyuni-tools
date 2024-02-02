@@ -5,14 +5,17 @@
 package uninstall
 
 import (
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
-	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
-	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
+
+type uninstallFlags struct {
+	Backend      string
+	DryRun       bool
+	PurgeVolumes bool
+}
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	uninstallCmd := &cobra.Command{
@@ -20,34 +23,31 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short: "uninstall a server",
 		Long:  "Uninstall a server and optionally the corresponding volumes." + kubernetesHelp,
 		Args:  cobra.ExactArgs(0),
-		Run: func(cmd *cobra.Command, args []string) {
-			dryRun, _ := cmd.Flags().GetBool("dry-run")
-			purge, _ := cmd.Flags().GetBool("purge-volumes")
-
-			backend := "podman"
-			if utils.KubernetesBuilt {
-				backend, _ = cmd.Flags().GetString("backend")
-			}
-
-			cnx := shared.NewConnection(backend, podman.ServerContainerName, kubernetes.ServerFilter)
-			command, err := cnx.GetCommand()
-			if err != nil {
-				log.Fatal().Err(err).Msg("Failed to determine suitable backend")
-			}
-			switch command {
-			case "podman":
-				uninstallForPodman(dryRun, purge)
-			case "kubectl":
-				uninstallForKubernetes(dryRun)
-			}
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var flags uninstallFlags
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, uninstall)
 		},
 	}
-	uninstallCmd.Flags().BoolP("dry-run", "n", false, "Only show what would be done")
-	uninstallCmd.Flags().Bool("purge-volumes", false, "Also remove the volume")
+	uninstallCmd.Flags().BoolP("dryRun", "n", false, "Only show what would be done")
+	uninstallCmd.Flags().Bool("purgeVolumes", false, "Also remove the volume")
 
 	if utils.KubernetesBuilt {
 		utils.AddBackendFlag(uninstallCmd)
 	}
 
 	return uninstallCmd
+}
+
+func uninstall(
+	globalFlags *types.GlobalFlags,
+	flags *uninstallFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	fn, err := shared.ChoosePodmanOrKubernetes(cmd.Flags(), uninstallForPodman, uninstallForKubernetes)
+	if err != nil {
+		return err
+	}
+
+	return fn(globalFlags, flags, cmd, args)
 }
