@@ -1,10 +1,11 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package podman
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 
@@ -18,23 +19,22 @@ import (
 )
 
 // Start the proxy services.
-func startPod() {
-	const servicePod = "uyuni-proxy-pod"
-	if shared_podman.IsServiceRunning(servicePod) {
-		shared_podman.RestartService(servicePod)
+func startPod() error {
+	if shared_podman.IsServiceRunning(shared_podman.ProxyService) {
+		return shared_podman.RestartService(shared_podman.ProxyService)
 	} else {
-		shared_podman.EnableService(servicePod)
+		return shared_podman.EnableService(shared_podman.ProxyService)
 	}
 }
 
 func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallFlags, cmd *cobra.Command, args []string) error {
 	if _, err := exec.LookPath("podman"); err != nil {
-		log.Fatal().Err(err).Msgf("install podman before running this command")
+		return fmt.Errorf("install podman before running this command")
 	}
 
 	configPath := utils.GetConfigPath(args)
 	if err := unpackConfig(configPath); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to extract proxy config from %s file", configPath)
+		return fmt.Errorf("failed to extract proxy config from %s file: %s", configPath, err)
 	}
 
 	httpdImage := getContainerImage(flags, "httpd")
@@ -46,8 +46,7 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallF
 	// Setup the systemd service configuration options
 	podman.GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags.Podman.Args)
 
-	startPod()
-	return nil
+	return startPod()
 }
 
 func getContainerImage(flags *podmanProxyInstallFlags, name string) string {

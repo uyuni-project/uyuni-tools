@@ -1,10 +1,11 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package podman
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"path"
@@ -14,6 +15,12 @@ import (
 )
 
 const servicesPath = "/etc/systemd/system/"
+
+// Name of the systemd service for the server.
+const ServerService = "uyuni-server"
+
+// Name of the systemd service for the proxy.
+const ProxyService = "uyuni-proxy-pod"
 
 // HasService returns if a systemd service is installed.
 // name is the name of the service without the '.service' part.
@@ -79,15 +86,33 @@ func IsServiceRunning(service string) bool {
 }
 
 // RestartService restarts the systemd service.
-func RestartService(service string) {
+func RestartService(service string) error {
 	if err := utils.RunCmd("systemctl", "restart", service); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to restart systemd %s.service", service)
+		return fmt.Errorf("failed to restart systemd %s.service: %s", service, err)
 	}
+	return nil
+}
+
+// StartService starts the systemd service.
+func StartService(service string) error {
+	if err := utils.RunCmd("systemctl", "start", service); err != nil {
+		return fmt.Errorf("failed to start systemd %s.service: %s", service, err)
+	}
+	return nil
+}
+
+// StopService starts the systemd service.
+func StopService(service string) error {
+	if err := utils.RunCmd("systemctl", "stop", service); err != nil {
+		return fmt.Errorf("failed to stop systemd %s.service: %s", service, err)
+	}
+	return nil
 }
 
 // EnableService enables and starts a systemd service.
-func EnableService(service string) {
+func EnableService(service string) error {
 	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to enable %s systemd service", service)
+		return fmt.Errorf("failed to enable %s systemd service: %s", service, err)
 	}
+	return nil
 }

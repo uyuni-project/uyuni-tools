@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -86,7 +86,9 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	podman.GenerateSystemdService(tz, serverImage, false, viper.GetStringSlice("podman.arg"))
 
 	// Start the service
-	podman_utils.EnableService("uyuni-server")
+	if err := podman_utils.EnableService(podman_utils.ServerService); err != nil {
+		return err
+	}
 
 	log.Info().Msg("Server migrated")
 
