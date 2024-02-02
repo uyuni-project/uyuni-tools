@@ -6,11 +6,12 @@
 
 package uninstall
 
-func uninstallForKubernetes(dryRun bool) {
-}
-
-func helmUninstall(kubeconfig string, deployment string, filter string, dryRun bool) string {
-	return ""
+func uninstallForKubernetes(
+	globalFlags *types.GlobalFlags,
+	flags *uninstallFlags,
+	cmd *cobra.Command,
+	args []string,
+) {
 }
 
 const kubernetesHelp = ""
