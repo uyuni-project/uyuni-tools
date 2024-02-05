@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -42,19 +42,19 @@ func runPost(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command
 		}
 	}
 
-	res, err := client.Post(path, data)
+	res, err := api.Post[interface{}](client, path, data)
 	if err != nil {
 		return fmt.Errorf("error in query %s: %s", path, err)
 	}
 
-	if !res["success"].(bool) {
-		log.Error().Msg(res["message"].(string))
+	if !res.Success {
+		log.Error().Msg(res.Message)
 	}
-	out, err := json.MarshalIndent(res["result"], "", "  ")
+	out, err := json.MarshalIndent(res.Result, "", "  ")
 	if err != nil {
 		log.Fatal().Err(err)
 	}
-	fmt.Print(out)
+	fmt.Print(string(out))
 
 	return nil
 }

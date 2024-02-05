@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,7 +22,7 @@ import (
 
 const ROOT_PATH_APIv1 = "/rhn/manager/api"
 
-// HTTP Client is an API entrypoint
+// HTTP Client is an API entrypoint.
 type HTTPClient struct {
 
 	// URL to the API endpoint of the target host
@@ -35,7 +35,7 @@ type HTTPClient struct {
 	AuthCookie *http.Cookie
 }
 
-// Connection details for initial API connection
+// Connection details for initial API connection.
 type ConnectionDetails struct {
 
 	// FQDN of the target host.
@@ -53,6 +53,13 @@ type ConnectionDetails struct {
 
 	// Disable certificate validation, unsecure and not recommended.
 	Insecure bool
+}
+
+// API response where T is the type of the result.
+type ApiResponse[T interface{}] struct {
+	Result  T
+	Success bool
+	Message string
 }
 
 // AddAPIFlags is a helper to include api details for the provided command tree.
@@ -202,8 +209,8 @@ func (c *HTTPClient) login(conn *ConnectionDetails) error {
 // `path` specifies an API endpoint
 // `data` contains a map of values to add to the POST query. `data` are serialized to the JSON
 //
-// returns a deserialized JSON data to the map
-func (c *HTTPClient) Post(path string, data map[string]interface{}) (map[string]interface{}, error) {
+// returns a raw HTTP Response
+func (c *HTTPClient) Post(path string, data map[string]interface{}) (*http.Response, error) {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	jsonData, err := json.Marshal(data)
 	if err != nil {
@@ -220,22 +227,16 @@ func (c *HTTPClient) Post(path string, data map[string]interface{}) (map[string]
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
 
-	var response map[string]interface{}
-	if err = json.NewDecoder(res.Body).Decode(&response); err != nil {
-		return nil, err
-	}
-
-	return response, nil
+	return res, nil
 }
 
 // Get issues GET HTTP request to the API target
 //
 // `path` specifies API endpoint together with query options
 //
-// returns a deserialized JSON data to the map
-func (c *HTTPClient) Get(path string) (map[string]interface{}, error) {
+// returns a raw HTTP Response
+func (c *HTTPClient) Get(path string) (*http.Response, error) {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -246,12 +247,49 @@ func (c *HTTPClient) Get(path string) (map[string]interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	return res, nil
+}
+
+// Post issues a POST HTTP request to the API target using the client and decodes the response.
+//
+// `path` specifies an API endpoint
+// `data` contains a map of values to add to the POST query. `data` are serialized to the JSON
+//
+// returns a deserialized JSON data to the map
+func Post[T interface{}](client *HTTPClient, path string, data map[string]interface{}) (*ApiResponse[T], error) {
+	res, err := client.Post(path, data)
+	if err != nil {
+		return nil, err
+	}
+
 	defer res.Body.Close()
 
-	var response map[string]interface{}
+	var response ApiResponse[T]
 	if err = json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
 	}
 
-	return response, nil
+	return &response, nil
+}
+
+// Get issues an HTTP GET request to the API using the client and decodes the response.
+//
+// `path` specifies API endpoint together with query options
+//
+// returns an ApiResponse with the decoded result.
+func Get[T interface{}](client *HTTPClient, path string) (*ApiResponse[T], error) {
+	res, err := client.Get(path)
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
+
+	var response ApiResponse[T]
+	if err = json.NewDecoder(res.Body).Decode(&response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
 }
