@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,10 +22,11 @@ func NewUyuniproxyCommand() *cobra.Command {
 	globalFlags := &types.GlobalFlags{}
 	name := path.Base(os.Args[0])
 	rootCmd := &cobra.Command{
-		Use:     name,
-		Short:   "Uyuni proxy administration tool",
-		Long:    "Uyuni tool used to help user administer uyuni proxies on kubernetes and podman",
-		Version: utils.Version,
+		Use:          name,
+		Short:        "Uyuni proxy administration tool",
+		Long:         "Uyuni tool used to help user administer uyuni proxies on kubernetes and podman",
+		Version:      utils.Version,
+		SilenceUsage: true, // Don't show usage help on errors
 	}
 
 	rootCmd.SetUsageTemplate(utils.GetUsageWithConfigHelpTemplate(rootCmd.UsageTemplate()))
