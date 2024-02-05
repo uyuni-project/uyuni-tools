@@ -1,10 +1,11 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package shared
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -14,12 +15,14 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
+	"github.com/uyuni-project/uyuni-tools/shared/api"
+	"github.com/uyuni-project/uyuni-tools/shared/api/org"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 const SETUP_NAME = "setup.sh"
 
-func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[string]string) {
+func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[string]string) error {
 	tmpFolder := generateSetupScript(flags, fqdn, env)
 	defer os.RemoveAll(tmpFolder)
 
@@ -27,10 +30,23 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 
 	err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/tmp/setup.sh")
 	if err != nil {
-		log.Fatal().Err(err).Msg("error running the setup script")
+		return fmt.Errorf("error running the setup script: %s", err)
+	}
+
+	// Call the org.createFirst api if flags are passed
+	if flags.Admin.Password != "" {
+		apiCnx := api.ConnectionDetails{
+			Server:   fqdn,
+			Insecure: true, // TODO Get the CA Cert and toggle this to false
+		}
+		_, err := org.CreateFirst(&apiCnx, flags.Organization, &flags.Admin)
+		if err != nil {
+			return err
+		}
 	}
 
 	log.Info().Msg("Server set up")
+	return nil
 }
 
 // generateSetupScript creates a temporary folder with the setup script to execute in the container.

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,10 +7,10 @@
 package kubernetes
 
 import (
+	"fmt"
 	"os/exec"
 
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
@@ -28,7 +28,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 ) error {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
-			log.Fatal().Err(err).Msgf("install %s before running this command", binary)
+			return fmt.Errorf("install %s before running this command: %s", binary, err)
 		}
 	}
 
@@ -63,13 +63,15 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 		"NO_SSL": "Y",
 	}
 
-	install_shared.RunSetup(cnx, &flags.InstallFlags, args[0], envs)
+	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, args[0], envs); err != nil {
+		return err
+	}
 
 	// The CA needs to be added to the database for Kickstart use.
 	err := adm_utils.ExecCommand(zerolog.DebugLevel, cnx,
 		"/usr/bin/rhn-ssl-dbstore", "--ca-cert=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT")
 	if err != nil {
-		log.Fatal().Err(err).Msg("Error storing the SSL CA certificate in database")
+		return fmt.Errorf("error storing the SSL CA certificate in database: %s", err)
 	}
 	return nil
 }
