@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -21,21 +21,21 @@ func runGet(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command,
 	client, err := api.Init(&flags.ConnectionDetails)
 
 	if err != nil {
-		log.Fatal().Err(err).Msg("Unable to login to the server")
+		return fmt.Errorf("unable to login to the server: %s", err)
 	}
 	path := args[0]
 	options := args[1:]
 
-	res, err := client.Get(fmt.Sprintf("%s?%s", path, strings.Join(options, "&")))
+	res, err := api.Get[interface{}](client, fmt.Sprintf("%s?%s", path, strings.Join(options, "&")))
 	if err != nil {
-		log.Error().Err(err).Msgf("Error in query %s", path)
+		return fmt.Errorf("error in query %s: %s", path, err)
 	}
 
 	// TODO do this only when result is JSON or TEXT. Watchout for binary data
 	// Decode JSON to the string and pretty print it
-	out, err := json.MarshalIndent(res, "", "  ")
+	out, err := json.MarshalIndent(res.Result, "", "  ")
 	if err != nil {
-		log.Fatal().Err(err)
+		return err
 	}
 	fmt.Print(string(out))
 
