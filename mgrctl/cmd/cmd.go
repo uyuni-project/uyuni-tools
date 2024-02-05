@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -23,10 +23,11 @@ func NewUyunictlCommand() *cobra.Command {
 	globalFlags := &types.GlobalFlags{}
 	name := path.Base(os.Args[0])
 	rootCmd := &cobra.Command{
-		Use:     name,
-		Short:   "Uyuni control tool",
-		Long:    "Uyuni control tool used to help user managing Uyuni and SUSE Manager Servers mainly through its API",
-		Version: utils.Version,
+		Use:          name,
+		Short:        "Uyuni control tool",
+		Long:         "Uyuni control tool used to help user managing Uyuni and SUSE Manager Servers mainly through its API",
+		Version:      utils.Version,
+		SilenceUsage: true, // Don't show usage help on errors
 	}
 
 	rootCmd.SetUsageTemplate(utils.GetUsageWithConfigHelpTemplate(rootCmd.UsageTemplate()))
