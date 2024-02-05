@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -6,9 +6,10 @@ package shared
 
 import (
 	"github.com/spf13/cobra"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 )
 
 type DbFlags struct {
@@ -35,18 +36,20 @@ type DebugFlags struct {
 }
 
 type InstallFlags struct {
-	TZ         string
-	Email      string
-	EmailFrom  string
-	IssParent  string
-	MirrorPath string
-	Tftp       bool
-	Db         DbFlags
-	ReportDb   DbFlags
-	Ssl        cmd_utils.SslCertFlags
-	Scc        SccFlags
-	Debug      DebugFlags
-	Image      types.ImageFlags `mapstructure:",squash"`
+	TZ           string
+	Email        string
+	EmailFrom    string
+	IssParent    string
+	MirrorPath   string
+	Tftp         bool
+	Db           DbFlags
+	ReportDb     DbFlags
+	Ssl          cmd_utils.SslCertFlags
+	Scc          SccFlags
+	Debug        DebugFlags
+	Image        types.ImageFlags `mapstructure:",squash"`
+	Admin        apiTypes.User
+	Organization string
 }
 
 func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
@@ -113,4 +116,11 @@ func AddInstallFlags(cmd *cobra.Command) {
 
 	cmd.Flags().Bool("debug-java", false, "Enable tomcat and taskomatic remote debugging")
 	cmd_utils.AddImageFlag(cmd)
+
+	cmd.Flags().String("admin-login", "admin", "Administrator user name")
+	cmd.Flags().String("admin-password", "", "Administrator password. If empty, the first user will not be created")
+	cmd.Flags().String("admin-firstName", "Administrator", "The first name of the administrator")
+	cmd.Flags().String("admin-lastName", "McAdmin", "The last name of the administrator")
+	cmd.Flags().String("admin-email", "root@localhost", "The administrator's email")
+	cmd.Flags().String("organization", "Organiszation", "The first organization name")
 }

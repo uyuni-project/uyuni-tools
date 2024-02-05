@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -45,15 +45,18 @@ func installForPodman(
 ) error {
 	flags.CheckParameters(cmd, "podman")
 	if _, err := exec.LookPath("podman"); err != nil {
-		log.Fatal().Err(err).Msg("install podman before running this command")
+		return fmt.Errorf("install podman before running this command: %s", err)
 	}
 
-	fqdn := getFqdn(args)
+	fqdn, err := getFqdn(args)
+	if err != nil {
+		return err
+	}
 	log.Info().Msgf("setting up server with the FQDN '%s'", fqdn)
 
 	image, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to compute image URL")
+		return fmt.Errorf("failed to compute image URL, %s", err)
 	}
 	shared_podman.PrepareImage(image, flags.Image.PullPolicy)
 
@@ -79,7 +82,9 @@ func installForPodman(
 
 	log.Info().Msg("run setup command in the container")
 
-	install_shared.RunSetup(cnx, &flags.InstallFlags, fqdn, env)
+	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, fqdn, env); err != nil {
+		return err
+	}
 
 	if flags.Ssl.UseExisting() {
 		podman.UpdateSslCertificate(cnx, &flags.Ssl.Ca, &flags.Ssl.Server)
@@ -89,14 +94,14 @@ func installForPodman(
 	return nil
 }
 
-func getFqdn(args []string) string {
+func getFqdn(args []string) (string, error) {
 	if len(args) == 1 {
-		return args[0]
+		return args[0], nil
 	} else {
 		fqdn_b, err := utils.RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
 		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to compute server FQDN")
+			return "", fmt.Errorf("failed to compute server FQDN: %s", err)
 		}
-		return string(fqdn_b)
+		return string(fqdn_b), nil
 	}
 }
