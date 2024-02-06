@@ -102,6 +102,6 @@ func getFqdn(args []string) (string, error) {
 		if err != nil {
 			return "", fmt.Errorf("failed to compute server FQDN: %s", err)
 		}
-		return string(fqdn_b), nil
+		return strings.TrimSpace(string(fqdn_b)), nil
 	}
 }
