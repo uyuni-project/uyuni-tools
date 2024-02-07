@@ -5,11 +5,17 @@
 package utils
 
 import (
+	"bytes"
+	"fmt"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -39,6 +45,76 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	runCmd.Stdout = logger
 	runCmd.Stderr = logger
 	return runCmd.Run()
+}
+
+func GeneratePgMigrationScript(scriptDir string, oldPgVersion string, newPgVersion string, kubernetes bool) (string, error) {
+	data := templates.MigratePostgresVersionTemplateData{
+		OldVersion: oldPgVersion,
+		NewVersion: newPgVersion,
+		Kubernetes: kubernetes,
+	}
+
+	scriptName := "migrate_pgsql.sh"
+	scriptPath := filepath.Join(scriptDir, scriptName)
+	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+		return "", fmt.Errorf("Failed to generate %s", scriptName)
+	}
+	return scriptName, nil
+}
+
+func GenerateFinalizePostgresMigrationScript(scriptDir string, RunAutotune bool, RunReindex bool, RunSchemaUpdate bool, RunDistroMigration bool, kubernetes bool) (string, error) {
+	data := templates.FinalizePostgresTemplateData{
+		RunAutotune:        RunAutotune,
+		RunReindex:         RunReindex,
+		RunSchemaUpdate:    RunSchemaUpdate,
+		RunDistroMigration: RunDistroMigration,
+		Kubernetes:         kubernetes,
+	}
+
+	scriptName := "finalize_pgsql.sh"
+	scriptPath := filepath.Join(scriptDir, scriptName)
+	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+		return "", fmt.Errorf("Failed to generate %s", scriptName)
+	}
+	return scriptName, nil
+}
+
+func ReadContainerData(scriptDir string) (string, string, string) {
+	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))
+	if err != nil {
+		log.Fatal().Msgf("Failed to read data extracted from source host")
+	}
+	viper.SetConfigType("env")
+	viper.ReadConfig(bytes.NewBuffer(data))
+	return viper.GetString("Timezone"), viper.GetString("old_pg_version"), viper.GetString("new_pg_version")
+}
+
+func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) {
+	log.Info().Msg("Migrating server")
+	err := ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/"+scriptName)
+	if err != nil {
+		log.Fatal().Err(err).Msg("error running the migration script")
+	}
+}
+
+func GenerateMigrationScript(sourceFqdn string, kubernetes bool) string {
+	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	if err != nil {
+		log.Fatal().Err(err).Msgf("Failed to create temporary directory")
+	}
+
+	data := templates.MigrateScriptTemplateData{
+		Volumes:    utils.VOLUMES,
+		SourceFqdn: sourceFqdn,
+		Kubernetes: kubernetes,
+	}
+
+	scriptPath := filepath.Join(scriptDir, "migrate.sh")
+	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+		log.Fatal().Err(err).Msgf("Failed to generate migration script")
+	}
+
+	return scriptDir
 }
 
 func RunningImage(cnx *shared.Connection, containerName string) (string, error) {
