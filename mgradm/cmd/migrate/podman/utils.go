@@ -30,7 +30,10 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	sshAuthSocket := shared.GetSshAuthSocket()
 	sshConfigPath, sshKnownhostsPath := shared.GetSshPaths()
 
-	scriptDir := adm_utils.GenerateMigrationScript(args[0], false)
+	scriptDir, err := adm_utils.GenerateMigrationScript(args[0], false)
+	if err != nil {
+		return fmt.Errorf("Cannot generate migration script: %s", err)
+	}
 	defer os.RemoveAll(scriptDir)
 
 	extraArgs := []string{

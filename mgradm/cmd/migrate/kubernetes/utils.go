@@ -14,7 +14,6 @@ import (
 	"path"
 
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
@@ -35,7 +34,7 @@ func migrateToKubernetes(
 ) error {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
-			log.Fatal().Err(err).Msgf("install %s before running this command", binary)
+			return fmt.Errorf("install %s before running this command: %s", binary, err)
 		}
 	}
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
@@ -46,7 +45,11 @@ func migrateToKubernetes(
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
 	// Prepare the migration script and folder
-	scriptDir := adm_utils.GenerateMigrationScript(fqdn, true)
+	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, true)
+	if err != nil {
+		return fmt.Errorf("Failed to generater migration script: %s", err)
+	}
+
 	defer os.RemoveAll(scriptDir)
 
 	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
@@ -81,23 +84,18 @@ func migrateToKubernetes(
 			migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, oldPgVersion, newPgVersion)
 		}
 		migrationImage.Tag = flags.MigrationImage.Tag
-		migrationImageUrl, err := utils.ComputeImage(migrationImage.Name, flags.Image.Tag)
-		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to compute image URL")
-		}
-		log.Info().Msgf("Using migration image %s", migrationImageUrl)
 
 		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
 		if err != nil {
 			return fmt.Errorf("Cannot generate pg migration script: %s", err)
 		}
 
-		serverImage, err := utils.ComputeImage(migrationImage.Name, migrationImage.Tag)
+		migrationImageUrl, err := utils.ComputeImage(migrationImage.Name, migrationImage.Tag)
 		if err != nil {
 			return fmt.Errorf("Failed to compute image URL")
 		}
 
-		kubernetes.UyuniUpgrade(serverImage, migrationImage.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+		kubernetes.UyuniUpgrade(migrationImageUrl, migrationImage.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 		adm_utils.RunMigration(cnx, scriptDir, scriptName)
 	}
 
@@ -114,7 +112,11 @@ func migrateToKubernetes(
 	kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 	adm_utils.RunMigration(cnx, scriptDir, scriptName)
 
-	helmArgs = append(helmArgs, setupSsl(&flags.Helm, kubeconfig, scriptDir, flags.Ssl.Password, flags.Image.PullPolicy)...)
+	setupSslArray, err := setupSsl(&flags.Helm, kubeconfig, scriptDir, flags.Ssl.Password, flags.Image.PullPolicy)
+	if err != nil {
+		return fmt.Errorf("Cannot setup SSL: %s", err)
+	}
+	helmArgs = append(helmArgs, setupSslArray...)
 
 	// As we upgrade the helm instance without the migration parameters the SSL certificate will be used
 	kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
@@ -123,7 +125,7 @@ func migrateToKubernetes(
 
 // updateIssuer replaces the temporary SSL certificate issuer with the source server CA.
 // Return additional helm args to use the SSL certificates
-func setupSsl(helm *cmd_utils.HelmFlags, kubeconfig string, scriptDir string, password string, pullPolicy string) []string {
+func setupSsl(helm *cmd_utils.HelmFlags, kubeconfig string, scriptDir string, password string, pullPolicy string) ([]string, error) {
 	caCert := path.Join(scriptDir, "RHN-ORG-TRUSTED-SSL-CERT")
 	caKey := path.Join(scriptDir, "RHN-ORG-PRIVATE-SSL-KEY")
 
@@ -133,14 +135,14 @@ func setupSsl(helm *cmd_utils.HelmFlags, kubeconfig string, scriptDir string, pa
 		// Strip down the certificate text part
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "openssl", "x509", "-in", caCert)
 		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to strip text part of CA certificate")
+			return []string{}, fmt.Errorf("Failed to strip text part of CA certificate %s", err)
 		}
 		cert := base64.StdEncoding.EncodeToString(out)
 		ca := ssl.SslPair{Cert: cert, Key: key}
 
 		// An empty struct means no third party certificate
 		sslFlags := cmd_utils.SslCertFlags{}
-		return kubernetes.DeployCertificate(helm, &sslFlags, cert, &ca, kubeconfig, "", pullPolicy)
+		return kubernetes.DeployCertificate(helm, &sslFlags, cert, &ca, kubeconfig, "", pullPolicy), nil
 	} else {
 		// Handle third party certificates and CA
 		sslFlags := cmd_utils.SslCertFlags{
@@ -152,5 +154,5 @@ func setupSsl(helm *cmd_utils.HelmFlags, kubeconfig string, scriptDir string, pa
 		}
 		kubernetes.DeployExistingCertificate(helm, &sslFlags, kubeconfig)
 	}
-	return []string{}
+	return []string{}, nil
 }

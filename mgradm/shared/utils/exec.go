@@ -24,7 +24,7 @@ import (
 func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string) error {
 	podName, err := cnx.GetPodName()
 	if err != nil {
-		log.Fatal().Err(err)
+		return fmt.Errorf("ExecCommand failed %s", err)
 	}
 
 	commandArgs := []string{"exec", podName}
@@ -89,15 +89,16 @@ func ReadContainerData(scriptDir string) (string, string, string) {
 	return viper.GetString("Timezone"), viper.GetString("old_pg_version"), viper.GetString("new_pg_version")
 }
 
-func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) {
+func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) error {
 	log.Info().Msg("Migrating server")
 	err := ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/"+scriptName)
 	if err != nil {
-		log.Fatal().Err(err).Msg("error running the migration script")
+		return fmt.Errorf("error running the migration script: %s", err)
 	}
+	return nil
 }
 
-func GenerateMigrationScript(sourceFqdn string, kubernetes bool) string {
+func GenerateMigrationScript(sourceFqdn string, kubernetes bool) (string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to create temporary directory")
@@ -111,10 +112,10 @@ func GenerateMigrationScript(sourceFqdn string, kubernetes bool) string {
 
 	scriptPath := filepath.Join(scriptDir, "migrate.sh")
 	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to generate migration script")
+		return "", fmt.Errorf("Failed to generate migration script: %s", err)
 	}
 
-	return scriptDir
+	return scriptDir, nil
 }
 
 func RunningImage(cnx *shared.Connection, containerName string) (string, error) {
