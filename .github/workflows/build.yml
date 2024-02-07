@@ -49,6 +49,15 @@ jobs:
             -o ./bin \
             ./...
 
+      - name: Build nok8s
+        run: |
+          mkdir -p ./bin
+          go build \
+            -tags netgo,nok8s \
+            -ldflags "-X github.com/uyuni-project/uyuni-tools/shared/utils.Version=${{ env.VERSION }}" \
+            -o ./bin \
+            ./...
+
       - name: Test with the Go CLI
         run: go test ./...
 
