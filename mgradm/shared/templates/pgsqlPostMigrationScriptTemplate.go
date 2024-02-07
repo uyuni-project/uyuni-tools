@@ -38,6 +38,17 @@ UPDATE rhnKickstartableTree SET base_path = CONCAT('/srv/www/distributions/', ta
 DROP TABLE dist_map;
 EOT
 {{ end }}
+
+echo "Schedule a system list update task..."
+spacewalk-sql --select-mode - <<EOT
+insert into rhnTaskQueue (id, org_id, task_name, task_data)
+SELECT nextval('rhn_task_queue_id_seq'), 1, 'update_system_overview', s.id
+from rhnserver s
+where not exists (select 1 from rhntaskorun r join rhntaskotemplate t on r.template_id = t.id
+join rhntaskobunch b on t.bunch_id = b.id where b.name='update-system-overview-bunch' limit 1);
+EOT
+
+
 echo "Stopping Postgresql..."
 su -s /bin/bash - postgres -c "/usr/share/postgresql/postgresql-script stop"
 echo "DONE"
