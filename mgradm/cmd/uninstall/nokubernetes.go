@@ -6,12 +6,18 @@
 
 package uninstall
 
+import (
+	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+)
+
 func uninstallForKubernetes(
 	globalFlags *types.GlobalFlags,
 	flags *uninstallFlags,
 	cmd *cobra.Command,
 	args []string,
-) {
+) error {
+	return nil
 }
 
 const kubernetesHelp = ""
