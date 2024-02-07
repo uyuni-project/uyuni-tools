@@ -50,3 +50,16 @@ func pullImage(image string) {
 		log.Fatal().Err(err).Msg("Failed to pull image")
 	}
 }
+
+func ShowAvailableTag(image string) []string {
+	log.Info().Msgf("Running podman image search --list-tags %s --format='{{.Tag}}'", image)
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", image, "--format='{{.Tag}}'")
+	if err != nil {
+		log.Fatal().Err(err).Msgf("Cannot find any tag for image: %s", image)
+		return []string{}
+	}
+
+	tags := strings.Split(string(out), "\n")
+	return tags
+}

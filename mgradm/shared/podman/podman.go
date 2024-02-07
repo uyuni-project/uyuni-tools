@@ -119,3 +119,23 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 	log.Info().Msg("Restarting services after updating the certificate")
 	utils.RunCmdStdMapping("podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
 }
+
+func RunContainer(name string, image string, extraArgs []string, cmd []string) error {
+
+	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
+	podmanArgs = append(podmanArgs, extraArgs...)
+
+	for volumeName, containerPath := range utils.VOLUMES {
+		podmanArgs = append(podmanArgs, "-v", volumeName+":"+containerPath)
+	}
+
+	podmanArgs = append(podmanArgs, image)
+	podmanArgs = append(podmanArgs, cmd...)
+
+	err := utils.RunCmdStdMapping("podman", podmanArgs...)
+
+	if err != nil {
+		return fmt.Errorf("Failed to run %s container: %s", name, err)
+	}
+	return nil
+}

@@ -128,3 +128,72 @@ func GetPullPolicy(name string) string {
 	}
 	return policy
 }
+
+func RunPod(podname string, image string, pullPolicy string, command string, args ...string) error {
+	arguments := []string{"run", podname, "--image", image, "--image-pull-policy", pullPolicy}
+
+	arguments = append(arguments, args...)
+	arguments = append(arguments, "--command", "--", command)
+	err := utils.RunCmdStdMapping("kubectl", arguments...)
+
+	if err != nil {
+		return fmt.Errorf("Cannot run %s using image %s: %s", command, image, err)
+	}
+	return nil
+}
+
+func DeletePod(podname string) (string, error) {
+	arguments := []string{"delete", "pod", podname}
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", arguments...)
+
+	if err != nil {
+		return "", fmt.Errorf("Cannot delete pod %s: %s", podname, err)
+	}
+	return string(out), nil
+}
+
+func WaitForPod(podname string, status string) error {
+	waitSeconds := 60
+
+	log.Debug().Msgf("Checking status for %s pod. Waiting %s seconds until status is %s", podname, strconv.Itoa(waitSeconds), status)
+
+	cmdArgs := []string{"get", "pod", podname, "--output=custom-columns=STATUS:.status.phase", "--no-headers"}
+
+	var err error
+	for i := 0; i < waitSeconds; i++ {
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
+		log.Debug().Msgf("%s status is %s", podname, out)
+		if err != nil {
+			return fmt.Errorf("Cannot execute %s: %s", strings.Join(cmdArgs, string(" ")), err)
+		}
+
+		if strings.ToUpper(string(out)) == strings.ToUpper(status+"\n") {
+			log.Debug().Msgf("%s pod status is %s", podname, status)
+			break
+		}
+		time.Sleep(1 * time.Second)
+	}
+	if err != nil {
+		return fmt.Errorf("Pod %s status is not %s in %s seconds: %s", podname, status, strconv.Itoa(waitSeconds), err)
+	}
+	return nil
+}
+
+func GetNode(appName string) string {
+	nodeName := ""
+	cmdArgs := []string{"get", "pod", "-lapp=" + appName, "-o", "jsonpath={.items[*].spec.nodeName}"}
+	for i := 0; i < 60; i++ {
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
+		if err == nil {
+			nodeName = string(out)
+			break
+		}
+	}
+	if len(nodeName) > 0 {
+		log.Debug().Msgf("Node name for app %s is: %s", appName, nodeName)
+	} else {
+		log.Warn().Msgf("Cannot find Node name for app %s", appName)
+	}
+	return nodeName
+}

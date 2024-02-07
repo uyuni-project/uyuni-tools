@@ -116,3 +116,30 @@ func EnableService(service string) error {
 	}
 	return nil
 }
+
+// Create new conf file
+func GenerateSystemdConfFile(serviceName string, section string, body string) {
+	systemdFilePath := GetServicePath(serviceName)
+	log.Info().Msgf("systemdFilePath: %s", systemdFilePath)
+
+	systemdConfFolder := systemdFilePath + ".d"
+	log.Info().Msgf("systemdConfFolder: %s", systemdConfFolder)
+	if err := os.MkdirAll(systemdConfFolder, 0750); err != nil {
+		log.Fatal().Err(err).Msgf("Failed to create %s folder", systemdConfFolder)
+	}
+
+	systemdConfFilePath := path.Join(systemdConfFolder, section+".conf")
+
+	log.Info().Msgf("systemdConfFilePath: %s", systemdConfFilePath)
+
+	if utils.FileExists(systemdConfFilePath) {
+		log.Warn().Msgf("File %s already exists. It will be override", systemdConfFilePath)
+	}
+
+	content := []byte("[" + section + "]" + "\n" + body + "\n")
+
+	if err := os.WriteFile(systemdConfFilePath, content, 0644); err != nil {
+		log.Fatal().Err(err).Msgf("Cannot write %s file", systemdConfFilePath)
+	}
+
+}
