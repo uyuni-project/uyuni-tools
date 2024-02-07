@@ -52,13 +52,13 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 		Args:       commonArgs + " " + strings.Join(podmanArgs, " "),
 		Ports:      GetExposedPorts(debug),
 		Timezone:   tz,
-		Image:      image,
 		Network:    podman.UyuniNetwork,
 	}
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, false); err != nil {
 		log.Fatal().Err(err).Msg("Failed to generate systemd service unit file")
 	}
 
+	podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+image)
 	podman.ReloadDaemon(false)
 }
 
