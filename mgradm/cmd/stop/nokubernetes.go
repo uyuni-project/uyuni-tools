@@ -10,13 +10,12 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 func kubernetesStop(
 	globalFlags *types.GlobalFlags,
-	flags *startFlags,
+	flags *stopFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
