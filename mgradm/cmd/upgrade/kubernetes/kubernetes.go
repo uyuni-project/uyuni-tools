@@ -27,7 +27,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short: "upgrade a local server on kubernetes",
 		Long: `Upgrade a local server on kubernetes
 `,
-		Args: cobra.ExactArgs(1),
+		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesUpgradeFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, upgradeKubernetes)

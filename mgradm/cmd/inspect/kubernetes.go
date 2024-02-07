@@ -47,7 +47,7 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 		return map[string]string{}, fmt.Errorf("Cannot find node for app uyuni %s", err)
 	}
 
-	overridesArgs := []string{"--override-type=strategic", "--overrides", `{"apiVersion":"v1","spec":{"nodeName":"` + nodeName + `","restartPolicy":"Never","containers":[{"name":` + strconv.Quote(podName) + `,"image":` + strconv.Quote(serverImage) + `,"volumeMounts":[{"mountPath":"/var/lib/pgsql","name":"var-pgsql"},{"mountPath":"` + inspect_shared.InspectOutputFile.Directory + `","name":"var-lib-uyuni-tools"}]}],"volumes":[{"name":"var-pgsql","persistentVolumeClaim":{"claimName":"var-pgsql"}},{"name":"var-lib-uyuni-tools","hostPath":{"path":` + strconv.Quote(scriptDir) + `,"type":"Directory"}}]}}`}
+	overridesArgs := []string{"--override-type=strategic", "--overrides", `{"apiVersion":"v1","spec":{"nodeName":"` + nodeName + `","restartPolicy":"Never","containers":[{"name":` + strconv.Quote(podName) + `,"image":` + strconv.Quote(serverImage) + `,"volumeMounts":[{"mountPath":"/var/lib/pgsql","name":"var-pgsql"},{"mountPath":"/etc/rhn","name":"etc-rhn"}, {"mountPath":"` + inspect_shared.InspectOutputFile.Directory + `","name":"var-lib-uyuni-tools"}]}],"volumes":[{"name":"var-pgsql","persistentVolumeClaim":{"claimName":"var-pgsql"}},{"name":"var-lib-uyuni-tools","hostPath":{"path":` + strconv.Quote(scriptDir) + `,"type":"Directory"}},{"name":"etc-rhn","persistentVolumeClaim":{"claimName":"etc-rhn"}}]}}`}
 
 	shared_kubernetes.RunPod(podName, serverImage, pullPolicy, command, overridesArgs...)
 

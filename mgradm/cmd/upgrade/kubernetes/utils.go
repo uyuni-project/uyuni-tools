@@ -15,10 +15,8 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect"
-	upgrade_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -36,10 +34,6 @@ func upgradeKubernetes(
 		}
 	}
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
-	if (len(args[0])) <= 0 {
-		return fmt.Errorf("FQDN must be provided as argument")
-	}
-	fqdn := args[0]
 
 	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
 	if err != nil {
@@ -47,8 +41,12 @@ func upgradeKubernetes(
 	}
 
 	inspectedValues, err := inspect.InspectKubernetes(serverImage, flags.Image.PullPolicy)
-
 	upgrade_shared.SanityCheck(cnx, inspectedValues, serverImage)
+
+	fqdn, exist := inspectedValues["fqdn"]
+	if !exist {
+		return fmt.Errorf("Inspect function did non return fqdn value")
+	}
 
 	clusterInfos := shared_kubernetes.CheckCluster()
 	kubeconfig := clusterInfos.GetKubeconfig()

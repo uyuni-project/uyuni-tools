@@ -21,6 +21,7 @@ import (
 var inspectValues = []types.InspectData{
 	types.InspectDataConstructor("uyuni_release", "cat /etc/*release | grep 'Uyuni release' | cut -d ' ' -f3"),
 	types.InspectDataConstructor("suse_manager_release", "cat /etc/*release | grep 'SUSE Manager release' | cut -d ' ' -f4"),
+	types.InspectDataConstructor("fqdn", "cat /etc/rhn/rhn.conf | grep 'java.hostname' | cut -d' ' -f3"),
 	types.InspectDataConstructor("image_pg_version", "rpm -qa --qf '%{VERSION}\\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1"),
 	types.InspectDataConstructor("current_pg_version", "(test -e /var/lib/pgsql/data/PG_VERSION && cat /var/lib/pgsql/data/PG_VERSION) || true"),
 }
