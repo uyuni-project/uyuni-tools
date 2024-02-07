@@ -111,8 +111,10 @@ func IsDeploymentReady(namespace string, name string) bool {
 	return false
 }
 
-func ReplicasTo(replica uint) error {
+func ReplicasTo(filter string, replica uint) error {
 	args := []string{"scale", "deploy", "uyuni", "--replicas"}
+
+	log.Debug().Msgf("Setting replicas for pod in %s to %d", filter, replica)
 
 	args = append(args, fmt.Sprint(replica))
 
@@ -120,13 +122,71 @@ func ReplicasTo(replica uint) error {
 	if err != nil {
 		return fmt.Errorf("Cannot run kubectl %s: %s", args, err)
 	}
-	//FIXME
-	//err = waitForReplica(replica)
-	//if err != nil {
-	//	return fmt.Errorf("Replica to %d failed: %s", replica, err)
-	//}
+
+	pods, err := getPods(ServerFilter)
+	if err != nil {
+		return fmt.Errorf("Cannot get pods for %s: %s", filter, err)
+	}
+
+	for _, pod := range pods {
+		err = waitForReplica(pod, replica)
+		if replica > 0 {
+			return nil
+		}
+		if err != nil {
+			return fmt.Errorf("Replica to %d failed: %s", replica, err)
+		}
+	}
+
+	log.Debug().Msgf("Replicas for pod in %s are now %d", filter, replica)
 
 	return err
+}
+
+func getPods(filter string) (pods []string, err error) {
+	log.Debug().Msgf("Checking all pods for %s", filter)
+
+	cmdArgs := []string{"get", "pods", filter, "--output=custom-columns=:.metadata.name", "--no-headers"}
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
+	if err != nil {
+		return pods, fmt.Errorf("Cannot execute %s: %s", strings.Join(cmdArgs, string(" ")), err)
+	}
+	lines := strings.Split(string(out), "\n")
+
+	for _, line := range lines {
+		pods = append(pods, line)
+	}
+	log.Debug().Msgf("Pods in %s are %s", filter, pods)
+
+	return pods, err
+}
+
+func waitForReplica(podname string, replica uint) error {
+	waitSeconds := 120
+
+	log.Debug().Msgf("Checking replica for %s ready to %d", podname, replica)
+
+	cmdArgs := []string{"get", "rs", podname, "--output=custom-columns=DESIRED:.status.replicas", "--no-headers"}
+
+	var err error
+	for i := 0; i < waitSeconds; i++ {
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
+		outStr := strings.TrimSuffix(string(out), "\n")
+		if err != nil {
+			return fmt.Errorf("Cannot execute %s: %s", strings.Join(cmdArgs, string(" ")), err)
+		}
+		if string(outStr) == fmt.Sprint(replica) {
+			log.Debug().Msgf("%s pod replica is now %d", podname, replica)
+			break
+		}
+		log.Debug().Msgf("Pod %s replica is %s in %d seconds.", podname, string(out), i)
+		time.Sleep(1 * time.Second)
+	}
+	if err != nil {
+		return fmt.Errorf("Pod %s replica is not %d in %s seconds: %s", podname, replica, strconv.Itoa(waitSeconds), err)
+	}
+	return nil
 }
 
 func addNamespace(args []string, namespace string) []string {

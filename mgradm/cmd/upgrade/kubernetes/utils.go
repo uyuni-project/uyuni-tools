@@ -15,8 +15,10 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect"
+	upgrade_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -53,12 +55,12 @@ func upgradeKubernetes(
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
-
 	if err != nil {
 		return fmt.Errorf("Failed to create temporary directory")
 	}
 
-	shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
+	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
+
 	defer shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 1)
 
 	nodeName, err := shared_kubernetes.GetNode("uyuni")
