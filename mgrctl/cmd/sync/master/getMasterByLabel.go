@@ -13,7 +13,7 @@ import (
 
 type getMasterByLabelFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
+	Label                 string
 }
 
 func getMasterByLabelCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getMasterByLabelCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getMasterByLabel(globalFlags *types.GlobalFlags, flags *getMasterByLabelFlags, cmd *cobra.Command, args []string) error {
 
-res, err := master.Master(&flags.ConnectionDetails, flags.Label)
+	res, err := master.Master(&flags.ConnectionDetails, flags.Label)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := master.Master(&flags.ConnectionDetails, flags.Label)
 
 	return nil
 }
-

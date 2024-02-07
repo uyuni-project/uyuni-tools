@@ -13,8 +13,8 @@ import (
 
 type createFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SubscriptionId          int
-	Sid          int
+	SubscriptionId        int
+	Sid                   int
 }
 
 func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func create(globalFlags *types.GlobalFlags, flags *createFlags, cmd *cobra.Command, args []string) error {
 
-res, err := pinnedsubscription.Pinnedsubscription(&flags.ConnectionDetails, flags.SubscriptionId, flags.Sid)
+	res, err := pinnedsubscription.Pinnedsubscription(&flags.ConnectionDetails, flags.SubscriptionId, flags.Sid)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := pinnedsubscription.Pinnedsubscription(&flags.ConnectionDetails, flag
 
 	return nil
 }
-

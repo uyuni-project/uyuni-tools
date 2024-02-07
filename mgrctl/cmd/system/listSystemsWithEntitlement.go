@@ -13,7 +13,7 @@ import (
 
 type listSystemsWithEntitlementFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	EntitlementName          string
+	EntitlementName       string
 }
 
 func listSystemsWithEntitlementCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listSystemsWithEntitlementCommand(globalFlags *types.GlobalFlags) *cobra.Co
 
 func listSystemsWithEntitlement(globalFlags *types.GlobalFlags, flags *listSystemsWithEntitlementFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.EntitlementName)
+	res, err := system.System(&flags.ConnectionDetails, flags.EntitlementName)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.EntitlementName)
 
 	return nil
 }
-

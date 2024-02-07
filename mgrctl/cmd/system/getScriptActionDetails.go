@@ -13,7 +13,7 @@ import (
 
 type getScriptActionDetailsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ActionId          int
+	ActionId              int
 }
 
 func getScriptActionDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getScriptActionDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Comman
 
 func getScriptActionDetails(globalFlags *types.GlobalFlags, flags *getScriptActionDetailsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.ActionId)
+	res, err := system.System(&flags.ConnectionDetails, flags.ActionId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.ActionId)
 
 	return nil
 }
-

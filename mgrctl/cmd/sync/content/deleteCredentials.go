@@ -13,7 +13,7 @@ import (
 
 type deleteCredentialsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Username          string
+	Username              string
 }
 
 func deleteCredentialsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func deleteCredentialsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func deleteCredentials(globalFlags *types.GlobalFlags, flags *deleteCredentialsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := content.Content(&flags.ConnectionDetails, flags.Username)
+	res, err := content.Content(&flags.ConnectionDetails, flags.Username)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := content.Content(&flags.ConnectionDetails, flags.Username)
 
 	return nil
 }
-

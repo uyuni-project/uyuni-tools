@@ -13,8 +13,8 @@ import (
 
 type rollbackToSnapshotFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	SnapId          int
+	Sid                   int
+	SnapId                int
 }
 
 func rollbackToSnapshotCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func rollbackToSnapshotCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func rollbackToSnapshot(globalFlags *types.GlobalFlags, flags *rollbackToSnapshotFlags, cmd *cobra.Command, args []string) error {
 
-res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.Sid, flags.SnapId)
+	res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.Sid, flags.SnapId)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.Sid, flags.SnapId)
 
 	return nil
 }
-

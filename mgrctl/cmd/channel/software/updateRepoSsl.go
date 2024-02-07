@@ -13,11 +13,11 @@ import (
 
 type updateRepoSslFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Id          int
-	SslCaCert          string
-	SslCliCert          string
-	SslCliKey          string
-	Label          string
+	Id                    int
+	SslCaCert             string
+	SslCliCert            string
+	SslCliKey             string
+	Label                 string
 }
 
 func updateRepoSslCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -41,7 +41,7 @@ func updateRepoSslCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func updateRepoSsl(globalFlags *types.GlobalFlags, flags *updateRepoSslFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.Id, flags.SslCaCert, flags.SslCliCert, flags.SslCliKey, flags.Label)
+	res, err := software.Software(&flags.ConnectionDetails, flags.Id, flags.SslCaCert, flags.SslCliCert, flags.SslCliKey, flags.Label)
 	if err != nil {
 		return err
 	}
@@ -50,4 +50,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.Id, flags.SslCaCer
 
 	return nil
 }
-

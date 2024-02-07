@@ -16,8 +16,8 @@ func Create(cnxDetails *api.ConnectionDetails, Name string, Description string) 
 	}
 
 	data := map[string]interface{}{
-		"name":       Name,
-		"description":       Description,
+		"name":        Name,
+		"description": Description,
 	}
 
 	res, err := api.Post[types.ManagedServerGroup](client, "systemgroup", data)

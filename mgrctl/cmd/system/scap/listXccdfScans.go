@@ -13,7 +13,7 @@ import (
 
 type listXccdfScansFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
+	Sid                   int
 }
 
 func listXccdfScansCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listXccdfScansCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listXccdfScans(globalFlags *types.GlobalFlags, flags *listXccdfScansFlags, cmd *cobra.Command, args []string) error {
 
-res, err := scap.Scap(&flags.ConnectionDetails, flags.Sid)
+	res, err := scap.Scap(&flags.ConnectionDetails, flags.Sid)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := scap.Scap(&flags.ConnectionDetails, flags.Sid)
 
 	return nil
 }
-

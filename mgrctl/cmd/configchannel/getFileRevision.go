@@ -13,9 +13,9 @@ import (
 
 type getFileRevisionFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
-	FilePath          string
-	Revision          int
+	Label                 string
+	FilePath              string
+	Revision              int
 }
 
 func getFileRevisionCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func getFileRevisionCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getFileRevision(globalFlags *types.GlobalFlags, flags *getFileRevisionFlags, cmd *cobra.Command, args []string) error {
 
-res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label, flags.FilePath, flags.Revision)
+	res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label, flags.FilePath, flags.Revision)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label, f
 
 	return nil
 }
-

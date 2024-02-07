@@ -13,9 +13,9 @@ import (
 
 type setGroupMembershipFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	Sgid          int
-	Member          bool
+	Sid                   int
+	Sgid                  int
+	Member                bool
 }
 
 func setGroupMembershipCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func setGroupMembershipCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setGroupMembership(globalFlags *types.GlobalFlags, flags *setGroupMembershipFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Sgid, flags.Member)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Sgid, flags.Member)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Sgid, flags
 
 	return nil
 }
-

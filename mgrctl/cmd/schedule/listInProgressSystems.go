@@ -13,7 +13,7 @@ import (
 
 type listInProgressSystemsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ActionId          int
+	ActionId              int
 }
 
 func listInProgressSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listInProgressSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command
 
 func listInProgressSystems(globalFlags *types.GlobalFlags, flags *listInProgressSystemsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionId)
+	res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionId)
 
 	return nil
 }
-

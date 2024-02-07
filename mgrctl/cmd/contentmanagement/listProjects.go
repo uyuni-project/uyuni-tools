@@ -25,13 +25,12 @@ func listProjectsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listProjects(globalFlags *types.GlobalFlags, flags *listProjectsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails)
 
 	return nil
 }
-

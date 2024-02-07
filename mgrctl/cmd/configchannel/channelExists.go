@@ -13,7 +13,7 @@ import (
 
 type channelExistsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
+	Label                 string
 }
 
 func channelExistsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func channelExistsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func channelExists(globalFlags *types.GlobalFlags, flags *channelExistsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label)
+	res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label)
 
 	return nil
 }
-

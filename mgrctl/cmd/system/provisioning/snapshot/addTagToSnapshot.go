@@ -13,8 +13,8 @@ import (
 
 type addTagToSnapshotFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SnapId          int
-	TagName          string
+	SnapId                int
+	TagName               string
 }
 
 func addTagToSnapshotCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func addTagToSnapshotCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addTagToSnapshot(globalFlags *types.GlobalFlags, flags *addTagToSnapshotFlags, cmd *cobra.Command, args []string) error {
 
-res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.SnapId, flags.TagName)
+	res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.SnapId, flags.TagName)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.SnapId, flags.TagN
 
 	return nil
 }
-

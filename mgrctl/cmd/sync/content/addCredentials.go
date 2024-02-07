@@ -13,9 +13,9 @@ import (
 
 type addCredentialsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Username          string
-	Password          string
-	Primary          bool
+	Username              string
+	Password              string
+	Primary               bool
 }
 
 func addCredentialsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func addCredentialsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addCredentials(globalFlags *types.GlobalFlags, flags *addCredentialsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := content.Content(&flags.ConnectionDetails, flags.Username, flags.Password, flags.Primary)
+	res, err := content.Content(&flags.ConnectionDetails, flags.Username, flags.Password, flags.Primary)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := content.Content(&flags.ConnectionDetails, flags.Username, flags.Pass
 
 	return nil
 }
-

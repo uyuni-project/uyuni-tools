@@ -13,7 +13,7 @@ import (
 
 type getKickstartTreeFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
+	KsLabel               string
 }
 
 func getKickstartTreeCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getKickstartTreeCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getKickstartTree(globalFlags *types.GlobalFlags, flags *getKickstartTreeFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel)
 
 	return nil
 }
-

@@ -13,7 +13,7 @@ import (
 
 type listTrustsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	OrgId          int
+	OrgId                 int
 }
 
 func listTrustsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listTrustsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listTrusts(globalFlags *types.GlobalFlags, flags *listTrustsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := trusts.Trusts(&flags.ConnectionDetails, flags.OrgId)
+	res, err := trusts.Trusts(&flags.ConnectionDetails, flags.OrgId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := trusts.Trusts(&flags.ConnectionDetails, flags.OrgId)
 
 	return nil
 }
-

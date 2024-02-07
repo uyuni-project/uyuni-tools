@@ -13,9 +13,9 @@ import (
 
 type addPackageInstallFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	PackageIds          []int
-	ChainLabel          string
+	Sid                   int
+	PackageIds            []int
+	ChainLabel            string
 }
 
 func addPackageInstallCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func addPackageInstallCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addPackageInstall(globalFlags *types.GlobalFlags, flags *addPackageInstallFlags, cmd *cobra.Command, args []string) error {
 
-res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.Sid, flags.PackageIds, flags.ChainLabel)
+	res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.Sid, flags.PackageIds, flags.ChainLabel)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.Sid, flags.P
 
 	return nil
 }
-

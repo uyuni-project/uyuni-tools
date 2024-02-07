@@ -25,13 +25,12 @@ func listImageProfileTypesCommand(globalFlags *types.GlobalFlags) *cobra.Command
 		},
 	}
 
-
 	return cmd
 }
 
 func listImageProfileTypes(globalFlags *types.GlobalFlags, flags *listImageProfileTypesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails)
+	res, err := profile.Profile(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := profile.Profile(&flags.ConnectionDetails)
 
 	return nil
 }
-

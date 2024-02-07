@@ -13,14 +13,14 @@ import (
 
 type addScriptFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
-	Name          string
-	Contents          string
-	Interpreter          string
-	Type          string
-	Chroot          bool
-	Template          bool
-	Erroronfail          bool
+	KsLabel               string
+	Name                  string
+	Contents              string
+	Interpreter           string
+	Type                  string
+	Chroot                bool
+	Template              bool
+	Erroronfail           bool
 }
 
 func addScriptCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -47,7 +47,7 @@ func addScriptCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addScript(globalFlags *types.GlobalFlags, flags *addScriptFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Name, flags.Contents, flags.Interpreter, flags.Type, flags.Chroot, flags.Template, flags.Erroronfail)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Name, flags.Contents, flags.Interpreter, flags.Type, flags.Chroot, flags.Template, flags.Erroronfail)
 	if err != nil {
 		return err
 	}
@@ -56,4 +56,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Name,
 
 	return nil
 }
-

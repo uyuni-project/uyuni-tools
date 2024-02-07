@@ -13,8 +13,8 @@ import (
 
 type renameProfileFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	OriginalLabel          string
-	NewLabel          string
+	OriginalLabel         string
+	NewLabel              string
 }
 
 func renameProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func renameProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func renameProfile(globalFlags *types.GlobalFlags, flags *renameProfileFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.OriginalLabel, flags.NewLabel)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.OriginalLabel, flags.NewLabel)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.OriginalLabel, f
 
 	return nil
 }
-

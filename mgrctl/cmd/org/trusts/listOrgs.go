@@ -25,13 +25,12 @@ func listOrgsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listOrgs(globalFlags *types.GlobalFlags, flags *listOrgsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := trusts.Trusts(&flags.ConnectionDetails)
+	res, err := trusts.Trusts(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := trusts.Trusts(&flags.ConnectionDetails)
 
 	return nil
 }
-

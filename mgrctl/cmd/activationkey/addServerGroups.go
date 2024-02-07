@@ -13,8 +13,8 @@ import (
 
 type addServerGroupsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Key          string
-	ServerGroupIds          []int
+	Key                   string
+	ServerGroupIds        []int
 }
 
 func addServerGroupsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func addServerGroupsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addServerGroups(globalFlags *types.GlobalFlags, flags *addServerGroupsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key, flags.ServerGroupIds)
+	res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key, flags.ServerGroupIds)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key, fla
 
 	return nil
 }
-

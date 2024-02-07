@@ -13,8 +13,8 @@ import (
 
 type setLockStatusFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	LockStatus          bool
+	Sid                   int
+	LockStatus            bool
 }
 
 func setLockStatusCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setLockStatusCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setLockStatus(globalFlags *types.GlobalFlags, flags *setLockStatusFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.LockStatus)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.LockStatus)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.LockStatus)
 
 	return nil
 }
-

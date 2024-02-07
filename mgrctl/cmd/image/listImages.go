@@ -25,13 +25,12 @@ func listImagesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listImages(globalFlags *types.GlobalFlags, flags *listImagesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := image.Image(&flags.ConnectionDetails)
+	res, err := image.Image(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := image.Image(&flags.ConnectionDetails)
 
 	return nil
 }
-

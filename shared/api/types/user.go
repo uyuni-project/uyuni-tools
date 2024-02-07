@@ -11,6 +11,6 @@ type User struct {
 	FirstName string
 	LastName  string
 	Email     string
-    Id int `mapstructure:"id"`
-    Enabled bool `mapstructure:"enabled"`
+	Id        int  `mapstructure:"id"`
+	Enabled   bool `mapstructure:"enabled"`
 }

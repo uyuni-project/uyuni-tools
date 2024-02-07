@@ -17,9 +17,9 @@ func UpdateRepoLabel(cnxDetails *api.ConnectionDetails, Id int, Label string, La
 
 	data := map[string]interface{}{
 		"id":       Id,
-		"label":       Label,
-		"label":       Label,
-		"newLabel":       NewLabel,
+		"label":    Label,
+		"label":    Label,
+		"newLabel": NewLabel,
 	}
 
 	res, err := api.Post[types.ContentSource](client, "channel/software", data)

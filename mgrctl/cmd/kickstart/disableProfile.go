@@ -14,7 +14,7 @@ import (
 type disableProfileFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ProfileLabel          string
-	Disabled          string
+	Disabled              string
 }
 
 func disableProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func disableProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func disableProfile(globalFlags *types.GlobalFlags, flags *disableProfileFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, flags.Disabled)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, flags.Disabled)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, fl
 
 	return nil
 }
-

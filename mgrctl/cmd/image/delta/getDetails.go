@@ -13,8 +13,8 @@ import (
 
 type getDetailsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SourceImageId          int
-	TargetImageId          int
+	SourceImageId         int
+	TargetImageId         int
 }
 
 func getDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func getDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getDetails(globalFlags *types.GlobalFlags, flags *getDetailsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := delta.Delta(&flags.ConnectionDetails, flags.SourceImageId, flags.TargetImageId)
+	res, err := delta.Delta(&flags.ConnectionDetails, flags.SourceImageId, flags.TargetImageId)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := delta.Delta(&flags.ConnectionDetails, flags.SourceImageId, flags.Tar
 
 	return nil
 }
-

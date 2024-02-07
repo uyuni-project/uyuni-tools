@@ -13,7 +13,7 @@ import (
 
 type listFailedSystemsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ActionId          int
+	ActionId              int
 }
 
 func listFailedSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listFailedSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listFailedSystems(globalFlags *types.GlobalFlags, flags *listFailedSystemsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionId)
+	res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionId)
 
 	return nil
 }
-

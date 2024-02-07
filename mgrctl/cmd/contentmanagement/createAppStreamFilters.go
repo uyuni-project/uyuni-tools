@@ -13,7 +13,7 @@ import (
 
 type createAppStreamFiltersFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Prefix          string
+	Prefix                string
 	ChannelLabel          string
 	ProjectLabel          string
 }
@@ -37,7 +37,7 @@ func createAppStreamFiltersCommand(globalFlags *types.GlobalFlags) *cobra.Comman
 
 func createAppStreamFilters(globalFlags *types.GlobalFlags, flags *createAppStreamFiltersFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.Prefix, flags.ChannelLabel, flags.ProjectLabel)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.Prefix, flags.ChannelLabel, flags.ProjectLabel)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.
 
 	return nil
 }
-

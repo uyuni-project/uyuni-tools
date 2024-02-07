@@ -12,9 +12,9 @@ import (
 )
 
 type deleteCalendarFlags struct {
-	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
-	CancelScheduledActions          bool
+	api.ConnectionDetails  `mapstructure:"api"`
+	Label                  string
+	CancelScheduledActions bool
 }
 
 func deleteCalendarCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func deleteCalendarCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func deleteCalendar(globalFlags *types.GlobalFlags, flags *deleteCalendarFlags, cmd *cobra.Command, args []string) error {
 
-res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Label, flags.CancelScheduledActions)
+	res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Label, flags.CancelScheduledActions)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Label, flags
 
 	return nil
 }
-

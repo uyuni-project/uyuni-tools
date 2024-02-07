@@ -13,7 +13,7 @@ import (
 
 type getApiNamespaceCallListFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Namespace          string
+	Namespace             string
 }
 
 func getApiNamespaceCallListCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getApiNamespaceCallListCommand(globalFlags *types.GlobalFlags) *cobra.Comma
 
 func getApiNamespaceCallList(globalFlags *types.GlobalFlags, flags *getApiNamespaceCallListFlags, cmd *cobra.Command, args []string) error {
 
-res, err := api.Api(&flags.ConnectionDetails, flags.Namespace)
+	res, err := api.Api(&flags.ConnectionDetails, flags.Namespace)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := api.Api(&flags.ConnectionDetails, flags.Namespace)
 
 	return nil
 }
-

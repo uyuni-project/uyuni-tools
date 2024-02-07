@@ -14,10 +14,10 @@ import (
 type createEnvironmentFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ProjectLabel          string
-	PredecessorLabel          string
-	EnvLabel          string
-	Name          string
-	Description          string
+	PredecessorLabel      string
+	EnvLabel              string
+	Name                  string
+	Description           string
 }
 
 func createEnvironmentCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -41,7 +41,7 @@ func createEnvironmentCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func createEnvironment(globalFlags *types.GlobalFlags, flags *createEnvironmentFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.PredecessorLabel, flags.EnvLabel, flags.Name, flags.Description)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.PredecessorLabel, flags.EnvLabel, flags.Name, flags.Description)
 	if err != nil {
 		return err
 	}
@@ -50,4 +50,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.
 
 	return nil
 }
-

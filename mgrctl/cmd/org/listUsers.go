@@ -13,7 +13,7 @@ import (
 
 type listUsersFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	OrgId          int
+	OrgId                 int
 }
 
 func listUsersCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listUsersCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listUsers(globalFlags *types.GlobalFlags, flags *listUsersFlags, cmd *cobra.Command, args []string) error {
 
-res, err := org.Org(&flags.ConnectionDetails, flags.OrgId)
+	res, err := org.Org(&flags.ConnectionDetails, flags.OrgId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := org.Org(&flags.ConnectionDetails, flags.OrgId)
 
 	return nil
 }
-

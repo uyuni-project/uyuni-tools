@@ -13,10 +13,10 @@ import (
 
 type addImageFileFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ImageId          int
-	File          string
-	Type          string
-	External          bool
+	ImageId               int
+	File                  string
+	Type                  string
+	External              bool
 }
 
 func addImageFileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -39,7 +39,7 @@ func addImageFileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addImageFile(globalFlags *types.GlobalFlags, flags *addImageFileFlags, cmd *cobra.Command, args []string) error {
 
-res, err := image.Image(&flags.ConnectionDetails, flags.ImageId, flags.File, flags.Type, flags.External)
+	res, err := image.Image(&flags.ConnectionDetails, flags.ImageId, flags.File, flags.Type, flags.External)
 	if err != nil {
 		return err
 	}
@@ -48,4 +48,3 @@ res, err := image.Image(&flags.ConnectionDetails, flags.ImageId, flags.File, fla
 
 	return nil
 }
-

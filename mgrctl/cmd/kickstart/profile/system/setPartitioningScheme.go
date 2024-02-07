@@ -13,7 +13,7 @@ import (
 
 type setPartitioningSchemeFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
+	KsLabel               string
 }
 
 func setPartitioningSchemeCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func setPartitioningSchemeCommand(globalFlags *types.GlobalFlags) *cobra.Command
 
 func setPartitioningScheme(globalFlags *types.GlobalFlags, flags *setPartitioningSchemeFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
+	res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
 
 	return nil
 }
-

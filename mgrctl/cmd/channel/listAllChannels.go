@@ -25,13 +25,12 @@ func listAllChannelsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listAllChannels(globalFlags *types.GlobalFlags, flags *listAllChannelsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := channel.Channel(&flags.ConnectionDetails)
+	res, err := channel.Channel(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := channel.Channel(&flags.ConnectionDetails)
 
 	return nil
 }
-

@@ -13,8 +13,8 @@ import (
 
 type comparePackagesFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid1          int
-	Sid2          int
+	Sid1                  int
+	Sid2                  int
 }
 
 func comparePackagesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func comparePackagesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func comparePackages(globalFlags *types.GlobalFlags, flags *comparePackagesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid1, flags.Sid2)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid1, flags.Sid2)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid1, flags.Sid2)
 
 	return nil
 }
-

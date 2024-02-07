@@ -25,13 +25,12 @@ func removeChannelsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func removeChannels(globalFlags *types.GlobalFlags, flags *removeChannelsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := config.Config(&flags.ConnectionDetails)
+	res, err := config.Config(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := config.Config(&flags.ConnectionDetails)
 
 	return nil
 }
-

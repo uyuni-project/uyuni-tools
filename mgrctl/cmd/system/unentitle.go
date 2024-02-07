@@ -13,7 +13,7 @@ import (
 
 type unentitleFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ClientCert          string
+	ClientCert            string
 }
 
 func unentitleCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func unentitleCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func unentitle(globalFlags *types.GlobalFlags, flags *unentitleFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.ClientCert)
+	res, err := system.System(&flags.ConnectionDetails, flags.ClientCert)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.ClientCert)
 
 	return nil
 }
-

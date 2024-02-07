@@ -13,8 +13,8 @@ import (
 
 type setProfileNameFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	Name          string
+	Sid                   int
+	Name                  string
 }
 
 func setProfileNameCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setProfileNameCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setProfileName(globalFlags *types.GlobalFlags, flags *setProfileNameFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Name)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Name)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Name)
 
 	return nil
 }
-

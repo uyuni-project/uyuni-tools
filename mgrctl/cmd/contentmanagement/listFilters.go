@@ -25,13 +25,12 @@ func listFiltersCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listFilters(globalFlags *types.GlobalFlags, flags *listFiltersFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails)
 
 	return nil
 }
-

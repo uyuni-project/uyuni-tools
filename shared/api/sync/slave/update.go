@@ -16,10 +16,10 @@ func Update(cnxDetails *api.ConnectionDetails, SlaveId int, SlaveFqdn string, Is
 	}
 
 	data := map[string]interface{}{
-		"slaveId":       SlaveId,
-		"slaveFqdn":       SlaveFqdn,
-		"isEnabled":       IsEnabled,
-		"allowAllOrgs":       AllowAllOrgs,
+		"slaveId":      SlaveId,
+		"slaveFqdn":    SlaveFqdn,
+		"isEnabled":    IsEnabled,
+		"allowAllOrgs": AllowAllOrgs,
 	}
 
 	res, err := api.Post[types.IssSlave](client, "sync/slave", data)

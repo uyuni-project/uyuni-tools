@@ -13,8 +13,8 @@ import (
 
 type getStatusFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	Name          string
+	Sid                   int
+	Name                  string
 }
 
 func getStatusCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func getStatusCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getStatus(globalFlags *types.GlobalFlags, flags *getStatusFlags, cmd *cobra.Command, args []string) error {
 
-res, err := powermanagement.Powermanagement(&flags.ConnectionDetails, flags.Sid, flags.Name)
+	res, err := powermanagement.Powermanagement(&flags.ConnectionDetails, flags.Sid, flags.Name)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := powermanagement.Powermanagement(&flags.ConnectionDetails, flags.Sid,
 
 	return nil
 }
-

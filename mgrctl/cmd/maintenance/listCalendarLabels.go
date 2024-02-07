@@ -25,13 +25,12 @@ func listCalendarLabelsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listCalendarLabels(globalFlags *types.GlobalFlags, flags *listCalendarLabelsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := maintenance.Maintenance(&flags.ConnectionDetails)
+	res, err := maintenance.Maintenance(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := maintenance.Maintenance(&flags.ConnectionDetails)
 
 	return nil
 }
-

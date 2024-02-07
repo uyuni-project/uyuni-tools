@@ -1,18 +1,6 @@
-
-
-
-
-
-
-
-
-
-
-
-
 package types
 
 type OrgUserExtGroup struct {
-    Name string `mapstructure:"name"`
-    Groups []string `mapstructure:"groups"`
-} 
+	Name   string   `mapstructure:"name"`
+	Groups []string `mapstructure:"groups"`
+}

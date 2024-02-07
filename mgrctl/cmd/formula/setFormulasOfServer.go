@@ -13,8 +13,8 @@ import (
 
 type setFormulasOfServerFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	Formulas          []string
+	Sid                   int
+	Formulas              []string
 }
 
 func setFormulasOfServerCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setFormulasOfServerCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setFormulasOfServer(globalFlags *types.GlobalFlags, flags *setFormulasOfServerFlags, cmd *cobra.Command, args []string) error {
 
-res, err := formula.Formula(&flags.ConnectionDetails, flags.Sid, flags.Formulas)
+	res, err := formula.Formula(&flags.ConnectionDetails, flags.Sid, flags.Formulas)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := formula.Formula(&flags.ConnectionDetails, flags.Sid, flags.Formulas)
 
 	return nil
 }
-

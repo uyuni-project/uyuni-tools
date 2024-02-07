@@ -13,7 +13,7 @@ import (
 
 type deviceIdFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SearchTerm          string
+	SearchTerm            string
 }
 
 func deviceIdCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func deviceIdCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func deviceId(globalFlags *types.GlobalFlags, flags *deviceIdFlags, cmd *cobra.Command, args []string) error {
 
-res, err := search.Search(&flags.ConnectionDetails, flags.SearchTerm)
+	res, err := search.Search(&flags.ConnectionDetails, flags.SearchTerm)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := search.Search(&flags.ConnectionDetails, flags.SearchTerm)
 
 	return nil
 }
-

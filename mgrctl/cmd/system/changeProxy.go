@@ -13,8 +13,8 @@ import (
 
 type changeProxyFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sids          []int
-	ProxyId          int
+	Sids                  []int
+	ProxyId               int
 }
 
 func changeProxyCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func changeProxyCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func changeProxy(globalFlags *types.GlobalFlags, flags *changeProxyFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sids, flags.ProxyId)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sids, flags.ProxyId)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sids, flags.ProxyId)
 
 	return nil
 }
-

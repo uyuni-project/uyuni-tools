@@ -12,13 +12,13 @@ import (
 )
 
 type createProfileFlags struct {
-	api.ConnectionDetails `mapstructure:"api"`
-	ProfileLabel          string
-	VirtualizationType          string
-	KickstartableTreeLabel          string
+	api.ConnectionDetails  `mapstructure:"api"`
+	ProfileLabel           string
+	VirtualizationType     string
+	KickstartableTreeLabel string
 	KickstartHost          string
-	RootPassword          string
-	UpdateType          string
+	RootPassword           string
+	UpdateType             string
 }
 
 func createProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -43,7 +43,7 @@ func createProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func createProfile(globalFlags *types.GlobalFlags, flags *createProfileFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, flags.VirtualizationType, flags.KickstartableTreeLabel, flags.KickstartHost, flags.RootPassword, flags.UpdateType)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, flags.VirtualizationType, flags.KickstartableTreeLabel, flags.KickstartHost, flags.RootPassword, flags.UpdateType)
 	if err != nil {
 		return err
 	}
@@ -52,4 +52,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, fl
 
 	return nil
 }
-

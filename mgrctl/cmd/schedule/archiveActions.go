@@ -13,7 +13,7 @@ import (
 
 type archiveActionsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ActionIds          []int
+	ActionIds             []int
 }
 
 func archiveActionsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func archiveActionsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func archiveActions(globalFlags *types.GlobalFlags, flags *archiveActionsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionIds)
+	res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionIds)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionIds)
 
 	return nil
 }
-

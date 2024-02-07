@@ -13,7 +13,7 @@ import (
 
 type applyChannelStateFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sids          []int
+	Sids                  []int
 }
 
 func applyChannelStateCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func applyChannelStateCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func applyChannelState(globalFlags *types.GlobalFlags, flags *applyChannelStateFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.Sids)
+	res, err := software.Software(&flags.ConnectionDetails, flags.Sids)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.Sids)
 
 	return nil
 }
-

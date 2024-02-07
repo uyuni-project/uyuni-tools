@@ -13,8 +13,8 @@ import (
 
 type deleteFilesFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	Paths          []string
+	Sid                   int
+	Paths                 []string
 }
 
 func deleteFilesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func deleteFilesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func deleteFiles(globalFlags *types.GlobalFlags, flags *deleteFilesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := config.Config(&flags.ConnectionDetails, flags.Sid, flags.Paths)
+	res, err := config.Config(&flags.ConnectionDetails, flags.Sid, flags.Paths)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := config.Config(&flags.ConnectionDetails, flags.Sid, flags.Paths)
 
 	return nil
 }
-

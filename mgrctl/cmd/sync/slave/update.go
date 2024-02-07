@@ -13,9 +13,9 @@ import (
 
 type updateFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SlaveId          int
-	SlaveFqdn          string
-	IsEnabled          bool
+	SlaveId               int
+	SlaveFqdn             string
+	IsEnabled             bool
 	AllowAllOrgs          bool
 }
 
@@ -39,7 +39,7 @@ func updateCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func update(globalFlags *types.GlobalFlags, flags *updateFlags, cmd *cobra.Command, args []string) error {
 
-res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveId, flags.SlaveFqdn, flags.IsEnabled, flags.AllowAllOrgs)
+	res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveId, flags.SlaveFqdn, flags.IsEnabled, flags.AllowAllOrgs)
 	if err != nil {
 		return err
 	}
@@ -48,4 +48,3 @@ res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveId, flags.SlaveFqdn
 
 	return nil
 }
-

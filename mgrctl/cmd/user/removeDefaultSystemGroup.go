@@ -5,16 +5,16 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
-	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
+	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type removeDefaultSystemGroupFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Login          string
-	SgName          string
+	Login                 string
+	SgName                string
 }
 
 func removeDefaultSystemGroupCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func removeDefaultSystemGroupCommand(globalFlags *types.GlobalFlags) *cobra.Comm
 
 func removeDefaultSystemGroup(globalFlags *types.GlobalFlags, flags *removeDefaultSystemGroupFlags, cmd *cobra.Command, args []string) error {
 
-res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.SgName)
+	res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.SgName)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.SgName)
 
 	return nil
 }
-

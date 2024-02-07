@@ -13,8 +13,8 @@ import (
 
 type rescheduleActionsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ActionIds          []int
-	OnlyFailed          bool
+	ActionIds             []int
+	OnlyFailed            bool
 }
 
 func rescheduleActionsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func rescheduleActionsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func rescheduleActions(globalFlags *types.GlobalFlags, flags *rescheduleActionsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionIds, flags.OnlyFailed)
+	res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionIds, flags.OnlyFailed)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := schedule.Schedule(&flags.ConnectionDetails, flags.ActionIds, flags.O
 
 	return nil
 }
-

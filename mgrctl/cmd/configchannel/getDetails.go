@@ -13,8 +13,8 @@ import (
 
 type getDetailsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
-	Id          int
+	Label                 string
+	Id                    int
 }
 
 func getDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func getDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getDetails(globalFlags *types.GlobalFlags, flags *getDetailsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label, flags.Id)
+	res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label, flags.Id)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label, f
 
 	return nil
 }
-

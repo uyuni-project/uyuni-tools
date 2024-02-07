@@ -33,7 +33,7 @@ func listSubscribedSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command
 
 func listSubscribedSystems(globalFlags *types.GlobalFlags, flags *listSubscribedSystemsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel)
+	res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel)
 
 	return nil
 }
-

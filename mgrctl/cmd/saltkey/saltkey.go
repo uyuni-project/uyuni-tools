@@ -1,4 +1,3 @@
-
 package saltkey
 
 import (

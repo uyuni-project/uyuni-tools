@@ -33,7 +33,7 @@ func getOrgSharingCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getOrgSharing(globalFlags *types.GlobalFlags, flags *getOrgSharingFlags, cmd *cobra.Command, args []string) error {
 
-res, err := access.Access(&flags.ConnectionDetails, flags.ChannelLabel)
+	res, err := access.Access(&flags.ConnectionDetails, flags.ChannelLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := access.Access(&flags.ConnectionDetails, flags.ChannelLabel)
 
 	return nil
 }
-

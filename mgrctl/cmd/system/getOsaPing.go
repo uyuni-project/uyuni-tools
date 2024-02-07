@@ -14,7 +14,7 @@ import (
 type getOsaPingFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	LoggedInUser          User
-	Sid          int
+	Sid                   int
 }
 
 func getOsaPingCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func getOsaPingCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getOsaPing(globalFlags *types.GlobalFlags, flags *getOsaPingFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.LoggedInUser, flags.Sid)
+	res, err := system.System(&flags.ConnectionDetails, flags.LoggedInUser, flags.Sid)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.LoggedInUser, flags.Si
 
 	return nil
 }
-

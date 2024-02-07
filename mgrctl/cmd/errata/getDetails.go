@@ -33,7 +33,7 @@ func getDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getDetails(globalFlags *types.GlobalFlags, flags *getDetailsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := errata.Errata(&flags.ConnectionDetails, flags.AdvisoryName)
+	res, err := errata.Errata(&flags.ConnectionDetails, flags.AdvisoryName)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := errata.Errata(&flags.ConnectionDetails, flags.AdvisoryName)
 
 	return nil
 }
-

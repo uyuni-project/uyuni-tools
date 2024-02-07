@@ -13,8 +13,8 @@ import (
 
 type renameChainFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	PreviousLabel          string
-	NewLabel          string
+	PreviousLabel         string
+	NewLabel              string
 }
 
 func renameChainCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func renameChainCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func renameChain(globalFlags *types.GlobalFlags, flags *renameChainFlags, cmd *cobra.Command, args []string) error {
 
-res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.PreviousLabel, flags.NewLabel)
+	res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.PreviousLabel, flags.NewLabel)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.PreviousLabe
 
 	return nil
 }
-

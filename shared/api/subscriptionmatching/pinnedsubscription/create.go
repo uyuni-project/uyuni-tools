@@ -16,8 +16,8 @@ func Create(cnxDetails *api.ConnectionDetails, SubscriptionId int, Sid int) (*ty
 	}
 
 	data := map[string]interface{}{
-		"subscriptionId":       SubscriptionId,
-		"sid":       Sid,
+		"subscriptionId": SubscriptionId,
+		"sid":            Sid,
 	}
 
 	res, err := api.Post[types.PinnedSubscription](client, "subscriptionmatching/pinnedsubscription", data)

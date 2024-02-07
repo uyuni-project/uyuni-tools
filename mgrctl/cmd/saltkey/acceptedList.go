@@ -25,13 +25,12 @@ func acceptedListCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func acceptedList(globalFlags *types.GlobalFlags, flags *acceptedListFlags, cmd *cobra.Command, args []string) error {
 
-res, err := saltkey.Saltkey(&flags.ConnectionDetails)
+	res, err := saltkey.Saltkey(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := saltkey.Saltkey(&flags.ConnectionDetails)
 
 	return nil
 }
-

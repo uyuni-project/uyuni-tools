@@ -13,7 +13,7 @@ import (
 
 type getDetailsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	TreeLabel          string
+	TreeLabel             string
 }
 
 func getDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getDetails(globalFlags *types.GlobalFlags, flags *getDetailsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := tree.Tree(&flags.ConnectionDetails, flags.TreeLabel)
+	res, err := tree.Tree(&flags.ConnectionDetails, flags.TreeLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := tree.Tree(&flags.ConnectionDetails, flags.TreeLabel)
 
 	return nil
 }
-

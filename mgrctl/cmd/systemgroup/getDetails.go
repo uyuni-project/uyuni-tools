@@ -13,8 +13,8 @@ import (
 
 type getDetailsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SystemGroupId          int
-	SystemGroupName          string
+	SystemGroupId         int
+	SystemGroupName       string
 }
 
 func getDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func getDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getDetails(globalFlags *types.GlobalFlags, flags *getDetailsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupId, flags.SystemGroupName)
+	res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupId, flags.SystemGroupName)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupI
 
 	return nil
 }
-

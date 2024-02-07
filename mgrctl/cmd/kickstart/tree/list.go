@@ -33,7 +33,7 @@ func listCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func list(globalFlags *types.GlobalFlags, flags *listFlags, cmd *cobra.Command, args []string) error {
 
-res, err := tree.Tree(&flags.ConnectionDetails, flags.ChannelLabel)
+	res, err := tree.Tree(&flags.ConnectionDetails, flags.ChannelLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := tree.Tree(&flags.ConnectionDetails, flags.ChannelLabel)
 
 	return nil
 }
-

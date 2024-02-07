@@ -14,8 +14,8 @@ import (
 type detachSourceFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ProjectLabel          string
-	SourceType          string
-	SourceLabel          string
+	SourceType            string
+	SourceLabel           string
 }
 
 func detachSourceCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func detachSourceCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func detachSource(globalFlags *types.GlobalFlags, flags *detachSourceFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.SourceType, flags.SourceLabel)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.SourceType, flags.SourceLabel)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.
 
 	return nil
 }
-

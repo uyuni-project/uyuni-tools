@@ -13,8 +13,8 @@ import (
 
 type getGroupFormulaDataFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	GroupId          int
-	FormulaName          string
+	GroupId               int
+	FormulaName           string
 }
 
 func getGroupFormulaDataCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func getGroupFormulaDataCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getGroupFormulaData(globalFlags *types.GlobalFlags, flags *getGroupFormulaDataFlags, cmd *cobra.Command, args []string) error {
 
-res, err := formula.Formula(&flags.ConnectionDetails, flags.GroupId, flags.FormulaName)
+	res, err := formula.Formula(&flags.ConnectionDetails, flags.GroupId, flags.FormulaName)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := formula.Formula(&flags.ConnectionDetails, flags.GroupId, flags.Formu
 
 	return nil
 }
-

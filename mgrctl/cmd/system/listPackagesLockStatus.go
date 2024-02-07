@@ -13,7 +13,7 @@ import (
 
 type listPackagesLockStatusFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          string
+	Sid                   string
 }
 
 func listPackagesLockStatusCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listPackagesLockStatusCommand(globalFlags *types.GlobalFlags) *cobra.Comman
 
 func listPackagesLockStatus(globalFlags *types.GlobalFlags, flags *listPackagesLockStatusFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid)
 
 	return nil
 }
-

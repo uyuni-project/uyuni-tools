@@ -16,7 +16,7 @@ func GetDetails(cnxDetails *api.ConnectionDetails, Host string) (*types.PaygSshD
 	}
 
 	data := map[string]interface{}{
-		"host":       Host,
+		"host": Host,
 	}
 
 	res, err := api.Post[types.PaygSshData](client, "admin", data)

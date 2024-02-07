@@ -16,7 +16,7 @@ func WhoRegistered(cnxDetails *api.ConnectionDetails, Sid int) (*types.User, err
 	}
 
 	data := map[string]interface{}{
-		"sid":       Sid,
+		"sid": Sid,
 	}
 
 	res, err := api.Post[types.User](client, "system", data)

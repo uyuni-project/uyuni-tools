@@ -13,8 +13,8 @@ import (
 
 type removeActivationKeyFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
-	Key          string
+	KsLabel               string
+	Key                   string
 }
 
 func removeActivationKeyCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func removeActivationKeyCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func removeActivationKey(globalFlags *types.GlobalFlags, flags *removeActivationKeyFlags, cmd *cobra.Command, args []string) error {
 
-res, err := keys.Keys(&flags.ConnectionDetails, flags.KsLabel, flags.Key)
+	res, err := keys.Keys(&flags.ConnectionDetails, flags.KsLabel, flags.Key)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := keys.Keys(&flags.ConnectionDetails, flags.KsLabel, flags.Key)
 
 	return nil
 }
-

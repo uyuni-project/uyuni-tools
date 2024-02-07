@@ -13,10 +13,10 @@ import (
 
 type listSystemsWithPackageFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Pid          int
-	Name          string
-	Version          string
-	Release          string
+	Pid                   int
+	Name                  string
+	Version               string
+	Release               string
 }
 
 func listSystemsWithPackageCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -39,7 +39,7 @@ func listSystemsWithPackageCommand(globalFlags *types.GlobalFlags) *cobra.Comman
 
 func listSystemsWithPackage(globalFlags *types.GlobalFlags, flags *listSystemsWithPackageFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Pid, flags.Name, flags.Version, flags.Release)
+	res, err := system.System(&flags.ConnectionDetails, flags.Pid, flags.Name, flags.Version, flags.Release)
 	if err != nil {
 		return err
 	}
@@ -48,4 +48,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Pid, flags.Name, flags
 
 	return nil
 }
-

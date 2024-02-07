@@ -16,8 +16,8 @@ func AttachFilter(cnxDetails *api.ConnectionDetails, ProjectLabel string, Filter
 	}
 
 	data := map[string]interface{}{
-		"projectLabel":       ProjectLabel,
-		"filterId":       FilterId,
+		"projectLabel": ProjectLabel,
+		"filterId":     FilterId,
 	}
 
 	res, err := api.Post[types.ContentFilter](client, "contentmanagement", data)

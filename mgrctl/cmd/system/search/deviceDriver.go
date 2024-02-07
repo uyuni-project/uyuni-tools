@@ -13,7 +13,7 @@ import (
 
 type deviceDriverFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SearchTerm          string
+	SearchTerm            string
 }
 
 func deviceDriverCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func deviceDriverCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func deviceDriver(globalFlags *types.GlobalFlags, flags *deviceDriverFlags, cmd *cobra.Command, args []string) error {
 
-res, err := search.Search(&flags.ConnectionDetails, flags.SearchTerm)
+	res, err := search.Search(&flags.ConnectionDetails, flags.SearchTerm)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := search.Search(&flags.ConnectionDetails, flags.SearchTerm)
 
 	return nil
 }
-

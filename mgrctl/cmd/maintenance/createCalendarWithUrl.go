@@ -13,8 +13,8 @@ import (
 
 type createCalendarWithUrlFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
-	Url          string
+	Label                 string
+	Url                   string
 }
 
 func createCalendarWithUrlCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func createCalendarWithUrlCommand(globalFlags *types.GlobalFlags) *cobra.Command
 
 func createCalendarWithUrl(globalFlags *types.GlobalFlags, flags *createCalendarWithUrlFlags, cmd *cobra.Command, args []string) error {
 
-res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Label, flags.Url)
+	res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Label, flags.Url)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Label, flags
 
 	return nil
 }
-

@@ -16,7 +16,7 @@ func Create(cnxDetails *api.ConnectionDetails, Label string) (*types.IssMaster, 
 	}
 
 	data := map[string]interface{}{
-		"label":       Label,
+		"label": Label,
 	}
 
 	res, err := api.Post[types.IssMaster](client, "sync/master", data)

@@ -16,9 +16,9 @@ func CreateProject(cnxDetails *api.ConnectionDetails, ProjectLabel string, Name 
 	}
 
 	data := map[string]interface{}{
-		"projectLabel":       ProjectLabel,
-		"name":       Name,
-		"description":       Description,
+		"projectLabel": ProjectLabel,
+		"name":         Name,
+		"description":  Description,
 	}
 
 	res, err := api.Post[types.ContentProject](client, "contentmanagement", data)

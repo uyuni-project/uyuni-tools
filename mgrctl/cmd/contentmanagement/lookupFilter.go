@@ -13,7 +13,7 @@ import (
 
 type lookupFilterFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	FilterId          int
+	FilterId              int
 }
 
 func lookupFilterCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func lookupFilterCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func lookupFilter(globalFlags *types.GlobalFlags, flags *lookupFilterFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.FilterId)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.FilterId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.
 
 	return nil
 }
-

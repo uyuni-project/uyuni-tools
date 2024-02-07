@@ -25,13 +25,12 @@ func listProductsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listProducts(globalFlags *types.GlobalFlags, flags *listProductsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := content.Content(&flags.ConnectionDetails)
+	res, err := content.Content(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := content.Content(&flags.ConnectionDetails)
 
 	return nil
 }
-

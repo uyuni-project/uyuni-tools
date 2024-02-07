@@ -16,8 +16,8 @@ func Update(cnxDetails *api.ConnectionDetails, MasterId int, Label string) (*typ
 	}
 
 	data := map[string]interface{}{
-		"masterId":       MasterId,
-		"label":       Label,
+		"masterId": MasterId,
+		"label":    Label,
 	}
 
 	res, err := api.Post[types.IssMaster](client, "sync/master", data)

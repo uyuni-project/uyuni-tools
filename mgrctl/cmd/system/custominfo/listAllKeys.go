@@ -25,13 +25,12 @@ func listAllKeysCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listAllKeys(globalFlags *types.GlobalFlags, flags *listAllKeysFlags, cmd *cobra.Command, args []string) error {
 
-res, err := custominfo.Custominfo(&flags.ConnectionDetails)
+	res, err := custominfo.Custominfo(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := custominfo.Custominfo(&flags.ConnectionDetails)
 
 	return nil
 }
-

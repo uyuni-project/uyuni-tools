@@ -16,10 +16,10 @@ func AttachSource(cnxDetails *api.ConnectionDetails, ProjectLabel string, Source
 	}
 
 	data := map[string]interface{}{
-		"projectLabel":       ProjectLabel,
-		"sourceType":       SourceType,
-		"sourceLabel":       SourceLabel,
-		"sourcePosition":       SourcePosition,
+		"projectLabel":   ProjectLabel,
+		"sourceType":     SourceType,
+		"sourceLabel":    SourceLabel,
+		"sourcePosition": SourcePosition,
 	}
 
 	res, err := api.Post[types.ContentProjectSource](client, "contentmanagement", data)

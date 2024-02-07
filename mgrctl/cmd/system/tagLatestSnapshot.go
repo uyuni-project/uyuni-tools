@@ -13,8 +13,8 @@ import (
 
 type tagLatestSnapshotFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	TagName          string
+	Sid                   int
+	TagName               string
 }
 
 func tagLatestSnapshotCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func tagLatestSnapshotCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func tagLatestSnapshot(globalFlags *types.GlobalFlags, flags *tagLatestSnapshotFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.TagName)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.TagName)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.TagName)
 
 	return nil
 }
-

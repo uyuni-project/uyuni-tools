@@ -13,7 +13,7 @@ import (
 
 type listFilesFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
+	Sid                   int
 }
 
 func listFilesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listFilesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listFiles(globalFlags *types.GlobalFlags, flags *listFilesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := config.Config(&flags.ConnectionDetails, flags.Sid)
+	res, err := config.Config(&flags.ConnectionDetails, flags.Sid)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := config.Config(&flags.ConnectionDetails, flags.Sid)
 
 	return nil
 }
-

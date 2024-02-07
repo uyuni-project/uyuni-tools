@@ -13,8 +13,8 @@ import (
 
 type deleteNoteFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	NoteId          int
+	Sid                   int
+	NoteId                int
 }
 
 func deleteNoteCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func deleteNoteCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func deleteNote(globalFlags *types.GlobalFlags, flags *deleteNoteFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.NoteId)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.NoteId)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.NoteId)
 
 	return nil
 }
-

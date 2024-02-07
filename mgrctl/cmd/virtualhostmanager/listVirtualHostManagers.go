@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
-	"github.com/uyuni-project/uyuni-tools/shared/api/virtualhostmanager"
 	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
+	"github.com/uyuni-project/uyuni-tools/shared/api/virtualhostmanager"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -25,13 +25,12 @@ func listVirtualHostManagersCommand(globalFlags *types.GlobalFlags) *cobra.Comma
 		},
 	}
 
-
 	return cmd
 }
 
 func listVirtualHostManagers(globalFlags *types.GlobalFlags, flags *listVirtualHostManagersFlags, cmd *cobra.Command, args []string) error {
 
-res, err := virtualhostmanager.Virtualhostmanager(&flags.ConnectionDetails)
+	res, err := virtualhostmanager.Virtualhostmanager(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := virtualhostmanager.Virtualhostmanager(&flags.ConnectionDetails)
 
 	return nil
 }
-

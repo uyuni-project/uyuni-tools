@@ -13,8 +13,8 @@ import (
 
 type removeIpRangeFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
-	IpAddress          string
+	KsLabel               string
+	IpAddress             string
 }
 
 func removeIpRangeCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func removeIpRangeCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func removeIpRange(globalFlags *types.GlobalFlags, flags *removeIpRangeFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.IpAddress)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.IpAddress)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.IpAdd
 
 	return nil
 }
-

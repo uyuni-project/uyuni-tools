@@ -13,8 +13,8 @@ import (
 
 type updateNameFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	OrgId          int
-	Name          string
+	OrgId                 int
+	Name                  string
 }
 
 func updateNameCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func updateNameCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func updateName(globalFlags *types.GlobalFlags, flags *updateNameFlags, cmd *cobra.Command, args []string) error {
 
-res, err := org.Org(&flags.ConnectionDetails, flags.OrgId, flags.Name)
+	res, err := org.Org(&flags.ConnectionDetails, flags.OrgId, flags.Name)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := org.Org(&flags.ConnectionDetails, flags.OrgId, flags.Name)
 
 	return nil
 }
-

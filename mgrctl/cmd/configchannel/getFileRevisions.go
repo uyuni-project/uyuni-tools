@@ -13,8 +13,8 @@ import (
 
 type getFileRevisionsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
-	FilePath          string
+	Label                 string
+	FilePath              string
 }
 
 func getFileRevisionsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func getFileRevisionsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getFileRevisions(globalFlags *types.GlobalFlags, flags *getFileRevisionsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label, flags.FilePath)
+	res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label, flags.FilePath)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label, f
 
 	return nil
 }
-

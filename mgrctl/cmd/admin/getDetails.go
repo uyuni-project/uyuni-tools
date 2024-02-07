@@ -13,7 +13,7 @@ import (
 
 type getDetailsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Host          string
+	Host                  string
 }
 
 func getDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getDetails(globalFlags *types.GlobalFlags, flags *getDetailsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := admin.Admin(&flags.ConnectionDetails, flags.Host)
+	res, err := admin.Admin(&flags.ConnectionDetails, flags.Host)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := admin.Admin(&flags.ConnectionDetails, flags.Host)
 
 	return nil
 }
-

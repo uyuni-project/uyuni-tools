@@ -13,7 +13,7 @@ import (
 
 type removeSourcePackageFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Psid          int
+	Psid                  int
 }
 
 func removeSourcePackageCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func removeSourcePackageCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func removeSourcePackage(globalFlags *types.GlobalFlags, flags *removeSourcePackageFlags, cmd *cobra.Command, args []string) error {
 
-res, err := packages.Packages(&flags.ConnectionDetails, flags.Psid)
+	res, err := packages.Packages(&flags.ConnectionDetails, flags.Psid)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := packages.Packages(&flags.ConnectionDetails, flags.Psid)
 
 	return nil
 }
-

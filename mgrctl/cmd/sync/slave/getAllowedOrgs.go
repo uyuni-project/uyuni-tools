@@ -13,7 +13,7 @@ import (
 
 type getAllowedOrgsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SlaveId          int
+	SlaveId               int
 }
 
 func getAllowedOrgsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getAllowedOrgsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getAllowedOrgs(globalFlags *types.GlobalFlags, flags *getAllowedOrgsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveId)
+	res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveId)
 
 	return nil
 }
-

@@ -25,13 +25,12 @@ func listAllCompletedActionsCommand(globalFlags *types.GlobalFlags) *cobra.Comma
 		},
 	}
 
-
 	return cmd
 }
 
 func listAllCompletedActions(globalFlags *types.GlobalFlags, flags *listAllCompletedActionsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := schedule.Schedule(&flags.ConnectionDetails)
+	res, err := schedule.Schedule(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := schedule.Schedule(&flags.ConnectionDetails)
 
 	return nil
 }
-

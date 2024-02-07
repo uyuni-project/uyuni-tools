@@ -14,7 +14,7 @@ import (
 type setGloballySubscribableFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ChannelLabel          string
-	Value          bool
+	Value                 bool
 }
 
 func setGloballySubscribableCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setGloballySubscribableCommand(globalFlags *types.GlobalFlags) *cobra.Comma
 
 func setGloballySubscribable(globalFlags *types.GlobalFlags, flags *setGloballySubscribableFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.Value)
+	res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.Value)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flag
 
 	return nil
 }
-

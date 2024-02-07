@@ -13,7 +13,7 @@ import (
 
 type getSlaveByNameFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SlaveFqdn          string
+	SlaveFqdn             string
 }
 
 func getSlaveByNameCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getSlaveByNameCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getSlaveByName(globalFlags *types.GlobalFlags, flags *getSlaveByNameFlags, cmd *cobra.Command, args []string) error {
 
-res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveFqdn)
+	res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveFqdn)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveFqdn)
 
 	return nil
 }
-

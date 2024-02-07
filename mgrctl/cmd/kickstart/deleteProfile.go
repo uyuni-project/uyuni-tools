@@ -13,7 +13,7 @@ import (
 
 type deleteProfileFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
+	KsLabel               string
 }
 
 func deleteProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func deleteProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func deleteProfile(globalFlags *types.GlobalFlags, flags *deleteProfileFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.KsLabel)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.KsLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.KsLabel)
 
 	return nil
 }
-

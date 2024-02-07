@@ -13,14 +13,14 @@ import (
 
 type bootstrapFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Host          string
-	SshPort          int
-	SshUser          string
-	SshPassword          string
-	ActivationKey          string
-	SaltSSH          bool
-	ProxyId          int
-	ReactivationKey          string
+	Host                  string
+	SshPort               int
+	SshUser               string
+	SshPassword           string
+	ActivationKey         string
+	SaltSSH               bool
+	ProxyId               int
+	ReactivationKey       string
 }
 
 func bootstrapCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -47,7 +47,7 @@ func bootstrapCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func bootstrap(globalFlags *types.GlobalFlags, flags *bootstrapFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Host, flags.SshPort, flags.SshUser, flags.SshPassword, flags.ActivationKey, flags.SaltSSH, flags.ProxyId, flags.ReactivationKey)
+	res, err := system.System(&flags.ConnectionDetails, flags.Host, flags.SshPort, flags.SshUser, flags.SshPassword, flags.ActivationKey, flags.SaltSSH, flags.ProxyId, flags.ReactivationKey)
 	if err != nil {
 		return err
 	}
@@ -56,4 +56,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Host, flags.SshPort, f
 
 	return nil
 }
-

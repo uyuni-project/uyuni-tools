@@ -25,13 +25,12 @@ func listScheduleNamesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listScheduleNames(globalFlags *types.GlobalFlags, flags *listScheduleNamesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := maintenance.Maintenance(&flags.ConnectionDetails)
+	res, err := maintenance.Maintenance(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := maintenance.Maintenance(&flags.ConnectionDetails)
 
 	return nil
 }
-

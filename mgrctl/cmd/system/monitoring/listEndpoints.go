@@ -13,7 +13,7 @@ import (
 
 type listEndpointsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sids          []int
+	Sids                  []int
 }
 
 func listEndpointsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listEndpointsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listEndpoints(globalFlags *types.GlobalFlags, flags *listEndpointsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := monitoring.Monitoring(&flags.ConnectionDetails, flags.Sids)
+	res, err := monitoring.Monitoring(&flags.ConnectionDetails, flags.Sids)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := monitoring.Monitoring(&flags.ConnectionDetails, flags.Sids)
 
 	return nil
 }
-

@@ -12,13 +12,13 @@ import (
 )
 
 type importFileFlags struct {
-	api.ConnectionDetails `mapstructure:"api"`
-	ProfileLabel          string
-	VirtualizationType          string
-	KickstartableTreeLabel          string
-	KickstartFileContents          string
+	api.ConnectionDetails  `mapstructure:"api"`
+	ProfileLabel           string
+	VirtualizationType     string
+	KickstartableTreeLabel string
+	KickstartFileContents  string
 	KickstartHost          string
-	UpdateType          string
+	UpdateType             string
 }
 
 func importFileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -43,7 +43,7 @@ func importFileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func importFile(globalFlags *types.GlobalFlags, flags *importFileFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, flags.VirtualizationType, flags.KickstartableTreeLabel, flags.KickstartFileContents, flags.KickstartHost, flags.UpdateType)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, flags.VirtualizationType, flags.KickstartableTreeLabel, flags.KickstartFileContents, flags.KickstartHost, flags.UpdateType)
 	if err != nil {
 		return err
 	}
@@ -52,4 +52,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, fl
 
 	return nil
 }
-

@@ -13,7 +13,7 @@ import (
 
 type listMapsForOrgFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	OrgId          int
+	OrgId                 int
 }
 
 func listMapsForOrgCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listMapsForOrgCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listMapsForOrg(globalFlags *types.GlobalFlags, flags *listMapsForOrgFlags, cmd *cobra.Command, args []string) error {
 
-res, err := distchannel.Distchannel(&flags.ConnectionDetails, flags.OrgId)
+	res, err := distchannel.Distchannel(&flags.ConnectionDetails, flags.OrgId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := distchannel.Distchannel(&flags.ConnectionDetails, flags.OrgId)
 
 	return nil
 }
-

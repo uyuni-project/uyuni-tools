@@ -25,13 +25,12 @@ func getSystemCurrencyMultipliersCommand(globalFlags *types.GlobalFlags) *cobra.
 		},
 	}
 
-
 	return cmd
 }
 
 func getSystemCurrencyMultipliers(globalFlags *types.GlobalFlags, flags *getSystemCurrencyMultipliersFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails)
+	res, err := system.System(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := system.System(&flags.ConnectionDetails)
 
 	return nil
 }
-

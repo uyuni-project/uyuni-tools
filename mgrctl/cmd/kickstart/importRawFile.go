@@ -12,12 +12,12 @@ import (
 )
 
 type importRawFileFlags struct {
-	api.ConnectionDetails `mapstructure:"api"`
-	ProfileLabel          string
-	VirtualizationType          string
-	KickstartableTreeLabel          string
-	KickstartFileContents          string
-	UpdateType          string
+	api.ConnectionDetails  `mapstructure:"api"`
+	ProfileLabel           string
+	VirtualizationType     string
+	KickstartableTreeLabel string
+	KickstartFileContents  string
+	UpdateType             string
 }
 
 func importRawFileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -41,7 +41,7 @@ func importRawFileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func importRawFile(globalFlags *types.GlobalFlags, flags *importRawFileFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, flags.VirtualizationType, flags.KickstartableTreeLabel, flags.KickstartFileContents, flags.UpdateType)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, flags.VirtualizationType, flags.KickstartableTreeLabel, flags.KickstartFileContents, flags.UpdateType)
 	if err != nil {
 		return err
 	}
@@ -50,4 +50,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, fl
 
 	return nil
 }
-

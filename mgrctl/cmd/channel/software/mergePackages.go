@@ -13,7 +13,7 @@ import (
 
 type mergePackagesFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	MergeFromLabel          string
+	MergeFromLabel        string
 	MergeToLabel          string
 	AlignModules          bool
 }
@@ -37,7 +37,7 @@ func mergePackagesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func mergePackages(globalFlags *types.GlobalFlags, flags *mergePackagesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.MergeFromLabel, flags.MergeToLabel, flags.AlignModules)
+	res, err := software.Software(&flags.ConnectionDetails, flags.MergeFromLabel, flags.MergeToLabel, flags.AlignModules)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.MergeFromLabel, fl
 
 	return nil
 }
-

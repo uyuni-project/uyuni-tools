@@ -13,8 +13,8 @@ import (
 
 type removeScriptFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
-	ScriptId          int
+	KsLabel               string
+	ScriptId              int
 }
 
 func removeScriptCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func removeScriptCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func removeScript(globalFlags *types.GlobalFlags, flags *removeScriptFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.ScriptId)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.ScriptId)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Scrip
 
 	return nil
 }
-

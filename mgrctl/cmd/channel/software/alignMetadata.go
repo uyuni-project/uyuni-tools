@@ -13,8 +13,8 @@ import (
 
 type alignMetadataFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ChannelFromLabel          string
-	ChannelToLabel          string
+	ChannelFromLabel      string
+	ChannelToLabel        string
 	MetadataType          string
 }
 
@@ -37,7 +37,7 @@ func alignMetadataCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func alignMetadata(globalFlags *types.GlobalFlags, flags *alignMetadataFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.ChannelFromLabel, flags.ChannelToLabel, flags.MetadataType)
+	res, err := software.Software(&flags.ConnectionDetails, flags.ChannelFromLabel, flags.ChannelToLabel, flags.MetadataType)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.ChannelFromLabel, 
 
 	return nil
 }
-

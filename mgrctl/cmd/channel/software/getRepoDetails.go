@@ -13,8 +13,8 @@ import (
 
 type getRepoDetailsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	RepoLabel          string
-	Id          int
+	RepoLabel             string
+	Id                    int
 }
 
 func getRepoDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func getRepoDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getRepoDetails(globalFlags *types.GlobalFlags, flags *getRepoDetailsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.RepoLabel, flags.Id)
+	res, err := software.Software(&flags.ConnectionDetails, flags.RepoLabel, flags.Id)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.RepoLabel, flags.I
 
 	return nil
 }
-

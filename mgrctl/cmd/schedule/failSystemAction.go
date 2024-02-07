@@ -13,9 +13,9 @@ import (
 
 type failSystemActionFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	ActionId          int
-	Message          string
+	Sid                   int
+	ActionId              int
+	Message               string
 }
 
 func failSystemActionCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func failSystemActionCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func failSystemAction(globalFlags *types.GlobalFlags, flags *failSystemActionFlags, cmd *cobra.Command, args []string) error {
 
-res, err := schedule.Schedule(&flags.ConnectionDetails, flags.Sid, flags.ActionId, flags.Message)
+	res, err := schedule.Schedule(&flags.ConnectionDetails, flags.Sid, flags.ActionId, flags.Message)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := schedule.Schedule(&flags.ConnectionDetails, flags.Sid, flags.ActionI
 
 	return nil
 }
-

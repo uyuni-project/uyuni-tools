@@ -25,13 +25,12 @@ func listTypesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listTypes(globalFlags *types.GlobalFlags, flags *listTypesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := powermanagement.Powermanagement(&flags.ConnectionDetails)
+	res, err := powermanagement.Powermanagement(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := powermanagement.Powermanagement(&flags.ConnectionDetails)
 
 	return nil
 }
-

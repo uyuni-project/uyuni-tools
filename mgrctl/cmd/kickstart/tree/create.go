@@ -13,13 +13,13 @@ import (
 
 type createFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	TreeLabel          string
-	BasePath          string
+	TreeLabel             string
+	BasePath              string
 	ChannelLabel          string
-	InstallType          string
-	InstallType          string
-	KernelOptions          string
-	PostKernelOptions          string
+	InstallType           string
+	InstallType           string
+	KernelOptions         string
+	PostKernelOptions     string
 }
 
 func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -45,7 +45,7 @@ func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func create(globalFlags *types.GlobalFlags, flags *createFlags, cmd *cobra.Command, args []string) error {
 
-res, err := tree.Tree(&flags.ConnectionDetails, flags.TreeLabel, flags.BasePath, flags.ChannelLabel, flags.InstallType, flags.InstallType, flags.KernelOptions, flags.PostKernelOptions)
+	res, err := tree.Tree(&flags.ConnectionDetails, flags.TreeLabel, flags.BasePath, flags.ChannelLabel, flags.InstallType, flags.InstallType, flags.KernelOptions, flags.PostKernelOptions)
 	if err != nil {
 		return err
 	}
@@ -54,4 +54,3 @@ res, err := tree.Tree(&flags.ConnectionDetails, flags.TreeLabel, flags.BasePath,
 
 	return nil
 }
-

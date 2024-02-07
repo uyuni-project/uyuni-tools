@@ -13,7 +13,7 @@ import (
 
 type getXccdfScanRuleResultsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Xid          int
+	Xid                   int
 }
 
 func getXccdfScanRuleResultsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getXccdfScanRuleResultsCommand(globalFlags *types.GlobalFlags) *cobra.Comma
 
 func getXccdfScanRuleResults(globalFlags *types.GlobalFlags, flags *getXccdfScanRuleResultsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := scap.Scap(&flags.ConnectionDetails, flags.Xid)
+	res, err := scap.Scap(&flags.ConnectionDetails, flags.Xid)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := scap.Scap(&flags.ConnectionDetails, flags.Xid)
 
 	return nil
 }
-

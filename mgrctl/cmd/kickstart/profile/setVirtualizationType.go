@@ -13,8 +13,8 @@ import (
 
 type setVirtualizationTypeFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
-	TypeLabel          string
+	KsLabel               string
+	TypeLabel             string
 }
 
 func setVirtualizationTypeCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setVirtualizationTypeCommand(globalFlags *types.GlobalFlags) *cobra.Command
 
 func setVirtualizationType(globalFlags *types.GlobalFlags, flags *setVirtualizationTypeFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.TypeLabel)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.TypeLabel)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.TypeL
 
 	return nil
 }
-

@@ -25,13 +25,12 @@ func listCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func list(globalFlags *types.GlobalFlags, flags *listFlags, cmd *cobra.Command, args []string) error {
 
-res, err := pinnedsubscription.Pinnedsubscription(&flags.ConnectionDetails)
+	res, err := pinnedsubscription.Pinnedsubscription(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := pinnedsubscription.Pinnedsubscription(&flags.ConnectionDetails)
 
 	return nil
 }
-

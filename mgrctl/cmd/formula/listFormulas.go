@@ -25,13 +25,12 @@ func listFormulasCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listFormulas(globalFlags *types.GlobalFlags, flags *listFormulasFlags, cmd *cobra.Command, args []string) error {
 
-res, err := formula.Formula(&flags.ConnectionDetails)
+	res, err := formula.Formula(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := formula.Formula(&flags.ConnectionDetails)
 
 	return nil
 }
-

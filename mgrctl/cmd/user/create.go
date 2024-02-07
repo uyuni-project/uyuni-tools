@@ -5,21 +5,21 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
-	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
+	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type createFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Login          string
-	Password          string
-	FirstName          string
-	LastName          string
-	Email          string
-	Login          string
-	UsePamAuth          int
+	Login                 string
+	Password              string
+	FirstName             string
+	LastName              string
+	Email                 string
+	Login                 string
+	UsePamAuth            int
 }
 
 func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -45,7 +45,7 @@ func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func create(globalFlags *types.GlobalFlags, flags *createFlags, cmd *cobra.Command, args []string) error {
 
-res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.Password, flags.FirstName, flags.LastName, flags.Email, flags.Login, flags.UsePamAuth)
+	res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.Password, flags.FirstName, flags.LastName, flags.Email, flags.Login, flags.UsePamAuth)
 	if err != nil {
 		return err
 	}
@@ -54,4 +54,3 @@ res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.Password, fla
 
 	return nil
 }
-

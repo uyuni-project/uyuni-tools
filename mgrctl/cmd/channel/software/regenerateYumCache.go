@@ -14,7 +14,7 @@ import (
 type regenerateYumCacheFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ChannelLabel          string
-	Force          bool
+	Force                 bool
 }
 
 func regenerateYumCacheCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func regenerateYumCacheCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func regenerateYumCache(globalFlags *types.GlobalFlags, flags *regenerateYumCacheFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.Force)
+	res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.Force)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flag
 
 	return nil
 }
-

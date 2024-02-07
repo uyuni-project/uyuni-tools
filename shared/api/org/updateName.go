@@ -16,8 +16,8 @@ func UpdateName(cnxDetails *api.ConnectionDetails, OrgId int, Name string) (*typ
 	}
 
 	data := map[string]interface{}{
-		"orgId":       OrgId,
-		"name":       Name,
+		"orgId": OrgId,
+		"name":  Name,
 	}
 
 	res, err := api.Post[types.OrgDto](client, "org", data)

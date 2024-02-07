@@ -35,7 +35,7 @@ func listErrataByTypeCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listErrataByType(globalFlags *types.GlobalFlags, flags *listErrataByTypeFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.AdvisoryType)
+	res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.AdvisoryType)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flag
 
 	return nil
 }
-

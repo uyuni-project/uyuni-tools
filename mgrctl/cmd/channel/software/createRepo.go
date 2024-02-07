@@ -13,18 +13,18 @@ import (
 
 type createRepoFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
-	Type          string
-	Url          string
-	Type          string
-	SslCaCert          string
-	SslCliCert          string
-	SslCliKey          string
-	Type          string
-	SslCaCert          string
-	SslCliCert          string
-	SslCliKey          string
-	HasSignedMetadata          bool
+	Label                 string
+	Type                  string
+	Url                   string
+	Type                  string
+	SslCaCert             string
+	SslCliCert            string
+	SslCliKey             string
+	Type                  string
+	SslCaCert             string
+	SslCliCert            string
+	SslCliKey             string
+	HasSignedMetadata     bool
 }
 
 func createRepoCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -55,7 +55,7 @@ func createRepoCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func createRepo(globalFlags *types.GlobalFlags, flags *createRepoFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.Label, flags.Type, flags.Url, flags.Type, flags.SslCaCert, flags.SslCliCert, flags.SslCliKey, flags.Type, flags.SslCaCert, flags.SslCliCert, flags.SslCliKey, flags.HasSignedMetadata)
+	res, err := software.Software(&flags.ConnectionDetails, flags.Label, flags.Type, flags.Url, flags.Type, flags.SslCaCert, flags.SslCliCert, flags.SslCliKey, flags.Type, flags.SslCaCert, flags.SslCliCert, flags.SslCliKey, flags.HasSignedMetadata)
 	if err != nil {
 		return err
 	}
@@ -64,4 +64,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.Label, flags.Type,
 
 	return nil
 }
-

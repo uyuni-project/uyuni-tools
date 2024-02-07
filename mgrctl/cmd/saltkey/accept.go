@@ -13,7 +13,7 @@ import (
 
 type acceptFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	MinionId          string
+	MinionId              string
 }
 
 func acceptCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func acceptCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func accept(globalFlags *types.GlobalFlags, flags *acceptFlags, cmd *cobra.Command, args []string) error {
 
-res, err := saltkey.Saltkey(&flags.ConnectionDetails, flags.MinionId)
+	res, err := saltkey.Saltkey(&flags.ConnectionDetails, flags.MinionId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := saltkey.Saltkey(&flags.ConnectionDetails, flags.MinionId)
 
 	return nil
 }
-

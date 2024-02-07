@@ -25,13 +25,12 @@ func listProxiesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listProxies(globalFlags *types.GlobalFlags, flags *listProxiesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := proxy.Proxy(&flags.ConnectionDetails)
+	res, err := proxy.Proxy(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := proxy.Proxy(&flags.ConnectionDetails)
 
 	return nil
 }
-

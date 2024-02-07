@@ -13,14 +13,14 @@ import (
 
 type createFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	OrgName          string
-	AdminLogin          string
-	AdminPassword          string
-	Prefix          string
-	FirstName          string
-	LastName          string
-	Email          string
-	UsePamAuth          bool
+	OrgName               string
+	AdminLogin            string
+	AdminPassword         string
+	Prefix                string
+	FirstName             string
+	LastName              string
+	Email                 string
+	UsePamAuth            bool
 }
 
 func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -47,7 +47,7 @@ func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func create(globalFlags *types.GlobalFlags, flags *createFlags, cmd *cobra.Command, args []string) error {
 
-res, err := org.Org(&flags.ConnectionDetails, flags.OrgName, flags.AdminLogin, flags.AdminPassword, flags.Prefix, flags.FirstName, flags.LastName, flags.Email, flags.UsePamAuth)
+	res, err := org.Org(&flags.ConnectionDetails, flags.OrgName, flags.AdminLogin, flags.AdminPassword, flags.Prefix, flags.FirstName, flags.LastName, flags.Email, flags.UsePamAuth)
 	if err != nil {
 		return err
 	}
@@ -56,4 +56,3 @@ res, err := org.Org(&flags.ConnectionDetails, flags.OrgName, flags.AdminLogin, f
 
 	return nil
 }
-

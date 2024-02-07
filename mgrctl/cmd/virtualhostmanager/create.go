@@ -5,17 +5,17 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
-	"github.com/uyuni-project/uyuni-tools/shared/api/virtualhostmanager"
 	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
+	"github.com/uyuni-project/uyuni-tools/shared/api/virtualhostmanager"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type createFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
-	ModuleName          string
-	Parameters          parameters
+	Label                 string
+	ModuleName            string
+	Parameters            parameters
 }
 
 func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func create(globalFlags *types.GlobalFlags, flags *createFlags, cmd *cobra.Command, args []string) error {
 
-res, err := virtualhostmanager.Virtualhostmanager(&flags.ConnectionDetails, flags.Label, flags.ModuleName, flags.Parameters)
+	res, err := virtualhostmanager.Virtualhostmanager(&flags.ConnectionDetails, flags.Label, flags.ModuleName, flags.Parameters)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := virtualhostmanager.Virtualhostmanager(&flags.ConnectionDetails, flag
 
 	return nil
 }
-

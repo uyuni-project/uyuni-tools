@@ -25,13 +25,12 @@ func listArchesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listArches(globalFlags *types.GlobalFlags, flags *listArchesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails)
+	res, err := software.Software(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := software.Software(&flags.ConnectionDetails)
 
 	return nil
 }
-

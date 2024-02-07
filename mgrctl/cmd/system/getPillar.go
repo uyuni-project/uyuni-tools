@@ -13,9 +13,9 @@ import (
 
 type getPillarFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SystemId          int
-	Category          string
-	MinionId          int
+	SystemId              int
+	Category              string
+	MinionId              int
 }
 
 func getPillarCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func getPillarCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getPillar(globalFlags *types.GlobalFlags, flags *getPillarFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.SystemId, flags.Category, flags.MinionId)
+	res, err := system.System(&flags.ConnectionDetails, flags.SystemId, flags.Category, flags.MinionId)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.SystemId, flags.Catego
 
 	return nil
 }
-

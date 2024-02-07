@@ -25,13 +25,12 @@ func listDefaultMapsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listDefaultMaps(globalFlags *types.GlobalFlags, flags *listDefaultMapsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := distchannel.Distchannel(&flags.ConnectionDetails)
+	res, err := distchannel.Distchannel(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := distchannel.Distchannel(&flags.ConnectionDetails)
 
 	return nil
 }
-

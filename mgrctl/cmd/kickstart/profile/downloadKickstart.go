@@ -13,8 +13,8 @@ import (
 
 type downloadKickstartFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
-	Host          string
+	KsLabel               string
+	Host                  string
 }
 
 func downloadKickstartCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func downloadKickstartCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func downloadKickstart(globalFlags *types.GlobalFlags, flags *downloadKickstartFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Host)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Host)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Host)
 
 	return nil
 }
-

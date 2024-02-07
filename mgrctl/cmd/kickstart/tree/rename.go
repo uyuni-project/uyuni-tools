@@ -13,8 +13,8 @@ import (
 
 type renameFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	OriginalLabel          string
-	NewLabel          string
+	OriginalLabel         string
+	NewLabel              string
 }
 
 func renameCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func renameCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func rename(globalFlags *types.GlobalFlags, flags *renameFlags, cmd *cobra.Command, args []string) error {
 
-res, err := tree.Tree(&flags.ConnectionDetails, flags.OriginalLabel, flags.NewLabel)
+	res, err := tree.Tree(&flags.ConnectionDetails, flags.OriginalLabel, flags.NewLabel)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := tree.Tree(&flags.ConnectionDetails, flags.OriginalLabel, flags.NewLa
 
 	return nil
 }
-

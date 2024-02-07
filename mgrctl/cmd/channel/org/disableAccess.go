@@ -13,8 +13,8 @@ import (
 
 type disableAccessFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
-	OrgId          int
+	Label                 string
+	OrgId                 int
 }
 
 func disableAccessCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func disableAccessCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func disableAccess(globalFlags *types.GlobalFlags, flags *disableAccessFlags, cmd *cobra.Command, args []string) error {
 
-res, err := org.Org(&flags.ConnectionDetails, flags.Label, flags.OrgId)
+	res, err := org.Org(&flags.ConnectionDetails, flags.Label, flags.OrgId)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := org.Org(&flags.ConnectionDetails, flags.Label, flags.OrgId)
 
 	return nil
 }
-

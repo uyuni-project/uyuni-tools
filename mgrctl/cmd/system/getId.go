@@ -13,7 +13,7 @@ import (
 
 type getIdFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Name          string
+	Name                  string
 }
 
 func getIdCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getIdCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getId(globalFlags *types.GlobalFlags, flags *getIdFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Name)
+	res, err := system.System(&flags.ConnectionDetails, flags.Name)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Name)
 
 	return nil
 }
-

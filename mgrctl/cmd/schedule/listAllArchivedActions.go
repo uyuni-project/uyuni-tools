@@ -25,13 +25,12 @@ func listAllArchivedActionsCommand(globalFlags *types.GlobalFlags) *cobra.Comman
 		},
 	}
 
-
 	return cmd
 }
 
 func listAllArchivedActions(globalFlags *types.GlobalFlags, flags *listAllArchivedActionsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := schedule.Schedule(&flags.ConnectionDetails)
+	res, err := schedule.Schedule(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := schedule.Schedule(&flags.ConnectionDetails)
 
 	return nil
 }
-

@@ -13,8 +13,8 @@ import (
 
 type cloneFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Key          string
-	CloneDescription          string
+	Key                   string
+	CloneDescription      string
 }
 
 func cloneCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func cloneCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func clone(globalFlags *types.GlobalFlags, flags *cloneFlags, cmd *cobra.Command, args []string) error {
 
-res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key, flags.CloneDescription)
+	res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key, flags.CloneDescription)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key, fla
 
 	return nil
 }
-

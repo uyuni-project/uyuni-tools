@@ -25,13 +25,12 @@ func logoutCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func logout(globalFlags *types.GlobalFlags, flags *logoutFlags, cmd *cobra.Command, args []string) error {
 
-res, err := auth.Auth(&flags.ConnectionDetails)
+	res, err := auth.Auth(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := auth.Auth(&flags.ConnectionDetails)
 
 	return nil
 }
-

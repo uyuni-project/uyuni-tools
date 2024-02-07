@@ -13,12 +13,12 @@ import (
 
 type createFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
-	Type          string
-	StoreLabel          string
-	Path          string
-	ActivationKey          string
-	KiwiOptions          string
+	Label                 string
+	Type                  string
+	StoreLabel            string
+	Path                  string
+	ActivationKey         string
+	KiwiOptions           string
 }
 
 func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -43,7 +43,7 @@ func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func create(globalFlags *types.GlobalFlags, flags *createFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.Label, flags.Type, flags.StoreLabel, flags.Path, flags.ActivationKey, flags.KiwiOptions)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.Label, flags.Type, flags.StoreLabel, flags.Path, flags.ActivationKey, flags.KiwiOptions)
 	if err != nil {
 		return err
 	}
@@ -52,4 +52,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.Label, flags.Type, f
 
 	return nil
 }
-

@@ -16,9 +16,9 @@ func Create(cnxDetails *api.ConnectionDetails, SlaveFqdn string, IsEnabled bool,
 	}
 
 	data := map[string]interface{}{
-		"slaveFqdn":       SlaveFqdn,
-		"isEnabled":       IsEnabled,
-		"allowAllOrgs":       AllowAllOrgs,
+		"slaveFqdn":    SlaveFqdn,
+		"isEnabled":    IsEnabled,
+		"allowAllOrgs": AllowAllOrgs,
 	}
 
 	res, err := api.Post[types.IssSlave](client, "sync/slave", data)

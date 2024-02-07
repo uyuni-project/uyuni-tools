@@ -14,7 +14,7 @@ import (
 type isUserSubscribableFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ChannelLabel          string
-	Login          string
+	Login                 string
 }
 
 func isUserSubscribableCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func isUserSubscribableCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func isUserSubscribable(globalFlags *types.GlobalFlags, flags *isUserSubscribableFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.Login)
+	res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.Login)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flag
 
 	return nil
 }
-

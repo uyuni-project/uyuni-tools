@@ -14,7 +14,7 @@ import (
 type attachFilterFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ProjectLabel          string
-	FilterId          int
+	FilterId              int
 }
 
 func attachFilterCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func attachFilterCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func attachFilter(globalFlags *types.GlobalFlags, flags *attachFilterFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.FilterId)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.FilterId)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.
 
 	return nil
 }
-

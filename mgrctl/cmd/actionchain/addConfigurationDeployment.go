@@ -13,8 +13,8 @@ import (
 
 type addConfigurationDeploymentFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ChainLabel          string
-	Sid          int
+	ChainLabel            string
+	Sid                   int
 }
 
 func addConfigurationDeploymentCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func addConfigurationDeploymentCommand(globalFlags *types.GlobalFlags) *cobra.Co
 
 func addConfigurationDeployment(globalFlags *types.GlobalFlags, flags *addConfigurationDeploymentFlags, cmd *cobra.Command, args []string) error {
 
-res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.ChainLabel, flags.Sid)
+	res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.ChainLabel, flags.Sid)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.ChainLabel, 
 
 	return nil
 }
-

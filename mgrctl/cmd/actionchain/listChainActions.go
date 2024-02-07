@@ -13,7 +13,7 @@ import (
 
 type listChainActionsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ChainLabel          string
+	ChainLabel            string
 }
 
 func listChainActionsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listChainActionsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listChainActions(globalFlags *types.GlobalFlags, flags *listChainActionsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.ChainLabel)
+	res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.ChainLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.ChainLabel)
 
 	return nil
 }
-

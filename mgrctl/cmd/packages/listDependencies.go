@@ -13,7 +13,7 @@ import (
 
 type listDependenciesFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Pid          int
+	Pid                   int
 }
 
 func listDependenciesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listDependenciesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listDependencies(globalFlags *types.GlobalFlags, flags *listDependenciesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := packages.Packages(&flags.ConnectionDetails, flags.Pid)
+	res, err := packages.Packages(&flags.ConnectionDetails, flags.Pid)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := packages.Packages(&flags.ConnectionDetails, flags.Pid)
 
 	return nil
 }
-

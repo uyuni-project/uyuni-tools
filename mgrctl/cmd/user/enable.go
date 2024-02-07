@@ -5,15 +5,15 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
-	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
+	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type enableFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Login          string
+	Login                 string
 }
 
 func enableCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func enableCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func enable(globalFlags *types.GlobalFlags, flags *enableFlags, cmd *cobra.Command, args []string) error {
 
-res, err := user.User(&flags.ConnectionDetails, flags.Login)
+	res, err := user.User(&flags.ConnectionDetails, flags.Login)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := user.User(&flags.ConnectionDetails, flags.Login)
 
 	return nil
 }
-

@@ -14,7 +14,7 @@ import (
 type setOrgSharingFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ChannelLabel          string
-	Access          string
+	Access                string
 }
 
 func setOrgSharingCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setOrgSharingCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setOrgSharing(globalFlags *types.GlobalFlags, flags *setOrgSharingFlags, cmd *cobra.Command, args []string) error {
 
-res, err := access.Access(&flags.ConnectionDetails, flags.ChannelLabel, flags.Access)
+	res, err := access.Access(&flags.ConnectionDetails, flags.ChannelLabel, flags.Access)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := access.Access(&flags.ConnectionDetails, flags.ChannelLabel, flags.Ac
 
 	return nil
 }
-

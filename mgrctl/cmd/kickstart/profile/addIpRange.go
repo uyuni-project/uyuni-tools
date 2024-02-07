@@ -13,9 +13,9 @@ import (
 
 type addIpRangeFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
-	Min          string
-	Max          string
+	KsLabel               string
+	Min                   string
+	Max                   string
 }
 
 func addIpRangeCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func addIpRangeCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addIpRange(globalFlags *types.GlobalFlags, flags *addIpRangeFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Min, flags.Max)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Min, flags.Max)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Min, 
 
 	return nil
 }
-

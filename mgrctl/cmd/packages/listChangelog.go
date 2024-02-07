@@ -13,7 +13,7 @@ import (
 
 type listChangelogFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Pid          int
+	Pid                   int
 }
 
 func listChangelogCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listChangelogCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listChangelog(globalFlags *types.GlobalFlags, flags *listChangelogFlags, cmd *cobra.Command, args []string) error {
 
-res, err := packages.Packages(&flags.ConnectionDetails, flags.Pid)
+	res, err := packages.Packages(&flags.ConnectionDetails, flags.Pid)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := packages.Packages(&flags.ConnectionDetails, flags.Pid)
 
 	return nil
 }
-

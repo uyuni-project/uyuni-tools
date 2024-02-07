@@ -13,7 +13,7 @@ import (
 
 type listProvidingChannelsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Pid          int
+	Pid                   int
 }
 
 func listProvidingChannelsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listProvidingChannelsCommand(globalFlags *types.GlobalFlags) *cobra.Command
 
 func listProvidingChannels(globalFlags *types.GlobalFlags, flags *listProvidingChannelsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := packages.Packages(&flags.ConnectionDetails, flags.Pid)
+	res, err := packages.Packages(&flags.ConnectionDetails, flags.Pid)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := packages.Packages(&flags.ConnectionDetails, flags.Pid)
 
 	return nil
 }
-

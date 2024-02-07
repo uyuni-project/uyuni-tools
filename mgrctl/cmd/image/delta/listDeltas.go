@@ -25,13 +25,12 @@ func listDeltasCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listDeltas(globalFlags *types.GlobalFlags, flags *listDeltasFlags, cmd *cobra.Command, args []string) error {
 
-res, err := delta.Delta(&flags.ConnectionDetails)
+	res, err := delta.Delta(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := delta.Delta(&flags.ConnectionDetails)
 
 	return nil
 }
-

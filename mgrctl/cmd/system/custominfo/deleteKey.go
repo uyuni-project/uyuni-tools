@@ -13,7 +13,7 @@ import (
 
 type deleteKeyFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KeyLabel          string
+	KeyLabel              string
 }
 
 func deleteKeyCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func deleteKeyCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func deleteKey(globalFlags *types.GlobalFlags, flags *deleteKeyFlags, cmd *cobra.Command, args []string) error {
 
-res, err := custominfo.Custominfo(&flags.ConnectionDetails, flags.KeyLabel)
+	res, err := custominfo.Custominfo(&flags.ConnectionDetails, flags.KeyLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := custominfo.Custominfo(&flags.ConnectionDetails, flags.KeyLabel)
 
 	return nil
 }
-

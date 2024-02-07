@@ -13,8 +13,8 @@ import (
 
 type upgradeEntitlementFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	EntitlementLevel          string
+	Sid                   int
+	EntitlementLevel      string
 }
 
 func upgradeEntitlementCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func upgradeEntitlementCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func upgradeEntitlement(globalFlags *types.GlobalFlags, flags *upgradeEntitlementFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.EntitlementLevel)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.EntitlementLevel)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Entitlement
 
 	return nil
 }
-

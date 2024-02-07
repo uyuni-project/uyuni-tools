@@ -16,11 +16,11 @@ func CreateEnvironment(cnxDetails *api.ConnectionDetails, ProjectLabel string, P
 	}
 
 	data := map[string]interface{}{
-		"projectLabel":       ProjectLabel,
-		"predecessorLabel":       PredecessorLabel,
-		"envLabel":       EnvLabel,
-		"name":       Name,
-		"description":       Description,
+		"projectLabel":     ProjectLabel,
+		"predecessorLabel": PredecessorLabel,
+		"envLabel":         EnvLabel,
+		"name":             Name,
+		"description":      Description,
 	}
 
 	res, err := api.Post[types.ContentEnvironment](client, "contentmanagement", data)

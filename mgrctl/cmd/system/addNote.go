@@ -13,9 +13,9 @@ import (
 
 type addNoteFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	Subject          string
-	Body          string
+	Sid                   int
+	Subject               string
+	Body                  string
 }
 
 func addNoteCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func addNoteCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addNote(globalFlags *types.GlobalFlags, flags *addNoteFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Subject, flags.Body)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Subject, flags.Body)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Subject, fl
 
 	return nil
 }
-

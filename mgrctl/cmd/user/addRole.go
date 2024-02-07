@@ -5,16 +5,16 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
-	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
+	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type addRoleFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Login          string
-	Role          string
+	Login                 string
+	Role                  string
 }
 
 func addRoleCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func addRoleCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addRole(globalFlags *types.GlobalFlags, flags *addRoleFlags, cmd *cobra.Command, args []string) error {
 
-res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.Role)
+	res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.Role)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.Role)
 
 	return nil
 }
-

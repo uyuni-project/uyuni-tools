@@ -13,7 +13,7 @@ import (
 
 type getSoftwareListFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
+	KsLabel               string
 }
 
 func getSoftwareListCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getSoftwareListCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getSoftwareList(globalFlags *types.GlobalFlags, flags *getSoftwareListFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.KsLabel)
+	res, err := software.Software(&flags.ConnectionDetails, flags.KsLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.KsLabel)
 
 	return nil
 }
-

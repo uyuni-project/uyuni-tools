@@ -16,18 +16,18 @@ func CreateRepo(cnxDetails *api.ConnectionDetails, Label string, Type string, Ur
 	}
 
 	data := map[string]interface{}{
-		"label":       Label,
-		"type":       Type,
-		"url":       Url,
-		"type":       Type,
-		"sslCaCert":       SslCaCert,
-		"sslCliCert":       SslCliCert,
-		"sslCliKey":       SslCliKey,
-		"type":       Type,
-		"sslCaCert":       SslCaCert,
-		"sslCliCert":       SslCliCert,
-		"sslCliKey":       SslCliKey,
-		"hasSignedMetadata":       HasSignedMetadata,
+		"label":             Label,
+		"type":              Type,
+		"url":               Url,
+		"type":              Type,
+		"sslCaCert":         SslCaCert,
+		"sslCliCert":        SslCliCert,
+		"sslCliKey":         SslCliKey,
+		"type":              Type,
+		"sslCaCert":         SslCaCert,
+		"sslCliCert":        SslCliCert,
+		"sslCliKey":         SslCliKey,
+		"hasSignedMetadata": HasSignedMetadata,
 	}
 
 	res, err := api.Post[types.ContentSource](client, "channel/software", data)

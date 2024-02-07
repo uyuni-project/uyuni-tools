@@ -13,7 +13,7 @@ import (
 
 type getCalendarDetailsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
+	Label                 string
 }
 
 func getCalendarDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getCalendarDetailsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getCalendarDetails(globalFlags *types.GlobalFlags, flags *getCalendarDetailsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Label)
+	res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Label)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Label)
 
 	return nil
 }
-

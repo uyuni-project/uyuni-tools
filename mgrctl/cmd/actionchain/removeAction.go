@@ -13,8 +13,8 @@ import (
 
 type removeActionFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ChainLabel          string
-	ActionId          int
+	ChainLabel            string
+	ActionId              int
 }
 
 func removeActionCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func removeActionCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func removeAction(globalFlags *types.GlobalFlags, flags *removeActionFlags, cmd *cobra.Command, args []string) error {
 
-res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.ChainLabel, flags.ActionId)
+	res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.ChainLabel, flags.ActionId)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.ChainLabel, 
 
 	return nil
 }
-

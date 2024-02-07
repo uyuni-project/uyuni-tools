@@ -13,8 +13,8 @@ import (
 
 type setCfgPreservationFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
-	Preserve          bool
+	KsLabel               string
+	Preserve              bool
 }
 
 func setCfgPreservationCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setCfgPreservationCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setCfgPreservation(globalFlags *types.GlobalFlags, flags *setCfgPreservationFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Preserve)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Preserve)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Prese
 
 	return nil
 }
-

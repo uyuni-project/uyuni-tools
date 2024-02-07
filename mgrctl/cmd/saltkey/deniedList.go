@@ -25,13 +25,12 @@ func deniedListCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func deniedList(globalFlags *types.GlobalFlags, flags *deniedListFlags, cmd *cobra.Command, args []string) error {
 
-res, err := saltkey.Saltkey(&flags.ConnectionDetails)
+	res, err := saltkey.Saltkey(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := saltkey.Saltkey(&flags.ConnectionDetails)
 
 	return nil
 }
-

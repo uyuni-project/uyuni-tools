@@ -13,7 +13,7 @@ import (
 
 type findKickstartForIpFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	IpAddress          string
+	IpAddress             string
 }
 
 func findKickstartForIpCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func findKickstartForIpCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func findKickstartForIp(globalFlags *types.GlobalFlags, flags *findKickstartForIpFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.IpAddress)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.IpAddress)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.IpAddress)
 
 	return nil
 }
-

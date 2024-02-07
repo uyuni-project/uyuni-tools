@@ -25,13 +25,12 @@ func listSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listSystems(globalFlags *types.GlobalFlags, flags *listSystemsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails)
+	res, err := system.System(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := system.System(&flags.ConnectionDetails)
 
 	return nil
 }
-

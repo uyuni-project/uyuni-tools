@@ -25,13 +25,12 @@ func listChainsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listChains(globalFlags *types.GlobalFlags, flags *listChainsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := actionchain.Actionchain(&flags.ConnectionDetails)
+	res, err := actionchain.Actionchain(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := actionchain.Actionchain(&flags.ConnectionDetails)
 
 	return nil
 }
-

@@ -13,9 +13,9 @@ import (
 
 type addOrRemoveSystemsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SystemGroupName          string
-	ServerIds          []int
-	Add          bool
+	SystemGroupName       string
+	ServerIds             []int
+	Add                   bool
 }
 
 func addOrRemoveSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func addOrRemoveSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addOrRemoveSystems(globalFlags *types.GlobalFlags, flags *addOrRemoveSystemsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupName, flags.ServerIds, flags.Add)
+	res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupName, flags.ServerIds, flags.Add)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupN
 
 	return nil
 }
-

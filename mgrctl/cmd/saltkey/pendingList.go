@@ -25,13 +25,12 @@ func pendingListCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func pendingList(globalFlags *types.GlobalFlags, flags *pendingListFlags, cmd *cobra.Command, args []string) error {
 
-res, err := saltkey.Saltkey(&flags.ConnectionDetails)
+	res, err := saltkey.Saltkey(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := saltkey.Saltkey(&flags.ConnectionDetails)
 
 	return nil
 }
-

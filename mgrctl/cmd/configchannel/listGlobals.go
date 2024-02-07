@@ -25,13 +25,12 @@ func listGlobalsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listGlobals(globalFlags *types.GlobalFlags, flags *listGlobalsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := configchannel.Configchannel(&flags.ConnectionDetails)
+	res, err := configchannel.Configchannel(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := configchannel.Configchannel(&flags.ConnectionDetails)
 
 	return nil
 }
-

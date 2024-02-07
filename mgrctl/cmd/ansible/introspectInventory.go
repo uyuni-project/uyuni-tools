@@ -13,7 +13,7 @@ import (
 
 type introspectInventoryFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	PathId          int
+	PathId                int
 }
 
 func introspectInventoryCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func introspectInventoryCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func introspectInventory(globalFlags *types.GlobalFlags, flags *introspectInventoryFlags, cmd *cobra.Command, args []string) error {
 
-res, err := ansible.Ansible(&flags.ConnectionDetails, flags.PathId)
+	res, err := ansible.Ansible(&flags.ConnectionDetails, flags.PathId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := ansible.Ansible(&flags.ConnectionDetails, flags.PathId)
 
 	return nil
 }
-

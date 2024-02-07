@@ -25,13 +25,12 @@ func unsetDefaultMasterCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func unsetDefaultMaster(globalFlags *types.GlobalFlags, flags *unsetDefaultMasterFlags, cmd *cobra.Command, args []string) error {
 
-res, err := master.Master(&flags.ConnectionDetails)
+	res, err := master.Master(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := master.Master(&flags.ConnectionDetails)
 
 	return nil
 }
-

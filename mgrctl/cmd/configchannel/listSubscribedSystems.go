@@ -13,7 +13,7 @@ import (
 
 type listSubscribedSystemsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
+	Label                 string
 }
 
 func listSubscribedSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listSubscribedSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command
 
 func listSubscribedSystems(globalFlags *types.GlobalFlags, flags *listSubscribedSystemsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label)
+	res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := configchannel.Configchannel(&flags.ConnectionDetails, flags.Label)
 
 	return nil
 }
-

@@ -13,8 +13,8 @@ import (
 
 type setTimeZoneFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Login          string
-	Tzid          int
+	Login                 string
+	Tzid                  int
 }
 
 func setTimeZoneCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setTimeZoneCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setTimeZone(globalFlags *types.GlobalFlags, flags *setTimeZoneFlags, cmd *cobra.Command, args []string) error {
 
-res, err := locale.Locale(&flags.ConnectionDetails, flags.Login, flags.Tzid)
+	res, err := locale.Locale(&flags.ConnectionDetails, flags.Login, flags.Tzid)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := locale.Locale(&flags.ConnectionDetails, flags.Login, flags.Tzid)
 
 	return nil
 }
-

@@ -13,12 +13,12 @@ import (
 
 type isNvreInstalledFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	Name          string
-	Version          string
-	Release          string
-	Version          string
-	Epoch          string
+	Sid                   int
+	Name                  string
+	Version               string
+	Release               string
+	Version               string
+	Epoch                 string
 }
 
 func isNvreInstalledCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -43,7 +43,7 @@ func isNvreInstalledCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func isNvreInstalled(globalFlags *types.GlobalFlags, flags *isNvreInstalledFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Name, flags.Version, flags.Release, flags.Version, flags.Epoch)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Name, flags.Version, flags.Release, flags.Version, flags.Epoch)
 	if err != nil {
 		return err
 	}
@@ -52,4 +52,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Name, flags
 
 	return nil
 }
-

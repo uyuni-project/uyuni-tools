@@ -13,7 +13,7 @@ import (
 
 type deleteFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Id          int
+	Id                    int
 }
 
 func deleteCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func deleteCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func delete(globalFlags *types.GlobalFlags, flags *deleteFlags, cmd *cobra.Command, args []string) error {
 
-res, err := recurring.Recurring(&flags.ConnectionDetails, flags.Id)
+	res, err := recurring.Recurring(&flags.ConnectionDetails, flags.Id)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := recurring.Recurring(&flags.ConnectionDetails, flags.Id)
 
 	return nil
 }
-

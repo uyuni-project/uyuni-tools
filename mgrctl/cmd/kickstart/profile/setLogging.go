@@ -13,9 +13,9 @@ import (
 
 type setLoggingFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
-	Pre          bool
-	Post          bool
+	KsLabel               string
+	Pre                   bool
+	Post                  bool
 }
 
 func setLoggingCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func setLoggingCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setLogging(globalFlags *types.GlobalFlags, flags *setLoggingFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Pre, flags.Post)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Pre, flags.Post)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Pre, 
 
 	return nil
 }
-

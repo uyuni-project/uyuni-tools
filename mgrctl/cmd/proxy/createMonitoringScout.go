@@ -13,7 +13,7 @@ import (
 
 type createMonitoringScoutFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Clientcert          string
+	Clientcert            string
 }
 
 func createMonitoringScoutCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func createMonitoringScoutCommand(globalFlags *types.GlobalFlags) *cobra.Command
 
 func createMonitoringScout(globalFlags *types.GlobalFlags, flags *createMonitoringScoutFlags, cmd *cobra.Command, args []string) error {
 
-res, err := proxy.Proxy(&flags.ConnectionDetails, flags.Clientcert)
+	res, err := proxy.Proxy(&flags.ConnectionDetails, flags.Clientcert)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := proxy.Proxy(&flags.ConnectionDetails, flags.Clientcert)
 
 	return nil
 }
-

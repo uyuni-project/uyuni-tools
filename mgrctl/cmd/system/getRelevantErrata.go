@@ -13,8 +13,8 @@ import (
 
 type getRelevantErrataFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	Sids          []int
+	Sid                   int
+	Sids                  []int
 }
 
 func getRelevantErrataCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func getRelevantErrataCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getRelevantErrata(globalFlags *types.GlobalFlags, flags *getRelevantErrataFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Sids)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Sids)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Sids)
 
 	return nil
 }
-

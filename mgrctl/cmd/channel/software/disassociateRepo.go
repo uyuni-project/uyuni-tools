@@ -14,7 +14,7 @@ import (
 type disassociateRepoFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ChannelLabel          string
-	RepoLabel          string
+	RepoLabel             string
 }
 
 func disassociateRepoCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func disassociateRepoCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func disassociateRepo(globalFlags *types.GlobalFlags, flags *disassociateRepoFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.RepoLabel)
+	res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.RepoLabel)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flag
 
 	return nil
 }
-

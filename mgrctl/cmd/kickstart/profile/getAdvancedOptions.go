@@ -13,7 +13,7 @@ import (
 
 type getAdvancedOptionsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
+	KsLabel               string
 }
 
 func getAdvancedOptionsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getAdvancedOptionsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getAdvancedOptions(globalFlags *types.GlobalFlags, flags *getAdvancedOptionsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel)
 
 	return nil
 }
-

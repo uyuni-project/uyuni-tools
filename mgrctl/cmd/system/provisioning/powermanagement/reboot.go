@@ -13,8 +13,8 @@ import (
 
 type rebootFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	Name          string
+	Sid                   int
+	Name                  string
 }
 
 func rebootCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func rebootCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func reboot(globalFlags *types.GlobalFlags, flags *rebootFlags, cmd *cobra.Command, args []string) error {
 
-res, err := powermanagement.Powermanagement(&flags.ConnectionDetails, flags.Sid, flags.Name)
+	res, err := powermanagement.Powermanagement(&flags.ConnectionDetails, flags.Sid, flags.Name)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := powermanagement.Powermanagement(&flags.ConnectionDetails, flags.Sid,
 
 	return nil
 }
-

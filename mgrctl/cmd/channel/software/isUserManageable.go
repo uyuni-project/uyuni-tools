@@ -14,7 +14,7 @@ import (
 type isUserManageableFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ChannelLabel          string
-	Login          string
+	Login                 string
 }
 
 func isUserManageableCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func isUserManageableCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func isUserManageable(globalFlags *types.GlobalFlags, flags *isUserManageableFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.Login)
+	res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flags.Login)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.ChannelLabel, flag
 
 	return nil
 }
-

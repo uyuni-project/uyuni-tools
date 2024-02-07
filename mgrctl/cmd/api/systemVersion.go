@@ -25,13 +25,12 @@ func systemVersionCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func systemVersion(globalFlags *types.GlobalFlags, flags *systemVersionFlags, cmd *cobra.Command, args []string) error {
 
-res, err := api.Api(&flags.ConnectionDetails)
+	res, err := api.Api(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := api.Api(&flags.ConnectionDetails)
 
 	return nil
 }
-

@@ -13,8 +13,8 @@ import (
 
 type setPrimaryInterfaceFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	InterfaceName          string
+	Sid                   int
+	InterfaceName         string
 }
 
 func setPrimaryInterfaceCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setPrimaryInterfaceCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setPrimaryInterface(globalFlags *types.GlobalFlags, flags *setPrimaryInterfaceFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.InterfaceName)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.InterfaceName)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.InterfaceNa
 
 	return nil
 }
-

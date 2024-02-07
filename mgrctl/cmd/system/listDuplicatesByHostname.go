@@ -25,13 +25,12 @@ func listDuplicatesByHostnameCommand(globalFlags *types.GlobalFlags) *cobra.Comm
 		},
 	}
 
-
 	return cmd
 }
 
 func listDuplicatesByHostname(globalFlags *types.GlobalFlags, flags *listDuplicatesByHostnameFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails)
+	res, err := system.System(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := system.System(&flags.ConnectionDetails)
 
 	return nil
 }
-

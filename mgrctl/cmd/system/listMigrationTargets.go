@@ -12,9 +12,9 @@ import (
 )
 
 type listMigrationTargetsFlags struct {
-	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	ExcludeTargetWhereMissingSuccessors          bool
+	api.ConnectionDetails               `mapstructure:"api"`
+	Sid                                 int
+	ExcludeTargetWhereMissingSuccessors bool
 }
 
 func listMigrationTargetsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func listMigrationTargetsCommand(globalFlags *types.GlobalFlags) *cobra.Command 
 
 func listMigrationTargets(globalFlags *types.GlobalFlags, flags *listMigrationTargetsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.ExcludeTargetWhereMissingSuccessors)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.ExcludeTargetWhereMissingSuccessors)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.ExcludeTarg
 
 	return nil
 }
-

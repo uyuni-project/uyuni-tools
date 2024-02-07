@@ -13,8 +13,8 @@ import (
 
 type setClmSyncPatchesConfigFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	OrgId          int
-	Value          bool
+	OrgId                 int
+	Value                 bool
 }
 
 func setClmSyncPatchesConfigCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setClmSyncPatchesConfigCommand(globalFlags *types.GlobalFlags) *cobra.Comma
 
 func setClmSyncPatchesConfig(globalFlags *types.GlobalFlags, flags *setClmSyncPatchesConfigFlags, cmd *cobra.Command, args []string) error {
 
-res, err := org.Org(&flags.ConnectionDetails, flags.OrgId, flags.Value)
+	res, err := org.Org(&flags.ConnectionDetails, flags.OrgId, flags.Value)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := org.Org(&flags.ConnectionDetails, flags.OrgId, flags.Value)
 
 	return nil
 }
-

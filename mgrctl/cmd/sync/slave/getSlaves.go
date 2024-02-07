@@ -25,13 +25,12 @@ func getSlavesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func getSlaves(globalFlags *types.GlobalFlags, flags *getSlavesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := slave.Slave(&flags.ConnectionDetails)
+	res, err := slave.Slave(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := slave.Slave(&flags.ConnectionDetails)
 
 	return nil
 }
-

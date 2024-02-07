@@ -13,8 +13,8 @@ import (
 
 type setCaCertFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	MasterId          int
-	CaCertFilename          string
+	MasterId              int
+	CaCertFilename        string
 }
 
 func setCaCertCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setCaCertCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setCaCert(globalFlags *types.GlobalFlags, flags *setCaCertFlags, cmd *cobra.Command, args []string) error {
 
-res, err := master.Master(&flags.ConnectionDetails, flags.MasterId, flags.CaCertFilename)
+	res, err := master.Master(&flags.ConnectionDetails, flags.MasterId, flags.CaCertFilename)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := master.Master(&flags.ConnectionDetails, flags.MasterId, flags.CaCert
 
 	return nil
 }
-

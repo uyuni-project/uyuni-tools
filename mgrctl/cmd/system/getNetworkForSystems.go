@@ -13,7 +13,7 @@ import (
 
 type getNetworkForSystemsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sids          []int
+	Sids                  []int
 }
 
 func getNetworkForSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getNetworkForSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command 
 
 func getNetworkForSystems(globalFlags *types.GlobalFlags, flags *getNetworkForSystemsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sids)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sids)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sids)
 
 	return nil
 }
-

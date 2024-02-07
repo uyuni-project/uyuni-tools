@@ -14,9 +14,9 @@ import (
 type attachSourceFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ProjectLabel          string
-	SourceType          string
-	SourceLabel          string
-	SourcePosition          int
+	SourceType            string
+	SourceLabel           string
+	SourcePosition        int
 }
 
 func attachSourceCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -39,7 +39,7 @@ func attachSourceCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func attachSource(globalFlags *types.GlobalFlags, flags *attachSourceFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.SourceType, flags.SourceLabel, flags.SourcePosition)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.SourceType, flags.SourceLabel, flags.SourcePosition)
 	if err != nil {
 		return err
 	}
@@ -48,4 +48,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.
 
 	return nil
 }
-

@@ -13,7 +13,7 @@ import (
 
 type listActivatedSystemsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Key          string
+	Key                   string
 }
 
 func listActivatedSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listActivatedSystemsCommand(globalFlags *types.GlobalFlags) *cobra.Command 
 
 func listActivatedSystems(globalFlags *types.GlobalFlags, flags *listActivatedSystemsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key)
+	res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key)
 
 	return nil
 }
-

@@ -14,7 +14,7 @@ import (
 type lookupEnvironmentFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ProjectLabel          string
-	EnvLabel          string
+	EnvLabel              string
 }
 
 func lookupEnvironmentCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func lookupEnvironmentCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func lookupEnvironment(globalFlags *types.GlobalFlags, flags *lookupEnvironmentFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.EnvLabel)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.EnvLabel)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.
 
 	return nil
 }
-

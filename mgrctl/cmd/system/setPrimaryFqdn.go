@@ -13,8 +13,8 @@ import (
 
 type setPrimaryFqdnFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	Fqdn          string
+	Sid                   int
+	Fqdn                  string
 }
 
 func setPrimaryFqdnCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setPrimaryFqdnCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setPrimaryFqdn(globalFlags *types.GlobalFlags, flags *setPrimaryFqdnFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Fqdn)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Fqdn)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.Fqdn)
 
 	return nil
 }
-

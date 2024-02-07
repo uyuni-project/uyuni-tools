@@ -13,8 +13,8 @@ import (
 
 type setContentStagingFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	OrgId          int
-	Enable          bool
+	OrgId                 int
+	Enable                bool
 }
 
 func setContentStagingCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setContentStagingCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setContentStaging(globalFlags *types.GlobalFlags, flags *setContentStagingFlags, cmd *cobra.Command, args []string) error {
 
-res, err := org.Org(&flags.ConnectionDetails, flags.OrgId, flags.Enable)
+	res, err := org.Org(&flags.ConnectionDetails, flags.OrgId, flags.Enable)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := org.Org(&flags.ConnectionDetails, flags.OrgId, flags.Enable)
 
 	return nil
 }
-

@@ -13,8 +13,8 @@ import (
 
 type refreshPillarFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sids          []int
-	Subset          string
+	Sids                  []int
+	Subset                string
 }
 
 func refreshPillarCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func refreshPillarCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func refreshPillar(globalFlags *types.GlobalFlags, flags *refreshPillarFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sids, flags.Subset)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sids, flags.Subset)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sids, flags.Subset)
 
 	return nil
 }
-

@@ -13,7 +13,7 @@ import (
 
 type listAnsiblePathsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ControlNodeId          int
+	ControlNodeId         int
 }
 
 func listAnsiblePathsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listAnsiblePathsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func listAnsiblePaths(globalFlags *types.GlobalFlags, flags *listAnsiblePathsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := ansible.Ansible(&flags.ConnectionDetails, flags.ControlNodeId)
+	res, err := ansible.Ansible(&flags.ConnectionDetails, flags.ControlNodeId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := ansible.Ansible(&flags.ConnectionDetails, flags.ControlNodeId)
 
 	return nil
 }
-

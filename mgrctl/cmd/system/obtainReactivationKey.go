@@ -13,8 +13,8 @@ import (
 
 type obtainReactivationKeyFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	ClientCert          string
+	Sid                   int
+	ClientCert            string
 }
 
 func obtainReactivationKeyCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func obtainReactivationKeyCommand(globalFlags *types.GlobalFlags) *cobra.Command
 
 func obtainReactivationKey(globalFlags *types.GlobalFlags, flags *obtainReactivationKeyFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.ClientCert)
+	res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.ClientCert)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.Sid, flags.ClientCert)
 
 	return nil
 }
-

@@ -13,7 +13,7 @@ import (
 
 type listSnapshotPackagesFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SnapId          int
+	SnapId                int
 }
 
 func listSnapshotPackagesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listSnapshotPackagesCommand(globalFlags *types.GlobalFlags) *cobra.Command 
 
 func listSnapshotPackages(globalFlags *types.GlobalFlags, flags *listSnapshotPackagesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.SnapId)
+	res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.SnapId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.SnapId)
 
 	return nil
 }
-

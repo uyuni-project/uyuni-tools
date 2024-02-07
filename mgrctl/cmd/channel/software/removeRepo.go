@@ -13,8 +13,8 @@ import (
 
 type removeRepoFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Id          long
-	Label          string
+	Id                    long
+	Label                 string
 }
 
 func removeRepoCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func removeRepoCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func removeRepo(globalFlags *types.GlobalFlags, flags *removeRepoFlags, cmd *cobra.Command, args []string) error {
 
-res, err := software.Software(&flags.ConnectionDetails, flags.Id, flags.Label)
+	res, err := software.Software(&flags.ConnectionDetails, flags.Id, flags.Label)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := software.Software(&flags.ConnectionDetails, flags.Id, flags.Label)
 
 	return nil
 }
-

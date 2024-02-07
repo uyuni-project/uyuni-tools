@@ -13,7 +13,7 @@ import (
 
 type enableConfigDeploymentFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Key          string
+	Key                   string
 }
 
 func enableConfigDeploymentCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func enableConfigDeploymentCommand(globalFlags *types.GlobalFlags) *cobra.Comman
 
 func enableConfigDeployment(globalFlags *types.GlobalFlags, flags *enableConfigDeploymentFlags, cmd *cobra.Command, args []string) error {
 
-res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key)
+	res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key)
 
 	return nil
 }
-

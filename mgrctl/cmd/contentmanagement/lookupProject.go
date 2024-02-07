@@ -33,7 +33,7 @@ func lookupProjectCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func lookupProject(globalFlags *types.GlobalFlags, flags *lookupProjectFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.
 
 	return nil
 }
-

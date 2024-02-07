@@ -13,7 +13,7 @@ import (
 
 type getCustomValuesFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Label          string
+	Label                 string
 }
 
 func getCustomValuesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getCustomValuesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getCustomValues(globalFlags *types.GlobalFlags, flags *getCustomValuesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.Label)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.Label)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.Label)
 
 	return nil
 }
-

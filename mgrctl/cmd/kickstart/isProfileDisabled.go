@@ -33,7 +33,7 @@ func isProfileDisabledCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func isProfileDisabled(globalFlags *types.GlobalFlags, flags *isProfileDisabledFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel)
 
 	return nil
 }
-

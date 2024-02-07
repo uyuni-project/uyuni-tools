@@ -13,7 +13,7 @@ import (
 
 type checkRemoteCommandsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
+	KsLabel               string
 }
 
 func checkRemoteCommandsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func checkRemoteCommandsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func checkRemoteCommands(globalFlags *types.GlobalFlags, flags *checkRemoteCommandsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
+	res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
 
 	return nil
 }
-

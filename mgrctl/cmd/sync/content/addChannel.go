@@ -14,7 +14,7 @@ import (
 type addChannelFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ChannelLabel          string
-	MirrorUrl          string
+	MirrorUrl             string
 }
 
 func addChannelCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func addChannelCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addChannel(globalFlags *types.GlobalFlags, flags *addChannelFlags, cmd *cobra.Command, args []string) error {
 
-res, err := content.Content(&flags.ConnectionDetails, flags.ChannelLabel, flags.MirrorUrl)
+	res, err := content.Content(&flags.ConnectionDetails, flags.ChannelLabel, flags.MirrorUrl)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := content.Content(&flags.ConnectionDetails, flags.ChannelLabel, flags.
 
 	return nil
 }
-

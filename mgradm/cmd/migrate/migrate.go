@@ -6,9 +6,9 @@ package migrate
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {

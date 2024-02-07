@@ -25,13 +25,12 @@ func listAutoinstallableChannelsCommand(globalFlags *types.GlobalFlags) *cobra.C
 		},
 	}
 
-
 	return cmd
 }
 
 func listAutoinstallableChannels(globalFlags *types.GlobalFlags, flags *listAutoinstallableChannelsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails)
 
 	return nil
 }
-

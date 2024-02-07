@@ -25,13 +25,12 @@ func listImageStoreTypesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listImageStoreTypes(globalFlags *types.GlobalFlags, flags *listImageStoreTypesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := store.Store(&flags.ConnectionDetails)
+	res, err := store.Store(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := store.Store(&flags.ConnectionDetails)
 
 	return nil
 }
-

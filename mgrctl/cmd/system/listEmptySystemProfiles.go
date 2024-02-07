@@ -25,13 +25,12 @@ func listEmptySystemProfilesCommand(globalFlags *types.GlobalFlags) *cobra.Comma
 		},
 	}
 
-
 	return cmd
 }
 
 func listEmptySystemProfiles(globalFlags *types.GlobalFlags, flags *listEmptySystemProfilesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails)
+	res, err := system.System(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := system.System(&flags.ConnectionDetails)
 
 	return nil
 }
-

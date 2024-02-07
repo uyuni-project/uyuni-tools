@@ -25,13 +25,12 @@ func listKickstartableChannelsCommand(globalFlags *types.GlobalFlags) *cobra.Com
 		},
 	}
 
-
 	return cmd
 }
 
 func listKickstartableChannels(globalFlags *types.GlobalFlags, flags *listKickstartableChannelsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails)
 
 	return nil
 }
-

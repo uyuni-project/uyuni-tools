@@ -16,11 +16,11 @@ func UpdateRepoSsl(cnxDetails *api.ConnectionDetails, Id int, SslCaCert string, 
 	}
 
 	data := map[string]interface{}{
-		"id":       Id,
-		"sslCaCert":       SslCaCert,
-		"sslCliCert":       SslCliCert,
-		"sslCliKey":       SslCliKey,
-		"label":       Label,
+		"id":         Id,
+		"sslCaCert":  SslCaCert,
+		"sslCliCert": SslCliCert,
+		"sslCliKey":  SslCliKey,
+		"label":      Label,
 	}
 
 	res, err := api.Post[types.ContentSource](client, "channel/software", data)

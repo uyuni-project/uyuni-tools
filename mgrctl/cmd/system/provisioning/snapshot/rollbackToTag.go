@@ -13,8 +13,8 @@ import (
 
 type rollbackToTagFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	TagName          string
+	Sid                   int
+	TagName               string
 }
 
 func rollbackToTagCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func rollbackToTagCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func rollbackToTag(globalFlags *types.GlobalFlags, flags *rollbackToTagFlags, cmd *cobra.Command, args []string) error {
 
-res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.Sid, flags.TagName)
+	res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.Sid, flags.TagName)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := snapshot.Snapshot(&flags.ConnectionDetails, flags.Sid, flags.TagName
 
 	return nil
 }
-

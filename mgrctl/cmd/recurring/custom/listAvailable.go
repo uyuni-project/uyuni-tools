@@ -25,13 +25,12 @@ func listAvailableCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listAvailable(globalFlags *types.GlobalFlags, flags *listAvailableFlags, cmd *cobra.Command, args []string) error {
 
-res, err := custom.Custom(&flags.ConnectionDetails)
+	res, err := custom.Custom(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := custom.Custom(&flags.ConnectionDetails)
 
 	return nil
 }
-

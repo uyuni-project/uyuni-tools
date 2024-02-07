@@ -14,8 +14,8 @@ import (
 type createProjectFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	ProjectLabel          string
-	Name          string
-	Description          string
+	Name                  string
+	Description           string
 }
 
 func createProjectCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func createProjectCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func createProject(globalFlags *types.GlobalFlags, flags *createProjectFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.Name, flags.Description)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel, flags.Name, flags.Description)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.
 
 	return nil
 }
-

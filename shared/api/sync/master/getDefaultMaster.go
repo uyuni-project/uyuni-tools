@@ -21,7 +21,7 @@ func GetDefaultMaster(cnxDetails *api.ConnectionDetails) (*types.IssMaster, erro
 		query := fmt.Sprintf("%s?%s", query, params)
 	}
 
-    res, err := api.Get[types.IssMaster](client, query)
+	res, err := api.Get[types.IssMaster](client, query)
 	if err != nil {
 		return nil, fmt.Errorf("failed to execute getDefaultMaster: %s", err)
 	}

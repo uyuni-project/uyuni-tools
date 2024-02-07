@@ -13,8 +13,8 @@ import (
 
 type fetchPlaybookContentsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	PathId          int
-	PlaybookRelPath          string
+	PathId                int
+	PlaybookRelPath       string
 }
 
 func fetchPlaybookContentsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func fetchPlaybookContentsCommand(globalFlags *types.GlobalFlags) *cobra.Command
 
 func fetchPlaybookContents(globalFlags *types.GlobalFlags, flags *fetchPlaybookContentsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := ansible.Ansible(&flags.ConnectionDetails, flags.PathId, flags.PlaybookRelPath)
+	res, err := ansible.Ansible(&flags.ConnectionDetails, flags.PathId, flags.PlaybookRelPath)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := ansible.Ansible(&flags.ConnectionDetails, flags.PathId, flags.Playbo
 
 	return nil
 }
-

@@ -13,8 +13,8 @@ import (
 
 type cloneProfileFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabelToClone          string
-	NewKsLabel          string
+	KsLabelToClone        string
+	NewKsLabel            string
 }
 
 func cloneProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func cloneProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func cloneProfile(globalFlags *types.GlobalFlags, flags *cloneProfileFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.KsLabelToClone, flags.NewKsLabel)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.KsLabelToClone, flags.NewKsLabel)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.KsLabelToClone, 
 
 	return nil
 }
-

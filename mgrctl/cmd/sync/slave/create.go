@@ -13,8 +13,8 @@ import (
 
 type createFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SlaveFqdn          string
-	IsEnabled          bool
+	SlaveFqdn             string
+	IsEnabled             bool
 	AllowAllOrgs          bool
 }
 
@@ -37,7 +37,7 @@ func createCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func create(globalFlags *types.GlobalFlags, flags *createFlags, cmd *cobra.Command, args []string) error {
 
-res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveFqdn, flags.IsEnabled, flags.AllowAllOrgs)
+	res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveFqdn, flags.IsEnabled, flags.AllowAllOrgs)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := slave.Slave(&flags.ConnectionDetails, flags.SlaveFqdn, flags.IsEnabl
 
 	return nil
 }
-

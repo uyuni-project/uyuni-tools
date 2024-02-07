@@ -13,7 +13,7 @@ import (
 
 type deleteScheduleFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Name          string
+	Name                  string
 }
 
 func deleteScheduleCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func deleteScheduleCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func deleteSchedule(globalFlags *types.GlobalFlags, flags *deleteScheduleFlags, cmd *cobra.Command, args []string) error {
 
-res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Name)
+	res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Name)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Name)
 
 	return nil
 }
-

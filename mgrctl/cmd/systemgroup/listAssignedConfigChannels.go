@@ -13,7 +13,7 @@ import (
 
 type listAssignedConfigChannelsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SystemGroupName          string
+	SystemGroupName       string
 }
 
 func listAssignedConfigChannelsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listAssignedConfigChannelsCommand(globalFlags *types.GlobalFlags) *cobra.Co
 
 func listAssignedConfigChannels(globalFlags *types.GlobalFlags, flags *listAssignedConfigChannelsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupName)
+	res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupName)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupN
 
 	return nil
 }
-

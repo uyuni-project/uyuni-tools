@@ -25,13 +25,12 @@ func listSourcePackagesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func listSourcePackages(globalFlags *types.GlobalFlags, flags *listSourcePackagesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := packages.Packages(&flags.ConnectionDetails)
+	res, err := packages.Packages(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := packages.Packages(&flags.ConnectionDetails)
 
 	return nil
 }
-

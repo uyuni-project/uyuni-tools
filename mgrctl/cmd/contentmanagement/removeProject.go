@@ -33,7 +33,7 @@ func removeProjectCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func removeProject(globalFlags *types.GlobalFlags, flags *removeProjectFlags, cmd *cobra.Command, args []string) error {
 
-res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel)
+	res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.ProjectLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := contentmanagement.Contentmanagement(&flags.ConnectionDetails, flags.
 
 	return nil
 }
-

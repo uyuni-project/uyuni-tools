@@ -13,7 +13,7 @@ import (
 
 type checkConfigManagementFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
+	KsLabel               string
 }
 
 func checkConfigManagementCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func checkConfigManagementCommand(globalFlags *types.GlobalFlags) *cobra.Command
 
 func checkConfigManagement(globalFlags *types.GlobalFlags, flags *checkConfigManagementFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
+	res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
 
 	return nil
 }
-

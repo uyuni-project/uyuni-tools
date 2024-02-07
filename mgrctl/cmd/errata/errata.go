@@ -1,4 +1,3 @@
-
 package errata
 
 import (

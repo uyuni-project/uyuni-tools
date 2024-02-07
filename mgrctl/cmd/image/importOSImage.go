@@ -13,9 +13,9 @@ import (
 
 type importOSImageFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Name          string
-	Version          string
-	Arch          string
+	Name                  string
+	Version               string
+	Arch                  string
 }
 
 func importOSImageCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func importOSImageCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func importOSImage(globalFlags *types.GlobalFlags, flags *importOSImageFlags, cmd *cobra.Command, args []string) error {
 
-res, err := image.Image(&flags.ConnectionDetails, flags.Name, flags.Version, flags.Arch)
+	res, err := image.Image(&flags.ConnectionDetails, flags.Name, flags.Version, flags.Arch)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := image.Image(&flags.ConnectionDetails, flags.Name, flags.Version, fla
 
 	return nil
 }
-

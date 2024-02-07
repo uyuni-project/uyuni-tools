@@ -16,8 +16,8 @@ func Update(cnxDetails *api.ConnectionDetails, SystemGroupName string, Descripti
 	}
 
 	data := map[string]interface{}{
-		"systemGroupName":       SystemGroupName,
-		"description":       Description,
+		"systemGroupName": SystemGroupName,
+		"description":     Description,
 	}
 
 	res, err := api.Post[types.ManagedServerGroup](client, "systemgroup", data)

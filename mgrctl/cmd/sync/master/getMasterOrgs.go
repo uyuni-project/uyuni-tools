@@ -13,7 +13,7 @@ import (
 
 type getMasterOrgsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	MasterId          int
+	MasterId              int
 }
 
 func getMasterOrgsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getMasterOrgsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getMasterOrgs(globalFlags *types.GlobalFlags, flags *getMasterOrgsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := master.Master(&flags.ConnectionDetails, flags.MasterId)
+	res, err := master.Master(&flags.ConnectionDetails, flags.MasterId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := master.Master(&flags.ConnectionDetails, flags.MasterId)
 
 	return nil
 }
-

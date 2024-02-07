@@ -13,9 +13,9 @@ import (
 
 type createScheduleFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Name          string
-	Type          string
-	Calendar          string
+	Name                  string
+	Type                  string
+	Calendar              string
 }
 
 func createScheduleCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func createScheduleCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func createSchedule(globalFlags *types.GlobalFlags, flags *createScheduleFlags, cmd *cobra.Command, args []string) error {
 
-res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Name, flags.Type, flags.Calendar)
+	res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Name, flags.Type, flags.Calendar)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := maintenance.Maintenance(&flags.ConnectionDetails, flags.Name, flags.
 
 	return nil
 }
-

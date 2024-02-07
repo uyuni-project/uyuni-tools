@@ -5,16 +5,16 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
-	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
+	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type setErrataNotificationsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Login          string
-	Value          bool
+	Login                 string
+	Value                 bool
 }
 
 func setErrataNotificationsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setErrataNotificationsCommand(globalFlags *types.GlobalFlags) *cobra.Comman
 
 func setErrataNotifications(globalFlags *types.GlobalFlags, flags *setErrataNotificationsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.Value)
+	res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.Value)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.Value)
 
 	return nil
 }
-

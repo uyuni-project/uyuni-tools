@@ -5,17 +5,17 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
-	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
+	"github.com/uyuni-project/uyuni-tools/shared/api/user"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type addAssignedSystemGroupFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Login          string
-	SgName          string
-	SetDefault          bool
+	Login                 string
+	SgName                string
+	SetDefault            bool
 }
 
 func addAssignedSystemGroupCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -37,7 +37,7 @@ func addAssignedSystemGroupCommand(globalFlags *types.GlobalFlags) *cobra.Comman
 
 func addAssignedSystemGroup(globalFlags *types.GlobalFlags, flags *addAssignedSystemGroupFlags, cmd *cobra.Command, args []string) error {
 
-res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.SgName, flags.SetDefault)
+	res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.SgName, flags.SetDefault)
 	if err != nil {
 		return err
 	}
@@ -46,4 +46,3 @@ res, err := user.User(&flags.ConnectionDetails, flags.Login, flags.SgName, flags
 
 	return nil
 }
-

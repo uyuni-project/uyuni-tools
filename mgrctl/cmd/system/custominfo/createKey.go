@@ -13,8 +13,8 @@ import (
 
 type createKeyFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KeyLabel          string
-	KeyDescription          string
+	KeyLabel              string
+	KeyDescription        string
 }
 
 func createKeyCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func createKeyCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func createKey(globalFlags *types.GlobalFlags, flags *createKeyFlags, cmd *cobra.Command, args []string) error {
 
-res, err := custominfo.Custominfo(&flags.ConnectionDetails, flags.KeyLabel, flags.KeyDescription)
+	res, err := custominfo.Custominfo(&flags.ConnectionDetails, flags.KeyLabel, flags.KeyDescription)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := custominfo.Custominfo(&flags.ConnectionDetails, flags.KeyLabel, flag
 
 	return nil
 }
-

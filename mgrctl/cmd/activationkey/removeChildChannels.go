@@ -13,8 +13,8 @@ import (
 
 type removeChildChannelsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Key          string
-	ChildChannelLabels          []string
+	Key                   string
+	ChildChannelLabels    []string
 }
 
 func removeChildChannelsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func removeChildChannelsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func removeChildChannels(globalFlags *types.GlobalFlags, flags *removeChildChannelsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key, flags.ChildChannelLabels)
+	res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key, flags.ChildChannelLabels)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := activationkey.Activationkey(&flags.ConnectionDetails, flags.Key, fla
 
 	return nil
 }
-

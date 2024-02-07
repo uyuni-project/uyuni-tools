@@ -12,13 +12,13 @@ import (
 )
 
 type createProfileWithCustomUrlFlags struct {
-	api.ConnectionDetails `mapstructure:"api"`
-	ProfileLabel          string
-	VirtualizationType          string
-	KickstartableTreeLabel          string
-	DownloadUrl          bool
-	RootPassword          string
-	UpdateType          string
+	api.ConnectionDetails  `mapstructure:"api"`
+	ProfileLabel           string
+	VirtualizationType     string
+	KickstartableTreeLabel string
+	DownloadUrl            bool
+	RootPassword           string
+	UpdateType             string
 }
 
 func createProfileWithCustomUrlCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -43,7 +43,7 @@ func createProfileWithCustomUrlCommand(globalFlags *types.GlobalFlags) *cobra.Co
 
 func createProfileWithCustomUrl(globalFlags *types.GlobalFlags, flags *createProfileWithCustomUrlFlags, cmd *cobra.Command, args []string) error {
 
-res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, flags.VirtualizationType, flags.KickstartableTreeLabel, flags.DownloadUrl, flags.RootPassword, flags.UpdateType)
+	res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, flags.VirtualizationType, flags.KickstartableTreeLabel, flags.DownloadUrl, flags.RootPassword, flags.UpdateType)
 	if err != nil {
 		return err
 	}
@@ -52,4 +52,3 @@ res, err := kickstart.Kickstart(&flags.ConnectionDetails, flags.ProfileLabel, fl
 
 	return nil
 }
-

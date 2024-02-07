@@ -13,8 +13,8 @@ import (
 
 type addSystemRebootFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	Sid          int
-	ChainLabel          string
+	Sid                   int
+	ChainLabel            string
 }
 
 func addSystemRebootCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func addSystemRebootCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func addSystemReboot(globalFlags *types.GlobalFlags, flags *addSystemRebootFlags, cmd *cobra.Command, args []string) error {
 
-res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.Sid, flags.ChainLabel)
+	res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.Sid, flags.ChainLabel)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := actionchain.Actionchain(&flags.ConnectionDetails, flags.Sid, flags.C
 
 	return nil
 }
-

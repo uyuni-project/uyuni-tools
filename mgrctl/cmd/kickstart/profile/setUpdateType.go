@@ -13,8 +13,8 @@ import (
 
 type setUpdateTypeFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
-	UpdateType          string
+	KsLabel               string
+	UpdateType            string
 }
 
 func setUpdateTypeCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func setUpdateTypeCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func setUpdateType(globalFlags *types.GlobalFlags, flags *setUpdateTypeFlags, cmd *cobra.Command, args []string) error {
 
-res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.UpdateType)
+	res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.UpdateType)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := profile.Profile(&flags.ConnectionDetails, flags.KsLabel, flags.Updat
 
 	return nil
 }
-

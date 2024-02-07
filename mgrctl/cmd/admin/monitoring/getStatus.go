@@ -25,13 +25,12 @@ func getStatusCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-
 	return cmd
 }
 
 func getStatus(globalFlags *types.GlobalFlags, flags *getStatusFlags, cmd *cobra.Command, args []string) error {
 
-res, err := monitoring.Monitoring(&flags.ConnectionDetails)
+	res, err := monitoring.Monitoring(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := monitoring.Monitoring(&flags.ConnectionDetails)
 
 	return nil
 }
-

@@ -16,8 +16,8 @@ func DisassociateRepo(cnxDetails *api.ConnectionDetails, ChannelLabel string, Re
 	}
 
 	data := map[string]interface{}{
-		"channelLabel":       ChannelLabel,
-		"repoLabel":       RepoLabel,
+		"channelLabel": ChannelLabel,
+		"repoLabel":    RepoLabel,
 	}
 
 	res, err := api.Post[types.Channel](client, "channel/software", data)

@@ -17,13 +17,13 @@ func Create(cnxDetails *api.ConnectionDetails, OrgName string, AdminLogin string
 
 	data := map[string]interface{}{
 		"orgName":       OrgName,
-		"adminLogin":       AdminLogin,
-		"adminPassword":       AdminPassword,
-		"prefix":       Prefix,
-		"firstName":       FirstName,
-		"lastName":       LastName,
-		"email":       Email,
-		"usePamAuth":       UsePamAuth,
+		"adminLogin":    AdminLogin,
+		"adminPassword": AdminPassword,
+		"prefix":        Prefix,
+		"firstName":     FirstName,
+		"lastName":      LastName,
+		"email":         Email,
+		"usePamAuth":    UsePamAuth,
 	}
 
 	res, err := api.Post[types.OrgDto](client, "org", data)

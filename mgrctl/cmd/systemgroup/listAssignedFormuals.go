@@ -13,7 +13,7 @@ import (
 
 type listAssignedFormualsFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SystemGroupName          string
+	SystemGroupName       string
 }
 
 func listAssignedFormualsCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func listAssignedFormualsCommand(globalFlags *types.GlobalFlags) *cobra.Command 
 
 func listAssignedFormuals(globalFlags *types.GlobalFlags, flags *listAssignedFormualsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupName)
+	res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupName)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupN
 
 	return nil
 }
-

@@ -13,7 +13,7 @@ import (
 
 type deletePackageProfileFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	ProfileId          int
+	ProfileId             int
 }
 
 func deletePackageProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func deletePackageProfileCommand(globalFlags *types.GlobalFlags) *cobra.Command 
 
 func deletePackageProfile(globalFlags *types.GlobalFlags, flags *deletePackageProfileFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.ProfileId)
+	res, err := system.System(&flags.ConnectionDetails, flags.ProfileId)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.ProfileId)
 
 	return nil
 }
-

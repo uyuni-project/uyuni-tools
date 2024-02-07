@@ -13,8 +13,8 @@ import (
 
 type unsubscribeConfigChannelFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	SystemGroupName          string
-	ConfigChannelLabels          []string
+	SystemGroupName       string
+	ConfigChannelLabels   []string
 }
 
 func unsubscribeConfigChannelCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func unsubscribeConfigChannelCommand(globalFlags *types.GlobalFlags) *cobra.Comm
 
 func unsubscribeConfigChannel(globalFlags *types.GlobalFlags, flags *unsubscribeConfigChannelFlags, cmd *cobra.Command, args []string) error {
 
-res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupName, flags.ConfigChannelLabels)
+	res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupName, flags.ConfigChannelLabels)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := systemgroup.Systemgroup(&flags.ConnectionDetails, flags.SystemGroupN
 
 	return nil
 }
-

@@ -13,8 +13,8 @@ import (
 
 type deleteGuestProfilesFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	HostId          int
-	GuestNames          []string
+	HostId                int
+	GuestNames            []string
 }
 
 func deleteGuestProfilesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -35,7 +35,7 @@ func deleteGuestProfilesCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func deleteGuestProfiles(globalFlags *types.GlobalFlags, flags *deleteGuestProfilesFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.HostId, flags.GuestNames)
+	res, err := system.System(&flags.ConnectionDetails, flags.HostId, flags.GuestNames)
 	if err != nil {
 		return err
 	}
@@ -44,4 +44,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.HostId, flags.GuestNam
 
 	return nil
 }
-

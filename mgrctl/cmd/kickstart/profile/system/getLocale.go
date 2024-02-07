@@ -13,7 +13,7 @@ import (
 
 type getLocaleFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
-	KsLabel          string
+	KsLabel               string
 }
 
 func getLocaleCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -33,7 +33,7 @@ func getLocaleCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func getLocale(globalFlags *types.GlobalFlags, flags *getLocaleFlags, cmd *cobra.Command, args []string) error {
 
-res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
+	res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
 	if err != nil {
 		return err
 	}
@@ -42,4 +42,3 @@ res, err := system.System(&flags.ConnectionDetails, flags.KsLabel)
 
 	return nil
 }
-

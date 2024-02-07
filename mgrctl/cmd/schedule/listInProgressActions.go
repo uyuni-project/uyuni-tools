@@ -25,13 +25,12 @@ func listInProgressActionsCommand(globalFlags *types.GlobalFlags) *cobra.Command
 		},
 	}
 
-
 	return cmd
 }
 
 func listInProgressActions(globalFlags *types.GlobalFlags, flags *listInProgressActionsFlags, cmd *cobra.Command, args []string) error {
 
-res, err := schedule.Schedule(&flags.ConnectionDetails)
+	res, err := schedule.Schedule(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
@@ -40,4 +39,3 @@ res, err := schedule.Schedule(&flags.ConnectionDetails)
 
 	return nil
 }
-
