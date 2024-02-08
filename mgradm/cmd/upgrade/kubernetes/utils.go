@@ -67,7 +67,6 @@ func upgradeKubernetes(
 	}
 
 	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
-
 	defer shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 1)
 
 	nodeName, err := shared_kubernetes.GetNode("uyuni")
@@ -76,7 +75,6 @@ func upgradeKubernetes(
 	}
 
 	pgsqlMigrationArgs := []string{}
-
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
 		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB migration...", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 
