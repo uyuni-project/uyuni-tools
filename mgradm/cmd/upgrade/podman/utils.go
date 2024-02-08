@@ -32,7 +32,10 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 
-	upgrade_shared.SanityCheck(cnx, inspectedValues, serverImage)
+	err = upgrade_shared.SanityCheck(cnx, inspectedValues, serverImage)
+	if err != nil {
+		return err
+	}
 
 	podmanArgs := flags.Podman.Args
 	if flags.MirrorPath != "" {
@@ -41,29 +44,54 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
-
 	if err != nil {
 		return fmt.Errorf("Failed to create temporary directory")
 	}
 
 	shared_podman.StopService(shared_podman.ServerService)
+	if err != nil {
+		return fmt.Errorf("Cannot stop service %s", err)
+	}
+
 	defer shared_podman.StartService(shared_podman.ServerService)
 
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
 		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB migration...", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
-		var migrationImage types.ImageFlags
 		extraArgs := []string{
 			"-v", scriptDir + ":/var/lib/uyuni-tools/",
 		}
-		migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
-		shared_podman.PrepareImage(migrationImage.Name, flags.Image.PullPolicy)
+
+		migrationImageUrl := ""
+		if flags.MigrationImage.Name == "" {
+			migrationImageUrl, err = utils.ComputeImage(flags.Image.Name, flags.Image.Tag, fmt.Sprintf("-migration-%s-%s", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]))
+			if err != nil {
+				return fmt.Errorf("Failed to compute image URL %s", err)
+			}
+		} else {
+			migrationImageUrl, err = utils.ComputeImage(flags.MigrationImage.Name, flags.Image.Tag)
+			if err != nil {
+				return fmt.Errorf("Failed to compute image URL %s", err)
+			}
+
+		}
+
+		err = shared_podman.PrepareImage(migrationImageUrl, flags.Image.PullPolicy)
+		if err != nil {
+			return err
+		}
+
+		log.Info().Msgf("Using migration image %s", migrationImageUrl)
+
 		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], false)
 		if err != nil {
 			return fmt.Errorf("Cannot generate pg migration script %s", err)
 		}
 
-		podman.RunContainer("uyuni-upgrade-pgsql", migrationImage.Name, extraArgs,
+		err = podman.RunContainer("uyuni-upgrade-pgsql", migrationImageUrl, extraArgs,
 			[]string{"/var/lib/uyuni-tools/" + scriptName})
+		if err != nil {
+			return err
+		}
 	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
 		log.Info().Msgf("Upgrading uyuni to %s without changing PostgreSQL version", inspectedValues["uyuni_release"])
 	} else {

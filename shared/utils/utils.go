@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strings"
 	"syscall"
 
 	"github.com/rs/zerolog"
@@ -44,20 +45,27 @@ func AskIfMissing(value *string, prompt string) {
 }
 
 // ComputeImage assembles the container image from its name and tag.
-func ComputeImage(name string, tag string) (string, error) {
+func ComputeImage(name string, tag string, appendToName ...string) (string, error) {
 	imageValid := regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
 	submatches := imageValid.FindStringSubmatch(name)
 	if submatches == nil {
 		return "", fmt.Errorf("invalid image name: %s", name)
 	}
-	if submatches[2] == "" {
-		// No tag provided in the URL name, append the one passed
+	if submatches[2] == `` {
 		if len(tag) <= 0 {
 			return name, fmt.Errorf("Tag missing on %s", name)
 		}
-		return fmt.Sprintf("%s:%s", name, tag), nil
+		if len(appendToName) > 0 {
+			name = name + strings.Join(appendToName, ``)
+		}
+		// No tag provided in the URL name, append the one passed
+		imageName := fmt.Sprintf("%s:%s", name, tag)
+		log.Debug().Msgf("Computed image name is %s", imageName)
+		return imageName, nil
 	}
-	return name, nil
+	imageName := submatches[1] + strings.Join(appendToName, ``) + `:` + submatches[2]
+	log.Debug().Msgf("Computed image name is %s", imageName)
+	return imageName, nil
 }
 
 // Get the timezone set on the machine running the tool

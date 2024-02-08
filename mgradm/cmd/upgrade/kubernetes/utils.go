@@ -76,15 +76,17 @@ func upgradeKubernetes(
 
 		migrationContainer := "uyuni-upgrade-pgsql"
 
-		var migrationImage types.ImageFlags
-		migrationImage.Name = flags.MigrationImage.Name
-		if migrationImage.Name == "" {
-			migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
-		}
-		migrationImage.Tag = flags.MigrationImage.Tag
-		migrationImageUrl, err := utils.ComputeImage(migrationImage.Name, flags.Image.Tag)
-		if err != nil {
-			return fmt.Errorf("Failed to compute image URL %s", err)
+		migrationImageUrl := ""
+		if flags.MigrationImage.Name == "" {
+			migrationImageUrl, err = utils.ComputeImage(flags.Image.Name, flags.Image.Tag, fmt.Sprintf("-migration-%s-%s", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]))
+			if err != nil {
+				return fmt.Errorf("Failed to compute image URL %s", err)
+			}
+		} else {
+			migrationImageUrl, err = utils.ComputeImage(flags.MigrationImage.Name, flags.Image.Tag)
+			if err != nil {
+				return fmt.Errorf("Failed to compute image URL %s", err)
+			}
 		}
 
 		log.Info().Msgf("Using migration image %s", migrationImageUrl)
