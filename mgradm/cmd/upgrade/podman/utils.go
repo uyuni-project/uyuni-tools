@@ -84,7 +84,7 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 
 		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], false)
 		if err != nil {
-			return fmt.Errorf("Cannot generate pg migration script %s", err)
+			return fmt.Errorf("Cannot generate postgresql database migration script %s", err)
 		}
 
 		err = podman.RunContainer("uyuni-upgrade-pgsql", migrationImageUrl, extraArgs,
@@ -93,9 +93,9 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 			return err
 		}
 	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
-		log.Info().Msgf("Upgrading uyuni to %s without changing PostgreSQL version", inspectedValues["uyuni_release"])
+		log.Info().Msgf("Upgrading to %s without changing PostgreSQL version", inspectedValues["uyuni_release"])
 	} else {
-		return fmt.Errorf("Trying to downgrade PostgreSQL. Previous postgresql is %s, instead new one is %s", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+		return fmt.Errorf("Trying to downgrade postgresql from %s to %s", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 	}
 
 	extraArgs := []string{
@@ -104,12 +104,18 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 
 	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"], true, true, false)
 	if err != nil {
-		return fmt.Errorf("Cannot generate finalize postgres script %s", err)
+		return fmt.Errorf("Cannot generate postgresql migration finalization script %s", err)
 	}
-	podman.RunContainer("uyuni-finalize-pgsql", serverImage, extraArgs,
+	err = podman.RunContainer("uyuni-finalize-pgsql", serverImage, extraArgs,
 		[]string{"/var/lib/uyuni-tools/" + scriptName})
+	if err != nil {
+		return err
+	}
 
-	shared_podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+serverImage)
+	err = shared_podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+serverImage)
+	if err != nil {
+		return err
+	}
 	log.Info().Msg("Waiting for the server to start...")
 	shared_podman.ReloadDaemon(false)
 

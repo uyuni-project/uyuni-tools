@@ -70,7 +70,10 @@ func migrateToKubernetes(
 	// Run the actual migration
 	adm_utils.RunMigration(cnx, scriptDir, "migrate.sh")
 
-	tz, oldPgVersion, newPgVersion := adm_utils.ReadContainerData(scriptDir)
+	tz, oldPgVersion, newPgVersion, err := adm_utils.ReadContainerData(scriptDir)
+	if err != nil {
+		return fmt.Errorf("cannot read data from container: %s", err)
+	}
 
 	helmArgs := []string{
 		"--reset-values",
@@ -87,7 +90,7 @@ func migrateToKubernetes(
 
 		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
 		if err != nil {
-			return fmt.Errorf("Cannot generate pg migration script: %s", err)
+			return fmt.Errorf("Cannot generate postgresql database migration script: %s", err)
 		}
 
 		migrationImageUrl, err := utils.ComputeImage(migrationImage.Name, migrationImage.Tag)
@@ -101,7 +104,7 @@ func migrateToKubernetes(
 
 	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
 	if err != nil {
-		return fmt.Errorf("Cannot generate finalize pg script: %s", err)
+		return fmt.Errorf("Cannot generate postgresql migration finalization script: %s", err)
 	}
 
 	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)

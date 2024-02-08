@@ -58,7 +58,10 @@ func installForPodman(
 	if err != nil {
 		return fmt.Errorf("failed to compute image URL, %s", err)
 	}
-	shared_podman.PrepareImage(image, flags.Image.PullPolicy)
+	err = shared_podman.PrepareImage(image, flags.Image.PullPolicy)
+	if err != nil {
+		return err
+	}
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 	waitForSystemStart(cnx, flags)

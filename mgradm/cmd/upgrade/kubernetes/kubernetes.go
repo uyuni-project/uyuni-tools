@@ -17,7 +17,6 @@ import (
 type kubernetesUpgradeFlags struct {
 	shared.UpgradeFlags `mapstructure:",squash"`
 	Helm                cmd_utils.HelmFlags
-	//Ssl                 cmd_utils.SslCertFlags
 }
 
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {

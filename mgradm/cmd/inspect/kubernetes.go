@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path"
 	"strconv"
 
 	"github.com/rs/zerolog/log"
@@ -30,26 +31,29 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
-
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("Failed to create temporary directory. %s", err)
 	}
 
-	inspect_shared.GenerateInspectScript(scriptDir)
+	if err := inspect_shared.GenerateInspectScript(scriptDir); err != nil {
+		return map[string]string{}, err
+	}
 
-	command := inspect_shared.InspectOutputFile.Directory + "/" + inspect_shared.InspectScriptFilename
+	command := path.Join(inspect_shared.InspectOutputFile.Directory, inspect_shared.InspectScriptFilename)
 
-	podName := "inspector"
+	const podName = "inspector"
 
 	nodeName, err := shared_kubernetes.GetNode("uyuni")
-
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("Cannot find node for app uyuni %s", err)
 	}
 
 	overridesArgs := []string{"--override-type=strategic", "--overrides", `{"apiVersion":"v1","spec":{"nodeName":"` + nodeName + `","restartPolicy":"Never","containers":[{"name":` + strconv.Quote(podName) + `,"image":` + strconv.Quote(serverImage) + `,"volumeMounts":[{"mountPath":"/var/lib/pgsql","name":"var-pgsql"},{"mountPath":"/etc/rhn","name":"etc-rhn"}, {"mountPath":"` + inspect_shared.InspectOutputFile.Directory + `","name":"var-lib-uyuni-tools"}]}],"volumes":[{"name":"var-pgsql","persistentVolumeClaim":{"claimName":"var-pgsql"}},{"name":"var-lib-uyuni-tools","hostPath":{"path":` + strconv.Quote(scriptDir) + `,"type":"Directory"}},{"name":"etc-rhn","persistentVolumeClaim":{"claimName":"etc-rhn"}}]}}`}
 
-	shared_kubernetes.RunPod(podName, serverImage, pullPolicy, command, overridesArgs...)
+	err = shared_kubernetes.RunPod(podName, serverImage, pullPolicy, command, overridesArgs...)
+	if err != nil {
+		return map[string]string{}, fmt.Errorf("Cannot run inspect pod %s", err)
+	}
 
 	inspectResult, err := inspect_shared.ReadInspectData(scriptDir)
 	if err != nil {

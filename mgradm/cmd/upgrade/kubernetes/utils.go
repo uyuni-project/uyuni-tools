@@ -43,7 +43,14 @@ func upgradeKubernetes(
 	}
 
 	inspectedValues, err := inspect.InspectKubernetes(serverImage, flags.Image.PullPolicy)
-	upgrade_shared.SanityCheck(cnx, inspectedValues, serverImage)
+	if err != nil {
+		return err
+	}
+
+	err = upgrade_shared.SanityCheck(cnx, inspectedValues, serverImage)
+	if err != nil {
+		return err
+	}
 
 	fqdn, exist := inspectedValues["fqdn"]
 	if !exist {
@@ -64,7 +71,6 @@ func upgradeKubernetes(
 	defer shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 1)
 
 	nodeName, err := shared_kubernetes.GetNode("uyuni")
-
 	if err != nil {
 		return fmt.Errorf("Cannot find node for app uyuni %s", err)
 	}
@@ -91,7 +97,6 @@ func upgradeKubernetes(
 
 		log.Info().Msgf("Using migration image %s", migrationImageUrl)
 
-		//FIXME create a type for it and pass it as Go Template
 		pgsqlMigrationArgs = []string{
 			"--override-type=strategic",
 			"--overrides",
@@ -112,10 +117,7 @@ func upgradeKubernetes(
 		}
 	}
 
-	//FIXME finalize pgsql should be done automatically
-
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
-
 	pgsqlFinalizeArgs := []string{
 		"--override-type=strategic",
 		"--overrides",
@@ -125,9 +127,7 @@ func upgradeKubernetes(
 			strconv.Quote(scriptDir),
 		),
 	}
-
 	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"], true, true, true)
-
 	if err != nil {
 		return fmt.Errorf("Cannot generate pg migration script: %s", err)
 	}
@@ -142,7 +142,5 @@ func upgradeKubernetes(
 		return fmt.Errorf("Cannot upgrade to image %s: %s", serverImage, err)
 	}
 
-	shared_kubernetes.WaitForDeployment(flags.Helm.Uyuni.Namespace, "uyuni", "uyuni")
-
-	return nil
+	return shared_kubernetes.WaitForDeployment(flags.Helm.Uyuni.Namespace, "uyuni", "uyuni")
 }

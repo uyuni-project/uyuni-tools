@@ -6,6 +6,7 @@ package kubernetes
 
 import (
 	"encoding/base64"
+	"fmt"
 	"os"
 	"path/filepath"
 	"time"
@@ -101,7 +102,7 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	return []string{}
 }
 
-func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, imagePullPolicy string) {
+func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, imagePullPolicy string) error {
 	if !kubernetes.IsDeploymentReady("", "cert-manager") {
 		log.Info().Msg("Installing cert-manager")
 		repo := ""
@@ -129,7 +130,12 @@ func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, image
 	}
 
 	// Wait for cert-manager to be ready
-	kubernetes.WaitForDeployment("", "cert-manager-webhook", "webhook")
+	err := kubernetes.WaitForDeployment("", "cert-manager-webhook", "webhook")
+	if err != nil {
+		return fmt.Errorf("cannot deploy: %s", err)
+	}
+
+	return nil
 }
 
 func extractCaCertToConfig() {

@@ -16,7 +16,7 @@ const helmAppName = "uyuni-proxy"
 
 func Deploy(installFlags *utils.ProxyInstallFlags, helmFlags *HelmFlags, configDir string,
 	kubeconfig string, helmArgs ...string,
-) {
+) error {
 	log.Info().Msg("Installing Uyuni")
 
 	helmParams := []string{}
@@ -47,5 +47,5 @@ func Deploy(installFlags *utils.ProxyInstallFlags, helmFlags *HelmFlags, configD
 		helmFlags.Proxy.Version, helmParams...)
 
 	// Wait for the pod to be started
-	kubernetes.WaitForDeployment(helmFlags.Proxy.Namespace, helmAppName, "uyuni-proxy")
+	return kubernetes.WaitForDeployment(helmFlags.Proxy.Namespace, helmAppName, "uyuni-proxy")
 }

@@ -59,7 +59,6 @@ func inspect(globalFlags *types.GlobalFlags, flags *inspectFlags, cmd *cobra.Com
 
 	cnx := shared.NewConnection(backend, serverContainerName, kubernetes.ServerFilter)
 	command, err := cnx.GetCommand()
-
 	if err != nil {
 		return fmt.Errorf("Failed to determine suitable backend")
 	}

@@ -21,7 +21,6 @@ const serverContainerName = "uyuni-server"
 func InspectPodman(serverImage string, pullPolicy string) (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
-
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("Failed to create temporary directory %s", err)
 	}
@@ -30,21 +29,27 @@ func InspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 		"-v", scriptDir + ":" + inspect_shared.InspectOutputFile.Directory,
 	}
 
-	shared_podman.PrepareImage(serverImage, pullPolicy)
+	err = shared_podman.PrepareImage(serverImage, pullPolicy)
+	if err != nil {
+		return map[string]string{}, err
+	}
 
-	shared.GenerateInspectScript(scriptDir)
+	if err := shared.GenerateInspectScript(scriptDir); err != nil {
+		return map[string]string{}, err
+	}
 
-	podman.RunContainer("uyuni-inspect", serverImage, extraArgs,
+	err = podman.RunContainer("uyuni-inspect", serverImage, extraArgs,
 		[]string{inspect_shared.InspectOutputFile.Directory + "/" + inspect_shared.InspectScriptFilename})
+	if err != nil {
+		return map[string]string{}, err
+	}
 
 	inspectResult, err := shared.ReadInspectData(scriptDir)
-
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("Cannot inspect data. %s", err)
 	}
 
 	prettyInspectOutput, err := json.MarshalIndent(inspectResult, "", "  ")
-
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("Cannot print inspect result %s", err)
 	}

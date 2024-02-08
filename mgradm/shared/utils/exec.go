@@ -6,6 +6,7 @@ package utils
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -79,14 +80,14 @@ func GenerateFinalizePostgresMigrationScript(scriptDir string, RunAutotune bool,
 	return scriptName, nil
 }
 
-func ReadContainerData(scriptDir string) (string, string, string) {
+func ReadContainerData(scriptDir string) (string, string, string, error) {
 	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))
 	if err != nil {
-		log.Fatal().Msgf("Failed to read data extracted from source host")
+		return "", "", "", errors.New("failed to read data extracted from source host")
 	}
 	viper.SetConfigType("env")
 	viper.ReadConfig(bytes.NewBuffer(data))
-	return viper.GetString("Timezone"), viper.GetString("old_pg_version"), viper.GetString("new_pg_version")
+	return viper.GetString("Timezone"), viper.GetString("old_pg_version"), viper.GetString("new_pg_version"), nil
 }
 
 func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) error {
@@ -101,7 +102,7 @@ func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) err
 func GenerateMigrationScript(sourceFqdn string, kubernetes bool) (string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to create temporary directory")
+		return "", fmt.Errorf("Failed to create temporary directory: %s", err)
 	}
 
 	data := templates.MigrateScriptTemplateData{

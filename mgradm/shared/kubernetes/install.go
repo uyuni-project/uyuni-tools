@@ -38,9 +38,15 @@ func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 
 	// Install the uyuni server helm chart
 	UyuniUpgrade(serverImage, imageFlags.PullPolicy, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
+	if err != nil {
+		return fmt.Errorf("cannot upgrade: %s", err)
+	}
 
 	// Wait for the pod to be started
 	kubernetes.WaitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
+	if err != nil {
+		return fmt.Errorf("cannot deploy: %s", err)
+	}
 	cnx.WaitForServer()
 
 	return nil

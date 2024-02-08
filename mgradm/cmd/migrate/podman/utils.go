@@ -53,16 +53,22 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to compute image URL")
+		return fmt.Errorf("Failed to compute image URL: %s", err)
 	}
-	podman_utils.PrepareImage(serverImage, flags.Image.PullPolicy)
+	err = podman_utils.PrepareImage(serverImage, flags.Image.PullPolicy)
+	if err != nil {
+		return err
+	}
 
 	log.Info().Msg("Migrating server")
 	podman.RunContainer("uyuni-migration", serverImage, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"})
 
 	// Read the extracted data
-	tz, oldPgVersion, newPgVersion := adm_utils.ReadContainerData(scriptDir)
+	tz, oldPgVersion, newPgVersion, err := adm_utils.ReadContainerData(scriptDir)
+	if err != nil {
+		return fmt.Errorf("cannot read data from container: %s", err)
+	}
 
 	if oldPgVersion != newPgVersion {
 		var migrationImage types.ImageFlags
@@ -77,10 +83,14 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		if err != nil {
 			return fmt.Errorf("Failed to compute image URL: %s", err)
 		}
-		podman_utils.PrepareImage(image, flags.Image.PullPolicy)
+		err = podman_utils.PrepareImage(image, flags.Image.PullPolicy)
+		if err != nil {
+			return err
+		}
+
 		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
 		if err != nil {
-			return fmt.Errorf("Cannot generate pg migration script: %s", err)
+			return fmt.Errorf("Cannot generate postgresql database migration script: %s", err)
 		}
 
 		err = podman.RunContainer("uyuni-pg-migration", image, extraArgs,
@@ -93,12 +103,11 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
 	if err != nil {
-		return fmt.Errorf("Cannot generate pg migration script: %s", err)
+		return fmt.Errorf("Cannot generate postgresql database migration script: %s", err)
 	}
 
-	podman.RunContainer("uyuni-finalize-pg", serverImage, extraArgs,
+	err = podman.RunContainer("uyuni-finalize-pg", serverImage, extraArgs,
 		[]string{"/var/lib/uyuni-tools/" + scriptName})
-
 	if err != nil {
 		return fmt.Errorf("Cannot run uyuni-finalize-pg container: %s", err)
 	}

@@ -49,11 +49,8 @@ func GenerateInspectScript(scriptDir string) error {
 
 func ReadInspectData(scriptDir string) (map[string]string, error) {
 	path := filepath.Join(scriptDir, "data")
-
 	log.Debug().Msgf("Trying to read %s", path)
-
 	data, err := os.ReadFile(path)
-
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("Cannot parse file %s: %s", path, err)
 	}
