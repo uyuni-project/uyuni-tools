@@ -14,6 +14,7 @@ import (
 
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -57,7 +58,7 @@ func inspect(globalFlags *types.GlobalFlags, flags *inspectFlags, cmd *cobra.Com
 		backend, _ = cmd.Flags().GetString("backend")
 	}
 
-	cnx := shared.NewConnection(backend, serverContainerName, kubernetes.ServerFilter)
+	cnx := shared.NewConnection(backend, shared_podman.ServerContainerName, kubernetes.ServerFilter)
 	command, err := cnx.GetCommand()
 	if err != nil {
 		return fmt.Errorf("Failed to determine suitable backend")
@@ -72,7 +73,7 @@ func inspect(globalFlags *types.GlobalFlags, flags *inspectFlags, cmd *cobra.Com
 	case "podman":
 		if len(serverImage) <= 0 {
 			log.Debug().Msg("Use deployed image")
-			serverImage, err = adm_utils.RunningImage(cnx, serverContainerName)
+			serverImage, err = adm_utils.RunningImage(cnx, shared_podman.ServerContainerName)
 			if err != nil {
 				return fmt.Errorf("Failed to find current running image")
 			}

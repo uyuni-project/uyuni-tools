@@ -16,8 +16,6 @@ import (
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 )
 
-const serverContainerName = "uyuni-server"
-
 func InspectPodman(serverImage string, pullPolicy string) (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
