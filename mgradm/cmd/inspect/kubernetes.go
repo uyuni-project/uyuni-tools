@@ -12,12 +12,12 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"strconv"
 
 	"github.com/rs/zerolog/log"
 
 	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 var kubernetesBuilt = true
@@ -43,14 +43,39 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 
 	const podName = "inspector"
 
+	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
+	shared_kubernetes.DeletePod(podName)
+
+	//this is needed because folder with script needs to be mounted
 	nodeName, err := shared_kubernetes.GetNode("uyuni")
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("Cannot find node for app uyuni %s", err)
 	}
 
-	overridesArgs := []string{"--override-type=strategic", "--overrides", `{"apiVersion":"v1","spec":{"nodeName":"` + nodeName + `","restartPolicy":"Never","containers":[{"name":` + strconv.Quote(podName) + `,"image":` + strconv.Quote(serverImage) + `,"volumeMounts":[{"mountPath":"/var/lib/pgsql","name":"var-pgsql"},{"mountPath":"/etc/rhn","name":"etc-rhn"}, {"mountPath":"` + inspect_shared.InspectOutputFile.Directory + `","name":"var-lib-uyuni-tools"}]}],"volumes":[{"name":"var-pgsql","persistentVolumeClaim":{"claimName":"var-pgsql"}},{"name":"var-lib-uyuni-tools","hostPath":{"path":` + strconv.Quote(scriptDir) + `,"type":"Directory"}},{"name":"etc-rhn","persistentVolumeClaim":{"claimName":"etc-rhn"}}]}}`}
-
-	err = shared_kubernetes.RunPod(podName, serverImage, pullPolicy, command, overridesArgs...)
+	//generate deploy data
+	deployData := types.Deployment{
+		APIVersion: "v1",
+		Spec: &types.Spec{
+			RestartPolicy: "Never",
+			NodeName:      nodeName,
+			Containers: []types.Container{
+				{
+					Name: podName,
+					VolumeMounts: append(shared_kubernetes.PgsqlRequiredVolumeMounts,
+						types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
+					Image: serverImage,
+				},
+			},
+			Volumes: append(shared_kubernetes.PgsqlRequiredVolumes,
+				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
+		},
+	}
+	//transform deploy data in JSON
+	override, err := shared_kubernetes.GenerateOverrideDeployment(deployData)
+	if err != nil {
+		return map[string]string{}, err
+	}
+	err = shared_kubernetes.RunPod(podName, serverImage, pullPolicy, command, override)
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("Cannot run inspect pod %s", err)
 	}

@@ -5,6 +5,7 @@
 package kubernetes
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strconv"
@@ -13,6 +14,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -21,6 +23,27 @@ const ProxyFilter = "-lapp=uyuni-proxy"
 
 type KubernetesFlags struct {
 	Args []string `mapstructure:"arg"`
+}
+
+var PgsqlRequiredVolumeMounts = []types.VolumeMount{
+	{MountPath: "/etc/pki/tls", Name: "etc-tls"},
+	{MountPath: "/var/lib/pgsql", Name: "var-pgsql"},
+	{MountPath: "/etc/rhn", Name: "etc-rhn"},
+	{MountPath: "/etc/pki/spacewalk-tls", Name: "tls-key"},
+}
+
+var PgsqlRequiredVolumes = []types.Volume{
+	{Name: "etc-tls", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-tls"}},
+	{Name: "var-pgsql", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "var-pgsql"}},
+	{Name: "etc-rhn", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-rhn"}},
+	{Name: "tls-key",
+		Secret: &types.Secret{
+			SecretName: "uyuni-cert", Items: []types.SecretItem{
+				{Key: "tls.crt", Path: "spacewalk.crt"},
+				{Key: "tls.key", Path: "spacewalk.key"},
+			},
+		},
+	},
 }
 
 // waitForDeployment waits at most 60s for a kubernetes deployment to have at least one replica.
@@ -208,9 +231,17 @@ func GetPullPolicy(name string) string {
 	return policy
 }
 
-func RunPod(podname string, image string, pullPolicy string, command string, args ...string) error {
+func RunPod(podname string, image string, pullPolicy string, command string, override ...string) error {
 	arguments := []string{"run", podname, "--image", image, "--image-pull-policy", pullPolicy}
-	arguments = append(arguments, args...)
+
+	if len(override) > 0 {
+		arguments = append(arguments, `--override-type=strategic`)
+		for _, arg := range override {
+			overrideParam := "--overrides=" + arg
+			arguments = append(arguments, overrideParam)
+		}
+	}
+
 	arguments = append(arguments, "--command", "--", command)
 	err := utils.RunCmdStdMapping("kubectl", arguments...)
 	if err != nil {
@@ -220,11 +251,11 @@ func RunPod(podname string, image string, pullPolicy string, command string, arg
 	if err != nil {
 		return fmt.Errorf("Deleting pod %s. Status fails with error %s", podname, err)
 	}
-	defer deletePod(podname)
+	defer DeletePod(podname)
 	return nil
 }
 
-func deletePod(podname string) (string, error) {
+func DeletePod(podname string) (string, error) {
 	arguments := []string{"delete", "pod", podname}
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", arguments...)
 	if err != nil {
@@ -271,4 +302,12 @@ func GetNode(appName string) (string, error) {
 		return "", fmt.Errorf("Cannot find Node name for app %s", appName)
 	}
 	return nodeName, nil
+}
+
+func GenerateOverrideDeployment(deployData types.Deployment) (string, error) {
+	ret, err := json.Marshal(deployData)
+	if err != nil {
+		return "", fmt.Errorf("Cannot marshal deployment %s", err)
+	}
+	return string(ret), nil
 }

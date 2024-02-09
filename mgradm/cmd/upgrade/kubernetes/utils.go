@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"strconv"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -69,11 +68,6 @@ func upgradeKubernetes(
 	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
 	defer shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 1)
 
-	nodeName, err := shared_kubernetes.GetNode("uyuni")
-	if err != nil {
-		return fmt.Errorf("Cannot find node for app uyuni %s", err)
-	}
-
 	pgsqlMigrationArgs := []string{}
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
 		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB migration...", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
@@ -94,43 +88,88 @@ func upgradeKubernetes(
 		}
 
 		log.Info().Msgf("Using migration image %s", migrationImageUrl)
-
-		pgsqlMigrationArgs = []string{
-			"--override-type=strategic",
-			"--overrides",
-			fmt.Sprintf(`{"apiVersion":"v1","spec":{"nodeName":"%s","restartPolicy":"Never","containers":[{"name":%s,"volumeMounts":[{"mountPath":"/etc/pki/tls","name":"etc-tls"},{"mountPath":"/var/lib/pgsql","name":"var-pgsql"},{"mountPath":"/var/lib/uyuni-tools","name":"var-lib-uyuni-tools"},{"mountPath":"/etc/rhn","name":"etc-rhn"},{"mountPath":"/etc/pki/spacewalk-tls","name":"tls-key"}]}],"volumes":[{"name":"etc-tls","persistentVolumeClaim":{"claimName":"etc-tls"}},{"name":"var-pgsql","persistentVolumeClaim":{"claimName":"var-pgsql"}},{"name":"var-lib-uyuni-tools","hostPath":{"path":%s,"type":"Directory"}},{"name":"etc-rhn","persistentVolumeClaim":{"claimName":"etc-rhn"}},{"name":"tls-key","secret":{"secretName":"uyuni-cert","items":[{"key":"tls.crt","path":"spacewalk.crt"},{"key":"tls.key","path":"spacewalk.key"}]}}]}}`,
-				nodeName,
-				strconv.Quote(migrationContainer),
-				strconv.Quote(scriptDir),
-			),
-		}
 		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], true)
 		if err != nil {
 			return fmt.Errorf("Cannot generate pg migration script: %s", err)
 		}
 
-		err = shared_kubernetes.RunPod(migrationContainer, migrationImageUrl, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+scriptName, pgsqlMigrationArgs...)
+		//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
+		shared_kubernetes.DeletePod(migrationContainer)
+		//this is needed because folder with script needs to be mounted
+		nodeName, err := shared_kubernetes.GetNode("uyuni")
+		if err != nil {
+			return fmt.Errorf("Cannot find node for app uyuni %s", err)
+		}
+
+		//generate deploy data
+		deployData := types.Deployment{
+			APIVersion: "v1",
+			Spec: &types.Spec{
+				RestartPolicy: "Never",
+				NodeName:      nodeName,
+				Containers: []types.Container{
+					{
+						Name: migrationContainer,
+						VolumeMounts: append(shared_kubernetes.PgsqlRequiredVolumeMounts,
+							types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
+					},
+				},
+				Volumes: append(shared_kubernetes.PgsqlRequiredVolumes,
+					types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
+			},
+		}
+
+		//transform deploy in JSON
+		override, err := shared_kubernetes.GenerateOverrideDeployment(deployData)
+		if err != nil {
+			return err
+		}
+
+		err = shared_kubernetes.RunPod(migrationContainer, migrationImageUrl, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+scriptName, override)
 		if err != nil {
 			return fmt.Errorf("Error running container %s: %s", migrationContainer, err)
 		}
 	}
 
-	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
-	pgsqlFinalizeArgs := []string{
-		"--override-type=strategic",
-		"--overrides",
-		fmt.Sprintf(`{"apiVersion":"v1","spec":{"nodeName":"%s","restartPolicy":"Never","containers":[{"name":%s,"volumeMounts":[{"mountPath":"/etc/pki/tls","name":"etc-tls"},{"mountPath":"/var/lib/pgsql","name":"var-pgsql"},{"mountPath":"/var/lib/uyuni-tools","name":"var-lib-uyuni-tools"},{"mountPath":"/etc/rhn","name":"etc-rhn"},{"mountPath":"/etc/pki/spacewalk-tls","name":"tls-key"}]}],"volumes":[{"name":"etc-tls","persistentVolumeClaim":{"claimName":"etc-tls"}},{"name":"var-pgsql","persistentVolumeClaim":{"claimName":"var-pgsql"}},{"name":"var-lib-uyuni-tools","hostPath":{"path":%s,"type":"Directory"}},{"name":"etc-rhn","persistentVolumeClaim":{"claimName":"etc-rhn"}},{"name":"tls-key","secret":{"secretName":"uyuni-cert","items":[{"key":"tls.crt","path":"spacewalk.crt"},{"key":"tls.key","path":"spacewalk.key"}]}}]}}`,
-			nodeName,
-			strconv.Quote(pgsqlFinalizeContainer),
-			strconv.Quote(scriptDir),
-		),
-	}
 	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"], true, true, true)
 	if err != nil {
 		return fmt.Errorf("Cannot generate pg migration script: %s", err)
 	}
 
-	err = shared_kubernetes.RunPod(pgsqlFinalizeContainer, serverImage, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+scriptName, pgsqlFinalizeArgs...)
+	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
+
+	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
+	shared_kubernetes.DeletePod(pgsqlFinalizeContainer)
+
+	//this is needed because folder with script needs to be mounted
+	nodeName, err := shared_kubernetes.GetNode("uyuni")
+	if err != nil {
+		return fmt.Errorf("Cannot find node for app uyuni %s", err)
+	}
+
+	//generate deploy data
+	deployData := types.Deployment{
+		APIVersion: "v1",
+		Spec: &types.Spec{
+			RestartPolicy: "Never",
+			NodeName:      nodeName,
+			Containers: []types.Container{
+				{
+					Name: pgsqlFinalizeContainer,
+					VolumeMounts: append(shared_kubernetes.PgsqlRequiredVolumeMounts,
+						types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
+				},
+			},
+			Volumes: append(shared_kubernetes.PgsqlRequiredVolumes,
+				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
+		},
+	}
+	//transform deploy data in JSON
+	override, err := shared_kubernetes.GenerateOverrideDeployment(deployData)
+	if err != nil {
+		return err
+	}
+	err = shared_kubernetes.RunPod(pgsqlFinalizeContainer, serverImage, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+scriptName, override)
 	if err != nil {
 		return fmt.Errorf("Error running container %s: %s", pgsqlFinalizeContainer, err)
 	}
