@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -17,8 +17,8 @@ type podmanInstallFlags struct {
 	Podman              podman.PodmanFlags
 }
 
+// NewCommand for podman installation.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	podmanCmd := &cobra.Command{
 		Use:   "podman [fqdn]",
 		Short: "install a new server on podman from scratch",

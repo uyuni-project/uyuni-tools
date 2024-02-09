@@ -1,17 +1,18 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package uninstall
 
 import (
+	"fmt"
+
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func uninstallForPodman(dryRun bool, purge bool) {
-
+func uninstallForPodman(dryRun bool, purge bool) error {
 	// Uninstall the service
 	podman.UninstallService("uyuni-proxy-pod", dryRun)
 
@@ -37,12 +38,14 @@ func uninstallForPodman(dryRun bool, purge bool) {
 
 		// Delete each volume
 		for volume := range volumes {
-			podman.DeleteVolume(volume, dryRun)
+			if err := podman.DeleteVolume(volume, dryRun); err != nil {
+				return fmt.Errorf("cannot delete volume %s: %s", volume, err)
+			}
 		}
 		log.Info().Msg("All volumes removed")
 	}
 
 	podman.DeleteNetwork(dryRun)
 
-	podman.ReloadDaemon(dryRun)
+	return podman.ReloadDaemon(dryRun)
 }

@@ -22,10 +22,11 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// ExecCommand execute commands passed as argument in the current system.
 func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string) error {
 	podName, err := cnx.GetPodName()
 	if err != nil {
-		return fmt.Errorf("ExecCommand failed %s", err)
+		return fmt.Errorf("execCommand failed %s", err)
 	}
 
 	commandArgs := []string{"exec", podName}
@@ -48,6 +49,7 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	return runCmd.Run()
 }
 
+// GeneratePgMigrationScript generates the PostgreSQL migration script.
 func GeneratePgMigrationScript(scriptDir string, oldPgVersion string, newPgVersion string, kubernetes bool) (string, error) {
 	data := templates.MigratePostgresVersionTemplateData{
 		OldVersion: oldPgVersion,
@@ -58,11 +60,12 @@ func GeneratePgMigrationScript(scriptDir string, oldPgVersion string, newPgVersi
 	scriptName := "migrate_pgsql.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf("Failed to generate %s", scriptName)
+		return "", fmt.Errorf("failed to generate %s", scriptName)
 	}
 	return scriptName, nil
 }
 
+// GenerateFinalizePostgresMigrationScript generates the script to finalize PostgreSQL upgrade.
 func GenerateFinalizePostgresMigrationScript(scriptDir string, RunAutotune bool, RunReindex bool, RunSchemaUpdate bool, RunDistroMigration bool, kubernetes bool) (string, error) {
 	data := templates.FinalizePostgresTemplateData{
 		RunAutotune:        RunAutotune,
@@ -75,21 +78,25 @@ func GenerateFinalizePostgresMigrationScript(scriptDir string, RunAutotune bool,
 	scriptName := "finalize_pgsql.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf("Failed to generate %s", scriptName)
+		return "", fmt.Errorf("failed to generate %s", scriptName)
 	}
 	return scriptName, nil
 }
 
+// ReadContainerData returns values used to perform migration.
 func ReadContainerData(scriptDir string) (string, string, string, error) {
 	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))
 	if err != nil {
 		return "", "", "", errors.New("failed to read data extracted from source host")
 	}
 	viper.SetConfigType("env")
-	viper.ReadConfig(bytes.NewBuffer(data))
+	if err := viper.ReadConfig(bytes.NewBuffer(data)); err != nil {
+		return "", "", "", fmt.Errorf("cannot read config: %s", err)
+	}
 	return viper.GetString("Timezone"), viper.GetString("old_pg_version"), viper.GetString("new_pg_version"), nil
 }
 
+// RunMigration execute the migration script.
 func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) error {
 	log.Info().Msg("Migrating server")
 	err := ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/"+scriptName)
@@ -99,10 +106,11 @@ func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) err
 	return nil
 }
 
+// GenerateMigrationScript generates the script that perform migration.
 func GenerateMigrationScript(sourceFqdn string, kubernetes bool) (string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return "", fmt.Errorf("Failed to create temporary directory: %s", err)
+		return "", fmt.Errorf("failed to create temporary directory: %s", err)
 	}
 
 	data := templates.MigrateScriptTemplateData{
@@ -113,12 +121,13 @@ func GenerateMigrationScript(sourceFqdn string, kubernetes bool) (string, error)
 
 	scriptPath := filepath.Join(scriptDir, "migrate.sh")
 	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf("Failed to generate migration script: %s", err)
+		return "", fmt.Errorf("failed to generate migration script: %s", err)
 	}
 
 	return scriptDir, nil
 }
 
+// RunningImage returns the image running in the current system.
 func RunningImage(cnx *shared.Connection, containerName string) (string, error) {
 	command, err := cnx.GetCommand()
 

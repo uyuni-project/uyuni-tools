@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -51,12 +51,14 @@ Type=forking
 WantedBy=multi-user.target default.target
 `
 
+// TFTPDTemplateData represents information used to create TFTPD systemd configuration file.
 type TFTPDTemplateData struct {
 	Volumes       map[string]string
 	HttpProxyFile string
 	Image         string
 }
 
+// Render will create the TFTPD systemd configuration file.
 func (data TFTPDTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("service").Parse(tftpdTemplate))
 	return t.Execute(wr, data)

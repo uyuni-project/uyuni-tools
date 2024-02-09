@@ -20,7 +20,11 @@ import (
 
 // Start the proxy services.
 func startPod() error {
-	if shared_podman.IsServiceRunning(shared_podman.ProxyService) {
+	ret, err := shared_podman.IsServiceRunning(shared_podman.ProxyService)
+	if err != nil {
+		return err
+	}
+	if ret {
 		return shared_podman.RestartService(shared_podman.ProxyService)
 	} else {
 		return shared_podman.EnableService(shared_podman.ProxyService)
@@ -59,7 +63,9 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallF
 	}
 
 	// Setup the systemd service configuration options
-	podman.GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags.Podman.Args)
+	if err := podman.GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags.Podman.Args); err != nil {
+		return fmt.Errorf("cannot generate systemd file: %s", err)
+	}
 
 	return startPod()
 }

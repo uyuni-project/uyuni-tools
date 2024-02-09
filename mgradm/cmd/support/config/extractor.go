@@ -5,6 +5,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -38,7 +39,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	log.Info().Msg("Running supportconfig in the container")
 	out, err := cnx.Exec("supportconfig")
 	if err != nil {
-		log.Err(err).Msg("Failed to run supportconfig")
+		return errors.New("failed to run supportconfig")
 	} else {
 		tarballPath := getSupportConfigPath(out)
 		if tarballPath == "" {
@@ -48,12 +49,14 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 		// TODO Get the error from copy
 		for _, ext := range extensions {
 			containerTarball := path.Join(tmpDir, "container-supportconfig.txz"+ext)
-			cnx.Copy("server:"+tarballPath+ext, containerTarball, "", "")
+			if err := cnx.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
+				return fmt.Errorf("cannot copy tarball: %s", err)
+			}
 			files = append(files, containerTarball)
 
 			// Remove the generated file in the container
 			if _, err := cnx.Exec("rm", tarballPath+ext); err != nil {
-				log.Warn().Err(err).Msgf("Failed to remove %s%s file in the container", tarballPath, ext)
+				return fmt.Errorf("failed to remove %s%s file in the container: %s", tarballPath, ext, err)
 			}
 		}
 	}
@@ -62,7 +65,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	if _, err := exec.LookPath("supportconfig"); err == nil {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "supportconfig")
 		if err != nil {
-			log.Warn().Err(err).Msg("Failed to run supportconfig on the host")
+			return fmt.Errorf("failed to run supportconfig on the host: %s", err)
 		}
 		tarballPath := getSupportConfigPath(out)
 
@@ -72,7 +75,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 				files = append(files, tarballPath+ext)
 			}
 		} else {
-			log.Error().Msg("Failed to find host supportconfig tarball from command output")
+			return errors.New("failed to find host supportconfig tarball from command output")
 		}
 	} else {
 		log.Warn().Msg("supportconfig is not available on the host, skipping it")

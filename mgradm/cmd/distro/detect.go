@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -80,7 +80,7 @@ func getDistroFromDetails(distro string, version string, arch string, channeLabe
 	}
 
 	if !ok {
-		return types.Distribution{}, fmt.Errorf("unkown distribution, auto-registration is not possible")
+		return types.Distribution{}, fmt.Errorf("unknown distribution, auto-registration is not possible")
 	}
 
 	if channeLabel != "" {

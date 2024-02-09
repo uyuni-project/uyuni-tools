@@ -64,6 +64,7 @@ Type=forking
 WantedBy=multi-user.target default.target
 `
 
+// PodmanServiceTemplateData POD information to create systemd file.
 type PodmanServiceTemplateData struct {
 	Volumes    map[string]string
 	NamePrefix string
@@ -74,6 +75,7 @@ type PodmanServiceTemplateData struct {
 	Network    string
 }
 
+// Render will create the systemd configuration file.
 func (data PodmanServiceTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("service").Parse(serviceTemplate))
 	return t.Execute(wr, data)

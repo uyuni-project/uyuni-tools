@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -17,8 +17,8 @@ type podmanProxyInstallFlags struct {
 	Podman                  podman.PodmanFlags
 }
 
+// NewCommand install a new proxy on podman from scratch.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	podmanCmd := &cobra.Command{
 		Use:   "podman [path/to/config.tar.gz]",
 		Short: "install a new proxy on podman from scratch",

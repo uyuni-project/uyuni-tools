@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -50,17 +50,18 @@ func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, root
 
 // Install cert-manager and its CRDs using helm in the cert-manager namespace if needed
 // and then create a self-signed CA and issuers.
-// Returns helm arguments to be added to use the issuer
+// Returns helm arguments to be added to use the issuer.
 func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, rootCa string,
-	tlsCert *ssl.SslPair, kubeconfig, fqdn string, imagePullPolicy string) []string {
-
+	tlsCert *ssl.SslPair, kubeconfig, fqdn string, imagePullPolicy string) ([]string, error) {
 	// Install cert-manager if needed
-	installCertManager(helmFlags, kubeconfig, imagePullPolicy)
+	if err := installCertManager(helmFlags, kubeconfig, imagePullPolicy); err != nil {
+		return []string{}, fmt.Errorf("cannot install cert manager: %s", err)
+	}
 
 	log.Info().Msg("Creating SSL certificate issuer")
 	crdsDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to create temporary directory")
+		return []string{}, fmt.Errorf("failed to create temporary directory: %s", err)
 	}
 	defer os.RemoveAll(crdsDir)
 
@@ -81,7 +82,7 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	}
 
 	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to generate issuer definition")
+		return []string{}, fmt.Errorf("failed to generate issuer definition: %s", err)
 	}
 
 	err = utils.RunCmd("kubectl", "apply", "-f", issuerPath)
@@ -94,12 +95,12 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "-o=jsonpath={.status.conditions[*].type}",
 			"issuer", "uyuni-ca-issuer")
 		if err == nil && string(out) == "Ready" {
-			return []string{"--set-json", "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"}
+			return []string{"--set-json", "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"}, nil
 		}
 		time.Sleep(1 * time.Second)
 	}
 	log.Fatal().Msg("Issuer didn't turn ready after 60s")
-	return []string{}
+	return []string{}, nil
 }
 
 func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, imagePullPolicy string) error {
@@ -126,7 +127,9 @@ func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, image
 			chart = "cert-manager"
 		}
 		// The installedby label will be used to only uninstall what we installed
-		kubernetes.HelmUpgrade(kubeconfig, namespace, true, repo, "cert-manager", chart, version, args...)
+		if err := kubernetes.HelmUpgrade(kubeconfig, namespace, true, repo, "cert-manager", chart, version, args...); err != nil {
+			return fmt.Errorf("cannot run helm upgrade: %s", err)
+		}
 	}
 
 	// Wait for cert-manager to be ready

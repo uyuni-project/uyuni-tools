@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -32,7 +32,6 @@ func TestReadCertificatesNoCa(t *testing.T) {
 }
 
 func TestReadCertificatesMultiple(t *testing.T) {
-
 	actual := readCertificates("testdata/chain1/intermediate-ca.crt")
 	if len(actual) != 2 {
 		t.Errorf("readCertificates got %d certificates; want 2", len(actual))
@@ -130,7 +129,7 @@ func TestFindServerCertificate(t *testing.T) {
 	}
 }
 
-// Test a CA chain with all the chain in the server certificate file
+// Test a CA chain with all the chain in the server certificate file.
 func TestOrderCasChain2(t *testing.T) {
 	chain := CaChain{Root: "testdata/chain2/RHN-ORG-TRUSTED-SSL-CERT", Intermediate: []string{}}
 	server := SslPair{Cert: "testdata/chain2/spacewalk.crt", Key: "testdata/chain2/spacewalk.key"}

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -17,8 +17,8 @@ type podmanMigrateFlags struct {
 	Podman              podman_utils.PodmanFlags
 }
 
+// NewCommand for podman migration.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	migrateCmd := &cobra.Command{
 		Use:   "podman [source server FQDN]",
 		Short: "migrate a remote server to containers running on podman",

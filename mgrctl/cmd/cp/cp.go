@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,6 +22,7 @@ type flagpole struct {
 	Backend string
 }
 
+// NewCommand copy file to and from the containers.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	flags := &flagpole{}
 
@@ -40,8 +41,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 				log.Error().Err(err).Msgf("Failed to unmarshall configuration")
 				return fmt.Errorf("failed to unmarshall configuration: %s", err)
 			}
-			run(flags, cmd, args)
-			return nil
+			return run(flags, cmd, args)
 		},
 	}
 
@@ -52,7 +52,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return cpCmd
 }
 
-func run(flags *flagpole, cmd *cobra.Command, args []string) {
+func run(flags *flagpole, cmd *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
-	cnx.Copy(args[0], args[1], flags.User, flags.Group)
+	return cnx.Copy(args[0], args[1], flags.User, flags.Group)
 }

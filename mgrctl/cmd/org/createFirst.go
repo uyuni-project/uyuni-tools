@@ -42,7 +42,6 @@ func createFirstCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 }
 
 func createFirst(globalFlags *types.GlobalFlags, flags *createFirstFlags, cmd *cobra.Command, args []string) error {
-
 	org, err := org.CreateFirst(&flags.ConnectionDetails, flags.Organization, &flags.Admin)
 	if err != nil {
 		return err

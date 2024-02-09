@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -16,6 +16,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+// LogInit initialize logs.
 func LogInit(logToConsole bool) {
 	zerolog.CallerMarshalFunc = logCallerMarshalFunction
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
@@ -54,6 +55,7 @@ func getFileWriter() *lumberjack.Logger {
 	return fileLogger
 }
 
+// SetLogLevel sets the loglevel.
 func SetLogLevel(logLevel string) {
 	globalLevel := zerolog.InfoLevel
 

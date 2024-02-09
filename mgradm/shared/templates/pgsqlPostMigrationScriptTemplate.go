@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -43,6 +43,7 @@ su -s /bin/bash - postgres -c "/usr/share/postgresql/postgresql-script stop"
 echo "DONE"
 `
 
+// FinalizePostgresTemplateData represents information used to create PostgreSQL migration script.
 type FinalizePostgresTemplateData struct {
 	RunAutotune        bool
 	RunReindex         bool
@@ -51,6 +52,7 @@ type FinalizePostgresTemplateData struct {
 	Kubernetes         bool
 }
 
+// Render will create script for finalizing PostgreSQL upgrade.
 func (data FinalizePostgresTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("script").Parse(postgresFinalizeScriptTemplate))
 	return t.Execute(wr, data)

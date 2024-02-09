@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -12,10 +12,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// HelmFlags it's used for helm chart flags.
 type HelmFlags struct {
 	Proxy types.ChartFlags
 }
 
+// AddHelmFlags add helm flags to a command.
 func AddHelmFlags(cmd *cobra.Command) {
 	defaultChart := fmt.Sprintf("oci://%s/proxy-helm", utils.DefaultNamespace)
 

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,8 +15,8 @@ type configFlags struct {
 	Backend string
 }
 
+// NewCommand is the command for creates supportconfig.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	configCmd := &cobra.Command{
 		Use:   "config",
 		Short: "extract configuration and logs",

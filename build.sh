@@ -1,9 +1,9 @@
 #!/usr/bin/bash
 
-# SPDX-FileCopyrightText: 2023 SUSE LLC
+# SPDX-FileCopyrightText: 2024 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
-
+set -e
 mkdir -p ./bin
 
 tag=$(git describe --tags --abbrev=0)
@@ -22,3 +22,6 @@ for shell in "bash" "zsh" "fish"; do
     ./bin/mgrctl completion ${shell} >> "${COMPLETION_FILE}"
     ./bin/mgrpxy completion ${shell} >> "${COMPLETION_FILE}"
 done
+
+golangci-lint run
+echo "DONE"

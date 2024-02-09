@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -18,7 +18,8 @@ type flagpole struct {
 	ConnectionDetails api.ConnectionDetails `mapstructure:"api"`
 }
 
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+// NewCommand command for distribution management.
+func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 	var flags flagpole
 
 	distroCmd := &cobra.Command{
@@ -43,7 +44,9 @@ Optional channel label specify which parent channel to associate with the distri
 		},
 	}
 
-	api.AddAPIFlags(distroCmd, true)
+	if err := api.AddAPIFlags(distroCmd, true); err != nil {
+		return distroCmd, err
+	}
 	distroCmd.AddCommand(cpCmd)
-	return distroCmd
+	return distroCmd, nil
 }

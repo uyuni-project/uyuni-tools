@@ -20,8 +20,8 @@ type podmanUpgradeFlags struct {
 	MirrorPath          string
 }
 
+// NewCommand to upgrade a podman server.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	upgradeCmd := &cobra.Command{
 		Use:   "podman",
 		Short: "upgrade a local server on podman",
@@ -36,7 +36,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short: "list available tag for an image",
 		Args: cobra.ExactArgs(0),
 		Run: func(cmd *cobra.Command, args []string) {
-
 			viper, _ := utils.ReadConfig(globalFlags.ConfigPath, cmd)
 
 			var flags podmanUpgradeFlags

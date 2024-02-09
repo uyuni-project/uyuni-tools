@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -48,11 +48,13 @@ Type=forking
 WantedBy=multi-user.target default.target
 `
 
+// SaltBrokerTemplateData represents Salt Broker information to create systemd file.
 type SaltBrokerTemplateData struct {
 	HttpProxyFile string
 	Image         string
 }
 
+// Render will create the systemd configuration file.
 func (data SaltBrokerTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("service").Parse(saltBrokerTemplate))
 	return t.Execute(wr, data)

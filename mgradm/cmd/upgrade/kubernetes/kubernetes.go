@@ -19,8 +19,8 @@ type kubernetesUpgradeFlags struct {
 	Helm                cmd_utils.HelmFlags
 }
 
+// NewCommand to upgrade a kubernetes server.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	upgradeCmd := &cobra.Command{
 		Use:   "kubernetes",
 		Short: "upgrade a local server on kubernetes",

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -27,7 +27,7 @@ type flagpole struct {
 	Backend     string
 }
 
-// NewCommand returns a new cobra.Command for exec
+// NewCommand returns a new cobra.Command for exec.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	var flags flagpole
 
@@ -109,10 +109,13 @@ type copyWriter struct {
 	Stream io.Writer
 }
 
+// Write writes an array of buffer in a stream.
 func (l copyWriter) Write(p []byte) (n int, err error) {
 	// Filter out kubectl line about terminated exit code
 	if !strings.HasPrefix(string(p), "command terminated with exit code") {
-		l.Stream.Write(p)
+		if _, err := l.Stream.Write(p); err != nil {
+			return 0, fmt.Errorf("cannot write: %s", err)
+		}
 
 		n = len(p)
 		if n > 0 && p[n-1] == '\n' {
@@ -124,8 +127,8 @@ func (l copyWriter) Write(p []byte) (n int, err error) {
 	return
 }
 
+// RunRawCmd runs a command, mapping stdout and start error, waiting and checking return code.
 func RunRawCmd(command string, args []string) error {
-
 	log.Info().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	runCmd := exec.Command(command, args...)

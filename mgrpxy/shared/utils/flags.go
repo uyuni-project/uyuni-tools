@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -13,6 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// ProxyInstallFlags are the flags used by install proxy command.
 type ProxyInstallFlags struct {
 	ImagesLocation string           `mapstructure:"imagesLocation"`
 	Tag            string           `namespace:"tag"`
@@ -62,6 +63,7 @@ func (f *ProxyInstallFlags) GetContainerImage(name string) string {
 	return imageUrl
 }
 
+// AddInstallFlags will add the proxy install flags to a command.
 func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().String("imagesLocation", utils.DefaultNamespace,
 		"registry URL prefix containing the all the container images")

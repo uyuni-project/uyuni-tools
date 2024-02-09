@@ -12,6 +12,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// DbFlags can store all values required to connect to a database.
 type DbFlags struct {
 	Host     string
 	Name     string
@@ -26,15 +27,18 @@ type DbFlags struct {
 	}
 }
 
+// SccFlags can store SCC Credentials.
 type SccFlags struct {
 	User     string
 	Password string
 }
 
+// DebugFlags contains information about enabled/disabled debug.
 type DebugFlags struct {
 	Java bool
 }
 
+// InstallFlags stores all the flags used by install command.
 type InstallFlags struct {
 	TZ           string
 	Email        string
@@ -52,6 +56,7 @@ type InstallFlags struct {
 	Organization string
 }
 
+// CheckParameters checks parameters for install command.
 func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 	utils.AskPasswordIfMissing(&flags.Db.Password, cmd.Flag("db-password").Usage)
 
@@ -72,6 +77,7 @@ func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 	utils.AskIfMissing(&flags.EmailFrom, cmd.Flag("emailfrom").Usage)
 }
 
+// AddInstallFlags add flags to installa command.
 func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().String("tz", "", "Time zone to set on the server. Defaults to the host timezone")
 	cmd.Flags().String("email", "admin@example.com", "Administrator e-mail")

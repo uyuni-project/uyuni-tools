@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,11 +15,13 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// CaChain is a type to store CA Chain.
 type CaChain struct {
 	Root         string
 	Intermediate []string
 }
 
+// SslPait is a type for SSL Cert and Key.
 type SslPair struct {
 	Cert string
 	Key  string
@@ -191,7 +193,6 @@ func extractCertificateData(content []byte) certificate {
 // Prepare the certificate chain starting by the server up to the root CA.
 // Returns the certificate chain and the root CA.
 func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash string) ([]byte, []byte) {
-
 	if len(mapBySubjectHash) == 0 {
 		log.Fatal().Msg("No CA found in hash")
 	}

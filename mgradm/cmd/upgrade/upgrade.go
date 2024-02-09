@@ -10,8 +10,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
+// NewCommand for upgrading a local server.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	upgradeCmd := &cobra.Command{
 		Use:   "upgrade server",
 		Short: "upgrade local server",

@@ -51,12 +51,17 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 
 	// Deploy the SSL CA or server certificate
 	ca := ssl.SslPair{}
-	sslArgs := kubernetes.DeployCertificate(&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
+	sslArgs, err := kubernetes.DeployCertificate(&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
 		flags.Image.PullPolicy)
+	if err != nil {
+		return fmt.Errorf("cannot deploy certificate: %s", err)
+	}
 	helmArgs = append(helmArgs, sslArgs...)
 
 	// Deploy Uyuni and wait for it to be up
-	kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &flags.Ssl, &clusterInfos, fqdn, flags.Debug.Java, helmArgs...)
+	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &flags.Ssl, &clusterInfos, fqdn, flags.Debug.Java, helmArgs...); err != nil {
+		return fmt.Errorf("cannot deploy uyuni: %s", err)
+	}
 
 	// Create setup script + env variables and copy it to the container
 	envs := map[string]string{
@@ -68,7 +73,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// The CA needs to be added to the database for Kickstart use.
-	err := adm_utils.ExecCommand(zerolog.DebugLevel, cnx,
+	err = adm_utils.ExecCommand(zerolog.DebugLevel, cnx,
 		"/usr/bin/rhn-ssl-dbstore", "--ca-cert=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT")
 	if err != nil {
 		return fmt.Errorf("error storing the SSL CA certificate in database: %s", err)

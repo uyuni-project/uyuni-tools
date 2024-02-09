@@ -17,11 +17,12 @@ import (
 	"golang.org/x/term"
 )
 
-const PROMPT_END = ": "
+const prompt_end = ": "
 
+// AskPasswordIfMissing asks for password if missing.
 func AskPasswordIfMissing(value *string, prompt string) {
 	if *value == "" {
-		fmt.Print(prompt + PROMPT_END)
+		fmt.Print(prompt + prompt_end)
 		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 		if err != nil {
 			log.Fatal().Err(err).Msgf("Failed to read password")
@@ -31,9 +32,10 @@ func AskPasswordIfMissing(value *string, prompt string) {
 	}
 }
 
+// AskIfMissing asks for a value if missing.
 func AskIfMissing(value *string, prompt string) {
 	if *value == "" {
-		fmt.Print(prompt + PROMPT_END)
+		fmt.Print(prompt + prompt_end)
 		reader := bufio.NewReader(os.Stdin)
 		newValue, err := reader.ReadString('\n')
 		if err != nil {
@@ -53,7 +55,7 @@ func ComputeImage(name string, tag string, appendToName ...string) (string, erro
 	}
 	if submatches[2] == `` {
 		if len(tag) <= 0 {
-			return name, fmt.Errorf("Tag missing on %s", name)
+			return name, fmt.Errorf("tag missing on %s", name)
 		}
 		if len(appendToName) > 0 {
 			name = name + strings.Join(appendToName, ``)
@@ -68,9 +70,8 @@ func ComputeImage(name string, tag string, appendToName ...string) (string, erro
 	return imageName, nil
 }
 
-// Get the timezone set on the machine running the tool
+// Get the timezone set on the machine running the tool.
 func GetLocalTimezone() string {
-
 	out, err := RunCmdOutput(zerolog.DebugLevel, "timedatectl", "show", "--value", "-p", "Timezone")
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to run timedatectl show --value -p Timezone")
@@ -78,7 +79,7 @@ func GetLocalTimezone() string {
 	return string(out)
 }
 
-// Check if a given path exists
+// Check if a given path exists.
 func FileExists(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {
@@ -99,7 +100,7 @@ func ReadFile(file string) []byte {
 }
 
 // Get the value of a file containing a boolean.
-// This is handy for files from the kernel API
+// This is handy for files from the kernel API.
 func GetFileBoolean(file string) bool {
 	return string(ReadFile(file)) != "0"
 }

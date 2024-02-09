@@ -10,15 +10,18 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+// NewCommand  command for APIs.
+func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 	orgCmd := &cobra.Command{
 		Use:   "org",
 		Short: "Organization-related commands",
 	}
 
-	api.AddAPIFlags(orgCmd, false)
+	if err := api.AddAPIFlags(orgCmd, false); err != nil {
+		return orgCmd, err
+	}
 
 	orgCmd.AddCommand(createFirstCommand(globalFlags))
 
-	return orgCmd
+	return orgCmd, nil
 }

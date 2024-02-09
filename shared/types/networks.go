@@ -1,9 +1,10 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package types
 
+// PortMap describes a port.
 type PortMap struct {
 	Name     string
 	Exposed  int

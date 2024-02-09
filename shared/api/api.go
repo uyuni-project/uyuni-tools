@@ -20,7 +20,7 @@ import (
 	"time"
 )
 
-const ROOT_PATH_APIv1 = "/rhn/manager/api"
+const root_path_apiv1 = "/rhn/manager/api"
 
 // HTTP Client is an API entrypoint.
 type HTTPClient struct {
@@ -64,8 +64,8 @@ type ApiResponse[T interface{}] struct {
 
 // AddAPIFlags is a helper to include api details for the provided command tree.
 //
-// If the api support is only optional for the command, set optional parameter to true
-func AddAPIFlags(cmd *cobra.Command, optional bool) {
+// If the api support is only optional for the command, set optional parameter to true.
+func AddAPIFlags(cmd *cobra.Command, optional bool) error {
 	cmd.PersistentFlags().String("api-server", "", "FQDN of the server to connect to")
 	cmd.PersistentFlags().String("api-user", "", "API user username")
 	cmd.PersistentFlags().String("api-password", "", "Password for the API user")
@@ -73,10 +73,17 @@ func AddAPIFlags(cmd *cobra.Command, optional bool) {
 	cmd.PersistentFlags().Bool("api-insecure", false, "If set, server certificate will not be checked for validity")
 
 	if !optional {
-		cmd.MarkFlagRequired("api-server")
-		cmd.MarkFlagRequired("api-username")
-		cmd.MarkFlagRequired("api-password")
+		if err := cmd.MarkFlagRequired("api-server"); err != nil {
+			return err
+		}
+		if err := cmd.MarkFlagRequired("api-username"); err != nil {
+			return err
+		}
+		if err := cmd.MarkFlagRequired("api-password"); err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 func prettyPrint(v interface{}) string {
@@ -125,7 +132,7 @@ func (c *HTTPClient) sendRequest(req *http.Request) (*http.Response, error) {
 //
 // Optionaly connectionDetails can have user name and password set and Init
 // will try to login to the host.
-// caCert can be set to use custom CA certificate to validate target host
+// caCert can be set to use custom CA certificate to validate target host.
 func Init(conn *ConnectionDetails) (*HTTPClient, error) {
 	caCertPool, err := x509.SystemCertPool()
 	if err != nil {
@@ -139,7 +146,7 @@ func Init(conn *ConnectionDetails) (*HTTPClient, error) {
 		caCertPool.AppendCertsFromPEM(caCert)
 	}
 	client := &HTTPClient{
-		BaseURL: fmt.Sprintf("https://%s%s", conn.Server, ROOT_PATH_APIv1),
+		BaseURL: fmt.Sprintf("https://%s%s", conn.Server, root_path_apiv1),
 		Client: &http.Client{
 			Timeout: time.Minute,
 			Transport: &http.Transport{
@@ -209,7 +216,7 @@ func (c *HTTPClient) login(conn *ConnectionDetails) error {
 // `path` specifies an API endpoint
 // `data` contains a map of values to add to the POST query. `data` are serialized to the JSON
 //
-// returns a raw HTTP Response
+// returns a raw HTTP Response.
 func (c *HTTPClient) Post(path string, data map[string]interface{}) (*http.Response, error) {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	jsonData, err := json.Marshal(data)
@@ -235,7 +242,7 @@ func (c *HTTPClient) Post(path string, data map[string]interface{}) (*http.Respo
 //
 // `path` specifies API endpoint together with query options
 //
-// returns a raw HTTP Response
+// returns a raw HTTP Response.
 func (c *HTTPClient) Get(path string) (*http.Response, error) {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	req, err := http.NewRequest("GET", url, nil)
@@ -256,7 +263,7 @@ func (c *HTTPClient) Get(path string) (*http.Response, error) {
 // `path` specifies an API endpoint
 // `data` contains a map of values to add to the POST query. `data` are serialized to the JSON
 //
-// returns a deserialized JSON data to the map
+// returns a deserialized JSON data to the map.
 func Post[T interface{}](client *HTTPClient, path string, data map[string]interface{}) (*ApiResponse[T], error) {
 	res, err := client.Post(path, data)
 	if err != nil {

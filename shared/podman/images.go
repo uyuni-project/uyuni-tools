@@ -6,7 +6,6 @@ package podman
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"strings"
 
@@ -15,7 +14,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// Ensure the container image is pulled or pull it if the pull policy allows it
+// Ensure the container image is pulled or pull it if the pull policy allows it.
 func PrepareImage(image string, pullPolicy string) error {
 	log.Info().Msgf("Ensure image %s is available", image)
 
@@ -37,12 +36,12 @@ func checkImage(image string, pullPolicy string) (bool, error) {
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", "--quiet", image)
 	if err != nil {
-		return false, errors.New(fmt.Sprintf("Failed to check if image %s has already been pulled", image))
+		return false, fmt.Errorf("failed to check if image %s has already been pulled", image)
 	}
 
 	if len(bytes.TrimSpace(out)) == 0 {
 		if pullPolicy == "Never" {
-			log.Fatal().Msgf("Image %s is not available and cannot be pulled due to policy", image)
+			return false, fmt.Errorf("image %s is not available and cannot be pulled due to policy", image)
 		}
 		return true, nil
 	}
@@ -55,6 +54,7 @@ func pullImage(image string) error {
 	return utils.RunCmdStdMapping("podman", "pull", image)
 }
 
+// ShowAvailableTag  returns the list of avaialable tag for a given image.
 func ShowAvailableTag(image string) ([]string, error) {
 	log.Info().Msgf("Running podman image search --list-tags %s --format='{{.Tag}}'", image)
 

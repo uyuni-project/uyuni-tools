@@ -1,11 +1,11 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package utils
 
 // This map should match the volumes mapping from the container definition in both
-// the helm chart and the systemctl services definitions
+// the helm chart and the systemctl services definitions.
 var VOLUMES = map[string]string{
 	"var-cobbler":         "/var/lib/cobbler",
 	"var-salt":            "/var/lib/salt",
@@ -34,15 +34,18 @@ var VOLUMES = map[string]string{
 	"ca-cert":             "/etc/pki/trust/anchors",
 }
 
+// PROXY_HTTPD_VOLUMES volumes used by HTTPD in proxy.
 var PROXY_HTTPD_VOLUMES = map[string]string{
 	"uyuni-proxy-rhn-cache": "/var/cache/rhn",
 	"uyuni-proxy-tftpboot":  "/srv/tftpboot",
 }
 
+// PROXY_HTTPD_VOLUMES volumes used by Squid in  proxy.
 var PROXY_SQUID_VOLUMES = map[string]string{
 	"uyuni-proxy-squid-cache": "/var/cache/squid",
 }
 
+// PROXY_TFTPD_VOLUMES volumes used by TFTP in proxy.
 var PROXY_TFTPD_VOLUMES = map[string]string{
 	"uyuni-proxy-tftpboot": "/srv/tftpboot:ro",
 }

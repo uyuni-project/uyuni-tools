@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,7 +9,7 @@ import (
 	"text/template"
 )
 
-// Deploy self-signed issuer or CA Certificate and key
+// Deploy self-signed issuer or CA Certificate and key.
 const issuerTemplate = `{{if and .Certificate .Key -}}
 apiVersion: v1
 kind: Secret
@@ -83,6 +83,7 @@ spec:
       uyuni-ca
 `
 
+// IssuerTemplateData represents information used to create issuer file.
 type IssuerTemplateData struct {
 	Namespace   string
 	Country     string
@@ -97,6 +98,7 @@ type IssuerTemplateData struct {
 	Key         string
 }
 
+// Render creates issuer file.
 func (data IssuerTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("issuer").Parse(issuerTemplate))
 	return t.Execute(wr, data)

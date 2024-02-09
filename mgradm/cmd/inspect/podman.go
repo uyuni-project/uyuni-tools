@@ -28,7 +28,7 @@ func podmanInspect(
 ) error {
 	serverImage, err := utils.ComputeImage(flags.Image, flags.Tag)
 	if err != nil && len(serverImage) > 0 {
-		return fmt.Errorf("Failed to determine image. %s", err)
+		return fmt.Errorf("failed to determine image. %s", err)
 	}
 
 	if len(serverImage) <= 0 {
@@ -37,16 +37,16 @@ func podmanInspect(
 		cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 		serverImage, err = adm_utils.RunningImage(cnx, shared_podman.ServerContainerName)
 		if err != nil {
-			return fmt.Errorf("Failed to find current running image")
+			return fmt.Errorf("failed to find current running image")
 		}
 	}
 	inspectResult, err := InspectPodman(serverImage, flags.PullPolicy)
 	if err != nil {
-		return fmt.Errorf("Inspect command failed %s", err)
+		return fmt.Errorf("inspect command failed %s", err)
 	}
 	prettyInspectOutput, err := json.MarshalIndent(inspectResult, "", "  ")
 	if err != nil {
-		return fmt.Errorf("Cannot print inspect result %s", err)
+		return fmt.Errorf("cannot print inspect result %s", err)
 	}
 
 	log.Info().Msgf("\n%s", string(prettyInspectOutput))
@@ -54,11 +54,12 @@ func podmanInspect(
 	return nil
 }
 
+// InspectPodman check values on a given image and deploy.
 func InspectPodman(serverImage string, pullPolicy string) (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf("Failed to create temporary directory %s", err)
+		return map[string]string{}, fmt.Errorf("failed to create temporary directory %s", err)
 	}
 
 	extraArgs := []string{
@@ -82,9 +83,8 @@ func InspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 
 	inspectResult, err := inspect_shared.ReadInspectData(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf("Cannot inspect data. %s", err)
+		return map[string]string{}, fmt.Errorf("cannot inspect data. %s", err)
 	}
 
 	return inspectResult, err
-
 }

@@ -19,11 +19,13 @@ echo "{{ .Variable }}=$({{ .CLI }})" >> {{ $.OutputFile }}
 exit 0
 `
 
+// InspectTemplateData represents information used to create inspect script.
 type InspectTemplateData struct {
 	Param      []types.InspectData
 	OutputFile string
 }
 
+// Render will create inspect script.
 func (data InspectTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("inspect").Parse(inspectTemplate))
 	return t.Execute(wr, data)

@@ -20,13 +20,16 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-const SETUP_NAME = "setup.sh"
+const setup_name = "setup.sh"
 
+// RunSetup execute the setup.
 func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[string]string) error {
 	tmpFolder := generateSetupScript(flags, fqdn, env)
 	defer os.RemoveAll(tmpFolder)
 
-	cnx.Copy(filepath.Join(tmpFolder, SETUP_NAME), "server:/tmp/setup.sh", "root", "root")
+	if err := cnx.Copy(filepath.Join(tmpFolder, setup_name), "server:/tmp/setup.sh", "root", "root"); err != nil {
+		return fmt.Errorf("cannot copy /tmp/setup.sh: %s", err)
+	}
 
 	err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/tmp/setup.sh")
 	if err != nil {
@@ -115,7 +118,7 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 		DebugJava: flags.Debug.Java,
 	}
 
-	scriptPath := filepath.Join(scriptDir, SETUP_NAME)
+	scriptPath := filepath.Join(scriptDir, setup_name)
 	if err = utils.WriteTemplateToFile(dataTemplate, scriptPath, 0555, true); err != nil {
 		log.Fatal().Err(err).Msg("Failed to generate setup script")
 	}

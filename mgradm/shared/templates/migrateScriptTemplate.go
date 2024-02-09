@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -132,12 +132,14 @@ rm /etc/pki/trust/anchors/*
 
 echo "DONE"`
 
+// MigrateScriptTemplateData represents migration information used to create migration script.
 type MigrateScriptTemplateData struct {
 	Volumes    map[string]string
 	SourceFqdn string
 	Kubernetes bool
 }
 
+// Render will create migration script.
 func (data MigrateScriptTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("script").Parse(migrationScriptTemplate))
 	return t.Execute(wr, data)

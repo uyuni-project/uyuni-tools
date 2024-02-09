@@ -21,12 +21,13 @@ import (
 
 const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
 
+// GetCommonParams splits the common arguments.
 func GetCommonParams() []string {
 	return strings.Split(commonArgs, " ")
 }
 
+// GetExposedPorts returns the port exposed.
 func GetExposedPorts(debug bool) []types.PortMap {
-
 	ports := []types.PortMap{
 		utils.NewPortMap("https", 443, 443),
 		utils.NewPortMap("http", 80, 80),
@@ -41,9 +42,11 @@ func GetExposedPorts(debug bool) []types.PortMap {
 	return ports
 }
 
-func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []string) {
-
-	podman.SetupNetwork()
+// GenerateSystemdService creates a serverY systemd file.
+func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []string) error {
+	if err := podman.SetupNetwork(); err != nil {
+		return fmt.Errorf("cannot setup network: %s", err)
+	}
 
 	log.Info().Msg("Enabling system service")
 	data := templates.PodmanServiceTemplateData{
@@ -55,20 +58,23 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 		Network:    podman.UyuniNetwork,
 	}
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, false); err != nil {
-		log.Fatal().Err(err).Msg("Failed to generate systemd service unit file")
+		return fmt.Errorf("failed to generate systemd service unit file: %s", err)
 	}
 
-	podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+image)
-	podman.ReloadDaemon(false)
+	if err := podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+image); err != nil {
+		return fmt.Errorf("cannot generate systemd conf file: %s", err)
+	}
+	return podman.ReloadDaemon(false)
 }
 
-func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair *ssl.SslPair) {
+// UpdateSslCertificate update SSL certificate.
+func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair *ssl.SslPair) error {
 	ssl.CheckPaths(chain, serverPair)
 
 	// Copy the CAs, certificate and key to the container
 	const certDir = "/tmp/uyuni-tools"
 	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "mkdir", "-p", certDir); err != nil {
-		log.Fatal().Err(err).Msg("Failed to create temporary folder on container to copy certificates to")
+		return fmt.Errorf("failed to create temporary folder on container to copy certificates to")
 	}
 
 	rootCaPath := path.Join(certDir, "root-ca.crt")
@@ -87,39 +93,48 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 		"--server-key-file", serverKeyPath,
 	}
 
-	cnx.Copy(chain.Root, "server:"+rootCaPath, "root", "root")
-	cnx.Copy(serverPair.Cert, "server:"+serverCrtPath, "root", "root")
-	cnx.Copy(serverPair.Key, "server:"+serverKeyPath, "root", "root")
+	if err := cnx.Copy(chain.Root, "server:"+rootCaPath, "root", "root"); err != nil {
+		return fmt.Errorf("cannot copy %s: %s", rootCaPath, err)
+	}
+	if err := cnx.Copy(serverPair.Cert, "server:"+serverCrtPath, "root", "root"); err != nil {
+		return fmt.Errorf("cannot copy %s: %s", serverCrtPath, err)
+	}
+	if err := cnx.Copy(serverPair.Key, "server:"+serverKeyPath, "root", "root"); err != nil {
+		return fmt.Errorf("cannot copy %s: %s", serverKeyPath, err)
+	}
 
 	for i, ca := range chain.Intermediate {
 		caFilename := fmt.Sprintf("ca-%d.crt", i)
 		caPath := path.Join(certDir, caFilename)
 		args = append(args, "--intermediate-ca-file", caPath)
-		cnx.Copy(ca, "server:"+caPath, "root", "root")
+		if err := cnx.Copy(ca, "server:"+caPath, "root", "root"); err != nil {
+			return fmt.Errorf("cannot copy %s: %s", caPath, err)
+		}
 	}
 
 	// Check and install then using mgr-ssl-cert-setup
 	if _, err := utils.RunCmdOutput(zerolog.InfoLevel, "podman", args...); err != nil {
-		log.Fatal().Err(err).Msg("Failed to update SSL certificate")
+		return fmt.Errorf("failed to update SSL certificate")
 	}
 
 	// Clean the copied files and the now useless ssl-build
 	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", certDir); err != nil {
-		log.Error().Err(err).Msg("Failed to remove copied certificate files in the container")
+		return fmt.Errorf("failed to remove copied certificate files in the container")
 	}
 
 	const sslbuildPath = "/root/ssl-build"
 	if cnx.TestExistenceInPod(sslbuildPath) {
 		if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", sslbuildPath); err != nil {
-			log.Error().Err(err).Msg("Failed to remove now useless ssl-build folder in the container")
+			return fmt.Errorf("failed to remove now useless ssl-build folder in the container")
 		}
 	}
 
 	// The services need to be restarted
 	log.Info().Msg("Restarting services after updating the certificate")
-	utils.RunCmdStdMapping("podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
+	return utils.RunCmdStdMapping("podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
 }
 
+// RunContainer execute a container.
 func RunContainer(name string, image string, extraArgs []string, cmd []string) error {
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
@@ -131,8 +146,8 @@ func RunContainer(name string, image string, extraArgs []string, cmd []string) e
 
 	err := utils.RunCmdStdMapping("podman", podmanArgs...)
 	if err != nil {
-		return fmt.Errorf("Failed to run %s container: %s", name, err)
+		return fmt.Errorf("failed to run %s container: %s", name, err)
 	}
-	
+
 	return nil
 }

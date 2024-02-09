@@ -1,10 +1,11 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package podman
 
 import (
+	"fmt"
 	"os/exec"
 
 	"github.com/rs/zerolog"
@@ -13,8 +14,10 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// ServerContainerName represents the server container name.
 const ServerContainerName = "uyuni-server"
 
+// ProxyContainerNames represents all the proxy container names.
 var ProxyContainerNames = []string{
 	"uyuni-proxy-httpd",
 	"uyuni-proxy-salt-broker",
@@ -23,19 +26,23 @@ var ProxyContainerNames = []string{
 	"uyuni-proxy-tftpd",
 }
 
+// PodmanFlags stores the podman arguments.
 type PodmanFlags struct {
 	Args []string `mapstructure:"arg"`
 }
 
+// AddPodmanInstallFlag add the podman arguments to a command.
 func AddPodmanInstallFlag(cmd *cobra.Command) {
 	cmd.Flags().StringSlice("podman-arg", []string{}, "Extra arguments to pass to podman")
 }
 
-func EnablePodmanSocket() {
+// EnablePodmanSocket enables the podman socket.
+func EnablePodmanSocket() error {
 	err := utils.RunCmd("systemctl", "enable", "--now", "podman.socket")
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to enable podman.socket unit")
+		return fmt.Errorf("failed to enable podman.socket unit: %s", err)
 	}
+	return err
 }
 
 // DeleteContainer deletes a container based on its name.
@@ -65,9 +72,11 @@ func DeleteContainer(name string, dryRun bool) {
 
 // DeleteVolume deletes a podman volume based on its name.
 // If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
-func DeleteVolume(name string, dryRun bool) {
+func DeleteVolume(name string, dryRun bool) error {
 	cmd := exec.Command("podman", "volume", "exists", name)
-	cmd.Run()
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("cannot run delete volume: %s", err)
+	}
 	if cmd.ProcessState.ExitCode() == 0 {
 		if dryRun {
 			log.Info().Msgf("Would run podman volume rm %s", name)
@@ -79,4 +88,5 @@ func DeleteVolume(name string, dryRun bool) {
 			}
 		}
 	}
+	return nil
 }

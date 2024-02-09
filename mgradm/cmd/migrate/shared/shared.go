@@ -12,6 +12,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// GetSshAuthSocket returns the SSH_AUTH_SOCK environment variable value.
 func GetSshAuthSocket() string {
 	path := os.Getenv("SSH_AUTH_SOCK")
 	if len(path) == 0 {
@@ -20,7 +21,7 @@ func GetSshAuthSocket() string {
 	return path
 }
 
-// GetSshPaths returns the user SSH config and known_hosts paths
+// GetSshPaths returns the user SSH config and known_hosts paths.
 func GetSshPaths() (string, string) {
 	// Find ssh config to mount it in the container
 	homedir, err := os.UserHomeDir()

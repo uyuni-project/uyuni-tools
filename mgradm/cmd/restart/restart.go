@@ -15,8 +15,8 @@ type restartFlags struct {
 	Backend string
 }
 
+// NewCommand to restart server.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	restartCmd := &cobra.Command{
 		Use:   "restart",
 		Short: "restart the server",

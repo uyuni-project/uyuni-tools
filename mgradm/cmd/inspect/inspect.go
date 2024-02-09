@@ -18,8 +18,8 @@ type inspectFlags struct {
 	PullPolicy string
 }
 
+// NewCommand for extracting information from image and deployment.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	inspectCmd := &cobra.Command{
 		Use:   "inspect",
 		Short: "inspect",

@@ -4,7 +4,7 @@
 
 package types
 
-// Organization describe an organization in the API
+// Organization describe an organization in the API.
 type Organization struct {
 	Id                    int
 	Name                  string

@@ -25,10 +25,13 @@ import (
 func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.Command, args []string) error {
 	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
 	if err != nil {
-		return fmt.Errorf("Failed to compute image URL")
+		return fmt.Errorf("failed to compute image URL")
 	}
 
 	inspectedValues, err := inspect.InspectPodman(serverImage, flags.Image.PullPolicy)
+	if err != nil {
+		return fmt.Errorf("cannot inspect podman values: %s", err)
+	}
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 
@@ -45,15 +48,17 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return fmt.Errorf("Failed to create temporary directory")
+		return fmt.Errorf("failed to create temporary directory")
 	}
 
-	shared_podman.StopService(shared_podman.ServerService)
+	err = shared_podman.StopService(shared_podman.ServerService)
 	if err != nil {
-		return fmt.Errorf("Cannot stop service %s", err)
+		return fmt.Errorf("cannot stop service %s", err)
 	}
 
-	defer shared_podman.StartService(shared_podman.ServerService)
+	defer func() {
+		err = shared_podman.StartService(shared_podman.ServerService)
+	}()
 
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
 		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB migration...", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
@@ -65,14 +70,13 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 		if flags.MigrationImage.Name == "" {
 			migrationImageUrl, err = utils.ComputeImage(flags.Image.Name, flags.Image.Tag, fmt.Sprintf("-migration-%s-%s", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]))
 			if err != nil {
-				return fmt.Errorf("Failed to compute image URL %s", err)
+				return fmt.Errorf("failed to compute image URL %s", err)
 			}
 		} else {
 			migrationImageUrl, err = utils.ComputeImage(flags.MigrationImage.Name, flags.Image.Tag)
 			if err != nil {
-				return fmt.Errorf("Failed to compute image URL %s", err)
+				return fmt.Errorf("failed to compute image URL %s", err)
 			}
-
 		}
 
 		err = shared_podman.PrepareImage(migrationImageUrl, flags.Image.PullPolicy)
@@ -84,7 +88,7 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 
 		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], false)
 		if err != nil {
-			return fmt.Errorf("Cannot generate postgresql database migration script %s", err)
+			return fmt.Errorf("cannot generate postgresql database migration script %s", err)
 		}
 
 		err = podman.RunContainer("uyuni-upgrade-pgsql", migrationImageUrl, extraArgs,
@@ -95,7 +99,7 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
 		log.Info().Msgf("Upgrading to %s without changing PostgreSQL version", inspectedValues["uyuni_release"])
 	} else {
-		return fmt.Errorf("Trying to downgrade postgresql from %s to %s", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+		return fmt.Errorf("trying to downgrade postgresql from %s to %s", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 	}
 
 	extraArgs := []string{
@@ -104,7 +108,7 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 
 	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"], true, true, false)
 	if err != nil {
-		return fmt.Errorf("Cannot generate postgresql migration finalization script %s", err)
+		return fmt.Errorf("cannot generate postgresql migration finalization script %s", err)
 	}
 	err = podman.RunContainer("uyuni-finalize-pgsql", serverImage, extraArgs,
 		[]string{"/var/lib/uyuni-tools/" + scriptName})
@@ -117,7 +121,5 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 		return err
 	}
 	log.Info().Msg("Waiting for the server to start...")
-	shared_podman.ReloadDaemon(false)
-
-	return nil
+	return shared_podman.ReloadDaemon(false)
 }

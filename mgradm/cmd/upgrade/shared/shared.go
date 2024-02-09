@@ -5,7 +5,6 @@
 package shared
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -15,6 +14,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared"
 )
 
+// CompareVersion compare the server image version and the server deployed  version.
 func CompareVersion(imageVersion string, deployedVersion string) int {
 	imageVersionCleaned := strings.ReplaceAll(imageVersion, ".", "")
 	imageVersionCleaned = strings.TrimSpace(imageVersionCleaned)
@@ -24,6 +24,7 @@ func CompareVersion(imageVersion string, deployedVersion string) int {
 	return imageVersionInt - deployedVersionInt
 }
 
+// SanityCheck verifies if an upgrade can be run.
 func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serverImage string) error {
 	cnx_args := []string{"s/Uyuni release //g", "/etc/uyuni-release"}
 	current_uyuni_release, err := cnx.Exec("sed", cnx_args...)
@@ -36,14 +37,14 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 	}
 	log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues["uyuni_release"])
 	if CompareVersion(inspectedValues["uyuni_release"], string(current_uyuni_release)) <= 0 {
-		return errors.New(fmt.Sprintf("cannot downgrade from version %s to %s", string(current_uyuni_release), inspectedValues["uyuni_release"]))
+		return fmt.Errorf("cannot downgrade from version %s to %s", string(current_uyuni_release), inspectedValues["uyuni_release"])
 	}
 	if (len(inspectedValues["image_pg_version"])) <= 0 {
-		return errors.New(fmt.Sprintf("cannot fetch postgresql version from %s", serverImage))
+		return fmt.Errorf("cannot fetch postgresql version from %s", serverImage)
 	}
 	log.Debug().Msgf("Image %s has PostgreSQL %s", serverImage, inspectedValues["image_pg_version"])
 	if (len(inspectedValues["current_pg_version"])) <= 0 {
-		return errors.New("posgresql is not installed in the current deployment")
+		return fmt.Errorf("posgresql is not installed in the current deployment")
 	}
 	log.Debug().Msgf("Current deployment has PostgreSQL %s", inspectedValues["current_pg_version"])
 

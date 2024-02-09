@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -13,15 +13,18 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// ClusterInfos represent cluster information.
 type ClusterInfos struct {
 	KubeletVersion string
 	Ingress        string
 }
 
+// IsK3s is true if it's a K3s Cluster.
 func (infos ClusterInfos) IsK3s() bool {
 	return strings.Contains(infos.KubeletVersion, "k3s")
 }
 
+// IsRKE2 is true if it's a RKE2 Cluster.
 func (infos ClusterInfos) IsRke2() bool {
 	return strings.Contains(infos.KubeletVersion, "rke2")
 }
@@ -40,8 +43,8 @@ func (infos ClusterInfos) GetKubeconfig() string {
 	return kubeconfig
 }
 
+// CheckCluster return cluster information.
 func CheckCluster() ClusterInfos {
-
 	// Get the kubelet version
 	hostname, err := os.Hostname()
 	if err != nil {
