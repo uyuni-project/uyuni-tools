@@ -14,13 +14,53 @@ import (
 	"path"
 
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 
 	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 var kubernetesBuilt = true
+
+func kuberneteInspect(
+	globalFlags *types.GlobalFlags,
+	flags *inspectFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	serverImage, err := utils.ComputeImage(flags.Image, flags.Tag)
+	if err != nil && len(serverImage) > 0 {
+		return fmt.Errorf("Failed to determine image. %s", err)
+	}
+
+	if len(serverImage) <= 0 {
+		log.Debug().Msg("Use deployed image")
+
+		cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
+		serverImage, err = adm_utils.RunningImage(cnx, "uyuni")
+		if err != nil {
+			return fmt.Errorf("Failed to find current running image")
+		}
+	}
+
+	inspectResult, err := InspectKubernetes(serverImage, flags.PullPolicy)
+	if err != nil {
+		return fmt.Errorf("Inspect command failed %s", err)
+	}
+
+	prettyInspectOutput, err := json.MarshalIndent(inspectResult, "", "  ")
+	if err != nil {
+		return fmt.Errorf("Cannot print inspect result %s", err)
+	}
+
+	log.Info().Msgf("\n%s", string(prettyInspectOutput))
+
+	return nil
+}
 
 func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string, error) {
 	for _, binary := range []string{"kubectl", "helm"} {
@@ -85,11 +125,5 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 		return map[string]string{}, fmt.Errorf("Cannot inspect data. %s", err)
 	}
 
-	prettyInspectOutput, err := json.MarshalIndent(inspectResult, "", "  ")
-	if err != nil {
-		return map[string]string{}, fmt.Errorf("Cannot print inspect result. %s", err)
-	}
-
-	log.Info().Msgf("\n%s", string(prettyInspectOutput))
 	return inspectResult, err
 }

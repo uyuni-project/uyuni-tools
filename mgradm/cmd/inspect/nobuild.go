@@ -11,6 +11,11 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func kuberneteInspect(
+	globalFlags *types.GlobalFlags,
+	flags *inspectFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
 	return nil
 }

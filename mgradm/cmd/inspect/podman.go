@@ -10,11 +10,49 @@ import (
 	"os"
 
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
+	"github.com/spf13/cobra"
 	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
+
+func podmanInspect(
+	globalFlags *types.GlobalFlags,
+	flags *inspectFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	serverImage, err := utils.ComputeImage(flags.Image, flags.Tag)
+	if err != nil && len(serverImage) > 0 {
+		return fmt.Errorf("Failed to determine image. %s", err)
+	}
+
+	if len(serverImage) <= 0 {
+		log.Debug().Msg("Use deployed image")
+
+		cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
+		serverImage, err = adm_utils.RunningImage(cnx, shared_podman.ServerContainerName)
+		if err != nil {
+			return fmt.Errorf("Failed to find current running image")
+		}
+	}
+	inspectResult, err := InspectPodman(serverImage, flags.PullPolicy)
+	if err != nil {
+		return fmt.Errorf("Inspect command failed %s", err)
+	}
+	prettyInspectOutput, err := json.MarshalIndent(inspectResult, "", "  ")
+	if err != nil {
+		return fmt.Errorf("Cannot print inspect result %s", err)
+	}
+
+	log.Info().Msgf("\n%s", string(prettyInspectOutput))
+
+	return nil
+}
 
 func InspectPodman(serverImage string, pullPolicy string) (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
@@ -32,7 +70,7 @@ func InspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 		return map[string]string{}, err
 	}
 
-	if err := shared.GenerateInspectScript(scriptDir); err != nil {
+	if err := inspect_shared.GenerateInspectScript(scriptDir); err != nil {
 		return map[string]string{}, err
 	}
 
@@ -42,17 +80,11 @@ func InspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 		return map[string]string{}, err
 	}
 
-	inspectResult, err := shared.ReadInspectData(scriptDir)
+	inspectResult, err := inspect_shared.ReadInspectData(scriptDir)
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("Cannot inspect data. %s", err)
 	}
 
-	prettyInspectOutput, err := json.MarshalIndent(inspectResult, "", "  ")
-	if err != nil {
-		return map[string]string{}, fmt.Errorf("Cannot print inspect result %s", err)
-	}
-
-	log.Info().Msgf("\n%s", string(prettyInspectOutput))
 	return inspectResult, err
 
 }
