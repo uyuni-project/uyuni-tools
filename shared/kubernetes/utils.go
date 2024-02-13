@@ -141,6 +141,7 @@ func IsDeploymentReady(namespace string, name string) bool {
 }
 
 // ReplicasTo set the replica for an app to the given value.
+// Scale the number of replicas of the server.
 func ReplicasTo(filter string, replica uint) error {
 	args := []string{"scale", "deploy", "uyuni", "--replicas"}
 	log.Debug().Msgf("Setting replicas for pod in %s to %d", filter, replica)
