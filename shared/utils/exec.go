@@ -49,15 +49,13 @@ func RunCmdStdMapping(command string, args ...string) error {
 
 // RunCmdOutput execute a shell command and collects output.
 func RunCmdOutput(logLevel zerolog.Level, command string, args ...string) ([]byte, error) {
-	logger := log.Logger.WithLevel(logLevel)
-
-	logger.Msgf("Running: %s %s", command, strings.Join(args, " "))
+	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	output, err := exec.Command(command, args...).Output()
 	if err != nil {
-		logger.Err(err).Msgf("Command returned Error: %s", output)
+		log.Err(err).Msgf("Command returned Error: %s", output)
 	} else if len(output) > 0 {
-		logger.Msgf("Command output: %s", output)
+		log.Debug().Msgf("Command output: %s", output)
 	}
 	return output, err
 }
