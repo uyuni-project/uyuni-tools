@@ -65,6 +65,13 @@ func upgradeKubernetes(
 		return fmt.Errorf("failed to create temporary directory")
 	}
 
+	//this is needed because folder with script needs to be mounted
+	//check the node before scaling down
+	nodeName, err := shared_kubernetes.GetNode("uyuni")
+	if err != nil {
+		return fmt.Errorf("cannot find node for app uyuni %s", err)
+	}
+
 	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
 	if err != nil {
 		return fmt.Errorf("cannot set replica to 0: %s", err)
@@ -100,12 +107,6 @@ func upgradeKubernetes(
 		//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
 		if err := shared_kubernetes.DeletePod(migrationContainer, shared_kubernetes.ServerFilter); err != nil {
 			return fmt.Errorf("cannot delete %s: %s", migrationContainer, err)
-		}
-
-		//this is needed because folder with script needs to be mounted
-		nodeName, err := shared_kubernetes.GetNode("uyuni")
-		if err != nil {
-			return fmt.Errorf("cannot find node for app uyuni %s", err)
 		}
 
 		//generate deploy data
@@ -148,12 +149,6 @@ func upgradeKubernetes(
 	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
 	if err := shared_kubernetes.DeletePod(pgsqlFinalizeContainer, shared_kubernetes.ServerFilter); err != nil {
 		return fmt.Errorf("cannot delete %s: %s", pgsqlFinalizeContainer, err)
-	}
-
-	//this is needed because folder with script needs to be mounted
-	nodeName, err := shared_kubernetes.GetNode("uyuni")
-	if err != nil {
-		return fmt.Errorf("cannot find node for app uyuni %s", err)
 	}
 
 	//generate deploy data

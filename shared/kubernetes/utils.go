@@ -158,12 +158,11 @@ func ReplicasTo(filter string, replica uint) error {
 	}
 
 	for _, pod := range pods {
-		err = waitForReplica(pod, replica)
-		if replica > 0 {
-			return nil
-		}
-		if err != nil {
-			return fmt.Errorf("replica to %d failed: %s", replica, err)
+		if len(pod) > 0 {
+			err = waitForReplica(pod, replica)
+			if err != nil {
+				return fmt.Errorf("replica to %d failed: %s", replica, err)
+			}
 		}
 	}
 
@@ -194,12 +193,38 @@ func getPods(filter string) (pods []string, err error) {
 	return pods, err
 }
 
+func waitForReplicaZero(podname string) error {
+	waitSeconds := 120
+	cmdArgs := []string{"get", "pod", podname}
+
+	for i := 0; i < waitSeconds; i++ {
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
+		/* Assume that if the command return an error at the first iteration, it's because it failed,
+		* next iteration because the pod was actually deleted
+		 */
+		if err != nil && i == 0 {
+			return fmt.Errorf("cannot check for replica zero for %s: %s", podname, err)
+		}
+		outStr := strings.TrimSuffix(string(out), "\n")
+		if len(outStr) == 0 {
+			log.Debug().Msgf("Pod %s has been deleted", podname)
+			return nil
+		}
+		time.Sleep(1 * time.Second)
+	}
+	return fmt.Errorf("cannot set replica for %s to zero", podname)
+}
+
 func waitForReplica(podname string, replica uint) error {
 	waitSeconds := 120
 	log.Debug().Msgf("Checking replica for %s ready to %d", podname, replica)
+	if replica == 0 {
+		return waitForReplicaZero(podname)
+	}
 	cmdArgs := []string{"get", "rs", podname, "--output=custom-columns=DESIRED:.status.replicas", "--no-headers"}
 
 	var err error
+
 	for i := 0; i < waitSeconds; i++ {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
 		outStr := strings.TrimSuffix(string(out), "\n")
@@ -304,7 +329,7 @@ func waitForPod(podname string) error {
 			log.Debug().Msgf("%s pod status is %s", podname, status)
 			return nil
 		}
-		log.Debug().Msgf("Pod %s status is %s in %d seconds.", podname, string(out), i)
+		log.Debug().Msgf("Pod %s status is %s for %d seconds.", podname, outStr, i)
 		time.Sleep(1 * time.Second)
 	}
 	return fmt.Errorf("pod %s status is not %s in %s seconds: %s", podname, status, strconv.Itoa(waitSeconds), err)
