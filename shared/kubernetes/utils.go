@@ -300,7 +300,7 @@ func waitForPod(podname string) error {
 		if err != nil {
 			return fmt.Errorf("cannot execute %s: %s", strings.Join(cmdArgs, string(" ")), err)
 		}
-		if strings.ToUpper(outStr) == strings.ToUpper(status) {
+		if strings.EqualFold(outStr, status) {
 			log.Debug().Msgf("%s pod status is %s", podname, status)
 			return nil
 		}

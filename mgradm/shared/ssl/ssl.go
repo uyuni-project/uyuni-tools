@@ -6,6 +6,7 @@ package ssl
 
 import (
 	"bytes"
+	"errors"
 	"os"
 	"os/exec"
 	"strings"
@@ -40,8 +41,8 @@ func OrderCas(chain *CaChain, serverPair *SslPair) ([]byte, []byte) {
 	serverCerts := readCertificates(serverPair.Cert)
 	certs = append(certs, serverCerts...)
 
-	serverCert := findServerCert(certs)
-	if serverCert == nil {
+	serverCert, err := findServerCert(certs)
+	if err != nil {
 		log.Fatal().Msg("Failed to find a non-CA certificate")
 	}
 
@@ -75,13 +76,13 @@ type certificate struct {
 	isRoot       bool
 }
 
-func findServerCert(certs []certificate) *certificate {
+func findServerCert(certs []certificate) (*certificate, error) {
 	for _, cert := range certs {
 		if !cert.isCa {
-			return &cert
+			return &cert, nil
 		}
 	}
-	return nil
+	return nil, errors.New("expected to find a certificate, got none")
 }
 
 func readCertificates(path string) []certificate {

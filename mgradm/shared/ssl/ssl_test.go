@@ -118,9 +118,9 @@ func TestOrderCas(t *testing.T) {
 
 func TestFindServerCertificate(t *testing.T) {
 	certsList := readCertificates("testdata/chain2/spacewalk.crt")
-	actual := findServerCert(certsList)
+	actual, err := findServerCert(certsList)
 
-	if actual == nil {
+	if err != nil {
 		t.Error("Expected to find a certificate, got none")
 	}
 
