@@ -83,8 +83,8 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 	const podName = "inspector"
 
 	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
-	if out, err := shared_kubernetes.DeletePod(podName); err != nil {
-		return map[string]string{}, fmt.Errorf("cannot delete %s: %s. Output is: %s", podName, err, out)
+	if err := shared_kubernetes.DeletePod(podName); err != nil {
+		return map[string]string{}, fmt.Errorf("cannot delete %s: %s", podName, err)
 	}
 
 	//this is needed because folder with script needs to be mounted

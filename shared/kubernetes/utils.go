@@ -257,19 +257,19 @@ func RunPod(podname string, image string, pullPolicy string, command string, ove
 	}
 
 	defer func() {
-		_, err = DeletePod(podname)
+		err = DeletePod(podname)
 	}()
 	return nil
 }
 
 // Delete a kubernetes pod named podname.
-func DeletePod(podname string) (string, error) {
+func DeletePod(podname string) error {
 	arguments := []string{"delete", "pod", podname}
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", arguments...)
+	_, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", arguments...)
 	if err != nil {
-		return "", fmt.Errorf("cannot delete pod %s: %s", podname, err)
+		return fmt.Errorf("cannot delete pod %s: %s", podname, err)
 	}
-	return string(out), nil
+	return nil
 }
 
 func waitForPod(podname string) error {

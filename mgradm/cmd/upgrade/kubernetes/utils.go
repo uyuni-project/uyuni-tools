@@ -98,9 +98,8 @@ func upgradeKubernetes(
 		}
 
 		//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
-		out, err := shared_kubernetes.DeletePod(migrationContainer)
-		if err != nil {
-			return fmt.Errorf("cannot delete %s: %s. Output is: %s", migrationContainer, err, out)
+		if err := shared_kubernetes.DeletePod(migrationContainer); err != nil {
+			return fmt.Errorf("cannot delete %s: %s", migrationContainer, err)
 		}
 
 		//this is needed because folder with script needs to be mounted
@@ -147,9 +146,8 @@ func upgradeKubernetes(
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
 
 	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
-	out, err := shared_kubernetes.DeletePod(pgsqlFinalizeContainer)
-	if err != nil {
-		return fmt.Errorf("cannot delete %s: %s. Output is: %s", pgsqlFinalizeContainer, err, out)
+	if err := shared_kubernetes.DeletePod(pgsqlFinalizeContainer); err != nil {
+		return fmt.Errorf("cannot delete %s: %s", pgsqlFinalizeContainer, err)
 	}
 
 	//this is needed because folder with script needs to be mounted
