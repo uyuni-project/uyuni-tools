@@ -78,7 +78,10 @@ func upgradeKubernetes(
 	}
 
 	defer func() {
-		err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 1)
+		// if something is running, we don't need to set replicas to 1
+		if _, err = shared_kubernetes.GetNode("uyuni"); err != nil {
+			err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 1)
+		}
 	}()
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
 		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB migration...", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
