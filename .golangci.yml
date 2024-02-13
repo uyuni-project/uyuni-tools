@@ -68,7 +68,7 @@ linters:
     - gosimple
       #- gocyclo
     - revive
-      #- ineffassign
+    - ineffassign
     - govet
       #- lll
       #- megacheck

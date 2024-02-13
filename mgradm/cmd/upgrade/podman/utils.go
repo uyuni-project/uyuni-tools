@@ -40,11 +40,6 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 		return err
 	}
 
-	podmanArgs := flags.Podman.Args
-	if flags.MirrorPath != "" {
-		podmanArgs = append(podmanArgs, "-v", flags.MirrorPath+":/mirror")
-	}
-
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {

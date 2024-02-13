@@ -27,8 +27,10 @@ func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 			dryRun, _ := cmd.Flags().GetBool("dry-run")
 			purge, _ := cmd.Flags().GetBool("purge-volumes")
 
-			backend := "podman"
-			backend, _ = cmd.Flags().GetString("backend")
+			backend, _ := cmd.Flags().GetString("backend")
+			if len(backend) <= 0 {
+				backend = "podman"
+			}
 
 			cnx := shared.NewConnection(backend, podman.ProxyContainerNames[0], kubernetes.ProxyFilter)
 			command, err := cnx.GetCommand()

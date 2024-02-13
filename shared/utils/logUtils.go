@@ -36,11 +36,10 @@ func getFileWriter() *lumberjack.Logger {
 	logPath := globalLogPath
 
 	if file, err := os.OpenFile(globalLogPath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0600); err != nil {
-		home, err := os.UserHomeDir()
+		logPath, err = os.UserHomeDir()
 		if err != nil {
 			logPath = "./"
 		}
-		logPath = home
 	} else {
 		file.Close()
 	}
