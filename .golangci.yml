@@ -42,7 +42,7 @@ linters-settings:
     enabled: false
   stylecheck:
     enabled: true
-    checks: ["ST1005"]
+    checks: ["ST1005", "ST1019"]
   structcheck:
     enabled: true
   typecheck:
@@ -84,7 +84,6 @@ linters:
 issues:
   include:
     - EXC0012
-
 
 
 

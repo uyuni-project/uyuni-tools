@@ -9,14 +9,13 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
-	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type podmanUpgradeFlags struct {
 	shared.UpgradeFlags `mapstructure:",squash"`
-	Podman              podman_utils.PodmanFlags
+	Podman              podman.PodmanFlags
 	MirrorPath          string
 }
 
@@ -42,7 +41,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			if err := viper.Unmarshal(&flags); err != nil {
 				log.Fatal().Err(err).Msg("Failed to unmarshall configuration")
 			}
-			tags, _ := podman_utils.ShowAvailableTag(flags.Image.Name)
+			tags, _ := podman.ShowAvailableTag(flags.Image.Name)
 			log.Info().Msgf("Available Tags for image: %s", flags.Image.Name)
 			for _, value := range tags {
 				log.Info().Msgf("%s", value)
