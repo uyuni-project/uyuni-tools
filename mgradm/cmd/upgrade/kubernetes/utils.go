@@ -98,7 +98,7 @@ func upgradeKubernetes(
 		}
 
 		//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
-		if err := shared_kubernetes.DeletePod(migrationContainer); err != nil {
+		if err := shared_kubernetes.DeletePod(migrationContainer, shared_kubernetes.ServerFilter); err != nil {
 			return fmt.Errorf("cannot delete %s: %s", migrationContainer, err)
 		}
 
@@ -132,7 +132,7 @@ func upgradeKubernetes(
 			return err
 		}
 
-		err = shared_kubernetes.RunPod(migrationContainer, migrationImageUrl, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+scriptName, override)
+		err = shared_kubernetes.RunPod(migrationContainer, shared_kubernetes.ServerFilter, migrationImageUrl, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+scriptName, override)
 		if err != nil {
 			return fmt.Errorf("error running container %s: %s", migrationContainer, err)
 		}
@@ -146,7 +146,7 @@ func upgradeKubernetes(
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
 
 	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
-	if err := shared_kubernetes.DeletePod(pgsqlFinalizeContainer); err != nil {
+	if err := shared_kubernetes.DeletePod(pgsqlFinalizeContainer, shared_kubernetes.ServerFilter); err != nil {
 		return fmt.Errorf("cannot delete %s: %s", pgsqlFinalizeContainer, err)
 	}
 
@@ -178,7 +178,7 @@ func upgradeKubernetes(
 	if err != nil {
 		return err
 	}
-	err = shared_kubernetes.RunPod(pgsqlFinalizeContainer, serverImage, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+scriptName, override)
+	err = shared_kubernetes.RunPod(pgsqlFinalizeContainer, shared_kubernetes.ServerFilter, serverImage, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+scriptName, override)
 	if err != nil {
 		return fmt.Errorf("error running container %s: %s", pgsqlFinalizeContainer, err)
 	}

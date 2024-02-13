@@ -172,6 +172,14 @@ func ReplicasTo(filter string, replica uint) error {
 	return err
 }
 
+func isPodRunning(podname string, filter string) (bool, error) {
+	pods, err := getPods(filter)
+	if err != nil {
+		return false, fmt.Errorf("cannot check if pod %s is running in app %s: %s", podname, filter, err)
+	}
+	return utils.Contains(pods, podname), nil
+}
+
 func getPods(filter string) (pods []string, err error) {
 	log.Debug().Msgf("Checking all pods for %s", filter)
 	cmdArgs := []string{"get", "pods", filter, "--output=custom-columns=:.metadata.name", "--no-headers"}
@@ -235,8 +243,8 @@ func GetPullPolicy(name string) string {
 }
 
 // RunPod runs a pod, waiting for its execution and deleting it.
-func RunPod(podname string, image string, pullPolicy string, command string, override ...string) error {
-	arguments := []string{"run", podname, "--image", image, "--image-pull-policy", pullPolicy}
+func RunPod(podname string, filter string, image string, pullPolicy string, command string, override ...string) error {
+	arguments := []string{"run", podname, "--image", image, "--image-pull-policy", pullPolicy, filter}
 
 	if len(override) > 0 {
 		arguments = append(arguments, `--override-type=strategic`)
@@ -257,15 +265,23 @@ func RunPod(podname string, image string, pullPolicy string, command string, ove
 	}
 
 	defer func() {
-		err = DeletePod(podname)
+		err = DeletePod(podname, filter)
 	}()
 	return nil
 }
 
 // Delete a kubernetes pod named podname.
-func DeletePod(podname string) error {
+func DeletePod(podname string, filter string) error {
+	isRunning, err := isPodRunning(podname, filter)
+	if err != nil {
+		return fmt.Errorf("cannot delete pod %s: %s", podname, err)
+	}
+	if !isRunning {
+		log.Debug().Msgf("no need to delete pod %s because is not running", podname)
+		return nil
+	}
 	arguments := []string{"delete", "pod", podname}
-	_, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", arguments...)
+	_, err = utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", arguments...)
 	if err != nil {
 		return fmt.Errorf("cannot delete pod %s: %s", podname, err)
 	}
