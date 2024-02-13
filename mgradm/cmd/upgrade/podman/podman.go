@@ -25,7 +25,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	upgradeCmd := &cobra.Command{
 		Use:   "podman",
 		Short: "upgrade a local server on podman",
-		Args: cobra.RangeArgs(0, 1),
+		Args:  cobra.RangeArgs(0, 1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanUpgradeFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, upgradePodman)
@@ -34,7 +34,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	listCmd := &cobra.Command{
 		Use:   "list",
 		Short: "list available tag for an image",
-		Args: cobra.ExactArgs(0),
+		Args:  cobra.ExactArgs(0),
 		Run: func(cmd *cobra.Command, args []string) {
 			viper, _ := utils.ReadConfig(globalFlags.ConfigPath, cmd)
 
