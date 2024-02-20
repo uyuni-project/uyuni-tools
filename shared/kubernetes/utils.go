@@ -221,7 +221,7 @@ func waitForReplica(podname string, replica uint) error {
 	if replica == 0 {
 		return waitForReplicaZero(podname)
 	}
-	cmdArgs := []string{"get", "rs", podname, "--output=custom-columns=DESIRED:.status.replicas", "--no-headers"}
+	cmdArgs := []string{"get", "pod", podname, "--output=custom-columns=STATUS:.status.phase", "--no-headers"}
 
 	var err error
 
@@ -231,7 +231,7 @@ func waitForReplica(podname string, replica uint) error {
 		if err != nil {
 			return fmt.Errorf("cannot execute %s: %s", strings.Join(cmdArgs, string(" ")), err)
 		}
-		if string(outStr) == fmt.Sprint(replica) {
+		if string(outStr) == "Running" {
 			log.Debug().Msgf("%s pod replica is now %d", podname, replica)
 			break
 		}

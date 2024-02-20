@@ -5,6 +5,7 @@
 package kubernetes
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -86,4 +87,27 @@ func guessIngress() string {
 	}
 
 	return ingress
+}
+
+// Restart restarts the pod.
+func Restart(ServerFilter string) error {
+	if err := Stop(ServerFilter); err != nil {
+		return fmt.Errorf("cannot stop %s: %s", ServerFilter, err)
+	}
+	return Start(ServerFilter)
+}
+
+// Start starts the pod.
+func Start(ServerFilter string) error {
+	// if something is running, we don't need to set replicas to 1
+	if _, err := GetNode("uyuni"); err != nil {
+		return ReplicasTo(ServerFilter, 1)
+	}
+	log.Debug().Msgf("Already running")
+	return nil
+}
+
+// Stop stop the pod.
+func Stop(ServerFilter string) error {
+	return ReplicasTo(ServerFilter, 0)
 }

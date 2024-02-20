@@ -7,9 +7,8 @@
 package restart
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -19,5 +18,5 @@ func kubernetesRestart(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return fmt.Errorf("not implemented")
+	return kubernetes.Restart(kubernetes.ServerFilter)
 }
