@@ -64,6 +64,7 @@ func InspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 
 	extraArgs := []string{
 		"-v", scriptDir + ":" + inspect_shared.InspectOutputFile.Directory,
+		"--security-opt", "label:disable",
 	}
 
 	err = shared_podman.PrepareImage(serverImage, pullPolicy)

@@ -59,6 +59,7 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB migration...", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 		extraArgs := []string{
 			"-v", scriptDir + ":/var/lib/uyuni-tools/",
+			"--security-opt", "label:disable",
 		}
 
 		migrationImageUrl := ""
@@ -99,6 +100,7 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 
 	extraArgs := []string{
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
+		"--security-opt", "label:disable",
 	}
 
 	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"], true, true, false)
