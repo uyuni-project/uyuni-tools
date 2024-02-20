@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -17,8 +17,8 @@ type kubernetesProxyInstallFlags struct {
 	Helm                        kubernetes.HelmFlags
 }
 
+// NewCommand install a new proxy on a running kubernetes cluster.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	cmd := &cobra.Command{
 		Use:   "kubernetes [path/to/config.tar.gz]",
 		Short: "install a new proxy on a running kubernetes cluster",

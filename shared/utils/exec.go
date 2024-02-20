@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -13,11 +13,13 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// OutputLogWriter contains information output the logger and the loglevel.
 type OutputLogWriter struct {
 	Logger   zerolog.Logger
 	LogLevel zerolog.Level
 }
 
+// Write writes a byte array to an OutputLogWriter.
 func (l OutputLogWriter) Write(p []byte) (n int, err error) {
 	n = len(p)
 	if n > 0 && p[n-1] == '\n' {
@@ -28,12 +30,14 @@ func (l OutputLogWriter) Write(p []byte) (n int, err error) {
 	return
 }
 
+// RunCmd execute a shell command.
 func RunCmd(command string, args ...string) error {
 	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	return exec.Command(command, args...).Run()
 }
 
+// RunCmdStdMapping execute a shell command mapping the stdout and stderr.
 func RunCmdStdMapping(command string, args ...string) error {
 	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
@@ -43,16 +47,15 @@ func RunCmdStdMapping(command string, args ...string) error {
 	return runCmd.Run()
 }
 
+// RunCmdOutput execute a shell command and collects output.
 func RunCmdOutput(logLevel zerolog.Level, command string, args ...string) ([]byte, error) {
-	logger := log.Logger.WithLevel(logLevel)
-
-	logger.Msgf("Running: %s %s", command, strings.Join(args, " "))
+	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	output, err := exec.Command(command, args...).Output()
 	if err != nil {
-		logger.Err(err).Msgf("Command returned Error: %s", output)
+		log.Err(err).Msgf("Command returned Error: %s", output)
 	} else if len(output) > 0 {
-		logger.Msgf("Command output: %s", output)
+		log.Debug().Msgf("Command output: %s", output)
 	}
 	return output, err
 }

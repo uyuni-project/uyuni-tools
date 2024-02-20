@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -10,8 +10,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/k3s-traefik-config.yaml"
-
+// InstallK3sTraefikConfig installs the K3s Traefik configuration.
 func InstallK3sTraefikConfig(debug bool) {
 	tcpPorts := []types.PortMap{}
 	tcpPorts = append(tcpPorts, utils.TCP_PORTS...)

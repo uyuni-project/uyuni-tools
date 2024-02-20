@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -14,7 +14,6 @@ import (
 	"path"
 
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
@@ -34,7 +33,7 @@ func migrateToKubernetes(
 ) error {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
-			log.Fatal().Err(err).Msgf("install %s before running this command", binary)
+			return fmt.Errorf("install %s before running this command: %s", binary, err)
 		}
 	}
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
@@ -45,7 +44,11 @@ func migrateToKubernetes(
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
 	// Prepare the migration script and folder
-	scriptDir := migration_shared.GenerateMigrationScript(fqdn, true)
+	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, true)
+	if err != nil {
+		return fmt.Errorf("failed to generater migration script: %s", err)
+	}
+
 	defer os.RemoveAll(scriptDir)
 
 	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
@@ -57,16 +60,23 @@ func migrateToKubernetes(
 	kubeconfig := clusterInfos.GetKubeconfig()
 	//TODO: check if we need to handle SELinux policies, as we do in podman
 
-	kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &sslFlags, &clusterInfos, fqdn, false,
+	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &sslFlags, &clusterInfos, fqdn, false,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
-		"--set", "migration.dataPath="+scriptDir)
+		"--set", "migration.dataPath="+scriptDir); err != nil {
+		return fmt.Errorf("cannot run deploy: %s", err)
+	}
 
 	// Run the actual migration
-	runMigration(cnx, flags, scriptDir)
+	if err := adm_utils.RunMigration(cnx, scriptDir, "migrate.sh"); err != nil {
+		return fmt.Errorf("cannot run migration: %s", err)
+	}
 
-	tz, oldPgVersion, newPgVersion := migration_shared.ReadContainerData(scriptDir)
+	tz, oldPgVersion, newPgVersion, err := adm_utils.ReadContainerData(scriptDir)
+	if err != nil {
+		return fmt.Errorf("cannot read data from container: %s", err)
+	}
 
 	helmArgs := []string{
 		"--reset-values",
@@ -80,56 +90,79 @@ func migrateToKubernetes(
 			migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, oldPgVersion, newPgVersion)
 		}
 		migrationImage.Tag = flags.MigrationImage.Tag
-		migrationImageUrl, err := utils.ComputeImage(migrationImage.Name, flags.Image.Tag)
-		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to compute image URL")
-		}
-		log.Info().Msgf("Using migration image %s", migrationImageUrl)
-		migration_shared.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
 
-		kubernetes.UyuniUpgrade(&migrationImage, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
-		runMigration(cnx, flags, scriptDir)
+		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
+		if err != nil {
+			return fmt.Errorf("cannot generate postgresql database migration script: %s", err)
+		}
+
+		migrationImageUrl, err := utils.ComputeImage(migrationImage.Name, migrationImage.Tag)
+		if err != nil {
+			return fmt.Errorf("failed to compute image URL")
+		}
+
+		if err := kubernetes.UyuniUpgrade(migrationImageUrl, migrationImage.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...); err != nil {
+			return fmt.Errorf("cannot upgrade uyuni: %s", err)
+		}
+		if err := adm_utils.RunMigration(cnx, scriptDir, scriptName); err != nil {
+			return fmt.Errorf("cannot run migration: %s", err)
+		}
 	}
 
-	migration_shared.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
-	kubernetes.UyuniUpgrade(&flags.Image, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
-	runMigration(cnx, flags, scriptDir)
+	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
+	if err != nil {
+		return fmt.Errorf("cannot generate postgresql migration finalization script: %s", err)
+	}
 
-	helmArgs = append(helmArgs, setupSsl(flags, kubeconfig, scriptDir)...)
+	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
+	if err != nil {
+		return fmt.Errorf("failed to compute image URL")
+	}
+
+	if err := kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...); err != nil {
+		return fmt.Errorf("cannot run uyuni upgrade: %s", err)
+	}
+	if err := adm_utils.RunMigration(cnx, scriptDir, scriptName); err != nil {
+		return fmt.Errorf("cannot run migration: %s", err)
+	}
+
+	setupSslArray, err := setupSsl(&flags.Helm, kubeconfig, scriptDir, flags.Ssl.Password, flags.Image.PullPolicy)
+	if err != nil {
+		return fmt.Errorf("cannot setup SSL: %s", err)
+	}
+	helmArgs = append(helmArgs, setupSslArray...)
 
 	// As we upgrade the helm instance without the migration parameters the SSL certificate will be used
-	kubernetes.UyuniUpgrade(&flags.Image, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	if err := kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...); err != nil {
+		return fmt.Errorf("cannot run uyuni upgrade: %s", err)
+	}
 	return nil
 }
 
-func runMigration(cnx *shared.Connection, flags *kubernetesMigrateFlags, tmpPath string) {
-	log.Info().Msg("Migrating server")
-	err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/migrate.sh")
-	if err != nil {
-		log.Fatal().Err(err).Msg("error running the migration script")
-	}
-}
-
 // updateIssuer replaces the temporary SSL certificate issuer with the source server CA.
-// Return additional helm args to use the SSL certificates
-func setupSsl(flags *kubernetesMigrateFlags, kubeconfig string, scriptDir string) []string {
+// Return additional helm args to use the SSL certificates.
+func setupSsl(helm *adm_utils.HelmFlags, kubeconfig string, scriptDir string, password string, pullPolicy string) ([]string, error) {
 	caCert := path.Join(scriptDir, "RHN-ORG-TRUSTED-SSL-CERT")
 	caKey := path.Join(scriptDir, "RHN-ORG-PRIVATE-SSL-KEY")
 
 	if utils.FileExists(caCert) && utils.FileExists(caKey) {
-		key := base64.StdEncoding.EncodeToString(ssl.GetRsaKey(caKey, flags.Ssl.Password))
+		key := base64.StdEncoding.EncodeToString(ssl.GetRsaKey(caKey, password))
 
 		// Strip down the certificate text part
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "openssl", "x509", "-in", caCert)
 		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to strip text part of CA certificate")
+			return []string{}, fmt.Errorf("failed to strip text part of CA certificate %s", err)
 		}
 		cert := base64.StdEncoding.EncodeToString(out)
 		ca := ssl.SslPair{Cert: cert, Key: key}
 
 		// An empty struct means no third party certificate
 		sslFlags := adm_utils.SslCertFlags{}
-		return kubernetes.DeployCertificate(&flags.Helm, &sslFlags, cert, &ca, kubeconfig, "", flags.Image.PullPolicy)
+		ret, err := kubernetes.DeployCertificate(helm, &sslFlags, cert, &ca, kubeconfig, "", pullPolicy)
+		if err != nil {
+			return []string{}, fmt.Errorf("cannot deploy certificate: %s", err)
+		}
+		return ret, nil
 	} else {
 		// Handle third party certificates and CA
 		sslFlags := adm_utils.SslCertFlags{
@@ -139,7 +172,7 @@ func setupSsl(flags *kubernetesMigrateFlags, kubeconfig string, scriptDir string
 				Cert: path.Join(scriptDir, "spacewalk.crt"),
 			},
 		}
-		kubernetes.DeployExistingCertificate(&flags.Helm, &sslFlags, kubeconfig)
+		kubernetes.DeployExistingCertificate(helm, &sslFlags, kubeconfig)
 	}
-	return []string{}
+	return []string{}, nil
 }

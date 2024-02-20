@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -35,11 +35,13 @@ spec:
 {{- end }}
 `
 
+// K3sTraefikConfigTemplateData represents information used to create K3s Traefik helm chart.
 type K3sTraefikConfigTemplateData struct {
 	TcpPorts []types.PortMap
 	UdpPorts []types.PortMap
 }
 
+// Render will create the helm chart configuation for K3sTraefik.
 func (data K3sTraefikConfigTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("k3sTraefikConfig").Parse(k3sTraefikConfigTemplate))
 	return t.Execute(wr, data)

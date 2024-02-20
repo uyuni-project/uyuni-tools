@@ -1,10 +1,11 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package kubernetes
 
 import (
+	"fmt"
 	"path"
 
 	"github.com/rs/zerolog/log"
@@ -14,9 +15,10 @@ import (
 
 const helmAppName = "uyuni-proxy"
 
+// Deploy will deploy proxy in kubernetes.
 func Deploy(installFlags *utils.ProxyInstallFlags, helmFlags *HelmFlags, configDir string,
 	kubeconfig string, helmArgs ...string,
-) {
+) error {
 	log.Info().Msg("Installing Uyuni")
 
 	helmParams := []string{}
@@ -43,9 +45,11 @@ func Deploy(installFlags *utils.ProxyInstallFlags, helmFlags *HelmFlags, configD
 	helmParams = append(helmParams, helmArgs...)
 
 	// Install the helm chart
-	kubernetes.HelmUpgrade(kubeconfig, helmFlags.Proxy.Namespace, true, "", helmAppName, helmFlags.Proxy.Chart,
-		helmFlags.Proxy.Version, helmParams...)
+	if err := kubernetes.HelmUpgrade(kubeconfig, helmFlags.Proxy.Namespace, true, "", helmAppName, helmFlags.Proxy.Chart,
+		helmFlags.Proxy.Version, helmParams...); err != nil {
+		return fmt.Errorf("cannot run helm upgrade: %s", err)
+	}
 
 	// Wait for the pod to be started
-	kubernetes.WaitForDeployment(helmFlags.Proxy.Namespace, helmAppName, "uyuni-proxy")
+	return kubernetes.WaitForDeployment(helmFlags.Proxy.Namespace, helmAppName, "uyuni-proxy")
 }

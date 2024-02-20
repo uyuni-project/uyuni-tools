@@ -6,6 +6,7 @@ package shared
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
@@ -19,6 +20,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// Connection contains information about how to connect to the server.
 type Connection struct {
 	backend          string
 	command          string
@@ -43,7 +45,6 @@ func NewConnection(backend string, podmanContainer string, kubernetesFilter stri
 func (c *Connection) GetCommand() (string, error) {
 	var err error
 	if c.command == "" {
-
 		switch c.backend {
 		case "podman":
 			fallthrough
@@ -129,7 +130,6 @@ func (c *Connection) GetPodName() (string, error) {
 				c.podName = string(podName[:])
 			}
 		}
-
 	}
 
 	return c.podName, err
@@ -160,7 +160,7 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 }
 
 // WaitForServer waits at most 60s for multi-user systemd target to be reached.
-func (c *Connection) WaitForServer() {
+func (c *Connection) WaitForServer() error {
 	// Wait for the system to be up
 	for i := 0; i < 60; i++ {
 		podName, err := c.GetPodName()
@@ -179,22 +179,24 @@ func (c *Connection) WaitForServer() {
 		}
 		args = append(args, "systemctl", "is-active", "-q", "multi-user.target")
 		testCmd := exec.Command(command, args...)
-		testCmd.Run()
+		if err := testCmd.Run(); err != nil {
+			return fmt.Errorf("cannot wait for server: %s", err)
+		}
 		if testCmd.ProcessState.ExitCode() == 0 {
-			return
+			return nil
 		}
 		time.Sleep(1 * time.Second)
 	}
-	log.Fatal().Msgf("Server didn't start within 60s")
+	return errors.New("server didn't start within 60s")
 }
 
 // Copy transfers a file to or from the container.
 // Prefix one of src or dst parameters with `server:` to designate the path is in the container
-// user and group parameters are used to set the owner of a file transfered in the container.
-func (c *Connection) Copy(src string, dst string, user string, group string) {
+// user and group parameters are used to set the owner of a file transferred in the container.
+func (c *Connection) Copy(src string, dst string, user string, group string) error {
 	podName, err := c.GetPodName()
 	if err != nil {
-		log.Fatal().Err(err)
+		return err
 	}
 	var commandArgs []string
 	extraArgs := []string{}
@@ -203,7 +205,7 @@ func (c *Connection) Copy(src string, dst string, user string, group string) {
 
 	command, err := c.GetCommand()
 	if err != nil {
-		log.Fatal().Err(err)
+		return err
 	}
 
 	switch command {
@@ -215,10 +217,12 @@ func (c *Connection) Copy(src string, dst string, user string, group string) {
 		commandArgs = []string{"cp", "-c", "uyuni", srcExpanded, dstExpanded}
 		extraArgs = []string{"-c", "uyuni", "--"}
 	default:
-		log.Fatal().Msgf("Unknown container kind: %s", command)
+		return fmt.Errorf("unknown container kind: %s", command)
 	}
 
-	utils.RunCmdStdMapping(command, commandArgs...)
+	if err := utils.RunCmdStdMapping(command, commandArgs...); err != nil {
+		return err
+	}
 
 	if user != "" && strings.HasPrefix(dst, "server:") {
 		execArgs := []string{"exec", podName}
@@ -228,8 +232,9 @@ func (c *Connection) Copy(src string, dst string, user string, group string) {
 			owner = user + ":" + group
 		}
 		execArgs = append(execArgs, "chown", owner, strings.Replace(dst, "server:", "", 1))
-		utils.RunCmdStdMapping(command, execArgs...)
+		return utils.RunCmdStdMapping(command, execArgs...)
 	}
+	return nil
 }
 
 // TestExistenceInPod returns true if dstpath exists in the pod.
@@ -267,7 +272,6 @@ func ChoosePodmanOrKubernetes[F interface{}](
 	podmanFn utils.CommandFunc[F],
 	kubernetesFn utils.CommandFunc[F],
 ) (utils.CommandFunc[F], error) {
-
 	backend := "podman"
 	if utils.KubernetesBuilt {
 		backend, _ = flags.GetString("backend")

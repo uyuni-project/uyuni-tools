@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -6,6 +6,7 @@ package ssl
 
 import (
 	"bytes"
+	"errors"
 	"os"
 	"os/exec"
 	"strings"
@@ -15,11 +16,13 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// CaChain is a type to store CA Chain.
 type CaChain struct {
 	Root         string
 	Intermediate []string
 }
 
+// SslPait is a type for SSL Cert and Key.
 type SslPair struct {
 	Cert string
 	Key  string
@@ -38,8 +41,8 @@ func OrderCas(chain *CaChain, serverPair *SslPair) ([]byte, []byte) {
 	serverCerts := readCertificates(serverPair.Cert)
 	certs = append(certs, serverCerts...)
 
-	serverCert := findServerCert(certs)
-	if serverCert == nil {
+	serverCert, err := findServerCert(certs)
+	if err != nil {
 		log.Fatal().Msg("Failed to find a non-CA certificate")
 	}
 
@@ -73,13 +76,13 @@ type certificate struct {
 	isRoot       bool
 }
 
-func findServerCert(certs []certificate) *certificate {
+func findServerCert(certs []certificate) (*certificate, error) {
 	for _, cert := range certs {
 		if !cert.isCa {
-			return &cert
+			return &cert, nil
 		}
 	}
-	return nil
+	return nil, errors.New("expected to find a certificate, got none")
 }
 
 func readCertificates(path string) []certificate {
@@ -191,7 +194,6 @@ func extractCertificateData(content []byte) certificate {
 // Prepare the certificate chain starting by the server up to the root CA.
 // Returns the certificate chain and the root CA.
 func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash string) ([]byte, []byte) {
-
 	if len(mapBySubjectHash) == 0 {
 		log.Fatal().Msg("No CA found in hash")
 	}

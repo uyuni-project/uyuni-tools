@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,6 +15,7 @@ import (
 
 const rke2NginxConfigPath = "/var/lib/rancher/rke2/server/manifests/rke2-ingress-nginx-config.yaml"
 
+// InstallRke2NgixConfig install Rke2 Nginx configuration.
 func InstallRke2NginxConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap, namespace string) {
 	log.Info().Msg("Installing RKE2 Nginx configuration")
 
@@ -40,6 +41,7 @@ func InstallRke2NginxConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap, 
 	}
 }
 
+// UninstallRke2NgixConfig uninstall Rke2 Nginx configuration.
 func UninstallRke2NginxConfig(dryRun bool) {
 	utils.UninstallFile(rke2NginxConfigPath, dryRun)
 }

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -6,6 +6,7 @@ package utils
 
 import "github.com/uyuni-project/uyuni-tools/shared/types"
 
+// NewPortMap is a constructor for PortMap type.
 func NewPortMap(name string, exposed int, port int) types.PortMap {
 	return types.PortMap{
 		Name:    name,
@@ -14,7 +15,8 @@ func NewPortMap(name string, exposed int, port int) types.PortMap {
 	}
 }
 
-// The port names should be less than 15 characters long and lowercased for traefik to eat them
+// TCP_PORTS are the tcp ports required by the server
+// The port names should be less than 15 characters long and lowercased for traefik to eat them.
 var TCP_PORTS = []types.PortMap{
 	NewPortMap("postgres", 5432, 5432),
 	NewPortMap("salt-publish", 4505, 4505),
@@ -25,6 +27,7 @@ var TCP_PORTS = []types.PortMap{
 	NewPortMap("tomcat-jmx-mtrx", 5557, 5557),
 }
 
+// DEBUG_PORTS are the port used by dev for debugging applications.
 var DEBUG_PORTS = []types.PortMap{
 	// We can't expose on port 8000 since traefik already uses it
 	NewPortMap("tomcat-debug", 8003, 8003),
@@ -32,6 +35,7 @@ var DEBUG_PORTS = []types.PortMap{
 	NewPortMap("search-debug", 8002, 8002),
 }
 
+// UDP_PORTS are the udp ports required by the server.
 var UDP_PORTS = []types.PortMap{
 	{
 		Name:     "tftp",
@@ -41,12 +45,14 @@ var UDP_PORTS = []types.PortMap{
 	},
 }
 
+// PROXY_TCP_PORTS are the tcp ports required by the proxy.
 var PROXY_TCP_PORTS = []types.PortMap{
 	NewPortMap("ssh", 8022, 22),
 	NewPortMap("salt-publish", 4505, 4505),
 	NewPortMap("salt-request", 4506, 4506),
 }
 
+// PROXY_PODMAN_PORTS are the http/s ports required by the proxy.
 var PROXY_PODMAN_PORTS = []types.PortMap{
 	NewPortMap("https", 443, 443),
 	NewPortMap("http", 80, 8080),

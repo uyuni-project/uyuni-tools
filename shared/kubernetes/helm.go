@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,8 +22,7 @@ import (
 // If repo is not empty, the --repo parameter will be passed.
 // If version is not empty, the --version parameter will be passed.
 func HelmUpgrade(kubeconfig string, namespace string, install bool,
-	repo string, name string, chart string, version string, args ...string) {
-
+	repo string, name string, chart string, version string, args ...string) error {
 	helmArgs := []string{
 		"upgrade",
 		"-n", namespace,
@@ -53,8 +52,9 @@ func HelmUpgrade(kubeconfig string, namespace string, install bool,
 	}
 	errorMessage := fmt.Sprintf("Failed to %s helm chart %s in namespace %s", command, chart, namespace)
 	if err := utils.RunCmdStdMapping("helm", helmArgs...); err != nil {
-		log.Fatal().Err(err).Msg(errorMessage)
+		return fmt.Errorf("%s: %s", errorMessage, err)
 	}
+	return nil
 }
 
 // HelmUninstall runs the helm uninstall command to remove a deployment.

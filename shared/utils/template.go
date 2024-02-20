@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,10 +11,12 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// Template is an interface for implementing Render function.
 type Template interface {
 	Render(wr io.Writer) error
 }
 
+// WriteTemplateToFile writes a template to a file.
 func WriteTemplateToFile(template Template, path string, perm os.FileMode, overwrite bool) error {
 	// Check if the file is existing
 	if !overwrite {

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -20,8 +20,8 @@ type kubernetesMigrateFlags struct {
 	Ssl                 cmd_utils.SslCertFlags
 }
 
+// NewCommand for kubernetes migration.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	migrateCmd := &cobra.Command{
 		Use:   "kubernetes [source server FQDN]",
 		Short: "migrate a remote server to containers running on a kubernetes cluster",

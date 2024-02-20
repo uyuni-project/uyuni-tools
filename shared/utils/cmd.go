@@ -12,10 +12,13 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
+// DefaultNamespace represents the default name used for image.
 var DefaultNamespace = "registry.opensuse.org/uyuni"
+
+// DefaultTag represents the default tag used for image.
 var DefaultTag = "latest"
 
-// This variable needs to be set a build time using git tags
+// This variable needs to be set a build time using git tags.
 var Version = "0.0.0"
 
 // CommandFunc is a function to be executed by a Cobra command.
@@ -41,6 +44,7 @@ func CommandHelper[T interface{}](
 	return fn(globalFlags, flags, cmd, args)
 }
 
+// AddBackendFlag add the flag for setting the backend ('podman', 'podman-remote', 'kubectl').
 func AddBackendFlag(cmd *cobra.Command) {
 	cmd.Flags().String("backend", "", "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use.")
 }

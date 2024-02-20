@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,13 +15,15 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var DefaultImage = path.Join(utils.DefaultNamespace, "server")
+var defaultImage = path.Join(utils.DefaultNamespace, "server")
 
+// HelmFrags stores Uyuni and Cert Manager Helm information.
 type HelmFlags struct {
 	Uyuni       types.ChartFlags
 	CertManager types.ChartFlags
 }
 
+// SslCertFlags can store SSL Certs information.
 type SslCertFlags struct {
 	Cnames   []string `mapstructure:"cname"`
 	Country  string
@@ -35,6 +37,7 @@ type SslCertFlags struct {
 	Server   ssl.SslPair
 }
 
+// UseExisting return true if existing SSL Cert can be used.
 func (f *SslCertFlags) UseExisting() bool {
 	return f.Server.Cert != "" && f.Server.Key != "" && f.Ca.Root != ""
 }
@@ -46,6 +49,7 @@ func (f *SslCertFlags) CheckParameters() {
 	}
 }
 
+// AddHelmInstallFlag add Helm install flags to a command.
 func AddHelmInstallFlag(cmd *cobra.Command) {
 	defaultChart := fmt.Sprintf("oci://%s/server-helm", utils.DefaultNamespace)
 
@@ -59,13 +63,15 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 	cmd.Flags().String("helm-certmanager-values", "", "Path to a values YAML file to use for cert-manager helm install")
 }
 
+// AddimageFlag add Image flags to a command.
 func AddImageFlag(cmd *cobra.Command) {
-	cmd.Flags().String("image", DefaultImage, "Image")
+	cmd.Flags().String("image", defaultImage, "Image")
 	cmd.Flags().String("tag", utils.DefaultTag, "Tag Image")
 
 	utils.AddPullPolicyFlag(cmd)
 }
 
+// AddMigrationImageFlag add Migration Image flags to a command.
 func AddMigrationImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("migration-image", "", "Migration image")
 	cmd.Flags().String("migration-tag", utils.DefaultTag, "Migration image tag")

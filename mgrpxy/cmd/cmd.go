@@ -17,8 +17,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// NewCommand returns a new cobra.Command implementing the root command for kinder
-func NewUyuniproxyCommand() *cobra.Command {
+// NewCommand returns a new cobra.Command implementing the root command for kinder.
+func NewUyuniproxyCommand() (*cobra.Command, error) {
 	globalFlags := &types.GlobalFlags{}
 	name := path.Base(os.Args[0])
 	rootCmd := &cobra.Command{
@@ -29,7 +29,11 @@ func NewUyuniproxyCommand() *cobra.Command {
 		SilenceUsage: true, // Don't show usage help on errors
 	}
 
-	rootCmd.SetUsageTemplate(utils.GetUsageWithConfigHelpTemplate(rootCmd.UsageTemplate()))
+	usage, err := utils.GetUsageWithConfigHelpTemplate(rootCmd.UsageTemplate())
+	if err != nil {
+		return rootCmd, err
+	}
+	rootCmd.SetUsageTemplate(usage)
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		utils.LogInit(true)
@@ -47,8 +51,12 @@ func NewUyuniproxyCommand() *cobra.Command {
 
 	installCmd := install.NewCommand(globalFlags)
 	rootCmd.AddCommand(installCmd)
-	rootCmd.AddCommand(uninstall.NewCommand(globalFlags))
+	uninstallCmd, err := uninstall.NewCommand(globalFlags)
+	if err != nil {
+		return rootCmd, err
+	}
+	rootCmd.AddCommand(uninstallCmd)
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
 
-	return rootCmd
+	return rootCmd, nil
 }

@@ -8,4 +8,4 @@ bin
 vendor.tar.gz
 *.pyc
 __pycache__
-tags
+**/tags

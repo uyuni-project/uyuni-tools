@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -14,16 +14,19 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// The name of the podman network for Uyuni and its proxies
+// The name of the podman network for Uyuni and its proxies.
 const UyuniNetwork = "uyuni"
 
-func SetupNetwork() {
+// SetupNetwork creates the podman network.
+func SetupNetwork() error {
 	log.Info().Msgf("Setting up %s network", UyuniNetwork)
 
 	ipv6Enabled := isIpv6Enabled()
 
 	testNetworkCmd := exec.Command("podman", "network", "exists", UyuniNetwork)
-	testNetworkCmd.Run()
+	if err := testNetworkCmd.Run(); err != nil {
+		return err
+	}
 	// check if network exists before trying to get the IPV6 information
 	if testNetworkCmd.ProcessState.ExitCode() == 0 {
 		// Check if the uyuni network exists and is IPv6 enabled
@@ -31,20 +34,17 @@ func SetupNetwork() {
 		if err == nil {
 			if string(hasIpv6) != "true" && ipv6Enabled {
 				log.Info().Msgf("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it", UyuniNetwork)
-				message := fmt.Sprintf("Failed to remove %s podman network", UyuniNetwork)
 				err := utils.RunCmd("podman", "network", "rm", UyuniNetwork,
 					"--log-level", log.Logger.GetLevel().String())
 				if err != nil {
-					log.Fatal().Err(err).Msg(message)
+					return fmt.Errorf("failed to remove %s podman network: %s", UyuniNetwork, err)
 				}
 			} else {
 				log.Info().Msgf("Reusing existing %s network", UyuniNetwork)
-				return
+				return nil
 			}
 		}
 	}
-
-	message := fmt.Sprintf("Failed to create %s network with IPv6 enabled", UyuniNetwork)
 
 	args := []string{"network", "create"}
 	if ipv6Enabled {
@@ -53,7 +53,7 @@ func SetupNetwork() {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "info", "--format", "{{.Host.NetworkBackend}}")
 		backend := strings.Trim(string(out), "\n")
 		if err != nil {
-			log.Fatal().Err(err).Msgf("Failed to find podman's network backend")
+			return fmt.Errorf("failed to find podman's network backend: %s", err)
 		} else if backend != "netavark" {
 			log.Info().Msgf("Podman's network backend (%s) is not netavark, skipping IPv6 enabling on %s network", backend, UyuniNetwork)
 		} else {
@@ -63,12 +63,12 @@ func SetupNetwork() {
 	args = append(args, UyuniNetwork)
 	err := utils.RunCmd("podman", args...)
 	if err != nil {
-		log.Fatal().Err(err).Msg(message)
+		return fmt.Errorf("failed to create %s network with IPv6 enabled: %s", UyuniNetwork, err)
 	}
+	return nil
 }
 
 func isIpv6Enabled() bool {
-
 	files := []string{
 		"/sys/module/ipv6/parameters/disable",
 		"/proc/sys/net/ipv6/conf/default/disable_ipv6",

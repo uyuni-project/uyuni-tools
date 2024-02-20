@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -51,12 +51,14 @@ Type=forking
 WantedBy=multi-user.target default.target
 `
 
+// SquidTemplateData Squid information to create systemd file.
 type SquidTemplateData struct {
 	Volumes       map[string]string
 	HttpProxyFile string
 	Image         string
 }
 
+// Render will create the systemd configuration file.
 func (data SquidTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("service").Parse(squidTemplate))
 	return t.Execute(wr, data)

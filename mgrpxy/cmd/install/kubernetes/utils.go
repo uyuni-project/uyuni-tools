@@ -1,14 +1,14 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package kubernetes
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
@@ -22,7 +22,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 ) error {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
-			log.Fatal().Err(err).Msgf("install %s before running this command", binary)
+			return fmt.Errorf("install %s before running this command", binary)
 		}
 	}
 
@@ -31,12 +31,12 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 
 	tmpDir, err := os.MkdirTemp("", "mgrpxy-*")
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to create temporary directory")
+		return fmt.Errorf("failed to create temporary directory")
 	}
 	defer os.RemoveAll(tmpDir)
 
 	if err := shared_utils.ExtractTarGz(configPath, tmpDir); err != nil {
-		log.Fatal().Err(err).Msg("Failed to extract configuration")
+		return fmt.Errorf("failed to extract configuration")
 	}
 
 	// Check the kubernetes cluster setup
@@ -53,8 +53,10 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// Install the uyuni proxy helm chart
-	kubernetes.Deploy(&flags.ProxyInstallFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
-		"--set", "ingress="+clusterInfos.Ingress)
+	if err := kubernetes.Deploy(&flags.ProxyInstallFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
+		"--set", "ingress="+clusterInfos.Ingress); err != nil {
+		return fmt.Errorf("cannot deploy proxy helm chart: %s", err)
+	}
 
 	return nil
 }

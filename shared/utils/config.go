@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -21,6 +21,7 @@ const envPrefix = "UYUNI"
 const appName = "uyuni-tools"
 const configFilename = "config.yaml"
 
+// ReadConfig parse configuration file and env variables a return parameters.
 func ReadConfig(configPath string, cmd *cobra.Command) (*viper.Viper, error) {
 	v := viper.New()
 
@@ -67,7 +68,7 @@ func ReadConfig(configPath string, cmd *cobra.Command) (*viper.Viper, error) {
 	return v, nil
 }
 
-// Bind each cobra flag to its associated viper configuration (config file and environment variable)
+// Bind each cobra flag to its associated viper configuration (config file and environment variable).
 func bindFlags(cmd *cobra.Command, v *viper.Viper) error {
 	var errors []error
 	cmd.Flags().VisitAll(func(f *pflag.Flag) {
@@ -118,15 +119,17 @@ Environment variables:
 `
 
 // GetUsageWithConfigHelpTemplate returns the usage template with the configuration help added.
-func GetUsageWithConfigHelpTemplate(usageTemplate string) string {
+func GetUsageWithConfigHelpTemplate(usageTemplate string) (string, error) {
 	t := template.Must(template.New("help").Parse(configTemplate))
 	var helpBuilder strings.Builder
-	t.Execute(&helpBuilder, configTemplateData{
+	if err := t.Execute(&helpBuilder, configTemplateData{
 		EnvPrefix:  envPrefix,
 		Name:       appName,
 		ConfigFile: configFilename,
-	})
-	return usageTemplate + helpBuilder.String()
+	}); err != nil {
+		return "", fmt.Errorf("cannot return usage template: %s", err)
+	}
+	return usageTemplate + helpBuilder.String(), nil
 }
 
 type configTemplateData struct {

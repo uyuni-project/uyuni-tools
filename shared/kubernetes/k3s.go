@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,6 +15,7 @@ import (
 
 const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/k3s-traefik-config.yaml"
 
+// InstallK3sTraefikConfig install K3s Traefik configuration.
 func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap) {
 	log.Info().Msg("Installing K3s Traefik configuration")
 
@@ -40,6 +41,7 @@ func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap)
 	}
 }
 
+// UninstallK3sTraefikConfig uninstall K3s Traefik configuration.
 func UninstallK3sTraefikConfig(dryRun bool) {
 	utils.UninstallFile(k3sTraefikConfigPath, dryRun)
 }

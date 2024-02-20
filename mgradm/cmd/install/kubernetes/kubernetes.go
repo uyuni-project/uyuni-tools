@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -19,8 +19,8 @@ type kubernetesInstallFlags struct {
 	Helm                cmd_utils.HelmFlags
 }
 
+// NewCommand for kubernetes installation.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	kubernetesCmd := &cobra.Command{
 		Use:   "kubernetes [fqdn]",
 		Short: "install a new server on a kubernetes cluster from scratch",

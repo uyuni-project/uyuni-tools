@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,7 +9,7 @@ import (
 	"text/template"
 )
 
-// Deploy self-signed issuer or CA Certificate and key
+// Deploy self-signed issuer or CA Certificate and key.
 const tlsSecretTemplate = `apiVersion: v1
 kind: Secret
 type: kubernetes.io/tls
@@ -22,6 +22,7 @@ data:
   tls.key: {{ .Key }}
 `
 
+// TlsSecretTemplateData contains information to create secret configuration file.
 type TlsSecretTemplateData struct {
 	Name        string
 	Namespace   string
@@ -30,6 +31,7 @@ type TlsSecretTemplateData struct {
 	Key         string
 }
 
+// Render creates secret configuration file.
 func (data TlsSecretTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("secret").Parse(tlsSecretTemplate))
 	return t.Execute(wr, data)

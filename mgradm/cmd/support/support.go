@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -10,8 +10,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
+// NewCommand to export supportconfig.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	supportCmd := &cobra.Command{
 		Use:   "support",
 		Short: "commands for support operations",

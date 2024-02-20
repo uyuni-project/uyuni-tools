@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,8 +11,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
+// NewCommand install a new proxy from scratch.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	installCmd := &cobra.Command{
 		Use:   "install [fqdn]",
 		Short: "install a new proxy from scratch",

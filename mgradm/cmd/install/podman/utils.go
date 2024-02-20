@@ -20,7 +20,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func waitForSystemStart(cnx *shared.Connection, flags *podmanInstallFlags) {
+func waitForSystemStart(cnx *shared.Connection, flags *podmanInstallFlags) error {
 	// Setup the systemd service configuration options
 	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
 
@@ -29,12 +29,16 @@ func waitForSystemStart(cnx *shared.Connection, flags *podmanInstallFlags) {
 		podmanArgs = append(podmanArgs, "-v", flags.MirrorPath+":/mirror")
 	}
 
-	podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, podmanArgs)
+	if err := podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, podmanArgs); err != nil {
+		return fmt.Errorf("cannot generate systemd service: %s", err)
+	}
 
 	log.Info().Msg("Waiting for the server to start...")
-	shared_podman.EnableService(shared_podman.ServerService)
+	if err := shared_podman.EnableService(shared_podman.ServerService); err != nil {
+		return fmt.Errorf("cannot enable service: %s", err)
+	}
 
-	cnx.WaitForServer()
+	return cnx.WaitForServer()
 }
 
 func installForPodman(
@@ -58,10 +62,15 @@ func installForPodman(
 	if err != nil {
 		return fmt.Errorf("failed to compute image URL, %s", err)
 	}
-	shared_podman.PrepareImage(image, flags.Image.PullPolicy)
+	err = shared_podman.PrepareImage(image, flags.Image.PullPolicy)
+	if err != nil {
+		return err
+	}
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
-	waitForSystemStart(cnx, flags)
+	if err := waitForSystemStart(cnx, flags); err != nil {
+		return fmt.Errorf("cannot wait for system start: %s", err)
+	}
 
 	caPassword := flags.Ssl.Password
 	if flags.Ssl.UseExisting() {
@@ -87,10 +96,14 @@ func installForPodman(
 	}
 
 	if flags.Ssl.UseExisting() {
-		podman.UpdateSslCertificate(cnx, &flags.Ssl.Ca, &flags.Ssl.Server)
+		if err := podman.UpdateSslCertificate(cnx, &flags.Ssl.Ca, &flags.Ssl.Server); err != nil {
+			return fmt.Errorf("cannot update ssl certificate: %s", err)
+		}
 	}
 
-	shared_podman.EnablePodmanSocket()
+	if err := shared_podman.EnablePodmanSocket(); err != nil {
+		return fmt.Errorf("cannot enable podman socket: %s", err)
+	}
 	return nil
 }
 

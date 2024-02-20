@@ -20,7 +20,11 @@ import (
 
 // Start the proxy services.
 func startPod() error {
-	if shared_podman.IsServiceRunning(shared_podman.ProxyService) {
+	ret, err := shared_podman.IsServiceRunning(shared_podman.ProxyService)
+	if err != nil {
+		return err
+	}
+	if ret {
 		return shared_podman.RestartService(shared_podman.ProxyService)
 	} else {
 		return shared_podman.EnableService(shared_podman.ProxyService)
@@ -37,22 +41,42 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallF
 		return fmt.Errorf("failed to extract proxy config from %s file: %s", configPath, err)
 	}
 
-	httpdImage := getContainerImage(flags, "httpd")
-	saltBrokerImage := getContainerImage(flags, "salt-broker")
-	squidImage := getContainerImage(flags, "squid")
-	sshImage := getContainerImage(flags, "ssh")
-	tftpdImage := getContainerImage(flags, "tftpd")
+	httpdImage, err := getContainerImage(flags, "httpd")
+	if err != nil {
+		return err
+	}
+	saltBrokerImage, err := getContainerImage(flags, "salt-broker")
+	if err != nil {
+		return err
+	}
+	squidImage, err := getContainerImage(flags, "squid")
+	if err != nil {
+		return err
+	}
+	sshImage, err := getContainerImage(flags, "ssh")
+	if err != nil {
+		return err
+	}
+	tftpdImage, err := getContainerImage(flags, "tftpd")
+	if err != nil {
+		return err
+	}
 
 	// Setup the systemd service configuration options
-	podman.GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags.Podman.Args)
+	if err := podman.GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags.Podman.Args); err != nil {
+		return fmt.Errorf("cannot generate systemd file: %s", err)
+	}
 
 	return startPod()
 }
 
-func getContainerImage(flags *podmanProxyInstallFlags, name string) string {
+func getContainerImage(flags *podmanProxyInstallFlags, name string) (string, error) {
 	image := flags.GetContainerImage(name)
-	shared_podman.PrepareImage(image, flags.PullPolicy)
-	return image
+	err := shared_podman.PrepareImage(image, flags.PullPolicy)
+	if err != nil {
+		return "", err
+	}
+	return image, nil
 }
 
 func unpackConfig(configPath string) error {

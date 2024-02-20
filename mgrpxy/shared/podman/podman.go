@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -16,10 +16,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// GenerateSystemdService generates all the systemd files required by proxy.
 func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImage string, sshImage string,
-	tftpdImage string, podmanArgs []string) {
-
-	podman.SetupNetwork()
+	tftpdImage string, podmanArgs []string) error {
+	if err := podman.SetupNetwork(); err != nil {
+		return fmt.Errorf("cannot setup network: %s", err)
+	}
 
 	log.Info().Msg("Generating systemd services")
 	httpProxyConfig := getHttpProxyConfig()
@@ -35,7 +37,9 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		HttpProxyFile: httpProxyConfig,
 		Args:          strings.Join(podmanArgs, " "),
 	}
-	generateSystemdFile(dataPod, "pod")
+	if err := generateSystemdFile(dataPod, "pod"); err != nil {
+		return fmt.Errorf("cannot generated systemd file: %s", err)
+	}
 
 	// Httpd
 	dataHttpd := templates.HttpdTemplateData{
@@ -43,14 +47,18 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		HttpProxyFile: httpProxyConfig,
 		Image:         httpdImage,
 	}
-	generateSystemdFile(dataHttpd, "httpd")
+	if err := generateSystemdFile(dataHttpd, "httpd"); err != nil {
+		return fmt.Errorf("cannot generated systemd file: %s", err)
+	}
 
 	// Salt broker
 	dataSaltBroker := templates.SaltBrokerTemplateData{
 		HttpProxyFile: httpProxyConfig,
 		Image:         saltBrokerImage,
 	}
-	generateSystemdFile(dataSaltBroker, "salt-broker")
+	if err := generateSystemdFile(dataSaltBroker, "salt-broker"); err != nil {
+		return fmt.Errorf("cannot generated systemd file: %s", err)
+	}
 
 	// Squid
 	dataSquid := templates.SquidTemplateData{
@@ -58,14 +66,18 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		HttpProxyFile: httpProxyConfig,
 		Image:         squidImage,
 	}
-	generateSystemdFile(dataSquid, "squid")
+	if err := generateSystemdFile(dataSquid, "squid"); err != nil {
+		return fmt.Errorf("cannot generated systemd file: %s", err)
+	}
 
 	// SSH
 	dataSSH := templates.SSHTemplateData{
 		HttpProxyFile: httpProxyConfig,
 		Image:         sshImage,
 	}
-	generateSystemdFile(dataSSH, "ssh")
+	if err := generateSystemdFile(dataSSH, "ssh"); err != nil {
+		return fmt.Errorf("cannot generated systemd file: %s", err)
+	}
 
 	// Tftpd
 	dataTftpd := templates.TFTPDTemplateData{
@@ -73,19 +85,22 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		HttpProxyFile: httpProxyConfig,
 		Image:         tftpdImage,
 	}
-	generateSystemdFile(dataTftpd, "tftpd")
+	if err := generateSystemdFile(dataTftpd, "tftpd"); err != nil {
+		return fmt.Errorf("cannot generated systemd file: %s", err)
+	}
 
-	podman.ReloadDaemon(false)
+	return podman.ReloadDaemon(false)
 }
 
-func generateSystemdFile(template utils.Template, service string) {
+func generateSystemdFile(template utils.Template, service string) error {
 	name := fmt.Sprintf("uyuni-proxy-%s.service", service)
 
 	const systemdPath = "/etc/systemd/system"
 	path := path.Join(systemdPath, name)
 	if err := utils.WriteTemplateToFile(template, path, 0555, true); err != nil {
-		log.Fatal().Err(err).Msgf("Failed to generate %s", path)
+		return fmt.Errorf("failed to generate %s", path)
 	}
+	return nil
 }
 
 func getHttpProxyConfig() string {

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,7 +22,6 @@ RequiresMountsFor=%t/containers
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-Environment=UYUNI_IMAGE={{ .Image }}
 Environment=TZ={{ .Timezone }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-server.pid %t/%n.ctr-id
@@ -65,6 +64,7 @@ Type=forking
 WantedBy=multi-user.target default.target
 `
 
+// PodmanServiceTemplateData POD information to create systemd file.
 type PodmanServiceTemplateData struct {
 	Volumes    map[string]string
 	NamePrefix string
@@ -75,6 +75,7 @@ type PodmanServiceTemplateData struct {
 	Network    string
 }
 
+// Render will create the systemd configuration file.
 func (data PodmanServiceTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("service").Parse(serviceTemplate))
 	return t.Execute(wr, data)

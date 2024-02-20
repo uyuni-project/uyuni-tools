@@ -15,8 +15,8 @@ type stopFlags struct {
 	Backend string
 }
 
+// NewCommand to stop server.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	stopCmd := &cobra.Command{
 		Use:   "stop",
 		Short: "stop the server",

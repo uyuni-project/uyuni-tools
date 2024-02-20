@@ -15,8 +15,8 @@ type startFlags struct {
 	Backend string
 }
 
+// NewCommand starts the server.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-
 	startCmd := &cobra.Command{
 		Use:   "start",
 		Short: "start the server",

@@ -17,6 +17,7 @@ type uninstallFlags struct {
 	PurgeVolumes bool
 }
 
+// NewCommand uninstall a server and optionally the corresponding volumes.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	uninstallCmd := &cobra.Command{
 		Use:   "uninstall",

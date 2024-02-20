@@ -1,10 +1,12 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package distro
 
 import (
+	"errors"
+	"fmt"
 	"os"
 	"strings"
 
@@ -47,10 +49,9 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 
 	_, err = client.Post("kickstart/tree/create", data)
 	if err != nil {
-		log.Error().Msg("Unable to register the distribution. Manual distro registration is required.")
-		return err
+		return fmt.Errorf("unable to register the distribution. Manual distro registration is required: %s", err)
 	}
-	log.Info().Msgf("Distribution %s successfuly registered", distro.TreeLabel)
+	log.Info().Msgf("Distribution %s successfully registered", distro.TreeLabel)
 	return nil
 }
 
@@ -72,12 +73,12 @@ func distroCp(
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	log.Info().Msgf("Copying distribution %s\n", distroName)
 	if !utils.FileExists(source) {
-		log.Fatal().Msgf("Source %s does not exists", source)
+		return fmt.Errorf("source %s does not exists", source)
 	}
 
 	dstpath := "/srv/www/distributions/" + distroName
 	if cnx.TestExistenceInPod(dstpath) {
-		log.Fatal().Msgf("Distribution already exists: %s\n", dstpath)
+		return fmt.Errorf("distribution already exists: %s", dstpath)
 	}
 
 	srcdir := source
@@ -85,7 +86,7 @@ func distroCp(
 		log.Debug().Msg("Source is an iso file")
 		tmpdir, err := os.MkdirTemp("", "mgrctl")
 		if err != nil {
-			log.Fatal().Err(err)
+			return err
 		}
 		srcdir = tmpdir
 		defer umountAndRemove(srcdir)
@@ -98,11 +99,13 @@ func distroCp(
 		}
 		if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "/usr/bin/sudo", mountCmd...); err != nil {
 			log.Debug().Msgf("Error mounting iso: '%s'", out)
-			log.Error().Msg("Unable to mount iso file. Mount manually and try again")
+			return errors.New("unable to mount iso file. Mount manually and try again")
 		}
 	}
 
-	cnx.Copy(srcdir, "server:"+dstpath, "tomcat", "susemanager")
+	if err := cnx.Copy(srcdir, "server:"+dstpath, "tomcat", "susemanager"); err != nil {
+		return fmt.Errorf("cannot copy %s: %s", dstpath, err)
+	}
 
 	log.Info().Msg("Distribution has been copied")
 
@@ -115,7 +118,7 @@ func distroCp(
 		}
 
 		if err := registerDistro(&flags.ConnectionDetails, &distro); err != nil {
-			log.Error().Msg(err.Error())
+			return err
 		}
 	}
 	return nil

@@ -1,16 +1,18 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package completion
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
+// NewCommand  command for generates completion script.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	shellCompletionCmd := &cobra.Command{
 		Use:                   "completion [bash|zsh|fish|powershell]",
@@ -20,15 +22,22 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		ValidArgs:             []string{"bash", "zsh", "fish"},
 		Args:                  cobra.ExactValidArgs(1),
 		Hidden:                true,
-		Run: func(cmd *cobra.Command, args []string) {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			switch args[0] {
 			case "bash":
-				cmd.Root().GenBashCompletion(os.Stdout)
+				if err := cmd.Root().GenBashCompletion(os.Stdout); err != nil {
+					return fmt.Errorf("cannot generate bash completion: %s", err)
+				}
 			case "zsh":
-				cmd.Root().GenZshCompletion(os.Stdout)
+				if err := cmd.Root().GenZshCompletion(os.Stdout); err != nil {
+					return fmt.Errorf("cannot generate zsh completion: %s", err)
+				}
 			case "fish":
-				cmd.Root().GenFishCompletion(os.Stdout, true)
+				if err := cmd.Root().GenFishCompletion(os.Stdout, true); err != nil {
+					return fmt.Errorf("cannot generate fish completion: %s", err)
+				}
 			}
+			return nil
 		},
 	}
 	return shellCompletionCmd

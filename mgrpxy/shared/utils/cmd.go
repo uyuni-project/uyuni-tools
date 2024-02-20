@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,6 +9,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// GetConfigPath returns the configuration path if exists.
 func GetConfigPath(args []string) string {
 	configPath := args[0]
 	if !utils.FileExists(configPath) {

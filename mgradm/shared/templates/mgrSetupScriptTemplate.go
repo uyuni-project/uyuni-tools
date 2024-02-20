@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,7 +9,7 @@ import (
 	"text/template"
 )
 
-const MgrSetupScriptTemplate = `#!/bin/sh
+const mgrSetupScriptTemplate = `#!/bin/sh
 {{- range $name, $value := .Env }}
 export {{ $name }}={{ $value }}
 {{- end }}
@@ -25,12 +25,14 @@ echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:800
 # clean before leaving
 rm $0`
 
+// MgrSetupScriptTemplateData represents information used to create setup script.
 type MgrSetupScriptTemplateData struct {
 	Env       map[string]string
 	DebugJava bool
 }
 
+// Render will create setup script.
 func (data MgrSetupScriptTemplateData) Render(wr io.Writer) error {
-	t := template.Must(template.New("script").Parse(MgrSetupScriptTemplate))
+	t := template.Must(template.New("script").Parse(mgrSetupScriptTemplate))
 	return t.Execute(wr, data)
 }

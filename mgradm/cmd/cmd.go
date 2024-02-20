@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/distro"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/restart"
@@ -22,10 +23,11 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/stop"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/support"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/uninstall"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade"
 )
 
-// NewCommand returns a new cobra.Command implementing the root command for kinder
-func NewUyuniadmCommand() *cobra.Command {
+// NewCommand returns a new cobra.Command implementing the root command for kinder.
+func NewUyuniadmCommand() (*cobra.Command, error) {
 	globalFlags := &types.GlobalFlags{}
 	name := path.Base(os.Args[0])
 	rootCmd := &cobra.Command{
@@ -36,7 +38,11 @@ func NewUyuniadmCommand() *cobra.Command {
 		SilenceUsage: true, // Don't show usage help on errors
 	}
 
-	rootCmd.SetUsageTemplate(utils.GetUsageWithConfigHelpTemplate(rootCmd.UsageTemplate()))
+	usage, err := utils.GetUsageWithConfigHelpTemplate(rootCmd.UsageTemplate())
+	if err != nil {
+		return rootCmd, err
+	}
+	rootCmd.SetUsageTemplate(usage)
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		utils.LogInit(true)
@@ -59,12 +65,18 @@ func NewUyuniadmCommand() *cobra.Command {
 	rootCmd.AddCommand(installCmd)
 
 	rootCmd.AddCommand(uninstall.NewCommand(globalFlags))
-	rootCmd.AddCommand(distro.NewCommand(globalFlags))
+	distroCmd, err := distro.NewCommand(globalFlags)
+	if err != nil {
+		return rootCmd, err
+	}
+	rootCmd.AddCommand(distroCmd)
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
 	rootCmd.AddCommand(support.NewCommand(globalFlags))
 	rootCmd.AddCommand(start.NewCommand(globalFlags))
 	rootCmd.AddCommand(restart.NewCommand(globalFlags))
 	rootCmd.AddCommand(stop.NewCommand(globalFlags))
+	rootCmd.AddCommand(inspect.NewCommand(globalFlags))
+	rootCmd.AddCommand(upgrade.NewCommand(globalFlags))
 
-	return rootCmd
+	return rootCmd, err
 }

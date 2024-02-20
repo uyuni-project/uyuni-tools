@@ -1,10 +1,12 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package uninstall
 
 import (
+	"fmt"
+
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
@@ -14,18 +16,21 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+// NewCommand for uninstall proxy.
+func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 	uninstallCmd := &cobra.Command{
 		Use:   "uninstall",
 		Short: "uninstall a proxy",
 		Long:  "Uninstall a proxy and optionally the corresponding volumes." + kubernetes.UninstallHelp,
 		Args:  cobra.ExactArgs(0),
-		Run: func(cmd *cobra.Command, args []string) {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			dryRun, _ := cmd.Flags().GetBool("dry-run")
 			purge, _ := cmd.Flags().GetBool("purge-volumes")
 
-			backend := "podman"
-			backend, _ = cmd.Flags().GetString("backend")
+			backend, _ := cmd.Flags().GetString("backend")
+			if len(backend) <= 0 {
+				backend = "podman"
+			}
 
 			cnx := shared.NewConnection(backend, podman.ProxyContainerNames[0], kubernetes.ProxyFilter)
 			command, err := cnx.GetCommand()
@@ -34,10 +39,13 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			}
 			switch command {
 			case "podman":
-				uninstallForPodman(dryRun, purge)
+				if err := uninstallForPodman(dryRun, purge); err != nil {
+					return fmt.Errorf("cannot uninstall podman: %s", err)
+				}
 			case "kubectl":
 				uninstallForKubernetes(dryRun)
 			}
+			return nil
 		},
 	}
 	uninstallCmd.Flags().BoolP("dry-run", "n", false, "Only show what would be done")
@@ -45,5 +53,5 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 	utils.AddBackendFlag(uninstallCmd)
 
-	return uninstallCmd
+	return uninstallCmd, nil
 }

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -47,12 +47,14 @@ Type=forking
 WantedBy=multi-user.target default.target
 `
 
+// PodTemplateData POD information to create systemd file.
 type PodTemplateData struct {
 	Ports         []types.PortMap
 	HttpProxyFile string
 	Args          string
 }
 
+// Render will create the systemd configuration file.
 func (data PodTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("service").Parse(podTemplate))
 	return t.Execute(wr, data)

@@ -5,6 +5,8 @@
 package uninstall
 
 import (
+	"fmt"
+
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -18,7 +20,6 @@ func uninstallForPodman(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-
 	// Uninstall the service
 	podman.UninstallService("uyuni-server", flags.DryRun)
 
@@ -32,14 +33,14 @@ func uninstallForPodman(
 			volumes = append(volumes, volume)
 		}
 		for _, volume := range volumes {
-			podman.DeleteVolume(volume, flags.DryRun)
+			if err := podman.DeleteVolume(volume, flags.DryRun); err != nil {
+				return fmt.Errorf("cannot delete volume %s: %s", volume, err)
+			}
 		}
 		log.Info().Msg("All volumes removed")
 	}
 
 	podman.DeleteNetwork(flags.DryRun)
 
-	podman.ReloadDaemon(flags.DryRun)
-
-	return nil
+	return podman.ReloadDaemon(flags.DryRun)
 }

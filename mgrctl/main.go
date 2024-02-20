@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -10,9 +10,13 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd"
 )
 
-// Run runs the `mgrctl` root command
+// Run runs the `mgrctl` root command.
 func Run() error {
-	return cmd.NewUyunictlCommand().Execute()
+	run, err := cmd.NewUyunictlCommand()
+	if err != nil {
+		return err
+	}
+	return run.Execute()
 }
 
 func main() {

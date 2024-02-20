@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -51,12 +51,14 @@ Type=forking
 WantedBy=multi-user.target default.target
 `
 
+// HttpdTemplateData represents HTTPD information to create systemd file.
 type HttpdTemplateData struct {
 	Volumes       map[string]string
 	HttpProxyFile string
 	Image         string
 }
 
+// Render will create the systemd configuration file.
 func (data HttpdTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("service").Parse(httpdTemplate))
 	return t.Execute(wr, data)

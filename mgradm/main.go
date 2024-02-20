@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -10,9 +10,13 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd"
 )
 
-// Run runs the `mgradm` root command
+// Run runs the `mgradm` root command.
 func Run() error {
-	return cmd.NewUyuniadmCommand().Execute()
+	run, err := cmd.NewUyuniadmCommand()
+	if err != nil {
+		return err
+	}
+	return run.Execute()
 }
 
 func main() {

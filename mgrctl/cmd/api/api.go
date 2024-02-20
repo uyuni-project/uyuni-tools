@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 SUSE LLC
+// SPDX-FileCopyrightText: 2024 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,7 +15,8 @@ type apiFlags struct {
 	api.ConnectionDetails `mapstructure:"api"`
 }
 
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+// NewCommand generates a JSON over HTTP API helper tool command.
+func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 	var flags apiFlags
 
 	apiCmd := &cobra.Command{
@@ -44,6 +45,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	apiCmd.AddCommand(apiGet)
 	apiCmd.AddCommand(apiPost)
 
-	api.AddAPIFlags(apiCmd, false)
-	return apiCmd
+	if err := api.AddAPIFlags(apiCmd, false); err != nil {
+		return apiCmd, err
+	}
+	return apiCmd, nil
 }

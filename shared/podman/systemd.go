@@ -29,6 +29,7 @@ func HasService(name string) bool {
 	return err != nil
 }
 
+// GetServicePath return the path for a given service.
 func GetServicePath(name string) string {
 	return path.Join(servicesPath, name+".service")
 }
@@ -62,27 +63,31 @@ func UninstallService(name string, dryRun bool) {
 
 // ReloadDaemon resets the failed state of services and reload the systemd daemon.
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
-func ReloadDaemon(dryRun bool) {
+func ReloadDaemon(dryRun bool) error {
 	if dryRun {
 		log.Info().Msg("Would run systemctl reset-failed")
 		log.Info().Msg("Would run systemctl daemon-reload")
 	} else {
 		err := utils.RunCmd("systemctl", "reset-failed")
 		if err != nil {
-			log.Error().Err(err).Msg("Failed to reset-failed systemd")
+			return fmt.Errorf("failed to reset-failed systemd")
 		}
 		err = utils.RunCmd("systemctl", "daemon-reload")
 		if err != nil {
-			log.Error().Err(err).Msg("Failed to reload systemd daemon")
+			return fmt.Errorf("failed to reload systemd daemon")
 		}
 	}
+	return nil
 }
 
 // IsServiceRunning returns whether the systemd service is started or not.
-func IsServiceRunning(service string) bool {
+func IsServiceRunning(service string) (bool, error) {
+	// RestartService restarts the systemd service.
 	cmd := exec.Command("systemctl", "is-active", "-q", service)
-	cmd.Run()
-	return cmd.ProcessState.ExitCode() == 0
+	if err := cmd.Run(); err != nil {
+		return false, err
+	}
+	return cmd.ProcessState.ExitCode() == 0, nil
 }
 
 // RestartService restarts the systemd service.
@@ -114,5 +119,29 @@ func EnableService(service string) error {
 	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
 		return fmt.Errorf("failed to enable %s systemd service: %s", service, err)
 	}
+	return nil
+}
+
+// Create new systemd service configuration file.
+func GenerateSystemdConfFile(serviceName string, section string, body string) error {
+	systemdFilePath := GetServicePath(serviceName)
+	log.Info().Msgf("systemdFilePath: %s", systemdFilePath)
+
+	systemdConfFolder := systemdFilePath + ".d"
+	log.Info().Msgf("systemdConfFolder: %s", systemdConfFolder)
+	if err := os.MkdirAll(systemdConfFolder, 0750); err != nil {
+		return fmt.Errorf("failed to create %s folder: %s", systemdConfFolder, err)
+	}
+	systemdConfFilePath := path.Join(systemdConfFolder, section+".conf")
+	log.Info().Msgf("systemdConfFilePath: %s", systemdConfFilePath)
+	if utils.FileExists(systemdConfFilePath) {
+		log.Warn().Msgf("File %s already exists. It will be override", systemdConfFilePath)
+	}
+
+	content := []byte("[" + section + "]" + "\n" + body + "\n")
+	if err := os.WriteFile(systemdConfFilePath, content, 0644); err != nil {
+		return fmt.Errorf("cannot write %s file: %s", systemdConfFilePath, err)
+	}
+
 	return nil
 }
