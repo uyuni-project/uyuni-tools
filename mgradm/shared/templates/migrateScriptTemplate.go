@@ -82,6 +82,8 @@ echo "Altering configuration for domain resolution..."
 sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/rhn/rhn.conf;
 sed 's/server\.jabber_server/java\.hostname/' -i /etc/rhn/rhn.conf;
 sed 's/client_use_localhost: false/client_use_localhost: true/' -i /etc/cobbler/settings.yaml;
+sed 's/cobbler\.host.*/cobbler\.host = localhost/' -i /etc/rhn/rhn.conf;
+sed 's/redhat_management_server.*/redhat_management_server = localhost/' -i /etc/cobbler/settings.yaml;
 
 echo "Altering configuration for container environment..."
 sed 's/address=[^:]*:/address=*:/' -i /etc/rhn/taskomatic.conf;
