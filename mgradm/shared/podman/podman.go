@@ -6,13 +6,16 @@ package podman
 
 import (
 	"fmt"
+	"os"
 	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -150,4 +153,145 @@ func RunContainer(name string, image string, extraArgs []string, cmd []string) e
 	}
 
 	return nil
+}
+
+// RunPostUpgradeScript run the script with the changes to apply after the upgrade.
+func RunPostUpgradeScript(serverImage string) error {
+	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	defer os.RemoveAll(scriptDir)
+	if err != nil {
+		return fmt.Errorf("failed to create temporary directory")
+	}
+
+	extraArgs := []string{
+		"-v", scriptDir + ":/var/lib/uyuni-tools/",
+		"--security-opt", "label:disable",
+	}
+	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
+	if err != nil {
+		return fmt.Errorf("cannot generate postgresql finalization script %s", err)
+	}
+	err = RunContainer("uyuni-post-upgrade", serverImage, extraArgs,
+		[]string{"/var/lib/uyuni-tools/" + postUpgradeScriptName})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
+func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool) error {
+	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	defer os.RemoveAll(scriptDir)
+	if err != nil {
+		return fmt.Errorf("failed to create temporary directory")
+	}
+
+	extraArgs := []string{
+		"-v", scriptDir + ":/var/lib/uyuni-tools/",
+		"--security-opt", "label:disable",
+	}
+	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, schemaUpdateRequired, true, true, false)
+	if err != nil {
+		return fmt.Errorf("cannot generate postgresql finalization script %s", err)
+	}
+	err = RunContainer("uyuni-finalize-pgsql", serverImage, extraArgs,
+		[]string{"/var/lib/uyuni-tools/" + pgsqlFinalizeScriptName})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
+func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFlags, oldPgsql string, newPgsql string) error {
+	log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB version upgrade...", oldPgsql, newPgsql)
+
+	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	defer os.RemoveAll(scriptDir)
+	if err != nil {
+		return fmt.Errorf("failed to create temporary directory")
+	}
+
+	extraArgs := []string{
+		"-v", scriptDir + ":/var/lib/uyuni-tools/",
+		"--security-opt", "label:disable",
+	}
+
+	migrationImageUrl := ""
+	if migrationImage.Name == "" {
+		migrationImageUrl, err = utils.ComputeImage(image.Name, image.Tag, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
+		if err != nil {
+			return fmt.Errorf("failed to compute image URL %s", err)
+		}
+	} else {
+		migrationImageUrl, err = utils.ComputeImage(migrationImage.Name, image.Tag)
+		if err != nil {
+			return fmt.Errorf("failed to compute image URL %s", err)
+		}
+	}
+
+	err = podman.PrepareImage(migrationImageUrl, image.PullPolicy)
+	if err != nil {
+		return err
+	}
+
+	log.Info().Msgf("Using migration image %s", migrationImageUrl)
+
+	pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, false)
+	if err != nil {
+		return fmt.Errorf("cannot generate postgresql database version upgrade script %s", err)
+	}
+
+	err = RunContainer("uyuni-upgrade-pgsql", migrationImageUrl, extraArgs,
+		[]string{"/var/lib/uyuni-tools/" + pgsqlVersionUpgradeScriptName})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// RunMigration migrate an existing remote server to a container.
+func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, sshConfigPath string, sshKnownhostsPath string, sourceFqdn string) (string, string, string, error) {
+	scriptDir, err := adm_utils.GenerateMigrationScript(sourceFqdn, false)
+	if err != nil {
+		return "", "", "", fmt.Errorf("cannot generate migration script: %s", err)
+	}
+	defer os.RemoveAll(scriptDir)
+
+	extraArgs := []string{
+		"--security-opt", "label:disable",
+		"-e", "SSH_AUTH_SOCK",
+		"-v", filepath.Dir(sshAuthSocket) + ":" + filepath.Dir(sshAuthSocket),
+		"-v", scriptDir + ":/var/lib/uyuni-tools/",
+	}
+
+	if sshConfigPath != "" {
+		extraArgs = append(extraArgs, "-v", sshConfigPath+":/tmp/ssh_config")
+	}
+
+	if sshKnownhostsPath != "" {
+		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/etc/ssh/ssh_known_hosts")
+	}
+
+	if err != nil {
+		return "", "", "", fmt.Errorf("failed to compute image URL: %s", err)
+	}
+	err = podman.PrepareImage(serverImage, pullPolicy)
+	if err != nil {
+		return "", "", "", err
+	}
+
+	log.Info().Msg("Migrating server")
+	if err := RunContainer("uyuni-migration", serverImage, extraArgs,
+		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
+		return "", "", "", fmt.Errorf("cannot run uyuni migration container: %s", err)
+	}
+	tz, oldPgVersion, newPgVersion, err := adm_utils.ReadContainerData(scriptDir)
+
+	if err != nil {
+		return "", "", "", fmt.Errorf("cannot read extracted data: %s", err)
+	}
+
+	return tz, oldPgVersion, newPgVersion, nil
 }
