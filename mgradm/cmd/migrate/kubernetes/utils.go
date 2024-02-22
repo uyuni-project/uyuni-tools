@@ -109,9 +109,9 @@ func migrateToKubernetes(
 		}
 	}
 
-	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
+	scriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
 	if err != nil {
-		return fmt.Errorf("cannot generate postgresql migration finalization script: %s", err)
+		return fmt.Errorf("cannot generate postgresql finalization script: %s", err)
 	}
 
 	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)

@@ -84,7 +84,7 @@ func upgradeKubernetes(
 		}
 	}()
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
-		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB migration...", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB version upgrade...", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 
 		migrationContainer := "uyuni-upgrade-pgsql"
 
@@ -142,9 +142,9 @@ func upgradeKubernetes(
 		}
 	}
 
-	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"], true, true, true)
+	scriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"], true, true, true)
 	if err != nil {
-		return fmt.Errorf("cannot generate pg migration script: %s", err)
+		return fmt.Errorf("cannot generate psql finalize script: %s", err)
 	}
 
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"

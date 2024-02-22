@@ -49,7 +49,7 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	return runCmd.Run()
 }
 
-// GeneratePgsqlVersionUpgradeScript generates the PostgreSQL migration script.
+// GeneratePgsqlVersionUpgradeScript generates the PostgreSQL version upgrade script.
 func GeneratePgsqlVersionUpgradeScript(scriptDir string, oldPgVersion string, newPgVersion string, kubernetes bool) (string, error) {
 	data := templates.PostgreSQLVersionUpgradeTemplateData{
 		OldVersion: oldPgVersion,
@@ -65,8 +65,8 @@ func GeneratePgsqlVersionUpgradeScript(scriptDir string, oldPgVersion string, ne
 	return scriptName, nil
 }
 
-// GenerateFinalizePostgresMigrationScript generates the script to finalize PostgreSQL upgrade.
-func GenerateFinalizePostgresMigrationScript(scriptDir string, RunAutotune bool, RunReindex bool, RunSchemaUpdate bool, RunDistroMigration bool, kubernetes bool) (string, error) {
+// GenerateFinalizePostgresScript generates the script to finalize PostgreSQL upgrade.
+func GenerateFinalizePostgresScript(scriptDir string, RunAutotune bool, RunReindex bool, RunSchemaUpdate bool, RunDistroMigration bool, kubernetes bool) (string, error) {
 	data := templates.FinalizePostgresTemplateData{
 		RunAutotune:        RunAutotune,
 		RunReindex:         RunReindex,
@@ -75,7 +75,7 @@ func GenerateFinalizePostgresMigrationScript(scriptDir string, RunAutotune bool,
 		Kubernetes:         kubernetes,
 	}
 
-	scriptName := "finalize_pgsql.sh"
+	scriptName := "pgsqlFinalize.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
 		return "", fmt.Errorf("failed to generate %s", scriptName)
