@@ -101,18 +101,29 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 			return fmt.Errorf("cannot run uyuni-pg-migration container: %s", err)
 		}
 	}
+	{
+		pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
+		if err != nil {
+			return fmt.Errorf("cannot generate postgresql finalization script %s", err)
+		}
 
-	scriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
-	if err != nil {
-		return fmt.Errorf("cannot generate postgresql database finalize script: %s", err)
+		err = podman.RunContainer("uyuni-finalize-pgsql", serverImage, extraArgs,
+			[]string{"/var/lib/uyuni-tools/" + pgsqlFinalizeScriptName})
+		if err != nil {
+			return err
+		}
 	}
-
-	err = podman.RunContainer("uyuni-finalize-pg", serverImage, extraArgs,
-		[]string{"/var/lib/uyuni-tools/" + scriptName})
-	if err != nil {
-		return fmt.Errorf("cannot run uyuni-finalize-pg container: %s", err)
+	{
+		postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
+		if err != nil {
+			return fmt.Errorf("cannot generate postgresql finalization script %s", err)
+		}
+		err = podman.RunContainer("uyuni-post-upgrade", serverImage, extraArgs,
+			[]string{"/var/lib/uyuni-tools/" + postUpgradeScriptName})
+		if err != nil {
+			return err
+		}
 	}
-
 	if err := podman.GenerateSystemdService(tz, serverImage, false, viper.GetStringSlice("podman.arg")); err != nil {
 		return fmt.Errorf("cannot generate systemd service file: %s", err)
 	}

@@ -83,6 +83,20 @@ func GenerateFinalizePostgresScript(scriptDir string, RunAutotune bool, RunReind
 	return scriptName, nil
 }
 
+// GeneratePostUpgradeScript generates the script to be run after upgrade.
+func GeneratePostUpgradeScript(scriptDir string, cobblerHost string) (string, error) {
+	data := templates.PostUpgradeTemplateData{
+		CobblerHost: cobblerHost,
+	}
+
+	scriptName := "postUpgrade.sh"
+	scriptPath := filepath.Join(scriptDir, scriptName)
+	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+		return "", fmt.Errorf("failed to generate %s", scriptName)
+	}
+	return scriptName, nil
+}
+
 // ReadContainerData returns values used to perform migration.
 func ReadContainerData(scriptDir string) (string, string, string, error) {
 	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))
@@ -114,7 +128,7 @@ func GenerateMigrationScript(sourceFqdn string, kubernetes bool) (string, error)
 	}
 
 	data := templates.MigrateScriptTemplateData{
-		Volumes:    utils.VOLUMES,
+		Volumes:    utils.ServerVolumeMounts,
 		SourceFqdn: sourceFqdn,
 		Kubernetes: kubernetes,
 	}

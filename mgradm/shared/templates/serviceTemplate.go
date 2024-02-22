@@ -38,8 +38,8 @@ ExecStart=/usr/bin/podman run \
 	{{- range .Ports }}
 	-p {{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
 	{{- end }}
-	{{- range $name, $path := .Volumes }}
-	-v {{ $name }}:{{ $path }} \
+	{{- range .Volumes }}
+	-v {{ .Name }}:{{ .MountPath }} \
 	{{- end }}
 	-e TZ=${TZ} \
 	--network {{ .Network }} \
@@ -66,7 +66,7 @@ WantedBy=multi-user.target default.target
 
 // PodmanServiceTemplateData POD information to create systemd file.
 type PodmanServiceTemplateData struct {
-	Volumes    map[string]string
+	Volumes    []types.VolumeMount
 	NamePrefix string
 	Args       string
 	Ports      []types.PortMap

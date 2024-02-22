@@ -50,7 +50,7 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 
 	log.Info().Msg("Enabling system service")
 	data := templates.PodmanServiceTemplateData{
-		Volumes:    utils.VOLUMES,
+		Volumes:    utils.ServerVolumeMounts,
 		NamePrefix: "uyuni",
 		Args:       commonArgs + " " + strings.Join(podmanArgs, " "),
 		Ports:      GetExposedPorts(debug),
@@ -138,8 +138,8 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 func RunContainer(name string, image string, extraArgs []string, cmd []string) error {
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
-	for volumeName, containerPath := range utils.VOLUMES {
-		podmanArgs = append(podmanArgs, "-v", volumeName+":"+containerPath)
+	for _, volume := range utils.ServerVolumeMounts {
+		podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath)
 	}
 	podmanArgs = append(podmanArgs, image)
 	podmanArgs = append(podmanArgs, cmd...)

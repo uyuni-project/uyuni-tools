@@ -24,29 +24,6 @@ const ServerFilter = "-lapp=uyuni"
 // ServerFilter represents filter used to check proxy app.
 const ProxyFilter = "-lapp=uyuni-proxy"
 
-// PgsqlRequiredVolumeMounts represents volumes mount used by PostgreSQL.
-var PgsqlRequiredVolumeMounts = []types.VolumeMount{
-	{MountPath: "/etc/pki/tls", Name: "etc-tls"},
-	{MountPath: "/var/lib/pgsql", Name: "var-pgsql"},
-	{MountPath: "/etc/rhn", Name: "etc-rhn"},
-	{MountPath: "/etc/pki/spacewalk-tls", Name: "tls-key"},
-}
-
-// PgsqlRequiredVolumes represents volumes used by PostgreSQL.
-var PgsqlRequiredVolumes = []types.Volume{
-	{Name: "etc-tls", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-tls"}},
-	{Name: "var-pgsql", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "var-pgsql"}},
-	{Name: "etc-rhn", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-rhn"}},
-	{Name: "tls-key",
-		Secret: &types.Secret{
-			SecretName: "uyuni-cert", Items: []types.SecretItem{
-				{Key: "tls.crt", Path: "spacewalk.crt"},
-				{Key: "tls.key", Path: "spacewalk.key"},
-			},
-		},
-	},
-}
-
 // waitForDeployment waits at most 60s for a kubernetes deployment to have at least one replica.
 // See [isDeploymentReady] for more details.
 func WaitForDeployment(namespace string, name string, appName string) error {

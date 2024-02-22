@@ -82,13 +82,13 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 
 		log.Info().Msgf("Using migration image %s", migrationImageUrl)
 
-		scriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], false)
+		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], false)
 		if err != nil {
 			return fmt.Errorf("cannot generate postgresql database version upgrade script %s", err)
 		}
 
 		err = podman.RunContainer("uyuni-upgrade-pgsql", migrationImageUrl, extraArgs,
-			[]string{"/var/lib/uyuni-tools/" + scriptName})
+			[]string{"/var/lib/uyuni-tools/" + pgsqlVersionUpgradeScriptName})
 		if err != nil {
 			return err
 		}
@@ -102,17 +102,28 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
 		"--security-opt", "label:disable",
 	}
-
-	scriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"], true, true, false)
-	if err != nil {
-		return fmt.Errorf("cannot generate postgresql finalization script %s", err)
+	{
+		pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"], true, true, false)
+		if err != nil {
+			return fmt.Errorf("cannot generate postgresql finalization script %s", err)
+		}
+		err = podman.RunContainer("uyuni-finalize-pgsql", serverImage, extraArgs,
+			[]string{"/var/lib/uyuni-tools/" + pgsqlFinalizeScriptName})
+		if err != nil {
+			return err
+		}
 	}
-	err = podman.RunContainer("uyuni-finalize-pgsql", serverImage, extraArgs,
-		[]string{"/var/lib/uyuni-tools/" + scriptName})
-	if err != nil {
-		return err
+	{
+		postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
+		if err != nil {
+			return fmt.Errorf("cannot generate postgresql finalization script %s", err)
+		}
+		err = podman.RunContainer("uyuni-post-upgrade", serverImage, extraArgs,
+			[]string{"/var/lib/uyuni-tools/" + postUpgradeScriptName})
+		if err != nil {
+			return err
+		}
 	}
-
 	err = shared_podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+serverImage)
 	if err != nil {
 		return err

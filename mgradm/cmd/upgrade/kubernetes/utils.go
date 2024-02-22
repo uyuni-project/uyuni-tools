@@ -86,7 +86,7 @@ func upgradeKubernetes(
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
 		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB version upgrade...", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 
-		migrationContainer := "uyuni-upgrade-pgsql"
+		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
 
 		migrationImageUrl := ""
 		if flags.MigrationImage.Name == "" {
@@ -102,83 +102,121 @@ func upgradeKubernetes(
 		}
 
 		log.Info().Msgf("Using migration image %s", migrationImageUrl)
-		scriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], true)
+		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], true)
 		if err != nil {
 			return fmt.Errorf("cannot generate postgresql database version upgrade script: %s", err)
 		}
 
 		//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
-		if err := shared_kubernetes.DeletePod(migrationContainer, shared_kubernetes.ServerFilter); err != nil {
-			return fmt.Errorf("cannot delete %s: %s", migrationContainer, err)
+		if err := shared_kubernetes.DeletePod(pgsqlVersionUpgradeContainer, shared_kubernetes.ServerFilter); err != nil {
+			return fmt.Errorf("cannot delete %s: %s", pgsqlVersionUpgradeContainer, err)
 		}
 
 		//generate deploy data
-		deployData := types.Deployment{
+		pgsqlVersioUpgradeDeployData := types.Deployment{
 			APIVersion: "v1",
 			Spec: &types.Spec{
 				RestartPolicy: "Never",
 				NodeName:      nodeName,
 				Containers: []types.Container{
 					{
-						Name: migrationContainer,
-						VolumeMounts: append(shared_kubernetes.PgsqlRequiredVolumeMounts,
+						Name: pgsqlVersionUpgradeContainer,
+						VolumeMounts: append(utils.PgsqlRequiredVolumeMounts,
 							types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
 					},
 				},
-				Volumes: append(shared_kubernetes.PgsqlRequiredVolumes,
+				Volumes: append(utils.PgsqlRequiredVolumes,
 					types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
 			},
 		}
 
 		//transform deploy in JSON
-		override, err := shared_kubernetes.GenerateOverrideDeployment(deployData)
+		overridePgsqlVersioUpgrade, err := shared_kubernetes.GenerateOverrideDeployment(pgsqlVersioUpgradeDeployData)
 		if err != nil {
 			return err
 		}
 
-		err = shared_kubernetes.RunPod(migrationContainer, shared_kubernetes.ServerFilter, migrationImageUrl, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+scriptName, override)
+		err = shared_kubernetes.RunPod(pgsqlVersionUpgradeContainer, shared_kubernetes.ServerFilter, migrationImageUrl, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+pgsqlVersionUpgradeScriptName, overridePgsqlVersioUpgrade)
 		if err != nil {
-			return fmt.Errorf("error running container %s: %s", migrationContainer, err)
+			return fmt.Errorf("error running container %s: %s", pgsqlVersionUpgradeContainer, err)
 		}
 	}
 
-	scriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"], true, true, true)
-	if err != nil {
-		return fmt.Errorf("cannot generate psql finalize script: %s", err)
-	}
-
-	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
-
-	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
-	if err := shared_kubernetes.DeletePod(pgsqlFinalizeContainer, shared_kubernetes.ServerFilter); err != nil {
-		return fmt.Errorf("cannot delete %s: %s", pgsqlFinalizeContainer, err)
-	}
-
-	//generate deploy data
-	deployData := types.Deployment{
-		APIVersion: "v1",
-		Spec: &types.Spec{
-			RestartPolicy: "Never",
-			NodeName:      nodeName,
-			Containers: []types.Container{
-				{
-					Name: pgsqlFinalizeContainer,
-					VolumeMounts: append(shared_kubernetes.PgsqlRequiredVolumeMounts,
-						types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
+	{
+		pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
+		pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"], true, true, true)
+		if err != nil {
+			return fmt.Errorf("cannot generate psql finalize script: %s", err)
+		}
+		//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
+		if err := shared_kubernetes.DeletePod(pgsqlFinalizeContainer, shared_kubernetes.ServerFilter); err != nil {
+			return fmt.Errorf("cannot delete %s: %s", pgsqlFinalizeContainer, err)
+		}
+		//generate deploy data
+		pgsqlFinalizeDeployData := types.Deployment{
+			APIVersion: "v1",
+			Spec: &types.Spec{
+				RestartPolicy: "Never",
+				NodeName:      nodeName,
+				Containers: []types.Container{
+					{
+						Name: pgsqlFinalizeContainer,
+						VolumeMounts: append(utils.ServerVolumeMounts,
+							types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
+					},
 				},
+				Volumes: append(utils.ServerVolumes,
+					types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
 			},
-			Volumes: append(shared_kubernetes.PgsqlRequiredVolumes,
-				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
-		},
+		}
+		//transform deploy data in JSON
+		overridePgsqlFinalize, err := shared_kubernetes.GenerateOverrideDeployment(pgsqlFinalizeDeployData)
+		if err != nil {
+			return err
+		}
+		err = shared_kubernetes.RunPod(pgsqlFinalizeContainer, shared_kubernetes.ServerFilter, serverImage, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+pgsqlFinalizeScriptName, overridePgsqlFinalize)
+		if err != nil {
+			return fmt.Errorf("error running container %s: %s", pgsqlFinalizeContainer, err)
+		}
 	}
-	//transform deploy data in JSON
-	override, err := shared_kubernetes.GenerateOverrideDeployment(deployData)
-	if err != nil {
-		return err
-	}
-	err = shared_kubernetes.RunPod(pgsqlFinalizeContainer, shared_kubernetes.ServerFilter, serverImage, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+scriptName, override)
-	if err != nil {
-		return fmt.Errorf("error running container %s: %s", pgsqlFinalizeContainer, err)
+	{
+		postUpgradeContainer := "uyuni-post-upgrade"
+		postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
+		if err != nil {
+			return fmt.Errorf("cannot generate postgresql finalization script %s", err)
+		}
+
+		//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
+		if err := shared_kubernetes.DeletePod(postUpgradeContainer, shared_kubernetes.ServerFilter); err != nil {
+			return fmt.Errorf("cannot delete %s: %s", postUpgradeContainer, err)
+		}
+		//generate deploy data
+		postUpgradeDeployData := types.Deployment{
+			APIVersion: "v1",
+			Spec: &types.Spec{
+				RestartPolicy: "Never",
+				NodeName:      nodeName,
+				Containers: []types.Container{
+					{
+						Name: postUpgradeContainer,
+						VolumeMounts: append(utils.PgsqlRequiredVolumeMounts,
+							types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
+					},
+				},
+				Volumes: append(utils.PgsqlRequiredVolumes,
+					types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
+			},
+		}
+		//transform deploy data in JSON
+		overridePostUpgrade, err := shared_kubernetes.GenerateOverrideDeployment(postUpgradeDeployData)
+		if err != nil {
+			return err
+		}
+
+		err = shared_kubernetes.RunPod(postUpgradeContainer, shared_kubernetes.ServerFilter, serverImage, flags.Image.PullPolicy, "/var/lib/uyuni-tools/"+postUpgradeScriptName, overridePostUpgrade)
+		if err != nil {
+			return fmt.Errorf("error running container %s: %s", postUpgradeContainer, err)
+		}
 	}
 
 	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress)
