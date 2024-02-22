@@ -51,19 +51,14 @@ func NewUyunictlCommand() (*cobra.Command, error) {
 		}
 	}
 
-	apiCmd, err := api.NewCommand(globalFlags)
-	if err != nil {
-		//FIXME this should return err, but with it the code stop compiling
-		return rootCmd, nil
-	}
+	//FIXME this is currently return an err
+	apiCmd, _ := api.NewCommand(globalFlags)
 	rootCmd.AddCommand(apiCmd)
 	rootCmd.AddCommand(exec.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
-	orgCmd, err := org.NewCommand(globalFlags)
-	if err != nil {
-		return rootCmd, err
-	}
+	//FIXME this is currently return an err
+	orgCmd, _ := org.NewCommand(globalFlags)
 	rootCmd.AddCommand(orgCmd)
 
 	return rootCmd, nil
