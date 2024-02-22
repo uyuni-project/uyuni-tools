@@ -82,9 +82,9 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 
 		log.Info().Msgf("Using migration image %s", migrationImageUrl)
 
-		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], false)
+		scriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], false)
 		if err != nil {
-			return fmt.Errorf("cannot generate postgresql database migration script %s", err)
+			return fmt.Errorf("cannot generate postgresql database version upgrade script %s", err)
 		}
 
 		err = podman.RunContainer("uyuni-upgrade-pgsql", migrationImageUrl, extraArgs,

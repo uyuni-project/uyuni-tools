@@ -49,15 +49,15 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	return runCmd.Run()
 }
 
-// GeneratePgMigrationScript generates the PostgreSQL migration script.
-func GeneratePgMigrationScript(scriptDir string, oldPgVersion string, newPgVersion string, kubernetes bool) (string, error) {
-	data := templates.MigratePostgresVersionTemplateData{
+// GeneratePgsqlVersionUpgradeScript generates the PostgreSQL migration script.
+func GeneratePgsqlVersionUpgradeScript(scriptDir string, oldPgVersion string, newPgVersion string, kubernetes bool) (string, error) {
+	data := templates.PostgreSQLVersionUpgradeTemplateData{
 		OldVersion: oldPgVersion,
 		NewVersion: newPgVersion,
 		Kubernetes: kubernetes,
 	}
 
-	scriptName := "migrate_pgsql.sh"
+	scriptName := "pgsqlVersionUpgrade.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
 		return "", fmt.Errorf("failed to generate %s", scriptName)

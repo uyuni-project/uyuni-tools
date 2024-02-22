@@ -90,9 +90,9 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 			return err
 		}
 
-		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
+		scriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgVersion, newPgVersion, false)
 		if err != nil {
-			return fmt.Errorf("cannot generate postgresql database migration script: %s", err)
+			return fmt.Errorf("cannot generate postgresql database version upgrade script: %s", err)
 		}
 
 		err = podman.RunContainer("uyuni-pg-migration", image, extraArgs,

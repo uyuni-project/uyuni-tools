@@ -9,9 +9,9 @@ import (
 	"text/template"
 )
 
-const postgresVersionMigrationScriptTemplate = `#!/bin/bash
+const postgreSQLVersionUpgradeScriptTemplate = `#!/bin/bash
 set -e
-echo "Postgres version migration"
+echo "PostgreSQL version upgrade"
 
 OLD_VERSION={{ .OldVersion }}
 NEW_VERSION={{ .NewVersion }}
@@ -48,15 +48,15 @@ su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql$OLD_V
 
 echo "DONE"`
 
-// MigrateScriptTemplateData represents information used to create PostgreSQL migration script.
-type MigratePostgresVersionTemplateData struct {
+// PostgreSQLVersionUpgradeTemplateData represents information used to create PostgreSQL migration script.
+type PostgreSQLVersionUpgradeTemplateData struct {
 	OldVersion string
 	NewVersion string
 	Kubernetes bool
 }
 
 // Render will create PostgreSQL migration script.
-func (data MigratePostgresVersionTemplateData) Render(wr io.Writer) error {
-	t := template.Must(template.New("script").Parse(postgresVersionMigrationScriptTemplate))
+func (data PostgreSQLVersionUpgradeTemplateData) Render(wr io.Writer) error {
+	t := template.Must(template.New("script").Parse(postgreSQLVersionUpgradeScriptTemplate))
 	return t.Execute(wr, data)
 }

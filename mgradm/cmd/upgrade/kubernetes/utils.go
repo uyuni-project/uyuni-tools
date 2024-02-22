@@ -102,9 +102,9 @@ func upgradeKubernetes(
 		}
 
 		log.Info().Msgf("Using migration image %s", migrationImageUrl)
-		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], true)
+		scriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"], true)
 		if err != nil {
-			return fmt.Errorf("cannot generate pg migration script: %s", err)
+			return fmt.Errorf("cannot generate postgresql database version upgrade script: %s", err)
 		}
 
 		//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
