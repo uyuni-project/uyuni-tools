@@ -46,7 +46,8 @@ done
 echo "-/ /etc/sysconfig/rhn/reportdb-schema-upgrade" >> exclude_list
 echo "-/ /etc/sysconfig/rhn/schema-upgrade" >> exclude_list
 
-for folder in {{ range .Volumes }}{{ . }} {{ end }};
+
+for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
   if $SSH {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."

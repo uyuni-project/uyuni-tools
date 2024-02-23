@@ -306,6 +306,9 @@ func waitForPod(podname string) error {
 			log.Debug().Msgf("%s pod status is %s", podname, status)
 			return nil
 		}
+		if strings.EqualFold(outStr, "Failed") {
+			return fmt.Errorf("error during execution of %s: %s", strings.Join(cmdArgs, string(" ")), err)
+		}
 		log.Debug().Msgf("Pod %s status is %s for %d seconds.", podname, outStr, i)
 		time.Sleep(1 * time.Second)
 	}

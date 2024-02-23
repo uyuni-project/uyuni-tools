@@ -107,6 +107,15 @@ func ReadContainerData(scriptDir string) (string, string, string, error) {
 	if err := viper.ReadConfig(bytes.NewBuffer(data)); err != nil {
 		return "", "", "", fmt.Errorf("cannot read config: %s", err)
 	}
+	if len(viper.GetString("Timezone")) <= 0 {
+		return "", "", "", errors.New("cannot retrieve timezone")
+	}
+	if len(viper.GetString("old_pg_version")) <= 0 {
+		return "", "", "", errors.New("cannot retrieve source PostgreSQL version")
+	}
+	if len(viper.GetString("new_pg_version")) <= 0 {
+		return "", "", "", errors.New("cannot retrieve image PostgreSQL version")
+	}
 	return viper.GetString("Timezone"), viper.GetString("old_pg_version"), viper.GetString("new_pg_version"), nil
 }
 
