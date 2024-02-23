@@ -178,16 +178,15 @@ func (c *Connection) WaitForServer() error {
 			args = append(args, "--")
 		}
 		args = append(args, "systemctl", "is-active", "-q", "multi-user.target")
-		testCmd := exec.Command(command, args...)
-		if err := testCmd.Run(); err != nil {
-			return fmt.Errorf("cannot wait for server: %s", err)
-		}
-		if testCmd.ProcessState.ExitCode() == 0 {
+		output := utils.RunCmd(command, args...)
+		isActive := output == nil
+
+		if isActive {
 			return nil
 		}
 		time.Sleep(1 * time.Second)
 	}
-	return errors.New("server didn't start within 60s")
+	return errors.New("server didn't start within 60s. Check for the service status")
 }
 
 // Copy transfers a file to or from the container.
