@@ -23,12 +23,13 @@ func SetupNetwork() error {
 
 	ipv6Enabled := isIpv6Enabled()
 
-	testNetworkCmd := exec.Command("podman", "network", "exists", UyuniNetwork)
-	if err := testNetworkCmd.Run(); err != nil {
-		return err
+	networkExists, err := IsNetworkPresent(UyuniNetwork)
+	if networkExists && err != nil {
+		return fmt.Errorf("cannot check if network %s is already present", UyuniNetwork)
 	}
 	// check if network exists before trying to get the IPV6 information
-	if testNetworkCmd.ProcessState.ExitCode() == 0 {
+	if networkExists {
+		log.Debug().Msgf("%s network already present", UyuniNetwork)
 		// Check if the uyuni network exists and is IPv6 enabled
 		hasIpv6, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UyuniNetwork)
 		if err == nil {
@@ -61,7 +62,7 @@ func SetupNetwork() error {
 		}
 	}
 	args = append(args, UyuniNetwork)
-	err := utils.RunCmd("podman", args...)
+	err = utils.RunCmd("podman", args...)
 	if err != nil {
 		return fmt.Errorf("failed to create %s network with IPv6 enabled: %s", UyuniNetwork, err)
 	}
@@ -102,4 +103,13 @@ func DeleteNetwork(dryRun bool) {
 			}
 		}
 	}
+}
+
+// IsNetworkPresent returns whether a network is already present.
+func IsNetworkPresent(network string) (bool, error) {
+	cmd := exec.Command("podman", "network", "exists", network)
+	if err := cmd.Run(); err != nil {
+		return false, err
+	}
+	return cmd.ProcessState.ExitCode() == 0, nil
 }

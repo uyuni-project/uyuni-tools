@@ -73,11 +73,11 @@ func DeleteContainer(name string, dryRun bool) {
 // DeleteVolume deletes a podman volume based on its name.
 // If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
 func DeleteVolume(name string, dryRun bool) error {
-	cmd := exec.Command("podman", "volume", "exists", name)
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("cannot run delete volume: %s", err)
+	exists, err := isVolumePresent(name)
+	if exists && err != nil {
+		return fmt.Errorf("cannot check if volume %s already exists", name)
 	}
-	if cmd.ProcessState.ExitCode() == 0 {
+	if exists {
 		if dryRun {
 			log.Info().Msgf("Would run podman volume rm %s", name)
 		} else {
@@ -89,4 +89,12 @@ func DeleteVolume(name string, dryRun bool) error {
 		}
 	}
 	return nil
+}
+
+func isVolumePresent(volume string) (bool, error) {
+	cmd := exec.Command("podman", "volume", "exists", volume)
+	if err := cmd.Run(); err != nil {
+		return false, err
+	}
+	return cmd.ProcessState.ExitCode() == 0, nil
 }
