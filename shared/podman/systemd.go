@@ -133,9 +133,6 @@ func GenerateSystemdConfFile(serviceName string, section string, body string) er
 	}
 	systemdConfFilePath := path.Join(systemdConfFolder, section+".conf")
 	log.Info().Msgf("systemdConfFilePath: %s", systemdConfFilePath)
-	if utils.FileExists(systemdConfFilePath) {
-		log.Warn().Msgf("File %s already exists. It will be override", systemdConfFilePath)
-	}
 
 	content := []byte("[" + section + "]" + "\n" + body + "\n")
 	if err := os.WriteFile(systemdConfFilePath, content, 0644); err != nil {
