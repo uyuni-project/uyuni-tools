@@ -59,7 +59,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 	}
 
 	if !isUyuni && isCurrentUyuni {
-		return fmt.Errorf("currently Uyuni %s is installed, instead the image is SUSE Manager. Not supported upgrade", inspectedValues["uyuni_release"])
+		return fmt.Errorf("currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported", inspectedValues["uyuni_release"])
 	}
 
 	if isUyuni {
