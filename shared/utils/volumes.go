@@ -8,26 +8,17 @@ import "github.com/uyuni-project/uyuni-tools/shared/types"
 
 // PgsqlRequiredVolumeMounts represents volumes mount used by PostgreSQL.
 var PgsqlRequiredVolumeMounts = []types.VolumeMount{
+	{MountPath: "/etc/pki/tls", Name: "etc-tls"},
 	{MountPath: "/var/lib/pgsql", Name: "var-pgsql"},
 	{MountPath: "/etc/rhn", Name: "etc-rhn"},
+	{MountPath: "/etc/pki/spacewalk-tls", Name: "tls-key"},
 }
 
 // PgsqlRequiredVolumes represents volumes used by PostgreSQL.
 var PgsqlRequiredVolumes = []types.Volume{
+	{Name: "etc-tls", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-tls"}},
 	{Name: "var-pgsql", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "var-pgsql"}},
 	{Name: "etc-rhn", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-rhn"}},
-}
-
-// CACertsVolumeMounts represents volume mounts used to store certificates.
-var CACertsVolumeMounts = []types.VolumeMount{
-	{MountPath: "/etc/pki/tls", Name: "etc-tls"},
-	{MountPath: "/etc/pki/spacewalk-tls", Name: "tls-key"},
-	{MountPath: "/etc/pki/trust/anchors", Name: "ca-cert"},
-}
-
-// CACertsVolumes represents volumes used to store certificates.
-var CACertsVolumes = []types.Volume{
-	{Name: "etc-tls", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-tls"}},
 	{Name: "tls-key",
 		Secret: &types.Secret{
 			SecretName: "uyuni-cert", Items: []types.SecretItem{
@@ -36,41 +27,10 @@ var CACertsVolumes = []types.Volume{
 			},
 		},
 	},
-	{Name: "ca-cert", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "ca-cert"}},
 }
 
-// MigrationVolumeMounts represents volume mounts during migration.
-var MigrationVolumeMounts = []types.VolumeMount{
-	{MountPath: "/var/lib/pgsql", Name: "var-pgsql"},
-	{MountPath: "/etc/rhn", Name: "etc-rhn"},
-	{MountPath: "/etc/apache2", Name: "etc-apache2"},
-	{MountPath: "/etc/systemd/system/multi-user.target.wants", Name: "etc-systemd-multi"},
-	{MountPath: "/etc/systemd/system/sockets.target.wants", Name: "etc-systemd-sockets"},
-	{MountPath: "/etc/salt", Name: "etc-salt"},
-	{MountPath: "/etc/tomcat", Name: "etc-tomcat"},
-	{MountPath: "/etc/cobbler", Name: "etc-cobbler"},
-	{MountPath: "/etc/sysconfig", Name: "etc-sysconfig"},
-	{MountPath: "/etc/postfix", Name: "etc-postfix"},
-	{MountPath: "/etc/pki/tls", Name: "etc-tls"},
-}
-
-// MigrationVolume represents volumes used during migration.
-var MigrationVolumes = []types.Volume{
-	{Name: "var-pgsql", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "var-pgsql"}},
-	{Name: "etc-rhn", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-rhn"}},
-	{Name: "etc-apache2", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-apache2"}},
-	{Name: "etc-systemd-multi", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-systemd-multi"}},
-	{Name: "etc-systemd-sockets", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-systemd-sockets"}},
-	{Name: "etc-salt", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-salt"}},
-	{Name: "etc-tomcat", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-tomcat"}},
-	{Name: "etc-cobbler", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-cobbler"}},
-	{Name: "etc-sysconfig", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-sysconfig"}},
-	{Name: "etc-postfix", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-postfix"}},
-	{Name: "etc-tls", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-tls"}},
-}
-
-// EtcVolumeMounts represents volumes mounted in /etc folder.
-var EtcVolumeMounts = []types.VolumeMount{
+// EtcServerVolumeMounts represents volumes mounted in /etc folder.
+var EtcServerVolumeMounts = []types.VolumeMount{
 	{MountPath: "/etc/apache2", Name: "etc-apache2"},
 	{MountPath: "/etc/systemd/system/multi-user.target.wants", Name: "etc-systemd-multi"},
 	{MountPath: "/etc/systemd/system/sockets.target.wants", Name: "etc-systemd-sockets"},
@@ -83,7 +43,7 @@ var EtcVolumeMounts = []types.VolumeMount{
 }
 
 // EtcServerVolumeMounts represents volumes used for configuration.
-var EtcVolumes = []types.Volume{
+var EtcServerVolumes = []types.Volume{
 	{Name: "etc-apache2", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-apache2"}},
 	{Name: "etc-systemd-multi", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-systemd-multi"}},
 	{Name: "etc-systemd-sockets", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-systemd-sockets"}},
@@ -95,9 +55,12 @@ var EtcVolumes = []types.Volume{
 	{Name: "etc-rhn", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-rhn"}},
 }
 
+var etcAndPgsqlVolumeMounts = append(PgsqlRequiredVolumeMounts, EtcServerVolumeMounts[:]...)
+var etcAndPgsqlVolumes = append(PgsqlRequiredVolumes, EtcServerVolumes[:]...)
+
 // ServerVolumeMounts should match the volumes mapping from the container definition in both
 // the helm chart and the systemctl services definitions.
-var ServerVolumeMounts = append(append(append([]types.VolumeMount{
+var ServerVolumeMounts = append([]types.VolumeMount{
 	{MountPath: "/var/lib/cobbler", Name: "var-cobbler"},
 	{MountPath: "/var/lib/salt", Name: "var-salt"},
 	{MountPath: "/var/cache", Name: "var-cache"},
@@ -111,10 +74,11 @@ var ServerVolumeMounts = append(append(append([]types.VolumeMount{
 	{MountPath: "/srv/susemanager", Name: "srv-susemanager"},
 	{MountPath: "/srv/spacewalk", Name: "srv-spacewalk"},
 	{MountPath: "/root", Name: "root"},
-}, EtcVolumeMounts[:]...), PgsqlRequiredVolumeMounts[:]...), CACertsVolumeMounts[:]...) //FIXME golang 1.22 will introduce slices.Concat.
+	{MountPath: "/etc/pki/trust/anchors", Name: "ca-cert"},
+}, etcAndPgsqlVolumeMounts[:]...)
 
 // ServerVolumes match the volume with Persistent Volume Claim.
-var ServerVolumes = append(append(append([]types.Volume{
+var ServerVolumes = append([]types.Volume{
 	{Name: "var-cobbler", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "var-cobbler"}},
 	{Name: "var-salt", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "var-salt"}},
 	{Name: "var-cache", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "var-cache"}},
@@ -128,7 +92,8 @@ var ServerVolumes = append(append(append([]types.Volume{
 	{Name: "srv-susemanager", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "srv-susemanager"}},
 	{Name: "srv-spacewalk", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "srv-spacewalk"}},
 	{Name: "root", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "root"}},
-}, EtcVolumes[:]...), PgsqlRequiredVolumes[:]...), CACertsVolumes[:]...) //FIXME golang 1.22 will introduce slices.Concat.
+	{Name: "ca-cert", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "ca-cert"}},
+}, etcAndPgsqlVolumes[:]...)
 
 // PROXY_HTTPD_VOLUMES volumes used by HTTPD in proxy.
 var PROXY_HTTPD_VOLUMES = map[string]string{

@@ -71,11 +71,11 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 				Containers: []types.Container{
 					{
 						Name: pgsqlVersionUpgradeContainer,
-						VolumeMounts: append(utils.MigrationVolumeMounts,
+						VolumeMounts: append(utils.PgsqlRequiredVolumeMounts,
 							types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
 					},
 				},
-				Volumes: append(utils.MigrationVolumes,
+				Volumes: append(utils.PgsqlRequiredVolumes,
 					types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
 			},
 		}
@@ -119,11 +119,11 @@ func RunPgsqlFinalizeScript(serverImage string, pullPolicy string, nodeName stri
 			Containers: []types.Container{
 				{
 					Name: pgsqlFinalizeContainer,
-					VolumeMounts: append(utils.MigrationVolumeMounts,
+					VolumeMounts: append(utils.PgsqlRequiredVolumeMounts,
 						types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
 				},
 			},
-			Volumes: append(utils.MigrationVolumes,
+			Volumes: append(utils.PgsqlRequiredVolumes,
 				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
 		},
 	}
@@ -165,16 +165,10 @@ func RunPostUpgradeScript(serverImage string, pullPolicy string, nodeName string
 			Containers: []types.Container{
 				{
 					Name: postUpgradeContainer,
-==== BASE ====
-					VolumeMounts: append(utils.EtcServerVolumeMounts,
-==== BASE ====
+					VolumeMounts: append(utils.PgsqlRequiredVolumeMounts,
 						types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
 				},
 			},
-==== BASE ====
-			Volumes: append(utils.EtcServerVolumes,
-==== BASE ====
-				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
 		},
 	}
 	//transform deploy data in JSON
