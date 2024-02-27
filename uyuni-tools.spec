@@ -269,7 +269,7 @@ go_path=
 
 GOLD_FLAGS="-X ${UTILS_PATH}.Version=%{version}"
 if test -n "${namespace}"; then
-    GOLD_FLAGS="-X ${UTILS_PATH}.DefaultNamespace=${namespace} -X ${UTILS_PATH}.DefaultTag=${tag}"
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultNamespace=${namespace} -X ${UTILS_PATH}.DefaultTag=${tag}"
 fi
 
 if test -n "${tag}"; then
