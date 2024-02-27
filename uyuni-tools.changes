@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Feb 27 14:50:42 CET 2024 - marina.latini@suse.com
+
+- version 0.1.5-0
+  * Install aardvark-dns if netavark is installed (bsc#1220371)
+
+-------------------------------------------------------------------
 Tue Feb 13 18:45:11 CET 2024 - marina.latini@suse.com
 
 - version 0.1.4-1
