@@ -20,10 +20,7 @@ import (
 
 // Start the proxy services.
 func startPod() error {
-	ret, err := shared_podman.IsServiceRunning(shared_podman.ProxyService)
-	if err != nil {
-		return err
-	}
+	ret := shared_podman.IsServiceRunning(shared_podman.ProxyService)
 	if ret {
 		return shared_podman.RestartService(shared_podman.ProxyService)
 	} else {

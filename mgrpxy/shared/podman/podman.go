@@ -97,7 +97,7 @@ func generateSystemdFile(template utils.Template, service string) error {
 
 	const systemdPath = "/etc/systemd/system"
 	path := path.Join(systemdPath, name)
-	if err := utils.WriteTemplateToFile(template, path, 0555, true); err != nil {
+	if err := utils.WriteTemplateToFile(template, path, 0644, true); err != nil {
 		return fmt.Errorf("failed to generate %s", path)
 	}
 	return nil
