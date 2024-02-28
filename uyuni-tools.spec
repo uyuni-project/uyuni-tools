@@ -43,8 +43,8 @@
 %endif
 
 Name:           %{project}
-Version:        0.1.4
-Release:        1
+Version:        0.1.5
+Release:        0
 Summary:        Tools for managing %{productname} container
 License:        Apache-2.0
 Group:          System/Management
@@ -80,6 +80,9 @@ Tools for managing uyuni container.
 
 %package -n %{name_adm}
 Summary:        Command line tool to install and update %{productname}
+%if 0%{?suse_version}
+Requires:       (aardvark-dns if netavark)
+%endif
 
 %description -n %{name_adm}
 %{name_adm} is a convenient tool to install and update %{productname} components as containers running
@@ -87,6 +90,9 @@ either on Podman or a Kubernetes cluster.
 
 %package -n %{name_pxy}
 Summary:        Command line tool to install and update %{productname} proxy
+%if 0%{?suse_version}
+Requires:       (aardvark-dns if netavark)
+%endif
 
 %description -n %{name_pxy}
 %{name_pxy} is a convenient tool to install and update %{productname} proxy components as containers
