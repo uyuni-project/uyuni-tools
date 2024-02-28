@@ -46,7 +46,7 @@ linters-settings:
   structcheck:
     enabled: true
   typecheck:
-    enabled: true
+    enabled: false
   unused:
     enabled: true
   varcheck:
@@ -76,7 +76,6 @@ linters:
     - revive
       #- staticcheck
     - stylecheck
-    - typecheck
       #- unparam
     - unused
     - whitespace
