@@ -15,6 +15,11 @@ import (
 func uninstallForPodman(dryRun bool, purge bool) error {
 	// Uninstall the service
 	podman.UninstallService("uyuni-proxy-pod", dryRun)
+	podman.UninstallService("uyuni-proxy-httpd", dryRun)
+	podman.UninstallService("uyuni-proxy-salt-broker", dryRun)
+	podman.UninstallService("uyuni-proxy-squid", dryRun)
+	podman.UninstallService("uyuni-proxy-ssh", dryRun)
+	podman.UninstallService("uyuni-proxy-tftpd", dryRun)
 
 	// Force stop the pod
 	for _, containerName := range podman.ProxyContainerNames {
