@@ -82,7 +82,6 @@ func ReloadDaemon(dryRun bool) error {
 
 // IsServiceRunning returns whether the systemd service is started or not.
 func IsServiceRunning(service string) bool {
-	// RestartService restarts the systemd service.
 	cmd := exec.Command("systemctl", "is-active", "-q", service)
 	if err := cmd.Run(); err != nil {
 		return false
