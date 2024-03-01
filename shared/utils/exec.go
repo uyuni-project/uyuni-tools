@@ -52,10 +52,6 @@ func RunCmdOutput(logLevel zerolog.Level, command string, args ...string) ([]byt
 	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	output, err := exec.Command(command, args...).Output()
-	if err != nil {
-		log.Warn().Msgf("Command returned with error: %s. Be sure to handle the error if required", err)
-	} else if len(output) > 0 {
-		log.Debug().Msgf("Command output: %s", output)
-	}
+	log.Trace().Msgf("Command output: %s, error: %s", output, err)
 	return output, err
 }
