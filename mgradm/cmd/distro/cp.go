@@ -76,7 +76,8 @@ func distroCp(
 		return fmt.Errorf("source %s does not exists", source)
 	}
 
-	dstpath := "/srv/www/distributions/" + distroName
+	const distrosPath = "/srv/www/distributions/"
+	dstpath := distrosPath + distroName
 	if cnx.TestExistenceInPod(dstpath) {
 		return fmt.Errorf("distribution already exists: %s", dstpath)
 	}
@@ -101,6 +102,10 @@ func distroCp(
 			log.Debug().Msgf("Error mounting iso: '%s'", out)
 			return errors.New("unable to mount iso file. Mount manually and try again")
 		}
+	}
+
+	if _, err := cnx.Exec("sh", "-c", "mkdir -p "+distrosPath); err != nil {
+		return fmt.Errorf("cannot create %s path in container: %s", distrosPath, err)
 	}
 
 	if err := cnx.Copy(srcdir, "server:"+dstpath, "tomcat", "susemanager"); err != nil {
