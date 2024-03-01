@@ -21,7 +21,7 @@ func TestExecute(t *testing.T) {
 		execCmd := exec.NewCommand(globalFlags)
 		execCmd.RunE = func(cmd *cobra.Command, args []string) error {
 			if interactive, err := cmd.Flags().GetBool("interactive"); err != nil || !interactive {
-				t.Error("interartive flag not passed")
+				t.Error("interactive flag not passed")
 			}
 			if tty, err := cmd.Flags().GetBool("tty"); err != nil || !tty {
 				t.Error("tty flag not passed")
