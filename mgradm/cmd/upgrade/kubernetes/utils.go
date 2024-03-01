@@ -42,7 +42,7 @@ func upgradeKubernetes(
 
 	inspectedValues, err := inspect.InspectKubernetes(serverImage, flags.Image.PullPolicy)
 	if err != nil {
-		return err
+		return fmt.Errorf("cannot inspect kubernetes values: %s", err)
 	}
 
 	err = upgrade_shared.SanityCheck(cnx, inspectedValues, serverImage)
@@ -88,6 +88,10 @@ func upgradeKubernetes(
 		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image, flags.MigrationImage, nodeName, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]); err != nil {
 			return fmt.Errorf("cannot run PostgreSQL version upgrade script: %s", err)
 		}
+	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
+		log.Info().Msgf("Upgrading to %s without changing PostgreSQL version", inspectedValues["uyuni_release"])
+	} else {
+		return fmt.Errorf("trying to downgrade postgresql from %s to %s", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 	}
 
 	schemaUpdateRequired := inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"]

@@ -104,7 +104,7 @@ func RunPgsqlFinalizeScript(serverImage string, pullPolicy string, nodeName stri
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
 	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, schemaUpdateRequired, true, true, true)
 	if err != nil {
-		return fmt.Errorf("cannot generate psql finalize script: %s", err)
+		return fmt.Errorf("cannot generate postgresql finalization script %s", err)
 	}
 	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
 	if err := kubernetes.DeletePod(pgsqlFinalizeContainer, kubernetes.ServerFilter); err != nil {

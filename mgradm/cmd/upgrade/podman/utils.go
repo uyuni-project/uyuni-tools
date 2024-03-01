@@ -44,8 +44,8 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 	defer func() {
 		err = shared_podman.StartService(shared_podman.ServerService)
 	}()
-
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
+		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB version upgrade...", inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 		if err := podman.RunPgsqlVersionUpgrade(flags.Image, flags.MigrationImage, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]); err != nil {
 			return fmt.Errorf("cannot run PostgreSQL version upgrade script: %s", err)
 		}
@@ -57,7 +57,7 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 
 	schemaUpdateRequired := inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"]
 	if err := podman.RunPgsqlFinalizeScript(serverImage, schemaUpdateRequired); err != nil {
-		return fmt.Errorf("cannot run post upgrade script: %s", err)
+		return fmt.Errorf("cannot run PostgreSQL version upgrade script: %s", err)
 	}
 
 	if err := podman.RunPostUpgradeScript(serverImage); err != nil {

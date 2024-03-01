@@ -46,7 +46,7 @@ func migrateToKubernetes(
 	// Prepare the migration script and folder
 	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, true)
 	if err != nil {
-		return fmt.Errorf("failed to generater migration script: %s", err)
+		return fmt.Errorf("failed to generate migration script: %s", err)
 	}
 
 	defer os.RemoveAll(scriptDir)

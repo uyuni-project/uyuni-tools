@@ -39,6 +39,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 
 	if oldPgVersion != newPgVersion {
+		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB version upgrade...", oldPgVersion, newPgVersion)
 		if err := podman.RunPgsqlVersionUpgrade(flags.Image, flags.MigrationImage, oldPgVersion, newPgVersion); err != nil {
 			return fmt.Errorf("cannot run PostgreSQL version upgrade script: %s", err)
 		}
