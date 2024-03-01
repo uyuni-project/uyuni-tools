@@ -73,13 +73,13 @@ func AddAPIFlags(cmd *cobra.Command, optional bool) error {
 	cmd.PersistentFlags().Bool("api-insecure", false, "If set, server certificate will not be checked for validity")
 
 	if !optional {
-		if err := cmd.MarkFlagRequired("api-server"); err != nil {
+		if err := cmd.MarkPersistentFlagRequired("api-server"); err != nil {
 			return err
 		}
-		if err := cmd.MarkFlagRequired("api-username"); err != nil {
+		if err := cmd.MarkPersistentFlagRequired("api-user"); err != nil {
 			return err
 		}
-		if err := cmd.MarkFlagRequired("api-password"); err != nil {
+		if err := cmd.MarkPersistentFlagRequired("api-password"); err != nil {
 			return err
 		}
 	}
