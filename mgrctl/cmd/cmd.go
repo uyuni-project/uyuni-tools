@@ -52,15 +52,19 @@ func NewUyunictlCommand() (*cobra.Command, error) {
 		}
 	}
 
-	//FIXME this is currently return an err
-	apiCmd, _ := api.NewCommand(globalFlags)
+	apiCmd, err := api.NewCommand(globalFlags)
+	if err != nil {
+		log.Err(err).Msg("Failed to create api command")
+	}
 	rootCmd.AddCommand(apiCmd)
 	rootCmd.AddCommand(exec.NewCommand(globalFlags))
 	rootCmd.AddCommand(term.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
-	//FIXME this is currently return an err
-	orgCmd, _ := org.NewCommand(globalFlags)
+	orgCmd, err := org.NewCommand(globalFlags)
+	if err != nil {
+		log.Err(err).Msg("Failed to create org command")
+	}
 	rootCmd.AddCommand(orgCmd)
 
 	return rootCmd, nil
