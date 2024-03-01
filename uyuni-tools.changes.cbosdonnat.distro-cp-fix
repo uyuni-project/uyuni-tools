@@ -1,0 +1,2 @@
+- Create /srv/www/distributions if not existing before copying a 
+  distribution
