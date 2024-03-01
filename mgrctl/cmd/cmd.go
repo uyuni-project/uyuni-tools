@@ -14,6 +14,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/cp"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/exec"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/org"
+	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/term"
 	"github.com/uyuni-project/uyuni-tools/shared/completion"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -41,7 +42,7 @@ func NewUyunictlCommand() (*cobra.Command, error) {
 	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "", "application log level (trace|debug|info|warn|error|fatal|panic)")
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
-		utils.LogInit(cmd.Name() != "exec")
+		utils.LogInit(cmd.Name() != "exec" && cmd.Name() != "term")
 		utils.SetLogLevel(globalFlags.LogLevel)
 
 		// do not log if running the completion cmd as the output is redirect to create a file to source
@@ -55,6 +56,7 @@ func NewUyunictlCommand() (*cobra.Command, error) {
 	apiCmd, _ := api.NewCommand(globalFlags)
 	rootCmd.AddCommand(apiCmd)
 	rootCmd.AddCommand(exec.NewCommand(globalFlags))
+	rootCmd.AddCommand(term.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
 	//FIXME this is currently return an err
