@@ -21,7 +21,7 @@ const prompt_end = ": "
 
 // AskPasswordIfMissing asks for password if missing.
 func AskPasswordIfMissing(value *string, prompt string) {
-	if *value == "" {
+	for *value == "" {
 		fmt.Print(prompt + prompt_end)
 		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 		if err != nil {
@@ -29,20 +29,26 @@ func AskPasswordIfMissing(value *string, prompt string) {
 		}
 		*value = string(bytePassword)
 		fmt.Println()
+		if *value == "" {
+			fmt.Println("A value is required")
+		}
 	}
 }
 
 // AskIfMissing asks for a value if missing.
 func AskIfMissing(value *string, prompt string) {
-	if *value == "" {
+	reader := bufio.NewReader(os.Stdin)
+	for *value == "" {
 		fmt.Print(prompt + prompt_end)
-		reader := bufio.NewReader(os.Stdin)
 		newValue, err := reader.ReadString('\n')
 		if err != nil {
 			log.Fatal().Err(err).Msgf("Failed to read input")
 		}
-		*value = newValue
+		*value = strings.TrimSpace(newValue)
 		fmt.Println()
+		if *value == "" {
+			fmt.Println("A value is required")
+		}
 	}
 }
 

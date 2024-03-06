@@ -75,6 +75,11 @@ func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 
 	utils.AskIfMissing(&flags.Email, cmd.Flag("email").Usage)
 	utils.AskIfMissing(&flags.EmailFrom, cmd.Flag("emailfrom").Usage)
+
+	utils.AskIfMissing(&flags.Admin.Login, cmd.Flag("admin-login").Usage)
+	utils.AskPasswordIfMissing(&flags.Admin.Password, cmd.Flag("admin-password").Usage)
+	utils.AskIfMissing(&flags.Admin.Email, cmd.Flag("admin-email").Usage)
+	utils.AskIfMissing(&flags.Organization, cmd.Flag("organization").Usage)
 }
 
 // AddInstallFlags add flags to installa command.
@@ -124,9 +129,9 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd_utils.AddImageFlag(cmd)
 
 	cmd.Flags().String("admin-login", "admin", "Administrator user name")
-	cmd.Flags().String("admin-password", "", "Administrator password. If empty, the first user will not be created")
-	cmd.Flags().String("admin-firstName", "Administrator", "The first name of the administrator")
-	cmd.Flags().String("admin-lastName", "McAdmin", "The last name of the administrator")
-	cmd.Flags().String("admin-email", "root@localhost", "The administrator's email")
-	cmd.Flags().String("organization", "Organiszation", "The first organization name")
+	cmd.Flags().String("admin-password", "", "Administrator password")
+	cmd.Flags().String("admin-firstName", "Administrator", "First name of the administrator")
+	cmd.Flags().String("admin-lastName", "McAdmin", "Last name of the administrator")
+	cmd.Flags().String("admin-email", "", "Administrator's email")
+	cmd.Flags().String("organization", "Organization", "First organization name")
 }
