@@ -160,7 +160,7 @@ func Init(conn *ConnectionDetails) (*HTTPClient, error) {
 
 	if len(conn.User) > 0 {
 		if len(conn.Password) == 0 {
-			utils.AskPasswordIfMissing(&conn.Password, "API server password")
+			utils.AskPasswordIfMissing(&conn.Password, "API server password", 0, 0)
 		}
 		err = client.login(conn)
 	}

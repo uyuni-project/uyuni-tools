@@ -5,13 +5,23 @@
 package utils
 
 import (
+	"fmt"
 	"os"
 	"regexp"
+	"strings"
 	"syscall"
 	"testing"
 
 	expect "github.com/Netflix/go-expect"
 )
+
+type askTestData struct {
+	value           string
+	expectedMessage string
+	min             int
+	max             int
+	checker         func(string) bool
+}
 
 func TestAskIfMissing(t *testing.T) {
 	c, err := expect.NewConsole(expect.WithStdout(os.Stdout))
@@ -30,28 +40,45 @@ func TestAskIfMissing(t *testing.T) {
 		os.Stdout = origStdout
 	}()
 
-	go func() {
-		if _, err := c.ExpectString("Prompted value: "); err != nil {
-			t.Errorf("Expected prompt error: %s", err)
+	fChecker := func(v string) bool {
+		if !strings.Contains(v, "f") {
+			fmt.Println("Has to contain an 'f'")
+			return false
 		}
-		if _, err := c.Send("\n"); err != nil {
-			t.Errorf("Failed to send empty line to fake console: %s", err)
-		}
-		if _, err := c.Expect(expect.Regexp(regexp.MustCompile("A value is required"))); err != nil {
-			t.Errorf("Expected missing value message error :%s", err)
-		}
-		if _, err := c.ExpectString("Prompted value: "); err != nil {
-			t.Errorf("Expected prompt error: %s", err)
-		}
-		if _, err := c.Send("foo\n"); err != nil {
-			t.Errorf("Failed to send value to fake console: %s", err)
-		}
-	}()
+		return true
+	}
 
-	var value string
-	AskIfMissing(&value, "Prompted value")
-	if value != "foo" {
-		t.Errorf("Expected 'foo', got '%s' value", value)
+	data := []askTestData{
+		{value: "\n", expectedMessage: "A value is required", min: 1, max: 5, checker: nil},
+		{value: "superlong\n", expectedMessage: "Has to be less than 5 characters long", min: 1, max: 5, checker: nil},
+		{value: "a\n", expectedMessage: "Has to be more than 2 characters long", min: 2, max: 5, checker: nil},
+		{value: "booh\n", expectedMessage: "Has to contain an 'f'", min: 0, max: 0, checker: fChecker},
+	}
+
+	for i, testCase := range data {
+		go func() {
+			if _, err := c.ExpectString("Prompted value: "); err != nil {
+				t.Errorf("Testcase %d: Expected prompt error: %s", i, err)
+			}
+			if _, err := c.Send(testCase.value); err != nil {
+				t.Errorf("Testcase %d: Failed to send value to fake console: %s", i, err)
+			}
+			if _, err := c.Expect(expect.Regexp(regexp.MustCompile(testCase.expectedMessage))); err != nil {
+				t.Errorf("Testcase %d: Expected '%s' message: %s", i, testCase.expectedMessage, err)
+			}
+			if _, err := c.ExpectString("Prompted value: "); err != nil {
+				t.Errorf("Testcase %d: Expected prompt error: %s", i, err)
+			}
+			if _, err := c.Send("foo\n"); err != nil {
+				t.Errorf("Testcase %d: Failed to send value to fake console: %s", i, err)
+			}
+		}()
+
+		var value string
+		AskIfMissing(&value, "Prompted value", testCase.min, testCase.max, testCase.checker)
+		if value != "foo" {
+			t.Errorf("Testcase %d: Expected 'foo', got '%s' value", i, value)
+		}
 	}
 }
 
@@ -72,28 +99,36 @@ func TestAskPasswordIfMissing(t *testing.T) {
 		os.Stdout = origStdout
 	}()
 
-	go func() {
-		if _, err := c.ExpectString("Prompted password: "); err != nil {
-			t.Errorf("Expected prompt error: %s", err)
-		}
-		if _, err := c.Send("\n"); err != nil {
-			t.Errorf("Failed to send empty line to fake console: %s", err)
-		}
-		if _, err := c.Expect(expect.Regexp(regexp.MustCompile("A value is required"))); err != nil {
-			t.Errorf("Expected missing value message error :%s", err)
-		}
-		if _, err := c.ExpectString("Prompted password: "); err != nil {
-			t.Errorf("Expected prompt error: %s", err)
-		}
-		if _, err := c.Send("foo\n"); err != nil {
-			t.Errorf("Failed to send value to fake console: %s", err)
-		}
-	}()
+	data := []askTestData{
+		{value: "\n", expectedMessage: "A value is required", min: 1, max: 5, checker: nil},
+		{value: "superlong\n", expectedMessage: "Has to be less than 5 characters long", min: 1, max: 5, checker: nil},
+		{value: "a\n", expectedMessage: "Has to be more than 2 characters long", min: 2, max: 5, checker: nil},
+	}
 
-	var value string
-	AskPasswordIfMissing(&value, "Prompted password")
-	if value != "foo" {
-		t.Errorf("Expected 'foo', got '%s' value", value)
+	for i, testCase := range data {
+		go func() {
+			if _, err := c.ExpectString("Prompted password: "); err != nil {
+				t.Errorf("Testcase %d: Expected prompt error: %s", i, err)
+			}
+			if _, err := c.Send(testCase.value); err != nil {
+				t.Errorf("Testcase %d: Failed to send value to fake console: %s", i, err)
+			}
+			if _, err := c.Expect(expect.Regexp(regexp.MustCompile(testCase.expectedMessage))); err != nil {
+				t.Errorf("Testcase %d: Expected '%s' message: %s", i, testCase.expectedMessage, err)
+			}
+			if _, err := c.ExpectString("Prompted password: "); err != nil {
+				t.Errorf("Testcase %d: Expected prompt error: %s", i, err)
+			}
+			if _, err := c.Send("foo\n"); err != nil {
+				t.Errorf("Testcase %d: Failed to send value to fake console: %s", i, err)
+			}
+		}()
+
+		var value string
+		AskPasswordIfMissing(&value, "Prompted password", testCase.min, testCase.max)
+		if value != "foo" {
+			t.Errorf("Expected 'foo', got '%s' value", value)
+		}
 	}
 }
 
