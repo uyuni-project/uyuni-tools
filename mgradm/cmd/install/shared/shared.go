@@ -37,6 +37,7 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 	}
 
 	// Call the org.createFirst api if flags are passed
+	// This should not happen since the password is queried and enforced
 	if flags.Admin.Password != "" {
 		apiCnx := api.ConnectionDetails{
 			Server:   fqdn,

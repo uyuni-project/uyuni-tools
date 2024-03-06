@@ -4,7 +4,98 @@
 
 package utils
 
-import "testing"
+import (
+	"os"
+	"regexp"
+	"syscall"
+	"testing"
+
+	expect "github.com/Netflix/go-expect"
+)
+
+func TestAskIfMissing(t *testing.T) {
+	c, err := expect.NewConsole(expect.WithStdout(os.Stdout))
+	if err != nil {
+		t.Errorf("Failed to create fake console")
+	}
+	defer c.Close()
+
+	origStdin := os.Stdin
+	origStdout := os.Stdout
+
+	os.Stdin = c.Tty()
+	os.Stdout = c.Tty()
+	defer func() {
+		os.Stdin = origStdin
+		os.Stdout = origStdout
+	}()
+
+	go func() {
+		if _, err := c.ExpectString("Prompted value: "); err != nil {
+			t.Errorf("Expected prompt error: %s", err)
+		}
+		if _, err := c.Send("\n"); err != nil {
+			t.Errorf("Failed to send empty line to fake console: %s", err)
+		}
+		if _, err := c.Expect(expect.Regexp(regexp.MustCompile("A value is required"))); err != nil {
+			t.Errorf("Expected missing value message error :%s", err)
+		}
+		if _, err := c.ExpectString("Prompted value: "); err != nil {
+			t.Errorf("Expected prompt error: %s", err)
+		}
+		if _, err := c.Send("foo\n"); err != nil {
+			t.Errorf("Failed to send value to fake console: %s", err)
+		}
+	}()
+
+	var value string
+	AskIfMissing(&value, "Prompted value")
+	if value != "foo" {
+		t.Errorf("Expected 'foo', got '%s' value", value)
+	}
+}
+
+func TestAskPasswordIfMissing(t *testing.T) {
+	c, err := expect.NewConsole(expect.WithStdout(os.Stdout))
+	if err != nil {
+		t.Errorf("Failed to create fake console")
+	}
+	defer c.Close()
+
+	origStdin := syscall.Stdin
+	origStdout := os.Stdout
+
+	syscall.Stdin = int(c.Tty().Fd())
+	os.Stdout = c.Tty()
+	defer func() {
+		syscall.Stdin = origStdin
+		os.Stdout = origStdout
+	}()
+
+	go func() {
+		if _, err := c.ExpectString("Prompted password: "); err != nil {
+			t.Errorf("Expected prompt error: %s", err)
+		}
+		if _, err := c.Send("\n"); err != nil {
+			t.Errorf("Failed to send empty line to fake console: %s", err)
+		}
+		if _, err := c.Expect(expect.Regexp(regexp.MustCompile("A value is required"))); err != nil {
+			t.Errorf("Expected missing value message error :%s", err)
+		}
+		if _, err := c.ExpectString("Prompted password: "); err != nil {
+			t.Errorf("Expected prompt error: %s", err)
+		}
+		if _, err := c.Send("foo\n"); err != nil {
+			t.Errorf("Failed to send value to fake console: %s", err)
+		}
+	}()
+
+	var value string
+	AskPasswordIfMissing(&value, "Prompted password")
+	if value != "foo" {
+		t.Errorf("Expected 'foo', got '%s' value", value)
+	}
+}
 
 func TestComputeImage(t *testing.T) {
 	data := [][]string{

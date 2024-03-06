@@ -2,7 +2,12 @@ module github.com/uyuni-project/uyuni-tools
 
 go 1.20
 
-require github.com/spf13/cobra v1.1.3
+require (
+	github.com/Netflix/go-expect v0.0.0-20220104043353-73e0943537d2
+	github.com/spf13/cobra v1.1.3
+)
+
+require github.com/creack/pty v1.1.17 // indirect
 
 require (
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
