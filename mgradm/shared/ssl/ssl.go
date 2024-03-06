@@ -253,7 +253,7 @@ func optionalFile(file string) {
 func GetRsaKey(keyPath string, password string) []byte {
 	// Kubernetes only handles RSA private TLS keys, convert and strip password
 	caPassword := password
-	utils.AskIfMissing(&caPassword, "Source server SSL CA private key password")
+	utils.AskPasswordIfMissing(&caPassword, "Source server SSL CA private key password", 0, 0)
 
 	// Convert the key file to RSA format for kubectl to handle it
 	cmd := exec.Command("openssl", "rsa", "-in", keyPath, "-passin", "env:pass")

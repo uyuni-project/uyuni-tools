@@ -19,15 +19,41 @@ import (
 
 const prompt_end = ": "
 
+func checkValueSize(value string, min int, max int) bool {
+	if min == 0 && max == 0 {
+		return true
+	}
+
+	if len(value) < min {
+		fmt.Printf("Has to be more than %d characters long", min)
+		return false
+	}
+	if len(value) > max {
+		fmt.Printf("Has to be less than %d characters long", max)
+		return false
+	}
+	return true
+}
+
 // AskPasswordIfMissing asks for password if missing.
-func AskPasswordIfMissing(value *string, prompt string) {
+// Don't perform any check if min and max are set to 0.
+func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 	for *value == "" {
 		fmt.Print(prompt + prompt_end)
 		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 		if err != nil {
 			log.Fatal().Err(err).Msgf("Failed to read password")
 		}
-		*value = string(bytePassword)
+		tmpValue := strings.TrimSpace(string(bytePassword))
+		r := regexp.MustCompile(`^[^\t ]+$`)
+		validChars := r.MatchString(tmpValue)
+		if !validChars {
+			fmt.Printf("Cannot contain spaces or tabs")
+		}
+
+		if validChars && checkValueSize(tmpValue, min, max) {
+			*value = tmpValue
+		}
 		fmt.Println()
 		if *value == "" {
 			fmt.Println("A value is required")
@@ -36,7 +62,8 @@ func AskPasswordIfMissing(value *string, prompt string) {
 }
 
 // AskIfMissing asks for a value if missing.
-func AskIfMissing(value *string, prompt string) {
+// Don't perform any check if min and max are set to 0.
+func AskIfMissing(value *string, prompt string, min int, max int, checker func(string) bool) {
 	reader := bufio.NewReader(os.Stdin)
 	for *value == "" {
 		fmt.Print(prompt + prompt_end)
@@ -44,7 +71,10 @@ func AskIfMissing(value *string, prompt string) {
 		if err != nil {
 			log.Fatal().Err(err).Msgf("Failed to read input")
 		}
-		*value = strings.TrimSpace(newValue)
+		tmpValue := strings.TrimSpace(newValue)
+		if checkValueSize(tmpValue, min, max) && (checker == nil || checker(tmpValue)) {
+			*value = tmpValue
+		}
 		fmt.Println()
 		if *value == "" {
 			fmt.Println("A value is required")

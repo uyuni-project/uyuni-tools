@@ -5,6 +5,11 @@
 package shared
 
 import (
+	"fmt"
+	"net/mail"
+	"regexp"
+	"strings"
+
 	"github.com/spf13/cobra"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
@@ -56,16 +61,36 @@ type InstallFlags struct {
 	Organization string
 }
 
+// idChecker verifies that the value is a valid identifier.
+func idChecker(value string) bool {
+	r := regexp.MustCompile(`^([[:alnum:]]|[._-])+$`)
+	if r.MatchString(value) {
+		return true
+	}
+	fmt.Println("Can only contain letters, digits . _ and -")
+	return false
+}
+
+// emailChecker verifies that the value is a valid email address.
+func emailChecker(value string) bool {
+	address, err := mail.ParseAddress(value)
+	if err != nil || address.Name != "" || strings.ContainsAny(value, "<>") {
+		fmt.Println("Not a valid email address")
+		return false
+	}
+	return true
+}
+
 // CheckParameters checks parameters for install command.
 func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
-	utils.AskPasswordIfMissing(&flags.Db.Password, cmd.Flag("db-password").Usage)
+	utils.AskPasswordIfMissing(&flags.Db.Password, cmd.Flag("db-password").Usage, 0, 0)
 
 	// Make sure we have all the required 3rd party flags or none
 	flags.Ssl.CheckParameters()
 
 	// Since we use cert-manager for self-signed certificates on kubernetes we don't need password for it
 	if !flags.Ssl.UseExisting() && command == "podman" {
-		utils.AskPasswordIfMissing(&flags.Ssl.Password, cmd.Flag("ssl-password").Usage)
+		utils.AskPasswordIfMissing(&flags.Ssl.Password, cmd.Flag("ssl-password").Usage, 0, 0)
 	}
 
 	// Use the host timezone if the user didn't define one
@@ -73,13 +98,13 @@ func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 		flags.TZ = utils.GetLocalTimezone()
 	}
 
-	utils.AskIfMissing(&flags.Email, cmd.Flag("email").Usage)
-	utils.AskIfMissing(&flags.EmailFrom, cmd.Flag("emailfrom").Usage)
+	utils.AskIfMissing(&flags.Email, cmd.Flag("email").Usage, 0, 0, emailChecker)
+	utils.AskIfMissing(&flags.EmailFrom, cmd.Flag("emailfrom").Usage, 0, 0, emailChecker)
 
-	utils.AskIfMissing(&flags.Admin.Login, cmd.Flag("admin-login").Usage)
-	utils.AskPasswordIfMissing(&flags.Admin.Password, cmd.Flag("admin-password").Usage)
-	utils.AskIfMissing(&flags.Admin.Email, cmd.Flag("admin-email").Usage)
-	utils.AskIfMissing(&flags.Organization, cmd.Flag("organization").Usage)
+	utils.AskIfMissing(&flags.Admin.Login, cmd.Flag("admin-login").Usage, 1, 64, idChecker)
+	utils.AskPasswordIfMissing(&flags.Admin.Password, cmd.Flag("admin-password").Usage, 1, 48)
+	utils.AskIfMissing(&flags.Admin.Email, cmd.Flag("admin-email").Usage, 1, 128, emailChecker)
+	utils.AskIfMissing(&flags.Organization, cmd.Flag("organization").Usage, 3, 128, nil)
 }
 
 // AddInstallFlags add flags to installa command.
