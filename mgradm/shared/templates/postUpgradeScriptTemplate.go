@@ -12,11 +12,11 @@ import (
 const postUpgradeScriptTemplate = `#!/bin/bash
 {{ if .CobblerHost }}
 sed 's/cobbler\.host.*/cobbler\.host = {{ .CobblerHost }}/' -i /etc/rhn/rhn.conf;
-grep spacewalk_authentication_endpoint /etc/cobbler/settings.yaml
+grep uyuni_authentication_endpoint /etc/cobbler/settings.yaml
 if [ $? -eq 1 ]; then
-	echo 'spacewalk_authentication_endpoint: "http://localhost"' >> /etc/cobbler/settings.yaml
+	echo 'uyuni_authentication_endpoint: "http://localhost"' >> /etc/cobbler/settings.yaml
 else
-	sed 's/spacewalk_authentication_endpoint.*/spacewalk_authentication_endpoint: http:\/\/localhost/' -i /etc/cobbler/settings.yaml;
+	sed 's/uyuni_authentication_endpoint.*/spacewalk_authentication_endpoint: http:\/\/localhost/' -i /etc/cobbler/settings.yaml;
 fi
 {{ end }}
 `
