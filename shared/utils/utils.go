@@ -6,6 +6,8 @@ package utils
 
 import (
 	"bufio"
+	"crypto/rand"
+	"encoding/base64"
 	"fmt"
 	"os"
 	"regexp"
@@ -153,4 +155,13 @@ func UninstallFile(path string, dryRun bool) {
 			}
 		}
 	}
+}
+
+// GetRandomBase64 generates random base64-encoded data.
+func GetRandomBase64(size int) string {
+	data := make([]byte, size)
+	if _, err := rand.Read(data); err != nil {
+		log.Fatal().Err(err).Msg("Failed to read random data")
+	}
+	return base64.StdEncoding.EncodeToString(data)
 }
