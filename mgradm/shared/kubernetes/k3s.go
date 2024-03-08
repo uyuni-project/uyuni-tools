@@ -169,6 +169,8 @@ func RunPostUpgradeScript(serverImage string, pullPolicy string, nodeName string
 						types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
 				},
 			},
+			Volumes: append(utils.PgsqlRequiredVolumes,
+				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
 		},
 	}
 	//transform deploy data in JSON
