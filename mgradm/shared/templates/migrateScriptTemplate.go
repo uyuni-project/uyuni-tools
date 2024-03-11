@@ -7,6 +7,8 @@ package templates
 import (
 	"io"
 	"text/template"
+
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 const migrationScriptTemplate = `#!/bin/bash
@@ -44,7 +46,8 @@ done
 echo "-/ /etc/sysconfig/rhn/reportdb-schema-upgrade" >> exclude_list
 echo "-/ /etc/sysconfig/rhn/schema-upgrade" >> exclude_list
 
-for folder in {{ range .Volumes }}{{ . }} {{ end }};
+
+for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
   if $SSH {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."
@@ -134,7 +137,7 @@ echo "DONE"`
 
 // MigrateScriptTemplateData represents migration information used to create migration script.
 type MigrateScriptTemplateData struct {
-	Volumes    map[string]string
+	Volumes    []types.VolumeMount
 	SourceFqdn string
 	Kubernetes bool
 }

@@ -102,12 +102,12 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 			Containers: []types.Container{
 				{
 					Name: podName,
-					VolumeMounts: append(shared_kubernetes.PgsqlRequiredVolumeMounts,
+					VolumeMounts: append(utils.PgsqlRequiredVolumeMounts,
 						types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
 					Image: serverImage,
 				},
 			},
-			Volumes: append(shared_kubernetes.PgsqlRequiredVolumes,
+			Volumes: append(utils.PgsqlRequiredVolumes,
 				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
 		},
 	}

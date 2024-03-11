@@ -46,7 +46,7 @@ func migrateToKubernetes(
 	// Prepare the migration script and folder
 	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, true)
 	if err != nil {
-		return fmt.Errorf("failed to generater migration script: %s", err)
+		return fmt.Errorf("failed to generate migration script: %s", err)
 	}
 
 	defer os.RemoveAll(scriptDir)
@@ -86,12 +86,13 @@ func migrateToKubernetes(
 	if oldPgVersion != newPgVersion {
 		var migrationImage types.ImageFlags
 		migrationImage.Name = flags.MigrationImage.Name
+		//FIXME this does not work if we use flag with image:tag format
 		if migrationImage.Name == "" {
 			migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, oldPgVersion, newPgVersion)
 		}
 		migrationImage.Tag = flags.MigrationImage.Tag
 
-		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
+		scriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgVersion, newPgVersion, false)
 		if err != nil {
 			return fmt.Errorf("cannot generate postgresql database migration script: %s", err)
 		}
@@ -101,7 +102,7 @@ func migrateToKubernetes(
 			return fmt.Errorf("failed to compute image URL")
 		}
 
-		if err := kubernetes.UyuniUpgrade(migrationImageUrl, migrationImage.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...); err != nil {
+		if err := kubernetes.UyuniUpgrade(migrationImageUrl, flags.MigrationImage.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...); err != nil {
 			return fmt.Errorf("cannot upgrade uyuni: %s", err)
 		}
 		if err := adm_utils.RunMigration(cnx, scriptDir, scriptName); err != nil {
@@ -109,7 +110,7 @@ func migrateToKubernetes(
 		}
 	}
 
-	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
+	scriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
 	if err != nil {
 		return fmt.Errorf("cannot generate postgresql migration finalization script: %s", err)
 	}

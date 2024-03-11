@@ -29,8 +29,8 @@ func uninstallForPodman(
 	// Remove the volumes
 	if flags.PurgeVolumes {
 		volumes := []string{"cgroup"}
-		for volume := range utils.VOLUMES {
-			volumes = append(volumes, volume)
+		for _, volume := range utils.ServerVolumeMounts {
+			volumes = append(volumes, volume.Name)
 		}
 		for _, volume := range volumes {
 			if err := podman.DeleteVolume(volume, flags.DryRun); err != nil {

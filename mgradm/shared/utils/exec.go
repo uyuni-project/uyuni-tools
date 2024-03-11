@@ -49,15 +49,15 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	return runCmd.Run()
 }
 
-// GeneratePgMigrationScript generates the PostgreSQL migration script.
-func GeneratePgMigrationScript(scriptDir string, oldPgVersion string, newPgVersion string, kubernetes bool) (string, error) {
-	data := templates.MigratePostgresVersionTemplateData{
+// GeneratePgsqlVersionUpgradeScript generates the PostgreSQL version upgrade script.
+func GeneratePgsqlVersionUpgradeScript(scriptDir string, oldPgVersion string, newPgVersion string, kubernetes bool) (string, error) {
+	data := templates.PostgreSQLVersionUpgradeTemplateData{
 		OldVersion: oldPgVersion,
 		NewVersion: newPgVersion,
 		Kubernetes: kubernetes,
 	}
 
-	scriptName := "migrate_pgsql.sh"
+	scriptName := "pgsqlVersionUpgrade.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
 		return "", fmt.Errorf("failed to generate %s", scriptName)
@@ -65,8 +65,8 @@ func GeneratePgMigrationScript(scriptDir string, oldPgVersion string, newPgVersi
 	return scriptName, nil
 }
 
-// GenerateFinalizePostgresMigrationScript generates the script to finalize PostgreSQL upgrade.
-func GenerateFinalizePostgresMigrationScript(scriptDir string, RunAutotune bool, RunReindex bool, RunSchemaUpdate bool, RunDistroMigration bool, kubernetes bool) (string, error) {
+// GenerateFinalizePostgresScript generates the script to finalize PostgreSQL upgrade.
+func GenerateFinalizePostgresScript(scriptDir string, RunAutotune bool, RunReindex bool, RunSchemaUpdate bool, RunDistroMigration bool, kubernetes bool) (string, error) {
 	data := templates.FinalizePostgresTemplateData{
 		RunAutotune:        RunAutotune,
 		RunReindex:         RunReindex,
@@ -75,7 +75,21 @@ func GenerateFinalizePostgresMigrationScript(scriptDir string, RunAutotune bool,
 		Kubernetes:         kubernetes,
 	}
 
-	scriptName := "finalize_pgsql.sh"
+	scriptName := "pgsqlFinalize.sh"
+	scriptPath := filepath.Join(scriptDir, scriptName)
+	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+		return "", fmt.Errorf("failed to generate %s", scriptName)
+	}
+	return scriptName, nil
+}
+
+// GeneratePostUpgradeScript generates the script to be run after upgrade.
+func GeneratePostUpgradeScript(scriptDir string, cobblerHost string) (string, error) {
+	data := templates.PostUpgradeTemplateData{
+		CobblerHost: cobblerHost,
+	}
+
+	scriptName := "postUpgrade.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
 		return "", fmt.Errorf("failed to generate %s", scriptName)
@@ -92,6 +106,15 @@ func ReadContainerData(scriptDir string) (string, string, string, error) {
 	viper.SetConfigType("env")
 	if err := viper.ReadConfig(bytes.NewBuffer(data)); err != nil {
 		return "", "", "", fmt.Errorf("cannot read config: %s", err)
+	}
+	if len(viper.GetString("Timezone")) <= 0 {
+		return "", "", "", errors.New("cannot retrieve timezone")
+	}
+	if len(viper.GetString("old_pg_version")) <= 0 {
+		return "", "", "", errors.New("cannot retrieve source PostgreSQL version")
+	}
+	if len(viper.GetString("new_pg_version")) <= 0 {
+		return "", "", "", errors.New("cannot retrieve image PostgreSQL version")
 	}
 	return viper.GetString("Timezone"), viper.GetString("old_pg_version"), viper.GetString("new_pg_version"), nil
 }
@@ -114,7 +137,7 @@ func GenerateMigrationScript(sourceFqdn string, kubernetes bool) (string, error)
 	}
 
 	data := templates.MigrateScriptTemplateData{
-		Volumes:    utils.VOLUMES,
+		Volumes:    utils.ServerVolumeMounts,
 		SourceFqdn: sourceFqdn,
 		Kubernetes: kubernetes,
 	}

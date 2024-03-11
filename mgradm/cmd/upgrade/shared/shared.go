@@ -73,7 +73,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 			return fmt.Errorf("cannot fetch release from image %s", serverImage)
 		}
 		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues["uyuni_release"])
-		if CompareVersion(inspectedValues["uyuni_release"], string(current_uyuni_release)) <= 0 {
+		if CompareVersion(inspectedValues["uyuni_release"], string(current_uyuni_release)) < 0 {
 			return fmt.Errorf("cannot downgrade from version %s to %s", string(current_uyuni_release), inspectedValues["uyuni_release"])
 		}
 	} else {
@@ -87,7 +87,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 			return fmt.Errorf("cannot fetch release from image %s", serverImage)
 		}
 		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues["suse_manager_release"])
-		if CompareVersion(inspectedValues["suse_manager_release"], string(current_suse_manager_release)) <= 0 {
+		if CompareVersion(inspectedValues["suse_manager_release"], string(current_suse_manager_release)) < 0 {
 			return fmt.Errorf("cannot downgrade from version %s to %s", string(current_suse_manager_release), inspectedValues["suse_manager_release"])
 		}
 	}

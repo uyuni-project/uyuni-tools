@@ -6,18 +6,16 @@ package podman
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
-	"path/filepath"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
+	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -25,92 +23,35 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	if _, err := exec.LookPath("podman"); err != nil {
 		log.Fatal().Err(err).Msg("install podman before running this command")
 	}
-
-	// Find the SSH Socket and paths for the migration
-	sshAuthSocket := shared.GetSshAuthSocket()
-	sshConfigPath, sshKnownhostsPath := shared.GetSshPaths()
-
-	scriptDir, err := adm_utils.GenerateMigrationScript(args[0], false)
-	if err != nil {
-		return fmt.Errorf("cannot generate migration script: %s", err)
-	}
-	defer os.RemoveAll(scriptDir)
-
-	extraArgs := []string{
-		"--security-opt", "label:disable",
-		"-e", "SSH_AUTH_SOCK",
-		"-v", filepath.Dir(sshAuthSocket) + ":" + filepath.Dir(sshAuthSocket),
-		"-v", scriptDir + ":/var/lib/uyuni-tools/",
-	}
-
-	if sshConfigPath != "" {
-		extraArgs = append(extraArgs, "-v", sshConfigPath+":/tmp/ssh_config")
-	}
-
-	if sshKnownhostsPath != "" {
-		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/etc/ssh/ssh_known_hosts")
-	}
-
+	sourceFqdn := args[0]
 	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
 	if err != nil {
-		return fmt.Errorf("failed to compute image URL: %s", err)
-	}
-	err = podman_utils.PrepareImage(serverImage, flags.Image.PullPolicy)
-	if err != nil {
-		return err
+		return fmt.Errorf("cannot compute image: %s", err)
 	}
 
-	log.Info().Msg("Migrating server")
-	if err := podman.RunContainer("uyuni-migration", serverImage, extraArgs,
-		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
-		return fmt.Errorf("cannot run uyuni migration container: %s", err)
-	}
+	// Find the SSH Socket and paths for the migration
+	sshAuthSocket := migration_shared.GetSshAuthSocket()
+	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
-	// Read the extracted data
-	tz, oldPgVersion, newPgVersion, err := adm_utils.ReadContainerData(scriptDir)
+	tz, oldPgVersion, newPgVersion, err := podman.RunMigration(serverImage, flags.Image.PullPolicy, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn)
 	if err != nil {
-		return fmt.Errorf("cannot read data from container: %s", err)
+		return fmt.Errorf("cannot run migration script: %s", err)
 	}
 
 	if oldPgVersion != newPgVersion {
-		var migrationImage types.ImageFlags
-		migrationImage.Name = flags.MigrationImage.Name
-		if migrationImage.Name == "" {
-			migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, oldPgVersion, newPgVersion)
-		}
-		migrationImage.Tag = flags.MigrationImage.Tag
-		log.Info().Msgf("Using migration image %s:%s", migrationImage.Name, migrationImage.Tag)
-
-		image, err := utils.ComputeImage(migrationImage.Name, migrationImage.Tag)
-		if err != nil {
-			return fmt.Errorf("failed to compute image URL: %s", err)
-		}
-		err = podman_utils.PrepareImage(image, flags.Image.PullPolicy)
-		if err != nil {
-			return err
-		}
-
-		scriptName, err := adm_utils.GeneratePgMigrationScript(scriptDir, oldPgVersion, newPgVersion, false)
-		if err != nil {
-			return fmt.Errorf("cannot generate postgresql database migration script: %s", err)
-		}
-
-		err = podman.RunContainer("uyuni-pg-migration", image, extraArgs,
-			[]string{"/var/lib/uyuni-tools/" + scriptName})
-		if err != nil {
-			return fmt.Errorf("cannot run uyuni-pg-migration container: %s", err)
+		log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB version upgrade...", oldPgVersion, newPgVersion)
+		if err := podman.RunPgsqlVersionUpgrade(flags.Image, flags.MigrationImage, oldPgVersion, newPgVersion); err != nil {
+			return fmt.Errorf("cannot run PostgreSQL version upgrade script: %s", err)
 		}
 	}
 
-	scriptName, err := adm_utils.GenerateFinalizePostgresMigrationScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
-	if err != nil {
-		return fmt.Errorf("cannot generate postgresql database migration script: %s", err)
+	schemaUpdateRequired := oldPgVersion != newPgVersion
+	if err := podman.RunPgsqlFinalizeScript(serverImage, schemaUpdateRequired); err != nil {
+		return fmt.Errorf("cannot run PostgreSQL finalize script: %s", err)
 	}
 
-	err = podman.RunContainer("uyuni-finalize-pg", serverImage, extraArgs,
-		[]string{"/var/lib/uyuni-tools/" + scriptName})
-	if err != nil {
-		return fmt.Errorf("cannot run uyuni-finalize-pg container: %s", err)
+	if err := podman.RunPostUpgradeScript(serverImage); err != nil {
+		return fmt.Errorf("cannot run post upgrade script: %s", err)
 	}
 
 	if err := podman.GenerateSystemdService(tz, serverImage, false, viper.GetStringSlice("podman.arg")); err != nil {
