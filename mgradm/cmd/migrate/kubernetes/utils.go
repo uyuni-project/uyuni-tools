@@ -37,6 +37,12 @@ func migrateToKubernetes(
 		}
 	}
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
+
+	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
+	if err != nil {
+		return fmt.Errorf("failed to compute image URL")
+	}
+
 	fqdn := args[0]
 
 	// Find the SSH Socket and paths for the migration
@@ -51,15 +57,15 @@ func migrateToKubernetes(
 
 	defer os.RemoveAll(scriptDir)
 
-	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
-	var sslFlags adm_utils.SslCertFlags
-
 	// We don't need the SSL certs at this point of the migration
 	clusterInfos := shared_kubernetes.CheckCluster()
-
 	kubeconfig := clusterInfos.GetKubeconfig()
 	//TODO: check if we need to handle SELinux policies, as we do in podman
 
+	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
+	var sslFlags adm_utils.SslCertFlags
+
+	// Deploy for running migration command
 	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &sslFlags, &clusterInfos, fqdn, false,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
@@ -68,6 +74,12 @@ func migrateToKubernetes(
 		return fmt.Errorf("cannot run deploy: %s", err)
 	}
 
+	//this is needed because folder with script needs to be mounted
+	//check the node before scaling down
+	nodeName, err := shared_kubernetes.GetNode("uyuni")
+	if err != nil {
+		return fmt.Errorf("cannot find node for app uyuni %s", err)
+	}
 	// Run the actual migration
 	if err := adm_utils.RunMigration(cnx, scriptDir, "migrate.sh"); err != nil {
 		return fmt.Errorf("cannot run migration: %s", err)
@@ -78,66 +90,66 @@ func migrateToKubernetes(
 		return fmt.Errorf("cannot read data from container: %s", err)
 	}
 
+	// After each command we want to scale to 0
+	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
+	if err != nil {
+		return fmt.Errorf("cannot set replica to 0: %s", err)
+	}
+
+	defer func() {
+		// if something is running, we don't need to set replicas to 1
+		if _, err = shared_kubernetes.GetNode("uyuni"); err != nil {
+			err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 1)
+		}
+	}()
+
+	setupSslArray, err := setupSsl(&flags.Helm, kubeconfig, scriptDir, flags.Ssl.Password, flags.Image.PullPolicy)
+	if err != nil {
+		return fmt.Errorf("cannot setup ssl: %s", err)
+	}
+
 	helmArgs := []string{
 		"--reset-values",
 		"--set", "timezone=" + tz,
 	}
-
-	if oldPgVersion != newPgVersion {
-		var migrationImage types.ImageFlags
-		migrationImage.Name = flags.MigrationImage.Name
-		//FIXME this does not work if we use flag with image:tag format
-		if migrationImage.Name == "" {
-			migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", flags.Image.Name, oldPgVersion, newPgVersion)
-		}
-		migrationImage.Tag = flags.MigrationImage.Tag
-
-		scriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgVersion, newPgVersion, false)
-		if err != nil {
-			return fmt.Errorf("cannot generate postgresql database migration script: %s", err)
-		}
-
-		migrationImageUrl, err := utils.ComputeImage(migrationImage.Name, migrationImage.Tag)
-		if err != nil {
-			return fmt.Errorf("failed to compute image URL")
-		}
-
-		if err := kubernetes.UyuniUpgrade(migrationImageUrl, flags.MigrationImage.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...); err != nil {
-			return fmt.Errorf("cannot upgrade uyuni: %s", err)
-		}
-		if err := adm_utils.RunMigration(cnx, scriptDir, scriptName); err != nil {
-			return fmt.Errorf("cannot run migration: %s", err)
-		}
-	}
-
-	scriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, oldPgVersion != newPgVersion, true, true, false)
-	if err != nil {
-		return fmt.Errorf("cannot generate postgresql migration finalization script: %s", err)
-	}
-
-	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
-	if err != nil {
-		return fmt.Errorf("failed to compute image URL")
-	}
-
-	if err := kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...); err != nil {
-		return fmt.Errorf("cannot run uyuni upgrade: %s", err)
-	}
-	if err := adm_utils.RunMigration(cnx, scriptDir, scriptName); err != nil {
-		return fmt.Errorf("cannot run migration: %s", err)
-	}
-
-	setupSslArray, err := setupSsl(&flags.Helm, kubeconfig, scriptDir, flags.Ssl.Password, flags.Image.PullPolicy)
-	if err != nil {
-		return fmt.Errorf("cannot setup SSL: %s", err)
-	}
 	helmArgs = append(helmArgs, setupSslArray...)
 
-	// As we upgrade the helm instance without the migration parameters the SSL certificate will be used
-	if err := kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...); err != nil {
-		return fmt.Errorf("cannot run uyuni upgrade: %s", err)
+	// Run uyuni upgrade using the new ssl certificate
+	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	if err != nil {
+		return fmt.Errorf("cannot upgrade to image %s using new ssl: %s", serverImage, err)
 	}
-	return nil
+
+	if err := shared_kubernetes.WaitForDeployment(flags.Helm.Uyuni.Namespace, "uyuni", "uyuni"); err != nil {
+		return fmt.Errorf("cannot wait for deployment of %s: %s", serverImage, err)
+	}
+
+	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
+	if err != nil {
+		return fmt.Errorf("cannot set replica to 0: %s", err)
+	}
+
+	if oldPgVersion != newPgVersion {
+		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image, flags.MigrationImage, nodeName, oldPgVersion, newPgVersion); err != nil {
+			return fmt.Errorf("cannot run PostgreSQL version upgrade script: %s", err)
+		}
+	}
+
+	schemaUpdateRequired := oldPgVersion != newPgVersion
+	if err := kubernetes.RunPgsqlFinalizeScript(serverImage, flags.Image.PullPolicy, nodeName, schemaUpdateRequired); err != nil {
+		return fmt.Errorf("cannot run PostgreSQL version upgrade script: %s", err)
+	}
+
+	if err := kubernetes.RunPostUpgradeScript(serverImage, flags.Image.PullPolicy, nodeName); err != nil {
+		return fmt.Errorf("cannot run post upgrade script: %s", err)
+	}
+
+	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	if err != nil {
+		return fmt.Errorf("cannot upgrade to image %s: %s", serverImage, err)
+	}
+
+	return shared_kubernetes.WaitForDeployment(flags.Helm.Uyuni.Namespace, "uyuni", "uyuni")
 }
 
 // updateIssuer replaces the temporary SSL certificate issuer with the source server CA.
