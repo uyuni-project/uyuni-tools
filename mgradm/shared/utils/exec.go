@@ -22,6 +22,26 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// InspectScriptFilename is the inspect script basename.
+var InspectScriptFilename = "inspect.sh"
+
+var inspectValues = []types.InspectData{
+	types.NewInspectData("uyuni_release", "cat /etc/*release | grep 'Uyuni release' | cut -d ' ' -f3 || true"),
+	types.NewInspectData("suse_manager_release", "cat /etc/*release | grep 'SUSE Manager release' | cut -d ' ' -f4 || true"),
+	types.NewInspectData("fqdn", "cat /etc/rhn/rhn.conf 2>/dev/null | grep 'java.hostname' | cut -d' ' -f3 || true"),
+	types.NewInspectData("image_pg_version", "rpm -qa --qf '%{VERSION}\\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1 || true"),
+	types.NewInspectData("current_pg_version", "(test -e /var/lib/pgsql/data/PG_VERSION && cat /var/lib/pgsql/data/PG_VERSION) || true"),
+	types.NewInspectData("registration_info", "transactional-update --quiet register --status 2>/dev/null || true"),
+	types.NewInspectData("scc_username", "cat /etc/zypp/credentials.d/SCCcredentials | grep username | cut -d= -f2 || true"),
+	types.NewInspectData("scc_password", "cat /etc/zypp/credentials.d/SCCcredentials | grep password | cut -d= -f2 || true"),
+}
+
+// InspectOutputFile represents the directory and the basename where the inspect values are stored.
+var InspectOutputFile = types.InspectFile{
+	Directory: "/var/lib/uyuni-tools",
+	Basename:  "data",
+}
+
 // ExecCommand execute commands passed as argument in the current system.
 func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string) error {
 	podName, err := cnx.GetPodName()
