@@ -67,6 +67,10 @@ func installForPodman(
 		return err
 	}
 
+	if err := shared_podman.LinkVolumes(&flags.Podman.Mounts); err != nil {
+		return err
+	}
+
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 	if err := waitForSystemStart(cnx, flags); err != nil {
 		return fmt.Errorf("cannot wait for system start: %s", err)
