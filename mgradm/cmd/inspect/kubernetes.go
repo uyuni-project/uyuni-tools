@@ -16,7 +16,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
-	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
@@ -74,11 +73,11 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 		return map[string]string{}, fmt.Errorf("failed to create temporary directory. %s", err)
 	}
 
-	if err := inspect_shared.GenerateInspectScript(scriptDir); err != nil {
+	if err := adm_utils.GenerateInspectContainerScript(scriptDir); err != nil {
 		return map[string]string{}, err
 	}
 
-	command := path.Join(inspect_shared.InspectOutputFile.Directory, inspect_shared.InspectScriptFilename)
+	command := path.Join(adm_utils.InspectOutputFile.Directory, adm_utils.InspectScriptFilename)
 
 	const podName = "inspector"
 
@@ -121,7 +120,7 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 		return map[string]string{}, fmt.Errorf("cannot run inspect pod %s", err)
 	}
 
-	inspectResult, err := inspect_shared.ReadInspectData(scriptDir)
+	inspectResult, err := adm_utils.ReadInspectData(scriptDir)
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("cannot inspect data. %s", err)
 	}

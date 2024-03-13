@@ -11,7 +11,6 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
@@ -62,27 +61,39 @@ func InspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 		return map[string]string{}, fmt.Errorf("failed to create temporary directory %s", err)
 	}
 
-	extraArgs := []string{
-		"-v", scriptDir + ":" + inspect_shared.InspectOutputFile.Directory,
+	inspectedHostValues, err := adm_utils.InspectHost()
+	if err != nil {
+		return map[string]string{}, fmt.Errorf("cannot inspect host values: %s", err)
+	}
+
+	pullArgs := []string{}
+	_, scc_user_exist := inspectedHostValues["host_scc_username"]
+	_, scc_user_password := inspectedHostValues["host_scc_password"]
+	if scc_user_exist && scc_user_password {
+		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+	}
+
+	err = shared_podman.PrepareImage(serverImage, pullPolicy, pullArgs...)
+	if err != nil {
+		return map[string]string{}, err
+	}
+
+	if err := adm_utils.GenerateInspectContainerScript(scriptDir); err != nil {
+		return map[string]string{}, err
+	}
+
+	podmanArgs := []string{
+		"-v", scriptDir + ":" + adm_utils.InspectOutputFile.Directory,
 		"--security-opt", "label:disable",
 	}
 
-	err = shared_podman.PrepareImage(serverImage, pullPolicy)
+	err = podman.RunContainer("uyuni-inspect", serverImage, podmanArgs,
+		[]string{adm_utils.InspectOutputFile.Directory + "/" + adm_utils.InspectScriptFilename})
 	if err != nil {
 		return map[string]string{}, err
 	}
 
-	if err := inspect_shared.GenerateInspectScript(scriptDir); err != nil {
-		return map[string]string{}, err
-	}
-
-	err = podman.RunContainer("uyuni-inspect", serverImage, extraArgs,
-		[]string{inspect_shared.InspectOutputFile.Directory + "/" + inspect_shared.InspectScriptFilename})
-	if err != nil {
-		return map[string]string{}, err
-	}
-
-	inspectResult, err := inspect_shared.ReadInspectData(scriptDir)
+	inspectResult, err := adm_utils.ReadInspectData(scriptDir)
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("cannot inspect data. %s", err)
 	}

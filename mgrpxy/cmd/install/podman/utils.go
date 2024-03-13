@@ -11,6 +11,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -69,8 +70,19 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallF
 
 func getContainerImage(flags *podmanProxyInstallFlags, name string) (string, error) {
 	image := flags.GetContainerImage(name)
-	err := shared_podman.PrepareImage(image, flags.PullPolicy)
+	inspectedHostValues, err := adm_utils.InspectHost()
 	if err != nil {
+		return "", fmt.Errorf("cannot inspect host values: %s", err)
+	}
+
+	pullArgs := []string{}
+	_, scc_user_exist := inspectedHostValues["host_scc_username"]
+	_, scc_user_password := inspectedHostValues["host_scc_password"]
+	if scc_user_exist && scc_user_password {
+		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+	}
+
+	if err := shared_podman.PrepareImage(image, flags.PullPolicy, pullArgs...); err != nil {
 		return "", err
 	}
 	return image, nil
