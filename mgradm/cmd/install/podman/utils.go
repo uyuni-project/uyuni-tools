@@ -22,7 +22,10 @@ import (
 
 func waitForSystemStart(cnx *shared.Connection, flags *podmanInstallFlags) error {
 	// Setup the systemd service configuration options
-	image := fmt.Sprintf("%s:%s", flags.Image.Name, flags.Image.Tag)
+	image, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
+	if err != nil {
+		return fmt.Errorf("failed to compute image URL, %s", err)
+	}
 
 	podmanArgs := flags.Podman.Args
 	if flags.MirrorPath != "" {
