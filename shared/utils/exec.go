@@ -13,8 +13,16 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// RedactedWords is a collection of word redacted by logs.
-var RedactedWords = []string{}
+var redactedWords = []string{}
+
+func getRedactedWords() []string {
+	return redactedWords
+}
+
+// InsertNewRedactedWord add a new word to the redacted word slice.
+func InsertNewRedactedWord(word string) {
+	redactedWords = append(redactedWords, word)
+}
 
 // OutputLogWriter contains information output the logger and the loglevel.
 type OutputLogWriter struct {
@@ -62,7 +70,7 @@ func RunCmdOutput(logLevel zerolog.Level, command string, args ...string) ([]byt
 func filterRedactedArgs(args ...string) []string {
 	filteredArgs := make([]string, len(args))
 	// Iterate over each filter
-	for _, filter := range RedactedWords {
+	for _, filter := range getRedactedWords() {
 		// Iterate over each argument in args
 		for i, arg := range args {
 			arg = strings.Replace(arg, filter, "[REDACTED]", -1)

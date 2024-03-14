@@ -256,7 +256,7 @@ func InspectHost() (map[string]string, error) {
 
 	for key, value := range inspectResult {
 		if strings.Contains(key, "password") {
-			utils.RedactedWords = append(utils.RedactedWords, value)
+			utils.InsertNewRedactedWord(value)
 		}
 	}
 
