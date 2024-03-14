@@ -87,7 +87,10 @@ func (c *Connection) GetCommand() (string, error) {
 				if hasPodman && podman.HasService("uyuni-server") {
 					c.command = "podman"
 				} else if hasKubectl {
-					clusterInfos := kubernetes.CheckCluster()
+					clusterInfos, err := kubernetes.CheckCluster()
+					if err != nil {
+						return c.command, err
+					}
 					if kubernetes.HasHelmRelease("uyuni", clusterInfos.GetKubeconfig()) {
 						c.command = "kubectl"
 					}

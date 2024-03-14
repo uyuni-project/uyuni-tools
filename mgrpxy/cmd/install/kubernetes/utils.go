@@ -40,7 +40,10 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// Check the kubernetes cluster setup
-	clusterInfos := shared_kubernetes.CheckCluster()
+	clusterInfos, err := shared_kubernetes.CheckCluster()
+	if err != nil {
+		return err
+	}
 
 	// If installing on k3s, install the traefik helm config in manifests
 	isK3s := clusterInfos.IsK3s()

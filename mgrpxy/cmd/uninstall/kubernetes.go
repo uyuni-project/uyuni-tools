@@ -8,14 +8,19 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 )
 
-func uninstallForKubernetes(dryRun bool) {
-	clusterInfos := kubernetes.CheckCluster()
+func uninstallForKubernetes(dryRun bool) error {
+	clusterInfos, err := kubernetes.CheckCluster()
+	if err != nil {
+		return err
+	}
 	kubeconfig := clusterInfos.GetKubeconfig()
 
 	// TODO Find all the PVs related to the server if we want to delete them
 
 	// Uninstall uyuni
-	kubernetes.HelmUninstall(kubeconfig, "uyuni-proxy", "", dryRun)
+	if _, err := kubernetes.HelmUninstall(kubeconfig, "uyuni-proxy", "", dryRun); err != nil {
+		return err
+	}
 
 	// TODO Remove the PVs or wait for their automatic removal if purge is requested
 	// Also wait if the PVs are dynamic with Delete reclaim policy but the user didn't ask to purge them
@@ -30,4 +35,5 @@ func uninstallForKubernetes(dryRun bool) {
 	if clusterInfos.IsRke2() {
 		kubernetes.UninstallRke2NginxConfig(dryRun)
 	}
+	return nil
 }

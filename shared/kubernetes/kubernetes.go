@@ -45,48 +45,51 @@ func (infos ClusterInfos) GetKubeconfig() string {
 }
 
 // CheckCluster return cluster information.
-func CheckCluster() ClusterInfos {
+func CheckCluster() (*ClusterInfos, error) {
 	// Get the kubelet version
 	hostname, err := os.Hostname()
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to get node hostname")
+		return nil, fmt.Errorf("failed to get node hostname: %s", err)
 	}
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "node",
 		"-o", "jsonpath={.status.nodeInfo.kubeletVersion}", hostname)
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to get kubelet version for node %s", hostname)
+		return nil, fmt.Errorf("failed to get kubelet version for node %s: %s", hostname, err)
 	}
 
 	var infos ClusterInfos
 	infos.KubeletVersion = string(out)
-	infos.Ingress = guessIngress()
+	infos.Ingress, err = guessIngress()
+	if err != nil {
+		return nil, err
+	}
 
-	return infos
+	return &infos, nil
 }
 
-func guessIngress() string {
-	var ingress string
-
+func guessIngress() (string, error) {
 	// Check for a traefik resource
 	err := utils.RunCmd("kubectl", "explain", "ingressroutetcp")
 	if err == nil {
-		ingress = "traefik"
+		return "traefik", nil
+	} else {
+		log.Debug().Err(err).Msg("No ingressroutetcp resource deployed")
 	}
 
 	// Look for a pod running the nginx-ingress-controller: there is no other common way to find out
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-A",
 		"-o", "jsonpath={range .items[*]}{.spec.containers[*].args[0]}{.spec.containers[*].command}{end}")
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to get pod commands to look for nginx controller")
+		return "", fmt.Errorf("failed to get pod commands to look for nginx controller: %s", err)
 	}
 
 	const nginxController = "/nginx-ingress-controller"
 	if strings.Contains(string(out), nginxController) {
-		ingress = "nginx"
+		return "nginx", nil
 	}
 
-	return ingress
+	return "", nil
 }
 
 // Restart restarts the pod.
