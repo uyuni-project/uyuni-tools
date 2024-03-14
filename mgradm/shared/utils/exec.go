@@ -254,6 +254,12 @@ func InspectHost() (map[string]string, error) {
 		return map[string]string{}, fmt.Errorf("cannot inspect host data. %s", err)
 	}
 
+	for key, value := range inspectResult {
+		if strings.Contains(key, "password") {
+			utils.RedactedWords = append(utils.RedactedWords, value)
+		}
+	}
+
 	return inspectResult, err
 }
 
