@@ -43,7 +43,9 @@ func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 					return fmt.Errorf("cannot uninstall podman: %s", err)
 				}
 			case "kubectl":
-				uninstallForKubernetes(dryRun)
+				if err := uninstallForKubernetes(dryRun); err != nil {
+					return err
+				}
 			}
 			return nil
 		},

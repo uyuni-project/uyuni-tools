@@ -58,7 +58,7 @@ func HelmUpgrade(kubeconfig string, namespace string, install bool,
 }
 
 // HelmUninstall runs the helm uninstall command to remove a deployment.
-func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun bool) string {
+func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun bool) (string, error) {
 	helmArgs := []string{}
 	if kubeconfig != "" {
 		helmArgs = append(helmArgs, "--kubeconfig", kubeconfig)
@@ -100,14 +100,12 @@ func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 			log.Info().Msgf("Would run helm %s", strings.Join(helmArgs, " "))
 		} else {
 			log.Info().Msgf("Uninstalling %s", deployment)
-			message := "Failed to run helm " + strings.Join(helmArgs, " ")
-			err := utils.RunCmd("helm", helmArgs...)
-			if err != nil {
-				log.Fatal().Err(err).Msg(message)
+			if err := utils.RunCmd("helm", helmArgs...); err != nil {
+				return namespace, fmt.Errorf("failed to run helm %s: %s", strings.Join(helmArgs, " "), err)
 			}
 		}
 	}
-	return namespace
+	return namespace, nil
 }
 
 // HasHelmRelease returns whether a helm release is installed or not, even if it failed.

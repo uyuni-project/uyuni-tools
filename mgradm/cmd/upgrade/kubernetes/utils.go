@@ -55,7 +55,10 @@ func upgradeKubernetes(
 		return fmt.Errorf("inspect function did non return fqdn value")
 	}
 
-	clusterInfos := shared_kubernetes.CheckCluster()
+	clusterInfos, err := shared_kubernetes.CheckCluster()
+	if err != nil {
+		return err
+	}
 	kubeconfig := clusterInfos.GetKubeconfig()
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")

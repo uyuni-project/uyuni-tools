@@ -47,7 +47,10 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// Check the kubernetes cluster setup
-	clusterInfos := shared_kubernetes.CheckCluster()
+	clusterInfos, err := shared_kubernetes.CheckCluster()
+	if err != nil {
+		return err
+	}
 
 	// Deploy the SSL CA or server certificate
 	ca := ssl.SslPair{}
@@ -59,7 +62,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	helmArgs = append(helmArgs, sslArgs...)
 
 	// Deploy Uyuni and wait for it to be up
-	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &flags.Ssl, &clusterInfos, fqdn, flags.Debug.Java, helmArgs...); err != nil {
+	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &flags.Ssl, clusterInfos, fqdn, flags.Debug.Java, helmArgs...); err != nil {
 		return fmt.Errorf("cannot deploy uyuni: %s", err)
 	}
 

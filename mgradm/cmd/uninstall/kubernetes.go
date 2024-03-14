@@ -21,13 +21,19 @@ func uninstallForKubernetes(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	clusterInfos := kubernetes.CheckCluster()
+	clusterInfos, err := kubernetes.CheckCluster()
+	if err != nil {
+		return err
+	}
 	kubeconfig := clusterInfos.GetKubeconfig()
 
 	// TODO Find all the PVs related to the server if we want to delete them
 
 	// Uninstall uyuni
-	namespace := kubernetes.HelmUninstall(kubeconfig, "uyuni", "", flags.DryRun)
+	namespace, err := kubernetes.HelmUninstall(kubeconfig, "uyuni", "", flags.DryRun)
+	if err != nil {
+		return err
+	}
 
 	// Remove the remaining configmap and secrets
 	if namespace != "" {
@@ -64,7 +70,9 @@ func uninstallForKubernetes(
 	// Since some storage plugins don't handle Delete policy, we may need to check for error events to avoid infinite loop
 
 	// Uninstall cert-manager if we installed it
-	kubernetes.HelmUninstall(kubeconfig, "cert-manager", "-linstalledby=mgradm", flags.DryRun)
+	if _, err := kubernetes.HelmUninstall(kubeconfig, "cert-manager", "-linstalledby=mgradm", flags.DryRun); err != nil {
+		return err
+	}
 
 	// Remove the K3s Traefik config
 	if clusterInfos.IsK3s() {
