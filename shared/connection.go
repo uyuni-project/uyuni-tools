@@ -219,7 +219,7 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 		return fmt.Errorf("unknown container kind: %s", command)
 	}
 
-	if err := utils.RunCmdStdMapping(command, commandArgs...); err != nil {
+	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, command, commandArgs...); err != nil {
 		return err
 	}
 
@@ -231,7 +231,7 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 			owner = user + ":" + group
 		}
 		execArgs = append(execArgs, "chown", owner, strings.Replace(dst, "server:", "", 1))
-		return utils.RunCmdStdMapping(command, execArgs...)
+		return utils.RunCmdStdMapping(zerolog.DebugLevel, command, execArgs...)
 	}
 	return nil
 }

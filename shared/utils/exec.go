@@ -38,8 +38,9 @@ func RunCmd(command string, args ...string) error {
 }
 
 // RunCmdStdMapping execute a shell command mapping the stdout and stderr.
-func RunCmdStdMapping(command string, args ...string) error {
-	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
+func RunCmdStdMapping(logLevel zerolog.Level, command string, args ...string) error {
+	localLogger := log.Level(logLevel)
+	localLogger.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	runCmd := exec.Command(command, args...)
 	runCmd.Stdout = os.Stdout

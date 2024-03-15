@@ -245,7 +245,7 @@ func InspectHost() (map[string]string, error) {
 		return map[string]string{}, err
 	}
 
-	if err := utils.RunCmdStdMapping(scriptDir + "/inspect.sh"); err != nil {
+	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, scriptDir+"/inspect.sh"); err != nil {
 		return map[string]string{}, fmt.Errorf("failed to run inspect script in host system: %s", err)
 	}
 

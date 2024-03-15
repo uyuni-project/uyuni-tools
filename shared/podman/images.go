@@ -59,11 +59,7 @@ func pullImage(image string, args ...string) error {
 		log.Debug().Msg("Additional arguments for pull command will not be shown.")
 	}
 
-	if _, err := utils.RunCmdOutput(loglevel, "podman", podmanArgs...); err != nil {
-		return fmt.Errorf("cannot run podman pull: %s", err)
-	}
-
-	return nil
+	return utils.RunCmdStdMapping(loglevel, "podman", podmanArgs...)
 }
 
 // ShowAvailableTag  returns the list of avaialable tag for a given image.

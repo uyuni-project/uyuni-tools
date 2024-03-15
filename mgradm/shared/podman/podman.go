@@ -134,7 +134,7 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 
 	// The services need to be restarted
 	log.Info().Msg("Restarting services after updating the certificate")
-	return utils.RunCmdStdMapping("podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
+	return utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
 }
 
 // RunContainer execute a container.
@@ -147,7 +147,7 @@ func RunContainer(name string, image string, extraArgs []string, cmd []string) e
 	podmanArgs = append(podmanArgs, image)
 	podmanArgs = append(podmanArgs, cmd...)
 
-	err := utils.RunCmdStdMapping("podman", podmanArgs...)
+	err := utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", podmanArgs...)
 	if err != nil {
 		return fmt.Errorf("failed to run %s container: %s", name, err)
 	}
