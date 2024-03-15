@@ -50,9 +50,20 @@ func checkImage(image string, pullPolicy string) (bool, error) {
 
 func pullImage(image string, args ...string) error {
 	log.Info().Msgf("Running podman pull %s", image)
-	podmanArgs := []string{"pull", image}
-	podmanArgs = append(podmanArgs, args...)
-	return utils.RunCmdStdMapping("podman", podmanArgs...)
+	podmanImageArgs := []string{"pull", image}
+	podmanArgs := append(podmanImageArgs, args...)
+
+	loglevel := zerolog.DebugLevel
+	if len(args) > 0 {
+		loglevel = zerolog.Disabled
+		log.Debug().Msg("Additional arguments for pull command will not be shown.")
+	}
+
+	if _, err := utils.RunCmdOutput(loglevel, "podman", podmanArgs...); err != nil {
+		return fmt.Errorf("cannot run podman pull: %s", err)
+	}
+
+	return nil
 }
 
 // ShowAvailableTag  returns the list of avaialable tag for a given image.

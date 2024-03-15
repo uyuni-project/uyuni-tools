@@ -13,17 +13,6 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var redactedWords = []string{}
-
-func getRedactedWords() []string {
-	return redactedWords
-}
-
-// InsertNewRedactedWord add a new word to the redacted word slice.
-func InsertNewRedactedWord(word string) {
-	redactedWords = append(redactedWords, word)
-}
-
 // OutputLogWriter contains information output the logger and the loglevel.
 type OutputLogWriter struct {
 	Logger   zerolog.Logger
@@ -43,14 +32,14 @@ func (l OutputLogWriter) Write(p []byte) (n int, err error) {
 
 // RunCmd execute a shell command.
 func RunCmd(command string, args ...string) error {
-	log.Debug().Msgf("Running: %s %s", command, strings.Join(filterRedactedArgs(args...), " "))
+	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	return exec.Command(command, args...).Run()
 }
 
 // RunCmdStdMapping execute a shell command mapping the stdout and stderr.
 func RunCmdStdMapping(command string, args ...string) error {
-	log.Debug().Msgf("Running: %s %s", command, strings.Join(filterRedactedArgs(args...), " "))
+	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	runCmd := exec.Command(command, args...)
 	runCmd.Stdout = os.Stdout
@@ -60,23 +49,11 @@ func RunCmdStdMapping(command string, args ...string) error {
 
 // RunCmdOutput execute a shell command and collects output.
 func RunCmdOutput(logLevel zerolog.Level, command string, args ...string) ([]byte, error) {
-	log.Debug().Msgf("Running: %s %s", command, strings.Join(filterRedactedArgs(args...), " "))
+	localLogger := log.Level(logLevel)
+
+	localLogger.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	output, err := exec.Command(command, args...).Output()
-	log.Trace().Msgf("Command output: %s, error: %s", output, err)
+	localLogger.Trace().Msgf("Command output: %s, error: %s", output, err)
 	return output, err
-}
-
-func filterRedactedArgs(args ...string) []string {
-	filteredArgs := make([]string, len(args))
-	// Iterate over each filter
-	for _, filter := range getRedactedWords() {
-		// Iterate over each argument in args
-		for i, arg := range args {
-			arg = strings.Replace(arg, filter, "[REDACTED]", -1)
-			// Store the filtered argument in filteredArgs
-			filteredArgs[i] = arg
-		}
-	}
-	return filteredArgs
 }
