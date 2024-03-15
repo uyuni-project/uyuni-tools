@@ -257,7 +257,7 @@ func RunPod(podname string, filter string, image string, pullPolicy string, comm
 	}
 
 	arguments = append(arguments, "--command", "--", command)
-	err := utils.RunCmdStdMapping("kubectl", arguments...)
+	err := utils.RunCmdStdMapping(zerolog.DebugLevel, "kubectl", arguments...)
 	if err != nil {
 		return fmt.Errorf("cannot run %s using image %s: %s", command, image, err)
 	}

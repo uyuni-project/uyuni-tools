@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/cobra"
 	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -55,6 +56,11 @@ func installForPodman(
 		return fmt.Errorf("install podman before running this command: %s", err)
 	}
 
+	inspectedHostValues, err := adm_utils.InspectHost()
+	if err != nil {
+		return fmt.Errorf("cannot inspect host values: %s", err)
+	}
+
 	fqdn, err := getFqdn(args)
 	if err != nil {
 		return err
@@ -65,7 +71,14 @@ func installForPodman(
 	if err != nil {
 		return fmt.Errorf("failed to compute image URL, %s", err)
 	}
-	err = shared_podman.PrepareImage(image, flags.Image.PullPolicy)
+	pullArgs := []string{}
+	_, scc_user_exist := inspectedHostValues["host_scc_username"]
+	_, scc_user_password := inspectedHostValues["host_scc_password"]
+	if scc_user_exist && scc_user_password {
+		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+	}
+
+	err = shared_podman.PrepareImage(image, flags.Image.PullPolicy, pullArgs...)
 	if err != nil {
 		return err
 	}

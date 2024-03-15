@@ -38,8 +38,9 @@ func RunCmd(command string, args ...string) error {
 }
 
 // RunCmdStdMapping execute a shell command mapping the stdout and stderr.
-func RunCmdStdMapping(command string, args ...string) error {
-	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
+func RunCmdStdMapping(logLevel zerolog.Level, command string, args ...string) error {
+	localLogger := log.Level(logLevel)
+	localLogger.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	runCmd := exec.Command(command, args...)
 	runCmd.Stdout = os.Stdout
@@ -49,9 +50,11 @@ func RunCmdStdMapping(command string, args ...string) error {
 
 // RunCmdOutput execute a shell command and collects output.
 func RunCmdOutput(logLevel zerolog.Level, command string, args ...string) ([]byte, error) {
-	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
+	localLogger := log.Level(logLevel)
+
+	localLogger.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	output, err := exec.Command(command, args...).Output()
-	log.Trace().Msgf("Command output: %s, error: %s", output, err)
+	localLogger.Trace().Msgf("Command output: %s, error: %s", output, err)
 	return output, err
 }

@@ -51,7 +51,7 @@ func HelmUpgrade(kubeconfig string, namespace string, install bool,
 		command = "install"
 	}
 	errorMessage := fmt.Sprintf("Failed to %s helm chart %s in namespace %s", command, chart, namespace)
-	if err := utils.RunCmdStdMapping("helm", helmArgs...); err != nil {
+	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "helm", helmArgs...); err != nil {
 		return fmt.Errorf("%s: %s", errorMessage, err)
 	}
 	return nil

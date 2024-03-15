@@ -15,7 +15,7 @@ import (
 )
 
 // Ensure the container image is pulled or pull it if the pull policy allows it.
-func PrepareImage(image string, pullPolicy string) error {
+func PrepareImage(image string, pullPolicy string, args ...string) error {
 	log.Info().Msgf("Ensure image %s is available", image)
 
 	needsPull, err := checkImage(image, pullPolicy)
@@ -24,7 +24,7 @@ func PrepareImage(image string, pullPolicy string) error {
 	}
 
 	if needsPull {
-		return pullImage(image)
+		return pullImage(image, args...)
 	}
 	return nil
 }
@@ -48,10 +48,18 @@ func checkImage(image string, pullPolicy string) (bool, error) {
 	return false, nil
 }
 
-func pullImage(image string) error {
+func pullImage(image string, args ...string) error {
 	log.Info().Msgf("Running podman pull %s", image)
+	podmanImageArgs := []string{"pull", image}
+	podmanArgs := append(podmanImageArgs, args...)
 
-	return utils.RunCmdStdMapping("podman", "pull", image)
+	loglevel := zerolog.DebugLevel
+	if len(args) > 0 {
+		loglevel = zerolog.Disabled
+		log.Debug().Msg("Additional arguments for pull command will not be shown.")
+	}
+
+	return utils.RunCmdStdMapping(loglevel, "podman", podmanArgs...)
 }
 
 // ShowAvailableTag  returns the list of avaialable tag for a given image.

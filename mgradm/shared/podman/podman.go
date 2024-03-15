@@ -134,7 +134,7 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 
 	// The services need to be restarted
 	log.Info().Msg("Restarting services after updating the certificate")
-	return utils.RunCmdStdMapping("podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
+	return utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
 }
 
 // RunContainer execute a container.
@@ -147,7 +147,7 @@ func RunContainer(name string, image string, extraArgs []string, cmd []string) e
 	podmanArgs = append(podmanArgs, image)
 	podmanArgs = append(podmanArgs, cmd...)
 
-	err := utils.RunCmdStdMapping("podman", podmanArgs...)
+	err := utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", podmanArgs...)
 	if err != nil {
 		return fmt.Errorf("failed to run %s container: %s", name, err)
 	}
@@ -178,10 +178,19 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/etc/ssh/ssh_known_hosts")
 	}
 
+	inspectedHostValues, err := adm_utils.InspectHost()
 	if err != nil {
-		return "", "", "", fmt.Errorf("failed to compute image URL: %s", err)
+		return "", "", "", fmt.Errorf("cannot inspect host values: %s", err)
 	}
-	err = podman.PrepareImage(serverImage, pullPolicy)
+
+	pullArgs := []string{}
+	_, scc_user_exist := inspectedHostValues["host_scc_username"]
+	_, scc_user_password := inspectedHostValues["host_scc_password"]
+	if scc_user_exist && scc_user_password {
+		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+	}
+
+	err = podman.PrepareImage(serverImage, pullPolicy, pullArgs...)
 	if err != nil {
 		return "", "", "", err
 	}
@@ -229,7 +238,19 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 			}
 		}
 
-		err = podman.PrepareImage(migrationImageUrl, image.PullPolicy)
+		inspectedHostValues, err := adm_utils.InspectHost()
+		if err != nil {
+			return fmt.Errorf("cannot inspect host values: %s", err)
+		}
+
+		pullArgs := []string{}
+		_, scc_user_exist := inspectedHostValues["host_scc_username"]
+		_, scc_user_password := inspectedHostValues["host_scc_password"]
+		if scc_user_exist && scc_user_password {
+			pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+		}
+
+		err = podman.PrepareImage(migrationImageUrl, image.PullPolicy, pullArgs...)
 		if err != nil {
 			return err
 		}
