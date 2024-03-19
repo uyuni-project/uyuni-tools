@@ -78,7 +78,7 @@ func installForPodman(
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 
-	err = shared_podman.PrepareImage(image, flags.Image.PullPolicy, pullArgs...)
+	_, err = shared_podman.PrepareImage(image, flags.Image.PullPolicy, pullArgs...)
 	if err != nil {
 		return err
 	}

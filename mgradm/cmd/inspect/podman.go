@@ -73,7 +73,7 @@ func InspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 
-	err = shared_podman.PrepareImage(serverImage, pullPolicy, pullArgs...)
+	preparedImage, err := shared_podman.PrepareImage(serverImage, pullPolicy, pullArgs...)
 	if err != nil {
 		return map[string]string{}, err
 	}
@@ -87,7 +87,7 @@ func InspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 		"--security-opt", "label:disable",
 	}
 
-	err = podman.RunContainer("uyuni-inspect", serverImage, podmanArgs,
+	err = podman.RunContainer("uyuni-inspect", preparedImage, podmanArgs,
 		[]string{adm_utils.InspectOutputFile.Directory + "/" + adm_utils.InspectScriptFilename})
 	if err != nil {
 		return map[string]string{}, err

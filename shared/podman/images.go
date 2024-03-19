@@ -20,18 +20,51 @@ import (
 )
 
 // Ensure the container image is pulled or pull it if the pull policy allows it.
-func PrepareImage(image string, pullPolicy string, args ...string) error {
+func PrepareImage(image string, pullPolicy string, args ...string) (string, error) {
 	log.Info().Msgf("Ensure image %s is available", image)
 
-	needsPull, err := checkImage(image, pullPolicy)
+	present, err := IsImagePresent(image)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	if needsPull {
-		return pullImage(image, args...)
+	if present && strings.ToLower(pullPolicy) != "always" {
+		log.Debug().Msgf("Image %s already present", image)
+		return "", nil
 	}
-	return nil
+
+	rpmImageFile, err := IsRpmImagePresent(image)
+	if err != nil {
+		return "", err
+	}
+
+	if len(rpmImageFile) > 0 {
+		log.Debug().Msgf("Image %s present as RPM. Loading it", image)
+		loadedImage, err := loadRpmImage(rpmImageFile)
+		if err != nil {
+			log.Warn().Msgf("cannot use RPM image for %s:%s", image, err)
+			present = false
+		} else {
+			if strings.ToLower(pullPolicy) == "always" {
+				log.Debug().Msg("Ignoring pull policy alway ")
+			}
+
+			log.Info().Msgf("The image loaded is %s", strings.TrimSpace(loadedImage))
+			return loadedImage, nil
+		}
+	}
+
+	if strings.ToLower(pullPolicy) == "always" {
+		log.Debug().Msgf("Pulling image cause pull policy is always %s", image)
+		return image, pullImage(image, args...)
+	}
+
+	if !present && strings.ToLower(pullPolicy) != "never" {
+		log.Debug().Msgf("Pulling image cause is missing and pull policy is not never %s", image)
+		return image, pullImage(image, args...)
+	}
+
+	return image, fmt.Errorf("image %s is missing and cannot be fetch", image)
 }
 
 // GetRpmInfoFromImage return the RPM Image name and the tag, given an image.
@@ -64,7 +97,8 @@ func GetRpmImage(byteValue []byte, rpmImageFile string, tag string) (string, err
 	return "", nil
 }
 
-func isRpmImagePresent(image string) (string, error) {
+// IsRpmImagePresent return true if the RPM with the provided image is installed.
+func IsRpmImagePresent(image string) (string, error) {
 	log.Debug().Msgf("looking for RPM image for %s", image)
 
 	rpmImageFile, tag := GetRpmInfoFromImage(image)
@@ -108,39 +142,37 @@ func isRpmImagePresent(image string) (string, error) {
 	return "", fmt.Errorf("image %s does not exists as RPM image", image)
 }
 
-func loadRpmImage(rpmImageBasePath string) error {
-	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", "load", "--input", rpmImageBasePath); err != nil {
-		return fmt.Errorf("cannot load image from: %s, continuing trying to pull from the registry: %s", rpmImageBasePath, err)
+func loadRpmImage(rpmImageBasePath string) (string, error) {
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "load", "--quiet", "--input", rpmImageBasePath)
+	if err != nil {
+		return "", fmt.Errorf("cannot load image from: %s, continuing trying to pull from the registry: %s", rpmImageBasePath, err)
 	}
-	return nil
+	loadedImage := strings.ReplaceAll(string(out), "Loaded image: ", "")
+	return loadedImage, nil
 }
 
-func checkImage(image string, pullPolicy string) (bool, error) {
-	if strings.ToLower(pullPolicy) == "always" {
-		return true, nil
-	}
-
+// IsImagePresent return true if the image is present.
+func IsImagePresent(image string) (bool, error) {
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", "--quiet", image)
 	if err != nil {
 		return false, fmt.Errorf("failed to check if image %s has already been pulled", image)
 	}
 
-	rpmImageBasePath, _ := isRpmImagePresent(image)
-
-	if len(rpmImageBasePath) > 0 {
-		if err := loadRpmImage(rpmImageBasePath); err != nil {
-			log.Warn().Msgf("cannot use RPM image for %s:%s", image, err)
-		}
-		return false, nil
-	}
-
-	if len(bytes.TrimSpace(out)) == 0 {
-		if pullPolicy == "Never" {
-			return false, fmt.Errorf("image %s is not available and cannot be pulled due to policy", image)
-		}
+	if len(bytes.TrimSpace(out)) > 0 {
 		return true, nil
 	}
 	return false, nil
+}
+
+// GetPulledImageName returns the fullname of a pulled image.
+func GetPulledImageName(image string) (string, error) {
+	parts := strings.Split(image, "/")
+	imageWithTag := parts[len(parts)-1]
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", imageWithTag, "--format", "{{.Repository}}")
+	if err != nil {
+		return "", fmt.Errorf("failed to check if image %s has already been pulled", parts[len(parts)-1])
+	}
+	return string(bytes.TrimSpace(out)), nil
 }
 
 func pullImage(image string, args ...string) error {
