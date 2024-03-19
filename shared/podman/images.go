@@ -6,12 +6,16 @@ package podman
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -30,12 +34,78 @@ func PrepareImage(image string, pullPolicy string, args ...string) error {
 	return nil
 }
 
-func calculateRpmImagePath(image string) string {
-	imagePrefix := strings.ReplaceAll(image, "registry.suse.com/", "")
-	imagePrefix = strings.ReplaceAll(imagePrefix, "/", "-")
-	imagePrefix = strings.Split(imagePrefix, ":")[0]
+// GetRpmInfoFromImage return the RPM Image name and the tag, given an image.
+func GetRpmInfoFromImage(image string) (rpmImageFile string, tag string) {
+	rpmImageFile = strings.ReplaceAll(image, "registry.suse.com/", "")
+	rpmImageFile = strings.ReplaceAll(rpmImageFile, "/", "-")
+	parts := strings.Split(rpmImageFile, ":")
+	tag = "latest"
+	if len(parts) > 1 {
+		tag = parts[1]
+	}
+	rpmImageFile = parts[0]
+	return rpmImageFile, tag
+}
 
-	return "/usr/share/suse-docker-images/native/" + imagePrefix
+// GetRpmInfoFromImage return the path of an RPM Image.
+func GetRpmImage(byteValue []byte, rpmImageFile string, tag string) (string, error) {
+	var data types.Metadata
+	if err := json.Unmarshal(byteValue, &data); err != nil {
+		return "", fmt.Errorf("cannot unmarshal: %s", err)
+	}
+	fullPathFile := "/usr/share/suse-docker-images/native/" + data.Image.File
+	if data.Image.Name == rpmImageFile {
+		for _, metadataTag := range data.Image.Tags {
+			if metadataTag == tag {
+				return fullPathFile, nil
+			}
+		}
+	}
+	return "", nil
+}
+
+func isRpmImagePresent(image string) (string, error) {
+	log.Debug().Msgf("looking for RPM image for %s", image)
+
+	rpmImageFile, tag := GetRpmInfoFromImage(image)
+
+	rpmImageDir := "/usr/share/suse-docker-images/native/"
+	files, err := os.ReadDir(rpmImageDir)
+	if err != nil {
+		return "", fmt.Errorf("cannot read directory %s: %s", rpmImageDir, err)
+	}
+
+	for _, file := range files {
+		if !strings.HasSuffix(file.Name(), "metadata") {
+			continue
+		}
+		fullPathFileName := path.Join(rpmImageDir, file.Name())
+		log.Debug().Msgf("parsing %s", fullPathFileName)
+		fileHandler, err := os.Open(fullPathFileName)
+		if err != nil {
+			log.Debug().Msgf("error opening %s: %s", fullPathFileName, err)
+			continue
+		}
+		defer fileHandler.Close()
+		byteValue, err := io.ReadAll(fileHandler)
+		if err != nil {
+			log.Debug().Msgf("error reading %s: %s", fullPathFileName, err)
+			continue
+		}
+
+		fullPathFile, err := GetRpmImage(byteValue, rpmImageFile, tag)
+		if err != nil {
+			log.Warn().Msgf("cannot unmarshal %s: %s", fullPathFileName, err)
+			return "", err
+		}
+		if len(fullPathFile) > 0 {
+			log.Debug().Msgf("%s match with %s", fullPathFileName, image)
+			return fullPathFile, nil
+		}
+		log.Debug().Msgf("%s does not match with %s", fullPathFileName, image)
+	}
+	log.Debug().Msgf("image %s does not exists as RPM image", image)
+	return "", fmt.Errorf("image %s does not exists as RPM image", image)
 }
 
 func loadRpmImage(rpmImageBasePath string) error {
@@ -43,20 +113,6 @@ func loadRpmImage(rpmImageBasePath string) error {
 		return fmt.Errorf("cannot load image from: %s, continuing trying to pull from the registry: %s", rpmImageBasePath, err)
 	}
 	return nil
-}
-
-func isRpmImagePresent(image string) bool {
-	//check if image is available from RPM
-	log.Debug().Msgf("Check if RPM based image for %s is present", image)
-
-	rpmImageBasePath := calculateRpmImagePath(image)
-	log.Debug().Msgf("Looking for %s", rpmImageBasePath)
-
-	if _, err := os.Stat(rpmImageBasePath); err == nil {
-		return true
-	}
-
-	return false
 }
 
 func checkImage(image string, pullPolicy string) (bool, error) {
@@ -69,8 +125,9 @@ func checkImage(image string, pullPolicy string) (bool, error) {
 		return false, fmt.Errorf("failed to check if image %s has already been pulled", image)
 	}
 
-	if isRpmImagePresent(image) {
-		rpmImageBasePath := calculateRpmImagePath(image)
+	rpmImageBasePath, _ := isRpmImagePresent(image)
+
+	if len(rpmImageBasePath) > 0 {
 		if err := loadRpmImage(rpmImageBasePath); err != nil {
 			log.Warn().Msgf("cannot use RPM image for %s:%s", image, err)
 		}

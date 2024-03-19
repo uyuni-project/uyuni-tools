@@ -10,3 +10,15 @@ type ImageFlags struct {
 	Tag        string `mapstructure:"tag"`
 	PullPolicy string `mapstructure:"pullPolicy"`
 }
+
+// ImageMetadata represents the image metadata of an RPM image.
+type ImageMetadata struct {
+	Name string   `json:"name"`
+	Tags []string `json:"tags"`
+	File string   `json:"file"`
+}
+
+// Metadata represents the metadata of an RPM image.
+type Metadata struct {
+	Image ImageMetadata `json:"image"`
+}
