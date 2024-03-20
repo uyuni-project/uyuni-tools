@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestGetRpmInfoFromImage(t *testing.T) {
+func TestGetRpmImageName(t *testing.T) {
 	data := [][]string{
 		{"suse-manager-5.0-x86_64-proxy-httpd", "latest", "registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd"},
 		{"suse-manager-5.0-x86_64-proxy-httpd", "latest", "registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:latest"},
@@ -20,7 +20,7 @@ func TestGetRpmInfoFromImage(t *testing.T) {
 		tag := testCase[1]
 		image := testCase[2]
 
-		rpmImageResult, tagResult := GetRpmInfoFromImage(image)
+		rpmImageResult, tagResult := GetRpmImageName(image)
 
 		if rpmImage != rpmImageResult {
 			t.Errorf("Testcase %d: Expected %s got %s when computing RPM for image %s", i, rpmImage, rpmImageResult, image)
@@ -53,7 +53,7 @@ func TestMatchingMetadata(t *testing.T) {
 		rpmImage := testCase[1]
 		tag := testCase[2]
 
-		testResult, err := GetRpmImage(jsonData, rpmImage, tag)
+		testResult, err := BuildRpmImagePath(jsonData, rpmImage, tag)
 
 		if err != nil && expectedResult != testResult {
 			t.Errorf("Testcase %d: Expected %s got %s when computing RPM for image %s with tag %s", i, expectedResult, testResult, rpmImage, tag)
@@ -68,7 +68,7 @@ func TestMatchingMetadata(t *testing.T) {
 		}
 	}`)
 
-	_, err := GetRpmImage(jsonDataInvalidWithTypo, "", "")
+	_, err := BuildRpmImagePath(jsonDataInvalidWithTypo, "", "")
 	if err == nil {
 		t.Error("typo in json: this should fail")
 	}
