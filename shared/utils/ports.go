@@ -55,5 +55,5 @@ var PROXY_TCP_PORTS = []types.PortMap{
 // PROXY_PODMAN_PORTS are the http/s ports required by the proxy.
 var PROXY_PODMAN_PORTS = []types.PortMap{
 	NewPortMap("https", 443, 443),
-	NewPortMap("http", 80, 8080),
+	NewPortMap("http", 80, 80),
 }
