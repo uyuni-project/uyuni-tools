@@ -16,6 +16,7 @@ import (
 
 type kubernetesInstallFlags struct {
 	shared.InstallFlags `mapstructure:",squash"`
+	Image               types.ImageFlags `mapstructure:",squash"`
 	Helm                cmd_utils.HelmFlags
 }
 
