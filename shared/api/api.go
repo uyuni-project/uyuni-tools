@@ -107,6 +107,7 @@ func (c *HTTPClient) sendRequest(req *http.Request) (*http.Response, error) {
 
 	res, err := c.Client.Do(req)
 	if err != nil {
+		log.Trace().Msgf("Request failed: %s", err)
 		return nil, err
 	}
 
@@ -224,6 +225,8 @@ func (c *HTTPClient) Post(path string, data map[string]interface{}) (*http.Respo
 		log.Error().Err(err).Msg("Unable to JSONify data")
 		return nil, err
 	}
+
+	log.Trace().Msg(string(jsonData))
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
