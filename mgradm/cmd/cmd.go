@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/distro"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate"
@@ -73,6 +74,7 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
 	rootCmd.AddCommand(support.NewCommand(globalFlags))
 	rootCmd.AddCommand(start.NewCommand(globalFlags))
+	rootCmd.AddCommand(hub.NewCommand(globalFlags))
 	rootCmd.AddCommand(restart.NewCommand(globalFlags))
 	rootCmd.AddCommand(stop.NewCommand(globalFlags))
 	rootCmd.AddCommand(inspect.NewCommand(globalFlags))
