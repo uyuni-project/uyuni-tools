@@ -7,7 +7,11 @@ require (
 	github.com/spf13/cobra v1.1.3
 )
 
-require github.com/creack/pty v1.1.17 // indirect
+require (
+	github.com/briandowns/spinner v1.23.0 // indirect
+	github.com/creack/pty v1.1.17 // indirect
+	github.com/fatih/color v1.7.0 // indirect
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
