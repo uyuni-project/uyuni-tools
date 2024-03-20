@@ -49,7 +49,7 @@ func PrepareImage(image string, pullPolicy string, args ...string) (string, erro
 				log.Debug().Msg("Ignoring pull policy alway ")
 			}
 
-			log.Info().Msgf("The image loaded is %s", strings.TrimSpace(loadedImage))
+			log.Warn().Msgf("Loading image %s: it's the RPM based image of %s.", strings.TrimSpace(loadedImage), image)
 			return loadedImage, nil
 		}
 	}
