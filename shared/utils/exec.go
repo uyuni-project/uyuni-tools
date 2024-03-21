@@ -80,3 +80,9 @@ func RunCmdOutput(logLevel zerolog.Level, command string, args ...string) ([]byt
 	localLogger.Trace().Msgf("Command output: %s, error: %s", output, err)
 	return output, err
 }
+
+// IsInstalled checks if a tool is in the path.
+func IsInstalled(tool string) bool {
+	_, err := exec.LookPath("kubectl")
+	return err == nil
+}
