@@ -93,6 +93,7 @@ Summary:        Command line tool to install and update %{productname} proxy
 %if 0%{?suse_version}
 Requires:       (aardvark-dns if netavark)
 %endif
+Obsoletes:      uyuni-proxy-systemd-services
 
 %description -n %{name_pxy}
 %{name_pxy} is a convenient tool to install and update %{productname} proxy components as containers
