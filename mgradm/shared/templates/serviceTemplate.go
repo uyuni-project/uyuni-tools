@@ -30,6 +30,8 @@ ExecStart=/usr/bin/podman run \
 	--conmon-pidfile %t/uyuni-server.pid \
 	--cidfile=%t/%n.ctr-id \
 	--cgroups=no-conmon \
+	--shm-size=0 \
+	--shm-size-systemd=0 \
 	--sdnotify=conmon \
 	-d \
 	--name {{ .NamePrefix }}-server \
