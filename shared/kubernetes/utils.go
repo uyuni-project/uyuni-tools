@@ -117,6 +117,29 @@ func IsDeploymentReady(namespace string, name string) bool {
 	return false
 }
 
+// DeploymentStatus represents the kubernetes deployment status.
+type DeploymentStatus struct {
+	AvailableReplicas int
+	ReadyReplicas     int
+	UpdatedReplicas   int
+	Replicas          int
+}
+
+// GetDeploymentStatus returns the replicas status of the deployment.
+func GetDeploymentStatus(namespace string, name string) (*DeploymentStatus, error) {
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "deploy", "-n", namespace,
+		name, "-o", "jsonpath={.status}")
+	if err != nil {
+		return nil, err
+	}
+
+	var status DeploymentStatus
+	if err = json.Unmarshal(out, &status); err != nil {
+		return nil, fmt.Errorf("failed to parse deployment status: %s", err)
+	}
+	return &status, nil
+}
+
 // ReplicasTo set the replica for an app to the given value.
 // Scale the number of replicas of the server.
 func ReplicasTo(filter string, replica uint) error {

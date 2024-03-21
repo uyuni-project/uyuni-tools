@@ -26,7 +26,7 @@ const ProxyService = "uyuni-proxy-pod"
 // name is the name of the service without the '.service' part.
 func HasService(name string) bool {
 	err := utils.RunCmd("systemctl", "list-unit-files", name+".service")
-	return err != nil
+	return err == nil
 }
 
 // GetServicePath return the path for a given service.
@@ -38,7 +38,7 @@ func GetServicePath(name string) string {
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
 func UninstallService(name string, dryRun bool) {
 	servicePath := GetServicePath(name)
-	if HasService(name) {
+	if !HasService(name) {
 		log.Info().Msgf("Systemd has no %s.service unit", name)
 	} else {
 		if dryRun {

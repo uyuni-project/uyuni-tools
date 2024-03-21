@@ -7,6 +7,7 @@ package kubernetes
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
@@ -78,18 +79,10 @@ func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 	namespace := string(out)
 	if namespace == "" {
 		log.Debug().Msgf("Pod is not running, trying to find the namespace using the helm release")
-		args = append(helmArgs, "list", "-aA", "-f", deployment, "-o", "json")
-		out, err = utils.RunCmdOutput(zerolog.DebugLevel, "helm", args...)
+		namespace, err = FindNamespace(deployment, kubeconfig)
 		if err != nil {
-			log.Info().Err(err).Msgf("Failed to detect %s's namespace using helm", deployment)
-		}
-		var data []releaseInfo
-		if err = json.Unmarshal(out, &data); err != nil {
-			log.Error().Err(err).Msgf("Helm provided an invalid JSON output")
-		}
-
-		if len(data) == 1 {
-			namespace = data[0].Namespace
+			log.Info().Err(err).Msgf("Cannot guess namespace")
+			return "", nil
 		}
 	}
 
@@ -108,6 +101,28 @@ func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 	return namespace, nil
 }
 
+// FindNamespace tries to find the deployment namespace using helm.
+func FindNamespace(deployment string, kubeconfig string) (string, error) {
+	args := []string{}
+	if kubeconfig != "" {
+		args = append(args, "--kubeconfig", kubeconfig)
+	}
+	args = append(args, "list", "-aA", "-f", deployment, "-o", "json")
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "helm", args...)
+	if err != nil {
+		return "", fmt.Errorf("failed to detect %s's namespace using helm: %s", deployment, err)
+	}
+	var data []releaseInfo
+	if err = json.Unmarshal(out, &data); err != nil {
+		return "", fmt.Errorf("helm provided an invalid JSON output: %s", err)
+	}
+
+	if len(data) == 1 {
+		return data[0].Namespace, nil
+	}
+	return "", errors.New("found no or more than one deployment")
+}
+
 // HasHelmRelease returns whether a helm release is installed or not, even if it failed.
 func HasHelmRelease(release string, kubeconfig string) bool {
 	if _, err := exec.LookPath("helm"); err == nil {
@@ -117,7 +132,7 @@ func HasHelmRelease(release string, kubeconfig string) bool {
 		}
 		args = append(args, "list", "-aAq", "--no-headers", "-f", release)
 		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "helm", args...)
-		return len(bytes.TrimSpace(out)) != 0 && err != nil
+		return len(bytes.TrimSpace(out)) != 0 && err == nil
 	}
 	return false
 }
