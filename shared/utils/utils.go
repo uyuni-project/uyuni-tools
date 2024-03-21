@@ -6,9 +6,12 @@ package utils
 
 import (
 	"bufio"
+	"bytes"
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"regexp"
 	"strings"
@@ -165,4 +168,46 @@ func GetRandomBase64(size int) string {
 		log.Fatal().Err(err).Msg(L("Failed to read random data"))
 	}
 	return base64.StdEncoding.EncodeToString(data)
+}
+
+// GetURLBody provide the body content of an GET HTTP request.
+func GetURLBody(URL string) ([]byte, error) {
+	// Download the key from the URL
+	log.Debug().Msgf("Downloading %s", URL)
+	resp, err := http.Get(URL)
+	if err != nil {
+		return nil, fmt.Errorf("error downloading from %s: %s", URL, err)
+	}
+	defer resp.Body.Close()
+
+	// Check server response
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("bad status: %s", resp.Status)
+	}
+
+	var buf bytes.Buffer
+
+	if _, err = io.Copy(&buf, resp.Body); err != nil {
+		return nil, err
+	}
+
+	// Extract the byte slice from the buffer
+	data := buf.Bytes()
+	return data, nil
+}
+
+// DownloadFile downloads from a remote path to a local file.
+func DownloadFile(filepath string, URL string) (err error) {
+	data, err := GetURLBody(URL)
+	if err != nil {
+		return err
+	}
+
+	// Writer the body to file
+	log.Debug().Msgf("Saving %s to %s", URL, filepath)
+	if err := os.WriteFile(filepath, data, 0644); err != nil {
+		return err
+	}
+
+	return nil
 }

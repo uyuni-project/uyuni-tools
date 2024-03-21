@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/distro"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/gpg"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install"
@@ -78,6 +79,7 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 	rootCmd.AddCommand(status.NewCommand(globalFlags))
 	rootCmd.AddCommand(inspect.NewCommand(globalFlags))
 	rootCmd.AddCommand(upgrade.NewCommand(globalFlags))
+	rootCmd.AddCommand(gpg.NewCommand(globalFlags))
 
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
 
