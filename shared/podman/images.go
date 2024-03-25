@@ -6,46 +6,196 @@ package podman
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
+	"os"
+	"path"
 	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// Ensure the container image is pulled or pull it if the pull policy allows it.
-func PrepareImage(image string, pullPolicy string, args ...string) error {
-	log.Info().Msgf("Ensure image %s is available", image)
+const rpmImageDir = "/usr/share/suse-docker-images/native/"
 
-	needsPull, err := checkImage(image, pullPolicy)
-	if err != nil {
-		return err
-	}
-
-	if needsPull {
-		return pullImage(image, args...)
-	}
-	return nil
+var registries = []string{
+	"registry.suse.com",
+	"registry.opensuse.com",
 }
 
-func checkImage(image string, pullPolicy string) (bool, error) {
-	if strings.ToLower(pullPolicy) == "always" {
-		return true, nil
+// Ensure the container image is pulled or pull it if the pull policy allows it.
+//
+// Returns the image name to use. Note that it may be changed if the image has been loaded from a local RPM package.
+func PrepareImage(image string, pullPolicy string, args ...string) (string, error) {
+	if strings.ToLower(pullPolicy) != "always" {
+		log.Info().Msgf("Ensure image %s is available", image)
+
+		presentImage, err := IsImagePresent(image)
+		if err != nil {
+			return image, err
+		}
+
+		if len(presentImage) > 0 {
+			log.Debug().Msgf("Image %s already present", presentImage)
+			return presentImage, nil
+		}
 	}
 
+	rpmImageFile := GetRpmImagePath(image)
+
+	if len(rpmImageFile) > 0 {
+		log.Debug().Msgf("Image %s present as RPM. Loading it", image)
+		loadedImage, err := loadRpmImage(rpmImageFile)
+		if err != nil {
+			log.Warn().Msgf("Cannot use RPM image for %s: %s", image, err)
+		} else {
+			log.Info().Msgf("Using the %s image loaded from the RPM instead of its online version %s", strings.TrimSpace(loadedImage), image)
+			return loadedImage, nil
+		}
+	} else {
+		log.Info().Msgf("Cannot find RPM image for %s", image)
+	}
+
+	if strings.ToLower(pullPolicy) != "never" {
+		log.Debug().Msgf("Pulling image %s because it is missing and pull policy is not 'never'", image)
+		return image, pullImage(image, args...)
+	}
+
+	return image, fmt.Errorf("image %s is missing and cannot be fetched", image)
+}
+
+// GetRpmImageName return the RPM Image name and the tag, given an image.
+func GetRpmImageName(image string) (rpmImageFile string, tag string) {
+	for _, registry := range registries {
+		if strings.HasPrefix(image, registry) {
+			rpmImageFile = strings.ReplaceAll(image, registry+"/", "")
+			rpmImageFile = strings.ReplaceAll(rpmImageFile, "/", "-")
+			parts := strings.Split(rpmImageFile, ":")
+			tag = "latest"
+			if len(parts) > 1 {
+				tag = parts[1]
+			}
+			rpmImageFile = parts[0]
+			return rpmImageFile, tag
+		}
+	}
+	return "", ""
+}
+
+// BuildRpmImagePath checks the image metadata and returns the RPM Image path.
+func BuildRpmImagePath(byteValue []byte, rpmImageFile string, tag string) (string, error) {
+	var data types.Metadata
+	if err := json.Unmarshal(byteValue, &data); err != nil {
+		return "", fmt.Errorf("cannot unmarshal: %s", err)
+	}
+	fullPathFile := rpmImageDir + data.Image.File
+	if data.Image.Name == rpmImageFile {
+		for _, metadataTag := range data.Image.Tags {
+			if metadataTag == tag {
+				return fullPathFile, nil
+			}
+		}
+	}
+	return "", nil
+}
+
+// GetRpmImagePath return the RPM image path.
+func GetRpmImagePath(image string) string {
+	log.Debug().Msgf("Looking for installed RPM package containing %s image", image)
+
+	rpmImageFile, tag := GetRpmImageName(image)
+
+	files, err := os.ReadDir(rpmImageDir)
+	if err != nil {
+		log.Debug().Msgf("Cannot read directory %s: %s", rpmImageDir, err)
+		return ""
+	}
+
+	for _, file := range files {
+		if !strings.HasSuffix(file.Name(), "metadata") {
+			continue
+		}
+		fullPathFileName := path.Join(rpmImageDir, file.Name())
+		log.Debug().Msgf("Parsing metadata file %s", fullPathFileName)
+		fileHandler, err := os.Open(fullPathFileName)
+		if err != nil {
+			log.Debug().Msgf("Error opening metadata file %s: %s", fullPathFileName, err)
+			continue
+		}
+		defer fileHandler.Close()
+		byteValue, err := io.ReadAll(fileHandler)
+		if err != nil {
+			log.Debug().Msgf("Error reading metadata file %s: %s", fullPathFileName, err)
+			continue
+		}
+
+		fullPathFile, err := BuildRpmImagePath(byteValue, rpmImageFile, tag)
+		if err != nil {
+			log.Warn().Msgf("Cannot unmarshal metadata file %s: %s", fullPathFileName, err)
+			return ""
+		}
+		if len(fullPathFile) > 0 {
+			log.Debug().Msgf("%s match with %s", fullPathFileName, image)
+			return fullPathFile
+		}
+		log.Debug().Msgf("%s does not match with %s", fullPathFileName, image)
+	}
+	log.Debug().Msgf("No installed RPM package containing %s image", image)
+	return ""
+}
+
+func loadRpmImage(rpmImageBasePath string) (string, error) {
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "load", "--quiet", "--input", rpmImageBasePath)
+	if err != nil {
+		return "", err
+	}
+	parseOutput := strings.SplitN(string(out), ":", 2)
+	if len(parseOutput) == 2 {
+		return strings.TrimSpace(parseOutput[1]), nil
+	}
+	return "", fmt.Errorf("error parsing: %s", string(out))
+}
+
+// IsImagePresent return true if the image is present.
+func IsImagePresent(image string) (string, error) {
+	log.Debug().Msgf("Checking for %s", image)
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", "--quiet", image)
 	if err != nil {
-		return false, fmt.Errorf("failed to check if image %s has already been pulled", image)
+		return "", fmt.Errorf("failed to check if image %s has already been pulled", image)
 	}
 
-	if len(bytes.TrimSpace(out)) == 0 {
-		if pullPolicy == "Never" {
-			return false, fmt.Errorf("image %s is not available and cannot be pulled due to policy", image)
-		}
-		return true, nil
+	if len(bytes.TrimSpace(out)) > 0 {
+		return image, nil
 	}
-	return false, nil
+
+	splitImage := strings.SplitN(string(image), "/", 2)
+	if len(splitImage) < 2 {
+		return "", nil
+	}
+	log.Debug().Msgf("Checking for local image of %s", image)
+	out, err = utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", "--quiet", "localhost/"+splitImage[1])
+	if err != nil {
+		return "", fmt.Errorf("failed to check if image %s has already been pulled", image)
+	}
+	if len(bytes.TrimSpace(out)) > 0 {
+		return "localhost/" + splitImage[1], nil
+	}
+
+	return "", nil
+}
+
+// GetPulledImageName returns the fullname of a pulled image.
+func GetPulledImageName(image string) (string, error) {
+	parts := strings.Split(image, "/")
+	imageWithTag := parts[len(parts)-1]
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", imageWithTag, "--format", "{{.Repository}}")
+	if err != nil {
+		return "", fmt.Errorf("failed to check if image %s has already been pulled", parts[len(parts)-1])
+	}
+	return string(bytes.TrimSpace(out)), nil
 }
 
 func pullImage(image string, args ...string) error {

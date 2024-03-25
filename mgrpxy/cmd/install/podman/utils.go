@@ -82,10 +82,12 @@ func getContainerImage(flags *podmanProxyInstallFlags, name string) (string, err
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 
-	if err := shared_podman.PrepareImage(image, flags.PullPolicy, pullArgs...); err != nil {
+	preparedImage, err := shared_podman.PrepareImage(image, flags.PullPolicy, pullArgs...)
+	if err != nil {
 		return "", err
 	}
-	return image, nil
+
+	return preparedImage, nil
 }
 
 func unpackConfig(configPath string) error {

@@ -5,10 +5,13 @@
 package utils
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
+	"github.com/briandowns/spinner"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -32,29 +35,48 @@ func (l OutputLogWriter) Write(p []byte) (n int, err error) {
 
 // RunCmd execute a shell command.
 func RunCmd(command string, args ...string) error {
+	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond) // Build our new spinner
+	s.Suffix = fmt.Sprintf(" %s %s", command, strings.Join(args, " "))
+	s.Start() // Start the spinner
 	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
-
-	return exec.Command(command, args...).Run()
+	err := exec.Command(command, args...).Run()
+	s.Stop()
+	return err
 }
 
 // RunCmdStdMapping execute a shell command mapping the stdout and stderr.
 func RunCmdStdMapping(logLevel zerolog.Level, command string, args ...string) error {
+	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond) // Build our new spinner
+	s.Suffix = fmt.Sprintf(" %s %s", command, strings.Join(args, " "))
+	if logLevel != zerolog.Disabled {
+		s.Start() // Start the spinner
+	}
 	localLogger := log.Level(logLevel)
 	localLogger.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
 	runCmd := exec.Command(command, args...)
 	runCmd.Stdout = os.Stdout
 	runCmd.Stderr = os.Stderr
-	return runCmd.Run()
+	err := runCmd.Run()
+	if logLevel != zerolog.Disabled {
+		s.Stop()
+	}
+	return err
 }
 
 // RunCmdOutput execute a shell command and collects output.
 func RunCmdOutput(logLevel zerolog.Level, command string, args ...string) ([]byte, error) {
 	localLogger := log.Level(logLevel)
-
+	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond) // Build our new spinner
+	s.Suffix = fmt.Sprintf(" %s %s", command, strings.Join(args, " "))
+	if logLevel != zerolog.Disabled {
+		s.Start() // Start the spinner
+	}
 	localLogger.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
-
 	output, err := exec.Command(command, args...).Output()
+	if logLevel != zerolog.Disabled {
+		s.Stop()
+	}
 	localLogger.Trace().Msgf("Command output: %s, error: %s", output, err)
 	return output, err
 }

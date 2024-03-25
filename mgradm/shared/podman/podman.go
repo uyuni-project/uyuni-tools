@@ -190,13 +190,13 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 
-	err = podman.PrepareImage(serverImage, pullPolicy, pullArgs...)
+	preparedImage, err := podman.PrepareImage(serverImage, pullPolicy, pullArgs...)
 	if err != nil {
 		return "", "", "", err
 	}
 
 	log.Info().Msg("Migrating server")
-	if err := RunContainer("uyuni-migration", serverImage, extraArgs,
+	if err := RunContainer("uyuni-migration", preparedImage, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
 		return "", "", "", fmt.Errorf("cannot run uyuni migration container: %s", err)
 	}
@@ -250,19 +250,19 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 			pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 		}
 
-		err = podman.PrepareImage(migrationImageUrl, image.PullPolicy, pullArgs...)
+		preparedImage, err := podman.PrepareImage(migrationImageUrl, image.PullPolicy, pullArgs...)
 		if err != nil {
 			return err
 		}
 
-		log.Info().Msgf("Using migration image %s", migrationImageUrl)
+		log.Info().Msgf("Using migration image %s", preparedImage)
 
 		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, false)
 		if err != nil {
 			return fmt.Errorf("cannot generate postgresql database version upgrade script %s", err)
 		}
 
-		err = RunContainer(pgsqlVersionUpgradeContainer, migrationImageUrl, extraArgs,
+		err = RunContainer(pgsqlVersionUpgradeContainer, preparedImage, extraArgs,
 			[]string{"/var/lib/uyuni-tools/" + pgsqlVersionUpgradeScriptName})
 		if err != nil {
 			return err

@@ -21,13 +21,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func waitForSystemStart(cnx *shared.Connection, flags *podmanInstallFlags) error {
-	// Setup the systemd service configuration options
-	image, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
-	if err != nil {
-		return fmt.Errorf("failed to compute image URL, %s", err)
-	}
-
+func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
 	podmanArgs := flags.Podman.Args
 	if flags.MirrorPath != "" {
 		podmanArgs = append(podmanArgs, "-v", flags.MirrorPath+":/mirror")
@@ -78,7 +72,7 @@ func installForPodman(
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 
-	err = shared_podman.PrepareImage(image, flags.Image.PullPolicy, pullArgs...)
+	preparedImage, err := shared_podman.PrepareImage(image, flags.Image.PullPolicy, pullArgs...)
 	if err != nil {
 		return err
 	}
@@ -88,7 +82,7 @@ func installForPodman(
 	}
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
-	if err := waitForSystemStart(cnx, flags); err != nil {
+	if err := waitForSystemStart(cnx, preparedImage, flags); err != nil {
 		return fmt.Errorf("cannot wait for system start: %s", err)
 	}
 
