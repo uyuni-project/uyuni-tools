@@ -47,15 +47,10 @@ func (infos ClusterInfos) GetKubeconfig() string {
 // CheckCluster return cluster information.
 func CheckCluster() (*ClusterInfos, error) {
 	// Get the kubelet version
-	hostname, err := os.Hostname()
-	if err != nil {
-		return nil, fmt.Errorf("failed to get node hostname: %s", err)
-	}
-
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "node",
-		"-o", "jsonpath={.status.nodeInfo.kubeletVersion}", hostname)
+		"-o", "jsonpath={.items[0].status.nodeInfo.kubeletVersion}")
 	if err != nil {
-		return nil, fmt.Errorf("failed to get kubelet version for node %s: %s", hostname, err)
+		return nil, fmt.Errorf("failed to get kubelet version: %s", err)
 	}
 
 	var infos ClusterInfos
