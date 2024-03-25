@@ -1,0 +1,2 @@
+- Add Node exporter (9100) and Taskomatic (9800) ports to the list
+  of open TCP ports
