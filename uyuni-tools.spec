@@ -103,6 +103,7 @@ running either on Podman or a Kubernetes cluster.
 Summary:        Bash Completion for %{name_adm}
 Group:          System/Shells
 Requires:       %{name_adm} = %{version}
+Obsoletes:      uyuni-proxy-systemd-services
 %if 0%{?suse_version} >= 150000
 Supplements:    (%{name_adm} and bash-completion)
 %else
