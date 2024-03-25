@@ -1,0 +1,2 @@
+- Don't assume the current host is a cluster node when getting 
+  kubelet version
