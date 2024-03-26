@@ -1,0 +1,2 @@
+- uninstall commands dry run by default to avoid unintended 
+  removals

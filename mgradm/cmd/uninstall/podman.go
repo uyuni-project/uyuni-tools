@@ -21,10 +21,10 @@ func uninstallForPodman(
 	args []string,
 ) error {
 	// Uninstall the service
-	podman.UninstallService("uyuni-server", flags.DryRun)
+	podman.UninstallService("uyuni-server", !flags.Force)
 
 	// Force stop the pod
-	podman.DeleteContainer(podman.ServerContainerName, flags.DryRun)
+	podman.DeleteContainer(podman.ServerContainerName, !flags.Force)
 
 	// Remove the volumes
 	if flags.PurgeVolumes {
@@ -33,14 +33,14 @@ func uninstallForPodman(
 			volumes = append(volumes, volume.Name)
 		}
 		for _, volume := range volumes {
-			if err := podman.DeleteVolume(volume, flags.DryRun); err != nil {
+			if err := podman.DeleteVolume(volume, !flags.Force); err != nil {
 				return fmt.Errorf("cannot delete volume %s: %s", volume, err)
 			}
 		}
 		log.Info().Msg("All volumes removed")
 	}
 
-	podman.DeleteNetwork(flags.DryRun)
+	podman.DeleteNetwork(!flags.Force)
 
-	return podman.ReloadDaemon(flags.DryRun)
+	return podman.ReloadDaemon(!flags.Force)
 }
