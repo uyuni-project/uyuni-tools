@@ -88,24 +88,24 @@ func guessIngress() (string, error) {
 }
 
 // Restart restarts the pod.
-func Restart(ServerFilter string) error {
-	if err := Stop(ServerFilter); err != nil {
-		return fmt.Errorf("cannot stop %s: %s", ServerFilter, err)
+func Restart(filter string) error {
+	if err := Stop(filter); err != nil {
+		return fmt.Errorf("cannot stop %s: %s", filter, err)
 	}
-	return Start(ServerFilter)
+	return Start(filter)
 }
 
 // Start starts the pod.
-func Start(ServerFilter string) error {
+func Start(filter string) error {
 	// if something is running, we don't need to set replicas to 1
-	if _, err := GetNode("uyuni"); err != nil {
-		return ReplicasTo(ServerFilter, 1)
+	if _, err := GetNode(filter); err != nil {
+		return ReplicasTo(filter, 1)
 	}
 	log.Debug().Msgf("Already running")
 	return nil
 }
 
 // Stop stop the pod.
-func Stop(ServerFilter string) error {
-	return ReplicasTo(ServerFilter, 0)
+func Stop(filter string) error {
+	return ReplicasTo(filter, 0)
 }

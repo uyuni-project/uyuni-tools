@@ -280,6 +280,26 @@ func ChoosePodmanOrKubernetes[F interface{}](
 	}
 
 	cnx := NewConnection(backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	return chooseBackend(cnx, podmanFn, kubernetesFn)
+}
+
+// ChooseProxyPodmanOrKubernetes selects either the podman or the kubernetes function based on the backend for the proxy.
+func ChooseProxyPodmanOrKubernetes[F interface{}](
+	flags *pflag.FlagSet,
+	podmanFn utils.CommandFunc[F],
+	kubernetesFn utils.CommandFunc[F],
+) (utils.CommandFunc[F], error) {
+	backend, _ := flags.GetString("backend")
+
+	cnx := NewConnection(backend, podman.ProxyContainerNames[0], kubernetes.ProxyFilter)
+	return chooseBackend(cnx, podmanFn, kubernetesFn)
+}
+
+func chooseBackend[F interface{}](
+	cnx *Connection,
+	podmanFn utils.CommandFunc[F],
+	kubernetesFn utils.CommandFunc[F],
+) (utils.CommandFunc[F], error) {
 	command, err := cnx.GetCommand()
 	if err != nil {
 		return nil, fmt.Errorf("failed to determine suitable backend")

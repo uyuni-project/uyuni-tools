@@ -143,7 +143,7 @@ func GetDeploymentStatus(namespace string, name string) (*DeploymentStatus, erro
 // ReplicasTo set the replica for an app to the given value.
 // Scale the number of replicas of the server.
 func ReplicasTo(filter string, replica uint) error {
-	args := []string{"scale", "deploy", "uyuni", "--replicas"}
+	args := []string{"scale", "deploy", filter, "--replicas"}
 	log.Debug().Msgf("Setting replicas for pod in %s to %d", filter, replica)
 	args = append(args, fmt.Sprint(replica))
 
@@ -152,7 +152,7 @@ func ReplicasTo(filter string, replica uint) error {
 		return fmt.Errorf("cannot run kubectl %s: %s", args, err)
 	}
 
-	pods, err := getPods(ServerFilter)
+	pods, err := getPods(filter)
 	if err != nil {
 		return fmt.Errorf("cannot get pods for %s: %s", filter, err)
 	}
@@ -339,9 +339,9 @@ func waitForPod(podname string) error {
 }
 
 // GetNode return the node where the app is running.
-func GetNode(appName string) (string, error) {
+func GetNode(filter string) (string, error) {
 	nodeName := ""
-	cmdArgs := []string{"get", "pod", "-lapp=" + appName, "-o", "jsonpath={.items[*].spec.nodeName}"}
+	cmdArgs := []string{"get", "pod", filter, "-o", "jsonpath={.items[*].spec.nodeName}"}
 	for i := 0; i < 60; i++ {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
 		if err == nil {
@@ -350,9 +350,9 @@ func GetNode(appName string) (string, error) {
 		}
 	}
 	if len(nodeName) > 0 {
-		log.Debug().Msgf("Node name for app %s is: %s", appName, nodeName)
+		log.Debug().Msgf("Node name matching filter %s is: %s", filter, nodeName)
 	} else {
-		return "", fmt.Errorf("cannot find Node name for app %s", appName)
+		return "", fmt.Errorf("cannot find node name matching filter %s", filter)
 	}
 	return nodeName, nil
 }
