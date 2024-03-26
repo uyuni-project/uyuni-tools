@@ -30,7 +30,7 @@ func uninstallForKubernetes(
 	// TODO Find all the PVs related to the server if we want to delete them
 
 	// Uninstall uyuni
-	namespace, err := kubernetes.HelmUninstall(kubeconfig, "uyuni", "", flags.DryRun)
+	namespace, err := kubernetes.HelmUninstall(kubeconfig, "uyuni", "", !flags.Force)
 	if err != nil {
 		return err
 	}
@@ -43,7 +43,7 @@ func uninstallForKubernetes(
 			caSecret = ""
 		}
 
-		if flags.DryRun {
+		if !flags.Force {
 			log.Info().Msgf("Would run kubectl delete -n %s configmap uyuni-ca", namespace)
 			log.Info().Msgf("Would run kubectl delete -n %s secret uyuni-cert %s", namespace, caSecret)
 		} else {
@@ -70,18 +70,18 @@ func uninstallForKubernetes(
 	// Since some storage plugins don't handle Delete policy, we may need to check for error events to avoid infinite loop
 
 	// Uninstall cert-manager if we installed it
-	if _, err := kubernetes.HelmUninstall(kubeconfig, "cert-manager", "-linstalledby=mgradm", flags.DryRun); err != nil {
+	if _, err := kubernetes.HelmUninstall(kubeconfig, "cert-manager", "-linstalledby=mgradm", !flags.Force); err != nil {
 		return err
 	}
 
 	// Remove the K3s Traefik config
 	if clusterInfos.IsK3s() {
-		kubernetes.UninstallK3sTraefikConfig(flags.DryRun)
+		kubernetes.UninstallK3sTraefikConfig(!flags.Force)
 	}
 
 	// Remove the rke2 nginx config
 	if clusterInfos.IsRke2() {
-		kubernetes.UninstallRke2NginxConfig(flags.DryRun)
+		kubernetes.UninstallRke2NginxConfig(!flags.Force)
 	}
 	return nil
 }

@@ -13,7 +13,7 @@ import (
 
 type uninstallFlags struct {
 	Backend      string
-	DryRun       bool
+	Force        bool
 	PurgeVolumes bool
 }
 
@@ -22,15 +22,16 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	uninstallCmd := &cobra.Command{
 		Use:   "uninstall",
 		Short: "uninstall a server",
-		Long:  "Uninstall a server and optionally the corresponding volumes." + kubernetesHelp,
-		Args:  cobra.ExactArgs(0),
+		Long: `Uninstall a server and optionally the corresponding volumes.
+By default it will only print what would be done, use --force to actually remove.` + kubernetesHelp,
+		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags uninstallFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, uninstall)
 		},
 	}
-	uninstallCmd.Flags().BoolP("dryRun", "n", false, "Only show what would be done")
-	uninstallCmd.Flags().Bool("purgeVolumes", false, "Also remove the volume")
+	uninstallCmd.Flags().BoolP("force", "f", false, "Actually remove the server")
+	uninstallCmd.Flags().Bool("purgeVolumes", false, "Also remove the volumes")
 
 	if utils.KubernetesBuilt {
 		utils.AddBackendFlag(uninstallCmd)

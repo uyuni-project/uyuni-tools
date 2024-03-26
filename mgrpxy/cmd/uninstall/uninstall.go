@@ -21,16 +21,14 @@ func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 	uninstallCmd := &cobra.Command{
 		Use:   "uninstall",
 		Short: "uninstall a proxy",
-		Long:  "Uninstall a proxy and optionally the corresponding volumes." + kubernetes.UninstallHelp,
-		Args:  cobra.ExactArgs(0),
+		Long: `Uninstall a proxy and optionally the corresponding volumes.
+By default it will only print what would be done, use --force to actually remove.` + kubernetes.UninstallHelp,
+		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			dryRun, _ := cmd.Flags().GetBool("dry-run")
-			purge, _ := cmd.Flags().GetBool("purge-volumes")
+			force, _ := cmd.Flags().GetBool("force")
+			purge, _ := cmd.Flags().GetBool("purgeVolumes")
 
 			backend, _ := cmd.Flags().GetString("backend")
-			if len(backend) <= 0 {
-				backend = "podman"
-			}
 
 			cnx := shared.NewConnection(backend, podman.ProxyContainerNames[0], kubernetes.ProxyFilter)
 			command, err := cnx.GetCommand()
@@ -39,19 +37,19 @@ func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 			}
 			switch command {
 			case "podman":
-				if err := uninstallForPodman(dryRun, purge); err != nil {
+				if err := uninstallForPodman(!force, purge); err != nil {
 					return fmt.Errorf("cannot uninstall podman: %s", err)
 				}
 			case "kubectl":
-				if err := uninstallForKubernetes(dryRun); err != nil {
+				if err := uninstallForKubernetes(!force); err != nil {
 					return err
 				}
 			}
 			return nil
 		},
 	}
-	uninstallCmd.Flags().BoolP("dry-run", "n", false, "Only show what would be done")
-	uninstallCmd.Flags().Bool("purge-volumes", false, "Also remove the volume")
+	uninstallCmd.Flags().BoolP("force", "f", false, "Actually remove the server")
+	uninstallCmd.Flags().Bool("purgeVolumes", false, "Also remove the volumes")
 
 	utils.AddBackendFlag(uninstallCmd)
 
