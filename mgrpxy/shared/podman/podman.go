@@ -37,6 +37,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Ports:         ports,
 		HttpProxyFile: httpProxyConfig,
 		Args:          strings.Join(podmanArgs, " "),
+		Network:       podman.UyuniNetwork,
 	}
 	if err := generateSystemdFile(dataPod, "pod"); err != nil {
 		return err
@@ -99,7 +100,7 @@ func generateSystemdFile(template utils.Template, service string) error {
 	const systemdPath = "/etc/systemd/system"
 	path := path.Join(systemdPath, name)
 	if err := utils.WriteTemplateToFile(template, path, 0644, true); err != nil {
-		return fmt.Errorf(L("failed to generate systemd file: %s"), path)
+		return fmt.Errorf(L("failed to generate systemd file %s: %s"), path, err)
 	}
 	return nil
 }
