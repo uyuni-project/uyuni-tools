@@ -36,9 +36,10 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Ports:         ports,
 		HttpProxyFile: httpProxyConfig,
 		Args:          strings.Join(podmanArgs, " "),
+		Network:       podman.UyuniNetwork,
 	}
 	if err := generateSystemdFile(dataPod, "pod"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return err
 	}
 
 	// Httpd
@@ -48,7 +49,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Image:         httpdImage,
 	}
 	if err := generateSystemdFile(dataHttpd, "httpd"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return fmt.Errorf("cannot generate systemd file: %s", err)
 	}
 
 	// Salt broker
@@ -57,7 +58,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Image:         saltBrokerImage,
 	}
 	if err := generateSystemdFile(dataSaltBroker, "salt-broker"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return err
 	}
 
 	// Squid
@@ -67,7 +68,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Image:         squidImage,
 	}
 	if err := generateSystemdFile(dataSquid, "squid"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return err
 	}
 
 	// SSH
@@ -76,7 +77,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Image:         sshImage,
 	}
 	if err := generateSystemdFile(dataSSH, "ssh"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return err
 	}
 
 	// Tftpd
@@ -86,7 +87,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Image:         tftpdImage,
 	}
 	if err := generateSystemdFile(dataTftpd, "tftpd"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return err
 	}
 
 	return podman.ReloadDaemon(false)
@@ -98,7 +99,7 @@ func generateSystemdFile(template utils.Template, service string) error {
 	const systemdPath = "/etc/systemd/system"
 	path := path.Join(systemdPath, name)
 	if err := utils.WriteTemplateToFile(template, path, 0644, true); err != nil {
-		return fmt.Errorf("failed to generate %s", path)
+		return fmt.Errorf("failed to generate '%s', error '%s'", path, err)
 	}
 	return nil
 }

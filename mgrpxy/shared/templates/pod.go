@@ -30,6 +30,7 @@ ExecStartPre=/bin/rm -f %t/uyuni-proxy-pod.pid %t/uyuni-proxy-pod.pod-id
 
 ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/uyuni-proxy-pod.pid \
 		--pod-id-file %t/uyuni-proxy-pod.pod-id --name uyuni-proxy-pod \
+		--network {{ .Network }} \
         {{- range .Ports }}
         -p {{ .Exposed }}:{{ .Port }}{{ if .Protocol }}/{{ .Protocol }}{{ end }} \
         {{- end }}
@@ -52,6 +53,7 @@ type PodTemplateData struct {
 	Ports         []types.PortMap
 	HttpProxyFile string
 	Args          string
+	Network       string
 }
 
 // Render will create the systemd configuration file.
