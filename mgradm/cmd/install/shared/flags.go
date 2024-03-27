@@ -108,7 +108,7 @@ func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 	utils.AskIfMissing(&flags.EmailFrom, cmd.Flag("emailfrom").Usage, 0, 0, emailChecker)
 
 	utils.AskIfMissing(&flags.Admin.Login, cmd.Flag("admin-login").Usage, 1, 64, idChecker)
-	utils.AskPasswordIfMissing(&flags.Admin.Password, cmd.Flag("admin-password").Usage, 1, 48)
+	utils.AskPasswordIfMissing(&flags.Admin.Password, cmd.Flag("admin-password").Usage, 5, 48)
 	utils.AskIfMissing(&flags.Admin.Email, cmd.Flag("admin-email").Usage, 1, 128, emailChecker)
 	utils.AskIfMissing(&flags.Organization, cmd.Flag("organization").Usage, 3, 128, nil)
 }
