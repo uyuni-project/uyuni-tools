@@ -5,10 +5,11 @@
 package utils
 
 import (
+	"fmt"
 	"io"
 	"os"
 
-	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
 
 // Template is an interface for implementing Render function.
@@ -21,14 +22,14 @@ func WriteTemplateToFile(template Template, path string, perm os.FileMode, overw
 	// Check if the file is existing
 	if !overwrite {
 		if FileExists(path) {
-			log.Fatal().Msgf("%s file already present, not overwriting", path)
+			return fmt.Errorf(L("%s file already present, not overwriting"), path)
 		}
 	}
 
 	// Write the configuration
 	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, perm)
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to open %s for writing", path)
+		return fmt.Errorf(L("failed to open %s for writing: %s"), path, err)
 	}
 	defer file.Close()
 

@@ -9,8 +9,14 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
+
+// Default path where to look for locale files.
+//
+// On SUSE distros this should be overridden with /usr/share/locale.
+var LocaleRoot = "locale"
 
 // DefaultNamespace represents the default name used for image.
 var DefaultNamespace = "registry.opensuse.org/uyuni"
@@ -38,15 +44,15 @@ func CommandHelper[T interface{}](
 		return err
 	}
 	if err := viper.Unmarshal(&flags); err != nil {
-		log.Error().Err(err).Msgf("Failed to unmarshall configuration")
-		return fmt.Errorf("failed to unmarshall configuration: %s", err)
+		log.Error().Err(err).Msg(L("failed to unmarshall configuration"))
+		return fmt.Errorf(L("failed to unmarshall configuration")+": %s", err)
 	}
 	return fn(globalFlags, flags, cmd, args)
 }
 
 // AddBackendFlag add the flag for setting the backend ('podman', 'podman-remote', 'kubectl').
 func AddBackendFlag(cmd *cobra.Command) {
-	cmd.Flags().String("backend", "", "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use.")
+	cmd.Flags().String("backend", "", L("tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use."))
 }
 
 // AddPullPolicyFlag adds the --pullPolicy flag to a command.
@@ -60,5 +66,5 @@ func AddBackendFlag(cmd *cobra.Command) {
 // For kubernetes the value is simply passed to the helm charts.
 func AddPullPolicyFlag(cmd *cobra.Command) {
 	cmd.Flags().String("pullPolicy", "IfNotPresent",
-		"set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'")
+		L("set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
 }

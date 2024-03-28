@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -16,7 +17,7 @@ import (
 func GetSshAuthSocket() string {
 	path := os.Getenv("SSH_AUTH_SOCK")
 	if len(path) == 0 {
-		log.Fatal().Msg("SSH_AUTH_SOCK is not defined, start an ssh agent and try again")
+		log.Fatal().Msg(L("SSH_AUTH_SOCK is not defined, start an SSH agent and try again"))
 	}
 	return path
 }
@@ -26,7 +27,7 @@ func GetSshPaths() (string, string) {
 	// Find ssh config to mount it in the container
 	homedir, err := os.UserHomeDir()
 	if err != nil {
-		log.Fatal().Msg("Failed to find home directory to look for SSH config")
+		log.Fatal().Msg(L("Failed to find home directory to look for SSH config"))
 	}
 	sshConfigPath := filepath.Join(homedir, ".ssh", "config")
 	sshKnownhostsPath := filepath.Join(homedir, ".ssh", "known_hosts")

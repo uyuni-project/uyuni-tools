@@ -11,6 +11,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
 
 const helmAppName = "uyuni-proxy"
@@ -19,7 +20,7 @@ const helmAppName = "uyuni-proxy"
 func Deploy(installFlags *utils.ProxyInstallFlags, helmFlags *HelmFlags, configDir string,
 	kubeconfig string, helmArgs ...string,
 ) error {
-	log.Info().Msg("Installing Uyuni")
+	log.Info().Msg(L("Installing Uyuni proxy"))
 
 	helmParams := []string{}
 
@@ -47,7 +48,7 @@ func Deploy(installFlags *utils.ProxyInstallFlags, helmFlags *HelmFlags, configD
 	// Install the helm chart
 	if err := kubernetes.HelmUpgrade(kubeconfig, helmFlags.Proxy.Namespace, true, "", helmAppName, helmFlags.Proxy.Chart,
 		helmFlags.Proxy.Version, helmParams...); err != nil {
-		return fmt.Errorf("cannot run helm upgrade: %s", err)
+		return fmt.Errorf(L("cannot run helm upgrade: %s"), err)
 	}
 
 	// Wait for the pod to be started

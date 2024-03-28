@@ -7,6 +7,7 @@ package stop
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -19,8 +20,8 @@ type stopFlags struct {
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	stopCmd := &cobra.Command{
 		Use:   "stop",
-		Short: "stop the proxy",
-		Long:  "Stop the proxy",
+		Short: L("Stop the proxy"),
+		Long:  L("Stop the proxy"),
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags stopFlags

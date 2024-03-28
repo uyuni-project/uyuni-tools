@@ -7,6 +7,7 @@ package term
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/exec"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -17,7 +18,7 @@ var newExecCmd = exec.NewCommand
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "term",
-		Short: "Run a terminal inside the server container",
+		Short: L("Run a terminal inside the server container"),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			execCmd := newExecCmd(globalFlags)
 			execArgs := []string{"-i", "-t"}

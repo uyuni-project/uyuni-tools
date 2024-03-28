@@ -36,3 +36,7 @@ License: Apache-2.0
 Files: .tito/packages/*
 Copyright: 2023 SUSE LLC
 License: Apache-2.0
+
+Files: locale/*
+Copyright: 2024 SUSE LLC
+License: Apache-2.0

@@ -9,6 +9,7 @@ require (
 
 require (
 	github.com/briandowns/spinner v1.23.0 // indirect
+	github.com/chai2010/gettext-go v1.0.2 // indirect
 	github.com/creack/pty v1.1.17 // indirect
 	github.com/fatih/color v1.7.0 // indirect
 )

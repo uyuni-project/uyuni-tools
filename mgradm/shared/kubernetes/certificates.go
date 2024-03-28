@@ -17,18 +17,19 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) {
 	crdsDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to create temporary directory")
+		log.Fatal().Err(err).Msgf(L("failed to create temporary directory: %s"), err)
 	}
 	defer os.RemoveAll(crdsDir)
 
 	secretPath := filepath.Join(crdsDir, "secret.yaml")
-	log.Info().Msg("Creating SSL server certificate secret")
+	log.Info().Msg(L("Creating SSL server certificate secret"))
 	tlsSecretData := templates.TlsSecretTemplateData{
 		Namespace:   namespace,
 		Name:        "uyuni-cert",
@@ -38,11 +39,11 @@ func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, root
 	}
 
 	if err = utils.WriteTemplateToFile(tlsSecretData, secretPath, 0500, true); err != nil {
-		log.Fatal().Err(err).Msg("Failed to generate uyuni-crt secret definition")
+		log.Fatal().Err(err).Msg(L("Failed to generate uyuni-crt secret definition"))
 	}
 	err = utils.RunCmd("kubectl", "apply", "-f", secretPath)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to create uyuni-crt TLS secret")
+		log.Fatal().Err(err).Msg(L("Failed to create uyuni-crt TLS secret"))
 	}
 
 	createCaConfig(rootCaCrt)
@@ -55,13 +56,13 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	tlsCert *ssl.SslPair, kubeconfig, fqdn string, imagePullPolicy string) ([]string, error) {
 	// Install cert-manager if needed
 	if err := installCertManager(helmFlags, kubeconfig, imagePullPolicy); err != nil {
-		return []string{}, fmt.Errorf("cannot install cert manager: %s", err)
+		return []string{}, fmt.Errorf(L("cannot install cert manager: %s"), err)
 	}
 
 	log.Info().Msg("Creating SSL certificate issuer")
 	crdsDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return []string{}, fmt.Errorf("failed to create temporary directory: %s", err)
+		return []string{}, fmt.Errorf(L("failed to create temporary directory: %s"), err)
 	}
 	defer os.RemoveAll(crdsDir)
 
@@ -82,12 +83,12 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	}
 
 	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
-		return []string{}, fmt.Errorf("failed to generate issuer definition: %s", err)
+		return []string{}, fmt.Errorf(L("failed to generate issuer definition: %s"), err)
 	}
 
 	err = utils.RunCmd("kubectl", "apply", "-f", issuerPath)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to create issuer")
+		log.Fatal().Err(err).Msg(L("Failed to create issuer"))
 	}
 
 	// Wait for issuer to be ready
@@ -99,13 +100,13 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 		}
 		time.Sleep(1 * time.Second)
 	}
-	log.Fatal().Msg("Issuer didn't turn ready after 60s")
+	log.Fatal().Msg(L("Issuer didn't turn ready after 60s"))
 	return []string{}, nil
 }
 
 func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, imagePullPolicy string) error {
 	if !kubernetes.IsDeploymentReady("", "cert-manager") {
-		log.Info().Msg("Installing cert-manager")
+		log.Info().Msg(L("Installing cert-manager"))
 		repo := ""
 		chart := helmFlags.CertManager.Chart
 		version := helmFlags.CertManager.Version
@@ -128,14 +129,14 @@ func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, image
 		}
 		// The installedby label will be used to only uninstall what we installed
 		if err := kubernetes.HelmUpgrade(kubeconfig, namespace, true, repo, "cert-manager", chart, version, args...); err != nil {
-			return fmt.Errorf("cannot run helm upgrade: %s", err)
+			return fmt.Errorf(L("cannot run helm upgrade: %s"), err)
 		}
 	}
 
 	// Wait for cert-manager to be ready
 	err := kubernetes.WaitForDeployment("", "cert-manager-webhook", "webhook")
 	if err != nil {
-		return fmt.Errorf("cannot deploy: %s", err)
+		return fmt.Errorf(L("cannot deploy: %s"), err)
 	}
 
 	return nil
@@ -145,23 +146,23 @@ func extractCaCertToConfig() {
 	// TODO Replace with [trust-manager](https://cert-manager.io/docs/projects/trust-manager/) to automate this
 	const jsonPath = "-o=jsonpath={.data.ca\\.crt}"
 
-	log.Info().Msg("Extracting CA certificate to a configmap")
+	log.Info().Msg(L("Extracting CA certificate to a configmap"))
 	// Skip extracting if the configmap is already present
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "configmap", "uyuni-ca", jsonPath)
 	log.Info().Msgf("CA cert: %s", string(out))
 	if err == nil && len(out) > 0 {
-		log.Info().Msg("uyuni-ca configmap already existing, skipping extraction")
+		log.Info().Msg(L("uyuni-ca configmap already existing, skipping extraction"))
 		return
 	}
 
 	out, err = utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "secret", "uyuni-ca", jsonPath)
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to get uyuni-ca certificate")
+		log.Fatal().Err(err).Msgf(L("Failed to get uyuni-ca certificate"))
 	}
 
 	decoded, err := base64.StdEncoding.DecodeString(string(out))
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to base64 decode CA certificate")
+		log.Fatal().Err(err).Msgf(L("Failed to base64 decode CA certificate"))
 	}
 
 	createCaConfig(decoded)
@@ -170,6 +171,6 @@ func extractCaCertToConfig() {
 func createCaConfig(ca []byte) {
 	valueArg := "--from-literal=ca.crt=" + string(ca)
 	if err := utils.RunCmd("kubectl", "create", "configmap", "uyuni-ca", valueArg); err != nil {
-		log.Fatal().Err(err).Msg("Failed to create uyuni-ca config map from certificate")
+		log.Fatal().Err(err).Msg(L("Failed to create uyuni-ca config map from certificate"))
 	}
 }

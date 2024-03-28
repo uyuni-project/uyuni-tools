@@ -16,6 +16,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -52,7 +53,7 @@ func (c *Connection) GetCommand() (string, error) {
 			fallthrough
 		case "kubectl":
 			if _, err = exec.LookPath(c.backend); err != nil {
-				err = fmt.Errorf("backend command not found in PATH: %s", c.backend)
+				err = fmt.Errorf(L("backend command not found in PATH: %s"), c.backend)
 			}
 			c.command = c.backend
 		case "":
@@ -64,7 +65,7 @@ func (c *Connection) GetCommand() (string, error) {
 			if err == nil {
 				hasKubectl = true
 				if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "--request-timeout=30s", "get", "pod", c.kubernetesFilter, "-A", "-o=jsonpath={.items[*].metadata.name}"); err != nil {
-					log.Info().Msg("kubectl not configured to connect to a cluster, ignoring")
+					log.Info().Msg(L("kubectl not configured to connect to a cluster, ignoring"))
 				} else if len(bytes.TrimSpace(out)) != 0 {
 					c.command = "kubectl"
 					return c.command, err
@@ -97,10 +98,10 @@ func (c *Connection) GetCommand() (string, error) {
 				}
 			}
 			if c.command == "" {
-				err = fmt.Errorf("uyuni container is not accessible with one of podman, podman-remote or kubectl")
+				err = errors.New(L("uyuni container is not accessible with one of podman, podman-remote or kubectl"))
 			}
 		default:
-			err = fmt.Errorf("unsupported backend %s", c.backend)
+			err = fmt.Errorf(L("unsupported backend %s"), c.backend)
 		}
 	}
 	return c.command, err
@@ -121,7 +122,7 @@ func (c *Connection) GetPodName() (string, error) {
 			fallthrough
 		case "podman":
 			if out, _ := utils.RunCmdOutput(zerolog.DebugLevel, c.command, "ps", "-q", "-f", "name="+c.podmanContainer); len(out) == 0 {
-				err = fmt.Errorf("container %s is not running on podman", c.podmanContainer)
+				err = fmt.Errorf(L("container %s is not running on podman"), c.podmanContainer)
 			} else {
 				c.podName = c.podmanContainer
 			}
@@ -142,7 +143,7 @@ func (c *Connection) GetPodName() (string, error) {
 func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 	if c.podName == "" {
 		if _, err := c.GetPodName(); c.podName == "" {
-			return nil, fmt.Errorf("the container is not running, %s %s command not executed: %s",
+			return nil, fmt.Errorf(L("the container is not running, %s %s command not executed: %s"),
 				command, strings.Join(args, " "), err)
 		}
 	}
@@ -189,7 +190,7 @@ func (c *Connection) WaitForServer() error {
 		}
 		time.Sleep(1 * time.Second)
 	}
-	return errors.New("server didn't start within 60s. Check for the service status")
+	return errors.New(L("server didn't start within 60s. Check for the service status"))
 }
 
 // Copy transfers a file to or from the container.
@@ -219,7 +220,7 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 		commandArgs = []string{"cp", "-c", "uyuni", srcExpanded, dstExpanded}
 		extraArgs = []string{"-c", "uyuni", "--"}
 	default:
-		return fmt.Errorf("unknown container kind: %s", command)
+		return fmt.Errorf(L("unknown container kind: %s"), command)
 	}
 
 	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, command, commandArgs...); err != nil {
@@ -258,7 +259,7 @@ func (c *Connection) TestExistenceInPod(dstpath string) bool {
 	case "kubectl":
 		commandArgs = append(commandArgs, "-c", "uyuni", "test", "-e", dstpath)
 	default:
-		log.Fatal().Msgf("Unknown container kind: %s\n", command)
+		log.Fatal().Msgf(L("unknown container kind: %s"), command)
 	}
 
 	if _, err := utils.RunCmdOutput(zerolog.DebugLevel, command, commandArgs...); err != nil {
@@ -302,7 +303,7 @@ func chooseBackend[F interface{}](
 ) (utils.CommandFunc[F], error) {
 	command, err := cnx.GetCommand()
 	if err != nil {
-		return nil, fmt.Errorf("failed to determine suitable backend")
+		return nil, errors.New(L("failed to determine suitable backend"))
 	}
 	switch command {
 	case "podman":
@@ -312,5 +313,5 @@ func chooseBackend[F interface{}](
 	}
 
 	// Should never happen if the commands are the same than those handled in GetCommand()
-	return nil, fmt.Errorf("no supported backend found")
+	return nil, errors.New(L("no supported backend found"))
 }

@@ -24,4 +24,5 @@ for shell in "bash" "zsh" "fish"; do
 done
 
 golangci-lint run
+./check_localizable
 echo "DONE"

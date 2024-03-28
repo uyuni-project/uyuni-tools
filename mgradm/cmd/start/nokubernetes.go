@@ -7,9 +7,10 @@
 package start
 
 import (
-	"fmt"
+	"errors"
 
 	"github.com/spf13/cobra"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -19,5 +20,5 @@ func kubernetesStart(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return fmt.Errorf("built without kubernetes support")
+	return errors.New(L("built without kubernetes support"))
 }

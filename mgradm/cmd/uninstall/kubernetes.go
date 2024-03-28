@@ -7,10 +7,13 @@
 package uninstall
 
 import (
+	"fmt"
+
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -44,15 +47,15 @@ func uninstallForKubernetes(
 		}
 
 		if !flags.Force {
-			log.Info().Msgf("Would run kubectl delete -n %s configmap uyuni-ca", namespace)
-			log.Info().Msgf("Would run kubectl delete -n %s secret uyuni-cert %s", namespace, caSecret)
+			log.Info().Msgf(L("Would run %s"), fmt.Sprintf("kubectl delete -n %s configmap uyuni-ca", namespace))
+			log.Info().Msgf(L("Would run %s"), fmt.Sprintf("kubectl delete -n %s secret uyuni-cert %s", namespace, caSecret))
 		} else {
-			log.Info().Msgf("Running kubectl delete -n %s configmap uyuni-ca", namespace)
+			log.Info().Msgf(L("Running %s"), fmt.Sprintf("kubectl delete -n %s configmap uyuni-ca", namespace))
 			if err := utils.RunCmd("kubectl", "delete", "-n", namespace, "configmap", "uyuni-ca"); err != nil {
-				log.Info().Err(err).Msgf("Failed deleting config map")
+				log.Info().Err(err).Msgf(L("Failed deleting config map"))
 			}
 
-			log.Info().Msgf("Running kubectl delete -n %s secret uyuni-cert %s", namespace, caSecret)
+			log.Info().Msgf(L("Running %s"), fmt.Sprintf("kubectl delete -n %s secret uyuni-cert %s", namespace, caSecret))
 
 			args := []string{"delete", "-n", namespace, "secret", "uyuni-cert"}
 			if caSecret != "" {
@@ -60,7 +63,7 @@ func uninstallForKubernetes(
 			}
 			err := utils.RunCmd("kubectl", args...)
 			if err != nil {
-				log.Info().Err(err).Msgf("Failed deleting secret")
+				log.Info().Err(err).Msgf(L("Failed deleting secret"))
 			}
 		}
 	}
@@ -85,5 +88,3 @@ func uninstallForKubernetes(
 	}
 	return nil
 }
-
-const kubernetesHelp = kubernetes.UninstallHelp

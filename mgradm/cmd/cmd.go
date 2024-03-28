@@ -26,6 +26,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/support"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/uninstall"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
 
 // NewCommand returns a new cobra.Command implementing the root command for kinder.
@@ -34,17 +35,13 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 	name := path.Base(os.Args[0])
 	rootCmd := &cobra.Command{
 		Use:          name,
-		Short:        "Uyuni administration tool",
-		Long:         "Uyuni administration tool used to help user administer uyuni servers on kubernetes and podman",
+		Short:        L("Uyuni administration tool"),
+		Long:         L("Tool to help administering Uyuni servers in containers"),
 		Version:      utils.Version,
 		SilenceUsage: true, // Don't show usage help on errors
 	}
 
-	usage, err := utils.GetUsageWithConfigHelpTemplate(rootCmd.UsageTemplate())
-	if err != nil {
-		return rootCmd, err
-	}
-	rootCmd.SetUsageTemplate(usage)
+	rootCmd.SetUsageTemplate(utils.GetLocalizedUsageTemplate())
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		utils.LogInit(true)
@@ -52,13 +49,13 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 
 		// do not log if running the completion cmd as the output is redirected to create a file to source
 		if cmd.Name() != "completion" {
-			log.Info().Msgf("Welcome to %s", name)
-			log.Info().Msgf("Executing command: %s", cmd.Name())
+			log.Info().Msgf(L("Welcome to %s"), name)
+			log.Info().Msgf(L("Executing command: %s"), cmd.Name())
 		}
 	}
 
-	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", "configuration file path")
-	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "", "application log level (trace|debug|info|warn|error|fatal|panic)")
+	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", L("configuration file path"))
+	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "", L("application log level")+"(trace|debug|info|warn|error|fatal|panic)")
 
 	migrateCmd := migrate.NewCommand(globalFlags)
 	rootCmd.AddCommand(migrateCmd)
@@ -81,6 +78,8 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 	rootCmd.AddCommand(status.NewCommand(globalFlags))
 	rootCmd.AddCommand(inspect.NewCommand(globalFlags))
 	rootCmd.AddCommand(upgrade.NewCommand(globalFlags))
+
+	rootCmd.AddCommand(utils.GetConfigHelpCommand())
 
 	return rootCmd, err
 }

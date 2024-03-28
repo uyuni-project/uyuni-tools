@@ -16,6 +16,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"golang.org/x/term"
 )
 
@@ -27,11 +28,11 @@ func checkValueSize(value string, min int, max int) bool {
 	}
 
 	if len(value) < min {
-		fmt.Printf("Has to be more than %d characters long", min)
+		fmt.Printf(NL("Has to be more than %d character long", "Has to be more that %d characters long", min), min)
 		return false
 	}
 	if len(value) > max {
-		fmt.Printf("Has to be less than %d characters long", max)
+		fmt.Printf(NL("Has to be less than %d character long", "Has to be less than %d characters long", max), max)
 		return false
 	}
 	return true
@@ -44,13 +45,13 @@ func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 		fmt.Print(prompt + prompt_end)
 		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 		if err != nil {
-			log.Fatal().Err(err).Msgf("Failed to read password")
+			log.Fatal().Err(err).Msgf(L("Failed to read password"))
 		}
 		tmpValue := strings.TrimSpace(string(bytePassword))
 		r := regexp.MustCompile(`^[^\t ]+$`)
 		validChars := r.MatchString(tmpValue)
 		if !validChars {
-			fmt.Printf("Cannot contain spaces or tabs")
+			fmt.Printf(L("Cannot contain spaces or tabs"))
 		}
 
 		if validChars && checkValueSize(tmpValue, min, max) {
@@ -71,7 +72,7 @@ func AskIfMissing(value *string, prompt string, min int, max int, checker func(s
 		fmt.Print(prompt + prompt_end)
 		newValue, err := reader.ReadString('\n')
 		if err != nil {
-			log.Fatal().Err(err).Msgf("Failed to read input")
+			log.Fatal().Err(err).Msgf(L("Failed to read input"))
 		}
 		tmpValue := strings.TrimSpace(newValue)
 		if checkValueSize(tmpValue, min, max) && (checker == nil || checker(tmpValue)) {
@@ -79,7 +80,7 @@ func AskIfMissing(value *string, prompt string, min int, max int, checker func(s
 		}
 		fmt.Println()
 		if *value == "" {
-			fmt.Println("A value is required")
+			fmt.Println(L("A value is required"))
 		}
 	}
 }
@@ -89,11 +90,11 @@ func ComputeImage(name string, tag string, appendToName ...string) (string, erro
 	imageValid := regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
 	submatches := imageValid.FindStringSubmatch(name)
 	if submatches == nil {
-		return "", fmt.Errorf("invalid image name: %s", name)
+		return "", fmt.Errorf(L("invalid image name: %s"), name)
 	}
 	if submatches[2] == `` {
 		if len(tag) <= 0 {
-			return name, fmt.Errorf("tag missing on %s", name)
+			return name, fmt.Errorf(L("tag missing on %s"), name)
 		}
 		if len(appendToName) > 0 {
 			name = name + strings.Join(appendToName, ``)
@@ -112,7 +113,7 @@ func ComputeImage(name string, tag string, appendToName ...string) (string, erro
 func GetLocalTimezone() string {
 	out, err := RunCmdOutput(zerolog.DebugLevel, "timedatectl", "show", "--value", "-p", "Timezone")
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to run timedatectl show --value -p Timezone")
+		log.Fatal().Err(err).Msgf(L("Failed to run %s"), "timedatectl show --value -p Timezone")
 	}
 	return string(out)
 }
@@ -123,7 +124,7 @@ func FileExists(path string) bool {
 	if err == nil {
 		return true
 	} else if !os.IsNotExist(err) {
-		log.Fatal().Err(err).Msgf("Failed to stat %s file", path)
+		log.Fatal().Err(err).Msgf(L("Failed to get %s file informations"), path)
 	}
 	return false
 }
@@ -132,7 +133,7 @@ func FileExists(path string) bool {
 func ReadFile(file string) []byte {
 	out, err := os.ReadFile(file)
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to read file %s", file)
+		log.Fatal().Err(err).Msgf(L("Failed to read file %s"), file)
 	}
 	return out
 }
@@ -147,11 +148,11 @@ func GetFileBoolean(file string) bool {
 func UninstallFile(path string, dryRun bool) {
 	if FileExists(path) {
 		if dryRun {
-			log.Info().Msgf("Would remove file %s", path)
+			log.Info().Msgf(L("Would remove file %s"), path)
 		} else {
-			log.Info().Msgf("Removing file %s", path)
+			log.Info().Msgf(L("Removing file %s"), path)
 			if err := os.Remove(path); err != nil {
-				log.Info().Err(err).Msgf("Failed to remove file %s", path)
+				log.Info().Err(err).Msgf(L("Failed to remove file %s"), path)
 			}
 		}
 	}
@@ -161,7 +162,7 @@ func UninstallFile(path string, dryRun bool) {
 func GetRandomBase64(size int) string {
 	data := make([]byte, size)
 	if _, err := rand.Read(data); err != nil {
-		log.Fatal().Err(err).Msg("Failed to read random data")
+		log.Fatal().Err(err).Msg(L("Failed to read random data"))
 	}
 	return base64.StdEncoding.EncodeToString(data)
 }

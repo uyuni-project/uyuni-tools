@@ -10,6 +10,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -80,7 +81,7 @@ func getDistroFromDetails(distro string, version string, arch string, channeLabe
 	}
 
 	if !ok {
-		return types.Distribution{}, fmt.Errorf("unknown distribution, auto-registration is not possible")
+		return types.Distribution{}, fmt.Errorf(L("unknown distribution, auto-registration is not possible"))
 	}
 
 	if channeLabel != "" {
@@ -106,7 +107,7 @@ func detectDistro(path string, channelLabel string, flags *flagpole, distro *typ
 	dname := treeInfoViper.GetString("release.name")
 	dversion := treeInfoViper.GetString("release.version")
 	darch := treeInfoViper.GetString("general.arch")
-	log.Debug().Msgf("Detected distro %s, version %s. arch %s", dname, dversion, darch)
+	log.Debug().Msgf("Detected distribution %s, version %s. arch %s", dname, dversion, darch)
 	details, err := getDistroFromDetails(dname, dversion, darch, channelLabel, flags)
 	if err != nil {
 		return err

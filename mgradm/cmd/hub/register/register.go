@@ -13,6 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -27,8 +28,8 @@ type configFlags struct {
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	registerCmd := &cobra.Command{
 		Use:   "register",
-		Short: "register",
-		Long:  "Register this peripheral server to Hub API",
+		Short: L("Register"),
+		Long:  L("Register this peripheral server to Hub API"),
 		Args:  cobra.MaximumNArgs(0),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -75,7 +76,7 @@ func getRhnConfig(cnx *shared.Connection) (map[string]string, error) {
 
 		parts := strings.SplitN(line, "=", 2)
 		if len(parts) != 2 {
-			return nil, fmt.Errorf("invalid line format: %s", line)
+			return nil, fmt.Errorf(L("invalid line format: %s"), line)
 		}
 
 		key := strings.TrimSpace(parts[0])
@@ -89,13 +90,13 @@ func getRhnConfig(cnx *shared.Connection) (map[string]string, error) {
 func registerToHub(config map[string]string, cnxDetails *api.ConnectionDetails) error {
 	for _, key := range []string{"java.hostname", "report_db_name", "report_db_port", "report_db_user", "report_db_password"} {
 		if _, ok := config[key]; !ok {
-			return fmt.Errorf("mandatory entry missing in config: %s", key)
+			return fmt.Errorf(L("mandatory entry missing in config: %s"), key)
 		}
 	}
-	log.Info().Msgf("Hub API server: %s", cnxDetails.Server)
+	log.Info().Msgf(L("Hub API server: %s"), cnxDetails.Server)
 	client, err := api.Init(cnxDetails)
 	if err != nil {
-		return fmt.Errorf("failed to connect to the Hub server: %s", err)
+		return fmt.Errorf(L("failed to connect to the Hub server: %s"), err)
 	}
 	data := map[string]interface{}{
 		"fqdn": config["java.hostname"],
@@ -103,10 +104,10 @@ func registerToHub(config map[string]string, cnxDetails *api.ConnectionDetails) 
 
 	ret, err := api.Post[int](client, "system/registerPeripheralServer", data)
 	if err != nil {
-		return fmt.Errorf("failed to register this peripheral server: %s", err)
+		return fmt.Errorf(L("failed to register this peripheral server: %s"), err)
 	}
 	if !ret.Success {
-		return fmt.Errorf("failed to register this peripheral server: %s", ret.Message)
+		return fmt.Errorf(L("failed to register this peripheral server: %s"), ret.Message)
 	}
 	id := ret.Result
 
@@ -120,12 +121,12 @@ func registerToHub(config map[string]string, cnxDetails *api.ConnectionDetails) 
 	}
 	ret, err = api.Post[int](client, "system/updatePeripheralServerInfo", data)
 	if err != nil {
-		return fmt.Errorf("failed to update peripheral server info: %s", err)
+		return fmt.Errorf(L("failed to update peripheral server info: %s"), err)
 	}
 
 	if !ret.Success {
-		return fmt.Errorf("failed to update peripheral server info: %s", ret.Message)
+		return fmt.Errorf(L("failed to update peripheral server info: %s"), ret.Message)
 	}
-	log.Info().Msgf("Registered peripheral server: %s, ID: %d", config["java.hostname"], id)
+	log.Info().Msgf(L("Registered peripheral server: %s, ID: %d"), config["java.hostname"], id)
 	return nil
 }

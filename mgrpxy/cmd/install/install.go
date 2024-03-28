@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/install/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/install/podman"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -15,8 +16,8 @@ import (
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	installCmd := &cobra.Command{
 		Use:   "install [fqdn]",
-		Short: "install a new proxy from scratch",
-		Long:  "Install a new proxy from scratch",
+		Short: L("Install a new proxy from scratch"),
+		Long:  L("Install a new proxy from scratch"),
 	}
 
 	installCmd.AddCommand(podman.NewCommand(globalFlags))

@@ -14,6 +14,7 @@ import (
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -31,12 +32,12 @@ func startPod() error {
 
 func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallFlags, cmd *cobra.Command, args []string) error {
 	if _, err := exec.LookPath("podman"); err != nil {
-		return fmt.Errorf("install podman before running this command")
+		return fmt.Errorf(L("install podman before running this command"))
 	}
 
 	configPath := utils.GetConfigPath(args)
 	if err := unpackConfig(configPath); err != nil {
-		return fmt.Errorf("failed to extract proxy config from %s file: %s", configPath, err)
+		return fmt.Errorf(L("failed to extract proxy config from %s file: %s"), configPath, err)
 	}
 
 	httpdImage, err := getContainerImage(flags, "httpd")
@@ -62,7 +63,7 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallF
 
 	// Setup the systemd service configuration options
 	if err := podman.GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags.Podman.Args); err != nil {
-		return fmt.Errorf("cannot generate systemd file: %s", err)
+		return err
 	}
 
 	return startPod()
@@ -72,7 +73,7 @@ func getContainerImage(flags *podmanProxyInstallFlags, name string) (string, err
 	image := flags.GetContainerImage(name)
 	inspectedHostValues, err := adm_utils.InspectHost()
 	if err != nil {
-		return "", fmt.Errorf("cannot inspect host values: %s", err)
+		return "", fmt.Errorf(L("cannot inspect host values: %s"), err)
 	}
 
 	pullArgs := []string{}
@@ -91,7 +92,7 @@ func getContainerImage(flags *podmanProxyInstallFlags, name string) (string, err
 }
 
 func unpackConfig(configPath string) error {
-	log.Info().Msgf("Setting up proxy with configuration %s", configPath)
+	log.Info().Msgf(L("Setting up proxy with configuration %s"), configPath)
 	const proxyConfigDir = "/etc/uyuni/proxy"
 	if err := os.MkdirAll(proxyConfigDir, 0755); err != nil {
 		return err

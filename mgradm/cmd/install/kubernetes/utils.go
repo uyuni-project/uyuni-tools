@@ -18,6 +18,7 @@ import (
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -28,7 +29,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 ) error {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
-			return fmt.Errorf("install %s before running this command: %s", binary, err)
+			return fmt.Errorf(L("install %s before running this command"), binary)
 		}
 	}
 
@@ -57,13 +58,13 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	sslArgs, err := kubernetes.DeployCertificate(&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
 		flags.Image.PullPolicy)
 	if err != nil {
-		return fmt.Errorf("cannot deploy certificate: %s", err)
+		return fmt.Errorf(L("cannot deploy certificate: %s"), err)
 	}
 	helmArgs = append(helmArgs, sslArgs...)
 
 	// Deploy Uyuni and wait for it to be up
 	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &flags.Ssl, clusterInfos, fqdn, flags.Debug.Java, helmArgs...); err != nil {
-		return fmt.Errorf("cannot deploy uyuni: %s", err)
+		return fmt.Errorf(L("cannot deploy uyuni: %s"), err)
 	}
 
 	// Create setup script + env variables and copy it to the container
@@ -79,7 +80,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	err = adm_utils.ExecCommand(zerolog.DebugLevel, cnx,
 		"/usr/bin/rhn-ssl-dbstore", "--ca-cert=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT")
 	if err != nil {
-		return fmt.Errorf("error storing the SSL CA certificate in database: %s", err)
+		return fmt.Errorf(L("error storing the SSL CA certificate in database: %s"), err)
 	}
 	return nil
 }

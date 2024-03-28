@@ -9,6 +9,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -34,10 +35,10 @@ func uninstallForPodman(
 		}
 		for _, volume := range volumes {
 			if err := podman.DeleteVolume(volume, !flags.Force); err != nil {
-				return fmt.Errorf("cannot delete volume %s: %s", volume, err)
+				return fmt.Errorf(L("cannot delete volume %s: %s"), volume, err)
 			}
 		}
-		log.Info().Msg("All volumes removed")
+		log.Info().Msg(L("All volumes removed"))
 	}
 
 	podman.DeleteNetwork(!flags.Force)

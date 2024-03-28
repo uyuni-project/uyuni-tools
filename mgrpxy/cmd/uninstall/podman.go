@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -44,10 +45,10 @@ func uninstallForPodman(dryRun bool, purge bool) error {
 		// Delete each volume
 		for volume := range volumes {
 			if err := podman.DeleteVolume(volume, dryRun); err != nil {
-				return fmt.Errorf("cannot delete volume %s: %s", volume, err)
+				return fmt.Errorf(L("cannot delete volume %s: %s"), volume, err)
 			}
 		}
-		log.Info().Msg("All volumes removed")
+		log.Info().Msg(L("All volumes removed"))
 	}
 
 	podman.DeleteNetwork(dryRun)

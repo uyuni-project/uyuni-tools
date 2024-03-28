@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
 
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -22,8 +23,8 @@ type inspectFlags struct {
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	inspectCmd := &cobra.Command{
 		Use:   "inspect",
-		Short: "inspect",
-		Long:  "Extract information from image and deployment",
+		Short: L("Inspect"),
+		Long:  L("Extract information from image and deployment"),
 		Args:  cobra.MaximumNArgs(0),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -33,8 +34,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	}
 
 	inspectCmd.SetUsageTemplate(inspectCmd.UsageTemplate())
-	inspectCmd.Flags().String("image", "", "Image. Leave it empty to analyze the current deployment")
-	inspectCmd.Flags().String("tag", "", "Tag Image. Leave it empty to analyze the current deployment")
+	inspectCmd.Flags().String("image", "", L("Image URL. Leave it empty to analyze the current deployment"))
+	inspectCmd.Flags().String("tag", "", L("Image Tag. Leave it empty to analyze the current deployment"))
 	utils.AddPullPolicyFlag(inspectCmd)
 
 	if utils.KubernetesBuilt {

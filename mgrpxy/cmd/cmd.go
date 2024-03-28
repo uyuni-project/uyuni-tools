@@ -17,6 +17,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/stop"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/uninstall"
 	"github.com/uyuni-project/uyuni-tools/shared/completion"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -27,17 +28,13 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 	name := path.Base(os.Args[0])
 	rootCmd := &cobra.Command{
 		Use:          name,
-		Short:        "Uyuni proxy administration tool",
-		Long:         "Uyuni tool used to help user administer uyuni proxies on kubernetes and podman",
+		Short:        L("Uyuni proxy administration tool"),
+		Long:         L("Tool to help administering Uyuni proxies in containers"),
 		Version:      utils.Version,
 		SilenceUsage: true, // Don't show usage help on errors
 	}
 
-	usage, err := utils.GetUsageWithConfigHelpTemplate(rootCmd.UsageTemplate())
-	if err != nil {
-		return rootCmd, err
-	}
-	rootCmd.SetUsageTemplate(usage)
+	rootCmd.SetUsageTemplate(utils.GetLocalizedUsageTemplate())
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		utils.LogInit(true)
@@ -45,13 +42,13 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 
 		// do not log if running the completion cmd as the output is redirected to create a file to source
 		if cmd.Name() != "completion" {
-			log.Info().Msgf("Welcome to %s", name)
-			log.Info().Msgf("Executing command: %s", cmd.Name())
+			log.Info().Msgf(L("Welcome to %s"), name)
+			log.Info().Msgf(L("Executing command: %s"), cmd.Name())
 		}
 	}
 
-	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", "configuration file path")
-	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "", "application log level (trace|debug|info|warn|error|fatal|panic)")
+	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", L("configuration file path"))
+	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "", L("application log level")+"(trace|debug|info|warn|error|fatal|panic)")
 
 	installCmd := install.NewCommand(globalFlags)
 	rootCmd.AddCommand(installCmd)
@@ -65,6 +62,8 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 	rootCmd.AddCommand(start.NewCommand(globalFlags))
 	rootCmd.AddCommand(stop.NewCommand(globalFlags))
 	rootCmd.AddCommand(restart.NewCommand(globalFlags))
+
+	rootCmd.AddCommand(utils.GetConfigHelpCommand())
 
 	return rootCmd, nil
 }

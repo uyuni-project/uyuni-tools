@@ -11,6 +11,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/templates"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -20,10 +21,10 @@ import (
 func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImage string, sshImage string,
 	tftpdImage string, podmanArgs []string) error {
 	if err := podman.SetupNetwork(); err != nil {
-		return fmt.Errorf("cannot setup network: %s", err)
+		return fmt.Errorf(L("cannot setup network: %s"), err)
 	}
 
-	log.Info().Msg("Generating systemd services")
+	log.Info().Msg(L("Generating systemd services"))
 	httpProxyConfig := getHttpProxyConfig()
 
 	ports := []types.PortMap{}
@@ -38,7 +39,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Args:          strings.Join(podmanArgs, " "),
 	}
 	if err := generateSystemdFile(dataPod, "pod"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return err
 	}
 
 	// Httpd
@@ -48,7 +49,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Image:         httpdImage,
 	}
 	if err := generateSystemdFile(dataHttpd, "httpd"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return err
 	}
 
 	// Salt broker
@@ -57,7 +58,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Image:         saltBrokerImage,
 	}
 	if err := generateSystemdFile(dataSaltBroker, "salt-broker"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return err
 	}
 
 	// Squid
@@ -67,7 +68,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Image:         squidImage,
 	}
 	if err := generateSystemdFile(dataSquid, "squid"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return err
 	}
 
 	// SSH
@@ -76,7 +77,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Image:         sshImage,
 	}
 	if err := generateSystemdFile(dataSSH, "ssh"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return err
 	}
 
 	// Tftpd
@@ -86,7 +87,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Image:         tftpdImage,
 	}
 	if err := generateSystemdFile(dataTftpd, "tftpd"); err != nil {
-		return fmt.Errorf("cannot generated systemd file: %s", err)
+		return err
 	}
 
 	return podman.ReloadDaemon(false)
@@ -98,7 +99,7 @@ func generateSystemdFile(template utils.Template, service string) error {
 	const systemdPath = "/etc/systemd/system"
 	path := path.Join(systemdPath, name)
 	if err := utils.WriteTemplateToFile(template, path, 0644, true); err != nil {
-		return fmt.Errorf("failed to generate %s", path)
+		return fmt.Errorf(L("failed to generate systemd file: %s"), path)
 	}
 	return nil
 }

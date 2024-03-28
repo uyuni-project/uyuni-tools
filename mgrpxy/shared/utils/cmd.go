@@ -6,6 +6,7 @@ package utils
 
 import (
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -13,7 +14,7 @@ import (
 func GetConfigPath(args []string) string {
 	configPath := args[0]
 	if !utils.FileExists(configPath) {
-		log.Fatal().Msgf("argument is not an existing file: %s", configPath)
+		log.Fatal().Msgf(L("argument is not an existing file: %s"), configPath)
 	}
 	return configPath
 }

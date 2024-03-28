@@ -1,0 +1,183 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-08 09:52+0200\n"
+"PO-Revision-Date: 2024-04-08 11:13+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#: mgrctl/cmd/api/get.go:25 mgrctl/cmd/api/post.go:25
+#, javascript-format
+msgid "unable to login to the server: %s"
+msgstr "impossible de se connecter au serveur: %s"
+
+#: mgrctl/cmd/api/get.go:32 mgrctl/cmd/api/post.go:48
+#, javascript-format
+msgid "error in query %s: %s"
+msgstr "erreur dans la requête %s: %s"
+
+#: mgrctl/cmd/api/api.go:25
+msgid "JSON over HTTP API helper tool"
+msgstr "Utilitaire pour l'API JSON sur HTTP"
+
+#: mgrctl/cmd/api/api.go:30
+msgid "Call API GET request"
+msgstr "Appeler une requête API GET"
+
+#: mgrctl/cmd/api/api.go:31
+msgid "Takes an API path and optional parameters and then issues GET request with them. If user and password are provided, calls login before API call"
+msgstr "Effectue une requête GET avec un chemin d'API et des paramètres optionnels. Appelle login avant la requête de l'API si l'utilisateur et le mot de passe sont fournis"
+
+#: mgrctl/cmd/api/api.go:39
+msgid "Call API POST request"
+msgstr "Appeler une requête API POST"
+
+#: mgrctl/cmd/api/api.go:40
+msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
+msgstr "Effectue une requête POST avec un chemin d'API et des paramètres. L'utilisateur et le mot de passe sont obligatoires. Les paramètres peuvent être soit une chaîne de caractères encodée en JSON ou une ou plusieurs paire clé=valeur."
+
+#: mgrctl/cmd/cp/cp.go:31
+msgid "Copy files to and from the containers"
+msgstr "Copie des fichiers vers et depuis les conteneurs"
+
+#: mgrctl/cmd/cp/cp.go:32
+msgid ""
+"Takes a source and destination parameters.\n"
+"\tOne of them can be prefixed with 'server:' to indicate the path is within the server pod."
+msgstr ""
+"Prend une source et une destination comme paramètres.\n"
+"\tL'un d'eux peut être préfixé par 'server:' pour indiquer que le chemin est dans le conteneur du serveur."
+
+#: mgrctl/cmd/cp/cp.go:41
+#, javascript-format
+msgid "failed to unmarshall configuration: %s"
+msgstr "impossible d'analyser la configuration: %s"
+
+#: mgrctl/cmd/cp/cp.go:47
+msgid "User or UID to set on the destination file"
+msgstr "Utilisateur ou UID à définir sur le fichier de destination"
+
+#: mgrctl/cmd/cp/cp.go:48
+msgid "Group or GID to set on the destination file"
+msgstr "Groupe ou GID à définir sur le fichier de destination"
+
+#: mgrctl/cmd/exec/exec.go:37
+msgid "Execute commands inside the uyuni containers using 'sh -c'"
+msgstr "Exécute des commandes à l'intérieur des conteneurs uyuni avec 'sh -c'"
+
+#: mgrctl/cmd/exec/exec.go:43
+msgid "environment variables to pass to the command, separated by commas"
+msgstr "variables d'environnement à passer à la commade, séparées par des virgules"
+
+#: mgrctl/cmd/exec/exec.go:44
+msgid "Pass stdin to the container"
+msgstr "Passer l'entrée standard au conteneur"
+
+#: mgrctl/cmd/exec/exec.go:45
+msgid "Stdin is a TTY"
+msgstr "L'entrée standard est un TTY"
+
+#: mgrctl/cmd/exec/exec.go:98
+msgid "Command failed"
+msgstr "La commande a échoué"
+
+#: mgrctl/cmd/exec/exec.go:102
+msgid "Command returned with exit code 0"
+msgstr "La commande a été exécutée avec un code de retour de 0"
+
+#: mgrctl/cmd/exec/exec.go:116
+#, javascript-format
+msgid "cannot write: %s"
+msgstr "impossible d'écrire: %s"
+
+#: mgrctl/cmd/exec/exec.go:131
+#, javascript-format
+msgid "Running: %s %s"
+msgstr "Exécution: %s %s"
+
+#: mgrctl/cmd/org/org.go:18
+msgid "Organization-related commands"
+msgstr "Commandes liées à l'organisation"
+
+#: mgrctl/cmd/org/createFirst.go:28
+msgid "Create the first user and organization"
+msgstr "Créer les premiers utilisateurs et organisations"
+
+#: mgrctl/cmd/org/createFirst.go:35
+msgid "Administrator user name"
+msgstr "Nom d'utilisateur de l'administrateur"
+
+#: mgrctl/cmd/org/createFirst.go:36
+msgid "Administrator password"
+msgstr "Mot de passe de l'administrateur"
+
+#: mgrctl/cmd/org/createFirst.go:37
+msgid "The first name of the administrator"
+msgstr "Le prénom de l'administrateur"
+
+#: mgrctl/cmd/org/createFirst.go:38
+msgid "The last name of the administrator"
+msgstr "Le nom de l'administrateur"
+
+#: mgrctl/cmd/org/createFirst.go:39
+msgid "The administrator's email"
+msgstr "L'adresse email de l'administrateur"
+
+#: mgrctl/cmd/org/createFirst.go:40
+msgid "The first organization name"
+msgstr "Le nom de la première organisation"
+
+#: mgrctl/cmd/org/createFirst.go:51
+#, javascript-format
+msgid "Organization %s created with id %d"
+msgstr "Organisation %s créée avec l'id %d"
+
+#: mgrctl/cmd/term/term.go:21
+msgid "Run a terminal inside the server container"
+msgstr "Exécuter un terminal dans le conteneur du serveur"
+
+#: mgrctl/cmd/cmd.go:30
+msgid "Uyuni control tool"
+msgstr "Outil de contrôle d'Uyuni"
+
+#: mgrctl/cmd/cmd.go:31
+msgid "Tool to help managing Uyuni servers mainly through their API"
+msgstr "Outil pour aider à gérer des serveurs Uyuni, principalement via leur API"
+
+#: mgrctl/cmd/cmd.go:38
+msgid "configuration file path"
+msgstr "chemin vers le fichier de configuration"
+
+#: mgrctl/cmd/cmd.go:39
+msgid "application log level"
+msgstr "niveau de verbosité de l'application"
+
+#: mgrctl/cmd/cmd.go:47
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "Bienvenue à %s"
+
+#: mgrctl/cmd/cmd.go:48
+#, javascript-format
+msgid "Executing command: %s"
+msgstr "Exécution de la commande: %s"
+
+#: mgrctl/cmd/cmd.go:54
+msgid "Failed to create api command"
+msgstr "Echec lors de la création de la commande api"
+
+#: mgrctl/cmd/cmd.go:63
+msgid "Failed to create org command"
+msgstr "Echec lors de la création de la commande org"

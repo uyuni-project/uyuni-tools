@@ -7,6 +7,7 @@ package podman
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -21,13 +22,13 @@ type podmanInstallFlags struct {
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	podmanCmd := &cobra.Command{
 		Use:   "podman [fqdn]",
-		Short: "install a new server on podman from scratch",
-		Long: `Install a new server on podman from scratch
+		Short: L("Install a new server on podman"),
+		Long: L(`Install a new server on podman
 
-The install podman command assumes podman is installed locally
+The install podman command assumes podman is installed locally.
 
-NOTE: for now installing on a remote podman is not supported!
-`,
+NOTE: installing on a remote podman is not supported yet!
+`),
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanInstallFlags
