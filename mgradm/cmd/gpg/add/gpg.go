@@ -57,7 +57,7 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 			return fmt.Errorf("failed to create keyring %s: %s", customKeyringPath, err)
 		}
 	}
-	gpgAddCmd := []string{"gpg", "--no-default-keyring", "--import"}
+	gpgAddCmd := []string{"gpg", "--no-default-keyring", "--import", "--import-options", "import-minimal"}
 
 	if !flags.Force {
 		gpgAddCmd = append(gpgAddCmd, "--dry-run")
