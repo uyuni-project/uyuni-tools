@@ -61,8 +61,9 @@ sed -i -e 's|appBase="webapps"|appBase="/usr/share/susemanager/www/tomcat/webapp
 sed -i -e 's|DocumentRoot\s*"/srv/www/htdocs"|DocumentRoot "/usr/share/susemanager/www/htdocs"|' /etc/apache2/vhosts.d/vhost-ssl.conf
 
 echo "Migrating auto-installable distributions..."
+
 while IFS="," read -r target path ; do
-  if $SSH -A {{ .SourceFqdn }} test -e $path; then
+  if $SSH -n {{ .SourceFqdn }} test -e $path ; then
     echo "Copying distribution $target from $path"
     mkdir -p "/srv/www/distributions/$target"
     rsync -e "$SSH" --rsync-path='sudo rsync' -avz "{{ .SourceFqdn }}:$path/" "/srv/www/distributions/$target"
