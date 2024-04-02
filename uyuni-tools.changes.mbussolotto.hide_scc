@@ -1,0 +1,1 @@
+- Hide message in stdout if SCCcredentials is missing (bsc#1222277)
