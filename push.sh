@@ -13,6 +13,6 @@ PKG_NAME=$3
 SRPM_PKG_DIR=$(dirname "$0")
 
 if [ "${OSCAPI}" == "https://api.suse.de" ]; then
-  sed 's/^tag=%{!?_default_tag:latest}/tag=5.0.0-beta1/' -i ${SRPM_PKG_DIR}/uyuni-tools.spec
+  sed 's/^tag=%{!?_default_tag:latest}/tag=5.0.0-beta2/' -i ${SRPM_PKG_DIR}/uyuni-tools.spec
   sed "s/namespace='%{_default_namespace}'/namespace='%{_default_namespace}\/%{_arch}'/" -i ${SRPM_PKG_DIR}/uyuni-tools.spec
 fi
