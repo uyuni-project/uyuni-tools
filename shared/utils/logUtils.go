@@ -13,6 +13,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"golang.org/x/term"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -24,7 +25,9 @@ func LogInit(logToConsole bool) {
 	fileWriter := getFileWriter()
 	writers := []io.Writer{fileWriter}
 	if logToConsole {
-		writers = append(writers, zerolog.NewConsoleWriter())
+		consoleWriter := zerolog.NewConsoleWriter()
+		consoleWriter.NoColor = !term.IsTerminal(int(os.Stdout.Fd()))
+		writers = append(writers, consoleWriter)
 	}
 
 	multi := zerolog.MultiLevelWriter(writers...)
