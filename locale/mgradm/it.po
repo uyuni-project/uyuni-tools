@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-04 14:44+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-04-04 15:45+0000\n"
+"Last-Translator: Michele Bussolotto <michele.bussolotto@suse.com>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools/"
+"it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: mgradm/cmd/distro/cp.go:32
 #, javascript-format
@@ -58,7 +61,7 @@ msgstr ""
 #: mgradm/cmd/distro/cp.go:107
 #, javascript-format
 msgid "cannot copy %s: %s"
-msgstr ""
+msgstr "impossibile copiare %s: %s"
 
 #: mgradm/cmd/distro/cp.go:110
 msgid "Distribution has been copied"
