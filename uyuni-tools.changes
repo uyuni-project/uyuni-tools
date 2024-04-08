@@ -1,4 +1,42 @@
 -------------------------------------------------------------------
+Mon Apr 08 17:40:38 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.6-0
+  * Pull image from authenticated registry
+  * Port 80 should be published to the port 80 of the containers.
+    8080 is squid
+  * Autogenerate the database password
+  * Add mgrctl term command
+  * Fix --version flag
+  * Deny uyuni to suma upgrade and viceversa
+  * Refactor upgrade to clarify script end adding post upgrade
+    script (bsc#1219887)
+  * Add mgradm install podman arguments to define big volumes storage
+  * k8s migration use same functions as upgrade
+  * Allow to use images from RPM if present
+  * Schedule a system list refresh after migrate if not runned before
+  * Ignore error on optional flag
+  * Fix migration of multiple autoinstallable distributions
+  * Obsolete uyuni-proxy-systemd-service package by mgrpxy
+  * Add GitHub workflow for checking changelog
+  * Allow installation using --image image:tag
+  * Add command to register Peripheral server to Hub
+  * Add Node exporter (9100) and Taskomatic (9800) ports to the list
+    of open TCP ports
+  * Fix minimal administrator password length
+  * Do not assume the current host is a cluster node when getting
+    kubelet version
+  * Add mgrpxy start, stop and restart commands
+  * Remove shm size constraints on the server
+  * Add mgrpxy and mgradm status commands
+  * Use uninstall commands dry run by default to avoid unintended
+    removals
+  * Make first user mandatory at install time
+  * Add inspect and upgrade command
+  * Improve error handling when exec.Command is used
+  * Start/Stop/Restart command with kubernetes
+
+-------------------------------------------------------------------
 Tue Feb 27 14:50:42 CET 2024 - marina.latini@suse.com
 
 - version 0.1.5-0

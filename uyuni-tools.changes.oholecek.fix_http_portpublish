@@ -1,1 +1,0 @@
-- Port 80 should be published to the port 80 of the containers. 8080 is squid
