@@ -35,7 +35,7 @@ ExecStart=/usr/bin/podman run \
 	--sdnotify=conmon \
 	-d \
 	--name {{ .NamePrefix }}-server \
-	--hostname {{ .NamePrefix }}-server \
+	--hostname {{ .NamePrefix }}-server.mgr.internal \
 	{{ .Args }} \
 	{{- range .Ports }}
 	-p {{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
