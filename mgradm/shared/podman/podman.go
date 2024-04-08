@@ -158,8 +158,8 @@ func RunContainer(name string, image string, extraArgs []string, cmd []string) e
 }
 
 // RunMigration migrate an existing remote server to a container.
-func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, sshConfigPath string, sshKnownhostsPath string, sourceFqdn string) (string, string, string, error) {
-	scriptDir, err := adm_utils.GenerateMigrationScript(sourceFqdn, false)
+func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, sshConfigPath string, sshKnownhostsPath string, sourceFqdn string, user string) (string, string, string, error) {
+	scriptDir, err := adm_utils.GenerateMigrationScript(sourceFqdn, user, false)
 	if err != nil {
 		return "", "", "", fmt.Errorf(L("cannot generate migration script: %s"), err)
 	}

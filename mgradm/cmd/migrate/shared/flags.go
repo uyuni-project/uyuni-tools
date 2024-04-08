@@ -14,10 +14,12 @@ import (
 type MigrateFlags struct {
 	Image          types.ImageFlags `mapstructure:",squash"`
 	MigrationImage types.ImageFlags `mapstructure:"migration"`
+	User           string
 }
 
 // AddMigrateFlags add migration flags to a command.
 func AddMigrateFlags(cmd *cobra.Command) {
 	utils.AddImageFlag(cmd)
 	utils.AddMigrationImageFlag(cmd)
+	cmd.Flags().String("user", "root", "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers).")
 }
