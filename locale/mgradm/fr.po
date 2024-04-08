@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 09:52+0200\n"
-"PO-Revision-Date: 2024-04-05 18:26+0200\n"
+"POT-Creation-Date: 2024-04-08 14:28+0200\n"
+"PO-Revision-Date: 2024-04-08 14:34+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -654,12 +654,14 @@ msgid "Also remove the volumes"
 msgstr "Supprimer également les volumes"
 
 #: mgradm/cmd/support/config/extractor.go:32
-#: mgradm/cmd/inspect/kubernetes.go:75
+#: mgradm/cmd/inspect/kubernetes.go:75 mgradm/cmd/inspect/podman.go:63
+#: mgradm/cmd/upgrade/kubernetes/utils.go:68
 #: mgradm/shared/kubernetes/certificates.go:27
 #: mgradm/shared/kubernetes/certificates.go:65
-#: mgradm/shared/podman/podman.go:221 mgradm/shared/podman/podman.go:281
-#: mgradm/shared/podman/podman.go:306 mgradm/shared/utils/exec.go:158
-#: mgradm/shared/utils/exec.go:242
+#: mgradm/shared/kubernetes/k3s.go:36 mgradm/shared/kubernetes/k3s.go:104
+#: mgradm/shared/kubernetes/k3s.go:149 mgradm/shared/podman/podman.go:221
+#: mgradm/shared/podman/podman.go:281 mgradm/shared/podman/podman.go:306
+#: mgradm/shared/utils/exec.go:158 mgradm/shared/utils/exec.go:242
 #, javascript-format
 msgid "failed to create temporary directory: %s"
 msgstr "impossible de créér le répertoire temporaire: %s"
@@ -797,11 +799,6 @@ msgstr ""
 msgid "cannot inspect data: %s"
 msgstr ""
 
-#: mgradm/cmd/inspect/podman.go:63
-#, javascript-format
-msgid "failed to create temporary directory %s"
-msgstr ""
-
 #: mgradm/cmd/upgrade/kubernetes/kubernetes.go:27
 #: mgradm/cmd/upgrade/kubernetes/kubernetes.go:28
 msgid "Upgrade a local server on kubernetes"
@@ -814,11 +811,6 @@ msgstr ""
 
 #: mgradm/cmd/upgrade/kubernetes/utils.go:56
 msgid "inspect function did non return fqdn value"
-msgstr ""
-
-#: mgradm/cmd/upgrade/kubernetes/utils.go:68 mgradm/shared/kubernetes/k3s.go:36
-#: mgradm/shared/kubernetes/k3s.go:104 mgradm/shared/kubernetes/k3s.go:149
-msgid "failed to create temporary directory"
 msgstr ""
 
 #: mgradm/cmd/upgrade/kubernetes/utils.go:80
@@ -1009,11 +1001,7 @@ msgstr ""
 msgid "failed to get status of the server service: %s"
 msgstr ""
 
-#: mgradm/cmd/status/status.go:24
-msgid "get the server status"
-msgstr ""
-
-#: mgradm/cmd/status/status.go:25
+#: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
 msgid "Get the server status"
 msgstr ""
 
@@ -1094,11 +1082,11 @@ msgstr "impossible d'exécuter le déploiement: %s"
 
 #: mgradm/shared/kubernetes/certificates.go:149
 msgid "Extracting CA certificate to a configmap"
-msgstr ""
+msgstr "Extraction du certificat de l'autorité de certification dans une configmap"
 
 #: mgradm/shared/kubernetes/certificates.go:154
 msgid "uyuni-ca configmap already existing, skipping extraction"
-msgstr ""
+msgstr "La configmap uyuni-ca existe déjà, extraction passée"
 
 #: mgradm/shared/kubernetes/certificates.go:160
 msgid "Failed to get uyuni-ca certificate"
@@ -1120,16 +1108,16 @@ msgstr "impossible de mettre à jour: %s"
 #: mgradm/shared/kubernetes/install.go:65
 #, javascript-format
 msgid "cannot install cert-manager and self-sign issuer: %s"
-msgstr ""
+msgstr "impossible d'installer cert-manager et l'issuer auto-signé: %s"
 
 #: mgradm/shared/kubernetes/install.go:90
 msgid "Installing Uyuni"
-msgstr ""
+msgstr "Installation d'Uyuni"
 
 #: mgradm/shared/kubernetes/k3s.go:56 mgradm/shared/podman/podman.go:260
 #, javascript-format
 msgid "Using migration image %s"
-msgstr ""
+msgstr "Utilisation de l'image de migration %s"
 
 #: mgradm/shared/kubernetes/k3s.go:59
 #, javascript-format
@@ -1179,159 +1167,152 @@ msgid "failed to remove now useless ssl-build folder in the container"
 msgstr "impossible de supprimer le répertoire ssl-build devenu inutile dans le conteneur"
 
 #: mgradm/shared/podman/podman.go:154
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run %s container: %s"
-msgstr "impossible de supprimer le fichier %s%s dans le conteneur: %s"
+msgstr "impossible d'exécuter le conteneur %s: %s"
 
 #: mgradm/shared/podman/podman.go:164
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot generate migration script: %s"
-msgstr "impossible d'exécuter le script de migration: %s"
+msgstr "impossible de générer le script de migration: %s"
 
 #: mgradm/shared/podman/podman.go:203
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot run uyuni migration container: %s"
-msgstr "impossible d'exécuter le script de migration: %s"
+msgstr "impossible d'exécuter le conteneur de migration: %s"
 
 #: mgradm/shared/podman/podman.go:208
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot read extracted data: %s"
-msgstr "impossible d'activer le service systemd: %s"
+msgstr "impossible de lire les données extraites: %s"
 
 #: mgradm/shared/podman/podman.go:264
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot generate PostgreSQL database version upgrade script %s"
-msgstr "impossible d'exécuter le script de mise à jour de la version de PostgreSQL: %s"
+msgstr "impossible de générer le script de mise à jour de la version de PostgreSQL: %s"
 
 #: mgradm/shared/podman/podman.go:291 mgradm/shared/podman/podman.go:315
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot generate PostgreSQL finalization script: %s"
-msgstr "impossible d'exécuter le script de finalisation de PostgreSQL: %s"
+msgstr "impossible de générer le script de finalisation de PostgreSQL: %s"
 
 #: mgradm/shared/ssl/ssl.go:47
-#, fuzzy
 msgid "Failed to find a non-CA certificate"
-msgstr "impossible de supprimer la partie text du certificat de l'autorité de certification: %s"
+msgstr "Impossible de trouver un certificat qui ne soit pas une autorité de certification"
 
 #: mgradm/shared/ssl/ssl.go:86
 msgid "expected to find a certificate, got none"
-msgstr ""
+msgstr "certificat attendu, aucun trouvé"
 
 #: mgradm/shared/ssl/ssl.go:92
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to read certificate file %s"
-msgstr "impossible de supprimer la partie text du certificat de l'autorité de certification: %s"
+msgstr "Impossible de lire le fichier de certificat %s"
 
 #: mgradm/shared/ssl/ssl.go:128
-#, fuzzy
 msgid "Failed to extract data from certificate"
-msgstr "impossible de supprimer la partie text du certificat de l'autorité de certification: %s"
+msgstr "Impossible d'extraire les données du certificat"
 
 #: mgradm/shared/ssl/ssl.go:149
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse start date: %s\n"
-msgstr "impossible d'ajouter %s à l'archive: %s"
+msgstr "Impossible lire la date de début: %s\n"
 
 #: mgradm/shared/ssl/ssl.go:155
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse end date: %s\n"
-msgstr "impossible de déterminer l'image: %s"
+msgstr "Impossible de lire la date de fin: %s\n"
 
 #: mgradm/shared/ssl/ssl.go:199
-msgid "No CA found in hash"
-msgstr ""
+msgid "No CA found"
+msgstr "Aucune autorité de certification trouvée"
 
 #: mgradm/shared/ssl/ssl.go:206
 msgid "No CA found for server certificate"
-msgstr ""
+msgstr "Aucune autorité de certification trouvée pour le certificat du serveur"
 
 #: mgradm/shared/ssl/ssl.go:215
 #, javascript-format
 msgid "Missing CA with subject hash %s"
-msgstr ""
+msgstr "Autorité de certification avec  hachage du sujet %s manquante"
 
 #: mgradm/shared/ssl/ssl.go:236
-#, fuzzy
 msgid "server certificate is required"
-msgstr "Chemin vers le certificat du serveur"
+msgstr "certificat du serveur nécessaire"
 
 #: mgradm/shared/ssl/ssl.go:237
 msgid "server key is required"
-msgstr ""
+msgstr "la clé du serveur est nécessaire"
 
 #: mgradm/shared/ssl/ssl.go:249
 #, javascript-format
 msgid "%s file is not accessible"
-msgstr ""
+msgstr "le fichier %s n'est pas accessible"
 
 #: mgradm/shared/ssl/ssl.go:257
-#, fuzzy
 msgid "Source server SSL CA private key password"
-msgstr "Mot de passe de la clé privée de l'autorité de certification SSL générée"
+msgstr "Mot de passe de la clé privée de l'autorité de certification SSL source"
 
 #: mgradm/shared/ssl/ssl.go:264
 msgid "Failed to convert CA private key to RSA"
-msgstr ""
+msgstr "Echec de conversion de la clé privée de l'autorité de certification en RSA"
 
 #: mgradm/shared/utils/exec.go:51
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "exec command failed: %s"
-msgstr "la commande inspect a échoué: %s"
+msgstr "la commande exec a échoué: %s"
 
 #: mgradm/shared/utils/exec.go:85 mgradm/shared/utils/exec.go:103
 #: mgradm/shared/utils/exec.go:117
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to generate %s"
-msgstr "Impossible de générer le script d'installation"
+msgstr "impossible de générer %s"
 
 #: mgradm/shared/utils/exec.go:126
-#, fuzzy
 msgid "failed to read data extracted from source host"
-msgstr "impossible de supprimer la partie text du certificat de l'autorité de certification: %s"
+msgstr "impossible de lire les données extraites de l'hôte source"
 
 #: mgradm/shared/utils/exec.go:130 mgradm/shared/utils/exec.go:219
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot read config: %s"
-msgstr "impossible de lire les données du conteneur: %s"
+msgstr "impossible de lire la configuration: %s"
 
 #: mgradm/shared/utils/exec.go:133
 msgid "cannot retrieve timezone"
-msgstr ""
+msgstr "impossible d'obtenir la zone horaire"
 
 #: mgradm/shared/utils/exec.go:136
-#, fuzzy
 msgid "cannot retrieve source PostgreSQL version"
-msgstr "impossible d'exécuter le script de mise à jour de la version de PostgreSQL: %s"
+msgstr "impossible d'obtenir la version de PostgreSQL sur le serveur d'origine: %s"
 
 #: mgradm/shared/utils/exec.go:139
-#, fuzzy
 msgid "cannot retrieve image PostgreSQL version"
-msgstr "impossible d'exécuter le script de mise à jour de la version de PostgreSQL: %s"
+msgstr "impossible d'obtenir la version de PostgreSQL sur l'image: %s"
 
 #: mgradm/shared/utils/exec.go:149
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error running the migration script: %s"
-msgstr "erreur lors de l'exécution du script d'installation: %s"
+msgstr "erreur lors de l'exécution du script de migration: %s"
 
 #: mgradm/shared/utils/exec.go:212
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot parse file %s: %s"
-msgstr "impossible de mettre à jour avec l'image %s: %s"
+msgstr "impossible d'analyser le fichier %s: %s"
 
 #: mgradm/shared/utils/exec.go:250
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run inspect script in host system: %s"
-msgstr "impossible de trouver supportconfig sur l'hôte: %s"
+msgstr "impossible d'exécuter le script d'inspection sur le système hôte: %s"
 
 #: mgradm/shared/utils/exec.go:255
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot inspect host data: %s"
 msgstr "impossible d'inspecter les valeurs de l'hôte: %s"
 
 #: mgradm/shared/utils/exec.go:270 mgradm/shared/utils/exec.go:284
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to generate inspect script: %s"
-msgstr "impossible de générer le script de migration: %s"
+msgstr "impossible de générer le script d'inspection: %s"
 
 #, javascript-format
 #~ msgid "cannot generate systemd service: %s"

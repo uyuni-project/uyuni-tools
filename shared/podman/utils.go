@@ -131,7 +131,7 @@ func LinkVolumes(mountFlags *PodmanMountFlags) error {
 			}
 			baseFolder := path.Join(graphRoot, "volumes")
 			if err := utils.RunCmd("mkdir", "-p", baseFolder); err != nil {
-				return fmt.Errorf(L("failed to create volumes folder: %s: %s"), baseFolder, err)
+				return fmt.Errorf(L("failed to create volumes folder %s: %s"), baseFolder, err)
 			}
 
 			if err := utils.RunCmd("ln", "-s", value, volumePath); err != nil {

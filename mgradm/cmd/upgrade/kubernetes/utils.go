@@ -65,7 +65,7 @@ func upgradeKubernetes(
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return fmt.Errorf(L("failed to create temporary directory"))
+		return fmt.Errorf(L("failed to create temporary directory: %s"), err)
 	}
 
 	//this is needed because folder with script needs to be mounted

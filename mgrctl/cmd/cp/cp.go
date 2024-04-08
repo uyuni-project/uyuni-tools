@@ -38,7 +38,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 				return err
 			}
 			if err := viper.Unmarshal(&flags); err != nil {
-				return fmt.Errorf(L("failed to unmarshall configuration: %s"), err)
+				return fmt.Errorf(L("failed to unmarshall configuration")+": %s", err)
 			}
 			return run(flags, cmd, args)
 		},

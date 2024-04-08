@@ -90,7 +90,7 @@ func GetRpmImageName(image string) (rpmImageFile string, tag string) {
 func BuildRpmImagePath(byteValue []byte, rpmImageFile string, tag string) (string, error) {
 	var data types.Metadata
 	if err := json.Unmarshal(byteValue, &data); err != nil {
-		return "", fmt.Errorf(L("cannot unmarshal: %s"), err)
+		return "", fmt.Errorf(L("cannot unmarshal image RPM metadata: %s"), err)
 	}
 	fullPathFile := rpmImageDir + data.Image.File
 	if data.Image.Name == rpmImageFile {

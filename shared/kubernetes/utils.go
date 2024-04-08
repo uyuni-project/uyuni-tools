@@ -48,7 +48,7 @@ func WaitForDeployment(namespace string, name string, appName string) error {
 	// List the Pulled events from the pod as we may not see the Pulling if the image was already downloaded
 	err := WaitForPulledImage(namespace, podName)
 	if err != nil {
-		return fmt.Errorf(L("failed to pulled image: %s"), err)
+		return fmt.Errorf(L("failed to pull image: %s"), err)
 	}
 
 	log.Info().Msgf(L("Waiting for %s deployment to be ready in %s namespace\n"), name, namespace)
@@ -204,7 +204,7 @@ func waitForReplicaZero(podname string) error {
 		* next iteration because the pod was actually deleted
 		 */
 		if err != nil && i == 0 {
-			return fmt.Errorf(L("cannot check for replica zero for %s: %s"), podname, err)
+			return fmt.Errorf(L("cannot get pod informations %s: %s"), podname, err)
 		}
 		outStr := strings.TrimSuffix(string(out), "\n")
 		if len(outStr) == 0 {
@@ -362,7 +362,7 @@ func GetNode(filter string) (string, error) {
 func GenerateOverrideDeployment(deployData types.Deployment) (string, error) {
 	ret, err := json.Marshal(deployData)
 	if err != nil {
-		return "", fmt.Errorf(L("cannot marshal deployment: %s"), err)
+		return "", fmt.Errorf(L("cannot serialize pod definition override: %s"), err)
 	}
 	return string(ret), nil
 }

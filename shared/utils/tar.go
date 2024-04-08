@@ -45,7 +45,7 @@ func ExtractTarGz(tarballPath string, dstPath string) error {
 			return err
 		}
 		if !strings.HasPrefix(path, dstPath) {
-			log.Warn().Msgf(L("Skipping extraction of %s in %s file as is resolves outside the target path"),
+			log.Warn().Msgf(L("Skipping extraction of %s in %s file as it resolves outside the target path"),
 				header.Name, tarballPath)
 			continue
 		}

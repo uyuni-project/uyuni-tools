@@ -33,7 +33,7 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return errors.New(L("failed to create temporary directory"))
+		return errors.New(L("failed to create temporary directory: %s"))
 	}
 	if newPgsql > oldPgsql {
 		log.Info().Msgf(L("Previous PostgreSQL is %s, new one is %s. Performing a DB version upgrade..."), oldPgsql, newPgsql)
@@ -101,7 +101,7 @@ func RunPgsqlFinalizeScript(serverImage string, pullPolicy string, nodeName stri
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return fmt.Errorf(L("failed to create temporary directory"))
+		return fmt.Errorf(L("failed to create temporary directory: %s"))
 	}
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
 	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, schemaUpdateRequired, true, true, true)
@@ -146,7 +146,7 @@ func RunPostUpgradeScript(serverImage string, pullPolicy string, nodeName string
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return fmt.Errorf(L("failed to create temporary directory"))
+		return fmt.Errorf(L("failed to create temporary directory: %s"))
 	}
 	postUpgradeContainer := "uyuni-post-upgrade"
 	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")

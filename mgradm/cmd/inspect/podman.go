@@ -60,7 +60,7 @@ func InspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("failed to create temporary directory %s"), err)
+		return map[string]string{}, fmt.Errorf(L("failed to create temporary directory: %s"), err)
 	}
 
 	inspectedHostValues, err := adm_utils.InspectHost()

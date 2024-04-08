@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 10:02+0200\n"
+"POT-Creation-Date: 2024-04-08 14:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,8 +58,7 @@ msgid ""
 msgstr ""
 
 #: mgrctl/cmd/cp/cp.go:41
-#, javascript-format
-msgid "failed to unmarshall configuration: %s"
+msgid "failed to unmarshall configuration"
 msgstr ""
 
 #: mgrctl/cmd/cp/cp.go:47

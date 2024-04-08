@@ -27,15 +27,15 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			switch args[0] {
 			case "bash":
 				if err := cmd.Root().GenBashCompletion(os.Stdout); err != nil {
-					return fmt.Errorf(L("cannot generate bash completion: %s"), err)
+					return fmt.Errorf(L("cannot generate %s completion: %s"), args[0], err)
 				}
 			case "zsh":
 				if err := cmd.Root().GenZshCompletion(os.Stdout); err != nil {
-					return fmt.Errorf(L("cannot generate zsh completion: %s"), err)
+					return fmt.Errorf(L("cannot generate %s completion: %s"), args[0], err)
 				}
 			case "fish":
 				if err := cmd.Root().GenFishCompletion(os.Stdout, true); err != nil {
-					return fmt.Errorf(L("cannot generate fish completion: %s"), err)
+					return fmt.Errorf(L("cannot generate %s completion: %s"), args[0], err)
 				}
 			}
 			return nil

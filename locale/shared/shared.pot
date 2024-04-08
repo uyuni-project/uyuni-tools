@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 10:02+0200\n"
+"POT-Creation-Date: 2024-04-08 14:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: shared/utils/template.go:25
 #, javascript-format
@@ -25,76 +26,6 @@ msgstr ""
 #: shared/utils/template.go:32
 #, javascript-format
 msgid "failed to open %s for writing: %s"
-msgstr ""
-
-#: shared/utils/utils.go:31
-#, javascript-format
-msgid "Has to be more than %d character long"
-msgstr ""
-
-#: shared/utils/utils.go:35
-#, javascript-format
-msgid "Has to be less than %d character long"
-msgstr ""
-
-#: shared/utils/utils.go:48
-msgid "Failed to read password"
-msgstr ""
-
-#: shared/utils/utils.go:54
-msgid "Cannot contain spaces or tabs"
-msgstr ""
-
-#: shared/utils/utils.go:75
-msgid "Failed to read input"
-msgstr ""
-
-#: shared/utils/utils.go:83
-msgid "A value is required"
-msgstr ""
-
-#: shared/utils/utils.go:93
-#, javascript-format
-msgid "invalid image name: %s"
-msgstr ""
-
-#: shared/utils/utils.go:97
-#, javascript-format
-msgid "tag missing on %s"
-msgstr ""
-
-#: shared/utils/utils.go:116
-#, javascript-format
-msgid "Failed to run %s"
-msgstr ""
-
-#: shared/utils/utils.go:127
-#, javascript-format
-msgid "Failed to stat %s file"
-msgstr ""
-
-#: shared/utils/utils.go:136
-#, javascript-format
-msgid "Failed to read file %s"
-msgstr ""
-
-#: shared/utils/utils.go:151
-#, javascript-format
-msgid "Would remove file %s"
-msgstr ""
-
-#: shared/utils/utils.go:153
-#, javascript-format
-msgid "Removing file %s"
-msgstr ""
-
-#: shared/utils/utils.go:155
-#, javascript-format
-msgid "Failed to remove file %s"
-msgstr ""
-
-#: shared/utils/utils.go:165
-msgid "Failed to read random data"
 msgstr ""
 
 #: shared/utils/config.go:33
@@ -183,9 +114,83 @@ msgstr ""
 msgid "failed to compute config help command"
 msgstr ""
 
+#: shared/utils/utils.go:31
+#, javascript-format
+msgid "Has to be more than %d character long"
+msgid_plural "Has to be more that %d characters long"
+msgstr[0] ""
+msgstr[1] ""
+
+#: shared/utils/utils.go:35
+#, javascript-format
+msgid "Has to be less than %d character long"
+msgid_plural "Has to be less than %d characters long"
+msgstr[0] ""
+msgstr[1] ""
+
+#: shared/utils/utils.go:48
+msgid "Failed to read password"
+msgstr ""
+
+#: shared/utils/utils.go:54
+msgid "Cannot contain spaces or tabs"
+msgstr ""
+
+#: shared/utils/utils.go:75
+msgid "Failed to read input"
+msgstr ""
+
+#: shared/utils/utils.go:83
+msgid "A value is required"
+msgstr ""
+
+#: shared/utils/utils.go:93
+#, javascript-format
+msgid "invalid image name: %s"
+msgstr ""
+
+#: shared/utils/utils.go:97
+#, javascript-format
+msgid "tag missing on %s"
+msgstr ""
+
+#: shared/utils/utils.go:116
+#, javascript-format
+msgid "Failed to run %s"
+msgstr ""
+
+#: shared/utils/utils.go:127
+#, javascript-format
+msgid "Failed to get %s file informations"
+msgstr ""
+
+#: shared/utils/utils.go:136
+#, javascript-format
+msgid "Failed to read file %s"
+msgstr ""
+
+#: shared/utils/utils.go:151
+#, javascript-format
+msgid "Would remove file %s"
+msgstr ""
+
+#: shared/utils/utils.go:153
+#, javascript-format
+msgid "Removing file %s"
+msgstr ""
+
+#: shared/utils/utils.go:155
+#, javascript-format
+msgid "Failed to remove file %s"
+msgstr ""
+
+#: shared/utils/utils.go:165
+msgid "Failed to read random data"
+msgstr ""
+
 #: shared/utils/tar.go:48
 #, javascript-format
-msgid "Skipping extraction of %s in %s file as is resolves outside the target path"
+msgid "Skipping extraction of %s in %s file as it resolves outside the target path"
 msgstr ""
 
 #: shared/utils/tar.go:90
@@ -260,19 +265,10 @@ msgstr ""
 msgid "Generate shell completion script"
 msgstr ""
 
-#: shared/completion/completion.go:30
-#, javascript-format
-msgid "cannot generate bash completion: %s"
-msgstr ""
-
-#: shared/completion/completion.go:34
-#, javascript-format
-msgid "cannot generate zsh completion: %s"
-msgstr ""
-
+#: shared/completion/completion.go:30 shared/completion/completion.go:34
 #: shared/completion/completion.go:38
 #, javascript-format
-msgid "cannot generate fish completion: %s"
+msgid "cannot generate %s completion: %s"
 msgstr ""
 
 #: shared/kubernetes/helm.go:56
@@ -379,7 +375,7 @@ msgstr ""
 
 #: shared/kubernetes/utils.go:51
 #, javascript-format
-msgid "failed to pulled image: %s"
+msgid "failed to pull image: %s"
 msgstr ""
 
 #: shared/kubernetes/utils.go:54
@@ -444,7 +440,7 @@ msgstr ""
 
 #: shared/kubernetes/utils.go:207
 #, javascript-format
-msgid "cannot check for replica zero for %s: %s"
+msgid "cannot get pod informations %s: %s"
 msgstr ""
 
 #: shared/kubernetes/utils.go:216
@@ -494,63 +490,7 @@ msgstr ""
 
 #: shared/kubernetes/utils.go:365
 #, javascript-format
-msgid "cannot marshal deployment: %s"
-msgstr ""
-
-#: shared/podman/images.go:35
-#, javascript-format
-msgid "Ensure image %s is available"
-msgstr ""
-
-#: shared/podman/images.go:54
-#, javascript-format
-msgid "Cannot use RPM image for %s: %s"
-msgstr ""
-
-#: shared/podman/images.go:56
-#, javascript-format
-msgid "Using the %s image loaded from the RPM instead of its online version %s"
-msgstr ""
-
-#: shared/podman/images.go:60
-#, javascript-format
-msgid "Cannot find RPM image for %s"
-msgstr ""
-
-#: shared/podman/images.go:68
-#, javascript-format
-msgid "image %s is missing and cannot be fetched"
-msgstr ""
-
-#: shared/podman/images.go:93
-#, javascript-format
-msgid "cannot unmarshal: %s"
-msgstr ""
-
-#: shared/podman/images.go:138
-#, javascript-format
-msgid "Cannot unmarshal metadata file %s: %s"
-msgstr ""
-
-#: shared/podman/images.go:160
-#, javascript-format
-msgid "error parsing: %s"
-msgstr ""
-
-#: shared/podman/images.go:168 shared/podman/images.go:182
-#: shared/podman/images.go:197
-#, javascript-format
-msgid "failed to check if image %s has already been pulled"
-msgstr ""
-
-#: shared/podman/images.go:203
-#, javascript-format
-msgid "Pulling image %s"
-msgstr ""
-
-#: shared/podman/images.go:222
-#, javascript-format
-msgid "cannot find any tag for image %s: %s"
+msgid "cannot serialize pod definition override: %s"
 msgstr ""
 
 #: shared/podman/network.go:23
@@ -724,7 +664,7 @@ msgstr ""
 
 #: shared/podman/utils.go:134
 #, javascript-format
-msgid "failed to create volumes folder: %s: %s"
+msgid "failed to create volumes folder %s: %s"
 msgstr ""
 
 #: shared/podman/utils.go:138
@@ -735,6 +675,62 @@ msgstr ""
 #: shared/podman/utils.go:148
 #, javascript-format
 msgid "failed to get podman's volumes folder: %s"
+msgstr ""
+
+#: shared/podman/images.go:35
+#, javascript-format
+msgid "Ensure image %s is available"
+msgstr ""
+
+#: shared/podman/images.go:54
+#, javascript-format
+msgid "Cannot use RPM image for %s: %s"
+msgstr ""
+
+#: shared/podman/images.go:56
+#, javascript-format
+msgid "Using the %s image loaded from the RPM instead of its online version %s"
+msgstr ""
+
+#: shared/podman/images.go:60
+#, javascript-format
+msgid "Cannot find RPM image for %s"
+msgstr ""
+
+#: shared/podman/images.go:68
+#, javascript-format
+msgid "image %s is missing and cannot be fetched"
+msgstr ""
+
+#: shared/podman/images.go:93
+#, javascript-format
+msgid "cannot unmarshal image RPM metadata: %s"
+msgstr ""
+
+#: shared/podman/images.go:138
+#, javascript-format
+msgid "Cannot unmarshal metadata file %s: %s"
+msgstr ""
+
+#: shared/podman/images.go:160
+#, javascript-format
+msgid "error parsing: %s"
+msgstr ""
+
+#: shared/podman/images.go:168 shared/podman/images.go:182
+#: shared/podman/images.go:197
+#, javascript-format
+msgid "failed to check if image %s has already been pulled"
+msgstr ""
+
+#: shared/podman/images.go:203
+#, javascript-format
+msgid "Pulling image %s"
+msgstr ""
+
+#: shared/podman/images.go:222
+#, javascript-format
+msgid "cannot find any tag for image %s: %s"
 msgstr ""
 
 #: shared/connection.go:56

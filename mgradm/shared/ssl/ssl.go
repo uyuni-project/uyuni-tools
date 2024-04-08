@@ -196,7 +196,7 @@ func extractCertificateData(content []byte) certificate {
 // Returns the certificate chain and the root CA.
 func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash string) ([]byte, []byte) {
 	if len(mapBySubjectHash) == 0 {
-		log.Fatal().Msg(L("No CA found in hash"))
+		log.Fatal().Msg(L("No CA found"))
 	}
 
 	cert := mapBySubjectHash[serverCertHash]

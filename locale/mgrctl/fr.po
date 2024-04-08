@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 09:52+0200\n"
-"PO-Revision-Date: 2024-04-08 11:13+0200\n"
+"POT-Creation-Date: 2024-04-08 13:56+0200\n"
+"PO-Revision-Date: 2024-04-08 14:10+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -61,9 +61,8 @@ msgstr ""
 "\tL'un d'eux peut être préfixé par 'server:' pour indiquer que le chemin est dans le conteneur du serveur."
 
 #: mgrctl/cmd/cp/cp.go:41
-#, javascript-format
-msgid "failed to unmarshall configuration: %s"
-msgstr "impossible d'analyser la configuration: %s"
+msgid "failed to unmarshall configuration"
+msgstr "impossible d'analyser la configuration"
 
 #: mgrctl/cmd/cp/cp.go:47
 msgid "User or UID to set on the destination file"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 10:02+0200\n"
+"POT-Creation-Date: 2024-04-08 14:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -609,12 +609,14 @@ msgid "Also remove the volumes"
 msgstr ""
 
 #: mgradm/cmd/support/config/extractor.go:32
-#: mgradm/cmd/inspect/kubernetes.go:75
+#: mgradm/cmd/inspect/kubernetes.go:75 mgradm/cmd/inspect/podman.go:63
+#: mgradm/cmd/upgrade/kubernetes/utils.go:68
 #: mgradm/shared/kubernetes/certificates.go:27
 #: mgradm/shared/kubernetes/certificates.go:65
-#: mgradm/shared/podman/podman.go:221 mgradm/shared/podman/podman.go:281
-#: mgradm/shared/podman/podman.go:306 mgradm/shared/utils/exec.go:158
-#: mgradm/shared/utils/exec.go:242
+#: mgradm/shared/kubernetes/k3s.go:36 mgradm/shared/kubernetes/k3s.go:104
+#: mgradm/shared/kubernetes/k3s.go:149 mgradm/shared/podman/podman.go:221
+#: mgradm/shared/podman/podman.go:281 mgradm/shared/podman/podman.go:306
+#: mgradm/shared/utils/exec.go:158 mgradm/shared/utils/exec.go:242
 #, javascript-format
 msgid "failed to create temporary directory: %s"
 msgstr ""
@@ -750,11 +752,6 @@ msgstr ""
 msgid "cannot inspect data: %s"
 msgstr ""
 
-#: mgradm/cmd/inspect/podman.go:63
-#, javascript-format
-msgid "failed to create temporary directory %s"
-msgstr ""
-
 #: mgradm/cmd/upgrade/kubernetes/kubernetes.go:27
 #: mgradm/cmd/upgrade/kubernetes/kubernetes.go:28
 msgid "Upgrade a local server on kubernetes"
@@ -767,11 +764,6 @@ msgstr ""
 
 #: mgradm/cmd/upgrade/kubernetes/utils.go:56
 msgid "inspect function did non return fqdn value"
-msgstr ""
-
-#: mgradm/cmd/upgrade/kubernetes/utils.go:68 mgradm/shared/kubernetes/k3s.go:36
-#: mgradm/shared/kubernetes/k3s.go:104 mgradm/shared/kubernetes/k3s.go:149
-msgid "failed to create temporary directory"
 msgstr ""
 
 #: mgradm/cmd/upgrade/kubernetes/utils.go:80
@@ -962,11 +954,7 @@ msgstr ""
 msgid "failed to get status of the server service: %s"
 msgstr ""
 
-#: mgradm/cmd/status/status.go:24
-msgid "get the server status"
-msgstr ""
-
-#: mgradm/cmd/status/status.go:25
+#: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
 msgid "Get the server status"
 msgstr ""
 
@@ -1189,7 +1177,7 @@ msgid "Failed to parse end date: %s\n"
 msgstr ""
 
 #: mgradm/shared/ssl/ssl.go:199
-msgid "No CA found in hash"
+msgid "No CA found"
 msgstr ""
 
 #: mgradm/shared/ssl/ssl.go:206
