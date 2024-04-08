@@ -23,6 +23,32 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+func setupCocoContainer(flags *podmanInstallFlags) error {
+	if flags.Coco.Replicas > 0 {
+		if flags.Coco.Replicas > 1 {
+			log.Warn().Msgf(L("Currently only one replica is supported, starting just one instead of %d"), flags.Coco.Replicas)
+		}
+
+		tag := flags.Coco.Image.Tag
+		if tag == "" {
+			tag = flags.Image.Tag
+		}
+		cocoImage, err := utils.ComputeImage(flags.Coco.Image.Name, tag)
+		if err != nil {
+			return fmt.Errorf(L("failed to compute image URL, %s"), err)
+		}
+
+		if err := podman.GenerateAttestationSystemdService(cocoImage, flags.Db); err != nil {
+			return fmt.Errorf(L("cannot generate systemd service: %s"), err)
+		}
+
+		if err := shared_podman.EnableService(shared_podman.ServerAttestationService); err != nil {
+			return fmt.Errorf(L("cannot enable service: %s"), err)
+		}
+	}
+	return nil
+}
+
 func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
 	podmanArgs := flags.Podman.Args
 	if flags.MirrorPath != "" {
@@ -111,6 +137,10 @@ func installForPodman(
 		if stopErr := shared_podman.StopService(shared_podman.ServerService); stopErr != nil {
 			log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
 		}
+		return err
+	}
+
+	if err := setupCocoContainer(flags); err != nil {
 		return err
 	}
 

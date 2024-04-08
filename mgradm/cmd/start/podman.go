@@ -16,5 +16,10 @@ func podmanStart(
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	if podman.HasService(podman.ServerAttestationService) {
+		if err := podman.StartService(podman.ServerAttestationService); err != nil {
+			return err
+		}
+	}
 	return podman.StartService(podman.ServerService)
 }

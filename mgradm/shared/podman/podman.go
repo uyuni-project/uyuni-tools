@@ -14,6 +14,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -45,6 +46,29 @@ func GetExposedPorts(debug bool) []types.PortMap {
 	}
 
 	return ports
+}
+
+// GenerateAttestationSystemdService creates the coco attestation systemd files.
+func GenerateAttestationSystemdService(image string, db install_shared.DbFlags) error {
+	attestationData := templates.AttestationServiceTemplateData{
+		NamePrefix: "uyuni",
+		Network:    podman.UyuniNetwork,
+		Image:      image,
+	}
+	if err := utils.WriteTemplateToFile(attestationData, podman.GetServicePath(podman.ServerAttestationService), 0555, false); err != nil {
+		return fmt.Errorf(L("failed to generate systemd service unit file: %s"), err)
+	}
+
+	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
+Environment=database_connection=jdbc:postgresql://uyuni-server.mgr.internal:%d/%s
+Environment=database_user=%s
+Environment=database_password=%s
+	`, image, db.Port, db.Name, db.User, db.Password)
+	if err := podman.GenerateSystemdConfFile(podman.ServerAttestationService, "Service", environment); err != nil {
+		return fmt.Errorf(L("cannot generate systemd conf file: %s"), err)
+	}
+
+	return podman.ReloadDaemon(false)
 }
 
 // GenerateSystemdService creates a serverY systemd file.

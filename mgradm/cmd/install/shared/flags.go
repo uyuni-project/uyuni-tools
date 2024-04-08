@@ -44,6 +44,12 @@ type DebugFlags struct {
 	Java bool
 }
 
+// CocoFlags contains settings for coco attestation container.
+type CocoFlags struct {
+	Replicas int
+	Image    types.ImageFlags `mapstructure:",squash"`
+}
+
 // InstallFlags stores all the flags used by install command.
 type InstallFlags struct {
 	TZ           string
@@ -58,6 +64,7 @@ type InstallFlags struct {
 	Scc          SccFlags
 	Debug        DebugFlags
 	Image        types.ImageFlags `mapstructure:",squash"`
+	Coco         CocoFlags
 	Admin        apiTypes.User
 	Organization string
 }
@@ -198,6 +205,14 @@ func AddInstallFlags(cmd *cobra.Command) {
 
 	cmd.Flags().Bool("debug-java", false, L("Enable tomcat and taskomatic remote debugging"))
 	cmd_utils.AddImageFlag(cmd)
+
+	cmd_utils.AddContainerImageFlags(cmd, "coco")
+	cmd.Flags().Int("coco-replicas", 0, L("How many replicas of the confidential computing container should be started. (only 0 or 1 supported for now)"))
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
+	_ = utils.AddFlagToHelpGroupID(cmd, "coco-image", "coco-container")
+	_ = utils.AddFlagToHelpGroupID(cmd, "coco-tag", "coco-container")
 
 	cmd.Flags().String("admin-login", "admin", L("Administrator user name"))
 	cmd.Flags().String("admin-password", "", L("Administrator password"))

@@ -23,9 +23,13 @@ func uninstallForPodman(
 ) error {
 	// Uninstall the service
 	podman.UninstallService("uyuni-server", !flags.Force)
-
 	// Force stop the pod
 	podman.DeleteContainer(podman.ServerContainerName, !flags.Force)
+
+	if podman.HasService(podman.ServerAttestationService) {
+		podman.UninstallService(podman.ServerAttestationService, !flags.Force)
+		podman.DeleteContainer(podman.ServerAttestationService, !flags.Force)
+	}
 
 	// Remove the volumes
 	if flags.PurgeVolumes {
