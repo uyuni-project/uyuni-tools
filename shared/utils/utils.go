@@ -28,7 +28,7 @@ func checkValueSize(value string, min int, max int) bool {
 	}
 
 	if len(value) < min {
-		fmt.Printf(NL("Has to be more than %d character long", "Has to be more that %d characters long", min), min)
+		fmt.Printf(NL("Has to be more than %d character long", "Has to be more than %d characters long", min), min)
 		return false
 	}
 	if len(value) > max {
