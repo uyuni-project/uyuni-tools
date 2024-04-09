@@ -1,1 +1,1 @@
-- Allow PAM authentication
+- Allow PAM and LDAP authentication using SSSD

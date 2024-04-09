@@ -19,6 +19,14 @@ else
 	sed 's/uyuni_authentication_endpoint.*/spacewalk_authentication_endpoint: http:\/\/localhost/' -i /etc/cobbler/settings.yaml;
 fi
 {{ end }}
+
+grep pam_auth_service /etc/rhn/rhn.conf
+if [ $? -eq 1 ]; then
+	echo 'pam_auth_service = susemanager' >> /etc/rhn/rhn.conf
+else
+	sed 's/pam_auth_service.*/pam_auth_service = susemanager/' -i /etc/rhn/rhn.conf;
+fi
+{{ end }}
 `
 
 // PostUpgradeTemplateData represents information used to create post upgrade.
