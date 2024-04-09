@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 14:08+0200\n"
+"POT-Creation-Date: 2024-04-09 16:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -24,6 +24,16 @@ msgstr ""
 #: shared/utils/template.go:32
 #, javascript-format
 msgid "failed to open %s for writing: %s"
+msgstr ""
+
+#: shared/utils/tar.go:48
+#, javascript-format
+msgid "Skipping extraction of %s in %s file as it resolves outside the target path"
+msgstr ""
+
+#: shared/utils/tar.go:90
+#, javascript-format
+msgid "failed to write tar.gz to %s: %s"
 msgstr ""
 
 #: shared/utils/config.go:33
@@ -115,7 +125,7 @@ msgstr ""
 #: shared/utils/utils.go:31
 #, javascript-format
 msgid "Has to be more than %d character long"
-msgid_plural "Has to be more that %d characters long"
+msgid_plural "Has to be more than %d characters long"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -184,16 +194,6 @@ msgstr ""
 
 #: shared/utils/utils.go:165
 msgid "Failed to read random data"
-msgstr ""
-
-#: shared/utils/tar.go:48
-#, javascript-format
-msgid "Skipping extraction of %s in %s file as it resolves outside the target path"
-msgstr ""
-
-#: shared/utils/tar.go:90
-#, javascript-format
-msgid "failed to write tar.gz to %s: %s"
 msgstr ""
 
 #: shared/utils/cmd.go:47 shared/utils/cmd.go:48
@@ -608,6 +608,62 @@ msgstr ""
 msgid "cannot write %s file: %s"
 msgstr ""
 
+#: shared/podman/images.go:35
+#, javascript-format
+msgid "Ensure image %s is available"
+msgstr ""
+
+#: shared/podman/images.go:54
+#, javascript-format
+msgid "Cannot use RPM image for %s: %s"
+msgstr ""
+
+#: shared/podman/images.go:56
+#, javascript-format
+msgid "Using the %s image loaded from the RPM instead of its online version %s"
+msgstr ""
+
+#: shared/podman/images.go:60
+#, javascript-format
+msgid "Cannot find RPM image for %s"
+msgstr ""
+
+#: shared/podman/images.go:68
+#, javascript-format
+msgid "image %s is missing and cannot be fetched"
+msgstr ""
+
+#: shared/podman/images.go:93
+#, javascript-format
+msgid "cannot unmarshal image RPM metadata: %s"
+msgstr ""
+
+#: shared/podman/images.go:138
+#, javascript-format
+msgid "Cannot unmarshal metadata file %s: %s"
+msgstr ""
+
+#: shared/podman/images.go:160
+#, javascript-format
+msgid "error parsing: %s"
+msgstr ""
+
+#: shared/podman/images.go:168 shared/podman/images.go:182
+#: shared/podman/images.go:197
+#, javascript-format
+msgid "failed to check if image %s has already been pulled"
+msgstr ""
+
+#: shared/podman/images.go:203
+#, javascript-format
+msgid "Pulling image %s"
+msgstr ""
+
+#: shared/podman/images.go:222
+#, javascript-format
+msgid "cannot find any tag for image %s: %s"
+msgstr ""
+
 #: shared/podman/utils.go:58
 #, javascript-format
 msgid "failed to enable podman.socket unit: %s"
@@ -673,62 +729,6 @@ msgstr ""
 #: shared/podman/utils.go:148
 #, javascript-format
 msgid "failed to get podman's volumes folder: %s"
-msgstr ""
-
-#: shared/podman/images.go:35
-#, javascript-format
-msgid "Ensure image %s is available"
-msgstr ""
-
-#: shared/podman/images.go:54
-#, javascript-format
-msgid "Cannot use RPM image for %s: %s"
-msgstr ""
-
-#: shared/podman/images.go:56
-#, javascript-format
-msgid "Using the %s image loaded from the RPM instead of its online version %s"
-msgstr ""
-
-#: shared/podman/images.go:60
-#, javascript-format
-msgid "Cannot find RPM image for %s"
-msgstr ""
-
-#: shared/podman/images.go:68
-#, javascript-format
-msgid "image %s is missing and cannot be fetched"
-msgstr ""
-
-#: shared/podman/images.go:93
-#, javascript-format
-msgid "cannot unmarshal image RPM metadata: %s"
-msgstr ""
-
-#: shared/podman/images.go:138
-#, javascript-format
-msgid "Cannot unmarshal metadata file %s: %s"
-msgstr ""
-
-#: shared/podman/images.go:160
-#, javascript-format
-msgid "error parsing: %s"
-msgstr ""
-
-#: shared/podman/images.go:168 shared/podman/images.go:182
-#: shared/podman/images.go:197
-#, javascript-format
-msgid "failed to check if image %s has already been pulled"
-msgstr ""
-
-#: shared/podman/images.go:203
-#, javascript-format
-msgid "Pulling image %s"
-msgstr ""
-
-#: shared/podman/images.go:222
-#, javascript-format
-msgid "cannot find any tag for image %s: %s"
 msgstr ""
 
 #: shared/connection.go:56
