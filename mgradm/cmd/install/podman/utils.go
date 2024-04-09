@@ -106,6 +106,9 @@ func installForPodman(
 	log.Info().Msg("run setup command in the container")
 
 	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, fqdn, env); err != nil {
+		if stopErr := shared_podman.StopService(shared_podman.ServerService); stopErr != nil {
+			log.Error().Msgf("Failed to stop service: %v", stopErr)
+		}
 		return err
 	}
 
