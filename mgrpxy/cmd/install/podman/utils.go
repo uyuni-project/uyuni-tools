@@ -6,18 +6,14 @@ package podman
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
 
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
-	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // Start the proxy services.
@@ -36,27 +32,27 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallF
 	}
 
 	configPath := utils.GetConfigPath(args)
-	if err := unpackConfig(configPath); err != nil {
+	if err := podman.UnpackConfig(configPath); err != nil {
 		return fmt.Errorf(L("failed to extract proxy config from %s file: %s"), configPath, err)
 	}
 
-	httpdImage, err := getContainerImage(flags, "httpd")
+	httpdImage, err := podman.GetContainerImage(&flags.ProxyImageFlags, "httpd")
 	if err != nil {
 		return err
 	}
-	saltBrokerImage, err := getContainerImage(flags, "salt-broker")
+	saltBrokerImage, err := podman.GetContainerImage(&flags.ProxyImageFlags, "salt-broker")
 	if err != nil {
 		return err
 	}
-	squidImage, err := getContainerImage(flags, "squid")
+	squidImage, err := podman.GetContainerImage(&flags.ProxyImageFlags, "squid")
 	if err != nil {
 		return err
 	}
-	sshImage, err := getContainerImage(flags, "ssh")
+	sshImage, err := podman.GetContainerImage(&flags.ProxyImageFlags, "ssh")
 	if err != nil {
 		return err
 	}
-	tftpdImage, err := getContainerImage(flags, "tftpd")
+	tftpdImage, err := podman.GetContainerImage(&flags.ProxyImageFlags, "tftpd")
 	if err != nil {
 		return err
 	}
@@ -67,39 +63,4 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallF
 	}
 
 	return startPod()
-}
-
-func getContainerImage(flags *podmanProxyInstallFlags, name string) (string, error) {
-	image := flags.GetContainerImage(name)
-	inspectedHostValues, err := adm_utils.InspectHost()
-	if err != nil {
-		return "", fmt.Errorf(L("cannot inspect host values: %s"), err)
-	}
-
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := shared_podman.PrepareImage(image, flags.PullPolicy, pullArgs...)
-	if err != nil {
-		return "", err
-	}
-
-	return preparedImage, nil
-}
-
-func unpackConfig(configPath string) error {
-	log.Info().Msgf(L("Setting up proxy with configuration %s"), configPath)
-	const proxyConfigDir = "/etc/uyuni/proxy"
-	if err := os.MkdirAll(proxyConfigDir, 0755); err != nil {
-		return err
-	}
-
-	if err := shared_utils.ExtractTarGz(configPath, proxyConfigDir); err != nil {
-		return err
-	}
-	return nil
 }

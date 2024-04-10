@@ -14,8 +14,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// ProxyInstallFlags are the flags used by install proxy command.
-type ProxyInstallFlags struct {
+// ProxyImageFlags are the flags used by install proxy command.
+type ProxyImageFlags struct {
 	ImagesLocation string           `mapstructure:"imagesLocation"`
 	Tag            string           `namespace:"tag"`
 	PullPolicy     string           `mapstructure:"pullPolicy"`
@@ -27,7 +27,7 @@ type ProxyInstallFlags struct {
 }
 
 // Get the full container image name and tag for a container name.
-func (f *ProxyInstallFlags) GetContainerImage(name string) string {
+func (f *ProxyImageFlags) GetContainerImage(name string) string {
 	imageName := "proxy-" + name
 	image := fmt.Sprintf("%s/%s", f.ImagesLocation, imageName)
 	tag := f.Tag
@@ -64,8 +64,8 @@ func (f *ProxyInstallFlags) GetContainerImage(name string) string {
 	return imageUrl
 }
 
-// AddInstallFlags will add the proxy install flags to a command.
-func AddInstallFlags(cmd *cobra.Command) {
+// AddImageFlags will add the proxy install flags to a command.
+func AddImageFlags(cmd *cobra.Command) {
 	cmd.Flags().String("imagesLocation", utils.DefaultNamespace,
 		L("registry URL prefix containing the all the container images"))
 	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))

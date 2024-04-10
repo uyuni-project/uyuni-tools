@@ -201,9 +201,9 @@ func GetPulledImageName(image string) (string, error) {
 
 func pullImage(image string, args ...string) error {
 	if utils.ContainsUpperCase(image) {
-		return fmt.Errorf(L("%s should contains just lower case character, otherwise podman pull would fails", image))
+		return fmt.Errorf(L("%s should contains just lower case character, otherwise podman pull would fails"), image)
 	}
-	log.Info().Msgf(L("Running podman pull %s", image))
+	log.Info().Msgf(L("Running podman pull %s"), image)
 	podmanImageArgs := []string{"pull", image}
 	podmanArgs := append(podmanImageArgs, args...)
 
@@ -218,7 +218,7 @@ func pullImage(image string, args ...string) error {
 
 // ShowAvailableTag  returns the list of available tag for a given image.
 func ShowAvailableTag(image string) ([]string, error) {
-	log.Info().Msgf("Running podman image search --list-tags %s --format={{.Tag}}", image)
+	log.Info().Msgf(L("Running podman image search --list-tags %s --format={{.Tag}}"), image)
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", image, "--format={{.Tag}}")
 	if err != nil {
@@ -227,4 +227,17 @@ func ShowAvailableTag(image string) ([]string, error) {
 
 	tags := strings.Split(string(out), "\n")
 	return tags, nil
+}
+
+// GetRunningImage given a container name, return the image name.
+func GetRunningImage(container string) (string, error) {
+	log.Info().Msgf(L("Running podman ps --filter=name=%s --format={{ .Image }}"), container)
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "--filter=name=", container, "--format='{{ .Image }}'")
+	if err != nil {
+		return "", fmt.Errorf(L("cannot find any running image for container %s: %s"), container, err)
+	}
+
+	image := strings.TrimSpace(string(out))
+	return image, nil
 }

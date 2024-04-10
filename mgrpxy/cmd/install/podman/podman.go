@@ -14,8 +14,8 @@ import (
 )
 
 type podmanProxyInstallFlags struct {
-	utils.ProxyInstallFlags `mapstructure:",squash"`
-	Podman                  podman.PodmanFlags
+	utils.ProxyImageFlags `mapstructure:",squash"`
+	Podman                podman.PodmanFlags
 }
 
 // NewCommand install a new proxy on podman from scratch.
@@ -39,7 +39,7 @@ NOTE: for now installing on a remote podman is not supported!
 		},
 	}
 
-	utils.AddInstallFlags(podmanCmd)
+	utils.AddImageFlags(podmanCmd)
 	podman.AddPodmanArgFlag(podmanCmd)
 
 	return podmanCmd

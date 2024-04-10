@@ -6,16 +6,26 @@ package podman
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
 	"path"
 	"strings"
 
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/templates"
+	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
+
+// ProxyImageFlags are the flags used by pormdna proxy upgrade command.
+type PodmanProxyUpgradeFlags struct {
+	utils.ProxyImageFlags `mapstructure:",squash"`
+	Podman                podman.PodmanFlags
+}
 
 // GenerateSystemdService generates all the systemd files required by proxy.
 func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImage string, sshImage string,
@@ -28,9 +38,9 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 	httpProxyConfig := getHttpProxyConfig()
 
 	ports := []types.PortMap{}
-	ports = append(ports, utils.PROXY_TCP_PORTS...)
-	ports = append(ports, utils.PROXY_PODMAN_PORTS...)
-	ports = append(ports, utils.UDP_PORTS...)
+	ports = append(ports, shared_utils.PROXY_TCP_PORTS...)
+	ports = append(ports, shared_utils.PROXY_PODMAN_PORTS...)
+	ports = append(ports, shared_utils.UDP_PORTS...)
 
 	// Pod
 	dataPod := templates.PodTemplateData{
@@ -45,7 +55,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 
 	// Httpd
 	dataHttpd := templates.HttpdTemplateData{
-		Volumes:       utils.PROXY_HTTPD_VOLUMES,
+		Volumes:       shared_utils.PROXY_HTTPD_VOLUMES,
 		HttpProxyFile: httpProxyConfig,
 		Image:         httpdImage,
 	}
@@ -64,7 +74,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 
 	// Squid
 	dataSquid := templates.SquidTemplateData{
-		Volumes:       utils.PROXY_SQUID_VOLUMES,
+		Volumes:       shared_utils.PROXY_SQUID_VOLUMES,
 		HttpProxyFile: httpProxyConfig,
 		Image:         squidImage,
 	}
@@ -83,7 +93,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 
 	// Tftpd
 	dataTftpd := templates.TFTPDTemplateData{
-		Volumes:       utils.PROXY_TFTPD_VOLUMES,
+		Volumes:       shared_utils.PROXY_TFTPD_VOLUMES,
 		HttpProxyFile: httpProxyConfig,
 		Image:         tftpdImage,
 	}
@@ -94,13 +104,13 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 	return podman.ReloadDaemon(false)
 }
 
-func generateSystemdFile(template utils.Template, service string) error {
+func generateSystemdFile(template shared_utils.Template, service string) error {
 	name := fmt.Sprintf("uyuni-proxy-%s.service", service)
 
 	const systemdPath = "/etc/systemd/system"
 	path := path.Join(systemdPath, name)
-	if err := utils.WriteTemplateToFile(template, path, 0644, true); err != nil {
-		return fmt.Errorf(L("failed to generate systemd file %s: %s"), path, err)
+	if err := shared_utils.WriteTemplateToFile(template, path, 0644, true); err != nil {
+		return fmt.Errorf(L("failed to generate systemd file '%s': %s"), path, err)
 	}
 	return nil
 }
@@ -109,8 +119,112 @@ func getHttpProxyConfig() string {
 	const httpProxyConfigPath = "/etc/sysconfig/proxy"
 
 	// Only SUSE distros seem to have such a file for HTTP proxy settings
-	if utils.FileExists(httpProxyConfigPath) {
+	if shared_utils.FileExists(httpProxyConfigPath) {
 		return httpProxyConfigPath
 	}
 	return ""
+}
+
+// GetContainerImage returns a proxy image URL.
+func GetContainerImage(flags *utils.ProxyImageFlags, name string) (string, error) {
+	image := flags.GetContainerImage(name)
+	inspectedHostValues, err := shared_utils.InspectHost()
+	if err != nil {
+		return "", fmt.Errorf(L("cannot inspect host values: %s"), err)
+	}
+
+	pullArgs := []string{}
+	_, scc_user_exist := inspectedHostValues["host_scc_username"]
+	_, scc_user_password := inspectedHostValues["host_scc_password"]
+	if scc_user_exist && scc_user_password {
+		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+	}
+
+	preparedImage, err := podman.PrepareImage(image, flags.PullPolicy, pullArgs...)
+	if err != nil {
+		return "", err
+	}
+
+	return preparedImage, nil
+}
+
+// UnpackConfig uncompress the config.tar.gz containing proxy configuration.
+func UnpackConfig(configPath string) error {
+	log.Info().Msgf(L("Setting up proxy with configuration %s"), configPath)
+	const proxyConfigDir = "/etc/uyuni/proxy"
+	if err := os.MkdirAll(proxyConfigDir, 0755); err != nil {
+		return err
+	}
+
+	if err := shared_utils.ExtractTarGz(configPath, proxyConfigDir); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Upgrade will upgrade the proxy podman deploy.
+func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyUpgradeFlags, cmd *cobra.Command, args []string) error {
+	if _, err := exec.LookPath("podman"); err != nil {
+		return fmt.Errorf(L("install podman before running this command"))
+	}
+
+	httpdImage, err := getContainerImage(&flags.ProxyImageFlags, "httpd")
+	if err != nil {
+		log.Info().Msgf(L("cannot find httpd image: it will no be upgraded"))
+	}
+	saltBrokerImage, err := getContainerImage(&flags.ProxyImageFlags, "salt-broker")
+	if err != nil {
+		log.Info().Msgf(L("cannot find salt-broker image: it will no be upgraded"))
+	}
+	squidImage, err := getContainerImage(&flags.ProxyImageFlags, "squid")
+	if err != nil {
+		log.Info().Msgf(L("cannot find squid image: it will no be upgraded"))
+	}
+	sshImage, err := getContainerImage(&flags.ProxyImageFlags, "ssh")
+	if err != nil {
+		log.Info().Msgf(L("cannot find ssh image: it will no be upgraded"))
+	}
+	tftpdImage, err := getContainerImage(&flags.ProxyImageFlags, "tftpd")
+	if err != nil {
+		log.Info().Msgf(L("cannot find tftpd image: it will no be upgraded"))
+	}
+
+	// Setup the systemd service configuration options
+	if err := GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags.Podman.Args); err != nil {
+		return err
+	}
+
+	return startPod()
+}
+
+func getContainerImage(flags *utils.ProxyImageFlags, name string) (string, error) {
+	image := flags.GetContainerImage(name)
+	inspectedHostValues, err := shared_utils.InspectHost()
+	if err != nil {
+		return "", fmt.Errorf(L("cannot inspect host values: %s"), err)
+	}
+
+	pullArgs := []string{}
+	_, scc_user_exist := inspectedHostValues["host_scc_username"]
+	_, scc_user_password := inspectedHostValues["host_scc_password"]
+	if scc_user_exist && scc_user_password {
+		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+	}
+
+	preparedImage, err := podman.PrepareImage(image, flags.PullPolicy, pullArgs...)
+	if err != nil {
+		return "", err
+	}
+
+	return preparedImage, nil
+}
+
+// Start the proxy services.
+func startPod() error {
+	ret := podman.IsServiceRunning(podman.ProxyService)
+	if ret {
+		return podman.RestartService(podman.ProxyService)
+	} else {
+		return podman.EnableService(podman.ProxyService)
+	}
 }

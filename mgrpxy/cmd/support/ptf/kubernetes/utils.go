@@ -8,15 +8,14 @@ package kubernetes
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func upgradeKubernetes(
-	globalFlags *types.GlobalFlags,
-	flags *kubernetesUpgradeFlags,
+func ptfForKubernetes(globalFlags *types.GlobalFlags,
+	flags *kubernetes.KubernetesProxyUpgradeFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return kubernetes.Upgrade(globalFlags, &flags.Image, &flags.MigrationImage, flags.Helm, cmd, args)
+	return kubernetes.Upgrade(flags, cmd, args)
 }

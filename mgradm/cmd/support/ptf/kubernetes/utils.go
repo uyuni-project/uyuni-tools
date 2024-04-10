@@ -7,16 +7,17 @@
 package kubernetes
 
 import (
+	"errors"
+
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func upgradeKubernetes(
-	globalFlags *types.GlobalFlags,
-	flags *kubernetesUpgradeFlags,
+func ptfForKubernetes(globalFlags *types.GlobalFlags,
+	flags *kubernetesInstallFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return kubernetes.Upgrade(globalFlags, &flags.Image, &flags.MigrationImage, flags.Helm, cmd, args)
+	return errors.New(L("PTF command for kubernetes is not implemented yet"))
 }

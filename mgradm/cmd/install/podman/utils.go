@@ -15,7 +15,6 @@ import (
 	"github.com/spf13/cobra"
 	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -78,7 +77,7 @@ func installForPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
-	inspectedHostValues, err := adm_utils.InspectHost()
+	inspectedHostValues, err := utils.InspectHost()
 	if err != nil {
 		return fmt.Errorf(L("cannot inspect host values: %s"), err)
 	}

@@ -13,18 +13,44 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 	"syscall"
 	"unicode"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/templates"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"golang.org/x/term"
 )
 
 const prompt_end = ": "
+
+// InspectScriptFilename is the inspect script basename.
+var InspectScriptFilename = "inspect.sh"
+
+var inspectValues = []types.InspectData{
+	types.NewInspectData("uyuni_release", "cat /etc/*release | grep 'Uyuni release' | cut -d ' ' -f3 || true"),
+	types.NewInspectData("suse_manager_release", "cat /etc/*release | grep 'SUSE Manager release' | cut -d ' ' -f4 || true"),
+	types.NewInspectData("architecture", "lscpu | grep Architecture | awk '{print $2}' || true"),
+	types.NewInspectData("fqdn", "cat /etc/rhn/rhn.conf 2>/dev/null | grep 'java.hostname' | cut -d' ' -f3 || true"),
+	types.NewInspectData("image_pg_version", "rpm -qa --qf '%{VERSION}\\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1 || true"),
+	types.NewInspectData("current_pg_version", "(test -e /var/lib/pgsql/data/PG_VERSION && cat /var/lib/pgsql/data/PG_VERSION) || true"),
+	types.NewInspectData("registration_info", "transactional-update --quiet register --status 2>/dev/null || true"),
+	types.NewInspectData("scc_username", "cat /etc/zypp/credentials.d/SCCcredentials | grep username | cut -d= -f2 || true"),
+	types.NewInspectData("scc_password", "cat /etc/zypp/credentials.d/SCCcredentials | grep password | cut -d= -f2 || true"),
+}
+
+// InspectOutputFile represents the directory and the basename where the inspect values are stored.
+var InspectOutputFile = types.InspectFile{
+	Directory: "/var/lib/uyuni-tools",
+	Basename:  "data",
+}
 
 func checkValueSize(value string, min int, max int) bool {
 	if min == 0 && max == 0 {
@@ -135,6 +161,16 @@ func ComputeImage(name string, tag string, appendToName ...string) (string, erro
 	return imageName, nil
 }
 
+// ComputePTFImage returns a PTF image from registry.suse.com.
+func ComputePTFImage(user string, ptfId string, version string, arch string, image string) (string, error) {
+	return ComputeImage(fmt.Sprintf("registry.suse.com/a/%s/%s/suse/manager/%s/%s/%s", user, ptfId, version, arch, image), fmt.Sprintf("latest-ptf-%s", ptfId))
+}
+
+// ComputeTestImage returns a test image from registry.suse.com.
+func ComputeTestImage(user string, testId string, version string, arch string, image string) (string, error) {
+	return ComputeImage(fmt.Sprintf("registry.suse.com/a/%s/%s/suse/manager/%s/%s/%s", user, testId, version, arch, image), fmt.Sprintf("latest-test-%s", testId))
+}
+
 // Get the timezone set on the machine running the tool.
 func GetLocalTimezone() string {
 	out, err := RunCmdOutput(zerolog.DebugLevel, "timedatectl", "show", "--value", "-p", "Timezone")
@@ -243,4 +279,102 @@ func DownloadFile(filepath string, URL string) (err error) {
 	}
 
 	return nil
+}
+
+// ReadInspectData returns a map with the values inspected by an image and deploy.
+func ReadInspectData(scriptDir string, prefix ...string) (map[string]string, error) {
+	path := filepath.Join(scriptDir, "data")
+	log.Debug().Msgf("Trying to read %s", path)
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return map[string]string{}, fmt.Errorf(L("cannot parse file %s: %s"), path, err)
+	}
+
+	inspectResult := make(map[string]string)
+
+	viper.SetConfigType("env")
+	if err := viper.ReadConfig(bytes.NewBuffer(data)); err != nil {
+		return map[string]string{}, fmt.Errorf(L("cannot read config: %s"), err)
+	}
+
+	for _, v := range inspectValues {
+		if len(viper.GetString(v.Variable)) > 0 {
+			index := v.Variable
+			/* Just the first value of prefix is used.
+			 * This slice is just to allow an empty argument
+			 */
+			if len(prefix) >= 1 {
+				index = prefix[0] + v.Variable
+			}
+			inspectResult[index] = viper.GetString(v.Variable)
+		}
+	}
+	return inspectResult, nil
+}
+
+// InspectHost check values on a host machine.
+func InspectHost() (map[string]string, error) {
+	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	defer os.RemoveAll(scriptDir)
+	if err != nil {
+		return map[string]string{}, fmt.Errorf(L("failed to create temporary directory: %s"), err)
+	}
+
+	if err := GenerateInspectHostScript(scriptDir); err != nil {
+		return map[string]string{}, err
+	}
+
+	if err := RunCmdStdMapping(zerolog.DebugLevel, scriptDir+"/inspect.sh"); err != nil {
+		return map[string]string{}, fmt.Errorf(L("failed to run inspect script in host system: %s"), err)
+	}
+
+	inspectResult, err := ReadInspectData(scriptDir, "host_")
+	if err != nil {
+		return map[string]string{}, fmt.Errorf(L("cannot inspect host data: %s"), err)
+	}
+
+	return inspectResult, err
+}
+
+// GenerateInspectContainerScript create the host inspect script.
+func GenerateInspectHostScript(scriptDir string) error {
+	data := templates.InspectTemplateData{
+		Param:      inspectValues,
+		OutputFile: scriptDir + "/" + InspectOutputFile.Basename,
+	}
+
+	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
+	if err := WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+		return fmt.Errorf(L("failed to generate inspect script: %s"), err)
+	}
+	return nil
+}
+
+// GenerateInspectContainerScript create the container inspect script.
+func GenerateInspectContainerScript(scriptDir string) error {
+	data := templates.InspectTemplateData{
+		Param:      inspectValues,
+		OutputFile: InspectOutputFile.Directory + "/" + InspectOutputFile.Basename,
+	}
+
+	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
+	if err := WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+		return fmt.Errorf(L("failed to generate inspect script: %s"), err)
+	}
+	return nil
+}
+
+// CompareVersion compare the server image version and the server deployed  version.
+func CompareVersion(imageVersion string, deployedVersion string) int {
+	re := regexp.MustCompile(`\((.*?)\)`)
+	imageVersionCleaned := strings.ReplaceAll(imageVersion, ".", "")
+	imageVersionCleaned = strings.TrimSpace(imageVersionCleaned)
+	imageVersionCleaned = re.ReplaceAllString(imageVersionCleaned, "")
+	imageVersionInt, _ := strconv.Atoi(imageVersionCleaned)
+
+	deployedVersionCleaned := strings.ReplaceAll(deployedVersion, ".", "")
+	deployedVersionCleaned = strings.TrimSpace(deployedVersionCleaned)
+	deployedVersionCleaned = re.ReplaceAllString(deployedVersionCleaned, "")
+	deployedVersionInt, _ := strconv.Atoi(deployedVersionCleaned)
+	return imageVersionInt - deployedVersionInt
 }
