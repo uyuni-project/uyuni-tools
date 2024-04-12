@@ -16,6 +16,7 @@ import (
 	"regexp"
 	"strings"
 	"syscall"
+	"unicode"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -124,10 +125,12 @@ func ComputeImage(name string, tag string, appendToName ...string) (string, erro
 		}
 		// No tag provided in the URL name, append the one passed
 		imageName := fmt.Sprintf("%s:%s", name, tag)
+		imageName = strings.ToLower(imageName) // podman does not accept repo in upper case
 		log.Debug().Msgf("Computed image name is %s", imageName)
 		return imageName, nil
 	}
 	imageName := submatches[1] + strings.Join(appendToName, ``) + `:` + submatches[2]
+	imageName = strings.ToLower(imageName) // podman does not accept repo in upper case
 	log.Debug().Msgf("Computed image name is %s", imageName)
 	return imageName, nil
 }
@@ -188,6 +191,16 @@ func GetRandomBase64(size int) string {
 		log.Fatal().Err(err).Msg(L("Failed to read random data"))
 	}
 	return base64.StdEncoding.EncodeToString(data)
+}
+
+// ContainsUpperCase check if string contains an uppercase character.
+func ContainsUpperCase(str string) bool {
+	for _, char := range str {
+		if unicode.IsUpper(char) {
+			return true
+		}
+	}
+	return false
 }
 
 // GetURLBody provide the body content of an GET HTTP request.

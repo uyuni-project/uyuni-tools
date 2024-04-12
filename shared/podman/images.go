@@ -163,7 +163,7 @@ func loadRpmImage(rpmImageBasePath string) (string, error) {
 // IsImagePresent return true if the image is present.
 func IsImagePresent(image string) (string, error) {
 	log.Debug().Msgf("Checking for %s", image)
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", "--quiet", image)
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", "--format={{ .Repository }}", image)
 	if err != nil {
 		return "", fmt.Errorf(L("failed to check if image %s has already been pulled"), image)
 	}
@@ -200,7 +200,10 @@ func GetPulledImageName(image string) (string, error) {
 }
 
 func pullImage(image string, args ...string) error {
-	log.Info().Msgf(L("Pulling image %s"), image)
+	if utils.ContainsUpperCase(image) {
+		return fmt.Errorf(L("%s should contains just lower case character, otherwise podman pull would fails", image))
+	}
+	log.Info().Msgf(L("Running podman pull %s", image))
 	podmanImageArgs := []string{"pull", image}
 	podmanArgs := append(podmanImageArgs, args...)
 
@@ -215,9 +218,9 @@ func pullImage(image string, args ...string) error {
 
 // ShowAvailableTag  returns the list of available tag for a given image.
 func ShowAvailableTag(image string) ([]string, error) {
-	log.Debug().Msgf("Running podman image search --list-tags %s --format='{{.Tag}}'", image)
+	log.Info().Msgf("Running podman image search --list-tags %s --format={{.Tag}}", image)
 
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", image, "--format='{{.Tag}}'")
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", image, "--format={{.Tag}}")
 	if err != nil {
 		return []string{}, fmt.Errorf(L("cannot find any tag for image %s: %s"), image, err)
 	}
