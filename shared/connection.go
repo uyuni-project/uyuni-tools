@@ -202,8 +202,6 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 	}
 	var commandArgs []string
 	extraArgs := []string{}
-	srcExpanded := strings.Replace(src, "server:", podName+":", 1)
-	dstExpanded := strings.Replace(dst, "server:", podName+":", 1)
 
 	command, err := c.GetCommand()
 	if err != nil {
@@ -214,16 +212,32 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 	case "podman-remote":
 		fallthrough
 	case "podman":
-		commandArgs = []string{"cp", srcExpanded, dstExpanded}
+		mount, err := mountContainer(podName)
+		if err != nil {
+			return err
+		}
+		defer func() {
+			if err := unmountContainer(podName); err != nil {
+				log.Error().Err(err).Msg("Failed to unmount podman container")
+			}
+		}()
+		srcExpanded := strings.Replace(src, "server:", mount+"/", 1)
+		dstExpanded := strings.Replace(dst, "server:", mount+"/", 1)
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "cp", "-r", srcExpanded, dstExpanded); err != nil {
+			return err
+		}
+
 	case "kubectl":
+		srcExpanded := strings.Replace(src, "server:", podName+":", 1)
+		dstExpanded := strings.Replace(dst, "server:", podName+":", 1)
 		commandArgs = []string{"cp", "-c", "uyuni", srcExpanded, dstExpanded}
 		extraArgs = []string{"-c", "uyuni", "--"}
+
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, command, commandArgs...); err != nil {
+			return err
+		}
 	default:
 		return fmt.Errorf("unknown container kind: %s", command)
-	}
-
-	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, command, commandArgs...); err != nil {
-		return err
 	}
 
 	if user != "" && strings.HasPrefix(dst, "server:") {
@@ -237,6 +251,20 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 		return utils.RunCmdStdMapping(zerolog.DebugLevel, command, execArgs...)
 	}
 	return nil
+}
+
+// mount a podman container.
+func mountContainer(containerName string) (string, error) {
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "mount", containerName)
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSpace(string(out)), nil
+}
+
+// unmount the mount performed by mountContainer().
+func unmountContainer(containerName string) error {
+	return utils.RunCmd("podman", "umount", containerName)
 }
 
 // TestExistenceInPod returns true if dstpath exists in the pod.
