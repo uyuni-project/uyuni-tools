@@ -46,11 +46,6 @@ func RunCmd(command string, args ...string) error {
 
 // RunCmdStdMapping execute a shell command mapping the stdout and stderr.
 func RunCmdStdMapping(logLevel zerolog.Level, command string, args ...string) error {
-	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond) // Build our new spinner
-	s.Suffix = fmt.Sprintf(" %s %s\n", command, strings.Join(args, " "))
-	if logLevel != zerolog.Disabled {
-		s.Start() // Start the spinner
-	}
 	localLogger := log.Level(logLevel)
 	localLogger.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
 
@@ -58,9 +53,6 @@ func RunCmdStdMapping(logLevel zerolog.Level, command string, args ...string) er
 	runCmd.Stdout = os.Stdout
 	runCmd.Stderr = os.Stderr
 	err := runCmd.Run()
-	if logLevel != zerolog.Disabled {
-		s.Stop()
-	}
 	return err
 }
 
