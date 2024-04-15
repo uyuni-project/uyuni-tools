@@ -104,6 +104,12 @@ func copyDistro(srcdir string, distro types.Distribution, flags *flagpole) error
 	return nil
 }
 
+func getServerFqdn(flags *flagpole) (string, error) {
+	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	fqdn, err := cnx.Exec("sh", "-c", "cat /etc/rhn/rhn.conf 2>/dev/null | grep 'java.hostname' | cut -d' ' -f3")
+	return strings.TrimSuffix(string(fqdn), "\n"), err
+}
+
 func distroCp(
 	globalFlags *types.GlobalFlags,
 	flags *flagpole,
@@ -151,8 +157,15 @@ func distroCp(
 		return err
 	}
 
-	if flags.ConnectionDetails.User != "" {
+	// Fill server FQDN if not provided, ignore error, will be hanled later
+	if flags.ConnectionDetails.Server == "" {
+		flags.ConnectionDetails.Server, _ = getServerFqdn(flags)
+		log.Debug().Msgf("Using api-server FQDN '%s'", flags.ConnectionDetails.Server)
+	}
+
+	if flags.ConnectionDetails.User != "" && flags.ConnectionDetails.Password != "" {
 		return registerDistro(&flags.ConnectionDetails, &distribution)
 	}
+	log.Info().Msgf(L("Continue by registering autoinstallation distribution"))
 	return nil
 }
