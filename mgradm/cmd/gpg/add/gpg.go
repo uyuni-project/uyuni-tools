@@ -18,6 +18,7 @@ import (
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -51,10 +52,10 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	if !utils.FileExists(customKeyringPath) {
 		if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "mkdir", "-m", "700", "-p", filepath.Dir(customKeyringPath)); err != nil {
-			return fmt.Errorf("failed to create folder %s: %s", filepath.Dir(customKeyringPath), err)
+			return fmt.Errorf(L("failed to create folder %s: %s"), filepath.Dir(customKeyringPath), err)
 		}
 		if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "gpg", "--no-default-keyring", "--keyring", customKeyringPath, "--fingerprint"); err != nil {
-			return fmt.Errorf("failed to create keyring %s: %s", customKeyringPath, err)
+			return fmt.Errorf(L("failed to create keyring %s: %s"), customKeyringPath, err)
 		}
 	}
 	gpgAddCmd := []string{"gpg", "--no-default-keyring", "--import", "--import-options", "import-minimal"}
@@ -67,33 +68,33 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return fmt.Errorf("failed to create temporary directory %s", err)
+		return fmt.Errorf(L("failed to create temporary directory %s"), err)
 	}
 
 	for _, keyURL := range args {
 		// Parse the URL
 		parsedURL, err := url.Parse(keyURL)
 		if err != nil {
-			log.Error().Err(err).Msgf("failed to parse %s", keyURL)
+			log.Error().Err(err).Msgf(L("failed to parse %s"), keyURL)
 			continue
 		}
 
 		keyname := path.Base(parsedURL.Path)
 		hostKeyPath := filepath.Join(scriptDir, keyname)
 		if err := utils.DownloadFile(hostKeyPath, keyURL); err != nil {
-			log.Error().Err(err).Msgf("failed to download %s", keyURL)
+			log.Error().Err(err).Msgf(L("failed to download %s"), keyURL)
 			continue
 		}
 
 		if err := utils.RunCmdStdMapping(zerolog.InfoLevel, "gpg", "--show-key", hostKeyPath); err != nil {
-			log.Error().Err(err).Msgf("failed to show key %s", hostKeyPath)
+			log.Error().Err(err).Msgf(L("failed to show key %s"), hostKeyPath)
 			continue
 		}
 
 		containerKeyPath := filepath.Join(filepath.Dir(customKeyringPath), keyname)
 
 		if err := cnx.Copy(hostKeyPath, "server:"+containerKeyPath, "", ""); err != nil {
-			log.Error().Err(err).Msgf("failed to cp %s to %s", hostKeyPath, containerKeyPath)
+			log.Error().Err(err).Msgf(L("failed to cp %s to %s"), hostKeyPath, containerKeyPath)
 			continue
 		}
 		defer func() {
@@ -105,14 +106,14 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 
 	log.Info().Msgf("Running: %s", strings.Join(gpgAddCmd, " "))
 	if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, gpgAddCmd...); err != nil {
-		return fmt.Errorf("failed to run import key: %s", err)
+		return fmt.Errorf(L("failed to run import key: %s"), err)
 	}
 
 	//this is for running import-suma-build-keys, who import customer-build-keys.gpg
 	uyuniUpdateCmd := []string{"systemctl", "restart", "uyuni-update-config"}
 	log.Info().Msgf("Running: %s", strings.Join(uyuniUpdateCmd, " "))
 	if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, uyuniUpdateCmd...); err != nil {
-		return fmt.Errorf("failed to restart uyuni-update-config: %s", err)
+		return fmt.Errorf(L("failed to restart uyuni-update-config: %s"), err)
 	}
 	return err
 }

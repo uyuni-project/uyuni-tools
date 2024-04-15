@@ -176,13 +176,13 @@ func GetURLBody(URL string) ([]byte, error) {
 	log.Debug().Msgf("Downloading %s", URL)
 	resp, err := http.Get(URL)
 	if err != nil {
-		return nil, fmt.Errorf("error downloading from %s: %s", URL, err)
+		return nil, fmt.Errorf(L("error downloading from %s: %s"), URL, err)
 	}
 	defer resp.Body.Close()
 
 	// Check server response
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("bad status: %s", resp.Status)
+		return nil, fmt.Errorf(L("bad status: %s"), resp.Status)
 	}
 
 	var buf bytes.Buffer
