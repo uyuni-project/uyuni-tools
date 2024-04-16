@@ -1,3 +1,0 @@
-- Fix wrong cobbler spacewalk_authentication_endpoint property 
-  after upgrade or migration
-- Fix migration script using awk missing in migration image

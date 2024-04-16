@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Apr 16 13:33:34 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.7-0
+  * Fix wrong cobbler spacewalk_authentication_endpoint property
+    after upgrade or migration
+  * Fix migration script using awk missing in migration image
+
+-------------------------------------------------------------------
 Mon Apr 08 17:40:38 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.6-0
