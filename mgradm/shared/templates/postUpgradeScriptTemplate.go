@@ -16,7 +16,7 @@ grep uyuni_authentication_endpoint /etc/cobbler/settings.yaml
 if [ $? -eq 1 ]; then
 	echo 'uyuni_authentication_endpoint: "http://localhost"' >> /etc/cobbler/settings.yaml
 else
-	sed 's/uyuni_authentication_endpoint.*/spacewalk_authentication_endpoint: http:\/\/localhost/' -i /etc/cobbler/settings.yaml;
+	sed 's/uyuni_authentication_endpoint.*/uyuni_authentication_endpoint: http:\/\/localhost/' -i /etc/cobbler/settings.yaml;
 fi
 {{ end }}
 `

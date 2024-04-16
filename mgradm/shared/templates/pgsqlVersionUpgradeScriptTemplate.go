@@ -33,7 +33,7 @@ chown -R postgres:postgres /etc/pki/tls/certs/spacewalk.crt
 
 echo "Initialize new postgresql $NEW_VERSION database..."
 . /etc/sysconfig/postgresql 2>/dev/null # Load locale for SUSE
-PGHOME=$(getent passwd postgres | awk -F: '{print $6}')
+PGHOME=$(getent passwd postgres | cut -d ":" -f6)
 #. $PGHOME/.i18n 2>/dev/null # Load locale for Enterprise Linux
 if [ -z $POSTGRES_LANG ]; then
     POSTGRES_LANG="en_US.UTF-8"
