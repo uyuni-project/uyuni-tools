@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-grep -r . --include '*.go' --exclude '*_test.go' -n -e 'fmt\.Errorf("[^"]\+"' -e 'errors.New("[^"]\+"' -e '\(Fatal\|Error\|Info\|Warn\)()\(.Err(err)\?\).Msgf\?("'
+grep -r . --include '*.go' --exclude '*_test.go' -n -e 'fmt\.Errorf("[^"]\+"' -e 'errors.New("[^"]\+"' -e '\(Fatal\|Error\|Info\|Warn\)()\(\.Err(err)\)\?\.Msgf\?("' -e '\.Flags()\.\(String\|Int\|Bool\)\(Slice\)\?\(Var\)\?P\?([^)]\+, \+"[^"]\+")'
 
 if test $? -eq 0; then
     echo "Fix the non localizable strings"

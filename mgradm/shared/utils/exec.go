@@ -143,7 +143,7 @@ func ReadContainerData(scriptDir string) (string, string, string, error) {
 
 // RunMigration execute the migration script.
 func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) error {
-	log.Info().Msg("Migrating server")
+	log.Info().Msg(L("Migrating server"))
 	err := ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/"+scriptName)
 	if err != nil {
 		return fmt.Errorf(L("error running the migration script: %s"), err)
@@ -193,7 +193,7 @@ func RunningImage(cnx *shared.Connection, containerName string) (string, error) 
 		args := []string{"get", "pods", kubernetes.ServerFilter, "-o", "jsonpath={.items[0].spec.containers[0].image}"}
 		image, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
 
-		log.Info().Msgf("image is: %s", image)
+		log.Info().Msgf(L("Image is: %s"), image)
 		if err != nil {
 			return "", err
 		}

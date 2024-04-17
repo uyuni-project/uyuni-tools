@@ -59,7 +59,7 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 		return []string{}, fmt.Errorf(L("cannot install cert manager: %s"), err)
 	}
 
-	log.Info().Msg("Creating SSL certificate issuer")
+	log.Info().Msg(L("Creating SSL certificate issuer"))
 	crdsDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
 		return []string{}, fmt.Errorf(L("failed to create temporary directory: %s"), err)
@@ -149,7 +149,7 @@ func extractCaCertToConfig() {
 	log.Info().Msg(L("Extracting CA certificate to a configmap"))
 	// Skip extracting if the configmap is already present
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "configmap", "uyuni-ca", jsonPath)
-	log.Info().Msgf("CA cert: %s", string(out))
+	log.Info().Msgf(L("CA cert: %s"), string(out))
 	if err == nil && len(out) > 0 {
 		log.Info().Msg(L("uyuni-ca configmap already existing, skipping extraction"))
 		return

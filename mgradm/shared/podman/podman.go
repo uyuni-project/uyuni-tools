@@ -53,7 +53,7 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 		return fmt.Errorf(L("cannot setup network: %s"), err)
 	}
 
-	log.Info().Msg("Enabling system service")
+	log.Info().Msg(L("Enabling system service"))
 	data := templates.PodmanServiceTemplateData{
 		Volumes:    utils.ServerVolumeMounts,
 		NamePrefix: "uyuni",
@@ -135,7 +135,7 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 	}
 
 	// The services need to be restarted
-	log.Info().Msg("Restarting services after updating the certificate")
+	log.Info().Msg(L("Restarting services after updating the certificate"))
 	return utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
 }
 
@@ -197,7 +197,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 		return "", "", "", err
 	}
 
-	log.Info().Msg("Migrating server")
+	log.Info().Msg(L("Migrating server"))
 	if err := RunContainer("uyuni-migration", preparedImage, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
 		return "", "", "", fmt.Errorf(L("cannot run uyuni migration container: %s"), err)
