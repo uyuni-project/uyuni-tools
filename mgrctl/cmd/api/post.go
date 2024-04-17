@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/uyuni-project/uyuni-tools/shared/api"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -21,7 +22,7 @@ func runPost(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command
 	client, err := api.Init(&flags.ConnectionDetails)
 
 	if err != nil {
-		log.Fatal().Err(err).Msg("Unable to login to the server")
+		return fmt.Errorf(L("unable to login to the server: %s"), err)
 	}
 
 	path := args[0]
@@ -44,7 +45,7 @@ func runPost(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command
 
 	res, err := api.Post[interface{}](client, path, data)
 	if err != nil {
-		return fmt.Errorf("error in query %s: %s", path, err)
+		return fmt.Errorf(L("error in query %s: %s"), path, err)
 	}
 
 	if !res.Success {

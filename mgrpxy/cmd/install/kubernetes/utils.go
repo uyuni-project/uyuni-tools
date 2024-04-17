@@ -13,6 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -22,7 +23,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 ) error {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
-			return fmt.Errorf("install %s before running this command", binary)
+			return fmt.Errorf(L("install %s before running this command"), binary)
 		}
 	}
 
@@ -31,12 +32,12 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 
 	tmpDir, err := os.MkdirTemp("", "mgrpxy-*")
 	if err != nil {
-		return fmt.Errorf("failed to create temporary directory")
+		return fmt.Errorf(L("failed to create temporary directory: %s"), err)
 	}
 	defer os.RemoveAll(tmpDir)
 
 	if err := shared_utils.ExtractTarGz(configPath, tmpDir); err != nil {
-		return fmt.Errorf("failed to extract configuration")
+		return fmt.Errorf(L("failed to extract configuration"))
 	}
 
 	// Check the kubernetes cluster setup
@@ -58,7 +59,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	// Install the uyuni proxy helm chart
 	if err := kubernetes.Deploy(&flags.ProxyInstallFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
 		"--set", "ingress="+clusterInfos.Ingress); err != nil {
-		return fmt.Errorf("cannot deploy proxy helm chart: %s", err)
+		return fmt.Errorf(L("cannot deploy proxy helm chart: %s"), err)
 	}
 
 	return nil

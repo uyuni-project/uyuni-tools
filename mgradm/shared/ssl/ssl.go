@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -43,7 +44,7 @@ func OrderCas(chain *CaChain, serverPair *SslPair) ([]byte, []byte) {
 
 	serverCert, err := findServerCert(certs)
 	if err != nil {
-		log.Fatal().Msg("Failed to find a non-CA certificate")
+		log.Fatal().Msg(L("Failed to find a non-CA certificate"))
 	}
 
 	// Map all certificates using their hashes
@@ -82,13 +83,13 @@ func findServerCert(certs []certificate) (*certificate, error) {
 			return &cert, nil
 		}
 	}
-	return nil, errors.New("expected to find a certificate, got none")
+	return nil, errors.New(L("expected to find a certificate, got none"))
 }
 
 func readCertificates(path string) []certificate {
 	fd, err := os.Open(path)
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Failed to read certificate file %s", path)
+		log.Fatal().Err(err).Msgf(L("Failed to read certificate file %s"), path)
 	}
 
 	certs := []certificate{}
@@ -124,7 +125,7 @@ func extractCertificateData(content []byte) certificate {
 
 	out, err := cmd.Output()
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to extract data from certificate")
+		log.Fatal().Err(err).Msg(L("Failed to extract data from certificate"))
 	}
 	lines := strings.Split(string(out), "\n")
 
@@ -145,13 +146,13 @@ func extractCertificateData(content []byte) certificate {
 			date := strings.SplitN(line, "=", 2)[1]
 			cert.startDate, err = time.Parse(timeLayout, date)
 			if err != nil {
-				log.Fatal().Err(err).Msgf("Failed to parse start date: %s\n", date)
+				log.Fatal().Err(err).Msgf(L("Failed to parse start date: %s\n"), date)
 			}
 		} else if strings.HasPrefix(line, "notAfter=") {
 			date := strings.SplitN(line, "=", 2)[1]
 			cert.endDate, err = time.Parse(timeLayout, date)
 			if err != nil {
-				log.Fatal().Err(err).Msgf("Failed to parse end date: %s\n", date)
+				log.Fatal().Err(err).Msgf(L("Failed to parse end date: %s\n"), date)
 			}
 		} else if strings.HasPrefix(line, "X509v3 Subject Key Identifier") {
 			nextVal = "subjectKeyId"
@@ -195,14 +196,14 @@ func extractCertificateData(content []byte) certificate {
 // Returns the certificate chain and the root CA.
 func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash string) ([]byte, []byte) {
 	if len(mapBySubjectHash) == 0 {
-		log.Fatal().Msg("No CA found in hash")
+		log.Fatal().Msg(L("No CA found"))
 	}
 
 	cert := mapBySubjectHash[serverCertHash]
 	issuerHash := cert.issuerHash
 	_, found := mapBySubjectHash[issuerHash]
 	if issuerHash == "" || !found {
-		log.Fatal().Msg("No CA found for server certificate")
+		log.Fatal().Msg(L("No CA found for server certificate"))
 	}
 
 	sortedChain := bytes.NewBuffer(mapBySubjectHash[serverCertHash].content)
@@ -211,7 +212,7 @@ func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash st
 	for {
 		cert, found = mapBySubjectHash[issuerHash]
 		if !found {
-			log.Fatal().Msgf("Missing CA with subject hash %s", issuerHash)
+			log.Fatal().Msgf(L("Missing CA with subject hash %s"), issuerHash)
 		}
 
 		nextHash := cert.issuerHash
@@ -232,20 +233,20 @@ func CheckPaths(chain *CaChain, serverPair *SslPair) {
 	for _, ca := range chain.Intermediate {
 		optionalFile(ca)
 	}
-	mandatoryFile(serverPair.Cert, "server certificate")
-	mandatoryFile(serverPair.Key, "server key")
+	mandatoryFile(serverPair.Cert, L("server certificate is required"))
+	mandatoryFile(serverPair.Key, L("server key is required"))
 }
 
 func mandatoryFile(file string, msg string) {
 	if file == "" {
-		log.Fatal().Msgf("%s is required", msg)
+		log.Fatal().Msgf(msg)
 	}
 	optionalFile(file)
 }
 
 func optionalFile(file string) {
 	if file != "" && !utils.FileExists(file) {
-		log.Fatal().Msgf("%s file is not accessible", file)
+		log.Fatal().Msgf(L("%s file is not accessible"), file)
 	}
 }
 
@@ -253,14 +254,14 @@ func optionalFile(file string) {
 func GetRsaKey(keyPath string, password string) []byte {
 	// Kubernetes only handles RSA private TLS keys, convert and strip password
 	caPassword := password
-	utils.AskPasswordIfMissing(&caPassword, "Source server SSL CA private key password", 0, 0)
+	utils.AskPasswordIfMissing(&caPassword, L("Source server SSL CA private key password"), 0, 0)
 
 	// Convert the key file to RSA format for kubectl to handle it
 	cmd := exec.Command("openssl", "rsa", "-in", keyPath, "-passin", "env:pass")
 	cmd.Env = append(cmd.Env, "pass="+caPassword)
 	out, err := cmd.Output()
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to convert CA private key to RSA")
+		log.Fatal().Err(err).Msg(L("Failed to convert CA private key to RSA"))
 	}
 	return out
 }

@@ -12,6 +12,7 @@ import (
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -34,19 +35,19 @@ func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 
 	serverImage, err := utils.ComputeImage(imageFlags.Name, imageFlags.Tag)
 	if err != nil {
-		return fmt.Errorf("failed to compute image URL")
+		return fmt.Errorf(L("failed to compute image URL: %s"), err)
 	}
 
 	// Install the uyuni server helm chart
 	err = UyuniUpgrade(serverImage, imageFlags.PullPolicy, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
 	if err != nil {
-		return fmt.Errorf("cannot upgrade: %s", err)
+		return fmt.Errorf(L("cannot upgrade: %s"), err)
 	}
 
 	// Wait for the pod to be started
 	err = kubernetes.WaitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
 	if err != nil {
-		return fmt.Errorf("cannot deploy: %s", err)
+		return fmt.Errorf(L("cannot deploy: %s"), err)
 	}
 	return cnx.WaitForServer()
 }
@@ -61,7 +62,7 @@ func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 		// Install cert-manager and a self-signed issuer ready for use
 		issuerArgs, err := installSslIssuers(helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn, imagePullPolicy)
 		if err != nil {
-			return []string{}, fmt.Errorf("cannot install cert-manager and self-sign issuer: %s", err)
+			return []string{}, fmt.Errorf(L("cannot install cert-manager and self-sign issuer: %s"), err)
 		}
 		helmArgs = append(helmArgs, issuerArgs...)
 
@@ -86,7 +87,7 @@ func DeployExistingCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_uti
 // UyuniUpgrade runs an helm upgrade using images and helm configuration as parameters.
 func UyuniUpgrade(serverImage string, pullPolicy string, helmFlags *cmd_utils.HelmFlags, kubeconfig string,
 	fqdn string, ingress string, helmArgs ...string) error {
-	log.Info().Msg("Installing Uyuni")
+	log.Info().Msg(L("Installing Uyuni"))
 
 	// The guessed ingress is passed before the user's value to let the user override it in case we got it wrong.
 	helmParams := []string{

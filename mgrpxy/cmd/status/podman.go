@@ -11,6 +11,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -26,8 +27,8 @@ func podmanStatus(
 	for _, service := range services {
 		serviceName := fmt.Sprintf("uyuni-proxy-%s", service)
 		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", serviceName); err != nil {
-			log.Error().Err(err).Msgf("Failed to get status of the %s service", serviceName)
-			returnErr = errors.New("failed to get the status of at least one service")
+			log.Error().Err(err).Msgf(L("Failed to get status of the %s service"), serviceName)
+			returnErr = errors.New(L("failed to get the status of at least one service"))
 		}
 	}
 	return returnErr

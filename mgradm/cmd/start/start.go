@@ -7,6 +7,7 @@ package start
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -19,8 +20,8 @@ type startFlags struct {
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	startCmd := &cobra.Command{
 		Use:   "start",
-		Short: "start the server",
-		Long:  "Start the server",
+		Short: L("Start the server"),
+		Long:  L("Start the server"),
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags startFlags

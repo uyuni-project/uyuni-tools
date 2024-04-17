@@ -7,6 +7,7 @@ package hub
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/hub/register"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -14,8 +15,8 @@ import (
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	hubCmd := &cobra.Command{
 		Use:     "hub",
-		Short:   "Hub management",
-		Long:    "Tools and utilities for Hub management",
+		Short:   L("Hub management"),
+		Long:    L("Tools and utilities for Hub management"),
 		Aliases: []string{"hub"},
 	}
 

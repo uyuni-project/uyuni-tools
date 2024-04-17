@@ -8,6 +8,7 @@ import (
 	"errors"
 
 	"github.com/spf13/cobra"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -20,8 +21,8 @@ type statusFlags struct {
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "status",
-		Short: "get the proxy status",
-		Long:  "Get the proxy status",
+		Short: L("Get the proxy status"),
+		Long:  L("Get the proxy status"),
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags statusFlags
@@ -42,5 +43,5 @@ func status(globalFlags *types.GlobalFlags, flags *statusFlags, cmd *cobra.Comma
 		return kubernetesStatus(globalFlags, flags, cmd, args)
 	}
 
-	return errors.New("no installed proxy detected")
+	return errors.New(L("no installed proxy detected"))
 }

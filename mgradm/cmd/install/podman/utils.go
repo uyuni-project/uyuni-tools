@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
@@ -16,6 +17,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -28,12 +30,12 @@ func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInsta
 	}
 
 	if err := podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, podmanArgs); err != nil {
-		return fmt.Errorf("cannot generate systemd service: %s", err)
+		return err
 	}
 
 	log.Info().Msg("Waiting for the server to start...")
 	if err := shared_podman.EnableService(shared_podman.ServerService); err != nil {
-		return fmt.Errorf("cannot enable service: %s", err)
+		return fmt.Errorf(L("cannot enable service: %s"), err)
 	}
 
 	return cnx.WaitForServer()
@@ -47,23 +49,23 @@ func installForPodman(
 ) error {
 	flags.CheckParameters(cmd, "podman")
 	if _, err := exec.LookPath("podman"); err != nil {
-		return fmt.Errorf("install podman before running this command: %s", err)
+		return errors.New(L("install podman before running this command"))
 	}
 
 	inspectedHostValues, err := adm_utils.InspectHost()
 	if err != nil {
-		return fmt.Errorf("cannot inspect host values: %s", err)
+		return fmt.Errorf(L("cannot inspect host values: %s"), err)
 	}
 
 	fqdn, err := getFqdn(args)
 	if err != nil {
 		return err
 	}
-	log.Info().Msgf("setting up server with the FQDN '%s'", fqdn)
+	log.Info().Msgf(L("Setting up the server with the FQDN '%s'"), fqdn)
 
 	image, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
 	if err != nil {
-		return fmt.Errorf("failed to compute image URL, %s", err)
+		return fmt.Errorf(L("failed to compute image URL: %s"), err)
 	}
 	pullArgs := []string{}
 	_, scc_user_exist := inspectedHostValues["host_scc_username"]
@@ -83,7 +85,7 @@ func installForPodman(
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 	if err := waitForSystemStart(cnx, preparedImage, flags); err != nil {
-		return fmt.Errorf("cannot wait for system start: %s", err)
+		return fmt.Errorf(L("cannot wait for system start: %s"), err)
 	}
 
 	caPassword := flags.Ssl.Password
@@ -103,7 +105,7 @@ func installForPodman(
 		"CERT_PASS":    caPassword,
 	}
 
-	log.Info().Msg("run setup command in the container")
+	log.Info().Msg(L("Run setup command in the container"))
 
 	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, fqdn, env); err != nil {
 		return err
@@ -111,12 +113,12 @@ func installForPodman(
 
 	if flags.Ssl.UseExisting() {
 		if err := podman.UpdateSslCertificate(cnx, &flags.Ssl.Ca, &flags.Ssl.Server); err != nil {
-			return fmt.Errorf("cannot update ssl certificate: %s", err)
+			return fmt.Errorf(L("cannot update SSL certificate: %s"), err)
 		}
 	}
 
 	if err := shared_podman.EnablePodmanSocket(); err != nil {
-		return fmt.Errorf("cannot enable podman socket: %s", err)
+		return fmt.Errorf(L("cannot enable podman socket: %s"), err)
 	}
 	return nil
 }
@@ -127,7 +129,7 @@ func getFqdn(args []string) (string, error) {
 	} else {
 		fqdn_b, err := utils.RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
 		if err != nil {
-			return "", fmt.Errorf("failed to compute server FQDN: %s", err)
+			return "", fmt.Errorf(L("failed to compute server FQDN: %s"), err)
 		}
 		return strings.TrimSpace(string(fqdn_b)), nil
 	}

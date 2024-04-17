@@ -21,6 +21,7 @@ import (
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -33,14 +34,14 @@ func migrateToKubernetes(
 ) error {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
-			return fmt.Errorf("install %s before running this command: %s", binary, err)
+			return fmt.Errorf(L("install %s before running this command"), binary)
 		}
 	}
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 
 	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
 	if err != nil {
-		return fmt.Errorf("failed to compute image URL")
+		return fmt.Errorf(L("failed to compute image URL: %s"), err)
 	}
 
 	fqdn := args[0]
@@ -52,7 +53,7 @@ func migrateToKubernetes(
 	// Prepare the migration script and folder
 	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, true)
 	if err != nil {
-		return fmt.Errorf("failed to generate migration script: %s", err)
+		return fmt.Errorf(L("failed to generate migration script: %s"), err)
 	}
 
 	defer os.RemoveAll(scriptDir)
@@ -74,29 +75,29 @@ func migrateToKubernetes(
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
 		"--set", "migration.dataPath="+scriptDir); err != nil {
-		return fmt.Errorf("cannot run deploy: %s", err)
+		return fmt.Errorf(L("cannot run deploy: %s"), err)
 	}
 
 	//this is needed because folder with script needs to be mounted
 	//check the node before scaling down
 	nodeName, err := shared_kubernetes.GetNode("uyuni")
 	if err != nil {
-		return fmt.Errorf("cannot find node for app uyuni %s", err)
+		return fmt.Errorf(L("cannot find node running uyuni: %s"), err)
 	}
 	// Run the actual migration
 	if err := adm_utils.RunMigration(cnx, scriptDir, "migrate.sh"); err != nil {
-		return fmt.Errorf("cannot run migration: %s", err)
+		return fmt.Errorf(L("cannot run migration: %s"), err)
 	}
 
 	tz, oldPgVersion, newPgVersion, err := adm_utils.ReadContainerData(scriptDir)
 	if err != nil {
-		return fmt.Errorf("cannot read data from container: %s", err)
+		return fmt.Errorf(L("cannot read data from container: %s"), err)
 	}
 
 	// After each command we want to scale to 0
 	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
 	if err != nil {
-		return fmt.Errorf("cannot set replica to 0: %s", err)
+		return fmt.Errorf(L("cannot set replicas to 0: %s"), err)
 	}
 
 	defer func() {
@@ -108,7 +109,7 @@ func migrateToKubernetes(
 
 	setupSslArray, err := setupSsl(&flags.Helm, kubeconfig, scriptDir, flags.Ssl.Password, flags.Image.PullPolicy)
 	if err != nil {
-		return fmt.Errorf("cannot setup ssl: %s", err)
+		return fmt.Errorf(L("cannot setup SSL: %s"), err)
 	}
 
 	helmArgs := []string{
@@ -120,36 +121,36 @@ func migrateToKubernetes(
 	// Run uyuni upgrade using the new ssl certificate
 	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 	if err != nil {
-		return fmt.Errorf("cannot upgrade to image %s using new ssl: %s", serverImage, err)
+		return fmt.Errorf(L("cannot upgrade helm chart to image %s using new SSL certificate: %s"), serverImage, err)
 	}
 
 	if err := shared_kubernetes.WaitForDeployment(flags.Helm.Uyuni.Namespace, "uyuni", "uyuni"); err != nil {
-		return fmt.Errorf("cannot wait for deployment of %s: %s", serverImage, err)
+		return fmt.Errorf(L("cannot wait for deployment of %s: %s"), serverImage, err)
 	}
 
 	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
 	if err != nil {
-		return fmt.Errorf("cannot set replica to 0: %s", err)
+		return fmt.Errorf(L("cannot set replicas to 0: %s"), err)
 	}
 
 	if oldPgVersion != newPgVersion {
 		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image, flags.MigrationImage, nodeName, oldPgVersion, newPgVersion); err != nil {
-			return fmt.Errorf("cannot run PostgreSQL version upgrade script: %s", err)
+			return fmt.Errorf(L("cannot run PostgreSQL version upgrade script: %s"), err)
 		}
 	}
 
 	schemaUpdateRequired := oldPgVersion != newPgVersion
 	if err := kubernetes.RunPgsqlFinalizeScript(serverImage, flags.Image.PullPolicy, nodeName, schemaUpdateRequired); err != nil {
-		return fmt.Errorf("cannot run PostgreSQL version upgrade script: %s", err)
+		return fmt.Errorf(L("cannot run PostgreSQL version upgrade script: %s"), err)
 	}
 
 	if err := kubernetes.RunPostUpgradeScript(serverImage, flags.Image.PullPolicy, nodeName); err != nil {
-		return fmt.Errorf("cannot run post upgrade script: %s", err)
+		return fmt.Errorf(L("cannot run post upgrade script: %s"), err)
 	}
 
 	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 	if err != nil {
-		return fmt.Errorf("cannot upgrade to image %s: %s", serverImage, err)
+		return fmt.Errorf(L("cannot upgrade to image %s: %s"), serverImage, err)
 	}
 
 	return shared_kubernetes.WaitForDeployment(flags.Helm.Uyuni.Namespace, "uyuni", "uyuni")
@@ -167,7 +168,7 @@ func setupSsl(helm *adm_utils.HelmFlags, kubeconfig string, scriptDir string, pa
 		// Strip down the certificate text part
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "openssl", "x509", "-in", caCert)
 		if err != nil {
-			return []string{}, fmt.Errorf("failed to strip text part of CA certificate %s", err)
+			return []string{}, fmt.Errorf(L("failed to strip text part from CA certificate: %s"), err)
 		}
 		cert := base64.StdEncoding.EncodeToString(out)
 		ca := ssl.SslPair{Cert: cert, Key: key}
@@ -176,7 +177,7 @@ func setupSsl(helm *adm_utils.HelmFlags, kubeconfig string, scriptDir string, pa
 		sslFlags := adm_utils.SslCertFlags{}
 		ret, err := kubernetes.DeployCertificate(helm, &sslFlags, cert, &ca, kubeconfig, "", pullPolicy)
 		if err != nil {
-			return []string{}, fmt.Errorf("cannot deploy certificate: %s", err)
+			return []string{}, fmt.Errorf(L("cannot deploy certificate: %s"), err)
 		}
 		return ret, nil
 	} else {

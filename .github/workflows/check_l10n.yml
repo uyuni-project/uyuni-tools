@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: 2024 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: l10n-check 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  l10n-check:
+    name: localizable
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check localizable strings
+        shell: bash -x {0}
+        run: ./check_localizable
+

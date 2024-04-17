@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
 
 // Extracts a tar.gz file.
@@ -44,7 +45,7 @@ func ExtractTarGz(tarballPath string, dstPath string) error {
 			return err
 		}
 		if !strings.HasPrefix(path, dstPath) {
-			log.Warn().Msgf("Skipping extraction of %s in %s file as is resolves outside the target path",
+			log.Warn().Msgf(L("Skipping extraction of %s in %s file as it resolves outside the target path"),
 				header.Name, tarballPath)
 			continue
 		}
@@ -86,7 +87,7 @@ func NewTarGz(path string) (*TarGz, error) {
 	var err error
 	targz.fileWriter, err = os.Create(path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to write tar.gz to %s: %s", path, err)
+		return nil, fmt.Errorf(L("failed to write tar.gz to %s: %s"), path, err)
 	}
 
 	targz.gzipWriter = gzip.NewWriter(targz.fileWriter)

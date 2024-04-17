@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/podman"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -15,8 +16,8 @@ import (
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	migrateCmd := &cobra.Command{
 		Use:   "migrate [source server FQDN]",
-		Short: "migrate a remote server to containers",
-		Long:  "Migrate a remote server to containers",
+		Short: L("Migrate a remote server to containers"),
+		Long:  L("Migrate a remote server to containers"),
 	}
 
 	migrateCmd.AddCommand(podman.NewCommand(globalFlags))

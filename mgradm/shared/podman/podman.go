@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -17,6 +18,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -48,7 +50,7 @@ func GetExposedPorts(debug bool) []types.PortMap {
 // GenerateSystemdService creates a serverY systemd file.
 func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []string) error {
 	if err := podman.SetupNetwork(); err != nil {
-		return fmt.Errorf("cannot setup network: %s", err)
+		return fmt.Errorf(L("cannot setup network: %s"), err)
 	}
 
 	log.Info().Msg("Enabling system service")
@@ -61,11 +63,11 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 		Network:    podman.UyuniNetwork,
 	}
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, false); err != nil {
-		return fmt.Errorf("failed to generate systemd service unit file: %s", err)
+		return fmt.Errorf(L("failed to generate systemd service unit file: %s"), err)
 	}
 
 	if err := podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+image); err != nil {
-		return fmt.Errorf("cannot generate systemd conf file: %s", err)
+		return fmt.Errorf(L("cannot generate systemd conf file: %s"), err)
 	}
 	return podman.ReloadDaemon(false)
 }
@@ -77,7 +79,7 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 	// Copy the CAs, certificate and key to the container
 	const certDir = "/tmp/uyuni-tools"
 	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "mkdir", "-p", certDir); err != nil {
-		return fmt.Errorf("failed to create temporary folder on container to copy certificates to")
+		return fmt.Errorf(L("failed to create temporary folder on container to copy certificates to"))
 	}
 
 	rootCaPath := path.Join(certDir, "root-ca.crt")
@@ -97,13 +99,13 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 	}
 
 	if err := cnx.Copy(chain.Root, "server:"+rootCaPath, "root", "root"); err != nil {
-		return fmt.Errorf("cannot copy %s: %s", rootCaPath, err)
+		return fmt.Errorf(L("cannot copy %s: %s"), rootCaPath, err)
 	}
 	if err := cnx.Copy(serverPair.Cert, "server:"+serverCrtPath, "root", "root"); err != nil {
-		return fmt.Errorf("cannot copy %s: %s", serverCrtPath, err)
+		return fmt.Errorf(L("cannot copy %s: %s"), serverCrtPath, err)
 	}
 	if err := cnx.Copy(serverPair.Key, "server:"+serverKeyPath, "root", "root"); err != nil {
-		return fmt.Errorf("cannot copy %s: %s", serverKeyPath, err)
+		return fmt.Errorf(L("cannot copy %s: %s"), serverKeyPath, err)
 	}
 
 	for i, ca := range chain.Intermediate {
@@ -111,24 +113,24 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 		caPath := path.Join(certDir, caFilename)
 		args = append(args, "--intermediate-ca-file", caPath)
 		if err := cnx.Copy(ca, "server:"+caPath, "root", "root"); err != nil {
-			return fmt.Errorf("cannot copy %s: %s", caPath, err)
+			return fmt.Errorf(L("cannot copy %s: %s"), caPath, err)
 		}
 	}
 
 	// Check and install then using mgr-ssl-cert-setup
 	if _, err := utils.RunCmdOutput(zerolog.InfoLevel, "podman", args...); err != nil {
-		return fmt.Errorf("failed to update SSL certificate")
+		return errors.New(L("failed to update SSL certificate"))
 	}
 
 	// Clean the copied files and the now useless ssl-build
 	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", certDir); err != nil {
-		return fmt.Errorf("failed to remove copied certificate files in the container")
+		return errors.New(L("failed to remove copied certificate files in the container"))
 	}
 
 	const sslbuildPath = "/root/ssl-build"
 	if cnx.TestExistenceInPod(sslbuildPath) {
 		if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", sslbuildPath); err != nil {
-			return fmt.Errorf("failed to remove now useless ssl-build folder in the container")
+			return errors.New(L("failed to remove now useless ssl-build folder in the container"))
 		}
 	}
 
@@ -149,7 +151,7 @@ func RunContainer(name string, image string, extraArgs []string, cmd []string) e
 
 	err := utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", podmanArgs...)
 	if err != nil {
-		return fmt.Errorf("failed to run %s container: %s", name, err)
+		return fmt.Errorf(L("failed to run %s container: %s"), name, err)
 	}
 
 	return nil
@@ -159,7 +161,7 @@ func RunContainer(name string, image string, extraArgs []string, cmd []string) e
 func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, sshConfigPath string, sshKnownhostsPath string, sourceFqdn string) (string, string, string, error) {
 	scriptDir, err := adm_utils.GenerateMigrationScript(sourceFqdn, false)
 	if err != nil {
-		return "", "", "", fmt.Errorf("cannot generate migration script: %s", err)
+		return "", "", "", fmt.Errorf(L("cannot generate migration script: %s"), err)
 	}
 	defer os.RemoveAll(scriptDir)
 
@@ -180,7 +182,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 
 	inspectedHostValues, err := adm_utils.InspectHost()
 	if err != nil {
-		return "", "", "", fmt.Errorf("cannot inspect host values: %s", err)
+		return "", "", "", fmt.Errorf(L("cannot inspect host values: %s"), err)
 	}
 
 	pullArgs := []string{}
@@ -198,12 +200,12 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 	log.Info().Msg("Migrating server")
 	if err := RunContainer("uyuni-migration", preparedImage, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
-		return "", "", "", fmt.Errorf("cannot run uyuni migration container: %s", err)
+		return "", "", "", fmt.Errorf(L("cannot run uyuni migration container: %s"), err)
 	}
 	tz, oldPgVersion, newPgVersion, err := adm_utils.ReadContainerData(scriptDir)
 
 	if err != nil {
-		return "", "", "", fmt.Errorf("cannot read extracted data: %s", err)
+		return "", "", "", fmt.Errorf(L("cannot read extracted data: %s"), err)
 	}
 
 	return tz, oldPgVersion, newPgVersion, nil
@@ -211,12 +213,12 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
 func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFlags, oldPgsql string, newPgsql string) error {
-	log.Info().Msgf("Previous postgresql is %s, instead new one is %s. Performing a DB version upgrade...", oldPgsql, newPgsql)
+	log.Info().Msgf(L("Previous PostgreSQL is %s, new one is %s. Performing a DB version upgrade..."), oldPgsql, newPgsql)
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return fmt.Errorf("failed to create temporary directory")
+		return fmt.Errorf(L("failed to create temporary directory: %s"), err)
 	}
 	if newPgsql > oldPgsql {
 		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
@@ -229,18 +231,18 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 		if migrationImage.Name == "" {
 			migrationImageUrl, err = utils.ComputeImage(image.Name, image.Tag, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
-				return fmt.Errorf("failed to compute image URL %s", err)
+				return fmt.Errorf(L("failed to compute image URL: %s"), err)
 			}
 		} else {
 			migrationImageUrl, err = utils.ComputeImage(migrationImage.Name, image.Tag)
 			if err != nil {
-				return fmt.Errorf("failed to compute image URL %s", err)
+				return fmt.Errorf(L("failed to compute image URL: %s"), err)
 			}
 		}
 
 		inspectedHostValues, err := adm_utils.InspectHost()
 		if err != nil {
-			return fmt.Errorf("cannot inspect host values: %s", err)
+			return fmt.Errorf(L("cannot inspect host values: %s"), err)
 		}
 
 		pullArgs := []string{}
@@ -255,11 +257,11 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 			return err
 		}
 
-		log.Info().Msgf("Using migration image %s", preparedImage)
+		log.Info().Msgf(L("Using migration image %s"), preparedImage)
 
 		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, false)
 		if err != nil {
-			return fmt.Errorf("cannot generate postgresql database version upgrade script %s", err)
+			return fmt.Errorf(L("cannot generate PostgreSQL database version upgrade script %s"), err)
 		}
 
 		err = RunContainer(pgsqlVersionUpgradeContainer, preparedImage, extraArgs,
@@ -276,7 +278,7 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool) error
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return fmt.Errorf("failed to create temporary directory")
+		return fmt.Errorf(L("failed to create temporary directory: %s"), err)
 	}
 
 	extraArgs := []string{
@@ -286,7 +288,7 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool) error
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
 	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, schemaUpdateRequired, true, true, false)
 	if err != nil {
-		return fmt.Errorf("cannot generate postgresql finalization script %s", err)
+		return fmt.Errorf(L("cannot generate PostgreSQL finalization script: %s"), err)
 	}
 	err = RunContainer(pgsqlFinalizeContainer, serverImage, extraArgs,
 		[]string{"/var/lib/uyuni-tools/" + pgsqlFinalizeScriptName})
@@ -301,7 +303,7 @@ func RunPostUpgradeScript(serverImage string) error {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return fmt.Errorf("failed to create temporary directory")
+		return fmt.Errorf(L("failed to create temporary directory: %s"), err)
 	}
 	postUpgradeContainer := "uyuni-post-upgrade"
 	extraArgs := []string{
@@ -310,7 +312,7 @@ func RunPostUpgradeScript(serverImage string) error {
 	}
 	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
 	if err != nil {
-		return fmt.Errorf("cannot generate postgresql finalization script %s", err)
+		return fmt.Errorf(L("cannot generate PostgreSQL finalization script: %s"), err)
 	}
 	err = RunContainer(postUpgradeContainer, serverImage, extraArgs,
 		[]string{"/var/lib/uyuni-tools/" + postUpgradeScriptName})

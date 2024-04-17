@@ -15,6 +15,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
 
 const envPrefix = "UYUNI"
@@ -29,14 +30,14 @@ func ReadConfig(configPath string, cmd *cobra.Command) (*viper.Viper, error) {
 	v.SetConfigName(configFilename)
 
 	if configPath != "" {
-		log.Info().Msgf("Using config file %s", configPath)
+		log.Info().Msgf(L("Using config file %s"), configPath)
 		v.SetConfigFile(configPath)
 	} else {
 		xdgConfigHome := os.Getenv("XDG_CONFIG_HOME")
 		if xdgConfigHome == "" {
 			home, err := os.UserHomeDir()
 			if err != nil {
-				log.Err(err).Msg("Failed to find home directory")
+				log.Err(err).Msg(L("Failed to find home directory"))
 			} else {
 				xdgConfigHome = path.Join(home, ".config")
 			}
@@ -55,7 +56,7 @@ func ReadConfig(configPath string, cmd *cobra.Command) (*viper.Viper, error) {
 		// It's okay if there isn't a config file
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 			// TODO Provide help on the config file format
-			return nil, fmt.Errorf("failed to parse configuration file %s: %s", v.ConfigFileUsed(), err)
+			return nil, fmt.Errorf(L("failed to parse configuration file %s: %s"), v.ConfigFileUsed(), err)
 		}
 	}
 
@@ -74,7 +75,7 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) error {
 	cmd.Flags().VisitAll(func(f *pflag.Flag) {
 		configName := strings.ReplaceAll(f.Name, "-", ".")
 		if err := v.BindPFlag(configName, f); err != nil {
-			errors = append(errors, fmt.Errorf("failed to bind %s config to parameter %s: %s", configName, f.Name, err))
+			errors = append(errors, fmt.Errorf(L("failed to bind %s config to parameter %s: %s"), configName, f.Name, err))
 		}
 	})
 
@@ -84,7 +85,37 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) error {
 	return nil
 }
 
-const configTemplate = `
+// GetLocalizedUsageTemplate provides the help template, but localized.
+func GetLocalizedUsageTemplate() string {
+	return L(`Usage:{{if .Runnable}}
+  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
+  {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
+
+Aliases:
+  {{.NameAndAliases}}{{end}}{{if .HasExample}}
+
+Examples:
+{{.Example}}{{end}}{{if .HasAvailableSubCommands}}
+
+Available Commands:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
+  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
+
+Flags:
+{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}
+
+Global Flags:
+{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}
+
+Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
+  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
+
+Use "{{.CommandPath}} [command] --help" for more information about a command.{{end}}
+`)
+}
+
+// GetConfigHelpCommand provides a help command describing the config file and environment variables.
+func GetConfigHelpCommand() *cobra.Command {
+	var configTemplate = L(`
 Configuration:
 
   All the non-global flags can alternatively be passed as configuration.
@@ -116,10 +147,12 @@ Environment variables:
   
   For example the '--tz CEST' flag will be mapped to '{{ .EnvPrefix }}_TZ'
   and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD' 
-`
+`)
 
-// GetUsageWithConfigHelpTemplate returns the usage template with the configuration help added.
-func GetUsageWithConfigHelpTemplate(usageTemplate string) (string, error) {
+	cmd := &cobra.Command{
+		Use:   "config",
+		Short: "help on configuration file and environment variables",
+	}
 	t := template.Must(template.New("help").Parse(configTemplate))
 	var helpBuilder strings.Builder
 	if err := t.Execute(&helpBuilder, configTemplateData{
@@ -127,9 +160,10 @@ func GetUsageWithConfigHelpTemplate(usageTemplate string) (string, error) {
 		Name:       appName,
 		ConfigFile: configFilename,
 	}); err != nil {
-		return "", fmt.Errorf("cannot return usage template: %s", err)
+		log.Fatal().Err(err).Msg(L("failed to compute config help command"))
 	}
-	return usageTemplate + helpBuilder.String(), nil
+	cmd.SetHelpTemplate(helpBuilder.String())
+	return cmd
 }
 
 type configTemplateData struct {

@@ -9,3 +9,4 @@ vendor.tar.gz
 *.pyc
 __pycache__
 **/tags
+*.mo

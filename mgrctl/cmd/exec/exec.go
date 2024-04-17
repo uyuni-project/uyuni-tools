@@ -15,6 +15,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -33,17 +34,15 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 	execCmd := &cobra.Command{
 		Use:   "exec '[command-to-run --with-args]'",
-		Short: "Execute commands inside the uyuni containers using 'sh -c'",
+		Short: L("Execute commands inside the uyuni containers using 'sh -c'"),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 
-	execCmd.SetUsageTemplate(execCmd.UsageTemplate())
-
-	execCmd.Flags().StringSliceP("env", "e", []string{}, "environment variables to pass to the command, separated by commas")
-	execCmd.Flags().BoolP("interactive", "i", false, "Pass stdin to the container")
-	execCmd.Flags().BoolP("tty", "t", false, "Stdin is a TTY")
+	execCmd.Flags().StringSliceP("env", "e", []string{}, L("environment variables to pass to the command, separated by commas"))
+	execCmd.Flags().BoolP("interactive", "i", false, L("Pass stdin to the container"))
+	execCmd.Flags().BoolP("tty", "t", false, L("Stdin is a TTY"))
 
 	utils.AddBackendFlag(execCmd)
 	return execCmd
@@ -96,11 +95,11 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 	err = RunRawCmd(command, commandArgs)
 	if err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
-			log.Info().Err(err).Msg("Command failed")
+			log.Info().Err(err).Msg(L("Command failed"))
 			os.Exit(exitErr.ExitCode())
 		}
 	}
-	log.Info().Msg("Command returned with exit code 0")
+	log.Info().Msg(L("Command returned with exit code 0"))
 
 	return nil
 }
@@ -114,7 +113,7 @@ func (l copyWriter) Write(p []byte) (n int, err error) {
 	// Filter out kubectl line about terminated exit code
 	if !strings.HasPrefix(string(p), "command terminated with exit code") {
 		if _, err := l.Stream.Write(p); err != nil {
-			return 0, fmt.Errorf("cannot write: %s", err)
+			return 0, fmt.Errorf(L("cannot write: %s"), err)
 		}
 
 		n = len(p)
@@ -129,7 +128,7 @@ func (l copyWriter) Write(p []byte) (n int, err error) {
 
 // RunRawCmd runs a command, mapping stdout and start error, waiting and checking return code.
 func RunRawCmd(command string, args []string) error {
-	log.Info().Msgf("Running: %s %s", command, strings.Join(args, " "))
+	log.Info().Msgf(L("Running: %s %s"), command, strings.Join(args, " "))
 
 	runCmd := exec.Command(command, args...)
 	runCmd.Stdin = os.Stdin

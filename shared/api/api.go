@@ -7,10 +7,12 @@ package api
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"errors"
 	"os"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 
 	"bytes"
@@ -66,11 +68,11 @@ type ApiResponse[T interface{}] struct {
 //
 // If the api support is only optional for the command, set optional parameter to true.
 func AddAPIFlags(cmd *cobra.Command, optional bool) error {
-	cmd.PersistentFlags().String("api-server", "", "FQDN of the server to connect to")
-	cmd.PersistentFlags().String("api-user", "", "API user username")
-	cmd.PersistentFlags().String("api-password", "", "Password for the API user")
-	cmd.PersistentFlags().String("api-cacert", "", "Path to a cert file of the CA")
-	cmd.PersistentFlags().Bool("api-insecure", false, "If set, server certificate will not be checked for validity")
+	cmd.PersistentFlags().String("api-server", "", L("FQDN of the server to connect to"))
+	cmd.PersistentFlags().String("api-user", "", L("API user username"))
+	cmd.PersistentFlags().String("api-password", "", L("Password for the API user"))
+	cmd.PersistentFlags().String("api-cacert", "", L("Path to a cert file of the CA"))
+	cmd.PersistentFlags().Bool("api-insecure", false, L("If set, server certificate will not be checked for validity"))
 
 	if !optional {
 		if err := cmd.MarkPersistentFlagRequired("api-server"); err != nil {
@@ -119,7 +121,7 @@ func (c *HTTPClient) sendRequest(req *http.Request) (*http.Response, error) {
 		if err = json.NewDecoder(res.Body).Decode(&errResponse); err == nil {
 			return nil, fmt.Errorf(errResponse["message"])
 		}
-		return nil, fmt.Errorf("unknown error: %d", res.StatusCode)
+		return nil, fmt.Errorf(L("unknown error: %d"), res.StatusCode)
 	}
 	log.Debug().Msgf("Received response with code %d", res.StatusCode)
 
@@ -161,7 +163,7 @@ func Init(conn *ConnectionDetails) (*HTTPClient, error) {
 
 	if len(conn.User) > 0 {
 		if len(conn.Password) == 0 {
-			utils.AskPasswordIfMissing(&conn.Password, "API server password", 0, 0)
+			utils.AskPasswordIfMissing(&conn.Password, L("API server password"), 0, 0)
 		}
 		err = client.login(conn)
 	}
@@ -176,7 +178,7 @@ func (c *HTTPClient) login(conn *ConnectionDetails) error {
 	}
 	jsonData, err := json.Marshal(data)
 	if err != nil {
-		log.Error().Err(err).Msg("Unable to create login data")
+		log.Error().Err(err).Msg(L("Unable to create login data"))
 		return err
 	}
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
@@ -206,7 +208,7 @@ func (c *HTTPClient) login(conn *ConnectionDetails) error {
 	}
 
 	if c.AuthCookie == nil {
-		return fmt.Errorf("auth cookie not found in login response")
+		return errors.New(L("auth cookie not found in login response"))
 	}
 
 	return nil
@@ -222,7 +224,7 @@ func (c *HTTPClient) Post(path string, data map[string]interface{}) (*http.Respo
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	jsonData, err := json.Marshal(data)
 	if err != nil {
-		log.Error().Err(err).Msg("Unable to JSONify data")
+		log.Error().Err(err).Msg(L("Unable to convert data to JSON"))
 		return nil, err
 	}
 

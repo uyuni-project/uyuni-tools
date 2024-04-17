@@ -15,6 +15,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -31,7 +32,7 @@ var registries = []string{
 // Returns the image name to use. Note that it may be changed if the image has been loaded from a local RPM package.
 func PrepareImage(image string, pullPolicy string, args ...string) (string, error) {
 	if strings.ToLower(pullPolicy) != "always" {
-		log.Info().Msgf("Ensure image %s is available", image)
+		log.Info().Msgf(L("Ensure image %s is available"), image)
 
 		presentImage, err := IsImagePresent(image)
 		if err != nil {
@@ -50,13 +51,13 @@ func PrepareImage(image string, pullPolicy string, args ...string) (string, erro
 		log.Debug().Msgf("Image %s present as RPM. Loading it", image)
 		loadedImage, err := loadRpmImage(rpmImageFile)
 		if err != nil {
-			log.Warn().Msgf("Cannot use RPM image for %s: %s", image, err)
+			log.Warn().Msgf(L("Cannot use RPM image for %s: %s"), image, err)
 		} else {
-			log.Info().Msgf("Using the %s image loaded from the RPM instead of its online version %s", strings.TrimSpace(loadedImage), image)
+			log.Info().Msgf(L("Using the %s image loaded from the RPM instead of its online version %s"), strings.TrimSpace(loadedImage), image)
 			return loadedImage, nil
 		}
 	} else {
-		log.Info().Msgf("Cannot find RPM image for %s", image)
+		log.Info().Msgf(L("Cannot find RPM image for %s"), image)
 	}
 
 	if strings.ToLower(pullPolicy) != "never" {
@@ -64,7 +65,7 @@ func PrepareImage(image string, pullPolicy string, args ...string) (string, erro
 		return image, pullImage(image, args...)
 	}
 
-	return image, fmt.Errorf("image %s is missing and cannot be fetched", image)
+	return image, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)
 }
 
 // GetRpmImageName return the RPM Image name and the tag, given an image.
@@ -89,7 +90,7 @@ func GetRpmImageName(image string) (rpmImageFile string, tag string) {
 func BuildRpmImagePath(byteValue []byte, rpmImageFile string, tag string) (string, error) {
 	var data types.Metadata
 	if err := json.Unmarshal(byteValue, &data); err != nil {
-		return "", fmt.Errorf("cannot unmarshal: %s", err)
+		return "", fmt.Errorf(L("cannot unmarshal image RPM metadata: %s"), err)
 	}
 	fullPathFile := rpmImageDir + data.Image.File
 	if data.Image.Name == rpmImageFile {
@@ -134,7 +135,7 @@ func GetRpmImagePath(image string) string {
 
 		fullPathFile, err := BuildRpmImagePath(byteValue, rpmImageFile, tag)
 		if err != nil {
-			log.Warn().Msgf("Cannot unmarshal metadata file %s: %s", fullPathFileName, err)
+			log.Warn().Msgf(L("Cannot unmarshal metadata file %s: %s"), fullPathFileName, err)
 			return ""
 		}
 		if len(fullPathFile) > 0 {
@@ -156,7 +157,7 @@ func loadRpmImage(rpmImageBasePath string) (string, error) {
 	if len(parseOutput) == 2 {
 		return strings.TrimSpace(parseOutput[1]), nil
 	}
-	return "", fmt.Errorf("error parsing: %s", string(out))
+	return "", fmt.Errorf(L("error parsing: %s"), string(out))
 }
 
 // IsImagePresent return true if the image is present.
@@ -164,7 +165,7 @@ func IsImagePresent(image string) (string, error) {
 	log.Debug().Msgf("Checking for %s", image)
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", "--quiet", image)
 	if err != nil {
-		return "", fmt.Errorf("failed to check if image %s has already been pulled", image)
+		return "", fmt.Errorf(L("failed to check if image %s has already been pulled"), image)
 	}
 
 	if len(bytes.TrimSpace(out)) > 0 {
@@ -178,7 +179,7 @@ func IsImagePresent(image string) (string, error) {
 	log.Debug().Msgf("Checking for local image of %s", image)
 	out, err = utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", "--quiet", "localhost/"+splitImage[1])
 	if err != nil {
-		return "", fmt.Errorf("failed to check if image %s has already been pulled", image)
+		return "", fmt.Errorf(L("failed to check if image %s has already been pulled"), image)
 	}
 	if len(bytes.TrimSpace(out)) > 0 {
 		return "localhost/" + splitImage[1], nil
@@ -193,13 +194,13 @@ func GetPulledImageName(image string) (string, error) {
 	imageWithTag := parts[len(parts)-1]
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", imageWithTag, "--format", "{{.Repository}}")
 	if err != nil {
-		return "", fmt.Errorf("failed to check if image %s has already been pulled", parts[len(parts)-1])
+		return "", fmt.Errorf(L("failed to check if image %s has already been pulled"), parts[len(parts)-1])
 	}
 	return string(bytes.TrimSpace(out)), nil
 }
 
 func pullImage(image string, args ...string) error {
-	log.Info().Msgf("Running podman pull %s", image)
+	log.Info().Msgf(L("Pulling image %s"), image)
 	podmanImageArgs := []string{"pull", image}
 	podmanArgs := append(podmanImageArgs, args...)
 
@@ -214,11 +215,11 @@ func pullImage(image string, args ...string) error {
 
 // ShowAvailableTag  returns the list of avaialable tag for a given image.
 func ShowAvailableTag(image string) ([]string, error) {
-	log.Info().Msgf("Running podman image search --list-tags %s --format='{{.Tag}}'", image)
+	log.Debug().Msgf("Running podman image search --list-tags %s --format='{{.Tag}}'", image)
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", image, "--format='{{.Tag}}'")
 	if err != nil {
-		return []string{}, fmt.Errorf("cannot find any tag for image %s: %s", image, err)
+		return []string{}, fmt.Errorf(L("cannot find any tag for image %s: %s"), image, err)
 	}
 
 	tags := strings.Split(string(out), "\n")

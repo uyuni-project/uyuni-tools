@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# SPDX-FileCopyrightText: 2024 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+grep -r . --include '*.go' --exclude '*_test.go' -n -e 'fmt\.Errorf("[^"]\+"' -e 'errors.New("[^"]\+"' -e '\(Fatal\|Error\|Info\|Warn\)()\(.Err(err)\?\).Msgf\?("'
+
+if test $? -eq 0; then
+    echo "Fix the non localizable strings"
+    exit 1
+fi

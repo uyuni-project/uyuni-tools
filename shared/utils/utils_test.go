@@ -13,6 +13,8 @@ import (
 	"testing"
 
 	expect "github.com/Netflix/go-expect"
+	"github.com/chai2010/gettext-go"
+	l10n_utils "github.com/uyuni-project/uyuni-tools/shared/l10n/utils"
 )
 
 type askTestData struct {
@@ -24,6 +26,10 @@ type askTestData struct {
 }
 
 func TestAskIfMissing(t *testing.T) {
+	// Set english locale to not depend on the system one
+	gettext.BindLocale(gettext.New("", "", l10n_utils.New("")))
+	gettext.SetLanguage("en")
+
 	c, err := expect.NewConsole(expect.WithStdout(os.Stdout))
 	if err != nil {
 		t.Errorf("Failed to create fake console")
@@ -83,6 +89,10 @@ func TestAskIfMissing(t *testing.T) {
 }
 
 func TestAskPasswordIfMissing(t *testing.T) {
+	// Set english locale to not depend on the system one
+	gettext.BindLocale(gettext.New("", "", l10n_utils.New("")))
+	gettext.SetLanguage("en")
+
 	c, err := expect.NewConsole(expect.WithStdout(os.Stdout))
 	if err != nil {
 		t.Errorf("Failed to create fake console")

@@ -7,6 +7,7 @@ package org
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -14,7 +15,7 @@ import (
 func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 	orgCmd := &cobra.Command{
 		Use:   "org",
-		Short: "Organization-related commands",
+		Short: L("Organization-related commands"),
 	}
 
 	if err := api.AddAPIFlags(orgCmd, false); err != nil {

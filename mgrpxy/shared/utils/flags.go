@@ -9,6 +9,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -44,7 +45,7 @@ func (f *ProxyInstallFlags) GetContainerImage(name string) string {
 	case "tftpd":
 		containerImage = &f.Tftpd
 	default:
-		log.Warn().Msgf("Invalid proxy container name: %s", name)
+		log.Warn().Msgf(L("Invalid proxy container name: %s"), name)
 	}
 
 	if containerImage != nil {
@@ -58,7 +59,7 @@ func (f *ProxyInstallFlags) GetContainerImage(name string) string {
 
 	imageUrl, err := utils.ComputeImage(image, tag)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to compute image URL")
+		log.Fatal().Err(err).Msg(L("Failed to compute image URL"))
 	}
 	return imageUrl
 }
@@ -66,8 +67,8 @@ func (f *ProxyInstallFlags) GetContainerImage(name string) string {
 // AddInstallFlags will add the proxy install flags to a command.
 func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().String("imagesLocation", utils.DefaultNamespace,
-		"registry URL prefix containing the all the container images")
-	cmd.Flags().String("tag", utils.DefaultTag, "Tag Image")
+		L("registry URL prefix containing the all the container images"))
+	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))
 	utils.AddPullPolicyFlag(cmd)
 
 	addContainerImageFlags(cmd, "httpd")
@@ -79,7 +80,7 @@ func AddInstallFlags(cmd *cobra.Command) {
 
 func addContainerImageFlags(cmd *cobra.Command, container string) {
 	cmd.Flags().String(container+"-image", "",
-		fmt.Sprintf("Image for %s container, overrides the namespace if set", container))
+		fmt.Sprintf(L("Image for %s container, overrides the namespace if set"), container))
 	cmd.Flags().String(container+"-tag", "",
-		fmt.Sprintf("Tag for %s container, overrides the global value if set", container))
+		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), container))
 }

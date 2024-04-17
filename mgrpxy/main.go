@@ -7,11 +7,15 @@ package main
 import (
 	"os"
 
+	"github.com/chai2010/gettext-go"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd"
+	l10n_utils "github.com/uyuni-project/uyuni-tools/shared/l10n/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // Run runs the `mgrpxy` root command.
 func Run() error {
+	gettext.BindLocale(gettext.New("mgrpxy", utils.LocaleRoot, l10n_utils.New(utils.LocaleRoot)))
 	run, err := cmd.NewUyuniproxyCommand()
 	if err != nil {
 		return err

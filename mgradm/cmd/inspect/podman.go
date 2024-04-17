@@ -14,6 +14,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -27,7 +28,7 @@ func podmanInspect(
 ) error {
 	serverImage, err := utils.ComputeImage(flags.Image, flags.Tag)
 	if err != nil && len(serverImage) > 0 {
-		return fmt.Errorf("failed to determine image. %s", err)
+		return fmt.Errorf(L("failed to determine image: %s"), err)
 	}
 
 	if len(serverImage) <= 0 {
@@ -36,19 +37,20 @@ func podmanInspect(
 		cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 		serverImage, err = adm_utils.RunningImage(cnx, shared_podman.ServerContainerName)
 		if err != nil {
-			return fmt.Errorf("failed to find current running image")
+			return fmt.Errorf(L("failed to find the image of the currently running server container: %s"))
 		}
 	}
 	inspectResult, err := InspectPodman(serverImage, flags.PullPolicy)
 	if err != nil {
-		return fmt.Errorf("inspect command failed %s", err)
+		return fmt.Errorf(L("inspect command failed: %s"), err)
 	}
 	prettyInspectOutput, err := json.MarshalIndent(inspectResult, "", "  ")
 	if err != nil {
-		return fmt.Errorf("cannot print inspect result %s", err)
+		return fmt.Errorf(L("cannot print inspect result: %s"), err)
 	}
 
-	log.Info().Msgf("\n%s", string(prettyInspectOutput))
+	outputString := "\n" + string(prettyInspectOutput)
+	log.Info().Msgf(outputString)
 
 	return nil
 }
@@ -58,12 +60,12 @@ func InspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf("failed to create temporary directory %s", err)
+		return map[string]string{}, fmt.Errorf(L("failed to create temporary directory: %s"), err)
 	}
 
 	inspectedHostValues, err := adm_utils.InspectHost()
 	if err != nil {
-		return map[string]string{}, fmt.Errorf("cannot inspect host values: %s", err)
+		return map[string]string{}, fmt.Errorf(L("cannot inspect host values: %s"), err)
 	}
 
 	pullArgs := []string{}
@@ -95,7 +97,7 @@ func InspectPodman(serverImage string, pullPolicy string) (map[string]string, er
 
 	inspectResult, err := adm_utils.ReadInspectData(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf("cannot inspect data. %s", err)
+		return map[string]string{}, fmt.Errorf(L("cannot inspect data: %s"), err)
 	}
 
 	return inspectResult, err

@@ -16,6 +16,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -28,7 +29,7 @@ func umountAndRemove(mountpoint string) {
 	}
 
 	if err := utils.RunCmd("/usr/bin/sudo", umountCmd...); err != nil {
-		log.Fatal().Err(err).Msgf("Unable to unmount iso file, leaving %s intact", mountpoint)
+		log.Fatal().Err(err).Msgf(L("Unable to unmount ISO image, leaving %s intact"), mountpoint)
 	}
 
 	os.Remove(mountpoint)
@@ -37,8 +38,7 @@ func umountAndRemove(mountpoint string) {
 func registerDistro(connection *api.ConnectionDetails, distro *types.Distribution) error {
 	client, err := api.Init(connection)
 	if err != nil {
-		log.Error().Msg("Unable to login and register the distribution. Manual distro registration is required.")
-		return err
+		return fmt.Errorf(L("unable to login and register the distribution. Manual distro registration is required: %s"), err)
 	}
 	data := map[string]interface{}{
 		"treeLabel":    distro.TreeLabel,
@@ -49,9 +49,9 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 
 	_, err = client.Post("kickstart/tree/create", data)
 	if err != nil {
-		return fmt.Errorf("unable to register the distribution. Manual distro registration is required: %s", err)
+		return fmt.Errorf(L("unable to register the distribution. Manual distro registration is required: %s"), err)
 	}
-	log.Info().Msgf("Distribution %s successfully registered", distro.TreeLabel)
+	log.Info().Msgf(L("Distribution %s successfully registered"), distro.TreeLabel)
 	return nil
 }
 
@@ -71,19 +71,19 @@ func distroCp(
 		channelLabel = ""
 	}
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
-	log.Info().Msgf("Copying distribution %s\n", distroName)
+	log.Info().Msgf(L("Copying distribution %s\n"), distroName)
 	if !utils.FileExists(source) {
-		return fmt.Errorf("source %s does not exists", source)
+		return fmt.Errorf(L("source %s does not exists"), source)
 	}
 
 	dstpath := "/srv/www/distributions/" + distroName
 	if cnx.TestExistenceInPod(dstpath) {
-		return fmt.Errorf("distribution already exists: %s", dstpath)
+		return fmt.Errorf(L("distribution already exists: %s"), dstpath)
 	}
 
 	srcdir := source
 	if strings.HasSuffix(source, ".iso") {
-		log.Debug().Msg("Source is an iso file")
+		log.Debug().Msg("Source is an ISO image")
 		tmpdir, err := os.MkdirTemp("", "mgrctl")
 		if err != nil {
 			return err
@@ -98,16 +98,16 @@ func distroCp(
 			srcdir,
 		}
 		if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "/usr/bin/sudo", mountCmd...); err != nil {
-			log.Debug().Msgf("Error mounting iso: '%s'", out)
-			return errors.New("unable to mount iso file. Mount manually and try again")
+			log.Debug().Msgf("Error mounting ISO image: '%s'", out)
+			return errors.New(L("unable to mount ISO image. Mount manually and try again"))
 		}
 	}
 
 	if err := cnx.Copy(srcdir, "server:"+dstpath, "tomcat", "susemanager"); err != nil {
-		return fmt.Errorf("cannot copy %s: %s", dstpath, err)
+		return fmt.Errorf(L("cannot copy %s: %s"), dstpath, err)
 	}
 
-	log.Info().Msg("Distribution has been copied")
+	log.Info().Msg(L("Distribution has been copied"))
 
 	if flags.ConnectionDetails.User != "" {
 		distro := types.Distribution{

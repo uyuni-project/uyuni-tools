@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/uyuni-project/uyuni-tools/shared/api"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -21,14 +22,14 @@ func runGet(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command,
 	client, err := api.Init(&flags.ConnectionDetails)
 
 	if err != nil {
-		return fmt.Errorf("unable to login to the server: %s", err)
+		return fmt.Errorf(L("unable to login to the server: %s"), err)
 	}
 	path := args[0]
 	options := args[1:]
 
 	res, err := api.Get[interface{}](client, fmt.Sprintf("%s?%s", path, strings.Join(options, "&")))
 	if err != nil {
-		return fmt.Errorf("error in query %s: %s", path, err)
+		return fmt.Errorf(L("error in query %s: %s"), path, err)
 	}
 
 	// TODO do this only when result is JSON or TEXT. Watchout for binary data

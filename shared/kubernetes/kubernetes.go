@@ -11,6 +11,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -50,7 +51,7 @@ func CheckCluster() (*ClusterInfos, error) {
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "node",
 		"-o", "jsonpath={.items[0].status.nodeInfo.kubeletVersion}")
 	if err != nil {
-		return nil, fmt.Errorf("failed to get kubelet version: %s", err)
+		return nil, fmt.Errorf(L("failed to get kubelet version: %s"), err)
 	}
 
 	var infos ClusterInfos
@@ -69,14 +70,14 @@ func guessIngress() (string, error) {
 	if err == nil {
 		return "traefik", nil
 	} else {
-		log.Debug().Err(err).Msg("No ingressroutetcp resource deployed")
+		log.Debug().Err(err).Msg(L("No ingressroutetcp resource deployed"))
 	}
 
 	// Look for a pod running the nginx-ingress-controller: there is no other common way to find out
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-A",
 		"-o", "jsonpath={range .items[*]}{.spec.containers[*].args[0]}{.spec.containers[*].command}{end}")
 	if err != nil {
-		return "", fmt.Errorf("failed to get pod commands to look for nginx controller: %s", err)
+		return "", fmt.Errorf(L("failed to get pod commands to look for nginx controller: %s"), err)
 	}
 
 	const nginxController = "/nginx-ingress-controller"
@@ -90,7 +91,7 @@ func guessIngress() (string, error) {
 // Restart restarts the pod.
 func Restart(filter string) error {
 	if err := Stop(filter); err != nil {
-		return fmt.Errorf("cannot stop %s: %s", filter, err)
+		return fmt.Errorf(L("cannot stop %s: %s"), filter, err)
 	}
 	return Start(filter)
 }
@@ -101,7 +102,7 @@ func Start(filter string) error {
 	if _, err := GetNode(filter); err != nil {
 		return ReplicasTo(filter, 1)
 	}
-	log.Debug().Msgf("Already running")
+	log.Debug().Msgf(L("Already running"))
 	return nil
 }
 

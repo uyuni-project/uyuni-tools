@@ -10,6 +10,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -23,10 +24,9 @@ type kubernetesUpgradeFlags struct {
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	upgradeCmd := &cobra.Command{
 		Use:   "kubernetes",
-		Short: "upgrade a local server on kubernetes",
-		Long: `Upgrade a local server on kubernetes
-`,
-		Args: cobra.ExactArgs(0),
+		Short: L("Upgrade a local server on kubernetes"),
+		Long:  L("Upgrade a local server on kubernetes"),
+		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesUpgradeFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, upgradeKubernetes)

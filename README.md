@@ -10,20 +10,19 @@ SPDX-License-Identifier: Apache-2.0
 
 **These tools are work in progress**
 
-* `mgradm` used to help user administer Uyuni servers on K8s and Podman
-* `mgrctl` used to help user managing Uyuni servers mainly through its API
+* `mgradm` used to help administer Uyuni servers on K8s and Podman
+* `mgrctl` used to help managing Uyuni servers mainly through its API
+* `mgrpxy` used to help managing Uyuni proxies
 
 # Deployment rolling release
-
-**NOTE:** This is rolling releases, meaning it can be broken at any time. Do not use it in production (yet!)
 
 ## For Podman deployment
 Requirement:
   - openSUSE Leap Micro 15.5
   - Podman installed
 
-*Note that other distros with a recent Podman installed could work, but for now the tool is not packaged for them in OBS.
-So you would need to build it locally.*
+*Note that other distros with a recent Podman installed could work but they have not been tested.
+Please report issues if any arises on those distributions.*
 
 Add uyuni-tool repository:
 ```
@@ -94,3 +93,30 @@ Macros:
 To disable features at build time pass the `-tags` parameter with the following values in a comma-separated list:
 
 * `nok8s`: will disable Kubernetes support
+
+## Localization
+
+### Developer tricks
+
+For Localization the project uses `gettext`.
+There are a few rules to follow to make strings localizable:
+
+Add the following import in the go file and then wrap all the strings that could be localized in the `L()` function.
+
+```
+. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+```
+
+**Global variables and constants are evaluated before running the main function and thus do not take the locale into account.**
+Move them in a function to work around this issue.
+
+### Generating the POT files
+
+In order to extract the strings from the code run the `extract_strings` script.
+One POT file for each tool and one for the `shared` folder will be generated in the `locale` directory.
+
+### Translating
+
+The translation files should be named after the target language next to the corresponding PO file.
+The `.mo` files should not be committed in the source tree as they are build results.
+Those are generated using the `locale/build.sh` script.

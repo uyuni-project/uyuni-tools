@@ -14,6 +14,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -51,9 +52,8 @@ func HelmUpgrade(kubeconfig string, namespace string, install bool,
 	if install {
 		command = "install"
 	}
-	errorMessage := fmt.Sprintf("Failed to %s helm chart %s in namespace %s", command, chart, namespace)
 	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "helm", helmArgs...); err != nil {
-		return fmt.Errorf("%s: %s", errorMessage, err)
+		return fmt.Errorf(L("failed to %s helm chart %s in namespace %s")+": %s", command, chart, namespace, err)
 	}
 	return nil
 }
@@ -73,7 +73,7 @@ func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
 	if err != nil {
-		log.Info().Err(err).Msgf("Failed to find %s's namespace, skipping removal", deployment)
+		log.Info().Err(err).Msgf(L("Failed to find %s's namespace, skipping removal"), deployment)
 	}
 
 	namespace := string(out)
@@ -81,7 +81,7 @@ func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 		log.Debug().Msgf("Pod is not running, trying to find the namespace using the helm release")
 		namespace, err = FindNamespace(deployment, kubeconfig)
 		if err != nil {
-			log.Info().Err(err).Msgf("Cannot guess namespace")
+			log.Info().Err(err).Msgf(L("Cannot guess namespace"))
 			return "", nil
 		}
 	}
@@ -90,11 +90,11 @@ func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 		helmArgs = append(helmArgs, "uninstall", "-n", namespace, deployment)
 
 		if dryRun {
-			log.Info().Msgf("Would run helm %s", strings.Join(helmArgs, " "))
+			log.Info().Msgf(L("Would run %s"), "helm "+strings.Join(helmArgs, " "))
 		} else {
-			log.Info().Msgf("Uninstalling %s", deployment)
+			log.Info().Msgf(L("Uninstalling %s"), deployment)
 			if err := utils.RunCmd("helm", helmArgs...); err != nil {
-				return namespace, fmt.Errorf("failed to run helm %s: %s", strings.Join(helmArgs, " "), err)
+				return namespace, fmt.Errorf(L("failed to run helm %s: %s"), strings.Join(helmArgs, " "), err)
 			}
 		}
 	}
@@ -110,17 +110,17 @@ func FindNamespace(deployment string, kubeconfig string) (string, error) {
 	args = append(args, "list", "-aA", "-f", deployment, "-o", "json")
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "helm", args...)
 	if err != nil {
-		return "", fmt.Errorf("failed to detect %s's namespace using helm: %s", deployment, err)
+		return "", fmt.Errorf(L("failed to detect %s's namespace using helm: %s"), deployment, err)
 	}
 	var data []releaseInfo
 	if err = json.Unmarshal(out, &data); err != nil {
-		return "", fmt.Errorf("helm provided an invalid JSON output: %s", err)
+		return "", fmt.Errorf(L("helm provided an invalid JSON output: %s"), err)
 	}
 
 	if len(data) == 1 {
 		return data[0].Namespace, nil
 	}
-	return "", errors.New("found no or more than one deployment")
+	return "", errors.New(L("found no or more than one deployment"))
 }
 
 // HasHelmRelease returns whether a helm release is installed or not, even if it failed.

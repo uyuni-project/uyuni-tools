@@ -19,6 +19,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -47,7 +48,7 @@ var InspectOutputFile = types.InspectFile{
 func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string) error {
 	podName, err := cnx.GetPodName()
 	if err != nil {
-		return fmt.Errorf("execCommand failed %s", err)
+		return fmt.Errorf(L("exec command failed: %s"), err)
 	}
 
 	commandArgs := []string{"exec", podName}
@@ -81,7 +82,7 @@ func GeneratePgsqlVersionUpgradeScript(scriptDir string, oldPgVersion string, ne
 	scriptName := "pgsqlVersionUpgrade.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf("failed to generate %s", scriptName)
+		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
 	}
 	return scriptName, nil
 }
@@ -99,7 +100,7 @@ func GenerateFinalizePostgresScript(scriptDir string, RunAutotune bool, RunReind
 	scriptName := "pgsqlFinalize.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf("failed to generate %s", scriptName)
+		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
 	}
 	return scriptName, nil
 }
@@ -113,7 +114,7 @@ func GeneratePostUpgradeScript(scriptDir string, cobblerHost string) (string, er
 	scriptName := "postUpgrade.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf("failed to generate %s", scriptName)
+		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
 	}
 	return scriptName, nil
 }
@@ -122,20 +123,20 @@ func GeneratePostUpgradeScript(scriptDir string, cobblerHost string) (string, er
 func ReadContainerData(scriptDir string) (string, string, string, error) {
 	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))
 	if err != nil {
-		return "", "", "", errors.New("failed to read data extracted from source host")
+		return "", "", "", errors.New(L("failed to read data extracted from source host"))
 	}
 	viper.SetConfigType("env")
 	if err := viper.ReadConfig(bytes.NewBuffer(data)); err != nil {
-		return "", "", "", fmt.Errorf("cannot read config: %s", err)
+		return "", "", "", fmt.Errorf(L("cannot read config: %s"), err)
 	}
 	if len(viper.GetString("Timezone")) <= 0 {
-		return "", "", "", errors.New("cannot retrieve timezone")
+		return "", "", "", errors.New(L("cannot retrieve timezone"))
 	}
 	if len(viper.GetString("old_pg_version")) <= 0 {
-		return "", "", "", errors.New("cannot retrieve source PostgreSQL version")
+		return "", "", "", errors.New(L("cannot retrieve source PostgreSQL version"))
 	}
 	if len(viper.GetString("new_pg_version")) <= 0 {
-		return "", "", "", errors.New("cannot retrieve image PostgreSQL version")
+		return "", "", "", errors.New(L("cannot retrieve image PostgreSQL version"))
 	}
 	return viper.GetString("Timezone"), viper.GetString("old_pg_version"), viper.GetString("new_pg_version"), nil
 }
@@ -145,7 +146,7 @@ func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) err
 	log.Info().Msg("Migrating server")
 	err := ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/"+scriptName)
 	if err != nil {
-		return fmt.Errorf("error running the migration script: %s", err)
+		return fmt.Errorf(L("error running the migration script: %s"), err)
 	}
 	return nil
 }
@@ -154,7 +155,7 @@ func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) err
 func GenerateMigrationScript(sourceFqdn string, kubernetes bool) (string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return "", fmt.Errorf("failed to create temporary directory: %s", err)
+		return "", fmt.Errorf(L("failed to create temporary directory: %s"), err)
 	}
 
 	data := templates.MigrateScriptTemplateData{
@@ -165,7 +166,7 @@ func GenerateMigrationScript(sourceFqdn string, kubernetes bool) (string, error)
 
 	scriptPath := filepath.Join(scriptDir, "migrate.sh")
 	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf("failed to generate migration script: %s", err)
+		return "", fmt.Errorf(L("failed to generate migration script: %s"), err)
 	}
 
 	return scriptDir, nil
@@ -208,14 +209,14 @@ func ReadInspectData(scriptDir string, prefix ...string) (map[string]string, err
 	log.Debug().Msgf("Trying to read %s", path)
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf("cannot parse file %s: %s", path, err)
+		return map[string]string{}, fmt.Errorf(L("cannot parse file %s: %s"), path, err)
 	}
 
 	inspectResult := make(map[string]string)
 
 	viper.SetConfigType("env")
 	if err := viper.ReadConfig(bytes.NewBuffer(data)); err != nil {
-		return map[string]string{}, fmt.Errorf("cannot read config: %s", err)
+		return map[string]string{}, fmt.Errorf(L("cannot read config: %s"), err)
 	}
 
 	for _, v := range inspectValues {
@@ -238,7 +239,7 @@ func InspectHost() (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf("failed to create temporary directory %s", err)
+		return map[string]string{}, fmt.Errorf(L("failed to create temporary directory: %s"), err)
 	}
 
 	if err := GenerateInspectHostScript(scriptDir); err != nil {
@@ -246,12 +247,12 @@ func InspectHost() (map[string]string, error) {
 	}
 
 	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, scriptDir+"/inspect.sh"); err != nil {
-		return map[string]string{}, fmt.Errorf("failed to run inspect script in host system: %s", err)
+		return map[string]string{}, fmt.Errorf(L("failed to run inspect script in host system: %s"), err)
 	}
 
 	inspectResult, err := ReadInspectData(scriptDir, "host_")
 	if err != nil {
-		return map[string]string{}, fmt.Errorf("cannot inspect host data. %s", err)
+		return map[string]string{}, fmt.Errorf(L("cannot inspect host data: %s"), err)
 	}
 
 	return inspectResult, err
@@ -266,7 +267,7 @@ func GenerateInspectHostScript(scriptDir string) error {
 
 	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return fmt.Errorf("failed to generate inspect script: %s", err)
+		return fmt.Errorf(L("failed to generate inspect script: %s"), err)
 	}
 	return nil
 }
@@ -280,7 +281,7 @@ func GenerateInspectContainerScript(scriptDir string) error {
 
 	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
 	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return fmt.Errorf("failed to generate inspect script: %s", err)
+		return fmt.Errorf(L("failed to generate inspect script: %s"), err)
 	}
 	return nil
 }

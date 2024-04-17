@@ -11,6 +11,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -19,7 +20,7 @@ const UyuniNetwork = "uyuni"
 
 // SetupNetwork creates the podman network.
 func SetupNetwork() error {
-	log.Info().Msgf("Setting up %s network", UyuniNetwork)
+	log.Info().Msgf(L("Setting up %s network"), UyuniNetwork)
 
 	ipv6Enabled := isIpv6Enabled()
 
@@ -31,14 +32,14 @@ func SetupNetwork() error {
 		hasIpv6, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UyuniNetwork)
 		if err == nil {
 			if string(hasIpv6) != "true" && ipv6Enabled {
-				log.Info().Msgf("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it", UyuniNetwork)
+				log.Info().Msgf(L("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it"), UyuniNetwork)
 				err := utils.RunCmd("podman", "network", "rm", UyuniNetwork,
 					"--log-level", log.Logger.GetLevel().String())
 				if err != nil {
-					return fmt.Errorf("failed to remove %s podman network: %s", UyuniNetwork, err)
+					return fmt.Errorf(L("failed to remove %s podman network: %s"), UyuniNetwork, err)
 				}
 			} else {
-				log.Info().Msgf("Reusing existing %s network", UyuniNetwork)
+				log.Info().Msgf(L("Reusing existing %s network"), UyuniNetwork)
 				return nil
 			}
 		}
@@ -51,9 +52,9 @@ func SetupNetwork() error {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "info", "--format", "{{.Host.NetworkBackend}}")
 		backend := strings.Trim(string(out), "\n")
 		if err != nil {
-			return fmt.Errorf("failed to find podman's network backend: %s", err)
+			return fmt.Errorf(L("failed to find podman's network backend: %s"), err)
 		} else if backend != "netavark" {
-			log.Info().Msgf("Podman's network backend (%s) is not netavark, skipping IPv6 enabling on %s network", backend, UyuniNetwork)
+			log.Info().Msgf(L("Podman's network backend (%s) is not netavark, skipping IPv6 enabling on %s network"), backend, UyuniNetwork)
 		} else {
 			args = append(args, "--ipv6")
 		}
@@ -61,7 +62,7 @@ func SetupNetwork() error {
 	args = append(args, UyuniNetwork)
 	err := utils.RunCmd("podman", args...)
 	if err != nil {
-		return fmt.Errorf("failed to create %s network with IPv6 enabled: %s", UyuniNetwork, err)
+		return fmt.Errorf(L("failed to create %s network with IPv6 enabled: %s"), UyuniNetwork, err)
 	}
 	return nil
 }
@@ -87,16 +88,16 @@ func isIpv6Enabled() bool {
 func DeleteNetwork(dryRun bool) {
 	err := utils.RunCmd("podman", "network", "exists", UyuniNetwork)
 	if err != nil {
-		log.Info().Msgf("Network %s already removed", UyuniNetwork)
+		log.Info().Msgf(L("Network %s already removed"), UyuniNetwork)
 	} else {
 		if dryRun {
-			log.Info().Msgf("Would run podman network rm %s", UyuniNetwork)
+			log.Info().Msgf(L("Would run %s"), "podman network rm "+UyuniNetwork)
 		} else {
 			err := utils.RunCmd("podman", "network", "rm", UyuniNetwork)
 			if err != nil {
-				log.Error().Msgf("Failed to remove network %s", UyuniNetwork)
+				log.Error().Msgf(L("Failed to remove network %s"), UyuniNetwork)
 			} else {
-				log.Info().Msg("Network removed")
+				log.Info().Msg(L("Network removed"))
 			}
 		}
 	}

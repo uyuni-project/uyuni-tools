@@ -5,12 +5,14 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
 	"path"
 
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -39,23 +41,23 @@ func GetServicePath(name string) string {
 func UninstallService(name string, dryRun bool) {
 	servicePath := GetServicePath(name)
 	if !HasService(name) {
-		log.Info().Msgf("Systemd has no %s.service unit", name)
+		log.Info().Msgf(L("Systemd has no %s.service unit"), name)
 	} else {
 		if dryRun {
-			log.Info().Msgf("Would run systemctl disable --now %s", name)
-			log.Info().Msgf("Would remove %s", servicePath)
+			log.Info().Msgf(L("Would run %s"), "systemctl disable --now "+name)
+			log.Info().Msgf(L("Would remove %s"), servicePath)
 		} else {
-			log.Info().Msgf("Disable %s service", name)
+			log.Info().Msgf(L("Disable %s service"), name)
 			// disable server
 			err := utils.RunCmd("systemctl", "disable", "--now", name)
 			if err != nil {
-				log.Error().Err(err).Msgf("Failed to disable %s service", name)
+				log.Error().Err(err).Msgf(L("Failed to disable %s service"), name)
 			}
 
 			// Remove the service unit
-			log.Info().Msgf("Remove %s", servicePath)
+			log.Info().Msgf(L("Remove %s"), servicePath)
 			if err := os.Remove(servicePath); err != nil {
-				log.Error().Err(err).Msgf("Failed to remove %s.service file", name)
+				log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), name)
 			}
 		}
 	}
@@ -65,16 +67,16 @@ func UninstallService(name string, dryRun bool) {
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
 func ReloadDaemon(dryRun bool) error {
 	if dryRun {
-		log.Info().Msg("Would run systemctl reset-failed")
-		log.Info().Msg("Would run systemctl daemon-reload")
+		log.Info().Msgf(L("Would run %s"), "systemctl reset-failed")
+		log.Info().Msgf(L("Would run %s"), "systemctl daemon-reload")
 	} else {
 		err := utils.RunCmd("systemctl", "reset-failed")
 		if err != nil {
-			return fmt.Errorf("failed to reset-failed systemd")
+			return errors.New(L("failed to reset-failed systemd"))
 		}
 		err = utils.RunCmd("systemctl", "daemon-reload")
 		if err != nil {
-			return fmt.Errorf("failed to reload systemd daemon")
+			return errors.New(L("failed to reload systemd daemon"))
 		}
 	}
 	return nil
@@ -92,7 +94,7 @@ func IsServiceRunning(service string) bool {
 // RestartService restarts the systemd service.
 func RestartService(service string) error {
 	if err := utils.RunCmd("systemctl", "restart", service); err != nil {
-		return fmt.Errorf("failed to restart systemd %s.service: %s", service, err)
+		return fmt.Errorf(L("failed to restart systemd %s.service: %s"), service, err)
 	}
 	return nil
 }
@@ -100,7 +102,7 @@ func RestartService(service string) error {
 // StartService starts the systemd service.
 func StartService(service string) error {
 	if err := utils.RunCmd("systemctl", "start", service); err != nil {
-		return fmt.Errorf("failed to start systemd %s.service: %s", service, err)
+		return fmt.Errorf(L("failed to start systemd %s.service: %s"), service, err)
 	}
 	return nil
 }
@@ -108,7 +110,7 @@ func StartService(service string) error {
 // StopService starts the systemd service.
 func StopService(service string) error {
 	if err := utils.RunCmd("systemctl", "stop", service); err != nil {
-		return fmt.Errorf("failed to stop systemd %s.service: %s", service, err)
+		return fmt.Errorf(L("failed to stop systemd %s.service: %s"), service, err)
 	}
 	return nil
 }
@@ -116,7 +118,7 @@ func StopService(service string) error {
 // EnableService enables and starts a systemd service.
 func EnableService(service string) error {
 	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
-		return fmt.Errorf("failed to enable %s systemd service: %s", service, err)
+		return fmt.Errorf(L("failed to enable %s systemd service: %s"), service, err)
 	}
 	return nil
 }
@@ -124,19 +126,16 @@ func EnableService(service string) error {
 // Create new systemd service configuration file.
 func GenerateSystemdConfFile(serviceName string, section string, body string) error {
 	systemdFilePath := GetServicePath(serviceName)
-	log.Info().Msgf("systemdFilePath: %s", systemdFilePath)
 
 	systemdConfFolder := systemdFilePath + ".d"
-	log.Info().Msgf("systemdConfFolder: %s", systemdConfFolder)
 	if err := os.MkdirAll(systemdConfFolder, 0750); err != nil {
-		return fmt.Errorf("failed to create %s folder: %s", systemdConfFolder, err)
+		return fmt.Errorf(L("failed to create %s folder: %s"), systemdConfFolder, err)
 	}
 	systemdConfFilePath := path.Join(systemdConfFolder, section+".conf")
-	log.Info().Msgf("systemdConfFilePath: %s", systemdConfFilePath)
 
 	content := []byte("[" + section + "]" + "\n" + body + "\n")
 	if err := os.WriteFile(systemdConfFilePath, content, 0644); err != nil {
-		return fmt.Errorf("cannot write %s file: %s", systemdConfFilePath, err)
+		return fmt.Errorf(L("cannot write %s file: %s"), systemdConfFilePath, err)
 	}
 
 	return nil
