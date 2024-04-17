@@ -12,14 +12,17 @@ type Distribution struct {
 	InstallType  string
 }
 
+// DistributionDetails contains distro details passed from the command line.
 type DistributionDetails struct {
 	Name    string
 	Version string
 	Arch    Arch
 }
 
+// Arch type to store architecture.
 type Arch string
 
+// Constants for supported archhitectures.
 const (
 	UnknownArch Arch = "unknown"
 	AMD64       Arch = "x86_64"
@@ -28,6 +31,7 @@ const (
 	PPC64LE     Arch = "ppc64le"
 )
 
+// Translates string representation of architecture to Arch type.
 func GetArch(a string) Arch {
 	switch a {
 	case "x86_64":
