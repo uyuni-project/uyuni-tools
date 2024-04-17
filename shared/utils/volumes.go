@@ -40,9 +40,10 @@ var EtcServerVolumeMounts = []types.VolumeMount{
 	{MountPath: "/etc/cobbler", Name: "etc-cobbler"},
 	{MountPath: "/etc/sysconfig", Name: "etc-sysconfig"},
 	{MountPath: "/etc/postfix", Name: "etc-postfix"},
+	{MountPath: "/etc/sssd", Name: "etc-sssd"},
 }
 
-// EtcServerVolumeMounts represents volumes used for configuration.
+// EtcServerVolumes represents volumes used for configuration.
 var EtcServerVolumes = []types.Volume{
 	{Name: "etc-apache2", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-apache2"}},
 	{Name: "etc-systemd-multi", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-systemd-multi"}},
@@ -53,6 +54,7 @@ var EtcServerVolumes = []types.Volume{
 	{Name: "etc-sysconfig", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-sysconfig"}},
 	{Name: "etc-postfix", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-postfix"}},
 	{Name: "etc-rhn", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-rhn"}},
+	{Name: "etc-sssd", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-sssd"}},
 }
 
 var etcAndPgsqlVolumeMounts = append(PgsqlRequiredVolumeMounts, EtcServerVolumeMounts[:]...)
