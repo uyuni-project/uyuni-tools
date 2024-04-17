@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-09 16:03+0200\n"
+"POT-Creation-Date: 2024-04-17 10:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -15,208 +15,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: shared/utils/template.go:25
-#, javascript-format
-msgid "%s file already present, not overwriting"
-msgstr ""
-
-#: shared/utils/template.go:32
-#, javascript-format
-msgid "failed to open %s for writing: %s"
-msgstr ""
-
-#: shared/utils/tar.go:48
-#, javascript-format
-msgid "Skipping extraction of %s in %s file as it resolves outside the target path"
-msgstr ""
-
-#: shared/utils/tar.go:90
-#, javascript-format
-msgid "failed to write tar.gz to %s: %s"
-msgstr ""
-
-#: shared/utils/config.go:33
-#, javascript-format
-msgid "Using config file %s"
-msgstr ""
-
-#: shared/utils/config.go:40
-msgid "Failed to find home directory"
-msgstr ""
-
-#: shared/utils/config.go:59
-#, javascript-format
-msgid "failed to parse configuration file %s: %s"
-msgstr ""
-
-#: shared/utils/config.go:78
-#, javascript-format
-msgid "failed to bind %s config to parameter %s: %s"
-msgstr ""
-
-#: shared/utils/config.go:90
-msgid ""
-"Usage:{{if .Runnable}}\n"
-"  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}\n"
-"  {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}\n"
-"\n"
-"Aliases:\n"
-"  {{.NameAndAliases}}{{end}}{{if .HasExample}}\n"
-"\n"
-"Examples:\n"
-"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}\n"
-"\n"
-"Available Commands:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name \"help\"))}}\n"
-"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
-"\n"
-"Flags:\n"
-"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}\n"
-"\n"
-"Global Flags:\n"
-"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}\n"
-"\n"
-"Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}\n"
-"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}\n"
-"\n"
-"Use \"{{.CommandPath}} [command] --help\" for more information about a command.{{end}}\n"
-msgstr ""
-
-#: shared/utils/config.go:118
-msgid ""
-"\n"
-"Configuration:\n"
-"\n"
-"  All the non-global flags can alternatively be passed as configuration.\n"
-"  \n"
-"  The configuration file is a YAML file with entries matching the flag name.\n"
-"  The name of a flag is the part after the '--' of the command line parameter.\n"
-"  Every '_' character in the flag name means a nested property.\n"
-"  \n"
-"  For instance the '--tz CEST' and '--ssl-password secret' will be mapped to\n"
-"  this YAML configuration:\n"
-"  \n"
-"    tz: CEST\n"
-"    ssl:\n"
-"      password: secret\n"
-"  \n"
-"  The configuration file will be searched in the following places and order:\n"
-"  · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}\n"
-"  · $HOME/.config/{{ .Name }}/{{ .ConfigFile }}\n"
-"  · $PWD/{{ .ConfigFile }}\n"
-"  · the value of the --config flag\n"
-"\n"
-"\n"
-"Environment variables:\n"
-"\n"
-"  All the non-global flags can also be passed as environment variables.\n"
-"  \n"
-"  The environment variable name is the flag name with '-' replaced by with '_'\n"
-"  and the {{ .EnvPrefix }} prefix.\n"
-"  \n"
-"  For example the '--tz CEST' flag will be mapped to '{{ .EnvPrefix }}_TZ'\n"
-"  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD' \n"
-msgstr ""
-
-#: shared/utils/config.go:163
-msgid "failed to compute config help command"
-msgstr ""
-
-#: shared/utils/utils.go:31
-#, javascript-format
-msgid "Has to be more than %d character long"
-msgid_plural "Has to be more than %d characters long"
-msgstr[0] ""
-msgstr[1] ""
-
-#: shared/utils/utils.go:35
-#, javascript-format
-msgid "Has to be less than %d character long"
-msgid_plural "Has to be less than %d characters long"
-msgstr[0] ""
-msgstr[1] ""
-
-#: shared/utils/utils.go:48
-msgid "Failed to read password"
-msgstr ""
-
-#: shared/utils/utils.go:54
-msgid "Cannot contain spaces or tabs"
-msgstr ""
-
-#: shared/utils/utils.go:75
-msgid "Failed to read input"
-msgstr ""
-
-#: shared/utils/utils.go:83
-msgid "A value is required"
-msgstr ""
-
-#: shared/utils/utils.go:93
-#, javascript-format
-msgid "invalid image name: %s"
-msgstr ""
-
-#: shared/utils/utils.go:97
-#, javascript-format
-msgid "tag missing on %s"
-msgstr ""
-
-#: shared/utils/utils.go:116
-#, javascript-format
-msgid "Failed to run %s"
-msgstr ""
-
-#: shared/utils/utils.go:127
-#, javascript-format
-msgid "Failed to get %s file informations"
-msgstr ""
-
-#: shared/utils/utils.go:136
-#, javascript-format
-msgid "Failed to read file %s"
-msgstr ""
-
-#: shared/utils/utils.go:151
-#, javascript-format
-msgid "Would remove file %s"
-msgstr ""
-
-#: shared/utils/utils.go:153
-#, javascript-format
-msgid "Removing file %s"
-msgstr ""
-
-#: shared/utils/utils.go:155
-#, javascript-format
-msgid "Failed to remove file %s"
-msgstr ""
-
-#: shared/utils/utils.go:165
-msgid "Failed to read random data"
-msgstr ""
-
-#: shared/utils/cmd.go:47 shared/utils/cmd.go:48
-msgid "failed to unmarshall configuration"
-msgstr ""
-
-#: shared/utils/cmd.go:55
-msgid "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use."
-msgstr ""
-
-#: shared/utils/cmd.go:69
-msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
-msgstr ""
-
-#: shared/api/org/createFirst.go:21
-#, javascript-format
-msgid "failed to connect to the server: %s"
-msgstr ""
-
-#: shared/api/org/createFirst.go:35
-#, javascript-format
-msgid "failed to create first user and organization: %s"
-msgstr ""
 
 #: shared/api/api.go:71
 msgid "FQDN of the server to connect to"
@@ -259,6 +57,16 @@ msgstr ""
 msgid "Unable to convert data to JSON"
 msgstr ""
 
+#: shared/api/org/createFirst.go:21
+#, javascript-format
+msgid "failed to connect to the server: %s"
+msgstr ""
+
+#: shared/api/org/createFirst.go:35
+#, javascript-format
+msgid "failed to create first user and organization: %s"
+msgstr ""
+
 #: shared/completion/completion.go:20 shared/completion/completion.go:21
 msgid "Generate shell completion script"
 msgstr ""
@@ -267,6 +75,51 @@ msgstr ""
 #: shared/completion/completion.go:38
 #, javascript-format
 msgid "cannot generate %s completion: %s"
+msgstr ""
+
+#: shared/connection.go:56
+#, javascript-format
+msgid "backend command not found in PATH: %s"
+msgstr ""
+
+#: shared/connection.go:68
+msgid "kubectl not configured to connect to a cluster, ignoring"
+msgstr ""
+
+#: shared/connection.go:101
+msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
+msgstr ""
+
+#: shared/connection.go:104
+#, javascript-format
+msgid "unsupported backend %s"
+msgstr ""
+
+#: shared/connection.go:125
+#, javascript-format
+msgid "container %s is not running on podman"
+msgstr ""
+
+#: shared/connection.go:146
+#, javascript-format
+msgid "the container is not running, %s %s command not executed: %s"
+msgstr ""
+
+#: shared/connection.go:193
+msgid "server didn't start within 60s. Check for the service status"
+msgstr ""
+
+#: shared/connection.go:223 shared/connection.go:262
+#, javascript-format
+msgid "unknown container kind: %s"
+msgstr ""
+
+#: shared/connection.go:306
+msgid "failed to determine suitable backend"
+msgstr ""
+
+#: shared/connection.go:316
+msgid "no supported backend found"
 msgstr ""
 
 #: shared/kubernetes/helm.go:56
@@ -491,6 +344,62 @@ msgstr ""
 msgid "cannot serialize pod definition override: %s"
 msgstr ""
 
+#: shared/podman/images.go:35
+#, javascript-format
+msgid "Ensure image %s is available"
+msgstr ""
+
+#: shared/podman/images.go:54
+#, javascript-format
+msgid "Cannot use RPM image for %s: %s"
+msgstr ""
+
+#: shared/podman/images.go:56
+#, javascript-format
+msgid "Using the %s image loaded from the RPM instead of its online version %s"
+msgstr ""
+
+#: shared/podman/images.go:60
+#, javascript-format
+msgid "Cannot find RPM image for %s"
+msgstr ""
+
+#: shared/podman/images.go:68
+#, javascript-format
+msgid "image %s is missing and cannot be fetched"
+msgstr ""
+
+#: shared/podman/images.go:93
+#, javascript-format
+msgid "cannot unmarshal image RPM metadata: %s"
+msgstr ""
+
+#: shared/podman/images.go:138
+#, javascript-format
+msgid "Cannot unmarshal metadata file %s: %s"
+msgstr ""
+
+#: shared/podman/images.go:160
+#, javascript-format
+msgid "error parsing: %s"
+msgstr ""
+
+#: shared/podman/images.go:168 shared/podman/images.go:182
+#: shared/podman/images.go:197
+#, javascript-format
+msgid "failed to check if image %s has already been pulled"
+msgstr ""
+
+#: shared/podman/images.go:203
+#, javascript-format
+msgid "Pulling image %s"
+msgstr ""
+
+#: shared/podman/images.go:222
+#, javascript-format
+msgid "cannot find any tag for image %s: %s"
+msgstr ""
+
 #: shared/podman/network.go:23
 #, javascript-format
 msgid "Setting up %s network"
@@ -608,62 +517,6 @@ msgstr ""
 msgid "cannot write %s file: %s"
 msgstr ""
 
-#: shared/podman/images.go:35
-#, javascript-format
-msgid "Ensure image %s is available"
-msgstr ""
-
-#: shared/podman/images.go:54
-#, javascript-format
-msgid "Cannot use RPM image for %s: %s"
-msgstr ""
-
-#: shared/podman/images.go:56
-#, javascript-format
-msgid "Using the %s image loaded from the RPM instead of its online version %s"
-msgstr ""
-
-#: shared/podman/images.go:60
-#, javascript-format
-msgid "Cannot find RPM image for %s"
-msgstr ""
-
-#: shared/podman/images.go:68
-#, javascript-format
-msgid "image %s is missing and cannot be fetched"
-msgstr ""
-
-#: shared/podman/images.go:93
-#, javascript-format
-msgid "cannot unmarshal image RPM metadata: %s"
-msgstr ""
-
-#: shared/podman/images.go:138
-#, javascript-format
-msgid "Cannot unmarshal metadata file %s: %s"
-msgstr ""
-
-#: shared/podman/images.go:160
-#, javascript-format
-msgid "error parsing: %s"
-msgstr ""
-
-#: shared/podman/images.go:168 shared/podman/images.go:182
-#: shared/podman/images.go:197
-#, javascript-format
-msgid "failed to check if image %s has already been pulled"
-msgstr ""
-
-#: shared/podman/images.go:203
-#, javascript-format
-msgid "Pulling image %s"
-msgstr ""
-
-#: shared/podman/images.go:222
-#, javascript-format
-msgid "cannot find any tag for image %s: %s"
-msgstr ""
-
 #: shared/podman/utils.go:58
 #, javascript-format
 msgid "failed to enable podman.socket unit: %s"
@@ -731,47 +584,204 @@ msgstr ""
 msgid "failed to get podman's volumes folder: %s"
 msgstr ""
 
-#: shared/connection.go:56
+#: shared/utils/cmd.go:47 shared/utils/cmd.go:48
+msgid "failed to unmarshall configuration"
+msgstr ""
+
+#: shared/utils/cmd.go:55
+msgid "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use."
+msgstr ""
+
+#: shared/utils/cmd.go:69
+msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
+msgstr ""
+
+#: shared/utils/config.go:33
 #, javascript-format
-msgid "backend command not found in PATH: %s"
+msgid "Using config file %s"
 msgstr ""
 
-#: shared/connection.go:68
-msgid "kubectl not configured to connect to a cluster, ignoring"
+#: shared/utils/config.go:40
+msgid "Failed to find home directory"
 msgstr ""
 
-#: shared/connection.go:101
-msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
-msgstr ""
-
-#: shared/connection.go:104
+#: shared/utils/config.go:59
 #, javascript-format
-msgid "unsupported backend %s"
+msgid "failed to parse configuration file %s: %s"
 msgstr ""
 
-#: shared/connection.go:125
+#: shared/utils/config.go:78
 #, javascript-format
-msgid "container %s is not running on podman"
+msgid "failed to bind %s config to parameter %s: %s"
 msgstr ""
 
-#: shared/connection.go:146
+#: shared/utils/config.go:90
+msgid ""
+"Usage:{{if .Runnable}}\n"
+"  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}\n"
+"  {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}\n"
+"\n"
+"Aliases:\n"
+"  {{.NameAndAliases}}{{end}}{{if .HasExample}}\n"
+"\n"
+"Examples:\n"
+"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}\n"
+"\n"
+"Available Commands:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name \"help\"))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
+"\n"
+"Flags:\n"
+"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}\n"
+"\n"
+"Global Flags:\n"
+"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}\n"
+"\n"
+"Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}\n"
+"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}\n"
+"\n"
+"Use \"{{.CommandPath}} [command] --help\" for more information about a command.{{end}}\n"
+msgstr ""
+
+#: shared/utils/config.go:118
+msgid ""
+"\n"
+"Configuration:\n"
+"\n"
+"  All the non-global flags can alternatively be passed as configuration.\n"
+"  \n"
+"  The configuration file is a YAML file with entries matching the flag name.\n"
+"  The name of a flag is the part after the '--' of the command line parameter.\n"
+"  Every '_' character in the flag name means a nested property.\n"
+"  \n"
+"  For instance the '--tz CEST' and '--ssl-password secret' will be mapped to\n"
+"  this YAML configuration:\n"
+"  \n"
+"    tz: CEST\n"
+"    ssl:\n"
+"      password: secret\n"
+"  \n"
+"  The configuration file will be searched in the following places and order:\n"
+"  · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}\n"
+"  · $HOME/.config/{{ .Name }}/{{ .ConfigFile }}\n"
+"  · $PWD/{{ .ConfigFile }}\n"
+"  · the value of the --config flag\n"
+"\n"
+"\n"
+"Environment variables:\n"
+"\n"
+"  All the non-global flags can also be passed as environment variables.\n"
+"  \n"
+"  The environment variable name is the flag name with '-' replaced by with '_'\n"
+"  and the {{ .EnvPrefix }} prefix.\n"
+"  \n"
+"  For example the '--tz CEST' flag will be mapped to '{{ .EnvPrefix }}_TZ'\n"
+"  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD' \n"
+msgstr ""
+
+#: shared/utils/config.go:163
+msgid "failed to compute config help command"
+msgstr ""
+
+#: shared/utils/tar.go:48
 #, javascript-format
-msgid "the container is not running, %s %s command not executed: %s"
+msgid "Skipping extraction of %s in %s file as it resolves outside the target path"
 msgstr ""
 
-#: shared/connection.go:193
-msgid "server didn't start within 60s. Check for the service status"
-msgstr ""
-
-#: shared/connection.go:223 shared/connection.go:262
+#: shared/utils/tar.go:90
 #, javascript-format
-msgid "unknown container kind: %s"
+msgid "failed to write tar.gz to %s: %s"
 msgstr ""
 
-#: shared/connection.go:306
-msgid "failed to determine suitable backend"
+#: shared/utils/template.go:25
+#, javascript-format
+msgid "%s file already present, not overwriting"
 msgstr ""
 
-#: shared/connection.go:316
-msgid "no supported backend found"
+#: shared/utils/template.go:32
+#, javascript-format
+msgid "failed to open %s for writing: %s"
+msgstr ""
+
+#: shared/utils/utils.go:34
+#, javascript-format
+msgid "Has to be more than %d character long"
+msgid_plural "Has to be more than %d characters long"
+msgstr[0] ""
+msgstr[1] ""
+
+#: shared/utils/utils.go:38
+#, javascript-format
+msgid "Has to be less than %d character long"
+msgid_plural "Has to be less than %d characters long"
+msgstr[0] ""
+msgstr[1] ""
+
+#: shared/utils/utils.go:51
+msgid "Failed to read password"
+msgstr ""
+
+#: shared/utils/utils.go:57
+msgid "Cannot contain spaces or tabs"
+msgstr ""
+
+#: shared/utils/utils.go:78
+msgid "Failed to read input"
+msgstr ""
+
+#: shared/utils/utils.go:86
+msgid "A value is required"
+msgstr ""
+
+#: shared/utils/utils.go:96
+#, javascript-format
+msgid "invalid image name: %s"
+msgstr ""
+
+#: shared/utils/utils.go:100
+#, javascript-format
+msgid "tag missing on %s"
+msgstr ""
+
+#: shared/utils/utils.go:119
+#, javascript-format
+msgid "Failed to run %s"
+msgstr ""
+
+#: shared/utils/utils.go:130
+#, javascript-format
+msgid "Failed to get %s file informations"
+msgstr ""
+
+#: shared/utils/utils.go:139
+#, javascript-format
+msgid "Failed to read file %s"
+msgstr ""
+
+#: shared/utils/utils.go:154
+#, javascript-format
+msgid "Would remove file %s"
+msgstr ""
+
+#: shared/utils/utils.go:156
+#, javascript-format
+msgid "Removing file %s"
+msgstr ""
+
+#: shared/utils/utils.go:158
+#, javascript-format
+msgid "Failed to remove file %s"
+msgstr ""
+
+#: shared/utils/utils.go:168
+msgid "Failed to read random data"
+msgstr ""
+
+#: shared/utils/utils.go:179
+#, javascript-format
+msgid "error downloading from %s: %s"
+msgstr ""
+
+#: shared/utils/utils.go:185
+#, javascript-format
+msgid "bad status: %s"
 msgstr ""

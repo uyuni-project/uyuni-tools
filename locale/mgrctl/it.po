@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 13:56+0200\n"
+"POT-Creation-Date: 2024-04-17 10:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -15,16 +15,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: mgrctl/cmd/api/get.go:25 mgrctl/cmd/api/post.go:25
-#, javascript-format
-msgid "unable to login to the server: %s"
-msgstr ""
-
-#: mgrctl/cmd/api/get.go:32 mgrctl/cmd/api/post.go:48
-#, javascript-format
-msgid "error in query %s: %s"
-msgstr ""
 
 #: mgrctl/cmd/api/api.go:25
 msgid "JSON over HTTP API helper tool"
@@ -44,6 +34,50 @@ msgstr ""
 
 #: mgrctl/cmd/api/api.go:40
 msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
+msgstr ""
+
+#: mgrctl/cmd/api/get.go:25 mgrctl/cmd/api/post.go:25
+#, javascript-format
+msgid "unable to login to the server: %s"
+msgstr ""
+
+#: mgrctl/cmd/api/get.go:32 mgrctl/cmd/api/post.go:48
+#, javascript-format
+msgid "error in query %s: %s"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:30
+msgid "Uyuni control tool"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:31
+msgid "Tool to help managing Uyuni servers mainly through their API"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:38
+msgid "configuration file path"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:39
+msgid "application log level"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:47
+#, javascript-format
+msgid "Welcome to %s"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:48
+#, javascript-format
+msgid "Executing command: %s"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:54
+msgid "Failed to create api command"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:63
+msgid "Failed to create org command"
 msgstr ""
 
 #: mgrctl/cmd/cp/cp.go:31
@@ -102,10 +136,6 @@ msgstr ""
 msgid "Running: %s %s"
 msgstr ""
 
-#: mgrctl/cmd/org/org.go:18
-msgid "Organization-related commands"
-msgstr ""
-
 #: mgrctl/cmd/org/createFirst.go:28
 msgid "Create the first user and organization"
 msgstr ""
@@ -139,40 +169,10 @@ msgstr ""
 msgid "Organization %s created with id %d"
 msgstr ""
 
+#: mgrctl/cmd/org/org.go:18
+msgid "Organization-related commands"
+msgstr ""
+
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:30
-msgid "Uyuni control tool"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:31
-msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:38
-msgid "configuration file path"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:39
-msgid "application log level"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:47
-#, javascript-format
-msgid "Welcome to %s"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:48
-#, javascript-format
-msgid "Executing command: %s"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:54
-msgid "Failed to create api command"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:63
-msgid "Failed to create org command"
 msgstr ""
