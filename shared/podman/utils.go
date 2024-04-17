@@ -44,11 +44,11 @@ type PodmanMountFlags struct {
 
 // AddPodmanInstallFlag add the podman arguments to a command.
 func AddPodmanInstallFlag(cmd *cobra.Command) {
-	cmd.Flags().StringSlice("podman-arg", []string{}, "Extra arguments to pass to podman")
+	cmd.Flags().StringSlice("podman-arg", []string{}, L("Extra arguments to pass to podman"))
 
-	cmd.Flags().String("podman-mount-cache", "", "Path to custom /var/cache volume")
-	cmd.Flags().String("podman-mount-postgresql", "", "Path to custom /var/lib/pgsql volume")
-	cmd.Flags().String("podman-mount-spacewalk", "", "Path to custom /var/spacewalk volume")
+	cmd.Flags().String("podman-mount-cache", "", L("Path to custom /var/cache volume"))
+	cmd.Flags().String("podman-mount-postgresql", "", L("Path to custom /var/lib/pgsql volume"))
+	cmd.Flags().String("podman-mount-spacewalk", "", L("Path to custom /var/spacewalk volume"))
 }
 
 // EnablePodmanSocket enables the podman socket.
