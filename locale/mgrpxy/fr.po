@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 09:52+0200\n"
+"POT-Creation-Date: 2024-04-17 10:16+0200\n"
 "PO-Revision-Date: 2024-04-08 11:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,6 +17,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.2\n"
+
+#: mgrpxy/cmd/cmd.go:31
+msgid "Uyuni proxy administration tool"
+msgstr "Outil d'administration de proxy Uyuni"
+
+#: mgrpxy/cmd/cmd.go:32
+msgid "Tool to help administering Uyuni proxies in containers"
+msgstr "Outil pour aider à administrer des proxy Uyuni dans des conteneurs"
+
+#: mgrpxy/cmd/cmd.go:45
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "Bienvenue à %s"
+
+#: mgrpxy/cmd/cmd.go:46
+#, javascript-format
+msgid "Executing command: %s"
+msgstr "Exécution de la commande: %s"
+
+#: mgrpxy/cmd/cmd.go:50
+msgid "configuration file path"
+msgstr "chemin vers le fichier de configuration"
+
+#: mgrpxy/cmd/cmd.go:51
+msgid "application log level"
+msgstr "niveau de verbosité de l'application"
+
+#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
+msgid "Install a new proxy from scratch"
+msgstr "Installer un nouveau proxy"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
@@ -104,43 +134,13 @@ msgstr "impossible d'inspecter les valeurs de l'hôte: %s"
 msgid "Setting up proxy with configuration %s"
 msgstr "Installation du proxy avec la configuration %s"
 
-#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
-msgid "Install a new proxy from scratch"
-msgstr "Installer un nouveau proxy"
+#: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
+msgid "Restart the proxy"
+msgstr "Redémarrer le proxy"
 
-#: mgrpxy/cmd/uninstall/podman.go:48
-#, javascript-format
-msgid "cannot delete volume %s: %s"
-msgstr "impossible de suppimer le volume %s: %s"
-
-#: mgrpxy/cmd/uninstall/podman.go:51
-msgid "All volumes removed"
-msgstr "Tous les volumes ont été supprimés"
-
-#: mgrpxy/cmd/uninstall/uninstall.go:23
-msgid "Uninstall a proxy"
-msgstr "Désinstaller un proxy"
-
-#: mgrpxy/cmd/uninstall/uninstall.go:24
-msgid ""
-"Uninstall a proxy and optionally the corresponding volumes.\n"
-"By default it will only print what would be done, use --force to actually remove."
-msgstr ""
-"Désinstaller un proxy et optionnellement les volumes associés.\n"
-"Par défaut les actions qui seraient effectuées sont seulement affichées, utiliser --force pour effectivement supprimer."
-
-#: mgrpxy/cmd/uninstall/uninstall.go:36
-#, javascript-format
-msgid "failed to determine suitable backend: %s"
-msgstr "impossible de déterminer le back-end à utiliser: %s"
-
-#: mgrpxy/cmd/uninstall/uninstall.go:51
-msgid "Actually remove the proxy"
-msgstr "Réellement supprimer le proxy"
-
-#: mgrpxy/cmd/uninstall/uninstall.go:52
-msgid "Also remove the volumes"
-msgstr "Supprimer également les volumes"
+#: mgrpxy/cmd/start/start.go:23 mgrpxy/cmd/start/start.go:24
+msgid "Start the proxy"
+msgstr "Démarrer le proxy"
 
 #: mgrpxy/cmd/status/kubernetes.go:27
 #, javascript-format
@@ -191,43 +191,43 @@ msgstr "Obtenir le status du proxy"
 msgid "no installed proxy detected"
 msgstr "aucun proxy installé détecté"
 
-#: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
-msgid "Restart the proxy"
-msgstr "Redémarrer le proxy"
-
-#: mgrpxy/cmd/start/start.go:23 mgrpxy/cmd/start/start.go:24
-msgid "Start the proxy"
-msgstr "Démarrer le proxy"
-
 #: mgrpxy/cmd/stop/stop.go:23 mgrpxy/cmd/stop/stop.go:24
 msgid "Stop the proxy"
 msgstr "Arrêter le proxy"
 
-#: mgrpxy/cmd/cmd.go:31
-msgid "Uyuni proxy administration tool"
-msgstr "Outil d'administration de proxy Uyuni"
-
-#: mgrpxy/cmd/cmd.go:32
-msgid "Tool to help administering Uyuni proxies in containers"
-msgstr "Outil pour aider à administrer des proxy Uyuni dans des conteneurs"
-
-#: mgrpxy/cmd/cmd.go:45
+#: mgrpxy/cmd/uninstall/podman.go:48
 #, javascript-format
-msgid "Welcome to %s"
-msgstr "Bienvenue à %s"
+msgid "cannot delete volume %s: %s"
+msgstr "impossible de suppimer le volume %s: %s"
 
-#: mgrpxy/cmd/cmd.go:46
+#: mgrpxy/cmd/uninstall/podman.go:51
+msgid "All volumes removed"
+msgstr "Tous les volumes ont été supprimés"
+
+#: mgrpxy/cmd/uninstall/uninstall.go:23
+msgid "Uninstall a proxy"
+msgstr "Désinstaller un proxy"
+
+#: mgrpxy/cmd/uninstall/uninstall.go:24
+msgid ""
+"Uninstall a proxy and optionally the corresponding volumes.\n"
+"By default it will only print what would be done, use --force to actually remove."
+msgstr ""
+"Désinstaller un proxy et optionnellement les volumes associés.\n"
+"Par défaut les actions qui seraient effectuées sont seulement affichées, utiliser --force pour effectivement supprimer."
+
+#: mgrpxy/cmd/uninstall/uninstall.go:36
 #, javascript-format
-msgid "Executing command: %s"
-msgstr "Exécution de la commande: %s"
+msgid "failed to determine suitable backend: %s"
+msgstr "impossible de déterminer le back-end à utiliser: %s"
 
-#: mgrpxy/cmd/cmd.go:50
-msgid "configuration file path"
-msgstr "chemin vers le fichier de configuration"
+#: mgrpxy/cmd/uninstall/uninstall.go:51
+msgid "Actually remove the proxy"
+msgstr "Réellement supprimer le proxy"
 
-#: mgrpxy/cmd/cmd.go:51
-msgid "application log level"
-msgstr "niveau de verbosité de l'application"
+#: mgrpxy/cmd/uninstall/uninstall.go:52
+msgid "Also remove the volumes"
+msgstr "Supprimer également les volumes"
 
 #: mgrpxy/shared/kubernetes/cmd.go:25
 msgid "Kubernetes namespace where to install the proxy"

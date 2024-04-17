@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-08 14:28+0200\n"
-"PO-Revision-Date: 2024-04-04 15:45+0000\n"
+"POT-Creation-Date: 2024-04-17 10:16+0200\n"
+"PO-Revision-Date: 2024-04-17 08:03+0000\n"
 "Last-Translator: Michele Bussolotto <michele.bussolotto@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools/it/>\n"
 "Language: it\n"
@@ -94,6 +94,149 @@ msgid ""
 "Only when API informations are provided and auto registration is done."
 msgstr ""
 
+#: mgradm/cmd/hub/hub.go:18
+msgid "Hub management"
+msgstr ""
+
+#: mgradm/cmd/hub/hub.go:19
+msgid "Tools and utilities for Hub management"
+msgstr ""
+
+#: mgradm/cmd/hub/register/register.go:31
+msgid "Register"
+msgstr ""
+
+#: mgradm/cmd/hub/register/register.go:32
+msgid "Register this peripheral server to Hub API"
+msgstr ""
+
+#: mgradm/cmd/hub/register/register.go:79
+#, javascript-format
+msgid "invalid line format: %s"
+msgstr ""
+
+#: mgradm/cmd/hub/register/register.go:93
+#, javascript-format
+msgid "mandatory entry missing in config: %s"
+msgstr ""
+
+#: mgradm/cmd/hub/register/register.go:96
+#, javascript-format
+msgid "Hub API server: %s"
+msgstr ""
+
+#: mgradm/cmd/hub/register/register.go:99
+#, javascript-format
+msgid "failed to connect to the Hub server: %s"
+msgstr ""
+
+#: mgradm/cmd/hub/register/register.go:107
+#: mgradm/cmd/hub/register/register.go:110
+#, javascript-format
+msgid "failed to register this peripheral server: %s"
+msgstr ""
+
+#: mgradm/cmd/hub/register/register.go:124
+#: mgradm/cmd/hub/register/register.go:128
+#, javascript-format
+msgid "failed to update peripheral server info: %s"
+msgstr ""
+
+#: mgradm/cmd/hub/register/register.go:130
+#, javascript-format
+msgid "Registered peripheral server: %s, ID: %d"
+msgstr ""
+
+#: mgradm/cmd/inspect/inspect.go:26
+msgid "Inspect"
+msgstr ""
+
+#: mgradm/cmd/inspect/inspect.go:27
+msgid "Extract information from image and deployment"
+msgstr ""
+
+#: mgradm/cmd/inspect/inspect.go:37
+msgid "Image URL. Leave it empty to analyze the current deployment"
+msgstr ""
+
+#: mgradm/cmd/inspect/inspect.go:38
+msgid "Image Tag. Leave it empty to analyze the current deployment"
+msgstr ""
+
+#: mgradm/cmd/inspect/kubernetes.go:35 mgradm/cmd/inspect/podman.go:31
+#, javascript-format
+msgid "failed to determine image: %s"
+msgstr ""
+
+#: mgradm/cmd/inspect/kubernetes.go:44 mgradm/cmd/inspect/podman.go:40
+#, javascript-format
+msgid "failed to find the image of the currently running server container: %s"
+msgstr ""
+
+#: mgradm/cmd/inspect/kubernetes.go:50 mgradm/cmd/inspect/podman.go:45
+#, javascript-format
+msgid "inspect command failed: %s"
+msgstr ""
+
+#: mgradm/cmd/inspect/kubernetes.go:55 mgradm/cmd/inspect/podman.go:49
+#, javascript-format
+msgid "cannot print inspect result: %s"
+msgstr ""
+
+#: mgradm/cmd/inspect/kubernetes.go:68
+#: mgradm/cmd/install/kubernetes/utils.go:32
+#: mgradm/cmd/migrate/kubernetes/utils.go:37
+#: mgradm/cmd/upgrade/kubernetes/utils.go:34
+#, javascript-format
+msgid "install %s before running this command"
+msgstr ""
+
+#: mgradm/cmd/inspect/kubernetes.go:75 mgradm/cmd/inspect/podman.go:63
+#: mgradm/cmd/support/config/extractor.go:32
+#: mgradm/cmd/upgrade/kubernetes/utils.go:68
+#: mgradm/shared/kubernetes/certificates.go:27
+#: mgradm/shared/kubernetes/certificates.go:65
+#: mgradm/shared/kubernetes/k3s.go:36 mgradm/shared/kubernetes/k3s.go:104
+#: mgradm/shared/kubernetes/k3s.go:149 mgradm/shared/podman/podman.go:221
+#: mgradm/shared/podman/podman.go:281 mgradm/shared/podman/podman.go:306
+#: mgradm/shared/utils/exec.go:158 mgradm/shared/utils/exec.go:242
+#, javascript-format
+msgid "failed to create temporary directory: %s"
+msgstr ""
+
+#: mgradm/cmd/inspect/kubernetes.go:88 mgradm/shared/kubernetes/k3s.go:64
+#: mgradm/shared/kubernetes/k3s.go:113 mgradm/shared/kubernetes/k3s.go:159
+#, javascript-format
+msgid "cannot delete %s: %s"
+msgstr ""
+
+#: mgradm/cmd/inspect/kubernetes.go:94
+#: mgradm/cmd/migrate/kubernetes/utils.go:85
+#: mgradm/cmd/upgrade/kubernetes/utils.go:75
+#, javascript-format
+msgid "cannot find node running uyuni: %s"
+msgstr ""
+
+#: mgradm/cmd/inspect/kubernetes.go:122
+#, javascript-format
+msgid "cannot run inspect pod: %s"
+msgstr ""
+
+#: mgradm/cmd/inspect/kubernetes.go:127 mgradm/cmd/inspect/podman.go:100
+#, fuzzy, javascript-format
+msgid "cannot inspect data: %s"
+msgstr "impossibile copiare %s: %s"
+
+#: mgradm/cmd/inspect/podman.go:68 mgradm/cmd/install/podman/utils.go:57
+#: mgradm/shared/podman/podman.go:185 mgradm/shared/podman/podman.go:245
+#, javascript-format
+msgid "cannot inspect host values: %s"
+msgstr ""
+
+#: mgradm/cmd/install/install.go:19 mgradm/cmd/install/install.go:20
+msgid "Install a new server"
+msgstr ""
+
 #: mgradm/cmd/install/kubernetes/kubernetes.go:27
 msgid "Install a new server on a kubernetes cluster"
 msgstr ""
@@ -109,14 +252,6 @@ msgid ""
 "The helm values file will be overridden with the values from the command parameters or configuration.\n"
 "\n"
 "NOTE: installing on a remote cluster is not supported yet!\n"
-msgstr ""
-
-#: mgradm/cmd/install/kubernetes/utils.go:32
-#: mgradm/cmd/migrate/kubernetes/utils.go:37
-#: mgradm/cmd/inspect/kubernetes.go:68
-#: mgradm/cmd/upgrade/kubernetes/utils.go:34
-#, javascript-format
-msgid "install %s before running this command"
 msgstr ""
 
 #: mgradm/cmd/install/kubernetes/utils.go:61
@@ -157,12 +292,6 @@ msgstr ""
 msgid "install podman before running this command"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:57 mgradm/cmd/inspect/podman.go:68
-#: mgradm/shared/podman/podman.go:185 mgradm/shared/podman/podman.go:245
-#, javascript-format
-msgid "cannot inspect host values: %s"
-msgstr ""
-
 #: mgradm/cmd/install/podman/utils.go:64
 #, javascript-format
 msgid "Setting up the server with the FQDN '%s'"
@@ -192,7 +321,7 @@ msgstr ""
 msgid "cannot update SSL certificate: %s"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:121 mgradm/cmd/migrate/podman/utils.go:70
+#: mgradm/cmd/install/podman/utils.go:121 mgradm/cmd/migrate/podman/utils.go:69
 #, javascript-format
 msgid "cannot enable podman socket: %s"
 msgstr ""
@@ -200,28 +329,6 @@ msgstr ""
 #: mgradm/cmd/install/podman/utils.go:132
 #, javascript-format
 msgid "failed to compute server FQDN: %s"
-msgstr ""
-
-#: mgradm/cmd/install/shared/shared.go:32
-#, javascript-format
-msgid "cannot copy /tmp/setup.sh: %s"
-msgstr ""
-
-#: mgradm/cmd/install/shared/shared.go:37
-#, javascript-format
-msgid "error running the setup script: %s"
-msgstr ""
-
-#: mgradm/cmd/install/shared/shared.go:53
-msgid "Server set up"
-msgstr ""
-
-#: mgradm/cmd/install/shared/shared.go:115
-msgid "Failed to create temporary directory"
-msgstr ""
-
-#: mgradm/cmd/install/shared/shared.go:125
-msgid "Failed to generate setup script"
 msgstr ""
 
 #: mgradm/cmd/install/shared/flags.go:71
@@ -396,8 +503,26 @@ msgstr ""
 msgid "First organization name"
 msgstr ""
 
-#: mgradm/cmd/install/install.go:19 mgradm/cmd/install/install.go:20
-msgid "Install a new server"
+#: mgradm/cmd/install/shared/shared.go:32
+#, javascript-format
+msgid "cannot copy /tmp/setup.sh: %s"
+msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:37
+#, javascript-format
+msgid "error running the setup script: %s"
+msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:53
+msgid "Server set up"
+msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:115
+msgid "Failed to create temporary directory"
+msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:125
+msgid "Failed to generate setup script"
 msgstr ""
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:28
@@ -436,13 +561,6 @@ msgstr ""
 msgid "cannot run deploy: %s"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:85
-#: mgradm/cmd/inspect/kubernetes.go:94
-#: mgradm/cmd/upgrade/kubernetes/utils.go:75
-#, javascript-format
-msgid "cannot find node running uyuni: %s"
-msgstr ""
-
 #: mgradm/cmd/migrate/kubernetes/utils.go:89
 #, javascript-format
 msgid "cannot run migration: %s"
@@ -476,18 +594,18 @@ msgstr ""
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:138
 #: mgradm/cmd/migrate/kubernetes/utils.go:144
-#: mgradm/cmd/migrate/podman/utils.go:45
+#: mgradm/cmd/migrate/podman/utils.go:44
 #: mgradm/cmd/upgrade/kubernetes/utils.go:93
 #: mgradm/cmd/upgrade/kubernetes/utils.go:103
-#: mgradm/cmd/upgrade/podman/utils.go:51 mgradm/cmd/upgrade/podman/utils.go:61
+#: mgradm/cmd/upgrade/podman/utils.go:50 mgradm/cmd/upgrade/podman/utils.go:60
 #, javascript-format
 msgid "cannot run PostgreSQL version upgrade script: %s"
 msgstr ""
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:148
-#: mgradm/cmd/migrate/podman/utils.go:55
+#: mgradm/cmd/migrate/podman/utils.go:54
 #: mgradm/cmd/upgrade/kubernetes/utils.go:107
-#: mgradm/cmd/upgrade/podman/utils.go:65
+#: mgradm/cmd/upgrade/podman/utils.go:64
 #, javascript-format
 msgid "cannot run post upgrade script: %s"
 msgstr ""
@@ -501,6 +619,10 @@ msgstr ""
 #: mgradm/cmd/migrate/kubernetes/utils.go:171
 #, javascript-format
 msgid "failed to strip text part from CA certificate: %s"
+msgstr ""
+
+#: mgradm/cmd/migrate/migrate.go:19 mgradm/cmd/migrate/migrate.go:20
+msgid "Migrate a remote server to containers"
 msgstr ""
 
 #: mgradm/cmd/migrate/podman/podman.go:25
@@ -530,25 +652,17 @@ msgstr ""
 msgid "cannot run migration script: %s"
 msgstr ""
 
-#: mgradm/cmd/migrate/podman/utils.go:43
-#: mgradm/cmd/upgrade/kubernetes/utils.go:90
-#: mgradm/cmd/upgrade/podman/utils.go:49 mgradm/shared/kubernetes/k3s.go:39
-#: mgradm/shared/podman/podman.go:216
-#, javascript-format
-msgid "Previous PostgreSQL is %s, new one is %s. Performing a DB version upgrade..."
-msgstr ""
-
-#: mgradm/cmd/migrate/podman/utils.go:51
+#: mgradm/cmd/migrate/podman/utils.go:50
 #, javascript-format
 msgid "cannot run PostgreSQL finalize script: %s"
 msgstr ""
 
-#: mgradm/cmd/migrate/podman/utils.go:59
+#: mgradm/cmd/migrate/podman/utils.go:58
 #, javascript-format
 msgid "cannot generate systemd service file: %s"
 msgstr ""
 
-#: mgradm/cmd/migrate/podman/utils.go:67
+#: mgradm/cmd/migrate/podman/utils.go:66
 msgid "Server migrated"
 msgstr ""
 
@@ -560,66 +674,76 @@ msgstr ""
 msgid "Failed to find home directory to look for SSH config"
 msgstr ""
 
-#: mgradm/cmd/migrate/migrate.go:19 mgradm/cmd/migrate/migrate.go:20
-msgid "Migrate a remote server to containers"
+#: mgradm/cmd/restart/nokubernetes.go:23 mgradm/cmd/start/nokubernetes.go:23
+#: mgradm/cmd/status/nokubernetes.go:23 mgradm/cmd/stop/nokubernetes.go:23
+msgid "built without kubernetes support"
 msgstr ""
 
-#: mgradm/cmd/uninstall/podman.go:38
+#: mgradm/cmd/restart/restart.go:23 mgradm/cmd/restart/restart.go:24
+msgid "Restart the server"
+msgstr ""
+
+#: mgradm/cmd/start/start.go:23 mgradm/cmd/start/start.go:24
+msgid "Start the server"
+msgstr ""
+
+#: mgradm/cmd/status/kubernetes.go:32
 #, javascript-format
-msgid "cannot delete volume %s: %s"
+msgid "failed to discover the cluster type: %s"
 msgstr ""
 
-#: mgradm/cmd/uninstall/podman.go:41
-msgid "All volumes removed"
+#: mgradm/cmd/status/kubernetes.go:37
+msgid "no uyuni helm release installed on the cluster"
 msgstr ""
 
-#: mgradm/cmd/uninstall/kubernetes.go:50 mgradm/cmd/uninstall/kubernetes.go:51
+#: mgradm/cmd/status/kubernetes.go:42
 #, javascript-format
-msgid "Would run %s"
+msgid "failed to find the uyuni deployment namespace: %s"
 msgstr ""
 
-#: mgradm/cmd/uninstall/kubernetes.go:53 mgradm/cmd/uninstall/kubernetes.go:58
+#: mgradm/cmd/status/kubernetes.go:48
 #, javascript-format
-msgid "Running %s"
+msgid "failed to get deployment status: %s"
 msgstr ""
 
-#: mgradm/cmd/uninstall/kubernetes.go:55
-msgid "Failed deleting config map"
+#: mgradm/cmd/status/kubernetes.go:55
+msgid "the pod is not running"
 msgstr ""
 
-#: mgradm/cmd/uninstall/kubernetes.go:66
-msgid "Failed deleting secret"
+#: mgradm/cmd/status/kubernetes.go:61 mgradm/cmd/status/podman.go:37
+#, javascript-format
+msgid "failed to run spacewalk-service status: %s"
 msgstr ""
 
-#: mgradm/cmd/uninstall/uninstall.go:26
-msgid "Uninstall a server"
+#: mgradm/cmd/status/podman.go:29
+#, javascript-format
+msgid "failed to get status of the server service: %s"
 msgstr ""
 
-#: mgradm/cmd/uninstall/uninstall.go:27
+#: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
+msgid "Get the server status"
+msgstr ""
+
+#: mgradm/cmd/status/status.go:46
+msgid "no installed server detected"
+msgstr ""
+
+#: mgradm/cmd/stop/stop.go:23 mgradm/cmd/stop/stop.go:24
+msgid "Stop the server"
+msgstr ""
+
+#: mgradm/cmd/support/config/config.go:23
+msgid "Extract configuration and logs"
+msgstr ""
+
+#: mgradm/cmd/support/config/config.go:24
 msgid ""
-"Uninstall a server and optionally the corresponding volumes.\n"
-"By default it will only print what would be done, use --force to actually remove."
+"Extract the host or cluster configuration and logs as well as those from \n"
+"the containers for support to help debugging."
 msgstr ""
 
-#: mgradm/cmd/uninstall/uninstall.go:35
-msgid "Actually remove the server"
-msgstr ""
-
-#: mgradm/cmd/uninstall/uninstall.go:36
-msgid "Also remove the volumes"
-msgstr ""
-
-#: mgradm/cmd/support/config/extractor.go:32
-#: mgradm/cmd/inspect/kubernetes.go:75 mgradm/cmd/inspect/podman.go:63
-#: mgradm/cmd/upgrade/kubernetes/utils.go:68
-#: mgradm/shared/kubernetes/certificates.go:27
-#: mgradm/shared/kubernetes/certificates.go:65
-#: mgradm/shared/kubernetes/k3s.go:36 mgradm/shared/kubernetes/k3s.go:104
-#: mgradm/shared/kubernetes/k3s.go:149 mgradm/shared/podman/podman.go:221
-#: mgradm/shared/podman/podman.go:281 mgradm/shared/podman/podman.go:306
-#: mgradm/shared/utils/exec.go:158 mgradm/shared/utils/exec.go:242
-#, javascript-format
-msgid "failed to create temporary directory: %s"
+#: mgradm/cmd/support/config/config.go:32
+msgid "path where to extract the data"
 msgstr ""
 
 #: mgradm/cmd/support/config/extractor.go:40
@@ -666,92 +790,54 @@ msgstr ""
 msgid "failed to add %s to tarball: %s"
 msgstr ""
 
-#: mgradm/cmd/support/config/config.go:23
-msgid "Extract configuration and logs"
-msgstr ""
-
-#: mgradm/cmd/support/config/config.go:24
-msgid ""
-"Extract the host or cluster configuration and logs as well as those from \n"
-"the containers for support to help debugging."
-msgstr ""
-
-#: mgradm/cmd/support/config/config.go:32
-msgid "path where to extract the data"
-msgstr ""
-
 #: mgradm/cmd/support/support.go:18 mgradm/cmd/support/support.go:19
 msgid "Commands for support operations"
 msgstr ""
 
-#: mgradm/cmd/restart/restart.go:23 mgradm/cmd/restart/restart.go:24
-msgid "Restart the server"
-msgstr ""
-
-#: mgradm/cmd/restart/nokubernetes.go:23 mgradm/cmd/start/nokubernetes.go:23
-#: mgradm/cmd/stop/nokubernetes.go:23 mgradm/cmd/status/nokubernetes.go:23
-msgid "built without kubernetes support"
-msgstr ""
-
-#: mgradm/cmd/start/start.go:23 mgradm/cmd/start/start.go:24
-msgid "Start the server"
-msgstr ""
-
-#: mgradm/cmd/stop/stop.go:23 mgradm/cmd/stop/stop.go:24
-msgid "Stop the server"
-msgstr ""
-
-#: mgradm/cmd/inspect/inspect.go:26
-msgid "Inspect"
-msgstr ""
-
-#: mgradm/cmd/inspect/inspect.go:27
-msgid "Extract information from image and deployment"
-msgstr ""
-
-#: mgradm/cmd/inspect/inspect.go:37
-msgid "Image URL. Leave it empty to analyze the current deployment"
-msgstr ""
-
-#: mgradm/cmd/inspect/inspect.go:38
-msgid "Image Tag. Leave it empty to analyze the current deployment"
-msgstr ""
-
-#: mgradm/cmd/inspect/kubernetes.go:35 mgradm/cmd/inspect/podman.go:31
+#: mgradm/cmd/uninstall/kubernetes.go:50 mgradm/cmd/uninstall/kubernetes.go:51
 #, javascript-format
-msgid "failed to determine image: %s"
+msgid "Would run %s"
 msgstr ""
 
-#: mgradm/cmd/inspect/kubernetes.go:44 mgradm/cmd/inspect/podman.go:40
+#: mgradm/cmd/uninstall/kubernetes.go:53 mgradm/cmd/uninstall/kubernetes.go:58
 #, javascript-format
-msgid "failed to find the image of the currently running server container: %s"
+msgid "Running %s"
 msgstr ""
 
-#: mgradm/cmd/inspect/kubernetes.go:50 mgradm/cmd/inspect/podman.go:45
+#: mgradm/cmd/uninstall/kubernetes.go:55
+msgid "Failed deleting config map"
+msgstr ""
+
+#: mgradm/cmd/uninstall/kubernetes.go:66
+msgid "Failed deleting secret"
+msgstr ""
+
+#: mgradm/cmd/uninstall/podman.go:38
 #, javascript-format
-msgid "inspect command failed: %s"
+msgid "cannot delete volume %s: %s"
 msgstr ""
 
-#: mgradm/cmd/inspect/kubernetes.go:55 mgradm/cmd/inspect/podman.go:49
-#, javascript-format
-msgid "cannot print inspect result: %s"
+#: mgradm/cmd/uninstall/podman.go:41
+msgid "All volumes removed"
 msgstr ""
 
-#: mgradm/cmd/inspect/kubernetes.go:88 mgradm/shared/kubernetes/k3s.go:64
-#: mgradm/shared/kubernetes/k3s.go:113 mgradm/shared/kubernetes/k3s.go:159
-#, javascript-format
-msgid "cannot delete %s: %s"
+#: mgradm/cmd/uninstall/uninstall.go:26
+msgid "Uninstall a server"
 msgstr ""
 
-#: mgradm/cmd/inspect/kubernetes.go:122
-#, javascript-format
-msgid "cannot run inspect pod: %s"
+#: mgradm/cmd/uninstall/uninstall.go:27
+msgid ""
+"Uninstall a server and optionally the corresponding volumes.\n"
+"By default it will only print what would be done, use --force to actually remove."
 msgstr ""
 
-#: mgradm/cmd/inspect/kubernetes.go:127 mgradm/cmd/inspect/podman.go:100
-#, fuzzy, javascript-format
-msgid "cannot inspect data: %s"
-msgstr "impossibile copiare %s: %s"
+#: mgradm/cmd/uninstall/uninstall.go:35
+msgid "Actually remove the server"
+msgstr ""
+
+#: mgradm/cmd/uninstall/uninstall.go:36
+msgid "Also remove the volumes"
+msgstr ""
 
 #: mgradm/cmd/upgrade/kubernetes/kubernetes.go:27
 #: mgradm/cmd/upgrade/kubernetes/kubernetes.go:28
@@ -772,14 +858,20 @@ msgstr ""
 msgid "cannot set replica to 0: %s"
 msgstr ""
 
+#: mgradm/cmd/upgrade/kubernetes/utils.go:90 mgradm/shared/kubernetes/k3s.go:39
+#: mgradm/shared/podman/podman.go:216
+#, javascript-format
+msgid "Previous PostgreSQL is %s, new one is %s. Performing a DB version upgrade..."
+msgstr ""
+
 #: mgradm/cmd/upgrade/kubernetes/utils.go:96
-#: mgradm/cmd/upgrade/podman/utils.go:54
+#: mgradm/cmd/upgrade/podman/utils.go:53
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr ""
 
 #: mgradm/cmd/upgrade/kubernetes/utils.go:98
-#: mgradm/cmd/upgrade/podman/utils.go:56
+#: mgradm/cmd/upgrade/podman/utils.go:55
 #, javascript-format
 msgid "trying to downgrade PostgreSQL from %s to %s"
 msgstr ""
@@ -811,7 +903,7 @@ msgstr ""
 msgid "cannot stop service %s"
 msgstr ""
 
-#: mgradm/cmd/upgrade/podman/utils.go:71
+#: mgradm/cmd/upgrade/podman/utils.go:70
 msgid "Waiting for the server to start..."
 msgstr ""
 
@@ -869,124 +961,75 @@ msgstr ""
 msgid "Upgrade local server"
 msgstr ""
 
-#: mgradm/cmd/hub/register/register.go:31
-msgid "Register"
-msgstr ""
-
-#: mgradm/cmd/hub/register/register.go:32
-msgid "Register this peripheral server to Hub API"
-msgstr ""
-
-#: mgradm/cmd/hub/register/register.go:79
-#, javascript-format
-msgid "invalid line format: %s"
-msgstr ""
-
-#: mgradm/cmd/hub/register/register.go:93
-#, javascript-format
-msgid "mandatory entry missing in config: %s"
-msgstr ""
-
-#: mgradm/cmd/hub/register/register.go:96
-#, javascript-format
-msgid "Hub API server: %s"
-msgstr ""
-
-#: mgradm/cmd/hub/register/register.go:99
-#, javascript-format
-msgid "failed to connect to the Hub server: %s"
-msgstr ""
-
-#: mgradm/cmd/hub/register/register.go:107
-#: mgradm/cmd/hub/register/register.go:110
-#, javascript-format
-msgid "failed to register this peripheral server: %s"
-msgstr ""
-
-#: mgradm/cmd/hub/register/register.go:124
-#: mgradm/cmd/hub/register/register.go:128
-#, javascript-format
-msgid "failed to update peripheral server info: %s"
-msgstr ""
-
-#: mgradm/cmd/hub/register/register.go:130
-#, javascript-format
-msgid "Registered peripheral server: %s, ID: %d"
-msgstr ""
-
-#: mgradm/cmd/hub/hub.go:18
-msgid "Hub management"
-msgstr ""
-
-#: mgradm/cmd/hub/hub.go:19
-msgid "Tools and utilities for Hub management"
-msgstr ""
-
-#: mgradm/cmd/status/kubernetes.go:32
-#, javascript-format
-msgid "failed to discover the cluster type: %s"
-msgstr ""
-
-#: mgradm/cmd/status/kubernetes.go:37
-msgid "no uyuni helm release installed on the cluster"
-msgstr ""
-
-#: mgradm/cmd/status/kubernetes.go:42
-#, javascript-format
-msgid "failed to find the uyuni deployment namespace: %s"
-msgstr ""
-
-#: mgradm/cmd/status/kubernetes.go:48
-#, javascript-format
-msgid "failed to get deployment status: %s"
-msgstr ""
-
-#: mgradm/cmd/status/kubernetes.go:55
-msgid "the pod is not running"
-msgstr ""
-
-#: mgradm/cmd/status/kubernetes.go:61 mgradm/cmd/status/podman.go:37
-#, javascript-format
-msgid "failed to run spacewalk-service status: %s"
-msgstr ""
-
-#: mgradm/cmd/status/podman.go:29
-#, javascript-format
-msgid "failed to get status of the server service: %s"
-msgstr ""
-
-#: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
-msgid "Get the server status"
-msgstr ""
-
-#: mgradm/cmd/status/status.go:46
-msgid "no installed server detected"
-msgstr ""
-
-#: mgradm/cmd/cmd.go:38
+#: mgradm/cmd/cmd.go:39
 msgid "Uyuni administration tool"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:39
+#: mgradm/cmd/cmd.go:40
 msgid "Tool to help administering Uyuni servers in containers"
-msgstr ""
-
-#: mgradm/cmd/cmd.go:52
-#, javascript-format
-msgid "Welcome to %s"
 msgstr ""
 
 #: mgradm/cmd/cmd.go:53
 #, javascript-format
+msgid "Welcome to %s"
+msgstr ""
+
+#: mgradm/cmd/cmd.go:54
+#, javascript-format
 msgid "Executing command: %s"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:57
+#: mgradm/cmd/cmd.go:58
 msgid "configuration file path"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:58
+#: mgradm/cmd/cmd.go:59
 msgid "application log level"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:55
+#, javascript-format
+msgid "failed to create folder %s: %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:58
+#, javascript-format
+msgid "failed to create keyring %s: %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:71
+#, javascript-format
+msgid "failed to create temporary directory %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:78
+#, javascript-format
+msgid "failed to parse %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:85
+#, javascript-format
+msgid "failed to download %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:90
+#, javascript-format
+msgid "failed to show key %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:97
+#, javascript-format
+msgid "failed to cp %s to %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:109
+#, javascript-format
+msgid "failed to run import key: %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:116
+#, javascript-format
+msgid "failed to restart uyuni-update-config: %s"
 msgstr ""
 
 #: mgradm/shared/kubernetes/certificates.go:32
