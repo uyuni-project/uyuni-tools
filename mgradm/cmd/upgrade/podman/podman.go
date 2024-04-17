@@ -53,7 +53,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	upgradeCmd.AddCommand(listCmd)
 
 	shared.AddUpgradeFlags(upgradeCmd)
-	podman.AddPodmanInstallFlag(upgradeCmd)
+	podman.AddPodmanArgFlag(upgradeCmd)
 
 	return upgradeCmd
 }
