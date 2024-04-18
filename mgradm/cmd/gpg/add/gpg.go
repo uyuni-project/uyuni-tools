@@ -34,7 +34,7 @@ type gpgAddFlags struct {
 // NewCommand import gpg keys from 3rd party repository.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	gpgAddKeyCmd := &cobra.Command{
-		Use:   "add",
+		Use:   "add [URL]...",
 		Short: L("Add gpg keys for 3rd party repositories"),
 		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
