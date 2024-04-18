@@ -26,7 +26,6 @@ if [ $? -eq 1 ]; then
 else
 	sed 's/pam_auth_service.*/pam_auth_service = susemanager/' -i /etc/rhn/rhn.conf;
 fi
-{{ end }}
 `
 
 // PostUpgradeTemplateData represents information used to create post upgrade.
