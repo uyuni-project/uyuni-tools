@@ -42,10 +42,14 @@ type PodmanMountFlags struct {
 	Spacewalk  string
 }
 
-// AddPodmanInstallFlag add the podman arguments to a command.
-func AddPodmanInstallFlag(cmd *cobra.Command) {
+// AddPodmanArgFlag add the podman arguments to a command.
+func AddPodmanArgFlag(cmd *cobra.Command) {
 	cmd.Flags().StringSlice("podman-arg", []string{}, L("Extra arguments to pass to podman"))
+}
 
+// AddPodmanInstallFlag add the podman install arguments to a command.
+func AddPodmanInstallFlag(cmd *cobra.Command) {
+	AddPodmanArgFlag(cmd)
 	cmd.Flags().String("podman-mount-cache", "", L("Path to custom /var/cache volume"))
 	cmd.Flags().String("podman-mount-postgresql", "", L("Path to custom /var/lib/pgsql volume"))
 	cmd.Flags().String("podman-mount-spacewalk", "", L("Path to custom /var/spacewalk volume"))
