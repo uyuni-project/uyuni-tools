@@ -64,7 +64,7 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 	cmd.Flags().String("helm-certmanager-values", "", L("Path to a values YAML file to use for cert-manager helm install"))
 }
 
-// AddimageFlag add Image flags to a command.
+// AddImageFlag add Image flags to a command.
 func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("image", defaultImage, L("Image"))
 	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
@@ -72,10 +72,18 @@ func AddImageFlag(cmd *cobra.Command) {
 	utils.AddPullPolicyFlag(cmd)
 }
 
+// AddImageUpgradeFlag add Image flags to an upgrade command, where pullPolicy default is always.
+func AddImageUpgradeFlag(cmd *cobra.Command) {
+	cmd.Flags().String("image", defaultImage, L("Image"))
+	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
+	cmd.Flags().String("pullPolicy", "Always",
+		L("set whether to pull the images or not during upgrade. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
+}
+
 // AddMigrationImageFlag add Migration Image flags to a command.
 func AddMigrationImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("migration-image", "", L("Migration image"))
 	cmd.Flags().String("migration-tag", utils.DefaultTag, L("Migration image tag"))
 	cmd.Flags().String("migration-pullPolicy", "IfNotPresent",
-		L("set whether to pull the migrattion images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
+		L("set whether to pull the migration images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
 }
