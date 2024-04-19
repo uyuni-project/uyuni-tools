@@ -55,6 +55,13 @@ func AddPodmanInstallFlag(cmd *cobra.Command) {
 	cmd.Flags().String("podman-mount-postgresql", "", L("Path to custom /var/lib/pgsql volume"))
 	cmd.Flags().String("podman-mount-spacewalk", "", L("Path to custom /var/spacewalk volume"))
 	cmd.Flags().String("podman-mount-www", "", L("Path to custom /srv/www/ volume"))
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "podman", Title: "Podman Flags"})
+	_ = utils.AddFlagToHelpGroupID(cmd, "podman-arg", "podman")
+	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-cache", "podman")
+	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-postgresql", "podman")
+	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-spacewalk", "podman")
+	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-www", "podman")
 }
 
 // EnablePodmanSocket enables the podman socket.
