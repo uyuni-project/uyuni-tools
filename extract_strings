@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+export LC_ALL=C
 for MODULE in mgrctl mgradm mgrpxy shared; do
     # Generate the pot file
     echo "Generate locale/${MODULE}/${MODULE}.pot"
