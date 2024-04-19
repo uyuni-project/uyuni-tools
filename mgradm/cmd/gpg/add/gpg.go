@@ -35,7 +35,7 @@ type gpgAddFlags struct {
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	gpgAddKeyCmd := &cobra.Command{
 		Use:   "add",
-		Short: "Add gpg keys for 3rd party repositories",
+		Short: L("Add gpg keys for 3rd party repositories"),
 		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags gpgAddFlags
