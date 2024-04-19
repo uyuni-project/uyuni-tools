@@ -51,7 +51,7 @@ func migrateToKubernetes(
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
 	// Prepare the migration script and folder
-	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, true)
+	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true)
 	if err != nil {
 		return fmt.Errorf(L("failed to generate migration script: %s"), err)
 	}
