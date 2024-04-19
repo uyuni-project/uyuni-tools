@@ -40,6 +40,7 @@ type PodmanMountFlags struct {
 	Cache      string
 	Postgresql string
 	Spacewalk  string
+	Www        string
 }
 
 // AddPodmanArgFlag add the podman arguments to a command.
@@ -53,6 +54,7 @@ func AddPodmanInstallFlag(cmd *cobra.Command) {
 	cmd.Flags().String("podman-mount-cache", "", L("Path to custom /var/cache volume"))
 	cmd.Flags().String("podman-mount-postgresql", "", L("Path to custom /var/lib/pgsql volume"))
 	cmd.Flags().String("podman-mount-spacewalk", "", L("Path to custom /var/spacewalk volume"))
+	cmd.Flags().String("podman-mount-www", "", L("Path to custom /srv/www/ volume"))
 }
 
 // EnablePodmanSocket enables the podman socket.
@@ -126,6 +128,7 @@ func LinkVolumes(mountFlags *PodmanMountFlags) error {
 		"var-cache":     mountFlags.Cache,
 		"var-spacewalk": mountFlags.Spacewalk,
 		"var-pgsql":     mountFlags.Postgresql,
+		"srv-www":       mountFlags.Www,
 	}
 	for volume, value := range data {
 		if value != "" {
