@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-17 10:16+0200\n"
+"POT-Creation-Date: 2024-04-19 15:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -15,6 +15,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: shared/api/org/createFirst.go:21
+#, javascript-format
+msgid "failed to connect to the server: %s"
+msgstr ""
+
+#: shared/api/org/createFirst.go:35
+#, javascript-format
+msgid "failed to create first user and organization: %s"
+msgstr ""
 
 #: shared/api/api.go:71
 msgid "FQDN of the server to connect to"
@@ -57,16 +67,6 @@ msgstr ""
 msgid "Unable to convert data to JSON"
 msgstr ""
 
-#: shared/api/org/createFirst.go:21
-#, javascript-format
-msgid "failed to connect to the server: %s"
-msgstr ""
-
-#: shared/api/org/createFirst.go:35
-#, javascript-format
-msgid "failed to create first user and organization: %s"
-msgstr ""
-
 #: shared/completion/completion.go:20 shared/completion/completion.go:21
 msgid "Generate shell completion script"
 msgstr ""
@@ -75,51 +75,6 @@ msgstr ""
 #: shared/completion/completion.go:38
 #, javascript-format
 msgid "cannot generate %s completion: %s"
-msgstr ""
-
-#: shared/connection.go:56
-#, javascript-format
-msgid "backend command not found in PATH: %s"
-msgstr ""
-
-#: shared/connection.go:68
-msgid "kubectl not configured to connect to a cluster, ignoring"
-msgstr ""
-
-#: shared/connection.go:101
-msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
-msgstr ""
-
-#: shared/connection.go:104
-#, javascript-format
-msgid "unsupported backend %s"
-msgstr ""
-
-#: shared/connection.go:125
-#, javascript-format
-msgid "container %s is not running on podman"
-msgstr ""
-
-#: shared/connection.go:146
-#, javascript-format
-msgid "the container is not running, %s %s command not executed: %s"
-msgstr ""
-
-#: shared/connection.go:193
-msgid "server didn't start within 60s. Check for the service status"
-msgstr ""
-
-#: shared/connection.go:223 shared/connection.go:262
-#, javascript-format
-msgid "unknown container kind: %s"
-msgstr ""
-
-#: shared/connection.go:306
-msgid "failed to determine suitable backend"
-msgstr ""
-
-#: shared/connection.go:316
-msgid "no supported backend found"
 msgstr ""
 
 #: shared/kubernetes/helm.go:56
@@ -138,7 +93,7 @@ msgstr ""
 
 #: shared/kubernetes/helm.go:93 shared/podman/network.go:94
 #: shared/podman/systemd.go:47 shared/podman/systemd.go:70
-#: shared/podman/systemd.go:71 shared/podman/utils.go:94
+#: shared/podman/systemd.go:71 shared/podman/utils.go:98
 #, javascript-format
 msgid "Would run %s"
 msgstr ""
@@ -517,69 +472,85 @@ msgstr ""
 msgid "cannot write %s file: %s"
 msgstr ""
 
-#: shared/podman/utils.go:58
+#: shared/podman/utils.go:47
+msgid "Extra arguments to pass to podman"
+msgstr ""
+
+#: shared/podman/utils.go:53
+msgid "Path to custom /var/cache volume"
+msgstr ""
+
+#: shared/podman/utils.go:54
+msgid "Path to custom /var/lib/pgsql volume"
+msgstr ""
+
+#: shared/podman/utils.go:55
+msgid "Path to custom /var/spacewalk volume"
+msgstr ""
+
+#: shared/podman/utils.go:62
 #, javascript-format
 msgid "failed to enable podman.socket unit: %s"
 msgstr ""
 
-#: shared/podman/utils.go:68
+#: shared/podman/utils.go:72
 #, javascript-format
 msgid "Would run podman kill %s for container id: %s"
 msgstr ""
 
-#: shared/podman/utils.go:69
+#: shared/podman/utils.go:73
 #, javascript-format
 msgid "Would run podman remove %s for container id: %s"
 msgstr ""
 
-#: shared/podman/utils.go:71
+#: shared/podman/utils.go:75
 #, javascript-format
 msgid "Run podman kill %s for container id: %s"
 msgstr ""
 
-#: shared/podman/utils.go:74
+#: shared/podman/utils.go:78
 msgid "Failed to kill the server"
 msgstr ""
 
-#: shared/podman/utils.go:76
+#: shared/podman/utils.go:80
 #, javascript-format
 msgid "Run podman remove %s for container id: %s"
 msgstr ""
 
-#: shared/podman/utils.go:79
+#: shared/podman/utils.go:83
 msgid "Error removing container"
 msgstr ""
 
-#: shared/podman/utils.go:84
+#: shared/podman/utils.go:88
 msgid "Container already removed"
 msgstr ""
 
-#: shared/podman/utils.go:96
+#: shared/podman/utils.go:100
 #, javascript-format
 msgid "Run %s"
 msgstr ""
 
-#: shared/podman/utils.go:99
+#: shared/podman/utils.go:103
 #, javascript-format
 msgid "Failed to remove volume %s"
 msgstr ""
 
-#: shared/podman/utils.go:130
+#: shared/podman/utils.go:134
 #, javascript-format
 msgid "volume folder (%s) already exists, cannot link it to %s"
 msgstr ""
 
-#: shared/podman/utils.go:134
+#: shared/podman/utils.go:138
 #, javascript-format
 msgid "failed to create volumes folder %s: %s"
 msgstr ""
 
-#: shared/podman/utils.go:138
+#: shared/podman/utils.go:142
 #, javascript-format
 msgid "failed to link volume folder %s to %s: %s"
 msgstr ""
 
-#: shared/podman/utils.go:148
+#: shared/podman/utils.go:152
 #, javascript-format
 msgid "failed to get podman's volumes folder: %s"
 msgstr ""
@@ -784,4 +755,49 @@ msgstr ""
 #: shared/utils/utils.go:185
 #, javascript-format
 msgid "bad status: %s"
+msgstr ""
+
+#: shared/connection.go:56
+#, javascript-format
+msgid "backend command not found in PATH: %s"
+msgstr ""
+
+#: shared/connection.go:68
+msgid "kubectl not configured to connect to a cluster, ignoring"
+msgstr ""
+
+#: shared/connection.go:101
+msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
+msgstr ""
+
+#: shared/connection.go:104
+#, javascript-format
+msgid "unsupported backend %s"
+msgstr ""
+
+#: shared/connection.go:125
+#, javascript-format
+msgid "container %s is not running on podman"
+msgstr ""
+
+#: shared/connection.go:146
+#, javascript-format
+msgid "the container is not running, %s %s command not executed: %s"
+msgstr ""
+
+#: shared/connection.go:193
+msgid "server didn't start within 60s. Check for the service status"
+msgstr ""
+
+#: shared/connection.go:223 shared/connection.go:262
+#, javascript-format
+msgid "unknown container kind: %s"
+msgstr ""
+
+#: shared/connection.go:306
+msgid "failed to determine suitable backend"
+msgstr ""
+
+#: shared/connection.go:316
+msgid "no supported backend found"
 msgstr ""

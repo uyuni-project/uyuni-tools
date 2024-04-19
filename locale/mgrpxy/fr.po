@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-17 10:16+0200\n"
+"POT-Creation-Date: 2024-04-19 15:10+0200\n"
 "PO-Revision-Date: 2024-04-08 11:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,36 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.2\n"
-
-#: mgrpxy/cmd/cmd.go:31
-msgid "Uyuni proxy administration tool"
-msgstr "Outil d'administration de proxy Uyuni"
-
-#: mgrpxy/cmd/cmd.go:32
-msgid "Tool to help administering Uyuni proxies in containers"
-msgstr "Outil pour aider à administrer des proxy Uyuni dans des conteneurs"
-
-#: mgrpxy/cmd/cmd.go:45
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "Bienvenue à %s"
-
-#: mgrpxy/cmd/cmd.go:46
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "Exécution de la commande: %s"
-
-#: mgrpxy/cmd/cmd.go:50
-msgid "configuration file path"
-msgstr "chemin vers le fichier de configuration"
-
-#: mgrpxy/cmd/cmd.go:51
-msgid "application log level"
-msgstr "niveau de verbosité de l'application"
-
-#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
-msgid "Install a new proxy from scratch"
-msgstr "Installer un nouveau proxy"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
@@ -91,6 +61,25 @@ msgstr "impossible d'extraire la configuration"
 msgid "cannot deploy proxy helm chart: %s"
 msgstr "impossible de déployer le helm chart du proxy: %s"
 
+#: mgrpxy/cmd/install/podman/utils.go:35
+msgid "install podman before running this command"
+msgstr "installer podman avant d'exécuter cette commande"
+
+#: mgrpxy/cmd/install/podman/utils.go:40
+#, javascript-format
+msgid "failed to extract proxy config from %s file: %s"
+msgstr "impossible d'extraire la configuration du proxy du fichier %s: %s"
+
+#: mgrpxy/cmd/install/podman/utils.go:76
+#, javascript-format
+msgid "cannot inspect host values: %s"
+msgstr "impossible d'inspecter les valeurs de l'hôte: %s"
+
+#: mgrpxy/cmd/install/podman/utils.go:95
+#, javascript-format
+msgid "Setting up proxy with configuration %s"
+msgstr "Installation du proxy avec la configuration %s"
+
 #: mgrpxy/cmd/install/podman/podman.go:25
 msgid "Install a new proxy on podman"
 msgstr "Installer un nouveau proxy sur podman"
@@ -115,24 +104,9 @@ msgstr ""
 "\n"
 "NOTE: pour l'instant l'installation sur un podman distant n'est pas supportée!\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:35
-msgid "install podman before running this command"
-msgstr "installer podman avant d'exécuter cette commande"
-
-#: mgrpxy/cmd/install/podman/utils.go:40
-#, javascript-format
-msgid "failed to extract proxy config from %s file: %s"
-msgstr "impossible d'extraire la configuration du proxy du fichier %s: %s"
-
-#: mgrpxy/cmd/install/podman/utils.go:76
-#, javascript-format
-msgid "cannot inspect host values: %s"
-msgstr "impossible d'inspecter les valeurs de l'hôte: %s"
-
-#: mgrpxy/cmd/install/podman/utils.go:95
-#, javascript-format
-msgid "Setting up proxy with configuration %s"
-msgstr "Installation du proxy avec la configuration %s"
+#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
+msgid "Install a new proxy from scratch"
+msgstr "Installer un nouveau proxy"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
@@ -228,6 +202,32 @@ msgstr "Réellement supprimer le proxy"
 #: mgrpxy/cmd/uninstall/uninstall.go:52
 msgid "Also remove the volumes"
 msgstr "Supprimer également les volumes"
+
+#: mgrpxy/cmd/cmd.go:31
+msgid "Uyuni proxy administration tool"
+msgstr "Outil d'administration de proxy Uyuni"
+
+#: mgrpxy/cmd/cmd.go:32
+msgid "Tool to help administering Uyuni proxies in containers"
+msgstr "Outil pour aider à administrer des proxy Uyuni dans des conteneurs"
+
+#: mgrpxy/cmd/cmd.go:45
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "Bienvenue à %s"
+
+#: mgrpxy/cmd/cmd.go:46
+#, javascript-format
+msgid "Executing command: %s"
+msgstr "Exécution de la commande: %s"
+
+#: mgrpxy/cmd/cmd.go:50
+msgid "configuration file path"
+msgstr "chemin vers le fichier de configuration"
+
+#: mgrpxy/cmd/cmd.go:51
+msgid "application log level"
+msgstr "niveau de verbosité de l'application"
 
 #: mgrpxy/shared/kubernetes/cmd.go:25
 msgid "Kubernetes namespace where to install the proxy"
