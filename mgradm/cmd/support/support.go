@@ -7,6 +7,7 @@ package support
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/support/config"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/support/sql"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
@@ -19,6 +20,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Long:  L("Commands for support operations"),
 	}
 	supportCmd.AddCommand(config.NewCommand(globalFlags))
+	supportCmd.AddCommand(sql.NewCommand(globalFlags))
 
 	return supportCmd
 }
