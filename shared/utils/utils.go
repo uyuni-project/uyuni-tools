@@ -88,6 +88,26 @@ func AskIfMissing(value *string, prompt string, min int, max int, checker func(s
 	}
 }
 
+// YesNo asks a question in CLI.
+func YesNo(question string) (bool, error) {
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		fmt.Printf("%s [y/N]?", question)
+
+		response, err := reader.ReadString('\n')
+		if err != nil {
+			return false, err
+		}
+
+		response = strings.ToLower(strings.TrimSpace(response))
+
+		if strings.ToLower(response) == "y" || strings.ToLower(response) == "yes" {
+			return true, nil
+		}
+		return false, nil
+	}
+}
+
 // ComputeImage assembles the container image from its name and tag.
 func ComputeImage(name string, tag string, appendToName ...string) (string, error) {
 	imageValid := regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
