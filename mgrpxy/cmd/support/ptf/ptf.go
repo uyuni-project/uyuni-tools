@@ -6,8 +6,8 @@ package ptf
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/support/ptf/kubernetes"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/support/ptf/podman"
+	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/support/ptf/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/support/ptf/podman"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
