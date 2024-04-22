@@ -39,7 +39,7 @@ func isUyuni(cnx *shared.Connection) (bool, error) {
 		cnx_args := []string{"/etc/susemanager-release"}
 		_, err := cnx.Exec("cat", cnx_args...)
 		if err != nil {
-			return false, errors.New(L("cannot find neither /etc/uyuni-release nor /etc/susemanagere-release"))
+			return false, errors.New(L("cannot find neither /etc/uyuni-release nor /etc/susemanager-release"))
 		}
 		return false, nil
 	}
@@ -98,7 +98,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 	}
 	log.Debug().Msgf("Image %s has PostgreSQL %s", serverImage, inspectedValues["image_pg_version"])
 	if (len(inspectedValues["current_pg_version"])) <= 0 {
-		return fmt.Errorf(L("posgresql is not installed in the current deployment"))
+		return fmt.Errorf(L("PostgreSQL is not installed in the current deployment"))
 	}
 	log.Debug().Msgf("Current deployment has PostgreSQL %s", inspectedValues["current_pg_version"])
 
