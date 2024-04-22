@@ -31,7 +31,7 @@ NOTE: for now upgrading on a remote podman is not supported!
 		},
 	}
 
-	utils.AddImageFlags(podmanCmd)
+	utils.AddImageUpgradeFlags(podmanCmd)
 
 	return podmanCmd
 }

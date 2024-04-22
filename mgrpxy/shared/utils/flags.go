@@ -78,6 +78,20 @@ func AddImageFlags(cmd *cobra.Command) {
 	addContainerImageFlags(cmd, "tftpd")
 }
 
+// AddImageUpgradeFlags will add the proxy upgrade or support ptf flags to a command.
+func AddImageUpgradeFlags(cmd *cobra.Command) {
+	cmd.Flags().String("imagesLocation", utils.DefaultNamespace,
+		L("registry URL prefix containing the all the container images"))
+	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))
+	utils.AddPullPolicyUpgradeFlag(cmd)
+
+	addContainerImageFlags(cmd, "httpd")
+	addContainerImageFlags(cmd, "saltBroker")
+	addContainerImageFlags(cmd, "squid")
+	addContainerImageFlags(cmd, "ssh")
+	addContainerImageFlags(cmd, "tftpd")
+}
+
 func addContainerImageFlags(cmd *cobra.Command, container string) {
 	cmd.Flags().String(container+"-image", "",
 		fmt.Sprintf(L("Image for %s container, overrides the namespace if set"), container))

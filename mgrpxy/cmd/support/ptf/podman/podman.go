@@ -39,7 +39,7 @@ NOTE: for now installing on a remote podman is not supported!
 		},
 	}
 
-	utils.AddImageFlags(podmanCmd)
+	utils.AddImageUpgradeFlags(podmanCmd)
 	shared_utils.AddPTFFlag(podmanCmd)
 	return podmanCmd
 }
