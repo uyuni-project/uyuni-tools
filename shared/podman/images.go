@@ -213,7 +213,7 @@ func pullImage(image string, args ...string) error {
 	return utils.RunCmdStdMapping(loglevel, "podman", podmanArgs...)
 }
 
-// ShowAvailableTag  returns the list of avaialable tag for a given image.
+// ShowAvailableTag  returns the list of available tag for a given image.
 func ShowAvailableTag(image string) ([]string, error) {
 	log.Debug().Msgf("Running podman image search --list-tags %s --format='{{.Tag}}'", image)
 

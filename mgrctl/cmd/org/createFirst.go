@@ -37,7 +37,7 @@ func createFirstCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	cmd.Flags().String("admin-firstName", "Administrator", L("The first name of the administrator"))
 	cmd.Flags().String("admin-lastName", "McAdmin", L("The last name of the administrator"))
 	cmd.Flags().String("admin-email", "root@localhost", L("The administrator's email"))
-	cmd.Flags().String("organization", "Organiszation", L("The first organization name"))
+	cmd.Flags().String("organization", "Organization", L("The first organization name"))
 
 	return cmd
 }
