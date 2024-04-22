@@ -15,7 +15,7 @@ import (
 )
 
 func ptfForKubernetes(globalFlags *types.GlobalFlags,
-	flags *kubernetesInstallFlags,
+	flags *kubernetesPTFFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {

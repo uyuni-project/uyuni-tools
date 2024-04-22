@@ -8,16 +8,12 @@ package kubernetes
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-type kubernetesInstallFlags struct {
-	shared.InstallFlags `mapstructure:",squash"`
-	Helm                cmd_utils.HelmFlags
+type kubernetesPTFFlags struct {
 }
 
 // NewCommand for kubernetes installation.
@@ -38,13 +34,10 @@ NOTE: installing on a remote cluster is not supported yet!
 
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags kubernetesInstallFlags
+			var flags kubernetesPTFFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, ptfForKubernetes)
 		},
 	}
-
-	shared.AddInstallFlags(kubernetesCmd)
-	cmd_utils.AddHelmInstallFlag(kubernetesCmd)
 
 	return kubernetesCmd
 }
