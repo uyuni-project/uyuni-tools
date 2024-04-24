@@ -24,7 +24,23 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	configCmd := &cobra.Command{
 		Use:   "sql [sql-file]",
 		Short: L("Execute SQL query"),
-		Long:  L(`Execute SQL query either provided in sql-file or passed through standard input`),
+		Long: L(`Execute SQL query either provided in sql-file or passed through standard input.
+
+Examples:
+
+  Run the 'select hostname from rhnserver;' query using echo:
+
+  # echo 'select hostname from rhnserver;' | mgradm support sql
+
+  Run in interative mode:
+
+  # mgradm support sql -i
+
+  Running the SQL queries in example.sql file and output them to out.log file
+
+  # mgradm support sql example.sql -o out.log
+
+`),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags configFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, doSql)
