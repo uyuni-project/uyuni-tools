@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+res=0
 grep -r . --include '*.go' --exclude '*_test.go' -n \
     -e 'fmt\.Errorf("[^"]\+"' \
     -e 'errors.New("[^"]\+"' \
@@ -12,6 +13,15 @@ grep -r . --include '*.go' --exclude '*_test.go' -n \
     -e '\(Short\|Long\): \+["`]'
 
 if test $? -eq 0; then
-    echo "Fix the non localizable strings"
-    exit 1
+    echo -e "Fix the non localizable strings\n"
+    res=1
 fi
+
+grep -r . --include '*.go' --exclude '*_test.go' -n \
+    -e '\(Trace\|Debug\)()\(\.Err(err)\)\?\.Msgf\?(N\?L("' \
+
+if test $? -eq 0; then
+    echo -e "Trace and debug messages shouldn't be localizable\n"
+    res=1
+fi
+exit $res

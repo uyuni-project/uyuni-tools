@@ -206,11 +206,11 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 		if err != nil {
 			return fmt.Errorf(L("failed to read current uyuni release: %s"), err)
 		}
-		log.Debug().Msgf(L("Current release is %s"), string(current_uyuni_release))
+		log.Debug().Msgf("Current release is %s", string(current_uyuni_release))
 		if (len(inspectedValues["uyuni_release"])) <= 0 {
 			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
 		}
-		log.Debug().Msgf(L("Image %s is %s"), serverImage, inspectedValues["uyuni_release"])
+		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues["uyuni_release"])
 		if utils.CompareVersion(inspectedValues["uyuni_release"], string(current_uyuni_release)) < 0 {
 			return fmt.Errorf(L("cannot downgrade from version %s to %s"), string(current_uyuni_release), inspectedValues["uyuni_release"])
 		}
@@ -220,7 +220,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 		if err != nil {
 			return fmt.Errorf(L("failed to read current susemanager release: %s"), err)
 		}
-		log.Debug().Msgf(L("Current release is %s"), string(current_suse_manager_release))
+		log.Debug().Msgf("Current release is %s", string(current_suse_manager_release))
 		if (len(inspectedValues["suse_manager_release"])) <= 0 {
 			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
 		}
@@ -237,7 +237,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 	if (len(inspectedValues["current_pg_version"])) <= 0 {
 		return fmt.Errorf(L("posgresql is not installed in the current deployment"))
 	}
-	log.Debug().Msgf(L("Current deployment has PostgreSQL %s"), inspectedValues["current_pg_version"])
+	log.Debug().Msgf("Current deployment has PostgreSQL %s", inspectedValues["current_pg_version"])
 
 	return nil
 }

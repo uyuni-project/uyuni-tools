@@ -71,7 +71,7 @@ func guessIngress() (string, error) {
 	if err == nil {
 		return "traefik", nil
 	} else {
-		log.Debug().Err(err).Msg(L("No ingressroutetcp resource deployed"))
+		log.Debug().Err(err).Msg("No ingressroutetcp resource deployed")
 	}
 
 	// Look for a pod running the nginx-ingress-controller: there is no other common way to find out
@@ -103,7 +103,7 @@ func Start(filter string) error {
 	if _, err := GetNode(filter); err != nil {
 		return ReplicasTo(filter, 1)
 	}
-	log.Debug().Msgf(L("Already running"))
+	log.Debug().Msgf("Already running")
 	return nil
 }
 
