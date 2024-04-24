@@ -25,7 +25,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	podmanCmd := &cobra.Command{
 		Use: "podman",
 
-		Short: L("install a PTF or Test package on podman"),
+		Short: L("Install a PTF or Test package on podman"),
 		Long: L(`Install a PTF or Test package on podman
 
 The support ptf podman command assumes podman is installed locally and

@@ -24,4 +24,12 @@ if test $? -eq 0; then
     echo -e "Trace and debug messages shouldn't be localizable\n"
     res=1
 fi
+
+grep -r . --include '*.go' --exclude '*_test.go' -n \
+    -e '\(Short\|Long\): \+L(["`][a-z]'
+if test $? -eq 0; then
+    echo -e "Short and Long messages shouldn't start with a lowercase letter\n"
+    res=1
+fi
+
 exit $res

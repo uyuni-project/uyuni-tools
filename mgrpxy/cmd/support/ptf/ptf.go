@@ -16,7 +16,7 @@ import (
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	ptfCmd := &cobra.Command{
 		Use:   "ptf",
-		Short: L("install a PTF"),
+		Short: L("Install a PTF"),
 	}
 
 	ptfCmd.AddCommand(podman.NewCommand(globalFlags))
