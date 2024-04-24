@@ -38,7 +38,7 @@ NOTE: for now installing on a remote podman is not supported!
 		},
 	}
 
-	mgradm_utils.AddImageFlag(podmanCmd)
+	mgradm_utils.AddImageUpgradeFlag(podmanCmd)
 	utils.AddPTFFlag(podmanCmd)
 
 	return podmanCmd
