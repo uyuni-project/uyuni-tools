@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/start"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/status"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/stop"
+	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/support"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/uninstall"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/upgrade"
 	"github.com/uyuni-project/uyuni-tools/shared/completion"
@@ -64,6 +65,10 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 	rootCmd.AddCommand(stop.NewCommand(globalFlags))
 	rootCmd.AddCommand(restart.NewCommand(globalFlags))
 	rootCmd.AddCommand(upgrade.NewCommand(globalFlags))
+
+	if supportCommand := support.NewCommand(globalFlags); supportCommand != nil {
+		rootCmd.AddCommand(supportCommand)
+	}
 
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
 

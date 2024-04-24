@@ -6,14 +6,18 @@
 set -e
 mkdir -p ./bin
 
+build_tags=$1
+if [ -n "${build_tags}" ]; then
+    build_tags="-tags ${build_tags}"
+fi
+
 tag=$(git describe --tags --abbrev=0)
 version=$(git describe --tags --abbrev=0 | cut -f 3 -d '-')
 offset=$(git rev-list --count ${tag}..)
-commit_id=$(git rev-parse --short HEAD)
 
 VERSION_NAME=github.com/uyuni-project/uyuni-tools/shared/utils.Version
 
-CGO_ENABLED=0 go build -ldflags "-X \"${VERSION_NAME}=${version}-${offset} (${commit_id})\"" -o ./bin ./...
+CGO_ENABLED=0 go build ${build_tags} -ldflags "-X ${VERSION_NAME}=${tag}-${offset}" -o ./bin ./...
 
 for shell in "bash" "zsh" "fish"; do
     COMPLETION_FILE="./bin/completion.${shell}"

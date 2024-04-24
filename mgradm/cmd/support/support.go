@@ -22,7 +22,9 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	}
 	supportCmd.AddCommand(config.NewCommand(globalFlags))
 	supportCmd.AddCommand(sql.NewCommand(globalFlags))
-	supportCmd.AddCommand(ptf.NewCommand(globalFlags))
+	if ptfCommand := ptf.NewCommand(globalFlags); ptfCommand != nil {
+		supportCmd.AddCommand(ptfCommand)
+	}
 
 	return supportCmd
 }

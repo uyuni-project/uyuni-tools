@@ -18,7 +18,10 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short: L("Commands for support operations"),
 		Long:  L("Commands for support operations"),
 	}
-	supportCmd.AddCommand(ptf.NewCommand(globalFlags))
 
-	return supportCmd
+	if ptfCommand := ptf.NewCommand(globalFlags); ptfCommand != nil {
+		supportCmd.AddCommand(ptfCommand)
+		return supportCmd
+	}
+	return nil
 }
