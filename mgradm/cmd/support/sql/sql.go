@@ -7,6 +7,7 @@ package sql
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -104,6 +105,10 @@ func getBaseCommand(keepStdin bool, flags *configFlags, cnx *shared.Connection) 
 }
 
 func doSql(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
+	if flags.Interactive && flags.OutputFile != "" {
+		return errors.New(L("interactive mode cannot work with a file output"))
+	}
+
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 
 	// Validate options
