@@ -142,6 +142,29 @@ func TestAskPasswordIfMissing(t *testing.T) {
 	}
 }
 
+func TestComputeProxyPTFImage(t *testing.T) {
+	data := [][]string{
+		{"registry.suse.com/ptf/a/a127499/26859/suse/manager/4.3/proxy-tftpd:latest-ptf-26859", "a127499", "26859", "registry.suse.com/suse/manager/4.3/proxy-tftpd:latest-ptf-26859"},
+		{"registry.suse.com/ptf/a/a127499/26859/suse/manager/4.3/proxy-ssh:latest-ptf-26859", "a127499", "26859", "registry.suse.com/suse/manager/4.3/proxy-ssh:latest-ptf-26859"},
+	}
+
+	for i, testCase := range data {
+		result := testCase[0]
+		user := testCase[1]
+		ptfId := testCase[2]
+		fullImage := testCase[3]
+
+		actual, err := ComputeProxyPTFImage(user, ptfId, fullImage)
+
+		if err != nil {
+			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s: %s", i, user, ptfId, fullImage, err)
+		}
+		if actual != result {
+			t.Errorf("Testcase %d: Expected %s got %s when computing image with %s, %s, %s", i, result, actual, user, ptfId, fullImage)
+		}
+	}
+}
+
 func TestComputePTFImage(t *testing.T) {
 	data := [][]string{
 		{"registry.suse.com/a/a127499/26859/suse/manager/5.0/x86_64/server:latest-ptf-26859", "a127499", "26859", "5.0", "x86_64", "server"},

@@ -31,6 +31,9 @@ import (
 
 const prompt_end = ": "
 
+var prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
+var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
+
 // InspectScriptFilename is the inspect script basename.
 var InspectScriptFilename = "inspect.sh"
 
@@ -137,7 +140,6 @@ func YesNo(question string) (bool, error) {
 
 // ComputeImage assembles the container image from its name and tag.
 func ComputeImage(name string, tag string, appendToName ...string) (string, error) {
-	imageValid := regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
 	submatches := imageValid.FindStringSubmatch(name)
 	if submatches == nil {
 		return "", fmt.Errorf(L("invalid image name: %s"), name)
@@ -159,6 +161,17 @@ func ComputeImage(name string, tag string, appendToName ...string) (string, erro
 	imageName = strings.ToLower(imageName) // podman does not accept repo in upper case
 	log.Debug().Msgf("Computed image name is %s", imageName)
 	return imageName, nil
+}
+
+// ComputeProxyPTFImage returns a proxy PTF image from registry.suse.com.
+func ComputeProxyPTFImage(user string, ptfId string, fullImage string) (string, error) {
+	prefix := fmt.Sprintf("registry.suse.com/ptf/a/%s/%s/", user, ptfId)
+	submatches := prodVersionArchRegex.FindStringSubmatch(fullImage)
+	if submatches == nil || len(submatches) > 1 {
+		return "", fmt.Errorf(L("invalid image name: %s"), fullImage)
+	}
+	tag := fmt.Sprintf("latest-ptf-%s", ptfId)
+	return prefix + submatches[0] + tag, nil
 }
 
 // ComputePTFImage returns a PTF image from registry.suse.com.
