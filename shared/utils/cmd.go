@@ -68,3 +68,16 @@ func AddPullPolicyFlag(cmd *cobra.Command) {
 	cmd.Flags().String("pullPolicy", "IfNotPresent",
 		L("set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
 }
+
+// AddPullPolicyFlag adds the --pullPolicy flag to an upgrade command.
+func AddPullPolicyUpgradeFlag(cmd *cobra.Command) {
+	cmd.Flags().String("pullPolicy", "Always",
+		L("set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
+}
+
+// AddPTFFlag add PTF flag to a command.
+func AddPTFFlag(cmd *cobra.Command) {
+	cmd.Flags().String("ptf", "", L("PTF ID"))
+	cmd.Flags().String("test", "", L("Test package ID"))
+	cmd.Flags().String("user", "", L("SCC user"))
+}

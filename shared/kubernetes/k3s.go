@@ -5,6 +5,10 @@
 package kubernetes
 
 import (
+	"fmt"
+	"os"
+	"os/exec"
+	"path"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -45,4 +49,73 @@ func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap)
 // UninstallK3sTraefikConfig uninstall K3s Traefik configuration.
 func UninstallK3sTraefikConfig(dryRun bool) {
 	utils.UninstallFile(k3sTraefikConfigPath, dryRun)
+}
+
+// InspectKubernetes check values on a given image and deploy.
+func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string, error) {
+	for _, binary := range []string{"kubectl", "helm"} {
+		if _, err := exec.LookPath(binary); err != nil {
+			return map[string]string{}, fmt.Errorf(L("install %s before running this command"), binary)
+		}
+	}
+
+	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	defer os.RemoveAll(scriptDir)
+	if err != nil {
+		return map[string]string{}, fmt.Errorf(L("failed to create temporary directory: %s"), err)
+	}
+
+	if err := utils.GenerateInspectContainerScript(scriptDir); err != nil {
+		return map[string]string{}, err
+	}
+
+	command := path.Join(utils.InspectOutputFile.Directory, utils.InspectScriptFilename)
+
+	const podName = "inspector"
+
+	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
+	if err := DeletePod(podName, ServerFilter); err != nil {
+		return map[string]string{}, fmt.Errorf(L("cannot delete %s: %s"), podName, err)
+	}
+
+	//this is needed because folder with script needs to be mounted
+	nodeName, err := GetNode("uyuni")
+	if err != nil {
+		return map[string]string{}, fmt.Errorf(L("cannot find node running uyuni: %s"), err)
+	}
+
+	//generate deploy data
+	deployData := types.Deployment{
+		APIVersion: "v1",
+		Spec: &types.Spec{
+			RestartPolicy: "Never",
+			NodeName:      nodeName,
+			Containers: []types.Container{
+				{
+					Name: podName,
+					VolumeMounts: append(utils.PgsqlRequiredVolumeMounts,
+						types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
+					Image: serverImage,
+				},
+			},
+			Volumes: append(utils.PgsqlRequiredVolumes,
+				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
+		},
+	}
+	//transform deploy data in JSON
+	override, err := GenerateOverrideDeployment(deployData)
+	if err != nil {
+		return map[string]string{}, err
+	}
+	err = RunPod(podName, ServerFilter, serverImage, pullPolicy, command, override)
+	if err != nil {
+		return map[string]string{}, fmt.Errorf(L("cannot run inspect pod: %s"), err)
+	}
+
+	inspectResult, err := utils.ReadInspectData(scriptDir)
+	if err != nil {
+		return map[string]string{}, fmt.Errorf(L("cannot inspect data: %s"), err)
+	}
+
+	return inspectResult, err
 }

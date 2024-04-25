@@ -57,7 +57,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// Install the uyuni proxy helm chart
-	if err := kubernetes.Deploy(&flags.ProxyInstallFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
+	if err := kubernetes.Deploy(&flags.ProxyImageFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
 		"--set", "ingress="+clusterInfos.Ingress); err != nil {
 		return fmt.Errorf(L("cannot deploy proxy helm chart: %s"), err)
 	}

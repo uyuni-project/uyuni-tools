@@ -33,7 +33,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	}
 	listCmd := &cobra.Command{
 		Use:   "list",
-		Short: L("list available tag for an image"),
+		Short: L("List available tag for an image"),
 		Args:  cobra.ExactArgs(0),
 		Run: func(cmd *cobra.Command, args []string) {
 			viper, _ := utils.ReadConfig(globalFlags.ConfigPath, cmd)

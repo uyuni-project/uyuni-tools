@@ -7,20 +7,9 @@
 package kubernetes
 
 import (
-	"fmt"
-	"os"
-	"os/exec"
-
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect"
-	upgrade_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
-	"github.com/uyuni-project/uyuni-tools/shared"
-	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
-	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func upgradeKubernetes(
@@ -29,88 +18,5 @@ func upgradeKubernetes(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	for _, binary := range []string{"kubectl", "helm"} {
-		if _, err := exec.LookPath(binary); err != nil {
-			return fmt.Errorf(L("install %s before running this command"), binary)
-		}
-	}
-	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
-
-	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
-	if err != nil {
-		return fmt.Errorf(L("failed to compute image URL: %s"), err)
-	}
-
-	inspectedValues, err := inspect.InspectKubernetes(serverImage, flags.Image.PullPolicy)
-	if err != nil {
-		return fmt.Errorf(L("cannot inspect kubernetes values: %s"), err)
-	}
-
-	err = upgrade_shared.SanityCheck(cnx, inspectedValues, serverImage)
-	if err != nil {
-		return err
-	}
-
-	fqdn, exist := inspectedValues["fqdn"]
-	if !exist {
-		return fmt.Errorf(L("inspect function did non return fqdn value"))
-	}
-
-	clusterInfos, err := shared_kubernetes.CheckCluster()
-	if err != nil {
-		return err
-	}
-	kubeconfig := clusterInfos.GetKubeconfig()
-
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
-	defer os.RemoveAll(scriptDir)
-	if err != nil {
-		return fmt.Errorf(L("failed to create temporary directory: %s"), err)
-	}
-
-	//this is needed because folder with script needs to be mounted
-	//check the node before scaling down
-	nodeName, err := shared_kubernetes.GetNode("uyuni")
-	if err != nil {
-		return fmt.Errorf(L("cannot find node running uyuni: %s"), err)
-	}
-
-	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
-	if err != nil {
-		return fmt.Errorf(L("cannot set replica to 0: %s"), err)
-	}
-
-	defer func() {
-		// if something is running, we don't need to set replicas to 1
-		if _, err = shared_kubernetes.GetNode("uyuni"); err != nil {
-			err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 1)
-		}
-	}()
-	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
-		log.Info().Msgf(L("Previous PostgreSQL is %s, new one is %s. Performing a DB version upgrade..."), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
-
-		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image, flags.MigrationImage, nodeName, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]); err != nil {
-			return fmt.Errorf(L("cannot run PostgreSQL version upgrade script: %s"), err)
-		}
-	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
-		log.Info().Msgf(L("Upgrading to %s without changing PostgreSQL version"), inspectedValues["uyuni_release"])
-	} else {
-		return fmt.Errorf(L("trying to downgrade PostgreSQL from %s to %s"), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
-	}
-
-	schemaUpdateRequired := inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"]
-	if err := kubernetes.RunPgsqlFinalizeScript(serverImage, flags.Image.PullPolicy, nodeName, schemaUpdateRequired); err != nil {
-		return fmt.Errorf(L("cannot run PostgreSQL version upgrade script: %s"), err)
-	}
-
-	if err := kubernetes.RunPostUpgradeScript(serverImage, flags.Image.PullPolicy, nodeName); err != nil {
-		return fmt.Errorf(L("cannot run post upgrade script: %s"), err)
-	}
-
-	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress)
-	if err != nil {
-		return fmt.Errorf(L("cannot upgrade to image %s: %s"), serverImage, err)
-	}
-
-	return shared_kubernetes.WaitForDeployment(flags.Helm.Uyuni.Namespace, "uyuni", "uyuni")
+	return kubernetes.Upgrade(globalFlags, &flags.Image, &flags.MigrationImage, flags.Helm, cmd, args)
 }
