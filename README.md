@@ -93,6 +93,7 @@ Macros:
 To disable features at build time pass the `-tags` parameter with the following values in a comma-separated list:
 
 * `nok8s`: will disable Kubernetes support
+* `ptf`: will enable ptf support commands build
 
 ## Localization
 
