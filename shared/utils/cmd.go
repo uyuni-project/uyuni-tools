@@ -79,4 +79,5 @@ func AddPullPolicyUpgradeFlag(cmd *cobra.Command) {
 func AddPTFFlag(cmd *cobra.Command) {
 	cmd.Flags().String("ptf", "", L("PTF ID"))
 	cmd.Flags().String("test", "", L("Test package ID"))
+	cmd.Flags().String("user", "", L("SCC user"))
 }

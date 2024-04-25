@@ -103,6 +103,14 @@ func AddImageUpgradeFlag(cmd *cobra.Command) {
 		L("set whether to pull the images or not during upgrade. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
 }
 
+// AddImagePTFFlag add Image flags to an support ptf command, where pullPolicy default is always.
+func AddImagePTFlag(cmd *cobra.Command) {
+	cmd.Flags().String("image", "", L("Image"))
+	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
+	cmd.Flags().String("pullPolicy", "Always",
+		L("set whether to pull the images or not during upgrade. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
+}
+
 // AddMigrationImageFlag add Migration Image flags to a command.
 func AddMigrationImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("migration-image", "", L("Migration image"))

@@ -163,25 +163,15 @@ func ComputeImage(name string, tag string, appendToName ...string) (string, erro
 	return imageName, nil
 }
 
-// ComputeProxyPTFImage returns a proxy PTF image from registry.suse.com.
-func ComputeProxyPTFImage(user string, ptfId string, fullImage string) (string, error) {
-	prefix := fmt.Sprintf("registry.suse.com/ptf/a/%s/%s/", user, ptfId)
+// ComputePTFImage returns a PTF or Test image from registry.suse.com.
+func ComputePTFImage(user string, ptfId string, fullImage string, suffix string) (string, error) {
+	prefix := fmt.Sprintf("registry.suse.com/a/%s/%s/", user, ptfId)
 	submatches := prodVersionArchRegex.FindStringSubmatch(fullImage)
 	if submatches == nil || len(submatches) > 1 {
 		return "", fmt.Errorf(L("invalid image name: %s"), fullImage)
 	}
-	tag := fmt.Sprintf("latest-ptf-%s", ptfId)
+	tag := fmt.Sprintf("latest-%s-%s", suffix, ptfId)
 	return prefix + submatches[0] + tag, nil
-}
-
-// ComputePTFImage returns a PTF image from registry.suse.com.
-func ComputePTFImage(user string, ptfId string, version string, arch string, image string) (string, error) {
-	return ComputeImage(fmt.Sprintf("registry.suse.com/a/%s/%s/suse/manager/%s/%s/%s", user, ptfId, version, arch, image), fmt.Sprintf("latest-ptf-%s", ptfId))
-}
-
-// ComputeTestImage returns a test image from registry.suse.com.
-func ComputeTestImage(user string, testId string, version string, arch string, image string) (string, error) {
-	return ComputeImage(fmt.Sprintf("registry.suse.com/a/%s/%s/suse/manager/%s/%s/%s", user, testId, version, arch, image), fmt.Sprintf("latest-test-%s", testId))
 }
 
 // Get the timezone set on the machine running the tool.

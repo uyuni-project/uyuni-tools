@@ -14,9 +14,10 @@ import (
 )
 
 type podmanPTFFlags struct {
-	Image  types.ImageFlags `mapstructure:",squash"`
-	PTFId  string           `mapstructure:"ptf"`
-	TestId string           `mapstructure:"test"`
+	Image      types.ImageFlags `mapstructure:",squash"`
+	PTFId      string           `mapstructure:"ptf"`
+	TestId     string           `mapstructure:"test"`
+	CustomerId string           `mapstructure:"user"`
 }
 
 // NewCommand for podman installation.
@@ -39,7 +40,7 @@ NOTE: for now installing on a remote podman is not supported!
 		},
 	}
 
-	mgradm_utils.AddImageUpgradeFlag(podmanCmd)
+	mgradm_utils.AddImagePTFlag(podmanCmd)
 	utils.AddPTFFlag(podmanCmd)
 
 	return podmanCmd

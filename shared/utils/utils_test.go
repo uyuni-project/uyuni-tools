@@ -142,10 +142,11 @@ func TestAskPasswordIfMissing(t *testing.T) {
 	}
 }
 
-func TestComputeProxyPTFImage(t *testing.T) {
+func TestComputePTFImage(t *testing.T) {
 	data := [][]string{
-		{"registry.suse.com/ptf/a/a127499/26859/suse/manager/4.3/proxy-tftpd:latest-ptf-26859", "a127499", "26859", "registry.suse.com/suse/manager/4.3/proxy-tftpd:latest-ptf-26859"},
-		{"registry.suse.com/ptf/a/a127499/26859/suse/manager/4.3/proxy-ssh:latest-ptf-26859", "a127499", "26859", "registry.suse.com/suse/manager/4.3/proxy-ssh:latest-ptf-26859"},
+		{"registry.suse.com/a/a127499/26859/suse/manager/4.3/proxy-tftpd:latest-ptf-26859", "a127499", "26859", "registry.suse.com/suse/manager/4.3/proxy-tftpd:latest", "suffix"},
+		{"registry.suse.com/a/a127499/26859/suse/manager/4.3/proxy-ssh:latest-test-26859", "a127499", "26859", "registry.suse.com/suse/manager/4.3/proxy-ssh:latest", "test"},
+		{"registry.suse.com/a/a127499/26859/suse/manager/5.0/x86_64/server:latest-ptf-26859", "a127499", "26859", "registry.suse.com/suse/manager/5.0/server:latest"},
 	}
 
 	for i, testCase := range data {
@@ -153,8 +154,9 @@ func TestComputeProxyPTFImage(t *testing.T) {
 		user := testCase[1]
 		ptfId := testCase[2]
 		fullImage := testCase[3]
+		suffix := testCase[4]
 
-		actual, err := ComputeProxyPTFImage(user, ptfId, fullImage)
+		actual, err := ComputePTFImage(user, ptfId, fullImage, suffix)
 
 		if err != nil {
 			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s: %s", i, user, ptfId, fullImage, err)
@@ -165,29 +167,6 @@ func TestComputeProxyPTFImage(t *testing.T) {
 	}
 }
 
-func TestComputePTFImage(t *testing.T) {
-	data := [][]string{
-		{"registry.suse.com/a/a127499/26859/suse/manager/5.0/x86_64/server:latest-ptf-26859", "a127499", "26859", "5.0", "x86_64", "server"},
-	}
-
-	for i, testCase := range data {
-		result := testCase[0]
-		user := testCase[1]
-		ptfId := testCase[2]
-		version := testCase[3]
-		arch := testCase[4]
-		image := testCase[5]
-
-		actual, err := ComputePTFImage(user, ptfId, version, arch, image)
-
-		if err != nil {
-			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s, %s, %s: %s", i, user, ptfId, version, arch, image, err)
-		}
-		if actual != result {
-			t.Errorf("Testcase %d: Expected %s got %s when computing image with %s, %s, %s, %s, %s", i, result, actual, user, ptfId, version, arch, image)
-		}
-	}
-}
 func TestComputeImage(t *testing.T) {
 	data := [][]string{
 		{"registry:5000/path/to/image:foo", "registry:5000/path/to/image:foo", "bar"},

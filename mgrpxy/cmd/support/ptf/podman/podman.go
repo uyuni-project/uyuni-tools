@@ -18,6 +18,7 @@ type podmanPTFFlags struct {
 	UpgradeFlags podman.PodmanProxyUpgradeFlags `mapstructure:",squash"`
 	PTFId        string                         `mapstructure:"ptf"`
 	TestId       string                         `mapstructure:"test"`
+	CustomerId   string                         `mapstructure:"user"`
 }
 
 // NewCommand for podman installation.
@@ -40,7 +41,7 @@ NOTE: for now installing on a remote podman is not supported!
 		},
 	}
 
-	utils.AddImageUpgradeFlags(podmanCmd)
+	utils.AddImagePTFFlags(podmanCmd)
 	shared_utils.AddPTFFlag(podmanCmd)
 	return podmanCmd
 }

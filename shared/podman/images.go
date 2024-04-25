@@ -233,7 +233,7 @@ func ShowAvailableTag(image string) ([]string, error) {
 func GetRunningImage(container string) (string, error) {
 	log.Info().Msgf(L("Running podman ps --filter=name=%s --format={{ .Image }}"), container)
 
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "--filter=name=", container, "--format='{{ .Image }}'")
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", fmt.Sprintf("--filter=name=%s", container), "--format='{{ .Image }}'")
 	if err != nil {
 		return "", fmt.Errorf(L("cannot find any running image for container %s: %s"), container, err)
 	}
