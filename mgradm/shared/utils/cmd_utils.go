@@ -74,6 +74,14 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-values", "helm")
 }
 
+// AddContainerImageFlags add container image flags to command.
+func AddContainerImageFlags(cmd *cobra.Command, container string) {
+	cmd.Flags().String(container+"-image", "",
+		fmt.Sprintf(L("Image for %s container, overrides the namespace if set"), container))
+	cmd.Flags().String(container+"-tag", "",
+		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), container))
+}
+
 // AddImageFlag add Image flags to a command.
 func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("image", defaultImage, L("Image"))

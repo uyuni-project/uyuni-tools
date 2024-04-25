@@ -37,5 +37,12 @@ func podmanStatus(
 		return fmt.Errorf(L("failed to run spacewalk-service status: %s"), err)
 	}
 
+	if !podman.IsServiceRunning(podman.ServerAttestationService) {
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", podman.ServerAttestationService); err != nil {
+			return fmt.Errorf(L("failed to get status of the server service: %s"), err)
+		}
+		return nil
+	}
+
 	return nil
 }
