@@ -12,9 +12,10 @@ import (
 )
 
 func ptfForKubernetes(globalFlags *types.GlobalFlags,
-	flags *kubernetes.KubernetesProxyUpgradeFlags,
+	flags *kubernetesPTFFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return kubernetes.Upgrade(flags, cmd, args)
+
+	return kubernetes.Upgrade(&flags.UpgradeFlags, cmd, args)
 }

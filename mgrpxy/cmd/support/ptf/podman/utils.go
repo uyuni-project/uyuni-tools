@@ -47,7 +47,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.Httpd.Name, err = utils.ComputePTFImage(flags.CustomerId, flags.PTFId, httpdImage, suffix)
+	flags.UpgradeFlags.Httpd.Name, err = utils.ComputePTF(flags.CustomerId, flags.PTFId, httpdImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.Ssh.Name, err = utils.ComputePTFImage(flags.CustomerId, flags.PTFId, sshImage, suffix)
+	flags.UpgradeFlags.Ssh.Name, err = utils.ComputePTF(flags.CustomerId, flags.PTFId, sshImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.Tftpd.Name, err = utils.ComputePTFImage(flags.CustomerId, flags.PTFId, tftpdImage, suffix)
+	flags.UpgradeFlags.Tftpd.Name, err = utils.ComputePTF(flags.CustomerId, flags.PTFId, tftpdImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -77,7 +77,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.SaltBroker.Name, err = utils.ComputePTFImage(flags.CustomerId, flags.PTFId, saltBrokerImage, suffix)
+	flags.UpgradeFlags.SaltBroker.Name, err = utils.ComputePTF(flags.CustomerId, flags.PTFId, saltBrokerImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -87,7 +87,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.Squid.Name, err = utils.ComputePTFImage(flags.CustomerId, flags.PTFId, squidImage, suffix)
+	flags.UpgradeFlags.Squid.Name, err = utils.ComputePTF(flags.CustomerId, flags.PTFId, squidImage, suffix)
 	if err != nil {
 		return err
 	}

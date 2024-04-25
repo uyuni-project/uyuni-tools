@@ -14,6 +14,10 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+type kubernetesPTFFlags struct {
+	UpgradeFlags kubernetes.KubernetesProxyUpgradeFlags `mapstructure:",squash"`
+}
+
 // NewCommand for kubernetes installation.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	kubernetesCmd := &cobra.Command{
@@ -30,9 +34,9 @@ The helm values file will be overridden with the values from the command paramet
 NOTE: installing on a remote cluster is not supported yet!
 `),
 
-		Args: cobra.ExactArgs(1),
+		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags kubernetes.KubernetesProxyUpgradeFlags
+			var flags kubernetesPTFFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, ptfForKubernetes)
 		},
 	}
@@ -40,7 +44,6 @@ NOTE: installing on a remote cluster is not supported yet!
 	pxy_utils.AddImageUpgradeFlags(kubernetesCmd)
 
 	kubernetes.AddHelmFlags(kubernetesCmd)
-	utils.AddPTFFlag(kubernetesCmd)
 
 	return kubernetesCmd
 }

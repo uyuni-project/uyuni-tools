@@ -142,11 +142,10 @@ func TestAskPasswordIfMissing(t *testing.T) {
 	}
 }
 
-func TestComputePTFImage(t *testing.T) {
+func TestComputePTF(t *testing.T) {
 	data := [][]string{
-		{"registry.suse.com/a/a127499/26859/suse/manager/4.3/proxy-tftpd:latest-ptf-26859", "a127499", "26859", "registry.suse.com/suse/manager/4.3/proxy-tftpd:latest", "suffix"},
-		{"registry.suse.com/a/a127499/26859/suse/manager/4.3/proxy-ssh:latest-test-26859", "a127499", "26859", "registry.suse.com/suse/manager/4.3/proxy-ssh:latest", "test"},
-		{"registry.suse.com/a/a127499/26859/suse/manager/5.0/x86_64/server:latest-ptf-26859", "a127499", "26859", "registry.suse.com/suse/manager/5.0/server:latest"},
+		{"registry.suse.com/a/a196136/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977", "a196136", "27977", "registry.suse.com/suse/manager/5.0/x86_64/proxy-helm:latest", "ptf"},
+		//{"registry.suse.com/a/a196136/26859/suse/manager/5.0/x86_64/server:latest-test-26859", "a196136", "26859", "registry.suse.com/suse/manager/5.0/x64_64/server:latest", "test"},
 	}
 
 	for i, testCase := range data {
@@ -156,13 +155,13 @@ func TestComputePTFImage(t *testing.T) {
 		fullImage := testCase[3]
 		suffix := testCase[4]
 
-		actual, err := ComputePTFImage(user, ptfId, fullImage, suffix)
+		actual, err := ComputePTF(user, ptfId, fullImage, suffix)
 
 		if err != nil {
-			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s: %s", i, user, ptfId, fullImage, err)
+			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s, %s: %s", i, user, ptfId, fullImage, suffix, err)
 		}
 		if actual != result {
-			t.Errorf("Testcase %d: Expected %s got %s when computing image with %s, %s, %s", i, result, actual, user, ptfId, fullImage)
+			t.Errorf("Testcase %d: Expected %s got %s when computing image with %s, %s, %s, %s", i, result, actual, user, ptfId, fullImage, suffix)
 		}
 	}
 }

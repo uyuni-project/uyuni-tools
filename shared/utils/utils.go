@@ -163,8 +163,8 @@ func ComputeImage(name string, tag string, appendToName ...string) (string, erro
 	return imageName, nil
 }
 
-// ComputePTFImage returns a PTF or Test image from registry.suse.com.
-func ComputePTFImage(user string, ptfId string, fullImage string, suffix string) (string, error) {
+// ComputePTF returns a PTF or Test image from registry.suse.com.
+func ComputePTF(user string, ptfId string, fullImage string, suffix string) (string, error) {
 	prefix := fmt.Sprintf("registry.suse.com/a/%s/%s/", user, ptfId)
 	submatches := prodVersionArchRegex.FindStringSubmatch(fullImage)
 	if submatches == nil || len(submatches) > 1 {
