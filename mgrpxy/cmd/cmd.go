@@ -71,7 +71,9 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 	}
 
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
-	rootCmd.AddCommand(support.NewCommand(globalFlags))
+	if cmd := support.NewCommand(globalFlags); cmd != nil {
+		rootCmd.AddCommand(cmd)
+	}
 
 	return rootCmd, nil
 }
