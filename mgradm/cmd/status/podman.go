@@ -25,7 +25,7 @@ func podmanStatus(
 ) error {
 	// Show the status and that's it if the service is not running
 	if !podman.IsServiceRunning(podman.ServerService) {
-		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "-no-pager", podman.ServerService); err != nil {
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", podman.ServerService); err != nil {
 			return fmt.Errorf(L("failed to get status of the server service: %s"), err)
 		}
 		return nil
