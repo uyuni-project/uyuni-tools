@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:10+0200\n"
+"POT-Creation-Date: 2024-04-26 10:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,6 +45,40 @@ msgstr ""
 #: mgrctl/cmd/api/get.go:32 mgrctl/cmd/api/post.go:48
 #, javascript-format
 msgid "error in query %s: %s"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:30
+msgid "Uyuni control tool"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:31
+msgid "Tool to help managing Uyuni servers mainly through their API"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:38
+msgid "configuration file path"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:39
+msgid "application log level"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:47
+#, javascript-format
+msgid "Welcome to %s"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:48
+#, javascript-format
+msgid "Executing command: %s"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:54
+msgid "Failed to create api command"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:63
+msgid "Failed to create org command"
 msgstr ""
 
 #: mgrctl/cmd/cp/cp.go:31
@@ -103,6 +137,10 @@ msgstr ""
 msgid "Running: %s %s"
 msgstr ""
 
+#: mgrctl/cmd/org/org.go:18
+msgid "Organization-related commands"
+msgstr ""
+
 #: mgrctl/cmd/org/createFirst.go:28
 msgid "Create the first user and organization"
 msgstr ""
@@ -136,44 +174,6 @@ msgstr ""
 msgid "Organization %s created with id %d"
 msgstr ""
 
-#: mgrctl/cmd/org/org.go:18
-msgid "Organization-related commands"
-msgstr ""
-
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:30
-msgid "Uyuni control tool"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:31
-msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:38
-msgid "configuration file path"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:39
-msgid "application log level"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:47
-#, javascript-format
-msgid "Welcome to %s"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:48
-#, javascript-format
-msgid "Executing command: %s"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:54
-msgid "Failed to create api command"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:63
-msgid "Failed to create org command"
 msgstr ""

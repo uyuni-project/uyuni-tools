@@ -7,17 +7,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-19 15:10+0200\n"
+"POT-Creation-Date: 2024-04-26 10:11+0200\n"
 "PO-Revision-Date: 2024-04-25 20:43+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
-"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgrpxy/it/>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.9.1\n"
+
+#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
+msgid "Install a new proxy from scratch"
+msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
@@ -36,11 +39,13 @@ msgid ""
 msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:26
+#: mgrpxy/shared/kubernetes/deploy.go:137
 #, javascript-format
 msgid "install %s before running this command"
 msgstr "installare %s prima di eseguire questo comando"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:35
+#: mgrpxy/shared/kubernetes/deploy.go:143
 #, javascript-format
 msgid "failed to create temporary directory: %s"
 msgstr "mancata creazione della directory temporanea: %s"
@@ -50,27 +55,9 @@ msgid "failed to extract configuration"
 msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:62
+#: mgrpxy/shared/kubernetes/deploy.go:168
 #, javascript-format
 msgid "cannot deploy proxy helm chart: %s"
-msgstr ""
-
-#: mgrpxy/cmd/install/podman/utils.go:35
-msgid "install podman before running this command"
-msgstr "installare podman prima di eseguire questo comando"
-
-#: mgrpxy/cmd/install/podman/utils.go:40
-#, javascript-format
-msgid "failed to extract proxy config from %s file: %s"
-msgstr ""
-
-#: mgrpxy/cmd/install/podman/utils.go:76
-#, javascript-format
-msgid "cannot inspect host values: %s"
-msgstr "impossibile ispezionare i valori dell'host: %s"
-
-#: mgrpxy/cmd/install/podman/utils.go:95
-#, javascript-format
-msgid "Setting up proxy with configuration %s"
 msgstr ""
 
 #: mgrpxy/cmd/install/podman/podman.go:25
@@ -89,8 +76,13 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
-msgid "Install a new proxy from scratch"
+#: mgrpxy/cmd/install/podman/utils.go:31 mgrpxy/shared/podman/podman.go:168
+msgid "install podman before running this command"
+msgstr "installare podman prima di eseguire questo comando"
+
+#: mgrpxy/cmd/install/podman/utils.go:36
+#, javascript-format
+msgid "failed to extract proxy config from %s file: %s"
 msgstr ""
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
@@ -133,6 +125,14 @@ msgstr ""
 msgid "Proxy containers up and running"
 msgstr ""
 
+#: mgrpxy/cmd/status/status.go:24 mgrpxy/cmd/status/status.go:25
+msgid "Get the proxy status"
+msgstr ""
+
+#: mgrpxy/cmd/status/status.go:46
+msgid "no installed proxy detected"
+msgstr ""
+
 #: mgrpxy/cmd/status/podman.go:30
 #, javascript-format
 msgid "Failed to get status of the %s service"
@@ -140,14 +140,6 @@ msgstr ""
 
 #: mgrpxy/cmd/status/podman.go:31
 msgid "failed to get the status of at least one service"
-msgstr ""
-
-#: mgrpxy/cmd/status/status.go:24 mgrpxy/cmd/status/status.go:25
-msgid "Get the proxy status"
-msgstr ""
-
-#: mgrpxy/cmd/status/status.go:46
-msgid "no installed proxy detected"
 msgstr ""
 
 #: mgrpxy/cmd/stop/stop.go:23 mgrpxy/cmd/stop/stop.go:24
@@ -186,30 +178,136 @@ msgstr ""
 msgid "Also remove the volumes"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:31
+#: mgrpxy/cmd/cmd.go:33
 msgid "Uyuni proxy administration tool"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:32
+#: mgrpxy/cmd/cmd.go:34
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:45
+#: mgrpxy/cmd/cmd.go:47
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "Benvenuti su %s"
 
-#: mgrpxy/cmd/cmd.go:46
+#: mgrpxy/cmd/cmd.go:48
 #, javascript-format
 msgid "Executing command: %s"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:50
+#: mgrpxy/cmd/cmd.go:52
 msgid "configuration file path"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:51
+#: mgrpxy/cmd/cmd.go:53
 msgid "application log level"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:25
+msgid "Install a PTF or Test package on a kubernetes cluster"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:26
+msgid ""
+"Install a PTR of Test package on a kubernetes cluster\n"
+"\n"
+"The support ptf command assumes the following:\n"
+"  * kubectl and helm are installed locally\n"
+"  * a working kubectl configuration should be set to connect to the cluster to deploy to\n"
+"\n"
+"The helm values file will be overridden with the values from the command parameters or configuration.\n"
+"\n"
+"NOTE: installing on a remote cluster is not supported yet!\n"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/podman.go:30
+msgid "Install a PTF or Test package on podman"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/podman.go:31
+msgid ""
+"Install a PTF or Test package on podman\n"
+"\n"
+"The support ptf podman command assumes podman is installed locally and\n"
+"the host machine is register to SCC.\n"
+"\n"
+"NOTE: for now installing on a remote podman is not supported!\n"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:34
+msgid "ptf and test flags cannot be set simultaneously "
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:37
+msgid "ptf and test flags cannot be empty simultaneously "
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:40
+msgid "user flag cannot be empty"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:54
+#, javascript-format
+msgid "The httpd ptf image computed is: %s"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:64
+#, javascript-format
+msgid "The ssh ptf image computed is: %s"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:74
+#, javascript-format
+msgid "The tftpd ptf image computed is: %s"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:84
+#, javascript-format
+msgid "The salt-broker ptf image computed is: %s"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:94
+#, javascript-format
+msgid "The squid ptf image computed is: %s"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/ptf.go:20
+msgid "Install a PTF"
+msgstr ""
+
+#: mgrpxy/cmd/support/support.go:18 mgrpxy/cmd/support/support.go:19
+msgid "Commands for support operations"
+msgstr ""
+
+#: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:20
+msgid "Upgrade a proxy on a running kubernetes cluster"
+msgstr ""
+
+#: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:21
+msgid ""
+"Upgrade a proxy on a running kubernetes cluster.\n"
+"\n"
+"The upgrade kubernetes command assumes kubectl is installed locally.\n"
+"\n"
+"NOTE: for now upgrading on a remote kubernetes cluster is not supported!\n"
+msgstr ""
+
+#: mgrpxy/cmd/upgrade/podman/podman.go:20
+msgid "Upgrade a proxy on podman"
+msgstr ""
+
+#: mgrpxy/cmd/upgrade/podman/podman.go:21
+msgid ""
+"Upgrade a proxy on podman\n"
+"\n"
+"The upgrade podman command assumes podman is upgraded locally.\n"
+"\n"
+"NOTE: for now upgrading on a remote podman is not supported!\n"
+msgstr ""
+
+#: mgrpxy/cmd/upgrade/upgrade.go:19 mgrpxy/cmd/upgrade/upgrade.go:20
+msgid "Upgrade a proxy"
 msgstr ""
 
 #: mgrpxy/shared/kubernetes/cmd.go:25
@@ -228,27 +326,63 @@ msgstr ""
 msgid "Path to a values YAML file to use for proxy helm install"
 msgstr ""
 
-#: mgrpxy/shared/kubernetes/deploy.go:23
+#: mgrpxy/shared/kubernetes/deploy.go:34
 msgid "Installing Uyuni proxy"
 msgstr ""
 
-#: mgrpxy/shared/kubernetes/deploy.go:51
+#: mgrpxy/shared/kubernetes/deploy.go:80
 #, javascript-format
 msgid "cannot run helm upgrade: %s"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:24
+#: mgrpxy/shared/kubernetes/deploy.go:96 mgrpxy/shared/kubernetes/deploy.go:111
+#: mgrpxy/shared/kubernetes/deploy.go:126
+#, fuzzy, javascript-format
+msgid "failed to write in file %s: %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgrpxy/shared/podman/podman.go:34
 #, javascript-format
 msgid "cannot setup network: %s"
 msgstr "impossibile impostare la rete: %s"
 
-#: mgrpxy/shared/podman/podman.go:27
+#: mgrpxy/shared/podman/podman.go:37
 msgid "Generating systemd services"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:102
+#: mgrpxy/shared/podman/podman.go:113
+#, fuzzy, javascript-format
+msgid "failed to generate systemd file '%s': %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgrpxy/shared/podman/podman.go:133 mgrpxy/shared/podman/podman.go:204
 #, javascript-format
-msgid "failed to generate systemd file: %s"
+msgid "cannot inspect host values: %s"
+msgstr "impossibile ispezionare i valori dell'host: %s"
+
+#: mgrpxy/shared/podman/podman.go:153
+#, javascript-format
+msgid "Setting up proxy with configuration %s"
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:173
+msgid "cannot find httpd image: it will no be upgraded"
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:177
+msgid "cannot find salt-broker image: it will no be upgraded"
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:181
+msgid "cannot find squid image: it will no be upgraded"
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:185
+msgid "cannot find ssh image: it will no be upgraded"
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:189
+msgid "cannot find tftpd image: it will no be upgraded"
 msgstr ""
 
 #: mgrpxy/shared/utils/cmd.go:17
@@ -265,20 +399,22 @@ msgstr ""
 msgid "Failed to compute image URL"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:70
+#: mgrpxy/shared/utils/flags.go:70 mgrpxy/shared/utils/flags.go:84
+#: mgrpxy/shared/utils/flags.go:98
 msgid "registry URL prefix containing the all the container images"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:71
+#: mgrpxy/shared/utils/flags.go:71 mgrpxy/shared/utils/flags.go:85
+#: mgrpxy/shared/utils/flags.go:99
 msgid "image tag"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:83
+#: mgrpxy/shared/utils/flags.go:111
 #, javascript-format
 msgid "Image for %s container, overrides the namespace if set"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:85
+#: mgrpxy/shared/utils/flags.go:113
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr ""
