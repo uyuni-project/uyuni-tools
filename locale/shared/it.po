@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-04-26 19:43+0000\n"
+"Last-Translator: Marina Latini <marina.latini@suse.com>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-shared/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: shared/api/api.go:71
 msgid "FQDN of the server to connect to"
@@ -324,22 +327,22 @@ msgstr ""
 #: shared/kubernetes/k3s.go:58
 #, javascript-format
 msgid "install %s before running this command"
-msgstr ""
+msgstr "installare %s prima di eseguire questo comando"
 
 #: shared/kubernetes/k3s.go:65 shared/utils/utils.go:323
 #, javascript-format
 msgid "failed to create temporary directory: %s"
-msgstr ""
+msgstr "mancata creazione della directory temporanea: %s"
 
 #: shared/kubernetes/k3s.go:78
 #, javascript-format
 msgid "cannot delete %s: %s"
-msgstr ""
+msgstr "impossible eliminare %s: %s"
 
 #: shared/kubernetes/k3s.go:84
 #, javascript-format
 msgid "cannot find node running uyuni: %s"
-msgstr ""
+msgstr "impossibile trovare il nodo che ha in esecuzione uyuni: %s"
 
 #: shared/kubernetes/k3s.go:112
 #, javascript-format
@@ -674,7 +677,7 @@ msgstr ""
 #: shared/podman/utils.go:203
 #, javascript-format
 msgid "cannot inspect host values: %s"
-msgstr ""
+msgstr "impossibile ispezionare i valori dell'host: %s"
 
 #: shared/podman/utils.go:235
 #, javascript-format
@@ -915,7 +918,7 @@ msgstr ""
 #: shared/utils/utils.go:300
 #, javascript-format
 msgid "cannot read config: %s"
-msgstr ""
+msgstr "impossibile leggere la configurazione: %s"
 
 #: shared/utils/utils.go:331
 #, javascript-format
