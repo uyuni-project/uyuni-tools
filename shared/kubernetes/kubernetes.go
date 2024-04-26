@@ -5,6 +5,7 @@
 package kubernetes
 
 import (
+	"encoding/base64"
 	"fmt"
 	"os"
 	"strings"
@@ -70,7 +71,7 @@ func guessIngress() (string, error) {
 	if err == nil {
 		return "traefik", nil
 	} else {
-		log.Debug().Err(err).Msg(L("No ingressroutetcp resource deployed"))
+		log.Debug().Err(err).Msg("No ingressroutetcp resource deployed")
 	}
 
 	// Look for a pod running the nginx-ingress-controller: there is no other common way to find out
@@ -102,11 +103,51 @@ func Start(filter string) error {
 	if _, err := GetNode(filter); err != nil {
 		return ReplicasTo(filter, 1)
 	}
-	log.Debug().Msgf(L("Already running"))
+	log.Debug().Msgf("Already running")
 	return nil
 }
 
 // Stop stop the pod.
 func Stop(filter string) error {
 	return ReplicasTo(filter, 0)
+}
+
+func get(component string, componentName string, args ...string) ([]byte, error) {
+	kubectlArgs := []string{
+		"get",
+		component,
+		componentName,
+	}
+
+	kubectlArgs = append(kubectlArgs, args...)
+
+	output, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", kubectlArgs...)
+	if err != nil {
+		return []byte{}, err
+	}
+	return output, nil
+}
+
+// GetConfigMap returns the value of a given config map.
+func GetConfigMap(configMapName string, filter string) (string, error) {
+	out, err := get("configMap", configMapName, filter)
+	if err != nil {
+		return "", fmt.Errorf(L("failed to kubectl get configMap %s %s")+": %s", configMapName, filter, err)
+	}
+
+	return string(out), nil
+}
+
+// GetSecret returns the value of a given secret.
+func GetSecret(secretName string, filter string) (string, error) {
+	out, err := get("secret", secretName, filter)
+	if err != nil {
+		return "", fmt.Errorf(L("failed to kubectl get secret %s %s")+": %s", secretName, filter, err)
+	}
+	decoded, err := base64.StdEncoding.DecodeString(string(out))
+	if err != nil {
+		return "", fmt.Errorf(L("Failed to base64 decode configMap %s: %s"), secretName, err)
+	}
+
+	return string(decoded), nil
 }

@@ -7,6 +7,7 @@ package gpg
 import (
 	"github.com/spf13/cobra"
 	gpgadd "github.com/uyuni-project/uyuni-tools/mgradm/cmd/gpg/add"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -14,7 +15,7 @@ import (
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	gpgKeyCmd := &cobra.Command{
 		Use:   "gpg",
-		Short: "Manage gpg keys for 3rd party repositories",
+		Short: L("Manage GPG keys for 3rd party repositories"),
 		Args:  cobra.ExactArgs(1),
 	}
 

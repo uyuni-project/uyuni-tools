@@ -15,13 +15,38 @@ import (
 	"github.com/spf13/cobra"
 	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
+
+func setupCocoContainer(flags *podmanInstallFlags) error {
+	if flags.Coco.Replicas > 0 {
+		if flags.Coco.Replicas > 1 {
+			log.Warn().Msgf(L("Currently only one replica is supported, starting just one instead of %d"), flags.Coco.Replicas)
+		}
+
+		tag := flags.Coco.Image.Tag
+		if tag == "" {
+			tag = flags.Image.Tag
+		}
+		cocoImage, err := utils.ComputeImage(flags.Coco.Image.Name, tag)
+		if err != nil {
+			return fmt.Errorf(L("failed to compute image URL, %s"), err)
+		}
+
+		if err := podman.GenerateAttestationSystemdService(cocoImage, flags.Db); err != nil {
+			return fmt.Errorf(L("cannot generate systemd service: %s"), err)
+		}
+
+		if err := shared_podman.EnableService(shared_podman.ServerAttestationService); err != nil {
+			return fmt.Errorf(L("cannot enable service: %s"), err)
+		}
+	}
+	return nil
+}
 
 func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
 	podmanArgs := flags.Podman.Args
@@ -52,7 +77,7 @@ func installForPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
-	inspectedHostValues, err := adm_utils.InspectHost()
+	inspectedHostValues, err := utils.InspectHost()
 	if err != nil {
 		return fmt.Errorf(L("cannot inspect host values: %s"), err)
 	}
@@ -108,6 +133,13 @@ func installForPodman(
 	log.Info().Msg(L("Run setup command in the container"))
 
 	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, fqdn, env); err != nil {
+		if stopErr := shared_podman.StopService(shared_podman.ServerService); stopErr != nil {
+			log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
+		}
+		return err
+	}
+
+	if err := setupCocoContainer(flags); err != nil {
 		return err
 	}
 

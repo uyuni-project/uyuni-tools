@@ -5,7 +5,6 @@
 package distro
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -29,10 +28,12 @@ func umountAndRemove(mountpoint string) {
 	}
 
 	if err := utils.RunCmd("/usr/bin/sudo", umountCmd...); err != nil {
-		log.Fatal().Err(err).Msgf(L("Unable to unmount ISO image, leaving %s intact"), mountpoint)
+		log.Error().Err(err).Msgf(L("Unable to unmount ISO image, leaving %s intact"), mountpoint)
 	}
 
-	os.Remove(mountpoint)
+	if err := os.Remove(mountpoint); err != nil {
+		log.Error().Err(err).Msgf(L("unable to remove temporary directory, leaving %s intact"), mountpoint)
+	}
 }
 
 func registerDistro(connection *api.ConnectionDetails, distro *types.Distribution) error {
@@ -55,41 +56,16 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 	return nil
 }
 
-func distroCp(
-	globalFlags *types.GlobalFlags,
-	flags *flagpole,
-	cmd *cobra.Command,
-	args []string,
-) error {
-	distroName := args[1]
-	source := args[0]
-
-	var channelLabel string
-	if len(args) == 3 {
-		channelLabel = args[2]
-	} else {
-		channelLabel = ""
-	}
-	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
-	log.Info().Msgf(L("Copying distribution %s\n"), distroName)
-	if !utils.FileExists(source) {
-		return fmt.Errorf(L("source %s does not exists"), source)
-	}
-
-	dstpath := "/srv/www/distributions/" + distroName
-	if cnx.TestExistenceInPod(dstpath) {
-		return fmt.Errorf(L("distribution already exists: %s"), dstpath)
-	}
-
+func prepareSource(source string) (string, bool, error) {
 	srcdir := source
+	needremove := false
 	if strings.HasSuffix(source, ".iso") {
 		log.Debug().Msg("Source is an ISO image")
-		tmpdir, err := os.MkdirTemp("", "mgrctl")
+		tmpdir, err := os.MkdirTemp("", "mgradm-distcp")
 		if err != nil {
-			return err
+			return "", needremove, err
 		}
 		srcdir = tmpdir
-		defer umountAndRemove(srcdir)
 
 		mountCmd := []string{
 			"/usr/bin/mount",
@@ -99,27 +75,97 @@ func distroCp(
 		}
 		if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "/usr/bin/sudo", mountCmd...); err != nil {
 			log.Debug().Msgf("Error mounting ISO image: '%s'", out)
-			return errors.New(L("unable to mount ISO image. Mount manually and try again"))
+			return "", needremove, fmt.Errorf(L("unable to mount ISO image: %s"), out)
 		}
+		needremove = true
+	}
+	return srcdir, needremove, nil
+}
+
+func copyDistro(srcdir string, distro types.Distribution, flags *flagpole) error {
+	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
+
+	const distrosPath = "/srv/www/distributions/"
+	dstpath := distrosPath + distro.TreeLabel
+	distro.BasePath = dstpath
+	if cnx.TestExistenceInPod(dstpath) {
+		return fmt.Errorf(L("distribution with same name already exists: %s"), dstpath)
 	}
 
+	if _, err := cnx.Exec("sh", "-c", "mkdir -p "+distrosPath); err != nil {
+		return fmt.Errorf(L("cannot create %s path in container: %s"), distrosPath, err)
+	}
+
+	log.Info().Msgf(L("Copying distribution %s"), distro.TreeLabel)
 	if err := cnx.Copy(srcdir, "server:"+dstpath, "tomcat", "susemanager"); err != nil {
 		return fmt.Errorf(L("cannot copy %s: %s"), dstpath, err)
 	}
+	log.Info().Msgf(L("Distribution has been copied into %s"), distro.BasePath)
+	return nil
+}
 
-	log.Info().Msg(L("Distribution has been copied"))
+func getServerFqdn(flags *flagpole) (string, error) {
+	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	fqdn, err := cnx.Exec("sh", "-c", "cat /etc/rhn/rhn.conf 2>/dev/null | grep 'java.hostname' | cut -d' ' -f3")
+	return strings.TrimSuffix(string(fqdn), "\n"), err
+}
 
-	if flags.ConnectionDetails.User != "" {
-		distro := types.Distribution{
-			BasePath: dstpath,
-		}
-		if err := detectDistro(srcdir, channelLabel, flags, &distro); err != nil {
-			return err
-		}
-
-		if err := registerDistro(&flags.ConnectionDetails, &distro); err != nil {
-			return err
+func distroCp(
+	globalFlags *types.GlobalFlags,
+	flags *flagpole,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	source := args[0]
+	distroDetails := types.DistributionDetails{}
+	if len(args) >= 2 {
+		distroDetails.Name = args[1]
+		if len(args) > 3 {
+			distroDetails.Version = args[2]
+			distroDetails.Arch = types.GetArch(args[3])
 		}
 	}
+	channelLabel := flags.ChannelLabel
+
+	if !utils.FileExists(source) {
+		return fmt.Errorf(L("source %s does not exists"), source)
+	}
+
+	srcdir, needremove, err := prepareSource(source)
+	if err != nil {
+		return err
+	}
+	if needremove {
+		defer umountAndRemove(srcdir)
+	}
+
+	distribution := types.Distribution{}
+	if err := detectDistro(srcdir, distroDetails, channelLabel, flags, &distribution); err != nil {
+		// If we do not want to do the registration, we don't need all the details for mere copy, just name
+		if flags.ConnectionDetails.User != "" || distroDetails.Name == "" {
+			return err
+		}
+		log.Debug().Msgf("Would not be able to auto register")
+		distribution.TreeLabel = distroDetails.Name
+	}
+
+	if len(args) == 1 {
+		log.Info().Msgf(L("Auto-detected distribution %s"), distribution.TreeLabel)
+	}
+
+	if err := copyDistro(srcdir, distribution, flags); err != nil {
+		return err
+	}
+
+	// Fill server FQDN if not provided, ignore error, will be hanled later
+	if flags.ConnectionDetails.Server == "" {
+		flags.ConnectionDetails.Server, _ = getServerFqdn(flags)
+		log.Debug().Msgf("Using api-server FQDN '%s'", flags.ConnectionDetails.Server)
+	}
+
+	if flags.ConnectionDetails.User != "" && flags.ConnectionDetails.Password != "" {
+		return registerDistro(&flags.ConnectionDetails, &distribution)
+	}
+	log.Info().Msgf(L("Continue by registering autoinstallation distribution"))
 	return nil
 }

@@ -6,18 +6,29 @@ package kubernetes
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
 	"path"
+	"path/filepath"
 
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 const helmAppName = "uyuni-proxy"
 
+// KubernetesProxyUpgradeFlags represents the flags for the mgrpxy upgrade kubernetes command.
+type KubernetesProxyUpgradeFlags struct {
+	utils.ProxyImageFlags `mapstructure:",squash"`
+	Helm                  HelmFlags
+}
+
 // Deploy will deploy proxy in kubernetes.
-func Deploy(installFlags *utils.ProxyInstallFlags, helmFlags *HelmFlags, configDir string,
+func Deploy(imageFlags *utils.ProxyImageFlags, helmFlags *HelmFlags, configDir string,
 	kubeconfig string, helmArgs ...string,
 ) error {
 	log.Info().Msg(L("Installing Uyuni proxy"))
@@ -30,18 +41,36 @@ func Deploy(installFlags *utils.ProxyInstallFlags, helmFlags *HelmFlags, configD
 		helmParams = append(helmParams, "-f", extraValues)
 	}
 
+	if !shared_utils.FileExists(path.Join(configDir, "httpd.yaml")) {
+		if _, err := getHTTPDYaml(configDir); err != nil {
+			return err
+		}
+	}
+	helmParams = append(helmParams, "-f", path.Join(configDir, "httpd.yaml"))
+
+	if !shared_utils.FileExists(path.Join(configDir, "ssh.yaml")) {
+		if _, err := getSSHYaml(configDir); err != nil {
+			return err
+		}
+	}
+	helmParams = append(helmParams, "-f", path.Join(configDir, "ssh.yaml"))
+
+	if !shared_utils.FileExists(path.Join(configDir, "config.yaml")) {
+		if _, err := getConfigYaml(configDir); err != nil {
+			return err
+		}
+	}
+	helmParams = append(helmParams, "-f", path.Join(configDir, "config.yaml"))
+
 	helmParams = append(helmParams,
-		"-f", path.Join(configDir, "httpd.yaml"),
-		"-f", path.Join(configDir, "ssh.yaml"),
-		"-f", path.Join(configDir, "config.yaml"),
-		"--set", "images.proxy-httpd="+installFlags.GetContainerImage("httpd"),
-		"--set", "images.proxy-salt-broker="+installFlags.GetContainerImage("salt-broker"),
-		"--set", "images.proxy-squid="+installFlags.GetContainerImage("squid"),
-		"--set", "images.proxy-ssh="+installFlags.GetContainerImage("ssh"),
-		"--set", "images.proxy-tftpd="+installFlags.GetContainerImage("tftpd"),
-		"--set", "repository="+installFlags.ImagesLocation,
-		"--set", "version="+installFlags.Tag,
-		"--set", "pullPolicy="+kubernetes.GetPullPolicy(installFlags.PullPolicy))
+		"--set", "images.proxy-httpd="+imageFlags.GetContainerImage("httpd"),
+		"--set", "images.proxy-salt-broker="+imageFlags.GetContainerImage("salt-broker"),
+		"--set", "images.proxy-squid="+imageFlags.GetContainerImage("squid"),
+		"--set", "images.proxy-ssh="+imageFlags.GetContainerImage("ssh"),
+		"--set", "images.proxy-tftpd="+imageFlags.GetContainerImage("tftpd"),
+		"--set", "repository="+imageFlags.ImagesLocation,
+		"--set", "version="+imageFlags.Tag,
+		"--set", "pullPolicy="+kubernetes.GetPullPolicy(imageFlags.PullPolicy))
 
 	helmParams = append(helmParams, helmArgs...)
 
@@ -53,4 +82,91 @@ func Deploy(installFlags *utils.ProxyInstallFlags, helmFlags *HelmFlags, configD
 
 	// Wait for the pod to be started
 	return kubernetes.WaitForDeployment(helmFlags.Proxy.Namespace, helmAppName, "uyuni-proxy")
+}
+
+func getSSHYaml(directory string) (string, error) {
+	sshPayload, err := kubernetes.GetSecret("proxy-secret", "-o=jsonpath={.data.ssh\\.yaml}")
+	if err != nil {
+		return "", err
+	}
+
+	sshYamlFilename := filepath.Join(directory, "ssh.yaml")
+	err = os.WriteFile(sshYamlFilename, []byte(sshPayload), 0644)
+	if err != nil {
+		return "", fmt.Errorf(L("failed to write in file %s: %s"), sshYamlFilename, err)
+	}
+
+	return sshYamlFilename, nil
+}
+
+func getHTTPDYaml(directory string) (string, error) {
+	httpdPayload, err := kubernetes.GetSecret("proxy-secret", "-o=jsonpath={.data.httpd\\.yaml}")
+	if err != nil {
+		return "", err
+	}
+
+	httpdYamlFilename := filepath.Join(directory, "httpd.yaml")
+	err = os.WriteFile(httpdYamlFilename, []byte(httpdPayload), 0644)
+	if err != nil {
+		return "", fmt.Errorf(L("failed to write in file %s: %s"), httpdYamlFilename, err)
+	}
+
+	return httpdYamlFilename, nil
+}
+
+func getConfigYaml(directory string) (string, error) {
+	configPayload, err := kubernetes.GetConfigMap("proxy-configMap", "-o=jsonpath={.data.config\\.yaml}")
+	if err != nil {
+		return "", err
+	}
+
+	configYamlFilename := filepath.Join(directory, "config.yaml")
+	err = os.WriteFile(configYamlFilename, []byte(configPayload), 0644)
+	if err != nil {
+		return "", fmt.Errorf(L("failed to write in file %s: %s"), configYamlFilename, err)
+	}
+
+	return configYamlFilename, nil
+}
+
+// Upgrade will upgrade the current kubernetes proxy.
+func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []string,
+) error {
+	for _, binary := range []string{"kubectl", "helm"} {
+		if _, err := exec.LookPath(binary); err != nil {
+			return fmt.Errorf(L("install %s before running this command"), binary)
+		}
+	}
+
+	tmpDir, err := os.MkdirTemp("", "mgrpxy-*")
+	if err != nil {
+		return fmt.Errorf(L("failed to create temporary directory: %s"), err)
+	}
+	defer os.RemoveAll(tmpDir)
+
+	// Check the kubernetes cluster setup
+	clusterInfos, err := kubernetes.CheckCluster()
+	if err != nil {
+		return err
+	}
+
+	err = kubernetes.ReplicasTo(kubernetes.ProxyFilter, 0)
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		// if something is running, we don't need to set replicas to 1
+		if _, err = kubernetes.GetNode("uyuni"); err != nil {
+			err = kubernetes.ReplicasTo(kubernetes.ProxyFilter, 1)
+		}
+	}()
+
+	// Install the uyuni proxy helm chart
+	if err := Deploy(&flags.ProxyImageFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
+		"--set", "ingress="+clusterInfos.Ingress); err != nil {
+		return fmt.Errorf(L("cannot deploy proxy helm chart: %s"), err)
+	}
+
+	return nil
 }

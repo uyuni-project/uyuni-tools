@@ -17,18 +17,17 @@ SSH_CONFIG=""
 if test -e /tmp/ssh_config; then
   SSH_CONFIG="-F /tmp/ssh_config"
 fi
-SSH="ssh -A $SSH_CONFIG "
-SCP="scp -A $SSH_CONFIG "
+SSH="ssh -o User={{ .User }} -A $SSH_CONFIG "
 
 echo "Stopping spacewalk service..."
-$SSH {{ .SourceFqdn }} "spacewalk-service stop ; systemctl start postgresql.service"
+$SSH {{ .SourceFqdn }} "sudo spacewalk-service stop ; sudo systemctl start postgresql.service"
 
 $SSH {{ .SourceFqdn }} \
  "echo \"COPY (SELECT MIN(CONCAT(org_id, '-', label)) AS target, base_path FROM rhnKickstartableTree GROUP BY base_path) TO STDOUT WITH CSV;\" \
- |spacewalk-sql --select-mode - " > distros
+ |sudo spacewalk-sql --select-mode - " > distros
 
 echo "Stopping posgresql service..."
-$SSH {{ .SourceFqdn }} "systemctl stop postgresql.service"
+$SSH {{ .SourceFqdn }} "sudo systemctl stop postgresql.service"
 
 while IFS="," read -r target path ; do
     echo "-/ $path"
@@ -123,8 +122,9 @@ cp /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /var/lib/uyuni-tools/RH
 
 if test "extractedSSL" != "1"; then
   # For third party certificates, the CA chain is in the certificate file.
-  $SCP {{ .SourceFqdn }}:/etc/pki/tls/private/spacewalk.key /var/lib/uyuni-tools/
-  $SCP {{ .SourceFqdn }}:/etc/pki/tls/certs/spacewalk.crt /var/lib/uyuni-tools/
+  rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/pki/tls/private/spacewalk.key /var/lib/uyuni-tools/
+  rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/pki/tls/certs/spacewalk.crt /var/lib/uyuni-tools/
+
 fi
 
 echo "Removing useless ssl-build folder..."
@@ -140,6 +140,7 @@ echo "DONE"`
 type MigrateScriptTemplateData struct {
 	Volumes    []types.VolumeMount
 	SourceFqdn string
+	User       string
 	Kubernetes bool
 }
 

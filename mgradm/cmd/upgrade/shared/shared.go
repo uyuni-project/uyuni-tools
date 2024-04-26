@@ -7,30 +7,13 @@ package shared
 import (
 	"errors"
 	"fmt"
-	"regexp"
-	"strconv"
-	"strings"
 
 	"github.com/rs/zerolog/log"
 
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
-
-// CompareVersion compare the server image version and the server deployed  version.
-func CompareVersion(imageVersion string, deployedVersion string) int {
-	re := regexp.MustCompile(`\((.*?)\)`)
-	imageVersionCleaned := strings.ReplaceAll(imageVersion, ".", "")
-	imageVersionCleaned = strings.TrimSpace(imageVersionCleaned)
-	imageVersionCleaned = re.ReplaceAllString(imageVersionCleaned, "")
-	imageVersionInt, _ := strconv.Atoi(imageVersionCleaned)
-
-	deployedVersionCleaned := strings.ReplaceAll(deployedVersion, ".", "")
-	deployedVersionCleaned = strings.TrimSpace(deployedVersionCleaned)
-	deployedVersionCleaned = re.ReplaceAllString(deployedVersionCleaned, "")
-	deployedVersionInt, _ := strconv.Atoi(deployedVersionCleaned)
-	return imageVersionInt - deployedVersionInt
-}
 
 func isUyuni(cnx *shared.Connection) (bool, error) {
 	cnx_args := []string{"/etc/uyuni-release"}
@@ -39,7 +22,7 @@ func isUyuni(cnx *shared.Connection) (bool, error) {
 		cnx_args := []string{"/etc/susemanager-release"}
 		_, err := cnx.Exec("cat", cnx_args...)
 		if err != nil {
-			return false, errors.New(L("cannot find neither /etc/uyuni-release nor /etc/susemanagere-release"))
+			return false, errors.New(L("cannot find neither /etc/uyuni-release nor /etc/susemanager-release"))
 		}
 		return false, nil
 	}
@@ -74,7 +57,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
 		}
 		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues["uyuni_release"])
-		if CompareVersion(inspectedValues["uyuni_release"], string(current_uyuni_release)) < 0 {
+		if utils.CompareVersion(inspectedValues["uyuni_release"], string(current_uyuni_release)) < 0 {
 			return fmt.Errorf(L("cannot downgrade from version %s to %s"), string(current_uyuni_release), inspectedValues["uyuni_release"])
 		}
 	} else {
@@ -88,7 +71,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
 		}
 		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues["suse_manager_release"])
-		if CompareVersion(inspectedValues["suse_manager_release"], string(current_suse_manager_release)) < 0 {
+		if utils.CompareVersion(inspectedValues["suse_manager_release"], string(current_suse_manager_release)) < 0 {
 			return fmt.Errorf(L("cannot downgrade from version %s to %s"), string(current_suse_manager_release), inspectedValues["suse_manager_release"])
 		}
 	}
@@ -98,7 +81,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 	}
 	log.Debug().Msgf("Image %s has PostgreSQL %s", serverImage, inspectedValues["image_pg_version"])
 	if (len(inspectedValues["current_pg_version"])) <= 0 {
-		return fmt.Errorf(L("posgresql is not installed in the current deployment"))
+		return fmt.Errorf(L("PostgreSQL is not installed in the current deployment"))
 	}
 	log.Debug().Msgf("Current deployment has PostgreSQL %s", inspectedValues["current_pg_version"])
 

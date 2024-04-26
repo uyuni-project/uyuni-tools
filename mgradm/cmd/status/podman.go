@@ -25,7 +25,7 @@ func podmanStatus(
 ) error {
 	// Show the status and that's it if the service is not running
 	if !podman.IsServiceRunning(podman.ServerService) {
-		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", podman.ServerService); err != nil {
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "-no-pager", podman.ServerService); err != nil {
 			return fmt.Errorf(L("failed to get status of the server service: %s"), err)
 		}
 		return nil
@@ -35,6 +35,13 @@ func podmanStatus(
 	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
 	if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "spacewalk-service", "status"); err != nil {
 		return fmt.Errorf(L("failed to run spacewalk-service status: %s"), err)
+	}
+
+	if !podman.IsServiceRunning(podman.ServerAttestationService) {
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", podman.ServerAttestationService); err != nil {
+			return fmt.Errorf(L("failed to get status of the server service: %s"), err)
+		}
+		return nil
 	}
 
 	return nil

@@ -99,6 +99,7 @@ Tools for managing uyuni container.
 Summary:        Command line tool to install and update %{productname}
 %if 0%{?suse_version}
 Requires:       (aardvark-dns if netavark)
+Requires:       (podman >= 4.5.0 if podman)
 %endif
 # 0%{?suse_version}
 
@@ -326,7 +327,7 @@ go_path=
 %endif
 # 0%{?ubuntu}
 
-GOLD_FLAGS="-X ${UTILS_PATH}.Version=%{version} -X ${UTILS_PATH}.LocaleRoot=%{_datadir}/locale"
+GOLD_FLAGS="-X \"${UTILS_PATH}.Version=%{version} (%{version_details})\" -X ${UTILS_PATH}.LocaleRoot=%{_datadir}/locale"
 if test -n "${namespace}"; then
     GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultNamespace=${namespace} -X ${UTILS_PATH}.DefaultTag=${tag}"
 fi

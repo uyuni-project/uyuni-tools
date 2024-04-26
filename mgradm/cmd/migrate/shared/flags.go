@@ -7,6 +7,7 @@ package shared
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -14,10 +15,12 @@ import (
 type MigrateFlags struct {
 	Image          types.ImageFlags `mapstructure:",squash"`
 	MigrationImage types.ImageFlags `mapstructure:"migration"`
+	User           string
 }
 
 // AddMigrateFlags add migration flags to a command.
 func AddMigrateFlags(cmd *cobra.Command) {
 	utils.AddImageFlag(cmd)
 	utils.AddMigrationImageFlag(cmd)
+	cmd.Flags().String("user", "root", L("User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."))
 }

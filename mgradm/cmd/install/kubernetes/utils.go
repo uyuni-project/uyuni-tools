@@ -11,6 +11,7 @@ import (
 	"os/exec"
 
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
@@ -73,6 +74,9 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, args[0], envs); err != nil {
+		if stopErr := shared_kubernetes.Stop(shared_kubernetes.ServerFilter); stopErr != nil {
+			log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
+		}
 		return err
 	}
 

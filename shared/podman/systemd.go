@@ -21,6 +21,9 @@ const servicesPath = "/etc/systemd/system/"
 // Name of the systemd service for the server.
 const ServerService = "uyuni-server"
 
+// Name of the systemd service for the coco attestation container.
+const ServerAttestationService = "uyuni-server-attestation"
+
 // Name of the systemd service for the proxy.
 const ProxyService = "uyuni-proxy-pod"
 

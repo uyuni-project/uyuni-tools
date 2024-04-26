@@ -34,8 +34,8 @@ type gpgAddFlags struct {
 // NewCommand import gpg keys from 3rd party repository.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	gpgAddKeyCmd := &cobra.Command{
-		Use:   "add",
-		Short: "Add gpg keys for 3rd party repositories",
+		Use:   "add [URL]...",
+		Short: L("Add GPG keys for 3rd party repositories"),
 		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags gpgAddFlags
@@ -43,7 +43,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-	gpgAddKeyCmd.Flags().BoolP("force", "f", false, L("Run the import"))
+	gpgAddKeyCmd.Flags().BoolP("force", "f", false, L("Import without asking confirmation"))
 	utils.AddBackendFlag(gpgAddKeyCmd)
 	return gpgAddKeyCmd
 }
@@ -60,9 +60,6 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 	}
 	gpgAddCmd := []string{"gpg", "--no-default-keyring", "--import", "--import-options", "import-minimal"}
 
-	if !flags.Force {
-		gpgAddCmd = append(gpgAddCmd, "--dry-run")
-	}
 	gpgAddCmd = append(gpgAddCmd, "--keyring", customKeyringPath)
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
@@ -89,6 +86,15 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 		if err := utils.RunCmdStdMapping(zerolog.InfoLevel, "gpg", "--show-key", hostKeyPath); err != nil {
 			log.Error().Err(err).Msgf(L("failed to show key %s"), hostKeyPath)
 			continue
+		}
+		if !flags.Force {
+			ret, err := utils.YesNo(L("Do you really want to trust this key"))
+			if err != nil {
+				return err
+			}
+			if !ret {
+				return nil
+			}
 		}
 
 		containerKeyPath := filepath.Join(filepath.Dir(customKeyringPath), keyname)

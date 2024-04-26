@@ -62,6 +62,24 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 	cmd.Flags().String("helm-certmanager-chart", "", L("URL to the cert-manager helm chart. To be used for offline installations"))
 	cmd.Flags().String("helm-certmanager-version", "", L("Version of the cert-manager helm chart"))
 	cmd.Flags().String("helm-certmanager-values", "", L("Path to a values YAML file to use for cert-manager helm install"))
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "helm", Title: L("Helm Chart Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "helm-uyuni-namespace", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "helm-uyuni-chart", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "helm-uyuni-version", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "helm-uyuni-values", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-namespace", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-chart", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-version", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-values", "helm")
+}
+
+// AddContainerImageFlags add container image flags to command.
+func AddContainerImageFlags(cmd *cobra.Command, container string) {
+	cmd.Flags().String(container+"-image", "",
+		fmt.Sprintf(L("Image for %s container, overrides the namespace if set"), container))
+	cmd.Flags().String(container+"-tag", "",
+		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), container))
 }
 
 // AddImageFlag add Image flags to a command.
@@ -70,11 +88,24 @@ func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
 
 	utils.AddPullPolicyFlag(cmd)
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "image", Title: L("Image Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "image", "image")
+	_ = utils.AddFlagToHelpGroupID(cmd, "tag", "image")
+	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "image")
 }
 
 // AddImageUpgradeFlag add Image flags to an upgrade command, where pullPolicy default is always.
 func AddImageUpgradeFlag(cmd *cobra.Command) {
 	cmd.Flags().String("image", defaultImage, L("Image"))
+	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
+	cmd.Flags().String("pullPolicy", "Always",
+		L("set whether to pull the images or not during upgrade. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
+}
+
+// AddImagePTFFlag add Image flags to an support ptf command, where pullPolicy default is always.
+func AddImagePTFlag(cmd *cobra.Command) {
+	cmd.Flags().String("image", "", L("Image"))
 	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
 	cmd.Flags().String("pullPolicy", "Always",
 		L("set whether to pull the images or not during upgrade. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
@@ -86,4 +117,9 @@ func AddMigrationImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("migration-tag", utils.DefaultTag, L("Migration image tag"))
 	cmd.Flags().String("migration-pullPolicy", "IfNotPresent",
 		L("set whether to pull the migration images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "migration-image", Title: L("Migration Image Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "migration-image", "migration-image")
+	_ = utils.AddFlagToHelpGroupID(cmd, "migration-tag", "migration-image")
+	_ = utils.AddFlagToHelpGroupID(cmd, "migration-pullPolicy", "migration-image")
 }

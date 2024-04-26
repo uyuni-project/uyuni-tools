@@ -34,7 +34,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	sshAuthSocket := migration_shared.GetSshAuthSocket()
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
-	tz, oldPgVersion, newPgVersion, err := podman.RunMigration(serverImage, flags.Image.PullPolicy, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn)
+	tz, oldPgVersion, newPgVersion, err := podman.RunMigration(serverImage, flags.Image.PullPolicy, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn, flags.User)
 	if err != nil {
 		return fmt.Errorf(L("cannot run migration script: %s"), err)
 	}

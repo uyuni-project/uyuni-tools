@@ -151,7 +151,7 @@ Environment variables:
 
 	cmd := &cobra.Command{
 		Use:   "config",
-		Short: "help on configuration file and environment variables",
+		Short: L("Help on configuration file and environment variables"),
 	}
 	t := template.Must(template.New("help").Parse(configTemplate))
 	var helpBuilder strings.Builder

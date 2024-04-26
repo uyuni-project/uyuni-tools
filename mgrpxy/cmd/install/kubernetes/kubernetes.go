@@ -14,8 +14,8 @@ import (
 )
 
 type kubernetesProxyInstallFlags struct {
-	pxy_utils.ProxyInstallFlags `mapstructure:",squash"`
-	Helm                        kubernetes.HelmFlags
+	pxy_utils.ProxyImageFlags `mapstructure:",squash"`
+	Helm                      kubernetes.HelmFlags
 }
 
 // NewCommand install a new proxy on a running kubernetes cluster.
@@ -39,7 +39,7 @@ NOTE: for now installing on a remote kubernetes cluster is not supported!
 		},
 	}
 
-	pxy_utils.AddInstallFlags(cmd)
+	pxy_utils.AddImageFlags(cmd)
 
 	kubernetes.AddHelmFlags(cmd)
 

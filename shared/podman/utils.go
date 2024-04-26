@@ -6,6 +6,7 @@ package podman
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	"path"
 	"strings"
@@ -16,6 +17,8 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
+
+const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
 
 // ServerContainerName represents the server container name.
 const ServerContainerName = "uyuni-server"
@@ -40,6 +43,12 @@ type PodmanMountFlags struct {
 	Cache      string
 	Postgresql string
 	Spacewalk  string
+	Www        string
+}
+
+// GetCommonParams splits the common arguments.
+func GetCommonParams() []string {
+	return strings.Split(commonArgs, " ")
 }
 
 // AddPodmanArgFlag add the podman arguments to a command.
@@ -53,6 +62,14 @@ func AddPodmanInstallFlag(cmd *cobra.Command) {
 	cmd.Flags().String("podman-mount-cache", "", L("Path to custom /var/cache volume"))
 	cmd.Flags().String("podman-mount-postgresql", "", L("Path to custom /var/lib/pgsql volume"))
 	cmd.Flags().String("podman-mount-spacewalk", "", L("Path to custom /var/spacewalk volume"))
+	cmd.Flags().String("podman-mount-www", "", L("Path to custom /srv/www/ volume"))
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "podman", Title: "Podman Flags"})
+	_ = utils.AddFlagToHelpGroupID(cmd, "podman-arg", "podman")
+	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-cache", "podman")
+	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-postgresql", "podman")
+	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-spacewalk", "podman")
+	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-www", "podman")
 }
 
 // EnablePodmanSocket enables the podman socket.
@@ -62,6 +79,24 @@ func EnablePodmanSocket() error {
 		return fmt.Errorf(L("failed to enable podman.socket unit: %s"), err)
 	}
 	return err
+}
+
+// RunContainer execute a container.
+func RunContainer(name string, image string, extraArgs []string, cmd []string) error {
+	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
+	podmanArgs = append(podmanArgs, extraArgs...)
+	for _, volume := range utils.ServerVolumeMounts {
+		podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath)
+	}
+	podmanArgs = append(podmanArgs, image)
+	podmanArgs = append(podmanArgs, cmd...)
+
+	err := utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", podmanArgs...)
+	if err != nil {
+		return fmt.Errorf(L("failed to run %s container: %s"), name, err)
+	}
+
+	return nil
 }
 
 // DeleteContainer deletes a container based on its name.
@@ -126,6 +161,7 @@ func LinkVolumes(mountFlags *PodmanMountFlags) error {
 		"var-cache":     mountFlags.Cache,
 		"var-spacewalk": mountFlags.Spacewalk,
 		"var-pgsql":     mountFlags.Postgresql,
+		"srv-www":       mountFlags.Www,
 	}
 	for volume, value := range data {
 		if value != "" {
@@ -152,4 +188,52 @@ func getGraphRoot() (string, error) {
 		return "", fmt.Errorf(L("failed to get podman's volumes folder: %s"), err)
 	}
 	return strings.TrimSpace(string(out)), nil
+}
+
+// Inspect check values on a given image and deploy.
+func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
+	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	defer os.RemoveAll(scriptDir)
+	if err != nil {
+		return map[string]string{}, fmt.Errorf(L("failed to create temporary directory %s"), err)
+	}
+
+	inspectedHostValues, err := utils.InspectHost()
+	if err != nil {
+		return map[string]string{}, fmt.Errorf(L("cannot inspect host values: %s"), err)
+	}
+
+	pullArgs := []string{}
+	_, scc_user_exist := inspectedHostValues["host_scc_username"]
+	_, scc_user_password := inspectedHostValues["host_scc_password"]
+	if scc_user_exist && scc_user_password {
+		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+	}
+
+	preparedImage, err := PrepareImage(serverImage, pullPolicy, pullArgs...)
+	if err != nil {
+		return map[string]string{}, err
+	}
+
+	if err := utils.GenerateInspectContainerScript(scriptDir); err != nil {
+		return map[string]string{}, err
+	}
+
+	podmanArgs := []string{
+		"-v", scriptDir + ":" + utils.InspectOutputFile.Directory,
+		"--security-opt", "label:disable",
+	}
+
+	err = RunContainer("uyuni-inspect", preparedImage, podmanArgs,
+		[]string{utils.InspectOutputFile.Directory + "/" + utils.InspectScriptFilename})
+	if err != nil {
+		return map[string]string{}, err
+	}
+
+	inspectResult, err := utils.ReadInspectData(scriptDir)
+	if err != nil {
+		return map[string]string{}, fmt.Errorf(L("cannot inspect data. %s"), err)
+	}
+
+	return inspectResult, err
 }

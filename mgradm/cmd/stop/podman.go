@@ -16,5 +16,10 @@ func podmanStop(
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	if podman.HasService(podman.ServerAttestationService) {
+		if err := podman.StopService(podman.ServerAttestationService); err != nil {
+			return err
+		}
+	}
 	return podman.StopService(podman.ServerService)
 }

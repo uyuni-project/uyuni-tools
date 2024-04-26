@@ -1,0 +1,2 @@
+- Require podman 4.5.0 for its --shm-size-systemd parameter
+- Add --podman-mount-www flag for install and migration
