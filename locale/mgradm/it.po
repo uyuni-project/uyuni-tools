@@ -8,9 +8,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-04-25 20:43+0000\n"
+"PO-Revision-Date: 2024-04-26 19:43+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
-"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools/it/>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools/"
+"it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -59,9 +60,9 @@ msgid "cannot create %s path in container: %s"
 msgstr "impossibile leggere la configurazione: %s"
 
 #: mgradm/cmd/distro/cp.go:99
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Copying distribution %s"
-msgstr "Copia della distribuzione %s\n"
+msgstr "Copia della distribuzione %s"
 
 #: mgradm/cmd/distro/cp.go:101 mgradm/shared/podman/podman.go:119
 #: mgradm/shared/podman/podman.go:122 mgradm/shared/podman/podman.go:125
@@ -71,9 +72,9 @@ msgid "cannot copy %s: %s"
 msgstr "impossibile copiare %s: %s"
 
 #: mgradm/cmd/distro/cp.go:103
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Distribution has been copied into %s"
-msgstr "La distribuzione è stata copiata"
+msgstr "La distribuzione è stata copiata in %s"
 
 #: mgradm/cmd/distro/cp.go:131 mgradm/cmd/support/sql/sql.go:32
 #, javascript-format
@@ -979,9 +980,8 @@ msgid "unknown or unsupported database %s"
 msgstr ""
 
 #: mgradm/cmd/support/sql/sql.go:152
-#, fuzzy
 msgid "Command failed"
-msgstr "comando ispezione fallito: %s"
+msgstr "Comando non riuscito"
 
 #: mgradm/cmd/support/sql/sql.go:157
 #, javascript-format
