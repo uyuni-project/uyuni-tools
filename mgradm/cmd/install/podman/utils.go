@@ -6,7 +6,6 @@ package podman
 
 import (
 	"errors"
-	"fmt"
 	"os/exec"
 	"strings"
 
@@ -34,15 +33,15 @@ func setupCocoContainer(flags *podmanInstallFlags) error {
 		}
 		cocoImage, err := utils.ComputeImage(flags.Coco.Image.Name, tag)
 		if err != nil {
-			return fmt.Errorf(L("failed to compute image URL, %s"), err)
+			return utils.Errorf(err, L("failed to compute image URL"))
 		}
 
 		if err := podman.GenerateAttestationSystemdService(cocoImage, flags.Db); err != nil {
-			return fmt.Errorf(L("cannot generate systemd service: %s"), err)
+			return utils.Errorf(err, L("cannot generate systemd service"))
 		}
 
 		if err := shared_podman.EnableService(shared_podman.ServerAttestationService); err != nil {
-			return fmt.Errorf(L("cannot enable service: %s"), err)
+			return utils.Errorf(err, L("cannot enable service"))
 		}
 	}
 	return nil
@@ -60,7 +59,7 @@ func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInsta
 
 	log.Info().Msg(L("Waiting for the server to start..."))
 	if err := shared_podman.EnableService(shared_podman.ServerService); err != nil {
-		return fmt.Errorf(L("cannot enable service: %s"), err)
+		return utils.Errorf(err, L("cannot enable service"))
 	}
 
 	return cnx.WaitForServer()
@@ -79,7 +78,7 @@ func installForPodman(
 
 	inspectedHostValues, err := utils.InspectHost()
 	if err != nil {
-		return fmt.Errorf(L("cannot inspect host values: %s"), err)
+		return utils.Errorf(err, L("cannot inspect host values"))
 	}
 
 	fqdn, err := getFqdn(args)
@@ -90,7 +89,7 @@ func installForPodman(
 
 	image, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
 	if err != nil {
-		return fmt.Errorf(L("failed to compute image URL: %s"), err)
+		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 	pullArgs := []string{}
 	_, scc_user_exist := inspectedHostValues["host_scc_username"]
@@ -110,7 +109,7 @@ func installForPodman(
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 	if err := waitForSystemStart(cnx, preparedImage, flags); err != nil {
-		return fmt.Errorf(L("cannot wait for system start: %s"), err)
+		return utils.Errorf(err, L("cannot wait for system start"))
 	}
 
 	caPassword := flags.Ssl.Password
@@ -145,12 +144,12 @@ func installForPodman(
 
 	if flags.Ssl.UseExisting() {
 		if err := podman.UpdateSslCertificate(cnx, &flags.Ssl.Ca, &flags.Ssl.Server); err != nil {
-			return fmt.Errorf(L("cannot update SSL certificate: %s"), err)
+			return utils.Errorf(err, L("cannot update SSL certificate"))
 		}
 	}
 
 	if err := shared_podman.EnablePodmanSocket(); err != nil {
-		return fmt.Errorf(L("cannot enable podman socket: %s"), err)
+		return utils.Errorf(err, L("cannot enable podman socket"))
 	}
 	return nil
 }
@@ -161,7 +160,7 @@ func getFqdn(args []string) (string, error) {
 	} else {
 		fqdn_b, err := utils.RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
 		if err != nil {
-			return "", fmt.Errorf(L("failed to compute server FQDN: %s"), err)
+			return "", utils.Errorf(err, L("failed to compute server FQDN"))
 		}
 		return strings.TrimSpace(string(fqdn_b)), nil
 	}

@@ -5,8 +5,6 @@
 package utils
 
 import (
-	"fmt"
-
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -45,7 +43,7 @@ func CommandHelper[T interface{}](
 	}
 	if err := viper.Unmarshal(&flags); err != nil {
 		log.Error().Err(err).Msg(L("failed to unmarshall configuration"))
-		return fmt.Errorf(L("failed to unmarshall configuration")+": %s", err)
+		return Errorf(err, L("failed to unmarshall configuration"))
 	}
 	return fn(globalFlags, flags, cmd, args)
 }

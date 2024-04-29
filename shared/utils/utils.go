@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -248,7 +249,7 @@ func GetURLBody(URL string) ([]byte, error) {
 	log.Debug().Msgf("Downloading %s", URL)
 	resp, err := http.Get(URL)
 	if err != nil {
-		return nil, fmt.Errorf(L("error downloading from %s: %s"), URL, err)
+		return nil, Errorf(err, L("error downloading from %s"), URL)
 	}
 	defer resp.Body.Close()
 
@@ -290,14 +291,14 @@ func ReadInspectData(scriptDir string, prefix ...string) (map[string]string, err
 	log.Debug().Msgf("Trying to read %s", path)
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot parse file %s: %s"), path, err)
+		return map[string]string{}, Errorf(err, L("cannot parse file %s"), path)
 	}
 
 	inspectResult := make(map[string]string)
 
 	viper.SetConfigType("env")
 	if err := viper.ReadConfig(bytes.NewBuffer(data)); err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot read config: %s"), err)
+		return map[string]string{}, Errorf(err, L("cannot read config"))
 	}
 
 	for _, v := range inspectValues {
@@ -320,7 +321,7 @@ func InspectHost() (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("failed to create temporary directory: %s"), err)
+		return map[string]string{}, Errorf(err, L("failed to create temporary directory"))
 	}
 
 	if err := GenerateInspectHostScript(scriptDir); err != nil {
@@ -328,12 +329,12 @@ func InspectHost() (map[string]string, error) {
 	}
 
 	if err := RunCmdStdMapping(zerolog.DebugLevel, scriptDir+"/inspect.sh"); err != nil {
-		return map[string]string{}, fmt.Errorf(L("failed to run inspect script in host system: %s"), err)
+		return map[string]string{}, Errorf(err, L("failed to run inspect script in host system"))
 	}
 
 	inspectResult, err := ReadInspectData(scriptDir, "host_")
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot inspect host data: %s"), err)
+		return map[string]string{}, Errorf(err, L("cannot inspect host data"))
 	}
 
 	return inspectResult, err
@@ -348,7 +349,7 @@ func GenerateInspectHostScript(scriptDir string) error {
 
 	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
 	if err := WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return fmt.Errorf(L("failed to generate inspect script: %s"), err)
+		return Errorf(err, L("failed to generate inspect script"))
 	}
 	return nil
 }
@@ -362,7 +363,7 @@ func GenerateInspectContainerScript(scriptDir string) error {
 
 	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
 	if err := WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return fmt.Errorf(L("failed to generate inspect script: %s"), err)
+		return Errorf(err, L("failed to generate inspect script"))
 	}
 	return nil
 }
@@ -380,4 +381,14 @@ func CompareVersion(imageVersion string, deployedVersion string) int {
 	deployedVersionCleaned = re.ReplaceAllString(deployedVersionCleaned, "")
 	deployedVersionInt, _ := strconv.Atoi(deployedVersionCleaned)
 	return imageVersionInt - deployedVersionInt
+}
+
+// Errorf helps providing consistent errors.
+//
+// Instead of fmt.Printf(L("the message for %s: %s"), value, err) use:
+//
+//	Errorf(err, L("the message for %s"), value)
+func Errorf(err error, message string, args ...any) error {
+	appended := fmt.Sprintf(message, args...) + ": " + err.Error()
+	return errors.New(appended)
 }

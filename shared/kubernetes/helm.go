@@ -53,7 +53,12 @@ func HelmUpgrade(kubeconfig string, namespace string, install bool,
 		command = "install"
 	}
 	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "helm", helmArgs...); err != nil {
-		return fmt.Errorf(L("failed to %s helm chart %s in namespace %s")+": %s", command, chart, namespace, err)
+		// TODO We cannot use the command variable in the message as that would break localization
+		if command == "upgrade" {
+			return utils.Errorf(err, L("failed to upgrade helm chart %[1]s in namespace %[2]s"), chart, namespace)
+		} else if command == "install" {
+			return utils.Errorf(err, L("failed to install helm chart %[1]s in namespace %[2]s"), chart, namespace)
+		}
 	}
 	return nil
 }
@@ -94,7 +99,7 @@ func HelmUninstall(kubeconfig string, deployment string, filter string, dryRun b
 		} else {
 			log.Info().Msgf(L("Uninstalling %s"), deployment)
 			if err := utils.RunCmd("helm", helmArgs...); err != nil {
-				return namespace, fmt.Errorf(L("failed to run helm %s: %s"), strings.Join(helmArgs, " "), err)
+				return namespace, utils.Errorf(err, L("failed to run helm %s"), strings.Join(helmArgs, " "))
 			}
 		}
 	}
@@ -110,11 +115,11 @@ func FindNamespace(deployment string, kubeconfig string) (string, error) {
 	args = append(args, "list", "-aA", "-f", deployment, "-o", "json")
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "helm", args...)
 	if err != nil {
-		return "", fmt.Errorf(L("failed to detect %s's namespace using helm: %s"), deployment, err)
+		return "", utils.Errorf(err, L("failed to detect %s's namespace using helm"), deployment)
 	}
 	var data []releaseInfo
 	if err = json.Unmarshal(out, &data); err != nil {
-		return "", fmt.Errorf(L("helm provided an invalid JSON output: %s"), err)
+		return "", utils.Errorf(err, L("helm provided an invalid JSON output"))
 	}
 
 	if len(data) == 1 {

@@ -109,7 +109,7 @@ func (c *HTTPClient) sendRequest(req *http.Request) (*http.Response, error) {
 
 	res, err := c.Client.Do(req)
 	if err != nil {
-		log.Trace().Msgf("Request failed: %s", err)
+		log.Trace().Err(err).Msgf("Request failed")
 		return nil, err
 	}
 

@@ -5,8 +5,6 @@
 package uninstall
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
@@ -33,7 +31,7 @@ By default it will only print what would be done, use --force to actually remove
 			cnx := shared.NewConnection(backend, podman.ProxyContainerNames[0], kubernetes.ProxyFilter)
 			command, err := cnx.GetCommand()
 			if err != nil {
-				return fmt.Errorf(L("failed to determine suitable backend: %s"), err)
+				return utils.Errorf(err, L("failed to determine suitable backend"))
 			}
 			switch command {
 			case "podman":

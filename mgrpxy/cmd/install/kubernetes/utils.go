@@ -32,7 +32,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 
 	tmpDir, err := os.MkdirTemp("", "mgrpxy-*")
 	if err != nil {
-		return fmt.Errorf(L("failed to create temporary directory: %s"), err)
+		return shared_utils.Errorf(err, L("failed to create temporary directory"))
 	}
 	defer os.RemoveAll(tmpDir)
 
@@ -59,7 +59,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	// Install the uyuni proxy helm chart
 	if err := kubernetes.Deploy(&flags.ProxyImageFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
 		"--set", "ingress="+clusterInfos.Ingress); err != nil {
-		return fmt.Errorf(L("cannot deploy proxy helm chart: %s"), err)
+		return shared_utils.Errorf(err, L("cannot deploy proxy helm chart"))
 	}
 
 	return nil

@@ -29,7 +29,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	// Copy the generated file locally
 	tmpDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return fmt.Errorf(L("failed to create temporary directory: %s"), err)
+		return utils.Errorf(err, L("failed to create temporary directory"))
 	}
 	defer os.RemoveAll(tmpDir)
 
@@ -51,13 +51,13 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 		for _, ext := range extensions {
 			containerTarball := path.Join(tmpDir, "container-supportconfig.txz"+ext)
 			if err := cnx.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
-				return fmt.Errorf(L("cannot copy tarball: %s"), err)
+				return utils.Errorf(err, L("cannot copy tarball"))
 			}
 			files = append(files, containerTarball)
 
 			// Remove the generated file in the container
 			if _, err := cnx.Exec("rm", tarballPath+ext); err != nil {
-				return fmt.Errorf(L("failed to remove %s%s file in the container: %s"), tarballPath, ext, err)
+				return utils.Errorf(err, L("failed to remove %s file in the container"), tarballPath+ext)
 			}
 		}
 	}
@@ -66,7 +66,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	if _, err := exec.LookPath("supportconfig"); err == nil {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "supportconfig")
 		if err != nil {
-			return fmt.Errorf(L("failed to run supportconfig on the host: %s"), err)
+			return utils.Errorf(err, L("failed to run supportconfig on the host"))
 		}
 		tarballPath := getSupportConfigPath(out)
 
@@ -93,7 +93,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 
 	for _, file := range files {
 		if err := tarball.AddFile(file, path.Base(file)); err != nil {
-			return fmt.Errorf(L("failed to add %s to tarball: %s"), path.Base(file), err)
+			return utils.Errorf(err, L("failed to add %s to tarball"), path.Base(file))
 		}
 	}
 	tarball.Close()

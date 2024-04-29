@@ -5,7 +5,6 @@
 package utils
 
 import (
-	"fmt"
 	"os"
 	"path"
 	"strings"
@@ -56,7 +55,7 @@ func ReadConfig(configPath string, cmd *cobra.Command) (*viper.Viper, error) {
 		// It's okay if there isn't a config file
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 			// TODO Provide help on the config file format
-			return nil, fmt.Errorf(L("failed to parse configuration file %s: %s"), v.ConfigFileUsed(), err)
+			return nil, Errorf(err, L("failed to parse configuration file %s"), v.ConfigFileUsed())
 		}
 	}
 
@@ -75,7 +74,7 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) error {
 	cmd.Flags().VisitAll(func(f *pflag.Flag) {
 		configName := strings.ReplaceAll(f.Name, "-", ".")
 		if err := v.BindPFlag(configName, f); err != nil {
-			errors = append(errors, fmt.Errorf(L("failed to bind %s config to parameter %s: %s"), configName, f.Name, err))
+			errors = append(errors, Errorf(err, L("failed to bind %[1]s config to parameter %[2]s"), configName, f.Name))
 		}
 	})
 

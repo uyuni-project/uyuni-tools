@@ -26,7 +26,7 @@ func podmanInspect(
 ) error {
 	serverImage, err := utils.ComputeImage(flags.Image, flags.Tag)
 	if err != nil && len(serverImage) > 0 {
-		return fmt.Errorf(L("failed to determine image: %s"), err)
+		return utils.Errorf(err, L("failed to determine image"))
 	}
 
 	if len(serverImage) <= 0 {
@@ -40,11 +40,11 @@ func podmanInspect(
 	}
 	inspectResult, err := shared_podman.Inspect(serverImage, flags.PullPolicy)
 	if err != nil {
-		return fmt.Errorf(L("inspect command failed: %s"), err)
+		return utils.Errorf(err, L("inspect command failed"))
 	}
 	prettyInspectOutput, err := json.MarshalIndent(inspectResult, "", "  ")
 	if err != nil {
-		return fmt.Errorf(L("cannot print inspect result: %s"), err)
+		return utils.Errorf(err, L("cannot print inspect result"))
 	}
 
 	outputString := "\n" + string(prettyInspectOutput)

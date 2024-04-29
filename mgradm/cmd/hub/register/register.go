@@ -90,13 +90,13 @@ func getRhnConfig(cnx *shared.Connection) (map[string]string, error) {
 func registerToHub(config map[string]string, cnxDetails *api.ConnectionDetails) error {
 	for _, key := range []string{"java.hostname", "report_db_name", "report_db_port", "report_db_user", "report_db_password"} {
 		if _, ok := config[key]; !ok {
-			return fmt.Errorf(L("mandatory entry missing in config: %s"), key)
+			return fmt.Errorf(L("mandatory %s entry missing in config"), key)
 		}
 	}
 	log.Info().Msgf(L("Hub API server: %s"), cnxDetails.Server)
 	client, err := api.Init(cnxDetails)
 	if err != nil {
-		return fmt.Errorf(L("failed to connect to the Hub server: %s"), err)
+		return utils.Errorf(err, L("failed to connect to the Hub server"))
 	}
 	data := map[string]interface{}{
 		"fqdn": config["java.hostname"],
@@ -104,7 +104,7 @@ func registerToHub(config map[string]string, cnxDetails *api.ConnectionDetails) 
 
 	ret, err := api.Post[int](client, "system/registerPeripheralServer", data)
 	if err != nil {
-		return fmt.Errorf(L("failed to register this peripheral server: %s"), err)
+		return utils.Errorf(err, L("failed to register this peripheral server"))
 	}
 	if !ret.Success {
 		return fmt.Errorf(L("failed to register this peripheral server: %s"), ret.Message)
@@ -121,7 +121,7 @@ func registerToHub(config map[string]string, cnxDetails *api.ConnectionDetails) 
 	}
 	ret, err = api.Post[int](client, "system/updatePeripheralServerInfo", data)
 	if err != nil {
-		return fmt.Errorf(L("failed to update peripheral server info: %s"), err)
+		return utils.Errorf(err, L("failed to update peripheral server info"))
 	}
 
 	if !ret.Success {

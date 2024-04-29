@@ -5,7 +5,6 @@
 package gpgadd
 
 import (
-	"fmt"
 	"net/url"
 	"os"
 	"path"
@@ -52,10 +51,10 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	if !utils.FileExists(customKeyringPath) {
 		if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "mkdir", "-m", "700", "-p", filepath.Dir(customKeyringPath)); err != nil {
-			return fmt.Errorf(L("failed to create folder %s: %s"), filepath.Dir(customKeyringPath), err)
+			return utils.Errorf(err, L("failed to create folder %s"), filepath.Dir(customKeyringPath))
 		}
 		if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "gpg", "--no-default-keyring", "--keyring", customKeyringPath, "--fingerprint"); err != nil {
-			return fmt.Errorf(L("failed to create keyring %s: %s"), customKeyringPath, err)
+			return utils.Errorf(err, L("failed to create keyring %s"), customKeyringPath)
 		}
 	}
 	gpgAddCmd := []string{"gpg", "--no-default-keyring", "--import", "--import-options", "import-minimal"}
@@ -65,7 +64,7 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return fmt.Errorf(L("failed to create temporary directory %s"), err)
+		return utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
 	for _, keyURL := range args {
@@ -112,14 +111,14 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 
 	log.Info().Msgf(L("Running: %s"), strings.Join(gpgAddCmd, " "))
 	if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, gpgAddCmd...); err != nil {
-		return fmt.Errorf(L("failed to run import key: %s"), err)
+		return utils.Errorf(err, L("failed to run import key"))
 	}
 
 	//this is for running import-suma-build-keys, who import customer-build-keys.gpg
 	uyuniUpdateCmd := []string{"systemctl", "restart", "uyuni-update-config"}
 	log.Info().Msgf(L("Running: %s"), strings.Join(uyuniUpdateCmd, " "))
 	if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, uyuniUpdateCmd...); err != nil {
-		return fmt.Errorf(L("failed to restart uyuni-update-config: %s"), err)
+		return utils.Errorf(err, L("failed to restart uyuni-update-config"))
 	}
 	return err
 }

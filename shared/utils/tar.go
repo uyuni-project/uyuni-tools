@@ -7,7 +7,6 @@ package utils
 import (
 	"archive/tar"
 	"compress/gzip"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -87,7 +86,7 @@ func NewTarGz(path string) (*TarGz, error) {
 	var err error
 	targz.fileWriter, err = os.Create(path)
 	if err != nil {
-		return nil, fmt.Errorf(L("failed to write tar.gz to %s: %s"), path, err)
+		return nil, Errorf(err, L("failed to write tar.gz to %s"), path)
 	}
 
 	targz.gzipWriter = gzip.NewWriter(targz.fileWriter)

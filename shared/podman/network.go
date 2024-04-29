@@ -5,7 +5,6 @@
 package podman
 
 import (
-	"fmt"
 	"os/exec"
 	"strings"
 
@@ -36,7 +35,7 @@ func SetupNetwork() error {
 				err := utils.RunCmd("podman", "network", "rm", UyuniNetwork,
 					"--log-level", log.Logger.GetLevel().String())
 				if err != nil {
-					return fmt.Errorf(L("failed to remove %s podman network: %s"), UyuniNetwork, err)
+					return utils.Errorf(err, L("failed to remove %s podman network"), UyuniNetwork)
 				}
 			} else {
 				log.Info().Msgf(L("Reusing existing %s network"), UyuniNetwork)
@@ -52,7 +51,7 @@ func SetupNetwork() error {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "info", "--format", "{{.Host.NetworkBackend}}")
 		backend := strings.Trim(string(out), "\n")
 		if err != nil {
-			return fmt.Errorf(L("failed to find podman's network backend: %s"), err)
+			return utils.Errorf(err, L("failed to find podman's network backend"))
 		} else if backend != "netavark" {
 			log.Info().Msgf(L("Podman's network backend (%s) is not netavark, skipping IPv6 enabling on %s network"), backend, UyuniNetwork)
 		} else {
@@ -62,7 +61,7 @@ func SetupNetwork() error {
 	args = append(args, UyuniNetwork)
 	err := utils.RunCmd("podman", args...)
 	if err != nil {
-		return fmt.Errorf(L("failed to create %s network with IPv6 enabled: %s"), UyuniNetwork, err)
+		return utils.Errorf(err, L("failed to create %s network with IPv6 enabled"), UyuniNetwork)
 	}
 	return nil
 }

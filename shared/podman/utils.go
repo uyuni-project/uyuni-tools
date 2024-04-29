@@ -76,7 +76,7 @@ func AddPodmanInstallFlag(cmd *cobra.Command) {
 func EnablePodmanSocket() error {
 	err := utils.RunCmd("systemctl", "enable", "--now", "podman.socket")
 	if err != nil {
-		return fmt.Errorf(L("failed to enable podman.socket unit: %s"), err)
+		return utils.Errorf(err, L("failed to enable podman.socket unit"))
 	}
 	return err
 }
@@ -93,7 +93,7 @@ func RunContainer(name string, image string, extraArgs []string, cmd []string) e
 
 	err := utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", podmanArgs...)
 	if err != nil {
-		return fmt.Errorf(L("failed to run %s container: %s"), name, err)
+		return utils.Errorf(err, L("failed to run %s container"), name)
 	}
 
 	return nil
@@ -171,11 +171,11 @@ func LinkVolumes(mountFlags *PodmanMountFlags) error {
 			}
 			baseFolder := path.Join(graphRoot, "volumes")
 			if err := utils.RunCmd("mkdir", "-p", baseFolder); err != nil {
-				return fmt.Errorf(L("failed to create volumes folder %s: %s"), baseFolder, err)
+				return utils.Errorf(err, L("failed to create volumes folder %s"), baseFolder)
 			}
 
 			if err := utils.RunCmd("ln", "-s", value, volumePath); err != nil {
-				return fmt.Errorf(L("failed to link volume folder %s to %s: %s"), value, volumePath, err)
+				return utils.Errorf(err, L("failed to link volume folder %[1]s to %[2]s"), value, volumePath)
 			}
 		}
 	}
@@ -185,7 +185,7 @@ func LinkVolumes(mountFlags *PodmanMountFlags) error {
 func getGraphRoot() (string, error) {
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "system", "info", "--format", "{{ .Store.GraphRoot }}")
 	if err != nil {
-		return "", fmt.Errorf(L("failed to get podman's volumes folder: %s"), err)
+		return "", utils.Errorf(err, L("failed to get podman's volumes folder"))
 	}
 	return strings.TrimSpace(string(out)), nil
 }
@@ -195,12 +195,12 @@ func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("failed to create temporary directory %s"), err)
+		return map[string]string{}, utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
 	inspectedHostValues, err := utils.InspectHost()
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot inspect host values: %s"), err)
+		return map[string]string{}, utils.Errorf(err, L("cannot inspect host values"))
 	}
 
 	pullArgs := []string{}
@@ -232,7 +232,7 @@ func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
 
 	inspectResult, err := utils.ReadInspectData(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot inspect data. %s"), err)
+		return map[string]string{}, utils.Errorf(err, L("cannot inspect data"))
 	}
 
 	return inspectResult, err

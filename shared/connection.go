@@ -143,8 +143,9 @@ func (c *Connection) GetPodName() (string, error) {
 func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 	if c.podName == "" {
 		if _, err := c.GetPodName(); c.podName == "" {
-			return nil, fmt.Errorf(L("the container is not running, %s %s command not executed: %s"),
-				command, strings.Join(args, " "), err)
+			commandStr := fmt.Sprintf("%s %s", command, strings.Join(args, " "))
+			return nil, utils.Errorf(err, L("the container is not running, %s command not executed:"),
+				commandStr)
 		}
 	}
 

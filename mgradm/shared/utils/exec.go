@@ -27,7 +27,7 @@ import (
 func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string) error {
 	podName, err := cnx.GetPodName()
 	if err != nil {
-		return fmt.Errorf(L("exec command failed: %s"), err)
+		return utils.Errorf(err, L("exec command failed"))
 	}
 
 	commandArgs := []string{"exec", podName}
@@ -106,7 +106,7 @@ func ReadContainerData(scriptDir string) (string, string, string, error) {
 	}
 	viper.SetConfigType("env")
 	if err := viper.ReadConfig(bytes.NewBuffer(data)); err != nil {
-		return "", "", "", fmt.Errorf(L("cannot read config: %s"), err)
+		return "", "", "", utils.Errorf(err, L("cannot read config"))
 	}
 	if len(viper.GetString("Timezone")) <= 0 {
 		return "", "", "", errors.New(L("cannot retrieve timezone"))
@@ -125,7 +125,7 @@ func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) err
 	log.Info().Msg(L("Migrating server"))
 	err := ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/"+scriptName)
 	if err != nil {
-		return fmt.Errorf(L("error running the migration script: %s"), err)
+		return utils.Errorf(err, L("error running the migration script"))
 	}
 	return nil
 }
@@ -134,7 +134,7 @@ func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) err
 func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool) (string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return "", fmt.Errorf(L("failed to create temporary directory: %s"), err)
+		return "", utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
 	data := templates.MigrateScriptTemplateData{
@@ -146,7 +146,7 @@ func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool) (s
 
 	scriptPath := filepath.Join(scriptDir, "migrate.sh")
 	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf(L("failed to generate migration script: %s"), err)
+		return "", utils.Errorf(err, L("failed to generate migration script"))
 	}
 
 	return scriptDir, nil
@@ -187,7 +187,7 @@ func RunningImage(cnx *shared.Connection, containerName string) (string, error) 
 func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serverImage string) error {
 	isUyuni, err := isUyuni(cnx)
 	if err != nil {
-		return fmt.Errorf(L("cannot check server release: %s"), err)
+		return utils.Errorf(err, L("cannot check server release"))
 	}
 	_, isCurrentUyuni := inspectedValues["uyuni_release"]
 	_, isCurrentSuma := inspectedValues["suse_manager_release"]
@@ -204,7 +204,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 		cnx_args := []string{"s/Uyuni release //g", "/etc/uyuni-release"}
 		current_uyuni_release, err := cnx.Exec("sed", cnx_args...)
 		if err != nil {
-			return fmt.Errorf(L("failed to read current uyuni release: %s"), err)
+			return utils.Errorf(err, L("failed to read current uyuni release"))
 		}
 		log.Debug().Msgf("Current release is %s", string(current_uyuni_release))
 		if (len(inspectedValues["uyuni_release"])) <= 0 {
@@ -218,7 +218,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 		cnx_args := []string{"s/SUSE Manager release //g", "/etc/susemanager-release"}
 		current_suse_manager_release, err := cnx.Exec("sed", cnx_args...)
 		if err != nil {
-			return fmt.Errorf(L("failed to read current susemanager release: %s"), err)
+			return utils.Errorf(err, L("failed to read current susemanager release"))
 		}
 		log.Debug().Msgf("Current release is %s", string(current_suse_manager_release))
 		if (len(inspectedValues["suse_manager_release"])) <= 0 {

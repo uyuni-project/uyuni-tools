@@ -5,7 +5,6 @@
 package shared
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -29,12 +28,12 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 	defer os.RemoveAll(tmpFolder)
 
 	if err := cnx.Copy(filepath.Join(tmpFolder, setup_name), "server:/tmp/setup.sh", "root", "root"); err != nil {
-		return fmt.Errorf(L("cannot copy /tmp/setup.sh: %s"), err)
+		return utils.Errorf(err, L("cannot copy /tmp/setup.sh"))
 	}
 
 	err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/tmp/setup.sh")
 	if err != nil {
-		return fmt.Errorf(L("error running the setup script: %s"), err)
+		return utils.Errorf(err, L("error running the setup script"))
 	}
 
 	// Call the org.createFirst api if flags are passed

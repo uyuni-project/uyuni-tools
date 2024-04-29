@@ -113,7 +113,7 @@ func (l copyWriter) Write(p []byte) (n int, err error) {
 	// Filter out kubectl line about terminated exit code
 	if !strings.HasPrefix(string(p), "command terminated with exit code") {
 		if _, err := l.Stream.Write(p); err != nil {
-			return 0, fmt.Errorf(L("cannot write: %s"), err)
+			return 0, utils.Errorf(err, L("cannot write"))
 		}
 
 		n = len(p)

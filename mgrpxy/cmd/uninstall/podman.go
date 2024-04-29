@@ -5,8 +5,6 @@
 package uninstall
 
 import (
-	"fmt"
-
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -45,7 +43,7 @@ func uninstallForPodman(dryRun bool, purge bool) error {
 		// Delete each volume
 		for volume := range volumes {
 			if err := podman.DeleteVolume(volume, dryRun); err != nil {
-				return fmt.Errorf(L("cannot delete volume %s: %s"), volume, err)
+				return utils.Errorf(err, L("cannot delete volume %s"), volume)
 			}
 		}
 		log.Info().Msg(L("All volumes removed"))

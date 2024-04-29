@@ -21,6 +21,7 @@ import (
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func installForKubernetes(globalFlags *types.GlobalFlags,
@@ -59,13 +60,13 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	sslArgs, err := kubernetes.DeployCertificate(&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
 		flags.Image.PullPolicy)
 	if err != nil {
-		return fmt.Errorf(L("cannot deploy certificate: %s"), err)
+		return shared_utils.Errorf(err, L("cannot deploy certificate"))
 	}
 	helmArgs = append(helmArgs, sslArgs...)
 
 	// Deploy Uyuni and wait for it to be up
 	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &flags.Ssl, clusterInfos, fqdn, flags.Debug.Java, helmArgs...); err != nil {
-		return fmt.Errorf(L("cannot deploy uyuni: %s"), err)
+		return shared_utils.Errorf(err, L("cannot deploy uyuni"))
 	}
 
 	// Create setup script + env variables and copy it to the container
@@ -84,7 +85,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	err = adm_utils.ExecCommand(zerolog.DebugLevel, cnx,
 		"/usr/bin/rhn-ssl-dbstore", "--ca-cert=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT")
 	if err != nil {
-		return fmt.Errorf(L("error storing the SSL CA certificate in database: %s"), err)
+		return shared_utils.Errorf(err, L("error storing the SSL CA certificate in database"))
 	}
 	return nil
 }
