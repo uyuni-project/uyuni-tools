@@ -71,10 +71,12 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 	}
 
 	log.Info().Msg(L("Enabling system service"))
+	args := append(podman.GetCommonParams(), podmanArgs...)
+
 	data := templates.PodmanServiceTemplateData{
 		Volumes:    utils.ServerVolumeMounts,
 		NamePrefix: "uyuni",
-		Args:       strings.Join(podman.GetCommonParams(), " ") + strings.Join(podmanArgs, " "),
+		Args:       strings.Join(args, " "),
 		Ports:      GetExposedPorts(debug),
 		Timezone:   tz,
 		Network:    podman.UyuniNetwork,
