@@ -51,7 +51,7 @@ func WaitForDeployment(namespace string, name string, appName string) error {
 		return utils.Errorf(err, L("failed to pull image"))
 	}
 
-	log.Info().Msgf(L("Waiting for %s deployment to be ready in %s namespace\n"), name, namespace)
+	log.Info().Msgf(L("Waiting for %[1]s deployment to be ready in %[2]s namespace\n"), name, namespace)
 	// Wait for a replica to be ready
 	for i := 0; i < 60; i++ {
 		// TODO Look for pod failures
@@ -60,12 +60,12 @@ func WaitForDeployment(namespace string, name string, appName string) error {
 		}
 		time.Sleep(1 * time.Second)
 	}
-	return fmt.Errorf(L("failed to find a ready replica for deployment %s in namespace %s after 60s"), name, namespace)
+	return fmt.Errorf(L("failed to find a ready replica for deployment %[1]s in namespace %[2]s after 60s"), name, namespace)
 }
 
 // WaitForPulledImage wait that image is pulled.
 func WaitForPulledImage(namespace string, podName string) error {
-	log.Info().Msgf(L("Waiting for image of %s pod in %s namespace to be pulled"), podName, namespace)
+	log.Info().Msgf(L("Waiting for image of %[1]s pod in %[2]s namespace to be pulled"), podName, namespace)
 	pulledArgs := []string{"get", "event",
 		"-o", "jsonpath={.items[?(@.reason==\"Pulled\")].message}",
 		"--field-selector", "involvedObject.name=" + podName}
@@ -175,7 +175,7 @@ func ReplicasTo(filter string, replica uint) error {
 func isPodRunning(podname string, filter string) (bool, error) {
 	pods, err := getPods(filter)
 	if err != nil {
-		return false, fmt.Errorf(L("cannot check if pod %s is running in app %s: %s"), podname, filter, err)
+		return false, utils.Errorf(err, L("cannot check if pod %[1]s is running in app %[2]s"), podname, filter)
 	}
 	return utils.Contains(pods, podname), nil
 }

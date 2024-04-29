@@ -53,7 +53,8 @@ func PrepareImage(image string, pullPolicy string, args ...string) (string, erro
 		if err != nil {
 			log.Warn().Err(err).Msgf(L("Cannot use RPM image for %s"), image)
 		} else {
-			log.Info().Msgf(L("Using the %s image loaded from the RPM instead of its online version %s"), strings.TrimSpace(loadedImage), image)
+			log.Info().Msgf(L("Using the %[1]s image loaded from the RPM instead of its online version %[2]s"),
+				strings.TrimSpace(loadedImage), image)
 			return loadedImage, nil
 		}
 	} else {

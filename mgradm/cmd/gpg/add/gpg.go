@@ -99,7 +99,7 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 		containerKeyPath := filepath.Join(filepath.Dir(customKeyringPath), keyname)
 
 		if err := cnx.Copy(hostKeyPath, "server:"+containerKeyPath, "", ""); err != nil {
-			log.Error().Err(err).Msgf(L("failed to cp %s to %s"), hostKeyPath, containerKeyPath)
+			log.Error().Err(err).Msgf(L("failed to copy %[1]s to %[2]s"), hostKeyPath, containerKeyPath)
 			continue
 		}
 		defer func() {

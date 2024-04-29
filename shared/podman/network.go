@@ -53,7 +53,8 @@ func SetupNetwork() error {
 		if err != nil {
 			return utils.Errorf(err, L("failed to find podman's network backend"))
 		} else if backend != "netavark" {
-			log.Info().Msgf(L("Podman's network backend (%s) is not netavark, skipping IPv6 enabling on %s network"), backend, UyuniNetwork)
+			log.Info().Msgf(L("Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"),
+				backend, UyuniNetwork)
 		} else {
 			args = append(args, "--ipv6")
 		}

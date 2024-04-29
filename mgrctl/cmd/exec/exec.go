@@ -128,7 +128,8 @@ func (l copyWriter) Write(p []byte) (n int, err error) {
 
 // RunRawCmd runs a command, mapping stdout and start error, waiting and checking return code.
 func RunRawCmd(command string, args []string) error {
-	log.Info().Msgf(L("Running: %s %s"), command, strings.Join(args, " "))
+	commandStr := fmt.Sprintf("%s %s", command, strings.Join(args, " "))
+	log.Info().Msgf(L("Running: %s"), commandStr)
 
 	runCmd := exec.Command(command, args...)
 	runCmd.Stdin = os.Stdin

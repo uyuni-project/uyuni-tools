@@ -104,15 +104,15 @@ func RunContainer(name string, image string, extraArgs []string, cmd []string) e
 func DeleteContainer(name string, dryRun bool) {
 	if out, _ := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "-a", "-q", "-f", "name="+name); len(out) > 0 {
 		if dryRun {
-			log.Info().Msgf(L("Would run podman kill %s for container id: %s"), name, out)
-			log.Info().Msgf(L("Would run podman remove %s for container id: %s"), name, out)
+			log.Info().Msgf(L("Would run podman kill %[1]s for container id %[2]s"), name, out)
+			log.Info().Msgf(L("Would run podman remove %[1]s for container id %[2]s"), name, out)
 		} else {
-			log.Info().Msgf(L("Run podman kill %s for container id: %s"), name, out)
+			log.Info().Msgf(L("Run podman kill %[1]s for container id %[2]s"), name, out)
 			err := utils.RunCmd("podman", "kill", name)
 			if err != nil {
 				log.Error().Err(err).Msg(L("Failed to kill the server"))
 
-				log.Info().Msgf(L("Run podman remove %s for container id: %s"), name, out)
+				log.Info().Msgf(L("Run podman remove %[1]s for container id %[2]s"), name, out)
 				err = utils.RunCmd("podman", "rm", name)
 				if err != nil {
 					log.Error().Err(err).Msg(L("Error removing container"))
@@ -167,7 +167,7 @@ func LinkVolumes(mountFlags *PodmanMountFlags) error {
 		if value != "" {
 			volumePath := path.Join(graphRoot, "volumes", volume)
 			if utils.FileExists(volumePath) {
-				return fmt.Errorf(L("volume folder (%s) already exists, cannot link it to %s"), volumePath, value)
+				return fmt.Errorf(L("volume folder (%[1]s) already exists, cannot link it to %[2]s"), volumePath, value)
 			}
 			baseFolder := path.Join(graphRoot, "volumes")
 			if err := utils.RunCmd("mkdir", "-p", baseFolder); err != nil {

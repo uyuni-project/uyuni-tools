@@ -127,6 +127,6 @@ func registerToHub(config map[string]string, cnxDetails *api.ConnectionDetails) 
 	if !ret.Success {
 		return fmt.Errorf(L("failed to update peripheral server info: %s"), ret.Message)
 	}
-	log.Info().Msgf(L("Registered peripheral server: %s, ID: %d"), config["java.hostname"], id)
+	log.Info().Msgf(L("Registered peripheral server: %[1]s, ID: %[2]d"), config["java.hostname"], id)
 	return nil
 }

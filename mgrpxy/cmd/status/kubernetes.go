@@ -43,7 +43,7 @@ func kubernetesStatus(
 		return utils.Errorf(err, L("failed to get deployment status"))
 	}
 	if status.Replicas != status.ReadyReplicas {
-		log.Warn().Msgf(L("Some replicas are not ready: %d / %d"), status.ReadyReplicas, status.Replicas)
+		log.Warn().Msgf(L("Some replicas are not ready: %[1]d / %[2]d"), status.ReadyReplicas, status.Replicas)
 	}
 
 	if status.AvailableReplicas == 0 {

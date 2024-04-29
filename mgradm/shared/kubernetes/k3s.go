@@ -36,7 +36,7 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 		return errors.New(L("failed to create temporary directory: %s"))
 	}
 	if newPgsql > oldPgsql {
-		log.Info().Msgf(L("Previous PostgreSQL is %s, new one is %s. Performing a DB version upgrade..."), oldPgsql, newPgsql)
+		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade..."), oldPgsql, newPgsql)
 
 		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
 

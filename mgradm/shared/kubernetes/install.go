@@ -183,15 +183,19 @@ func Upgrade(
 		}
 	}()
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
-		log.Info().Msgf(L("Previous PostgreSQL is %s, new one is %s. Performing a DB version upgrade..."), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade..."),
+			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 
-		if err := RunPgsqlVersionUpgrade(*image, *migrationImage, nodeName, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]); err != nil {
-			return fmt.Errorf(L("cannot run PostgreSQL version upgrade script: %s"), err)
+		if err := RunPgsqlVersionUpgrade(*image, *migrationImage, nodeName,
+			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"],
+		); err != nil {
+			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
 		log.Info().Msgf(L("Upgrading to %s without changing PostgreSQL version"), inspectedValues["uyuni_release"])
 	} else {
-		return fmt.Errorf(L("trying to downgrade PostgreSQL from %s to %s"), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+		return fmt.Errorf(L("trying to downgrade PostgreSQL from %[1]s to %[2]s"),
+			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 	}
 
 	schemaUpdateRequired := inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"]
