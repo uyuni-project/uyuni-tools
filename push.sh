@@ -22,8 +22,8 @@ if [ "${OSCAPI}" == "https://api.suse.de" ]; then
   case ${REMOTE_BRANCH} in Manager-*)
     VERSION="${REMOTE_BRANCH#Manager-}"
   esac
-  
-  sed 's/^tag=%{!?_default_tag:latest}/tag=5.0.0-beta2/' -i ${SRPM_PKG_DIR}/uyuni-tools.spec
+
+  sed 's/^tag=%{!?_default_tag:latest}/tag=5.0.0-RC/' -i ${SRPM_PKG_DIR}/uyuni-tools.spec
   sed "s/namespace='%{_default_namespace}'/namespace='%{_default_namespace}\/%{_arch}'/" -i ${SRPM_PKG_DIR}/uyuni-tools.spec
 
 else
@@ -36,7 +36,7 @@ else
       case ${REMOTE_BRANCH} in Uyuni-*)
         VERSION="${REMOTE_BRANCH#Uyuni-}"
       esac
-  
+
       if test -z "${VERSION}"; then
         VERSION="Master"
       fi
