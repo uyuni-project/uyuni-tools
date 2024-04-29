@@ -57,7 +57,7 @@ func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInsta
 		return err
 	}
 
-	log.Info().Msg(L("Waiting for the server to start..."))
+	log.Info().Msg(L("Waiting for the server to start…"))
 	if err := shared_podman.EnableService(shared_podman.ServerService); err != nil {
 		return utils.Errorf(err, L("cannot enable service"))
 	}
