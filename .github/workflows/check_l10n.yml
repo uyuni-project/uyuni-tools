@@ -21,4 +21,7 @@ jobs:
       - name: Check localizable strings
         shell: bash -x {0}
         run: ./check_localizable
-
+      - uses: cbosdo/gettext-go-lint@gettext-go-lint-0.1.0-0
+        name: Localizable strings linter
+        with:
+          keywords: L,NL,PL
