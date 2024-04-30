@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-04-26 19:43+0000\n"
+"PO-Revision-Date: 2024-04-30 09:43+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools/"
 "it/>\n"
@@ -25,9 +25,9 @@ msgid "Unable to unmount ISO image, leaving %s intact"
 msgstr "Impossibile smontare l'immagine ISO, %s è inalterata"
 
 #: mgradm/cmd/distro/cp.go:35
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "unable to remove temporary directory, leaving %s intact"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile rimuovere la directory temporanea, %s è inalterata"
 
 #: mgradm/cmd/distro/cp.go:42
 #, javascript-format
@@ -45,9 +45,9 @@ msgid "Distribution %s successfully registered"
 msgstr "Distribuzione %s registrata con successo"
 
 #: mgradm/cmd/distro/cp.go:78
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "unable to mount ISO image: %s"
-msgstr "Impossibile smontare l'immagine ISO, %s è inalterata"
+msgstr "impossibile montare l'immagine ISO: %s"
 
 #: mgradm/cmd/distro/cp.go:92
 #, fuzzy, javascript-format
@@ -55,9 +55,9 @@ msgid "distribution with same name already exists: %s"
 msgstr "la distribuzione esiste già: %s"
 
 #: mgradm/cmd/distro/cp.go:96
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot create %s path in container: %s"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "impossibile creare il percorso %s nel container: %s"
 
 #: mgradm/cmd/distro/cp.go:99
 #, javascript-format
