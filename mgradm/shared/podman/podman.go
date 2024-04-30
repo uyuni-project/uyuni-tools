@@ -356,7 +356,7 @@ func Upgrade(image types.ImageFlags, migrationImage types.ImageFlags, args []str
 	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
 		log.Info().Msgf(L("Upgrading to %s without changing PostgreSQL version"), inspectedValues["uyuni_release"])
 	} else {
-		return fmt.Errorf(L("trying to downgrade postgresql from %[1]s to %[2]s"), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+		return fmt.Errorf(L("trying to downgrade PostgreSQL from %[1]s to %[2]s"), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 	}
 
 	schemaUpdateRequired := inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"]

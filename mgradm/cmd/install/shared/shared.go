@@ -111,7 +111,7 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to create temporary directory"))
+		log.Fatal().Err(err).Msg(L("failed to create temporary directory"))
 	}
 
 	dataTemplate := templates.MgrSetupScriptTemplateData{

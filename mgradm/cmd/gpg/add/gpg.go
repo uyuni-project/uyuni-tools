@@ -109,14 +109,14 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 		gpgAddCmd = append(gpgAddCmd, containerKeyPath)
 	}
 
-	log.Info().Msgf(L("Running: %s"), strings.Join(gpgAddCmd, " "))
+	log.Info().Msgf(L("Running %s"), strings.Join(gpgAddCmd, " "))
 	if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, gpgAddCmd...); err != nil {
 		return utils.Errorf(err, L("failed to run import key"))
 	}
 
 	//this is for running import-suma-build-keys, who import customer-build-keys.gpg
 	uyuniUpdateCmd := []string{"systemctl", "restart", "uyuni-update-config"}
-	log.Info().Msgf(L("Running: %s"), strings.Join(uyuniUpdateCmd, " "))
+	log.Info().Msgf(L("Running %s"), strings.Join(uyuniUpdateCmd, " "))
 	if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, uyuniUpdateCmd...); err != nil {
 		return utils.Errorf(err, L("failed to restart uyuni-update-config"))
 	}

@@ -183,7 +183,7 @@ func (l copyWriter) Write(p []byte) (n int, err error) {
 
 func runCmd(command string, output string, args []string) error {
 	commandStr := fmt.Sprintf("%s %s", command, strings.Join(args, " "))
-	log.Info().Msgf(L("Running: %s"), commandStr)
+	log.Info().Msgf(L("Running %s"), commandStr)
 
 	runCmd := exec.Command(command, args...)
 	runCmd.Stdin = os.Stdin
