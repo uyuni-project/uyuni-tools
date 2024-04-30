@@ -161,12 +161,68 @@ def load_instance_info():
              "basic_auth": credentials_data,
              "header_auth": header_auth,
              "rmt_host": rmt_host_data,
-             "timestamp": time.time()}
+             "timestamp": int(time.time())}
+
+def perform_compliants_checks():
+    cloudProvider = "None"
+    if os.path.isfile("/usr/bin/ec2metadata"):
+        cloudProvider = "AWS"
+    elif os.path.isfile("/usr/bin/azuremetadata"):
+        cloudProvider = "AZURE"
+    elif os.path.isfile("/usr/bin/gcemetadata"):
+        cloudProvider = "GCE"
+
+    modifiedPackages = (has_package_modifications("billing-data-service") or
+                        has_package_modifications("csp-billing-adapter-service") or
+                        has_package_modifications("python3-csp-billing-adapter") or
+                        has_package_modifications("python3-csp-billing-adapter-local"))
+    if cloudProvider == "AWS":
+        modifiedPackages = modifiedPackages or has_package_modifications("python3-csp-billing-adapter-amazon")
+    elif cloudProvider == "AZURE":
+        modifiedPackages = modifiedPackages or has_package_modifications("python3-csp-billing-adapter-azure")
+    billing_service_running = is_service_running("csp-billing-adapter.service")
+
+    compliant = billing_service_running and not modifiedPackages
+
+    return { "isPaygInstance": is_payg_instance(),
+             "compliant": compliant,
+             "cloudProvider": cloudProvider,
+             "hasModifiedPackages": modifiedPackages,
+             "billingServiceRunning": billing_service_running,
+             "timestamp": int(time.time())}
+
+def is_service_running(service):
+    try:
+        result = subprocess.call(["/usr/bin/systemctl", "-q", "is-active", service], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except subprocess.CalledProcessError as e:
+        print("Checking for running service {} failed: {}".format(service, e), file=sys.stderr)
+        return False
+    return result == 0
+
+
+def has_package_modifications(pkg):
+    try:
+        out = subprocess.check_output(["rpm", "-V", pkg], stderr=subprocess.PIPE, universal_newlines=True, encoding="utf-8")
+    except subprocess.CalledProcessError as e:
+        print("has_package_modifications({}) failed: {}".format(pkg, e), file=sys.stderr)
+        return True
+
+    for line in out.split("\n"):
+        if line.endswith(".pyc"):
+            continue
+        if line[2] == "5":
+            return True
+    return False
 
 
 def main():
     if not os.path.isdir("/var/lib/containers/storage/volumes/var-cache/_data/rhn/"):
         system_exit(1, ["Container not yet initialized"])
+
+    compliance_data = perform_compliants_checks()
+    with open("/var/lib/containers/storage/volumes/var-cache/_data/rhn/payg_compliance.json", "w", encoding='utf-8') as f:
+        json.dump(compliance_data, f, ensure_ascii=False, indent=2)
+
     if not is_payg_instance():
         if os.path.isfile("/var/lib/containers/storage/volumes/var-cache/_data/rhn/payg.json"):
             os.remove("/var/lib/containers/storage/volumes/var-cache/_data/rhn/payg.json")
@@ -176,6 +232,7 @@ def main():
     #print(json.dumps(payg_data))
     with open("/var/lib/containers/storage/volumes/var-cache/_data/rhn/payg.json", "w", encoding='utf-8') as f:
         json.dump(payg_data, f, ensure_ascii=False, indent=2)
+
 
 
 if __name__ == '__main__':
