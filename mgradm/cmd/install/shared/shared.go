@@ -50,7 +50,7 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 		}
 	}
 
-	log.Info().Msg(L("Server set up"))
+	log.Info().Msgf(L("Server set up, login on https://%[1]s with %[2]s user"), fqdn, flags.Admin.Login)
 	return nil
 }
 
