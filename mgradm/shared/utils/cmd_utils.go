@@ -75,11 +75,11 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 }
 
 // AddContainerImageFlags add container image flags to command.
-func AddContainerImageFlags(cmd *cobra.Command, container string) {
+func AddContainerImageFlags(cmd *cobra.Command, container string, displayName string) {
 	cmd.Flags().String(container+"-image", "",
-		fmt.Sprintf(L("Image for %s container, overrides the namespace if set"), container))
+		fmt.Sprintf(L("Image for %s container, overrides the namespace if set"), displayName))
 	cmd.Flags().String(container+"-tag", "",
-		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), container))
+		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), displayName))
 }
 
 // AddImageFlag add Image flags to a command.
