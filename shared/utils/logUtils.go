@@ -18,7 +18,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-var redactRegex = regexp.MustCompile(`(password\s+)[^\s"]+`)
+var redactRegex = regexp.MustCompile(`([pP]assword[\t :"\\]+)[^\t "\\]+`)
 
 // UyuniLogger is an io.WriteCloser that writes to the specified filename.
 type UyuniLogger struct {
