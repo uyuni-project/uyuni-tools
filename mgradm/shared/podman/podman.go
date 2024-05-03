@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -325,6 +326,10 @@ func RunPostUpgradeScript(serverImage string) error {
 
 // Upgrade will upgrade server to the image given as attribute.
 func Upgrade(image types.ImageFlags, migrationImage types.ImageFlags, args []string) error {
+	if err := CallCloudGuestRegistryAuth(); err != nil {
+		return err
+	}
+
 	serverImage, err := utils.ComputeImage(image.Name, image.Tag)
 	if err != nil {
 		return fmt.Errorf(L("failed to compute image URL"))
@@ -421,4 +426,17 @@ func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
 	}
 
 	return inspectResult, err
+}
+
+// Call cloudguestregistryauth if it is available.
+func CallCloudGuestRegistryAuth() error {
+	cloudguestregistryauth := "cloudguestregistryauth"
+
+	path, err := exec.LookPath(cloudguestregistryauth)
+	if err == nil {
+		// the binary is installed
+		return utils.RunCmdStdMapping(zerolog.DebugLevel, path)
+	}
+	// silently ignore error if it is missing
+	return nil
 }
