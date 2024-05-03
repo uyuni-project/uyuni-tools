@@ -8,6 +8,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
+	"io"
 	"os"
 
 	"github.com/rs/zerolog/log"
@@ -228,7 +229,7 @@ func (c *HTTPClient) Post(path string, data map[string]interface{}) (*http.Respo
 		return nil, err
 	}
 
-	log.Trace().Msg(string(jsonData))
+	log.Trace().Msgf("payload: %s", string(jsonData))
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
@@ -278,7 +279,13 @@ func Post[T interface{}](client *HTTPClient, path string, data map[string]interf
 	defer res.Body.Close()
 
 	var response ApiResponse[T]
-	if err = json.NewDecoder(res.Body).Decode(&response); err != nil {
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	log.Trace().Msgf("response: %s", string(body))
+
+	if err = json.Unmarshal(body, &response); err != nil {
 		return nil, err
 	}
 
