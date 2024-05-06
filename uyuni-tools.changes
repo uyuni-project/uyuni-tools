@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May 06 10:00:48 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.9-0
+  * Redact passwords from the API payload in traces
+  * Fix build on Ubuntu 20.04 due to version change
+
+-------------------------------------------------------------------
 Fri May 03 16:32:03 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.8-0
