@@ -67,6 +67,7 @@ func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 
 	distroCmd := &cobra.Command{
 		Use:     "distribution",
+		GroupID: "tool",
 		Short:   L("Distributions management"),
 		Long:    L("Tools for autoinstallation distributions management"),
 		Aliases: []string{"distro"},

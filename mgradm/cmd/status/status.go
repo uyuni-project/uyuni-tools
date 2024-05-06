@@ -20,10 +20,11 @@ type statusFlags struct {
 // NewCommand to get the status of the server.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "status",
-		Short: L("Get the server status"),
-		Long:  L("Get the server status"),
-		Args:  cobra.ExactArgs(0),
+		Use:     "status",
+		GroupID: "management",
+		Short:   L("Get the server status"),
+		Long:    L("Get the server status"),
+		Args:    cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags statusFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, status)

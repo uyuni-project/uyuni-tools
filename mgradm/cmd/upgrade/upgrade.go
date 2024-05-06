@@ -14,9 +14,10 @@ import (
 // NewCommand for upgrading a local server.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	upgradeCmd := &cobra.Command{
-		Use:   "upgrade server",
-		Short: L("Upgrade local server"),
-		Long:  L("Upgrade local server"),
+		Use:     "upgrade server",
+		GroupID: "deploy",
+		Short:   L("Upgrade local server"),
+		Long:    L("Upgrade local server"),
 	}
 
 	upgradeCmd.AddCommand(podman.NewCommand(globalFlags))
