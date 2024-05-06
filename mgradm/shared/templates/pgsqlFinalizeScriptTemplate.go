@@ -14,7 +14,7 @@ set -e
 
 {{ if .RunAutotune }}
 echo "Running smdba system-check autotuning..."
-smdba system-check autotuning
+smdba system-check autotuning --max_connections=400
 {{ end }}
 echo "Starting Postgresql..."
 su -s /bin/bash - postgres -c "/usr/share/postgresql/postgresql-script start"
