@@ -8,23 +8,29 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-05-07 02:43+0000\n"
+"Last-Translator: Seeun Lee <selee@e4net.net>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrpxy/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
+#, fuzzy
 msgid "Install a new proxy from scratch"
-msgstr ""
+msgstr "처음부터 새 프록시 설치"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
+#, fuzzy
 msgid "Install a new proxy on a running kubernetes cluster"
-msgstr ""
+msgstr "실행 중인 Kubernetes 클러스터에 새 프록시 설치"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
+#, fuzzy
 msgid ""
 "Install a new proxy on a running kubernetes cluster.\n"
 "\n"
@@ -35,34 +41,45 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote kubernetes cluster is not supported!\n"
 msgstr ""
+"실행 중인 Kubernetes 클러스터에 새 프록시를 설치합니다.\n"
+"\n"
+"이 명령은 서버에서 생성한 구성 tarball의 경로만\n"
+"파라미터로 사용합니다.\n"
+"\n"
+"kubernetes 설치 명령은 kubectl이 로컬로 설치되어 있다고 가정합니다.\n"
+"\n"
+"참고: 현재 원격 Kubernetes 클러스터에 설치하는 기능은 지원되지 않습니다!\n"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:26
 #: mgrpxy/shared/kubernetes/deploy.go:137
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "install %s before running this command"
-msgstr ""
+msgstr "이 명령을 실행하기 전 %s 설치"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:35
 #: mgrpxy/shared/kubernetes/deploy.go:143
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "failed to create temporary directory: %s"
-msgstr ""
+msgstr "임시 디렉토리를 만들지 못함: %s"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
+#, fuzzy
 msgid "failed to extract configuration"
-msgstr ""
+msgstr "구성을 추출하지 못했습니다."
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:62
 #: mgrpxy/shared/kubernetes/deploy.go:168
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "cannot deploy proxy helm chart: %s"
-msgstr ""
+msgstr "프록시 helm 차트를 배포할 수 없음: %s"
 
 #: mgrpxy/cmd/install/podman/podman.go:25
+#, fuzzy
 msgid "Install a new proxy on podman"
-msgstr ""
+msgstr "podman에 새 프록시 설치"
 
 #: mgrpxy/cmd/install/podman/podman.go:26
+#, fuzzy
 msgid ""
 "Install a new proxy on podman\n"
 "\n"
@@ -73,140 +90,171 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
+"podman에 새 프록시 설치\n"
+"\n"
+"서버에서 생성한 구성 tarball의 경로만\n"
+"파라미터로 사용합니다.\n"
+"\n"
+"podman 설치 명령은 podman이 로컬에 설치되어 있다고 가정합니다.\n"
+"\n"
+"참고: 현재 원격 podman에 설치하는 기능은 지원되지 않습니다!\n"
 
 #: mgrpxy/cmd/install/podman/utils.go:31 mgrpxy/shared/podman/podman.go:168
+#, fuzzy
 msgid "install podman before running this command"
-msgstr ""
+msgstr "이 명령을 실행하기 전 podman 설치"
 
 #: mgrpxy/cmd/install/podman/utils.go:36
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "failed to extract proxy config from %s file: %s"
-msgstr ""
+msgstr "%s 파일에서 프록시 구성을 추출하지 못함: %s"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
+#, fuzzy
 msgid "Restart the proxy"
-msgstr ""
+msgstr "프록시 다시 시작"
 
 #: mgrpxy/cmd/start/start.go:23 mgrpxy/cmd/start/start.go:24
+#, fuzzy
 msgid "Start the proxy"
-msgstr ""
+msgstr "프록시 시작"
 
 #: mgrpxy/cmd/status/kubernetes.go:27
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "failed to discover the cluster type: %s"
-msgstr ""
+msgstr "클러스터 유형을 검색하지 못함: %s"
 
 #: mgrpxy/cmd/status/kubernetes.go:32
+#, fuzzy
 msgid "no uyuni-proxy helm release installed on the cluster"
-msgstr ""
+msgstr "클러스터에 설치된 uyuni-proxy helm 릴리스 없음"
 
 #: mgrpxy/cmd/status/kubernetes.go:37
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "failed to find the uyuni-proxy deployment namespace: %s"
-msgstr ""
+msgstr "uyuni-proxy 배포 네임스페이스를 찾지 못함: %s"
 
 #: mgrpxy/cmd/status/kubernetes.go:43
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "failed to get deployment status: %s"
-msgstr ""
+msgstr "배포 상태를 가져오지 못함: %s"
 
 #: mgrpxy/cmd/status/kubernetes.go:46
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Some replicas are not ready: %d / %d"
-msgstr ""
+msgstr "일부 복제본이 준비되지 않음: %d / %d"
 
 #: mgrpxy/cmd/status/kubernetes.go:50
+#, fuzzy
 msgid "the pod is not running"
-msgstr ""
+msgstr "Pod가 실행 중이 아님"
 
 #: mgrpxy/cmd/status/kubernetes.go:53
+#, fuzzy
 msgid "Proxy containers up and running"
-msgstr ""
+msgstr "프록시 컨테이너 설정 및 실행"
 
 #: mgrpxy/cmd/status/status.go:24 mgrpxy/cmd/status/status.go:25
+#, fuzzy
 msgid "Get the proxy status"
-msgstr ""
+msgstr "프록시 상태 가져오기"
 
 #: mgrpxy/cmd/status/status.go:46
+#, fuzzy
 msgid "no installed proxy detected"
-msgstr ""
+msgstr "설치된 프록시가 감지되지 않음"
 
 #: mgrpxy/cmd/status/podman.go:30
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Failed to get status of the %s service"
-msgstr ""
+msgstr "서비스 %s의 상태를 가져오지 못했습니다."
 
 #: mgrpxy/cmd/status/podman.go:31
+#, fuzzy
 msgid "failed to get the status of at least one service"
-msgstr ""
+msgstr "하나 이상의 서비스 상태를 가져오지 못했습니다."
 
 #: mgrpxy/cmd/stop/stop.go:23 mgrpxy/cmd/stop/stop.go:24
+#, fuzzy
 msgid "Stop the proxy"
-msgstr ""
+msgstr "프록시 중지"
 
 #: mgrpxy/cmd/uninstall/podman.go:48
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "cannot delete volume %s: %s"
-msgstr ""
+msgstr "%s 볼륨을 삭제할 수 없음: %s"
 
 #: mgrpxy/cmd/uninstall/podman.go:51
+#, fuzzy
 msgid "All volumes removed"
-msgstr ""
+msgstr "모든 볼륨 제거됨"
 
 #: mgrpxy/cmd/uninstall/uninstall.go:23
+#, fuzzy
 msgid "Uninstall a proxy"
-msgstr ""
+msgstr "프록시 제거"
 
 #: mgrpxy/cmd/uninstall/uninstall.go:24
+#, fuzzy
 msgid ""
 "Uninstall a proxy and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
 msgstr ""
+"프록시 및 선택 사항으로 해당 볼륨을 제거합니다.\n"
+"기본적으로 수행되는 작업만 인쇄하고 실제로 제거하려면 --force를 사용합니다."
 
 #: mgrpxy/cmd/uninstall/uninstall.go:36
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "failed to determine suitable backend: %s"
-msgstr ""
+msgstr "적합한 백엔드를 확인하지 못함: %s"
 
 #: mgrpxy/cmd/uninstall/uninstall.go:51
+#, fuzzy
 msgid "Actually remove the proxy"
-msgstr ""
+msgstr "실제로 프록시 제거"
 
 #: mgrpxy/cmd/uninstall/uninstall.go:52
+#, fuzzy
 msgid "Also remove the volumes"
-msgstr ""
+msgstr "볼륨도 제거"
 
 #: mgrpxy/cmd/cmd.go:33
+#, fuzzy
 msgid "Uyuni proxy administration tool"
-msgstr ""
+msgstr "Uyuni 프록시 관리 도구"
 
 #: mgrpxy/cmd/cmd.go:34
+#, fuzzy
 msgid "Tool to help administering Uyuni proxies in containers"
-msgstr ""
+msgstr "컨테이너에서 Uyuni 프록시를 관리하는 데 유용한 도구"
 
 #: mgrpxy/cmd/cmd.go:47
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Welcome to %s"
-msgstr ""
+msgstr "%s 시작"
 
 #: mgrpxy/cmd/cmd.go:48
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Executing command: %s"
-msgstr ""
+msgstr "실행 중 명령: %s"
 
 #: mgrpxy/cmd/cmd.go:52
+#, fuzzy
 msgid "configuration file path"
-msgstr ""
+msgstr "구성 파일 경로"
 
 #: mgrpxy/cmd/cmd.go:53
+#, fuzzy
 msgid "application log level"
-msgstr ""
+msgstr "애플리케이션 로그 수준"
 
 #: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:25
+#, fuzzy
 msgid "Install a PTF or Test package on a kubernetes cluster"
-msgstr ""
+msgstr "Kubernetes 클러스터에 PTF 또는 테스트 패키지 설치"
 
 #: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:26
+#, fuzzy
 msgid ""
 "Install a PTR of Test package on a kubernetes cluster\n"
 "\n"
@@ -218,12 +266,24 @@ msgid ""
 "\n"
 "NOTE: installing on a remote cluster is not supported yet!\n"
 msgstr ""
+"Kubernetes 클러스터에 테스트 패키지의 PTR 설치\n"
+"\n"
+"지원 ptf 명령에서는 다음을 가정합니다.\n"
+"  * kubectl과 helm이 로컬에 설치되어 있습니다.\n"
+"  * 배포할 클러스터에 연결하도록 작동하는\n"
+"      kubectl 구성이 설정되어 있습니다.\n"
+"\n"
+"helm 값 파일은 명령 파라미터 또는 구성의 값으로 재정의됩니다.\n"
+"\n"
+"참고: 원격 클러스터에 설치하는 기능은 아직 지원되지 않습니다!\n"
 
 #: mgrpxy/cmd/support/ptf/podman/podman.go:30
+#, fuzzy
 msgid "Install a PTF or Test package on podman"
-msgstr ""
+msgstr "podman에 PTF 또는 테스트 패키지 설치"
 
 #: mgrpxy/cmd/support/ptf/podman/podman.go:31
+#, fuzzy
 msgid ""
 "Install a PTF or Test package on podman\n"
 "\n"
@@ -232,57 +292,70 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
+"podman에 PTF 또는 테스트 패키지 설치\n"
+"\n"
+"지원 ptf podman 명령은 podman이 로컬에 설치되어 있고\n"
+"호스트 머신이 SCC에 등록되어 있다고 가정합니다.\n"
+"\n"
+"참고: 현재 원격 podman에 설치하는 기능은 지원되지 않습니다!\n"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:34
+#, fuzzy
 msgid "ptf and test flags cannot be set simultaneously "
-msgstr ""
+msgstr "ptf와 테스트 플래그를 동시에 설정할 수 없음 "
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:37
+#, fuzzy
 msgid "ptf and test flags cannot be empty simultaneously "
-msgstr ""
+msgstr "ptf와 테스트 플래그를 동시에 비워둘 수없음 "
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:40
+#, fuzzy
 msgid "user flag cannot be empty"
-msgstr ""
+msgstr "사용자 플래그를 비워둘 수 없습니다."
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:54
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "The httpd ptf image computed is: %s"
-msgstr ""
+msgstr "계산된 httpd ptf 이미지: %s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:64
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "The ssh ptf image computed is: %s"
-msgstr ""
+msgstr "계산된 ssh ptf 이미지: %s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:74
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "The tftpd ptf image computed is: %s"
-msgstr ""
+msgstr "계산된 tftpd ptf 이미지: %s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:84
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "The salt-broker ptf image computed is: %s"
-msgstr ""
+msgstr "계산된 salt-broker ptf 이미지: %s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:94
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "The squid ptf image computed is: %s"
-msgstr ""
+msgstr "계산된 squid ptf 이미지: %s"
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
+#, fuzzy
 msgid "Install a PTF"
-msgstr ""
+msgstr "PTF 설치"
 
 #: mgrpxy/cmd/support/support.go:18 mgrpxy/cmd/support/support.go:19
+#, fuzzy
 msgid "Commands for support operations"
-msgstr ""
+msgstr "지원 작업을 위한 명령"
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:20
+#, fuzzy
 msgid "Upgrade a proxy on a running kubernetes cluster"
-msgstr ""
+msgstr "실행 중인 Kubernetes 클러스터에서 프록시 업그레이드"
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:21
+#, fuzzy
 msgid ""
 "Upgrade a proxy on a running kubernetes cluster.\n"
 "\n"
@@ -290,12 +363,19 @@ msgid ""
 "\n"
 "NOTE: for now upgrading on a remote kubernetes cluster is not supported!\n"
 msgstr ""
+"실행 중인 Kubernetes 클러스터에서 프록시를 업그레이드합니다.\n"
+"\n"
+"업그레이드 kubernetes 명령에서는 kubectl이 로컬로 설치되어 있다고 가정합니다.\n"
+"\n"
+"참고: 현재 원격 Kubernetes 클러스터에서의 업그레이드는 지원되지 않습니다!\n"
 
 #: mgrpxy/cmd/upgrade/podman/podman.go:20
+#, fuzzy
 msgid "Upgrade a proxy on podman"
-msgstr ""
+msgstr "podman에서 프록시 업그레이드"
 
 #: mgrpxy/cmd/upgrade/podman/podman.go:21
+#, fuzzy
 msgid ""
 "Upgrade a proxy on podman\n"
 "\n"
@@ -303,116 +383,136 @@ msgid ""
 "\n"
 "NOTE: for now upgrading on a remote podman is not supported!\n"
 msgstr ""
+"podman에서 프록시 업그레이드\n"
+"\n"
+"업그레이드 podman 명령은 podman이 로컬로 업그레이드되었다고 가정합니다.\n"
+"\n"
+"참고: 현재 원격 podman에서의 업그레이드는 지원되지 않습니다!\n"
 
 #: mgrpxy/cmd/upgrade/upgrade.go:19 mgrpxy/cmd/upgrade/upgrade.go:20
+#, fuzzy
 msgid "Upgrade a proxy"
-msgstr ""
+msgstr "프록시 업그레이드"
 
 #: mgrpxy/shared/kubernetes/cmd.go:25
+#, fuzzy
 msgid "Kubernetes namespace where to install the proxy"
-msgstr ""
+msgstr "프록시를 설치할 Kubernetes 네임스페이스"
 
 #: mgrpxy/shared/kubernetes/cmd.go:26
+#, fuzzy
 msgid "URL to the proxy helm chart"
-msgstr ""
+msgstr "프록시 helm 차트에 대한 URL"
 
 #: mgrpxy/shared/kubernetes/cmd.go:27
+#, fuzzy
 msgid "Version of the proxy helm chart"
-msgstr ""
+msgstr "프록시 helm 차트의 버전"
 
 #: mgrpxy/shared/kubernetes/cmd.go:28
+#, fuzzy
 msgid "Path to a values YAML file to use for proxy helm install"
-msgstr ""
+msgstr "프록시 helm 설치에 사용할 값 YAML 파일의 경로"
 
 #: mgrpxy/shared/kubernetes/deploy.go:34
+#, fuzzy
 msgid "Installing Uyuni proxy"
-msgstr ""
+msgstr "Uyuni 프록시 설치"
 
 #: mgrpxy/shared/kubernetes/deploy.go:80
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "cannot run helm upgrade: %s"
-msgstr ""
+msgstr "helm 업그레이드를 실행할 수 없음: %s"
 
 #: mgrpxy/shared/kubernetes/deploy.go:96 mgrpxy/shared/kubernetes/deploy.go:111
 #: mgrpxy/shared/kubernetes/deploy.go:126
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "failed to write in file %s: %s"
-msgstr ""
+msgstr "%s 파일에 쓰기 실패: %s"
 
 #: mgrpxy/shared/podman/podman.go:34
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "cannot setup network: %s"
-msgstr ""
+msgstr "네트워크를 설정할 수 없음: %s"
 
 #: mgrpxy/shared/podman/podman.go:37
+#, fuzzy
 msgid "Generating systemd services"
-msgstr ""
+msgstr "systemd 서비스 생성"
 
 #: mgrpxy/shared/podman/podman.go:113
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "failed to generate systemd file '%s': %s"
-msgstr ""
+msgstr "systemd 파일 '%s' 생성 실패: %s"
 
 #: mgrpxy/shared/podman/podman.go:133 mgrpxy/shared/podman/podman.go:204
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "cannot inspect host values: %s"
-msgstr ""
+msgstr "호스트 값 검사 불가: %s"
 
 #: mgrpxy/shared/podman/podman.go:153
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Setting up proxy with configuration %s"
-msgstr ""
+msgstr "구성 %s(으)로 프록시 설정"
 
 #: mgrpxy/shared/podman/podman.go:173
+#, fuzzy
 msgid "cannot find httpd image: it will no be upgraded"
-msgstr ""
+msgstr "httpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
 #: mgrpxy/shared/podman/podman.go:177
+#, fuzzy
 msgid "cannot find salt-broker image: it will no be upgraded"
-msgstr ""
+msgstr "salt-broker 이미지를 찾을 수 없음 : 업그레이드되지 않습니다."
 
 #: mgrpxy/shared/podman/podman.go:181
+#, fuzzy
 msgid "cannot find squid image: it will no be upgraded"
-msgstr ""
+msgstr "squid 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
 #: mgrpxy/shared/podman/podman.go:185
+#, fuzzy
 msgid "cannot find ssh image: it will no be upgraded"
-msgstr ""
+msgstr "ssh 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
 #: mgrpxy/shared/podman/podman.go:189
+#, fuzzy
 msgid "cannot find tftpd image: it will no be upgraded"
-msgstr ""
+msgstr "tftpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
 #: mgrpxy/shared/utils/cmd.go:17
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "argument is not an existing file: %s"
-msgstr ""
+msgstr "인수가 기존 파일이 아님: %s"
 
 #: mgrpxy/shared/utils/flags.go:48
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Invalid proxy container name: %s"
-msgstr ""
+msgstr "잘못된 프록시 컨테이너 이름: %s"
 
 #: mgrpxy/shared/utils/flags.go:62
+#, fuzzy
 msgid "Failed to compute image URL"
-msgstr ""
+msgstr "이미지 URL을 계산하지 못했습니다."
 
 #: mgrpxy/shared/utils/flags.go:70 mgrpxy/shared/utils/flags.go:84
 #: mgrpxy/shared/utils/flags.go:98
+#, fuzzy
 msgid "registry URL prefix containing the all the container images"
-msgstr ""
+msgstr "모든 컨테이너 이미지가 포함된 레지스트리 URL 접두사"
 
 #: mgrpxy/shared/utils/flags.go:71 mgrpxy/shared/utils/flags.go:85
 #: mgrpxy/shared/utils/flags.go:99
+#, fuzzy
 msgid "image tag"
-msgstr ""
+msgstr "이미지 태그"
 
 #: mgrpxy/shared/utils/flags.go:111
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Image for %s container, overrides the namespace if set"
-msgstr ""
+msgstr "%s 컨테이너의 이미지, 설정된 경우 네임스페이스 재정의"
 
 #: mgrpxy/shared/utils/flags.go:113
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
-msgstr ""
+msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
