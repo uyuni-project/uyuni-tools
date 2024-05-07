@@ -8,97 +8,100 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-05-07 16:43+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: mgradm/cmd/distro/cp.go:31
 #, javascript-format
 msgid "Unable to unmount ISO image, leaving %s intact"
-msgstr ""
+msgstr "ISOイメージをアンマウントできません。%sはそのまま残ります。"
 
 #: mgradm/cmd/distro/cp.go:35
 #, javascript-format
 msgid "unable to remove temporary directory, leaving %s intact"
-msgstr ""
+msgstr "一時ディレクトリを削除できません。%s はそのまま残ります"
 
 #: mgradm/cmd/distro/cp.go:42
 #, javascript-format
 msgid "unable to login and register the distribution. Manual distro registration is required: %s"
-msgstr ""
+msgstr "ログインしてディストリビューションを登録できません。手動でのディストリビューション登録が必要です: %s"
 
 #: mgradm/cmd/distro/cp.go:53
 #, javascript-format
 msgid "unable to register the distribution. Manual distro registration is required: %s"
-msgstr ""
+msgstr "ディストリビューションを登録できません。手動でのディストリビューション登録が必要です: %s"
 
 #: mgradm/cmd/distro/cp.go:55
 #, javascript-format
 msgid "Distribution %s successfully registered"
-msgstr ""
+msgstr "ディストリビューション %s が正常に登録されました"
 
 #: mgradm/cmd/distro/cp.go:78
 #, javascript-format
 msgid "unable to mount ISO image: %s"
-msgstr ""
+msgstr "ISOイメージをマウントできません: %s"
 
 #: mgradm/cmd/distro/cp.go:92
 #, javascript-format
 msgid "distribution with same name already exists: %s"
-msgstr ""
+msgstr "同じ名前のディストリビューションがすでに存在します: %s"
 
 #: mgradm/cmd/distro/cp.go:96
 #, javascript-format
 msgid "cannot create %s path in container: %s"
-msgstr ""
+msgstr "コンテナ内に %s パスを作成できません: %s"
 
 #: mgradm/cmd/distro/cp.go:99
 #, javascript-format
 msgid "Copying distribution %s"
-msgstr ""
+msgstr "ディストリビューション %s をコピーしています"
 
 #: mgradm/cmd/distro/cp.go:101 mgradm/shared/podman/podman.go:119
 #: mgradm/shared/podman/podman.go:122 mgradm/shared/podman/podman.go:125
 #: mgradm/shared/podman/podman.go:133
 #, javascript-format
 msgid "cannot copy %s: %s"
-msgstr ""
+msgstr "%s をコピーできません: %s"
 
 #: mgradm/cmd/distro/cp.go:103
 #, javascript-format
 msgid "Distribution has been copied into %s"
-msgstr ""
+msgstr "ディストリビューションが %s にコピーされました"
 
 #: mgradm/cmd/distro/cp.go:131 mgradm/cmd/support/sql/sql.go:32
 #, javascript-format
 msgid "source %s does not exists"
-msgstr ""
+msgstr "ソース %s が存在しません"
 
 #: mgradm/cmd/distro/cp.go:153
 #, javascript-format
 msgid "Auto-detected distribution %s"
-msgstr ""
+msgstr "自動検出されたディストリビューション %s"
 
 #: mgradm/cmd/distro/cp.go:169
 msgid "Continue by registering autoinstallation distribution"
-msgstr ""
+msgstr "自動インストールディストリビューションを登録して続行します"
 
 #: mgradm/cmd/distro/detect.go:92
 msgid "distribution not found in product map. Please update productmap or provide channel label"
-msgstr ""
+msgstr "製品マップにディストリビューションが見つかりません。製品マップを更新するか、チャンネルラベルを提供してください"
 
 #: mgradm/cmd/distro/detect.go:105
 msgid "unable to read distribution treeinfo. Please provide distribution details and/or channel label"
-msgstr ""
+msgstr "ディストリビューションツリー情報を読み込めません。ディストリビューションの詳細および/またはチャンネルラベルを提供してください"
 
 #: mgradm/cmd/distro/detect.go:135 mgradm/cmd/distro/detect.go:137
 #, javascript-format
 msgid "distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"
-msgstr ""
+msgstr "ディストリビューションツリー情報 %s が存在しません。ディストリビューションの詳細および/またはチャンネルラベルを提供してください"
 
 #: mgradm/cmd/distro/distro.go:32
 msgid ""
@@ -132,18 +135,52 @@ msgid ""
 "\n"
 "{{ .DefaultProductMap }}\n"
 msgstr ""
+"自動インストールのディストリビューション製品のマッピング\n"
+"\n"
+"Uyuniサーバでディストリビューションを登録するには、ディストリビューションを正しいソフトウェアチャンネルにマッピングすることが重要です。\n"
+"\n"
+"ソフトウェアチャンネルは、ディストリビューション名とまったく関連付けずに異なる名前を付けることができます。\n"
+"\n"
+"ソフトウェアチャンネルを設定する1つの方法は、ディストリビューションコピーコマンドに--channelフラグを付けることです。\n"
+"\n"
+"頻繁に使用する場合は、mgradmの設定ファイルに以下のフォーマットでカスタム製品マッピングを書き込むことができます。\n"
+"\n"
+"<ディストリビューション名>:\n"
+"    <ディストリビューションバージョン:\n"
+"      <ディストリビューションアーキテクチャ>:\n"
+"        チャンネルラベル: <チャンネルラベル>\n"
+"        インストールタイプ: "
+"<rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpmのいずれか>\n"
+"        ツリー名: <カスタムディストリビューション\n"
+"\n"
+"ここで\n"
+"* <ディストリビューション名> はディストリビューションの名前で、デフォルトではメディアの「.treeinfo」ファイルから取得します。「."
+"treeinfo」が見つからない場合は、コマンドラインオプションが必要で、使用されます。\n"
+"*<ディストリビューションバージョン>はディストリビューションのバージョンで、デフォルトではメディアの「.treeinfo」ファイルから取得します。「."
+"treeinfo」が見つからない場合は、コマンドラインオプションが必要で、使用されます。\n"
+"* ChannelLabelはUyuniサーバからのチャンネルラベルで、このディストリビューションに使用され、コマンドラインフラグで上書きできません。\n"
+"*<ディストリビューションアーキテクチャ>はディストリビューションのアーキテクチャで、デフォルトではメディアの「."
+"treeinfo」ファイルから取得します。「.treeinfo」が見つからない場合は、コマンドラインオプションが必要で、使用されます。\n"
+"* InstallType は、インストーラが既知の場合 (autoyast や kickstart "
+"の場合)、または「generic_rpm」を使用する場合に使用します。\n"
+"* TreeName は、Uyuniサーバーの UIでディストリビューションがどのように表示されるかを指定します。設定されていない場合は "
+"<ディストリビューション名> が使用されます。\n"
+"\n"
+"ビルトイン製品マッ:\n"
+"\n"
+"{{ .DefaultProductMap }}\n"
 
 #: mgradm/cmd/distro/distro.go:70
 msgid "Distributions management"
-msgstr ""
+msgstr "ディストリビューション管理"
 
 #: mgradm/cmd/distro/distro.go:71
 msgid "Tools for autoinstallation distributions management"
-msgstr ""
+msgstr "自動インストールのディストリビューション管理用ツール"
 
 #: mgradm/cmd/distro/distro.go:77
 msgid "Copy distribution files from iso to the container"
-msgstr ""
+msgstr "ディストリビューションファイルをisoからコンテナにコピーします"
 
 #: mgradm/cmd/distro/distro.go:78
 msgid ""
@@ -153,66 +190,72 @@ msgid ""
 "\n"
 "Note: API details are required for auto registration."
 msgstr ""
+"ソース iso ファイルまたはマウントされたisoのあるディレクトリへのパスを取り、それをコンテナにコピーします。\n"
+"\n"
+"オプションのパラメータ「distribution-name」、「version」 "
+"および「arch」は、カスタムディストリビューションを指定します。設定されていない場合、ディストリビューション名は自動検出されます。\n"
+"\n"
+"メモ: 自動登録には API の詳細が必要です。"
 
 #: mgradm/cmd/distro/distro.go:88
 msgid "Set parent channel for the distribution."
-msgstr ""
+msgstr "ディストリビューションの親チャンネルを設定します。"
 
 #: mgradm/cmd/distro/distro.go:92
 msgid "Help on using custom distribution product map"
-msgstr ""
+msgstr "カスタムディストリビューション製品マップの使用に関するヘルプ"
 
 #: mgradm/cmd/distro/distro.go:104
 msgid "failed to compute config help command"
-msgstr ""
+msgstr "config helpコマンドの計算に失敗しました"
 
 #: mgradm/cmd/hub/hub.go:18
 msgid "Hub management"
-msgstr ""
+msgstr "ハブ管理"
 
 #: mgradm/cmd/hub/hub.go:19
 msgid "Tools and utilities for Hub management"
-msgstr ""
+msgstr "ハブ管理用ツールとユーティリティ"
 
 #: mgradm/cmd/hub/register/register.go:31
 msgid "Register"
-msgstr ""
+msgstr "登録"
 
 #: mgradm/cmd/hub/register/register.go:32
 msgid "Register this peripheral server to Hub API"
-msgstr ""
+msgstr "この周辺サーバをハブAPIに登録する"
 
 #: mgradm/cmd/hub/register/register.go:79
 #, javascript-format
 msgid "invalid line format: %s"
-msgstr ""
+msgstr "無効な行のフォーマット: %s"
 
 #: mgradm/cmd/hub/register/register.go:93
 #, javascript-format
 msgid "mandatory entry missing in config: %s"
-msgstr ""
+msgstr "config に必須エントリがありません: %s"
 
 #: mgradm/cmd/hub/register/register.go:96
 #, javascript-format
 msgid "Hub API server: %s"
-msgstr ""
+msgstr "Hub API サーバ: %s"
 
 #: mgradm/cmd/hub/register/register.go:99
 #, javascript-format
 msgid "failed to connect to the Hub server: %s"
-msgstr ""
+msgstr "ハブサーバへの接続に失敗しました: %s"
 
 #: mgradm/cmd/hub/register/register.go:107
 #: mgradm/cmd/hub/register/register.go:110
 #, javascript-format
 msgid "failed to register this peripheral server: %s"
-msgstr ""
+msgstr "この周辺サーバの登録に失敗しました: %s"
 
 #: mgradm/cmd/hub/register/register.go:124
 #: mgradm/cmd/hub/register/register.go:128
 #, javascript-format
 msgid "failed to update peripheral server info: %s"
-msgstr ""
+msgstr "周辺サーバ情報の更新に失敗しました: %s"
 
 #: mgradm/cmd/hub/register/register.go:130
 #, javascript-format
