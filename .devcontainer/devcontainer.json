@@ -8,7 +8,9 @@
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers/features/go:1": {},
+    		"ghcr.io/devcontainers/features/go:1": {
+        		"version": "1.18"
+    		},
 		"ghcr.io/guiyomh/features/golangci-lint:0": {}
 	},
 	
