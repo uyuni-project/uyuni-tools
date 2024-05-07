@@ -4,20 +4,13 @@
 {
 	"name": "Go",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-    	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    	"image": "docker.io/mbussolotto7/uyuni-tools-dev",
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	"features": {
-    		"ghcr.io/devcontainers/features/go:1": {
-        		"version": "1.18"
-    		},
-	},
-	
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"updateContentCommand": "go mod vendor",
+	"postCreateCommand": "go mod vendor",
 
 	// Configure tool-specific properties.
 	// "customizations": {},
