@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-05-07 02:43+0000\n"
+"PO-Revision-Date: 2024-05-07 16:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrctl/ko/>\n"
@@ -34,7 +34,7 @@ msgstr "API GET 요청 호출"
 msgid "Takes an API path and optional parameters and then issues GET request with them. If user and password are provided, calls login before API call"
 msgstr ""
 "API 경로와 선택 사항 파라미터를 가져온 다음 이를 사용하여 GET 요청을 발급합니다. 사용자 및 비밀번호가 제공된 경우 API를 "
-"호출하지 전 로그인을 호출합니다."
+"호출하기 전 로그인을 호출합니다."
 
 #: mgrctl/cmd/api/api.go:39
 #, fuzzy
