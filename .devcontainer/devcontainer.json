@@ -11,7 +11,6 @@
     		"ghcr.io/devcontainers/features/go:1": {
         		"version": "1.18"
     		},
-		"ghcr.io/guiyomh/features/golangci-lint:0": {}
 	},
 	
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
