@@ -30,9 +30,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	}
 	startCmd.SetUsageTemplate(startCmd.UsageTemplate())
 
-	if utils.KubernetesBuilt {
-		utils.AddBackendFlag(startCmd)
-	}
+	utils.AddBackendFlag(startCmd)
 
 	return startCmd
 }
