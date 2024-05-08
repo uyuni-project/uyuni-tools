@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-05-08 09:43+0000\n"
+"PO-Revision-Date: 2024-05-08 15:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrpxy/ja/>\n"
@@ -314,7 +314,7 @@ msgstr "支援業務用のコマンド"
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:20
 msgid "Upgrade a proxy on a running kubernetes cluster"
-msgstr ""
+msgstr "実行中のkubernetesクラスタ上のプロキシをアップグレードする"
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:21
 msgid ""
@@ -324,10 +324,15 @@ msgid ""
 "\n"
 "NOTE: for now upgrading on a remote kubernetes cluster is not supported!\n"
 msgstr ""
+"実行中のkubernetesクラスタ上のプロキシをアップグレードします。\n"
+"\n"
+"upgrade kubernetesコマンドは、kubectlがローカルにインストールされていることを前提としています。\n"
+"\n"
+"メモ: 現時点では、リモートのkubernetesクラスタ上でのアップグレードはサポートされていません。\n"
 
 #: mgrpxy/cmd/upgrade/podman/podman.go:20
 msgid "Upgrade a proxy on podman"
-msgstr ""
+msgstr "podmanでプロキシをアップグレードする"
 
 #: mgrpxy/cmd/upgrade/podman/podman.go:21
 msgid ""
@@ -337,30 +342,35 @@ msgid ""
 "\n"
 "NOTE: for now upgrading on a remote podman is not supported!\n"
 msgstr ""
+"podmanでプロキシをアップグレードする\n"
+"\n"
+"upgrade podmanコマンドは、 podmanがローカルでアップグレードされていることを前提にしています。\n"
+"\n"
+"メモ: 現時点では、podmanでのアップグレードはサポートされていません。\n"
 
 #: mgrpxy/cmd/upgrade/upgrade.go:19 mgrpxy/cmd/upgrade/upgrade.go:20
 msgid "Upgrade a proxy"
-msgstr ""
+msgstr "プロキシのアップグレード"
 
 #: mgrpxy/shared/kubernetes/cmd.go:25
 msgid "Kubernetes namespace where to install the proxy"
-msgstr ""
+msgstr "プロキシをインストールするKubernetesネームスペース"
 
 #: mgrpxy/shared/kubernetes/cmd.go:26
 msgid "URL to the proxy helm chart"
-msgstr ""
+msgstr "プロキシhelmチャートへのURL"
 
 #: mgrpxy/shared/kubernetes/cmd.go:27
 msgid "Version of the proxy helm chart"
-msgstr ""
+msgstr "プロキシhelmチャートのバージョン"
 
 #: mgrpxy/shared/kubernetes/cmd.go:28
 msgid "Path to a values YAML file to use for proxy helm install"
-msgstr ""
+msgstr "プロキシhelmインストールに使用する値YAMLファイルへのパス"
 
 #: mgrpxy/shared/kubernetes/deploy.go:34
 msgid "Installing Uyuni proxy"
-msgstr ""
+msgstr "Uyuniプロキシのインストール"
 
 #: mgrpxy/shared/kubernetes/deploy.go:80
 #, javascript-format
@@ -371,7 +381,7 @@ msgstr "helmアップグレードを実行できません: %s"
 #: mgrpxy/shared/kubernetes/deploy.go:126
 #, javascript-format
 msgid "failed to write in file %s: %s"
-msgstr ""
+msgstr "ファイル %s への書き込みに失敗しました: %s"
 
 #: mgrpxy/shared/podman/podman.go:34
 #, javascript-format
@@ -380,12 +390,12 @@ msgstr "ネットワークを設定できません: %s"
 
 #: mgrpxy/shared/podman/podman.go:37
 msgid "Generating systemd services"
-msgstr ""
+msgstr "systemdサービスの生成"
 
 #: mgrpxy/shared/podman/podman.go:113
 #, javascript-format
 msgid "failed to generate systemd file '%s': %s"
-msgstr ""
+msgstr "systemdファイル「%s」の生成に失敗しました: %s"
 
 #: mgrpxy/shared/podman/podman.go:133 mgrpxy/shared/podman/podman.go:204
 #, javascript-format
@@ -395,51 +405,51 @@ msgstr "ホスト値を検査できません: %s"
 #: mgrpxy/shared/podman/podman.go:153
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
-msgstr ""
+msgstr "構成 %s でプロキシを設定しています"
 
 #: mgrpxy/shared/podman/podman.go:173
 msgid "cannot find httpd image: it will no be upgraded"
-msgstr ""
+msgstr "httpdイメージが見つかりません: アップグレードされません"
 
 #: mgrpxy/shared/podman/podman.go:177
 msgid "cannot find salt-broker image: it will no be upgraded"
-msgstr ""
+msgstr "salt-brokerイメージが見つかりません: アップグレードされません"
 
 #: mgrpxy/shared/podman/podman.go:181
 msgid "cannot find squid image: it will no be upgraded"
-msgstr ""
+msgstr "squidイメージが見つかりません: アップグレードされません"
 
 #: mgrpxy/shared/podman/podman.go:185
 msgid "cannot find ssh image: it will no be upgraded"
-msgstr ""
+msgstr "sshイメージが見つかりません: アップグレードされません"
 
 #: mgrpxy/shared/podman/podman.go:189
 msgid "cannot find tftpd image: it will no be upgraded"
-msgstr ""
+msgstr "tftpdイメージが見つかりません: アップグレードされません"
 
 #: mgrpxy/shared/utils/cmd.go:17
 #, javascript-format
 msgid "argument is not an existing file: %s"
-msgstr ""
+msgstr "引数は既存のファイルではありません: %s"
 
 #: mgrpxy/shared/utils/flags.go:48
 #, javascript-format
 msgid "Invalid proxy container name: %s"
-msgstr ""
+msgstr "無効なプロキシコンテナ名: %s"
 
 #: mgrpxy/shared/utils/flags.go:62
 msgid "Failed to compute image URL"
-msgstr ""
+msgstr "イメージURLの計算に失敗しました"
 
 #: mgrpxy/shared/utils/flags.go:70 mgrpxy/shared/utils/flags.go:84
 #: mgrpxy/shared/utils/flags.go:98
 msgid "registry URL prefix containing the all the container images"
-msgstr ""
+msgstr "すべてのコンテナイメージを含む、レジストリのURLプレフィックス"
 
 #: mgrpxy/shared/utils/flags.go:71 mgrpxy/shared/utils/flags.go:85
 #: mgrpxy/shared/utils/flags.go:99
 msgid "image tag"
-msgstr ""
+msgstr "イメージタグ"
 
 #: mgrpxy/shared/utils/flags.go:111
 #, javascript-format
