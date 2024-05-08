@@ -8,171 +8,180 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-05-08 09:43+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrctl/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: mgrctl/cmd/api/api.go:25
 msgid "JSON over HTTP API helper tool"
-msgstr ""
+msgstr "JSON over HTTPヘルパーツール"
 
 #: mgrctl/cmd/api/api.go:30
 msgid "Call API GET request"
-msgstr ""
+msgstr "API GET要求を呼び出す"
 
 #: mgrctl/cmd/api/api.go:31
 msgid "Takes an API path and optional parameters and then issues GET request with them. If user and password are provided, calls login before API call"
 msgstr ""
+"APIパスとオプションパラメータを受け取り、これらを使用してGET要求を発行します。ユーザとパスワードが指定された場合、APIコールの前にログインを呼び出"
+"します"
 
 #: mgrctl/cmd/api/api.go:39
 msgid "Call API POST request"
-msgstr ""
+msgstr "API POST要求を呼び出す"
 
 #: mgrctl/cmd/api/api.go:40
 msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
 msgstr ""
+"APIパスとパラメータを受け取り、それらを使用してPOST要求を発行します。ユーザとパスワードは必須です。パラメータには、JSONでエンコードされた文字列"
+"か、1つ以上のkey=valueペアを指定できます。"
 
 #: mgrctl/cmd/api/get.go:25 mgrctl/cmd/api/post.go:25
 #, javascript-format
 msgid "unable to login to the server: %s"
-msgstr ""
+msgstr "サーバにログインできません: %s"
 
 #: mgrctl/cmd/api/get.go:32 mgrctl/cmd/api/post.go:48
 #, javascript-format
 msgid "error in query %s: %s"
-msgstr ""
+msgstr "クエリ %s でエラーが発生しました: %s"
 
 #: mgrctl/cmd/cmd.go:30
 msgid "Uyuni control tool"
-msgstr ""
+msgstr "Uyuni制御ツール"
 
 #: mgrctl/cmd/cmd.go:31
 msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr ""
+msgstr "主にAPIを通じてUyuni サーバを管理するのに役立つツール"
 
 #: mgrctl/cmd/cmd.go:38
 msgid "configuration file path"
-msgstr ""
+msgstr "設定ファイルパス"
 
 #: mgrctl/cmd/cmd.go:39
 msgid "application log level"
-msgstr ""
+msgstr "アプリケーションログレベル"
 
 #: mgrctl/cmd/cmd.go:47
 #, javascript-format
 msgid "Welcome to %s"
-msgstr ""
+msgstr "%s へようこそ"
 
 #: mgrctl/cmd/cmd.go:48
 #, javascript-format
 msgid "Executing command: %s"
-msgstr ""
+msgstr "コマンドの実行中: %s"
 
 #: mgrctl/cmd/cmd.go:54
 msgid "Failed to create api command"
-msgstr ""
+msgstr "api コマンドの作成に失敗しました"
 
 #: mgrctl/cmd/cmd.go:63
 msgid "Failed to create org command"
-msgstr ""
+msgstr "orgコマンドの作成に失敗しました"
 
 #: mgrctl/cmd/cp/cp.go:31
 msgid "Copy files to and from the containers"
-msgstr ""
+msgstr "コンテナへのファイルのコピーとコンテナからのファイルのコピー"
 
 #: mgrctl/cmd/cp/cp.go:32
 msgid ""
 "Takes a source and destination parameters.\n"
 "\tOne of them can be prefixed with 'server:' to indicate the path is within the server pod."
 msgstr ""
+"ソースと宛先のパラメータを受け取ります。\n"
+"\tそのうちの1つに 「server:」というプレフィックスを付けて、 そのパスがサーバポッド内にあることを示すことができます。"
 
 #: mgrctl/cmd/cp/cp.go:41
 msgid "failed to unmarshall configuration"
-msgstr ""
+msgstr "設定のアンマーシャルに失敗しました"
 
 #: mgrctl/cmd/cp/cp.go:47
 msgid "User or UID to set on the destination file"
-msgstr ""
+msgstr "宛先ファイルに設定するユーザまたはUID"
 
 #: mgrctl/cmd/cp/cp.go:48
 msgid "Group or GID to set on the destination file"
-msgstr ""
+msgstr "宛先ファイルに設定するグループまたはGID"
 
 #: mgrctl/cmd/exec/exec.go:37
 msgid "Execute commands inside the uyuni containers using 'sh -c'"
-msgstr ""
+msgstr "uyuniコンテナンテナ内で 「sh -c」を使用してコマンドを実行する"
 
 #: mgrctl/cmd/exec/exec.go:43
 msgid "environment variables to pass to the command, separated by commas"
-msgstr ""
+msgstr "カンマで区切ってコマンドに渡す環境変数"
 
 #: mgrctl/cmd/exec/exec.go:44
 msgid "Pass stdin to the container"
-msgstr ""
+msgstr "コンテナに標準入力を渡す"
 
 #: mgrctl/cmd/exec/exec.go:45
 msgid "Stdin is a TTY"
-msgstr ""
+msgstr "標準入力はTTYです"
 
 #: mgrctl/cmd/exec/exec.go:98
 msgid "Command failed"
-msgstr ""
+msgstr "コマンド失敗"
 
 #: mgrctl/cmd/exec/exec.go:102
 msgid "Command returned with exit code 0"
-msgstr ""
+msgstr "コマンドは終了コード0で返されます"
 
 #: mgrctl/cmd/exec/exec.go:116
 #, javascript-format
 msgid "cannot write: %s"
-msgstr ""
+msgstr "書き込めません: %s"
 
 #: mgrctl/cmd/exec/exec.go:131
 #, javascript-format
 msgid "Running: %s %s"
-msgstr ""
+msgstr "実行中: %s %s"
 
 #: mgrctl/cmd/org/org.go:18
 msgid "Organization-related commands"
-msgstr ""
+msgstr "組織関連コマンド"
 
 #: mgrctl/cmd/org/createFirst.go:28
 msgid "Create the first user and organization"
-msgstr ""
+msgstr "最初のユーザと組織を作成する"
 
 #: mgrctl/cmd/org/createFirst.go:35
 msgid "Administrator user name"
-msgstr ""
+msgstr "管理者ユーザ名"
 
 #: mgrctl/cmd/org/createFirst.go:36
 msgid "Administrator password"
-msgstr ""
+msgstr "管理者パスワード"
 
 #: mgrctl/cmd/org/createFirst.go:37
 msgid "The first name of the administrator"
-msgstr ""
+msgstr "管理者の名"
 
 #: mgrctl/cmd/org/createFirst.go:38
 msgid "The last name of the administrator"
-msgstr ""
+msgstr "管理者の姓"
 
 #: mgrctl/cmd/org/createFirst.go:39
 msgid "The administrator's email"
-msgstr ""
+msgstr "管理者の電子メールアアドレス"
 
 #: mgrctl/cmd/org/createFirst.go:40
 msgid "The first organization name"
-msgstr ""
+msgstr "最初の組織名"
 
 #: mgrctl/cmd/org/createFirst.go:51
 #, javascript-format
 msgid "Organization %s created with id %d"
-msgstr ""
+msgstr "組織 %s は ID %d で作成されました"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
-msgstr ""
+msgstr "サーバコンテナ内で端末を実行する"
