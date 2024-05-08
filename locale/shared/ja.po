@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-05-08 09:43+0000\n"
+"PO-Revision-Date: 2024-05-08 15:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ja/>\n"
@@ -25,119 +25,119 @@ msgstr ""
 
 #: shared/api/api.go:72
 msgid "API user username"
-msgstr ""
+msgstr "APIユーザのユーザ名"
 
 #: shared/api/api.go:73
 msgid "Password for the API user"
-msgstr ""
+msgstr "APIユーザのパスワード"
 
 #: shared/api/api.go:74
 msgid "Path to a cert file of the CA"
-msgstr ""
+msgstr "CAの証明書ファイルへのパス"
 
 #: shared/api/api.go:75
 msgid "If set, server certificate will not be checked for validity"
-msgstr ""
+msgstr "設定された場合、サーバ証明書は有効性をチェックされません"
 
 #: shared/api/api.go:124
 #, javascript-format
 msgid "unknown error: %d"
-msgstr ""
+msgstr "不明なエラー: %d"
 
 #: shared/api/api.go:166
 msgid "API server password"
-msgstr ""
+msgstr "APIサーバパスワード"
 
 #: shared/api/api.go:181
 msgid "Unable to create login data"
-msgstr ""
+msgstr "ログインデータを作成できません"
 
 #: shared/api/api.go:211
 msgid "auth cookie not found in login response"
-msgstr ""
+msgstr "ログインレスポンスにauthクッキーが見つかりません"
 
 #: shared/api/api.go:227
 msgid "Unable to convert data to JSON"
-msgstr ""
+msgstr "データをJSONに変換できません"
 
 #: shared/api/org/createFirst.go:21
 #, javascript-format
 msgid "failed to connect to the server: %s"
-msgstr ""
+msgstr "サーバへの接続に失敗しました: %s"
 
 #: shared/api/org/createFirst.go:35
 #, javascript-format
 msgid "failed to create first user and organization: %s"
-msgstr ""
+msgstr "最初のユーザと組織の作成に失敗しました: %s"
 
 #: shared/completion/completion.go:20 shared/completion/completion.go:21
 msgid "Generate shell completion script"
-msgstr ""
+msgstr "シェル補完スクリプトの生成"
 
 #: shared/completion/completion.go:30 shared/completion/completion.go:34
 #: shared/completion/completion.go:38
 #, javascript-format
 msgid "cannot generate %s completion: %s"
-msgstr ""
+msgstr "%s 完了を生成できません: %s"
 
 #: shared/connection.go:56
 #, javascript-format
 msgid "backend command not found in PATH: %s"
-msgstr ""
+msgstr "バックエンドコマンドがPATHに見つかりません: %s"
 
 #: shared/connection.go:68
 msgid "kubectl not configured to connect to a cluster, ignoring"
-msgstr ""
+msgstr "クラスタに接続するようにkubectlが設定されていません。無視します"
 
 #: shared/connection.go:101
 msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
-msgstr ""
+msgstr "uyuniコンテナは、podman、podman-remote、またはkubectlのいずれかでアクセスできません"
 
 #: shared/connection.go:104
 #, javascript-format
 msgid "unsupported backend %s"
-msgstr ""
+msgstr "サポートされていないバックエンド %s"
 
 #: shared/connection.go:125
 #, javascript-format
 msgid "container %s is not running on podman"
-msgstr ""
+msgstr "コンテナ %s は podman で実行されていません"
 
 #: shared/connection.go:146
 #, javascript-format
 msgid "the container is not running, %s %s command not executed: %s"
-msgstr ""
+msgstr "コンテナが実行されていません。%s %s コマンドが実行されませんでした: %s"
 
 #: shared/connection.go:193
 msgid "server didn't start within 60s. Check for the service status"
-msgstr ""
+msgstr "サーバが60秒以内に起動しませんでした。サービスステータスを確認します"
 
 #: shared/connection.go:223 shared/connection.go:262
 #, javascript-format
 msgid "unknown container kind: %s"
-msgstr ""
+msgstr "不明なコンテナの種類: %s"
 
 #: shared/connection.go:306
 msgid "failed to determine suitable backend"
-msgstr ""
+msgstr "適切なバックエンドを決定できませんでした"
 
 #: shared/connection.go:316
 msgid "no supported backend found"
-msgstr ""
+msgstr "サポートされているバックエンドが見つかりません"
 
 #: shared/kubernetes/helm.go:56
 #, javascript-format
 msgid "failed to %s helm chart %s in namespace %s"
-msgstr ""
+msgstr "ネームスペース %s で %s helmチャート %s に失敗しました"
 
 #: shared/kubernetes/helm.go:76
 #, javascript-format
 msgid "Failed to find %s's namespace, skipping removal"
-msgstr ""
+msgstr "%s のネームスペースが見つかりません。削除をスキップします"
 
 #: shared/kubernetes/helm.go:84
 msgid "Cannot guess namespace"
-msgstr ""
+msgstr "ネームスペースを推測できません"
 
 #: shared/kubernetes/helm.go:93 shared/podman/network.go:94
 #: shared/podman/systemd.go:50 shared/podman/systemd.go:73
@@ -149,38 +149,38 @@ msgstr "%s を実行します"
 #: shared/kubernetes/helm.go:95
 #, javascript-format
 msgid "Uninstalling %s"
-msgstr ""
+msgstr "%s をアンインストールしています"
 
 #: shared/kubernetes/helm.go:97
 #, javascript-format
 msgid "failed to run helm %s: %s"
-msgstr ""
+msgstr "helm %s の実行に失敗しました: %s"
 
 #: shared/kubernetes/helm.go:113
 #, javascript-format
 msgid "failed to detect %s's namespace using helm: %s"
-msgstr ""
+msgstr "helm: %s を使用して %s のネームスペースを検出できませんでした"
 
 #: shared/kubernetes/helm.go:117
 #, javascript-format
 msgid "helm provided an invalid JSON output: %s"
-msgstr ""
+msgstr "helmは無効なJSON出力を提供しました: %s"
 
 #: shared/kubernetes/helm.go:123
 msgid "found no or more than one deployment"
-msgstr ""
+msgstr "配備が見つからないか、複数の配備があります"
 
 #: shared/kubernetes/rke2.go:21
 msgid "Installing RKE2 Nginx configuration"
-msgstr ""
+msgstr "RKE2 Nginx設定のインストール"
 
 #: shared/kubernetes/rke2.go:29
 msgid "Failed to write Rke2 nginx configuration"
-msgstr ""
+msgstr "Rke2 nginx設定の書き込みに失敗しました"
 
 #: shared/kubernetes/rke2.go:33
 msgid "Waiting for Nginx controller to be reloaded"
-msgstr ""
+msgstr "Nginxコントローラーが再ロードされるのを待っています"
 
 #: shared/kubernetes/uninstall.go:13
 msgid ""
@@ -191,86 +191,92 @@ msgid ""
 "For instance on a default K3S install, the local-path-provider storage volumes will\n"
 "be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
 msgstr ""
+"\n"
+"ボリュームの削除は、kubernetesクラスタにインストールされたときに使用されるStorageClass\n"
+"によって自動的に処理される可能性があることに注意してください。\n"
+"\n"
+"たとえば、デフォルトのK3Sインストールでは、local-path-providerストレージボリュームは、\n"
+"-purge-volumes引数が使用されていなくても、配備を削除するときに自動的に削除されます。"
 
 #: shared/kubernetes/utils.go:51
 #, javascript-format
 msgid "failed to pull image: %s"
-msgstr ""
+msgstr "イメージのプルに失敗しました: %s"
 
 #: shared/kubernetes/utils.go:54
 #, javascript-format
 msgid "Waiting for %s deployment to be ready in %s namespace\n"
-msgstr ""
+msgstr "%s ネームスペース で %s 配備の準備ができるまで待っています\n"
 
 #: shared/kubernetes/utils.go:63
 #, javascript-format
 msgid "failed to find a ready replica for deployment %s in namespace %s after 60s"
-msgstr ""
+msgstr "60秒後にネームスペース %s で配備 %s の準備ができたレプリカが見つかりませんでした"
 
 #: shared/kubernetes/utils.go:68
 #, javascript-format
 msgid "Waiting for image of %s pod in %s namespace to be pulled"
-msgstr ""
+msgstr "%s ネームスペース の %s ポッドのイメージがプルされるのを待っています"
 
 #: shared/kubernetes/utils.go:81
 #, javascript-format
 msgid "failed to get failed events for pod %s"
-msgstr ""
+msgstr "ポッド %s の失敗したイベントの取得に失敗しました"
 
 #: shared/kubernetes/utils.go:86
 msgid "failed to pull image"
-msgstr ""
+msgstr "イメージをプルできませんでした"
 
 #: shared/kubernetes/utils.go:93
 #, javascript-format
 msgid "failed to get events for pod %s"
-msgstr ""
+msgstr "ポッド %s のイベントを取得できませんでした"
 
 #: shared/kubernetes/utils.go:139
 #, javascript-format
 msgid "failed to parse deployment status: %s"
-msgstr ""
+msgstr "配置ステータスの解析に失敗しました: %s"
 
 #: shared/kubernetes/utils.go:153
 #, javascript-format
 msgid "cannot run kubectl %s: %s"
-msgstr ""
+msgstr "kubectl %s を実行できません: %s"
 
 #: shared/kubernetes/utils.go:158
 #, javascript-format
 msgid "cannot get pods for %s: %s"
-msgstr ""
+msgstr "%s のポッドを取得できません: %s"
 
 #: shared/kubernetes/utils.go:165
 #, javascript-format
 msgid "replica to %d failed: %s"
-msgstr ""
+msgstr "%d へのレプリカが失敗しました: %s"
 
 #: shared/kubernetes/utils.go:178
 #, javascript-format
 msgid "cannot check if pod %s is running in app %s: %s"
-msgstr ""
+msgstr "アプリ %s: %s でポッド %s が実行中かどうかを確認できません"
 
 #: shared/kubernetes/utils.go:188 shared/kubernetes/utils.go:233
 #: shared/kubernetes/utils.go:327
 #, javascript-format
 msgid "cannot execute %s: %s"
-msgstr ""
+msgstr "%sは実行できません: %s"
 
 #: shared/kubernetes/utils.go:207
 #, javascript-format
 msgid "cannot get pod informations %s: %s"
-msgstr ""
+msgstr "ポッド情報 %s を取得できません: %s"
 
 #: shared/kubernetes/utils.go:216
 #, javascript-format
 msgid "cannot set replicas for %s to zero"
-msgstr ""
+msgstr "%s のレプリカを0に設定できません"
 
 #: shared/kubernetes/utils.go:243
 #, javascript-format
 msgid "pod %s replica is not %d in %s seconds: %s"
-msgstr ""
+msgstr "ポッド %s レプリカは %s 秒で %d ではありません: %s"
 
 #: shared/kubernetes/utils.go:266
 #, javascript-format
