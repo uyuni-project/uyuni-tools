@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-05-07 16:43+0000\n"
+"PO-Revision-Date: 2024-05-08 09:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ja/>\n"
@@ -144,7 +144,7 @@ msgstr ""
 #: shared/podman/systemd.go:74 shared/podman/utils.go:133
 #, javascript-format
 msgid "Would run %s"
-msgstr ""
+msgstr "%s を実行します"
 
 #: shared/kubernetes/helm.go:95
 #, javascript-format
@@ -327,22 +327,22 @@ msgstr ""
 #: shared/kubernetes/k3s.go:58
 #, javascript-format
 msgid "install %s before running this command"
-msgstr ""
+msgstr "このコマンドを実行する前に %s をインストールする"
 
 #: shared/kubernetes/k3s.go:65 shared/utils/utils.go:323
 #, javascript-format
 msgid "failed to create temporary directory: %s"
-msgstr ""
+msgstr "一時ディレクトリの作成に失敗しました: %s"
 
 #: shared/kubernetes/k3s.go:78
 #, javascript-format
 msgid "cannot delete %s: %s"
-msgstr ""
+msgstr "%s を削除できません: %s"
 
 #: shared/kubernetes/k3s.go:84
 #, javascript-format
 msgid "cannot find node running uyuni: %s"
-msgstr ""
+msgstr "uyuniを実行しているノードが見つかりません: %s"
 
 #: shared/kubernetes/k3s.go:112
 #, javascript-format
@@ -672,17 +672,17 @@ msgstr ""
 #: shared/podman/utils.go:198
 #, javascript-format
 msgid "failed to create temporary directory %s"
-msgstr ""
+msgstr "一時ディレクトリ %s の作成に失敗しました"
 
 #: shared/podman/utils.go:203
 #, javascript-format
 msgid "cannot inspect host values: %s"
-msgstr ""
+msgstr "ホスト値を検査できません: %s"
 
 #: shared/podman/utils.go:235
 #, javascript-format
 msgid "cannot inspect data. %s"
-msgstr ""
+msgstr "データを検査できません。%s"
 
 #: shared/utils/tar.go:48
 #, javascript-format
@@ -706,7 +706,7 @@ msgstr ""
 
 #: shared/utils/cmd.go:47 shared/utils/cmd.go:48
 msgid "failed to unmarshall configuration"
-msgstr ""
+msgstr "設定のアンマーシャルに失敗しました"
 
 #: shared/utils/cmd.go:55
 msgid "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use."
@@ -916,7 +916,7 @@ msgstr ""
 #: shared/utils/utils.go:300
 #, javascript-format
 msgid "cannot read config: %s"
-msgstr ""
+msgstr "設定を読み込めませんでした: %s"
 
 #: shared/utils/utils.go:331
 #, javascript-format
