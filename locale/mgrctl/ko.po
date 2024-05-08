@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-05-07 16:43+0000\n"
+"PO-Revision-Date: 2024-05-08 09:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrctl/ko/>\n"
@@ -20,91 +20,78 @@ msgstr ""
 "X-Generator: Weblate 4.9.1\n"
 
 #: mgrctl/cmd/api/api.go:25
-#, fuzzy
 msgid "JSON over HTTP API helper tool"
 msgstr "JSON over HTTP API 헬퍼 도구"
 
 #: mgrctl/cmd/api/api.go:30
-#, fuzzy
 msgid "Call API GET request"
 msgstr "API GET 요청 호출"
 
 #: mgrctl/cmd/api/api.go:31
-#, fuzzy
 msgid "Takes an API path and optional parameters and then issues GET request with them. If user and password are provided, calls login before API call"
 msgstr ""
 "API 경로와 선택 사항 파라미터를 가져온 다음 이를 사용하여 GET 요청을 발급합니다. 사용자 및 비밀번호가 제공된 경우 API를 "
 "호출하기 전 로그인을 호출합니다."
 
 #: mgrctl/cmd/api/api.go:39
-#, fuzzy
 msgid "Call API POST request"
 msgstr "API POST 요청 호출"
 
 #: mgrctl/cmd/api/api.go:40
-#, fuzzy
 msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
 msgstr ""
 "API 경로와 파라미터를 받은 가져온 이를 사용하여 POST 요청을 발급합니다. 사용자 및 비밀번호는 필수입니다. 파라미터는 JSON "
 "인코딩된 문자열 또는 하나 이상의 키=값 쌍일 수 있습니다."
 
 #: mgrctl/cmd/api/get.go:25 mgrctl/cmd/api/post.go:25
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "unable to login to the server: %s"
 msgstr "서버에 로그인할 수 없음: %s"
 
 #: mgrctl/cmd/api/get.go:32 mgrctl/cmd/api/post.go:48
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error in query %s: %s"
 msgstr "%s 쿼리의 오류: %s"
 
 #: mgrctl/cmd/cmd.go:30
-#, fuzzy
 msgid "Uyuni control tool"
 msgstr "Uyuni 제어 도구"
 
 #: mgrctl/cmd/cmd.go:31
-#, fuzzy
 msgid "Tool to help managing Uyuni servers mainly through their API"
 msgstr "주로 API를 통해 Uyuni 서버를 관리하는 데 유용한 도구"
 
 #: mgrctl/cmd/cmd.go:38
-#, fuzzy
 msgid "configuration file path"
 msgstr "구성 파일 경로"
 
 #: mgrctl/cmd/cmd.go:39
-#, fuzzy
 msgid "application log level"
 msgstr "애플리케이션 로그 수준"
 
 #: mgrctl/cmd/cmd.go:47
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Welcome to %s"
 msgstr "%s 시작"
 
 #: mgrctl/cmd/cmd.go:48
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Executing command: %s"
 msgstr "실행 중 명령: %s"
 
 #: mgrctl/cmd/cmd.go:54
-#, fuzzy
 msgid "Failed to create api command"
 msgstr "API 명령을 생성하지 못했습니다."
 
 #: mgrctl/cmd/cmd.go:63
-#, fuzzy
 msgid "Failed to create org command"
 msgstr "org 명령을 생성하지 못했습니다."
 
 #: mgrctl/cmd/cp/cp.go:31
-#, fuzzy
 msgid "Copy files to and from the containers"
 msgstr "컨테이너에 파일 복사"
 
 #: mgrctl/cmd/cp/cp.go:32
-#, fuzzy
 msgid ""
 "Takes a source and destination parameters.\n"
 "\tOne of them can be prefixed with 'server:' to indicate the path is within the server pod."
@@ -113,106 +100,88 @@ msgstr ""
 "\t이 중 하나 앞에 'server:'를 붙여 경로가 서버 Pod 내에 있음을 나타낼 수 있습니다."
 
 #: mgrctl/cmd/cp/cp.go:41
-#, fuzzy
 msgid "failed to unmarshall configuration"
 msgstr "구성을 마샬링 해제하지 못했습니다."
 
 #: mgrctl/cmd/cp/cp.go:47
-#, fuzzy
 msgid "User or UID to set on the destination file"
 msgstr "대상 파일에 설정할 사용자 또는 UID"
 
 #: mgrctl/cmd/cp/cp.go:48
-#, fuzzy
 msgid "Group or GID to set on the destination file"
 msgstr "대상 파일에 설정할 그룹 또는 GID"
 
 #: mgrctl/cmd/exec/exec.go:37
-#, fuzzy
 msgid "Execute commands inside the uyuni containers using 'sh -c'"
 msgstr "'sh -c'를 사용하여 uyuni 컨테이너 내에서 명령을 실행합니다."
 
 #: mgrctl/cmd/exec/exec.go:43
-#, fuzzy
 msgid "environment variables to pass to the command, separated by commas"
 msgstr "명령에 전달할 환경 변수를 쉼표로 구분하여 입력합니다."
 
 #: mgrctl/cmd/exec/exec.go:44
-#, fuzzy
 msgid "Pass stdin to the container"
 msgstr "컨테이너에 stdin을 전달합니다."
 
 #: mgrctl/cmd/exec/exec.go:45
-#, fuzzy
 msgid "Stdin is a TTY"
 msgstr "Stdin은 TTY입니다."
 
 #: mgrctl/cmd/exec/exec.go:98
-#, fuzzy
 msgid "Command failed"
 msgstr "명령 실패"
 
 #: mgrctl/cmd/exec/exec.go:102
-#, fuzzy
 msgid "Command returned with exit code 0"
 msgstr "종료 코드 0으로 반환된 명령"
 
 #: mgrctl/cmd/exec/exec.go:116
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot write: %s"
 msgstr "쓸 수 없음: %s"
 
 #: mgrctl/cmd/exec/exec.go:131
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Running: %s %s"
 msgstr "실행 중: %s %s"
 
 #: mgrctl/cmd/org/org.go:18
-#, fuzzy
 msgid "Organization-related commands"
 msgstr "조직 관련 명령"
 
 #: mgrctl/cmd/org/createFirst.go:28
-#, fuzzy
 msgid "Create the first user and organization"
 msgstr "첫 번째 사용자 및 조직 만들기"
 
 #: mgrctl/cmd/org/createFirst.go:35
-#, fuzzy
 msgid "Administrator user name"
 msgstr "관리자 사용자 이름"
 
 #: mgrctl/cmd/org/createFirst.go:36
-#, fuzzy
 msgid "Administrator password"
 msgstr "관리자 비밀번호"
 
 #: mgrctl/cmd/org/createFirst.go:37
-#, fuzzy
 msgid "The first name of the administrator"
 msgstr "관리자의 이름"
 
 #: mgrctl/cmd/org/createFirst.go:38
-#, fuzzy
 msgid "The last name of the administrator"
 msgstr "관리자의 성"
 
 #: mgrctl/cmd/org/createFirst.go:39
-#, fuzzy
 msgid "The administrator's email"
 msgstr "관리자의 전자 메일"
 
 #: mgrctl/cmd/org/createFirst.go:40
-#, fuzzy
 msgid "The first organization name"
 msgstr "첫 번째 조직 이름"
 
 #: mgrctl/cmd/org/createFirst.go:51
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Organization %s created with id %d"
 msgstr "조직 %s이(가) ID %d(으)로 생성되었습니다."
 
 #: mgrctl/cmd/term/term.go:21
-#, fuzzy
 msgid "Run a terminal inside the server container"
 msgstr "서버 컨테이너 내에서 터미널 실행"
