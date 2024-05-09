@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-05-09 16:43+0000\n"
+"PO-Revision-Date: 2024-05-10 02:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrpxy/ja/>\n"
@@ -277,7 +277,7 @@ msgstr "ptfとtestフラグを同時に空にすることはできません "
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:40
 msgid "user flag cannot be empty"
-msgstr "userフラグは空にできません"
+msgstr "ユーザフラグは空にできません"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:54
 #, javascript-format
@@ -405,7 +405,7 @@ msgstr "ホスト値を検査できません: %s"
 #: mgrpxy/shared/podman/podman.go:153
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
-msgstr "構成 %s でプロキシを設定しています"
+msgstr "設定 %s でプロキシを設定しています"
 
 #: mgrpxy/shared/podman/podman.go:173
 msgid "cannot find httpd image: it will no be upgraded"
