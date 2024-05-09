@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-05-08 15:43+0000\n"
+"PO-Revision-Date: 2024-05-09 16:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrpxy/ja/>\n"
@@ -40,7 +40,7 @@ msgid ""
 msgstr ""
 "実行中のkubernetesクラスタに新しいプロキシをインストールします。\n"
 "\n"
-"サーバが生成した設定用tarballのパスのみをパラメータとして受け取ります。\n"
+"サーバが生成した設定tarballへのパスのみをパラメータとして受け取ります。\n"
 "\n"
 "install kubernetesコマンドは、kubectlがローカルにインストールされていることを前提としています。\n"
 "\n"
@@ -85,9 +85,9 @@ msgid ""
 msgstr ""
 "podmanに新しいプロキシをインストールする\n"
 "\n"
-"サーバが生成した設定用tarballへのパスのみをパラメータとして受け取ります。\n"
+"サーバが生成した設定tarballへのパスのみをパラメータとして受け取ります。\n"
 "\n"
-"install podmanコマンドは、podmanがローカルにインストールされていることを前提にしています。\n"
+"install podmanコマンドは、podmanがローカルにインストールされていることを前提としています。\n"
 "\n"
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
@@ -120,7 +120,7 @@ msgstr "クラスタにuyuni-proxy helmリリースがインストールされ�
 #: mgrpxy/cmd/status/kubernetes.go:37
 #, javascript-format
 msgid "failed to find the uyuni-proxy deployment namespace: %s"
-msgstr "uyuni-proxy配置ネームスペースが見つかりませんでした: %s"
+msgstr "uyuni-proxy配備ネームスペースが見つかりませんでした: %s"
 
 #: mgrpxy/cmd/status/kubernetes.go:43
 #, javascript-format
@@ -179,8 +179,8 @@ msgid ""
 "Uninstall a proxy and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
 msgstr ""
-"プロキシとオプションで対応するボリュームをアンインストールします。\n"
-"デフォルトでは、実行される内容のみが出力され、実際に削除するには --forceを使用します。"
+"プロキシ、およびオプションで対応するボリュームをアンインストールします。\n"
+"デフォルトでは、実行される内容のみが出力され、実際に削除するには--forceを使用します。"
 
 #: mgrpxy/cmd/uninstall/uninstall.go:36
 #, javascript-format
@@ -193,7 +193,7 @@ msgstr "実際にプロキシを削除する"
 
 #: mgrpxy/cmd/uninstall/uninstall.go:52
 msgid "Also remove the volumes"
-msgstr "ボリュームも削除"
+msgstr "ボリュームも削除する"
 
 #: mgrpxy/cmd/cmd.go:33
 msgid "Uyuni proxy administration tool"
@@ -201,7 +201,7 @@ msgstr "Uyuniプロキシ管理ツール"
 
 #: mgrpxy/cmd/cmd.go:34
 msgid "Tool to help administering Uyuni proxies in containers"
-msgstr "Uyuni プロキシのコンテナ管理を支援するツール"
+msgstr "Uyuniプロキシのコンテナ管理を支援するツール"
 
 #: mgrpxy/cmd/cmd.go:47
 #, javascript-format
@@ -243,7 +243,7 @@ msgstr ""
 "  * kubectlとhelmがローカルにインストールされている\n"
 "  *配備先のクラスタに接続するために、動作するkubectl構成が設定されている\n"
 "\n"
-"helmの値ファイルは、コマンドのパラメータまたは設定の値で上書きされます。\n"
+"helm値ファイルは、コマンドのパラメータまたは設定の値で上書きされます。\n"
 "\n"
 "メモ:リモートクラスタへのインストールはまだサポートされていません。\n"
 
@@ -265,7 +265,7 @@ msgstr ""
 "support ptf podmanコマンドは、podmanがローカルにインストールされ、\n"
 "ホストマシンがSCCに登録されていることを前提としています。\n"
 "\n"
-"メモ: 今のところ、リモートpodmanへのインストールはサポートされていません!\n"
+"メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:34
 msgid "ptf and test flags cannot be set simultaneously "
@@ -310,7 +310,7 @@ msgstr "PTFのインストール"
 
 #: mgrpxy/cmd/support/support.go:18 mgrpxy/cmd/support/support.go:19
 msgid "Commands for support operations"
-msgstr "支援業務用のコマンド"
+msgstr "サポート操作用のコマンド"
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:20
 msgid "Upgrade a proxy on a running kubernetes cluster"
@@ -328,7 +328,7 @@ msgstr ""
 "\n"
 "upgrade kubernetesコマンドは、kubectlがローカルにインストールされていることを前提としています。\n"
 "\n"
-"メモ: 現時点では、リモートのkubernetesクラスタ上でのアップグレードはサポートされていません。\n"
+"メモ: 現時点では、リモートkubernetesクラスタ上でのアップグレードはサポートされていません。\n"
 
 #: mgrpxy/cmd/upgrade/podman/podman.go:20
 msgid "Upgrade a proxy on podman"
@@ -344,9 +344,9 @@ msgid ""
 msgstr ""
 "podmanでプロキシをアップグレードする\n"
 "\n"
-"upgrade podmanコマンドは、 podmanがローカルでアップグレードされていることを前提にしています。\n"
+"upgrade podmanコマンドは、 podmanがローカルでアップグレードされていることを前提としています。\n"
 "\n"
-"メモ: 現時点では、podmanでのアップグレードはサポートされていません。\n"
+"メモ: 現時点では、リモートpodmanでのアップグレードはサポートされていません。\n"
 
 #: mgrpxy/cmd/upgrade/upgrade.go:19 mgrpxy/cmd/upgrade/upgrade.go:20
 msgid "Upgrade a proxy"
