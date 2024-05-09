@@ -98,7 +98,8 @@ Tools for managing uyuni container.
 %package -n %{name_adm}
 Summary:        Command line tool to install and update %{productname}
 %if 0%{?suse_version}
-Requires:       (aardvark-dns if netavark)
+Requires:       (aardvark-dns if podman)
+Requires:       (netavark if podman)
 %endif
 # 0%{?suse_version}
 %if "%{_vendor}" != "debbuild"
@@ -113,7 +114,8 @@ either on Podman or a Kubernetes cluster.
 Summary:        Command line tool to install and update %{productname} proxy
 Obsoletes:      uyuni-proxy-systemd-services
 %if 0%{?suse_version}
-Requires:       (aardvark-dns if netavark)
+Requires:       (netavark if podman)
+Requires:       (aardvark-dns if podman)
 %endif
 # 0%{?suse_version}
 
