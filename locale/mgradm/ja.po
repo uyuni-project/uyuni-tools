@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-05-09 16:43+0000\n"
+"PO-Revision-Date: 2024-05-09 19:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools/ja/>\n"
@@ -1756,7 +1756,7 @@ msgstr "ソースホストから抽出されたデータを読み込めません
 #: mgradm/shared/utils/exec.go:109
 #, javascript-format
 msgid "cannot read config: %s"
-msgstr "設定を読み込めませんでした: %s"
+msgstr "設定を読み込めません: %s"
 
 #: mgradm/shared/utils/exec.go:112
 msgid "cannot retrieve timezone"
