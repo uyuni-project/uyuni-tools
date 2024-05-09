@@ -228,7 +228,7 @@ func ReadFile(file string) []byte {
 // Get the value of a file containing a boolean.
 // This is handy for files from the kernel API.
 func GetFileBoolean(file string) bool {
-	return string(ReadFile(file)) != "0"
+	return strings.TrimSpace(string(ReadFile(file))) != "0"
 }
 
 // Uninstalls a file.
