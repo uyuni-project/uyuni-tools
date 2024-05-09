@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-05-08 09:43+0000\n"
+"PO-Revision-Date: 2024-05-09 16:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrctl/ja/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: mgrctl/cmd/api/api.go:25
 msgid "JSON over HTTP API helper tool"
-msgstr "JSON over HTTPヘルパーツール"
+msgstr "JSON over HTTP API ヘルパーツール"
 
 #: mgrctl/cmd/api/api.go:30
 msgid "Call API GET request"
@@ -59,7 +59,7 @@ msgstr "Uyuni制御ツール"
 
 #: mgrctl/cmd/cmd.go:31
 msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr "主にAPIを通じてUyuni サーバを管理するのに役立つツール"
+msgstr "主にAPIを通じてUyuniサーバを管理するのに役立つツール"
 
 #: mgrctl/cmd/cmd.go:38
 msgid "configuration file path"
@@ -81,7 +81,7 @@ msgstr "コマンドの実行中: %s"
 
 #: mgrctl/cmd/cmd.go:54
 msgid "Failed to create api command"
-msgstr "api コマンドの作成に失敗しました"
+msgstr "apiコマンドの作成に失敗しました"
 
 #: mgrctl/cmd/cmd.go:63
 msgid "Failed to create org command"
@@ -121,19 +121,19 @@ msgstr "カンマで区切ってコマンドに渡す環境変数"
 
 #: mgrctl/cmd/exec/exec.go:44
 msgid "Pass stdin to the container"
-msgstr "コンテナに標準入力を渡す"
+msgstr "コンテナにstdinを渡す"
 
 #: mgrctl/cmd/exec/exec.go:45
 msgid "Stdin is a TTY"
-msgstr "標準入力はTTYです"
+msgstr "StdinはTTYです"
 
 #: mgrctl/cmd/exec/exec.go:98
 msgid "Command failed"
-msgstr "コマンド失敗"
+msgstr "コマンドが失敗しました"
 
 #: mgrctl/cmd/exec/exec.go:102
 msgid "Command returned with exit code 0"
-msgstr "コマンドは終了コード0で返されます"
+msgstr "コマンドは終了コード0で返されました"
 
 #: mgrctl/cmd/exec/exec.go:116
 #, javascript-format
@@ -171,7 +171,7 @@ msgstr "管理者の姓"
 
 #: mgrctl/cmd/org/createFirst.go:39
 msgid "The administrator's email"
-msgstr "管理者の電子メールアアドレス"
+msgstr "管理者の電子メール"
 
 #: mgrctl/cmd/org/createFirst.go:40
 msgid "The first organization name"
