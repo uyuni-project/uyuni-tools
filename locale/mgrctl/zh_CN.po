@@ -8,171 +8,176 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-05-09 11:43+0000\n"
+"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrctl/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: mgrctl/cmd/api/api.go:25
 msgid "JSON over HTTP API helper tool"
-msgstr ""
+msgstr "JSON over HTTP API 助手工具"
 
 #: mgrctl/cmd/api/api.go:30
 msgid "Call API GET request"
-msgstr ""
+msgstr "Call API GET 请求"
 
 #: mgrctl/cmd/api/api.go:31
 msgid "Takes an API path and optional parameters and then issues GET request with them. If user and password are provided, calls login before API call"
-msgstr ""
+msgstr "接受 API 路径和可选参数，然后使用它们发出 GET 请求。如果提供了用户和口令，则会在调用 API 之前调用登录"
 
 #: mgrctl/cmd/api/api.go:39
 msgid "Call API POST request"
-msgstr ""
+msgstr "Call API POST 请求"
 
 #: mgrctl/cmd/api/api.go:40
 msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
-msgstr ""
+msgstr "接受 API 路径和其他参数，然后使用它们发出 POST 请求。必须提供用户和口令。参数可以是 JSON 编码的字符串或一个或多个键值对。"
 
 #: mgrctl/cmd/api/get.go:25 mgrctl/cmd/api/post.go:25
 #, javascript-format
 msgid "unable to login to the server: %s"
-msgstr ""
+msgstr "无法登录到服务器：%s"
 
 #: mgrctl/cmd/api/get.go:32 mgrctl/cmd/api/post.go:48
 #, javascript-format
 msgid "error in query %s: %s"
-msgstr ""
+msgstr "查询 %s 中存在错误：%s"
 
 #: mgrctl/cmd/cmd.go:30
 msgid "Uyuni control tool"
-msgstr ""
+msgstr "Uyuni 控制工具"
 
 #: mgrctl/cmd/cmd.go:31
 msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr ""
+msgstr "用于帮助管理 Uyuni 服务器（主要通过其 API）的工具"
 
 #: mgrctl/cmd/cmd.go:38
 msgid "configuration file path"
-msgstr ""
+msgstr "配置文件路径"
 
 #: mgrctl/cmd/cmd.go:39
 msgid "application log level"
-msgstr ""
+msgstr "应用程序日志级别"
 
 #: mgrctl/cmd/cmd.go:47
 #, javascript-format
 msgid "Welcome to %s"
-msgstr ""
+msgstr "欢迎使用 %s"
 
 #: mgrctl/cmd/cmd.go:48
 #, javascript-format
 msgid "Executing command: %s"
-msgstr ""
+msgstr "正在执行命令：%s"
 
 #: mgrctl/cmd/cmd.go:54
 msgid "Failed to create api command"
-msgstr ""
+msgstr "无法创建 api 命令"
 
 #: mgrctl/cmd/cmd.go:63
 msgid "Failed to create org command"
-msgstr ""
+msgstr "无法创建 org 命令"
 
 #: mgrctl/cmd/cp/cp.go:31
 msgid "Copy files to and from the containers"
-msgstr ""
+msgstr "将文件复制到容器以及从中复制文件"
 
 #: mgrctl/cmd/cp/cp.go:32
 msgid ""
 "Takes a source and destination parameters.\n"
 "\tOne of them can be prefixed with 'server:' to indicate the path is within the server pod."
 msgstr ""
+"接受来源和目标参数。\n"
+"\t其中之一可以加上 'server:' 前缀来指出路径在服务器 pod 内。"
 
 #: mgrctl/cmd/cp/cp.go:41
 msgid "failed to unmarshall configuration"
-msgstr ""
+msgstr "无法解组配置"
 
 #: mgrctl/cmd/cp/cp.go:47
 msgid "User or UID to set on the destination file"
-msgstr ""
+msgstr "要对目标文件设置的用户或 UID"
 
 #: mgrctl/cmd/cp/cp.go:48
 msgid "Group or GID to set on the destination file"
-msgstr ""
+msgstr "要对目标文件设置的组或 UID"
 
 #: mgrctl/cmd/exec/exec.go:37
 msgid "Execute commands inside the uyuni containers using 'sh -c'"
-msgstr ""
+msgstr "使用 'sh -c' 在 uyuni 容器内执行命令"
 
 #: mgrctl/cmd/exec/exec.go:43
 msgid "environment variables to pass to the command, separated by commas"
-msgstr ""
+msgstr "要传递给命令的环境变量，以逗号分隔"
 
 #: mgrctl/cmd/exec/exec.go:44
 msgid "Pass stdin to the container"
-msgstr ""
+msgstr "将 stdin 传递给容器"
 
 #: mgrctl/cmd/exec/exec.go:45
 msgid "Stdin is a TTY"
-msgstr ""
+msgstr "Stdin 为 TTY"
 
 #: mgrctl/cmd/exec/exec.go:98
 msgid "Command failed"
-msgstr ""
+msgstr "命令失败"
 
 #: mgrctl/cmd/exec/exec.go:102
 msgid "Command returned with exit code 0"
-msgstr ""
+msgstr "命令返回退出码 0"
 
 #: mgrctl/cmd/exec/exec.go:116
 #, javascript-format
 msgid "cannot write: %s"
-msgstr ""
+msgstr "无法写入：%s"
 
 #: mgrctl/cmd/exec/exec.go:131
 #, javascript-format
 msgid "Running: %s %s"
-msgstr ""
+msgstr "正在运行：%s %s"
 
 #: mgrctl/cmd/org/org.go:18
 msgid "Organization-related commands"
-msgstr ""
+msgstr "与组织相关的命令"
 
 #: mgrctl/cmd/org/createFirst.go:28
 msgid "Create the first user and organization"
-msgstr ""
+msgstr "创建第一个用户和组织"
 
 #: mgrctl/cmd/org/createFirst.go:35
 msgid "Administrator user name"
-msgstr ""
+msgstr "管理员用户名"
 
 #: mgrctl/cmd/org/createFirst.go:36
 msgid "Administrator password"
-msgstr ""
+msgstr "管理员口令"
 
 #: mgrctl/cmd/org/createFirst.go:37
 msgid "The first name of the administrator"
-msgstr ""
+msgstr "管理员的名字"
 
 #: mgrctl/cmd/org/createFirst.go:38
 msgid "The last name of the administrator"
-msgstr ""
+msgstr "管理员的姓氏"
 
 #: mgrctl/cmd/org/createFirst.go:39
 msgid "The administrator's email"
-msgstr ""
+msgstr "管理员的电子邮件地址"
 
 #: mgrctl/cmd/org/createFirst.go:40
 msgid "The first organization name"
-msgstr ""
+msgstr "第一个组织名称"
 
 #: mgrctl/cmd/org/createFirst.go:51
 #, javascript-format
 msgid "Organization %s created with id %d"
-msgstr ""
+msgstr "组织 %s 已创建，ID 为 %d"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
-msgstr ""
+msgstr "在服务器容器内运行终端"
