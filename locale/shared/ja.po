@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-05-09 07:43+0000\n"
+"PO-Revision-Date: 2024-05-09 16:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ja/>\n"
@@ -46,7 +46,7 @@ msgstr "不明なエラー: %d"
 
 #: shared/api/api.go:166
 msgid "API server password"
-msgstr "APIサーバパスワード"
+msgstr "APIサーバのパスワード"
 
 #: shared/api/api.go:181
 msgid "Unable to create login data"
@@ -54,7 +54,7 @@ msgstr "ログインデータを作成できません"
 
 #: shared/api/api.go:211
 msgid "auth cookie not found in login response"
-msgstr "ログインレスポンスにauthクッキーが見つかりません"
+msgstr "ログイン応答に認証クッキーが見つかりません"
 
 #: shared/api/api.go:227
 msgid "Unable to convert data to JSON"
@@ -101,7 +101,7 @@ msgstr "サポートされていないバックエンド %s"
 #: shared/connection.go:125
 #, javascript-format
 msgid "container %s is not running on podman"
-msgstr "コンテナ %s は podman で実行されていません"
+msgstr "コンテナ %s はpodmanで実行されていません"
 
 #: shared/connection.go:146
 #, javascript-format
@@ -128,12 +128,12 @@ msgstr "サポートされているバックエンドが見つかりません"
 #: shared/kubernetes/helm.go:56
 #, javascript-format
 msgid "failed to %s helm chart %s in namespace %s"
-msgstr "ネームスペース %s で %s helmチャート %s に失敗しました"
+msgstr "%s helmチャート %s (ネームスペース %s 内)に失敗しました"
 
 #: shared/kubernetes/helm.go:76
 #, javascript-format
 msgid "Failed to find %s's namespace, skipping removal"
-msgstr "%s のネームスペースが見つかりません。削除をスキップします"
+msgstr "%s のネームスペースが見つかりませんでした。削除をスキップします"
 
 #: shared/kubernetes/helm.go:84
 msgid "Cannot guess namespace"
@@ -159,7 +159,7 @@ msgstr "helm %s の実行に失敗しました: %s"
 #: shared/kubernetes/helm.go:113
 #, javascript-format
 msgid "failed to detect %s's namespace using helm: %s"
-msgstr "helm: %s を使用して %s のネームスペースを検出できませんでした"
+msgstr "helmを使用して %s のネームスペースを検出できませんでした: %s"
 
 #: shared/kubernetes/helm.go:117
 #, javascript-format
@@ -180,7 +180,7 @@ msgstr "Rke2 nginx設定の書き込みに失敗しました"
 
 #: shared/kubernetes/rke2.go:33
 msgid "Waiting for Nginx controller to be reloaded"
-msgstr "Nginxコントローラーが再ロードされるのを待っています"
+msgstr "Nginxコントローラが再ロードされるのを待機中"
 
 #: shared/kubernetes/uninstall.go:13
 msgid ""
@@ -193,10 +193,10 @@ msgid ""
 msgstr ""
 "\n"
 "ボリュームの削除は、kubernetesクラスタにインストールされたときに使用されるStorageClass\n"
-"によって自動的に処理される可能性があることに注意してください。\n"
+"によって自動的に処理される可能性あることにも注意してください。\n"
 "\n"
 "たとえば、デフォルトのK3Sインストールでは、local-path-providerストレージボリュームは、\n"
-"-purge-volumes引数が使用されていなくても、配備を削除するときに自動的に削除されます。"
+"--purge-volumes引数が使用されていなくても、配備を削除するときに自動的に削除されます。"
 
 #: shared/kubernetes/utils.go:51
 #, javascript-format
@@ -206,7 +206,7 @@ msgstr "イメージのプルに失敗しました: %s"
 #: shared/kubernetes/utils.go:54
 #, javascript-format
 msgid "Waiting for %s deployment to be ready in %s namespace\n"
-msgstr "%s ネームスペース で %s 配備の準備ができるまで待っています\n"
+msgstr "%s 配備の準備ができています( %s ネームスペース内)\n"
 
 #: shared/kubernetes/utils.go:63
 #, javascript-format
@@ -216,7 +216,7 @@ msgstr "60秒後にネームスペース %s で配備 %s の準備ができた�
 #: shared/kubernetes/utils.go:68
 #, javascript-format
 msgid "Waiting for image of %s pod in %s namespace to be pulled"
-msgstr "%s ネームスペース の %s ポッドのイメージがプルされるのを待っています"
+msgstr "%s ポッド( %s  ネームスペース内)のイメージを待機しています"
 
 #: shared/kubernetes/utils.go:81
 #, javascript-format
@@ -235,7 +235,7 @@ msgstr "ポッド %s のイベントを取得できませんでした"
 #: shared/kubernetes/utils.go:139
 #, javascript-format
 msgid "failed to parse deployment status: %s"
-msgstr "配置ステータスの解析に失敗しました: %s"
+msgstr "配備ステータスの解析に失敗しました: %s"
 
 #: shared/kubernetes/utils.go:153
 #, javascript-format
@@ -255,13 +255,13 @@ msgstr "%d へのレプリカが失敗しました: %s"
 #: shared/kubernetes/utils.go:178
 #, javascript-format
 msgid "cannot check if pod %s is running in app %s: %s"
-msgstr "アプリ %s: %s でポッド %s が実行中かどうかを確認できません"
+msgstr "ポッド %s がアプリ %s で実行中かどうかを確認できません: %s"
 
 #: shared/kubernetes/utils.go:188 shared/kubernetes/utils.go:233
 #: shared/kubernetes/utils.go:327
 #, javascript-format
 msgid "cannot execute %s: %s"
-msgstr "%sは実行できません: %s"
+msgstr "%s を実行できません: %s"
 
 #: shared/kubernetes/utils.go:207
 #, javascript-format
@@ -368,7 +368,7 @@ msgstr "kubeletバージョンの取得に失敗しました: %s"
 #: shared/kubernetes/kubernetes.go:81
 #, javascript-format
 msgid "failed to get pod commands to look for nginx controller: %s"
-msgstr "nginxコントローラを探すためのpodコマンドの取得に失敗しました: %s"
+msgstr "nginxコントローラを探すためのポッドコマンドの取得に失敗しました: %s"
 
 #: shared/kubernetes/kubernetes.go:95
 #, javascript-format
@@ -398,7 +398,7 @@ msgstr "%s ネットワークの設定"
 #: shared/podman/network.go:35
 #, javascript-format
 msgid "%s network doesn't have IPv6, deleting existing network to enable IPv6 on it"
-msgstr "%s ネットワークにはIPv6がありません。既存のネットワークを削除してIPv6を有効にしてください"
+msgstr "%s ネットワークにはIPv6がありません。既存のネットワークを削除してIPv6を有効にします"
 
 #: shared/podman/network.go:39
 #, javascript-format
@@ -418,7 +418,7 @@ msgstr "podmanのネットワークバックエンドが見つかりませんで
 #: shared/podman/network.go:57
 #, javascript-format
 msgid "Podman's network backend (%s) is not netavark, skipping IPv6 enabling on %s network"
-msgstr "Podmanのネットワークバックエンド (%s) はnetavarkではないので、%s ネットワークでIPv6を有効にするのをスキップします"
+msgstr "Podmanのネットワークバックエンド (%s) はnetavarkではありません。%s ネットワークでIPv6を有効にするのをスキップします"
 
 #: shared/podman/network.go:65
 #, javascript-format
@@ -452,7 +452,7 @@ msgstr "%s のRPMイメージを使用できません: %s"
 #: shared/podman/images.go:56
 #, javascript-format
 msgid "Using the %s image loaded from the RPM instead of its online version %s"
-msgstr "オンラインバージョン %s ではなく、RPM からロードされた %s イメージを使用"
+msgstr "RPM からロードされた %s イメージを使用(オンラインバージョン %s ではない)"
 
 #: shared/podman/images.go:60
 #, javascript-format
@@ -462,7 +462,7 @@ msgstr "%s のRPMイメージが見つかりません"
 #: shared/podman/images.go:68
 #, javascript-format
 msgid "image %s is missing and cannot be fetched"
-msgstr "イメージ %s が見つからないので取得できません"
+msgstr "イメージ %s が見つからないのでフェッチできません"
 
 #: shared/podman/images.go:93
 #, javascript-format
@@ -488,17 +488,17 @@ msgstr "イメージ %s がすでにプルされているかどうかの確認�
 #: shared/podman/images.go:204
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
-msgstr "%s には小文字のみを含める必要があります。含めない場合、podman pull は失敗します"
+msgstr "%s には小文字のみを含める必要があります。含めない場合、podmanのプルは失敗します"
 
 #: shared/podman/images.go:206
 #, javascript-format
 msgid "Running podman pull %s"
-msgstr "podman pull %s の実行中"
+msgstr "podmanのプル %s の実行中"
 
 #: shared/podman/images.go:221
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
-msgstr "podman image search --list-tags %s --format={{.Tag}}の実行中"
+msgstr "podmanイメージ検索--list-tags %s --format={{.Tag}}の実行中"
 
 #: shared/podman/images.go:225
 #, javascript-format
@@ -523,7 +523,7 @@ msgstr "Systemd には %s.serviceユニットがありません"
 #: shared/podman/systemd.go:51
 #, javascript-format
 msgid "Would remove %s"
-msgstr "%s を削除する"
+msgstr "%s を削除します"
 
 #: shared/podman/systemd.go:53
 #, javascript-format
@@ -616,17 +616,17 @@ msgstr "%s コンテナの実行に失敗しました: %s"
 #: shared/podman/utils.go:107
 #, javascript-format
 msgid "Would run podman kill %s for container id: %s"
-msgstr "コンテナID: %s に対してpodman kill %s を実行する"
+msgstr "podman kill %s を実行します (コンテナID: %s に対して)"
 
 #: shared/podman/utils.go:108
 #, javascript-format
 msgid "Would run podman remove %s for container id: %s"
-msgstr "コンテナID: %s に対してpodman remove %s を実行する"
+msgstr "podman remove %s を実行します(コンテナID: %s に対して)"
 
 #: shared/podman/utils.go:110
 #, javascript-format
 msgid "Run podman kill %s for container id: %s"
-msgstr "コンテナID: %s に対してpodman kill %sを実行する"
+msgstr "podman kill %sを実行します(コンテナID: %s に対して)"
 
 #: shared/podman/utils.go:113
 msgid "Failed to kill the server"
@@ -635,7 +635,7 @@ msgstr "サーバの強制終了に失敗しました"
 #: shared/podman/utils.go:115
 #, javascript-format
 msgid "Run podman remove %s for container id: %s"
-msgstr "コンテナID: %s に対してpodman remove %s を実行する"
+msgstr "podman remove %s を実行する(コンテナID: %s に対して)"
 
 #: shared/podman/utils.go:118
 msgid "Error removing container"
@@ -658,7 +658,7 @@ msgstr "ボリューム %s の削除に失敗しました"
 #: shared/podman/utils.go:170
 #, javascript-format
 msgid "volume folder (%s) already exists, cannot link it to %s"
-msgstr "ボリュームフォルダ (%s) はすでに存在するため、%s にリンクできません"
+msgstr "ボリュームフォルダ (%s) はすでに存在します。%s にリンクできません"
 
 #: shared/podman/utils.go:174
 #, javascript-format
@@ -693,7 +693,7 @@ msgstr "データを検査できません。%s"
 #: shared/utils/tar.go:48
 #, javascript-format
 msgid "Skipping extraction of %s in %s file as it resolves outside the target path"
-msgstr "%s (%s ファイル内)はターゲットパスの外部で解決されるため、抽出をスキップします"
+msgstr "ターゲットパスの外部で解決されるため、%s (%s ファイル内)の抽出をスキップします"
 
 #: shared/utils/tar.go:90
 #, javascript-format
@@ -718,11 +718,11 @@ msgstr "設定のアンマーシャルに失敗しました"
 msgid "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use."
 msgstr ""
 "コンテナに到達するために使用するツール。指定できる値:「 podman」、「podman-"
-"remote」、「kubectl」。デフォルトではどれを使うかを推測します。"
+"remote」、「kubectl」。デフォルトではどれを使用するかを推測します。"
 
 #: shared/utils/cmd.go:69 shared/utils/cmd.go:75
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
-msgstr "イメージをプルするかどうかを設定します。値は 「Never」、 「IfNotPresent」、または 「Always」のいずれかとなります"
+msgstr "イメージをプルするかどうかを設定します。値は 「Never」、 「IfNotPresent」、または 「Always」のいずれかになります"
 
 #: shared/utils/cmd.go:80
 msgid "PTF ID"
@@ -730,7 +730,7 @@ msgstr "PTF ID"
 
 #: shared/utils/cmd.go:81
 msgid "Test package ID"
-msgstr "テストパッケージ ID"
+msgstr "テストパッケージID"
 
 #: shared/utils/cmd.go:82
 msgid "SCC user"
@@ -808,7 +808,7 @@ msgstr ""
 "  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{"
 "if .HasAvailableSubCommands}}\n"
 "\n"
-"コマンドの詳細については、「{{.CommandPath}} [command] --helpを使用してください{{end}}\n"
+"コマンドの詳細については、「{{.CommandPath}} [command] --help」を使用してください{{end}}\n"
 
 #: shared/utils/config.go:118
 msgid ""
