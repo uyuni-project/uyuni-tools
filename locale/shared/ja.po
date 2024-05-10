@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: 2024-05-09 19:43+0000\n"
+"PO-Revision-Date: 2024-05-10 02:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ja/>\n"
@@ -37,7 +37,7 @@ msgstr "CAの証明書ファイルへのパス"
 
 #: shared/api/api.go:75
 msgid "If set, server certificate will not be checked for validity"
-msgstr "設定された場合、サーバ証明書は有効性をチェックされません"
+msgstr "設定されている場合、サーバ証明書は有効性をチェックされません"
 
 #: shared/api/api.go:124
 #, javascript-format
@@ -128,7 +128,7 @@ msgstr "サポートされているバックエンドが見つかりません"
 #: shared/kubernetes/helm.go:56
 #, javascript-format
 msgid "failed to %s helm chart %s in namespace %s"
-msgstr "%s helmチャート %s (ネームスペース %s 内)に失敗しました"
+msgstr "%s helmチャート %s (ネームスペース %s 内)の実行に失敗しました"
 
 #: shared/kubernetes/helm.go:76
 #, javascript-format
@@ -206,7 +206,7 @@ msgstr "イメージのプルに失敗しました: %s"
 #: shared/kubernetes/utils.go:54
 #, javascript-format
 msgid "Waiting for %s deployment to be ready in %s namespace\n"
-msgstr "%s 配備の準備ができています( %s ネームスペース内)\n"
+msgstr "%s 配備の準備を待機中( %s ネームスペース内)\n"
 
 #: shared/kubernetes/utils.go:63
 #, javascript-format
@@ -276,7 +276,7 @@ msgstr "%s のレプリカを0に設定できません"
 #: shared/kubernetes/utils.go:243
 #, javascript-format
 msgid "pod %s replica is not %d in %s seconds: %s"
-msgstr "ポッド %s レプリカは %d ではありません(%s 秒): %s"
+msgstr "ポッド %s のレプリカが %d になっていません(%s 秒後): %s"
 
 #: shared/kubernetes/utils.go:266
 #, javascript-format
@@ -418,7 +418,7 @@ msgstr "podmanのネットワークバックエンドが見つかりませんで
 #: shared/podman/network.go:57
 #, javascript-format
 msgid "Podman's network backend (%s) is not netavark, skipping IPv6 enabling on %s network"
-msgstr "Podmanのネットワークバックエンド (%s) はnetavarkではありません。%s ネットワークでIPv6を有効にするのをスキップします"
+msgstr "Podmanのネットワークバックエンド (%s) はnetavarkではありません。%s ネットワークでのIPv6の有効化をスキップします"
 
 #: shared/podman/network.go:65
 #, javascript-format
@@ -518,7 +518,7 @@ msgstr "コンテナ %s に対して実行中のイメージが見つかりま�
 #: shared/podman/systemd.go:47
 #, javascript-format
 msgid "Systemd has no %s.service unit"
-msgstr "Systemd には %s.serviceユニットがありません"
+msgstr "Systemdには %s.serviceユニットがありません"
 
 #: shared/podman/systemd.go:51
 #, javascript-format
