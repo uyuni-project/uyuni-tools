@@ -44,7 +44,8 @@ func SetupNetwork() error {
 		}
 	}
 
-	args := []string{"network", "create"}
+	// We do not need inter-container resolution, disable dns plugin
+	args := []string{"network", "create", "--disable-dns"}
 	if ipv6Enabled {
 		// An IPv6 network on a host where IPv6 is disabled doesn't work: don't try it.
 		// Check if the networkd backend is netavark
