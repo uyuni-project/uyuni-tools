@@ -5,6 +5,8 @@
 package start
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -16,8 +18,8 @@ func podmanStart(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	if podman.HasService(podman.ServerAttestationService) {
-		if err := podman.StartService(podman.ServerAttestationService); err != nil {
+	for i := 0; i < podman.CurrentReplicaCount(podman.ServerAttestationService); i++ {
+		if err := podman.StartService(fmt.Sprintf("%s@%d", podman.ServerAttestationService, i)); err != nil {
 			return err
 		}
 	}
