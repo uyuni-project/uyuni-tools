@@ -22,6 +22,29 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
+	if flags.HubXmlrpc.Enable {
+		log.Info().Msg(L("Enabling Hub XMLRPC API container."))
+		tag := flags.HubXmlrpc.Image.Tag
+		if tag == "" {
+			tag = flags.Image.Tag
+		}
+		hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image.Name, tag)
+		if err != nil {
+			return fmt.Errorf(L("failed to compute image URL, %s"), err)
+		}
+
+		if err := podman.GenerateHubXmlrpcSystemdService(hubXmlrpcImage); err != nil {
+			return fmt.Errorf(L("cannot generate systemd service: %s"), err)
+		}
+
+		if err := shared_podman.EnableService(shared_podman.HubXmlrpcService); err != nil {
+			return fmt.Errorf(L("cannot enable service: %s"), err)
+		}
+	}
+	return nil
+}
+
 func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
 	podmanArgs := flags.Podman.Args
 	if flags.MirrorPath != "" {
@@ -114,6 +137,10 @@ func installForPodman(
 	}
 
 	if err := coco.SetupCocoContainer(flags.Coco.Replicas, flags.Coco.Image, flags.Image, flags.Db); err != nil {
+		return err
+	}
+
+	if err := setupHubXmlrpcContainer(flags); err != nil {
 		return err
 	}
 

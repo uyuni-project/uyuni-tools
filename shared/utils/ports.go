@@ -48,6 +48,11 @@ var UDP_PORTS = []types.PortMap{
 	},
 }
 
+// HUB_XMLRPC_PORTS are the tcp ports required by the Hub XMLRPC API service.
+var HUB_XMLRPC_PORTS = []types.PortMap{
+	NewPortMap("hub-xmlrpc", 2830, 2830),
+}
+
 // PROXY_TCP_PORTS are the tcp ports required by the proxy.
 var PROXY_TCP_PORTS = []types.PortMap{
 	NewPortMap("ssh", 8022, 22),

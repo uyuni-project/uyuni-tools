@@ -38,6 +38,11 @@ func uninstallForPodman(
 		}
 	}
 
+	if podman.HasService(podman.HubXmlrpcService) {
+		podman.UninstallService(podman.HubXmlrpcService, !flags.Force)
+		podman.DeleteContainer(podman.HubXmlrpcService, !flags.Force)
+	}
+
 	// Remove the volumes
 	if flags.PurgeVolumes {
 		volumes := []string{"cgroup"}

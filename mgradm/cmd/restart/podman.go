@@ -23,5 +23,8 @@ func podmanRestart(
 	if podman.HasService(podman.ServerAttestationService) {
 		return podman.RestartService(podman.ServerAttestationService)
 	}
+	if podman.HasService(podman.HubXmlrpcService) {
+		return podman.RestartService(podman.HubXmlrpcService)
+	}
 	return nil
 }
