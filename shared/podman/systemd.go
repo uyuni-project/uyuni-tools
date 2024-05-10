@@ -24,6 +24,9 @@ const ServerService = "uyuni-server"
 // Name of the systemd service for the coco attestation container.
 const ServerAttestationService = "uyuni-server-attestation"
 
+// Name of the systemd service for the Hub XMLRPC container.
+const HubXmlrpcService = "uyuni-hub-xmlrpc"
+
 // Name of the systemd service for the proxy.
 const ProxyService = "uyuni-proxy-pod"
 

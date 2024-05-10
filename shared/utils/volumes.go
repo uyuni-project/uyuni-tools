@@ -97,6 +97,11 @@ var ServerVolumes = append([]types.Volume{
 	{Name: "ca-cert", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "ca-cert"}},
 }, etcAndPgsqlVolumes[:]...)
 
+// HubXmlrpcVolumeMounts represents volumes used by Hub Xmlrpc container.
+var HubXmlrpcVolumeMounts = []types.VolumeMount{
+	{MountPath: "/etc/pki/trust/anchors", Name: "ca-cert"},
+}
+
 // PROXY_HTTPD_VOLUMES volumes used by HTTPD in proxy.
 var PROXY_HTTPD_VOLUMES = map[string]string{
 	"uyuni-proxy-rhn-cache": "/var/cache/rhn",

@@ -7,6 +7,7 @@ package shared
 import (
 	"fmt"
 	"net/mail"
+	"path"
 	"regexp"
 	"strings"
 
@@ -50,6 +51,12 @@ type CocoFlags struct {
 	Image    types.ImageFlags `mapstructure:",squash"`
 }
 
+// HubXmlrpcFlags contains settings for Hub XMLRPC container.
+type HubXmlrpcFlags struct {
+	Enable bool
+	Image  types.ImageFlags `mapstructure:",squash"`
+}
+
 // InstallFlags stores all the flags used by install command.
 type InstallFlags struct {
 	TZ           string
@@ -65,6 +72,7 @@ type InstallFlags struct {
 	Debug        DebugFlags
 	Image        types.ImageFlags `mapstructure:",squash"`
 	Coco         CocoFlags
+	HubXmlrpc    HubXmlrpcFlags
 	Admin        apiTypes.User
 	Organization string
 }
@@ -213,6 +221,16 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-image", "coco-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-tag", "coco-container")
+
+	cmd.Flags().Bool("hubxmlrpc-enable", false, L("Enable Hub XMLRPC service container"))
+	hubXmlrpcImage := path.Join(utils.DefaultNamespace, "server-hub-xmlrpc-api")
+	cmd.Flags().String("hubxmlrpc-image", hubXmlrpcImage, L("Hub XMLRPC API Image"))
+	cmd.Flags().String("hubxmlrpc-tag", utils.DefaultTag, L("Hub XMLRPC API Image Tag"))
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XMLRPC")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-enable", "hubxmlrpc-container")
+	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-image", "hubxmlrpc-container")
+	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-tag", "hubxmlrpc-container")
 
 	cmd.Flags().String("admin-login", "admin", L("Administrator user name"))
 	cmd.Flags().String("admin-password", "", L("Administrator password"))

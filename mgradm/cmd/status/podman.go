@@ -39,5 +39,11 @@ func podmanStatus(
 		_ = utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.ServerAttestationService, i))
 	}
 
+	if podman.HasService(podman.HubXmlrpcService) {
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", podman.HubXmlrpcService); err != nil {
+			return fmt.Errorf(L("failed to get status of the server service: %s"), err)
+		}
+	}
+
 	return nil
 }

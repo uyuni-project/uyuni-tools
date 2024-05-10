@@ -23,5 +23,10 @@ func podmanStart(
 			return err
 		}
 	}
+	if podman.HasService(podman.HubXmlrpcService) {
+		if err := podman.StartService(podman.HubXmlrpcService); err != nil {
+			return err
+		}
+	}
 	return podman.StartService(podman.ServerService)
 }
