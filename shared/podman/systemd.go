@@ -6,6 +6,7 @@ package podman
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"path"
@@ -31,6 +32,22 @@ const ProxyService = "uyuni-proxy-pod"
 func HasService(name string) bool {
 	err := utils.RunCmd("systemctl", "list-unit-files", name+".service")
 	return err == nil
+}
+
+// ServiceIsEnabled returns if a service is enabled
+// name is the name of the service without the '.service' part.
+func ServiceIsEnabled(name string) bool {
+	err := utils.RunCmd("systemctl", "is-enabled", name+".service")
+	return err == nil
+}
+
+// DisableService disables a service
+// name is the name of the service without the '.service' part.
+func DisableService(name string) error {
+	if err := utils.RunCmd("systemctl", "disable", "--now", name); err != nil {
+		return utils.Errorf(err, L("failed to disable %s systemd service"), name)
+	}
+	return nil
 }
 
 // GetServicePath return the path for a given service.
@@ -167,5 +184,35 @@ func GenerateSystemdConfFile(serviceName string, section string, body string) er
 		return utils.Errorf(err, L("cannot write %s file"), systemdConfFilePath)
 	}
 
+	return nil
+}
+
+// CurrentReplicaCount returns the current enabled replica count for a template service
+// name is the name of the service without the '.service' part.
+func CurrentReplicaCount(name string) int {
+	count := 0
+	for ServiceIsEnabled(fmt.Sprintf("%s@%d", name, count)) {
+		count += 1
+	}
+	return count
+}
+
+// scales a templated systemd service to the requested number of replicas.
+// name is the name of the service without the '.service' part.
+func ScaleService(replicas int, name string) error {
+	currentReplicas := CurrentReplicaCount(name)
+	log.Info().Msgf(L("Scale %[1]s from %[2]d to %[3]d replicas."), name, currentReplicas, replicas)
+	for i := currentReplicas; i < replicas; i++ {
+		serviceName := fmt.Sprintf("%s@%d", name, i)
+		if err := EnableService(serviceName); err != nil {
+			return utils.Errorf(err, L("cannot enable service"))
+		}
+	}
+	for i := replicas; i < currentReplicas; i++ {
+		serviceName := fmt.Sprintf("%s@%d", name, i)
+		if err := DisableService(serviceName); err != nil {
+			return utils.Errorf(err, L("cannot disable service"))
+		}
+	}
 	return nil
 }

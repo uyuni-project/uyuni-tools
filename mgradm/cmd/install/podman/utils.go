@@ -13,6 +13,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -20,32 +21,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
-
-func setupCocoContainer(flags *podmanInstallFlags) error {
-	if flags.Coco.Replicas > 0 {
-		if flags.Coco.Replicas > 1 {
-			log.Warn().Msgf(L("Currently only one replica is supported, starting just one instead of %d"), flags.Coco.Replicas)
-		}
-
-		tag := flags.Coco.Image.Tag
-		if tag == "" {
-			tag = flags.Image.Tag
-		}
-		cocoImage, err := utils.ComputeImage(flags.Coco.Image.Name, tag)
-		if err != nil {
-			return utils.Errorf(err, L("failed to compute image URL"))
-		}
-
-		if err := podman.GenerateAttestationSystemdService(cocoImage, flags.Db); err != nil {
-			return utils.Errorf(err, L("cannot generate systemd service"))
-		}
-
-		if err := shared_podman.EnableService(shared_podman.ServerAttestationService); err != nil {
-			return utils.Errorf(err, L("cannot enable service"))
-		}
-	}
-	return nil
-}
 
 func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
 	podmanArgs := flags.Podman.Args
@@ -138,7 +113,7 @@ func installForPodman(
 		return err
 	}
 
-	if err := setupCocoContainer(flags); err != nil {
+	if err := coco.SetupCocoContainer(flags.Coco.Replicas, flags.Coco.Image, flags.Image, flags.Db); err != nil {
 		return err
 	}
 
