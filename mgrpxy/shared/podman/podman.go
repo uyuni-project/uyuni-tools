@@ -30,7 +30,7 @@ type PodmanProxyUpgradeFlags struct {
 // GenerateSystemdService generates all the systemd files required by proxy.
 func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImage string, sshImage string,
 	tftpdImage string, podmanArgs []string) error {
-	if err := podman.SetupNetwork(); err != nil {
+	if err := podman.SetupNetwork(true); err != nil {
 		return shared_utils.Errorf(err, L("cannot setup network"))
 	}
 
