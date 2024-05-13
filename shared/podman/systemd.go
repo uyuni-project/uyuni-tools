@@ -40,14 +40,20 @@ func GetServicePath(name string) string {
 }
 
 // GetServiceConfPath return the path for Service.conf file.
+func GetServiceConfFolder(name string) string {
+	return path.Join(servicesPath, name+".service.d")
+}
+
+// GetServiceConfPath return the path for Service.conf file.
 func GetServiceConfPath(name string) string {
-	return path.Join(servicesPath, name+".service.d", "Service.conf")
+	return path.Join(GetServiceConfFolder(name), "Service.conf")
 }
 
 // UninstallService stops and remove a systemd service.
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
 func UninstallService(name string, dryRun bool) {
 	servicePath := GetServicePath(name)
+	serviceConfFolder := GetServiceConfFolder(name)
 	serviceConfPath := GetServiceConfPath(name)
 	if !HasService(name) {
 		log.Info().Msgf(L("Systemd has no %s.service unit"), name)
@@ -56,6 +62,7 @@ func UninstallService(name string, dryRun bool) {
 			log.Info().Msgf(L("Would run %s"), "systemctl disable --now "+name)
 			log.Info().Msgf(L("Would remove %s"), servicePath)
 			log.Info().Msgf(L("Would remove %s"), serviceConfPath)
+			log.Info().Msgf(L("Would remove %s if empty"), serviceConfFolder)
 		} else {
 			log.Info().Msgf(L("Disable %s service"), name)
 			// disable server
@@ -75,6 +82,12 @@ func UninstallService(name string, dryRun bool) {
 				if err := os.Remove(serviceConfPath); err != nil {
 					log.Error().Err(err).Msgf(L("Failed to remove %s file"), serviceConfPath)
 				}
+			}
+			if utils.IsEmptyDirectory(serviceConfFolder) {
+				log.Debug().Msgf("Removing %s folder, since it's empty", serviceConfFolder)
+				_ = utils.RemoveDirectory(serviceConfFolder)
+			} else {
+				log.Warn().Msgf(L("%s folder contains file created by the user. Please remove them when uninstallation is completed."), serviceConfFolder)
 			}
 		}
 	}
