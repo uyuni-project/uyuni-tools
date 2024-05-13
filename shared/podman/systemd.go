@@ -39,7 +39,7 @@ func GetServicePath(name string) string {
 	return path.Join(servicesPath, name+".service")
 }
 
-// GetServiceConfPath return the path for Service.conf file.
+// GetServiceConfFolder return the conf folder for systemd services.
 func GetServiceConfFolder(name string) string {
 	return path.Join(servicesPath, name+".service.d")
 }
