@@ -93,7 +93,7 @@ func (c *Connection) GetCommand() (string, error) {
 					if err != nil {
 						return c.command, err
 					}
-					if kubernetes.HasHelmRelease("uyuni", clusterInfos.GetKubeconfig()) {
+					if kubernetes.HasHelmRelease("uyuni", clusterInfos.GetKubeconfig()) || kubernetes.HasHelmRelease("uyuni-proxy", clusterInfos.GetKubeconfig()) {
 						c.command = "kubectl"
 						return c.command, nil
 					}
