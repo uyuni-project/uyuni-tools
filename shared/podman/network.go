@@ -18,7 +18,7 @@ import (
 const UyuniNetwork = "uyuni"
 
 // SetupNetwork creates the podman network.
-func SetupNetwork() error {
+func SetupNetwork(isProxy bool) error {
 	log.Info().Msgf(L("Setting up %s network"), UyuniNetwork)
 
 	ipv6Enabled := isIpv6Enabled()
@@ -45,7 +45,10 @@ func SetupNetwork() error {
 	}
 
 	// We do not need inter-container resolution, disable dns plugin
-	args := []string{"network", "create", "--disable-dns"}
+	args := []string{"network", "create"}
+	if isProxy {
+		args = append(args, "--disable-dns")
+	}
 	if ipv6Enabled {
 		// An IPv6 network on a host where IPv6 is disabled doesn't work: don't try it.
 		// Check if the networkd backend is netavark

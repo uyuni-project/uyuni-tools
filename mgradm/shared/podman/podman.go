@@ -67,7 +67,7 @@ Environment=database_password=%s
 
 // GenerateSystemdService creates a serverY systemd file.
 func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []string) error {
-	if err := podman.SetupNetwork(); err != nil {
+	if err := podman.SetupNetwork(false); err != nil {
 		return utils.Errorf(err, L("cannot setup network"))
 	}
 
