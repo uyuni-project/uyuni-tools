@@ -83,7 +83,7 @@ echo "old_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)" >> /var/lib/uyuni-to
 
 echo "Altering configuration for domain resolution..."
 sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/rhn/rhn.conf;
-sed 's/server\.jabber_server.*/java\.hostname =  {{ .SourceFqdn }}/' -i /etc/rhn/rhn.conf;
+sed 's/server\.jabber_server.*/java\.hostname = {{ .SourceFqdn }}/' -i /etc/rhn/rhn.conf;
 sed 's/client_use_localhost: false/client_use_localhost: true/' -i /etc/cobbler/settings.yaml;
 
 grep java\.hostname /etc/rhn/rhn.conf
