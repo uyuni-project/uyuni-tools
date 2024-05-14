@@ -37,7 +37,7 @@ func CommandHelper[T interface{}](
 	flags *T,
 	fn CommandFunc[T],
 ) error {
-	viper, err := ReadConfig(globalFlags.ConfigPath, cmd)
+	viper, err := ReadConfig(cmd, GlobalConfigFilename, globalFlags.ConfigPath)
 	if err != nil {
 		return err
 	}

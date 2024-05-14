@@ -318,7 +318,7 @@ func ReadInspectData(scriptDir string, prefix ...string) (map[string]string, err
 	inspectResult := make(map[string]string)
 
 	viper.SetConfigType("env")
-	if err := viper.ReadConfig(bytes.NewBuffer(data)); err != nil {
+	if err := viper.MergeConfig(bytes.NewBuffer(data)); err != nil {
 		return map[string]string{}, Errorf(err, L("cannot read config"))
 	}
 
