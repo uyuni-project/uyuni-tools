@@ -105,7 +105,7 @@ func ReadContainerData(scriptDir string) (string, string, string, error) {
 		return "", "", "", errors.New(L("failed to read data extracted from source host"))
 	}
 	viper.SetConfigType("env")
-	if err := viper.ReadConfig(bytes.NewBuffer(data)); err != nil {
+	if err := viper.MergeConfig(bytes.NewBuffer(data)); err != nil {
 		return "", "", "", utils.Errorf(err, L("cannot read config"))
 	}
 	if len(viper.GetString("Timezone")) <= 0 {

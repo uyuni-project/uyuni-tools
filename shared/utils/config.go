@@ -21,43 +21,53 @@ const envPrefix = "UYUNI"
 const appName = "uyuni-tools"
 const configFilename = "config.yaml"
 
-// ReadConfig parse configuration file and env variables a return parameters.
-func ReadConfig(configPath string, cmd *cobra.Command) (*viper.Viper, error) {
-	v := viper.New()
+// GlobalConfigFilename is the path for the global configuration.
+const GlobalConfigFilename = "/etc/uyuni/uyuni-tools.yaml"
 
-	v.SetConfigType("yaml")
-	v.SetConfigName(configFilename)
-
-	if configPath != "" {
-		log.Info().Msgf(L("Using config file %s"), configPath)
-		v.SetConfigFile(configPath)
-	} else {
-		xdgConfigHome := os.Getenv("XDG_CONFIG_HOME")
-		if xdgConfigHome == "" {
-			home, err := os.UserHomeDir()
-			if err != nil {
-				log.Err(err).Msg(L("Failed to find home directory"))
-			} else {
-				xdgConfigHome = path.Join(home, ".config")
-			}
-		}
-		if xdgConfigHome != "" {
-			v.AddConfigPath(path.Join(xdgConfigHome, appName))
-		}
-		v.AddConfigPath(".")
+func addConfigurationFile(v *viper.Viper, cmd *cobra.Command, configFilename string) error {
+	if FileExists(configFilename) {
+		v.SetConfigFile(configFilename)
 	}
-
 	if err := bindFlags(cmd, v); err != nil {
-		return nil, err
+		return err
 	}
-
-	if err := v.ReadInConfig(); err != nil {
+	if err := v.MergeInConfig(); err != nil {
 		// It's okay if there isn't a config file
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 			// TODO Provide help on the config file format
-			return nil, Errorf(err, L("failed to parse configuration file %s"), v.ConfigFileUsed())
+			return Errorf(err, L("failed to parse configuration file %s"), v.ConfigFileUsed())
 		}
 	}
+	return nil
+}
+
+// ReadConfig parse configuration file and env variables a return parameters.
+func ReadConfig(cmd *cobra.Command, configPaths ...string) (*viper.Viper, error) {
+	v := viper.New()
+
+	for _, configPath := range configPaths {
+		if err := addConfigurationFile(v, cmd, configPath); err != nil {
+			return v, err
+		}
+	}
+
+	//once global configuration are set, set the local config file as default
+	v.SetConfigType("yaml")
+	v.SetConfigName(configFilename)
+
+	xdgConfigHome := os.Getenv("XDG_CONFIG_HOME")
+	if xdgConfigHome == "" {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			log.Err(err).Msg(L("Failed to find home directory"))
+		} else {
+			xdgConfigHome = path.Join(home, ".config")
+		}
+	}
+	if xdgConfigHome != "" {
+		v.AddConfigPath(path.Join(xdgConfigHome, appName))
+	}
+	v.AddConfigPath(".")
 
 	v.SetEnvPrefix(envPrefix)
 
