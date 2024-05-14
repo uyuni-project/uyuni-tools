@@ -83,8 +83,15 @@ echo "old_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)" >> /var/lib/uyuni-to
 
 echo "Altering configuration for domain resolution..."
 sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/rhn/rhn.conf;
-sed 's/server\.jabber_server/java\.hostname/' -i /etc/rhn/rhn.conf;
+sed 's/server\.jabber_server.*/java\.hostname =  {{ .SourceFqdn }}/' -i /etc/rhn/rhn.conf;
 sed 's/client_use_localhost: false/client_use_localhost: true/' -i /etc/cobbler/settings.yaml;
+
+grep java\.hostname /etc/rhn/rhn.conf
+if [ $? -eq 1 ]; then
+	echo 'java.hostname = {{ .SourceFqdn }}' >> /etc/rhn/rhn.conf
+else
+	sed 's/java\.hostname.*/java\.hostname = {{ .SourceFqdn }}' -i /etc/rhn/rhn.conf;
+fi
 
 echo "Altering configuration for container environment..."
 sed 's/address=[^:]*:/address=*:/' -i /etc/rhn/taskomatic.conf;
