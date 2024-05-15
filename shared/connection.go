@@ -85,15 +85,17 @@ func (c *Connection) GetCommand() (string, error) {
 			}
 			if c.command == "" {
 				// Check for uyuni-server.service or helm release
-				if hasPodman && podman.HasService("uyuni-server") {
+				if hasPodman && (podman.HasService(podman.ServerService) || podman.HasService(podman.ProxyService)) {
 					c.command = "podman"
+					return c.command, nil
 				} else if hasKubectl {
 					clusterInfos, err := kubernetes.CheckCluster()
 					if err != nil {
 						return c.command, err
 					}
-					if kubernetes.HasHelmRelease("uyuni", clusterInfos.GetKubeconfig()) {
+					if kubernetes.HasHelmRelease("uyuni", clusterInfos.GetKubeconfig()) || kubernetes.HasHelmRelease("uyuni-proxy", clusterInfos.GetKubeconfig()) {
 						c.command = "kubectl"
+						return c.command, nil
 					}
 				}
 			}
