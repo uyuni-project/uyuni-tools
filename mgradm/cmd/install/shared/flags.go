@@ -222,12 +222,12 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-image", "coco-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-tag", "coco-container")
 
-	cmd.Flags().Bool("hubxmlrpc-enable", false, L("Enable Hub XMLRPC service container"))
+	cmd.Flags().Bool("hubxmlrpc-enable", false, L("Enable Hub XML-RPC API service container"))
 	hubXmlrpcImage := path.Join(utils.DefaultNamespace, "server-hub-xmlrpc-api")
-	cmd.Flags().String("hubxmlrpc-image", hubXmlrpcImage, L("Hub XMLRPC API Image"))
-	cmd.Flags().String("hubxmlrpc-tag", utils.DefaultTag, L("Hub XMLRPC API Image Tag"))
+	cmd.Flags().String("hubxmlrpc-image", hubXmlrpcImage, L("Hub XML-RPC API Image"))
+	cmd.Flags().String("hubxmlrpc-tag", utils.DefaultTag, L("Hub XML-RPC API Image Tag"))
 
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XMLRPC")})
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-enable", "hubxmlrpc-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-image", "hubxmlrpc-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-tag", "hubxmlrpc-container")
