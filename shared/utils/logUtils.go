@@ -76,10 +76,10 @@ func LogInit(logToConsole bool) {
 	writers := []io.Writer{fileWriter}
 	if logToConsole {
 		consoleWriter := zerolog.NewConsoleWriter()
+		consoleWriter.NoColor = !term.IsTerminal(int(os.Stdout.Fd()))
 		uyuniConsoleWriter := UyuniConsoleWriter{
 			consoleWriter: consoleWriter,
 		}
-		consoleWriter.NoColor = !term.IsTerminal(int(os.Stdout.Fd()))
 		writers = append(writers, uyuniConsoleWriter)
 	}
 
