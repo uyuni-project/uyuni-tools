@@ -77,7 +77,7 @@ func Deploy(imageFlags *utils.ProxyImageFlags, helmFlags *HelmFlags, configDir s
 	// Install the helm chart
 	if err := kubernetes.HelmUpgrade(kubeconfig, helmFlags.Proxy.Namespace, true, "", helmAppName, helmFlags.Proxy.Chart,
 		helmFlags.Proxy.Version, helmParams...); err != nil {
-		return fmt.Errorf(L("cannot run helm upgrade: %s"), err)
+		return shared_utils.Errorf(err, L("cannot run helm upgrade"))
 	}
 
 	// Wait for the pod to be started
@@ -93,7 +93,7 @@ func getSSHYaml(directory string) (string, error) {
 	sshYamlFilename := filepath.Join(directory, "ssh.yaml")
 	err = os.WriteFile(sshYamlFilename, []byte(sshPayload), 0644)
 	if err != nil {
-		return "", fmt.Errorf(L("failed to write in file %s: %s"), sshYamlFilename, err)
+		return "", shared_utils.Errorf(err, L("failed to write in file %s"), sshYamlFilename)
 	}
 
 	return sshYamlFilename, nil
@@ -108,7 +108,7 @@ func getHTTPDYaml(directory string) (string, error) {
 	httpdYamlFilename := filepath.Join(directory, "httpd.yaml")
 	err = os.WriteFile(httpdYamlFilename, []byte(httpdPayload), 0644)
 	if err != nil {
-		return "", fmt.Errorf(L("failed to write in file %s: %s"), httpdYamlFilename, err)
+		return "", shared_utils.Errorf(err, L("failed to write in file %s"), httpdYamlFilename)
 	}
 
 	return httpdYamlFilename, nil
@@ -123,7 +123,7 @@ func getConfigYaml(directory string) (string, error) {
 	configYamlFilename := filepath.Join(directory, "config.yaml")
 	err = os.WriteFile(configYamlFilename, []byte(configPayload), 0644)
 	if err != nil {
-		return "", fmt.Errorf(L("failed to write in file %s: %s"), configYamlFilename, err)
+		return "", shared_utils.Errorf(err, L("failed to write in file %s"), configYamlFilename)
 	}
 
 	return configYamlFilename, nil
@@ -140,7 +140,7 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 
 	tmpDir, err := os.MkdirTemp("", "mgrpxy-*")
 	if err != nil {
-		return fmt.Errorf(L("failed to create temporary directory: %s"), err)
+		return shared_utils.Errorf(err, L("failed to create temporary directory"))
 	}
 	defer os.RemoveAll(tmpDir)
 
@@ -165,7 +165,7 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 	// Install the uyuni proxy helm chart
 	if err := Deploy(&flags.ProxyImageFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
 		"--set", "ingress="+clusterInfos.Ingress); err != nil {
-		return fmt.Errorf(L("cannot deploy proxy helm chart: %s"), err)
+		return shared_utils.Errorf(err, L("cannot deploy proxy helm chart"))
 	}
 
 	return nil

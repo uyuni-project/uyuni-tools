@@ -5,8 +5,6 @@
 package cp
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
@@ -38,7 +36,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 				return err
 			}
 			if err := viper.Unmarshal(&flags); err != nil {
-				return fmt.Errorf(L("failed to unmarshall configuration")+": %s", err)
+				return utils.Errorf(err, L("failed to unmarshall configuration"))
 			}
 			return run(flags, cmd, args)
 		},

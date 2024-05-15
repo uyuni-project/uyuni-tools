@@ -62,7 +62,7 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("failed to create temporary directory: %s"), err)
+		return map[string]string{}, utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
 	if err := utils.GenerateInspectContainerScript(scriptDir); err != nil {
@@ -75,13 +75,13 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 
 	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
 	if err := DeletePod(podName, ServerFilter); err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot delete %s: %s"), podName, err)
+		return map[string]string{}, utils.Errorf(err, L("cannot delete %s"), podName)
 	}
 
 	//this is needed because folder with script needs to be mounted
 	nodeName, err := GetNode("uyuni")
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot find node running uyuni: %s"), err)
+		return map[string]string{}, utils.Errorf(err, L("cannot find node running uyuni"))
 	}
 
 	//generate deploy data
@@ -109,12 +109,12 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 	}
 	err = RunPod(podName, ServerFilter, serverImage, pullPolicy, command, override)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot run inspect pod: %s"), err)
+		return map[string]string{}, utils.Errorf(err, L("cannot run inspect pod"))
 	}
 
 	inspectResult, err := utils.ReadInspectData(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot inspect data: %s"), err)
+		return map[string]string{}, utils.Errorf(err, L("cannot inspect data"))
 	}
 
 	return inspectResult, err

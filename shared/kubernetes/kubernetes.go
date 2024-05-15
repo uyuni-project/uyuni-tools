@@ -6,7 +6,6 @@ package kubernetes
 
 import (
 	"encoding/base64"
-	"fmt"
 	"os"
 	"strings"
 
@@ -52,7 +51,7 @@ func CheckCluster() (*ClusterInfos, error) {
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "node",
 		"-o", "jsonpath={.items[0].status.nodeInfo.kubeletVersion}")
 	if err != nil {
-		return nil, fmt.Errorf(L("failed to get kubelet version: %s"), err)
+		return nil, utils.Errorf(err, L("failed to get kubelet version"))
 	}
 
 	var infos ClusterInfos
@@ -78,7 +77,7 @@ func guessIngress() (string, error) {
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-A",
 		"-o", "jsonpath={range .items[*]}{.spec.containers[*].args[0]}{.spec.containers[*].command}{end}")
 	if err != nil {
-		return "", fmt.Errorf(L("failed to get pod commands to look for nginx controller: %s"), err)
+		return "", utils.Errorf(err, L("failed to get pod commands to look for nginx controller"))
 	}
 
 	const nginxController = "/nginx-ingress-controller"
@@ -92,7 +91,7 @@ func guessIngress() (string, error) {
 // Restart restarts the pod.
 func Restart(filter string) error {
 	if err := Stop(filter); err != nil {
-		return fmt.Errorf(L("cannot stop %s: %s"), filter, err)
+		return utils.Errorf(err, L("cannot stop %s"), filter)
 	}
 	return Start(filter)
 }
@@ -132,7 +131,7 @@ func get(component string, componentName string, args ...string) ([]byte, error)
 func GetConfigMap(configMapName string, filter string) (string, error) {
 	out, err := get("configMap", configMapName, filter)
 	if err != nil {
-		return "", fmt.Errorf(L("failed to kubectl get configMap %s %s")+": %s", configMapName, filter, err)
+		return "", utils.Errorf(err, L("failed to run kubectl get configMap %[1]s %[2]s"), configMapName, filter)
 	}
 
 	return string(out), nil
@@ -142,11 +141,11 @@ func GetConfigMap(configMapName string, filter string) (string, error) {
 func GetSecret(secretName string, filter string) (string, error) {
 	out, err := get("secret", secretName, filter)
 	if err != nil {
-		return "", fmt.Errorf(L("failed to kubectl get secret %s %s")+": %s", secretName, filter, err)
+		return "", utils.Errorf(err, L("failed to run kubectl get secret %[1]s %[2]s"), secretName, filter)
 	}
 	decoded, err := base64.StdEncoding.DecodeString(string(out))
 	if err != nil {
-		return "", fmt.Errorf(L("Failed to base64 decode configMap %s: %s"), secretName, err)
+		return "", utils.Errorf(err, L("Failed to base64 decode secret %s"), secretName)
 	}
 
 	return string(decoded), nil

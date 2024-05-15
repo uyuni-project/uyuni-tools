@@ -17,3 +17,9 @@ func L(message string) string {
 func NL(message string, plural string, count int) string {
 	return gettext.NGettext(message, plural, count)
 }
+
+// PL localizes a string using the set up gettext domain and locale, but adding a context.
+// This is an alias for gettext.PGettext().
+func PL(context string, message string) string {
+	return gettext.PGettext(context, message)
+}

@@ -48,10 +48,10 @@ func WaitForDeployment(namespace string, name string, appName string) error {
 	// List the Pulled events from the pod as we may not see the Pulling if the image was already downloaded
 	err := WaitForPulledImage(namespace, podName)
 	if err != nil {
-		return fmt.Errorf(L("failed to pull image: %s"), err)
+		return utils.Errorf(err, L("failed to pull image"))
 	}
 
-	log.Info().Msgf(L("Waiting for %s deployment to be ready in %s namespace\n"), name, namespace)
+	log.Info().Msgf(L("Waiting for %[1]s deployment to be ready in %[2]s namespace\n"), name, namespace)
 	// Wait for a replica to be ready
 	for i := 0; i < 60; i++ {
 		// TODO Look for pod failures
@@ -60,12 +60,12 @@ func WaitForDeployment(namespace string, name string, appName string) error {
 		}
 		time.Sleep(1 * time.Second)
 	}
-	return fmt.Errorf(L("failed to find a ready replica for deployment %s in namespace %s after 60s"), name, namespace)
+	return fmt.Errorf(L("failed to find a ready replica for deployment %[1]s in namespace %[2]s after 60s"), name, namespace)
 }
 
 // WaitForPulledImage wait that image is pulled.
 func WaitForPulledImage(namespace string, podName string) error {
-	log.Info().Msgf(L("Waiting for image of %s pod in %s namespace to be pulled"), podName, namespace)
+	log.Info().Msgf(L("Waiting for image of %[1]s pod in %[2]s namespace to be pulled"), podName, namespace)
 	pulledArgs := []string{"get", "event",
 		"-o", "jsonpath={.items[?(@.reason==\"Pulled\")].message}",
 		"--field-selector", "involvedObject.name=" + podName}
@@ -136,7 +136,7 @@ func GetDeploymentStatus(namespace string, name string) (*DeploymentStatus, erro
 
 	var status DeploymentStatus
 	if err = json.Unmarshal(out, &status); err != nil {
-		return nil, fmt.Errorf(L("failed to parse deployment status: %s"), err)
+		return nil, utils.Errorf(err, L("failed to parse deployment status"))
 	}
 	return &status, nil
 }
@@ -150,19 +150,19 @@ func ReplicasTo(filter string, replica uint) error {
 
 	_, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
 	if err != nil {
-		return fmt.Errorf(L("cannot run kubectl %s: %s"), args, err)
+		return utils.Errorf(err, L("cannot run kubectl %s"), args)
 	}
 
 	pods, err := getPods(filter)
 	if err != nil {
-		return fmt.Errorf(L("cannot get pods for %s: %s"), filter, err)
+		return utils.Errorf(err, L("cannot get pods for %s"), filter)
 	}
 
 	for _, pod := range pods {
 		if len(pod) > 0 {
 			err = waitForReplica(pod, replica)
 			if err != nil {
-				return fmt.Errorf(L("replica to %d failed: %s"), replica, err)
+				return utils.Errorf(err, L("replica to %d failed"), replica)
 			}
 		}
 	}
@@ -175,7 +175,7 @@ func ReplicasTo(filter string, replica uint) error {
 func isPodRunning(podname string, filter string) (bool, error) {
 	pods, err := getPods(filter)
 	if err != nil {
-		return false, fmt.Errorf(L("cannot check if pod %s is running in app %s: %s"), podname, filter, err)
+		return false, utils.Errorf(err, L("cannot check if pod %[1]s is running in app %[2]s"), podname, filter)
 	}
 	return utils.Contains(pods, podname), nil
 }
@@ -185,7 +185,7 @@ func getPods(filter string) (pods []string, err error) {
 	cmdArgs := []string{"get", "pods", filter, "--output=custom-columns=:.metadata.name", "--no-headers"}
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
 	if err != nil {
-		return pods, fmt.Errorf(L("cannot execute %s: %s"), strings.Join(cmdArgs, string(" ")), err)
+		return pods, utils.Errorf(err, L("cannot execute %s"), strings.Join(cmdArgs, string(" ")))
 	}
 	lines := strings.Split(string(out), "\n")
 	pods = append(pods, lines...)
@@ -204,7 +204,7 @@ func waitForReplicaZero(podname string) error {
 		* next iteration because the pod was actually deleted
 		 */
 		if err != nil && i == 0 {
-			return fmt.Errorf(L("cannot get pod informations %s: %s"), podname, err)
+			return utils.Errorf(err, L("cannot get pod informations %s"), podname)
 		}
 		outStr := strings.TrimSuffix(string(out), "\n")
 		if len(outStr) == 0 {
@@ -230,7 +230,7 @@ func waitForReplica(podname string, replica uint) error {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
 		outStr := strings.TrimSuffix(string(out), "\n")
 		if err != nil {
-			return fmt.Errorf(L("cannot execute %s: %s"), strings.Join(cmdArgs, string(" ")), err)
+			return utils.Errorf(err, L("cannot execute %s"), strings.Join(cmdArgs, string(" ")))
 		}
 		if string(outStr) == "Running" {
 			log.Debug().Msgf("%s pod replica is now %d", podname, replica)
@@ -240,7 +240,7 @@ func waitForReplica(podname string, replica uint) error {
 		time.Sleep(1 * time.Second)
 	}
 	if err != nil {
-		return fmt.Errorf(L("pod %s replica is not %d in %s seconds: %s"), podname, replica, strconv.Itoa(waitSeconds), err)
+		return utils.Errorf(err, L("pod %[1]s replicas have not reached %[2]d in %[3]s seconds"), podname, replica, strconv.Itoa(waitSeconds))
 	}
 	return nil
 }
@@ -283,11 +283,12 @@ func RunPod(podname string, filter string, image string, pullPolicy string, comm
 	arguments = append(arguments, "--command", "--", command)
 	err := utils.RunCmdStdMapping(zerolog.DebugLevel, "kubectl", arguments...)
 	if err != nil {
-		return fmt.Errorf(L("cannot run %s using image %s: %s"), command, image, err)
+		return utils.Errorf(err, PL("The first placeholder is a command",
+			"cannot run %[1]s using image %[2]s"), command, image)
 	}
 	err = waitForPod(podname)
 	if err != nil {
-		return fmt.Errorf(L("deleting pod %s. Status fails with error %s"), podname, err)
+		return utils.Errorf(err, L("deleting pod %s. Status fails with error"), podname)
 	}
 
 	defer func() {
@@ -300,7 +301,7 @@ func RunPod(podname string, filter string, image string, pullPolicy string, comm
 func DeletePod(podname string, filter string) error {
 	isRunning, err := isPodRunning(podname, filter)
 	if err != nil {
-		return fmt.Errorf(L("cannot delete pod %s: %s"), podname, err)
+		return utils.Errorf(err, L("cannot delete pod %s"), podname)
 	}
 	if !isRunning {
 		log.Debug().Msgf("no need to delete pod %s because is not running", podname)
@@ -309,7 +310,7 @@ func DeletePod(podname string, filter string) error {
 	arguments := []string{"delete", "pod", podname}
 	_, err = utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", arguments...)
 	if err != nil {
-		return fmt.Errorf(L("cannot delete pod %s: %s"), podname, err)
+		return utils.Errorf(err, L("cannot delete pod %s"), podname)
 	}
 	return nil
 }
@@ -324,19 +325,19 @@ func waitForPod(podname string) error {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
 		outStr := strings.TrimSuffix(string(out), "\n")
 		if err != nil {
-			return fmt.Errorf(L("cannot execute %s: %s"), strings.Join(cmdArgs, string(" ")), err)
+			return utils.Errorf(err, L("cannot execute %s"), strings.Join(cmdArgs, string(" ")))
 		}
 		if strings.EqualFold(outStr, status) {
 			log.Debug().Msgf("%s pod status is %s", podname, status)
 			return nil
 		}
 		if strings.EqualFold(outStr, "Failed") {
-			return fmt.Errorf(L("error during execution of %s: %s"), strings.Join(cmdArgs, string(" ")), err)
+			return utils.Errorf(err, L("error during execution of %s"), strings.Join(cmdArgs, string(" ")))
 		}
 		log.Debug().Msgf("Pod %s status is %s for %d seconds.", podname, outStr, i)
 		time.Sleep(1 * time.Second)
 	}
-	return fmt.Errorf(L("pod %s status is not %s in %s seconds: %s"), podname, status, strconv.Itoa(waitSeconds), err)
+	return utils.Errorf(err, L("pod %[1]s status is not %[2]s in %[3]d seconds"), podname, status, waitSeconds)
 }
 
 // GetNode return the node where the app is running.
@@ -362,7 +363,7 @@ func GetNode(filter string) (string, error) {
 func GenerateOverrideDeployment(deployData types.Deployment) (string, error) {
 	ret, err := json.Marshal(deployData)
 	if err != nil {
-		return "", fmt.Errorf(L("cannot serialize pod definition override: %s"), err)
+		return "", utils.Errorf(err, L("cannot serialize pod definition override"))
 	}
 	return string(ret), nil
 }

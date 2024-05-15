@@ -31,7 +31,7 @@ type PodmanProxyUpgradeFlags struct {
 func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImage string, sshImage string,
 	tftpdImage string, podmanArgs []string) error {
 	if err := podman.SetupNetwork(); err != nil {
-		return fmt.Errorf(L("cannot setup network: %s"), err)
+		return shared_utils.Errorf(err, L("cannot setup network"))
 	}
 
 	log.Info().Msg(L("Generating systemd services"))
@@ -110,7 +110,7 @@ func generateSystemdFile(template shared_utils.Template, service string) error {
 	const systemdPath = "/etc/systemd/system"
 	path := path.Join(systemdPath, name)
 	if err := shared_utils.WriteTemplateToFile(template, path, 0644, true); err != nil {
-		return fmt.Errorf(L("failed to generate systemd file '%s': %s"), path, err)
+		return shared_utils.Errorf(err, L("failed to generate systemd file '%s'"), path)
 	}
 	return nil
 }
@@ -130,7 +130,7 @@ func GetContainerImage(flags *utils.ProxyImageFlags, name string) (string, error
 	image := flags.GetContainerImage(name)
 	inspectedHostValues, err := shared_utils.InspectHost()
 	if err != nil {
-		return "", fmt.Errorf(L("cannot inspect host values: %s"), err)
+		return "", shared_utils.Errorf(err, L("cannot inspect host values"))
 	}
 
 	pullArgs := []string{}
@@ -201,7 +201,7 @@ func getContainerImage(flags *utils.ProxyImageFlags, name string) (string, error
 	image := flags.GetContainerImage(name)
 	inspectedHostValues, err := shared_utils.InspectHost()
 	if err != nil {
-		return "", fmt.Errorf(L("cannot inspect host values: %s"), err)
+		return "", shared_utils.Errorf(err, L("cannot inspect host values"))
 	}
 
 	pullArgs := []string{}

@@ -6,7 +6,6 @@ package kubernetes
 
 import (
 	"encoding/base64"
-	"fmt"
 	"os"
 	"path/filepath"
 	"time"
@@ -24,7 +23,7 @@ import (
 func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) {
 	crdsDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		log.Fatal().Err(err).Msgf(L("failed to create temporary directory: %s"), err)
+		log.Fatal().Err(err).Msgf(L("failed to create temporary directory"))
 	}
 	defer os.RemoveAll(crdsDir)
 
@@ -56,13 +55,13 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	tlsCert *ssl.SslPair, kubeconfig, fqdn string, imagePullPolicy string) ([]string, error) {
 	// Install cert-manager if needed
 	if err := installCertManager(helmFlags, kubeconfig, imagePullPolicy); err != nil {
-		return []string{}, fmt.Errorf(L("cannot install cert manager: %s"), err)
+		return []string{}, utils.Errorf(err, L("cannot install cert manager"))
 	}
 
 	log.Info().Msg(L("Creating SSL certificate issuer"))
 	crdsDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return []string{}, fmt.Errorf(L("failed to create temporary directory: %s"), err)
+		return []string{}, utils.Errorf(err, L("failed to create temporary directory"))
 	}
 	defer os.RemoveAll(crdsDir)
 
@@ -83,7 +82,7 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	}
 
 	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
-		return []string{}, fmt.Errorf(L("failed to generate issuer definition: %s"), err)
+		return []string{}, utils.Errorf(err, L("failed to generate issuer definition"))
 	}
 
 	err = utils.RunCmd("kubectl", "apply", "-f", issuerPath)
@@ -129,14 +128,14 @@ func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, image
 		}
 		// The installedby label will be used to only uninstall what we installed
 		if err := kubernetes.HelmUpgrade(kubeconfig, namespace, true, repo, "cert-manager", chart, version, args...); err != nil {
-			return fmt.Errorf(L("cannot run helm upgrade: %s"), err)
+			return utils.Errorf(err, L("cannot run helm upgrade"))
 		}
 	}
 
 	// Wait for cert-manager to be ready
 	err := kubernetes.WaitForDeployment("", "cert-manager-webhook", "webhook")
 	if err != nil {
-		return fmt.Errorf(L("cannot deploy: %s"), err)
+		return utils.Errorf(err, L("cannot deploy"))
 	}
 
 	return nil

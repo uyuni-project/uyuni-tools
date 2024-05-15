@@ -5,8 +5,6 @@
 package status
 
 import (
-	"fmt"
-
 	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -26,7 +24,7 @@ func podmanStatus(
 	// Show the status and that's it if the service is not running
 	if !podman.IsServiceRunning(podman.ServerService) {
 		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", podman.ServerService); err != nil {
-			return fmt.Errorf(L("failed to get status of the server service: %s"), err)
+			return utils.Errorf(err, L("failed to get status of the server service"))
 		}
 		return nil
 	}
@@ -34,12 +32,12 @@ func podmanStatus(
 	// Run spacewalk-service status in the container
 	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
 	if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "spacewalk-service", "status"); err != nil {
-		return fmt.Errorf(L("failed to run spacewalk-service status: %s"), err)
+		return utils.Errorf(err, L("failed to run spacewalk-service status"))
 	}
 
 	if !podman.IsServiceRunning(podman.ServerAttestationService) {
 		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", podman.ServerAttestationService); err != nil {
-			return fmt.Errorf(L("failed to get status of the server service: %s"), err)
+			return utils.Errorf(err, L("failed to get status of the server service"))
 		}
 		return nil
 	}

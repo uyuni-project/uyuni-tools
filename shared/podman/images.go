@@ -51,9 +51,10 @@ func PrepareImage(image string, pullPolicy string, args ...string) (string, erro
 		log.Debug().Msgf("Image %s present as RPM. Loading it", image)
 		loadedImage, err := loadRpmImage(rpmImageFile)
 		if err != nil {
-			log.Warn().Msgf(L("Cannot use RPM image for %s: %s"), image, err)
+			log.Warn().Err(err).Msgf(L("Cannot use RPM image for %s"), image)
 		} else {
-			log.Info().Msgf(L("Using the %s image loaded from the RPM instead of its online version %s"), strings.TrimSpace(loadedImage), image)
+			log.Info().Msgf(L("Using the %[1]s image loaded from the RPM instead of its online version %[2]s"),
+				strings.TrimSpace(loadedImage), image)
 			return loadedImage, nil
 		}
 	} else {
@@ -90,7 +91,7 @@ func GetRpmImageName(image string) (rpmImageFile string, tag string) {
 func BuildRpmImagePath(byteValue []byte, rpmImageFile string, tag string) (string, error) {
 	var data types.Metadata
 	if err := json.Unmarshal(byteValue, &data); err != nil {
-		return "", fmt.Errorf(L("cannot unmarshal image RPM metadata: %s"), err)
+		return "", utils.Errorf(err, L("cannot unmarshal image RPM metadata"))
 	}
 	fullPathFile := rpmImageDir + data.Image.File
 	if data.Image.Name == rpmImageFile {
@@ -111,7 +112,7 @@ func GetRpmImagePath(image string) string {
 
 	files, err := os.ReadDir(rpmImageDir)
 	if err != nil {
-		log.Debug().Msgf("Cannot read directory %s: %s", rpmImageDir, err)
+		log.Debug().Err(err).Msgf("Cannot read directory %s", rpmImageDir)
 		return ""
 	}
 
@@ -123,19 +124,19 @@ func GetRpmImagePath(image string) string {
 		log.Debug().Msgf("Parsing metadata file %s", fullPathFileName)
 		fileHandler, err := os.Open(fullPathFileName)
 		if err != nil {
-			log.Debug().Msgf("Error opening metadata file %s: %s", fullPathFileName, err)
+			log.Debug().Err(err).Msgf("Error opening metadata file %s", fullPathFileName)
 			continue
 		}
 		defer fileHandler.Close()
 		byteValue, err := io.ReadAll(fileHandler)
 		if err != nil {
-			log.Debug().Msgf("Error reading metadata file %s: %s", fullPathFileName, err)
+			log.Debug().Err(err).Msgf("Error reading metadata file %s", fullPathFileName)
 			continue
 		}
 
 		fullPathFile, err := BuildRpmImagePath(byteValue, rpmImageFile, tag)
 		if err != nil {
-			log.Warn().Msgf(L("Cannot unmarshal metadata file %s: %s"), fullPathFileName, err)
+			log.Warn().Err(err).Msgf(L("Cannot unmarshal metadata file %s"), fullPathFileName)
 			return ""
 		}
 		if len(fullPathFile) > 0 {
@@ -222,7 +223,7 @@ func ShowAvailableTag(image string) ([]string, error) {
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", image, "--format={{.Tag}}")
 	if err != nil {
-		return []string{}, fmt.Errorf(L("cannot find any tag for image %s: %s"), image, err)
+		return []string{}, utils.Errorf(err, L("cannot find any tag for image %s"), image)
 	}
 
 	tags := strings.Split(string(out), "\n")
@@ -235,7 +236,7 @@ func GetRunningImage(container string) (string, error) {
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", fmt.Sprintf("--filter=name=%s", container), "--format='{{ .Image }}'")
 	if err != nil {
-		return "", fmt.Errorf(L("cannot find any running image for container %s: %s"), container, err)
+		return "", utils.Errorf(err, L("cannot find any running image for container %s"), container)
 	}
 
 	image := strings.TrimSpace(string(out))

@@ -38,19 +38,19 @@ func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 
 	serverImage, err := utils.ComputeImage(imageFlags.Name, imageFlags.Tag)
 	if err != nil {
-		return fmt.Errorf(L("failed to compute image URL: %s"), err)
+		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
 	// Install the uyuni server helm chart
 	err = UyuniUpgrade(serverImage, imageFlags.PullPolicy, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
 	if err != nil {
-		return fmt.Errorf(L("cannot upgrade: %s"), err)
+		return utils.Errorf(err, L("cannot upgrade"))
 	}
 
 	// Wait for the pod to be started
 	err = kubernetes.WaitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
 	if err != nil {
-		return fmt.Errorf(L("cannot deploy: %s"), err)
+		return utils.Errorf(err, L("cannot deploy"))
 	}
 	return cnx.WaitForServer()
 }
@@ -65,7 +65,7 @@ func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 		// Install cert-manager and a self-signed issuer ready for use
 		issuerArgs, err := installSslIssuers(helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn, imagePullPolicy)
 		if err != nil {
-			return []string{}, fmt.Errorf(L("cannot install cert-manager and self-sign issuer: %s"), err)
+			return []string{}, utils.Errorf(err, L("cannot install cert-manager and self-sign issuer"))
 		}
 		helmArgs = append(helmArgs, issuerArgs...)
 
@@ -134,12 +134,12 @@ func Upgrade(
 
 	serverImage, err := utils.ComputeImage(image.Name, image.Tag)
 	if err != nil {
-		return fmt.Errorf(L("failed to compute image URL: %s"), err)
+		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
 	inspectedValues, err := kubernetes.InspectKubernetes(serverImage, image.PullPolicy)
 	if err != nil {
-		return fmt.Errorf(L("cannot inspect kubernetes values: %s"), err)
+		return utils.Errorf(err, L("cannot inspect kubernetes values"))
 	}
 
 	err = cmd_utils.SanityCheck(cnx, inspectedValues, serverImage)
@@ -161,19 +161,19 @@ func Upgrade(
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return fmt.Errorf(L("failed to create temporary directory: %s"), err)
+		return utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
 	//this is needed because folder with script needs to be mounted
 	//check the node before scaling down
 	nodeName, err := kubernetes.GetNode("uyuni")
 	if err != nil {
-		return fmt.Errorf(L("cannot find node running uyuni: %s"), err)
+		return utils.Errorf(err, L("cannot find node running uyuni"))
 	}
 
 	err = kubernetes.ReplicasTo(kubernetes.ServerFilter, 0)
 	if err != nil {
-		return fmt.Errorf(L("cannot set replica to 0: %s"), err)
+		return utils.Errorf(err, L("cannot set replica to 0"))
 	}
 
 	defer func() {
@@ -183,29 +183,33 @@ func Upgrade(
 		}
 	}()
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
-		log.Info().Msgf(L("Previous PostgreSQL is %s, new one is %s. Performing a DB version upgrade..."), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"),
+			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 
-		if err := RunPgsqlVersionUpgrade(*image, *migrationImage, nodeName, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]); err != nil {
-			return fmt.Errorf(L("cannot run PostgreSQL version upgrade script: %s"), err)
+		if err := RunPgsqlVersionUpgrade(*image, *migrationImage, nodeName,
+			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"],
+		); err != nil {
+			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
 		log.Info().Msgf(L("Upgrading to %s without changing PostgreSQL version"), inspectedValues["uyuni_release"])
 	} else {
-		return fmt.Errorf(L("trying to downgrade PostgreSQL from %s to %s"), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+		return fmt.Errorf(L("trying to downgrade PostgreSQL from %[1]s to %[2]s"),
+			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 	}
 
 	schemaUpdateRequired := inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"]
 	if err := RunPgsqlFinalizeScript(serverImage, image.PullPolicy, nodeName, schemaUpdateRequired); err != nil {
-		return fmt.Errorf(L("cannot run PostgreSQL version upgrade script: %s"), err)
+		return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 	}
 
 	if err := RunPostUpgradeScript(serverImage, image.PullPolicy, nodeName); err != nil {
-		return fmt.Errorf(L("cannot run post upgrade script: %s"), err)
+		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
 	err = UyuniUpgrade(serverImage, image.PullPolicy, &helm, kubeconfig, fqdn, clusterInfos.Ingress)
 	if err != nil {
-		return fmt.Errorf(L("cannot upgrade to image %s: %s"), serverImage, err)
+		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}
 
 	return kubernetes.WaitForDeployment(helm.Uyuni.Namespace, "uyuni", "uyuni")

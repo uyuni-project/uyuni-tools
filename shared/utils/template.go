@@ -29,7 +29,7 @@ func WriteTemplateToFile(template Template, path string, perm os.FileMode, overw
 	// Write the configuration
 	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, perm)
 	if err != nil {
-		return fmt.Errorf(L("failed to open %s for writing: %s"), path, err)
+		return Errorf(err, L("failed to open %s for writing"), path)
 	}
 	defer file.Close()
 

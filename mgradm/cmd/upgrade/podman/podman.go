@@ -40,7 +40,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 			var flags podmanUpgradeFlags
 			if err := viper.Unmarshal(&flags); err != nil {
-				log.Fatal().Err(err).Msg(L("Failed to unmarshall configuration"))
+				log.Fatal().Err(err).Msg(L("failed to unmarshall configuration"))
 			}
 			tags, _ := podman.ShowAvailableTag(flags.Image.Name)
 			log.Info().Msgf(L("Available Tags for image: %s"), flags.Image.Name)
