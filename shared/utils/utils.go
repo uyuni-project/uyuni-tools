@@ -184,6 +184,27 @@ func GetLocalTimezone() string {
 	return string(out)
 }
 
+// IsEmptyDirectory return true if a given directory is empty.
+func IsEmptyDirectory(path string) bool {
+	files, err := os.ReadDir(path)
+	if err != nil {
+		log.Fatal().Err(err).Msgf(L("cannot check content of %s"), path)
+		return false
+	}
+	if len(files) > 0 {
+		return false
+	}
+	return true
+}
+
+// RemoveDirectory remove a given directory.
+func RemoveDirectory(path string) error {
+	if err := os.Remove(path); err != nil {
+		return fmt.Errorf(L("Cannot remove %s folder: %s"), path, err)
+	}
+	return nil
+}
+
 // Check if a given path exists.
 func FileExists(path string) bool {
 	_, err := os.Stat(path)
