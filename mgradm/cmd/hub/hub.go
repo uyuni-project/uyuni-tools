@@ -15,6 +15,7 @@ import (
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	hubCmd := &cobra.Command{
 		Use:     "hub",
+		GroupID: "management",
 		Short:   L("Hub management"),
 		Long:    L("Tools and utilities for Hub management"),
 		Aliases: []string{"hub"},

@@ -15,9 +15,10 @@ import (
 // NewCommand for installation.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	installCmd := &cobra.Command{
-		Use:   "install",
-		Short: L("Install a new server"),
-		Long:  L("Install a new server"),
+		Use:     "install",
+		GroupID: "deploy",
+		Short:   L("Install a new server"),
+		Long:    L("Install a new server"),
 	}
 
 	installCmd.AddCommand(podman.NewCommand(globalFlags))

@@ -22,10 +22,11 @@ type inspectFlags struct {
 // NewCommand for extracting information from image and deployment.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	inspectCmd := &cobra.Command{
-		Use:   "inspect",
-		Short: L("Inspect"),
-		Long:  L("Extract information from image and deployment"),
-		Args:  cobra.MaximumNArgs(0),
+		Use:     "inspect",
+		GroupID: "deploy",
+		Short:   L("Inspect"),
+		Long:    L("Extract information from image and deployment"),
+		Args:    cobra.MaximumNArgs(0),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags inspectFlags

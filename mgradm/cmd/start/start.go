@@ -19,10 +19,11 @@ type startFlags struct {
 // NewCommand starts the server.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	startCmd := &cobra.Command{
-		Use:   "start",
-		Short: L("Start the server"),
-		Long:  L("Start the server"),
-		Args:  cobra.ExactArgs(0),
+		Use:     "start",
+		GroupID: "management",
+		Short:   L("Start the server"),
+		Long:    L("Start the server"),
+		Args:    cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags startFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, start)

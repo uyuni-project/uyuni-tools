@@ -10,7 +10,7 @@ grep -r . --include '*.go' --exclude '*_test.go' -n \
     -e 'errors.New("[^"]\+"' \
     -e '\(Fatal\|Error\|Info\|Warn\)()\(\.Err(err)\)\?\.Msgf\?("' \
     -e '\.Flags()\.\(String\|Int\|Bool\)\(Slice\)\?\(Var\)\?P\?([^)]\+, \+"[^"]\+")' \
-    -e '\(Short\|Long\): \+["`]'
+    -e '\(Short\|Long\|Title\): \+["`]'
 
 if test $? -eq 0; then
     echo -e "Fix the non localizable strings\n"
