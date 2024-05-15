@@ -200,7 +200,7 @@ func IsEmptyDirectory(path string) bool {
 // RemoveDirectory remove a given directory.
 func RemoveDirectory(path string) error {
 	if err := os.Remove(path); err != nil {
-		return fmt.Errorf(L("Cannot remove %s folder: %s"), path, err)
+		return Errorf(err, L("Cannot remove %s folder"), path)
 	}
 	return nil
 }
