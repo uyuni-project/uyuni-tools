@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/rs/zerolog/log"
@@ -21,15 +22,15 @@ import (
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// ProxyImageFlags are the flags used by pormdna proxy upgrade command.
-type PodmanProxyUpgradeFlags struct {
+// PodmanProxyFlags are the flags used by podman proxy install and upgrade command.
+type PodmanProxyFlags struct {
 	utils.ProxyImageFlags `mapstructure:",squash"`
 	Podman                podman.PodmanFlags
 }
 
 // GenerateSystemdService generates all the systemd files required by proxy.
 func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImage string, sshImage string,
-	tftpdImage string, podmanArgs []string) error {
+	tftpdImage string, flags *PodmanProxyFlags) error {
 	if err := podman.SetupNetwork(true); err != nil {
 		return shared_utils.Errorf(err, L("cannot setup network"))
 	}
@@ -53,13 +54,32 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		return err
 	}
 
+	httpdVolumes := shared_utils.PROXY_HTTPD_VOLUMES
+	log.Debug().Msgf("Tuning HTTPD value: %s", flags.ProxyImageFlags.TuningHttpd)
+	if flags.ProxyImageFlags.TuningHttpd != "" {
+		absPath, err := filepath.Abs(flags.ProxyImageFlags.TuningHttpd)
+		if err != nil {
+			return err
+		}
+		httpdVolumes[absPath] = "/etc/apache2/conf.d/apache_tuning.conf"
+	}
 	// Httpd
 	dataHttpd := templates.HttpdTemplateData{
-		Volumes:       shared_utils.PROXY_HTTPD_VOLUMES,
+		Volumes:       httpdVolumes,
 		HttpProxyFile: httpProxyConfig,
 	}
 	if err := generateSystemdFile(dataHttpd, "httpd", httpdImage, ""); err != nil {
 		return err
+	}
+	if flags.ProxyImageFlags.TuningHttpd != "" {
+		absPath, err := filepath.Abs(flags.ProxyImageFlags.TuningHttpd)
+		if err != nil {
+			return err
+		}
+		additionPodmanSettings := fmt.Sprintf(`Environment=HTTPD_ADDITIONAL_SETTINGS=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro`, absPath)
+		if err := podman.GenerateSystemdConfFile("uyuni-proxy-httpd", "Service", additionPodmanSettings); err != nil {
+			return shared_utils.Errorf(err, L("cannot generate systemd conf file"))
+		}
 	}
 
 	// Salt broker
@@ -70,9 +90,23 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		return err
 	}
 
+	squidVolumes := shared_utils.PROXY_SQUID_VOLUMES
+
+	log.Debug().Msgf("Tuning Suid value: %s", flags.ProxyImageFlags.TuningSquid)
+	if flags.ProxyImageFlags.TuningSquid != "" {
+		absPath, err := filepath.Abs(flags.ProxyImageFlags.TuningSquid)
+		if err != nil {
+			return err
+		}
+		additionPodmanSettings := fmt.Sprintf(`Environment=SQUID_ADDITIONAL_SETTINGS=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro`, absPath)
+		if err := podman.GenerateSystemdConfFile("uyuni-proxy-squid", "Service", additionPodmanSettings); err != nil {
+			return shared_utils.Errorf(err, L("cannot generate systemd conf file"))
+		}
+	}
+
 	// Squid
 	dataSquid := templates.SquidTemplateData{
-		Volumes:       shared_utils.PROXY_SQUID_VOLUMES,
+		Volumes:       squidVolumes,
 		HttpProxyFile: httpProxyConfig,
 	}
 	if err := generateSystemdFile(dataSquid, "squid", squidImage, ""); err != nil {
@@ -166,7 +200,7 @@ func UnpackConfig(configPath string) error {
 }
 
 // Upgrade will upgrade the proxy podman deploy.
-func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyUpgradeFlags, cmd *cobra.Command, args []string) error {
+func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra.Command, args []string) error {
 	if _, err := exec.LookPath("podman"); err != nil {
 		return fmt.Errorf(L("install podman before running this command"))
 	}
@@ -193,7 +227,7 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyUpgradeFlags, cmd
 	}
 
 	// Setup the systemd service configuration options
-	if err := GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags.Podman.Args); err != nil {
+	if err := GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags); err != nil {
 		return err
 	}
 

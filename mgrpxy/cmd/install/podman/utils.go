@@ -27,7 +27,7 @@ func startPod() error {
 	}
 }
 
-func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallFlags, cmd *cobra.Command, args []string) error {
+func installForPodman(globalFlags *types.GlobalFlags, flags *podman.PodmanProxyFlags, cmd *cobra.Command, args []string) error {
 	if _, err := exec.LookPath("podman"); err != nil {
 		return fmt.Errorf(L("install podman before running this command"))
 	}
@@ -59,7 +59,7 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallF
 	}
 
 	// Setup the systemd service configuration options
-	if err := podman.GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags.Podman.Args); err != nil {
+	if err := podman.GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags); err != nil {
 		return err
 	}
 
