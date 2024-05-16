@@ -7,98 +7,100 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2024-05-16 10:27+0200\n"
+"PO-Revision-Date: 2024-05-10 02:43+0000\n"
+"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: mgradm/cmd/distro/cp.go:31
-#, javascript-format
-msgid "Unable to unmount ISO image, leaving %s intact"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:35
-#, javascript-format
-msgid "unable to remove temporary directory, leaving %s intact"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:42
-#, javascript-format
-msgid "unable to login and register the distribution. Manual distro registration is required: %s"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:53
-#, javascript-format
-msgid "unable to register the distribution. Manual distro registration is required: %s"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:55
-#, javascript-format
-msgid "Distribution %s successfully registered"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:78
-#, javascript-format
-msgid "unable to mount ISO image: %s"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:92
-#, javascript-format
-msgid "distribution with same name already exists: %s"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:96
-#, javascript-format
-msgid "cannot create %s path in container: %s"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:99
-#, javascript-format
-msgid "Copying distribution %s"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:101 mgradm/shared/podman/podman.go:119
-#: mgradm/shared/podman/podman.go:122 mgradm/shared/podman/podman.go:125
-#: mgradm/shared/podman/podman.go:133
-#, javascript-format
-msgid "cannot copy %s: %s"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:103
-#, javascript-format
-msgid "Distribution has been copied into %s"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:131 mgradm/cmd/support/sql/sql.go:32
-#, javascript-format
-msgid "source %s does not exists"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:153
-#, javascript-format
-msgid "Auto-detected distribution %s"
-msgstr ""
-
-#: mgradm/cmd/distro/cp.go:169
-msgid "Continue by registering autoinstallation distribution"
-msgstr ""
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: mgradm/cmd/distro/detect.go:92
 msgid "distribution not found in product map. Please update productmap or provide channel label"
-msgstr ""
+msgstr "产品映射中找不到发行套件。请更新产品映射或提供通道标签"
 
 #: mgradm/cmd/distro/detect.go:105
 msgid "unable to read distribution treeinfo. Please provide distribution details and/or channel label"
-msgstr ""
+msgstr "无法读取发行套件树信息。请提供发行套件细节和/或通道标签"
 
 #: mgradm/cmd/distro/detect.go:135 mgradm/cmd/distro/detect.go:137
 #, javascript-format
 msgid "distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"
-msgstr ""
+msgstr "发行套件树信息 %s 不存在。请提供发行套件细节和/或通道标签"
+
+#: mgradm/cmd/distro/cp.go:31
+#, javascript-format
+msgid "Unable to unmount ISO image, leaving %s intact"
+msgstr "无法卸载 ISO 映像，%s 将保持不变"
+
+#: mgradm/cmd/distro/cp.go:35
+#, javascript-format
+msgid "unable to remove temporary directory, leaving %s intact"
+msgstr "无法去除临时目录，%s 将保持不变"
+
+#: mgradm/cmd/distro/cp.go:42
+#, fuzzy
+msgid "unable to login and register the distribution. Manual distro registration is required"
+msgstr "无法登录并注册该发行套件。需要手动注册发行套件：%s"
+
+#: mgradm/cmd/distro/cp.go:53
+#, fuzzy
+msgid "unable to register the distribution. Manual distro registration is required"
+msgstr "无法注册该发行套件。需要手动注册发行套件：%s"
+
+#: mgradm/cmd/distro/cp.go:55
+#, javascript-format
+msgid "Distribution %s successfully registered"
+msgstr "已成功注册发行套件 %s"
+
+#: mgradm/cmd/distro/cp.go:78
+#, javascript-format
+msgid "unable to mount ISO image: %s"
+msgstr "无法挂载 ISO 映像：%s"
+
+#: mgradm/cmd/distro/cp.go:92
+#, javascript-format
+msgid "distribution with same name already exists: %s"
+msgstr "已存在同名的发行套件：%s"
+
+#: mgradm/cmd/distro/cp.go:96
+#, fuzzy, javascript-format
+msgid "cannot create %s path in container"
+msgstr "无法创建 %s 路径（在容器 %s 中）"
+
+#: mgradm/cmd/distro/cp.go:99
+#, javascript-format
+msgid "Copying distribution %s"
+msgstr "正在复制发行套件 %s"
+
+#: mgradm/cmd/distro/cp.go:101 mgradm/shared/podman/podman.go:122
+#: mgradm/shared/podman/podman.go:125 mgradm/shared/podman/podman.go:128
+#: mgradm/shared/podman/podman.go:136
+#, fuzzy, javascript-format
+msgid "cannot copy %s"
+msgstr "无法复制 %s：%s"
+
+#: mgradm/cmd/distro/cp.go:103
+#, javascript-format
+msgid "Distribution has been copied into %s"
+msgstr "已将发行套件复制到 %s 中"
+
+#: mgradm/cmd/distro/cp.go:131 mgradm/cmd/support/sql/sql.go:32
+#, javascript-format
+msgid "source %s does not exists"
+msgstr "源 %s 不存在"
+
+#: mgradm/cmd/distro/cp.go:153
+#, javascript-format
+msgid "Auto-detected distribution %s"
+msgstr "自动检测到发行套件 %s"
+
+#: mgradm/cmd/distro/cp.go:169
+msgid "Continue by registering autoinstallation distribution"
+msgstr "通过注册自动安装发行套件继续"
 
 #: mgradm/cmd/distro/distro.go:32
 msgid ""
@@ -132,20 +134,49 @@ msgid ""
 "\n"
 "{{ .DefaultProductMap }}\n"
 msgstr ""
-
-#: mgradm/cmd/distro/distro.go:70
-msgid "Distributions management"
-msgstr ""
+"自动安装发行套件产品映射。\n"
+"\n"
+"要让发行套件通过 Uyuni 服务器注册，务必将发行套件映射到正确的软件通道。\n"
+"\n"
+"软件通道的名称可能各不相同，与发行套件名称毫不相关，因而需要允许将自定义发行套件名称映射到软件通道。\n"
+"\n"
+"一种设置软件通道的方法是在发行套件复制命令中使用标志 --channel。\n"
+"\n"
+"如果需要频繁使用，可以按以下格式将自定义产品映射添加到 mgradm 配置文件中：\n"
+"\n"
+"ProductMap:\n"
+"  <distribution name>:\n"
+"    <distribution version>:\n"
+"      <distribution architecture>:\n"
+"        ChannelLabel: <通道标签>\n"
+"        InstallType: <rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpm 其中之一>\n"
+"        TreeName: <自定义发行套件名称>\n"
+"\n"
+"其中\n"
+"* <distribution name> 是发行套件的名称，默认取自媒体中的 \".treeinfo\" 文件。如果找不到 \".treeinfo\" 或该文件不可用，则需要使用命令行选项。\n"
+"* <distribution version> 是发行套件的版本，默认取自媒体中的 \".treeinfo\" 文件。如果找不到 \".treeinfo\"，则需要使用命令行选项。\n"
+"* <distribution architecture> 是发行套件体系结构，默认取自媒体中的 \".treeinfo\" 文件。如果找不到 \".treeinfo\"，则需要使用命令行选项。\n"
+"* ChannelLabel 是 Uyuni 服务器提供的通道标签，将用于此发行套件；可以被命令行标志覆盖。\n"
+"* 如果 autoyast 或 kickstart 可以识别安装程序，则使用 InstallType，否则使用 'generic_rpm'。\n"
+"* TreeName 是发行套件在 Uyuni 服务器 UI 中的显示方式。如果未设置，则会使用 <distribution name>。\n"
+"\n"
+"内置产品映射：\n"
+"\n"
+"{{ .DefaultProductMap }}\n"
 
 #: mgradm/cmd/distro/distro.go:71
-msgid "Tools for autoinstallation distributions management"
-msgstr ""
+msgid "Distributions management"
+msgstr "发行套件管理"
 
-#: mgradm/cmd/distro/distro.go:77
-msgid "Copy distribution files from iso to the container"
-msgstr ""
+#: mgradm/cmd/distro/distro.go:72
+msgid "Tools for autoinstallation distributions management"
+msgstr "用于管理自动安装发行套件的工具"
 
 #: mgradm/cmd/distro/distro.go:78
+msgid "Copy distribution files from iso to the container"
+msgstr "将 ISO 中的发行套件文件复制到容器"
+
+#: mgradm/cmd/distro/distro.go:79
 msgid ""
 "Takes a path to source iso file or directory with mounted iso and copies it into the container.\n"
 "\n"
@@ -153,115 +184,124 @@ msgid ""
 "\n"
 "Note: API details are required for auto registration."
 msgstr ""
+"接受源 ISO 文件或包含已挂载 ISO 的目录的路径，并将该文件复制到容器。\n"
+"\n"
+"可选参数 'distribution-name'、'version' 和 'arch' 用于指定自定义发行套件。如果未设置，将会自动检测发行套件名称。\n"
+"\n"
+"注意：要自动执行注册，需要提供 API 细节。"
 
-#: mgradm/cmd/distro/distro.go:88
+#: mgradm/cmd/distro/distro.go:89
 msgid "Set parent channel for the distribution."
-msgstr ""
+msgstr "设置发行套件的父通道。"
 
-#: mgradm/cmd/distro/distro.go:92
+#: mgradm/cmd/distro/distro.go:93
 msgid "Help on using custom distribution product map"
-msgstr ""
+msgstr "有关使用自定义发行套件产品映射的帮助"
 
-#: mgradm/cmd/distro/distro.go:104
+#: mgradm/cmd/distro/distro.go:105
 msgid "failed to compute config help command"
-msgstr ""
-
-#: mgradm/cmd/hub/hub.go:18
-msgid "Hub management"
-msgstr ""
-
-#: mgradm/cmd/hub/hub.go:19
-msgid "Tools and utilities for Hub management"
-msgstr ""
+msgstr "compute config 帮助命令失败"
 
 #: mgradm/cmd/hub/register/register.go:31
 msgid "Register"
-msgstr ""
+msgstr "注册"
 
 #: mgradm/cmd/hub/register/register.go:32
 msgid "Register this peripheral server to Hub API"
-msgstr ""
+msgstr "将此外设服务器注册到 Hub API"
 
 #: mgradm/cmd/hub/register/register.go:79
 #, javascript-format
 msgid "invalid line format: %s"
-msgstr ""
+msgstr "命令行格式无效：%s"
 
 #: mgradm/cmd/hub/register/register.go:93
-#, javascript-format
-msgid "mandatory entry missing in config: %s"
-msgstr ""
+#, fuzzy, javascript-format
+msgid "mandatory %s entry missing in config"
+msgstr "配置中缺少必需的项：%s"
 
 #: mgradm/cmd/hub/register/register.go:96
 #, javascript-format
 msgid "Hub API server: %s"
-msgstr ""
+msgstr "Hub API 服务器：%s"
 
 #: mgradm/cmd/hub/register/register.go:99
-#, javascript-format
-msgid "failed to connect to the Hub server: %s"
-msgstr ""
+#, fuzzy
+msgid "failed to connect to the Hub server"
+msgstr "无法连接到 Hub 服务器：%s"
 
 #: mgradm/cmd/hub/register/register.go:107
+#, fuzzy
+msgid "failed to register this peripheral server"
+msgstr "无法注册此外设服务器：%s"
+
 #: mgradm/cmd/hub/register/register.go:110
 #, javascript-format
 msgid "failed to register this peripheral server: %s"
-msgstr ""
+msgstr "无法注册此外设服务器：%s"
 
 #: mgradm/cmd/hub/register/register.go:124
+#, fuzzy
+msgid "failed to update peripheral server info"
+msgstr "无法更新外设服务器信息：%s"
+
 #: mgradm/cmd/hub/register/register.go:128
 #, javascript-format
 msgid "failed to update peripheral server info: %s"
-msgstr ""
+msgstr "无法更新外设服务器信息：%s"
 
 #: mgradm/cmd/hub/register/register.go:130
-#, javascript-format
-msgid "Registered peripheral server: %s, ID: %d"
-msgstr ""
+#, fuzzy
+msgid "Registered peripheral server: %[1]s, ID: %[2]d"
+msgstr "已注册外设服务器：%s，ID：%d"
 
-#: mgradm/cmd/inspect/inspect.go:26
-msgid "Inspect"
-msgstr ""
+#: mgradm/cmd/hub/hub.go:19
+msgid "Hub management"
+msgstr "Hub 管理"
+
+#: mgradm/cmd/hub/hub.go:20
+msgid "Tools and utilities for Hub management"
+msgstr "用于进行 Hub 管理的工具和实用程序"
 
 #: mgradm/cmd/inspect/inspect.go:27
-msgid "Extract information from image and deployment"
-msgstr ""
+msgid "Inspect"
+msgstr "检查"
 
-#: mgradm/cmd/inspect/inspect.go:37
-msgid "Image URL. Leave it empty to analyze the current deployment"
-msgstr ""
+#: mgradm/cmd/inspect/inspect.go:28
+msgid "Extract information from image and deployment"
+msgstr "从映像和部署提取信息"
 
 #: mgradm/cmd/inspect/inspect.go:38
+msgid "Image URL. Leave it empty to analyze the current deployment"
+msgstr "映像 URL。保留为空将会分析当前的部署"
+
+#: mgradm/cmd/inspect/inspect.go:39
 msgid "Image Tag. Leave it empty to analyze the current deployment"
-msgstr ""
+msgstr "映像标记。保留为空将会分析当前的部署"
 
 #: mgradm/cmd/inspect/kubernetes.go:32 mgradm/cmd/inspect/podman.go:29
-#, javascript-format
-msgid "failed to determine image: %s"
-msgstr ""
+#, fuzzy
+msgid "failed to determine image"
+msgstr "无法确定映像：%s"
 
 #: mgradm/cmd/inspect/kubernetes.go:41 mgradm/cmd/inspect/podman.go:38
 #, javascript-format
 msgid "failed to find the image of the currently running server container: %s"
-msgstr ""
+msgstr "找不到目前正在运行的服务器容器的映像：%s"
 
 #: mgradm/cmd/inspect/kubernetes.go:47 mgradm/cmd/inspect/podman.go:43
-#, javascript-format
-msgid "inspect command failed: %s"
-msgstr ""
+#, fuzzy
+msgid "inspect command failed"
+msgstr "检查命令失败：%s"
 
 #: mgradm/cmd/inspect/kubernetes.go:52 mgradm/cmd/inspect/podman.go:47
-#, javascript-format
-msgid "cannot print inspect result: %s"
-msgstr ""
-
-#: mgradm/cmd/install/install.go:19 mgradm/cmd/install/install.go:20
-msgid "Install a new server"
-msgstr ""
+#, fuzzy
+msgid "cannot print inspect result"
+msgstr "无法列显检查结果：%s"
 
 #: mgradm/cmd/install/kubernetes/kubernetes.go:27
 msgid "Install a new server on a kubernetes cluster"
-msgstr ""
+msgstr "在 kubernetes 群集上安装新服务器"
 
 #: mgradm/cmd/install/kubernetes/kubernetes.go:28
 msgid ""
@@ -275,38 +315,47 @@ msgid ""
 "\n"
 "NOTE: installing on a remote cluster is not supported yet!\n"
 msgstr ""
+"在 kubernetes 群集上安装新服务器\n"
+"\n"
+"安装命令假定：\n"
+"  * 本地已安装 kubectl 和 helm\n"
+"  * 应该设置有效的 kubectl 配置，以便连接要部署到的群集\n"
+"\n"
+"helm 值文件将被命令参数或配置提供的值覆盖。\n"
+"\n"
+"注意：目前不支持在远程群集上安装！\n"
 
-#: mgradm/cmd/install/kubernetes/utils.go:33
+#: mgradm/cmd/install/kubernetes/utils.go:34
 #: mgradm/cmd/migrate/kubernetes/utils.go:37
 #: mgradm/shared/kubernetes/install.go:130
 #, javascript-format
 msgid "install %s before running this command"
-msgstr ""
+msgstr "在运行此命令前安装 %s"
 
-#: mgradm/cmd/install/kubernetes/utils.go:62
+#: mgradm/cmd/install/kubernetes/utils.go:63
 #: mgradm/cmd/migrate/kubernetes/utils.go:180
-#, javascript-format
-msgid "cannot deploy certificate: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot deploy certificate"
+msgstr "无法部署证书：%s"
 
-#: mgradm/cmd/install/kubernetes/utils.go:68
-#, javascript-format
-msgid "cannot deploy uyuni: %s"
-msgstr ""
+#: mgradm/cmd/install/kubernetes/utils.go:69
+#, fuzzy
+msgid "cannot deploy uyuni"
+msgstr "无法部署 uyuni：%s"
 
-#: mgradm/cmd/install/kubernetes/utils.go:78
-#: mgradm/cmd/install/podman/utils.go:137
+#: mgradm/cmd/install/kubernetes/utils.go:79
+#: mgradm/cmd/install/podman/utils.go:136
 msgid "Failed to stop service: %v"
-msgstr ""
+msgstr "无法停止服务：%v"
 
-#: mgradm/cmd/install/kubernetes/utils.go:87
-#, javascript-format
-msgid "error storing the SSL CA certificate in database: %s"
-msgstr ""
+#: mgradm/cmd/install/kubernetes/utils.go:88
+#, fuzzy
+msgid "error storing the SSL CA certificate in database"
+msgstr "在数据库中存储 SSL CA 证书时出错：%s"
 
 #: mgradm/cmd/install/podman/podman.go:25
 msgid "Install a new server on podman"
-msgstr ""
+msgstr "在 podman 上安装新服务器"
 
 #: mgradm/cmd/install/podman/podman.go:26
 msgid ""
@@ -316,308 +365,325 @@ msgid ""
 "\n"
 "NOTE: installing on a remote podman is not supported yet!\n"
 msgstr ""
+"在 podman 上安装新服务器\n"
+"\n"
+"install podman 命令假定本地已安装 podman。\n"
+"\n"
+"注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgradm/cmd/install/podman/utils.go:28
+#: mgradm/cmd/install/podman/utils.go:27
 #, javascript-format
 msgid "Currently only one replica is supported, starting just one instead of %d"
-msgstr ""
+msgstr "目前仅支持一个复本，正在启动一个复本，而不是 %d 个"
 
-#: mgradm/cmd/install/podman/utils.go:37
-#, javascript-format
-msgid "failed to compute image URL, %s"
-msgstr ""
+#: mgradm/cmd/install/podman/utils.go:36 mgradm/cmd/install/podman/utils.go:92
+#: mgradm/cmd/migrate/kubernetes/utils.go:44
+#: mgradm/shared/kubernetes/install.go:41
+#: mgradm/shared/kubernetes/install.go:137 mgradm/shared/kubernetes/k3s.go:47
+#: mgradm/shared/kubernetes/k3s.go:52 mgradm/shared/podman/podman.go:236
+#: mgradm/shared/podman/podman.go:241 mgradm/shared/podman/podman.go:335
+msgid "failed to compute image URL"
+msgstr "无法计算映像 URL"
 
-#: mgradm/cmd/install/podman/utils.go:41
-#, javascript-format
-msgid "cannot generate systemd service: %s"
-msgstr ""
+#: mgradm/cmd/install/podman/utils.go:40
+#, fuzzy
+msgid "cannot generate systemd service"
+msgstr "无法生成 systemd 服务：%s"
 
-#: mgradm/cmd/install/podman/utils.go:45 mgradm/cmd/install/podman/utils.go:63
-#, javascript-format
-msgid "cannot enable service: %s"
-msgstr ""
+#: mgradm/cmd/install/podman/utils.go:44 mgradm/cmd/install/podman/utils.go:62
+#, fuzzy
+msgid "cannot enable service"
+msgstr "无法启用服务：%s"
 
-#: mgradm/cmd/install/podman/utils.go:61 mgradm/shared/podman/podman.go:372
-msgid "Waiting for the server to start..."
-msgstr ""
+#: mgradm/cmd/install/podman/utils.go:60 mgradm/shared/podman/podman.go:379
+#, fuzzy
+msgid "Waiting for the server to start…"
+msgstr "正在等待服务器启动..."
 
-#: mgradm/cmd/install/podman/utils.go:77 mgradm/cmd/migrate/podman/utils.go:25
+#: mgradm/cmd/install/podman/utils.go:76 mgradm/cmd/migrate/podman/utils.go:25
 msgid "install podman before running this command"
-msgstr ""
+msgstr "在运行此命令前安装 podman"
 
-#: mgradm/cmd/install/podman/utils.go:82 mgradm/shared/podman/podman.go:184
-#: mgradm/shared/podman/podman.go:244 mgradm/shared/podman/podman.go:386
-#, javascript-format
-msgid "cannot inspect host values: %s"
-msgstr ""
+#: mgradm/cmd/install/podman/utils.go:81 mgradm/shared/podman/podman.go:187
+#: mgradm/shared/podman/podman.go:247 mgradm/shared/podman/podman.go:393
+#, fuzzy
+msgid "cannot inspect host values"
+msgstr "无法检查主机值：%s"
 
-#: mgradm/cmd/install/podman/utils.go:89
+#: mgradm/cmd/install/podman/utils.go:88
 #, javascript-format
 msgid "Setting up the server with the FQDN '%s'"
-msgstr ""
+msgstr "正在使用 FQDN '%s' 设置服务器"
 
-#: mgradm/cmd/install/podman/utils.go:93
-#: mgradm/cmd/migrate/kubernetes/utils.go:44 mgradm/shared/kubernetes/k3s.go:47
-#: mgradm/shared/kubernetes/k3s.go:52 mgradm/shared/kubernetes/install.go:41
-#: mgradm/shared/kubernetes/install.go:137 mgradm/shared/podman/podman.go:233
-#: mgradm/shared/podman/podman.go:238
-#, javascript-format
-msgid "failed to compute image URL: %s"
-msgstr ""
+#: mgradm/cmd/install/podman/utils.go:112
+#, fuzzy
+msgid "cannot wait for system start"
+msgstr "无法等待系统启动：%s"
 
-#: mgradm/cmd/install/podman/utils.go:113
-#, javascript-format
-msgid "cannot wait for system start: %s"
-msgstr ""
-
-#: mgradm/cmd/install/podman/utils.go:133
+#: mgradm/cmd/install/podman/utils.go:132
 msgid "Run setup command in the container"
-msgstr ""
+msgstr "在容器中运行设置命令"
 
-#: mgradm/cmd/install/podman/utils.go:148
-#, javascript-format
-msgid "cannot update SSL certificate: %s"
-msgstr ""
+#: mgradm/cmd/install/podman/utils.go:147
+#, fuzzy
+msgid "cannot update SSL certificate"
+msgstr "无法更新 SSL 证书：%s"
 
-#: mgradm/cmd/install/podman/utils.go:153 mgradm/cmd/migrate/podman/utils.go:69
-#, javascript-format
-msgid "cannot enable podman socket: %s"
-msgstr ""
+#: mgradm/cmd/install/podman/utils.go:152 mgradm/cmd/migrate/podman/utils.go:69
+#, fuzzy
+msgid "cannot enable podman socket"
+msgstr "无法启用 podman 套接字：%s"
 
-#: mgradm/cmd/install/podman/utils.go:164
-#, javascript-format
-msgid "failed to compute server FQDN: %s"
-msgstr ""
-
-#: mgradm/cmd/install/shared/shared.go:32
-#, javascript-format
-msgid "cannot copy /tmp/setup.sh: %s"
-msgstr ""
-
-#: mgradm/cmd/install/shared/shared.go:37
-#, javascript-format
-msgid "error running the setup script: %s"
-msgstr ""
-
-#: mgradm/cmd/install/shared/shared.go:53
-msgid "Server set up"
-msgstr ""
-
-#: mgradm/cmd/install/shared/shared.go:115
-msgid "Failed to create temporary directory"
-msgstr ""
-
-#: mgradm/cmd/install/shared/shared.go:125
-msgid "Failed to generate setup script"
-msgstr ""
+#: mgradm/cmd/install/podman/utils.go:163
+#, fuzzy
+msgid "failed to compute server FQDN"
+msgstr "无法计算服务器 FQDN：%s"
 
 #: mgradm/cmd/install/shared/flags.go:78
 msgid "Can only contain letters, digits . _ and -"
-msgstr ""
+msgstr "只能包含字母、数字 . _ 和 -"
 
 #: mgradm/cmd/install/shared/flags.go:86
 msgid "Not a valid email address"
-msgstr ""
+msgstr "不是有效的电子邮件地址"
 
 #: mgradm/cmd/install/shared/flags.go:126
 msgid "Time zone to set on the server. Defaults to the host timezone"
-msgstr ""
+msgstr "要在服务器上设置的时区。默认设为主机时区"
 
 #: mgradm/cmd/install/shared/flags.go:127
 msgid "Administrator e-mail"
-msgstr ""
+msgstr "管理员电子邮件地址"
 
 #: mgradm/cmd/install/shared/flags.go:128
 msgid "E-Mail sending the notifications"
-msgstr ""
+msgstr "发送通知的电子邮件地址"
 
 #: mgradm/cmd/install/shared/flags.go:129
 msgid "Path to mirrored packages mounted on the host"
-msgstr ""
+msgstr "主机上所挂载的已镜像软件包的路径"
 
 #: mgradm/cmd/install/shared/flags.go:130
 msgid "InterServerSync v1 parent FQDN"
-msgstr ""
+msgstr "InterServerSync v1 父 FQDN"
 
 #: mgradm/cmd/install/shared/flags.go:132
 msgid "Database user"
-msgstr ""
+msgstr "数据库用户"
 
 #: mgradm/cmd/install/shared/flags.go:133
 msgid "Database password. Randomly generated by default"
-msgstr ""
+msgstr "数据库口令。默认会随机生成"
 
 #: mgradm/cmd/install/shared/flags.go:134
 msgid "Database name"
-msgstr ""
+msgstr "数据库名称"
 
 #: mgradm/cmd/install/shared/flags.go:135
 msgid "Database host"
-msgstr ""
+msgstr "数据库主机"
 
 #: mgradm/cmd/install/shared/flags.go:136
 msgid "Database port"
-msgstr ""
+msgstr "数据库端口"
 
 #: mgradm/cmd/install/shared/flags.go:137
 msgid "Database protocol"
-msgstr ""
+msgstr "数据库协议"
 
 #: mgradm/cmd/install/shared/flags.go:138
 msgid "External database admin user name"
-msgstr ""
+msgstr "外部数据库管理员用户名"
 
 #: mgradm/cmd/install/shared/flags.go:139
 msgid "External database admin password"
-msgstr ""
+msgstr "外部数据库管理员口令"
 
 #: mgradm/cmd/install/shared/flags.go:140
 msgid "External database provider. Possible values 'aws'"
-msgstr ""
+msgstr "外部数据库提供商。可能的值为 \"aws\""
 
 #: mgradm/cmd/install/shared/flags.go:142
 msgid "Database Flags"
-msgstr ""
+msgstr "数据库标志"
 
 #: mgradm/cmd/install/shared/flags.go:153
 msgid "Enable TFTP"
-msgstr ""
+msgstr "启用 TFTP"
 
 #: mgradm/cmd/install/shared/flags.go:154
 msgid "Report database name"
-msgstr ""
+msgstr "报告数据库名称"
 
 #: mgradm/cmd/install/shared/flags.go:155
 msgid "Report database host"
-msgstr ""
+msgstr "报告数据库主机"
 
 #: mgradm/cmd/install/shared/flags.go:156
 msgid "Report database port"
-msgstr ""
+msgstr "报告数据库端口"
 
 #: mgradm/cmd/install/shared/flags.go:157
 msgid "Report Database username"
-msgstr ""
+msgstr "报告数据库用户名"
 
 #: mgradm/cmd/install/shared/flags.go:158
 msgid "Report database password. Randomly generated by default"
-msgstr ""
+msgstr "报告数据库口令。默认会随机生成"
 
 #: mgradm/cmd/install/shared/flags.go:160
 msgid "Report DB Flags"
-msgstr ""
+msgstr "报告数据库标志"
 
 #: mgradm/cmd/install/shared/flags.go:168
 msgid "SSL certificate cnames separated by commas"
-msgstr ""
+msgstr "SSL 证书名称（各名称以逗号分隔）"
 
 #: mgradm/cmd/install/shared/flags.go:169
 msgid "SSL certificate country"
-msgstr ""
+msgstr "SSL 证书国家/地区"
 
 #: mgradm/cmd/install/shared/flags.go:170
 msgid "SSL certificate state"
-msgstr ""
+msgstr "SSL 证书州/省"
 
 #: mgradm/cmd/install/shared/flags.go:171
 msgid "SSL certificate city"
-msgstr ""
+msgstr "SSL 证书城市"
 
 #: mgradm/cmd/install/shared/flags.go:172
 msgid "SSL certificate organization"
-msgstr ""
+msgstr "SSL 证书组织"
 
 #: mgradm/cmd/install/shared/flags.go:173
 msgid "SSL certificate organization unit"
-msgstr ""
+msgstr "SSL 证书组织单位"
 
 #: mgradm/cmd/install/shared/flags.go:174
 msgid "Password for the CA key to generate"
-msgstr ""
+msgstr "要生成的 CA 密钥的口令"
 
 #: mgradm/cmd/install/shared/flags.go:175
 msgid "SSL certificate E-Mail"
-msgstr ""
+msgstr "SSL 证书电子邮件地址"
 
 #: mgradm/cmd/install/shared/flags.go:177
 msgid "SSL Certificate Flags"
-msgstr ""
+msgstr "SSL 证书标志"
 
 #: mgradm/cmd/install/shared/flags.go:188
 msgid "Intermediate CA certificate path"
-msgstr ""
+msgstr "中间 CA 证书路径"
 
 #: mgradm/cmd/install/shared/flags.go:189
 msgid "Root CA certificate path"
-msgstr ""
+msgstr "根 CA 证书路径"
 
 #: mgradm/cmd/install/shared/flags.go:190
 msgid "Server certificate path"
-msgstr ""
+msgstr "服务器证书路径"
 
 #: mgradm/cmd/install/shared/flags.go:191
 msgid "Server key path"
-msgstr ""
+msgstr "服务器密钥路径"
 
 #: mgradm/cmd/install/shared/flags.go:193
 msgid "3rd Party SSL Certificate Flags"
-msgstr ""
+msgstr "第三方 SSL 证书标志"
 
 #: mgradm/cmd/install/shared/flags.go:199
 msgid "SUSE Customer Center username"
-msgstr ""
+msgstr "SUSE Customer Center 用户名"
 
 #: mgradm/cmd/install/shared/flags.go:200
 msgid "SUSE Customer Center password"
-msgstr ""
+msgstr "SUSE Customer Center 口令"
 
 #: mgradm/cmd/install/shared/flags.go:202
 msgid "SUSE Customer Center Flags"
-msgstr ""
+msgstr "SUSE Customer Center 标志"
 
 #: mgradm/cmd/install/shared/flags.go:206
 msgid "Enable tomcat and taskomatic remote debugging"
-msgstr ""
+msgstr "启用 tomcat 和 taskomatic 远程调试"
+
+#: mgradm/cmd/install/shared/flags.go:209
+#, fuzzy
+msgid "confidential computing attestation"
+msgstr "机密计算标志"
 
 #: mgradm/cmd/install/shared/flags.go:210
 msgid "How many replicas of the confidential computing container should be started. (only 0 or 1 supported for now)"
-msgstr ""
+msgstr "应启动机密计算容器的多少复本。（目前仅支持 0 或 1 个）"
 
 #: mgradm/cmd/install/shared/flags.go:212
 msgid "Confidential Computing Flags"
-msgstr ""
+msgstr "机密计算标志"
 
 #: mgradm/cmd/install/shared/flags.go:217
 msgid "Administrator user name"
-msgstr ""
+msgstr "管理员用户名"
 
 #: mgradm/cmd/install/shared/flags.go:218
 msgid "Administrator password"
-msgstr ""
+msgstr "管理员口令"
 
 #: mgradm/cmd/install/shared/flags.go:219
 msgid "First name of the administrator"
-msgstr ""
+msgstr "管理员的名字"
 
 #: mgradm/cmd/install/shared/flags.go:220
 msgid "Last name of the administrator"
-msgstr ""
+msgstr "管理员的姓氏"
 
 #: mgradm/cmd/install/shared/flags.go:221
 msgid "Administrator's email"
-msgstr ""
+msgstr "管理员的电子邮件地址"
 
 #: mgradm/cmd/install/shared/flags.go:222
 msgid "First organization name"
-msgstr ""
+msgstr "第一个组织名称"
 
 #: mgradm/cmd/install/shared/flags.go:224
 msgid "First User Flags"
+msgstr "第一个用户标志"
+
+#: mgradm/cmd/install/shared/shared.go:31
+#, fuzzy
+msgid "cannot copy /tmp/setup.sh"
+msgstr "无法复制 /tmp/setup.sh：%s"
+
+#: mgradm/cmd/install/shared/shared.go:36
+#, fuzzy
+msgid "error running the setup script"
+msgstr "运行设置脚本时出错：%s"
+
+#: mgradm/cmd/install/shared/shared.go:52
+msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:114
+#: mgradm/cmd/support/config/extractor.go:32 mgradm/cmd/gpg/add/gpg.go:67
+#: mgradm/shared/kubernetes/certificates.go:26
+#: mgradm/shared/kubernetes/certificates.go:64
+#: mgradm/shared/kubernetes/install.go:164 mgradm/shared/podman/podman.go:223
+#: mgradm/shared/podman/podman.go:283 mgradm/shared/podman/podman.go:308
+#: mgradm/shared/podman/podman.go:388 mgradm/shared/utils/exec.go:137
+#, fuzzy
+msgid "failed to create temporary directory"
+msgstr "无法创建临时目录"
+
+#: mgradm/cmd/install/shared/shared.go:124
+msgid "Failed to generate setup script"
+msgstr "无法生成设置脚本"
+
+#: mgradm/cmd/install/install.go:20 mgradm/cmd/install/install.go:21
+msgid "Install a new server"
+msgstr "安装新服务器"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:28
 msgid "Migrate a remote server to containers running on a kubernetes cluster"
-msgstr ""
+msgstr "将远程服务器迁移到正在 kubernetes 群集中运行的容器"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:29
 msgid ""
@@ -636,93 +702,103 @@ msgid ""
 "\n"
 "NOTE: migrating to a remote cluster is not supported yet!\n"
 msgstr ""
+"将远程服务器迁移到正在 kubernetes 群集中运行的容器\n"
+"\n"
+"此迁移命令假定：\n"
+"  * 源服务器的 SSH 配置是完整的，包含用户和连接到\n"
+"    该计算机所需的全部选项\n"
+"  * SSH 代理已启动，并且用于连接服务器的密钥已添加到其中\n"
+"  * 本地已安装 kubectl 和 helm\n"
+"  * 应该设置有效的 kubectl 配置，以便连接要部署到的群集\n"
+"\n"
+"迁移使用自动生成的 SSL 根 CA 证书的服务器时，需要提供私用\n"
+"密钥口令以将密钥转换为 kubernetes 机密中的 RSA。\n"
+"如果源服务器不使用生成的 SSL CA 证书，则不需要如此。\n"
+"\n"
+"注意：目前不支持迁移到远程群集！\n"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:53
 msgid "SSL CA generated private key password"
-msgstr ""
+msgstr "生成的 SSL CA 私用密钥口令"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:56 mgradm/shared/utils/exec.go:149
-#, javascript-format
-msgid "failed to generate migration script: %s"
-msgstr ""
+#, fuzzy
+msgid "failed to generate migration script"
+msgstr "无法生成迁移脚本：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:78
-#, javascript-format
-msgid "cannot run deploy: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot run deploy"
+msgstr "无法运行部署作业：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:85
 #: mgradm/shared/kubernetes/install.go:171
-#, javascript-format
-msgid "cannot find node running uyuni: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot find node running uyuni"
+msgstr "找不到运行 uyuni 的节点：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:89
-#, javascript-format
-msgid "cannot run migration: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot run migration"
+msgstr "无法运行迁移作业：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:94
-#, javascript-format
-msgid "cannot read data from container: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot read data from container"
+msgstr "无法从容器读取数据：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:100
 #: mgradm/cmd/migrate/kubernetes/utils.go:133
-#, javascript-format
-msgid "cannot set replicas to 0: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot set replicas to 0"
+msgstr "无法将复本数设置为 0：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:112
-#, javascript-format
-msgid "cannot setup SSL: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot setup SSL"
+msgstr "无法设置 SSL：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:124
-#, javascript-format
-msgid "cannot upgrade helm chart to image %s using new SSL certificate: %s"
-msgstr ""
+#, fuzzy, javascript-format
+msgid "cannot upgrade helm chart to image %s using new SSL certificate"
+msgstr "无法使用新 SSL 证书将 helm 图表升级到映像 %s：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:128
-#, javascript-format
-msgid "cannot wait for deployment of %s: %s"
-msgstr ""
+#, fuzzy, javascript-format
+msgid "cannot wait for deployment of %s"
+msgstr "无法等待 %s 部署：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:138
 #: mgradm/cmd/migrate/kubernetes/utils.go:144
 #: mgradm/cmd/migrate/podman/utils.go:44
-#: mgradm/shared/kubernetes/install.go:189
-#: mgradm/shared/kubernetes/install.go:199 mgradm/shared/podman/podman.go:352
-#: mgradm/shared/podman/podman.go:362
-#, javascript-format
-msgid "cannot run PostgreSQL version upgrade script: %s"
-msgstr ""
+#: mgradm/shared/kubernetes/install.go:192
+#: mgradm/shared/kubernetes/install.go:203 mgradm/shared/podman/podman.go:359
+#: mgradm/shared/podman/podman.go:369
+#, fuzzy
+msgid "cannot run PostgreSQL version upgrade script"
+msgstr "无法运行 PostgreSQL 版本升级脚本：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:148
 #: mgradm/cmd/migrate/podman/utils.go:54
-#: mgradm/shared/kubernetes/install.go:203 mgradm/shared/podman/podman.go:366
-#, javascript-format
-msgid "cannot run post upgrade script: %s"
-msgstr ""
+#: mgradm/shared/kubernetes/install.go:207 mgradm/shared/podman/podman.go:373
+#, fuzzy
+msgid "cannot run post upgrade script"
+msgstr "无法运行升级后脚本：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:153
-#: mgradm/shared/kubernetes/install.go:208
-#, javascript-format
-msgid "cannot upgrade to image %s: %s"
-msgstr ""
+#: mgradm/shared/kubernetes/install.go:212
+#, fuzzy, javascript-format
+msgid "cannot upgrade to image %s"
+msgstr "无法更新到映像 %s：%s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:171
-#, javascript-format
-msgid "failed to strip text part from CA certificate: %s"
-msgstr ""
-
-#: mgradm/cmd/migrate/migrate.go:19 mgradm/cmd/migrate/migrate.go:20
-msgid "Migrate a remote server to containers"
-msgstr ""
+#, fuzzy
+msgid "failed to strip text part from CA certificate"
+msgstr "无法剥离 CA 证书中的文本部分：%s"
 
 #: mgradm/cmd/migrate/podman/podman.go:25
 msgid "Migrate a remote server to containers running on podman"
-msgstr ""
+msgstr "将远程服务器迁移到正在 podman 上运行的容器"
 
 #: mgradm/cmd/migrate/podman/podman.go:26
 msgid ""
@@ -736,178 +812,182 @@ msgid ""
 "\n"
 "NOTE: migrating to a remote podman is not supported yet!\n"
 msgstr ""
+"将远程服务器迁移到正在 podman 上运行的容器\n"
+"\n"
+"此迁移命令假定：\n"
+"  * 源服务器的 SSH 配置是完整的，包含用户和连接到\n"
+"    该计算机所需的全部选项\n"
+"  * SSH 代理已启动，并且用于连接服务器的密钥已添加到其中\n"
+"  * 本地已安装 podman\n"
+"\n"
+"注意：目前不支持迁移到远程 podman！\n"
 
 #: mgradm/cmd/migrate/podman/utils.go:30
-#, javascript-format
-msgid "cannot compute image: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot compute image"
+msgstr "无法计算映像：%s"
 
 #: mgradm/cmd/migrate/podman/utils.go:39
-#, javascript-format
-msgid "cannot run migration script: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot run migration script"
+msgstr "无法运行迁移脚本：%s"
 
 #: mgradm/cmd/migrate/podman/utils.go:50
-#, javascript-format
-msgid "cannot run PostgreSQL finalize script: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot run PostgreSQL finalize script"
+msgstr "无法运行 PostgreSQL 完成脚本：%s"
 
 #: mgradm/cmd/migrate/podman/utils.go:58
-#, javascript-format
-msgid "cannot generate systemd service file: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot generate systemd service file"
+msgstr "无法生成 systemd 服务文件：%s"
 
 #: mgradm/cmd/migrate/podman/utils.go:66
 msgid "Server migrated"
-msgstr ""
+msgstr "服务器已迁移"
 
 #: mgradm/cmd/migrate/shared/shared.go:20
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
-msgstr ""
+msgstr "未定义 SSH_AUTH_SOCK，请启动 SSH 代理，然后重试"
 
 #: mgradm/cmd/migrate/shared/shared.go:30
 msgid "Failed to find home directory to look for SSH config"
-msgstr ""
+msgstr "找不到可查找 SSH 配置的主目录"
 
 #: mgradm/cmd/migrate/shared/flags.go:25
 msgid "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."
-msgstr ""
+msgstr "源服务器上的用户。非 root 用户必须拥有无口令 sudo 权限（/etc/sudoers 中需设置 NOPASSWD 标记）。"
+
+#: mgradm/cmd/migrate/migrate.go:20 mgradm/cmd/migrate/migrate.go:21
+msgid "Migrate a remote server to containers"
+msgstr "将远程服务器迁移到容器"
 
 #: mgradm/cmd/restart/nokubernetes.go:23 mgradm/cmd/start/nokubernetes.go:23
 #: mgradm/cmd/status/nokubernetes.go:23 mgradm/cmd/stop/nokubernetes.go:23
 msgid "built without kubernetes support"
-msgstr ""
+msgstr "已构建，但不含 kubernetes 支持"
 
-#: mgradm/cmd/restart/restart.go:23 mgradm/cmd/restart/restart.go:24
+#: mgradm/cmd/restart/restart.go:24 mgradm/cmd/restart/restart.go:25
 msgid "Restart the server"
-msgstr ""
+msgstr "重启动服务器"
 
-#: mgradm/cmd/start/start.go:23 mgradm/cmd/start/start.go:24
+#: mgradm/cmd/start/start.go:24 mgradm/cmd/start/start.go:25
 msgid "Start the server"
-msgstr ""
-
-#: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
-msgid "Get the server status"
-msgstr ""
-
-#: mgradm/cmd/status/status.go:46
-msgid "no installed server detected"
-msgstr ""
+msgstr "启动服务器"
 
 #: mgradm/cmd/status/kubernetes.go:32
-#, javascript-format
-msgid "failed to discover the cluster type: %s"
-msgstr ""
+#, fuzzy
+msgid "failed to discover the cluster type"
+msgstr "无法发现群集类型：%s"
 
 #: mgradm/cmd/status/kubernetes.go:37
 msgid "no uyuni helm release installed on the cluster"
-msgstr ""
+msgstr "群集上未安装 uyuni helm 版本"
 
 #: mgradm/cmd/status/kubernetes.go:42
-#, javascript-format
-msgid "failed to find the uyuni deployment namespace: %s"
-msgstr ""
+#, fuzzy
+msgid "failed to find the uyuni deployment namespace"
+msgstr "找不到 uyuni 部署名称空间：%s"
 
 #: mgradm/cmd/status/kubernetes.go:48
-#, javascript-format
-msgid "failed to get deployment status: %s"
-msgstr ""
+#, fuzzy
+msgid "failed to get deployment status"
+msgstr "无法获取部署状态：%s"
 
 #: mgradm/cmd/status/kubernetes.go:51
-#, javascript-format
-msgid "Some replicas are not ready: %d / %d"
-msgstr ""
+#, fuzzy
+msgid "Some replicas are not ready: %[1]d / %[2]d"
+msgstr "部分复本尚未准备就绪：%d / %d"
 
 #: mgradm/cmd/status/kubernetes.go:55
 msgid "the pod is not running"
-msgstr ""
+msgstr "该 pod 未在运行"
 
-#: mgradm/cmd/status/kubernetes.go:61 mgradm/cmd/status/podman.go:37
-#, javascript-format
-msgid "failed to run spacewalk-service status: %s"
-msgstr ""
+#: mgradm/cmd/status/kubernetes.go:61 mgradm/cmd/status/podman.go:35
+#, fuzzy
+msgid "failed to run spacewalk-service status"
+msgstr "无法运行 spacewalk-service 状态：%s"
 
-#: mgradm/cmd/status/podman.go:29 mgradm/cmd/status/podman.go:42
-#, javascript-format
-msgid "failed to get status of the server service: %s"
-msgstr ""
+#: mgradm/cmd/status/podman.go:27 mgradm/cmd/status/podman.go:40
+#, fuzzy
+msgid "failed to get status of the server service"
+msgstr "无法获取服务器服务的状态：%s"
 
-#: mgradm/cmd/stop/stop.go:23 mgradm/cmd/stop/stop.go:24
+#: mgradm/cmd/status/status.go:25 mgradm/cmd/status/status.go:26
+msgid "Get the server status"
+msgstr "获取服务器状态"
+
+#: mgradm/cmd/status/status.go:47
+msgid "no installed server detected"
+msgstr "未检测到任何已安装的服务器"
+
+#: mgradm/cmd/stop/stop.go:24 mgradm/cmd/stop/stop.go:25
 msgid "Stop the server"
-msgstr ""
+msgstr "停止服务器"
 
 #: mgradm/cmd/support/config/config.go:23
 msgid "Extract configuration and logs"
-msgstr ""
+msgstr "提取配置和日志"
 
 #: mgradm/cmd/support/config/config.go:24
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from \n"
 "the containers for support to help debugging."
 msgstr ""
+"提取主机或群集配置和日志以及容器中的这些信息，\n"
+"以便在调试时提供帮助。"
 
 #: mgradm/cmd/support/config/config.go:32
 msgid "path where to extract the data"
-msgstr ""
-
-#: mgradm/cmd/support/config/extractor.go:32 mgradm/shared/kubernetes/k3s.go:36
-#: mgradm/shared/kubernetes/k3s.go:104 mgradm/shared/kubernetes/k3s.go:149
-#: mgradm/shared/kubernetes/certificates.go:27
-#: mgradm/shared/kubernetes/certificates.go:65
-#: mgradm/shared/kubernetes/install.go:164 mgradm/shared/podman/podman.go:220
-#: mgradm/shared/podman/podman.go:280 mgradm/shared/podman/podman.go:305
-#: mgradm/shared/utils/exec.go:137
-#, javascript-format
-msgid "failed to create temporary directory: %s"
-msgstr ""
+msgstr "从中提取数据的路径"
 
 #: mgradm/cmd/support/config/extractor.go:40
 msgid "Running supportconfig in the container"
-msgstr ""
+msgstr "正在容器中运行 supportconfig"
 
 #: mgradm/cmd/support/config/extractor.go:43
 msgid "failed to run supportconfig"
-msgstr ""
+msgstr "无法运行 supportconfig"
 
 #: mgradm/cmd/support/config/extractor.go:47
 msgid "failed to find container supportconfig tarball from command output"
-msgstr ""
+msgstr "在命令输出中找不到容器 supportconfig Tar 包"
 
 #: mgradm/cmd/support/config/extractor.go:54
-#, javascript-format
-msgid "cannot copy tarball: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot copy tarball"
+msgstr "无法复制 Tar 包：%s"
 
 #: mgradm/cmd/support/config/extractor.go:60
-#, javascript-format
-msgid "failed to remove %s%s file in the container: %s"
-msgstr ""
+#, fuzzy, javascript-format
+msgid "failed to remove %s file in the container"
+msgstr "无法去除容器中的 %s%s 文件：%s"
 
 #: mgradm/cmd/support/config/extractor.go:69
-#, javascript-format
-msgid "failed to run supportconfig on the host: %s"
-msgstr ""
+#, fuzzy
+msgid "failed to run supportconfig on the host"
+msgstr "无法在主机上运行 supportconfig：%s"
 
 #: mgradm/cmd/support/config/extractor.go:79
 msgid "failed to find host supportconfig tarball from command output"
-msgstr ""
+msgstr "在命令输出中找不到主机 supportconfig Tar 包"
 
 #: mgradm/cmd/support/config/extractor.go:82
 msgid "supportconfig is not available on the host, skipping it"
-msgstr ""
+msgstr "无法在主机上使用 supportconfig，正在跳过"
 
 #: mgradm/cmd/support/config/extractor.go:88
 msgid "Preparing the tarball"
-msgstr ""
+msgstr "正在准备 Tar 包"
 
 #: mgradm/cmd/support/config/extractor.go:96
-#, javascript-format
-msgid "failed to add %s to tarball: %s"
-msgstr ""
+#, fuzzy, javascript-format
+msgid "failed to add %s to tarball"
+msgstr "无法将 %s 添加到 Tar 包：%s"
 
 #: mgradm/cmd/support/ptf/podman/podman.go:28
 msgid "Install a PTF or Test package on podman"
-msgstr ""
+msgstr "在 podman 上安装 PTF 或测试软件包"
 
 #: mgradm/cmd/support/ptf/podman/podman.go:29
 msgid ""
@@ -918,73 +998,37 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
+"在 podman 上安装 PTF 或测试软件包\n"
+"\n"
+"support ptf podman 命令假定本地已安装 podman 且\n"
+"主机计算机已注册到 SCC。\n"
+"\n"
+"注意：目前不支持在远程 podman 上安装！\n"
 
 #: mgradm/cmd/support/ptf/podman/utils.go:37
 msgid "ptf and test flags cannot be set simultaneously "
-msgstr ""
+msgstr "不能同时设置 ptf 和 test 标志 "
 
 #: mgradm/cmd/support/ptf/podman/utils.go:40
 msgid "ptf and test flags cannot be empty simultaneously "
-msgstr ""
+msgstr "ptf 和 test 标志不能同时为空 "
 
 #: mgradm/cmd/support/ptf/podman/utils.go:43
 msgid "user flag cannot be empty"
-msgstr ""
+msgstr "user 标志不能为空"
 
 #: mgradm/cmd/support/ptf/podman/utils.go:58
 #, javascript-format
 msgid "The image computed is: %s"
-msgstr ""
+msgstr "计算出的映像为：%s"
 
 #: mgradm/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:36
-#, javascript-format
-msgid "unable to get random file prefix: %s"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:48
-msgid "unable to cleanup source file"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:57
-#, javascript-format
-msgid "output file %s exists, use -f to force overwrite"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:109
-msgid "interactive mode cannot work with a file output"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:139
-#, javascript-format
-msgid "unknown or unsupported database %s"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:152
-msgid "Command failed"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:157
-#, javascript-format
-msgid "Result is stored in the file '%s'"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:171
-#, javascript-format
-msgid "cannot write: %s"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:185
-#, javascript-format
-msgid "Running: %s %s"
-msgstr ""
+msgstr "安装 PTF"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:26
 msgid "Execute SQL query"
-msgstr ""
+msgstr "执行 SQL 查询"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:27
 msgid ""
@@ -1005,675 +1049,761 @@ msgid ""
 "  # mgradm support sql example.sql -o out.log\n"
 "\n"
 msgstr ""
+"执行 sql-file 中提供或通过标准输入传递的 SQL 查询。\n"
+"\n"
+"示例：\n"
+"\n"
+"  使用 echo 运行 'select hostname from rhnserver;' 查询：\n"
+"\n"
+"  # echo 'select hostname from rhnserver;' | mgradm support sql\n"
+"\n"
+"  在交互模式下运行：\n"
+"\n"
+"  # mgradm support sql -i\n"
+"\n"
+"  运行 example.sql 文件中的 SQL 查询并将结果输出到 out.log 文件\n"
+"\n"
+"  # mgradm support sql example.sql -o out.log\n"
+"\n"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:50
 msgid "Target database, can be 'reportdb' or 'productdb'"
-msgstr ""
+msgstr "目标数据库，可以是 'reportdb' 或 'productdb'"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:51
 msgid "Start in interactive mode"
-msgstr ""
+msgstr "以交互模式启动"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:52
 msgid "Force overwrite of output file if already exists"
-msgstr ""
+msgstr "如果输出文件已存在，则强制重写"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:53
 msgid "Write output to the file instead of standard output"
-msgstr ""
+msgstr "将输出内容写入文件而不是标准输出"
 
-#: mgradm/cmd/support/support.go:20 mgradm/cmd/support/support.go:21
+#: mgradm/cmd/support/sql/sql.go:36
+#, fuzzy
+msgid "unable to get random file prefix"
+msgstr "无法获取随机文件前缀：%s"
+
+#: mgradm/cmd/support/sql/sql.go:48
+msgid "unable to cleanup source file"
+msgstr "无法清理源文件"
+
+#: mgradm/cmd/support/sql/sql.go:57
+#, javascript-format
+msgid "output file %s exists, use -f to force overwrite"
+msgstr "输出文件 %s 已存在，使用 -f 可强制重写"
+
+#: mgradm/cmd/support/sql/sql.go:109
+msgid "interactive mode cannot work with a file output"
+msgstr "交互模式无法提供文件输出"
+
+#: mgradm/cmd/support/sql/sql.go:139
+#, javascript-format
+msgid "unknown or unsupported database %s"
+msgstr "数据库 %s 未知或不受支持"
+
+#: mgradm/cmd/support/sql/sql.go:152
+msgid "Command failed"
+msgstr "命令失败"
+
+#: mgradm/cmd/support/sql/sql.go:157
+#, javascript-format
+msgid "Result is stored in the file '%s'"
+msgstr "结果存储在文件 '%s' 中"
+
+#: mgradm/cmd/support/sql/sql.go:171
+#, fuzzy
+msgid "cannot write"
+msgstr "无法写入：%s"
+
+#: mgradm/cmd/support/sql/sql.go:186 mgradm/cmd/uninstall/kubernetes.go:53
+#: mgradm/cmd/uninstall/kubernetes.go:58 mgradm/cmd/gpg/add/gpg.go:112
+#: mgradm/cmd/gpg/add/gpg.go:119
+#, javascript-format
+msgid "Running %s"
+msgstr "正在运行 %s"
+
+#: mgradm/cmd/support/support.go:21 mgradm/cmd/support/support.go:22
 msgid "Commands for support operations"
-msgstr ""
+msgstr "用于执行支持操作的命令"
 
 #: mgradm/cmd/uninstall/kubernetes.go:50 mgradm/cmd/uninstall/kubernetes.go:51
 #, javascript-format
 msgid "Would run %s"
-msgstr ""
-
-#: mgradm/cmd/uninstall/kubernetes.go:53 mgradm/cmd/uninstall/kubernetes.go:58
-#, javascript-format
-msgid "Running %s"
-msgstr ""
+msgstr "将运行 %s"
 
 #: mgradm/cmd/uninstall/kubernetes.go:55
 msgid "Failed deleting config map"
-msgstr ""
+msgstr "检测配置映射失败"
 
 #: mgradm/cmd/uninstall/kubernetes.go:66
 msgid "Failed deleting secret"
-msgstr ""
+msgstr "检测机密失败"
 
-#: mgradm/cmd/uninstall/uninstall.go:26
-msgid "Uninstall a server"
-msgstr ""
+#: mgradm/cmd/uninstall/podman.go:40
+#, fuzzy, javascript-format
+msgid "cannot delete volume %s"
+msgstr "无法删除卷 %s：%s"
+
+#: mgradm/cmd/uninstall/podman.go:43
+msgid "All volumes removed"
+msgstr "所有卷均已去除"
 
 #: mgradm/cmd/uninstall/uninstall.go:27
+msgid "Uninstall a server"
+msgstr "卸装服务器"
+
+#: mgradm/cmd/uninstall/uninstall.go:28
 msgid ""
 "Uninstall a server and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
 msgstr ""
-
-#: mgradm/cmd/uninstall/uninstall.go:35
-msgid "Actually remove the server"
-msgstr ""
+"卸装服务器以及可选的相应卷。\n"
+"默认仅会列显将执行的操作，使用 --force 可真正去除服务器。"
 
 #: mgradm/cmd/uninstall/uninstall.go:36
+msgid "Actually remove the server"
+msgstr "真正去除服务器"
+
+#: mgradm/cmd/uninstall/uninstall.go:37
 msgid "Also remove the volumes"
-msgstr ""
-
-#: mgradm/cmd/uninstall/podman.go:42
-#, javascript-format
-msgid "cannot delete volume %s: %s"
-msgstr ""
-
-#: mgradm/cmd/uninstall/podman.go:45
-msgid "All volumes removed"
-msgstr ""
+msgstr "同时去除卷"
 
 #: mgradm/cmd/upgrade/kubernetes/kubernetes.go:27
 #: mgradm/cmd/upgrade/kubernetes/kubernetes.go:28
 msgid "Upgrade a local server on kubernetes"
-msgstr ""
+msgstr "在 kubernetes 上升级本地服务器"
 
 #: mgradm/cmd/upgrade/podman/podman.go:27
 msgid "Upgrade a local server on podman"
-msgstr ""
+msgstr "在 podman 上升级本地服务器"
 
 #: mgradm/cmd/upgrade/podman/podman.go:36
 msgid "List available tag for an image"
-msgstr ""
+msgstr "列出映像的可用标记"
 
 #: mgradm/cmd/upgrade/podman/podman.go:43
-msgid "Failed to unmarshall configuration"
-msgstr ""
+#, fuzzy
+msgid "failed to unmarshall configuration"
+msgstr "无法解组配置"
 
 #: mgradm/cmd/upgrade/podman/podman.go:46
 #, javascript-format
 msgid "Available Tags for image: %s"
-msgstr ""
+msgstr "映像的可用标记：%s"
 
 #: mgradm/cmd/upgrade/shared/shared.go:25
 msgid "cannot find neither /etc/uyuni-release nor /etc/susemanager-release"
-msgstr ""
+msgstr "找不到 /etc/uyuni-release 和 /etc/susemanager-release"
 
 #: mgradm/cmd/upgrade/shared/shared.go:36 mgradm/shared/utils/exec.go:190
-#, javascript-format
-msgid "cannot check server release: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot check server release"
+msgstr "无法检查服务器版本：%s"
 
 #: mgradm/cmd/upgrade/shared/shared.go:42 mgradm/shared/utils/exec.go:196
 #, javascript-format
 msgid "currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"
-msgstr ""
+msgstr "目前安装了 SUSE Manager %s，但映像为 Uyuni。不支持升级"
 
 #: mgradm/cmd/upgrade/shared/shared.go:46 mgradm/shared/utils/exec.go:200
 #, javascript-format
 msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"
-msgstr ""
+msgstr "目前安装了 Uyuni %s，但映像为 SUSE Manager。不支持升级"
 
 #: mgradm/cmd/upgrade/shared/shared.go:53 mgradm/shared/utils/exec.go:207
-#, javascript-format
-msgid "failed to read current uyuni release: %s"
-msgstr ""
+#, fuzzy
+msgid "failed to read current uyuni release"
+msgstr "无法读取当前的 uyuni 版本：%s"
 
 #: mgradm/cmd/upgrade/shared/shared.go:57
 #: mgradm/cmd/upgrade/shared/shared.go:71 mgradm/shared/utils/exec.go:211
 #: mgradm/shared/utils/exec.go:225
 #, javascript-format
 msgid "cannot fetch release from image %s"
-msgstr ""
+msgstr "无法从映像 %s 中提取版本信息"
 
 #: mgradm/cmd/upgrade/shared/shared.go:61
 #: mgradm/cmd/upgrade/shared/shared.go:75 mgradm/shared/utils/exec.go:215
 #: mgradm/shared/utils/exec.go:229
-#, javascript-format
-msgid "cannot downgrade from version %s to %s"
-msgstr ""
+#, fuzzy
+msgid "cannot downgrade from version %[1]s to %[2]s"
+msgstr "无法从版本 %s 降级到 %s"
 
 #: mgradm/cmd/upgrade/shared/shared.go:67 mgradm/shared/utils/exec.go:221
-#, javascript-format
-msgid "failed to read current susemanager release: %s"
-msgstr ""
+#, fuzzy
+msgid "failed to read current susemanager release"
+msgstr "无法读取当前的 susemanager 版本：%s"
 
 #: mgradm/cmd/upgrade/shared/shared.go:80 mgradm/shared/utils/exec.go:234
 #, javascript-format
 msgid "cannot fetch postgresql version from %s"
-msgstr ""
+msgstr "无法从 %s 提取 postgresql 版本信息"
 
 #: mgradm/cmd/upgrade/shared/shared.go:84
 msgid "PostgreSQL is not installed in the current deployment"
-msgstr ""
+msgstr "当前部署中未安装 PostgreSQL"
 
-#: mgradm/cmd/upgrade/upgrade.go:18 mgradm/cmd/upgrade/upgrade.go:19
+#: mgradm/cmd/upgrade/upgrade.go:19 mgradm/cmd/upgrade/upgrade.go:20
 msgid "Upgrade local server"
-msgstr ""
+msgstr "升级本地服务器"
+
+#: mgradm/cmd/gpg/add/gpg.go:37
+msgid "Add GPG keys for 3rd party repositories"
+msgstr "添加第三方储存库的 GPG 密钥"
+
+#: mgradm/cmd/gpg/add/gpg.go:45
+msgid "Import without asking confirmation"
+msgstr "不要求确认即导入"
+
+#: mgradm/cmd/gpg/add/gpg.go:54
+#, fuzzy, javascript-format
+msgid "failed to create folder %s"
+msgstr "无法创建文件夹 %s：%s"
+
+#: mgradm/cmd/gpg/add/gpg.go:57
+#, fuzzy, javascript-format
+msgid "failed to create keyring %s"
+msgstr "无法创建密钥环 %s：%s"
+
+#: mgradm/cmd/gpg/add/gpg.go:74
+#, javascript-format
+msgid "failed to parse %s"
+msgstr "无法分析 %s"
+
+#: mgradm/cmd/gpg/add/gpg.go:81
+#, javascript-format
+msgid "failed to download %s"
+msgstr "无法下载 %s"
+
+#: mgradm/cmd/gpg/add/gpg.go:86
+#, javascript-format
+msgid "failed to show key %s"
+msgstr "无法显示密钥 %s"
+
+#: mgradm/cmd/gpg/add/gpg.go:90
+msgid "Do you really want to trust this key"
+msgstr "确实要信任此密钥吗"
+
+#: mgradm/cmd/gpg/add/gpg.go:102
+#, fuzzy
+msgid "failed to copy %[1]s to %[2]s"
+msgstr "无法将 %s cp 到 %s"
+
+#: mgradm/cmd/gpg/add/gpg.go:114
+#, fuzzy
+msgid "failed to run import key"
+msgstr "无法运行导入密钥：%s"
+
+#: mgradm/cmd/gpg/add/gpg.go:121
+#, fuzzy
+msgid "failed to restart uyuni-update-config"
+msgstr "无法重启动 uyuni-update-config：%s"
+
+#: mgradm/cmd/gpg/gpg.go:19
+msgid "Manage GPG keys for 3rd party repositories"
+msgstr "管理第三方储存库的 GPG 密钥"
 
 #: mgradm/cmd/cmd.go:39
 msgid "Uyuni administration tool"
-msgstr ""
+msgstr "Uyuni 管理工具"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Tool to help administering Uyuni servers in containers"
-msgstr ""
+msgstr "用于帮助管理容器中的 Uyuni 服务器的工具"
 
-#: mgradm/cmd/cmd.go:53
+#: mgradm/cmd/cmd.go:47
+#, fuzzy
+msgid "Server Deployment:"
+msgstr "服务器密钥路径"
+
+#: mgradm/cmd/cmd.go:51
+#, fuzzy
+msgid "Server Management:"
+msgstr "Hub 管理"
+
+#: mgradm/cmd/cmd.go:55
+#, fuzzy
+msgid "Administrator tools:"
+msgstr "管理员电子邮件地址"
+
+#: mgradm/cmd/cmd.go:66
 #, javascript-format
 msgid "Welcome to %s"
-msgstr ""
+msgstr "欢迎使用 %s"
 
-#: mgradm/cmd/cmd.go:54
+#: mgradm/cmd/cmd.go:67
 #, javascript-format
 msgid "Executing command: %s"
-msgstr ""
+msgstr "正在执行命令：%s"
 
-#: mgradm/cmd/cmd.go:58
+#: mgradm/cmd/cmd.go:71
 msgid "configuration file path"
-msgstr ""
+msgstr "配置文件路径"
 
-#: mgradm/cmd/cmd.go:59
+#: mgradm/cmd/cmd.go:72
 msgid "application log level"
-msgstr ""
+msgstr "应用程序日志级别"
 
-#: mgradm/cmd/gpg/add/gpg.go:38
-msgid "Add GPG keys for 3rd party repositories"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:46
-msgid "Import without asking confirmation"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:55
-#, javascript-format
-msgid "failed to create folder %s: %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:58
-#, javascript-format
-msgid "failed to create keyring %s: %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:68 mgradm/shared/podman/podman.go:381
-#, javascript-format
-msgid "failed to create temporary directory %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:75
-#, javascript-format
-msgid "failed to parse %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:82
-#, javascript-format
-msgid "failed to download %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:87
-#, javascript-format
-msgid "failed to show key %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:91
-msgid "Do you really want to trust this key"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:103
-#, javascript-format
-msgid "failed to cp %s to %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:113 mgradm/cmd/gpg/add/gpg.go:120
-#, javascript-format
-msgid "Running: %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:115
-#, javascript-format
-msgid "failed to run import key: %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:122
-#, javascript-format
-msgid "failed to restart uyuni-update-config: %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/gpg.go:18
-msgid "Manage GPG keys for 3rd party repositories"
-msgstr ""
-
-#: mgradm/shared/kubernetes/k3s.go:39 mgradm/shared/kubernetes/install.go:186
-#: mgradm/shared/podman/podman.go:215
-#, javascript-format
-msgid "Previous PostgreSQL is %s, new one is %s. Performing a DB version upgrade..."
-msgstr ""
-
-#: mgradm/shared/kubernetes/k3s.go:56 mgradm/shared/podman/podman.go:259
-#, javascript-format
-msgid "Using migration image %s"
-msgstr ""
-
-#: mgradm/shared/kubernetes/k3s.go:59
-#, javascript-format
-msgid "cannot generate PostgreSQL database version upgrade script: %s"
-msgstr ""
-
-#: mgradm/shared/kubernetes/k3s.go:64 mgradm/shared/kubernetes/k3s.go:113
-#: mgradm/shared/kubernetes/k3s.go:159
-#, javascript-format
-msgid "cannot delete %s: %s"
-msgstr ""
-
-#: mgradm/shared/kubernetes/k3s.go:93 mgradm/shared/kubernetes/k3s.go:139
-#: mgradm/shared/kubernetes/k3s.go:186
-#, javascript-format
-msgid "error running container %s: %s"
-msgstr ""
-
-#: mgradm/shared/kubernetes/k3s.go:109 mgradm/shared/kubernetes/k3s.go:154
-#, javascript-format
-msgid "cannot generate PostgreSQL finalization script %s"
-msgstr ""
-
-#: mgradm/shared/kubernetes/certificates.go:32
+#: mgradm/shared/kubernetes/certificates.go:31
 msgid "Creating SSL server certificate secret"
-msgstr ""
+msgstr "正在创建 SSL 服务器证书机密"
 
-#: mgradm/shared/kubernetes/certificates.go:42
+#: mgradm/shared/kubernetes/certificates.go:41
 msgid "Failed to generate uyuni-crt secret definition"
-msgstr ""
+msgstr "无法生成 uyuni-crt 机密定义"
 
-#: mgradm/shared/kubernetes/certificates.go:46
+#: mgradm/shared/kubernetes/certificates.go:45
 msgid "Failed to create uyuni-crt TLS secret"
-msgstr ""
+msgstr "无法创建 uyuni-crt TLS 机密"
 
-#: mgradm/shared/kubernetes/certificates.go:59
-#, javascript-format
-msgid "cannot install cert manager: %s"
-msgstr ""
+#: mgradm/shared/kubernetes/certificates.go:58
+#, fuzzy
+msgid "cannot install cert manager"
+msgstr "无法安装证书管理器：%s"
 
-#: mgradm/shared/kubernetes/certificates.go:62
+#: mgradm/shared/kubernetes/certificates.go:61
 msgid "Creating SSL certificate issuer"
-msgstr ""
+msgstr "正在创建 SSL 证书颁发者"
 
-#: mgradm/shared/kubernetes/certificates.go:86
-#, javascript-format
-msgid "failed to generate issuer definition: %s"
-msgstr ""
+#: mgradm/shared/kubernetes/certificates.go:85
+#, fuzzy
+msgid "failed to generate issuer definition"
+msgstr "无法生成颁发者定义：%s"
 
-#: mgradm/shared/kubernetes/certificates.go:91
+#: mgradm/shared/kubernetes/certificates.go:90
 msgid "Failed to create issuer"
-msgstr ""
+msgstr "无法创建颁发者"
 
-#: mgradm/shared/kubernetes/certificates.go:103
+#: mgradm/shared/kubernetes/certificates.go:102
 msgid "Issuer didn't turn ready after 60s"
-msgstr ""
+msgstr "颁发者未在 60 秒后变为就绪状态"
 
-#: mgradm/shared/kubernetes/certificates.go:109
+#: mgradm/shared/kubernetes/certificates.go:108
 msgid "Installing cert-manager"
-msgstr ""
+msgstr "正在安装 cert-manager"
 
-#: mgradm/shared/kubernetes/certificates.go:132
-#, javascript-format
-msgid "cannot run helm upgrade: %s"
-msgstr ""
+#: mgradm/shared/kubernetes/certificates.go:131
+#, fuzzy
+msgid "cannot run helm upgrade"
+msgstr "无法执行 helm 升级：%s"
 
-#: mgradm/shared/kubernetes/certificates.go:139
+#: mgradm/shared/kubernetes/certificates.go:138
 #: mgradm/shared/kubernetes/install.go:53
-#, javascript-format
-msgid "cannot deploy: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot deploy"
+msgstr "无法部署：%s"
 
-#: mgradm/shared/kubernetes/certificates.go:149
+#: mgradm/shared/kubernetes/certificates.go:148
 msgid "Extracting CA certificate to a configmap"
-msgstr ""
+msgstr "正在将 CA 证书提取到配置映射"
 
-#: mgradm/shared/kubernetes/certificates.go:152
+#: mgradm/shared/kubernetes/certificates.go:151
 #, javascript-format
 msgid "CA cert: %s"
-msgstr ""
+msgstr "CA 证书：%s"
 
-#: mgradm/shared/kubernetes/certificates.go:154
+#: mgradm/shared/kubernetes/certificates.go:153
 msgid "uyuni-ca configmap already existing, skipping extraction"
-msgstr ""
+msgstr "uyuni-ca 配置映射已存在，正在跳过提取步骤"
 
-#: mgradm/shared/kubernetes/certificates.go:160
+#: mgradm/shared/kubernetes/certificates.go:159
 msgid "Failed to get uyuni-ca certificate"
-msgstr ""
+msgstr "无法获取 uyuni-ca 证书"
 
-#: mgradm/shared/kubernetes/certificates.go:165
+#: mgradm/shared/kubernetes/certificates.go:164
 msgid "Failed to base64 decode CA certificate"
-msgstr ""
+msgstr "无法对 CA 证书进行 base64 解码"
 
-#: mgradm/shared/kubernetes/certificates.go:174
+#: mgradm/shared/kubernetes/certificates.go:173
 msgid "Failed to create uyuni-ca config map from certificate"
-msgstr ""
+msgstr "无法根据证书创建 uyuni-ca 配置映射"
 
 #: mgradm/shared/kubernetes/install.go:47
-#, javascript-format
-msgid "cannot upgrade: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot upgrade"
+msgstr "无法升级：%s"
 
 #: mgradm/shared/kubernetes/install.go:68
-#, javascript-format
-msgid "cannot install cert-manager and self-sign issuer: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot install cert-manager and self-sign issuer"
+msgstr "无法安装 cert-manager 和 self-sign issuer：%s"
 
 #: mgradm/shared/kubernetes/install.go:93
 msgid "Installing Uyuni"
-msgstr ""
+msgstr "正在安装 Uyuni"
 
 #: mgradm/shared/kubernetes/install.go:142
-#, javascript-format
-msgid "cannot inspect kubernetes values: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot inspect kubernetes values"
+msgstr "无法检查 kubernetes 值：%s"
 
 #: mgradm/shared/kubernetes/install.go:152
 msgid "inspect function did non return fqdn value"
-msgstr ""
+msgstr "检查函数未返回 fqdn 值"
 
 #: mgradm/shared/kubernetes/install.go:176
-#, javascript-format
-msgid "cannot set replica to 0: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot set replica to 0"
+msgstr "无法将复本数设置为 0：%s"
 
-#: mgradm/shared/kubernetes/install.go:192 mgradm/shared/podman/podman.go:355
+#: mgradm/shared/kubernetes/install.go:186 mgradm/shared/kubernetes/k3s.go:39
+#: mgradm/shared/podman/podman.go:218
+#, fuzzy
+msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
+msgstr "旧 PostgreSQL 版本为 %s，新版本为 %s。正在执行数据库版本升级..."
+
+#: mgradm/shared/kubernetes/install.go:195 mgradm/shared/podman/podman.go:362
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
-msgstr ""
+msgstr "正在升级到 %s，PostgreSQL 版本将不更改"
 
-#: mgradm/shared/kubernetes/install.go:194
+#: mgradm/shared/kubernetes/install.go:197 mgradm/shared/podman/podman.go:364
+#, fuzzy
+msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
+msgstr "正在尝试将 PostgreSQL 从 %s 降级到 %s"
+
+#: mgradm/shared/kubernetes/k3s.go:36 mgradm/shared/kubernetes/k3s.go:104
+#: mgradm/shared/kubernetes/k3s.go:149
 #, javascript-format
-msgid "trying to downgrade PostgreSQL from %s to %s"
-msgstr ""
+msgid "failed to create temporary directory: %s"
+msgstr "无法创建临时目录：%s"
 
-#: mgradm/shared/podman/podman.go:52 mgradm/shared/podman/podman.go:83
+#: mgradm/shared/kubernetes/k3s.go:56 mgradm/shared/podman/podman.go:262
 #, javascript-format
-msgid "failed to generate systemd service unit file: %s"
-msgstr ""
+msgid "Using migration image %s"
+msgstr "正在使用迁移映像 %s"
 
-#: mgradm/shared/podman/podman.go:61 mgradm/shared/podman/podman.go:87
-#, javascript-format
-msgid "cannot generate systemd conf file: %s"
-msgstr ""
+#: mgradm/shared/kubernetes/k3s.go:59 mgradm/shared/podman/podman.go:266
+#, fuzzy
+msgid "cannot generate PostgreSQL database version upgrade script"
+msgstr "无法生成 PostgreSQL 数据库版本升级脚本 %s"
 
-#: mgradm/shared/podman/podman.go:70
-#, javascript-format
-msgid "cannot setup network: %s"
-msgstr ""
+#: mgradm/shared/kubernetes/k3s.go:64 mgradm/shared/kubernetes/k3s.go:113
+#: mgradm/shared/kubernetes/k3s.go:159
+#, fuzzy, javascript-format
+msgid "cannot delete %s"
+msgstr "无法删除 %s：%s"
 
-#: mgradm/shared/podman/podman.go:73
+#: mgradm/shared/kubernetes/k3s.go:93 mgradm/shared/kubernetes/k3s.go:139
+#: mgradm/shared/kubernetes/k3s.go:186
+#, fuzzy, javascript-format
+msgid "error running container %s"
+msgstr "运行容器 %s 时出错：%s"
+
+#: mgradm/shared/kubernetes/k3s.go:109 mgradm/shared/kubernetes/k3s.go:154
+#: mgradm/shared/podman/podman.go:293 mgradm/shared/podman/podman.go:317
+#, fuzzy
+msgid "cannot generate PostgreSQL finalization script"
+msgstr "无法生成 PostgreSQL 完成脚本 %s"
+
+#: mgradm/shared/podman/podman.go:53 mgradm/shared/podman/podman.go:86
+#, fuzzy
+msgid "failed to generate systemd service unit file"
+msgstr "无法生成 systemd 服务单元文件：%s"
+
+#: mgradm/shared/podman/podman.go:62 mgradm/shared/podman/podman.go:90
+#, fuzzy
+msgid "cannot generate systemd conf file"
+msgstr "无法生成 systemd 配置文件：%s"
+
+#: mgradm/shared/podman/podman.go:71
+#, fuzzy
+msgid "cannot setup network"
+msgstr "无法设置网络：%s"
+
+#: mgradm/shared/podman/podman.go:74
 msgid "Enabling system service"
-msgstr ""
+msgstr "正在启用系统服务"
 
-#: mgradm/shared/podman/podman.go:99
+#: mgradm/shared/podman/podman.go:102
 msgid "failed to create temporary folder on container to copy certificates to"
-msgstr ""
+msgstr "无法在证书要复制到的容器上创建临时文件夹"
 
-#: mgradm/shared/podman/podman.go:139
+#: mgradm/shared/podman/podman.go:142
 msgid "failed to update SSL certificate"
-msgstr ""
+msgstr "无法更新 SSL 证书"
 
-#: mgradm/shared/podman/podman.go:144
+#: mgradm/shared/podman/podman.go:147
 msgid "failed to remove copied certificate files in the container"
-msgstr ""
+msgstr "无法去除容器中已复制的证书文件"
 
-#: mgradm/shared/podman/podman.go:150
+#: mgradm/shared/podman/podman.go:153
 msgid "failed to remove now useless ssl-build folder in the container"
-msgstr ""
+msgstr "无法去除容器中目前无用的 ssl-build 文件夹"
 
-#: mgradm/shared/podman/podman.go:155
+#: mgradm/shared/podman/podman.go:158
 msgid "Restarting services after updating the certificate"
-msgstr ""
+msgstr "正在重启动服务（证书已更新）"
 
-#: mgradm/shared/podman/podman.go:163
-#, javascript-format
-msgid "cannot generate migration script: %s"
-msgstr ""
+#: mgradm/shared/podman/podman.go:166
+#, fuzzy
+msgid "cannot generate migration script"
+msgstr "无法生成迁移脚本：%s"
 
-#: mgradm/shared/podman/podman.go:199 mgradm/shared/utils/exec.go:125
+#: mgradm/shared/podman/podman.go:202 mgradm/shared/utils/exec.go:125
 msgid "Migrating server"
-msgstr ""
+msgstr "正在迁移服务器"
 
-#: mgradm/shared/podman/podman.go:202
-#, javascript-format
-msgid "cannot run uyuni migration container: %s"
-msgstr ""
+#: mgradm/shared/podman/podman.go:205
+#, fuzzy
+msgid "cannot run uyuni migration container"
+msgstr "无法运行 uyuni 迁移容器：%s"
 
-#: mgradm/shared/podman/podman.go:207
-#, javascript-format
-msgid "cannot read extracted data: %s"
-msgstr ""
+#: mgradm/shared/podman/podman.go:210
+#, fuzzy
+msgid "cannot read extracted data"
+msgstr "无法读取提取的数据：%s"
 
-#: mgradm/shared/podman/podman.go:263
-#, javascript-format
-msgid "cannot generate PostgreSQL database version upgrade script %s"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:290 mgradm/shared/podman/podman.go:314
-#, javascript-format
-msgid "cannot generate PostgreSQL finalization script: %s"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:328
-msgid "failed to compute image URL"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:333
-#, javascript-format
-msgid "cannot inspect podman values: %s"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:343
-#, javascript-format
-msgid "cannot stop service %s"
-msgstr ""
+#: mgradm/shared/podman/podman.go:340
+#, fuzzy
+msgid "cannot inspect podman values"
+msgstr "无法检查 podman 值：%s"
 
 #: mgradm/shared/podman/podman.go:350
-#, javascript-format
-msgid "Previous postgresql is %s, instead new one is %s. Performing a DB version upgrade..."
-msgstr ""
+#, fuzzy
+msgid "cannot stop service"
+msgstr "无法停止服务 %s"
 
 #: mgradm/shared/podman/podman.go:357
-#, javascript-format
-msgid "trying to downgrade postgresql from %s to %s"
-msgstr ""
+#, fuzzy
+msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
+msgstr "旧 postgresql 版本为 %s，而新版本为 %s。正在执行数据库版本升级..."
 
-#: mgradm/shared/podman/podman.go:418
-#, javascript-format
-msgid "cannot inspect data. %s"
-msgstr ""
+#: mgradm/shared/podman/podman.go:425
+#, fuzzy
+msgid "cannot inspect data"
+msgstr "无法检查数据。%s"
 
 #: mgradm/shared/ssl/ssl.go:47
 msgid "Failed to find a non-CA certificate"
-msgstr ""
+msgstr "找不到非 CA 证书"
 
 #: mgradm/shared/ssl/ssl.go:86
 msgid "expected to find a certificate, got none"
-msgstr ""
+msgstr "应该找到一个证书，结果未找到任何证书"
 
 #: mgradm/shared/ssl/ssl.go:92
 #, javascript-format
 msgid "Failed to read certificate file %s"
-msgstr ""
+msgstr "无法读取证书文件 %s"
 
 #: mgradm/shared/ssl/ssl.go:128
 msgid "Failed to extract data from certificate"
-msgstr ""
+msgstr "无法从证书提取数据"
 
 #: mgradm/shared/ssl/ssl.go:149
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
-msgstr ""
+msgstr "无法分析起始日期：%s\n"
 
 #: mgradm/shared/ssl/ssl.go:155
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
-msgstr ""
+msgstr "无法分析终止日期：%s\n"
 
 #: mgradm/shared/ssl/ssl.go:199
 msgid "No CA found"
-msgstr ""
+msgstr "未找到 CA"
 
 #: mgradm/shared/ssl/ssl.go:206
 msgid "No CA found for server certificate"
-msgstr ""
+msgstr "未找到服务器证书的 CA"
 
 #: mgradm/shared/ssl/ssl.go:215
 #, javascript-format
 msgid "Missing CA with subject hash %s"
-msgstr ""
+msgstr "缺少主体哈希为 %s 的 CA"
 
 #: mgradm/shared/ssl/ssl.go:236
 msgid "server certificate is required"
-msgstr ""
+msgstr "必须指定服务器证书"
 
 #: mgradm/shared/ssl/ssl.go:237
 msgid "server key is required"
-msgstr ""
+msgstr "必须指定服务器密钥"
 
 #: mgradm/shared/ssl/ssl.go:249
 #, javascript-format
 msgid "%s file is not accessible"
-msgstr ""
+msgstr "%s 文件无法访问"
 
 #: mgradm/shared/ssl/ssl.go:257
 msgid "Source server SSL CA private key password"
-msgstr ""
+msgstr "源服务器 SSL CA 私用密钥口令"
 
 #: mgradm/shared/ssl/ssl.go:264
 msgid "Failed to convert CA private key to RSA"
-msgstr ""
+msgstr "无法将 CA 私用密钥转换为 RSA"
 
 #: mgradm/shared/utils/cmd_utils.go:49
 msgid "Server certificate, key and root CA need to be all provided"
-msgstr ""
+msgstr "服务器证书、密钥和根 CA 必须全部提供"
 
 #: mgradm/shared/utils/cmd_utils.go:57
 msgid "Kubernetes namespace where to install uyuni"
-msgstr ""
+msgstr "要安装 uyuni 的 Kubernetes 名称空间"
 
 #: mgradm/shared/utils/cmd_utils.go:58
 msgid "URL to the uyuni helm chart"
-msgstr ""
+msgstr "Uyuni helm 图表的 URL"
 
 #: mgradm/shared/utils/cmd_utils.go:59
 msgid "Version of the uyuni helm chart"
-msgstr ""
+msgstr "Uyuni helm 图表的版本"
 
 #: mgradm/shared/utils/cmd_utils.go:60
 msgid "Path to a values YAML file to use for Uyuni helm install"
-msgstr ""
+msgstr "用于安装 Uyuni helm 的值 YAML 文件的路径"
 
 #: mgradm/shared/utils/cmd_utils.go:61
 msgid "Kubernetes namespace where to install cert-manager"
-msgstr ""
+msgstr "要安装 cert-manager 的 Kubernetes 名称空间"
 
 #: mgradm/shared/utils/cmd_utils.go:62
 msgid "URL to the cert-manager helm chart. To be used for offline installations"
-msgstr ""
+msgstr "Cert-manager helm 图表的 URL。将用于进行脱机安装"
 
 #: mgradm/shared/utils/cmd_utils.go:63
 msgid "Version of the cert-manager helm chart"
-msgstr ""
+msgstr "Cert-manager helm 图表的版本"
 
 #: mgradm/shared/utils/cmd_utils.go:64
 msgid "Path to a values YAML file to use for cert-manager helm install"
-msgstr ""
+msgstr "用于安装 cert-manager helm 的值 YAML 文件的路径"
 
 #: mgradm/shared/utils/cmd_utils.go:66
 msgid "Helm Chart Flags"
-msgstr ""
+msgstr "Helm 图表标志"
 
 #: mgradm/shared/utils/cmd_utils.go:80
 #, javascript-format
 msgid "Image for %s container, overrides the namespace if set"
-msgstr ""
+msgstr "%s 容器的映像，如果设置，将会覆盖名称空间"
 
 #: mgradm/shared/utils/cmd_utils.go:82
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
-msgstr ""
+msgstr "%s 容器的标记，如果设置，将会覆盖全局值"
 
 #: mgradm/shared/utils/cmd_utils.go:87 mgradm/shared/utils/cmd_utils.go:100
 #: mgradm/shared/utils/cmd_utils.go:108
 msgid "Image"
-msgstr ""
+msgstr "映像"
 
 #: mgradm/shared/utils/cmd_utils.go:88 mgradm/shared/utils/cmd_utils.go:101
 #: mgradm/shared/utils/cmd_utils.go:109
 msgid "Tag Image"
-msgstr ""
+msgstr "标记映像"
 
 #: mgradm/shared/utils/cmd_utils.go:92
 msgid "Image Flags"
-msgstr ""
+msgstr "映像标志"
 
 #: mgradm/shared/utils/cmd_utils.go:103 mgradm/shared/utils/cmd_utils.go:111
 msgid "set whether to pull the images or not during upgrade. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
-msgstr ""
+msgstr "设置升级期间是否拉取映像。值可以是以下之一：'Never'、'IfNotPresent' 或 'Always'"
 
 #: mgradm/shared/utils/cmd_utils.go:116
 msgid "Migration image"
-msgstr ""
+msgstr "迁移映像"
 
 #: mgradm/shared/utils/cmd_utils.go:117
 msgid "Migration image tag"
-msgstr ""
+msgstr "迁移映像标记"
 
 #: mgradm/shared/utils/cmd_utils.go:119
 msgid "set whether to pull the migration images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
-msgstr ""
+msgstr "设置是否拉取迁移映像。值可以是以下之一：'Never'、'IfNotPresent' 或 'Always'"
 
 #: mgradm/shared/utils/cmd_utils.go:121
 msgid "Migration Image Flags"
-msgstr ""
+msgstr "迁移映像标志"
 
 #: mgradm/shared/utils/exec.go:30
-#, javascript-format
-msgid "exec command failed: %s"
-msgstr ""
+#, fuzzy
+msgid "exec command failed"
+msgstr "执行命令失败：%s"
 
 #: mgradm/shared/utils/exec.go:64 mgradm/shared/utils/exec.go:82
 #: mgradm/shared/utils/exec.go:96
 #, javascript-format
 msgid "failed to generate %s"
-msgstr ""
+msgstr "无法生成 %s"
 
 #: mgradm/shared/utils/exec.go:105
 msgid "failed to read data extracted from source host"
-msgstr ""
+msgstr "无法读取从源主机提取的数据"
 
 #: mgradm/shared/utils/exec.go:109
-#, javascript-format
-msgid "cannot read config: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot read config"
+msgstr "无法读取配置：%s"
 
 #: mgradm/shared/utils/exec.go:112
 msgid "cannot retrieve timezone"
-msgstr ""
+msgstr "无法检索时区"
 
 #: mgradm/shared/utils/exec.go:115
 msgid "cannot retrieve source PostgreSQL version"
-msgstr ""
+msgstr "无法检索源 PostgreSQL 版本"
 
 #: mgradm/shared/utils/exec.go:118
 msgid "cannot retrieve image PostgreSQL version"
-msgstr ""
+msgstr "无法检索映像 PostgreSQL 版本"
 
 #: mgradm/shared/utils/exec.go:128
-#, javascript-format
-msgid "error running the migration script: %s"
-msgstr ""
+#, fuzzy
+msgid "error running the migration script"
+msgstr "运行迁移脚本时出错：%s"
 
 #: mgradm/shared/utils/exec.go:176
 #, javascript-format
 msgid "Image is: %s"
-msgstr ""
+msgstr "映像为 %s"
 
 #: mgradm/shared/utils/exec.go:238
 msgid "posgresql is not installed in the current deployment"
-msgstr ""
+msgstr "当前部署中未安装 posgresql"
 
 #: mgradm/shared/utils/exec.go:252
 msgid "cannot find neither /etc/uyuni-release nor /etc/susemanagere-release"
-msgstr ""
+msgstr "找不到 /etc/uyuni-release 和 /etc/susemanagere-release"
+
+#, javascript-format
+#~ msgid "failed to compute image URL, %s"
+#~ msgstr "无法计算映像 URL，%s"
+
+#, javascript-format
+#~ msgid "failed to compute image URL: %s"
+#~ msgstr "无法计算映像 URL：%s"
+
+#~ msgid "Server set up"
+#~ msgstr "服务器设置"
+
+#, javascript-format
+#~ msgid "Running: %s %s"
+#~ msgstr "正在运行：%s %s"
+
+#, javascript-format
+#~ msgid "failed to create temporary directory %s"
+#~ msgstr "无法创建临时目录 %s"
+
+#, javascript-format
+#~ msgid "Running: %s"
+#~ msgstr "正在运行：%s"
+
+#, javascript-format
+#~ msgid "cannot generate PostgreSQL database version upgrade script: %s"
+#~ msgstr "无法生成 PostgreSQL 数据库版本升级脚本：%s"
+
+#, javascript-format
+#~ msgid "cannot generate PostgreSQL finalization script: %s"
+#~ msgstr "无法生成 PostgreSQL 完成脚本：%s"
+
+#, javascript-format
+#~ msgid "trying to downgrade postgresql from %s to %s"
+#~ msgstr "正在尝试将 postgresql 从 %s 降级到 %s"

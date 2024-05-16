@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-26 10:11+0200\n"
+"POT-Creation-Date: 2024-05-16 10:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,69 +37,34 @@ msgstr ""
 msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
 msgstr ""
 
-#: mgrctl/cmd/api/get.go:25 mgrctl/cmd/api/post.go:25
+#: mgrctl/cmd/api/get.go:26 mgrctl/cmd/api/post.go:26
+msgid "unable to login to the server"
+msgstr ""
+
+#: mgrctl/cmd/api/get.go:33 mgrctl/cmd/api/post.go:49
 #, javascript-format
-msgid "unable to login to the server: %s"
+msgid "error in query %s"
 msgstr ""
 
-#: mgrctl/cmd/api/get.go:32 mgrctl/cmd/api/post.go:48
-#, javascript-format
-msgid "error in query %s: %s"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:30
-msgid "Uyuni control tool"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:31
-msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:38
-msgid "configuration file path"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:39
-msgid "application log level"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:47
-#, javascript-format
-msgid "Welcome to %s"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:48
-#, javascript-format
-msgid "Executing command: %s"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:54
-msgid "Failed to create api command"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:63
-msgid "Failed to create org command"
-msgstr ""
-
-#: mgrctl/cmd/cp/cp.go:31
+#: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
 msgstr ""
 
-#: mgrctl/cmd/cp/cp.go:32
+#: mgrctl/cmd/cp/cp.go:30
 msgid ""
 "Takes a source and destination parameters.\n"
 "\tOne of them can be prefixed with 'server:' to indicate the path is within the server pod."
 msgstr ""
 
-#: mgrctl/cmd/cp/cp.go:41
+#: mgrctl/cmd/cp/cp.go:39
 msgid "failed to unmarshall configuration"
 msgstr ""
 
-#: mgrctl/cmd/cp/cp.go:47
+#: mgrctl/cmd/cp/cp.go:45
 msgid "User or UID to set on the destination file"
 msgstr ""
 
-#: mgrctl/cmd/cp/cp.go:48
+#: mgrctl/cmd/cp/cp.go:46
 msgid "Group or GID to set on the destination file"
 msgstr ""
 
@@ -128,52 +93,44 @@ msgid "Command returned with exit code 0"
 msgstr ""
 
 #: mgrctl/cmd/exec/exec.go:116
+msgid "cannot write"
+msgstr ""
+
+#: mgrctl/cmd/exec/exec.go:132
 #, javascript-format
-msgid "cannot write: %s"
-msgstr ""
-
-#: mgrctl/cmd/exec/exec.go:131
-#, javascript-format
-msgid "Running: %s %s"
-msgstr ""
-
-#: mgrctl/cmd/org/org.go:18
-msgid "Organization-related commands"
-msgstr ""
-
-#: mgrctl/cmd/org/createFirst.go:28
-msgid "Create the first user and organization"
-msgstr ""
-
-#: mgrctl/cmd/org/createFirst.go:35
-msgid "Administrator user name"
-msgstr ""
-
-#: mgrctl/cmd/org/createFirst.go:36
-msgid "Administrator password"
-msgstr ""
-
-#: mgrctl/cmd/org/createFirst.go:37
-msgid "The first name of the administrator"
-msgstr ""
-
-#: mgrctl/cmd/org/createFirst.go:38
-msgid "The last name of the administrator"
-msgstr ""
-
-#: mgrctl/cmd/org/createFirst.go:39
-msgid "The administrator's email"
-msgstr ""
-
-#: mgrctl/cmd/org/createFirst.go:40
-msgid "The first organization name"
-msgstr ""
-
-#: mgrctl/cmd/org/createFirst.go:51
-#, javascript-format
-msgid "Organization %s created with id %d"
+msgid "Running %s"
 msgstr ""
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:29
+msgid "Uyuni control tool"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:30
+msgid "Tool to help managing Uyuni servers mainly through their API"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:37
+msgid "configuration file path"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:38
+msgid "application log level"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:46
+#, javascript-format
+msgid "Welcome to %s"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:47
+#, javascript-format
+msgid "Executing command: %s"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:53
+msgid "Failed to create api command"
 msgstr ""

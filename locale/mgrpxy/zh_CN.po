@@ -7,22 +7,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-26 10:11+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"POT-Creation-Date: 2024-05-16 10:27+0200\n"
+"PO-Revision-Date: 2024-05-09 11:43+0000\n"
+"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
-msgid "Install a new proxy from scratch"
-msgstr ""
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
-msgstr ""
+msgstr "在正在运行的 kubernetes 群集上安装新代理"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
 msgid ""
@@ -35,32 +33,40 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote kubernetes cluster is not supported!\n"
 msgstr ""
+"在正在运行的 kubernetes 群集上安装新代理。\n"
+"\n"
+"该命令仅接受服务器生成的配置 Tar 包的路径作为参数。\n"
+"\n"
+"\n"
+"install kubernetes 命令假定本地已安装 kubectl。\n"
+"\n"
+"注意：目前不支持在远程 kubernetes 群集上安装！\n"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:26
 #: mgrpxy/shared/kubernetes/deploy.go:137
 #, javascript-format
 msgid "install %s before running this command"
-msgstr ""
+msgstr "在运行此命令前安装 %s"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:35
 #: mgrpxy/shared/kubernetes/deploy.go:143
-#, javascript-format
-msgid "failed to create temporary directory: %s"
-msgstr ""
+#, fuzzy
+msgid "failed to create temporary directory"
+msgstr "无法创建临时目录：%s"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
 msgid "failed to extract configuration"
-msgstr ""
+msgstr "无法提取配置"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:62
 #: mgrpxy/shared/kubernetes/deploy.go:168
-#, javascript-format
-msgid "cannot deploy proxy helm chart: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot deploy proxy helm chart"
+msgstr "无法部署代理 helm 图表：%s"
 
 #: mgrpxy/cmd/install/podman/podman.go:25
 msgid "Install a new proxy on podman"
-msgstr ""
+msgstr "在 podman 上安装新代理"
 
 #: mgrpxy/cmd/install/podman/podman.go:26
 msgid ""
@@ -73,138 +79,152 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
+"在 podman 上安装新代理\n"
+"\n"
+"该命令仅接受服务器生成的配置 Tar 包的路径作为参数。\n"
+"\n"
+"\n"
+"install podman 命令假定本地已安装 podman。\n"
+"\n"
+"注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:31 mgrpxy/shared/podman/podman.go:168
+#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:168
 msgid "install podman before running this command"
-msgstr ""
+msgstr "在运行此命令前安装 podman"
 
-#: mgrpxy/cmd/install/podman/utils.go:36
-#, javascript-format
-msgid "failed to extract proxy config from %s file: %s"
-msgstr ""
+#: mgrpxy/cmd/install/podman/utils.go:37
+#, fuzzy, javascript-format
+msgid "failed to extract proxy config from %s file"
+msgstr "无法从 %s 文件中提取代理配置：%s"
+
+#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
+msgid "Install a new proxy from scratch"
+msgstr "从头开始安装新代理"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
-msgstr ""
+msgstr "重启动代理"
 
 #: mgrpxy/cmd/start/start.go:23 mgrpxy/cmd/start/start.go:24
 msgid "Start the proxy"
-msgstr ""
-
-#: mgrpxy/cmd/status/kubernetes.go:27
-#, javascript-format
-msgid "failed to discover the cluster type: %s"
-msgstr ""
-
-#: mgrpxy/cmd/status/kubernetes.go:32
-msgid "no uyuni-proxy helm release installed on the cluster"
-msgstr ""
-
-#: mgrpxy/cmd/status/kubernetes.go:37
-#, javascript-format
-msgid "failed to find the uyuni-proxy deployment namespace: %s"
-msgstr ""
-
-#: mgrpxy/cmd/status/kubernetes.go:43
-#, javascript-format
-msgid "failed to get deployment status: %s"
-msgstr ""
-
-#: mgrpxy/cmd/status/kubernetes.go:46
-#, javascript-format
-msgid "Some replicas are not ready: %d / %d"
-msgstr ""
-
-#: mgrpxy/cmd/status/kubernetes.go:50
-msgid "the pod is not running"
-msgstr ""
-
-#: mgrpxy/cmd/status/kubernetes.go:53
-msgid "Proxy containers up and running"
-msgstr ""
+msgstr "启动代理"
 
 #: mgrpxy/cmd/status/status.go:24 mgrpxy/cmd/status/status.go:25
 msgid "Get the proxy status"
-msgstr ""
+msgstr "获取代理状态"
 
 #: mgrpxy/cmd/status/status.go:46
 msgid "no installed proxy detected"
-msgstr ""
+msgstr "未检测到任何已安装的代理"
 
 #: mgrpxy/cmd/status/podman.go:30
 #, javascript-format
 msgid "Failed to get status of the %s service"
-msgstr ""
+msgstr "无法获取 %s 服务的状态"
 
 #: mgrpxy/cmd/status/podman.go:31
 msgid "failed to get the status of at least one service"
-msgstr ""
+msgstr "无法获取至少一项服务的状态"
+
+#: mgrpxy/cmd/status/kubernetes.go:27
+#, fuzzy
+msgid "failed to discover the cluster type"
+msgstr "无法发现群集类型：%s"
+
+#: mgrpxy/cmd/status/kubernetes.go:32
+msgid "no uyuni-proxy helm release installed on the cluster"
+msgstr "群集上未安装 uyuni-proxy helm 版本"
+
+#: mgrpxy/cmd/status/kubernetes.go:37
+#, fuzzy
+msgid "failed to find the uyuni-proxy deployment namespace"
+msgstr "找不到 uyuni-proxy 部署名称空间：%s"
+
+#: mgrpxy/cmd/status/kubernetes.go:43
+#, fuzzy
+msgid "failed to get deployment status"
+msgstr "无法获取部署状态：%s"
+
+#: mgrpxy/cmd/status/kubernetes.go:46
+#, fuzzy
+msgid "Some replicas are not ready: %[1]d / %[2]d"
+msgstr "部分复本尚未准备就绪：%d / %d"
+
+#: mgrpxy/cmd/status/kubernetes.go:50
+msgid "the pod is not running"
+msgstr "该 pod 未在运行"
+
+#: mgrpxy/cmd/status/kubernetes.go:53
+msgid "Proxy containers up and running"
+msgstr "代理容器在正常运行"
 
 #: mgrpxy/cmd/stop/stop.go:23 mgrpxy/cmd/stop/stop.go:24
 msgid "Stop the proxy"
-msgstr ""
+msgstr "停止代理"
 
-#: mgrpxy/cmd/uninstall/podman.go:48
-#, javascript-format
-msgid "cannot delete volume %s: %s"
-msgstr ""
+#: mgrpxy/cmd/uninstall/podman.go:46
+#, fuzzy, javascript-format
+msgid "cannot delete volume %s"
+msgstr "无法删除卷 %s：%s"
 
-#: mgrpxy/cmd/uninstall/podman.go:51
+#: mgrpxy/cmd/uninstall/podman.go:49
 msgid "All volumes removed"
-msgstr ""
+msgstr "所有卷均已去除"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:23
+#: mgrpxy/cmd/uninstall/uninstall.go:21
 msgid "Uninstall a proxy"
-msgstr ""
+msgstr "卸装代理"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:24
+#: mgrpxy/cmd/uninstall/uninstall.go:22
 msgid ""
 "Uninstall a proxy and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
 msgstr ""
+"卸装代理以及可选的相应卷。\n"
+"默认仅会列显将执行的操作，使用 --force 可真正去除代理。"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:36
-#, javascript-format
-msgid "failed to determine suitable backend: %s"
-msgstr ""
+#: mgrpxy/cmd/uninstall/uninstall.go:34
+#, fuzzy
+msgid "failed to determine suitable backend"
+msgstr "无法确定合适的后端：%s"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:51
+#: mgrpxy/cmd/uninstall/uninstall.go:49
 msgid "Actually remove the proxy"
-msgstr ""
+msgstr "真正去除代理"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:52
+#: mgrpxy/cmd/uninstall/uninstall.go:50
 msgid "Also remove the volumes"
-msgstr ""
+msgstr "同时去除卷"
 
 #: mgrpxy/cmd/cmd.go:33
 msgid "Uyuni proxy administration tool"
-msgstr ""
+msgstr "Uyuni 代理管理工具"
 
 #: mgrpxy/cmd/cmd.go:34
 msgid "Tool to help administering Uyuni proxies in containers"
-msgstr ""
+msgstr "用于帮助管理容器中的 Uyuni 代理的工具"
 
 #: mgrpxy/cmd/cmd.go:47
 #, javascript-format
 msgid "Welcome to %s"
-msgstr ""
+msgstr "欢迎使用 %s"
 
 #: mgrpxy/cmd/cmd.go:48
 #, javascript-format
 msgid "Executing command: %s"
-msgstr ""
+msgstr "正在执行命令：%s"
 
 #: mgrpxy/cmd/cmd.go:52
 msgid "configuration file path"
-msgstr ""
+msgstr "配置文件路径"
 
 #: mgrpxy/cmd/cmd.go:53
 msgid "application log level"
-msgstr ""
+msgstr "应用程序日志级别"
 
 #: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:25
 msgid "Install a PTF or Test package on a kubernetes cluster"
-msgstr ""
+msgstr "在 kubernetes 群集上安装 PTF 或测试软件包"
 
 #: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:26
 msgid ""
@@ -218,10 +238,19 @@ msgid ""
 "\n"
 "NOTE: installing on a remote cluster is not supported yet!\n"
 msgstr ""
+"在 kubernetes 群集上安装 PTF 或测试软件包\n"
+"\n"
+"support ptf 命令假定：\n"
+"  * 本地已安装 kubectl 和 helm\n"
+"  * 应该设置有效的 kubectl 配置，以便连接要部署到的群集\n"
+"\n"
+"helm 值文件将被命令参数或配置提供的值覆盖。\n"
+"\n"
+"注意：目前不支持在远程群集上安装！\n"
 
 #: mgrpxy/cmd/support/ptf/podman/podman.go:30
 msgid "Install a PTF or Test package on podman"
-msgstr ""
+msgstr "在 podman 上安装 PTF 或测试软件包"
 
 #: mgrpxy/cmd/support/ptf/podman/podman.go:31
 msgid ""
@@ -232,55 +261,61 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
+"在 podman 上安装 PTF 或测试软件包\n"
+"\n"
+"support ptf podman 命令假定本地已安装 podman 且\n"
+"主机计算机已注册到 SCC。\n"
+"\n"
+"注意：目前不支持在远程 podman 上安装！\n"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:34
 msgid "ptf and test flags cannot be set simultaneously "
-msgstr ""
+msgstr "不能同时设置 ptf 和 test 标志 "
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:37
 msgid "ptf and test flags cannot be empty simultaneously "
-msgstr ""
+msgstr "ptf 和 test 标志不能同时为空 "
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:40
 msgid "user flag cannot be empty"
-msgstr ""
+msgstr "user 标志不能为空"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:54
 #, javascript-format
 msgid "The httpd ptf image computed is: %s"
-msgstr ""
+msgstr "计算出的 httpd ptf 映像为：%s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:64
 #, javascript-format
 msgid "The ssh ptf image computed is: %s"
-msgstr ""
+msgstr "计算出的 ssh ptf 映像为：%s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:74
 #, javascript-format
 msgid "The tftpd ptf image computed is: %s"
-msgstr ""
+msgstr "计算出的 tftpd ptf 映像为：%s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:84
 #, javascript-format
 msgid "The salt-broker ptf image computed is: %s"
-msgstr ""
+msgstr "计算出的 salt-broker ptf 映像为：%s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:94
 #, javascript-format
 msgid "The squid ptf image computed is: %s"
-msgstr ""
+msgstr "计算出的 squid ptf 映像为：%s"
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
-msgstr ""
+msgstr "安装 PTF"
 
 #: mgrpxy/cmd/support/support.go:18 mgrpxy/cmd/support/support.go:19
 msgid "Commands for support operations"
-msgstr ""
+msgstr "用于执行支持操作的命令"
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:20
 msgid "Upgrade a proxy on a running kubernetes cluster"
-msgstr ""
+msgstr "在正在运行的 kubernetes 群集上升级代理"
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:21
 msgid ""
@@ -290,10 +325,15 @@ msgid ""
 "\n"
 "NOTE: for now upgrading on a remote kubernetes cluster is not supported!\n"
 msgstr ""
+"在正在运行的 kubernetes 群集上升级代理。\n"
+"\n"
+"upgrade kubernetes 命令假定本地已安装 kubectl。\n"
+"\n"
+"注意：目前不支持在远程 kubernetes 群集上升级！\n"
 
 #: mgrpxy/cmd/upgrade/podman/podman.go:20
 msgid "Upgrade a proxy on podman"
-msgstr ""
+msgstr "在 podman 上升级代理"
 
 #: mgrpxy/cmd/upgrade/podman/podman.go:21
 msgid ""
@@ -303,116 +343,122 @@ msgid ""
 "\n"
 "NOTE: for now upgrading on a remote podman is not supported!\n"
 msgstr ""
+"在 podman 上升级代理\n"
+"\n"
+"upgrade podman 命令假定本地已升级 podman。\n"
+"\n"
+"注意：目前不支持在远程 podman 上升级！\n"
 
 #: mgrpxy/cmd/upgrade/upgrade.go:19 mgrpxy/cmd/upgrade/upgrade.go:20
 msgid "Upgrade a proxy"
-msgstr ""
+msgstr "升级代理"
 
 #: mgrpxy/shared/kubernetes/cmd.go:25
 msgid "Kubernetes namespace where to install the proxy"
-msgstr ""
+msgstr "要安装代理的 Kubernetes 名称空间"
 
 #: mgrpxy/shared/kubernetes/cmd.go:26
 msgid "URL to the proxy helm chart"
-msgstr ""
+msgstr "代理 helm 图表的 URL"
 
 #: mgrpxy/shared/kubernetes/cmd.go:27
 msgid "Version of the proxy helm chart"
-msgstr ""
+msgstr "代理 helm 图表的版本"
 
 #: mgrpxy/shared/kubernetes/cmd.go:28
 msgid "Path to a values YAML file to use for proxy helm install"
-msgstr ""
+msgstr "用于安装代理 helm 的值 YAML 文件的路径"
 
 #: mgrpxy/shared/kubernetes/deploy.go:34
 msgid "Installing Uyuni proxy"
-msgstr ""
+msgstr "正在安装 Uyuni 代理"
 
 #: mgrpxy/shared/kubernetes/deploy.go:80
-#, javascript-format
-msgid "cannot run helm upgrade: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot run helm upgrade"
+msgstr "无法执行 helm 升级：%s"
 
 #: mgrpxy/shared/kubernetes/deploy.go:96 mgrpxy/shared/kubernetes/deploy.go:111
 #: mgrpxy/shared/kubernetes/deploy.go:126
-#, javascript-format
-msgid "failed to write in file %s: %s"
-msgstr ""
+#, fuzzy, javascript-format
+msgid "failed to write in file %s"
+msgstr "无法在文件 %s 中写入数据：%s"
 
 #: mgrpxy/shared/podman/podman.go:34
-#, javascript-format
-msgid "cannot setup network: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot setup network"
+msgstr "无法设置网络：%s"
 
 #: mgrpxy/shared/podman/podman.go:37
 msgid "Generating systemd services"
-msgstr ""
+msgstr "正在生成 systemd 服务"
 
 #: mgrpxy/shared/podman/podman.go:113
-#, javascript-format
-msgid "failed to generate systemd file '%s': %s"
-msgstr ""
+#, fuzzy, javascript-format
+msgid "failed to generate systemd file '%s'"
+msgstr "无法生成 systemd 文件 '%s'：%s"
 
 #: mgrpxy/shared/podman/podman.go:133 mgrpxy/shared/podman/podman.go:204
-#, javascript-format
-msgid "cannot inspect host values: %s"
-msgstr ""
+#, fuzzy
+msgid "cannot inspect host values"
+msgstr "无法检查主机值：%s"
 
 #: mgrpxy/shared/podman/podman.go:153
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
-msgstr ""
+msgstr "正在使用配置 %s 设置代理"
 
 #: mgrpxy/shared/podman/podman.go:173
 msgid "cannot find httpd image: it will no be upgraded"
-msgstr ""
+msgstr "找不到 httpd 映像：将不升级该映像"
 
 #: mgrpxy/shared/podman/podman.go:177
 msgid "cannot find salt-broker image: it will no be upgraded"
-msgstr ""
+msgstr "找不到 salt-broker 映像：将不升级该映像"
 
 #: mgrpxy/shared/podman/podman.go:181
 msgid "cannot find squid image: it will no be upgraded"
-msgstr ""
+msgstr "找不到 squid 映像：将不升级该映像"
 
 #: mgrpxy/shared/podman/podman.go:185
 msgid "cannot find ssh image: it will no be upgraded"
-msgstr ""
+msgstr "找不到 ssh 映像：将不升级该映像"
 
 #: mgrpxy/shared/podman/podman.go:189
 msgid "cannot find tftpd image: it will no be upgraded"
-msgstr ""
+msgstr "找不到 tftpd 映像：将不升级该映像"
 
 #: mgrpxy/shared/utils/cmd.go:17
 #, javascript-format
 msgid "argument is not an existing file: %s"
-msgstr ""
+msgstr "参数不是现有的文件：%s"
 
 #: mgrpxy/shared/utils/flags.go:48
 #, javascript-format
 msgid "Invalid proxy container name: %s"
-msgstr ""
+msgstr "代理容器名称无效：%s"
 
 #: mgrpxy/shared/utils/flags.go:62
-msgid "Failed to compute image URL"
-msgstr ""
+#, fuzzy
+msgid "failed to compute image URL"
+msgstr "无法计算映像 URL"
 
 #: mgrpxy/shared/utils/flags.go:70 mgrpxy/shared/utils/flags.go:84
 #: mgrpxy/shared/utils/flags.go:98
 msgid "registry URL prefix containing the all the container images"
-msgstr ""
+msgstr "包含所有容器映像的注册表 URL 前缀"
 
 #: mgrpxy/shared/utils/flags.go:71 mgrpxy/shared/utils/flags.go:85
 #: mgrpxy/shared/utils/flags.go:99
 msgid "image tag"
-msgstr ""
+msgstr "映像标记"
 
 #: mgrpxy/shared/utils/flags.go:111
 #, javascript-format
 msgid "Image for %s container, overrides the namespace if set"
-msgstr ""
+msgstr "%s 容器的映像，如果设置，将会覆盖名称空间"
 
 #: mgrpxy/shared/utils/flags.go:113
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
-msgstr ""
+msgstr "%s 容器的标记，如果设置，将会覆盖全局值"
