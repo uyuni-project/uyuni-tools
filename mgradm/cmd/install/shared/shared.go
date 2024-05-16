@@ -5,7 +5,6 @@
 package shared
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -29,12 +28,12 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 	defer os.RemoveAll(tmpFolder)
 
 	if err := cnx.Copy(filepath.Join(tmpFolder, setup_name), "server:/tmp/setup.sh", "root", "root"); err != nil {
-		return fmt.Errorf(L("cannot copy /tmp/setup.sh: %s"), err)
+		return utils.Errorf(err, L("cannot copy /tmp/setup.sh"))
 	}
 
 	err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/tmp/setup.sh")
 	if err != nil {
-		return fmt.Errorf(L("error running the setup script: %s"), err)
+		return utils.Errorf(err, L("error running the setup script"))
 	}
 
 	// Call the org.createFirst api if flags are passed
@@ -50,7 +49,7 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 		}
 	}
 
-	log.Info().Msg(L("Server set up"))
+	log.Info().Msgf(L("Server set up, login on https://%[1]s with %[2]s user"), fqdn, flags.Admin.Login)
 	return nil
 }
 
@@ -112,7 +111,7 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to create temporary directory"))
+		log.Fatal().Err(err).Msg(L("failed to create temporary directory"))
 	}
 
 	dataTemplate := templates.MgrSetupScriptTemplateData{

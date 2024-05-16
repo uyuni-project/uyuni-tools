@@ -1,4 +1,46 @@
 -------------------------------------------------------------------
+Mon May 06 10:00:48 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.9-0
+  * Redact passwords from the API payload in traces
+  * Fix build on Ubuntu 20.04 due to version change
+
+-------------------------------------------------------------------
+Fri May 03 16:32:03 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.8-0
+  * Add 'mgradm support sql' command
+  * Improve GPG help
+  * podman-mount* flag should be used only on Server installation
+    and migration
+  * Add flag groups in help text
+  * Attach Proxy pod to our Podman network
+  * Create support ptf commands
+  * Create mgrpxy upgrade command
+  * Add domain for internal container network
+  * Stop the Server if first user creation failed
+  * Add localization support
+  * Require Podman 4.5.0 for its --shm-size-systemd parameter
+  * Add --podman-mount-www flag for install and migration
+  * Only colorize output if outputting to a terminal
+  * Fix output missing newlines due to the spinner
+  * Add product version and commit id to the version output
+  * Add missing whitespace between podman common arguments and
+    additional ones
+  * Bump the push tag to 5.0.0-RC
+  * Add gpg command to mgradm
+  * Hide message in stdout if SCCcredentials is missing
+    (bsc#1222277)
+  * Redact password in stdout and uyuni-tools.log
+  * Rework distribution mapping to work with distros without
+    .treeinfo data
+  * Add initial installation support for Confidental Computing
+    attestation container
+  * Allow PAM and LDAP authentication using SSSD
+  * Change pull policy default to Always during upgrade
+  * Allow migration with non-root user on source server
+
+-------------------------------------------------------------------
 Tue Apr 16 13:33:34 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.7-0

@@ -14,6 +14,7 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // Start the proxy services.
@@ -33,7 +34,7 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podmanProxyInstallF
 
 	configPath := utils.GetConfigPath(args)
 	if err := podman.UnpackConfig(configPath); err != nil {
-		return fmt.Errorf(L("failed to extract proxy config from %s file: %s"), configPath, err)
+		return shared_utils.Errorf(err, L("failed to extract proxy config from %s file"), configPath)
 	}
 
 	httpdImage, err := podman.GetContainerImage(&flags.ProxyImageFlags, "httpd")

@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -44,7 +45,7 @@ var inspectValues = []types.InspectData{
 	types.NewInspectData("fqdn", "cat /etc/rhn/rhn.conf 2>/dev/null | grep 'java.hostname' | cut -d' ' -f3 || true"),
 	types.NewInspectData("image_pg_version", "rpm -qa --qf '%{VERSION}\\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1 || true"),
 	types.NewInspectData("current_pg_version", "(test -e /var/lib/pgsql/data/PG_VERSION && cat /var/lib/pgsql/data/PG_VERSION) || true"),
-	types.NewInspectData("registration_info", "transactional-update --quiet register --status 2>/dev/null || true"),
+	types.NewInspectData("registration_info", "env LC_ALL=C LC_MESSAGES=C LANG=C transactional-update --quiet register --status 2>/dev/null || true"),
 	types.NewInspectData("scc_username", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep username | cut -d= -f2 || true"),
 	types.NewInspectData("scc_password", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep password | cut -d= -f2 || true"),
 }
@@ -183,6 +184,27 @@ func GetLocalTimezone() string {
 	return string(out)
 }
 
+// IsEmptyDirectory return true if a given directory is empty.
+func IsEmptyDirectory(path string) bool {
+	files, err := os.ReadDir(path)
+	if err != nil {
+		log.Fatal().Err(err).Msgf(L("cannot check content of %s"), path)
+		return false
+	}
+	if len(files) > 0 {
+		return false
+	}
+	return true
+}
+
+// RemoveDirectory remove a given directory.
+func RemoveDirectory(path string) error {
+	if err := os.Remove(path); err != nil {
+		return Errorf(err, L("Cannot remove %s folder"), path)
+	}
+	return nil
+}
+
 // Check if a given path exists.
 func FileExists(path string) bool {
 	_, err := os.Stat(path)
@@ -206,7 +228,7 @@ func ReadFile(file string) []byte {
 // Get the value of a file containing a boolean.
 // This is handy for files from the kernel API.
 func GetFileBoolean(file string) bool {
-	return string(ReadFile(file)) != "0"
+	return strings.TrimSpace(string(ReadFile(file))) != "0"
 }
 
 // Uninstalls a file.
@@ -248,7 +270,7 @@ func GetURLBody(URL string) ([]byte, error) {
 	log.Debug().Msgf("Downloading %s", URL)
 	resp, err := http.Get(URL)
 	if err != nil {
-		return nil, fmt.Errorf(L("error downloading from %s: %s"), URL, err)
+		return nil, Errorf(err, L("error downloading from %s"), URL)
 	}
 	defer resp.Body.Close()
 
@@ -290,14 +312,14 @@ func ReadInspectData(scriptDir string, prefix ...string) (map[string]string, err
 	log.Debug().Msgf("Trying to read %s", path)
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot parse file %s: %s"), path, err)
+		return map[string]string{}, Errorf(err, L("cannot parse file %s"), path)
 	}
 
 	inspectResult := make(map[string]string)
 
 	viper.SetConfigType("env")
-	if err := viper.ReadConfig(bytes.NewBuffer(data)); err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot read config: %s"), err)
+	if err := viper.MergeConfig(bytes.NewBuffer(data)); err != nil {
+		return map[string]string{}, Errorf(err, L("cannot read config"))
 	}
 
 	for _, v := range inspectValues {
@@ -320,7 +342,7 @@ func InspectHost() (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("failed to create temporary directory: %s"), err)
+		return map[string]string{}, Errorf(err, L("failed to create temporary directory"))
 	}
 
 	if err := GenerateInspectHostScript(scriptDir); err != nil {
@@ -328,12 +350,12 @@ func InspectHost() (map[string]string, error) {
 	}
 
 	if err := RunCmdStdMapping(zerolog.DebugLevel, scriptDir+"/inspect.sh"); err != nil {
-		return map[string]string{}, fmt.Errorf(L("failed to run inspect script in host system: %s"), err)
+		return map[string]string{}, Errorf(err, L("failed to run inspect script in host system"))
 	}
 
 	inspectResult, err := ReadInspectData(scriptDir, "host_")
 	if err != nil {
-		return map[string]string{}, fmt.Errorf(L("cannot inspect host data: %s"), err)
+		return map[string]string{}, Errorf(err, L("cannot inspect host data"))
 	}
 
 	return inspectResult, err
@@ -348,7 +370,7 @@ func GenerateInspectHostScript(scriptDir string) error {
 
 	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
 	if err := WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return fmt.Errorf(L("failed to generate inspect script: %s"), err)
+		return Errorf(err, L("failed to generate inspect script"))
 	}
 	return nil
 }
@@ -362,7 +384,7 @@ func GenerateInspectContainerScript(scriptDir string) error {
 
 	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
 	if err := WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return fmt.Errorf(L("failed to generate inspect script: %s"), err)
+		return Errorf(err, L("failed to generate inspect script"))
 	}
 	return nil
 }
@@ -380,4 +402,14 @@ func CompareVersion(imageVersion string, deployedVersion string) int {
 	deployedVersionCleaned = re.ReplaceAllString(deployedVersionCleaned, "")
 	deployedVersionInt, _ := strconv.Atoi(deployedVersionCleaned)
 	return imageVersionInt - deployedVersionInt
+}
+
+// Errorf helps providing consistent errors.
+//
+// Instead of fmt.Printf(L("the message for %s: %s"), value, err) use:
+//
+//	Errorf(err, L("the message for %s"), value)
+func Errorf(err error, message string, args ...any) error {
+	appended := fmt.Sprintf(message, args...) + ": " + err.Error()
+	return errors.New(appended)
 }

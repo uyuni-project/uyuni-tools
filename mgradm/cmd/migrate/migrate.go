@@ -15,9 +15,10 @@ import (
 // NewCommand for migration.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	migrateCmd := &cobra.Command{
-		Use:   "migrate [source server FQDN]",
-		Short: L("Migrate a remote server to containers"),
-		Long:  L("Migrate a remote server to containers"),
+		Use:     "migrate [source server FQDN]",
+		GroupID: "deploy",
+		Short:   L("Migrate a remote server to containers"),
+		Long:    L("Migrate a remote server to containers"),
 	}
 
 	migrateCmd.AddCommand(podman.NewCommand(globalFlags))

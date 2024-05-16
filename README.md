@@ -102,11 +102,15 @@ To disable features at build time pass the `-tags` parameter with the following 
 For Localization the project uses `gettext`.
 There are a few rules to follow to make strings localizable:
 
-Add the following import in the go file and then wrap all the strings that could be localized in the `L()` function.
+Add the following import in the go file and then wrap all the strings that could be localized in the `L()`, `NL()` or `PL()` function.
 
 ```
 . "github.com/uyuni-project/uyuni-tools/shared/l10n"
 ```
+
+* `L("my message")`: is the simple form to localize a string and will be used most often
+* `NL("my %d message", "my %d messages", count)`: should be used when a message has a plural form
+* `PL("some context", "my message")`: should be used if a string is hard to understand without some additional context. Remember that translators don't read the code.
 
 **Global variables and constants are evaluated before running the main function and thus do not take the locale into account.**
 Move them in a function to work around this issue.

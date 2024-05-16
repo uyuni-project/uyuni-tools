@@ -27,7 +27,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	sourceFqdn := args[0]
 	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
 	if err != nil {
-		return fmt.Errorf(L("cannot compute image: %s"), err)
+		return utils.Errorf(err, L("cannot compute image"))
 	}
 
 	// Find the SSH Socket and paths for the migration
@@ -36,26 +36,26 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	tz, oldPgVersion, newPgVersion, err := podman.RunMigration(serverImage, flags.Image.PullPolicy, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn, flags.User)
 	if err != nil {
-		return fmt.Errorf(L("cannot run migration script: %s"), err)
+		return utils.Errorf(err, L("cannot run migration script"))
 	}
 
 	if oldPgVersion != newPgVersion {
 		if err := podman.RunPgsqlVersionUpgrade(flags.Image, flags.MigrationImage, oldPgVersion, newPgVersion); err != nil {
-			return fmt.Errorf(L("cannot run PostgreSQL version upgrade script: %s"), err)
+			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	}
 
 	schemaUpdateRequired := oldPgVersion != newPgVersion
 	if err := podman.RunPgsqlFinalizeScript(serverImage, schemaUpdateRequired); err != nil {
-		return fmt.Errorf(L("cannot run PostgreSQL finalize script: %s"), err)
+		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
 
 	if err := podman.RunPostUpgradeScript(serverImage); err != nil {
-		return fmt.Errorf(L("cannot run post upgrade script: %s"), err)
+		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
 	if err := podman.GenerateSystemdService(tz, serverImage, false, viper.GetStringSlice("podman.arg")); err != nil {
-		return fmt.Errorf(L("cannot generate systemd service file: %s"), err)
+		return utils.Errorf(err, L("cannot generate systemd service file"))
 	}
 
 	// Start the service
@@ -66,7 +66,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	log.Info().Msg(L("Server migrated"))
 
 	if err := podman_utils.EnablePodmanSocket(); err != nil {
-		return fmt.Errorf(L("cannot enable podman socket: %s"), err)
+		return utils.Errorf(err, L("cannot enable podman socket"))
 	}
 
 	return nil

@@ -5,28 +5,28 @@
 # SPDX-License-Identifier: Apache-2.0
 
 res=0
-grep -r . --include '*.go' --exclude '*_test.go' -n \
+grep -r . --include '*.go' --exclude '*_test.go' --exclude-dir='vendor' -n \
     -e 'fmt\.Errorf("[^"]\+"' \
     -e 'errors.New("[^"]\+"' \
     -e '\(Fatal\|Error\|Info\|Warn\)()\(\.Err(err)\)\?\.Msgf\?("' \
     -e '\.Flags()\.\(String\|Int\|Bool\)\(Slice\)\?\(Var\)\?P\?([^)]\+, \+"[^"]\+")' \
-    -e '\(Short\|Long\): \+["`]'
+    -e '\(Short\|Long\|Title\): \+["`]'
 
 if test $? -eq 0; then
     echo -e "Fix the non localizable strings\n"
     res=1
 fi
 
-grep -r . --include '*.go' --exclude '*_test.go' -n \
-    -e '\(Trace\|Debug\)()\(\.Err(err)\)\?\.Msgf\?(N\?L("' \
+grep -r . --include '*.go' --exclude '*_test.go' --exclude-dir='vendor' -n \
+    -e '\(Trace\|Debug\)()\(\.Err(err)\)\?\.Msgf\?(P\?N\?L("' \
 
 if test $? -eq 0; then
     echo -e "Trace and debug messages shouldn't be localizable\n"
     res=1
 fi
 
-grep -r . --include '*.go' --exclude '*_test.go' -n \
-    -e '\(Short\|Long\): \+L(["`][a-z]'
+grep -r . --include '*.go' --exclude '*_test.go' --exclude-dir='vendor' -n \
+    -e '\(Short\|Long\): \+P\?N\?L(["`][a-z]'
 if test $? -eq 0; then
     echo -e "Short and Long messages shouldn't start with a lowercase letter\n"
     res=1

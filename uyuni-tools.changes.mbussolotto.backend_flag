@@ -1,0 +1,2 @@
+- backend flag required in mgrpxy start
+- fix mgrpxy backend detection

@@ -44,7 +44,7 @@
 # 0%{?debian} || 0%{?ubuntu}
 
 Name:           %{project}
-Version:        0.1.7
+Version:        0.1.9
 Release:        0
 Summary:        Tools for managing %{productname} container
 License:        Apache-2.0
@@ -315,7 +315,7 @@ go_tags=""
 %endif
 # "%{?_uyuni_tools_tags}" != ""
 
-go_path=
+go_path=""
 %if 0%{?ubuntu}
   go_path=/usr/lib/go-%{go_version}/bin/
 %else
@@ -327,7 +327,7 @@ go_path=
 %endif
 # 0%{?ubuntu}
 
-GOLD_FLAGS="-X \"${UTILS_PATH}.Version=%{version} (%{version_details})\" -X ${UTILS_PATH}.LocaleRoot=%{_datadir}/locale"
+GOLD_FLAGS="-X '${UTILS_PATH}.Version=%{version} (%{version_details})' -X ${UTILS_PATH}.LocaleRoot=%{_datadir}/locale"
 if test -n "${namespace}"; then
     GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultNamespace=${namespace} -X ${UTILS_PATH}.DefaultTag=${tag}"
 fi

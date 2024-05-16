@@ -59,7 +59,7 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 
 	imageUrl, err := utils.ComputeImage(image, tag)
 	if err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to compute image URL"))
+		log.Fatal().Err(err).Msg(L("failed to compute image URL"))
 	}
 	return imageUrl
 }

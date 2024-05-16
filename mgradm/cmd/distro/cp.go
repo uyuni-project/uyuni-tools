@@ -39,7 +39,7 @@ func umountAndRemove(mountpoint string) {
 func registerDistro(connection *api.ConnectionDetails, distro *types.Distribution) error {
 	client, err := api.Init(connection)
 	if err != nil {
-		return fmt.Errorf(L("unable to login and register the distribution. Manual distro registration is required: %s"), err)
+		return utils.Errorf(err, L("unable to login and register the distribution. Manual distro registration is required"))
 	}
 	data := map[string]interface{}{
 		"treeLabel":    distro.TreeLabel,
@@ -50,7 +50,7 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 
 	_, err = client.Post("kickstart/tree/create", data)
 	if err != nil {
-		return fmt.Errorf(L("unable to register the distribution. Manual distro registration is required: %s"), err)
+		return utils.Errorf(err, L("unable to register the distribution. Manual distro registration is required"))
 	}
 	log.Info().Msgf(L("Distribution %s successfully registered"), distro.TreeLabel)
 	return nil
@@ -93,12 +93,12 @@ func copyDistro(srcdir string, distro types.Distribution, flags *flagpole) error
 	}
 
 	if _, err := cnx.Exec("sh", "-c", "mkdir -p "+distrosPath); err != nil {
-		return fmt.Errorf(L("cannot create %s path in container: %s"), distrosPath, err)
+		return utils.Errorf(err, L("cannot create %s path in container"), distrosPath)
 	}
 
 	log.Info().Msgf(L("Copying distribution %s"), distro.TreeLabel)
 	if err := cnx.Copy(srcdir, "server:"+dstpath, "tomcat", "susemanager"); err != nil {
-		return fmt.Errorf(L("cannot copy %s: %s"), dstpath, err)
+		return utils.Errorf(err, L("cannot copy %s"), dstpath)
 	}
 	log.Info().Msgf(L("Distribution has been copied into %s"), distro.BasePath)
 	return nil

@@ -13,7 +13,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/api"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/cp"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/exec"
-	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/org"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/term"
 	"github.com/uyuni-project/uyuni-tools/shared/completion"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -58,11 +57,6 @@ func NewUyunictlCommand() (*cobra.Command, error) {
 	rootCmd.AddCommand(term.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
-	orgCmd, err := org.NewCommand(globalFlags)
-	if err != nil {
-		log.Err(err).Msg(L("Failed to create org command"))
-	}
-	rootCmd.AddCommand(orgCmd)
 
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
 

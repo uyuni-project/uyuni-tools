@@ -14,6 +14,7 @@ import (
 
 	expect "github.com/Netflix/go-expect"
 	"github.com/chai2010/gettext-go"
+	"github.com/spf13/cobra"
 	l10n_utils "github.com/uyuni-project/uyuni-tools/shared/l10n/utils"
 )
 
@@ -210,5 +211,53 @@ func TestComputeImageError(t *testing.T) {
 		if err == nil {
 			t.Errorf("Expected error for %s with tag %s, got none", image, tag)
 		}
+	}
+}
+
+func TestConfig(t *testing.T) {
+	type fakeFlags struct {
+		firstConf  string
+		secondConf string
+		thirdConf  string
+		fourthConf string
+	}
+	fakeCmd := &cobra.Command{
+		Use:  "podman",
+		Args: cobra.RangeArgs(0, 1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var flags fakeFlags
+			flags.firstConf = ""
+			flags.secondConf = ""
+			flags.thirdConf = ""
+			flags.fourthConf = ""
+			return CommandHelper(nil, cmd, args, &flags, nil)
+		},
+	}
+
+	fakeCmd.Flags().String("firstConf", "hardcodedDefault", "")
+	fakeCmd.Flags().String("secondConf", "hardcodedDefault", "")
+	fakeCmd.Flags().String("thirdConf", "hardcodedDefault", "")
+	fakeCmd.Flags().String("fourthConf", "hardcodedDefault", "")
+
+	viper, err := ReadConfig(fakeCmd, "conf_test/firstConfFile.yaml", "conf_test/secondConfFile.yaml")
+	if err != nil {
+		t.Errorf("Unexpected error while reading configuration files: %s", err)
+	}
+
+	//This value is not set by conf file, so it should be the hardcoded default value
+	if viper.Get("firstConf") != "hardcodedDefault" {
+		t.Errorf("firstConf is %s, instead of hardcodedDefault", viper.Get("firstConf"))
+	}
+	//This value is set by firstConfFile.yaml
+	if viper.Get("secondConf") != "firstConfFile" {
+		t.Errorf("secondConf is %s, instead of firstConfFile", viper.Get("secondConf"))
+	}
+	//This value is as first set by firstConfFile.yaml, but then overwritten by secondConfFile.yaml
+	if viper.Get("thirdConf") != "SecondConfFile" {
+		t.Errorf("thirdConf is %s, instead of SecondConfFile", viper.Get("thirdConf"))
+	}
+	//This value is set by secondConfFile.yaml
+	if viper.Get("fourthconf") != "SecondConfFile" {
+		t.Errorf("fourthconf is %s, instead of SecondConfFile", viper.Get("fourthconf"))
 	}
 }

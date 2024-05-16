@@ -22,8 +22,9 @@ type uninstallFlags struct {
 // NewCommand uninstall a server and optionally the corresponding volumes.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	uninstallCmd := &cobra.Command{
-		Use:   "uninstall",
-		Short: L("Uninstall a server"),
+		Use:     "uninstall",
+		GroupID: "deploy",
+		Short:   L("Uninstall a server"),
 		Long: L(`Uninstall a server and optionally the corresponding volumes.
 By default it will only print what would be done, use --force to actually remove.`) + kubernetes.UninstallHelp(),
 		Args: cobra.ExactArgs(0),

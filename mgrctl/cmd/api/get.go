@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func runGet(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
@@ -22,14 +23,14 @@ func runGet(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command,
 	client, err := api.Init(&flags.ConnectionDetails)
 
 	if err != nil {
-		return fmt.Errorf(L("unable to login to the server: %s"), err)
+		return utils.Errorf(err, L("unable to login to the server"))
 	}
 	path := args[0]
 	options := args[1:]
 
 	res, err := api.Get[interface{}](client, fmt.Sprintf("%s?%s", path, strings.Join(options, "&")))
 	if err != nil {
-		return fmt.Errorf(L("error in query %s: %s"), path, err)
+		return utils.Errorf(err, L("error in query %s"), path)
 	}
 
 	// TODO do this only when result is JSON or TEXT. Watchout for binary data

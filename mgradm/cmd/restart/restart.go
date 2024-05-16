@@ -19,10 +19,11 @@ type restartFlags struct {
 // NewCommand to restart server.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	restartCmd := &cobra.Command{
-		Use:   "restart",
-		Short: L("Restart the server"),
-		Long:  L("Restart the server"),
-		Args:  cobra.ExactArgs(0),
+		Use:     "restart",
+		GroupID: "management",
+		Short:   L("Restart the server"),
+		Long:    L("Restart the server"),
+		Args:    cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags restartFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, restart)

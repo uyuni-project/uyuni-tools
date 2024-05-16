@@ -6,7 +6,6 @@ package podman
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"os/exec"
 	"path"
@@ -39,16 +38,30 @@ func GetServicePath(name string) string {
 	return path.Join(servicesPath, name+".service")
 }
 
+// GetServiceConfFolder return the conf folder for systemd services.
+func GetServiceConfFolder(name string) string {
+	return path.Join(servicesPath, name+".service.d")
+}
+
+// GetServiceConfPath return the path for Service.conf file.
+func GetServiceConfPath(name string) string {
+	return path.Join(GetServiceConfFolder(name), "Service.conf")
+}
+
 // UninstallService stops and remove a systemd service.
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
 func UninstallService(name string, dryRun bool) {
 	servicePath := GetServicePath(name)
+	serviceConfFolder := GetServiceConfFolder(name)
+	serviceConfPath := GetServiceConfPath(name)
 	if !HasService(name) {
 		log.Info().Msgf(L("Systemd has no %s.service unit"), name)
 	} else {
 		if dryRun {
 			log.Info().Msgf(L("Would run %s"), "systemctl disable --now "+name)
 			log.Info().Msgf(L("Would remove %s"), servicePath)
+			log.Info().Msgf(L("Would remove %s"), serviceConfPath)
+			log.Info().Msgf(L("Would remove %s if empty"), serviceConfFolder)
 		} else {
 			log.Info().Msgf(L("Disable %s service"), name)
 			// disable server
@@ -61,6 +74,19 @@ func UninstallService(name string, dryRun bool) {
 			log.Info().Msgf(L("Remove %s"), servicePath)
 			if err := os.Remove(servicePath); err != nil {
 				log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), name)
+			}
+
+			if utils.FileExists(serviceConfPath) {
+				log.Info().Msgf(L("Remove %s"), serviceConfPath)
+				if err := os.Remove(serviceConfPath); err != nil {
+					log.Error().Err(err).Msgf(L("Failed to remove %s file"), serviceConfPath)
+				}
+			}
+			if utils.IsEmptyDirectory(serviceConfFolder) {
+				log.Debug().Msgf("Removing %s folder, since it's empty", serviceConfFolder)
+				_ = utils.RemoveDirectory(serviceConfFolder)
+			} else {
+				log.Warn().Msgf(L("%s folder contains file created by the user. Please remove them when uninstallation is completed."), serviceConfFolder)
 			}
 		}
 	}
@@ -97,7 +123,7 @@ func IsServiceRunning(service string) bool {
 // RestartService restarts the systemd service.
 func RestartService(service string) error {
 	if err := utils.RunCmd("systemctl", "restart", service); err != nil {
-		return fmt.Errorf(L("failed to restart systemd %s.service: %s"), service, err)
+		return utils.Errorf(err, L("failed to restart systemd %s.service"), service)
 	}
 	return nil
 }
@@ -105,7 +131,7 @@ func RestartService(service string) error {
 // StartService starts the systemd service.
 func StartService(service string) error {
 	if err := utils.RunCmd("systemctl", "start", service); err != nil {
-		return fmt.Errorf(L("failed to start systemd %s.service: %s"), service, err)
+		return utils.Errorf(err, L("failed to start systemd %s.service"), service)
 	}
 	return nil
 }
@@ -113,7 +139,7 @@ func StartService(service string) error {
 // StopService starts the systemd service.
 func StopService(service string) error {
 	if err := utils.RunCmd("systemctl", "stop", service); err != nil {
-		return fmt.Errorf(L("failed to stop systemd %s.service: %s"), service, err)
+		return utils.Errorf(err, L("failed to stop systemd %s.service"), service)
 	}
 	return nil
 }
@@ -121,24 +147,24 @@ func StopService(service string) error {
 // EnableService enables and starts a systemd service.
 func EnableService(service string) error {
 	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
-		return fmt.Errorf(L("failed to enable %s systemd service: %s"), service, err)
+		return utils.Errorf(err, L("failed to enable %s systemd service"), service)
 	}
 	return nil
 }
 
-// Create new systemd service configuration file.
+// Create new systemd service configuration file (e.g. Service.conf).
 func GenerateSystemdConfFile(serviceName string, section string, body string) error {
 	systemdFilePath := GetServicePath(serviceName)
 
 	systemdConfFolder := systemdFilePath + ".d"
 	if err := os.MkdirAll(systemdConfFolder, 0750); err != nil {
-		return fmt.Errorf(L("failed to create %s folder: %s"), systemdConfFolder, err)
+		return utils.Errorf(err, L("failed to create %s folder"), systemdConfFolder)
 	}
 	systemdConfFilePath := path.Join(systemdConfFolder, section+".conf")
 
 	content := []byte("[" + section + "]" + "\n" + body + "\n")
 	if err := os.WriteFile(systemdConfFilePath, content, 0644); err != nil {
-		return fmt.Errorf(L("cannot write %s file: %s"), systemdConfFilePath, err)
+		return utils.Errorf(err, L("cannot write %s file"), systemdConfFilePath)
 	}
 
 	return nil

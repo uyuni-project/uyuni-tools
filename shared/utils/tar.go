@@ -7,7 +7,6 @@ package utils
 import (
 	"archive/tar"
 	"compress/gzip"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -45,7 +44,7 @@ func ExtractTarGz(tarballPath string, dstPath string) error {
 			return err
 		}
 		if !strings.HasPrefix(path, dstPath) {
-			log.Warn().Msgf(L("Skipping extraction of %s in %s file as it resolves outside the target path"),
+			log.Warn().Msgf(L("Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"),
 				header.Name, tarballPath)
 			continue
 		}
@@ -87,7 +86,7 @@ func NewTarGz(path string) (*TarGz, error) {
 	var err error
 	targz.fileWriter, err = os.Create(path)
 	if err != nil {
-		return nil, fmt.Errorf(L("failed to write tar.gz to %s: %s"), path, err)
+		return nil, Errorf(err, L("failed to write tar.gz to %s"), path)
 	}
 
 	targz.gzipWriter = gzip.NewWriter(targz.fileWriter)

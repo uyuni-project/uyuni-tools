@@ -33,7 +33,7 @@ func isUyuni(cnx *shared.Connection) (bool, error) {
 func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serverImage string) error {
 	isUyuni, err := isUyuni(cnx)
 	if err != nil {
-		return fmt.Errorf(L("cannot check server release: %s"), err)
+		return utils.Errorf(err, L("cannot check server release"))
 	}
 	_, isCurrentUyuni := inspectedValues["uyuni_release"]
 	_, isCurrentSuma := inspectedValues["suse_manager_release"]
@@ -50,7 +50,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 		cnx_args := []string{"s/Uyuni release //g", "/etc/uyuni-release"}
 		current_uyuni_release, err := cnx.Exec("sed", cnx_args...)
 		if err != nil {
-			return fmt.Errorf(L("failed to read current uyuni release: %s"), err)
+			return utils.Errorf(err, L("failed to read current uyuni release"))
 		}
 		log.Debug().Msgf("Current release is %s", string(current_uyuni_release))
 		if (len(inspectedValues["uyuni_release"])) <= 0 {
@@ -58,13 +58,13 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 		}
 		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues["uyuni_release"])
 		if utils.CompareVersion(inspectedValues["uyuni_release"], string(current_uyuni_release)) < 0 {
-			return fmt.Errorf(L("cannot downgrade from version %s to %s"), string(current_uyuni_release), inspectedValues["uyuni_release"])
+			return fmt.Errorf(L("cannot downgrade from version %[1]s to %[2]s"), string(current_uyuni_release), inspectedValues["uyuni_release"])
 		}
 	} else {
 		cnx_args := []string{"s/SUSE Manager release //g", "/etc/susemanager-release"}
 		current_suse_manager_release, err := cnx.Exec("sed", cnx_args...)
 		if err != nil {
-			return fmt.Errorf(L("failed to read current susemanager release: %s"), err)
+			return utils.Errorf(err, L("failed to read current susemanager release"))
 		}
 		log.Debug().Msgf("Current release is %s", string(current_suse_manager_release))
 		if (len(inspectedValues["suse_manager_release"])) <= 0 {
@@ -72,7 +72,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 		}
 		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues["suse_manager_release"])
 		if utils.CompareVersion(inspectedValues["suse_manager_release"], string(current_suse_manager_release)) < 0 {
-			return fmt.Errorf(L("cannot downgrade from version %s to %s"), string(current_suse_manager_release), inspectedValues["suse_manager_release"])
+			return fmt.Errorf(L("cannot downgrade from version %[1]s to %[2]s"), string(current_suse_manager_release), inspectedValues["suse_manager_release"])
 		}
 	}
 

@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"path"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -16,6 +17,55 @@ import (
 	"golang.org/x/term"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
+
+var redactRegex = regexp.MustCompile(`([pP]assword[\t :"\\]+)[^\t "\\]+`)
+
+// UyuniLogger is an io.WriteCloser that writes to the specified filename.
+type UyuniLogger struct {
+	logger *lumberjack.Logger
+}
+
+// UyuniConsoleWriter parses the JSON input and writes it in an (optionally) colorized, human-friendly format to Out.
+type UyuniConsoleWriter struct {
+	consoleWriter zerolog.ConsoleWriter
+}
+
+func (l *UyuniLogger) Write(p []byte) (n int, err error) {
+	_, err = l.logger.Write([]byte(redact(string(p)) + "\n"))
+	if err != nil {
+		return 0, err
+	}
+	//using len(p) prevents "zerolog: could not write event: short write" error
+	return len(p), nil
+}
+
+// Close implements io.Closer, and closes the current logfile.
+func (l *UyuniLogger) Close() error {
+	return l.logger.Close()
+}
+
+// Rotate causes Logger to close the existing log file and immediately create a
+// new one.  This is a helper function for applications that want to initiate
+// rotations outside of the normal rotation rules, such as in response to
+// SIGHUP.  After rotating, this initiates compression and removal of old log
+// files according to the configuration.
+func (l *UyuniLogger) Rotate() error {
+	return l.logger.Rotate()
+}
+
+// Write transforms the JSON input with formatters and appends to w.Out.
+func (c UyuniConsoleWriter) Write(p []byte) (n int, err error) {
+	_, err = c.consoleWriter.Write([]byte(redact(string(p))))
+	if err != nil {
+		return 0, err
+	}
+	//using len(p) prevents "zerolog: could not write event: short write" error
+	return len(p), nil
+}
+
+func redact(line string) string {
+	return redactRegex.ReplaceAllString(line, "${1}<REDACTED>")
+}
 
 // LogInit initialize logs.
 func LogInit(logToConsole bool) {
@@ -27,14 +77,17 @@ func LogInit(logToConsole bool) {
 	if logToConsole {
 		consoleWriter := zerolog.NewConsoleWriter()
 		consoleWriter.NoColor = !term.IsTerminal(int(os.Stdout.Fd()))
-		writers = append(writers, consoleWriter)
+		uyuniConsoleWriter := UyuniConsoleWriter{
+			consoleWriter: consoleWriter,
+		}
+		writers = append(writers, uyuniConsoleWriter)
 	}
 
 	multi := zerolog.MultiLevelWriter(writers...)
 	log.Logger = zerolog.New(multi).With().Timestamp().Stack().Logger()
 }
 
-func getFileWriter() *lumberjack.Logger {
+func getFileWriter() *UyuniLogger {
 	const globalLogPath = "/var/log/"
 	logPath := globalLogPath
 
@@ -54,7 +107,10 @@ func getFileWriter() *lumberjack.Logger {
 		MaxAge:     90,
 		Compress:   true,
 	}
-	return fileLogger
+	uyuniLogger := &UyuniLogger{
+		logger: fileLogger,
+	}
+	return uyuniLogger
 }
 
 // SetLogLevel sets the loglevel.

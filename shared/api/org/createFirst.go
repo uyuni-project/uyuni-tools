@@ -6,11 +6,11 @@ package org
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/api/types"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // Create first organization and user after initial setup without authentication.
@@ -18,7 +18,7 @@ import (
 func CreateFirst(cnxDetails *api.ConnectionDetails, orgName string, admin *types.User) (*types.Organization, error) {
 	client, err := api.Init(cnxDetails)
 	if err != nil {
-		return nil, fmt.Errorf(L("failed to connect to the server: %s"), err)
+		return nil, utils.Errorf(err, L("failed to connect to the server"))
 	}
 
 	data := map[string]interface{}{
@@ -32,7 +32,7 @@ func CreateFirst(cnxDetails *api.ConnectionDetails, orgName string, admin *types
 
 	res, err := api.Post[types.Organization](client, "org/createFirst", data)
 	if err != nil {
-		return nil, fmt.Errorf(L("failed to create first user and organization: %s"), err)
+		return nil, utils.Errorf(err, L("failed to create first user and organization"))
 	}
 
 	if !res.Success {

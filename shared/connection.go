@@ -85,15 +85,17 @@ func (c *Connection) GetCommand() (string, error) {
 			}
 			if c.command == "" {
 				// Check for uyuni-server.service or helm release
-				if hasPodman && podman.HasService("uyuni-server") {
+				if hasPodman && (podman.HasService(podman.ServerService) || podman.HasService(podman.ProxyService)) {
 					c.command = "podman"
+					return c.command, nil
 				} else if hasKubectl {
 					clusterInfos, err := kubernetes.CheckCluster()
 					if err != nil {
 						return c.command, err
 					}
-					if kubernetes.HasHelmRelease("uyuni", clusterInfos.GetKubeconfig()) {
+					if kubernetes.HasHelmRelease("uyuni", clusterInfos.GetKubeconfig()) || kubernetes.HasHelmRelease("uyuni-proxy", clusterInfos.GetKubeconfig()) {
 						c.command = "kubectl"
+						return c.command, nil
 					}
 				}
 			}
@@ -143,8 +145,9 @@ func (c *Connection) GetPodName() (string, error) {
 func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 	if c.podName == "" {
 		if _, err := c.GetPodName(); c.podName == "" {
-			return nil, fmt.Errorf(L("the container is not running, %s %s command not executed: %s"),
-				command, strings.Join(args, " "), err)
+			commandStr := fmt.Sprintf("%s %s", command, strings.Join(args, " "))
+			return nil, utils.Errorf(err, L("the container is not running, %s command not executed:"),
+				commandStr)
 		}
 	}
 
