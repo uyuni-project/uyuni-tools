@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:27+0200\n"
+"POT-Creation-Date: 2024-05-16 11:25+0200\n"
 "PO-Revision-Date: 2024-05-08 09:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.9.1\n"
+
+#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
+msgid "Install a new proxy from scratch"
+msgstr "처음부터 새 프록시 설치"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
@@ -96,10 +100,6 @@ msgstr "이 명령을 실행하기 전 podman 설치"
 #, fuzzy, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "%s 파일에서 프록시 구성을 추출하지 못함: %s"
-
-#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
-msgid "Install a new proxy from scratch"
-msgstr "처음부터 새 프록시 설치"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"

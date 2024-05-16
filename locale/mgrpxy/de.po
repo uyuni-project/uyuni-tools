@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:27+0200\n"
+"POT-Creation-Date: 2024-05-16 11:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -15,6 +15,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
+msgid "Install a new proxy from scratch"
+msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
@@ -75,10 +79,6 @@ msgstr ""
 #: mgrpxy/cmd/install/podman/utils.go:37
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
-msgstr ""
-
-#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
-msgid "Install a new proxy from scratch"
 msgstr ""
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
