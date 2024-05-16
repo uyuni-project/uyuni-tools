@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-16 10:27+0200\n"
-"PO-Revision-Date: 2024-04-26 19:43+0000\n"
+"PO-Revision-Date: 2024-05-16 09:49+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
-"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/it/>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrctl/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: mgrctl/cmd/api/api.go:25
 msgid "JSON over HTTP API helper tool"
@@ -39,9 +40,8 @@ msgid "Takes an API path and parameters and then issues POST request with them. 
 msgstr ""
 
 #: mgrctl/cmd/api/get.go:26 mgrctl/cmd/api/post.go:26
-#, fuzzy
 msgid "unable to login to the server"
-msgstr "impossibile effettuare il login al server: %s"
+msgstr "impossibile effettuare il login al server"
 
 #: mgrctl/cmd/api/get.go:33 mgrctl/cmd/api/post.go:49
 #, javascript-format
