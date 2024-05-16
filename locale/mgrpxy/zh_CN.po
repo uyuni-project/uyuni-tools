@@ -7,21 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-26 10:11+0200\n"
+"POT-Creation-Date: 2024-05-16 10:27+0200\n"
 "PO-Revision-Date: 2024-05-09 11:43+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgrpxy/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.9.1\n"
-
-#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
-msgid "Install a new proxy from scratch"
-msgstr "从头开始安装新代理"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
@@ -55,8 +50,8 @@ msgstr "在运行此命令前安装 %s"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:35
 #: mgrpxy/shared/kubernetes/deploy.go:143
-#, javascript-format
-msgid "failed to create temporary directory: %s"
+#, fuzzy
+msgid "failed to create temporary directory"
 msgstr "无法创建临时目录：%s"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
@@ -65,8 +60,8 @@ msgstr "无法提取配置"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:62
 #: mgrpxy/shared/kubernetes/deploy.go:168
-#, javascript-format
-msgid "cannot deploy proxy helm chart: %s"
+#, fuzzy
+msgid "cannot deploy proxy helm chart"
 msgstr "无法部署代理 helm 图表：%s"
 
 #: mgrpxy/cmd/install/podman/podman.go:25
@@ -93,14 +88,18 @@ msgstr ""
 "\n"
 "注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:31 mgrpxy/shared/podman/podman.go:168
+#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:168
 msgid "install podman before running this command"
 msgstr "在运行此命令前安装 podman"
 
-#: mgrpxy/cmd/install/podman/utils.go:36
-#, javascript-format
-msgid "failed to extract proxy config from %s file: %s"
+#: mgrpxy/cmd/install/podman/utils.go:37
+#, fuzzy, javascript-format
+msgid "failed to extract proxy config from %s file"
 msgstr "无法从 %s 文件中提取代理配置：%s"
+
+#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
+msgid "Install a new proxy from scratch"
+msgstr "从头开始安装新代理"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
@@ -109,38 +108,6 @@ msgstr "重启动代理"
 #: mgrpxy/cmd/start/start.go:23 mgrpxy/cmd/start/start.go:24
 msgid "Start the proxy"
 msgstr "启动代理"
-
-#: mgrpxy/cmd/status/kubernetes.go:27
-#, javascript-format
-msgid "failed to discover the cluster type: %s"
-msgstr "无法发现群集类型：%s"
-
-#: mgrpxy/cmd/status/kubernetes.go:32
-msgid "no uyuni-proxy helm release installed on the cluster"
-msgstr "群集上未安装 uyuni-proxy helm 版本"
-
-#: mgrpxy/cmd/status/kubernetes.go:37
-#, javascript-format
-msgid "failed to find the uyuni-proxy deployment namespace: %s"
-msgstr "找不到 uyuni-proxy 部署名称空间：%s"
-
-#: mgrpxy/cmd/status/kubernetes.go:43
-#, javascript-format
-msgid "failed to get deployment status: %s"
-msgstr "无法获取部署状态：%s"
-
-#: mgrpxy/cmd/status/kubernetes.go:46
-#, javascript-format
-msgid "Some replicas are not ready: %d / %d"
-msgstr "部分复本尚未准备就绪：%d / %d"
-
-#: mgrpxy/cmd/status/kubernetes.go:50
-msgid "the pod is not running"
-msgstr "该 pod 未在运行"
-
-#: mgrpxy/cmd/status/kubernetes.go:53
-msgid "Proxy containers up and running"
-msgstr "代理容器在正常运行"
 
 #: mgrpxy/cmd/status/status.go:24 mgrpxy/cmd/status/status.go:25
 msgid "Get the proxy status"
@@ -159,24 +126,56 @@ msgstr "无法获取 %s 服务的状态"
 msgid "failed to get the status of at least one service"
 msgstr "无法获取至少一项服务的状态"
 
+#: mgrpxy/cmd/status/kubernetes.go:27
+#, fuzzy
+msgid "failed to discover the cluster type"
+msgstr "无法发现群集类型：%s"
+
+#: mgrpxy/cmd/status/kubernetes.go:32
+msgid "no uyuni-proxy helm release installed on the cluster"
+msgstr "群集上未安装 uyuni-proxy helm 版本"
+
+#: mgrpxy/cmd/status/kubernetes.go:37
+#, fuzzy
+msgid "failed to find the uyuni-proxy deployment namespace"
+msgstr "找不到 uyuni-proxy 部署名称空间：%s"
+
+#: mgrpxy/cmd/status/kubernetes.go:43
+#, fuzzy
+msgid "failed to get deployment status"
+msgstr "无法获取部署状态：%s"
+
+#: mgrpxy/cmd/status/kubernetes.go:46
+#, fuzzy
+msgid "Some replicas are not ready: %[1]d / %[2]d"
+msgstr "部分复本尚未准备就绪：%d / %d"
+
+#: mgrpxy/cmd/status/kubernetes.go:50
+msgid "the pod is not running"
+msgstr "该 pod 未在运行"
+
+#: mgrpxy/cmd/status/kubernetes.go:53
+msgid "Proxy containers up and running"
+msgstr "代理容器在正常运行"
+
 #: mgrpxy/cmd/stop/stop.go:23 mgrpxy/cmd/stop/stop.go:24
 msgid "Stop the proxy"
 msgstr "停止代理"
 
-#: mgrpxy/cmd/uninstall/podman.go:48
-#, javascript-format
-msgid "cannot delete volume %s: %s"
+#: mgrpxy/cmd/uninstall/podman.go:46
+#, fuzzy, javascript-format
+msgid "cannot delete volume %s"
 msgstr "无法删除卷 %s：%s"
 
-#: mgrpxy/cmd/uninstall/podman.go:51
+#: mgrpxy/cmd/uninstall/podman.go:49
 msgid "All volumes removed"
 msgstr "所有卷均已去除"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:23
+#: mgrpxy/cmd/uninstall/uninstall.go:21
 msgid "Uninstall a proxy"
 msgstr "卸装代理"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:24
+#: mgrpxy/cmd/uninstall/uninstall.go:22
 msgid ""
 "Uninstall a proxy and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
@@ -184,16 +183,16 @@ msgstr ""
 "卸装代理以及可选的相应卷。\n"
 "默认仅会列显将执行的操作，使用 --force 可真正去除代理。"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:36
-#, javascript-format
-msgid "failed to determine suitable backend: %s"
+#: mgrpxy/cmd/uninstall/uninstall.go:34
+#, fuzzy
+msgid "failed to determine suitable backend"
 msgstr "无法确定合适的后端：%s"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:51
+#: mgrpxy/cmd/uninstall/uninstall.go:49
 msgid "Actually remove the proxy"
 msgstr "真正去除代理"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:52
+#: mgrpxy/cmd/uninstall/uninstall.go:50
 msgid "Also remove the volumes"
 msgstr "同时去除卷"
 
@@ -375,19 +374,19 @@ msgid "Installing Uyuni proxy"
 msgstr "正在安装 Uyuni 代理"
 
 #: mgrpxy/shared/kubernetes/deploy.go:80
-#, javascript-format
-msgid "cannot run helm upgrade: %s"
+#, fuzzy
+msgid "cannot run helm upgrade"
 msgstr "无法执行 helm 升级：%s"
 
 #: mgrpxy/shared/kubernetes/deploy.go:96 mgrpxy/shared/kubernetes/deploy.go:111
 #: mgrpxy/shared/kubernetes/deploy.go:126
-#, javascript-format
-msgid "failed to write in file %s: %s"
+#, fuzzy, javascript-format
+msgid "failed to write in file %s"
 msgstr "无法在文件 %s 中写入数据：%s"
 
 #: mgrpxy/shared/podman/podman.go:34
-#, javascript-format
-msgid "cannot setup network: %s"
+#, fuzzy
+msgid "cannot setup network"
 msgstr "无法设置网络：%s"
 
 #: mgrpxy/shared/podman/podman.go:37
@@ -395,13 +394,13 @@ msgid "Generating systemd services"
 msgstr "正在生成 systemd 服务"
 
 #: mgrpxy/shared/podman/podman.go:113
-#, javascript-format
-msgid "failed to generate systemd file '%s': %s"
+#, fuzzy, javascript-format
+msgid "failed to generate systemd file '%s'"
 msgstr "无法生成 systemd 文件 '%s'：%s"
 
 #: mgrpxy/shared/podman/podman.go:133 mgrpxy/shared/podman/podman.go:204
-#, javascript-format
-msgid "cannot inspect host values: %s"
+#, fuzzy
+msgid "cannot inspect host values"
 msgstr "无法检查主机值：%s"
 
 #: mgrpxy/shared/podman/podman.go:153
@@ -440,7 +439,8 @@ msgid "Invalid proxy container name: %s"
 msgstr "代理容器名称无效：%s"
 
 #: mgrpxy/shared/utils/flags.go:62
-msgid "Failed to compute image URL"
+#, fuzzy
+msgid "failed to compute image URL"
 msgstr "无法计算映像 URL"
 
 #: mgrpxy/shared/utils/flags.go:70 mgrpxy/shared/utils/flags.go:84

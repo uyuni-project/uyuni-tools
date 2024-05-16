@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-26 10:11+0200\n"
+"POT-Creation-Date: 2024-05-16 10:27+0200\n"
 "PO-Revision-Date: 2024-05-10 02:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgrctl/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,9 +28,7 @@ msgstr "API GET要求を呼び出す"
 
 #: mgrctl/cmd/api/api.go:31
 msgid "Takes an API path and optional parameters and then issues GET request with them. If user and password are provided, calls login before API call"
-msgstr ""
-"APIパスとオプションパラメータを受け取り、これらを使用してGET要求を発行します。ユーザとパスワードが指定された場合、APIコールの前にログインを呼び出"
-"します"
+msgstr "APIパスとオプションパラメータを受け取り、これらを使用してGET要求を発行します。ユーザとパスワードが指定された場合、APIコールの前にログインを呼び出します"
 
 #: mgrctl/cmd/api/api.go:39
 msgid "Call API POST request"
@@ -39,59 +36,23 @@ msgstr "API POST要求を呼び出す"
 
 #: mgrctl/cmd/api/api.go:40
 msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
-msgstr ""
-"APIパスとパラメータを受け取り、それらを使用してPOST要求を発行します。ユーザとパスワードは必須です。パラメータには、JSONでエンコードされた文字列"
-"か、1つ以上のkey=valueペアを指定できます。"
+msgstr "APIパスとパラメータを受け取り、それらを使用してPOST要求を発行します。ユーザとパスワードは必須です。パラメータには、JSONでエンコードされた文字列か、1つ以上のkey=valueペアを指定できます。"
 
-#: mgrctl/cmd/api/get.go:25 mgrctl/cmd/api/post.go:25
-#, javascript-format
-msgid "unable to login to the server: %s"
+#: mgrctl/cmd/api/get.go:26 mgrctl/cmd/api/post.go:26
+#, fuzzy
+msgid "unable to login to the server"
 msgstr "サーバにログインできません: %s"
 
-#: mgrctl/cmd/api/get.go:32 mgrctl/cmd/api/post.go:48
-#, javascript-format
-msgid "error in query %s: %s"
+#: mgrctl/cmd/api/get.go:33 mgrctl/cmd/api/post.go:49
+#, fuzzy, javascript-format
+msgid "error in query %s"
 msgstr "クエリ %s でエラーが発生しました: %s"
 
-#: mgrctl/cmd/cmd.go:30
-msgid "Uyuni control tool"
-msgstr "Uyuni制御ツール"
-
-#: mgrctl/cmd/cmd.go:31
-msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr "主にAPIを通じてUyuniサーバを管理するのに役立つツール"
-
-#: mgrctl/cmd/cmd.go:38
-msgid "configuration file path"
-msgstr "設定ファイルパス"
-
-#: mgrctl/cmd/cmd.go:39
-msgid "application log level"
-msgstr "アプリケーションログレベル"
-
-#: mgrctl/cmd/cmd.go:47
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "%s へようこそ"
-
-#: mgrctl/cmd/cmd.go:48
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "コマンドの実行中: %s"
-
-#: mgrctl/cmd/cmd.go:54
-msgid "Failed to create api command"
-msgstr "apiコマンドの作成に失敗しました"
-
-#: mgrctl/cmd/cmd.go:63
-msgid "Failed to create org command"
-msgstr "orgコマンドの作成に失敗しました"
-
-#: mgrctl/cmd/cp/cp.go:31
+#: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
 msgstr "コンテナへのファイルのコピーとコンテナからのファイルのコピー"
 
-#: mgrctl/cmd/cp/cp.go:32
+#: mgrctl/cmd/cp/cp.go:30
 msgid ""
 "Takes a source and destination parameters.\n"
 "\tOne of them can be prefixed with 'server:' to indicate the path is within the server pod."
@@ -99,15 +60,15 @@ msgstr ""
 "ソースと宛先のパラメータを受け取ります。\n"
 "\tそのうちの1つに 「server:」というプレフィックスを付けて、 そのパスがサーバポッド内にあることを示すことができます。"
 
-#: mgrctl/cmd/cp/cp.go:41
+#: mgrctl/cmd/cp/cp.go:39
 msgid "failed to unmarshall configuration"
 msgstr "設定のアンマーシャルに失敗しました"
 
-#: mgrctl/cmd/cp/cp.go:47
+#: mgrctl/cmd/cp/cp.go:45
 msgid "User or UID to set on the destination file"
 msgstr "宛先ファイルに設定するユーザまたはUID"
 
-#: mgrctl/cmd/cp/cp.go:48
+#: mgrctl/cmd/cp/cp.go:46
 msgid "Group or GID to set on the destination file"
 msgstr "宛先ファイルに設定するグループまたはGID"
 
@@ -136,52 +97,76 @@ msgid "Command returned with exit code 0"
 msgstr "コマンドは終了コード0で返されました"
 
 #: mgrctl/cmd/exec/exec.go:116
-#, javascript-format
-msgid "cannot write: %s"
+#, fuzzy
+msgid "cannot write"
 msgstr "書き込めません: %s"
 
-#: mgrctl/cmd/exec/exec.go:131
-#, javascript-format
-msgid "Running: %s %s"
+#: mgrctl/cmd/exec/exec.go:132
+#, fuzzy, javascript-format
+msgid "Running %s"
 msgstr "実行中: %s %s"
-
-#: mgrctl/cmd/org/org.go:18
-msgid "Organization-related commands"
-msgstr "組織関連コマンド"
-
-#: mgrctl/cmd/org/createFirst.go:28
-msgid "Create the first user and organization"
-msgstr "最初のユーザと組織を作成する"
-
-#: mgrctl/cmd/org/createFirst.go:35
-msgid "Administrator user name"
-msgstr "管理者ユーザ名"
-
-#: mgrctl/cmd/org/createFirst.go:36
-msgid "Administrator password"
-msgstr "管理者パスワード"
-
-#: mgrctl/cmd/org/createFirst.go:37
-msgid "The first name of the administrator"
-msgstr "管理者の名"
-
-#: mgrctl/cmd/org/createFirst.go:38
-msgid "The last name of the administrator"
-msgstr "管理者の姓"
-
-#: mgrctl/cmd/org/createFirst.go:39
-msgid "The administrator's email"
-msgstr "管理者の電子メール"
-
-#: mgrctl/cmd/org/createFirst.go:40
-msgid "The first organization name"
-msgstr "最初の組織名"
-
-#: mgrctl/cmd/org/createFirst.go:51
-#, javascript-format
-msgid "Organization %s created with id %d"
-msgstr "組織 %s は ID %d で作成されました"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "サーバコンテナ内で端末を実行する"
+
+#: mgrctl/cmd/cmd.go:29
+msgid "Uyuni control tool"
+msgstr "Uyuni制御ツール"
+
+#: mgrctl/cmd/cmd.go:30
+msgid "Tool to help managing Uyuni servers mainly through their API"
+msgstr "主にAPIを通じてUyuniサーバを管理するのに役立つツール"
+
+#: mgrctl/cmd/cmd.go:37
+msgid "configuration file path"
+msgstr "設定ファイルパス"
+
+#: mgrctl/cmd/cmd.go:38
+msgid "application log level"
+msgstr "アプリケーションログレベル"
+
+#: mgrctl/cmd/cmd.go:46
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "%s へようこそ"
+
+#: mgrctl/cmd/cmd.go:47
+#, javascript-format
+msgid "Executing command: %s"
+msgstr "コマンドの実行中: %s"
+
+#: mgrctl/cmd/cmd.go:53
+msgid "Failed to create api command"
+msgstr "apiコマンドの作成に失敗しました"
+
+#~ msgid "Failed to create org command"
+#~ msgstr "orgコマンドの作成に失敗しました"
+
+#~ msgid "Organization-related commands"
+#~ msgstr "組織関連コマンド"
+
+#~ msgid "Create the first user and organization"
+#~ msgstr "最初のユーザと組織を作成する"
+
+#~ msgid "Administrator user name"
+#~ msgstr "管理者ユーザ名"
+
+#~ msgid "Administrator password"
+#~ msgstr "管理者パスワード"
+
+#~ msgid "The first name of the administrator"
+#~ msgstr "管理者の名"
+
+#~ msgid "The last name of the administrator"
+#~ msgstr "管理者の姓"
+
+#~ msgid "The administrator's email"
+#~ msgstr "管理者の電子メール"
+
+#~ msgid "The first organization name"
+#~ msgstr "最初の組織名"
+
+#, javascript-format
+#~ msgid "Organization %s created with id %d"
+#~ msgstr "組織 %s は ID %d で作成されました"
