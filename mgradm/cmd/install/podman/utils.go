@@ -31,15 +31,15 @@ func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
 		}
 		hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image.Name, tag)
 		if err != nil {
-			return fmt.Errorf(L("failed to compute image URL, %s"), err)
+			return utils.Errorf(err, L("failed to compute image URL"))
 		}
 
 		if err := podman.GenerateHubXmlrpcSystemdService(hubXmlrpcImage); err != nil {
-			return fmt.Errorf(L("cannot generate systemd service: %s"), err)
+			return utils.Errorf(err, L("cannot generate systemd service"))
 		}
 
 		if err := shared_podman.EnableService(shared_podman.HubXmlrpcService); err != nil {
-			return fmt.Errorf(L("cannot enable service: %s"), err)
+			return utils.Errorf(err, L("cannot enable service"))
 		}
 	}
 	return nil
