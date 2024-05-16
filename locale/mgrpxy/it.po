@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:27+0200\n"
-"PO-Revision-Date: 2024-04-25 20:43+0000\n"
+"POT-Creation-Date: 2024-05-16 11:25+0200\n"
+"PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/it/>\n"
 "Language: it\n"
@@ -16,7 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
+
+#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
+msgid "Install a new proxy from scratch"
+msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
@@ -80,10 +84,6 @@ msgstr "installare podman prima di eseguire questo comando"
 msgid "failed to extract proxy config from %s file"
 msgstr ""
 
-#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
-msgid "Install a new proxy from scratch"
-msgstr ""
-
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
 msgstr ""
@@ -142,9 +142,9 @@ msgid "Stop the proxy"
 msgstr ""
 
 #: mgrpxy/cmd/uninstall/podman.go:46
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot delete volume %s"
-msgstr "impossibile ispezionare i valori dell'host: %s"
+msgstr "impossible eliminare il volume %s"
 
 #: mgrpxy/cmd/uninstall/podman.go:49
 msgid "All volumes removed"
@@ -390,7 +390,7 @@ msgstr ""
 
 #: mgrpxy/shared/utils/flags.go:62
 msgid "failed to compute image URL"
-msgstr ""
+msgstr "impossibile determinare l'URL dell'immagine"
 
 #: mgrpxy/shared/utils/flags.go:70 mgrpxy/shared/utils/flags.go:84
 #: mgrpxy/shared/utils/flags.go:98

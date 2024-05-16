@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-16 10:27+0200\n"
-"PO-Revision-Date: 2024-04-30 09:43+0000\n"
+"PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
-"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools/it/>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: mgradm/cmd/distro/detect.go:92
 msgid "distribution not found in product map. Please update productmap or provide channel label"
@@ -67,9 +68,9 @@ msgid "distribution with same name already exists: %s"
 msgstr "la distribuzione esiste già: %s"
 
 #: mgradm/cmd/distro/cp.go:96
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot create %s path in container"
-msgstr "impossibile creare il percorso %s nel container: %s"
+msgstr "impossibile creare il percorso %s nel container"
 
 #: mgradm/cmd/distro/cp.go:99
 #, javascript-format
@@ -79,9 +80,9 @@ msgstr "Copia della distribuzione %s"
 #: mgradm/cmd/distro/cp.go:101 mgradm/shared/podman/podman.go:122
 #: mgradm/shared/podman/podman.go:125 mgradm/shared/podman/podman.go:128
 #: mgradm/shared/podman/podman.go:136
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot copy %s"
-msgstr "impossibile copiare %s: %s"
+msgstr "impossibile copiare %s"
 
 #: mgradm/cmd/distro/cp.go:103
 #, javascript-format
@@ -345,9 +346,8 @@ msgstr ""
 #: mgradm/shared/kubernetes/install.go:137 mgradm/shared/kubernetes/k3s.go:47
 #: mgradm/shared/kubernetes/k3s.go:52 mgradm/shared/podman/podman.go:236
 #: mgradm/shared/podman/podman.go:241 mgradm/shared/podman/podman.go:335
-#, fuzzy
 msgid "failed to compute image URL"
-msgstr "impossibile determinare l'URL dell'immagine: %s"
+msgstr "impossibile determinare l'URL dell'immagine"
 
 #: mgradm/cmd/install/podman/utils.go:40
 #, fuzzy
@@ -1052,9 +1052,9 @@ msgid "Failed deleting secret"
 msgstr ""
 
 #: mgradm/cmd/uninstall/podman.go:40
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot delete volume %s"
-msgstr "impossible eliminare %s: %s"
+msgstr "impossible eliminare il volume %s"
 
 #: mgradm/cmd/uninstall/podman.go:43
 msgid "All volumes removed"
@@ -1222,9 +1222,8 @@ msgid "Server Deployment:"
 msgstr ""
 
 #: mgradm/cmd/cmd.go:51
-#, fuzzy
 msgid "Server Management:"
-msgstr "Gestione dell'Hub"
+msgstr "Gestione del Server:"
 
 #: mgradm/cmd/cmd.go:55
 #, fuzzy
@@ -1380,9 +1379,9 @@ msgstr ""
 
 #: mgradm/shared/kubernetes/k3s.go:64 mgradm/shared/kubernetes/k3s.go:113
 #: mgradm/shared/kubernetes/k3s.go:159
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot delete %s"
-msgstr "impossible eliminare %s: %s"
+msgstr "impossible eliminare %s"
 
 #: mgradm/shared/kubernetes/k3s.go:93 mgradm/shared/kubernetes/k3s.go:139
 #: mgradm/shared/kubernetes/k3s.go:186
