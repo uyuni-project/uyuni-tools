@@ -54,7 +54,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	if err := podman.GenerateSystemdService(tz, serverImage, false, viper.GetStringSlice("podman.arg")); err != nil {
+	if err := podman.GenerateSystemdService(tz, serverImage, false, flags.Mirror, viper.GetStringSlice("podman.arg")); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd service file"))
 	}
 

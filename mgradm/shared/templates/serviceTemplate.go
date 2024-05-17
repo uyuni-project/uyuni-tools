@@ -26,7 +26,7 @@ Environment=TZ={{ .Timezone }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-server.pid %t/%n.ctr-id
 ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-server
-ExecStart=/usr/bin/podman run \
+ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--conmon-pidfile %t/uyuni-server.pid \
 	--cidfile=%t/%n.ctr-id \
 	--cgroups=no-conmon \
@@ -45,7 +45,7 @@ ExecStart=/usr/bin/podman run \
 	{{- end }}
 	-e TZ=${TZ} \
 	--network {{ .Network }} \
-	${UYUNI_IMAGE}
+	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 ExecStop=/usr/bin/podman exec \
     uyuni-server \
     /bin/bash -c 'spacewalk-service stop && systemctl stop postgresql'

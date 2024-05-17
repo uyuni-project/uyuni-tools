@@ -88,13 +88,17 @@ func GenerateHubXmlrpcSystemdService(image string) error {
 }
 
 // GenerateSystemdService creates a serverY systemd file.
-func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []string) error {
+func GenerateSystemdService(tz string, image string, debug bool, mirrorPath string, podmanArgs []string) error {
 	if err := podman.SetupNetwork(false); err != nil {
 		return utils.Errorf(err, L("cannot setup network"))
 	}
 
 	log.Info().Msg(L("Enabling system service"))
-	args := append(podman.GetCommonParams(), podmanArgs...)
+	args := podman.GetCommonParams()
+
+	if mirrorPath != "" {
+		args = append(args, "-v", mirrorPath+":/mirror")
+	}
 
 	ports := GetExposedPorts(debug)
 	if _, err := exec.LookPath("csp-billing-adapter"); err == nil {
@@ -114,7 +118,11 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
-	if err := podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+image); err != nil {
+	config := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
+Environment="PODMAN_EXTRA_ARGS=%s"
+`, image, strings.Join(podmanArgs, " "))
+
+	if err := podman.GenerateSystemdConfFile("uyuni-server", "Service", config); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 	return podman.ReloadDaemon(false)
