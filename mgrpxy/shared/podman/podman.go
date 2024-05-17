@@ -61,6 +61,9 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		if err != nil {
 			return err
 		}
+		if !shared_utils.FileExists(absPath) {
+			return fmt.Errorf(L("%s does not exists"), absPath)
+		}
 		httpdVolumes[absPath] = "/etc/apache2/conf.d/apache_tuning.conf"
 	}
 	// Httpd
