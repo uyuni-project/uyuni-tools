@@ -74,11 +74,17 @@ func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []st
 	log.Info().Msg(L("Enabling system service"))
 	args := append(podman.GetCommonParams(), podmanArgs...)
 
+	ports := GetExposedPorts(debug)
+	if _, err := exec.LookPath("csp-billing-adapter"); err == nil {
+		ports = append(ports, utils.NewPortMap("csp-billing", 10888, 10888))
+		args = append(args, "-e ISPAYG=1")
+	}
+
 	data := templates.PodmanServiceTemplateData{
 		Volumes:    utils.ServerVolumeMounts,
 		NamePrefix: "uyuni",
 		Args:       strings.Join(args, " "),
-		Ports:      GetExposedPorts(debug),
+		Ports:      ports,
 		Timezone:   tz,
 		Network:    podman.UyuniNetwork,
 	}
