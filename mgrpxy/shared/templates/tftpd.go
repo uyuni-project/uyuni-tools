@@ -21,7 +21,6 @@ After=uyuni-proxy-pod.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-Environment=UYUNI_IMAGE={{ .Image }}
 {{- if .HttpProxyFile }}
 EnvironmentFile={{ .HttpProxyFile }}
 {{- end }}
@@ -55,7 +54,6 @@ WantedBy=multi-user.target default.target
 type TFTPDTemplateData struct {
 	Volumes       map[string]string
 	HttpProxyFile string
-	Image         string
 }
 
 // Render will create the TFTPD systemd configuration file.

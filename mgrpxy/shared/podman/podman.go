@@ -49,7 +49,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Args:          strings.Join(podmanArgs, " "),
 		Network:       podman.UyuniNetwork,
 	}
-	if err := generateSystemdFile(dataPod, "pod"); err != nil {
+	if err := generateSystemdFile(dataPod, "pod", ""); err != nil {
 		return err
 	}
 
@@ -57,18 +57,16 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 	dataHttpd := templates.HttpdTemplateData{
 		Volumes:       shared_utils.PROXY_HTTPD_VOLUMES,
 		HttpProxyFile: httpProxyConfig,
-		Image:         httpdImage,
 	}
-	if err := generateSystemdFile(dataHttpd, "httpd"); err != nil {
+	if err := generateSystemdFile(dataHttpd, "httpd", httpdImage); err != nil {
 		return err
 	}
 
 	// Salt broker
 	dataSaltBroker := templates.SaltBrokerTemplateData{
 		HttpProxyFile: httpProxyConfig,
-		Image:         saltBrokerImage,
 	}
-	if err := generateSystemdFile(dataSaltBroker, "salt-broker"); err != nil {
+	if err := generateSystemdFile(dataSaltBroker, "salt-broker", saltBrokerImage); err != nil {
 		return err
 	}
 
@@ -76,18 +74,16 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 	dataSquid := templates.SquidTemplateData{
 		Volumes:       shared_utils.PROXY_SQUID_VOLUMES,
 		HttpProxyFile: httpProxyConfig,
-		Image:         squidImage,
 	}
-	if err := generateSystemdFile(dataSquid, "squid"); err != nil {
+	if err := generateSystemdFile(dataSquid, "squid", squidImage); err != nil {
 		return err
 	}
 
 	// SSH
 	dataSSH := templates.SSHTemplateData{
 		HttpProxyFile: httpProxyConfig,
-		Image:         sshImage,
 	}
-	if err := generateSystemdFile(dataSSH, "ssh"); err != nil {
+	if err := generateSystemdFile(dataSSH, "ssh", sshImage); err != nil {
 		return err
 	}
 
@@ -95,22 +91,27 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 	dataTftpd := templates.TFTPDTemplateData{
 		Volumes:       shared_utils.PROXY_TFTPD_VOLUMES,
 		HttpProxyFile: httpProxyConfig,
-		Image:         tftpdImage,
 	}
-	if err := generateSystemdFile(dataTftpd, "tftpd"); err != nil {
+	if err := generateSystemdFile(dataTftpd, "tftpd", tftpdImage); err != nil {
 		return err
 	}
 
 	return podman.ReloadDaemon(false)
 }
 
-func generateSystemdFile(template shared_utils.Template, service string) error {
+func generateSystemdFile(template shared_utils.Template, service string, image string) error {
 	name := fmt.Sprintf("uyuni-proxy-%s.service", service)
 
 	const systemdPath = "/etc/systemd/system"
 	path := path.Join(systemdPath, name)
 	if err := shared_utils.WriteTemplateToFile(template, path, 0644, true); err != nil {
 		return shared_utils.Errorf(err, L("failed to generate systemd file '%s'"), path)
+	}
+
+	if image != "" {
+		if err := podman.GenerateSystemdConfFile("uyuni-proxy-"+service, "Service", "Environment=UYUNI_IMAGE="+image); err != nil {
+			return shared_utils.Errorf(err, L("cannot generate systemd conf file"))
+		}
 	}
 	return nil
 }
