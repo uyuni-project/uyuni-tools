@@ -123,3 +123,8 @@ func AddMigrationImageFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "migration-tag", "migration-image")
 	_ = utils.AddFlagToHelpGroupID(cmd, "migration-pullPolicy", "migration-image")
 }
+
+// AddMirrorFlag adds the flag for the mirror.
+func AddMirrorFlag(cmd *cobra.Command) {
+	cmd.Flags().String("mirror", "", L("Path to mirrored packages mounted on the host"))
+}

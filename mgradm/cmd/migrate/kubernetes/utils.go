@@ -14,6 +14,7 @@ import (
 	"path"
 
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
@@ -115,6 +116,11 @@ func migrateToKubernetes(
 	helmArgs := []string{
 		"--reset-values",
 		"--set", "timezone=" + tz,
+	}
+	if flags.Mirror != "" {
+		log.Warn().Msgf(L("The mirror data will not be migrated, ensure it is available at %s"), flags.Mirror)
+		// TODO Handle claims for multi-node clusters
+		helmArgs = append(helmArgs, "--set", "mirror.hostPath="+flags.Mirror)
 	}
 	helmArgs = append(helmArgs, setupSslArray...)
 

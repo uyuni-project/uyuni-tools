@@ -46,12 +46,8 @@ func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
 }
 
 func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
-	podmanArgs := flags.Podman.Args
-	if flags.MirrorPath != "" {
-		podmanArgs = append(podmanArgs, "-v", flags.MirrorPath+":/mirror")
-	}
-
-	if err := podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, podmanArgs); err != nil {
+	err := podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, flags.Mirror, flags.Podman.Args)
+	if err != nil {
 		return err
 	}
 
