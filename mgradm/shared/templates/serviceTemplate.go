@@ -22,7 +22,6 @@ RequiresMountsFor=%t/containers
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-Environment=TZ={{ .Timezone }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-server.pid %t/%n.ctr-id
 ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-server
@@ -72,7 +71,6 @@ type PodmanServiceTemplateData struct {
 	NamePrefix string
 	Args       string
 	Ports      []types.PortMap
-	Timezone   string
 	Image      string
 	Network    string
 }

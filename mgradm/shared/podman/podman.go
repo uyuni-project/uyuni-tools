@@ -111,7 +111,6 @@ func GenerateSystemdService(tz string, image string, debug bool, mirrorPath stri
 		NamePrefix: "uyuni",
 		Args:       strings.Join(args, " "),
 		Ports:      ports,
-		Timezone:   tz,
 		Network:    podman.UyuniNetwork,
 	}
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, false); err != nil {
@@ -119,8 +118,9 @@ func GenerateSystemdService(tz string, image string, debug bool, mirrorPath stri
 	}
 
 	config := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
+Environment=TZ=%s
 Environment="PODMAN_EXTRA_ARGS=%s"
-`, image, strings.Join(podmanArgs, " "))
+`, image, strings.TrimSpace(tz), strings.Join(podmanArgs, " "))
 
 	if err := podman.GenerateSystemdConfFile("uyuni-server", "Service", config); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
