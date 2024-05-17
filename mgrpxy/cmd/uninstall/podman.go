@@ -51,5 +51,13 @@ func uninstallForPodman(dryRun bool, purge bool) error {
 
 	podman.DeleteNetwork(dryRun)
 
-	return podman.ReloadDaemon(dryRun)
+	err := podman.ReloadDaemon(dryRun)
+
+	if dryRun {
+		log.Warn().Msg(L("Nothing has been uninstalled, run with --force and --purgeVolumes to actually uninstall and clear data"))
+	} else if !purge {
+		log.Warn().Msg(L("Data have been kept, use podman volume commands to clear the volumes"))
+	}
+
+	return err
 }

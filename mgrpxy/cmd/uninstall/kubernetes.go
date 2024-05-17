@@ -5,7 +5,9 @@
 package uninstall
 
 import (
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
 
 func uninstallForKubernetes(dryRun bool) error {
@@ -35,5 +37,10 @@ func uninstallForKubernetes(dryRun bool) error {
 	if clusterInfos.IsRke2() {
 		kubernetes.UninstallRke2NginxConfig(dryRun)
 	}
+
+	if dryRun {
+		log.Warn().Msg(L("Nothing has been uninstalled, run with --force to actually uninstall"))
+	}
+	log.Warn().Msg(L("Volumes have not been touched. Depending on the storage class used, they may not have been removed"))
 	return nil
 }

@@ -86,5 +86,10 @@ func uninstallForKubernetes(
 	if clusterInfos.IsRke2() {
 		kubernetes.UninstallRke2NginxConfig(!flags.Force)
 	}
+
+	if !flags.Force {
+		log.Warn().Msg(L("Nothing has been uninstalled, run with --force to actually uninstall"))
+	}
+	log.Warn().Msg(L("Volumes have not been touched. Depending on the storage class used, they may not have been removed"))
 	return nil
 }
