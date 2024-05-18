@@ -90,7 +90,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	log.Info().Msg(L("Preparing the tarball"))
 
 	supportFileName := getSupportConfigFileSaveName()
-	supportFilePath := fmt.Sprintf("%s/%s", flags.Output, supportFileName)
+	supportFilePath := fmt.Sprintf("%s/%s.tar.gz", flags.Output, supportFileName)
 
 	tarball, err := utils.NewTarGz(supportFilePath)
 	if err != nil {
@@ -98,7 +98,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	}
 
 	for _, file := range files {
-		if err := tarball.AddFile(file, path.Base(file)); err != nil {
+		if err := tarball.AddFile(file, fmt.Sprintf("%s/%s", supportFileName, path.Base(file))); err != nil {
 			return utils.Errorf(err, L("failed to add %s to tarball"), path.Base(file))
 		}
 	}
@@ -112,23 +112,13 @@ func getSupportConfigPath(out []byte) string {
 	return re.FindString(string(out))
 }
 
-func getHostname() string {
-	hostname_b, err := utils.RunCmdOutput(zerolog.DebugLevel, "hostname")
-	if err != nil {
-		log.Warn().Err(err).Msg(L("Unable to detect hostname, using localhost"))
-		return "localhost"
-	}
-	return strings.TrimSpace(string(hostname_b))
-}
-
 func getSupportConfigFileSaveName() string {
 	hostname_b, err := utils.RunCmdOutput(zerolog.DebugLevel, "hostname")
 	hostname := "localhost"
 	if err != nil {
 		log.Warn().Err(err).Msg(L("Unable to detect hostname, using localhost"))
-
+		hostname = strings.TrimSpace(string(hostname_b))
 	}
-	hostname = strings.TrimSpace(string(hostname_b))
 	now := time.Now()
-	return fmt.Sprintf("scc_%s_%s.tar.gz", hostname, now.Format("20060102_1504"))
+	return fmt.Sprintf("scc_%s_%s", hostname, now.Format("20060102_1504"))
 }
