@@ -29,7 +29,7 @@ the containers for support to help debugging.`),
 		},
 	}
 
-	configCmd.Flags().StringP("output", "o", "supportconfig.tar.gz", L("path where to extract the data"))
+	configCmd.Flags().StringP("output", "o", ".", L("path where to extract the data"))
 	utils.AddBackendFlag(configCmd)
 
 	return configCmd
