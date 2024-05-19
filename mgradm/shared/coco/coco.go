@@ -28,7 +28,10 @@ func SetupCocoContainer(replicas int, image types.ImageFlags, baseImage types.Im
 	}
 	cocoImage, err := utils.ComputeImage(image.Name, tag)
 	if err != nil {
-		return utils.Errorf(err, L("failed to compute image URL"))
+		cocoImage, err = utils.ComputeImage(baseImage.Name, tag, "-attestation")
+		if err != nil {
+			return utils.Errorf(err, L("failed to compute image URL"))
+		}
 	}
 
 	attestationData := templates.AttestationServiceTemplateData{
