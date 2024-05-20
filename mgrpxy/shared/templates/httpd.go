@@ -39,7 +39,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- range .Volumes }}
 	-v {{ .Name }}:{{ .MountPath }} \
 	{{- end }}
-	--name uyuni-proxy-httpd \
+	${HTTPD_EXTRA_CONF} --name uyuni-proxy-httpd \
 	${UYUNI_IMAGE}'
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/uyuni-proxy-httpd.ctr-id -t 10

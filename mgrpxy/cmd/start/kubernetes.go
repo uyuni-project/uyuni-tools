@@ -16,5 +16,5 @@ func kubernetesStart(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return kubernetes.Start(kubernetes.ProxyFilter)
+	return kubernetes.Start(kubernetes.ProxyApp)
 }

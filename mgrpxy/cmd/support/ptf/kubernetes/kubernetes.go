@@ -41,7 +41,7 @@ NOTE: installing on a remote cluster is not supported yet!
 		},
 	}
 
-	pxy_utils.AddImageUpgradeFlags(kubernetesCmd)
+	pxy_utils.AddImageFlags(kubernetesCmd)
 
 	kubernetes.AddHelmFlags(kubernetesCmd)
 

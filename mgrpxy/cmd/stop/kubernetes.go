@@ -16,5 +16,5 @@ func kubernetesStop(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return kubernetes.Stop(kubernetes.ProxyFilter)
+	return kubernetes.Stop(kubernetes.ProxyApp)
 }

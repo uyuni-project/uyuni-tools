@@ -25,7 +25,7 @@ import (
 // PodmanProxyFlags are the flags used by podman proxy install and upgrade command.
 type PodmanProxyFlags struct {
 	utils.ProxyImageFlags `mapstructure:",squash"`
-	Podman                podman.PodmanFlags
+	Podman                podman.PodmanFlags `mapstructure:",squash"`
 }
 
 // GenerateSystemdService generates all the systemd files required by proxy.
@@ -49,89 +49,75 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		HttpProxyFile: httpProxyConfig,
 		Network:       podman.UyuniNetwork,
 	}
-	podEnv := fmt.Sprintf(`Environment="PODMAN_EXTRA_ARGS=%s"`, strings.Join(podmanArgs, " "))
+	podEnv := fmt.Sprintf(`Environment="PODMAN_EXTRA_ARGS=%s"`, strings.Join(flags.Podman.Args, " "))
 	if err := generateSystemdFile(dataPod, "pod", "", podEnv); err != nil {
 		return err
 	}
 
-	httpdVolumes := shared_utils.PROXY_HTTPD_VOLUMES
-	if flags.ProxyImageFlags.TuningHttpd != "" {
-		absPath, err := filepath.Abs(flags.ProxyImageFlags.TuningHttpd)
-		if err != nil {
-			return err
-		}
-		if !shared_utils.FileExists(absPath) {
-			return fmt.Errorf(L("%s does not exists"), absPath)
-		}
-		httpdVolumes = append(httpdVolumes,
-			types.VolumeMount{MountPath: "/etc/apache2/conf.d/apache_tuning.conf", Name: absPath})
-	}
 	// Httpd
-	dataHttpd := templates.HttpdTemplateData{
-		Volumes:       httpdVolumes,
-		HttpProxyFile: httpProxyConfig,
-	}
-	if err := generateSystemdFile(dataHttpd, "httpd", httpdImage, ""); err != nil {
-		return err
-	}
-	if flags.ProxyImageFlags.TuningHttpd != "" {
-		absPath, err := filepath.Abs(flags.ProxyImageFlags.TuningHttpd)
-		if err != nil {
+	{
+		dataHttpd := templates.HttpdTemplateData{
+			Volumes:       shared_utils.PROXY_HTTPD_VOLUMES,
+			HttpProxyFile: httpProxyConfig,
+		}
+		additionHttpdTuningSettings := ""
+		if flags.ProxyImageFlags.Tuning.Httpd != "" {
+			absPath, err := filepath.Abs(flags.ProxyImageFlags.Tuning.Httpd)
+			if err != nil {
+				return err
+			}
+			additionHttpdTuningSettings = fmt.Sprintf(`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro`, absPath)
+		}
+		if err := generateSystemdFile(dataHttpd, "httpd", httpdImage, additionHttpdTuningSettings); err != nil {
 			return err
 		}
-		additionPodmanSettings := fmt.Sprintf(`Environment=HTTPD_ADDITIONAL_SETTINGS=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro`, absPath)
-		if err := podman.GenerateSystemdConfFile("uyuni-proxy-httpd", "Service", additionPodmanSettings); err != nil {
-			return shared_utils.Errorf(err, L("cannot generate systemd conf file"))
-		}
 	}
-
 	// Salt broker
-	dataSaltBroker := templates.SaltBrokerTemplateData{
-		HttpProxyFile: httpProxyConfig,
-	}
-	if err := generateSystemdFile(dataSaltBroker, "salt-broker", saltBrokerImage, ""); err != nil {
-		return err
-	}
-
-	squidVolumes := shared_utils.PROXY_SQUID_VOLUMES
-
-	if flags.ProxyImageFlags.TuningSquid != "" {
-		absPath, err := filepath.Abs(flags.ProxyImageFlags.TuningSquid)
-		if err != nil {
+	{
+		dataSaltBroker := templates.SaltBrokerTemplateData{
+			HttpProxyFile: httpProxyConfig,
+		}
+		if err := generateSystemdFile(dataSaltBroker, "salt-broker", saltBrokerImage, ""); err != nil {
 			return err
 		}
-		additionPodmanSettings := fmt.Sprintf(`Environment=SQUID_ADDITIONAL_SETTINGS=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro`, absPath)
-		if err := podman.GenerateSystemdConfFile("uyuni-proxy-squid", "Service", additionPodmanSettings); err != nil {
-			return shared_utils.Errorf(err, L("cannot generate systemd conf file"))
+	}
+	// Squid
+	{
+		dataSquid := templates.SquidTemplateData{
+			Volumes:       shared_utils.PROXY_SQUID_VOLUMES,
+			HttpProxyFile: httpProxyConfig,
+		}
+		additionSquidTuningSettings := ""
+		if flags.ProxyImageFlags.Tuning.Squid != "" {
+			absPath, err := filepath.Abs(flags.ProxyImageFlags.Tuning.Squid)
+			if err != nil {
+				return err
+			}
+			additionSquidTuningSettings = fmt.Sprintf(`Environment=SQUID_EXTRA_CONF=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro`, absPath)
+		}
+		if err := generateSystemdFile(dataSquid, "squid", squidImage, additionSquidTuningSettings); err != nil {
+			return err
 		}
 	}
-
-	// Squid
-	dataSquid := templates.SquidTemplateData{
-		Volumes:       squidVolumes,
-		HttpProxyFile: httpProxyConfig,
-	}
-	if err := generateSystemdFile(dataSquid, "squid", squidImage, ""); err != nil {
-		return err
-	}
-
 	// SSH
-	dataSSH := templates.SSHTemplateData{
-		HttpProxyFile: httpProxyConfig,
+	{
+		dataSSH := templates.SSHTemplateData{
+			HttpProxyFile: httpProxyConfig,
+		}
+		if err := generateSystemdFile(dataSSH, "ssh", sshImage, ""); err != nil {
+			return err
+		}
 	}
-	if err := generateSystemdFile(dataSSH, "ssh", sshImage, ""); err != nil {
-		return err
-	}
-
 	// Tftpd
-	dataTftpd := templates.TFTPDTemplateData{
-		Volumes:       shared_utils.PROXY_TFTPD_VOLUMES,
-		HttpProxyFile: httpProxyConfig,
+	{
+		dataTftpd := templates.TFTPDTemplateData{
+			Volumes:       shared_utils.PROXY_TFTPD_VOLUMES,
+			HttpProxyFile: httpProxyConfig,
+		}
+		if err := generateSystemdFile(dataTftpd, "tftpd", tftpdImage, ""); err != nil {
+			return err
+		}
 	}
-	if err := generateSystemdFile(dataTftpd, "tftpd", tftpdImage, ""); err != nil {
-		return err
-	}
-
 	return podman.ReloadDaemon(false)
 }
 

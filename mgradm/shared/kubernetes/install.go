@@ -171,7 +171,7 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot find node running uyuni"))
 	}
 
-	err = kubernetes.ReplicasTo(kubernetes.ServerFilter, 0)
+	err = kubernetes.ReplicasTo(kubernetes.ServerApp, 0)
 	if err != nil {
 		return utils.Errorf(err, L("cannot set replica to 0"))
 	}
@@ -179,7 +179,7 @@ func Upgrade(
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
 		if _, err = kubernetes.GetNode("uyuni"); err != nil {
-			err = kubernetes.ReplicasTo(kubernetes.ServerFilter, 1)
+			err = kubernetes.ReplicasTo(kubernetes.ServerApp, 1)
 		}
 	}()
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
