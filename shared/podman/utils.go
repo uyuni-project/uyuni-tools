@@ -15,6 +15,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -82,10 +83,10 @@ func EnablePodmanSocket() error {
 }
 
 // RunContainer execute a container.
-func RunContainer(name string, image string, extraArgs []string, cmd []string) error {
+func RunContainer(name string, image string, volumes []types.VolumeMount, extraArgs []string, cmd []string) error {
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
-	for _, volume := range utils.ServerVolumeMounts {
+	for _, volume := range volumes {
 		podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath)
 	}
 	podmanArgs = append(podmanArgs, image)
@@ -224,7 +225,7 @@ func Inspect(serverImage string, pullPolicy string, proxyHost bool) (map[string]
 		"--security-opt", "label:disable",
 	}
 
-	err = RunContainer("uyuni-inspect", preparedImage, podmanArgs,
+	err = RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
 		[]string{utils.InspectOutputFile.Directory + "/" + utils.InspectScriptFilename})
 	if err != nil {
 		return map[string]string{}, err

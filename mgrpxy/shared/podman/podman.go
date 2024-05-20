@@ -55,7 +55,6 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 	}
 
 	httpdVolumes := shared_utils.PROXY_HTTPD_VOLUMES
-	log.Debug().Msgf("Tuning HTTPD value: %s", flags.ProxyImageFlags.TuningHttpd)
 	if flags.ProxyImageFlags.TuningHttpd != "" {
 		absPath, err := filepath.Abs(flags.ProxyImageFlags.TuningHttpd)
 		if err != nil {
@@ -64,7 +63,8 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		if !shared_utils.FileExists(absPath) {
 			return fmt.Errorf(L("%s does not exists"), absPath)
 		}
-		httpdVolumes[absPath] = "/etc/apache2/conf.d/apache_tuning.conf"
+		httpdVolumes = append(httpdVolumes,
+			types.VolumeMount{MountPath: "/etc/apache2/conf.d/apache_tuning.conf", Name: absPath})
 	}
 	// Httpd
 	dataHttpd := templates.HttpdTemplateData{
@@ -95,7 +95,6 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 
 	squidVolumes := shared_utils.PROXY_SQUID_VOLUMES
 
-	log.Debug().Msgf("Tuning Suid value: %s", flags.ProxyImageFlags.TuningSquid)
 	if flags.ProxyImageFlags.TuningSquid != "" {
 		absPath, err := filepath.Abs(flags.ProxyImageFlags.TuningSquid)
 		if err != nil {

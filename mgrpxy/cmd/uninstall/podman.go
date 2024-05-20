@@ -28,20 +28,19 @@ func uninstallForPodman(dryRun bool, purge bool) error {
 	// Remove the volumes
 	if purge {
 		// Merge all proxy containers volumes into a map
-		volumes := map[string]string{}
-		allProxyVolumes := []map[string]string{
-			utils.PROXY_HTTPD_VOLUMES,
-			utils.PROXY_SQUID_VOLUMES,
-			utils.PROXY_TFTPD_VOLUMES,
+		volumes := []string{}
+		for _, volume := range utils.PROXY_HTTPD_VOLUMES {
+			volumes = append(volumes, volume.Name)
 		}
-		for _, volumesList := range allProxyVolumes {
-			for volume, mount := range volumesList {
-				volumes[volume] = mount
-			}
+		for _, volume := range utils.PROXY_SQUID_VOLUMES {
+			volumes = append(volumes, volume.Name)
+		}
+		for _, volume := range utils.PROXY_TFTPD_VOLUMES {
+			volumes = append(volumes, volume.Name)
 		}
 
 		// Delete each volume
-		for volume := range volumes {
+		for _, volume := range volumes {
 			if err := podman.DeleteVolume(volume, dryRun); err != nil {
 				return utils.Errorf(err, L("cannot delete volume %s"), volume)
 			}
