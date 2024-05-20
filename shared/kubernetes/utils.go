@@ -19,11 +19,17 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// ServerApp represent the server app name.
+const ServerApp = "uyuni"
+
 // ServerFilter represents filter used to check server app.
-const ServerFilter = "-lapp=uyuni"
+const ServerFilter = "-lapp=" + ServerApp
+
+// ProxyApp represnet the proxy app name.
+const ProxyApp = "uyuni-proxy"
 
 // ServerFilter represents filter used to check proxy app.
-const ProxyFilter = "-lapp=uyuni-proxy"
+const ProxyFilter = "-lapp=" + ProxyApp
 
 // waitForDeployment waits at most 60s for a kubernetes deployment to have at least one replica.
 // See [isDeploymentReady] for more details.
@@ -143,9 +149,9 @@ func GetDeploymentStatus(namespace string, name string) (*DeploymentStatus, erro
 
 // ReplicasTo set the replica for an app to the given value.
 // Scale the number of replicas of the server.
-func ReplicasTo(filter string, replica uint) error {
-	args := []string{"scale", "deploy", filter, "--replicas"}
-	log.Debug().Msgf("Setting replicas for pod in %s to %d", filter, replica)
+func ReplicasTo(app string, replica uint) error {
+	args := []string{"scale", "deploy", app, "--replicas"}
+	log.Debug().Msgf("Setting replicas for pod in %s to %d", app, replica)
 	args = append(args, fmt.Sprint(replica))
 
 	_, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
@@ -153,9 +159,9 @@ func ReplicasTo(filter string, replica uint) error {
 		return utils.Errorf(err, L("cannot run kubectl %s"), args)
 	}
 
-	pods, err := getPods(filter)
+	pods, err := getPods("-lapp=" + app)
 	if err != nil {
-		return utils.Errorf(err, L("cannot get pods for %s"), filter)
+		return utils.Errorf(err, L("cannot get pods for %s"), app)
 	}
 
 	for _, pod := range pods {
@@ -167,7 +173,7 @@ func ReplicasTo(filter string, replica uint) error {
 		}
 	}
 
-	log.Debug().Msgf("Replicas for pod in %s are now %d", filter, replica)
+	log.Debug().Msgf("Replicas for pod in %s are now %d", app, replica)
 
 	return err
 }

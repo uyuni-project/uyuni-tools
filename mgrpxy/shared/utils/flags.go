@@ -24,8 +24,13 @@ type ProxyImageFlags struct {
 	Squid          types.ImageFlags `mapstructure:"squid"`
 	Ssh            types.ImageFlags `mapstructure:"ssh"`
 	Tftpd          types.ImageFlags `mapstructure:"tftpd"`
-	TuningHttpd    string           `mapstructure:"tuningHttpd"`
-	TuningSquid    string           `mapstructure:"tuningSquid"`
+	Tuning         Tuning           `mapstructure:"tuning"`
+}
+
+// Tuning are the custom configuration file provide by users.
+type Tuning struct {
+	Httpd string `mapstructure:"httpd"`
+	Squid string `mapstructure:"squid"`
 }
 
 // Get the full container image name and tag for a container name.
@@ -79,8 +84,8 @@ func AddImageFlags(cmd *cobra.Command) {
 	addContainerImageFlags(cmd, "ssh")
 	addContainerImageFlags(cmd, "tftpd")
 
-	cmd.Flags().String("tuningHttpd", "", L("HTTPD tuning configuration file"))
-	cmd.Flags().String("tuningSquid", "", L("Squid tuning configuration file"))
+	cmd.Flags().String("tuning-httpd", "", L("HTTPD tuning configuration file"))
+	cmd.Flags().String("tuning-squid", "", L("Squid tuning configuration file"))
 }
 
 func addContainerImageFlags(cmd *cobra.Command, container string) {

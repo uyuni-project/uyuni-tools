@@ -21,7 +21,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-server-attestation-%i.pid %t/%n.ctr-id
 ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-server-attestation-%i
-ExecStart=/usr/bin/podman run \
+ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--conmon-pidfile %t/uyuni-server-attestation-%i.pid \
 	--cidfile=%t/%n-%i.ctr-id \
 	--cgroups=no-conmon \
@@ -34,7 +34,7 @@ ExecStart=/usr/bin/podman run \
 	--name {{ .NamePrefix }}-server-attestation-%i \
 	--hostname {{ .NamePrefix }}-server-attestation-%i.mgr.internal \
 	--network {{ .Network }} \
-	${UYUNI_IMAGE}
+	${UYUNI_IMAGE}'
 ExecStop=/usr/bin/podman stop --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
 PIDFile=%t/uyuni-server-attestation-%i.pid
