@@ -239,7 +239,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 	}
 
 	log.Info().Msg(L("Migrating server"))
-	if err := podman.RunContainer("uyuni-migration", preparedImage, extraArgs,
+	if err := podman.RunContainer("uyuni-migration", preparedImage, utils.ServerVolumeMounts, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
 		return "", "", "", utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
@@ -305,7 +305,7 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlag
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
 
-		err = podman.RunContainer(pgsqlVersionUpgradeContainer, preparedImage, extraArgs,
+		err = podman.RunContainer(pgsqlVersionUpgradeContainer, preparedImage, utils.ServerVolumeMounts, extraArgs,
 			[]string{"/var/lib/uyuni-tools/" + pgsqlVersionUpgradeScriptName})
 		if err != nil {
 			return err
@@ -331,7 +331,7 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool) error
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
-	err = podman.RunContainer(pgsqlFinalizeContainer, serverImage, extraArgs,
+	err = podman.RunContainer(pgsqlFinalizeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
 		[]string{"/var/lib/uyuni-tools/" + pgsqlFinalizeScriptName})
 	if err != nil {
 		return err
@@ -355,7 +355,7 @@ func RunPostUpgradeScript(serverImage string) error {
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
-	err = podman.RunContainer(postUpgradeContainer, serverImage, extraArgs,
+	err = podman.RunContainer(postUpgradeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
 		[]string{"/var/lib/uyuni-tools/" + postUpgradeScriptName})
 	if err != nil {
 		return err
@@ -453,7 +453,7 @@ func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
 		"--security-opt", "label:disable",
 	}
 
-	err = podman.RunContainer("uyuni-inspect", preparedImage, podmanArgs,
+	err = podman.RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
 		[]string{utils.InspectOutputFile.Directory + "/" + utils.InspectScriptFilename})
 	if err != nil {
 		return map[string]string{}, err
