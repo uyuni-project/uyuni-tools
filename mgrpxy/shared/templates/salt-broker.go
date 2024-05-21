@@ -27,7 +27,7 @@ EnvironmentFile={{ .HttpProxyFile }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-salt-broker.pid %t/uyuni-proxy-salt-broker.ctr-id
 
-ExecStart=/usr/bin/podman run \
+ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--conmon-pidfile %t/uyuni-proxy-salt-broker.pid \
 	--cidfile %t/uyuni-proxy-salt-broker.ctr-id \
 	--cgroups=no-conmon \
@@ -35,7 +35,7 @@ ExecStart=/usr/bin/podman run \
 	--replace -dt \
 	-v /etc/uyuni/proxy:/etc/uyuni:ro \
 	--name uyuni-proxy-salt-broker \
-	${UYUNI_IMAGE}
+	${UYUNI_IMAGE}'
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/uyuni-proxy-salt-broker.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/uyuni-proxy-salt-broker.ctr-id

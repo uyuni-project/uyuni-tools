@@ -27,7 +27,7 @@ EnvironmentFile={{ .HttpProxyFile }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-squid.pid %t/uyuni-proxy-squid.ctr-id
 
-ExecStart=/usr/bin/podman run \
+ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--conmon-pidfile %t/uyuni-proxy-squid.pid \
 	--cidfile %t/uyuni-proxy-squid.ctr-id \
 	--cgroups=no-conmon \
@@ -38,7 +38,7 @@ ExecStart=/usr/bin/podman run \
 	-v {{ $name }}:{{ $path }} \
 	{{- end }}
 	--name uyuni-proxy-squid \
-	${UYUNI_IMAGE}
+	${UYUNI_IMAGE}'
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/uyuni-proxy-squid.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/uyuni-proxy-squid.ctr-id
