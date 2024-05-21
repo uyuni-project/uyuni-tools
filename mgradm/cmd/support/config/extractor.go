@@ -90,7 +90,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	log.Info().Msg(L("Preparing the tarball"))
 
 	supportFileName := getSupportConfigFileSaveName()
-	supportFilePath := fmt.Sprintf("%s/%s.tar.gz", flags.Output, supportFileName)
+	supportFilePath := path.Join(flags.Output, fmt.Sprintf("%s.tar.gz", supportFileName))
 
 	tarball, err := utils.NewTarGz(supportFilePath)
 	if err != nil {
@@ -98,7 +98,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	}
 
 	for _, file := range files {
-		if err := tarball.AddFile(file, fmt.Sprintf("%s/%s", supportFileName, path.Base(file))); err != nil {
+		if err := tarball.AddFile(file, path.Join(supportFileName, path.Base(file))); err != nil {
 			return utils.Errorf(err, L("failed to add %s to tarball"), path.Base(file))
 		}
 	}
