@@ -70,7 +70,7 @@ func installForPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
-	inspectedHostValues, err := utils.InspectHost()
+	inspectedHostValues, err := utils.InspectHost(false)
 	if err != nil {
 		return utils.Errorf(err, L("cannot inspect host values"))
 	}

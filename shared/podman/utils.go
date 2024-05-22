@@ -191,14 +191,14 @@ func getGraphRoot() (string, error) {
 }
 
 // Inspect check values on a given image and deploy.
-func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
+func Inspect(serverImage string, pullPolicy string, proxyHost bool) (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
 		return map[string]string{}, utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
-	inspectedHostValues, err := utils.InspectHost()
+	inspectedHostValues, err := utils.InspectHost(proxyHost)
 	if err != nil {
 		return map[string]string{}, utils.Errorf(err, L("cannot inspect host values"))
 	}
