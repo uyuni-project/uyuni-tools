@@ -39,15 +39,15 @@ var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+)
 var InspectScriptFilename = "inspect.sh"
 
 var inspectValues = []types.InspectData{
-	types.NewInspectData("uyuni_release", "cat /etc/*release | grep 'Uyuni release' | cut -d ' ' -f3 || true"),
-	types.NewInspectData("suse_manager_release", "cat /etc/*release | grep 'SUSE Manager release' | cut -d ' ' -f4 || true"),
-	types.NewInspectData("architecture", "lscpu | grep Architecture | awk '{print $2}' || true"),
-	types.NewInspectData("fqdn", "cat /etc/rhn/rhn.conf 2>/dev/null | grep 'java.hostname' | cut -d' ' -f3 || true"),
-	types.NewInspectData("image_pg_version", "rpm -qa --qf '%{VERSION}\\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1 || true"),
-	types.NewInspectData("current_pg_version", "(test -e /var/lib/pgsql/data/PG_VERSION && cat /var/lib/pgsql/data/PG_VERSION) || true"),
-	types.NewInspectData("registration_info", "env LC_ALL=C LC_MESSAGES=C LANG=C transactional-update --quiet register --status 2>/dev/null || true"),
-	types.NewInspectData("scc_username", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep username | cut -d= -f2 || true"),
-	types.NewInspectData("scc_password", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep password | cut -d= -f2 || true"),
+	types.NewInspectData("uyuni_release", "cat /etc/*release | grep 'Uyuni release' | cut -d ' ' -f3 || true", false),
+	types.NewInspectData("suse_manager_release", "cat /etc/*release | grep 'SUSE Manager release' | cut -d ' ' -f4 || true", false),
+	types.NewInspectData("architecture", "lscpu | grep Architecture | awk '{print $2}' || true", false),
+	types.NewInspectData("fqdn", "cat /etc/rhn/rhn.conf 2>/dev/null | grep 'java.hostname' | cut -d' ' -f3 || true", false),
+	types.NewInspectData("image_pg_version", "rpm -qa --qf '%{VERSION}\\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1 || true", false),
+	types.NewInspectData("current_pg_version", "(test -e /var/lib/pgsql/data/PG_VERSION && cat /var/lib/pgsql/data/PG_VERSION) || true", false),
+	types.NewInspectData("registration_info", "env LC_ALL=C LC_MESSAGES=C LANG=C transactional-update --quiet register --status 2>/dev/null || true", false),
+	types.NewInspectData("scc_username", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep username | cut -d= -f2 || true", true),
+	types.NewInspectData("scc_password", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep password | cut -d= -f2 || true", true),
 }
 
 // InspectOutputFile represents the directory and the basename where the inspect values are stored.
@@ -338,14 +338,14 @@ func ReadInspectData(scriptDir string, prefix ...string) (map[string]string, err
 }
 
 // InspectHost check values on a host machine.
-func InspectHost() (map[string]string, error) {
+func InspectHost(serverHost bool) (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
 		return map[string]string{}, Errorf(err, L("failed to create temporary directory"))
 	}
 
-	if err := GenerateInspectHostScript(scriptDir); err != nil {
+	if err := GenerateInspectHostScript(scriptDir, serverHost); err != nil {
 		return map[string]string{}, err
 	}
 
@@ -362,10 +362,11 @@ func InspectHost() (map[string]string, error) {
 }
 
 // GenerateInspectContainerScript create the host inspect script.
-func GenerateInspectHostScript(scriptDir string) error {
+func GenerateInspectHostScript(scriptDir string, proxyHost bool) error {
 	data := templates.InspectTemplateData{
 		Param:      inspectValues,
 		OutputFile: scriptDir + "/" + InspectOutputFile.Basename,
+		ProxyHost:  proxyHost,
 	}
 
 	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)

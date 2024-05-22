@@ -221,7 +221,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/etc/ssh/ssh_known_hosts")
 	}
 
-	inspectedHostValues, err := utils.InspectHost()
+	inspectedHostValues, err := utils.InspectHost(false)
 	if err != nil {
 		return "", "", "", utils.Errorf(err, L("cannot inspect host values"))
 	}
@@ -281,7 +281,7 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 			}
 		}
 
-		inspectedHostValues, err := utils.InspectHost()
+		inspectedHostValues, err := utils.InspectHost(false)
 		if err != nil {
 			return utils.Errorf(err, L("cannot inspect host values"))
 		}
@@ -427,7 +427,7 @@ func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
 		return map[string]string{}, utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
-	inspectedHostValues, err := utils.InspectHost()
+	inspectedHostValues, err := utils.InspectHost(false)
 	if err != nil {
 		return map[string]string{}, utils.Errorf(err, L("cannot inspect host values"))
 	}

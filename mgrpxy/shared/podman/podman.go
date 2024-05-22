@@ -131,7 +131,7 @@ func getHttpProxyConfig() string {
 // GetContainerImage returns a proxy image URL.
 func GetContainerImage(flags *utils.ProxyImageFlags, name string) (string, error) {
 	image := flags.GetContainerImage(name)
-	inspectedHostValues, err := shared_utils.InspectHost()
+	inspectedHostValues, err := shared_utils.InspectHost(true)
 	if err != nil {
 		return "", shared_utils.Errorf(err, L("cannot inspect host values"))
 	}
@@ -202,7 +202,7 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyUpgradeFlags, cmd
 
 func getContainerImage(flags *utils.ProxyImageFlags, name string) (string, error) {
 	image := flags.GetContainerImage(name)
-	inspectedHostValues, err := shared_utils.InspectHost()
+	inspectedHostValues, err := shared_utils.InspectHost(true)
 	if err != nil {
 		return "", shared_utils.Errorf(err, L("cannot inspect host values"))
 	}

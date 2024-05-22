@@ -10,6 +10,7 @@ package types
 type InspectData struct {
 	Variable string
 	CLI      string
+	Proxy    bool
 }
 
 /* InspectFile represent where the inspect file should be stored
@@ -22,9 +23,10 @@ type InspectFile struct {
 }
 
 // NewInspectData creates an InspectData instance.
-func NewInspectData(variable string, cli string) InspectData {
+func NewInspectData(variable string, cli string, proxy bool) InspectData {
 	return InspectData{
 		Variable: variable,
 		CLI:      cli,
+		Proxy:    proxy,
 	}
 }
