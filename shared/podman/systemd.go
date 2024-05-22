@@ -79,9 +79,6 @@ func UninstallService(name string, dryRun bool) {
 	} else {
 		if dryRun {
 			log.Info().Msgf(L("Would run %s"), "systemctl disable --now "+name)
-			log.Info().Msgf(L("Would remove %s"), servicePath)
-			log.Info().Msgf(L("Would remove %s"), serviceConfPath)
-			log.Info().Msgf(L("Would remove %s if empty"), serviceConfFolder)
 		} else {
 			log.Info().Msgf(L("Disable %s service"), name)
 			// disable server
@@ -89,24 +86,39 @@ func UninstallService(name string, dryRun bool) {
 			if err != nil {
 				log.Error().Err(err).Msgf(L("Failed to disable %s service"), name)
 			}
+		}
 
+		if dryRun {
+			log.Info().Msgf(L("Would remove %s"), servicePath)
+		} else {
 			// Remove the service unit
 			log.Info().Msgf(L("Remove %s"), servicePath)
 			if err := os.Remove(servicePath); err != nil {
 				log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), name)
 			}
+		}
 
+		if utils.FileExists(serviceConfFolder) {
 			if utils.FileExists(serviceConfPath) {
-				log.Info().Msgf(L("Remove %s"), serviceConfPath)
-				if err := os.Remove(serviceConfPath); err != nil {
-					log.Error().Err(err).Msgf(L("Failed to remove %s file"), serviceConfPath)
+				if dryRun {
+					log.Info().Msgf(L("Would remove %s"), serviceConfPath)
+				} else {
+					log.Info().Msgf(L("Remove %s"), serviceConfPath)
+					if err := os.Remove(serviceConfPath); err != nil {
+						log.Error().Err(err).Msgf(L("Failed to remove %s file"), serviceConfPath)
+					}
 				}
 			}
-			if utils.IsEmptyDirectory(serviceConfFolder) {
-				log.Debug().Msgf("Removing %s folder, since it's empty", serviceConfFolder)
-				_ = utils.RemoveDirectory(serviceConfFolder)
+
+			if dryRun {
+				log.Info().Msgf(L("Would remove %s if empty"), serviceConfFolder)
 			} else {
-				log.Warn().Msgf(L("%s folder contains file created by the user. Please remove them when uninstallation is completed."), serviceConfFolder)
+				if utils.IsEmptyDirectory(serviceConfFolder) {
+					log.Debug().Msgf("Removing %s folder, since it's empty", serviceConfFolder)
+					_ = utils.RemoveDirectory(serviceConfFolder)
+				} else {
+					log.Warn().Msgf(L("%s folder contains file created by the user. Please remove them when uninstallation is completed."), serviceConfFolder)
+				}
 			}
 		}
 	}
