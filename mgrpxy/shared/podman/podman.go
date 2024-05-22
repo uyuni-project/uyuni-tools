@@ -47,6 +47,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 	dataPod := templates.PodTemplateData{
 		Ports:         ports,
 		HttpProxyFile: httpProxyConfig,
+		Args:          strings.Join(flags.Podman.Args, " "),
 		Network:       podman.UyuniNetwork,
 	}
 	podEnv := fmt.Sprintf(`Environment="PODMAN_EXTRA_ARGS=%s"`, strings.Join(flags.Podman.Args, " "))
@@ -153,7 +154,7 @@ func getHttpProxyConfig() string {
 // GetContainerImage returns a proxy image URL.
 func GetContainerImage(flags *utils.ProxyImageFlags, name string) (string, error) {
 	image := flags.GetContainerImage(name)
-	inspectedHostValues, err := shared_utils.InspectHost(true)
+	inspectedHostValues, err := shared_utils.InspectHost(false)
 	if err != nil {
 		return "", shared_utils.Errorf(err, L("cannot inspect host values"))
 	}
@@ -192,7 +193,9 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra
 	if _, err := exec.LookPath("podman"); err != nil {
 		return fmt.Errorf(L("install podman before running this command"))
 	}
-
+	if err := podman.StopService(podman.ProxyService); err != nil {
+		return err
+	}
 	httpdImage, err := getContainerImage(&flags.ProxyImageFlags, "httpd")
 	if err != nil {
 		log.Info().Msgf(L("cannot find httpd image: it will no be upgraded"))
@@ -224,7 +227,7 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra
 
 func getContainerImage(flags *utils.ProxyImageFlags, name string) (string, error) {
 	image := flags.GetContainerImage(name)
-	inspectedHostValues, err := shared_utils.InspectHost(true)
+	inspectedHostValues, err := shared_utils.InspectHost(false)
 	if err != nil {
 		return "", shared_utils.Errorf(err, L("cannot inspect host values"))
 	}
