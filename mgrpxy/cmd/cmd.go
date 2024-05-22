@@ -34,6 +34,7 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 		Long:         L("Tool to help administering Uyuni proxies in containers"),
 		Version:      utils.Version,
 		SilenceUsage: true, // Don't show usage help on errors
+		ValidArgs:             []string{"just", "a", "test"},
 	}
 
 	rootCmd.SetUsageTemplate(utils.GetLocalizedUsageTemplate())

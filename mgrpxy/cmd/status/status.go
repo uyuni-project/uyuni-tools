@@ -28,6 +28,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			var flags statusFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, status)
 		},
+		ValidArgs:             []string{"another", "test"},
 	}
 	cmd.SetUsageTemplate(cmd.UsageTemplate())
 
