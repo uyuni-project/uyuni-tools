@@ -13,13 +13,13 @@ import (
 // UpgradeFlags represents flags used for upgrading a server.
 type UpgradeFlags struct {
 	Image          types.ImageFlags `mapstructure:",squash"`
-	MigrationImage types.ImageFlags `mapstructure:"migration"`
+	DbUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 }
 
 // AddUpgradeFlags add upgrade flags to a command.
 func AddUpgradeFlags(cmd *cobra.Command) {
 	utils.AddImageUpgradeFlag(cmd)
-	utils.AddMigrationImageFlag(cmd)
+	utils.AddDbUpgradeImageFlag(cmd)
 }
 
 // AddUpgradeListFlags add upgrade list flags to a command.

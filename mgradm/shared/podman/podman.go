@@ -253,7 +253,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
-func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFlags, oldPgsql string, newPgsql string) error {
+func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlags, oldPgsql string, newPgsql string) error {
 	log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql)
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
@@ -268,14 +268,14 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 			"--security-opt", "label:disable",
 		}
 
-		migrationImageUrl := ""
-		if migrationImage.Name == "" {
-			migrationImageUrl, err = utils.ComputeImage(image.Name, image.Tag, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
+		upgradeImageUrl := ""
+		if upgradeImage.Name == "" {
+			upgradeImageUrl, err = utils.ComputeImage(image.Name, image.Tag, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			migrationImageUrl, err = utils.ComputeImage(migrationImage.Name, image.Tag)
+			upgradeImageUrl, err = utils.ComputeImage(upgradeImage.Name, image.Tag)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
@@ -293,12 +293,12 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 			pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 		}
 
-		preparedImage, err := podman.PrepareImage(migrationImageUrl, image.PullPolicy, pullArgs...)
+		preparedImage, err := podman.PrepareImage(upgradeImageUrl, image.PullPolicy, pullArgs...)
 		if err != nil {
 			return err
 		}
 
-		log.Info().Msgf(L("Using migration image %s"), preparedImage)
+		log.Info().Msgf(L("Using database upgrade image %s"), preparedImage)
 
 		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, false)
 		if err != nil {
@@ -364,7 +364,7 @@ func RunPostUpgradeScript(serverImage string) error {
 }
 
 // Upgrade will upgrade server to the image given as attribute.
-func Upgrade(image types.ImageFlags, migrationImage types.ImageFlags, args []string) error {
+func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, args []string) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {
 		return err
 	}
@@ -394,7 +394,7 @@ func Upgrade(image types.ImageFlags, migrationImage types.ImageFlags, args []str
 	}()
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
 		log.Info().Msgf(L("Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
-		if err := RunPgsqlVersionUpgrade(image, migrationImage, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]); err != nil {
+		if err := RunPgsqlVersionUpgrade(image, upgradeImage, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {

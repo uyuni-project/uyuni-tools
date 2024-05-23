@@ -120,7 +120,7 @@ func UyuniUpgrade(serverImage string, pullPolicy string, helmFlags *cmd_utils.He
 func Upgrade(
 	globalFlags *types.GlobalFlags,
 	image *types.ImageFlags,
-	migrationImage *types.ImageFlags,
+	upgradeImage *types.ImageFlags,
 	helm cmd_utils.HelmFlags,
 	cmd *cobra.Command,
 	args []string,
@@ -186,7 +186,7 @@ func Upgrade(
 		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"),
 			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 
-		if err := RunPgsqlVersionUpgrade(*image, *migrationImage, nodeName,
+		if err := RunPgsqlVersionUpgrade(*image, *upgradeImage, nodeName,
 			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"],
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
