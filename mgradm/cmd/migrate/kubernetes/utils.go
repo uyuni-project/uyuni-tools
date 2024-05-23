@@ -140,7 +140,7 @@ func migrateToKubernetes(
 	}
 
 	if oldPgVersion != newPgVersion {
-		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image, flags.MigrationImage, nodeName, oldPgVersion, newPgVersion); err != nil {
+		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image, flags.DbUpgradeImage, nodeName, oldPgVersion, newPgVersion); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	}

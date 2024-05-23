@@ -48,14 +48,14 @@ su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql$OLD_V
 
 echo "DONE"`
 
-// PostgreSQLVersionUpgradeTemplateData represents information used to create PostgreSQL migration script.
+// PostgreSQLVersionUpgradeTemplateData represents information used to create PostgreSQL upgrade script.
 type PostgreSQLVersionUpgradeTemplateData struct {
 	OldVersion string
 	NewVersion string
 	Kubernetes bool
 }
 
-// Render will create PostgreSQL migration script.
+// Render will create PostgreSQL upgrade script.
 func (data PostgreSQLVersionUpgradeTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("script").Parse(postgreSQLVersionUpgradeScriptTemplate))
 	return t.Execute(wr, data)

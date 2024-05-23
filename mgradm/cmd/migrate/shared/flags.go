@@ -14,7 +14,7 @@ import (
 // MigrateFlags represents flag required by migration command.
 type MigrateFlags struct {
 	Image          types.ImageFlags `mapstructure:",squash"`
-	MigrationImage types.ImageFlags `mapstructure:"migration"`
+	DbUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	User           string
 	Mirror         string
 }
@@ -23,6 +23,6 @@ type MigrateFlags struct {
 func AddMigrateFlags(cmd *cobra.Command) {
 	utils.AddMirrorFlag(cmd)
 	utils.AddImageFlag(cmd)
-	utils.AddMigrationImageFlag(cmd)
+	utils.AddDbUpgradeImageFlag(cmd)
 	cmd.Flags().String("user", "root", L("User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."))
 }
