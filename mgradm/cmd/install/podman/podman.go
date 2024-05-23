@@ -37,7 +37,6 @@ NOTE: installing on a remote podman is not supported yet!
 	}
 
 	shared.AddInstallFlags(podmanCmd)
-	podman.AddPodmanInstallFlag(podmanCmd)
 
 	return podmanCmd
 }
