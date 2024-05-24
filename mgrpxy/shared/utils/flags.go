@@ -17,13 +17,20 @@ import (
 // ProxyImageFlags are the flags used by install proxy command.
 type ProxyImageFlags struct {
 	ImagesLocation string           `mapstructure:"imagesLocation"`
-	Tag            string           `namespace:"tag"`
+	Tag            string           `mapstructure:"tag"`
 	PullPolicy     string           `mapstructure:"pullPolicy"`
 	Httpd          types.ImageFlags `mapstructure:"httpd"`
 	SaltBroker     types.ImageFlags `mapstructure:"saltBroker"`
 	Squid          types.ImageFlags `mapstructure:"squid"`
 	Ssh            types.ImageFlags `mapstructure:"ssh"`
 	Tftpd          types.ImageFlags `mapstructure:"tftpd"`
+	Tuning         Tuning           `mapstructure:"tuning"`
+}
+
+// Tuning are the custom configuration file provide by users.
+type Tuning struct {
+	Httpd string `mapstructure:"httpd"`
+	Squid string `mapstructure:"squid"`
 }
 
 // Get the full container image name and tag for a container name.
@@ -76,34 +83,9 @@ func AddImageFlags(cmd *cobra.Command) {
 	addContainerImageFlags(cmd, "squid")
 	addContainerImageFlags(cmd, "ssh")
 	addContainerImageFlags(cmd, "tftpd")
-}
 
-// AddImageUpgradeFlags will add the proxy upgrade flags to a command.
-func AddImageUpgradeFlags(cmd *cobra.Command) {
-	cmd.Flags().String("imagesLocation", utils.DefaultNamespace,
-		L("registry URL prefix containing the all the container images"))
-	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))
-	utils.AddPullPolicyUpgradeFlag(cmd)
-
-	addContainerImageFlags(cmd, "httpd")
-	addContainerImageFlags(cmd, "saltBroker")
-	addContainerImageFlags(cmd, "squid")
-	addContainerImageFlags(cmd, "ssh")
-	addContainerImageFlags(cmd, "tftpd")
-}
-
-// AddImagePTFFlags will add the proxy support ptf flags to a command.
-func AddImagePTFFlags(cmd *cobra.Command) {
-	cmd.Flags().String("imagesLocation", "",
-		L("registry URL prefix containing the all the container images"))
-	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))
-	utils.AddPullPolicyUpgradeFlag(cmd)
-
-	addContainerImageFlags(cmd, "httpd")
-	addContainerImageFlags(cmd, "saltBroker")
-	addContainerImageFlags(cmd, "squid")
-	addContainerImageFlags(cmd, "ssh")
-	addContainerImageFlags(cmd, "tftpd")
+	cmd.Flags().String("tuning-httpd", "", L("HTTPD tuning configuration file"))
+	cmd.Flags().String("tuning-squid", "", L("Squid tuning configuration file"))
 }
 
 func addContainerImageFlags(cmd *cobra.Command, container string) {

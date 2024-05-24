@@ -21,7 +21,14 @@ func podmanRestart(
 		return err
 	}
 	if podman.HasService(podman.ServerAttestationService) {
-		return podman.RestartService(podman.ServerAttestationService)
+		if err := podman.RestartService(podman.ServerAttestationService); err != nil {
+			return err
+		}
+	}
+	if podman.HasService(podman.HubXmlrpcService) {
+		if err := podman.RestartService(podman.HubXmlrpcService); err != nil {
+			return err
+		}
 	}
 	return nil
 }

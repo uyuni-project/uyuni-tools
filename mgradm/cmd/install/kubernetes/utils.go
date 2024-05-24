@@ -41,9 +41,9 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	fqdn := args[0]
 
 	helmArgs := []string{"--set", "timezone=" + flags.TZ}
-	if flags.MirrorPath != "" {
+	if flags.Mirror != "" {
 		// TODO Handle claims for multi-node clusters
-		helmArgs = append(helmArgs, "--set", "mirror.hostPath="+flags.MirrorPath)
+		helmArgs = append(helmArgs, "--set", "mirror.hostPath="+flags.Mirror)
 	}
 	if flags.Debug.Java {
 		helmArgs = append(helmArgs, "--set", "exposeJavaDebug=true")

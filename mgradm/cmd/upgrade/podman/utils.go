@@ -11,5 +11,5 @@ import (
 )
 
 func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.Command, args []string) error {
-	return podman.Upgrade(flags.Image, flags.MigrationImage, args)
+	return podman.Upgrade(flags.Image, flags.DbUpgradeImage, args)
 }

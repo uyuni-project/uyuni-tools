@@ -38,7 +38,7 @@ func podmanInspect(
 			return fmt.Errorf(L("failed to find the image of the currently running server container: %s"))
 		}
 	}
-	inspectResult, err := shared_podman.Inspect(serverImage, flags.PullPolicy)
+	inspectResult, err := shared_podman.Inspect(serverImage, flags.PullPolicy, false)
 	if err != nil {
 		return utils.Errorf(err, L("inspect command failed"))
 	}

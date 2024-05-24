@@ -13,6 +13,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -21,26 +22,23 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func setupCocoContainer(flags *podmanInstallFlags) error {
-	if flags.Coco.Replicas > 0 {
-		if flags.Coco.Replicas > 1 {
-			log.Warn().Msgf(L("Currently only one replica is supported, starting just one instead of %d"), flags.Coco.Replicas)
-		}
-
-		tag := flags.Coco.Image.Tag
+func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
+	if flags.HubXmlrpc.Enable {
+		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
+		tag := flags.HubXmlrpc.Image.Tag
 		if tag == "" {
 			tag = flags.Image.Tag
 		}
-		cocoImage, err := utils.ComputeImage(flags.Coco.Image.Name, tag)
+		hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image.Name, tag)
 		if err != nil {
 			return utils.Errorf(err, L("failed to compute image URL"))
 		}
 
-		if err := podman.GenerateAttestationSystemdService(cocoImage, flags.Db); err != nil {
+		if err := podman.GenerateHubXmlrpcSystemdService(hubXmlrpcImage); err != nil {
 			return utils.Errorf(err, L("cannot generate systemd service"))
 		}
 
-		if err := shared_podman.EnableService(shared_podman.ServerAttestationService); err != nil {
+		if err := shared_podman.EnableService(shared_podman.HubXmlrpcService); err != nil {
 			return utils.Errorf(err, L("cannot enable service"))
 		}
 	}
@@ -48,12 +46,8 @@ func setupCocoContainer(flags *podmanInstallFlags) error {
 }
 
 func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
-	podmanArgs := flags.Podman.Args
-	if flags.MirrorPath != "" {
-		podmanArgs = append(podmanArgs, "-v", flags.MirrorPath+":/mirror")
-	}
-
-	if err := podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, podmanArgs); err != nil {
+	err := podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, flags.Mirror, flags.Podman.Args)
+	if err != nil {
 		return err
 	}
 
@@ -76,7 +70,7 @@ func installForPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
-	inspectedHostValues, err := utils.InspectHost()
+	inspectedHostValues, err := utils.InspectHost(false)
 	if err != nil {
 		return utils.Errorf(err, L("cannot inspect host values"))
 	}
@@ -100,10 +94,6 @@ func installForPodman(
 
 	preparedImage, err := shared_podman.PrepareImage(image, flags.Image.PullPolicy, pullArgs...)
 	if err != nil {
-		return err
-	}
-
-	if err := shared_podman.LinkVolumes(&flags.Podman.Mounts); err != nil {
 		return err
 	}
 
@@ -138,7 +128,11 @@ func installForPodman(
 		return err
 	}
 
-	if err := setupCocoContainer(flags); err != nil {
+	if err := coco.SetupCocoContainer(flags.Coco.Replicas, flags.Coco.Image, flags.Image, flags.Db); err != nil {
+		return err
+	}
+
+	if err := setupHubXmlrpcContainer(flags); err != nil {
 		return err
 	}
 

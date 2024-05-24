@@ -21,14 +21,13 @@ After=uyuni-proxy-pod.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-Environment=UYUNI_IMAGE={{ .Image }}
 {{- if .HttpProxyFile }}
 EnvironmentFile={{ .HttpProxyFile }}
 {{- end }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-salt-broker.pid %t/uyuni-proxy-salt-broker.ctr-id
 
-ExecStart=/usr/bin/podman run \
+ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--conmon-pidfile %t/uyuni-proxy-salt-broker.pid \
 	--cidfile %t/uyuni-proxy-salt-broker.ctr-id \
 	--cgroups=no-conmon \
@@ -36,7 +35,7 @@ ExecStart=/usr/bin/podman run \
 	--replace -dt \
 	-v /etc/uyuni/proxy:/etc/uyuni:ro \
 	--name uyuni-proxy-salt-broker \
-	${UYUNI_IMAGE}
+	${UYUNI_IMAGE}'
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/uyuni-proxy-salt-broker.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/uyuni-proxy-salt-broker.ctr-id
@@ -51,7 +50,6 @@ WantedBy=multi-user.target default.target
 // SaltBrokerTemplateData represents Salt Broker information to create systemd file.
 type SaltBrokerTemplateData struct {
 	HttpProxyFile string
-	Image         string
 }
 
 // Render will create the systemd configuration file.

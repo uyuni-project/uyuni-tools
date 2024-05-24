@@ -11,6 +11,8 @@ import (
 	"os/exec"
 	"path"
 	"regexp"
+	"strings"
+	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -86,13 +88,17 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 
 	// Pack it all into a tarball
 	log.Info().Msg(L("Preparing the tarball"))
-	tarball, err := utils.NewTarGz(flags.Output)
+
+	supportFileName := getSupportConfigFileSaveName()
+	supportFilePath := path.Join(flags.Output, fmt.Sprintf("%s.tar.gz", supportFileName))
+
+	tarball, err := utils.NewTarGz(supportFilePath)
 	if err != nil {
 		return err
 	}
 
 	for _, file := range files {
-		if err := tarball.AddFile(file, path.Base(file)); err != nil {
+		if err := tarball.AddFile(file, path.Join(supportFileName, path.Base(file))); err != nil {
 			return utils.Errorf(err, L("failed to add %s to tarball"), path.Base(file))
 		}
 	}
@@ -104,4 +110,15 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 func getSupportConfigPath(out []byte) string {
 	re := regexp.MustCompile(`/var/log/scc_[^.]+\.txz`)
 	return re.FindString(string(out))
+}
+
+func getSupportConfigFileSaveName() string {
+	hostname_b, err := utils.RunCmdOutput(zerolog.DebugLevel, "hostname")
+	hostname := "localhost"
+	if err != nil {
+		log.Warn().Err(err).Msg(L("Unable to detect hostname, using localhost"))
+		hostname = strings.TrimSpace(string(hostname_b))
+	}
+	now := time.Now()
+	return fmt.Sprintf("scc_%s_%s", hostname, now.Format("20060102_1504"))
 }

@@ -7,6 +7,7 @@ package shared
 import (
 	"fmt"
 	"net/mail"
+	"path"
 	"regexp"
 	"strings"
 
@@ -50,13 +51,19 @@ type CocoFlags struct {
 	Image    types.ImageFlags `mapstructure:",squash"`
 }
 
+// HubXmlrpcFlags contains settings for Hub XMLRPC container.
+type HubXmlrpcFlags struct {
+	Enable bool
+	Image  types.ImageFlags `mapstructure:",squash"`
+}
+
 // InstallFlags stores all the flags used by install command.
 type InstallFlags struct {
 	TZ           string
 	Email        string
 	EmailFrom    string
 	IssParent    string
-	MirrorPath   string
+	Mirror       string
 	Tftp         bool
 	Db           DbFlags
 	ReportDb     DbFlags
@@ -65,6 +72,7 @@ type InstallFlags struct {
 	Debug        DebugFlags
 	Image        types.ImageFlags `mapstructure:",squash"`
 	Coco         CocoFlags
+	HubXmlrpc    HubXmlrpcFlags
 	Admin        apiTypes.User
 	Organization string
 }
@@ -123,10 +131,10 @@ func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 
 // AddInstallFlags add flags to installa command.
 func AddInstallFlags(cmd *cobra.Command) {
+	cmd_utils.AddMirrorFlag(cmd)
 	cmd.Flags().String("tz", "", L("Time zone to set on the server. Defaults to the host timezone"))
 	cmd.Flags().String("email", "admin@example.com", L("Administrator e-mail"))
 	cmd.Flags().String("emailfrom", "admin@example.com", L("E-Mail sending the notifications"))
-	cmd.Flags().String("mirrorPath", "", L("Path to mirrored packages mounted on the host"))
 	cmd.Flags().String("issParent", "", L("InterServerSync v1 parent FQDN"))
 
 	cmd.Flags().String("db-user", "spacewalk", L("Database user"))
@@ -213,6 +221,16 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-image", "coco-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-tag", "coco-container")
+
+	cmd.Flags().Bool("hubxmlrpc-enable", false, L("Enable Hub XML-RPC API service container"))
+	hubXmlrpcImage := path.Join(utils.DefaultNamespace, "server-hub-xmlrpc-api")
+	cmd.Flags().String("hubxmlrpc-image", hubXmlrpcImage, L("Hub XML-RPC API Image"))
+	cmd.Flags().String("hubxmlrpc-tag", utils.DefaultTag, L("Hub XML-RPC API Image Tag"))
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-enable", "hubxmlrpc-container")
+	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-image", "hubxmlrpc-container")
+	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-tag", "hubxmlrpc-container")
 
 	cmd.Flags().String("admin-login", "admin", L("Administrator user name"))
 	cmd.Flags().String("admin-password", "", L("Administrator password"))

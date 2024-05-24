@@ -97,18 +97,23 @@ var ServerVolumes = append([]types.Volume{
 	{Name: "ca-cert", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "ca-cert"}},
 }, etcAndPgsqlVolumes[:]...)
 
+// HubXmlrpcVolumeMounts represents volumes used by Hub Xmlrpc container.
+var HubXmlrpcVolumeMounts = []types.VolumeMount{
+	{MountPath: "/etc/pki/trust/anchors", Name: "ca-cert"},
+}
+
 // PROXY_HTTPD_VOLUMES volumes used by HTTPD in proxy.
-var PROXY_HTTPD_VOLUMES = map[string]string{
-	"uyuni-proxy-rhn-cache": "/var/cache/rhn",
-	"uyuni-proxy-tftpboot":  "/srv/tftpboot",
+var PROXY_HTTPD_VOLUMES = []types.VolumeMount{
+	{Name: "uyuni-proxy-rhn-cache", MountPath: "/var/cache/rhn"},
+	{Name: "uyuni-proxy-tftpboot", MountPath: "/srv/tftpboot"},
 }
 
 // PROXY_HTTPD_VOLUMES volumes used by Squid in  proxy.
-var PROXY_SQUID_VOLUMES = map[string]string{
-	"uyuni-proxy-squid-cache": "/var/cache/squid",
+var PROXY_SQUID_VOLUMES = []types.VolumeMount{
+	{Name: "uyuni-proxy-squid-cache", MountPath: "/var/cache/squid"},
 }
 
 // PROXY_TFTPD_VOLUMES volumes used by TFTP in proxy.
-var PROXY_TFTPD_VOLUMES = map[string]string{
-	"uyuni-proxy-tftpboot": "/srv/tftpboot:ro",
+var PROXY_TFTPD_VOLUMES = []types.VolumeMount{
+	{Name: "uyuni-proxy-tftpboot", MountPath: "/srv/tftpboot:ro"},
 }

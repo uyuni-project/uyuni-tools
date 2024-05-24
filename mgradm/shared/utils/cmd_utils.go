@@ -111,15 +111,20 @@ func AddImagePTFlag(cmd *cobra.Command) {
 		L("set whether to pull the images or not during upgrade. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
 }
 
-// AddMigrationImageFlag add Migration Image flags to a command.
-func AddMigrationImageFlag(cmd *cobra.Command) {
-	cmd.Flags().String("migration-image", "", L("Migration image"))
-	cmd.Flags().String("migration-tag", utils.DefaultTag, L("Migration image tag"))
-	cmd.Flags().String("migration-pullPolicy", "IfNotPresent",
-		L("set whether to pull the migration images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
+// AddDbUpgradeImageFlag add Database upgrade image flags to a command.
+func AddDbUpgradeImageFlag(cmd *cobra.Command) {
+	cmd.Flags().String("dbupgrade-image", "", L("Database upgrade image"))
+	cmd.Flags().String("dbupgrade-tag", "latest", L("Database upgrade image tag"))
+	cmd.Flags().String("dbupgrade-pullPolicy", "IfNotPresent",
+		L("set whether to pull the database upgrade images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
 
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "migration-image", Title: L("Migration Image Flags")})
-	_ = utils.AddFlagToHelpGroupID(cmd, "migration-image", "migration-image")
-	_ = utils.AddFlagToHelpGroupID(cmd, "migration-tag", "migration-image")
-	_ = utils.AddFlagToHelpGroupID(cmd, "migration-pullPolicy", "migration-image")
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "dbupgrade-image", Title: L("Database Upgrade Image Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-image", "dbupgrade-image")
+	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-tag", "dbupgrade-image")
+	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-pullPolicy", "dbupgrade-image")
+}
+
+// AddMirrorFlag adds the flag for the mirror.
+func AddMirrorFlag(cmd *cobra.Command) {
+	cmd.Flags().String("mirror", "", L("Path to mirrored packages mounted on the host"))
 }

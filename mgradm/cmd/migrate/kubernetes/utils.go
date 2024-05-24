@@ -14,6 +14,7 @@ import (
 	"path"
 
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
@@ -95,7 +96,7 @@ func migrateToKubernetes(
 	}
 
 	// After each command we want to scale to 0
-	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
+	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 0)
 	if err != nil {
 		return utils.Errorf(err, L("cannot set replicas to 0"))
 	}
@@ -103,7 +104,7 @@ func migrateToKubernetes(
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
 		if _, err = shared_kubernetes.GetNode("uyuni"); err != nil {
-			err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 1)
+			err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 1)
 		}
 	}()
 
@@ -115,6 +116,11 @@ func migrateToKubernetes(
 	helmArgs := []string{
 		"--reset-values",
 		"--set", "timezone=" + tz,
+	}
+	if flags.Mirror != "" {
+		log.Warn().Msgf(L("The mirror data will not be migrated, ensure it is available at %s"), flags.Mirror)
+		// TODO Handle claims for multi-node clusters
+		helmArgs = append(helmArgs, "--set", "mirror.hostPath="+flags.Mirror)
 	}
 	helmArgs = append(helmArgs, setupSslArray...)
 
@@ -128,13 +134,13 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot wait for deployment of %s"), serverImage)
 	}
 
-	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerFilter, 0)
+	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 0)
 	if err != nil {
 		return utils.Errorf(err, L("cannot set replicas to 0"))
 	}
 
 	if oldPgVersion != newPgVersion {
-		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image, flags.MigrationImage, nodeName, oldPgVersion, newPgVersion); err != nil {
+		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image, flags.DbUpgradeImage, nodeName, oldPgVersion, newPgVersion); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	}

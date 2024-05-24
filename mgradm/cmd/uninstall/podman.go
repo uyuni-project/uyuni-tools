@@ -5,6 +5,8 @@
 package uninstall
 
 import (
+	"os"
+
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -24,9 +26,21 @@ func uninstallForPodman(
 	// Force stop the pod
 	podman.DeleteContainer(podman.ServerContainerName, !flags.Force)
 
-	if podman.HasService(podman.ServerAttestationService) {
-		podman.UninstallService(podman.ServerAttestationService, !flags.Force)
-		podman.DeleteContainer(podman.ServerAttestationService, !flags.Force)
+	if err := podman.ScaleService(0, podman.ServerAttestationService); err != nil {
+		return utils.Errorf(err, L("cannot delete confidential computing attestation instances"))
+	}
+	// Remove the service unit
+	servicePath := podman.GetServicePath(podman.ServerAttestationService + "@")
+	if _, err := os.Stat(servicePath); !os.IsNotExist(err) {
+		log.Info().Msgf(L("Remove %s"), servicePath)
+		if err := os.Remove(servicePath); err != nil {
+			log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), podman.ServerAttestationService+"@")
+		}
+	}
+
+	if podman.HasService(podman.HubXmlrpcService) {
+		podman.UninstallService(podman.HubXmlrpcService, !flags.Force)
+		podman.DeleteContainer(podman.HubXmlrpcService, !flags.Force)
 	}
 
 	// Remove the volumes
@@ -45,5 +59,13 @@ func uninstallForPodman(
 
 	podman.DeleteNetwork(!flags.Force)
 
-	return podman.ReloadDaemon(!flags.Force)
+	err := podman.ReloadDaemon(!flags.Force)
+
+	if !flags.Force {
+		log.Warn().Msg(L("Nothing has been uninstalled, run with --force and --purgeVolumes to actually uninstall and clear data"))
+	} else if !flags.PurgeVolumes {
+		log.Warn().Msg(L("Data have been kept, use podman volume commands to clear the volumes"))
+	}
+
+	return err
 }

@@ -62,6 +62,22 @@ func Deploy(imageFlags *utils.ProxyImageFlags, helmFlags *HelmFlags, configDir s
 	}
 	helmParams = append(helmParams, "-f", path.Join(configDir, "config.yaml"))
 
+	if len(imageFlags.Tuning.Httpd) > 0 {
+		absPath, err := filepath.Abs(imageFlags.Tuning.Httpd)
+		if err != nil {
+			return err
+		}
+		helmParams = append(helmParams, "--set-file", "apache_tuning="+absPath)
+	}
+
+	if len(imageFlags.Tuning.Squid) > 0 {
+		absPath, err := filepath.Abs(imageFlags.Tuning.Squid)
+		if err != nil {
+			return err
+		}
+		helmParams = append(helmParams, "--set-file", "squid_tuning="+absPath)
+	}
+
 	helmParams = append(helmParams,
 		"--set", "images.proxy-httpd="+imageFlags.GetContainerImage("httpd"),
 		"--set", "images.proxy-salt-broker="+imageFlags.GetContainerImage("salt-broker"),
@@ -150,7 +166,7 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 		return err
 	}
 
-	err = kubernetes.ReplicasTo(kubernetes.ProxyFilter, 0)
+	err = kubernetes.ReplicasTo(kubernetes.ProxyApp, 0)
 	if err != nil {
 		return err
 	}
@@ -158,7 +174,7 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
 		if _, err = kubernetes.GetNode("uyuni"); err != nil {
-			err = kubernetes.ReplicasTo(kubernetes.ProxyFilter, 1)
+			err = kubernetes.ReplicasTo(kubernetes.ProxyApp, 1)
 		}
 	}()
 

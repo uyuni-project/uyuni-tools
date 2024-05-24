@@ -29,7 +29,7 @@ func InstallK3sTraefikConfig(debug bool) {
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
-func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFlags, nodeName string, oldPgsql string, newPgsql string) error {
+func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlags, nodeName string, oldPgsql string, newPgsql string) error {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
@@ -40,20 +40,20 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 
 		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
 
-		migrationImageUrl := ""
-		if migrationImage.Name == "" {
-			migrationImageUrl, err = utils.ComputeImage(image.Name, image.Tag, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
+		upgradeImageUrl := ""
+		if upgradeImage.Name == "" {
+			upgradeImageUrl, err = utils.ComputeImage(image.Name, image.Tag, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			migrationImageUrl, err = utils.ComputeImage(migrationImage.Name, image.Tag)
+			upgradeImageUrl, err = utils.ComputeImage(upgradeImage.Name, image.Tag)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		}
 
-		log.Info().Msgf(L("Using migration image %s"), migrationImageUrl)
+		log.Info().Msgf(L("Using database upgrade image %s"), upgradeImageUrl)
 		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, true)
 		if err != nil {
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
@@ -88,7 +88,7 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 			return err
 		}
 
-		err = kubernetes.RunPod(pgsqlVersionUpgradeContainer, kubernetes.ServerFilter, migrationImageUrl, image.PullPolicy, "/var/lib/uyuni-tools/"+pgsqlVersionUpgradeScriptName, overridePgsqlVersioUpgrade)
+		err = kubernetes.RunPod(pgsqlVersionUpgradeContainer, kubernetes.ServerFilter, upgradeImageUrl, image.PullPolicy, "/var/lib/uyuni-tools/"+pgsqlVersionUpgradeScriptName, overridePgsqlVersioUpgrade)
 		if err != nil {
 			return utils.Errorf(err, L("error running container %s"), pgsqlVersionUpgradeContainer)
 		}

@@ -6,17 +6,13 @@ package podman
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
-
-type podmanProxyInstallFlags struct {
-	utils.ProxyImageFlags `mapstructure:",squash"`
-	Podman                podman.PodmanFlags
-}
 
 // NewCommand install a new proxy on podman from scratch.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -34,13 +30,13 @@ NOTE: for now installing on a remote podman is not supported!
 `),
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags podmanProxyInstallFlags
+			var flags podman.PodmanProxyFlags
 			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, installForPodman)
 		},
 	}
 
 	utils.AddImageFlags(podmanCmd)
-	podman.AddPodmanArgFlag(podmanCmd)
+	shared_podman.AddPodmanArgFlag(podmanCmd)
 
 	return podmanCmd
 }

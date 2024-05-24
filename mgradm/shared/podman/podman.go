@@ -65,28 +65,64 @@ Environment=database_password=%s
 	return podman.ReloadDaemon(false)
 }
 
+// GenerateHubXmlrpcSystemdService creates the Hub XMLRPC systemd files.
+func GenerateHubXmlrpcSystemdService(image string) error {
+	hubXmlrpcData := templates.HubXmlrpcServiceTemplateData{
+		Volumes:    utils.HubXmlrpcVolumeMounts,
+		Ports:      utils.HUB_XMLRPC_PORTS,
+		NamePrefix: "uyuni",
+		Network:    podman.UyuniNetwork,
+		Image:      image,
+	}
+	if err := utils.WriteTemplateToFile(hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService), 0555, false); err != nil {
+		return utils.Errorf(err, L("failed to generate systemd service unit file"))
+	}
+
+	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
+	`, image)
+	if err := podman.GenerateSystemdConfFile(podman.HubXmlrpcService, "Service", environment); err != nil {
+		return utils.Errorf(err, L("cannot generate systemd conf file"))
+	}
+
+	return podman.ReloadDaemon(false)
+}
+
 // GenerateSystemdService creates a serverY systemd file.
-func GenerateSystemdService(tz string, image string, debug bool, podmanArgs []string) error {
-	if err := podman.SetupNetwork(); err != nil {
+func GenerateSystemdService(tz string, image string, debug bool, mirrorPath string, podmanArgs []string) error {
+	if err := podman.SetupNetwork(false); err != nil {
 		return utils.Errorf(err, L("cannot setup network"))
 	}
 
 	log.Info().Msg(L("Enabling system service"))
-	args := append(podman.GetCommonParams(), podmanArgs...)
+	args := podman.GetCommonParams()
+
+	if mirrorPath != "" {
+		args = append(args, "-v", mirrorPath+":/mirror")
+	}
+
+	ports := GetExposedPorts(debug)
+	if _, err := exec.LookPath("csp-billing-adapter"); err == nil {
+		ports = append(ports, utils.NewPortMap("csp-billing", 18888, 18888))
+		args = append(args, "-e ISPAYG=1")
+	}
 
 	data := templates.PodmanServiceTemplateData{
 		Volumes:    utils.ServerVolumeMounts,
 		NamePrefix: "uyuni",
 		Args:       strings.Join(args, " "),
-		Ports:      GetExposedPorts(debug),
-		Timezone:   tz,
+		Ports:      ports,
 		Network:    podman.UyuniNetwork,
 	}
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, false); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
-	if err := podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+image); err != nil {
+	config := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
+Environment=TZ=%s
+Environment="PODMAN_EXTRA_ARGS=%s"
+`, image, strings.TrimSpace(tz), strings.Join(podmanArgs, " "))
+
+	if err := podman.GenerateSystemdConfFile("uyuni-server", "Service", config); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 	return podman.ReloadDaemon(false)
@@ -156,6 +192,9 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 
 	// The services need to be restarted
 	log.Info().Msg(L("Restarting services after updating the certificate"))
+	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "systemctl", "restart", "postgresql.service"); err != nil {
+		return err
+	}
 	return utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
 }
 
@@ -182,7 +221,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/etc/ssh/ssh_known_hosts")
 	}
 
-	inspectedHostValues, err := utils.InspectHost()
+	inspectedHostValues, err := utils.InspectHost(false)
 	if err != nil {
 		return "", "", "", utils.Errorf(err, L("cannot inspect host values"))
 	}
@@ -200,7 +239,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 	}
 
 	log.Info().Msg(L("Migrating server"))
-	if err := podman.RunContainer("uyuni-migration", preparedImage, extraArgs,
+	if err := podman.RunContainer("uyuni-migration", preparedImage, utils.ServerVolumeMounts, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
 		return "", "", "", utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
@@ -214,7 +253,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
-func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFlags, oldPgsql string, newPgsql string) error {
+func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlags, oldPgsql string, newPgsql string) error {
 	log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql)
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
@@ -229,20 +268,20 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 			"--security-opt", "label:disable",
 		}
 
-		migrationImageUrl := ""
-		if migrationImage.Name == "" {
-			migrationImageUrl, err = utils.ComputeImage(image.Name, image.Tag, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
+		upgradeImageUrl := ""
+		if upgradeImage.Name == "" {
+			upgradeImageUrl, err = utils.ComputeImage(image.Name, image.Tag, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			migrationImageUrl, err = utils.ComputeImage(migrationImage.Name, image.Tag)
+			upgradeImageUrl, err = utils.ComputeImage(upgradeImage.Name, image.Tag)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		}
 
-		inspectedHostValues, err := utils.InspectHost()
+		inspectedHostValues, err := utils.InspectHost(false)
 		if err != nil {
 			return utils.Errorf(err, L("cannot inspect host values"))
 		}
@@ -254,19 +293,19 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, migrationImage types.ImageFl
 			pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 		}
 
-		preparedImage, err := podman.PrepareImage(migrationImageUrl, image.PullPolicy, pullArgs...)
+		preparedImage, err := podman.PrepareImage(upgradeImageUrl, image.PullPolicy, pullArgs...)
 		if err != nil {
 			return err
 		}
 
-		log.Info().Msgf(L("Using migration image %s"), preparedImage)
+		log.Info().Msgf(L("Using database upgrade image %s"), preparedImage)
 
 		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, false)
 		if err != nil {
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
 
-		err = podman.RunContainer(pgsqlVersionUpgradeContainer, preparedImage, extraArgs,
+		err = podman.RunContainer(pgsqlVersionUpgradeContainer, preparedImage, utils.ServerVolumeMounts, extraArgs,
 			[]string{"/var/lib/uyuni-tools/" + pgsqlVersionUpgradeScriptName})
 		if err != nil {
 			return err
@@ -292,7 +331,7 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool) error
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
-	err = podman.RunContainer(pgsqlFinalizeContainer, serverImage, extraArgs,
+	err = podman.RunContainer(pgsqlFinalizeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
 		[]string{"/var/lib/uyuni-tools/" + pgsqlFinalizeScriptName})
 	if err != nil {
 		return err
@@ -316,7 +355,7 @@ func RunPostUpgradeScript(serverImage string) error {
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
-	err = podman.RunContainer(postUpgradeContainer, serverImage, extraArgs,
+	err = podman.RunContainer(postUpgradeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
 		[]string{"/var/lib/uyuni-tools/" + postUpgradeScriptName})
 	if err != nil {
 		return err
@@ -325,7 +364,7 @@ func RunPostUpgradeScript(serverImage string) error {
 }
 
 // Upgrade will upgrade server to the image given as attribute.
-func Upgrade(image types.ImageFlags, migrationImage types.ImageFlags, args []string) error {
+func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, args []string) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {
 		return err
 	}
@@ -355,7 +394,7 @@ func Upgrade(image types.ImageFlags, migrationImage types.ImageFlags, args []str
 	}()
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
 		log.Info().Msgf(L("Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
-		if err := RunPgsqlVersionUpgrade(image, migrationImage, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]); err != nil {
+		if err := RunPgsqlVersionUpgrade(image, upgradeImage, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
@@ -388,7 +427,7 @@ func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
 		return map[string]string{}, utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
-	inspectedHostValues, err := utils.InspectHost()
+	inspectedHostValues, err := utils.InspectHost(false)
 	if err != nil {
 		return map[string]string{}, utils.Errorf(err, L("cannot inspect host values"))
 	}
@@ -414,7 +453,7 @@ func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
 		"--security-opt", "label:disable",
 	}
 
-	err = podman.RunContainer("uyuni-inspect", preparedImage, podmanArgs,
+	err = podman.RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
 		[]string{utils.InspectOutputFile.Directory + "/" + utils.InspectScriptFilename})
 	if err != nil {
 		return map[string]string{}, err
