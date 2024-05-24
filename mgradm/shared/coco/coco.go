@@ -26,9 +26,11 @@ func SetupCocoContainer(replicas int, image types.ImageFlags, baseImage types.Im
 			tag = "latest"
 		}
 	}
-	cocoImage, err := utils.ComputeImage(image.Name, tag)
+	image.Tag = tag
+	cocoImage, err := utils.ComputeImage(image)
 	if err != nil {
-		cocoImage, err = utils.ComputeImage(baseImage.Name, tag, "-attestation")
+		baseImage.Tag = tag
+		cocoImage, err = utils.ComputeImage(baseImage, "-attestation")
 		if err != nil {
 			return utils.Errorf(err, L("failed to compute image URL"))
 		}

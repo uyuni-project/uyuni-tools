@@ -36,7 +36,7 @@ func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 		kubernetes.InstallRke2NginxConfig(utils.TCP_PORTS, utils.UDP_PORTS, helmFlags.Uyuni.Namespace)
 	}
 
-	serverImage, err := utils.ComputeImage(imageFlags.Name, imageFlags.Tag)
+	serverImage, err := utils.ComputeImage(*imageFlags)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -132,7 +132,7 @@ func Upgrade(
 	}
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
 
-	serverImage, err := utils.ComputeImage(image.Name, image.Tag)
+	serverImage, err := utils.ComputeImage(*image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}

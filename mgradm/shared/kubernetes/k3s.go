@@ -42,12 +42,13 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlag
 
 		upgradeImageUrl := ""
 		if upgradeImage.Name == "" {
-			upgradeImageUrl, err = utils.ComputeImage(image.Name, image.Tag, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
+			upgradeImageUrl, err = utils.ComputeImage(image, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			upgradeImageUrl, err = utils.ComputeImage(upgradeImage.Name, image.Tag)
+			upgradeImage.Tag = image.Tag
+			upgradeImageUrl, err = utils.ComputeImage(upgradeImage)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}

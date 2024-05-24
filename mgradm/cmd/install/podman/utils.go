@@ -29,7 +29,8 @@ func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
 		if tag == "" {
 			tag = flags.Image.Tag
 		}
-		hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image.Name, tag)
+		flags.HubXmlrpc.Image.Tag = tag
+		hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image)
 		if err != nil {
 			return utils.Errorf(err, L("failed to compute image URL"))
 		}
@@ -81,7 +82,7 @@ func installForPodman(
 	}
 	log.Info().Msgf(L("Setting up the server with the FQDN '%s'"), fqdn)
 
-	image, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
+	image, err := utils.ComputeImage(flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
