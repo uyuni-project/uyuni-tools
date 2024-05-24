@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 11:25+0200\n"
+"POT-Creation-Date: 2024-05-24 17:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-
-#: shared/api/org/createFirst.go:21
-msgid "failed to connect to the server"
-msgstr ""
-
-#: shared/api/org/createFirst.go:35
-msgid "failed to create first user and organization"
-msgstr ""
 
 #: shared/api/api.go:72
 msgid "FQDN of the server to connect to"
@@ -67,6 +59,14 @@ msgstr ""
 msgid "Unable to convert data to JSON"
 msgstr ""
 
+#: shared/api/org/createFirst.go:21
+msgid "failed to connect to the server"
+msgstr ""
+
+#: shared/api/org/createFirst.go:35
+msgid "failed to create first user and organization"
+msgstr ""
+
 #: shared/completion/completion.go:20 shared/completion/completion.go:21
 msgid "Generate shell completion script"
 msgstr ""
@@ -77,26 +77,49 @@ msgstr ""
 msgid "cannot generate %s completion"
 msgstr ""
 
-#: shared/kubernetes/rke2.go:21
-msgid "Installing RKE2 Nginx configuration"
+#: shared/connection.go:56
+#, javascript-format
+msgid "backend command not found in PATH: %s"
 msgstr ""
 
-#: shared/kubernetes/rke2.go:29
-msgid "Failed to write Rke2 nginx configuration"
+#: shared/connection.go:68
+msgid "kubectl not configured to connect to a cluster, ignoring"
 msgstr ""
 
-#: shared/kubernetes/rke2.go:33
-msgid "Waiting for Nginx controller to be reloaded"
+#: shared/connection.go:103
+msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
 msgstr ""
 
-#: shared/kubernetes/uninstall.go:13
-msgid ""
-"\n"
-"Note that removing the volumes could also be handled automatically depending on the StorageClass used\n"
-"when installed on a kubernetes cluster.\n"
-"\n"
-"For instance on a default K3S install, the local-path-provider storage volumes will\n"
-"be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
+#: shared/connection.go:106
+#, javascript-format
+msgid "unsupported backend %s"
+msgstr ""
+
+#: shared/connection.go:127
+#, javascript-format
+msgid "container %s is not running on podman"
+msgstr ""
+
+#: shared/connection.go:149
+#, javascript-format
+msgid "the container is not running, %s command not executed:"
+msgstr ""
+
+#: shared/connection.go:196
+msgid "server didn't start within 60s. Check for the service status"
+msgstr ""
+
+#: shared/connection.go:226 shared/connection.go:265
+#, javascript-format
+msgid "unknown container kind: %s"
+msgstr ""
+
+#: shared/connection.go:309
+msgid "failed to determine suitable backend"
+msgstr ""
+
+#: shared/connection.go:319
+msgid "no supported backend found"
 msgstr ""
 
 #: shared/kubernetes/helm.go:58
@@ -116,9 +139,9 @@ msgstr ""
 msgid "Cannot guess namespace"
 msgstr ""
 
-#: shared/kubernetes/helm.go:98 shared/podman/network.go:94
-#: shared/podman/systemd.go:61 shared/podman/systemd.go:99
-#: shared/podman/systemd.go:100 shared/podman/utils.go:133
+#: shared/kubernetes/helm.go:98 shared/podman/network.go:98
+#: shared/podman/systemd.go:81 shared/podman/systemd.go:131
+#: shared/podman/systemd.go:132 shared/podman/utils.go:107
 #, javascript-format
 msgid "Would run %s"
 msgstr ""
@@ -163,7 +186,7 @@ msgstr ""
 msgid "install %s before running this command"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:65 shared/podman/utils.go:198
+#: shared/kubernetes/k3s.go:65 shared/podman/utils.go:132
 #: shared/utils/utils.go:345
 msgid "failed to create temporary directory"
 msgstr ""
@@ -181,8 +204,30 @@ msgstr ""
 msgid "cannot run inspect pod"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:117 shared/podman/utils.go:235
+#: shared/kubernetes/k3s.go:117 shared/podman/utils.go:169
 msgid "cannot inspect data"
+msgstr ""
+
+#: shared/kubernetes/rke2.go:21
+msgid "Installing RKE2 Nginx configuration"
+msgstr ""
+
+#: shared/kubernetes/rke2.go:29
+msgid "Failed to write Rke2 nginx configuration"
+msgstr ""
+
+#: shared/kubernetes/rke2.go:33
+msgid "Waiting for Nginx controller to be reloaded"
+msgstr ""
+
+#: shared/kubernetes/uninstall.go:13
+msgid ""
+"\n"
+"Note that removing the volumes could also be handled automatically depending on the StorageClass used\n"
+"when installed on a kubernetes cluster.\n"
+"\n"
+"For instance on a default K3S install, the local-path-provider storage volumes will\n"
+"be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
 msgstr ""
 
 #: shared/kubernetes/kubernetes.go:54
@@ -211,110 +256,110 @@ msgstr ""
 msgid "Failed to base64 decode secret %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:51 shared/kubernetes/utils.go:86
+#: shared/kubernetes/utils.go:57 shared/kubernetes/utils.go:92
 msgid "failed to pull image"
 msgstr ""
 
-#: shared/kubernetes/utils.go:54
+#: shared/kubernetes/utils.go:60
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgstr ""
 
-#: shared/kubernetes/utils.go:63
+#: shared/kubernetes/utils.go:69
 msgid "failed to find a ready replica for deployment %[1]s in namespace %[2]s after 60s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:68
+#: shared/kubernetes/utils.go:74
 msgid "Waiting for image of %[1]s pod in %[2]s namespace to be pulled"
 msgstr ""
 
-#: shared/kubernetes/utils.go:81
+#: shared/kubernetes/utils.go:87
 #, javascript-format
 msgid "failed to get failed events for pod %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:93
+#: shared/kubernetes/utils.go:99
 #, javascript-format
 msgid "failed to get events for pod %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:139
+#: shared/kubernetes/utils.go:145
 msgid "failed to parse deployment status"
 msgstr ""
 
-#: shared/kubernetes/utils.go:153
+#: shared/kubernetes/utils.go:159
 #, javascript-format
 msgid "cannot run kubectl %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:158
+#: shared/kubernetes/utils.go:164
 #, javascript-format
 msgid "cannot get pods for %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:165
+#: shared/kubernetes/utils.go:171
 #, javascript-format
 msgid "replica to %d failed"
 msgstr ""
 
-#: shared/kubernetes/utils.go:178
+#: shared/kubernetes/utils.go:184
 msgid "cannot check if pod %[1]s is running in app %[2]s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:188 shared/kubernetes/utils.go:233
-#: shared/kubernetes/utils.go:328
+#: shared/kubernetes/utils.go:194 shared/kubernetes/utils.go:239
+#: shared/kubernetes/utils.go:334
 #, javascript-format
 msgid "cannot execute %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:207
+#: shared/kubernetes/utils.go:213
 #, javascript-format
 msgid "cannot get pod informations %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:216
+#: shared/kubernetes/utils.go:222
 #, javascript-format
 msgid "cannot set replicas for %s to zero"
 msgstr ""
 
-#: shared/kubernetes/utils.go:243
+#: shared/kubernetes/utils.go:249
 msgid "pod %[1]s replicas have not reached %[2]d in %[3]s seconds"
 msgstr ""
 
-#: shared/kubernetes/utils.go:266
+#: shared/kubernetes/utils.go:272
 #, javascript-format
 msgid "%s is not a valid image pull policy value"
 msgstr ""
 
-#: shared/kubernetes/utils.go:287
+#: shared/kubernetes/utils.go:293
 msgctxt "The first placeholder is a command"
 msgid "cannot run %[1]s using image %[2]s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:291
+#: shared/kubernetes/utils.go:297
 #, javascript-format
 msgid "deleting pod %s. Status fails with error"
 msgstr ""
 
-#: shared/kubernetes/utils.go:304 shared/kubernetes/utils.go:313
+#: shared/kubernetes/utils.go:310 shared/kubernetes/utils.go:319
 #, javascript-format
 msgid "cannot delete pod %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:335
+#: shared/kubernetes/utils.go:341
 #, javascript-format
 msgid "error during execution of %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:340
+#: shared/kubernetes/utils.go:346
 msgid "pod %[1]s status is not %[2]s in %[3]d seconds"
 msgstr ""
 
-#: shared/kubernetes/utils.go:357
+#: shared/kubernetes/utils.go:363
 #, javascript-format
 msgid "cannot find node name matching filter %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:366
+#: shared/kubernetes/utils.go:372
 msgid "cannot serialize pod definition override"
 msgstr ""
 
@@ -412,214 +457,186 @@ msgstr ""
 msgid "Reusing existing %s network"
 msgstr ""
 
-#: shared/podman/network.go:54
+#: shared/podman/network.go:58
 msgid "failed to find podman's network backend"
 msgstr ""
 
-#: shared/podman/network.go:56
+#: shared/podman/network.go:60
 msgid "Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"
 msgstr ""
 
-#: shared/podman/network.go:65
+#: shared/podman/network.go:69
 #, javascript-format
 msgid "failed to create %s network with IPv6 enabled"
 msgstr ""
 
-#: shared/podman/network.go:91
+#: shared/podman/network.go:95
 #, javascript-format
 msgid "Network %s already removed"
 msgstr ""
 
-#: shared/podman/network.go:98
+#: shared/podman/network.go:102
 #, javascript-format
 msgid "Failed to remove network %s"
 msgstr ""
 
-#: shared/podman/network.go:100
+#: shared/podman/network.go:104
 msgid "Network removed"
 msgstr ""
 
-#: shared/podman/systemd.go:58
+#: shared/podman/systemd.go:51
+#, javascript-format
+msgid "failed to disable %s systemd service"
+msgstr ""
+
+#: shared/podman/systemd.go:78
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr ""
 
-#: shared/podman/systemd.go:62 shared/podman/systemd.go:63
-#, javascript-format
-msgid "Would remove %s"
-msgstr ""
-
-#: shared/podman/systemd.go:64
-#, javascript-format
-msgid "Would remove %s if empty"
-msgstr ""
-
-#: shared/podman/systemd.go:66
+#: shared/podman/systemd.go:83
 #, javascript-format
 msgid "Disable %s service"
 msgstr ""
 
-#: shared/podman/systemd.go:70
+#: shared/podman/systemd.go:87
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr ""
 
-#: shared/podman/systemd.go:74 shared/podman/systemd.go:80
+#: shared/podman/systemd.go:92 shared/podman/systemd.go:104
+#, javascript-format
+msgid "Would remove %s"
+msgstr ""
+
+#: shared/podman/systemd.go:95 shared/podman/systemd.go:106
 #, javascript-format
 msgid "Remove %s"
 msgstr ""
 
-#: shared/podman/systemd.go:76
+#: shared/podman/systemd.go:97
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr ""
 
-#: shared/podman/systemd.go:82
+#: shared/podman/systemd.go:108
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr ""
 
-#: shared/podman/systemd.go:89
+#: shared/podman/systemd.go:114
+#, javascript-format
+msgid "Would remove %s if empty"
+msgstr ""
+
+#: shared/podman/systemd.go:120
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr ""
 
-#: shared/podman/systemd.go:104
+#: shared/podman/systemd.go:136
 msgid "failed to reset-failed systemd"
 msgstr ""
 
-#: shared/podman/systemd.go:108
+#: shared/podman/systemd.go:140
 msgid "failed to reload systemd daemon"
 msgstr ""
 
-#: shared/podman/systemd.go:126
+#: shared/podman/systemd.go:158
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:134
+#: shared/podman/systemd.go:166
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:142
+#: shared/podman/systemd.go:174
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:150
+#: shared/podman/systemd.go:182
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr ""
 
-#: shared/podman/systemd.go:161
+#: shared/podman/systemd.go:193
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr ""
 
-#: shared/podman/systemd.go:167
+#: shared/podman/systemd.go:199
 #, javascript-format
 msgid "cannot write %s file"
 msgstr ""
 
-#: shared/podman/utils.go:56
+#: shared/podman/systemd.go:219
+msgid "Scale %[1]s from %[2]d to %[3]d replicas."
+msgstr ""
+
+#: shared/podman/systemd.go:223
+msgid "cannot enable service"
+msgstr ""
+
+#: shared/podman/systemd.go:229
+msgid "cannot disable service"
+msgstr ""
+
+#: shared/podman/utils.go:46
 msgid "Extra arguments to pass to podman"
 msgstr ""
 
-#: shared/podman/utils.go:62
-msgid "Path to custom /var/cache volume"
-msgstr ""
-
-#: shared/podman/utils.go:63
-msgid "Path to custom /var/lib/pgsql volume"
-msgstr ""
-
-#: shared/podman/utils.go:64
-msgid "Path to custom /var/spacewalk volume"
-msgstr ""
-
-#: shared/podman/utils.go:65
-msgid "Path to custom /srv/www/ volume"
-msgstr ""
-
-#: shared/podman/utils.go:67
-msgid "Podman Flags"
-msgstr ""
-
-#: shared/podman/utils.go:79
+#: shared/podman/utils.go:53
 msgid "failed to enable podman.socket unit"
 msgstr ""
 
-#: shared/podman/utils.go:96
+#: shared/podman/utils.go:70
 #, javascript-format
 msgid "failed to run %s container"
 msgstr ""
 
-#: shared/podman/utils.go:107
+#: shared/podman/utils.go:81
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:108
+#: shared/podman/utils.go:82
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:110
+#: shared/podman/utils.go:84
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:113
+#: shared/podman/utils.go:87
 msgid "Failed to kill the server"
 msgstr ""
 
-#: shared/podman/utils.go:115
+#: shared/podman/utils.go:89
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:118
+#: shared/podman/utils.go:92
 msgid "Error removing container"
 msgstr ""
 
-#: shared/podman/utils.go:123
+#: shared/podman/utils.go:97
 msgid "Container already removed"
 msgstr ""
 
-#: shared/podman/utils.go:135
+#: shared/podman/utils.go:109
 #, javascript-format
 msgid "Run %s"
 msgstr ""
 
-#: shared/podman/utils.go:138
+#: shared/podman/utils.go:112
 #, javascript-format
 msgid "Failed to remove volume %s"
 msgstr ""
 
-#: shared/podman/utils.go:170
-msgid "volume folder (%[1]s) already exists, cannot link it to %[2]s"
-msgstr ""
-
-#: shared/podman/utils.go:174
-#, javascript-format
-msgid "failed to create volumes folder %s"
-msgstr ""
-
-#: shared/podman/utils.go:178
-msgid "failed to link volume folder %[1]s to %[2]s"
-msgstr ""
-
-#: shared/podman/utils.go:188
-msgid "failed to get podman's volumes folder"
-msgstr ""
-
-#: shared/podman/utils.go:203
+#: shared/podman/utils.go:137
 msgid "cannot inspect host values"
-msgstr ""
-
-#: shared/utils/flaggroups.go:56
-msgid "Flags:\n"
-msgstr ""
-
-#: shared/utils/flaggroups.go:94
-msgid "no such flag help group: %v"
 msgstr ""
 
 #: shared/utils/cmd.go:45 shared/utils/cmd.go:46
@@ -734,6 +751,14 @@ msgstr ""
 
 #: shared/utils/config.go:178
 msgid "failed to compute config help command"
+msgstr ""
+
+#: shared/utils/flaggroups.go:56
+msgid "Flags:\n"
+msgstr ""
+
+#: shared/utils/flaggroups.go:94
+msgid "no such flag help group: %v"
 msgstr ""
 
 #: shared/utils/tar.go:47
@@ -866,51 +891,6 @@ msgstr ""
 msgid "cannot inspect host data"
 msgstr ""
 
-#: shared/utils/utils.go:373 shared/utils/utils.go:387
+#: shared/utils/utils.go:374 shared/utils/utils.go:388
 msgid "failed to generate inspect script"
-msgstr ""
-
-#: shared/connection.go:56
-#, javascript-format
-msgid "backend command not found in PATH: %s"
-msgstr ""
-
-#: shared/connection.go:68
-msgid "kubectl not configured to connect to a cluster, ignoring"
-msgstr ""
-
-#: shared/connection.go:103
-msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
-msgstr ""
-
-#: shared/connection.go:106
-#, javascript-format
-msgid "unsupported backend %s"
-msgstr ""
-
-#: shared/connection.go:127
-#, javascript-format
-msgid "container %s is not running on podman"
-msgstr ""
-
-#: shared/connection.go:149
-#, javascript-format
-msgid "the container is not running, %s command not executed:"
-msgstr ""
-
-#: shared/connection.go:196
-msgid "server didn't start within 60s. Check for the service status"
-msgstr ""
-
-#: shared/connection.go:226 shared/connection.go:265
-#, javascript-format
-msgid "unknown container kind: %s"
-msgstr ""
-
-#: shared/connection.go:309
-msgid "failed to determine suitable backend"
-msgstr ""
-
-#: shared/connection.go:319
-msgid "no supported backend found"
 msgstr ""

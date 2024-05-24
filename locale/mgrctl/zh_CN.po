@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:27+0200\n"
+"POT-Creation-Date: 2024-05-24 17:14+0200\n"
 "PO-Revision-Date: 2024-05-09 11:43+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/zh_CN/>\n"
@@ -47,6 +47,36 @@ msgstr "无法登录到服务器：%s"
 #, fuzzy, javascript-format
 msgid "error in query %s"
 msgstr "查询 %s 中存在错误：%s"
+
+#: mgrctl/cmd/cmd.go:29
+msgid "Uyuni control tool"
+msgstr "Uyuni 控制工具"
+
+#: mgrctl/cmd/cmd.go:30
+msgid "Tool to help managing Uyuni servers mainly through their API"
+msgstr "用于帮助管理 Uyuni 服务器（主要通过其 API）的工具"
+
+#: mgrctl/cmd/cmd.go:37
+msgid "configuration file path"
+msgstr "配置文件路径"
+
+#: mgrctl/cmd/cmd.go:38
+msgid "application log level"
+msgstr "应用程序日志级别"
+
+#: mgrctl/cmd/cmd.go:46
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "欢迎使用 %s"
+
+#: mgrctl/cmd/cmd.go:47
+#, javascript-format
+msgid "Executing command: %s"
+msgstr "正在执行命令：%s"
+
+#: mgrctl/cmd/cmd.go:53
+msgid "Failed to create api command"
+msgstr "无法创建 api 命令"
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
@@ -109,36 +139,6 @@ msgstr "正在运行：%s %s"
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "在服务器容器内运行终端"
-
-#: mgrctl/cmd/cmd.go:29
-msgid "Uyuni control tool"
-msgstr "Uyuni 控制工具"
-
-#: mgrctl/cmd/cmd.go:30
-msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr "用于帮助管理 Uyuni 服务器（主要通过其 API）的工具"
-
-#: mgrctl/cmd/cmd.go:37
-msgid "configuration file path"
-msgstr "配置文件路径"
-
-#: mgrctl/cmd/cmd.go:38
-msgid "application log level"
-msgstr "应用程序日志级别"
-
-#: mgrctl/cmd/cmd.go:46
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "欢迎使用 %s"
-
-#: mgrctl/cmd/cmd.go:47
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "正在执行命令：%s"
-
-#: mgrctl/cmd/cmd.go:53
-msgid "Failed to create api command"
-msgstr "无法创建 api 命令"
 
 #~ msgid "Failed to create org command"
 #~ msgstr "无法创建 org 命令"

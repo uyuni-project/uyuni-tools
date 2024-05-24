@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:27+0200\n"
+"POT-Creation-Date: 2024-05-24 17:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -15,19 +15,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: mgradm/cmd/distro/detect.go:92
-msgid "distribution not found in product map. Please update productmap or provide channel label"
-msgstr ""
-
-#: mgradm/cmd/distro/detect.go:105
-msgid "unable to read distribution treeinfo. Please provide distribution details and/or channel label"
-msgstr ""
-
-#: mgradm/cmd/distro/detect.go:135 mgradm/cmd/distro/detect.go:137
-#, javascript-format
-msgid "distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"
-msgstr ""
 
 #: mgradm/cmd/distro/cp.go:31
 #, javascript-format
@@ -72,9 +59,9 @@ msgstr ""
 msgid "Copying distribution %s"
 msgstr ""
 
-#: mgradm/cmd/distro/cp.go:101 mgradm/shared/podman/podman.go:122
-#: mgradm/shared/podman/podman.go:125 mgradm/shared/podman/podman.go:128
-#: mgradm/shared/podman/podman.go:136
+#: mgradm/cmd/distro/cp.go:101 mgradm/shared/podman/podman.go:158
+#: mgradm/shared/podman/podman.go:161 mgradm/shared/podman/podman.go:164
+#: mgradm/shared/podman/podman.go:172
 #, javascript-format
 msgid "cannot copy %s"
 msgstr ""
@@ -96,6 +83,19 @@ msgstr ""
 
 #: mgradm/cmd/distro/cp.go:169
 msgid "Continue by registering autoinstallation distribution"
+msgstr ""
+
+#: mgradm/cmd/distro/detect.go:92
+msgid "distribution not found in product map. Please update productmap or provide channel label"
+msgstr ""
+
+#: mgradm/cmd/distro/detect.go:105
+msgid "unable to read distribution treeinfo. Please provide distribution details and/or channel label"
+msgstr ""
+
+#: mgradm/cmd/distro/detect.go:135 mgradm/cmd/distro/detect.go:137
+#, javascript-format
+msgid "distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"
 msgstr ""
 
 #: mgradm/cmd/distro/distro.go:32
@@ -164,6 +164,84 @@ msgstr ""
 msgid "failed to compute config help command"
 msgstr ""
 
+#: mgradm/cmd/gpg/add/gpg.go:37
+msgid "Add GPG keys for 3rd party repositories"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:45
+msgid "Import without asking confirmation"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:54
+#, javascript-format
+msgid "failed to create folder %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:57
+#, javascript-format
+msgid "failed to create keyring %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:114
+#: mgradm/cmd/support/config/extractor.go:34
+#: mgradm/shared/kubernetes/certificates.go:26
+#: mgradm/shared/kubernetes/certificates.go:64
+#: mgradm/shared/kubernetes/install.go:164 mgradm/shared/podman/podman.go:262
+#: mgradm/shared/podman/podman.go:322 mgradm/shared/podman/podman.go:347
+#: mgradm/shared/podman/podman.go:427 mgradm/shared/utils/exec.go:137
+msgid "failed to create temporary directory"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:74
+#, javascript-format
+msgid "failed to parse %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:81
+#, javascript-format
+msgid "failed to download %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:86
+#, javascript-format
+msgid "failed to show key %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:90
+msgid "Do you really want to trust this key"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:102
+msgid "failed to copy %[1]s to %[2]s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:112 mgradm/cmd/gpg/add/gpg.go:119
+#: mgradm/cmd/support/sql/sql.go:186 mgradm/cmd/uninstall/kubernetes.go:53
+#: mgradm/cmd/uninstall/kubernetes.go:58
+#, javascript-format
+msgid "Running %s"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:114
+msgid "failed to run import key"
+msgstr ""
+
+#: mgradm/cmd/gpg/add/gpg.go:121
+msgid "failed to restart uyuni-update-config"
+msgstr ""
+
+#: mgradm/cmd/gpg/gpg.go:19
+msgid "Manage GPG keys for 3rd party repositories"
+msgstr ""
+
+#: mgradm/cmd/hub/hub.go:19
+msgid "Hub management"
+msgstr ""
+
+#: mgradm/cmd/hub/hub.go:20
+msgid "Tools and utilities for Hub management"
+msgstr ""
+
 #: mgradm/cmd/hub/register/register.go:31
 msgid "Register"
 msgstr ""
@@ -213,14 +291,6 @@ msgstr ""
 msgid "Registered peripheral server: %[1]s, ID: %[2]d"
 msgstr ""
 
-#: mgradm/cmd/hub/hub.go:19
-msgid "Hub management"
-msgstr ""
-
-#: mgradm/cmd/hub/hub.go:20
-msgid "Tools and utilities for Hub management"
-msgstr ""
-
 #: mgradm/cmd/inspect/inspect.go:27
 msgid "Inspect"
 msgstr ""
@@ -254,6 +324,10 @@ msgstr ""
 msgid "cannot print inspect result"
 msgstr ""
 
+#: mgradm/cmd/install/install.go:20 mgradm/cmd/install/install.go:21
+msgid "Install a new server"
+msgstr ""
+
 #: mgradm/cmd/install/kubernetes/kubernetes.go:27
 msgid "Install a new server on a kubernetes cluster"
 msgstr ""
@@ -272,14 +346,14 @@ msgid ""
 msgstr ""
 
 #: mgradm/cmd/install/kubernetes/utils.go:34
-#: mgradm/cmd/migrate/kubernetes/utils.go:37
+#: mgradm/cmd/migrate/kubernetes/utils.go:38
 #: mgradm/shared/kubernetes/install.go:130
 #, javascript-format
 msgid "install %s before running this command"
 msgstr ""
 
 #: mgradm/cmd/install/kubernetes/utils.go:63
-#: mgradm/cmd/migrate/kubernetes/utils.go:180
+#: mgradm/cmd/migrate/kubernetes/utils.go:186
 msgid "cannot deploy certificate"
 msgstr ""
 
@@ -288,7 +362,7 @@ msgid "cannot deploy uyuni"
 msgstr ""
 
 #: mgradm/cmd/install/kubernetes/utils.go:79
-#: mgradm/cmd/install/podman/utils.go:136
+#: mgradm/cmd/install/podman/utils.go:126
 msgid "Failed to stop service: %v"
 msgstr ""
 
@@ -310,270 +384,282 @@ msgid ""
 msgstr ""
 
 #: mgradm/cmd/install/podman/utils.go:27
-#, javascript-format
-msgid "Currently only one replica is supported, starting just one instead of %d"
+msgid "Enabling Hub XML-RPC API container."
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:36 mgradm/cmd/install/podman/utils.go:92
-#: mgradm/cmd/migrate/kubernetes/utils.go:44
+#: mgradm/cmd/install/podman/utils.go:34 mgradm/cmd/install/podman/utils.go:86
+#: mgradm/cmd/migrate/kubernetes/utils.go:45
 #: mgradm/shared/kubernetes/install.go:41
 #: mgradm/shared/kubernetes/install.go:137 mgradm/shared/kubernetes/k3s.go:47
-#: mgradm/shared/kubernetes/k3s.go:52 mgradm/shared/podman/podman.go:236
-#: mgradm/shared/podman/podman.go:241 mgradm/shared/podman/podman.go:335
+#: mgradm/shared/kubernetes/k3s.go:52 mgradm/shared/podman/podman.go:275
+#: mgradm/shared/podman/podman.go:280 mgradm/shared/podman/podman.go:374
+#: mgradm/shared/coco/coco.go:33
 msgid "failed to compute image URL"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:40
+#: mgradm/cmd/install/podman/utils.go:38
 msgid "cannot generate systemd service"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:44 mgradm/cmd/install/podman/utils.go:62
+#: mgradm/cmd/install/podman/utils.go:42 mgradm/cmd/install/podman/utils.go:56
 msgid "cannot enable service"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:60 mgradm/shared/podman/podman.go:379
+#: mgradm/cmd/install/podman/utils.go:54 mgradm/shared/podman/podman.go:418
 msgid "Waiting for the server to start…"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:76 mgradm/cmd/migrate/podman/utils.go:25
+#: mgradm/cmd/install/podman/utils.go:70 mgradm/cmd/migrate/podman/utils.go:25
 msgid "install podman before running this command"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:81 mgradm/shared/podman/podman.go:187
-#: mgradm/shared/podman/podman.go:247 mgradm/shared/podman/podman.go:393
+#: mgradm/cmd/install/podman/utils.go:75 mgradm/shared/podman/podman.go:226
+#: mgradm/shared/podman/podman.go:286 mgradm/shared/podman/podman.go:432
 msgid "cannot inspect host values"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:88
+#: mgradm/cmd/install/podman/utils.go:82
 #, javascript-format
 msgid "Setting up the server with the FQDN '%s'"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:112
+#: mgradm/cmd/install/podman/utils.go:102
 msgid "cannot wait for system start"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:132
+#: mgradm/cmd/install/podman/utils.go:122
 msgid "Run setup command in the container"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:147
+#: mgradm/cmd/install/podman/utils.go:141
 msgid "cannot update SSL certificate"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:152 mgradm/cmd/migrate/podman/utils.go:69
+#: mgradm/cmd/install/podman/utils.go:146 mgradm/cmd/migrate/podman/utils.go:69
 msgid "cannot enable podman socket"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:163
+#: mgradm/cmd/install/podman/utils.go:157
 msgid "failed to compute server FQDN"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:78
+#: mgradm/cmd/install/shared/flags.go:86
 msgid "Can only contain letters, digits . _ and -"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:86
+#: mgradm/cmd/install/shared/flags.go:94
 msgid "Not a valid email address"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:126
+#: mgradm/cmd/install/shared/flags.go:135
 msgid "Time zone to set on the server. Defaults to the host timezone"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:127
+#: mgradm/cmd/install/shared/flags.go:136
 msgid "Administrator e-mail"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:128
+#: mgradm/cmd/install/shared/flags.go:137
 msgid "E-Mail sending the notifications"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:129
-msgid "Path to mirrored packages mounted on the host"
-msgstr ""
-
-#: mgradm/cmd/install/shared/flags.go:130
+#: mgradm/cmd/install/shared/flags.go:138
 msgid "InterServerSync v1 parent FQDN"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:132
+#: mgradm/cmd/install/shared/flags.go:140
 msgid "Database user"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:133
+#: mgradm/cmd/install/shared/flags.go:141
 msgid "Database password. Randomly generated by default"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:134
+#: mgradm/cmd/install/shared/flags.go:142
 msgid "Database name"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:135
+#: mgradm/cmd/install/shared/flags.go:143
 msgid "Database host"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:136
+#: mgradm/cmd/install/shared/flags.go:144
 msgid "Database port"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:137
+#: mgradm/cmd/install/shared/flags.go:145
 msgid "Database protocol"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:138
+#: mgradm/cmd/install/shared/flags.go:146
 msgid "External database admin user name"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:139
+#: mgradm/cmd/install/shared/flags.go:147
 msgid "External database admin password"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:140
+#: mgradm/cmd/install/shared/flags.go:148
 msgid "External database provider. Possible values 'aws'"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:142
+#: mgradm/cmd/install/shared/flags.go:150
 msgid "Database Flags"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:153
+#: mgradm/cmd/install/shared/flags.go:161
 msgid "Enable TFTP"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:154
+#: mgradm/cmd/install/shared/flags.go:162
 msgid "Report database name"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:155
+#: mgradm/cmd/install/shared/flags.go:163
 msgid "Report database host"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:156
+#: mgradm/cmd/install/shared/flags.go:164
 msgid "Report database port"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:157
+#: mgradm/cmd/install/shared/flags.go:165
 msgid "Report Database username"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:158
+#: mgradm/cmd/install/shared/flags.go:166
 msgid "Report database password. Randomly generated by default"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:160
+#: mgradm/cmd/install/shared/flags.go:168
 msgid "Report DB Flags"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:168
+#: mgradm/cmd/install/shared/flags.go:176
 msgid "SSL certificate cnames separated by commas"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:169
+#: mgradm/cmd/install/shared/flags.go:177
 msgid "SSL certificate country"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:170
+#: mgradm/cmd/install/shared/flags.go:178
 msgid "SSL certificate state"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:171
+#: mgradm/cmd/install/shared/flags.go:179
 msgid "SSL certificate city"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:172
+#: mgradm/cmd/install/shared/flags.go:180
 msgid "SSL certificate organization"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:173
+#: mgradm/cmd/install/shared/flags.go:181
 msgid "SSL certificate organization unit"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:174
+#: mgradm/cmd/install/shared/flags.go:182
 msgid "Password for the CA key to generate"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:175
+#: mgradm/cmd/install/shared/flags.go:183
 msgid "SSL certificate E-Mail"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:177
+#: mgradm/cmd/install/shared/flags.go:185
 msgid "SSL Certificate Flags"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:188
+#: mgradm/cmd/install/shared/flags.go:196
 msgid "Intermediate CA certificate path"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:189
+#: mgradm/cmd/install/shared/flags.go:197
 msgid "Root CA certificate path"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:190
+#: mgradm/cmd/install/shared/flags.go:198
 msgid "Server certificate path"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:191
+#: mgradm/cmd/install/shared/flags.go:199
 msgid "Server key path"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:193
+#: mgradm/cmd/install/shared/flags.go:201
 msgid "3rd Party SSL Certificate Flags"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:199
+#: mgradm/cmd/install/shared/flags.go:207
 msgid "SUSE Customer Center username"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:200
+#: mgradm/cmd/install/shared/flags.go:208
 msgid "SUSE Customer Center password"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:202
+#: mgradm/cmd/install/shared/flags.go:210
 msgid "SUSE Customer Center Flags"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:206
+#: mgradm/cmd/install/shared/flags.go:214
 msgid "Enable tomcat and taskomatic remote debugging"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:209
+#: mgradm/cmd/install/shared/flags.go:217
 msgid "confidential computing attestation"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:210
+#: mgradm/cmd/install/shared/flags.go:218
 msgid "How many replicas of the confidential computing container should be started. (only 0 or 1 supported for now)"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:212
+#: mgradm/cmd/install/shared/flags.go:220
 msgid "Confidential Computing Flags"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:217
+#: mgradm/cmd/install/shared/flags.go:225
+msgid "Enable Hub XML-RPC API service container"
+msgstr ""
+
+#: mgradm/cmd/install/shared/flags.go:227
+msgid "Hub XML-RPC API Image"
+msgstr ""
+
+#: mgradm/cmd/install/shared/flags.go:228
+msgid "Hub XML-RPC API Image Tag"
+msgstr ""
+
+#: mgradm/cmd/install/shared/flags.go:230
+msgid "Hub XML-RPC API"
+msgstr ""
+
+#: mgradm/cmd/install/shared/flags.go:235
 msgid "Administrator user name"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:218
+#: mgradm/cmd/install/shared/flags.go:236
 msgid "Administrator password"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:219
+#: mgradm/cmd/install/shared/flags.go:237
 msgid "First name of the administrator"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:220
+#: mgradm/cmd/install/shared/flags.go:238
 msgid "Last name of the administrator"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:221
+#: mgradm/cmd/install/shared/flags.go:239
 msgid "Administrator's email"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:222
+#: mgradm/cmd/install/shared/flags.go:240
 msgid "First organization name"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:224
+#: mgradm/cmd/install/shared/flags.go:242
 msgid "First User Flags"
 msgstr ""
 
@@ -589,22 +675,8 @@ msgstr ""
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:114
-#: mgradm/cmd/support/config/extractor.go:32 mgradm/cmd/gpg/add/gpg.go:67
-#: mgradm/shared/kubernetes/certificates.go:26
-#: mgradm/shared/kubernetes/certificates.go:64
-#: mgradm/shared/kubernetes/install.go:164 mgradm/shared/podman/podman.go:223
-#: mgradm/shared/podman/podman.go:283 mgradm/shared/podman/podman.go:308
-#: mgradm/shared/podman/podman.go:388 mgradm/shared/utils/exec.go:137
-msgid "failed to create temporary directory"
-msgstr ""
-
 #: mgradm/cmd/install/shared/shared.go:124
 msgid "Failed to generate setup script"
-msgstr ""
-
-#: mgradm/cmd/install/install.go:20 mgradm/cmd/install/install.go:21
-msgid "Install a new server"
 msgstr ""
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:28
@@ -633,69 +705,78 @@ msgstr ""
 msgid "SSL CA generated private key password"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:56 mgradm/shared/utils/exec.go:149
+#: mgradm/cmd/migrate/kubernetes/utils.go:57 mgradm/shared/utils/exec.go:149
 msgid "failed to generate migration script"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:78
+#: mgradm/cmd/migrate/kubernetes/utils.go:79
 msgid "cannot run deploy"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:85
+#: mgradm/cmd/migrate/kubernetes/utils.go:86
 #: mgradm/shared/kubernetes/install.go:171
 msgid "cannot find node running uyuni"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:89
+#: mgradm/cmd/migrate/kubernetes/utils.go:90
 msgid "cannot run migration"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:94
+#: mgradm/cmd/migrate/kubernetes/utils.go:95
 msgid "cannot read data from container"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:100
-#: mgradm/cmd/migrate/kubernetes/utils.go:133
+#: mgradm/cmd/migrate/kubernetes/utils.go:101
+#: mgradm/cmd/migrate/kubernetes/utils.go:139
 msgid "cannot set replicas to 0"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:112
+#: mgradm/cmd/migrate/kubernetes/utils.go:113
 msgid "cannot setup SSL"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:124
+#: mgradm/cmd/migrate/kubernetes/utils.go:121
+#, javascript-format
+msgid "The mirror data will not be migrated, ensure it is available at %s"
+msgstr ""
+
+#: mgradm/cmd/migrate/kubernetes/utils.go:130
 #, javascript-format
 msgid "cannot upgrade helm chart to image %s using new SSL certificate"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:128
+#: mgradm/cmd/migrate/kubernetes/utils.go:134
 #, javascript-format
 msgid "cannot wait for deployment of %s"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:138
 #: mgradm/cmd/migrate/kubernetes/utils.go:144
+#: mgradm/cmd/migrate/kubernetes/utils.go:150
 #: mgradm/cmd/migrate/podman/utils.go:44
 #: mgradm/shared/kubernetes/install.go:192
-#: mgradm/shared/kubernetes/install.go:203 mgradm/shared/podman/podman.go:359
-#: mgradm/shared/podman/podman.go:369
+#: mgradm/shared/kubernetes/install.go:203 mgradm/shared/podman/podman.go:398
+#: mgradm/shared/podman/podman.go:408
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:148
+#: mgradm/cmd/migrate/kubernetes/utils.go:154
 #: mgradm/cmd/migrate/podman/utils.go:54
-#: mgradm/shared/kubernetes/install.go:207 mgradm/shared/podman/podman.go:373
+#: mgradm/shared/kubernetes/install.go:207 mgradm/shared/podman/podman.go:412
 msgid "cannot run post upgrade script"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:153
+#: mgradm/cmd/migrate/kubernetes/utils.go:159
 #: mgradm/shared/kubernetes/install.go:212
 #, javascript-format
 msgid "cannot upgrade to image %s"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:171
+#: mgradm/cmd/migrate/kubernetes/utils.go:177
 msgid "failed to strip text part from CA certificate"
+msgstr ""
+
+#: mgradm/cmd/migrate/migrate.go:20 mgradm/cmd/migrate/migrate.go:21
+msgid "Migrate a remote server to containers"
 msgstr ""
 
 #: mgradm/cmd/migrate/podman/podman.go:25
@@ -743,16 +824,13 @@ msgstr ""
 msgid "Failed to find home directory to look for SSH config"
 msgstr ""
 
-#: mgradm/cmd/migrate/shared/flags.go:25
+#: mgradm/cmd/migrate/shared/flags.go:27
 msgid "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."
-msgstr ""
-
-#: mgradm/cmd/migrate/migrate.go:20 mgradm/cmd/migrate/migrate.go:21
-msgid "Migrate a remote server to containers"
 msgstr ""
 
 #: mgradm/cmd/restart/nokubernetes.go:23 mgradm/cmd/start/nokubernetes.go:23
 #: mgradm/cmd/status/nokubernetes.go:23 mgradm/cmd/stop/nokubernetes.go:23
+#: mgradm/cmd/scale/nokubernetes.go:23
 msgid "built without kubernetes support"
 msgstr ""
 
@@ -788,12 +866,8 @@ msgstr ""
 msgid "the pod is not running"
 msgstr ""
 
-#: mgradm/cmd/status/kubernetes.go:61 mgradm/cmd/status/podman.go:35
+#: mgradm/cmd/status/kubernetes.go:61 mgradm/cmd/status/podman.go:33
 msgid "failed to run spacewalk-service status"
-msgstr ""
-
-#: mgradm/cmd/status/podman.go:27 mgradm/cmd/status/podman.go:40
-msgid "failed to get status of the server service"
 msgstr ""
 
 #: mgradm/cmd/status/status.go:25 mgradm/cmd/status/status.go:26
@@ -802,6 +876,10 @@ msgstr ""
 
 #: mgradm/cmd/status/status.go:47
 msgid "no installed server detected"
+msgstr ""
+
+#: mgradm/cmd/status/podman.go:44
+msgid "failed to get status of the server service"
 msgstr ""
 
 #: mgradm/cmd/stop/stop.go:24 mgradm/cmd/stop/stop.go:25
@@ -822,46 +900,50 @@ msgstr ""
 msgid "path where to extract the data"
 msgstr ""
 
-#: mgradm/cmd/support/config/extractor.go:40
+#: mgradm/cmd/support/config/extractor.go:42
 msgid "Running supportconfig in the container"
 msgstr ""
 
-#: mgradm/cmd/support/config/extractor.go:43
+#: mgradm/cmd/support/config/extractor.go:45
 msgid "failed to run supportconfig"
 msgstr ""
 
-#: mgradm/cmd/support/config/extractor.go:47
+#: mgradm/cmd/support/config/extractor.go:49
 msgid "failed to find container supportconfig tarball from command output"
 msgstr ""
 
-#: mgradm/cmd/support/config/extractor.go:54
+#: mgradm/cmd/support/config/extractor.go:56
 msgid "cannot copy tarball"
 msgstr ""
 
-#: mgradm/cmd/support/config/extractor.go:60
+#: mgradm/cmd/support/config/extractor.go:62
 #, javascript-format
 msgid "failed to remove %s file in the container"
 msgstr ""
 
-#: mgradm/cmd/support/config/extractor.go:69
+#: mgradm/cmd/support/config/extractor.go:71
 msgid "failed to run supportconfig on the host"
 msgstr ""
 
-#: mgradm/cmd/support/config/extractor.go:79
+#: mgradm/cmd/support/config/extractor.go:81
 msgid "failed to find host supportconfig tarball from command output"
 msgstr ""
 
-#: mgradm/cmd/support/config/extractor.go:82
+#: mgradm/cmd/support/config/extractor.go:84
 msgid "supportconfig is not available on the host, skipping it"
 msgstr ""
 
-#: mgradm/cmd/support/config/extractor.go:88
+#: mgradm/cmd/support/config/extractor.go:90
 msgid "Preparing the tarball"
 msgstr ""
 
-#: mgradm/cmd/support/config/extractor.go:96
+#: mgradm/cmd/support/config/extractor.go:102
 #, javascript-format
 msgid "failed to add %s to tarball"
+msgstr ""
+
+#: mgradm/cmd/support/config/extractor.go:119
+msgid "Unable to detect hostname, using localhost"
 msgstr ""
 
 #: mgradm/cmd/support/ptf/podman/podman.go:28
@@ -897,6 +979,41 @@ msgstr ""
 
 #: mgradm/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
+msgstr ""
+
+#: mgradm/cmd/support/sql/sql.go:36
+msgid "unable to get random file prefix"
+msgstr ""
+
+#: mgradm/cmd/support/sql/sql.go:48
+msgid "unable to cleanup source file"
+msgstr ""
+
+#: mgradm/cmd/support/sql/sql.go:57
+#, javascript-format
+msgid "output file %s exists, use -f to force overwrite"
+msgstr ""
+
+#: mgradm/cmd/support/sql/sql.go:109
+msgid "interactive mode cannot work with a file output"
+msgstr ""
+
+#: mgradm/cmd/support/sql/sql.go:139
+#, javascript-format
+msgid "unknown or unsupported database %s"
+msgstr ""
+
+#: mgradm/cmd/support/sql/sql.go:152
+msgid "Command failed"
+msgstr ""
+
+#: mgradm/cmd/support/sql/sql.go:157
+#, javascript-format
+msgid "Result is stored in the file '%s'"
+msgstr ""
+
+#: mgradm/cmd/support/sql/sql.go:171
+msgid "cannot write"
 msgstr ""
 
 #: mgradm/cmd/support/sql/sql_cmd.go:26
@@ -939,72 +1056,8 @@ msgstr ""
 msgid "Write output to the file instead of standard output"
 msgstr ""
 
-#: mgradm/cmd/support/sql/sql.go:36
-msgid "unable to get random file prefix"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:48
-msgid "unable to cleanup source file"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:57
-#, javascript-format
-msgid "output file %s exists, use -f to force overwrite"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:109
-msgid "interactive mode cannot work with a file output"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:139
-#, javascript-format
-msgid "unknown or unsupported database %s"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:152
-msgid "Command failed"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:157
-#, javascript-format
-msgid "Result is stored in the file '%s'"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:171
-msgid "cannot write"
-msgstr ""
-
-#: mgradm/cmd/support/sql/sql.go:186 mgradm/cmd/uninstall/kubernetes.go:53
-#: mgradm/cmd/uninstall/kubernetes.go:58 mgradm/cmd/gpg/add/gpg.go:112
-#: mgradm/cmd/gpg/add/gpg.go:119
-#, javascript-format
-msgid "Running %s"
-msgstr ""
-
 #: mgradm/cmd/support/support.go:21 mgradm/cmd/support/support.go:22
 msgid "Commands for support operations"
-msgstr ""
-
-#: mgradm/cmd/uninstall/kubernetes.go:50 mgradm/cmd/uninstall/kubernetes.go:51
-#, javascript-format
-msgid "Would run %s"
-msgstr ""
-
-#: mgradm/cmd/uninstall/kubernetes.go:55
-msgid "Failed deleting config map"
-msgstr ""
-
-#: mgradm/cmd/uninstall/kubernetes.go:66
-msgid "Failed deleting secret"
-msgstr ""
-
-#: mgradm/cmd/uninstall/podman.go:40
-#, javascript-format
-msgid "cannot delete volume %s"
-msgstr ""
-
-#: mgradm/cmd/uninstall/podman.go:43
-msgid "All volumes removed"
 msgstr ""
 
 #: mgradm/cmd/uninstall/uninstall.go:27
@@ -1023,6 +1076,58 @@ msgstr ""
 
 #: mgradm/cmd/uninstall/uninstall.go:37
 msgid "Also remove the volumes"
+msgstr ""
+
+#: mgradm/cmd/uninstall/kubernetes.go:50 mgradm/cmd/uninstall/kubernetes.go:51
+#, javascript-format
+msgid "Would run %s"
+msgstr ""
+
+#: mgradm/cmd/uninstall/kubernetes.go:55
+msgid "Failed deleting config map"
+msgstr ""
+
+#: mgradm/cmd/uninstall/kubernetes.go:66
+msgid "Failed deleting secret"
+msgstr ""
+
+#: mgradm/cmd/uninstall/kubernetes.go:91
+msgid "Nothing has been uninstalled, run with --force to actually uninstall"
+msgstr ""
+
+#: mgradm/cmd/uninstall/kubernetes.go:93
+msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
+msgstr ""
+
+#: mgradm/cmd/uninstall/podman.go:30
+msgid "cannot delete confidential computing attestation instances"
+msgstr ""
+
+#: mgradm/cmd/uninstall/podman.go:35
+#, javascript-format
+msgid "Remove %s"
+msgstr ""
+
+#: mgradm/cmd/uninstall/podman.go:37
+#, javascript-format
+msgid "Failed to remove %s.service file"
+msgstr ""
+
+#: mgradm/cmd/uninstall/podman.go:54
+#, javascript-format
+msgid "cannot delete volume %s"
+msgstr ""
+
+#: mgradm/cmd/uninstall/podman.go:57
+msgid "All volumes removed"
+msgstr ""
+
+#: mgradm/cmd/uninstall/podman.go:65
+msgid "Nothing has been uninstalled, run with --force and --purgeVolumes to actually uninstall and clear data"
+msgstr ""
+
+#: mgradm/cmd/uninstall/podman.go:67
+msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr ""
 
 #: mgradm/cmd/upgrade/kubernetes/kubernetes.go:27
@@ -1099,95 +1204,66 @@ msgstr ""
 msgid "Upgrade local server"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:37
-msgid "Add GPG keys for 3rd party repositories"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:45
-msgid "Import without asking confirmation"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:54
-#, javascript-format
-msgid "failed to create folder %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:57
-#, javascript-format
-msgid "failed to create keyring %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:74
-#, javascript-format
-msgid "failed to parse %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:81
-#, javascript-format
-msgid "failed to download %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:86
-#, javascript-format
-msgid "failed to show key %s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:90
-msgid "Do you really want to trust this key"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:102
-msgid "failed to copy %[1]s to %[2]s"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:114
-msgid "failed to run import key"
-msgstr ""
-
-#: mgradm/cmd/gpg/add/gpg.go:121
-msgid "failed to restart uyuni-update-config"
-msgstr ""
-
-#: mgradm/cmd/gpg/gpg.go:19
-msgid "Manage GPG keys for 3rd party repositories"
-msgstr ""
-
-#: mgradm/cmd/cmd.go:39
+#: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:40
+#: mgradm/cmd/cmd.go:41
 msgid "Tool to help administering Uyuni servers in containers"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:47
+#: mgradm/cmd/cmd.go:48
 msgid "Server Deployment:"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:51
+#: mgradm/cmd/cmd.go:52
 msgid "Server Management:"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:55
+#: mgradm/cmd/cmd.go:56
 msgid "Administrator tools:"
-msgstr ""
-
-#: mgradm/cmd/cmd.go:66
-#, javascript-format
-msgid "Welcome to %s"
 msgstr ""
 
 #: mgradm/cmd/cmd.go:67
 #, javascript-format
+msgid "Welcome to %s"
+msgstr ""
+
+#: mgradm/cmd/cmd.go:68
+#, javascript-format
 msgid "Executing command: %s"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:71
+#: mgradm/cmd/cmd.go:72
 msgid "configuration file path"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:72
+#: mgradm/cmd/cmd.go:73
 msgid "application log level"
+msgstr ""
+
+#: mgradm/cmd/scale/kubernetes.go:23
+msgid "kubernetes not supported yet"
+msgstr ""
+
+#: mgradm/cmd/scale/podman.go:29
+#, javascript-format
+msgid "service not allowing to be scaled: %s"
+msgstr ""
+
+#: mgradm/cmd/scale/scale.go:21
+msgid "How many replicas of a service should be started."
+msgstr ""
+
+#: mgradm/cmd/scale/scale.go:29
+msgid "Adjust the replicas for services supporting it."
+msgstr ""
+
+#: mgradm/cmd/scale/scale.go:30
+msgid ""
+"Adjust the replicas for services supporting it.\n"
+"Supported services:\n"
+"  - uyuni-server-attestation\n"
 msgstr ""
 
 #: mgradm/shared/kubernetes/certificates.go:31
@@ -1285,16 +1361,16 @@ msgid "cannot set replica to 0"
 msgstr ""
 
 #: mgradm/shared/kubernetes/install.go:186 mgradm/shared/kubernetes/k3s.go:39
-#: mgradm/shared/podman/podman.go:218
+#: mgradm/shared/podman/podman.go:257
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:195 mgradm/shared/podman/podman.go:362
+#: mgradm/shared/kubernetes/install.go:195 mgradm/shared/podman/podman.go:401
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:197 mgradm/shared/podman/podman.go:364
+#: mgradm/shared/kubernetes/install.go:197 mgradm/shared/podman/podman.go:403
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr ""
 
@@ -1304,12 +1380,12 @@ msgstr ""
 msgid "failed to create temporary directory: %s"
 msgstr ""
 
-#: mgradm/shared/kubernetes/k3s.go:56 mgradm/shared/podman/podman.go:262
+#: mgradm/shared/kubernetes/k3s.go:56 mgradm/shared/podman/podman.go:301
 #, javascript-format
-msgid "Using migration image %s"
+msgid "Using database upgrade image %s"
 msgstr ""
 
-#: mgradm/shared/kubernetes/k3s.go:59 mgradm/shared/podman/podman.go:266
+#: mgradm/shared/kubernetes/k3s.go:59 mgradm/shared/podman/podman.go:305
 msgid "cannot generate PostgreSQL database version upgrade script"
 msgstr ""
 
@@ -1326,75 +1402,77 @@ msgid "error running container %s"
 msgstr ""
 
 #: mgradm/shared/kubernetes/k3s.go:109 mgradm/shared/kubernetes/k3s.go:154
-#: mgradm/shared/podman/podman.go:293 mgradm/shared/podman/podman.go:317
+#: mgradm/shared/podman/podman.go:332 mgradm/shared/podman/podman.go:356
 msgid "cannot generate PostgreSQL finalization script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:53 mgradm/shared/podman/podman.go:86
+#: mgradm/shared/podman/podman.go:53 mgradm/shared/podman/podman.go:78
+#: mgradm/shared/podman/podman.go:117 mgradm/shared/coco/coco.go:47
 msgid "failed to generate systemd service unit file"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:62 mgradm/shared/podman/podman.go:90
+#: mgradm/shared/podman/podman.go:62 mgradm/shared/podman/podman.go:84
+#: mgradm/shared/podman/podman.go:126 mgradm/shared/coco/coco.go:57
 msgid "cannot generate systemd conf file"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:71
+#: mgradm/shared/podman/podman.go:93
 msgid "cannot setup network"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:74
+#: mgradm/shared/podman/podman.go:96
 msgid "Enabling system service"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:102
+#: mgradm/shared/podman/podman.go:138
 msgid "failed to create temporary folder on container to copy certificates to"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:142
+#: mgradm/shared/podman/podman.go:178
 msgid "failed to update SSL certificate"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:147
+#: mgradm/shared/podman/podman.go:183
 msgid "failed to remove copied certificate files in the container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:153
+#: mgradm/shared/podman/podman.go:189
 msgid "failed to remove now useless ssl-build folder in the container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:158
+#: mgradm/shared/podman/podman.go:194
 msgid "Restarting services after updating the certificate"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:166
+#: mgradm/shared/podman/podman.go:205
 msgid "cannot generate migration script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:202 mgradm/shared/utils/exec.go:125
+#: mgradm/shared/podman/podman.go:241 mgradm/shared/utils/exec.go:125
 msgid "Migrating server"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:205
+#: mgradm/shared/podman/podman.go:244
 msgid "cannot run uyuni migration container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:210
+#: mgradm/shared/podman/podman.go:249
 msgid "cannot read extracted data"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:340
+#: mgradm/shared/podman/podman.go:379
 msgid "cannot inspect podman values"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:350
+#: mgradm/shared/podman/podman.go:389
 msgid "cannot stop service"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:357
+#: mgradm/shared/podman/podman.go:396
 msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:425
+#: mgradm/shared/podman/podman.go:464
 msgid "cannot inspect data"
 msgstr ""
 
@@ -1457,6 +1535,53 @@ msgstr ""
 
 #: mgradm/shared/ssl/ssl.go:264
 msgid "Failed to convert CA private key to RSA"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:30
+msgid "exec command failed"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:64 mgradm/shared/utils/exec.go:82
+#: mgradm/shared/utils/exec.go:96
+#, javascript-format
+msgid "failed to generate %s"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:105
+msgid "failed to read data extracted from source host"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:109
+msgid "cannot read config"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:112
+msgid "cannot retrieve timezone"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:115
+msgid "cannot retrieve source PostgreSQL version"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:118
+msgid "cannot retrieve image PostgreSQL version"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:128
+msgid "error running the migration script"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:176
+#, javascript-format
+msgid "Image is: %s"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:238
+msgid "posgresql is not installed in the current deployment"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:252
+msgid "cannot find neither /etc/uyuni-release nor /etc/susemanagere-release"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:49
@@ -1528,64 +1653,25 @@ msgid "set whether to pull the images or not during upgrade. The value can be on
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:116
-msgid "Migration image"
+msgid "Database upgrade image"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:117
-msgid "Migration image tag"
+msgid "Database upgrade image tag"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:119
-msgid "set whether to pull the migration images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
+msgid "set whether to pull the database upgrade images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:121
-msgid "Migration Image Flags"
+msgid "Database Upgrade Image Flags"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:30
-msgid "exec command failed"
+#: mgradm/shared/utils/cmd_utils.go:129
+msgid "Path to mirrored packages mounted on the host"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:64 mgradm/shared/utils/exec.go:82
-#: mgradm/shared/utils/exec.go:96
-#, javascript-format
-msgid "failed to generate %s"
-msgstr ""
-
-#: mgradm/shared/utils/exec.go:105
-msgid "failed to read data extracted from source host"
-msgstr ""
-
-#: mgradm/shared/utils/exec.go:109
-msgid "cannot read config"
-msgstr ""
-
-#: mgradm/shared/utils/exec.go:112
-msgid "cannot retrieve timezone"
-msgstr ""
-
-#: mgradm/shared/utils/exec.go:115
-msgid "cannot retrieve source PostgreSQL version"
-msgstr ""
-
-#: mgradm/shared/utils/exec.go:118
-msgid "cannot retrieve image PostgreSQL version"
-msgstr ""
-
-#: mgradm/shared/utils/exec.go:128
-msgid "error running the migration script"
-msgstr ""
-
-#: mgradm/shared/utils/exec.go:176
-#, javascript-format
-msgid "Image is: %s"
-msgstr ""
-
-#: mgradm/shared/utils/exec.go:238
-msgid "posgresql is not installed in the current deployment"
-msgstr ""
-
-#: mgradm/shared/utils/exec.go:252
-msgid "cannot find neither /etc/uyuni-release nor /etc/susemanagere-release"
+#: mgradm/shared/coco/coco.go:43
+msgid "Setting up confidential computing attestation service"
 msgstr ""

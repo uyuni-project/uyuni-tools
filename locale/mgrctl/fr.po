@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:27+0200\n"
+"POT-Creation-Date: 2024-05-24 17:14+0200\n"
 "PO-Revision-Date: 2024-04-08 14:10+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -47,6 +47,36 @@ msgstr "impossible de se connecter au serveur: %s"
 #, fuzzy, javascript-format
 msgid "error in query %s"
 msgstr "erreur dans la requête %s: %s"
+
+#: mgrctl/cmd/cmd.go:29
+msgid "Uyuni control tool"
+msgstr "Outil de contrôle d'Uyuni"
+
+#: mgrctl/cmd/cmd.go:30
+msgid "Tool to help managing Uyuni servers mainly through their API"
+msgstr "Outil pour aider à gérer des serveurs Uyuni, principalement via leur API"
+
+#: mgrctl/cmd/cmd.go:37
+msgid "configuration file path"
+msgstr "chemin vers le fichier de configuration"
+
+#: mgrctl/cmd/cmd.go:38
+msgid "application log level"
+msgstr "niveau de verbosité de l'application"
+
+#: mgrctl/cmd/cmd.go:46
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "Bienvenue à %s"
+
+#: mgrctl/cmd/cmd.go:47
+#, javascript-format
+msgid "Executing command: %s"
+msgstr "Exécution de la commande: %s"
+
+#: mgrctl/cmd/cmd.go:53
+msgid "Failed to create api command"
+msgstr "Echec lors de la création de la commande api"
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
@@ -109,36 +139,6 @@ msgstr "Exécution: %s %s"
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "Exécuter un terminal dans le conteneur du serveur"
-
-#: mgrctl/cmd/cmd.go:29
-msgid "Uyuni control tool"
-msgstr "Outil de contrôle d'Uyuni"
-
-#: mgrctl/cmd/cmd.go:30
-msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr "Outil pour aider à gérer des serveurs Uyuni, principalement via leur API"
-
-#: mgrctl/cmd/cmd.go:37
-msgid "configuration file path"
-msgstr "chemin vers le fichier de configuration"
-
-#: mgrctl/cmd/cmd.go:38
-msgid "application log level"
-msgstr "niveau de verbosité de l'application"
-
-#: mgrctl/cmd/cmd.go:46
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "Bienvenue à %s"
-
-#: mgrctl/cmd/cmd.go:47
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "Exécution de la commande: %s"
-
-#: mgrctl/cmd/cmd.go:53
-msgid "Failed to create api command"
-msgstr "Echec lors de la création de la commande api"
 
 #~ msgid "Failed to create org command"
 #~ msgstr "Echec lors de la création de la commande org"
