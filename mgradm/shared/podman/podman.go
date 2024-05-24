@@ -102,7 +102,7 @@ func GenerateSystemdService(tz string, image string, debug bool, mirrorPath stri
 
 	ports := GetExposedPorts(debug)
 	if _, err := exec.LookPath("csp-billing-adapter"); err == nil {
-		ports = append(ports, utils.NewPortMap("csp-billing", 10888, 10888))
+		ports = append(ports, utils.NewPortMap("csp-billing", 18888, 18888))
 		args = append(args, "-e ISPAYG=1")
 	}
 
