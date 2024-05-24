@@ -17,7 +17,7 @@ import (
 
 func uninstallForPodman(
 	globalFlags *types.GlobalFlags,
-	flags *uninstallFlags,
+	flags *utils.UninstallFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
@@ -44,7 +44,7 @@ func uninstallForPodman(
 	}
 
 	// Remove the volumes
-	if flags.PurgeVolumes {
+	if flags.Purge.Volumes {
 		volumes := []string{"cgroup"}
 		for _, volume := range utils.ServerVolumeMounts {
 			volumes = append(volumes, volume.Name)
@@ -62,8 +62,8 @@ func uninstallForPodman(
 	err := podman.ReloadDaemon(!flags.Force)
 
 	if !flags.Force {
-		log.Warn().Msg(L("Nothing has been uninstalled, run with --force and --purgeVolumes to actually uninstall and clear data"))
-	} else if !flags.PurgeVolumes {
+		log.Warn().Msg(L("Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"))
+	} else if !flags.Purge.Volumes {
 		log.Warn().Msg(L("Data have been kept, use podman volume commands to clear the volumes"))
 	}
 

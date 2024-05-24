@@ -79,3 +79,25 @@ func AddPTFFlag(cmd *cobra.Command) {
 	cmd.Flags().String("test", "", L("Test package ID"))
 	cmd.Flags().String("user", "", L("SCC user"))
 }
+
+// PurgeFlags defined what has te be removed in an uninstall command.
+type PurgeFlags struct {
+	Volumes bool
+}
+
+// UninstallFlags are the common flags for uninstall commands.
+type UninstallFlags struct {
+	Backend string
+	Force   bool
+	Purge   PurgeFlags
+}
+
+// AddUninstallFlags adds the common flags for uninstall commands.
+func AddUninstallFlags(cmd *cobra.Command, withBackend bool) {
+	cmd.Flags().BoolP("force", "f", false, L("Actually remove the server"))
+	cmd.Flags().Bool("purge-volumes", false, L("Also remove the volumes"))
+
+	if withBackend {
+		AddBackendFlag(cmd)
+	}
+}
