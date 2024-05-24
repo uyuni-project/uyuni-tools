@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:27+0200\n"
+"POT-Creation-Date: 2024-05-24 17:14+0200\n"
 "PO-Revision-Date: 2024-05-10 02:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ja/>\n"
@@ -47,6 +47,36 @@ msgstr "サーバにログインできません: %s"
 #, fuzzy, javascript-format
 msgid "error in query %s"
 msgstr "クエリ %s でエラーが発生しました: %s"
+
+#: mgrctl/cmd/cmd.go:29
+msgid "Uyuni control tool"
+msgstr "Uyuni制御ツール"
+
+#: mgrctl/cmd/cmd.go:30
+msgid "Tool to help managing Uyuni servers mainly through their API"
+msgstr "主にAPIを通じてUyuniサーバを管理するのに役立つツール"
+
+#: mgrctl/cmd/cmd.go:37
+msgid "configuration file path"
+msgstr "設定ファイルパス"
+
+#: mgrctl/cmd/cmd.go:38
+msgid "application log level"
+msgstr "アプリケーションログレベル"
+
+#: mgrctl/cmd/cmd.go:46
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "%s へようこそ"
+
+#: mgrctl/cmd/cmd.go:47
+#, javascript-format
+msgid "Executing command: %s"
+msgstr "コマンドの実行中: %s"
+
+#: mgrctl/cmd/cmd.go:53
+msgid "Failed to create api command"
+msgstr "apiコマンドの作成に失敗しました"
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
@@ -109,36 +139,6 @@ msgstr "実行中: %s %s"
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "サーバコンテナ内で端末を実行する"
-
-#: mgrctl/cmd/cmd.go:29
-msgid "Uyuni control tool"
-msgstr "Uyuni制御ツール"
-
-#: mgrctl/cmd/cmd.go:30
-msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr "主にAPIを通じてUyuniサーバを管理するのに役立つツール"
-
-#: mgrctl/cmd/cmd.go:37
-msgid "configuration file path"
-msgstr "設定ファイルパス"
-
-#: mgrctl/cmd/cmd.go:38
-msgid "application log level"
-msgstr "アプリケーションログレベル"
-
-#: mgrctl/cmd/cmd.go:46
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "%s へようこそ"
-
-#: mgrctl/cmd/cmd.go:47
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "コマンドの実行中: %s"
-
-#: mgrctl/cmd/cmd.go:53
-msgid "Failed to create api command"
-msgstr "apiコマンドの作成に失敗しました"
 
 #~ msgid "Failed to create org command"
 #~ msgstr "orgコマンドの作成に失敗しました"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 11:25+0200\n"
+"POT-Creation-Date: 2024-05-24 17:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,6 +44,36 @@ msgstr ""
 #: mgrctl/cmd/api/get.go:33 mgrctl/cmd/api/post.go:49
 #, javascript-format
 msgid "error in query %s"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:29
+msgid "Uyuni control tool"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:30
+msgid "Tool to help managing Uyuni servers mainly through their API"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:37
+msgid "configuration file path"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:38
+msgid "application log level"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:46
+#, javascript-format
+msgid "Welcome to %s"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:47
+#, javascript-format
+msgid "Executing command: %s"
+msgstr ""
+
+#: mgrctl/cmd/cmd.go:53
+msgid "Failed to create api command"
 msgstr ""
 
 #: mgrctl/cmd/cp/cp.go:29
@@ -103,34 +133,4 @@ msgstr ""
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:29
-msgid "Uyuni control tool"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:30
-msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:37
-msgid "configuration file path"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:38
-msgid "application log level"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:46
-#, javascript-format
-msgid "Welcome to %s"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:47
-#, javascript-format
-msgid "Executing command: %s"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:53
-msgid "Failed to create api command"
 msgstr ""

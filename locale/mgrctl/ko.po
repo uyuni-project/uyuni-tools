@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:27+0200\n"
+"POT-Creation-Date: 2024-05-24 17:14+0200\n"
 "PO-Revision-Date: 2024-05-08 09:43+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ko/>\n"
@@ -47,6 +47,36 @@ msgstr "서버에 로그인할 수 없음: %s"
 #, fuzzy, javascript-format
 msgid "error in query %s"
 msgstr "%s 쿼리의 오류: %s"
+
+#: mgrctl/cmd/cmd.go:29
+msgid "Uyuni control tool"
+msgstr "Uyuni 제어 도구"
+
+#: mgrctl/cmd/cmd.go:30
+msgid "Tool to help managing Uyuni servers mainly through their API"
+msgstr "주로 API를 통해 Uyuni 서버를 관리하는 데 유용한 도구"
+
+#: mgrctl/cmd/cmd.go:37
+msgid "configuration file path"
+msgstr "구성 파일 경로"
+
+#: mgrctl/cmd/cmd.go:38
+msgid "application log level"
+msgstr "애플리케이션 로그 수준"
+
+#: mgrctl/cmd/cmd.go:46
+#, javascript-format
+msgid "Welcome to %s"
+msgstr "%s 시작"
+
+#: mgrctl/cmd/cmd.go:47
+#, javascript-format
+msgid "Executing command: %s"
+msgstr "실행 중 명령: %s"
+
+#: mgrctl/cmd/cmd.go:53
+msgid "Failed to create api command"
+msgstr "API 명령을 생성하지 못했습니다."
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
@@ -109,36 +139,6 @@ msgstr "실행 중: %s %s"
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "서버 컨테이너 내에서 터미널 실행"
-
-#: mgrctl/cmd/cmd.go:29
-msgid "Uyuni control tool"
-msgstr "Uyuni 제어 도구"
-
-#: mgrctl/cmd/cmd.go:30
-msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr "주로 API를 통해 Uyuni 서버를 관리하는 데 유용한 도구"
-
-#: mgrctl/cmd/cmd.go:37
-msgid "configuration file path"
-msgstr "구성 파일 경로"
-
-#: mgrctl/cmd/cmd.go:38
-msgid "application log level"
-msgstr "애플리케이션 로그 수준"
-
-#: mgrctl/cmd/cmd.go:46
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "%s 시작"
-
-#: mgrctl/cmd/cmd.go:47
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "실행 중 명령: %s"
-
-#: mgrctl/cmd/cmd.go:53
-msgid "Failed to create api command"
-msgstr "API 명령을 생성하지 못했습니다."
 
 #~ msgid "Failed to create org command"
 #~ msgstr "org 명령을 생성하지 못했습니다."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-16 10:27+0200\n"
+"POT-Creation-Date: 2024-05-24 17:14+0200\n"
 "PO-Revision-Date: 2024-05-10 02:43+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
@@ -17,16 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.9.1\n"
-
-#: shared/api/org/createFirst.go:21
-#, fuzzy
-msgid "failed to connect to the server"
-msgstr "サーバへの接続に失敗しました: %s"
-
-#: shared/api/org/createFirst.go:35
-#, fuzzy
-msgid "failed to create first user and organization"
-msgstr "最初のユーザと組織の作成に失敗しました: %s"
 
 #: shared/api/api.go:72
 msgid "FQDN of the server to connect to"
@@ -69,6 +59,16 @@ msgstr "ログイン応答に認証クッキーが見つかりません"
 msgid "Unable to convert data to JSON"
 msgstr "データをJSONに変換できません"
 
+#: shared/api/org/createFirst.go:21
+#, fuzzy
+msgid "failed to connect to the server"
+msgstr "サーバへの接続に失敗しました: %s"
+
+#: shared/api/org/createFirst.go:35
+#, fuzzy
+msgid "failed to create first user and organization"
+msgstr "最初のユーザと組織の作成に失敗しました: %s"
+
 #: shared/completion/completion.go:20 shared/completion/completion.go:21
 msgid "Generate shell completion script"
 msgstr "シェル補完スクリプトの生成"
@@ -79,33 +79,50 @@ msgstr "シェル補完スクリプトの生成"
 msgid "cannot generate %s completion"
 msgstr "%s 完了を生成できません: %s"
 
-#: shared/kubernetes/rke2.go:21
-msgid "Installing RKE2 Nginx configuration"
-msgstr "RKE2 Nginx設定のインストール"
+#: shared/connection.go:56
+#, javascript-format
+msgid "backend command not found in PATH: %s"
+msgstr "バックエンドコマンドがPATHに見つかりません: %s"
 
-#: shared/kubernetes/rke2.go:29
-msgid "Failed to write Rke2 nginx configuration"
-msgstr "Rke2 nginx設定の書き込みに失敗しました"
+#: shared/connection.go:68
+msgid "kubectl not configured to connect to a cluster, ignoring"
+msgstr "クラスタに接続するようにkubectlが設定されていません。無視します"
 
-#: shared/kubernetes/rke2.go:33
-msgid "Waiting for Nginx controller to be reloaded"
-msgstr "Nginxコントローラが再ロードされるのを待機中"
+#: shared/connection.go:103
+msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
+msgstr "uyuniコンテナは、podman、podman-remote、またはkubectlのいずれかでアクセスできません"
 
-#: shared/kubernetes/uninstall.go:13
-msgid ""
-"\n"
-"Note that removing the volumes could also be handled automatically depending on the StorageClass used\n"
-"when installed on a kubernetes cluster.\n"
-"\n"
-"For instance on a default K3S install, the local-path-provider storage volumes will\n"
-"be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
-msgstr ""
-"\n"
-"ボリュームの削除は、kubernetesクラスタにインストールされたときに使用されるStorageClass\n"
-"によって自動的に処理される可能性あることにも注意してください。\n"
-"\n"
-"たとえば、デフォルトのK3Sインストールでは、local-path-providerストレージボリュームは、\n"
-"--purge-volumes引数が使用されていなくても、配備を削除するときに自動的に削除されます。"
+#: shared/connection.go:106
+#, javascript-format
+msgid "unsupported backend %s"
+msgstr "サポートされていないバックエンド %s"
+
+#: shared/connection.go:127
+#, javascript-format
+msgid "container %s is not running on podman"
+msgstr "コンテナ %s はpodmanで実行されていません"
+
+#: shared/connection.go:149
+#, fuzzy, javascript-format
+msgid "the container is not running, %s command not executed:"
+msgstr "コンテナが実行されていません。%s %s コマンドが実行されませんでした: %s"
+
+#: shared/connection.go:196
+msgid "server didn't start within 60s. Check for the service status"
+msgstr "サーバが60秒以内に起動しませんでした。サービスステータスを確認します"
+
+#: shared/connection.go:226 shared/connection.go:265
+#, javascript-format
+msgid "unknown container kind: %s"
+msgstr "不明なコンテナの種類: %s"
+
+#: shared/connection.go:309
+msgid "failed to determine suitable backend"
+msgstr "適切なバックエンドを決定できませんでした"
+
+#: shared/connection.go:319
+msgid "no supported backend found"
+msgstr "サポートされているバックエンドが見つかりません"
 
 #: shared/kubernetes/helm.go:58
 #, fuzzy
@@ -126,9 +143,9 @@ msgstr "%s のネームスペースが見つかりませんでした。削除を
 msgid "Cannot guess namespace"
 msgstr "ネームスペースを推測できません"
 
-#: shared/kubernetes/helm.go:98 shared/podman/network.go:94
-#: shared/podman/systemd.go:61 shared/podman/systemd.go:99
-#: shared/podman/systemd.go:100 shared/podman/utils.go:133
+#: shared/kubernetes/helm.go:98 shared/podman/network.go:98
+#: shared/podman/systemd.go:81 shared/podman/systemd.go:131
+#: shared/podman/systemd.go:132 shared/podman/utils.go:107
 #, javascript-format
 msgid "Would run %s"
 msgstr "%s を実行します"
@@ -174,7 +191,7 @@ msgstr "Traefikの再ロードを待機中"
 msgid "install %s before running this command"
 msgstr "このコマンドを実行する前に %s をインストールする"
 
-#: shared/kubernetes/k3s.go:65 shared/podman/utils.go:198
+#: shared/kubernetes/k3s.go:65 shared/podman/utils.go:132
 #: shared/utils/utils.go:345
 #, fuzzy
 msgid "failed to create temporary directory"
@@ -195,10 +212,38 @@ msgstr "uyuniを実行しているノードが見つかりません: %s"
 msgid "cannot run inspect pod"
 msgstr "ポッドを検査できません: %s"
 
-#: shared/kubernetes/k3s.go:117 shared/podman/utils.go:235
+#: shared/kubernetes/k3s.go:117 shared/podman/utils.go:169
 #, fuzzy
 msgid "cannot inspect data"
 msgstr "データを検査できません: %s"
+
+#: shared/kubernetes/rke2.go:21
+msgid "Installing RKE2 Nginx configuration"
+msgstr "RKE2 Nginx設定のインストール"
+
+#: shared/kubernetes/rke2.go:29
+msgid "Failed to write Rke2 nginx configuration"
+msgstr "Rke2 nginx設定の書き込みに失敗しました"
+
+#: shared/kubernetes/rke2.go:33
+msgid "Waiting for Nginx controller to be reloaded"
+msgstr "Nginxコントローラが再ロードされるのを待機中"
+
+#: shared/kubernetes/uninstall.go:13
+msgid ""
+"\n"
+"Note that removing the volumes could also be handled automatically depending on the StorageClass used\n"
+"when installed on a kubernetes cluster.\n"
+"\n"
+"For instance on a default K3S install, the local-path-provider storage volumes will\n"
+"be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
+msgstr ""
+"\n"
+"ボリュームの削除は、kubernetesクラスタにインストールされたときに使用されるStorageClass\n"
+"によって自動的に処理される可能性あることにも注意してください。\n"
+"\n"
+"たとえば、デフォルトのK3Sインストールでは、local-path-providerストレージボリュームは、\n"
+"--purge-volumes引数が使用されていなくても、配備を削除するときに自動的に削除されます。"
 
 #: shared/kubernetes/kubernetes.go:54
 #, fuzzy
@@ -230,118 +275,118 @@ msgstr "kubectl get secret %s %s に失敗しました"
 msgid "Failed to base64 decode secret %s"
 msgstr "configMap %s のbase64デコードに失敗しました: %s"
 
-#: shared/kubernetes/utils.go:51 shared/kubernetes/utils.go:86
+#: shared/kubernetes/utils.go:57 shared/kubernetes/utils.go:92
 msgid "failed to pull image"
 msgstr "イメージをプルできませんでした"
 
-#: shared/kubernetes/utils.go:54
+#: shared/kubernetes/utils.go:60
 #, fuzzy
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgstr "%s 配備の準備を待機中( %s ネームスペース内)\n"
 
-#: shared/kubernetes/utils.go:63
+#: shared/kubernetes/utils.go:69
 #, fuzzy
 msgid "failed to find a ready replica for deployment %[1]s in namespace %[2]s after 60s"
 msgstr "60秒後にネームスペース %s で配備 %s の準備ができたレプリカが見つかりませんでした"
 
-#: shared/kubernetes/utils.go:68
+#: shared/kubernetes/utils.go:74
 #, fuzzy
 msgid "Waiting for image of %[1]s pod in %[2]s namespace to be pulled"
 msgstr "%s ポッド(%s ネームスペース内)のイメージを待機しています"
 
-#: shared/kubernetes/utils.go:81
+#: shared/kubernetes/utils.go:87
 #, javascript-format
 msgid "failed to get failed events for pod %s"
 msgstr "ポッド %s の失敗したイベントの取得に失敗しました"
 
-#: shared/kubernetes/utils.go:93
+#: shared/kubernetes/utils.go:99
 #, javascript-format
 msgid "failed to get events for pod %s"
 msgstr "ポッド %s のイベントを取得できませんでした"
 
-#: shared/kubernetes/utils.go:139
+#: shared/kubernetes/utils.go:145
 #, fuzzy
 msgid "failed to parse deployment status"
 msgstr "配備ステータスの解析に失敗しました: %s"
 
-#: shared/kubernetes/utils.go:153
+#: shared/kubernetes/utils.go:159
 #, fuzzy, javascript-format
 msgid "cannot run kubectl %s"
 msgstr "kubectl %s を実行できません: %s"
 
-#: shared/kubernetes/utils.go:158
+#: shared/kubernetes/utils.go:164
 #, fuzzy, javascript-format
 msgid "cannot get pods for %s"
 msgstr "%s のポッドを取得できません: %s"
 
-#: shared/kubernetes/utils.go:165
+#: shared/kubernetes/utils.go:171
 #, fuzzy, javascript-format
 msgid "replica to %d failed"
 msgstr "%d へのレプリカが失敗しました: %s"
 
-#: shared/kubernetes/utils.go:178
+#: shared/kubernetes/utils.go:184
 #, fuzzy
 msgid "cannot check if pod %[1]s is running in app %[2]s"
 msgstr "ポッド %s がアプリ %s で実行中かどうかを確認できません: %s"
 
-#: shared/kubernetes/utils.go:188 shared/kubernetes/utils.go:233
-#: shared/kubernetes/utils.go:328
+#: shared/kubernetes/utils.go:194 shared/kubernetes/utils.go:239
+#: shared/kubernetes/utils.go:334
 #, fuzzy, javascript-format
 msgid "cannot execute %s"
 msgstr "%s を実行できません: %s"
 
-#: shared/kubernetes/utils.go:207
+#: shared/kubernetes/utils.go:213
 #, fuzzy, javascript-format
 msgid "cannot get pod informations %s"
 msgstr "ポッド情報 %s を取得できません: %s"
 
-#: shared/kubernetes/utils.go:216
+#: shared/kubernetes/utils.go:222
 #, javascript-format
 msgid "cannot set replicas for %s to zero"
 msgstr "%s のレプリカを0に設定できません"
 
-#: shared/kubernetes/utils.go:243
+#: shared/kubernetes/utils.go:249
 #, fuzzy
 msgid "pod %[1]s replicas have not reached %[2]d in %[3]s seconds"
 msgstr "ポッド %s のレプリカが %d になっていません(%s 秒後): %s"
 
-#: shared/kubernetes/utils.go:266
+#: shared/kubernetes/utils.go:272
 #, javascript-format
 msgid "%s is not a valid image pull policy value"
 msgstr "%s は有効なイメージプルポリシーの値ではありません"
 
-#: shared/kubernetes/utils.go:287
+#: shared/kubernetes/utils.go:293
 #, fuzzy
 msgctxt "The first placeholder is a command"
 msgid "cannot run %[1]s using image %[2]s"
 msgstr "%s を実行できません(イメージ %s を使用): %s"
 
-#: shared/kubernetes/utils.go:291
+#: shared/kubernetes/utils.go:297
 #, fuzzy, javascript-format
 msgid "deleting pod %s. Status fails with error"
 msgstr "ポッド %s を削除しています。エラー %s でステータスが失敗します"
 
-#: shared/kubernetes/utils.go:304 shared/kubernetes/utils.go:313
+#: shared/kubernetes/utils.go:310 shared/kubernetes/utils.go:319
 #, fuzzy, javascript-format
 msgid "cannot delete pod %s"
 msgstr "ポッド %s を削除できません: %s"
 
-#: shared/kubernetes/utils.go:335
+#: shared/kubernetes/utils.go:341
 #, fuzzy, javascript-format
 msgid "error during execution of %s"
 msgstr "%s の実行中にエラーが発生しました: %s"
 
-#: shared/kubernetes/utils.go:340
+#: shared/kubernetes/utils.go:346
 #, fuzzy
 msgid "pod %[1]s status is not %[2]s in %[3]d seconds"
 msgstr "ポッド %s のステータスが %s になっていません(%s 秒後): %s"
 
-#: shared/kubernetes/utils.go:357
+#: shared/kubernetes/utils.go:363
 #, javascript-format
 msgid "cannot find node name matching filter %s"
 msgstr "フィルタ %s に一致するノード名が見つかりません"
 
-#: shared/kubernetes/utils.go:366
+#: shared/kubernetes/utils.go:372
 #, fuzzy
 msgid "cannot serialize pod definition override"
 msgstr "ポッド定義の上書きをシリアライズできません: %s"
@@ -442,226 +487,197 @@ msgstr "%s podmanネットワークの削除に失敗しました: %s"
 msgid "Reusing existing %s network"
 msgstr "既存の %s ネットワークの再利用"
 
-#: shared/podman/network.go:54
+#: shared/podman/network.go:58
 #, fuzzy
 msgid "failed to find podman's network backend"
 msgstr "podmanのネットワークバックエンドが見つかりませんでした: %s"
 
-#: shared/podman/network.go:56
+#: shared/podman/network.go:60
 #, fuzzy
 msgid "Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"
 msgstr "Podmanのネットワークバックエンド (%s) はnetavarkではありません。%s ネットワークでのIPv6の有効化をスキップします"
 
-#: shared/podman/network.go:65
+#: shared/podman/network.go:69
 #, fuzzy, javascript-format
 msgid "failed to create %s network with IPv6 enabled"
 msgstr "IPv6を有効にした %s ネットワークの作成に失敗しました: %s"
 
-#: shared/podman/network.go:91
+#: shared/podman/network.go:95
 #, javascript-format
 msgid "Network %s already removed"
 msgstr "ネットワーク %s はすでに削除されています"
 
-#: shared/podman/network.go:98
+#: shared/podman/network.go:102
 #, javascript-format
 msgid "Failed to remove network %s"
 msgstr "ネットワーク %s の削除に失敗しました"
 
-#: shared/podman/network.go:100
+#: shared/podman/network.go:104
 msgid "Network removed"
 msgstr "ネットワークが削除されました"
 
-#: shared/podman/systemd.go:58
+#: shared/podman/systemd.go:51
+#, fuzzy, javascript-format
+msgid "failed to disable %s systemd service"
+msgstr "%s systemdサービスを有効にできませんでした: %s"
+
+#: shared/podman/systemd.go:78
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "Systemdには %s.serviceユニットがありません"
 
-#: shared/podman/systemd.go:62 shared/podman/systemd.go:63
-#, javascript-format
-msgid "Would remove %s"
-msgstr "%s を削除します"
-
-#: shared/podman/systemd.go:64
-#, fuzzy, javascript-format
-msgid "Would remove %s if empty"
-msgstr "%s を削除します"
-
-#: shared/podman/systemd.go:66
+#: shared/podman/systemd.go:83
 #, javascript-format
 msgid "Disable %s service"
 msgstr "%s サービスを無効にする"
 
-#: shared/podman/systemd.go:70
+#: shared/podman/systemd.go:87
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "%s サービスを無効にできませんでした"
 
-#: shared/podman/systemd.go:74 shared/podman/systemd.go:80
+#: shared/podman/systemd.go:92 shared/podman/systemd.go:104
+#, javascript-format
+msgid "Would remove %s"
+msgstr "%s を削除します"
+
+#: shared/podman/systemd.go:95 shared/podman/systemd.go:106
 #, javascript-format
 msgid "Remove %s"
 msgstr "%s の削除"
 
-#: shared/podman/systemd.go:76
+#: shared/podman/systemd.go:97
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "%s.serviceファイルの削除に失敗しました"
 
-#: shared/podman/systemd.go:82
+#: shared/podman/systemd.go:108
 #, fuzzy, javascript-format
 msgid "Failed to remove %s file"
 msgstr "ファイル %s の削除に失敗しました"
 
-#: shared/podman/systemd.go:89
+#: shared/podman/systemd.go:114
+#, fuzzy, javascript-format
+msgid "Would remove %s if empty"
+msgstr "%s を削除します"
+
+#: shared/podman/systemd.go:120
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr ""
 
-#: shared/podman/systemd.go:104
+#: shared/podman/systemd.go:136
 msgid "failed to reset-failed systemd"
 msgstr "systemdのreset-failedに失敗しました"
 
-#: shared/podman/systemd.go:108
+#: shared/podman/systemd.go:140
 msgid "failed to reload systemd daemon"
 msgstr "systemdデーモンの再ロードに失敗しました"
 
-#: shared/podman/systemd.go:126
+#: shared/podman/systemd.go:158
 #, fuzzy, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "systemd %s.serviceの再起動に失敗しました: %s"
 
-#: shared/podman/systemd.go:134
+#: shared/podman/systemd.go:166
 #, fuzzy, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "systemd %s.service の起動に失敗しました: %s"
 
-#: shared/podman/systemd.go:142
+#: shared/podman/systemd.go:174
 #, fuzzy, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "systemd %s.serviceの停止に失敗しました: %s"
 
-#: shared/podman/systemd.go:150
+#: shared/podman/systemd.go:182
 #, fuzzy, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "%s systemdサービスを有効にできませんでした: %s"
 
-#: shared/podman/systemd.go:161
+#: shared/podman/systemd.go:193
 #, fuzzy, javascript-format
 msgid "failed to create %s folder"
 msgstr "%s フォルダの作成に失敗しました: %s"
 
-#: shared/podman/systemd.go:167
+#: shared/podman/systemd.go:199
 #, fuzzy, javascript-format
 msgid "cannot write %s file"
 msgstr "%s ファイルを書き込めません: %s"
 
-#: shared/podman/utils.go:56
+#: shared/podman/systemd.go:219
+msgid "Scale %[1]s from %[2]d to %[3]d replicas."
+msgstr ""
+
+#: shared/podman/systemd.go:223
+#, fuzzy
+msgid "cannot enable service"
+msgstr "%s を削除できません: %s"
+
+#: shared/podman/systemd.go:229
+#, fuzzy
+msgid "cannot disable service"
+msgstr "%s サービスを無効にできませんでした"
+
+#: shared/podman/utils.go:46
 msgid "Extra arguments to pass to podman"
 msgstr "podmanに渡す追加引数"
 
-#: shared/podman/utils.go:62
-msgid "Path to custom /var/cache volume"
-msgstr "カスタム/var/cacheボリュームへのパス"
-
-#: shared/podman/utils.go:63
-msgid "Path to custom /var/lib/pgsql volume"
-msgstr "カスタム/var/lib/pgsqlボリュームへのパス"
-
-#: shared/podman/utils.go:64
-msgid "Path to custom /var/spacewalk volume"
-msgstr "カスタム/var/spacewalkボリュームへのパス"
-
-#: shared/podman/utils.go:65
-msgid "Path to custom /srv/www/ volume"
-msgstr "カスタム/srv/www/ボリュームへのパス"
-
-#: shared/podman/utils.go:67
-msgid "Podman Flags"
-msgstr ""
-
-#: shared/podman/utils.go:79
+#: shared/podman/utils.go:53
 #, fuzzy
 msgid "failed to enable podman.socket unit"
 msgstr "podman.socketユニットの有効化に失敗しました: %s"
 
-#: shared/podman/utils.go:96
+#: shared/podman/utils.go:70
 #, fuzzy, javascript-format
 msgid "failed to run %s container"
 msgstr "%s コンテナの実行に失敗しました: %s"
 
-#: shared/podman/utils.go:107
+#: shared/podman/utils.go:81
 #, fuzzy
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr "podman kill %s を実行します (コンテナID: %s に対して)"
 
-#: shared/podman/utils.go:108
+#: shared/podman/utils.go:82
 #, fuzzy
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr "podman remove %s を実行します(コンテナID: %s に対して)"
 
-#: shared/podman/utils.go:110
+#: shared/podman/utils.go:84
 #, fuzzy
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr "podman kill %sを実行します(コンテナID: %s に対して)"
 
-#: shared/podman/utils.go:113
+#: shared/podman/utils.go:87
 msgid "Failed to kill the server"
 msgstr "サーバの強制終了に失敗しました"
 
-#: shared/podman/utils.go:115
+#: shared/podman/utils.go:89
 #, fuzzy
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr "podman remove %s を実行する(コンテナID: %s に対して)"
 
-#: shared/podman/utils.go:118
+#: shared/podman/utils.go:92
 msgid "Error removing container"
 msgstr "コンテナ削除エラー"
 
-#: shared/podman/utils.go:123
+#: shared/podman/utils.go:97
 msgid "Container already removed"
 msgstr "コンテナはすでに削除されています"
 
-#: shared/podman/utils.go:135
+#: shared/podman/utils.go:109
 #, javascript-format
 msgid "Run %s"
 msgstr "%s の実行"
 
-#: shared/podman/utils.go:138
+#: shared/podman/utils.go:112
 #, javascript-format
 msgid "Failed to remove volume %s"
 msgstr "ボリューム %s の削除に失敗しました"
 
-#: shared/podman/utils.go:170
-#, fuzzy
-msgid "volume folder (%[1]s) already exists, cannot link it to %[2]s"
-msgstr "ボリュームフォルダ (%s) はすでに存在します。%s にリンクできません"
-
-#: shared/podman/utils.go:174
-#, fuzzy, javascript-format
-msgid "failed to create volumes folder %s"
-msgstr "ボリュームフォルダ %s の作成に失敗しました: %s"
-
-#: shared/podman/utils.go:178
-#, fuzzy
-msgid "failed to link volume folder %[1]s to %[2]s"
-msgstr "ボリュームフォルダ %s を %s にリンクできませんでした: %s"
-
-#: shared/podman/utils.go:188
-#, fuzzy
-msgid "failed to get podman's volumes folder"
-msgstr "podmanのボリュームフォルダの取得に失敗しました: %s"
-
-#: shared/podman/utils.go:203
+#: shared/podman/utils.go:137
 #, fuzzy
 msgid "cannot inspect host values"
 msgstr "ホスト値を検査できません: %s"
-
-#: shared/utils/flaggroups.go:56
-msgid "Flags:\n"
-msgstr "フラグ:\n"
-
-#: shared/utils/flaggroups.go:94
-msgid "no such flag help group: %v"
-msgstr "そのようなフラグヘルプグループはありません: %v"
 
 #: shared/utils/cmd.go:45 shared/utils/cmd.go:46
 msgid "failed to unmarshall configuration"
@@ -832,6 +848,14 @@ msgstr "設定ファイルと環境変数のヘルプ"
 msgid "failed to compute config help command"
 msgstr "config helpコマンドの計算に失敗しました"
 
+#: shared/utils/flaggroups.go:56
+msgid "Flags:\n"
+msgstr "フラグ:\n"
+
+#: shared/utils/flaggroups.go:94
+msgid "no such flag help group: %v"
+msgstr "そのようなフラグヘルプグループはありません: %v"
+
 #: shared/utils/tar.go:47
 #, fuzzy
 msgid "Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"
@@ -964,55 +988,38 @@ msgstr "ホストシステムで検査スクリプトを実行できませんで
 msgid "cannot inspect host data"
 msgstr "ホストデータを検査できません: %s"
 
-#: shared/utils/utils.go:373 shared/utils/utils.go:387
+#: shared/utils/utils.go:374 shared/utils/utils.go:388
 #, fuzzy
 msgid "failed to generate inspect script"
 msgstr "検査スクリプトの生成に失敗しました: %s"
 
-#: shared/connection.go:56
-#, javascript-format
-msgid "backend command not found in PATH: %s"
-msgstr "バックエンドコマンドがPATHに見つかりません: %s"
+#~ msgid "Path to custom /var/cache volume"
+#~ msgstr "カスタム/var/cacheボリュームへのパス"
 
-#: shared/connection.go:68
-msgid "kubectl not configured to connect to a cluster, ignoring"
-msgstr "クラスタに接続するようにkubectlが設定されていません。無視します"
+#~ msgid "Path to custom /var/lib/pgsql volume"
+#~ msgstr "カスタム/var/lib/pgsqlボリュームへのパス"
 
-#: shared/connection.go:103
-msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
-msgstr "uyuniコンテナは、podman、podman-remote、またはkubectlのいずれかでアクセスできません"
+#~ msgid "Path to custom /var/spacewalk volume"
+#~ msgstr "カスタム/var/spacewalkボリュームへのパス"
 
-#: shared/connection.go:106
-#, javascript-format
-msgid "unsupported backend %s"
-msgstr "サポートされていないバックエンド %s"
+#~ msgid "Path to custom /srv/www/ volume"
+#~ msgstr "カスタム/srv/www/ボリュームへのパス"
 
-#: shared/connection.go:127
-#, javascript-format
-msgid "container %s is not running on podman"
-msgstr "コンテナ %s はpodmanで実行されていません"
+#, fuzzy
+#~ msgid "volume folder (%[1]s) already exists, cannot link it to %[2]s"
+#~ msgstr "ボリュームフォルダ (%s) はすでに存在します。%s にリンクできません"
 
-#: shared/connection.go:149
 #, fuzzy, javascript-format
-msgid "the container is not running, %s command not executed:"
-msgstr "コンテナが実行されていません。%s %s コマンドが実行されませんでした: %s"
+#~ msgid "failed to create volumes folder %s"
+#~ msgstr "ボリュームフォルダ %s の作成に失敗しました: %s"
 
-#: shared/connection.go:196
-msgid "server didn't start within 60s. Check for the service status"
-msgstr "サーバが60秒以内に起動しませんでした。サービスステータスを確認します"
+#, fuzzy
+#~ msgid "failed to link volume folder %[1]s to %[2]s"
+#~ msgstr "ボリュームフォルダ %s を %s にリンクできませんでした: %s"
 
-#: shared/connection.go:226 shared/connection.go:265
-#, javascript-format
-msgid "unknown container kind: %s"
-msgstr "不明なコンテナの種類: %s"
-
-#: shared/connection.go:309
-msgid "failed to determine suitable backend"
-msgstr "適切なバックエンドを決定できませんでした"
-
-#: shared/connection.go:319
-msgid "no supported backend found"
-msgstr "サポートされているバックエンドが見つかりません"
+#, fuzzy
+#~ msgid "failed to get podman's volumes folder"
+#~ msgstr "podmanのボリュームフォルダの取得に失敗しました: %s"
 
 #, javascript-format
 #~ msgid "failed to pull image: %s"
