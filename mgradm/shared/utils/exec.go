@@ -15,7 +15,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared"
-	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -135,37 +134,6 @@ func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, pr
 	}
 
 	return scriptDir, cleaner, nil
-}
-
-// RunningImage returns the image running in the current system.
-func RunningImage(cnx *shared.Connection) (string, error) {
-	command, err := cnx.GetCommand()
-
-	switch command {
-	case "podman":
-		args := []string{"ps", "--format", "{{.Image}}", "--noheading"}
-		image, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", args...)
-		if err != nil {
-			return "", err
-		}
-		return strings.Trim(string(image), "\n"), nil
-
-	case "kubectl":
-
-		// FIXME this will work until containers 0 is uyuni. Then jsonpath should be something like
-		// {.items[0].spec.containers[?(@.name=="` + containerName + `")].image but there are problems
-		// using RunCmdOutput with an arguments with round brackets
-		args := []string{"get", "pods", kubernetes.ServerFilter, "-o", "jsonpath={.items[0].spec.containers[0].image}"}
-		image, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
-
-		log.Info().Msgf(L("Image is: %s"), image)
-		if err != nil {
-			return "", err
-		}
-		return strings.Trim(string(image), "\n"), nil
-	}
-
-	return command, err
 }
 
 // SanityCheck verifies if an upgrade can be run.

@@ -31,7 +31,7 @@ func podmanScale(
 	}
 	if service == podman.HubXmlrpcService {
 		if newReplicas > 1 {
-			return errors.New(L("Multiple Hub XML-RPC container replicas are not currently supported."))
+			return errors.New(L("Multiple Hub XML-RPC API container replicas are not currently supported."))
 		}
 		return systemd.ScaleService(newReplicas, service)
 	}

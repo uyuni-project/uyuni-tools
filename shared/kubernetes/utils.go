@@ -389,3 +389,18 @@ func GenerateOverrideDeployment(deployData types.Deployment) (string, error) {
 	}
 	return string(ret), nil
 }
+
+// GetRunningImage returns the image of containerName for the server running in the current system.
+func GetRunningImage(containerName string) (string, error) {
+	args := []string{
+		"get", "pods", "-A", ServerFilter,
+		"-o", "jsonpath={.items[0].spec.containers[?(@.name=='" + containerName + "')].image}",
+	}
+	image, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
+
+	log.Debug().Msgf("%[1]s container image is: %[2]s", containerName, image)
+	if err != nil {
+		return "", err
+	}
+	return strings.Trim(string(image), "\n"), nil
+}

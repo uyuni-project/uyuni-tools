@@ -15,15 +15,18 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// InstallK3sTraefikConfig installs the K3s Traefik configuration.
-func InstallK3sTraefikConfig(debug bool) {
+// GetPortLists returns compiled lists of tcp and udp ports..
+func GetPortLists(hub bool, debug bool) ([]types.PortMap, []types.PortMap) {
 	tcpPorts := []types.PortMap{}
 	tcpPorts = append(tcpPorts, utils.TCPPorts...)
 	if debug {
 		tcpPorts = append(tcpPorts, utils.DebugPorts...)
 	}
+	if hub {
+		tcpPorts = append(tcpPorts, utils.HubXmlrpcPorts...)
+	}
 
-	kubernetes.InstallK3sTraefikConfig(tcpPorts, utils.UDPPorts)
+	return tcpPorts, utils.UDPPorts
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
