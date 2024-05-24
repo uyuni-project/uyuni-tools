@@ -19,6 +19,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short: L("Upgrade a proxy"),
 		Long:  L("Upgrade a proxy"),
 	}
+	upgradeCmd.PersistentFlags().StringVar(&globalFlags.Registry, "registry", "", L("specify a private registry"))
 
 	upgradeCmd.AddCommand(podman.NewCommand(globalFlags))
 	upgradeCmd.AddCommand(kubernetes.NewCommand(globalFlags))

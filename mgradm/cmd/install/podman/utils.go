@@ -25,11 +25,9 @@ import (
 func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
 	if flags.HubXmlrpc.Enable {
 		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
-		tag := flags.HubXmlrpc.Image.Tag
-		if tag == "" {
-			tag = flags.Image.Tag
+		if flags.HubXmlrpc.Image.Tag == "" {
+			flags.HubXmlrpc.Image.Tag = flags.Image.Tag
 		}
-		flags.HubXmlrpc.Image.Tag = tag
 		hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image)
 		if err != nil {
 			return utils.Errorf(err, L("failed to compute image URL"))

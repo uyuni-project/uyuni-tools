@@ -16,6 +16,7 @@ import (
 
 // ProxyImageFlags are the flags used by install proxy command.
 type ProxyImageFlags struct {
+	Registry       string           `mapstructure:"registry"`
 	ImagesLocation string           `mapstructure:"imagesLocation"`
 	Tag            string           `mapstructure:"tag"`
 	PullPolicy     string           `mapstructure:"pullPolicy"`

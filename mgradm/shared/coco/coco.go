@@ -18,18 +18,16 @@ import (
 
 // SetupCocoContainer sets up the confidential computing attestation service.
 func SetupCocoContainer(replicas int, image types.ImageFlags, baseImage types.ImageFlags, db shared.DbFlags) error {
-	tag := image.Tag
-	if tag == "" {
+	if image.Tag == "" {
 		if baseImage.Tag != "" {
-			tag = baseImage.Tag
+			image.Tag = baseImage.Tag
 		} else {
-			tag = "latest"
+			image.Tag = "latest"
 		}
 	}
-	image.Tag = tag
 	cocoImage, err := utils.ComputeImage(image)
 	if err != nil {
-		baseImage.Tag = tag
+		baseImage.Tag = image.Tag
 		cocoImage, err = utils.ComputeImage(baseImage, "-attestation")
 		if err != nil {
 			return utils.Errorf(err, L("failed to compute image URL"))

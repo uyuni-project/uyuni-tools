@@ -28,6 +28,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:  cobra.RangeArgs(0, 1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanUpgradeFlags
+			flags.Image.Registry = globalFlags.Registry
+			flags.DbUpgradeImage.Registry = globalFlags.Registry
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, upgradePodman)
 		},
 	}

@@ -5,8 +5,6 @@
 package utils
 
 import (
-	"path"
-
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -18,11 +16,8 @@ import (
 // On SUSE distros this should be overridden with /usr/share/locale.
 var LocaleRoot = "locale"
 
-// DefaultRegsitry represents the default registry used for image.
-var DefaultRegistry = "registry.opensuse.org"
-
 // DefaultNamespace represents the default name used for image.
-var DefaultNamespace = path.Join(DefaultRegistry, "uyuni")
+var DefaultNamespace = "registry.opensuse.org/uyuni"
 
 // DefaultTag represents the default tag used for image.
 var DefaultTag = "latest"

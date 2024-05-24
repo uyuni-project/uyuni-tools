@@ -14,6 +14,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -141,8 +142,16 @@ func YesNo(question string) (bool, error) {
 
 // ComputeImage assembles the container image from its name and tag.
 func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, error) {
+	if !strings.Contains(DefaultNamespace, imageFlags.Registry) {
+		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), imageFlags.Registry, DefaultNamespace)
+	}
 	name := imageFlags.Name
+	if !strings.Contains(imageFlags.Name, imageFlags.Registry) {
+		name = path.Join(imageFlags.Registry, imageFlags.Name)
+		log.Info().Msgf(L("The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."), imageFlags.Name, imageFlags.Registry, name)
+	}
 	tag := imageFlags.Tag
+
 	submatches := imageValid.FindStringSubmatch(name)
 	if submatches == nil {
 		return "", fmt.Errorf(L("invalid image name: %s"), name)
