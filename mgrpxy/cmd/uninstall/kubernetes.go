@@ -6,11 +6,25 @@ package uninstall
 
 import (
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func uninstallForKubernetes(dryRun bool) error {
+func uninstallForKubernetes(
+	globalFlags *types.GlobalFlags,
+	flags *utils.UninstallFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	dryRun := !flags.Force
+
+	if flags.Purge.Volumes {
+		log.Warn().Msg(L("--purge-volumes is ignored on a kubernetes deployment"))
+	}
+
 	clusterInfos, err := kubernetes.CheckCluster()
 	if err != nil {
 		return err

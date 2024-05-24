@@ -20,10 +20,14 @@ import (
 
 func uninstallForKubernetes(
 	globalFlags *types.GlobalFlags,
-	flags *uninstallFlags,
+	flags *utils.UninstallFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	if flags.Purge.Volumes {
+		log.Warn().Msg(L("--purge-volumes is ignored on a kubernetes deployment"))
+	}
+
 	clusterInfos, err := kubernetes.CheckCluster()
 	if err != nil {
 		return err
