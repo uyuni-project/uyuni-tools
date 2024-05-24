@@ -20,11 +20,11 @@ import (
 
 func podmanInspect(
 	globalFlags *types.GlobalFlags,
-	flags *inspectFlags,
+	flags *types.ImageFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	serverImage, err := utils.ComputeImage(flags.Image, flags.Tag)
+	serverImage, err := utils.ComputeImage(flags.Name, flags.Tag)
 	if err != nil && len(serverImage) > 0 {
 		return utils.Errorf(err, L("failed to determine image"))
 	}
