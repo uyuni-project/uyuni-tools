@@ -12,6 +12,12 @@ type ImageFlags struct {
 	PullPolicy string `mapstructure:"pullPolicy"`
 }
 
+// HubXmlrpcFlags contains settings for Hub XMLRPC container.
+type HubXmlrpcFlags struct {
+	Replicas int
+	Image    ImageFlags `mapstructure:",squash"`
+}
+
 // ImageMetadata represents the image metadata of an RPM image.
 type ImageMetadata struct {
 	Name string   `json:"name"`

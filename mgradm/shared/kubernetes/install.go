@@ -23,17 +23,36 @@ import (
 // HELM_APP_NAME is the Helm application name.
 const HELM_APP_NAME = "uyuni"
 
+// Compute Hub Xmlrpc image.
+func ComputeHubXmlrpcImage(imageFlags *types.ImageFlags, hubXmlrpcFlags *types.HubXmlrpcFlags) (string, error) {
+	if hubXmlrpcFlags.Replicas > 0 {
+		log.Info().Msg(L("Enabling Hub XMLRPC API container."))
+		tag := hubXmlrpcFlags.Image.Tag
+		if tag == "" {
+			tag = imageFlags.Tag
+		}
+		hubXmlrpcImage, err := utils.ComputeImage(hubXmlrpcFlags.Image, tag)
+		if err != nil {
+			return "", err
+		}
+		return hubXmlrpcImage, nil
+	}
+	return "", nil
+}
+
 // Deploy execute a deploy of a given image and helm to a cluster.
 func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
+	hubXmlrpcFlags *types.HubXmlrpcFlags,
 	helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, clusterInfos *kubernetes.ClusterInfos,
 	fqdn string, debug bool, helmArgs ...string) error {
 	// If installing on k3s, install the traefik helm config in manifests
 	isK3s := clusterInfos.IsK3s()
 	IsRke2 := clusterInfos.IsRke2()
+	tcpPorts, udpPorts := CompilePortLists(hubXmlrpcFlags.Replicas > 0, debug)
 	if isK3s {
-		InstallK3sTraefikConfig(debug)
+		kubernetes.InstallK3sTraefikConfig(tcpPorts, udpPorts)
 	} else if IsRke2 {
-		kubernetes.InstallRke2NginxConfig(utils.TCP_PORTS, utils.UDP_PORTS, helmFlags.Uyuni.Namespace)
+		kubernetes.InstallRke2NginxConfig(tcpPorts, udpPorts, helmFlags.Uyuni.Namespace)
 	}
 
 	serverImage, err := utils.ComputeImage(*imageFlags)
@@ -41,8 +60,13 @@ func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
+	hubXmlrpcImage, err := ComputeHubXmlrpcImage(imageFlags, hubXmlrpcFlags)
+	if err != nil {
+		return utils.Errorf(err, L("failed to compute image URL"))
+	}
+
 	// Install the uyuni server helm chart
-	err = UyuniUpgrade(serverImage, imageFlags.PullPolicy, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
+	err = UyuniUpgrade(serverImage, imageFlags.PullPolicy, hubXmlrpcFlags.Replicas, hubXmlrpcImage, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade"))
 	}
@@ -88,7 +112,7 @@ func DeployExistingCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_uti
 }
 
 // UyuniUpgrade runs an helm upgrade using images and helm configuration as parameters.
-func UyuniUpgrade(serverImage string, pullPolicy string, helmFlags *cmd_utils.HelmFlags, kubeconfig string,
+func UyuniUpgrade(serverImage string, pullPolicy string, hubXmlrpcReplicas int, hubXmlrpcImage string, helmFlags *cmd_utils.HelmFlags, kubeconfig string,
 	fqdn string, ingress string, helmArgs ...string) error {
 	log.Info().Msg(L("Installing Uyuni"))
 
@@ -108,6 +132,11 @@ func UyuniUpgrade(serverImage string, pullPolicy string, helmFlags *cmd_utils.He
 		"--set", "pullPolicy="+kubernetes.GetPullPolicy(pullPolicy),
 		"--set", "fqdn="+fqdn)
 
+	if hubXmlrpcReplicas > 0 {
+		helmParams = append(helmParams,
+			"--set", fmt.Sprintf("hubXmlrpcRepicas=%v", hubXmlrpcReplicas),
+			"--set", "images.hub_xmlrpc="+hubXmlrpcImage)
+	}
 	helmParams = append(helmParams, helmArgs...)
 
 	namespace := helmFlags.Uyuni.Namespace
@@ -207,7 +236,7 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	err = UyuniUpgrade(serverImage, image.PullPolicy, &helm, kubeconfig, fqdn, clusterInfos.Ingress)
+	err = UyuniUpgrade(serverImage, image.PullPolicy, 0, "", &helm, kubeconfig, fqdn, clusterInfos.Ingress)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}
