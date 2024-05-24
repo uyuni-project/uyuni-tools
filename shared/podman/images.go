@@ -43,6 +43,8 @@ func PrepareImage(image string, pullPolicy string, args ...string) (string, erro
 			log.Debug().Msgf("Image %s already present", presentImage)
 			return presentImage, nil
 		}
+	} else {
+		log.Info().Msgf(L("Pull Policy is always. Presence of RPM image will be checked and if it's not present it will be pulled from registry"))
 	}
 
 	rpmImageFile := GetRpmImagePath(image)
