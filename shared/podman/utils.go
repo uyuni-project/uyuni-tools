@@ -24,6 +24,9 @@ const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup
 // ServerContainerName represents the server container name.
 const ServerContainerName = "uyuni-server"
 
+// HubXmlrpcContainerName is the container name for the Hub XML-RPC API.
+const HubXmlrpcContainerName = "uyuni-hub-xmlrpc"
+
 // ProxyContainerNames represents all the proxy container names.
 var ProxyContainerNames = []string{
 	"uyuni-proxy-httpd",
@@ -123,6 +126,51 @@ func DeleteContainer(name string, dryRun bool) {
 	} else {
 		log.Info().Msg(L("Container already removed"))
 	}
+}
+
+// GetServiceImage returns the value of the UYUNI_IMAGE variable for a systemd service.
+func GetServiceImage(service string) string {
+	serviceConfPath := GetServiceConfPath(service)
+	if !utils.FileExists(serviceConfPath) {
+		return ""
+	}
+
+	content := string(utils.ReadFile(serviceConfPath))
+	lines := strings.Split(content, "\n")
+	const imagePrefix = "Environment=UYUNI_IMAGE="
+	for _, line := range lines {
+		if strings.HasPrefix(line, imagePrefix) {
+			return strings.TrimSpace(strings.TrimPrefix(line, imagePrefix))
+		}
+	}
+
+	return ""
+}
+
+// DeleteImage deletes a podman image based on its name.
+// If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
+func DeleteImage(name string, dryRun bool) error {
+	exists := imageExists(name)
+	if exists {
+		if dryRun {
+			log.Info().Msgf(L("Would run %s"), "podman image rm "+name)
+		} else {
+			log.Info().Msgf(L("Run %s"), "podman image rm "+name)
+			err := utils.RunCmd("podman", "image", "rm", name)
+			if err != nil {
+				log.Error().Err(err).Msgf(L("Failed to remove image %s"), name)
+			}
+		}
+	}
+	return nil
+}
+
+func imageExists(volume string) bool {
+	cmd := exec.Command("podman", "image", "exists", volume)
+	if err := cmd.Run(); err != nil {
+		return false
+	}
+	return cmd.ProcessState.ExitCode() == 0
 }
 
 // DeleteVolume deletes a podman volume based on its name.
