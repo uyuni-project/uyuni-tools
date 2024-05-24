@@ -13,7 +13,7 @@ import (
 
 func kuberneteInspect(
 	globalFlags *types.GlobalFlags,
-	flags *inspectFlags,
+	flags *types.ImageFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
