@@ -40,7 +40,7 @@ func migrateToKubernetes(
 	}
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 
-	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
+	serverImage, err := utils.ComputeImage(flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}

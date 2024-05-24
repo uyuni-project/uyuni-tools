@@ -35,9 +35,10 @@ type Tuning struct {
 
 // Get the full container image name and tag for a container name.
 func (f *ProxyImageFlags) GetContainerImage(name string) string {
-	imageName := "proxy-" + name
-	image := fmt.Sprintf("%s/%s", f.ImagesLocation, imageName)
-	tag := f.Tag
+	computedImage := types.ImageFlags{
+		Name: fmt.Sprintf("%s/%s", f.ImagesLocation, "proxy-"+name),
+		Tag:  f.Tag,
+	}
 
 	var containerImage *types.ImageFlags
 	switch name {
@@ -57,14 +58,14 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 
 	if containerImage != nil {
 		if containerImage.Name != "" {
-			image = containerImage.Name
+			computedImage.Name = containerImage.Name
 		}
 		if containerImage.Tag != "" {
-			tag = containerImage.Tag
+			computedImage.Tag = containerImage.Tag
 		}
 	}
 
-	imageUrl, err := utils.ComputeImage(image, tag)
+	imageUrl, err := utils.ComputeImage(computedImage)
 	if err != nil {
 		log.Fatal().Err(err).Msg(L("failed to compute image URL"))
 	}

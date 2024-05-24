@@ -140,7 +140,9 @@ func YesNo(question string) (bool, error) {
 }
 
 // ComputeImage assembles the container image from its name and tag.
-func ComputeImage(name string, tag string, appendToName ...string) (string, error) {
+func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, error) {
+	name := imageFlags.Name
+	tag := imageFlags.Tag
 	submatches := imageValid.FindStringSubmatch(name)
 	if submatches == nil {
 		return "", fmt.Errorf(L("invalid image name: %s"), name)

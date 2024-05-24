@@ -24,7 +24,7 @@ func podmanInspect(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	serverImage, err := utils.ComputeImage(flags.Name, flags.Tag)
+	serverImage, err := utils.ComputeImage(*flags)
 	if err != nil && len(serverImage) > 0 {
 		return utils.Errorf(err, L("failed to determine image"))
 	}

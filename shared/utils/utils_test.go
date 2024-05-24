@@ -16,6 +16,7 @@ import (
 	"github.com/chai2010/gettext-go"
 	"github.com/spf13/cobra"
 	l10n_utils "github.com/uyuni-project/uyuni-tools/shared/l10n/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 type askTestData struct {
@@ -183,17 +184,19 @@ func TestComputeImage(t *testing.T) {
 
 	for i, testCase := range data {
 		result := testCase[0]
-		image := testCase[1]
-		tag := testCase[2]
+		image := types.ImageFlags{
+			Name: testCase[1],
+			Tag:  testCase[2],
+		}
 		appendToImage := testCase[3:]
 
-		actual, err := ComputeImage(image, tag, appendToImage...)
+		actual, err := ComputeImage(image, appendToImage...)
 
 		if err != nil {
-			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s: %s", i, image, tag, appendToImage, err)
+			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s: %s", i, image.Name, image.Tag, appendToImage, err)
 		}
 		if actual != result {
-			t.Errorf("Testcase %d: Expected %s got %s when computing image with %s, %s, %s", i, result, actual, image, tag, appendToImage)
+			t.Errorf("Testcase %d: Expected %s got %s when computing image with %s, %s, %s", i, result, actual, image.Name, image.Tag, appendToImage)
 		}
 	}
 }
@@ -204,12 +207,14 @@ func TestComputeImageError(t *testing.T) {
 	}
 
 	for _, testCase := range data {
-		image := testCase[0]
-		tag := testCase[1]
+		image := types.ImageFlags{
+			Name: testCase[0],
+			Tag:  testCase[1],
+		}
 
-		_, err := ComputeImage(image, tag)
+		_, err := ComputeImage(image)
 		if err == nil {
-			t.Errorf("Expected error for %s with tag %s, got none", image, tag)
+			t.Errorf("Expected error for %s with tag %s, got none", image.Name, image.Tag)
 		}
 	}
 }
