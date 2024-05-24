@@ -24,6 +24,9 @@ func uninstallForKubernetes(
 	if flags.Purge.Volumes {
 		log.Warn().Msg(L("--purge-volumes is ignored on a kubernetes deployment"))
 	}
+	if flags.Purge.Images {
+		log.Warn().Msg(L("--purge-images is ignored on a kubernetes deployment"))
+	}
 
 	clusterInfos, err := kubernetes.CheckCluster()
 	if err != nil {

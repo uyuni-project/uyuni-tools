@@ -21,6 +21,15 @@ func uninstallForPodman(
 ) error {
 	dryRun := !flags.Force
 
+	// Get the images from the service configs before they are removed
+	images := []string{
+		podman.GetServiceImage("uyuni-proxy-httpd"),
+		podman.GetServiceImage("uyuni-proxy-salt-broker"),
+		podman.GetServiceImage("uyuni-proxy-squid"),
+		podman.GetServiceImage("uyuni-proxy-ssh"),
+		podman.GetServiceImage("uyuni-proxy-tftpd"),
+	}
+
 	// Uninstall the service
 	podman.UninstallService("uyuni-proxy-pod", dryRun)
 	podman.UninstallService("uyuni-proxy-httpd", dryRun)
@@ -55,6 +64,17 @@ func uninstallForPodman(
 			}
 		}
 		log.Info().Msg(L("All volumes removed"))
+	}
+
+	if flags.Purge.Images {
+		for _, image := range images {
+			if image != "" {
+				if err := podman.DeleteImage(image, !flags.Force); err != nil {
+					return utils.Errorf(err, L("cannot delete image %s"), image)
+				}
+			}
+		}
+		log.Info().Msg(L("All images have been removed"))
 	}
 
 	podman.DeleteNetwork(dryRun)
