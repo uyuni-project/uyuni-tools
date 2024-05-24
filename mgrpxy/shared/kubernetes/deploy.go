@@ -173,7 +173,7 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
-		if _, err = kubernetes.GetNode("uyuni"); err != nil {
+		if _, err = kubernetes.GetNode(kubernetes.ServerFilter); err != nil {
 			err = kubernetes.ReplicasTo(kubernetes.ProxyApp, 1)
 		}
 	}()

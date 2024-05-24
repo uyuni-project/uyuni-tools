@@ -13,8 +13,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -35,8 +33,7 @@ func kuberneteInspect(
 	if len(serverImage) <= 0 {
 		log.Debug().Msg("Use deployed image")
 
-		cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
-		serverImage, err = adm_utils.RunningImage(cnx, "uyuni")
+		serverImage, err = shared_kubernetes.GetRunningImage("uyuni")
 		if err != nil {
 			return fmt.Errorf(L("failed to find the image of the currently running server container: %s"))
 		}
