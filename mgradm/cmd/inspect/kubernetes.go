@@ -14,7 +14,6 @@ import (
 	"github.com/spf13/cobra"
 
 	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -37,7 +36,7 @@ func kuberneteInspect(
 	if len(serverImage) <= 0 {
 		log.Debug().Msg("Use deployed image")
 
-		serverImage, err = adm_utils.RunningImage(cnx, "uyuni")
+		serverImage, err = shared_kubernetes.GetRunningImage("uyuni")
 		if err != nil {
 			return fmt.Errorf(L("failed to find the image of the currently running server container: %s"))
 		}
