@@ -128,6 +128,14 @@ func installForPodman(
 		return err
 	}
 
+	if path, err := exec.LookPath("uyuni-payg-extract-data"); err == nil {
+		// the binary is installed
+		err = utils.RunCmdStdMapping(zerolog.DebugLevel, path)
+		if err != nil {
+			return utils.Errorf(err, L("failed to extract payg data"))
+		}
+	}
+
 	if err := coco.SetupCocoContainer(flags.Coco.Replicas, flags.Coco.Image, flags.Image, flags.Db); err != nil {
 		return err
 	}
