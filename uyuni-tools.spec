@@ -303,6 +303,12 @@ tag=%{!?_default_tag:latest}
 %endif
 # "%{?_default_tag}" != ""
 
+pull_policy=%{!?_default_pull_policy:Always}
+%if "%{?_default_pull_policy}" != ""
+    pull_policy='%{_default_pull_policy}'
+%endif
+# "%{?_default_pull_policy}" != ""
+
 image=%{namespace}
 %if "%{?_default_namespace}" != ""
   namespace='%{_default_namespace}'
@@ -334,6 +340,10 @@ fi
 
 if test -n "${tag}"; then
     GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultTag=${tag}"
+fi
+
+if test -n "${pull_policy}"; then
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultPullPolicy=${pull_policy}"
 fi
 
 # Workaround for rpm on Fedora and EL clones not able to handle go's compressed debug symbols
