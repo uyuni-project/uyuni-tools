@@ -470,3 +470,29 @@ func CallCloudGuestRegistryAuth() error {
 	// silently ignore error if it is missing
 	return nil
 }
+
+// Setup Hub XMLRPC service container if it is enabled in the flags.
+func SetupHubXmlrpcContainer(flags *types.HubXmlrpcFlags, defaultTag string) error {
+	if flags.Replicas > 0 {
+		if flags.Replicas > 1 {
+			return errors.New(L("Multiple Hub XML-RPC container replicas are not currently supported."))
+		}
+		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
+		if flags.Image.Tag == "" {
+			flags.Image.Tag = defaultTag
+		}
+		hubXmlrpcImage, err := utils.ComputeImage(flags.Image)
+		if err != nil {
+			return utils.Errorf(err, L("failed to compute image URL"))
+		}
+
+		if err := GenerateHubXmlrpcSystemdService(hubXmlrpcImage); err != nil {
+			return utils.Errorf(err, L("cannot generate systemd service"))
+		}
+
+		if err := podman.ScaleService(flags.Replicas, podman.HubXmlrpcService); err != nil {
+			return utils.Errorf(err, L("cannot enable service"))
+		}
+	}
+	return nil
+}

@@ -45,6 +45,14 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
+	hubXmlrpcImage := ""
+	if flags.HubXmlrpc.Replicas > 0 {
+		hubXmlrpcImage, err = kubernetes.ComputeHubXmlrpcImage(&flags.Image, &flags.HubXmlrpc.Image)
+		if err != nil {
+			return utils.Errorf(err, L("failed to compute image URL"))
+		}
+	}
+
 	fqdn := args[0]
 
 	// Find the SSH Socket and paths for the migration
@@ -70,10 +78,8 @@ func migrateToKubernetes(
 	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
 	var sslFlags adm_utils.SslCertFlags
 
-	hubXmlrpcFlags := types.HubXmlrpcFlags{false, types.ImageFlags{"", "", ""}}
-
 	// Deploy for running migration command
-	if err := kubernetes.Deploy(cnx, &flags.Image, &hubXmlrpcFlags, &flags.Helm, &sslFlags, clusterInfos, fqdn, false,
+	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.HubXmlrpc, &flags.Helm, &sslFlags, clusterInfos, fqdn, false,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
@@ -127,7 +133,7 @@ func migrateToKubernetes(
 	helmArgs = append(helmArgs, setupSslArray...)
 
 	// Run uyuni upgrade using the new ssl certificate
-	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, 0, "", &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, flags.HubXmlrpc.Replicas, hubXmlrpcImage, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade helm chart to image %s using new SSL certificate"), serverImage)
 	}
@@ -156,7 +162,7 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, 0, "", &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, flags.HubXmlrpc.Replicas, hubXmlrpcImage, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}
