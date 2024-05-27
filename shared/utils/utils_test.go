@@ -147,7 +147,6 @@ func TestAskPasswordIfMissing(t *testing.T) {
 func TestComputePTF(t *testing.T) {
 	data := [][]string{
 		{"registry.suse.com/a/a196136/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977", "a196136", "27977", "registry.suse.com/suse/manager/5.0/x86_64/proxy-helm:latest", "ptf"},
-		//{"registry.suse.com/a/a196136/26859/suse/manager/5.0/x86_64/server:latest-test-26859", "a196136", "26859", "registry.suse.com/suse/manager/5.0/x64_64/server:latest", "test"},
 	}
 
 	for i, testCase := range data {
@@ -182,6 +181,7 @@ func TestComputeImage(t *testing.T) {
 		{"registry:5000/path/to/image-migration-14-16:bar", "registry:5000/path/to/image", "bar", "", "-migration-14-16"},
 		{"registry/path/to/image-migration-14-16:foo", "registry/path/to/image:foo", "bar", "", "-migration-14-16"},
 		{"registry/path/to/image-migration-14-16:bar", "registry/path/to/image", "bar", "", "-migration-14-16"},
+		{"registry/path/to/image-migration-14-16:bar", "path/to/image", "bar", "registry", "-migration-14-16"},
 	}
 
 	for i, testCase := range data {
