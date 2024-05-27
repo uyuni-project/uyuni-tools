@@ -234,7 +234,7 @@ func getContainerImage(flags *utils.ProxyImageFlags, name string) (string, error
 	pullArgs := []string{}
 	_, scc_user_exist := inspectedHostValues["host_scc_username"]
 	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
+	if scc_user_exist && scc_user_password && strings.Contains(image, "registry.suse.com") {
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 

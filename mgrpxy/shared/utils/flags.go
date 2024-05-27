@@ -6,6 +6,7 @@ package utils
 
 import (
 	"fmt"
+	"path"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -16,16 +17,15 @@ import (
 
 // ProxyImageFlags are the flags used by install proxy command.
 type ProxyImageFlags struct {
-	Registry       string           `mapstructure:"registry"`
-	ImagesLocation string           `mapstructure:"imagesLocation"`
-	Tag            string           `mapstructure:"tag"`
-	PullPolicy     string           `mapstructure:"pullPolicy"`
-	Httpd          types.ImageFlags `mapstructure:"httpd"`
-	SaltBroker     types.ImageFlags `mapstructure:"saltBroker"`
-	Squid          types.ImageFlags `mapstructure:"squid"`
-	Ssh            types.ImageFlags `mapstructure:"ssh"`
-	Tftpd          types.ImageFlags `mapstructure:"tftpd"`
-	Tuning         Tuning           `mapstructure:"tuning"`
+	Registry   string           `mapstructure:"registry"`
+	Tag        string           `mapstructure:"tag"`
+	PullPolicy string           `mapstructure:"pullPolicy"`
+	Httpd      types.ImageFlags `mapstructure:"httpd"`
+	SaltBroker types.ImageFlags `mapstructure:"saltBroker"`
+	Squid      types.ImageFlags `mapstructure:"squid"`
+	Ssh        types.ImageFlags `mapstructure:"ssh"`
+	Tftpd      types.ImageFlags `mapstructure:"tftpd"`
+	Tuning     Tuning           `mapstructure:"tuning"`
 }
 
 // Tuning are the custom configuration file provide by users.
@@ -37,7 +37,7 @@ type Tuning struct {
 // Get the full container image name and tag for a container name.
 func (f *ProxyImageFlags) GetContainerImage(name string) string {
 	computedImage := types.ImageFlags{
-		Name: fmt.Sprintf("%s/%s", f.ImagesLocation, "proxy-"+name),
+		Name: path.Join(f.Registry, "proxy-"+name),
 		Tag:  f.Tag,
 	}
 
@@ -75,8 +75,6 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 
 // AddImageFlags will add the proxy install flags to a command.
 func AddImageFlags(cmd *cobra.Command) {
-	cmd.Flags().String("imagesLocation", utils.DefaultNamespace,
-		L("registry URL prefix containing the all the container images"))
 	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))
 	utils.AddPullPolicyFlag(cmd)
 
