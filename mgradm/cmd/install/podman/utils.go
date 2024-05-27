@@ -23,7 +23,7 @@ import (
 )
 
 func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
-	if flags.HubXmlrpc.Enable {
+	if flags.HubXmlrpc.Replicas > 0 {
 		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
 		if flags.HubXmlrpc.Image.Tag == "" {
 			flags.HubXmlrpc.Image.Tag = flags.Image.Tag
