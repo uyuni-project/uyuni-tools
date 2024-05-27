@@ -22,6 +22,9 @@ var DefaultNamespace = "registry.opensuse.org/uyuni"
 // DefaultTag represents the default tag used for image.
 var DefaultTag = "latest"
 
+// DefaultPullP represents the default pull policy used for image.
+var DefaultPullPolicy = "Always"
+
 // This variable needs to be set a build time using git tags.
 var Version = "0.0.0"
 
@@ -63,13 +66,7 @@ func AddBackendFlag(cmd *cobra.Command) {
 //
 // For kubernetes the value is simply passed to the helm charts.
 func AddPullPolicyFlag(cmd *cobra.Command) {
-	cmd.Flags().String("pullPolicy", "IfNotPresent",
-		L("set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
-}
-
-// AddPullPolicyFlag adds the --pullPolicy flag to an upgrade command.
-func AddPullPolicyUpgradeFlag(cmd *cobra.Command) {
-	cmd.Flags().String("pullPolicy", "Always",
+	cmd.Flags().String("pullPolicy", DefaultPullPolicy,
 		L("set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
 }
 
