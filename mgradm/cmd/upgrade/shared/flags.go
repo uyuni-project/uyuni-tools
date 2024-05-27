@@ -18,11 +18,11 @@ type UpgradeFlags struct {
 
 // AddUpgradeFlags add upgrade flags to a command.
 func AddUpgradeFlags(cmd *cobra.Command) {
-	utils.AddImageUpgradeFlag(cmd)
+	utils.AddImageFlag(cmd)
 	utils.AddDbUpgradeImageFlag(cmd)
 }
 
 // AddUpgradeListFlags add upgrade list flags to a command.
 func AddUpgradeListFlags(cmd *cobra.Command) {
-	utils.AddImageUpgradeFlag(cmd)
+	utils.AddImageFlag(cmd)
 }
