@@ -229,7 +229,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 	pullArgs := []string{}
 	_, scc_user_exist := inspectedHostValues["host_scc_username"]
 	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
+	if scc_user_exist && scc_user_password && strings.Contains(serverImage, "registry.suse.com") {
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 
@@ -290,7 +290,7 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlag
 		pullArgs := []string{}
 		_, scc_user_exist := inspectedHostValues["host_scc_username"]
 		_, scc_user_password := inspectedHostValues["host_scc_password"]
-		if scc_user_exist && scc_user_password {
+		if scc_user_exist && scc_user_password && strings.Contains(upgradeImageUrl, "registry.suse.com") {
 			pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 		}
 
@@ -436,7 +436,7 @@ func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
 	pullArgs := []string{}
 	_, scc_user_exist := inspectedHostValues["host_scc_username"]
 	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
+	if scc_user_exist && scc_user_password && strings.Contains(serverImage, "registry.suse.com") {
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 
