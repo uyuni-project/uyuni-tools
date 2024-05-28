@@ -6,7 +6,9 @@ package shared
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -14,12 +16,14 @@ import (
 type UpgradeFlags struct {
 	Image          types.ImageFlags `mapstructure:",squash"`
 	DbUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
+	Coco           shared.CocoFlags
 }
 
 // AddUpgradeFlags add upgrade flags to a command.
 func AddUpgradeFlags(cmd *cobra.Command) {
 	utils.AddImageFlag(cmd)
 	utils.AddDbUpgradeImageFlag(cmd)
+	utils.AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"))
 }
 
 // AddUpgradeListFlags add upgrade list flags to a command.

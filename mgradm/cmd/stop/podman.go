@@ -5,9 +5,8 @@
 package stop
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
@@ -18,10 +17,8 @@ func podmanStop(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	for i := 0; i < podman.CurrentReplicaCount(podman.ServerAttestationService); i++ {
-		if err := podman.StopService(fmt.Sprintf("%s@%d", podman.ServerAttestationService, i)); err != nil {
-			return err
-		}
+	if err := coco.Stop(); err != nil {
+		return err
 	}
 	return podman.StopService(podman.ServerService)
 }
