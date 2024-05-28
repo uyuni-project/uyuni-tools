@@ -77,28 +77,49 @@ func checkValueSize(value string, min int, max int) bool {
 	return true
 }
 
+// CheckValidPassword performs check to a given password.
+func CheckValidPassword(value *string, prompt string, min int, max int) string {
+	fmt.Print(prompt + prompt_end)
+	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+	if err != nil {
+		log.Fatal().Err(err).Msgf(L("Failed to read password"))
+		return ""
+	}
+	tmpValue := strings.TrimSpace(string(bytePassword))
+
+	if tmpValue == "" {
+		fmt.Println("A value is required")
+		return ""
+	}
+
+	r := regexp.MustCompile(`[\t ]`)
+	invalidChars := r.MatchString(tmpValue)
+
+	if invalidChars {
+		fmt.Println(L("Cannot contain spaces or tabs"))
+		return ""
+	}
+
+	if !invalidChars && checkValueSize(tmpValue, min, max) {
+		*value = tmpValue
+	}
+	return *value
+}
+
 // AskPasswordIfMissing asks for password if missing.
 // Don't perform any check if min and max are set to 0.
 func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 	for *value == "" {
-		fmt.Print(prompt + prompt_end)
-		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
-		if err != nil {
-			log.Fatal().Err(err).Msgf(L("Failed to read password"))
+		firstRound := CheckValidPassword(value, prompt, min, max)
+		if firstRound == "" {
+			continue
 		}
-		tmpValue := strings.TrimSpace(string(bytePassword))
-		r := regexp.MustCompile(`^[^\t ]+$`)
-		validChars := r.MatchString(tmpValue)
-		if !validChars {
-			fmt.Printf(L("Cannot contain spaces or tabs"))
-		}
-
-		if validChars && checkValueSize(tmpValue, min, max) {
-			*value = tmpValue
-		}
-		fmt.Println()
-		if *value == "" {
-			fmt.Println("A value is required")
+		secondRound := CheckValidPassword(value, "\nConfirm the password", min, max)
+		if secondRound != firstRound {
+			fmt.Println(L("Two different passwords have been provided"))
+			*value = ""
+		} else {
+			*value = secondRound
 		}
 	}
 }
@@ -119,7 +140,7 @@ func AskIfMissing(value *string, prompt string, min int, max int, checker func(s
 		}
 		fmt.Println()
 		if *value == "" {
-			fmt.Println(L("A value is required"))
+			fmt.Print(L("A value is required"))
 		}
 	}
 }
