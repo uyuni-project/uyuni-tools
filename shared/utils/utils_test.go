@@ -27,7 +27,7 @@ type askTestData struct {
 	checker         func(string) bool
 }
 
-func TestAskIfMissing(t *testing.T) {
+func setupConsole(t *testing.T) (*expect.Console, func(t *testing.T)) {
 	// Set english locale to not depend on the system one
 	gettext.BindLocale(gettext.New("", "", l10n_utils.New("")))
 	gettext.SetLanguage("en")
@@ -36,17 +36,26 @@ func TestAskIfMissing(t *testing.T) {
 	if err != nil {
 		t.Errorf("Failed to create fake console")
 	}
-	defer c.Close()
 
-	origStdin := os.Stdin
+	origStdin := syscall.Stdin
+	origOsStdin := os.Stdin
 	origStdout := os.Stdout
 
+	syscall.Stdin = int(c.Tty().Fd())
 	os.Stdin = c.Tty()
 	os.Stdout = c.Tty()
-	defer func() {
-		os.Stdin = origStdin
+
+	return c, func(t *testing.T) {
+		syscall.Stdin = origStdin
+		os.Stdin = origOsStdin
 		os.Stdout = origStdout
-	}()
+		c.Close()
+	}
+}
+
+func TestAskIfMissing(t *testing.T) {
+	c, teardown := setupConsole(t)
+	defer teardown(t)
 
 	fChecker := func(v string) bool {
 		if !strings.Contains(v, "f") {
@@ -57,29 +66,17 @@ func TestAskIfMissing(t *testing.T) {
 	}
 
 	data := []askTestData{
-		{value: "\n", expectedMessage: "A value is required", min: 1, max: 5, checker: nil},
-		{value: "superlong\n", expectedMessage: "Has to be less than 5 characters long", min: 1, max: 5, checker: nil},
-		{value: "a\n", expectedMessage: "Has to be more than 2 characters long", min: 2, max: 5, checker: nil},
+		{value: "\n", expectedMessage: "A value is required", min: 1, max: 5},
+		{value: "superlong\n", expectedMessage: "Has to be less than 5 characters long", min: 1, max: 5},
+		{value: "a\n", expectedMessage: "Has to be more than 2 characters long", min: 2, max: 5},
 		{value: "booh\n", expectedMessage: "Has to contain an 'f'", min: 0, max: 0, checker: fChecker},
 	}
 
 	for i, testCase := range data {
 		go func() {
-			if _, err := c.ExpectString("Prompted value: "); err != nil {
-				t.Errorf("Testcase %d: Expected prompt error: %s", i, err)
-			}
-			if _, err := c.Send(testCase.value); err != nil {
-				t.Errorf("Testcase %d: Failed to send value to fake console: %s", i, err)
-			}
-			if _, err := c.Expect(expect.Regexp(regexp.MustCompile(testCase.expectedMessage))); err != nil {
-				t.Errorf("Testcase %d: Expected '%s' message: %s", i, testCase.expectedMessage, err)
-			}
-			if _, err := c.ExpectString("Prompted value: "); err != nil {
-				t.Errorf("Testcase %d: Expected prompt error: %s", i, err)
-			}
-			if _, err := c.Send("foo\n"); err != nil {
-				t.Errorf("Testcase %d: Failed to send value to fake console: %s", i, err)
-			}
+			sendInput(t, i, c, "Prompted value:", testCase.value, testCase.expectedMessage)
+			// Send a good value
+			sendInput(t, i, c, "Prompted value:", "foo\n", "")
 		}()
 
 		var value string
@@ -90,57 +87,73 @@ func TestAskIfMissing(t *testing.T) {
 	}
 }
 
-func TestAskPasswordIfMissing(t *testing.T) {
-	// Set english locale to not depend on the system one
-	gettext.BindLocale(gettext.New("", "", l10n_utils.New("")))
-	gettext.SetLanguage("en")
-
-	c, err := expect.NewConsole(expect.WithStdout(os.Stdout))
-	if err != nil {
-		t.Errorf("Failed to create fake console")
-	}
-	defer c.Close()
-
-	origStdin := syscall.Stdin
-	origStdout := os.Stdout
-
-	syscall.Stdin = int(c.Tty().Fd())
-	os.Stdout = c.Tty()
-	defer func() {
-		syscall.Stdin = origStdin
-		os.Stdout = origStdout
-	}()
+func TestCheckValidPassword(t *testing.T) {
+	c, teardown := setupConsole(t)
+	defer teardown(t)
 
 	data := []askTestData{
-		{value: "\n", expectedMessage: "A value is required", min: 1, max: 5, checker: nil},
-		{value: "superlong\n", expectedMessage: "Has to be less than 5 characters long", min: 1, max: 5, checker: nil},
-		{value: "a\n", expectedMessage: "Has to be more than 2 characters long", min: 2, max: 5, checker: nil},
+		{value: "\n", expectedMessage: "A value is required", min: 1, max: 5},
+		{value: "superlong\n", expectedMessage: "Has to be less than 5 characters long", min: 1, max: 5},
+		{value: "a\n", expectedMessage: "Has to be more than 2 characters long", min: 2, max: 5},
 	}
 
 	for i, testCase := range data {
 		go func() {
-			if _, err := c.ExpectString("Prompted password: "); err != nil {
-				t.Errorf("Testcase %d: Expected prompt error: %s", i, err)
-			}
-			if _, err := c.Send(testCase.value); err != nil {
-				t.Errorf("Testcase %d: Failed to send value to fake console: %s", i, err)
-			}
-			if _, err := c.Expect(expect.Regexp(regexp.MustCompile(testCase.expectedMessage))); err != nil {
-				t.Errorf("Testcase %d: Expected '%s' message: %s", i, testCase.expectedMessage, err)
-			}
-			if _, err := c.ExpectString("Prompted password: "); err != nil {
-				t.Errorf("Testcase %d: Expected prompt error: %s", i, err)
-			}
-			if _, err := c.Send("foo\n"); err != nil {
-				t.Errorf("Testcase %d: Failed to send value to fake console: %s", i, err)
-			}
+			sendInput(t, i, c, "Prompted password:", testCase.value, testCase.expectedMessage)
+			// Send a good password
+			sendInput(t, i, c, "Prompted password: ", "foo\n", "")
+			sendInput(t, i, c, "Confirm the password: ", "foo\n", "")
 		}()
 
 		var value string
 		AskPasswordIfMissing(&value, "Prompted password", testCase.min, testCase.max)
 		if value != "foo" {
-			t.Errorf("Expected 'foo', got '%s' value", value)
+			t.Errorf("Testcase %d: Expected 'foo', got '%s' value", i, value)
 		}
+	}
+}
+
+func TestPasswordMismatch(t *testing.T) {
+	c, teardown := setupConsole(t)
+	defer teardown(t)
+
+	go func() {
+		sendInput(t, 1, c, "Prompted password: ", "password1\n", "")
+		sendInput(t, 1, c, "Confirm the password: ", "password2\n", "")
+
+		if _, err := c.ExpectString("Two different passwords have been provided"); err != nil {
+			t.Errorf("Expected message error: %s", err)
+		}
+
+		// Send a good password
+		sendInput(t, 1, c, "Prompted password: ", "foo\n", "")
+		sendInput(t, 1, c, "Confirm the password: ", "foo\n", "")
+	}()
+
+	var value string
+	AskPasswordIfMissing(&value, "Prompted password", 1, 20)
+	if value != "foo" {
+		t.Errorf("Expected 'foo', got '%s' value", value)
+	}
+}
+
+func sendInput(t *testing.T, testcase int, c *expect.Console, expectedPrompt string, value string, expectedMessage string) {
+	if _, err := c.ExpectString(expectedPrompt); err != nil {
+		t.Errorf("Testcase %d: Expected prompt error: %s", testcase, err)
+	}
+	if _, err := c.Send(value); err != nil {
+		t.Errorf("Testcase %d: Failed to send value to fake console: %s", testcase, err)
+	}
+	t.Logf("Value sent: '%s'", value)
+	if expectedMessage == "" {
+		return
+	}
+
+	if _, err := c.Expect(expect.Regexp(regexp.MustCompile(expectedMessage))); err != nil {
+		t.Errorf("Testcase %d: Expected '%s' message: %s", testcase, expectedMessage, err)
+	}
+	if expectedMessage == "" {
+		return
 	}
 }
 
