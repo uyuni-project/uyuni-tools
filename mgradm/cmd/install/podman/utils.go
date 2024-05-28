@@ -135,7 +135,7 @@ func installForPodman(
 		}
 	}
 
-	if err := coco.SetupCocoContainer(flags.Coco.Replicas, flags.Coco.Image, flags.Image, flags.Db); err != nil {
+	if err := coco.SetupCocoContainer(flags.Coco.Replicas, flags.Coco.Image, flags.Image, flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password); err != nil {
 		return err
 	}
 

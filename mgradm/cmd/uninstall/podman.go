@@ -5,10 +5,9 @@
 package uninstall
 
 import (
-	"os"
-
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -33,17 +32,8 @@ func uninstallForPodman(
 	// Force stop the pod
 	podman.DeleteContainer(podman.ServerContainerName, !flags.Force)
 
-	if err := podman.ScaleService(0, podman.ServerAttestationService); err != nil {
-		return utils.Errorf(err, L("cannot delete confidential computing attestation instances"))
-	}
-
-	// Remove the service unit
-	servicePath := podman.GetServicePath(podman.ServerAttestationService + "@")
-	if _, err := os.Stat(servicePath); !os.IsNotExist(err) {
-		log.Info().Msgf(L("Remove %s"), servicePath)
-		if err := os.Remove(servicePath); err != nil {
-			log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), podman.ServerAttestationService+"@")
-		}
+	if err := coco.Uninstall(!flags.Force); err != nil {
+		return utils.Errorf(err, L("cannot uninstall confidential computing attestation service"))
 	}
 
 	if podman.HasService(podman.HubXmlrpcService) {

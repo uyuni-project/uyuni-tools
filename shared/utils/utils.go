@@ -49,6 +49,10 @@ var inspectValues = []types.InspectData{
 	types.NewInspectData("registration_info", "env LC_ALL=C LC_MESSAGES=C LANG=C transactional-update --quiet register --status 2>/dev/null || true", false),
 	types.NewInspectData("scc_username", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep username | cut -d= -f2 || true", true),
 	types.NewInspectData("scc_password", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep password | cut -d= -f2 || true", true),
+	types.NewInspectData("db_user", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_user' | cut -d' ' -f3 || true", false),
+	types.NewInspectData("db_password", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_password' | cut -d' ' -f3 || true", false),
+	types.NewInspectData("db_name", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_name' | cut -d' ' -f3 || true", false),
+	types.NewInspectData("db_port", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_port' | cut -d' ' -f3 || true", false),
 }
 
 // InspectOutputFile represents the directory and the basename where the inspect values are stored.

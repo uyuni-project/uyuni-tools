@@ -11,11 +11,12 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -40,29 +41,6 @@ func GetExposedPorts(debug bool) []types.PortMap {
 	}
 
 	return ports
-}
-
-// GenerateAttestationSystemdService creates the coco attestation systemd files.
-func GenerateAttestationSystemdService(image string, db install_shared.DbFlags) error {
-	attestationData := templates.AttestationServiceTemplateData{
-		NamePrefix: "uyuni",
-		Network:    podman.UyuniNetwork,
-		Image:      image,
-	}
-	if err := utils.WriteTemplateToFile(attestationData, podman.GetServicePath(podman.ServerAttestationService), 0555, false); err != nil {
-		return utils.Errorf(err, L("failed to generate systemd service unit file"))
-	}
-
-	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
-Environment=database_connection=jdbc:postgresql://uyuni-server.mgr.internal:%d/%s
-Environment=database_user=%s
-Environment=database_password=%s
-	`, image, db.Port, db.Name, db.User, db.Password)
-	if err := podman.GenerateSystemdConfFile(podman.ServerAttestationService, "Service", environment); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd conf file"))
-	}
-
-	return podman.ReloadDaemon(false)
 }
 
 // GenerateHubXmlrpcSystemdService creates the Hub XMLRPC systemd files.
@@ -365,7 +343,7 @@ func RunPostUpgradeScript(serverImage string) error {
 }
 
 // Upgrade will upgrade server to the image given as attribute.
-func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, args []string) error {
+func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage types.ImageFlags, args []string) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {
 		return err
 	}
@@ -417,6 +395,18 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, args []strin
 		return err
 	}
 	log.Info().Msg(L("Waiting for the server to start…"))
+
+	dbPort, err := strconv.Atoi(inspectedValues["db_port"])
+	if err != nil {
+		return utils.Errorf(err, L("error %s is not a valid port number."), inspectedValues["db_port"])
+	}
+
+	err = coco.Upgrade(cocoImage, image,
+		dbPort, inspectedValues["db_name"], inspectedValues["db_user"], inspectedValues["db_password"])
+	if err != nil {
+		return utils.Errorf(err, L("error upgrading confidential computing service."))
+	}
+
 	return podman.ReloadDaemon(false)
 }
 
