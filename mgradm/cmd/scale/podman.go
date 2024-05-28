@@ -5,6 +5,7 @@
 package scale
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -24,6 +25,12 @@ func podmanScale(
 	newReplicas := flags.Replicas
 	service := args[0]
 	if service == podman.ServerAttestationService {
+		return podman.ScaleService(newReplicas, service)
+	}
+	if service == podman.HubXmlrpcService {
+		if newReplicas > 1 {
+			return errors.New(L("Multiple Hub XML-RPC container replicas are not currently supported."))
+		}
 		return podman.ScaleService(newReplicas, service)
 	}
 	return fmt.Errorf(L("service not allowing to be scaled: %s"), service)
