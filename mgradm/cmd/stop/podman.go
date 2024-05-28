@@ -5,8 +5,9 @@
 package stop
 
 import (
+	"errors"
+
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
@@ -17,8 +18,8 @@ func podmanStop(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	if err := coco.Stop(); err != nil {
-		return err
-	}
-	return podman.StopService(podman.ServerService)
+	err1 := podman.StopInstantiated(podman.ServerAttestationService)
+	err2 := podman.StopInstantiated(podman.HubXmlrpcService)
+	err3 := podman.StopService(podman.ServerService)
+	return errors.Join(err1, err2, err3)
 }

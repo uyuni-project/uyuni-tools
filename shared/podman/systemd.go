@@ -124,6 +124,56 @@ func UninstallService(name string, dryRun bool) {
 	}
 }
 
+// UninstallInstantiatedService stops and remove an instantiated systemd service.
+// If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
+func UninstallInstantiatedService(name string, dryRun bool) {
+	if dryRun {
+		log.Info().Msgf(L("Would scale %s to 0 replicas"), name)
+	} else {
+		if err := ScaleService(0, name); err != nil {
+			log.Error().Err(err).Msgf(L("Failed to disable %s service"), name)
+		}
+	}
+
+	// Remove the service unit
+	servicePath := GetServicePath(name + "@")
+	serviceConfFolder := GetServiceConfFolder(name + "@")
+	serviceConfPath := GetServiceConfPath(name + "@")
+	if dryRun {
+		log.Info().Msgf(L("Would remove %s"), servicePath)
+	} else {
+		// Remove the service unit
+		log.Info().Msgf(L("Remove %s"), servicePath)
+		if err := os.Remove(servicePath); err != nil {
+			log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), name)
+		}
+	}
+
+	if utils.FileExists(serviceConfFolder) {
+		if utils.FileExists(serviceConfPath) {
+			if dryRun {
+				log.Info().Msgf(L("Would remove %s"), serviceConfPath)
+			} else {
+				log.Info().Msgf(L("Remove %s"), serviceConfPath)
+				if err := os.Remove(serviceConfPath); err != nil {
+					log.Error().Err(err).Msgf(L("Failed to remove %s file"), serviceConfPath)
+				}
+			}
+		}
+
+		if dryRun {
+			log.Info().Msgf(L("Would remove %s if empty"), serviceConfFolder)
+		} else {
+			if utils.IsEmptyDirectory(serviceConfFolder) {
+				log.Debug().Msgf("Removing %s folder, since it's empty", serviceConfFolder)
+				_ = utils.RemoveDirectory(serviceConfFolder)
+			} else {
+				log.Warn().Msgf(L("%s folder contains file created by the user. Please remove them when uninstallation is completed."), serviceConfFolder)
+			}
+		}
+	}
+}
+
 // ReloadDaemon resets the failed state of services and reload the systemd daemon.
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
 func ReloadDaemon(dryRun bool) error {
@@ -180,6 +230,36 @@ func StopService(service string) error {
 func EnableService(service string) error {
 	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
 		return utils.Errorf(err, L("failed to enable %s systemd service"), service)
+	}
+	return nil
+}
+
+// StartInstantiated starts all replicas.
+func StartInstantiated(service string) error {
+	for i := 0; i < CurrentReplicaCount(service); i++ {
+		if err := StartService(fmt.Sprintf("%s@%d", service, i)); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// RestartInstantiated restarts all replicas.
+func RestartInstantiated(service string) error {
+	for i := 0; i < CurrentReplicaCount(service); i++ {
+		if err := RestartService(fmt.Sprintf("%s@%d", service, i)); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// StopInstantiated stops all replicas.
+func StopInstantiated(service string) error {
+	for i := 0; i < CurrentReplicaCount(service); i++ {
+		if err := StopService(fmt.Sprintf("%s@%d", service, i)); err != nil {
+			return err
+		}
 	}
 	return nil
 }
