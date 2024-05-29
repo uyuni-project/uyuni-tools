@@ -14,9 +14,10 @@ import (
 // NewCommand to export supportconfig.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	supportCmd := &cobra.Command{
-		Use:   "support",
-		Short: L("Commands for support operations"),
-		Long:  L("Commands for support operations"),
+		Use:     "support",
+		GroupID: "tool",
+		Short:   L("Commands for support operations"),
+		Long:    L("Commands for support operations"),
 	}
 
 	if ptfCommand := ptf.NewCommand(globalFlags); ptfCommand != nil {
