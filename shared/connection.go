@@ -318,3 +318,48 @@ func chooseBackend[F interface{}](
 	// Should never happen if the commands are the same than those handled in GetCommand()
 	return nil, errors.New(L("no supported backend found"))
 }
+
+// RunSupportConfig will run supportconfig command on given connection.
+func RunSupportConfig(cnx *Connection) ([]string, error) {
+	var containerTarball string
+	var files []string
+	extensions := []string{"", ".md5"}
+	containerName, err := cnx.GetPodName()
+	if err != nil {
+		return []string{}, err
+	}
+
+	// Copy the generated file locally
+	tmpDir, err := os.MkdirTemp("", "mgradm-*")
+	if err != nil {
+		return []string{}, utils.Errorf(err, L("failed to create temporary directory"))
+	}
+
+	defer os.RemoveAll(tmpDir)
+	// Run supportconfig in the container if it's running
+	log.Info().Msgf(L("Running supportconfig in  %s"), containerName)
+	out, err := cnx.Exec("supportconfig")
+	if err != nil {
+		return []string{}, errors.New(L("failed to run supportconfig"))
+	} else {
+		tarballPath := utils.GetSupportConfigPath(string(out))
+		if tarballPath == "" {
+			return []string{}, fmt.Errorf(L("failed to find container supportconfig tarball from command output"))
+		}
+
+		// TODO Get the error from copy
+		for _, ext := range extensions {
+			containerTarball = path.Join(tmpDir, containerName+"-supportconfig.txz"+ext)
+			if err := cnx.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
+				return []string{}, utils.Errorf(err, L("cannot copy tarball"))
+			}
+			files = append(files, containerTarball)
+
+			// Remove the generated file in the container
+			if _, err := cnx.Exec("rm", tarballPath+ext); err != nil {
+				return []string{}, utils.Errorf(err, L("failed to remove %s file in the container"), tarballPath+ext)
+			}
+		}
+	}
+	return files, nil
+}
