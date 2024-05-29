@@ -17,7 +17,7 @@ import (
 
 // GetSupportConfigPath returns the support config tarball path.
 func GetSupportConfigPath(out []byte) string {
-	re := regexp.MustCompile(`/var/log/scc_[^.]+\.txz`)
+	re := regexp.MustCompile(`/var/log/scc_(.*?)\.txz`)
 	return re.FindString(string(out))
 }
 
