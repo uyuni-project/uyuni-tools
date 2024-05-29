@@ -10,9 +10,6 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"regexp"
-	"strings"
-	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -44,7 +41,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	if err != nil {
 		return errors.New(L("failed to run supportconfig"))
 	} else {
-		tarballPath := getSupportConfigPath(out)
+		tarballPath := utils.GetSupportConfigPath(out)
 		if tarballPath == "" {
 			return fmt.Errorf(L("failed to find container supportconfig tarball from command output"))
 		}
@@ -70,7 +67,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 		if err != nil {
 			return utils.Errorf(err, L("failed to run supportconfig on the host"))
 		}
-		tarballPath := getSupportConfigPath(out)
+		tarballPath := utils.GetSupportConfigPath(out)
 
 		// Look for the generated supportconfig file
 		if tarballPath != "" && utils.FileExists(tarballPath) {
@@ -89,7 +86,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	// Pack it all into a tarball
 	log.Info().Msg(L("Preparing the tarball"))
 
-	supportFileName := getSupportConfigFileSaveName()
+	supportFileName := utils.GetSupportConfigFileSaveName()
 	supportFilePath := path.Join(flags.Output, fmt.Sprintf("%s.tar.gz", supportFileName))
 
 	tarball, err := utils.NewTarGz(supportFilePath)
@@ -105,20 +102,4 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	tarball.Close()
 
 	return nil
-}
-
-func getSupportConfigPath(out []byte) string {
-	re := regexp.MustCompile(`/var/log/scc_[^.]+\.txz`)
-	return re.FindString(string(out))
-}
-
-func getSupportConfigFileSaveName() string {
-	hostname_b, err := utils.RunCmdOutput(zerolog.DebugLevel, "hostname")
-	hostname := "localhost"
-	if err != nil {
-		log.Warn().Err(err).Msg(L("Unable to detect hostname, using localhost"))
-		hostname = strings.TrimSpace(string(hostname_b))
-	}
-	now := time.Now()
-	return fmt.Sprintf("scc_%s_%s", hostname, now.Format("20060102_1504"))
 }
