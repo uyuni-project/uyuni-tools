@@ -41,7 +41,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	if err != nil {
 		return errors.New(L("failed to run supportconfig"))
 	} else {
-		tarballPath := utils.GetSupportConfigPath(out)
+		tarballPath := utils.GetSupportConfigPath(string(out))
 		if tarballPath == "" {
 			return fmt.Errorf(L("failed to find container supportconfig tarball from command output"))
 		}
@@ -67,7 +67,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 		if err != nil {
 			return utils.Errorf(err, L("failed to run supportconfig on the host"))
 		}
-		tarballPath := utils.GetSupportConfigPath(out)
+		tarballPath := utils.GetSupportConfigPath(string(out))
 
 		// Look for the generated supportconfig file
 		if tarballPath != "" && utils.FileExists(tarballPath) {

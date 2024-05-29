@@ -16,9 +16,9 @@ import (
 )
 
 // GetSupportConfigPath returns the support config tarball path.
-func GetSupportConfigPath(out []byte) string {
+func GetSupportConfigPath(out string) string {
 	re := regexp.MustCompile(`/var/log/scc_(.*?)\.txz`)
-	return re.FindString(string(out))
+	return re.FindString(out)
 }
 
 // GetSupportConfigFileSaveName returns the support config file name.
