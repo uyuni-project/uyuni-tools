@@ -37,6 +37,19 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 		SilenceUsage: true, // Don't show usage help on errors
 	}
 
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "deploy",
+		Title: L("Server Deployment:"),
+	})
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "management",
+		Title: L("Server Management:"),
+	})
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "tool",
+		Title: L("Administrator tools:"),
+	})
+
 	rootCmd.SetUsageTemplate(utils.GetLocalizedUsageTemplate())
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
@@ -73,9 +86,6 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 	}
 
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
-	if cmd := support.NewCommand(globalFlags); cmd != nil {
-		rootCmd.AddCommand(cmd)
-	}
 
 	return rootCmd, nil
 }

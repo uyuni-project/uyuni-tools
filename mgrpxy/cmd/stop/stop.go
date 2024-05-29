@@ -19,10 +19,11 @@ type stopFlags struct {
 // NewCommand to stop server.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	stopCmd := &cobra.Command{
-		Use:   "stop",
-		Short: L("Stop the proxy"),
-		Long:  L("Stop the proxy"),
-		Args:  cobra.ExactArgs(0),
+		Use:     "stop",
+		GroupID: "management",
+		Short:   L("Stop the proxy"),
+		Long:    L("Stop the proxy"),
+		Args:    cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags stopFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, stop)
