@@ -23,6 +23,7 @@ import (
 )
 
 func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
+	containerName := podman.ServerContainerName
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 
 	// Copy the generated file locally
@@ -48,7 +49,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 
 		// TODO Get the error from copy
 		for _, ext := range extensions {
-			containerTarball := path.Join(tmpDir, "container-supportconfig.txz"+ext)
+			containerTarball := path.Join(tmpDir, containerName+"-supportconfig.txz"+ext)
 			if err := cnx.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
 				return utils.Errorf(err, L("cannot copy tarball"))
 			}
