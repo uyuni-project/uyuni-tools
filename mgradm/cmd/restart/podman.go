@@ -5,11 +5,10 @@
 package restart
 
 import (
-	"errors"
-
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func podmanRestart(
@@ -21,5 +20,5 @@ func podmanRestart(
 	err1 := podman.RestartService(podman.ServerService)
 	err2 := podman.RestartInstantiated(podman.ServerAttestationService)
 	err3 := podman.RestartInstantiated(podman.HubXmlrpcService)
-	return errors.Join(err1, err2, err3)
+	return utils.JoinErrors(err1, err2, err3)
 }
