@@ -429,3 +429,18 @@ func Errorf(err error, message string, args ...any) error {
 	appended := fmt.Sprintf(message, args...) + ": " + err.Error()
 	return errors.New(appended)
 }
+
+// Join multiple errors.
+// Replacement for errors.Join which is not available in go 1.19.
+func JoinErrors(errs ...error) error {
+	var messages []string
+	for _, err := range errs {
+		if err != nil {
+			messages = append(messages, err.Error())
+		}
+	}
+	if len(messages) == 0 {
+		return nil
+	}
+	return errors.New(strings.Join(messages, "; "))
+}

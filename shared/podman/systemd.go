@@ -236,32 +236,32 @@ func EnableService(service string) error {
 
 // StartInstantiated starts all replicas.
 func StartInstantiated(service string) error {
+	var errList []error
 	for i := 0; i < CurrentReplicaCount(service); i++ {
-		if err := StartService(fmt.Sprintf("%s@%d", service, i)); err != nil {
-			return err
-		}
+		err := StartService(fmt.Sprintf("%s@%d", service, i))
+		errList = append(errList, err)
 	}
-	return nil
+	return utils.JoinErrors(errList...)
 }
 
 // RestartInstantiated restarts all replicas.
 func RestartInstantiated(service string) error {
+	var errList []error
 	for i := 0; i < CurrentReplicaCount(service); i++ {
-		if err := RestartService(fmt.Sprintf("%s@%d", service, i)); err != nil {
-			return err
-		}
+		err := RestartService(fmt.Sprintf("%s@%d", service, i))
+		errList = append(errList, err)
 	}
-	return nil
+	return utils.JoinErrors(errList...)
 }
 
 // StopInstantiated stops all replicas.
 func StopInstantiated(service string) error {
+	var errList []error
 	for i := 0; i < CurrentReplicaCount(service); i++ {
-		if err := StopService(fmt.Sprintf("%s@%d", service, i)); err != nil {
-			return err
-		}
+		err := StopService(fmt.Sprintf("%s@%d", service, i))
+		errList = append(errList, err)
 	}
-	return nil
+	return utils.JoinErrors(errList...)
 }
 
 // Create new systemd service configuration file (e.g. Service.conf).
