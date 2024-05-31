@@ -120,13 +120,15 @@ func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 		flags.TZ = utils.GetLocalTimezone()
 	}
 
-	utils.AskIfMissing(&flags.Email, cmd.Flag("email").Usage, 0, 0, emailChecker)
+	utils.AskIfMissing(&flags.Email, cmd.Flag("email").Usage, 1, 128, emailChecker)
 	utils.AskIfMissing(&flags.EmailFrom, cmd.Flag("emailfrom").Usage, 0, 0, emailChecker)
 
 	utils.AskIfMissing(&flags.Admin.Login, cmd.Flag("admin-login").Usage, 1, 64, idChecker)
 	utils.AskPasswordIfMissing(&flags.Admin.Password, cmd.Flag("admin-password").Usage, 5, 48)
-	utils.AskIfMissing(&flags.Admin.Email, cmd.Flag("admin-email").Usage, 1, 128, emailChecker)
 	utils.AskIfMissing(&flags.Organization, cmd.Flag("organization").Usage, 3, 128, nil)
+
+	flags.Ssl.Email = flags.Email
+	flags.Admin.Email = flags.Email
 }
 
 // AddInstallFlags add flags to installa command.
@@ -180,7 +182,6 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().String("ssl-org", "SUSE", L("SSL certificate organization"))
 	cmd.Flags().String("ssl-ou", "SUSE", L("SSL certificate organization unit"))
 	cmd.Flags().String("ssl-password", "", L("Password for the CA key to generate"))
-	cmd.Flags().String("ssl-email", "ca-admin@example.com", L("SSL certificate E-Mail"))
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "ssl", Title: L("SSL Certificate Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-cname", "ssl")
@@ -190,7 +191,6 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-org", "ssl")
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-ou", "ssl")
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", "ssl")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-email", "ssl")
 
 	// For SSL 3rd party certificates
 	cmd.Flags().StringSlice("ssl-ca-intermediate", []string{}, L("Intermediate CA certificate path"))
@@ -236,7 +236,6 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().String("admin-password", "", L("Administrator password"))
 	cmd.Flags().String("admin-firstName", "Administrator", L("First name of the administrator"))
 	cmd.Flags().String("admin-lastName", "McAdmin", L("Last name of the administrator"))
-	cmd.Flags().String("admin-email", "", L("Administrator's email"))
 	cmd.Flags().String("organization", "Organization", L("First organization name"))
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "first-user", Title: L("First User Flags")})
@@ -244,6 +243,5 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "admin-password", "first-user")
 	_ = utils.AddFlagToHelpGroupID(cmd, "admin-firstName", "first-user")
 	_ = utils.AddFlagToHelpGroupID(cmd, "admin-lastName", "first-user")
-	_ = utils.AddFlagToHelpGroupID(cmd, "admin-email", "first-user")
 	_ = utils.AddFlagToHelpGroupID(cmd, "organization", "first-user")
 }
