@@ -296,6 +296,10 @@ func CurrentReplicaCount(name string) int {
 // name is the name of the service without the '.service' part.
 func ScaleService(replicas int, name string) error {
 	currentReplicas := CurrentReplicaCount(name)
+	if currentReplicas == replicas {
+		log.Info().Msgf(L("Service %[1]s already has %[2]d replicas."), name, currentReplicas)
+		return nil
+	}
 	log.Info().Msgf(L("Scale %[1]s from %[2]d to %[3]d replicas."), name, currentReplicas, replicas)
 	for i := currentReplicas; i < replicas; i++ {
 		serviceName := fmt.Sprintf("%s@%d", name, i)
