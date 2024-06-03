@@ -117,9 +117,33 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 			files = append(files, logsDump)
 		}
 	}
-	//kubectl get configmap -o yaml
+
+	configmapFilename, err := fetchConfigMap(dir)
+	if err != nil {
+		log.Warn().Msg(L("cannot retrieve any configmap. This is expected in no kubernetes host"))
+	} else {
+		files = append(files, configmapFilename)
+	}
 
 	return files, nil
+}
+
+func fetchConfigMap(dir string) (string, error) {
+	configmapFile, err := os.Create(path.Join(dir, "configmap"))
+	if err != nil {
+		return "", Errorf(err, L("cannot create %s"), configmapFile.Name())
+	}
+	defer configmapFile.Close()
+	out, err := RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "configmap", "-o", "yaml")
+	if err != nil {
+		return "", Errorf(err, L("cannot fetch configmap"))
+	}
+
+	_, err = configmapFile.WriteString(string(out))
+	if err != nil {
+		return "", err
+	}
+	return configmapFile.Name(), nil
 }
 
 func createSystemdDump(dir string) (string, error) {
