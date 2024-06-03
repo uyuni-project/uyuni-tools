@@ -24,7 +24,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	}
 
 	// Copy the generated file locally
-	tmpDir, err := os.MkdirTemp("", "mgrpxy-*")
+	tmpDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
 		return utils.Errorf(err, L("failed to create temporary directory"))
 	}
