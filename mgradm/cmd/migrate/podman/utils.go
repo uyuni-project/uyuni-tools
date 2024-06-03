@@ -23,6 +23,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman_utils.Systemd = podman_utils.SystemdImpl{}
+
 func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, cmd *cobra.Command, args []string) error {
 	if _, err := exec.LookPath("podman"); err != nil {
 		return fmt.Errorf(L("install podman before running this command"))
@@ -89,27 +91,27 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 
 	if err := podman.GenerateSystemdService(
-		extractedData.Timezone, preparedImage, false, flags.Mirror, viper.GetStringSlice("podman.arg"),
+		systemd, extractedData.Timezone, preparedImage, false, flags.Mirror, viper.GetStringSlice("podman.arg"),
 	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd service file"))
 	}
 
 	// Start the service
-	if err := podman_utils.EnableService(podman_utils.ServerService); err != nil {
+	if err := systemd.EnableService(podman_utils.ServerService); err != nil {
 		return err
 	}
 
 	// Prepare confidential computing containers
 	if flags.Coco.Replicas > 0 {
 		if err = coco.Upgrade(
-			authFile, flags.Image.Registry, flags.Coco, flags.Image,
+			systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
 			extractedData.DbPort, extractedData.DbName,
 			extractedData.DbUser, extractedData.DbPassword,
 		); err != nil {
 			return utils.Errorf(err, L("cannot setup confidential computing attestation service"))
 		}
 
-		err := podman_utils.ScaleService(flags.Coco.Replicas, podman_utils.ServerAttestationService)
+		err := systemd.ScaleService(flags.Coco.Replicas, podman_utils.ServerAttestationService)
 		if err != nil {
 			return err
 		}
@@ -122,11 +124,11 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 	if hubReplicas > 0 {
 		if err := hub.SetupHubXmlrpc(
-			authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
+			systemd, authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
 		); err != nil {
 			return err
 		}
-		if err := hub.EnableHubXmlrpc(hubReplicas); err != nil {
+		if err := hub.EnableHubXmlrpc(systemd, hubReplicas); err != nil {
 			return err
 		}
 	}

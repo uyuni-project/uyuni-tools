@@ -27,6 +27,9 @@ type logsFlags struct {
 	Since      string
 }
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
+// NewCommand to get the logs of the server.
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[logsFlags]) *cobra.Command {
 	var flags logsFlags
 
@@ -85,7 +88,7 @@ func logs(globalFlags *types.GlobalFlags, flags *logsFlags, cmd *cobra.Command, 
 func getContainerNames(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	var names []string
 
-	if podman.HasService(podman.ProxyService) {
+	if systemd.HasService(podman.ProxyService) {
 		names = getNames(exec.Command("podman", "ps", "--format", "{{.Names}}"), "\n", "uyuni")
 	} else if utils.IsInstalled("kubectl") && utils.IsInstalled("helm") {
 		if len(args) == 0 {

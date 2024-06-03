@@ -14,6 +14,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 type statusFlags struct {
 }
 
@@ -40,7 +42,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 }
 
 func status(globalFlags *types.GlobalFlags, flags *statusFlags, cmd *cobra.Command, args []string) error {
-	if podman.HasService(podman.ProxyService) {
+	if systemd.HasService(podman.ProxyService) {
 		return podmanStatus(globalFlags, flags, cmd, args)
 	}
 
