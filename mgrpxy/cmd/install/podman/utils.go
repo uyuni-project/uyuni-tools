@@ -17,13 +17,15 @@ import (
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd shared_podman.Systemd = shared_podman.SystemdImpl{}
+
 // Start the proxy services.
 func startPod() error {
-	ret := shared_podman.IsServiceRunning(shared_podman.ProxyService)
+	ret := systemd.IsServiceRunning(shared_podman.ProxyService)
 	if ret {
-		return shared_podman.RestartService(shared_podman.ProxyService)
+		return systemd.RestartService(shared_podman.ProxyService)
 	} else {
-		return shared_podman.EnableService(shared_podman.ProxyService)
+		return systemd.EnableService(shared_podman.ProxyService)
 	}
 }
 
@@ -70,7 +72,8 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podman.PodmanProxyF
 	}
 
 	// Setup the systemd service configuration options
-	if err := podman.GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags); err != nil {
+	err = podman.GenerateSystemdService(systemd, httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags)
+	if err != nil {
 		return err
 	}
 

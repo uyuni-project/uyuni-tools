@@ -31,23 +31,27 @@ const HubXmlrpcService = "uyuni-hub-xmlrpc"
 // Name of the systemd service for the proxy.
 const ProxyService = "uyuni-proxy-pod"
 
+// SystemdImpl implements the Systemd interface.
+type SystemdImpl struct {
+}
+
 // HasService returns if a systemd service is installed.
 // name is the name of the service without the '.service' part.
-func HasService(name string) bool {
+func (s SystemdImpl) HasService(name string) bool {
 	err := utils.RunCmd("systemctl", "list-unit-files", name+".service")
 	return err == nil
 }
 
 // ServiceIsEnabled returns if a service is enabled
 // name is the name of the service without the '.service' part.
-func ServiceIsEnabled(name string) bool {
+func (s SystemdImpl) ServiceIsEnabled(name string) bool {
 	err := utils.RunCmd("systemctl", "is-enabled", name+".service")
 	return err == nil
 }
 
 // DisableService disables a service
 // name is the name of the service without the '.service' part.
-func DisableService(name string) error {
+func (s SystemdImpl) DisableService(name string) error {
 	if err := utils.RunCmd("systemctl", "disable", "--now", name); err != nil {
 		return utils.Errorf(err, L("failed to disable %s systemd service"), name)
 	}
@@ -70,14 +74,14 @@ func GetServiceConfPath(name string) string {
 }
 
 // GetServicesFromSystemdFiles return the uyuni enabled services as string list.
-func GetServicesFromSystemdFiles(systemdFileList string) []string {
+func (s SystemdImpl) GetServicesFromSystemdFiles(systemdFileList string) []string {
 	services := strings.Replace(string(systemdFileList), "/etc/systemd/system/", "", -1)
 	services = strings.Replace(services, ".service", "", -1)
 	servicesList := strings.Split(strings.TrimSpace(services), "\n")
 
 	var trimmedServices []string
 	for _, service := range servicesList {
-		if ServiceIsEnabled(service) {
+		if s.ServiceIsEnabled(service) {
 			trimmedServices = append(trimmedServices, strings.TrimSpace(service))
 		} else {
 			log.Debug().Msgf("service %s is not enabled. Do not run any action on the container.", service)
@@ -88,8 +92,8 @@ func GetServicesFromSystemdFiles(systemdFileList string) []string {
 
 // UninstallService stops and remove a systemd service.
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
-func UninstallService(name string, dryRun bool) {
-	if !HasService(name) {
+func (s SystemdImpl) UninstallService(name string, dryRun bool) {
+	if !s.HasService(name) {
 		log.Info().Msgf(L("Systemd has no %s.service unit"), name)
 	} else {
 		if dryRun {
@@ -153,11 +157,11 @@ func uninstallServiceFiles(name string, dryRun bool) {
 
 // UninstallInstantiatedService stops and remove an instantiated systemd service.
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
-func UninstallInstantiatedService(name string, dryRun bool) {
+func (s SystemdImpl) UninstallInstantiatedService(name string, dryRun bool) {
 	if dryRun {
 		log.Info().Msgf(L("Would scale %s to 0 replicas"), name)
 	} else {
-		if err := ScaleService(0, name); err != nil {
+		if err := s.ScaleService(0, name); err != nil {
 			log.Error().Err(err).Msgf(L("Failed to disable %s service"), name)
 		}
 	}
@@ -167,7 +171,7 @@ func UninstallInstantiatedService(name string, dryRun bool) {
 
 // ReloadDaemon resets the failed state of services and reload the systemd daemon.
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
-func ReloadDaemon(dryRun bool) error {
+func (s SystemdImpl) ReloadDaemon(dryRun bool) error {
 	if dryRun {
 		log.Info().Msgf(L("Would run %s"), "systemctl reset-failed")
 		log.Info().Msgf(L("Would run %s"), "systemctl daemon-reload")
@@ -185,7 +189,7 @@ func ReloadDaemon(dryRun bool) error {
 }
 
 // IsServiceRunning returns whether the systemd service is started or not.
-func IsServiceRunning(service string) bool {
+func (s SystemdImpl) IsServiceRunning(service string) bool {
 	cmd := exec.Command("systemctl", "is-active", "-q", service)
 	if err := cmd.Run(); err != nil {
 		return false
@@ -194,7 +198,7 @@ func IsServiceRunning(service string) bool {
 }
 
 // RestartService restarts the systemd service.
-func RestartService(service string) error {
+func (s SystemdImpl) RestartService(service string) error {
 	if err := utils.RunCmd("systemctl", "restart", service); err != nil {
 		return utils.Errorf(err, L("failed to restart systemd %s.service"), service)
 	}
@@ -202,7 +206,7 @@ func RestartService(service string) error {
 }
 
 // StartService starts the systemd service.
-func StartService(service string) error {
+func (s SystemdImpl) StartService(service string) error {
 	if err := utils.RunCmd("systemctl", "start", service); err != nil {
 		return utils.Errorf(err, L("failed to start systemd %s.service"), service)
 	}
@@ -210,7 +214,7 @@ func StartService(service string) error {
 }
 
 // StopService starts the systemd service.
-func StopService(service string) error {
+func (s SystemdImpl) StopService(service string) error {
 	if err := utils.RunCmd("systemctl", "stop", service); err != nil {
 		return utils.Errorf(err, L("failed to stop systemd %s.service"), service)
 	}
@@ -218,7 +222,7 @@ func StopService(service string) error {
 }
 
 // EnableService enables and starts a systemd service.
-func EnableService(service string) error {
+func (s SystemdImpl) EnableService(service string) error {
 	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
 		return utils.Errorf(err, L("failed to enable %s systemd service"), service)
 	}
@@ -226,30 +230,30 @@ func EnableService(service string) error {
 }
 
 // StartInstantiated starts all replicas.
-func StartInstantiated(service string) error {
+func (s SystemdImpl) StartInstantiated(service string) error {
 	var errList []error
-	for i := 0; i < CurrentReplicaCount(service); i++ {
-		err := StartService(fmt.Sprintf("%s@%d", service, i))
+	for i := 0; i < s.CurrentReplicaCount(service); i++ {
+		err := s.StartService(fmt.Sprintf("%s@%d", service, i))
 		errList = append(errList, err)
 	}
 	return utils.JoinErrors(errList...)
 }
 
 // RestartInstantiated restarts all replicas.
-func RestartInstantiated(service string) error {
+func (s SystemdImpl) RestartInstantiated(service string) error {
 	var errList []error
-	for i := 0; i < CurrentReplicaCount(service); i++ {
-		err := RestartService(fmt.Sprintf("%s@%d", service, i))
+	for i := 0; i < s.CurrentReplicaCount(service); i++ {
+		err := s.RestartService(fmt.Sprintf("%s@%d", service, i))
 		errList = append(errList, err)
 	}
 	return utils.JoinErrors(errList...)
 }
 
 // StopInstantiated stops all replicas.
-func StopInstantiated(service string) error {
+func (s SystemdImpl) StopInstantiated(service string) error {
 	var errList []error
-	for i := 0; i < CurrentReplicaCount(service); i++ {
-		err := StopService(fmt.Sprintf("%s@%d", service, i))
+	for i := 0; i < s.CurrentReplicaCount(service); i++ {
+		err := s.StopService(fmt.Sprintf("%s@%d", service, i))
 		errList = append(errList, err)
 	}
 	return utils.JoinErrors(errList...)
@@ -336,9 +340,9 @@ func CleanSystemdConfFile(serviceName string) error {
 
 // CurrentReplicaCount returns the current enabled replica count for a template service
 // name is the name of the service without the '.service' part.
-func CurrentReplicaCount(name string) int {
+func (s SystemdImpl) CurrentReplicaCount(name string) int {
 	count := 0
-	for ServiceIsEnabled(fmt.Sprintf("%s@%d", name, count)) {
+	for s.ServiceIsEnabled(fmt.Sprintf("%s@%d", name, count)) {
 		count += 1
 	}
 	return count
@@ -346,8 +350,8 @@ func CurrentReplicaCount(name string) int {
 
 // scales a templated systemd service to the requested number of replicas.
 // name is the name of the service without the '.service' part.
-func ScaleService(replicas int, name string) error {
-	currentReplicas := CurrentReplicaCount(name)
+func (s SystemdImpl) ScaleService(replicas int, name string) error {
+	currentReplicas := s.CurrentReplicaCount(name)
 	if currentReplicas == replicas {
 		log.Info().Msgf(L("Service %[1]s already has %[2]d replicas."), name, currentReplicas)
 		return nil
@@ -355,13 +359,13 @@ func ScaleService(replicas int, name string) error {
 	log.Info().Msgf(L("Scale %[1]s from %[2]d to %[3]d replicas."), name, currentReplicas, replicas)
 	for i := currentReplicas; i < replicas; i++ {
 		serviceName := fmt.Sprintf("%s@%d", name, i)
-		if err := EnableService(serviceName); err != nil {
+		if err := s.EnableService(serviceName); err != nil {
 			return utils.Errorf(err, L("cannot enable service"))
 		}
 	}
 	for i := replicas; i < currentReplicas; i++ {
 		serviceName := fmt.Sprintf("%s@%d", name, i)
-		if err := DisableService(serviceName); err != nil {
+		if err := s.DisableService(serviceName); err != nil {
 			return utils.Errorf(err, L("cannot disable service"))
 		}
 	}

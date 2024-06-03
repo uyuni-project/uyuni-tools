@@ -18,6 +18,7 @@ import (
 
 // Upgrade coco attestation.
 func Upgrade(
+	systemd podman.Systemd,
 	authFile string,
 	registry string,
 	cocoFlags adm_utils.CocoFlags,
@@ -28,15 +29,16 @@ func Upgrade(
 	dbPassword string,
 ) error {
 	if err := writeCocoServiceFiles(
-		authFile, registry, cocoFlags, baseImage, dbName, dbPort, dbUser, dbPassword,
+		systemd, authFile, registry, cocoFlags, baseImage, dbName, dbPort, dbUser, dbPassword,
 	); err != nil {
 		return err
 	}
 
-	return podman.ScaleService(cocoFlags.Replicas, podman.ServerAttestationService)
+	return systemd.ScaleService(cocoFlags.Replicas, podman.ServerAttestationService)
 }
 
 func writeCocoServiceFiles(
+	systemd podman.Systemd,
 	authFile string,
 	registry string,
 	cocoFlags adm_utils.CocoFlags,
@@ -47,7 +49,7 @@ func writeCocoServiceFiles(
 	dbPassword string,
 ) error {
 	image := cocoFlags.Image
-	currentReplicas := podman.CurrentReplicaCount(podman.ServerAttestationService)
+	currentReplicas := systemd.CurrentReplicaCount(podman.ServerAttestationService)
 	log.Debug().Msgf("Current Confidential Computing replicas running are %d.", currentReplicas)
 
 	if image.Tag == "" {
@@ -99,7 +101,7 @@ Environment=database_password=%s`, preparedImage, dbPort, dbName, dbUser, dbPass
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 
-	if err := podman.ReloadDaemon(false); err != nil {
+	if err := systemd.ReloadDaemon(false); err != nil {
 		return err
 	}
 	return nil
@@ -107,6 +109,7 @@ Environment=database_password=%s`, preparedImage, dbPort, dbName, dbUser, dbPass
 
 // SetupCocoContainer sets up the confidential computing attestation service.
 func SetupCocoContainer(
+	systemd podman.Systemd,
 	authFile string,
 	registry string,
 	coco adm_utils.CocoFlags,
@@ -117,9 +120,9 @@ func SetupCocoContainer(
 	dbPassword string,
 ) error {
 	if err := writeCocoServiceFiles(
-		authFile, registry, coco, baseImage, dbName, dbPort, dbUser, dbPassword,
+		systemd, authFile, registry, coco, baseImage, dbName, dbPort, dbUser, dbPassword,
 	); err != nil {
 		return err
 	}
-	return podman.ScaleService(coco.Replicas, podman.ServerAttestationService)
+	return systemd.ScaleService(coco.Replicas, podman.ServerAttestationService)
 }

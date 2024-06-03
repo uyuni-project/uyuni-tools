@@ -17,6 +17,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman_shared.Systemd = podman_shared.SystemdImpl{}
+
 func ptfForPodman(
 	globalFlags *types.GlobalFlags,
 	flags *podmanPTFFlags,
@@ -26,7 +28,7 @@ func ptfForPodman(
 	if err := flags.checkParameters(); err != nil {
 		return err
 	}
-	return podman.Upgrade(globalFlags, &flags.UpgradeFlags, cmd, args)
+	return podman.Upgrade(systemd, globalFlags, &flags.UpgradeFlags, cmd, args)
 }
 
 func (flags *podmanPTFFlags) checkParameters() error {
