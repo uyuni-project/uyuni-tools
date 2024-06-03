@@ -90,7 +90,7 @@ func createSystemdDump(dir string) (string, error) {
 	}
 	defer systemdSupportConfig.Close()
 
-	_, err = systemdSupportConfig.WriteString(string(out))
+	_, err = systemdSupportConfig.WriteString("====systemctl cat uyuni-*====\n" + string(out))
 	if err != nil {
 		return "", err
 	}
@@ -110,7 +110,7 @@ func runPodmanInspectCommand(dir string, container string) (string, error) {
 		return "", utils.Errorf(err, L("cannot run podman inspect %s"), container)
 	}
 
-	_, err = podmanInspectDump.WriteString(string(out))
+	_, err = podmanInspectDump.WriteString("====podman inspect " + container + "====\n" + string(out))
 	if err != nil {
 		return "", err
 	}
@@ -124,6 +124,10 @@ func fetchBindedFileCommand(dir string, container string) (string, error) {
 		return "", utils.Errorf(err, L("cannot create %s"), bindedFilesDump)
 	}
 
+	_, err = bindedFilesDump.WriteString("====binded files====" + "\n")
+	if err != nil {
+		return "", err
+	}
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "inspect", container, "--format", "{{range .Mounts}}{{if eq .Type \"bind\"}} {{.Source}}{{end}}{{end}}")
 	if err != nil {
 		return "", utils.Errorf(err, L("cannot run podman inspect %s"), container)
@@ -170,7 +174,7 @@ func runPodmanLogsCommand(dir string, container string) (string, error) {
 		return "", utils.Errorf(err, L("cannot run podman inspect %s"), container)
 	}
 
-	_, err = podmanLogsDump.WriteString(string(out))
+	_, err = podmanLogsDump.WriteString("====podman logs====\n" + string(out))
 	if err != nil {
 		return "", err
 	}
