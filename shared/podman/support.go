@@ -16,7 +16,7 @@ import (
 )
 
 // RunSupportConfigOnPodmanHost will run supportconfig command on podman machine.
-func RunSupportConfigOnPodmanHost(dir string) ([]string, error) {
+func RunSupportConfigOnPodmanHost(systemd Systemd, dir string) ([]string, error) {
 	files, err := utils.RunSupportConfigOnHost(dir)
 	if err != nil {
 		return files, err
@@ -29,7 +29,7 @@ func RunSupportConfigOnPodmanHost(dir string) ([]string, error) {
 		files = append(files, systemdDump)
 	}
 
-	containerList, err := hostedContainers()
+	containerList, err := hostedContainers(systemd)
 	if err != nil {
 		return files, err
 	}
@@ -165,12 +165,12 @@ func getSystemdFileList() ([]byte, error) {
 	return utils.RunCmdOutput(zerolog.DebugLevel, "find", "/etc/systemd/system", "-maxdepth", "1", "-name", "uyuni-*service")
 }
 
-func hostedContainers() ([]string, error) {
+func hostedContainers(systemd Systemd) ([]string, error) {
 	systemdFiles, err := getSystemdFileList()
 	if err != nil {
 		return []string{}, err
 	}
-	servicesList := GetServicesFromSystemdFiles(string(systemdFiles))
+	servicesList := systemd.GetServicesFromSystemdFiles(string(systemdFiles))
 
 	var containerList []string
 

@@ -24,19 +24,26 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
-	err := podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, flags.Mirror, flags.Podman.Args)
+func waitForSystemStart(
+	systemd shared_podman.Systemd,
+	cnx *shared.Connection,
+	image string,
+	flags *podmanInstallFlags,
+) error {
+	err := podman.GenerateSystemdService(systemd, flags.TZ, image, flags.Debug.Java, flags.Mirror, flags.Podman.Args)
 	if err != nil {
 		return err
 	}
 
 	log.Info().Msg(L("Waiting for the server to start…"))
-	if err := shared_podman.EnableService(shared_podman.ServerService); err != nil {
+	if err := systemd.EnableService(shared_podman.ServerService); err != nil {
 		return utils.Errorf(err, L("cannot enable service"))
 	}
 
 	return cnx.WaitForServer()
 }
+
+var systemd shared_podman.Systemd = shared_podman.SystemdImpl{}
 
 func installForPodman(
 	globalFlags *types.GlobalFlags,
@@ -81,7 +88,7 @@ func installForPodman(
 	}
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
-	if err := waitForSystemStart(cnx, preparedImage, flags); err != nil {
+	if err := waitForSystemStart(systemd, cnx, preparedImage, flags); err != nil {
 		return utils.Errorf(err, L("cannot wait for system start"))
 	}
 
@@ -105,7 +112,7 @@ func installForPodman(
 	log.Info().Msg(L("Run setup command in the container"))
 
 	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, fqdn, env); err != nil {
-		if stopErr := shared_podman.StopService(shared_podman.ServerService); stopErr != nil {
+		if stopErr := systemd.StopService(shared_podman.ServerService); stopErr != nil {
 			log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
 		}
 		return err
@@ -121,7 +128,7 @@ func installForPodman(
 
 	if flags.Coco.Replicas > 0 {
 		if err := coco.SetupCocoContainer(
-			authFile, flags.Image.Registry, flags.Coco, flags.Image,
+			systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
 			flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password,
 		); err != nil {
 			return err
@@ -130,7 +137,7 @@ func installForPodman(
 
 	if flags.HubXmlrpc.Replicas > 0 {
 		if err := hub.SetupHubXmlrpc(
-			authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
+			systemd, authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
 		); err != nil {
 			return err
 		}

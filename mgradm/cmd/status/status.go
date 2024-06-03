@@ -40,7 +40,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 }
 
 func status(globalFlags *types.GlobalFlags, flags *statusFlags, cmd *cobra.Command, args []string) error {
-	if podman.HasService(podman.ServerService) {
+	if systemd.HasService(podman.ServerService) {
 		return podmanStatus(globalFlags, flags, cmd, args)
 	}
 
