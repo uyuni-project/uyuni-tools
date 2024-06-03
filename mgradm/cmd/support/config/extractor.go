@@ -18,7 +18,7 @@ import (
 
 func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
-	supportConfigFiles, err := shared.RunSupportConfig(cnx)
+	fileList, err := shared.RunSupportConfig(cnx)
 	if err != nil {
 		return err
 	}
@@ -30,16 +30,19 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	}
 
 	defer os.RemoveAll(tmpDir)
-	hostSupportConfigFiles, err := utils.RunSupportConfigOnHost(tmpDir)
+	if podman.HasService(podman.ServerService) {
+		fileList, err = podman.RunSupportConfigOnHost(tmpDir)
+	}
+
+	if utils.IsInstalled("kubectl") && utils.IsInstalled("helm") {
+		fileList, err = kubernetes.RunSupportConfigOnHost(tmpDir)
+	}
+
 	if err != nil {
 		return err
 	}
 
-	supportConfigFiles = append(supportConfigFiles, hostSupportConfigFiles...)
-
-	// TODO Get cluster infos in case of kubernetes
-
-	if err := utils.CreateSupportConfigTarball(flags.Output, supportConfigFiles); err != nil {
+	if err := utils.CreateSupportConfigTarball(flags.Output, fileList); err != nil {
 		return err
 	}
 
