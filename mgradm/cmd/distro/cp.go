@@ -82,7 +82,7 @@ func prepareSource(source string) (string, bool, error) {
 	return srcdir, needremove, nil
 }
 
-func copyDistro(srcdir string, distro types.Distribution, flags *flagpole) error {
+func copyDistro(srcdir string, distro *types.Distribution, flags *flagpole) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 
 	const distrosPath = "/srv/www/distributions/"
@@ -153,11 +153,11 @@ func distroCp(
 		log.Info().Msgf(L("Auto-detected distribution %s"), distribution.TreeLabel)
 	}
 
-	if err := copyDistro(srcdir, distribution, flags); err != nil {
+	if err := copyDistro(srcdir, &distribution, flags); err != nil {
 		return err
 	}
 
-	// Fill server FQDN if not provided, ignore error, will be hanled later
+	// Fill server FQDN if not provided, ignore error, will be handled later
 	if flags.ConnectionDetails.Server == "" {
 		flags.ConnectionDetails.Server, _ = getServerFqdn(flags)
 		log.Debug().Msgf("Using api-server FQDN '%s'", flags.ConnectionDetails.Server)
