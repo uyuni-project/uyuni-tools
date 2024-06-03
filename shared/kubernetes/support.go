@@ -43,11 +43,17 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 
 	configmapFilename, err := fetchConfigMap(dir)
 	if err != nil {
-		log.Warn().Msg(L("cannot retrieve any configmap. This is expected in no kubernetes host"))
+		log.Warn().Msg(L("cannot retrieve any configmap"))
 	} else {
 		files = append(files, configmapFilename)
 	}
 
+	podFilename, err := fetchPodYaml(dir)
+	if err != nil {
+		log.Warn().Msg(L("cannot retrieve any pod"))
+	} else {
+		files = append(files, podFilename)
+	}
 	return files, nil
 }
 
@@ -67,4 +73,22 @@ func fetchConfigMap(dir string) (string, error) {
 		return "", err
 	}
 	return configmapFile.Name(), nil
+}
+
+func fetchPodYaml(dir string) (string, error) {
+	podFile, err := os.Create(path.Join(dir, "pod"))
+	if err != nil {
+		return "", utils.Errorf(err, L("cannot create %s"), podFile.Name())
+	}
+	defer podFile.Close()
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-o", "yaml")
+	if err != nil {
+		return "", utils.Errorf(err, L("cannot fetch pod"))
+	}
+
+	_, err = podFile.WriteString(string(out))
+	if err != nil {
+		return "", err
+	}
+	return podFile.Name(), nil
 }
