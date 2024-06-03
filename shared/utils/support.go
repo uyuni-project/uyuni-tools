@@ -104,9 +104,9 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 			}
 			files = append(files, inspectDump)
 
-			bindedFilesDump, err := dumpBindedFileCommand(dir, container)
+			bindedFilesDump, err := fetchBindedFileCommand(dir, container)
 			if err != nil {
-				log.Warn().Msgf(L("cannot dump the binded files in %s"), container)
+				log.Warn().Msgf(L("cannot fetch the binded files in %s"), container)
 			}
 			files = append(files, bindedFilesDump)
 
@@ -117,6 +117,7 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 			files = append(files, logsDump)
 		}
 	}
+	//kubectl get configmap -o yaml
 
 	return files, nil
 }
@@ -140,5 +141,91 @@ func createSystemdDump(dir string) (string, error) {
 
 	return systemdSupportConfig.Name(), nil
 }
-==== BASE ====
-==== BASE ====
+
+func runPodmanInspectCommand(dir string, container string) (string, error) {
+	podmanInspectDump, err := os.Create(path.Join(dir, "inspect-"+container))
+	defer podmanInspectDump.Close()
+	if err != nil {
+		return "", Errorf(err, L("cannot create %s"), podmanInspectDump)
+	}
+
+	out, err := RunCmdOutput(zerolog.DebugLevel, "podman", "inspect", container)
+	if err != nil {
+		return "", Errorf(err, L("cannot run podman inspect %s"), container)
+	}
+
+	_, err = podmanInspectDump.WriteString(string(out))
+	if err != nil {
+		return "", err
+	}
+	return podmanInspectDump.Name(), nil
+}
+
+func fetchBindedFileCommand(dir string, container string) (string, error) {
+	bindedFilesDump, err := os.Create(path.Join(dir, "binded-files-"+container))
+	defer bindedFilesDump.Close()
+	if err != nil {
+		return "", Errorf(err, L("cannot create %s"), bindedFilesDump)
+	}
+
+	out, err := RunCmdOutput(zerolog.DebugLevel, "podman", "inspect", container, "--format", "{{range .Mounts}}{{if eq .Type \"bind\"}} {{.Source}}{{end}}{{end}}")
+	if err != nil {
+		return "", Errorf(err, L("cannot run podman inspect %s"), container)
+	}
+	bindedFiles := strings.Split(string(out), " ")
+
+	for _, bindFile := range bindedFiles {
+		bindFile = strings.TrimSpace(bindFile)
+		if len(bindFile) <= 0 {
+			continue
+		}
+		out, err := RunCmdOutput(zerolog.DebugLevel, "find", bindFile, "-type", "f")
+		if err != nil {
+			return "", err
+		}
+
+		fileList := strings.Split(strings.TrimSpace(string(out)), "\n")
+		for _, file := range fileList {
+			_, err = bindedFilesDump.WriteString("====" + file + "====" + "\n")
+			if err != nil {
+				return "", err
+			}
+			out, err := RunCmdOutput(zerolog.DebugLevel, "cat", file)
+			if err != nil {
+				return "", err
+			}
+			_, err = bindedFilesDump.WriteString(string(out) + "\n")
+			if err != nil {
+				return "", err
+			}
+		}
+	}
+	return bindedFilesDump.Name(), nil
+}
+
+func runPodmanLogsCommand(dir string, container string) (string, error) {
+	podmanLogsDump, err := os.Create(path.Join(dir, "logs-"+container))
+	if err != nil {
+		return "", Errorf(err, L("cannot create %s"), podmanLogsDump)
+	}
+
+	out, err := RunCmdOutput(zerolog.DebugLevel, "podman", "logs", container)
+	if err != nil {
+		return "", Errorf(err, L("cannot run podman inspect %s"), container)
+	}
+
+	_, err = podmanLogsDump.WriteString(string(out))
+	if err != nil {
+		return "", err
+	}
+	return podmanLogsDump.Name(), nil
+}
+
+func runningContainer() ([]string, error) {
+	containerList, err := RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "-a", "--format={{ .Names }}")
+	if err != nil {
+		return []string{}, err
+	}
+
+	return strings.Split(strings.TrimSpace(string(containerList)), "\n"), nil
+}
