@@ -8,6 +8,13 @@ SPDX-License-Identifier: Apache-2.0
 
 **add description**
 
+## Codespace
+<!-- Button to create CodeSpace -->
+
+Check if you already have a running container clicking on [![Running CodeSpace](https://badgen.net/badge/Running/CodeSpace/green)](https://github.com/codespaces)
+
+[![Create CodeSpace](https://img.shields.io/badge/Create-CodeSpace-blue.svg)](https://codespaces.new/uyuni-project/uyuni-tools)  [![About billing for Github Codespaces](https://badgen.net/badge/CodeSpace/Price)](https://docs.github.com/en/billing/managing-billing-for-github-codespaces/about-billing-for-github-codespaces) [![CodeSpace Billing Summary](https://badgen.net/badge/CodeSpace/Billing%20Summary)](https://github.com/settings/billing/summary) [![CodeSpace Limit](https://badgen.net/badge/CodeSpace/Spending%20Limit)](https://github.com/settings/billing/spending_limit)
+
 ## Test coverage
 - No tests: **add explanation**
 - No tests: already covered
