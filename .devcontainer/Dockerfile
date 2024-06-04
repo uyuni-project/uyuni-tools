@@ -1,4 +1,6 @@
-ARG VARIANT="16"
+# SPDX-FileCopyrightText: 2024 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
 FROM mcr.microsoft.com/devcontainers/go:1-1.21-bullseye
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
