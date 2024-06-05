@@ -23,7 +23,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	}
 	defer os.RemoveAll(tmpDir)
 	var fileList []string
-	if podman.HasService(podman.ServerService) {
+	if podman.HasService(podman.ProxyService) {
 		fileList, err = podman.RunSupportConfigOnHost(tmpDir)
 	}
 
