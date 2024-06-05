@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:14+0200\n"
+"POT-Creation-Date: 2024-06-05 10:09+0200\n"
 "PO-Revision-Date: 2024-05-09 11:43+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/zh_CN/>\n"
@@ -47,6 +47,10 @@ msgstr "应用程序日志级别"
 #: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
 msgid "Install a new proxy from scratch"
 msgstr "从头开始安装新代理"
+
+#: mgrpxy/cmd/install/install.go:22 mgrpxy/cmd/upgrade/upgrade.go:22
+msgid "specify a private registry"
+msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
@@ -214,6 +218,26 @@ msgstr ""
 "\n"
 "注意：目前不支持在远程群集上安装！\n"
 
+#: mgrpxy/cmd/support/ptf/podman/podman.go:30
+msgid "Install a PTF or Test package on podman"
+msgstr "在 podman 上安装 PTF 或测试软件包"
+
+#: mgrpxy/cmd/support/ptf/podman/podman.go:31
+msgid ""
+"Install a PTF or Test package on podman\n"
+"\n"
+"The support ptf podman command assumes podman is installed locally and\n"
+"the host machine is register to SCC.\n"
+"\n"
+"NOTE: for now installing on a remote podman is not supported!\n"
+msgstr ""
+"在 podman 上安装 PTF 或测试软件包\n"
+"\n"
+"support ptf podman 命令假定本地已安装 podman 且\n"
+"主机计算机已注册到 SCC。\n"
+"\n"
+"注意：目前不支持在远程 podman 上安装！\n"
+
 #: mgrpxy/cmd/support/ptf/podman/utils.go:34
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "不能同时设置 ptf 和 test 标志 "
@@ -251,26 +275,6 @@ msgstr "计算出的 salt-broker ptf 映像为：%s"
 msgid "The squid ptf image computed is: %s"
 msgstr "计算出的 squid ptf 映像为：%s"
 
-#: mgrpxy/cmd/support/ptf/podman/podman.go:30
-msgid "Install a PTF or Test package on podman"
-msgstr "在 podman 上安装 PTF 或测试软件包"
-
-#: mgrpxy/cmd/support/ptf/podman/podman.go:31
-msgid ""
-"Install a PTF or Test package on podman\n"
-"\n"
-"The support ptf podman command assumes podman is installed locally and\n"
-"the host machine is register to SCC.\n"
-"\n"
-"NOTE: for now installing on a remote podman is not supported!\n"
-msgstr ""
-"在 podman 上安装 PTF 或测试软件包\n"
-"\n"
-"support ptf podman 命令假定本地已安装 podman 且\n"
-"主机计算机已注册到 SCC。\n"
-"\n"
-"注意：目前不支持在远程 podman 上安装！\n"
-
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
 msgstr "安装 PTF"
@@ -279,55 +283,60 @@ msgstr "安装 PTF"
 msgid "Commands for support operations"
 msgstr "用于执行支持操作的命令"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:21
+#: mgrpxy/cmd/uninstall/kubernetes.go:25
+msgid "--purge-volumes is ignored on a kubernetes deployment"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/kubernetes.go:28
+msgid "--purge-images is ignored on a kubernetes deployment"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/kubernetes.go:59
+msgid "Nothing has been uninstalled, run with --force to actually uninstall"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/kubernetes.go:61
+msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/podman.go:63
+#, fuzzy, javascript-format
+msgid "cannot delete volume %s"
+msgstr "无法删除卷 %s：%s"
+
+#: mgrpxy/cmd/uninstall/podman.go:66
+msgid "All volumes removed"
+msgstr "所有卷均已去除"
+
+#: mgrpxy/cmd/uninstall/podman.go:73
+#, fuzzy, javascript-format
+msgid "cannot delete image %s"
+msgstr "无法删除卷 %s：%s"
+
+#: mgrpxy/cmd/uninstall/podman.go:77
+#, fuzzy
+msgid "All images have been removed"
+msgstr "所有卷均已去除"
+
+#: mgrpxy/cmd/uninstall/podman.go:85
+msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/podman.go:87
+msgid "Data have been kept, use podman volume commands to clear the volumes"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/uninstall.go:20
 msgid "Uninstall a proxy"
 msgstr "卸装代理"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:22
+#: mgrpxy/cmd/uninstall/uninstall.go:21
 msgid ""
 "Uninstall a proxy and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
 msgstr ""
 "卸装代理以及可选的相应卷。\n"
 "默认仅会列显将执行的操作，使用 --force 可真正去除代理。"
-
-#: mgrpxy/cmd/uninstall/uninstall.go:34
-#, fuzzy
-msgid "failed to determine suitable backend"
-msgstr "无法确定合适的后端：%s"
-
-#: mgrpxy/cmd/uninstall/uninstall.go:49
-msgid "Actually remove the proxy"
-msgstr "真正去除代理"
-
-#: mgrpxy/cmd/uninstall/uninstall.go:50
-msgid "Also remove the volumes"
-msgstr "同时去除卷"
-
-#: mgrpxy/cmd/uninstall/kubernetes.go:42
-msgid "Nothing has been uninstalled, run with --force to actually uninstall"
-msgstr ""
-
-#: mgrpxy/cmd/uninstall/kubernetes.go:44
-msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
-msgstr ""
-
-#: mgrpxy/cmd/uninstall/podman.go:45
-#, fuzzy, javascript-format
-msgid "cannot delete volume %s"
-msgstr "无法删除卷 %s：%s"
-
-#: mgrpxy/cmd/uninstall/podman.go:48
-msgid "All volumes removed"
-msgstr "所有卷均已去除"
-
-#: mgrpxy/cmd/uninstall/podman.go:56
-msgid "Nothing has been uninstalled, run with --force and --purgeVolumes to actually uninstall and clear data"
-msgstr ""
-
-#: mgrpxy/cmd/uninstall/podman.go:58
-msgid "Data have been kept, use podman volume commands to clear the volumes"
-msgstr ""
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:20
 msgid "Upgrade a proxy on a running kubernetes cluster"
@@ -455,19 +464,15 @@ msgstr "找不到 tftpd 映像：将不升级该映像"
 msgid "argument is not an existing file: %s"
 msgstr "参数不是现有的文件：%s"
 
-#: mgrpxy/shared/utils/flags.go:55
+#: mgrpxy/shared/utils/flags.go:57
 #, javascript-format
 msgid "Invalid proxy container name: %s"
 msgstr "代理容器名称无效：%s"
 
-#: mgrpxy/shared/utils/flags.go:69
+#: mgrpxy/shared/utils/flags.go:71
 #, fuzzy
 msgid "failed to compute image URL"
 msgstr "无法计算映像 URL"
-
-#: mgrpxy/shared/utils/flags.go:77
-msgid "registry URL prefix containing the all the container images"
-msgstr "包含所有容器映像的注册表 URL 前缀"
 
 #: mgrpxy/shared/utils/flags.go:78
 msgid "image tag"
@@ -492,3 +497,16 @@ msgstr "%s 容器的映像，如果设置，将会覆盖名称空间"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 容器的标记，如果设置，将会覆盖全局值"
+
+#, fuzzy
+#~ msgid "failed to determine suitable backend"
+#~ msgstr "无法确定合适的后端：%s"
+
+#~ msgid "Actually remove the proxy"
+#~ msgstr "真正去除代理"
+
+#~ msgid "Also remove the volumes"
+#~ msgstr "同时去除卷"
+
+#~ msgid "registry URL prefix containing the all the container images"
+#~ msgstr "包含所有容器映像的注册表 URL 前缀"

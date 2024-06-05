@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:14+0200\n"
+"POT-Creation-Date: 2024-06-05 10:09+0200\n"
 "PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
@@ -140,8 +140,9 @@ msgid "Cannot guess namespace"
 msgstr ""
 
 #: shared/kubernetes/helm.go:98 shared/podman/network.go:98
-#: shared/podman/systemd.go:81 shared/podman/systemd.go:131
-#: shared/podman/systemd.go:132 shared/podman/utils.go:107
+#: shared/podman/systemd.go:81 shared/podman/systemd.go:181
+#: shared/podman/systemd.go:182 shared/podman/utils.go:129
+#: shared/podman/utils.go:155
 #, javascript-format
 msgid "Would run %s"
 msgstr ""
@@ -186,8 +187,8 @@ msgstr ""
 msgid "install %s before running this command"
 msgstr "installare %s prima di eseguire questo comando"
 
-#: shared/kubernetes/k3s.go:65 shared/podman/utils.go:132
-#: shared/utils/utils.go:345
+#: shared/kubernetes/k3s.go:65 shared/podman/utils.go:180
+#: shared/utils/utils.go:381
 #, fuzzy
 msgid "failed to create temporary directory"
 msgstr "mancata creazione della directory temporanea: %s"
@@ -207,32 +208,10 @@ msgstr "impossibile trovare il nodo che ha in esecuzione uyuni: %s"
 msgid "cannot run inspect pod"
 msgstr "impossibile ispezionare i valori dell'host: %s"
 
-#: shared/kubernetes/k3s.go:117 shared/podman/utils.go:169
+#: shared/kubernetes/k3s.go:117 shared/podman/utils.go:217
 #, fuzzy
 msgid "cannot inspect data"
 msgstr "impossibile ispezionare i valori dell'host: %s"
-
-#: shared/kubernetes/rke2.go:21
-msgid "Installing RKE2 Nginx configuration"
-msgstr ""
-
-#: shared/kubernetes/rke2.go:29
-msgid "Failed to write Rke2 nginx configuration"
-msgstr ""
-
-#: shared/kubernetes/rke2.go:33
-msgid "Waiting for Nginx controller to be reloaded"
-msgstr ""
-
-#: shared/kubernetes/uninstall.go:13
-msgid ""
-"\n"
-"Note that removing the volumes could also be handled automatically depending on the StorageClass used\n"
-"when installed on a kubernetes cluster.\n"
-"\n"
-"For instance on a default K3S install, the local-path-provider storage volumes will\n"
-"be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
-msgstr ""
 
 #: shared/kubernetes/kubernetes.go:54
 msgid "failed to get kubelet version"
@@ -258,6 +237,28 @@ msgstr ""
 #: shared/kubernetes/kubernetes.go:148
 #, javascript-format
 msgid "Failed to base64 decode secret %s"
+msgstr ""
+
+#: shared/kubernetes/rke2.go:21
+msgid "Installing RKE2 Nginx configuration"
+msgstr ""
+
+#: shared/kubernetes/rke2.go:29
+msgid "Failed to write Rke2 nginx configuration"
+msgstr ""
+
+#: shared/kubernetes/rke2.go:33
+msgid "Waiting for Nginx controller to be reloaded"
+msgstr ""
+
+#: shared/kubernetes/uninstall.go:13
+msgid ""
+"\n"
+"Note that removing the volumes could also be handled automatically depending on the StorageClass used\n"
+"when installed on a kubernetes cluster.\n"
+"\n"
+"For instance on a default K3S install, the local-path-provider storage volumes will\n"
+"be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
 msgstr ""
 
 #: shared/kubernetes/utils.go:57 shared/kubernetes/utils.go:92
@@ -372,71 +373,75 @@ msgstr ""
 msgid "Ensure image %s is available"
 msgstr ""
 
-#: shared/podman/images.go:54
+#: shared/podman/images.go:47
+msgid "Pull Policy is always. Presence of RPM image will be checked and if it's not present it will be pulled from registry"
+msgstr ""
+
+#: shared/podman/images.go:56
 #, javascript-format
 msgid "Cannot use RPM image for %s"
 msgstr ""
 
-#: shared/podman/images.go:56
+#: shared/podman/images.go:58
 msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
 msgstr ""
 
-#: shared/podman/images.go:61
+#: shared/podman/images.go:63
 #, javascript-format
 msgid "Cannot find RPM image for %s"
 msgstr ""
 
-#: shared/podman/images.go:69
+#: shared/podman/images.go:71
 #, javascript-format
 msgid "image %s is missing and cannot be fetched"
 msgstr ""
 
-#: shared/podman/images.go:94
+#: shared/podman/images.go:96
 msgid "cannot unmarshal image RPM metadata"
 msgstr ""
 
-#: shared/podman/images.go:139
+#: shared/podman/images.go:141
 #, javascript-format
 msgid "Cannot unmarshal metadata file %s"
 msgstr ""
 
-#: shared/podman/images.go:161
+#: shared/podman/images.go:163
 #, javascript-format
 msgid "error parsing: %s"
 msgstr ""
 
-#: shared/podman/images.go:169 shared/podman/images.go:183
-#: shared/podman/images.go:198
+#: shared/podman/images.go:171 shared/podman/images.go:185
+#: shared/podman/images.go:200
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
 msgstr ""
 
-#: shared/podman/images.go:205
+#: shared/podman/images.go:207
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr ""
 
-#: shared/podman/images.go:207
+#: shared/podman/images.go:209
 #, javascript-format
 msgid "Running podman pull %s"
 msgstr ""
 
-#: shared/podman/images.go:222
+#: shared/podman/images.go:224
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr ""
 
-#: shared/podman/images.go:226
+#: shared/podman/images.go:232
 #, fuzzy, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr "impossibile trovare il nodo che ha in esecuzione uyuni: %s"
 
-#: shared/podman/images.go:235
+#: shared/podman/images.go:241
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr ""
 
-#: shared/podman/images.go:239
+#: shared/podman/images.go:245
 #, fuzzy, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr "impossibile trovare il nodo che ha in esecuzione uyuni: %s"
@@ -503,171 +508,199 @@ msgstr ""
 msgid "Disable %s service"
 msgstr ""
 
-#: shared/podman/systemd.go:87
+#: shared/podman/systemd.go:87 shared/podman/systemd.go:134
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr ""
 
 #: shared/podman/systemd.go:92 shared/podman/systemd.go:104
+#: shared/podman/systemd.go:143 shared/podman/systemd.go:155
 #, javascript-format
 msgid "Would remove %s"
 msgstr ""
 
 #: shared/podman/systemd.go:95 shared/podman/systemd.go:106
+#: shared/podman/systemd.go:146 shared/podman/systemd.go:157
 #, javascript-format
 msgid "Remove %s"
 msgstr ""
 
-#: shared/podman/systemd.go:97
+#: shared/podman/systemd.go:97 shared/podman/systemd.go:148
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr ""
 
-#: shared/podman/systemd.go:108
+#: shared/podman/systemd.go:108 shared/podman/systemd.go:159
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr ""
 
-#: shared/podman/systemd.go:114
+#: shared/podman/systemd.go:114 shared/podman/systemd.go:165
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr ""
 
-#: shared/podman/systemd.go:120
+#: shared/podman/systemd.go:120 shared/podman/systemd.go:171
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr ""
 
-#: shared/podman/systemd.go:136
+#: shared/podman/systemd.go:131
+#, javascript-format
+msgid "Would scale %s to 0 replicas"
+msgstr ""
+
+#: shared/podman/systemd.go:186
 msgid "failed to reset-failed systemd"
 msgstr ""
 
-#: shared/podman/systemd.go:140
+#: shared/podman/systemd.go:190
 msgid "failed to reload systemd daemon"
 msgstr ""
 
-#: shared/podman/systemd.go:158
+#: shared/podman/systemd.go:208
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:166
+#: shared/podman/systemd.go:216
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:174
+#: shared/podman/systemd.go:224
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:182
+#: shared/podman/systemd.go:232
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr ""
 
-#: shared/podman/systemd.go:193
+#: shared/podman/systemd.go:273
 #, fuzzy, javascript-format
 msgid "failed to create %s folder"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/podman/systemd.go:199
+#: shared/podman/systemd.go:279
 #, fuzzy, javascript-format
 msgid "cannot write %s file"
 msgstr "impossible eliminare %s: %s"
 
-#: shared/podman/systemd.go:219
+#: shared/podman/systemd.go:300
+msgid "Service %[1]s already has %[2]d replicas."
+msgstr ""
+
+#: shared/podman/systemd.go:303
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr ""
 
-#: shared/podman/systemd.go:223
+#: shared/podman/systemd.go:307
 #, fuzzy
 msgid "cannot enable service"
 msgstr "impossible eliminare %s"
 
-#: shared/podman/systemd.go:229
+#: shared/podman/systemd.go:313
 #, fuzzy
 msgid "cannot disable service"
 msgstr "impossible eliminare %s"
 
-#: shared/podman/utils.go:46
+#: shared/podman/utils.go:49
 msgid "Extra arguments to pass to podman"
 msgstr ""
 
-#: shared/podman/utils.go:53
+#: shared/podman/utils.go:56
 msgid "failed to enable podman.socket unit"
 msgstr ""
 
-#: shared/podman/utils.go:70
+#: shared/podman/utils.go:73
 #, javascript-format
 msgid "failed to run %s container"
 msgstr ""
 
-#: shared/podman/utils.go:81
+#: shared/podman/utils.go:84
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:82
+#: shared/podman/utils.go:85
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:84
+#: shared/podman/utils.go:87
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:87
+#: shared/podman/utils.go:90
 msgid "Failed to kill the server"
 msgstr ""
 
-#: shared/podman/utils.go:89
+#: shared/podman/utils.go:92
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:92
+#: shared/podman/utils.go:95
 msgid "Error removing container"
 msgstr ""
 
-#: shared/podman/utils.go:97
+#: shared/podman/utils.go:100
 msgid "Container already removed"
 msgstr ""
 
-#: shared/podman/utils.go:109
+#: shared/podman/utils.go:131 shared/podman/utils.go:157
 #, javascript-format
 msgid "Run %s"
 msgstr ""
 
-#: shared/podman/utils.go:112
+#: shared/podman/utils.go:134
+#, fuzzy, javascript-format
+msgid "Failed to remove image %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: shared/podman/utils.go:160
 #, javascript-format
 msgid "Failed to remove volume %s"
 msgstr ""
 
-#: shared/podman/utils.go:137
+#: shared/podman/utils.go:185
 #, fuzzy
 msgid "cannot inspect host values"
 msgstr "impossibile ispezionare i valori dell'host: %s"
 
-#: shared/utils/cmd.go:45 shared/utils/cmd.go:46
+#: shared/utils/cmd.go:48 shared/utils/cmd.go:49
 msgid "failed to unmarshall configuration"
 msgstr ""
 
-#: shared/utils/cmd.go:53
+#: shared/utils/cmd.go:56
 msgid "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use."
 msgstr ""
 
-#: shared/utils/cmd.go:67 shared/utils/cmd.go:73
+#: shared/utils/cmd.go:70
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr ""
 
-#: shared/utils/cmd.go:78
+#: shared/utils/cmd.go:75
 msgid "PTF ID"
 msgstr ""
 
-#: shared/utils/cmd.go:79
+#: shared/utils/cmd.go:76
 msgid "Test package ID"
 msgstr ""
 
-#: shared/utils/cmd.go:80
+#: shared/utils/cmd.go:77
 msgid "SCC user"
+msgstr ""
+
+#: shared/utils/cmd.go:95
+msgid "Actually remove the server"
+msgstr ""
+
+#: shared/utils/cmd.go:96
+msgid "Also remove the volumes"
+msgstr ""
+
+#: shared/utils/cmd.go:97
+msgid "Also remove the container images"
 msgstr ""
 
 #: shared/utils/config.go:38
@@ -787,120 +820,132 @@ msgstr ""
 msgid "failed to open %s for writing"
 msgstr ""
 
-#: shared/utils/utils.go:65
+#: shared/utils/utils.go:70
 #, javascript-format
 msgid "Has to be more than %d character long"
 msgid_plural "Has to be more than %d characters long"
 msgstr[0] ""
 msgstr[1] ""
 
-#: shared/utils/utils.go:69
+#: shared/utils/utils.go:74
 #, javascript-format
 msgid "Has to be less than %d character long"
 msgid_plural "Has to be less than %d characters long"
 msgstr[0] ""
 msgstr[1] ""
 
-#: shared/utils/utils.go:82
+#: shared/utils/utils.go:85
 msgid "Failed to read password"
 msgstr ""
 
-#: shared/utils/utils.go:88
+#: shared/utils/utils.go:99
 msgid "Cannot contain spaces or tabs"
 msgstr ""
 
-#: shared/utils/utils.go:109
+#: shared/utils/utils.go:119
+msgid "Two different passwords have been provided"
+msgstr ""
+
+#: shared/utils/utils.go:135
 msgid "Failed to read input"
 msgstr ""
 
-#: shared/utils/utils.go:117
+#: shared/utils/utils.go:143
 msgid "A value is required"
 msgstr ""
 
-#: shared/utils/utils.go:146 shared/utils/utils.go:172
+#: shared/utils/utils.go:171
+msgid "Registry %[1]s would be used instead of namespace %[2]s"
+msgstr ""
+
+#: shared/utils/utils.go:176
+msgid "The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."
+msgstr ""
+
+#: shared/utils/utils.go:182 shared/utils/utils.go:208
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr ""
 
-#: shared/utils/utils.go:150
+#: shared/utils/utils.go:186
 #, javascript-format
 msgid "tag missing on %s"
 msgstr ""
 
-#: shared/utils/utils.go:182
+#: shared/utils/utils.go:218
 #, javascript-format
 msgid "Failed to run %s"
 msgstr ""
 
-#: shared/utils/utils.go:191
+#: shared/utils/utils.go:227
 #, fuzzy, javascript-format
 msgid "cannot check content of %s"
 msgstr "impossibile leggere la configurazione: %s"
 
-#: shared/utils/utils.go:203
+#: shared/utils/utils.go:239
 #, javascript-format
 msgid "Cannot remove %s folder"
 msgstr ""
 
-#: shared/utils/utils.go:214
+#: shared/utils/utils.go:250
 #, javascript-format
 msgid "Failed to get %s file informations"
 msgstr ""
 
-#: shared/utils/utils.go:223
+#: shared/utils/utils.go:259
 #, javascript-format
 msgid "Failed to read file %s"
 msgstr ""
 
-#: shared/utils/utils.go:238
+#: shared/utils/utils.go:274
 #, javascript-format
 msgid "Would remove file %s"
 msgstr ""
 
-#: shared/utils/utils.go:240
+#: shared/utils/utils.go:276
 #, javascript-format
 msgid "Removing file %s"
 msgstr ""
 
-#: shared/utils/utils.go:242
+#: shared/utils/utils.go:278
 #, javascript-format
 msgid "Failed to remove file %s"
 msgstr ""
 
-#: shared/utils/utils.go:252
+#: shared/utils/utils.go:288
 msgid "Failed to read random data"
 msgstr ""
 
-#: shared/utils/utils.go:273
+#: shared/utils/utils.go:309
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:279
+#: shared/utils/utils.go:315
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:315
+#: shared/utils/utils.go:351
 #, fuzzy, javascript-format
 msgid "cannot parse file %s"
 msgstr "impossibile leggere la configurazione: %s"
 
-#: shared/utils/utils.go:322
+#: shared/utils/utils.go:358
 #, fuzzy
 msgid "cannot read config"
 msgstr "impossibile leggere la configurazione: %s"
 
-#: shared/utils/utils.go:353
+#: shared/utils/utils.go:389
 msgid "failed to run inspect script in host system"
 msgstr ""
 
-#: shared/utils/utils.go:358
+#: shared/utils/utils.go:394
 #, fuzzy
 msgid "cannot inspect host data"
 msgstr "impossibile ispezionare i valori dell'host: %s"
 
-#: shared/utils/utils.go:374 shared/utils/utils.go:388
+#: shared/utils/utils.go:410 shared/utils/utils.go:424
 msgid "failed to generate inspect script"
 msgstr ""
 

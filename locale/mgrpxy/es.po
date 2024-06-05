@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:14+0200\n"
+"POT-Creation-Date: 2024-06-05 10:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -44,6 +44,10 @@ msgstr ""
 
 #: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
 msgid "Install a new proxy from scratch"
+msgstr ""
+
+#: mgrpxy/cmd/install/install.go:22 mgrpxy/cmd/upgrade/upgrade.go:22
+msgid "specify a private registry"
 msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
@@ -181,6 +185,20 @@ msgid ""
 "NOTE: installing on a remote cluster is not supported yet!\n"
 msgstr ""
 
+#: mgrpxy/cmd/support/ptf/podman/podman.go:30
+msgid "Install a PTF or Test package on podman"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/podman.go:31
+msgid ""
+"Install a PTF or Test package on podman\n"
+"\n"
+"The support ptf podman command assumes podman is installed locally and\n"
+"the host machine is register to SCC.\n"
+"\n"
+"NOTE: for now installing on a remote podman is not supported!\n"
+msgstr ""
+
 #: mgrpxy/cmd/support/ptf/podman/utils.go:34
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr ""
@@ -218,20 +236,6 @@ msgstr ""
 msgid "The squid ptf image computed is: %s"
 msgstr ""
 
-#: mgrpxy/cmd/support/ptf/podman/podman.go:30
-msgid "Install a PTF or Test package on podman"
-msgstr ""
-
-#: mgrpxy/cmd/support/ptf/podman/podman.go:31
-msgid ""
-"Install a PTF or Test package on podman\n"
-"\n"
-"The support ptf podman command assumes podman is installed locally and\n"
-"the host machine is register to SCC.\n"
-"\n"
-"NOTE: for now installing on a remote podman is not supported!\n"
-msgstr ""
-
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
 msgstr ""
@@ -240,51 +244,56 @@ msgstr ""
 msgid "Commands for support operations"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/uninstall.go:21
-msgid "Uninstall a proxy"
+#: mgrpxy/cmd/uninstall/kubernetes.go:25
+msgid "--purge-volumes is ignored on a kubernetes deployment"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/uninstall.go:22
-msgid ""
-"Uninstall a proxy and optionally the corresponding volumes.\n"
-"By default it will only print what would be done, use --force to actually remove."
+#: mgrpxy/cmd/uninstall/kubernetes.go:28
+msgid "--purge-images is ignored on a kubernetes deployment"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/uninstall.go:34
-msgid "failed to determine suitable backend"
-msgstr ""
-
-#: mgrpxy/cmd/uninstall/uninstall.go:49
-msgid "Actually remove the proxy"
-msgstr ""
-
-#: mgrpxy/cmd/uninstall/uninstall.go:50
-msgid "Also remove the volumes"
-msgstr ""
-
-#: mgrpxy/cmd/uninstall/kubernetes.go:42
+#: mgrpxy/cmd/uninstall/kubernetes.go:59
 msgid "Nothing has been uninstalled, run with --force to actually uninstall"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/kubernetes.go:44
+#: mgrpxy/cmd/uninstall/kubernetes.go:61
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/podman.go:45
+#: mgrpxy/cmd/uninstall/podman.go:63
 #, javascript-format
 msgid "cannot delete volume %s"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/podman.go:48
+#: mgrpxy/cmd/uninstall/podman.go:66
 msgid "All volumes removed"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/podman.go:56
-msgid "Nothing has been uninstalled, run with --force and --purgeVolumes to actually uninstall and clear data"
+#: mgrpxy/cmd/uninstall/podman.go:73
+#, javascript-format
+msgid "cannot delete image %s"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/podman.go:58
+#: mgrpxy/cmd/uninstall/podman.go:77
+msgid "All images have been removed"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/podman.go:85
+msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/podman.go:87
 msgid "Data have been kept, use podman volume commands to clear the volumes"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/uninstall.go:20
+msgid "Uninstall a proxy"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/uninstall.go:21
+msgid ""
+"Uninstall a proxy and optionally the corresponding volumes.\n"
+"By default it will only print what would be done, use --force to actually remove."
 msgstr ""
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:20
@@ -399,17 +408,13 @@ msgstr ""
 msgid "argument is not an existing file: %s"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:55
+#: mgrpxy/shared/utils/flags.go:57
 #, javascript-format
 msgid "Invalid proxy container name: %s"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:69
+#: mgrpxy/shared/utils/flags.go:71
 msgid "failed to compute image URL"
-msgstr ""
-
-#: mgrpxy/shared/utils/flags.go:77
-msgid "registry URL prefix containing the all the container images"
 msgstr ""
 
 #: mgrpxy/shared/utils/flags.go:78

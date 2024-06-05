@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:14+0200\n"
+"POT-Creation-Date: 2024-06-05 10:09+0200\n"
 "PO-Revision-Date: 2024-04-08 11:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -47,6 +47,10 @@ msgstr "niveau de verbosité de l'application"
 #: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
 msgid "Install a new proxy from scratch"
 msgstr "Installer un nouveau proxy"
+
+#: mgrpxy/cmd/install/install.go:22 mgrpxy/cmd/upgrade/upgrade.go:22
+msgid "specify a private registry"
+msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
@@ -206,6 +210,30 @@ msgid ""
 "NOTE: installing on a remote cluster is not supported yet!\n"
 msgstr ""
 
+#: mgrpxy/cmd/support/ptf/podman/podman.go:30
+#, fuzzy
+msgid "Install a PTF or Test package on podman"
+msgstr "Installer un nouveau proxy sur podman"
+
+#: mgrpxy/cmd/support/ptf/podman/podman.go:31
+#, fuzzy
+msgid ""
+"Install a PTF or Test package on podman\n"
+"\n"
+"The support ptf podman command assumes podman is installed locally and\n"
+"the host machine is register to SCC.\n"
+"\n"
+"NOTE: for now installing on a remote podman is not supported!\n"
+msgstr ""
+"Installer un nouveau proxy sur podman\n"
+"\n"
+"Ne prend que le chemin vers l'archive de configuration générée par le serveur\n"
+"comme paramètre.\n"
+"\n"
+"La command install podman suppose que podman est installé en local.\n"
+"\n"
+"NOTE: pour l'instant l'installation sur un podman distant n'est pas supportée!\n"
+
 #: mgrpxy/cmd/support/ptf/podman/utils.go:34
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr ""
@@ -243,30 +271,6 @@ msgstr ""
 msgid "The squid ptf image computed is: %s"
 msgstr ""
 
-#: mgrpxy/cmd/support/ptf/podman/podman.go:30
-#, fuzzy
-msgid "Install a PTF or Test package on podman"
-msgstr "Installer un nouveau proxy sur podman"
-
-#: mgrpxy/cmd/support/ptf/podman/podman.go:31
-#, fuzzy
-msgid ""
-"Install a PTF or Test package on podman\n"
-"\n"
-"The support ptf podman command assumes podman is installed locally and\n"
-"the host machine is register to SCC.\n"
-"\n"
-"NOTE: for now installing on a remote podman is not supported!\n"
-msgstr ""
-"Installer un nouveau proxy sur podman\n"
-"\n"
-"Ne prend que le chemin vers l'archive de configuration générée par le serveur\n"
-"comme paramètre.\n"
-"\n"
-"La command install podman suppose que podman est installé en local.\n"
-"\n"
-"NOTE: pour l'instant l'installation sur un podman distant n'est pas supportée!\n"
-
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 #, fuzzy
 msgid "Install a PTF"
@@ -276,55 +280,60 @@ msgstr "Désinstaller un proxy"
 msgid "Commands for support operations"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/uninstall.go:21
+#: mgrpxy/cmd/uninstall/kubernetes.go:25
+msgid "--purge-volumes is ignored on a kubernetes deployment"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/kubernetes.go:28
+msgid "--purge-images is ignored on a kubernetes deployment"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/kubernetes.go:59
+msgid "Nothing has been uninstalled, run with --force to actually uninstall"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/kubernetes.go:61
+msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/podman.go:63
+#, fuzzy, javascript-format
+msgid "cannot delete volume %s"
+msgstr "impossible de suppimer le volume %s: %s"
+
+#: mgrpxy/cmd/uninstall/podman.go:66
+msgid "All volumes removed"
+msgstr "Tous les volumes ont été supprimés"
+
+#: mgrpxy/cmd/uninstall/podman.go:73
+#, fuzzy, javascript-format
+msgid "cannot delete image %s"
+msgstr "impossible de suppimer le volume %s: %s"
+
+#: mgrpxy/cmd/uninstall/podman.go:77
+#, fuzzy
+msgid "All images have been removed"
+msgstr "Tous les volumes ont été supprimés"
+
+#: mgrpxy/cmd/uninstall/podman.go:85
+msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/podman.go:87
+msgid "Data have been kept, use podman volume commands to clear the volumes"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/uninstall.go:20
 msgid "Uninstall a proxy"
 msgstr "Désinstaller un proxy"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:22
+#: mgrpxy/cmd/uninstall/uninstall.go:21
 msgid ""
 "Uninstall a proxy and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
 msgstr ""
 "Désinstaller un proxy et optionnellement les volumes associés.\n"
 "Par défaut les actions qui seraient effectuées sont seulement affichées, utiliser --force pour effectivement supprimer."
-
-#: mgrpxy/cmd/uninstall/uninstall.go:34
-#, fuzzy
-msgid "failed to determine suitable backend"
-msgstr "impossible de déterminer le back-end à utiliser: %s"
-
-#: mgrpxy/cmd/uninstall/uninstall.go:49
-msgid "Actually remove the proxy"
-msgstr "Réellement supprimer le proxy"
-
-#: mgrpxy/cmd/uninstall/uninstall.go:50
-msgid "Also remove the volumes"
-msgstr "Supprimer également les volumes"
-
-#: mgrpxy/cmd/uninstall/kubernetes.go:42
-msgid "Nothing has been uninstalled, run with --force to actually uninstall"
-msgstr ""
-
-#: mgrpxy/cmd/uninstall/kubernetes.go:44
-msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
-msgstr ""
-
-#: mgrpxy/cmd/uninstall/podman.go:45
-#, fuzzy, javascript-format
-msgid "cannot delete volume %s"
-msgstr "impossible de suppimer le volume %s: %s"
-
-#: mgrpxy/cmd/uninstall/podman.go:48
-msgid "All volumes removed"
-msgstr "Tous les volumes ont été supprimés"
-
-#: mgrpxy/cmd/uninstall/podman.go:56
-msgid "Nothing has been uninstalled, run with --force and --purgeVolumes to actually uninstall and clear data"
-msgstr ""
-
-#: mgrpxy/cmd/uninstall/podman.go:58
-msgid "Data have been kept, use podman volume commands to clear the volumes"
-msgstr ""
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:20
 #, fuzzy
@@ -463,19 +472,15 @@ msgstr ""
 msgid "argument is not an existing file: %s"
 msgstr "le paramètre n'est pas un fichier existant: %s"
 
-#: mgrpxy/shared/utils/flags.go:55
+#: mgrpxy/shared/utils/flags.go:57
 #, javascript-format
 msgid "Invalid proxy container name: %s"
 msgstr "Nom de conteneur de proxy invalide: %s"
 
-#: mgrpxy/shared/utils/flags.go:69
+#: mgrpxy/shared/utils/flags.go:71
 #, fuzzy
 msgid "failed to compute image URL"
 msgstr "Impossible de calculer l'URL de l'image"
-
-#: mgrpxy/shared/utils/flags.go:77
-msgid "registry URL prefix containing the all the container images"
-msgstr "prefixe de l'URL du registre contenant toutes les images de conteneurs"
 
 #: mgrpxy/shared/utils/flags.go:78
 msgid "image tag"
@@ -500,3 +505,16 @@ msgstr "Image pour le conteneur %s, remplace le namespace is défini"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "Tag pour le conteneur %sm remplace la valeur globale si définie"
+
+#, fuzzy
+#~ msgid "failed to determine suitable backend"
+#~ msgstr "impossible de déterminer le back-end à utiliser: %s"
+
+#~ msgid "Actually remove the proxy"
+#~ msgstr "Réellement supprimer le proxy"
+
+#~ msgid "Also remove the volumes"
+#~ msgstr "Supprimer également les volumes"
+
+#~ msgid "registry URL prefix containing the all the container images"
+#~ msgstr "prefixe de l'URL du registre contenant toutes les images de conteneurs"
