@@ -6,12 +6,30 @@ package uninstall
 
 import (
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func uninstallForPodman(dryRun bool, purge bool) error {
+func uninstallForPodman(
+	globalFlags *types.GlobalFlags,
+	flags *utils.UninstallFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	dryRun := !flags.Force
+
+	// Get the images from the service configs before they are removed
+	images := []string{
+		podman.GetServiceImage("uyuni-proxy-httpd"),
+		podman.GetServiceImage("uyuni-proxy-salt-broker"),
+		podman.GetServiceImage("uyuni-proxy-squid"),
+		podman.GetServiceImage("uyuni-proxy-ssh"),
+		podman.GetServiceImage("uyuni-proxy-tftpd"),
+	}
+
 	// Uninstall the service
 	podman.UninstallService("uyuni-proxy-pod", dryRun)
 	podman.UninstallService("uyuni-proxy-httpd", dryRun)
@@ -26,7 +44,7 @@ func uninstallForPodman(dryRun bool, purge bool) error {
 	}
 
 	// Remove the volumes
-	if purge {
+	if flags.Purge.Volumes {
 		// Merge all proxy containers volumes into a map
 		volumes := []string{}
 		for _, volume := range utils.PROXY_HTTPD_VOLUMES {
@@ -48,13 +66,24 @@ func uninstallForPodman(dryRun bool, purge bool) error {
 		log.Info().Msg(L("All volumes removed"))
 	}
 
+	if flags.Purge.Images {
+		for _, image := range images {
+			if image != "" {
+				if err := podman.DeleteImage(image, !flags.Force); err != nil {
+					return utils.Errorf(err, L("cannot delete image %s"), image)
+				}
+			}
+		}
+		log.Info().Msg(L("All images have been removed"))
+	}
+
 	podman.DeleteNetwork(dryRun)
 
 	err := podman.ReloadDaemon(dryRun)
 
 	if dryRun {
-		log.Warn().Msg(L("Nothing has been uninstalled, run with --force and --purgeVolumes to actually uninstall and clear data"))
-	} else if !purge {
+		log.Warn().Msg(L("Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"))
+	} else if !flags.Purge.Volumes {
 		log.Warn().Msg(L("Data have been kept, use podman volume commands to clear the volumes"))
 	}
 

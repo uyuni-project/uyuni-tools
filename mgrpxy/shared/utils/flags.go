@@ -6,6 +6,7 @@ package utils
 
 import (
 	"fmt"
+	"path"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -16,15 +17,15 @@ import (
 
 // ProxyImageFlags are the flags used by install proxy command.
 type ProxyImageFlags struct {
-	ImagesLocation string           `mapstructure:"imagesLocation"`
-	Tag            string           `mapstructure:"tag"`
-	PullPolicy     string           `mapstructure:"pullPolicy"`
-	Httpd          types.ImageFlags `mapstructure:"httpd"`
-	SaltBroker     types.ImageFlags `mapstructure:"saltBroker"`
-	Squid          types.ImageFlags `mapstructure:"squid"`
-	Ssh            types.ImageFlags `mapstructure:"ssh"`
-	Tftpd          types.ImageFlags `mapstructure:"tftpd"`
-	Tuning         Tuning           `mapstructure:"tuning"`
+	Registry   string           `mapstructure:"registry"`
+	Tag        string           `mapstructure:"tag"`
+	PullPolicy string           `mapstructure:"pullPolicy"`
+	Httpd      types.ImageFlags `mapstructure:"httpd"`
+	SaltBroker types.ImageFlags `mapstructure:"saltBroker"`
+	Squid      types.ImageFlags `mapstructure:"squid"`
+	Ssh        types.ImageFlags `mapstructure:"ssh"`
+	Tftpd      types.ImageFlags `mapstructure:"tftpd"`
+	Tuning     Tuning           `mapstructure:"tuning"`
 }
 
 // Tuning are the custom configuration file provide by users.
@@ -35,9 +36,10 @@ type Tuning struct {
 
 // Get the full container image name and tag for a container name.
 func (f *ProxyImageFlags) GetContainerImage(name string) string {
-	imageName := "proxy-" + name
-	image := fmt.Sprintf("%s/%s", f.ImagesLocation, imageName)
-	tag := f.Tag
+	computedImage := types.ImageFlags{
+		Name: path.Join(f.Registry, "proxy-"+name),
+		Tag:  f.Tag,
+	}
 
 	var containerImage *types.ImageFlags
 	switch name {
@@ -57,14 +59,14 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 
 	if containerImage != nil {
 		if containerImage.Name != "" {
-			image = containerImage.Name
+			computedImage.Name = containerImage.Name
 		}
 		if containerImage.Tag != "" {
-			tag = containerImage.Tag
+			computedImage.Tag = containerImage.Tag
 		}
 	}
 
-	imageUrl, err := utils.ComputeImage(image, tag)
+	imageUrl, err := utils.ComputeImage(computedImage)
 	if err != nil {
 		log.Fatal().Err(err).Msg(L("failed to compute image URL"))
 	}
@@ -73,8 +75,6 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 
 // AddImageFlags will add the proxy install flags to a command.
 func AddImageFlags(cmd *cobra.Command) {
-	cmd.Flags().String("imagesLocation", utils.DefaultNamespace,
-		L("registry URL prefix containing the all the container images"))
 	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))
 	utils.AddPullPolicyFlag(cmd)
 

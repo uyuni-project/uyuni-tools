@@ -23,13 +23,15 @@ import (
 )
 
 func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
-	if flags.HubXmlrpc.Enable {
-		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
-		tag := flags.HubXmlrpc.Image.Tag
-		if tag == "" {
-			tag = flags.Image.Tag
+	if flags.HubXmlrpc.Replicas > 0 {
+		if flags.HubXmlrpc.Replicas > 1 {
+			return errors.New(L("Multiple Hub XML-RPC container replicas are not currently supported."))
 		}
-		hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image.Name, tag)
+		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
+		if flags.HubXmlrpc.Image.Tag == "" {
+			flags.HubXmlrpc.Image.Tag = flags.Image.Tag
+		}
+		hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image)
 		if err != nil {
 			return utils.Errorf(err, L("failed to compute image URL"))
 		}
@@ -38,7 +40,7 @@ func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
 			return utils.Errorf(err, L("cannot generate systemd service"))
 		}
 
-		if err := shared_podman.EnableService(shared_podman.HubXmlrpcService); err != nil {
+		if err := shared_podman.ScaleService(flags.HubXmlrpc.Replicas, shared_podman.HubXmlrpcService); err != nil {
 			return utils.Errorf(err, L("cannot enable service"))
 		}
 	}
@@ -81,7 +83,7 @@ func installForPodman(
 	}
 	log.Info().Msgf(L("Setting up the server with the FQDN '%s'"), fqdn)
 
-	image, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
+	image, err := utils.ComputeImage(flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -128,7 +130,15 @@ func installForPodman(
 		return err
 	}
 
-	if err := coco.SetupCocoContainer(flags.Coco.Replicas, flags.Coco.Image, flags.Image, flags.Db); err != nil {
+	if path, err := exec.LookPath("uyuni-payg-extract-data"); err == nil {
+		// the binary is installed
+		err = utils.RunCmdStdMapping(zerolog.DebugLevel, path)
+		if err != nil {
+			return utils.Errorf(err, L("failed to extract payg data"))
+		}
+	}
+
+	if err := coco.SetupCocoContainer(flags.Coco.Replicas, flags.Coco.Image, flags.Image, flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password); err != nil {
 		return err
 	}
 

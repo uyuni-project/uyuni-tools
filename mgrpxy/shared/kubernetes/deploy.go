@@ -84,7 +84,7 @@ func Deploy(imageFlags *utils.ProxyImageFlags, helmFlags *HelmFlags, configDir s
 		"--set", "images.proxy-squid="+imageFlags.GetContainerImage("squid"),
 		"--set", "images.proxy-ssh="+imageFlags.GetContainerImage("ssh"),
 		"--set", "images.proxy-tftpd="+imageFlags.GetContainerImage("tftpd"),
-		"--set", "repository="+imageFlags.ImagesLocation,
+		"--set", "repository="+imageFlags.Registry,
 		"--set", "version="+imageFlags.Tag,
 		"--set", "pullPolicy="+kubernetes.GetPullPolicy(imageFlags.PullPolicy))
 

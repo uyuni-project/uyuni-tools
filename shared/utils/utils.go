@@ -14,6 +14,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -48,6 +49,10 @@ var inspectValues = []types.InspectData{
 	types.NewInspectData("registration_info", "env LC_ALL=C LC_MESSAGES=C LANG=C transactional-update --quiet register --status 2>/dev/null || true", false),
 	types.NewInspectData("scc_username", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep username | cut -d= -f2 || true", true),
 	types.NewInspectData("scc_password", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep password | cut -d= -f2 || true", true),
+	types.NewInspectData("db_user", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_user' | cut -d' ' -f3 || true", false),
+	types.NewInspectData("db_password", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_password' | cut -d' ' -f3 || true", false),
+	types.NewInspectData("db_name", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_name' | cut -d' ' -f3 || true", false),
+	types.NewInspectData("db_port", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_port' | cut -d' ' -f3 || true", false),
 }
 
 // InspectOutputFile represents the directory and the basename where the inspect values are stored.
@@ -72,28 +77,49 @@ func checkValueSize(value string, min int, max int) bool {
 	return true
 }
 
+// CheckValidPassword performs check to a given password.
+func CheckValidPassword(value *string, prompt string, min int, max int) string {
+	fmt.Print(prompt + prompt_end)
+	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+	if err != nil {
+		log.Fatal().Err(err).Msgf(L("Failed to read password"))
+		return ""
+	}
+	tmpValue := strings.TrimSpace(string(bytePassword))
+
+	if tmpValue == "" {
+		fmt.Println("A value is required")
+		return ""
+	}
+
+	r := regexp.MustCompile(`[\t ]`)
+	invalidChars := r.MatchString(tmpValue)
+
+	if invalidChars {
+		fmt.Println(L("Cannot contain spaces or tabs"))
+		return ""
+	}
+
+	if !invalidChars && checkValueSize(tmpValue, min, max) {
+		*value = tmpValue
+	}
+	return *value
+}
+
 // AskPasswordIfMissing asks for password if missing.
 // Don't perform any check if min and max are set to 0.
 func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 	for *value == "" {
-		fmt.Print(prompt + prompt_end)
-		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
-		if err != nil {
-			log.Fatal().Err(err).Msgf(L("Failed to read password"))
+		firstRound := CheckValidPassword(value, prompt, min, max)
+		if firstRound == "" {
+			continue
 		}
-		tmpValue := strings.TrimSpace(string(bytePassword))
-		r := regexp.MustCompile(`^[^\t ]+$`)
-		validChars := r.MatchString(tmpValue)
-		if !validChars {
-			fmt.Printf(L("Cannot contain spaces or tabs"))
-		}
-
-		if validChars && checkValueSize(tmpValue, min, max) {
-			*value = tmpValue
-		}
-		fmt.Println()
-		if *value == "" {
-			fmt.Println("A value is required")
+		secondRound := CheckValidPassword(value, "\nConfirm the password", min, max)
+		if secondRound != firstRound {
+			fmt.Println(L("Two different passwords have been provided"))
+			*value = ""
+		} else {
+			*value = secondRound
 		}
 	}
 }
@@ -114,7 +140,7 @@ func AskIfMissing(value *string, prompt string, min int, max int, checker func(s
 		}
 		fmt.Println()
 		if *value == "" {
-			fmt.Println(L("A value is required"))
+			fmt.Print(L("A value is required"))
 		}
 	}
 }
@@ -140,7 +166,17 @@ func YesNo(question string) (bool, error) {
 }
 
 // ComputeImage assembles the container image from its name and tag.
-func ComputeImage(name string, tag string, appendToName ...string) (string, error) {
+func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, error) {
+	if !strings.Contains(DefaultNamespace, imageFlags.Registry) {
+		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), imageFlags.Registry, DefaultNamespace)
+	}
+	name := imageFlags.Name
+	if !strings.Contains(imageFlags.Name, imageFlags.Registry) {
+		name = path.Join(imageFlags.Registry, imageFlags.Name)
+		log.Info().Msgf(L("The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."), imageFlags.Name, imageFlags.Registry, name)
+	}
+	tag := imageFlags.Tag
+
 	submatches := imageValid.FindStringSubmatch(name)
 	if submatches == nil {
 		return "", fmt.Errorf(L("invalid image name: %s"), name)
@@ -413,4 +449,19 @@ func CompareVersion(imageVersion string, deployedVersion string) int {
 func Errorf(err error, message string, args ...any) error {
 	appended := fmt.Sprintf(message, args...) + ": " + err.Error()
 	return errors.New(appended)
+}
+
+// Join multiple errors.
+// Replacement for errors.Join which is not available in go 1.19.
+func JoinErrors(errs ...error) error {
+	var messages []string
+	for _, err := range errs {
+		if err != nil {
+			messages = append(messages, err.Error())
+		}
+	}
+	if len(messages) == 0 {
+		return nil
+	}
+	return errors.New(strings.Join(messages, "; "))
 }

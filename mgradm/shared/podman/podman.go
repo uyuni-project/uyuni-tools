@@ -11,11 +11,12 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -42,29 +43,6 @@ func GetExposedPorts(debug bool) []types.PortMap {
 	return ports
 }
 
-// GenerateAttestationSystemdService creates the coco attestation systemd files.
-func GenerateAttestationSystemdService(image string, db install_shared.DbFlags) error {
-	attestationData := templates.AttestationServiceTemplateData{
-		NamePrefix: "uyuni",
-		Network:    podman.UyuniNetwork,
-		Image:      image,
-	}
-	if err := utils.WriteTemplateToFile(attestationData, podman.GetServicePath(podman.ServerAttestationService), 0555, false); err != nil {
-		return utils.Errorf(err, L("failed to generate systemd service unit file"))
-	}
-
-	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
-Environment=database_connection=jdbc:postgresql://uyuni-server.mgr.internal:%d/%s
-Environment=database_user=%s
-Environment=database_password=%s
-	`, image, db.Port, db.Name, db.User, db.Password)
-	if err := podman.GenerateSystemdConfFile(podman.ServerAttestationService, "Service", environment); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd conf file"))
-	}
-
-	return podman.ReloadDaemon(false)
-}
-
 // GenerateHubXmlrpcSystemdService creates the Hub XMLRPC systemd files.
 func GenerateHubXmlrpcSystemdService(image string) error {
 	hubXmlrpcData := templates.HubXmlrpcServiceTemplateData{
@@ -74,13 +52,13 @@ func GenerateHubXmlrpcSystemdService(image string) error {
 		Network:    podman.UyuniNetwork,
 		Image:      image,
 	}
-	if err := utils.WriteTemplateToFile(hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService), 0555, false); err != nil {
+	if err := utils.WriteTemplateToFile(hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0555, false); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
 	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
 	`, image)
-	if err := podman.GenerateSystemdConfFile(podman.HubXmlrpcService, "Service", environment); err != nil {
+	if err := podman.GenerateSystemdConfFile(podman.HubXmlrpcService+"@", "Service", environment); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 
@@ -229,7 +207,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 	pullArgs := []string{}
 	_, scc_user_exist := inspectedHostValues["host_scc_username"]
 	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
+	if scc_user_exist && scc_user_password && strings.Contains(serverImage, "registry.suse.com") {
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 
@@ -270,12 +248,13 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlag
 
 		upgradeImageUrl := ""
 		if upgradeImage.Name == "" {
-			upgradeImageUrl, err = utils.ComputeImage(image.Name, image.Tag, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
+			upgradeImageUrl, err = utils.ComputeImage(image, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			upgradeImageUrl, err = utils.ComputeImage(upgradeImage.Name, image.Tag)
+			upgradeImage.Tag = image.Tag
+			upgradeImageUrl, err = utils.ComputeImage(upgradeImage)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
@@ -289,7 +268,7 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlag
 		pullArgs := []string{}
 		_, scc_user_exist := inspectedHostValues["host_scc_username"]
 		_, scc_user_password := inspectedHostValues["host_scc_password"]
-		if scc_user_exist && scc_user_password {
+		if scc_user_exist && scc_user_password && strings.Contains(upgradeImageUrl, "registry.suse.com") {
 			pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 		}
 
@@ -364,12 +343,12 @@ func RunPostUpgradeScript(serverImage string) error {
 }
 
 // Upgrade will upgrade server to the image given as attribute.
-func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, args []string) error {
+func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage types.ImageFlags, args []string) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {
 		return err
 	}
 
-	serverImage, err := utils.ComputeImage(image.Name, image.Tag)
+	serverImage, err := utils.ComputeImage(image)
 	if err != nil {
 		return fmt.Errorf(L("failed to compute image URL"))
 	}
@@ -416,6 +395,18 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, args []strin
 		return err
 	}
 	log.Info().Msg(L("Waiting for the server to start…"))
+
+	dbPort, err := strconv.Atoi(inspectedValues["db_port"])
+	if err != nil {
+		return utils.Errorf(err, L("error %s is not a valid port number."), inspectedValues["db_port"])
+	}
+
+	err = coco.Upgrade(cocoImage, image,
+		dbPort, inspectedValues["db_name"], inspectedValues["db_user"], inspectedValues["db_password"])
+	if err != nil {
+		return utils.Errorf(err, L("error upgrading confidential computing service."))
+	}
+
 	return podman.ReloadDaemon(false)
 }
 
@@ -435,7 +426,7 @@ func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
 	pullArgs := []string{}
 	_, scc_user_exist := inspectedHostValues["host_scc_username"]
 	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
+	if scc_user_exist && scc_user_password && strings.Contains(serverImage, "registry.suse.com") {
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 

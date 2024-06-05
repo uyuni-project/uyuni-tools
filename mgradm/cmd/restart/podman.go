@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func podmanRestart(
@@ -16,19 +17,8 @@ func podmanRestart(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	err := podman.RestartService(podman.ServerService)
-	if err != nil {
-		return err
-	}
-	if podman.HasService(podman.ServerAttestationService) {
-		if err := podman.RestartService(podman.ServerAttestationService); err != nil {
-			return err
-		}
-	}
-	if podman.HasService(podman.HubXmlrpcService) {
-		if err := podman.RestartService(podman.HubXmlrpcService); err != nil {
-			return err
-		}
-	}
-	return nil
+	err1 := podman.RestartService(podman.ServerService)
+	err2 := podman.RestartInstantiated(podman.ServerAttestationService)
+	err3 := podman.RestartInstantiated(podman.HubXmlrpcService)
+	return utils.JoinErrors(err1, err2, err3)
 }

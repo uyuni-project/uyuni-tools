@@ -25,7 +25,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return fmt.Errorf(L("install podman before running this command"))
 	}
 	sourceFqdn := args[0]
-	serverImage, err := utils.ComputeImage(flags.Image.Name, flags.Image.Tag)
+	serverImage, err := utils.ComputeImage(flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("cannot compute image"))
 	}

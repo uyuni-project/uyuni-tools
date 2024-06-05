@@ -22,6 +22,9 @@ var DefaultNamespace = "registry.opensuse.org/uyuni"
 // DefaultTag represents the default tag used for image.
 var DefaultTag = "latest"
 
+// DefaultPullP represents the default pull policy used for image.
+var DefaultPullPolicy = "Always"
+
 // This variable needs to be set a build time using git tags.
 var Version = "0.0.0"
 
@@ -63,13 +66,7 @@ func AddBackendFlag(cmd *cobra.Command) {
 //
 // For kubernetes the value is simply passed to the helm charts.
 func AddPullPolicyFlag(cmd *cobra.Command) {
-	cmd.Flags().String("pullPolicy", "IfNotPresent",
-		L("set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
-}
-
-// AddPullPolicyFlag adds the --pullPolicy flag to an upgrade command.
-func AddPullPolicyUpgradeFlag(cmd *cobra.Command) {
-	cmd.Flags().String("pullPolicy", "Always",
+	cmd.Flags().String("pullPolicy", DefaultPullPolicy,
 		L("set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
 }
 
@@ -78,4 +75,28 @@ func AddPTFFlag(cmd *cobra.Command) {
 	cmd.Flags().String("ptf", "", L("PTF ID"))
 	cmd.Flags().String("test", "", L("Test package ID"))
 	cmd.Flags().String("user", "", L("SCC user"))
+}
+
+// PurgeFlags defined what has te be removed in an uninstall command.
+type PurgeFlags struct {
+	Volumes bool
+	Images  bool
+}
+
+// UninstallFlags are the common flags for uninstall commands.
+type UninstallFlags struct {
+	Backend string
+	Force   bool
+	Purge   PurgeFlags
+}
+
+// AddUninstallFlags adds the common flags for uninstall commands.
+func AddUninstallFlags(cmd *cobra.Command, withBackend bool) {
+	cmd.Flags().BoolP("force", "f", false, L("Actually remove the server"))
+	cmd.Flags().Bool("purge-volumes", false, L("Also remove the volumes"))
+	cmd.Flags().Bool("purge-images", false, L("Also remove the container images"))
+
+	if withBackend {
+		AddBackendFlag(cmd)
+	}
 }

@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/sh
 
 # SPDX-FileCopyrightText: 2024 SUSE LLC
 #

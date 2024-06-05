@@ -9,7 +9,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -23,33 +22,25 @@ func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 By default it will only print what would be done, use --force to actually remove.`) + kubernetes.UninstallHelp(),
 		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			force, _ := cmd.Flags().GetBool("force")
-			purge, _ := cmd.Flags().GetBool("purgeVolumes")
-
-			backend, _ := cmd.Flags().GetString("backend")
-
-			cnx := shared.NewConnection(backend, podman.ProxyContainerNames[0], kubernetes.ProxyFilter)
-			command, err := cnx.GetCommand()
-			if err != nil {
-				return utils.Errorf(err, L("failed to determine suitable backend"))
-			}
-			switch command {
-			case "podman":
-				if err := uninstallForPodman(!force, purge); err != nil {
-					return err
-				}
-			case "kubectl":
-				if err := uninstallForKubernetes(!force); err != nil {
-					return err
-				}
-			}
-			return nil
+			var flags utils.UninstallFlags
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, uninstall)
 		},
 	}
-	uninstallCmd.Flags().BoolP("force", "f", false, L("Actually remove the proxy"))
-	uninstallCmd.Flags().Bool("purgeVolumes", false, L("Also remove the volumes"))
-
-	utils.AddBackendFlag(uninstallCmd)
+	utils.AddUninstallFlags(uninstallCmd, true)
 
 	return uninstallCmd, nil
+}
+
+func uninstall(
+	globalFlags *types.GlobalFlags,
+	flags *utils.UninstallFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	fn, err := shared.ChoosePodmanOrKubernetes(cmd.Flags(), uninstallForPodman, uninstallForKubernetes)
+	if err != nil {
+		return err
+	}
+
+	return fn(globalFlags, flags, cmd, args)
 }

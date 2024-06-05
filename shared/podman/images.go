@@ -43,6 +43,8 @@ func PrepareImage(image string, pullPolicy string, args ...string) (string, erro
 			log.Debug().Msgf("Image %s already present", presentImage)
 			return presentImage, nil
 		}
+	} else {
+		log.Info().Msgf(L("Pull Policy is always. Presence of RPM image will be checked and if it's not present it will be pulled from registry"))
 	}
 
 	rpmImageFile := GetRpmImagePath(image)
@@ -218,10 +220,14 @@ func pullImage(image string, args ...string) error {
 }
 
 // ShowAvailableTag  returns the list of available tag for a given image.
-func ShowAvailableTag(image string) ([]string, error) {
-	log.Info().Msgf(L("Running podman image search --list-tags %s --format={{.Tag}}"), image)
+func ShowAvailableTag(image types.ImageFlags) ([]string, error) {
+	log.Info().Msgf(L("Running podman image search --list-tags %s --format={{.Tag}}"), image.Name)
 
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", image, "--format={{.Tag}}")
+	name, err := utils.ComputeImage(image)
+	if err != nil {
+		return []string{}, err
+	}
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", name, "--format={{.Tag}}")
 	if err != nil {
 		return []string{}, utils.Errorf(err, L("cannot find any tag for image %s"), image)
 	}

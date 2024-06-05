@@ -197,23 +197,23 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra
 	}
 	httpdImage, err := getContainerImage(&flags.ProxyImageFlags, "httpd")
 	if err != nil {
-		log.Info().Msgf(L("cannot find httpd image: it will no be upgraded"))
+		log.Warn().Msgf(L("cannot find httpd image: it will no be upgraded"))
 	}
 	saltBrokerImage, err := getContainerImage(&flags.ProxyImageFlags, "salt-broker")
 	if err != nil {
-		log.Info().Msgf(L("cannot find salt-broker image: it will no be upgraded"))
+		log.Warn().Msgf(L("cannot find salt-broker image: it will no be upgraded"))
 	}
 	squidImage, err := getContainerImage(&flags.ProxyImageFlags, "squid")
 	if err != nil {
-		log.Info().Msgf(L("cannot find squid image: it will no be upgraded"))
+		log.Warn().Msgf(L("cannot find squid image: it will no be upgraded"))
 	}
 	sshImage, err := getContainerImage(&flags.ProxyImageFlags, "ssh")
 	if err != nil {
-		log.Info().Msgf(L("cannot find ssh image: it will no be upgraded"))
+		log.Warn().Msgf(L("cannot find ssh image: it will no be upgraded"))
 	}
 	tftpdImage, err := getContainerImage(&flags.ProxyImageFlags, "tftpd")
 	if err != nil {
-		log.Info().Msgf(L("cannot find tftpd image: it will no be upgraded"))
+		log.Warn().Msgf(L("cannot find tftpd image: it will no be upgraded"))
 	}
 
 	// Setup the systemd service configuration options
@@ -234,7 +234,7 @@ func getContainerImage(flags *utils.ProxyImageFlags, name string) (string, error
 	pullArgs := []string{}
 	_, scc_user_exist := inspectedHostValues["host_scc_username"]
 	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
+	if scc_user_exist && scc_user_password && strings.Contains(image, "registry.suse.com") {
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 
