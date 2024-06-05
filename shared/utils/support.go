@@ -25,9 +25,11 @@ func GetSupportConfigPath(out string) string {
 // GetSupportConfigFileSaveName returns the support config file name.
 func GetSupportConfigFileSaveName() string {
 	hostname_b, err := RunCmdOutput(zerolog.DebugLevel, "hostname")
-	hostname := "localhost"
+	var hostname string
 	if err != nil {
 		log.Warn().Err(err).Msg(L("Unable to detect hostname, using localhost"))
+		hostname = "localhost"
+	} else {
 		hostname = strings.TrimSpace(string(hostname_b))
 	}
 	now := time.Now()
