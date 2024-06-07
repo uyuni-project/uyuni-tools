@@ -320,7 +320,7 @@ func chooseBackend[F interface{}](
 }
 
 // RunSupportConfig will run supportconfig command on given connection.
-func RunSupportConfig(cnx *Connection) ([]string, error) {
+func (cnx *Connection) RunSupportConfig() ([]string, error) {
 	var containerTarball string
 	var files []string
 	extensions := []string{"", ".md5"}
