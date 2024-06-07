@@ -195,7 +195,7 @@ func Upgrade(
 
 	//this is needed because folder with script needs to be mounted
 	//check the node before scaling down
-	nodeName, err := kubernetes.GetNode("uyuni")
+	nodeName, err := kubernetes.GetNode(kubernetes.ServerFilter)
 	if err != nil {
 		return utils.Errorf(err, L("cannot find node running uyuni"))
 	}
@@ -207,7 +207,7 @@ func Upgrade(
 
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
-		if _, err = kubernetes.GetNode("uyuni"); err != nil {
+		if _, err = kubernetes.GetNode(kubernetes.ServerFilter); err != nil {
 			err = kubernetes.ReplicasTo(kubernetes.ServerApp, 1)
 		}
 	}()

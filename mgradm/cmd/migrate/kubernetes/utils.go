@@ -89,7 +89,7 @@ func migrateToKubernetes(
 
 	//this is needed because folder with script needs to be mounted
 	//check the node before scaling down
-	nodeName, err := shared_kubernetes.GetNode("uyuni")
+	nodeName, err := shared_kubernetes.GetNode(shared_kubernetes.ServerFilter)
 	if err != nil {
 		return utils.Errorf(err, L("cannot find node running uyuni"))
 	}
@@ -111,7 +111,7 @@ func migrateToKubernetes(
 
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
-		if _, err = shared_kubernetes.GetNode("uyuni"); err != nil {
+		if _, err = shared_kubernetes.GetNode(shared_kubernetes.ServerFilter); err != nil {
 			err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 1)
 		}
 	}()
