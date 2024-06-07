@@ -18,7 +18,7 @@ import (
 
 func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
-	fileList, err := shared.RunSupportConfig(cnx)
+	fileList, err := cnx.RunSupportConfig()
 	if err != nil {
 		return err
 	}
