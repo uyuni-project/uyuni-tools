@@ -139,13 +139,15 @@ func UninstallInstantiatedService(name string, dryRun bool) {
 	servicePath := GetServicePath(name + "@")
 	serviceConfFolder := GetServiceConfFolder(name + "@")
 	serviceConfPath := GetServiceConfPath(name + "@")
-	if dryRun {
-		log.Info().Msgf(L("Would remove %s"), servicePath)
-	} else {
-		// Remove the service unit
-		log.Info().Msgf(L("Remove %s"), servicePath)
-		if err := os.Remove(servicePath); err != nil {
-			log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), name)
+	if utils.FileExists(servicePath) {
+		if dryRun {
+			log.Info().Msgf(L("Would remove %s"), servicePath)
+		} else {
+			// Remove the service unit
+			log.Info().Msgf(L("Remove %s"), servicePath)
+			if err := os.Remove(servicePath); err != nil {
+				log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), name)
+			}
 		}
 	}
 
