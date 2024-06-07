@@ -10,6 +10,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/cache"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/install"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/logs"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/restart"
@@ -74,6 +75,7 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 	}
 	rootCmd.AddCommand(uninstallCmd)
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
+	rootCmd.AddCommand(cache.NewCommand(globalFlags))
 	rootCmd.AddCommand(status.NewCommand(globalFlags))
 	rootCmd.AddCommand(start.NewCommand(globalFlags))
 	rootCmd.AddCommand(stop.NewCommand(globalFlags))
