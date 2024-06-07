@@ -52,7 +52,7 @@ func GenerateHubXmlrpcSystemdService(image string) error {
 		Network:    podman.UyuniNetwork,
 		Image:      image,
 	}
-	if err := utils.WriteTemplateToFile(hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0555, false); err != nil {
+	if err := utils.WriteTemplateToFile(hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0555, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
@@ -343,7 +343,7 @@ func RunPostUpgradeScript(serverImage string) error {
 }
 
 // Upgrade will upgrade server to the image given as attribute.
-func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage types.ImageFlags, args []string) error {
+func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage types.ImageFlags, hubXmlrpcImage types.ImageFlags, args []string) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {
 		return err
 	}
@@ -407,7 +407,30 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage ty
 		return utils.Errorf(err, L("error upgrading confidential computing service."))
 	}
 
-	return podman.ReloadDaemon(false)
+	if podman.HasService(podman.HubXmlrpcService + "@") {
+		if hubXmlrpcImage.Tag == "" {
+			hubXmlrpcImage.Tag = image.Tag
+		}
+		hubXmlrpcImageName, err := utils.ComputeImage(hubXmlrpcImage)
+		if err != nil {
+			return utils.Errorf(err, L("failed to compute image URL"))
+		}
+		if err := podman.StopInstantiated(podman.HubXmlrpcService); err != nil {
+			return err
+		}
+		if err := GenerateHubXmlrpcSystemdService(hubXmlrpcImageName); err != nil {
+			return err
+		}
+	}
+	if err := podman.ReloadDaemon(false); err != nil {
+		return err
+	}
+	if podman.CurrentReplicaCount(podman.HubXmlrpcService) > 0 {
+		if err := podman.StartInstantiated(podman.HubXmlrpcService); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // Inspect check values on a given image and deploy.

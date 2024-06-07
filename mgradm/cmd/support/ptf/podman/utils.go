@@ -27,10 +27,11 @@ func ptfForPodman(
 	//in that case, we can use the upgrade command.
 	dummyMigration := types.ImageFlags{}
 	dummyCoco := types.ImageFlags{}
+	dummyHubXmlrpc := types.ImageFlags{}
 	if err := flags.checkParameters(); err != nil {
 		return err
 	}
-	return podman.Upgrade(flags.Image, dummyMigration, dummyCoco, args)
+	return podman.Upgrade(flags.Image, dummyMigration, dummyCoco, dummyHubXmlrpc, args)
 }
 
 func (flags *podmanPTFFlags) checkParameters() error {
