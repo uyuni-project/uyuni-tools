@@ -12,6 +12,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -40,31 +41,35 @@ func uninstallForKubernetes(
 	// TODO Find all the PVs related to the server if we want to delete them
 
 	// Uninstall uyuni
-	namespace, err := kubernetes.HelmUninstall(kubeconfig, "uyuni", "", !flags.Force)
+	serverConnection := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
+	serverNamespace, err := serverConnection.GetNamespace("")
 	if err != nil {
+		return err
+	}
+	if err := kubernetes.HelmUninstall(serverNamespace, kubeconfig, kubernetes.ProxyApp, !flags.Force); err != nil {
 		return err
 	}
 
 	// Remove the remaining configmap and secrets
-	if namespace != "" {
-		_, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "-n", namespace, "get", "secret", "uyuni-ca")
+	if serverNamespace != "" {
+		_, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "-n", serverNamespace, "get", "secret", "uyuni-ca")
 		caSecret := "uyuni-ca"
 		if err != nil {
 			caSecret = ""
 		}
 
 		if !flags.Force {
-			log.Info().Msgf(L("Would run %s"), fmt.Sprintf("kubectl delete -n %s configmap uyuni-ca", namespace))
-			log.Info().Msgf(L("Would run %s"), fmt.Sprintf("kubectl delete -n %s secret uyuni-cert %s", namespace, caSecret))
+			log.Info().Msgf(L("Would run %s"), fmt.Sprintf("kubectl delete -n %s configmap uyuni-ca", serverNamespace))
+			log.Info().Msgf(L("Would run %s"), fmt.Sprintf("kubectl delete -n %s secret uyuni-cert %s", serverNamespace, caSecret))
 		} else {
-			log.Info().Msgf(L("Running %s"), fmt.Sprintf("kubectl delete -n %s configmap uyuni-ca", namespace))
-			if err := utils.RunCmd("kubectl", "delete", "-n", namespace, "configmap", "uyuni-ca"); err != nil {
+			log.Info().Msgf(L("Running %s"), fmt.Sprintf("kubectl delete -n %s configmap uyuni-ca", serverNamespace))
+			if err := utils.RunCmd("kubectl", "delete", "-n", serverNamespace, "configmap", "uyuni-ca"); err != nil {
 				log.Info().Err(err).Msgf(L("Failed deleting config map"))
 			}
 
-			log.Info().Msgf(L("Running %s"), fmt.Sprintf("kubectl delete -n %s secret uyuni-cert %s", namespace, caSecret))
+			log.Info().Msgf(L("Running %s"), fmt.Sprintf("kubectl delete -n %s secret uyuni-cert %s", serverNamespace, caSecret))
 
-			args := []string{"delete", "-n", namespace, "secret", "uyuni-cert"}
+			args := []string{"delete", "-n", serverNamespace, "secret", "uyuni-cert"}
 			if caSecret != "" {
 				args = append(args, caSecret)
 			}
@@ -80,7 +85,12 @@ func uninstallForKubernetes(
 	// Since some storage plugins don't handle Delete policy, we may need to check for error events to avoid infinite loop
 
 	// Uninstall cert-manager if we installed it
-	if _, err := kubernetes.HelmUninstall(kubeconfig, "cert-manager", "-linstalledby=mgradm", !flags.Force); err != nil {
+	certManagerConnection := shared.NewConnection("kubectl", "", "")
+	certManagerNamespace, err := certManagerConnection.GetNamespace("cert-manager", "-linstalledby=mgradm")
+	if err != nil {
+		return err
+	}
+	if err := kubernetes.HelmUninstall(certManagerNamespace, kubeconfig, "cert-manager", !flags.Force); err != nil {
 		return err
 	}
 

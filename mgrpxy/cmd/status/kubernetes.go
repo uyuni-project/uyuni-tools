@@ -9,6 +9,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -21,24 +22,14 @@ func kubernetesStatus(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	// Do we have an uyuni helm release?
-	clusterInfos, err := kubernetes.CheckCluster()
+	cnx := shared.NewConnection("kubectl", "", kubernetes.ProxyFilter)
+	namespace, err := cnx.GetNamespace("")
 	if err != nil {
-		return utils.Errorf(err, L("failed to discover the cluster type"))
-	}
-
-	kubeconfig := clusterInfos.GetKubeconfig()
-	if !kubernetes.HasHelmRelease("uyuni-proxy", kubeconfig) {
-		return errors.New(L("no uyuni-proxy helm release installed on the cluster"))
-	}
-
-	namespace, err := kubernetes.FindNamespace("uyuni-proxy", kubeconfig)
-	if err != nil {
-		return utils.Errorf(err, L("failed to find the uyuni-proxy deployment namespace"))
+		return err
 	}
 
 	// Is the pod running? Do we have all the replicas?
-	status, err := kubernetes.GetDeploymentStatus(namespace, "uyuni-proxy")
+	status, err := kubernetes.GetDeploymentStatus(namespace, kubernetes.ProxyApp)
 	if err != nil {
 		return utils.Errorf(err, L("failed to get deployment status"))
 	}
