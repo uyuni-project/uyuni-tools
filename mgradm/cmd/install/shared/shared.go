@@ -24,6 +24,13 @@ const setup_name = "setup.sh"
 
 // RunSetup execute the setup.
 func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[string]string) error {
+	// Containers should be running now, check storage if it is using volume from already configured server
+	preconfigured := false
+	if isServerConfigured(cnx) {
+		log.Warn().Msg(L("Server appears to be already configured. Installation will continue, but installation options may be ignored."))
+		preconfigured = true
+	}
+
 	tmpFolder := generateSetupScript(flags, fqdn, env)
 	defer os.RemoveAll(tmpFolder)
 
@@ -132,4 +139,8 @@ func boolToString(value bool) string {
 		return "Y"
 	}
 	return "N"
+}
+
+func isServerConfigured(cnx *shared.Connection) bool {
+	return cnx.TestExistenceInPod("/root/.MANAGER_SETUP_COMPLETE")
 }
