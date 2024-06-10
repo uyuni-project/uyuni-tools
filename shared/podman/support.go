@@ -44,7 +44,7 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 
 	systemdDump, err := createSystemdDump(dir)
 	if err != nil {
-		log.Warn().Msg(L("systemd file are not present, skipping them"))
+		log.Warn().Msg(L("No systemd file to add to the archive"))
 	} else {
 		files = append(files, systemdDump)
 	}
@@ -57,19 +57,19 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 		for _, container := range containerList {
 			inspectDump, err := runPodmanInspectCommand(dir, container)
 			if err != nil {
-				log.Warn().Msgf(L("cannot podman inspect %s"), container)
+				log.Warn().Err(err).Msgf(L("Failed to run podman inspect %s"), container)
 			}
 			files = append(files, inspectDump)
 
-			bindedFilesDump, err := fetchBindedFileCommand(dir, container)
+			boundFilesDump, err := fetchBoundFileCommand(dir, container)
 			if err != nil {
-				log.Warn().Msgf(L("cannot fetch the binded files in %s"), container)
+				log.Warn().Err(err).Msgf(L("Failed to fetch the config files bound to container %s"), container)
 			}
-			files = append(files, bindedFilesDump)
+			files = append(files, boundFilesDump)
 
 			logsDump, err := runPodmanLogsCommand(dir, container)
 			if err != nil {
-				log.Warn().Msgf(L("cannot podman logs %s"), container)
+				log.Warn().Err(err).Msgf(L("Failed to run podman logs %s"), container)
 			}
 			files = append(files, logsDump)
 		}
@@ -81,12 +81,12 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 func createSystemdDump(dir string) (string, error) {
 	systemdSupportConfig, err := os.Create(path.Join(dir, "systemd-conf"))
 	if err != nil {
-		return "", utils.Errorf(err, L("cannot create %s"), systemdSupportConfig.Name())
+		return "", utils.Errorf(err, L("failed to create %s file"), systemdSupportConfig.Name())
 	}
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "systemctl", "cat", "uyuni-*")
 	if err != nil {
-		return "", utils.Errorf(err, L("cannot run systemctl cat uyuni-proxy-pod"))
+		return "", utils.Errorf(err, L("failed to run systemctl cat uyuni-*"))
 	}
 	defer systemdSupportConfig.Close()
 
@@ -102,12 +102,12 @@ func runPodmanInspectCommand(dir string, container string) (string, error) {
 	podmanInspectDump, err := os.Create(path.Join(dir, "inspect-"+container))
 	defer podmanInspectDump.Close()
 	if err != nil {
-		return "", utils.Errorf(err, L("cannot create %s"), podmanInspectDump)
+		return "", utils.Errorf(err, L("failed to create %s file"), podmanInspectDump)
 	}
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "inspect", container)
 	if err != nil {
-		return "", utils.Errorf(err, L("cannot run podman inspect %s"), container)
+		return "", utils.Errorf(err, L("failed to run podman inspect %s"), container)
 	}
 
 	_, err = podmanInspectDump.WriteString("====podman inspect " + container + "====\n" + string(out))
@@ -117,36 +117,36 @@ func runPodmanInspectCommand(dir string, container string) (string, error) {
 	return podmanInspectDump.Name(), nil
 }
 
-func fetchBindedFileCommand(dir string, container string) (string, error) {
-	bindedFilesDump, err := os.Create(path.Join(dir, "binded-files-"+container))
-	defer bindedFilesDump.Close()
+func fetchBoundFileCommand(dir string, container string) (string, error) {
+	boundFilesDump, err := os.Create(path.Join(dir, "bound-files-"+container))
+	defer boundFilesDump.Close()
 	if err != nil {
-		return "", utils.Errorf(err, L("cannot create %s"), bindedFilesDump)
+		return "", utils.Errorf(err, L("failed to create %s file"), boundFilesDump)
 	}
 
-	_, err = bindedFilesDump.WriteString("====binded files====" + "\n")
+	_, err = boundFilesDump.WriteString("====bound files====" + "\n")
 	if err != nil {
 		return "", err
 	}
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "inspect", container, "--format", "{{range .Mounts}}{{if eq .Type \"bind\"}} {{.Source}}{{end}}{{end}}")
 	if err != nil {
-		return "", utils.Errorf(err, L("cannot run podman inspect %s"), container)
+		return "", utils.Errorf(err, L("failed to run podman inspect %s"), container)
 	}
-	bindedFiles := strings.Split(string(out), " ")
+	boundFiles := strings.Split(string(out), " ")
 
-	for _, bindFile := range bindedFiles {
-		bindFile = strings.TrimSpace(bindFile)
-		if len(bindFile) <= 0 {
+	for _, boundFile := range boundFiles {
+		boundFile = strings.TrimSpace(boundFile)
+		if len(boundFile) <= 0 {
 			continue
 		}
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "find", bindFile, "-type", "f")
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "find", boundFile, "-type", "f")
 		if err != nil {
 			return "", err
 		}
 
 		fileList := strings.Split(strings.TrimSpace(string(out)), "\n")
 		for _, file := range fileList {
-			_, err = bindedFilesDump.WriteString("====" + file + "====" + "\n")
+			_, err = boundFilesDump.WriteString("====" + file + "====" + "\n")
 			if err != nil {
 				return "", err
 			}
@@ -154,24 +154,24 @@ func fetchBindedFileCommand(dir string, container string) (string, error) {
 			if err != nil {
 				return "", err
 			}
-			_, err = bindedFilesDump.WriteString(string(out) + "\n")
+			_, err = boundFilesDump.WriteString(string(out) + "\n")
 			if err != nil {
 				return "", err
 			}
 		}
 	}
-	return bindedFilesDump.Name(), nil
+	return boundFilesDump.Name(), nil
 }
 
 func runPodmanLogsCommand(dir string, container string) (string, error) {
 	podmanLogsDump, err := os.Create(path.Join(dir, "logs-"+container))
 	if err != nil {
-		return "", utils.Errorf(err, L("cannot create %s"), podmanLogsDump)
+		return "", utils.Errorf(err, L("failed create %s file"), journalctlDump)
 	}
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "logs", container)
 	if err != nil {
-		return "", utils.Errorf(err, L("cannot run podman inspect %s"), container)
+		return "", utils.Errorf(err, L("failed to run journalctl -u %s"), container)
 	}
 
 	_, err = podmanLogsDump.WriteString("====podman logs====\n" + string(out))
@@ -179,6 +179,10 @@ func runPodmanLogsCommand(dir string, container string) (string, error) {
 		return "", err
 	}
 	return podmanLogsDump.Name(), nil
+}
+
+func getSystemdFileList() ([]byte, error) {
+	return utils.RunCmdOutput(zerolog.DebugLevel, "find", "/etc/systemd/systemd", "-maxdepth", "1", "uyuni-*service")
 }
 
 func runningContainer() ([]string, error) {

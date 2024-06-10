@@ -347,7 +347,6 @@ func (cnx *Connection) RunSupportConfig() ([]string, error) {
 			return []string{}, fmt.Errorf(L("failed to find container supportconfig tarball from command output"))
 		}
 
-		// TODO Get the error from copy
 		for _, ext := range extensions {
 			containerTarball = path.Join(tmpDir, containerName+"-supportconfig.txz"+ext)
 			if err := cnx.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
