@@ -99,8 +99,8 @@ Tools for managing uyuni container.
 Summary:        Command line tool to install and update %{productname}
 %if 0%{?suse_version}
 Requires:       (aardvark-dns if netavark)
-%endif
 Requires:       (podman >= 4.5.0 if podman)
+%endif
 # 0%{?suse_version}
 
 %description -n %{name_adm}
