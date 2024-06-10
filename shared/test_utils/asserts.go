@@ -12,3 +12,10 @@ func AssertEquals[T comparable](t *testing.T, message string, expected T, actual
 		t.Errorf(message+": got '%v' expected '%v'", actual, expected)
 	}
 }
+
+// AssertTrue ensures a value is true and raises and error if not.
+func AssertTrue(t *testing.T, message string, actual bool) {
+	if !actual {
+		t.Errorf(message)
+	}
+}
