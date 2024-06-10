@@ -112,3 +112,14 @@ func AddDbUpgradeImageFlag(cmd *cobra.Command) {
 func AddMirrorFlag(cmd *cobra.Command) {
 	cmd.Flags().String("mirror", "", L("Path to mirrored packages mounted on the host"))
 }
+
+// AddCocoFlag adds the confidential computing related parameters to cmd.
+func AddCocoFlag(cmd *cobra.Command) {
+	AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"))
+	cmd.Flags().Int("coco-replicas", 0, L("How many replicas of the confidential computing container should be started."))
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
+	_ = utils.AddFlagToHelpGroupID(cmd, "coco-image", "coco-container")
+	_ = utils.AddFlagToHelpGroupID(cmd, "coco-tag", "coco-container")
+}
