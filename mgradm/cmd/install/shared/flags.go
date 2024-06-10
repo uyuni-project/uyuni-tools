@@ -214,13 +214,7 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().Bool("debug-java", false, L("Enable tomcat and taskomatic remote debugging"))
 	cmd_utils.AddImageFlag(cmd)
 
-	cmd_utils.AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"))
-	cmd.Flags().Int("coco-replicas", 0, L("How many replicas of the confidential computing container should be started. (only 0 or 1 supported for now)"))
-
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
-	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
-	_ = utils.AddFlagToHelpGroupID(cmd, "coco-image", "coco-container")
-	_ = utils.AddFlagToHelpGroupID(cmd, "coco-tag", "coco-container")
+	cmd_utils.AddCocoFlag(cmd)
 
 	cmd.Flags().Int("hubxmlrpc-replicas", 0, L("How many replicas of the Hub XML-RPC API service container should be started. (only 0 or 1 supported for now)"))
 	hubXmlrpcImage := path.Join(utils.DefaultNamespace, "server-hub-xmlrpc-api")

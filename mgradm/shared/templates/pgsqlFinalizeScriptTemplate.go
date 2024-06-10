@@ -12,6 +12,14 @@ import (
 const postgresFinalizeScriptTemplate = `#!/bin/bash
 set -e
 
+{{ if .Migration }}
+echo "Adding database access for other containers..."
+db_user=$(sed -n '/^db_user/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
+db_name=$(sed -n '/^db_name/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
+ip=$(ip -o -4 addr show up scope global | head -1 | awk '{print $4}' || true)
+echo "host $db_name $db_user $ip scram-sha-256" >> /var/lib/pgsql/data/pg_hba.conf
+{{ end }}
+
 {{ if .RunAutotune }}
 echo "Running smdba system-check autotuning..."
 smdba system-check autotuning
