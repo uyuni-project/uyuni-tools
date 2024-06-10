@@ -1,0 +1,2 @@
+- Require podman >= 4.5.0 on RPM based systems only,
+  do not require it for DEB based systems.
