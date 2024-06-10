@@ -53,6 +53,7 @@ var inspectValues = []types.InspectData{
 	types.NewInspectData("db_password", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_password' | cut -d' ' -f3 || true", false),
 	types.NewInspectData("db_name", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_name' | cut -d' ' -f3 || true", false),
 	types.NewInspectData("db_port", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_port' | cut -d' ' -f3 || true", false),
+	types.NewInspectData("ip", "ip -o -4 addr show up scope global | head -1 | awk '{print $4}' || true", false),
 }
 
 // InspectOutputFile represents the directory and the basename where the inspect values are stored.

@@ -98,6 +98,22 @@ func GeneratePostUpgradeScript(scriptDir string, cobblerHost string) (string, er
 	return scriptName, nil
 }
 
+// GeneratePostUpgradeScript generates the script to be run after upgrade.
+func GenerateCocoDBConfigScript(scriptDir string, user string, dbname, ip string) (string, error) {
+	data := templates.CocoDBConfigTemplateData{
+		Ip:     ip,
+		User:   user,
+		DBName: dbname,
+	}
+
+	scriptName := "cocoDbConfig.sh"
+	scriptPath := filepath.Join(scriptDir, scriptName)
+	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
+	}
+	return scriptName, nil
+}
+
 // ReadContainerData returns values used to perform migration.
 func ReadContainerData(scriptDir string) (string, string, string, error) {
 	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))

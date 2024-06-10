@@ -7,11 +7,13 @@ package podman
 import (
 	"fmt"
 	"os/exec"
+	"strconv"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -73,6 +75,26 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	cnx := shared.NewConnection("podman", podman_utils.ServerContainerName, "")
 	if err := cnx.CopyCaCertificate(sourceFqdn); err != nil {
 		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
+	}
+
+	inspectedValues, err := podman.Inspect(serverImage, flags.Image.PullPolicy)
+	if err != nil {
+		return utils.Errorf(err, L("cannot inspect podman values"))
+	}
+
+	if err := podman.RunCocoDBConfigScript(serverImage, inspectedValues["db_user"], inspectedValues["db_name"], inspectedValues["ip"]); err != nil {
+		return utils.Errorf(err, L("cannot run coco db config script"))
+	}
+
+	dbPort, err := strconv.Atoi(inspectedValues["db_port"])
+	if err != nil {
+		return utils.Errorf(err, L("error %s is not a valid port number."), inspectedValues["db_port"])
+	}
+
+	err = coco.Upgrade(flags.Coco.Image, flags.Image,
+		dbPort, inspectedValues["db_name"], inspectedValues["db_user"], inspectedValues["db_password"])
+	if err != nil {
+		return utils.Errorf(err, L("error upgrading confidential computing service."))
 	}
 
 	return nil
