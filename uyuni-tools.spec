@@ -100,8 +100,10 @@ Summary:        Command line tool to install and update %{productname}
 %if 0%{?suse_version}
 Requires:       (aardvark-dns if netavark)
 %endif
-Requires:       (podman >= 4.5.0 if podman)
 # 0%{?suse_version}
+%if "%{_vendor}" != "debbuild"
+Requires: (podman >= 4.5.0 if podman)
+%endif
 
 %description -n %{name_adm}
 %{name_adm} is a convenient tool to install and update %{productname} components as containers running
