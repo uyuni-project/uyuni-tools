@@ -46,6 +46,9 @@ su -s /bin/bash - postgres -c "initdb -D /var/lib/pgsql/data --locale=$POSTGRES_
 echo "Successfully initialized new postgresql $NEW_VERSION database."
 su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql$OLD_VERSION/bin --new-bindir=/usr/lib/postgresql$NEW_VERSION/bin --old-datadir=/var/lib/pgsql/data-pg$OLD_VERSION --new-datadir=/var/lib/pgsql/data $FAST_UPGRADE"
 
+cp /var/lib/pgsql/data-pg$OLD_VERSION/pg_hba.conf /var/lib/pgsql/data
+cp /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf /var/lib/pgsql/data/
+
 echo "DONE"`
 
 // PostgreSQLVersionUpgradeTemplateData represents information used to create PostgreSQL upgrade script.
