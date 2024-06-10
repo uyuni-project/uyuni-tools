@@ -5,6 +5,8 @@
 package shared
 
 import (
+	"errors"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -24,6 +26,13 @@ const setup_name = "setup.sh"
 
 // RunSetup execute the setup.
 func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[string]string) error {
+	// Containers should be running now, check storage if it is using volume from already configured server
+	preconfigured := false
+	if isServerConfigured(cnx) {
+		log.Warn().Msg(L("Server appears to be already configured. Installation will continue, but installation options may be ignored."))
+		preconfigured = true
+	}
+
 	tmpFolder := generateSetupScript(flags, fqdn, env)
 	defer os.RemoveAll(tmpFolder)
 
@@ -46,10 +55,37 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 		apiCnx := api.ConnectionDetails{
 			Server:   fqdn,
 			Insecure: false,
+			User:     flags.Admin.Login,
+			Password: flags.Admin.Password,
 		}
-		_, err := org.CreateFirst(&apiCnx, flags.Organization, &flags.Admin)
-		if err != nil {
-			return err
+
+		// Check if there is already admin user with given password and organization with same name
+		if _, err := api.Init(&apiCnx); err == nil {
+			if _, err := org.GetOrganizationDetails(&apiCnx, flags.Organization); err == nil {
+				log.Info().Msgf(L("Server organization already exists, reusing"))
+			} else {
+				log.Debug().Err(err).Msg("Error returned by server")
+				log.Warn().Msgf(L("Administration user already exists, but organization %s could not be found"), flags.Organization)
+			}
+		} else {
+			var connError *url.Error
+			if errors.As(err, &connError) {
+				// We were not able to connect to the server at all
+				return err
+			}
+			// We do not have any user existing, do not try to login
+			apiCnx = api.ConnectionDetails{
+				Server:   fqdn,
+				Insecure: false,
+			}
+			_, err := org.CreateFirst(&apiCnx, flags.Organization, &flags.Admin)
+			if err != nil {
+				if preconfigured {
+					log.Warn().Msgf(L("Administration user already exists, but provided credentials are not valid"))
+				} else {
+					return err
+				}
+			}
 		}
 	}
 
@@ -136,4 +172,8 @@ func boolToString(value bool) string {
 		return "Y"
 	}
 	return "N"
+}
+
+func isServerConfigured(cnx *shared.Connection) bool {
+	return cnx.TestExistenceInPod("/root/.MANAGER_SETUP_COMPLETE")
 }

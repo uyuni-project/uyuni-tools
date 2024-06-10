@@ -6,6 +6,7 @@ package podman
 
 import (
 	"errors"
+	"fmt"
 	"os/exec"
 	"strings"
 
@@ -43,11 +44,6 @@ func installForPodman(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	flags.CheckParameters(cmd, "podman")
-	if _, err := exec.LookPath("podman"); err != nil {
-		return errors.New(L("install podman before running this command"))
-	}
-
 	hostData, err := shared_podman.InspectHost()
 	if err != nil {
 		return err
@@ -58,6 +54,15 @@ func installForPodman(
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
 	defer cleaner()
+
+	if hostData.HasUyuniServer {
+		return fmt.Errorf(L("Server is already initialized! Uninstall before attempting new installation or use upgrade command"))
+	}
+
+	flags.CheckParameters(cmd, "podman")
+	if _, err := exec.LookPath("podman"); err != nil {
+		return errors.New(L("install podman before running this command"))
+	}
 
 	fqdn, err := utils.GetFqdn(args)
 	if err != nil {
