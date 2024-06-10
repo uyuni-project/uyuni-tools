@@ -1,4 +1,52 @@
 -------------------------------------------------------------------
+Mon Jun 10 18:11:27 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.10-0
+  * Change --hubxmlrpc-enable to --hubxmlrpc-replicas
+  * Add scale command for changing Confidential Computing
+    attestation replicas
+  * Ask for passwords twice
+  * Add mgrpxy logs command
+  * Remove the mount flags podman install command
+  * Rename the --migration-image* flags to --dbupgrade-image-* to
+    avoid confusion
+  * Move user-defined values to service configuration files
+  * Bump the push tag to 5.0.0
+  * Remove /etc/systemd/system/uyuni-server.service.d/Service.conf
+    during uninstallation
+  * Add support for Hub XMLRPC API container
+  * Enhance supportconfig file name with date to avoid conflicts
+  * Exclude /var/log/lastlog from migration
+  * Add registry flag
+  * Set pull policy on build service
+  * Compute attestation image name from base image when not
+    specified
+  * Add hint on uninstall dry runs that nothing has been done
+  * Create groups for mgradm subcommands
+  * Fix port number for billing API
+  * Require podman >= 4.5.0 on RPM based systems only,
+    do not require it for DEB based systems
+  * Backend flag required in mgrpxy start
+  * Fix mgrpxy backend detection
+  * Extract PAYG data after setup to prevent a race condition
+  * Fix IPv6 enabled detection (bsc#1224080)
+  * Replace coco with better name in mgradm install help
+  * Merge all email parameters into a single one
+  * Disable all locales when running SUSEConnect register -s
+    (bsc#1223483)
+  * Simplify localized strings
+  * Add parameters for the cloud service providers billing
+  * Fix colors disabling in non-interactive runs
+  * Add --purge-images flag for podman uninstalls
+  * Add URL and admin username in the setup final message
+  * Add support for /etc/uyuni/uyuni-tools.yaml conf file
+  * Add flags for Apache and Squid tuning
+  * Do not include DNS plugin in proxy uyuni net (bsc#1224127)
+  * Call cloudguestregistryauth before upgrade
+  * Change security-opts values to use = instead of :
+  * Fix passing distro info as reference
+
+-------------------------------------------------------------------
 Mon May 06 10:00:48 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.9-0
