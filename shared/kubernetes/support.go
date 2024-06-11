@@ -41,14 +41,19 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 		log.Warn().Msg(L("supportconfig is not available on the host, skipping it"))
 	}
 
-	configmapFilename, err := fetchConfigMap(dir)
+	namespace, err := fetchNamespace(ProxyApp)
+	if err != nil {
+		return files, err
+	}
+
+	configmapFilename, err := fetchConfigMap(dir, namespace)
 	if err != nil {
 		log.Warn().Msg(L("cannot retrieve any configmap"))
 	} else {
 		files = append(files, configmapFilename)
 	}
 
-	podFilename, err := fetchPodYaml(dir)
+	podFilename, err := fetchPodYaml(dir, namespace)
 	if err != nil {
 		log.Warn().Msg(L("cannot retrieve any pod"))
 	} else {
@@ -56,14 +61,22 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 	}
 	return files, nil
 }
+func fetchNamespace(app string) (string, error) {
+	//kubectl get deployment uyuni-proxy -o jsonpath='{.metadata.namespace}'
+	namespace, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "deployment", app, "-o=jsonpath={.metadata.namespace}")
+	if err != nil {
+		return "", utils.Errorf(err, L("cannot fetch namespace"))
+	}
+	return string(namespace), nil
+}
 
-func fetchConfigMap(dir string) (string, error) {
+func fetchConfigMap(dir string, namespace string) (string, error) {
 	configmapFile, err := os.Create(path.Join(dir, "configmap"))
 	if err != nil {
 		return "", utils.Errorf(err, L("cannot create %s"), configmapFile.Name())
 	}
 	defer configmapFile.Close()
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "configmap", "-o", "yaml")
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "configmap", "-o", "yaml", "--namespace", namespace)
 	if err != nil {
 		return "", utils.Errorf(err, L("cannot fetch configmap"))
 	}
@@ -75,13 +88,13 @@ func fetchConfigMap(dir string) (string, error) {
 	return configmapFile.Name(), nil
 }
 
-func fetchPodYaml(dir string) (string, error) {
+func fetchPodYaml(dir string, namespace string) (string, error) {
 	podFile, err := os.Create(path.Join(dir, "pod"))
 	if err != nil {
 		return "", utils.Errorf(err, L("cannot create %s"), podFile.Name())
 	}
 	defer podFile.Close()
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-o", "yaml")
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-o", "yaml", "--namespace", namespace)
 	if err != nil {
 		return "", utils.Errorf(err, L("cannot fetch pod"))
 	}
