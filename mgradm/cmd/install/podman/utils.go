@@ -6,6 +6,7 @@ package podman
 
 import (
 	"errors"
+	"fmt"
 	"os/exec"
 	"strings"
 
@@ -67,14 +68,18 @@ func installForPodman(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	flags.CheckParameters(cmd, "podman")
-	if _, err := exec.LookPath("podman"); err != nil {
-		return errors.New(L("install podman before running this command"))
-	}
-
 	inspectedHostValues, err := utils.InspectHost(false)
 	if err != nil {
 		return utils.Errorf(err, L("cannot inspect host values"))
+	}
+
+	if _, present := inspectedHostValues["host_uyuni_server"]; present {
+		return fmt.Errorf(L("Server is already initialized! Uninstall before attempting new installation or use upgrade command"))
+	}
+
+	flags.CheckParameters(cmd, "podman")
+	if _, err := exec.LookPath("podman"); err != nil {
+		return errors.New(L("install podman before running this command"))
 	}
 
 	fqdn, err := getFqdn(args)
