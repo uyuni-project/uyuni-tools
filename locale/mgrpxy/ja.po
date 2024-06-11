@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-05 10:09+0200\n"
-"PO-Revision-Date: 2024-05-10 02:43+0000\n"
+"PO-Revision-Date: 2024-06-11 07:47+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrpxy/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: mgrpxy/cmd/cmd.go:33
 msgid "Uyuni proxy administration tool"
@@ -50,7 +51,7 @@ msgstr "最初から新しいプロキシをインストールする"
 
 #: mgrpxy/cmd/install/install.go:22 mgrpxy/cmd/upgrade/upgrade.go:22
 msgid "specify a private registry"
-msgstr ""
+msgstr "プライベートレジストリを指定してください"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
@@ -83,9 +84,8 @@ msgstr "このコマンドを実行する前に %s をインストールする"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:35
 #: mgrpxy/shared/kubernetes/deploy.go:159
-#, fuzzy
 msgid "failed to create temporary directory"
-msgstr "一時ディレクトリの作成に失敗しました: %s"
+msgstr "一時ディレクトリの作成に失敗しました"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
 msgid "failed to extract configuration"
@@ -93,9 +93,8 @@ msgstr "設定の抽出に失敗しました"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:62
 #: mgrpxy/shared/kubernetes/deploy.go:184
-#, fuzzy
 msgid "cannot deploy proxy helm chart"
-msgstr "プロキシhelmチャートを配備できません: %s"
+msgstr "プロキシhelmチャートを配備できません"
 
 #: mgrpxy/cmd/install/podman/podman.go:21
 msgid "Install a new proxy on podman"
@@ -125,9 +124,9 @@ msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
 
 #: mgrpxy/cmd/install/podman/utils.go:37
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to extract proxy config from %s file"
-msgstr "プロキシ設定を %s ファイルから抽出できませんでした: %s"
+msgstr "プロキシ設定を %s ファイルから抽出できませんでした"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
@@ -138,28 +137,24 @@ msgid "Start the proxy"
 msgstr "プロキシの起動"
 
 #: mgrpxy/cmd/status/kubernetes.go:27
-#, fuzzy
 msgid "failed to discover the cluster type"
-msgstr "クラスタタイプの検出に失敗しました: %s"
+msgstr "クラスタタイプの検出に失敗しました"
 
 #: mgrpxy/cmd/status/kubernetes.go:32
 msgid "no uyuni-proxy helm release installed on the cluster"
 msgstr "クラスタにuyuni-proxy helmリリースがインストールされていません"
 
 #: mgrpxy/cmd/status/kubernetes.go:37
-#, fuzzy
 msgid "failed to find the uyuni-proxy deployment namespace"
-msgstr "uyuni-proxy配備ネームスペースが見つかりませんでした: %s"
+msgstr "uyuni-proxy配備ネームスペースが見つかりませんでした"
 
 #: mgrpxy/cmd/status/kubernetes.go:43
-#, fuzzy
 msgid "failed to get deployment status"
-msgstr "配備ステータスの取得に失敗しました: %s"
+msgstr "配備ステータスの取得に失敗しました"
 
 #: mgrpxy/cmd/status/kubernetes.go:46
-#, fuzzy
 msgid "Some replicas are not ready: %[1]d / %[2]d"
-msgstr "いくつかのレプリカは準備ができていません: %d / %d"
+msgstr "いくつかのレプリカは準備ができていません: %[1]d / %[2]d"
 
 #: mgrpxy/cmd/status/kubernetes.go:50
 msgid "the pod is not running"
@@ -283,46 +278,50 @@ msgstr "サポート操作用のコマンド"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:25
 msgid "--purge-volumes is ignored on a kubernetes deployment"
-msgstr ""
+msgstr "--purge-volumesは、kubernetes配備で無視されます"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:28
 msgid "--purge-images is ignored on a kubernetes deployment"
-msgstr ""
+msgstr "--purge-imagesは、kubernetes配備で無視されます"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:59
 msgid "Nothing has been uninstalled, run with --force to actually uninstall"
-msgstr ""
+msgstr "何もアンインストールされていません。--forceを指定して実行することでアンインス"
+"トールされるようにしてください"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:61
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
-msgstr ""
+msgstr "ボリュームに何の操作も行われていません。使用したストレージクラスによっては、"
+"削除されていない可能性があります"
 
 #: mgrpxy/cmd/uninstall/podman.go:63
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot delete volume %s"
-msgstr "ボリューム %s を削除できません: %s"
+msgstr "ボリューム %s を削除できません"
 
 #: mgrpxy/cmd/uninstall/podman.go:66
 msgid "All volumes removed"
 msgstr "すべてのボリュームが削除されました"
 
 #: mgrpxy/cmd/uninstall/podman.go:73
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot delete image %s"
-msgstr "ボリューム %s を削除できません: %s"
+msgstr "イメージ %s を削除できません"
 
 #: mgrpxy/cmd/uninstall/podman.go:77
-#, fuzzy
 msgid "All images have been removed"
-msgstr "すべてのボリュームが削除されました"
+msgstr "すべてのイメージが削除されました"
 
 #: mgrpxy/cmd/uninstall/podman.go:85
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr ""
+"何もアンインストールされていません。--forceと--purge-volumesを指定して実行し"
+"て、データがアンインストールされてクリアされるようにしてください"
 
 #: mgrpxy/cmd/uninstall/podman.go:87
 msgid "Data have been kept, use podman volume commands to clear the volumes"
-msgstr ""
+msgstr "データが保管されています。podmanボリュームコマンドを使用して、ボリュームをク"
+"リアしてください"
 
 #: mgrpxy/cmd/uninstall/uninstall.go:20
 msgid "Uninstall a proxy"
@@ -397,40 +396,36 @@ msgid "Installing Uyuni proxy"
 msgstr "Uyuniプロキシのインストール"
 
 #: mgrpxy/shared/kubernetes/deploy.go:96
-#, fuzzy
 msgid "cannot run helm upgrade"
-msgstr "helmアップグレードを実行できません: %s"
+msgstr "helmアップグレードを実行できません"
 
 #: mgrpxy/shared/kubernetes/deploy.go:112
 #: mgrpxy/shared/kubernetes/deploy.go:127
 #: mgrpxy/shared/kubernetes/deploy.go:142
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write in file %s"
-msgstr "ファイル %s への書き込みに失敗しました: %s"
+msgstr "ファイル %s への書き込みに失敗しました"
 
 #: mgrpxy/shared/podman/podman.go:35
-#, fuzzy
 msgid "cannot setup network"
-msgstr "ネットワークを設定できません: %s"
+msgstr "ネットワークを設定できません"
 
 #: mgrpxy/shared/podman/podman.go:38
 msgid "Generating systemd services"
 msgstr "systemdサービスの生成"
 
 #: mgrpxy/shared/podman/podman.go:130
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to generate systemd file '%s'"
-msgstr "systemdファイル「%s」の生成に失敗しました: %s"
+msgstr "systemdファイル「%s」の生成に失敗しました"
 
 #: mgrpxy/shared/podman/podman.go:137
-#, fuzzy
 msgid "cannot generate systemd conf file"
-msgstr "systemdファイル「%s」の生成に失敗しました: %s"
+msgstr "systemd confファイルを生成できません"
 
 #: mgrpxy/shared/podman/podman.go:158 mgrpxy/shared/podman/podman.go:231
-#, fuzzy
 msgid "cannot inspect host values"
-msgstr "ホスト値を検査できません: %s"
+msgstr "ホスト値を検査できません"
 
 #: mgrpxy/shared/podman/podman.go:178
 #, javascript-format
@@ -468,7 +463,6 @@ msgid "Invalid proxy container name: %s"
 msgstr "無効なプロキシコンテナ名: %s"
 
 #: mgrpxy/shared/utils/flags.go:71
-#, fuzzy
 msgid "failed to compute image URL"
 msgstr "イメージURLの計算に失敗しました"
 
@@ -477,14 +471,12 @@ msgid "image tag"
 msgstr "イメージタグ"
 
 #: mgrpxy/shared/utils/flags.go:87
-#, fuzzy
 msgid "HTTPD tuning configuration file"
-msgstr "設定ファイルパス"
+msgstr "HTTPDチューニング設定ファイル"
 
 #: mgrpxy/shared/utils/flags.go:88
-#, fuzzy
 msgid "Squid tuning configuration file"
-msgstr "設定ファイルパス"
+msgstr "Squidチューニング設定ファイル"
 
 #: mgrpxy/shared/utils/flags.go:93
 #, javascript-format
