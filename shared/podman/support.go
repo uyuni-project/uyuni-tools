@@ -49,7 +49,7 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 		files = append(files, systemdDump)
 	}
 
-	containerList, err := runningContainer()
+	containerList, err := hostedContainers()
 	if err != nil {
 		return files, err
 	}
@@ -182,16 +182,15 @@ func runJournalCtlCommand(dir string, container string) (string, error) {
 }
 
 func getSystemdFileList() ([]byte, error) {
-	return utils.RunCmdOutput(zerolog.DebugLevel, "find", "/etc/systemd/systemd", "-maxdepth", "1", "uyuni-*service")
+	return utils.RunCmdOutput(zerolog.DebugLevel, "find", "/etc/systemd/system", "-maxdepth", "1", "-name", "uyuni-*service")
 }
 
-func runningContainer() ([]string, error) {
-	containers, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "-a", "--format={{ .Names }}")
+func hostedContainers() ([]string, error) {
+	systemdFiles, err := getSystemdFileList()
 	if err != nil {
 		return []string{}, err
 	}
-
-	containerList := strings.Split(strings.TrimSpace(string(containers)), "\n")
+	containerList := utils.GetContainersFromSystemdFiles(string(systemdFiles))
 
 	return containerList, nil
 }

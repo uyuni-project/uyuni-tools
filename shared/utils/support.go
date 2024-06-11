@@ -59,3 +59,17 @@ func CreateSupportConfigTarball(outputFolder string, files []string) error {
 	tarball.Close()
 	return nil
 }
+
+// GetContainersFromSystemdFiles parse a string of systemdfile and return a list of containers.
+func GetContainersFromSystemdFiles(systemdFileList string) []string {
+	serviceList := strings.Replace(string(systemdFileList), "/etc/systemd/system/", "", -1)
+	containers := strings.Replace(serviceList, ".service", "", -1)
+
+	containerList := strings.Split(strings.TrimSpace(containers), "\n")
+
+	var trimmedContainers []string
+	for _, container := range containerList {
+		trimmedContainers = append(trimmedContainers, strings.TrimSpace(container))
+	}
+	return trimmedContainers
+}
