@@ -67,7 +67,7 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 			}
 			files = append(files, boundFilesDump)
 
-			logsDump, err := runPodmanLogsCommand(dir, container)
+			logsDump, err := runJournalCtlCommand(dir, container)
 			if err != nil {
 				log.Warn().Err(err).Msgf(L("Failed to run podman logs %s"), container)
 			}
@@ -163,22 +163,22 @@ func fetchBoundFileCommand(dir string, container string) (string, error) {
 	return boundFilesDump.Name(), nil
 }
 
-func runPodmanLogsCommand(dir string, container string) (string, error) {
-	podmanLogsDump, err := os.Create(path.Join(dir, "logs-"+container))
+func runJournalCtlCommand(dir string, container string) (string, error) {
+	journalctlDump, err := os.Create(path.Join(dir, "journalctl-"+container))
 	if err != nil {
 		return "", utils.Errorf(err, L("failed create %s file"), journalctlDump)
 	}
 
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "logs", container)
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "journalctl", "-u", container)
 	if err != nil {
 		return "", utils.Errorf(err, L("failed to run journalctl -u %s"), container)
 	}
 
-	_, err = podmanLogsDump.WriteString("====podman logs====\n" + string(out))
+	_, err = journalctlDump.WriteString("====journalctl====\n" + string(out))
 	if err != nil {
 		return "", err
 	}
-	return podmanLogsDump.Name(), nil
+	return journalctlDump.Name(), nil
 }
 
 func getSystemdFileList() ([]byte, error) {
