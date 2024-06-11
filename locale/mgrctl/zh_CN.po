@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-24 17:14+0200\n"
-"PO-Revision-Date: 2024-05-09 11:43+0000\n"
+"PO-Revision-Date: 2024-06-11 07:46+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrctl/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: mgrctl/cmd/api/api.go:25
 msgid "JSON over HTTP API helper tool"
@@ -39,14 +40,13 @@ msgid "Takes an API path and parameters and then issues POST request with them. 
 msgstr "接受 API 路径和其他参数，然后使用它们发出 POST 请求。必须提供用户和口令。参数可以是 JSON 编码的字符串或一个或多个键值对。"
 
 #: mgrctl/cmd/api/get.go:26 mgrctl/cmd/api/post.go:26
-#, fuzzy
 msgid "unable to login to the server"
-msgstr "无法登录到服务器：%s"
+msgstr "无法登录到服务器"
 
 #: mgrctl/cmd/api/get.go:33 mgrctl/cmd/api/post.go:49
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error in query %s"
-msgstr "查询 %s 中存在错误：%s"
+msgstr "查询 %s 中存在错误"
 
 #: mgrctl/cmd/cmd.go:29
 msgid "Uyuni control tool"
@@ -127,14 +127,13 @@ msgid "Command returned with exit code 0"
 msgstr "命令返回退出码 0"
 
 #: mgrctl/cmd/exec/exec.go:116
-#, fuzzy
 msgid "cannot write"
-msgstr "无法写入：%s"
+msgstr "无法写入"
 
 #: mgrctl/cmd/exec/exec.go:132
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Running %s"
-msgstr "正在运行：%s %s"
+msgstr "正在运行 %s"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
