@@ -57,19 +57,19 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 		for _, container := range containerList {
 			inspectDump, err := runPodmanInspectCommand(dir, container)
 			if err != nil {
-				log.Warn().Err(err).Msgf(L("Failed to run podman inspect %s"), container)
+				log.Warn().Err(err).Msgf(L("failed to run podman inspect %s"), container)
 			}
 			files = append(files, inspectDump)
 
 			boundFilesDump, err := fetchBoundFileCommand(dir, container)
 			if err != nil {
-				log.Warn().Err(err).Msgf(L("Failed to fetch the config files bound to container %s"), container)
+				log.Warn().Err(err).Msgf(L("failed to fetch the config files bound to container %s"), container)
 			}
 			files = append(files, boundFilesDump)
 
 			logsDump, err := runJournalCtlCommand(dir, container)
 			if err != nil {
-				log.Warn().Err(err).Msgf(L("Failed to run podman logs %s"), container)
+				log.Warn().Err(err).Msgf(L("failed to run podman logs %s"), container)
 			}
 			files = append(files, logsDump)
 		}
