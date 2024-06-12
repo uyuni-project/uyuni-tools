@@ -177,13 +177,40 @@ func GetContainerImage(flags *utils.ProxyImageFlags, name string) (string, error
 func UnpackConfig(configPath string) error {
 	log.Info().Msgf(L("Setting up proxy with configuration %s"), configPath)
 	const proxyConfigDir = "/etc/uyuni/proxy"
-	if err := os.MkdirAll(proxyConfigDir, 0755); err != nil {
+	if err := os.MkdirAll(proxyConfigDir, 755); err != nil {
 		return err
 	}
 
 	if err := shared_utils.ExtractTarGz(configPath, proxyConfigDir); err != nil {
 		return err
 	}
+
+	proxyConfigDirInfo, err := os.Stat(proxyConfigDir)
+	if err != nil {
+		return err
+	}
+
+	dirMode := proxyConfigDirInfo.Mode()
+
+	if !(dirMode&0005 != 0 && dirMode&0050 != 0 && dirMode&0500 != 0) {
+		return fmt.Errorf(L("/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."))
+	}
+
+	if err := shared_utils.ExtractTarGz(configPath, proxyConfigDir); err != nil {
+		return err
+	}
+
+	proxyConfigInfo, err := os.Stat(path.Join(proxyConfigDir, "config.yaml"))
+	if err != nil {
+		return err
+	}
+
+	mode := proxyConfigInfo.Mode()
+
+	if !(mode&0004 != 0 && mode&0040 != 0 && mode&0400 != 0) {
+		return fmt.Errorf(L("/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."))
+	}
+
 	return nil
 }
 

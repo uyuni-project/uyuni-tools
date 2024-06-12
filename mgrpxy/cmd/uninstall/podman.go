@@ -5,6 +5,8 @@
 package uninstall
 
 import (
+	"os"
+
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -64,6 +66,12 @@ func uninstallForPodman(
 			}
 		}
 		log.Info().Msg(L("All volumes removed"))
+		//Remove config dir
+		if err := os.RemoveAll("/etc/uyuni/proxy"); err != nil {
+			log.Warn().Msg(L("Failed to delete /etc/uyuni/proxy folder"))
+		} else {
+			log.Info().Msg(L("/etc/uyuni/proxy folder removed"))
+		}
 	}
 
 	if flags.Purge.Images {
