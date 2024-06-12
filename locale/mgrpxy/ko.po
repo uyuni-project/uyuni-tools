@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-05 10:09+0200\n"
-"PO-Revision-Date: 2024-06-12 05:46+0000\n"
+"PO-Revision-Date: 2024-06-12 10:46+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrpxy/ko/>\n"
@@ -50,7 +50,6 @@ msgid "Install a new proxy from scratch"
 msgstr "처음부터 새 프록시 설치"
 
 #: mgrpxy/cmd/install/install.go:22 mgrpxy/cmd/upgrade/upgrade.go:22
-#, fuzzy
 msgid "specify a private registry"
 msgstr "개인 레지스트리 지정"
 
@@ -86,9 +85,8 @@ msgstr "이 명령을 실행하기 전 %s 설치"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:35
 #: mgrpxy/shared/kubernetes/deploy.go:159
-#, fuzzy
 msgid "failed to create temporary directory"
-msgstr "임시 디렉토리를 만들지 못함: %s"
+msgstr "임시 디렉토리를 만들지 못함"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
 msgid "failed to extract configuration"
@@ -96,9 +94,8 @@ msgstr "구성을 추출하지 못했습니다."
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:62
 #: mgrpxy/shared/kubernetes/deploy.go:184
-#, fuzzy
 msgid "cannot deploy proxy helm chart"
-msgstr "프록시 helm 차트를 배포할 수 없음: %s"
+msgstr "프록시 helm 차트를 배포할 수 없음"
 
 #: mgrpxy/cmd/install/podman/podman.go:21
 msgid "Install a new proxy on podman"
@@ -129,9 +126,9 @@ msgid "install podman before running this command"
 msgstr "이 명령을 실행하기 전 podman 설치"
 
 #: mgrpxy/cmd/install/podman/utils.go:37
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to extract proxy config from %s file"
-msgstr "%s 파일에서 프록시 구성을 추출하지 못함: %s"
+msgstr "%s 파일에서 프록시 구성을 추출하지 못함"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
@@ -142,28 +139,24 @@ msgid "Start the proxy"
 msgstr "프록시 시작"
 
 #: mgrpxy/cmd/status/kubernetes.go:27
-#, fuzzy
 msgid "failed to discover the cluster type"
-msgstr "클러스터 유형을 검색하지 못함: %s"
+msgstr "클러스터 유형을 검색하지 못함"
 
 #: mgrpxy/cmd/status/kubernetes.go:32
 msgid "no uyuni-proxy helm release installed on the cluster"
 msgstr "클러스터에 설치된 uyuni-proxy helm 릴리스 없음"
 
 #: mgrpxy/cmd/status/kubernetes.go:37
-#, fuzzy
 msgid "failed to find the uyuni-proxy deployment namespace"
-msgstr "uyuni-proxy 배포 네임스페이스를 찾지 못함: %s"
+msgstr "uyuni-proxy 배포 네임스페이스를 찾지 못함"
 
 #: mgrpxy/cmd/status/kubernetes.go:43
-#, fuzzy
 msgid "failed to get deployment status"
-msgstr "배포 상태를 가져오지 못함: %s"
+msgstr "배포 상태를 가져오지 못함"
 
 #: mgrpxy/cmd/status/kubernetes.go:46
-#, fuzzy
 msgid "Some replicas are not ready: %[1]d / %[2]d"
-msgstr "일부 복제본이 준비되지 않음: %d / %d"
+msgstr "일부 복제본이 준비되지 않음: %[1]d / %[2]d"
 
 #: mgrpxy/cmd/status/kubernetes.go:50
 msgid "the pod is not running"
@@ -287,54 +280,47 @@ msgid "Commands for support operations"
 msgstr "지원 작업을 위한 명령"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:25
-#, fuzzy
 msgid "--purge-volumes is ignored on a kubernetes deployment"
 msgstr "kubernetes 배포에서는 --purge-volumes가 무시됨"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:28
-#, fuzzy
 msgid "--purge-images is ignored on a kubernetes deployment"
 msgstr "kubernetes 배포에서는 --purge-images가 무시됨"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:59
-#, fuzzy
 msgid "Nothing has been uninstalled, run with --force to actually uninstall"
 msgstr "설치 제거된 항목이 없습니다. 실제로 설치를 제거하려면 --force를 실행하십시오."
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:61
-#, fuzzy
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
 msgstr "볼륨과 관련한 작업은 수행되지 않았습니다. 사용된 스토리지 클래스에 따라 "
 "제거되지 않았을 수 있습니다."
 
 #: mgrpxy/cmd/uninstall/podman.go:63
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot delete volume %s"
-msgstr "%s 볼륨을 삭제할 수 없음: %s"
+msgstr "%s 볼륨을 삭제할 수 없음"
 
 #: mgrpxy/cmd/uninstall/podman.go:66
 msgid "All volumes removed"
 msgstr "모든 볼륨 제거됨"
 
 #: mgrpxy/cmd/uninstall/podman.go:73
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot delete image %s"
-msgstr "%s 볼륨을 삭제할 수 없음: %s"
+msgstr "%s 이미지를 삭제할 수 없음"
 
 #: mgrpxy/cmd/uninstall/podman.go:77
-#, fuzzy
 msgid "All images have been removed"
-msgstr "모든 볼륨 제거됨"
+msgstr "모든 이미지가 제거됨"
 
 #: mgrpxy/cmd/uninstall/podman.go:85
-#, fuzzy
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr ""
 "설치 제거된 항목이 없습니다. 실제로 설치를 제거하고 데이터를 정리하려면 --"
 "force 및 --purge-volumes를 실행하십시오."
 
 #: mgrpxy/cmd/uninstall/podman.go:87
-#, fuzzy
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr "데이터가 보관된 경우, podman volume 명령을 사용하여 볼륨을 지우십시오."
 
@@ -411,40 +397,36 @@ msgid "Installing Uyuni proxy"
 msgstr "Uyuni 프록시 설치"
 
 #: mgrpxy/shared/kubernetes/deploy.go:96
-#, fuzzy
 msgid "cannot run helm upgrade"
-msgstr "helm 업그레이드를 실행할 수 없음: %s"
+msgstr "helm 업그레이드를 실행할 수 없음"
 
 #: mgrpxy/shared/kubernetes/deploy.go:112
 #: mgrpxy/shared/kubernetes/deploy.go:127
 #: mgrpxy/shared/kubernetes/deploy.go:142
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write in file %s"
-msgstr "%s 파일에 쓰기 실패: %s"
+msgstr "%s 파일에 쓰지 못함"
 
 #: mgrpxy/shared/podman/podman.go:35
-#, fuzzy
 msgid "cannot setup network"
-msgstr "네트워크를 설정할 수 없음: %s"
+msgstr "네트워크를 설정할 수 없음"
 
 #: mgrpxy/shared/podman/podman.go:38
 msgid "Generating systemd services"
 msgstr "systemd 서비스 생성"
 
 #: mgrpxy/shared/podman/podman.go:130
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to generate systemd file '%s'"
-msgstr "systemd 파일 '%s' 생성 실패: %s"
+msgstr "systemd 파일 '%s' 생성 실패"
 
 #: mgrpxy/shared/podman/podman.go:137
-#, fuzzy
 msgid "cannot generate systemd conf file"
-msgstr "systemd 파일 '%s' 생성 실패: %s"
+msgstr "systemd conf 파일을 생성할 수 없음"
 
 #: mgrpxy/shared/podman/podman.go:158 mgrpxy/shared/podman/podman.go:231
-#, fuzzy
 msgid "cannot inspect host values"
-msgstr "호스트 값 검사 불가: %s"
+msgstr "호스트 값 검사할 수 없음"
 
 #: mgrpxy/shared/podman/podman.go:178
 #, javascript-format
@@ -482,23 +464,20 @@ msgid "Invalid proxy container name: %s"
 msgstr "잘못된 프록시 컨테이너 이름: %s"
 
 #: mgrpxy/shared/utils/flags.go:71
-#, fuzzy
 msgid "failed to compute image URL"
-msgstr "이미지 URL을 계산하지 못했습니다."
+msgstr "이미지 URL을 계산하지 못함"
 
 #: mgrpxy/shared/utils/flags.go:78
 msgid "image tag"
 msgstr "이미지 태그"
 
 #: mgrpxy/shared/utils/flags.go:87
-#, fuzzy
 msgid "HTTPD tuning configuration file"
-msgstr "구성 파일 경로"
+msgstr "HTTPD 튜닝 구성 파일"
 
 #: mgrpxy/shared/utils/flags.go:88
-#, fuzzy
 msgid "Squid tuning configuration file"
-msgstr "구성 파일 경로"
+msgstr "Squid 튜닝 구성 파일"
 
 #: mgrpxy/shared/utils/flags.go:93
 #, javascript-format
