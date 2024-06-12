@@ -159,7 +159,14 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}
 
-	return shared_kubernetes.WaitForDeployment(flags.Helm.Uyuni.Namespace, "uyuni", "uyuni")
+	if err := shared_kubernetes.WaitForDeployment(flags.Helm.Uyuni.Namespace, "uyuni", "uyuni"); err != nil {
+		return err
+	}
+
+	if err := cnx.CopyCaCertificate(fqdn); err != nil {
+		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
+	}
+	return nil
 }
 
 // updateIssuer replaces the temporary SSL certificate issuer with the source server CA.

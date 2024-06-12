@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"os/exec"
+	"path"
 	"strings"
 	"time"
 
@@ -269,6 +270,28 @@ func (c *Connection) TestExistenceInPod(dstpath string) bool {
 		return false
 	}
 	return true
+}
+
+// Copy the server SSL CA certificate to the host with fqdn as the name of the created file.
+func (c *Connection) CopyCaCertificate(fqdn string) error {
+	log.Info().Msg(L("Copying the SSL CA certificate to the host"))
+
+	pkiDir := "/etc/pki/trust/anchors/"
+	if !utils.FileExists(pkiDir) {
+		pkiDir = "/etc/pki/ca-trust/source/anchors" // RedHat
+		if !utils.FileExists(pkiDir) {
+			pkiDir = "/usr/local/share/ca-certificates" // Debian and Ubuntu
+		}
+	}
+	hostPath := path.Join(pkiDir, fqdn+".crt")
+
+	const containerCertPath = "server:/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
+	if err := c.Copy(containerCertPath, hostPath, "root", "root"); err != nil {
+		return err
+	}
+
+	log.Info().Msg(L("Updating host trusted certificates"))
+	return utils.RunCmdStdMapping(zerolog.DebugLevel, "update-ca-certificates")
 }
 
 // ChoosePodmanOrKubernetes selects either the podman or the kubernetes function based on the backend.
