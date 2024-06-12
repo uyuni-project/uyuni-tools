@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/viper"
 	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 
@@ -67,6 +68,11 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	if err := podman_utils.EnablePodmanSocket(); err != nil {
 		return utils.Errorf(err, L("cannot enable podman socket"))
+	}
+
+	cnx := shared.NewConnection("podman", podman_utils.ServerContainerName, "")
+	if err := cnx.CopyCaCertificate(sourceFqdn); err != nil {
+		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
 
 	return nil
