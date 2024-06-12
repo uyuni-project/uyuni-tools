@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-05 10:09+0200\n"
-"PO-Revision-Date: 2024-05-08 09:43+0000\n"
+"PO-Revision-Date: 2024-06-12 05:46+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -412,8 +413,9 @@ msgstr "새 서버 설치"
 
 #: mgradm/cmd/install/install.go:23 mgradm/cmd/migrate/migrate.go:23
 #: mgradm/cmd/upgrade/upgrade.go:22
+#, fuzzy
 msgid "specify a private registry"
-msgstr ""
+msgstr "개인 레지스트리 지정"
 
 #: mgradm/cmd/install/kubernetes/kubernetes.go:27
 msgid "Install a new server on a kubernetes cluster"
@@ -488,12 +490,14 @@ msgstr ""
 "참고: 원격 podman에 설치하는 기능은 아직 지원되지 않습니다!\n"
 
 #: mgradm/cmd/install/podman/utils.go:28 mgradm/cmd/scale/podman.go:32
+#, fuzzy
 msgid "Multiple Hub XML-RPC container replicas are not currently supported."
-msgstr ""
+msgstr "다중 Hub XML-RPC 컨테이너 복제본은 현재 지원되지 않습니다."
 
 #: mgradm/cmd/install/podman/utils.go:30
+#, fuzzy
 msgid "Enabling Hub XML-RPC API container."
-msgstr ""
+msgstr "Hub XML-RPC API 컨테이너 활성화."
 
 #: mgradm/cmd/install/podman/utils.go:36 mgradm/cmd/install/podman/utils.go:88
 #: mgradm/cmd/migrate/kubernetes/utils.go:45 mgradm/shared/coco/coco.go:42
@@ -742,16 +746,19 @@ msgid "How many replicas of the Hub XML-RPC API service container should be star
 msgstr "시작해야 하는 기밀 컴퓨팅 컨테이너의 복제본 수. (현재는 0 또는 1만 지원됨)"
 
 #: mgradm/cmd/install/shared/flags.go:227
+#, fuzzy
 msgid "Hub XML-RPC API Image"
-msgstr ""
+msgstr "Hub XML-RPC API 이미지"
 
 #: mgradm/cmd/install/shared/flags.go:228
+#, fuzzy
 msgid "Hub XML-RPC API Image Tag"
-msgstr ""
+msgstr "Hub XML-RPC API 이미지 태그"
 
 #: mgradm/cmd/install/shared/flags.go:230
+#, fuzzy
 msgid "Hub XML-RPC API"
-msgstr ""
+msgstr "Hub XML-RPC API"
 
 #: mgradm/cmd/install/shared/flags.go:235
 msgid "Administrator user name"
@@ -788,8 +795,9 @@ msgid "error running the setup script"
 msgstr "설정 스크립트를 실행하는 중 오류 발생: %s"
 
 #: mgradm/cmd/install/shared/shared.go:52
+#, fuzzy
 msgid "Server set up, login on https://%[1]s with %[2]s user"
-msgstr ""
+msgstr "서버 설정, https://%[1]s에 %[2]s 사용자로 로그인"
 
 #: mgradm/cmd/install/shared/shared.go:124
 msgid "Failed to generate setup script"
@@ -873,9 +881,9 @@ msgid "cannot setup SSL"
 msgstr "SSL 설정 불가: %s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:121
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "The mirror data will not be migrated, ensure it is available at %s"
-msgstr ""
+msgstr "미러 데이터는 마이그레이션되지 않으므로 %s에서 사용할 수 있는지 확인하십시오."
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:130
 #, fuzzy, javascript-format
@@ -997,24 +1005,30 @@ msgid "kubernetes not supported yet"
 msgstr "Kubernetes 지원 없이 빌드됨"
 
 #: mgradm/cmd/scale/podman.go:36
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "service not allowing to be scaled: %s"
-msgstr ""
+msgstr "서비스 확장 허용 안 됨: %s"
 
 #: mgradm/cmd/scale/scale.go:21
+#, fuzzy
 msgid "How many replicas of a service should be started."
-msgstr ""
+msgstr "시작해야 하는 서비스 복제본 수."
 
 #: mgradm/cmd/scale/scale.go:29
+#, fuzzy
 msgid "Adjust the replicas for services supporting it."
-msgstr ""
+msgstr "이를 지원하는 서비스에 대한 복제본을 조정합니다."
 
 #: mgradm/cmd/scale/scale.go:30
+#, fuzzy
 msgid ""
 "Adjust the replicas for services supporting it.\n"
 "Supported services:\n"
 "  - uyuni-server-attestation\n"
 msgstr ""
+"이를 지원하는 서비스에 대한 복제본을 조정합니다.\n"
+"지원되는 서비스:\n"
+"  - uyuni-server-attestation\n"
 
 #: mgradm/cmd/start/start.go:24 mgradm/cmd/start/start.go:25
 msgid "Start the server"
@@ -1126,8 +1140,9 @@ msgid "failed to add %s to tarball"
 msgstr "tarball에 %s를 추가하지 못함: %s"
 
 #: mgradm/cmd/support/config/extractor.go:119
+#, fuzzy
 msgid "Unable to detect hostname, using localhost"
-msgstr ""
+msgstr "로컬호스트를 사용하여 호스트 이름을 감지할 수 없음"
 
 #: mgradm/cmd/support/ptf/podman/podman.go:27
 msgid "Install a PTF or Test package on podman"
@@ -1268,12 +1283,14 @@ msgid "Commands for support operations"
 msgstr "지원 작업을 위한 명령"
 
 #: mgradm/cmd/uninstall/kubernetes.go:28
+#, fuzzy
 msgid "--purge-volumes is ignored on a kubernetes deployment"
-msgstr ""
+msgstr "kubernetes 배포에서는 --purge-volumes가 무시됨"
 
 #: mgradm/cmd/uninstall/kubernetes.go:31
+#, fuzzy
 msgid "--purge-images is ignored on a kubernetes deployment"
-msgstr ""
+msgstr "kubernetes 배포에서는 --purge-images가 무시됨"
 
 #: mgradm/cmd/uninstall/kubernetes.go:57 mgradm/cmd/uninstall/kubernetes.go:58
 #, javascript-format
@@ -1289,12 +1306,15 @@ msgid "Failed deleting secret"
 msgstr "비밀 삭제 실패"
 
 #: mgradm/cmd/uninstall/kubernetes.go:98
+#, fuzzy
 msgid "Nothing has been uninstalled, run with --force to actually uninstall"
-msgstr ""
+msgstr "설치 제거된 항목이 없습니다. 실제로 설치를 제거하려면 --force를 실행하십시오."
 
 #: mgradm/cmd/uninstall/kubernetes.go:100
+#, fuzzy
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
-msgstr ""
+msgstr "볼륨과 관련한 작업은 수행되지 않았습니다. 사용된 스토리지 클래스에 따라 "
+"제거되지 않았을 수 있습니다."
 
 #: mgradm/cmd/uninstall/podman.go:45
 #, fuzzy, javascript-format
@@ -1317,12 +1337,16 @@ msgid "All images have been removed"
 msgstr "모든 볼륨 제거됨"
 
 #: mgradm/cmd/uninstall/podman.go:67
+#, fuzzy
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr ""
+"설치 제거된 항목이 없습니다. 실제로 설치를 제거하고 데이터를 정리하려면 --"
+"force 및 --purge-volumes를 실행하십시오."
 
 #: mgradm/cmd/uninstall/podman.go:69
+#, fuzzy
 msgid "Data have been kept, use podman volume commands to clear the volumes"
-msgstr ""
+msgstr "데이터가 보관된 경우, podman volume 명령을 사용하여 볼륨을 지우십시오."
 
 #: mgradm/cmd/uninstall/uninstall.go:21
 msgid "Uninstall a server"
@@ -1648,9 +1672,9 @@ msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB v
 msgstr "이전 postgresql은 %s이고 대신 새 버전은 %s입니다. DB 버전 업그레이드를 수행하는 중..."
 
 #: mgradm/shared/podman/podman.go:401
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "error %s is not a valid port number."
-msgstr ""
+msgstr "%s 오류는 유효한 포트 번호가 아닙니다."
 
 #: mgradm/shared/podman/podman.go:407
 #, fuzzy
