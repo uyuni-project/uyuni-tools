@@ -5,7 +5,9 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
+	"os/exec"
 	"path"
 	"regexp"
 	"strings"
@@ -72,4 +74,31 @@ func GetContainersFromSystemdFiles(systemdFileList string) []string {
 		trimmedContainers = append(trimmedContainers, strings.TrimSpace(container))
 	}
 	return trimmedContainers
+}
+
+// RunSupportConfigOnProxyHost will run supportconfig command on host machine.
+func RunSupportConfigOnHost(dir string) ([]string, error) {
+	var files []string
+	extensions := []string{"", ".md5"}
+
+	// Run supportconfig on the host if installed
+	if _, err := exec.LookPath("supportconfig"); err == nil {
+		out, err := RunCmdOutput(zerolog.DebugLevel, "supportconfig")
+		if err != nil {
+			return []string{}, Errorf(err, L("failed to run supportconfig on the host"))
+		}
+		tarballPath := GetSupportConfigPath(string(out))
+
+		// Look for the generated supportconfig file
+		if tarballPath != "" && FileExists(tarballPath) {
+			for _, ext := range extensions {
+				files = append(files, tarballPath+ext)
+			}
+		} else {
+			return []string{}, errors.New(L("failed to find host supportconfig tarball from command output"))
+		}
+	} else {
+		log.Warn().Msg(L("supportconfig is not available on the host, skipping it"))
+	}
+	return files, nil
 }

@@ -24,11 +24,11 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	defer os.RemoveAll(tmpDir)
 	var fileList []string
 	if podman.HasService(podman.ProxyService) {
-		fileList, err = podman.RunSupportConfigOnHost(tmpDir)
+		fileList, err = podman.RunSupportConfigOnPodmanHost(tmpDir)
 	}
 
 	if utils.IsInstalled("kubectl") && utils.IsInstalled("helm") {
-		fileList, err = kubernetes.RunSupportConfigOnHost(tmpDir)
+		fileList, err = kubernetes.RunSupportConfigOnKubernetesHost(tmpDir)
 	}
 
 	if err != nil {

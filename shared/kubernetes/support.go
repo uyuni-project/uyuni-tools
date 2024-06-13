@@ -5,10 +5,8 @@
 package kubernetes
 
 import (
-	"errors"
 	"fmt"
 	"os"
-	"os/exec"
 	"path"
 
 	"github.com/rs/zerolog"
@@ -17,29 +15,11 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// RunSupportConfigOnProxyHost will run supportconfig command on host machine.
-func RunSupportConfigOnHost(dir string) ([]string, error) {
-	var files []string
-	extensions := []string{"", ".md5"}
-
-	// Run supportconfig on the host if installed
-	if _, err := exec.LookPath("supportconfig"); err == nil {
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "supportconfig")
-		if err != nil {
-			return []string{}, utils.Errorf(err, L("failed to run supportconfig on the host"))
-		}
-		tarballPath := utils.GetSupportConfigPath(string(out))
-
-		// Look for the generated supportconfig file
-		if tarballPath != "" && utils.FileExists(tarballPath) {
-			for _, ext := range extensions {
-				files = append(files, tarballPath+ext)
-			}
-		} else {
-			return []string{}, errors.New(L("failed to find host supportconfig tarball from command output"))
-		}
-	} else {
-		log.Warn().Msg(L("supportconfig is not available on the host, skipping it"))
+// RunSupportConfigOnKubernetesHost will run supportconfig command on kubernetes machine.
+func RunSupportConfigOnKubernetesHost(dir string) ([]string, error) {
+	files, err := utils.RunSupportConfigOnHost(dir)
+	if err != nil {
+		return files, err
 	}
 
 	namespace, err := fetchNamespace(ProxyApp)
