@@ -6,6 +6,7 @@ package kubernetes
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"path"
@@ -57,7 +58,7 @@ func RunSupportConfigOnHost(dir string) ([]string, error) {
 	if err != nil {
 		log.Warn().Msg(L("cannot retrieve any pod"))
 	} else {
-		files = append(files, podFilename)
+		files = append(files, podFilename...)
 	}
 	return files, nil
 }
@@ -88,20 +89,32 @@ func fetchConfigMap(dir string, namespace string) (string, error) {
 	return configmapFile.Name(), nil
 }
 
-func fetchPodYaml(dir string, namespace string) (string, error) {
-	podFile, err := os.Create(path.Join(dir, "pod"))
+func fetchPodYaml(dir string, namespace string) ([]string, error) {
+	pods, err := GetPods(ProxyFilter)
 	if err != nil {
-		return "", utils.Errorf(err, L("cannot create %s"), podFile.Name())
-	}
-	defer podFile.Close()
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-o", "yaml", "--namespace", namespace)
-	if err != nil {
-		return "", utils.Errorf(err, L("cannot fetch pod"))
+		return []string{}, utils.Errorf(err, L("cannot check for pods in %s"), ProxyFilter)
 	}
 
-	_, err = podFile.WriteString(string(out))
-	if err != nil {
-		return "", err
+	var podsFile []string
+	for _, pod := range pods {
+		podFile, err := os.Create(path.Join(dir, fmt.Sprintf("pod-%s", pod)))
+		if err != nil {
+			log.Warn().Msgf(L("failed to create %s"), podFile.Name())
+			continue
+		}
+		defer podFile.Close()
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", pod, "-o", "yaml", "--namespace", namespace)
+		if err != nil {
+			log.Warn().Msgf(L("failed to fetch info for pod %s"), podFile.Name())
+			continue
+		}
+
+		_, err = podFile.WriteString(string(out))
+		if err != nil {
+			log.Warn().Msgf(L("failed to write in %s"), podFile.Name())
+			continue
+		}
+		podsFile = append(podsFile, podFile.Name())
 	}
-	return podFile.Name(), nil
+	return podsFile, nil
 }
