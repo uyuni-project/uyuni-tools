@@ -32,14 +32,14 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	defer os.RemoveAll(tmpDir)
 	var fileListHost []string
 	if podman.HasService(podman.ServerService) {
-		fileListHost, err = podman.RunSupportConfigOnHost(tmpDir)
+		fileListHost, err = podman.RunSupportConfigOnPodmanHost(tmpDir)
 	}
 	if err != nil {
 		return err
 	}
 
 	if utils.IsInstalled("kubectl") && utils.IsInstalled("helm") {
-		fileListHost, err = kubernetes.RunSupportConfigOnHost(tmpDir)
+		fileListHost, err = kubernetes.RunSupportConfigOnKubernetesHost(tmpDir)
 	}
 	if err != nil {
 		return err
