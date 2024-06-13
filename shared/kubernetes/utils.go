@@ -159,7 +159,7 @@ func ReplicasTo(app string, replica uint) error {
 		return utils.Errorf(err, L("cannot run kubectl %s"), args)
 	}
 
-	pods, err := getPods("-lapp=" + app)
+	pods, err := GetPods("-lapp=" + app)
 	if err != nil {
 		return utils.Errorf(err, L("cannot get pods for %s"), app)
 	}
@@ -179,22 +179,25 @@ func ReplicasTo(app string, replica uint) error {
 }
 
 func isPodRunning(podname string, filter string) (bool, error) {
-	pods, err := getPods(filter)
+	pods, err := GetPods(filter)
 	if err != nil {
 		return false, utils.Errorf(err, L("cannot check if pod %[1]s is running in app %[2]s"), podname, filter)
 	}
 	return utils.Contains(pods, podname), nil
 }
 
-func getPods(filter string) (pods []string, err error) {
+// GetPods return the list of the pod given a filter.
+func GetPods(filter string) (pods []string, err error) {
 	log.Debug().Msgf("Checking all pods for %s", filter)
 	cmdArgs := []string{"get", "pods", filter, "--output=custom-columns=:.metadata.name", "--no-headers"}
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
 	if err != nil {
 		return pods, utils.Errorf(err, L("cannot execute %s"), strings.Join(cmdArgs, string(" ")))
 	}
-	lines := strings.Split(string(out), "\n")
-	pods = append(pods, lines...)
+	lines := strings.Split(strings.TrimSpace(string(out)), "\n")
+	for _, pod := range lines {
+		pods = append(pods, strings.TrimSpace(pod))
+	}
 	log.Debug().Msgf("Pods in %s are %s", filter, pods)
 
 	return pods, err
