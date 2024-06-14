@@ -43,6 +43,7 @@ NOTE: migrating to a remote podman is not supported yet!
 	}
 
 	shared.AddMigrateFlags(migrateCmd)
+	podman_utils.AddPodmanArgFlag(migrateCmd)
 
 	return migrateCmd
 }
