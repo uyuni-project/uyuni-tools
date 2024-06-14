@@ -498,7 +498,7 @@ func CallCloudGuestRegistryAuth() error {
 func SetupHubXmlrpcContainer(flags *types.HubXmlrpcFlags, defaultTag string) error {
 	if flags.Replicas > 0 {
 		if flags.Replicas > 1 {
-			return errors.New(L("Multiple Hub XML-RPC container replicas are not currently supported."))
+			return errors.New(L("Multiple Hub XML-RPC API container replicas are not currently supported."))
 		}
 		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
 		if flags.Image.Tag == "" {

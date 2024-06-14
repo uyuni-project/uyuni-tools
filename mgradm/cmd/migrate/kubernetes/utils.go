@@ -47,6 +47,7 @@ func migrateToKubernetes(
 
 	hubXmlrpcImage := ""
 	if flags.HubXmlrpc.Replicas > 0 {
+		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
 		hubXmlrpcImage, err = kubernetes.ComputeHubXmlrpcImage(&flags.Image, &flags.HubXmlrpc.Image)
 		if err != nil {
 			return utils.Errorf(err, L("failed to compute image URL"))

@@ -17,8 +17,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// CompilePortLists returns compiled lists of tcp and udp ports..
-func CompilePortLists(hub bool, debug bool) ([]types.PortMap, []types.PortMap) {
+// GetPortLists returns compiled lists of tcp and udp ports..
+func GetPortLists(hub bool, debug bool) ([]types.PortMap, []types.PortMap) {
 	tcpPorts := []types.PortMap{}
 	tcpPorts = append(tcpPorts, utils.TCP_PORTS...)
 	if debug {

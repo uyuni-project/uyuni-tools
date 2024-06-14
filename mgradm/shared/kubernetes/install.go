@@ -25,7 +25,6 @@ const HELM_APP_NAME = "uyuni"
 
 // Compute Hub Xmlrpc image.
 func ComputeHubXmlrpcImage(imageFlags *types.ImageFlags, hubXmlrpcFlags *types.ImageFlags) (string, error) {
-	log.Info().Msg(L("Enabling Hub XML-RPC API container."))
 	tag := hubXmlrpcFlags.Tag
 	if tag == "" {
 		tag = imageFlags.Tag
@@ -45,7 +44,7 @@ func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 	// If installing on k3s, install the traefik helm config in manifests
 	isK3s := clusterInfos.IsK3s()
 	IsRke2 := clusterInfos.IsRke2()
-	tcpPorts, udpPorts := CompilePortLists(hubXmlrpcFlags.Replicas > 0, debug)
+	tcpPorts, udpPorts := GetPortLists(hubXmlrpcFlags.Replicas > 0, debug)
 	if isK3s {
 		kubernetes.InstallK3sTraefikConfig(tcpPorts, udpPorts)
 	} else if IsRke2 {
@@ -59,6 +58,7 @@ func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 
 	hubXmlrpcImage := ""
 	if hubXmlrpcFlags.Replicas > 0 {
+		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
 		hubXmlrpcImage, err = ComputeHubXmlrpcImage(imageFlags, &hubXmlrpcFlags.Image)
 		if err != nil {
 			return utils.Errorf(err, L("failed to compute image URL"))
@@ -131,7 +131,7 @@ func UyuniUpgrade(serverImage string, pullPolicy string, hubXmlrpcReplicas int, 
 		"--set", "images.server="+serverImage,
 		"--set", "pullPolicy="+kubernetes.GetPullPolicy(pullPolicy),
 		"--set", "fqdn="+fqdn,
-		"--set", fmt.Sprintf("hubXmlrpcReplicas=%v", hubXmlrpcReplicas),
+		"--set", fmt.Sprintf("hub.api.replicas=%v", hubXmlrpcReplicas),
 		"--set", "images.hub_xmlrpc="+hubXmlrpcImage)
 	helmParams = append(helmParams, helmArgs...)
 
@@ -161,7 +161,7 @@ func Upgrade(
 
 	origHubXmlrpcImage, err := kubernetes.GetRunningImage("hub-xmlrpc-api")
 	if err != nil {
-		return utils.Errorf(err, L("failed to query Hub XML-RPC container"))
+		return utils.Errorf(err, L("failed to find Hub XML-RPC API container"))
 	}
 
 	serverImage, err := utils.ComputeImage(*image)
