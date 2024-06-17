@@ -25,9 +25,13 @@ var TCP_PORTS = []types.PortMap{
 	NewPortMap("psql-mtrx", 9187, 9187),
 	NewPortMap("tasko-jmx-mtrx", 5556, 5556),
 	NewPortMap("tomcat-jmx-mtrx", 5557, 5557),
+	NewPortMap("tasko-mtrx", 9800, 9800),
+}
+
+// TCP_PODMAN_PORTS are the tcp ports required by the server on podman.
+var TCP_PODMAN_PORTS = []types.PortMap{
 	// TODO: Replace Node exporter with cAdvisor
 	NewPortMap("node-exporter", 9100, 9100),
-	NewPortMap("tasko-mtrx", 9800, 9800),
 }
 
 // DEBUG_PORTS are the port used by dev for debugging applications.
