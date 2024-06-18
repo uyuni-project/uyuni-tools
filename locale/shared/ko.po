@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
 "PO-Revision-Date: 2024-06-12 10:46+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-shared/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -78,48 +77,56 @@ msgstr "셸 완성 스크립트 생성"
 msgid "cannot generate %s completion"
 msgstr "%s 완성을 생성하지 못함"
 
-#: shared/connection.go:56
+#: shared/connection.go:57
 #, javascript-format
 msgid "backend command not found in PATH: %s"
 msgstr "경로에 백엔드 명령을 찾을 수 없음: %s"
 
-#: shared/connection.go:68
+#: shared/connection.go:69
 msgid "kubectl not configured to connect to a cluster, ignoring"
 msgstr "클러스터에 연결하도록 구성된 kubectl 없음, 무시"
 
-#: shared/connection.go:103
+#: shared/connection.go:104
 msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
 msgstr "podman, podman-remote 또는 kubectl 중 하나로 uyuni 컨테이너에 액세스할 수 없음"
 
-#: shared/connection.go:106
+#: shared/connection.go:107
 #, javascript-format
 msgid "unsupported backend %s"
 msgstr "지원되지 않는 백엔드 %s"
 
-#: shared/connection.go:127
+#: shared/connection.go:128
 #, javascript-format
 msgid "container %s is not running on podman"
 msgstr "%s 컨테이너가 podman에서 실행 중이 아님"
 
-#: shared/connection.go:149
+#: shared/connection.go:150
 #, javascript-format
 msgid "the container is not running, %s command not executed:"
 msgstr "컨테이너가 실행 중이 아님, %s 명령이 실행되지 않음"
 
-#: shared/connection.go:196
+#: shared/connection.go:197
 msgid "server didn't start within 60s. Check for the service status"
 msgstr "서버가 60초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
 
-#: shared/connection.go:226 shared/connection.go:265
+#: shared/connection.go:227 shared/connection.go:266
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr "알 수 없는 컨테이너 종류: %s"
 
-#: shared/connection.go:309
+#: shared/connection.go:277
+msgid "Copying the SSL CA certificate to the host"
+msgstr ""
+
+#: shared/connection.go:293
+msgid "Updating host trusted certificates"
+msgstr ""
+
+#: shared/connection.go:332
 msgid "failed to determine suitable backend"
 msgstr "적합한 백엔드를 확인하지 못했습니다."
 
-#: shared/connection.go:319
+#: shared/connection.go:342
 msgid "no supported backend found"
 msgstr "지원되는 백엔드를 찾을 수 없습니다."
 
@@ -141,8 +148,8 @@ msgid "Cannot guess namespace"
 msgstr "네임스페이스를 추측할 수 없음"
 
 #: shared/kubernetes/helm.go:98 shared/podman/network.go:98
-#: shared/podman/systemd.go:81 shared/podman/systemd.go:181
-#: shared/podman/systemd.go:182 shared/podman/utils.go:129
+#: shared/podman/systemd.go:81 shared/podman/systemd.go:183
+#: shared/podman/systemd.go:184 shared/podman/utils.go:129
 #: shared/podman/utils.go:155
 #, javascript-format
 msgid "Would run %s"
@@ -378,8 +385,7 @@ msgstr "%s 이미지를 사용할 수 있는지 확인"
 
 #: shared/podman/images.go:47
 msgid "Pull Policy is always. Presence of RPM image will be checked and if it's not present it will be pulled from registry"
-msgstr "끌어오기 정책이 항상입니다. RPM 이미지가 있는지 확인하여 이미지가 없는 경우 "
-"레지스트리에서 끌어옵니다."
+msgstr "끌어오기 정책이 항상입니다. RPM 이미지가 있는지 확인하여 이미지가 없는 경우 레지스트리에서 끌어옵니다."
 
 #: shared/podman/images.go:56
 #, javascript-format
@@ -476,8 +482,7 @@ msgstr "podman의 네트워크 백엔드를 찾지 못함"
 
 #: shared/podman/network.go:60
 msgid "Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"
-msgstr "Podman의 네트워크 백엔드(%[1]s)가 netavark가 아니므로 %[2]s 네트워크에서 "
-"IPv6 활성화를 건너뜁니다."
+msgstr "Podman의 네트워크 백엔드(%[1]s)가 netavark가 아니므로 %[2]s 네트워크에서 IPv6 활성화를 건너뜁니다."
 
 #: shared/podman/network.go:69
 #, javascript-format
@@ -519,94 +524,93 @@ msgid "Failed to disable %s service"
 msgstr "%s 서비스 비활성화 실패"
 
 #: shared/podman/systemd.go:92 shared/podman/systemd.go:104
-#: shared/podman/systemd.go:143 shared/podman/systemd.go:155
+#: shared/podman/systemd.go:144 shared/podman/systemd.go:157
 #, javascript-format
 msgid "Would remove %s"
 msgstr "%s 제거"
 
 #: shared/podman/systemd.go:95 shared/podman/systemd.go:106
-#: shared/podman/systemd.go:146 shared/podman/systemd.go:157
+#: shared/podman/systemd.go:147 shared/podman/systemd.go:159
 #, javascript-format
 msgid "Remove %s"
 msgstr "%s 제거"
 
-#: shared/podman/systemd.go:97 shared/podman/systemd.go:148
+#: shared/podman/systemd.go:97 shared/podman/systemd.go:149
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "%s.service 파일 제거 실패"
 
-#: shared/podman/systemd.go:108 shared/podman/systemd.go:159
+#: shared/podman/systemd.go:108 shared/podman/systemd.go:161
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "%s 파일 제거를 하지 못함"
 
-#: shared/podman/systemd.go:114 shared/podman/systemd.go:165
+#: shared/podman/systemd.go:114 shared/podman/systemd.go:167
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "비어 있으면, %s을(를) 제거"
 
-#: shared/podman/systemd.go:120 shared/podman/systemd.go:171
+#: shared/podman/systemd.go:120 shared/podman/systemd.go:173
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
-msgstr "%s 폴더에는 사용자가 만든 파일이 들어 있습니다. 설치 제거가 완료되면 해당 "
-"파일을 제거하십시오."
+msgstr "%s 폴더에는 사용자가 만든 파일이 들어 있습니다. 설치 제거가 완료되면 해당 파일을 제거하십시오."
 
 #: shared/podman/systemd.go:131
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "%s을(를) 0 복제본으로 확장"
 
-#: shared/podman/systemd.go:186
+#: shared/podman/systemd.go:188
 msgid "failed to reset-failed systemd"
 msgstr "reset-failed systemd 실패"
 
-#: shared/podman/systemd.go:190
+#: shared/podman/systemd.go:192
 msgid "failed to reload systemd daemon"
 msgstr "systemd 데몬을 다시 로드하지 못함"
 
-#: shared/podman/systemd.go:208
+#: shared/podman/systemd.go:210
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "systemd %s.service를 다시 시작하지 못함"
 
-#: shared/podman/systemd.go:216
+#: shared/podman/systemd.go:218
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "systemd %s.service를 시작하지 못함"
 
-#: shared/podman/systemd.go:224
+#: shared/podman/systemd.go:226
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "systemd %s.service를 중지하지 못함"
 
-#: shared/podman/systemd.go:232
+#: shared/podman/systemd.go:234
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "%s systemd service를 활성화하지 못함"
 
-#: shared/podman/systemd.go:273
+#: shared/podman/systemd.go:275
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "%s 폴더를 생성하지 못함"
 
-#: shared/podman/systemd.go:279
+#: shared/podman/systemd.go:281
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "%s 파일을 쓸 수 없음"
 
-#: shared/podman/systemd.go:300
+#: shared/podman/systemd.go:302
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "%[1]s 서비스에 이미 %[2]d개 복제본이 있습니다."
 
-#: shared/podman/systemd.go:303
+#: shared/podman/systemd.go:305
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "%[2]d개에서 %[3]d개 복제본으로 %[1]s 확장"
 
-#: shared/podman/systemd.go:307
+#: shared/podman/systemd.go:309
 msgid "cannot enable service"
 msgstr "서비스를 활성할 수 없음"
 
-#: shared/podman/systemd.go:313
+#: shared/podman/systemd.go:315
 msgid "cannot disable service"
 msgstr "서비스 비활성화 실패"
 
@@ -759,38 +763,27 @@ msgstr ""
 "  {{.NameAndAliases}}{{end}}{{if .HasExample}}\n"
 "\n"
 "예제:\n"
-"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if "
-"eq (len .Groups) 0}}\n"
+"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if eq (len .Groups) 0}}\n"
 "\n"
-"사용할 수 있는 명령:{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name "
-"\"help\"))}}\n"
-"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{else}}{{range $"
-"group := .Groups}}\n"
+"사용할 수 있는 명령:{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name \"help\"))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{else}}{{range $group := .Groups}}\n"
 "\n"
-"{{.Title}}{{range $cmds}}{{if (and (eq .GroupID $group.ID) (or ."
-"IsAvailableCommand (eq .Name \"help\")))}}\n"
-"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if not ."
-"AllChildCommandsHaveGroup}}\n"
+"{{.Title}}{{range $cmds}}{{if (and (eq .GroupID $group.ID) (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if not .AllChildCommandsHaveGroup}}\n"
 "\n"
-"추가 명령:{{range $cmds}}{{if (and (eq .GroupID \"\") (or ."
-"IsAvailableCommand (eq .Name \"help\")))}}\n"
-"  {{rpad .Name .NamePadding }} {{."
-"Short}}{{end}}{{end}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
+"추가 명령:{{range $cmds}}{{if (and (eq .GroupID \"\") (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
 "\n"
 "플래그:\n"
-"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if ."
-"HasAvailableInheritedFlags}}\n"
+"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}\n"
 "\n"
 "전역 플래그:\n"
-"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if ."
-"HasHelpSubCommands}}\n"
+"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}\n"
 "\n"
 "추가 도움말 항목:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}\n"
-"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{"
-"if .HasAvailableSubCommands}}\n"
+"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}\n"
 "\n"
-"명령에 대한 자세한 내용을 확인하려면 \"{{.CommandPath}} [command] --help\"를 "
-"사용하십시오.{{end}}\n"
+"명령에 대한 자세한 내용을 확인하려면 \"{{.CommandPath}} [command] --help\"를 사용하십시오.{{end}}\n"
 
 #: shared/utils/config.go:133
 msgid ""
@@ -931,10 +924,7 @@ msgstr "%[2]s 네임스페이스 대신 %[1]s 레지스트리가 사용됩니다
 
 #: shared/utils/utils.go:176
 msgid "The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."
-msgstr ""
-"제공된 이미지 이름은 %[1]s이며 레지스트리 %[2]을(를) 포함하지 않습니다. "
-"사용된 이미지 이름은 %[3]s입니다. --registry 플래그를 설정하여 이 동작을 "
-"변경할 수 있습니다."
+msgstr "제공된 이미지 이름은 %[1]s이며 레지스트리 %[2]을(를) 포함하지 않습니다. 사용된 이미지 이름은 %[3]s입니다. --registry 플래그를 설정하여 이 동작을 변경할 수 있습니다."
 
 #: shared/utils/utils.go:182 shared/utils/utils.go:208
 #, javascript-format

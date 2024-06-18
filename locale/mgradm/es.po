@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -220,7 +220,7 @@ msgstr ""
 msgid "failed to create keyring %s"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:114
+#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:118
 #: mgradm/cmd/support/config/extractor.go:34
 #: mgradm/shared/kubernetes/certificates.go:26
 #: mgradm/shared/kubernetes/certificates.go:64
@@ -388,7 +388,7 @@ msgid "install %s before running this command"
 msgstr ""
 
 #: mgradm/cmd/install/kubernetes/utils.go:63
-#: mgradm/cmd/migrate/kubernetes/utils.go:186
+#: mgradm/cmd/migrate/kubernetes/utils.go:193
 msgid "cannot deploy certificate"
 msgstr ""
 
@@ -447,7 +447,7 @@ msgstr ""
 msgid "Waiting for the server to start…"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:72 mgradm/cmd/migrate/podman/utils.go:25
+#: mgradm/cmd/install/podman/utils.go:72 mgradm/cmd/migrate/podman/utils.go:26
 msgid "install podman before running this command"
 msgstr ""
 
@@ -477,7 +477,7 @@ msgstr ""
 msgid "cannot update SSL certificate"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:156 mgradm/cmd/migrate/podman/utils.go:69
+#: mgradm/cmd/install/podman/utils.go:156 mgradm/cmd/migrate/podman/utils.go:70
 msgid "cannot enable podman socket"
 msgstr ""
 
@@ -705,11 +705,17 @@ msgstr ""
 msgid "error running the setup script"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:52
+#: mgradm/cmd/install/shared/shared.go:40
+#: mgradm/cmd/migrate/kubernetes/utils.go:167
+#: mgradm/cmd/migrate/podman/utils.go:75
+msgid "failed to add SSL CA certificate to host trusted certificates"
+msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:56
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:124
+#: mgradm/cmd/install/shared/shared.go:128
 msgid "Failed to generate setup script"
 msgstr ""
 
@@ -786,7 +792,7 @@ msgstr ""
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:144
 #: mgradm/cmd/migrate/kubernetes/utils.go:150
-#: mgradm/cmd/migrate/podman/utils.go:44
+#: mgradm/cmd/migrate/podman/utils.go:45
 #: mgradm/shared/kubernetes/install.go:192
 #: mgradm/shared/kubernetes/install.go:203 mgradm/shared/podman/podman.go:377
 #: mgradm/shared/podman/podman.go:387
@@ -794,7 +800,7 @@ msgid "cannot run PostgreSQL version upgrade script"
 msgstr ""
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:154
-#: mgradm/cmd/migrate/podman/utils.go:54
+#: mgradm/cmd/migrate/podman/utils.go:55
 #: mgradm/shared/kubernetes/install.go:207 mgradm/shared/podman/podman.go:391
 msgid "cannot run post upgrade script"
 msgstr ""
@@ -805,7 +811,7 @@ msgstr ""
 msgid "cannot upgrade to image %s"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:177
+#: mgradm/cmd/migrate/kubernetes/utils.go:184
 msgid "failed to strip text part from CA certificate"
 msgstr ""
 
@@ -830,23 +836,23 @@ msgid ""
 "NOTE: migrating to a remote podman is not supported yet!\n"
 msgstr ""
 
-#: mgradm/cmd/migrate/podman/utils.go:30
+#: mgradm/cmd/migrate/podman/utils.go:31
 msgid "cannot compute image"
 msgstr ""
 
-#: mgradm/cmd/migrate/podman/utils.go:39
+#: mgradm/cmd/migrate/podman/utils.go:40
 msgid "cannot run migration script"
 msgstr ""
 
-#: mgradm/cmd/migrate/podman/utils.go:50
+#: mgradm/cmd/migrate/podman/utils.go:51
 msgid "cannot run PostgreSQL finalize script"
 msgstr ""
 
-#: mgradm/cmd/migrate/podman/utils.go:58
+#: mgradm/cmd/migrate/podman/utils.go:59
 msgid "cannot generate systemd service file"
 msgstr ""
 
-#: mgradm/cmd/migrate/podman/utils.go:66
+#: mgradm/cmd/migrate/podman/utils.go:67
 msgid "Server migrated"
 msgstr ""
 

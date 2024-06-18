@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
 "PO-Revision-Date: 2024-06-12 10:46+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgrpxy/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,29 +18,29 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.5.5\n"
 
-#: mgrpxy/cmd/cmd.go:33
+#: mgrpxy/cmd/cmd.go:34
 msgid "Uyuni proxy administration tool"
 msgstr "Uyuni 프록시 관리 도구"
 
-#: mgrpxy/cmd/cmd.go:34
+#: mgrpxy/cmd/cmd.go:35
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr "컨테이너에서 Uyuni 프록시를 관리하는 데 유용한 도구"
 
-#: mgrpxy/cmd/cmd.go:47
+#: mgrpxy/cmd/cmd.go:48
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "%s 시작"
 
-#: mgrpxy/cmd/cmd.go:48
+#: mgrpxy/cmd/cmd.go:49
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "실행 중 명령: %s"
 
-#: mgrpxy/cmd/cmd.go:52
+#: mgrpxy/cmd/cmd.go:53
 msgid "configuration file path"
 msgstr "구성 파일 경로"
 
-#: mgrpxy/cmd/cmd.go:53
+#: mgrpxy/cmd/cmd.go:54
 msgid "application log level"
 msgstr "애플리케이션 로그 수준"
 
@@ -121,7 +120,7 @@ msgstr ""
 "\n"
 "참고: 현재 원격 podman에 설치하는 기능은 지원되지 않습니다.\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:193
+#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:220
 msgid "install podman before running this command"
 msgstr "이 명령을 실행하기 전 podman 설치"
 
@@ -129,6 +128,34 @@ msgstr "이 명령을 실행하기 전 podman 설치"
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "%s 파일에서 프록시 구성을 추출하지 못함"
+
+#: mgrpxy/cmd/logs/logs.go:36
+#, fuzzy
+msgid "Get the proxy logs"
+msgstr "프록시 상태 가져오기"
+
+#: mgrpxy/cmd/logs/logs.go:37
+msgid ""
+"Get the proxy logs\n"
+"The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman\n"
+"However, you can specify the pod and/or container names to get the logs for specific container(s). See examples for more details."
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:62
+msgid "specify if logs should be followed"
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:63
+msgid "show timestamps in the log outputs"
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:64
+msgid "number of lines to show from the end of the logs"
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:66
+msgid "show logs since a specific time or duration. Supports Go duration strings and RFC3339 format (e.g. 5s, 2m, 3h, 2023-01-02T15:04:05)"
+msgstr ""
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
@@ -293,34 +320,39 @@ msgstr "설치 제거된 항목이 없습니다. 실제로 설치를 제거하�
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:61
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
-msgstr "볼륨과 관련한 작업은 수행되지 않았습니다. 사용된 스토리지 클래스에 따라 "
-"제거되지 않았을 수 있습니다."
+msgstr "볼륨과 관련한 작업은 수행되지 않았습니다. 사용된 스토리지 클래스에 따라 제거되지 않았을 수 있습니다."
 
-#: mgrpxy/cmd/uninstall/podman.go:63
+#: mgrpxy/cmd/uninstall/podman.go:65
 #, javascript-format
 msgid "cannot delete volume %s"
 msgstr "%s 볼륨을 삭제할 수 없음"
 
-#: mgrpxy/cmd/uninstall/podman.go:66
+#: mgrpxy/cmd/uninstall/podman.go:68
 msgid "All volumes removed"
 msgstr "모든 볼륨 제거됨"
 
+#: mgrpxy/cmd/uninstall/podman.go:71
+msgid "Failed to delete /etc/uyuni/proxy folder"
+msgstr ""
+
 #: mgrpxy/cmd/uninstall/podman.go:73
+msgid "/etc/uyuni/proxy folder removed"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/podman.go:81
 #, javascript-format
 msgid "cannot delete image %s"
 msgstr "%s 이미지를 삭제할 수 없음"
 
-#: mgrpxy/cmd/uninstall/podman.go:77
+#: mgrpxy/cmd/uninstall/podman.go:85
 msgid "All images have been removed"
 msgstr "모든 이미지가 제거됨"
 
-#: mgrpxy/cmd/uninstall/podman.go:85
+#: mgrpxy/cmd/uninstall/podman.go:93
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
-msgstr ""
-"설치 제거된 항목이 없습니다. 실제로 설치를 제거하고 데이터를 정리하려면 --"
-"force 및 --purge-volumes를 실행하십시오."
+msgstr "설치 제거된 항목이 없습니다. 실제로 설치를 제거하고 데이터를 정리하려면 --force 및 --purge-volumes를 실행하십시오."
 
-#: mgrpxy/cmd/uninstall/podman.go:87
+#: mgrpxy/cmd/uninstall/podman.go:95
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr "데이터가 보관된 경우, podman volume 명령을 사용하여 볼륨을 지우십시오."
 
@@ -424,7 +456,7 @@ msgstr "systemd 파일 '%s' 생성 실패"
 msgid "cannot generate systemd conf file"
 msgstr "systemd conf 파일을 생성할 수 없음"
 
-#: mgrpxy/shared/podman/podman.go:158 mgrpxy/shared/podman/podman.go:231
+#: mgrpxy/shared/podman/podman.go:158 mgrpxy/shared/podman/podman.go:258
 msgid "cannot inspect host values"
 msgstr "호스트 값 검사할 수 없음"
 
@@ -433,23 +465,31 @@ msgstr "호스트 값 검사할 수 없음"
 msgid "Setting up proxy with configuration %s"
 msgstr "구성 %s(으)로 프록시 설정"
 
-#: mgrpxy/shared/podman/podman.go:200
+#: mgrpxy/shared/podman/podman.go:196
+msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:211
+msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:227
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr "httpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:204
+#: mgrpxy/shared/podman/podman.go:231
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr "salt-broker 이미지를 찾을 수 없음 : 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:208
+#: mgrpxy/shared/podman/podman.go:235
 msgid "cannot find squid image: it will no be upgraded"
 msgstr "squid 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:212
+#: mgrpxy/shared/podman/podman.go:239
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr "ssh 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:216
+#: mgrpxy/shared/podman/podman.go:243
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr "tftpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
@@ -458,33 +498,33 @@ msgstr "tftpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다
 msgid "argument is not an existing file: %s"
 msgstr "인수가 기존 파일이 아님: %s"
 
-#: mgrpxy/shared/utils/flags.go:57
+#: mgrpxy/shared/utils/flags.go:61
 #, javascript-format
 msgid "Invalid proxy container name: %s"
 msgstr "잘못된 프록시 컨테이너 이름: %s"
 
-#: mgrpxy/shared/utils/flags.go:71
+#: mgrpxy/shared/utils/flags.go:75
 msgid "failed to compute image URL"
 msgstr "이미지 URL을 계산하지 못함"
 
-#: mgrpxy/shared/utils/flags.go:78
+#: mgrpxy/shared/utils/flags.go:82
 msgid "image tag"
 msgstr "이미지 태그"
 
-#: mgrpxy/shared/utils/flags.go:87
+#: mgrpxy/shared/utils/flags.go:91
 msgid "HTTPD tuning configuration file"
 msgstr "HTTPD 튜닝 구성 파일"
 
-#: mgrpxy/shared/utils/flags.go:88
+#: mgrpxy/shared/utils/flags.go:92
 msgid "Squid tuning configuration file"
 msgstr "Squid 튜닝 구성 파일"
 
-#: mgrpxy/shared/utils/flags.go:93
+#: mgrpxy/shared/utils/flags.go:97
 #, javascript-format
 msgid "Image for %s container, overrides the namespace if set"
 msgstr "%s 컨테이너의 이미지, 설정된 경우 네임스페이스 재정의"
 
-#: mgrpxy/shared/utils/flags.go:95
+#: mgrpxy/shared/utils/flags.go:99
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"

@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
 "PO-Revision-Date: 2024-06-11 07:46+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgradm/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -69,13 +68,11 @@ msgstr "一時ディレクトリを削除できません。%s はそのまま残
 
 #: mgradm/cmd/distro/cp.go:42
 msgid "unable to login and register the distribution. Manual distro registration is required"
-msgstr "ログインしてディストリビューションを登録できません。手動ディストリビューショ"
-"ン登録が必要です"
+msgstr "ログインしてディストリビューションを登録できません。手動ディストリビューション登録が必要です"
 
 #: mgradm/cmd/distro/cp.go:53
 msgid "unable to register the distribution. Manual distro registration is required"
-msgstr "ディストリビューションを登録できません。手動ディストリビューション登録が必要"
-"です"
+msgstr "ディストリビューションを登録できません。手動ディストリビューション登録が必要です"
 
 #: mgradm/cmd/distro/cp.go:55
 #, javascript-format
@@ -260,7 +257,7 @@ msgstr "フォルダ %s の作成に失敗しました"
 msgid "failed to create keyring %s"
 msgstr "キーリング %s の作成に失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:114
+#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:118
 #: mgradm/cmd/support/config/extractor.go:34
 #: mgradm/shared/kubernetes/certificates.go:26
 #: mgradm/shared/kubernetes/certificates.go:64
@@ -437,7 +434,7 @@ msgid "install %s before running this command"
 msgstr "このコマンドを実行する前に %s をインストールする"
 
 #: mgradm/cmd/install/kubernetes/utils.go:63
-#: mgradm/cmd/migrate/kubernetes/utils.go:186
+#: mgradm/cmd/migrate/kubernetes/utils.go:193
 msgid "cannot deploy certificate"
 msgstr "証明書を配備できません"
 
@@ -501,7 +498,7 @@ msgstr "サービスを有効にできません"
 msgid "Waiting for the server to start…"
 msgstr "サーバが起動するのを待機中…"
 
-#: mgradm/cmd/install/podman/utils.go:72 mgradm/cmd/migrate/podman/utils.go:25
+#: mgradm/cmd/install/podman/utils.go:72 mgradm/cmd/migrate/podman/utils.go:26
 msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
 
@@ -531,7 +528,7 @@ msgstr "paygデータの抽出に失敗しました"
 msgid "cannot update SSL certificate"
 msgstr "SSL証明書を更新できません"
 
-#: mgradm/cmd/install/podman/utils.go:156 mgradm/cmd/migrate/podman/utils.go:69
+#: mgradm/cmd/install/podman/utils.go:156 mgradm/cmd/migrate/podman/utils.go:70
 msgid "cannot enable podman socket"
 msgstr "podmanソケットを有効にできません"
 
@@ -713,8 +710,7 @@ msgstr "コンフィデンシャルコンピューティングのフラグ"
 
 #: mgradm/cmd/install/shared/flags.go:225
 msgid "How many replicas of the Hub XML-RPC API service container should be started. (only 0 or 1 supported for now)"
-msgstr "Hub XML-RPC APIサービスコンテナのレプリカをいくつ起動する必要があるか(現時点"
-"では0または1のみサポート）"
+msgstr "Hub XML-RPC APIサービスコンテナのレプリカをいくつ起動する必要があるか(現時点では0または1のみサポート）"
 
 #: mgradm/cmd/install/shared/flags.go:227
 msgid "Hub XML-RPC API Image"
@@ -760,11 +756,17 @@ msgstr "/tmp/setup.shをコピーできません"
 msgid "error running the setup script"
 msgstr "セットアップスクリプトの実行中にエラーが発生しました"
 
-#: mgradm/cmd/install/shared/shared.go:52
+#: mgradm/cmd/install/shared/shared.go:40
+#: mgradm/cmd/migrate/kubernetes/utils.go:167
+#: mgradm/cmd/migrate/podman/utils.go:75
+msgid "failed to add SSL CA certificate to host trusted certificates"
+msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:56
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "サーバ設定、%[2]s ユーザでhttps://%[1]s にログイン"
 
-#: mgradm/cmd/install/shared/shared.go:124
+#: mgradm/cmd/install/shared/shared.go:128
 msgid "Failed to generate setup script"
 msgstr "セットアップスクリプトの生成に失敗しました"
 
@@ -846,8 +848,7 @@ msgstr "ミラーデータは移行されません。%s に配置しておいて
 #: mgradm/cmd/migrate/kubernetes/utils.go:130
 #, javascript-format
 msgid "cannot upgrade helm chart to image %s using new SSL certificate"
-msgstr "新しいSSL 証明書を使用してhelmチャートをイメージ %s "
-"にアップグレードできません"
+msgstr "新しいSSL 証明書を使用してhelmチャートをイメージ %s にアップグレードできません"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:134
 #, javascript-format
@@ -856,7 +857,7 @@ msgstr "%s の配備を待機できません"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:144
 #: mgradm/cmd/migrate/kubernetes/utils.go:150
-#: mgradm/cmd/migrate/podman/utils.go:44
+#: mgradm/cmd/migrate/podman/utils.go:45
 #: mgradm/shared/kubernetes/install.go:192
 #: mgradm/shared/kubernetes/install.go:203 mgradm/shared/podman/podman.go:377
 #: mgradm/shared/podman/podman.go:387
@@ -864,7 +865,7 @@ msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQLバージョンアップグレードスクリプトを実行できません"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:154
-#: mgradm/cmd/migrate/podman/utils.go:54
+#: mgradm/cmd/migrate/podman/utils.go:55
 #: mgradm/shared/kubernetes/install.go:207 mgradm/shared/podman/podman.go:391
 msgid "cannot run post upgrade script"
 msgstr "アップグレード後のスクリプトを実行できません"
@@ -875,7 +876,7 @@ msgstr "アップグレード後のスクリプトを実行できません"
 msgid "cannot upgrade to image %s"
 msgstr "イメージ %s にアップグレードできません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:177
+#: mgradm/cmd/migrate/kubernetes/utils.go:184
 msgid "failed to strip text part from CA certificate"
 msgstr "CA証明書からテキスト部分を削除できませんでした"
 
@@ -909,23 +910,23 @@ msgstr ""
 "\n"
 "メモ: リモートpodmanへの移行はまだサポートされていません。\n"
 
-#: mgradm/cmd/migrate/podman/utils.go:30
+#: mgradm/cmd/migrate/podman/utils.go:31
 msgid "cannot compute image"
 msgstr "イメージを計算できません"
 
-#: mgradm/cmd/migrate/podman/utils.go:39
+#: mgradm/cmd/migrate/podman/utils.go:40
 msgid "cannot run migration script"
 msgstr "移行スクリプトを実行できません"
 
-#: mgradm/cmd/migrate/podman/utils.go:50
+#: mgradm/cmd/migrate/podman/utils.go:51
 msgid "cannot run PostgreSQL finalize script"
 msgstr "PostgreSQL終了処理スクリプトを実行できません"
 
-#: mgradm/cmd/migrate/podman/utils.go:58
+#: mgradm/cmd/migrate/podman/utils.go:59
 msgid "cannot generate systemd service file"
 msgstr "systemdサービスファイルを生成できません"
 
-#: mgradm/cmd/migrate/podman/utils.go:66
+#: mgradm/cmd/migrate/podman/utils.go:67
 msgid "Server migrated"
 msgstr "サーバが移行されました"
 
@@ -1243,13 +1244,11 @@ msgstr "シークレットの削除に失敗しました"
 
 #: mgradm/cmd/uninstall/kubernetes.go:98
 msgid "Nothing has been uninstalled, run with --force to actually uninstall"
-msgstr "何もアンインストールされていません。--forceを指定して実行することでアンインス"
-"トールされるようにしてください"
+msgstr "何もアンインストールされていません。--forceを指定して実行することでアンインストールされるようにしてください"
 
 #: mgradm/cmd/uninstall/kubernetes.go:100
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
-msgstr "ボリュームに何の操作も行われていません。使用したストレージクラスによっては、"
-"削除されていない可能性があります"
+msgstr "ボリュームに何の操作も行われていません。使用したストレージクラスによっては、削除されていない可能性があります"
 
 #: mgradm/cmd/uninstall/podman.go:45
 #, javascript-format
@@ -1271,14 +1270,11 @@ msgstr "すべてのイメージが削除されました"
 
 #: mgradm/cmd/uninstall/podman.go:67
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
-msgstr ""
-"何もアンインストールされていません。--forceと--purge-volumesを指定して実行し"
-"て、データがアンインストールされてクリアされるようにしてください"
+msgstr "何もアンインストールされていません。--forceと--purge-volumesを指定して実行して、データがアンインストールされてクリアされるようにしてください"
 
 #: mgradm/cmd/uninstall/podman.go:69
 msgid "Data have been kept, use podman volume commands to clear the volumes"
-msgstr "データが保管されています。podmanボリュームコマンドを使用して、ボリュームをク"
-"リアしてください"
+msgstr "データが保管されています。podmanボリュームコマンドを使用して、ボリュームをクリアしてください"
 
 #: mgradm/cmd/uninstall/uninstall.go:21
 msgid "Uninstall a server"
@@ -1477,8 +1473,7 @@ msgstr "レプリカを0に設定できません"
 #: mgradm/shared/kubernetes/install.go:186 mgradm/shared/kubernetes/k3s.go:39
 #: mgradm/shared/podman/podman.go:235
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
-msgstr "以前のPostgreSQLは %[1]s、新しいPostgreSQLは %[2]s "
-"です。DBバージョンのアップグレードを実行中…"
+msgstr "以前のPostgreSQLは %[1]s、新しいPostgreSQLは %[2]s です。DBバージョンのアップグレードを実行中…"
 
 #: mgradm/shared/kubernetes/install.go:195 mgradm/shared/podman/podman.go:380
 #, javascript-format
@@ -1575,8 +1570,7 @@ msgstr "サービスを停止できません"
 
 #: mgradm/shared/podman/podman.go:375
 msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
-msgstr "以前のpostgresqlは %[1]s、新しいpostgresqlは  %[2]s "
-"です。DBバージョンのアップグレードを実行中…"
+msgstr "以前のpostgresqlは %[1]s、新しいpostgresqlは  %[2]s です。DBバージョンのアップグレードを実行中…"
 
 #: mgradm/shared/podman/podman.go:401
 #, javascript-format
@@ -1724,9 +1718,7 @@ msgstr "データベースのアップグレードイメージタグ"
 
 #: mgradm/shared/utils/cmd_utils.go:103
 msgid "set whether to pull the database upgrade images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
-msgstr ""
-"データベースアップグレードイメージをプルするかどうかを設定します。値には "
-"「Never」、「IfNotPresent」または「Always」のいずれかを指定します"
+msgstr "データベースアップグレードイメージをプルするかどうかを設定します。値には 「Never」、「IfNotPresent」または「Always」のいずれかを指定します"
 
 #: mgradm/shared/utils/cmd_utils.go:105
 msgid "Database Upgrade Image Flags"

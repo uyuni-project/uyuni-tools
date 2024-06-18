@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
 "PO-Revision-Date: 2024-06-11 07:47+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgradm/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -257,7 +256,7 @@ msgstr "无法创建文件夹 %s"
 msgid "failed to create keyring %s"
 msgstr "无法创建密钥环 %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:114
+#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:118
 #: mgradm/cmd/support/config/extractor.go:34
 #: mgradm/shared/kubernetes/certificates.go:26
 #: mgradm/shared/kubernetes/certificates.go:64
@@ -434,7 +433,7 @@ msgid "install %s before running this command"
 msgstr "在运行此命令前安装 %s"
 
 #: mgradm/cmd/install/kubernetes/utils.go:63
-#: mgradm/cmd/migrate/kubernetes/utils.go:186
+#: mgradm/cmd/migrate/kubernetes/utils.go:193
 msgid "cannot deploy certificate"
 msgstr "无法部署证书"
 
@@ -498,7 +497,7 @@ msgstr "无法启用服务"
 msgid "Waiting for the server to start…"
 msgstr "正在等待服务器启动…"
 
-#: mgradm/cmd/install/podman/utils.go:72 mgradm/cmd/migrate/podman/utils.go:25
+#: mgradm/cmd/install/podman/utils.go:72 mgradm/cmd/migrate/podman/utils.go:26
 msgid "install podman before running this command"
 msgstr "在运行此命令前安装 podman"
 
@@ -528,7 +527,7 @@ msgstr "无法提取 payg 数据"
 msgid "cannot update SSL certificate"
 msgstr "无法更新 SSL 证书"
 
-#: mgradm/cmd/install/podman/utils.go:156 mgradm/cmd/migrate/podman/utils.go:69
+#: mgradm/cmd/install/podman/utils.go:156 mgradm/cmd/migrate/podman/utils.go:70
 msgid "cannot enable podman socket"
 msgstr "无法启用 podman 套接字"
 
@@ -756,11 +755,17 @@ msgstr "无法复制 /tmp/setup.sh"
 msgid "error running the setup script"
 msgstr "运行设置脚本时出错"
 
-#: mgradm/cmd/install/shared/shared.go:52
+#: mgradm/cmd/install/shared/shared.go:40
+#: mgradm/cmd/migrate/kubernetes/utils.go:167
+#: mgradm/cmd/migrate/podman/utils.go:75
+msgid "failed to add SSL CA certificate to host trusted certificates"
+msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:56
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "服务器设置，以 %[2]s 用户身份在 https://%[1]s 上登录"
 
-#: mgradm/cmd/install/shared/shared.go:124
+#: mgradm/cmd/install/shared/shared.go:128
 msgid "Failed to generate setup script"
 msgstr "无法生成设置脚本"
 
@@ -851,7 +856,7 @@ msgstr "无法等待 %s 部署"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:144
 #: mgradm/cmd/migrate/kubernetes/utils.go:150
-#: mgradm/cmd/migrate/podman/utils.go:44
+#: mgradm/cmd/migrate/podman/utils.go:45
 #: mgradm/shared/kubernetes/install.go:192
 #: mgradm/shared/kubernetes/install.go:203 mgradm/shared/podman/podman.go:377
 #: mgradm/shared/podman/podman.go:387
@@ -859,7 +864,7 @@ msgid "cannot run PostgreSQL version upgrade script"
 msgstr "无法运行 PostgreSQL 版本升级脚本"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:154
-#: mgradm/cmd/migrate/podman/utils.go:54
+#: mgradm/cmd/migrate/podman/utils.go:55
 #: mgradm/shared/kubernetes/install.go:207 mgradm/shared/podman/podman.go:391
 msgid "cannot run post upgrade script"
 msgstr "无法运行升级后脚本"
@@ -870,7 +875,7 @@ msgstr "无法运行升级后脚本"
 msgid "cannot upgrade to image %s"
 msgstr "无法升级到映像 %s"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:177
+#: mgradm/cmd/migrate/kubernetes/utils.go:184
 msgid "failed to strip text part from CA certificate"
 msgstr "无法剥离 CA 证书中的文本部分"
 
@@ -904,23 +909,23 @@ msgstr ""
 "\n"
 "注意：目前不支持迁移到远程 podman！\n"
 
-#: mgradm/cmd/migrate/podman/utils.go:30
+#: mgradm/cmd/migrate/podman/utils.go:31
 msgid "cannot compute image"
 msgstr "无法计算映像"
 
-#: mgradm/cmd/migrate/podman/utils.go:39
+#: mgradm/cmd/migrate/podman/utils.go:40
 msgid "cannot run migration script"
 msgstr "无法运行迁移脚本"
 
-#: mgradm/cmd/migrate/podman/utils.go:50
+#: mgradm/cmd/migrate/podman/utils.go:51
 msgid "cannot run PostgreSQL finalize script"
 msgstr "无法运行 PostgreSQL 完成脚本"
 
-#: mgradm/cmd/migrate/podman/utils.go:58
+#: mgradm/cmd/migrate/podman/utils.go:59
 msgid "cannot generate systemd service file"
 msgstr "无法生成 systemd 服务文件"
 
-#: mgradm/cmd/migrate/podman/utils.go:66
+#: mgradm/cmd/migrate/podman/utils.go:67
 msgid "Server migrated"
 msgstr "服务器已迁移"
 
@@ -1712,8 +1717,7 @@ msgstr "数据库升级映像标记"
 
 #: mgradm/shared/utils/cmd_utils.go:103
 msgid "set whether to pull the database upgrade images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
-msgstr "设置是否拉取数据库升级映像。值可以是以下之一：'Never'、'IfNotPresent' 或 "
-"'Always'"
+msgstr "设置是否拉取数据库升级映像。值可以是以下之一：'Never'、'IfNotPresent' 或 'Always'"
 
 #: mgradm/shared/utils/cmd_utils.go:105
 msgid "Database Upgrade Image Flags"

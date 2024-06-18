@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
 "PO-Revision-Date: 2024-06-11 07:47+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-shared/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -78,48 +77,56 @@ msgstr "シェル補完スクリプトの生成"
 msgid "cannot generate %s completion"
 msgstr "%s 完了を生成できません"
 
-#: shared/connection.go:56
+#: shared/connection.go:57
 #, javascript-format
 msgid "backend command not found in PATH: %s"
 msgstr "バックエンドコマンドがPATHに見つかりません: %s"
 
-#: shared/connection.go:68
+#: shared/connection.go:69
 msgid "kubectl not configured to connect to a cluster, ignoring"
 msgstr "クラスタに接続するようにkubectlが設定されていません。無視します"
 
-#: shared/connection.go:103
+#: shared/connection.go:104
 msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
 msgstr "uyuniコンテナは、podman、podman-remote、またはkubectlのいずれかでアクセスできません"
 
-#: shared/connection.go:106
+#: shared/connection.go:107
 #, javascript-format
 msgid "unsupported backend %s"
 msgstr "サポートされていないバックエンド %s"
 
-#: shared/connection.go:127
+#: shared/connection.go:128
 #, javascript-format
 msgid "container %s is not running on podman"
 msgstr "コンテナ %s はpodmanで実行されていません"
 
-#: shared/connection.go:149
+#: shared/connection.go:150
 #, javascript-format
 msgid "the container is not running, %s command not executed:"
 msgstr "コンテナが実行されていません。%s  コマンドが実行されませんでした:"
 
-#: shared/connection.go:196
+#: shared/connection.go:197
 msgid "server didn't start within 60s. Check for the service status"
 msgstr "サーバが60秒以内に起動しませんでした。サービスステータスを確認します"
 
-#: shared/connection.go:226 shared/connection.go:265
+#: shared/connection.go:227 shared/connection.go:266
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr "不明なコンテナの種類: %s"
 
-#: shared/connection.go:309
+#: shared/connection.go:277
+msgid "Copying the SSL CA certificate to the host"
+msgstr ""
+
+#: shared/connection.go:293
+msgid "Updating host trusted certificates"
+msgstr ""
+
+#: shared/connection.go:332
 msgid "failed to determine suitable backend"
 msgstr "適切なバックエンドを決定できませんでした"
 
-#: shared/connection.go:319
+#: shared/connection.go:342
 msgid "no supported backend found"
 msgstr "サポートされているバックエンドが見つかりません"
 
@@ -141,8 +148,8 @@ msgid "Cannot guess namespace"
 msgstr "ネームスペースを推測できません"
 
 #: shared/kubernetes/helm.go:98 shared/podman/network.go:98
-#: shared/podman/systemd.go:81 shared/podman/systemd.go:181
-#: shared/podman/systemd.go:182 shared/podman/utils.go:129
+#: shared/podman/systemd.go:81 shared/podman/systemd.go:183
+#: shared/podman/systemd.go:184 shared/podman/utils.go:129
 #: shared/podman/utils.go:155
 #, javascript-format
 msgid "Would run %s"
@@ -274,8 +281,7 @@ msgstr "%[1]s 配備の準備を待機中( %[2]s ネームスペース内)\n"
 
 #: shared/kubernetes/utils.go:69
 msgid "failed to find a ready replica for deployment %[1]s in namespace %[2]s after 60s"
-msgstr "60秒後にネームスペース %[2]s で配備 %[1]s "
-"の準備ができたレプリカが見つかりませんでした"
+msgstr "60秒後にネームスペース %[2]s で配備 %[1]s の準備ができたレプリカが見つかりませんでした"
 
 #: shared/kubernetes/utils.go:74
 msgid "Waiting for image of %[1]s pod in %[2]s namespace to be pulled"
@@ -379,8 +385,7 @@ msgstr "イメージ %s が使用可能であることを確認します"
 
 #: shared/podman/images.go:47
 msgid "Pull Policy is always. Presence of RPM image will be checked and if it's not present it will be pulled from registry"
-msgstr "プルポリシーが常に適用されます。RPMイメージがあるかどうかがチェックされ、存在"
-"しない場合はレジストリからプルされます"
+msgstr "プルポリシーが常に適用されます。RPMイメージがあるかどうかがチェックされ、存在しない場合はレジストリからプルされます"
 
 #: shared/podman/images.go:56
 #, javascript-format
@@ -389,8 +394,7 @@ msgstr "%s のRPMイメージを使用できません"
 
 #: shared/podman/images.go:58
 msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
-msgstr "RPM からロードされた %[1]s イメージを使用(オンラインバージョン %[2]s "
-"ではない)"
+msgstr "RPM からロードされた %[1]s イメージを使用(オンラインバージョン %[2]s ではない)"
 
 #: shared/podman/images.go:63
 #, javascript-format
@@ -478,9 +482,7 @@ msgstr "podmanのネットワークバックエンドが見つかりませんで
 
 #: shared/podman/network.go:60
 msgid "Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"
-msgstr ""
-"Podmanのネットワークバックエンド (%[1]s) はnetavarkではありません。%[2]s "
-"ネットワークでのIPv6の有効化をスキップします"
+msgstr "Podmanのネットワークバックエンド (%[1]s) はnetavarkではありません。%[2]s ネットワークでのIPv6の有効化をスキップします"
 
 #: shared/podman/network.go:69
 #, javascript-format
@@ -522,94 +524,93 @@ msgid "Failed to disable %s service"
 msgstr "%s サービスを無効にできませんでした"
 
 #: shared/podman/systemd.go:92 shared/podman/systemd.go:104
-#: shared/podman/systemd.go:143 shared/podman/systemd.go:155
+#: shared/podman/systemd.go:144 shared/podman/systemd.go:157
 #, javascript-format
 msgid "Would remove %s"
 msgstr "%s を削除します"
 
 #: shared/podman/systemd.go:95 shared/podman/systemd.go:106
-#: shared/podman/systemd.go:146 shared/podman/systemd.go:157
+#: shared/podman/systemd.go:147 shared/podman/systemd.go:159
 #, javascript-format
 msgid "Remove %s"
 msgstr "%s の削除"
 
-#: shared/podman/systemd.go:97 shared/podman/systemd.go:148
+#: shared/podman/systemd.go:97 shared/podman/systemd.go:149
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "%s.serviceファイルの削除に失敗しました"
 
-#: shared/podman/systemd.go:108 shared/podman/systemd.go:159
+#: shared/podman/systemd.go:108 shared/podman/systemd.go:161
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "ファイル %s の削除に失敗しました"
 
-#: shared/podman/systemd.go:114 shared/podman/systemd.go:165
+#: shared/podman/systemd.go:114 shared/podman/systemd.go:167
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "空の場合は、%s を削除します"
 
-#: shared/podman/systemd.go:120 shared/podman/systemd.go:171
+#: shared/podman/systemd.go:120 shared/podman/systemd.go:173
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
-msgstr "%s フォルダには、ユーザが作成したファイルが含まれます。アンインストール後にそ"
-"れらのファイルを削除してください。"
+msgstr "%s フォルダには、ユーザが作成したファイルが含まれます。アンインストール後にそれらのファイルを削除してください。"
 
 #: shared/podman/systemd.go:131
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "%s を0個のレプリカにスケールします"
 
-#: shared/podman/systemd.go:186
+#: shared/podman/systemd.go:188
 msgid "failed to reset-failed systemd"
 msgstr "systemdのreset-failedに失敗しました"
 
-#: shared/podman/systemd.go:190
+#: shared/podman/systemd.go:192
 msgid "failed to reload systemd daemon"
 msgstr "systemdデーモンの再ロードに失敗しました"
 
-#: shared/podman/systemd.go:208
+#: shared/podman/systemd.go:210
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "systemd %s.serviceの再起動に失敗しました"
 
-#: shared/podman/systemd.go:216
+#: shared/podman/systemd.go:218
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "systemd %s.serviceの起動に失敗しました"
 
-#: shared/podman/systemd.go:224
+#: shared/podman/systemd.go:226
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "systemd %s.serviceの停止に失敗しました"
 
-#: shared/podman/systemd.go:232
+#: shared/podman/systemd.go:234
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "%s systemdサービスを有効にできませんでした"
 
-#: shared/podman/systemd.go:273
+#: shared/podman/systemd.go:275
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "%s フォルダの作成に失敗しました"
 
-#: shared/podman/systemd.go:279
+#: shared/podman/systemd.go:281
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "%s ファイルを書き込めません"
 
-#: shared/podman/systemd.go:300
+#: shared/podman/systemd.go:302
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "サービス %[1]s にはすでに %[2]d 個のレプリカがあります。"
 
-#: shared/podman/systemd.go:303
+#: shared/podman/systemd.go:305
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "%[1]s を %[2]d から %[3]d レプリカにスケールします。"
 
-#: shared/podman/systemd.go:307
+#: shared/podman/systemd.go:309
 msgid "cannot enable service"
 msgstr "サービスを有効にできません"
 
-#: shared/podman/systemd.go:313
+#: shared/podman/systemd.go:315
 msgid "cannot disable service"
 msgstr "サービスを無効にできませんでした"
 
@@ -762,39 +763,27 @@ msgstr ""
 "  {{.NameAndAliases}}{{end}}{{if .HasExample}}\n"
 "\n"
 "例:\n"
-"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if "
-"eq (len .Groups) 0}}\n"
+"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if eq (len .Groups) 0}}\n"
 "\n"
-"利用可能なコマンド:{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name "
-"\"help\"))}}\n"
-"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{else}}{{range $"
-"group := .Groups}}\n"
+"利用可能なコマンド:{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name \"help\"))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{else}}{{range $group := .Groups}}\n"
 "\n"
-"{{.Title}}{{range $cmds}}{{if (and (eq .GroupID $group.ID) (or ."
-"IsAvailableCommand (eq .Name \"help\")))}}\n"
-"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if not ."
-"AllChildCommandsHaveGroup}}\n"
+"{{.Title}}{{range $cmds}}{{if (and (eq .GroupID $group.ID) (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if not .AllChildCommandsHaveGroup}}\n"
 "\n"
-"追加のコマンド:{{range $cmds}}{{if (and (eq .GroupID \"\") (or ."
-"IsAvailableCommand (eq .Name \"help\")))}}\n"
-"  {{rpad .Name .NamePadding }} {{."
-"Short}}{{end}}{{end}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
+"追加のコマンド:{{range $cmds}}{{if (and (eq .GroupID \"\") (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
 "\n"
 "フラグ:\n"
-"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if ."
-"HasAvailableInheritedFlags}}\n"
+"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}\n"
 "\n"
 "グローバルフラグ:\n"
-"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if ."
-"HasHelpSubCommands}}\n"
+"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}\n"
 "\n"
-"追加のヘルプトピック:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}"
+"追加のヘルプトピック:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}\n"
+"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}\n"
 "\n"
-"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{"
-"if .HasAvailableSubCommands}}\n"
-"\n"
-"コマンドの詳細については、「{{.CommandPath}} [command] "
-"--help」を使用してください。{{end}}\n"
+"コマンドの詳細については、「{{.CommandPath}} [command] --help」を使用してください。{{end}}\n"
 
 #: shared/utils/config.go:133
 msgid ""
@@ -880,8 +869,7 @@ msgstr "そのようなフラグヘルプグループはありません: %v"
 
 #: shared/utils/tar.go:47
 msgid "Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"
-msgstr "ターゲットパスの外部で解決されるため、%[1]s ( %[2]s "
-"ファイル内)の抽出をスキップします"
+msgstr "ターゲットパスの外部で解決されるため、%[1]s ( %[2]s ファイル内)の抽出をスキップします"
 
 #: shared/utils/tar.go:89
 #, javascript-format
@@ -936,10 +924,7 @@ msgstr "ネームスペース %[2]s のかわりにレジストリ %[1]s が使�
 
 #: shared/utils/utils.go:176
 msgid "The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."
-msgstr ""
-"指定されたイメージ名 %[1]s にはレジストリ %[2]s が含まれないため、イメージ名 "
-"%[3]s が使用されます。--registry "
-"フラグを設定することで、この動作を変更できます。"
+msgstr "指定されたイメージ名 %[1]s にはレジストリ %[2]s が含まれないため、イメージ名 %[3]s が使用されます。--registry フラグを設定することで、この動作を変更できます。"
 
 #: shared/utils/utils.go:182 shared/utils/utils.go:208
 #, javascript-format

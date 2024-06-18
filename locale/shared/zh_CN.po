@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
 "PO-Revision-Date: 2024-06-11 07:46+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-shared/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -78,48 +77,56 @@ msgstr "生成外壳完成脚本"
 msgid "cannot generate %s completion"
 msgstr "无法生成 %s 完成"
 
-#: shared/connection.go:56
+#: shared/connection.go:57
 #, javascript-format
 msgid "backend command not found in PATH: %s"
 msgstr "在 PATH 中找不到后端命令：%s"
 
-#: shared/connection.go:68
+#: shared/connection.go:69
 msgid "kubectl not configured to connect to a cluster, ignoring"
 msgstr "kubectl 未配置为连接到群集，正在忽略"
 
-#: shared/connection.go:103
+#: shared/connection.go:104
 msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
 msgstr "无法使用 podman、podman-remote 或 kubectl 访问 uyuni 容器"
 
-#: shared/connection.go:106
+#: shared/connection.go:107
 #, javascript-format
 msgid "unsupported backend %s"
 msgstr "后端 %s 不受支持"
 
-#: shared/connection.go:127
+#: shared/connection.go:128
 #, javascript-format
 msgid "container %s is not running on podman"
 msgstr "容器 %s 未在 podman 上运行"
 
-#: shared/connection.go:149
+#: shared/connection.go:150
 #, javascript-format
 msgid "the container is not running, %s command not executed:"
 msgstr "容器未在运行，%s 命令未执行："
 
-#: shared/connection.go:196
+#: shared/connection.go:197
 msgid "server didn't start within 60s. Check for the service status"
 msgstr "服务器未在 60 秒内启动。请检查服务状态"
 
-#: shared/connection.go:226 shared/connection.go:265
+#: shared/connection.go:227 shared/connection.go:266
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr "容器类型未知：%s"
 
-#: shared/connection.go:309
+#: shared/connection.go:277
+msgid "Copying the SSL CA certificate to the host"
+msgstr ""
+
+#: shared/connection.go:293
+msgid "Updating host trusted certificates"
+msgstr ""
+
+#: shared/connection.go:332
 msgid "failed to determine suitable backend"
 msgstr "无法确定合适的后端"
 
-#: shared/connection.go:319
+#: shared/connection.go:342
 msgid "no supported backend found"
 msgstr "未找到支持的后端"
 
@@ -141,8 +148,8 @@ msgid "Cannot guess namespace"
 msgstr "无法推测名称空间"
 
 #: shared/kubernetes/helm.go:98 shared/podman/network.go:98
-#: shared/podman/systemd.go:81 shared/podman/systemd.go:181
-#: shared/podman/systemd.go:182 shared/podman/utils.go:129
+#: shared/podman/systemd.go:81 shared/podman/systemd.go:183
+#: shared/podman/systemd.go:184 shared/podman/utils.go:129
 #: shared/podman/utils.go:155
 #, javascript-format
 msgid "Would run %s"
@@ -475,8 +482,7 @@ msgstr "找不到 podman 的网络后端"
 
 #: shared/podman/network.go:60
 msgid "Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"
-msgstr "Podman 的网络后端 (%[1]s) 不是 netavark，正在跳过在 %[2]s 网络上启用 IPv6 "
-"的步骤"
+msgstr "Podman 的网络后端 (%[1]s) 不是 netavark，正在跳过在 %[2]s 网络上启用 IPv6 的步骤"
 
 #: shared/podman/network.go:69
 #, javascript-format
@@ -518,33 +524,33 @@ msgid "Failed to disable %s service"
 msgstr "无法禁用 %s 服务"
 
 #: shared/podman/systemd.go:92 shared/podman/systemd.go:104
-#: shared/podman/systemd.go:143 shared/podman/systemd.go:155
+#: shared/podman/systemd.go:144 shared/podman/systemd.go:157
 #, javascript-format
 msgid "Would remove %s"
 msgstr "将去除 %s"
 
 #: shared/podman/systemd.go:95 shared/podman/systemd.go:106
-#: shared/podman/systemd.go:146 shared/podman/systemd.go:157
+#: shared/podman/systemd.go:147 shared/podman/systemd.go:159
 #, javascript-format
 msgid "Remove %s"
 msgstr "去除 %s"
 
-#: shared/podman/systemd.go:97 shared/podman/systemd.go:148
+#: shared/podman/systemd.go:97 shared/podman/systemd.go:149
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "无法去除 %s.service 文件"
 
-#: shared/podman/systemd.go:108 shared/podman/systemd.go:159
+#: shared/podman/systemd.go:108 shared/podman/systemd.go:161
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "无法去除 %s 文件"
 
-#: shared/podman/systemd.go:114 shared/podman/systemd.go:165
+#: shared/podman/systemd.go:114 shared/podman/systemd.go:167
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "将去除 %s（如果为空）"
 
-#: shared/podman/systemd.go:120 shared/podman/systemd.go:171
+#: shared/podman/systemd.go:120 shared/podman/systemd.go:173
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "%s 文件夹包含该用户创建的文件。卸装完毕后，请去除这些文件。"
@@ -554,57 +560,57 @@ msgstr "%s 文件夹包含该用户创建的文件。卸装完毕后，请去除
 msgid "Would scale %s to 0 replicas"
 msgstr "会将 %s 扩缩到 0 个复本"
 
-#: shared/podman/systemd.go:186
+#: shared/podman/systemd.go:188
 msgid "failed to reset-failed systemd"
 msgstr "reset-failed systemd 失败"
 
-#: shared/podman/systemd.go:190
+#: shared/podman/systemd.go:192
 msgid "failed to reload systemd daemon"
 msgstr "无法重新装载 systemd 守护程序"
 
-#: shared/podman/systemd.go:208
+#: shared/podman/systemd.go:210
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "无法重启动 systemd %s.service"
 
-#: shared/podman/systemd.go:216
+#: shared/podman/systemd.go:218
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "无法启动 systemd %s.service"
 
-#: shared/podman/systemd.go:224
+#: shared/podman/systemd.go:226
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "无法停止 systemd %s.service"
 
-#: shared/podman/systemd.go:232
+#: shared/podman/systemd.go:234
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "无法启用 %s systemd 服务"
 
-#: shared/podman/systemd.go:273
+#: shared/podman/systemd.go:275
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "无法创建 %s 文件夹"
 
-#: shared/podman/systemd.go:279
+#: shared/podman/systemd.go:281
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "无法写入 %s 文件"
 
-#: shared/podman/systemd.go:300
+#: shared/podman/systemd.go:302
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "服务 %[1]s 已有 %[2]d 个复本。"
 
-#: shared/podman/systemd.go:303
+#: shared/podman/systemd.go:305
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "将 %[1]s 的复本数从 %[2]d 个扩缩到 %[3]d 个。"
 
-#: shared/podman/systemd.go:307
+#: shared/podman/systemd.go:309
 msgid "cannot enable service"
 msgstr "无法启用服务"
 
-#: shared/podman/systemd.go:313
+#: shared/podman/systemd.go:315
 msgid "cannot disable service"
 msgstr "无法禁用服务"
 
@@ -757,35 +763,25 @@ msgstr ""
 "  {{.NameAndAliases}}{{end}}{{if .HasExample}}\n"
 "\n"
 "示例：\n"
-"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if "
-"eq (len .Groups) 0}}\n"
+"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if eq (len .Groups) 0}}\n"
 "\n"
-"可用的命令：{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name \"help\""
-"))}}\n"
-"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{else}}{{range $"
-"group := .Groups}}\n"
+"可用的命令：{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name \"help\"))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{else}}{{range $group := .Groups}}\n"
 "\n"
-"{{.Title}}{{range $cmds}}{{if (and (eq .GroupID $group.ID) (or ."
-"IsAvailableCommand (eq .Name \"help\")))}}\n"
-"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if not ."
-"AllChildCommandsHaveGroup}}\n"
+"{{.Title}}{{range $cmds}}{{if (and (eq .GroupID $group.ID) (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if not .AllChildCommandsHaveGroup}}\n"
 "\n"
-"其他命令：{{range $cmds}}{{if (and (eq .GroupID \"\") (or ."
-"IsAvailableCommand (eq .Name \"help\")))}}\n"
-"  {{rpad .Name .NamePadding }} {{."
-"Short}}{{end}}{{end}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
+"其他命令：{{range $cmds}}{{if (and (eq .GroupID \"\") (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
 "\n"
 "标志：\n"
-"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if ."
-"HasAvailableInheritedFlags}}\n"
+"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}\n"
 "\n"
 "全局标志：\n"
-"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if ."
-"HasHelpSubCommands}}\n"
+"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}\n"
 "\n"
 "其他帮助主题：{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}\n"
-"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{"
-"if .HasAvailableSubCommands}}\n"
+"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}\n"
 "\n"
 "有关命令的详细信息，请使用 \"{{.CommandPath}} [command] --help\"。{{end}}\n"
 
@@ -930,8 +926,7 @@ msgstr "将使用注册表 %[1]s 而不是名称空间 %[2]s"
 
 #: shared/utils/utils.go:176
 msgid "The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."
-msgstr "提供的映像名称为 %[1]s，不包含注册表 %[2]s。使用的映像名称将是 %[3]s。"
-"您可以设置标志 --registry 来更改此行为。"
+msgstr "提供的映像名称为 %[1]s，不包含注册表 %[2]s。使用的映像名称将是 %[3]s。您可以设置标志 --registry 来更改此行为。"
 
 #: shared/utils/utils.go:182 shared/utils/utils.go:208
 #, javascript-format

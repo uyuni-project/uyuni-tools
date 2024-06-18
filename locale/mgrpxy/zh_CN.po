@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
 "PO-Revision-Date: 2024-06-11 07:46+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgrpxy/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,29 +18,29 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.5.5\n"
 
-#: mgrpxy/cmd/cmd.go:33
+#: mgrpxy/cmd/cmd.go:34
 msgid "Uyuni proxy administration tool"
 msgstr "Uyuni 代理管理工具"
 
-#: mgrpxy/cmd/cmd.go:34
+#: mgrpxy/cmd/cmd.go:35
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr "用于帮助管理容器中的 Uyuni 代理的工具"
 
-#: mgrpxy/cmd/cmd.go:47
+#: mgrpxy/cmd/cmd.go:48
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "欢迎使用 %s"
 
-#: mgrpxy/cmd/cmd.go:48
+#: mgrpxy/cmd/cmd.go:49
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "正在执行命令：%s"
 
-#: mgrpxy/cmd/cmd.go:52
+#: mgrpxy/cmd/cmd.go:53
 msgid "configuration file path"
 msgstr "配置文件路径"
 
-#: mgrpxy/cmd/cmd.go:53
+#: mgrpxy/cmd/cmd.go:54
 msgid "application log level"
 msgstr "应用程序日志级别"
 
@@ -121,7 +120,7 @@ msgstr ""
 "\n"
 "注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:193
+#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:220
 msgid "install podman before running this command"
 msgstr "在运行此命令前安装 podman"
 
@@ -129,6 +128,34 @@ msgstr "在运行此命令前安装 podman"
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "无法从 %s 文件中提取代理配置"
+
+#: mgrpxy/cmd/logs/logs.go:36
+#, fuzzy
+msgid "Get the proxy logs"
+msgstr "获取代理状态"
+
+#: mgrpxy/cmd/logs/logs.go:37
+msgid ""
+"Get the proxy logs\n"
+"The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman\n"
+"However, you can specify the pod and/or container names to get the logs for specific container(s). See examples for more details."
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:62
+msgid "specify if logs should be followed"
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:63
+msgid "show timestamps in the log outputs"
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:64
+msgid "number of lines to show from the end of the logs"
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:66
+msgid "show logs since a specific time or duration. Supports Go duration strings and RFC3339 format (e.g. 5s, 2m, 3h, 2023-01-02T15:04:05)"
+msgstr ""
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
@@ -294,29 +321,37 @@ msgstr "尚未卸装任何内容，带 --force 选项运行可真正执行卸装
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
 msgstr "未更改任何卷。根据所用的存储类别，它们可能尚未去除"
 
-#: mgrpxy/cmd/uninstall/podman.go:63
+#: mgrpxy/cmd/uninstall/podman.go:65
 #, javascript-format
 msgid "cannot delete volume %s"
 msgstr "无法删除卷 %s"
 
-#: mgrpxy/cmd/uninstall/podman.go:66
+#: mgrpxy/cmd/uninstall/podman.go:68
 msgid "All volumes removed"
 msgstr "所有卷均已去除"
 
+#: mgrpxy/cmd/uninstall/podman.go:71
+msgid "Failed to delete /etc/uyuni/proxy folder"
+msgstr ""
+
 #: mgrpxy/cmd/uninstall/podman.go:73
+msgid "/etc/uyuni/proxy folder removed"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/podman.go:81
 #, javascript-format
 msgid "cannot delete image %s"
 msgstr "无法删除映像 %s"
 
-#: mgrpxy/cmd/uninstall/podman.go:77
+#: mgrpxy/cmd/uninstall/podman.go:85
 msgid "All images have been removed"
 msgstr "所有映像均已去除"
 
-#: mgrpxy/cmd/uninstall/podman.go:85
+#: mgrpxy/cmd/uninstall/podman.go:93
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr "尚未卸装任何内容，带 --force 和 --purge-volumes 选项运行可真正卸装并清除数据"
 
-#: mgrpxy/cmd/uninstall/podman.go:87
+#: mgrpxy/cmd/uninstall/podman.go:95
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr "数据已保留，使用 podman 卷命令可清除卷"
 
@@ -420,7 +455,7 @@ msgstr "无法生成 systemd 文件 '%s'"
 msgid "cannot generate systemd conf file"
 msgstr "无法生成 systemd 配置文件"
 
-#: mgrpxy/shared/podman/podman.go:158 mgrpxy/shared/podman/podman.go:231
+#: mgrpxy/shared/podman/podman.go:158 mgrpxy/shared/podman/podman.go:258
 msgid "cannot inspect host values"
 msgstr "无法检查主机值"
 
@@ -429,23 +464,31 @@ msgstr "无法检查主机值"
 msgid "Setting up proxy with configuration %s"
 msgstr "正在使用配置 %s 设置代理"
 
-#: mgrpxy/shared/podman/podman.go:200
+#: mgrpxy/shared/podman/podman.go:196
+msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:211
+msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:227
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr "找不到 httpd 映像：将不升级该映像"
 
-#: mgrpxy/shared/podman/podman.go:204
+#: mgrpxy/shared/podman/podman.go:231
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr "找不到 salt-broker 映像：将不升级该映像"
 
-#: mgrpxy/shared/podman/podman.go:208
+#: mgrpxy/shared/podman/podman.go:235
 msgid "cannot find squid image: it will no be upgraded"
 msgstr "找不到 squid 映像：将不升级该映像"
 
-#: mgrpxy/shared/podman/podman.go:212
+#: mgrpxy/shared/podman/podman.go:239
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr "找不到 ssh 映像：将不升级该映像"
 
-#: mgrpxy/shared/podman/podman.go:216
+#: mgrpxy/shared/podman/podman.go:243
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr "找不到 tftpd 映像：将不升级该映像"
 
@@ -454,33 +497,33 @@ msgstr "找不到 tftpd 映像：将不升级该映像"
 msgid "argument is not an existing file: %s"
 msgstr "参数不是现有的文件：%s"
 
-#: mgrpxy/shared/utils/flags.go:57
+#: mgrpxy/shared/utils/flags.go:61
 #, javascript-format
 msgid "Invalid proxy container name: %s"
 msgstr "代理容器名称无效：%s"
 
-#: mgrpxy/shared/utils/flags.go:71
+#: mgrpxy/shared/utils/flags.go:75
 msgid "failed to compute image URL"
 msgstr "无法计算映像 URL"
 
-#: mgrpxy/shared/utils/flags.go:78
+#: mgrpxy/shared/utils/flags.go:82
 msgid "image tag"
 msgstr "映像标记"
 
-#: mgrpxy/shared/utils/flags.go:87
+#: mgrpxy/shared/utils/flags.go:91
 msgid "HTTPD tuning configuration file"
 msgstr "HTTPD 微调配置文件"
 
-#: mgrpxy/shared/utils/flags.go:88
+#: mgrpxy/shared/utils/flags.go:92
 msgid "Squid tuning configuration file"
 msgstr "Squid 微调配置文件"
 
-#: mgrpxy/shared/utils/flags.go:93
+#: mgrpxy/shared/utils/flags.go:97
 #, javascript-format
 msgid "Image for %s container, overrides the namespace if set"
 msgstr "%s 容器的映像，如果设置，将会覆盖名称空间"
 
-#: mgrpxy/shared/utils/flags.go:95
+#: mgrpxy/shared/utils/flags.go:99
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 容器的标记，如果设置，将会覆盖全局值"

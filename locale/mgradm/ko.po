@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
 "PO-Revision-Date: 2024-06-12 10:46+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgradm/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -257,7 +256,7 @@ msgstr "%s 폴더를 생성할 수 없음"
 msgid "failed to create keyring %s"
 msgstr "%s 키링을 생성할 수 없음"
 
-#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:114
+#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:118
 #: mgradm/cmd/support/config/extractor.go:34
 #: mgradm/shared/kubernetes/certificates.go:26
 #: mgradm/shared/kubernetes/certificates.go:64
@@ -434,7 +433,7 @@ msgid "install %s before running this command"
 msgstr "이 명령을 실행하기 전 %s 설치"
 
 #: mgradm/cmd/install/kubernetes/utils.go:63
-#: mgradm/cmd/migrate/kubernetes/utils.go:186
+#: mgradm/cmd/migrate/kubernetes/utils.go:193
 msgid "cannot deploy certificate"
 msgstr "인증서를 배포할 수 없음"
 
@@ -498,7 +497,7 @@ msgstr "서비스를 활성할 수 없음"
 msgid "Waiting for the server to start…"
 msgstr "서버가 시작되기를 기다리는 중…"
 
-#: mgradm/cmd/install/podman/utils.go:72 mgradm/cmd/migrate/podman/utils.go:25
+#: mgradm/cmd/install/podman/utils.go:72 mgradm/cmd/migrate/podman/utils.go:26
 msgid "install podman before running this command"
 msgstr "이 명령을 실행하기 전 podman 설치"
 
@@ -528,7 +527,7 @@ msgstr "payg 데이터를 추출하지 못함"
 msgid "cannot update SSL certificate"
 msgstr "SSL 인증서를 업데이트하지 못함"
 
-#: mgradm/cmd/install/podman/utils.go:156 mgradm/cmd/migrate/podman/utils.go:69
+#: mgradm/cmd/install/podman/utils.go:156 mgradm/cmd/migrate/podman/utils.go:70
 msgid "cannot enable podman socket"
 msgstr "podman 소켓을 활성화할 수 없음"
 
@@ -710,8 +709,7 @@ msgstr "기밀 컴퓨팅 플래그"
 
 #: mgradm/cmd/install/shared/flags.go:225
 msgid "How many replicas of the Hub XML-RPC API service container should be started. (only 0 or 1 supported for now)"
-msgstr "시작해야 하는 Hub XML-RPC API 서비스 컨테이너의 복제본 수(현재는 0 또는 1만 "
-"지원됨)"
+msgstr "시작해야 하는 Hub XML-RPC API 서비스 컨테이너의 복제본 수(현재는 0 또는 1만 지원됨)"
 
 #: mgradm/cmd/install/shared/flags.go:227
 msgid "Hub XML-RPC API Image"
@@ -757,11 +755,17 @@ msgstr "/tmp/setup.sh 복사할 수 없음"
 msgid "error running the setup script"
 msgstr "설정 스크립트를 실행하는 중 오류 발생"
 
-#: mgradm/cmd/install/shared/shared.go:52
+#: mgradm/cmd/install/shared/shared.go:40
+#: mgradm/cmd/migrate/kubernetes/utils.go:167
+#: mgradm/cmd/migrate/podman/utils.go:75
+msgid "failed to add SSL CA certificate to host trusted certificates"
+msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:56
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "서버 설정, https://%[1]s에 %[2]s 사용자로 로그인"
 
-#: mgradm/cmd/install/shared/shared.go:124
+#: mgradm/cmd/install/shared/shared.go:128
 msgid "Failed to generate setup script"
 msgstr "설치 스크립트를 생성하지 못함"
 
@@ -852,7 +856,7 @@ msgstr "%s의 배포를 기다릴 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:144
 #: mgradm/cmd/migrate/kubernetes/utils.go:150
-#: mgradm/cmd/migrate/podman/utils.go:44
+#: mgradm/cmd/migrate/podman/utils.go:45
 #: mgradm/shared/kubernetes/install.go:192
 #: mgradm/shared/kubernetes/install.go:203 mgradm/shared/podman/podman.go:377
 #: mgradm/shared/podman/podman.go:387
@@ -860,7 +864,7 @@ msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQL 버전 업그레이드 스크립트를 실행할 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:154
-#: mgradm/cmd/migrate/podman/utils.go:54
+#: mgradm/cmd/migrate/podman/utils.go:55
 #: mgradm/shared/kubernetes/install.go:207 mgradm/shared/podman/podman.go:391
 msgid "cannot run post upgrade script"
 msgstr "업그레이드 후 스크립트를 실행할 수 없음"
@@ -871,7 +875,7 @@ msgstr "업그레이드 후 스크립트를 실행할 수 없음"
 msgid "cannot upgrade to image %s"
 msgstr "%s 이미지로 업그레이드할 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:177
+#: mgradm/cmd/migrate/kubernetes/utils.go:184
 msgid "failed to strip text part from CA certificate"
 msgstr "CA 인증서에서 텍스트 부분 제거하지 못함"
 
@@ -905,23 +909,23 @@ msgstr ""
 "\n"
 "참고: 원격 podman으로의 마이그레이션은 아직 지원되지 않습니다!\n"
 
-#: mgradm/cmd/migrate/podman/utils.go:30
+#: mgradm/cmd/migrate/podman/utils.go:31
 msgid "cannot compute image"
 msgstr "이미지를 계산할 수 없음"
 
-#: mgradm/cmd/migrate/podman/utils.go:39
+#: mgradm/cmd/migrate/podman/utils.go:40
 msgid "cannot run migration script"
 msgstr "마이그레이션 스크립트를 실행할 수 없음"
 
-#: mgradm/cmd/migrate/podman/utils.go:50
+#: mgradm/cmd/migrate/podman/utils.go:51
 msgid "cannot run PostgreSQL finalize script"
 msgstr "PostgreSQL 최종 스크립트를 실행할 수 없음"
 
-#: mgradm/cmd/migrate/podman/utils.go:58
+#: mgradm/cmd/migrate/podman/utils.go:59
 msgid "cannot generate systemd service file"
 msgstr "systemd 서비스 파일을 생성할 수 없음"
 
-#: mgradm/cmd/migrate/podman/utils.go:66
+#: mgradm/cmd/migrate/podman/utils.go:67
 msgid "Server migrated"
 msgstr "서버 마이그레이션됨"
 
@@ -1243,8 +1247,7 @@ msgstr "설치 제거된 항목이 없습니다. 실제로 설치를 제거하�
 
 #: mgradm/cmd/uninstall/kubernetes.go:100
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
-msgstr "볼륨과 관련한 작업은 수행되지 않았습니다. 사용된 스토리지 클래스에 따라 "
-"제거되지 않았을 수 있습니다."
+msgstr "볼륨과 관련한 작업은 수행되지 않았습니다. 사용된 스토리지 클래스에 따라 제거되지 않았을 수 있습니다."
 
 #: mgradm/cmd/uninstall/podman.go:45
 #, javascript-format
@@ -1266,9 +1269,7 @@ msgstr "모든 이미지가 제거됨"
 
 #: mgradm/cmd/uninstall/podman.go:67
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
-msgstr ""
-"설치 제거된 항목이 없습니다. 실제로 설치를 제거하고 데이터를 정리하려면 --"
-"force 및 --purge-volumes를 실행하십시오."
+msgstr "설치 제거된 항목이 없습니다. 실제로 설치를 제거하고 데이터를 정리하려면 --force 및 --purge-volumes를 실행하십시오."
 
 #: mgradm/cmd/uninstall/podman.go:69
 msgid "Data have been kept, use podman volume commands to clear the volumes"
@@ -1568,8 +1569,7 @@ msgstr "서비스를 중지하지 못함"
 
 #: mgradm/shared/podman/podman.go:375
 msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
-msgstr "이전 postgresql은 %[1]s(이)고 대신 새 버전은 %[2]s입니다. DB 버전 "
-"업그레이드를 수행하는 중…"
+msgstr "이전 postgresql은 %[1]s(이)고 대신 새 버전은 %[2]s입니다. DB 버전 업그레이드를 수행하는 중…"
 
 #: mgradm/shared/podman/podman.go:401
 #, javascript-format
@@ -1717,9 +1717,7 @@ msgstr "데이터베이스 업그레이드 이미지 태그"
 
 #: mgradm/shared/utils/cmd_utils.go:103
 msgid "set whether to pull the database upgrade images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
-msgstr ""
-"데이터베이스 이미지를 가져올지 여부를 설정합니다. 값은 'Never', "
-"'IfNotPresent' 또는 'Always' 중 하나를 사용할 수 있습니다."
+msgstr "데이터베이스 이미지를 가져올지 여부를 설정합니다. 값은 'Never', 'IfNotPresent' 또는 'Always' 중 하나를 사용할 수 있습니다."
 
 #: mgradm/shared/utils/cmd_utils.go:105
 msgid "Database Upgrade Image Flags"

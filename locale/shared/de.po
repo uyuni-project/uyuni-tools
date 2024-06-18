@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -76,48 +76,56 @@ msgstr ""
 msgid "cannot generate %s completion"
 msgstr ""
 
-#: shared/connection.go:56
+#: shared/connection.go:57
 #, javascript-format
 msgid "backend command not found in PATH: %s"
 msgstr ""
 
-#: shared/connection.go:68
+#: shared/connection.go:69
 msgid "kubectl not configured to connect to a cluster, ignoring"
 msgstr ""
 
-#: shared/connection.go:103
+#: shared/connection.go:104
 msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
 msgstr ""
 
-#: shared/connection.go:106
+#: shared/connection.go:107
 #, javascript-format
 msgid "unsupported backend %s"
 msgstr ""
 
-#: shared/connection.go:127
+#: shared/connection.go:128
 #, javascript-format
 msgid "container %s is not running on podman"
 msgstr ""
 
-#: shared/connection.go:149
+#: shared/connection.go:150
 #, javascript-format
 msgid "the container is not running, %s command not executed:"
 msgstr ""
 
-#: shared/connection.go:196
+#: shared/connection.go:197
 msgid "server didn't start within 60s. Check for the service status"
 msgstr ""
 
-#: shared/connection.go:226 shared/connection.go:265
+#: shared/connection.go:227 shared/connection.go:266
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr ""
 
-#: shared/connection.go:309
+#: shared/connection.go:277
+msgid "Copying the SSL CA certificate to the host"
+msgstr ""
+
+#: shared/connection.go:293
+msgid "Updating host trusted certificates"
+msgstr ""
+
+#: shared/connection.go:332
 msgid "failed to determine suitable backend"
 msgstr ""
 
-#: shared/connection.go:319
+#: shared/connection.go:342
 msgid "no supported backend found"
 msgstr ""
 
@@ -139,8 +147,8 @@ msgid "Cannot guess namespace"
 msgstr ""
 
 #: shared/kubernetes/helm.go:98 shared/podman/network.go:98
-#: shared/podman/systemd.go:81 shared/podman/systemd.go:181
-#: shared/podman/systemd.go:182 shared/podman/utils.go:129
+#: shared/podman/systemd.go:81 shared/podman/systemd.go:183
+#: shared/podman/systemd.go:184 shared/podman/utils.go:129
 #: shared/podman/utils.go:155
 #, javascript-format
 msgid "Would run %s"
@@ -509,33 +517,33 @@ msgid "Failed to disable %s service"
 msgstr ""
 
 #: shared/podman/systemd.go:92 shared/podman/systemd.go:104
-#: shared/podman/systemd.go:143 shared/podman/systemd.go:155
+#: shared/podman/systemd.go:144 shared/podman/systemd.go:157
 #, javascript-format
 msgid "Would remove %s"
 msgstr ""
 
 #: shared/podman/systemd.go:95 shared/podman/systemd.go:106
-#: shared/podman/systemd.go:146 shared/podman/systemd.go:157
+#: shared/podman/systemd.go:147 shared/podman/systemd.go:159
 #, javascript-format
 msgid "Remove %s"
 msgstr ""
 
-#: shared/podman/systemd.go:97 shared/podman/systemd.go:148
+#: shared/podman/systemd.go:97 shared/podman/systemd.go:149
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr ""
 
-#: shared/podman/systemd.go:108 shared/podman/systemd.go:159
+#: shared/podman/systemd.go:108 shared/podman/systemd.go:161
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr ""
 
-#: shared/podman/systemd.go:114 shared/podman/systemd.go:165
+#: shared/podman/systemd.go:114 shared/podman/systemd.go:167
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr ""
 
-#: shared/podman/systemd.go:120 shared/podman/systemd.go:171
+#: shared/podman/systemd.go:120 shared/podman/systemd.go:173
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr ""
@@ -545,57 +553,57 @@ msgstr ""
 msgid "Would scale %s to 0 replicas"
 msgstr ""
 
-#: shared/podman/systemd.go:186
+#: shared/podman/systemd.go:188
 msgid "failed to reset-failed systemd"
 msgstr ""
 
-#: shared/podman/systemd.go:190
+#: shared/podman/systemd.go:192
 msgid "failed to reload systemd daemon"
 msgstr ""
 
-#: shared/podman/systemd.go:208
+#: shared/podman/systemd.go:210
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:216
+#: shared/podman/systemd.go:218
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:224
+#: shared/podman/systemd.go:226
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:232
+#: shared/podman/systemd.go:234
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr ""
 
-#: shared/podman/systemd.go:273
+#: shared/podman/systemd.go:275
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr ""
 
-#: shared/podman/systemd.go:279
+#: shared/podman/systemd.go:281
 #, javascript-format
 msgid "cannot write %s file"
 msgstr ""
 
-#: shared/podman/systemd.go:300
+#: shared/podman/systemd.go:302
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr ""
 
-#: shared/podman/systemd.go:303
+#: shared/podman/systemd.go:305
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr ""
 
-#: shared/podman/systemd.go:307
+#: shared/podman/systemd.go:309
 msgid "cannot enable service"
 msgstr ""
 
-#: shared/podman/systemd.go:313
+#: shared/podman/systemd.go:315
 msgid "cannot disable service"
 msgstr ""
 
