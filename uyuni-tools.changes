@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue Jun 18 16:18:33 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.11-0
+  * Require Netavark network backend for Podman
+    (bsc#1224081)
+  * Fix --registry option (bsc#1226436)
+  * Copy the server CA certificate to the host
+  * Delete /etc/uyuni/proxy folder during mgrpxy uninstall
+  * Check permissions of /etc/uyuni folder to prevent Squid failures
+  * Correctly prepend default namespace for mgrpxy containers
+  * Re-add Podman extra args for install and migrate
+
+-------------------------------------------------------------------
 Mon Jun 10 18:11:27 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.10-0
