@@ -188,13 +188,13 @@ func TestComputeImage(t *testing.T) {
 		{"registry:5000/path/to/image:bar", "registry:5000/path/to/image", "bar", ""},
 		{"registry/path/to/image:foo", "registry/path/to/image:foo", "bar", ""},
 		{"registry/path/to/image:bar", "registry/path/to/image", "bar", ""},
-		{"registry/path/to/image:bar", "path/to/image", "bar", "registry"},
-		{"registry:5000/path/to/image:foo", "path/to/image:foo", "BAR", "REGISTRY:5000"},
+		{"registry/path/to/image:bar", "orig/path/to/image", "bar", "registry/path/to/"},
+		{"registry:5000/path/to/image:foo", "path/to/image:foo", "BAR", "REGISTRY:5000/path/to"},
 		{"registry:5000/path/to/image-migration-14-16:foo", "registry:5000/path/to/image:foo", "bar", "", "-migration-14-16"},
 		{"registry:5000/path/to/image-migration-14-16:bar", "registry:5000/path/to/image", "bar", "", "-migration-14-16"},
 		{"registry/path/to/image-migration-14-16:foo", "registry/path/to/image:foo", "bar", "", "-migration-14-16"},
 		{"registry/path/to/image-migration-14-16:bar", "registry/path/to/image", "bar", "", "-migration-14-16"},
-		{"registry/path/to/image-migration-14-16:bar", "path/to/image", "bar", "registry", "-migration-14-16"},
+		{"registry/path/to/image-migration-14-16:bar", "path/to/image", "bar", "registry/path/to", "-migration-14-16"},
 	}
 
 	for i, testCase := range data {
