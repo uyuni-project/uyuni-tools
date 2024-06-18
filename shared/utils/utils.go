@@ -172,7 +172,7 @@ func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, 
 	}
 	name := imageFlags.Name
 	if !strings.Contains(imageFlags.Name, imageFlags.Registry) {
-		name = path.Join(imageFlags.Registry, imageFlags.Name)
+		name = path.Join(imageFlags.Registry, path.Base(imageFlags.Name))
 		log.Info().Msgf(L("The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."), imageFlags.Name, imageFlags.Registry, name)
 	}
 	tag := imageFlags.Tag
