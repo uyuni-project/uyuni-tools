@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-24 17:14+0200\n"
-"PO-Revision-Date: 2024-05-10 02:43+0000\n"
+"PO-Revision-Date: 2024-06-11 07:47+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrctl/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: mgrctl/cmd/api/api.go:25
 msgid "JSON over HTTP API helper tool"
@@ -39,14 +40,13 @@ msgid "Takes an API path and parameters and then issues POST request with them. 
 msgstr "APIパスとパラメータを受け取り、それらを使用してPOST要求を発行します。ユーザとパスワードは必須です。パラメータには、JSONでエンコードされた文字列か、1つ以上のkey=valueペアを指定できます。"
 
 #: mgrctl/cmd/api/get.go:26 mgrctl/cmd/api/post.go:26
-#, fuzzy
 msgid "unable to login to the server"
-msgstr "サーバにログインできません: %s"
+msgstr "サーバにログインできません"
 
 #: mgrctl/cmd/api/get.go:33 mgrctl/cmd/api/post.go:49
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error in query %s"
-msgstr "クエリ %s でエラーが発生しました: %s"
+msgstr "クエリ %s でエラーが発生しました"
 
 #: mgrctl/cmd/cmd.go:29
 msgid "Uyuni control tool"
@@ -127,14 +127,13 @@ msgid "Command returned with exit code 0"
 msgstr "コマンドは終了コード0で返されました"
 
 #: mgrctl/cmd/exec/exec.go:116
-#, fuzzy
 msgid "cannot write"
-msgstr "書き込めません: %s"
+msgstr "書き込めません"
 
 #: mgrctl/cmd/exec/exec.go:132
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Running %s"
-msgstr "実行中: %s %s"
+msgstr "%s を実行中"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
 "PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/it/>\n"
@@ -18,29 +18,29 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.5.5\n"
 
-#: mgrpxy/cmd/cmd.go:33
+#: mgrpxy/cmd/cmd.go:34
 msgid "Uyuni proxy administration tool"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:34
+#: mgrpxy/cmd/cmd.go:35
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:47
+#: mgrpxy/cmd/cmd.go:48
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "Benvenuti su %s"
 
-#: mgrpxy/cmd/cmd.go:48
+#: mgrpxy/cmd/cmd.go:49
 #, javascript-format
 msgid "Executing command: %s"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:52
+#: mgrpxy/cmd/cmd.go:53
 msgid "configuration file path"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:53
+#: mgrpxy/cmd/cmd.go:54
 msgid "application log level"
 msgstr ""
 
@@ -105,13 +105,40 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:193
+#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:220
 msgid "install podman before running this command"
 msgstr "installare podman prima di eseguire questo comando"
 
 #: mgrpxy/cmd/install/podman/utils.go:37
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:36
+msgid "Get the proxy logs"
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:37
+msgid ""
+"Get the proxy logs\n"
+"The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman\n"
+"However, you can specify the pod and/or container names to get the logs for specific container(s). See examples for more details."
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:62
+msgid "specify if logs should be followed"
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:63
+msgid "show timestamps in the log outputs"
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:64
+msgid "number of lines to show from the end of the logs"
+msgstr ""
+
+#: mgrpxy/cmd/logs/logs.go:66
+msgid "show logs since a specific time or duration. Supports Go duration strings and RFC3339 format (e.g. 5s, 2m, 3h, 2023-01-02T15:04:05)"
 msgstr ""
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
@@ -263,29 +290,37 @@ msgstr ""
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/podman.go:63
+#: mgrpxy/cmd/uninstall/podman.go:65
 #, javascript-format
 msgid "cannot delete volume %s"
 msgstr "impossible eliminare il volume %s"
 
-#: mgrpxy/cmd/uninstall/podman.go:66
+#: mgrpxy/cmd/uninstall/podman.go:68
 msgid "All volumes removed"
 msgstr ""
 
+#: mgrpxy/cmd/uninstall/podman.go:71
+msgid "Failed to delete /etc/uyuni/proxy folder"
+msgstr ""
+
 #: mgrpxy/cmd/uninstall/podman.go:73
+msgid "/etc/uyuni/proxy folder removed"
+msgstr ""
+
+#: mgrpxy/cmd/uninstall/podman.go:81
 #, fuzzy, javascript-format
 msgid "cannot delete image %s"
 msgstr "impossible eliminare il volume %s"
 
-#: mgrpxy/cmd/uninstall/podman.go:77
+#: mgrpxy/cmd/uninstall/podman.go:85
 msgid "All images have been removed"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/podman.go:85
+#: mgrpxy/cmd/uninstall/podman.go:93
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/podman.go:87
+#: mgrpxy/cmd/uninstall/podman.go:95
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr ""
 
@@ -379,7 +414,7 @@ msgstr "mancata creazione della directory temporanea: %s"
 msgid "cannot generate systemd conf file"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgrpxy/shared/podman/podman.go:158 mgrpxy/shared/podman/podman.go:231
+#: mgrpxy/shared/podman/podman.go:158 mgrpxy/shared/podman/podman.go:258
 #, fuzzy
 msgid "cannot inspect host values"
 msgstr "impossibile ispezionare i valori dell'host: %s"
@@ -389,23 +424,31 @@ msgstr "impossibile ispezionare i valori dell'host: %s"
 msgid "Setting up proxy with configuration %s"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:200
+#: mgrpxy/shared/podman/podman.go:196
+msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:211
+msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:227
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:204
+#: mgrpxy/shared/podman/podman.go:231
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:208
+#: mgrpxy/shared/podman/podman.go:235
 msgid "cannot find squid image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:212
+#: mgrpxy/shared/podman/podman.go:239
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:216
+#: mgrpxy/shared/podman/podman.go:243
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr ""
 
@@ -414,33 +457,33 @@ msgstr ""
 msgid "argument is not an existing file: %s"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:57
+#: mgrpxy/shared/utils/flags.go:61
 #, javascript-format
 msgid "Invalid proxy container name: %s"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:71
+#: mgrpxy/shared/utils/flags.go:75
 msgid "failed to compute image URL"
 msgstr "impossibile determinare l'URL dell'immagine"
 
-#: mgrpxy/shared/utils/flags.go:78
+#: mgrpxy/shared/utils/flags.go:82
 msgid "image tag"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:87
+#: mgrpxy/shared/utils/flags.go:91
 msgid "HTTPD tuning configuration file"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:88
+#: mgrpxy/shared/utils/flags.go:92
 msgid "Squid tuning configuration file"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:93
+#: mgrpxy/shared/utils/flags.go:97
 #, javascript-format
 msgid "Image for %s container, overrides the namespace if set"
 msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:95
+#: mgrpxy/shared/utils/flags.go:99
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr ""
