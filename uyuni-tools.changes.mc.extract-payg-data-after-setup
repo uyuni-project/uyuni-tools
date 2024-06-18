@@ -1,1 +1,0 @@
-- extract payg data after setup to prevent a race condition

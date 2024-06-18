@@ -185,7 +185,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 	defer os.RemoveAll(scriptDir)
 
 	extraArgs := []string{
-		"--security-opt", "label:disable",
+		"--security-opt", "label=disable",
 		"-e", "SSH_AUTH_SOCK",
 		"-v", filepath.Dir(sshAuthSocket) + ":" + filepath.Dir(sshAuthSocket),
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
@@ -243,7 +243,7 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlag
 		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
 		extraArgs := []string{
 			"-v", scriptDir + ":/var/lib/uyuni-tools/",
-			"--security-opt", "label:disable",
+			"--security-opt", "label=disable",
 		}
 
 		upgradeImageUrl := ""
@@ -303,7 +303,7 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool) error
 
 	extraArgs := []string{
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
-		"--security-opt", "label:disable",
+		"--security-opt", "label=disable",
 	}
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
 	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, schemaUpdateRequired, true, true, false)
@@ -328,7 +328,7 @@ func RunPostUpgradeScript(serverImage string) error {
 	postUpgradeContainer := "uyuni-post-upgrade"
 	extraArgs := []string{
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
-		"--security-opt", "label:disable",
+		"--security-opt", "label=disable",
 	}
 	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
 	if err != nil {
@@ -441,7 +441,7 @@ func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
 
 	podmanArgs := []string{
 		"-v", scriptDir + ":" + utils.InspectOutputFile.Directory,
-		"--security-opt", "label:disable",
+		"--security-opt", "label=disable",
 	}
 
 	err = podman.RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,

@@ -1,3 +1,0 @@
-- Rename the --migration-image* flags to --dbupgrade-image-* to 
-  avoid confusion
-- Move user-defined values to service configuration files

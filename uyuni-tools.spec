@@ -44,7 +44,7 @@
 # 0%{?debian} || 0%{?ubuntu}
 
 Name:           %{project}
-Version:        0.1.9
+Version:        0.1.10
 Release:        0
 Summary:        Tools for managing %{productname} container
 License:        Apache-2.0
@@ -98,10 +98,13 @@ Tools for managing uyuni container.
 %package -n %{name_adm}
 Summary:        Command line tool to install and update %{productname}
 %if 0%{?suse_version}
-Requires:       (aardvark-dns if netavark)
-Requires:       (podman >= 4.5.0 if podman)
+Requires:       (aardvark-dns if podman)
+Requires:       (netavark if podman)
 %endif
 # 0%{?suse_version}
+%if "%{_vendor}" != "debbuild"
+Requires: (podman >= 4.5.0 if podman)
+%endif
 
 %description -n %{name_adm}
 %{name_adm} is a convenient tool to install and update %{productname} components as containers running
@@ -111,7 +114,8 @@ either on Podman or a Kubernetes cluster.
 Summary:        Command line tool to install and update %{productname} proxy
 Obsoletes:      uyuni-proxy-systemd-services
 %if 0%{?suse_version}
-Requires:       (aardvark-dns if netavark)
+Requires:       (netavark if podman)
+Requires:       (aardvark-dns if podman)
 %endif
 # 0%{?suse_version}
 

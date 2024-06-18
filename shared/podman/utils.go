@@ -203,7 +203,7 @@ func Inspect(serverImage string, pullPolicy string, proxyHost bool) (map[string]
 
 	podmanArgs := []string{
 		"-v", scriptDir + ":" + utils.InspectOutputFile.Directory,
-		"--security-opt", "label:disable",
+		"--security-opt", "label=disable",
 	}
 
 	err = RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
