@@ -8,8 +8,10 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -302,7 +304,8 @@ func ChoosePodmanOrKubernetes[F interface{}](
 	kubernetesFn utils.CommandFunc[F],
 ) (utils.CommandFunc[F], error) {
 	backend := "podman"
-	if utils.KubernetesBuilt {
+	runningBinary := filepath.Base(os.Args[0])
+	if utils.KubernetesBuilt || runningBinary == "mgrpxy" {
 		backend, _ = flags.GetString("backend")
 	}
 
