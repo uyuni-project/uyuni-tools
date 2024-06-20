@@ -35,7 +35,7 @@ func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap)
 	// Wait for traefik to be back
 	log.Info().Msg(L("Waiting for Traefik to be reloaded"))
 	for i := 0; i < 60; i++ {
-		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "get", "job", "-A",
+		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "get", "job", "-n", "kube-system",
 			"-o", "jsonpath={.status.completionTime}", "helm-install-traefik")
 		if err == nil {
 			completionTime, err := time.Parse(time.RFC3339, string(out))
