@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jun 20 11:42:11 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.12-0
+  * Detection of k8s on Proxy was wrongly influenced by Server
+    setting
+
+-------------------------------------------------------------------
 Tue Jun 18 16:18:33 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.11-0
