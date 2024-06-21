@@ -1,1 +1,2 @@
 - implement mgrpxy support config command
+- fix mgradm support config tarball creation (bsc#1226759)
