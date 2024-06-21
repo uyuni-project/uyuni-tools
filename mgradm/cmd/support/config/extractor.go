@@ -108,7 +108,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 }
 
 func getSupportConfigPath(out []byte) string {
-	re := regexp.MustCompile(`/var/log/scc_[^.]+\.txz`)
+	re := regexp.MustCompile(`/var/log/scc_(.*?)\.txz`)
 	return re.FindString(string(out))
 }
 
