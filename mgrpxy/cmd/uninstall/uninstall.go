@@ -16,8 +16,9 @@ import (
 // NewCommand for uninstall proxy.
 func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 	uninstallCmd := &cobra.Command{
-		Use:   "uninstall",
-		Short: L("Uninstall a proxy"),
+		Use:     "uninstall",
+		GroupID: "deploy",
+		Short:   L("Uninstall a proxy"),
 		Long: L(`Uninstall a proxy and optionally the corresponding volumes.
 By default it will only print what would be done, use --force to actually remove.`) + kubernetes.UninstallHelp(),
 		Args: cobra.ExactArgs(0),

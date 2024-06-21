@@ -15,9 +15,10 @@ import (
 // NewCommand install a new proxy from scratch.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	upgradeCmd := &cobra.Command{
-		Use:   "upgrade",
-		Short: L("Upgrade a proxy"),
-		Long:  L("Upgrade a proxy"),
+		Use:     "upgrade",
+		GroupID: "deploy",
+		Short:   L("Upgrade a proxy"),
+		Long:    L("Upgrade a proxy"),
 	}
 	upgradeCmd.PersistentFlags().StringVar(&globalFlags.Registry, "registry", "", L("specify a private registry"))
 
