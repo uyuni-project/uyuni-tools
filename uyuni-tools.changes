@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun 21 16:52:52 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.13-0
+  * Fix mgradm support config tarball creation (bsc#1226759)
+
+-------------------------------------------------------------------
 Thu Jun 20 11:42:11 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.12-0
