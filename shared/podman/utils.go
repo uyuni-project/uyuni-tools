@@ -5,10 +5,8 @@
 package podman
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
-	"path"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -24,6 +22,9 @@ const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup
 // ServerContainerName represents the server container name.
 const ServerContainerName = "uyuni-server"
 
+// HubXmlrpcContainerName is the container name for the Hub XML-RPC API.
+const HubXmlrpcContainerName = "uyuni-hub-xmlrpc"
+
 // ProxyContainerNames represents all the proxy container names.
 var ProxyContainerNames = []string{
 	"uyuni-proxy-httpd",
@@ -35,16 +36,7 @@ var ProxyContainerNames = []string{
 
 // PodmanFlags stores the podman arguments.
 type PodmanFlags struct {
-	Args   []string         `mapstructure:"arg"`
-	Mounts PodmanMountFlags `mapstructure:"mount"`
-}
-
-// PodmanMountFlags stores the --podman-mount-* arguments.
-type PodmanMountFlags struct {
-	Cache      string
-	Postgresql string
-	Spacewalk  string
-	Www        string
+	Args []string `mapstructure:"arg"`
 }
 
 // GetCommonParams splits the common arguments.
@@ -55,22 +47,6 @@ func GetCommonParams() []string {
 // AddPodmanArgFlag add the podman arguments to a command.
 func AddPodmanArgFlag(cmd *cobra.Command) {
 	cmd.Flags().StringSlice("podman-arg", []string{}, L("Extra arguments to pass to podman"))
-}
-
-// AddPodmanInstallFlag add the podman install arguments to a command.
-func AddPodmanInstallFlag(cmd *cobra.Command) {
-	AddPodmanArgFlag(cmd)
-	cmd.Flags().String("podman-mount-cache", "", L("Path to custom /var/cache volume"))
-	cmd.Flags().String("podman-mount-postgresql", "", L("Path to custom /var/lib/pgsql volume"))
-	cmd.Flags().String("podman-mount-spacewalk", "", L("Path to custom /var/spacewalk volume"))
-	cmd.Flags().String("podman-mount-www", "", L("Path to custom /srv/www/ volume"))
-
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "podman", Title: L("Podman Flags")})
-	_ = utils.AddFlagToHelpGroupID(cmd, "podman-arg", "podman")
-	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-cache", "podman")
-	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-postgresql", "podman")
-	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-spacewalk", "podman")
-	_ = utils.AddFlagToHelpGroupID(cmd, "podman-mount-www", "podman")
 }
 
 // EnablePodmanSocket enables the podman socket.
@@ -125,6 +101,51 @@ func DeleteContainer(name string, dryRun bool) {
 	}
 }
 
+// GetServiceImage returns the value of the UYUNI_IMAGE variable for a systemd service.
+func GetServiceImage(service string) string {
+	serviceConfPath := GetServiceConfPath(service)
+	if !utils.FileExists(serviceConfPath) {
+		return ""
+	}
+
+	content := string(utils.ReadFile(serviceConfPath))
+	lines := strings.Split(content, "\n")
+	const imagePrefix = "Environment=UYUNI_IMAGE="
+	for _, line := range lines {
+		if strings.HasPrefix(line, imagePrefix) {
+			return strings.TrimSpace(strings.TrimPrefix(line, imagePrefix))
+		}
+	}
+
+	return ""
+}
+
+// DeleteImage deletes a podman image based on its name.
+// If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
+func DeleteImage(name string, dryRun bool) error {
+	exists := imageExists(name)
+	if exists {
+		if dryRun {
+			log.Info().Msgf(L("Would run %s"), "podman image rm "+name)
+		} else {
+			log.Info().Msgf(L("Run %s"), "podman image rm "+name)
+			err := utils.RunCmd("podman", "image", "rm", name)
+			if err != nil {
+				log.Error().Err(err).Msgf(L("Failed to remove image %s"), name)
+			}
+		}
+	}
+	return nil
+}
+
+func imageExists(volume string) bool {
+	cmd := exec.Command("podman", "image", "exists", volume)
+	if err := cmd.Run(); err != nil {
+		return false
+	}
+	return cmd.ProcessState.ExitCode() == 0
+}
+
 // DeleteVolume deletes a podman volume based on its name.
 // If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
 func DeleteVolume(name string, dryRun bool) error {
@@ -149,46 +170,6 @@ func isVolumePresent(volume string) bool {
 		return false
 	}
 	return cmd.ProcessState.ExitCode() == 0
-}
-
-// LinkVolumes adds the symlinks for the podman volumes if needed.
-func LinkVolumes(mountFlags *PodmanMountFlags) error {
-	graphRoot, err := getGraphRoot()
-	if err != nil {
-		return err
-	}
-
-	data := map[string]string{
-		"var-cache":     mountFlags.Cache,
-		"var-spacewalk": mountFlags.Spacewalk,
-		"var-pgsql":     mountFlags.Postgresql,
-		"srv-www":       mountFlags.Www,
-	}
-	for volume, value := range data {
-		if value != "" {
-			volumePath := path.Join(graphRoot, "volumes", volume)
-			if utils.FileExists(volumePath) {
-				return fmt.Errorf(L("volume folder (%[1]s) already exists, cannot link it to %[2]s"), volumePath, value)
-			}
-			baseFolder := path.Join(graphRoot, "volumes")
-			if err := utils.RunCmd("mkdir", "-p", baseFolder); err != nil {
-				return utils.Errorf(err, L("failed to create volumes folder %s"), baseFolder)
-			}
-
-			if err := utils.RunCmd("ln", "-s", value, volumePath); err != nil {
-				return utils.Errorf(err, L("failed to link volume folder %[1]s to %[2]s"), value, volumePath)
-			}
-		}
-	}
-	return nil
-}
-
-func getGraphRoot() (string, error) {
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "system", "info", "--format", "{{ .Store.GraphRoot }}")
-	if err != nil {
-		return "", utils.Errorf(err, L("failed to get podman's volumes folder"))
-	}
-	return strings.TrimSpace(string(out)), nil
 }
 
 // Inspect check values on a given image and deploy.
@@ -222,7 +203,7 @@ func Inspect(serverImage string, pullPolicy string, proxyHost bool) (map[string]
 
 	podmanArgs := []string{
 		"-v", scriptDir + ":" + utils.InspectOutputFile.Directory,
-		"--security-opt", "label:disable",
+		"--security-opt", "label=disable",
 	}
 
 	err = RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,

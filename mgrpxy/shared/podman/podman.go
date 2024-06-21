@@ -177,13 +177,40 @@ func GetContainerImage(flags *utils.ProxyImageFlags, name string) (string, error
 func UnpackConfig(configPath string) error {
 	log.Info().Msgf(L("Setting up proxy with configuration %s"), configPath)
 	const proxyConfigDir = "/etc/uyuni/proxy"
-	if err := os.MkdirAll(proxyConfigDir, 0755); err != nil {
+	if err := os.MkdirAll(proxyConfigDir, 755); err != nil {
 		return err
 	}
 
 	if err := shared_utils.ExtractTarGz(configPath, proxyConfigDir); err != nil {
 		return err
 	}
+
+	proxyConfigDirInfo, err := os.Stat(proxyConfigDir)
+	if err != nil {
+		return err
+	}
+
+	dirMode := proxyConfigDirInfo.Mode()
+
+	if !(dirMode&0005 != 0 && dirMode&0050 != 0 && dirMode&0500 != 0) {
+		return fmt.Errorf(L("/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."))
+	}
+
+	if err := shared_utils.ExtractTarGz(configPath, proxyConfigDir); err != nil {
+		return err
+	}
+
+	proxyConfigInfo, err := os.Stat(path.Join(proxyConfigDir, "config.yaml"))
+	if err != nil {
+		return err
+	}
+
+	mode := proxyConfigInfo.Mode()
+
+	if !(mode&0004 != 0 && mode&0040 != 0 && mode&0400 != 0) {
+		return fmt.Errorf(L("/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."))
+	}
+
 	return nil
 }
 
@@ -197,23 +224,23 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra
 	}
 	httpdImage, err := getContainerImage(&flags.ProxyImageFlags, "httpd")
 	if err != nil {
-		log.Info().Msgf(L("cannot find httpd image: it will no be upgraded"))
+		log.Warn().Msgf(L("cannot find httpd image: it will no be upgraded"))
 	}
 	saltBrokerImage, err := getContainerImage(&flags.ProxyImageFlags, "salt-broker")
 	if err != nil {
-		log.Info().Msgf(L("cannot find salt-broker image: it will no be upgraded"))
+		log.Warn().Msgf(L("cannot find salt-broker image: it will no be upgraded"))
 	}
 	squidImage, err := getContainerImage(&flags.ProxyImageFlags, "squid")
 	if err != nil {
-		log.Info().Msgf(L("cannot find squid image: it will no be upgraded"))
+		log.Warn().Msgf(L("cannot find squid image: it will no be upgraded"))
 	}
 	sshImage, err := getContainerImage(&flags.ProxyImageFlags, "ssh")
 	if err != nil {
-		log.Info().Msgf(L("cannot find ssh image: it will no be upgraded"))
+		log.Warn().Msgf(L("cannot find ssh image: it will no be upgraded"))
 	}
 	tftpdImage, err := getContainerImage(&flags.ProxyImageFlags, "tftpd")
 	if err != nil {
-		log.Info().Msgf(L("cannot find tftpd image: it will no be upgraded"))
+		log.Warn().Msgf(L("cannot find tftpd image: it will no be upgraded"))
 	}
 
 	// Setup the systemd service configuration options
@@ -234,7 +261,7 @@ func getContainerImage(flags *utils.ProxyImageFlags, name string) (string, error
 	pullArgs := []string{}
 	_, scc_user_exist := inspectedHostValues["host_scc_username"]
 	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
+	if scc_user_exist && scc_user_password && strings.Contains(image, "registry.suse.com") {
 		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
 	}
 

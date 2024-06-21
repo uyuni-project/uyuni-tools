@@ -5,8 +5,6 @@
 package uninstall
 
 import (
-	"os"
-
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -17,34 +15,27 @@ import (
 
 func uninstallForPodman(
 	globalFlags *types.GlobalFlags,
-	flags *uninstallFlags,
+	flags *utils.UninstallFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	// Get the images from the service configs before they are removed
+	images := []string{
+		podman.GetServiceImage(podman.ServerService),
+		podman.GetServiceImage(podman.ServerAttestationService + "@"),
+		podman.GetServiceImage(podman.HubXmlrpcService),
+	}
+
 	// Uninstall the service
 	podman.UninstallService("uyuni-server", !flags.Force)
 	// Force stop the pod
 	podman.DeleteContainer(podman.ServerContainerName, !flags.Force)
 
-	if err := podman.ScaleService(0, podman.ServerAttestationService); err != nil {
-		return utils.Errorf(err, L("cannot delete confidential computing attestation instances"))
-	}
-	// Remove the service unit
-	servicePath := podman.GetServicePath(podman.ServerAttestationService + "@")
-	if _, err := os.Stat(servicePath); !os.IsNotExist(err) {
-		log.Info().Msgf(L("Remove %s"), servicePath)
-		if err := os.Remove(servicePath); err != nil {
-			log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), podman.ServerAttestationService+"@")
-		}
-	}
-
-	if podman.HasService(podman.HubXmlrpcService) {
-		podman.UninstallService(podman.HubXmlrpcService, !flags.Force)
-		podman.DeleteContainer(podman.HubXmlrpcService, !flags.Force)
-	}
+	podman.UninstallInstantiatedService(podman.ServerAttestationService, !flags.Force)
+	podman.UninstallInstantiatedService(podman.HubXmlrpcService, !flags.Force)
 
 	// Remove the volumes
-	if flags.PurgeVolumes {
+	if flags.Purge.Volumes {
 		volumes := []string{"cgroup"}
 		for _, volume := range utils.ServerVolumeMounts {
 			volumes = append(volumes, volume.Name)
@@ -54,7 +45,18 @@ func uninstallForPodman(
 				return utils.Errorf(err, L("cannot delete volume %s"), volume)
 			}
 		}
-		log.Info().Msg(L("All volumes removed"))
+		log.Info().Msg(L("All volumes have been removed"))
+	}
+
+	if flags.Purge.Images {
+		for _, image := range images {
+			if image != "" {
+				if err := podman.DeleteImage(image, !flags.Force); err != nil {
+					return utils.Errorf(err, L("cannot delete image %s"), image)
+				}
+			}
+		}
+		log.Info().Msg(L("All images have been removed"))
 	}
 
 	podman.DeleteNetwork(!flags.Force)
@@ -62,8 +64,8 @@ func uninstallForPodman(
 	err := podman.ReloadDaemon(!flags.Force)
 
 	if !flags.Force {
-		log.Warn().Msg(L("Nothing has been uninstalled, run with --force and --purgeVolumes to actually uninstall and clear data"))
-	} else if !flags.PurgeVolumes {
+		log.Warn().Msg(L("Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"))
+	} else if !flags.Purge.Volumes {
 		log.Warn().Msg(L("Data have been kept, use podman volume commands to clear the volumes"))
 	}
 

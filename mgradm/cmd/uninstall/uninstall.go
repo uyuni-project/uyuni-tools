@@ -13,12 +13,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-type uninstallFlags struct {
-	Backend      string
-	Force        bool
-	PurgeVolumes bool
-}
-
 // NewCommand uninstall a server and optionally the corresponding volumes.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	uninstallCmd := &cobra.Command{
@@ -29,23 +23,18 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 By default it will only print what would be done, use --force to actually remove.`) + kubernetes.UninstallHelp(),
 		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags uninstallFlags
+			var flags utils.UninstallFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, uninstall)
 		},
 	}
-	uninstallCmd.Flags().BoolP("force", "f", false, L("Actually remove the server"))
-	uninstallCmd.Flags().Bool("purgeVolumes", false, L("Also remove the volumes"))
-
-	if utils.KubernetesBuilt {
-		utils.AddBackendFlag(uninstallCmd)
-	}
+	utils.AddUninstallFlags(uninstallCmd, utils.KubernetesBuilt)
 
 	return uninstallCmd
 }
 
 func uninstall(
 	globalFlags *types.GlobalFlags,
-	flags *uninstallFlags,
+	flags *utils.UninstallFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {

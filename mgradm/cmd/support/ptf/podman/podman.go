@@ -7,7 +7,6 @@ package podman
 
 import (
 	"github.com/spf13/cobra"
-	mgradm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -40,7 +39,6 @@ NOTE: for now installing on a remote podman is not supported!
 		},
 	}
 
-	mgradm_utils.AddImagePTFlag(podmanCmd)
 	utils.AddPTFFlag(podmanCmd)
 
 	return podmanCmd

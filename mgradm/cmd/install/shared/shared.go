@@ -36,12 +36,16 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 		return utils.Errorf(err, L("error running the setup script"))
 	}
 
+	if err := cnx.CopyCaCertificate(fqdn); err != nil {
+		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
+	}
+
 	// Call the org.createFirst api if flags are passed
 	// This should not happen since the password is queried and enforced
 	if flags.Admin.Password != "" {
 		apiCnx := api.ConnectionDetails{
 			Server:   fqdn,
-			Insecure: true, // TODO Get the CA Cert and toggle this to false
+			Insecure: false,
 		}
 		_, err := org.CreateFirst(&apiCnx, flags.Organization, &flags.Admin)
 		if err != nil {

@@ -6,6 +6,7 @@ package types
 
 // GlobalFlags represents the flags used by all commands.
 type GlobalFlags struct {
+	Registry   string
 	ConfigPath string
 	LogLevel   string
 }

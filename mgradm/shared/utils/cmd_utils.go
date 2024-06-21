@@ -95,22 +95,6 @@ func AddImageFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "image")
 }
 
-// AddImageUpgradeFlag add Image flags to an upgrade command, where pullPolicy default is always.
-func AddImageUpgradeFlag(cmd *cobra.Command) {
-	cmd.Flags().String("image", defaultImage, L("Image"))
-	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
-	cmd.Flags().String("pullPolicy", "Always",
-		L("set whether to pull the images or not during upgrade. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
-}
-
-// AddImagePTFFlag add Image flags to an support ptf command, where pullPolicy default is always.
-func AddImagePTFlag(cmd *cobra.Command) {
-	cmd.Flags().String("image", "", L("Image"))
-	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
-	cmd.Flags().String("pullPolicy", "Always",
-		L("set whether to pull the images or not during upgrade. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
-}
-
 // AddDbUpgradeImageFlag add Database upgrade image flags to a command.
 func AddDbUpgradeImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("dbupgrade-image", "", L("Database upgrade image"))

@@ -1,1 +1,0 @@
-- Remove /etc/systemd/system/uyuni-server.service.d/Service.conf during uninstallation

@@ -24,11 +24,11 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Environment=HUB_API_URL=http://{{ .NamePrefix }}-server.mgr.internal:80/rpc/api
 Environment=HUB_CONNECT_USING_SSL=true
 Restart=on-failure
-ExecStartPre=/bin/rm -f %t/uyuni-hub-xmlrpc.pid %t/%n.ctr-id
-ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-hub-xmlrpc
+ExecStartPre=/bin/rm -f %t/uyuni-hub-xmlrpc-%i.pid %t/%n.ctr-id
+ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-hub-xmlrpc-%i
 ExecStart=/usr/bin/podman run \
-	--conmon-pidfile %t/uyuni-hub-xmlrpc.pid \
-	--cidfile=%t/%n.ctr-id \
+	--conmon-pidfile %t/uyuni-hub-xmlrpc-%i.pid \
+	--cidfile=%t/%n-%i.ctr-id \
 	--cgroups=no-conmon \
 	--sdnotify=conmon \
 	-d \
@@ -43,14 +43,14 @@ ExecStart=/usr/bin/podman run \
 	-e HUB_CONNECT_TIMEOUT \
 	-e HUB_REQUEST_TIMEOUT \
 	-e HUB_CONNECT_USING_SSL \
-	--name {{ .NamePrefix }}-hub-xmlrpc \
-	--hostname {{ .NamePrefix }}-hub-xmlrpc.mgr.internal \
+	--name {{ .NamePrefix }}-hub-xmlrpc-%i \
+	--hostname {{ .NamePrefix }}-hub-xmlrpc-%i.mgr.internal \
 	--network {{ .Network }} \
 	${UYUNI_IMAGE}
 
-ExecStop=/usr/bin/podman stop --ignore -t 10 --cidfile=%t/%n.ctr-id
-ExecStopPost=/usr/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n.ctr-id
-PIDFile=%t/uyuni-hub-xmlrpc.pid
+ExecStop=/usr/bin/podman stop --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
+ExecStopPost=/usr/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
+PIDFile=%t/uyuni-hub-xmlrpc-%i.pid
 TimeoutStopSec=60
 TimeoutStartSec=60
 Type=forking

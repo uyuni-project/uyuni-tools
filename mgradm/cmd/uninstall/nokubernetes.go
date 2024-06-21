@@ -9,11 +9,12 @@ package uninstall
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func uninstallForKubernetes(
 	globalFlags *types.GlobalFlags,
-	flags *uninstallFlags,
+	flags *utils.UninstallFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {

@@ -1,2 +1,0 @@
-- Disable all locales when running SUSEConnect register -s 
-  (bsc#1223483)

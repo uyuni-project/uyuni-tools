@@ -4,11 +4,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-export LC_ALL=C
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
 for MODULE in mgrctl mgradm mgrpxy shared; do
     # Generate the pot file
     echo "Generate locale/${MODULE}/${MODULE}.pot"
-    find ${MODULE} -type f -not -name '*_test.go' -name '*.go' | xargs xgettext --no-wrap --keyword="PL:1c,2" --keyword="NL:1,2" --keyword="L" --language=Javascript --from-code=UTF-8 -o locale/${MODULE}/${MODULE}.pot -
+    find ${MODULE} -type f -not -name '*_test.go' -name '*.go' | sort | xargs xgettext --no-wrap --keyword="PL:1c,2" --keyword="NL:1,2" --keyword="L" --language=Javascript --from-code=UTF-8 -o locale/${MODULE}/${MODULE}.pot -
     msguniq --no-wrap -o locale/${MODULE}/${MODULE}-uniq.pot locale/${MODULE}/${MODULE}.pot
     mv locale/${MODULE}/${MODULE}-uniq.pot locale/${MODULE}/${MODULE}.pot
 

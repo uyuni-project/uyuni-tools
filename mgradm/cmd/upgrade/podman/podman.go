@@ -28,6 +28,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:  cobra.RangeArgs(0, 1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanUpgradeFlags
+			flags.Image.Registry = globalFlags.Registry
+			flags.DbUpgradeImage.Registry = globalFlags.Registry
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, upgradePodman)
 		},
 	}
@@ -42,7 +44,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			if err := viper.Unmarshal(&flags); err != nil {
 				log.Fatal().Err(err).Msg(L("failed to unmarshall configuration"))
 			}
-			tags, _ := podman.ShowAvailableTag(flags.Image.Name)
+			tags, _ := podman.ShowAvailableTag(flags.Image)
 			log.Info().Msgf(L("Available Tags for image: %s"), flags.Image.Name)
 			for _, value := range tags {
 				log.Info().Msgf(value)

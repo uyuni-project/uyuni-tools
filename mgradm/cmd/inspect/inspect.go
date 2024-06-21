@@ -6,18 +6,12 @@ package inspect
 
 import (
 	"github.com/spf13/cobra"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
-
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
-
-type inspectFlags struct {
-	Image      string
-	Tag        string
-	PullPolicy string
-}
 
 // NewCommand for extracting information from image and deployment.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
@@ -29,15 +23,14 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:    cobra.MaximumNArgs(0),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags inspectFlags
+			var flags types.ImageFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, inspect)
 		},
 	}
 
 	inspectCmd.SetUsageTemplate(inspectCmd.UsageTemplate())
-	inspectCmd.Flags().String("image", "", L("Image URL. Leave it empty to analyze the current deployment"))
-	inspectCmd.Flags().String("tag", "", L("Image Tag. Leave it empty to analyze the current deployment"))
-	utils.AddPullPolicyFlag(inspectCmd)
+
+	cmd_utils.AddImageFlag(inspectCmd)
 
 	if utils.KubernetesBuilt {
 		utils.AddBackendFlag(inspectCmd)
@@ -46,7 +39,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return inspectCmd
 }
 
-func inspect(globalFlags *types.GlobalFlags, flags *inspectFlags, cmd *cobra.Command, args []string) error {
+func inspect(globalFlags *types.GlobalFlags, flags *types.ImageFlags, cmd *cobra.Command, args []string) error {
 	fn, err := shared.ChoosePodmanOrKubernetes(cmd.Flags(), podmanInspect, kuberneteInspect)
 	if err != nil {
 		return err

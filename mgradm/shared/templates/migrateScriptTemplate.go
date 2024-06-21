@@ -45,6 +45,8 @@ done
 echo "-/ /etc/sysconfig/rhn/reportdb-schema-upgrade" >> exclude_list
 echo "-/ /etc/sysconfig/rhn/schema-upgrade" >> exclude_list
 
+# exclude lastlog - it is not needed and can be too large
+echo "-/ /var/log/lastlog" >> exclude_list
 
 for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
