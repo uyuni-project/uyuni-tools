@@ -62,7 +62,8 @@ func usageFunc(cmd *cobra.Command) error {
 	cmd.SetUsageTemplate(template)
 
 	// call the original UsageFunc with the modified template
-	cmd.SetUsageFunc(nil)
+	blankCmd := cobra.Command{}
+	cmd.SetUsageFunc(blankCmd.UsageFunc())
 	origUsageFunc := cmd.UsageFunc()
 	cmd.SetUsageFunc(usageFunc)
 
