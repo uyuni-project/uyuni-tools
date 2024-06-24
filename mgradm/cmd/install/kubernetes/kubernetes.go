@@ -38,7 +38,6 @@ NOTE: installing on a remote cluster is not supported yet!
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesInstallFlags
-			flags.Image.Registry = globalFlags.Registry
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, installForKubernetes)
 		},
 	}

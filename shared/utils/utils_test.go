@@ -200,13 +200,12 @@ func TestComputeImage(t *testing.T) {
 	for i, testCase := range data {
 		result := testCase[0]
 		image := types.ImageFlags{
-			Name:     testCase[1],
-			Tag:      testCase[2],
-			Registry: testCase[3],
+			Name: testCase[1],
+			Tag:  testCase[2],
 		}
 		appendToImage := testCase[4:]
 
-		actual, err := ComputeImage(image, appendToImage...)
+		actual, err := ComputeImage(testCase[3], "defaulttag", image, appendToImage...)
 
 		if err != nil {
 			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s: %s", i, image.Name, image.Tag, appendToImage, err)
@@ -228,7 +227,7 @@ func TestComputeImageError(t *testing.T) {
 			Tag:  testCase[1],
 		}
 
-		_, err := ComputeImage(image)
+		_, err := ComputeImage("defaultregistry", "defaulttag", image)
 		if err == nil {
 			t.Errorf("Expected error for %s with tag %s, got none", image.Name, image.Tag)
 		}
