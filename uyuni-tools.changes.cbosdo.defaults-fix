@@ -1,0 +1,1 @@
+- Use the same logic for image computation in mgradm and mgrpxy (bsc#1228026)

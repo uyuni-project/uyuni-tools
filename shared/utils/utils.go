@@ -182,16 +182,17 @@ func RemoveRegistryFromImage(imagePath string) string {
 }
 
 // ComputeImage assembles the container image from its name and tag.
-func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, error) {
-	if !strings.Contains(DefaultNamespace, imageFlags.Registry) {
-		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), imageFlags.Registry, DefaultNamespace)
-	}
+func ComputeImage(registry string, globalTag string, imageFlags types.ImageFlags, appendToName ...string) (string, error) {
 	name := imageFlags.Name
-	if !strings.Contains(imageFlags.Name, imageFlags.Registry) {
-		name = path.Join(imageFlags.Registry, RemoveRegistryFromImage(imageFlags.Name))
-		log.Info().Msgf(L("The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."), imageFlags.Name, imageFlags.Registry, name)
+	if !strings.Contains(imageFlags.Name, registry) {
+		name = path.Join(registry, RemoveRegistryFromImage(imageFlags.Name))
 	}
-	tag := imageFlags.Tag
+
+	// Compute the tag
+	tag := globalTag
+	if imageFlags.Tag != "" {
+		tag = imageFlags.Tag
+	}
 
 	submatches := imageValid.FindStringSubmatch(name)
 	if submatches == nil {
@@ -207,12 +208,12 @@ func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, 
 		// No tag provided in the URL name, append the one passed
 		imageName := fmt.Sprintf("%s:%s", name, tag)
 		imageName = strings.ToLower(imageName) // podman does not accept repo in upper case
-		log.Debug().Msgf("Computed image name is %s", imageName)
+		log.Info().Msgf(L("Computed image name is %s"), imageName)
 		return imageName, nil
 	}
 	imageName := submatches[1] + strings.Join(appendToName, ``) + `:` + submatches[2]
 	imageName = strings.ToLower(imageName) // podman does not accept repo in upper case
-	log.Debug().Msgf("Computed image name is %s", imageName)
+	log.Info().Msgf(L("Computed image name is %s"), imageName)
 	return imageName, nil
 }
 

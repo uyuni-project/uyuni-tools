@@ -16,17 +16,25 @@ import (
 )
 
 // Upgrade coco attestation.
-func Upgrade(image types.ImageFlags, baseImage types.ImageFlags, dbPort int, dbName string, dbUser string, dbPassword string) error {
+func Upgrade(registry string, image types.ImageFlags, baseImage types.ImageFlags, dbPort int, dbName string, dbUser string, dbPassword string) error {
 	if err := podman.StopInstantiated(podman.ServerAttestationService); err != nil {
 		return err
 	}
-	if err := writeCocoServiceFiles(image, baseImage, dbName, dbPort, dbUser, dbPassword); err != nil {
+	if err := writeCocoServiceFiles(registry, image, baseImage, dbName, dbPort, dbUser, dbPassword); err != nil {
 		return err
 	}
 	return podman.StartInstantiated(podman.ServerAttestationService)
 }
 
-func writeCocoServiceFiles(image types.ImageFlags, baseImage types.ImageFlags, dbName string, dbPort int, dbUser string, dbPassword string) error {
+func writeCocoServiceFiles(
+	registry string,
+	image types.ImageFlags,
+	baseImage types.ImageFlags,
+	dbName string,
+	dbPort int,
+	dbUser string,
+	dbPassword string,
+) error {
 	if image.Tag == "" {
 		if baseImage.Tag != "" {
 			image.Tag = baseImage.Tag
@@ -34,13 +42,9 @@ func writeCocoServiceFiles(image types.ImageFlags, baseImage types.ImageFlags, d
 			image.Tag = "latest"
 		}
 	}
-	cocoImage, err := utils.ComputeImage(image)
+	cocoImage, err := utils.ComputeImage(registry, baseImage.Tag, image)
 	if err != nil {
-		baseImage.Tag = image.Tag
-		cocoImage, err = utils.ComputeImage(baseImage, "-attestation")
-		if err != nil {
-			return utils.Errorf(err, L("failed to compute image URL"))
-		}
+		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
 	attestationData := templates.AttestationServiceTemplateData{
@@ -72,8 +76,17 @@ func writeCocoServiceFiles(image types.ImageFlags, baseImage types.ImageFlags, d
 }
 
 // SetupCocoContainer sets up the confidential computing attestation service.
-func SetupCocoContainer(replicas int, image types.ImageFlags, baseImage types.ImageFlags, dbName string, dbPort int, dbUser string, dbPassword string) error {
-	if err := writeCocoServiceFiles(image, baseImage, dbName, dbPort, dbUser, dbPassword); err != nil {
+func SetupCocoContainer(
+	replicas int,
+	registry string,
+	image types.ImageFlags,
+	baseImage types.ImageFlags,
+	dbName string,
+	dbPort int,
+	dbUser string,
+	dbPassword string,
+) error {
+	if err := writeCocoServiceFiles(registry, image, baseImage, dbName, dbPort, dbUser, dbPassword); err != nil {
 		return err
 	}
 	return podman.ScaleService(replicas, podman.ServerAttestationService)

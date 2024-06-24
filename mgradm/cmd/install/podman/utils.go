@@ -22,16 +22,13 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
+func setupHubXmlrpcContainer(registry string, flags *podmanInstallFlags) error {
 	if flags.HubXmlrpc.Replicas > 0 {
 		if flags.HubXmlrpc.Replicas > 1 {
 			return errors.New(L("Multiple Hub XML-RPC container replicas are not currently supported."))
 		}
 		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
-		if flags.HubXmlrpc.Image.Tag == "" {
-			flags.HubXmlrpc.Image.Tag = flags.Image.Tag
-		}
-		hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image)
+		hubXmlrpcImage, err := utils.ComputeImage(registry, flags.Image.Tag, flags.HubXmlrpc.Image)
 		if err != nil {
 			return utils.Errorf(err, L("failed to compute image URL"))
 		}
@@ -83,7 +80,7 @@ func installForPodman(
 	}
 	log.Info().Msgf(L("Setting up the server with the FQDN '%s'"), fqdn)
 
-	image, err := utils.ComputeImage(flags.Image)
+	image, err := utils.ComputeImage(globalFlags.Registry, utils.DefaultTag, flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -138,11 +135,12 @@ func installForPodman(
 		}
 	}
 
-	if err := coco.SetupCocoContainer(flags.Coco.Replicas, flags.Coco.Image, flags.Image, flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password); err != nil {
+	if err := coco.SetupCocoContainer(flags.Coco.Replicas, globalFlags.Registry, flags.Coco.Image, flags.Image,
+		flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password); err != nil {
 		return err
 	}
 
-	if err := setupHubXmlrpcContainer(flags); err != nil {
+	if err := setupHubXmlrpcContainer(globalFlags.Registry, flags); err != nil {
 		return err
 	}
 
