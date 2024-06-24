@@ -16,7 +16,7 @@ import (
 )
 
 // Upgrade coco attestation.
-func Upgrade(registry string, image types.ImageFlags, baseImage types.ImageFlags, dbPort int, dbName string, dbUser string, dbPassword string) error {
+func Upgrade(registry types.RegistryFlags, image types.ImageFlags, baseImage types.ImageFlags, dbPort int, dbName string, dbUser string, dbPassword string) error {
 	if err := podman.StopInstantiated(podman.ServerAttestationService); err != nil {
 		return err
 	}
@@ -27,7 +27,7 @@ func Upgrade(registry string, image types.ImageFlags, baseImage types.ImageFlags
 }
 
 func writeCocoServiceFiles(
-	registry string,
+	registry types.RegistryFlags,
 	image types.ImageFlags,
 	baseImage types.ImageFlags,
 	dbName string,
@@ -78,7 +78,7 @@ func writeCocoServiceFiles(
 // SetupCocoContainer sets up the confidential computing attestation service.
 func SetupCocoContainer(
 	replicas int,
-	registry string,
+	registry types.RegistryFlags,
 	image types.ImageFlags,
 	baseImage types.ImageFlags,
 	dbName string,

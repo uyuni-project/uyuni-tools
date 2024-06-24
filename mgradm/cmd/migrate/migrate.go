@@ -20,7 +20,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short:   L("Migrate a remote server to containers"),
 		Long:    L("Migrate a remote server to containers"),
 	}
-	migrateCmd.PersistentFlags().StringVar(&globalFlags.Registry, "registry", "", L("specify a private registry"))
 
 	migrateCmd.AddCommand(podman.NewCommand(globalFlags))
 

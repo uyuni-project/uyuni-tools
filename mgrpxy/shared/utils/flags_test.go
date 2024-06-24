@@ -12,19 +12,19 @@ import (
 
 func TestGetContainerImage(t *testing.T) {
 	data := [][]string{
-		// Expectect image, value of --registry, value of --tag, value of --http-image, value of --http-tag
-		{"registry/default/image/proxy-httpd:tag", "registry", "tag", "registry/default/image/proxy-httpd", ""},
-		{"myregistry.example.com/proxy-httpd:tag", "myregistry.example.com", "tag", "default/image/proxy-httpd", ""},
-		{"default/image/proxy-httpd:mytag", "default/image", "tag", "default/image/proxy-httpd", "mytag"},
+		// Expectect image, value of --registry-server, value of --registry-path, value of --tag, value of --http-image, value of --http-tag
+		{"registry/default/image/proxy-httpd:tag", "registry", "", "tag", "registry/default/image/proxy-httpd", ""},
+		{"myregistry.example.com/proxy-httpd:tag", "myregistry.example.com", "", "tag", "default/image/proxy-httpd", ""},
+		{"default/image/proxy-httpd:mytag", "", "default/image", "tag", "default/image/proxy-httpd", "mytag"},
 	}
 
 	for i, testCase := range data {
 		proxyFlags := ProxyImageFlags{
-			Tag:      testCase[2],
-			Registry: testCase[1],
+			Tag:      testCase[3],
+			Registry: types.RegistryFlags{Server: testCase[1], Path: testCase[2]},
 			Httpd: types.ImageFlags{
-				Name: testCase[3],
-				Tag:  testCase[4],
+				Name: testCase[4],
+				Tag:  testCase[5],
 			},
 		}
 		imageName := proxyFlags.GetContainerImage("httpd")

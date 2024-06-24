@@ -71,6 +71,7 @@ type InstallFlags struct {
 	Scc          SccFlags
 	Debug        DebugFlags
 	Image        types.ImageFlags `mapstructure:",squash"`
+	Registry     types.RegistryFlags
 	Coco         CocoFlags
 	HubXmlrpc    HubXmlrpcFlags
 	Admin        apiTypes.User
@@ -212,6 +213,7 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "scc-password", "scc")
 
 	cmd.Flags().Bool("debug-java", false, L("Enable tomcat and taskomatic remote debugging"))
+	utils.AddRegistryFlags(cmd)
 	cmd_utils.AddImageFlag(cmd)
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
@@ -222,7 +224,7 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
 
 	cmd.Flags().Int("hubxmlrpc-replicas", 0, L("How many replicas of the Hub XML-RPC API service container should be started. (only 0 or 1 supported for now)"))
-	hubXmlrpcImage := path.Join(utils.DefaultNamespace, "server-hub-xmlrpc-api")
+	hubXmlrpcImage := path.Join(utils.DefaultRegistryServer, utils.DefaultRegistryPath, "server-hub-xmlrpc-api")
 	cmd.Flags().String("hubxmlrpc-image", hubXmlrpcImage, L("Hub XML-RPC API Image"))
 	cmd.Flags().String("hubxmlrpc-tag", utils.DefaultTag, L("Hub XML-RPC API Image Tag"))
 

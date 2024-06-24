@@ -15,6 +15,7 @@ import (
 
 // UpgradeFlags represents flags used for upgrading a server.
 type UpgradeFlags struct {
+	Registry       types.RegistryFlags
 	Image          types.ImageFlags `mapstructure:",squash"`
 	DbUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	Coco           shared.CocoFlags
@@ -22,6 +23,7 @@ type UpgradeFlags struct {
 
 // AddUpgradeFlags add upgrade flags to a command.
 func AddUpgradeFlags(cmd *cobra.Command) {
+	shared_utils.AddRegistryFlags(cmd)
 	utils.AddImageFlag(cmd)
 	utils.AddDbUpgradeImageFlag(cmd)
 

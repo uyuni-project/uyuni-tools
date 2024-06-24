@@ -26,7 +26,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return fmt.Errorf(L("install podman before running this command"))
 	}
 	sourceFqdn := args[0]
-	serverImage, err := utils.ComputeImage(globalFlags.Registry, utils.DefaultTag, flags.Image)
+	serverImage, err := utils.ComputeImage(flags.Registry, utils.DefaultTag, flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("cannot compute image"))
 	}
@@ -42,7 +42,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	if oldPgVersion != newPgVersion {
 		if err := podman.RunPgsqlVersionUpgrade(
-			globalFlags.Registry, flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion,
+			flags.Registry, flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}

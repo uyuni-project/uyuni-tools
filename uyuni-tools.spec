@@ -23,7 +23,9 @@
 %global provider_prefix %{provider}.%{provider_tld}/%{org}/%{project}
 %global productname     Uyuni
 
-%global namespace       registry.opensuse.org/uyuni
+%global registryServer      registry.opensuse.org
+%global registryPath        /uyuni
+%global registryHelmPath    /uyuni
 
 %if 0%{?suse_version} >= 1600 || 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 12 || 0%{?ubuntu} >= 2004
 %define adm_build    1
@@ -313,11 +315,23 @@ pull_policy=%{!?_default_pull_policy:Always}
 %endif
 # "%{?_default_pull_policy}" != ""
 
-image=%{namespace}
-%if "%{?_default_namespace}" != ""
-  namespace='%{_default_namespace}'
+registryServer=%{registryServer}
+%if "%{?_default_registry_server}" != ""
+  registryServer='%{_default_registry_server}'
 %endif
-# "%{?_default_namespace}" != ""
+# "%{?_default_registry_server}" != ""
+
+registryPath=%{registryPath}
+%if "%{?_default_registry_path}" != ""
+  registryPath='%{_default_registry_path}'
+%endif
+# "%{?_default_registry_path}" != ""
+
+registryHelmPath=%{registryPath}
+%if "%{?_default_registry_helm_path}" != ""
+  registryHelmPath='%{_default_registry_helm_path}'
+%endif
+# "%{?_default_registry_helm_path}" != ""
 
 go_tags=""
 %if "%{?_uyuni_tools_tags}" != ""
@@ -338,8 +352,16 @@ go_path=""
 # 0%{?ubuntu}
 
 GOLD_FLAGS="-X '${UTILS_PATH}.Version=%{version} (%{version_details})' -X ${UTILS_PATH}.LocaleRoot=%{_datadir}/locale"
-if test -n "${namespace}"; then
-    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultNamespace=${namespace} -X ${UTILS_PATH}.DefaultTag=${tag}"
+if test -n "${registryServer}"; then
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultRegistryServer=${registryServer}"
+fi
+
+if test -n "${registryHelmPath}"; then
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultRegistryHelmPath=${registryHelmPath}"
+fi
+
+if test -n "${registryPath}"; then
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultRegistryPath=${registryPath}"
 fi
 
 if test -n "${tag}"; then

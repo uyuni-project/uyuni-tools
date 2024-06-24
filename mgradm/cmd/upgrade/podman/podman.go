@@ -15,6 +15,7 @@ import (
 )
 
 type podmanUpgradeFlags struct {
+	Registry            types.RegistryFlags
 	shared.UpgradeFlags `mapstructure:",squash"`
 	Podman              podman.PodmanFlags
 	MirrorPath          string
@@ -46,7 +47,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			if err := viper.Unmarshal(&flags); err != nil {
 				log.Fatal().Err(err).Msg(L("failed to unmarshall configuration"))
 			}
-			tags, _ := podman.ShowAvailableTag(globalFlags.Registry, flags.Image)
+			tags, _ := podman.ShowAvailableTag(flags.Registry, flags.Image)
 			log.Info().Msgf(L("Available Tags for image: %s"), flags.Image.Name)
 			for _, value := range tags {
 				log.Info().Msgf(value)

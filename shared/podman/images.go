@@ -220,7 +220,7 @@ func pullImage(image string, args ...string) error {
 }
 
 // ShowAvailableTag  returns the list of available tag for a given image.
-func ShowAvailableTag(registry string, image types.ImageFlags) ([]string, error) {
+func ShowAvailableTag(registry types.RegistryFlags, image types.ImageFlags) ([]string, error) {
 	log.Info().Msgf(L("Running podman image search --list-tags %s --format={{.Tag}}"), image.Name)
 
 	name, err := utils.ComputeImage(registry, utils.DefaultTag, image)

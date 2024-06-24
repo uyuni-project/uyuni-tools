@@ -231,7 +231,7 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
-func RunPgsqlVersionUpgrade(registry string, image types.ImageFlags, upgradeImage types.ImageFlags, oldPgsql string, newPgsql string) error {
+func RunPgsqlVersionUpgrade(registry types.RegistryFlags, image types.ImageFlags, upgradeImage types.ImageFlags, oldPgsql string, newPgsql string) error {
 	log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql)
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
@@ -344,7 +344,7 @@ func RunPostUpgradeScript(serverImage string) error {
 
 // Upgrade will upgrade server to the image given as attribute.
 func Upgrade(
-	registry string,
+	registry types.RegistryFlags,
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
 	cocoImage types.ImageFlags,

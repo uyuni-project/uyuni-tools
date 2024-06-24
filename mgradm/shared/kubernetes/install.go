@@ -26,7 +26,7 @@ const HELM_APP_NAME = "uyuni"
 // Deploy execute a deploy of a given image and helm to a cluster.
 func Deploy(
 	cnx *shared.Connection,
-	registry string,
+	registry types.RegistryFlags,
 	imageFlags *types.ImageFlags,
 	helmFlags *cmd_utils.HelmFlags,
 	sslFlags *cmd_utils.SslCertFlags,
@@ -127,6 +127,7 @@ func UyuniUpgrade(serverImage string, pullPolicy string, helmFlags *cmd_utils.He
 // Upgrade will upgrade a server in a kubernetes cluster.
 func Upgrade(
 	globalFlags *types.GlobalFlags,
+	registry *types.RegistryFlags,
 	image *types.ImageFlags,
 	upgradeImage *types.ImageFlags,
 	helm cmd_utils.HelmFlags,
@@ -140,7 +141,7 @@ func Upgrade(
 	}
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
 
-	serverImage, err := utils.ComputeImage(globalFlags.Registry, utils.DefaultTag, *image)
+	serverImage, err := utils.ComputeImage(*registry, utils.DefaultTag, *image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -194,7 +195,7 @@ func Upgrade(
 		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"),
 			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 
-		if err := RunPgsqlVersionUpgrade(globalFlags.Registry, *image, *upgradeImage, nodeName,
+		if err := RunPgsqlVersionUpgrade(*registry, *image, *upgradeImage, nodeName,
 			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"],
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))

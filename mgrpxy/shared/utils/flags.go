@@ -17,15 +17,15 @@ import (
 
 // ProxyImageFlags are the flags used by install proxy command.
 type ProxyImageFlags struct {
-	Registry   string           `mapstructure:"registry"`
-	Tag        string           `mapstructure:"tag"`
-	PullPolicy string           `mapstructure:"pullPolicy"`
-	Httpd      types.ImageFlags `mapstructure:"httpd"`
-	SaltBroker types.ImageFlags `mapstructure:"saltBroker"`
-	Squid      types.ImageFlags `mapstructure:"squid"`
-	Ssh        types.ImageFlags `mapstructure:"ssh"`
-	Tftpd      types.ImageFlags `mapstructure:"tftpd"`
-	Tuning     Tuning           `mapstructure:"tuning"`
+	Registry   types.RegistryFlags `mapstructure:"registry"`
+	Tag        string              `mapstructure:"tag"`
+	PullPolicy string              `mapstructure:"pullPolicy"`
+	Httpd      types.ImageFlags    `mapstructure:"httpd"`
+	SaltBroker types.ImageFlags    `mapstructure:"saltBroker"`
+	Squid      types.ImageFlags    `mapstructure:"squid"`
+	Ssh        types.ImageFlags    `mapstructure:"ssh"`
+	Tftpd      types.ImageFlags    `mapstructure:"tftpd"`
+	Tuning     Tuning              `mapstructure:"tuning"`
 }
 
 // Tuning are the custom configuration file provide by users.
@@ -75,7 +75,7 @@ func AddImageFlags(cmd *cobra.Command) {
 }
 
 func addContainerImageFlags(cmd *cobra.Command, container string) {
-	defaultImage := path.Join(utils.DefaultNamespace, "proxy-"+container)
+	defaultImage := path.Join(utils.DefaultRegistryServer, utils.DefaultRegistryPath, "proxy-"+container)
 	cmd.Flags().String(container+"-image", defaultImage,
 		fmt.Sprintf(L("Image for %s container"), container))
 	cmd.Flags().String(container+"-tag", "",
