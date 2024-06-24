@@ -36,8 +36,6 @@ NOTE: migrating to a remote podman is not supported yet!
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanMigrateFlags
-			flags.Image.Registry = globalFlags.Registry
-			flags.DbUpgradeImage.Registry = globalFlags.Registry
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, migrateToPodman)
 		},
 	}

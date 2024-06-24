@@ -36,15 +36,6 @@ type Tuning struct {
 
 // Get the full container image name and tag for a container name.
 func (f *ProxyImageFlags) GetContainerImage(name string) string {
-	registry := utils.DefaultNamespace
-	if len(f.Registry) != 0 {
-		registry = f.Registry
-	}
-	computedImage := types.ImageFlags{
-		Name: path.Join(registry, "proxy-"+name),
-		Tag:  f.Tag,
-	}
-
 	var containerImage *types.ImageFlags
 	switch name {
 	case "httpd":
@@ -58,19 +49,10 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 	case "tftpd":
 		containerImage = &f.Tftpd
 	default:
-		log.Warn().Msgf(L("Invalid proxy container name: %s"), name)
+		log.Fatal().Msgf(L("Invalid proxy container name: %s"), name)
 	}
 
-	if containerImage != nil {
-		if containerImage.Name != "" {
-			computedImage.Name = containerImage.Name
-		}
-		if containerImage.Tag != "" {
-			computedImage.Tag = containerImage.Tag
-		}
-	}
-
-	imageUrl, err := utils.ComputeImage(computedImage)
+	imageUrl, err := utils.ComputeImage(f.Registry, f.Tag, *containerImage)
 	if err != nil {
 		log.Fatal().Err(err).Msg(L("failed to compute image URL"))
 	}
@@ -83,7 +65,7 @@ func AddImageFlags(cmd *cobra.Command) {
 	utils.AddPullPolicyFlag(cmd)
 
 	addContainerImageFlags(cmd, "httpd")
-	addContainerImageFlags(cmd, "saltBroker")
+	addContainerImageFlags(cmd, "salt-broker")
 	addContainerImageFlags(cmd, "squid")
 	addContainerImageFlags(cmd, "ssh")
 	addContainerImageFlags(cmd, "tftpd")
@@ -93,8 +75,9 @@ func AddImageFlags(cmd *cobra.Command) {
 }
 
 func addContainerImageFlags(cmd *cobra.Command, container string) {
-	cmd.Flags().String(container+"-image", "",
-		fmt.Sprintf(L("Image for %s container, overrides the namespace if set"), container))
+	defaultImage := path.Join(utils.DefaultNamespace, "proxy-"+container)
+	cmd.Flags().String(container+"-image", defaultImage,
+		fmt.Sprintf(L("Image for %s container"), container))
 	cmd.Flags().String(container+"-tag", "",
 		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), container))
 }

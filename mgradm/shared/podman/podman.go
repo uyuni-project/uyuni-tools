@@ -214,7 +214,7 @@ func RunMigration(preparedImage string, sshAuthSocket string, sshConfigPath stri
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
-func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlags, oldPgsql string, newPgsql string) error {
+func RunPgsqlVersionUpgrade(registry string, image types.ImageFlags, upgradeImage types.ImageFlags, oldPgsql string, newPgsql string) error {
 	log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql)
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
@@ -231,13 +231,13 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlag
 
 		upgradeImageUrl := ""
 		if upgradeImage.Name == "" {
-			upgradeImageUrl, err = utils.ComputeImage(image, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
+			upgradeImageUrl, err = utils.ComputeImage(registry, utils.DefaultTag, image,
+				fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			upgradeImage.Tag = image.Tag
-			upgradeImageUrl, err = utils.ComputeImage(upgradeImage)
+			upgradeImageUrl, err = utils.ComputeImage(registry, image.Tag, upgradeImage)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
@@ -328,12 +328,17 @@ func RunPostUpgradeScript(serverImage string) error {
 }
 
 // Upgrade will upgrade server to the image given as attribute.
-func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage types.ImageFlags, args []string) error {
+func Upgrade(
+	registry string,
+	image types.ImageFlags,
+	upgradeImage types.ImageFlags,
+	cocoImage types.ImageFlags,
+) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {
 		return err
 	}
 
-	serverImage, err := utils.ComputeImage(image)
+	serverImage, err := utils.ComputeImage(registry, utils.DefaultTag, image)
 	if err != nil {
 		return fmt.Errorf(L("failed to compute image URL"))
 	}
@@ -374,8 +379,13 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage ty
 		err = podman.StartService(podman.ServerService)
 	}()
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
-		log.Info().Msgf(L("Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
-		if err := RunPgsqlVersionUpgrade(image, upgradeImage, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]); err != nil {
+		log.Info().Msgf(
+			L("Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"),
+			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"],
+		)
+		if err := RunPgsqlVersionUpgrade(
+			registry, image, upgradeImage, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"],
+		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
@@ -403,7 +413,7 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage ty
 		return utils.Errorf(err, L("error %s is not a valid port number."), inspectedValues["db_port"])
 	}
 
-	err = coco.Upgrade(cocoImage, image,
+	err = coco.Upgrade(registry, cocoImage, image,
 		dbPort, inspectedValues["db_name"], inspectedValues["db_user"], inspectedValues["db_password"])
 	if err != nil {
 		return utils.Errorf(err, L("error upgrading confidential computing service."))

@@ -27,7 +27,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return fmt.Errorf(L("install podman before running this command"))
 	}
 	sourceFqdn := args[0]
-	serverImage, err := utils.ComputeImage(flags.Image)
+	serverImage, err := utils.ComputeImage(globalFlags.Registry, utils.DefaultTag, flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("cannot compute image"))
 	}
@@ -63,7 +63,9 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	newPgVersion := extractedData.ImagePgVersion
 
 	if oldPgVersion != newPgVersion {
-		if err := podman.RunPgsqlVersionUpgrade(flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion); err != nil {
+		if err := podman.RunPgsqlVersionUpgrade(
+			globalFlags.Registry, flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion,
+		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	}
@@ -90,7 +92,8 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	// Prepare confidential computing containers
 	if err = coco.Upgrade(
-		flags.Coco.Image, flags.Image, extractedData.DbPort, extractedData.DbName,
+		globalFlags.Registry, flags.Coco.Image, flags.Image,
+		extractedData.DbPort, extractedData.DbName,
 		extractedData.DbUser, extractedData.DbPassword,
 	); err != nil {
 		return utils.Errorf(err, L("cannot setup confidential computing attestation service"))

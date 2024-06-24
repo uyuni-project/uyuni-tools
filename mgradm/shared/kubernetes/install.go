@@ -24,9 +24,17 @@ import (
 const HELM_APP_NAME = "uyuni"
 
 // Deploy execute a deploy of a given image and helm to a cluster.
-func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
-	helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, clusterInfos *kubernetes.ClusterInfos,
-	fqdn string, debug bool, helmArgs ...string) error {
+func Deploy(
+	cnx *shared.Connection,
+	registry string,
+	imageFlags *types.ImageFlags,
+	helmFlags *cmd_utils.HelmFlags,
+	sslFlags *cmd_utils.SslCertFlags,
+	clusterInfos *kubernetes.ClusterInfos,
+	fqdn string,
+	debug bool,
+	helmArgs ...string,
+) error {
 	// If installing on k3s, install the traefik helm config in manifests
 	isK3s := clusterInfos.IsK3s()
 	IsRke2 := clusterInfos.IsRke2()
@@ -36,7 +44,7 @@ func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 		kubernetes.InstallRke2NginxConfig(utils.TCP_PORTS, utils.UDP_PORTS, helmFlags.Uyuni.Namespace)
 	}
 
-	serverImage, err := utils.ComputeImage(*imageFlags)
+	serverImage, err := utils.ComputeImage(registry, utils.DefaultTag, *imageFlags)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -132,7 +140,7 @@ func Upgrade(
 	}
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
 
-	serverImage, err := utils.ComputeImage(*image)
+	serverImage, err := utils.ComputeImage(globalFlags.Registry, utils.DefaultTag, *image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -186,7 +194,7 @@ func Upgrade(
 		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"),
 			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
 
-		if err := RunPgsqlVersionUpgrade(*image, *upgradeImage, nodeName,
+		if err := RunPgsqlVersionUpgrade(globalFlags.Registry, *image, *upgradeImage, nodeName,
 			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"],
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))

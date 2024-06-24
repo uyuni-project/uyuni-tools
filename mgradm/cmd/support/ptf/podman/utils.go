@@ -30,7 +30,7 @@ func ptfForPodman(
 	if err := flags.checkParameters(); err != nil {
 		return err
 	}
-	return podman.Upgrade(flags.Image, dummyMigration, dummyCoco, args)
+	return podman.Upgrade("", flags.Image, dummyMigration, dummyCoco)
 }
 
 func (flags *podmanPTFFlags) checkParameters() error {
