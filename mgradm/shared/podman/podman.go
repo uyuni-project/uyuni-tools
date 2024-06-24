@@ -154,8 +154,16 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 }
 
 // RunMigration migrate an existing remote server to a container.
-func RunMigration(preparedImage string, sshAuthSocket string, sshConfigPath string, sshKnownhostsPath string, sourceFqdn string, user string) (*utils.InspectResult, error) {
-	scriptDir, err := adm_utils.GenerateMigrationScript(sourceFqdn, user, false)
+func RunMigration(
+	preparedImage string,
+	sshAuthSocket string,
+	sshConfigPath string,
+	sshKnownhostsPath string,
+	sourceFqdn string,
+	user string,
+	prepare bool,
+) (*utils.InspectResult, error) {
+	scriptDir, err := adm_utils.GenerateMigrationScript(sourceFqdn, user, false, prepare)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot generate migration script"))
 	}
