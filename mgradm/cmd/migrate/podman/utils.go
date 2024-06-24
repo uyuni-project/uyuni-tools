@@ -35,9 +35,13 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	sshAuthSocket := migration_shared.GetSshAuthSocket()
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
-	tz, oldPgVersion, newPgVersion, err := podman.RunMigration(serverImage, flags.Image.PullPolicy, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn, flags.User)
+	tz, oldPgVersion, newPgVersion, err := podman.RunMigration(serverImage, flags.Image.PullPolicy, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn, flags.User, flags.Prepare)
 	if err != nil {
 		return utils.Errorf(err, L("cannot run migration script"))
+	}
+	if flags.Prepare {
+		log.Info().Msg(L("Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."))
+		return nil
 	}
 
 	if oldPgVersion != newPgVersion {

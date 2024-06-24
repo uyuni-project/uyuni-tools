@@ -19,15 +19,22 @@ if test -e /tmp/ssh_config; then
 fi
 SSH="ssh -o User={{ .User }} -A $SSH_CONFIG "
 
+{{ if .Prepare }}
+echo "Preparing migration..."
+$SSH {{ .SourceFqdn }} "sudo systemctl start postgresql.service"
+{{ else }}
 echo "Stopping spacewalk service..."
 $SSH {{ .SourceFqdn }} "sudo spacewalk-service stop ; sudo systemctl start postgresql.service"
+{{ end }}
 
 $SSH {{ .SourceFqdn }} \
  "echo \"COPY (SELECT MIN(CONCAT(org_id, '-', label)) AS target, base_path FROM rhnKickstartableTree GROUP BY base_path) TO STDOUT WITH CSV;\" \
  |sudo spacewalk-sql --select-mode - " > distros
 
+{{ if not .Prepare }}
 echo "Stopping posgresql service..."
 $SSH {{ .SourceFqdn }} "sudo systemctl stop postgresql.service"
+{{ end }}
 
 while IFS="," read -r target path ; do
     echo "-/ $path"
@@ -144,6 +151,7 @@ type MigrateScriptTemplateData struct {
 	SourceFqdn string
 	User       string
 	Kubernetes bool
+	Prepare    bool
 }
 
 // Render will create migration script.

@@ -52,7 +52,7 @@ func migrateToKubernetes(
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
 	// Prepare the migration script and folder
-	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true)
+	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true, flags.Prepare)
 	if err != nil {
 		return utils.Errorf(err, L("failed to generate migration script"))
 	}
@@ -88,6 +88,11 @@ func migrateToKubernetes(
 	// Run the actual migration
 	if err := adm_utils.RunMigration(cnx, scriptDir, "migrate.sh"); err != nil {
 		return utils.Errorf(err, L("cannot run migration"))
+	}
+
+	if flags.Prepare {
+		log.Info().Msg(L("Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."))
+		return nil
 	}
 
 	tz, oldPgVersion, newPgVersion, err := adm_utils.ReadContainerData(scriptDir)
