@@ -75,11 +75,23 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 }
 
 // AddContainerImageFlags add container image flags to command.
-func AddContainerImageFlags(cmd *cobra.Command, container string, displayName string) {
-	cmd.Flags().String(container+"-image", "",
-		fmt.Sprintf(L("Image for %s container, overrides the namespace if set"), displayName))
+func AddContainerImageFlags(
+	cmd *cobra.Command,
+	container string,
+	displayName string,
+	groupName string,
+	imageName string,
+) {
+	defaultImage := path.Join(utils.DefaultNamespace, imageName)
+	cmd.Flags().String(container+"-image", defaultImage,
+		fmt.Sprintf(L("Image for %s container"), displayName))
 	cmd.Flags().String(container+"-tag", "",
 		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), displayName))
+
+	if groupName != "" {
+		_ = utils.AddFlagToHelpGroupID(cmd, container+"-image", groupName)
+		_ = utils.AddFlagToHelpGroupID(cmd, container+"-tag", groupName)
+	}
 }
 
 // AddImageFlag add Image flags to a command.
@@ -115,11 +127,9 @@ func AddMirrorFlag(cmd *cobra.Command) {
 
 // AddCocoFlag adds the confidential computing related parameters to cmd.
 func AddCocoFlag(cmd *cobra.Command) {
-	AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"))
-	cmd.Flags().Int("coco-replicas", 0, L("How many replicas of the confidential computing container should be started."))
-
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
+	AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"), "coco-container", "server-attestation")
+	cmd.Flags().Int("coco-replicas", 0, L("How many replicas of the confidential computing container should be started. (only 0 or 1 supported for now)"))
+
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
-	_ = utils.AddFlagToHelpGroupID(cmd, "coco-image", "coco-container")
-	_ = utils.AddFlagToHelpGroupID(cmd, "coco-tag", "coco-container")
 }

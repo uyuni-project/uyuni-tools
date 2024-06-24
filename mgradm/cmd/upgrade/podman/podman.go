@@ -34,7 +34,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	shared.AddUpgradeFlags(upgradeCmd)
 	podman.AddPodmanArgFlag(upgradeCmd)
 
-	// TODO Help blocks on this command
 	listCmd := &cobra.Command{
 		Use:   "list",
 		Short: L("List available tags for an image"),
