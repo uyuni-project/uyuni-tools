@@ -100,9 +100,12 @@ func CheckValidPassword(value *string, prompt string, min int, max int) string {
 		return ""
 	}
 
-	if !invalidChars && checkValueSize(tmpValue, min, max) {
-		*value = tmpValue
+	if !checkValueSize(tmpValue, min, max) {
+		fmt.Println()
+		return ""
 	}
+	fmt.Println()
+	*value = tmpValue
 	return *value
 }
 
@@ -114,7 +117,7 @@ func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 		if firstRound == "" {
 			continue
 		}
-		secondRound := CheckValidPassword(value, "\nConfirm the password", min, max)
+		secondRound := CheckValidPassword(value, "Confirm the password", min, max)
 		if secondRound != firstRound {
 			fmt.Println(L("Two different passwords have been provided"))
 			*value = ""
