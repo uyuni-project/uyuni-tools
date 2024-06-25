@@ -13,6 +13,10 @@ func TestGetRpmImageName(t *testing.T) {
 		{"suse-manager-5.0-x86_64-proxy-httpd", "latest", "registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd"},
 		{"suse-manager-5.0-x86_64-proxy-httpd", "latest", "registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:latest"},
 		{"suse-manager-5.0-x86_64-proxy-httpd", "beta1", "registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:beta1"},
+		{"suse-manager-5.0-x86_64-proxy-httpd", "5.0.0", "http://registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:5.0.0"},
+		{"suse-manager-5.0-x86_64-proxy-httpd", "5.0.0", "https://registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:5.0.0"},
+		{"suse-manager-5.0-x86_64-proxy-httpd", "5.0.0", "docker://registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:5.0.0"},
+		{"suse-manager-5.0-x86_64-proxy-httpd", "5.0.0", "oci://registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:5.0.0"},
 	}
 
 	for i, testCase := range data {
