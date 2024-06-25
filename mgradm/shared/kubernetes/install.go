@@ -26,14 +26,16 @@ const HELM_APP_NAME = "uyuni"
 // Deploy execute a deploy of a given image and helm to a cluster.
 func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 	helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, clusterInfos *kubernetes.ClusterInfos,
-	fqdn string, debug bool, helmArgs ...string) error {
+	fqdn string, debug bool, prepare bool, helmArgs ...string) error {
 	// If installing on k3s, install the traefik helm config in manifests
 	isK3s := clusterInfos.IsK3s()
 	IsRke2 := clusterInfos.IsRke2()
-	if isK3s {
-		InstallK3sTraefikConfig(debug)
-	} else if IsRke2 {
-		kubernetes.InstallRke2NginxConfig(utils.TCP_PORTS, utils.UDP_PORTS, helmFlags.Uyuni.Namespace)
+	if !prepare {
+		if isK3s {
+			InstallK3sTraefikConfig(debug)
+		} else if IsRke2 {
+			kubernetes.InstallRke2NginxConfig(utils.TCP_PORTS, utils.UDP_PORTS, helmFlags.Uyuni.Namespace)
+		}
 	}
 
 	serverImage, err := utils.ComputeImage(*imageFlags)
