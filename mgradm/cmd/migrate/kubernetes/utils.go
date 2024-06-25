@@ -75,7 +75,7 @@ func migrateToKubernetes(
 
 	// Deploy for running migration command
 	if err := kubernetes.Deploy(cnx, globalFlags.Registry, &flags.Image, &flags.Helm, &sslFlags,
-		clusterInfos, fqdn, false,
+		clusterInfos, fqdn, false, flags.Prepare,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
@@ -95,11 +95,6 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot run migration"))
 	}
 
-	if flags.Prepare {
-		log.Info().Msg(L("Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."))
-		return nil
-	}
-
 	extractedData, err := utils.ReadInspectData[utils.InspectResult](path.Join(scriptDir, "data"))
 	if err != nil {
 		return utils.Errorf(err, L("cannot read data from container"))
@@ -109,6 +104,11 @@ func migrateToKubernetes(
 	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 0)
 	if err != nil {
 		return utils.Errorf(err, L("cannot set replicas to 0"))
+	}
+
+	if flags.Prepare {
+		log.Info().Msg(L("Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."))
+		return nil
 	}
 
 	defer func() {
