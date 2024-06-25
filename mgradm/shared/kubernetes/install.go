@@ -33,15 +33,18 @@ func Deploy(
 	clusterInfos *kubernetes.ClusterInfos,
 	fqdn string,
 	debug bool,
+	prepare bool,
 	helmArgs ...string,
 ) error {
 	// If installing on k3s, install the traefik helm config in manifests
 	isK3s := clusterInfos.IsK3s()
 	IsRke2 := clusterInfos.IsRke2()
-	if isK3s {
-		InstallK3sTraefikConfig(debug)
-	} else if IsRke2 {
-		kubernetes.InstallRke2NginxConfig(utils.TCP_PORTS, utils.UDP_PORTS, helmFlags.Uyuni.Namespace)
+	if !prepare {
+		if isK3s {
+			InstallK3sTraefikConfig(debug)
+		} else if IsRke2 {
+			kubernetes.InstallRke2NginxConfig(utils.TCP_PORTS, utils.UDP_PORTS, helmFlags.Uyuni.Namespace)
+		}
 	}
 
 	serverImage, err := utils.ComputeImage(registry, utils.DefaultTag, *imageFlags)
