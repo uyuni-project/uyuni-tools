@@ -70,7 +70,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 
 	// Deploy Uyuni and wait for it to be up
 	if err := kubernetes.Deploy(cnx, globalFlags.Registry, &flags.Image, &flags.Helm, &flags.Ssl,
-		clusterInfos, fqdn, flags.Debug.Java, helmArgs...,
+		clusterInfos, fqdn, flags.Debug.Java, false, helmArgs...,
 	); err != nil {
 		return shared_utils.Errorf(err, L("cannot deploy uyuni"))
 	}
