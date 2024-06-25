@@ -9,8 +9,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"path"
+	"regexp"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -21,11 +23,6 @@ import (
 )
 
 const rpmImageDir = "/usr/share/suse-docker-images/native/"
-
-var registries = []string{
-	"registry.suse.com",
-	"registry.opensuse.com",
-}
 
 // Ensure the container image is pulled or pull it if the pull policy allows it.
 //
@@ -73,20 +70,24 @@ func PrepareImage(image string, pullPolicy string, args ...string) (string, erro
 
 // GetRpmImageName return the RPM Image name and the tag, given an image.
 func GetRpmImageName(image string) (rpmImageFile string, tag string) {
-	for _, registry := range registries {
-		if strings.HasPrefix(image, registry) {
-			rpmImageFile = strings.ReplaceAll(image, registry+"/", "")
-			rpmImageFile = strings.ReplaceAll(rpmImageFile, "/", "-")
-			parts := strings.Split(rpmImageFile, ":")
-			tag = "latest"
-			if len(parts) > 1 {
-				tag = parts[1]
-			}
-			rpmImageFile = parts[0]
-			return rpmImageFile, tag
-		}
+	pattern := regexp.MustCompile(`^https?://|^docker://|^oci://`)
+	if pattern.FindStringIndex(image) == nil {
+		image = "docker://" + image
 	}
-	return "", ""
+	url, err := url.Parse(image)
+	if err != nil {
+		log.Warn().Msgf(L("Cannot correctly parse image name '%s', local image cannot be used"), image)
+		return "", ""
+	}
+	rpmImageFile = strings.TrimPrefix(url.Path, "/")
+	rpmImageFile = strings.ReplaceAll(rpmImageFile, "/", "-")
+	parts := strings.Split(rpmImageFile, ":")
+	tag = "latest"
+	if len(parts) > 1 {
+		tag = parts[1]
+	}
+	rpmImageFile = parts[0]
+	return rpmImageFile, tag
 }
 
 // BuildRpmImagePath checks the image metadata and returns the RPM Image path.
