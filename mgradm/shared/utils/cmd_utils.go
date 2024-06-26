@@ -16,8 +16,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var defaultImage = path.Join(utils.DefaultNamespace, "server")
-
 // HelmFrags stores Uyuni and Cert Manager Helm information.
 type HelmFlags struct {
 	Uyuni       types.ChartFlags
@@ -52,7 +50,7 @@ func (f *SslCertFlags) CheckParameters() {
 
 // AddHelmInstallFlag add Helm install flags to a command.
 func AddHelmInstallFlag(cmd *cobra.Command) {
-	defaultChart := fmt.Sprintf("oci://%s/server-helm", utils.DefaultNamespace)
+	defaultChart := fmt.Sprintf("oci://%s/%s/server-helm", utils.DefaultRegistryServer, utils.DefaultRegistryHelmPath)
 
 	cmd.Flags().String("helm-uyuni-namespace", "default", L("Kubernetes namespace where to install uyuni"))
 	cmd.Flags().String("helm-uyuni-chart", defaultChart, L("URL to the uyuni helm chart"))
@@ -75,15 +73,28 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 }
 
 // AddContainerImageFlags add container image flags to command.
-func AddContainerImageFlags(cmd *cobra.Command, container string, displayName string) {
-	cmd.Flags().String(container+"-image", "",
-		fmt.Sprintf(L("Image for %s container, overrides the namespace if set"), displayName))
+func AddContainerImageFlags(
+	cmd *cobra.Command,
+	container string,
+	displayName string,
+	groupName string,
+	imageName string,
+) {
+	defaultImage := path.Join(utils.DefaultRegistryServer, utils.DefaultRegistryPath, imageName)
+	cmd.Flags().String(container+"-image", defaultImage,
+		fmt.Sprintf(L("Image for %s container"), displayName))
 	cmd.Flags().String(container+"-tag", "",
 		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), displayName))
+
+	if groupName != "" {
+		_ = utils.AddFlagToHelpGroupID(cmd, container+"-image", groupName)
+		_ = utils.AddFlagToHelpGroupID(cmd, container+"-tag", groupName)
+	}
 }
 
 // AddImageFlag add Image flags to a command.
 func AddImageFlag(cmd *cobra.Command) {
+	defaultImage := path.Join(utils.DefaultRegistryServer, utils.DefaultRegistryPath, "server")
 	cmd.Flags().String("image", defaultImage, L("Image"))
 	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
 

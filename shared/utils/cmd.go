@@ -5,6 +5,9 @@
 package utils
 
 import (
+	"fmt"
+	"path"
+
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -16,8 +19,15 @@ import (
 // On SUSE distros this should be overridden with /usr/share/locale.
 var LocaleRoot = "locale"
 
-// DefaultNamespace represents the default name used for image.
-var DefaultNamespace = "registry.opensuse.org/uyuni"
+// DefaultRegistryServer represents the default registry FQDN for images.
+var DefaultRegistryServer = "registry.opensuse.org"
+
+// DefaultRegistryPath represents the default registry path used for images.
+var DefaultRegistryPath = "/uyuni"
+
+// DefaultRegistryPath represents the default registry path used for helm charts.
+// The value is the same as a default here, but could be configured with different in the spec file.
+var DefaultRegistryHelmPath = "/uyuni"
 
 // DefaultTag represents the default tag used for image.
 var DefaultTag = "latest"
@@ -54,6 +64,18 @@ func CommandHelper[T interface{}](
 // AddBackendFlag add the flag for setting the backend ('podman', 'podman-remote', 'kubectl').
 func AddBackendFlag(cmd *cobra.Command) {
 	cmd.Flags().String("backend", "", L("tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use."))
+}
+
+// AddRegistryFlags adds the flags setting the registry server and path.
+func AddRegistryFlags(cmd *cobra.Command) {
+	cmd.Flags().String("registry-server", "",
+		fmt.Sprintf(
+			L(`Server FQDN or IP and optional port for the container images registry. (default "%s")`),
+			DefaultRegistryServer))
+	cmd.Flags().String("registry-path", "",
+		fmt.Sprintf(
+			L(`Path to the container images in the registry. (default "%s")`),
+			DefaultRegistryPath))
 }
 
 // AddPullPolicyFlag adds the --pullPolicy flag to a command.
@@ -99,4 +121,19 @@ func AddUninstallFlags(cmd *cobra.Command, withBackend bool) {
 	if withBackend {
 		AddBackendFlag(cmd)
 	}
+}
+
+// Get the contatenated server and path using default values if needed.
+func GetRegistryPath(registry *types.RegistryFlags) string {
+	server := DefaultRegistryServer
+	if registry.Server != "" {
+		server = registry.Server
+	}
+
+	imagesPath := DefaultRegistryPath
+	if registry.Path != "" {
+		imagesPath = registry.Path
+	}
+
+	return path.Join(server, imagesPath)
 }

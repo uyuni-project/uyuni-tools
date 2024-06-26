@@ -4,9 +4,14 @@
 
 package types
 
+// Registry represents the flags used to set the registry.
+type RegistryFlags struct {
+	Server string `mapstructure:"server"`
+	Path   string `mapstructure:"path"`
+}
+
 // ImageFlags represents the flags used by an image.
 type ImageFlags struct {
-	Registry   string `mapstructure:"registry"`
 	Name       string `mapstructure:"image"`
 	Tag        string `mapstructure:"tag"`
 	PullPolicy string `mapstructure:"pullPolicy"`

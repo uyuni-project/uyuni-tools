@@ -166,16 +166,25 @@ func YesNo(question string) (bool, error) {
 }
 
 // ComputeImage assembles the container image from its name and tag.
-func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, error) {
-	if !strings.Contains(DefaultNamespace, imageFlags.Registry) {
-		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), imageFlags.Registry, DefaultNamespace)
+func ComputeImage(registry types.RegistryFlags, globalTag string, imageFlags types.ImageFlags, appendToName ...string) (string, error) {
+	fullImagePath := path.Join(registry.Server, registry.Path)
+	if !strings.Contains(path.Join(DefaultRegistryServer, DefaultRegistryPath), fullImagePath) {
+		log.Info().Msgf(L("Registry %[1]s would be used instead of %[2]s"), registry, DefaultRegistryServer)
 	}
 	name := imageFlags.Name
-	if !strings.Contains(imageFlags.Name, imageFlags.Registry) {
-		name = path.Join(imageFlags.Registry, path.Base(imageFlags.Name))
-		log.Info().Msgf(L("The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."), imageFlags.Name, imageFlags.Registry, name)
+	if !strings.Contains(imageFlags.Name, registry.Server) {
+		name = path.Join(registry.Server, registry.Path, path.Base(imageFlags.Name))
+		log.Info().Msgf(
+			L(`The image name provided is %[1]s and does not contains the registry %[2]s.
+			The image name used will be %[3]s, set the flag --registry to change this behaviour.`),
+			imageFlags.Name, registry, name)
 	}
-	tag := imageFlags.Tag
+
+	// Compute the tag
+	tag := globalTag
+	if imageFlags.Tag != "" {
+		tag = imageFlags.Tag
+	}
 
 	submatches := imageValid.FindStringSubmatch(name)
 	if submatches == nil {

@@ -9,10 +9,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // MigrateFlags represents flag required by migration command.
 type MigrateFlags struct {
+	Registry       types.RegistryFlags
 	Image          types.ImageFlags `mapstructure:",squash"`
 	DbUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	User           string
@@ -22,6 +24,7 @@ type MigrateFlags struct {
 // AddMigrateFlags add migration flags to a command.
 func AddMigrateFlags(cmd *cobra.Command) {
 	utils.AddMirrorFlag(cmd)
+	shared_utils.AddRegistryFlags(cmd)
 	utils.AddImageFlag(cmd)
 	utils.AddDbUpgradeImageFlag(cmd)
 	cmd.Flags().String("user", "root", L("User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."))

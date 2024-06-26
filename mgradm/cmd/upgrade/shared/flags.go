@@ -10,10 +10,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // UpgradeFlags represents flags used for upgrading a server.
 type UpgradeFlags struct {
+	Registry       types.RegistryFlags
 	Image          types.ImageFlags `mapstructure:",squash"`
 	DbUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	Coco           shared.CocoFlags
@@ -21,9 +23,15 @@ type UpgradeFlags struct {
 
 // AddUpgradeFlags add upgrade flags to a command.
 func AddUpgradeFlags(cmd *cobra.Command) {
+	shared_utils.AddRegistryFlags(cmd)
 	utils.AddImageFlag(cmd)
 	utils.AddDbUpgradeImageFlag(cmd)
-	utils.AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"))
+
+	_ = shared_utils.AddFlagHelpGroup(cmd, &shared_utils.Group{
+		ID:    "coco-container",
+		Title: L("Confidential Computing Flags"),
+	})
+	utils.AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"), "coco-container", "server-attestation")
 }
 
 // AddUpgradeListFlags add upgrade list flags to a command.

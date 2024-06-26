@@ -19,7 +19,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short:   L("Upgrade local server"),
 		Long:    L("Upgrade local server"),
 	}
-	upgradeCmd.PersistentFlags().StringVar(&globalFlags.Registry, "registry", "", L("specify a private registry"))
 
 	upgradeCmd.AddCommand(podman.NewCommand(globalFlags))
 

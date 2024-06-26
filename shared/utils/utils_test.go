@@ -182,31 +182,35 @@ func TestComputePTF(t *testing.T) {
 
 func TestComputeImage(t *testing.T) {
 	data := [][]string{
-		{"registry:5000/path/to/image:foo", "registry:5000/path/to/image:foo", "bar", ""},
-		{"registry:5000/path/to/image:foo", "REGISTRY:5000/path/to/image:foo", "bar", ""},
-		{"registry:5000/path/to/image:foo", "REGISTRY:5000/path/to/image:foo", "BAR", ""},
-		{"registry:5000/path/to/image:bar", "registry:5000/path/to/image", "bar", ""},
-		{"registry/path/to/image:foo", "registry/path/to/image:foo", "bar", ""},
-		{"registry/path/to/image:bar", "registry/path/to/image", "bar", ""},
-		{"registry/path/to/image:bar", "orig/path/to/image", "bar", "registry/path/to/"},
-		{"registry:5000/path/to/image:foo", "path/to/image:foo", "BAR", "REGISTRY:5000/path/to"},
-		{"registry:5000/path/to/image-migration-14-16:foo", "registry:5000/path/to/image:foo", "bar", "", "-migration-14-16"},
-		{"registry:5000/path/to/image-migration-14-16:bar", "registry:5000/path/to/image", "bar", "", "-migration-14-16"},
-		{"registry/path/to/image-migration-14-16:foo", "registry/path/to/image:foo", "bar", "", "-migration-14-16"},
-		{"registry/path/to/image-migration-14-16:bar", "registry/path/to/image", "bar", "", "-migration-14-16"},
-		{"registry/path/to/image-migration-14-16:bar", "path/to/image", "bar", "registry/path/to", "-migration-14-16"},
+		// Expected image, the provided image name, the image tag, the registry server, the registry path, what to add after the image name
+		{"registry:5000/path/to/image:foo", "registry:5000/path/to/image:foo", "bar", "", ""},
+		{"registry:5000/path/to/image:foo", "REGISTRY:5000/path/to/image:foo", "bar", "", ""},
+		{"registry:5000/path/to/image:foo", "REGISTRY:5000/path/to/image:foo", "BAR", "", ""},
+		{"registry:5000/path/to/image:bar", "registry:5000/path/to/image", "bar", "", ""},
+		{"registry/path/to/image:foo", "registry/path/to/image:foo", "bar", "", ""},
+		{"registry/path/to/image:bar", "registry/path/to/image", "bar", "", ""},
+		{"registry/path/to/image:bar", "orig/path/to/image", "bar", "registry", "/path/to/"},
+		{"registry:5000/path/to/image:foo", "path/to/image:foo", "BAR", "REGISTRY:5000", "/path/to"},
+		{"registry:5000/path/to/image-migration-14-16:foo", "registry:5000/path/to/image:foo", "bar", "", "", "-migration-14-16"},
+		{"registry:5000/path/to/image-migration-14-16:bar", "registry:5000/path/to/image", "bar", "", "", "-migration-14-16"},
+		{"registry/path/to/image-migration-14-16:foo", "registry/path/to/image:foo", "bar", "", "", "-migration-14-16"},
+		{"registry/path/to/image-migration-14-16:bar", "registry/path/to/image", "bar", "", "", "-migration-14-16"},
+		{"registry/path/to/image-migration-14-16:bar", "path/to/image", "bar", "registry", "/path/to", "-migration-14-16"},
 	}
 
 	for i, testCase := range data {
 		result := testCase[0]
 		image := types.ImageFlags{
-			Name:     testCase[1],
-			Tag:      testCase[2],
-			Registry: testCase[3],
+			Name: testCase[1],
+			Tag:  testCase[2],
 		}
-		appendToImage := testCase[4:]
+		appendToImage := testCase[5:]
 
-		actual, err := ComputeImage(image, appendToImage...)
+		actual, err := ComputeImage(
+			types.RegistryFlags{Server: testCase[3], Path: testCase[4]},
+			"defaulttag",
+			image,
+			appendToImage...)
 
 		if err != nil {
 			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s: %s", i, image.Name, image.Tag, appendToImage, err)
@@ -228,7 +232,11 @@ func TestComputeImageError(t *testing.T) {
 			Tag:  testCase[1],
 		}
 
-		_, err := ComputeImage(image)
+		defaultRegistry := types.RegistryFlags{
+			Server: "defaultregistry",
+			Path:   "defaultpath",
+		}
+		_, err := ComputeImage(defaultRegistry, "defaulttag", image)
 		if err == nil {
 			t.Errorf("Expected error for %s with tag %s, got none", image.Name, image.Tag)
 		}
