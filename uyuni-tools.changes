@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 26 18:30:27 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.15-0
+  * Define --registry flag behaviour (bsc#1226793)
+
+-------------------------------------------------------------------
 Wed Jun 26 15:14:40 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.14-0
