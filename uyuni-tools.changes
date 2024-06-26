@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 26 15:14:40 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.14-0
+  * Do not rely on hardcoded registry, remove any FQDN
+
+-------------------------------------------------------------------
 Fri Jun 21 16:52:52 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.13-0
