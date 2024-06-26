@@ -99,7 +99,7 @@ func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 		if firstRound == "" {
 			continue
 		}
-		secondRound := CheckValidPassword(value, "Confirm the password", min, max)
+		secondRound := CheckValidPassword(value, L("Confirm the password"), min, max)
 		if secondRound != firstRound {
 			fmt.Println(L("Two different passwords have been provided"))
 			*value = ""
