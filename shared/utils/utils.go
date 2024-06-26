@@ -165,6 +165,22 @@ func YesNo(question string) (bool, error) {
 	}
 }
 
+// Remove registry fqdn from image path.
+func RemoveRegistryFromImage(imagePath string) string {
+	separator := "://"
+	index := strings.Index(imagePath, separator)
+	if index != -1 {
+		imagePath = imagePath[index+len(separator):]
+	}
+
+	parts := strings.Split(imagePath, "/")
+	if strings.Contains(parts[0], ".") || strings.Contains(parts[0], ":") || index != -1 {
+		// first part is a registry fqdn
+		parts = parts[1:]
+	}
+	return strings.Join(parts, "/")
+}
+
 // ComputeImage assembles the container image from its name and tag.
 func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, error) {
 	if !strings.Contains(DefaultNamespace, imageFlags.Registry) {
@@ -172,7 +188,7 @@ func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, 
 	}
 	name := imageFlags.Name
 	if !strings.Contains(imageFlags.Name, imageFlags.Registry) {
-		name = path.Join(imageFlags.Registry, path.Base(imageFlags.Name))
+		name = path.Join(imageFlags.Registry, RemoveRegistryFromImage(imageFlags.Name))
 		log.Info().Msgf(L("The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."), imageFlags.Name, imageFlags.Registry, name)
 	}
 	tag := imageFlags.Tag
