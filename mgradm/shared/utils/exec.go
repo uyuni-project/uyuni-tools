@@ -131,7 +131,7 @@ func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) err
 }
 
 // GenerateMigrationScript generates the script that perform migration.
-func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool) (string, error) {
+func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, prepare bool) (string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
 		return "", utils.Errorf(err, L("failed to create temporary directory"))
@@ -142,6 +142,7 @@ func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool) (s
 		SourceFqdn: sourceFqdn,
 		User:       user,
 		Kubernetes: kubernetes,
+		Prepare:    prepare,
 	}
 
 	scriptPath := filepath.Join(scriptDir, "migrate.sh")

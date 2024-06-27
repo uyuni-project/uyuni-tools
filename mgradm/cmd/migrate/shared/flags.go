@@ -13,6 +13,7 @@ import (
 
 // MigrateFlags represents flag required by migration command.
 type MigrateFlags struct {
+	Prepare        bool
 	Image          types.ImageFlags `mapstructure:",squash"`
 	DbUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	User           string
@@ -21,6 +22,7 @@ type MigrateFlags struct {
 
 // AddMigrateFlags add migration flags to a command.
 func AddMigrateFlags(cmd *cobra.Command) {
+	cmd.Flags().Bool("prepare", false, L("Prepare the mgration - copy the data without stopping the source server."))
 	utils.AddMirrorFlag(cmd)
 	utils.AddImageFlag(cmd)
 	utils.AddDbUpgradeImageFlag(cmd)

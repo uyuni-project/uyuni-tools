@@ -52,7 +52,7 @@ func migrateToKubernetes(
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
 	// Prepare the migration script and folder
-	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true)
+	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true, flags.Prepare)
 	if err != nil {
 		return utils.Errorf(err, L("failed to generate migration script"))
 	}
@@ -71,7 +71,7 @@ func migrateToKubernetes(
 	var sslFlags adm_utils.SslCertFlags
 
 	// Deploy for running migration command
-	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &sslFlags, clusterInfos, fqdn, false,
+	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &sslFlags, clusterInfos, fqdn, false, flags.Prepare,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
@@ -99,6 +99,11 @@ func migrateToKubernetes(
 	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 0)
 	if err != nil {
 		return utils.Errorf(err, L("cannot set replicas to 0"))
+	}
+
+	if flags.Prepare {
+		log.Info().Msg(L("Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."))
+		return nil
 	}
 
 	defer func() {
