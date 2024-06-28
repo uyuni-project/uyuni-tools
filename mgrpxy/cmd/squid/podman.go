@@ -6,8 +6,11 @@ package squid
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func podmanSquidClear(
@@ -16,19 +19,15 @@ func podmanSquidClear(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	volumeName := "uyuni-proxy-squid-cache"
+	cnx := shared.NewConnection("podman", "uyuni-proxy-squid", "")
 
-	if err := podman.StopService(podman.ProxyService); err != nil {
-		return err
+	if _, err := cnx.Exec("sh", "-c", "rm -rf /var/cache/squid/*"); err != nil {
+		return utils.Errorf(err, L("failed to remove cached data"))
 	}
 
-	if err := podman.DeleteVolume(volumeName, false); err != nil {
-		return err
+	if _, err := cnx.Exec("sh", "-c", "squid -z --foreground"); err != nil {
+		return utils.Errorf(err, L("failed to re-create the cache directories"))
 	}
 
-	if err := podman.CreateVolume(volumeName, false); err != nil {
-		return err
-	}
-
-	return podman.StartService(podman.ProxyService)
+	return podman.EnableService(podman.ProxyService)
 }

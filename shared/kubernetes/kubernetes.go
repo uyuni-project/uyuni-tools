@@ -6,6 +6,7 @@ package kubernetes
 
 import (
 	"encoding/base64"
+	"fmt"
 	"os"
 	"strings"
 
@@ -149,4 +150,29 @@ func GetSecret(secretName string, filter string) (string, error) {
 	}
 
 	return string(decoded), nil
+}
+
+// GetNamespace returns the namespace either for a uyuni or uyuni-proxy deployment.
+func GetNamespace(kubernetesFilter string) (string, error) {
+	release := "uyuni"
+	if kubernetesFilter == ProxyApp {
+		release = "uyuni-proxy"
+	}
+
+	clusterInfos, err := CheckCluster()
+	if err != nil {
+		return "", utils.Errorf(err, L("failed to discover the cluster type"))
+	}
+
+	kubeconfig := clusterInfos.GetKubeconfig()
+	if !HasHelmRelease(release, kubeconfig) {
+		return "", fmt.Errorf(L("no %s helm release installed on the cluster"), release)
+	}
+
+	namespace, err := FindNamespace(release, kubeconfig)
+	if err != nil {
+		return "", utils.Errorf(err, L("failed to find the %s deployment namespace"), release)
+	}
+
+	return namespace, nil
 }

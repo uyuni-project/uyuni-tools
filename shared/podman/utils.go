@@ -164,24 +164,6 @@ func DeleteVolume(name string, dryRun bool) error {
 	return nil
 }
 
-// CreateVolume creates a podman volume based on its name.
-// If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
-func CreateVolume(name string, dryRun bool) error {
-	exists := isVolumePresent(name)
-	if !exists {
-		if dryRun {
-			log.Info().Msgf(L("Would run %s"), "podman volume create "+name)
-		} else {
-			log.Info().Msgf(L("Run %s"), "podman volume create "+name)
-			err := utils.RunCmd("podman", "volume", "create", name)
-			if err != nil {
-				return utils.Errorf(err, L("Failed to create volume %s"), name)
-			}
-		}
-	}
-	return nil
-}
-
 func isVolumePresent(volume string) bool {
 	cmd := exec.Command("podman", "volume", "exists", volume)
 	if err := cmd.Run(); err != nil {

@@ -23,11 +23,13 @@ import (
 
 // Connection contains information about how to connect to the server.
 type Connection struct {
-	backend          string
-	command          string
-	podName          string
-	podmanContainer  string
-	kubernetesFilter string
+	backend             string
+	command             string
+	podName             string
+	podmanContainer     string
+	kubernetesFilter    string
+	namespace           string
+	kubernetesContainer string
 }
 
 // Create a new connection object.
@@ -38,6 +40,17 @@ type Connection struct {
 // kubernetesFilter is a filter parameter to use to match a pod.
 func NewConnection(backend string, podmanContainer string, kubernetesFilter string) *Connection {
 	cnx := Connection{backend: backend, podmanContainer: podmanContainer, kubernetesFilter: kubernetesFilter}
+
+	return &cnx
+}
+
+// An explicit constructor for a kubernetes connection
+// Allows to specify:
+// - namespace: the namespace where the pod is running
+// - kubernetesFilter: a filter to find the pod
+// - kubernetesContainer: the container name.
+func NewKubernetesConnection(namespace string, kubernetesFilter string, kubernetesContainer string) *Connection {
+	cnx := Connection{backend: "kubectl", namespace: namespace, kubernetesFilter: kubernetesFilter, kubernetesContainer: kubernetesContainer}
 
 	return &cnx
 }
@@ -158,7 +171,22 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 
 	cmdArgs := []string{"exec", c.podName}
 	if cmd == "kubectl" {
-		cmdArgs = append(cmdArgs, "-c", "uyuni", "--")
+		namespace := c.namespace
+		if namespace == "" {
+			var namespaceErr error
+			namespace, namespaceErr = kubernetes.GetNamespace(c.kubernetesFilter)
+
+			if namespaceErr != nil {
+				return nil, utils.Errorf(namespaceErr, L("failed to discover the cluster type"))
+			}
+		}
+
+		container := c.kubernetesContainer
+		if c.kubernetesContainer == "" {
+			container = "uyuni"
+		}
+
+		cmdArgs = append(cmdArgs, "-n", namespace, "-c", container, "--")
 	}
 	shellArgs := append([]string{command}, args...)
 	cmdArgs = append(cmdArgs, shellArgs...)

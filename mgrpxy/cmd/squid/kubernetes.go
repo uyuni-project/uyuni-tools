@@ -5,8 +5,6 @@
 package squid
 
 import (
-	"github.com/rs/zerolog"
-
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
@@ -21,15 +19,14 @@ func kubernetesSquidClear(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	cnx := shared.NewConnection("kubectl", "", kubernetes.ProxyFilter)
-	podName, err := cnx.GetPodName()
-	if err != nil {
-		return utils.Errorf(err, L("failed to get pod name"))
+	cnx := shared.NewKubernetesConnection("", kubernetes.ProxyFilter, "squid")
+
+	if _, err := cnx.Exec("find", "/var/cache/squid", "-mindepth", "1", "-delete"); err != nil {
+		return utils.Errorf(err, L("failed to remove cached data"))
 	}
 
-	err = utils.RunCmdStdMapping(zerolog.DebugLevel, "kubectl", "exec", podName, "-c", "squid", "--", "find", "/var/cache/squid", "-mindepth", "1", "-delete")
-	if err != nil {
-		return utils.Errorf(err, L("failed to remove cached data"))
+	if _, err := cnx.Exec("squid", "-z", "--foreground"); err != nil {
+		return utils.Errorf(err, L("failed to re-create the cache directories"))
 	}
 
 	return kubernetes.Restart(kubernetes.ProxyFilter)
