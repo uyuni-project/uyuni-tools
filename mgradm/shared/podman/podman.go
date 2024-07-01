@@ -177,7 +177,7 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 }
 
 // RunMigration migrate an existing remote server to a container.
-func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, sshConfigPath string, sshKnownhostsPath string, sourceFqdn string, user string) (string, string, string, error) {
+func RunMigration(preparedImage string, sshAuthSocket string, sshConfigPath string, sshKnownhostsPath string, sourceFqdn string, user string) (string, string, string, error) {
 	scriptDir, err := adm_utils.GenerateMigrationScript(sourceFqdn, user, false)
 	if err != nil {
 		return "", "", "", utils.Errorf(err, L("cannot generate migration script"))
@@ -197,23 +197,6 @@ func RunMigration(serverImage string, pullPolicy string, sshAuthSocket string, s
 
 	if sshKnownhostsPath != "" {
 		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/etc/ssh/ssh_known_hosts")
-	}
-
-	inspectedHostValues, err := utils.InspectHost(false)
-	if err != nil {
-		return "", "", "", utils.Errorf(err, L("cannot inspect host values"))
-	}
-
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password && strings.Contains(serverImage, "registry.suse.com") {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := podman.PrepareImage(serverImage, pullPolicy, pullArgs...)
-	if err != nil {
-		return "", "", "", err
 	}
 
 	log.Info().Msg(L("Migrating server"))
@@ -353,14 +336,31 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage ty
 		return fmt.Errorf(L("failed to compute image URL"))
 	}
 
-	inspectedValues, err := Inspect(serverImage, image.PullPolicy)
+	inspectedHostValues, err := utils.InspectHost(false)
+	if err != nil {
+		return utils.Errorf(err, L("cannot inspect host values"))
+	}
+
+	pullArgs := []string{}
+	_, scc_user_exist := inspectedHostValues["host_scc_username"]
+	_, scc_user_password := inspectedHostValues["host_scc_password"]
+	if scc_user_exist && scc_user_password && strings.Contains(serverImage, "registry.suse.com") {
+		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+	}
+
+	preparedImage, err := podman.PrepareImage(serverImage, image.PullPolicy, pullArgs...)
+	if err != nil {
+		return err
+	}
+
+	inspectedValues, err := Inspect(preparedImage)
 	if err != nil {
 		return utils.Errorf(err, L("cannot inspect podman values"))
 	}
 
 	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
 
-	if err := adm_utils.SanityCheck(cnx, inspectedValues, serverImage); err != nil {
+	if err := adm_utils.SanityCheck(cnx, inspectedValues, preparedImage); err != nil {
 		return err
 	}
 
@@ -383,15 +383,15 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage ty
 	}
 
 	schemaUpdateRequired := inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"]
-	if err := RunPgsqlFinalizeScript(serverImage, schemaUpdateRequired); err != nil {
+	if err := RunPgsqlFinalizeScript(preparedImage, schemaUpdateRequired); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 	}
 
-	if err := RunPostUpgradeScript(serverImage); err != nil {
+	if err := RunPostUpgradeScript(preparedImage); err != nil {
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	if err := podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+serverImage); err != nil {
+	if err := podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+preparedImage); err != nil {
 		return err
 	}
 	log.Info().Msg(L("Waiting for the server to start…"))
@@ -411,28 +411,11 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage ty
 }
 
 // Inspect check values on a given image and deploy.
-func Inspect(serverImage string, pullPolicy string) (map[string]string, error) {
+func Inspect(preparedImage string) (map[string]string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
 		return map[string]string{}, utils.Errorf(err, L("failed to create temporary directory"))
-	}
-
-	inspectedHostValues, err := utils.InspectHost(false)
-	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("cannot inspect host values"))
-	}
-
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password && strings.Contains(serverImage, "registry.suse.com") {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := podman.PrepareImage(serverImage, pullPolicy, pullArgs...)
-	if err != nil {
-		return map[string]string{}, err
 	}
 
 	if err := utils.GenerateInspectContainerScript(scriptDir); err != nil {
