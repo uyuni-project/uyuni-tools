@@ -342,6 +342,30 @@ func RunPostUpgradeScript(serverImage string) error {
 	return nil
 }
 
+// RunCocoDBConfigScript a script to allow the coco container to connect to the db.
+func RunCocoDBConfigScript(serverImage string, user string, dbname string, ip string) error {
+	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	defer os.RemoveAll(scriptDir)
+	if err != nil {
+		return utils.Errorf(err, L("failed to create temporary directory"))
+	}
+	containerName := "uyuni-coco-dbconfig"
+	extraArgs := []string{
+		"-v", scriptDir + ":/var/lib/uyuni-tools/",
+		"--security-opt", "label=disable",
+	}
+	scriptName, err := adm_utils.GenerateCocoDBConfigScript(scriptDir, user, dbname, ip)
+	if err != nil {
+		return utils.Errorf(err, L("cannot generate coco db config script"))
+	}
+	err = podman.RunContainer(containerName, serverImage, utils.ServerVolumeMounts, extraArgs,
+		[]string{"/var/lib/uyuni-tools/" + scriptName})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // Upgrade will upgrade server to the image given as attribute.
 func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage types.ImageFlags, args []string) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {

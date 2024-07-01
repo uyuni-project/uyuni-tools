@@ -6,6 +6,7 @@ package shared
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -15,6 +16,7 @@ import (
 type MigrateFlags struct {
 	Image          types.ImageFlags `mapstructure:",squash"`
 	DbUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
+	Coco           shared.CocoFlags
 	User           string
 	Mirror         string
 }
