@@ -23,17 +23,32 @@ import (
 // HELM_APP_NAME is the Helm application name.
 const HELM_APP_NAME = "uyuni"
 
+// Compute Hub Xmlrpc image.
+func ComputeHubXmlrpcImage(imageFlags *types.ImageFlags, hubXmlrpcFlags *types.ImageFlags) (string, error) {
+	tag := hubXmlrpcFlags.Tag
+	if tag == "" {
+		tag = imageFlags.Tag
+	}
+	hubXmlrpcImage, err := utils.ComputeImage(*hubXmlrpcFlags, tag)
+	if err != nil {
+		return "", err
+	}
+	return hubXmlrpcImage, nil
+}
+
 // Deploy execute a deploy of a given image and helm to a cluster.
 func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
+	hubXmlrpcFlags *types.HubXmlrpcFlags,
 	helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, clusterInfos *kubernetes.ClusterInfos,
 	fqdn string, debug bool, helmArgs ...string) error {
 	// If installing on k3s, install the traefik helm config in manifests
 	isK3s := clusterInfos.IsK3s()
 	IsRke2 := clusterInfos.IsRke2()
+	tcpPorts, udpPorts := GetPortLists(hubXmlrpcFlags.Replicas > 0, debug)
 	if isK3s {
-		InstallK3sTraefikConfig(debug)
+		kubernetes.InstallK3sTraefikConfig(tcpPorts, udpPorts)
 	} else if IsRke2 {
-		kubernetes.InstallRke2NginxConfig(utils.TCP_PORTS, utils.UDP_PORTS, helmFlags.Uyuni.Namespace)
+		kubernetes.InstallRke2NginxConfig(tcpPorts, udpPorts, helmFlags.Uyuni.Namespace)
 	}
 
 	serverImage, err := utils.ComputeImage(*imageFlags)
@@ -41,8 +56,17 @@ func Deploy(cnx *shared.Connection, imageFlags *types.ImageFlags,
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
+	hubXmlrpcImage := ""
+	if hubXmlrpcFlags.Replicas > 0 {
+		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
+		hubXmlrpcImage, err = ComputeHubXmlrpcImage(imageFlags, &hubXmlrpcFlags.Image)
+		if err != nil {
+			return utils.Errorf(err, L("failed to compute image URL"))
+		}
+	}
+
 	// Install the uyuni server helm chart
-	err = UyuniUpgrade(serverImage, imageFlags.PullPolicy, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
+	err = UyuniUpgrade(serverImage, imageFlags.PullPolicy, hubXmlrpcFlags.Replicas, hubXmlrpcImage, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade"))
 	}
@@ -88,7 +112,7 @@ func DeployExistingCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_uti
 }
 
 // UyuniUpgrade runs an helm upgrade using images and helm configuration as parameters.
-func UyuniUpgrade(serverImage string, pullPolicy string, helmFlags *cmd_utils.HelmFlags, kubeconfig string,
+func UyuniUpgrade(serverImage string, pullPolicy string, hubXmlrpcReplicas int, hubXmlrpcImage string, helmFlags *cmd_utils.HelmFlags, kubeconfig string,
 	fqdn string, ingress string, helmArgs ...string) error {
 	log.Info().Msg(L("Installing Uyuni"))
 
@@ -106,8 +130,9 @@ func UyuniUpgrade(serverImage string, pullPolicy string, helmFlags *cmd_utils.He
 	helmParams = append(helmParams,
 		"--set", "images.server="+serverImage,
 		"--set", "pullPolicy="+kubernetes.GetPullPolicy(pullPolicy),
-		"--set", "fqdn="+fqdn)
-
+		"--set", "fqdn="+fqdn,
+		"--set", fmt.Sprintf("hub.api.replicas=%v", hubXmlrpcReplicas),
+		"--set", "images.hub_xmlrpc="+hubXmlrpcImage)
 	helmParams = append(helmParams, helmArgs...)
 
 	namespace := helmFlags.Uyuni.Namespace
@@ -121,6 +146,7 @@ func Upgrade(
 	globalFlags *types.GlobalFlags,
 	image *types.ImageFlags,
 	upgradeImage *types.ImageFlags,
+	hubXmlrpcImage *types.ImageFlags,
 	helm cmd_utils.HelmFlags,
 	cmd *cobra.Command,
 	args []string,
@@ -130,7 +156,13 @@ func Upgrade(
 			return fmt.Errorf(L("install %s before running this command"), binary)
 		}
 	}
+
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
+
+	origHubXmlrpcImage, err := kubernetes.GetRunningImage("hub-xmlrpc-api")
+	if err != nil {
+		return utils.Errorf(err, L("failed to find Hub XML-RPC API container"))
+	}
 
 	serverImage, err := utils.ComputeImage(*image)
 	if err != nil {
@@ -166,7 +198,7 @@ func Upgrade(
 
 	//this is needed because folder with script needs to be mounted
 	//check the node before scaling down
-	nodeName, err := kubernetes.GetNode("uyuni")
+	nodeName, err := kubernetes.GetNode(kubernetes.ServerFilter)
 	if err != nil {
 		return utils.Errorf(err, L("cannot find node running uyuni"))
 	}
@@ -178,7 +210,7 @@ func Upgrade(
 
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
-		if _, err = kubernetes.GetNode("uyuni"); err != nil {
+		if _, err = kubernetes.GetNode(kubernetes.ServerFilter); err != nil {
 			err = kubernetes.ReplicasTo(kubernetes.ServerApp, 1)
 		}
 	}()
@@ -207,7 +239,17 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	err = UyuniUpgrade(serverImage, image.PullPolicy, &helm, kubeconfig, fqdn, clusterInfos.Ingress)
+	hubXmlrpcImageName, err := ComputeHubXmlrpcImage(image, hubXmlrpcImage)
+	if err != nil {
+		return utils.Errorf(err, L("failed to compute image URL"))
+	}
+
+	hubXmlrpcReplicas := 0
+	if origHubXmlrpcImage != "" {
+		hubXmlrpcReplicas = 1
+	}
+
+	err = UyuniUpgrade(serverImage, image.PullPolicy, hubXmlrpcReplicas, hubXmlrpcImageName, &helm, kubeconfig, fqdn, clusterInfos.Ingress)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}

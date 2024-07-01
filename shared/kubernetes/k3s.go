@@ -40,10 +40,12 @@ func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap)
 		if err == nil {
 			completionTime, err := time.Parse(time.RFC3339, string(out))
 			if err == nil && time.Since(completionTime).Seconds() < 60 {
-				break
+				return
 			}
 		}
+		time.Sleep(1 * time.Second)
 	}
+	log.Error().Msg(L("Failed to reload K3s Traefik"))
 }
 
 // UninstallK3sTraefikConfig uninstall K3s Traefik configuration.
@@ -79,7 +81,7 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 	}
 
 	//this is needed because folder with script needs to be mounted
-	nodeName, err := GetNode("uyuni")
+	nodeName, err := GetNode(ServerFilter)
 	if err != nil {
 		return map[string]string{}, utils.Errorf(err, L("cannot find node running uyuni"))
 	}

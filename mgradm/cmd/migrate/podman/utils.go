@@ -64,6 +64,10 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return err
 	}
 
+	if err := podman.SetupHubXmlrpcContainer(&flags.HubXmlrpc, flags.Image.Tag); err != nil {
+		return err
+	}
+
 	log.Info().Msg(L("Server migrated"))
 
 	if err := podman_utils.EnablePodmanSocket(); err != nil {

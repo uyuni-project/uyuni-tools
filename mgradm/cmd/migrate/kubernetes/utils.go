@@ -45,6 +45,15 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
+	hubXmlrpcImage := ""
+	if flags.HubXmlrpc.Replicas > 0 {
+		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
+		hubXmlrpcImage, err = kubernetes.ComputeHubXmlrpcImage(&flags.Image, &flags.HubXmlrpc.Image)
+		if err != nil {
+			return utils.Errorf(err, L("failed to compute image URL"))
+		}
+	}
+
 	fqdn := args[0]
 
 	// Find the SSH Socket and paths for the migration
@@ -71,7 +80,7 @@ func migrateToKubernetes(
 	var sslFlags adm_utils.SslCertFlags
 
 	// Deploy for running migration command
-	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &sslFlags, clusterInfos, fqdn, false,
+	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.HubXmlrpc, &flags.Helm, &sslFlags, clusterInfos, fqdn, false,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
@@ -81,7 +90,7 @@ func migrateToKubernetes(
 
 	//this is needed because folder with script needs to be mounted
 	//check the node before scaling down
-	nodeName, err := shared_kubernetes.GetNode("uyuni")
+	nodeName, err := shared_kubernetes.GetNode(shared_kubernetes.ServerFilter)
 	if err != nil {
 		return utils.Errorf(err, L("cannot find node running uyuni"))
 	}
@@ -103,7 +112,7 @@ func migrateToKubernetes(
 
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
-		if _, err = shared_kubernetes.GetNode("uyuni"); err != nil {
+		if _, err = shared_kubernetes.GetNode(shared_kubernetes.ServerFilter); err != nil {
 			err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 1)
 		}
 	}()
@@ -125,7 +134,7 @@ func migrateToKubernetes(
 	helmArgs = append(helmArgs, setupSslArray...)
 
 	// Run uyuni upgrade using the new ssl certificate
-	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, flags.HubXmlrpc.Replicas, hubXmlrpcImage, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade helm chart to image %s using new SSL certificate"), serverImage)
 	}
@@ -154,7 +163,7 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, flags.HubXmlrpc.Replicas, hubXmlrpcImage, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}

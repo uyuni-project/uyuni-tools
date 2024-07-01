@@ -51,12 +51,6 @@ type CocoFlags struct {
 	Image    types.ImageFlags `mapstructure:",squash"`
 }
 
-// HubXmlrpcFlags contains settings for Hub XMLRPC container.
-type HubXmlrpcFlags struct {
-	Replicas int
-	Image    types.ImageFlags `mapstructure:",squash"`
-}
-
 // InstallFlags stores all the flags used by install command.
 type InstallFlags struct {
 	TZ           string
@@ -72,7 +66,7 @@ type InstallFlags struct {
 	Debug        DebugFlags
 	Image        types.ImageFlags `mapstructure:",squash"`
 	Coco         CocoFlags
-	HubXmlrpc    HubXmlrpcFlags
+	HubXmlrpc    types.HubXmlrpcFlags
 	Admin        apiTypes.User
 	Organization string
 }
