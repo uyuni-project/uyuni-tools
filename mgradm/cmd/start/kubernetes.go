@@ -18,5 +18,5 @@ func kubernetesStart(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return kubernetes.Start(kubernetes.ServerFilter)
+	return kubernetes.Start(kubernetes.ServerApp)
 }

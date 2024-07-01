@@ -99,7 +99,7 @@ func Restart(app string) error {
 // Start starts the pod.
 func Start(app string) error {
 	// if something is running, we don't need to set replicas to 1
-	if _, err := GetNode(app); err != nil {
+	if _, err := GetNode("-lapp=" + app); err != nil {
 		return ReplicasTo(app, 1)
 	}
 	log.Debug().Msgf("Already running")

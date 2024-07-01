@@ -59,14 +59,14 @@ func WaitForDeployment(namespace string, name string, appName string) error {
 
 	log.Info().Msgf(L("Waiting for %[1]s deployment to be ready in %[2]s namespace\n"), name, namespace)
 	// Wait for a replica to be ready
-	for i := 0; i < 60; i++ {
+	for i := 0; i < 120; i++ {
 		// TODO Look for pod failures
 		if IsDeploymentReady(namespace, name) {
 			return nil
 		}
 		time.Sleep(1 * time.Second)
 	}
-	return fmt.Errorf(L("failed to find a ready replica for deployment %[1]s in namespace %[2]s after 60s"), name, namespace)
+	return fmt.Errorf(L("failed to find a ready replica for deployment %[1]s in namespace %[2]s after 120s"), name, namespace)
 }
 
 // WaitForPulledImage wait that image is pulled.

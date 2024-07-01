@@ -34,6 +34,7 @@ func GetExposedPorts(debug bool) []types.PortMap {
 		utils.NewPortMap("http", 80, 80),
 	}
 	ports = append(ports, utils.TCP_PORTS...)
+	ports = append(ports, utils.TCP_PODMAN_PORTS...)
 	ports = append(ports, utils.UDP_PORTS...)
 
 	if debug {
