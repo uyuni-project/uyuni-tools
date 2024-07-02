@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 02 15:16:44 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.16-0
+  * Prefer local images in all migration steps (bsc#1227244)
+
+-------------------------------------------------------------------
 Wed Jun 26 18:30:27 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.15-0
