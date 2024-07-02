@@ -26,18 +26,7 @@ func kubernetesStatus(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	// Do we have an uyuni helm release?
-	clusterInfos, err := kubernetes.CheckCluster()
-	if err != nil {
-		return utils.Errorf(err, L("failed to discover the cluster type"))
-	}
-
-	kubeconfig := clusterInfos.GetKubeconfig()
-	if !kubernetes.HasHelmRelease("uyuni", kubeconfig) {
-		return errors.New(L("no uyuni helm release installed on the cluster"))
-	}
-
-	namespace, err := kubernetes.FindNamespace("uyuni", kubeconfig)
+	namespace, err := kubernetes.GetNamespace("uyuni")
 	if err != nil {
 		return utils.Errorf(err, L("failed to find the uyuni deployment namespace"))
 	}
