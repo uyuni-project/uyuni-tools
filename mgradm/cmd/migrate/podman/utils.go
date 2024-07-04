@@ -126,6 +126,11 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 
 	cnx := shared.NewConnection("podman", podman_utils.ServerContainerName, "")
+
+	if err := cnx.WaitForContainer(); err != nil {
+		return err
+	}
+
 	if err := cnx.CopyCaCertificate(sourceFqdn); err != nil {
 		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}

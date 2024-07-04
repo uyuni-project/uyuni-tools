@@ -170,13 +170,43 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 	return utils.RunCmdOutput(zerolog.DebugLevel, cmd, cmdArgs...)
 }
 
+// WaitForContainer waits up to 10 sec for the container to appear.
+func (c *Connection) WaitForContainer() error {
+	for i := 0; i < 10; i++ {
+		podName, err := c.GetPodName()
+		if err != nil {
+			log.Warn().Err(err)
+			time.Sleep(1 * time.Second)
+			continue
+		}
+		args := []string{"exec", podName}
+		command, err := c.GetCommand()
+		if err != nil {
+			log.Fatal().Err(err)
+		}
+
+		if command == "kubectl" {
+			args = append(args, "--")
+		}
+		args = append(args, "true")
+		err = utils.RunCmd(command, args...)
+		if err == nil {
+			return nil
+		}
+		time.Sleep(1 * time.Second)
+	}
+	return errors.New(L("container didn't start within 10s."))
+}
+
 // WaitForServer waits at most 60s for multi-user systemd target to be reached.
 func (c *Connection) WaitForServer() error {
 	// Wait for the system to be up
 	for i := 0; i < 60; i++ {
 		podName, err := c.GetPodName()
 		if err != nil {
-			log.Fatal().Err(err)
+			log.Warn().Err(err)
+			time.Sleep(1 * time.Second)
+			continue
 		}
 
 		args := []string{"exec", podName}
