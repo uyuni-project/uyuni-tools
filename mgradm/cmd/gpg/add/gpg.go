@@ -68,18 +68,26 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 	}
 
 	for _, keyURL := range args {
-		// Parse the URL
-		parsedURL, err := url.Parse(keyURL)
-		if err != nil {
-			log.Error().Err(err).Msgf(L("failed to parse %s"), keyURL)
-			continue
-		}
+		var hostKeyPath string
+		var keyname string
+		if _, err := os.Stat(keyURL); err == nil {
+			// gpg passed in a local file
+			hostKeyPath = keyURL
+			keyname = filepath.Base(hostKeyPath)
+		} else {
+			// Parse the URL
+			parsedURL, err := url.Parse(keyURL)
+			if err != nil {
+				log.Error().Err(err).Msgf(L("failed to parse %s"), keyURL)
+				continue
+			}
 
-		keyname := path.Base(parsedURL.Path)
-		hostKeyPath := filepath.Join(scriptDir, keyname)
-		if err := utils.DownloadFile(hostKeyPath, keyURL); err != nil {
-			log.Error().Err(err).Msgf(L("failed to download %s"), keyURL)
-			continue
+			keyname = path.Base(parsedURL.Path)
+			hostKeyPath = filepath.Join(scriptDir, keyname)
+			if err := utils.DownloadFile(hostKeyPath, keyURL); err != nil {
+				log.Error().Err(err).Msgf(L("failed to download %s"), keyURL)
+				continue
+			}
 		}
 
 		if err := utils.RunCmdStdMapping(zerolog.InfoLevel, "gpg", "--show-key", hostKeyPath); err != nil {
