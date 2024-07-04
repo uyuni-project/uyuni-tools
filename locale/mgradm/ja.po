@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-18 15:00+0200\n"
-"PO-Revision-Date: 2024-06-11 07:46+0000\n"
+"PO-Revision-Date: 2024-07-04 02:46+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -760,7 +761,7 @@ msgstr "セットアップスクリプトの実行中にエラーが発生しま
 #: mgradm/cmd/migrate/kubernetes/utils.go:167
 #: mgradm/cmd/migrate/podman/utils.go:75
 msgid "failed to add SSL CA certificate to host trusted certificates"
-msgstr ""
+msgstr "SSL CA証明書をホストの信頼済み証明書に追加できませんでした"
 
 #: mgradm/cmd/install/shared/shared.go:56
 msgid "Server set up, login on https://%[1]s with %[2]s user"
