@@ -49,7 +49,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
-	if !utils.FileExists(customKeyringPath) {
+	if !cnx.TestExistenceInPod(customKeyringPath) {
 		if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "mkdir", "-m", "700", "-p", filepath.Dir(customKeyringPath)); err != nil {
 			return utils.Errorf(err, L("failed to create folder %s"), filepath.Dir(customKeyringPath))
 		}
