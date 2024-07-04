@@ -54,6 +54,12 @@ https://github.com/uyuni-project/uyuni/tree/master/containers/doc/server-kuberne
 
 # Development documentation
 
+## Sign your Git commits
+
+Signing commits with a GPG/SSH key is mandatory for contributing. That way your commits will be marked as verified on GitHub so other people can be confident that the changes come from a trusted source.
+
+If you are not doing it already, check out the [GitHub documentation](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification).
+
 ## Building
 
 `go build -o ./bin ./...` will produce the binaries in the root folder with `0.0.0` as version.
