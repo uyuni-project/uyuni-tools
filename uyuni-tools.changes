@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jul 04 17:11:17 CEST 2024 - rosuna@suse.com
+
+- version 0.1.17-0
+  * Allow GPG files to be loaded from the local file (bsc#1227195)
+
+-------------------------------------------------------------------
 Tue Jul 02 15:16:44 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.16-0
