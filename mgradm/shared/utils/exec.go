@@ -42,7 +42,7 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
 
 	runCmd := exec.Command(command, commandArgs...)
-	logger := utils.OutputLogWriter{Logger: log.Logger, LogLevel: logLevel}
+	logger := log.Logger.Level(logLevel)
 	runCmd.Stdout = logger
 	runCmd.Stderr = logger
 	return runCmd.Run()
