@@ -175,14 +175,14 @@ func (c *Connection) WaitForContainer() error {
 	for i := 0; i < 10; i++ {
 		podName, err := c.GetPodName()
 		if err != nil {
-			log.Warn().Err(err)
+			log.Debug().Err(err)
 			time.Sleep(1 * time.Second)
 			continue
 		}
 		args := []string{"exec", podName}
 		command, err := c.GetCommand()
 		if err != nil {
-			log.Fatal().Err(err)
+			return err
 		}
 
 		if command == "kubectl" {
@@ -204,7 +204,7 @@ func (c *Connection) WaitForServer() error {
 	for i := 0; i < 60; i++ {
 		podName, err := c.GetPodName()
 		if err != nil {
-			log.Warn().Err(err)
+			log.Debug().Err(err)
 			time.Sleep(1 * time.Second)
 			continue
 		}
@@ -212,7 +212,7 @@ func (c *Connection) WaitForServer() error {
 		args := []string{"exec", podName}
 		command, err := c.GetCommand()
 		if err != nil {
-			log.Fatal().Err(err)
+			return err
 		}
 
 		if command == "kubectl" {
