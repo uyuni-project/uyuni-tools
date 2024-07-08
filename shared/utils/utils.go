@@ -183,8 +183,8 @@ func RemoveRegistryFromImage(imagePath string) string {
 
 // ComputeImage assembles the container image from its name and tag.
 func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, error) {
-	if !strings.Contains(DefaultNamespace, imageFlags.Registry) {
-		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), imageFlags.Registry, DefaultNamespace)
+	if !strings.Contains(DefaultRegistry, imageFlags.Registry) {
+		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), imageFlags.Registry, DefaultRegistry)
 	}
 	name := imageFlags.Name
 	if !strings.Contains(imageFlags.Name, imageFlags.Registry) {

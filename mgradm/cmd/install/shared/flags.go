@@ -223,7 +223,7 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-tag", "coco-container")
 
 	cmd.Flags().Int("hubxmlrpc-replicas", 0, L("How many replicas of the Hub XML-RPC API service container should be started. (only 0 or 1 supported for now)"))
-	hubXmlrpcImage := path.Join(utils.DefaultNamespace, "server-hub-xmlrpc-api")
+	hubXmlrpcImage := path.Join(utils.DefaultRegistry, "server-hub-xmlrpc-api")
 	cmd.Flags().String("hubxmlrpc-image", hubXmlrpcImage, L("Hub XML-RPC API Image"))
 	cmd.Flags().String("hubxmlrpc-tag", utils.DefaultTag, L("Hub XML-RPC API Image Tag"))
 

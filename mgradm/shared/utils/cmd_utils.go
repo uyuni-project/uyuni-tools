@@ -16,7 +16,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var defaultImage = path.Join(utils.DefaultNamespace, "server")
+var defaultImage = path.Join(utils.DefaultRegistry, "server")
 
 // HelmFrags stores Uyuni and Cert Manager Helm information.
 type HelmFlags struct {
@@ -52,7 +52,7 @@ func (f *SslCertFlags) CheckParameters() {
 
 // AddHelmInstallFlag add Helm install flags to a command.
 func AddHelmInstallFlag(cmd *cobra.Command) {
-	defaultChart := fmt.Sprintf("oci://%s/server-helm", utils.DefaultNamespace)
+	defaultChart := fmt.Sprintf("oci://%s/server-helm", utils.DefaultHelmRegistry)
 
 	cmd.Flags().String("helm-uyuni-namespace", "default", L("Kubernetes namespace where to install uyuni"))
 	cmd.Flags().String("helm-uyuni-chart", defaultChart, L("URL to the uyuni helm chart"))

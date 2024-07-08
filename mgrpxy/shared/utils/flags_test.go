@@ -11,7 +11,7 @@ import (
 )
 
 func TestGetContainerImageDefaultNamespace(t *testing.T) {
-	utils.DefaultNamespace = "mynamespace"
+	utils.DefaultRegistry = "mynamespace"
 	proxyFlags := ProxyImageFlags{
 		Tag: "mytag",
 	}
@@ -23,7 +23,7 @@ func TestGetContainerImageDefaultNamespace(t *testing.T) {
 }
 
 func TestGetContainerImageCustomRegistry(t *testing.T) {
-	utils.DefaultNamespace = "mynamespace"
+	utils.DefaultRegistry = "mynamespace"
 	proxyFlags := ProxyImageFlags{
 		Registry: "mytestregistry.example.com",
 		Tag:      "mytag",

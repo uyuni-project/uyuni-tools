@@ -1,0 +1,2 @@
+- Allow building with different helm and container default 
+  registry paths (bsc#1226191)
