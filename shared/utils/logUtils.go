@@ -14,11 +14,17 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"golang.org/x/term"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 var redactRegex = regexp.MustCompile(`([pP]assword[\t :"\\]+)[^\t "\\]+`)
+
+// The default directory where log files are written.
+const logDir = "/var/log/"
+const logFileName = "uyuni-tools.log"
+const globalLogPath = logDir + logFileName
 
 // UyuniLogger is an io.WriteCloser that writes to the specified filename.
 type UyuniLogger struct {
@@ -85,23 +91,28 @@ func LogInit(logToConsole bool) {
 
 	multi := zerolog.MultiLevelWriter(writers...)
 	log.Logger = zerolog.New(multi).With().Timestamp().Stack().Logger()
+
+	if fileWriter.logger.Filename != globalLogPath {
+		log.Warn().Msgf(L("Couldn't open %[1]s file for writing, writing log to %[2]s"), globalLogPath, fileWriter.logger.Filename)
+	}
 }
 
 func getFileWriter() *UyuniLogger {
-	const globalLogPath = "/var/log/"
 	logPath := globalLogPath
 
 	if file, err := os.OpenFile(globalLogPath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0600); err != nil {
-		logPath, err = os.UserHomeDir()
+		homeDir, err := os.UserHomeDir()
 		if err != nil {
-			logPath = "./"
+			logPath = path.Join(".", logFileName)
+		} else {
+			logPath = path.Join(homeDir, logFileName)
 		}
 	} else {
 		file.Close()
 	}
 
 	fileLogger := &lumberjack.Logger{
-		Filename:   path.Join(logPath, "uyuni-tools.log"),
+		Filename:   logPath,
 		MaxSize:    5,
 		MaxBackups: 5,
 		MaxAge:     90,
