@@ -313,11 +313,20 @@ pull_policy=%{!?_default_pull_policy:Always}
 %endif
 # "%{?_default_pull_policy}" != ""
 
-image=%{namespace}
+namespace=%{namespace}
+helm_registry=%{namespace}
 %if "%{?_default_namespace}" != ""
+  # Set both container and helm chart namespaces as this can be the same value
   namespace='%{_default_namespace}'
+  helm_registry='%{_default_namespace}'
 %endif
 # "%{?_default_namespace}" != ""
+
+# We may have additional config for helm registry as the path is different in OBS devel projects
+%if "%{?_default_helm_registry}" != ""
+  helm_registry='%{_default_helm_registry}'
+%endif
+# "%{?_default_helm_registry}" != ""
 
 go_tags=""
 %if "%{?_uyuni_tools_tags}" != ""
@@ -339,7 +348,11 @@ go_path=""
 
 GOLD_FLAGS="-X '${UTILS_PATH}.Version=%{version} (%{version_details})' -X ${UTILS_PATH}.LocaleRoot=%{_datadir}/locale"
 if test -n "${namespace}"; then
-    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultNamespace=${namespace} -X ${UTILS_PATH}.DefaultTag=${tag}"
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultRegistry=${namespace}"
+fi
+
+if test -n "${helm_registry}"; then
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultHelmRegistry=${helm_registry}"
 fi
 
 if test -n "${tag}"; then

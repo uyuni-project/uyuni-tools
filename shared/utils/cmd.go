@@ -16,8 +16,11 @@ import (
 // On SUSE distros this should be overridden with /usr/share/locale.
 var LocaleRoot = "locale"
 
-// DefaultNamespace represents the default name used for image.
-var DefaultNamespace = "registry.opensuse.org/uyuni"
+// DefaultRegistry represents the default name used for container image.
+var DefaultRegistry = "registry.opensuse.org/uyuni"
+
+// DefaultHelmRegistry represents the default name used for helm charts.
+var DefaultHelmRegistry = "registry.opensuse.org/uyuni"
 
 // DefaultTag represents the default tag used for image.
 var DefaultTag = "latest"
