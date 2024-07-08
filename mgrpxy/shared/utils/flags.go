@@ -75,7 +75,7 @@ func AddImageFlags(cmd *cobra.Command) {
 }
 
 func addContainerImageFlags(cmd *cobra.Command, paramName string, imageName string) {
-	defaultImage := path.Join(utils.DefaultNamespace, "proxy-"+imageName)
+	defaultImage := path.Join(utils.DefaultRegistry, "proxy-"+imageName)
 	cmd.Flags().String(paramName+"-image", defaultImage,
 		fmt.Sprintf(L("Image for %s container"), imageName))
 	cmd.Flags().String(paramName+"-tag", "",
