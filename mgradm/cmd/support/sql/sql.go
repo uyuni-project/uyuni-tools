@@ -77,7 +77,7 @@ func getBaseCommand(keepStdin bool, flags *configFlags, cnx *shared.Connection) 
 		commandArgs = append(commandArgs, "-i")
 		envs = append(envs, "ENV=/etc/sh.shrc.local")
 		commandArgs = append(commandArgs, "-t")
-		envs = append(envs, "TERM")
+		envs = append(envs, "TERM", "PAGER", "LESS")
 	} else if keepStdin {
 		// To use STDIN source, we need to pass -i
 		commandArgs = append(commandArgs, "-i")
