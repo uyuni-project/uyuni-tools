@@ -69,7 +69,7 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 	}
 	if flags.Tty {
 		commandArgs = append(commandArgs, "-t")
-		envs = append(envs, "TERM")
+		envs = append(envs, utils.GetEnvironmentVarsList()...)
 	}
 	commandArgs = append(commandArgs, podName)
 
