@@ -36,7 +36,24 @@ func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
 			return utils.Errorf(err, L("failed to compute image URL"))
 		}
 
-		if err := podman.GenerateHubXmlrpcSystemdService(hubXmlrpcImage); err != nil {
+		inspectedHostValues, err := utils.InspectHost(false)
+		if err != nil {
+			return utils.Errorf(err, L("cannot inspect host values"))
+		}
+
+		pullArgs := []string{}
+		_, scc_user_exist := inspectedHostValues["host_scc_username"]
+		_, scc_user_password := inspectedHostValues["host_scc_password"]
+		if scc_user_exist && scc_user_password {
+			pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+		}
+
+		preparedImage, err := shared_podman.PrepareImage(hubXmlrpcImage, flags.Image.PullPolicy, pullArgs...)
+		if err != nil {
+			return err
+		}
+
+		if err := podman.GenerateHubXmlrpcSystemdService(preparedImage); err != nil {
 			return utils.Errorf(err, L("cannot generate systemd service"))
 		}
 
