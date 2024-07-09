@@ -78,3 +78,11 @@ func IsInstalled(tool string) bool {
 	_, err := exec.LookPath("kubectl")
 	return err == nil
 }
+
+// Return list of environmental variables to be passed to exec.
+func GetEnvironmentVarsList() []string {
+	// Taken from /etc/profile and /etc/profile.d/lang
+	return []string{"TERM", "PAGER",
+		"LESS", "LESSOPEN", "LESSKEY", "LESSCLOSE", "LESS_ADVANCED_PREPROCESSOR", "MORE",
+		"LANG", "LC_CTYPE", "LC_ALL"}
+}
