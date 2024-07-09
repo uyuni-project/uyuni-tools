@@ -46,6 +46,9 @@ func migrateToKubernetes(
 	}
 
 	fqdn := args[0]
+	if !utils.IsValidFQDN(fqdn) {
+		return fmt.Errorf(L("%s is not a valid FDQN"), fqdn)
+	}
 
 	// Find the SSH Socket and paths for the migration
 	sshAuthSocket := migration_shared.GetSshAuthSocket()

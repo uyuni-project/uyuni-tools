@@ -252,6 +252,30 @@ func TestComputeImage(t *testing.T) {
 	}
 }
 
+func TestIsValidFQN(t *testing.T) {
+	data := []string{
+		"manager.mgr.suse.de",
+		"suma50.suse.de",
+	}
+
+	for i, testCase := range data {
+		if !IsValidFQDN(testCase) {
+			t.Errorf("Testcase %d: Unexpected error while validating FQDN with %s", i, testCase)
+		}
+	}
+	wrongData := []string{
+		"manager",
+		"suma50",
+		"test24.example24.com..",
+		"127.0.0.1",
+	}
+
+	for i, testCase := range wrongData {
+		if IsValidFQDN(testCase) {
+			t.Errorf("Testcase %d: expected error while validating FQDN with %s", i, testCase)
+		}
+	}
+}
 func TestComputeImageError(t *testing.T) {
 	data := [][]string{
 		{"registry:path/to/image:tag:tag", "bar"},
