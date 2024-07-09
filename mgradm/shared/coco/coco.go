@@ -43,10 +43,27 @@ func writeCocoServiceFiles(image types.ImageFlags, baseImage types.ImageFlags, d
 		}
 	}
 
+	inspectedHostValues, err := utils.InspectHost(false)
+	if err != nil {
+		return utils.Errorf(err, L("cannot inspect host values"))
+	}
+
+	pullArgs := []string{}
+	_, scc_user_exist := inspectedHostValues["host_scc_username"]
+	_, scc_user_password := inspectedHostValues["host_scc_password"]
+	if scc_user_exist && scc_user_password {
+		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+	}
+
+	preparedImage, err := podman.PrepareImage(cocoImage, baseImage.PullPolicy, pullArgs...)
+	if err != nil {
+		return err
+	}
+
 	attestationData := templates.AttestationServiceTemplateData{
 		NamePrefix: "uyuni",
 		Network:    podman.UyuniNetwork,
-		Image:      cocoImage,
+		Image:      preparedImage,
 	}
 
 	log.Info().Msg(L("Setting up confidential computing attestation service"))
@@ -59,7 +76,7 @@ func writeCocoServiceFiles(image types.ImageFlags, baseImage types.ImageFlags, d
 	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
 	Environment=database_connection=jdbc:postgresql://uyuni-server.mgr.internal:%d/%s
 	Environment=database_user=%s
-	Environment=database_password=%s`, cocoImage, dbPort, dbName, dbUser, dbPassword)
+	Environment=database_password=%s`, preparedImage, dbPort, dbName, dbUser, dbPassword)
 
 	if err := podman.GenerateSystemdConfFile(podman.ServerAttestationService+"@", "Service", environment); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
