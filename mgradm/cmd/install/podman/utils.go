@@ -59,7 +59,7 @@ func installForPodman(
 	}
 	defer cleaner()
 
-	fqdn, err := getFqdn(args)
+	fqdn, err := utils.GetFqdn(args)
 	if err != nil {
 		return err
 	}
@@ -141,16 +141,4 @@ func installForPodman(
 		return utils.Errorf(err, L("cannot enable podman socket"))
 	}
 	return nil
-}
-
-func getFqdn(args []string) (string, error) {
-	if len(args) == 1 {
-		return args[0], nil
-	} else {
-		fqdn_b, err := utils.RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
-		if err != nil {
-			return "", utils.Errorf(err, L("failed to compute server FQDN"))
-		}
-		return strings.TrimSpace(string(fqdn_b)), nil
-	}
 }
