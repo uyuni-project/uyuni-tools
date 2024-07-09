@@ -32,6 +32,7 @@ const prompt_end = ": "
 
 var prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
 var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
+var fqdnValid = regexp.MustCompile(`^([a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})(\.[a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})*?(\.[a-zA-Z]{1}[a-zA-Z0-9]{0,62})\.?$`)
 
 // InspectResult holds the results of the inspection scripts.
 type InspectResult struct {
@@ -375,4 +376,28 @@ func JoinErrors(errs ...error) error {
 		return nil
 	}
 	return errors.New(strings.Join(messages, "; "))
+}
+
+// GetFqdn returns and checks the FQDN of the host system.
+func GetFqdn(args []string) (string, error) {
+	var fqdn string
+	if len(args) == 1 {
+		fqdn = args[0]
+	} else {
+		fqdn_b, err := RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
+		if err != nil {
+			return "", Errorf(err, L("failed to compute server FQDN"))
+		}
+		fqdn = strings.TrimSpace(string(fqdn_b))
+	}
+	if !IsValidFQDN(fqdn) {
+		return "", fmt.Errorf(L("%s is not a valid FDQN"), fqdn)
+	}
+
+	return fqdn, nil
+}
+
+// IsValidFDQN returns an error if the argument is not a valid FQDN.
+func IsValidFQDN(fqdn string) bool {
+	return fqdnValid.MatchString(fqdn)
 }

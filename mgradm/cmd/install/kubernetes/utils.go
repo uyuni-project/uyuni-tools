@@ -40,6 +40,10 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 
 	fqdn := args[0]
 
+	if !shared_utils.IsValidFQDN(fqdn) {
+		return fmt.Errorf(L("%s is not a valid FDQN"), fqdn)
+	}
+
 	helmArgs := []string{"--set", "timezone=" + flags.TZ}
 	if flags.Mirror != "" {
 		// TODO Handle claims for multi-node clusters
