@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/cobra"
 	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -21,48 +22,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
-
-func setupHubXmlrpcContainer(registry string, flags *podmanInstallFlags) error {
-	if flags.HubXmlrpc.Replicas > 1 {
-		log.Warn().Msg(L("Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."))
-		flags.HubXmlrpc.Replicas = 1
-	}
-	log.Info().Msg(L("Setting Hub XML-RPC API service."))
-	hubXmlrpcImage, err := utils.ComputeImage(registry, flags.Image.Tag, flags.HubXmlrpc.Image)
-	if err != nil {
-		return utils.Errorf(err, L("failed to compute image URL"))
-	}
-
-	inspectedHostValues, err := utils.InspectHost(false)
-	if err != nil {
-		return utils.Errorf(err, L("cannot inspect host values"))
-	}
-
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := shared_podman.PrepareImage(hubXmlrpcImage, flags.Image.PullPolicy, pullArgs...)
-	if err != nil {
-		return err
-	}
-
-	if err := podman.GenerateHubXmlrpcSystemdService(preparedImage); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd service"))
-	}
-
-	if flags.HubXmlrpc.Replicas > 0 {
-		if err := shared_podman.ScaleService(flags.HubXmlrpc.Replicas, shared_podman.HubXmlrpcService); err != nil {
-			return utils.Errorf(err, L("cannot enable service"))
-		}
-	} else {
-		log.Info().Msg(L("Not starting Hub XML-RPC API service"))
-	}
-	return nil
-}
 
 func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
 	err := podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, flags.Mirror, flags.Podman.Args)
@@ -160,7 +119,13 @@ func installForPodman(
 		return err
 	}
 
-	if err := setupHubXmlrpcContainer(globalFlags.Registry, flags); err != nil {
+	if err := hub.SetupHubXmlrpc(
+		globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
+	); err != nil {
+		return err
+	}
+
+	if err := hub.EnableHubXmlrpc(flags.HubXmlrpc.Replicas); err != nil {
 		return err
 	}
 
