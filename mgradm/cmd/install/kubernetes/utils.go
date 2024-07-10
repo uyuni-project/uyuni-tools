@@ -40,8 +40,8 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 
 	fqdn := args[0]
 
-	if !shared_utils.IsValidFQDN(fqdn) {
-		return fmt.Errorf(L("%s is not a valid FDQN"), fqdn)
+	if err := shared_utils.IsValidFQDN(fqdn); err != nil {
+		return err
 	}
 
 	helmArgs := []string{"--set", "timezone=" + flags.TZ}
