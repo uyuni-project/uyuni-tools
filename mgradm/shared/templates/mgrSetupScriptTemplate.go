@@ -20,10 +20,12 @@ echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:800
 echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:8002,server=y,suspend=n" ' >> /usr/share/rhn/config-defaults/rhn_search_daemon.conf
 {{- end }}
 
-/usr/lib/susemanager/bin/mgr-setup -s -n
+RESULT=$(/usr/lib/susemanager/bin/mgr-setup -s -n)
 
 # clean before leaving
-rm $0`
+rm $0
+exit $RESULT
+`
 
 // MgrSetupScriptTemplateData represents information used to create setup script.
 type MgrSetupScriptTemplateData struct {
