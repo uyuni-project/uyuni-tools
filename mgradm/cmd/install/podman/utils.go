@@ -23,26 +23,29 @@ import (
 )
 
 func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
+	if flags.HubXmlrpc.Replicas > 1 {
+		log.Warn().Msg(L("Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."))
+		flags.HubXmlrpc.Replicas = 1
+	}
+	log.Info().Msg(L("Setting Hub XML-RPC API service."))
+	if flags.HubXmlrpc.Image.Tag == "" {
+		flags.HubXmlrpc.Image.Tag = flags.Image.Tag
+	}
+	hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image)
+	if err != nil {
+		return utils.Errorf(err, L("failed to compute image URL"))
+	}
+
+	if err := podman.GenerateHubXmlrpcSystemdService(hubXmlrpcImage); err != nil {
+		return utils.Errorf(err, L("cannot generate systemd service"))
+	}
+
 	if flags.HubXmlrpc.Replicas > 0 {
-		if flags.HubXmlrpc.Replicas > 1 {
-			return errors.New(L("Multiple Hub XML-RPC container replicas are not currently supported."))
-		}
-		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
-		if flags.HubXmlrpc.Image.Tag == "" {
-			flags.HubXmlrpc.Image.Tag = flags.Image.Tag
-		}
-		hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image)
-		if err != nil {
-			return utils.Errorf(err, L("failed to compute image URL"))
-		}
-
-		if err := podman.GenerateHubXmlrpcSystemdService(hubXmlrpcImage); err != nil {
-			return utils.Errorf(err, L("cannot generate systemd service"))
-		}
-
 		if err := shared_podman.ScaleService(flags.HubXmlrpc.Replicas, shared_podman.HubXmlrpcService); err != nil {
 			return utils.Errorf(err, L("cannot enable service"))
 		}
+	} else {
+		log.Info().Msg(L("Not starting Hub XML-RPC API service"))
 	}
 	return nil
 }
