@@ -252,14 +252,14 @@ func TestComputeImage(t *testing.T) {
 	}
 }
 
-func TestIsValidFQN(t *testing.T) {
+func TestIsWellFormedFQDN(t *testing.T) {
 	data := []string{
 		"manager.mgr.suse.de",
 		"suma50.suse.de",
 	}
 
 	for i, testCase := range data {
-		if !IsValidFQDN(testCase) {
+		if err := IsWellFormedFQDN(testCase); err != nil {
 			t.Errorf("Testcase %d: Unexpected error while validating FQDN with %s", i, testCase)
 		}
 	}
@@ -271,7 +271,7 @@ func TestIsValidFQN(t *testing.T) {
 	}
 
 	for i, testCase := range wrongData {
-		if IsValidFQDN(testCase) {
+		if err := IsWellFormedFQDN(testCase); err == nil {
 			t.Errorf("Testcase %d: expected error while validating FQDN with %s", i, testCase)
 		}
 	}
