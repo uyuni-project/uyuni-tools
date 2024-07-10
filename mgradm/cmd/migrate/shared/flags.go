@@ -6,6 +6,7 @@ package shared
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -17,6 +18,7 @@ type MigrateFlags struct {
 	DbUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	User           string
 	Mirror         string
+	HubXmlrpc      shared.HubXmlrpcFlags
 }
 
 // AddMigrateFlags add migration flags to a command.
@@ -24,5 +26,6 @@ func AddMigrateFlags(cmd *cobra.Command) {
 	utils.AddMirrorFlag(cmd)
 	utils.AddImageFlag(cmd)
 	utils.AddDbUpgradeImageFlag(cmd)
+	utils.AddHubXmlrpcFlags(cmd)
 	cmd.Flags().String("user", "root", L("User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."))
 }

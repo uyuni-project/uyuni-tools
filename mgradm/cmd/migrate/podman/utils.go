@@ -12,6 +12,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -79,6 +80,10 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	// Start the service
 	if err := podman_utils.EnableService(podman_utils.ServerService); err != nil {
+		return err
+	}
+
+	if err := hub.HubXmlrpc(flags.Image.Tag, &flags.HubXmlrpc); err != nil {
 		return err
 	}
 

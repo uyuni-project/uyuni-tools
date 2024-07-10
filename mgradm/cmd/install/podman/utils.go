@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/cobra"
 	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -21,34 +22,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
-
-func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
-	if flags.HubXmlrpc.Replicas > 1 {
-		log.Warn().Msg(L("Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."))
-		flags.HubXmlrpc.Replicas = 1
-	}
-	log.Info().Msg(L("Setting Hub XML-RPC API service."))
-	if flags.HubXmlrpc.Image.Tag == "" {
-		flags.HubXmlrpc.Image.Tag = flags.Image.Tag
-	}
-	hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image)
-	if err != nil {
-		return utils.Errorf(err, L("failed to compute image URL"))
-	}
-
-	if err := podman.GenerateHubXmlrpcSystemdService(hubXmlrpcImage); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd service"))
-	}
-
-	if flags.HubXmlrpc.Replicas > 0 {
-		if err := shared_podman.ScaleService(flags.HubXmlrpc.Replicas, shared_podman.HubXmlrpcService); err != nil {
-			return utils.Errorf(err, L("cannot enable service"))
-		}
-	} else {
-		log.Info().Msg(L("Not starting Hub XML-RPC API service"))
-	}
-	return nil
-}
 
 func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
 	err := podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, flags.Mirror, flags.Podman.Args)
@@ -145,7 +118,7 @@ func installForPodman(
 		return err
 	}
 
-	if err := setupHubXmlrpcContainer(flags); err != nil {
+	if err := hub.HubXmlrpc(flags.Image.Tag, &flags.HubXmlrpc); err != nil {
 		return err
 	}
 
