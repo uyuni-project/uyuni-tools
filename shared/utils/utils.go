@@ -12,6 +12,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"path"
@@ -390,14 +391,29 @@ func GetFqdn(args []string) (string, error) {
 		}
 		fqdn = strings.TrimSpace(string(fqdn_b))
 	}
-	if !IsValidFQDN(fqdn) {
-		return "", fmt.Errorf(L("%s is not a valid FDQN"), fqdn)
+	if err := IsValidFQDN(fqdn); err != nil {
+		return "", err
 	}
 
 	return fqdn, nil
 }
 
 // IsValidFDQN returns an error if the argument is not a valid FQDN.
-func IsValidFQDN(fqdn string) bool {
-	return fqdnValid.MatchString(fqdn)
+func IsValidFQDN(fqdn string) error {
+	if err := IsWellFormedFQDN(fqdn); err != nil {
+		return err
+	}
+	_, err := net.LookupHost(fqdn)
+	if err != nil {
+		return Errorf(err, L("cannot resolve %s"), fqdn)
+	}
+	return nil
+}
+
+// IsWellFormedFQDN returns an error if the argument is not a well formed FQDN.
+func IsWellFormedFQDN(fqdn string) error {
+	if !fqdnValid.MatchString(fqdn) {
+		return fmt.Errorf(L("%s is not a valid FQDN"), fqdn)
+	}
+	return nil
 }
