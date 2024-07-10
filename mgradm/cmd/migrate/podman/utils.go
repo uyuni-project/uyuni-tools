@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/viper"
 	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -104,6 +105,16 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		if err != nil {
 			return err
 		}
+	}
+
+	if err := hub.SetupHubXmlrpc(
+		globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
+	); err != nil {
+		return err
+	}
+
+	if err := hub.EnableHubXmlrpc(flags.HubXmlrpc.Replicas); err != nil {
+		return err
 	}
 
 	log.Info().Msg(L("Server migrated"))

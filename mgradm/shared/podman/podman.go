@@ -43,28 +43,6 @@ func GetExposedPorts(debug bool) []types.PortMap {
 	return ports
 }
 
-// GenerateHubXmlrpcSystemdService creates the Hub XMLRPC systemd files.
-func GenerateHubXmlrpcSystemdService(image string) error {
-	hubXmlrpcData := templates.HubXmlrpcServiceTemplateData{
-		Volumes:    utils.HubXmlrpcVolumeMounts,
-		Ports:      utils.HUB_XMLRPC_PORTS,
-		NamePrefix: "uyuni",
-		Network:    podman.UyuniNetwork,
-		Image:      image,
-	}
-	if err := utils.WriteTemplateToFile(hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0555, false); err != nil {
-		return utils.Errorf(err, L("failed to generate systemd service unit file"))
-	}
-
-	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
-	`, image)
-	if err := podman.GenerateSystemdConfFile(podman.HubXmlrpcService+"@", "Service", environment); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd conf file"))
-	}
-
-	return podman.ReloadDaemon(false)
-}
-
 // GenerateSystemdService creates a serverY systemd file.
 func GenerateSystemdService(tz string, image string, debug bool, mirrorPath string, podmanArgs []string) error {
 	if err := podman.SetupNetwork(false); err != nil {

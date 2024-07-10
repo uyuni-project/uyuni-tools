@@ -19,6 +19,7 @@ type MigrateFlags struct {
 	Coco           shared.CocoFlags
 	User           string
 	Mirror         string
+	HubXmlrpc      utils.HubXmlrpcFlags
 }
 
 // AddMigrateFlags add migration flags to a command.
@@ -27,5 +28,6 @@ func AddMigrateFlags(cmd *cobra.Command) {
 	utils.AddImageFlag(cmd)
 	utils.AddDbUpgradeImageFlag(cmd)
 	utils.AddCocoFlag(cmd)
+	utils.AddHubXmlrpcFlags(cmd)
 	cmd.Flags().String("user", "root", L("User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."))
 }

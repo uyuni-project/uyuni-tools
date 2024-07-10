@@ -1,1 +1,2 @@
+- Setup hub xmlrpc api service in migration to podman (bsc#1227588)
 - Setup disabled hub xmlrpc api service in all cases (bsc#1227584)
