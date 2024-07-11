@@ -119,7 +119,7 @@ func (c *Connection) GetPodName() (string, error) {
 	if c.podName == "" {
 		command, cmdErr := c.GetCommand()
 		if cmdErr != nil {
-			log.Fatal().Err(cmdErr)
+			return "", cmdErr
 		}
 
 		switch command {
@@ -129,6 +129,7 @@ func (c *Connection) GetPodName() (string, error) {
 			if out, _ := utils.RunCmdOutput(zerolog.DebugLevel, c.command, "ps", "-q", "-f", "name="+c.podmanContainer); len(out) == 0 {
 				err = fmt.Errorf(L("container %s is not running on podman"), c.podmanContainer)
 			} else {
+				log.Trace().Msgf("Found container ID '%s'", out)
 				c.podName = c.podmanContainer
 			}
 		case "kubectl":
