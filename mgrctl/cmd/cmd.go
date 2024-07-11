@@ -38,7 +38,7 @@ func NewUyunictlCommand() (*cobra.Command, error) {
 	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "", L("application log level")+"(trace|debug|info|warn|error|fatal|panic)")
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
-		utils.LogInit(cmd.Name() != "exec" && cmd.Name() != "term")
+		utils.LogInit((cmd.Name() != "exec" && cmd.Name() != "term") || globalFlags.LogLevel == "trace")
 		utils.SetLogLevel(globalFlags.LogLevel)
 
 		// do not log if running the completion cmd as the output is redirect to create a file to source
