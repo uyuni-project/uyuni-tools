@@ -1,1 +1,1 @@
-- During installation, check if FQDN is valid (bsc#1226847)
+- Enforce cobbler setup (bsc#1226847)
