@@ -177,10 +177,10 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 }
 
 // RunMigration migrate an existing remote server to a container.
-func RunMigration(preparedImage string, sshAuthSocket string, sshConfigPath string, sshKnownhostsPath string, sourceFqdn string, user string) (string, string, string, error) {
+func RunMigration(preparedImage string, sshAuthSocket string, sshConfigPath string, sshKnownhostsPath string, sourceFqdn string, user string) (*utils.InspectResult, error) {
 	scriptDir, err := adm_utils.GenerateMigrationScript(sourceFqdn, user, false)
 	if err != nil {
-		return "", "", "", utils.Errorf(err, L("cannot generate migration script"))
+		return nil, utils.Errorf(err, L("cannot generate migration script"))
 	}
 	defer os.RemoveAll(scriptDir)
 
@@ -202,15 +202,15 @@ func RunMigration(preparedImage string, sshAuthSocket string, sshConfigPath stri
 	log.Info().Msg(L("Migrating server"))
 	if err := podman.RunContainer("uyuni-migration", preparedImage, utils.ServerVolumeMounts, extraArgs,
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
-		return "", "", "", utils.Errorf(err, L("cannot run uyuni migration container"))
+		return nil, utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
-	tz, oldPgVersion, newPgVersion, err := adm_utils.ReadContainerData(scriptDir)
+	extractedData, err := adm_utils.ReadContainerData(scriptDir)
 
 	if err != nil {
-		return "", "", "", utils.Errorf(err, L("cannot read extracted data"))
+		return nil, utils.Errorf(err, L("cannot read extracted data"))
 	}
 
-	return tz, oldPgVersion, newPgVersion, nil
+	return extractedData, nil
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
@@ -277,7 +277,7 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlag
 }
 
 // RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
-func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool) error {
+func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migration bool) error {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
@@ -289,7 +289,9 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool) error
 		"--security-opt", "label=disable",
 	}
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
-	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, schemaUpdateRequired, true, true, false)
+	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(
+		scriptDir, true, schemaUpdateRequired, true, migration, false,
+	)
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
@@ -383,8 +385,8 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage ty
 	}
 
 	schemaUpdateRequired := inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"]
-	if err := RunPgsqlFinalizeScript(preparedImage, schemaUpdateRequired); err != nil {
-		return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
+	if err := RunPgsqlFinalizeScript(preparedImage, schemaUpdateRequired, false); err != nil {
+		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
 
 	if err := RunPostUpgradeScript(preparedImage); err != nil {

@@ -53,10 +53,13 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	sshAuthSocket := migration_shared.GetSshAuthSocket()
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
-	tz, oldPgVersion, newPgVersion, err := podman.RunMigration(preparedImage, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn, flags.User)
+	extractedData, err := podman.RunMigration(preparedImage, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn, flags.User)
 	if err != nil {
 		return utils.Errorf(err, L("cannot run migration script"))
 	}
+
+	oldPgVersion := extractedData.CurrentPgVersion
+	newPgVersion := extractedData.ImagePgVersion
 
 	if oldPgVersion != newPgVersion {
 		if err := podman.RunPgsqlVersionUpgrade(flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion); err != nil {
@@ -65,7 +68,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 
 	schemaUpdateRequired := oldPgVersion != newPgVersion
-	if err := podman.RunPgsqlFinalizeScript(preparedImage, schemaUpdateRequired); err != nil {
+	if err := podman.RunPgsqlFinalizeScript(preparedImage, schemaUpdateRequired, true); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
 
@@ -73,7 +76,9 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	if err := podman.GenerateSystemdService(tz, preparedImage, false, flags.Mirror, viper.GetStringSlice("podman.arg")); err != nil {
+	if err := podman.GenerateSystemdService(
+		extractedData.Timezone, preparedImage, false, flags.Mirror, viper.GetStringSlice("podman.arg"),
+	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd service file"))
 	}
 

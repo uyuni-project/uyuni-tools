@@ -277,7 +277,7 @@ func GenerateSystemdConfFile(serviceName string, section string, body string) er
 	systemdConfFilePath := path.Join(systemdConfFolder, section+".conf")
 
 	content := []byte("[" + section + "]" + "\n" + body + "\n")
-	if err := os.WriteFile(systemdConfFilePath, content, 0644); err != nil {
+	if err := os.WriteFile(systemdConfFilePath, content, 0640); err != nil {
 		return utils.Errorf(err, L("cannot write %s file"), systemdConfFilePath)
 	}
 

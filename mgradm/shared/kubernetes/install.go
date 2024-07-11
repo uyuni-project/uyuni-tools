@@ -199,8 +199,8 @@ func Upgrade(
 	}
 
 	schemaUpdateRequired := inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"]
-	if err := RunPgsqlFinalizeScript(serverImage, image.PullPolicy, nodeName, schemaUpdateRequired); err != nil {
-		return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
+	if err := RunPgsqlFinalizeScript(serverImage, image.PullPolicy, nodeName, schemaUpdateRequired, false); err != nil {
+		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
 
 	if err := RunPostUpgradeScript(serverImage, image.PullPolicy, nodeName); err != nil {
