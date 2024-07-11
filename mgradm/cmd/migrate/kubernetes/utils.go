@@ -90,7 +90,7 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot run migration"))
 	}
 
-	tz, oldPgVersion, newPgVersion, err := adm_utils.ReadContainerData(scriptDir)
+	extractedData, err := adm_utils.ReadContainerData(scriptDir)
 	if err != nil {
 		return utils.Errorf(err, L("cannot read data from container"))
 	}
@@ -115,7 +115,7 @@ func migrateToKubernetes(
 
 	helmArgs := []string{
 		"--reset-values",
-		"--set", "timezone=" + tz,
+		"--set", "timezone=" + extractedData.Timezone,
 	}
 	if flags.Mirror != "" {
 		log.Warn().Msgf(L("The mirror data will not be migrated, ensure it is available at %s"), flags.Mirror)
@@ -139,6 +139,9 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot set replicas to 0"))
 	}
 
+	oldPgVersion := extractedData.CurrentPgVersion
+	newPgVersion := extractedData.ImagePgVersion
+
 	if oldPgVersion != newPgVersion {
 		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image, flags.DbUpgradeImage, nodeName, oldPgVersion, newPgVersion); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
@@ -146,8 +149,8 @@ func migrateToKubernetes(
 	}
 
 	schemaUpdateRequired := oldPgVersion != newPgVersion
-	if err := kubernetes.RunPgsqlFinalizeScript(serverImage, flags.Image.PullPolicy, nodeName, schemaUpdateRequired); err != nil {
-		return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
+	if err := kubernetes.RunPgsqlFinalizeScript(serverImage, flags.Image.PullPolicy, nodeName, schemaUpdateRequired, true); err != nil {
+		return utils.Errorf(err, L("cannot run PostgreSQL finalisation script"))
 	}
 
 	if err := kubernetes.RunPostUpgradeScript(serverImage, flags.Image.PullPolicy, nodeName); err != nil {

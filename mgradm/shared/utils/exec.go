@@ -67,13 +67,15 @@ func GeneratePgsqlVersionUpgradeScript(scriptDir string, oldPgVersion string, ne
 }
 
 // GenerateFinalizePostgresScript generates the script to finalize PostgreSQL upgrade.
-func GenerateFinalizePostgresScript(scriptDir string, RunAutotune bool, RunReindex bool, RunSchemaUpdate bool, RunDistroMigration bool, kubernetes bool) (string, error) {
+func GenerateFinalizePostgresScript(
+	scriptDir string, runAutotune bool, runReindex bool, runSchemaUpdate bool, migration bool, kubernetes bool,
+) (string, error) {
 	data := templates.FinalizePostgresTemplateData{
-		RunAutotune:        RunAutotune,
-		RunReindex:         RunReindex,
-		RunSchemaUpdate:    RunSchemaUpdate,
-		RunDistroMigration: RunDistroMigration,
-		Kubernetes:         kubernetes,
+		RunAutotune:     runAutotune,
+		RunReindex:      runReindex,
+		RunSchemaUpdate: runSchemaUpdate,
+		Migration:       migration,
+		Kubernetes:      kubernetes,
 	}
 
 	scriptName := "pgsqlFinalize.sh"
@@ -99,25 +101,22 @@ func GeneratePostUpgradeScript(scriptDir string, cobblerHost string) (string, er
 }
 
 // ReadContainerData returns values used to perform migration.
-func ReadContainerData(scriptDir string) (string, string, string, error) {
+func ReadContainerData(scriptDir string) (*utils.InspectResult, error) {
 	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))
 	if err != nil {
-		return "", "", "", errors.New(L("failed to read data extracted from source host"))
+		return nil, errors.New(L("failed to read data extracted from source host"))
 	}
+
 	viper.SetConfigType("env")
 	if err := viper.MergeConfig(bytes.NewBuffer(data)); err != nil {
-		return "", "", "", utils.Errorf(err, L("cannot read config"))
+		return nil, utils.Errorf(err, L("cannot read config"))
 	}
-	if len(viper.GetString("Timezone")) <= 0 {
-		return "", "", "", errors.New(L("cannot retrieve timezone"))
+
+	var results utils.InspectResult
+	if err := viper.Unmarshal(&results); err != nil {
+		return nil, utils.Errorf(err, L("failed to unmarshall data extracted from source host"))
 	}
-	if len(viper.GetString("old_pg_version")) <= 0 {
-		return "", "", "", errors.New(L("cannot retrieve source PostgreSQL version"))
-	}
-	if len(viper.GetString("new_pg_version")) <= 0 {
-		return "", "", "", errors.New(L("cannot retrieve image PostgreSQL version"))
-	}
-	return viper.GetString("Timezone"), viper.GetString("old_pg_version"), viper.GetString("new_pg_version"), nil
+	return &results, nil
 }
 
 // RunMigration execute the migration script.

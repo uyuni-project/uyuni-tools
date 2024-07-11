@@ -80,8 +80,8 @@ echo "Extracting time zone..."
 $SSH {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
 
 echo "Extracting postgresql versions..."
-echo "new_pg_version=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1)" >> /var/lib/uyuni-tools/data
-echo "old_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)" >> /var/lib/uyuni-tools/data
+echo "image_pg_version=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1)" >> /var/lib/uyuni-tools/data
+echo "current_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)" >> /var/lib/uyuni-tools/data
 
 echo "Altering configuration for domain resolution..."
 sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/rhn/rhn.conf;

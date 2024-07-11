@@ -55,6 +55,17 @@ var inspectValues = []types.InspectData{
 	types.NewInspectData("db_port", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_port' | cut -d' ' -f3 || true", false),
 }
 
+// InspectResult holds the results of the inspection scripts.
+type InspectResult struct {
+	Timezone         string `mapstructure:"Timezone"`
+	CurrentPgVersion string `mapstructure:"current_pg_version"`
+	ImagePgVersion   string `mapstructure:"image_pg_version"`
+	DbUser           string `mapstructure:"db_user"`
+	DbPassword       string `mapstructure:"db_password"`
+	DbName           string `mapstructure:"db_name"`
+	DbPort           int    `mapstructure:"db_port"`
+}
+
 // InspectOutputFile represents the directory and the basename where the inspect values are stored.
 var InspectOutputFile = types.InspectFile{
 	Directory: "/var/lib/uyuni-tools",
