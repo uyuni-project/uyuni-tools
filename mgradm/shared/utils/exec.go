@@ -20,6 +20,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -137,11 +138,19 @@ func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool) (s
 		return "", utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
+	var ipv6_enabled bool
+	if kubernetes {
+		ipv6_enabled = false
+	} else {
+		ipv6_enabled = podman.IsIpv6Enabled()
+	}
+
 	data := templates.MigrateScriptTemplateData{
 		Volumes:    utils.ServerVolumeMounts,
 		SourceFqdn: sourceFqdn,
 		User:       user,
 		Kubernetes: kubernetes,
+		IPv6:       ipv6_enabled,
 	}
 
 	scriptPath := filepath.Join(scriptDir, "migrate.sh")

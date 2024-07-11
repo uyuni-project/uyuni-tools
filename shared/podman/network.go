@@ -21,7 +21,7 @@ const UyuniNetwork = "uyuni"
 func SetupNetwork(isProxy bool) error {
 	log.Info().Msgf(L("Setting up %s network"), UyuniNetwork)
 
-	ipv6Enabled := isIpv6Enabled()
+	ipv6Enabled := IsIpv6Enabled()
 
 	// check if network exists before trying to get the IPV6 information
 	networkExists := IsNetworkPresent(UyuniNetwork)
@@ -71,7 +71,8 @@ func SetupNetwork(isProxy bool) error {
 	return nil
 }
 
-func isIpv6Enabled() bool {
+// IsIpv6Enabled returns true if IPv6 is enabled in host system.
+func IsIpv6Enabled() bool {
 	files := []string{
 		"/sys/module/ipv6/parameters/disable",
 		"/proc/sys/net/ipv6/conf/default/disable_ipv6",

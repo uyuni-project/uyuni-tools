@@ -97,6 +97,11 @@ fi
 
 sed 's/address=[^:]*:/address=*:/' -i /etc/tomcat/conf.d/remote_debug.conf
 
+{{ if .IPv6 }}
+sed 's/interface: 0\.0\.0\.0/interface: \'::\'/' -i /etc/salt/master
+sed 's/ipv6: False/ipv6: True/' -i /etc/salt/master
+{{ end }}
+
 {{ if .Kubernetes }}
 echo 'server.no_ssl = 1' >> /etc/rhn/rhn.conf;
 echo "Extracting SSL certificate and authority"
@@ -144,6 +149,7 @@ type MigrateScriptTemplateData struct {
 	SourceFqdn string
 	User       string
 	Kubernetes bool
+	IPv6       bool
 }
 
 // Render will create migration script.
