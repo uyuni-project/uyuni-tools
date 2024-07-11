@@ -1,0 +1,2 @@
+- replace not working Fatal error by plain error return
+  (bsc#1220136)
