@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"os"
 	"path"
-	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -24,9 +23,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"golang.org/x/term"
 )
@@ -36,40 +33,10 @@ const prompt_end = ": "
 var prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
 var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
 
-// InspectScriptFilename is the inspect script basename.
-var InspectScriptFilename = "inspect.sh"
-
-var inspectValues = []types.InspectData{
-	types.NewInspectData("uyuni_release", "cat /etc/*release | grep 'Uyuni release' | cut -d ' ' -f3 || true", false),
-	types.NewInspectData("suse_manager_release", "cat /etc/*release | grep 'SUSE Manager release' | cut -d ' ' -f4 || true", false),
-	types.NewInspectData("architecture", "lscpu | grep Architecture | awk '{print $2}' || true", false),
-	types.NewInspectData("fqdn", "cat /etc/rhn/rhn.conf 2>/dev/null | grep 'java.hostname' | cut -d' ' -f3 || true", false),
-	types.NewInspectData("image_pg_version", "rpm -qa --qf '%{VERSION}\\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1 || true", false),
-	types.NewInspectData("current_pg_version", "(test -e /var/lib/pgsql/data/PG_VERSION && cat /var/lib/pgsql/data/PG_VERSION) || true", false),
-	types.NewInspectData("registration_info", "env LC_ALL=C LC_MESSAGES=C LANG=C transactional-update --quiet register --status 2>/dev/null || true", false),
-	types.NewInspectData("scc_username", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep username | cut -d= -f2 || true", true),
-	types.NewInspectData("scc_password", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep password | cut -d= -f2 || true", true),
-	types.NewInspectData("db_user", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_user' | cut -d' ' -f3 || true", false),
-	types.NewInspectData("db_password", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_password' | cut -d' ' -f3 || true", false),
-	types.NewInspectData("db_name", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_name' | cut -d' ' -f3 || true", false),
-	types.NewInspectData("db_port", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_port' | cut -d' ' -f3 || true", false),
-}
-
 // InspectResult holds the results of the inspection scripts.
 type InspectResult struct {
-	Timezone         string `mapstructure:"Timezone"`
-	CurrentPgVersion string `mapstructure:"current_pg_version"`
-	ImagePgVersion   string `mapstructure:"image_pg_version"`
-	DbUser           string `mapstructure:"db_user"`
-	DbPassword       string `mapstructure:"db_password"`
-	DbName           string `mapstructure:"db_name"`
-	DbPort           int    `mapstructure:"db_port"`
-}
-
-// InspectOutputFile represents the directory and the basename where the inspect values are stored.
-var InspectOutputFile = types.InspectFile{
-	Directory: "/var/lib/uyuni-tools",
-	Basename:  "data",
+	CommonInspectData `mapstructure:",squash"`
+	Timezone          string
 }
 
 func checkValueSize(value string, min int, max int) bool {
@@ -366,90 +333,6 @@ func DownloadFile(filepath string, URL string) (err error) {
 		return err
 	}
 
-	return nil
-}
-
-// ReadInspectData returns a map with the values inspected by an image and deploy.
-func ReadInspectData(scriptDir string, prefix ...string) (map[string]string, error) {
-	path := filepath.Join(scriptDir, "data")
-	log.Debug().Msgf("Trying to read %s", path)
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return map[string]string{}, Errorf(err, L("cannot parse file %s"), path)
-	}
-
-	inspectResult := make(map[string]string)
-
-	viper.SetConfigType("env")
-	if err := viper.MergeConfig(bytes.NewBuffer(data)); err != nil {
-		return map[string]string{}, Errorf(err, L("cannot read config"))
-	}
-
-	for _, v := range inspectValues {
-		if len(viper.GetString(v.Variable)) > 0 {
-			index := v.Variable
-			/* Just the first value of prefix is used.
-			 * This slice is just to allow an empty argument
-			 */
-			if len(prefix) >= 1 {
-				index = prefix[0] + v.Variable
-			}
-			inspectResult[index] = viper.GetString(v.Variable)
-		}
-	}
-	return inspectResult, nil
-}
-
-// InspectHost check values on a host machine.
-func InspectHost(serverHost bool) (map[string]string, error) {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
-	defer os.RemoveAll(scriptDir)
-	if err != nil {
-		return map[string]string{}, Errorf(err, L("failed to create temporary directory"))
-	}
-
-	if err := GenerateInspectHostScript(scriptDir, serverHost); err != nil {
-		return map[string]string{}, err
-	}
-
-	if err := RunCmdStdMapping(zerolog.DebugLevel, scriptDir+"/inspect.sh"); err != nil {
-		return map[string]string{}, Errorf(err, L("failed to run inspect script in host system"))
-	}
-
-	inspectResult, err := ReadInspectData(scriptDir, "host_")
-	if err != nil {
-		return map[string]string{}, Errorf(err, L("cannot inspect host data"))
-	}
-
-	return inspectResult, err
-}
-
-// GenerateInspectContainerScript create the host inspect script.
-func GenerateInspectHostScript(scriptDir string, proxyHost bool) error {
-	data := templates.InspectTemplateData{
-		Param:      inspectValues,
-		OutputFile: scriptDir + "/" + InspectOutputFile.Basename,
-		ProxyHost:  proxyHost,
-	}
-
-	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
-	if err := WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return Errorf(err, L("failed to generate inspect script"))
-	}
-	return nil
-}
-
-// GenerateInspectContainerScript create the container inspect script.
-func GenerateInspectContainerScript(scriptDir string) error {
-	data := templates.InspectTemplateData{
-		Param:      inspectValues,
-		OutputFile: InspectOutputFile.Directory + "/" + InspectOutputFile.Basename,
-	}
-
-	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
-	if err := WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return Errorf(err, L("failed to generate inspect script"))
-	}
 	return nil
 }
 

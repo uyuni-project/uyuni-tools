@@ -15,16 +15,14 @@ import (
 
 // PodmanLogin logs in the registry.suse.com registry if needed and returns an authentication file, a cleanup function and an error.
 func PodmanLogin() (string, func(), error) {
-	inspectedHostValues, err := utils.InspectHost(false)
+	creds, err := inspectHost()
 	if err != nil {
 		return "", nil, err
 	}
 
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
+	if creds.SccPassword != "" && creds.SccUsername != "" {
 		// We have SCC credentials, so we are pretty likely to need registry.suse.com
-		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", inspectedHostValues["host_scc_username"], inspectedHostValues["host_scc_password"])))
+		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", creds.SccUsername, creds.SccPassword)))
 		authFileContent := fmt.Sprintf(`{
 	"auths": {
 		"registry.suse.com" : {

@@ -11,7 +11,6 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
-	"strconv"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -204,7 +203,7 @@ func RunMigration(preparedImage string, sshAuthSocket string, sshConfigPath stri
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
 		return nil, utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
-	extractedData, err := adm_utils.ReadContainerData(scriptDir)
+	extractedData, err := utils.ReadInspectData[utils.InspectResult](path.Join(scriptDir, "data"))
 
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot read extracted data"))
@@ -361,20 +360,20 @@ func Upgrade(
 	defer func() {
 		err = podman.StartService(podman.ServerService)
 	}()
-	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
-		log.Info().Msgf(L("Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+	if inspectedValues.ImagePgVersion > inspectedValues.CurrentPgVersion {
+		log.Info().Msgf(L("Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"), inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion)
 		if err := RunPgsqlVersionUpgrade(
-			authFile, image, upgradeImage, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"],
+			authFile, image, upgradeImage, inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
-	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
-		log.Info().Msgf(L("Upgrading to %s without changing PostgreSQL version"), inspectedValues["uyuni_release"])
+	} else if inspectedValues.ImagePgVersion == inspectedValues.CurrentPgVersion {
+		log.Info().Msgf(L("Upgrading to %s without changing PostgreSQL version"), inspectedValues.UyuniRelease)
 	} else {
-		return fmt.Errorf(L("trying to downgrade PostgreSQL from %[1]s to %[2]s"), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+		return fmt.Errorf(L("trying to downgrade PostgreSQL from %[1]s to %[2]s"), inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion)
 	}
 
-	schemaUpdateRequired := inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"]
+	schemaUpdateRequired := inspectedValues.CurrentPgVersion != inspectedValues.ImagePgVersion
 	if err := RunPgsqlFinalizeScript(preparedImage, schemaUpdateRequired, false); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
@@ -388,13 +387,8 @@ func Upgrade(
 	}
 	log.Info().Msg(L("Waiting for the server to start…"))
 
-	dbPort, err := strconv.Atoi(inspectedValues["db_port"])
-	if err != nil {
-		return utils.Errorf(err, L("error %s is not a valid port number."), inspectedValues["db_port"])
-	}
-
 	err = coco.Upgrade(cocoImage, image,
-		dbPort, inspectedValues["db_name"], inspectedValues["db_user"], inspectedValues["db_password"])
+		inspectedValues.DbPort, inspectedValues.DbName, inspectedValues.DbUser, inspectedValues.DbPassword)
 	if err != nil {
 		return utils.Errorf(err, L("error upgrading confidential computing service."))
 	}
@@ -403,31 +397,32 @@ func Upgrade(
 }
 
 // Inspect check values on a given image and deploy.
-func Inspect(preparedImage string) (map[string]string, error) {
+func Inspect(preparedImage string) (*utils.ServerInspectData, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("failed to create temporary directory"))
+		return nil, utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
-	if err := utils.GenerateInspectContainerScript(scriptDir); err != nil {
-		return map[string]string{}, err
+	inspector := utils.NewServerInspector(scriptDir)
+	if err := inspector.GenerateScript(); err != nil {
+		return nil, err
 	}
 
 	podmanArgs := []string{
-		"-v", scriptDir + ":" + utils.InspectOutputFile.Directory,
+		"-v", scriptDir + ":" + utils.InspectContainerDirectory,
 		"--security-opt", "label=disable",
 	}
 
 	err = podman.RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
-		[]string{utils.InspectOutputFile.Directory + "/" + utils.InspectScriptFilename})
+		[]string{utils.InspectContainerDirectory + "/" + utils.InspectScriptFilename})
 	if err != nil {
-		return map[string]string{}, err
+		return nil, err
 	}
 
-	inspectResult, err := utils.ReadInspectData(scriptDir)
+	inspectResult, err := inspector.ReadInspectData()
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("cannot inspect data"))
+		return nil, utils.Errorf(err, L("cannot inspect data"))
 	}
 
 	return inspectResult, err
