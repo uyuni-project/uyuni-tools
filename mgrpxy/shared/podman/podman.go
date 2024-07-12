@@ -222,23 +222,23 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra
 	if err := podman.StopService(podman.ProxyService); err != nil {
 		return err
 	}
-	httpdImage, err := getContainerImage(&flags.ProxyImageFlags, "httpd")
+	httpdImage, err := GetContainerImage(&flags.ProxyImageFlags, "httpd")
 	if err != nil {
 		log.Warn().Msgf(L("cannot find httpd image: it will no be upgraded"))
 	}
-	saltBrokerImage, err := getContainerImage(&flags.ProxyImageFlags, "salt-broker")
+	saltBrokerImage, err := GetContainerImage(&flags.ProxyImageFlags, "salt-broker")
 	if err != nil {
 		log.Warn().Msgf(L("cannot find salt-broker image: it will no be upgraded"))
 	}
-	squidImage, err := getContainerImage(&flags.ProxyImageFlags, "squid")
+	squidImage, err := GetContainerImage(&flags.ProxyImageFlags, "squid")
 	if err != nil {
 		log.Warn().Msgf(L("cannot find squid image: it will no be upgraded"))
 	}
-	sshImage, err := getContainerImage(&flags.ProxyImageFlags, "ssh")
+	sshImage, err := GetContainerImage(&flags.ProxyImageFlags, "ssh")
 	if err != nil {
 		log.Warn().Msgf(L("cannot find ssh image: it will no be upgraded"))
 	}
-	tftpdImage, err := getContainerImage(&flags.ProxyImageFlags, "tftpd")
+	tftpdImage, err := GetContainerImage(&flags.ProxyImageFlags, "tftpd")
 	if err != nil {
 		log.Warn().Msgf(L("cannot find tftpd image: it will no be upgraded"))
 	}
@@ -249,28 +249,6 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra
 	}
 
 	return startPod()
-}
-
-func getContainerImage(flags *utils.ProxyImageFlags, name string) (string, error) {
-	image := flags.GetContainerImage(name)
-	inspectedHostValues, err := shared_utils.InspectHost(true)
-	if err != nil {
-		return "", shared_utils.Errorf(err, L("cannot inspect host values"))
-	}
-
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password && strings.Contains(image, "registry.suse.com") {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := podman.PrepareImage(image, flags.PullPolicy, pullArgs...)
-	if err != nil {
-		return "", err
-	}
-
-	return preparedImage, nil
 }
 
 // Start the proxy services.
