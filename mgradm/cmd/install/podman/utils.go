@@ -48,7 +48,12 @@ func installForPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin()
+	hostData, err := shared_podman.InspectHost()
+	if err != nil {
+		return err
+	}
+
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}

@@ -155,8 +155,8 @@ func Upgrade(
 		return err
 	}
 
-	fqdn, exist := inspectedValues["fqdn"]
-	if !exist {
+	fqdn := inspectedValues.Fqdn
+	if fqdn == "" {
 		return fmt.Errorf(L("inspect function did non return fqdn value"))
 	}
 
@@ -190,23 +190,23 @@ func Upgrade(
 			err = kubernetes.ReplicasTo(kubernetes.ServerApp, 1)
 		}
 	}()
-	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
+	if inspectedValues.ImagePgVersion > inspectedValues.CurrentPgVersion {
 		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"),
-			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+			inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion)
 
 		if err := RunPgsqlVersionUpgrade(globalFlags.Registry, *image, *upgradeImage, nodeName,
-			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"],
+			inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
-	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {
-		log.Info().Msgf(L("Upgrading to %s without changing PostgreSQL version"), inspectedValues["uyuni_release"])
+	} else if inspectedValues.ImagePgVersion == inspectedValues.CurrentPgVersion {
+		log.Info().Msgf(L("Upgrading to %s without changing PostgreSQL version"), inspectedValues.UyuniRelease)
 	} else {
 		return fmt.Errorf(L("trying to downgrade PostgreSQL from %[1]s to %[2]s"),
-			inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
+			inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion)
 	}
 
-	schemaUpdateRequired := inspectedValues["current_pg_version"] != inspectedValues["image_pg_version"]
+	schemaUpdateRequired := inspectedValues.CurrentPgVersion != inspectedValues.ImagePgVersion
 	if err := RunPgsqlFinalizeScript(serverImage, image.PullPolicy, nodeName, schemaUpdateRequired, false); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}

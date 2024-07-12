@@ -14,7 +14,12 @@ import (
 )
 
 func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.Command, args []string) error {
-	authFile, cleaner, err := shared_podman.PodmanLogin()
+	hostData, err := shared_podman.InspectHost()
+	if err != nil {
+		return err
+	}
+
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}

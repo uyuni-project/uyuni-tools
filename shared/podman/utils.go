@@ -173,14 +173,19 @@ func isVolumePresent(volume string) bool {
 }
 
 // Inspect check values on a given image and deploy.
-func Inspect(serverImage string, pullPolicy string, proxyHost bool) (map[string]string, error) {
+func Inspect(serverImage string, pullPolicy string, proxyHost bool) (*utils.ServerInspectData, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("failed to create temporary directory"))
+		return nil, utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
-	authFile, cleaner, err := PodmanLogin()
+	hostData, err := InspectHost()
+	if err != nil {
+		return nil, err
+	}
+
+	authFile, cleaner, err := PodmanLogin(hostData)
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
@@ -188,27 +193,28 @@ func Inspect(serverImage string, pullPolicy string, proxyHost bool) (map[string]
 
 	preparedImage, err := PrepareImage(authFile, serverImage, pullPolicy)
 	if err != nil {
-		return map[string]string{}, err
+		return nil, err
 	}
 
-	if err := utils.GenerateInspectContainerScript(scriptDir); err != nil {
-		return map[string]string{}, err
+	inspector := utils.NewServerInspector(scriptDir)
+	if err := inspector.GenerateScript(); err != nil {
+		return nil, err
 	}
 
 	podmanArgs := []string{
-		"-v", scriptDir + ":" + utils.InspectOutputFile.Directory,
+		"-v", scriptDir + ":" + utils.InspectContainerDirectory,
 		"--security-opt", "label=disable",
 	}
 
 	err = RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
-		[]string{utils.InspectOutputFile.Directory + "/" + utils.InspectScriptFilename})
+		[]string{utils.InspectContainerDirectory + "/" + utils.InspectScriptFilename})
 	if err != nil {
-		return map[string]string{}, err
+		return nil, err
 	}
 
-	inspectResult, err := utils.ReadInspectData(scriptDir)
+	inspectResult, err := inspector.ReadInspectData()
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("cannot inspect data"))
+		return nil, utils.Errorf(err, L("cannot inspect data"))
 	}
 
 	return inspectResult, err
