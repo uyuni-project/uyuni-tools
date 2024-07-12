@@ -92,7 +92,7 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot run migration"))
 	}
 
-	extractedData, err := adm_utils.ReadContainerData(scriptDir)
+	extractedData, err := utils.ReadInspectData[utils.InspectResult](path.Join(scriptDir, "data"))
 	if err != nil {
 		return utils.Errorf(err, L("cannot read data from container"))
 	}

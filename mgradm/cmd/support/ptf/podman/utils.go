@@ -31,7 +31,12 @@ func ptfForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := podman_shared.PodmanLogin()
+	hostData, err := podman_shared.InspectHost()
+	if err != nil {
+		return err
+	}
+
+	authFile, cleaner, err := podman_shared.PodmanLogin(hostData)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
