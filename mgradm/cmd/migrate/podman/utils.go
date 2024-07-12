@@ -33,7 +33,12 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return utils.Errorf(err, L("cannot compute image"))
 	}
 
-	authFile, cleaner, err := podman_utils.PodmanLogin()
+	hostData, err := podman_utils.InspectHost()
+	if err != nil {
+		return err
+	}
+
+	authFile, cleaner, err := podman_utils.PodmanLogin(hostData)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}

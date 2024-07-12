@@ -212,7 +212,12 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra
 		return err
 	}
 
-	authFile, cleaner, err := podman.PodmanLogin()
+	hostData, err := podman.InspectHost()
+	if err != nil {
+		return err
+	}
+
+	authFile, cleaner, err := podman.PodmanLogin(hostData)
 	if err != nil {
 		return shared_utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}

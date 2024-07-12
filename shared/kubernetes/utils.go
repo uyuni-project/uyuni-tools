@@ -230,23 +230,18 @@ func waitForReplica(podname string, replica uint) error {
 	}
 	cmdArgs := []string{"get", "pod", podname, "--output=custom-columns=STATUS:.status.phase", "--no-headers"}
 
-	var err error
-
 	for i := 0; i < waitSeconds; i++ {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
-		outStr := strings.TrimSuffix(string(out), "\n")
 		if err != nil {
 			return utils.Errorf(err, L("cannot execute %s"), strings.Join(cmdArgs, string(" ")))
 		}
+		outStr := strings.TrimSuffix(string(out), "\n")
 		if string(outStr) == "Running" {
 			log.Debug().Msgf("%s pod replica is now %d", podname, replica)
 			break
 		}
 		log.Debug().Msgf("Pod %s replica is %s in %d seconds.", podname, string(out), i)
 		time.Sleep(1 * time.Second)
-	}
-	if err != nil {
-		return utils.Errorf(err, L("pod %[1]s replicas have not reached %[2]d in %[3]s seconds"), podname, replica, strconv.Itoa(waitSeconds))
 	}
 	return nil
 }

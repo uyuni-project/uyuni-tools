@@ -37,7 +37,12 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podman.PodmanProxyF
 		return shared_utils.Errorf(err, L("failed to extract proxy config from %s file"), configPath)
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin()
+	hostData, err := shared_podman.InspectHost()
+	if err != nil {
+		return err
+	}
+
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData)
 	if err != nil {
 		return shared_utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
