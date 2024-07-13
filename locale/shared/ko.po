@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-18 15:00+0200\n"
-"PO-Revision-Date: 2024-06-12 10:46+0000\n"
+"PO-Revision-Date: 2024-07-13 08:47+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-shared/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: shared/api/api.go:72
 msgid "FQDN of the server to connect to"
@@ -115,12 +116,14 @@ msgid "unknown container kind: %s"
 msgstr "알 수 없는 컨테이너 종류: %s"
 
 #: shared/connection.go:277
+#, fuzzy
 msgid "Copying the SSL CA certificate to the host"
-msgstr ""
+msgstr "SSL CA 인증서를 호스트에 복사"
 
 #: shared/connection.go:293
+#, fuzzy
 msgid "Updating host trusted certificates"
-msgstr ""
+msgstr "호스트 신뢰할 수 있는 인증서 업데이트"
 
 #: shared/connection.go:332
 msgid "failed to determine suitable backend"
