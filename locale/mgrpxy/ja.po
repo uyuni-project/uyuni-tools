@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-18 15:00+0200\n"
-"PO-Revision-Date: 2024-06-11 07:47+0000\n"
+"PO-Revision-Date: 2024-07-14 23:47+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrpxy/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: mgrpxy/cmd/cmd.go:34
 msgid "Uyuni proxy administration tool"
@@ -128,9 +129,8 @@ msgid "failed to extract proxy config from %s file"
 msgstr "プロキシ設定を %s ファイルから抽出できませんでした"
 
 #: mgrpxy/cmd/logs/logs.go:36
-#, fuzzy
 msgid "Get the proxy logs"
-msgstr "プロキシステータスの取得"
+msgstr "プロキシログの取得"
 
 #: mgrpxy/cmd/logs/logs.go:37
 msgid ""
@@ -138,22 +138,29 @@ msgid ""
 "The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman\n"
 "However, you can specify the pod and/or container names to get the logs for specific container(s). See examples for more details."
 msgstr ""
+"プロキシログの取得\n"
+"このコマンドは、インストールされたバックエンドを自動的に検出し、"
+"KubernetesまたはPodmanが管理しているコンテナのログを表示します\n"
+"ただし、ポッド名および／またはコンテナ名を指定して、特定のコンテナのログを取"
+"得できます。詳細については、例を参照してください。"
 
 #: mgrpxy/cmd/logs/logs.go:62
 msgid "specify if logs should be followed"
-msgstr ""
+msgstr "ログの追跡を行うかどうかを指定します"
 
 #: mgrpxy/cmd/logs/logs.go:63
 msgid "show timestamps in the log outputs"
-msgstr ""
+msgstr "ログ出力にタイムスタンプを表示します"
 
 #: mgrpxy/cmd/logs/logs.go:64
 msgid "number of lines to show from the end of the logs"
-msgstr ""
+msgstr "ログの末尾から表示する行数"
 
 #: mgrpxy/cmd/logs/logs.go:66
 msgid "show logs since a specific time or duration. Supports Go duration strings and RFC3339 format (e.g. 5s, 2m, 3h, 2023-01-02T15:04:05)"
 msgstr ""
+"特定の時刻または期間以降のログを表示します。Go期間文字列およびRFC3339形式をサ"
+"ポートしています（5s、2m、3h、2023-01-02T15:04:05など）"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
@@ -330,11 +337,11 @@ msgstr "すべてのボリュームが削除されました"
 
 #: mgrpxy/cmd/uninstall/podman.go:71
 msgid "Failed to delete /etc/uyuni/proxy folder"
-msgstr ""
+msgstr "/etc/uyuni/proxyフォルダを削除できませんでした"
 
 #: mgrpxy/cmd/uninstall/podman.go:73
 msgid "/etc/uyuni/proxy folder removed"
-msgstr ""
+msgstr "/etc/uyuni/proxyフォルダは削除されました"
 
 #: mgrpxy/cmd/uninstall/podman.go:81
 #, javascript-format
@@ -464,11 +471,13 @@ msgstr "設定 %s でプロキシを設定しています"
 
 #: mgrpxy/shared/podman/podman.go:196
 msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
-msgstr ""
+msgstr "/etc/uyuni/proxyディレクトリには、すべてのユーザーに読み取りおよび書き込み権"
+"限がありません。umask設定を確認してください。"
 
 #: mgrpxy/shared/podman/podman.go:211
 msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
-msgstr ""
+msgstr "/etc/uyuni/proxy/config.yaml には、すべてのユーザーに読み取り権限がありません"
+"。umask設定を確認してください。"
 
 #: mgrpxy/shared/podman/podman.go:227
 msgid "cannot find httpd image: it will no be upgraded"
