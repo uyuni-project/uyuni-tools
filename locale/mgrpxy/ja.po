@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-18 15:00+0200\n"
-"PO-Revision-Date: 2024-07-14 23:47+0000\n"
+"PO-Revision-Date: 2024-07-15 22:47+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrpxy/ja/>\n"
@@ -341,7 +341,7 @@ msgstr "/etc/uyuni/proxyフォルダを削除できませんでした"
 
 #: mgrpxy/cmd/uninstall/podman.go:73
 msgid "/etc/uyuni/proxy folder removed"
-msgstr "/etc/uyuni/proxyフォルダは削除されました"
+msgstr "/etc/uyuni/proxyフォルダが削除されました"
 
 #: mgrpxy/cmd/uninstall/podman.go:81
 #, javascript-format
@@ -476,7 +476,7 @@ msgstr "/etc/uyuni/proxyディレクトリには、すべてのユーザーに�
 
 #: mgrpxy/shared/podman/podman.go:211
 msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
-msgstr "/etc/uyuni/proxy/config.yaml には、すべてのユーザーに読み取り権限がありません"
+msgstr "/etc/uyuni/proxy/config.yamlには、すべてのユーザーに読み取り権限がありません"
 "。umask設定を確認してください。"
 
 #: mgrpxy/shared/podman/podman.go:227
