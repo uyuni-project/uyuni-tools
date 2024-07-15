@@ -214,7 +214,13 @@ func RunMigration(preparedImage string, sshAuthSocket string, sshConfigPath stri
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
-func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlags, oldPgsql string, newPgsql string) error {
+func RunPgsqlVersionUpgrade(
+	authFile string,
+	image types.ImageFlags,
+	upgradeImage types.ImageFlags,
+	oldPgsql string,
+	newPgsql string,
+) error {
 	log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql)
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
@@ -243,19 +249,7 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlag
 			}
 		}
 
-		inspectedHostValues, err := utils.InspectHost(false)
-		if err != nil {
-			return utils.Errorf(err, L("cannot inspect host values"))
-		}
-
-		pullArgs := []string{}
-		_, scc_user_exist := inspectedHostValues["host_scc_username"]
-		_, scc_user_password := inspectedHostValues["host_scc_password"]
-		if scc_user_exist && scc_user_password && strings.Contains(upgradeImageUrl, "registry.suse.com") {
-			pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-		}
-
-		preparedImage, err := podman.PrepareImage(upgradeImageUrl, image.PullPolicy, pullArgs...)
+		preparedImage, err := podman.PrepareImage(authFile, upgradeImageUrl, image.PullPolicy)
 		if err != nil {
 			return err
 		}
@@ -328,7 +322,13 @@ func RunPostUpgradeScript(serverImage string) error {
 }
 
 // Upgrade will upgrade server to the image given as attribute.
-func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage types.ImageFlags, args []string) error {
+func Upgrade(
+	authFile string,
+	image types.ImageFlags,
+	upgradeImage types.ImageFlags,
+	cocoImage types.ImageFlags,
+	args []string,
+) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {
 		return err
 	}
@@ -338,19 +338,7 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage ty
 		return fmt.Errorf(L("failed to compute image URL"))
 	}
 
-	inspectedHostValues, err := utils.InspectHost(false)
-	if err != nil {
-		return utils.Errorf(err, L("cannot inspect host values"))
-	}
-
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password && strings.Contains(serverImage, "registry.suse.com") {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := podman.PrepareImage(serverImage, image.PullPolicy, pullArgs...)
+	preparedImage, err := podman.PrepareImage(authFile, serverImage, image.PullPolicy)
 	if err != nil {
 		return err
 	}
@@ -375,7 +363,9 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage ty
 	}()
 	if inspectedValues["image_pg_version"] > inspectedValues["current_pg_version"] {
 		log.Info().Msgf(L("Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"), inspectedValues["current_pg_version"], inspectedValues["image_pg_version"])
-		if err := RunPgsqlVersionUpgrade(image, upgradeImage, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"]); err != nil {
+		if err := RunPgsqlVersionUpgrade(
+			authFile, image, upgradeImage, inspectedValues["current_pg_version"], inspectedValues["image_pg_version"],
+		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	} else if inspectedValues["image_pg_version"] == inspectedValues["current_pg_version"] {

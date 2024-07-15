@@ -32,20 +32,13 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return utils.Errorf(err, L("cannot compute image"))
 	}
 
-	// FIXME all this code should be centralized. Now it being called in several different places.
-	inspectedHostValues, err := utils.InspectHost(false)
+	authFile, cleaner, err := podman_utils.PodmanLogin()
 	if err != nil {
-		return utils.Errorf(err, L("cannot inspect host values"))
+		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
+	defer cleaner()
 
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := podman_utils.PrepareImage(serverImage, flags.Image.PullPolicy, pullArgs...)
+	preparedImage, err := podman_utils.PrepareImage(authFile, serverImage, flags.Image.PullPolicy)
 	if err != nil {
 		return err
 	}
@@ -63,7 +56,9 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	newPgVersion := extractedData.ImagePgVersion
 
 	if oldPgVersion != newPgVersion {
-		if err := podman.RunPgsqlVersionUpgrade(flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion); err != nil {
+		if err := podman.RunPgsqlVersionUpgrade(
+			authFile, flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion,
+		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	}
