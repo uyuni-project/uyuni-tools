@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/viper"
 	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 
@@ -30,11 +31,29 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return utils.Errorf(err, L("cannot compute image"))
 	}
 
+	// FIXME all this code should be centralized. Now it being called in several different places.
+	inspectedHostValues, err := utils.InspectHost(false)
+	if err != nil {
+		return utils.Errorf(err, L("cannot inspect host values"))
+	}
+
+	pullArgs := []string{}
+	_, scc_user_exist := inspectedHostValues["host_scc_username"]
+	_, scc_user_password := inspectedHostValues["host_scc_password"]
+	if scc_user_exist && scc_user_password {
+		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
+	}
+
+	preparedImage, err := podman_utils.PrepareImage(serverImage, flags.Image.PullPolicy, pullArgs...)
+	if err != nil {
+		return err
+	}
+
 	// Find the SSH Socket and paths for the migration
 	sshAuthSocket := migration_shared.GetSshAuthSocket()
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
-	tz, oldPgVersion, newPgVersion, err := podman.RunMigration(serverImage, flags.Image.PullPolicy, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn, flags.User)
+	tz, oldPgVersion, newPgVersion, err := podman.RunMigration(preparedImage, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn, flags.User)
 	if err != nil {
 		return utils.Errorf(err, L("cannot run migration script"))
 	}
@@ -46,15 +65,15 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 
 	schemaUpdateRequired := oldPgVersion != newPgVersion
-	if err := podman.RunPgsqlFinalizeScript(serverImage, schemaUpdateRequired); err != nil {
+	if err := podman.RunPgsqlFinalizeScript(preparedImage, schemaUpdateRequired); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
 
-	if err := podman.RunPostUpgradeScript(serverImage); err != nil {
+	if err := podman.RunPostUpgradeScript(preparedImage); err != nil {
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	if err := podman.GenerateSystemdService(tz, serverImage, false, flags.Mirror, viper.GetStringSlice("podman.arg")); err != nil {
+	if err := podman.GenerateSystemdService(tz, preparedImage, false, flags.Mirror, viper.GetStringSlice("podman.arg")); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd service file"))
 	}
 
@@ -67,6 +86,11 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	if err := podman_utils.EnablePodmanSocket(); err != nil {
 		return utils.Errorf(err, L("cannot enable podman socket"))
+	}
+
+	cnx := shared.NewConnection("podman", podman_utils.ServerContainerName, "")
+	if err := cnx.CopyCaCertificate(sourceFqdn); err != nil {
+		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
 
 	return nil

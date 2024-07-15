@@ -195,6 +195,42 @@ func TestComputeImage(t *testing.T) {
 		{"registry/path/to/image-migration-14-16:foo", "registry/path/to/image:foo", "bar", "", "-migration-14-16"},
 		{"registry/path/to/image-migration-14-16:bar", "registry/path/to/image", "bar", "", "-migration-14-16"},
 		{"registry/path/to/image-migration-14-16:bar", "path/to/image", "bar", "registry", "-migration-14-16"},
+		{
+			// bsc#1226436
+			"registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile/suse/manager/5.0/x86_64/server:bar",
+			"registry.suse.com/suse/manager/5.0/x86_64/server",
+			"bar",
+			"registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile",
+			"",
+		},
+		{
+			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
+			"registry.suse.com/suse/manager/5.0/x86_64/server",
+			"5.0.0",
+			"cloud.com",
+			"",
+		},
+		{
+			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
+			"/suse/manager/5.0/x86_64/server",
+			"5.0.0",
+			"cloud.com",
+			"",
+		},
+		{
+			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
+			"suse/manager/5.0/x86_64/server",
+			"5.0.0",
+			"cloud.com",
+			"",
+		},
+		{
+			"cloud.com/my/path/server:5.0.0",
+			"my/path/server",
+			"5.0.0",
+			"cloud.com",
+			"",
+		},
 	}
 
 	for i, testCase := range data {

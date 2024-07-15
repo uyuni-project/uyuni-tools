@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 10:09+0200\n"
-"PO-Revision-Date: 2024-05-08 09:43+0000\n"
+"POT-Creation-Date: 2024-06-18 15:00+0200\n"
+"PO-Revision-Date: 2024-06-12 10:46+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.5.5\n"
 
 #: shared/api/api.go:72
 msgid "FQDN of the server to connect to"
@@ -60,14 +60,12 @@ msgid "Unable to convert data to JSON"
 msgstr "데이터를 JSON으로 변환할 수 없습니다."
 
 #: shared/api/org/createFirst.go:21
-#, fuzzy
 msgid "failed to connect to the server"
-msgstr "서버에 연결하지 못함: %s"
+msgstr "서버에 연결하지 못함"
 
 #: shared/api/org/createFirst.go:35
-#, fuzzy
 msgid "failed to create first user and organization"
-msgstr "첫 번째 사용자 및 조직을 만들지 못함: %s"
+msgstr "첫 번째 사용자 및 조직을 만들지 못함"
 
 #: shared/completion/completion.go:20 shared/completion/completion.go:21
 msgid "Generate shell completion script"
@@ -75,64 +73,70 @@ msgstr "셸 완성 스크립트 생성"
 
 #: shared/completion/completion.go:30 shared/completion/completion.go:34
 #: shared/completion/completion.go:38
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot generate %s completion"
-msgstr "%s 완성을 생성하지 못함: %s"
+msgstr "%s 완성을 생성하지 못함"
 
-#: shared/connection.go:56
+#: shared/connection.go:57
 #, javascript-format
 msgid "backend command not found in PATH: %s"
 msgstr "경로에 백엔드 명령을 찾을 수 없음: %s"
 
-#: shared/connection.go:68
+#: shared/connection.go:69
 msgid "kubectl not configured to connect to a cluster, ignoring"
 msgstr "클러스터에 연결하도록 구성된 kubectl 없음, 무시"
 
-#: shared/connection.go:103
+#: shared/connection.go:104
 msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
 msgstr "podman, podman-remote 또는 kubectl 중 하나로 uyuni 컨테이너에 액세스할 수 없음"
 
-#: shared/connection.go:106
+#: shared/connection.go:107
 #, javascript-format
 msgid "unsupported backend %s"
 msgstr "지원되지 않는 백엔드 %s"
 
-#: shared/connection.go:127
+#: shared/connection.go:128
 #, javascript-format
 msgid "container %s is not running on podman"
 msgstr "%s 컨테이너가 podman에서 실행 중이 아님"
 
-#: shared/connection.go:149
-#, fuzzy, javascript-format
+#: shared/connection.go:150
+#, javascript-format
 msgid "the container is not running, %s command not executed:"
-msgstr "컨테이너가 실행 중이 아님, %s %s 명령이 실행되지 않음: %s"
+msgstr "컨테이너가 실행 중이 아님, %s 명령이 실행되지 않음"
 
-#: shared/connection.go:196
+#: shared/connection.go:197
 msgid "server didn't start within 60s. Check for the service status"
 msgstr "서버가 60초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
 
-#: shared/connection.go:226 shared/connection.go:265
+#: shared/connection.go:227 shared/connection.go:266
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr "알 수 없는 컨테이너 종류: %s"
 
-#: shared/connection.go:309
+#: shared/connection.go:277
+msgid "Copying the SSL CA certificate to the host"
+msgstr ""
+
+#: shared/connection.go:293
+msgid "Updating host trusted certificates"
+msgstr ""
+
+#: shared/connection.go:332
 msgid "failed to determine suitable backend"
 msgstr "적합한 백엔드를 확인하지 못했습니다."
 
-#: shared/connection.go:319
+#: shared/connection.go:342
 msgid "no supported backend found"
 msgstr "지원되는 백엔드를 찾을 수 없습니다."
 
 #: shared/kubernetes/helm.go:58
-#, fuzzy
 msgid "failed to upgrade helm chart %[1]s in namespace %[2]s"
-msgstr "%s 네임스페이스에서 helm 차트 %s을(를) %s하지 못함"
+msgstr "%[2]s 네임스페이스에서 helm 차트 %[1]s을(를) 업그레이드하지 못함"
 
 #: shared/kubernetes/helm.go:60
-#, fuzzy
 msgid "failed to install helm chart %[1]s in namespace %[2]s"
-msgstr "%s 네임스페이스에서 helm 차트 %s을(를) %s하지 못함"
+msgstr "%[2]s 네임스페이스에서 helm 차트 %[1]s을(를) 설치하지 못함"
 
 #: shared/kubernetes/helm.go:81
 #, javascript-format
@@ -144,8 +148,8 @@ msgid "Cannot guess namespace"
 msgstr "네임스페이스를 추측할 수 없음"
 
 #: shared/kubernetes/helm.go:98 shared/podman/network.go:98
-#: shared/podman/systemd.go:81 shared/podman/systemd.go:181
-#: shared/podman/systemd.go:182 shared/podman/utils.go:129
+#: shared/podman/systemd.go:81 shared/podman/systemd.go:183
+#: shared/podman/systemd.go:184 shared/podman/utils.go:129
 #: shared/podman/utils.go:155
 #, javascript-format
 msgid "Would run %s"
@@ -157,19 +161,18 @@ msgid "Uninstalling %s"
 msgstr "%s 설치 제거"
 
 #: shared/kubernetes/helm.go:102
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run helm %s"
-msgstr "%s helm 실행 실패: %s"
+msgstr "%s helm을 실행하지 못함"
 
 #: shared/kubernetes/helm.go:118
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to detect %s's namespace using helm"
-msgstr "helm을 사용하여 %s의 네임스페이스를 감지하지 못함: %s"
+msgstr "helm을 사용하여 %s의 네임스페이스를 감지하지 못함"
 
 #: shared/kubernetes/helm.go:122
-#, fuzzy
 msgid "helm provided an invalid JSON output"
-msgstr "helm이 잘못된 JSON 출력을 제공함: %s"
+msgstr "helm이 잘못된 JSON 출력을 제공함"
 
 #: shared/kubernetes/helm.go:128
 msgid "found no or more than one deployment"
@@ -194,59 +197,51 @@ msgstr "이 명령을 실행하기 전 %s 설치"
 
 #: shared/kubernetes/k3s.go:65 shared/podman/utils.go:180
 #: shared/utils/utils.go:381
-#, fuzzy
 msgid "failed to create temporary directory"
-msgstr "임시 디렉토리 %s을(를) 만들지 못했습니다."
+msgstr "임시 디렉토리를 만들지 못함"
 
 #: shared/kubernetes/k3s.go:78
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot delete %s"
-msgstr "%s을(를) 삭제할 수 없음: %s"
+msgstr "%s을(를) 삭제할 수 없음"
 
 #: shared/kubernetes/k3s.go:84
-#, fuzzy
 msgid "cannot find node running uyuni"
-msgstr "uyuni를 실행하는 노드를 찾을 수 없음: %s"
+msgstr "uyuni를 실행하는 노드를 찾을 수 없음"
 
 #: shared/kubernetes/k3s.go:112
-#, fuzzy
 msgid "cannot run inspect pod"
-msgstr "Pod를 검사할 수 없음: %s"
+msgstr "Pod를 검사할 수 없음"
 
 #: shared/kubernetes/k3s.go:117 shared/podman/utils.go:217
-#, fuzzy
 msgid "cannot inspect data"
-msgstr "데이터를 검사할 수 없음: %s"
+msgstr "데이터를 검사할 수 없음"
 
 #: shared/kubernetes/kubernetes.go:54
-#, fuzzy
 msgid "failed to get kubelet version"
-msgstr "kubelet 버전 가져오기 실패: %s"
+msgstr "kubelet 버전을 가져오지 못함"
 
 #: shared/kubernetes/kubernetes.go:80
-#, fuzzy
 msgid "failed to get pod commands to look for nginx controller"
-msgstr "nginx 컨트롤러를 찾기 위한 Pod 명령을 가져오지 못함: %s"
+msgstr "nginx 컨트롤러를 찾기 위한 Pod 명령을 가져오지 못함"
 
 #: shared/kubernetes/kubernetes.go:94
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot stop %s"
-msgstr "%s을(를) 중지할 수 없음: %s"
+msgstr "%s을(를) 중지할 수 없음"
 
 #: shared/kubernetes/kubernetes.go:134
-#, fuzzy
 msgid "failed to run kubectl get configMap %[1]s %[2]s"
-msgstr "kubectl에서 configMap %s%s 가져오기에 실패했습니다."
+msgstr "kubectl에서 configMap %[1]s %[2]s을(를) 가져오지 못함"
 
 #: shared/kubernetes/kubernetes.go:144
-#, fuzzy
 msgid "failed to run kubectl get secret %[1]s %[2]s"
-msgstr "kubectl이 비밀 %s%s 가져오기에 실패했습니다."
+msgstr "kubectl이 시크릿 %[1]s %[2]s을(를) 가져오지 못함"
 
 #: shared/kubernetes/kubernetes.go:148
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to base64 decode secret %s"
-msgstr "구성 맵 %s을(를) base64 디코딩하지 못함: %s"
+msgstr "base64 시크릿 %s을(를) 디코딩하지 못함"
 
 #: shared/kubernetes/rke2.go:21
 msgid "Installing RKE2 Nginx configuration"
@@ -281,19 +276,16 @@ msgid "failed to pull image"
 msgstr "이미지 끌어오기 실패"
 
 #: shared/kubernetes/utils.go:60
-#, fuzzy
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
-msgstr "%s 네임스페이스에서 %s 배포가 준비되기를 기다리는 중\n"
+msgstr "%[2]s 네임스페이스에서 %[1]s 배포가 준비되기를 기다리는 중\n"
 
 #: shared/kubernetes/utils.go:69
-#, fuzzy
 msgid "failed to find a ready replica for deployment %[1]s in namespace %[2]s after 60s"
-msgstr "60초 후에 네임스페이스 %s에서 %s 배포를 위해 준비된 복제본을 찾지 못했습니다."
+msgstr "60초 후에 네임스페이스 %[2]s에서 %[1]s 배포를 위해 준비된 복제본을 찾지 못함"
 
 #: shared/kubernetes/utils.go:74
-#, fuzzy
 msgid "Waiting for image of %[1]s pod in %[2]s namespace to be pulled"
-msgstr "%s 네임스페이스에 있는 %s Pod의 이미지 끌어오기를 기다리는 중"
+msgstr "%[2]s 네임스페이스에 있는 %[1]s Pod의 이미지 끌어오기를 기다리는 중"
 
 #: shared/kubernetes/utils.go:87
 #, javascript-format
@@ -306,40 +298,38 @@ msgid "failed to get events for pod %s"
 msgstr "%s Pod에 대한 이벤트를 가져오지 못했습니다."
 
 #: shared/kubernetes/utils.go:145
-#, fuzzy
 msgid "failed to parse deployment status"
-msgstr "배포 상태를 구문 분석하지 못함: %s"
+msgstr "배포 상태를 구문 분석하지 못함"
 
 #: shared/kubernetes/utils.go:159
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot run kubectl %s"
-msgstr "%s kubectl을 실행할 수 없음: %s"
+msgstr "%s kubectl을 실행할 수 없음"
 
 #: shared/kubernetes/utils.go:164
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot get pods for %s"
-msgstr "%s에 대한 Pod를 가져올 수 없음: %s"
+msgstr "%s에 대한 Pod를 가져올 수 없음"
 
 #: shared/kubernetes/utils.go:171
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "replica to %d failed"
-msgstr "%d 복제 실패: %s"
+msgstr "%d에 대한 복제를 하지 못함"
 
 #: shared/kubernetes/utils.go:184
-#, fuzzy
 msgid "cannot check if pod %[1]s is running in app %[2]s"
-msgstr "앱 %s에서 %s Pod가 실행 중인지 확인할 수 없음: %s"
+msgstr "앱 %[2]s에서 %[1]s Pod가 실행 중인지 확인할 수 없음"
 
 #: shared/kubernetes/utils.go:194 shared/kubernetes/utils.go:239
 #: shared/kubernetes/utils.go:334
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot execute %s"
-msgstr "%s을(를) 실행할 수 없음: %s"
+msgstr "%s을(를) 실행할 수 없음"
 
 #: shared/kubernetes/utils.go:213
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot get pod informations %s"
-msgstr "%s Pod 정보를 가져올 수 없음: %s"
+msgstr "%s Pod 정보를 가져올 수 없음"
 
 #: shared/kubernetes/utils.go:222
 #, javascript-format
@@ -347,9 +337,8 @@ msgid "cannot set replicas for %s to zero"
 msgstr "%s에 대한 복제본을 0으로 설정할 수 없습니다."
 
 #: shared/kubernetes/utils.go:249
-#, fuzzy
 msgid "pod %[1]s replicas have not reached %[2]d in %[3]s seconds"
-msgstr "Pod %s 복제본이 %s초 후에 %d 아님: %s"
+msgstr "Pod %[1]s 복제본이 %[3]s초 후에 %[2]d에 도달하지 못함"
 
 #: shared/kubernetes/utils.go:272
 #, javascript-format
@@ -357,30 +346,28 @@ msgid "%s is not a valid image pull policy value"
 msgstr "%s은(는) 올바른 이미지 끌어오기 정책 값이 아닙니다."
 
 #: shared/kubernetes/utils.go:293
-#, fuzzy
 msgctxt "The first placeholder is a command"
 msgid "cannot run %[1]s using image %[2]s"
-msgstr "%s 이미지를 사용하여 %s을(를) 실행할 수 없음: %s"
+msgstr "%[2]s 이미지를 사용하여 %[1]s을(를) 실행할 수 없음"
 
 #: shared/kubernetes/utils.go:297
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "deleting pod %s. Status fails with error"
-msgstr "%s Pod를 삭제하는 중입니다. %s 오류가 발생하여 상태가 실패했습니다."
+msgstr "%s Pod를 삭제하는 중입니다. 오류가 발생하여 상태가 실패했습니다."
 
 #: shared/kubernetes/utils.go:310 shared/kubernetes/utils.go:319
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot delete pod %s"
-msgstr "%s Pod를 삭제할 수 없음: %s"
+msgstr "%s Pod를 삭제할 수 없음"
 
 #: shared/kubernetes/utils.go:341
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error during execution of %s"
-msgstr "%s 실행 중 오류 발생: %s"
+msgstr "%s 실행 중 오류 발생"
 
 #: shared/kubernetes/utils.go:346
-#, fuzzy
 msgid "pod %[1]s status is not %[2]s in %[3]d seconds"
-msgstr "%s Pod 상태가 %s초 후에 %s 아님: %s"
+msgstr "%[1]s Pod 상태가 %[3]d초 후에 %[2]s 아님"
 
 #: shared/kubernetes/utils.go:363
 #, javascript-format
@@ -388,9 +375,8 @@ msgid "cannot find node name matching filter %s"
 msgstr "노드 이름과 일치하는 %s 필터를 찾을 수 없습니다."
 
 #: shared/kubernetes/utils.go:372
-#, fuzzy
 msgid "cannot serialize pod definition override"
-msgstr "Pod 정의 재정의를 직렬화할 수 없음: %s"
+msgstr "Pod 정의 재정의를 직렬화할 수 없음"
 
 #: shared/podman/images.go:35
 #, javascript-format
@@ -399,17 +385,16 @@ msgstr "%s 이미지를 사용할 수 있는지 확인"
 
 #: shared/podman/images.go:47
 msgid "Pull Policy is always. Presence of RPM image will be checked and if it's not present it will be pulled from registry"
-msgstr ""
+msgstr "끌어오기 정책이 항상입니다. RPM 이미지가 있는지 확인하여 이미지가 없는 경우 레지스트리에서 끌어옵니다."
 
 #: shared/podman/images.go:56
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Cannot use RPM image for %s"
-msgstr "%s에 RPM 이미지를 사용할 수 없음: %s"
+msgstr "%s에 RPM 이미지를 사용할 수 없음"
 
 #: shared/podman/images.go:58
-#, fuzzy
 msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
-msgstr "온라인 버전 %s 대신 RPM에서 로드한 %s 이미지 사용"
+msgstr "온라인 버전 %[2]s 대신 RPM에서 로드한 %[1]s 이미지 사용"
 
 #: shared/podman/images.go:63
 #, javascript-format
@@ -422,14 +407,13 @@ msgid "image %s is missing and cannot be fetched"
 msgstr "%s 이미지가 누락되어 가져올 수 없습니다."
 
 #: shared/podman/images.go:96
-#, fuzzy
 msgid "cannot unmarshal image RPM metadata"
-msgstr "이미지 RPM 메타데이터를 마샬링할 수 없음: %s"
+msgstr "이미지 RPM 메타데이터를 마샬링 해제할 수 없음"
 
 #: shared/podman/images.go:141
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Cannot unmarshal metadata file %s"
-msgstr "%s 메타데이터 파일을 마샬링 해제할 수 없음: %s"
+msgstr "%s 메타데이터 파일을 마샬링 해제할 수 없음"
 
 #: shared/podman/images.go:163
 #, javascript-format
@@ -458,9 +442,9 @@ msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr "실행 중 podman 이미지 검색 --list-tags %s --format={{.Tag}}"
 
 #: shared/podman/images.go:232
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot find any tag for image %s"
-msgstr "%s 이미지에 대한 태그를 찾을 수 없음: %s"
+msgstr "%s 이미지에 대한 태그를 찾을 수 없음"
 
 #: shared/podman/images.go:241
 #, javascript-format
@@ -468,9 +452,9 @@ msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr "실행 중 podman ps --filter=name=%s --format={{ .Image }}"
 
 #: shared/podman/images.go:245
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot find any running image for container %s"
-msgstr "%s 컨테이너에 대한 실행 이미지를 찾을 수 없음: %s"
+msgstr "%s 컨테이너에 대한 실행 이미지를 찾을 수 없음"
 
 #: shared/podman/network.go:22
 #, javascript-format
@@ -483,9 +467,9 @@ msgid "%s network doesn't have IPv6, deleting existing network to enable IPv6 on
 msgstr "%s 네트워크에 IPv6가 없는 경우 기존 네트워크를 삭제하여 IPv6를 사용하도록 설정하십시오."
 
 #: shared/podman/network.go:38
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to remove %s podman network"
-msgstr "%s podman 네트워크 제거 실패: %s"
+msgstr "%s podman 네트워크를 제거하지 못함"
 
 #: shared/podman/network.go:41
 #, javascript-format
@@ -493,19 +477,17 @@ msgid "Reusing existing %s network"
 msgstr "기존 %s 네트워크 재사용"
 
 #: shared/podman/network.go:58
-#, fuzzy
 msgid "failed to find podman's network backend"
-msgstr "podman의 네트워크 백엔드를 찾지 못함: %s"
+msgstr "podman의 네트워크 백엔드를 찾지 못함"
 
 #: shared/podman/network.go:60
-#, fuzzy
 msgid "Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"
-msgstr "Podman의 네트워크 백엔드(%s)가 netavark가 아니므로 %s 네트워크에서 IPv6 활성화를 건너뜁니다."
+msgstr "Podman의 네트워크 백엔드(%[1]s)가 netavark가 아니므로 %[2]s 네트워크에서 IPv6 활성화를 건너뜁니다."
 
 #: shared/podman/network.go:69
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s network with IPv6 enabled"
-msgstr "IPv6가 활성화된 %s 네트워크를 만들지 못함: %s"
+msgstr "IPv6가 활성화된 %s 네트워크를 만들지 못함"
 
 #: shared/podman/network.go:95
 #, javascript-format
@@ -522,9 +504,9 @@ msgid "Network removed"
 msgstr "네트워크 제거됨"
 
 #: shared/podman/systemd.go:51
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to disable %s systemd service"
-msgstr "%s systemd service 활성화 실패: %s"
+msgstr "%s systemd 서비스를 비활성화하지 못함"
 
 #: shared/podman/systemd.go:78
 #, javascript-format
@@ -542,135 +524,128 @@ msgid "Failed to disable %s service"
 msgstr "%s 서비스 비활성화 실패"
 
 #: shared/podman/systemd.go:92 shared/podman/systemd.go:104
-#: shared/podman/systemd.go:143 shared/podman/systemd.go:155
+#: shared/podman/systemd.go:144 shared/podman/systemd.go:157
 #, javascript-format
 msgid "Would remove %s"
 msgstr "%s 제거"
 
 #: shared/podman/systemd.go:95 shared/podman/systemd.go:106
-#: shared/podman/systemd.go:146 shared/podman/systemd.go:157
+#: shared/podman/systemd.go:147 shared/podman/systemd.go:159
 #, javascript-format
 msgid "Remove %s"
 msgstr "%s 제거"
 
-#: shared/podman/systemd.go:97 shared/podman/systemd.go:148
+#: shared/podman/systemd.go:97 shared/podman/systemd.go:149
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "%s.service 파일 제거 실패"
 
-#: shared/podman/systemd.go:108 shared/podman/systemd.go:159
-#, fuzzy, javascript-format
+#: shared/podman/systemd.go:108 shared/podman/systemd.go:161
+#, javascript-format
 msgid "Failed to remove %s file"
-msgstr "%s 파일 제거 실패"
+msgstr "%s 파일 제거를 하지 못함"
 
-#: shared/podman/systemd.go:114 shared/podman/systemd.go:165
-#, fuzzy, javascript-format
+#: shared/podman/systemd.go:114 shared/podman/systemd.go:167
+#, javascript-format
 msgid "Would remove %s if empty"
-msgstr "%s 제거"
+msgstr "비어 있으면, %s을(를) 제거"
 
-#: shared/podman/systemd.go:120 shared/podman/systemd.go:171
+#: shared/podman/systemd.go:120 shared/podman/systemd.go:173
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
-msgstr ""
+msgstr "%s 폴더에는 사용자가 만든 파일이 들어 있습니다. 설치 제거가 완료되면 해당 파일을 제거하십시오."
 
 #: shared/podman/systemd.go:131
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
-msgstr ""
+msgstr "%s을(를) 0 복제본으로 확장"
 
-#: shared/podman/systemd.go:186
+#: shared/podman/systemd.go:188
 msgid "failed to reset-failed systemd"
 msgstr "reset-failed systemd 실패"
 
-#: shared/podman/systemd.go:190
+#: shared/podman/systemd.go:192
 msgid "failed to reload systemd daemon"
 msgstr "systemd 데몬을 다시 로드하지 못함"
 
-#: shared/podman/systemd.go:208
-#, fuzzy, javascript-format
+#: shared/podman/systemd.go:210
+#, javascript-format
 msgid "failed to restart systemd %s.service"
-msgstr "systemd %s.service 다시 시작 실패: %s"
+msgstr "systemd %s.service를 다시 시작하지 못함"
 
-#: shared/podman/systemd.go:216
-#, fuzzy, javascript-format
+#: shared/podman/systemd.go:218
+#, javascript-format
 msgid "failed to start systemd %s.service"
-msgstr "systemd %s.service 시작 실패: %s"
+msgstr "systemd %s.service를 시작하지 못함"
 
-#: shared/podman/systemd.go:224
-#, fuzzy, javascript-format
+#: shared/podman/systemd.go:226
+#, javascript-format
 msgid "failed to stop systemd %s.service"
-msgstr "systemd %s.service 중지 실패: %s"
+msgstr "systemd %s.service를 중지하지 못함"
 
-#: shared/podman/systemd.go:232
-#, fuzzy, javascript-format
+#: shared/podman/systemd.go:234
+#, javascript-format
 msgid "failed to enable %s systemd service"
-msgstr "%s systemd service 활성화 실패: %s"
+msgstr "%s systemd service를 활성화하지 못함"
 
-#: shared/podman/systemd.go:273
-#, fuzzy, javascript-format
+#: shared/podman/systemd.go:275
+#, javascript-format
 msgid "failed to create %s folder"
-msgstr "%s 폴더 만들기 실패: %s"
+msgstr "%s 폴더를 생성하지 못함"
 
-#: shared/podman/systemd.go:279
-#, fuzzy, javascript-format
+#: shared/podman/systemd.go:281
+#, javascript-format
 msgid "cannot write %s file"
-msgstr "%s 파일 쓰기 실패: %s"
+msgstr "%s 파일을 쓸 수 없음"
 
-#: shared/podman/systemd.go:300
+#: shared/podman/systemd.go:302
 msgid "Service %[1]s already has %[2]d replicas."
-msgstr ""
+msgstr "%[1]s 서비스에 이미 %[2]d개 복제본이 있습니다."
 
-#: shared/podman/systemd.go:303
+#: shared/podman/systemd.go:305
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
-msgstr ""
+msgstr "%[2]d개에서 %[3]d개 복제본으로 %[1]s 확장"
 
-#: shared/podman/systemd.go:307
-#, fuzzy
+#: shared/podman/systemd.go:309
 msgid "cannot enable service"
-msgstr "%s을(를) 삭제할 수 없음: %s"
+msgstr "서비스를 활성할 수 없음"
 
-#: shared/podman/systemd.go:313
-#, fuzzy
+#: shared/podman/systemd.go:315
 msgid "cannot disable service"
-msgstr "%s 서비스 비활성화 실패"
+msgstr "서비스 비활성화 실패"
 
 #: shared/podman/utils.go:49
 msgid "Extra arguments to pass to podman"
 msgstr "podman에게 전달할 추가 인자"
 
 #: shared/podman/utils.go:56
-#, fuzzy
 msgid "failed to enable podman.socket unit"
-msgstr "podman.socket 단위 활성화 실패: %s"
+msgstr "podman.socket 단위 활성화하지 못함"
 
 #: shared/podman/utils.go:73
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run %s container"
-msgstr "%s 컨테이너 실행 실패: %s"
+msgstr "%s 컨테이너를 실행하지 못함"
 
 #: shared/podman/utils.go:84
-#, fuzzy
 msgid "Would run podman kill %[1]s for container id %[2]s"
-msgstr "컨테이너 ID: %s에 대해 podman kill %s을(를) 실행하시겠습니까"
+msgstr "컨테이너 ID: %[2]s에 대해 podman kill %[1]s을(를) 실행하시겠습니까?"
 
 #: shared/podman/utils.go:85
-#, fuzzy
 msgid "Would run podman remove %[1]s for container id %[2]s"
-msgstr "컨테이너 ID: %s에 대해 podman remove %s을(를) 실행하시겠습니까"
+msgstr "컨테이너 ID: %[2]s에 대해 podman remove %[1]s을(를) 실행하시겠습니까?"
 
 #: shared/podman/utils.go:87
-#, fuzzy
 msgid "Run podman kill %[1]s for container id %[2]s"
-msgstr "컨테이너 id: %s에 대해 podman kill %s 실행"
+msgstr "컨테이너 id %[2]s에 대해 podman kill %[1]s 실행"
 
 #: shared/podman/utils.go:90
 msgid "Failed to kill the server"
 msgstr "서버 종료 실패"
 
 #: shared/podman/utils.go:92
-#, fuzzy
 msgid "Run podman remove %[1]s for container id %[2]s"
-msgstr "컨테이너 id: %s에 대해 podman remove %s 실행"
+msgstr "컨테이너 id %[2]s에 대해 podman remove %[1]s 실행"
 
 #: shared/podman/utils.go:95
 msgid "Error removing container"
@@ -686,9 +661,9 @@ msgid "Run %s"
 msgstr "%s 실행"
 
 #: shared/podman/utils.go:134
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to remove image %s"
-msgstr "%s 파일 제거 실패"
+msgstr "%s 이미지를 제거하지 못함"
 
 #: shared/podman/utils.go:160
 #, javascript-format
@@ -696,9 +671,8 @@ msgid "Failed to remove volume %s"
 msgstr "%s 볼륨 제거 실패"
 
 #: shared/podman/utils.go:185
-#, fuzzy
 msgid "cannot inspect host values"
-msgstr "호스트 값 검사 불가: %s"
+msgstr "호스트 값 검사할 수 없음"
 
 #: shared/utils/cmd.go:48 shared/utils/cmd.go:49
 msgid "failed to unmarshall configuration"
@@ -726,34 +700,30 @@ msgstr "SCC 사용자"
 
 #: shared/utils/cmd.go:95
 msgid "Actually remove the server"
-msgstr ""
+msgstr "실제로 서버 제거"
 
 #: shared/utils/cmd.go:96
-#, fuzzy
 msgid "Also remove the volumes"
-msgstr "%s 볼륨 제거 실패"
+msgstr "볼륨도 제거"
 
 #: shared/utils/cmd.go:97
-#, fuzzy
 msgid "Also remove the container images"
-msgstr "컨테이너 제거 중 오류 발생"
+msgstr "컨테이너 이미지도 제거"
 
 #: shared/utils/config.go:38
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to parse configuration file %s"
-msgstr "구성 파일 %s 구문 분석 실패: %s"
+msgstr "구성 파일 %s을(를) 구문 분석하지 못함"
 
 #: shared/utils/config.go:62
 msgid "Failed to find home directory"
 msgstr "홈 디렉토리 찾기 실패"
 
 #: shared/utils/config.go:87
-#, fuzzy
 msgid "failed to bind %[1]s config to parameter %[2]s"
-msgstr "%s 구성을 %s 파라미터에 바인딩 실패: %s"
+msgstr "%[1]s 구성을 %[2]s 파라미터에 바인딩하지 못함"
 
 #: shared/utils/config.go:99
-#, fuzzy
 msgid ""
 "Usage:{{if .Runnable}}\n"
 "  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}\n"
@@ -793,10 +763,16 @@ msgstr ""
 "  {{.NameAndAliases}}{{end}}{{if .HasExample}}\n"
 "\n"
 "예제:\n"
-"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}\n"
+"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if eq (len .Groups) 0}}\n"
 "\n"
-"사용할 수 있는 명령:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name \"help\"))}}\n"
-"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
+"사용할 수 있는 명령:{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name \"help\"))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{else}}{{range $group := .Groups}}\n"
+"\n"
+"{{.Title}}{{range $cmds}}{{if (and (eq .GroupID $group.ID) (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if not .AllChildCommandsHaveGroup}}\n"
+"\n"
+"추가 명령:{{range $cmds}}{{if (and (eq .GroupID \"\") (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
 "\n"
 "플래그:\n"
 "{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}\n"
@@ -892,14 +868,13 @@ msgid "no such flag help group: %v"
 msgstr "해당 플래그 도움말 그룹 없음: %v"
 
 #: shared/utils/tar.go:47
-#, fuzzy
 msgid "Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"
-msgstr "대상 경로 외부에서 확인되므로 %s 파일에서 %s 추출 건너뛰기"
+msgstr "대상 경로 외부에서 확인되므로 %[2]s 파일에서 %[1]s 추출 건너뛰기"
 
 #: shared/utils/tar.go:89
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write tar.gz to %s"
-msgstr "tar.gz를 %s에 쓰기 실패: %s"
+msgstr "tar.gz를 %s에 쓰지 못함"
 
 #: shared/utils/template.go:25
 #, javascript-format
@@ -907,9 +882,9 @@ msgid "%s file already present, not overwriting"
 msgstr "%s 파일 이미 있음, 덮어쓰지 않음"
 
 #: shared/utils/template.go:32
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to open %s for writing"
-msgstr "쓰기 위해 %s 열기 실패: %s"
+msgstr "쓰기 위해 %s을(를) 열지 못함"
 
 #: shared/utils/utils.go:70
 #, javascript-format
@@ -933,7 +908,7 @@ msgstr "공백이나 탭을 포함할 수 없습니다."
 
 #: shared/utils/utils.go:119
 msgid "Two different passwords have been provided"
-msgstr ""
+msgstr "2개의 다른 비밀번호가 입력되었습니다."
 
 #: shared/utils/utils.go:135
 msgid "Failed to read input"
@@ -945,11 +920,11 @@ msgstr "값은 필수입니다."
 
 #: shared/utils/utils.go:171
 msgid "Registry %[1]s would be used instead of namespace %[2]s"
-msgstr ""
+msgstr "%[2]s 네임스페이스 대신 %[1]s 레지스트리가 사용됩니다."
 
 #: shared/utils/utils.go:176
 msgid "The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."
-msgstr ""
+msgstr "제공된 이미지 이름은 %[1]s이며 레지스트리 %[2]을(를) 포함하지 않습니다. 사용된 이미지 이름은 %[3]s입니다. --registry 플래그를 설정하여 이 동작을 변경할 수 있습니다."
 
 #: shared/utils/utils.go:182 shared/utils/utils.go:208
 #, javascript-format
@@ -967,14 +942,14 @@ msgid "Failed to run %s"
 msgstr "%s 실행 실패"
 
 #: shared/utils/utils.go:227
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot check content of %s"
-msgstr "구성을 읽을 수 없음: %s"
+msgstr "%s 컨텐트를 확인할 수 없음"
 
 #: shared/utils/utils.go:239
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Cannot remove %s folder"
-msgstr "%s 파일 쓰기 실패: %s"
+msgstr "%s 폴더를 제거할 수 없음"
 
 #: shared/utils/utils.go:250
 #, javascript-format
@@ -1006,9 +981,9 @@ msgid "Failed to read random data"
 msgstr "임의 데이터 읽기 실패"
 
 #: shared/utils/utils.go:309
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error downloading from %s"
-msgstr "%s에서 다운로드 실패: %s"
+msgstr "%s에서 다운로드하지 못함"
 
 #: shared/utils/utils.go:315
 #, javascript-format
@@ -1016,29 +991,25 @@ msgid "bad status: %s"
 msgstr "잘못된 상태: %s"
 
 #: shared/utils/utils.go:351
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot parse file %s"
-msgstr "%s 파일의 구문을 분석할 수 없음: %s"
+msgstr "%s 파일의 구문을 분석할 수 없음"
 
 #: shared/utils/utils.go:358
-#, fuzzy
 msgid "cannot read config"
-msgstr "구성을 읽을 수 없음: %s"
+msgstr "구성을 읽을 수 없음"
 
 #: shared/utils/utils.go:389
-#, fuzzy
 msgid "failed to run inspect script in host system"
-msgstr "호스트 시스템에서 검사 스크립트 실행 실패: %s"
+msgstr "호스트 시스템에서 검사 스크립트를 실행할 수 없음"
 
 #: shared/utils/utils.go:394
-#, fuzzy
 msgid "cannot inspect host data"
-msgstr "호스트 데이터를 검사할 수 없음: %s"
+msgstr "호스트 데이터를 검사할 수 없음"
 
 #: shared/utils/utils.go:410 shared/utils/utils.go:424
-#, fuzzy
 msgid "failed to generate inspect script"
-msgstr "검사 스크립트 생성 실패: %s"
+msgstr "검사 스크립트 생성하지 못함"
 
 #~ msgid "Path to custom /var/cache volume"
 #~ msgstr "사용자 정의 /var/cache 볼륨 경로"

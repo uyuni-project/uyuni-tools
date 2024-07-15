@@ -36,8 +36,12 @@ type Tuning struct {
 
 // Get the full container image name and tag for a container name.
 func (f *ProxyImageFlags) GetContainerImage(name string) string {
+	registry := utils.DefaultNamespace
+	if len(f.Registry) != 0 {
+		registry = f.Registry
+	}
 	computedImage := types.ImageFlags{
-		Name: path.Join(f.Registry, "proxy-"+name),
+		Name: path.Join(registry, "proxy-"+name),
 		Tag:  f.Tag,
 	}
 
