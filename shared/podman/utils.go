@@ -5,8 +5,11 @@
 package podman
 
 import (
+	"errors"
+	"io"
 	"os"
 	"os/exec"
+	"path"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -155,9 +158,16 @@ func DeleteVolume(name string, dryRun bool) error {
 			log.Info().Msgf(L("Would run %s"), "podman volume rm "+name)
 		} else {
 			log.Info().Msgf(L("Run %s"), "podman volume rm "+name)
-			err := utils.RunCmd("podman", "volume", "rm", name)
-			if err != nil {
-				log.Error().Err(err).Msgf(L("Failed to remove volume %s"), name)
+			if err := utils.RunCmd("podman", "volume", "rm", name); err != nil {
+				// Check if the volume is not mounted - for example var-pgsql as second storage device
+				// We cannot get volume real path from volume inspect because podman already removed it
+				// from its internal db. Let's assume our default path
+				target := path.Join("/var/lib/containers/storage/volumes", name)
+				if isVolumePathEmpty(target) && isVolumePathMounted(target) {
+					log.Info().Msgf(L("Volume %s is externally mounted, directory cannot be removed"), name)
+					return nil
+				}
+				return err
 			}
 		}
 	}
@@ -165,11 +175,34 @@ func DeleteVolume(name string, dryRun bool) error {
 }
 
 func isVolumePresent(volume string) bool {
+	var exitError *exec.ExitError
 	cmd := exec.Command("podman", "volume", "exists", volume)
-	if err := cmd.Run(); err != nil {
+	if err := cmd.Run(); err != nil && errors.As(err, &exitError) {
+		log.Debug().Err(err).Msgf("podman volume exists %s", volume)
 		return false
 	}
-	return cmd.ProcessState.ExitCode() == 0
+	return cmd.ProcessState.Success()
+}
+
+func isVolumePathMounted(volume string) bool {
+	cmd := exec.Command("findmnt", "--target", volume)
+	var exitError *exec.ExitError
+	if err := cmd.Run(); err != nil && errors.As(err, &exitError) {
+		log.Debug().Err(err).Msgf("findmnt --target %s", volume)
+		return false
+	}
+	return cmd.ProcessState.Success()
+}
+
+func isVolumePathEmpty(volume string) bool {
+	f, err := os.Open(volume)
+	if err != nil {
+		return false
+	}
+	defer f.Close()
+
+	_, err = f.Readdirnames(1)
+	return err == io.EOF
 }
 
 // Inspect check values on a given image and deploy.
