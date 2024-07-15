@@ -27,7 +27,7 @@ const rpmImageDir = "/usr/share/suse-docker-images/native/"
 // Ensure the container image is pulled or pull it if the pull policy allows it.
 //
 // Returns the image name to use. Note that it may be changed if the image has been loaded from a local RPM package.
-func PrepareImage(image string, pullPolicy string, args ...string) (string, error) {
+func PrepareImage(authFile string, image string, pullPolicy string) (string, error) {
 	if strings.ToLower(pullPolicy) != "always" {
 		log.Info().Msgf(L("Ensure image %s is available"), image)
 
@@ -62,7 +62,7 @@ func PrepareImage(image string, pullPolicy string, args ...string) (string, erro
 
 	if strings.ToLower(pullPolicy) != "never" {
 		log.Debug().Msgf("Pulling image %s because it is missing and pull policy is not 'never'", image)
-		return image, pullImage(image, args...)
+		return image, pullImage(authFile, image)
 	}
 
 	return image, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)
@@ -203,21 +203,18 @@ func GetPulledImageName(image string) (string, error) {
 	return string(bytes.TrimSpace(out)), nil
 }
 
-func pullImage(image string, args ...string) error {
+func pullImage(authFile string, image string) error {
 	if utils.ContainsUpperCase(image) {
 		return fmt.Errorf(L("%s should contains just lower case character, otherwise podman pull would fails"), image)
 	}
 	log.Info().Msgf(L("Running podman pull %s"), image)
-	podmanImageArgs := []string{"pull", image}
-	podmanArgs := append(podmanImageArgs, args...)
+	podmanArgs := []string{"pull", image}
 
-	loglevel := zerolog.DebugLevel
-	if len(args) > 0 {
-		loglevel = zerolog.Disabled
-		log.Debug().Msg("Additional arguments for pull command will not be shown.")
+	if authFile != "" {
+		podmanArgs = append(podmanArgs, "--authfile", authFile)
 	}
 
-	return utils.RunCmdStdMapping(loglevel, "podman", podmanArgs...)
+	return utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", podmanArgs...)
 }
 
 // ShowAvailableTag  returns the list of available tag for a given image.

@@ -180,19 +180,13 @@ func Inspect(serverImage string, pullPolicy string, proxyHost bool) (map[string]
 		return map[string]string{}, utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
-	inspectedHostValues, err := utils.InspectHost(proxyHost)
+	authFile, cleaner, err := PodmanLogin()
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("cannot inspect host values"))
+		return nil, utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
+	defer cleaner()
 
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := PrepareImage(serverImage, pullPolicy, pullArgs...)
+	preparedImage, err := PrepareImage(authFile, serverImage, pullPolicy)
 	if err != nil {
 		return map[string]string{}, err
 	}

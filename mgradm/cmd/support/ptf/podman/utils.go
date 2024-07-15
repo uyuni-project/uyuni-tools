@@ -30,7 +30,14 @@ func ptfForPodman(
 	if err := flags.checkParameters(); err != nil {
 		return err
 	}
-	return podman.Upgrade("", flags.Image, dummyMigration, dummyCoco)
+
+	authFile, cleaner, err := podman_shared.PodmanLogin()
+	if err != nil {
+		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+	}
+	defer cleaner()
+
+	return podman.Upgrade(authFile, "", flags.Image, dummyMigration, dummyCoco)
 }
 
 func (flags *podmanPTFFlags) checkParameters() error {
