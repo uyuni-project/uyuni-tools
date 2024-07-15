@@ -36,6 +36,8 @@ const prompt_end = ": "
 
 var prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
 var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
+
+// Taken from https://github.com/go-playground/validator/blob/2e1df48/regexes.go#L58
 var fqdnValid = regexp.MustCompile(`^([a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})(\.[a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})*?(\.[a-zA-Z]{1}[a-zA-Z0-9]{0,62})\.?$`)
 
 // InspectScriptFilename is the inspect script basename.
