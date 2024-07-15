@@ -17,26 +17,20 @@ import (
 
 // SetupHubXmlrpc prepares the systemd service and starts it if needed.
 // tag is the global images tag.
-func SetupHubXmlrpc(registry string, pullPolicy string, tag string, hubxmlrpcImage types.ImageFlags) error {
+func SetupHubXmlrpc(
+	authFile string,
+	registry string,
+	pullPolicy string,
+	tag string,
+	hubxmlrpcImage types.ImageFlags,
+) error {
 	log.Info().Msg(L("Setting Hub XML-RPC API service."))
 	hubXmlrpcImage, err := utils.ComputeImage(registry, tag, hubxmlrpcImage)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
-	inspectedHostValues, err := utils.InspectHost(false)
-	if err != nil {
-		return utils.Errorf(err, L("cannot inspect host values"))
-	}
-
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := podman.PrepareImage(hubXmlrpcImage, pullPolicy, pullArgs...)
+	preparedImage, err := podman.PrepareImage(authFile, hubXmlrpcImage, pullPolicy)
 	if err != nil {
 		return err
 	}

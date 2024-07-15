@@ -151,21 +151,10 @@ func getHttpProxyConfig() string {
 }
 
 // GetContainerImage returns a proxy image URL.
-func GetContainerImage(flags *utils.ProxyImageFlags, name string) (string, error) {
+func GetContainerImage(authFile string, flags *utils.ProxyImageFlags, name string) (string, error) {
 	image := flags.GetContainerImage(name)
-	inspectedHostValues, err := shared_utils.InspectHost(true)
-	if err != nil {
-		return "", shared_utils.Errorf(err, L("cannot inspect host values"))
-	}
 
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := podman.PrepareImage(image, flags.PullPolicy, pullArgs...)
+	preparedImage, err := podman.PrepareImage(authFile, image, flags.PullPolicy)
 	if err != nil {
 		return "", err
 	}
@@ -222,23 +211,30 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra
 	if err := podman.StopService(podman.ProxyService); err != nil {
 		return err
 	}
-	httpdImage, err := GetContainerImage(&flags.ProxyImageFlags, "httpd")
+
+	authFile, cleaner, err := podman.PodmanLogin()
+	if err != nil {
+		return shared_utils.Errorf(err, L("failed to login to registry.suse.com"))
+	}
+	defer cleaner()
+
+	httpdImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "httpd")
 	if err != nil {
 		log.Warn().Msgf(L("cannot find httpd image: it will no be upgraded"))
 	}
-	saltBrokerImage, err := GetContainerImage(&flags.ProxyImageFlags, "salt-broker")
+	saltBrokerImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "salt-broker")
 	if err != nil {
 		log.Warn().Msgf(L("cannot find salt-broker image: it will no be upgraded"))
 	}
-	squidImage, err := GetContainerImage(&flags.ProxyImageFlags, "squid")
+	squidImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "squid")
 	if err != nil {
 		log.Warn().Msgf(L("cannot find squid image: it will no be upgraded"))
 	}
-	sshImage, err := GetContainerImage(&flags.ProxyImageFlags, "ssh")
+	sshImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "ssh")
 	if err != nil {
 		log.Warn().Msgf(L("cannot find ssh image: it will no be upgraded"))
 	}
-	tftpdImage, err := GetContainerImage(&flags.ProxyImageFlags, "tftpd")
+	tftpdImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "tftpd")
 	if err != nil {
 		log.Warn().Msgf(L("cannot find tftpd image: it will no be upgraded"))
 	}

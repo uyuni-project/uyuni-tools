@@ -48,10 +48,11 @@ func installForPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
-	inspectedHostValues, err := utils.InspectHost(false)
+	authFile, cleaner, err := shared_podman.PodmanLogin()
 	if err != nil {
-		return utils.Errorf(err, L("cannot inspect host values"))
+		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
+	defer cleaner()
 
 	fqdn, err := getFqdn(args)
 	if err != nil {
@@ -63,14 +64,8 @@ func installForPodman(
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
 
-	preparedImage, err := shared_podman.PrepareImage(image, flags.Image.PullPolicy, pullArgs...)
+	preparedImage, err := shared_podman.PrepareImage(authFile, image, flags.Image.PullPolicy)
 	if err != nil {
 		return err
 	}
@@ -114,13 +109,15 @@ func installForPodman(
 		}
 	}
 
-	if err := coco.SetupCocoContainer(flags.Coco.Replicas, globalFlags.Registry, flags.Coco.Image, flags.Image,
-		flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password); err != nil {
+	if err := coco.SetupCocoContainer(
+		authFile, flags.Coco.Replicas, globalFlags.Registry, flags.Coco.Image, flags.Image,
+		flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password,
+	); err != nil {
 		return err
 	}
 
 	if err := hub.SetupHubXmlrpc(
-		globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
+		authFile, globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
 	); err != nil {
 		return err
 	}

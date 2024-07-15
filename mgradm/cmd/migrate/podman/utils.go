@@ -33,20 +33,13 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return utils.Errorf(err, L("cannot compute image"))
 	}
 
-	// FIXME all this code should be centralized. Now it being called in several different places.
-	inspectedHostValues, err := utils.InspectHost(false)
+	authFile, cleaner, err := podman_utils.PodmanLogin()
 	if err != nil {
-		return utils.Errorf(err, L("cannot inspect host values"))
+		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
+	defer cleaner()
 
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := podman_utils.PrepareImage(serverImage, flags.Image.PullPolicy, pullArgs...)
+	preparedImage, err := podman_utils.PrepareImage(authFile, serverImage, flags.Image.PullPolicy)
 	if err != nil {
 		return err
 	}
@@ -65,7 +58,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	if oldPgVersion != newPgVersion {
 		if err := podman.RunPgsqlVersionUpgrade(
-			globalFlags.Registry, flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion,
+			authFile, globalFlags.Registry, flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
@@ -93,7 +86,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	// Prepare confidential computing containers
 	if err = coco.Upgrade(
-		globalFlags.Registry, flags.Coco.Image, flags.Image,
+		authFile, globalFlags.Registry, flags.Coco.Image, flags.Image,
 		extractedData.DbPort, extractedData.DbName,
 		extractedData.DbUser, extractedData.DbPassword,
 	); err != nil {
@@ -108,7 +101,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 
 	if err := hub.SetupHubXmlrpc(
-		globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
+		authFile, globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
 	); err != nil {
 		return err
 	}
