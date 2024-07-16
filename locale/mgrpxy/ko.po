@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-18 15:00+0200\n"
-"PO-Revision-Date: 2024-07-13 08:47+0000\n"
+"PO-Revision-Date: 2024-07-16 05:47+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrpxy/ko/>\n"
@@ -131,12 +131,10 @@ msgid "failed to extract proxy config from %s file"
 msgstr "%s 파일에서 프록시 구성을 추출하지 못함"
 
 #: mgrpxy/cmd/logs/logs.go:36
-#, fuzzy
 msgid "Get the proxy logs"
 msgstr "프록시 로그 가져오기"
 
 #: mgrpxy/cmd/logs/logs.go:37
-#, fuzzy
 msgid ""
 "Get the proxy logs\n"
 "The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman\n"
@@ -149,22 +147,18 @@ msgstr ""
 "이름을 지정할 수 있습니다. 자세한 내용은 예제를 참조하십시오."
 
 #: mgrpxy/cmd/logs/logs.go:62
-#, fuzzy
 msgid "specify if logs should be followed"
 msgstr "로그를 따라야 하는지 지정"
 
 #: mgrpxy/cmd/logs/logs.go:63
-#, fuzzy
 msgid "show timestamps in the log outputs"
 msgstr "로그 출력에 타임스탬프 표시"
 
 #: mgrpxy/cmd/logs/logs.go:64
-#, fuzzy
 msgid "number of lines to show from the end of the logs"
 msgstr "로그의 끝에서 표시할 줄 수"
 
 #: mgrpxy/cmd/logs/logs.go:66
-#, fuzzy
 msgid "show logs since a specific time or duration. Supports Go duration strings and RFC3339 format (e.g. 5s, 2m, 3h, 2023-01-02T15:04:05)"
 msgstr ""
 "특정 시간 또는 기간 이후의 로그를 표시합니다. Go 기간 문자열 및 RFC3339 형식 "
@@ -345,12 +339,10 @@ msgid "All volumes removed"
 msgstr "모든 볼륨 제거됨"
 
 #: mgrpxy/cmd/uninstall/podman.go:71
-#, fuzzy
 msgid "Failed to delete /etc/uyuni/proxy folder"
 msgstr "/etc/uyuni/proxy 폴더 삭제 실패"
 
 #: mgrpxy/cmd/uninstall/podman.go:73
-#, fuzzy
 msgid "/etc/uyuni/proxy folder removed"
 msgstr "/etc/uyuni/proxy 폴더 제거됨"
 
@@ -481,13 +473,11 @@ msgid "Setting up proxy with configuration %s"
 msgstr "구성 %s(으)로 프록시 설정"
 
 #: mgrpxy/shared/podman/podman.go:196
-#, fuzzy
 msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
 msgstr "/etc/uyuni/proxy 디렉토리에는 모든 사용자에 대한 읽기 및 쓰기 권한이 "
 "없습니다. umask 설정을 확인하십시오."
 
 #: mgrpxy/shared/podman/podman.go:211
-#, fuzzy
 msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
 msgstr ""
 "/etc/uyuni/proxy/config.yaml에는 모든 사용자에 대한 읽기 권한이 없습니다. "
