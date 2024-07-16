@@ -57,11 +57,13 @@ func writeCocoServiceFiles(image types.ImageFlags, baseImage types.ImageFlags, d
 	}
 
 	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
-	Environment=database_connection=jdbc:postgresql://uyuni-server.mgr.internal:%d/%s
-	Environment=database_user=%s
-	Environment=database_password=%s`, cocoImage, dbPort, dbName, dbUser, dbPassword)
+Environment=database_connection=jdbc:postgresql://uyuni-server.mgr.internal:%d/%s
+Environment=database_user=%s
+Environment=database_password=%s`, cocoImage, dbPort, dbName, dbUser, dbPassword)
 
-	if err := podman.GenerateSystemdConfFile(podman.ServerAttestationService+"@", "Service", environment); err != nil {
+	if err := podman.GenerateSystemdConfFile(
+		podman.ServerAttestationService+"@", "generated.conf", environment, true,
+	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 

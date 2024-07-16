@@ -56,9 +56,8 @@ func GenerateHubXmlrpcSystemdService(image string) error {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
-	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
-	`, image)
-	if err := podman.GenerateSystemdConfFile(podman.HubXmlrpcService+"@", "Service", environment); err != nil {
+	environment := fmt.Sprintf("Environment=UYUNI_IMAGE=%s", image)
+	if err := podman.GenerateSystemdConfFile(podman.HubXmlrpcService+"@", "generated.conf", environment, true); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 
@@ -95,13 +94,18 @@ func GenerateSystemdService(tz string, image string, debug bool, mirrorPath stri
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
-	config := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
-Environment=TZ=%s
-Environment="PODMAN_EXTRA_ARGS=%s"
-`, image, strings.TrimSpace(tz), strings.Join(podmanArgs, " "))
-
-	if err := podman.GenerateSystemdConfFile("uyuni-server", "Service", config); err != nil {
+	if err := podman.GenerateSystemdConfFile("uyuni-server", "generated.conf",
+		"Environment=UYUNI_IMAGE="+image, true,
+	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
+	}
+
+	config := fmt.Sprintf(`Environment=TZ=%s
+Environment="PODMAN_EXTRA_ARGS=%s"
+`, strings.TrimSpace(tz), strings.Join(podmanArgs, " "))
+
+	if err := podman.GenerateSystemdConfFile("uyuni-server", "custom.conf", config, false); err != nil {
+		return utils.Errorf(err, L("cannot generate systemd user configuration file"))
 	}
 	return podman.ReloadDaemon(false)
 }
@@ -391,7 +395,13 @@ func Upgrade(image types.ImageFlags, upgradeImage types.ImageFlags, cocoImage ty
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	if err := podman.GenerateSystemdConfFile("uyuni-server", "Service", "Environment=UYUNI_IMAGE="+preparedImage); err != nil {
+	if err := podman.CleanSystemdConfFile("uyuni-server"); err != nil {
+		return err
+	}
+
+	if err := podman.GenerateSystemdConfFile("uyuni-server", "generated.conf",
+		"Environment=UYUNI_IMAGE="+preparedImage, true,
+	); err != nil {
 		return err
 	}
 	log.Info().Msg(L("Waiting for the server to start…"))
