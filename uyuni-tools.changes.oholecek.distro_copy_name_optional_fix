@@ -1,0 +1,2 @@
+- clarify and fix distro name guessing when not provided
+  (bsc#1226284)

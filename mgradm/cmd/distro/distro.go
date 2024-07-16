@@ -74,11 +74,15 @@ func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 	}
 
 	cpCmd := &cobra.Command{
-		Use:   "copy path-to-source [distribution-name version arch]",
+		Use:   "copy path-to-source [distribution-name [version arch]]",
 		Short: L("Copy distribution files from iso to the container"),
 		Long: L(`Takes a path to source iso file or directory with mounted iso and copies it into the container.
 
-Optional parameters 'distribution-name', 'version' and 'arch' specifies custom distribution. If not set, distribution name is autodetected.
+Optional parameters 'distribution-name', 'version' and 'arch' specifies custom distribution.
+If not set, distribution name is attempted to be autodetected:
+
+- use name from '.treeinfo' file if exists
+- use name of the ISO or passed directory
 
 Note: API details are required for auto registration.`),
 		Aliases: []string{"cp"},
