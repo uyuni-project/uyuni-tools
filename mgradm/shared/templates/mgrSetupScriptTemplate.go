@@ -20,7 +20,8 @@ echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:800
 echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:8002,server=y,suspend=n" ' >> /usr/share/rhn/config-defaults/rhn_search_daemon.conf
 {{- end }}
 
-RESULT=$(/usr/lib/susemanager/bin/mgr-setup -s -n)
+/usr/lib/susemanager/bin/mgr-setup -s -n
+RESULT=$?
 
 # clean before leaving
 rm $0
