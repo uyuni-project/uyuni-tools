@@ -73,9 +73,8 @@ func generateHubXmlrpcSystemdService(image string) error {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
-	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
-	`, image)
-	if err := podman.GenerateSystemdConfFile(podman.HubXmlrpcService+"@", "Service", environment); err != nil {
+	environment := fmt.Sprintf("Environment=UYUNI_IMAGE=%s", image)
+	if err := podman.GenerateSystemdConfFile(podman.HubXmlrpcService+"@", "generated.conf", environment, true); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 
