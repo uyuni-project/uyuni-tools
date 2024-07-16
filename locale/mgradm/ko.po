@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-18 15:00+0200\n"
-"PO-Revision-Date: 2024-07-13 08:47+0000\n"
+"PO-Revision-Date: 2024-07-16 05:47+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgradm/ko/>\n"
@@ -759,7 +759,6 @@ msgstr "설정 스크립트를 실행하는 중 오류 발생"
 #: mgradm/cmd/install/shared/shared.go:40
 #: mgradm/cmd/migrate/kubernetes/utils.go:167
 #: mgradm/cmd/migrate/podman/utils.go:75
-#, fuzzy
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "SSL CA 인증서를 호스트의 신뢰할 수 있는 인증서에 추가하지 못했습니다."
 
