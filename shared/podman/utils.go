@@ -159,10 +159,15 @@ func DeleteVolume(name string, dryRun bool) error {
 		} else {
 			log.Info().Msgf(L("Run %s"), "podman volume rm "+name)
 			if err := utils.RunCmd("podman", "volume", "rm", name); err != nil {
-				// Check if the volume is not mounted - for example var-pgsql as second storage device
-				// We cannot get volume real path from volume inspect because podman already removed it
-				// from its internal db. Let's assume our default path
-				target := path.Join("/var/lib/containers/storage/volumes", name)
+				log.Trace().Err(err).Msgf("podman volume rm %s", name)
+				// Check if the volume is not mounted - for example var-pgsql - as second storage device
+				// We need to compute volume path ourselves because above `podman volume rm` call may have
+				// already removed volume from podman internal structures
+				basePath, errBasePath := getPodmanVolumeBasePath()
+				if errBasePath != nil {
+					return errBasePath
+				}
+				target := path.Join(basePath, name)
 				if isVolumePathEmpty(target) && isVolumePathMounted(target) {
 					log.Info().Msgf(L("Volume %s is externally mounted, directory cannot be removed"), name)
 					return nil
@@ -203,6 +208,12 @@ func isVolumePathEmpty(volume string) bool {
 
 	_, err = f.Readdirnames(1)
 	return err == io.EOF
+}
+
+func getPodmanVolumeBasePath() (string, error) {
+	cmd := exec.Command("podman", "system", "info", "--format={{ .Store.VolumePath }}")
+	out, err := cmd.Output()
+	return strings.TrimSpace(string(out)), err
 }
 
 // Inspect check values on a given image and deploy.
