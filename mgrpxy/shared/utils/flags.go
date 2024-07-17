@@ -64,20 +64,20 @@ func AddImageFlags(cmd *cobra.Command) {
 	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))
 	utils.AddPullPolicyFlag(cmd)
 
-	addContainerImageFlags(cmd, "httpd")
-	addContainerImageFlags(cmd, "salt-broker")
-	addContainerImageFlags(cmd, "squid")
-	addContainerImageFlags(cmd, "ssh")
-	addContainerImageFlags(cmd, "tftpd")
+	addContainerImageFlags(cmd, "httpd", "httpd")
+	addContainerImageFlags(cmd, "saltbroker", "salt-broker")
+	addContainerImageFlags(cmd, "squid", "squid")
+	addContainerImageFlags(cmd, "ssh", "ssh")
+	addContainerImageFlags(cmd, "tftpd", "tftpd")
 
 	cmd.Flags().String("tuning-httpd", "", L("HTTPD tuning configuration file"))
 	cmd.Flags().String("tuning-squid", "", L("Squid tuning configuration file"))
 }
 
-func addContainerImageFlags(cmd *cobra.Command, container string) {
-	defaultImage := path.Join(utils.DefaultNamespace, "proxy-"+container)
-	cmd.Flags().String(container+"-image", defaultImage,
-		fmt.Sprintf(L("Image for %s container"), container))
-	cmd.Flags().String(container+"-tag", "",
-		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), container))
+func addContainerImageFlags(cmd *cobra.Command, paramName string, imageName string) {
+	defaultImage := path.Join(utils.DefaultNamespace, "proxy-"+imageName)
+	cmd.Flags().String(paramName+"-image", defaultImage,
+		fmt.Sprintf(L("Image for %s container"), imageName))
+	cmd.Flags().String(paramName+"-tag", "",
+		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), imageName))
 }
