@@ -26,15 +26,12 @@ func Upgrade(
 	dbUser string,
 	dbPassword string,
 ) error {
-	if err := podman.StopInstantiated(podman.ServerAttestationService); err != nil {
-		return err
-	}
 	if err := writeCocoServiceFiles(
 		authFile, registry, image, baseImage, dbName, dbPort, dbUser, dbPassword,
 	); err != nil {
 		return err
 	}
-	return podman.StartInstantiated(podman.ServerAttestationService)
+	return podman.RestartInstantiated(podman.ServerAttestationService)
 }
 
 func writeCocoServiceFiles(
