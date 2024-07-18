@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-18 15:00+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-07-18 11:46+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrpxy/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: mgrpxy/cmd/cmd.go:34
 msgid "Uyuni proxy administration tool"
@@ -27,16 +30,16 @@ msgstr ""
 #: mgrpxy/cmd/cmd.go:48
 #, javascript-format
 msgid "Welcome to %s"
-msgstr ""
+msgstr "Willkommen bei %s"
 
 #: mgrpxy/cmd/cmd.go:49
 #, javascript-format
 msgid "Executing command: %s"
-msgstr ""
+msgstr "Befehl ausführen: %s"
 
 #: mgrpxy/cmd/cmd.go:53
 msgid "configuration file path"
-msgstr ""
+msgstr "Konfigurationsdateipfad"
 
 #: mgrpxy/cmd/cmd.go:54
 msgid "application log level"
