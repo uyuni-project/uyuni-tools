@@ -16,6 +16,5 @@ func ptfForKubernetes(globalFlags *types.GlobalFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
-
 	return kubernetes.Upgrade(&flags.UpgradeFlags, cmd, args)
 }
