@@ -88,9 +88,11 @@ func isIpv6Enabled() bool {
 	for _, file := range files {
 		// Mind that we are checking disable files, the semantic is inverted
 		if utils.GetFileBoolean(file) {
+			log.Debug().Msgf("IPv6 is disabled")
 			return false
 		}
 	}
+	log.Debug().Msgf("IPv6 is enabled")
 	return true
 }
 
