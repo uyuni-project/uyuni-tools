@@ -28,6 +28,6 @@ for shell in "bash" "zsh" "fish"; do
     ./bin/mgrpxy completion ${shell} >> "${COMPLETION_FILE}"
 done
 
-golangci-lint run
+GOFLAGS="-tags=ptf" golangci-lint run
 ./check_localizable
 echo "DONE"
