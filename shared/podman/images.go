@@ -218,20 +218,19 @@ func pullImage(authFile string, image string) error {
 }
 
 // ShowAvailableTag  returns the list of available tag for a given image.
-func ShowAvailableTag(registry string, image types.ImageFlags) ([]string, error) {
+func ShowAvailableTag(registry string, image types.ImageFlags) error {
 	log.Info().Msgf(L("Running podman image search --list-tags %s --format={{.Tag}}"), image.Name)
 
 	name, err := utils.ComputeImage(registry, utils.DefaultTag, image)
 	if err != nil {
-		return []string{}, err
-	}
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", name, "--format={{.Tag}}")
-	if err != nil {
-		return []string{}, utils.Errorf(err, L("cannot find any tag for image %s"), image)
+		return err
 	}
 
-	tags := strings.Split(string(out), "\n")
-	return tags, nil
+	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", name, "--format={{.Tag}}"); err != nil {
+		return utils.Errorf(err, L("cannot find any tag for image %s"), image)
+	}
+
+	return nil
 }
 
 // GetRunningImage given a container name, return the image name.
