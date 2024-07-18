@@ -168,17 +168,17 @@ func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectDat
 	if err != nil {
 		return utils.Errorf(err, L("cannot check server release"))
 	}
-	isCurrentUyuni := inspectedValues.UyuniRelease != ""
-	isCurrentSuma := inspectedValues.SuseManagerRelease != ""
+	isUyuniImage := inspectedValues.UyuniRelease != ""
+	isSumaImage := inspectedValues.SuseManagerRelease != ""
 
-	if isUyuni && isCurrentSuma {
+	if isUyuni && isSumaImage {
 		return fmt.Errorf(
 			L("currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"),
 			inspectedValues.SuseManagerRelease,
 		)
 	}
 
-	if !isUyuni && isCurrentUyuni {
+	if !isUyuni && isUyuniImage {
 		return fmt.Errorf(
 			L("currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"),
 			inspectedValues.UyuniRelease,
@@ -192,7 +192,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectDat
 			return utils.Errorf(err, L("failed to read current uyuni release"))
 		}
 		log.Debug().Msgf("Current release is %s", string(current_uyuni_release))
-		if inspectedValues.UyuniRelease != "" {
+		if !isUyuniImage {
 			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
 		}
 		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.UyuniRelease)
@@ -209,7 +209,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectDat
 			return utils.Errorf(err, L("failed to read current susemanager release"))
 		}
 		log.Debug().Msgf("Current release is %s", string(current_suse_manager_release))
-		if inspectedValues.SuseManagerRelease != "" {
+		if !isSumaImage {
 			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
 		}
 		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.SuseManagerRelease)
@@ -221,11 +221,11 @@ func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectDat
 		}
 	}
 
-	if inspectedValues.ImagePgVersion != "" {
+	if inspectedValues.ImagePgVersion == "" {
 		return fmt.Errorf(L("cannot fetch postgresql version from %s"), serverImage)
 	}
 	log.Debug().Msgf("Image %s has PostgreSQL %s", serverImage, inspectedValues.ImagePgVersion)
-	if inspectedValues.CurrentPgVersion != "" {
+	if inspectedValues.CurrentPgVersion == "" {
 		return fmt.Errorf(L("posgresql is not installed in the current deployment"))
 	}
 	log.Debug().Msgf("Current deployment has PostgreSQL %s", inspectedValues.CurrentPgVersion)

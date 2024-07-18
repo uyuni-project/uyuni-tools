@@ -42,6 +42,7 @@ type Inspector[T any] interface {
 // BaseInspector is offering the basic implementation for the Inspector interface.
 type BaseInspector struct {
 	ScriptDir string
+	DataPath  string
 	Values    []types.InspectData
 }
 
@@ -61,6 +62,9 @@ func (i *BaseInspector) GenerateScript() error {
 
 // Return the path to the data file.
 func (i *BaseInspector) GetDataPath() string {
+	if i.DataPath != "" {
+		return i.DataPath
+	}
 	return path.Join(i.ScriptDir, inspectDataFile)
 }
 
