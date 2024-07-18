@@ -16,6 +16,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -320,6 +321,7 @@ func Upgrade(
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
 	cocoImage types.ImageFlags,
+	hubXmlrpcImage types.ImageFlags,
 ) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {
 		return err
@@ -393,6 +395,12 @@ func Upgrade(
 		inspectedValues.DbPort, inspectedValues.DbName, inspectedValues.DbUser, inspectedValues.DbPassword)
 	if err != nil {
 		return utils.Errorf(err, L("error upgrading confidential computing service."))
+	}
+
+	if err := hub.Upgrade(
+		authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcImage,
+	); err != nil {
+		return err
 	}
 
 	return podman.ReloadDaemon(false)
