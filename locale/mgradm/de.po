@@ -8,17 +8,20 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-18 15:00+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-07-18 11:46+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
-msgstr ""
+msgstr "Uyuni Administrationswerkzeug"
 
 #: mgradm/cmd/cmd.go:41
 msgid "Tool to help administering Uyuni servers in containers"
@@ -30,25 +33,25 @@ msgstr ""
 
 #: mgradm/cmd/cmd.go:52
 msgid "Server Management:"
-msgstr ""
+msgstr "Serververwaltung:"
 
 #: mgradm/cmd/cmd.go:56
 msgid "Administrator tools:"
-msgstr ""
+msgstr "Administratorwerkzeuge:"
 
 #: mgradm/cmd/cmd.go:67
 #, javascript-format
 msgid "Welcome to %s"
-msgstr ""
+msgstr "Willkommen bei %s"
 
 #: mgradm/cmd/cmd.go:68
 #, javascript-format
 msgid "Executing command: %s"
-msgstr ""
+msgstr "Befehl ausführen: %s"
 
 #: mgradm/cmd/cmd.go:72
 msgid "configuration file path"
-msgstr ""
+msgstr "Konfigurationsdateipfad"
 
 #: mgradm/cmd/cmd.go:73
 msgid "application log level"
@@ -75,7 +78,7 @@ msgstr ""
 #: mgradm/cmd/distro/cp.go:55
 #, javascript-format
 msgid "Distribution %s successfully registered"
-msgstr ""
+msgstr "Distribution %s erfolgreich registriert"
 
 #: mgradm/cmd/distro/cp.go:78
 #, javascript-format
@@ -95,7 +98,7 @@ msgstr ""
 #: mgradm/cmd/distro/cp.go:99
 #, javascript-format
 msgid "Copying distribution %s"
-msgstr ""
+msgstr "Distribution %s wird kopiert"
 
 #: mgradm/cmd/distro/cp.go:101 mgradm/shared/podman/podman.go:136
 #: mgradm/shared/podman/podman.go:139 mgradm/shared/podman/podman.go:142
@@ -107,17 +110,17 @@ msgstr ""
 #: mgradm/cmd/distro/cp.go:103
 #, javascript-format
 msgid "Distribution has been copied into %s"
-msgstr ""
+msgstr "Distribution wurde in %s kopiert"
 
 #: mgradm/cmd/distro/cp.go:131 mgradm/cmd/support/sql/sql.go:32
 #, javascript-format
 msgid "source %s does not exists"
-msgstr ""
+msgstr "Quelle %s existiert nicht"
 
 #: mgradm/cmd/distro/cp.go:153
 #, javascript-format
 msgid "Auto-detected distribution %s"
-msgstr ""
+msgstr "Automatisch erkannte Distribution %s"
 
 #: mgradm/cmd/distro/cp.go:169
 msgid "Continue by registering autoinstallation distribution"
@@ -171,7 +174,7 @@ msgstr ""
 
 #: mgradm/cmd/distro/distro.go:71
 msgid "Distributions management"
-msgstr ""
+msgstr "Distributionsverwaltung"
 
 #: mgradm/cmd/distro/distro.go:72
 msgid "Tools for autoinstallation distributions management"
@@ -258,7 +261,7 @@ msgstr ""
 #: mgradm/cmd/uninstall/kubernetes.go:65
 #, javascript-format
 msgid "Running %s"
-msgstr ""
+msgstr "%s wird ausgeführt"
 
 #: mgradm/cmd/gpg/add/gpg.go:114
 msgid "failed to run import key"
@@ -282,7 +285,7 @@ msgstr ""
 
 #: mgradm/cmd/hub/register/register.go:31
 msgid "Register"
-msgstr ""
+msgstr "Registrieren"
 
 #: mgradm/cmd/hub/register/register.go:32
 msgid "Register this peripheral server to Hub API"
@@ -291,7 +294,7 @@ msgstr ""
 #: mgradm/cmd/hub/register/register.go:79
 #, javascript-format
 msgid "invalid line format: %s"
-msgstr ""
+msgstr "ungültiges Zeilenformat: %s"
 
 #: mgradm/cmd/hub/register/register.go:93
 #, javascript-format
