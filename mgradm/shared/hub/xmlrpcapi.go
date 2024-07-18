@@ -82,7 +82,7 @@ func generateHubXmlrpcSystemdService(image string) error {
 		Network:    podman.UyuniNetwork,
 		Image:      image,
 	}
-	if err := utils.WriteTemplateToFile(hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0555, false); err != nil {
+	if err := utils.WriteTemplateToFile(hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0555, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
