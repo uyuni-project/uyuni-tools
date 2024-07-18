@@ -25,8 +25,7 @@ func ptfForPodman(
 ) error {
 	//we don't want to perform a postgres version upgrade when installing a PTF.
 	//in that case, we can use the upgrade command.
-	dummyMigration := types.ImageFlags{}
-	dummyCoco := types.ImageFlags{}
+	dummyImage := types.ImageFlags{}
 	if err := flags.checkParameters(); err != nil {
 		return err
 	}
@@ -42,7 +41,7 @@ func ptfForPodman(
 	}
 	defer cleaner()
 
-	return podman.Upgrade(authFile, "", flags.Image, dummyMigration, dummyCoco)
+	return podman.Upgrade(authFile, "", flags.Image, dummyImage, dummyImage, dummyImage)
 }
 
 func (flags *podmanPTFFlags) checkParameters() error {

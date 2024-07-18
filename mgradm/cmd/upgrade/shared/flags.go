@@ -18,6 +18,7 @@ type UpgradeFlags struct {
 	Image          types.ImageFlags `mapstructure:",squash"`
 	DbUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	Coco           shared.CocoFlags
+	HubXmlrpc      types.ImageFlags
 }
 
 // AddUpgradeFlags add upgrade flags to a command.
@@ -30,6 +31,8 @@ func AddUpgradeFlags(cmd *cobra.Command) {
 		Title: L("Confidential Computing Flags"),
 	})
 	utils.AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"), "coco-container", "server-attestation")
+	_ = shared_utils.AddFlagHelpGroup(cmd, &shared_utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API")})
+	utils.AddContainerImageFlags(cmd, "hubxmlrpc", L("Hub XML-RPC API"), "hubxmlrpc-container", "server-hub-xmlrpc-api")
 }
 
 // AddUpgradeListFlags add upgrade list flags to a command.
