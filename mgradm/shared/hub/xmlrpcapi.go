@@ -60,6 +60,19 @@ func EnableHubXmlrpc(replicas int) error {
 	return nil
 }
 
+// Upgrade updates the systemd service files and restarts the containers if needed.
+func Upgrade(authFile string, registry string, pullPolicy string, tag string, hubXmlrpcImage types.ImageFlags) error {
+	if err := SetupHubXmlrpc(authFile, registry, pullPolicy, tag, hubXmlrpcImage); err != nil {
+		return err
+	}
+
+	if err := podman.ReloadDaemon(false); err != nil {
+		return err
+	}
+
+	return podman.RestartInstantiated(podman.HubXmlrpcService)
+}
+
 // generateHubXmlrpcSystemdService creates the Hub XMLRPC systemd files.
 func generateHubXmlrpcSystemdService(image string) error {
 	hubXmlrpcData := templates.HubXmlrpcServiceTemplateData{
