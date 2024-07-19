@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/uyuni-project/uyuni-tools/shared/api"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -21,11 +22,19 @@ func runLogin(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Comman
 	// ToDO add FQDN checker from rebase
 	utils.AskIfMissing(&flags.Server, cmd.Flag("api-server").Usage, 0, 0, nil)
 
-	return api.StoreLoginCreds(cmd.Context(), &flags.ConnectionDetails)
+	if err := api.StoreLoginCreds(&flags.ConnectionDetails); err != nil {
+		return err
+	}
+	log.Info().Msg(L("Login credentials verified and stored"))
+	return nil
 }
 
 func runLogout(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
 	log.Debug().Msg("Running logout command")
 
-	return api.RemoveLoginCreds(cmd.Context())
+	if err := api.RemoveLoginCreds(); err != nil {
+		return err
+	}
+	log.Info().Msg(L("Successfully logged out"))
+	return nil
 }
