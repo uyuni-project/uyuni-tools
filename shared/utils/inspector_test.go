@@ -19,6 +19,7 @@ db_user=myuser
 db_password=mysecret
 db_name=mydb
 db_port=1234
+has_hubxmlrpc=true
 `
 
 	testDir, cleaner := test_utils.CreateTmpFolder(t)
@@ -39,4 +40,5 @@ db_port=1234
 	test_utils.AssertEquals(t, "Invalid DB password", "mysecret", actual.DbPassword)
 	test_utils.AssertEquals(t, "Invalid DB name", "mydb", actual.DbName)
 	test_utils.AssertEquals(t, "Invalid DB port", 1234, actual.DbPort)
+	test_utils.AssertTrue(t, "HasHubXmlrpcApi should be true", actual.HasHubXmlrpcApi)
 }
