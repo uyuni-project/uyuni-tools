@@ -5,7 +5,6 @@
 package api
 
 import (
-	"context"
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
@@ -21,7 +20,7 @@ import (
 )
 
 // Store API credentials for future API use.
-func StoreLoginCreds(ctx context.Context, connection *ConnectionDetails) error {
+func StoreLoginCreds(connection *ConnectionDetails) error {
 	// check login is valid
 	if !checkCredentials(connection) {
 		return fmt.Errorf(L("Failed to validate credentials"))
@@ -59,22 +58,19 @@ func StoreLoginCreds(ctx context.Context, connection *ConnectionDetails) error {
 		log.Error().Msgf(L("Unable to write credentials store"))
 		return err
 	}
-
-	log.Info().Msg(L("Login credentials verified and stored"))
 	return nil
 }
 
 // Remove stored API credentials.
-func RemoveLoginCreds(ctx context.Context) error {
+func RemoveLoginCreds() error {
 	if err := os.Remove(getAPICredsFile()); err != nil {
 		return err
 	}
-	log.Info().Msg(L("Successfully logged out"))
 	return nil
 }
 
 // Read and decrypt stored login credentials.
-func LoadLoginCreds(ctx context.Context, connection *ConnectionDetails) error {
+func LoadLoginCreds(connection *ConnectionDetails) error {
 	data, err := os.ReadFile(getAPICredsFile())
 	if err != nil {
 		return utils.Errorf(err, L("Unable to read credentials file"))

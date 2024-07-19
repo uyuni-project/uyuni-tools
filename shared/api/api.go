@@ -6,7 +6,6 @@ package api
 
 import (
 	"bytes"
-	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/json"
@@ -81,19 +80,7 @@ func (c *HTTPClient) sendRequest(req *http.Request) (*http.Response, error) {
 // will try to login to the host.
 // caCert can be set to use custom CA certificate to validate target host.
 func Init(conn *ConnectionDetails) (*HTTPClient, error) {
-	// Load stored credentials if no user was specified
-	if utils.FileExists(getAPICredsFile()) && conn.User == "" {
-		if err := LoadLoginCreds(context.Background(), conn); err != nil {
-			return nil, err
-		}
-	}
-
-	// If user name provided, but no password and not loaded
-	if conn.User != "" {
-		if conn.Password == "" {
-			utils.AskPasswordIfMissing(&conn.Password, L("API server password"), 0, 0)
-		}
-	}
+	cachedCredentials := getLoginCredentials(conn)
 
 	caCertPool, err := x509.SystemCertPool()
 	if err != nil {
@@ -120,6 +107,14 @@ func Init(conn *ConnectionDetails) (*HTTPClient, error) {
 	}
 	if conn.User != "" {
 		err = client.login(conn)
+		if err != nil && cachedCredentials {
+			log.Warn().Msg(L("Cached credentials are invalid and were removed"))
+			if err := RemoveLoginCreds(); err != nil {
+				log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
+			}
+			getLoginCredentials(conn)
+			err = client.login(conn)
+		}
 	}
 	return client, err
 }
@@ -264,4 +259,30 @@ func Get[T interface{}](client *HTTPClient, path string) (*ApiResponse[T], error
 	}
 
 	return &response, nil
+}
+
+// Fills ConnectionDetails with cached credentials and returns true.
+// In case cached credentials are not present, asks for password and returns false.
+func getLoginCredentials(conn *ConnectionDetails) bool {
+	// Load stored credentials if no user was specified
+	cachedCredentials := false
+	if utils.FileExists(getAPICredsFile()) && conn.User == "" {
+		if err := LoadLoginCreds(conn); err != nil {
+			log.Warn().Err(err).Msg(L("Cannot load stored credentials"))
+			if err := RemoveLoginCreds(); err != nil {
+				log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
+			}
+		} else {
+			cachedCredentials = true
+		}
+	}
+
+	// If user name provided, but no password and not loaded
+	if conn.User != "" {
+		if conn.Password == "" {
+			utils.AskPasswordIfMissing(&conn.Password, L("API server password"), 0, 0)
+		}
+	}
+
+	return cachedCredentials
 }
