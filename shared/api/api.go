@@ -5,65 +5,23 @@
 package api
 
 import (
+	"bytes"
+	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
+	"net/http"
 	"os"
+	"time"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"net/http"
-	"time"
 )
-
-const root_path_apiv1 = "/rhn/manager/api"
-
-// HTTP Client is an API entrypoint.
-type HTTPClient struct {
-
-	// URL to the API endpoint of the target host
-	BaseURL string
-
-	// net/http client
-	Client *http.Client
-
-	// Authentication cookie storage
-	AuthCookie *http.Cookie
-}
-
-// Connection details for initial API connection.
-type ConnectionDetails struct {
-
-	// FQDN of the target host.
-	Server string
-
-	// User to login under.
-	User string
-
-	// Password for the user.
-	Password string
-
-	// CA certificate used for target host validation.
-	// Provided certificate is used together with system certificates.
-	CAcert string
-
-	// Disable certificate validation, unsecure and not recommended.
-	Insecure bool
-}
-
-// API response where T is the type of the result.
-type ApiResponse[T interface{}] struct {
-	Result  T
-	Success bool
-	Message string
-}
 
 // AddAPIFlags is a helper to include api details for the provided command tree.
 //
@@ -75,7 +33,7 @@ func AddAPIFlags(cmd *cobra.Command, optional bool) error {
 	cmd.PersistentFlags().String("api-cacert", "", L("Path to a cert file of the CA"))
 	cmd.PersistentFlags().Bool("api-insecure", false, L("If set, server certificate will not be checked for validity"))
 
-	if !optional {
+	if false {
 		if err := cmd.MarkPersistentFlagRequired("api-server"); err != nil {
 			return err
 		}
@@ -138,6 +96,20 @@ func (c *HTTPClient) sendRequest(req *http.Request) (*http.Response, error) {
 // will try to login to the host.
 // caCert can be set to use custom CA certificate to validate target host.
 func Init(conn *ConnectionDetails) (*HTTPClient, error) {
+	// Load stored credentials if no user was specified
+	if utils.FileExists(getAPICredsFile()) && conn.User == "" {
+		if err := LoadLoginCreds(context.Background(), conn); err != nil {
+			return nil, err
+		}
+	}
+
+	// If user name provided, but no password and not loaded
+	if conn.User != "" {
+		if conn.Password == "" {
+			utils.AskPasswordIfMissing(&conn.Password, L("API server password"), 0, 0)
+		}
+	}
+
 	caCertPool, err := x509.SystemCertPool()
 	if err != nil {
 		log.Warn().Msg(err.Error())
@@ -161,11 +133,7 @@ func Init(conn *ConnectionDetails) (*HTTPClient, error) {
 			},
 		},
 	}
-
-	if len(conn.User) > 0 {
-		if len(conn.Password) == 0 {
-			utils.AskPasswordIfMissing(&conn.Password, L("API server password"), 0, 0)
-		}
+	if conn.User != "" {
 		err = client.login(conn)
 	}
 	return client, err

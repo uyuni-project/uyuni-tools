@@ -43,8 +43,28 @@ func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 		},
 	}
 
+	apiLogin := &cobra.Command{
+		Use:   "login",
+		Short: L("Store login information for future API usage"),
+		Long:  L("Login stores login information for next API calls. User name, password and remote host can be provided using flag or will be asked interactively. Environmental variables are also supported."),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, runLogin)
+		},
+	}
+
+	apiLogout := &cobra.Command{
+		Use:   "logout",
+		Short: L("Remove stored login information"),
+		Long:  L("Logout removes stored login information."),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, runLogout)
+		},
+	}
+
 	apiCmd.AddCommand(apiGet)
 	apiCmd.AddCommand(apiPost)
+	apiCmd.AddCommand(apiLogin)
+	apiCmd.AddCommand(apiLogout)
 
 	if err := api.AddAPIFlags(apiCmd, false); err != nil {
 		return apiCmd, err
