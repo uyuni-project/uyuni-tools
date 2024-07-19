@@ -16,10 +16,8 @@ import (
 // Run runs the `mgrctl` root command.
 func Run() error {
 	gettext.BindLocale(gettext.New("mgrctl", utils.LocaleRoot, l10n_utils.New(utils.LocaleRoot)))
-	run, err := cmd.NewUyunictlCommand()
-	if err != nil {
-		return err
-	}
+	run := cmd.NewUyunictlCommand()
+
 	return run.Execute()
 }
 

@@ -43,9 +43,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		utils.AddBackendFlag(registerCmd)
 	}
 
-	if err := api.AddAPIFlags(registerCmd, false); err != nil {
-		return nil
-	}
+	api.AddAPIFlags(registerCmd)
 
 	return registerCmd
 }

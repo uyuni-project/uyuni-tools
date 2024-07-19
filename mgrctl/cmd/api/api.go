@@ -17,7 +17,7 @@ type apiFlags struct {
 }
 
 // NewCommand generates a JSON over HTTP API helper tool command.
-func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	var flags apiFlags
 
 	apiCmd := &cobra.Command{
@@ -65,9 +65,7 @@ func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
 	apiCmd.AddCommand(apiPost)
 	apiCmd.AddCommand(apiLogin)
 	apiCmd.AddCommand(apiLogout)
+	api.AddAPIFlags(apiCmd)
 
-	if err := api.AddAPIFlags(apiCmd, false); err != nil {
-		return apiCmd, err
-	}
-	return apiCmd, nil
+	return apiCmd
 }
