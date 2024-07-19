@@ -121,7 +121,12 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return err
 	}
 
-	if err := hub.EnableHubXmlrpc(flags.HubXmlrpc.Replicas); err != nil {
+	hubReplicas := flags.HubXmlrpc.Replicas
+	if extractedData.HasHubXmlrpcApi {
+		log.Info().Msg(L("Enabling Hub XML-RPC API since it is enabled on the migrated server"))
+		hubReplicas = 1
+	}
+	if err := hub.EnableHubXmlrpc(hubReplicas); err != nil {
 		return err
 	}
 

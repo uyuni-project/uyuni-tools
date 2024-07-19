@@ -95,6 +95,8 @@ grep '^db_password' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/
 grep '^db_name' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 grep '^db_port' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 
+$SSH {{ .SourceFqdn }} sh -c "systemctl list-unit-files | grep hub-xmlrpc-api | grep -q active && echo has_hubxmlrpc=true || echo has_hubxmlrpc=false" >>/var/lib/uyuni-tools/data
+
 echo "Altering configuration for domain resolution..."
 sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/rhn/rhn.conf;
 sed 's/server\.jabber_server/java\.hostname/' -i /etc/rhn/rhn.conf;
