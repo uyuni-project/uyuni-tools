@@ -24,27 +24,12 @@ import (
 )
 
 // AddAPIFlags is a helper to include api details for the provided command tree.
-//
-// If the api support is only optional for the command, set optional parameter to true.
-func AddAPIFlags(cmd *cobra.Command, optional bool) error {
+func AddAPIFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().String("api-server", "", L("FQDN of the server to connect to"))
 	cmd.PersistentFlags().String("api-user", "", L("API user username"))
 	cmd.PersistentFlags().String("api-password", "", L("Password for the API user"))
 	cmd.PersistentFlags().String("api-cacert", "", L("Path to a cert file of the CA"))
 	cmd.PersistentFlags().Bool("api-insecure", false, L("If set, server certificate will not be checked for validity"))
-
-	if false {
-		if err := cmd.MarkPersistentFlagRequired("api-server"); err != nil {
-			return err
-		}
-		if err := cmd.MarkPersistentFlagRequired("api-user"); err != nil {
-			return err
-		}
-		if err := cmd.MarkPersistentFlagRequired("api-password"); err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 func prettyPrint(v interface{}) string {
