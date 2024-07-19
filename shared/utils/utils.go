@@ -41,6 +41,7 @@ var fqdnValid = regexp.MustCompile(`^([a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})(\.[a-zA-
 type InspectResult struct {
 	CommonInspectData `mapstructure:",squash"`
 	Timezone          string
+	HasHubXmlrpcApi   bool `mapstructure:"has_hubxmlrpc"`
 }
 
 func checkValueSize(value string, min int, max int) bool {
