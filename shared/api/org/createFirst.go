@@ -17,6 +17,9 @@ import (
 // orgName is the name of the first organization to create and admin the user to create.
 func CreateFirst(cnxDetails *api.ConnectionDetails, orgName string, admin *types.User) (*types.Organization, error) {
 	client, err := api.Init(cnxDetails)
+	if err == nil {
+		err = client.Login()
+	}
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to connect to the server"))
 	}

@@ -25,6 +25,14 @@ func runLogin(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Comman
 	if err := api.StoreLoginCreds(&flags.ConnectionDetails); err != nil {
 		return err
 	}
+	client, err := api.Init(&flags.ConnectionDetails)
+	if err != nil {
+		return err
+	}
+	if !client.ValidateCreds() {
+		err := api.RemoveLoginCreds()
+		return utils.Errorf(err, L("Failed to validate credentials. Not storing"))
+	}
 	log.Info().Msg(L("Login credentials verified and stored"))
 	return nil
 }
