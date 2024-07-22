@@ -48,6 +48,10 @@ rpm -qa --qf '[%{fileflags},%{filenames}\n]' |grep ",/etc/" | while IFS="," read
     fi
 done
 
+# exclude tomcat default configuration. All settings should be store in /etc/tomcat/conf.d/
+echo "-/ /etc/sysconfig/tomcat" >> exclude_list
+echo "-/ /etc/tomcat/tomcat.conf" >> exclude_list
+
 # exclude schema migration files
 echo "-/ /etc/sysconfig/rhn/reportdb-schema-upgrade" >> exclude_list
 echo "-/ /etc/sysconfig/rhn/schema-upgrade" >> exclude_list
@@ -80,6 +84,14 @@ while IFS="," read -r target path ; do
   fi
 done < distros
 
+if $SSH {{ .SourceFqdn }} test -e /etc/tomcat/conf.d; then
+  echo "Copying tomcat configuration.."
+  mkdir -p /etc/tomcat/conf.d
+  rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/tomcat/conf.d /etc/tomcat/;
+else
+  echo "Skipping tomcat configuration.."
+fi
+
 rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 
@@ -105,10 +117,9 @@ sed 's/client_use_localhost: false/client_use_localhost: true/' -i /etc/cobbler/
 echo "Altering configuration for container environment..."
 sed 's/address=[^:]*:/address=*:/' -i /etc/rhn/taskomatic.conf;
 
-if test ! -f /etc/tomcat/conf.d/remote_debug.conf -a -f /etc/sysconfig/tomcat; then
-  mv /etc/sysconfig/tomcat /etc/tomcat/conf.d/remote_debug.conf
-fi
-
+echo "Altering tomcat configuration..."
+sed 's/--add-modules java.annotation,com.sun.xml.bind://' -i /etc/tomcat/conf.d/*
+sed 's/-XX:-UseConcMarkSweepGC//' -i /etc/tomcat/conf.d/*
 sed 's/address=[^:]*:/address=*:/' -i /etc/tomcat/conf.d/remote_debug.conf
 
 {{ if .Kubernetes }}
