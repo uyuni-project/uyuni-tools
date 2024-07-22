@@ -39,7 +39,7 @@ func prettyPrint(v interface{}) string {
 	return fmt.Sprintln(string(b))
 }
 
-func (c *HTTPClient) sendRequest(req *http.Request) (*http.Response, error) {
+func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 	log.Debug().Msgf("Sending %s request %s", req.Method, req.URL)
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Accept", "application/json; charset=utf-8")
@@ -79,8 +79,9 @@ func (c *HTTPClient) sendRequest(req *http.Request) (*http.Response, error) {
 // Optionaly connectionDetails can have user name and password set and Init
 // will try to login to the host.
 // caCert can be set to use custom CA certificate to validate target host.
-func Init(conn *ConnectionDetails) (*HTTPClient, error) {
-	cachedCredentials := getLoginCredentials(conn)
+func Init(conn *ConnectionDetails) (*APIClient, error) {
+	// Need to load credentials as it also loads up server URL
+	_ = getLoginCredentials(conn)
 
 	caCertPool, err := x509.SystemCertPool()
 	if err != nil {
@@ -93,7 +94,8 @@ func Init(conn *ConnectionDetails) (*HTTPClient, error) {
 		}
 		caCertPool.AppendCertsFromPEM(caCert)
 	}
-	client := &HTTPClient{
+	client := &APIClient{
+		Details: conn,
 		BaseURL: fmt.Sprintf("https://%s%s", conn.Server, root_path_apiv1),
 		Client: &http.Client{
 			Timeout: time.Minute,
@@ -105,21 +107,27 @@ func Init(conn *ConnectionDetails) (*HTTPClient, error) {
 			},
 		},
 	}
-	if conn.User != "" {
-		err = client.login(conn)
-		if err != nil && cachedCredentials {
-			log.Warn().Msg(L("Cached credentials are invalid and were removed"))
-			if err := RemoveLoginCreds(); err != nil {
-				log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
-			}
-			getLoginCredentials(conn)
-			err = client.login(conn)
-		}
-	}
 	return client, err
 }
 
-func (c *HTTPClient) login(conn *ConnectionDetails) error {
+// Login to the server using stored or provided credentials.
+func (c *APIClient) Login() error {
+	err := c.login()
+	if err != nil && c.Details.Cached {
+		log.Warn().Msg(L("Cached credentials are invalid and were removed"))
+		if err := RemoveLoginCreds(); err != nil {
+			log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
+		}
+		if err := getLoginCredentials(c.Details); err != nil {
+			return err
+		}
+		err = c.login()
+	}
+	return err
+}
+
+func (c *APIClient) login() error {
+	conn := c.Details
 	url := fmt.Sprintf("%s/%s", c.BaseURL, "auth/login")
 	data := map[string]string{
 		"login":    conn.User,
@@ -169,7 +177,7 @@ func (c *HTTPClient) login(conn *ConnectionDetails) error {
 // `data` contains a map of values to add to the POST query. `data` are serialized to the JSON
 //
 // returns a raw HTTP Response.
-func (c *HTTPClient) Post(path string, data map[string]interface{}) (*http.Response, error) {
+func (c *APIClient) Post(path string, data map[string]interface{}) (*http.Response, error) {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	jsonData, err := json.Marshal(data)
 	if err != nil {
@@ -197,7 +205,7 @@ func (c *HTTPClient) Post(path string, data map[string]interface{}) (*http.Respo
 // `path` specifies API endpoint together with query options
 //
 // returns a raw HTTP Response.
-func (c *HTTPClient) Get(path string) (*http.Response, error) {
+func (c *APIClient) Get(path string) (*http.Response, error) {
 	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -218,7 +226,7 @@ func (c *HTTPClient) Get(path string) (*http.Response, error) {
 // `data` contains a map of values to add to the POST query. `data` are serialized to the JSON
 //
 // returns a deserialized JSON data to the map.
-func Post[T interface{}](client *HTTPClient, path string, data map[string]interface{}) (*ApiResponse[T], error) {
+func Post[T interface{}](client *APIClient, path string, data map[string]interface{}) (*ApiResponse[T], error) {
 	res, err := client.Post(path, data)
 	if err != nil {
 		return nil, err
@@ -245,7 +253,7 @@ func Post[T interface{}](client *HTTPClient, path string, data map[string]interf
 // `path` specifies API endpoint together with query options
 //
 // returns an ApiResponse with the decoded result.
-func Get[T interface{}](client *HTTPClient, path string) (*ApiResponse[T], error) {
+func Get[T interface{}](client *APIClient, path string) (*ApiResponse[T], error) {
 	res, err := client.Get(path)
 	if err != nil {
 		return nil, err
