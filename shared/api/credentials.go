@@ -21,11 +21,6 @@ import (
 
 // Store API credentials for future API use.
 func StoreLoginCreds(connection *ConnectionDetails) error {
-	// check login is valid
-	if !checkCredentials(connection) {
-		return fmt.Errorf(L("Failed to validate credentials"))
-	}
-
 	// encrypt login data
 	urldata := getFixedServerString(connection.Server)
 	encodedURL := make([]byte, base64.URLEncoding.EncodedLen(len(urldata)))
@@ -49,31 +44,60 @@ func StoreLoginCreds(connection *ConnectionDetails) error {
 
 	authData, err := json.Marshal(auth)
 	if err != nil {
-		log.Error().Msgf(L("Unable to create credentials json"))
-		return err
+		return utils.Errorf(err, L("Unable to create credentials json"))
 	}
 
-	err = os.WriteFile(getAPICredsFile(), authData, 0)
+	err = os.WriteFile(getAPICredsFile(), authData, 0600)
 	if err != nil {
-		log.Error().Msgf(L("Unable to write credentials store"))
-		return err
+		return utils.Errorf(err, L("Unable to write credentials store %s"), getAPICredsFile())
 	}
 	return nil
 }
 
 // Remove stored API credentials.
 func RemoveLoginCreds() error {
-	if err := os.Remove(getAPICredsFile()); err != nil {
-		return err
+	return os.Remove(getAPICredsFile())
+}
+
+// Check if login credentials are valid.
+func (c *APIClient) ValidateCreds() bool {
+	err := c.Login()
+	return err == nil
+}
+
+// Fills ConnectionDetails with cached credentials and returns true.
+// In case cached credentials are not present, asks for password and returns false.
+func getLoginCredentials(conn *ConnectionDetails) error {
+	// Load stored credentials if no user was specified
+	cachedCredentials := false
+	if utils.FileExists(getAPICredsFile()) && conn.User == "" {
+		if err := loadLoginCreds(conn); err != nil {
+			log.Warn().Err(err).Msg(L("Cannot load stored credentials"))
+			if err := RemoveLoginCreds(); err != nil {
+				log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
+			}
+			return err
+		} else {
+			cachedCredentials = true
+		}
 	}
+
+	// If user name provided, but no password and not loaded
+	if conn.User != "" {
+		if conn.Password == "" {
+			utils.AskPasswordIfMissing(&conn.Password, L("API server password"), 0, 0)
+		}
+	}
+
+	conn.Cached = cachedCredentials
 	return nil
 }
 
 // Read and decrypt stored login credentials.
-func LoadLoginCreds(connection *ConnectionDetails) error {
+func loadLoginCreds(connection *ConnectionDetails) error {
 	data, err := os.ReadFile(getAPICredsFile())
 	if err != nil {
-		return utils.Errorf(err, L("Unable to read credentials file"))
+		return utils.Errorf(err, L("Unable to read credentials file %s"), getAPICredsFile())
 	}
 	authData := authStorage{}
 	err = json.Unmarshal(data, &authData)
@@ -97,11 +121,6 @@ func LoadLoginCreds(connection *ConnectionDetails) error {
 	connection.Password = string(decPassword)
 	connection.User = string(decUser)
 	return nil
-}
-
-func checkCredentials(connection *ConnectionDetails) bool {
-	_, err := Init(connection)
-	return err == nil
 }
 
 func getAPICredsFile() string {

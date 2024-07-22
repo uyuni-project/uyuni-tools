@@ -19,7 +19,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // AddAPIFlags is a helper to include api details for the provided command tree.
@@ -61,8 +60,10 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
 		var errResponse map[string]string
-		if err = json.NewDecoder(res.Body).Decode(&errResponse); err == nil {
-			return nil, fmt.Errorf(errResponse["message"])
+		if res.Body != nil {
+			if err = json.NewDecoder(res.Body).Decode(&errResponse); err == nil {
+				return nil, fmt.Errorf(errResponse["message"])
+			}
 		}
 		return nil, fmt.Errorf(L("unknown error: %d"), res.StatusCode)
 	}
@@ -267,30 +268,4 @@ func Get[T interface{}](client *APIClient, path string) (*ApiResponse[T], error)
 	}
 
 	return &response, nil
-}
-
-// Fills ConnectionDetails with cached credentials and returns true.
-// In case cached credentials are not present, asks for password and returns false.
-func getLoginCredentials(conn *ConnectionDetails) bool {
-	// Load stored credentials if no user was specified
-	cachedCredentials := false
-	if utils.FileExists(getAPICredsFile()) && conn.User == "" {
-		if err := LoadLoginCreds(conn); err != nil {
-			log.Warn().Err(err).Msg(L("Cannot load stored credentials"))
-			if err := RemoveLoginCreds(); err != nil {
-				log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
-			}
-		} else {
-			cachedCredentials = true
-		}
-	}
-
-	// If user name provided, but no password and not loaded
-	if conn.User != "" {
-		if conn.Password == "" {
-			utils.AskPasswordIfMissing(&conn.Password, L("API server password"), 0, 0)
-		}
-	}
-
-	return cachedCredentials
 }
