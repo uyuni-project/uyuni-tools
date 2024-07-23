@@ -16,6 +16,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -30,12 +31,15 @@ func AddAPIFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().Bool("api-insecure", false, L("If set, server certificate will not be checked for validity"))
 }
 
-func prettyPrint(v interface{}) string {
+func logTraceHeader(v *http.Header) {
+	if log.Logger.GetLevel() != zerolog.TraceLevel {
+		return
+	}
 	b, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
-		return ""
+		return
 	}
-	return fmt.Sprintln(string(b))
+	log.Trace().Msg(string(b))
 }
 
 func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
@@ -46,8 +50,7 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 		req.AddCookie(c.AuthCookie)
 	}
 
-	log.Trace().Msg(prettyPrint(req.Header))
-	log.Trace().Msg(prettyPrint(req.Body))
+	logTraceHeader(&req.Header)
 
 	res, err := c.Client.Do(req)
 	if err != nil {
@@ -55,14 +58,18 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 		return nil, err
 	}
 
-	log.Trace().Msg(prettyPrint(res.Header))
-	log.Trace().Msg(prettyPrint(res.Body))
+	logTraceHeader(&res.Header)
 
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
 		var errResponse map[string]string
 		if res.Body != nil {
-			if err = json.NewDecoder(res.Body).Decode(&errResponse); err == nil {
-				return nil, fmt.Errorf(errResponse["message"])
+			body, err := io.ReadAll(res.Body)
+			if err == nil {
+				if err = json.Unmarshal(body, &errResponse); err == nil {
+					return nil, fmt.Errorf(errResponse["message"])
+				} else {
+					return nil, fmt.Errorf(string(body))
+				}
 			}
 		}
 		return nil, fmt.Errorf(L("unknown error: %d"), res.StatusCode)
