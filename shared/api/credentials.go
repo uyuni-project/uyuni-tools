@@ -36,10 +36,13 @@ func StoreLoginCreds(connection *ConnectionDetails) error {
 	}
 
 	// store encrypted credentials into separate credentials config storage
-	auth := authStorage{
-		User:     encUser,
-		Password: encPassword,
-		Server:   connection.Server,
+	// TODO: Add support for more servers if needed in the future
+	auth := []authStorage{
+		{
+			User:     encUser,
+			Password: encPassword,
+			Server:   connection.Server,
+		},
 	}
 
 	authData, err := json.Marshal(auth)
@@ -91,12 +94,25 @@ func getLoginCredentials(conn *ConnectionDetails) error {
 func loadLoginCreds(connection *ConnectionDetails) error {
 	data, err := os.ReadFile(getAPICredsFile())
 	if err != nil {
-		return utils.Errorf(err, L("Unable to read credentials file %s"), getAPICredsFile())
+		return utils.Errorf(err, L("unable to read credentials file %s"), getAPICredsFile())
 	}
-	authData := authStorage{}
-	err = json.Unmarshal(data, &authData)
+	authStore := []authStorage{}
+	err = json.Unmarshal(data, &authStore)
 	if err != nil {
-		return utils.Errorf(err, L("Unable to decode credentials file"))
+		return utils.Errorf(err, L("unable to decode credentials file"))
+	}
+
+	if len(authStore) == 0 {
+		return fmt.Errorf(L("no credentials loaded"))
+	}
+
+	// Currently we support storing data only to one server
+	// Future: add support for more servers if wanted
+
+	authData := authStore[0]
+
+	if connection.Server != "" && connection.Server != authData.Server {
+		return fmt.Errorf(L("specified api server does not match with stored credentials"))
 	}
 	connection.Server = authData.Server
 
