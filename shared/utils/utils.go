@@ -409,8 +409,8 @@ func GetFqdn(args []string) (string, error) {
 
 // IsValidFDQN returns an error if the argument is not a valid FQDN.
 func IsValidFQDN(fqdn string) error {
-	if err := IsWellFormedFQDN(fqdn); err != nil {
-		return err
+	if !IsWellFormedFQDN(fqdn) {
+		return fmt.Errorf(L("%s is not a valid FQDN"), fqdn)
 	}
 	_, err := net.LookupHost(fqdn)
 	if err != nil {
@@ -419,10 +419,7 @@ func IsValidFQDN(fqdn string) error {
 	return nil
 }
 
-// IsWellFormedFQDN returns an error if the argument is not a well formed FQDN.
-func IsWellFormedFQDN(fqdn string) error {
-	if !fqdnValid.MatchString(fqdn) {
-		return fmt.Errorf(L("%s is not a valid FQDN"), fqdn)
-	}
-	return nil
+// IsWellFormedFQDN returns an false if the argument is not a well formed FQDN.
+func IsWellFormedFQDN(fqdn string) bool {
+	return fqdnValid.MatchString(fqdn)
 }
