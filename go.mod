@@ -7,12 +7,12 @@ require (
 	github.com/briandowns/spinner v1.23.0
 	github.com/chai2010/gettext-go v1.0.2
 	github.com/spf13/cobra v1.8.0
+	golang.org/x/crypto v0.25.0
 )
 
 require (
 	github.com/creack/pty v1.1.17 // indirect
 	github.com/fatih/color v1.7.0 // indirect
-	golang.org/x/crypto v0.25.0 // indirect
 )
 
 require (
