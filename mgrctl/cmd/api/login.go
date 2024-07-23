@@ -5,6 +5,8 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
@@ -17,10 +19,13 @@ import (
 func runLogin(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
 	log.Debug().Msg("Running login command")
 
+	if api.IsAlreadyLoggedIn() && !flags.ForceLogin {
+		return fmt.Errorf(L("Refusing to overwrite existing login. Use --force to ignore this check."))
+	}
+
 	utils.AskIfMissing(&flags.User, cmd.Flag("api-user").Usage, 0, 0, nil)
 	utils.AskPasswordIfMissing(&flags.Password, cmd.Flag("api-password").Usage, 0, 0)
-	// ToDO add FQDN checker from rebase
-	utils.AskIfMissing(&flags.Server, cmd.Flag("api-server").Usage, 0, 0, nil)
+	utils.AskIfMissing(&flags.Server, cmd.Flag("api-server").Usage, 0, 0, utils.IsWellFormedFQDN)
 
 	if err := api.StoreLoginCreds(&flags.ConnectionDetails); err != nil {
 		return err

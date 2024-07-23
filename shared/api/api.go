@@ -172,6 +172,12 @@ func (c *APIClient) login() error {
 	return nil
 }
 
+// Check if login credentials are valid.
+func (c *APIClient) ValidateCreds() bool {
+	err := c.Login()
+	return err == nil
+}
+
 // Post issues a POST HTTP request to the API target
 //
 // `path` specifies an API endpoint

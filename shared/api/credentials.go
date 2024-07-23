@@ -59,18 +59,12 @@ func RemoveLoginCreds() error {
 	return os.Remove(getAPICredsFile())
 }
 
-// Check if login credentials are valid.
-func (c *APIClient) ValidateCreds() bool {
-	err := c.Login()
-	return err == nil
-}
-
 // Fills ConnectionDetails with cached credentials and returns true.
 // In case cached credentials are not present, asks for password and returns false.
 func getLoginCredentials(conn *ConnectionDetails) error {
 	// Load stored credentials if no user was specified
 	cachedCredentials := false
-	if utils.FileExists(getAPICredsFile()) && conn.User == "" {
+	if IsAlreadyLoggedIn() && conn.User == "" {
 		if err := loadLoginCreds(conn); err != nil {
 			log.Warn().Err(err).Msg(L("Cannot load stored credentials"))
 			if err := RemoveLoginCreds(); err != nil {
@@ -123,15 +117,14 @@ func loadLoginCreds(connection *ConnectionDetails) error {
 	return nil
 }
 
+// Returns true if credentials file already exists.
+// Does not check for credentials validity.
+func IsAlreadyLoggedIn() bool {
+	return utils.FileExists(getAPICredsFile())
+}
+
 func getAPICredsFile() string {
-	xdgConfigHome := os.Getenv("XDG_CONFIG_HOME")
-	if xdgConfigHome == "" {
-		home, err := os.UserHomeDir()
-		if err == nil {
-			xdgConfigHome = path.Join(home, ".config")
-		}
-	}
-	return path.Join(xdgConfigHome, api_credentials_store)
+	return path.Join(utils.GetUserConfigDir(), api_credentials_store)
 }
 
 func getFixedServerString(server string) []byte {
@@ -161,7 +154,7 @@ func decryptMsg(message []byte, secret [32]byte) (string, error) {
 	copy(decryptNonce[:], message[:24])
 	decrypted, err := secretbox.Open(nil, message[24:], &decryptNonce, &secret)
 	if !err {
-		return "", fmt.Errorf(L("Decoding of secret failed"))
+		return "", fmt.Errorf(L("decoding of secret failed"))
 	}
 	return string(decrypted), nil
 }
