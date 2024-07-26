@@ -89,26 +89,26 @@ func guessIngress() (string, error) {
 }
 
 // Restart restarts the pod.
-func Restart(app string) error {
-	if err := Stop(app); err != nil {
+func Restart(namespace string, app string) error {
+	if err := Stop(namespace, app); err != nil {
 		return utils.Errorf(err, L("cannot stop %s"), app)
 	}
-	return Start(app)
+	return Start(namespace, app)
 }
 
 // Start starts the pod.
-func Start(app string) error {
+func Start(namespace string, app string) error {
 	// if something is running, we don't need to set replicas to 1
-	if _, err := GetNode("-lapp=" + app); err != nil {
-		return ReplicasTo(app, 1)
+	if _, err := GetNode(namespace, "-lapp="+app); err != nil {
+		return ReplicasTo(namespace, app, 1)
 	}
 	log.Debug().Msgf("Already running")
 	return nil
 }
 
 // Stop stop the pod.
-func Stop(app string) error {
-	return ReplicasTo(app, 0)
+func Stop(namespace string, app string) error {
+	return ReplicasTo(namespace, app, 0)
 }
 
 func get(component string, componentName string, args ...string) ([]byte, error) {

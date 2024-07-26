@@ -20,6 +20,10 @@ func kubernetesCacheClear(
 	args []string,
 ) error {
 	cnx := shared.NewConnection("kubectl", "squid", kubernetes.ProxyFilter)
+	namespace, err := cnx.GetNamespace("")
+	if err != nil {
+		return utils.Errorf(err, L("failed retrieving namespace"))
+	}
 
 	if _, err := cnx.Exec("find", "/var/cache/squid", "-mindepth", "1", "-delete"); err != nil {
 		return utils.Errorf(err, L("failed to remove cached data"))
@@ -29,5 +33,5 @@ func kubernetesCacheClear(
 		return utils.Errorf(err, L("failed to re-create the cache directories"))
 	}
 
-	return kubernetes.Restart(kubernetes.ProxyApp)
+	return kubernetes.Restart(namespace, kubernetes.ProxyApp)
 }
