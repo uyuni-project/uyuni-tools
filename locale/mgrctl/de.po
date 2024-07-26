@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-24 17:14+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-07-18 11:46+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrctl/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: mgrctl/cmd/api/api.go:25
 msgid "JSON over HTTP API helper tool"
@@ -55,7 +58,7 @@ msgstr ""
 
 #: mgrctl/cmd/cmd.go:37
 msgid "configuration file path"
-msgstr ""
+msgstr "Konfigurationsdateipfad"
 
 #: mgrctl/cmd/cmd.go:38
 msgid "application log level"
@@ -64,12 +67,12 @@ msgstr ""
 #: mgrctl/cmd/cmd.go:46
 #, javascript-format
 msgid "Welcome to %s"
-msgstr ""
+msgstr "Willkommen bei %s"
 
 #: mgrctl/cmd/cmd.go:47
 #, javascript-format
 msgid "Executing command: %s"
-msgstr ""
+msgstr "Befehl ausführen: %s"
 
 #: mgrctl/cmd/cmd.go:53
 msgid "Failed to create api command"
@@ -128,7 +131,7 @@ msgstr ""
 #: mgrctl/cmd/exec/exec.go:132
 #, javascript-format
 msgid "Running %s"
-msgstr ""
+msgstr "%s wird ausgeführt"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"

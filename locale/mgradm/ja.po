@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-18 15:00+0200\n"
-"PO-Revision-Date: 2024-06-11 07:46+0000\n"
+"POT-Creation-Date: 2024-07-26 14:41+0200\n"
+"PO-Revision-Date: 2024-07-04 02:46+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -66,74 +66,78 @@ msgstr "ISOイメージをアンマウントできません。%s はそのまま
 msgid "unable to remove temporary directory, leaving %s intact"
 msgstr "一時ディレクトリを削除できません。%s はそのまま残ります"
 
-#: mgradm/cmd/distro/cp.go:42
+#: mgradm/cmd/distro/cp.go:48
 msgid "unable to login and register the distribution. Manual distro registration is required"
 msgstr "ログインしてディストリビューションを登録できません。手動ディストリビューション登録が必要です"
 
-#: mgradm/cmd/distro/cp.go:53
+#: mgradm/cmd/distro/cp.go:59
 msgid "unable to register the distribution. Manual distro registration is required"
 msgstr "ディストリビューションを登録できません。手動ディストリビューション登録が必要です"
 
-#: mgradm/cmd/distro/cp.go:55
+#: mgradm/cmd/distro/cp.go:61
 #, javascript-format
 msgid "Distribution %s successfully registered"
 msgstr "ディストリビューション %s が正常に登録されました"
 
-#: mgradm/cmd/distro/cp.go:78
-#, javascript-format
-msgid "unable to mount ISO image: %s"
-msgstr "ISOイメージをマウントできません: %s"
-
-#: mgradm/cmd/distro/cp.go:92
-#, javascript-format
-msgid "distribution with same name already exists: %s"
-msgstr "同じ名前のディストリビューションがすでに存在します: %s"
-
-#: mgradm/cmd/distro/cp.go:96
-#, javascript-format
-msgid "cannot create %s path in container"
-msgstr "コンテナ内に %s パスを作成できません"
-
-#: mgradm/cmd/distro/cp.go:99
-#, javascript-format
-msgid "Copying distribution %s"
-msgstr "ディストリビューション %s をコピーしています"
-
-#: mgradm/cmd/distro/cp.go:101 mgradm/shared/podman/podman.go:136
-#: mgradm/shared/podman/podman.go:139 mgradm/shared/podman/podman.go:142
-#: mgradm/shared/podman/podman.go:150
-#, javascript-format
-msgid "cannot copy %s"
-msgstr "%s をコピーできません"
-
-#: mgradm/cmd/distro/cp.go:103
-#, javascript-format
-msgid "Distribution has been copied into %s"
-msgstr "ディストリビューションが %s にコピーされました"
-
-#: mgradm/cmd/distro/cp.go:131 mgradm/cmd/support/sql/sql.go:32
+#: mgradm/cmd/distro/cp.go:70 mgradm/cmd/support/sql/sql.go:34
 #, javascript-format
 msgid "source %s does not exists"
 msgstr "ソース %s が存在しません"
 
-#: mgradm/cmd/distro/cp.go:153
+#: mgradm/cmd/distro/cp.go:89
+#, javascript-format
+msgid "unable to mount ISO image: %s"
+msgstr "ISOイメージをマウントできません: %s"
+
+#: mgradm/cmd/distro/cp.go:98
+msgid "Missing TreeLabel. Please specify distribution name"
+msgstr ""
+
+#: mgradm/cmd/distro/cp.go:107
+#, javascript-format
+msgid "distribution with same name already exists: %s"
+msgstr "同じ名前のディストリビューションがすでに存在します: %s"
+
+#: mgradm/cmd/distro/cp.go:111
+#, javascript-format
+msgid "cannot create %s path in container"
+msgstr "コンテナ内に %s パスを作成できません"
+
+#: mgradm/cmd/distro/cp.go:114
+#, javascript-format
+msgid "Copying distribution %s"
+msgstr "ディストリビューション %s をコピーしています"
+
+#: mgradm/cmd/distro/cp.go:116 mgradm/shared/podman/podman.go:120
+#: mgradm/shared/podman/podman.go:123 mgradm/shared/podman/podman.go:126
+#: mgradm/shared/podman/podman.go:134
+#, javascript-format
+msgid "cannot copy %s"
+msgstr "%s をコピーできません"
+
+#: mgradm/cmd/distro/cp.go:118
+#, javascript-format
+msgid "Distribution has been copied into %s"
+msgstr "ディストリビューションが %s にコピーされました"
+
+#: mgradm/cmd/distro/cp.go:172
 #, javascript-format
 msgid "Auto-detected distribution %s"
 msgstr "自動検出されたディストリビューション %s"
 
-#: mgradm/cmd/distro/cp.go:169
+#: mgradm/cmd/distro/cp.go:183
 msgid "Continue by registering autoinstallation distribution"
 msgstr "自動インストールディストリビューションを登録して続行します"
 
-#: mgradm/cmd/distro/detect.go:92
+#: mgradm/cmd/distro/detect.go:94
 msgid "distribution not found in product map. Please update productmap or provide channel label"
 msgstr "製品マップにディストリビューションが見つかりません。製品マップを更新するか、チャンネルラベルを提供してください"
 
-#: mgradm/cmd/distro/detect.go:105
+#: mgradm/cmd/distro/detect.go:107
 msgid "unable to read distribution treeinfo. Please provide distribution details and/or channel label"
 msgstr "ディストリビューションツリー情報を読み込めません。ディストリビューションの詳細および/またはチャンネルラベルを提供してください"
 
-#: mgradm/cmd/distro/detect.go:135 mgradm/cmd/distro/detect.go:137
+#: mgradm/cmd/distro/detect.go:139
 #, javascript-format
 msgid "distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"
 msgstr "ディストリビューションツリー情報 %s が存在しません。ディストリビューションの詳細および/またはチャンネルラベルを提供してください"
@@ -214,10 +218,15 @@ msgid "Copy distribution files from iso to the container"
 msgstr "ディストリビューションファイルをisoからコンテナにコピーする"
 
 #: mgradm/cmd/distro/distro.go:79
+#, fuzzy
 msgid ""
 "Takes a path to source iso file or directory with mounted iso and copies it into the container.\n"
 "\n"
-"Optional parameters 'distribution-name', 'version' and 'arch' specifies custom distribution. If not set, distribution name is autodetected.\n"
+"Optional parameters 'distribution-name', 'version' and 'arch' specifies custom distribution.\n"
+"If not set, distribution name is attempted to be autodetected:\n"
+"\n"
+"- use name from '.treeinfo' file if exists\n"
+"- use name of the ISO or passed directory\n"
 "\n"
 "Note: API details are required for auto registration."
 msgstr ""
@@ -227,15 +236,15 @@ msgstr ""
 "\n"
 "メモ: 自動登録にはAPIの詳細が必要です。"
 
-#: mgradm/cmd/distro/distro.go:89
+#: mgradm/cmd/distro/distro.go:93
 msgid "Set parent channel for the distribution."
 msgstr "ディストリビューションの親チャンネルを設定します。"
 
-#: mgradm/cmd/distro/distro.go:93
+#: mgradm/cmd/distro/distro.go:97
 msgid "Help on using custom distribution product map"
 msgstr "カスタムディストリビューション製品マップの使用に関するヘルプ"
 
-#: mgradm/cmd/distro/distro.go:105
+#: mgradm/cmd/distro/distro.go:109
 msgid "failed to compute config help command"
 msgstr "config helpコマンドの計算に失敗しました"
 
@@ -257,51 +266,51 @@ msgstr "フォルダ %s の作成に失敗しました"
 msgid "failed to create keyring %s"
 msgstr "キーリング %s の作成に失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:118
-#: mgradm/cmd/support/config/extractor.go:34
+#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:154
+#: mgradm/cmd/support/config/extractor.go:29
 #: mgradm/shared/kubernetes/certificates.go:26
 #: mgradm/shared/kubernetes/certificates.go:64
-#: mgradm/shared/kubernetes/install.go:164 mgradm/shared/podman/podman.go:240
-#: mgradm/shared/podman/podman.go:301 mgradm/shared/podman/podman.go:326
-#: mgradm/shared/podman/podman.go:418 mgradm/shared/utils/exec.go:137
+#: mgradm/shared/kubernetes/install.go:175 mgradm/shared/podman/podman.go:222
+#: mgradm/shared/podman/podman.go:271 mgradm/shared/podman/podman.go:298
+#: mgradm/shared/podman/podman.go:414 mgradm/shared/utils/exec.go:115
 msgid "failed to create temporary directory"
 msgstr "一時ディレクトリの作成に失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:74
+#: mgradm/cmd/gpg/add/gpg.go:81
 #, javascript-format
 msgid "failed to parse %s"
 msgstr "%s の解析に失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:81
+#: mgradm/cmd/gpg/add/gpg.go:88
 #, javascript-format
 msgid "failed to download %s"
 msgstr "%s のダウンロードに失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:86
+#: mgradm/cmd/gpg/add/gpg.go:94
 #, javascript-format
 msgid "failed to show key %s"
 msgstr "キー %s の表示に失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:90
+#: mgradm/cmd/gpg/add/gpg.go:98
 msgid "Do you really want to trust this key"
 msgstr "このキーを本当に信頼しますか"
 
-#: mgradm/cmd/gpg/add/gpg.go:102
+#: mgradm/cmd/gpg/add/gpg.go:110
 msgid "failed to copy %[1]s to %[2]s"
 msgstr "%[1]s を %[2]s にコピーできませんでした"
 
-#: mgradm/cmd/gpg/add/gpg.go:112 mgradm/cmd/gpg/add/gpg.go:119
-#: mgradm/cmd/support/sql/sql.go:186 mgradm/cmd/uninstall/kubernetes.go:60
-#: mgradm/cmd/uninstall/kubernetes.go:65
+#: mgradm/cmd/gpg/add/gpg.go:120 mgradm/cmd/gpg/add/gpg.go:127
+#: mgradm/cmd/support/sql/sql.go:187 mgradm/cmd/uninstall/kubernetes.go:65
+#: mgradm/cmd/uninstall/kubernetes.go:70
 #, javascript-format
 msgid "Running %s"
 msgstr "%s を実行中"
 
-#: mgradm/cmd/gpg/add/gpg.go:114
+#: mgradm/cmd/gpg/add/gpg.go:122
 msgid "failed to run import key"
 msgstr "インポートキーの実行に失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:121
+#: mgradm/cmd/gpg/add/gpg.go:129
 msgid "failed to restart uyuni-update-config"
 msgstr "uyuni-update-configの再起動に失敗しました"
 
@@ -428,26 +437,26 @@ msgstr ""
 
 #: mgradm/cmd/install/kubernetes/utils.go:34
 #: mgradm/cmd/migrate/kubernetes/utils.go:38
-#: mgradm/shared/kubernetes/install.go:130
+#: mgradm/shared/kubernetes/install.go:141
 #, javascript-format
 msgid "install %s before running this command"
 msgstr "このコマンドを実行する前に %s をインストールする"
 
-#: mgradm/cmd/install/kubernetes/utils.go:63
-#: mgradm/cmd/migrate/kubernetes/utils.go:193
+#: mgradm/cmd/install/kubernetes/utils.go:67
+#: mgradm/cmd/migrate/kubernetes/utils.go:208
 msgid "cannot deploy certificate"
 msgstr "証明書を配備できません"
 
-#: mgradm/cmd/install/kubernetes/utils.go:69
+#: mgradm/cmd/install/kubernetes/utils.go:75
 msgid "cannot deploy uyuni"
 msgstr "uyuniを配備できません"
 
-#: mgradm/cmd/install/kubernetes/utils.go:79
-#: mgradm/cmd/install/podman/utils.go:128
+#: mgradm/cmd/install/kubernetes/utils.go:85
+#: mgradm/cmd/install/podman/utils.go:109
 msgid "Failed to stop service: %v"
 msgstr "サービスを停止できませんでした: %v"
 
-#: mgradm/cmd/install/kubernetes/utils.go:88
+#: mgradm/cmd/install/kubernetes/utils.go:94
 msgid "error storing the SSL CA certificate in database"
 msgstr "SSL CA証明書をデータベースに保存中にエラーが発生しました"
 
@@ -469,304 +478,283 @@ msgstr ""
 "\n"
 "メモ: リモートのpodmanへのインストールはまだサポートされていません。\n"
 
-#: mgradm/cmd/install/podman/utils.go:28 mgradm/cmd/scale/podman.go:32
-msgid "Multiple Hub XML-RPC container replicas are not currently supported."
-msgstr "現在、複数のHub XML-RPCコンテナレプリカはサポートされていません。"
-
-#: mgradm/cmd/install/podman/utils.go:30
-msgid "Enabling Hub XML-RPC API container."
-msgstr "Hub XML-RPC APIコンテナを有効化しています。"
-
-#: mgradm/cmd/install/podman/utils.go:36 mgradm/cmd/install/podman/utils.go:88
-#: mgradm/cmd/migrate/kubernetes/utils.go:45 mgradm/shared/coco/coco.go:42
-#: mgradm/shared/kubernetes/install.go:41
-#: mgradm/shared/kubernetes/install.go:137 mgradm/shared/kubernetes/k3s.go:47
-#: mgradm/shared/kubernetes/k3s.go:53 mgradm/shared/podman/podman.go:253
-#: mgradm/shared/podman/podman.go:259 mgradm/shared/podman/podman.go:353
-msgid "failed to compute image URL"
-msgstr "イメージURLの計算に失敗しました"
-
-#: mgradm/cmd/install/podman/utils.go:40
-msgid "cannot generate systemd service"
-msgstr "systemdサービスを生成できません"
-
-#: mgradm/cmd/install/podman/utils.go:44 mgradm/cmd/install/podman/utils.go:58
-msgid "cannot enable service"
-msgstr "サービスを有効にできません"
-
-#: mgradm/cmd/install/podman/utils.go:56 mgradm/shared/podman/podman.go:397
+#: mgradm/cmd/install/podman/utils.go:33 mgradm/shared/podman/podman.go:392
 msgid "Waiting for the server to start…"
 msgstr "サーバが起動するのを待機中…"
 
-#: mgradm/cmd/install/podman/utils.go:72 mgradm/cmd/migrate/podman/utils.go:26
+#: mgradm/cmd/install/podman/utils.go:35 mgradm/shared/hub/xmlrpcapi.go:55
+msgid "cannot enable service"
+msgstr "サービスを有効にできません"
+
+#: mgradm/cmd/install/podman/utils.go:54 mgradm/cmd/migrate/podman/utils.go:47
+#: mgradm/cmd/support/ptf/podman/utils.go:40
+#: mgradm/cmd/upgrade/podman/utils.go:24
+msgid "failed to login to registry.suse.com"
+msgstr ""
+
+#: mgradm/cmd/install/podman/utils.go:59
+msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
+msgstr ""
+
+#: mgradm/cmd/install/podman/utils.go:64 mgradm/cmd/migrate/podman/utils.go:28
 msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
 
-#: mgradm/cmd/install/podman/utils.go:77 mgradm/shared/podman/podman.go:204
-#: mgradm/shared/podman/podman.go:265 mgradm/shared/podman/podman.go:423
-msgid "cannot inspect host values"
-msgstr "ホスト値を検査できません"
-
-#: mgradm/cmd/install/podman/utils.go:84
+#: mgradm/cmd/install/podman/utils.go:71
 #, javascript-format
 msgid "Setting up the server with the FQDN '%s'"
 msgstr "FQDN「%s」を使用してサーバを設定しています"
 
-#: mgradm/cmd/install/podman/utils.go:104
+#: mgradm/cmd/install/podman/utils.go:75
+#: mgradm/cmd/migrate/kubernetes/utils.go:45 mgradm/shared/coco/coco.go:56
+#: mgradm/shared/hub/xmlrpcapi.go:30 mgradm/shared/kubernetes/install.go:52
+#: mgradm/shared/kubernetes/install.go:148 mgradm/shared/kubernetes/k3s.go:47
+#: mgradm/shared/kubernetes/k3s.go:52 mgradm/shared/podman/podman.go:236
+#: mgradm/shared/podman/podman.go:241 mgradm/shared/podman/podman.go:332
+msgid "failed to compute image URL"
+msgstr "イメージURLの計算に失敗しました"
+
+#: mgradm/cmd/install/podman/utils.go:85
 msgid "cannot wait for system start"
 msgstr "システムの起動を待機できません"
 
-#: mgradm/cmd/install/podman/utils.go:124
+#: mgradm/cmd/install/podman/utils.go:105
 msgid "Run setup command in the container"
 msgstr "コンテナ内でsetupコマンドを実行する"
 
-#: mgradm/cmd/install/podman/utils.go:137
+#: mgradm/cmd/install/podman/utils.go:118
 msgid "failed to extract payg data"
 msgstr "paygデータの抽出に失敗しました"
 
-#: mgradm/cmd/install/podman/utils.go:151
+#: mgradm/cmd/install/podman/utils.go:141
 msgid "cannot update SSL certificate"
 msgstr "SSL証明書を更新できません"
 
-#: mgradm/cmd/install/podman/utils.go:156 mgradm/cmd/migrate/podman/utils.go:70
+#: mgradm/cmd/install/podman/utils.go:146
+#: mgradm/cmd/migrate/podman/utils.go:136
 msgid "cannot enable podman socket"
 msgstr "podmanソケットを有効にできません"
 
-#: mgradm/cmd/install/podman/utils.go:167
-msgid "failed to compute server FQDN"
-msgstr "サーバFQDNの計算に失敗しました"
-
-#: mgradm/cmd/install/shared/flags.go:86
+#: mgradm/cmd/install/shared/flags.go:79
 msgid "Can only contain letters, digits . _ and -"
 msgstr "文字、数字 ._ -のみを含めることができます"
 
-#: mgradm/cmd/install/shared/flags.go:94
+#: mgradm/cmd/install/shared/flags.go:87
 msgid "Not a valid email address"
 msgstr "有効な電子メールアドレスではありません"
 
-#: mgradm/cmd/install/shared/flags.go:137
+#: mgradm/cmd/install/shared/flags.go:130
 msgid "Time zone to set on the server. Defaults to the host timezone"
 msgstr "サーバに設定するタイムゾーン。デフォルトはホストのタイムゾーンです"
 
-#: mgradm/cmd/install/shared/flags.go:138
+#: mgradm/cmd/install/shared/flags.go:131
 msgid "Administrator e-mail"
 msgstr "管理者の電子メール"
 
-#: mgradm/cmd/install/shared/flags.go:139
+#: mgradm/cmd/install/shared/flags.go:132
 msgid "E-Mail sending the notifications"
 msgstr "通知を送信する電子メール"
 
-#: mgradm/cmd/install/shared/flags.go:140
+#: mgradm/cmd/install/shared/flags.go:133
 msgid "InterServerSync v1 parent FQDN"
 msgstr "InterServerSync v1の親FQDN"
 
-#: mgradm/cmd/install/shared/flags.go:142
+#: mgradm/cmd/install/shared/flags.go:135
 msgid "Database user"
 msgstr "データベースユーザ"
 
-#: mgradm/cmd/install/shared/flags.go:143
+#: mgradm/cmd/install/shared/flags.go:136
 msgid "Database password. Randomly generated by default"
 msgstr "データベースのパスワード。デフォルトでランダムに生成されます"
 
-#: mgradm/cmd/install/shared/flags.go:144
+#: mgradm/cmd/install/shared/flags.go:137
 msgid "Database name"
 msgstr "データベース名"
 
-#: mgradm/cmd/install/shared/flags.go:145
+#: mgradm/cmd/install/shared/flags.go:138
 msgid "Database host"
 msgstr "データベースホスト"
 
-#: mgradm/cmd/install/shared/flags.go:146
+#: mgradm/cmd/install/shared/flags.go:139
 msgid "Database port"
 msgstr "データベースポート"
 
-#: mgradm/cmd/install/shared/flags.go:147
+#: mgradm/cmd/install/shared/flags.go:140
 msgid "Database protocol"
 msgstr "データベースプロトコル"
 
-#: mgradm/cmd/install/shared/flags.go:148
+#: mgradm/cmd/install/shared/flags.go:141
 msgid "External database admin user name"
 msgstr "外部データベース管理者のユーザ名"
 
-#: mgradm/cmd/install/shared/flags.go:149
+#: mgradm/cmd/install/shared/flags.go:142
 msgid "External database admin password"
 msgstr "外部データベース管理者のパスワード"
 
-#: mgradm/cmd/install/shared/flags.go:150
+#: mgradm/cmd/install/shared/flags.go:143
 msgid "External database provider. Possible values 'aws'"
 msgstr "外部データベースプロバイダ。指定可能な値「 aws」"
 
-#: mgradm/cmd/install/shared/flags.go:152
+#: mgradm/cmd/install/shared/flags.go:145
 msgid "Database Flags"
 msgstr "データベースフラグ"
 
-#: mgradm/cmd/install/shared/flags.go:163
+#: mgradm/cmd/install/shared/flags.go:156
 msgid "Enable TFTP"
 msgstr "TFTPを有効にする"
 
-#: mgradm/cmd/install/shared/flags.go:164
+#: mgradm/cmd/install/shared/flags.go:157
 msgid "Report database name"
 msgstr "レポートデータベース名"
 
-#: mgradm/cmd/install/shared/flags.go:165
+#: mgradm/cmd/install/shared/flags.go:158
 msgid "Report database host"
 msgstr "レポートデータベースホスト"
 
-#: mgradm/cmd/install/shared/flags.go:166
+#: mgradm/cmd/install/shared/flags.go:159
 msgid "Report database port"
 msgstr "レポートデータベースポート"
 
-#: mgradm/cmd/install/shared/flags.go:167
+#: mgradm/cmd/install/shared/flags.go:160
 msgid "Report Database username"
 msgstr "レポートデータベースユーザ名"
 
-#: mgradm/cmd/install/shared/flags.go:168
+#: mgradm/cmd/install/shared/flags.go:161
 msgid "Report database password. Randomly generated by default"
 msgstr "レポートデータベースパスワード。デフォルトでランダムに生成されます"
 
-#: mgradm/cmd/install/shared/flags.go:170
+#: mgradm/cmd/install/shared/flags.go:163
 msgid "Report DB Flags"
 msgstr "レポートDBフラグ"
 
-#: mgradm/cmd/install/shared/flags.go:178
+#: mgradm/cmd/install/shared/flags.go:171
 msgid "SSL certificate cnames separated by commas"
 msgstr "カンマで区切られたSSL証明書のcnames"
 
-#: mgradm/cmd/install/shared/flags.go:179
+#: mgradm/cmd/install/shared/flags.go:172
 msgid "SSL certificate country"
 msgstr "SSL証明書の国"
 
-#: mgradm/cmd/install/shared/flags.go:180
+#: mgradm/cmd/install/shared/flags.go:173
 msgid "SSL certificate state"
 msgstr "SSL証明書の都道府県"
 
-#: mgradm/cmd/install/shared/flags.go:181
+#: mgradm/cmd/install/shared/flags.go:174
 msgid "SSL certificate city"
 msgstr "SSL証明書の市町村"
 
-#: mgradm/cmd/install/shared/flags.go:182
+#: mgradm/cmd/install/shared/flags.go:175
 msgid "SSL certificate organization"
 msgstr "SSL証明書の組織"
 
-#: mgradm/cmd/install/shared/flags.go:183
+#: mgradm/cmd/install/shared/flags.go:176
 msgid "SSL certificate organization unit"
 msgstr "SSL証明書の組織単位"
 
-#: mgradm/cmd/install/shared/flags.go:184
+#: mgradm/cmd/install/shared/flags.go:177
 msgid "Password for the CA key to generate"
 msgstr "生成するCAキーのパスワード"
 
-#: mgradm/cmd/install/shared/flags.go:186
+#: mgradm/cmd/install/shared/flags.go:179
 msgid "SSL Certificate Flags"
 msgstr "SSL証明書フラグ"
 
-#: mgradm/cmd/install/shared/flags.go:196
+#: mgradm/cmd/install/shared/flags.go:189
 msgid "Intermediate CA certificate path"
 msgstr "中間CA証明書のパス"
 
-#: mgradm/cmd/install/shared/flags.go:197
+#: mgradm/cmd/install/shared/flags.go:190
 msgid "Root CA certificate path"
 msgstr "ルートCA証明書のパス"
 
-#: mgradm/cmd/install/shared/flags.go:198
+#: mgradm/cmd/install/shared/flags.go:191
 msgid "Server certificate path"
 msgstr "サーバ証明書のパス"
 
-#: mgradm/cmd/install/shared/flags.go:199
+#: mgradm/cmd/install/shared/flags.go:192
 msgid "Server key path"
 msgstr "サーバキーのパス"
 
-#: mgradm/cmd/install/shared/flags.go:201
+#: mgradm/cmd/install/shared/flags.go:194
 msgid "3rd Party SSL Certificate Flags"
 msgstr "サードパーティSSL証明書のフラグ"
 
-#: mgradm/cmd/install/shared/flags.go:207
+#: mgradm/cmd/install/shared/flags.go:200
 msgid "SUSE Customer Center username"
 msgstr "SUSEカスタマーセンターのユーザ名"
 
-#: mgradm/cmd/install/shared/flags.go:208
+#: mgradm/cmd/install/shared/flags.go:201
 msgid "SUSE Customer Center password"
 msgstr "SUSEカスタマーセンターのパスワード"
 
-#: mgradm/cmd/install/shared/flags.go:210
+#: mgradm/cmd/install/shared/flags.go:203
 msgid "SUSE Customer Center Flags"
 msgstr "SUSE カスタマーセンターのフラグ"
 
-#: mgradm/cmd/install/shared/flags.go:214
+#: mgradm/cmd/install/shared/flags.go:207
 msgid "Enable tomcat and taskomatic remote debugging"
 msgstr "tomcatとtaskomaticのリモートデバッグを有効にする"
 
-#: mgradm/cmd/install/shared/flags.go:217 mgradm/cmd/upgrade/shared/flags.go:26
-msgid "confidential computing attestation"
-msgstr "コンフィデンシャルコンピューティングの検証"
-
-#: mgradm/cmd/install/shared/flags.go:218
-msgid "How many replicas of the confidential computing container should be started. (only 0 or 1 supported for now)"
-msgstr "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要があるか(現時点では0または1のみサポート）"
-
-#: mgradm/cmd/install/shared/flags.go:220
-msgid "Confidential Computing Flags"
-msgstr "コンフィデンシャルコンピューティングのフラグ"
-
-#: mgradm/cmd/install/shared/flags.go:225
-msgid "How many replicas of the Hub XML-RPC API service container should be started. (only 0 or 1 supported for now)"
-msgstr "Hub XML-RPC APIサービスコンテナのレプリカをいくつ起動する必要があるか(現時点では0または1のみサポート）"
-
-#: mgradm/cmd/install/shared/flags.go:227
-msgid "Hub XML-RPC API Image"
-msgstr "Hub XML-RPC APIイメージ"
-
-#: mgradm/cmd/install/shared/flags.go:228
-msgid "Hub XML-RPC API Image Tag"
-msgstr "Hub XML-RPC APIイメージタグ"
-
-#: mgradm/cmd/install/shared/flags.go:230
-msgid "Hub XML-RPC API"
-msgstr "Hub XML-RPC API"
-
-#: mgradm/cmd/install/shared/flags.go:235
+#: mgradm/cmd/install/shared/flags.go:214
 msgid "Administrator user name"
 msgstr "管理者ユーザ名"
 
-#: mgradm/cmd/install/shared/flags.go:236
+#: mgradm/cmd/install/shared/flags.go:215
 msgid "Administrator password"
 msgstr "管理者パスワード"
 
-#: mgradm/cmd/install/shared/flags.go:237
+#: mgradm/cmd/install/shared/flags.go:216
 msgid "First name of the administrator"
 msgstr "管理者の名"
 
-#: mgradm/cmd/install/shared/flags.go:238
+#: mgradm/cmd/install/shared/flags.go:217
 msgid "Last name of the administrator"
 msgstr "管理者の姓"
 
-#: mgradm/cmd/install/shared/flags.go:239
+#: mgradm/cmd/install/shared/flags.go:218
 msgid "First organization name"
 msgstr "最初の組織名"
 
-#: mgradm/cmd/install/shared/flags.go:241
+#: mgradm/cmd/install/shared/flags.go:220
 msgid "First User Flags"
 msgstr "最初のユーザのフラグ"
 
-#: mgradm/cmd/install/shared/shared.go:31
+#: mgradm/cmd/install/shared/shared.go:32
+msgid "Server appears to be already configured. Installation will continue, but installation options may be ignored."
+msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:40
 msgid "cannot copy /tmp/setup.sh"
 msgstr "/tmp/setup.shをコピーできません"
 
-#: mgradm/cmd/install/shared/shared.go:36
+#: mgradm/cmd/install/shared/shared.go:45
 msgid "error running the setup script"
 msgstr "セットアップスクリプトの実行中にエラーが発生しました"
 
-#: mgradm/cmd/install/shared/shared.go:40
-#: mgradm/cmd/migrate/kubernetes/utils.go:167
-#: mgradm/cmd/migrate/podman/utils.go:75
+#: mgradm/cmd/install/shared/shared.go:49
+#: mgradm/cmd/migrate/kubernetes/utils.go:182
+#: mgradm/cmd/migrate/podman/utils.go:146
 msgid "failed to add SSL CA certificate to host trusted certificates"
+msgstr "SSL CA証明書をホストの信頼済み証明書に追加できませんでした"
+
+#: mgradm/cmd/install/shared/shared.go:65
+msgid "Server organization already exists, reusing"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:56
+#: mgradm/cmd/install/shared/shared.go:68
+#, javascript-format
+msgid "Administration user already exists, but organization %s could not be found"
+msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:84
+msgid "Administration user already exists, but provided credentials are not valid"
+msgstr ""
+
+#: mgradm/cmd/install/shared/shared.go:92
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "サーバ設定、%[2]s ユーザでhttps://%[1]s にログイン"
 
-#: mgradm/cmd/install/shared/shared.go:128
+#: mgradm/cmd/install/shared/shared.go:164
 msgid "Failed to generate setup script"
 msgstr "セットアップスクリプトの生成に失敗しました"
 
@@ -806,77 +794,84 @@ msgstr ""
 "\n"
 "メモ: リモートクラスタへの移行はまだサポートされていません。\n"
 
-#: mgradm/cmd/migrate/kubernetes/kubernetes.go:55
+#: mgradm/cmd/migrate/kubernetes/kubernetes.go:53
 msgid "SSL CA generated private key password"
 msgstr "SSL CAが生成した機密鍵のパスワード"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:57 mgradm/shared/utils/exec.go:149
+#: mgradm/cmd/migrate/kubernetes/utils.go:60 mgradm/shared/utils/exec.go:128
 msgid "failed to generate migration script"
 msgstr "移行スクリプトの生成に失敗しました"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:79
+#: mgradm/cmd/migrate/kubernetes/utils.go:84
 msgid "cannot run deploy"
 msgstr "配備を実行できません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:86
-#: mgradm/shared/kubernetes/install.go:171
+#: mgradm/cmd/migrate/kubernetes/utils.go:91
+#: mgradm/shared/kubernetes/install.go:182
 msgid "cannot find node running uyuni"
 msgstr "uyuniを実行しているノードが見つかりません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:90
+#: mgradm/cmd/migrate/kubernetes/utils.go:95
 msgid "cannot run migration"
 msgstr "移行を実行できません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:95
+#: mgradm/cmd/migrate/kubernetes/utils.go:100
 msgid "cannot read data from container"
 msgstr "コンテナからデータを読み込めません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:101
-#: mgradm/cmd/migrate/kubernetes/utils.go:139
+#: mgradm/cmd/migrate/kubernetes/utils.go:106
+#: mgradm/cmd/migrate/kubernetes/utils.go:149
 msgid "cannot set replicas to 0"
 msgstr "レプリカを0に設定できません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:113
+#: mgradm/cmd/migrate/kubernetes/utils.go:110
+#: mgradm/cmd/migrate/podman/utils.go:67
+msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
+msgstr ""
+
+#: mgradm/cmd/migrate/kubernetes/utils.go:123
 msgid "cannot setup SSL"
 msgstr "SSLを設定できません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:121
+#: mgradm/cmd/migrate/kubernetes/utils.go:131
 #, javascript-format
 msgid "The mirror data will not be migrated, ensure it is available at %s"
 msgstr "ミラーデータは移行されません。%s に配置しておいてください"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:130
+#: mgradm/cmd/migrate/kubernetes/utils.go:140
 #, javascript-format
 msgid "cannot upgrade helm chart to image %s using new SSL certificate"
 msgstr "新しいSSL 証明書を使用してhelmチャートをイメージ %s にアップグレードできません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:134
+#: mgradm/cmd/migrate/kubernetes/utils.go:144
 #, javascript-format
 msgid "cannot wait for deployment of %s"
 msgstr "%s の配備を待機できません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:144
-#: mgradm/cmd/migrate/kubernetes/utils.go:150
-#: mgradm/cmd/migrate/podman/utils.go:45
-#: mgradm/shared/kubernetes/install.go:192
-#: mgradm/shared/kubernetes/install.go:203 mgradm/shared/podman/podman.go:377
-#: mgradm/shared/podman/podman.go:387
+#: mgradm/cmd/migrate/kubernetes/utils.go:159
+#: mgradm/cmd/migrate/podman/utils.go:78
+#: mgradm/shared/kubernetes/install.go:203 mgradm/shared/podman/podman.go:366
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQLバージョンアップグレードスクリプトを実行できません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:154
-#: mgradm/cmd/migrate/podman/utils.go:55
-#: mgradm/shared/kubernetes/install.go:207 mgradm/shared/podman/podman.go:391
+#: mgradm/cmd/migrate/kubernetes/utils.go:165
+#, fuzzy
+msgid "cannot run PostgreSQL finalisation script"
+msgstr "PostgreSQL終了処理スクリプトを実行できません"
+
+#: mgradm/cmd/migrate/kubernetes/utils.go:169
+#: mgradm/cmd/migrate/podman/utils.go:88
+#: mgradm/shared/kubernetes/install.go:218 mgradm/shared/podman/podman.go:380
 msgid "cannot run post upgrade script"
 msgstr "アップグレード後のスクリプトを実行できません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:159
-#: mgradm/shared/kubernetes/install.go:212
+#: mgradm/cmd/migrate/kubernetes/utils.go:174
+#: mgradm/shared/kubernetes/install.go:223
 #, javascript-format
 msgid "cannot upgrade to image %s"
 msgstr "イメージ %s にアップグレードできません"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:184
+#: mgradm/cmd/migrate/kubernetes/utils.go:199
 msgid "failed to strip text part from CA certificate"
 msgstr "CA証明書からテキスト部分を削除できませんでした"
 
@@ -910,27 +905,42 @@ msgstr ""
 "\n"
 "メモ: リモートpodmanへの移行はまだサポートされていません。\n"
 
-#: mgradm/cmd/migrate/podman/utils.go:31
+#: mgradm/cmd/migrate/podman/utils.go:37
 msgid "cannot compute image"
 msgstr "イメージを計算できません"
 
-#: mgradm/cmd/migrate/podman/utils.go:40
+#: mgradm/cmd/migrate/podman/utils.go:64
 msgid "cannot run migration script"
 msgstr "移行スクリプトを実行できません"
 
-#: mgradm/cmd/migrate/podman/utils.go:51
+#: mgradm/cmd/migrate/podman/utils.go:84
+#: mgradm/shared/kubernetes/install.go:214 mgradm/shared/podman/podman.go:376
 msgid "cannot run PostgreSQL finalize script"
 msgstr "PostgreSQL終了処理スクリプトを実行できません"
 
-#: mgradm/cmd/migrate/podman/utils.go:59
+#: mgradm/cmd/migrate/podman/utils.go:94
 msgid "cannot generate systemd service file"
 msgstr "systemdサービスファイルを生成できません"
 
-#: mgradm/cmd/migrate/podman/utils.go:67
+#: mgradm/cmd/migrate/podman/utils.go:108
+#, fuzzy
+msgid "cannot setup confidential computing attestation service"
+msgstr "コンフィデンシャルコンピューティング検証サービスの設定"
+
+#: mgradm/cmd/migrate/podman/utils.go:126
+#, fuzzy
+msgid "Enabling Hub XML-RPC API since it is enabled on the migrated server"
+msgstr "Hub XML-RPC APIコンテナを有効化しています。"
+
+#: mgradm/cmd/migrate/podman/utils.go:133
 msgid "Server migrated"
 msgstr "サーバが移行されました"
 
-#: mgradm/cmd/migrate/shared/flags.go:27
+#: mgradm/cmd/migrate/shared/flags.go:28
+msgid "Prepare the mgration - copy the data without stopping the source server."
+msgstr ""
+
+#: mgradm/cmd/migrate/shared/flags.go:34
 msgid "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."
 msgstr "ソースサーバ上のユーザ。非rootユーザにはパスワードなしのsudo権限が必要です(/etc/sudoersのNOPASSWDタグ)。"
 
@@ -956,6 +966,10 @@ msgstr "サーバの再起動"
 msgid "kubernetes not supported yet"
 msgstr "kubernetesが未サポートです"
 
+#: mgradm/cmd/scale/podman.go:32
+msgid "Multiple Hub XML-RPC container replicas are not currently supported."
+msgstr "現在、複数のHub XML-RPCコンテナレプリカはサポートされていません。"
+
 #: mgradm/cmd/scale/podman.go:36
 #, javascript-format
 msgid "service not allowing to be scaled: %s"
@@ -970,10 +984,12 @@ msgid "Adjust the replicas for services supporting it."
 msgstr "サポートしているサービス用にレプリカを調整します。"
 
 #: mgradm/cmd/scale/scale.go:30
+#, fuzzy
 msgid ""
 "Adjust the replicas for services supporting it.\n"
 "Supported services:\n"
 "  - uyuni-server-attestation\n"
+"  - uyuni-hub-xmlrpc\n"
 msgstr ""
 "サポートしているサービス用にレプリカを調整します。\n"
 "サポート対象サービス:\n"
@@ -984,30 +1000,22 @@ msgid "Start the server"
 msgstr "サーバの起動"
 
 #: mgradm/cmd/status/kubernetes.go:32
-msgid "failed to discover the cluster type"
-msgstr "クラスタタイプの検出に失敗しました"
-
-#: mgradm/cmd/status/kubernetes.go:37
-msgid "no uyuni helm release installed on the cluster"
-msgstr "クラスタにuyuni helmリリースがインストールされていません"
-
-#: mgradm/cmd/status/kubernetes.go:42
 msgid "failed to find the uyuni deployment namespace"
 msgstr "uyuni配備ネームスペースが見つかりませんでした"
 
-#: mgradm/cmd/status/kubernetes.go:48
+#: mgradm/cmd/status/kubernetes.go:38
 msgid "failed to get deployment status"
 msgstr "配備ステータスの取得に失敗しました"
 
-#: mgradm/cmd/status/kubernetes.go:51
+#: mgradm/cmd/status/kubernetes.go:41
 msgid "Some replicas are not ready: %[1]d / %[2]d"
 msgstr "いくつかのレプリカは準備ができていません: %[1]d / %[2]d"
 
-#: mgradm/cmd/status/kubernetes.go:55
+#: mgradm/cmd/status/kubernetes.go:45
 msgid "the pod is not running"
 msgstr "ポッドが実行されていません"
 
-#: mgradm/cmd/status/kubernetes.go:61 mgradm/cmd/status/podman.go:33
+#: mgradm/cmd/status/kubernetes.go:50
 msgid "failed to run spacewalk-service status"
 msgstr "spacewalk-serviceの実行に失敗しました"
 
@@ -1039,52 +1047,6 @@ msgstr ""
 msgid "path where to extract the data"
 msgstr "データを抽出するパス"
 
-#: mgradm/cmd/support/config/extractor.go:42
-msgid "Running supportconfig in the container"
-msgstr "コンテナ内でsupportconfigを実行する"
-
-#: mgradm/cmd/support/config/extractor.go:45
-msgid "failed to run supportconfig"
-msgstr "supportconfigの実行に失敗しました"
-
-#: mgradm/cmd/support/config/extractor.go:49
-msgid "failed to find container supportconfig tarball from command output"
-msgstr "コマンド出力からコンテナsupportconfig tarballが見つかりませんでした"
-
-#: mgradm/cmd/support/config/extractor.go:56
-msgid "cannot copy tarball"
-msgstr "tarballをコピーできません"
-
-#: mgradm/cmd/support/config/extractor.go:62
-#, javascript-format
-msgid "failed to remove %s file in the container"
-msgstr "コンテナ内の %s ファイルの削除に失敗しました"
-
-#: mgradm/cmd/support/config/extractor.go:71
-msgid "failed to run supportconfig on the host"
-msgstr "ホストでsupportconfigを実行できませんでした"
-
-#: mgradm/cmd/support/config/extractor.go:81
-msgid "failed to find host supportconfig tarball from command output"
-msgstr "コマンド出力からホストsupportconfig tarball が見つかりませんでした"
-
-#: mgradm/cmd/support/config/extractor.go:84
-msgid "supportconfig is not available on the host, skipping it"
-msgstr "supportconfigがホスト上で利用できません。スキップします"
-
-#: mgradm/cmd/support/config/extractor.go:90
-msgid "Preparing the tarball"
-msgstr "tarballの準備中"
-
-#: mgradm/cmd/support/config/extractor.go:102
-#, javascript-format
-msgid "failed to add %s to tarball"
-msgstr "%s をtarballに追加できませんでした"
-
-#: mgradm/cmd/support/config/extractor.go:119
-msgid "Unable to detect hostname, using localhost"
-msgstr "ローカルホストを使用してホスト名を検出できません"
-
 #: mgradm/cmd/support/ptf/podman/podman.go:27
 msgid "Install a PTF or Test package on podman"
 msgstr "PTFまたはTestパッケージをpodmanにインストールする"
@@ -1105,19 +1067,19 @@ msgstr ""
 "\n"
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:38
+#: mgradm/cmd/support/ptf/podman/utils.go:49
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "ptfとtestフラグを同時に設定することはできません "
 
-#: mgradm/cmd/support/ptf/podman/utils.go:41
+#: mgradm/cmd/support/ptf/podman/utils.go:52
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptfとtestフラグを同時に空にすることはできません "
 
-#: mgradm/cmd/support/ptf/podman/utils.go:44
+#: mgradm/cmd/support/ptf/podman/utils.go:55
 msgid "user flag cannot be empty"
 msgstr "ユーザフラグは空にできません"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:59
+#: mgradm/cmd/support/ptf/podman/utils.go:70
 #, javascript-format
 msgid "The image computed is: %s"
 msgstr "計算されたイメージは次のとおりです: %s"
@@ -1126,38 +1088,38 @@ msgstr "計算されたイメージは次のとおりです: %s"
 msgid "Install a PTF"
 msgstr "PTFのインストール"
 
-#: mgradm/cmd/support/sql/sql.go:36
+#: mgradm/cmd/support/sql/sql.go:38
 msgid "unable to get random file prefix"
 msgstr "ランダムなファイルプレフィックスを取得できません"
 
-#: mgradm/cmd/support/sql/sql.go:48
+#: mgradm/cmd/support/sql/sql.go:50
 msgid "unable to cleanup source file"
 msgstr "ソースファイルをクリーンアップできません"
 
-#: mgradm/cmd/support/sql/sql.go:57
+#: mgradm/cmd/support/sql/sql.go:59
 #, javascript-format
 msgid "output file %s exists, use -f to force overwrite"
 msgstr "出力ファイル %s が存在します。強制的に上書きするには-fを使用します"
 
-#: mgradm/cmd/support/sql/sql.go:109
+#: mgradm/cmd/support/sql/sql.go:111
 msgid "interactive mode cannot work with a file output"
 msgstr "インタラクティブモードではファイル出力はできません"
 
-#: mgradm/cmd/support/sql/sql.go:139
+#: mgradm/cmd/support/sql/sql.go:141
 #, javascript-format
 msgid "unknown or unsupported database %s"
 msgstr "不明またはサポートされていないデータベース %s"
 
-#: mgradm/cmd/support/sql/sql.go:152
+#: mgradm/cmd/support/sql/sql.go:154
 msgid "Command failed"
 msgstr "コマンドが失敗しました"
 
-#: mgradm/cmd/support/sql/sql.go:157
+#: mgradm/cmd/support/sql/sql.go:159
 #, javascript-format
 msgid "Result is stored in the file '%s'"
 msgstr "結果はファイル「%s」に保存されます"
 
-#: mgradm/cmd/support/sql/sql.go:171
+#: mgradm/cmd/support/sql/sql.go:173
 msgid "cannot write"
 msgstr "書き込めません"
 
@@ -1221,58 +1183,63 @@ msgstr "標準出力の代わりにファイルに出力を書き込む"
 msgid "Commands for support operations"
 msgstr "サポート操作用のコマンド"
 
-#: mgradm/cmd/uninstall/kubernetes.go:28
+#: mgradm/cmd/uninstall/kubernetes.go:29
 msgid "--purge-volumes is ignored on a kubernetes deployment"
 msgstr "--purge-volumesは、kubernetes配備で無視されます"
 
-#: mgradm/cmd/uninstall/kubernetes.go:31
+#: mgradm/cmd/uninstall/kubernetes.go:32
 msgid "--purge-images is ignored on a kubernetes deployment"
 msgstr "--purge-imagesは、kubernetes配備で無視されます"
 
-#: mgradm/cmd/uninstall/kubernetes.go:57 mgradm/cmd/uninstall/kubernetes.go:58
+#: mgradm/cmd/uninstall/kubernetes.go:62 mgradm/cmd/uninstall/kubernetes.go:63
 #, javascript-format
 msgid "Would run %s"
 msgstr "%s を実行します"
 
-#: mgradm/cmd/uninstall/kubernetes.go:62
+#: mgradm/cmd/uninstall/kubernetes.go:67
 msgid "Failed deleting config map"
 msgstr "設定マップの削除に失敗しました"
 
-#: mgradm/cmd/uninstall/kubernetes.go:73
+#: mgradm/cmd/uninstall/kubernetes.go:78
 msgid "Failed deleting secret"
 msgstr "シークレットの削除に失敗しました"
 
-#: mgradm/cmd/uninstall/kubernetes.go:98
+#: mgradm/cmd/uninstall/kubernetes.go:108
 msgid "Nothing has been uninstalled, run with --force to actually uninstall"
 msgstr "何もアンインストールされていません。--forceを指定して実行することでアンインストールされるようにしてください"
 
-#: mgradm/cmd/uninstall/kubernetes.go:100
+#: mgradm/cmd/uninstall/kubernetes.go:110
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
 msgstr "ボリュームに何の操作も行われていません。使用したストレージクラスによっては、削除されていない可能性があります"
 
-#: mgradm/cmd/uninstall/podman.go:45
-#, javascript-format
-msgid "cannot delete volume %s"
-msgstr "ボリューム %s を削除できません"
+#: mgradm/cmd/uninstall/podman.go:46
+#, fuzzy, javascript-format
+msgid "Failed to remove volume %s"
+msgstr "フォルダ %s の作成に失敗しました"
 
-#: mgradm/cmd/uninstall/podman.go:48
+#: mgradm/cmd/uninstall/podman.go:51
 msgid "All volumes have been removed"
 msgstr "すべてのボリュームが削除されました"
 
-#: mgradm/cmd/uninstall/podman.go:55
+#: mgradm/cmd/uninstall/podman.go:53
+#, fuzzy
+msgid "Some volumes have not been removed completely"
+msgstr "すべてのボリュームが削除されました"
+
+#: mgradm/cmd/uninstall/podman.go:61
 #, javascript-format
 msgid "cannot delete image %s"
 msgstr "イメージ %s を削除できません"
 
-#: mgradm/cmd/uninstall/podman.go:59
+#: mgradm/cmd/uninstall/podman.go:65
 msgid "All images have been removed"
 msgstr "すべてのイメージが削除されました"
 
-#: mgradm/cmd/uninstall/podman.go:67
+#: mgradm/cmd/uninstall/podman.go:73
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr "何もアンインストールされていません。--forceと--purge-volumesを指定して実行して、データがアンインストールされてクリアされるようにしてください"
 
-#: mgradm/cmd/uninstall/podman.go:69
+#: mgradm/cmd/uninstall/podman.go:75
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr "データが保管されています。podmanボリュームコマンドを使用して、ボリュームをクリアしてください"
 
@@ -1297,84 +1264,64 @@ msgstr "Kubernetes上のローカルサーバをアップグレードする"
 msgid "Upgrade a local server on podman"
 msgstr "podman上のローカルサーバをアップグレードする"
 
-#: mgradm/cmd/upgrade/podman/podman.go:38
-msgid "List available tag for an image"
+#: mgradm/cmd/upgrade/podman/podman.go:39
+#, fuzzy
+msgid "List available tags for an image"
 msgstr "イメージに使用可能なタグを一覧にする"
 
-#: mgradm/cmd/upgrade/podman/podman.go:45
+#: mgradm/cmd/upgrade/podman/podman.go:46
 msgid "failed to unmarshall configuration"
 msgstr "設定のアンマーシャルに失敗しました"
 
-#: mgradm/cmd/upgrade/podman/podman.go:48
-#, javascript-format
-msgid "Available Tags for image: %s"
-msgstr "イメージに使用できるタグ: %s"
+#: mgradm/cmd/upgrade/shared/flags.go:31 mgradm/shared/utils/cmd_utils.go:130
+msgid "Confidential Computing Flags"
+msgstr "コンフィデンシャルコンピューティングのフラグ"
 
-#: mgradm/cmd/upgrade/shared/shared.go:25
-msgid "cannot find neither /etc/uyuni-release nor /etc/susemanager-release"
-msgstr "/etc/uyuni-releaseも/etc/susemanager-releaseも見つかりません"
+#: mgradm/cmd/upgrade/shared/flags.go:33 mgradm/shared/utils/cmd_utils.go:131
+msgid "confidential computing attestation"
+msgstr "コンフィデンシャルコンピューティングの検証"
 
-#: mgradm/cmd/upgrade/shared/shared.go:36 mgradm/shared/utils/exec.go:190
-msgid "cannot check server release"
-msgstr "サーバのリリースを確認できません"
-
-#: mgradm/cmd/upgrade/shared/shared.go:42 mgradm/shared/utils/exec.go:196
-#, javascript-format
-msgid "currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"
-msgstr "現在SUSE Manager %s がインストールされていますが、イメージはUyuniです。アップグレードはサポートされていません"
-
-#: mgradm/cmd/upgrade/shared/shared.go:46 mgradm/shared/utils/exec.go:200
-#, javascript-format
-msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"
-msgstr "現在Uyuni %s がインストールされていますが、イメージはSUSE Managerです。アップグレードはサポートされていません"
-
-#: mgradm/cmd/upgrade/shared/shared.go:53 mgradm/shared/utils/exec.go:207
-msgid "failed to read current uyuni release"
-msgstr "現在のuyuniリリースの読み込みに失敗しました"
-
-#: mgradm/cmd/upgrade/shared/shared.go:57
-#: mgradm/cmd/upgrade/shared/shared.go:71 mgradm/shared/utils/exec.go:211
-#: mgradm/shared/utils/exec.go:225
-#, javascript-format
-msgid "cannot fetch release from image %s"
-msgstr "イメージ %s からリリースをフェッチできません"
-
-#: mgradm/cmd/upgrade/shared/shared.go:61
-#: mgradm/cmd/upgrade/shared/shared.go:75 mgradm/shared/utils/exec.go:215
-#: mgradm/shared/utils/exec.go:229
-msgid "cannot downgrade from version %[1]s to %[2]s"
-msgstr "バージョン %[1]s から %[2]s にダウングレードできません"
-
-#: mgradm/cmd/upgrade/shared/shared.go:67 mgradm/shared/utils/exec.go:221
-msgid "failed to read current susemanager release"
-msgstr "現在のsusemanagerリリースを読み込めませんでした"
-
-#: mgradm/cmd/upgrade/shared/shared.go:80 mgradm/shared/utils/exec.go:234
-#, javascript-format
-msgid "cannot fetch postgresql version from %s"
-msgstr "%s からpostgresqlバージョンをフェッチできません"
-
-#: mgradm/cmd/upgrade/shared/shared.go:84
-msgid "PostgreSQL is not installed in the current deployment"
-msgstr "現在の配備にPostgreSQLがインストールされていません"
+#: mgradm/cmd/upgrade/shared/flags.go:34 mgradm/cmd/upgrade/shared/flags.go:35
+#: mgradm/shared/utils/cmd_utils.go:139 mgradm/shared/utils/cmd_utils.go:140
+msgid "Hub XML-RPC API"
+msgstr "Hub XML-RPC API"
 
 #: mgradm/cmd/upgrade/upgrade.go:19 mgradm/cmd/upgrade/upgrade.go:20
 msgid "Upgrade local server"
 msgstr "ローカルサーバのアップグレード"
 
-#: mgradm/shared/coco/coco.go:52
+#: mgradm/shared/coco/coco.go:70
 msgid "Setting up confidential computing attestation service"
 msgstr "コンフィデンシャルコンピューティング検証サービスの設定"
 
-#: mgradm/shared/coco/coco.go:56 mgradm/shared/podman/podman.go:56
-#: mgradm/shared/podman/podman.go:95
+#: mgradm/shared/coco/coco.go:74 mgradm/shared/hub/xmlrpcapi.go:86
+#: mgradm/shared/podman/podman.go:74
 msgid "failed to generate systemd service unit file"
 msgstr "systemdサービスユニットファイルの生成に失敗しました"
 
-#: mgradm/shared/coco/coco.go:65 mgradm/shared/podman/podman.go:62
-#: mgradm/shared/podman/podman.go:104
+#: mgradm/shared/coco/coco.go:85 mgradm/shared/hub/xmlrpcapi.go:91
+#: mgradm/shared/podman/podman.go:80
 msgid "cannot generate systemd conf file"
 msgstr "systemd confファイルを生成できません"
+
+#: mgradm/shared/hub/xmlrpcapi.go:27
+#, fuzzy
+msgid "Setting Hub XML-RPC API service."
+msgstr "Hub XML-RPC APIコンテナを有効化しています。"
+
+#: mgradm/shared/hub/xmlrpcapi.go:39
+msgid "cannot generate systemd service"
+msgstr "systemdサービスを生成できません"
+
+#: mgradm/shared/hub/xmlrpcapi.go:49
+#, fuzzy
+msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
+msgstr "現在、複数のHub XML-RPCコンテナレプリカはサポートされていません。"
+
+#: mgradm/shared/hub/xmlrpcapi.go:58
+#, fuzzy
+msgid "Not starting Hub XML-RPC API service"
+msgstr "Hub XML-RPC APIコンテナを有効化しています。"
 
 #: mgradm/shared/kubernetes/certificates.go:31
 msgid "Creating SSL server certificate secret"
@@ -1417,7 +1364,7 @@ msgid "cannot run helm upgrade"
 msgstr "helmアップグレードを実行できません"
 
 #: mgradm/shared/kubernetes/certificates.go:138
-#: mgradm/shared/kubernetes/install.go:53
+#: mgradm/shared/kubernetes/install.go:64
 msgid "cannot deploy"
 msgstr "配備できません"
 
@@ -1446,142 +1393,142 @@ msgstr "CA証明書のbase64デコードに失敗しました"
 msgid "Failed to create uyuni-ca config map from certificate"
 msgstr "証明書からのuyuni-ca設定マップの作成に失敗しました"
 
-#: mgradm/shared/kubernetes/install.go:47
+#: mgradm/shared/kubernetes/install.go:58
 msgid "cannot upgrade"
 msgstr "アップグレードできません"
 
-#: mgradm/shared/kubernetes/install.go:68
+#: mgradm/shared/kubernetes/install.go:79
 msgid "cannot install cert-manager and self-sign issuer"
 msgstr "cert-managerと自己署名発行者をインストールできません"
 
-#: mgradm/shared/kubernetes/install.go:93
+#: mgradm/shared/kubernetes/install.go:104
 msgid "Installing Uyuni"
 msgstr "Uyuniのインストール"
 
-#: mgradm/shared/kubernetes/install.go:142
+#: mgradm/shared/kubernetes/install.go:153
 msgid "cannot inspect kubernetes values"
 msgstr "kubernetesの値を検査できません"
 
-#: mgradm/shared/kubernetes/install.go:152
+#: mgradm/shared/kubernetes/install.go:163
 msgid "inspect function did non return fqdn value"
 msgstr "検査関数がfqdn値を返しませんでした"
 
-#: mgradm/shared/kubernetes/install.go:176
+#: mgradm/shared/kubernetes/install.go:187
 msgid "cannot set replica to 0"
 msgstr "レプリカを0に設定できません"
 
-#: mgradm/shared/kubernetes/install.go:186 mgradm/shared/kubernetes/k3s.go:39
-#: mgradm/shared/podman/podman.go:235
+#: mgradm/shared/kubernetes/install.go:197 mgradm/shared/kubernetes/k3s.go:39
+#: mgradm/shared/podman/podman.go:217
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
 msgstr "以前のPostgreSQLは %[1]s、新しいPostgreSQLは %[2]s です。DBバージョンのアップグレードを実行中…"
 
-#: mgradm/shared/kubernetes/install.go:195 mgradm/shared/podman/podman.go:380
+#: mgradm/shared/kubernetes/install.go:206 mgradm/shared/podman/podman.go:369
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr "PostgreSQLバージョンを変更せずに %s にアップグレードしています"
 
-#: mgradm/shared/kubernetes/install.go:197 mgradm/shared/podman/podman.go:382
+#: mgradm/shared/kubernetes/install.go:208 mgradm/shared/podman/podman.go:371
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr "PostgreSQLを  %[1]s  から  %[2]s にダウングレードしようとしています"
 
-#: mgradm/shared/kubernetes/k3s.go:36 mgradm/shared/kubernetes/k3s.go:105
-#: mgradm/shared/kubernetes/k3s.go:150
+#: mgradm/shared/kubernetes/k3s.go:36 mgradm/shared/kubernetes/k3s.go:106
+#: mgradm/shared/kubernetes/k3s.go:151
 #, javascript-format
 msgid "failed to create temporary directory: %s"
 msgstr "一時ディレクトリの作成に失敗しました: %s"
 
-#: mgradm/shared/kubernetes/k3s.go:57 mgradm/shared/podman/podman.go:280
+#: mgradm/shared/kubernetes/k3s.go:56 mgradm/shared/podman/podman.go:250
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr "データベースのアップグレードイメージ %s を使用しています"
 
-#: mgradm/shared/kubernetes/k3s.go:60 mgradm/shared/podman/podman.go:284
+#: mgradm/shared/kubernetes/k3s.go:59 mgradm/shared/podman/podman.go:254
 msgid "cannot generate PostgreSQL database version upgrade script"
 msgstr "PostgreSQLデータベースのバージョンアップグレードスクリプトを生成できません"
 
-#: mgradm/shared/kubernetes/k3s.go:65 mgradm/shared/kubernetes/k3s.go:114
-#: mgradm/shared/kubernetes/k3s.go:160
+#: mgradm/shared/kubernetes/k3s.go:64 mgradm/shared/kubernetes/k3s.go:115
+#: mgradm/shared/kubernetes/k3s.go:161
 #, javascript-format
 msgid "cannot delete %s"
 msgstr "%s を削除できません"
 
-#: mgradm/shared/kubernetes/k3s.go:94 mgradm/shared/kubernetes/k3s.go:140
-#: mgradm/shared/kubernetes/k3s.go:187
+#: mgradm/shared/kubernetes/k3s.go:93 mgradm/shared/kubernetes/k3s.go:141
+#: mgradm/shared/kubernetes/k3s.go:188
 #, javascript-format
 msgid "error running container %s"
 msgstr "コンテナ %s を実行中のエラー"
 
-#: mgradm/shared/kubernetes/k3s.go:110 mgradm/shared/kubernetes/k3s.go:155
-#: mgradm/shared/podman/podman.go:311 mgradm/shared/podman/podman.go:335
+#: mgradm/shared/kubernetes/k3s.go:111 mgradm/shared/kubernetes/k3s.go:156
+#: mgradm/shared/podman/podman.go:283 mgradm/shared/podman/podman.go:307
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "PostgreSQL終了処理スクリプトを生成できません"
 
-#: mgradm/shared/podman/podman.go:71
+#: mgradm/shared/podman/podman.go:50
 msgid "cannot setup network"
 msgstr "ネットワークを設定できません"
 
-#: mgradm/shared/podman/podman.go:74
+#: mgradm/shared/podman/podman.go:53
 msgid "Enabling system service"
 msgstr "システムサービスの有効化"
 
-#: mgradm/shared/podman/podman.go:116
+#: mgradm/shared/podman/podman.go:88
+#, fuzzy
+msgid "cannot generate systemd user configuration file"
+msgstr "systemd confファイルを生成できません"
+
+#: mgradm/shared/podman/podman.go:100
 msgid "failed to create temporary folder on container to copy certificates to"
 msgstr "証明書をコピーするための一時フォルダをコンテナ上に作成できませんでした"
 
-#: mgradm/shared/podman/podman.go:156
+#: mgradm/shared/podman/podman.go:140
 msgid "failed to update SSL certificate"
 msgstr "SSL証明書の更新に失敗しました"
 
-#: mgradm/shared/podman/podman.go:161
+#: mgradm/shared/podman/podman.go:145
 msgid "failed to remove copied certificate files in the container"
 msgstr "コンテナ内にコピーされた証明書ファイルの削除に失敗しました"
 
-#: mgradm/shared/podman/podman.go:167
+#: mgradm/shared/podman/podman.go:151
 msgid "failed to remove now useless ssl-build folder in the container"
 msgstr "コンテナ内の不要なssl-buildフォルダの削除に失敗しました"
 
-#: mgradm/shared/podman/podman.go:172
+#: mgradm/shared/podman/podman.go:156
 msgid "Restarting services after updating the certificate"
 msgstr "証明書更新後のサービスの再起動"
 
-#: mgradm/shared/podman/podman.go:183
+#: mgradm/shared/podman/podman.go:175
 msgid "cannot generate migration script"
 msgstr "移行スクリプトを生成できません"
 
-#: mgradm/shared/podman/podman.go:219 mgradm/shared/utils/exec.go:125
+#: mgradm/shared/podman/podman.go:194 mgradm/shared/utils/exec.go:103
 msgid "Migrating server"
 msgstr "サーバの移行"
 
-#: mgradm/shared/podman/podman.go:222
+#: mgradm/shared/podman/podman.go:197
 msgid "cannot run uyuni migration container"
 msgstr "uyuni移行コンテナを実行できません"
 
-#: mgradm/shared/podman/podman.go:227
+#: mgradm/shared/podman/podman.go:202
 msgid "cannot read extracted data"
 msgstr "抽出されたデータを読み込めません"
 
-#: mgradm/shared/podman/podman.go:358
+#: mgradm/shared/podman/podman.go:342
 msgid "cannot inspect podman values"
 msgstr "podman値を検査できません"
 
-#: mgradm/shared/podman/podman.go:368
+#: mgradm/shared/podman/podman.go:352
 msgid "cannot stop service"
 msgstr "サービスを停止できません"
 
-#: mgradm/shared/podman/podman.go:375
+#: mgradm/shared/podman/podman.go:360
 msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr "以前のpostgresqlは %[1]s、新しいpostgresqlは  %[2]s です。DBバージョンのアップグレードを実行中…"
 
-#: mgradm/shared/podman/podman.go:401
-#, javascript-format
-msgid "error %s is not a valid port number."
-msgstr "エラー %s 、有効なポート番号ではありません。"
-
-#: mgradm/shared/podman/podman.go:407
+#: mgradm/shared/podman/podman.go:397
 msgid "error upgrading confidential computing service."
 msgstr "コンフィデンシャルコンピューティングサービスのアップグレード時のエラー"
 
-#: mgradm/shared/podman/podman.go:455
+#: mgradm/shared/podman/podman.go:435
 msgid "cannot inspect data"
 msgstr "データを検査できません"
 
@@ -1686,94 +1633,208 @@ msgstr "cert-manager helmインストールに使用する値YAMLファイルへ
 msgid "Helm Chart Flags"
 msgstr "Helmチャートフラグ"
 
-#: mgradm/shared/utils/cmd_utils.go:80
+#: mgradm/shared/utils/cmd_utils.go:87
 #, javascript-format
-msgid "Image for %s container, overrides the namespace if set"
-msgstr "%s コンテナのイメージ。設定されている場合はネームスペースを上書きします"
+msgid "Image for %s container"
+msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:82
+#: mgradm/shared/utils/cmd_utils.go:89
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s コンテナ用のタグ。設定されている場合はグローバル値を上書きします"
 
-#: mgradm/shared/utils/cmd_utils.go:87
+#: mgradm/shared/utils/cmd_utils.go:99
 msgid "Image"
 msgstr "イメージ"
 
-#: mgradm/shared/utils/cmd_utils.go:88
+#: mgradm/shared/utils/cmd_utils.go:100
 msgid "Tag Image"
 msgstr "タグイメージ"
 
-#: mgradm/shared/utils/cmd_utils.go:92
+#: mgradm/shared/utils/cmd_utils.go:104
 msgid "Image Flags"
 msgstr "イメージフラグ"
 
-#: mgradm/shared/utils/cmd_utils.go:100
+#: mgradm/shared/utils/cmd_utils.go:112
 msgid "Database upgrade image"
 msgstr "データベースのアップグレードイメージ"
 
-#: mgradm/shared/utils/cmd_utils.go:101
+#: mgradm/shared/utils/cmd_utils.go:113
 msgid "Database upgrade image tag"
 msgstr "データベースのアップグレードイメージタグ"
 
-#: mgradm/shared/utils/cmd_utils.go:103
+#: mgradm/shared/utils/cmd_utils.go:115
 msgid "set whether to pull the database upgrade images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr "データベースアップグレードイメージをプルするかどうかを設定します。値には 「Never」、「IfNotPresent」または「Always」のいずれかを指定します"
 
-#: mgradm/shared/utils/cmd_utils.go:105
+#: mgradm/shared/utils/cmd_utils.go:117
 msgid "Database Upgrade Image Flags"
 msgstr "データベースアップグレードイメージのフラグ"
 
-#: mgradm/shared/utils/cmd_utils.go:113
+#: mgradm/shared/utils/cmd_utils.go:125
 msgid "Path to mirrored packages mounted on the host"
 msgstr "ホストにマウントされたミラーパッケージへのパス"
 
-#: mgradm/shared/utils/exec.go:30
+#: mgradm/shared/utils/cmd_utils.go:132
+msgid "How many replicas of the confidential computing container should be started. (only 0 or 1 supported for now)"
+msgstr "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要があるか(現時点では0または1のみサポート）"
+
+#: mgradm/shared/utils/cmd_utils.go:142
+msgid "How many replicas of the Hub XML-RPC API service container should be started. (only 0 or 1 supported for now)"
+msgstr "Hub XML-RPC APIサービスコンテナのレプリカをいくつ起動する必要があるか(現時点では0または1のみサポート）"
+
+#: mgradm/shared/utils/exec.go:28
 msgid "exec command failed"
 msgstr "execコマンドが失敗しました"
 
-#: mgradm/shared/utils/exec.go:64 mgradm/shared/utils/exec.go:82
+#: mgradm/shared/utils/exec.go:62 mgradm/shared/utils/exec.go:82
 #: mgradm/shared/utils/exec.go:96
 #, javascript-format
 msgid "failed to generate %s"
 msgstr "%s の生成に失敗しました"
 
-#: mgradm/shared/utils/exec.go:105
-msgid "failed to read data extracted from source host"
-msgstr "ソースホストから抽出されたデータを読み込めませんでした"
-
-#: mgradm/shared/utils/exec.go:109
-msgid "cannot read config"
-msgstr "設定を読み込めません"
-
-#: mgradm/shared/utils/exec.go:112
-msgid "cannot retrieve timezone"
-msgstr "タイムゾーンを取得できません"
-
-#: mgradm/shared/utils/exec.go:115
-msgid "cannot retrieve source PostgreSQL version"
-msgstr "ソースPostgreSQLのバージョンを取得できません"
-
-#: mgradm/shared/utils/exec.go:118
-msgid "cannot retrieve image PostgreSQL version"
-msgstr "イメージPostgreSQLのバージョンを取得できません"
-
-#: mgradm/shared/utils/exec.go:128
+#: mgradm/shared/utils/exec.go:106
 msgid "error running the migration script"
 msgstr "移行スクリプトの実行中にエラーが発生しました"
 
-#: mgradm/shared/utils/exec.go:176
+#: mgradm/shared/utils/exec.go:155
 #, javascript-format
 msgid "Image is: %s"
 msgstr "イメージは %s です"
 
-#: mgradm/shared/utils/exec.go:238
+#: mgradm/shared/utils/exec.go:169
+msgid "cannot check server release"
+msgstr "サーバのリリースを確認できません"
+
+#: mgradm/shared/utils/exec.go:176
+#, javascript-format
+msgid "currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"
+msgstr "現在SUSE Manager %s がインストールされていますが、イメージはUyuniです。アップグレードはサポートされていません"
+
+#: mgradm/shared/utils/exec.go:183
+#, javascript-format
+msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"
+msgstr "現在Uyuni %s がインストールされていますが、イメージはSUSE Managerです。アップグレードはサポートされていません"
+
+#: mgradm/shared/utils/exec.go:192
+msgid "failed to read current uyuni release"
+msgstr "現在のuyuniリリースの読み込みに失敗しました"
+
+#: mgradm/shared/utils/exec.go:196 mgradm/shared/utils/exec.go:213
+#, javascript-format
+msgid "cannot fetch release from image %s"
+msgstr "イメージ %s からリリースをフェッチできません"
+
+#: mgradm/shared/utils/exec.go:201 mgradm/shared/utils/exec.go:218
+msgid "cannot downgrade from version %[1]s to %[2]s"
+msgstr "バージョン %[1]s から %[2]s にダウングレードできません"
+
+#: mgradm/shared/utils/exec.go:209
+msgid "failed to read current susemanager release"
+msgstr "現在のsusemanagerリリースを読み込めませんでした"
+
+#: mgradm/shared/utils/exec.go:225
+#, javascript-format
+msgid "cannot fetch postgresql version from %s"
+msgstr "%s からpostgresqlバージョンをフェッチできません"
+
+#: mgradm/shared/utils/exec.go:229
 msgid "posgresql is not installed in the current deployment"
 msgstr "posgresqlが現在の配備にインストールされていません"
 
-#: mgradm/shared/utils/exec.go:252
+#: mgradm/shared/utils/exec.go:243
 msgid "cannot find neither /etc/uyuni-release nor /etc/susemanagere-release"
 msgstr "etc/uyuni-releaseも/etc/susemanagere-releaseも見つかりません"
+
+#~ msgid "cannot inspect host values"
+#~ msgstr "ホスト値を検査できません"
+
+#~ msgid "failed to compute server FQDN"
+#~ msgstr "サーバFQDNの計算に失敗しました"
+
+#~ msgid "Hub XML-RPC API Image"
+#~ msgstr "Hub XML-RPC APIイメージ"
+
+#~ msgid "Hub XML-RPC API Image Tag"
+#~ msgstr "Hub XML-RPC APIイメージタグ"
+
+#~ msgid "failed to discover the cluster type"
+#~ msgstr "クラスタタイプの検出に失敗しました"
+
+#~ msgid "no uyuni helm release installed on the cluster"
+#~ msgstr "クラスタにuyuni helmリリースがインストールされていません"
+
+#~ msgid "Running supportconfig in the container"
+#~ msgstr "コンテナ内でsupportconfigを実行する"
+
+#~ msgid "failed to run supportconfig"
+#~ msgstr "supportconfigの実行に失敗しました"
+
+#~ msgid "failed to find container supportconfig tarball from command output"
+#~ msgstr "コマンド出力からコンテナsupportconfig tarballが見つかりませんでした"
+
+#~ msgid "cannot copy tarball"
+#~ msgstr "tarballをコピーできません"
+
+#, javascript-format
+#~ msgid "failed to remove %s file in the container"
+#~ msgstr "コンテナ内の %s ファイルの削除に失敗しました"
+
+#~ msgid "failed to run supportconfig on the host"
+#~ msgstr "ホストでsupportconfigを実行できませんでした"
+
+#~ msgid "failed to find host supportconfig tarball from command output"
+#~ msgstr "コマンド出力からホストsupportconfig tarball が見つかりませんでした"
+
+#~ msgid "supportconfig is not available on the host, skipping it"
+#~ msgstr "supportconfigがホスト上で利用できません。スキップします"
+
+#~ msgid "Preparing the tarball"
+#~ msgstr "tarballの準備中"
+
+#, javascript-format
+#~ msgid "failed to add %s to tarball"
+#~ msgstr "%s をtarballに追加できませんでした"
+
+#~ msgid "Unable to detect hostname, using localhost"
+#~ msgstr "ローカルホストを使用してホスト名を検出できません"
+
+#, javascript-format
+#~ msgid "cannot delete volume %s"
+#~ msgstr "ボリューム %s を削除できません"
+
+#, javascript-format
+#~ msgid "Available Tags for image: %s"
+#~ msgstr "イメージに使用できるタグ: %s"
+
+#~ msgid "cannot find neither /etc/uyuni-release nor /etc/susemanager-release"
+#~ msgstr "/etc/uyuni-releaseも/etc/susemanager-releaseも見つかりません"
+
+#~ msgid "PostgreSQL is not installed in the current deployment"
+#~ msgstr "現在の配備にPostgreSQLがインストールされていません"
+
+#, javascript-format
+#~ msgid "error %s is not a valid port number."
+#~ msgstr "エラー %s 、有効なポート番号ではありません。"
+
+#, javascript-format
+#~ msgid "Image for %s container, overrides the namespace if set"
+#~ msgstr "%s コンテナのイメージ。設定されている場合はネームスペースを上書きします"
+
+#~ msgid "failed to read data extracted from source host"
+#~ msgstr "ソースホストから抽出されたデータを読み込めませんでした"
+
+#~ msgid "cannot read config"
+#~ msgstr "設定を読み込めません"
+
+#~ msgid "cannot retrieve timezone"
+#~ msgstr "タイムゾーンを取得できません"
+
+#~ msgid "cannot retrieve source PostgreSQL version"
+#~ msgstr "ソースPostgreSQLのバージョンを取得できません"
+
+#~ msgid "cannot retrieve image PostgreSQL version"
+#~ msgstr "イメージPostgreSQLのバージョンを取得できません"
 
 #~ msgid "Image URL. Leave it empty to analyze the current deployment"
 #~ msgstr "イメージのURL。現在の配備を分析する場合は空のままにします。"
