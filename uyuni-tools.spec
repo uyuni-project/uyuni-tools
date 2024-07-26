@@ -72,7 +72,7 @@ BuildRequires:  golang(API) >= 1.20
 # 0%{?suse_version}
 
 %if 0%{?ubuntu}
-%define go_version      1.20
+%define go_version      1.21
 BuildRequires:  golang-%{go_version}
 %endif
 # 0%{?ubuntu}
