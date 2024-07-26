@@ -81,7 +81,7 @@ func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 		helmArgs = append(helmArgs, issuerArgs...)
 
 		// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
-		extractCaCertToConfig()
+		extractCaCertToConfig(helmFlags.Uyuni.Namespace)
 	}
 
 	return helmArgs, nil
@@ -95,7 +95,7 @@ func DeployExistingCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_uti
 	installTlsSecret(helmFlags.Uyuni.Namespace, serverCrt, serverKey, rootCaCrt)
 
 	// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
-	extractCaCertToConfig()
+	extractCaCertToConfig(helmFlags.Uyuni.Namespace)
 }
 
 // UyuniUpgrade runs an helm upgrade using images and helm configuration as parameters.
@@ -141,14 +141,19 @@ func Upgrade(
 			return fmt.Errorf(L("install %s before running this command"), binary)
 		}
 	}
+
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
+	namespace, err := cnx.GetNamespace("")
+	if err != nil {
+		return utils.Errorf(err, L("failed retrieving namespace"))
+	}
 
 	serverImage, err := utils.ComputeImage(image.Registry, utils.DefaultTag, *image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
-	inspectedValues, err := kubernetes.InspectKubernetes(serverImage, image.PullPolicy)
+	inspectedValues, err := kubernetes.InspectKubernetes(namespace, serverImage, image.PullPolicy)
 	if err != nil {
 		return utils.Errorf(err, L("cannot inspect kubernetes values"))
 	}
@@ -177,27 +182,27 @@ func Upgrade(
 
 	//this is needed because folder with script needs to be mounted
 	//check the node before scaling down
-	nodeName, err := kubernetes.GetNode("uyuni")
+	nodeName, err := kubernetes.GetNode(namespace, kubernetes.ServerFilter)
 	if err != nil {
 		return utils.Errorf(err, L("cannot find node running uyuni"))
 	}
 
-	err = kubernetes.ReplicasTo(kubernetes.ServerApp, 0)
+	err = kubernetes.ReplicasTo(namespace, kubernetes.ServerApp, 0)
 	if err != nil {
 		return utils.Errorf(err, L("cannot set replica to 0"))
 	}
 
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
-		if _, err = kubernetes.GetNode("uyuni"); err != nil {
-			err = kubernetes.ReplicasTo(kubernetes.ServerApp, 1)
+		if _, err = kubernetes.GetNode(namespace, kubernetes.ServerFilter); err != nil {
+			err = kubernetes.ReplicasTo(namespace, kubernetes.ServerApp, 1)
 		}
 	}()
 	if inspectedValues.ImagePgVersion > inspectedValues.CurrentPgVersion {
 		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"),
 			inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion)
 
-		if err := RunPgsqlVersionUpgrade(image.Registry, *image, *upgradeImage, nodeName,
+		if err := RunPgsqlVersionUpgrade(image.Registry, *image, *upgradeImage, nodeName, namespace,
 			inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
@@ -210,11 +215,11 @@ func Upgrade(
 	}
 
 	schemaUpdateRequired := inspectedValues.CurrentPgVersion != inspectedValues.ImagePgVersion
-	if err := RunPgsqlFinalizeScript(serverImage, image.PullPolicy, nodeName, schemaUpdateRequired, false); err != nil {
+	if err := RunPgsqlFinalizeScript(serverImage, image.PullPolicy, namespace, nodeName, schemaUpdateRequired, false); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
 
-	if err := RunPostUpgradeScript(serverImage, image.PullPolicy, nodeName); err != nil {
+	if err := RunPostUpgradeScript(serverImage, image.PullPolicy, namespace, nodeName); err != nil {
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
@@ -223,5 +228,5 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}
 
-	return kubernetes.WaitForDeployment(helm.Uyuni.Namespace, "uyuni", "uyuni")
+	return kubernetes.WaitForDeployment(namespace, "uyuni", "uyuni")
 }
