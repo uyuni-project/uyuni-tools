@@ -18,5 +18,5 @@ func kubernetesRestart(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return kubernetes.Restart(kubernetes.ServerFilter)
+	return kubernetes.Restart(kubernetes.ServerApp)
 }

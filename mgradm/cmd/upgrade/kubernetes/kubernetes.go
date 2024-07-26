@@ -29,8 +29,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesUpgradeFlags
-			flags.Image.Registry = globalFlags.Registry
-			flags.DbUpgradeImage.Registry = globalFlags.Registry
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, upgradeKubernetes)
 		},
 	}

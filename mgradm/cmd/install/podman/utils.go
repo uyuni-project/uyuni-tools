@@ -6,6 +6,7 @@ package podman
 
 import (
 	"errors"
+	"fmt"
 	"os/exec"
 	"strings"
 
@@ -14,6 +15,7 @@ import (
 	"github.com/spf13/cobra"
 	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -21,31 +23,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
-
-func setupHubXmlrpcContainer(flags *podmanInstallFlags) error {
-	if flags.HubXmlrpc.Replicas > 0 {
-		if flags.HubXmlrpc.Replicas > 1 {
-			return errors.New(L("Multiple Hub XML-RPC container replicas are not currently supported."))
-		}
-		log.Info().Msg(L("Enabling Hub XML-RPC API container."))
-		if flags.HubXmlrpc.Image.Tag == "" {
-			flags.HubXmlrpc.Image.Tag = flags.Image.Tag
-		}
-		hubXmlrpcImage, err := utils.ComputeImage(flags.HubXmlrpc.Image)
-		if err != nil {
-			return utils.Errorf(err, L("failed to compute image URL"))
-		}
-
-		if err := podman.GenerateHubXmlrpcSystemdService(hubXmlrpcImage); err != nil {
-			return utils.Errorf(err, L("cannot generate systemd service"))
-		}
-
-		if err := shared_podman.ScaleService(flags.HubXmlrpc.Replicas, shared_podman.HubXmlrpcService); err != nil {
-			return utils.Errorf(err, L("cannot enable service"))
-		}
-	}
-	return nil
-}
 
 func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
 	err := podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, flags.Mirror, flags.Podman.Args)
@@ -67,34 +44,38 @@ func installForPodman(
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	hostData, err := shared_podman.InspectHost()
+	if err != nil {
+		return err
+	}
+
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData)
+	if err != nil {
+		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+	}
+	defer cleaner()
+
+	if hostData.HasUyuniServer {
+		return fmt.Errorf(L("Server is already initialized! Uninstall before attempting new installation or use upgrade command"))
+	}
+
 	flags.CheckParameters(cmd, "podman")
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
 	}
 
-	inspectedHostValues, err := utils.InspectHost(false)
-	if err != nil {
-		return utils.Errorf(err, L("cannot inspect host values"))
-	}
-
-	fqdn, err := getFqdn(args)
+	fqdn, err := utils.GetFqdn(args)
 	if err != nil {
 		return err
 	}
 	log.Info().Msgf(L("Setting up the server with the FQDN '%s'"), fqdn)
 
-	image, err := utils.ComputeImage(flags.Image)
+	image, err := utils.ComputeImage(globalFlags.Registry, utils.DefaultTag, flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
 
-	preparedImage, err := shared_podman.PrepareImage(image, flags.Image.PullPolicy, pullArgs...)
+	preparedImage, err := shared_podman.PrepareImage(authFile, image, flags.Image.PullPolicy)
 	if err != nil {
 		return err
 	}
@@ -138,11 +119,20 @@ func installForPodman(
 		}
 	}
 
-	if err := coco.SetupCocoContainer(flags.Coco.Replicas, flags.Coco.Image, flags.Image, flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password); err != nil {
+	if err := coco.SetupCocoContainer(
+		authFile, flags.Coco.Replicas, globalFlags.Registry, flags.Coco.Image, flags.Image,
+		flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password,
+	); err != nil {
 		return err
 	}
 
-	if err := setupHubXmlrpcContainer(flags); err != nil {
+	if err := hub.SetupHubXmlrpc(
+		authFile, globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
+	); err != nil {
+		return err
+	}
+
+	if err := hub.EnableHubXmlrpc(flags.HubXmlrpc.Replicas); err != nil {
 		return err
 	}
 
@@ -156,16 +146,4 @@ func installForPodman(
 		return utils.Errorf(err, L("cannot enable podman socket"))
 	}
 	return nil
-}
-
-func getFqdn(args []string) (string, error) {
-	if len(args) == 1 {
-		return args[0], nil
-	} else {
-		fqdn_b, err := utils.RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
-		if err != nil {
-			return "", utils.Errorf(err, L("failed to compute server FQDN"))
-		}
-		return strings.TrimSpace(string(fqdn_b)), nil
-	}
 }

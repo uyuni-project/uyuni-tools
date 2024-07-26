@@ -59,14 +59,14 @@ func WaitForDeployment(namespace string, name string, appName string) error {
 
 	log.Info().Msgf(L("Waiting for %[1]s deployment to be ready in %[2]s namespace\n"), name, namespace)
 	// Wait for a replica to be ready
-	for i := 0; i < 60; i++ {
+	for i := 0; i < 120; i++ {
 		// TODO Look for pod failures
 		if IsDeploymentReady(namespace, name) {
 			return nil
 		}
 		time.Sleep(1 * time.Second)
 	}
-	return fmt.Errorf(L("failed to find a ready replica for deployment %[1]s in namespace %[2]s after 60s"), name, namespace)
+	return fmt.Errorf(L("failed to find a ready replica for deployment %[1]s in namespace %[2]s after 120s"), name, namespace)
 }
 
 // WaitForPulledImage wait that image is pulled.
@@ -159,7 +159,7 @@ func ReplicasTo(app string, replica uint) error {
 		return utils.Errorf(err, L("cannot run kubectl %s"), args)
 	}
 
-	pods, err := getPods("-lapp=" + app)
+	pods, err := GetPods("-lapp=" + app)
 	if err != nil {
 		return utils.Errorf(err, L("cannot get pods for %s"), app)
 	}
@@ -179,22 +179,25 @@ func ReplicasTo(app string, replica uint) error {
 }
 
 func isPodRunning(podname string, filter string) (bool, error) {
-	pods, err := getPods(filter)
+	pods, err := GetPods(filter)
 	if err != nil {
 		return false, utils.Errorf(err, L("cannot check if pod %[1]s is running in app %[2]s"), podname, filter)
 	}
 	return utils.Contains(pods, podname), nil
 }
 
-func getPods(filter string) (pods []string, err error) {
+// GetPods return the list of the pod given a filter.
+func GetPods(filter string) (pods []string, err error) {
 	log.Debug().Msgf("Checking all pods for %s", filter)
 	cmdArgs := []string{"get", "pods", filter, "--output=custom-columns=:.metadata.name", "--no-headers"}
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
 	if err != nil {
 		return pods, utils.Errorf(err, L("cannot execute %s"), strings.Join(cmdArgs, string(" ")))
 	}
-	lines := strings.Split(string(out), "\n")
-	pods = append(pods, lines...)
+	lines := strings.Split(strings.TrimSpace(string(out)), "\n")
+	for _, pod := range lines {
+		pods = append(pods, strings.TrimSpace(pod))
+	}
 	log.Debug().Msgf("Pods in %s are %s", filter, pods)
 
 	return pods, err
@@ -230,23 +233,18 @@ func waitForReplica(podname string, replica uint) error {
 	}
 	cmdArgs := []string{"get", "pod", podname, "--output=custom-columns=STATUS:.status.phase", "--no-headers"}
 
-	var err error
-
 	for i := 0; i < waitSeconds; i++ {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
-		outStr := strings.TrimSuffix(string(out), "\n")
 		if err != nil {
 			return utils.Errorf(err, L("cannot execute %s"), strings.Join(cmdArgs, string(" ")))
 		}
+		outStr := strings.TrimSuffix(string(out), "\n")
 		if string(outStr) == "Running" {
 			log.Debug().Msgf("%s pod replica is now %d", podname, replica)
 			break
 		}
 		log.Debug().Msgf("Pod %s replica is %s in %d seconds.", podname, string(out), i)
 		time.Sleep(1 * time.Second)
-	}
-	if err != nil {
-		return utils.Errorf(err, L("pod %[1]s replicas have not reached %[2]d in %[3]s seconds"), podname, replica, strconv.Itoa(waitSeconds))
 	}
 	return nil
 }

@@ -1,2 +1,0 @@
-- delete /etc/uyuni/proxy folder during mgrpxy uninstall
-- check permissions of /etc/uyuni folder to prevent squid failures

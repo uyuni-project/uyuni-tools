@@ -10,6 +10,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/cache"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/install"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/logs"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/cmd/restart"
@@ -37,6 +38,19 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 		SilenceUsage: true, // Don't show usage help on errors
 	}
 
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "deploy",
+		Title: L("Server Deployment:"),
+	})
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "management",
+		Title: L("Server Management:"),
+	})
+	rootCmd.AddGroup(&cobra.Group{
+		ID:    "tool",
+		Title: L("Administrator tools:"),
+	})
+
 	rootCmd.SetUsageTemplate(utils.GetLocalizedUsageTemplate())
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
@@ -61,6 +75,7 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 	}
 	rootCmd.AddCommand(uninstallCmd)
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
+	rootCmd.AddCommand(cache.NewCommand(globalFlags))
 	rootCmd.AddCommand(status.NewCommand(globalFlags))
 	rootCmd.AddCommand(start.NewCommand(globalFlags))
 	rootCmd.AddCommand(stop.NewCommand(globalFlags))
@@ -73,9 +88,6 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 	}
 
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
-	if cmd := support.NewCommand(globalFlags); cmd != nil {
-		rootCmd.AddCommand(cmd)
-	}
 
 	return rootCmd, nil
 }

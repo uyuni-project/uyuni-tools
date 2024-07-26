@@ -35,7 +35,7 @@ func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap)
 	// Wait for traefik to be back
 	log.Info().Msg(L("Waiting for Traefik to be reloaded"))
 	for i := 0; i < 60; i++ {
-		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "get", "job", "-A",
+		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "get", "job", "-n", "kube-system",
 			"-o", "jsonpath={.status.completionTime}", "helm-install-traefik")
 		if err == nil {
 			completionTime, err := time.Parse(time.RFC3339, string(out))
@@ -52,36 +52,37 @@ func UninstallK3sTraefikConfig(dryRun bool) {
 }
 
 // InspectKubernetes check values on a given image and deploy.
-func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string, error) {
+func InspectKubernetes(serverImage string, pullPolicy string) (*utils.ServerInspectData, error) {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
-			return map[string]string{}, fmt.Errorf(L("install %s before running this command"), binary)
+			return nil, fmt.Errorf(L("install %s before running this command"), binary)
 		}
 	}
 
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("failed to create temporary directory"))
+		return nil, utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
-	if err := utils.GenerateInspectContainerScript(scriptDir); err != nil {
-		return map[string]string{}, err
+	inspector := utils.NewServerInspector(scriptDir)
+	if err := inspector.GenerateScript(); err != nil {
+		return nil, err
 	}
 
-	command := path.Join(utils.InspectOutputFile.Directory, utils.InspectScriptFilename)
+	command := path.Join(utils.InspectContainerDirectory, utils.InspectScriptFilename)
 
 	const podName = "inspector"
 
 	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
 	if err := DeletePod(podName, ServerFilter); err != nil {
-		return map[string]string{}, utils.Errorf(err, L("cannot delete %s"), podName)
+		return nil, utils.Errorf(err, L("cannot delete %s"), podName)
 	}
 
 	//this is needed because folder with script needs to be mounted
 	nodeName, err := GetNode("uyuni")
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("cannot find node running uyuni"))
+		return nil, utils.Errorf(err, L("cannot find node running uyuni"))
 	}
 
 	//generate deploy data
@@ -105,16 +106,16 @@ func InspectKubernetes(serverImage string, pullPolicy string) (map[string]string
 	//transform deploy data in JSON
 	override, err := GenerateOverrideDeployment(deployData)
 	if err != nil {
-		return map[string]string{}, err
+		return nil, err
 	}
 	err = RunPod(podName, ServerFilter, serverImage, pullPolicy, command, override)
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("cannot run inspect pod"))
+		return nil, utils.Errorf(err, L("cannot run inspect pod"))
 	}
 
-	inspectResult, err := utils.ReadInspectData(scriptDir)
+	inspectResult, err := inspector.ReadInspectData()
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("cannot inspect data"))
+		return nil, utils.Errorf(err, L("cannot inspect data"))
 	}
 
 	return inspectResult, err

@@ -147,6 +147,7 @@ Configuration:
       password: secret
   
   The configuration file will be searched in the following places and order:
+  · /etc/uyuni/uyuni-tools.yaml
   · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}
   · $HOME/.config/{{ .Name }}/{{ .ConfigFile }}
   · $PWD/{{ .ConfigFile }}

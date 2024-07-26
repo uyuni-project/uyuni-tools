@@ -20,7 +20,7 @@ type HelmFlags struct {
 
 // AddHelmFlags add helm flags to a command.
 func AddHelmFlags(cmd *cobra.Command) {
-	defaultChart := fmt.Sprintf("oci://%s/proxy-helm", utils.DefaultNamespace)
+	defaultChart := fmt.Sprintf("oci://%s/proxy-helm", utils.DefaultHelmRegistry)
 
 	cmd.Flags().String("helm-proxy-namespace", "default", L("Kubernetes namespace where to install the proxy"))
 	cmd.Flags().String("helm-proxy-chart", defaultChart, L("URL to the proxy helm chart"))

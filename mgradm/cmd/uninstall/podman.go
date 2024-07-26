@@ -36,16 +36,22 @@ func uninstallForPodman(
 
 	// Remove the volumes
 	if flags.Purge.Volumes {
+		allOk := true
 		volumes := []string{"cgroup"}
 		for _, volume := range utils.ServerVolumeMounts {
 			volumes = append(volumes, volume.Name)
 		}
 		for _, volume := range volumes {
 			if err := podman.DeleteVolume(volume, !flags.Force); err != nil {
-				return utils.Errorf(err, L("cannot delete volume %s"), volume)
+				log.Warn().Err(err).Msgf(L("Failed to remove volume %s"), volume)
+				allOk = false
 			}
 		}
-		log.Info().Msg(L("All volumes have been removed"))
+		if allOk {
+			log.Info().Msg(L("All volumes have been removed"))
+		} else {
+			log.Warn().Msg(L("Some volumes have not been removed completely"))
+		}
 	}
 
 	if flags.Purge.Images {

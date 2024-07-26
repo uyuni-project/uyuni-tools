@@ -19,15 +19,22 @@ if test -e /tmp/ssh_config; then
 fi
 SSH="ssh -o User={{ .User }} -A $SSH_CONFIG "
 
+{{ if .Prepare }}
+echo "Preparing migration..."
+$SSH {{ .SourceFqdn }} "sudo systemctl start postgresql.service"
+{{ else }}
 echo "Stopping spacewalk service..."
 $SSH {{ .SourceFqdn }} "sudo spacewalk-service stop ; sudo systemctl start postgresql.service"
+{{ end }}
 
 $SSH {{ .SourceFqdn }} \
  "echo \"COPY (SELECT MIN(CONCAT(org_id, '-', label)) AS target, base_path FROM rhnKickstartableTree GROUP BY base_path) TO STDOUT WITH CSV;\" \
  |sudo spacewalk-sql --select-mode - " > distros
 
+{{ if not .Prepare }}
 echo "Stopping posgresql service..."
 $SSH {{ .SourceFqdn }} "sudo systemctl stop postgresql.service"
+{{ end }}
 
 while IFS="," read -r target path ; do
     echo "-/ $path"
@@ -40,6 +47,10 @@ rpm -qa --qf '[%{fileflags},%{filenames}\n]' |grep ",/etc/" | while IFS="," read
         echo "-/ $path" >> exclude_list
     fi
 done
+
+# exclude tomcat default configuration. All settings should be store in /etc/tomcat/conf.d/
+echo "-/ /etc/sysconfig/tomcat" >> exclude_list
+echo "-/ /etc/tomcat/tomcat.conf" >> exclude_list
 
 # exclude schema migration files
 echo "-/ /etc/sysconfig/rhn/reportdb-schema-upgrade" >> exclude_list
@@ -73,6 +84,14 @@ while IFS="," read -r target path ; do
   fi
 done < distros
 
+if $SSH {{ .SourceFqdn }} test -e /etc/tomcat/conf.d; then
+  echo "Copying tomcat configuration.."
+  mkdir -p /etc/tomcat/conf.d
+  rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/tomcat/conf.d /etc/tomcat/;
+else
+  echo "Skipping tomcat configuration.."
+fi
+
 rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 
@@ -80,8 +99,15 @@ echo "Extracting time zone..."
 $SSH {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
 
 echo "Extracting postgresql versions..."
-echo "new_pg_version=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1)" >> /var/lib/uyuni-tools/data
-echo "old_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)" >> /var/lib/uyuni-tools/data
+echo "image_pg_version=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1)" >> /var/lib/uyuni-tools/data
+echo "current_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)" >> /var/lib/uyuni-tools/data
+
+grep '^db_user' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
+grep '^db_password' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
+grep '^db_name' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
+grep '^db_port' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
+
+$SSH {{ .SourceFqdn }} sh -c "systemctl list-unit-files | grep hub-xmlrpc-api | grep -q active && echo has_hubxmlrpc=true || echo has_hubxmlrpc=false" >>/var/lib/uyuni-tools/data
 
 echo "Altering configuration for domain resolution..."
 sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/rhn/rhn.conf;
@@ -91,10 +117,9 @@ sed 's/client_use_localhost: false/client_use_localhost: true/' -i /etc/cobbler/
 echo "Altering configuration for container environment..."
 sed 's/address=[^:]*:/address=*:/' -i /etc/rhn/taskomatic.conf;
 
-if test ! -f /etc/tomcat/conf.d/remote_debug.conf -a -f /etc/sysconfig/tomcat; then
-  mv /etc/sysconfig/tomcat /etc/tomcat/conf.d/remote_debug.conf
-fi
-
+echo "Altering tomcat configuration..."
+sed 's/--add-modules java.annotation,com.sun.xml.bind://' -i /etc/tomcat/conf.d/*
+sed 's/-XX:-UseConcMarkSweepGC//' -i /etc/tomcat/conf.d/*
 sed 's/address=[^:]*:/address=*:/' -i /etc/tomcat/conf.d/remote_debug.conf
 
 {{ if .Kubernetes }}
@@ -144,6 +169,7 @@ type MigrateScriptTemplateData struct {
 	SourceFqdn string
 	User       string
 	Kubernetes bool
+	Prepare    bool
 }
 
 // Render will create migration script.

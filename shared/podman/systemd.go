@@ -10,13 +10,14 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-const servicesPath = "/etc/systemd/system/"
+var servicesPath = "/etc/systemd/system/"
 
 // Name of the systemd service for the server.
 const ServerService = "uyuni-server"
@@ -63,17 +64,14 @@ func GetServiceConfFolder(name string) string {
 	return path.Join(servicesPath, name+".service.d")
 }
 
-// GetServiceConfPath return the path for Service.conf file.
+// GetServiceConfPath return the path for generated.conf file.
 func GetServiceConfPath(name string) string {
-	return path.Join(GetServiceConfFolder(name), "Service.conf")
+	return path.Join(GetServiceConfFolder(name), "generated.conf")
 }
 
 // UninstallService stops and remove a systemd service.
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
 func UninstallService(name string, dryRun bool) {
-	servicePath := GetServicePath(name)
-	serviceConfFolder := GetServiceConfFolder(name)
-	serviceConfPath := GetServiceConfPath(name)
 	if !HasService(name) {
 		log.Info().Msgf(L("Systemd has no %s.service unit"), name)
 	} else {
@@ -87,38 +85,50 @@ func UninstallService(name string, dryRun bool) {
 				log.Error().Err(err).Msgf(L("Failed to disable %s service"), name)
 			}
 		}
+		uninstallServiceFiles(name, dryRun)
+	}
+}
 
-		if dryRun {
-			log.Info().Msgf(L("Would remove %s"), servicePath)
-		} else {
-			// Remove the service unit
-			log.Info().Msgf(L("Remove %s"), servicePath)
-			if err := os.Remove(servicePath); err != nil {
-				log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), name)
-			}
+func uninstallServiceFiles(name string, dryRun bool) {
+	servicePath := GetServicePath(name)
+	serviceConfFolder := GetServiceConfFolder(name)
+
+	if dryRun {
+		log.Info().Msgf(L("Would remove %s"), servicePath)
+	} else {
+		// Remove the service unit
+		log.Info().Msgf(L("Remove %s"), servicePath)
+		if err := os.Remove(servicePath); err != nil {
+			log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), name)
 		}
+	}
 
-		if utils.FileExists(serviceConfFolder) {
-			if utils.FileExists(serviceConfPath) {
+	if utils.FileExists(serviceConfFolder) {
+		confPaths := []string{
+			GetServiceConfPath(name),
+			path.Join(serviceConfFolder, "Service.conf"),
+		}
+		for _, confPath := range confPaths {
+			if utils.FileExists(confPath) {
 				if dryRun {
-					log.Info().Msgf(L("Would remove %s"), serviceConfPath)
+					log.Info().Msgf(L("Would remove %s"), confPath)
 				} else {
-					log.Info().Msgf(L("Remove %s"), serviceConfPath)
-					if err := os.Remove(serviceConfPath); err != nil {
-						log.Error().Err(err).Msgf(L("Failed to remove %s file"), serviceConfPath)
+					log.Info().Msgf(L("Remove %s"), confPath)
+					if err := os.Remove(confPath); err != nil {
+						log.Error().Err(err).Msgf(L("Failed to remove %s file"), confPath)
 					}
 				}
 			}
+		}
 
-			if dryRun {
-				log.Info().Msgf(L("Would remove %s if empty"), serviceConfFolder)
+		if dryRun {
+			log.Info().Msgf(L("Would remove %s if empty"), serviceConfFolder)
+		} else {
+			if utils.IsEmptyDirectory(serviceConfFolder) {
+				log.Debug().Msgf("Removing %s folder, since it's empty", serviceConfFolder)
+				_ = utils.RemoveDirectory(serviceConfFolder)
 			} else {
-				if utils.IsEmptyDirectory(serviceConfFolder) {
-					log.Debug().Msgf("Removing %s folder, since it's empty", serviceConfFolder)
-					_ = utils.RemoveDirectory(serviceConfFolder)
-				} else {
-					log.Warn().Msgf(L("%s folder contains file created by the user. Please remove them when uninstallation is completed."), serviceConfFolder)
-				}
+				log.Warn().Msgf(L("%s folder contains file created by the user. Please remove them when uninstallation is completed."), serviceConfFolder)
 			}
 		}
 	}
@@ -135,45 +145,7 @@ func UninstallInstantiatedService(name string, dryRun bool) {
 		}
 	}
 
-	// Remove the service unit
-	servicePath := GetServicePath(name + "@")
-	serviceConfFolder := GetServiceConfFolder(name + "@")
-	serviceConfPath := GetServiceConfPath(name + "@")
-	if utils.FileExists(servicePath) {
-		if dryRun {
-			log.Info().Msgf(L("Would remove %s"), servicePath)
-		} else {
-			// Remove the service unit
-			log.Info().Msgf(L("Remove %s"), servicePath)
-			if err := os.Remove(servicePath); err != nil {
-				log.Error().Err(err).Msgf(L("Failed to remove %s.service file"), name)
-			}
-		}
-	}
-
-	if utils.FileExists(serviceConfFolder) {
-		if utils.FileExists(serviceConfPath) {
-			if dryRun {
-				log.Info().Msgf(L("Would remove %s"), serviceConfPath)
-			} else {
-				log.Info().Msgf(L("Remove %s"), serviceConfPath)
-				if err := os.Remove(serviceConfPath); err != nil {
-					log.Error().Err(err).Msgf(L("Failed to remove %s file"), serviceConfPath)
-				}
-			}
-		}
-
-		if dryRun {
-			log.Info().Msgf(L("Would remove %s if empty"), serviceConfFolder)
-		} else {
-			if utils.IsEmptyDirectory(serviceConfFolder) {
-				log.Debug().Msgf("Removing %s folder, since it's empty", serviceConfFolder)
-				_ = utils.RemoveDirectory(serviceConfFolder)
-			} else {
-				log.Warn().Msgf(L("%s folder contains file created by the user. Please remove them when uninstallation is completed."), serviceConfFolder)
-			}
-		}
-	}
+	uninstallServiceFiles(name+"@", dryRun)
 }
 
 // ReloadDaemon resets the failed state of services and reload the systemd daemon.
@@ -266,19 +238,80 @@ func StopInstantiated(service string) error {
 	return utils.JoinErrors(errList...)
 }
 
+// confHeader is the header for the generated systemd configuration files.
+const confHeader = `# This file is generated by mgradm and will be overwritten during upgrades.
+# Custom configuration should go in another .conf file in the same folder.
+
+`
+
 // Create new systemd service configuration file (e.g. Service.conf).
-func GenerateSystemdConfFile(serviceName string, section string, body string) error {
+func GenerateSystemdConfFile(serviceName string, filename string, body string, withHeader bool) error {
 	systemdFilePath := GetServicePath(serviceName)
 
 	systemdConfFolder := systemdFilePath + ".d"
 	if err := os.MkdirAll(systemdConfFolder, 0750); err != nil {
 		return utils.Errorf(err, L("failed to create %s folder"), systemdConfFolder)
 	}
-	systemdConfFilePath := path.Join(systemdConfFolder, section+".conf")
+	systemdConfFilePath := path.Join(systemdConfFolder, filename)
 
-	content := []byte("[" + section + "]" + "\n" + body + "\n")
-	if err := os.WriteFile(systemdConfFilePath, content, 0644); err != nil {
+	header := ""
+	if withHeader {
+		header = confHeader
+	}
+	content := []byte(fmt.Sprintf("%s[Service]\n%s\n", header, body))
+	if err := os.WriteFile(systemdConfFilePath, content, 0640); err != nil {
 		return utils.Errorf(err, L("cannot write %s file"), systemdConfFilePath)
+	}
+
+	return nil
+}
+
+// CleanSystemdConfFile separates the Service.conf file once generated into generated.conf and custom.conf.
+func CleanSystemdConfFile(serviceName string) error {
+	systemdFilePath := GetServicePath(serviceName) + ".d"
+	oldConfPath := path.Join(systemdFilePath, "Service.conf")
+
+	// The first containerized release generated a Service.conf where the image and the configuration
+	// where stored. This had the side effect to remove the conf at upgrade time.
+	// If this file exists split it in two:
+	// - generated.conf with the image
+	// - custom.conf with everything that shouldn't be touched at upgrade
+	if utils.FileExists(oldConfPath) {
+		content := string(utils.ReadFile(oldConfPath))
+		lines := strings.Split(content, "\n")
+
+		generated := ""
+		custom := ""
+		hasCustom := false
+
+		for _, line := range lines {
+			trimmedLine := strings.TrimSpace(line)
+			if strings.HasPrefix(trimmedLine, "Environment=UYUNI_IMAGE=") {
+				generated = generated + trimmedLine
+			} else {
+				custom = custom + trimmedLine + "\n"
+				if trimmedLine != "" && trimmedLine != "[Service]" {
+					hasCustom = true
+				}
+			}
+		}
+
+		if generated != "" {
+			if err := GenerateSystemdConfFile(serviceName, "generated.conf", generated, true); err != nil {
+				return err
+			}
+		}
+
+		if hasCustom {
+			customPath := path.Join(systemdFilePath, "custom.conf")
+			if err := os.WriteFile(customPath, []byte(custom), 0644); err != nil {
+				return utils.Errorf(err, L("failed to write %s file"), customPath)
+			}
+		}
+
+		if err := os.Remove(oldConfPath); err != nil {
+			return utils.Errorf(err, L("failed to remove old %s systemd service configuration file"), oldConfPath)
+		}
 	}
 
 	return nil

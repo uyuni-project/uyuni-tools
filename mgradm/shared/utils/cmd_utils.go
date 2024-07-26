@@ -16,7 +16,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var defaultImage = path.Join(utils.DefaultNamespace, "server")
+var defaultImage = path.Join(utils.DefaultRegistry, "server")
 
 // HelmFrags stores Uyuni and Cert Manager Helm information.
 type HelmFlags struct {
@@ -52,7 +52,7 @@ func (f *SslCertFlags) CheckParameters() {
 
 // AddHelmInstallFlag add Helm install flags to a command.
 func AddHelmInstallFlag(cmd *cobra.Command) {
-	defaultChart := fmt.Sprintf("oci://%s/server-helm", utils.DefaultNamespace)
+	defaultChart := fmt.Sprintf("oci://%s/server-helm", utils.DefaultHelmRegistry)
 
 	cmd.Flags().String("helm-uyuni-namespace", "default", L("Kubernetes namespace where to install uyuni"))
 	cmd.Flags().String("helm-uyuni-chart", defaultChart, L("URL to the uyuni helm chart"))
@@ -75,11 +75,23 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 }
 
 // AddContainerImageFlags add container image flags to command.
-func AddContainerImageFlags(cmd *cobra.Command, container string, displayName string) {
-	cmd.Flags().String(container+"-image", "",
-		fmt.Sprintf(L("Image for %s container, overrides the namespace if set"), displayName))
+func AddContainerImageFlags(
+	cmd *cobra.Command,
+	container string,
+	displayName string,
+	groupName string,
+	imageName string,
+) {
+	defaultImage := path.Join(utils.DefaultRegistry, imageName)
+	cmd.Flags().String(container+"-image", defaultImage,
+		fmt.Sprintf(L("Image for %s container"), displayName))
 	cmd.Flags().String(container+"-tag", "",
 		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), displayName))
+
+	if groupName != "" {
+		_ = utils.AddFlagToHelpGroupID(cmd, container+"-image", groupName)
+		_ = utils.AddFlagToHelpGroupID(cmd, container+"-tag", groupName)
+	}
 }
 
 // AddImageFlag add Image flags to a command.
@@ -111,4 +123,23 @@ func AddDbUpgradeImageFlag(cmd *cobra.Command) {
 // AddMirrorFlag adds the flag for the mirror.
 func AddMirrorFlag(cmd *cobra.Command) {
 	cmd.Flags().String("mirror", "", L("Path to mirrored packages mounted on the host"))
+}
+
+// AddCocoFlag adds the confidential computing related parameters to cmd.
+func AddCocoFlag(cmd *cobra.Command) {
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
+	AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"), "coco-container", "server-attestation")
+	cmd.Flags().Int("coco-replicas", 0, L("How many replicas of the confidential computing container should be started. (only 0 or 1 supported for now)"))
+
+	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
+}
+
+// AddHubXmlrpcFlags adds hub XML-RPC related parameters to cmd.
+func AddHubXmlrpcFlags(cmd *cobra.Command) {
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API")})
+	AddContainerImageFlags(cmd, "hubxmlrpc", L("Hub XML-RPC API"), "hubxmlrpc-container", "server-hub-xmlrpc-api")
+
+	cmd.Flags().Int("hubxmlrpc-replicas", 0, L("How many replicas of the Hub XML-RPC API service container should be started. (only 0 or 1 supported for now)"))
+
+	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-replicas", "hubxmlrpc-container")
 }

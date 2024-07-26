@@ -7,6 +7,7 @@ package uninstall
 import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -37,7 +38,12 @@ func uninstallForKubernetes(
 	// TODO Find all the PVs related to the server if we want to delete them
 
 	// Uninstall uyuni
-	if _, err := kubernetes.HelmUninstall(kubeconfig, "uyuni-proxy", "", dryRun); err != nil {
+	cnx := shared.NewConnection("kubectl", "", kubernetes.ProxyFilter)
+	namespace, err := cnx.GetNamespace("")
+	if err != nil {
+		return err
+	}
+	if err := kubernetes.HelmUninstall(namespace, kubeconfig, kubernetes.ProxyApp, dryRun); err != nil {
 		return err
 	}
 

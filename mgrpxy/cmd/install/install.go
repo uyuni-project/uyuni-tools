@@ -15,9 +15,10 @@ import (
 // NewCommand install a new proxy from scratch.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	installCmd := &cobra.Command{
-		Use:   "install [fqdn]",
-		Short: L("Install a new proxy from scratch"),
-		Long:  L("Install a new proxy from scratch"),
+		Use:     "install [fqdn]",
+		GroupID: "deploy",
+		Short:   L("Install a new proxy from scratch"),
+		Long:    L("Install a new proxy from scratch"),
 	}
 	installCmd.PersistentFlags().StringVar(&globalFlags.Registry, "registry", "", L("specify a private registry"))
 

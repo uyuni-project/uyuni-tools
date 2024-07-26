@@ -37,23 +37,34 @@ func installForPodman(globalFlags *types.GlobalFlags, flags *podman.PodmanProxyF
 		return shared_utils.Errorf(err, L("failed to extract proxy config from %s file"), configPath)
 	}
 
-	httpdImage, err := podman.GetContainerImage(&flags.ProxyImageFlags, "httpd")
+	hostData, err := shared_podman.InspectHost()
 	if err != nil {
 		return err
 	}
-	saltBrokerImage, err := podman.GetContainerImage(&flags.ProxyImageFlags, "salt-broker")
+
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData)
+	if err != nil {
+		return shared_utils.Errorf(err, L("failed to login to registry.suse.com"))
+	}
+	defer cleaner()
+
+	httpdImage, err := podman.GetContainerImage(authFile, &flags.ProxyImageFlags, "httpd")
 	if err != nil {
 		return err
 	}
-	squidImage, err := podman.GetContainerImage(&flags.ProxyImageFlags, "squid")
+	saltBrokerImage, err := podman.GetContainerImage(authFile, &flags.ProxyImageFlags, "salt-broker")
 	if err != nil {
 		return err
 	}
-	sshImage, err := podman.GetContainerImage(&flags.ProxyImageFlags, "ssh")
+	squidImage, err := podman.GetContainerImage(authFile, &flags.ProxyImageFlags, "squid")
 	if err != nil {
 		return err
 	}
-	tftpdImage, err := podman.GetContainerImage(&flags.ProxyImageFlags, "tftpd")
+	sshImage, err := podman.GetContainerImage(authFile, &flags.ProxyImageFlags, "ssh")
+	if err != nil {
+		return err
+	}
+	tftpdImage, err := podman.GetContainerImage(authFile, &flags.ProxyImageFlags, "tftpd")
 	if err != nil {
 		return err
 	}

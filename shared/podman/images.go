@@ -9,8 +9,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"path"
+	"regexp"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -22,15 +24,10 @@ import (
 
 const rpmImageDir = "/usr/share/suse-docker-images/native/"
 
-var registries = []string{
-	"registry.suse.com",
-	"registry.opensuse.com",
-}
-
 // Ensure the container image is pulled or pull it if the pull policy allows it.
 //
 // Returns the image name to use. Note that it may be changed if the image has been loaded from a local RPM package.
-func PrepareImage(image string, pullPolicy string, args ...string) (string, error) {
+func PrepareImage(authFile string, image string, pullPolicy string) (string, error) {
 	if strings.ToLower(pullPolicy) != "always" {
 		log.Info().Msgf(L("Ensure image %s is available"), image)
 
@@ -65,7 +62,7 @@ func PrepareImage(image string, pullPolicy string, args ...string) (string, erro
 
 	if strings.ToLower(pullPolicy) != "never" {
 		log.Debug().Msgf("Pulling image %s because it is missing and pull policy is not 'never'", image)
-		return image, pullImage(image, args...)
+		return image, pullImage(authFile, image)
 	}
 
 	return image, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)
@@ -73,20 +70,24 @@ func PrepareImage(image string, pullPolicy string, args ...string) (string, erro
 
 // GetRpmImageName return the RPM Image name and the tag, given an image.
 func GetRpmImageName(image string) (rpmImageFile string, tag string) {
-	for _, registry := range registries {
-		if strings.HasPrefix(image, registry) {
-			rpmImageFile = strings.ReplaceAll(image, registry+"/", "")
-			rpmImageFile = strings.ReplaceAll(rpmImageFile, "/", "-")
-			parts := strings.Split(rpmImageFile, ":")
-			tag = "latest"
-			if len(parts) > 1 {
-				tag = parts[1]
-			}
-			rpmImageFile = parts[0]
-			return rpmImageFile, tag
-		}
+	pattern := regexp.MustCompile(`^https?://|^docker://|^oci://`)
+	if pattern.FindStringIndex(image) == nil {
+		image = "docker://" + image
 	}
-	return "", ""
+	url, err := url.Parse(image)
+	if err != nil {
+		log.Warn().Msgf(L("Cannot correctly parse image name '%s', local image cannot be used"), image)
+		return "", ""
+	}
+	rpmImageFile = strings.TrimPrefix(url.Path, "/")
+	rpmImageFile = strings.ReplaceAll(rpmImageFile, "/", "-")
+	parts := strings.Split(rpmImageFile, ":")
+	tag = "latest"
+	if len(parts) > 1 {
+		tag = parts[1]
+	}
+	rpmImageFile = parts[0]
+	return rpmImageFile, tag
 }
 
 // BuildRpmImagePath checks the image metadata and returns the RPM Image path.
@@ -202,38 +203,34 @@ func GetPulledImageName(image string) (string, error) {
 	return string(bytes.TrimSpace(out)), nil
 }
 
-func pullImage(image string, args ...string) error {
+func pullImage(authFile string, image string) error {
 	if utils.ContainsUpperCase(image) {
 		return fmt.Errorf(L("%s should contains just lower case character, otherwise podman pull would fails"), image)
 	}
 	log.Info().Msgf(L("Running podman pull %s"), image)
-	podmanImageArgs := []string{"pull", image}
-	podmanArgs := append(podmanImageArgs, args...)
+	podmanArgs := []string{"pull", image}
 
-	loglevel := zerolog.DebugLevel
-	if len(args) > 0 {
-		loglevel = zerolog.Disabled
-		log.Debug().Msg("Additional arguments for pull command will not be shown.")
+	if authFile != "" {
+		podmanArgs = append(podmanArgs, "--authfile", authFile)
 	}
 
-	return utils.RunCmdStdMapping(loglevel, "podman", podmanArgs...)
+	return utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", podmanArgs...)
 }
 
 // ShowAvailableTag  returns the list of available tag for a given image.
-func ShowAvailableTag(image types.ImageFlags) ([]string, error) {
+func ShowAvailableTag(registry string, image types.ImageFlags) error {
 	log.Info().Msgf(L("Running podman image search --list-tags %s --format={{.Tag}}"), image.Name)
 
-	name, err := utils.ComputeImage(image)
+	name, err := utils.ComputeImage(registry, utils.DefaultTag, image)
 	if err != nil {
-		return []string{}, err
-	}
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", name, "--format={{.Tag}}")
-	if err != nil {
-		return []string{}, utils.Errorf(err, L("cannot find any tag for image %s"), image)
+		return err
 	}
 
-	tags := strings.Split(string(out), "\n")
-	return tags, nil
+	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", name, "--format={{.Tag}}"); err != nil {
+		return utils.Errorf(err, L("cannot find any tag for image %s"), image)
+	}
+
+	return nil
 }
 
 // GetRunningImage given a container name, return the image name.

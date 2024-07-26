@@ -195,18 +195,53 @@ func TestComputeImage(t *testing.T) {
 		{"registry/path/to/image-migration-14-16:foo", "registry/path/to/image:foo", "bar", "", "-migration-14-16"},
 		{"registry/path/to/image-migration-14-16:bar", "registry/path/to/image", "bar", "", "-migration-14-16"},
 		{"registry/path/to/image-migration-14-16:bar", "path/to/image", "bar", "registry", "-migration-14-16"},
+		{
+			// bsc#1226436
+			"registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile/suse/manager/5.0/x86_64/server:bar",
+			"registry.suse.com/suse/manager/5.0/x86_64/server",
+			"bar",
+			"registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile",
+			"",
+		},
+		{
+			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
+			"registry.suse.com/suse/manager/5.0/x86_64/server",
+			"5.0.0",
+			"cloud.com",
+			"",
+		},
+		{
+			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
+			"/suse/manager/5.0/x86_64/server",
+			"5.0.0",
+			"cloud.com",
+			"",
+		},
+		{
+			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
+			"suse/manager/5.0/x86_64/server",
+			"5.0.0",
+			"cloud.com",
+			"",
+		},
+		{
+			"cloud.com/my/path/server:5.0.0",
+			"my/path/server",
+			"5.0.0",
+			"cloud.com",
+			"",
+		},
 	}
 
 	for i, testCase := range data {
 		result := testCase[0]
 		image := types.ImageFlags{
-			Name:     testCase[1],
-			Tag:      testCase[2],
-			Registry: testCase[3],
+			Name: testCase[1],
+			Tag:  testCase[2],
 		}
 		appendToImage := testCase[4:]
 
-		actual, err := ComputeImage(image, appendToImage...)
+		actual, err := ComputeImage(testCase[3], "defaulttag", image, appendToImage...)
 
 		if err != nil {
 			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s: %s", i, image.Name, image.Tag, appendToImage, err)
@@ -217,6 +252,30 @@ func TestComputeImage(t *testing.T) {
 	}
 }
 
+func TestIsWellFormedFQDN(t *testing.T) {
+	data := []string{
+		"manager.mgr.suse.de",
+		"suma50.suse.de",
+	}
+
+	for i, testCase := range data {
+		if err := IsWellFormedFQDN(testCase); err != nil {
+			t.Errorf("Testcase %d: Unexpected error while validating FQDN with %s", i, testCase)
+		}
+	}
+	wrongData := []string{
+		"manager",
+		"suma50",
+		"test24.example24.com..",
+		"127.0.0.1",
+	}
+
+	for i, testCase := range wrongData {
+		if err := IsWellFormedFQDN(testCase); err == nil {
+			t.Errorf("Testcase %d: expected error while validating FQDN with %s", i, testCase)
+		}
+	}
+}
 func TestComputeImageError(t *testing.T) {
 	data := [][]string{
 		{"registry:path/to/image:tag:tag", "bar"},
@@ -228,7 +287,7 @@ func TestComputeImageError(t *testing.T) {
 			Tag:  testCase[1],
 		}
 
-		_, err := ComputeImage(image)
+		_, err := ComputeImage("defaultregistry", "defaulttag", image)
 		if err == nil {
 			t.Errorf("Expected error for %s with tag %s, got none", image.Name, image.Tag)
 		}

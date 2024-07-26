@@ -52,12 +52,12 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	podName, err := cnx.GetPodName()
 	if err != nil {
-		log.Fatal().Err(err)
+		return err
 	}
 
 	command, err := cnx.GetCommand()
 	if err != nil {
-		log.Fatal().Err(err)
+		return err
 	}
 
 	commandArgs := []string{"exec"}
@@ -69,7 +69,7 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 	}
 	if flags.Tty {
 		commandArgs = append(commandArgs, "-t")
-		envs = append(envs, "TERM")
+		envs = append(envs, utils.GetEnvironmentVarsList()...)
 	}
 	commandArgs = append(commandArgs, podName)
 

@@ -12,6 +12,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"path"
 	"strings"
 
 	"github.com/rs/zerolog/log"
@@ -25,9 +26,10 @@ import (
 )
 
 func prepareSource(args []string, cnx *shared.Connection) (string, error) {
-	source := "-"
+	target := "-"
 	if len(args) > 0 {
-		source = args[0]
+		source := args[0]
+		target = path.Base(source)
 		if !utils.FileExists(source) {
 			return "", fmt.Errorf(L("source %s does not exists"), source)
 		}
@@ -35,12 +37,12 @@ func prepareSource(args []string, cnx *shared.Connection) (string, error) {
 		if _, err := rand.Read(randBytes); err != nil {
 			return "", utils.Errorf(err, L("unable to get random file prefix"))
 		}
-		source = hex.EncodeToString(randBytes) + source
-		if err := cnx.Copy(args[0], "server:"+source, "", ""); err != nil {
+		target = hex.EncodeToString(randBytes) + target
+		if err := cnx.Copy(args[0], "server:"+target, "", ""); err != nil {
 			return "", err
 		}
 	}
-	return source, nil
+	return target, nil
 }
 
 func cleanupSource(file string, cnx *shared.Connection) {
@@ -77,7 +79,7 @@ func getBaseCommand(keepStdin bool, flags *configFlags, cnx *shared.Connection) 
 		commandArgs = append(commandArgs, "-i")
 		envs = append(envs, "ENV=/etc/sh.shrc.local")
 		commandArgs = append(commandArgs, "-t")
-		envs = append(envs, "TERM")
+		envs = append(envs, utils.GetEnvironmentVarsList()...)
 	} else if keepStdin {
 		// To use STDIN source, we need to pass -i
 		commandArgs = append(commandArgs, "-i")
@@ -176,7 +178,6 @@ func (l copyWriter) Write(p []byte) (n int, err error) {
 			// Trim CR added by stdlog.
 			p = p[0 : n-1]
 		}
-		log.Debug().Msg(string(p))
 	}
 	return
 }

@@ -40,19 +40,22 @@ func migrateToKubernetes(
 	}
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 
-	serverImage, err := utils.ComputeImage(flags.Image)
+	serverImage, err := utils.ComputeImage(globalFlags.Registry, utils.DefaultTag, flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
 	fqdn := args[0]
+	if err := utils.IsValidFQDN(fqdn); err != nil {
+		return err
+	}
 
 	// Find the SSH Socket and paths for the migration
 	sshAuthSocket := migration_shared.GetSshAuthSocket()
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
 	// Prepare the migration script and folder
-	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true)
+	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true, flags.Prepare)
 	if err != nil {
 		return utils.Errorf(err, L("failed to generate migration script"))
 	}
@@ -71,11 +74,13 @@ func migrateToKubernetes(
 	var sslFlags adm_utils.SslCertFlags
 
 	// Deploy for running migration command
-	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &sslFlags, clusterInfos, fqdn, false,
+	if err := kubernetes.Deploy(cnx, globalFlags.Registry, &flags.Image, &flags.Helm, &sslFlags,
+		clusterInfos, fqdn, false, flags.Prepare,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
-		"--set", "migration.dataPath="+scriptDir); err != nil {
+		"--set", "migration.dataPath="+scriptDir,
+	); err != nil {
 		return utils.Errorf(err, L("cannot run deploy"))
 	}
 
@@ -90,7 +95,7 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot run migration"))
 	}
 
-	tz, oldPgVersion, newPgVersion, err := adm_utils.ReadContainerData(scriptDir)
+	extractedData, err := utils.ReadInspectData[utils.InspectResult](path.Join(scriptDir, "data"))
 	if err != nil {
 		return utils.Errorf(err, L("cannot read data from container"))
 	}
@@ -99,6 +104,11 @@ func migrateToKubernetes(
 	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 0)
 	if err != nil {
 		return utils.Errorf(err, L("cannot set replicas to 0"))
+	}
+
+	if flags.Prepare {
+		log.Info().Msg(L("Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."))
+		return nil
 	}
 
 	defer func() {
@@ -115,7 +125,7 @@ func migrateToKubernetes(
 
 	helmArgs := []string{
 		"--reset-values",
-		"--set", "timezone=" + tz,
+		"--set", "timezone=" + extractedData.Timezone,
 	}
 	if flags.Mirror != "" {
 		log.Warn().Msgf(L("The mirror data will not be migrated, ensure it is available at %s"), flags.Mirror)
@@ -139,15 +149,20 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot set replicas to 0"))
 	}
 
+	oldPgVersion := extractedData.CurrentPgVersion
+	newPgVersion := extractedData.ImagePgVersion
+
 	if oldPgVersion != newPgVersion {
-		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image, flags.DbUpgradeImage, nodeName, oldPgVersion, newPgVersion); err != nil {
+		if err := kubernetes.RunPgsqlVersionUpgrade(globalFlags.Registry, flags.Image,
+			flags.DbUpgradeImage, nodeName, oldPgVersion, newPgVersion,
+		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	}
 
 	schemaUpdateRequired := oldPgVersion != newPgVersion
-	if err := kubernetes.RunPgsqlFinalizeScript(serverImage, flags.Image.PullPolicy, nodeName, schemaUpdateRequired); err != nil {
-		return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
+	if err := kubernetes.RunPgsqlFinalizeScript(serverImage, flags.Image.PullPolicy, nodeName, schemaUpdateRequired, true); err != nil {
+		return utils.Errorf(err, L("cannot run PostgreSQL finalisation script"))
 	}
 
 	if err := kubernetes.RunPostUpgradeScript(serverImage, flags.Image.PullPolicy, nodeName); err != nil {

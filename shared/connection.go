@@ -6,10 +6,13 @@ package shared
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -27,18 +30,19 @@ type Connection struct {
 	backend          string
 	command          string
 	podName          string
-	podmanContainer  string
 	kubernetesFilter string
+	namespace        string
+	container        string
 }
 
 // Create a new connection object.
 // The backend is either the command to use to connect to the container or the empty string.
 //
 // The empty strings means automatic detection of the backend where the uyuni container is running.
-// podmanContainer is the name of a podman container to look for when detecting the command.
+// container is the name of a container to look for when detecting the command.
 // kubernetesFilter is a filter parameter to use to match a pod.
-func NewConnection(backend string, podmanContainer string, kubernetesFilter string) *Connection {
-	cnx := Connection{backend: backend, podmanContainer: podmanContainer, kubernetesFilter: kubernetesFilter}
+func NewConnection(backend string, container string, kubernetesFilter string) *Connection {
+	cnx := Connection{backend: backend, container: container, kubernetesFilter: kubernetesFilter}
 
 	return &cnx
 }
@@ -78,7 +82,7 @@ func (c *Connection) GetCommand() (string, error) {
 			for _, bin := range bins {
 				if _, err = exec.LookPath(bin); err == nil {
 					hasPodman = true
-					if checkErr := utils.RunCmd(bin, "inspect", c.podmanContainer, "--format", "{{.Name}}"); checkErr == nil {
+					if checkErr := utils.RunCmd(bin, "inspect", c.container, "--format", "{{.Name}}"); checkErr == nil {
 						c.command = bin
 						break
 					}
@@ -110,6 +114,59 @@ func (c *Connection) GetCommand() (string, error) {
 	return c.command, err
 }
 
+// GetNamespace finds the namespace of the running pod
+// appName is the name of the application to look for, if not provided it will be guessed based on the filter.
+// filters are additional filters to use to find the pod.
+func (c *Connection) GetNamespace(appName string, filters ...string) (string, error) {
+	// skip if namespace is already set
+	if c.namespace != "" {
+		return c.namespace, nil
+	}
+
+	command, cmdErr := c.GetCommand()
+	if cmdErr != nil {
+		return "", cmdErr
+	}
+
+	// skip if the command is not resolvable or does not target kubectl
+	if command != "kubectl" {
+		return c.namespace, nil
+	}
+
+	// if no appName is provided, we'll assume it based on its filter
+	if appName == "" {
+		switch c.kubernetesFilter {
+		case kubernetes.ProxyFilter:
+			appName = kubernetes.ProxyApp
+		case kubernetes.ServerFilter:
+			appName = kubernetes.ServerApp
+		}
+
+		if appName == "" {
+			return "", fmt.Errorf(L("coundn't find app name"))
+		}
+	}
+
+	// retrieving namespace from helm release
+	clusterInfos, clusterInfosErr := kubernetes.CheckCluster()
+	if clusterInfosErr != nil {
+		return "", utils.Errorf(clusterInfosErr, L("failed to discover the cluster type"))
+	}
+
+	kubeconfig := clusterInfos.GetKubeconfig()
+	if !kubernetes.HasHelmRelease(appName, kubeconfig) {
+		return "", fmt.Errorf(L("no %s helm release installed on the cluster"), appName)
+	}
+
+	var namespaceErr error
+	c.namespace, namespaceErr = extractNamespaceFromConfig(appName, kubeconfig)
+	if namespaceErr != nil {
+		return "", utils.Errorf(namespaceErr, L("failed to find the %s deployment namespace"), appName)
+	}
+
+	return c.namespace, nil
+}
+
 // GetPodName finds the name of the running pod.
 func (c *Connection) GetPodName() (string, error) {
 	var err error
@@ -117,23 +174,25 @@ func (c *Connection) GetPodName() (string, error) {
 	if c.podName == "" {
 		command, cmdErr := c.GetCommand()
 		if cmdErr != nil {
-			log.Fatal().Err(cmdErr)
+			return "", cmdErr
 		}
 
 		switch command {
 		case "podman-remote":
 			fallthrough
 		case "podman":
-			if out, _ := utils.RunCmdOutput(zerolog.DebugLevel, c.command, "ps", "-q", "-f", "name="+c.podmanContainer); len(out) == 0 {
-				err = fmt.Errorf(L("container %s is not running on podman"), c.podmanContainer)
+			if out, _ := utils.RunCmdOutput(zerolog.DebugLevel, c.command, "ps", "-q", "-f", "name="+c.container); len(out) == 0 {
+				err = fmt.Errorf(L("container %s is not running on podman"), c.container)
 			} else {
-				c.podName = c.podmanContainer
+				log.Trace().Msgf("Found container ID '%s'", out)
+				c.podName = c.container
 			}
 		case "kubectl":
 			// We try the first item on purpose to make the command fail if not available
-			podName, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", c.kubernetesFilter, "-A",
-				"-o=jsonpath={.items[0].metadata.name}")
-			if err == nil {
+			if podName, _ := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", c.kubernetesFilter, "-A",
+				"-o=jsonpath={.items[0].metadata.name}"); len(podName) == 0 {
+				err = fmt.Errorf(L("container labeled %s is not running on kubectl"), c.kubernetesFilter)
+			} else {
 				c.podName = string(podName[:])
 			}
 		}
@@ -147,8 +206,7 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 	if c.podName == "" {
 		if _, err := c.GetPodName(); c.podName == "" {
 			commandStr := fmt.Sprintf("%s %s", command, strings.Join(args, " "))
-			return nil, utils.Errorf(err, L("the container is not running, %s command not executed:"),
-				commandStr)
+			return nil, utils.Errorf(err, L("%s command not executed:"), commandStr)
 		}
 	}
 
@@ -159,12 +217,48 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 
 	cmdArgs := []string{"exec", c.podName}
 	if cmd == "kubectl" {
-		cmdArgs = append(cmdArgs, "-c", "uyuni", "--")
+		if _, err := c.GetNamespace(""); c.namespace == "" {
+			return nil, utils.Errorf(err, L("failed to retrieve namespace "))
+		}
+
+		if c.container == "" {
+			c.container = "uyuni"
+		}
+
+		cmdArgs = append(cmdArgs, "-n", c.namespace, "-c", c.container, "--")
 	}
 	shellArgs := append([]string{command}, args...)
 	cmdArgs = append(cmdArgs, shellArgs...)
 
 	return utils.RunCmdOutput(zerolog.DebugLevel, cmd, cmdArgs...)
+}
+
+// WaitForContainer waits up to 10 sec for the container to appear.
+func (c *Connection) WaitForContainer() error {
+	for i := 0; i < 10; i++ {
+		podName, err := c.GetPodName()
+		if err != nil {
+			log.Debug().Err(err)
+			time.Sleep(1 * time.Second)
+			continue
+		}
+		args := []string{"exec", podName}
+		command, err := c.GetCommand()
+		if err != nil {
+			return err
+		}
+
+		if command == "kubectl" {
+			args = append(args, "--")
+		}
+		args = append(args, "true")
+		err = utils.RunCmd(command, args...)
+		if err == nil {
+			return nil
+		}
+		time.Sleep(1 * time.Second)
+	}
+	return errors.New(L("container didn't start within 10s."))
 }
 
 // WaitForServer waits at most 60s for multi-user systemd target to be reached.
@@ -173,13 +267,15 @@ func (c *Connection) WaitForServer() error {
 	for i := 0; i < 60; i++ {
 		podName, err := c.GetPodName()
 		if err != nil {
-			log.Fatal().Err(err)
+			log.Debug().Err(err)
+			time.Sleep(1 * time.Second)
+			continue
 		}
 
 		args := []string{"exec", podName}
 		command, err := c.GetCommand()
 		if err != nil {
-			log.Fatal().Err(err)
+			return err
 		}
 
 		if command == "kubectl" {
@@ -302,7 +398,8 @@ func ChoosePodmanOrKubernetes[F interface{}](
 	kubernetesFn utils.CommandFunc[F],
 ) (utils.CommandFunc[F], error) {
 	backend := "podman"
-	if utils.KubernetesBuilt {
+	runningBinary := filepath.Base(os.Args[0])
+	if utils.KubernetesBuilt || runningBinary == "mgrpxy" {
 		backend, _ = flags.GetString("backend")
 	}
 
@@ -340,4 +437,77 @@ func chooseBackend[F interface{}](
 
 	// Should never happen if the commands are the same than those handled in GetCommand()
 	return nil, errors.New(L("no supported backend found"))
+}
+
+// RunSupportConfig will run supportconfig command on given connection.
+func (cnx *Connection) RunSupportConfig() ([]string, error) {
+	var containerTarball string
+	var files []string
+	extensions := []string{"", ".md5"}
+	containerName, err := cnx.GetPodName()
+	if err != nil {
+		return []string{}, err
+	}
+
+	// Copy the generated file locally
+	tmpDir, err := os.MkdirTemp("", "mgradm-*")
+	if err != nil {
+		return []string{}, utils.Errorf(err, L("failed to create temporary directory"))
+	}
+
+	defer os.RemoveAll(tmpDir)
+	// Run supportconfig in the container if it's running
+	log.Info().Msgf(L("Running supportconfig in  %s"), containerName)
+	out, err := cnx.Exec("supportconfig")
+	if err != nil {
+		return []string{}, errors.New(L("failed to run supportconfig"))
+	} else {
+		tarballPath := utils.GetSupportConfigPath(string(out))
+		if tarballPath == "" {
+			return []string{}, fmt.Errorf(L("failed to find container supportconfig tarball from command output"))
+		}
+
+		for _, ext := range extensions {
+			containerTarball = path.Join(tmpDir, containerName+"-supportconfig.txz"+ext)
+			if err := cnx.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
+				return []string{}, utils.Errorf(err, L("cannot copy tarball"))
+			}
+			files = append(files, containerTarball)
+
+			// Remove the generated file in the container
+			if _, err := cnx.Exec("rm", tarballPath+ext); err != nil {
+				return []string{}, utils.Errorf(err, L("failed to remove %s file in the container"), tarballPath+ext)
+			}
+		}
+	}
+	return files, nil
+}
+
+// extractNamespaceFromConfig extracts the namespace of a given application
+// from the Helm release information.
+func extractNamespaceFromConfig(appName string, kubeconfig string) (string, error) {
+	args := []string{}
+	if kubeconfig != "" {
+		args = append(args, "--kubeconfig", kubeconfig)
+	}
+	args = append(args, "list", "-aA", "-f", appName, "-o", "json")
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "helm", args...)
+	if err != nil {
+		return "", utils.Errorf(err, L("failed to detect %s's namespace using helm"), appName)
+	}
+
+	var data []releaseInfo
+	if err = json.Unmarshal(out, &data); err != nil {
+		return "", utils.Errorf(err, L("helm provided an invalid JSON output"))
+	}
+
+	if len(data) == 1 {
+		return data[0].Namespace, nil
+	}
+	return "", errors.New(L("found no or more than one deployment"))
+}
+
+type releaseInfo struct {
+	Namespace string `mapstructure:"namespace"`
 }

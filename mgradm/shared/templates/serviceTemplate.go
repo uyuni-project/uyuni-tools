@@ -38,6 +38,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{ .Args }} \
 	{{- range .Ports }}
 	-p {{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
+	-p [::]:{{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
 	{{- end }}
 	{{- range .Volumes }}
 	-v {{ .Name }}:{{ .MountPath }} \

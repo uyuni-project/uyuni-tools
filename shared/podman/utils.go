@@ -5,8 +5,11 @@
 package podman
 
 import (
+	"errors"
+	"io"
 	"os"
 	"os/exec"
+	"path"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -155,9 +158,21 @@ func DeleteVolume(name string, dryRun bool) error {
 			log.Info().Msgf(L("Would run %s"), "podman volume rm "+name)
 		} else {
 			log.Info().Msgf(L("Run %s"), "podman volume rm "+name)
-			err := utils.RunCmd("podman", "volume", "rm", name)
-			if err != nil {
-				log.Error().Err(err).Msgf(L("Failed to remove volume %s"), name)
+			if err := utils.RunCmd("podman", "volume", "rm", name); err != nil {
+				log.Trace().Err(err).Msgf("podman volume rm %s", name)
+				// Check if the volume is not mounted - for example var-pgsql - as second storage device
+				// We need to compute volume path ourselves because above `podman volume rm` call may have
+				// already removed volume from podman internal structures
+				basePath, errBasePath := getPodmanVolumeBasePath()
+				if errBasePath != nil {
+					return errBasePath
+				}
+				target := path.Join(basePath, name)
+				if isVolumePathEmpty(target) && isVolumePathMounted(target) {
+					log.Info().Msgf(L("Volume %s is externally mounted, directory cannot be removed"), name)
+					return nil
+				}
+				return err
 			}
 		}
 	}
@@ -165,56 +180,85 @@ func DeleteVolume(name string, dryRun bool) error {
 }
 
 func isVolumePresent(volume string) bool {
+	var exitError *exec.ExitError
 	cmd := exec.Command("podman", "volume", "exists", volume)
-	if err := cmd.Run(); err != nil {
+	if err := cmd.Run(); err != nil && errors.As(err, &exitError) {
+		log.Debug().Err(err).Msgf("podman volume exists %s", volume)
 		return false
 	}
-	return cmd.ProcessState.ExitCode() == 0
+	return cmd.ProcessState.Success()
+}
+
+func isVolumePathMounted(volume string) bool {
+	cmd := exec.Command("findmnt", "--target", volume)
+	var exitError *exec.ExitError
+	if err := cmd.Run(); err != nil && errors.As(err, &exitError) {
+		log.Debug().Err(err).Msgf("findmnt --target %s", volume)
+		return false
+	}
+	return cmd.ProcessState.Success()
+}
+
+func isVolumePathEmpty(volume string) bool {
+	f, err := os.Open(volume)
+	if err != nil {
+		return false
+	}
+	defer f.Close()
+
+	_, err = f.Readdirnames(1)
+	return err == io.EOF
+}
+
+func getPodmanVolumeBasePath() (string, error) {
+	cmd := exec.Command("podman", "system", "info", "--format={{ .Store.VolumePath }}")
+	out, err := cmd.Output()
+	return strings.TrimSpace(string(out)), err
 }
 
 // Inspect check values on a given image and deploy.
-func Inspect(serverImage string, pullPolicy string, proxyHost bool) (map[string]string, error) {
+func Inspect(serverImage string, pullPolicy string, proxyHost bool) (*utils.ServerInspectData, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("failed to create temporary directory"))
+		return nil, utils.Errorf(err, L("failed to create temporary directory"))
 	}
 
-	inspectedHostValues, err := utils.InspectHost(proxyHost)
+	hostData, err := InspectHost()
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("cannot inspect host values"))
+		return nil, err
 	}
 
-	pullArgs := []string{}
-	_, scc_user_exist := inspectedHostValues["host_scc_username"]
-	_, scc_user_password := inspectedHostValues["host_scc_password"]
-	if scc_user_exist && scc_user_password {
-		pullArgs = append(pullArgs, "--creds", inspectedHostValues["host_scc_username"]+":"+inspectedHostValues["host_scc_password"])
-	}
-
-	preparedImage, err := PrepareImage(serverImage, pullPolicy, pullArgs...)
+	authFile, cleaner, err := PodmanLogin(hostData)
 	if err != nil {
-		return map[string]string{}, err
+		return nil, utils.Errorf(err, L("failed to login to registry.suse.com"))
+	}
+	defer cleaner()
+
+	preparedImage, err := PrepareImage(authFile, serverImage, pullPolicy)
+	if err != nil {
+		return nil, err
 	}
 
-	if err := utils.GenerateInspectContainerScript(scriptDir); err != nil {
-		return map[string]string{}, err
+	inspector := utils.NewServerInspector(scriptDir)
+	if err := inspector.GenerateScript(); err != nil {
+		return nil, err
 	}
 
 	podmanArgs := []string{
-		"-v", scriptDir + ":" + utils.InspectOutputFile.Directory,
+		"-v", scriptDir + ":" + utils.InspectContainerDirectory,
 		"--security-opt", "label=disable",
 	}
 
 	err = RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
-		[]string{utils.InspectOutputFile.Directory + "/" + utils.InspectScriptFilename})
+		[]string{utils.InspectContainerDirectory + "/" + utils.InspectScriptFilename})
 	if err != nil {
-		return map[string]string{}, err
+		return nil, err
 	}
 
-	inspectResult, err := utils.ReadInspectData(scriptDir)
+	inspectResult, err := inspector.ReadInspectData()
 	if err != nil {
-		return map[string]string{}, utils.Errorf(err, L("cannot inspect data"))
+		return nil, utils.Errorf(err, L("cannot inspect data"))
 	}
 
 	return inspectResult, err

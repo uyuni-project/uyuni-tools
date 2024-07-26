@@ -30,6 +30,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Long: L(`Adjust the replicas for services supporting it.
 Supported services:
   - uyuni-server-attestation
+  - uyuni-hub-xmlrpc
 `),
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

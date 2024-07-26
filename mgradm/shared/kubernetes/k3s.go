@@ -29,7 +29,7 @@ func InstallK3sTraefikConfig(debug bool) {
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
-func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlags, nodeName string, oldPgsql string, newPgsql string) error {
+func RunPgsqlVersionUpgrade(registry string, image types.ImageFlags, upgradeImage types.ImageFlags, nodeName string, oldPgsql string, newPgsql string) error {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
@@ -42,13 +42,12 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlag
 
 		upgradeImageUrl := ""
 		if upgradeImage.Name == "" {
-			upgradeImageUrl, err = utils.ComputeImage(image, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
+			upgradeImageUrl, err = utils.ComputeImage(registry, image.Tag, image, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			upgradeImage.Tag = image.Tag
-			upgradeImageUrl, err = utils.ComputeImage(upgradeImage)
+			upgradeImageUrl, err = utils.ComputeImage(registry, image.Tag, upgradeImage)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
@@ -98,14 +97,16 @@ func RunPgsqlVersionUpgrade(image types.ImageFlags, upgradeImage types.ImageFlag
 }
 
 // RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
-func RunPgsqlFinalizeScript(serverImage string, pullPolicy string, nodeName string, schemaUpdateRequired bool) error {
+func RunPgsqlFinalizeScript(
+	serverImage string, pullPolicy string, nodeName string, schemaUpdateRequired bool, migration bool,
+) error {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
 		return fmt.Errorf(L("failed to create temporary directory: %s"))
 	}
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
-	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, schemaUpdateRequired, true, true, true)
+	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, schemaUpdateRequired, true, migration, true)
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}

@@ -12,10 +12,10 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"path"
-	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -24,9 +24,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"golang.org/x/term"
 )
@@ -36,29 +34,14 @@ const prompt_end = ": "
 var prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
 var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
 
-// InspectScriptFilename is the inspect script basename.
-var InspectScriptFilename = "inspect.sh"
+// Taken from https://github.com/go-playground/validator/blob/2e1df48/regexes.go#L58
+var fqdnValid = regexp.MustCompile(`^([a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})(\.[a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})*?(\.[a-zA-Z]{1}[a-zA-Z0-9]{0,62})\.?$`)
 
-var inspectValues = []types.InspectData{
-	types.NewInspectData("uyuni_release", "cat /etc/*release | grep 'Uyuni release' | cut -d ' ' -f3 || true", false),
-	types.NewInspectData("suse_manager_release", "cat /etc/*release | grep 'SUSE Manager release' | cut -d ' ' -f4 || true", false),
-	types.NewInspectData("architecture", "lscpu | grep Architecture | awk '{print $2}' || true", false),
-	types.NewInspectData("fqdn", "cat /etc/rhn/rhn.conf 2>/dev/null | grep 'java.hostname' | cut -d' ' -f3 || true", false),
-	types.NewInspectData("image_pg_version", "rpm -qa --qf '%{VERSION}\\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1 || true", false),
-	types.NewInspectData("current_pg_version", "(test -e /var/lib/pgsql/data/PG_VERSION && cat /var/lib/pgsql/data/PG_VERSION) || true", false),
-	types.NewInspectData("registration_info", "env LC_ALL=C LC_MESSAGES=C LANG=C transactional-update --quiet register --status 2>/dev/null || true", false),
-	types.NewInspectData("scc_username", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep username | cut -d= -f2 || true", true),
-	types.NewInspectData("scc_password", "cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep password | cut -d= -f2 || true", true),
-	types.NewInspectData("db_user", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_user' | cut -d' ' -f3 || true", false),
-	types.NewInspectData("db_password", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_password' | cut -d' ' -f3 || true", false),
-	types.NewInspectData("db_name", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_name' | cut -d' ' -f3 || true", false),
-	types.NewInspectData("db_port", "cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_port' | cut -d' ' -f3 || true", false),
-}
-
-// InspectOutputFile represents the directory and the basename where the inspect values are stored.
-var InspectOutputFile = types.InspectFile{
-	Directory: "/var/lib/uyuni-tools",
-	Basename:  "data",
+// InspectResult holds the results of the inspection scripts.
+type InspectResult struct {
+	CommonInspectData `mapstructure:",squash"`
+	Timezone          string
+	HasHubXmlrpcApi   bool `mapstructure:"has_hubxmlrpc"`
 }
 
 func checkValueSize(value string, min int, max int) bool {
@@ -100,9 +83,12 @@ func CheckValidPassword(value *string, prompt string, min int, max int) string {
 		return ""
 	}
 
-	if !invalidChars && checkValueSize(tmpValue, min, max) {
-		*value = tmpValue
+	if !checkValueSize(tmpValue, min, max) {
+		fmt.Println()
+		return ""
 	}
+	fmt.Println()
+	*value = tmpValue
 	return *value
 }
 
@@ -114,7 +100,7 @@ func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 		if firstRound == "" {
 			continue
 		}
-		secondRound := CheckValidPassword(value, "\nConfirm the password", min, max)
+		secondRound := CheckValidPassword(value, L("Confirm the password"), min, max)
 		if secondRound != firstRound {
 			fmt.Println(L("Two different passwords have been provided"))
 			*value = ""
@@ -165,17 +151,37 @@ func YesNo(question string) (bool, error) {
 	}
 }
 
+// Remove registry fqdn from image path.
+func RemoveRegistryFromImage(imagePath string) string {
+	separator := "://"
+	index := strings.Index(imagePath, separator)
+	if index != -1 {
+		imagePath = imagePath[index+len(separator):]
+	}
+
+	parts := strings.Split(imagePath, "/")
+	if strings.Contains(parts[0], ".") || strings.Contains(parts[0], ":") || index != -1 {
+		// first part is a registry fqdn
+		parts = parts[1:]
+	}
+	return strings.Join(parts, "/")
+}
+
 // ComputeImage assembles the container image from its name and tag.
-func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, error) {
-	if !strings.Contains(DefaultNamespace, imageFlags.Registry) {
-		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), imageFlags.Registry, DefaultNamespace)
+func ComputeImage(registry string, globalTag string, imageFlags types.ImageFlags, appendToName ...string) (string, error) {
+	if !strings.Contains(DefaultRegistry, registry) {
+		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), registry, DefaultRegistry)
 	}
 	name := imageFlags.Name
-	if !strings.Contains(imageFlags.Name, imageFlags.Registry) {
-		name = path.Join(imageFlags.Registry, imageFlags.Name)
-		log.Info().Msgf(L("The image name provided is %[1]s and does not contains the registry %[2]s. The image name used will be %[3]s. You can set the flag --registry to change this behaviour."), imageFlags.Name, imageFlags.Registry, name)
+	if !strings.Contains(imageFlags.Name, registry) {
+		name = path.Join(registry, RemoveRegistryFromImage(imageFlags.Name))
 	}
-	tag := imageFlags.Tag
+
+	// Compute the tag
+	tag := globalTag
+	if imageFlags.Tag != "" {
+		tag = imageFlags.Tag
+	}
 
 	submatches := imageValid.FindStringSubmatch(name)
 	if submatches == nil {
@@ -191,12 +197,12 @@ func ComputeImage(imageFlags types.ImageFlags, appendToName ...string) (string, 
 		// No tag provided in the URL name, append the one passed
 		imageName := fmt.Sprintf("%s:%s", name, tag)
 		imageName = strings.ToLower(imageName) // podman does not accept repo in upper case
-		log.Debug().Msgf("Computed image name is %s", imageName)
+		log.Info().Msgf(L("Computed image name is %s"), imageName)
 		return imageName, nil
 	}
 	imageName := submatches[1] + strings.Join(appendToName, ``) + `:` + submatches[2]
 	imageName = strings.ToLower(imageName) // podman does not accept repo in upper case
-	log.Debug().Msgf("Computed image name is %s", imageName)
+	log.Info().Msgf(L("Computed image name is %s"), imageName)
 	return imageName, nil
 }
 
@@ -342,90 +348,6 @@ func DownloadFile(filepath string, URL string) (err error) {
 	return nil
 }
 
-// ReadInspectData returns a map with the values inspected by an image and deploy.
-func ReadInspectData(scriptDir string, prefix ...string) (map[string]string, error) {
-	path := filepath.Join(scriptDir, "data")
-	log.Debug().Msgf("Trying to read %s", path)
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return map[string]string{}, Errorf(err, L("cannot parse file %s"), path)
-	}
-
-	inspectResult := make(map[string]string)
-
-	viper.SetConfigType("env")
-	if err := viper.MergeConfig(bytes.NewBuffer(data)); err != nil {
-		return map[string]string{}, Errorf(err, L("cannot read config"))
-	}
-
-	for _, v := range inspectValues {
-		if len(viper.GetString(v.Variable)) > 0 {
-			index := v.Variable
-			/* Just the first value of prefix is used.
-			 * This slice is just to allow an empty argument
-			 */
-			if len(prefix) >= 1 {
-				index = prefix[0] + v.Variable
-			}
-			inspectResult[index] = viper.GetString(v.Variable)
-		}
-	}
-	return inspectResult, nil
-}
-
-// InspectHost check values on a host machine.
-func InspectHost(serverHost bool) (map[string]string, error) {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
-	defer os.RemoveAll(scriptDir)
-	if err != nil {
-		return map[string]string{}, Errorf(err, L("failed to create temporary directory"))
-	}
-
-	if err := GenerateInspectHostScript(scriptDir, serverHost); err != nil {
-		return map[string]string{}, err
-	}
-
-	if err := RunCmdStdMapping(zerolog.DebugLevel, scriptDir+"/inspect.sh"); err != nil {
-		return map[string]string{}, Errorf(err, L("failed to run inspect script in host system"))
-	}
-
-	inspectResult, err := ReadInspectData(scriptDir, "host_")
-	if err != nil {
-		return map[string]string{}, Errorf(err, L("cannot inspect host data"))
-	}
-
-	return inspectResult, err
-}
-
-// GenerateInspectContainerScript create the host inspect script.
-func GenerateInspectHostScript(scriptDir string, proxyHost bool) error {
-	data := templates.InspectTemplateData{
-		Param:      inspectValues,
-		OutputFile: scriptDir + "/" + InspectOutputFile.Basename,
-		ProxyHost:  proxyHost,
-	}
-
-	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
-	if err := WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return Errorf(err, L("failed to generate inspect script"))
-	}
-	return nil
-}
-
-// GenerateInspectContainerScript create the container inspect script.
-func GenerateInspectContainerScript(scriptDir string) error {
-	data := templates.InspectTemplateData{
-		Param:      inspectValues,
-		OutputFile: InspectOutputFile.Directory + "/" + InspectOutputFile.Basename,
-	}
-
-	scriptPath := filepath.Join(scriptDir, InspectScriptFilename)
-	if err := WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return Errorf(err, L("failed to generate inspect script"))
-	}
-	return nil
-}
-
 // CompareVersion compare the server image version and the server deployed  version.
 func CompareVersion(imageVersion string, deployedVersion string) int {
 	re := regexp.MustCompile(`\((.*?)\)`)
@@ -464,4 +386,43 @@ func JoinErrors(errs ...error) error {
 		return nil
 	}
 	return errors.New(strings.Join(messages, "; "))
+}
+
+// GetFqdn returns and checks the FQDN of the host system.
+func GetFqdn(args []string) (string, error) {
+	var fqdn string
+	if len(args) == 1 {
+		fqdn = args[0]
+	} else {
+		fqdn_b, err := RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
+		if err != nil {
+			return "", Errorf(err, L("failed to compute server FQDN"))
+		}
+		fqdn = strings.TrimSpace(string(fqdn_b))
+	}
+	if err := IsValidFQDN(fqdn); err != nil {
+		return "", err
+	}
+
+	return fqdn, nil
+}
+
+// IsValidFDQN returns an error if the argument is not a valid FQDN.
+func IsValidFQDN(fqdn string) error {
+	if err := IsWellFormedFQDN(fqdn); err != nil {
+		return err
+	}
+	_, err := net.LookupHost(fqdn)
+	if err != nil {
+		return Errorf(err, L("cannot resolve %s"), fqdn)
+	}
+	return nil
+}
+
+// IsWellFormedFQDN returns an error if the argument is not a well formed FQDN.
+func IsWellFormedFQDN(fqdn string) error {
+	if !fqdnValid.MatchString(fqdn) {
+		return fmt.Errorf(L("%s is not a valid FQDN"), fqdn)
+	}
+	return nil
 }

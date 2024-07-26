@@ -17,6 +17,15 @@ import (
 // The name of the podman network for Uyuni and its proxies.
 const UyuniNetwork = "uyuni"
 
+func hasIpv6Enabled(network string) bool {
+	hasIpv6, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "network", "inspect",
+		"--format", "{{.IPv6Enabled}}", network)
+	if err == nil && strings.TrimSpace(string(hasIpv6)) == "true" {
+		return true
+	}
+	return false
+}
+
 // SetupNetwork creates the podman network.
 func SetupNetwork(isProxy bool) error {
 	log.Info().Msgf(L("Setting up %s network"), UyuniNetwork)
@@ -28,19 +37,17 @@ func SetupNetwork(isProxy bool) error {
 	if networkExists {
 		log.Debug().Msgf("%s network already present", UyuniNetwork)
 		// Check if the uyuni network exists and is IPv6 enabled
-		hasIpv6, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "network", "inspect", "--format", "{{.IPv6Enabled}}", UyuniNetwork)
-		if err == nil {
-			if string(hasIpv6) != "true" && ipv6Enabled {
-				log.Info().Msgf(L("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it"), UyuniNetwork)
-				err := utils.RunCmd("podman", "network", "rm", UyuniNetwork,
-					"--log-level", log.Logger.GetLevel().String())
-				if err != nil {
-					return utils.Errorf(err, L("failed to remove %s podman network"), UyuniNetwork)
-				}
-			} else {
-				log.Info().Msgf(L("Reusing existing %s network"), UyuniNetwork)
-				return nil
+		hasIpv6 := hasIpv6Enabled(UyuniNetwork)
+		if !hasIpv6 && ipv6Enabled {
+			log.Info().Msgf(L("%s network doesn't have IPv6, deleting existing network to enable IPv6 on it"), UyuniNetwork)
+			err := utils.RunCmd("podman", "network", "rm", UyuniNetwork,
+				"--log-level", log.Logger.GetLevel().String())
+			if err != nil {
+				return utils.Errorf(err, L("failed to remove %s podman network"), UyuniNetwork)
 			}
+		} else {
+			log.Info().Msgf(L("Reusing existing %s network"), UyuniNetwork)
+			return nil
 		}
 	}
 
@@ -81,9 +88,11 @@ func isIpv6Enabled() bool {
 	for _, file := range files {
 		// Mind that we are checking disable files, the semantic is inverted
 		if utils.GetFileBoolean(file) {
+			log.Debug().Msgf("IPv6 is disabled")
 			return false
 		}
 	}
+	log.Debug().Msgf("IPv6 is enabled")
 	return true
 }
 

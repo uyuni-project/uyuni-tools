@@ -5,7 +5,6 @@
 package utils
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"os"
@@ -15,7 +14,6 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
@@ -44,7 +42,7 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
 
 	runCmd := exec.Command(command, commandArgs...)
-	logger := utils.OutputLogWriter{Logger: log.Logger, LogLevel: logLevel}
+	logger := log.Logger.Level(logLevel)
 	runCmd.Stdout = logger
 	runCmd.Stderr = logger
 	return runCmd.Run()
@@ -67,13 +65,15 @@ func GeneratePgsqlVersionUpgradeScript(scriptDir string, oldPgVersion string, ne
 }
 
 // GenerateFinalizePostgresScript generates the script to finalize PostgreSQL upgrade.
-func GenerateFinalizePostgresScript(scriptDir string, RunAutotune bool, RunReindex bool, RunSchemaUpdate bool, RunDistroMigration bool, kubernetes bool) (string, error) {
+func GenerateFinalizePostgresScript(
+	scriptDir string, runAutotune bool, runReindex bool, runSchemaUpdate bool, migration bool, kubernetes bool,
+) (string, error) {
 	data := templates.FinalizePostgresTemplateData{
-		RunAutotune:        RunAutotune,
-		RunReindex:         RunReindex,
-		RunSchemaUpdate:    RunSchemaUpdate,
-		RunDistroMigration: RunDistroMigration,
-		Kubernetes:         kubernetes,
+		RunAutotune:     runAutotune,
+		RunReindex:      runReindex,
+		RunSchemaUpdate: runSchemaUpdate,
+		Migration:       migration,
+		Kubernetes:      kubernetes,
 	}
 
 	scriptName := "pgsqlFinalize.sh"
@@ -98,28 +98,6 @@ func GeneratePostUpgradeScript(scriptDir string, cobblerHost string) (string, er
 	return scriptName, nil
 }
 
-// ReadContainerData returns values used to perform migration.
-func ReadContainerData(scriptDir string) (string, string, string, error) {
-	data, err := os.ReadFile(filepath.Join(scriptDir, "data"))
-	if err != nil {
-		return "", "", "", errors.New(L("failed to read data extracted from source host"))
-	}
-	viper.SetConfigType("env")
-	if err := viper.MergeConfig(bytes.NewBuffer(data)); err != nil {
-		return "", "", "", utils.Errorf(err, L("cannot read config"))
-	}
-	if len(viper.GetString("Timezone")) <= 0 {
-		return "", "", "", errors.New(L("cannot retrieve timezone"))
-	}
-	if len(viper.GetString("old_pg_version")) <= 0 {
-		return "", "", "", errors.New(L("cannot retrieve source PostgreSQL version"))
-	}
-	if len(viper.GetString("new_pg_version")) <= 0 {
-		return "", "", "", errors.New(L("cannot retrieve image PostgreSQL version"))
-	}
-	return viper.GetString("Timezone"), viper.GetString("old_pg_version"), viper.GetString("new_pg_version"), nil
-}
-
 // RunMigration execute the migration script.
 func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) error {
 	log.Info().Msg(L("Migrating server"))
@@ -131,7 +109,7 @@ func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) err
 }
 
 // GenerateMigrationScript generates the script that perform migration.
-func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool) (string, error) {
+func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, prepare bool) (string, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
 		return "", utils.Errorf(err, L("failed to create temporary directory"))
@@ -142,6 +120,7 @@ func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool) (s
 		SourceFqdn: sourceFqdn,
 		User:       user,
 		Kubernetes: kubernetes,
+		Prepare:    prepare,
 	}
 
 	scriptPath := filepath.Join(scriptDir, "migrate.sh")
@@ -184,20 +163,26 @@ func RunningImage(cnx *shared.Connection, containerName string) (string, error) 
 }
 
 // SanityCheck verifies if an upgrade can be run.
-func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serverImage string) error {
+func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectData, serverImage string) error {
 	isUyuni, err := isUyuni(cnx)
 	if err != nil {
 		return utils.Errorf(err, L("cannot check server release"))
 	}
-	_, isCurrentUyuni := inspectedValues["uyuni_release"]
-	_, isCurrentSuma := inspectedValues["suse_manager_release"]
+	isUyuniImage := inspectedValues.UyuniRelease != ""
+	isSumaImage := inspectedValues.SuseManagerRelease != ""
 
-	if isUyuni && isCurrentSuma {
-		return fmt.Errorf(L("currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"), inspectedValues["suse_manager_release"])
+	if isUyuni && isSumaImage {
+		return fmt.Errorf(
+			L("currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"),
+			inspectedValues.SuseManagerRelease,
+		)
 	}
 
-	if !isUyuni && isCurrentUyuni {
-		return fmt.Errorf(L("currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"), inspectedValues["uyuni_release"])
+	if !isUyuni && isUyuniImage {
+		return fmt.Errorf(
+			L("currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"),
+			inspectedValues.UyuniRelease,
+		)
 	}
 
 	if isUyuni {
@@ -207,12 +192,15 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 			return utils.Errorf(err, L("failed to read current uyuni release"))
 		}
 		log.Debug().Msgf("Current release is %s", string(current_uyuni_release))
-		if (len(inspectedValues["uyuni_release"])) <= 0 {
+		if !isUyuniImage {
 			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
 		}
-		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues["uyuni_release"])
-		if utils.CompareVersion(inspectedValues["uyuni_release"], string(current_uyuni_release)) < 0 {
-			return fmt.Errorf(L("cannot downgrade from version %[1]s to %[2]s"), string(current_uyuni_release), inspectedValues["uyuni_release"])
+		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.UyuniRelease)
+		if utils.CompareVersion(inspectedValues.UyuniRelease, string(current_uyuni_release)) < 0 {
+			return fmt.Errorf(
+				L("cannot downgrade from version %[1]s to %[2]s"),
+				string(current_uyuni_release), inspectedValues.UyuniRelease,
+			)
 		}
 	} else {
 		cnx_args := []string{"s/SUSE Manager release //g", "/etc/susemanager-release"}
@@ -221,23 +209,26 @@ func SanityCheck(cnx *shared.Connection, inspectedValues map[string]string, serv
 			return utils.Errorf(err, L("failed to read current susemanager release"))
 		}
 		log.Debug().Msgf("Current release is %s", string(current_suse_manager_release))
-		if (len(inspectedValues["suse_manager_release"])) <= 0 {
+		if !isSumaImage {
 			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
 		}
-		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues["suse_manager_release"])
-		if utils.CompareVersion(inspectedValues["suse_manager_release"], string(current_suse_manager_release)) < 0 {
-			return fmt.Errorf(L("cannot downgrade from version %[1]s to %[2]s"), string(current_suse_manager_release), inspectedValues["suse_manager_release"])
+		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.SuseManagerRelease)
+		if utils.CompareVersion(inspectedValues.SuseManagerRelease, string(current_suse_manager_release)) < 0 {
+			return fmt.Errorf(
+				L("cannot downgrade from version %[1]s to %[2]s"),
+				string(current_suse_manager_release), inspectedValues.SuseManagerRelease,
+			)
 		}
 	}
 
-	if (len(inspectedValues["image_pg_version"])) <= 0 {
+	if inspectedValues.ImagePgVersion == "" {
 		return fmt.Errorf(L("cannot fetch postgresql version from %s"), serverImage)
 	}
-	log.Debug().Msgf("Image %s has PostgreSQL %s", serverImage, inspectedValues["image_pg_version"])
-	if (len(inspectedValues["current_pg_version"])) <= 0 {
+	log.Debug().Msgf("Image %s has PostgreSQL %s", serverImage, inspectedValues.ImagePgVersion)
+	if inspectedValues.CurrentPgVersion == "" {
 		return fmt.Errorf(L("posgresql is not installed in the current deployment"))
 	}
-	log.Debug().Msgf("Current deployment has PostgreSQL %s", inspectedValues["current_pg_version"])
+	log.Debug().Msgf("Current deployment has PostgreSQL %s", inspectedValues.CurrentPgVersion)
 
 	return nil
 }

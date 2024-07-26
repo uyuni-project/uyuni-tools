@@ -16,17 +16,34 @@ import (
 )
 
 // Upgrade coco attestation.
-func Upgrade(image types.ImageFlags, baseImage types.ImageFlags, dbPort int, dbName string, dbUser string, dbPassword string) error {
-	if err := podman.StopInstantiated(podman.ServerAttestationService); err != nil {
+func Upgrade(
+	authFile string,
+	registry string,
+	image types.ImageFlags,
+	baseImage types.ImageFlags,
+	dbPort int,
+	dbName string,
+	dbUser string,
+	dbPassword string,
+) error {
+	if err := writeCocoServiceFiles(
+		authFile, registry, image, baseImage, dbName, dbPort, dbUser, dbPassword,
+	); err != nil {
 		return err
 	}
-	if err := writeCocoServiceFiles(image, baseImage, dbName, dbPort, dbUser, dbPassword); err != nil {
-		return err
-	}
-	return podman.StartInstantiated(podman.ServerAttestationService)
+	return podman.RestartInstantiated(podman.ServerAttestationService)
 }
 
-func writeCocoServiceFiles(image types.ImageFlags, baseImage types.ImageFlags, dbName string, dbPort int, dbUser string, dbPassword string) error {
+func writeCocoServiceFiles(
+	authFile string,
+	registry string,
+	image types.ImageFlags,
+	baseImage types.ImageFlags,
+	dbName string,
+	dbPort int,
+	dbUser string,
+	dbPassword string,
+) error {
 	if image.Tag == "" {
 		if baseImage.Tag != "" {
 			image.Tag = baseImage.Tag
@@ -34,19 +51,20 @@ func writeCocoServiceFiles(image types.ImageFlags, baseImage types.ImageFlags, d
 			image.Tag = "latest"
 		}
 	}
-	cocoImage, err := utils.ComputeImage(image)
+	cocoImage, err := utils.ComputeImage(registry, baseImage.Tag, image)
 	if err != nil {
-		baseImage.Tag = image.Tag
-		cocoImage, err = utils.ComputeImage(baseImage, "-attestation")
-		if err != nil {
-			return utils.Errorf(err, L("failed to compute image URL"))
-		}
+		return utils.Errorf(err, L("failed to compute image URL"))
+	}
+
+	preparedImage, err := podman.PrepareImage(authFile, cocoImage, baseImage.PullPolicy)
+	if err != nil {
+		return err
 	}
 
 	attestationData := templates.AttestationServiceTemplateData{
 		NamePrefix: "uyuni",
 		Network:    podman.UyuniNetwork,
-		Image:      cocoImage,
+		Image:      preparedImage,
 	}
 
 	log.Info().Msg(L("Setting up confidential computing attestation service"))
@@ -57,11 +75,13 @@ func writeCocoServiceFiles(image types.ImageFlags, baseImage types.ImageFlags, d
 	}
 
 	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
-	Environment=database_connection=jdbc:postgresql://uyuni-server.mgr.internal:%d/%s
-	Environment=database_user=%s
-	Environment=database_password=%s`, cocoImage, dbPort, dbName, dbUser, dbPassword)
+Environment=database_connection=jdbc:postgresql://uyuni-server.mgr.internal:%d/%s
+Environment=database_user=%s
+Environment=database_password=%s`, preparedImage, dbPort, dbName, dbUser, dbPassword)
 
-	if err := podman.GenerateSystemdConfFile(podman.ServerAttestationService+"@", "Service", environment); err != nil {
+	if err := podman.GenerateSystemdConfFile(
+		podman.ServerAttestationService+"@", "generated.conf", environment, true,
+	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 
@@ -72,8 +92,20 @@ func writeCocoServiceFiles(image types.ImageFlags, baseImage types.ImageFlags, d
 }
 
 // SetupCocoContainer sets up the confidential computing attestation service.
-func SetupCocoContainer(replicas int, image types.ImageFlags, baseImage types.ImageFlags, dbName string, dbPort int, dbUser string, dbPassword string) error {
-	if err := writeCocoServiceFiles(image, baseImage, dbName, dbPort, dbUser, dbPassword); err != nil {
+func SetupCocoContainer(
+	authFile string,
+	replicas int,
+	registry string,
+	image types.ImageFlags,
+	baseImage types.ImageFlags,
+	dbName string,
+	dbPort int,
+	dbUser string,
+	dbPassword string,
+) error {
+	if err := writeCocoServiceFiles(
+		authFile, registry, image, baseImage, dbName, dbPort, dbUser, dbPassword,
+	); err != nil {
 		return err
 	}
 	return podman.ScaleService(replicas, podman.ServerAttestationService)

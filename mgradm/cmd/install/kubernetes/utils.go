@@ -40,6 +40,10 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 
 	fqdn := args[0]
 
+	if err := shared_utils.IsValidFQDN(fqdn); err != nil {
+		return err
+	}
+
 	helmArgs := []string{"--set", "timezone=" + flags.TZ}
 	if flags.Mirror != "" {
 		// TODO Handle claims for multi-node clusters
@@ -65,7 +69,9 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	helmArgs = append(helmArgs, sslArgs...)
 
 	// Deploy Uyuni and wait for it to be up
-	if err := kubernetes.Deploy(cnx, &flags.Image, &flags.Helm, &flags.Ssl, clusterInfos, fqdn, flags.Debug.Java, helmArgs...); err != nil {
+	if err := kubernetes.Deploy(cnx, globalFlags.Registry, &flags.Image, &flags.Helm, &flags.Ssl,
+		clusterInfos, fqdn, flags.Debug.Java, false, helmArgs...,
+	); err != nil {
 		return shared_utils.Errorf(err, L("cannot deploy uyuni"))
 	}
 

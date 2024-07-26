@@ -1,0 +1,2 @@
+- do not report error when purging mounted volume
+  (bsc#1225349)

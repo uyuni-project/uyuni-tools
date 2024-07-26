@@ -1,4 +1,54 @@
 -------------------------------------------------------------------
+Thu Jul 04 17:11:17 CEST 2024 - rosuna@suse.com
+
+- version 0.1.17-0
+  * Allow GPG files to be loaded from the local file (bsc#1227195)
+
+-------------------------------------------------------------------
+Tue Jul 02 15:16:44 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.16-0
+  * Prefer local images in all migration steps (bsc#1227244)
+
+-------------------------------------------------------------------
+Wed Jun 26 18:30:27 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.15-0
+  * Define --registry flag behaviour (bsc#1226793)
+
+-------------------------------------------------------------------
+Wed Jun 26 15:14:40 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.14-0
+  * Do not rely on hardcoded registry, remove any FQDN
+
+-------------------------------------------------------------------
+Fri Jun 21 16:52:52 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.13-0
+  * Fix mgradm support config tarball creation (bsc#1226759)
+
+-------------------------------------------------------------------
+Thu Jun 20 11:42:11 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.12-0
+  * Detection of k8s on Proxy was wrongly influenced by Server
+    setting
+
+-------------------------------------------------------------------
+Tue Jun 18 16:18:33 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.11-0
+  * Require Netavark network backend for Podman
+    (bsc#1224081)
+  * Fix --registry option (bsc#1226436)
+  * Copy the server CA certificate to the host
+  * Delete /etc/uyuni/proxy folder during mgrpxy uninstall
+  * Check permissions of /etc/uyuni folder to prevent Squid failures
+  * Correctly prepend default namespace for mgrpxy containers
+  * Re-add Podman extra args for install and migrate
+
+-------------------------------------------------------------------
 Mon Jun 10 18:11:27 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.10-0

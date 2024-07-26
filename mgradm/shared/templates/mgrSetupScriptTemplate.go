@@ -21,9 +21,12 @@ echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:800
 {{- end }}
 
 /usr/lib/susemanager/bin/mgr-setup -s -n
+RESULT=$?
 
 # clean before leaving
-rm $0`
+rm $0
+exit $RESULT
+`
 
 // MgrSetupScriptTemplateData represents information used to create setup script.
 type MgrSetupScriptTemplateData struct {
