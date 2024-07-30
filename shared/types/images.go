@@ -22,3 +22,9 @@ type ImageMetadata struct {
 type Metadata struct {
 	Image ImageMetadata `json:"image"`
 }
+
+// SCCCredentials can store SCC Credentials.
+type SCCCredentials struct {
+	User     string
+	Password string
+}

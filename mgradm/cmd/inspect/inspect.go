@@ -6,7 +6,7 @@ package inspect
 
 import (
 	"github.com/spf13/cobra"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -23,14 +23,14 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:    cobra.MaximumNArgs(0),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags types.ImageFlags
+			var flags inspect_shared.InspectFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, inspect)
 		},
 	}
 
 	inspectCmd.SetUsageTemplate(inspectCmd.UsageTemplate())
 
-	cmd_utils.AddImageFlag(inspectCmd)
+	inspect_shared.AddInspectFlags(inspectCmd)
 
 	if utils.KubernetesBuilt {
 		utils.AddBackendFlag(inspectCmd)
@@ -39,7 +39,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return inspectCmd
 }
 
-func inspect(globalFlags *types.GlobalFlags, flags *types.ImageFlags, cmd *cobra.Command, args []string) error {
+func inspect(globalFlags *types.GlobalFlags, flags *inspect_shared.InspectFlags, cmd *cobra.Command, args []string) error {
 	fn, err := shared.ChoosePodmanOrKubernetes(cmd.Flags(), podmanInspect, kuberneteInspect)
 	if err != nil {
 		return err

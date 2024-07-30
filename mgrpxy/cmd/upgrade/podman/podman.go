@@ -33,6 +33,7 @@ NOTE: for now upgrading on a remote podman is not supported!
 		},
 	}
 
+	utils.AddSCCFlag(podmanCmd)
 	utils.AddImageFlags(podmanCmd)
 	shared_podman.AddPodmanArgFlag(podmanCmd)
 
