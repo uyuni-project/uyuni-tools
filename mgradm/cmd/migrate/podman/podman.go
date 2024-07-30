@@ -15,6 +15,7 @@ import (
 
 type podmanMigrateFlags struct {
 	shared.MigrateFlags `mapstructure:",squash"`
+	SCC                 types.SCCCredentials
 	Podman              podman_utils.PodmanFlags
 }
 

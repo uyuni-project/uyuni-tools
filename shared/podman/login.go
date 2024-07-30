@@ -9,15 +9,24 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // PodmanLogin logs in the registry.suse.com registry if needed and returns an authentication file, a cleanup function and an error.
-func PodmanLogin(hostData *HostInspectData) (string, func(), error) {
-	if hostData.SccPassword != "" && hostData.SccUsername != "" {
+func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials) (string, func(), error) {
+	scc_user := hostData.SccUsername
+	scc_password := hostData.SccPassword
+	if scc.User != "" && scc.Password != "" {
+		log.Info().Msg(L("SCC credentials parameters will be used. SCC credentials from host will be ignored."))
+		scc_user = scc.User
+		scc_password = scc.Password
+	}
+	if scc_user != "" && scc_password != "" {
 		// We have SCC credentials, so we are pretty likely to need registry.suse.com
-		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", hostData.SccUsername, hostData.SccPassword)))
+		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", scc_user, scc_password)))
 		authFileContent := fmt.Sprintf(`{
 	"auths": {
 		"registry.suse.com" : {

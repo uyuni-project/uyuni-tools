@@ -16,6 +16,7 @@ import (
 
 type podmanUpgradeFlags struct {
 	shared.UpgradeFlags `mapstructure:",squash"`
+	SCC                 types.SCCCredentials
 	Podman              podman.PodmanFlags
 	MirrorPath          string
 }
