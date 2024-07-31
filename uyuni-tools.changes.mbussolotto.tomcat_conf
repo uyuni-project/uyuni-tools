@@ -1,2 +1,0 @@
-- during migration, ignore /etc/sysconfig/tomcat and /etc/tomcat/tomcat.conf (bsc#1228183)
-- during migration, remove java.annotation,com.sun.xml.bind and UseConcMarkSweepGC settings
