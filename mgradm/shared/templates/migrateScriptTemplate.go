@@ -59,7 +59,7 @@ for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
   if $SSH {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."
-    rsync -e "$SSH" --rsync-path='sudo rsync' -avz -f "merge exclude_list" {{ .SourceFqdn }}:$folder/ $folder;
+    rsync -e "$SSH" --rsync-path='sudo rsync' -avz --trust-sender -f "merge exclude_list" {{ .SourceFqdn }}:$folder/ $folder;
   else
     echo "Skipping missing $folder..."
   fi
