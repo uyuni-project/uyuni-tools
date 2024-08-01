@@ -120,7 +120,7 @@ sed 's/address=[^:]*:/address=*:/' -i /etc/rhn/taskomatic.conf;
 echo "Altering tomcat configuration..."
 sed 's/--add-modules java.annotation,com.sun.xml.bind://' -i /etc/tomcat/conf.d/*
 sed 's/-XX:-UseConcMarkSweepGC//' -i /etc/tomcat/conf.d/*
-sed 's/address=[^:]*:/address=*:/' -i /etc/tomcat/conf.d/remote_debug.conf
+test -f /etc/tomcat/conf.d/remote_debug.conf && sed 's/address=[^:]*:/address=*:/' -i /etc/tomcat/conf.d/remote_debug.conf
 
 {{ if .Kubernetes }}
 echo 'server.no_ssl = 1' >> /etc/rhn/rhn.conf;
