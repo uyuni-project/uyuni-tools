@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Aug 01 18:48:57 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.19-0
+  * Skip updating Tomcat remote debug if conf file is not present
+
+-------------------------------------------------------------------
 Wed Jul 31 13:24:42 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.18-0
