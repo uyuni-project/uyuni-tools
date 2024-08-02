@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Aug 02 16:50:31 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.20-0
+  * Update the push tag to 5.0.1
+  * mgrpxy: expose port on IPv6 network (bsc#1227951)
+
+-------------------------------------------------------------------
 Thu Aug 01 18:48:57 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.19-0
