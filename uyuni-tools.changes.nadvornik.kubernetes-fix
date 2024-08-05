@@ -1,4 +1,0 @@
-- Disable node exporter port for kubernetes
-- Fix start, stop and restart in kubernetes
-- Increase start timeout in kubernetes
-- Fix traefik query

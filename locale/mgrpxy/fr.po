@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-18 15:00+0200\n"
+"POT-Creation-Date: 2024-07-26 14:41+0200\n"
 "PO-Revision-Date: 2024-04-08 11:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,37 +18,67 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: mgrpxy/cmd/cmd.go:34
+#: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
+msgid "Clear the cache"
+msgstr ""
+
+#: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/cache/podman.go:25
+msgid "failed to remove cached data"
+msgstr ""
+
+#: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:29
+#, fuzzy
+msgid "failed to re-create the cache directories"
+msgstr "impossible de créer le répertoire temporaire: %s"
+
+#: mgrpxy/cmd/cache/squid.go:18 mgrpxy/cmd/cache/squid.go:19
+msgid "Manage proxy cache"
+msgstr ""
+
+#: mgrpxy/cmd/cmd.go:35
 msgid "Uyuni proxy administration tool"
 msgstr "Outil d'administration de proxy Uyuni"
 
-#: mgrpxy/cmd/cmd.go:35
+#: mgrpxy/cmd/cmd.go:36
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr "Outil pour aider à administrer des proxy Uyuni dans des conteneurs"
 
-#: mgrpxy/cmd/cmd.go:48
+#: mgrpxy/cmd/cmd.go:43
+msgid "Server Deployment:"
+msgstr ""
+
+#: mgrpxy/cmd/cmd.go:47
+msgid "Server Management:"
+msgstr ""
+
+#: mgrpxy/cmd/cmd.go:51
+#, fuzzy
+msgid "Administrator tools:"
+msgstr "Outil d'administration de proxy Uyuni"
+
+#: mgrpxy/cmd/cmd.go:62
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "Bienvenue à %s"
 
-#: mgrpxy/cmd/cmd.go:49
+#: mgrpxy/cmd/cmd.go:63
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "Exécution de la commande: %s"
 
-#: mgrpxy/cmd/cmd.go:53
+#: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
 msgstr "chemin vers le fichier de configuration"
 
-#: mgrpxy/cmd/cmd.go:54
+#: mgrpxy/cmd/cmd.go:68
 msgid "application log level"
 msgstr "niveau de verbosité de l'application"
 
-#: mgrpxy/cmd/install/install.go:19 mgrpxy/cmd/install/install.go:20
+#: mgrpxy/cmd/install/install.go:20 mgrpxy/cmd/install/install.go:21
 msgid "Install a new proxy from scratch"
 msgstr "Installer un nouveau proxy"
 
-#: mgrpxy/cmd/install/install.go:22 mgrpxy/cmd/upgrade/upgrade.go:22
+#: mgrpxy/cmd/install/install.go:23 mgrpxy/cmd/upgrade/upgrade.go:23
 msgid "specify a private registry"
 msgstr ""
 
@@ -83,6 +113,7 @@ msgid "install %s before running this command"
 msgstr "installer %s avant d'exécuter cette commande"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:35
+#: mgrpxy/cmd/support/config/extractor.go:22
 #: mgrpxy/shared/kubernetes/deploy.go:159
 #, fuzzy
 msgid "failed to create temporary directory"
@@ -122,7 +153,7 @@ msgstr ""
 "\n"
 "NOTE: pour l'instant l'installation sur un podman distant n'est pas supportée!\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:220
+#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:214
 msgid "install podman before running this command"
 msgstr "installer podman avant d'exécuter cette commande"
 
@@ -130,6 +161,10 @@ msgstr "installer podman avant d'exécuter cette commande"
 #, fuzzy, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "impossible d'extraire la configuration du proxy du fichier %s: %s"
+
+#: mgrpxy/cmd/install/podman/utils.go:47 mgrpxy/shared/podman/podman.go:227
+msgid "failed to login to registry.suse.com"
+msgstr ""
 
 #: mgrpxy/cmd/logs/logs.go:36
 #, fuzzy
@@ -159,43 +194,29 @@ msgstr ""
 msgid "show logs since a specific time or duration. Supports Go duration strings and RFC3339 format (e.g. 5s, 2m, 3h, 2023-01-02T15:04:05)"
 msgstr ""
 
-#: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
+#: mgrpxy/cmd/restart/restart.go:24 mgrpxy/cmd/restart/restart.go:25
 msgid "Restart the proxy"
 msgstr "Redémarrer le proxy"
 
-#: mgrpxy/cmd/start/start.go:23 mgrpxy/cmd/start/start.go:24
+#: mgrpxy/cmd/start/start.go:24 mgrpxy/cmd/start/start.go:25
 msgid "Start the proxy"
 msgstr "Démarrer le proxy"
 
-#: mgrpxy/cmd/status/kubernetes.go:27
-#, fuzzy
-msgid "failed to discover the cluster type"
-msgstr "impossible de détecter le type de cluster: %s"
-
-#: mgrpxy/cmd/status/kubernetes.go:32
-msgid "no uyuni-proxy helm release installed on the cluster"
-msgstr "aucune release helm uyuni-proxy installée sur le cluster"
-
-#: mgrpxy/cmd/status/kubernetes.go:37
-#, fuzzy
-msgid "failed to find the uyuni-proxy deployment namespace"
-msgstr "impossible de trouver le namespace du déploiement de uyuni-proxy: %s"
-
-#: mgrpxy/cmd/status/kubernetes.go:43
+#: mgrpxy/cmd/status/kubernetes.go:34
 #, fuzzy
 msgid "failed to get deployment status"
 msgstr "impossible de déterminer l'état du déploiement: %s"
 
-#: mgrpxy/cmd/status/kubernetes.go:46
+#: mgrpxy/cmd/status/kubernetes.go:37
 #, fuzzy
 msgid "Some replicas are not ready: %[1]d / %[2]d"
 msgstr "Certaines répliques ne sont pas prêtes: %d / %d"
 
-#: mgrpxy/cmd/status/kubernetes.go:50
+#: mgrpxy/cmd/status/kubernetes.go:41
 msgid "the pod is not running"
 msgstr "le pod n'est pas exécuté"
 
-#: mgrpxy/cmd/status/kubernetes.go:53
+#: mgrpxy/cmd/status/kubernetes.go:44
 msgid "Proxy containers up and running"
 msgstr "Les conteneurs du proxy sont démarrés"
 
@@ -208,17 +229,32 @@ msgstr "Impossible d'obtenir l'état du service %s"
 msgid "failed to get the status of at least one service"
 msgstr "impossible d'obtenir l'état d'au moins un des services"
 
-#: mgrpxy/cmd/status/status.go:24 mgrpxy/cmd/status/status.go:25
+#: mgrpxy/cmd/status/status.go:25 mgrpxy/cmd/status/status.go:26
 msgid "Get the proxy status"
 msgstr "Obtenir le status du proxy"
 
-#: mgrpxy/cmd/status/status.go:46
+#: mgrpxy/cmd/status/status.go:47
 msgid "no installed proxy detected"
 msgstr "aucun proxy installé détecté"
 
-#: mgrpxy/cmd/stop/stop.go:23 mgrpxy/cmd/stop/stop.go:24
+#: mgrpxy/cmd/stop/stop.go:24 mgrpxy/cmd/stop/stop.go:25
 msgid "Stop the proxy"
 msgstr "Arrêter le proxy"
+
+#: mgrpxy/cmd/support/config/config.go:23
+#, fuzzy
+msgid "Extract configuration and logs"
+msgstr "impossible d'extraire la configuration"
+
+#: mgrpxy/cmd/support/config/config.go:24
+msgid ""
+"Extract the host or cluster configuration and logs as well as those from \n"
+"the containers for support to help debugging."
+msgstr ""
+
+#: mgrpxy/cmd/support/config/config.go:32
+msgid "path where to extract the data"
+msgstr ""
 
 #: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:25
 #, fuzzy
@@ -304,23 +340,23 @@ msgstr ""
 msgid "Install a PTF"
 msgstr "Désinstaller un proxy"
 
-#: mgrpxy/cmd/support/support.go:18 mgrpxy/cmd/support/support.go:19
+#: mgrpxy/cmd/support/support.go:20 mgrpxy/cmd/support/support.go:21
 msgid "Commands for support operations"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/kubernetes.go:25
+#: mgrpxy/cmd/uninstall/kubernetes.go:26
 msgid "--purge-volumes is ignored on a kubernetes deployment"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/kubernetes.go:28
+#: mgrpxy/cmd/uninstall/kubernetes.go:29
 msgid "--purge-images is ignored on a kubernetes deployment"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/kubernetes.go:59
+#: mgrpxy/cmd/uninstall/kubernetes.go:65
 msgid "Nothing has been uninstalled, run with --force to actually uninstall"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/kubernetes.go:61
+#: mgrpxy/cmd/uninstall/kubernetes.go:67
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
 msgstr ""
 
@@ -359,11 +395,11 @@ msgstr ""
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/uninstall.go:20
+#: mgrpxy/cmd/uninstall/uninstall.go:21
 msgid "Uninstall a proxy"
 msgstr "Désinstaller un proxy"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:21
+#: mgrpxy/cmd/uninstall/uninstall.go:22
 msgid ""
 "Uninstall a proxy and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
@@ -417,7 +453,7 @@ msgstr ""
 "\n"
 "NOTE: pour l'instant l'installation sur un podman distant n'est pas supportée!\n"
 
-#: mgrpxy/cmd/upgrade/upgrade.go:19 mgrpxy/cmd/upgrade/upgrade.go:20
+#: mgrpxy/cmd/upgrade/upgrade.go:20 mgrpxy/cmd/upgrade/upgrade.go:21
 #, fuzzy
 msgid "Upgrade a proxy"
 msgstr "Désinstaller un proxy"
@@ -468,46 +504,46 @@ msgstr "Génération de services systemd"
 msgid "failed to generate systemd file '%s'"
 msgstr "impossible de générer le fichier systemd: %s"
 
-#: mgrpxy/shared/podman/podman.go:137
+#: mgrpxy/shared/podman/podman.go:136
 #, fuzzy
 msgid "cannot generate systemd conf file"
 msgstr "impossible de générer le fichier systemd: %s"
 
-#: mgrpxy/shared/podman/podman.go:158 mgrpxy/shared/podman/podman.go:258
+#: mgrpxy/shared/podman/podman.go:142
 #, fuzzy
-msgid "cannot inspect host values"
-msgstr "impossible d'inspecter les valeurs de l'hôte: %s"
+msgid "cannot generate systemd conf user configuration file"
+msgstr "impossible de générer le fichier systemd: %s"
 
-#: mgrpxy/shared/podman/podman.go:178
+#: mgrpxy/shared/podman/podman.go:172
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "Installation du proxy avec la configuration %s"
 
-#: mgrpxy/shared/podman/podman.go:196
+#: mgrpxy/shared/podman/podman.go:190
 msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:211
+#: mgrpxy/shared/podman/podman.go:205
 msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:227
+#: mgrpxy/shared/podman/podman.go:233
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:231
+#: mgrpxy/shared/podman/podman.go:237
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:235
+#: mgrpxy/shared/podman/podman.go:241
 msgid "cannot find squid image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:239
+#: mgrpxy/shared/podman/podman.go:245
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:243
+#: mgrpxy/shared/podman/podman.go:249
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr ""
 
@@ -516,39 +552,58 @@ msgstr ""
 msgid "argument is not an existing file: %s"
 msgstr "le paramètre n'est pas un fichier existant: %s"
 
-#: mgrpxy/shared/utils/flags.go:61
+#: mgrpxy/shared/utils/flags.go:52
 #, javascript-format
 msgid "Invalid proxy container name: %s"
 msgstr "Nom de conteneur de proxy invalide: %s"
 
-#: mgrpxy/shared/utils/flags.go:75
+#: mgrpxy/shared/utils/flags.go:57
 #, fuzzy
 msgid "failed to compute image URL"
 msgstr "Impossible de calculer l'URL de l'image"
 
-#: mgrpxy/shared/utils/flags.go:82
+#: mgrpxy/shared/utils/flags.go:64
 msgid "image tag"
 msgstr "tag de l'image"
 
-#: mgrpxy/shared/utils/flags.go:91
+#: mgrpxy/shared/utils/flags.go:73
 #, fuzzy
 msgid "HTTPD tuning configuration file"
 msgstr "chemin vers le fichier de configuration"
 
-#: mgrpxy/shared/utils/flags.go:92
+#: mgrpxy/shared/utils/flags.go:74
 #, fuzzy
 msgid "Squid tuning configuration file"
 msgstr "chemin vers le fichier de configuration"
 
-#: mgrpxy/shared/utils/flags.go:97
+#: mgrpxy/shared/utils/flags.go:80
 #, javascript-format
-msgid "Image for %s container, overrides the namespace if set"
-msgstr "Image pour le conteneur %s, remplace le namespace is défini"
+msgid "Image for %s container"
+msgstr ""
 
-#: mgrpxy/shared/utils/flags.go:99
+#: mgrpxy/shared/utils/flags.go:82
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "Tag pour le conteneur %sm remplace la valeur globale si définie"
+
+#, fuzzy
+#~ msgid "failed to discover the cluster type"
+#~ msgstr "impossible de détecter le type de cluster: %s"
+
+#~ msgid "no uyuni-proxy helm release installed on the cluster"
+#~ msgstr "aucune release helm uyuni-proxy installée sur le cluster"
+
+#, fuzzy
+#~ msgid "failed to find the uyuni-proxy deployment namespace"
+#~ msgstr "impossible de trouver le namespace du déploiement de uyuni-proxy: %s"
+
+#, fuzzy
+#~ msgid "cannot inspect host values"
+#~ msgstr "impossible d'inspecter les valeurs de l'hôte: %s"
+
+#, javascript-format
+#~ msgid "Image for %s container, overrides the namespace if set"
+#~ msgstr "Image pour le conteneur %s, remplace le namespace is défini"
 
 #, fuzzy
 #~ msgid "failed to determine suitable backend"

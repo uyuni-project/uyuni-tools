@@ -38,7 +38,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{ .Args }} \
 	{{- range .Ports }}
 	-p {{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
+        {{- if $.IPV6Enabled }}
 	-p [::]:{{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
+        {{- end }}
 	{{- end }}
 	{{- range .Volumes }}
 	-v {{ .Name }}:{{ .MountPath }} \
@@ -68,12 +70,13 @@ WantedBy=multi-user.target default.target
 
 // PodmanServiceTemplateData POD information to create systemd file.
 type PodmanServiceTemplateData struct {
-	Volumes    []types.VolumeMount
-	NamePrefix string
-	Args       string
-	Ports      []types.PortMap
-	Image      string
-	Network    string
+	Volumes     []types.VolumeMount
+	NamePrefix  string
+	Args        string
+	Ports       []types.PortMap
+	Image       string
+	Network     string
+	IPV6Enabled bool
 }
 
 // Render will create the systemd configuration file.

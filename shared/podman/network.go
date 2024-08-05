@@ -27,7 +27,7 @@ func hasIpv6Enabled(network string) bool {
 }
 
 // SetupNetwork creates the podman network.
-func SetupNetwork(isProxy bool) error {
+func SetupNetwork(isProxy bool) (bool, error) {
 	log.Info().Msgf(L("Setting up %s network"), UyuniNetwork)
 
 	ipv6Enabled := isIpv6Enabled()
@@ -43,11 +43,11 @@ func SetupNetwork(isProxy bool) error {
 			err := utils.RunCmd("podman", "network", "rm", UyuniNetwork,
 				"--log-level", log.Logger.GetLevel().String())
 			if err != nil {
-				return utils.Errorf(err, L("failed to remove %s podman network"), UyuniNetwork)
+				return hasIpv6, utils.Errorf(err, L("failed to remove %s podman network"), UyuniNetwork)
 			}
 		} else {
 			log.Info().Msgf(L("Reusing existing %s network"), UyuniNetwork)
-			return nil
+			return hasIpv6, nil
 		}
 	}
 
@@ -62,7 +62,7 @@ func SetupNetwork(isProxy bool) error {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "info", "--format", "{{.Host.NetworkBackend}}")
 		backend := strings.Trim(string(out), "\n")
 		if err != nil {
-			return utils.Errorf(err, L("failed to find podman's network backend"))
+			return ipv6Enabled, utils.Errorf(err, L("failed to find podman's network backend"))
 		} else if backend != "netavark" {
 			log.Info().Msgf(L("Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"),
 				backend, UyuniNetwork)
@@ -73,9 +73,9 @@ func SetupNetwork(isProxy bool) error {
 	args = append(args, UyuniNetwork)
 	err := utils.RunCmd("podman", args...)
 	if err != nil {
-		return utils.Errorf(err, L("failed to create %s network with IPv6 enabled"), UyuniNetwork)
+		return false, utils.Errorf(err, L("failed to create %s network with IPv6 enabled"), UyuniNetwork)
 	}
-	return nil
+	return ipv6Enabled, nil
 }
 
 func isIpv6Enabled() bool {

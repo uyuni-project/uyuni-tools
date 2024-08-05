@@ -6,7 +6,9 @@ package distro
 
 import (
 	"fmt"
+	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -113,8 +115,9 @@ func getDistroFromTreeinfo(path string, flags *flagpole) (types.Distribution, er
 	return getDistroFromDetails(dname, dversion, types.GetArch(darch), flags)
 }
 
-func detectDistro(path string, distroDetails types.DistributionDetails, channelLabel string, flags *flagpole, distro *types.Distribution) error {
+func detectDistro(path string, distroDetails types.DistributionDetails, flags *flagpole, distro *types.Distribution) error {
 	treeinfopath := filepath.Join(path, ".treeinfo")
+	channelLabel := flags.ChannelLabel
 	if !utils.FileExists(treeinfopath) {
 		log.Debug().Msgf(".treeinfo %s does not exists", treeinfopath)
 		if distroDetails.Name != "" {
@@ -132,7 +135,6 @@ func detectDistro(path string, distroDetails types.DistributionDetails, channelL
 				*distro, err = getDistroFromDetails(distroDetails.Name, distroDetails.Version, distroDetails.Arch, flags)
 				return err
 			}
-			return fmt.Errorf(L("distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"), treeinfopath)
 		}
 		return fmt.Errorf(L("distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"), treeinfopath)
 	} else {
@@ -152,4 +154,8 @@ func detectDistro(path string, distroDetails types.DistributionDetails, channelL
 	}
 
 	return nil
+}
+
+func getNameFromSource(source string) string {
+	return strings.TrimSuffix(path.Base(source), ".iso")
 }

@@ -36,7 +36,13 @@ func umountAndRemove(mountpoint string) {
 	}
 }
 
-func registerDistro(connection *api.ConnectionDetails, distro *types.Distribution) error {
+func registerDistro(connection *api.ConnectionDetails, distro *types.Distribution, flags *flagpole) error {
+	// Fill server FQDN if not provided, ignore error, will be handled later
+	if flags.ConnectionDetails.Server == "" {
+		flags.ConnectionDetails.Server, _ = getServerFqdn(flags)
+		log.Debug().Msgf("Using api-server FQDN '%s'", flags.ConnectionDetails.Server)
+	}
+
 	client, err := api.Init(connection)
 	if err != nil {
 		return utils.Errorf(err, L("unable to login and register the distribution. Manual distro registration is required"))
@@ -59,6 +65,11 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 func prepareSource(source string) (string, bool, error) {
 	srcdir := source
 	needremove := false
+
+	if !utils.FileExists(source) {
+		return "", false, fmt.Errorf(L("source %s does not exists"), source)
+	}
+
 	if strings.HasSuffix(source, ".iso") {
 		log.Debug().Msg("Source is an ISO image")
 		tmpdir, err := os.MkdirTemp("", "mgradm-distcp")
@@ -83,6 +94,10 @@ func prepareSource(source string) (string, bool, error) {
 }
 
 func copyDistro(srcdir string, distro *types.Distribution, flags *flagpole) error {
+	if len(distro.TreeLabel) == 0 {
+		return fmt.Errorf(L("Missing TreeLabel. Please specify distribution name"))
+	}
+
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 
 	const distrosPath = "/srv/www/distributions/"
@@ -125,10 +140,10 @@ func distroCp(
 			distroDetails.Arch = types.GetArch(args[3])
 		}
 	}
-	channelLabel := flags.ChannelLabel
 
-	if !utils.FileExists(source) {
-		return fmt.Errorf(L("source %s does not exists"), source)
+	attemptRegistration := false
+	if flags.ConnectionDetails.User != "" && flags.ConnectionDetails.Password != "" {
+		attemptRegistration = true
 	}
 
 	srcdir, needremove, err := prepareSource(source)
@@ -140,12 +155,16 @@ func distroCp(
 	}
 
 	distribution := types.Distribution{}
-	if err := detectDistro(srcdir, distroDetails, channelLabel, flags, &distribution); err != nil {
+	if err := detectDistro(srcdir, distroDetails, flags, &distribution); err != nil {
 		// If we do not want to do the registration, we don't need all the details for mere copy, just name
-		if flags.ConnectionDetails.User != "" || distroDetails.Name == "" {
+		if attemptRegistration {
 			return err
 		}
 		log.Debug().Msgf("Would not be able to auto register")
+		if len(distroDetails.Name) == 0 {
+			// If there is no hint, just use ISO/dir name
+			distroDetails.Name = getNameFromSource(source)
+		}
 		distribution.TreeLabel = distroDetails.Name
 	}
 
@@ -157,15 +176,10 @@ func distroCp(
 		return err
 	}
 
-	// Fill server FQDN if not provided, ignore error, will be handled later
-	if flags.ConnectionDetails.Server == "" {
-		flags.ConnectionDetails.Server, _ = getServerFqdn(flags)
-		log.Debug().Msgf("Using api-server FQDN '%s'", flags.ConnectionDetails.Server)
+	if attemptRegistration {
+		return registerDistro(&flags.ConnectionDetails, &distribution, flags)
 	}
 
-	if flags.ConnectionDetails.User != "" && flags.ConnectionDetails.Password != "" {
-		return registerDistro(&flags.ConnectionDetails, &distribution)
-	}
 	log.Info().Msgf(L("Continue by registering autoinstallation distribution"))
 	return nil
 }

@@ -1,2 +1,0 @@
-- Split systemd config files to not loose configuration at upgrade 
-  (bsc#1227718)

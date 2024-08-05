@@ -46,7 +46,8 @@ func GetExposedPorts(debug bool) []types.PortMap {
 
 // GenerateSystemdService creates a serverY systemd file.
 func GenerateSystemdService(tz string, image string, debug bool, mirrorPath string, podmanArgs []string) error {
-	if err := podman.SetupNetwork(false); err != nil {
+	ipv6Enabled, err := podman.SetupNetwork(false)
+	if err != nil {
 		return utils.Errorf(err, L("cannot setup network"))
 	}
 
@@ -64,11 +65,12 @@ func GenerateSystemdService(tz string, image string, debug bool, mirrorPath stri
 	}
 
 	data := templates.PodmanServiceTemplateData{
-		Volumes:    utils.ServerVolumeMounts,
-		NamePrefix: "uyuni",
-		Args:       strings.Join(args, " "),
-		Ports:      ports,
-		Network:    podman.UyuniNetwork,
+		Volumes:     utils.ServerVolumeMounts,
+		NamePrefix:  "uyuni",
+		Args:        strings.Join(args, " "),
+		Ports:       ports,
+		Network:     podman.UyuniNetwork,
+		IPV6Enabled: ipv6Enabled,
 	}
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, false); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))

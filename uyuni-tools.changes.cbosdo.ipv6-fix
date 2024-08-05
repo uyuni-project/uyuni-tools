@@ -1,1 +1,0 @@
-- Properly detect IPv6 enabled on podman network (bsc#1224349)

@@ -44,7 +44,7 @@
 # 0%{?debian} || 0%{?ubuntu}
 
 Name:           %{project}
-Version:        0.1.17
+Version:        0.1.20
 Release:        0
 Summary:        Tools for managing %{productname} container
 License:        Apache-2.0
@@ -72,7 +72,7 @@ BuildRequires:  golang(API) >= 1.20
 # 0%{?suse_version}
 
 %if 0%{?ubuntu}
-%define go_version      1.20
+%define go_version      1.21
 BuildRequires:  golang-%{go_version}
 %endif
 # 0%{?ubuntu}
