@@ -31,7 +31,7 @@ type PodmanProxyFlags struct {
 // GenerateSystemdService generates all the systemd files required by proxy.
 func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImage string, sshImage string,
 	tftpdImage string, flags *PodmanProxyFlags) error {
-	ipv6Network, err := podman.SetupNetwork(true)
+	ipv6Enabled, err := podman.SetupNetwork(true)
 	if err != nil {
 		return shared_utils.Errorf(err, L("cannot setup network"))
 	}
@@ -49,7 +49,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 		Ports:         ports,
 		HttpProxyFile: httpProxyConfig,
 		Network:       podman.UyuniNetwork,
-		IPV6Network:   ipv6Network,
+		IPV6Enabled:   ipv6Enabled,
 	}
 	podEnv := fmt.Sprintf(`Environment="PODMAN_EXTRA_ARGS=%s"`, strings.Join(flags.Podman.Args, " "))
 	if err := generateSystemdFile(dataPod, "pod", "", podEnv); err != nil {

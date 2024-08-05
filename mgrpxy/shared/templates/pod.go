@@ -56,7 +56,7 @@ type PodTemplateData struct {
 	Ports         []types.PortMap
 	HttpProxyFile string
 	Network       string
-	IPV6Network   bool
+	IPV6Enabled   bool
 }
 
 // Render will create the systemd configuration file.
