@@ -96,6 +96,12 @@ func CheckValidPassword(value *string, prompt string, min int, max int) string {
 // AskPasswordIfMissing asks for password if missing.
 // Don't perform any check if min and max are set to 0.
 func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
+	if *value == "" && !term.IsTerminal(int(os.Stdin.Fd())) {
+		//return fmt.Errorf(L("not an interactive device"))
+		log.Warn().Msgf(L("not an interactive device, not asking for missing value"))
+		return
+	}
+
 	for *value == "" {
 		firstRound := CheckValidPassword(value, prompt, min, max)
 		if firstRound == "" {
@@ -114,12 +120,18 @@ func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 // AskIfMissing asks for a value if missing.
 // Don't perform any check if min and max are set to 0.
 func AskIfMissing(value *string, prompt string, min int, max int, checker func(string) bool) {
+	if *value == "" && !term.IsTerminal(int(os.Stdin.Fd())) {
+		log.Warn().Msgf(L("not an interactive device, not asking for missing value"))
+		return
+	}
+
 	reader := bufio.NewReader(os.Stdin)
 	for *value == "" {
 		fmt.Print(prompt + prompt_end)
 		newValue, err := reader.ReadString('\n')
 		if err != nil {
-			log.Fatal().Err(err).Msgf(L("Failed to read input"))
+			//return utils.Errorf(err, L("failed to read input"))
+			log.Fatal().Err(err).Msg(L("failed to read input"))
 		}
 		tmpValue := strings.TrimSpace(newValue)
 		if checkValueSize(tmpValue, min, max) && (checker == nil || checker(tmpValue)) {

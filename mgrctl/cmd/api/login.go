@@ -23,21 +23,21 @@ func runLogin(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Comman
 		return fmt.Errorf(L("Refusing to overwrite existing login. Use --force to ignore this check."))
 	}
 
+	utils.AskIfMissing(&flags.Server, cmd.Flag("api-server").Usage, 0, 0, utils.IsWellFormedFQDN)
 	utils.AskIfMissing(&flags.User, cmd.Flag("api-user").Usage, 0, 0, nil)
 	utils.AskPasswordIfMissing(&flags.Password, cmd.Flag("api-password").Usage, 0, 0)
-	utils.AskIfMissing(&flags.Server, cmd.Flag("api-server").Usage, 0, 0, utils.IsWellFormedFQDN)
 
-	if err := api.StoreLoginCreds(&flags.ConnectionDetails); err != nil {
-		return err
-	}
 	client, err := api.Init(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
-	if !client.ValidateCreds() {
-		err := api.RemoveLoginCreds()
+	if err := client.Login(); err != nil {
 		return utils.Errorf(err, L("Failed to validate credentials. Not storing"))
 	}
+	if err := api.StoreLoginCreds(client); err != nil {
+		return err
+	}
+
 	log.Info().Msg(L("Login credentials verified and stored"))
 	return nil
 }

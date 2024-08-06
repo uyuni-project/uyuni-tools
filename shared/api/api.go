@@ -20,6 +20,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // AddAPIFlags is a helper to include api details for the provided command tree.
@@ -89,7 +90,9 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 // caCert can be set to use custom CA certificate to validate target host.
 func Init(conn *ConnectionDetails) (*APIClient, error) {
 	// Need to load credentials as it also loads up server URL
-	_ = getLoginCredentials(conn)
+	if err := getLoginCredentials(conn); err != nil {
+		return nil, err
+	}
 
 	caCertPool, err := x509.SystemCertPool()
 	if err != nil {
@@ -115,23 +118,33 @@ func Init(conn *ConnectionDetails) (*APIClient, error) {
 			},
 		},
 	}
+	if conn.Cookie != "" {
+		client.AuthCookie = &http.Cookie{
+			Name:  "pxt-session-cookie",
+			Value: conn.Cookie,
+		}
+	}
+
 	return client, err
 }
 
 // Login to the server using stored or provided credentials.
 func (c *APIClient) Login() error {
-	err := c.login()
-	if err != nil && c.Details.Cached {
-		log.Warn().Msg(L("Cached credentials are invalid and were removed"))
-		if err := RemoveLoginCreds(); err != nil {
-			log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
+	if c.Details.InSession {
+		if err := c.sessionValidity(); err != nil {
+			log.Warn().Msg(L("Cached session is expired."))
+			if err := RemoveLoginCreds(); err != nil {
+				log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
+			}
+			if err := getLoginCredentials(c.Details); err != nil {
+				return err
+			}
+			return c.login()
 		}
-		if err := getLoginCredentials(c.Details); err != nil {
-			return err
-		}
-		err = c.login()
+		// Session is valid
+		return nil
 	}
-	return err
+	return c.login()
 }
 
 func (c *APIClient) login() error {
@@ -176,6 +189,23 @@ func (c *APIClient) login() error {
 		return errors.New(L("auth cookie not found in login response"))
 	}
 
+	return nil
+}
+
+func (c *APIClient) sessionValidity() error {
+	// This is how spacecmd does it
+	_, err := c.Get("user/listAssignableRoles")
+	return err
+}
+
+// Logout from the server and remove localy stored session key.
+func (c *APIClient) Logout() error {
+	if _, err := c.Post("auth/logout", nil); err != nil {
+		return utils.Errorf(err, L("failed to logout from the server"))
+	}
+	if err := RemoveLoginCreds(); err != nil {
+		return err
+	}
 	return nil
 }
 
