@@ -52,7 +52,7 @@ func UninstallK3sTraefikConfig(dryRun bool) {
 }
 
 // InspectKubernetes check values on a given image and deploy.
-func InspectKubernetes(serverImage string, pullPolicy string) (*utils.ServerInspectData, error) {
+func InspectKubernetes(namespace string, serverImage string, pullPolicy string) (*utils.ServerInspectData, error) {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
 			return nil, fmt.Errorf(L("install %s before running this command"), binary)
@@ -75,12 +75,12 @@ func InspectKubernetes(serverImage string, pullPolicy string) (*utils.ServerInsp
 	const podName = "inspector"
 
 	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
-	if err := DeletePod(podName, ServerFilter); err != nil {
+	if err := DeletePod(namespace, podName, ServerFilter); err != nil {
 		return nil, utils.Errorf(err, L("cannot delete %s"), podName)
 	}
 
 	//this is needed because folder with script needs to be mounted
-	nodeName, err := GetNode("uyuni")
+	nodeName, err := GetNode(namespace, ServerFilter)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot find node running uyuni"))
 	}
@@ -108,7 +108,7 @@ func InspectKubernetes(serverImage string, pullPolicy string) (*utils.ServerInsp
 	if err != nil {
 		return nil, err
 	}
-	err = RunPod(podName, ServerFilter, serverImage, pullPolicy, command, override)
+	err = RunPod(namespace, podName, ServerFilter, serverImage, pullPolicy, command, override)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot run inspect pod"))
 	}

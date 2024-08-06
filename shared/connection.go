@@ -159,7 +159,7 @@ func (c *Connection) GetNamespace(appName string, filters ...string) (string, er
 	}
 
 	var namespaceErr error
-	c.namespace, namespaceErr = extractNamespaceFromConfig(appName, kubeconfig)
+	c.namespace, namespaceErr = extractNamespaceFromConfig(appName, kubeconfig, filters...)
 	if namespaceErr != nil {
 		return "", utils.Errorf(namespaceErr, L("failed to find the %s deployment namespace"), appName)
 	}
@@ -272,6 +272,11 @@ func (c *Connection) WaitForServer() error {
 			continue
 		}
 
+		namespace, err := c.GetNamespace("")
+		if err != nil {
+			return err
+		}
+
 		args := []string{"exec", podName}
 		command, err := c.GetCommand()
 		if err != nil {
@@ -279,7 +284,7 @@ func (c *Connection) WaitForServer() error {
 		}
 
 		if command == "kubectl" {
-			args = append(args, "--")
+			args = append(args, "-n", namespace, "--")
 		}
 		args = append(args, "systemctl", "is-active", "-q", "multi-user.target")
 		output := utils.RunCmd(command, args...)
@@ -301,15 +306,25 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 	if err != nil {
 		return err
 	}
-	var commandArgs []string
-	extraArgs := []string{}
-	srcExpanded := strings.Replace(src, "server:", podName+":", 1)
-	dstExpanded := strings.Replace(dst, "server:", podName+":", 1)
 
 	command, err := c.GetCommand()
 	if err != nil {
 		return err
 	}
+
+	var namespace, namespacePrefix string = "", ""
+	if command == "kubectl" {
+		namespace, err = c.GetNamespace("")
+		if err != nil {
+			return err
+		}
+		namespacePrefix = namespace + "/"
+	}
+
+	var commandArgs []string
+	extraArgs := []string{}
+	srcExpanded := strings.Replace(src, "server:", namespacePrefix+podName+":", 1)
+	dstExpanded := strings.Replace(dst, "server:", namespacePrefix+podName+":", 1)
 
 	switch command {
 	case "podman-remote":
@@ -317,7 +332,7 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 	case "podman":
 		commandArgs = []string{"cp", srcExpanded, dstExpanded}
 	case "kubectl":
-		commandArgs = []string{"cp", "-c", "uyuni", srcExpanded, dstExpanded}
+		commandArgs = []string{"cp", "-c", "uyuni", "-n", namespace, srcExpanded, dstExpanded}
 		extraArgs = []string{"-c", "uyuni", "--"}
 	default:
 		return fmt.Errorf(L("unknown container kind: %s"), command)
@@ -328,7 +343,7 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 	}
 
 	if user != "" && strings.HasPrefix(dst, "server:") {
-		execArgs := []string{"exec", podName}
+		execArgs := []string{"exec", podName, "-n", namespace}
 		execArgs = append(execArgs, extraArgs...)
 		owner := user
 		if group != "" {
@@ -439,8 +454,18 @@ func chooseBackend[F interface{}](
 	return nil, errors.New(L("no supported backend found"))
 }
 
+// ChooseObjPodmanOrKubernetes returns an artibraty object depending if podman or the kubernetes is installed.
+func ChooseObjPodmanOrKubernetes(podmanOption interface{}, kubernetesOption interface{}) (interface{}, error) {
+	if podman.HasService(podman.ServerService) || podman.HasService(podman.ProxyService) {
+		return podmanOption, nil
+	} else if utils.IsInstalled("kubectl") && utils.IsInstalled("helm") {
+		return kubernetesOption, nil
+	}
+	return nil, errors.New(L("failed to determine suitable backend"))
+}
+
 // RunSupportConfig will run supportconfig command on given connection.
-func (cnx *Connection) RunSupportConfig() ([]string, error) {
+func (cnx *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 	var containerTarball string
 	var files []string
 	extensions := []string{"", ".md5"}
@@ -449,13 +474,6 @@ func (cnx *Connection) RunSupportConfig() ([]string, error) {
 		return []string{}, err
 	}
 
-	// Copy the generated file locally
-	tmpDir, err := os.MkdirTemp("", "mgradm-*")
-	if err != nil {
-		return []string{}, utils.Errorf(err, L("failed to create temporary directory"))
-	}
-
-	defer os.RemoveAll(tmpDir)
 	// Run supportconfig in the container if it's running
 	log.Info().Msgf(L("Running supportconfig in  %s"), containerName)
 	out, err := cnx.Exec("supportconfig")
@@ -485,12 +503,13 @@ func (cnx *Connection) RunSupportConfig() ([]string, error) {
 
 // extractNamespaceFromConfig extracts the namespace of a given application
 // from the Helm release information.
-func extractNamespaceFromConfig(appName string, kubeconfig string) (string, error) {
+func extractNamespaceFromConfig(appName string, kubeconfig string, filters ...string) (string, error) {
 	args := []string{}
 	if kubeconfig != "" {
 		args = append(args, "--kubeconfig", kubeconfig)
 	}
 	args = append(args, "list", "-aA", "-f", appName, "-o", "json")
+	args = append(args, filters...)
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "helm", args...)
 	if err != nil {

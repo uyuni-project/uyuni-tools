@@ -8,8 +8,11 @@ package start
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func kubernetesStart(
@@ -18,5 +21,10 @@ func kubernetesStart(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return kubernetes.Start(kubernetes.ServerApp)
+	cnx := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
+	namespace, err := cnx.GetNamespace("")
+	if err != nil {
+		return utils.Errorf(err, L("failed retrieving namespace"))
+	}
+	return kubernetes.Start(namespace, kubernetes.ServerApp)
 }

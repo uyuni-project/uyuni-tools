@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -23,7 +23,17 @@ func kubernetesLogs(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	commandArgs := []string{"logs"}
+	cnx := shared.NewConnection("kubectl", "", kubernetes.ProxyFilter)
+	podName, err := cnx.GetPodName()
+	if err != nil {
+		return utils.Errorf(err, L("failed to find proxy pod"))
+	}
+	namespace, errNamespace := cnx.GetNamespace("")
+	if errNamespace != nil {
+		return utils.Errorf(err, L("failed to find proxy deployment namespace"))
+	}
+
+	commandArgs := []string{"logs", "-n", namespace}
 	if flags.Follow {
 		commandArgs = append(commandArgs, "-f")
 	}
@@ -45,11 +55,6 @@ func kubernetesLogs(
 	}
 
 	if len(flags.Containers) == 0 {
-		cnx := shared.NewConnection("kubectl", "", kubernetes.ProxyFilter)
-		podName, err := cnx.GetPodName()
-		if err != nil {
-			log.Fatal().Err(err)
-		}
 		commandArgs = append(commandArgs, podName, "--all-containers")
 	} else if len(flags.Containers) == 1 {
 		commandArgs = append(commandArgs, flags.Containers[0], "--all-containers")
