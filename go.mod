@@ -7,7 +7,6 @@ require (
 	github.com/briandowns/spinner v1.23.0
 	github.com/chai2010/gettext-go v1.0.2
 	github.com/spf13/cobra v1.8.0
-	golang.org/x/crypto v0.25.0
 )
 
 require (

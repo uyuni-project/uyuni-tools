@@ -7,6 +7,7 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -19,6 +20,7 @@ import (
 const user = "mytestuser"
 const password = "mytestpassword"
 const server = "mytestserver"
+const cookie = "mytestpxtcookie"
 
 // Test happy path for credentials store.
 func TestCredentialsStore(t *testing.T) {
@@ -28,7 +30,19 @@ func TestCredentialsStore(t *testing.T) {
 		Password: password,
 		Server:   server,
 	}
-	err := StoreLoginCreds(&connection)
+	client, err := Init(&connection)
+	if err != nil {
+		t.FailNow()
+	}
+
+	client.Client = &mocks.MockClient{
+		DoFunc: loginTestDo,
+	}
+
+	if err := client.Login(); err != nil {
+		t.FailNow()
+	}
+	err = StoreLoginCreds(client)
 	if err != nil {
 		t.Fail()
 	}
@@ -38,12 +52,11 @@ func TestCredentialsStore(t *testing.T) {
 		t.Fail()
 	}
 	if connection2.Server != server {
+		log.Error().Msg("server does not match")
 		t.Fail()
 	}
-	if connection2.User != user {
-		t.Fail()
-	}
-	if connection2.Password != password {
+	if connection2.Cookie != cookie {
+		log.Error().Msg("cookie does not match")
 		t.Fail()
 	}
 }
@@ -87,7 +100,7 @@ func TestAutocleanup(t *testing.T) {
 		Server: server,
 	}
 	err = getLoginCredentials(&connection)
-	if err == nil || connection.Cached {
+	if err == nil || connection.InSession {
 		t.Fail()
 	}
 	_, err = os.Stat(getAPICredsFile())
@@ -112,14 +125,14 @@ func TestCredentialValidation(t *testing.T) {
 		t.Fail()
 	}
 
-	if !client.Details.Cached {
+	if !client.Details.InSession {
 		log.Error().Msg("Credentials are not marked as cached")
 		t.Fail()
 	}
 
-	client.Client = &mocks.MockClient{}
-
-	mocks.GetDoFunc = loginTestDo
+	client.Client = &mocks.MockClient{
+		DoFunc: userListRolesDo,
+	}
 
 	if err := client.Login(); err != nil {
 		log.Trace().Err(err).Msg("failed")
@@ -142,14 +155,14 @@ func TestWrongCredentials(t *testing.T) {
 		t.Fail()
 	}
 
-	if !client.Details.Cached {
+	if !client.Details.InSession {
 		log.Error().Msg("Credentials are not marked as cached")
 		t.Fail()
 	}
 
-	client.Client = &mocks.MockClient{}
-
-	mocks.GetDoFunc = loginTestDo
+	client.Client = &mocks.MockClient{
+		DoFunc: userListRolesDo,
+	}
 
 	err = client.Login()
 	if err == nil {
@@ -166,22 +179,32 @@ func TestWrongCredentials(t *testing.T) {
 
 // helper storing valid credentials.
 func storeTestCredentials() error {
-	connection := ConnectionDetails{
-		User:     user,
-		Password: password,
-		Server:   server,
+	client := APIClient{
+		Details: &ConnectionDetails{
+			User:   user,
+			Server: server,
+		},
+		AuthCookie: &http.Cookie{
+			Name:  "pxt-session-cookie",
+			Value: cookie,
+		},
 	}
-	return StoreLoginCreds(&connection)
+	return StoreLoginCreds(&client)
 }
 
 // helper storing invalid credentials.
 func storeWrongTestCredentials() error {
-	connection := ConnectionDetails{
-		User:     user,
-		Password: "wrongpassword",
-		Server:   server,
+	client := APIClient{
+		Details: &ConnectionDetails{
+			User:   user,
+			Server: server,
+		},
+		AuthCookie: &http.Cookie{
+			Name:  "pxt-session-cookie",
+			Value: "wrongcookie",
+		},
 	}
-	return StoreLoginCreds(&connection)
+	return StoreLoginCreds(&client)
 }
 
 // helper login request response.
@@ -204,7 +227,30 @@ func loginTestDo(req *http.Request) (*http.Response, error) {
 	r := io.NopCloser(bytes.NewReader([]byte(json)))
 	headers := http.Header{}
 	headers.Add("Content-Type", "application/json")
-	headers.Add("Set-Cookie", "pxt-session-cookie=4284x533e61ed6e70cfb3696d2d7f9982ab5ec2aadf182faa6ea2e6993cd2f96c6a11; Max-Age=3600; Path=/; Secure; HttpOnly;HttpOnly;Secure")
+	headers.Add("Set-Cookie", fmt.Sprintf("pxt-session-cookie=%s; Max-Age=3600; Path=/; Secure; HttpOnly;HttpOnly;Secure", cookie))
+	return &http.Response{
+		StatusCode: 200,
+		Header:     headers,
+		Body:       r,
+	}, nil
+}
+
+func userListRolesDo(req *http.Request) (*http.Response, error) {
+	if req.URL.Path != "/rhn/manager/api/user/listAssignableRoles" {
+		return &http.Response{
+			StatusCode: 404,
+		}, nil
+	}
+	if pxt, err := req.Cookie("pxt-session-cookie"); err != nil || pxt.Value != cookie {
+		return &http.Response{
+			StatusCode: 403,
+		}, nil
+	}
+	json := `{"success": true}`
+	r := io.NopCloser(bytes.NewReader([]byte(json)))
+	headers := http.Header{}
+	headers.Add("Content-Type", "application/json")
+	headers.Add("Set-Cookie", fmt.Sprintf("pxt-session-cookie=%s; Max-Age=3600; Path=/; Secure; HttpOnly;HttpOnly;Secure", cookie))
 	return &http.Response{
 		StatusCode: 200,
 		Header:     headers,

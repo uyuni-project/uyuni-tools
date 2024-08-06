@@ -50,7 +50,10 @@ type ConnectionDetails struct {
 	Insecure bool
 
 	// Indicates if details we loaded from cache
-	Cached bool
+	InSession bool
+
+	// PXE cookie
+	Cookie string
 }
 
 // API response where T is the type of the result.
@@ -62,7 +65,7 @@ type ApiResponse[T interface{}] struct {
 
 // Authentication storage.
 type authStorage struct {
-	User     []byte
-	Password []byte
-	Server   string
+	Session string
+	Server  string
+	CACert  string
 }

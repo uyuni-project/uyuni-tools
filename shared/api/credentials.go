@@ -5,60 +5,46 @@
 package api
 
 import (
-	"crypto/rand"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io"
 	"os"
 	"path"
 
 	"github.com/rs/zerolog/log"
+
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	"golang.org/x/crypto/nacl/secretbox"
 )
 
 // Store API credentials for future API use.
-func StoreLoginCreds(connection *ConnectionDetails) error {
-	// encrypt login data
-	urldata := getFixedServerString(connection.Server)
-	encodedURL := make([]byte, base64.URLEncoding.EncodedLen(len(urldata)))
-	base64.URLEncoding.Encode(encodedURL, urldata)
-
-	encUser, err := encryptMsg(connection.User, [32]byte(encodedURL))
-	if err != nil {
-		return err
+func StoreLoginCreds(client *APIClient) error {
+	if client.AuthCookie.Value == "" {
+		return fmt.Errorf(L("not logged in, session cookie is missing"))
 	}
-	encPassword, err := encryptMsg(connection.Password, [32]byte(encodedURL))
-	if err != nil {
-		return err
-	}
-
-	// store encrypted credentials into separate credentials config storage
-	// TODO: Add support for more servers if needed in the future
+	// Future: Add support for more servers if needed in the future
 	auth := []authStorage{
 		{
-			User:     encUser,
-			Password: encPassword,
-			Server:   connection.Server,
+			Session: client.AuthCookie.Value,
+			Server:  client.Details.Server,
+			CACert:  client.Details.CAcert,
 		},
 	}
 
 	authData, err := json.Marshal(auth)
 	if err != nil {
-		return utils.Errorf(err, L("Unable to create credentials json"))
+		return utils.Errorf(err, L("unable to create credentials json"))
 	}
 
 	err = os.WriteFile(getAPICredsFile(), authData, 0600)
 	if err != nil {
-		return utils.Errorf(err, L("Unable to write credentials store %s"), getAPICredsFile())
+		return utils.Errorf(err, L("unable to write credentials store %s"), getAPICredsFile())
 	}
 	return nil
 }
 
 // Remove stored API credentials.
 func RemoveLoginCreds() error {
+	//Future: Multi-server support will need some parsing here
 	return os.Remove(getAPICredsFile())
 }
 
@@ -66,31 +52,35 @@ func RemoveLoginCreds() error {
 // In case cached credentials are not present, asks for password and returns false.
 func getLoginCredentials(conn *ConnectionDetails) error {
 	// Load stored credentials if no user was specified
-	cachedCredentials := false
 	if IsAlreadyLoggedIn() && conn.User == "" {
 		if err := loadLoginCreds(conn); err != nil {
 			log.Warn().Err(err).Msg(L("Cannot load stored credentials"))
 			if err := RemoveLoginCreds(); err != nil {
-				log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
+				return utils.Errorf(err, L("Failed to remove stored credentials!"))
 			}
-			return err
 		} else {
-			cachedCredentials = true
+			// We have connection cookie
+			conn.InSession = true
+			return nil
 		}
 	}
 
 	// If user name provided, but no password and not loaded
 	if conn.User != "" {
-		if conn.Password == "" {
-			utils.AskPasswordIfMissing(&conn.Password, L("API server password"), 0, 0)
-		}
+		utils.AskIfMissing(&conn.User, L("API server user"), 0, 0, nil)
+	}
+	if conn.Password == "" {
+		utils.AskPasswordIfMissing(&conn.Password, L("API server password"), 0, 0)
 	}
 
-	conn.Cached = cachedCredentials
+	if conn.User == "" || conn.Password == "" {
+		return fmt.Errorf(L("No credentials provided"))
+	}
+
 	return nil
 }
 
-// Read and decrypt stored login credentials.
+// Read stored session and server details.
 func loadLoginCreds(connection *ConnectionDetails) error {
 	data, err := os.ReadFile(getAPICredsFile())
 	if err != nil {
@@ -115,21 +105,12 @@ func loadLoginCreds(connection *ConnectionDetails) error {
 		return fmt.Errorf(L("specified api server does not match with stored credentials"))
 	}
 	connection.Server = authData.Server
-
-	urldata := getFixedServerString(connection.Server)
-	encodedURL := make([]byte, base64.URLEncoding.EncodedLen(len(urldata)))
-	base64.URLEncoding.Encode(encodedURL, urldata)
-
-	decUser, err := decryptMsg(authData.User, [32]byte(encodedURL))
-	if err != nil {
-		return err
+	if authData.CACert != "" {
+		connection.CAcert = authData.CACert
 	}
-	decPassword, err := decryptMsg(authData.Password, [32]byte(encodedURL))
-	if err != nil {
-		return err
-	}
-	connection.Password = string(decPassword)
-	connection.User = string(decUser)
+
+	connection.Cookie = authData.Session
+
 	return nil
 }
 
@@ -141,36 +122,4 @@ func IsAlreadyLoggedIn() bool {
 
 func getAPICredsFile() string {
 	return path.Join(utils.GetUserConfigDir(), api_credentials_store)
-}
-
-func getFixedServerString(server string) []byte {
-	res := make([]byte, 32)
-	for i := range res {
-		res[i] = '_'
-	}
-	if len(server) > 32 {
-		copy(res, server[:32])
-	} else {
-		copy(res, server)
-	}
-	return res
-}
-
-func encryptMsg(message string, secret [32]byte) ([]byte, error) {
-	var nonce [24]byte
-	if _, err := io.ReadFull(rand.Reader, nonce[:]); err != nil {
-		return nil, err
-	}
-
-	return secretbox.Seal(nonce[:], []byte(message), &nonce, &secret), nil
-}
-
-func decryptMsg(message []byte, secret [32]byte) (string, error) {
-	var decryptNonce [24]byte
-	copy(decryptNonce[:], message[:24])
-	decrypted, err := secretbox.Open(nil, message[24:], &decryptNonce, &secret)
-	if !err {
-		return "", fmt.Errorf(L("decoding of secret failed"))
-	}
-	return string(decrypted), nil
 }

@@ -7,12 +7,11 @@ package mocks
 import "net/http"
 
 // Mocked api.HTTPClient.
-type MockClient struct{}
-
-// To override Do function.
-var GetDoFunc func(req *http.Request) (*http.Response, error)
+type MockClient struct {
+	DoFunc func(req *http.Request) (*http.Response, error)
+}
 
 // To fulfil api.HTTPClient interface.
 func (m *MockClient) Do(req *http.Request) (*http.Response, error) {
-	return GetDoFunc(req)
+	return m.DoFunc(req)
 }
