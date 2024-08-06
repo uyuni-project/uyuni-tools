@@ -21,7 +21,9 @@ import (
 func runGet(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
 	log.Debug().Msgf("Running GET command %s", args[0])
 	client, err := api.Init(&flags.ConnectionDetails)
-
+	if err == nil && client.Details.User != "" {
+		err = client.Login()
+	}
 	if err != nil {
 		return utils.Errorf(err, L("unable to login to the server"))
 	}

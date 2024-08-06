@@ -259,8 +259,8 @@ func TestIsWellFormedFQDN(t *testing.T) {
 	}
 
 	for i, testCase := range data {
-		if err := IsWellFormedFQDN(testCase); err != nil {
-			t.Errorf("Testcase %d: Unexpected error while validating FQDN with %s", i, testCase)
+		if !IsWellFormedFQDN(testCase) {
+			t.Errorf("Testcase %d: Unexpected failure while validating FQDN with %s", i, testCase)
 		}
 	}
 	wrongData := []string{
@@ -271,8 +271,8 @@ func TestIsWellFormedFQDN(t *testing.T) {
 	}
 
 	for i, testCase := range wrongData {
-		if err := IsWellFormedFQDN(testCase); err == nil {
-			t.Errorf("Testcase %d: expected error while validating FQDN with %s", i, testCase)
+		if IsWellFormedFQDN(testCase) {
+			t.Errorf("Testcase %d: Unexpected success while validating FQDN with %s", i, testCase)
 		}
 	}
 }

@@ -44,9 +44,13 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 	}
 
 	client, err := api.Init(connection)
+	if err == nil {
+		err = client.Login()
+	}
 	if err != nil {
 		return utils.Errorf(err, L("unable to login and register the distribution. Manual distro registration is required"))
 	}
+
 	data := map[string]interface{}{
 		"treeLabel":    distro.TreeLabel,
 		"basePath":     distro.BasePath,

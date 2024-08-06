@@ -110,9 +110,7 @@ Note: API details are required for auto registration.`),
 	}
 	cpCmdHelp.SetHelpTemplate(helpBuilder.String())
 
-	if err := api.AddAPIFlags(distroCmd, true); err != nil {
-		return distroCmd, err
-	}
+	api.AddAPIFlags(distroCmd)
 	distroCmd.AddCommand(cpCmd)
 	distroCmd.AddCommand(cpCmdHelp)
 
