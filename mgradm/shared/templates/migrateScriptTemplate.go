@@ -126,8 +126,10 @@ echo "Extracting time zone..."
 $SSH {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
 
 echo "Extracting postgresql versions..."
-echo "image_pg_version=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1)" >> /var/lib/uyuni-tools/data
-echo "current_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)" >> /var/lib/uyuni-tools/data
+image_pg_version=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1)
+current_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)
+echo "image_pg_version=$image_pg_version" >> /var/lib/uyuni-tools/data
+echo "current_pg_version=$current_pg_version" >> /var/lib/uyuni-tools/data
 
 grep '^db_user' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 grep '^db_password' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
@@ -150,6 +152,15 @@ echo "Altering tomcat configuration..."
 sed 's/--add-modules java.annotation,com.sun.xml.bind://' -i /etc/tomcat/conf.d/*
 sed 's/-XX:-UseConcMarkSweepGC//' -i /etc/tomcat/conf.d/*
 test -f /etc/tomcat/conf.d/remote_debug.conf && sed 's/address=[^:]*:/address=*:/' -i /etc/tomcat/conf.d/remote_debug.conf
+
+# Create a backup copy of the data to prepare DB upgrade.
+# We need to upgrade the deployment before upgrading the database to get the SSL certificates ready.
+# To avoid corrupting the database files, move them to where the upgrade script will expect them.
+echo "Posgresql versions: image: $image_pg_version, current: $current_pg_version"
+if test "$image_pg_version" != "$current_pg_version"; then
+    echo "Backing up the database files ..."
+	mv /var/lib/pgsql/data /var/lib/pgsql/data-pg$current_pg_version
+fi
 
 {{ if .Kubernetes }}
 echo 'server.no_ssl = 1' >> /etc/rhn/rhn.conf;
