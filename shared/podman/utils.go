@@ -217,7 +217,7 @@ func getPodmanVolumeBasePath() (string, error) {
 }
 
 // Inspect check values on a given image and deploy.
-func Inspect(serverImage string, pullPolicy string, proxyHost bool) (*utils.ServerInspectData, error) {
+func Inspect(serverImage string, pullPolicy string, scc types.SCCCredentials, proxyHost bool) (*utils.ServerInspectData, error) {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
@@ -229,7 +229,7 @@ func Inspect(serverImage string, pullPolicy string, proxyHost bool) (*utils.Serv
 		return nil, err
 	}
 
-	authFile, cleaner, err := PodmanLogin(hostData)
+	authFile, cleaner, err := PodmanLogin(hostData, scc)
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}

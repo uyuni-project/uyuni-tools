@@ -41,6 +41,7 @@ NOTE: for now installing on a remote podman is not supported!
 		},
 	}
 
+	utils.AddSCCFlag(podmanCmd)
 	utils.AddImageFlags(podmanCmd)
 	shared_utils.AddPTFFlag(podmanCmd)
 	return podmanCmd

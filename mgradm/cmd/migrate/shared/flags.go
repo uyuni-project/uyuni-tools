@@ -27,6 +27,7 @@ type MigrateFlags struct {
 func AddMigrateFlags(cmd *cobra.Command) {
 	cmd.Flags().Bool("prepare", false, L("Prepare the mgration - copy the data without stopping the source server."))
 	utils.AddMirrorFlag(cmd)
+	utils.AddSCCFlag(cmd)
 	utils.AddImageFlag(cmd)
 	utils.AddDbUpgradeImageFlag(cmd)
 	utils.AddCocoFlag(cmd)
