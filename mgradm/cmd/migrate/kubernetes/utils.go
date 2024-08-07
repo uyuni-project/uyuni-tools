@@ -209,6 +209,8 @@ func migrateToKubernetes(
 		return err
 	}
 
+	// Reinitialize the connection since the pod name has changed since we first checked
+	cnx = shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 	if err := cnx.CopyCaCertificate(fqdn); err != nil {
 		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}

@@ -74,7 +74,7 @@ func Deploy(
 	return cnx.WaitForServer()
 }
 
-// DeployCertificate executre a deploy a new certificate given an helm.
+// DeployCertificate deploys a new SSL certificate.
 func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.InstallSSLFlags, rootCa string,
 	ca *types.SSLPair, kubeconfig string, fqdn string, imagePullPolicy string) ([]string, error) {
 	helmArgs := []string{}
