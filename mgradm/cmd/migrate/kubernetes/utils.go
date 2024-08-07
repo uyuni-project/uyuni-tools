@@ -84,7 +84,9 @@ func migrateToKubernetes(
 	var sslFlags adm_utils.SslCertFlags
 
 	// Deploy for running migration command
-	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.HubXmlrpc,
+	if err := kubernetes.Deploy(
+		fmt.Sprintf(L("Deploy to migrate the data from %s"), fqdn),
+		cnx, flags.Image.Registry, &flags.Image, &flags.HubXmlrpc,
 		&flags.Helm, &sslFlags, clusterInfos, fqdn, false, flags.Prepare,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
@@ -147,6 +149,7 @@ func migrateToKubernetes(
 	// Run uyuni upgrade using the new ssl certificate
 	// We don't need to start the Hub XML-RPC API containers during the setup phase
 	err = kubernetes.UyuniUpgrade(
+		L("Upgrade with final volumes"),
 		serverImage, flags.Image.PullPolicy, 0, hubXmlrpcImage, &flags.Helm,
 		kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...,
 	)
@@ -191,7 +194,9 @@ func migrateToKubernetes(
 
 	// This is the final deployment, all the replicas need to be correct here.
 	err = kubernetes.UyuniUpgrade(
-		serverImage, flags.Image.PullPolicy, hubReplicas, hubXmlrpcImage, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...,
+		L("Complete deployment after migration"),
+		serverImage, flags.Image.PullPolicy, hubReplicas, hubXmlrpcImage, &flags.Helm, kubeconfig, fqdn,
+		clusterInfos.Ingress, helmArgs...,
 	)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
