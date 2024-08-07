@@ -274,7 +274,7 @@ func GetPullPolicy(name string) string {
 
 // RunPod runs a pod, waiting for its execution and deleting it.
 func RunPod(podname string, filter string, image string, pullPolicy string, command string, override ...string) error {
-	arguments := []string{"run", podname, "--image", image, "--image-pull-policy", pullPolicy, filter}
+	arguments := []string{"run", "--rm", "--attach", "--pod-running-timeout=3h", "--restart=Never", podname, "--image", image, "--image-pull-policy", pullPolicy, filter}
 
 	if len(override) > 0 {
 		arguments = append(arguments, `--override-type=strategic`)
@@ -290,14 +290,6 @@ func RunPod(podname string, filter string, image string, pullPolicy string, comm
 		return utils.Errorf(err, PL("The first placeholder is a command",
 			"cannot run %[1]s using image %[2]s"), command, image)
 	}
-	err = waitForPod(podname)
-	if err != nil {
-		return utils.Errorf(err, L("deleting pod %s. Status fails with error"), podname)
-	}
-
-	defer func() {
-		err = DeletePod(podname, filter)
-	}()
 	return nil
 }
 
@@ -317,31 +309,6 @@ func DeletePod(podname string, filter string) error {
 		return utils.Errorf(err, L("cannot delete pod %s"), podname)
 	}
 	return nil
-}
-
-func waitForPod(podname string) error {
-	status := "Succeeded"
-	waitSeconds := 120
-	log.Debug().Msgf("Checking status for %s pod. Waiting %s seconds until status is %s", podname, strconv.Itoa(waitSeconds), status)
-	cmdArgs := []string{"get", "pod", podname, "--output=custom-columns=STATUS:.status.phase", "--no-headers"}
-	var err error
-	for i := 0; i < waitSeconds; i++ {
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
-		outStr := strings.TrimSuffix(string(out), "\n")
-		if err != nil {
-			return utils.Errorf(err, L("cannot execute %s"), strings.Join(cmdArgs, string(" ")))
-		}
-		if strings.EqualFold(outStr, status) {
-			log.Debug().Msgf("%s pod status is %s", podname, status)
-			return nil
-		}
-		if strings.EqualFold(outStr, "Failed") {
-			return utils.Errorf(err, L("error during execution of %s"), strings.Join(cmdArgs, string(" ")))
-		}
-		log.Debug().Msgf("Pod %s status is %s for %d seconds.", podname, outStr, i)
-		time.Sleep(1 * time.Second)
-	}
-	return utils.Errorf(err, L("pod %[1]s status is not %[2]s in %[3]d seconds"), podname, status, waitSeconds)
 }
 
 // GetNode return the node where the app is running.
