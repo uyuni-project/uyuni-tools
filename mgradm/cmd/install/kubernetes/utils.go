@@ -76,6 +76,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 
 	// Deploy Uyuni and wait for it to be up
 	if err := kubernetes.Deploy(
+		L("Initial deployment from mgradm install"),
 		cnx, flags.Image.Registry, &flags.Image, &flags.HubXmlrpc, &flags.Helm, &flags.Ssl,
 		clusterInfos, fqdn, flags.Debug.Java, false, helmArgs...,
 	); err != nil {

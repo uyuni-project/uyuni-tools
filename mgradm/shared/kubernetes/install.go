@@ -25,6 +25,7 @@ const HELM_APP_NAME = "uyuni"
 
 // Deploy execute a deploy of a given image and helm to a cluster.
 func Deploy(
+	reason string,
 	cnx *shared.Connection,
 	registry string,
 	imageFlags *types.ImageFlags,
@@ -60,7 +61,10 @@ func Deploy(
 	}
 
 	// Install the uyuni server helm chart
-	err = UyuniUpgrade(serverImage, imageFlags.PullPolicy, hubXmlrpcFlags.Replicas, hubXmlrpcImage, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
+	err = UyuniUpgrade(
+		reason, serverImage, imageFlags.PullPolicy, hubXmlrpcFlags.Replicas, hubXmlrpcImage,
+		helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...,
+	)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade"))
 	}
@@ -111,8 +115,18 @@ func DeployExistingCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_uti
 }
 
 // UyuniUpgrade runs an helm upgrade using images and helm configuration as parameters.
-func UyuniUpgrade(serverImage string, pullPolicy string, hubXmlrpcReplicas int, hubXmlrpcImage string, helmFlags *cmd_utils.HelmFlags, kubeconfig string,
-	fqdn string, ingress string, helmArgs ...string) error {
+func UyuniUpgrade(
+	reason string,
+	serverImage string,
+	pullPolicy string,
+	hubXmlrpcReplicas int,
+	hubXmlrpcImage string,
+	helmFlags *cmd_utils.HelmFlags,
+	kubeconfig string,
+	fqdn string,
+	ingress string,
+	helmArgs ...string,
+) error {
 	log.Info().Msg(L("Installing Uyuni"))
 
 	// The guessed ingress is passed before the user's value to let the user override it in case we got it wrong.
@@ -129,7 +143,9 @@ func UyuniUpgrade(serverImage string, pullPolicy string, hubXmlrpcReplicas int, 
 	helmParams = append(helmParams,
 		"--set", "images.server="+serverImage,
 		"--set", "pullPolicy="+kubernetes.GetPullPolicy(pullPolicy),
-		"--set", "fqdn="+fqdn)
+		"--set", "fqdn="+fqdn,
+		"--description", reason,
+	)
 
 	if hubXmlrpcReplicas > 0 {
 		log.Info().Msg(L("Enabling Hub XMLRPC API container."))
@@ -269,6 +285,7 @@ func Upgrade(
 	}
 
 	err = UyuniUpgrade(
+		L("Upgrade from mgradm"),
 		serverImage, image.PullPolicy, hubXmlrpcReplicas, hubXmlrpcImageName, &helm, kubeconfig, fqdn,
 		clusterInfos.Ingress, helmArgs...,
 	)
