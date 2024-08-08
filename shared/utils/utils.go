@@ -46,6 +46,7 @@ type InspectResult struct {
 	CommonInspectData `mapstructure:",squash"`
 	Timezone          string
 	HasHubXmlrpcAPI   bool `mapstructure:"has_hubxmlrpc"`
+	Debug             bool `mapstructure:"debug"`
 }
 
 func checkValueSize(value string, min int, max int) bool {

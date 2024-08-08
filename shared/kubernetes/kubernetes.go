@@ -8,7 +8,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
-	"path"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -16,6 +15,9 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	core "k8s.io/api/core/v1"
+	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
 // ClusterInfos represent cluster information.
@@ -101,7 +103,7 @@ func Restart(namespace string, app string) error {
 // Start starts the pod.
 func Start(namespace string, app string) error {
 	// if something is running, we don't need to set replicas to 1
-	if _, err := GetNode(namespace, "-lapp="+app); err != nil {
+	if _, err := GetNode(namespace, "-l"+AppLabel+"="+app); err != nil {
 		return ReplicasTo(namespace, app, 1)
 	}
 	log.Debug().Msgf("Already running")
@@ -154,7 +156,14 @@ func GetSecret(secretName string, filter string) (string, error) {
 }
 
 // createDockerSecret creates a secret of docker type to authenticate registries.
-func createDockerSecret(namespace string, name string, registry string, username string, password string) error {
+func createDockerSecret(
+	namespace string,
+	name string,
+	registry string,
+	username string,
+	password string,
+	appLabel string,
+) error {
 	authString := fmt.Sprintf("%s:%s", username, password)
 	auth := base64.StdEncoding.EncodeToString([]byte(authString))
 	configjson := fmt.Sprintf(
@@ -162,47 +171,44 @@ func createDockerSecret(namespace string, name string, registry string, username
 		registry, username, password, auth,
 	)
 
-	secret := fmt.Sprintf(`
-apiVersion: v1
-kind: Secret
-type: kubernetes.io/dockerconfigjson
-metadata:
-  namespace: %s
-  name: %s
-data:
-  .dockerconfigjson: %s
-`, namespace, name, base64.StdEncoding.EncodeToString([]byte(configjson)))
-
-	tempDir, cleaner, err := utils.TempDir()
-	if err != nil {
-		return err
+	secret := core.Secret{
+		TypeMeta: meta.TypeMeta{APIVersion: "v1", Kind: "Secret"},
+		ObjectMeta: meta.ObjectMeta{
+			Namespace: namespace,
+			Name:      name,
+			Labels:    GetLabels(appLabel, ""),
+		},
+		// It seems serializing this object automatically transforms the secrets to base64.
+		Data: map[string][]byte{
+			".dockerconfigjson": []byte(configjson),
+		},
+		Type: core.SecretTypeDockerConfigJson,
 	}
-	defer cleaner()
-
-	// Run the job
-	definitionPath := path.Join(tempDir, "definition.yaml")
-	if err := os.WriteFile(definitionPath, []byte(secret), 0600); err != nil {
-		return utils.Errorf(err, L("failed to write %s secret definition file"), name)
-	}
-
-	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "kubectl", "apply", "-f", definitionPath); err != nil {
-		return utils.Errorf(err, L("failed to define %s secret"), name)
-	}
-	return nil
+	return Apply([]runtime.Object{&secret}, fmt.Sprintf(L("failed to create the %s docker secret"), name))
 }
 
-// AddSCCSecret creates a secret holding the SCC credentials and adds it to the helm args.
-func AddSCCSecret(helmArgs []string, namespace string, scc *types.SCCCredentials) ([]string, error) {
-	if scc.User != "" && scc.Password != "" {
-		secretName := "scc-credentials"
-		if err := createDockerSecret(
-			namespace, secretName, "registry.suse.com", scc.User, scc.Password,
-		); err != nil {
-			return helmArgs, err
-		}
-		helmArgs = append(helmArgs, "--set", "registrySecret="+secretName)
+// AddSccSecret creates a secret holding the SCC credentials and adds it to the helm args.
+func AddSCCSecret(helmArgs []string, namespace string, scc *types.SCCCredentials, appLabel string) ([]string, error) {
+	secret, err := GetSCCSecret(namespace, scc, appLabel)
+	if secret != "" {
+		helmArgs = append(helmArgs, secret)
 	}
-	return helmArgs, nil
+	return helmArgs, err
+}
+
+// GetSCCSecret creates a secret holding the SCC credentials and returns the secret name.
+func GetSCCSecret(namespace string, scc *types.SCCCredentials, appLabel string) (string, error) {
+	const secretName = "scc-credentials"
+
+	if scc.User != "" && scc.Password != "" {
+		if err := createDockerSecret(
+			namespace, secretName, "registry.suse.com", scc.User, scc.Password, appLabel,
+		); err != nil {
+			return "", err
+		}
+		return secretName, nil
+	}
+	return "", nil
 }
 
 // GetDeploymentImagePullSecret returns the name of the image pull secret of a deployment.

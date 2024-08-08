@@ -137,6 +137,7 @@ grep '^db_name' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 grep '^db_port' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 
 $SSH {{ .SourceFqdn }} sh -c "systemctl list-unit-files | grep hub-xmlrpc-api | grep -q active && echo has_hubxmlrpc=true || echo has_hubxmlrpc=false" >>/var/lib/uyuni-tools/data
+(test $($SSH {{ .SourceFqdn }} grep jdwp -r /etc/tomcat/conf.d/ /etc/rhn/taskomatic.conf | wc -l) -gt 0 && echo debug=true || echo debug=false) >>/var/lib/uyuni-tools/data
 
 echo "Altering configuration for domain resolution..."
 sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/rhn/rhn.conf;
@@ -153,14 +154,8 @@ sed 's/--add-modules java.annotation,com.sun.xml.bind://' -i /etc/tomcat/conf.d/
 sed 's/-XX:-UseConcMarkSweepGC//' -i /etc/tomcat/conf.d/*
 test -f /etc/tomcat/conf.d/remote_debug.conf && sed 's/address=[^:]*:/address=*:/' -i /etc/tomcat/conf.d/remote_debug.conf
 
-# Create a backup copy of the data to prepare DB upgrade.
-# We need to upgrade the deployment before upgrading the database to get the SSL certificates ready.
-# To avoid corrupting the database files, move them to where the upgrade script will expect them.
-echo "Posgresql versions: image: $image_pg_version, current: $current_pg_version"
-if test "$image_pg_version" != "$current_pg_version"; then
-    echo "Backing up the database files ..."
-	mv /var/lib/pgsql/data /var/lib/pgsql/data-pg$current_pg_version
-fi
+# Alter rhn.conf to ensure mirror is set to /mirror if set at all
+sed 's/server.susemanager.fromdir =.*/server.susemanager.fromdir = \/mirror/' -i /etc/rhn/rhn.conf
 
 {{ if .Kubernetes }}
 echo 'server.no_ssl = 1' >> /etc/rhn/rhn.conf;
@@ -191,7 +186,6 @@ if test "extractedSSL" != "1"; then
   # For third party certificates, the CA chain is in the certificate file.
   rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/pki/tls/private/spacewalk.key /var/lib/uyuni-tools/
   rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/pki/tls/certs/spacewalk.crt /var/lib/uyuni-tools/
-
 fi
 
 echo "Removing useless ssl-build folder..."

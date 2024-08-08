@@ -13,6 +13,10 @@ import (
 const postgresFinalizeScriptTemplate = `#!/bin/bash
 set -e
 
+echo "Temporarily disable SSL in the posgresql configuration"
+cp /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.bak
+sed 's/^ssl/#ssl/' -i /var/lib/pgsql/data/postgresql.conf
+
 {{ if .Migration }}
 echo "Adding database access for other containers..."
 db_user=$(sed -n '/^db_user/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
@@ -57,9 +61,12 @@ where not exists (select 1 from rhntaskorun r join rhntaskotemplate t on r.templ
 join rhntaskobunch b on t.bunch_id = b.id where b.name='update-system-overview-bunch' limit 1);
 EOT
 
-
 echo "Stopping Postgresql..."
 su -s /bin/bash - postgres -c "/usr/share/postgresql/postgresql-script stop"
+
+echo "Enable SSL again"
+cp /var/lib/pgsql/data/postgresql.conf.bak /var/lib/pgsql/data/postgresql.conf
+
 echo "DONE"
 `
 

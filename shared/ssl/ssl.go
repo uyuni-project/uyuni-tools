@@ -7,6 +7,7 @@ package ssl
 import (
 	"bytes"
 	"errors"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -240,18 +241,43 @@ func optionalFile(file string) {
 	}
 }
 
-// GetRsaKey converts an SSL key to RSA.
-func GetRsaKey(keyPath string, password string) []byte {
+// Converts an SSL key to RSA.
+func GetRsaKey(keyContent string, password string) []byte {
 	// Kubernetes only handles RSA private TLS keys, convert and strip password
 	caPassword := password
 	utils.AskPasswordIfMissing(&caPassword, L("Source server SSL CA private key password"), 0, 0)
 
 	// Convert the key file to RSA format for kubectl to handle it
-	cmd := exec.Command("openssl", "rsa", "-in", keyPath, "-passin", "env:pass")
+	cmd := exec.Command("openssl", "rsa", "-passin", "env:pass")
+	stdin, err := cmd.StdinPipe()
+	if err != nil {
+		log.Fatal().Err(err).Msg(L("Failed to open openssl rsa process input stream"))
+	}
+	if _, err := io.WriteString(stdin, keyContent); err != nil {
+		log.Fatal().Err(err).Msg(L("Failed to write openssl key content to input stream"))
+	}
+
 	cmd.Env = append(cmd.Env, "pass="+caPassword)
 	out, err := cmd.Output()
 	if err != nil {
 		log.Fatal().Err(err).Msg(L("Failed to convert CA private key to RSA"))
+	}
+	return out
+}
+
+// StripTextFromCertificate removes the optional text part of an x509 certificate.
+func StripTextFromCertificate(certContent string) []byte {
+	cmd := exec.Command("openssl", "x509")
+	stdin, err := cmd.StdinPipe()
+	if err != nil {
+		log.Fatal().Err(err).Msg(L("Failed to open openssl x509 process input stream"))
+	}
+	if _, err := io.WriteString(stdin, certContent); err != nil {
+		log.Fatal().Err(err).Msg(L("Failed to write SSL certificate to input stream"))
+	}
+	out, err := cmd.Output()
+	if err != nil {
+		log.Fatal().Err(err).Msg(L("failed to strip text part from CA certificate"))
 	}
 	return out
 }

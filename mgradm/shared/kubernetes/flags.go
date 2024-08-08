@@ -12,6 +12,7 @@ import "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 type KubernetesServerFlags struct {
 	utils.ServerFlags `mapstructure:",squash"`
 	Helm              utils.HelmFlags
+	Volumes           utils.VolumesFlags
 	// SSH defines the SSH configuration to use to connect to the source server to migrate.
 	SSH utils.SSHFlags
 }

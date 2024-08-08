@@ -61,13 +61,12 @@ func installForKubernetes(
 
 	// Deploy the SSL CA or server certificate
 	if flags.Installation.SSL.UseExisting() {
-		if err := kubernetes.DeployExistingCertificate(&flags.Helm, &flags.Installation.SSL); err != nil {
+		if err := kubernetes.DeployExistingCertificate(flags.Helm.Uyuni.Namespace, &flags.Installation.SSL); err != nil {
 			return err
 		}
 	} else {
-		sslArgs, err := kubernetes.DeployCertificate(
-			&flags.Helm, &flags.Installation.SSL, clusterInfos.GetKubeconfig(), fqdn,
-			flags.Image.PullPolicy,
+		sslArgs, err := kubernetes.DeployGeneratedCa(
+			&flags.Helm, &flags.Installation.SSL, clusterInfos.GetKubeconfig(), fqdn, flags.Image.PullPolicy,
 		)
 
 		if err != nil {
@@ -77,7 +76,9 @@ func installForKubernetes(
 	}
 
 	// Create a secret using SCC credentials if any are provided
-	helmArgs, err = shared_kubernetes.AddSCCSecret(helmArgs, flags.Helm.Uyuni.Namespace, &flags.Installation.SCC)
+	helmArgs, err = shared_kubernetes.AddSCCSecret(
+		helmArgs, flags.Helm.Uyuni.Namespace, &flags.Installation.SCC, shared_kubernetes.ServerApp,
+	)
 	if err != nil {
 		return err
 	}

@@ -4,19 +4,39 @@
 
 package utils
 
-import "github.com/uyuni-project/uyuni-tools/shared/types"
+import (
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+)
 
-// ServerTCPServiceName is the name of the server TCP service.
-const ServerTCPServiceName = "uyuni-tcp"
+const (
+	// WebServiceName is the name of the server web service.
+	WebServiceName = "web"
+	// SaltServiceName is the name of the server salt service.
+	SaltServiceName = "salt"
+	// CobblerServiceName is the name of the server cobbler service.
+	CobblerServiceName = "cobbler"
+	// ReportdbServiceName is the name of the server report database service.
+	ReportdbServiceName = "reportdb"
+	// DBServiceName is the name of the server internal database service.
+	DBServiceName = "db"
+	// TaskoServiceName is the name of the server taskomatic service.
+	TaskoServiceName = "taskomatic"
+	// TftpServiceName is the name of the server tftp service.
+	TftpServiceName = "tftp"
+	// TomcatServiceName is the name of the server tomcat service.
+	TomcatServiceName = "tomcat"
+	// SearchServiceName is the name of the server search service.
+	SearchServiceName = "search"
 
-// ServerUDPServiceName is the name of the server UDP service.
-const ServerUDPServiceName = "uyuni-udp"
+	// HubAPIServiceName is the name of the server hub API service.
+	HubAPIServiceName = "hub-api"
 
-// ProxyTCPServiceName is the name of the proxy TCP service.
-const ProxyTCPServiceName = "uyuni-proxy-tcp"
+	// ProxyTCPServiceName is the name of the proxy TCP service.
+	ProxyTCPServiceName = "uyuni-proxy-tcp"
 
-// ProxyUDPServiceName is the name of the proxy UDP service.
-const ProxyUDPServiceName = "uyuni-proxy-udp"
+	// ProxyUDPServiceName is the name of the proxy UDP service.
+	ProxyUDPServiceName = "uyuni-proxy-udp"
+)
 
 // NewPortMap is a constructor for PortMap type.
 func NewPortMap(service string, name string, exposed int, port int) types.PortMap {
@@ -30,48 +50,54 @@ func NewPortMap(service string, name string, exposed int, port int) types.PortMa
 
 // WebPorts is the list of ports for the server web service.
 var WebPorts = []types.PortMap{
-	NewPortMap(ServerTCPServiceName, "http", 80, 80),
+	NewPortMap(WebServiceName, "http", 80, 80),
 }
 
-// PgsqlPorts is the list of ports for the server report db service.
-var PgsqlPorts = []types.PortMap{
-	NewPortMap(ServerTCPServiceName, "pgsql", 5432, 5432),
-	NewPortMap(ServerTCPServiceName, "exporter", 9187, 9187),
+// ReportDBPorts is the list of ports for the server report db service.
+var ReportDBPorts = []types.PortMap{
+	NewPortMap(ReportdbServiceName, "pgsql", 5432, 5432),
+	NewPortMap(ReportdbServiceName, "exporter", 9187, 9187),
+}
+
+// DBPorts is the list of ports for the server internal db service.
+var DBPorts = []types.PortMap{
+	NewPortMap(DBServiceName, "pgsql", 5432, 5432),
+	NewPortMap(DBServiceName, "exporter", 9187, 9187),
 }
 
 // SaltPorts is the list of ports for the server salt service.
 var SaltPorts = []types.PortMap{
-	NewPortMap(ServerTCPServiceName, "publish", 4505, 4505),
-	NewPortMap(ServerTCPServiceName, "request", 4506, 4506),
+	NewPortMap(SaltServiceName, "publish", 4505, 4505),
+	NewPortMap(SaltServiceName, "request", 4506, 4506),
 }
 
 // CobblerPorts is the list of ports for the server cobbler service.
 var CobblerPorts = []types.PortMap{
-	NewPortMap(ServerTCPServiceName, "cobbler", 25151, 25151),
+	NewPortMap(CobblerServiceName, "cobbler", 25151, 25151),
 }
 
 // TaskoPorts is the list of ports for the server taskomatic service.
 var TaskoPorts = []types.PortMap{
-	NewPortMap(ServerTCPServiceName, "jmx", 5556, 5556),
-	NewPortMap(ServerTCPServiceName, "mtrx", 9800, 9800),
-	NewPortMap(ServerTCPServiceName, "debug", 8001, 8001),
+	NewPortMap(TaskoServiceName, "jmx", 5556, 5556),
+	NewPortMap(TaskoServiceName, "mtrx", 9800, 9800),
+	NewPortMap(TaskoServiceName, "debug", 8001, 8001),
 }
 
 // TomcatPorts is the list of ports for the server tomcat service.
 var TomcatPorts = []types.PortMap{
-	NewPortMap(ServerTCPServiceName, "jmx", 5557, 5557),
-	NewPortMap(ServerTCPServiceName, "debug", 8003, 8003),
+	NewPortMap(TomcatServiceName, "jmx", 5557, 5557),
+	NewPortMap(TomcatServiceName, "debug", 8003, 8003),
 }
 
 // SearchPorts is the list of ports for the server search service.
 var SearchPorts = []types.PortMap{
-	NewPortMap(ServerTCPServiceName, "debug", 8002, 8002),
+	NewPortMap(SearchServiceName, "debug", 8002, 8002),
 }
 
 // TftpPorts is the list of ports for the server tftp service.
 var TftpPorts = []types.PortMap{
 	{
-		Service:  ServerUDPServiceName,
+		Service:  TftpServiceName,
 		Name:     "tftp",
 		Exposed:  69,
 		Port:     69,
@@ -85,7 +111,7 @@ var TftpPorts = []types.PortMap{
 func GetServerPorts(debug bool) []types.PortMap {
 	ports := []types.PortMap{}
 	ports = appendPorts(ports, debug, WebPorts...)
-	ports = appendPorts(ports, debug, PgsqlPorts...)
+	ports = appendPorts(ports, debug, ReportDBPorts...)
 	ports = appendPorts(ports, debug, SaltPorts...)
 	ports = appendPorts(ports, debug, CobblerPorts...)
 	ports = appendPorts(ports, debug, TaskoPorts...)
@@ -113,7 +139,7 @@ var TCPPodmanPorts = []types.PortMap{
 
 // HubXmlrpcPorts are the tcp ports required by the Hub XMLRPC API service.
 var HubXmlrpcPorts = []types.PortMap{
-	NewPortMap(ServerTCPServiceName, "xmlrpc", 2830, 2830),
+	NewPortMap(HubAPIServiceName, "xmlrpc", 2830, 2830),
 }
 
 // ProxyTCPPorts are the tcp ports required by the proxy.

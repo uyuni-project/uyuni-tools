@@ -83,6 +83,13 @@ func ReadInspectData[T any](dataFile string) (*T, error) {
 		return nil, Errorf(err, L("cannot read file %s"), dataFile)
 	}
 
+	return ReadInspectDataString[T](data)
+}
+
+// ReadInspectDataString returns an unmarshalled object of type T from the data as a string.
+//
+// This function is most likely to be used for the implementation of the inspectors, but can also be used directly.
+func ReadInspectDataString[T any](data []byte) (*T, error) {
 	viper.SetConfigType("env")
 	if err := viper.MergeConfig(bytes.NewBuffer(data)); err != nil {
 		return nil, Errorf(err, L("cannot read config"))

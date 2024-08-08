@@ -21,6 +21,10 @@ func TestParamsParsing(t *testing.T) {
 		"--prepare",
 		"--user", "sudoer",
 		"--ssl-password", "sslsecret",
+		"--ssh-key-public", "path/ssh.pub",
+		"--ssh-key-private", "path/ssh",
+		"--ssh-knownhosts", "path/known_hosts",
+		"--ssh-config", "path/config",
 		"source.fq.dn",
 	}
 
@@ -32,6 +36,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
 	args = append(args, flagstests.SalineFlagsTestArgs...)
 	args = append(args, flagstests.ServerHelmFlagsTestArgs...)
+	args = append(args, flagstests.VolumesFlagsTestExpected...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *kubernetes.KubernetesServerFlags,
@@ -47,7 +52,12 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertSalineFlag(t, &flags.Saline)
 		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.Migration.User)
 		flagstests.AssertServerHelmFlags(t, &flags.Helm)
+		flagstests.AssertVolumesFlags(t, &flags.Volumes)
 		testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.Installation.SSL.Password)
+		testutils.AssertEquals(t, "Error parsing --ssh-key-public", "path/ssh.pub", flags.SSH.Key.Public)
+		testutils.AssertEquals(t, "Error parsing --ssh-key-private", "path/ssh", flags.SSH.Key.Private)
+		testutils.AssertEquals(t, "Error parsing --ssh-knownhosts", "path/known_hosts", flags.SSH.Knownhosts)
+		testutils.AssertEquals(t, "Error parsing --ssh-config", "path/config", flags.SSH.Config)
 		testutils.AssertEquals(t, "Wrong FQDN", "source.fq.dn", args[0])
 		return nil
 	}

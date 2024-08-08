@@ -8,9 +8,9 @@ import "github.com/uyuni-project/uyuni-tools/shared/types"
 
 // PgsqlRequiredVolumeMounts represents volumes mount used by PostgreSQL.
 var PgsqlRequiredVolumeMounts = []types.VolumeMount{
-	{MountPath: "/etc/pki/tls", Name: "etc-tls"},
-	{MountPath: "/var/lib/pgsql", Name: "var-pgsql"},
-	{MountPath: "/etc/rhn", Name: "etc-rhn"},
+	{MountPath: "/etc/pki/tls", Name: "etc-tls", Size: "1Mi"},
+	{MountPath: "/var/lib/pgsql", Name: "var-pgsql", Size: "50Gi"},
+	{MountPath: "/etc/rhn", Name: "etc-rhn", Size: "1Mi"},
 	{MountPath: "/etc/pki/spacewalk-tls", Name: "tls-key"},
 }
 
@@ -29,18 +29,17 @@ var PgsqlRequiredVolumes = []types.Volume{
 	},
 }
 
-// EtcServerVolumeMounts represents volumes mounted in /etc folder.
-var EtcServerVolumeMounts = []types.VolumeMount{
-	{MountPath: "/etc/apache2", Name: "etc-apache2"},
-	{MountPath: "/etc/systemd/system/multi-user.target.wants", Name: "etc-systemd-multi"},
-	{MountPath: "/etc/systemd/system/sockets.target.wants", Name: "etc-systemd-sockets"},
-	{MountPath: "/etc/salt", Name: "etc-salt"},
-	{MountPath: "/etc/rhn", Name: "etc-rhn"},
-	{MountPath: "/etc/tomcat", Name: "etc-tomcat"},
-	{MountPath: "/etc/cobbler", Name: "etc-cobbler"},
-	{MountPath: "/etc/sysconfig", Name: "etc-sysconfig"},
-	{MountPath: "/etc/postfix", Name: "etc-postfix"},
-	{MountPath: "/etc/sssd", Name: "etc-sssd"},
+// etcServerVolumeMounts represents volumes mounted in /etc folder.
+var etcServerVolumeMounts = []types.VolumeMount{
+	{MountPath: "/etc/apache2", Name: "etc-apache2", Size: "1Mi"},
+	{MountPath: "/etc/systemd/system/multi-user.target.wants", Name: "etc-systemd-multi", Size: "1Mi"},
+	{MountPath: "/etc/systemd/system/sockets.target.wants", Name: "etc-systemd-sockets", Size: "1Mi"},
+	{MountPath: "/etc/salt", Name: "etc-salt", Size: "1Mi"},
+	{MountPath: "/etc/tomcat", Name: "etc-tomcat", Size: "1Mi"},
+	{MountPath: "/etc/cobbler", Name: "etc-cobbler", Size: "1Mi"},
+	{MountPath: "/etc/sysconfig", Name: "etc-sysconfig", Size: "20Mi"},
+	{MountPath: "/etc/postfix", Name: "etc-postfix", Size: "1Mi"},
+	{MountPath: "/etc/sssd", Name: "etc-sssd", Size: "1Mi"},
 }
 
 // EtcServerVolumes represents volumes used for configuration.
@@ -57,27 +56,27 @@ var EtcServerVolumes = []types.Volume{
 	{Name: "etc-sssd", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-sssd"}},
 }
 
-var etcAndPgsqlVolumeMounts = append(PgsqlRequiredVolumeMounts, EtcServerVolumeMounts[:]...)
+var etcAndPgsqlVolumeMounts = append(PgsqlRequiredVolumeMounts, etcServerVolumeMounts[:]...)
 var etcAndPgsqlVolumes = append(PgsqlRequiredVolumes, EtcServerVolumes[:]...)
 
 // ServerVolumeMounts should match the volumes mapping from the container definition in both
 // the helm chart and the systemctl services definitions.
 var ServerVolumeMounts = append([]types.VolumeMount{
-	{MountPath: "/var/lib/cobbler", Name: "var-cobbler"},
-	{MountPath: "/var/lib/rhn/search", Name: "var-search"},
-	{MountPath: "/var/lib/salt", Name: "var-salt"},
-	{MountPath: "/var/cache", Name: "var-cache"},
-	{MountPath: "/var/spacewalk", Name: "var-spacewalk"},
-	{MountPath: "/var/log", Name: "var-log"},
-	{MountPath: "/srv/salt", Name: "srv-salt"},
-	{MountPath: "/srv/www/", Name: "srv-www"},
-	{MountPath: "/srv/tftpboot", Name: "srv-tftpboot"},
-	{MountPath: "/srv/formula_metadata", Name: "srv-formulametadata"},
-	{MountPath: "/srv/pillar", Name: "srv-pillar"},
-	{MountPath: "/srv/susemanager", Name: "srv-susemanager"},
-	{MountPath: "/srv/spacewalk", Name: "srv-spacewalk"},
-	{MountPath: "/root", Name: "root"},
-	{MountPath: "/etc/pki/trust/anchors", Name: "ca-cert"},
+	{MountPath: "/var/lib/cobbler", Name: "var-cobbler", Size: "10Mi"},
+	{MountPath: "/var/lib/rhn/search", Name: "var-search", Size: "10Gi"},
+	{MountPath: "/var/lib/salt", Name: "var-salt", Size: "10Mi"},
+	{MountPath: "/var/cache", Name: "var-cache", Size: "10Gi"},
+	{MountPath: "/var/spacewalk", Name: "var-spacewalk", Size: "100Gi"},
+	{MountPath: "/var/log", Name: "var-log", Size: "2Gi"},
+	{MountPath: "/srv/salt", Name: "srv-salt", Size: "10Mi"},
+	{MountPath: "/srv/www/", Name: "srv-www", Size: "100Gi"},
+	{MountPath: "/srv/tftpboot", Name: "srv-tftpboot", Size: "300Mi"},
+	{MountPath: "/srv/formula_metadata", Name: "srv-formulametadata", Size: "10Mi"},
+	{MountPath: "/srv/pillar", Name: "srv-pillar", Size: "10Mi"},
+	{MountPath: "/srv/susemanager", Name: "srv-susemanager", Size: "1Mi"},
+	{MountPath: "/srv/spacewalk", Name: "srv-spacewalk", Size: "10Mi"},
+	{MountPath: "/root", Name: "root", Size: "1Mi"},
+	{MountPath: "/etc/pki/trust/anchors/", Name: "ca-cert"},
 	{MountPath: "/run/salt/master", Name: "run-salt-master"},
 }, etcAndPgsqlVolumeMounts[:]...)
 
