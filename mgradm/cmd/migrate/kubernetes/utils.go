@@ -119,13 +119,6 @@ func migrateToKubernetes(
 		return nil
 	}
 
-	defer func() {
-		// if something is running, we don't need to set replicas to 1
-		if _, err = shared_kubernetes.GetNode(shared_kubernetes.ServerFilter); err != nil {
-			err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 1)
-		}
-	}()
-
 	setupSslArray, err := setupSsl(&flags.Helm, kubeconfig, scriptDir, flags.Ssl.Password, flags.Image.PullPolicy)
 	if err != nil {
 		return utils.Errorf(err, L("cannot setup SSL"))
