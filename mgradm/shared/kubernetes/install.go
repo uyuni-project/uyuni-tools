@@ -232,12 +232,6 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot set replica to 0"))
 	}
 
-	defer func() {
-		// if something is running, we don't need to set replicas to 1
-		if _, err = kubernetes.GetNode(namespace, kubernetes.ServerFilter); err != nil {
-			err = kubernetes.ReplicasTo(namespace, kubernetes.ServerApp, 1)
-		}
-	}()
 	if inspectedValues.ImagePgVersion > inspectedValues.CurrentPgVersion {
 		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"),
 			inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion)
@@ -268,6 +262,7 @@ func Upgrade(
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
+	// TODO Use existing replicas count to compare
 	hubXmlrpcReplicas := 0
 	if origHubXmlrpcImage != "" {
 		hubXmlrpcReplicas = 1
