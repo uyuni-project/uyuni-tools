@@ -61,10 +61,12 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 
 	// Deploy the SSL CA or server certificate
 	if flags.Ssl.UseExisting() {
-		kubernetes.DeployExistingCertificate(&flags.Helm, &flags.Ssl, clusterInfos.GetKubeconfig())
+		if err := kubernetes.DeployExistingCertificate(flags.Helm.Uyuni.Namespace, &flags.Ssl); err != nil {
+			return err
+		}
 	} else {
 		ca := ssl.SslPair{}
-		sslArgs, err := kubernetes.DeployCertificate(
+		sslArgs, err := kubernetes.DeployGeneratedCa(
 			&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
 			flags.Image.PullPolicy,
 		)

@@ -57,7 +57,7 @@ func RunPgsqlVersionUpgrade(registry string, image types.ImageFlags, upgradeImag
 		}
 
 		log.Info().Msgf(L("Using database upgrade image %s"), upgradeImageUrl)
-		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, true)
+		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql)
 		if err != nil {
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
