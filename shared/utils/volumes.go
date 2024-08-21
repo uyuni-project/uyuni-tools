@@ -41,6 +41,7 @@ var EtcServerVolumeMounts = []types.VolumeMount{
 	{MountPath: "/etc/sysconfig", Name: "etc-sysconfig"},
 	{MountPath: "/etc/postfix", Name: "etc-postfix"},
 	{MountPath: "/etc/sssd", Name: "etc-sssd"},
+	{MountPath: "/etc/krb5.conf.d", Name: "etc-krb5"},
 }
 
 // EtcServerVolumes represents volumes used for configuration.
@@ -55,6 +56,7 @@ var EtcServerVolumes = []types.Volume{
 	{Name: "etc-postfix", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-postfix"}},
 	{Name: "etc-rhn", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-rhn"}},
 	{Name: "etc-sssd", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-sssd"}},
+	{Name: "etc-krb5", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-krb5"}},
 }
 
 var etcAndPgsqlVolumeMounts = append(PgsqlRequiredVolumeMounts, EtcServerVolumeMounts[:]...)
