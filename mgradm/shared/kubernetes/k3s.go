@@ -29,7 +29,15 @@ func InstallK3sTraefikConfig(debug bool) {
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
-func RunPgsqlVersionUpgrade(registry string, image types.ImageFlags, upgradeImage types.ImageFlags, namespace string, nodeName string, oldPgsql string, newPgsql string) error {
+func RunPgsqlVersionUpgrade(
+	registry string,
+	image types.ImageFlags,
+	upgradeImage types.ImageFlags,
+	namespace string,
+	nodeName string,
+	oldPgsql string,
+	newPgsql string,
+) error {
 	scriptDir, err := os.MkdirTemp("", "mgradm-*")
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
