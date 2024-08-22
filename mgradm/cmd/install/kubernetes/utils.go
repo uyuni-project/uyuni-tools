@@ -86,7 +86,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 			return shared_utils.Errorf(err, L("failed to stop service"))
 		}
 		if stopErr := shared_kubernetes.Stop(namespace, shared_kubernetes.ServerApp); stopErr != nil {
-			log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
+			log.Error().Err(stopErr).Msg(L("failed to stop service"))
 		}
 		return err
 	}
