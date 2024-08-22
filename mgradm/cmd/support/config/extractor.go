@@ -22,7 +22,7 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 		return err
 	}
 
-	cnx := shared.NewConnection(flags.Backend, containerName.(string), kubernetes.ServerFilter)
+	cnx := shared.NewConnection(flags.Backend, containerName, kubernetes.ServerFilter)
 
 	// Copy the generated file locally
 	tmpDir, err := os.MkdirTemp("", "mgradm-*")
