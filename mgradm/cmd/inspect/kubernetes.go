@@ -47,7 +47,7 @@ func kuberneteInspect(
 	if err != nil {
 		return utils.Errorf(err, L("failed retrieving namespace"))
 	}
-	inspectResult, err := shared_kubernetes.InspectKubernetes(namespace, serverImage, flags.PullPolicy)
+	inspectResult, err := shared_kubernetes.InspectKubernetes(namespace, serverImage, flags.Image.PullPolicy)
 	if err != nil {
 		return utils.Errorf(err, L("inspect command failed"))
 	}

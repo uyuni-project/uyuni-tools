@@ -85,14 +85,6 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 		return []string{}, utils.Errorf(err, L("failed to generate issuer definition"))
 	}
 
-	errNamespaceCheck := utils.RunCmd("kubectl", "get", "namespace", issuerData.Namespace)
-	if errNamespaceCheck != nil {
-		errNamespaceCreate := utils.RunCmd("kubectl", "create", "namespace", issuerData.Namespace)
-		if errNamespaceCreate != nil {
-			log.Fatal().Err(err).Msg(L("Failed to create namespace"))
-		}
-	}
-
 	err = utils.RunCmd("kubectl", "apply", "-f", issuerPath)
 	if err != nil {
 		log.Fatal().Err(err).Msg(L("Failed to create issuer"))

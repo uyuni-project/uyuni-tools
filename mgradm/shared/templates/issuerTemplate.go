@@ -10,7 +10,15 @@ import (
 )
 
 // Deploy self-signed issuer or CA Certificate and key.
-const issuerTemplate = `{{if and .Certificate .Key -}}
+const issuerTemplate = `
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Namespace }}
+  labels:
+    name: {{ .Namespace }}
+---
+{{if and .Certificate .Key -}}
 apiVersion: v1
 kind: Secret
 type: kubernetes.io/tls
