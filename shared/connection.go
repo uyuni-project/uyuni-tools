@@ -455,13 +455,14 @@ func chooseBackend[F interface{}](
 }
 
 // ChooseObjPodmanOrKubernetes returns an artibraty object depending if podman or the kubernetes is installed.
-func ChooseObjPodmanOrKubernetes(podmanOption interface{}, kubernetesOption interface{}) (interface{}, error) {
+func ChooseObjPodmanOrKubernetes[T any](podmanOption T, kubernetesOption T) (T, error) {
 	if podman.HasService(podman.ServerService) || podman.HasService(podman.ProxyService) {
 		return podmanOption, nil
 	} else if utils.IsInstalled("kubectl") && utils.IsInstalled("helm") {
 		return kubernetesOption, nil
 	}
-	return nil, errors.New(L("failed to determine suitable backend"))
+	var res T
+	return res, errors.New(L("failed to determine suitable backend"))
 }
 
 // RunSupportConfig will run supportconfig command on given connection.
