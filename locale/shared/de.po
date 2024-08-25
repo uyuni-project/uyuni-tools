@@ -8,14 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:41+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-08-25 15:47+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-shared/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: shared/api/api.go:72
 msgid "FQDN of the server to connect to"
@@ -27,7 +29,7 @@ msgstr ""
 
 #: shared/api/api.go:74
 msgid "Password for the API user"
-msgstr ""
+msgstr "Passwort für den API-Benutzer"
 
 #: shared/api/api.go:75
 msgid "Path to a cert file of the CA"
@@ -40,11 +42,11 @@ msgstr ""
 #: shared/api/api.go:125
 #, javascript-format
 msgid "unknown error: %d"
-msgstr ""
+msgstr "unbekannter Fehler: %d"
 
 #: shared/api/api.go:167
 msgid "API server password"
-msgstr ""
+msgstr "API-Server-Passwort"
 
 #: shared/api/api.go:182
 msgid "Unable to create login data"
@@ -129,7 +131,7 @@ msgstr ""
 #: shared/connection.go:209
 #, javascript-format
 msgid "%s command not executed:"
-msgstr ""
+msgstr "Befehl %s nicht ausgeführt:"
 
 #: shared/connection.go:221
 msgid "failed to retrieve namespace "
