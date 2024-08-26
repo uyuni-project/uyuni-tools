@@ -62,6 +62,8 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 // AddImageFlags will add the proxy install flags to a command.
 func AddImageFlags(cmd *cobra.Command) {
 	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))
+	cmd.Flags().String("registry", utils.DefaultRegistry, L("Registry"))
+
 	utils.AddPullPolicyFlag(cmd)
 
 	addContainerImageFlags(cmd, "httpd", "httpd")

@@ -98,10 +98,12 @@ func AddContainerImageFlags(
 func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("image", defaultImage, L("Image"))
 	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
+	cmd.Flags().String("registry", utils.DefaultRegistry, L("Registry"))
 
 	utils.AddPullPolicyFlag(cmd)
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "image", Title: L("Image Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "registry", "image")
 	_ = utils.AddFlagToHelpGroupID(cmd, "image", "image")
 	_ = utils.AddFlagToHelpGroupID(cmd, "tag", "image")
 	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "image")
@@ -114,7 +116,7 @@ func AddDbUpgradeImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("dbupgrade-pullPolicy", "IfNotPresent",
 		L("set whether to pull the database upgrade images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
 
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "dbupgrade-image", Title: L("Database Upgrade Image Flags")})
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "dbupgrade-image", Title: L("Database Upgrade Image Flags (use --registry for registry)")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-image", "dbupgrade-image")
 	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-tag", "dbupgrade-image")
 	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-pullPolicy", "dbupgrade-image")
@@ -127,7 +129,7 @@ func AddMirrorFlag(cmd *cobra.Command) {
 
 // AddCocoFlag adds the confidential computing related parameters to cmd.
 func AddCocoFlag(cmd *cobra.Command) {
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags (use --registry for registry)")})
 	AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"), "coco-container", "server-attestation")
 	cmd.Flags().Int("coco-replicas", 0, L("How many replicas of the confidential computing container should be started. (only 0 or 1 supported for now)"))
 
@@ -136,7 +138,7 @@ func AddCocoFlag(cmd *cobra.Command) {
 
 // AddHubXmlrpcFlags adds hub XML-RPC related parameters to cmd.
 func AddHubXmlrpcFlags(cmd *cobra.Command) {
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API")})
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API (use --registry for registry)")})
 	AddContainerImageFlags(cmd, "hubxmlrpc", L("Hub XML-RPC API"), "hubxmlrpc-container", "server-hub-xmlrpc-api")
 
 	cmd.Flags().Int("hubxmlrpc-replicas", 0, L("How many replicas of the Hub XML-RPC API service container should be started. (only 0 or 1 supported for now)"))

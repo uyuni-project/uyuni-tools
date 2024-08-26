@@ -13,5 +13,6 @@ import (
 func upgradeKubernetes(globalFlags *types.GlobalFlags,
 	flags *kubernetes.KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []string,
 ) error {
+	globalFlags.Registry = flags.ProxyImageFlags.Registry
 	return kubernetes.Upgrade(flags, cmd, args)
 }

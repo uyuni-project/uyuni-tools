@@ -44,6 +44,7 @@ func installForPodman(
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	globalFlags.Registry = flags.Image.Registry
 	hostData, err := shared_podman.InspectHost()
 	if err != nil {
 		return err

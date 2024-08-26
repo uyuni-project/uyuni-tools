@@ -31,7 +31,6 @@ NOTE: for now installing on a remote podman is not supported!
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podman.PodmanProxyFlags
-			flags.ProxyImageFlags.Registry = globalFlags.Registry
 			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, installForPodman)
 		},
 	}

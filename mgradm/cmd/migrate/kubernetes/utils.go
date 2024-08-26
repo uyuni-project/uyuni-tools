@@ -33,6 +33,7 @@ func migrateToKubernetes(
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	globalFlags.Registry = flags.Image.Registry
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
 			return fmt.Errorf(L("install %s before running this command"), binary)

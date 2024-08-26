@@ -11,5 +11,6 @@ import (
 )
 
 func upgradePodman(globalFlags *types.GlobalFlags, flags *podman.PodmanProxyFlags, cmd *cobra.Command, args []string) error {
+	globalFlags.Registry = flags.ProxyImageFlags.Registry
 	return podman.Upgrade(globalFlags, flags, cmd, args)
 }

@@ -1,0 +1,1 @@
+- make registry flag a local variable, so it can be stored in config file (bsc#1229740)
