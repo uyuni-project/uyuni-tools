@@ -48,6 +48,9 @@ rpm -qa --qf '[%{fileflags},%{filenames}\n]' |grep ",/etc/" | while IFS="," read
     fi
 done
 
+# exclude mgr-sync configuration file, in this way it would be re-generated (bsc#1228685)
+echo "-/ /root/.mgr-sync" >> exclude_list
+
 # exclude tomcat default configuration. All settings should be store in /etc/tomcat/conf.d/
 echo "-/ /etc/sysconfig/tomcat" >> exclude_list
 echo "-/ /etc/tomcat/tomcat.conf" >> exclude_list
