@@ -71,9 +71,11 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 			body, err := io.ReadAll(res.Body)
 			if err == nil {
 				if err = json.Unmarshal(body, &errResponse); err == nil {
-					return nil, fmt.Errorf(L("%d: %s"), res.StatusCode, errResponse["message"])
+					error_message := fmt.Sprintf("%d: '%s'", res.StatusCode, errResponse["message"])
+					return nil, fmt.Errorf(error_message)
 				} else {
-					return nil, fmt.Errorf(L("%d: %s"), res.StatusCode, string(body))
+					error_message := fmt.Sprintf("%d: '%s'", res.StatusCode, string(body))
+					return nil, fmt.Errorf(error_message)
 				}
 			}
 		}

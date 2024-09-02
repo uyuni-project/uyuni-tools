@@ -47,36 +47,33 @@ func RemoveLoginCreds() error {
 	return os.Remove(getAPICredsFile())
 }
 
-// Fills ConnectionDetails with cached credentials and returns true.
-// In case cached credentials are not present, asks for password and returns false.
+// Asks for not provided ConnectionDetails or errors out.
 func getLoginCredentials(conn *ConnectionDetails) error {
-	// Load stored credentials if no user was specified
-	if IsAlreadyLoggedIn() && conn.User == "" {
-		if err := loadLoginCreds(conn); err != nil {
-			log.Warn().Err(err).Msg(L("Cannot load stored credentials"))
-			if err := RemoveLoginCreds(); err != nil {
-				return utils.Errorf(err, L("Failed to remove stored credentials!"))
-			}
-		} else {
-			// We have connection cookie
-			conn.InSession = true
-			return nil
-		}
-	}
-
 	// If user name provided, but no password and not loaded
-	if conn.User != "" {
-		utils.AskIfMissing(&conn.User, L("API server user"), 0, 0, nil)
-	}
-	if conn.Password == "" {
-		utils.AskPasswordIfMissing(&conn.Password, L("API server password"), 0, 0)
-	}
+	utils.AskIfMissing(&conn.Server, L("API server URL"), 0, 0, nil)
+	utils.AskIfMissing(&conn.User, L("API server user"), 0, 0, nil)
+	utils.AskPasswordIfMissingOnce(&conn.Password, L("API server password"), 0, 0)
 
 	if conn.User == "" || conn.Password == "" {
 		return fmt.Errorf(L("No credentials provided"))
 	}
 
 	return nil
+}
+
+// Fills ConnectionDetails with cached credentials if possible.
+func getStoredConnectionDetails(conn *ConnectionDetails) {
+	if IsAlreadyLoggedIn() && conn.User == "" {
+		if err := loadLoginCreds(conn); err != nil {
+			log.Warn().Err(err).Msg(L("Cannot load stored credentials"))
+			if err := RemoveLoginCreds(); err != nil {
+				log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
+			}
+		} else {
+			// We have connection cookie
+			conn.InSession = true
+		}
+	}
 }
 
 // Read stored session and server details.

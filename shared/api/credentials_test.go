@@ -99,8 +99,8 @@ func TestAutocleanup(t *testing.T) {
 	connection := ConnectionDetails{
 		Server: server,
 	}
-	err = getLoginCredentials(&connection)
-	if err == nil || connection.InSession {
+	getStoredConnectionDetails(&connection)
+	if connection.InSession {
 		t.Fail()
 	}
 	_, err = os.Stat(getAPICredsFile())

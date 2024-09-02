@@ -48,7 +48,7 @@ func runPost(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command
 
 	res, err := api.Post[interface{}](client, path, data)
 	if err != nil {
-		return utils.Errorf(err, L("error in query %s"), path)
+		return utils.Errorf(err, L("error in query '%s'"), path)
 	}
 
 	if !res.Success {
