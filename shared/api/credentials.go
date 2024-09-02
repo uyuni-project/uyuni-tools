@@ -11,7 +11,6 @@ import (
 	"path"
 
 	"github.com/rs/zerolog/log"
-
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -26,7 +25,7 @@ func StoreLoginCreds(client *APIClient) error {
 		{
 			Session: client.AuthCookie.Value,
 			Server:  client.Details.Server,
-			CACert:  client.Details.CAcert,
+			CApath:  client.Details.CApath,
 		},
 	}
 
@@ -105,8 +104,8 @@ func loadLoginCreds(connection *ConnectionDetails) error {
 		return fmt.Errorf(L("specified api server does not match with stored credentials"))
 	}
 	connection.Server = authData.Server
-	if authData.CACert != "" {
-		connection.CAcert = authData.CACert
+	if authData.CApath != "" {
+		connection.CApath = authData.CApath
 	}
 
 	connection.Cookie = authData.Session

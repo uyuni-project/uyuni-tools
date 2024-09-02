@@ -42,9 +42,9 @@ type ConnectionDetails struct {
 	// Password for the user.
 	Password string
 
-	// CA certificate used for target host validation.
+	// Path to CA certificate file used for target host validation.
 	// Provided certificate is used together with system certificates.
-	CAcert string
+	CApath string
 
 	// Disable certificate validation, unsecure and not recommended.
 	Insecure bool
@@ -67,5 +67,5 @@ type ApiResponse[T interface{}] struct {
 type authStorage struct {
 	Session string
 	Server  string
-	CACert  string
+	CApath  string
 }
