@@ -117,6 +117,20 @@ func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 	}
 }
 
+// AskPasswordIfMissingOnce asks for password if missing only once
+// Don't perform any check if min and max are set to 0.
+func AskPasswordIfMissingOnce(value *string, prompt string, min int, max int) {
+	if *value == "" && !term.IsTerminal(int(os.Stdin.Fd())) {
+		//return fmt.Errorf(L("not an interactive device"))
+		log.Warn().Msgf(L("not an interactive device, not asking for missing value"))
+		return
+	}
+
+	for *value == "" {
+		*value = CheckValidPassword(value, prompt, min, max)
+	}
+}
+
 // AskIfMissing asks for a value if missing.
 // Don't perform any check if min and max are set to 0.
 func AskIfMissing(value *string, prompt string, min int, max int, checker func(string) bool) {

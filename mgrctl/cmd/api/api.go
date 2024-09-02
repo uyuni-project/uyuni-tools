@@ -31,8 +31,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short: L("Call API GET request"),
 		Long: L(`Takes an API path and optional parameters and then issues GET request with them.
 
-If user and password are provided, calls login before API call
-
 Example:
 # mgrctl api get user/getDetails login=test`),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -44,7 +42,6 @@ Example:
 		Use:   "post path parameters...",
 		Short: L("Call API POST request"),
 		Long: L(`Takes an API path and parameters and then issues POST request with them.
-User and password are mandatory.
 
 Parameters can be either JSON encoded string or one or more key=value pairs.
 
@@ -64,7 +61,7 @@ JSON example:
 		Long: L(`Login stores login information for next API calls.
 
 User name, password and remote host can be provided using flags or will be asked interactively.
-Environmental variables are also supported.`),
+Environment variables are also supported.`),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, runLogin)
 		},

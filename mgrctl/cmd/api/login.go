@@ -25,20 +25,20 @@ func runLogin(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Comman
 
 	utils.AskIfMissing(&flags.Server, cmd.Flag("api-server").Usage, 0, 0, utils.IsWellFormedFQDN)
 	utils.AskIfMissing(&flags.User, cmd.Flag("api-user").Usage, 0, 0, nil)
-	utils.AskPasswordIfMissing(&flags.Password, cmd.Flag("api-password").Usage, 0, 0)
+	utils.AskPasswordIfMissingOnce(&flags.Password, cmd.Flag("api-password").Usage, 0, 0)
 
 	client, err := api.Init(&flags.ConnectionDetails)
 	if err != nil {
 		return err
 	}
 	if err := client.Login(); err != nil {
-		return utils.Errorf(err, L("Failed to validate credentials. Not storing"))
+		return utils.Errorf(err, L("Failed to validate credentials."))
 	}
 	if err := api.StoreLoginCreds(client); err != nil {
 		return err
 	}
 
-	log.Info().Msg(L("Login credentials verified and stored"))
+	log.Info().Msg(L("Login credentials verified."))
 	return nil
 }
 

@@ -33,6 +33,7 @@ func AddAPIFlags(cmd *cobra.Command) {
 }
 
 func logTraceHeader(v *http.Header) {
+	// Return early when not in trace loglevel
 	if log.Logger.GetLevel() != zerolog.TraceLevel {
 		return
 	}
@@ -62,14 +63,17 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 	logTraceHeader(&res.Header)
 
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
+		if res.StatusCode == 401 {
+			return nil, fmt.Errorf(L("401: unauthorized"))
+		}
 		var errResponse map[string]string
 		if res.Body != nil {
 			body, err := io.ReadAll(res.Body)
 			if err == nil {
 				if err = json.Unmarshal(body, &errResponse); err == nil {
-					return nil, fmt.Errorf(errResponse["message"])
+					return nil, fmt.Errorf(L("%d: %s"), res.StatusCode, errResponse["message"])
 				} else {
-					return nil, fmt.Errorf(string(body))
+					return nil, fmt.Errorf(L("%d: %s"), res.StatusCode, string(body))
 				}
 			}
 		}
@@ -89,21 +93,23 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 // will try to login to the host.
 // caCert can be set to use custom CA certificate to validate target host.
 func Init(conn *ConnectionDetails) (*APIClient, error) {
-	// Need to load credentials as it also loads up server URL
-	if err := getLoginCredentials(conn); err != nil {
-		return nil, err
-	}
+	// Load stored credentials as it also loads up server URL and CApath
+	getStoredConnectionDetails(conn)
 
 	caCertPool, err := x509.SystemCertPool()
 	if err != nil {
 		log.Warn().Msg(err.Error())
 	}
-	if conn.CAcert != "" {
-		caCert, err := os.ReadFile(conn.CAcert)
+	if conn.CApath != "" {
+		caCert, err := os.ReadFile(conn.CApath)
 		if err != nil {
 			log.Fatal().Msg(err.Error())
 		}
 		caCertPool.AppendCertsFromPEM(caCert)
+	}
+
+	if conn.Server == "" {
+		return nil, fmt.Errorf(L("server URL is not provided"))
 	}
 	client := &APIClient{
 		Details: conn,
@@ -131,18 +137,17 @@ func Init(conn *ConnectionDetails) (*APIClient, error) {
 // Login to the server using stored or provided credentials.
 func (c *APIClient) Login() error {
 	if c.Details.InSession {
-		if err := c.sessionValidity(); err != nil {
-			log.Warn().Msg(L("Cached session is expired."))
-			if err := RemoveLoginCreds(); err != nil {
-				log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
-			}
-			if err := getLoginCredentials(c.Details); err != nil {
-				return err
-			}
-			return c.login()
+		if err := c.sessionValidity(); err == nil {
+			// Session is valid
+			return nil
 		}
-		// Session is valid
-		return nil
+		log.Warn().Msg(L("Cached session is expired."))
+		if err := RemoveLoginCreds(); err != nil {
+			log.Warn().Err(err).Msg(L("Failed to remove stored credentials!"))
+		}
+	}
+	if err := getLoginCredentials(c.Details); err != nil {
+		return err
 	}
 	return c.login()
 }
