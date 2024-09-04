@@ -60,10 +60,12 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	}
 
 	suffix := "ptf"
+	projectId := flags.PTFId
 	if flags.TestId != "" {
 		suffix = "test"
+		projectId = flags.TestId
 	}
-	flags.Image.Name, err = utils.ComputePTF(flags.CustomerId, flags.PTFId, serverImage, suffix)
+	flags.Image.Name, err = utils.ComputePTF(flags.CustomerId, projectId, serverImage, suffix)
 	if err != nil {
 		return err
 	}
