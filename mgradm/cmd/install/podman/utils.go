@@ -119,21 +119,25 @@ func installForPodman(
 		}
 	}
 
-	if err := coco.SetupCocoContainer(
-		authFile, flags.Coco.Replicas, globalFlags.Registry, flags.Coco.Image, flags.Image,
-		flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password,
-	); err != nil {
-		return err
+	if flags.Coco.Replicas > 0 {
+		if err := coco.SetupCocoContainer(
+			authFile, flags.Coco.Replicas, globalFlags.Registry, flags.Coco.Image, flags.Image,
+			flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password,
+		); err != nil {
+			return err
+		}
 	}
 
-	if err := hub.SetupHubXmlrpc(
-		authFile, globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
-	); err != nil {
-		return err
-	}
+	if flags.HubXmlrpc.Replicas > 0 {
+		if err := hub.SetupHubXmlrpc(
+			authFile, globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
+		); err != nil {
+			return err
+		}
 
-	if err := hub.EnableHubXmlrpc(flags.HubXmlrpc.Replicas); err != nil {
-		return err
+		if err := hub.EnableHubXmlrpc(flags.HubXmlrpc.Replicas); err != nil {
+			return err
+		}
 	}
 
 	if flags.Ssl.UseExisting() {

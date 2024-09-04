@@ -100,25 +100,19 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 
 	// Prepare confidential computing containers
-	if err = coco.Upgrade(
-		authFile, globalFlags.Registry, flags.Coco.Image, flags.Image,
-		extractedData.DbPort, extractedData.DbName,
-		extractedData.DbUser, extractedData.DbPassword,
-	); err != nil {
-		return utils.Errorf(err, L("cannot setup confidential computing attestation service"))
-	}
-
 	if flags.Coco.Replicas > 0 {
+		if err = coco.Upgrade(
+			authFile, globalFlags.Registry, flags.Coco.Image, flags.Image,
+			extractedData.DbPort, extractedData.DbName,
+			extractedData.DbUser, extractedData.DbPassword,
+		); err != nil {
+			return utils.Errorf(err, L("cannot setup confidential computing attestation service"))
+		}
+
 		err := podman_utils.ScaleService(flags.Coco.Replicas, podman_utils.ServerAttestationService)
 		if err != nil {
 			return err
 		}
-	}
-
-	if err := hub.SetupHubXmlrpc(
-		authFile, globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
-	); err != nil {
-		return err
 	}
 
 	hubReplicas := flags.HubXmlrpc.Replicas
@@ -126,8 +120,15 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		log.Info().Msg(L("Enabling Hub XML-RPC API since it is enabled on the migrated server"))
 		hubReplicas = 1
 	}
-	if err := hub.EnableHubXmlrpc(hubReplicas); err != nil {
-		return err
+	if hubReplicas > 0 {
+		if err := hub.SetupHubXmlrpc(
+			authFile, globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
+		); err != nil {
+			return err
+		}
+		if err := hub.EnableHubXmlrpc(hubReplicas); err != nil {
+			return err
+		}
 	}
 
 	log.Info().Msg(L("Server migrated"))

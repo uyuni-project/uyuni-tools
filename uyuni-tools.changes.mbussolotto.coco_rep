@@ -1,0 +1,1 @@
+- mgradm migration should not pull coco and hub image is replicas == 0 (bsc#1230136)
