@@ -24,6 +24,7 @@ type UpgradeFlags struct {
 // AddUpgradeFlags add upgrade flags to a command.
 func AddUpgradeFlags(cmd *cobra.Command) {
 	utils.AddImageFlag(cmd)
+	utils.AddSCCFlag(cmd)
 	utils.AddDbUpgradeImageFlag(cmd)
 
 	_ = shared_utils.AddFlagHelpGroup(cmd, &shared_utils.Group{
