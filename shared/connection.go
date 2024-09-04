@@ -377,6 +377,9 @@ func (c *Connection) CopyCaCertificate(fqdn string) error {
 		pkiDir = "/etc/pki/ca-trust/source/anchors" // RedHat
 		if !utils.FileExists(pkiDir) {
 			pkiDir = "/usr/local/share/ca-certificates" // Debian and Ubuntu
+			if !utils.FileExists(pkiDir) {
+				pkiDir = "/etc/ssl/certs" // OpenSSL fallback
+			}
 		}
 	}
 	hostPath := path.Join(pkiDir, fqdn+".crt")
@@ -387,7 +390,15 @@ func (c *Connection) CopyCaCertificate(fqdn string) error {
 	}
 
 	log.Info().Msg(L("Updating host trusted certificates"))
-	return utils.RunCmdStdMapping(zerolog.DebugLevel, "update-ca-certificates")
+	if utils.CommandExists("update-ca-certificates") {
+		return utils.RunCmdStdMapping(zerolog.DebugLevel, "update-ca-certificates") // openSUSE, Debian and Ubuntu
+	} else if utils.CommandExists("update-ca-trust") {
+		return utils.RunCmdStdMapping(zerolog.DebugLevel, "update-ca-trust") // RedHat
+	} else if utils.CommandExists("trust") {
+		return utils.RunCmdStdMapping(zerolog.DebugLevel, "trust", "anchor", "--store", hostPath) // Fallback
+	} else {
+		return errors.New(L("Unable to update host trusted certificates."))
+	}
 }
 
 // ChoosePodmanOrKubernetes selects either the podman or the kubernetes function based on the backend.

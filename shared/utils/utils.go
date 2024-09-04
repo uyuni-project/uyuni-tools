@@ -15,6 +15,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/exec"
 	"path"
 	"regexp"
 	"strconv"
@@ -425,4 +426,10 @@ func IsWellFormedFQDN(fqdn string) error {
 		return fmt.Errorf(L("%s is not a valid FQDN"), fqdn)
 	}
 	return nil
+}
+
+// Check if a given command exists in PATH.
+func CommandExists(cmd string) bool {
+	_, err := exec.LookPath(cmd)
+	return err == nil
 }
