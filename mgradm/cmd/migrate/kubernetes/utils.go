@@ -241,9 +241,7 @@ func setupSSL(
 		cert := base64.StdEncoding.EncodeToString(out)
 		ca := types.SSLPair{Cert: cert, Key: key}
 
-		// An empty struct means no third party certificate
-		sslFlags := adm_utils.InstallSSLFlags{}
-		ret, err := kubernetes.DeployCertificate(helm, &sslFlags, cert, &ca, kubeconfig, "", pullPolicy)
+		ret, err := kubernetes.DeployReusedCa(helm, &ca, kubeconfig, pullPolicy)
 		if err != nil {
 			return []string{}, utils.Errorf(err, L("cannot deploy certificate"))
 		}

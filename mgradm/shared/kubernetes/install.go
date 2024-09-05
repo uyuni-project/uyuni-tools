@@ -15,7 +15,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -72,46 +71,6 @@ func Deploy(
 		return utils.Errorf(err, L("cannot deploy"))
 	}
 	return cnx.WaitForServer()
-}
-
-// DeployCertificate deploys a new SSL certificate.
-func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.InstallSSLFlags, rootCa string,
-	ca *types.SSLPair, kubeconfig string, fqdn string, imagePullPolicy string) ([]string, error) {
-	helmArgs := []string{}
-	if sslFlags.UseExisting() {
-		if err := DeployExistingCertificate(helmFlags, sslFlags); err != nil {
-			return helmArgs, err
-		}
-	} else {
-		// Install cert-manager and a self-signed issuer ready for use
-		issuerArgs, err := installSSLIssuers(helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn, imagePullPolicy)
-		if err != nil {
-			return []string{}, utils.Errorf(err, L("cannot install cert-manager and self-sign issuer"))
-		}
-		helmArgs = append(helmArgs, issuerArgs...)
-
-		// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
-		extractCaCertToConfig(helmFlags.Uyuni.Namespace)
-	}
-
-	return helmArgs, nil
-}
-
-// DeployExistingCertificate execute a deploy of an existing certificate.
-func DeployExistingCertificate(
-	helmFlags *cmd_utils.HelmFlags,
-	sslFlags *cmd_utils.InstallSSLFlags,
-) error {
-	// Deploy the SSL Certificate secret and CA configmap
-	serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
-	serverKey := utils.ReadFile(sslFlags.Server.Key)
-	if err := installTLSSecret(helmFlags.Uyuni.Namespace, serverCrt, serverKey, rootCaCrt); err != nil {
-		return err
-	}
-
-	// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
-	extractCaCertToConfig(helmFlags.Uyuni.Namespace)
-	return nil
 }
 
 // UyuniUpgrade runs an helm upgrade using images and helm configuration as parameters.
