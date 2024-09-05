@@ -40,7 +40,7 @@ func migrateToKubernetes(
 	}
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 
-	serverImage, err := utils.ComputeImage(globalFlags.Registry, utils.DefaultTag, flags.Image)
+	serverImage, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -74,7 +74,7 @@ func migrateToKubernetes(
 	var sslFlags adm_utils.SslCertFlags
 
 	// Deploy for running migration command
-	if err := kubernetes.Deploy(cnx, globalFlags.Registry, &flags.Image, &flags.Helm, &sslFlags,
+	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm, &sslFlags,
 		clusterInfos, fqdn, false, flags.Prepare,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
@@ -153,7 +153,7 @@ func migrateToKubernetes(
 	newPgVersion := extractedData.ImagePgVersion
 
 	if oldPgVersion != newPgVersion {
-		if err := kubernetes.RunPgsqlVersionUpgrade(globalFlags.Registry, flags.Image,
+		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image.Registry, flags.Image,
 			flags.DbUpgradeImage, nodeName, oldPgVersion, newPgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))

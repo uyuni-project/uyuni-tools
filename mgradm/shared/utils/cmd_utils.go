@@ -107,14 +107,16 @@ func AddSCCFlag(cmd *cobra.Command) {
 // AddImageFlag add Image flags to a command.
 func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("image", defaultImage, L("Image"))
+	cmd.Flags().String("registry", utils.DefaultRegistry, L("Specify a private registry where pull the images"))
 	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
 
 	utils.AddPullPolicyFlag(cmd)
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "image", Title: L("Image Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "image", "image")
+	_ = utils.AddFlagToHelpGroupID(cmd, "registry", "") //without group, since this flag is applied to all the images
 	_ = utils.AddFlagToHelpGroupID(cmd, "tag", "image")
-	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "image")
+	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "") //without group, since this flag is applied to all the images
 }
 
 // AddDbUpgradeImageFlag add Database upgrade image flags to a command.
@@ -123,9 +125,10 @@ func AddDbUpgradeImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("dbupgrade-tag", "latest", L("Database upgrade image tag"))
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "dbupgrade-image", Title: L("Database Upgrade Image Flags")})
+	AddContainerImageFlags(cmd, "dbupgrade", L("Database upgrade"), "dbupgrade-image", "server-migration-14-16-image")
+
 	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-image", "dbupgrade-image")
 	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-tag", "dbupgrade-image")
-	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-pullPolicy", "dbupgrade-image")
 }
 
 // AddMirrorFlag adds the flag for the mirror.

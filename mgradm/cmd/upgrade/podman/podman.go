@@ -48,7 +48,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			if err := viper.Unmarshal(&flags); err != nil {
 				log.Fatal().Err(err).Msg(L("failed to unmarshall configuration"))
 			}
-			if err := podman.ShowAvailableTag(globalFlags.Registry, flags.Image); err != nil {
+			if err := podman.ShowAvailableTag(flags.Image.Registry, flags.Image); err != nil {
 				log.Fatal().Err(err)
 			}
 		},

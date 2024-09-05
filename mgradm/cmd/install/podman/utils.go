@@ -70,7 +70,7 @@ func installForPodman(
 	}
 	log.Info().Msgf(L("Setting up the server with the FQDN '%s'"), fqdn)
 
-	image, err := utils.ComputeImage(globalFlags.Registry, utils.DefaultTag, flags.Image)
+	image, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
