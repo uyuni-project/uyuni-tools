@@ -6,6 +6,7 @@ package kubernetes
 
 import (
 	"encoding/base64"
+	"errors"
 	"os"
 	"path/filepath"
 	"time"
@@ -20,17 +21,25 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) {
-	crdsDir, err := os.MkdirTemp("", "mgradm-*")
+// Helm annotation to add in order to use cert-manager's uyuni CA issuer, in JSON format.
+const ingressCertManagerAnnotation = "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"
+
+// DeployExistingCertificate execute a deploy of an existing certificate.
+func DeployExistingCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, kubeconfig string) {
+	// Deploy the SSL Certificate secret and CA configmap
+	serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
+	serverKey := utils.ReadFile(sslFlags.Server.Key)
+
+	tempDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
 		log.Fatal().Err(err).Msgf(L("failed to create temporary directory"))
 	}
-	defer os.RemoveAll(crdsDir)
+	defer os.RemoveAll(tempDir)
 
-	secretPath := filepath.Join(crdsDir, "secret.yaml")
+	secretPath := filepath.Join(tempDir, "secret.yaml")
 	log.Info().Msg(L("Creating SSL server certificate secret"))
 	tlsSecretData := templates.TlsSecretTemplateData{
-		Namespace:   namespace,
+		Namespace:   helmFlags.Uyuni.Namespace,
 		Name:        "uyuni-cert",
 		Certificate: base64.StdEncoding.EncodeToString(serverCrt),
 		Key:         base64.StdEncoding.EncodeToString(serverKey),
@@ -45,40 +54,37 @@ func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, root
 		log.Fatal().Err(err).Msg(L("Failed to create uyuni-crt TLS secret"))
 	}
 
+	// Copy the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
 	createCaConfig(rootCaCrt)
 }
 
-// Install cert-manager and its CRDs using helm in the cert-manager namespace if needed
-// and then create a self-signed CA and issuers.
-// Returns helm arguments to be added to use the issuer.
-func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, rootCa string,
-	tlsCert *ssl.SslPair, kubeconfig, fqdn string, imagePullPolicy string) ([]string, error) {
+// DeployReusedCaCertificate deploys an existing SSL CA using cert-manager.
+func DeployReusedCa(
+	helmFlags *cmd_utils.HelmFlags,
+	ca *ssl.SslPair,
+	kubeconfig string,
+	imagePullPolicy string,
+) ([]string, error) {
+	helmArgs := []string{}
+
 	// Install cert-manager if needed
 	if err := installCertManager(helmFlags, kubeconfig, imagePullPolicy); err != nil {
 		return []string{}, utils.Errorf(err, L("cannot install cert manager"))
 	}
 
-	log.Info().Msg(L("Creating SSL certificate issuer"))
-	crdsDir, err := os.MkdirTemp("", "mgradm-*")
+	log.Info().Msg(L("Creating cert-manager issuer for existing CA"))
+	tempDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
 		return []string{}, utils.Errorf(err, L("failed to create temporary directory"))
 	}
-	defer os.RemoveAll(crdsDir)
+	defer os.RemoveAll(tempDir)
 
-	issuerPath := filepath.Join(crdsDir, "issuer.yaml")
+	issuerPath := filepath.Join(tempDir, "issuer.yaml")
 
-	issuerData := templates.IssuerTemplateData{
+	issuerData := templates.ReusedCaIssuerTemplateData{
 		Namespace:   helmFlags.Uyuni.Namespace,
-		Country:     sslFlags.Country,
-		State:       sslFlags.State,
-		City:        sslFlags.City,
-		Org:         sslFlags.Org,
-		OrgUnit:     sslFlags.OU,
-		Email:       sslFlags.Email,
-		Fqdn:        fqdn,
-		RootCa:      rootCa,
-		Key:         tlsCert.Key,
-		Certificate: tlsCert.Cert,
+		Key:         ca.Key,
+		Certificate: ca.Cert,
 	}
 
 	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
@@ -91,16 +97,95 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	}
 
 	// Wait for issuer to be ready
+	if err := waitForIssuer(helmFlags.Uyuni.Namespace, "uyuni-ca-issuer"); err != nil {
+		return nil, err
+	} else {
+		helmArgs = append(helmArgs, "--set-json", ingressCertManagerAnnotation)
+
+	}
+
+	// Copy the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
+	createCaConfig([]byte(ca.Cert))
+
+	return helmArgs, nil
+}
+
+// DeployGenerateCa deploys a new SSL CA using cert-manager.
+func DeployCertificate(
+	helmFlags *cmd_utils.HelmFlags,
+	sslFlags *cmd_utils.SslCertFlags,
+	rootCa string,
+	tlsCert *ssl.SslPair,
+	kubeconfig string,
+	fqdn string,
+	imagePullPolicy string,
+) ([]string, error) {
+	helmArgs := []string{}
+
+	// Install cert-manager if needed
+	if err := installCertManager(helmFlags, kubeconfig, imagePullPolicy); err != nil {
+		return []string{}, utils.Errorf(err, L("cannot install cert manager"))
+	}
+
+	log.Info().Msg(L("Creating SSL certificate issuer"))
+	tempDir, err := os.MkdirTemp("", "mgradm-*")
+	if err != nil {
+		return []string{}, utils.Errorf(err, L("failed to create temporary directory"))
+	}
+	defer os.RemoveAll(tempDir)
+
+	issuerPath := filepath.Join(tempDir, "issuer.yaml")
+
+	issuerData := templates.GeneratedCaIssuerTemplateData{
+		Namespace: helmFlags.Uyuni.Namespace,
+		Country:   sslFlags.Country,
+		State:     sslFlags.State,
+		City:      sslFlags.City,
+		Org:       sslFlags.Org,
+		OrgUnit:   sslFlags.OU,
+		Email:     sslFlags.Email,
+		Fqdn:      fqdn,
+	}
+
+	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
+		return []string{}, utils.Errorf(err, L("failed to generate issuer definition"))
+	}
+
+	err = utils.RunCmd("kubectl", "apply", "-f", issuerPath)
+	if err != nil {
+		log.Fatal().Err(err).Msg(L("Failed to create issuer"))
+	}
+
+	// Wait for issuer to be ready
+	if err := waitForIssuer(helmFlags.Uyuni.Namespace, "uyuni-ca-issuer"); err != nil {
+		return nil, err
+	} else {
+		helmArgs = append(helmArgs, "--set-json", ingressCertManagerAnnotation)
+
+	}
+
+	// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
+	extractCaCertToConfig()
+
+	return helmArgs, nil
+}
+
+// Wait for issuer to be ready.
+func waitForIssuer(namespace string, name string) error {
 	for i := 0; i < 60; i++ {
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "-o=jsonpath={.status.conditions[*].type}",
-			"issuer", "uyuni-ca-issuer")
+		out, err := utils.RunCmdOutput(
+			zerolog.DebugLevel, "kubectl", "get",
+			"-o=jsonpath={.status.conditions[*].type}",
+			"-n", namespace,
+			"issuer", name,
+		)
 		if err == nil && string(out) == "Ready" {
-			return []string{"--set-json", "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"}, nil
+			return nil
 		}
 		time.Sleep(1 * time.Second)
 	}
-	log.Fatal().Msg(L("Issuer didn't turn ready after 60s"))
-	return []string{}, nil
+	return errors.New(L("Issuer didn't turn ready after 60s"))
+
 }
 
 func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, imagePullPolicy string) error {
