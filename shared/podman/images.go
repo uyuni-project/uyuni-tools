@@ -39,6 +39,8 @@ func PrepareImage(authFile string, image string, pullPolicy string) (string, err
 		if len(presentImage) > 0 {
 			log.Debug().Msgf("Image %s already present", presentImage)
 			return presentImage, nil
+		} else {
+			log.Debug().Msgf("Image %s is missing", image)
 		}
 	} else {
 		log.Info().Msgf(L("Pull Policy is always. Presence of RPM image will be checked and if it's not present it will be pulled from registry"))

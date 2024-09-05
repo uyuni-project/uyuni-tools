@@ -9,9 +9,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -22,23 +22,39 @@ func SetupHubXmlrpc(
 	registry string,
 	pullPolicy string,
 	tag string,
-	hubxmlrpcImage types.ImageFlags,
+	hubXmlrpcFlags cmd_utils.HubXmlrpcFlags,
 ) error {
-	log.Info().Msg(L("Setting Hub XML-RPC API service."))
-	hubXmlrpcImage, err := utils.ComputeImage(registry, tag, hubxmlrpcImage)
+	image := hubXmlrpcFlags.Image
+	currentReplicas := podman.CurrentReplicaCount(podman.HubXmlrpcService)
+	log.Debug().Msgf("Current HUB replicas running are %d.", currentReplicas)
+
+	if hubXmlrpcFlags.Replicas == 0 {
+		log.Debug().Msg("No HUB requested.")
+	}
+	if !hubXmlrpcFlags.IsChanged {
+		log.Info().Msgf(L("No changes requested for hub. Keep %d replicas."), currentReplicas)
+	}
+
+	hubXmlrpcImage, err := utils.ComputeImage(registry, tag, image)
+
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
 	preparedImage, err := podman.PrepareImage(authFile, hubXmlrpcImage, pullPolicy)
-	if err != nil {
+	if err != nil && ((hubXmlrpcFlags.Replicas > 0 && hubXmlrpcFlags.IsChanged) || (currentReplicas >= 0 && !hubXmlrpcFlags.IsChanged)) {
 		return err
+	} else if err != nil && (hubXmlrpcFlags.Replicas == 0 && hubXmlrpcFlags.IsChanged || (currentReplicas == 0 && !hubXmlrpcFlags.IsChanged)) {
+		log.Info().Msgf(L("Image %s not present and it will not be pulled since HUB is not requested."), hubXmlrpcImage)
 	}
 
 	if err := generateHubXmlrpcSystemdService(preparedImage); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd service"))
 	}
 
+	if err := EnableHubXmlrpc(hubXmlrpcFlags.Replicas); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -61,8 +77,8 @@ func EnableHubXmlrpc(replicas int) error {
 }
 
 // Upgrade updates the systemd service files and restarts the containers if needed.
-func Upgrade(authFile string, registry string, pullPolicy string, tag string, hubXmlrpcImage types.ImageFlags) error {
-	if err := SetupHubXmlrpc(authFile, registry, pullPolicy, tag, hubXmlrpcImage); err != nil {
+func Upgrade(authFile string, registry string, pullPolicy string, tag string, hubXmlrpcFlags cmd_utils.HubXmlrpcFlags) error {
+	if err := SetupHubXmlrpc(authFile, registry, pullPolicy, tag, hubXmlrpcFlags); err != nil {
 		return err
 	}
 

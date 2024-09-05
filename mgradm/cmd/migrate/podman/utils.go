@@ -102,7 +102,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	// Prepare confidential computing containers
 	if flags.Coco.Replicas > 0 {
 		if err = coco.Upgrade(
-			authFile, globalFlags.Registry, flags.Coco.Image, flags.Image,
+			authFile, flags.Image.Registry, flags.Coco, flags.Image,
 			extractedData.DbPort, extractedData.DbName,
 			extractedData.DbUser, extractedData.DbPassword,
 		); err != nil {
@@ -122,7 +122,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 	if hubReplicas > 0 {
 		if err := hub.SetupHubXmlrpc(
-			authFile, globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
+			authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
 		); err != nil {
 			return err
 		}

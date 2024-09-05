@@ -29,6 +29,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanUpgradeFlags
+			flags.UpgradeFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.UpgradeFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, upgradePodman)
 		},
 	}

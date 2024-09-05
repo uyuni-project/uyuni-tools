@@ -121,7 +121,7 @@ func installForPodman(
 
 	if flags.Coco.Replicas > 0 {
 		if err := coco.SetupCocoContainer(
-			authFile, flags.Coco.Replicas, globalFlags.Registry, flags.Coco.Image, flags.Image,
+			authFile, flags.Image.Registry, flags.Coco, flags.Image,
 			flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password,
 		); err != nil {
 			return err
@@ -130,12 +130,8 @@ func installForPodman(
 
 	if flags.HubXmlrpc.Replicas > 0 {
 		if err := hub.SetupHubXmlrpc(
-			authFile, globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
+			authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
 		); err != nil {
-			return err
-		}
-
-		if err := hub.EnableHubXmlrpc(flags.HubXmlrpc.Replicas); err != nil {
 			return err
 		}
 	}

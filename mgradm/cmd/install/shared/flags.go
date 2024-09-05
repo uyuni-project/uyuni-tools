@@ -38,12 +38,6 @@ type DebugFlags struct {
 	Java bool
 }
 
-// CocoFlags contains settings for coco attestation container.
-type CocoFlags struct {
-	Replicas int
-	Image    types.ImageFlags `mapstructure:",squash"`
-}
-
 // InstallFlags stores all the flags used by install command.
 type InstallFlags struct {
 	TZ           string
@@ -58,7 +52,7 @@ type InstallFlags struct {
 	Scc          types.SCCCredentials
 	Debug        DebugFlags
 	Image        types.ImageFlags `mapstructure:",squash"`
-	Coco         CocoFlags
+	Coco         cmd_utils.CocoFlags
 	HubXmlrpc    cmd_utils.HubXmlrpcFlags
 	Admin        apiTypes.User
 	Organization string
