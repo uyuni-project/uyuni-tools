@@ -125,8 +125,6 @@ func AddDbUpgradeImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("dbupgrade-tag", "latest", L("Database upgrade image tag"))
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "dbupgrade-image", Title: L("Database Upgrade Image Flags")})
-	AddContainerImageFlags(cmd, "dbupgrade", L("Database upgrade"), "dbupgrade-image", "server-migration-14-16-image")
-
 	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-image", "dbupgrade-image")
 	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-tag", "dbupgrade-image")
 }
