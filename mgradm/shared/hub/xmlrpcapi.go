@@ -44,7 +44,7 @@ func SetupHubXmlrpc(
 	preparedImage, err := podman.PrepareImage(authFile, hubXmlrpcImage, pullPolicy)
 	if err != nil && ((hubXmlrpcFlags.Replicas > 0 && hubXmlrpcFlags.IsChanged) || (currentReplicas >= 0 && !hubXmlrpcFlags.IsChanged)) {
 		return err
-	} else if err != nil && (hubXmlrpcFlags.Replicas == 0 && hubXmlrpcFlags.IsChanged || (currentReplicas == 0 && !hubXmlrpcFlags.IsChanged)) {
+	} else if err != nil && ((hubXmlrpcFlags.Replicas == 0 && hubXmlrpcFlags.IsChanged) || (currentReplicas == 0 && !hubXmlrpcFlags.IsChanged)) {
 		log.Info().Msgf(L("Image %s not present and it will not be pulled since HUB is not requested."), hubXmlrpcImage)
 	}
 
