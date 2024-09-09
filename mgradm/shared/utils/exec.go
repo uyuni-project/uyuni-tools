@@ -240,7 +240,7 @@ func isUyuni(cnx *shared.Connection) (bool, error) {
 		cnx_args := []string{"/etc/susemanager-release"}
 		_, err := cnx.Exec("cat", cnx_args...)
 		if err != nil {
-			return false, errors.New(L("cannot find neither /etc/uyuni-release nor /etc/susemanagere-release"))
+			return false, errors.New(L("cannot find either /etc/uyuni-release or /etc/susemanagere-release"))
 		}
 		return false, nil
 	}
