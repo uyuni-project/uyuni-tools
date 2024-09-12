@@ -43,7 +43,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
         {{- end }}
 	{{- end }}
 	{{- range .Volumes }}
-	-v {{ .Name }}:{{ .MountPath }} \
+	-v {{ .Name }}:{{ .MountPath }}:z \
 	{{- end }}
 	-e TZ=${TZ} \
 	--network {{ .Network }} \
