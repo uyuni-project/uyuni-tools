@@ -48,6 +48,8 @@ rpm -qa --qf '[%{fileflags},%{filenames}\n]' |grep ",/etc/" | while IFS="," read
     fi
 done
 
+echo "-/ .repo_gpgcheck" >> exclude_list
+
 # exclude mgr-sync configuration file, in this way it would be re-generated (bsc#1228685)
 echo "-/ /root/.mgr-sync" >> exclude_list
 
@@ -66,7 +68,7 @@ for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
   if $SSH {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."
-    rsync -e "$SSH" --rsync-path='sudo rsync' -avz --trust-sender -f "merge exclude_list" {{ .SourceFqdn }}:$folder/ $folder;
+    rsync -e "$SSH" --rsync-path='sudo rsync' -avzL --trust-sender -f "merge exclude_list" {{ .SourceFqdn }}:$folder/ $folder;
   else
     echo "Skipping missing $folder..."
   fi
