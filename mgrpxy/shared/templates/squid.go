@@ -37,7 +37,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--replace -dt \
 	-v /etc/uyuni/proxy:/etc/uyuni:ro \
 	{{- range .Volumes }}
-	-v {{ .Name }}:{{ .MountPath }} \
+	-v {{ .Name }}:{{ .MountPath }}:z \
 	{{- end }}
 	${SQUID_EXTRA_CONF} --name uyuni-proxy-squid \
 	${UYUNI_IMAGE}'
