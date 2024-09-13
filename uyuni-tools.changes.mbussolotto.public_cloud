@@ -1,1 +1,2 @@
+- during migration, handle empty autoinstallation path (bsc#1230285)
 - during migration, handle symlinks (bsc#1230288)
