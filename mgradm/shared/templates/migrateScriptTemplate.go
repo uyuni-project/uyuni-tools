@@ -37,7 +37,9 @@ $SSH {{ .SourceFqdn }} "sudo systemctl stop postgresql.service"
 {{ end }}
 
 while IFS="," read -r target path ; do
+  if $SSH -n {{ .SourceFqdn }} test -e "$path" ; then
     echo "-/ $path"
+  fi
 done < distros > exclude_list
 
 # exclude all config files which already exist and are not marked noreplace
@@ -68,7 +70,7 @@ for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
   if $SSH {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."
-    rsync -e "$SSH" --rsync-path='sudo rsync' -avzL --trust-sender -f "merge exclude_list" {{ .SourceFqdn }}:$folder/ $folder;
+    rsync -e "$SSH" --rsync-path='sudo rsync' -avzL --trust-sender -f 'merge exclude_list' {{ .SourceFqdn }}:$folder/ $folder;
   else
     echo "Skipping missing $folder..."
   fi
