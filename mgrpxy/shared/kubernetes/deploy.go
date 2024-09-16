@@ -97,7 +97,7 @@ func Deploy(imageFlags *utils.ProxyImageFlags, helmFlags *HelmFlags, configDir s
 	}
 
 	// Wait for the pod to be started
-	return kubernetes.WaitForDeployment(helmFlags.Proxy.Namespace, helmAppName, "uyuni-proxy")
+	return kubernetes.WaitForDeployment(helmFlags.Proxy.Namespace, helmAppName)
 }
 
 func getSSHYaml(directory string) (string, error) {

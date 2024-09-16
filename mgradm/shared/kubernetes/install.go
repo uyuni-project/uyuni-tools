@@ -69,7 +69,7 @@ func Deploy(
 	}
 
 	// Wait for the pod to be started
-	err = kubernetes.WaitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
+	err = kubernetes.WaitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME)
 	if err != nil {
 		return utils.Errorf(err, L("cannot deploy"))
 	}
@@ -235,5 +235,5 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}
 
-	return kubernetes.WaitForDeployment(helm.Uyuni.Namespace, "uyuni", "uyuni")
+	return kubernetes.WaitForDeployment(helm.Uyuni.Namespace, "uyuni")
 }

@@ -31,42 +31,18 @@ const ProxyApp = "uyuni-proxy"
 // ServerFilter represents filter used to check proxy app.
 const ProxyFilter = "-lapp=" + ProxyApp
 
-// waitForDeployment waits at most 60s for a kubernetes deployment to have at least one replica.
-// See [isDeploymentReady] for more details.
-func WaitForDeployment(namespace string, name string, appName string) error {
-	// Find the name of a replica pod
-	// Using the app label is a shortcut, not the 100% acurate way to get from deployment to pod
-	podName := ""
-	jsonpath := fmt.Sprintf("jsonpath={.items[?(@.metadata.labels.app==\"%s\")].metadata.name}", appName)
-	cmdArgs := []string{"get", "pod", "-o", jsonpath}
-	cmdArgs = addNamespace(cmdArgs, namespace)
-
-	for i := 0; i < 60; i++ {
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
-		if err == nil {
-			podName = string(out)
-			break
-		}
-	}
-
-	// We need to wait for the image to be pulled as this can add quite some time
-	// Setting a timeout on this is very hard since it hightly depends on network speed and image size
-	// List the Pulled events from the pod as we may not see the Pulling if the image was already downloaded
-	err := WaitForPulledImage(namespace, podName)
-	if err != nil {
-		return utils.Errorf(err, L("failed to pull image"))
-	}
-
+// WaitForDeployment waits for a kubernetes deployment to have at least one replica.
+func WaitForDeployment(namespace string, name string) error {
 	log.Info().Msgf(L("Waiting for %[1]s deployment to be ready in %[2]s namespace\n"), name, namespace)
-	// Wait for a replica to be ready
-	for i := 0; i < 120; i++ {
+	// Wait for ever for a replica to be ready
+	for {
 		// TODO Look for pod failures
 		if IsDeploymentReady(namespace, name) {
 			return nil
 		}
 		time.Sleep(1 * time.Second)
 	}
-	return fmt.Errorf(L("failed to find a ready replica for deployment %[1]s in namespace %[2]s after 120s"), name, namespace)
+	//return fmt.Errorf(L("failed to find a ready replica for deployment %[1]s in namespace %[2]s after 120s"), name, namespace)
 }
 
 // WaitForPulledImage wait that image is pulled.

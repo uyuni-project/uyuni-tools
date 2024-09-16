@@ -219,7 +219,7 @@ func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, image
 	}
 
 	// Wait for cert-manager to be ready
-	err := kubernetes.WaitForDeployment("", "cert-manager-webhook", "webhook")
+	err := kubernetes.WaitForDeployment("", "cert-manager-webhook")
 	if err != nil {
 		return utils.Errorf(err, L("cannot deploy"))
 	}
