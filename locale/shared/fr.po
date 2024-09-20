@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 14:41+0200\n"
+"POT-Creation-Date: 2024-09-20 14:47+0200\n"
 "PO-Revision-Date: 2024-04-08 14:09+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -570,7 +570,11 @@ msgstr ""
 msgid "cannot find any running image for container %s"
 msgstr ""
 
-#: shared/podman/login.go:41
+#: shared/podman/login.go:23
+msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+msgstr ""
+
+#: shared/podman/login.go:50
 #, fuzzy
 msgid "failed to close the temporary auth file"
 msgstr "impossible de créer le répertoire %s: %s"

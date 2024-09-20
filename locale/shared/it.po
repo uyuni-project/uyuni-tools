@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 14:41+0200\n"
+"POT-Creation-Date: 2024-09-20 14:47+0200\n"
 "PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
@@ -565,7 +565,11 @@ msgstr ""
 msgid "cannot find any running image for container %s"
 msgstr "impossibile trovare il nodo che ha in esecuzione uyuni: %s"
 
-#: shared/podman/login.go:41
+#: shared/podman/login.go:23
+msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+msgstr ""
+
+#: shared/podman/login.go:50
 #, fuzzy
 msgid "failed to close the temporary auth file"
 msgstr "mancata creazione della directory temporanea: %s"
