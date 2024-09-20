@@ -33,6 +33,9 @@ ExecStartPre=/bin/sh -c '/usr/bin/podman pod create --infra-conmon-pidfile %t/uy
 		--network {{ .Network }} \
         {{- range .Ports }}
         -p {{ .Exposed }}:{{ .Port }}{{ if .Protocol }}/{{ .Protocol }}{{ end }} \
+        {{- if $.IPV6Enabled }}
+	-p [::]:{{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
+        {{- end }}
         {{- end }}
 		--replace ${PODMAN_EXTRA_ARGS}'
 
@@ -53,6 +56,7 @@ type PodTemplateData struct {
 	Ports         []types.PortMap
 	HttpProxyFile string
 	Network       string
+	IPV6Enabled   bool
 }
 
 // Render will create the systemd configuration file.

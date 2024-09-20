@@ -17,6 +17,7 @@ type podmanPTFFlags struct {
 	PTFId      string           `mapstructure:"ptf"`
 	TestId     string           `mapstructure:"test"`
 	CustomerId string           `mapstructure:"user"`
+	SCC        types.SCCCredentials
 }
 
 // NewCommand for podman installation.

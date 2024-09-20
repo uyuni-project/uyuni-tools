@@ -48,6 +48,9 @@ rpm -qa --qf '[%{fileflags},%{filenames}\n]' |grep ",/etc/" | while IFS="," read
     fi
 done
 
+# exclude mgr-sync configuration file, in this way it would be re-generated (bsc#1228685)
+echo "-/ /root/.mgr-sync" >> exclude_list
+
 # exclude tomcat default configuration. All settings should be store in /etc/tomcat/conf.d/
 echo "-/ /etc/sysconfig/tomcat" >> exclude_list
 echo "-/ /etc/tomcat/tomcat.conf" >> exclude_list
@@ -63,7 +66,7 @@ for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
   if $SSH {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."
-    rsync -e "$SSH" --rsync-path='sudo rsync' -avz -f "merge exclude_list" {{ .SourceFqdn }}:$folder/ $folder;
+    rsync -e "$SSH" --rsync-path='sudo rsync' -avz --trust-sender -f "merge exclude_list" {{ .SourceFqdn }}:$folder/ $folder;
   else
     echo "Skipping missing $folder..."
   fi
@@ -120,7 +123,7 @@ sed 's/address=[^:]*:/address=*:/' -i /etc/rhn/taskomatic.conf;
 echo "Altering tomcat configuration..."
 sed 's/--add-modules java.annotation,com.sun.xml.bind://' -i /etc/tomcat/conf.d/*
 sed 's/-XX:-UseConcMarkSweepGC//' -i /etc/tomcat/conf.d/*
-sed 's/address=[^:]*:/address=*:/' -i /etc/tomcat/conf.d/remote_debug.conf
+test -f /etc/tomcat/conf.d/remote_debug.conf && sed 's/address=[^:]*:/address=*:/' -i /etc/tomcat/conf.d/remote_debug.conf
 
 {{ if .Kubernetes }}
 echo 'server.no_ssl = 1' >> /etc/rhn/rhn.conf;

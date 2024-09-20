@@ -1,4 +1,75 @@
 -------------------------------------------------------------------
+Mon Aug 05 10:05:30 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.21-0
+  * mgrpxy: Fix typo on Systemd template
+
+-------------------------------------------------------------------
+Fri Aug 02 16:50:31 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.20-0
+  * Update the push tag to 5.0.1
+  * mgrpxy: expose port on IPv6 network (bsc#1227951)
+
+-------------------------------------------------------------------
+Thu Aug 01 18:48:57 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.19-0
+  * Skip updating Tomcat remote debug if conf file is not present
+
+-------------------------------------------------------------------
+Wed Jul 31 13:24:42 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.18-0
+  * Setup Confidential Computing container during migration
+    (bsc#1227588)
+  * Add the /etc/uyuni/uyuni-tools.yaml path to the config help
+  * Split systemd config files to not loose configuration at upgrade
+    (bsc#1227718)
+  * Use the same logic for image computation in mgradm and mgrpxy
+    (bsc#1228026)
+  * Allow building with different Helm and container default
+    registry paths (bsc#1226191)
+  * Fix recursion in mgradm upgrade podman list --help
+  * Setup hub xmlrpc API service in migration to Podman (bsc#1227588)
+  * Setup disabled hub xmlrpc API service in all cases (bsc#1227584)
+  * Clean the inspection code to make it faster
+  * Properly detect IPv6 enabled on Podman network (bsc#1224349)
+  * Fix the log file path generation
+  * Write scripts output to uyuni-tools.log file
+  * Add uyuni-hubxml-rpc to the list of values in
+    mgradm scale --help
+  * Use path in mgradm support sql file input (bsc#1227505)
+  * On Ubuntu build with go1.21 instead of go1.20
+  * Enforce Cobbler setup (bsc#1226847)
+  * Expose port on IPv6 network (bsc#1227951)
+  * show output of podman image search --list-tags command
+  * Implement mgrpxy support config command
+  * During migration, ignore /etc/sysconfig/tomcat and
+    /etc/tomcat/tomcat.conf (bsc#1228183)
+  * During migration, remove java.annotation,com.sun.xml.bind and
+    UseConcMarkSweepGC settings
+  * Disable node exporter port for Kubernetes
+  * Fix start, stop and restart in Kubernetes
+  * Increase start timeout in Kubernetes
+  * Fix traefik query
+  * Fix password entry usability (bsc#1226437)
+  * Add --prepare option to migrate command
+  * Fix random error during installation of CA certificate
+    (bsc#1227245)
+  * Clarify and fix distro name guessing when not provided
+    (bsc#1226284)
+  * Replace not working Fatal error by plain error return
+    (bsc#1220136)
+  * Allow server installation with preexisting storage volumes
+  * Do not report error when purging mounted volume (bsc#1225349)
+  * Preserve PAGER settings from the host for interactive sql
+    usage (bsc#1226914)
+  * Add mgrpxy command to clear the Squid cache
+  * Use local images for Confidential Computing and
+    Hub containers (bsc#1227586)
+
+-------------------------------------------------------------------
 Thu Jul 04 17:11:17 CEST 2024 - rosuna@suse.com
 
 - version 0.1.17-0

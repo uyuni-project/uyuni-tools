@@ -1,2 +1,0 @@
-- preserve PAGER settings from the host for interactive
-  sql usage (bsc#1226914)

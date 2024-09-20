@@ -46,7 +46,8 @@ func GetExposedPorts(debug bool) []types.PortMap {
 
 // GenerateSystemdService creates a serverY systemd file.
 func GenerateSystemdService(tz string, image string, debug bool, mirrorPath string, podmanArgs []string) error {
-	if err := podman.SetupNetwork(false); err != nil {
+	ipv6Enabled, err := podman.SetupNetwork(false)
+	if err != nil {
 		return utils.Errorf(err, L("cannot setup network"))
 	}
 
@@ -64,11 +65,12 @@ func GenerateSystemdService(tz string, image string, debug bool, mirrorPath stri
 	}
 
 	data := templates.PodmanServiceTemplateData{
-		Volumes:    utils.ServerVolumeMounts,
-		NamePrefix: "uyuni",
-		Args:       strings.Join(args, " "),
-		Ports:      ports,
-		Network:    podman.UyuniNetwork,
+		Volumes:     utils.ServerVolumeMounts,
+		NamePrefix:  "uyuni",
+		Args:        strings.Join(args, " "),
+		Ports:       ports,
+		Network:     podman.UyuniNetwork,
+		IPV6Enabled: ipv6Enabled,
 	}
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, false); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
@@ -196,6 +198,18 @@ func RunMigration(
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
 		return nil, utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
+
+	//now that everything is migrated, we need to fix SELinux permission
+	for _, volumeMount := range utils.ServerVolumeMounts {
+		mountPoint, err := GetMountPoint(volumeMount.Name)
+		if err != nil {
+			return nil, utils.Errorf(err, L("cannot inspect volume %s"), volumeMount)
+		}
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "restorecon", "-F", "-r", "-v", mountPoint); err != nil {
+			return nil, utils.Errorf(err, L("cannot restore %s SELinux permissions"), mountPoint)
+		}
+	}
+
 	extractedData, err := utils.ReadInspectData[utils.InspectResult](path.Join(scriptDir, "data"))
 
 	if err != nil {
@@ -449,4 +463,14 @@ func CallCloudGuestRegistryAuth() error {
 	}
 	// silently ignore error if it is missing
 	return nil
+}
+
+// GetMountPoint return folder where a given volume is mounted.
+func GetMountPoint(volumeName string) (string, error) {
+	args := []string{"volume", "inspect", "--format", "{{.Mountpoint}}", volumeName}
+	mountPoint, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", args...)
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSuffix(string(mountPoint), "\n"), nil
 }

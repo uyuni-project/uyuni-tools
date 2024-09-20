@@ -35,7 +35,7 @@ func ptfForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := podman_shared.PodmanLogin(hostData)
+	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
@@ -60,10 +60,12 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	}
 
 	suffix := "ptf"
+	projectId := flags.PTFId
 	if flags.TestId != "" {
 		suffix = "test"
+		projectId = flags.TestId
 	}
-	flags.Image.Name, err = utils.ComputePTF(flags.CustomerId, flags.PTFId, serverImage, suffix)
+	flags.Image.Name, err = utils.ComputePTF(flags.CustomerId, projectId, serverImage, suffix)
 	if err != nil {
 		return err
 	}
