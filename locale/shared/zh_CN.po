@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 14:41+0200\n"
+"POT-Creation-Date: 2024-09-20 14:47+0200\n"
 "PO-Revision-Date: 2024-07-15 05:47+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -570,7 +570,11 @@ msgstr "正在运行 podman ps --filter=name=%s --format={{ .Image }}"
 msgid "cannot find any running image for container %s"
 msgstr "未找到容器 %s 的任何运行中映像"
 
-#: shared/podman/login.go:41
+#: shared/podman/login.go:23
+msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+msgstr ""
+
+#: shared/podman/login.go:50
 #, fuzzy
 msgid "failed to close the temporary auth file"
 msgstr "无法创建临时目录"
