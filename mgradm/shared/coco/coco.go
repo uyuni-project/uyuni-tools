@@ -32,7 +32,8 @@ func Upgrade(
 	); err != nil {
 		return err
 	}
-	return podman.RestartInstantiated(podman.ServerAttestationService)
+
+	return podman.ScaleService(cocoFlags.Replicas, podman.ServerAttestationService)
 }
 
 func writeCocoServiceFiles(
