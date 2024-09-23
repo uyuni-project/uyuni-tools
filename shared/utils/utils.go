@@ -42,6 +42,7 @@ type InspectResult struct {
 	CommonInspectData `mapstructure:",squash"`
 	Timezone          string
 	HasHubXmlrpcApi   bool `mapstructure:"has_hubxmlrpc"`
+	Debug             bool `mapstructure:"debug"`
 }
 
 func checkValueSize(value string, min int, max int) bool {
@@ -285,6 +286,15 @@ func UninstallFile(path string, dryRun bool) {
 			}
 		}
 	}
+}
+
+// TempDir creates a temporary directory.
+func TempDir() (string, error) {
+	tempDir, err := os.MkdirTemp("", "mgradm-*")
+	if err != nil {
+		return "", Errorf(err, L("failed to create temporary directory"))
+	}
+	return tempDir, nil
 }
 
 // GetRandomBase64 generates random base64-encoded data.

@@ -86,7 +86,7 @@ func Deploy(imageFlags *utils.ProxyImageFlags, helmFlags *HelmFlags, configDir s
 		"--set", "images.proxy-tftpd="+imageFlags.GetContainerImage("tftpd"),
 		"--set", "repository="+imageFlags.Registry,
 		"--set", "version="+imageFlags.Tag,
-		"--set", "pullPolicy="+kubernetes.GetPullPolicy(imageFlags.PullPolicy))
+		"--set", "pullPolicy="+string(kubernetes.GetPullPolicy(imageFlags.PullPolicy)))
 
 	helmParams = append(helmParams, helmArgs...)
 
@@ -97,7 +97,7 @@ func Deploy(imageFlags *utils.ProxyImageFlags, helmFlags *HelmFlags, configDir s
 	}
 
 	// Wait for the pod to be started
-	return kubernetes.WaitForDeployment(helmFlags.Proxy.Namespace, helmAppName, "uyuni-proxy")
+	return kubernetes.WaitForDeployments(helmFlags.Proxy.Namespace, helmAppName)
 }
 
 func getSSHYaml(directory string) (string, error) {
@@ -173,7 +173,7 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
-		if _, err = kubernetes.GetNode("uyuni"); err != nil {
+		if _, err = kubernetes.GetNode(kubernetes.ServerFilter); err != nil {
 			err = kubernetes.ReplicasTo(kubernetes.ProxyApp, 1)
 		}
 	}()

@@ -24,6 +24,31 @@ type HelmFlags struct {
 	CertManager types.ChartFlags
 }
 
+// VolumeFlags stores the persistent volume claims configuration.
+type VolumesFlags struct {
+	// Class is the default storage class for all the persistent volume claims.
+	Class string
+	// Database is the configuration of the var-pgsql volume.
+	Database VolumeFlags
+	// Packages is the configuration of the var-spacewalk volume containing the synchronizede repositories.
+	Packages VolumeFlags
+	// Www is the configuration of the srv-www volume containing the imags and distributions.
+	Www VolumeFlags
+	// Cache is the configuration of the var-cache volume.
+	Cache VolumeFlags
+	// Mirror is the PersistentVolume name to use in case of a mirror setup.
+	// An empty value means no mirror will be used.
+	Mirror string
+}
+
+// VolumeFlags is the configuration of one volume.
+type VolumeFlags struct {
+	// Size is the requested size of the volume using kubernetes values like '100Gi'.
+	Size string
+	// Class is the storage class of the volume.
+	Class string
+}
+
 // SslCertFlags can store SSL Certs information.
 type SslCertFlags struct {
 	Cnames   []string `mapstructure:"cname"`
@@ -72,6 +97,39 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-chart", "helm")
 	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-version", "helm")
 	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-values", "helm")
+}
+
+const volumesFlagsGroupId = "volumes"
+
+// AddVolumesFlags adds the Kubernetes volumes configuration parameters to the command.
+func AddVolumesFlags(cmd *cobra.Command) {
+	cmd.Flags().String("volumes-class", "", L("Default storage class for all the volumes"))
+	cmd.Flags().String("volumes-mirror", "",
+		L("PersistentVolume name to use as a mirror. Empty means no mirror is used"),
+	)
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: volumesFlagsGroupId, Title: L("Volumes Configuration Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "volumes-class", volumesFlagsGroupId)
+	_ = utils.AddFlagToHelpGroupID(cmd, "volumes-mirror", volumesFlagsGroupId)
+
+	addVolumeFlags(cmd, "database", "var-pgsql", "50Gi")
+	addVolumeFlags(cmd, "packages", "var-spacewalk", "100Gi")
+	addVolumeFlags(cmd, "www", "srv-www", "100Gi")
+	addVolumeFlags(cmd, "cache", "var-cache", "10Gi")
+}
+
+func addVolumeFlags(cmd *cobra.Command, name string, volumeName string, size string) {
+	sizeName := fmt.Sprintf("volumes-%s-size", name)
+	cmd.Flags().String(
+		sizeName, size, fmt.Sprintf(L("Requested size for the %s volume"), volumeName),
+	)
+	_ = utils.AddFlagToHelpGroupID(cmd, sizeName, volumesFlagsGroupId)
+
+	className := fmt.Sprintf("volumes-%s-class", name)
+	cmd.Flags().String(
+		className, "", fmt.Sprintf(L("Requested storage class for the %s volume"), volumeName),
+	)
+	_ = utils.AddFlagToHelpGroupID(cmd, className, volumesFlagsGroupId)
 }
 
 // AddContainerImageFlags add container image flags to command.

@@ -60,16 +60,27 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// Deploy the SSL CA or server certificate
-	ca := ssl.SslPair{}
-	sslArgs, err := kubernetes.DeployCertificate(&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
-		flags.Image.PullPolicy)
-	if err != nil {
-		return shared_utils.Errorf(err, L("cannot deploy certificate"))
+	if flags.Ssl.UseExisting() {
+		if err := kubernetes.DeployExistingCertificate(flags.Helm.Uyuni.Namespace, &flags.Ssl); err != nil {
+			return err
+		}
+	} else {
+		ca := ssl.SslPair{}
+		sslArgs, err := kubernetes.DeployGeneratedCa(
+			&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
+			flags.Image.PullPolicy,
+		)
+
+		if err != nil {
+			return shared_utils.Errorf(err, L("cannot deploy certificate"))
+		}
+		helmArgs = append(helmArgs, sslArgs...)
 	}
-	helmArgs = append(helmArgs, sslArgs...)
 
 	// Deploy Uyuni and wait for it to be up
-	if err := kubernetes.Deploy(cnx, globalFlags.Registry, &flags.Image, &flags.Helm, &flags.Ssl,
+	if err := kubernetes.Deploy(
+		L("Initial deployment from mgradm install"),
+		cnx, globalFlags.Registry, &flags.Image, &flags.HubXmlrpc, &flags.Helm, &flags.Ssl,
 		clusterInfos, fqdn, flags.Debug.Java, false, helmArgs...,
 	); err != nil {
 		return shared_utils.Errorf(err, L("cannot deploy uyuni"))
