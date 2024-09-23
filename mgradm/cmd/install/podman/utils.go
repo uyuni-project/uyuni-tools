@@ -75,7 +75,7 @@ func installForPodman(
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
-	preparedImage, err := shared_podman.PrepareImage(authFile, image, flags.Image.PullPolicy)
+	preparedImage, err := shared_podman.PrepareImage(authFile, image, flags.Image.PullPolicy, true)
 	if err != nil {
 		return err
 	}

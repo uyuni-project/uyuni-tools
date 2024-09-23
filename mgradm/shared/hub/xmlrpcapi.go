@@ -35,17 +35,17 @@ func SetupHubXmlrpc(
 		log.Info().Msgf(L("No changes requested for hub. Keep %d replicas."), currentReplicas)
 	}
 
+	pullEnabled := (hubXmlrpcFlags.Replicas > 0 && hubXmlrpcFlags.IsChanged) || (currentReplicas > 0 && !hubXmlrpcFlags.IsChanged)
+
 	hubXmlrpcImage, err := utils.ComputeImage(registry, tag, image)
 
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
-	preparedImage, err := podman.PrepareImage(authFile, hubXmlrpcImage, pullPolicy)
-	if err != nil && ((hubXmlrpcFlags.Replicas > 0 && hubXmlrpcFlags.IsChanged) || (currentReplicas >= 0 && !hubXmlrpcFlags.IsChanged)) {
+	preparedImage, err := podman.PrepareImage(authFile, hubXmlrpcImage, pullPolicy, pullEnabled)
+	if err != nil {
 		return err
-	} else if err != nil && ((hubXmlrpcFlags.Replicas == 0 && hubXmlrpcFlags.IsChanged) || (currentReplicas == 0 && !hubXmlrpcFlags.IsChanged)) {
-		log.Info().Msgf(L("Image %s not present and it will not be pulled since HUB is not requested."), hubXmlrpcImage)
 	}
 
 	if err := generateHubXmlrpcSystemdService(preparedImage); err != nil {

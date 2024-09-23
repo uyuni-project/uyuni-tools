@@ -256,7 +256,7 @@ func RunPgsqlVersionUpgrade(
 			}
 		}
 
-		preparedImage, err := podman.PrepareImage(authFile, upgradeImageUrl, image.PullPolicy)
+		preparedImage, err := podman.PrepareImage(authFile, upgradeImageUrl, image.PullPolicy, true)
 		if err != nil {
 			return err
 		}
@@ -346,7 +346,7 @@ func Upgrade(
 		return fmt.Errorf(L("failed to compute image URL"))
 	}
 
-	preparedImage, err := podman.PrepareImage(authFile, serverImage, image.PullPolicy)
+	preparedImage, err := podman.PrepareImage(authFile, serverImage, image.PullPolicy, true)
 	if err != nil {
 		return err
 	}

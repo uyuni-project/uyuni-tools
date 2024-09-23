@@ -67,11 +67,11 @@ func writeCocoServiceFiles(
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
-	preparedImage, err := podman.PrepareImage(authFile, cocoImage, baseImage.PullPolicy)
-	if err != nil && ((cocoFlags.Replicas > 0 && cocoFlags.IsChanged) || (currentReplicas >= 0 && !cocoFlags.IsChanged)) {
+	pullEnabled := (cocoFlags.Replicas > 0 && cocoFlags.IsChanged) || (currentReplicas > 0 && !cocoFlags.IsChanged)
+
+	preparedImage, err := podman.PrepareImage(authFile, cocoImage, baseImage.PullPolicy, pullEnabled)
+	if err != nil {
 		return err
-	} else if err != nil && ((cocoFlags.Replicas == 0 && cocoFlags.IsChanged) || (currentReplicas == 0 && !cocoFlags.IsChanged)) {
-		log.Info().Msgf(L("Image %s not present and it will not be pulled since Confidential Computing is not requested."), cocoImage)
 	}
 
 	attestationData := templates.AttestationServiceTemplateData{

@@ -48,7 +48,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 	defer cleaner()
 
-	preparedImage, err := podman_utils.PrepareImage(authFile, serverImage, flags.Image.PullPolicy)
+	preparedImage, err := podman_utils.PrepareImage(authFile, serverImage, flags.Image.PullPolicy, true)
 	if err != nil {
 		return err
 	}
