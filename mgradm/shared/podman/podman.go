@@ -256,7 +256,7 @@ func RunPgsqlVersionUpgrade(
 			}
 		}
 
-		preparedImage, err := podman.PrepareImage(authFile, upgradeImageUrl, image.PullPolicy)
+		preparedImage, err := podman.PrepareImage(authFile, upgradeImageUrl, image.PullPolicy, true)
 		if err != nil {
 			return err
 		}
@@ -334,8 +334,8 @@ func Upgrade(
 	registry string,
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
-	cocoImage types.ImageFlags,
-	hubXmlrpcImage types.ImageFlags,
+	cocoFlags adm_utils.CocoFlags,
+	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
 ) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {
 		return err
@@ -346,7 +346,7 @@ func Upgrade(
 		return fmt.Errorf(L("failed to compute image URL"))
 	}
 
-	preparedImage, err := podman.PrepareImage(authFile, serverImage, image.PullPolicy)
+	preparedImage, err := podman.PrepareImage(authFile, serverImage, image.PullPolicy, true)
 	if err != nil {
 		return err
 	}
@@ -405,14 +405,14 @@ func Upgrade(
 	}
 	log.Info().Msg(L("Waiting for the server to start…"))
 
-	err = coco.Upgrade(authFile, registry, cocoImage, image,
+	err = coco.Upgrade(authFile, registry, cocoFlags, image,
 		inspectedValues.DbPort, inspectedValues.DbName, inspectedValues.DbUser, inspectedValues.DbPassword)
 	if err != nil {
 		return utils.Errorf(err, L("error upgrading confidential computing service."))
 	}
 
 	if err := hub.Upgrade(
-		authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcImage,
+		authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcFlags,
 	); err != nil {
 		return err
 	}

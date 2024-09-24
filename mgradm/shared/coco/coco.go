@@ -9,6 +9,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -19,7 +20,7 @@ import (
 func Upgrade(
 	authFile string,
 	registry string,
-	image types.ImageFlags,
+	cocoFlags adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
 	dbPort int,
 	dbName string,
@@ -27,23 +28,28 @@ func Upgrade(
 	dbPassword string,
 ) error {
 	if err := writeCocoServiceFiles(
-		authFile, registry, image, baseImage, dbName, dbPort, dbUser, dbPassword,
+		authFile, registry, cocoFlags, baseImage, dbName, dbPort, dbUser, dbPassword,
 	); err != nil {
 		return err
 	}
-	return podman.RestartInstantiated(podman.ServerAttestationService)
+
+	return podman.ScaleService(cocoFlags.Replicas, podman.ServerAttestationService)
 }
 
 func writeCocoServiceFiles(
 	authFile string,
 	registry string,
-	image types.ImageFlags,
+	cocoFlags adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
 	dbName string,
 	dbPort int,
 	dbUser string,
 	dbPassword string,
 ) error {
+	image := cocoFlags.Image
+	currentReplicas := podman.CurrentReplicaCount(podman.ServerAttestationService)
+	log.Debug().Msgf("Current Confidential Computing replicas running are %d.", currentReplicas)
+
 	if image.Tag == "" {
 		if baseImage.Tag != "" {
 			image.Tag = baseImage.Tag
@@ -51,12 +57,20 @@ func writeCocoServiceFiles(
 			image.Tag = "latest"
 		}
 	}
+	if !cocoFlags.IsChanged {
+		log.Debug().Msg("Confidential Computing settings are not changed.")
+	} else if cocoFlags.Replicas == 0 {
+		log.Debug().Msg("No Confidential Computing requested.")
+	}
+
 	cocoImage, err := utils.ComputeImage(registry, baseImage.Tag, image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
-	preparedImage, err := podman.PrepareImage(authFile, cocoImage, baseImage.PullPolicy)
+	pullEnabled := (cocoFlags.Replicas > 0 && cocoFlags.IsChanged) || (currentReplicas > 0 && !cocoFlags.IsChanged)
+
+	preparedImage, err := podman.PrepareImage(authFile, cocoImage, baseImage.PullPolicy, pullEnabled)
 	if err != nil {
 		return err
 	}
@@ -94,9 +108,8 @@ Environment=database_password=%s`, preparedImage, dbPort, dbName, dbUser, dbPass
 // SetupCocoContainer sets up the confidential computing attestation service.
 func SetupCocoContainer(
 	authFile string,
-	replicas int,
 	registry string,
-	image types.ImageFlags,
+	coco adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
 	dbName string,
 	dbPort int,
@@ -104,9 +117,9 @@ func SetupCocoContainer(
 	dbPassword string,
 ) error {
 	if err := writeCocoServiceFiles(
-		authFile, registry, image, baseImage, dbName, dbPort, dbUser, dbPassword,
+		authFile, registry, coco, baseImage, dbName, dbPort, dbUser, dbPassword,
 	); err != nil {
 		return err
 	}
-	return podman.ScaleService(replicas, podman.ServerAttestationService)
+	return podman.ScaleService(coco.Replicas, podman.ServerAttestationService)
 }

@@ -143,7 +143,7 @@ func Upgrade(
 	}
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
 
-	serverImage, err := utils.ComputeImage(globalFlags.Registry, utils.DefaultTag, *image)
+	serverImage, err := utils.ComputeImage(image.Registry, utils.DefaultTag, *image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -197,7 +197,7 @@ func Upgrade(
 		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"),
 			inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion)
 
-		if err := RunPgsqlVersionUpgrade(globalFlags.Registry, *image, *upgradeImage, nodeName,
+		if err := RunPgsqlVersionUpgrade(image.Registry, *image, *upgradeImage, nodeName,
 			inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))

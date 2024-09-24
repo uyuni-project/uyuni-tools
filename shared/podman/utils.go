@@ -235,7 +235,7 @@ func Inspect(serverImage string, pullPolicy string, scc types.SCCCredentials, pr
 	}
 	defer cleaner()
 
-	preparedImage, err := PrepareImage(authFile, serverImage, pullPolicy)
+	preparedImage, err := PrepareImage(authFile, serverImage, pullPolicy, true)
 	if err != nil {
 		return nil, err
 	}
