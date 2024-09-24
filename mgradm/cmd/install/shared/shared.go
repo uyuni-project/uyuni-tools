@@ -41,7 +41,7 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 	}
 
 	err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/tmp/setup.sh")
-	if err != nil {
+	if err != nil && !preconfigured {
 		return utils.Errorf(err, L("error running the setup script"))
 	}
 
