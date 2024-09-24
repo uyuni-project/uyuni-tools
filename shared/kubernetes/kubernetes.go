@@ -200,6 +200,13 @@ func AddSCCSecret(helmArgs []string, namespace string, scc *types.SCCCredentials
 func GetSCCSecret(namespace string, scc *types.SCCCredentials, appLabel string) (string, error) {
 	const secretName = "scc-credentials"
 
+	// Return the existing secret if any.
+	out, err := runCmdOutput(zerolog.DebugLevel, "kubectl", "get", "-n", namespace, "secret", secretName, "-o", "name")
+	if err == nil && strings.TrimSpace(string(out)) != "" {
+		return secretName, nil
+	}
+
+	// Create the secret if SCC user and password are passed.
 	if scc.User != "" && scc.Password != "" {
 		if err := createDockerSecret(
 			namespace, secretName, "registry.suse.com", scc.User, scc.Password, appLabel,

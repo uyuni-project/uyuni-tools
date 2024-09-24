@@ -19,6 +19,7 @@ import (
 func TestParamsParsing(t *testing.T) {
 	args := flagstests.InstallFlagsTestArgs()
 	args = append(args, flagstests.ServerHelmFlagsTestArgs...)
+	args = append(args, flagstests.VolumesFlagsTestExpected...)
 	args = append(args, "srv.fq.dn")
 
 	// Test function asserting that the args are properly parsed
@@ -27,6 +28,7 @@ func TestParamsParsing(t *testing.T) {
 	) error {
 		flagstests.AssertInstallFlags(t, &flags.ServerFlags)
 		flagstests.AssertServerHelmFlags(t, &flags.Helm)
+		flagstests.AssertVolumesFlags(t, &flags.Volumes)
 		testutils.AssertEquals(t, "Wrong FQDN", "srv.fq.dn", args[0])
 		return nil
 	}

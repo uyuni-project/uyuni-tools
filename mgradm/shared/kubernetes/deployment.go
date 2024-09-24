@@ -309,3 +309,15 @@ func getRunningServerImage(namespace string) string {
 	}
 	return strings.TrimSpace(string(out))
 }
+
+// neverSetup checks if the server container has already been setup setup.
+func neverSetup(namespace string, image string, pullPolicy string, pullSecret string) bool {
+	out, err := kubernetes.RunPodLogs(namespace, "ran-setup-check", image, pullPolicy, pullSecret,
+		[]types.VolumeMount{utils.RootVolumeMount},
+		"ls", "-1a", "/root/",
+	)
+	if err != nil {
+		return false
+	}
+	return !strings.Contains(string(out), ".MANAGER_SETUP_COMPLETE")
+}

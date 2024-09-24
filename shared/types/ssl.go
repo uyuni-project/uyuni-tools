@@ -20,6 +20,8 @@ type SSLCertGenerationFlags struct {
 type CaChain struct {
 	Root         string
 	Intermediate []string
+	// Key is the CA key file in the case of a migration of a self-generate CA.
+	Key string
 }
 
 // SSLPair is a type for SSL Cert and Key.

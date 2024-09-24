@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -44,6 +45,21 @@ type BaseInspector struct {
 	ScriptDir string
 	DataPath  string
 	Values    []types.InspectData
+}
+
+// GenerateScriptString creates the inspector script and returns it as a string.
+func (i *BaseInspector) GenerateScriptString() (string, error) {
+	data := templates.InspectTemplateData{
+		Param:      i.Values,
+		OutputFile: i.GetDataPath(),
+	}
+
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return "", err
+	}
+
+	return scriptBuilder.String(), nil
 }
 
 // GenerateScript is a common implementation for all inspectors.

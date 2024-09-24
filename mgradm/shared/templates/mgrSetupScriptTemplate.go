@@ -24,6 +24,9 @@ echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:800
 /usr/lib/susemanager/bin/mgr-setup -s -n
 RESULT=$?
 
+# The CA needs to be added to the database for Kickstart use.
+/usr/bin/rhn-ssl-dbstore --ca-cert=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+
 # clean before leaving
 rm $0
 exit $RESULT

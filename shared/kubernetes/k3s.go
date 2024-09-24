@@ -8,8 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"os/exec"
-	"path"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -104,74 +102,4 @@ func UninstallK3sTraefikConfig(dryRun bool) {
 
 	// Now that it's reinstalled, remove the file
 	utils.UninstallFile(k3sTraefikConfigPath, dryRun)
-}
-
-// InspectKubernetes check values on a given image and deploy.
-func InspectKubernetes(namespace string, serverImage string, pullPolicy string) (*utils.ServerInspectData, error) {
-	for _, binary := range []string{"kubectl", "helm"} {
-		if _, err := exec.LookPath(binary); err != nil {
-			return nil, fmt.Errorf(L("install %s before running this command"), binary)
-		}
-	}
-
-	scriptDir, cleaner, err := utils.TempDir()
-	if err != nil {
-		return nil, err
-	}
-	defer cleaner()
-
-	inspector := utils.NewServerInspector(scriptDir)
-	if err := inspector.GenerateScript(); err != nil {
-		return nil, err
-	}
-
-	command := path.Join(utils.InspectContainerDirectory, utils.InspectScriptFilename)
-
-	const podName = "inspector"
-
-	// delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
-	if err := DeletePod(namespace, podName, ServerFilter); err != nil {
-		return nil, utils.Errorf(err, L("cannot delete %s"), podName)
-	}
-
-	// this is needed because folder with script needs to be mounted
-	nodeName, err := GetNode(namespace, ServerFilter)
-	if err != nil {
-		return nil, utils.Errorf(err, L("cannot find node running uyuni"))
-	}
-
-	// generate deploy data
-	deployData := types.Deployment{
-		APIVersion: "v1",
-		Spec: &types.Spec{
-			RestartPolicy: "Never",
-			NodeName:      nodeName,
-			Containers: []types.Container{
-				{
-					Name: podName,
-					VolumeMounts: append(utils.PgsqlRequiredVolumeMounts,
-						types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
-					Image: serverImage,
-				},
-			},
-			Volumes: append(utils.PgsqlRequiredVolumes,
-				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
-		},
-	}
-	// transform deploy data in JSON
-	override, err := GenerateOverrideDeployment(deployData)
-	if err != nil {
-		return nil, err
-	}
-	err = RunPod(namespace, podName, ServerFilter, serverImage, pullPolicy, command, override)
-	if err != nil {
-		return nil, utils.Errorf(err, L("cannot run inspect pod"))
-	}
-
-	inspectResult, err := inspector.ReadInspectData()
-	if err != nil {
-		return nil, utils.Errorf(err, L("cannot inspect data"))
-	}
-
-	return inspectResult, err
 }

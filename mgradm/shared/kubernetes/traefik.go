@@ -57,7 +57,7 @@ spec:
 	}
 
 	// Write the routes from the endpoint to the services
-	for _, endpoint := range GetPortLists(hub, debug) {
+	for _, endpoint := range getPortList(hub, debug) {
 		_, err := file.WriteString("---\n")
 		if err != nil {
 			return utils.Errorf(err, L("failed to write traefik middleware and routes to file"))

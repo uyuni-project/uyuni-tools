@@ -102,5 +102,19 @@ func getMigrationJob(
 	job.Spec.Template.Spec.Containers[0].VolumeMounts = volumeMounts
 	job.Spec.Template.Spec.Volumes = volumes
 
+	initScript := `cp -a /etc/systemd/system/multi-user.target.wants/. /mnt/etc-systemd-multi`
+
+	job.Spec.Template.Spec.InitContainers = []core.Container{
+		{
+			Name:            "init-volumes",
+			Image:           image,
+			ImagePullPolicy: kubernetes.GetPullPolicy(pullPolicy),
+			Command:         []string{"sh", "-c", initScript},
+			VolumeMounts: []core.VolumeMount{
+				{Name: "etc-systemd-multi", MountPath: "/mnt/etc-systemd-multi"},
+			},
+		},
+	}
+
 	return job, nil
 }

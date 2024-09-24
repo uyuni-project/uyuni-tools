@@ -262,3 +262,14 @@ func CreateVolumes(mounts []types.VolumeMount) []core.Volume {
 }
 
 var runCmdOutput = utils.RunCmdOutput
+
+// HasVolume returns true if the pvcName persistent volume claim is bound.
+func HasVolume(namespace string, pvcName string) bool {
+	out, err := runCmdOutput(
+		zerolog.DebugLevel, "kubectl", "get", "pvc", "-n", namespace, pvcName, "-o", "jsonpath={.status.phase}",
+	)
+	if err != nil {
+		return false
+	}
+	return strings.TrimSpace(string(out)) == "Bound"
+}

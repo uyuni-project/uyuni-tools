@@ -9,9 +9,9 @@ package kubernetes
 import (
 	"encoding/base64"
 	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -27,12 +27,6 @@ import (
 	core "k8s.io/api/core/v1"
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-)
-
-// Helm annotation to add in order to use cert-manager's uyuni CA issuer, in JSON format.
-var ingressCertManagerAnnotation = fmt.Sprintf(
-	"ingressSSLAnnotations={\"cert-manager.io/issuer\": \"%s\"}",
-	kubernetes.CaIssuerName,
 )
 
 // DeployExistingCertificate execute a deploy of an existing certificate.
@@ -70,13 +64,11 @@ func DeployExistingCertificate(namespace string, sslFlags *cmd_utils.InstallSSLF
 }
 
 // DeployReusedCa deploys an existing SSL CA using an already installed cert-manager.
-func DeployReusedCa(namespace string, ca *types.SSLPair) ([]string, error) {
-	helmArgs := []string{}
-
+func DeployReusedCa(namespace string, ca *types.SSLPair) error {
 	log.Info().Msg(L("Creating cert-manager issuer for existing CA"))
 	tempDir, cleaner, err := utils.TempDir()
 	if err != nil {
-		return []string{}, err
+		return err
 	}
 	defer cleaner()
 
@@ -89,7 +81,7 @@ func DeployReusedCa(namespace string, ca *types.SSLPair) ([]string, error) {
 	}
 
 	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
-		return []string{}, utils.Errorf(err, L("failed to generate issuer definition"))
+		return utils.Errorf(err, L("failed to generate issuer definition"))
 	}
 
 	err = utils.RunCmd("kubectl", "apply", "-f", issuerPath)
@@ -97,46 +89,26 @@ func DeployReusedCa(namespace string, ca *types.SSLPair) ([]string, error) {
 		log.Fatal().Err(err).Msg(L("Failed to create issuer"))
 	}
 
-	// Wait for issuer to be ready
-	if err := waitForIssuer(namespace, kubernetes.CaIssuerName); err != nil {
-		return nil, err
-	}
-	helmArgs = append(helmArgs, "--set-json", ingressCertManagerAnnotation)
-
-	// Copy the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
-	if err := createCaConfig(namespace, []byte(ca.Cert)); err != nil {
-		return nil, err
-	}
-
-	return helmArgs, nil
+	return nil
 }
 
 // DeployGenerateCa deploys a new SSL CA using cert-manager.
 func DeployGeneratedCa(
-	helmFlags *cmd_utils.HelmFlags,
+	namespace string,
 	sslFlags *cmd_utils.InstallSSLFlags,
-	kubeconfig string,
 	fqdn string,
-	imagePullPolicy string,
-) ([]string, error) {
-	helmArgs := []string{}
-
-	// Install cert-manager if needed
-	if err := InstallCertManager(helmFlags, kubeconfig, imagePullPolicy); err != nil {
-		return []string{}, utils.Errorf(err, L("cannot install cert manager"))
-	}
-
+) error {
 	log.Info().Msg(L("Creating SSL certificate issuer"))
 	tempDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return []string{}, utils.Errorf(err, L("failed to create temporary directory"))
+		return utils.Errorf(err, L("failed to create temporary directory"))
 	}
 	defer os.RemoveAll(tempDir)
 
 	issuerPath := filepath.Join(tempDir, "issuer.yaml")
 
 	issuerData := templates.GeneratedCaIssuerTemplateData{
-		Namespace: helmFlags.Uyuni.Namespace,
+		Namespace: namespace,
 		Country:   sslFlags.Country,
 		State:     sslFlags.State,
 		City:      sslFlags.City,
@@ -147,26 +119,15 @@ func DeployGeneratedCa(
 	}
 
 	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
-		return []string{}, utils.Errorf(err, L("failed to generate issuer definition"))
+		return utils.Errorf(err, L("failed to generate issuer definition"))
 	}
 
 	err = utils.RunCmd("kubectl", "apply", "-f", issuerPath)
 	if err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to create issuer"))
+		return utils.Errorf(err, L("Failed to create issuer"))
 	}
 
-	// Wait for issuer to be ready
-	if err := waitForIssuer(helmFlags.Uyuni.Namespace, "uyuni-ca-issuer"); err != nil {
-		return nil, err
-	}
-	helmArgs = append(helmArgs, "--set-json", ingressCertManagerAnnotation)
-
-	// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
-	if err := extractCaCertToConfig(helmFlags.Uyuni.Namespace); err != nil {
-		return nil, err
-	}
-
-	return helmArgs, nil
+	return nil
 }
 
 // Wait for issuer to be ready.
@@ -273,4 +234,12 @@ func createCaConfig(namespace string, ca []byte) error {
 		},
 	}
 	return kubernetes.Apply([]runtime.Object{&configMap}, L("failed to create the SSH migration ConfigMap"))
+}
+
+// HasIssuer returns true if the issuer is defined.
+//
+// False will be returned in case of errors or if the issuer resource doesn't exist on the cluster.
+func HasIssuer(namespace string, name string) bool {
+	out, err := runCmdOutput(zerolog.DebugLevel, "kubectl", "get", "issuer", "-n", namespace, name, "-o", "name")
+	return err == nil && strings.TrimSpace(string(out)) != ""
 }

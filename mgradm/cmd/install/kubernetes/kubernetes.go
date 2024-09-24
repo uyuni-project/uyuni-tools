@@ -45,10 +45,21 @@ NOTE: installing on a remote cluster is not supported yet!
 
 	shared.AddInstallFlags(cmd)
 	cmd_utils.AddHelmInstallFlag(cmd)
+	cmd_utils.AddVolumesFlags(cmd)
 	return cmd
 }
 
 // NewCommand for kubernetes installation.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return newCmd(globalFlags, installForKubernetes)
+}
+
+func installForKubernetes(
+	_ *types.GlobalFlags,
+	flags *kubernetes.KubernetesServerFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	flags.Installation.CheckParameters(cmd, "kubectl")
+	return kubernetes.Reconcile(flags, args[0])
 }

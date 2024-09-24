@@ -18,7 +18,12 @@ var defaultImage = path.Join(utils.DefaultRegistry, "server")
 
 // UseExisting return true if existing SSL Cert can be used.
 func (f *InstallSSLFlags) UseExisting() bool {
-	return f.Server.Cert != "" && f.Server.Key != "" && f.Ca.Root != ""
+	return f.Server.Cert != "" && f.Server.Key != "" && f.Ca.Root != "" && f.Ca.Key == ""
+}
+
+// UseMigratedCa returns true if a migrated CA and key can be used.
+func (f *InstallSSLFlags) UseMigratedCa() bool {
+	return f.Ca.Root != "" && f.Ca.Key != ""
 }
 
 // CheckParameters checks that all the required flags are passed if using 3rd party certificates.
