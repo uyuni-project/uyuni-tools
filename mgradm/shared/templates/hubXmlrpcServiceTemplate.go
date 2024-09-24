@@ -37,7 +37,7 @@ ExecStart=/usr/bin/podman run \
         -p {{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
         {{- end }}
         {{- range .Volumes }}
-        -v {{ .Name }}:{{ .MountPath }} \
+        -v {{ .Name }}:{{ .MountPath }}:z \
         {{- end }}
 	-e HUB_API_URL \
 	-e HUB_CONNECT_TIMEOUT \
