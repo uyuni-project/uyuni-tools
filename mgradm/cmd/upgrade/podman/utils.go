@@ -19,7 +19,7 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 		return err
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}

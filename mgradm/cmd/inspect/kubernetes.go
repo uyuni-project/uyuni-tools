@@ -13,6 +13,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
+	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
@@ -23,11 +24,11 @@ import (
 
 func kuberneteInspect(
 	globalFlags *types.GlobalFlags,
-	flags *types.ImageFlags,
+	flags *inspect_shared.InspectFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	serverImage, err := utils.ComputeImage("", utils.DefaultTag, *flags)
+	serverImage, err := utils.ComputeImage("", utils.DefaultTag, flags.Image)
 	if err != nil && len(serverImage) > 0 {
 		return utils.Errorf(err, L("failed to determine image"))
 	}
@@ -42,7 +43,7 @@ func kuberneteInspect(
 		}
 	}
 
-	inspectResult, err := shared_kubernetes.InspectKubernetes(serverImage, flags.PullPolicy)
+	inspectResult, err := shared_kubernetes.InspectKubernetes(serverImage, flags.Image.PullPolicy)
 	if err != nil {
 		return utils.Errorf(err, L("inspect command failed"))
 	}
