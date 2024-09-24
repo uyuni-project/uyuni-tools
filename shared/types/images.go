@@ -6,6 +6,7 @@ package types
 
 // ImageFlags represents the flags used by an image.
 type ImageFlags struct {
+	Registry   string `mapstructure:"registry"`
 	Name       string `mapstructure:"image"`
 	Tag        string `mapstructure:"tag"`
 	PullPolicy string `mapstructure:"pullPolicy"`

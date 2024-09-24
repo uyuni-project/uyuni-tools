@@ -162,7 +162,7 @@ func getHttpProxyConfig() string {
 func GetContainerImage(authFile string, flags *utils.ProxyImageFlags, name string) (string, error) {
 	image := flags.GetContainerImage(name)
 
-	preparedImage, err := podman.PrepareImage(authFile, image, flags.PullPolicy)
+	preparedImage, err := podman.PrepareImage(authFile, image, flags.PullPolicy, true)
 	if err != nil {
 		return "", err
 	}
