@@ -44,6 +44,7 @@ NOTE: installing on a remote cluster is not supported yet!
 
 	shared.AddInstallFlags(cmd)
 	cmd_utils.AddHelmInstallFlag(cmd)
+	cmd_utils.AddVolumesFlags(cmd)
 	return cmd
 }
 

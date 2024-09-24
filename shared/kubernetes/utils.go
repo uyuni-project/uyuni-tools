@@ -90,6 +90,35 @@ func WaitForDeployments(namespace string, names ...string) error {
 	return nil
 }
 
+// WaitForRunningDeployment waits for a deployment to have at least one replica in running state.
+func WaitForRunningDeployment(namespace string, name string) error {
+	log.Info().Msgf(L("Waiting for %[1]s deployment to be started in %[2]s namespace\n"), name, namespace)
+	for {
+		pods, err := getPodsForDeployment(namespace, name)
+		if err != nil {
+			return err
+		}
+
+		jsonPath := "jsonpath={.status.containerStatuses[*].state.running.startedAt}"
+		if len(pods) > 1 {
+			jsonPath = "jsonpath={.items[*].status.containerStatuses[*].state.running.startedAt}"
+		}
+		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-n", namespace,
+			"-o", jsonPath,
+			strings.Join(pods, " "),
+		)
+		if err != nil {
+			return err
+		}
+		if strings.TrimSpace(string(out)) != "" {
+			break
+		}
+
+		time.Sleep(1 * time.Second)
+	}
+	return nil
+}
+
 // WaitForPulledImage wait that image is pulled.
 func WaitForPulledImage(namespace string, podName string) error {
 	log.Info().Msgf(L("Waiting for image of %[1]s pod in %[2]s namespace to be pulled"), podName, namespace)
@@ -144,27 +173,11 @@ func IsDeploymentReady(namespace string, name string) (bool, error) {
 		}
 	}
 
-	// Search for the replica set matching the deployment
-	rsArgs := []string{
-		"get", "rs", "-o",
-		fmt.Sprintf("jsonpath={.items[?(@.metadata.ownerReferences[0].name=='%s')].metadata.name}", name),
-	}
-	rsArgs = addNamespace(rsArgs, namespace)
-	out, err = utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", rsArgs...)
+	pods, err := getPodsForDeployment(namespace, name)
 	if err != nil {
-		return false, utils.Errorf(err, L("failed to find ReplicaSet for deployment %s"), name)
+		return false, err
 	}
-	rs := strings.TrimSpace(string(out))
 
-	// Check if all replica set pods have failed to start
-	jsonpath = fmt.Sprintf("jsonpath={.items[?(@.metadata.ownerReferences[0].name=='%s')].metadata.name}", rs)
-	podArgs := []string{"get", "pod", "-o", jsonpath}
-	podArgs = addNamespace(podArgs, namespace)
-	out, err = utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", podArgs...)
-	if err != nil {
-		return false, utils.Errorf(err, L("failed to find pods for %s deployment"), name)
-	}
-	pods := strings.Split(string(out), " ")
 	failedPods := 0
 	for _, podName := range pods {
 		if failed, err := isPodFailed(namespace, podName); err != nil {
@@ -178,6 +191,33 @@ func IsDeploymentReady(namespace string, name string) (bool, error) {
 	}
 
 	return false, nil
+}
+
+func getPodsForDeployment(namespace string, name string) ([]string, error) {
+	pods := []string{}
+
+	// Search for the replica set matching the deployment
+	rsArgs := []string{
+		"get", "rs", "-o",
+		fmt.Sprintf("jsonpath={.items[?(@.metadata.ownerReferences[0].name=='%s')].metadata.name}", name),
+	}
+	rsArgs = addNamespace(rsArgs, namespace)
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", rsArgs...)
+	if err != nil {
+		return pods, utils.Errorf(err, L("failed to find ReplicaSet for deployment %s"), name)
+	}
+	rs := strings.TrimSpace(string(out))
+
+	// Check if all replica set pods have failed to start
+	jsonpath := fmt.Sprintf("jsonpath={.items[?(@.metadata.ownerReferences[0].name=='%s')].metadata.name}", rs)
+	podArgs := []string{"get", "pod", "-o", jsonpath}
+	podArgs = addNamespace(podArgs, namespace)
+	out, err = utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", podArgs...)
+	if err != nil {
+		return pods, utils.Errorf(err, L("failed to find pods for %s deployment"), name)
+	}
+	pods = strings.Split(string(out), " ")
+	return pods, nil
 }
 
 // isPodFailed checks if any of the containers of the pod are in BackOff state.
@@ -229,7 +269,7 @@ func GetDeploymentStatus(namespace string, name string) (*DeploymentStatus, erro
 // ReplicasTo set the replica for an app to the given value.
 // Scale the number of replicas of the server.
 func ReplicasTo(namespace string, app string, replica uint) error {
-	args := []string{"scale", "deploy", app, "--replicas"}
+	args := []string{"scale", "-n", namespace, "deploy", app, "--replicas"}
 	log.Debug().Msgf("Setting replicas for pod in %s to %d", app, replica)
 	args = append(args, fmt.Sprint(replica), "-n", namespace)
 
