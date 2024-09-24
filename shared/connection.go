@@ -6,7 +6,6 @@ package shared
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -69,7 +68,7 @@ func (c *Connection) GetCommand() (string, error) {
 			_, err = exec.LookPath("kubectl")
 			if err == nil {
 				hasKubectl = true
-				if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "--request-timeout=30s", "get", "pod", c.kubernetesFilter, "-A", "-o=jsonpath={.items[*].metadata.name}"); err != nil {
+				if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "--request-timeout=30s", "get", "deploy", c.kubernetesFilter, "-A", "-o=jsonpath={.items[*].metadata.name}"); err != nil {
 					log.Info().Msg(L("kubectl not configured to connect to a cluster, ignoring"))
 				} else if len(bytes.TrimSpace(out)) != 0 {
 					c.command = "kubectl"
@@ -147,23 +146,14 @@ func (c *Connection) GetNamespace(appName string, filters ...string) (string, er
 		}
 	}
 
-	// retrieving namespace from helm release
-	clusterInfos, clusterInfosErr := kubernetes.CheckCluster()
-	if clusterInfosErr != nil {
-		return "", utils.Errorf(clusterInfosErr, L("failed to discover the cluster type"))
+	// retrieving namespace from the first installed object we can find matching the filter.
+	// This assumes that the server or proxy has been installed only in one namespace
+	// with the current cluster credentials.
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "all", "-A", c.kubernetesFilter, "-o", "jsonpath={.items[*].metadata.namespace}")
+	if err != nil {
+		return "", utils.Errorf(err, L("failed to guest namespace"))
 	}
-
-	kubeconfig := clusterInfos.GetKubeconfig()
-	if !kubernetes.HasHelmRelease(appName, kubeconfig) {
-		return "", fmt.Errorf(L("no %s helm release installed on the cluster"), appName)
-	}
-
-	var namespaceErr error
-	c.namespace, namespaceErr = extractNamespaceFromConfig(appName, kubeconfig, filters...)
-	if namespaceErr != nil {
-		return "", utils.Errorf(namespaceErr, L("failed to find the %s deployment namespace"), appName)
-	}
-
+	c.namespace = strings.TrimSpace(strings.Split(string(out), " ")[0])
 	return c.namespace, nil
 }
 
@@ -372,6 +362,11 @@ func (c *Connection) TestExistenceInPod(dstpath string) bool {
 	case "podman":
 		commandArgs = append(commandArgs, "test", "-e", dstpath)
 	case "kubectl":
+		namespace, err := c.GetNamespace("")
+		if err != nil {
+			log.Fatal().Err(err).Msg(L("failed to detect the namespace"))
+		}
+		commandArgs = append(commandArgs, "-n", namespace)
 		commandArgs = append(commandArgs, "-c", "uyuni", "test", "-e", dstpath)
 	default:
 		log.Fatal().Msgf(L("unknown container kind: %s"), command)
@@ -511,34 +506,4 @@ func (cnx *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 		}
 	}
 	return files, nil
-}
-
-// extractNamespaceFromConfig extracts the namespace of a given application
-// from the Helm release information.
-func extractNamespaceFromConfig(appName string, kubeconfig string, filters ...string) (string, error) {
-	args := []string{}
-	if kubeconfig != "" {
-		args = append(args, "--kubeconfig", kubeconfig)
-	}
-	args = append(args, "list", "-aA", "-f", appName, "-o", "json")
-	args = append(args, filters...)
-
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "helm", args...)
-	if err != nil {
-		return "", utils.Errorf(err, L("failed to detect %s's namespace using helm"), appName)
-	}
-
-	var data []releaseInfo
-	if err = json.Unmarshal(out, &data); err != nil {
-		return "", utils.Errorf(err, L("helm provided an invalid JSON output"))
-	}
-
-	if len(data) == 1 {
-		return data[0].Namespace, nil
-	}
-	return "", errors.New(L("found no or more than one deployment"))
-}
-
-type releaseInfo struct {
-	Namespace string `mapstructure:"namespace"`
 }
