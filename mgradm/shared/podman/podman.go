@@ -198,6 +198,18 @@ func RunMigration(
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
 		return nil, utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
+
+	//now that everything is migrated, we need to fix SELinux permission
+	for _, volumeMount := range utils.ServerVolumeMounts {
+		mountPoint, err := GetMountPoint(volumeMount.Name)
+		if err != nil {
+			return nil, utils.Errorf(err, L("cannot inspect volume %s"), volumeMount)
+		}
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "restorecon", "-F", "-r", "-v", mountPoint); err != nil {
+			return nil, utils.Errorf(err, L("cannot restore %s SELinux permissions"), mountPoint)
+		}
+	}
+
 	extractedData, err := utils.ReadInspectData[utils.InspectResult](path.Join(scriptDir, "data"))
 
 	if err != nil {
@@ -451,4 +463,14 @@ func CallCloudGuestRegistryAuth() error {
 	}
 	// silently ignore error if it is missing
 	return nil
+}
+
+// GetMountPoint return folder where a given volume is mounted.
+func GetMountPoint(volumeName string) (string, error) {
+	args := []string{"volume", "inspect", "--format", "{{.Mountpoint}}", volumeName}
+	mountPoint, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", args...)
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSuffix(string(mountPoint), "\n"), nil
 }
