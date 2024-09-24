@@ -18,18 +18,19 @@ import (
 
 func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
-	fileList, err := cnx.RunSupportConfig()
-	if err != nil {
-		return err
-	}
 
 	// Copy the generated file locally
 	tmpDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
 		return utils.Errorf(err, L("failed to create temporary directory"))
 	}
-
 	defer os.RemoveAll(tmpDir)
+
+	fileList, err := cnx.RunSupportConfig(tmpDir)
+	if err != nil {
+		return err
+	}
+
 	var fileListHost []string
 	if podman.HasService(podman.ServerService) {
 		fileListHost, err = podman.RunSupportConfigOnPodmanHost(tmpDir)
