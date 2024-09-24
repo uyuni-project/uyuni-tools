@@ -343,7 +343,10 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 	}
 
 	if user != "" && strings.HasPrefix(dst, "server:") {
-		execArgs := []string{"exec", podName, "-n", namespace}
+		execArgs := []string{"exec", podName}
+		if command == "kubectl" {
+			execArgs = append(execArgs, "-n", namespace)
+		}
 		execArgs = append(execArgs, extraArgs...)
 		owner := user
 		if group != "" {
