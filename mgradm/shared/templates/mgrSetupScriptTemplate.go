@@ -11,7 +11,7 @@ import (
 
 const mgrSetupScriptTemplate = `#!/bin/sh
 {{- range $name, $value := .Env }}
-export {{ $name }}={{ $value }}
+export {{ $name }}='{{ $value }}'
 {{- end }}
 
 {{- if .DebugJava }}
