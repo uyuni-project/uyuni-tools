@@ -17,7 +17,12 @@ import (
 )
 
 func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
-	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	containerName, err := shared.ChooseObjPodmanOrKubernetes(podman.ServerContainerName, kubernetes.ServerApp)
+	if err != nil {
+		return err
+	}
+
+	cnx := shared.NewConnection(flags.Backend, containerName, kubernetes.ServerFilter)
 
 	// Copy the generated file locally
 	tmpDir, err := os.MkdirTemp("", "mgradm-*")
@@ -40,7 +45,12 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	}
 
 	if utils.IsInstalled("kubectl") && utils.IsInstalled("helm") {
-		fileListHost, err = kubernetes.RunSupportConfigOnKubernetesHost(tmpDir)
+		var namespace string
+		namespace, err = cnx.GetNamespace("")
+		if err != nil {
+			return err
+		}
+		fileListHost, err = kubernetes.RunSupportConfigOnKubernetesHost(tmpDir, namespace, kubernetes.ServerFilter)
 	}
 	if err != nil {
 		return err

@@ -46,7 +46,7 @@ func uninstallForKubernetes(
 	if err != nil {
 		return err
 	}
-	if err := kubernetes.HelmUninstall(serverNamespace, kubeconfig, kubernetes.ProxyApp, !flags.Force); err != nil {
+	if err := kubernetes.HelmUninstall(serverNamespace, kubeconfig, kubernetes.ServerApp, !flags.Force); err != nil {
 		return err
 	}
 
@@ -86,7 +86,9 @@ func uninstallForKubernetes(
 
 	// Uninstall cert-manager if we installed it
 	certManagerConnection := shared.NewConnection("kubectl", "", "")
-	certManagerNamespace, err := certManagerConnection.GetNamespace("cert-manager", "-linstalledby=mgradm")
+	// TODO: re-add "-linstalledby=mgradm" filter once the label is added in helm release
+	// mgradm/shared/kubernetes/certificates.go:124 was supposed to be addressing it
+	certManagerNamespace, err := certManagerConnection.GetNamespace("cert-manager")
 	if err != nil {
 		return err
 	}
