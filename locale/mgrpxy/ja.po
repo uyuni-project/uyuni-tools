@@ -8,32 +8,32 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:41+0200\n"
-"PO-Revision-Date: 2024-07-15 22:47+0000\n"
+"PO-Revision-Date: 2024-09-25 13:44+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrpxy-5-0/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
-msgstr ""
+msgstr "キャッシュのクリア"
 
 #: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/cache/podman.go:25
 msgid "failed to remove cached data"
-msgstr ""
+msgstr "キャッシュされたデータを削除できませんでした"
 
 #: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:29
-#, fuzzy
 msgid "failed to re-create the cache directories"
-msgstr "一時ディレクトリの作成に失敗しました"
+msgstr "キャッシュディレクトリの再作成に失敗しました"
 
 #: mgrpxy/cmd/cache/squid.go:18 mgrpxy/cmd/cache/squid.go:19
 msgid "Manage proxy cache"
-msgstr ""
+msgstr "プロキシキャッシュの管理"
 
 #: mgrpxy/cmd/cmd.go:35
 msgid "Uyuni proxy administration tool"
@@ -45,16 +45,15 @@ msgstr "Uyuniプロキシのコンテナ管理を支援するツール"
 
 #: mgrpxy/cmd/cmd.go:43
 msgid "Server Deployment:"
-msgstr ""
+msgstr "サーバ配備:"
 
 #: mgrpxy/cmd/cmd.go:47
 msgid "Server Management:"
-msgstr ""
+msgstr "サーバ管理:"
 
 #: mgrpxy/cmd/cmd.go:51
-#, fuzzy
 msgid "Administrator tools:"
-msgstr "Uyuniプロキシ管理ツール"
+msgstr "管理者ツール:"
 
 #: mgrpxy/cmd/cmd.go:62
 #, javascript-format
@@ -160,7 +159,7 @@ msgstr "プロキシ設定を %s ファイルから抽出できませんでし�
 
 #: mgrpxy/cmd/install/podman/utils.go:47 mgrpxy/shared/podman/podman.go:227
 msgid "failed to login to registry.suse.com"
-msgstr ""
+msgstr "registry.suse.comへのログインに失敗しました"
 
 #: mgrpxy/cmd/logs/logs.go:36
 msgid "Get the proxy logs"
@@ -238,19 +237,20 @@ msgid "Stop the proxy"
 msgstr "プロキシの停止"
 
 #: mgrpxy/cmd/support/config/config.go:23
-#, fuzzy
 msgid "Extract configuration and logs"
-msgstr "設定の抽出に失敗しました"
+msgstr "設定とログの抽出"
 
 #: mgrpxy/cmd/support/config/config.go:24
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from \n"
 "the containers for support to help debugging."
 msgstr ""
+"デバッグを支援するため、ホストまたはクラスタの設定とログ、および\n"
+"コンテナから設定とログを抽出します。"
 
 #: mgrpxy/cmd/support/config/config.go:32
 msgid "path where to extract the data"
-msgstr ""
+msgstr "データを抽出するパス"
 
 #: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:25
 msgid "Install a PTF or Test package on a kubernetes cluster"
@@ -494,9 +494,8 @@ msgid "cannot generate systemd conf file"
 msgstr "systemd confファイルを生成できません"
 
 #: mgrpxy/shared/podman/podman.go:142
-#, fuzzy
 msgid "cannot generate systemd conf user configuration file"
-msgstr "systemd confファイルを生成できません"
+msgstr "systemd confユーザ設定ファイルを生成できません"
 
 #: mgrpxy/shared/podman/podman.go:172
 #, javascript-format
@@ -560,7 +559,7 @@ msgstr "Squidチューニング設定ファイル"
 #: mgrpxy/shared/utils/flags.go:80
 #, javascript-format
 msgid "Image for %s container"
-msgstr ""
+msgstr "%s コンテナのイメージ"
 
 #: mgrpxy/shared/utils/flags.go:82
 #, javascript-format
