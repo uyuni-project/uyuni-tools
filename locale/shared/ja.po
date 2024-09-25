@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:47+0200\n"
-"PO-Revision-Date: 2024-09-25 06:48+0000\n"
+"PO-Revision-Date: 2024-09-25 13:45+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ja/>\n"
@@ -103,7 +103,7 @@ msgstr "サポートされていないバックエンド %s"
 
 #: shared/connection.go:146
 msgid "coundn't find app name"
-msgstr ""
+msgstr "アプリ名が見つかりませんでした"
 
 #: shared/connection.go:153
 #, fuzzy
