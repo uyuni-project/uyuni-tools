@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:41+0200\n"
-"PO-Revision-Date: 2024-07-04 02:46+0000\n"
+"PO-Revision-Date: 2024-09-25 13:44+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm-5-0/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -28,11 +29,11 @@ msgstr "Uyuniサーバのコンテナ管理を支援するツール"
 
 #: mgradm/cmd/cmd.go:48
 msgid "Server Deployment:"
-msgstr "サーバの配備"
+msgstr "サーバ配備:"
 
 #: mgradm/cmd/cmd.go:52
 msgid "Server Management:"
-msgstr "サーバ管理"
+msgstr "サーバ管理:"
 
 #: mgradm/cmd/cmd.go:56
 msgid "Administrator tools:"
@@ -91,7 +92,7 @@ msgstr "ISOイメージをマウントできません: %s"
 
 #: mgradm/cmd/distro/cp.go:98
 msgid "Missing TreeLabel. Please specify distribution name"
-msgstr ""
+msgstr "TreeLabelがありません。ディストリビューション名を指定してください"
 
 #: mgradm/cmd/distro/cp.go:107
 #, javascript-format
@@ -218,7 +219,6 @@ msgid "Copy distribution files from iso to the container"
 msgstr "ディストリビューションファイルをisoからコンテナにコピーする"
 
 #: mgradm/cmd/distro/distro.go:79
-#, fuzzy
 msgid ""
 "Takes a path to source iso file or directory with mounted iso and copies it into the container.\n"
 "\n"
@@ -230,9 +230,15 @@ msgid ""
 "\n"
 "Note: API details are required for auto registration."
 msgstr ""
-"ソースisoファイルまたはisoがマウントされているディレクトリへのパスを取得し、それをコンテナにコピーします。\n"
+"ソースisoファイルまたはisoがマウントされているディレクトリへのパスを取得し、"
+"それをコンテナにコピーします。\n"
 "\n"
-"オプションのパラメータ「distribution-name」、「version」 および「arch」は、カスタムディストリビューションを指定します。設定されていない場合、ディストリビューション名は自動検出されます。\n"
+"オプションのパラメータ「distribution-name」、「version」 "
+"および「arch」は、カスタムディストリビューションを指定します。.\n"
+"設定されていない場合、ディストリビューション名は自動検出が試みられます。\n"
+"\n"
+"- 「.treeinfo」ファイルが存在する場合はそのファイルの名前を使用する\n"
+"- ISOまたは渡されたディレクトリの名前を使用する\n"
 "\n"
 "メモ: 自動登録にはAPIの詳細が必要です。"
 
@@ -490,11 +496,12 @@ msgstr "サービスを有効にできません"
 #: mgradm/cmd/support/ptf/podman/utils.go:40
 #: mgradm/cmd/upgrade/podman/utils.go:24
 msgid "failed to login to registry.suse.com"
-msgstr ""
+msgstr "registry.suse.comへのログインに失敗しました"
 
 #: mgradm/cmd/install/podman/utils.go:59
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
-msgstr ""
+msgstr "サーバはすでに初期化されています。新規インストールを試みる前、またはアップグ"
+"レードコマンドを使用する前にアンインストールしてください"
 
 #: mgradm/cmd/install/podman/utils.go:64 mgradm/cmd/migrate/podman/utils.go:28
 msgid "install podman before running this command"
@@ -689,7 +696,7 @@ msgstr "SUSEカスタマーセンターのパスワード"
 
 #: mgradm/cmd/install/shared/flags.go:203
 msgid "SUSE Customer Center Flags"
-msgstr "SUSE カスタマーセンターのフラグ"
+msgstr "SUSEカスタマーセンターのフラグ"
 
 #: mgradm/cmd/install/shared/flags.go:207
 msgid "Enable tomcat and taskomatic remote debugging"
@@ -721,7 +728,8 @@ msgstr "最初のユーザのフラグ"
 
 #: mgradm/cmd/install/shared/shared.go:32
 msgid "Server appears to be already configured. Installation will continue, but installation options may be ignored."
-msgstr ""
+msgstr "サーバはすでに設定されているようです。インストールは続行されますが、インスト"
+"ールオプションは無視される場合があります。"
 
 #: mgradm/cmd/install/shared/shared.go:40
 msgid "cannot copy /tmp/setup.sh"
@@ -739,16 +747,16 @@ msgstr "SSL CA証明書をホストの信頼済み証明書に追加できませ
 
 #: mgradm/cmd/install/shared/shared.go:65
 msgid "Server organization already exists, reusing"
-msgstr ""
+msgstr "サーバ設定はすでに存在しており、再利用している"
 
 #: mgradm/cmd/install/shared/shared.go:68
 #, javascript-format
 msgid "Administration user already exists, but organization %s could not be found"
-msgstr ""
+msgstr "管理ユーザはすでに存在しますが、組織 %s が見つかりません"
 
 #: mgradm/cmd/install/shared/shared.go:84
 msgid "Administration user already exists, but provided credentials are not valid"
-msgstr ""
+msgstr "管理ユーザはすでに存在しますが、指定された認証情報は無効です"
 
 #: mgradm/cmd/install/shared/shared.go:92
 msgid "Server set up, login on https://%[1]s with %[2]s user"
@@ -827,7 +835,8 @@ msgstr "レプリカを0に設定できません"
 #: mgradm/cmd/migrate/kubernetes/utils.go:110
 #: mgradm/cmd/migrate/podman/utils.go:67
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
-msgstr ""
+msgstr "移行の準備ができました。移行を完了するには、「--prepare」を指定せずに「migrat"
+"e」コマンドを実行します。"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:123
 msgid "cannot setup SSL"
@@ -855,7 +864,6 @@ msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQLバージョンアップグレードスクリプトを実行できません"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:165
-#, fuzzy
 msgid "cannot run PostgreSQL finalisation script"
 msgstr "PostgreSQL終了処理スクリプトを実行できません"
 
@@ -923,14 +931,12 @@ msgid "cannot generate systemd service file"
 msgstr "systemdサービスファイルを生成できません"
 
 #: mgradm/cmd/migrate/podman/utils.go:108
-#, fuzzy
 msgid "cannot setup confidential computing attestation service"
-msgstr "コンフィデンシャルコンピューティング検証サービスの設定"
+msgstr "コンフィデンシャルコンピューティング認証サービスを設定できません"
 
 #: mgradm/cmd/migrate/podman/utils.go:126
-#, fuzzy
 msgid "Enabling Hub XML-RPC API since it is enabled on the migrated server"
-msgstr "Hub XML-RPC APIコンテナを有効化しています。"
+msgstr "移行先サーバでHub XML-RPC APIが有効になっているためこれを有効にする"
 
 #: mgradm/cmd/migrate/podman/utils.go:133
 msgid "Server migrated"
@@ -938,7 +944,7 @@ msgstr "サーバが移行されました"
 
 #: mgradm/cmd/migrate/shared/flags.go:28
 msgid "Prepare the mgration - copy the data without stopping the source server."
-msgstr ""
+msgstr "移行の準備 - ソースサーバを停止せずにデータをコピーします。"
 
 #: mgradm/cmd/migrate/shared/flags.go:34
 msgid "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."
@@ -984,7 +990,6 @@ msgid "Adjust the replicas for services supporting it."
 msgstr "サポートしているサービス用にレプリカを調整します。"
 
 #: mgradm/cmd/scale/scale.go:30
-#, fuzzy
 msgid ""
 "Adjust the replicas for services supporting it.\n"
 "Supported services:\n"
@@ -994,6 +999,7 @@ msgstr ""
 "サポートしているサービス用にレプリカを調整します。\n"
 "サポート対象サービス:\n"
 "  - uyuni-server-attestation\n"
+"  - uyuni-hub-xmlrpc\n"
 
 #: mgradm/cmd/start/start.go:24 mgradm/cmd/start/start.go:25
 msgid "Start the server"
@@ -1040,8 +1046,8 @@ msgid ""
 "Extract the host or cluster configuration and logs as well as those from \n"
 "the containers for support to help debugging."
 msgstr ""
-"ホストまたはクラスタの設定とログ、およびサポート用コンテナの設定とログを抽出し\n"
-"デバッグに役立てます。"
+"デバッグを支援するため、ホストまたはクラスタの設定とログ、および\n"
+"コンテナから設定とログを抽出します。"
 
 #: mgradm/cmd/support/config/config.go:32
 msgid "path where to extract the data"
@@ -1213,18 +1219,17 @@ msgid "Volumes have not been touched. Depending on the storage class used, they 
 msgstr "ボリュームに何の操作も行われていません。使用したストレージクラスによっては、削除されていない可能性があります"
 
 #: mgradm/cmd/uninstall/podman.go:46
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to remove volume %s"
-msgstr "フォルダ %s の作成に失敗しました"
+msgstr "ボリューム %s の削除に失敗しました"
 
 #: mgradm/cmd/uninstall/podman.go:51
 msgid "All volumes have been removed"
 msgstr "すべてのボリュームが削除されました"
 
 #: mgradm/cmd/uninstall/podman.go:53
-#, fuzzy
 msgid "Some volumes have not been removed completely"
-msgstr "すべてのボリュームが削除されました"
+msgstr "一部のボリュームは完全に削除されていません"
 
 #: mgradm/cmd/uninstall/podman.go:61
 #, javascript-format
@@ -1265,7 +1270,6 @@ msgid "Upgrade a local server on podman"
 msgstr "podman上のローカルサーバをアップグレードする"
 
 #: mgradm/cmd/upgrade/podman/podman.go:39
-#, fuzzy
 msgid "List available tags for an image"
 msgstr "イメージに使用可能なタグを一覧にする"
 
@@ -1305,23 +1309,21 @@ msgid "cannot generate systemd conf file"
 msgstr "systemd confファイルを生成できません"
 
 #: mgradm/shared/hub/xmlrpcapi.go:27
-#, fuzzy
 msgid "Setting Hub XML-RPC API service."
-msgstr "Hub XML-RPC APIコンテナを有効化しています。"
+msgstr "Hub XML-RPC APIサービスを設定しています。"
 
 #: mgradm/shared/hub/xmlrpcapi.go:39
 msgid "cannot generate systemd service"
 msgstr "systemdサービスを生成できません"
 
 #: mgradm/shared/hub/xmlrpcapi.go:49
-#, fuzzy
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
-msgstr "現在、複数のHub XML-RPCコンテナレプリカはサポートされていません。"
+msgstr "現在、複数のHub XML-"
+"RPCコンテナレプリカはサポートされておらず、1つだけ設定できます。"
 
 #: mgradm/shared/hub/xmlrpcapi.go:58
-#, fuzzy
 msgid "Not starting Hub XML-RPC API service"
-msgstr "Hub XML-RPC APIコンテナを有効化しています。"
+msgstr "Hub XML-RPC APIサービスが起動しません"
 
 #: mgradm/shared/kubernetes/certificates.go:31
 msgid "Creating SSL server certificate secret"
@@ -1472,9 +1474,8 @@ msgid "Enabling system service"
 msgstr "システムサービスの有効化"
 
 #: mgradm/shared/podman/podman.go:88
-#, fuzzy
 msgid "cannot generate systemd user configuration file"
-msgstr "systemd confファイルを生成できません"
+msgstr "systemdユーザ設定ファイルを生成できません"
 
 #: mgradm/shared/podman/podman.go:100
 msgid "failed to create temporary folder on container to copy certificates to"
@@ -1636,7 +1637,7 @@ msgstr "Helmチャートフラグ"
 #: mgradm/shared/utils/cmd_utils.go:87
 #, javascript-format
 msgid "Image for %s container"
-msgstr ""
+msgstr "%s コンテナのイメージ"
 
 #: mgradm/shared/utils/cmd_utils.go:89
 #, javascript-format
