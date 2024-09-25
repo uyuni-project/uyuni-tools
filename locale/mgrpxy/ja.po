@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:47+0200\n"
-"PO-Revision-Date: 2024-09-25 06:48+0000\n"
+"PO-Revision-Date: 2024-09-25 13:44+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrpxy/ja/>\n"
@@ -21,20 +21,19 @@ msgstr ""
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
-msgstr ""
+msgstr "キャッシュのクリア"
 
 #: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/cache/podman.go:25
 msgid "failed to remove cached data"
-msgstr ""
+msgstr "キャッシュされたデータを削除できませんでした"
 
 #: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:29
-#, fuzzy
 msgid "failed to re-create the cache directories"
-msgstr "一時ディレクトリの作成に失敗しました"
+msgstr "キャッシュディレクトリの再作成に失敗しました"
 
 #: mgrpxy/cmd/cache/squid.go:18 mgrpxy/cmd/cache/squid.go:19
 msgid "Manage proxy cache"
-msgstr ""
+msgstr "プロキシキャッシュの管理"
 
 #: mgrpxy/cmd/cmd.go:35
 msgid "Uyuni proxy administration tool"
@@ -46,16 +45,15 @@ msgstr "Uyuniプロキシのコンテナ管理を支援するツール"
 
 #: mgrpxy/cmd/cmd.go:43
 msgid "Server Deployment:"
-msgstr ""
+msgstr "サーバ配備:"
 
 #: mgrpxy/cmd/cmd.go:47
 msgid "Server Management:"
-msgstr ""
+msgstr "サーバ管理:"
 
 #: mgrpxy/cmd/cmd.go:51
-#, fuzzy
 msgid "Administrator tools:"
-msgstr "Uyuniプロキシ管理ツール"
+msgstr "管理者ツール:"
 
 #: mgrpxy/cmd/cmd.go:62
 #, javascript-format
@@ -239,19 +237,20 @@ msgid "Stop the proxy"
 msgstr "プロキシの停止"
 
 #: mgrpxy/cmd/support/config/config.go:23
-#, fuzzy
 msgid "Extract configuration and logs"
-msgstr "設定の抽出に失敗しました"
+msgstr "設定とログの抽出"
 
 #: mgrpxy/cmd/support/config/config.go:24
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from \n"
 "the containers for support to help debugging."
 msgstr ""
+"デバッグを支援するため、ホストまたはクラスタの設定とログ、および\n"
+"コンテナから設定とログを抽出します。"
 
 #: mgrpxy/cmd/support/config/config.go:32
 msgid "path where to extract the data"
-msgstr ""
+msgstr "データを抽出するパス"
 
 #: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:25
 msgid "Install a PTF or Test package on a kubernetes cluster"
@@ -284,7 +283,6 @@ msgid "Install a PTF or Test package on podman"
 msgstr "PTFまたはTestパッケージをpodmanにインストールする"
 
 #: mgrpxy/cmd/support/ptf/podman/podman.go:31
-#, fuzzy
 msgid ""
 "Install a PTF or Test package on podman\n"
 "\n"
@@ -496,9 +494,8 @@ msgid "cannot generate systemd conf file"
 msgstr "systemd confファイルを生成できません"
 
 #: mgrpxy/shared/podman/podman.go:145
-#, fuzzy
 msgid "cannot generate systemd conf user configuration file"
-msgstr "systemd confファイルを生成できません"
+msgstr "systemd confユーザ設定ファイルを生成できません"
 
 #: mgrpxy/shared/podman/podman.go:175
 #, javascript-format
@@ -549,15 +546,17 @@ msgstr "イメージURLの計算に失敗しました"
 
 #: mgrpxy/shared/utils/flags.go:64
 msgid "SUSE Customer Center username. It will be used to pull images from registry.suse.com"
-msgstr ""
+msgstr "SUSEカスタマーセンターのユーザ名。これは、registry.suse."
+"comからイメージを取得するために使用されます"
 
 #: mgrpxy/shared/utils/flags.go:65
 msgid "SUSE Customer Center password. It will be used to pull images from registry.suse.com"
-msgstr ""
+msgstr "SUSEカスタマーセンターのパスワード。これは、registry.suse."
+"comからイメージを取得するために使用されます"
 
 #: mgrpxy/shared/utils/flags.go:67
 msgid "SUSE Customer Center Flags"
-msgstr ""
+msgstr "SUSEカスタマーセンターのフラグ"
 
 #: mgrpxy/shared/utils/flags.go:74
 msgid "image tag"
