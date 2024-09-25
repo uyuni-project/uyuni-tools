@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:41+0200\n"
-"PO-Revision-Date: 2024-09-25 13:45+0000\n"
+"PO-Revision-Date: 2024-09-26 13:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared-5-0/ja/>\n"
@@ -69,9 +69,8 @@ msgid "failed to create first user and organization"
 msgstr "最初のユーザと組織の作成に失敗しました"
 
 #: shared/api/org/getDetails.go:25
-#, fuzzy
 msgid "failed to get organization details"
-msgstr "設定ファイル %s の解析に失敗しました"
+msgstr "組織の詳細の取得に失敗しました"
 
 #: shared/completion/completion.go:20 shared/completion/completion.go:21
 msgid "Generate shell completion script"
@@ -106,19 +105,18 @@ msgid "coundn't find app name"
 msgstr "アプリ名が見つかりませんでした"
 
 #: shared/connection.go:153
-#, fuzzy
 msgid "failed to discover the cluster type"
-msgstr "サーバへの接続に失敗しました"
+msgstr "クラスタタイプの検出に失敗しました"
 
 #: shared/connection.go:158
 #, javascript-format
 msgid "no %s helm release installed on the cluster"
-msgstr ""
+msgstr "クラスタに %s helmリリースがインストールされていません"
 
 #: shared/connection.go:164
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to find the %s deployment namespace"
-msgstr "配備ステータスの解析に失敗しました"
+msgstr "%s 配備ネームスペースが見つかりませんでした"
 
 #: shared/connection.go:185
 #, javascript-format
@@ -126,23 +124,22 @@ msgid "container %s is not running on podman"
 msgstr "コンテナ %s はpodmanで実行されていません"
 
 #: shared/connection.go:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "container labeled %s is not running on kubectl"
-msgstr "コンテナ %s はpodmanで実行されていません"
+msgstr "%s というラベルのコンテナはkubectlで実行されていません"
 
 #: shared/connection.go:209
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s command not executed:"
-msgstr "%s を実行できません"
+msgstr "%s コマンドは実行されませんでした:"
 
 #: shared/connection.go:221
-#, fuzzy
 msgid "failed to retrieve namespace "
-msgstr "helmを使用して %s のネームスペースを検出できませんでした"
+msgstr "ネームスペースを取得できませんでした "
 
 #: shared/connection.go:261
 msgid "container didn't start within 10s."
-msgstr ""
+msgstr "コンテナが10秒以内に起動しませんでした。"
 
 #: shared/connection.go:293
 msgid "server didn't start within 60s. Check for the service status"
@@ -175,29 +172,26 @@ msgid "failed to create temporary directory"
 msgstr "一時ディレクトリの作成に失敗しました"
 
 #: shared/connection.go:460
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Running supportconfig in  %s"
-msgstr "設定ファイル %s を使用中です"
+msgstr "%s でsupportconfigを実行しています"
 
 #: shared/connection.go:463
-#, fuzzy
 msgid "failed to run supportconfig"
-msgstr "%s コンテナの実行に失敗しました"
+msgstr "supportconfigの実行に失敗しました"
 
 #: shared/connection.go:467
-#, fuzzy
 msgid "failed to find container supportconfig tarball from command output"
-msgstr "config helpコマンドの計算に失敗しました"
+msgstr "コマンド出力からコンテナのsupportconfig tarballが見つかりませんでした"
 
 #: shared/connection.go:473
-#, fuzzy
 msgid "cannot copy tarball"
-msgstr "%s を停止できません"
+msgstr "tarballをコピーできません"
 
 #: shared/connection.go:479
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to remove %s file in the container"
-msgstr "%s コンテナの実行に失敗しました"
+msgstr "コンテナ内の %s ファイルの削除に失敗しました"
 
 #: shared/connection.go:497
 #, javascript-format
@@ -221,9 +215,8 @@ msgid "failed to install helm chart %[1]s in namespace %[2]s"
 msgstr "helmチャート %[1]s (ネームスペース %[2]s 内)のインストールに失敗しました"
 
 #: shared/kubernetes/helm.go:67
-#, fuzzy
 msgid "namespace is required"
-msgstr "値が必要がです"
+msgstr "ネームスペースが必要です"
 
 #: shared/kubernetes/helm.go:77 shared/podman/network.go:107
 #: shared/podman/systemd.go:79 shared/podman/systemd.go:155
@@ -316,49 +309,45 @@ msgid "Waiting for Nginx controller to be reloaded"
 msgstr "Nginxコントローラが再ロードされるのを待機中"
 
 #: shared/kubernetes/support.go:32
-#, fuzzy
 msgid "cannot retrieve any configmap"
-msgstr "設定を読み込めません"
+msgstr "configmapを取得できません"
 
 #: shared/kubernetes/support.go:39
-#, fuzzy
 msgid "cannot retrieve any pod"
-msgstr "ポッド %s を削除できません"
+msgstr "ポッドを取得できません"
 
 #: shared/kubernetes/support.go:49
-#, fuzzy
 msgid "cannot fetch namespace"
-msgstr "ネームスペースを推測できません"
+msgstr "ネームスペースをフェッチできません"
 
 #: shared/kubernetes/support.go:57
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot create %s"
-msgstr "%s を削除できません"
+msgstr "%s を作成できません"
 
 #: shared/kubernetes/support.go:62
-#, fuzzy
 msgid "cannot fetch configmap"
-msgstr "設定を読み込めません"
+msgstr "configmapをフェッチできません"
 
 #: shared/kubernetes/support.go:75
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot check for pods in %s"
-msgstr "%s の内容を確認できません"
+msgstr "%s でポッドを確認できません"
 
 #: shared/kubernetes/support.go:82
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s"
-msgstr "%s フォルダの作成に失敗しました"
+msgstr "%s の作成に失敗しました"
 
 #: shared/kubernetes/support.go:88
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to fetch info for pod %s"
-msgstr "ポッド %s のイベントを取得できませんでした"
+msgstr "ポッド %s の情報のフェッチに失敗しました"
 
 #: shared/kubernetes/support.go:94
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write in %s"
-msgstr "tar.gzの %s への書き込みに失敗しました"
+msgstr "%s への書き込みに失敗しました"
 
 #: shared/kubernetes/uninstall.go:13
 msgid ""
@@ -385,9 +374,9 @@ msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgstr "%[1]s 配備の準備を待機中( %[2]s ネームスペース内)\n"
 
 #: shared/kubernetes/utils.go:69
-#, fuzzy
 msgid "failed to find a ready replica for deployment %[1]s in namespace %[2]s after 120s"
-msgstr "60秒後にネームスペース %[2]s で配備 %[1]s の準備ができたレプリカが見つかりませんでした"
+msgstr "120秒後にネームスペース %[2]s で配備 %[1]s "
+"の準備ができたレプリカが見つかりませんでした"
 
 #: shared/kubernetes/utils.go:74
 msgid "Waiting for image of %[1]s pod in %[2]s namespace to be pulled"
@@ -519,7 +508,7 @@ msgstr "イメージ %s が見つからないのでフェッチできません"
 #: shared/podman/images.go:79
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
-msgstr ""
+msgstr "イメージ名「%s」を正しく解析できません。ローカルイメージを使用できません"
 
 #: shared/podman/images.go:97
 msgid "cannot unmarshal image RPM metadata"
@@ -572,9 +561,8 @@ msgid "cannot find any running image for container %s"
 msgstr "コンテナ %s に対して実行中のイメージが見つかりません"
 
 #: shared/podman/login.go:41
-#, fuzzy
 msgid "failed to close the temporary auth file"
-msgstr "一時ディレクトリの作成に失敗しました"
+msgstr "一時認証ファイルを閉じることができませんでした"
 
 #: shared/podman/network.go:31
 #, javascript-format
@@ -625,44 +613,43 @@ msgstr "ネットワークが削除されました"
 
 #: shared/podman/support.go:27
 msgid "No systemd file to add to the archive"
-msgstr ""
+msgstr "アーカイブに追加するsystemdファイルはありません"
 
 #: shared/podman/support.go:40 shared/podman/support.go:90
 #: shared/podman/support.go:113
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run podman inspect %s"
-msgstr "helm %s の実行に失敗しました"
+msgstr "podman inspect %s の実行に失敗しました"
 
 #: shared/podman/support.go:46
 #, javascript-format
 msgid "failed to fetch the config files bound to container %s"
-msgstr ""
+msgstr "コンテナ %s にバインドされた設定ファイルのフェッチに失敗しました"
 
 #: shared/podman/support.go:52
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run podman logs %s"
-msgstr "helm %s の実行に失敗しました"
+msgstr "podman logs %sの実行に失敗しました"
 
 #: shared/podman/support.go:64 shared/podman/support.go:85
 #: shared/podman/support.go:104
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s file"
-msgstr "%s フォルダの作成に失敗しました"
+msgstr "%s ファイルの作成に失敗しました"
 
 #: shared/podman/support.go:69
-#, fuzzy
 msgid "failed to run systemctl cat uyuni-*"
-msgstr "systemdデーモンの再ロードに失敗しました"
+msgstr "systemctl cat uyuni-*の実行に失敗しました"
 
 #: shared/podman/support.go:149
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed create %s file"
-msgstr "%s フォルダの作成に失敗しました"
+msgstr "%s ファイルの作成に失敗しました"
 
 #: shared/podman/support.go:154
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run journalctl -u %s"
-msgstr "helm %s の実行に失敗しました"
+msgstr "ournalctl -u %sの実行に失敗しました"
 
 #: shared/podman/systemd.go:52
 #, javascript-format
@@ -758,14 +745,14 @@ msgid "cannot write %s file"
 msgstr "%s ファイルを書き込めません"
 
 #: shared/podman/systemd.go:308
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write %s file"
-msgstr "%s フォルダの作成に失敗しました"
+msgstr "%s ファイルの書き込みに失敗しました"
 
 #: shared/podman/systemd.go:313
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
-msgstr "設定ファイル %s の解析に失敗しました"
+msgstr "古い %s systemdサービス設定ファイルの削除に失敗しました"
 
 #: shared/podman/systemd.go:335
 msgid "Service %[1]s already has %[2]d replicas."
@@ -837,7 +824,7 @@ msgstr "イメージ %s の削除に失敗しました"
 #: shared/podman/utils.go:172
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
-msgstr ""
+msgstr "ボリューム %s は外部にマウントされているため、ディレクトリを削除できません"
 
 #: shared/podman/utils.go:234
 msgid "failed to login to registry.suse.com"
@@ -955,7 +942,6 @@ msgstr ""
 "コマンドの詳細については、「{{.CommandPath}} [command] --help」を使用してください。{{end}}\n"
 
 #: shared/utils/config.go:133
-#, fuzzy
 msgid ""
 "\n"
 "Configuration:\n"
@@ -1000,13 +986,15 @@ msgstr ""
 "  フラグの名前はコマンドラインパラメータの「--」以降の部分です。\n"
 "  フラグ名の「_」文字はすべて、ネストされたプロパティを意味します。\n"
 "  \n"
-"  たとえば 「--tz CEST」と「--ssl-password secret」はこのYAML設定にマップされます。\n"
+"  たとえば 「--tz CEST」と「--ssl-password "
+"secret」はこのYAML設定にマップされます。\n"
 "  \n"
 "    tz: CEST\n"
 "    ssl:\n"
 "      パスワード: secret\n"
 "  \n"
 "  設定ファイルは以下の場所と順序で検索されます:\n"
+"  · /etc/uyuni/uyuni-tools.yam\n"
 "  · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}\n"
 "  · $HOME/.config/{{ .Name }}/{{ .ConfigFile }}\n"
 "  · $PWD/{{ .ConfigFile }}\n"
@@ -1017,10 +1005,12 @@ msgstr ""
 "\n"
 "  非グローバルフラグはすべて、環境変数として渡すこともできます。\n"
 "  \n"
-"    環境変数名は、フラグ名の「-」を「_」に置き換え、{{ .EnvPrefix }}プレフィックスを付けたものです。\n"
+"    環境変数名は、フラグ名の「-」を「_」に置き換え、{{ .EnvPrefix "
+"}}プレフィックスを付けたものです。\n"
 "  \n"
 "  たとえば、「--tz CEST」フラグは「{{ .EnvPrefix }}_TZ」にマップされ、\n"
-"  「--ssl-password」フラグは「{{ .EnvPrefix }}_SSL_PASSWORD」にマップされます。 \n"
+"  「--ssl-password」フラグは「{{ .EnvPrefix "
+"}}_SSL_PASSWORD」にマップされます。 \n"
 
 #: shared/utils/config.go:170
 msgid "Help on configuration file and environment variables"
@@ -1043,49 +1033,46 @@ msgid "failed to generate inspect script"
 msgstr "検査スクリプトの生成に失敗しました"
 
 #: shared/utils/inspector.go:83
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot read file %s"
-msgstr "ファイル %s を解析できません"
+msgstr "ファイル %s を読み込めません"
 
 #: shared/utils/inspector.go:88
 msgid "cannot read config"
 msgstr "設定を読み込めません"
 
 #: shared/utils/inspector.go:93
-#, fuzzy
 msgid "failed to unmarshal the inspected data"
-msgstr "検査スクリプトの生成に失敗しました"
+msgstr "検査データのアンマーシャルに失敗しました"
 
 #: shared/utils/logUtils.go:96
 msgid "Couldn't open %[1]s file for writing, writing log to %[2]s"
-msgstr ""
+msgstr "%[1]s ファイルを書き込み用に開けませんでした。ログを %[2]s に書き込みます"
 
 #: shared/utils/support.go:32
-#, fuzzy
 msgid "Unable to detect hostname, using localhost"
-msgstr "helmを使用して %s のネームスペースを検出できませんでした"
+msgstr "ホスト名を検出できません。localhostを使用しています"
 
 #: shared/utils/support.go:46
 msgid "Preparing the tarball"
-msgstr ""
+msgstr "tarballの準備中"
 
 #: shared/utils/support.go:58
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to add %s to tarball"
-msgstr "%s コンテナの実行に失敗しました"
+msgstr "%s をtarballに追加できませんでした"
 
 #: shared/utils/support.go:88
-#, fuzzy
 msgid "failed to run supportconfig on the host"
-msgstr "%s コンテナの実行に失敗しました"
+msgstr "ホスト上でsupportconfigを実行できませんでした"
 
 #: shared/utils/support.go:98
 msgid "failed to find host supportconfig tarball from command output"
-msgstr ""
+msgstr "コマンド出力からホストのsupportconfig tarballが見つかりませんでした"
 
 #: shared/utils/support.go:101
 msgid "supportconfig is not available on the host, skipping it"
-msgstr ""
+msgstr "supportconfigはホストで利用できないため、スキップします"
 
 #: shared/utils/tar.go:47
 msgid "Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"
@@ -1127,9 +1114,8 @@ msgid "Cannot contain spaces or tabs"
 msgstr "スペースやタブを含むことはできません"
 
 #: shared/utils/utils.go:103
-#, fuzzy
 msgid "Confirm the password"
-msgstr "パスワードの読み込みに失敗しました"
+msgstr "パスワードの確認"
 
 #: shared/utils/utils.go:105
 msgid "Two different passwords have been provided"
@@ -1158,9 +1144,9 @@ msgid "tag missing on %s"
 msgstr "タグが %s で見つかりません"
 
 #: shared/utils/utils.go:200 shared/utils/utils.go:205
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Computed image name is %s"
-msgstr "無効なイメージ名: %s"
+msgstr "計算されたイメージ名は %s です"
 
 #: shared/utils/utils.go:224
 #, javascript-format
@@ -1217,19 +1203,18 @@ msgid "bad status: %s"
 msgstr "不良ステータス: %s"
 
 #: shared/utils/utils.go:399
-#, fuzzy
 msgid "failed to compute server FQDN"
-msgstr "サーバへの接続に失敗しました"
+msgstr "サーバFQDNの計算に失敗しました"
 
 #: shared/utils/utils.go:417
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot resolve %s"
-msgstr "%s を削除できません"
+msgstr "%s を解決できません"
 
 #: shared/utils/utils.go:425
 #, javascript-format
 msgid "%s is not a valid FQDN"
-msgstr ""
+msgstr "%s は有効なFQDNではありません"
 
 #, javascript-format
 #~ msgid "the container is not running, %s command not executed:"
