@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:47+0200\n"
-"PO-Revision-Date: 2024-07-16 05:47+0000\n"
+"PO-Revision-Date: 2024-09-25 09:48+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -27,14 +28,17 @@ msgid "Tool to help administering Uyuni servers in containers"
 msgstr "컨테이너에서 Uyuni 서버를 관리하는 데 유용한 도구"
 
 #: mgradm/cmd/cmd.go:48
+#, fuzzy
 msgid "Server Deployment:"
 msgstr "서버 배포:"
 
 #: mgradm/cmd/cmd.go:52
+#, fuzzy
 msgid "Server Management:"
 msgstr "서버 관리:"
 
 #: mgradm/cmd/cmd.go:56
+#, fuzzy
 msgid "Administrator tools:"
 msgstr "관리자 도구:"
 
@@ -91,7 +95,7 @@ msgstr "ISO 이미지를 마운트할 수 없음: %s"
 
 #: mgradm/cmd/distro/cp.go:98
 msgid "Missing TreeLabel. Please specify distribution name"
-msgstr ""
+msgstr "TreeLabel이 누락되었습니다. 배포 이름을 지정하십시오."
 
 #: mgradm/cmd/distro/cp.go:107
 #, javascript-format
@@ -229,9 +233,14 @@ msgid ""
 "\n"
 "Note: API details are required for auto registration."
 msgstr ""
-"소스 ISO 파일 또는 마운트된 ISO가 있는 디렉토리의 경로를 가져와 컨테이너에 복사합니다.\n"
+"소스 ISO 파일 또는 마운트된 ISO가 있는 디렉토리의 경로를 가져와 컨테이너에 "
+"복사하십시오.\n"
 "\n"
-"선택적 파라미터 'distribution-name', 'version' 및 'arch'는 사용자 지정 배포를 지정합니다. 설정하지 않으면 배포 이름이 자동으로 감지됩니다.\n"
+"선택적 파라미터 ''distribution-name'', ''version'' 및 ''arch''는 사용자 지정 "
+"배포를 지정합니다.\n"
+"설정하지 않으면 배포 이름이 자동으로 감지됩니다.\n"
+"- 있는 경우 ''.treeinfo'' 파일의 이름 사용\n"
+"- ISO 또는 전달된 디렉토리의 이름 사용\n"
 "\n"
 "참고: 자동 등록을 위해서는 API 세부 정보가 필요합니다."
 
@@ -488,12 +497,15 @@ msgstr "서비스를 활성할 수 없음"
 #: mgradm/cmd/install/podman/utils.go:54 mgradm/cmd/migrate/podman/utils.go:47
 #: mgradm/cmd/support/ptf/podman/utils.go:40
 #: mgradm/cmd/upgrade/podman/utils.go:24
+#, fuzzy
 msgid "failed to login to registry.suse.com"
-msgstr ""
+msgstr "registry.suse.com에 로그인하지 못했습니다."
 
 #: mgradm/cmd/install/podman/utils.go:59
+#, fuzzy
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
-msgstr ""
+msgstr "서버가 이미 초기화되었습니다! 새 설치를 시도하기 전 제거하거나 upgrade "
+"명령을 사용하십시오."
 
 #: mgradm/cmd/install/podman/utils.go:64 mgradm/cmd/migrate/podman/utils.go:28
 msgid "install podman before running this command"
@@ -707,8 +719,10 @@ msgid "First User Flags"
 msgstr "첫 번째 사용자 플래그"
 
 #: mgradm/cmd/install/shared/shared.go:32
+#, fuzzy
 msgid "Server appears to be already configured. Installation will continue, but installation options may be ignored."
-msgstr ""
+msgstr "서버가 이미 구성된 것 같습니다. 설치가 계속 진행되지만, 설치 옵션이 무시될 "
+"수 있습니다."
 
 #: mgradm/cmd/install/shared/shared.go:40
 msgid "cannot copy /tmp/setup.sh"
@@ -725,17 +739,19 @@ msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "SSL CA 인증서를 호스트의 신뢰할 수 있는 인증서에 추가하지 못했습니다."
 
 #: mgradm/cmd/install/shared/shared.go:65
+#, fuzzy
 msgid "Server organization already exists, reusing"
-msgstr ""
+msgstr "이미 있는 서버 조직, 재사용"
 
 #: mgradm/cmd/install/shared/shared.go:68
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Administration user already exists, but organization %s could not be found"
-msgstr ""
+msgstr "관리 사용자가 이미 있지만, %s 조직을 찾을 수 없음"
 
 #: mgradm/cmd/install/shared/shared.go:84
+#, fuzzy
 msgid "Administration user already exists, but provided credentials are not valid"
-msgstr ""
+msgstr "관리 사용자가 이미 있지만, 제공된 자격 증명이 유효하지 않음"
 
 #: mgradm/cmd/install/shared/shared.go:92
 msgid "Server set up, login on https://%[1]s with %[2]s user"
@@ -813,8 +829,11 @@ msgstr "복제본을 0으로 설정할 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:110
 #: mgradm/cmd/migrate/podman/utils.go:67
+#, fuzzy
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr ""
+"마이그레이션이 준비되었습니다. 마이그레이션을 마치려면 ''--prepare''를 "
+"제외하고 ''migrate'' 명령을 실행하십시오."
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:123
 msgid "cannot setup SSL"
@@ -912,20 +931,21 @@ msgstr "systemd 서비스 파일을 생성할 수 없음"
 #: mgradm/cmd/migrate/podman/utils.go:108
 #, fuzzy
 msgid "cannot setup confidential computing attestation service"
-msgstr "기밀 컴퓨팅 증명 서비스 설정"
+msgstr "기밀 컴퓨팅 증명 서비스를 설정할 수 없음"
 
 #: mgradm/cmd/migrate/podman/utils.go:126
 #, fuzzy
 msgid "Enabling Hub XML-RPC API since it is enabled on the migrated server"
-msgstr "Hub XML-RPC API 컨테이너 활성화."
+msgstr "마이그레이션된 서버에서 활성화되어 있으므로 Hub XML-RPC API 컨테이너 활성화"
 
 #: mgradm/cmd/migrate/podman/utils.go:133
 msgid "Server migrated"
 msgstr "서버 마이그레이션됨"
 
 #: mgradm/cmd/migrate/shared/flags.go:28
+#, fuzzy
 msgid "Prepare the mgration - copy the data without stopping the source server."
-msgstr ""
+msgstr "마이그레이션 준비 - 원본 서버를 중지하지 않고 데이터를 복사합니다."
 
 #: mgradm/cmd/migrate/shared/flags.go:35
 msgid "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."
@@ -978,9 +998,10 @@ msgid ""
 "  - uyuni-server-attestation\n"
 "  - uyuni-hub-xmlrpc\n"
 msgstr ""
-"이를 지원하는 서비스에 대한 복제본을 조정합니다.\n"
+"이를 지원하는 서비스에 대한 복제본을 조정하십시오.\n"
 "지원되는 서비스:\n"
 "  - uyuni-server-attestation\n"
+"  - uyuni-hub-xmlrpc\n"
 
 #: mgradm/cmd/start/start.go:24 mgradm/cmd/start/start.go:25
 msgid "Start the server"
@@ -1019,20 +1040,22 @@ msgid "Stop the server"
 msgstr "서버 중지"
 
 #: mgradm/cmd/support/config/config.go:23
+#, fuzzy
 msgid "Extract configuration and logs"
 msgstr "구성 및 로그 추출"
 
 #: mgradm/cmd/support/config/config.go:24
+#, fuzzy
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from \n"
 "the containers for support to help debugging."
-msgstr ""
-"호스트 또는 클러스터 구성과 로그는 물론 컨테이너에서 로그를 추출하여\n"
-"디버깅에 도움이 되도록 지원하십시오."
+msgstr "디버깅에 도움이 되도록 호스트 또는 클러스터 구성 및 로그를 비록하여 "
+"컨테이너의 해당 항목을 추출하여 지원하십시오."
 
 #: mgradm/cmd/support/config/config.go:32
+#, fuzzy
 msgid "path where to extract the data"
-msgstr "경로 데이터를 추출할 위치"
+msgstr "데이터 추출 경로"
 
 #: mgradm/cmd/support/ptf/podman/podman.go:28
 msgid "Install a PTF or Test package on podman"
@@ -1202,7 +1225,7 @@ msgstr "볼륨과 관련한 작업은 수행되지 않았습니다. 사용된 �
 #: mgradm/cmd/uninstall/podman.go:46
 #, fuzzy, javascript-format
 msgid "Failed to remove volume %s"
-msgstr "%s 폴더를 생성할 수 없음"
+msgstr "%s 폴더 제거 실패"
 
 #: mgradm/cmd/uninstall/podman.go:51
 msgid "All volumes have been removed"
@@ -1211,7 +1234,7 @@ msgstr "모든 볼륨 제거됨"
 #: mgradm/cmd/uninstall/podman.go:53
 #, fuzzy
 msgid "Some volumes have not been removed completely"
-msgstr "모든 볼륨 제거됨"
+msgstr "일부 볼륨이 완전히 제거되지 않았습니다."
 
 #: mgradm/cmd/uninstall/podman.go:61
 #, javascript-format
@@ -1294,7 +1317,7 @@ msgstr "systemd conf 파일을 생성할 수 없음"
 #: mgradm/shared/hub/xmlrpcapi.go:27
 #, fuzzy
 msgid "Setting Hub XML-RPC API service."
-msgstr "Hub XML-RPC API 컨테이너 활성화."
+msgstr "Hub XML-RPC API 서비스 활성화"
 
 #: mgradm/shared/hub/xmlrpcapi.go:39
 msgid "cannot generate systemd service"
@@ -1303,12 +1326,13 @@ msgstr "systemd 서비스를 생성할 수 없음"
 #: mgradm/shared/hub/xmlrpcapi.go:49
 #, fuzzy
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
-msgstr "다중 Hub XML-RPC 컨테이너 복제본은 현재 지원되지 않습니다."
+msgstr "다중 Hub XML-RPC 컨테이너 복제본은 현재 지원되지 않습니다. 하나만 "
+"설정하십시오."
 
 #: mgradm/shared/hub/xmlrpcapi.go:58
 #, fuzzy
 msgid "Not starting Hub XML-RPC API service"
-msgstr "Hub XML-RPC API 컨테이너 활성화."
+msgstr "Hub XML-RPC API 서비스를 시작할 수 없음"
 
 #: mgradm/shared/kubernetes/certificates.go:31
 msgid "Creating SSL server certificate secret"
@@ -1461,7 +1485,7 @@ msgstr "시스템 서비스 활성화"
 #: mgradm/shared/podman/podman.go:90
 #, fuzzy
 msgid "cannot generate systemd user configuration file"
-msgstr "systemd conf 파일을 생성할 수 없음"
+msgstr "systemd 사용자 구성 파일을 생성할 수 없음"
 
 #: mgradm/shared/podman/podman.go:102
 msgid "failed to create temporary folder on container to copy certificates to"
@@ -1498,12 +1522,12 @@ msgstr "uyuni 마이그레이션 컨테이너를 실행할 수 없음"
 #: mgradm/shared/podman/podman.go:206
 #, fuzzy, javascript-format
 msgid "cannot inspect volume %s"
-msgstr "%s 볼륨을 삭제할 수 없음"
+msgstr "%s 볼륨을 검사할 수 없음"
 
 #: mgradm/shared/podman/podman.go:209
 #, fuzzy, javascript-format
 msgid "cannot restore %s SELinux permissions"
-msgstr "소스 PostgreSQL 버전을 검색할 수 없습니다."
+msgstr "%s SELinux 권한을 복구할 수 없음"
 
 #: mgradm/shared/podman/podman.go:216
 msgid "cannot read extracted data"
@@ -1631,9 +1655,9 @@ msgid "Helm Chart Flags"
 msgstr "Helm 차트 플래그"
 
 #: mgradm/shared/utils/cmd_utils.go:87
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Image for %s container"
-msgstr ""
+msgstr "%s 컨테이너용 이미지"
 
 #: mgradm/shared/utils/cmd_utils.go:89
 #, javascript-format
@@ -1641,16 +1665,23 @@ msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
 
 #: mgradm/shared/utils/cmd_utils.go:99
+#, fuzzy
 msgid "SUSE Customer Center username. It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgstr ""
+"SUSE 고객 센터 사용자 이름. 제품 동기화를 위해서 및 registry.suse.com에서 "
+"이미지를 가져오기 위한 SCC 자격 증명으로 사용됩니다."
 
 #: mgradm/shared/utils/cmd_utils.go:100
+#, fuzzy
 msgid "SUSE Customer Center password. It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgstr ""
+"SUSE 고객 센터 암호. 제품 동기화를 위해서 및 registry.suse.com에서 이미지를 "
+"가져오기 위한 SCC 자격 증명으로 사용됩니다."
 
 #: mgradm/shared/utils/cmd_utils.go:102
+#, fuzzy
 msgid "SUSE Customer Center Flags"
-msgstr "SUSE Customer Center 플래그"
+msgstr "SUSE 고객 센터 플래그"
 
 #: mgradm/shared/utils/cmd_utils.go:109
 msgid "Image"
