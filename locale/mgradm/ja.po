@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:47+0200\n"
-"PO-Revision-Date: 2024-09-25 06:48+0000\n"
+"PO-Revision-Date: 2024-09-25 13:44+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgradm/ja/>\n"
@@ -29,11 +29,11 @@ msgstr "Uyuniサーバのコンテナ管理を支援するツール"
 
 #: mgradm/cmd/cmd.go:48
 msgid "Server Deployment:"
-msgstr "サーバの配備"
+msgstr "サーバ配備:"
 
 #: mgradm/cmd/cmd.go:52
 msgid "Server Management:"
-msgstr "サーバ管理"
+msgstr "サーバ管理:"
 
 #: mgradm/cmd/cmd.go:56
 msgid "Administrator tools:"
@@ -219,7 +219,6 @@ msgid "Copy distribution files from iso to the container"
 msgstr "ディストリビューションファイルをisoからコンテナにコピーする"
 
 #: mgradm/cmd/distro/distro.go:79
-#, fuzzy
 msgid ""
 "Takes a path to source iso file or directory with mounted iso and copies it into the container.\n"
 "\n"
@@ -231,9 +230,15 @@ msgid ""
 "\n"
 "Note: API details are required for auto registration."
 msgstr ""
-"ソースisoファイルまたはisoがマウントされているディレクトリへのパスを取得し、それをコンテナにコピーします。\n"
+"ソースisoファイルまたはisoがマウントされているディレクトリへのパスを取得し、"
+"それをコンテナにコピーします。\n"
 "\n"
-"オプションのパラメータ「distribution-name」、「version」 および「arch」は、カスタムディストリビューションを指定します。設定されていない場合、ディストリビューション名は自動検出されます。\n"
+"オプションのパラメータ「distribution-name」、「version」 "
+"および「arch」は、カスタムディストリビューションを指定します。.\n"
+"設定されていない場合、ディストリビューション名は自動検出が試みられます。\n"
+"\n"
+"- 「.treeinfo」ファイルが存在する場合はそのファイルの名前を使用する\n"
+"- ISOまたは渡されたディレクトリの名前を使用する\n"
 "\n"
 "メモ: 自動登録にはAPIの詳細が必要です。"
 
@@ -818,8 +823,8 @@ msgstr "レプリカを0に設定できません"
 #: mgradm/cmd/migrate/kubernetes/utils.go:110
 #: mgradm/cmd/migrate/podman/utils.go:67
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
-msgstr "以降の準備が完了しました。移行を完了するには、「--prepare」を指定せずに「migr"
-"ate」コマンドを実行します。"
+msgstr "移行の準備ができました。移行を完了するには、「--prepare」を指定せずに「migrat"
+"e」コマンドを実行します。"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:123
 msgid "cannot setup SSL"
@@ -847,7 +852,6 @@ msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQLバージョンアップグレードスクリプトを実行できません"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:165
-#, fuzzy
 msgid "cannot run PostgreSQL finalisation script"
 msgstr "PostgreSQL終了処理スクリプトを実行できません"
 
@@ -915,14 +919,12 @@ msgid "cannot generate systemd service file"
 msgstr "systemdサービスファイルを生成できません"
 
 #: mgradm/cmd/migrate/podman/utils.go:108
-#, fuzzy
 msgid "cannot setup confidential computing attestation service"
-msgstr "コンフィデンシャルコンピューティング検証サービスの設定"
+msgstr "コンフィデンシャルコンピューティング認証サービスを設定できません"
 
 #: mgradm/cmd/migrate/podman/utils.go:126
-#, fuzzy
 msgid "Enabling Hub XML-RPC API since it is enabled on the migrated server"
-msgstr "Hub XML-RPC APIコンテナを有効化しています。"
+msgstr "移行先サーバでHub XML-RPC APIが有効になっているためこれを有効にする"
 
 #: mgradm/cmd/migrate/podman/utils.go:133
 msgid "Server migrated"
@@ -976,7 +978,6 @@ msgid "Adjust the replicas for services supporting it."
 msgstr "サポートしているサービス用にレプリカを調整します。"
 
 #: mgradm/cmd/scale/scale.go:30
-#, fuzzy
 msgid ""
 "Adjust the replicas for services supporting it.\n"
 "Supported services:\n"
@@ -986,6 +987,7 @@ msgstr ""
 "サポートしているサービス用にレプリカを調整します。\n"
 "サポート対象サービス:\n"
 "  - uyuni-server-attestation\n"
+"  - uyuni-hub-xmlrpc\n"
 
 #: mgradm/cmd/start/start.go:24 mgradm/cmd/start/start.go:25
 msgid "Start the server"
@@ -1032,8 +1034,8 @@ msgid ""
 "Extract the host or cluster configuration and logs as well as those from \n"
 "the containers for support to help debugging."
 msgstr ""
-"ホストまたはクラスタの設定とログ、およびサポート用コンテナの設定とログを抽出し\n"
-"デバッグに役立てます。"
+"デバッグを支援するため、ホストまたはクラスタの設定とログ、および\n"
+"コンテナから設定とログを抽出します。"
 
 #: mgradm/cmd/support/config/config.go:32
 msgid "path where to extract the data"
@@ -1205,18 +1207,17 @@ msgid "Volumes have not been touched. Depending on the storage class used, they 
 msgstr "ボリュームに何の操作も行われていません。使用したストレージクラスによっては、削除されていない可能性があります"
 
 #: mgradm/cmd/uninstall/podman.go:46
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to remove volume %s"
-msgstr "フォルダ %s の作成に失敗しました"
+msgstr "ボリューム %s の削除に失敗しました"
 
 #: mgradm/cmd/uninstall/podman.go:51
 msgid "All volumes have been removed"
 msgstr "すべてのボリュームが削除されました"
 
 #: mgradm/cmd/uninstall/podman.go:53
-#, fuzzy
 msgid "Some volumes have not been removed completely"
-msgstr "すべてのボリュームが削除されました"
+msgstr "一部のボリュームは完全に削除されていません"
 
 #: mgradm/cmd/uninstall/podman.go:61
 #, javascript-format
@@ -1257,7 +1258,6 @@ msgid "Upgrade a local server on podman"
 msgstr "podman上のローカルサーバをアップグレードする"
 
 #: mgradm/cmd/upgrade/podman/podman.go:40
-#, fuzzy
 msgid "List available tags for an image"
 msgstr "イメージに使用可能なタグを一覧にする"
 
@@ -1297,23 +1297,21 @@ msgid "cannot generate systemd conf file"
 msgstr "systemd confファイルを生成できません"
 
 #: mgradm/shared/hub/xmlrpcapi.go:27
-#, fuzzy
 msgid "Setting Hub XML-RPC API service."
-msgstr "Hub XML-RPC APIコンテナを有効化しています。"
+msgstr "Hub XML-RPC APIサービスを設定しています。"
 
 #: mgradm/shared/hub/xmlrpcapi.go:39
 msgid "cannot generate systemd service"
 msgstr "systemdサービスを生成できません"
 
 #: mgradm/shared/hub/xmlrpcapi.go:49
-#, fuzzy
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
-msgstr "現在、複数のHub XML-RPCコンテナレプリカはサポートされていません。"
+msgstr "現在、複数のHub XML-"
+"RPCコンテナレプリカはサポートされておらず、1つだけ設定できます。"
 
 #: mgradm/shared/hub/xmlrpcapi.go:58
-#, fuzzy
 msgid "Not starting Hub XML-RPC API service"
-msgstr "Hub XML-RPC APIコンテナを有効化しています。"
+msgstr "Hub XML-RPC APIサービスが起動しません"
 
 #: mgradm/shared/kubernetes/certificates.go:31
 msgid "Creating SSL server certificate secret"
@@ -1464,9 +1462,8 @@ msgid "Enabling system service"
 msgstr "システムサービスの有効化"
 
 #: mgradm/shared/podman/podman.go:90
-#, fuzzy
 msgid "cannot generate systemd user configuration file"
-msgstr "systemd confファイルを生成できません"
+msgstr "systemdユーザ設定ファイルを生成できません"
 
 #: mgradm/shared/podman/podman.go:102
 msgid "failed to create temporary folder on container to copy certificates to"
@@ -1501,14 +1498,14 @@ msgid "cannot run uyuni migration container"
 msgstr "uyuni移行コンテナを実行できません"
 
 #: mgradm/shared/podman/podman.go:206
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot inspect volume %s"
-msgstr "ボリューム %s を削除できません"
+msgstr "ボリューム %s を検査できません"
 
 #: mgradm/shared/podman/podman.go:209
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot restore %s SELinux permissions"
-msgstr "ソースPostgreSQLのバージョンを取得できません"
+msgstr "%s のSELinuxパーミッションを復元できません"
 
 #: mgradm/shared/podman/podman.go:216
 msgid "cannot read extracted data"
@@ -1647,16 +1644,19 @@ msgstr "%s コンテナ用のタグ。設定されている場合はグローバ
 
 #: mgradm/shared/utils/cmd_utils.go:99
 msgid "SUSE Customer Center username. It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
-msgstr "SUSEカスタマーセンターのユーザ名。 製品の同期やregistry.suse."
-"comからのイメージの取得にSCC認証情報として使用されます"
+msgstr ""
+"SUSEカスタマーセンターのユーザ名。 これは、製品の同期とregistry.suse."
+"comからのイメージの取得のためにSCC認証情報として使用されます"
 
 #: mgradm/shared/utils/cmd_utils.go:100
 msgid "SUSE Customer Center password. It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgstr ""
+"SUSEカスタマーセンターのパスワード。これは、製品の同期とregistry.suse."
+"comからのイメージの取得のためにSCC認証情報として使用されます"
 
 #: mgradm/shared/utils/cmd_utils.go:102
 msgid "SUSE Customer Center Flags"
-msgstr "SUSE カスタマーセンターのフラグ"
+msgstr "SUSEカスタマーセンターのフラグ"
 
 #: mgradm/shared/utils/cmd_utils.go:109
 msgid "Image"
