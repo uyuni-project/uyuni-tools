@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:47+0200\n"
-"PO-Revision-Date: 2024-07-15 05:47+0000\n"
+"PO-Revision-Date: 2024-09-26 08:48+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -91,7 +92,7 @@ msgstr "无法挂载 ISO 映像：%s"
 
 #: mgradm/cmd/distro/cp.go:98
 msgid "Missing TreeLabel. Please specify distribution name"
-msgstr ""
+msgstr "缺少 TreeLabel。请指定发行套件名称"
 
 #: mgradm/cmd/distro/cp.go:107
 #, javascript-format
@@ -217,7 +218,6 @@ msgid "Copy distribution files from iso to the container"
 msgstr "将 ISO 中的发行套件文件复制到容器"
 
 #: mgradm/cmd/distro/distro.go:79
-#, fuzzy
 msgid ""
 "Takes a path to source iso file or directory with mounted iso and copies it into the container.\n"
 "\n"
@@ -231,7 +231,11 @@ msgid ""
 msgstr ""
 "接受源 ISO 文件或包含已挂载 ISO 的目录的路径，并将该文件复制到容器。\n"
 "\n"
-"可选参数 'distribution-name'、'version' 和 'arch' 用于指定自定义发行套件。如果未设置，将会自动检测发行套件名称。\n"
+"可选参数 'distribution-name'、'version' 和 'arch' 用于指定自定义发行套件。\n"
+"如果未设置，系统会尝试自动检测发行套件名称。\n"
+"\n"
+"- 如果存在 '.treeinfo' 文件，则使用该文件中的名称\n"
+"- 使用 ISO 或传递的目录的名称\n"
 "\n"
 "注意：要自动执行注册，需要提供 API 细节。"
 
@@ -489,11 +493,11 @@ msgstr "无法启用服务"
 #: mgradm/cmd/support/ptf/podman/utils.go:40
 #: mgradm/cmd/upgrade/podman/utils.go:24
 msgid "failed to login to registry.suse.com"
-msgstr ""
+msgstr "无法登录 registry.suse.com"
 
 #: mgradm/cmd/install/podman/utils.go:59
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
-msgstr ""
+msgstr "服务器已初始化！请先将其卸装，再尝试进行全新安装或使用升级命令"
 
 #: mgradm/cmd/install/podman/utils.go:64 mgradm/cmd/migrate/podman/utils.go:28
 msgid "install podman before running this command"
@@ -708,7 +712,7 @@ msgstr "第一个用户标志"
 
 #: mgradm/cmd/install/shared/shared.go:32
 msgid "Server appears to be already configured. Installation will continue, but installation options may be ignored."
-msgstr ""
+msgstr "服务器似乎已经过配置。安装将会继续，但可能会忽略安装选项。"
 
 #: mgradm/cmd/install/shared/shared.go:40
 msgid "cannot copy /tmp/setup.sh"
@@ -726,16 +730,16 @@ msgstr "无法将 SSL CA 证书添加到主机信任的证书列表中"
 
 #: mgradm/cmd/install/shared/shared.go:65
 msgid "Server organization already exists, reusing"
-msgstr ""
+msgstr "服务器组织已存在，正在重新使用该组织"
 
 #: mgradm/cmd/install/shared/shared.go:68
 #, javascript-format
 msgid "Administration user already exists, but organization %s could not be found"
-msgstr ""
+msgstr "管理用户已存在，但找不到组织 %s"
 
 #: mgradm/cmd/install/shared/shared.go:84
 msgid "Administration user already exists, but provided credentials are not valid"
-msgstr ""
+msgstr "管理用户已存在，但提供的身份凭证无效"
 
 #: mgradm/cmd/install/shared/shared.go:92
 msgid "Server set up, login on https://%[1]s with %[2]s user"
@@ -814,7 +818,7 @@ msgstr "无法将复本数设置为 0"
 #: mgradm/cmd/migrate/kubernetes/utils.go:110
 #: mgradm/cmd/migrate/podman/utils.go:67
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
-msgstr ""
+msgstr "已完成迁移准备。请运行不含 '--prepare' 的 'migrate' 命令完成迁移。"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:123
 msgid "cannot setup SSL"
@@ -842,7 +846,6 @@ msgid "cannot run PostgreSQL version upgrade script"
 msgstr "无法运行 PostgreSQL 版本升级脚本"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:165
-#, fuzzy
 msgid "cannot run PostgreSQL finalisation script"
 msgstr "无法运行 PostgreSQL 完成脚本"
 
@@ -910,14 +913,12 @@ msgid "cannot generate systemd service file"
 msgstr "无法生成 systemd 服务文件"
 
 #: mgradm/cmd/migrate/podman/utils.go:108
-#, fuzzy
 msgid "cannot setup confidential computing attestation service"
-msgstr "设置机密计算认证服务"
+msgstr "无法设置机密计算认证服务"
 
 #: mgradm/cmd/migrate/podman/utils.go:126
-#, fuzzy
 msgid "Enabling Hub XML-RPC API since it is enabled on the migrated server"
-msgstr "正在启用 Hub XML-RPC API 容器。"
+msgstr "正在启用 Hub XML-RPC API，因为迁移的服务器上启用了该 API"
 
 #: mgradm/cmd/migrate/podman/utils.go:133
 msgid "Server migrated"
@@ -925,7 +926,7 @@ msgstr "服务器已迁移"
 
 #: mgradm/cmd/migrate/shared/flags.go:28
 msgid "Prepare the mgration - copy the data without stopping the source server."
-msgstr ""
+msgstr "准备迁移 - 在不停止源服务器的情况下复制数据。"
 
 #: mgradm/cmd/migrate/shared/flags.go:35
 msgid "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."
@@ -971,7 +972,6 @@ msgid "Adjust the replicas for services supporting it."
 msgstr "调整支持该功能的服务的复本数。"
 
 #: mgradm/cmd/scale/scale.go:30
-#, fuzzy
 msgid ""
 "Adjust the replicas for services supporting it.\n"
 "Supported services:\n"
@@ -981,6 +981,7 @@ msgstr ""
 "调整支持该功能的服务的复本数。\n"
 "支持的服务：\n"
 "  - uyuni-server-attestation\n"
+"  - uyuni-hub-xmlrpc\n"
 
 #: mgradm/cmd/start/start.go:24 mgradm/cmd/start/start.go:25
 msgid "Start the server"
@@ -1200,18 +1201,17 @@ msgid "Volumes have not been touched. Depending on the storage class used, they 
 msgstr "未更改任何卷。根据所用的存储类别，它们可能尚未去除"
 
 #: mgradm/cmd/uninstall/podman.go:46
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to remove volume %s"
-msgstr "无法创建文件夹 %s"
+msgstr "无法去除卷 %s"
 
 #: mgradm/cmd/uninstall/podman.go:51
 msgid "All volumes have been removed"
 msgstr "所有卷均已去除"
 
 #: mgradm/cmd/uninstall/podman.go:53
-#, fuzzy
 msgid "Some volumes have not been removed completely"
-msgstr "所有卷均已去除"
+msgstr "部分卷未完全去除"
 
 #: mgradm/cmd/uninstall/podman.go:61
 #, javascript-format
@@ -1252,7 +1252,6 @@ msgid "Upgrade a local server on podman"
 msgstr "在 podman 上升级本地服务器"
 
 #: mgradm/cmd/upgrade/podman/podman.go:40
-#, fuzzy
 msgid "List available tags for an image"
 msgstr "列出映像的可用标记"
 
@@ -1292,23 +1291,20 @@ msgid "cannot generate systemd conf file"
 msgstr "无法生成 systemd 配置文件"
 
 #: mgradm/shared/hub/xmlrpcapi.go:27
-#, fuzzy
 msgid "Setting Hub XML-RPC API service."
-msgstr "正在启用 Hub XML-RPC API 容器。"
+msgstr "正在设置 Hub XML-RPC API 服务。"
 
 #: mgradm/shared/hub/xmlrpcapi.go:39
 msgid "cannot generate systemd service"
 msgstr "无法生成 systemd 服务"
 
 #: mgradm/shared/hub/xmlrpcapi.go:49
-#, fuzzy
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
-msgstr "目前不支持多个 Hub XML-RPC 容器复本。"
+msgstr "目前不支持多个 Hub XML-RPC 容器复本，将仅设置一个复本。"
 
 #: mgradm/shared/hub/xmlrpcapi.go:58
-#, fuzzy
 msgid "Not starting Hub XML-RPC API service"
-msgstr "正在启用 Hub XML-RPC API 容器。"
+msgstr "不启动 Hub XML-RPC API 服务"
 
 #: mgradm/shared/kubernetes/certificates.go:31
 msgid "Creating SSL server certificate secret"
@@ -1459,9 +1455,8 @@ msgid "Enabling system service"
 msgstr "正在启用系统服务"
 
 #: mgradm/shared/podman/podman.go:90
-#, fuzzy
 msgid "cannot generate systemd user configuration file"
-msgstr "无法生成 systemd 配置文件"
+msgstr "无法生成 systemd 用户配置文件"
 
 #: mgradm/shared/podman/podman.go:102
 msgid "failed to create temporary folder on container to copy certificates to"
@@ -1496,14 +1491,14 @@ msgid "cannot run uyuni migration container"
 msgstr "无法运行 uyuni 迁移容器"
 
 #: mgradm/shared/podman/podman.go:206
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot inspect volume %s"
-msgstr "无法删除卷 %s"
+msgstr "无法检查卷 %s"
 
 #: mgradm/shared/podman/podman.go:209
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot restore %s SELinux permissions"
-msgstr "无法检索源 PostgreSQL 版本"
+msgstr "无法恢复 %s SELinux 权限"
 
 #: mgradm/shared/podman/podman.go:216
 msgid "cannot read extracted data"
@@ -1633,7 +1628,7 @@ msgstr "Helm 图表标志"
 #: mgradm/shared/utils/cmd_utils.go:87
 #, javascript-format
 msgid "Image for %s container"
-msgstr ""
+msgstr "%s 容器的映像"
 
 #: mgradm/shared/utils/cmd_utils.go:89
 #, javascript-format
@@ -1642,11 +1637,13 @@ msgstr "%s 容器的标记，如果设置，将会覆盖全局值"
 
 #: mgradm/shared/utils/cmd_utils.go:99
 msgid "SUSE Customer Center username. It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
-msgstr ""
+msgstr "SUSE Customer Center 用户名，将用作 SCC 身份凭证进行产品同步以及从 "
+"registry.suse.com 提取映像"
 
 #: mgradm/shared/utils/cmd_utils.go:100
 msgid "SUSE Customer Center password. It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
-msgstr ""
+msgstr "SUSE Customer Center 口令，将用作 SCC 身份凭证进行产品同步以及从 "
+"registry.suse.com 提取映像"
 
 #: mgradm/shared/utils/cmd_utils.go:102
 msgid "SUSE Customer Center Flags"
