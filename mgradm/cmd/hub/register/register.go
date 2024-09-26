@@ -43,9 +43,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		utils.AddBackendFlag(registerCmd)
 	}
 
-	if err := api.AddAPIFlags(registerCmd, false); err != nil {
-		return nil
-	}
+	api.AddAPIFlags(registerCmd)
 
 	return registerCmd
 }
@@ -95,9 +93,13 @@ func registerToHub(config map[string]string, cnxDetails *api.ConnectionDetails) 
 	}
 	log.Info().Msgf(L("Hub API server: %s"), cnxDetails.Server)
 	client, err := api.Init(cnxDetails)
+	if err == nil {
+		err = client.Login()
+	}
 	if err != nil {
 		return utils.Errorf(err, L("failed to connect to the Hub server"))
 	}
+
 	data := map[string]interface{}{
 		"fqdn": config["java.hostname"],
 	}

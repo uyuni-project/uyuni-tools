@@ -41,6 +41,21 @@ func addConfigurationFile(v *viper.Viper, cmd *cobra.Command, configFilename str
 	return nil
 }
 
+// Returns user configuration directory.
+// Can be $XDG_CONFIG_HOME or `homedir/.config`.
+func GetUserConfigDir() string {
+	xdgConfigHome := os.Getenv("XDG_CONFIG_HOME")
+	if xdgConfigHome == "" {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			log.Warn().Err(err).Msg(L("Failed to find home directory"))
+		} else {
+			xdgConfigHome = path.Join(home, ".config")
+		}
+	}
+	return xdgConfigHome
+}
+
 // ReadConfig parse configuration file and env variables a return parameters.
 func ReadConfig(cmd *cobra.Command, configPaths ...string) (*viper.Viper, error) {
 	v := viper.New()
@@ -55,15 +70,7 @@ func ReadConfig(cmd *cobra.Command, configPaths ...string) (*viper.Viper, error)
 	v.SetConfigType("yaml")
 	v.SetConfigName(configFilename)
 
-	xdgConfigHome := os.Getenv("XDG_CONFIG_HOME")
-	if xdgConfigHome == "" {
-		home, err := os.UserHomeDir()
-		if err != nil {
-			log.Err(err).Msg(L("Failed to find home directory"))
-		} else {
-			xdgConfigHome = path.Join(home, ".config")
-		}
-	}
+	xdgConfigHome := GetUserConfigDir()
 	if xdgConfigHome != "" {
 		v.AddConfigPath(path.Join(xdgConfigHome, appName))
 	}

@@ -21,7 +21,9 @@ import (
 func runPost(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
 	log.Debug().Msgf("Running POST command %s", args[0])
 	client, err := api.Init(&flags.ConnectionDetails)
-
+	if err == nil {
+		err = client.Login()
+	}
 	if err != nil {
 		return utils.Errorf(err, L("unable to login to the server"))
 	}
@@ -46,7 +48,7 @@ func runPost(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command
 
 	res, err := api.Post[interface{}](client, path, data)
 	if err != nil {
-		return utils.Errorf(err, L("error in query %s"), path)
+		return utils.Errorf(err, L("error in query '%s'"), path)
 	}
 
 	if !res.Success {
