@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-26 14:41+0200\n"
 "PO-Revision-Date: 2024-09-26 13:48+0000\n"
-"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
+"Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrpxy-5-0/ko/>\n"
 "Language: ko\n"
@@ -24,17 +24,14 @@ msgid "Clear the cache"
 msgstr "캐시 지우기"
 
 #: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/cache/podman.go:25
-#, fuzzy
 msgid "failed to remove cached data"
 msgstr "캐시 데이터 제거 실패"
 
 #: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:29
-#, fuzzy
 msgid "failed to re-create the cache directories"
 msgstr "캐시 디렉토리 재생성 실패"
 
 #: mgrpxy/cmd/cache/squid.go:18 mgrpxy/cmd/cache/squid.go:19
-#, fuzzy
 msgid "Manage proxy cache"
 msgstr "프록시 캐시 관리"
 
@@ -47,17 +44,14 @@ msgid "Tool to help administering Uyuni proxies in containers"
 msgstr "컨테이너에서 Uyuni 프록시를 관리하는 데 유용한 도구"
 
 #: mgrpxy/cmd/cmd.go:43
-#, fuzzy
 msgid "Server Deployment:"
 msgstr "서버 배포:"
 
 #: mgrpxy/cmd/cmd.go:47
-#, fuzzy
 msgid "Server Management:"
 msgstr "서버 관리:"
 
 #: mgrpxy/cmd/cmd.go:51
-#, fuzzy
 msgid "Administrator tools:"
 msgstr "관리자 도구:"
 
@@ -166,7 +160,6 @@ msgid "failed to extract proxy config from %s file"
 msgstr "%s 파일에서 프록시 구성을 추출하지 못함"
 
 #: mgrpxy/cmd/install/podman/utils.go:47 mgrpxy/shared/podman/podman.go:227
-#, fuzzy
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.com에 로그인하지 못했습니다."
 
@@ -246,20 +239,18 @@ msgid "Stop the proxy"
 msgstr "프록시 중지"
 
 #: mgrpxy/cmd/support/config/config.go:23
-#, fuzzy
 msgid "Extract configuration and logs"
 msgstr "구성 및 로그 추출"
 
 #: mgrpxy/cmd/support/config/config.go:24
-#, fuzzy
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from \n"
 "the containers for support to help debugging."
-msgstr "디버깅에 도움이 되도록 호스트 또는 클러스터 구성 및 로그를 비록하여 "
-"컨테이너의 해당 항목을 추출하여 지원하십시오."
+msgstr ""
+"호스트 또는 클러스터의 구성 및 로그와 컨테이너의 구성 및 로그를  \n"
+"추출하여 디버깅에 도움이 되도록 지원하십시오."
 
 #: mgrpxy/cmd/support/config/config.go:32
-#, fuzzy
 msgid "path where to extract the data"
 msgstr "데이터 추출 경로"
 
@@ -506,7 +497,6 @@ msgid "cannot generate systemd conf file"
 msgstr "systemd conf 파일을 생성할 수 없음"
 
 #: mgrpxy/shared/podman/podman.go:142
-#, fuzzy
 msgid "cannot generate systemd conf user configuration file"
 msgstr "systemd conf 사용자 구성 파일을 생성할 수 없음"
 
@@ -570,7 +560,7 @@ msgid "Squid tuning configuration file"
 msgstr "Squid 튜닝 구성 파일"
 
 #: mgrpxy/shared/utils/flags.go:80
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Image for %s container"
 msgstr "%s 컨테이너용 이미지"
 
