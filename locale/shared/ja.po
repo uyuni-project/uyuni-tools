@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:47+0200\n"
-"PO-Revision-Date: 2024-09-25 18:48+0000\n"
+"PO-Revision-Date: 2024-09-26 02:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ja/>\n"
@@ -216,7 +216,7 @@ msgstr "helmチャート %[1]s (ネームスペース %[2]s 内)のインスト�
 
 #: shared/kubernetes/helm.go:67
 msgid "namespace is required"
-msgstr "ネームスペースが必要がです"
+msgstr "ネームスペースが必要です"
 
 #: shared/kubernetes/helm.go:77 shared/podman/network.go:107
 #: shared/podman/systemd.go:79 shared/podman/systemd.go:155
@@ -342,7 +342,7 @@ msgstr "%s の作成に失敗しました"
 #: shared/kubernetes/support.go:88
 #, javascript-format
 msgid "failed to fetch info for pod %s"
-msgstr "ポッド %s の情報をフェッチできませんでした"
+msgstr "ポッド %s の情報のフェッチに失敗しました"
 
 #: shared/kubernetes/support.go:94
 #, javascript-format
@@ -562,7 +562,7 @@ msgstr "コンテナ %s に対して実行中のイメージが見つかりま�
 
 #: shared/podman/login.go:23
 msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
-msgstr "SCC認証情報パラメータが使用されます。ホストからのSCC認証情報は無視されます。"
+msgstr "SCC資格情報パラメータが使用されます。ホストからのSCC資格情報は無視されます。"
 
 #: shared/podman/login.go:50
 msgid "failed to close the temporary auth file"
@@ -828,7 +828,7 @@ msgstr "イメージ %s の削除に失敗しました"
 #: shared/podman/utils.go:172
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
-msgstr "ボリューム %s が外部からマウントされているため、ディレクトリを削除できません"
+msgstr "ボリューム %s は外部にマウントされているため、ディレクトリを削除できません"
 
 #: shared/podman/utils.go:234
 msgid "failed to login to registry.suse.com"
@@ -1051,7 +1051,7 @@ msgstr "検査データのアンマーシャルに失敗しました"
 
 #: shared/utils/logUtils.go:96
 msgid "Couldn't open %[1]s file for writing, writing log to %[2]s"
-msgstr "%[1]s ファイルを書き込み読み開けませんでした。ログを %[2]s に書き込みます"
+msgstr "%[1]s ファイルを書き込み用に開けませんでした。ログを %[2]s に書き込みます"
 
 #: shared/utils/support.go:32
 msgid "Unable to detect hostname, using localhost"
@@ -1059,7 +1059,7 @@ msgstr "ホスト名を検出できません。localhostを使用しています
 
 #: shared/utils/support.go:46
 msgid "Preparing the tarball"
-msgstr "tarballの準備"
+msgstr "tarballの準備中"
 
 #: shared/utils/support.go:58
 #, javascript-format
@@ -1068,11 +1068,11 @@ msgstr "%s をtarballに追加できませんでした"
 
 #: shared/utils/support.go:88
 msgid "failed to run supportconfig on the host"
-msgstr "ホスト上で supportconfig を実行できませんでした"
+msgstr "ホスト上でsupportconfigを実行できませんでした"
 
 #: shared/utils/support.go:98
 msgid "failed to find host supportconfig tarball from command output"
-msgstr "コマンド出力からホストsupportconfig tarballが見つかりませんでした"
+msgstr "コマンド出力からホストのsupportconfig tarballが見つかりませんでした"
 
 #: shared/utils/support.go:101
 msgid "supportconfig is not available on the host, skipping it"
