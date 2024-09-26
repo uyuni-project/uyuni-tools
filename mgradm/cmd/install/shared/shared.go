@@ -59,7 +59,11 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 		}
 
 		// Check if there is already admin user with given password and organization with same name
-		if _, err := api.Init(&apiCnx); err == nil {
+		client, err := api.Init(&apiCnx)
+		if err != nil {
+			log.Error().Err(err).Msgf(L("unable to prepare API client"))
+		}
+		if err = client.Login(); err == nil {
 			if _, err := org.GetOrganizationDetails(&apiCnx, flags.Organization); err == nil {
 				log.Info().Msgf(L("Server organization already exists, reusing"))
 			} else {
@@ -72,11 +76,7 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 				// We were not able to connect to the server at all
 				return err
 			}
-			// We do not have any user existing, do not try to login
-			apiCnx = api.ConnectionDetails{
-				Server:   fqdn,
-				Insecure: false,
-			}
+			// We do not have any user existing, create one. CreateFirst skip user login
 			_, err := org.CreateFirst(&apiCnx, flags.Organization, &flags.Admin)
 			if err != nil {
 				if preconfigured {
