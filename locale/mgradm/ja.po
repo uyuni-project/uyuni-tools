@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-20 14:47+0200\n"
-"PO-Revision-Date: 2024-09-25 13:44+0000\n"
+"PO-Revision-Date: 2024-09-26 02:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgradm/ja/>\n"
@@ -234,7 +234,7 @@ msgstr ""
 "それをコンテナにコピーします。\n"
 "\n"
 "オプションのパラメータ「distribution-name」、「version」 "
-"および「arch」は、カスタムディストリビューションを指定します。.\n"
+"および「arch」は、カスタムディストリビューションを指定します。\n"
 "設定されていない場合、ディストリビューション名は自動検出が試みられます。\n"
 "\n"
 "- 「.treeinfo」ファイルが存在する場合はそのファイルの名前を使用する\n"
@@ -501,7 +501,7 @@ msgstr "registry.suse.comへのログインに失敗しました"
 #: mgradm/cmd/install/podman/utils.go:59
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
 msgstr "サーバはすでに初期化されています。新規インストールを試みる前、またはアップグ"
-"レードコマンドを使用する前にアンインストールしてください"
+"レードコマンドを使用する前にアンインストールします"
 
 #: mgradm/cmd/install/podman/utils.go:64 mgradm/cmd/migrate/podman/utils.go:28
 msgid "install podman before running this command"
@@ -735,16 +735,16 @@ msgstr "SSL CA証明書をホストの信頼済み証明書に追加できませ
 
 #: mgradm/cmd/install/shared/shared.go:65
 msgid "Server organization already exists, reusing"
-msgstr "サーバ設定はすでに存在しており、再利用している"
+msgstr "サーバ組織はすでに存在しており、再利用しています"
 
 #: mgradm/cmd/install/shared/shared.go:68
 #, javascript-format
 msgid "Administration user already exists, but organization %s could not be found"
-msgstr "管理ユーザはすでに存在しますが、組織 %s が見つかりません"
+msgstr "管理ユーザはすでに存在しますが、組織 %s が見つかりませんでした"
 
 #: mgradm/cmd/install/shared/shared.go:84
 msgid "Administration user already exists, but provided credentials are not valid"
-msgstr "管理ユーザはすでに存在しますが、指定された認証情報は無効です"
+msgstr "管理ユーザはすでに存在しますが、指定された資格情報は無効です"
 
 #: mgradm/cmd/install/shared/shared.go:92
 msgid "Server set up, login on https://%[1]s with %[2]s user"
@@ -1646,13 +1646,13 @@ msgstr "%s コンテナ用のタグ。設定されている場合はグローバ
 msgid "SUSE Customer Center username. It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgstr ""
 "SUSEカスタマーセンターのユーザ名。 これは、製品の同期とregistry.suse."
-"comからのイメージの取得のためにSCC認証情報として使用されます"
+"comからのイメージの取得のためにSCC資格情報として使用されます"
 
 #: mgradm/shared/utils/cmd_utils.go:100
 msgid "SUSE Customer Center password. It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgstr ""
 "SUSEカスタマーセンターのパスワード。これは、製品の同期とregistry.suse."
-"comからのイメージの取得のためにSCC認証情報として使用されます"
+"comからのイメージの取得のためにSCC資格情報として使用されます"
 
 #: mgradm/shared/utils/cmd_utils.go:102
 msgid "SUSE Customer Center Flags"
