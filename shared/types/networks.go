@@ -6,6 +6,7 @@ package types
 
 // PortMap describes a port.
 type PortMap struct {
+	Service  string
 	Name     string
 	Exposed  int
 	Port     int
