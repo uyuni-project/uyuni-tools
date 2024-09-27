@@ -16,17 +16,13 @@ import (
 )
 
 // GetPortLists returns compiled lists of tcp and udp ports..
-func GetPortLists(hub bool, debug bool) ([]types.PortMap, []types.PortMap) {
-	tcpPorts := []types.PortMap{}
-	tcpPorts = append(tcpPorts, utils.TCPPorts...)
-	if debug {
-		tcpPorts = append(tcpPorts, utils.DebugPorts...)
-	}
+func GetPortLists(hub bool, debug bool) []types.PortMap {
+	ports := utils.GetServerPorts(debug)
 	if hub {
-		tcpPorts = append(tcpPorts, utils.HubXmlrpcPorts...)
+		ports = append(ports, utils.HubXmlrpcPorts...)
 	}
 
-	return tcpPorts, utils.UDPPorts
+	return ports
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.

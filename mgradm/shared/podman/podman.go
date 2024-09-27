@@ -31,18 +31,9 @@ import (
 
 // GetExposedPorts returns the port exposed.
 func GetExposedPorts(debug bool) []types.PortMap {
-	ports := []types.PortMap{
-		utils.NewPortMap("https", 443, 443),
-		utils.NewPortMap("http", 80, 80),
-	}
-	ports = append(ports, utils.TCPPorts...)
+	ports := utils.GetServerPorts(debug)
+	ports = append(ports, utils.NewPortMap(utils.ServerTCPServiceName, "https", 443, 443))
 	ports = append(ports, utils.TCPPodmanPorts...)
-	ports = append(ports, utils.UDPPorts...)
-
-	if debug {
-		ports = append(ports, utils.DebugPorts...)
-	}
-
 	return ports
 }
 
@@ -58,7 +49,7 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 
 	ports := GetExposedPorts(debug)
 	if _, err := exec.LookPath("csp-billing-adapter"); err == nil {
-		ports = append(ports, utils.NewPortMap("csp-billing", 18888, 18888))
+		ports = append(ports, utils.NewPortMap("csp", "csp-billing", 18888, 18888))
 		args = append(args, "-e ISPAYG=1")
 	}
 

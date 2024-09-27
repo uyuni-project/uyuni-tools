@@ -5,6 +5,7 @@
 package kubernetes
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -18,25 +19,58 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/k3s-traefik-config.yaml"
+const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/uyuni-traefik-config.yaml"
 
 // InstallK3sTraefikConfig install K3s Traefik configuration.
-func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap) {
+func InstallK3sTraefikConfig(ports []types.PortMap) error {
 	log.Info().Msg(L("Installing K3s Traefik configuration"))
 
-	data := K3sTraefikConfigTemplateData{
-		TCPPorts: tcpPorts,
-		UDPPorts: udpPorts,
+	endpoints := []types.PortMap{}
+	for _, port := range ports {
+		port.Name = GetTraefikEndpointName(port)
+		endpoints = append(endpoints, port)
 	}
-	if err := utils.WriteTemplateToFile(data, k3sTraefikConfigPath, 0600, false); err != nil {
-		log.Fatal().Err(err).Msgf(L("Failed to write K3s Traefik configuration"))
+	data := K3sTraefikConfigTemplateData{
+		Ports: endpoints,
+	}
+	if err := utils.WriteTemplateToFile(data, k3sTraefikConfigPath, 0600, true); err != nil {
+		return utils.Errorf(err, L("Failed to write Traefik configuration"))
 	}
 
 	// Wait for traefik to be back
-	waitForTraefik()
+	return waitForTraefik()
 }
 
-func waitForTraefik() {
+// GetTraefikEndpointName computes the traefik endpoint name from the service and port names.
+// Those names should be less than 15 characters long.
+func GetTraefikEndpointName(portmap types.PortMap) string {
+	svc := shortenName(portmap.Service)
+	name := shortenName(portmap.Name)
+	if name != svc {
+		return fmt.Sprintf("%s-%s", svc, name)
+	}
+	return name
+}
+
+func shortenName(name string) string {
+	shorteningMap := map[string]string{
+		"taskomatic":      "tasko",
+		"metrics":         "mtrx",
+		"postgresql":      "pgsql",
+		"exporter":        "xport",
+		"uyuni-tcp":       "uyuni",
+		"uyuni-udp":       "uyuni",
+		"uyuni-proxy-tcp": "uyuni",
+		"uyuni-proxy-udp": "uyuni",
+	}
+	short := shorteningMap[name]
+	if short == "" {
+		short = name
+	}
+	return short
+}
+
+func waitForTraefik() error {
 	log.Info().Msg(L("Waiting for Traefik to be reloaded"))
 	for i := 0; i < 60; i++ {
 		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "get", "job", "-n", "kube-system",
@@ -44,12 +78,12 @@ func waitForTraefik() {
 		if err == nil {
 			completionTime, err := time.Parse(time.RFC3339, string(out))
 			if err == nil && time.Since(completionTime).Seconds() < 60 {
-				return
+				return nil
 			}
 		}
 		time.Sleep(1 * time.Second)
 	}
-	log.Error().Msg(L("Failed to reload K3s Traefik"))
+	return errors.New(L("Failed to reload Traefik"))
 }
 
 // UninstallK3sTraefikConfig uninstall K3s Traefik configuration.
@@ -62,7 +96,9 @@ func UninstallK3sTraefikConfig(dryRun bool) {
 			log.Error().Err(err).Msg(L("failed to write empty traefik configuration"))
 		} else {
 			// Wait for traefik to be back
-			waitForTraefik()
+			if err := waitForTraefik(); err != nil {
+				log.Error().Err(err).Msg(L("failed to uninstall traefik configuration"))
+			}
 		}
 	} else {
 		log.Info().Msg(L("Would reinstall Traefik without additionnal configuration"))

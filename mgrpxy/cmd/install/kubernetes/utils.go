@@ -49,11 +49,14 @@ func installForKubernetes(_ *types.GlobalFlags,
 	// If installing on k3s, install the traefik helm config in manifests
 	isK3s := clusterInfos.IsK3s()
 	IsRke2 := clusterInfos.IsRke2()
+	ports := shared_utils.GetProxyPorts()
 	if isK3s {
-		shared_kubernetes.InstallK3sTraefikConfig(shared_utils.ProxyTCPPorts, shared_utils.UDPPorts)
+		err = shared_kubernetes.InstallK3sTraefikConfig(ports)
 	} else if IsRke2 {
-		shared_kubernetes.InstallRke2NginxConfig(shared_utils.ProxyTCPPorts, shared_utils.UDPPorts,
-			flags.Helm.Proxy.Namespace)
+		err = shared_kubernetes.InstallRke2NginxConfig(ports, flags.Helm.Proxy.Namespace)
+	}
+	if err != nil {
+		return err
 	}
 
 	helmArgs := []string{"--set", "ingress=" + clusterInfos.Ingress}

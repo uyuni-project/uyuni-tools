@@ -22,6 +22,25 @@ import (
 // HelmAppName is the Helm application name.
 const HelmAppName = "uyuni"
 
+// DeployNodeConfig deploy configuration files on the node.
+func DeployNodeConfig(
+	namespace string,
+	clusterInfos *kubernetes.ClusterInfos,
+	needsHub bool,
+	debug bool,
+) error {
+	// If installing on k3s, install the traefik helm config in manifests
+	isK3s := clusterInfos.IsK3s()
+	IsRke2 := clusterInfos.IsRke2()
+	ports := GetPortLists(needsHub, debug)
+	if isK3s {
+		return kubernetes.InstallK3sTraefikConfig(ports)
+	} else if IsRke2 {
+		return kubernetes.InstallRke2NginxConfig(ports, namespace)
+	}
+	return nil
+}
+
 // Deploy execute a deploy of a given image and helm to a cluster.
 func Deploy(
 	cnx *shared.Connection,
@@ -36,14 +55,11 @@ func Deploy(
 	helmArgs ...string,
 ) error {
 	// If installing on k3s, install the traefik helm config in manifests
-	isK3s := clusterInfos.IsK3s()
-	IsRke2 := clusterInfos.IsRke2()
 	if !prepare {
-		tcpPorts, udpPorts := GetPortLists(hubXmlrpcFlags.Replicas > 0, debug)
-		if isK3s {
-			kubernetes.InstallK3sTraefikConfig(tcpPorts, udpPorts)
-		} else if IsRke2 {
-			kubernetes.InstallRke2NginxConfig(tcpPorts, udpPorts, helmFlags.Uyuni.Namespace)
+		if err := DeployNodeConfig(
+			helmFlags.Uyuni.Namespace, clusterInfos, hubXmlrpcFlags.Replicas > 0, debug,
+		); err != nil {
+			return err
 		}
 	}
 
