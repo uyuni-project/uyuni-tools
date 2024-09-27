@@ -207,20 +207,21 @@ func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectDat
 			)
 		}
 	} else {
-		cnx_args := []string{"s/SUSE Manager release //g", "/etc/susemanager-release"}
-		current_suse_manager_release, err := cnx.Exec("sed", cnx_args...)
+		cnx_args := []string{"s/.*(\\([0-9.]*\\)).*/\\1/g", "/etc/susemanager-release"}
+		b_current_suse_manager_release, err := cnx.Exec("sed", cnx_args...)
+		current_suse_manager_release := strings.TrimSuffix(string(b_current_suse_manager_release), "\n")
 		if err != nil {
 			return utils.Errorf(err, L("failed to read current susemanager release"))
 		}
-		log.Debug().Msgf("Current release is %s", string(current_suse_manager_release))
+		log.Debug().Msgf("Current release is %s", current_suse_manager_release)
 		if !isSumaImage {
 			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
 		}
 		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.SuseManagerRelease)
-		if utils.CompareVersion(inspectedValues.SuseManagerRelease, string(current_suse_manager_release)) < 0 {
+		if utils.CompareVersion(inspectedValues.SuseManagerRelease, current_suse_manager_release) < 0 {
 			return fmt.Errorf(
 				L("cannot downgrade from version %[1]s to %[2]s"),
-				string(current_suse_manager_release), inspectedValues.SuseManagerRelease,
+				current_suse_manager_release, inspectedValues.SuseManagerRelease,
 			)
 		}
 	}
