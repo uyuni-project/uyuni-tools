@@ -37,7 +37,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--replace -dt \
 	-v /etc/uyuni/proxy:/etc/uyuni:ro \
 	{{- range .Volumes }}
-	-v {{ .Name }}:{{ .MountPath }}:z \
+	-v {{ .Name }}:{{ .MountPath }} \
 	{{- end }}
 	--name uyuni-proxy-tftpd \
 	${UYUNI_IMAGE}'
