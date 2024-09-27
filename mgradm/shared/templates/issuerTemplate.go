@@ -7,6 +7,8 @@ package templates
 import (
 	"io"
 	"text/template"
+
+	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 )
 
 // Deploy self-signed issuer or CA Certificate and key.
@@ -15,6 +17,8 @@ kind: Issuer
 metadata:
   name: uyuni-issuer
   namespace: {{ .Namespace }}
+  labels:
+    app: ` + kubernetes.ServerApp + `
 spec:
   selfSigned: {}
 ---
@@ -23,6 +27,8 @@ kind: Certificate
 metadata:
   name: uyuni-ca
   namespace: {{ .Namespace }}
+  labels:
+    app: ` + kubernetes.ServerApp + `
 spec:
   isCA: true
 {{- if or .Country .State .City .Org .OrgUnit }}

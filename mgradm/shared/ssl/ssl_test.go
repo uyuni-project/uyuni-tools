@@ -7,6 +7,8 @@ package ssl
 import (
 	"strings"
 	"testing"
+
+	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
 )
 
 func TestReadCertificatesRootCa(t *testing.T) {
@@ -171,7 +173,8 @@ func TestOrderCasChain2(t *testing.T) {
 }
 
 func TestGetRsaKey(t *testing.T) {
-	actual := string(GetRsaKey("testdata/RootCA.key", "secret"))
+	key := test_utils.ReadFile(t, "testdata/RootCA.key")
+	actual := string(GetRsaKey(key, "secret"))
 	if !strings.HasPrefix(actual, "-----BEGIN PRIVATE KEY-----\nMIIEugIBADANBgkqhkiG9w0BAQEFAAS") ||
 		!strings.HasSuffix(actual, "DKY9SmW6QD+RJwbMc4M=\n-----END PRIVATE KEY-----\n") {
 		t.Errorf("Unexpected generated RSA key: %s", actual)
