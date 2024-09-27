@@ -85,7 +85,7 @@ func Deploy(
 	}
 
 	// Wait for the pod to be started
-	err = kubernetes.WaitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
+	err = kubernetes.WaitForDeployments(helmFlags.Uyuni.Namespace, HELM_APP_NAME)
 	if err != nil {
 		return utils.Errorf(err, L("cannot deploy"))
 	}
@@ -120,7 +120,7 @@ func UyuniUpgrade(
 	// The values computed from the command line need to be last to override what could be in the extras
 	helmParams = append(helmParams,
 		"--set", "images.server="+serverImage,
-		"--set", "pullPolicy="+kubernetes.GetPullPolicy(pullPolicy),
+		"--set", "pullPolicy="+string(kubernetes.GetPullPolicy(pullPolicy)),
 		"--set", "fqdn="+fqdn,
 		"--description", reason,
 	)
@@ -266,5 +266,5 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}
 
-	return kubernetes.WaitForDeployment(namespace, "uyuni", "uyuni")
+	return kubernetes.WaitForDeployments(namespace, "uyuni")
 }

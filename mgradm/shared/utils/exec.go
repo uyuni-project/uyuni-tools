@@ -51,11 +51,10 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 }
 
 // GeneratePgsqlVersionUpgradeScript generates the PostgreSQL version upgrade script.
-func GeneratePgsqlVersionUpgradeScript(scriptDir string, oldPgVersion string, newPgVersion string, kubernetes bool) (string, error) {
+func GeneratePgsqlVersionUpgradeScript(scriptDir string, oldPgVersion string, newPgVersion string) (string, error) {
 	data := templates.PostgreSQLVersionUpgradeTemplateData{
 		OldVersion: oldPgVersion,
 		NewVersion: newPgVersion,
-		Kubernetes: kubernetes,
 	}
 
 	scriptName := "pgsqlVersionUpgrade.sh"

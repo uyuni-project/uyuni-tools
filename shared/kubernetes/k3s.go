@@ -58,8 +58,6 @@ func shortenName(name string) string {
 		"metrics":         "mtrx",
 		"postgresql":      "pgsql",
 		"exporter":        "xport",
-		"uyuni-tcp":       "uyuni",
-		"uyuni-udp":       "uyuni",
 		"uyuni-proxy-tcp": "uyuni",
 		"uyuni-proxy-udp": "uyuni",
 	}
@@ -72,7 +70,7 @@ func shortenName(name string) string {
 
 func waitForTraefik() error {
 	log.Info().Msg(L("Waiting for Traefik to be reloaded"))
-	for i := 0; i < 60; i++ {
+	for i := 0; i < 120; i++ {
 		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "get", "job", "-n", "kube-system",
 			"-o", "jsonpath={.status.completionTime}", "helm-install-traefik")
 		if err == nil {

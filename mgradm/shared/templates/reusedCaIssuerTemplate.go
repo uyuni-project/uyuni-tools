@@ -7,6 +7,8 @@ package templates
 import (
 	"io"
 	"text/template"
+
+	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 )
 
 const uyuniCaIssuer = `apiVersion: cert-manager.io/v1
@@ -14,6 +16,8 @@ kind: Issuer
 metadata:
   name: uyuni-ca-issuer
   namespace: {{ .Namespace }}
+  labels:
+    app: ` + kubernetes.ServerApp + `
 spec:
   ca:
     secretName:
@@ -26,6 +30,8 @@ type: kubernetes.io/tls
 metadata:
   name: uyuni-ca
   namespace: {{ .Namespace }}
+  labels:
+    app: ` + kubernetes.ServerApp + `
 data:
   ca.crt: {{ .Certificate }}
   tls.crt: {{ .Certificate }}

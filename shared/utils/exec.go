@@ -5,6 +5,8 @@
 package utils
 
 import (
+	"bytes"
+	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
@@ -64,11 +66,18 @@ func RunCmdOutput(logLevel zerolog.Level, command string, args ...string) ([]byt
 		s.Start() // Start the spinner
 	}
 	localLogger.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
-	output, err := exec.Command(command, args...).Output()
+	cmd := exec.Command(command, args...)
+	var errBuf bytes.Buffer
+	cmd.Stderr = &errBuf
+	output, err := cmd.Output()
 	if logLevel != zerolog.Disabled {
 		s.Stop()
 	}
 	localLogger.Trace().Msgf("Command output: %s, error: %s", output, err)
+	message := strings.TrimSpace(errBuf.String())
+	if message != "" {
+		err = errors.New(message)
+	}
 	return output, err
 }
 

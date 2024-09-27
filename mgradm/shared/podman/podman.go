@@ -30,7 +30,7 @@ import (
 // GetExposedPorts returns the port exposed.
 func GetExposedPorts(debug bool) []types.PortMap {
 	ports := utils.GetServerPorts(debug)
-	ports = append(ports, utils.NewPortMap(utils.ServerTcpServiceName, "https", 443, 443))
+	ports = append(ports, utils.NewPortMap(utils.WebServiceName, "https", 443, 443))
 	ports = append(ports, utils.TCP_PODMAN_PORTS...)
 	return ports
 }
@@ -254,7 +254,7 @@ func RunPgsqlVersionUpgrade(
 
 		log.Info().Msgf(L("Using database upgrade image %s"), preparedImage)
 
-		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, false)
+		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql)
 		if err != nil {
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
