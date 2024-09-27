@@ -207,8 +207,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectDat
 			)
 		}
 	} else {
-		cnx_args := []string{"s/.*(\\([0-9.]*\\)).*/\\1/g", "/etc/susemanager-release"}
-		b_current_suse_manager_release, err := cnx.Exec("sed", cnx_args...)
+		b_current_suse_manager_release, err := cnx.Exec("sed", "s/.*(\\([0-9.]*\\)).*/\\1/g", "/etc/susemanager-release")
 		current_suse_manager_release := strings.TrimSuffix(string(b_current_suse_manager_release), "\n")
 		if err != nil {
 			return utils.Errorf(err, L("failed to read current susemanager release"))
