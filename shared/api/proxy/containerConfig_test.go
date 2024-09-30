@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2024 SUSE LLC
+//
+// SPDX-License-Identifier: Apache-2.0
+
 package proxy_test
 
 import (
@@ -82,10 +86,40 @@ const expectedProxyKey = "proxyKey contents"
 
 var expectedIntermediateCAs = []string{"intermediateCA1", "intermediateCA2"}
 
+var proxyConfigRequest = proxy.ProxyConfigRequest{
+	ProxyName:       expectedProxyName,
+	ProxyPort:       expectedProxyPort,
+	Server:          expectedServer,
+	MaxCache:        expectedMaxCache,
+	Email:           expectedEmail,
+	RootCA:          expectedRootCA,
+	ProxyCrt:        expectedProxyCrt,
+	ProxyKey:        expectedProxyKey,
+	IntermediateCAs: expectedIntermediateCAs,
+}
+
+var proxyConfigGenerateRequest = proxy.ProxyConfigGenerateRequest{
+	ProxyName:  expectedProxyName,
+	ProxyPort:  expectedProxyPort,
+	Server:     expectedServer,
+	MaxCache:   expectedMaxCache,
+	Email:      expectedEmail,
+	CaCrt:      expectedCaCrt,
+	CaKey:      expectedCaKey,
+	CaPassword: expectedCaPassword,
+	Cnames:     expectedCnames,
+	Country:    expectedCountry,
+	State:      expectedState,
+	City:       expectedCity,
+	Org:        expectedOrg,
+	OrgUnit:    expectedOrgUnit,
+	SslEmail:   expectedSslEmail,
+}
+
 // Tests ContainerConfig when the post request fails.
 func TestFailContainerConfigWhenPostRequestFails(t *testing.T) {
 	//
-	expectedErrorMessage := "failed to create proxy configuration file with generated certificates"
+	expectedErrorMessage := "failed to create proxy configuration file"
 
 	// Mock client
 	client, err := api.Init(connectionDetails)
@@ -97,10 +131,9 @@ func TestFailContainerConfigWhenPostRequestFails(t *testing.T) {
 			return test_utils.GetResponse(404, `{}`)
 		},
 	}
+
 	// Execute
-	result, err := proxy.ContainerConfig(client, expectedProxyName, expectedProxyPort,
-		expectedServer, expectedMaxCache, expectedEmail,
-		expectedRootCA, expectedProxyCrt, expectedProxyKey, expectedIntermediateCAs)
+	result, err := proxy.ContainerConfig(client, proxyConfigRequest)
 
 	// Assertions
 	test_utils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
@@ -123,10 +156,9 @@ func TestFailContainerConfigWhenPostIsUnsuccessful(t *testing.T) {
 			return test_utils.GetResponse(200, `{"success": false, "message": "some error message"}`)
 		},
 	}
+
 	// Execute
-	result, err := proxy.ContainerConfig(client, expectedProxyName, expectedProxyPort,
-		expectedServer, expectedMaxCache, expectedEmail,
-		expectedRootCA, expectedProxyCrt, expectedProxyKey, expectedIntermediateCAs)
+	result, err := proxy.ContainerConfig(client, proxyConfigRequest)
 
 	// Assertions
 	test_utils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
@@ -168,10 +200,9 @@ func TestSuccessfulContainerConfigWhenAllParametersAreProvided(t *testing.T) {
 			return test_utils.GetResponse(200, `{"success": true, "result": [1, 2, 3, 4, 5]}`)
 		},
 	}
+
 	// Execute
-	result, err := proxy.ContainerConfig(client, expectedProxyName, expectedProxyPort,
-		expectedServer, expectedMaxCache, expectedEmail,
-		expectedRootCA, expectedProxyCrt, expectedProxyKey, expectedIntermediateCAs)
+	result, err := proxy.ContainerConfig(client, proxyConfigRequest)
 
 	// Assertions
 	test_utils.AssertTrue(t, "Unexpected error executing ContainerConfigGenerate", err == nil)
@@ -182,7 +213,7 @@ func TestSuccessfulContainerConfigWhenAllParametersAreProvided(t *testing.T) {
 // Tests ContainerConfigGenerate when the post request fails.
 func TestFailContainerConfigGenerateWhenPostRequestFails(t *testing.T) {
 	//
-	expectedErrorMessage := "failed to create proxy configuration file with generated certificates"
+	expectedErrorMessage := "failed to create proxy configuration file"
 
 	// Mock client
 	client, err := api.Init(connectionDetails)
@@ -194,11 +225,9 @@ func TestFailContainerConfigGenerateWhenPostRequestFails(t *testing.T) {
 			return test_utils.GetResponse(404, `{}`)
 		},
 	}
+
 	// Execute
-	result, err := proxy.ContainerConfigGenerate(client, expectedProxyName, expectedProxyPort,
-		expectedServer, expectedMaxCache, expectedEmail,
-		expectedCaCrt, expectedCaKey, expectedCaPassword, expectedCnames, expectedCountry,
-		expectedState, expectedCity, expectedOrg, expectedOrgUnit, expectedSslEmail)
+	result, err := proxy.ContainerConfigGenerate(client, proxyConfigGenerateRequest)
 
 	// Assertions
 	test_utils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
@@ -221,11 +250,9 @@ func TestFailContainerConfigGenerateWhenPostIsUnsuccessful(t *testing.T) {
 			return test_utils.GetResponse(200, `{"success": false, "message": "some error message"}`)
 		},
 	}
+
 	// Execute
-	result, err := proxy.ContainerConfigGenerate(client, expectedProxyName, expectedProxyPort,
-		expectedServer, expectedMaxCache, expectedEmail,
-		expectedCaCrt, expectedCaKey, expectedCaPassword, expectedCnames, expectedCountry,
-		expectedState, expectedCity, expectedOrg, expectedOrgUnit, expectedSslEmail)
+	result, err := proxy.ContainerConfigGenerate(client, proxyConfigGenerateRequest)
 
 	// Assertions
 	test_utils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
@@ -272,11 +299,9 @@ func TestSuccessfulContainerConfigGenerateWhenAllParametersAreProvided(t *testin
 			return test_utils.GetResponse(200, `{"success": true, "result": [1, 2, 3, 4, 5]}`)
 		},
 	}
+
 	// Execute
-	result, err := proxy.ContainerConfigGenerate(client, expectedProxyName, expectedProxyPort,
-		expectedServer, expectedMaxCache, expectedEmail,
-		expectedCaCrt, expectedCaKey, expectedCaPassword, expectedCnames, expectedCountry,
-		expectedState, expectedCity, expectedOrg, expectedOrgUnit, expectedSslEmail)
+	result, err := proxy.ContainerConfigGenerate(client, proxyConfigGenerateRequest)
 
 	// Assertions
 	test_utils.AssertTrue(t, "Unexpected error executing ContainerConfigGenerate", err == nil)

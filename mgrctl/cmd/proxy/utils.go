@@ -5,9 +5,6 @@
 package proxy
 
 import (
-	"bufio"
-	"fmt"
-	"os"
 	"strings"
 )
 
@@ -19,12 +16,4 @@ func GetFilename(output string, proxyName string) string {
 		filename = strings.Split(proxyName, ".")[0] + "-config"
 	}
 	return filename + ".tar.gz"
-}
-
-// Prompt for password.
-func PromptForPassword() string {
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf("Please enter %s: ", caPassword)
-	password, _ := reader.ReadString('\n')
-	return password
 }

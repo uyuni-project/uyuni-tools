@@ -4,10 +4,12 @@
 
 package utils
 
-import "github.com/spf13/cobra"
+import (
+	"github.com/spf13/cobra"
+)
 
-// AddUninstallFlags adds the common flags for uninstall commands.
-func ValidateMandatoryFlags(cmd *cobra.Command, fields []string) {
+// MarkMandatoryFlags ensures that the specified flags are marked as required for the given command.
+func MarkMandatoryFlags(cmd *cobra.Command, fields []string) {
 	for _, field := range fields {
 		if err := cmd.MarkFlagRequired(field); err != nil {
 			return
