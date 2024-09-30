@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 14:41+0200\n"
+"POT-Creation-Date: 2024-09-30 17:19+0200\n"
 "PO-Revision-Date: 2024-04-08 14:09+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -19,58 +19,130 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: shared/api/api.go:72
+#: shared/api/api.go:28
 msgid "FQDN of the server to connect to"
 msgstr ""
 
-#: shared/api/api.go:73
+#: shared/api/api.go:29
 msgid "API user username"
 msgstr ""
 
-#: shared/api/api.go:74
+#: shared/api/api.go:30
 msgid "Password for the API user"
 msgstr ""
 
-#: shared/api/api.go:75
+#: shared/api/api.go:31
 msgid "Path to a cert file of the CA"
 msgstr ""
 
-#: shared/api/api.go:76
+#: shared/api/api.go:32
 msgid "If set, server certificate will not be checked for validity"
 msgstr ""
 
-#: shared/api/api.go:125
+#: shared/api/api.go:67
+msgid "401: unauthorized"
+msgstr ""
+
+#: shared/api/api.go:82
 #, javascript-format
 msgid "unknown error: %d"
 msgstr ""
 
-#: shared/api/api.go:167
-msgid "API server password"
+#: shared/api/api.go:114
+msgid "server URL is not provided"
 msgstr ""
 
-#: shared/api/api.go:182
+#: shared/api/api.go:146
+msgid "Cached session is expired."
+msgstr ""
+
+#: shared/api/api.go:148 shared/api/credentials.go:70
+#, fuzzy
+msgid "Failed to remove stored credentials!"
+msgstr "Impossible de supprimer le fichier %s"
+
+#: shared/api/api.go:166
 msgid "Unable to create login data"
 msgstr ""
 
-#: shared/api/api.go:212
+#: shared/api/api.go:196
 msgid "auth cookie not found in login response"
 msgstr ""
 
-#: shared/api/api.go:228
+#: shared/api/api.go:211
+#, fuzzy
+msgid "failed to logout from the server"
+msgstr "impossible de se connecter au serveur: %s"
+
+#: shared/api/api.go:235
 msgid "Unable to convert data to JSON"
 msgstr ""
 
-#: shared/api/org/createFirst.go:21 shared/api/org/getDetails.go:21
-#, fuzzy
-msgid "failed to connect to the server"
-msgstr "impossible de se connecter au serveur: %s"
+#: shared/api/credentials.go:21
+msgid "not logged in, session cookie is missing"
+msgstr ""
+
+#: shared/api/credentials.go:34
+msgid "unable to create credentials json"
+msgstr ""
+
+#: shared/api/credentials.go:39
+#, fuzzy, javascript-format
+msgid "unable to write credentials store %s"
+msgstr "impossible d'écrire l'archive tar.gz vers %s: %s"
+
+#: shared/api/credentials.go:53
+msgid "API server URL"
+msgstr ""
+
+#: shared/api/credentials.go:54
+msgid "API server user"
+msgstr ""
+
+#: shared/api/credentials.go:55
+msgid "API server password"
+msgstr ""
+
+#: shared/api/credentials.go:58
+msgid "No credentials provided"
+msgstr ""
+
+#: shared/api/credentials.go:68
+msgid "Cannot load stored credentials"
+msgstr ""
+
+#: shared/api/credentials.go:83
+#, fuzzy, javascript-format
+msgid "unable to read credentials file %s"
+msgstr "Impossible de lire le fichier %s"
+
+#: shared/api/credentials.go:88
+msgid "unable to decode credentials file"
+msgstr ""
+
+#: shared/api/credentials.go:92
+msgid "no credentials loaded"
+msgstr ""
+
+#: shared/api/credentials.go:101
+msgid "specified api server does not match with stored credentials"
+msgstr ""
+
+#: shared/api/org/createFirst.go:21
+msgid "unable to prepare API client"
+msgstr ""
 
 #: shared/api/org/createFirst.go:35
 #, fuzzy
 msgid "failed to create first user and organization"
 msgstr "impossible de créer les premiers utilisateur et organisation: %s"
 
-#: shared/api/org/getDetails.go:25
+#: shared/api/org/getDetails.go:24
+#, fuzzy
+msgid "failed to connect to the server"
+msgstr "impossible de se connecter au serveur: %s"
+
+#: shared/api/org/getDetails.go:28
 #, fuzzy
 msgid "failed to get organization details"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
@@ -171,46 +243,40 @@ msgstr ""
 msgid "no supported backend found"
 msgstr ""
 
-#: shared/connection.go:455 shared/kubernetes/k3s.go:65
-#: shared/podman/hostinspector.go:60 shared/podman/utils.go:224
-#, fuzzy
-msgid "failed to create temporary directory"
-msgstr "impossible de créer le répertoire %s: %s"
-
-#: shared/connection.go:460
+#: shared/connection.go:453
 #, fuzzy, javascript-format
 msgid "Running supportconfig in  %s"
 msgstr "Utilisation du fichier de configuration %s"
 
-#: shared/connection.go:463
+#: shared/connection.go:456
 #, fuzzy
 msgid "failed to run supportconfig"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/connection.go:467
+#: shared/connection.go:460
 #, fuzzy
 msgid "failed to find container supportconfig tarball from command output"
 msgstr "impossible de créer la commande d'aide config"
 
-#: shared/connection.go:473
+#: shared/connection.go:466
 msgid "cannot copy tarball"
 msgstr ""
 
-#: shared/connection.go:479
+#: shared/connection.go:472
 #, fuzzy, javascript-format
 msgid "failed to remove %s file in the container"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/connection.go:497
+#: shared/connection.go:490
 #, javascript-format
 msgid "failed to detect %s's namespace using helm"
 msgstr ""
 
-#: shared/connection.go:502
+#: shared/connection.go:495
 msgid "helm provided an invalid JSON output"
 msgstr ""
 
-#: shared/connection.go:508
+#: shared/connection.go:501
 msgid "found no or more than one deployment"
 msgstr ""
 
@@ -228,8 +294,8 @@ msgid "namespace is required"
 msgstr "Une valeur est requise"
 
 #: shared/kubernetes/helm.go:77 shared/podman/network.go:107
-#: shared/podman/systemd.go:79 shared/podman/systemd.go:155
-#: shared/podman/systemd.go:156 shared/podman/utils.go:132
+#: shared/podman/systemd.go:96 shared/podman/systemd.go:172
+#: shared/podman/systemd.go:173 shared/podman/utils.go:132
 #: shared/podman/utils.go:158
 #, javascript-format
 msgid "Would run %s"
@@ -261,6 +327,12 @@ msgstr ""
 #, javascript-format
 msgid "install %s before running this command"
 msgstr ""
+
+#: shared/kubernetes/k3s.go:65 shared/podman/hostinspector.go:60
+#: shared/podman/utils.go:224
+#, fuzzy
+msgid "failed to create temporary directory"
+msgstr "impossible de créer le répertoire %s: %s"
 
 #: shared/kubernetes/k3s.go:79
 #, fuzzy, javascript-format
@@ -492,85 +564,89 @@ msgstr "Ne peut contenir d'espace ou de tabulation"
 msgid "Ensure image %s is available"
 msgstr ""
 
-#: shared/podman/images.go:44
+#: shared/podman/images.go:46
 msgid "Pull Policy is always. Presence of RPM image will be checked and if it's not present it will be pulled from registry"
 msgstr ""
 
-#: shared/podman/images.go:53
+#: shared/podman/images.go:55
 #, javascript-format
 msgid "Cannot use RPM image for %s"
 msgstr ""
 
-#: shared/podman/images.go:55
+#: shared/podman/images.go:57
 msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
 msgstr ""
 
-#: shared/podman/images.go:60
+#: shared/podman/images.go:62
 #, javascript-format
 msgid "Cannot find RPM image for %s"
 msgstr ""
 
-#: shared/podman/images.go:68
+#: shared/podman/images.go:75
 #, javascript-format
 msgid "image %s is missing and cannot be fetched"
 msgstr ""
 
-#: shared/podman/images.go:79
+#: shared/podman/images.go:86
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
 msgstr ""
 
-#: shared/podman/images.go:97
+#: shared/podman/images.go:104
 msgid "cannot unmarshal image RPM metadata"
 msgstr ""
 
-#: shared/podman/images.go:142
+#: shared/podman/images.go:149
 #, fuzzy, javascript-format
 msgid "Cannot unmarshal metadata file %s"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/podman/images.go:164
+#: shared/podman/images.go:171
 #, javascript-format
 msgid "error parsing: %s"
 msgstr ""
 
-#: shared/podman/images.go:172 shared/podman/images.go:186
-#: shared/podman/images.go:201
+#: shared/podman/images.go:179 shared/podman/images.go:193
+#: shared/podman/images.go:208
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
 msgstr ""
 
-#: shared/podman/images.go:208
+#: shared/podman/images.go:215
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr ""
 
-#: shared/podman/images.go:210
+#: shared/podman/images.go:217
 #, javascript-format
 msgid "Running podman pull %s"
 msgstr ""
 
-#: shared/podman/images.go:222
+#: shared/podman/images.go:229
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr ""
 
-#: shared/podman/images.go:230
+#: shared/podman/images.go:237
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr ""
 
-#: shared/podman/images.go:238
+#: shared/podman/images.go:245
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr ""
 
-#: shared/podman/images.go:242
+#: shared/podman/images.go:249
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr ""
 
-#: shared/podman/login.go:41
+#: shared/podman/login.go:23
+msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+msgstr ""
+
+#: shared/podman/login.go:50
 #, fuzzy
 msgid "failed to close the temporary auth file"
 msgstr "impossible de créer le répertoire %s: %s"
@@ -669,118 +745,118 @@ msgstr "impossible d'exécuter helm %s: %s"
 msgid "failed to disable %s systemd service"
 msgstr "Impossible de tuer le serveur"
 
-#: shared/podman/systemd.go:76
+#: shared/podman/systemd.go:93
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr ""
 
-#: shared/podman/systemd.go:81
+#: shared/podman/systemd.go:98
 #, javascript-format
 msgid "Disable %s service"
 msgstr ""
 
-#: shared/podman/systemd.go:85 shared/podman/systemd.go:144
+#: shared/podman/systemd.go:102 shared/podman/systemd.go:161
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr ""
 
-#: shared/podman/systemd.go:97 shared/podman/systemd.go:114
+#: shared/podman/systemd.go:114 shared/podman/systemd.go:131
 #, javascript-format
 msgid "Would remove %s"
 msgstr ""
 
-#: shared/podman/systemd.go:100 shared/podman/systemd.go:116
+#: shared/podman/systemd.go:117 shared/podman/systemd.go:133
 #, javascript-format
 msgid "Remove %s"
 msgstr ""
 
-#: shared/podman/systemd.go:102
+#: shared/podman/systemd.go:119
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr ""
 
-#: shared/podman/systemd.go:118
+#: shared/podman/systemd.go:135
 #, fuzzy, javascript-format
 msgid "Failed to remove %s file"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/podman/systemd.go:125
+#: shared/podman/systemd.go:142
 #, fuzzy, javascript-format
 msgid "Would remove %s if empty"
 msgstr "Supprimerait le fichier %s"
 
-#: shared/podman/systemd.go:131
+#: shared/podman/systemd.go:148
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr ""
 
-#: shared/podman/systemd.go:141
+#: shared/podman/systemd.go:158
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr ""
 
-#: shared/podman/systemd.go:160
+#: shared/podman/systemd.go:177
 msgid "failed to reset-failed systemd"
 msgstr ""
 
-#: shared/podman/systemd.go:164
+#: shared/podman/systemd.go:181
 msgid "failed to reload systemd daemon"
 msgstr ""
 
-#: shared/podman/systemd.go:182
+#: shared/podman/systemd.go:199
 #, fuzzy, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "impossible de se connecter au serveur: %s"
 
-#: shared/podman/systemd.go:190
+#: shared/podman/systemd.go:207
 #, fuzzy, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "impossible d'exécuter helm %s: %s"
 
-#: shared/podman/systemd.go:198
+#: shared/podman/systemd.go:215
 #, fuzzy, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "Impossible de tuer le serveur"
 
-#: shared/podman/systemd.go:206
+#: shared/podman/systemd.go:223
 #, fuzzy, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "Impossible de tuer le serveur"
 
-#: shared/podman/systemd.go:253
+#: shared/podman/systemd.go:270
 #, fuzzy, javascript-format
 msgid "failed to create %s folder"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/podman/systemd.go:263
+#: shared/podman/systemd.go:280
 #, fuzzy, javascript-format
 msgid "cannot write %s file"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/podman/systemd.go:308
+#: shared/podman/systemd.go:325
 #, fuzzy, javascript-format
 msgid "failed to write %s file"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/podman/systemd.go:313
+#: shared/podman/systemd.go:330
 #, fuzzy, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/podman/systemd.go:335
+#: shared/podman/systemd.go:352
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr ""
 
-#: shared/podman/systemd.go:338
+#: shared/podman/systemd.go:355
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr ""
 
-#: shared/podman/systemd.go:342
+#: shared/podman/systemd.go:359
 #, fuzzy
 msgid "cannot enable service"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/podman/systemd.go:348
+#: shared/podman/systemd.go:365
 #, fuzzy
 msgid "cannot disable service"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
@@ -887,16 +963,16 @@ msgstr ""
 msgid "failed to parse configuration file %s"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/utils/config.go:62
+#: shared/utils/config.go:51
 msgid "Failed to find home directory"
 msgstr "Impossible de trouver le repertoire home"
 
-#: shared/utils/config.go:87
+#: shared/utils/config.go:94
 #, fuzzy
 msgid "failed to bind %[1]s config to parameter %[2]s"
 msgstr "impossible de lier la configuration %s au paramètre %s: %s"
 
-#: shared/utils/config.go:99
+#: shared/utils/config.go:106
 #, fuzzy
 msgid ""
 "Usage:{{if .Runnable}}\n"
@@ -953,7 +1029,7 @@ msgstr ""
 "\n"
 "Utiliser \"{{.CommandPath}} [command] --help\" pour plus d'informations à propos d'une commande.{{end}}\n"
 
-#: shared/utils/config.go:133
+#: shared/utils/config.go:140
 #, fuzzy
 msgid ""
 "\n"
@@ -1022,11 +1098,11 @@ msgstr ""
 "  Par exemple le paramètre '--tz CEST' sera associé à '{{ .EnvPrefix }}_TZ'\n"
 "  et '--ssl-password' flags à '{{ .EnvPrefix }}_SSL_PASSWORD' \n"
 
-#: shared/utils/config.go:170
+#: shared/utils/config.go:177
 msgid "Help on configuration file and environment variables"
 msgstr ""
 
-#: shared/utils/config.go:179
+#: shared/utils/config.go:186
 msgid "failed to compute config help command"
 msgstr "impossible de créer la commande d'aide config"
 
@@ -1129,110 +1205,116 @@ msgstr "Impossible de lecture du mot de passe"
 msgid "Cannot contain spaces or tabs"
 msgstr "Ne peut contenir d'espace ou de tabulation"
 
-#: shared/utils/utils.go:103
+#: shared/utils/utils.go:100 shared/utils/utils.go:124
+#: shared/utils/utils.go:137
+msgid "not an interactive device, not asking for missing value"
+msgstr ""
+
+#: shared/utils/utils.go:109
 #, fuzzy
 msgid "Confirm the password"
 msgstr "Impossible de lecture du mot de passe"
 
-#: shared/utils/utils.go:105
+#: shared/utils/utils.go:111
 msgid "Two different passwords have been provided"
 msgstr ""
 
-#: shared/utils/utils.go:121
-msgid "Failed to read input"
+#: shared/utils/utils.go:147
+#, fuzzy
+msgid "failed to read input"
 msgstr "Impossible de lire la saisie"
 
-#: shared/utils/utils.go:129
+#: shared/utils/utils.go:155
 msgid "A value is required"
 msgstr "Une valeur est requise"
 
-#: shared/utils/utils.go:173
+#: shared/utils/utils.go:199
 msgid "Registry %[1]s would be used instead of namespace %[2]s"
 msgstr ""
 
-#: shared/utils/utils.go:188 shared/utils/utils.go:214
+#: shared/utils/utils.go:214 shared/utils/utils.go:240
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "nom d'image invalid: %s"
 
-#: shared/utils/utils.go:192
+#: shared/utils/utils.go:218
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "tag missing dans %s"
 
-#: shared/utils/utils.go:200 shared/utils/utils.go:205
+#: shared/utils/utils.go:226 shared/utils/utils.go:231
 #, fuzzy, javascript-format
 msgid "Computed image name is %s"
 msgstr "nom d'image invalid: %s"
 
-#: shared/utils/utils.go:224
+#: shared/utils/utils.go:250
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "Erreur lors de l'exécution de %s"
 
-#: shared/utils/utils.go:233
+#: shared/utils/utils.go:259
 #, javascript-format
 msgid "cannot check content of %s"
 msgstr ""
 
-#: shared/utils/utils.go:245
+#: shared/utils/utils.go:271
 #, fuzzy, javascript-format
 msgid "Cannot remove %s folder"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/utils/utils.go:256
+#: shared/utils/utils.go:282
 #, javascript-format
 msgid "Failed to get %s file informations"
 msgstr "Impossible d'obtenir les informations du fichier %s"
 
-#: shared/utils/utils.go:265
+#: shared/utils/utils.go:291
 #, javascript-format
 msgid "Failed to read file %s"
 msgstr "Impossible de lire le fichier %s"
 
-#: shared/utils/utils.go:280
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "Would remove file %s"
 msgstr "Supprimerait le fichier %s"
 
-#: shared/utils/utils.go:282
+#: shared/utils/utils.go:308
 #, javascript-format
 msgid "Removing file %s"
 msgstr "Suppression du fichier %s"
 
-#: shared/utils/utils.go:284
+#: shared/utils/utils.go:310
 #, javascript-format
 msgid "Failed to remove file %s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/utils/utils.go:294
+#: shared/utils/utils.go:320
 msgid "Failed to read random data"
 msgstr "Impossible de lire des données aléatoires"
 
-#: shared/utils/utils.go:315
+#: shared/utils/utils.go:341
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:321
+#: shared/utils/utils.go:347
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:399
+#: shared/utils/utils.go:425
 #, fuzzy
 msgid "failed to compute server FQDN"
 msgstr "impossible de se connecter au serveur: %s"
 
-#: shared/utils/utils.go:417
-#, fuzzy, javascript-format
-msgid "cannot resolve %s"
-msgstr "erreur d'analyse du fichier de configuration %s: %s"
-
-#: shared/utils/utils.go:425
+#: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
+
+#: shared/utils/utils.go:443
+#, fuzzy, javascript-format
+msgid "cannot resolve %s"
+msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
 #, fuzzy
 #~ msgid "failed to link volume folder %[1]s to %[2]s"
