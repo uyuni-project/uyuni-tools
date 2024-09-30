@@ -18,7 +18,7 @@ import (
 func CreateFirst(cnxDetails *api.ConnectionDetails, orgName string, admin *types.User) (*types.Organization, error) {
 	client, err := api.Init(cnxDetails)
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to connect to the server"))
+		return nil, utils.Errorf(err, L("unable to prepare API client"))
 	}
 
 	data := map[string]interface{}{

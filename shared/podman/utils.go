@@ -66,7 +66,7 @@ func RunContainer(name string, image string, volumes []types.VolumeMount, extraA
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
 	for _, volume := range volumes {
-		podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath)
+		podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath+":z")
 	}
 	podmanArgs = append(podmanArgs, image)
 	podmanArgs = append(podmanArgs, cmd...)
@@ -235,7 +235,7 @@ func Inspect(serverImage string, pullPolicy string, scc types.SCCCredentials, pr
 	}
 	defer cleaner()
 
-	preparedImage, err := PrepareImage(authFile, serverImage, pullPolicy)
+	preparedImage, err := PrepareImage(authFile, serverImage, pullPolicy, true)
 	if err != nil {
 		return nil, err
 	}

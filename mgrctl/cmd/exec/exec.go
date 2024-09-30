@@ -74,7 +74,11 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 	commandArgs = append(commandArgs, podName)
 
 	if command == "kubectl" {
-		commandArgs = append(commandArgs, "-c", "uyuni", "--")
+		namespace, err := cnx.GetNamespace("")
+		if namespace == "" {
+			log.Fatal().Err(err)
+		}
+		commandArgs = append(commandArgs, "-n", namespace, "-c", "uyuni", "--")
 	}
 
 	newEnv := []string{}

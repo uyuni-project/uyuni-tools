@@ -33,17 +33,21 @@ func kuberneteInspect(
 		return utils.Errorf(err, L("failed to determine image"))
 	}
 
+	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 	if len(serverImage) <= 0 {
 		log.Debug().Msg("Use deployed image")
 
-		cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 		serverImage, err = adm_utils.RunningImage(cnx, "uyuni")
 		if err != nil {
 			return fmt.Errorf(L("failed to find the image of the currently running server container: %s"))
 		}
 	}
 
-	inspectResult, err := shared_kubernetes.InspectKubernetes(serverImage, flags.Image.PullPolicy)
+	namespace, err := cnx.GetNamespace("")
+	if err != nil {
+		return utils.Errorf(err, L("failed retrieving namespace"))
+	}
+	inspectResult, err := shared_kubernetes.InspectKubernetes(namespace, serverImage, flags.Image.PullPolicy)
 	if err != nil {
 		return utils.Errorf(err, L("inspect command failed"))
 	}
