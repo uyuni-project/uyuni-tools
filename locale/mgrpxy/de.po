@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-20 14:47+0200\n"
+"POT-Creation-Date: 2024-09-30 17:14+0200\n"
 "PO-Revision-Date: 2024-07-18 11:46+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/de/>\n"
@@ -22,11 +22,16 @@ msgstr ""
 msgid "Clear the cache"
 msgstr ""
 
-#: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/cache/podman.go:25
+#: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/restart/kubernetes.go:25
+#: mgrpxy/cmd/start/kubernetes.go:25 mgrpxy/cmd/stop/kubernetes.go:25
+msgid "failed retrieving namespace"
+msgstr ""
+
+#: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:25
 msgid "failed to remove cached data"
 msgstr ""
 
-#: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:29
+#: mgrpxy/cmd/cache/kubernetes.go:33 mgrpxy/cmd/cache/podman.go:29
 msgid "failed to re-create the cache directories"
 msgstr ""
 
@@ -76,10 +81,6 @@ msgstr ""
 msgid "Install a new proxy from scratch"
 msgstr ""
 
-#: mgrpxy/cmd/install/install.go:23 mgrpxy/cmd/upgrade/upgrade.go:23
-msgid "specify a private registry"
-msgstr ""
-
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
 msgstr ""
@@ -103,7 +104,7 @@ msgid "install %s before running this command"
 msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:35
-#: mgrpxy/cmd/support/config/extractor.go:22
+#: mgrpxy/cmd/support/config/extractor.go:23
 #: mgrpxy/shared/kubernetes/deploy.go:159
 msgid "failed to create temporary directory"
 msgstr ""
@@ -113,7 +114,7 @@ msgid "failed to extract configuration"
 msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:62
-#: mgrpxy/shared/kubernetes/deploy.go:184
+#: mgrpxy/shared/kubernetes/deploy.go:189
 msgid "cannot deploy proxy helm chart"
 msgstr ""
 
@@ -144,6 +145,14 @@ msgstr ""
 
 #: mgrpxy/cmd/install/podman/utils.go:47 mgrpxy/shared/podman/podman.go:230
 msgid "failed to login to registry.suse.com"
+msgstr ""
+
+#: mgrpxy/cmd/logs/kubernetes.go:29
+msgid "failed to find proxy pod"
+msgstr ""
+
+#: mgrpxy/cmd/logs/kubernetes.go:33
+msgid "failed to find proxy deployment namespace"
 msgstr ""
 
 #: mgrpxy/cmd/logs/logs.go:36
