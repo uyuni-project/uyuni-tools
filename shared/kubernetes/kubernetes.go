@@ -224,3 +224,11 @@ func GetDeploymentImagePullSecret(namespace string, filter string) (string, erro
 
 	return strings.TrimSpace(string(out)), nil
 }
+
+// HasResource checks if a resource is available on the cluster.
+func HasResource(name string) bool {
+	if err := utils.RunCmd("kubectl", "explain", name); err != nil {
+		return false
+	}
+	return true
+}
