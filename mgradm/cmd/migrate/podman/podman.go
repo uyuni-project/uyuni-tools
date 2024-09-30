@@ -15,6 +15,7 @@ import (
 
 type podmanMigrateFlags struct {
 	shared.MigrateFlags `mapstructure:",squash"`
+	SCC                 types.SCCCredentials
 	Podman              podman_utils.PodmanFlags
 }
 
@@ -36,6 +37,8 @@ NOTE: migrating to a remote podman is not supported yet!
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanMigrateFlags
+			flags.MigrateFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.MigrateFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, migrateToPodman)
 		},
 	}

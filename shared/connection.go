@@ -440,7 +440,7 @@ func chooseBackend[F interface{}](
 }
 
 // RunSupportConfig will run supportconfig command on given connection.
-func (cnx *Connection) RunSupportConfig() ([]string, error) {
+func (cnx *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 	var containerTarball string
 	var files []string
 	extensions := []string{"", ".md5"}
@@ -449,13 +449,6 @@ func (cnx *Connection) RunSupportConfig() ([]string, error) {
 		return []string{}, err
 	}
 
-	// Copy the generated file locally
-	tmpDir, err := os.MkdirTemp("", "mgradm-*")
-	if err != nil {
-		return []string{}, utils.Errorf(err, L("failed to create temporary directory"))
-	}
-
-	defer os.RemoveAll(tmpDir)
 	// Run supportconfig in the container if it's running
 	log.Info().Msgf(L("Running supportconfig in  %s"), containerName)
 	out, err := cnx.Exec("supportconfig")

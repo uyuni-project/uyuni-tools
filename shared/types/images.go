@@ -6,6 +6,7 @@ package types
 
 // ImageFlags represents the flags used by an image.
 type ImageFlags struct {
+	Registry   string `mapstructure:"registry"`
 	Name       string `mapstructure:"image"`
 	Tag        string `mapstructure:"tag"`
 	PullPolicy string `mapstructure:"pullPolicy"`
@@ -21,4 +22,10 @@ type ImageMetadata struct {
 // Metadata represents the metadata of an RPM image.
 type Metadata struct {
 	Image ImageMetadata `json:"image"`
+}
+
+// SCCCredentials can store SCC Credentials.
+type SCCCredentials struct {
+	User     string
+	Password string
 }

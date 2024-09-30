@@ -27,7 +27,7 @@ const rpmImageDir = "/usr/share/suse-docker-images/native/"
 // Ensure the container image is pulled or pull it if the pull policy allows it.
 //
 // Returns the image name to use. Note that it may be changed if the image has been loaded from a local RPM package.
-func PrepareImage(authFile string, image string, pullPolicy string) (string, error) {
+func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled bool) (string, error) {
 	if strings.ToLower(pullPolicy) != "always" {
 		log.Info().Msgf(L("Ensure image %s is available"), image)
 
@@ -39,6 +39,8 @@ func PrepareImage(authFile string, image string, pullPolicy string) (string, err
 		if len(presentImage) > 0 {
 			log.Debug().Msgf("Image %s already present", presentImage)
 			return presentImage, nil
+		} else {
+			log.Debug().Msgf("Image %s is missing", image)
 		}
 	} else {
 		log.Info().Msgf(L("Pull Policy is always. Presence of RPM image will be checked and if it's not present it will be pulled from registry"))
@@ -61,8 +63,13 @@ func PrepareImage(authFile string, image string, pullPolicy string) (string, err
 	}
 
 	if strings.ToLower(pullPolicy) != "never" {
-		log.Debug().Msgf("Pulling image %s because it is missing and pull policy is not 'never'", image)
-		return image, pullImage(authFile, image)
+		if pullEnabled {
+			log.Debug().Msgf("Pulling image %s because it is missing and pull policy is not 'never'", image)
+			return image, pullImage(authFile, image)
+		} else {
+			log.Debug().Msgf("Do not pulling image %s, although the pull policy is not 'never', maybe replicas is zero?", image)
+			return image, nil
+		}
 	}
 
 	return image, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)

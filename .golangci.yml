@@ -53,6 +53,9 @@ linters-settings:
     enabled: true
   whitespace:
     enabled: true
+  govet:
+    disable:
+      - printf
 
 linters:
   disable-all: true
