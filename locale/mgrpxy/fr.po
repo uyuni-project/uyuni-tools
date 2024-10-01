@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-20 14:47+0200\n"
+"POT-Creation-Date: 2024-09-30 17:14+0200\n"
 "PO-Revision-Date: 2024-04-08 11:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,11 +22,17 @@ msgstr ""
 msgid "Clear the cache"
 msgstr ""
 
-#: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/cache/podman.go:25
+#: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/restart/kubernetes.go:25
+#: mgrpxy/cmd/start/kubernetes.go:25 mgrpxy/cmd/stop/kubernetes.go:25
+#, fuzzy
+msgid "failed retrieving namespace"
+msgstr "impossible de générer le fichier systemd: %s"
+
+#: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:25
 msgid "failed to remove cached data"
 msgstr ""
 
-#: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:29
+#: mgrpxy/cmd/cache/kubernetes.go:33 mgrpxy/cmd/cache/podman.go:29
 #, fuzzy
 msgid "failed to re-create the cache directories"
 msgstr "impossible de créer le répertoire temporaire: %s"
@@ -78,10 +84,6 @@ msgstr "niveau de verbosité de l'application"
 msgid "Install a new proxy from scratch"
 msgstr "Installer un nouveau proxy"
 
-#: mgrpxy/cmd/install/install.go:23 mgrpxy/cmd/upgrade/upgrade.go:23
-msgid "specify a private registry"
-msgstr ""
-
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
 msgstr "Installer un nouveau proxy sur un cluster kubernetes existant"
@@ -113,7 +115,7 @@ msgid "install %s before running this command"
 msgstr "installer %s avant d'exécuter cette commande"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:35
-#: mgrpxy/cmd/support/config/extractor.go:22
+#: mgrpxy/cmd/support/config/extractor.go:23
 #: mgrpxy/shared/kubernetes/deploy.go:159
 #, fuzzy
 msgid "failed to create temporary directory"
@@ -124,7 +126,7 @@ msgid "failed to extract configuration"
 msgstr "impossible d'extraire la configuration"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:62
-#: mgrpxy/shared/kubernetes/deploy.go:184
+#: mgrpxy/shared/kubernetes/deploy.go:189
 #, fuzzy
 msgid "cannot deploy proxy helm chart"
 msgstr "impossible de déployer le helm chart du proxy: %s"
@@ -165,6 +167,16 @@ msgstr "impossible d'extraire la configuration du proxy du fichier %s: %s"
 #: mgrpxy/cmd/install/podman/utils.go:47 mgrpxy/shared/podman/podman.go:230
 msgid "failed to login to registry.suse.com"
 msgstr ""
+
+#: mgrpxy/cmd/logs/kubernetes.go:29
+#, fuzzy
+msgid "failed to find proxy pod"
+msgstr "impossible de trouver le namespace du déploiement de uyuni-proxy: %s"
+
+#: mgrpxy/cmd/logs/kubernetes.go:33
+#, fuzzy
+msgid "failed to find proxy deployment namespace"
+msgstr "impossible de trouver le namespace du déploiement de uyuni-proxy: %s"
 
 #: mgrpxy/cmd/logs/logs.go:36
 #, fuzzy
@@ -604,10 +616,6 @@ msgstr "Tag pour le conteneur %sm remplace la valeur globale si définie"
 
 #~ msgid "no uyuni-proxy helm release installed on the cluster"
 #~ msgstr "aucune release helm uyuni-proxy installée sur le cluster"
-
-#, fuzzy
-#~ msgid "failed to find the uyuni-proxy deployment namespace"
-#~ msgstr "impossible de trouver le namespace du déploiement de uyuni-proxy: %s"
 
 #, fuzzy
 #~ msgid "cannot inspect host values"
