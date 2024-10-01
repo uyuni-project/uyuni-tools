@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:14+0200\n"
+"POT-Creation-Date: 2024-09-30 17:19+0200\n"
 "PO-Revision-Date: 2024-07-18 11:46+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgrctl/de/>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,33 +18,86 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.6.2\n"
 
-#: mgrctl/cmd/api/api.go:25
+#: mgrctl/cmd/api/api.go:26
 msgid "JSON over HTTP API helper tool"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:30
+#: mgrctl/cmd/api/api.go:31
 msgid "Call API GET request"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:31
-msgid "Takes an API path and optional parameters and then issues GET request with them. If user and password are provided, calls login before API call"
+#: mgrctl/cmd/api/api.go:32
+msgid ""
+"Takes an API path and optional parameters and then issues GET request with them.\n"
+"\n"
+"Example:\n"
+"# mgrctl api get user/getDetails login=test"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:39
+#: mgrctl/cmd/api/api.go:43
 msgid "Call API POST request"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:40
-msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
+#: mgrctl/cmd/api/api.go:44
+msgid ""
+"Takes an API path and parameters and then issues POST request with them.\n"
+"\n"
+"Parameters can be either JSON encoded string or one or more key=value pairs.\n"
+"\n"
+"Key=Value pairs example:\n"
+"# mgrctl api post user/create login=test password=testXX firstName=F lastName=L email=test@localhost\n"
+"\n"
+"JSON example:\n"
+"# mgrctl api post user/create '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'"
 msgstr ""
 
-#: mgrctl/cmd/api/get.go:26 mgrctl/cmd/api/post.go:26
+#: mgrctl/cmd/api/api.go:60
+msgid "Store login information for future API usage"
+msgstr ""
+
+#: mgrctl/cmd/api/api.go:61
+msgid ""
+"Login stores login information for next API calls.\n"
+"\n"
+"User name, password and remote host can be provided using flags or will be asked interactively.\n"
+"Environment variables are also supported."
+msgstr ""
+
+#: mgrctl/cmd/api/api.go:69
+msgid "Overwrite existing login if exists"
+msgstr ""
+
+#: mgrctl/cmd/api/api.go:73
+msgid "Remove stored login information"
+msgstr ""
+
+#: mgrctl/cmd/api/api.go:74
+msgid "Logout removes stored login information."
+msgstr ""
+
+#: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28
 msgid "unable to login to the server"
 msgstr ""
 
-#: mgrctl/cmd/api/get.go:33 mgrctl/cmd/api/post.go:49
+#: mgrctl/cmd/api/get.go:35 mgrctl/cmd/api/post.go:51
 #, javascript-format
-msgid "error in query %s"
+msgid "error in query '%s'"
+msgstr ""
+
+#: mgrctl/cmd/api/login.go:23
+msgid "Refusing to overwrite existing login. Use --force to ignore this check."
+msgstr ""
+
+#: mgrctl/cmd/api/login.go:35
+msgid "Failed to validate credentials."
+msgstr ""
+
+#: mgrctl/cmd/api/login.go:41
+msgid "Login credentials verified."
+msgstr ""
+
+#: mgrctl/cmd/api/login.go:51
+msgid "Successfully logged out"
 msgstr ""
 
 #: mgrctl/cmd/cmd.go:29
@@ -73,10 +125,6 @@ msgstr "Willkommen bei %s"
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "Befehl ausführen: %s"
-
-#: mgrctl/cmd/cmd.go:53
-msgid "Failed to create api command"
-msgstr ""
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"

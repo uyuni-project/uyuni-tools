@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-24 17:14+0200\n"
+"POT-Creation-Date: 2024-09-30 17:19+0200\n"
 "PO-Revision-Date: 2024-04-08 14:10+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,35 +18,89 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: mgrctl/cmd/api/api.go:25
+#: mgrctl/cmd/api/api.go:26
 msgid "JSON over HTTP API helper tool"
 msgstr "Utilitaire pour l'API JSON sur HTTP"
 
-#: mgrctl/cmd/api/api.go:30
+#: mgrctl/cmd/api/api.go:31
 msgid "Call API GET request"
 msgstr "Appeler une requête API GET"
 
-#: mgrctl/cmd/api/api.go:31
-msgid "Takes an API path and optional parameters and then issues GET request with them. If user and password are provided, calls login before API call"
+#: mgrctl/cmd/api/api.go:32
+#, fuzzy
+msgid ""
+"Takes an API path and optional parameters and then issues GET request with them.\n"
+"\n"
+"Example:\n"
+"# mgrctl api get user/getDetails login=test"
 msgstr "Effectue une requête GET avec un chemin d'API et des paramètres optionnels. Appelle login avant la requête de l'API si l'utilisateur et le mot de passe sont fournis"
 
-#: mgrctl/cmd/api/api.go:39
+#: mgrctl/cmd/api/api.go:43
 msgid "Call API POST request"
 msgstr "Appeler une requête API POST"
 
-#: mgrctl/cmd/api/api.go:40
-msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
-msgstr "Effectue une requête POST avec un chemin d'API et des paramètres. L'utilisateur et le mot de passe sont obligatoires. Les paramètres peuvent être soit une chaîne de caractères encodée en JSON ou une ou plusieurs paire clé=valeur."
+#: mgrctl/cmd/api/api.go:44
+msgid ""
+"Takes an API path and parameters and then issues POST request with them.\n"
+"\n"
+"Parameters can be either JSON encoded string or one or more key=value pairs.\n"
+"\n"
+"Key=Value pairs example:\n"
+"# mgrctl api post user/create login=test password=testXX firstName=F lastName=L email=test@localhost\n"
+"\n"
+"JSON example:\n"
+"# mgrctl api post user/create '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'"
+msgstr ""
 
-#: mgrctl/cmd/api/get.go:26 mgrctl/cmd/api/post.go:26
+#: mgrctl/cmd/api/api.go:60
+msgid "Store login information for future API usage"
+msgstr ""
+
+#: mgrctl/cmd/api/api.go:61
+msgid ""
+"Login stores login information for next API calls.\n"
+"\n"
+"User name, password and remote host can be provided using flags or will be asked interactively.\n"
+"Environment variables are also supported."
+msgstr ""
+
+#: mgrctl/cmd/api/api.go:69
+msgid "Overwrite existing login if exists"
+msgstr ""
+
+#: mgrctl/cmd/api/api.go:73
+msgid "Remove stored login information"
+msgstr ""
+
+#: mgrctl/cmd/api/api.go:74
+msgid "Logout removes stored login information."
+msgstr ""
+
+#: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28
 #, fuzzy
 msgid "unable to login to the server"
 msgstr "impossible de se connecter au serveur: %s"
 
-#: mgrctl/cmd/api/get.go:33 mgrctl/cmd/api/post.go:49
+#: mgrctl/cmd/api/get.go:35 mgrctl/cmd/api/post.go:51
 #, fuzzy, javascript-format
-msgid "error in query %s"
+msgid "error in query '%s'"
 msgstr "erreur dans la requête %s: %s"
+
+#: mgrctl/cmd/api/login.go:23
+msgid "Refusing to overwrite existing login. Use --force to ignore this check."
+msgstr ""
+
+#: mgrctl/cmd/api/login.go:35
+msgid "Failed to validate credentials."
+msgstr ""
+
+#: mgrctl/cmd/api/login.go:41
+msgid "Login credentials verified."
+msgstr ""
+
+#: mgrctl/cmd/api/login.go:51
+msgid "Successfully logged out"
+msgstr ""
 
 #: mgrctl/cmd/cmd.go:29
 msgid "Uyuni control tool"
@@ -73,10 +127,6 @@ msgstr "Bienvenue à %s"
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "Exécution de la commande: %s"
-
-#: mgrctl/cmd/cmd.go:53
-msgid "Failed to create api command"
-msgstr "Echec lors de la création de la commande api"
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
@@ -139,6 +189,12 @@ msgstr "Exécution: %s %s"
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "Exécuter un terminal dans le conteneur du serveur"
+
+#~ msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
+#~ msgstr "Effectue une requête POST avec un chemin d'API et des paramètres. L'utilisateur et le mot de passe sont obligatoires. Les paramètres peuvent être soit une chaîne de caractères encodée en JSON ou une ou plusieurs paire clé=valeur."
+
+#~ msgid "Failed to create api command"
+#~ msgstr "Echec lors de la création de la commande api"
 
 #~ msgid "Failed to create org command"
 #~ msgstr "Echec lors de la création de la commande org"
