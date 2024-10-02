@@ -19,13 +19,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-type configFlags struct {
+type registerFlags struct {
 	Backend           string
 	ConnectionDetails api.ConnectionDetails `mapstructure:"api"`
 }
 
-// NewCommand command for registering peripheral server to hub.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[registerFlags]) *cobra.Command {
 	registerCmd := &cobra.Command{
 		Use:   "register",
 		Short: L("Register"),
@@ -33,8 +32,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:  cobra.MaximumNArgs(0),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags configFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, register)
+			var flags registerFlags
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 	registerCmd.SetUsageTemplate(registerCmd.UsageTemplate())
@@ -48,7 +47,12 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return registerCmd
 }
 
-func register(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
+// NewCommand command for registering peripheral server to hub.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, register)
+}
+
+func register(globalFlags *types.GlobalFlags, flags *registerFlags, cmd *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	config, err := getRhnConfig(cnx)
 	if err != nil {

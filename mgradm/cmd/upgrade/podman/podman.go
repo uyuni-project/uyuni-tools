@@ -18,12 +18,10 @@ type podmanUpgradeFlags struct {
 	shared.UpgradeFlags `mapstructure:",squash"`
 	SCC                 types.SCCCredentials
 	Podman              podman.PodmanFlags
-	MirrorPath          string
 }
 
-// NewCommand to upgrade a podman server.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	upgradeCmd := &cobra.Command{
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeFlags]) *cobra.Command {
+	cmd := &cobra.Command{
 		Use:   "podman",
 		Short: L("Upgrade a local server on podman"),
 		Args:  cobra.ExactArgs(0),
@@ -31,11 +29,11 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 			var flags podmanUpgradeFlags
 			flags.UpgradeFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
 			flags.UpgradeFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, upgradePodman)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
-	shared.AddUpgradeFlags(upgradeCmd)
-	podman.AddPodmanArgFlag(upgradeCmd)
+	shared.AddUpgradeFlags(cmd)
+	podman.AddPodmanArgFlag(cmd)
 
 	listCmd := &cobra.Command{
 		Use:   "list",
@@ -54,7 +52,11 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 	shared.AddUpgradeListFlags(listCmd)
-	upgradeCmd.AddCommand(listCmd)
+	cmd.AddCommand(listCmd)
+	return cmd
+}
 
-	return upgradeCmd
+// NewCommand to upgrade a podman server.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, upgradePodman)
 }

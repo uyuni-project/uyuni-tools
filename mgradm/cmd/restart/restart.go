@@ -16,8 +16,7 @@ type restartFlags struct {
 	Backend string
 }
 
-// NewCommand to restart server.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[restartFlags]) *cobra.Command {
 	restartCmd := &cobra.Command{
 		Use:     "restart",
 		GroupID: "management",
@@ -26,7 +25,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:    cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags restartFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, restart)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 	restartCmd.SetUsageTemplate(restartCmd.UsageTemplate())
@@ -36,6 +35,11 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	}
 
 	return restartCmd
+}
+
+// NewCommand to restart server.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, restart)
 }
 
 func restart(globalFlags *types.GlobalFlags, flags *restartFlags, cmd *cobra.Command, args []string) error {
