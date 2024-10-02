@@ -20,7 +20,9 @@ import (
 
 // CaChain is a type to store CA Chain.
 type CaChain struct {
-	Root         string
+	Root string
+	// Key is the CA key file in the case of a migration of a self-generate CA.
+	Key          string
 	Intermediate []string
 }
 

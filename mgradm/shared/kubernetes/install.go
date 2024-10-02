@@ -178,7 +178,7 @@ func Upgrade(
 
 	var runningData *utils.ServerInspectData
 	if runningImage := getRunningServerImage(namespace); runningImage != "" {
-		runningData, err = kubernetes.InspectKubernetes(namespace, runningImage, "Never")
+		runningData, err = inspectServer(namespace, runningImage, "Never")
 		if err != nil {
 			return err
 		}

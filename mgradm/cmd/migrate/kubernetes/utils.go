@@ -7,12 +7,11 @@
 package kubernetes
 
 import (
-	"encoding/base64"
-	"fmt"
+	"os"
+	"path"
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -28,10 +27,6 @@ func migrateToKubernetes(
 	args []string,
 ) error {
 	namespace := flags.Helm.Uyuni.Namespace
-	// Create the namespace if not present
-	if err := kubernetes.CreateNamespace(namespace); err != nil {
-		return err
-	}
 
 	// Check the for the required SSH key and configuration
 	if err := checkSsh(namespace, &flags.Ssh); err != nil {
@@ -82,169 +77,59 @@ func migrateToKubernetes(
 		return err
 	}
 
-	oldPgVersion := extractedData.Data.CurrentPgVersion
-	newPgVersion := extractedData.Data.ImagePgVersion
-
-	// Run the DB Migration job if needed
-	if oldPgVersion < newPgVersion {
-		if err := kubernetes.StartDbUpgradeJob(
-			namespace, flags.Image.Registry, flags.Image, flags.DbUpgradeImage,
-			oldPgVersion, newPgVersion,
-		); err != nil {
-			return err
-		}
-
-		// Wait for ever for the job to finish: the duration of this job depends on the amount of data to upgrade
-		if err := shared_kubernetes.WaitForJob(namespace, kubernetes.DbUpgradeJobName, -1); err != nil {
-			return err
-		}
-	} else if oldPgVersion > newPgVersion {
-		return fmt.Errorf(
-			L("downgrading database from PostgreSQL %[1]d to %[2]d is not supported"), oldPgVersion, newPgVersion)
-	}
-
-	// Run the DB Finalization job
-	schemaUpdateRequired := oldPgVersion != newPgVersion
-	if err := kubernetes.StartDbFinalizeJob(
-		namespace, serverImage, flags.Image.PullPolicy, schemaUpdateRequired, true,
-	); err != nil {
-		return err
-	}
-
-	// Wait for ever for the job to finish: the duration of this job depends on the amount of data to reindex
-	if err := shared_kubernetes.WaitForJob(namespace, kubernetes.DbFinalizeJobName, -1); err != nil {
-		return err
-	}
-
-	// Run the Post Upgrade job
-	if err := kubernetes.StartPostUpgradeJob(namespace, serverImage, flags.Image.PullPolicy); err != nil {
-		return err
-	}
-
-	if err := shared_kubernetes.WaitForJob(namespace, kubernetes.PostUpgradeJobName, 60); err != nil {
-		return err
-	}
-
-	// Extract some data from the cluster to guess how to configure Uyuni.
-	clusterInfos, err := shared_kubernetes.CheckCluster()
-	if err != nil {
-		return err
-	}
-
-	// Install the traefik / nginx config on the node
-	// This will never be done in an operator.
-	needsHub := flags.HubXmlrpc.Replicas > 0
-	if err := kubernetes.DeployNodeConfig(namespace, clusterInfos, needsHub, extractedData.Data.Debug); err != nil {
-		return err
-	}
-
-	// Deploy the SSL CA and server certificates
-	var caIssuer string
-	if extractedData.CaKey != "" {
-		// cert-manager is not required for 3rd party certificates, only if we have the CA key.
-		// Note that in an operator we won't be able to install cert-manager and just wait for it to be installed.
-		kubeconfig := clusterInfos.GetKubeconfig()
-
-		if err := kubernetes.InstallCertManager(&flags.Helm, kubeconfig, flags.Image.PullPolicy); err != nil {
-			return utils.Errorf(err, L("cannot install cert manager"))
-		}
-
-		// Convert CA to RSA to use in a Kubernetes TLS secret.
-		// In an operator we would have to fail now if there is no SSL password as we cannot prompt it.
-		ca := ssl.SslPair{
-			Key: base64.StdEncoding.EncodeToString(
-				ssl.GetRsaKey(extractedData.CaKey, flags.Installation.Ssl.Password),
-			),
-			Cert: base64.StdEncoding.EncodeToString(ssl.StripTextFromCertificate(extractedData.CaCert)),
-		}
-
-		// Install the cert-manager issuers
-		if _, err := kubernetes.DeployReusedCa(namespace, &ca); err != nil {
-			return err
-		}
-		caIssuer = kubernetes.CaIssuerName
-	} else {
-		// Most likely a 3rd party certificate: cert-manager is not needed in this case
-		if err := installExistingCertificate(namespace, extractedData); err != nil {
-			return err
-		}
-	}
-
-	// Create the Ingress routes before the deployments as those are triggering
-	// the creation of the uyuni-cert secret from cert-manager.
-	if err := kubernetes.CreateIngress(namespace, fqdn, caIssuer, clusterInfos.Ingress); err != nil {
-		return err
-	}
-
-	// Wait for uyuni-cert secret to be ready
-	shared_kubernetes.WaitForSecret(namespace, kubernetes.CertSecretName)
-
-	// Create a secret using SCC credentials if any are provided
-	pullSecret, err := shared_kubernetes.GetSccSecret(flags.Helm.Uyuni.Namespace, &flags.Installation.Scc)
-	if err != nil {
-		return err
-	}
-
-	deploymentsStarting := []string{kubernetes.ServerDeployName}
-	// Start the server
-	if err := kubernetes.CreateServerDeployment(
-		namespace, serverImage, flags.Image.PullPolicy, extractedData.Data.Timezone, extractedData.Data.Debug,
-		flags.Volumes.Mirror, pullSecret,
-	); err != nil {
-		return err
-	}
-
-	// Create the services
-	if err := kubernetes.CreateServices(namespace, extractedData.Data.Debug); err != nil {
-		return err
-	}
-
-	if clusterInfos.Ingress == "traefik" {
-		// Create the Traefik routes
-		if err := kubernetes.CreateTraefikRoutes(namespace, needsHub, extractedData.Data.Debug); err != nil {
-			return err
-		}
-	}
-
-	// Store the extracted DB credentials in a secret.
-	if err := kubernetes.CreateDbSecret(
-		namespace, kubernetes.DbSecret, extractedData.Data.DbUser, extractedData.Data.DbPassword,
-	); err != nil {
-		return err
-	}
-
-	// Start the Coco Deployments if requested.
-	if flags.Coco.Replicas > 0 {
-		cocoImage, err := utils.ComputeImage(flags.Image.Registry, flags.Image.Tag, flags.Coco.Image)
-		if err != nil {
-			return err
-		}
-		if err := kubernetes.StartCocoDeployment(
-			namespace, cocoImage, flags.Image.PullPolicy, flags.Coco.Replicas,
-			extractedData.Data.DbPort, extractedData.Data.DbName,
-		); err != nil {
-			return err
-		}
-		deploymentsStarting = append(deploymentsStarting, kubernetes.CocoDeployName)
-	}
-
-	// In an operator mind, the user would just change the custom resource to enable the feature.
+	flags.Installation.TZ = extractedData.Data.Timezone
+	flags.Installation.Debug.Java = extractedData.Data.Debug
 	if extractedData.Data.HasHubXmlrpcApi {
-		// Install Hub API deployment, service
-		hubApiImage, err := utils.ComputeImage(flags.Image.Registry, flags.Image.Tag, flags.HubXmlrpc.Image)
-		if err != nil {
-			return err
-		}
-		if err := kubernetes.InstallHubApi(namespace, hubApiImage, flags.Image.PullPolicy); err != nil {
-			return err
-		}
-		deploymentsStarting = append(deploymentsStarting, kubernetes.HubApiDeployName)
+		flags.HubXmlrpc.Replicas = 1
+		flags.HubXmlrpc.IsChanged = true
 	}
+	flags.Installation.Db.User = extractedData.Data.DbUser
+	flags.Installation.Db.Password = extractedData.Data.DbPassword
+	// TODO Are those two really needed in migration?
+	flags.Installation.Db.Name = extractedData.Data.DbName
+	flags.Installation.Db.Port = extractedData.Data.DbPort
 
-	// Wait for all the deployments to be ready
-	if err := shared_kubernetes.WaitForDeployments(namespace, deploymentsStarting...); err != nil {
+	sslDir, err := utils.TempDir()
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(sslDir)
+
+	// Extract the SSL data as files and pass them as arguments to share code with installation.
+	if err := writeToFile(
+		extractedData.CaCert, path.Join(sslDir, "ca.crt"), &flags.Installation.Ssl.Ca.Root,
+	); err != nil {
 		return err
 	}
 
+	if err := writeToFile(
+		extractedData.CaKey, path.Join(sslDir, "ca.key"), &flags.Installation.Ssl.Ca.Key,
+	); err != nil {
+		return err
+	}
+
+	if err := writeToFile(
+		extractedData.ServerCert, path.Join(sslDir, "srv.crt"), &flags.Installation.Ssl.Server.Cert,
+	); err != nil {
+		return err
+	}
+
+	if err := writeToFile(
+		extractedData.ServerKey, path.Join(sslDir, "srv.key"), &flags.Installation.Ssl.Server.Key,
+	); err != nil {
+		return err
+	}
+
+	// TODO All the other extracted data should be moved to the inspect step and shared with Upgrade.
+	return kubernetes.Reconcile(flags, fqdn)
+}
+
+func writeToFile(content string, file string, flag *string) error {
+	if content != "" {
+		if err := os.WriteFile(file, []byte(content), 0600); err != nil {
+			return utils.Errorf(err, L("failed to write certificate to %s"), file)
+		}
+		*flag = file
+	}
 	return nil
 }

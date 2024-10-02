@@ -21,6 +21,11 @@ func (f *SslCertFlags) UseExisting() bool {
 	return f.Server.Cert != "" && f.Server.Key != "" && f.Ca.Root != ""
 }
 
+// UseMigratedCa returns true if a migrated CA and key can be used.
+func (f *SslCertFlags) UseMigratedCa() bool {
+	return f.Ca.Root != "" && f.Ca.Key != ""
+}
+
 // Checks that all the required flags are passed if using 3rd party certificates.
 func (f *SslCertFlags) CheckParameters() {
 	if !f.UseExisting() && (f.Server.Cert != "" || f.Server.Key != "" || f.Ca.Root != "") {
