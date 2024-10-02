@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -16,9 +17,8 @@ import (
 )
 
 type podmanUpgradeFlags struct {
-	shared.UpgradeFlags `mapstructure:",squash"`
-	SCC                 types.SCCCredentials
-	Podman              podman.PodmanFlags
+	cmd_utils.ServerFlags `mapstructure:",squash"`
+	Podman                podman.PodmanFlags
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeFlags]) *cobra.Command {
@@ -29,9 +29,9 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeF
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanUpgradeFlags
 			flagsUpdater := func(v *viper.Viper) {
-				flags.UpgradeFlags.Coco.IsChanged = v.IsSet("coco.replicas")
-				flags.UpgradeFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
-				flags.UpgradeFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
+				flags.ServerFlags.Coco.IsChanged = v.IsSet("coco.replicas")
+				flags.ServerFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+				flags.ServerFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},

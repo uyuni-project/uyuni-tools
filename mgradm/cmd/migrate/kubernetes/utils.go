@@ -28,7 +28,7 @@ import (
 
 func migrateToKubernetes(
 	_ *types.GlobalFlags,
-	flags *kubernetesMigrateFlags,
+	flags *kubernetes.KubernetesServerFlags,
 	_ *cobra.Command,
 	args []string,
 ) error {
@@ -64,7 +64,7 @@ func migrateToKubernetes(
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSSHPaths()
 
 	// Prepare the migration script and folder
-	scriptDir, cleaner, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true, flags.Prepare)
+	scriptDir, cleaner, err := adm_utils.GenerateMigrationScript(fqdn, flags.Migration.User, true, flags.Migration.Prepare)
 	if err != nil {
 		return utils.Errorf(err, L("failed to generate migration script"))
 	}
@@ -82,7 +82,7 @@ func migrateToKubernetes(
 	helmArgs := []string{}
 
 	// Create a secret using SCC credentials if any are provided
-	helmArgs, err = shared_kubernetes.AddSCCSecret(helmArgs, flags.Helm.Uyuni.Namespace, &flags.SCC)
+	helmArgs, err = shared_kubernetes.AddSCCSecret(helmArgs, flags.Helm.Uyuni.Namespace, &flags.Installation.SCC)
 	if err != nil {
 		return err
 	}
@@ -95,8 +95,9 @@ func migrateToKubernetes(
 		"--set", "migration.dataPath="+scriptDir,
 	)
 
-	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.HubXmlrpc,
-		&flags.Helm, clusterInfos, fqdn, false, flags.Prepare, migrationArgs...,
+	if err := kubernetes.Deploy(
+		cnx, flags.Image.Registry, &flags.Image, &flags.HubXmlrpc,
+		&flags.Helm, clusterInfos, fqdn, false, flags.Migration.Prepare, migrationArgs...,
 	); err != nil {
 		return utils.Errorf(err, L("cannot run deploy"))
 	}
@@ -123,7 +124,7 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot set replicas to 0"))
 	}
 
-	if flags.Prepare {
+	if flags.Migration.Prepare {
 		log.Info().Msg(L("Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."))
 		return nil
 	}
@@ -135,7 +136,9 @@ func migrateToKubernetes(
 		}
 	}()
 
-	setupSSLArray, err := setupSSL(&flags.Helm, kubeconfig, scriptDir, flags.SSL.Password, flags.Image.PullPolicy)
+	setupSSLArray, err := setupSSL(
+		&flags.Helm, kubeconfig, scriptDir, flags.Installation.SSL.Password, flags.Image.PullPolicy,
+	)
 	if err != nil {
 		return utils.Errorf(err, L("cannot setup SSL"))
 	}

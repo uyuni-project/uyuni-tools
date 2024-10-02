@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils/flagstests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -33,20 +34,20 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.ServerHelmFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
-	tester := func(_ *types.GlobalFlags, flags *kubernetesMigrateFlags,
+	tester := func(_ *types.GlobalFlags, flags *kubernetes.KubernetesServerFlags,
 		_ *cobra.Command, args []string,
 	) error {
-		testutils.AssertTrue(t, "Prepare not set", flags.Prepare)
+		testutils.AssertTrue(t, "Prepare not set", flags.Migration.Prepare)
 		flagstests.AssertMirrorFlag(t, flags.Mirror)
-		flagstests.AssertSCCFlag(t, &flags.SCC)
+		flagstests.AssertSCCFlag(t, &flags.Installation.SCC)
 		flagstests.AssertImageFlag(t, &flags.Image)
 		flagstests.AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
 		flagstests.AssertCocoFlag(t, &flags.Coco)
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		flagstests.AssertSalineFlag(t, &flags.Saline)
-		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.User)
+		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.Migration.User)
 		flagstests.AssertServerHelmFlags(t, &flags.Helm)
-		testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.SSL.Password)
+		testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.Installation.SSL.Password)
 		testutils.AssertEquals(t, "Wrong FQDN", "source.fq.dn", args[0])
 		return nil
 	}

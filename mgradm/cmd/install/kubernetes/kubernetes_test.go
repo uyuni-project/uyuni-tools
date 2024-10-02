@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils/flagstests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -21,10 +22,10 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, "srv.fq.dn")
 
 	// Test function asserting that the args are properly parsed
-	tester := func(_ *types.GlobalFlags, flags *kubernetesInstallFlags,
+	tester := func(_ *types.GlobalFlags, flags *kubernetes.KubernetesServerFlags,
 		_ *cobra.Command, args []string,
 	) error {
-		flagstests.AssertInstallFlags(t, &flags.InstallFlags)
+		flagstests.AssertInstallFlags(t, &flags.ServerFlags)
 		flagstests.AssertServerHelmFlags(t, &flags.Helm)
 		testutils.AssertEquals(t, "Wrong FQDN", "srv.fq.dn", args[0])
 		return nil

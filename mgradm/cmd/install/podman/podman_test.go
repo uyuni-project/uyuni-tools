@@ -21,8 +21,10 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, "srv.fq.dn")
 
 	// Test function asserting that the args are properly parsed
-	tester := func(_ *types.GlobalFlags, flags *podmanInstallFlags, _ *cobra.Command, args []string) error {
-		flagstests.AssertInstallFlags(t, &flags.InstallFlags)
+	tester := func(_ *types.GlobalFlags, flags *podmanInstallFlags,
+		_ *cobra.Command, args []string,
+	) error {
+		flagstests.AssertInstallFlags(t, &flags.ServerFlags)
 		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
 		testutils.AssertEquals(t, "Wrong FQDN", "srv.fq.dn", args[0])
 		return nil

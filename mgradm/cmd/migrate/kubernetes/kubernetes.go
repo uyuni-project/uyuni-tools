@@ -10,20 +10,14 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-type kubernetesMigrateFlags struct {
-	shared.MigrateFlags `mapstructure:",squash"`
-	Helm                cmd_utils.HelmFlags
-	SCC                 types.SCCCredentials
-	SSL                 types.SSLCertGenerationFlags
-}
-
-func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesMigrateFlags]) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetes.KubernetesServerFlags]) *cobra.Command {
 	migrateCmd := &cobra.Command{
 		Use:   "kubernetes [source server FQDN]",
 		Short: L("Migrate a remote server to containers running on a kubernetes cluster"),
@@ -44,11 +38,11 @@ NOTE: migrating to a remote cluster is not supported yet!
 `),
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags kubernetesMigrateFlags
+			var flags kubernetes.KubernetesServerFlags
 			flagsUpdater := func(v *viper.Viper) {
-				flags.MigrateFlags.Coco.IsChanged = v.IsSet("coco.replicas")
-				flags.MigrateFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
-				flags.MigrateFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
+				flags.ServerFlags.Coco.IsChanged = v.IsSet("coco.replicas")
+				flags.ServerFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+				flags.ServerFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},

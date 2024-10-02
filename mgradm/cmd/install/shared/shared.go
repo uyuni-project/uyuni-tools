@@ -24,7 +24,7 @@ import (
 const setupName = "setup.sh"
 
 // RunSetup execute the setup.
-func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[string]string) error {
+func RunSetup(cnx *shared.Connection, flags *adm_utils.ServerFlags, fqdn string, env map[string]string) error {
 	// Containers should be running now, check storage if it is using volume from already configured server
 	preconfigured := false
 	if isServerConfigured(cnx) {
@@ -34,7 +34,7 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 		preconfigured = true
 	}
 
-	tmpFolder, cleaner, err := generateSetupScript(flags, fqdn, env)
+	tmpFolder, cleaner, err := generateSetupScript(&flags.Installation, fqdn, flags.Mirror, env)
 	if err != nil {
 		return err
 	}
@@ -52,14 +52,16 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
 
+	installFlags := &flags.Installation
+
 	// Call the org.createFirst api if flags are passed
 	// This should not happen since the password is queried and enforced
-	if flags.Admin.Password != "" {
+	if installFlags.Admin.Password != "" {
 		apiCnx := api.ConnectionDetails{
 			Server:   fqdn,
 			Insecure: false,
-			User:     flags.Admin.Login,
-			Password: flags.Admin.Password,
+			User:     installFlags.Admin.Login,
+			Password: installFlags.Admin.Password,
 		}
 
 		// Check if there is already admin user with given password and organization with same name
@@ -68,11 +70,14 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 			log.Error().Err(err).Msgf(L("unable to prepare API client"))
 		}
 		if err = client.Login(); err == nil {
-			if _, err := org.GetOrganizationDetails(&apiCnx, flags.Organization); err == nil {
+			if _, err := org.GetOrganizationDetails(&apiCnx, installFlags.Organization); err == nil {
 				log.Info().Msgf(L("Server organization already exists, reusing"))
 			} else {
 				log.Debug().Err(err).Msg("Error returned by server")
-				log.Warn().Msgf(L("Administration user already exists, but organization %s could not be found"), flags.Organization)
+				log.Warn().Msgf(
+					L("Administration user already exists, but organization %s could not be found"),
+					installFlags.Organization,
+				)
 			}
 		} else {
 			var connError *url.Error
@@ -81,7 +86,7 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 				return err
 			}
 			// We do not have any user existing, create one. CreateFirst skip user login
-			_, err := org.CreateFirst(&apiCnx, flags.Organization, &flags.Admin)
+			_, err := org.CreateFirst(&apiCnx, installFlags.Organization, &installFlags.Admin)
 			if err != nil {
 				if preconfigured {
 					log.Warn().Msgf(L("Administration user already exists, but provided credentials are not valid"))
@@ -92,14 +97,19 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 		}
 	}
 
-	log.Info().Msgf(L("Server set up, login on https://%[1]s with %[2]s user"), fqdn, flags.Admin.Login)
+	log.Info().Msgf(L("Server set up, login on https://%[1]s with %[2]s user"), fqdn, installFlags.Admin.Login)
 	return nil
 }
 
 // generateSetupScript creates a temporary folder with the setup script to execute in the container.
 // The script exports all the needed environment variables and calls uyuni's mgr-setup.
 // Podman or kubernetes-specific variables can be passed using extraEnv parameter.
-func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]string) (string, func(), error) {
+func generateSetupScript(
+	flags *adm_utils.InstallationFlags,
+	fqdn string,
+	mirror string,
+	extraEnv map[string]string,
+) (string, func(), error) {
 	localHostValues := []string{
 		"localhost",
 		"127.0.0.1",
@@ -143,7 +153,7 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 		"SCC_USER":              flags.SCC.User,
 		"SCC_PASS":              flags.SCC.Password,
 	}
-	if flags.Mirror != "" {
+	if mirror != "" {
 		env["MIRROR_PATH"] = "/mirror"
 	}
 

@@ -14,11 +14,11 @@ import (
 
 func upgradeKubernetes(
 	globalFlags *types.GlobalFlags,
-	flags *kubernetesUpgradeFlags,
+	flags *kubernetes.KubernetesServerFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
 	return kubernetes.Upgrade(
-		globalFlags, &flags.UpgradeFlags.Image, &flags.DBUpgradeImage, &flags.HubXmlrpc.Image, flags.Helm, cmd, args,
+		globalFlags, &flags.ServerFlags.Image, &flags.DBUpgradeImage, &flags.HubXmlrpc.Image, flags.Helm, cmd, args,
 	)
 }

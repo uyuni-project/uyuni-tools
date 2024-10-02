@@ -25,13 +25,15 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.PodmanFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
-	tester := func(_ *types.GlobalFlags, flags *podmanUpgradeFlags, _ *cobra.Command, _ []string) error {
+	tester := func(_ *types.GlobalFlags, flags *podmanUpgradeFlags,
+		_ *cobra.Command, _ []string,
+	) error {
 		flagstests.AssertImageFlag(t, &flags.Image)
 		flagstests.AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
 		flagstests.AssertCocoFlag(t, &flags.Coco)
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		flagstests.AssertSalineFlag(t, &flags.Saline)
-		flagstests.AssertSCCFlag(t, &flags.SCC)
+		flagstests.AssertSCCFlag(t, &flags.ServerFlags.Installation.SCC)
 		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
 		return nil
 	}
