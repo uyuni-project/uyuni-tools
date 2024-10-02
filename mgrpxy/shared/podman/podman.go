@@ -26,7 +26,7 @@ import (
 type PodmanProxyFlags struct {
 	utils.ProxyImageFlags `mapstructure:",squash"`
 	SCC                   types.SCCCredentials
-	Podman                podman.PodmanFlags `mapstructure:",squash"`
+	Podman                podman.PodmanFlags
 }
 
 // GenerateSystemdService generates all the systemd files required by proxy.

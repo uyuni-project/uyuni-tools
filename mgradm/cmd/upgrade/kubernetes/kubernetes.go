@@ -20,8 +20,7 @@ type kubernetesUpgradeFlags struct {
 	Helm                cmd_utils.HelmFlags
 }
 
-// NewCommand to upgrade a kubernetes server.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesUpgradeFlags]) *cobra.Command {
 	upgradeCmd := &cobra.Command{
 		Use:   "kubernetes",
 		Short: L("Upgrade a local server on kubernetes"),
@@ -29,7 +28,9 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesUpgradeFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, upgradeKubernetes)
+			flags.UpgradeFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.UpgradeFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 
@@ -37,4 +38,9 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	cmd_utils.AddHelmInstallFlag(upgradeCmd)
 
 	return upgradeCmd
+}
+
+// NewCommand to upgrade a kubernetes server.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, upgradeKubernetes)
 }

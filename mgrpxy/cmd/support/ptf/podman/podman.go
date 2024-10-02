@@ -21,8 +21,7 @@ type podmanPTFFlags struct {
 	CustomerId   string                  `mapstructure:"user"`
 }
 
-// NewCommand for podman installation.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run shared_utils.CommandFunc[podmanPTFFlags]) *cobra.Command {
 	var flags podmanPTFFlags
 	podmanCmd := &cobra.Command{
 		Use: "podman",
@@ -37,7 +36,7 @@ NOTE: for now installing on a remote podman is not supported!
 `),
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, ptfForPodman)
+			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 
@@ -45,4 +44,9 @@ NOTE: for now installing on a remote podman is not supported!
 	utils.AddImageFlags(podmanCmd)
 	shared_utils.AddPTFFlag(podmanCmd)
 	return podmanCmd
+}
+
+// NewCommand for podman installation.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, ptfForPodman)
 }

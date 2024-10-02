@@ -13,7 +13,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
-	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -23,7 +22,7 @@ import (
 
 func kuberneteInspect(
 	globalFlags *types.GlobalFlags,
-	flags *inspect_shared.InspectFlags,
+	flags *inspectFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {

@@ -19,8 +19,7 @@ type podmanMigrateFlags struct {
 	Podman              podman_utils.PodmanFlags
 }
 
-// NewCommand for podman migration.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanMigrateFlags]) *cobra.Command {
 	migrateCmd := &cobra.Command{
 		Use:   "podman [source server FQDN]",
 		Short: L("Migrate a remote server to containers running on podman"),
@@ -39,7 +38,7 @@ NOTE: migrating to a remote podman is not supported yet!
 			var flags podmanMigrateFlags
 			flags.MigrateFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
 			flags.MigrateFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, migrateToPodman)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 
@@ -47,4 +46,9 @@ NOTE: migrating to a remote podman is not supported yet!
 	podman_utils.AddPodmanArgFlag(migrateCmd)
 
 	return migrateCmd
+}
+
+// NewCommand for podman migration.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, migrateToPodman)
 }

@@ -6,15 +6,21 @@ package inspect
 
 import (
 	"github.com/spf13/cobra"
-	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// NewCommand for extracting information from image and deployment.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+// InspectFlags are the flags used by inspect commands.
+type inspectFlags struct {
+	Image   types.ImageFlags `mapstructure:",squash"`
+	SCC     types.SCCCredentials
+	Backend string
+}
+
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[inspectFlags]) *cobra.Command {
 	inspectCmd := &cobra.Command{
 		Use:     "inspect",
 		GroupID: "deploy",
@@ -23,14 +29,15 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:    cobra.MaximumNArgs(0),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags inspect_shared.InspectFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, inspect)
+			var flags inspectFlags
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 
 	inspectCmd.SetUsageTemplate(inspectCmd.UsageTemplate())
 
-	inspect_shared.AddInspectFlags(inspectCmd)
+	cmd_utils.AddSCCFlag(inspectCmd)
+	cmd_utils.AddImageFlag(inspectCmd)
 
 	if utils.KubernetesBuilt {
 		utils.AddBackendFlag(inspectCmd)
@@ -39,7 +46,12 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return inspectCmd
 }
 
-func inspect(globalFlags *types.GlobalFlags, flags *inspect_shared.InspectFlags, cmd *cobra.Command, args []string) error {
+// NewCommand for extracting information from image and deployment.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, inspect)
+}
+
+func inspect(globalFlags *types.GlobalFlags, flags *inspectFlags, cmd *cobra.Command, args []string) error {
 	fn, err := shared.ChoosePodmanOrKubernetes(cmd.Flags(), podmanInspect, kuberneteInspect)
 	if err != nil {
 		return err

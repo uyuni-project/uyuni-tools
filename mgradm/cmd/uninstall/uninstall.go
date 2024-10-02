@@ -13,8 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// NewCommand uninstall a server and optionally the corresponding volumes.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[utils.UninstallFlags]) *cobra.Command {
 	uninstallCmd := &cobra.Command{
 		Use:     "uninstall",
 		GroupID: "deploy",
@@ -24,12 +23,17 @@ By default it will only print what would be done, use --force to actually remove
 		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags utils.UninstallFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, uninstall)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 	utils.AddUninstallFlags(uninstallCmd, utils.KubernetesBuilt)
 
 	return uninstallCmd
+}
+
+// NewCommand uninstall a server and optionally the corresponding volumes.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, uninstall)
 }
 
 func uninstall(

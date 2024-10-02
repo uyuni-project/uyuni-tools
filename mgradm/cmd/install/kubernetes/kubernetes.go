@@ -20,9 +20,8 @@ type kubernetesInstallFlags struct {
 	Helm                cmd_utils.HelmFlags
 }
 
-// NewCommand for kubernetes installation.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	kubernetesCmd := &cobra.Command{
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesInstallFlags]) *cobra.Command {
+	cmd := &cobra.Command{
 		Use:   "kubernetes [fqdn]",
 		Short: L("Install a new server on a kubernetes cluster"),
 		Long: L(`Install a new server on a kubernetes cluster
@@ -38,12 +37,18 @@ NOTE: installing on a remote cluster is not supported yet!
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesInstallFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, installForKubernetes)
+			flags.InstallFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.InstallFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 
-	shared.AddInstallFlags(kubernetesCmd)
-	cmd_utils.AddHelmInstallFlag(kubernetesCmd)
+	shared.AddInstallFlags(cmd)
+	cmd_utils.AddHelmInstallFlag(cmd)
+	return cmd
+}
 
-	return kubernetesCmd
+// NewCommand for kubernetes installation.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, installForKubernetes)
 }

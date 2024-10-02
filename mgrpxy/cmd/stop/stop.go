@@ -16,8 +16,7 @@ type stopFlags struct {
 	Backend string
 }
 
-// NewCommand to stop server.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[stopFlags]) *cobra.Command {
 	stopCmd := &cobra.Command{
 		Use:     "stop",
 		GroupID: "management",
@@ -26,7 +25,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:    cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags stopFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, stop)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 
@@ -35,6 +34,11 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	utils.AddBackendFlag(stopCmd)
 
 	return stopCmd
+}
+
+// NewCommand to stop server.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, stop)
 }
 
 func stop(globalFlags *types.GlobalFlags, flags *stopFlags, cmd *cobra.Command, args []string) error {
