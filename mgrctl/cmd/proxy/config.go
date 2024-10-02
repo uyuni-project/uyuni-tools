@@ -157,7 +157,7 @@ func ProxyCreateConfig(
 		return utils.Errorf(err, L("failed to execute proxy configuration api request"))
 	}
 
-	filename := GetFilename(flags.Output, proxyName)
+	filename := GetFilename(flags.Output, flags.ProxyName)
 	if err := utils.SaveBinaryData(filename, *data); err != nil {
 		return utils.Errorf(err, L("error saving binary data: %v"), err)
 	}
