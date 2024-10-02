@@ -18,9 +18,8 @@ type podmanInstallFlags struct {
 	Podman              podman.PodmanFlags
 }
 
-// NewCommand for podman installation.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	podmanCmd := &cobra.Command{
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanInstallFlags]) *cobra.Command {
+	cmd := &cobra.Command{
 		Use:   "podman [fqdn]",
 		Short: L("Install a new server on podman"),
 		Long: L(`Install a new server on podman
@@ -32,12 +31,19 @@ NOTE: installing on a remote podman is not supported yet!
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanInstallFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, installForPodman)
+			flags.InstallFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.InstallFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 
-	shared.AddInstallFlags(podmanCmd)
-	podman.AddPodmanArgFlag(podmanCmd)
+	shared.AddInstallFlags(cmd)
+	podman.AddPodmanArgFlag(cmd)
 
-	return podmanCmd
+	return cmd
+}
+
+// NewCommand for podman installation.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, installForPodman)
 }

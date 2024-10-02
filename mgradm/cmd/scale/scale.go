@@ -21,8 +21,7 @@ func addScaleFlags(cmd *cobra.Command) {
 	cmd.Flags().Int("replicas", 0, L("How many replicas of a service should be started."))
 }
 
-// NewCommand adjusts a containers replicas.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[scaleFlags]) *cobra.Command {
 	scaleCmd := &cobra.Command{
 		Use:     "scale",
 		GroupID: "management",
@@ -35,7 +34,7 @@ Supported services:
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags scaleFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, scale)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 	scaleCmd.SetUsageTemplate(scaleCmd.UsageTemplate())
@@ -46,6 +45,11 @@ Supported services:
 	}
 
 	return scaleCmd
+}
+
+// NewCommand adjusts a containers replicas.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, scale)
 }
 
 func scale(globalFlags *types.GlobalFlags, flags *scaleFlags, cmd *cobra.Command, args []string) error {
