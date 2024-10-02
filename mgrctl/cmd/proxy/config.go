@@ -161,7 +161,7 @@ func ProxyCreateConfig(
 	if err := utils.SaveBinaryData(filename, *data); err != nil {
 		return utils.Errorf(err, L("error saving binary data: %v"), err)
 	}
-	log.Info().Msgf("Proxy configuration file saved as %s", filename)
+	log.Info().Msgf(L("Proxy configuration file saved as %s"), filename)
 
 	return nil
 }
