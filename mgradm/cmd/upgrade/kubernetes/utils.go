@@ -14,7 +14,7 @@ import (
 
 func upgradeKubernetes(
 	globalFlags *types.GlobalFlags,
-	flags *kubernetesUpgradeFlags,
+	flags *kubernetes.KubernetesServerFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {

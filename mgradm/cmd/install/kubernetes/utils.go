@@ -24,8 +24,9 @@ import (
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func installForKubernetes(globalFlags *types.GlobalFlags,
-	flags *kubernetesInstallFlags,
+func installForKubernetes(
+	globalFlags *types.GlobalFlags,
+	flags *kubernetes.KubernetesServerFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
@@ -35,7 +36,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 		}
 	}
 
-	flags.CheckParameters(cmd, "kubectl")
+	flags.Installation.CheckParameters(cmd, "kubectl")
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 
 	fqdn := args[0]
@@ -44,12 +45,12 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 		return err
 	}
 
-	helmArgs := []string{"--set", "timezone=" + flags.TZ}
+	helmArgs := []string{"--set", "timezone=" + flags.Installation.TZ}
 	if flags.Mirror != "" {
 		// TODO Handle claims for multi-node clusters
 		helmArgs = append(helmArgs, "--set", "mirror.hostPath="+flags.Mirror)
 	}
-	if flags.Debug.Java {
+	if flags.Installation.Debug.Java {
 		helmArgs = append(helmArgs, "--set", "exposeJavaDebug=true")
 	}
 
@@ -60,16 +61,16 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// Deploy the SSL CA or server certificate
-	if flags.Ssl.UseExisting() {
+	if flags.Installation.Ssl.UseExisting() {
 		if err := kubernetes.DeployExistingCertificate(
-			&flags.Helm, &flags.Ssl, clusterInfos.GetKubeconfig(),
+			&flags.Helm, &flags.Installation.Ssl, clusterInfos.GetKubeconfig(),
 		); err != nil {
 			return err
 		}
 	} else {
 		ca := ssl.SslPair{}
 		sslArgs, err := kubernetes.DeployCertificate(
-			&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
+			&flags.Helm, &flags.Installation.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
 			flags.Image.PullPolicy,
 		)
 
@@ -80,7 +81,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// Create a secret using SCC credentials if any are provided
-	helmArgs, err = shared_kubernetes.AddSccSecret(helmArgs, flags.Helm.Uyuni.Namespace, &flags.Scc)
+	helmArgs, err = shared_kubernetes.AddSccSecret(helmArgs, flags.Helm.Uyuni.Namespace, &flags.Installation.Scc)
 	if err != nil {
 		return err
 	}
@@ -88,8 +89,8 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	// Deploy Uyuni and wait for it to be up
 	if err := kubernetes.Deploy(
 		L("Initial deployment from mgradm install"),
-		cnx, flags.Image.Registry, &flags.Image, &flags.HubXmlrpc, &flags.Helm, &flags.Ssl,
-		clusterInfos, fqdn, flags.Debug.Java, false, helmArgs...,
+		cnx, flags.Image.Registry, &flags.Image, &flags.HubXmlrpc, &flags.Helm, &flags.Installation.Ssl,
+		clusterInfos, fqdn, flags.Installation.Debug.Java, false, helmArgs...,
 	); err != nil {
 		return shared_utils.Errorf(err, L("cannot deploy uyuni"))
 	}
@@ -99,7 +100,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 		"NO_SSL": "Y",
 	}
 
-	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, args[0], envs); err != nil {
+	if err := install_shared.RunSetup(cnx, &flags.ServerFlags, args[0], envs); err != nil {
 		namespace, err := cnx.GetNamespace("")
 		if err != nil {
 			return shared_utils.Errorf(err, L("failed to stop service"))

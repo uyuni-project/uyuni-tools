@@ -29,7 +29,7 @@ import (
 
 func migrateToKubernetes(
 	globalFlags *types.GlobalFlags,
-	flags *kubernetesMigrateFlags,
+	flags *kubernetes.KubernetesServerFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
@@ -65,7 +65,7 @@ func migrateToKubernetes(
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
 	// Prepare the migration script and folder
-	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true, flags.Prepare)
+	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, flags.Migration.User, true, flags.Migration.Prepare)
 	if err != nil {
 		return utils.Errorf(err, L("failed to generate migration script"))
 	}
@@ -86,7 +86,7 @@ func migrateToKubernetes(
 	helmArgs := []string{}
 
 	// Create a secret using SCC credentials if any are provided
-	helmArgs, err = shared_kubernetes.AddSccSecret(helmArgs, flags.Helm.Uyuni.Namespace, &flags.Scc)
+	helmArgs, err = shared_kubernetes.AddSccSecret(helmArgs, flags.Helm.Uyuni.Namespace, &flags.Installation.Scc)
 	if err != nil {
 		return err
 	}
@@ -102,7 +102,7 @@ func migrateToKubernetes(
 	if err := kubernetes.Deploy(
 		fmt.Sprintf(L("Deploy to migrate the data from %s"), fqdn),
 		cnx, flags.Image.Registry, &flags.Image, &flags.HubXmlrpc,
-		&flags.Helm, &sslFlags, clusterInfos, fqdn, false, flags.Prepare, migrationArgs...,
+		&flags.Helm, &sslFlags, clusterInfos, fqdn, false, flags.Migration.Prepare, migrationArgs...,
 	); err != nil {
 		return utils.Errorf(err, L("cannot run deploy"))
 	}
@@ -129,12 +129,14 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot set replicas to 0"))
 	}
 
-	if flags.Prepare {
+	if flags.Migration.Prepare {
 		log.Info().Msg(L("Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."))
 		return nil
 	}
 
-	setupSslArray, err := setupSsl(&flags.Helm, kubeconfig, scriptDir, flags.Ssl.Password, flags.Image.PullPolicy)
+	setupSslArray, err := setupSsl(
+		&flags.Helm, kubeconfig, scriptDir, flags.Installation.Ssl.Password, flags.Image.PullPolicy,
+	)
 	if err != nil {
 		return utils.Errorf(err, L("cannot setup SSL"))
 	}

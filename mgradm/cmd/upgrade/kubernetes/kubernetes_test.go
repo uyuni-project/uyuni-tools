@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
 	"github.com/uyuni-project/uyuni-tools/shared/test_utils/flags_tests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -24,7 +25,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flags_tests.ServerHelmFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *kubernetesUpgradeFlags,
+	tester := func(globalFlags *types.GlobalFlags, flags *kubernetes.KubernetesServerFlags,
 		cmd *cobra.Command, args []string,
 	) error {
 		flags_tests.AssertImageFlag(t, cmd, &flags.Image)
