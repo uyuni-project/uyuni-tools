@@ -10,33 +10,11 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 var defaultImage = path.Join(utils.DefaultRegistry, "server")
-
-// HelmFrags stores Uyuni and Cert Manager Helm information.
-type HelmFlags struct {
-	Uyuni       types.ChartFlags
-	CertManager types.ChartFlags
-}
-
-// SslCertFlags can store SSL Certs information.
-type SslCertFlags struct {
-	Cnames   []string `mapstructure:"cname"`
-	Country  string
-	State    string
-	City     string
-	Org      string
-	OU       string
-	Password string
-	Email    string
-	Ca       ssl.CaChain
-	Server   ssl.SslPair
-}
 
 // UseExisting return true if existing SSL Cert can be used.
 func (f *SslCertFlags) UseExisting() bool {

@@ -18,11 +18,11 @@ import (
 type kubernetesMigrateFlags struct {
 	shared.MigrateFlags `mapstructure:",squash"`
 	Helm                cmd_utils.HelmFlags
+	SCC                 types.SCCCredentials
 	Ssl                 cmd_utils.SslCertFlags
 }
 
-// NewCommand for kubernetes migration.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesMigrateFlags]) *cobra.Command {
 	migrateCmd := &cobra.Command{
 		Use:   "kubernetes [source server FQDN]",
 		Short: L("Migrate a remote server to containers running on a kubernetes cluster"),
@@ -44,7 +44,9 @@ NOTE: migrating to a remote cluster is not supported yet!
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesMigrateFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, migrateToKubernetes)
+			flags.MigrateFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.MigrateFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
 
@@ -53,4 +55,9 @@ NOTE: migrating to a remote cluster is not supported yet!
 	migrateCmd.Flags().String("ssl-password", "", L("SSL CA generated private key password"))
 
 	return migrateCmd
+}
+
+// NewCommand for kubernetes migration.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, migrateToKubernetes)
 }

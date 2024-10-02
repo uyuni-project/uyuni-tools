@@ -51,7 +51,7 @@ func cleanupSource(file string, cnx *shared.Connection) {
 	}
 }
 
-func prepareOutput(flags *configFlags) (string, error) {
+func prepareOutput(flags *sqlFlags) (string, error) {
 	output := "-"
 	if flags.OutputFile != "" {
 		output = flags.OutputFile
@@ -62,7 +62,7 @@ func prepareOutput(flags *configFlags) (string, error) {
 	return output, nil
 }
 
-func getBaseCommand(keepStdin bool, flags *configFlags, cnx *shared.Connection) (string, []string, error) {
+func getBaseCommand(keepStdin bool, flags *sqlFlags, cnx *shared.Connection) (string, []string, error) {
 	podName, err := cnx.GetPodName()
 	if err != nil {
 		return "", nil, err
@@ -110,7 +110,7 @@ func getBaseCommand(keepStdin bool, flags *configFlags, cnx *shared.Connection) 
 	return command, commandArgs, nil
 }
 
-func doSql(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
+func doSql(globalFlags *types.GlobalFlags, flags *sqlFlags, cmd *cobra.Command, args []string) error {
 	if flags.Interactive && flags.OutputFile != "" {
 		return errors.New(L("interactive mode cannot work with a file output"))
 	}

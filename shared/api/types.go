@@ -44,7 +44,7 @@ type ConnectionDetails struct {
 
 	// Path to CA certificate file used for target host validation.
 	// Provided certificate is used together with system certificates.
-	CApath string
+	CApath string `mapstructure:"cacert"`
 
 	// Disable certificate validation, unsecure and not recommended.
 	Insecure bool
