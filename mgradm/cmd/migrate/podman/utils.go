@@ -42,7 +42,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return err
 	}
 
-	authFile, cleaner, err := podman_utils.PodmanLogin(hostData, flags.SCC)
+	authFile, cleaner, err := podman_utils.PodmanLogin(hostData, flags.Installation.Scc)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
@@ -58,12 +58,13 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
 
 	extractedData, err := podman.RunMigration(
-		preparedImage, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn, flags.User, flags.Prepare,
+		preparedImage, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn,
+		flags.Migration.User, flags.Migration.Prepare,
 	)
 	if err != nil {
 		return utils.Errorf(err, L("cannot run migration script"))
 	}
-	if flags.Prepare {
+	if flags.Migration.Prepare {
 		log.Info().Msg(L("Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."))
 		return nil
 	}

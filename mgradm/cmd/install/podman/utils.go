@@ -25,7 +25,9 @@ import (
 )
 
 func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInstallFlags) error {
-	err := podman.GenerateSystemdService(flags.TZ, image, flags.Debug.Java, flags.Mirror, flags.Podman.Args)
+	err := podman.GenerateSystemdService(
+		flags.Installation.TZ, image, flags.Installation.Debug.Java, flags.Mirror, flags.Podman.Args,
+	)
 	if err != nil {
 		return err
 	}
@@ -49,7 +51,7 @@ func installForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Scc)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Installation.Scc)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
@@ -59,7 +61,7 @@ func installForPodman(
 		return fmt.Errorf(L("Server is already initialized! Uninstall before attempting new installation or use upgrade command"))
 	}
 
-	flags.CheckParameters(cmd, "podman")
+	flags.Installation.CheckParameters(cmd, "podman")
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
 	}
@@ -85,26 +87,26 @@ func installForPodman(
 		return utils.Errorf(err, L("cannot wait for system start"))
 	}
 
-	caPassword := flags.Ssl.Password
-	if flags.Ssl.UseExisting() {
+	caPassword := flags.Installation.Ssl.Password
+	if flags.Installation.Ssl.UseExisting() {
 		// We need to have a password for the generated CA, even though it will be thrown away after install
 		caPassword = "dummy"
 	}
 
 	env := map[string]string{
-		"CERT_O":       flags.Ssl.Org,
-		"CERT_OU":      flags.Ssl.OU,
-		"CERT_CITY":    flags.Ssl.City,
-		"CERT_STATE":   flags.Ssl.State,
-		"CERT_COUNTRY": flags.Ssl.Country,
-		"CERT_EMAIL":   flags.Ssl.Email,
-		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, flags.Ssl.Cnames...), ","),
+		"CERT_O":       flags.Installation.Ssl.Org,
+		"CERT_OU":      flags.Installation.Ssl.OU,
+		"CERT_CITY":    flags.Installation.Ssl.City,
+		"CERT_STATE":   flags.Installation.Ssl.State,
+		"CERT_COUNTRY": flags.Installation.Ssl.Country,
+		"CERT_EMAIL":   flags.Installation.Ssl.Email,
+		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, flags.Installation.Ssl.Cnames...), ","),
 		"CERT_PASS":    caPassword,
 	}
 
 	log.Info().Msg(L("Run setup command in the container"))
 
-	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, fqdn, env); err != nil {
+	if err := install_shared.RunSetup(cnx, &flags.ServerFlags, fqdn, env); err != nil {
 		if stopErr := shared_podman.StopService(shared_podman.ServerService); stopErr != nil {
 			log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
 		}
@@ -122,7 +124,8 @@ func installForPodman(
 	if flags.Coco.Replicas > 0 {
 		if err := coco.SetupCocoContainer(
 			authFile, flags.Image.Registry, flags.Coco, flags.Image,
-			flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password,
+			flags.Installation.Db.Name, flags.Installation.Db.Port,
+			flags.Installation.Db.User, flags.Installation.Db.Password,
 		); err != nil {
 			return err
 		}
@@ -136,8 +139,10 @@ func installForPodman(
 		}
 	}
 
-	if flags.Ssl.UseExisting() {
-		if err := podman.UpdateSslCertificate(cnx, &flags.Ssl.Ca, &flags.Ssl.Server); err != nil {
+	if flags.Installation.Ssl.UseExisting() {
+		if err := podman.UpdateSslCertificate(
+			cnx, &flags.Installation.Ssl.Ca, &flags.Installation.Ssl.Server,
+		); err != nil {
 			return utils.Errorf(err, L("cannot update SSL certificate"))
 		}
 	}

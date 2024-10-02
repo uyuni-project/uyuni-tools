@@ -7,6 +7,7 @@ package podman
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -14,8 +15,8 @@ import (
 )
 
 type podmanInstallFlags struct {
-	shared.InstallFlags `mapstructure:",squash"`
-	Podman              podman.PodmanFlags
+	adm_utils.ServerFlags `mapstructure:",squash"`
+	Podman                podman.PodmanFlags
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanInstallFlags]) *cobra.Command {
@@ -31,8 +32,8 @@ NOTE: installing on a remote podman is not supported yet!
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanInstallFlags
-			flags.InstallFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
-			flags.InstallFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
+			flags.ServerFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.ServerFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}

@@ -31,7 +31,7 @@ func TestParamsParsing(t *testing.T) {
 		flags_tests.AssertDbUpgradeImageFlag(t, cmd, &flags.DbUpgradeImage)
 		flags_tests.AssertCocoFlag(t, cmd, &flags.Coco)
 		flags_tests.AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)
-		flags_tests.AssertSccFlag(t, cmd, &flags.SCC)
+		flags_tests.AssertSccFlag(t, cmd, &flags.ServerFlags.Installation.Scc)
 		flags_tests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
 		return nil
 	}

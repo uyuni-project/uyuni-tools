@@ -7,6 +7,7 @@ package podman
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -14,9 +15,8 @@ import (
 )
 
 type podmanMigrateFlags struct {
-	shared.MigrateFlags `mapstructure:",squash"`
-	SCC                 types.SCCCredentials
-	Podman              podman_utils.PodmanFlags
+	cmd_utils.ServerFlags `mapstructure:",squash"`
+	Podman                podman_utils.PodmanFlags
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanMigrateFlags]) *cobra.Command {
@@ -36,8 +36,8 @@ NOTE: migrating to a remote podman is not supported yet!
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanMigrateFlags
-			flags.MigrateFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
-			flags.MigrateFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
+			flags.ServerFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.ServerFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}

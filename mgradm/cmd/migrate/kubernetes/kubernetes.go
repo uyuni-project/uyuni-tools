@@ -9,20 +9,14 @@ package kubernetes
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-type kubernetesMigrateFlags struct {
-	shared.MigrateFlags `mapstructure:",squash"`
-	Helm                cmd_utils.HelmFlags
-	SCC                 types.SCCCredentials // TODO Use them!
-	Ssl                 cmd_utils.SslCertFlags
-}
-
-func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesMigrateFlags]) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetes.KubernetesServerFlags]) *cobra.Command {
 	migrateCmd := &cobra.Command{
 		Use:   "kubernetes [source server FQDN]",
 		Short: L("Migrate a remote server to containers running on a kubernetes cluster"),
@@ -43,9 +37,9 @@ NOTE: migrating to a remote cluster is not supported yet!
 `),
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags kubernetesMigrateFlags
-			flags.MigrateFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
-			flags.MigrateFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
+			var flags kubernetes.KubernetesServerFlags
+			flags.ServerFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.ServerFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}

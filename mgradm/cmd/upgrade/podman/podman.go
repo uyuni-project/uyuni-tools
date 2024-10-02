@@ -8,6 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -15,9 +16,8 @@ import (
 )
 
 type podmanUpgradeFlags struct {
-	shared.UpgradeFlags `mapstructure:",squash"`
-	SCC                 types.SCCCredentials
-	Podman              podman.PodmanFlags
+	cmd_utils.ServerFlags `mapstructure:",squash"`
+	Podman                podman.PodmanFlags
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeFlags]) *cobra.Command {
@@ -27,8 +27,8 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeF
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanUpgradeFlags
-			flags.UpgradeFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
-			flags.UpgradeFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
+			flags.ServerFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.ServerFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}

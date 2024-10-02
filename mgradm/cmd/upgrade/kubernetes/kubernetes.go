@@ -9,27 +9,23 @@ package kubernetes
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-type kubernetesUpgradeFlags struct {
-	shared.UpgradeFlags `mapstructure:",squash"`
-	Helm                cmd_utils.HelmFlags
-}
-
-func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesUpgradeFlags]) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetes.KubernetesServerFlags]) *cobra.Command {
 	upgradeCmd := &cobra.Command{
 		Use:   "kubernetes",
 		Short: L("Upgrade a local server on kubernetes"),
 		Long:  L("Upgrade a local server on kubernetes"),
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags kubernetesUpgradeFlags
-			flags.UpgradeFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
-			flags.UpgradeFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
+			var flags kubernetes.KubernetesServerFlags
+			flags.ServerFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.ServerFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
 		},
 	}
