@@ -33,6 +33,10 @@ func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap)
 	}
 
 	// Wait for traefik to be back
+	waitForTraefik()
+}
+
+func waitForTraefik() {
 	log.Info().Msg(L("Waiting for Traefik to be reloaded"))
 	for i := 0; i < 60; i++ {
 		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "get", "job", "-n", "kube-system",
@@ -40,14 +44,31 @@ func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap)
 		if err == nil {
 			completionTime, err := time.Parse(time.RFC3339, string(out))
 			if err == nil && time.Since(completionTime).Seconds() < 60 {
-				break
+				return
 			}
 		}
+		time.Sleep(1 * time.Second)
 	}
+	log.Error().Msg(L("Failed to reload K3s Traefik"))
 }
 
 // UninstallK3sTraefikConfig uninstall K3s Traefik configuration.
 func UninstallK3sTraefikConfig(dryRun bool) {
+	// Write a blank file first to get traefik to be reinstalled
+	if !dryRun {
+		log.Info().Msg(L("Reinstalling Traefik without additionnal configuration"))
+		err := os.WriteFile(k3sTraefikConfigPath, []byte{}, 0600)
+		if err != nil {
+			log.Error().Err(err).Msg(L("failed to write empty traefik configuration"))
+		} else {
+			// Wait for traefik to be back
+			waitForTraefik()
+		}
+	} else {
+		log.Info().Msg(L("Would reinstall Traefik without additionnal configuration"))
+	}
+
+	// Now that it's reinstalled, remove the file
 	utils.UninstallFile(k3sTraefikConfigPath, dryRun)
 }
 

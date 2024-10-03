@@ -49,6 +49,12 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
+	hubXmlrpcImage := ""
+	hubXmlrpcImage, err = utils.ComputeImage(flags.Image.Registry, flags.Image.Tag, flags.HubXmlrpc.Image)
+	if err != nil {
+		return err
+	}
+
 	fqdn := args[0]
 	if err := utils.IsValidFQDN(fqdn); err != nil {
 		return err
@@ -78,8 +84,10 @@ func migrateToKubernetes(
 	var sslFlags adm_utils.SslCertFlags
 
 	// Deploy for running migration command
-	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm, &sslFlags,
-		clusterInfos, fqdn, false, flags.Prepare,
+	if err := kubernetes.Deploy(
+		fmt.Sprintf(L("Deploy to migrate the data from %s"), fqdn),
+		cnx, flags.Image.Registry, &flags.Image, &flags.HubXmlrpc,
+		&flags.Helm, &sslFlags, clusterInfos, fqdn, false, flags.Prepare,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
@@ -139,7 +147,12 @@ func migrateToKubernetes(
 	helmArgs = append(helmArgs, setupSslArray...)
 
 	// Run uyuni upgrade using the new ssl certificate
-	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	// We don't need to start the Hub XML-RPC API containers during the setup phase
+	err = kubernetes.UyuniUpgrade(
+		L("Upgrade with final volumes"),
+		serverImage, flags.Image.PullPolicy, 0, hubXmlrpcImage, &flags.Helm,
+		kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...,
+	)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade helm chart to image %s using new SSL certificate"), serverImage)
 	}
@@ -173,7 +186,18 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
+	hubReplicas := flags.HubXmlrpc.Replicas
+	if extractedData.HasHubXmlrpcApi {
+		log.Info().Msg(L("Enabling Hub XML-RPC API since it is enabled on the migrated server"))
+		hubReplicas = 1
+	}
+
+	// This is the final deployment, all the replicas need to be correct here.
+	err = kubernetes.UyuniUpgrade(
+		L("Complete deployment after migration"),
+		serverImage, flags.Image.PullPolicy, hubReplicas, hubXmlrpcImage, &flags.Helm, kubeconfig, fqdn,
+		clusterInfos.Ingress, helmArgs...,
+	)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}
@@ -182,6 +206,8 @@ func migrateToKubernetes(
 		return err
 	}
 
+	// Reinitialize the connection since the pod name has changed since we first checked
+	cnx = shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 	if err := cnx.CopyCaCertificate(fqdn); err != nil {
 		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
