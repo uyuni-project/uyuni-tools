@@ -47,7 +47,9 @@ echo "Successfully initialized new postgresql $NEW_VERSION database."
 su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql$OLD_VERSION/bin --new-bindir=/usr/lib/postgresql$NEW_VERSION/bin --old-datadir=/var/lib/pgsql/data-pg$OLD_VERSION --new-datadir=/var/lib/pgsql/data $FAST_UPGRADE"
 
 cp /var/lib/pgsql/data-pg$OLD_VERSION/pg_hba.conf /var/lib/pgsql/data
+mv /var/lib/pgsql/data-pg$OLD_VERSION/pg_hba.conf /var/lib/pgsql/data-pg$OLD_VERSION/pg_hba.conf.migrated
 cp /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf /var/lib/pgsql/data/
+mv /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf.migrated
 
 echo "DONE"`
 
