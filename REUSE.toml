@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2023-2024 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+version = 1
+SPDX-PackageName = "uyuni-tools"
+SPDX-PackageSupplier = "Uyuni Project <>"
+SPDX-PackageDownloadLocation = "https://github.com/uyuni-project/uyuni-tools"
+
+[[annotations]]
+path = ["mgradm/shared/ssl/testdata/**", "go.mod", "go.sum", "uyuni-tools.changes*", "uyuni-tools.spec", ".tito/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2023-2024 SUSE LLC"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = "locale/**"
+precedence = "override"
+SPDX-FileCopyrightText = "2024 SUSE LLC"
+SPDX-License-Identifier = "Apache-2.0"
