@@ -223,7 +223,18 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	err = UyuniUpgrade(serverImage, image.PullPolicy, &helm, kubeconfig, fqdn, clusterInfos.Ingress)
+	helmArgs := []string{}
+
+	// Get the registry secret name if any
+	pullSecret, err := kubernetes.GetDeploymentImagePullSecret(namespace, kubernetes.ServerFilter)
+	if err != nil {
+		return err
+	}
+	if pullSecret != "" {
+		helmArgs = append(helmArgs, "--set", "registrySecret="+pullSecret)
+	}
+
+	err = UyuniUpgrade(serverImage, image.PullPolicy, &helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
 	if err != nil {
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}
