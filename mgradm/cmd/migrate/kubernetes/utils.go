@@ -77,14 +77,29 @@ func migrateToKubernetes(
 	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
 	var sslFlags adm_utils.SslCertFlags
 
+	helmArgs := []string{}
+
+	// Create a secret using SCC credentials if any are provided
+	if flags.Scc.User != "" && flags.Scc.Password != "" {
+		secretName := "scc-credentials"
+		if err := shared_kubernetes.CreateDockerSecret(
+			flags.Helm.Uyuni.Namespace, secretName, "registry.suse.com", flags.Scc.User, flags.Scc.Password,
+		); err != nil {
+			return err
+		}
+		helmArgs = append(helmArgs, "--set", "registrySecret="+secretName)
+	}
+
 	// Deploy for running migration command
-	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm, &sslFlags,
-		clusterInfos, fqdn, false, flags.Prepare,
+	migrationArgs := append(helmArgs,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
 		"--set", "migration.dataPath="+scriptDir,
-	); err != nil {
+	)
+
+	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm, &sslFlags,
+		clusterInfos, fqdn, false, flags.Prepare, migrationArgs...); err != nil {
 		return utils.Errorf(err, L("cannot run deploy"))
 	}
 
@@ -127,10 +142,10 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot setup SSL"))
 	}
 
-	helmArgs := []string{
+	helmArgs = append(helmArgs,
 		"--reset-values",
-		"--set", "timezone=" + extractedData.Timezone,
-	}
+		"--set", "timezone="+extractedData.Timezone,
+	)
 	if flags.Mirror != "" {
 		log.Warn().Msgf(L("The mirror data will not be migrated, ensure it is available at %s"), flags.Mirror)
 		// TODO Handle claims for multi-node clusters

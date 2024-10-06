@@ -56,9 +56,19 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 			flags.Helm.Proxy.Namespace)
 	}
 
+	helmArgs := []string{"--set", "ingress=" + clusterInfos.Ingress}
+	if flags.Scc.User != "" && flags.Scc.Password != "" {
+		secretName := "scc-credentials"
+		if err := shared_kubernetes.CreateDockerSecret(
+			flags.Helm.Proxy.Namespace, secretName, "registry.suse.com", flags.Scc.User, flags.Scc.Password,
+		); err != nil {
+			return err
+		}
+		helmArgs = append(helmArgs, "--set", "registrySecret="+secretName)
+	}
+
 	// Install the uyuni proxy helm chart
-	if err := kubernetes.Deploy(&flags.ProxyImageFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
-		"--set", "ingress="+clusterInfos.Ingress); err != nil {
+	if err := kubernetes.Deploy(&flags.ProxyImageFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(), helmArgs...); err != nil {
 		return shared_utils.Errorf(err, L("cannot deploy proxy helm chart"))
 	}
 

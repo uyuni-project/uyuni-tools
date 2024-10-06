@@ -183,9 +183,21 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 		}
 	}()
 
+	helmArgs := []string{"--set", "ingress=" + clusterInfos.Ingress}
+
+	// Get the registry secret name if any
+	pullSecret, err := kubernetes.GetDeploymentImagePullSecret(namespace, kubernetes.ProxyFilter)
+	if err != nil {
+		return err
+	}
+	if pullSecret != "" {
+		helmArgs = append(helmArgs, "--set", "registrySecret="+pullSecret)
+	}
+
 	// Install the uyuni proxy helm chart
 	if err := Deploy(&flags.ProxyImageFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
-		"--set", "ingress="+clusterInfos.Ingress); err != nil {
+		helmArgs...,
+	); err != nil {
 		return shared_utils.Errorf(err, L("cannot deploy proxy helm chart"))
 	}
 
