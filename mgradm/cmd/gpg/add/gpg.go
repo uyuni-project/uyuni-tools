@@ -61,11 +61,11 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 
 	gpgAddCmd = append(gpgAddCmd, "--keyring", customKeyringPath)
 
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
-	defer os.RemoveAll(scriptDir)
+	scriptDir, err := utils.TempDir()
 	if err != nil {
-		return utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
+	defer os.RemoveAll(scriptDir)
 
 	for _, keyURL := range args {
 		var hostKeyPath string

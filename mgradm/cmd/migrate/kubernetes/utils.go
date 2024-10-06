@@ -236,7 +236,9 @@ func setupSsl(helm *adm_utils.HelmFlags, kubeconfig string, scriptDir string, pa
 				Cert: path.Join(scriptDir, "spacewalk.crt"),
 			},
 		}
-		kubernetes.DeployExistingCertificate(helm, &sslFlags, kubeconfig)
+		if err := kubernetes.DeployExistingCertificate(helm, &sslFlags, kubeconfig); err != nil {
+			return []string{}, nil
+		}
 	}
 	return []string{}, nil
 }
