@@ -30,9 +30,9 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	// Unpack the tarball
 	configPath := utils.GetConfigPath(args)
 
-	tmpDir, err := os.MkdirTemp("", "mgrpxy-*")
+	tmpDir, err := shared_utils.TempDir()
 	if err != nil {
-		return shared_utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
 	defer os.RemoveAll(tmpDir)
 

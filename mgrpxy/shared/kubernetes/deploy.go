@@ -154,9 +154,9 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 		}
 	}
 
-	tmpDir, err := os.MkdirTemp("", "mgrpxy-*")
+	tmpDir, err := shared_utils.TempDir()
 	if err != nil {
-		return shared_utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
 	defer os.RemoveAll(tmpDir)
 

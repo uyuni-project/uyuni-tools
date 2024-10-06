@@ -5,7 +5,6 @@
 package kubernetes
 
 import (
-	"errors"
 	"fmt"
 	"os"
 
@@ -38,11 +37,11 @@ func RunPgsqlVersionUpgrade(
 	oldPgsql string,
 	newPgsql string,
 ) error {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
-	defer os.RemoveAll(scriptDir)
+	scriptDir, err := utils.TempDir()
 	if err != nil {
-		return errors.New(L("failed to create temporary directory: %s"))
+		return err
 	}
+	defer os.RemoveAll(scriptDir)
 	if newPgsql > oldPgsql {
 		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql)
 
@@ -108,11 +107,11 @@ func RunPgsqlVersionUpgrade(
 func RunPgsqlFinalizeScript(
 	serverImage string, pullPolicy string, namespace string, nodeName string, schemaUpdateRequired bool, migration bool,
 ) error {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
-	defer os.RemoveAll(scriptDir)
+	scriptDir, err := utils.TempDir()
 	if err != nil {
-		return fmt.Errorf(L("failed to create temporary directory: %s"))
+		return err
 	}
+	defer os.RemoveAll(scriptDir)
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
 	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, schemaUpdateRequired, true, migration, true)
 	if err != nil {
@@ -153,11 +152,11 @@ func RunPgsqlFinalizeScript(
 
 // RunPostUpgradeScript run the script with the changes to apply after the upgrade.
 func RunPostUpgradeScript(serverImage string, pullPolicy string, namespace string, nodeName string) error {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
-	defer os.RemoveAll(scriptDir)
+	scriptDir, err := utils.TempDir()
 	if err != nil {
-		return fmt.Errorf(L("failed to create temporary directory: %s"))
+		return err
 	}
+	defer os.RemoveAll(scriptDir)
 	postUpgradeContainer := "uyuni-post-upgrade"
 	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
 	if err != nil {

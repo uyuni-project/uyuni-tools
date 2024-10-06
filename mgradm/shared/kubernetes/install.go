@@ -71,7 +71,9 @@ func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	ca *ssl.SslPair, kubeconfig string, fqdn string, imagePullPolicy string) ([]string, error) {
 	helmArgs := []string{}
 	if sslFlags.UseExisting() {
-		DeployExistingCertificate(helmFlags, sslFlags, kubeconfig)
+		if err := DeployExistingCertificate(helmFlags, sslFlags, kubeconfig); err != nil {
+			return helmArgs, err
+		}
 	} else {
 		// Install cert-manager and a self-signed issuer ready for use
 		issuerArgs, err := installSslIssuers(helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn, imagePullPolicy)
@@ -88,14 +90,17 @@ func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 }
 
 // DeployExistingCertificate execute a deploy of an existing certificate.
-func DeployExistingCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, kubeconfig string) {
+func DeployExistingCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, kubeconfig string) error {
 	// Deploy the SSL Certificate secret and CA configmap
 	serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
 	serverKey := utils.ReadFile(sslFlags.Server.Key)
-	installTlsSecret(helmFlags.Uyuni.Namespace, serverCrt, serverKey, rootCaCrt)
+	if err := installTlsSecret(helmFlags.Uyuni.Namespace, serverCrt, serverKey, rootCaCrt); err != nil {
+		return err
+	}
 
 	// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
 	extractCaCertToConfig(helmFlags.Uyuni.Namespace)
+	return nil
 }
 
 // UyuniUpgrade runs an helm upgrade using images and helm configuration as parameters.
@@ -174,11 +179,11 @@ func Upgrade(
 	}
 	kubeconfig := clusterInfos.GetKubeconfig()
 
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
-	defer os.RemoveAll(scriptDir)
+	scriptDir, err := utils.TempDir()
 	if err != nil {
-		return utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
+	defer os.RemoveAll(scriptDir)
 
 	//this is needed because folder with script needs to be mounted
 	//check the node before scaling down

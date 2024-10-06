@@ -218,10 +218,10 @@ func getPodmanVolumeBasePath() (string, error) {
 
 // Inspect check values on a given image and deploy.
 func Inspect(serverImage string, pullPolicy string, scc types.SCCCredentials, proxyHost bool) (*utils.ServerInspectData, error) {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to create temporary directory"))
+		return nil, err
 	}
 
 	hostData, err := InspectHost()
