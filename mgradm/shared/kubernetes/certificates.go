@@ -20,10 +20,10 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) {
-	crdsDir, err := os.MkdirTemp("", "mgradm-*")
+func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) error {
+	crdsDir, err := utils.TempDir()
 	if err != nil {
-		log.Fatal().Err(err).Msgf(L("failed to create temporary directory"))
+		return err
 	}
 	defer os.RemoveAll(crdsDir)
 
@@ -38,14 +38,15 @@ func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, root
 	}
 
 	if err = utils.WriteTemplateToFile(tlsSecretData, secretPath, 0500, true); err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to generate uyuni-crt secret definition"))
+		return utils.Errorf(err, L("Failed to generate uyuni-crt secret definition"))
 	}
 	err = utils.RunCmd("kubectl", "apply", "-f", secretPath)
 	if err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to create uyuni-crt TLS secret"))
+		return utils.Errorf(err, L("Failed to create uyuni-crt TLS secret"))
 	}
 
 	createCaConfig(namespace, rootCaCrt)
+	return nil
 }
 
 // Install cert-manager and its CRDs using helm in the cert-manager namespace if needed
@@ -59,9 +60,9 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	}
 
 	log.Info().Msg(L("Creating SSL certificate issuer"))
-	crdsDir, err := os.MkdirTemp("", "mgradm-*")
+	crdsDir, err := utils.TempDir()
 	if err != nil {
-		return []string{}, utils.Errorf(err, L("failed to create temporary directory"))
+		return []string{}, err
 	}
 	defer os.RemoveAll(crdsDir)
 
