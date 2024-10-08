@@ -10,7 +10,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
-	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -25,9 +24,9 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	cnx := shared.NewConnection(flags.Backend, containerName, kubernetes.ServerFilter)
 
 	// Copy the generated file locally
-	tmpDir, err := os.MkdirTemp("", "mgradm-*")
+	tmpDir, err := utils.TempDir()
 	if err != nil {
-		return utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
 	defer os.RemoveAll(tmpDir)
 
