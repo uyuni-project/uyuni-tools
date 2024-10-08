@@ -166,15 +166,20 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 		return err
 	}
 
-	err = kubernetes.ReplicasTo(kubernetes.ProxyApp, 0)
+	namespace := flags.Helm.Proxy.Namespace
+	if _, err = kubernetes.GetNode(namespace, kubernetes.ProxyApp); err != nil {
+		err = kubernetes.ReplicasTo(namespace, kubernetes.ProxyApp, 1)
+	}
+
+	err = kubernetes.ReplicasTo(namespace, kubernetes.ProxyApp, 0)
 	if err != nil {
 		return err
 	}
 
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
-		if _, err = kubernetes.GetNode("uyuni"); err != nil {
-			err = kubernetes.ReplicasTo(kubernetes.ProxyApp, 1)
+		if _, err = kubernetes.GetNode(namespace, kubernetes.ProxyApp); err != nil {
+			err = kubernetes.ReplicasTo(namespace, kubernetes.ProxyApp, 1)
 		}
 	}()
 

@@ -87,7 +87,11 @@ func getBaseCommand(keepStdin bool, flags *configFlags, cnx *shared.Connection) 
 	commandArgs = append(commandArgs, podName)
 
 	if command == "kubectl" {
-		commandArgs = append(commandArgs, "-c", "uyuni", "--")
+		namespace, err := cnx.GetNamespace("")
+		if namespace == "" {
+			return "", nil, err
+		}
+		commandArgs = append(commandArgs, "-n", namespace, "-c", "uyuni", "--")
 	}
 	newEnv := []string{}
 	for _, envValue := range envs {

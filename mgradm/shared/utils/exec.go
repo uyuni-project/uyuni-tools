@@ -36,7 +36,11 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	}
 
 	if command == "kubectl" {
-		commandArgs = append(commandArgs, "-c", "uyuni", "--")
+		namespace, err := cnx.GetNamespace("")
+		if namespace == "" {
+			return utils.Errorf(err, L("failed retrieving namespace"))
+		}
+		commandArgs = append(commandArgs, "-n", namespace, "-c", "uyuni", "--")
 	}
 
 	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))

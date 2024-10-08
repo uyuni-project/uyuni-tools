@@ -81,8 +81,12 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, args[0], envs); err != nil {
-		if stopErr := shared_kubernetes.Stop(shared_kubernetes.ServerFilter); stopErr != nil {
-			log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
+		namespace, err := cnx.GetNamespace("")
+		if err != nil {
+			return shared_utils.Errorf(err, L("failed to stop service"))
+		}
+		if stopErr := shared_kubernetes.Stop(namespace, shared_kubernetes.ServerApp); stopErr != nil {
+			log.Error().Err(stopErr).Msg(L("failed to stop service"))
 		}
 		return err
 	}

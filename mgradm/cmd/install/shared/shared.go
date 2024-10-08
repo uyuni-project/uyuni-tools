@@ -44,7 +44,6 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 	if err != nil && !preconfigured {
 		return utils.Errorf(err, L("error running the setup script"))
 	}
-
 	if err := cnx.CopyCaCertificate(fqdn); err != nil {
 		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
