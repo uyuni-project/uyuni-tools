@@ -12,8 +12,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -151,7 +151,7 @@ func installForKubernetes(
 	// TODO Ideally we would need a job running at an earlier stage to persist the logs in a kubernetes-friendly way.
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
 
-	if err := install_shared.RunSetup(
+	if err := adm_utils.RunSetup(
 		cnx, &flags.ServerFlags, fqdn, map[string]string{"NO_SSL": "Y"},
 	); err != nil {
 		if stopErr := shared_kubernetes.Stop(namespace, shared_kubernetes.ServerApp); stopErr != nil {
