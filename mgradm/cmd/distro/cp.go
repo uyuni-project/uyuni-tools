@@ -76,7 +76,7 @@ func prepareSource(source string) (string, bool, error) {
 
 	if strings.HasSuffix(source, ".iso") {
 		log.Debug().Msg("Source is an ISO image")
-		tmpdir, err := os.MkdirTemp("", "mgradm-distcp")
+		tmpdir, err := utils.TempDir()
 		if err != nil {
 			return "", needremove, err
 		}

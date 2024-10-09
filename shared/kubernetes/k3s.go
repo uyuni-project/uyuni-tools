@@ -59,10 +59,10 @@ func InspectKubernetes(namespace string, serverImage string, pullPolicy string) 
 		}
 	}
 
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to create temporary directory"))
+		return nil, err
 	}
 
 	inspector := utils.NewServerInspector(scriptDir)

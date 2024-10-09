@@ -54,10 +54,10 @@ func (i *HostInspector) ReadInspectData() (*HostInspectData, error) {
 
 // InspectHost gathers data on the host where to install the server or proxy.
 func InspectHost() (*HostInspectData, error) {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to create temporary directory"))
+		return nil, err
 	}
 
 	inspector := NewHostInspector(scriptDir)

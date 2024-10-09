@@ -6,12 +6,15 @@ package kubernetes
 
 import (
 	"encoding/base64"
+	"fmt"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -149,4 +152,70 @@ func GetSecret(secretName string, filter string) (string, error) {
 	}
 
 	return string(decoded), nil
+}
+
+// createDockerSecret creates a secret of docker type to authenticate registries.
+func createDockerSecret(namespace string, name string, registry string, username string, password string) error {
+	authString := fmt.Sprintf("%s:%s", username, password)
+	auth := base64.StdEncoding.EncodeToString([]byte(authString))
+	configjson := fmt.Sprintf(
+		`{"auths": {"%s": {"username": "%s", "password": "%s", "auth": "%s"}}}`,
+		registry, username, password, auth,
+	)
+
+	secret := fmt.Sprintf(`
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/dockerconfigjson
+metadata:
+  namespace: %s
+  name: %s
+data:
+  .dockerconfigjson: %s
+`, namespace, name, base64.StdEncoding.EncodeToString([]byte(configjson)))
+
+	tempDir, err := utils.TempDir()
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(tempDir)
+
+	// Run the job
+	definitionPath := path.Join(tempDir, "definition.yaml")
+	if err := os.WriteFile(definitionPath, []byte(secret), 0600); err != nil {
+		return utils.Errorf(err, L("failed to write %s secret definition file"), name)
+	}
+
+	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "kubectl", "apply", "-f", definitionPath); err != nil {
+		return utils.Errorf(err, L("failed to define %s secret"), name)
+	}
+	return nil
+}
+
+// AddSccSecret creates a secret holding the SCC credentials and adds it to the helm args.
+func AddSccSecret(helmArgs []string, namespace string, scc *types.SCCCredentials) ([]string, error) {
+	if scc.User != "" && scc.Password != "" {
+		secretName := "scc-credentials"
+		if err := createDockerSecret(
+			namespace, secretName, "registry.suse.com", scc.User, scc.Password,
+		); err != nil {
+			return helmArgs, err
+		}
+		helmArgs = append(helmArgs, "--set", "registrySecret="+secretName)
+	}
+	return helmArgs, nil
+}
+
+// GetDeploymentImagePullSecret returns the name of the image pull secret of a deployment.
+//
+// This assumes only one secret is defined on the deployment.
+func GetDeploymentImagePullSecret(namespace string, filter string) (string, error) {
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "deploy", "-n", namespace, filter,
+		"-o", "jsonpath={.items[*].spec.template.spec.imagePullSecrets[*].name}",
+	)
+	if err != nil {
+		return "", utils.Errorf(err, L("failed to get deployment image pull secret"))
+	}
+
+	return strings.TrimSpace(string(out)), nil
 }
