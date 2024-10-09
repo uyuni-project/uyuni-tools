@@ -36,3 +36,18 @@ func ReadFile(t *testing.T, path string) string {
 	}
 	return string(content)
 }
+
+// ReadFileAsBinary returns the content of a file as a slice of int8.
+func ReadFileAsBinary(t *testing.T, path string) []int8 {
+	content, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("failed to read file %s: %s", path, err)
+	}
+
+	int8Content := make([]int8, len(content))
+	for i, b := range content {
+		int8Content[i] = int8(b)
+	}
+
+	return int8Content
+}
