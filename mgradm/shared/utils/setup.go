@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-package shared
+package utils
 
 import (
 	"errors"
@@ -14,7 +14,6 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/api/org"
@@ -25,7 +24,7 @@ import (
 const setup_name = "setup.sh"
 
 // RunSetup execute the setup.
-func RunSetup(cnx *shared.Connection, flags *adm_utils.ServerFlags, fqdn string, env map[string]string) error {
+func RunSetup(cnx *shared.Connection, flags *ServerFlags, fqdn string, env map[string]string) error {
 	// Containers should be running now, check storage if it is using volume from already configured server
 	preconfigured := false
 	if isServerConfigured(cnx) {
@@ -43,7 +42,7 @@ func RunSetup(cnx *shared.Connection, flags *adm_utils.ServerFlags, fqdn string,
 		return utils.Errorf(err, L("cannot copy /tmp/setup.sh"))
 	}
 
-	err = adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/tmp/setup.sh")
+	err = ExecCommand(zerolog.InfoLevel, cnx, "/tmp/setup.sh")
 	if err != nil && !preconfigured {
 		return utils.Errorf(err, L("error running the setup script"))
 	}
@@ -104,7 +103,7 @@ func RunSetup(cnx *shared.Connection, flags *adm_utils.ServerFlags, fqdn string,
 // The script exports all the needed environment variables and calls uyuni's mgr-setup.
 // Podman or kubernetes-specific variables can be passed using extraEnv parameter.
 func generateSetupScript(
-	flags *adm_utils.InstallationFlags,
+	flags *InstallationFlags,
 	fqdn string,
 	mirror string,
 	extraEnv map[string]string,
