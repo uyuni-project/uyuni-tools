@@ -14,6 +14,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -153,8 +154,8 @@ func GetSecret(secretName string, filter string) (string, error) {
 	return string(decoded), nil
 }
 
-// CreateDockerSecret creates a secret of docker type to authenticate registries.
-func CreateDockerSecret(namespace string, name string, registry string, username string, password string) error {
+// createDockerSecret creates a secret of docker type to authenticate registries.
+func createDockerSecret(namespace string, name string, registry string, username string, password string) error {
 	authString := fmt.Sprintf("%s:%s", username, password)
 	auth := base64.StdEncoding.EncodeToString([]byte(authString))
 	configjson := fmt.Sprintf(
@@ -189,6 +190,20 @@ data:
 		return utils.Errorf(err, L("failed to define %s secret"), name)
 	}
 	return nil
+}
+
+// AddSccSecret creates a secret holding the SCC credentials and adds it to the helm args.
+func AddSccSecret(helmArgs []string, namespace string, scc *types.SCCCredentials) ([]string, error) {
+	if scc.User != "" && scc.Password != "" {
+		secretName := "scc-credentials"
+		if err := createDockerSecret(
+			namespace, secretName, "registry.suse.com", scc.User, scc.Password,
+		); err != nil {
+			return helmArgs, err
+		}
+		helmArgs = append(helmArgs, "--set", "registrySecret="+secretName)
+	}
+	return helmArgs, nil
 }
 
 // GetDeploymentImagePullSecret returns the name of the image pull secret of a deployment.

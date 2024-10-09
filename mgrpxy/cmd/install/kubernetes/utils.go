@@ -57,14 +57,9 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	helmArgs := []string{"--set", "ingress=" + clusterInfos.Ingress}
-	if flags.Scc.User != "" && flags.Scc.Password != "" {
-		secretName := "scc-credentials"
-		if err := shared_kubernetes.CreateDockerSecret(
-			flags.Helm.Proxy.Namespace, secretName, "registry.suse.com", flags.Scc.User, flags.Scc.Password,
-		); err != nil {
-			return err
-		}
-		helmArgs = append(helmArgs, "--set", "registrySecret="+secretName)
+	helmArgs, err = shared_kubernetes.AddSccSecret(helmArgs, flags.Helm.Proxy.Namespace, &flags.Scc)
+	if err != nil {
+		return err
 	}
 
 	// Install the uyuni proxy helm chart
