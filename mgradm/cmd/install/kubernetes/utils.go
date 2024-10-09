@@ -13,7 +13,6 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
@@ -96,7 +95,7 @@ func installForKubernetes(
 		"NO_SSL": "Y",
 	}
 
-	if err := install_shared.RunSetup(cnx, &flags.ServerFlags, args[0], envs); err != nil {
+	if err := adm_utils.RunSetup(cnx, &flags.ServerFlags, args[0], envs); err != nil {
 		namespace, err := cnx.GetNamespace("")
 		if err != nil {
 			return shared_utils.Errorf(err, L("failed to stop service"))
