@@ -32,6 +32,8 @@ NOTE: installing on a remote podman is not supported yet!
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanInstallFlags
+			flags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
+			flags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, installForPodman)
 		},
 	}
