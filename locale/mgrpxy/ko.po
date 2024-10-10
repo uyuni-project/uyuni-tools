@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:14+0200\n"
+"POT-Creation-Date: 2024-10-10 15:50+0200\n"
 "PO-Revision-Date: 2024-09-26 12:48+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
@@ -82,11 +82,11 @@ msgstr "애플리케이션 로그 수준"
 msgid "Install a new proxy from scratch"
 msgstr "처음부터 새 프록시 설치"
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
 msgid "Install a new proxy on a running kubernetes cluster"
 msgstr "실행 중인 Kubernetes 클러스터에 새 프록시 설치"
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:27
 msgid ""
 "Install a new proxy on a running kubernetes cluster.\n"
 "\n"
@@ -112,18 +112,12 @@ msgstr ""
 msgid "install %s before running this command"
 msgstr "이 명령을 실행하기 전 %s 설치"
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:35
-#: mgrpxy/cmd/support/config/extractor.go:23
-#: mgrpxy/shared/kubernetes/deploy.go:159
-msgid "failed to create temporary directory"
-msgstr "임시 디렉토리를 만들지 못함"
-
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
 msgid "failed to extract configuration"
 msgstr "구성을 추출하지 못했습니다."
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:62
-#: mgrpxy/shared/kubernetes/deploy.go:189
+#: mgrpxy/cmd/install/kubernetes/utils.go:67
+#: mgrpxy/shared/kubernetes/deploy.go:201
 msgid "cannot deploy proxy helm chart"
 msgstr "프록시 helm 차트를 배포할 수 없음"
 
@@ -591,6 +585,9 @@ msgstr "%s 컨테이너용 이미지"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
+
+#~ msgid "failed to create temporary directory"
+#~ msgstr "임시 디렉토리를 만들지 못함"
 
 #~ msgid "specify a private registry"
 #~ msgstr "개인 레지스트리 지정"

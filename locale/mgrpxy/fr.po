@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:14+0200\n"
+"POT-Creation-Date: 2024-10-10 15:50+0200\n"
 "PO-Revision-Date: 2024-04-08 11:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -84,11 +84,11 @@ msgstr "niveau de verbosité de l'application"
 msgid "Install a new proxy from scratch"
 msgstr "Installer un nouveau proxy"
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
 msgid "Install a new proxy on a running kubernetes cluster"
 msgstr "Installer un nouveau proxy sur un cluster kubernetes existant"
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:27
 msgid ""
 "Install a new proxy on a running kubernetes cluster.\n"
 "\n"
@@ -114,19 +114,12 @@ msgstr ""
 msgid "install %s before running this command"
 msgstr "installer %s avant d'exécuter cette commande"
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:35
-#: mgrpxy/cmd/support/config/extractor.go:23
-#: mgrpxy/shared/kubernetes/deploy.go:159
-#, fuzzy
-msgid "failed to create temporary directory"
-msgstr "impossible de créer le répertoire temporaire: %s"
-
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
 msgid "failed to extract configuration"
 msgstr "impossible d'extraire la configuration"
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:62
-#: mgrpxy/shared/kubernetes/deploy.go:189
+#: mgrpxy/cmd/install/kubernetes/utils.go:67
+#: mgrpxy/shared/kubernetes/deploy.go:201
 #, fuzzy
 msgid "cannot deploy proxy helm chart"
 msgstr "impossible de déployer le helm chart du proxy: %s"
@@ -609,6 +602,10 @@ msgstr ""
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "Tag pour le conteneur %sm remplace la valeur globale si définie"
+
+#, fuzzy
+#~ msgid "failed to create temporary directory"
+#~ msgstr "impossible de créer le répertoire temporaire: %s"
 
 #, fuzzy
 #~ msgid "failed to discover the cluster type"

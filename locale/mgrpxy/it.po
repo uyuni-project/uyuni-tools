@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:14+0200\n"
+"POT-Creation-Date: 2024-10-10 15:50+0200\n"
 "PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/it/>\n"
@@ -83,11 +83,11 @@ msgstr ""
 msgid "Install a new proxy from scratch"
 msgstr ""
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
 msgid "Install a new proxy on a running kubernetes cluster"
 msgstr ""
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:27
 msgid ""
 "Install a new proxy on a running kubernetes cluster.\n"
 "\n"
@@ -105,19 +105,12 @@ msgstr ""
 msgid "install %s before running this command"
 msgstr "installare %s prima di eseguire questo comando"
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:35
-#: mgrpxy/cmd/support/config/extractor.go:23
-#: mgrpxy/shared/kubernetes/deploy.go:159
-#, fuzzy
-msgid "failed to create temporary directory"
-msgstr "mancata creazione della directory temporanea: %s"
-
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
 msgid "failed to extract configuration"
 msgstr ""
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:62
-#: mgrpxy/shared/kubernetes/deploy.go:189
+#: mgrpxy/cmd/install/kubernetes/utils.go:67
+#: mgrpxy/shared/kubernetes/deploy.go:201
 msgid "cannot deploy proxy helm chart"
 msgstr ""
 
@@ -545,6 +538,10 @@ msgstr ""
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr ""
+
+#, fuzzy
+#~ msgid "failed to create temporary directory"
+#~ msgstr "mancata creazione della directory temporanea: %s"
 
 #, fuzzy
 #~ msgid "cannot inspect host values"

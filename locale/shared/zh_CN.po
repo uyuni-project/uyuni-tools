@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:14+0200\n"
+"POT-Creation-Date: 2024-10-10 15:50+0200\n"
 "PO-Revision-Date: 2024-09-26 08:48+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -319,62 +319,87 @@ msgstr "正在安装 K3s Traefik 配置"
 msgid "Failed to write K3s Traefik configuration"
 msgstr "无法写入 K3s Traefik 配置"
 
-#: shared/kubernetes/k3s.go:36
+#: shared/kubernetes/k3s.go:40
 msgid "Waiting for Traefik to be reloaded"
 msgstr "正在等待重新装载 Traefik"
 
-#: shared/kubernetes/k3s.go:58
+#: shared/kubernetes/k3s.go:57
+#, fuzzy
+msgid "Reinstalling Traefik without additionnal configuration"
+msgstr "正在安装 K3s Traefik 配置"
+
+#: shared/kubernetes/k3s.go:60
+#, fuzzy
+msgid "failed to write empty traefik configuration"
+msgstr "无法写入 K3s Traefik 配置"
+
+#: shared/kubernetes/k3s.go:66
+#, fuzzy
+msgid "Would reinstall Traefik without additionnal configuration"
+msgstr "正在安装 K3s Traefik 配置"
+
+#: shared/kubernetes/k3s.go:77
 #, javascript-format
 msgid "install %s before running this command"
 msgstr "在运行此命令前安装 %s"
 
-#: shared/kubernetes/k3s.go:65 shared/podman/hostinspector.go:60
-#: shared/podman/utils.go:224
-msgid "failed to create temporary directory"
-msgstr "无法创建临时目录"
-
-#: shared/kubernetes/k3s.go:79
+#: shared/kubernetes/k3s.go:98
 #, javascript-format
 msgid "cannot delete %s"
 msgstr "无法删除 %s"
 
-#: shared/kubernetes/k3s.go:85
+#: shared/kubernetes/k3s.go:104
 msgid "cannot find node running uyuni"
 msgstr "找不到运行 uyuni 的节点"
 
-#: shared/kubernetes/k3s.go:113
+#: shared/kubernetes/k3s.go:132
 msgid "cannot run inspect pod"
 msgstr "无法运行检查 pod"
 
-#: shared/kubernetes/k3s.go:118 shared/podman/utils.go:261
+#: shared/kubernetes/k3s.go:137 shared/podman/utils.go:261
 msgid "cannot inspect data"
 msgstr "无法检查数据"
 
-#: shared/kubernetes/kubernetes.go:54
+#: shared/kubernetes/kubernetes.go:57
 msgid "failed to get kubelet version"
 msgstr "无法获取 kubelet 版本"
 
-#: shared/kubernetes/kubernetes.go:80
+#: shared/kubernetes/kubernetes.go:83
 msgid "failed to get pod commands to look for nginx controller"
 msgstr "无法获取用于查找 nginx 控制器的 pod 命令"
 
-#: shared/kubernetes/kubernetes.go:94
+#: shared/kubernetes/kubernetes.go:97
 #, javascript-format
 msgid "cannot stop %s"
 msgstr "无法停止 %s"
 
-#: shared/kubernetes/kubernetes.go:134
+#: shared/kubernetes/kubernetes.go:137
 msgid "failed to run kubectl get configMap %[1]s %[2]s"
 msgstr "kubectl get configMap %[1]s %[2]s 运行失败"
 
-#: shared/kubernetes/kubernetes.go:144
+#: shared/kubernetes/kubernetes.go:147
 msgid "failed to run kubectl get secret %[1]s %[2]s"
 msgstr "kubectl get secret %[1]s %[2]s 运行失败"
 
-#: shared/kubernetes/kubernetes.go:148
+#: shared/kubernetes/kubernetes.go:151
 #, javascript-format
 msgid "Failed to base64 decode secret %s"
 msgstr "无法对机密 %s 进行 base64 解码"
+
+#: shared/kubernetes/kubernetes.go:186
+#, fuzzy, javascript-format
+msgid "failed to write %s secret definition file"
+msgstr "无法写入 %s 文件"
+
+#: shared/kubernetes/kubernetes.go:190
+#, fuzzy, javascript-format
+msgid "failed to define %s secret"
+msgstr "无法禁用 %s 服务"
+
+#: shared/kubernetes/kubernetes.go:217
+#, fuzzy
+msgid "failed to get deployment image pull secret"
+msgstr "无法分析部署状态"
 
 #: shared/kubernetes/rke2.go:21
 msgid "Installing RKE2 Nginx configuration"
@@ -1273,29 +1298,33 @@ msgid "Failed to remove file %s"
 msgstr "无法去除文件 %s"
 
 #: shared/utils/utils.go:321
+msgid "failed to create temporary directory"
+msgstr "无法创建临时目录"
+
+#: shared/utils/utils.go:330
 msgid "Failed to read random data"
 msgstr "无法读取随机数据"
 
-#: shared/utils/utils.go:342
+#: shared/utils/utils.go:351
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "从 %s 下载时出错"
 
-#: shared/utils/utils.go:348
+#: shared/utils/utils.go:357
 #, javascript-format
 msgid "bad status: %s"
 msgstr "不良状态：%s"
 
-#: shared/utils/utils.go:426
+#: shared/utils/utils.go:435
 msgid "failed to compute server FQDN"
 msgstr "无法计算服务器 FQDN"
 
-#: shared/utils/utils.go:440
+#: shared/utils/utils.go:449
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s 不是有效 FQDN"
 
-#: shared/utils/utils.go:444
+#: shared/utils/utils.go:453
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "无法解析 %s"

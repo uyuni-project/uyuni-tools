@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:14+0200\n"
+"POT-Creation-Date: 2024-10-10 15:50+0200\n"
 "PO-Revision-Date: 2024-09-26 02:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
@@ -82,11 +82,11 @@ msgstr "アプリケーションログレベル"
 msgid "Install a new proxy from scratch"
 msgstr "最初から新しいプロキシをインストールする"
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
 msgid "Install a new proxy on a running kubernetes cluster"
 msgstr "実行中のkubernetesクラスタに新しいプロキシをインストールする"
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:27
 msgid ""
 "Install a new proxy on a running kubernetes cluster.\n"
 "\n"
@@ -111,18 +111,12 @@ msgstr ""
 msgid "install %s before running this command"
 msgstr "このコマンドを実行する前に %s をインストールする"
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:35
-#: mgrpxy/cmd/support/config/extractor.go:23
-#: mgrpxy/shared/kubernetes/deploy.go:159
-msgid "failed to create temporary directory"
-msgstr "一時ディレクトリの作成に失敗しました"
-
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
 msgid "failed to extract configuration"
 msgstr "設定の抽出に失敗しました"
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:62
-#: mgrpxy/shared/kubernetes/deploy.go:189
+#: mgrpxy/cmd/install/kubernetes/utils.go:67
+#: mgrpxy/shared/kubernetes/deploy.go:201
 msgid "cannot deploy proxy helm chart"
 msgstr "プロキシhelmチャートを配備できません"
 
@@ -588,6 +582,9 @@ msgstr "%s コンテナのイメージ"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s コンテナ用のタグ。設定されている場合はグローバル値を上書きします"
+
+#~ msgid "failed to create temporary directory"
+#~ msgstr "一時ディレクトリの作成に失敗しました"
 
 #~ msgid "specify a private registry"
 #~ msgstr "プライベートレジストリを指定してください"

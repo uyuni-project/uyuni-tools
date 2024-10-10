@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:14+0200\n"
+"POT-Creation-Date: 2024-10-10 15:50+0200\n"
 "PO-Revision-Date: 2024-09-26 12:48+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
@@ -268,16 +268,6 @@ msgstr "%s 폴더를 생성할 수 없음"
 msgid "failed to create keyring %s"
 msgstr "%s 키링을 생성할 수 없음"
 
-#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:153
-#: mgradm/cmd/support/config/extractor.go:30
-#: mgradm/shared/kubernetes/certificates.go:26
-#: mgradm/shared/kubernetes/certificates.go:64
-#: mgradm/shared/kubernetes/install.go:180 mgradm/shared/podman/podman.go:236
-#: mgradm/shared/podman/podman.go:285 mgradm/shared/podman/podman.go:312
-#: mgradm/shared/podman/podman.go:428 mgradm/shared/utils/exec.go:119
-msgid "failed to create temporary directory"
-msgstr "임시 디렉토리를 만들지 못함"
-
 #: mgradm/cmd/gpg/add/gpg.go:81
 #, javascript-format
 msgid "failed to parse %s"
@@ -397,8 +387,8 @@ msgstr "현재 실행 중인 서버 컨테이너의 이미지 찾기 실패: %s"
 #: mgradm/cmd/inspect/kubernetes.go:48
 #: mgradm/cmd/migrate/kubernetes/utils.go:44
 #: mgradm/cmd/restart/kubernetes.go:27 mgradm/cmd/start/kubernetes.go:27
-#: mgradm/cmd/stop/kubernetes.go:27 mgradm/shared/kubernetes/install.go:148
-#: mgradm/shared/utils/exec.go:41
+#: mgradm/cmd/stop/kubernetes.go:27 mgradm/shared/kubernetes/install.go:153
+#: mgradm/shared/utils/exec.go:40
 #, fuzzy
 msgid "failed retrieving namespace"
 msgstr "이미지를 결정하지 못함"
@@ -443,27 +433,27 @@ msgstr ""
 
 #: mgradm/cmd/install/kubernetes/utils.go:34
 #: mgradm/cmd/migrate/kubernetes/utils.go:38
-#: mgradm/shared/kubernetes/install.go:141
+#: mgradm/shared/kubernetes/install.go:146
 #, javascript-format
 msgid "install %s before running this command"
 msgstr "이 명령을 실행하기 전 %s 설치"
 
 #: mgradm/cmd/install/kubernetes/utils.go:67
-#: mgradm/cmd/migrate/kubernetes/utils.go:212
+#: mgradm/cmd/migrate/kubernetes/utils.go:222
 msgid "cannot deploy certificate"
 msgstr "인증서를 배포할 수 없음"
 
-#: mgradm/cmd/install/kubernetes/utils.go:75
+#: mgradm/cmd/install/kubernetes/utils.go:81
 msgid "cannot deploy uyuni"
 msgstr "uyuni를 배포할 수 없음"
 
-#: mgradm/cmd/install/kubernetes/utils.go:86
-#: mgradm/cmd/install/kubernetes/utils.go:89
+#: mgradm/cmd/install/kubernetes/utils.go:92
+#: mgradm/cmd/install/kubernetes/utils.go:95
 #, fuzzy
 msgid "failed to stop service"
 msgstr "서비스 중지 실패: %v"
 
-#: mgradm/cmd/install/kubernetes/utils.go:98
+#: mgradm/cmd/install/kubernetes/utils.go:104
 msgid "error storing the SSL CA certificate in database"
 msgstr "SSL CA 인증서를 데이터베이스에 저장하는 중 오류 발생"
 
@@ -515,8 +505,8 @@ msgstr "FQDN '%s'(으)로 서버 설정"
 #: mgradm/cmd/install/podman/utils.go:75
 #: mgradm/cmd/migrate/kubernetes/utils.go:49 mgradm/shared/coco/coco.go:68
 #: mgradm/shared/hub/xmlrpcapi.go:43 mgradm/shared/kubernetes/install.go:52
-#: mgradm/shared/kubernetes/install.go:153 mgradm/shared/kubernetes/k3s.go:55
-#: mgradm/shared/kubernetes/k3s.go:60 mgradm/shared/podman/podman.go:250
+#: mgradm/shared/kubernetes/install.go:158 mgradm/shared/kubernetes/k3s.go:54
+#: mgradm/shared/kubernetes/k3s.go:59 mgradm/shared/podman/podman.go:250
 #: mgradm/shared/podman/podman.go:255 mgradm/shared/podman/podman.go:346
 msgid "failed to compute image URL"
 msgstr "이미지 URL을 계산하지 못함"
@@ -722,42 +712,42 @@ msgstr "첫 번째 사용자 플래그"
 msgid "Server appears to be already configured. Installation will continue, but installation options may be ignored."
 msgstr "서버가 이미 구성된 것 같습니다. 설치가 계속 진행되지만, 설치 옵션이 무시될 수 있습니다."
 
-#: mgradm/cmd/install/shared/shared.go:40
+#: mgradm/cmd/install/shared/shared.go:43
 msgid "cannot copy /tmp/setup.sh"
 msgstr "/tmp/setup.sh 복사할 수 없음"
 
-#: mgradm/cmd/install/shared/shared.go:45
+#: mgradm/cmd/install/shared/shared.go:48
 msgid "error running the setup script"
 msgstr "설정 스크립트를 실행하는 중 오류 발생"
 
-#: mgradm/cmd/install/shared/shared.go:48
-#: mgradm/cmd/migrate/kubernetes/utils.go:186
+#: mgradm/cmd/install/shared/shared.go:51
+#: mgradm/cmd/migrate/kubernetes/utils.go:196
 #: mgradm/cmd/migrate/podman/utils.go:147
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "SSL CA 인증서를 호스트의 신뢰할 수 있는 인증서에 추가하지 못했습니다."
 
-#: mgradm/cmd/install/shared/shared.go:64
+#: mgradm/cmd/install/shared/shared.go:67
 msgid "unable to prepare API client"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:68
+#: mgradm/cmd/install/shared/shared.go:71
 msgid "Server organization already exists, reusing"
 msgstr "서버 조직 이미 있음, 재사용"
 
-#: mgradm/cmd/install/shared/shared.go:71
+#: mgradm/cmd/install/shared/shared.go:74
 #, javascript-format
 msgid "Administration user already exists, but organization %s could not be found"
 msgstr "관리 사용자가 이미 있지만, %s 조직을 찾을 수 없음"
 
-#: mgradm/cmd/install/shared/shared.go:83
+#: mgradm/cmd/install/shared/shared.go:86
 msgid "Administration user already exists, but provided credentials are not valid"
 msgstr "관리 사용자가 이미 있지만, 제공된 자격 증명이 유효하지 않음"
 
-#: mgradm/cmd/install/shared/shared.go:91
+#: mgradm/cmd/install/shared/shared.go:94
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "서버 설정, https://%[1]s에 %[2]s 사용자로 로그인"
 
-#: mgradm/cmd/install/shared/shared.go:163
+#: mgradm/cmd/install/shared/shared.go:166
 msgid "Failed to generate setup script"
 msgstr "설치 스크립트를 생성하지 못함"
 
@@ -801,79 +791,79 @@ msgstr ""
 msgid "SSL CA generated private key password"
 msgstr "SSL CA 생성 개인 키 비밀번호"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:64 mgradm/shared/utils/exec.go:132
+#: mgradm/cmd/migrate/kubernetes/utils.go:64 mgradm/shared/utils/exec.go:131
 msgid "failed to generate migration script"
 msgstr "마이그레이션 스크립트를 생성하지 못함"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:88
+#: mgradm/cmd/migrate/kubernetes/utils.go:98
 msgid "cannot run deploy"
 msgstr "배포를 실행할 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:95
-#: mgradm/shared/kubernetes/install.go:187
+#: mgradm/cmd/migrate/kubernetes/utils.go:105
+#: mgradm/shared/kubernetes/install.go:192
 msgid "cannot find node running uyuni"
 msgstr "uyuni를 실행하는 노드를 찾을 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:99
+#: mgradm/cmd/migrate/kubernetes/utils.go:109
 msgid "cannot run migration"
 msgstr "마이그레이션을 실행할 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:104
+#: mgradm/cmd/migrate/kubernetes/utils.go:114
 msgid "cannot read data from container"
 msgstr "컨테이너에서 데이터를 읽을 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:110
-#: mgradm/cmd/migrate/kubernetes/utils.go:153
+#: mgradm/cmd/migrate/kubernetes/utils.go:120
+#: mgradm/cmd/migrate/kubernetes/utils.go:163
 msgid "cannot set replicas to 0"
 msgstr "복제본을 0으로 설정할 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:114
+#: mgradm/cmd/migrate/kubernetes/utils.go:124
 #: mgradm/cmd/migrate/podman/utils.go:67
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr "마이그레이션이 준비되었습니다. 마이그레이션을 마치려면 ''--prepare''를 제외하고 ''migrate'' 명령을 실행하십시오."
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:127
+#: mgradm/cmd/migrate/kubernetes/utils.go:137
 msgid "cannot setup SSL"
 msgstr "SSL을 설정할 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:135
+#: mgradm/cmd/migrate/kubernetes/utils.go:145
 #, javascript-format
 msgid "The mirror data will not be migrated, ensure it is available at %s"
 msgstr "미러 데이터는 마이그레이션되지 않으므로 %s에서 사용할 수 있는지 확인하십시오."
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:144
+#: mgradm/cmd/migrate/kubernetes/utils.go:154
 #, javascript-format
 msgid "cannot upgrade helm chart to image %s using new SSL certificate"
 msgstr "새 SSL 인증서를 사용하여 helm 차트를 %s 이미지로 업그레이드할 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:148
+#: mgradm/cmd/migrate/kubernetes/utils.go:158
 #, javascript-format
 msgid "cannot wait for deployment of %s"
 msgstr "%s의 배포를 기다릴 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:163
+#: mgradm/cmd/migrate/kubernetes/utils.go:173
 #: mgradm/cmd/migrate/podman/utils.go:78
-#: mgradm/shared/kubernetes/install.go:208 mgradm/shared/podman/podman.go:380
+#: mgradm/shared/kubernetes/install.go:213 mgradm/shared/podman/podman.go:380
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQL 버전 업그레이드 스크립트를 실행할 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:169
+#: mgradm/cmd/migrate/kubernetes/utils.go:179
 msgid "cannot run PostgreSQL finalisation script"
 msgstr "PostgreSQL 최종 스크립트를 실행할 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:173
+#: mgradm/cmd/migrate/kubernetes/utils.go:183
 #: mgradm/cmd/migrate/podman/utils.go:88
-#: mgradm/shared/kubernetes/install.go:223 mgradm/shared/podman/podman.go:394
+#: mgradm/shared/kubernetes/install.go:228 mgradm/shared/podman/podman.go:394
 msgid "cannot run post upgrade script"
 msgstr "업그레이드 후 스크립트를 실행할 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:178
-#: mgradm/shared/kubernetes/install.go:228
+#: mgradm/cmd/migrate/kubernetes/utils.go:188
+#: mgradm/shared/kubernetes/install.go:244
 #, javascript-format
 msgid "cannot upgrade to image %s"
 msgstr "%s 이미지로 업그레이드할 수 없음"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:203
+#: mgradm/cmd/migrate/kubernetes/utils.go:213
 msgid "failed to strip text part from CA certificate"
 msgstr "CA 인증서에서 텍스트 부분 제거하지 못함"
 
@@ -916,7 +906,7 @@ msgid "cannot run migration script"
 msgstr "마이그레이션 스크립트를 실행할 수 없음"
 
 #: mgradm/cmd/migrate/podman/utils.go:84
-#: mgradm/shared/kubernetes/install.go:219 mgradm/shared/podman/podman.go:390
+#: mgradm/shared/kubernetes/install.go:224 mgradm/shared/podman/podman.go:390
 msgid "cannot run PostgreSQL finalize script"
 msgstr "PostgreSQL 최종 스크립트를 실행할 수 없음"
 
@@ -936,11 +926,11 @@ msgstr "마이그레이션된 서버에서 활성화되어 있으므로 Hub XML-
 msgid "Server migrated"
 msgstr "서버 마이그레이션됨"
 
-#: mgradm/cmd/migrate/shared/flags.go:27
+#: mgradm/cmd/migrate/shared/flags.go:28
 msgid "Prepare the mgration - copy the data without stopping the source server."
 msgstr "마이그레이션 준비 - 원본 서버를 정지하지 않고 데이터를 복사합니다."
 
-#: mgradm/cmd/migrate/shared/flags.go:34
+#: mgradm/cmd/migrate/shared/flags.go:35
 msgid "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."
 msgstr "소스 서버의 사용자. 루트가 아닌 사용자는 비밀번호 없는 sudo 권한이 있어야 합니다(/etc/sudoers의 NOPASSWD 태그)."
 
@@ -1318,61 +1308,61 @@ msgstr "uyuni-crt 비밀 정의 생성 실패"
 msgid "Failed to create uyuni-crt TLS secret"
 msgstr "uyuni-crt TLS 비밀 생성 실패"
 
-#: mgradm/shared/kubernetes/certificates.go:58
+#: mgradm/shared/kubernetes/certificates.go:59
 msgid "cannot install cert manager"
 msgstr "인증서 관리자를 설치할 수 없음"
 
-#: mgradm/shared/kubernetes/certificates.go:61
+#: mgradm/shared/kubernetes/certificates.go:62
 msgid "Creating SSL certificate issuer"
 msgstr "SSL 인증서 발급자 만들기"
 
-#: mgradm/shared/kubernetes/certificates.go:85
+#: mgradm/shared/kubernetes/certificates.go:86
 msgid "failed to generate issuer definition"
 msgstr "발급자 정의를 생성하지 못함"
 
-#: mgradm/shared/kubernetes/certificates.go:90
+#: mgradm/shared/kubernetes/certificates.go:91
 msgid "Failed to create issuer"
 msgstr "발급자 만들기 실패"
 
-#: mgradm/shared/kubernetes/certificates.go:102
+#: mgradm/shared/kubernetes/certificates.go:103
 msgid "Issuer didn't turn ready after 60s"
 msgstr "발급자가 60초 이후에도 준비되지 않음"
 
-#: mgradm/shared/kubernetes/certificates.go:108
+#: mgradm/shared/kubernetes/certificates.go:109
 msgid "Installing cert-manager"
 msgstr "인증서 관리자 설치 중"
 
-#: mgradm/shared/kubernetes/certificates.go:131
+#: mgradm/shared/kubernetes/certificates.go:132
 msgid "cannot run helm upgrade"
 msgstr "helm 업그레이드를 실행할 수 없음"
 
-#: mgradm/shared/kubernetes/certificates.go:138
+#: mgradm/shared/kubernetes/certificates.go:139
 #: mgradm/shared/kubernetes/install.go:64
 msgid "cannot deploy"
 msgstr "배포할 수 없음"
 
-#: mgradm/shared/kubernetes/certificates.go:148
+#: mgradm/shared/kubernetes/certificates.go:149
 msgid "Extracting CA certificate to a configmap"
 msgstr "구성 맵으로 CA 인증서 추출"
 
-#: mgradm/shared/kubernetes/certificates.go:151
+#: mgradm/shared/kubernetes/certificates.go:152
 #, javascript-format
 msgid "CA cert: %s"
 msgstr "CA 인증서: %s"
 
-#: mgradm/shared/kubernetes/certificates.go:153
+#: mgradm/shared/kubernetes/certificates.go:154
 msgid "uyuni-ca configmap already existing, skipping extraction"
 msgstr "uyuni-ca configmap 이미 있음, 추출 건너뛰기"
 
-#: mgradm/shared/kubernetes/certificates.go:159
+#: mgradm/shared/kubernetes/certificates.go:160
 msgid "Failed to get uyuni-ca certificate"
 msgstr "uyuni-ca 인증서 가져오기 실패"
 
-#: mgradm/shared/kubernetes/certificates.go:164
+#: mgradm/shared/kubernetes/certificates.go:165
 msgid "Failed to base64 decode CA certificate"
 msgstr "CA 인증서를 Base64 디코딩하지 못함"
 
-#: mgradm/shared/kubernetes/certificates.go:173
+#: mgradm/shared/kubernetes/certificates.go:174
 msgid "Failed to create uyuni-ca config map from certificate"
 msgstr "인증서에서 uyuni-ca 구성 맵을 만들지 못함"
 
@@ -1380,68 +1370,62 @@ msgstr "인증서에서 uyuni-ca 구성 맵을 만들지 못함"
 msgid "cannot upgrade"
 msgstr "업그레이드할 수 없음"
 
-#: mgradm/shared/kubernetes/install.go:79
+#: mgradm/shared/kubernetes/install.go:81
 msgid "cannot install cert-manager and self-sign issuer"
 msgstr "인증서 관리자 및 자체 서명 발급자를 설치할 수 없음"
 
-#: mgradm/shared/kubernetes/install.go:104
+#: mgradm/shared/kubernetes/install.go:109
 msgid "Installing Uyuni"
 msgstr "Uyuni 설치"
 
-#: mgradm/shared/kubernetes/install.go:158
+#: mgradm/shared/kubernetes/install.go:163
 msgid "cannot inspect kubernetes values"
 msgstr "Kubernetes 값을 검사할 수 없음"
 
-#: mgradm/shared/kubernetes/install.go:168
+#: mgradm/shared/kubernetes/install.go:173
 msgid "inspect function did non return fqdn value"
 msgstr "검사 함수가 FQDN 값을 반환하지 않음"
 
-#: mgradm/shared/kubernetes/install.go:192
+#: mgradm/shared/kubernetes/install.go:197
 msgid "cannot set replica to 0"
 msgstr "복제본을 0으로 설정할 수 없음"
 
-#: mgradm/shared/kubernetes/install.go:202 mgradm/shared/kubernetes/k3s.go:47
+#: mgradm/shared/kubernetes/install.go:207 mgradm/shared/kubernetes/k3s.go:46
 #: mgradm/shared/podman/podman.go:231
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
 msgstr "이전 PostgreSQL은 %[1]s(이)고 새 버전은 %[2]s입니다. DB 버전 업그레이드 중…"
 
-#: mgradm/shared/kubernetes/install.go:211 mgradm/shared/podman/podman.go:383
+#: mgradm/shared/kubernetes/install.go:216 mgradm/shared/podman/podman.go:383
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr "PostgreSQL 버전을 변경하지 않고 %s(으)로 업그레이드"
 
-#: mgradm/shared/kubernetes/install.go:213 mgradm/shared/podman/podman.go:385
+#: mgradm/shared/kubernetes/install.go:218 mgradm/shared/podman/podman.go:385
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr "PostgreSQL을 %[1]s에서 %[2]s(으)로 다운그레이드 시도 중"
 
-#: mgradm/shared/kubernetes/k3s.go:44 mgradm/shared/kubernetes/k3s.go:114
-#: mgradm/shared/kubernetes/k3s.go:159
-#, javascript-format
-msgid "failed to create temporary directory: %s"
-msgstr "임시 디렉토리를 만들지 못함: %s"
-
-#: mgradm/shared/kubernetes/k3s.go:64 mgradm/shared/podman/podman.go:264
+#: mgradm/shared/kubernetes/k3s.go:63 mgradm/shared/podman/podman.go:264
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr "데이터베이스 업그레이드 이미지 %s 사용"
 
-#: mgradm/shared/kubernetes/k3s.go:67 mgradm/shared/podman/podman.go:268
+#: mgradm/shared/kubernetes/k3s.go:66 mgradm/shared/podman/podman.go:268
 msgid "cannot generate PostgreSQL database version upgrade script"
 msgstr "PostgreSQL 데이터베이스 버전 업그레이드 스크립트를 생성할 수 없습니다."
 
-#: mgradm/shared/kubernetes/k3s.go:72 mgradm/shared/kubernetes/k3s.go:123
-#: mgradm/shared/kubernetes/k3s.go:169
+#: mgradm/shared/kubernetes/k3s.go:71 mgradm/shared/kubernetes/k3s.go:122
+#: mgradm/shared/kubernetes/k3s.go:168
 #, javascript-format
 msgid "cannot delete %s"
 msgstr "%s을(를) 삭제할 수 없음"
 
-#: mgradm/shared/kubernetes/k3s.go:101 mgradm/shared/kubernetes/k3s.go:149
-#: mgradm/shared/kubernetes/k3s.go:196
+#: mgradm/shared/kubernetes/k3s.go:100 mgradm/shared/kubernetes/k3s.go:148
+#: mgradm/shared/kubernetes/k3s.go:195
 #, javascript-format
 msgid "error running container %s"
 msgstr "%s 컨테이너 실행 중 오류 발생"
 
-#: mgradm/shared/kubernetes/k3s.go:119 mgradm/shared/kubernetes/k3s.go:164
+#: mgradm/shared/kubernetes/k3s.go:118 mgradm/shared/kubernetes/k3s.go:163
 #: mgradm/shared/podman/podman.go:297 mgradm/shared/podman/podman.go:321
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "PostgreSQL 마무리 스크립트를 생성할 수 없습니다."
@@ -1482,7 +1466,7 @@ msgstr "인증서 업데이트 후 서비스 다시 시작"
 msgid "cannot generate migration script"
 msgstr "마이그레이션 스크립트를 생성할 수 없음"
 
-#: mgradm/shared/podman/podman.go:196 mgradm/shared/utils/exec.go:107
+#: mgradm/shared/podman/podman.go:196 mgradm/shared/utils/exec.go:106
 msgid "Migrating server"
 msgstr "서버 마이그레이션"
 
@@ -1713,69 +1697,76 @@ msgstr "시작해야 하는 Hub XML-RPC API 서비스 컨테이너의 복제본 
 msgid "How many replicas of the Hub XML-RPC API service container should be started. Leave it unset if you want to keep the previous number of replicas."
 msgstr "시작해야 하는 Hub XML-RPC API 서비스 컨테이너의 복제본 수(현재는 0 또는 1만 지원됨)"
 
-#: mgradm/shared/utils/exec.go:28
+#: mgradm/shared/utils/exec.go:27
 msgid "exec command failed"
 msgstr "exec 명령 실패"
 
-#: mgradm/shared/utils/exec.go:66 mgradm/shared/utils/exec.go:86
-#: mgradm/shared/utils/exec.go:100
+#: mgradm/shared/utils/exec.go:65 mgradm/shared/utils/exec.go:85
+#: mgradm/shared/utils/exec.go:99
 #, javascript-format
 msgid "failed to generate %s"
 msgstr "%s을(를) 생성하지 못했습니다."
 
-#: mgradm/shared/utils/exec.go:110
+#: mgradm/shared/utils/exec.go:109
 msgid "error running the migration script"
 msgstr "마이그레이션 스크립트 실행 중 오류 발생"
 
-#: mgradm/shared/utils/exec.go:159
+#: mgradm/shared/utils/exec.go:158
 #, javascript-format
 msgid "Image is: %s"
 msgstr "이미지: %s"
 
-#: mgradm/shared/utils/exec.go:173
+#: mgradm/shared/utils/exec.go:172
 msgid "cannot check server release"
 msgstr "서버 릴리스를 확인할 수 없음"
 
-#: mgradm/shared/utils/exec.go:180
+#: mgradm/shared/utils/exec.go:179
 #, javascript-format
 msgid "currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"
 msgstr "현재 SUSE Manager %s이(가) 설치되어 있지만, 이미지가 Uyuni입니다. 업그레이드가 지원되지 않습니다."
 
-#: mgradm/shared/utils/exec.go:187
+#: mgradm/shared/utils/exec.go:186
 #, javascript-format
 msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"
 msgstr "현재 Uyuni %s가 설치되어 있지만, 이미지가 SUSE Manager입니다. 업그레이드가 지원되지 않습니다."
 
-#: mgradm/shared/utils/exec.go:196
+#: mgradm/shared/utils/exec.go:195
 msgid "failed to read current uyuni release"
 msgstr "현재 uyuni 릴리스를 읽지 못함"
 
-#: mgradm/shared/utils/exec.go:200 mgradm/shared/utils/exec.go:217
+#: mgradm/shared/utils/exec.go:199 mgradm/shared/utils/exec.go:216
 #, javascript-format
 msgid "cannot fetch release from image %s"
 msgstr "이미지 %s에서 릴리스를 가져올 수 없습니다."
 
-#: mgradm/shared/utils/exec.go:205 mgradm/shared/utils/exec.go:222
+#: mgradm/shared/utils/exec.go:204 mgradm/shared/utils/exec.go:221
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "버전 %[1]s에서 %[2]s(으)로 다운그레이드할 수 없습니다."
 
-#: mgradm/shared/utils/exec.go:213
+#: mgradm/shared/utils/exec.go:212
 msgid "failed to read current susemanager release"
 msgstr "현재 susemanager 릴리스를 읽지 못함"
 
-#: mgradm/shared/utils/exec.go:229
+#: mgradm/shared/utils/exec.go:228
 #, javascript-format
 msgid "cannot fetch postgresql version from %s"
 msgstr "%s에서 postgresql 버전을 가져올 수 없습니다."
 
-#: mgradm/shared/utils/exec.go:233
+#: mgradm/shared/utils/exec.go:232
 msgid "posgresql is not installed in the current deployment"
 msgstr "현재 배포에 posgresql이 설치되어 있지 않습니다."
 
-#: mgradm/shared/utils/exec.go:247
+#: mgradm/shared/utils/exec.go:246
 #, fuzzy
 msgid "cannot find either /etc/uyuni-release or /etc/susemanagere-release"
 msgstr "etc/uyuni-release 또는 / etc/susemanagere-release를 찾을 수 없습니다."
+
+#~ msgid "failed to create temporary directory"
+#~ msgstr "임시 디렉토리를 만들지 못함"
+
+#, javascript-format
+#~ msgid "failed to create temporary directory: %s"
+#~ msgstr "임시 디렉토리를 만들지 못함: %s"
 
 #~ msgid "Setting Hub XML-RPC API service."
 #~ msgstr "Hub XML-RPC API 서비스 활성화"
