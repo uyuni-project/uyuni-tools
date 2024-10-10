@@ -154,9 +154,9 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 		}
 	}
 
-	tmpDir, err := os.MkdirTemp("", "mgrpxy-*")
+	tmpDir, err := shared_utils.TempDir()
 	if err != nil {
-		return shared_utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
 	defer os.RemoveAll(tmpDir)
 
@@ -166,21 +166,38 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 		return err
 	}
 
-	err = kubernetes.ReplicasTo(kubernetes.ProxyApp, 0)
+	namespace := flags.Helm.Proxy.Namespace
+	if _, err = kubernetes.GetNode(namespace, kubernetes.ProxyApp); err != nil {
+		err = kubernetes.ReplicasTo(namespace, kubernetes.ProxyApp, 1)
+	}
+
+	err = kubernetes.ReplicasTo(namespace, kubernetes.ProxyApp, 0)
 	if err != nil {
 		return err
 	}
 
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
-		if _, err = kubernetes.GetNode("uyuni"); err != nil {
-			err = kubernetes.ReplicasTo(kubernetes.ProxyApp, 1)
+		if _, err = kubernetes.GetNode(namespace, kubernetes.ProxyApp); err != nil {
+			err = kubernetes.ReplicasTo(namespace, kubernetes.ProxyApp, 1)
 		}
 	}()
 
+	helmArgs := []string{"--set", "ingress=" + clusterInfos.Ingress}
+
+	// Get the registry secret name if any
+	pullSecret, err := kubernetes.GetDeploymentImagePullSecret(namespace, kubernetes.ProxyFilter)
+	if err != nil {
+		return err
+	}
+	if pullSecret != "" {
+		helmArgs = append(helmArgs, "--set", "registrySecret="+pullSecret)
+	}
+
 	// Install the uyuni proxy helm chart
 	if err := Deploy(&flags.ProxyImageFlags, &flags.Helm, tmpDir, clusterInfos.GetKubeconfig(),
-		"--set", "ingress="+clusterInfos.Ingress); err != nil {
+		helmArgs...,
+	); err != nil {
 		return shared_utils.Errorf(err, L("cannot deploy proxy helm chart"))
 	}
 

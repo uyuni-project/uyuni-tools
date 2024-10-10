@@ -24,7 +24,7 @@ func NewServerInspector(scriptDir string) ServerInspector {
 				"cat /etc/*release | grep 'Uyuni release' | cut -d ' ' -f3 || true"),
 			types.NewInspectData(
 				"suse_manager_release",
-				"cat /etc/*release | grep 'SUSE Manager release' | cut -d ' ' -f4 || true"),
+				"sed 's/.*(\\([0-9.]*\\)).*/\\1/g' /etc/susemanager-release || true"),
 			types.NewInspectData(
 				"fqdn",
 				"cat /etc/rhn/rhn.conf 2>/dev/null | grep 'java.hostname' | cut -d' ' -f3 || true"),

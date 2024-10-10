@@ -31,7 +31,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Long: L(`Install a PTF or Test package on podman
 
 The support ptf podman command assumes podman is installed locally and
-the host machine is register to SCC.
+the host machine is registered to SCC.
 
 NOTE: for now installing on a remote podman is not supported!
 `),
@@ -41,6 +41,7 @@ NOTE: for now installing on a remote podman is not supported!
 		},
 	}
 
+	utils.AddSCCFlag(podmanCmd)
 	utils.AddImageFlags(podmanCmd)
 	shared_utils.AddPTFFlag(podmanCmd)
 	return podmanCmd

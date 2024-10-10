@@ -8,6 +8,14 @@ import "github.com/uyuni-project/uyuni-tools/shared/types"
 
 // HubXmlrpcFlags contains settings for Hub XMLRPC container.
 type HubXmlrpcFlags struct {
-	Replicas int
-	Image    types.ImageFlags `mapstructure:",squash"`
+	Replicas  int
+	Image     types.ImageFlags `mapstructure:",squash"`
+	IsChanged bool
+}
+
+// CocoFlags contains settings for coco attestation container.
+type CocoFlags struct {
+	Replicas  int
+	Image     types.ImageFlags `mapstructure:",squash"`
+	IsChanged bool
 }

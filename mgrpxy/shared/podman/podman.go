@@ -25,6 +25,7 @@ import (
 // PodmanProxyFlags are the flags used by podman proxy install and upgrade command.
 type PodmanProxyFlags struct {
 	utils.ProxyImageFlags `mapstructure:",squash"`
+	SCC                   types.SCCCredentials
 	Podman                podman.PodmanFlags `mapstructure:",squash"`
 }
 
@@ -161,7 +162,7 @@ func getHttpProxyConfig() string {
 func GetContainerImage(authFile string, flags *utils.ProxyImageFlags, name string) (string, error) {
 	image := flags.GetContainerImage(name)
 
-	preparedImage, err := podman.PrepareImage(authFile, image, flags.PullPolicy)
+	preparedImage, err := podman.PrepareImage(authFile, image, flags.PullPolicy, true)
 	if err != nil {
 		return "", err
 	}
@@ -224,7 +225,7 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra
 		return err
 	}
 
-	authFile, cleaner, err := podman.PodmanLogin(hostData)
+	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.SCC)
 	if err != nil {
 		return shared_utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}

@@ -198,6 +198,18 @@ func RunMigration(
 		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
 		return nil, utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
+
+	//now that everything is migrated, we need to fix SELinux permission
+	for _, volumeMount := range utils.ServerVolumeMounts {
+		mountPoint, err := GetMountPoint(volumeMount.Name)
+		if err != nil {
+			return nil, utils.Errorf(err, L("cannot inspect volume %s"), volumeMount)
+		}
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "restorecon", "-F", "-r", "-v", mountPoint); err != nil {
+			return nil, utils.Errorf(err, L("cannot restore %s SELinux permissions"), mountPoint)
+		}
+	}
+
 	extractedData, err := utils.ReadInspectData[utils.InspectResult](path.Join(scriptDir, "data"))
 
 	if err != nil {
@@ -218,10 +230,10 @@ func RunPgsqlVersionUpgrade(
 ) error {
 	log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql)
 
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
 	if newPgsql > oldPgsql {
 		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
@@ -244,7 +256,7 @@ func RunPgsqlVersionUpgrade(
 			}
 		}
 
-		preparedImage, err := podman.PrepareImage(authFile, upgradeImageUrl, image.PullPolicy)
+		preparedImage, err := podman.PrepareImage(authFile, upgradeImageUrl, image.PullPolicy, true)
 		if err != nil {
 			return err
 		}
@@ -267,10 +279,10 @@ func RunPgsqlVersionUpgrade(
 
 // RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
 func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migration bool) error {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
 
 	extraArgs := []string{
@@ -294,10 +306,10 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migra
 
 // RunPostUpgradeScript run the script with the changes to apply after the upgrade.
 func RunPostUpgradeScript(serverImage string) error {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
 	postUpgradeContainer := "uyuni-post-upgrade"
 	extraArgs := []string{
@@ -322,8 +334,8 @@ func Upgrade(
 	registry string,
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
-	cocoImage types.ImageFlags,
-	hubXmlrpcImage types.ImageFlags,
+	cocoFlags adm_utils.CocoFlags,
+	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
 ) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {
 		return err
@@ -334,7 +346,7 @@ func Upgrade(
 		return fmt.Errorf(L("failed to compute image URL"))
 	}
 
-	preparedImage, err := podman.PrepareImage(authFile, serverImage, image.PullPolicy)
+	preparedImage, err := podman.PrepareImage(authFile, serverImage, image.PullPolicy, true)
 	if err != nil {
 		return err
 	}
@@ -393,14 +405,14 @@ func Upgrade(
 	}
 	log.Info().Msg(L("Waiting for the server to start…"))
 
-	err = coco.Upgrade(authFile, registry, cocoImage, image,
+	err = coco.Upgrade(authFile, registry, cocoFlags, image,
 		inspectedValues.DbPort, inspectedValues.DbName, inspectedValues.DbUser, inspectedValues.DbPassword)
 	if err != nil {
 		return utils.Errorf(err, L("error upgrading confidential computing service."))
 	}
 
 	if err := hub.Upgrade(
-		authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcImage,
+		authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcFlags,
 	); err != nil {
 		return err
 	}
@@ -410,10 +422,10 @@ func Upgrade(
 
 // Inspect check values on a given image and deploy.
 func Inspect(preparedImage string) (*utils.ServerInspectData, error) {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to create temporary directory"))
+		return nil, err
 	}
 
 	inspector := utils.NewServerInspector(scriptDir)
@@ -451,4 +463,14 @@ func CallCloudGuestRegistryAuth() error {
 	}
 	// silently ignore error if it is missing
 	return nil
+}
+
+// GetMountPoint return folder where a given volume is mounted.
+func GetMountPoint(volumeName string) (string, error) {
+	args := []string{"volume", "inspect", "--format", "{{.Mountpoint}}", volumeName}
+	mountPoint, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", args...)
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSuffix(string(mountPoint), "\n"), nil
 }

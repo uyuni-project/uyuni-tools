@@ -17,6 +17,9 @@ import (
 // Get details of organization based on organization name.
 func GetOrganizationDetails(cnxDetails *api.ConnectionDetails, orgName string) (*types.Organization, error) {
 	client, err := api.Init(cnxDetails)
+	if err == nil {
+		err = client.Login()
+	}
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to connect to the server"))
 	}

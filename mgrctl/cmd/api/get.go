@@ -21,7 +21,9 @@ import (
 func runGet(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
 	log.Debug().Msgf("Running GET command %s", args[0])
 	client, err := api.Init(&flags.ConnectionDetails)
-
+	if err == nil && (client.Details.User != "" || client.Details.InSession) {
+		err = client.Login()
+	}
 	if err != nil {
 		return utils.Errorf(err, L("unable to login to the server"))
 	}
@@ -30,7 +32,7 @@ func runGet(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command,
 
 	res, err := api.Get[interface{}](client, fmt.Sprintf("%s?%s", path, strings.Join(options, "&")))
 	if err != nil {
-		return utils.Errorf(err, L("error in query %s"), path)
+		return utils.Errorf(err, L("error in query '%s'"), path)
 	}
 
 	// TODO do this only when result is JSON or TEXT. Watchout for binary data

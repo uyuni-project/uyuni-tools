@@ -33,21 +33,9 @@ type DbFlags struct {
 	}
 }
 
-// SccFlags can store SCC Credentials.
-type SccFlags struct {
-	User     string
-	Password string
-}
-
 // DebugFlags contains information about enabled/disabled debug.
 type DebugFlags struct {
 	Java bool
-}
-
-// CocoFlags contains settings for coco attestation container.
-type CocoFlags struct {
-	Replicas int
-	Image    types.ImageFlags `mapstructure:",squash"`
 }
 
 // InstallFlags stores all the flags used by install command.
@@ -61,10 +49,10 @@ type InstallFlags struct {
 	Db           DbFlags
 	ReportDb     DbFlags
 	Ssl          cmd_utils.SslCertFlags
-	Scc          SccFlags
+	Scc          types.SCCCredentials
 	Debug        DebugFlags
 	Image        types.ImageFlags `mapstructure:",squash"`
-	Coco         CocoFlags
+	Coco         cmd_utils.CocoFlags
 	HubXmlrpc    cmd_utils.HubXmlrpcFlags
 	Admin        apiTypes.User
 	Organization string
@@ -122,6 +110,12 @@ func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 
 	flags.Ssl.Email = flags.Email
 	flags.Admin.Email = flags.Email
+}
+
+// AddInspectFlags add flags to inspect command.
+func AddInspectFlags(cmd *cobra.Command) {
+	cmd_utils.AddSCCFlag(cmd)
+	cmd_utils.AddImageFlag(cmd)
 }
 
 // AddInstallFlags add flags to installa command.
@@ -197,12 +191,7 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-server-cert", "ssl3rd")
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-server-key", "ssl3rd")
 
-	cmd.Flags().String("scc-user", "", L("SUSE Customer Center username"))
-	cmd.Flags().String("scc-password", "", L("SUSE Customer Center password"))
-
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "scc", Title: L("SUSE Customer Center Flags")})
-	_ = utils.AddFlagToHelpGroupID(cmd, "scc-user", "scc")
-	_ = utils.AddFlagToHelpGroupID(cmd, "scc-password", "scc")
+	cmd_utils.AddSCCFlag(cmd)
 
 	cmd.Flags().Bool("debug-java", false, L("Enable tomcat and taskomatic remote debugging"))
 	cmd_utils.AddImageFlag(cmd)

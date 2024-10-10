@@ -69,6 +69,23 @@ func GetServiceConfPath(name string) string {
 	return path.Join(GetServiceConfFolder(name), "generated.conf")
 }
 
+// GetServicesFromSystemdFiles return the uyuni enabled services as string list.
+func GetServicesFromSystemdFiles(systemdFileList string) []string {
+	services := strings.Replace(string(systemdFileList), "/etc/systemd/system/", "", -1)
+	services = strings.Replace(services, ".service", "", -1)
+	servicesList := strings.Split(strings.TrimSpace(services), "\n")
+
+	var trimmedServices []string
+	for _, service := range servicesList {
+		if ServiceIsEnabled(service) {
+			trimmedServices = append(trimmedServices, strings.TrimSpace(service))
+		} else {
+			log.Debug().Msgf("service %s is not enabled. Do not run any action on the container.", service)
+		}
+	}
+	return trimmedServices
+}
+
 // UninstallService stops and remove a systemd service.
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
 func UninstallService(name string, dryRun bool) {

@@ -8,12 +8,13 @@ package inspect
 
 import (
 	"github.com/spf13/cobra"
+	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 func kuberneteInspect(
 	globalFlags *types.GlobalFlags,
-	flags *types.ImageFlags,
+	flags *inspect_shared.InspectFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {

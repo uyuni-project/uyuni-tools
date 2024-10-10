@@ -170,7 +170,14 @@ func hostedContainers() ([]string, error) {
 	if err != nil {
 		return []string{}, err
 	}
-	containerList := utils.GetContainersFromSystemdFiles(string(systemdFiles))
+	servicesList := GetServicesFromSystemdFiles(string(systemdFiles))
+
+	var containerList []string
+
+	for _, service := range servicesList {
+		service = strings.Replace(service, ".service", "", -1)
+		containerList = append(containerList, strings.Replace(service, "@", "", -1))
+	}
 
 	return containerList, nil
 }

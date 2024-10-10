@@ -21,7 +21,7 @@ import (
 )
 
 // NewCommand returns a new cobra.Command implementing the root command for kinder.
-func NewUyunictlCommand() (*cobra.Command, error) {
+func NewUyunictlCommand() *cobra.Command {
 	globalFlags := &types.GlobalFlags{}
 	name := path.Base(os.Args[0])
 	rootCmd := &cobra.Command{
@@ -48,10 +48,7 @@ func NewUyunictlCommand() (*cobra.Command, error) {
 		}
 	}
 
-	apiCmd, err := api.NewCommand(globalFlags)
-	if err != nil {
-		log.Err(err).Msg(L("Failed to create api command"))
-	}
+	apiCmd := api.NewCommand(globalFlags)
 	rootCmd.AddCommand(apiCmd)
 	rootCmd.AddCommand(exec.NewCommand(globalFlags))
 	rootCmd.AddCommand(term.NewCommand(globalFlags))
@@ -60,5 +57,5 @@ func NewUyunictlCommand() (*cobra.Command, error) {
 
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
 
-	return rootCmd, nil
+	return rootCmd
 }

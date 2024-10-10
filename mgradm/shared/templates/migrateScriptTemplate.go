@@ -37,7 +37,9 @@ $SSH {{ .SourceFqdn }} "sudo systemctl stop postgresql.service"
 {{ end }}
 
 while IFS="," read -r target path ; do
+  if $SSH -n {{ .SourceFqdn }} test -e "$path" ; then
     echo "-/ $path"
+  fi
 done < distros > exclude_list
 
 # exclude all config files which already exist and are not marked noreplace
@@ -47,6 +49,11 @@ rpm -qa --qf '[%{fileflags},%{filenames}\n]' |grep ",/etc/" | while IFS="," read
         echo "-/ $path" >> exclude_list
     fi
 done
+
+echo "-/ .repo_gpgcheck" >> exclude_list
+
+# exclude mgr-sync configuration file, in this way it would be re-generated (bsc#1228685)
+echo "-/ /root/.mgr-sync" >> exclude_list
 
 # exclude tomcat default configuration. All settings should be store in /etc/tomcat/conf.d/
 echo "-/ /etc/sysconfig/tomcat" >> exclude_list
@@ -63,7 +70,7 @@ for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
   if $SSH {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."
-    rsync -e "$SSH" --rsync-path='sudo rsync' -avz -f "merge exclude_list" {{ .SourceFqdn }}:$folder/ $folder;
+    rsync -e "$SSH" --rsync-path='sudo rsync' -avzL --trust-sender -f 'merge exclude_list' {{ .SourceFqdn }}:$folder/ $folder;
   else
     echo "Skipping missing $folder..."
   fi

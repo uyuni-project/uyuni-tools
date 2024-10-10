@@ -20,8 +20,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short:   L("Install a new proxy from scratch"),
 		Long:    L("Install a new proxy from scratch"),
 	}
-	installCmd.PersistentFlags().StringVar(&globalFlags.Registry, "registry", "", L("specify a private registry"))
-
 	installCmd.AddCommand(podman.NewCommand(globalFlags))
 	installCmd.AddCommand(kubernetes.NewCommand(globalFlags))
 

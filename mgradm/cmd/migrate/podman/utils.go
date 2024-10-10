@@ -32,7 +32,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return err
 	}
 
-	serverImage, err := utils.ComputeImage(globalFlags.Registry, utils.DefaultTag, flags.Image)
+	serverImage, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("cannot compute image"))
 	}
@@ -42,13 +42,13 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		return err
 	}
 
-	authFile, cleaner, err := podman_utils.PodmanLogin(hostData)
+	authFile, cleaner, err := podman_utils.PodmanLogin(hostData, flags.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
 	defer cleaner()
 
-	preparedImage, err := podman_utils.PrepareImage(authFile, serverImage, flags.Image.PullPolicy)
+	preparedImage, err := podman_utils.PrepareImage(authFile, serverImage, flags.Image.PullPolicy, true)
 	if err != nil {
 		return err
 	}
@@ -73,7 +73,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 
 	if oldPgVersion != newPgVersion {
 		if err := podman.RunPgsqlVersionUpgrade(
-			authFile, globalFlags.Registry, flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion,
+			authFile, flags.Image.Registry, flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
@@ -100,25 +100,19 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 
 	// Prepare confidential computing containers
-	if err = coco.Upgrade(
-		authFile, globalFlags.Registry, flags.Coco.Image, flags.Image,
-		extractedData.DbPort, extractedData.DbName,
-		extractedData.DbUser, extractedData.DbPassword,
-	); err != nil {
-		return utils.Errorf(err, L("cannot setup confidential computing attestation service"))
-	}
-
 	if flags.Coco.Replicas > 0 {
+		if err = coco.Upgrade(
+			authFile, flags.Image.Registry, flags.Coco, flags.Image,
+			extractedData.DbPort, extractedData.DbName,
+			extractedData.DbUser, extractedData.DbPassword,
+		); err != nil {
+			return utils.Errorf(err, L("cannot setup confidential computing attestation service"))
+		}
+
 		err := podman_utils.ScaleService(flags.Coco.Replicas, podman_utils.ServerAttestationService)
 		if err != nil {
 			return err
 		}
-	}
-
-	if err := hub.SetupHubXmlrpc(
-		authFile, globalFlags.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc.Image,
-	); err != nil {
-		return err
 	}
 
 	hubReplicas := flags.HubXmlrpc.Replicas
@@ -126,8 +120,15 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 		log.Info().Msg(L("Enabling Hub XML-RPC API since it is enabled on the migrated server"))
 		hubReplicas = 1
 	}
-	if err := hub.EnableHubXmlrpc(hubReplicas); err != nil {
-		return err
+	if hubReplicas > 0 {
+		if err := hub.SetupHubXmlrpc(
+			authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
+		); err != nil {
+			return err
+		}
+		if err := hub.EnableHubXmlrpc(hubReplicas); err != nil {
+			return err
+		}
 	}
 
 	log.Info().Msg(L("Server migrated"))

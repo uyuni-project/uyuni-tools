@@ -20,8 +20,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short:   L("Install a new server"),
 		Long:    L("Install a new server"),
 	}
-	installCmd.PersistentFlags().StringVar(&globalFlags.Registry, "registry", "", L("specify a private registry"))
-
 	installCmd.AddCommand(podman.NewCommand(globalFlags))
 
 	if kubernetesCmd := kubernetes.NewCommand(globalFlags); kubernetesCmd != nil {

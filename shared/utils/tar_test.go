@@ -9,6 +9,8 @@ import (
 	"os/exec"
 	"path"
 	"testing"
+
+	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
 )
 
 const dataDir = "data"
@@ -23,10 +25,7 @@ var filesData = map[string]string{
 
 // Prepare test files to include in the tarball.
 func setup(t *testing.T) (string, func(t *testing.T)) {
-	dir, err := os.MkdirTemp("", "uyuni-tools-test-")
-	if err != nil {
-		t.Fatalf("failed to create temporary directory for test: %s", err)
-	}
+	dir, clean := test_utils.CreateTmpFolder(t)
 
 	// Create sub directories for the data and the test
 	for _, dirPath := range []string{dataDir, outDir} {
@@ -52,9 +51,7 @@ func setup(t *testing.T) (string, func(t *testing.T)) {
 
 	// Returns the teardown function.
 	return dir, func(t *testing.T) {
-		if err := os.RemoveAll(dir); err != nil {
-			t.Logf("failed to clean test directory: %s", err)
-		}
+		clean()
 	}
 }
 

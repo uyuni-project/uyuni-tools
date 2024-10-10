@@ -33,6 +33,10 @@ func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap)
 	}
 
 	// Wait for traefik to be back
+	waitForTraefik()
+}
+
+func waitForTraefik() {
 	log.Info().Msg(L("Waiting for Traefik to be reloaded"))
 	for i := 0; i < 60; i++ {
 		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "get", "job", "-n", "kube-system",
@@ -48,21 +52,36 @@ func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap)
 
 // UninstallK3sTraefikConfig uninstall K3s Traefik configuration.
 func UninstallK3sTraefikConfig(dryRun bool) {
+	// Write a blank file first to get traefik to be reinstalled
+	if !dryRun {
+		log.Info().Msg(L("Reinstalling Traefik without additionnal configuration"))
+		err := os.WriteFile(k3sTraefikConfigPath, []byte{}, 0600)
+		if err != nil {
+			log.Error().Err(err).Msg(L("failed to write empty traefik configuration"))
+		} else {
+			// Wait for traefik to be back
+			waitForTraefik()
+		}
+	} else {
+		log.Info().Msg(L("Would reinstall Traefik without additionnal configuration"))
+	}
+
+	// Now that it's reinstalled, remove the file
 	utils.UninstallFile(k3sTraefikConfigPath, dryRun)
 }
 
 // InspectKubernetes check values on a given image and deploy.
-func InspectKubernetes(serverImage string, pullPolicy string) (*utils.ServerInspectData, error) {
+func InspectKubernetes(namespace string, serverImage string, pullPolicy string) (*utils.ServerInspectData, error) {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
 			return nil, fmt.Errorf(L("install %s before running this command"), binary)
 		}
 	}
 
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to create temporary directory"))
+		return nil, err
 	}
 
 	inspector := utils.NewServerInspector(scriptDir)
@@ -75,12 +94,12 @@ func InspectKubernetes(serverImage string, pullPolicy string) (*utils.ServerInsp
 	const podName = "inspector"
 
 	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
-	if err := DeletePod(podName, ServerFilter); err != nil {
+	if err := DeletePod(namespace, podName, ServerFilter); err != nil {
 		return nil, utils.Errorf(err, L("cannot delete %s"), podName)
 	}
 
 	//this is needed because folder with script needs to be mounted
-	nodeName, err := GetNode("uyuni")
+	nodeName, err := GetNode(namespace, ServerFilter)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot find node running uyuni"))
 	}
@@ -108,7 +127,7 @@ func InspectKubernetes(serverImage string, pullPolicy string) (*utils.ServerInsp
 	if err != nil {
 		return nil, err
 	}
-	err = RunPod(podName, ServerFilter, serverImage, pullPolicy, command, override)
+	err = RunPod(namespace, podName, ServerFilter, serverImage, pullPolicy, command, override)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot run inspect pod"))
 	}
