@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:14+0200\n"
+"POT-Creation-Date: 2024-10-10 15:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -79,11 +79,11 @@ msgstr ""
 msgid "Install a new proxy from scratch"
 msgstr ""
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
 msgid "Install a new proxy on a running kubernetes cluster"
 msgstr ""
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:27
 msgid ""
 "Install a new proxy on a running kubernetes cluster.\n"
 "\n"
@@ -101,18 +101,12 @@ msgstr ""
 msgid "install %s before running this command"
 msgstr ""
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:35
-#: mgrpxy/cmd/support/config/extractor.go:23
-#: mgrpxy/shared/kubernetes/deploy.go:159
-msgid "failed to create temporary directory"
-msgstr ""
-
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
 msgid "failed to extract configuration"
 msgstr ""
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:62
-#: mgrpxy/shared/kubernetes/deploy.go:189
+#: mgrpxy/cmd/install/kubernetes/utils.go:67
+#: mgrpxy/shared/kubernetes/deploy.go:201
 msgid "cannot deploy proxy helm chart"
 msgstr ""
 

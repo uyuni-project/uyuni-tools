@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:14+0200\n"
+"POT-Creation-Date: 2024-10-10 15:50+0200\n"
 "PO-Revision-Date: 2024-07-18 11:46+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/de/>\n"
@@ -230,16 +230,6 @@ msgstr ""
 msgid "failed to create keyring %s"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:67 mgradm/cmd/install/shared/shared.go:153
-#: mgradm/cmd/support/config/extractor.go:30
-#: mgradm/shared/kubernetes/certificates.go:26
-#: mgradm/shared/kubernetes/certificates.go:64
-#: mgradm/shared/kubernetes/install.go:180 mgradm/shared/podman/podman.go:236
-#: mgradm/shared/podman/podman.go:285 mgradm/shared/podman/podman.go:312
-#: mgradm/shared/podman/podman.go:428 mgradm/shared/utils/exec.go:119
-msgid "failed to create temporary directory"
-msgstr ""
-
 #: mgradm/cmd/gpg/add/gpg.go:81
 #, javascript-format
 msgid "failed to parse %s"
@@ -359,8 +349,8 @@ msgstr ""
 #: mgradm/cmd/inspect/kubernetes.go:48
 #: mgradm/cmd/migrate/kubernetes/utils.go:44
 #: mgradm/cmd/restart/kubernetes.go:27 mgradm/cmd/start/kubernetes.go:27
-#: mgradm/cmd/stop/kubernetes.go:27 mgradm/shared/kubernetes/install.go:148
-#: mgradm/shared/utils/exec.go:41
+#: mgradm/cmd/stop/kubernetes.go:27 mgradm/shared/kubernetes/install.go:153
+#: mgradm/shared/utils/exec.go:40
 msgid "failed retrieving namespace"
 msgstr ""
 
@@ -395,26 +385,26 @@ msgstr ""
 
 #: mgradm/cmd/install/kubernetes/utils.go:34
 #: mgradm/cmd/migrate/kubernetes/utils.go:38
-#: mgradm/shared/kubernetes/install.go:141
+#: mgradm/shared/kubernetes/install.go:146
 #, javascript-format
 msgid "install %s before running this command"
 msgstr ""
 
 #: mgradm/cmd/install/kubernetes/utils.go:67
-#: mgradm/cmd/migrate/kubernetes/utils.go:212
+#: mgradm/cmd/migrate/kubernetes/utils.go:222
 msgid "cannot deploy certificate"
 msgstr ""
 
-#: mgradm/cmd/install/kubernetes/utils.go:75
+#: mgradm/cmd/install/kubernetes/utils.go:81
 msgid "cannot deploy uyuni"
 msgstr ""
 
-#: mgradm/cmd/install/kubernetes/utils.go:86
-#: mgradm/cmd/install/kubernetes/utils.go:89
+#: mgradm/cmd/install/kubernetes/utils.go:92
+#: mgradm/cmd/install/kubernetes/utils.go:95
 msgid "failed to stop service"
 msgstr ""
 
-#: mgradm/cmd/install/kubernetes/utils.go:98
+#: mgradm/cmd/install/kubernetes/utils.go:104
 msgid "error storing the SSL CA certificate in database"
 msgstr ""
 
@@ -461,8 +451,8 @@ msgstr ""
 #: mgradm/cmd/install/podman/utils.go:75
 #: mgradm/cmd/migrate/kubernetes/utils.go:49 mgradm/shared/coco/coco.go:68
 #: mgradm/shared/hub/xmlrpcapi.go:43 mgradm/shared/kubernetes/install.go:52
-#: mgradm/shared/kubernetes/install.go:153 mgradm/shared/kubernetes/k3s.go:55
-#: mgradm/shared/kubernetes/k3s.go:60 mgradm/shared/podman/podman.go:250
+#: mgradm/shared/kubernetes/install.go:158 mgradm/shared/kubernetes/k3s.go:54
+#: mgradm/shared/kubernetes/k3s.go:59 mgradm/shared/podman/podman.go:250
 #: mgradm/shared/podman/podman.go:255 mgradm/shared/podman/podman.go:346
 msgid "failed to compute image URL"
 msgstr ""
@@ -668,42 +658,42 @@ msgstr ""
 msgid "Server appears to be already configured. Installation will continue, but installation options may be ignored."
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:40
+#: mgradm/cmd/install/shared/shared.go:43
 msgid "cannot copy /tmp/setup.sh"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:45
+#: mgradm/cmd/install/shared/shared.go:48
 msgid "error running the setup script"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:48
-#: mgradm/cmd/migrate/kubernetes/utils.go:186
+#: mgradm/cmd/install/shared/shared.go:51
+#: mgradm/cmd/migrate/kubernetes/utils.go:196
 #: mgradm/cmd/migrate/podman/utils.go:147
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:64
+#: mgradm/cmd/install/shared/shared.go:67
 msgid "unable to prepare API client"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:68
+#: mgradm/cmd/install/shared/shared.go:71
 msgid "Server organization already exists, reusing"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:71
+#: mgradm/cmd/install/shared/shared.go:74
 #, javascript-format
 msgid "Administration user already exists, but organization %s could not be found"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:83
+#: mgradm/cmd/install/shared/shared.go:86
 msgid "Administration user already exists, but provided credentials are not valid"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:91
+#: mgradm/cmd/install/shared/shared.go:94
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr ""
 
-#: mgradm/cmd/install/shared/shared.go:163
+#: mgradm/cmd/install/shared/shared.go:166
 msgid "Failed to generate setup script"
 msgstr ""
 
@@ -733,79 +723,79 @@ msgstr ""
 msgid "SSL CA generated private key password"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:64 mgradm/shared/utils/exec.go:132
+#: mgradm/cmd/migrate/kubernetes/utils.go:64 mgradm/shared/utils/exec.go:131
 msgid "failed to generate migration script"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:88
+#: mgradm/cmd/migrate/kubernetes/utils.go:98
 msgid "cannot run deploy"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:95
-#: mgradm/shared/kubernetes/install.go:187
+#: mgradm/cmd/migrate/kubernetes/utils.go:105
+#: mgradm/shared/kubernetes/install.go:192
 msgid "cannot find node running uyuni"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:99
+#: mgradm/cmd/migrate/kubernetes/utils.go:109
 msgid "cannot run migration"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:104
+#: mgradm/cmd/migrate/kubernetes/utils.go:114
 msgid "cannot read data from container"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:110
-#: mgradm/cmd/migrate/kubernetes/utils.go:153
+#: mgradm/cmd/migrate/kubernetes/utils.go:120
+#: mgradm/cmd/migrate/kubernetes/utils.go:163
 msgid "cannot set replicas to 0"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:114
+#: mgradm/cmd/migrate/kubernetes/utils.go:124
 #: mgradm/cmd/migrate/podman/utils.go:67
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:127
+#: mgradm/cmd/migrate/kubernetes/utils.go:137
 msgid "cannot setup SSL"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:135
+#: mgradm/cmd/migrate/kubernetes/utils.go:145
 #, javascript-format
 msgid "The mirror data will not be migrated, ensure it is available at %s"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:144
+#: mgradm/cmd/migrate/kubernetes/utils.go:154
 #, javascript-format
 msgid "cannot upgrade helm chart to image %s using new SSL certificate"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:148
+#: mgradm/cmd/migrate/kubernetes/utils.go:158
 #, javascript-format
 msgid "cannot wait for deployment of %s"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:163
+#: mgradm/cmd/migrate/kubernetes/utils.go:173
 #: mgradm/cmd/migrate/podman/utils.go:78
-#: mgradm/shared/kubernetes/install.go:208 mgradm/shared/podman/podman.go:380
+#: mgradm/shared/kubernetes/install.go:213 mgradm/shared/podman/podman.go:380
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:169
+#: mgradm/cmd/migrate/kubernetes/utils.go:179
 msgid "cannot run PostgreSQL finalisation script"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:173
+#: mgradm/cmd/migrate/kubernetes/utils.go:183
 #: mgradm/cmd/migrate/podman/utils.go:88
-#: mgradm/shared/kubernetes/install.go:223 mgradm/shared/podman/podman.go:394
+#: mgradm/shared/kubernetes/install.go:228 mgradm/shared/podman/podman.go:394
 msgid "cannot run post upgrade script"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:178
-#: mgradm/shared/kubernetes/install.go:228
+#: mgradm/cmd/migrate/kubernetes/utils.go:188
+#: mgradm/shared/kubernetes/install.go:244
 #, javascript-format
 msgid "cannot upgrade to image %s"
 msgstr ""
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:203
+#: mgradm/cmd/migrate/kubernetes/utils.go:213
 msgid "failed to strip text part from CA certificate"
 msgstr ""
 
@@ -839,7 +829,7 @@ msgid "cannot run migration script"
 msgstr ""
 
 #: mgradm/cmd/migrate/podman/utils.go:84
-#: mgradm/shared/kubernetes/install.go:219 mgradm/shared/podman/podman.go:390
+#: mgradm/shared/kubernetes/install.go:224 mgradm/shared/podman/podman.go:390
 msgid "cannot run PostgreSQL finalize script"
 msgstr ""
 
@@ -859,11 +849,11 @@ msgstr ""
 msgid "Server migrated"
 msgstr ""
 
-#: mgradm/cmd/migrate/shared/flags.go:27
+#: mgradm/cmd/migrate/shared/flags.go:28
 msgid "Prepare the mgration - copy the data without stopping the source server."
 msgstr ""
 
-#: mgradm/cmd/migrate/shared/flags.go:34
+#: mgradm/cmd/migrate/shared/flags.go:35
 msgid "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."
 msgstr ""
 
@@ -1211,61 +1201,61 @@ msgstr ""
 msgid "Failed to create uyuni-crt TLS secret"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:58
+#: mgradm/shared/kubernetes/certificates.go:59
 msgid "cannot install cert manager"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:61
+#: mgradm/shared/kubernetes/certificates.go:62
 msgid "Creating SSL certificate issuer"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:85
+#: mgradm/shared/kubernetes/certificates.go:86
 msgid "failed to generate issuer definition"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:90
+#: mgradm/shared/kubernetes/certificates.go:91
 msgid "Failed to create issuer"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:102
+#: mgradm/shared/kubernetes/certificates.go:103
 msgid "Issuer didn't turn ready after 60s"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:108
+#: mgradm/shared/kubernetes/certificates.go:109
 msgid "Installing cert-manager"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:131
+#: mgradm/shared/kubernetes/certificates.go:132
 msgid "cannot run helm upgrade"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:138
+#: mgradm/shared/kubernetes/certificates.go:139
 #: mgradm/shared/kubernetes/install.go:64
 msgid "cannot deploy"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:148
+#: mgradm/shared/kubernetes/certificates.go:149
 msgid "Extracting CA certificate to a configmap"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:151
+#: mgradm/shared/kubernetes/certificates.go:152
 #, javascript-format
 msgid "CA cert: %s"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:153
+#: mgradm/shared/kubernetes/certificates.go:154
 msgid "uyuni-ca configmap already existing, skipping extraction"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:159
+#: mgradm/shared/kubernetes/certificates.go:160
 msgid "Failed to get uyuni-ca certificate"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:164
+#: mgradm/shared/kubernetes/certificates.go:165
 msgid "Failed to base64 decode CA certificate"
 msgstr ""
 
-#: mgradm/shared/kubernetes/certificates.go:173
+#: mgradm/shared/kubernetes/certificates.go:174
 msgid "Failed to create uyuni-ca config map from certificate"
 msgstr ""
 
@@ -1273,68 +1263,62 @@ msgstr ""
 msgid "cannot upgrade"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:79
+#: mgradm/shared/kubernetes/install.go:81
 msgid "cannot install cert-manager and self-sign issuer"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:104
+#: mgradm/shared/kubernetes/install.go:109
 msgid "Installing Uyuni"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:158
+#: mgradm/shared/kubernetes/install.go:163
 msgid "cannot inspect kubernetes values"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:168
+#: mgradm/shared/kubernetes/install.go:173
 msgid "inspect function did non return fqdn value"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:192
+#: mgradm/shared/kubernetes/install.go:197
 msgid "cannot set replica to 0"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:202 mgradm/shared/kubernetes/k3s.go:47
+#: mgradm/shared/kubernetes/install.go:207 mgradm/shared/kubernetes/k3s.go:46
 #: mgradm/shared/podman/podman.go:231
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:211 mgradm/shared/podman/podman.go:383
+#: mgradm/shared/kubernetes/install.go:216 mgradm/shared/podman/podman.go:383
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:213 mgradm/shared/podman/podman.go:385
+#: mgradm/shared/kubernetes/install.go:218 mgradm/shared/podman/podman.go:385
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/shared/kubernetes/k3s.go:44 mgradm/shared/kubernetes/k3s.go:114
-#: mgradm/shared/kubernetes/k3s.go:159
-#, javascript-format
-msgid "failed to create temporary directory: %s"
-msgstr ""
-
-#: mgradm/shared/kubernetes/k3s.go:64 mgradm/shared/podman/podman.go:264
+#: mgradm/shared/kubernetes/k3s.go:63 mgradm/shared/podman/podman.go:264
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr ""
 
-#: mgradm/shared/kubernetes/k3s.go:67 mgradm/shared/podman/podman.go:268
+#: mgradm/shared/kubernetes/k3s.go:66 mgradm/shared/podman/podman.go:268
 msgid "cannot generate PostgreSQL database version upgrade script"
 msgstr ""
 
-#: mgradm/shared/kubernetes/k3s.go:72 mgradm/shared/kubernetes/k3s.go:123
-#: mgradm/shared/kubernetes/k3s.go:169
+#: mgradm/shared/kubernetes/k3s.go:71 mgradm/shared/kubernetes/k3s.go:122
+#: mgradm/shared/kubernetes/k3s.go:168
 #, javascript-format
 msgid "cannot delete %s"
 msgstr ""
 
-#: mgradm/shared/kubernetes/k3s.go:101 mgradm/shared/kubernetes/k3s.go:149
-#: mgradm/shared/kubernetes/k3s.go:196
+#: mgradm/shared/kubernetes/k3s.go:100 mgradm/shared/kubernetes/k3s.go:148
+#: mgradm/shared/kubernetes/k3s.go:195
 #, javascript-format
 msgid "error running container %s"
 msgstr ""
 
-#: mgradm/shared/kubernetes/k3s.go:119 mgradm/shared/kubernetes/k3s.go:164
+#: mgradm/shared/kubernetes/k3s.go:118 mgradm/shared/kubernetes/k3s.go:163
 #: mgradm/shared/podman/podman.go:297 mgradm/shared/podman/podman.go:321
 msgid "cannot generate PostgreSQL finalization script"
 msgstr ""
@@ -1375,7 +1359,7 @@ msgstr ""
 msgid "cannot generate migration script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:196 mgradm/shared/utils/exec.go:107
+#: mgradm/shared/podman/podman.go:196 mgradm/shared/utils/exec.go:106
 msgid "Migrating server"
 msgstr ""
 
@@ -1601,65 +1585,65 @@ msgstr ""
 msgid "How many replicas of the Hub XML-RPC API service container should be started. Leave it unset if you want to keep the previous number of replicas."
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:28
+#: mgradm/shared/utils/exec.go:27
 msgid "exec command failed"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:66 mgradm/shared/utils/exec.go:86
-#: mgradm/shared/utils/exec.go:100
+#: mgradm/shared/utils/exec.go:65 mgradm/shared/utils/exec.go:85
+#: mgradm/shared/utils/exec.go:99
 #, javascript-format
 msgid "failed to generate %s"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:110
+#: mgradm/shared/utils/exec.go:109
 msgid "error running the migration script"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:159
+#: mgradm/shared/utils/exec.go:158
 #, javascript-format
 msgid "Image is: %s"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:173
+#: mgradm/shared/utils/exec.go:172
 msgid "cannot check server release"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:180
+#: mgradm/shared/utils/exec.go:179
 #, javascript-format
 msgid "currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:187
+#: mgradm/shared/utils/exec.go:186
 #, javascript-format
 msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:196
+#: mgradm/shared/utils/exec.go:195
 msgid "failed to read current uyuni release"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:200 mgradm/shared/utils/exec.go:217
+#: mgradm/shared/utils/exec.go:199 mgradm/shared/utils/exec.go:216
 #, javascript-format
 msgid "cannot fetch release from image %s"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:205 mgradm/shared/utils/exec.go:222
+#: mgradm/shared/utils/exec.go:204 mgradm/shared/utils/exec.go:221
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:213
+#: mgradm/shared/utils/exec.go:212
 msgid "failed to read current susemanager release"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:229
+#: mgradm/shared/utils/exec.go:228
 #, javascript-format
 msgid "cannot fetch postgresql version from %s"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:233
+#: mgradm/shared/utils/exec.go:232
 msgid "posgresql is not installed in the current deployment"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:247
+#: mgradm/shared/utils/exec.go:246
 msgid "cannot find either /etc/uyuni-release or /etc/susemanagere-release"
 msgstr ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:14+0200\n"
+"POT-Creation-Date: 2024-10-10 15:50+0200\n"
 "PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
@@ -318,65 +318,86 @@ msgstr ""
 msgid "Failed to write K3s Traefik configuration"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:36
+#: shared/kubernetes/k3s.go:40
 msgid "Waiting for Traefik to be reloaded"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:58
+#: shared/kubernetes/k3s.go:57
+msgid "Reinstalling Traefik without additionnal configuration"
+msgstr ""
+
+#: shared/kubernetes/k3s.go:60
+#, fuzzy
+msgid "failed to write empty traefik configuration"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: shared/kubernetes/k3s.go:66
+msgid "Would reinstall Traefik without additionnal configuration"
+msgstr ""
+
+#: shared/kubernetes/k3s.go:77
 #, javascript-format
 msgid "install %s before running this command"
 msgstr "installare %s prima di eseguire questo comando"
 
-#: shared/kubernetes/k3s.go:65 shared/podman/hostinspector.go:60
-#: shared/podman/utils.go:224
-#, fuzzy
-msgid "failed to create temporary directory"
-msgstr "mancata creazione della directory temporanea: %s"
-
-#: shared/kubernetes/k3s.go:79
+#: shared/kubernetes/k3s.go:98
 #, javascript-format
 msgid "cannot delete %s"
 msgstr "impossible eliminare %s"
 
-#: shared/kubernetes/k3s.go:85
+#: shared/kubernetes/k3s.go:104
 #, fuzzy
 msgid "cannot find node running uyuni"
 msgstr "impossibile trovare il nodo che ha in esecuzione uyuni: %s"
 
-#: shared/kubernetes/k3s.go:113
+#: shared/kubernetes/k3s.go:132
 #, fuzzy
 msgid "cannot run inspect pod"
 msgstr "impossibile ispezionare i valori dell'host: %s"
 
-#: shared/kubernetes/k3s.go:118 shared/podman/utils.go:261
+#: shared/kubernetes/k3s.go:137 shared/podman/utils.go:261
 #, fuzzy
 msgid "cannot inspect data"
 msgstr "impossibile ispezionare i valori dell'host: %s"
 
-#: shared/kubernetes/kubernetes.go:54
+#: shared/kubernetes/kubernetes.go:57
 msgid "failed to get kubelet version"
 msgstr ""
 
-#: shared/kubernetes/kubernetes.go:80
+#: shared/kubernetes/kubernetes.go:83
 msgid "failed to get pod commands to look for nginx controller"
 msgstr ""
 
-#: shared/kubernetes/kubernetes.go:94
+#: shared/kubernetes/kubernetes.go:97
 #, fuzzy, javascript-format
 msgid "cannot stop %s"
 msgstr "impossible eliminare %s: %s"
 
-#: shared/kubernetes/kubernetes.go:134
+#: shared/kubernetes/kubernetes.go:137
 msgid "failed to run kubectl get configMap %[1]s %[2]s"
 msgstr ""
 
-#: shared/kubernetes/kubernetes.go:144
+#: shared/kubernetes/kubernetes.go:147
 msgid "failed to run kubectl get secret %[1]s %[2]s"
 msgstr ""
 
-#: shared/kubernetes/kubernetes.go:148
+#: shared/kubernetes/kubernetes.go:151
 #, javascript-format
 msgid "Failed to base64 decode secret %s"
+msgstr ""
+
+#: shared/kubernetes/kubernetes.go:186
+#, fuzzy, javascript-format
+msgid "failed to write %s secret definition file"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: shared/kubernetes/kubernetes.go:190
+#, fuzzy, javascript-format
+msgid "failed to define %s secret"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: shared/kubernetes/kubernetes.go:217
+msgid "failed to get deployment image pull secret"
 msgstr ""
 
 #: shared/kubernetes/rke2.go:21
@@ -1218,30 +1239,35 @@ msgid "Failed to remove file %s"
 msgstr ""
 
 #: shared/utils/utils.go:321
+#, fuzzy
+msgid "failed to create temporary directory"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: shared/utils/utils.go:330
 msgid "Failed to read random data"
 msgstr ""
 
-#: shared/utils/utils.go:342
+#: shared/utils/utils.go:351
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:348
+#: shared/utils/utils.go:357
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:426
+#: shared/utils/utils.go:435
 #, fuzzy
 msgid "failed to compute server FQDN"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/utils/utils.go:440
+#: shared/utils/utils.go:449
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:444
+#: shared/utils/utils.go:453
 #, fuzzy, javascript-format
 msgid "cannot resolve %s"
 msgstr "impossible eliminare %s"
