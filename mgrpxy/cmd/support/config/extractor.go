@@ -15,6 +15,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
 	// Copy the generated file locally
 	tmpDir, err := utils.TempDir()
@@ -24,8 +26,8 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	defer os.RemoveAll(tmpDir)
 
 	var fileList []string
-	if podman.HasService(podman.ProxyService) {
-		fileList, err = podman.RunSupportConfigOnPodmanHost(tmpDir)
+	if systemd.HasService(podman.ProxyService) {
+		fileList, err = podman.RunSupportConfigOnPodmanHost(systemd, tmpDir)
 	}
 
 	if utils.IsInstalled("kubectl") && utils.IsInstalled("helm") {

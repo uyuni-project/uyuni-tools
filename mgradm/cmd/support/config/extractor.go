@@ -15,8 +15,10 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
-	containerName, err := shared.ChooseObjPodmanOrKubernetes(podman.ServerContainerName, kubernetes.ServerApp)
+	containerName, err := shared.ChooseObjPodmanOrKubernetes(systemd, podman.ServerContainerName, kubernetes.ServerApp)
 	if err != nil {
 		return err
 	}
@@ -36,8 +38,8 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 	}
 
 	var fileListHost []string
-	if podman.HasService(podman.ServerService) {
-		fileListHost, err = podman.RunSupportConfigOnPodmanHost(tmpDir)
+	if systemd.HasService(podman.ServerService) {
+		fileListHost, err = podman.RunSupportConfigOnPodmanHost(systemd, tmpDir)
 	}
 	if err != nil {
 		return err

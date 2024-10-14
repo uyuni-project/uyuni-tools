@@ -45,7 +45,14 @@ func GetExposedPorts(debug bool) []types.PortMap {
 }
 
 // GenerateSystemdService creates a serverY systemd file.
-func GenerateSystemdService(tz string, image string, debug bool, mirrorPath string, podmanArgs []string) error {
+func GenerateSystemdService(
+	systemd podman.Systemd,
+	tz string,
+	image string,
+	debug bool,
+	mirrorPath string,
+	podmanArgs []string,
+) error {
 	ipv6Enabled, err := podman.SetupNetwork(false)
 	if err != nil {
 		return utils.Errorf(err, L("cannot setup network"))
@@ -89,7 +96,7 @@ Environment="PODMAN_EXTRA_ARGS=%s"
 	if err := podman.GenerateSystemdConfFile("uyuni-server", "custom.conf", config, false); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd user configuration file"))
 	}
-	return podman.ReloadDaemon(false)
+	return systemd.ReloadDaemon(false)
 }
 
 // UpdateSslCertificate update SSL certificate.
@@ -330,6 +337,7 @@ func RunPostUpgradeScript(serverImage string) error {
 
 // Upgrade will upgrade server to the image given as attribute.
 func Upgrade(
+	systemd podman.Systemd,
 	authFile string,
 	registry string,
 	image types.ImageFlags,
@@ -362,12 +370,12 @@ func Upgrade(
 		return err
 	}
 
-	if err := podman.StopService(podman.ServerService); err != nil {
+	if err := systemd.StopService(podman.ServerService); err != nil {
 		return utils.Errorf(err, L("cannot stop service"))
 	}
 
 	defer func() {
-		err = podman.StartService(podman.ServerService)
+		err = systemd.StartService(podman.ServerService)
 	}()
 	if inspectedValues.ImagePgVersion > inspectedValues.CurrentPgVersion {
 		log.Info().Msgf(
@@ -405,19 +413,19 @@ func Upgrade(
 	}
 	log.Info().Msg(L("Waiting for the server to start…"))
 
-	err = coco.Upgrade(authFile, registry, cocoFlags, image,
+	err = coco.Upgrade(systemd, authFile, registry, cocoFlags, image,
 		inspectedValues.DbPort, inspectedValues.DbName, inspectedValues.DbUser, inspectedValues.DbPassword)
 	if err != nil {
 		return utils.Errorf(err, L("error upgrading confidential computing service."))
 	}
 
 	if err := hub.Upgrade(
-		authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcFlags,
+		systemd, authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcFlags,
 	); err != nil {
 		return err
 	}
 
-	return podman.ReloadDaemon(false)
+	return systemd.ReloadDaemon(false)
 }
 
 // Inspect check values on a given image and deploy.

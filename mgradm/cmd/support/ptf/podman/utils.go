@@ -18,6 +18,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman_shared.Systemd = podman_shared.SystemdImpl{}
+
 func ptfForPodman(
 	globalFlags *types.GlobalFlags,
 	flags *podmanPTFFlags,
@@ -44,7 +46,7 @@ func ptfForPodman(
 	}
 	defer cleaner()
 
-	return podman.Upgrade(authFile, "", flags.Image, dummyImage, dummyCoco, dummyHubXmlrpc)
+	return podman.Upgrade(systemd, authFile, "", flags.Image, dummyImage, dummyCoco, dummyHubXmlrpc)
 }
 
 func (flags *podmanPTFFlags) checkParameters() error {
