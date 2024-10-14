@@ -5,7 +5,6 @@
 package podman
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -138,19 +137,19 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 	}
 
 	// Check and install then using mgr-ssl-cert-setup
-	if _, err := utils.RunCmdOutput(zerolog.InfoLevel, "podman", args...); err != nil {
-		return errors.New(L("failed to update SSL certificate"))
+	if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", args...); err != nil {
+		return utils.Errorf(err, L("failed to update SSL certificate: %s"), out)
 	}
 
 	// Clean the copied files and the now useless ssl-build
 	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", certDir); err != nil {
-		return errors.New(L("failed to remove copied certificate files in the container"))
+		return utils.Errorf(err, L("failed to remove copied certificate files in the container"))
 	}
 
 	const sslbuildPath = "/root/ssl-build"
 	if cnx.TestExistenceInPod(sslbuildPath) {
 		if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", sslbuildPath); err != nil {
-			return errors.New(L("failed to remove now useless ssl-build folder in the container"))
+			return utils.Errorf(err, L("failed to remove now useless ssl-build folder in the container"))
 		}
 	}
 

@@ -1,0 +1,1 @@
+- Redact JSESSIONID and pxt-session-cookie values from logs and console output (bsc#1231568)

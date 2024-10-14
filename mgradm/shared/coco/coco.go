@@ -27,9 +27,11 @@ func Upgrade(
 	dbUser string,
 	dbPassword string,
 ) error {
-	if err := writeCocoServiceFiles(
-		authFile, registry, cocoFlags, baseImage, dbName, dbPort, dbUser, dbPassword,
-	); err != nil {
+	if err := podman.CreateDbSecrets(dbUser, dbPassword); err != nil {
+		return err
+	}
+
+	if err := writeCocoServiceFiles(authFile, registry, cocoFlags, baseImage, dbName, dbPort); err != nil {
 		return err
 	}
 
@@ -43,8 +45,6 @@ func writeCocoServiceFiles(
 	baseImage types.ImageFlags,
 	dbName string,
 	dbPort int,
-	dbUser string,
-	dbPassword string,
 ) error {
 	image := cocoFlags.Image
 	currentReplicas := podman.CurrentReplicaCount(podman.ServerAttestationService)
@@ -90,8 +90,7 @@ func writeCocoServiceFiles(
 
 	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
 Environment=database_connection=jdbc:postgresql://uyuni-server.mgr.internal:%d/%s
-Environment=database_user=%s
-Environment=database_password=%s`, preparedImage, dbPort, dbName, dbUser, dbPassword)
+`, preparedImage, dbPort, dbName)
 
 	if err := podman.GenerateSystemdConfFile(
 		podman.ServerAttestationService+"@", "generated.conf", environment, true,
@@ -113,11 +112,9 @@ func SetupCocoContainer(
 	baseImage types.ImageFlags,
 	dbName string,
 	dbPort int,
-	dbUser string,
-	dbPassword string,
 ) error {
 	if err := writeCocoServiceFiles(
-		authFile, registry, coco, baseImage, dbName, dbPort, dbUser, dbPassword,
+		authFile, registry, coco, baseImage, dbName, dbPort,
 	); err != nil {
 		return err
 	}
