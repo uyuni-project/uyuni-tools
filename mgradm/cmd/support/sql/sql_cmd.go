@@ -42,7 +42,7 @@ Examples:
 `),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags sqlFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 

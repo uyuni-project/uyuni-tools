@@ -23,7 +23,7 @@ func NewClearCmd(globalFlags *types.GlobalFlags) *cobra.Command {
 		Long:  L("Clear the cache"),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags cacheClearFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, clear)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, clear)
 		},
 	}
 

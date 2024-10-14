@@ -37,7 +37,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[gpgAddFlags]) 
 		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags gpgAddFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 

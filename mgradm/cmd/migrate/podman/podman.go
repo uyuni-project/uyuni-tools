@@ -6,6 +6,7 @@ package podman
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -36,9 +37,11 @@ NOTE: migrating to a remote podman is not supported yet!
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanMigrateFlags
-			flags.MigrateFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
-			flags.MigrateFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			flagsUpdater := func(v *viper.Viper) {
+				flags.MigrateFlags.Coco.IsChanged = v.IsSet("coco.replicas")
+				flags.MigrateFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+			}
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
 	}
 

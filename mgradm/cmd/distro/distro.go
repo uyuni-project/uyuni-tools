@@ -86,7 +86,7 @@ If not set, distribution name is attempted to be autodetected:
 Note: API details are required for auto registration.`),
 		Aliases: []string{"cp"},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 	cpCmd.Flags().String("channel", "", L("Set parent channel for the distribution."))
