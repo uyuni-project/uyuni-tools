@@ -25,7 +25,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[restartFlags])
 		Args:    cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags restartFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 	restartCmd.SetUsageTemplate(restartCmd.UsageTemplate())

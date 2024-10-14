@@ -36,7 +36,7 @@ NOTE: for now installing on a remote podman is not supported!
 `),
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 

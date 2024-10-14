@@ -24,7 +24,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[configFlags]) 
 the containers for support to help debugging.`),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags configFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 

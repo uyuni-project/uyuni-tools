@@ -8,6 +8,7 @@ package kubernetes
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -37,9 +38,11 @@ NOTE: installing on a remote cluster is not supported yet!
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesInstallFlags
-			flags.InstallFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
-			flags.InstallFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			flagsUpdater := func(v *viper.Viper) {
+				flags.InstallFlags.Coco.IsChanged = v.IsSet("coco.replicas")
+				flags.InstallFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+			}
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
 	}
 

@@ -23,7 +23,7 @@ By default it will only print what would be done, use --force to actually remove
 		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags utils.UninstallFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 	utils.AddUninstallFlags(uninstallCmd, true)

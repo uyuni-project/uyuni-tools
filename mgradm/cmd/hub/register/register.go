@@ -33,7 +33,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[registerFlags]
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags registerFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 	registerCmd.SetUsageTemplate(registerCmd.UsageTemplate())
