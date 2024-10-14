@@ -27,7 +27,7 @@ NOTE: for now upgrading on a remote podman is not supported!
 		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podman.PodmanProxyFlags
-			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 

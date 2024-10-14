@@ -312,7 +312,7 @@ func TestConfig(t *testing.T) {
 			flags.secondConf = ""
 			flags.thirdConf = ""
 			flags.fourthConf = ""
-			return CommandHelper(nil, cmd, args, &flags, nil)
+			return CommandHelper(nil, cmd, args, &flags, nil, nil)
 		},
 	}
 

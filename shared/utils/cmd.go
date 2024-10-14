@@ -7,6 +7,7 @@ package utils
 import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
@@ -34,6 +35,9 @@ var Version = "0.0.0"
 // CommandFunc is a function to be executed by a Cobra command.
 type CommandFunc[F interface{}] func(*types.GlobalFlags, *F, *cobra.Command, []string) error
 
+// FlagsUpdaterFunc is a function to be executed to update the flags from the viper instance used to parsed the config.
+type FlagsUpdaterFunc func(*viper.Viper)
+
 // CommandHelper parses the configuration file into the flags and runs the fn function.
 // This function should be passed to Command's RunE.
 func CommandHelper[T interface{}](
@@ -41,6 +45,7 @@ func CommandHelper[T interface{}](
 	cmd *cobra.Command,
 	args []string,
 	flags *T,
+	flagsUpdater FlagsUpdaterFunc,
 	fn CommandFunc[T],
 ) error {
 	viper, err := ReadConfig(cmd, GlobalConfigFilename, globalFlags.ConfigPath)
@@ -50,6 +55,9 @@ func CommandHelper[T interface{}](
 	if err := viper.Unmarshal(&flags); err != nil {
 		log.Error().Err(err).Msg(L("failed to unmarshall configuration"))
 		return Errorf(err, L("failed to unmarshall configuration"))
+	}
+	if flagsUpdater != nil {
+		flagsUpdater(viper)
 	}
 	return fn(globalFlags, flags, cmd, args)
 }

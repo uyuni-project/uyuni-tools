@@ -7,6 +7,7 @@ package podman
 import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -27,9 +28,11 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeF
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanUpgradeFlags
-			flags.UpgradeFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
-			flags.UpgradeFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			flagsUpdater := func(v *viper.Viper) {
+				flags.UpgradeFlags.Coco.IsChanged = v.IsSet("coco.replicas")
+				flags.UpgradeFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+			}
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
 	}
 	shared.AddUpgradeFlags(cmd)

@@ -53,7 +53,7 @@ However, you can specify the pod and/or container names to get the logs for spec
     $ mgrpxy logs logs uyuni-proxy-httpd uyuni-proxy-ssh`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			flags.Containers = cmd.Flags().Args()
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 		ValidArgsFunction: getContainerNames,
 	}

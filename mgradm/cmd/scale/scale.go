@@ -34,7 +34,7 @@ Supported services:
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags scaleFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 	scaleCmd.SetUsageTemplate(scaleCmd.UsageTemplate())
