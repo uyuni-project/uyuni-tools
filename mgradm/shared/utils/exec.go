@@ -88,10 +88,8 @@ func GenerateFinalizePostgresScript(
 }
 
 // GeneratePostUpgradeScript generates the script to be run after upgrade.
-func GeneratePostUpgradeScript(scriptDir string, cobblerHost string) (string, error) {
-	data := templates.PostUpgradeTemplateData{
-		CobblerHost: cobblerHost,
-	}
+func GeneratePostUpgradeScript(scriptDir string) (string, error) {
+	data := templates.PostUpgradeTemplateData{}
 
 	scriptName := "postUpgrade.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
