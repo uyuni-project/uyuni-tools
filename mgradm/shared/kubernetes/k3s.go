@@ -158,7 +158,7 @@ func RunPostUpgradeScript(serverImage string, pullPolicy string, namespace strin
 	}
 	defer os.RemoveAll(scriptDir)
 	postUpgradeContainer := "uyuni-post-upgrade"
-	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
+	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir)
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
