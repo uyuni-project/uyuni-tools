@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Oct 14 13:16:17 CEST 2024 - marina.latini@suse.com
+
+- version 0.1.24-0
+  * CVE-2024-22037: Use podman secret to store the database
+    credentials (bsc#1231497)
+  * Redact JSESSIONID and pxt-session-cookie values from logs and
+    console output (bsc#1231568)
+
+-------------------------------------------------------------------
 Wed Oct 09 16:02:16 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.23-0
