@@ -1,1 +1,0 @@
-- migrate from pgsql 14 to pgsql 16 pg_hba.conf and postgresql.conf files (bsc#1231206)
