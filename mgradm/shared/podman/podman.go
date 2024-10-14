@@ -328,7 +328,7 @@ func RunPostUpgradeScript(serverImage string) error {
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
 		"--security-opt", "label=disable",
 	}
-	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
+	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir)
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
