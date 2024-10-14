@@ -11,7 +11,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-type configFlags struct {
+type sqlFlags struct {
 	Database       string
 	Interactive    bool
 	ForceOverwrite bool   `mapstructure:"force"`
@@ -19,9 +19,8 @@ type configFlags struct {
 	Backend        string
 }
 
-// Add support sql command.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	configCmd := &cobra.Command{
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[sqlFlags]) *cobra.Command {
+	cmd := &cobra.Command{
 		Use:   "sql [sql-file]",
 		Short: L("Execute SQL query"),
 		Long: L(`Execute SQL query either provided in sql-file or passed through standard input.
@@ -42,16 +41,21 @@ Examples:
 
 `),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags configFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, doSql)
+			var flags sqlFlags
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 
-	configCmd.Flags().StringP("database", "d", "productdb", L("Target database, can be 'reportdb' or 'productdb'"))
-	configCmd.Flags().BoolP("interactive", "i", false, L("Start in interactive mode"))
-	configCmd.Flags().BoolP("force", "f", false, L("Force overwrite of output file if already exists"))
-	configCmd.Flags().StringP("output", "o", "", L("Write output to the file instead of standard output"))
-	utils.AddBackendFlag(configCmd)
+	cmd.Flags().StringP("database", "d", "productdb", L("Target database, can be 'reportdb' or 'productdb'"))
+	cmd.Flags().BoolP("interactive", "i", false, L("Start in interactive mode"))
+	cmd.Flags().BoolP("force", "f", false, L("Force overwrite of output file if already exists"))
+	cmd.Flags().StringP("output", "o", "", L("Write output to the file instead of standard output"))
+	utils.AddBackendFlag(cmd)
 
-	return configCmd
+	return cmd
+}
+
+// Add support sql command.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, doSql)
 }

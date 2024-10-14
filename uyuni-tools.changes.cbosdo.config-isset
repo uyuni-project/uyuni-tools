@@ -1,0 +1,2 @@
+- Consider the configuration file to detect the coco or hub api 
+  images should be pulled (bsc#1229104)

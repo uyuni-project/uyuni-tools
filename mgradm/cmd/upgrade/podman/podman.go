@@ -7,6 +7,7 @@ package podman
 import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -18,24 +19,24 @@ type podmanUpgradeFlags struct {
 	shared.UpgradeFlags `mapstructure:",squash"`
 	SCC                 types.SCCCredentials
 	Podman              podman.PodmanFlags
-	MirrorPath          string
 }
 
-// NewCommand to upgrade a podman server.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	upgradeCmd := &cobra.Command{
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeFlags]) *cobra.Command {
+	cmd := &cobra.Command{
 		Use:   "podman",
 		Short: L("Upgrade a local server on podman"),
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanUpgradeFlags
-			flags.UpgradeFlags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
-			flags.UpgradeFlags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, upgradePodman)
+			flagsUpdater := func(v *viper.Viper) {
+				flags.UpgradeFlags.Coco.IsChanged = v.IsSet("coco.replicas")
+				flags.UpgradeFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+			}
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
 	}
-	shared.AddUpgradeFlags(upgradeCmd)
-	podman.AddPodmanArgFlag(upgradeCmd)
+	shared.AddUpgradeFlags(cmd)
+	podman.AddPodmanArgFlag(cmd)
 
 	listCmd := &cobra.Command{
 		Use:   "list",
@@ -54,7 +55,11 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 	shared.AddUpgradeListFlags(listCmd)
-	upgradeCmd.AddCommand(listCmd)
+	cmd.AddCommand(listCmd)
+	return cmd
+}
 
-	return upgradeCmd
+// NewCommand to upgrade a podman server.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, upgradePodman)
 }

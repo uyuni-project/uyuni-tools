@@ -34,7 +34,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 Example:
 # mgrctl api get user/getDetails login=test`),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, runGet)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, runGet)
 		},
 	}
 
@@ -51,7 +51,7 @@ Key=Value pairs example:
 JSON example:
 # mgrctl api post user/create '{"login":"test", "password":"testXX", "firstName":"F", "lastName":"L", "email":"test@localhost"}'`),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, runPost)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, runPost)
 		},
 	}
 
@@ -63,7 +63,7 @@ JSON example:
 User name, password and remote host can be provided using flags or will be asked interactively.
 Environment variables are also supported.`),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, runLogin)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, runLogin)
 		},
 	}
 	apiLogin.Flags().BoolP("force", "f", false, L("Overwrite existing login if exists"))
@@ -73,7 +73,7 @@ Environment variables are also supported.`),
 		Short: L("Remove stored login information"),
 		Long:  L("Logout removes stored login information."),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, runLogout)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, runLogout)
 		},
 	}
 

@@ -13,8 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// NewCommand install a new proxy on a running kubernetes cluster.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetes.KubernetesProxyUpgradeFlags]) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "kubernetes",
 		Short: L("Upgrade a proxy on a running kubernetes cluster"),
@@ -27,7 +26,7 @@ NOTE: for now upgrading on a remote kubernetes cluster is not supported!
 		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetes.KubernetesProxyUpgradeFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, upgradeKubernetes)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 
@@ -36,4 +35,9 @@ NOTE: for now upgrading on a remote kubernetes cluster is not supported!
 	kubernetes.AddHelmFlags(cmd)
 
 	return cmd
+}
+
+// NewCommand install a new proxy on a running kubernetes cluster.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, upgradeKubernetes)
 }

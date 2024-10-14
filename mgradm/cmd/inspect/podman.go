@@ -10,7 +10,6 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	inspect_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect/shared"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -21,7 +20,7 @@ import (
 
 func podmanInspect(
 	globalFlags *types.GlobalFlags,
-	flags *inspect_shared.InspectFlags,
+	flags *inspectFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
