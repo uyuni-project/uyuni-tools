@@ -258,3 +258,17 @@ func GetRunningImage(container string) (string, error) {
 	image := strings.TrimSpace(string(out))
 	return image, nil
 }
+
+// HasRemoteImage returns true if the image is available remotely.
+//
+// The image has to be a full image with registry, path and tag.
+func HasRemoteImage(image string) bool {
+	out, err := runCmdOutput(zerolog.DebugLevel,
+		"podman", "search", "--list-tags", "--format", "{{.Name}}:{{.Tag}}", image,
+	)
+	if err != nil {
+		return false
+	}
+	imageFinder := regexp.MustCompile("(?Um)^" + image + "$")
+	return imageFinder.Match(out)
+}
