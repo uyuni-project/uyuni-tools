@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"regexp"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -19,6 +20,9 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
+
+// runCmdOutput is a function pointer to use for easies unit testing.
+var runCmdOutput = utils.RunCmdOutput
 
 const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
 
@@ -106,21 +110,19 @@ func DeleteContainer(name string, dryRun bool) {
 
 // GetServiceImage returns the value of the UYUNI_IMAGE variable for a systemd service.
 func GetServiceImage(service string) string {
-	serviceConfPath := GetServiceConfPath(service)
-	if !utils.FileExists(serviceConfPath) {
+	out, err := runCmdOutput(zerolog.DebugLevel, "systemd", "cat", service)
+	if err != nil {
+		log.Warn().Err(err).Msgf(L("failed to get %s systemd service definition"), service)
 		return ""
 	}
 
-	content := string(utils.ReadFile(serviceConfPath))
-	lines := strings.Split(content, "\n")
-	const imagePrefix = "Environment=UYUNI_IMAGE="
-	for _, line := range lines {
-		if strings.HasPrefix(line, imagePrefix) {
-			return strings.TrimSpace(strings.TrimPrefix(line, imagePrefix))
-		}
+	imageFinder := regexp.MustCompile(`UYUNI_IMAGE=(.*)`)
+	matches := imageFinder.FindStringSubmatch(string(out))
+	if len(matches) < 2 {
+		log.Warn().Msgf(L("no UYUNI_IMAGE defined in %s systemd service"), service)
+		return ""
 	}
-
-	return ""
+	return matches[1]
 }
 
 // DeleteImage deletes a podman image based on its name.
