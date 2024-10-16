@@ -5,7 +5,11 @@
 package podman
 
 import (
+	"errors"
 	"testing"
+
+	"github.com/rs/zerolog"
+	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
 )
 
 func TestGetRpmImageName(t *testing.T) {
@@ -75,5 +79,48 @@ func TestMatchingMetadata(t *testing.T) {
 	_, err := BuildRpmImagePath(jsonDataInvalidWithTypo, "", "")
 	if err == nil {
 		t.Error("typo in json: this should fail")
+	}
+}
+
+func TestHasRemoteImage(t *testing.T) {
+	type testData struct {
+		out      string
+		err      error
+		expected bool
+	}
+
+	data := []testData{
+		{
+			`Error: 1 error occurred:
+	* getting repository tags: fetching tags list: repository name not known to registry
+`,
+			errors.New("exit code 125"),
+			false,
+		},
+		{
+			`myregistry.org/path/image:1.2.2
+myregistry.org/path/image:1.2.3
+myregistry.org/path/image:1.2.3.4
+myregistry.org/path/image:1.2
+myregistry.org/path/image:latest`,
+			nil,
+			true,
+		},
+		{
+			`myregistry.org/path/image:1.2.1
+myregistry.org/path/image:1.2.1.2
+myregistry.org/path/image:1.2
+myregistry.org/path/image:latest`,
+			nil,
+			false,
+		},
+	}
+
+	for _, test := range data {
+		runCmdOutput = func(logLevel zerolog.Level, command string, args ...string) ([]byte, error) {
+			return []byte(test.out), test.err
+		}
+		searchedImage := "myregistry.org/path/image:1.2.3"
+		test_utils.AssertEquals(t, "Unexpected result", test.expected, HasRemoteImage(searchedImage))
 	}
 }
