@@ -78,6 +78,10 @@ func EnableHubXmlrpc(replicas int) error {
 
 // Upgrade updates the systemd service files and restarts the containers if needed.
 func Upgrade(authFile string, registry string, pullPolicy string, tag string, hubXmlrpcFlags cmd_utils.HubXmlrpcFlags) error {
+	if hubXmlrpcFlags.Image.Name == "" {
+		// Don't touch the hub service in ptf if not already present.
+		return nil
+	}
 	if err := SetupHubXmlrpc(authFile, registry, pullPolicy, tag, hubXmlrpcFlags); err != nil {
 		return err
 	}
