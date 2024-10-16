@@ -7,6 +7,7 @@ package podman
 
 import (
 	"github.com/spf13/cobra"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -18,6 +19,8 @@ type podmanPTFFlags struct {
 	TestId     string           `mapstructure:"test"`
 	CustomerId string           `mapstructure:"user"`
 	SCC        types.SCCCredentials
+	Coco       adm_utils.CocoFlags
+	Hubxmlrpc  adm_utils.HubXmlrpcFlags
 }
 
 // NewCommand for podman installation.
