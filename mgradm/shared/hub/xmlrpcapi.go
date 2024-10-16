@@ -87,6 +87,10 @@ func Upgrade(
 	tag string,
 	hubXmlrpcFlags cmd_utils.HubXmlrpcFlags,
 ) error {
+	if hubXmlrpcFlags.Image.Name == "" {
+		// Don't touch the hub service in ptf if not already present.
+		return nil
+	}
 	if err := SetupHubXmlrpc(systemd, authFile, registry, pullPolicy, tag, hubXmlrpcFlags); err != nil {
 		return err
 	}

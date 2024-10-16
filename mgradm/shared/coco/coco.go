@@ -28,6 +28,11 @@ func Upgrade(
 	dbUser string,
 	dbPassword string,
 ) error {
+	if cocoFlags.Image.Name == "" {
+		// Don't touch the coco service in ptf if not already present.
+		return nil
+	}
+
 	if err := writeCocoServiceFiles(
 		systemd, authFile, registry, cocoFlags, baseImage, dbName, dbPort, dbUser, dbPassword,
 	); err != nil {
