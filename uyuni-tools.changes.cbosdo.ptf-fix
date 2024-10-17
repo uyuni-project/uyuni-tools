@@ -1,0 +1,2 @@
+- Ignore coco and hub images when applying PTF if they are not
+  available (bsc#1229079)
