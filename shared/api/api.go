@@ -181,7 +181,7 @@ func (c *APIClient) login() error {
 		return err
 	}
 	if !response["success"].(bool) {
-		return fmt.Errorf(response["messages"].(string))
+		return fmt.Errorf(response["message"].(string))
 	}
 
 	cookies := res.Cookies()
