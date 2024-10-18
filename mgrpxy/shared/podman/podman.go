@@ -32,10 +32,12 @@ type PodmanProxyFlags struct {
 // GenerateSystemdService generates all the systemd files required by proxy.
 func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImage string, sshImage string,
 	tftpdImage string, flags *PodmanProxyFlags) error {
-	ipv6Enabled, err := podman.SetupNetwork(true)
+	err := podman.SetupNetwork(true)
 	if err != nil {
 		return shared_utils.Errorf(err, L("cannot setup network"))
 	}
+
+	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
 
 	log.Info().Msg(L("Generating systemd services"))
 	httpProxyConfig := getHttpProxyConfig()
