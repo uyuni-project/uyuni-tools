@@ -64,6 +64,7 @@ var etcAndPgsqlVolumes = append(PgsqlRequiredVolumes, EtcServerVolumes[:]...)
 // the helm chart and the systemctl services definitions.
 var ServerVolumeMounts = append([]types.VolumeMount{
 	{MountPath: "/var/lib/cobbler", Name: "var-cobbler"},
+	{MountPath: "/var/lib/rhn/search", Name: "var-search"},
 	{MountPath: "/var/lib/salt", Name: "var-salt"},
 	{MountPath: "/var/cache", Name: "var-cache"},
 	{MountPath: "/var/spacewalk", Name: "var-spacewalk"},
