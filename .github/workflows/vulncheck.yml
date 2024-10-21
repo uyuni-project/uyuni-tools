@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: 2023 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: Vulnerability check
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  govulncheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+
+      - name: Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          check-latest: true
+
+      - name: Install govulncheck
+        run: go install golang.org/x/vuln/cmd/govulncheck@latest
+        shell: bash
+
+      - id: govulncheck
+        name: Run govulncheck
+        run: govulncheck -tags ptf ./... 
+        shell: bash
