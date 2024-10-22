@@ -115,7 +115,7 @@ func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, image
 		args := []string{
 			"--set", "crds.enabled=true",
 			"--set-json", "global.commonLabels={\"installedby\": \"mgradm\"}",
-			"--set", "images.pullPolicy=" + kubernetes.GetPullPolicy(imagePullPolicy),
+			"--set", "image.pullPolicy=" + kubernetes.GetPullPolicy(imagePullPolicy),
 		}
 		extraValues := helmFlags.CertManager.Values
 		if extraValues != "" {
