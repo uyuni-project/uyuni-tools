@@ -13,6 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/api"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/cp"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/exec"
+	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/proxy"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/term"
 	"github.com/uyuni-project/uyuni-tools/shared/completion"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -54,6 +55,7 @@ func NewUyunictlCommand() *cobra.Command {
 	rootCmd.AddCommand(term.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
+	rootCmd.AddCommand(proxy.NewCommand(globalFlags))
 
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
 

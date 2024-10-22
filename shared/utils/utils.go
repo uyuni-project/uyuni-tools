@@ -465,3 +465,22 @@ func CommandExists(cmd string) bool {
 	_, err := exec.LookPath(cmd)
 	return err == nil
 }
+
+// SaveBinaryData saves binary data to a file.
+func SaveBinaryData(filename string, data []int8) error {
+	// Need to convert the array of signed ints to unsigned/byte
+	byteArray := make([]byte, len(data))
+	for i, v := range data {
+		byteArray[i] = byte(v)
+	}
+	file, err := os.Create(filename)
+	if err != nil {
+		return Errorf(err, L("error creating file %s"), filename)
+	}
+	defer file.Close()
+	_, err = file.Write(byteArray)
+	if err != nil {
+		return Errorf(err, L("error writing file %s"), filename)
+	}
+	return nil
+}

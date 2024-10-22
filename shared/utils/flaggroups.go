@@ -102,3 +102,14 @@ func AddFlagToHelpGroupID(cmd *cobra.Command, flag, groupID string) error {
 
 	return nil
 }
+
+// Add flag to a group.
+func AddFlagsToHelpGroupID(cmd *cobra.Command, groupID string, flags ...string) error {
+	for _, flag := range flags {
+		err := AddFlagToHelpGroupID(cmd, flag, groupID)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}

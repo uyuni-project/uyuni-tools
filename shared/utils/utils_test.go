@@ -7,6 +7,7 @@ package utils
 import (
 	"fmt"
 	"os"
+	"path"
 	"regexp"
 	"strings"
 	"syscall"
@@ -16,6 +17,7 @@ import (
 	"github.com/chai2010/gettext-go"
 	"github.com/spf13/cobra"
 	l10n_utils "github.com/uyuni-project/uyuni-tools/shared/l10n/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -340,4 +342,21 @@ func TestConfig(t *testing.T) {
 	if viper.Get("fourthconf") != "SecondConfFile" {
 		t.Errorf("fourthconf is %s, instead of SecondConfFile", viper.Get("fourthconf"))
 	}
+}
+
+// Test saveBinaryData function.
+func TestSaveBinaryData(t *testing.T) {
+	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	defer cleaner()
+
+	filepath := path.Join(testDir, "testfile")
+	data := []int8{104, 101, 121, 32, 116, 104, 101, 114, 101, 33}
+
+	// Save binary data to a file
+	err := SaveBinaryData(filepath, data)
+	test_utils.AssertTrue(t, "Unexpected error executing SaveBinaryData", err == nil)
+
+	// Read the file back and compare contents
+	storedData := test_utils.ReadFileAsBinary(t, filepath)
+	test_utils.AssertEquals(t, "File configuration binary doesn't match", fmt.Sprintf("%v", data), fmt.Sprintf("%v", storedData))
 }
