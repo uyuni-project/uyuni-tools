@@ -108,7 +108,7 @@ func NewConfigCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	
 	$ mgrctl proxy create config --proxyName="proxy.example.com" --server="server.example.com" --email="admin@org.com" --caCrt="ca.pem" --caKey="caKey.pem" --caPassword="pass.txt" --cnames="proxy_a.example.com" --cnames="proxy_b.example.com" --cnames="proxy_c.example.com" --country="DE" --state="Bayern" --city="Nuernberg" --org="orgExample" --orgUnit="orgUnitExample" --sslEmail="sslEmail@example.com" -o="proxy-config"`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, proxyCreateConfigInit)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, proxyCreateConfigInit)
 		},
 	}
 
