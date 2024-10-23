@@ -26,7 +26,7 @@ var DefaultHelmRegistry = "registry.opensuse.org/uyuni"
 // DefaultTag represents the default tag used for image.
 var DefaultTag = "latest"
 
-// DefaultPullP represents the default pull policy used for image.
+// DefaultPullPolicy represents the default pull policy used for image.
 var DefaultPullPolicy = "Always"
 
 // This variable needs to be set a build time using git tags.

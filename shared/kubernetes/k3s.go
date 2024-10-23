@@ -44,10 +44,12 @@ func waitForTraefik() {
 		if err == nil {
 			completionTime, err := time.Parse(time.RFC3339, string(out))
 			if err == nil && time.Since(completionTime).Seconds() < 60 {
-				break
+				return
 			}
 		}
+		time.Sleep(1 * time.Second)
 	}
+	log.Error().Msg(L("Failed to reload K3s Traefik"))
 }
 
 // UninstallK3sTraefikConfig uninstall K3s Traefik configuration.
