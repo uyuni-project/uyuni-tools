@@ -43,7 +43,9 @@ type Connection struct {
 // container is the name of a container to look for when detecting the command.
 // kubernetesFilter is a filter parameter to use to match a pod.
 func NewConnection(backend string, container string, kubernetesFilter string) *Connection {
-	cnx := Connection{backend: backend, container: container, kubernetesFilter: kubernetesFilter, systemd: new(podman.SystemdImpl)}
+	cnx := Connection{
+		backend: backend, container: container, kubernetesFilter: kubernetesFilter, systemd: new(podman.SystemdImpl),
+	}
 
 	return &cnx
 }
@@ -70,7 +72,10 @@ func (c *Connection) GetCommand() (string, error) {
 			_, err = exec.LookPath("kubectl")
 			if err == nil {
 				hasKubectl = true
-				if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "--request-timeout=30s", "get", "pod", c.kubernetesFilter, "-A", "-o=jsonpath={.items[*].metadata.name}"); err != nil {
+				if out, err := utils.RunCmdOutput(
+					zerolog.DebugLevel, "kubectl", "--request-timeout=30s", "get", "pod", c.kubernetesFilter, "-A",
+					"-o=jsonpath={.items[*].metadata.name}",
+				); err != nil {
 					log.Info().Msg(L("kubectl not configured to connect to a cluster, ignoring"))
 				} else if len(bytes.TrimSpace(out)) != 0 {
 					c.command = "kubectl"
@@ -99,7 +104,8 @@ func (c *Connection) GetCommand() (string, error) {
 					if err != nil {
 						return c.command, err
 					}
-					if kubernetes.HasHelmRelease("uyuni", clusterInfos.GetKubeconfig()) || kubernetes.HasHelmRelease("uyuni-proxy", clusterInfos.GetKubeconfig()) {
+					kubeconfig := clusterInfos.GetKubeconfig()
+					if kubernetes.HasHelmRelease("uyuni", kubeconfig) || kubernetes.HasHelmRelease("uyuni-proxy", kubeconfig) {
 						c.command = "kubectl"
 						return c.command, nil
 					}
@@ -182,7 +188,9 @@ func (c *Connection) GetPodName() (string, error) {
 		case "podman-remote":
 			fallthrough
 		case "podman":
-			if out, _ := utils.RunCmdOutput(zerolog.DebugLevel, c.command, "ps", "-q", "-f", "name="+c.container); len(out) == 0 {
+			if out, _ := utils.RunCmdOutput(
+				zerolog.DebugLevel, c.command, "ps", "-q", "-f", "name="+c.container,
+			); len(out) == 0 {
 				err = fmt.Errorf(L("container %s is not running on podman"), c.container)
 			} else {
 				log.Trace().Msgf("Found container ID '%s'", out)
@@ -421,7 +429,9 @@ func (c *Connection) CopyCaCertificate(fqdn string) error {
 }
 
 // ChoosePodmanOrKubernetes selects either the podman or the kubernetes function based on the backend.
-// This function automatically detects the backend if compiled with kubernetes support and the backend flag is not passed.
+//
+// This function automatically detects the backend if compiled with kubernetes support
+// and the backend flag is not passed.
 func ChoosePodmanOrKubernetes[F interface{}](
 	flags *pflag.FlagSet,
 	podmanFn utils.CommandFunc[F],
@@ -437,7 +447,7 @@ func ChoosePodmanOrKubernetes[F interface{}](
 	return chooseBackend(cnx, podmanFn, kubernetesFn)
 }
 
-// ChooseProxyPodmanOrKubernetes selects either the podman or the kubernetes function based on the backend for the proxy.
+// ChooseProxyPodmanOrKubernetes selects either the podman or the kubernetes function based on the proxy backend.
 func ChooseProxyPodmanOrKubernetes[F interface{}](
 	flags *pflag.FlagSet,
 	podmanFn utils.CommandFunc[F],

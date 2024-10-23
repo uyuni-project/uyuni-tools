@@ -53,8 +53,9 @@ func Deploy(
 	}
 
 	// Install the uyuni server helm chart
-	err = UyuniUpgrade(serverImage, imageFlags.PullPolicy, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...)
-	if err != nil {
+	if err := UyuniUpgrade(
+		serverImage, imageFlags.PullPolicy, helmFlags, clusterInfos.GetKubeconfig(), fqdn, clusterInfos.Ingress, helmArgs...,
+	); err != nil {
 		return utils.Errorf(err, L("cannot upgrade"))
 	}
 
@@ -90,7 +91,11 @@ func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 }
 
 // DeployExistingCertificate execute a deploy of an existing certificate.
-func DeployExistingCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, kubeconfig string) error {
+func DeployExistingCertificate(
+	helmFlags *cmd_utils.HelmFlags,
+	sslFlags *cmd_utils.SslCertFlags,
+	kubeconfig string,
+) error {
 	// Deploy the SSL Certificate secret and CA configmap
 	serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
 	serverKey := utils.ReadFile(sslFlags.Server.Key)
@@ -220,7 +225,9 @@ func Upgrade(
 	}
 
 	schemaUpdateRequired := inspectedValues.CurrentPgVersion != inspectedValues.ImagePgVersion
-	if err := RunPgsqlFinalizeScript(serverImage, image.PullPolicy, namespace, nodeName, schemaUpdateRequired, false); err != nil {
+	if err := RunPgsqlFinalizeScript(
+		serverImage, image.PullPolicy, namespace, nodeName, schemaUpdateRequired, false,
+	); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
 

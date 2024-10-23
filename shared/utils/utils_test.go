@@ -139,7 +139,14 @@ func TestPasswordMismatch(t *testing.T) {
 	}
 }
 
-func sendInput(t *testing.T, testcase int, c *expect.Console, expectedPrompt string, value string, expectedMessage string) {
+func sendInput(
+	t *testing.T,
+	testcase int,
+	c *expect.Console,
+	expectedPrompt string,
+	value string,
+	expectedMessage string,
+) {
 	if _, err := c.ExpectString(expectedPrompt); err != nil {
 		t.Errorf("Testcase %d: Expected prompt error: %s", testcase, err)
 	}
@@ -161,7 +168,13 @@ func sendInput(t *testing.T, testcase int, c *expect.Console, expectedPrompt str
 
 func TestComputePTF(t *testing.T) {
 	data := [][]string{
-		{"registry.suse.com/a/a196136/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977", "a196136", "27977", "registry.suse.com/suse/manager/5.0/x86_64/proxy-helm:latest", "ptf"},
+		{
+			"registry.suse.com/a/a196136/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977",
+			"a196136",
+			"27977",
+			"registry.suse.com/suse/manager/5.0/x86_64/proxy-helm:latest",
+			"ptf",
+		},
 	}
 
 	for i, testCase := range data {
@@ -174,10 +187,16 @@ func TestComputePTF(t *testing.T) {
 		actual, err := ComputePTF(user, ptfId, fullImage, suffix)
 
 		if err != nil {
-			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s, %s: %s", i, user, ptfId, fullImage, suffix, err)
+			t.Errorf(
+				"Testcase %d: Unexpected error while computing image with %s, %s, %s, %s: %s",
+				i, user, ptfId, fullImage, suffix, err,
+			)
 		}
 		if actual != result {
-			t.Errorf("Testcase %d: Expected %s got %s when computing image with %s, %s, %s, %s", i, result, actual, user, ptfId, fullImage, suffix)
+			t.Errorf(
+				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s, %s",
+				i, result, actual, user, ptfId, fullImage, suffix,
+			)
 		}
 	}
 }
@@ -246,10 +265,16 @@ func TestComputeImage(t *testing.T) {
 		actual, err := ComputeImage(testCase[3], "defaulttag", image, appendToImage...)
 
 		if err != nil {
-			t.Errorf("Testcase %d: Unexpected error while computing image with %s, %s, %s: %s", i, image.Name, image.Tag, appendToImage, err)
+			t.Errorf(
+				"Testcase %d: Unexpected error while computing image with %s, %s, %s: %s",
+				i, image.Name, image.Tag, appendToImage, err,
+			)
 		}
 		if actual != result {
-			t.Errorf("Testcase %d: Expected %s got %s when computing image with %s, %s, %s", i, result, actual, image.Name, image.Tag, appendToImage)
+			t.Errorf(
+				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s",
+				i, result, actual, image.Name, image.Tag, appendToImage,
+			)
 		}
 	}
 }
@@ -358,5 +383,8 @@ func TestSaveBinaryData(t *testing.T) {
 
 	// Read the file back and compare contents
 	storedData := test_utils.ReadFileAsBinary(t, filepath)
-	test_utils.AssertEquals(t, "File configuration binary doesn't match", fmt.Sprintf("%v", data), fmt.Sprintf("%v", storedData))
+	test_utils.AssertEquals(
+		t, "File configuration binary doesn't match",
+		fmt.Sprintf("%v", data), fmt.Sprintf("%v", storedData),
+	)
 }

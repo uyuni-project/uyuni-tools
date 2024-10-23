@@ -61,8 +61,12 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 
 // AddSCCFlag add SCC flags to a command.
 func AddSCCFlag(cmd *cobra.Command) {
-	cmd.Flags().String("scc-user", "", L("SUSE Customer Center username. It will be used to pull images from registry.suse.com"))
-	cmd.Flags().String("scc-password", "", L("SUSE Customer Center password. It will be used to pull images from registry.suse.com"))
+	cmd.Flags().String("scc-user", "",
+		L("SUSE Customer Center username. It will be used to pull images from registry.suse.com"),
+	)
+	cmd.Flags().String("scc-password", "",
+		L("SUSE Customer Center password. It will be used to pull images from registry.suse.com"),
+	)
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "scc", Title: L("SUSE Customer Center Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "scc-user", "scc")

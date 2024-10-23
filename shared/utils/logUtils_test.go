@@ -10,9 +10,24 @@ import (
 
 func TestRedact(t *testing.T) {
 	data := [][]string{
-		{`{"level":"info","time":"2024-04-29T15:23:39+02:00","message":"Running /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --host localhost --address * --remote 0.0.0.0/0,::/0 --password /z4FffHC2HxaagBeIXFzshxtNUfbqm5Zwv/EgvxT"}`, `{"level":"info","time":"2024-04-29T15:23:39+02:00","message":"Running /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --host localhost --address * --remote 0.0.0.0/0,::/0 --password <REDACTED>"}`},
-		{`Running /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --host localhost --address * --remote 0.0.0.0/0,::/0 --password iVgQsuPDGxwKhFc5bfk4IjpVBbqrbyRDYKEsww+Y`, `Running /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --host localhost --address * --remote 0.0.0.0/0,::/0 --password <REDACTED>`},
-		{`{"adminLogin":"admin","adminPassword":"secret","email":"no@email.com"}`, `{"adminLogin":"admin","adminPassword":"<REDACTED>","email":"no@email.com"}`},
+		{
+			`{"level":"info","time":"2024-04-29T15:23:39+02:00","message":"Running /usr/bin/uyuni-setup-reportdb create ` +
+				`--db reportdb --user pythia_susemanager --host localhost --address * --remote 0.0.0.0/0,::/0 --password ` +
+				`/z4FffHC2HxaagBeIXFzshxtNUfbqm5Zwv/EgvxT"}`,
+			`{"level":"info","time":"2024-04-29T15:23:39+02:00","message":"Running /usr/bin/uyuni-setup-reportdb create ` +
+				`--db reportdb --user pythia_susemanager --host localhost --address * --remote 0.0.0.0/0,::/0 --password ` +
+				`<REDACTED>"}`,
+		},
+		{
+			`Running /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --host localhost --address *` +
+				` --remote 0.0.0.0/0,::/0 --password iVgQsuPDGxwKhFc5bfk4IjpVBbqrbyRDYKEsww+Y`,
+			`Running /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --host localhost --address *` +
+				` --remote 0.0.0.0/0,::/0 --password <REDACTED>`,
+		},
+		{
+			`{"adminLogin":"admin","adminPassword":"secret","email":"no@email.com"}`,
+			`{"adminLogin":"admin","adminPassword":"<REDACTED>","email":"no@email.com"}`,
+		},
 	}
 
 	for i, testCase := range data {

@@ -149,8 +149,9 @@ func migrateToKubernetes(
 	helmArgs = append(helmArgs, setupSslArray...)
 
 	// Run uyuni upgrade using the new ssl certificate
-	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
-	if err != nil {
+	if err = kubernetes.UyuniUpgrade(
+		serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...,
+	); err != nil {
 		return utils.Errorf(err, L("cannot upgrade helm chart to image %s using new SSL certificate"), serverImage)
 	}
 
@@ -175,7 +176,9 @@ func migrateToKubernetes(
 	}
 
 	schemaUpdateRequired := oldPgVersion != newPgVersion
-	if err := kubernetes.RunPgsqlFinalizeScript(serverImage, flags.Image.PullPolicy, namespace, nodeName, schemaUpdateRequired, true); err != nil {
+	if err := kubernetes.RunPgsqlFinalizeScript(
+		serverImage, flags.Image.PullPolicy, namespace, nodeName, schemaUpdateRequired, true,
+	); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalisation script"))
 	}
 
@@ -183,8 +186,9 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
-	err = kubernetes.UyuniUpgrade(serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...)
-	if err != nil {
+	if err := kubernetes.UyuniUpgrade(
+		serverImage, flags.Image.PullPolicy, &flags.Helm, kubeconfig, fqdn, clusterInfos.Ingress, helmArgs...,
+	); err != nil {
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}
 
@@ -200,7 +204,14 @@ func migrateToKubernetes(
 
 // updateIssuer replaces the temporary SSL certificate issuer with the source server CA.
 // Return additional helm args to use the SSL certificates.
-func setupSsl(helm *adm_utils.HelmFlags, kubeconfig string, scriptDir string, password string, pullPolicy string) ([]string, error) {
+func setupSsl(
+	helm *adm_utils.HelmFlags,
+	kubeconfig string,
+	scriptDir string,
+	password string,
+	pullPolicy string) ([]string,
+	error,
+) {
 	caCert := path.Join(scriptDir, "RHN-ORG-TRUSTED-SSL-CERT")
 	caKey := path.Join(scriptDir, "RHN-ORG-PRIVATE-SSL-KEY")
 

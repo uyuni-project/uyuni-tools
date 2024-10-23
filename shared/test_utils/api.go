@@ -23,7 +23,10 @@ func GetResponseWithCookie(cookie string, status int, json string) (*http.Respon
 	body := io.NopCloser(bytes.NewReader([]byte(json)))
 	headers := http.Header{}
 	headers.Add("Content-Type", "application/json")
-	headers.Add("Set-Cookie", fmt.Sprintf("pxt-session-cookie=%s; Max-Age=3600; Path=/; Secure; HttpOnly;HttpOnly;Secure", cookie))
+	headers.Add(
+		"Set-Cookie",
+		fmt.Sprintf("pxt-session-cookie=%s; Max-Age=3600; Path=/; Secure; HttpOnly;HttpOnly;Secure", cookie),
+	)
 	return &http.Response{
 		StatusCode: status,
 		Header:     headers,

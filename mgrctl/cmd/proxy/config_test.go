@@ -185,7 +185,9 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	}
 
 	// Execute providing certs
-	err := proxy.ProxyCreateConfig(mockContainerConfigflags, mockSuccessfulLoginApiCall(), mockContainerConfig, mockCreateConfigGenerate)
+	err := proxy.ProxyCreateConfig(
+		mockContainerConfigflags, mockSuccessfulLoginApiCall(), mockContainerConfig, mockCreateConfigGenerate,
+	)
 
 	// Assertions providing certs call
 	test_utils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
@@ -193,7 +195,9 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	test_utils.AssertTrue(t, "File configuration file stored", !utils.FileExists(testFiles.OutputFilePath))
 
 	// Execute generate certs
-	err = proxy.ProxyCreateConfig(mockContainerConfigGenerateflags, mockSuccessfulLoginApiCall(), mockContainerConfig, mockCreateConfigGenerate)
+	err = proxy.ProxyCreateConfig(
+		mockContainerConfigGenerateflags, mockSuccessfulLoginApiCall(), mockContainerConfig, mockCreateConfigGenerate,
+	)
 
 	// Assertions generate certs call
 	test_utils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)

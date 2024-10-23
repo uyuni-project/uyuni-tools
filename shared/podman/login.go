@@ -15,7 +15,9 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// PodmanLogin logs in the registry.suse.com registry if needed and returns an authentication file, a cleanup function and an error.
+// PodmanLogin logs in the registry.suse.com registry if needed.
+//
+// It returns an authentication file, a cleanup function and an error.
 func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials) (string, func(), error) {
 	scc_user := hostData.SccUsername
 	scc_password := hostData.SccPassword

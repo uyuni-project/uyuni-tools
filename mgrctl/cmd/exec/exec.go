@@ -40,7 +40,9 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		},
 	}
 
-	execCmd.Flags().StringSliceP("env", "e", []string{}, L("environment variables to pass to the command, separated by commas"))
+	execCmd.Flags().StringSliceP("env", "e", []string{},
+		L("environment variables to pass to the command, separated by commas"),
+	)
 	execCmd.Flags().BoolP("interactive", "i", false, L("Pass stdin to the container"))
 	execCmd.Flags().BoolP("tty", "t", false, L("Stdin is a TTY"))
 

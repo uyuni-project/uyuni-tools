@@ -128,7 +128,9 @@ func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, image
 			chart = "cert-manager"
 		}
 		// The installedby label will be used to only uninstall what we installed
-		if err := kubernetes.HelmUpgrade(kubeconfig, namespace, true, repo, "cert-manager", chart, version, args...); err != nil {
+		if err := kubernetes.HelmUpgrade(
+			kubeconfig, namespace, true, repo, "cert-manager", chart, version, args...,
+		); err != nil {
 			return utils.Errorf(err, L("cannot run helm upgrade"))
 		}
 	}
@@ -148,7 +150,9 @@ func extractCaCertToConfig(namespace string) {
 
 	log.Info().Msg(L("Extracting CA certificate to a configmap"))
 	// Skip extracting if the configmap is already present
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "configmap", "uyuni-ca", jsonPath, "-n", namespace)
+	out, err := utils.RunCmdOutput(
+		zerolog.DebugLevel, "kubectl", "get", "configmap", "uyuni-ca", jsonPath, "-n", namespace,
+	)
 	log.Info().Msgf(L("CA cert: %s"), string(out))
 	if err == nil && len(out) > 0 {
 		log.Info().Msg(L("uyuni-ca configmap already existing, skipping extraction"))

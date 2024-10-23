@@ -13,6 +13,11 @@ import (
 
 var systemd shared_podman.Systemd = shared_podman.SystemdImpl{}
 
-func upgradePodman(globalFlags *types.GlobalFlags, flags *podman.PodmanProxyFlags, cmd *cobra.Command, args []string) error {
+func upgradePodman(
+	globalFlags *types.GlobalFlags,
+	flags *podman.PodmanProxyFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
 	return podman.Upgrade(systemd, globalFlags, flags, cmd, args)
 }

@@ -9,6 +9,7 @@ import (
 	"text/template"
 )
 
+//nolint:lll
 const mgrSetupScriptTemplate = `#!/bin/sh
 {{- range $name, $value := .Env }}
 export {{ $name }}='{{ $value }}'

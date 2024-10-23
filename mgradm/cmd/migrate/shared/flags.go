@@ -32,5 +32,7 @@ func AddMigrateFlags(cmd *cobra.Command) {
 	utils.AddDbUpgradeImageFlag(cmd)
 	utils.AddUpgradeCocoFlag(cmd)
 	utils.AddUpgradeHubXmlrpcFlags(cmd)
-	cmd.Flags().String("user", "root", L("User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."))
+	cmd.Flags().String("user", "root",
+		L("User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."),
+	)
 }
