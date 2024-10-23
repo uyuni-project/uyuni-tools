@@ -35,7 +35,8 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[logsFlags]) *c
 		Short: L("Get the proxy logs"),
 		Long: L(`Get the proxy logs
 The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman
-However, you can specify the pod and/or container names to get the logs for specific container(s). See examples for more details.`),
+However, you can specify the pod and/or container names to get the logs for specific container(s).
+See examples for more details.`),
 		Example: `  Log all relevant containers (Podman and Kubernetes)
 
     $ mgrpxy logs
@@ -62,7 +63,10 @@ However, you can specify the pod and/or container names to get the logs for spec
 	cmd.Flags().BoolP("timestamps", "t", false, L("show timestamps in the log outputs"))
 	cmd.Flags().Int("tail", -1, L("number of lines to show from the end of the logs"))
 	cmd.Flags().Lookup("tail").NoOptDefVal = "-1"
-	cmd.Flags().String("since", "", L("show logs since a specific time or duration. Supports Go duration strings and RFC3339 format (e.g. 5s, 2m, 3h, 2023-01-02T15:04:05)"))
+	cmd.Flags().String("since", "",
+		L(`show logs since a specific time or duration.
+Supports Go duration strings and RFC3339 format (e.g. 3h, 2023-01-02T15:04:05)`),
+	)
 
 	cmd.SetUsageTemplate(cmd.UsageTemplate())
 	return cmd
@@ -96,7 +100,10 @@ func getContainerNames(cmd *cobra.Command, args []string, toComplete string) ([]
 			}
 			return []string{podName}, cobra.ShellCompDirectiveNoFileComp
 		} else if len(args) == 1 {
-			names = getNames(exec.Command("kubectl", "get", "pod", args[0], "-o", "jsonpath={.spec.containers[*].name}"), " ", "")
+			names = getNames(
+				exec.Command("kubectl", "get", "pod", args[0], "-o", "jsonpath={.spec.containers[*].name}"),
+				" ", "",
+			)
 		} else {
 			//kubernetes log only accepts either 1 container name or the --all-containers flag.
 			return names, cobra.ShellCompDirectiveNoFileComp

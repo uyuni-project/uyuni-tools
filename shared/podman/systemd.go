@@ -145,7 +145,10 @@ func uninstallServiceFiles(name string, dryRun bool) {
 				log.Debug().Msgf("Removing %s folder, since it's empty", serviceConfFolder)
 				_ = utils.RemoveDirectory(serviceConfFolder)
 			} else {
-				log.Warn().Msgf(L("%s folder contains file created by the user. Please remove them when uninstallation is completed."), serviceConfFolder)
+				log.Warn().Msgf(
+					L("%s folder contains file created by the user. Please remove them when uninstallation is completed."),
+					serviceConfFolder,
+				)
 			}
 		}
 	}

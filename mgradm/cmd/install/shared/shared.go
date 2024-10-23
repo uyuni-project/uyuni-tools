@@ -29,7 +29,9 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 	// Containers should be running now, check storage if it is using volume from already configured server
 	preconfigured := false
 	if isServerConfigured(cnx) {
-		log.Warn().Msg(L("Server appears to be already configured. Installation will continue, but installation options may be ignored."))
+		log.Warn().Msg(
+			L("Server appears to be already configured. Installation will continue, but installation options may be ignored."),
+		)
 		preconfigured = true
 	}
 

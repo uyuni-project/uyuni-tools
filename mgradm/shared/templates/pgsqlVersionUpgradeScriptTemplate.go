@@ -9,6 +9,7 @@ import (
 	"text/template"
 )
 
+//nolint:lll
 const postgreSQLVersionUpgradeScriptTemplate = `#!/bin/bash
 set -e
 echo "PostgreSQL version upgrade"

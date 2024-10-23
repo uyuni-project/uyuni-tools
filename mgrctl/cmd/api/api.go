@@ -49,7 +49,9 @@ Key=Value pairs example:
 # mgrctl api post user/create login=test password=testXX firstName=F lastName=L email=test@localhost
 
 JSON example:
-# mgrctl api post user/create '{"login":"test", "password":"testXX", "firstName":"F", "lastName":"L", "email":"test@localhost"}'`),
+# mgrctl api post user/create \
+   '{"login":"test", "password":"testXX", "firstName":"F", "lastName":"L", "email":"test@localhost"}'
+`),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, runPost)
 		},

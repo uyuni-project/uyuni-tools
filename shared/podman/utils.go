@@ -220,7 +220,12 @@ func getPodmanVolumeBasePath() (string, error) {
 }
 
 // Inspect check values on a given image and deploy.
-func Inspect(serverImage string, pullPolicy string, scc types.SCCCredentials, proxyHost bool) (*utils.ServerInspectData, error) {
+func Inspect(
+	serverImage string,
+	pullPolicy string,
+	scc types.SCCCredentials,
+	proxyHost bool,
+) (*utils.ServerInspectData, error) {
 	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {

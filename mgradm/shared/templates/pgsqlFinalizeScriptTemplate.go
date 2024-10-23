@@ -9,6 +9,7 @@ import (
 	"text/template"
 )
 
+//nolint:lll
 const postgresFinalizeScriptTemplate = `#!/bin/bash
 set -e
 

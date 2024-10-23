@@ -35,7 +35,8 @@ func SetupHubXmlrpc(
 		log.Info().Msgf(L("No changes requested for hub. Keep %d replicas."), currentReplicas)
 	}
 
-	pullEnabled := (hubXmlrpcFlags.Replicas > 0 && hubXmlrpcFlags.IsChanged) || (currentReplicas > 0 && !hubXmlrpcFlags.IsChanged)
+	pullEnabled := (hubXmlrpcFlags.Replicas > 0 && hubXmlrpcFlags.IsChanged) ||
+		(currentReplicas > 0 && !hubXmlrpcFlags.IsChanged)
 
 	hubXmlrpcImage, err := utils.ComputeImage(registry, tag, image)
 
@@ -103,12 +104,16 @@ func generateHubXmlrpcSystemdService(image string) error {
 		Network:    podman.UyuniNetwork,
 		Image:      image,
 	}
-	if err := utils.WriteTemplateToFile(hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0555, true); err != nil {
+	if err := utils.WriteTemplateToFile(
+		hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0555, true,
+	); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
 	environment := fmt.Sprintf("Environment=UYUNI_IMAGE=%s", image)
-	if err := podman.GenerateSystemdConfFile(podman.HubXmlrpcService+"@", "generated.conf", environment, true); err != nil {
+	if err := podman.GenerateSystemdConfFile(
+		podman.HubXmlrpcService+"@", "generated.conf", environment, true,
+	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 

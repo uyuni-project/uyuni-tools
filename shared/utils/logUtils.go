@@ -93,7 +93,10 @@ func LogInit(logToConsole bool) {
 	log.Logger = zerolog.New(multi).With().Timestamp().Stack().Logger()
 
 	if fileWriter.logger.Filename != globalLogPath {
-		log.Warn().Msgf(L("Couldn't open %[1]s file for writing, writing log to %[2]s"), globalLogPath, fileWriter.logger.Filename)
+		log.Warn().Msgf(
+			L("Couldn't open %[1]s file for writing, writing log to %[2]s"),
+			globalLogPath, fileWriter.logger.Filename,
+		)
 	}
 }
 

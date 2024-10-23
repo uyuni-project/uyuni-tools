@@ -108,7 +108,10 @@ func fetchBoundFileCommand(dir string, container string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "inspect", container, "--format", "{{range .Mounts}}{{if eq .Type \"bind\"}} {{.Source}}{{end}}{{end}}")
+	out, err := utils.RunCmdOutput(
+		zerolog.DebugLevel, "podman", "inspect", container,
+		"--format", "{{range .Mounts}}{{if eq .Type \"bind\"}} {{.Source}}{{end}}{{end}}",
+	)
 	if err != nil {
 		return "", utils.Errorf(err, L("failed to run podman inspect %s"), container)
 	}
@@ -162,7 +165,9 @@ func runJournalCtlCommand(dir string, container string) (string, error) {
 }
 
 func getSystemdFileList() ([]byte, error) {
-	return utils.RunCmdOutput(zerolog.DebugLevel, "find", "/etc/systemd/system", "-maxdepth", "1", "-name", "uyuni-*service")
+	return utils.RunCmdOutput(
+		zerolog.DebugLevel, "find", "/etc/systemd/system", "-maxdepth", "1", "-name", "uyuni-*service",
+	)
 }
 
 func hostedContainers() ([]string, error) {

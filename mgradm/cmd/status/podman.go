@@ -33,12 +33,16 @@ func podmanStatus(
 
 	for i := 0; i < podman.CurrentReplicaCount(podman.ServerAttestationService); i++ {
 		println() // add an empty line between the previous logs and this one
-		_ = utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.ServerAttestationService, i))
+		_ = utils.RunCmdStdMapping(
+			zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.ServerAttestationService, i),
+		)
 	}
 
 	for i := 0; i < podman.CurrentReplicaCount(podman.HubXmlrpcService); i++ {
 		println() // add an empty line between the previous logs and this one
-		_ = utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.HubXmlrpcService, i))
+		_ = utils.RunCmdStdMapping(
+			zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.HubXmlrpcService, i),
+		)
 	}
 
 	return nil

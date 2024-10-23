@@ -35,7 +35,10 @@ var prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
 var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
 
 // Taken from https://github.com/go-playground/validator/blob/2e1df48/regexes.go#L58
-var fqdnValid = regexp.MustCompile(`^([a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})(\.[a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})*?(\.[a-zA-Z]{1}[a-zA-Z0-9]{0,62})\.?$`)
+var fqdnValid = regexp.MustCompile(
+	`^([a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})(\.[a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})*?` +
+		`(\.[a-zA-Z]{1}[a-zA-Z0-9]{0,62})\.?$`,
+)
 
 // InspectResult holds the results of the inspection scripts.
 type InspectResult struct {
@@ -194,7 +197,12 @@ func RemoveRegistryFromImage(imagePath string) string {
 }
 
 // ComputeImage assembles the container image from its name and tag.
-func ComputeImage(registry string, globalTag string, imageFlags types.ImageFlags, appendToName ...string) (string, error) {
+func ComputeImage(
+	registry string,
+	globalTag string,
+	imageFlags types.ImageFlags,
+	appendToName ...string,
+) (string, error) {
 	if !strings.Contains(DefaultRegistry, registry) {
 		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), registry, DefaultRegistry)
 	}

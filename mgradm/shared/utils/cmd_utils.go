@@ -36,8 +36,12 @@ func AddHelmInstallFlag(cmd *cobra.Command) {
 	cmd.Flags().String("helm-uyuni-chart", defaultChart, L("URL to the uyuni helm chart"))
 	cmd.Flags().String("helm-uyuni-version", "", L("Version of the uyuni helm chart"))
 	cmd.Flags().String("helm-uyuni-values", "", L("Path to a values YAML file to use for Uyuni helm install"))
-	cmd.Flags().String("helm-certmanager-namespace", "cert-manager", L("Kubernetes namespace where to install cert-manager"))
-	cmd.Flags().String("helm-certmanager-chart", "", L("URL to the cert-manager helm chart. To be used for offline installations"))
+	cmd.Flags().String("helm-certmanager-namespace", "cert-manager",
+		L("Kubernetes namespace where to install cert-manager"),
+	)
+	cmd.Flags().String("helm-certmanager-chart", "",
+		L("URL to the cert-manager helm chart. To be used for offline installations"),
+	)
 	cmd.Flags().String("helm-certmanager-version", "", L("Version of the cert-manager helm chart"))
 	cmd.Flags().String("helm-certmanager-values", "", L("Path to a values YAML file to use for cert-manager helm install"))
 
@@ -74,8 +78,10 @@ func AddContainerImageFlags(
 
 // AddSCCFlag add SCC flags to a command.
 func AddSCCFlag(cmd *cobra.Command) {
-	cmd.Flags().String("scc-user", "", L("SUSE Customer Center username. It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"))
-	cmd.Flags().String("scc-password", "", L("SUSE Customer Center password. It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"))
+	cmd.Flags().String("scc-user", "", L(`SUSE Customer Center username.
+It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com`))
+	cmd.Flags().String("scc-password", "", L(`SUSE Customer Center password.
+It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com`))
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "scc", Title: L("SUSE Customer Center Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "scc-user", "scc")
@@ -124,7 +130,8 @@ func AddCocoFlag(cmd *cobra.Command) {
 func AddUpgradeCocoFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
 	AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"), "coco-container", "server-attestation")
-	cmd.Flags().Int("coco-replicas", 0, L("How many replicas of the confidential computing container should be started. Leave it unset if you want to keep the previous number of replicas."))
+	cmd.Flags().Int("coco-replicas", 0, L(`How many replicas of the confidential computing container should be started.
+Leave it unset if you want to keep the previous number of replicas.`))
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
 }
 
@@ -132,7 +139,9 @@ func AddUpgradeCocoFlag(cmd *cobra.Command) {
 func AddHubXmlrpcFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API")})
 	AddContainerImageFlags(cmd, "hubxmlrpc", L("Hub XML-RPC API"), "hubxmlrpc-container", "server-hub-xmlrpc-api")
-	cmd.Flags().Int("hubxmlrpc-replicas", 0, L("How many replicas of the Hub XML-RPC API service container should be started."))
+	cmd.Flags().Int("hubxmlrpc-replicas", 0,
+		L("How many replicas of the Hub XML-RPC API service container should be started."),
+	)
 	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-replicas", "hubxmlrpc-container")
 }
 
@@ -140,6 +149,8 @@ func AddHubXmlrpcFlags(cmd *cobra.Command) {
 func AddUpgradeHubXmlrpcFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API")})
 	AddContainerImageFlags(cmd, "hubxmlrpc", L("Hub XML-RPC API"), "hubxmlrpc-container", "server-hub-xmlrpc-api")
-	cmd.Flags().Int("hubxmlrpc-replicas", 0, L("How many replicas of the Hub XML-RPC API service container should be started. Leave it unset if you want to keep the previous number of replicas."))
+	cmd.Flags().Int("hubxmlrpc-replicas", 0,
+		L(`How many replicas of the Hub XML-RPC API service container should be started.
+Leave it unset if you want to keep the previous number of replicas.`))
 	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-replicas", "hubxmlrpc-container")
 }

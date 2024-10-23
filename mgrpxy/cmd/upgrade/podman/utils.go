@@ -10,6 +10,11 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func upgradePodman(globalFlags *types.GlobalFlags, flags *podman.PodmanProxyFlags, cmd *cobra.Command, args []string) error {
+func upgradePodman(
+	globalFlags *types.GlobalFlags,
+	flags *podman.PodmanProxyFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
 	return podman.Upgrade(globalFlags, flags, cmd, args)
 }

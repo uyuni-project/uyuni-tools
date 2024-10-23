@@ -60,7 +60,9 @@ func uninstallForKubernetes(
 
 		if !flags.Force {
 			log.Info().Msgf(L("Would run %s"), fmt.Sprintf("kubectl delete -n %s configmap uyuni-ca", serverNamespace))
-			log.Info().Msgf(L("Would run %s"), fmt.Sprintf("kubectl delete -n %s secret uyuni-cert %s", serverNamespace, caSecret))
+			log.Info().Msgf(L("Would run %s"),
+				fmt.Sprintf("kubectl delete -n %s secret uyuni-cert %s", serverNamespace, caSecret),
+			)
 		} else {
 			log.Info().Msgf(L("Running %s"), fmt.Sprintf("kubectl delete -n %s configmap uyuni-ca", serverNamespace))
 			if err := utils.RunCmd("kubectl", "delete", "-n", serverNamespace, "configmap", "uyuni-ca"); err != nil {
