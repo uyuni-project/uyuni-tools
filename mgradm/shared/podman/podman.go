@@ -377,9 +377,16 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot inspect podman values"))
 	}
 
-	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
+	runningImage := podman.GetServiceImage(podman.ServerService)
+	var runningData *utils.ServerInspectData
+	if runningImage != "" {
+		runningData, err = Inspect(runningImage)
+		if err != nil {
+			return err
+		}
+	}
 
-	if err := adm_utils.SanityCheck(cnx, inspectedValues, preparedImage); err != nil {
+	if err := adm_utils.SanityCheck(runningData, inspectedValues, preparedImage); err != nil {
 		return err
 	}
 

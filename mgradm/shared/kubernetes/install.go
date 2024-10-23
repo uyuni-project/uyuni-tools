@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//go:build !nok8s
+
 package kubernetes
 
 import (
@@ -170,7 +172,15 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot inspect kubernetes values"))
 	}
 
-	err = cmd_utils.SanityCheck(cnx, inspectedValues, serverImage)
+	var runningData *utils.ServerInspectData
+	if runningImage := getRunningServerImage(namespace); runningImage != "" {
+		runningData, err = kubernetes.InspectKubernetes(namespace, runningImage, "Never")
+		if err != nil {
+			return err
+		}
+	}
+
+	err = cmd_utils.SanityCheck(runningData, inspectedValues, serverImage)
 	if err != nil {
 		return err
 	}
