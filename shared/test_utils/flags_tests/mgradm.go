@@ -43,6 +43,34 @@ func AssertServerHelmFlags(t *testing.T, cmd *cobra.Command, flags *utils.HelmFl
 	)
 }
 
+// Expected values for AssertVolumesFlags.
+var VolumesFlagsTestExpected = []string{
+	"--volumes-class", "MyStorageClass",
+	"--volumes-mirror", "mirror-pv",
+	"--volumes-database-size", "123Gi",
+	"--volumes-database-class", "dbclass",
+	"--volumes-packages-size", "456Gi",
+	"--volumes-packages-class", "pkgclass",
+	"--volumes-www-size", "123Mi",
+	"--volumes-www-class", "wwwclass",
+	"--volumes-cache-size", "789Gi",
+	"--volumes-cache-class", "cacheclass",
+}
+
+// Assert that all the volumes flags are parsed correctly.
+func AssertVolumesFlags(t *testing.T, cmd *cobra.Command, flags *utils.VolumesFlags) {
+	test_utils.AssertEquals(t, "Error parsing --volumes-class", "MyStorageClass", flags.Class)
+	test_utils.AssertEquals(t, "Error parsing --volumes-mirror", "mirror-pv", flags.Mirror)
+	test_utils.AssertEquals(t, "Error parsing --volumes-database-size", "123Gi", flags.Database.Size)
+	test_utils.AssertEquals(t, "Error parsing --volumes-database-class", "dbclass", flags.Database.Class)
+	test_utils.AssertEquals(t, "Error parsing --volumes-packages-size", "456Gi", flags.Packages.Size)
+	test_utils.AssertEquals(t, "Error parsing --volumes-packages-class", "pkgclass", flags.Packages.Class)
+	test_utils.AssertEquals(t, "Error parsing --volumes-www-size", "123Mi", flags.Www.Size)
+	test_utils.AssertEquals(t, "Error parsing --volumes-www-class", "wwwclass", flags.Www.Class)
+	test_utils.AssertEquals(t, "Error parsing --volumes-cache-size", "789Gi", flags.Cache.Size)
+	test_utils.AssertEquals(t, "Error parsing --volumes-cache-class", "cacheclass", flags.Cache.Class)
+}
+
 // Expected values for AssertImageFlag.
 var ImageFlagsTestArgs = []string{
 	"--image", "path/to/image",

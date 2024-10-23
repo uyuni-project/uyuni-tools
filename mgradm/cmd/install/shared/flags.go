@@ -5,112 +5,11 @@
 package shared
 
 import (
-	"fmt"
-	"net/mail"
-	"regexp"
-	"strings"
-
 	"github.com/spf13/cobra"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
-
-// DbFlags can store all values required to connect to a database.
-type DbFlags struct {
-	Host     string
-	Name     string
-	Port     int
-	User     string
-	Password string
-	Protocol string
-	Provider string
-	Admin    struct {
-		User     string
-		Password string
-	}
-}
-
-// DebugFlags contains information about enabled/disabled debug.
-type DebugFlags struct {
-	Java bool
-}
-
-// InstallFlags stores all the flags used by install command.
-type InstallFlags struct {
-	TZ           string
-	Email        string
-	EmailFrom    string
-	IssParent    string
-	Mirror       string
-	Tftp         bool
-	Db           DbFlags
-	ReportDb     DbFlags
-	Ssl          cmd_utils.SslCertFlags
-	Scc          types.SCCCredentials
-	Debug        DebugFlags
-	Image        types.ImageFlags `mapstructure:",squash"`
-	Coco         cmd_utils.CocoFlags
-	HubXmlrpc    cmd_utils.HubXmlrpcFlags
-	Admin        apiTypes.User
-	Organization string
-}
-
-// idChecker verifies that the value is a valid identifier.
-func idChecker(value string) bool {
-	r := regexp.MustCompile(`^([[:alnum:]]|[._-])+$`)
-	if r.MatchString(value) {
-		return true
-	}
-	fmt.Println(L("Can only contain letters, digits . _ and -"))
-	return false
-}
-
-// emailChecker verifies that the value is a valid email address.
-func emailChecker(value string) bool {
-	address, err := mail.ParseAddress(value)
-	if err != nil || address.Name != "" || strings.ContainsAny(value, "<>") {
-		fmt.Println(L("Not a valid email address"))
-		return false
-	}
-	return true
-}
-
-// CheckParameters checks parameters for install command.
-func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
-	if flags.Db.Password == "" {
-		flags.Db.Password = utils.GetRandomBase64(30)
-	}
-
-	if flags.ReportDb.Password == "" {
-		flags.ReportDb.Password = utils.GetRandomBase64(30)
-	}
-
-	// Make sure we have all the required 3rd party flags or none
-	flags.Ssl.CheckParameters()
-
-	// Since we use cert-manager for self-signed certificates on kubernetes we don't need password for it
-	if !flags.Ssl.UseExisting() && command == "podman" {
-		utils.AskPasswordIfMissing(&flags.Ssl.Password, cmd.Flag("ssl-password").Usage, 0, 0)
-	}
-
-	// Use the host timezone if the user didn't define one
-	if flags.TZ == "" {
-		flags.TZ = utils.GetLocalTimezone()
-	}
-
-	utils.AskIfMissing(&flags.Email, cmd.Flag("email").Usage, 1, 128, emailChecker)
-	utils.AskIfMissing(&flags.EmailFrom, cmd.Flag("emailfrom").Usage, 0, 0, emailChecker)
-
-	utils.AskIfMissing(&flags.Admin.Login, cmd.Flag("admin-login").Usage, 1, 64, idChecker)
-	utils.AskPasswordIfMissing(&flags.Admin.Password, cmd.Flag("admin-password").Usage, 5, 48)
-	utils.AskIfMissing(&flags.Organization, cmd.Flag("organization").Usage, 3, 128, nil)
-
-	flags.Ssl.Email = flags.Email
-	flags.Admin.Email = flags.Email
-}
 
 // AddInspectFlags add flags to inspect command.
 func AddInspectFlags(cmd *cobra.Command) {

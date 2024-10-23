@@ -24,7 +24,7 @@ func TestParamsParsing(t *testing.T) {
 	tester := func(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		flags_tests.AssertInstallFlags(t, cmd, &flags.InstallFlags)
+		flags_tests.AssertInstallFlags(t, cmd, &flags.ServerFlags)
 		flags_tests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
 		test_utils.AssertEquals(t, "Wrong FQDN", "srv.fq.dn", args[0])
 		return nil

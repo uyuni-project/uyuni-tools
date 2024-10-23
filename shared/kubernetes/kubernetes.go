@@ -102,7 +102,7 @@ func Restart(namespace string, app string) error {
 // Start starts the pod.
 func Start(namespace string, app string) error {
 	// if something is running, we don't need to set replicas to 1
-	if _, err := GetNode(namespace, "-lapp="+app); err != nil {
+	if _, err := GetNode(namespace, "-l"+AppLabel+"="+app); err != nil {
 		return ReplicasTo(namespace, app, 1)
 	}
 	log.Debug().Msgf("Already running")
@@ -194,16 +194,25 @@ data:
 
 // AddSccSecret creates a secret holding the SCC credentials and adds it to the helm args.
 func AddSccSecret(helmArgs []string, namespace string, scc *types.SCCCredentials) ([]string, error) {
+	secret, err := GetSccSecret(namespace, scc)
+	if secret != "" {
+		helmArgs = append(helmArgs, secret)
+	}
+	return helmArgs, err
+}
+
+// GetSccSecret creates a secret holding the SCC credentials and returns the secret name.
+func GetSccSecret(namespace string, scc *types.SCCCredentials) (string, error) {
 	if scc.User != "" && scc.Password != "" {
 		secretName := "scc-credentials"
 		if err := createDockerSecret(
 			namespace, secretName, "registry.suse.com", scc.User, scc.Password,
 		); err != nil {
-			return helmArgs, err
+			return "", err
 		}
-		helmArgs = append(helmArgs, "--set", "registrySecret="+secretName)
+		return secretName, nil
 	}
-	return helmArgs, nil
+	return "", nil
 }
 
 // GetDeploymentImagePullSecret returns the name of the image pull secret of a deployment.
@@ -218,4 +227,12 @@ func GetDeploymentImagePullSecret(namespace string, filter string) (string, erro
 	}
 
 	return strings.TrimSpace(string(out)), nil
+}
+
+// HasResource checks if a resource is available on the cluster.
+func HasResource(name string) bool {
+	if err := utils.RunCmd("kubectl", "explain", name); err != nil {
+		return false
+	}
+	return true
 }

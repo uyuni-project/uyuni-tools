@@ -16,15 +16,14 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// InstallK3sTraefikConfig installs the K3s Traefik configuration.
-func InstallK3sTraefikConfig(debug bool) {
-	tcpPorts := []types.PortMap{}
-	tcpPorts = append(tcpPorts, utils.TCP_PORTS...)
-	if debug {
-		tcpPorts = append(tcpPorts, utils.DEBUG_PORTS...)
+// GetPortLists returns compiled lists of tcp and udp ports..
+func GetPortLists(hub bool, debug bool) []types.PortMap {
+	ports := utils.GetServerPorts(debug)
+	if hub {
+		ports = append(ports, utils.HUB_XMLRPC_PORTS...)
 	}
 
-	kubernetes.InstallK3sTraefikConfig(tcpPorts, utils.UDP_PORTS)
+	return ports
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
@@ -61,7 +60,7 @@ func RunPgsqlVersionUpgrade(
 		}
 
 		log.Info().Msgf(L("Using database upgrade image %s"), upgradeImageUrl)
-		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, true)
+		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql)
 		if err != nil {
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
