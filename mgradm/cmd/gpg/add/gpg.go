@@ -69,11 +69,11 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 
 	gpgAddCmd = append(gpgAddCmd, "--keyring", customKeyringPath)
 
-	scriptDir, err := utils.TempDir()
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(scriptDir)
+	defer cleaner()
 
 	for _, keyURL := range args {
 		var hostKeyPath string

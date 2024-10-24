@@ -8,7 +8,7 @@ package inspect
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -38,7 +38,7 @@ func kuberneteInspect(
 
 		serverImage, err = adm_utils.RunningImage(cnx, "uyuni")
 		if err != nil {
-			return fmt.Errorf(L("failed to find the image of the currently running server container: %s"))
+			return errors.New(L("failed to find the image of the currently running server container: %s"))
 		}
 	}
 

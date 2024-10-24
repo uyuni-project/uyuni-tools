@@ -14,7 +14,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// The name of the podman network for Uyuni and its proxies.
+// UyuniNetwork is the name of the podman network for Uyuni and its proxies.
 const UyuniNetwork = "uyuni"
 
 // HasIpv6Enabled returns whether a podman network has IPv6 enabled.

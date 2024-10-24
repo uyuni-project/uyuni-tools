@@ -110,7 +110,7 @@ func getBaseCommand(keepStdin bool, flags *sqlFlags, cnx *shared.Connection) (st
 	return command, commandArgs, nil
 }
 
-func doSql(globalFlags *types.GlobalFlags, flags *sqlFlags, cmd *cobra.Command, args []string) error {
+func doSQL(globalFlags *types.GlobalFlags, flags *sqlFlags, cmd *cobra.Command, args []string) error {
 	if flags.Interactive && flags.OutputFile != "" {
 		return errors.New(L("interactive mode cannot work with a file output"))
 	}
@@ -154,7 +154,8 @@ func doSql(globalFlags *types.GlobalFlags, flags *sqlFlags, cmd *cobra.Command, 
 
 	err = runCmd(command, output, commandArgs)
 	if err != nil {
-		if exitErr, ok := err.(*exec.ExitError); ok {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
 			log.Info().Err(err).Msg(L("Command failed"))
 			os.Exit(exitErr.ExitCode())
 		}
@@ -178,10 +179,6 @@ func (l copyWriter) Write(p []byte) (n int, err error) {
 		}
 
 		n = len(p)
-		if n > 0 && p[n-1] == '\n' {
-			// Trim CR added by stdlog.
-			p = p[0 : n-1]
-		}
 	}
 	return
 }

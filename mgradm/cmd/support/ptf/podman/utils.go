@@ -50,13 +50,13 @@ func ptfForPodman(
 }
 
 func (flags *podmanPTFFlags) checkParameters() error {
-	if flags.TestId != "" && flags.PTFId != "" {
+	if flags.TestID != "" && flags.PTFId != "" {
 		return errors.New(L("ptf and test flags cannot be set simultaneously "))
 	}
-	if flags.TestId == "" && flags.PTFId == "" {
+	if flags.TestID == "" && flags.PTFId == "" {
 		return errors.New(L("ptf and test flags cannot be empty simultaneously "))
 	}
-	if flags.CustomerId == "" {
+	if flags.CustomerID == "" {
 		return errors.New(L("user flag cannot be empty"))
 	}
 	serverImage, err := podman_shared.GetRunningImage(podman_shared.ServerContainerName)
@@ -65,12 +65,12 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	}
 
 	suffix := "ptf"
-	projectId := flags.PTFId
-	if flags.TestId != "" {
+	projectID := flags.PTFId
+	if flags.TestID != "" {
 		suffix = "test"
-		projectId = flags.TestId
+		projectID = flags.TestID
 	}
-	flags.Image.Name, err = utils.ComputePTF(flags.CustomerId, projectId, serverImage, suffix)
+	flags.Image.Name, err = utils.ComputePTF(flags.CustomerID, projectID, serverImage, suffix)
 	if err != nil {
 		return err
 	}

@@ -22,11 +22,11 @@ spec:
       config:
         hsts: "false"
     tcp:
-{{- range .TcpPorts }}
+{{- range .TCPPorts }}
       {{ .Exposed }}: "{{ $.Namespace }}/uyuni-tcp:{{ .Port }}"
 {{- end }}
     udp:
-{{- range .UdpPorts }}
+{{- range .UDPPorts }}
       {{ .Exposed }}: "{{ $.Namespace }}/uyuni-udp:{{ .Port }}"
 {{- end }}
 `
@@ -34,8 +34,8 @@ spec:
 // Rke2NginxConfigTemplateData represents information used to create Rke2 Ngix helm chart.
 type Rke2NginxConfigTemplateData struct {
 	Namespace string
-	TcpPorts  []types.PortMap
-	UdpPorts  []types.PortMap
+	TCPPorts  []types.PortMap
+	UDPPorts  []types.PortMap
 }
 
 // Render will create the helm chart configuation for Rke2 Nginx.

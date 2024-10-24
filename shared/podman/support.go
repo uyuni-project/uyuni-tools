@@ -80,7 +80,11 @@ func createSystemdDump(dir string) (string, error) {
 
 func runPodmanInspectCommand(dir string, container string) (string, error) {
 	podmanInspectDump, err := os.Create(path.Join(dir, "inspect-"+container))
-	defer podmanInspectDump.Close()
+	defer func() {
+		if err := podmanInspectDump.Close(); err != nil {
+			log.Error().Err(err).Msg(L("failed to close inspect dump file"))
+		}
+	}()
 	if err != nil {
 		return "", utils.Errorf(err, L("failed to create %s file"), podmanInspectDump)
 	}
@@ -99,7 +103,11 @@ func runPodmanInspectCommand(dir string, container string) (string, error) {
 
 func fetchBoundFileCommand(dir string, container string) (string, error) {
 	boundFilesDump, err := os.Create(path.Join(dir, "bound-files-"+container))
-	defer boundFilesDump.Close()
+	defer func() {
+		if err := boundFilesDump.Close(); err != nil {
+			log.Error().Err(err).Msg(L("failed to close bound files"))
+		}
+	}()
 	if err != nil {
 		return "", utils.Errorf(err, L("failed to create %s file"), boundFilesDump)
 	}

@@ -22,8 +22,8 @@ data:
   tls.key: {{ .Key }}
 `
 
-// TlsSecretTemplateData contains information to create secret configuration file.
-type TlsSecretTemplateData struct {
+// TLSSecretTemplateData contains information to create secret configuration file.
+type TLSSecretTemplateData struct {
 	Name        string
 	Namespace   string
 	RootCa      string
@@ -32,7 +32,7 @@ type TlsSecretTemplateData struct {
 }
 
 // Render creates secret configuration file.
-func (data TlsSecretTemplateData) Render(wr io.Writer) error {
+func (data TLSSecretTemplateData) Render(wr io.Writer) error {
 	t := template.Must(template.New("secret").Parse(tlsSecretTemplate))
 	return t.Execute(wr, data)
 }

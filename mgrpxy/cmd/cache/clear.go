@@ -15,7 +15,7 @@ import (
 type cacheClearFlags struct {
 }
 
-// NewCommand for clearing cache.
+// NewClearCmd creates the command to clear the cache.
 func NewClearCmd(globalFlags *types.GlobalFlags) *cobra.Command {
 	var clearCmd = &cobra.Command{
 		Use:   "clear",

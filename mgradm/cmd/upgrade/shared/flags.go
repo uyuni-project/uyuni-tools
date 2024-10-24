@@ -13,7 +13,7 @@ import (
 // UpgradeFlags represents flags used for upgrading a server.
 type UpgradeFlags struct {
 	Image          types.ImageFlags `mapstructure:",squash"`
-	DbUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
+	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	Coco           utils.CocoFlags
 	HubXmlrpc      utils.HubXmlrpcFlags
 }
@@ -22,7 +22,7 @@ type UpgradeFlags struct {
 func AddUpgradeFlags(cmd *cobra.Command) {
 	utils.AddImageFlag(cmd)
 	utils.AddSCCFlag(cmd)
-	utils.AddDbUpgradeImageFlag(cmd)
+	utils.AddDBUpgradeImageFlag(cmd)
 
 	utils.AddUpgradeCocoFlag(cmd)
 	utils.AddUpgradeHubXmlrpcFlags(cmd)

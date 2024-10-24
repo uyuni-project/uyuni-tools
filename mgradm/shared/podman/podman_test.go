@@ -7,7 +7,7 @@ package podman
 import (
 	"testing"
 
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestHasDebugPorts(t *testing.T) {
@@ -37,7 +37,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 
 	for definition, expected := range data {
 		actual := hasDebugPorts([]byte(definition))
-		test_utils.AssertEquals(t, "Unexpected result for "+definition, expected, actual)
+		testutils.AssertEquals(t, "Unexpected result for "+definition, expected, actual)
 	}
 }
 
@@ -72,6 +72,6 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 
 	for definition, expected := range data {
 		actual := getMirrorPath([]byte(definition))
-		test_utils.AssertEquals(t, "Unexpected result for "+definition, expected, actual)
+		testutils.AssertEquals(t, "Unexpected result for "+definition, expected, actual)
 	}
 }

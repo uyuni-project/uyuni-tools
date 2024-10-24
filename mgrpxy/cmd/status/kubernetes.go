@@ -17,10 +17,10 @@ import (
 )
 
 func kubernetesStatus(
-	globalFlags *types.GlobalFlags,
-	flags *statusFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *statusFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ProxyFilter)
 	namespace, err := cnx.GetNamespace("")

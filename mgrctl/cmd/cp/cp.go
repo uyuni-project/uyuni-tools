@@ -49,7 +49,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return cpCmd
 }
 
-func run(flags *flagpole, cmd *cobra.Command, args []string) error {
+func run(flags *flagpole, _ *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	return cnx.Copy(args[0], args[1], flags.User, flags.Group)
 }

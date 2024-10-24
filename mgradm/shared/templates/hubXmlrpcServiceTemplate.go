@@ -59,7 +59,7 @@ Type=forking
 WantedBy=multi-user.target default.target
 `
 
-// PodmanServiceTemplateData POD information to create systemd file.
+// HubXmlrpcServiceTemplateData holds information to create the systemd file.
 type HubXmlrpcServiceTemplateData struct {
 	Volumes    []types.VolumeMount
 	Ports      []types.PortMap

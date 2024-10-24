@@ -9,7 +9,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-// HelmFrags stores Uyuni and Cert Manager Helm information.
+// HelmFlags stores Uyuni and Cert Manager Helm information.
 type HelmFlags struct {
 	Uyuni       types.ChartFlags
 	CertManager types.ChartFlags

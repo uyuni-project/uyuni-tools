@@ -32,26 +32,26 @@ func ptfForPodman(
 }
 
 func (flags *podmanPTFFlags) checkParameters() error {
-	if flags.TestId != "" && flags.PTFId != "" {
+	if flags.TestID != "" && flags.PTFId != "" {
 		return errors.New(L("ptf and test flags cannot be set simultaneously "))
 	}
-	if flags.TestId == "" && flags.PTFId == "" {
+	if flags.TestID == "" && flags.PTFId == "" {
 		return errors.New(L("ptf and test flags cannot be empty simultaneously "))
 	}
-	if flags.CustomerId == "" {
+	if flags.CustomerID == "" {
 		return errors.New(L("user flag cannot be empty"))
 	}
 	suffix := "ptf"
-	projectId := flags.PTFId
-	if flags.TestId != "" {
+	projectID := flags.PTFId
+	if flags.TestID != "" {
 		suffix = "test"
-		projectId = flags.TestId
+		projectID = flags.TestID
 	}
 	httpdImage, err := podman_shared.GetRunningImage("httpd")
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.Httpd.Name, err = utils.ComputePTF(flags.CustomerId, projectId, httpdImage, suffix)
+	flags.UpgradeFlags.Httpd.Name, err = utils.ComputePTF(flags.CustomerID, projectID, httpdImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -61,17 +61,17 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.Ssh.Name, err = utils.ComputePTF(flags.CustomerId, projectId, sshImage, suffix)
+	flags.UpgradeFlags.SSH.Name, err = utils.ComputePTF(flags.CustomerID, projectID, sshImage, suffix)
 	if err != nil {
 		return err
 	}
-	log.Info().Msgf(L("The ssh ptf image computed is: %s"), flags.UpgradeFlags.Ssh.Name)
+	log.Info().Msgf(L("The ssh ptf image computed is: %s"), flags.UpgradeFlags.SSH.Name)
 
 	tftpdImage, err := podman_shared.GetRunningImage("tftpd")
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.Tftpd.Name, err = utils.ComputePTF(flags.CustomerId, projectId, tftpdImage, suffix)
+	flags.UpgradeFlags.Tftpd.Name, err = utils.ComputePTF(flags.CustomerID, projectID, tftpdImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -81,7 +81,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.SaltBroker.Name, err = utils.ComputePTF(flags.CustomerId, projectId, saltBrokerImage, suffix)
+	flags.UpgradeFlags.SaltBroker.Name, err = utils.ComputePTF(flags.CustomerID, projectID, saltBrokerImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.Squid.Name, err = utils.ComputePTF(flags.CustomerId, projectId, squidImage, suffix)
+	flags.UpgradeFlags.Squid.Name, err = utils.ComputePTF(flags.CustomerID, projectID, squidImage, suffix)
 	if err != nil {
 		return err
 	}

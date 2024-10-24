@@ -9,7 +9,6 @@ package kubernetes
 import (
 	"encoding/base64"
 	"fmt"
-	"os"
 	"os/exec"
 	"path"
 
@@ -55,16 +54,16 @@ func migrateToKubernetes(
 	}
 
 	// Find the SSH Socket and paths for the migration
-	sshAuthSocket := migration_shared.GetSshAuthSocket()
-	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
+	sshAuthSocket := migration_shared.GetSSHAuthSocket()
+	sshConfigPath, sshKnownhostsPath := migration_shared.GetSSHPaths()
 
 	// Prepare the migration script and folder
-	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true, flags.Prepare)
+	scriptDir, cleaner, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true, flags.Prepare)
 	if err != nil {
 		return utils.Errorf(err, L("failed to generate migration script"))
 	}
 
-	defer os.RemoveAll(scriptDir)
+	defer cleaner()
 
 	// We don't need the SSL certs at this point of the migration
 	clusterInfos, err := shared_kubernetes.CheckCluster()
@@ -168,7 +167,7 @@ func migrateToKubernetes(
 
 	if oldPgVersion != newPgVersion {
 		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image.Registry, flags.Image,
-			flags.DbUpgradeImage, namespace, nodeName, oldPgVersion, newPgVersion,
+			flags.DBUpgradeImage, namespace, nodeName, oldPgVersion, newPgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}

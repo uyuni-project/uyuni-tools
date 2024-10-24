@@ -8,12 +8,11 @@ import (
 	"path"
 	"testing"
 
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestServerInspectorGenerate(t *testing.T) {
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	inspector := NewServerInspector(testDir)
 	if err := inspector.GenerateScript(); err != nil {
@@ -21,7 +20,7 @@ func TestServerInspectorGenerate(t *testing.T) {
 	}
 
 	dataPath := inspector.GetDataPath()
-	test_utils.AssertEquals(t, "Invalid data path", "/var/lib/uyuni-tools/data", dataPath)
+	testutils.AssertEquals(t, "Invalid data path", "/var/lib/uyuni-tools/data", dataPath)
 
 	//nolint:lll
 	expected := `#!/bin/bash
@@ -38,16 +37,15 @@ echo "db_port=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep '^db_port' | cut -d' ' 
 exit 0
 `
 
-	actual := test_utils.ReadFile(t, path.Join(testDir, InspectScriptFilename))
-	test_utils.AssertEquals(t, "Wrongly generated script", expected, actual)
+	actual := testutils.ReadFile(t, path.Join(testDir, InspectScriptFilename))
+	testutils.AssertEquals(t, "Wrongly generated script", expected, actual)
 }
 
 func TestServerInspectorParse(t *testing.T) {
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	inspector := NewServerInspector(testDir)
-	test_utils.AssertEquals(t, "Invalid data path", "/var/lib/uyuni-tools/data", inspector.GetDataPath())
+	testutils.AssertEquals(t, "Invalid data path", "/var/lib/uyuni-tools/data", inspector.GetDataPath())
 
 	// Change the data path to one we can write to during tests
 	inspector.DataPath = path.Join(testDir, "data")
@@ -63,20 +61,20 @@ db_password=mysecret
 db_name=mydb
 db_port=1234
 `
-	test_utils.WriteFile(t, inspector.GetDataPath(), content)
+	testutils.WriteFile(t, inspector.GetDataPath(), content)
 
 	actual, err := inspector.ReadInspectData()
 	if err != nil {
 		t.Fatalf("Unexpected error: %s", err)
 	}
 
-	test_utils.AssertEquals(t, "Invalid uyuni release", "2024.5", actual.UyuniRelease)
-	test_utils.AssertEquals(t, "Invalid SUSE Manager release", "5.0.0", actual.SuseManagerRelease)
-	test_utils.AssertEquals(t, "Invalid FQDN", "my.server.name", actual.Fqdn)
-	test_utils.AssertEquals(t, "Invalid current postgresql version", "14", actual.CurrentPgVersion)
-	test_utils.AssertEquals(t, "Invalid image postgresql version", "16", actual.ImagePgVersion)
-	test_utils.AssertEquals(t, "Invalid DB user", "myuser", actual.DbUser)
-	test_utils.AssertEquals(t, "Invalid DB password", "mysecret", actual.DbPassword)
-	test_utils.AssertEquals(t, "Invalid DB name", "mydb", actual.DbName)
-	test_utils.AssertEquals(t, "Invalid DB port", 1234, actual.DbPort)
+	testutils.AssertEquals(t, "Invalid uyuni release", "2024.5", actual.UyuniRelease)
+	testutils.AssertEquals(t, "Invalid SUSE Manager release", "5.0.0", actual.SuseManagerRelease)
+	testutils.AssertEquals(t, "Invalid FQDN", "my.server.name", actual.Fqdn)
+	testutils.AssertEquals(t, "Invalid current postgresql version", "14", actual.CurrentPgVersion)
+	testutils.AssertEquals(t, "Invalid image postgresql version", "16", actual.ImagePgVersion)
+	testutils.AssertEquals(t, "Invalid DB user", "myuser", actual.DBUser)
+	testutils.AssertEquals(t, "Invalid DB password", "mysecret", actual.DBPassword)
+	testutils.AssertEquals(t, "Invalid DB name", "mydb", actual.DBName)
+	testutils.AssertEquals(t, "Invalid DB port", 1234, actual.DBPort)
 }

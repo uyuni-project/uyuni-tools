@@ -10,30 +10,30 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils/flags_tests"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils/flagstests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 func TestParamsParsing(t *testing.T) {
-	args := flags_tests.InstallFlagsTestArgs()
-	args = append(args, flags_tests.PodmanFlagsTestArgs...)
+	args := flagstests.InstallFlagsTestArgs()
+	args = append(args, flagstests.PodmanFlagsTestArgs...)
 	args = append(args, "srv.fq.dn")
 
 	// Test function asserting that the args are properly parsed
 	tester := func(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		flags_tests.AssertInstallFlags(t, cmd, &flags.InstallFlags)
-		flags_tests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
-		test_utils.AssertEquals(t, "Wrong FQDN", "srv.fq.dn", args[0])
+		flagstests.AssertInstallFlags(t, cmd, &flags.InstallFlags)
+		flagstests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
+		testutils.AssertEquals(t, "Wrong FQDN", "srv.fq.dn", args[0])
 		return nil
 	}
 
 	globalFlags := types.GlobalFlags{}
 	cmd := newCmd(&globalFlags, tester)
 
-	test_utils.AssertHasAllFlags(t, cmd, args)
+	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
 	if err := cmd.Execute(); err != nil {
@@ -57,10 +57,10 @@ hubxmlrpc:
 	tester := func(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		test_utils.AssertEquals(t, "Coco replicas badly parsed", 2, flags.Coco.Replicas)
-		test_utils.AssertTrue(t, "Coco replicas not marked as changed", flags.Coco.IsChanged)
-		test_utils.AssertEquals(t, "Hub XML-RPC API replicas badly parsed", 0, flags.HubXmlrpc.Replicas)
-		test_utils.AssertTrue(t, "Hub XML-RPC API replicas not marked as changed", flags.HubXmlrpc.IsChanged)
+		testutils.AssertEquals(t, "Coco replicas badly parsed", 2, flags.Coco.Replicas)
+		testutils.AssertTrue(t, "Coco replicas not marked as changed", flags.Coco.IsChanged)
+		testutils.AssertEquals(t, "Hub XML-RPC API replicas badly parsed", 0, flags.HubXmlrpc.Replicas)
+		testutils.AssertTrue(t, "Hub XML-RPC API replicas not marked as changed", flags.HubXmlrpc.IsChanged)
 		return nil
 	}
 
@@ -77,10 +77,10 @@ func TestParamsNoConfig(t *testing.T) {
 	tester := func(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		test_utils.AssertEquals(t, "Coco replicas badly parsed", 0, flags.Coco.Replicas)
-		test_utils.AssertTrue(t, "Coco replicas marked as changed", !flags.Coco.IsChanged)
-		test_utils.AssertEquals(t, "Hub XML-RPC API replicas badly parsed", 0, flags.HubXmlrpc.Replicas)
-		test_utils.AssertTrue(t, "Hub XML-RPC API replicas marked as changed", !flags.HubXmlrpc.IsChanged)
+		testutils.AssertEquals(t, "Coco replicas badly parsed", 0, flags.Coco.Replicas)
+		testutils.AssertTrue(t, "Coco replicas marked as changed", !flags.Coco.IsChanged)
+		testutils.AssertEquals(t, "Hub XML-RPC API replicas badly parsed", 0, flags.HubXmlrpc.Replicas)
+		testutils.AssertTrue(t, "Hub XML-RPC API replicas marked as changed", !flags.HubXmlrpc.IsChanged)
 		return nil
 	}
 

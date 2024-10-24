@@ -23,8 +23,8 @@ After=uyuni-proxy-pod.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-{{- if .HttpProxyFile }}
-EnvironmentFile={{ .HttpProxyFile }}
+{{- if .HTTPProxyFile }}
+EnvironmentFile={{ .HTTPProxyFile }}
 {{- end }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-squid.pid %t/uyuni-proxy-squid.ctr-id
@@ -55,7 +55,7 @@ WantedBy=multi-user.target default.target
 // SquidTemplateData Squid information to create systemd file.
 type SquidTemplateData struct {
 	Volumes       []types.VolumeMount
-	HttpProxyFile string
+	HTTPProxyFile string
 }
 
 // Render will create the systemd configuration file.

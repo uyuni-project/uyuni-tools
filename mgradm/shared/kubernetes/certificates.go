@@ -6,7 +6,6 @@ package kubernetes
 
 import (
 	"encoding/base64"
-	"os"
 	"path/filepath"
 	"time"
 
@@ -20,16 +19,16 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) error {
-	crdsDir, err := utils.TempDir()
+func installTLSSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) error {
+	crdsDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(crdsDir)
+	defer cleaner()
 
 	secretPath := filepath.Join(crdsDir, "secret.yaml")
 	log.Info().Msg(L("Creating SSL server certificate secret"))
-	tlsSecretData := templates.TlsSecretTemplateData{
+	tlsSecretData := templates.TLSSecretTemplateData{
 		Namespace:   namespace,
 		Name:        "uyuni-cert",
 		Certificate: base64.StdEncoding.EncodeToString(serverCrt),
@@ -60,11 +59,11 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	}
 
 	log.Info().Msg(L("Creating SSL certificate issuer"))
-	crdsDir, err := utils.TempDir()
+	crdsDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return []string{}, err
 	}
-	defer os.RemoveAll(crdsDir)
+	defer cleaner()
 
 	issuerPath := filepath.Join(crdsDir, "issuer.yaml")
 

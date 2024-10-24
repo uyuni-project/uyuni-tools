@@ -5,7 +5,7 @@
 package api
 
 import (
-	"fmt"
+	"errors"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -20,7 +20,7 @@ func runLogin(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Comman
 	log.Debug().Msg("Running login command")
 
 	if api.IsAlreadyLoggedIn() && !flags.ForceLogin {
-		return fmt.Errorf(L("Refusing to overwrite existing login. Use --force to ignore this check."))
+		return errors.New(L("Refusing to overwrite existing login. Use --force to ignore this check."))
 	}
 
 	utils.AskIfMissing(&flags.Server, cmd.Flag("api-server").Usage, 0, 0, utils.IsWellFormedFQDN)

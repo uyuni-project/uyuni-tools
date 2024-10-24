@@ -18,5 +18,5 @@ func upgradeKubernetes(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return kubernetes.Upgrade(globalFlags, &flags.Image, &flags.DbUpgradeImage, flags.Helm, cmd, args)
+	return kubernetes.Upgrade(globalFlags, &flags.Image, &flags.DBUpgradeImage, flags.Helm, cmd, args)
 }

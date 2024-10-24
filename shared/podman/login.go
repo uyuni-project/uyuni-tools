@@ -19,16 +19,16 @@ import (
 //
 // It returns an authentication file, a cleanup function and an error.
 func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials) (string, func(), error) {
-	scc_user := hostData.SccUsername
-	scc_password := hostData.SccPassword
+	sccUser := hostData.SccUsername
+	sccPassword := hostData.SccPassword
 	if scc.User != "" && scc.Password != "" {
 		log.Info().Msg(L("SCC credentials parameters will be used. SCC credentials from host will be ignored."))
-		scc_user = scc.User
-		scc_password = scc.Password
+		sccUser = scc.User
+		sccPassword = scc.Password
 	}
-	if scc_user != "" && scc_password != "" {
+	if sccUser != "" && sccPassword != "" {
 		// We have SCC credentials, so we are pretty likely to need registry.suse.com
-		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", scc_user, scc_password)))
+		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", sccUser, sccPassword)))
 		authFileContent := fmt.Sprintf(`{
 	"auths": {
 		"registry.suse.com" : {

@@ -30,7 +30,7 @@ import (
 	"golang.org/x/term"
 )
 
-const prompt_end = ": "
+const promptEnd = ": "
 
 var prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
 var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
@@ -45,7 +45,7 @@ var fqdnValid = regexp.MustCompile(
 type InspectResult struct {
 	CommonInspectData `mapstructure:",squash"`
 	Timezone          string
-	HasHubXmlrpcApi   bool `mapstructure:"has_hubxmlrpc"`
+	HasHubXmlrpcAPI   bool `mapstructure:"has_hubxmlrpc"`
 }
 
 func checkValueSize(value string, min int, max int) bool {
@@ -66,7 +66,7 @@ func checkValueSize(value string, min int, max int) bool {
 
 // CheckValidPassword performs check to a given password.
 func CheckValidPassword(value *string, prompt string, min int, max int) string {
-	fmt.Print(prompt + prompt_end)
+	fmt.Print(prompt + promptEnd)
 	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 	if err != nil {
 		log.Fatal().Err(err).Msgf(L("Failed to read password"))
@@ -142,7 +142,7 @@ func AskIfMissing(value *string, prompt string, min int, max int, checker func(s
 
 	reader := bufio.NewReader(os.Stdin)
 	for *value == "" {
-		fmt.Print(prompt + prompt_end)
+		fmt.Print(prompt + promptEnd)
 		newValue, err := reader.ReadString('\n')
 		if err != nil {
 			log.Fatal().Err(err).Msg(L("failed to read input"))
@@ -174,11 +174,13 @@ func YesNo(question string) (bool, error) {
 		if strings.ToLower(response) == "y" || strings.ToLower(response) == "yes" {
 			return true, nil
 		}
-		return false, nil
+		if strings.ToLower(response) == "n" || strings.ToLower(response) == "no" {
+			return false, nil
+		}
 	}
 }
 
-// Remove registry fqdn from image path.
+// RemoveRegistryFromImage removes registry fqdn from image path.
 func RemoveRegistryFromImage(imagePath string) string {
 	separator := "://"
 	index := strings.Index(imagePath, separator)
@@ -239,17 +241,17 @@ func ComputeImage(
 }
 
 // ComputePTF returns a PTF or Test image from registry.suse.com.
-func ComputePTF(user string, ptfId string, fullImage string, suffix string) (string, error) {
-	prefix := fmt.Sprintf("registry.suse.com/a/%s/%s/", user, ptfId)
+func ComputePTF(user string, ptfID string, fullImage string, suffix string) (string, error) {
+	prefix := fmt.Sprintf("registry.suse.com/a/%s/%s/", user, ptfID)
 	submatches := prodVersionArchRegex.FindStringSubmatch(fullImage)
 	if submatches == nil || len(submatches) > 1 {
 		return "", fmt.Errorf(L("invalid image name: %s"), fullImage)
 	}
-	tag := fmt.Sprintf("latest-%s-%s", suffix, ptfId)
+	tag := fmt.Sprintf("latest-%s-%s", suffix, ptfID)
 	return prefix + submatches[0] + tag, nil
 }
 
-// Get the timezone set on the machine running the tool.
+// GetLocalTimezone returns the timezone set on the current machine.
 func GetLocalTimezone() string {
 	out, err := RunCmdOutput(zerolog.DebugLevel, "timedatectl", "show", "--value", "-p", "Timezone")
 	if err != nil {
@@ -279,7 +281,7 @@ func RemoveDirectory(path string) error {
 	return nil
 }
 
-// Check if a given path exists.
+// FileExists check if path exists.
 func FileExists(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {
@@ -290,7 +292,7 @@ func FileExists(path string) bool {
 	return false
 }
 
-// Returns the content of a file and exit if there was an error.
+// ReadFile returns the content of a file and exit if there was an error.
 func ReadFile(file string) []byte {
 	out, err := os.ReadFile(file)
 	if err != nil {
@@ -299,13 +301,14 @@ func ReadFile(file string) []byte {
 	return out
 }
 
-// Get the value of a file containing a boolean.
+// GetFileBoolean gets the value of a file containing a boolean.
+//
 // This is handy for files from the kernel API.
 func GetFileBoolean(file string) bool {
 	return strings.TrimSpace(string(ReadFile(file))) != "0"
 }
 
-// Uninstalls a file.
+// UninstallFile uninstalls a file.
 func UninstallFile(path string, dryRun bool) {
 	if FileExists(path) {
 		if dryRun {
@@ -320,12 +323,17 @@ func UninstallFile(path string, dryRun bool) {
 }
 
 // TempDir creates a temporary directory.
-func TempDir() (string, error) {
+func TempDir() (string, func(), error) {
 	tempDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return "", Errorf(err, L("failed to create temporary directory"))
+		return "", nil, Errorf(err, L("failed to create temporary directory"))
 	}
-	return tempDir, nil
+	cleaner := func() {
+		if err := os.RemoveAll(tempDir); err != nil {
+			log.Error().Err(err).Msg(L("failed to remove temporary directory"))
+		}
+	}
+	return tempDir, cleaner, nil
 }
 
 // GetRandomBase64 generates random base64-encoded data.
@@ -414,7 +422,8 @@ func Errorf(err error, message string, args ...any) error {
 	return errors.New(appended)
 }
 
-// Join multiple errors.
+// JoinErrors aggregate multiple multiple errors into one.
+//
 // Replacement for errors.Join which is not available in go 1.19.
 func JoinErrors(errs ...error) error {
 	var messages []string
@@ -435,11 +444,11 @@ func GetFqdn(args []string) (string, error) {
 	if len(args) == 1 {
 		fqdn = args[0]
 	} else {
-		fqdn_b, err := RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
+		out, err := RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
 		if err != nil {
 			return "", Errorf(err, L("failed to compute server FQDN"))
 		}
-		fqdn = strings.TrimSpace(string(fqdn_b))
+		fqdn = strings.TrimSpace(string(out))
 	}
 	if err := IsValidFQDN(fqdn); err != nil {
 		return "", err
@@ -448,7 +457,7 @@ func GetFqdn(args []string) (string, error) {
 	return fqdn, nil
 }
 
-// IsValidFDQN returns an error if the argument is not a valid FQDN.
+// IsValidFQDN returns an error if the argument is not a valid FQDN.
 func IsValidFQDN(fqdn string) error {
 	if !IsWellFormedFQDN(fqdn) {
 		return fmt.Errorf(L("%s is not a valid FQDN"), fqdn)
@@ -465,7 +474,7 @@ func IsWellFormedFQDN(fqdn string) bool {
 	return fqdnValid.MatchString(fqdn)
 }
 
-// Check if a given command exists in PATH.
+// CommandExists checks if cmd exists in $PATH.
 func CommandExists(cmd string) bool {
 	_, err := exec.LookPath(cmd)
 	return err == nil

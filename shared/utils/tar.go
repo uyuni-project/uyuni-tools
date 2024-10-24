@@ -7,6 +7,7 @@ package utils
 import (
 	"archive/tar"
 	"compress/gzip"
+	"errors"
 	"io"
 	"os"
 	"path/filepath"
@@ -16,7 +17,7 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
 
-// Extracts a tar.gz file.
+// ExtractTarGz extracts a tar.gz file to dstPath.
 func ExtractTarGz(tarballPath string, dstPath string) error {
 	reader, err := os.Open(tarballPath)
 	if err != nil {
@@ -33,7 +34,7 @@ func ExtractTarGz(tarballPath string, dstPath string) error {
 	tarReader := tar.NewReader(archive)
 	for {
 		header, err := tarReader.Next()
-		if err == io.EOF {
+		if errors.Is(err, io.EOF) {
 			break
 		} else if err != nil {
 			return err
@@ -72,7 +73,7 @@ func ExtractTarGz(tarballPath string, dstPath string) error {
 	return nil
 }
 
-// Object holding a .tar.gz to write it to a file.
+// TarGz holds a .tar.gz to write it to a file.
 type TarGz struct {
 	fileWriter *os.File
 	tarWriter  *tar.Writer

@@ -26,7 +26,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// NewCommand returns a new cobra.Command implementing the root command for kinder.
+// NewUyuniproxyCommand returns a new cobra.Command implementing the root command for mgrpxy.
 func NewUyuniproxyCommand() (*cobra.Command, error) {
 	globalFlags := &types.GlobalFlags{}
 	name := path.Base(os.Args[0])

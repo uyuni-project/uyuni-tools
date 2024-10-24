@@ -6,7 +6,6 @@ package inspect
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -35,7 +34,7 @@ func podmanInspect(
 		cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 		serverImage, err = adm_utils.RunningImage(cnx, shared_podman.ServerContainerName)
 		if err != nil {
-			return fmt.Errorf(L("failed to find the image of the currently running server container: %s"))
+			return utils.Errorf(err, L("failed to find the image of the currently running server container"))
 		}
 	}
 	inspectResult, err := shared_podman.Inspect(serverImage, flags.Image.PullPolicy, flags.SCC, false)

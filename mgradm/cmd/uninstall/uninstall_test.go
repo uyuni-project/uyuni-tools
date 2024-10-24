@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -25,17 +25,17 @@ func TestParamsParsing(t *testing.T) {
 	tester := func(globalFlags *types.GlobalFlags, flags *utils.UninstallFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		test_utils.AssertTrue(t, "Error parsing --force", flags.Force)
-		test_utils.AssertTrue(t, "Error parsing --purge-volumes", flags.Purge.Volumes)
-		test_utils.AssertTrue(t, "Error parsing --purge-images", flags.Purge.Images)
-		test_utils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
+		testutils.AssertTrue(t, "Error parsing --force", flags.Force)
+		testutils.AssertTrue(t, "Error parsing --purge-volumes", flags.Purge.Volumes)
+		testutils.AssertTrue(t, "Error parsing --purge-images", flags.Purge.Images)
+		testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
 		return nil
 	}
 
 	globalFlags := types.GlobalFlags{}
 	cmd := newCmd(&globalFlags, tester)
 
-	test_utils.AssertHasAllFlags(t, cmd, args)
+	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
 	if err := cmd.Execute(); err != nil {
