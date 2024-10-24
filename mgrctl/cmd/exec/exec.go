@@ -5,6 +5,7 @@
 package exec
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -100,7 +101,8 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
 	err = RunRawCmd(command, commandArgs)
 	if err != nil {
-		if exitErr, ok := err.(*exec.ExitError); ok {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
 			log.Info().Err(err).Msg(L("Command failed"))
 			os.Exit(exitErr.ExitCode())
 		}

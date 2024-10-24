@@ -64,7 +64,7 @@ linters:
     - dupl
     - errcheck
     - errname
-      #- errorlint
+    - errorlint
     - godot
     - gofmt
     - goimports
