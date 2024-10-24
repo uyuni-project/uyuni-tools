@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils/flags_tests"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils/flags_tests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -32,23 +32,23 @@ func TestParamsParsing(t *testing.T) {
 	tester := func(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		test_utils.AssertTrue(t, "Prepare not set", flags.Prepare)
+		testutils.AssertTrue(t, "Prepare not set", flags.Prepare)
 		flags_tests.AssertMirrorFlag(t, cmd, flags.Mirror)
 		flags_tests.AssertSccFlag(t, cmd, &flags.SCC)
 		flags_tests.AssertImageFlag(t, cmd, &flags.Image)
 		flags_tests.AssertDbUpgradeImageFlag(t, cmd, &flags.DbUpgradeImage)
 		flags_tests.AssertCocoFlag(t, cmd, &flags.Coco)
 		flags_tests.AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)
-		test_utils.AssertEquals(t, "Error parsing --user", "sudoer", flags.User)
+		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.User)
 		flags_tests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
-		test_utils.AssertEquals(t, "Wrong FQDN", "source.fq.dn", args[0])
+		testutils.AssertEquals(t, "Wrong FQDN", "source.fq.dn", args[0])
 		return nil
 	}
 
 	globalFlags := types.GlobalFlags{}
 	cmd := newCmd(&globalFlags, tester)
 
-	test_utils.AssertHasAllFlags(t, cmd, args)
+	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
 	if err := cmd.Execute(); err != nil {

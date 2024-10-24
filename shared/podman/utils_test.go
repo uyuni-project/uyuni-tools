@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/rs/zerolog"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestGetServiceImage(t *testing.T) {
@@ -43,6 +43,6 @@ Environment=UYUNI_IMAGE=myregistry.org/silly/image:tag
 			return []byte(testData.catOut), testData.catErr
 		}
 
-		test_utils.AssertEquals(t, "Wrong image found", testData.expected, GetServiceImage("myservice"))
+		testutils.AssertEquals(t, "Wrong image found", testData.expected, GetServiceImage("myservice"))
 	}
 }

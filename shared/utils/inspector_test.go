@@ -8,7 +8,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestReadInspectData(t *testing.T) {
@@ -22,23 +22,23 @@ db_port=1234
 has_hubxmlrpc=true
 `
 
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	dataPath := path.Join(testDir, "data")
-	test_utils.WriteFile(t, dataPath, content)
+	testutils.WriteFile(t, dataPath, content)
 
 	actual, err := ReadInspectData[InspectResult](dataPath)
 	if err != nil {
 		t.Fatalf("Unexpected failure: %s", err)
 	}
 
-	test_utils.AssertEquals(t, "Invalid timezone", "Europe/Berlin", actual.Timezone)
-	test_utils.AssertEquals(t, "Invalid current postgresql version", "14", actual.CurrentPgVersion)
-	test_utils.AssertEquals(t, "Invalid image postgresql version", "16", actual.ImagePgVersion)
-	test_utils.AssertEquals(t, "Invalid DB user", "myuser", actual.DbUser)
-	test_utils.AssertEquals(t, "Invalid DB password", "mysecret", actual.DbPassword)
-	test_utils.AssertEquals(t, "Invalid DB name", "mydb", actual.DbName)
-	test_utils.AssertEquals(t, "Invalid DB port", 1234, actual.DbPort)
-	test_utils.AssertTrue(t, "HasHubXmlrpcApi should be true", actual.HasHubXmlrpcApi)
+	testutils.AssertEquals(t, "Invalid timezone", "Europe/Berlin", actual.Timezone)
+	testutils.AssertEquals(t, "Invalid current postgresql version", "14", actual.CurrentPgVersion)
+	testutils.AssertEquals(t, "Invalid image postgresql version", "16", actual.ImagePgVersion)
+	testutils.AssertEquals(t, "Invalid DB user", "myuser", actual.DbUser)
+	testutils.AssertEquals(t, "Invalid DB password", "mysecret", actual.DbPassword)
+	testutils.AssertEquals(t, "Invalid DB name", "mydb", actual.DbName)
+	testutils.AssertEquals(t, "Invalid DB port", 1234, actual.DbPort)
+	testutils.AssertTrue(t, "HasHubXmlrpcApi should be true", actual.HasHubXmlrpcApi)
 }

@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestCheckParameters(t *testing.T) {
@@ -103,11 +103,11 @@ func TestCheckParameters(t *testing.T) {
 		if actualError != nil {
 			errMessage = actualError.Error()
 		}
-		test_utils.AssertEquals(t, testCase+"error didn't match the expected behavior",
+		testutils.AssertEquals(t, testCase+"error didn't match the expected behavior",
 			test.expectedError, errMessage,
 		)
-		test_utils.AssertEquals(t, testCase+"unexpected image", test.expectedImage, flags.Image.Name)
-		test_utils.AssertEquals(t, testCase+"unexpected coco image", test.expectedCocoImage, flags.Coco.Image.Name)
-		test_utils.AssertEquals(t, testCase+"unexpected hub image", test.expectedHubImage, flags.Hubxmlrpc.Image.Name)
+		testutils.AssertEquals(t, testCase+"unexpected image", test.expectedImage, flags.Image.Name)
+		testutils.AssertEquals(t, testCase+"unexpected coco image", test.expectedCocoImage, flags.Coco.Image.Name)
+		testutils.AssertEquals(t, testCase+"unexpected hub image", test.expectedHubImage, flags.Hubxmlrpc.Image.Name)
 	}
 }

@@ -8,12 +8,12 @@ import (
 	"path"
 	"testing"
 
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func TestHostInspectorGenerate(t *testing.T) {
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	inspector := NewHostInspector(testDir)
@@ -32,12 +32,12 @@ echo "has_uyuni_server=$(systemctl list-unit-files uyuni-server.service >/dev/nu
 exit 0
 `
 
-	actual := test_utils.ReadFile(t, path.Join(testDir, utils.InspectScriptFilename))
-	test_utils.AssertEquals(t, "Wrongly generated script", expected, actual)
+	actual := testutils.ReadFile(t, path.Join(testDir, utils.InspectScriptFilename))
+	testutils.AssertEquals(t, "Wrongly generated script", expected, actual)
 }
 
 func TestHostInspectorParse(t *testing.T) {
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	inspector := NewHostInspector(testDir)
@@ -47,14 +47,14 @@ scc_username=myuser
 scc_password=mysecret
 has_uyuni_server=true
 `
-	test_utils.WriteFile(t, inspector.GetDataPath(), content)
+	testutils.WriteFile(t, inspector.GetDataPath(), content)
 
 	actual, err := inspector.ReadInspectData()
 	if err != nil {
 		t.Fatalf("Unexpected error: %s", err)
 	}
 
-	test_utils.AssertEquals(t, "Invalid SCC username", "myuser", actual.SccUsername)
-	test_utils.AssertEquals(t, "Invalid SCC password", "mysecret", actual.SccPassword)
-	test_utils.AssertTrue(t, "HasUyuniServer should be true", actual.HasUyuniServer)
+	testutils.AssertEquals(t, "Invalid SCC username", "myuser", actual.SccUsername)
+	testutils.AssertEquals(t, "Invalid SCC password", "mysecret", actual.SccPassword)
+	testutils.AssertTrue(t, "HasUyuniServer should be true", actual.HasUyuniServer)
 }

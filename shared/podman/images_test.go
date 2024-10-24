@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/rs/zerolog"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestGetRpmImageName(t *testing.T) {
@@ -144,6 +144,6 @@ myregistry.org/path/image:latest`,
 			return []byte(test.out), test.err
 		}
 		searchedImage := "myregistry.org/path/image:1.2.3"
-		test_utils.AssertEquals(t, "Unexpected result", test.expected, HasRemoteImage(searchedImage))
+		testutils.AssertEquals(t, "Unexpected result", test.expected, HasRemoteImage(searchedImage))
 	}
 }

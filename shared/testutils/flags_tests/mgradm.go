@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -27,18 +27,18 @@ var ServerHelmFlagsTestArgs = []string{
 
 // AssertServerHelmFlags checks that all Helm flags are parsed correctly.
 func AssertServerHelmFlags(t *testing.T, cmd *cobra.Command, flags *utils.HelmFlags) {
-	test_utils.AssertEquals(t, "Error parsing --helm-uyuni-namespace", "uyunins", flags.Uyuni.Namespace)
-	test_utils.AssertEquals(t, "Error parsing --helm-uyuni-chart", "oci://srv/uyuni", flags.Uyuni.Chart)
-	test_utils.AssertEquals(t, "Error parsing --helm-uyuni-version", "1.2.3", flags.Uyuni.Version)
-	test_utils.AssertEquals(t, "Error parsing --helm-uyuni-values", "uyuni/values.yaml", flags.Uyuni.Values)
-	test_utils.AssertEquals(t, "Error parsing --helm-certmanager-namespace",
+	testutils.AssertEquals(t, "Error parsing --helm-uyuni-namespace", "uyunins", flags.Uyuni.Namespace)
+	testutils.AssertEquals(t, "Error parsing --helm-uyuni-chart", "oci://srv/uyuni", flags.Uyuni.Chart)
+	testutils.AssertEquals(t, "Error parsing --helm-uyuni-version", "1.2.3", flags.Uyuni.Version)
+	testutils.AssertEquals(t, "Error parsing --helm-uyuni-values", "uyuni/values.yaml", flags.Uyuni.Values)
+	testutils.AssertEquals(t, "Error parsing --helm-certmanager-namespace",
 		"certmanagerns", flags.CertManager.Namespace,
 	)
-	test_utils.AssertEquals(t, "Error parsing --helm-certmanager-chart",
+	testutils.AssertEquals(t, "Error parsing --helm-certmanager-chart",
 		"oci://srv/certmanager", flags.CertManager.Chart,
 	)
-	test_utils.AssertEquals(t, "Error parsing --helm-certmanager-version", "4.5.6", flags.CertManager.Version)
-	test_utils.AssertEquals(t, "Error parsing --helm-certmanager-values",
+	testutils.AssertEquals(t, "Error parsing --helm-certmanager-version", "4.5.6", flags.CertManager.Version)
+	testutils.AssertEquals(t, "Error parsing --helm-certmanager-values",
 		"certmanager/values.yaml", flags.CertManager.Values,
 	)
 }
@@ -53,10 +53,10 @@ var ImageFlagsTestArgs = []string{
 
 // AssertImageFlag checks that all image flags are parsed correctly.
 func AssertImageFlag(t *testing.T, cmd *cobra.Command, flags *types.ImageFlags) {
-	test_utils.AssertEquals(t, "Error parsing --image", "path/to/image", flags.Name)
-	test_utils.AssertEquals(t, "Error parsing --registry", "myregistry", flags.Registry)
-	test_utils.AssertEquals(t, "Error parsing --tag", "v1.2.3", flags.Tag)
-	test_utils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.PullPolicy)
+	testutils.AssertEquals(t, "Error parsing --image", "path/to/image", flags.Name)
+	testutils.AssertEquals(t, "Error parsing --registry", "myregistry", flags.Registry)
+	testutils.AssertEquals(t, "Error parsing --tag", "v1.2.3", flags.Tag)
+	testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.PullPolicy)
 }
 
 // DbUpdateImageFlagTestArgs is the expected values for AssertDbUpgradeImageFlag.
@@ -67,8 +67,8 @@ var DbUpdateImageFlagTestArgs = []string{
 
 // AssertDbUpgradeImageFlag asserts that all DB upgrade image flags are parsed correctly.
 func AssertDbUpgradeImageFlag(t *testing.T, cmd *cobra.Command, flags *types.ImageFlags) {
-	test_utils.AssertEquals(t, "Error parsing --dbupgrade-image", "dbupgradeimg", flags.Name)
-	test_utils.AssertEquals(t, "Error parsing --dbupgrade-tag", "dbupgradetag", flags.Tag)
+	testutils.AssertEquals(t, "Error parsing --dbupgrade-image", "dbupgradeimg", flags.Name)
+	testutils.AssertEquals(t, "Error parsing --dbupgrade-tag", "dbupgradetag", flags.Tag)
 }
 
 // MirrorFlagTestArgs is the expected values for AssertMirrorFlag.
@@ -78,7 +78,7 @@ var MirrorFlagTestArgs = []string{
 
 // AssertMirrorFlag asserts that all mirror flags are parsed correctly.
 func AssertMirrorFlag(t *testing.T, cmd *cobra.Command, value string) {
-	test_utils.AssertEquals(t, "Error parsing --mirror", "/path/to/mirror", value)
+	testutils.AssertEquals(t, "Error parsing --mirror", "/path/to/mirror", value)
 }
 
 // CocoFlagsTestArgs is the expected values for AssertCocoFlag.
@@ -90,10 +90,10 @@ var CocoFlagsTestArgs = []string{
 
 // AssertCocoFlag asserts that all confidential computing flags are parsed correctly.
 func AssertCocoFlag(t *testing.T, cmd *cobra.Command, flags *utils.CocoFlags) {
-	test_utils.AssertEquals(t, "Error parsing --coco-image", "cocoimg", flags.Image.Name)
-	test_utils.AssertEquals(t, "Error parsing --coco-tag", "cocotag", flags.Image.Tag)
-	test_utils.AssertEquals(t, "Error parsing --coco-replicas", 2, flags.Replicas)
-	test_utils.AssertTrue(t, "Coco should be changed", flags.IsChanged)
+	testutils.AssertEquals(t, "Error parsing --coco-image", "cocoimg", flags.Image.Name)
+	testutils.AssertEquals(t, "Error parsing --coco-tag", "cocotag", flags.Image.Tag)
+	testutils.AssertEquals(t, "Error parsing --coco-replicas", 2, flags.Replicas)
+	testutils.AssertTrue(t, "Coco should be changed", flags.IsChanged)
 }
 
 // HubXmlrpcFlagsTestArgs is the expected values for AssertHubXmlrpcFlag.
@@ -105,8 +105,8 @@ var HubXmlrpcFlagsTestArgs = []string{
 
 // AssertHubXmlrpcFlag asserts that all hub XML-RPC API flags are parsed correctly.
 func AssertHubXmlrpcFlag(t *testing.T, cmd *cobra.Command, flags *utils.HubXmlrpcFlags) {
-	test_utils.AssertEquals(t, "Error parsing --hubxmlrpc-image", "hubimg", flags.Image.Name)
-	test_utils.AssertEquals(t, "Error parsing --hubxmlrpc-tag", "hubtag", flags.Image.Tag)
-	test_utils.AssertEquals(t, "Error parsing --hubxmlrpc-replicas", 1, flags.Replicas)
-	test_utils.AssertTrue(t, "Hub should be changed", flags.IsChanged)
+	testutils.AssertEquals(t, "Error parsing --hubxmlrpc-image", "hubimg", flags.Image.Name)
+	testutils.AssertEquals(t, "Error parsing --hubxmlrpc-tag", "hubtag", flags.Image.Tag)
+	testutils.AssertEquals(t, "Error parsing --hubxmlrpc-replicas", 1, flags.Replicas)
+	testutils.AssertTrue(t, "Hub should be changed", flags.IsChanged)
 }

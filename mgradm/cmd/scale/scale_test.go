@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -26,10 +26,10 @@ func TestParamsParsing(t *testing.T) {
 	tester := func(globalFlags *types.GlobalFlags, flags *scaleFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		test_utils.AssertEquals(t, "Error parsing --replicas", 2, flags.Replicas)
-		test_utils.AssertEquals(t, "Error parsing the service name", "some-service", args[0])
+		testutils.AssertEquals(t, "Error parsing --replicas", 2, flags.Replicas)
+		testutils.AssertEquals(t, "Error parsing the service name", "some-service", args[0])
 		if utils.KubernetesBuilt {
-			test_utils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
+			testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
 		}
 		return nil
 	}
@@ -37,7 +37,7 @@ func TestParamsParsing(t *testing.T) {
 	globalFlags := types.GlobalFlags{}
 	cmd := newCmd(&globalFlags, tester)
 
-	test_utils.AssertHasAllFlags(t, cmd, args)
+	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
 	if err := cmd.Execute(); err != nil {
