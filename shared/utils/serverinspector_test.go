@@ -12,8 +12,7 @@ import (
 )
 
 func TestServerInspectorGenerate(t *testing.T) {
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	inspector := NewServerInspector(testDir)
 	if err := inspector.GenerateScript(); err != nil {
@@ -43,8 +42,7 @@ exit 0
 }
 
 func TestServerInspectorParse(t *testing.T) {
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	inspector := NewServerInspector(testDir)
 	testutils.AssertEquals(t, "Invalid data path", "/var/lib/uyuni-tools/data", inspector.GetDataPath())

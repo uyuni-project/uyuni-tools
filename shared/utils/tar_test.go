@@ -9,8 +9,6 @@ import (
 	"os/exec"
 	"path"
 	"testing"
-
-	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 const dataDir = "data"
@@ -24,8 +22,8 @@ var filesData = map[string]string{
 }
 
 // Prepare test files to include in the tarball.
-func setup(t *testing.T) (string, func(t *testing.T)) {
-	dir, clean := testutils.CreateTmpFolder(t)
+func setup(t *testing.T) string {
+	dir := t.TempDir()
 
 	// Create sub directories for the data and the test
 	for _, dirPath := range []string{dataDir, outDir} {
@@ -49,15 +47,11 @@ func setup(t *testing.T) (string, func(t *testing.T)) {
 		}
 	}
 
-	// Returns the teardown function.
-	return dir, func(t *testing.T) {
-		clean()
-	}
+	return dir
 }
 
 func TestWriteTarGz(t *testing.T) {
-	tmpDir, teardown := setup(t)
-	defer teardown(t)
+	tmpDir := setup(t)
 
 	// Create the tarball
 	tarballPath := path.Join(tmpDir, "test.tar.gz")
@@ -95,8 +89,7 @@ func TestWriteTarGz(t *testing.T) {
 }
 
 func TestExtractTarGz(t *testing.T) {
-	tmpDir, teardown := setup(t)
-	defer teardown(t)
+	tmpDir := setup(t)
 
 	// Create an archive using the tar tool
 	tarballPath := path.Join(tmpDir, "test.tar.gz")

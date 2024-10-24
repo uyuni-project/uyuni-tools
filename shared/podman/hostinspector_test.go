@@ -13,8 +13,7 @@ import (
 )
 
 func TestHostInspectorGenerate(t *testing.T) {
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	inspector := NewHostInspector(testDir)
 	if err := inspector.GenerateScript(); err != nil {
@@ -37,8 +36,7 @@ exit 0
 }
 
 func TestHostInspectorParse(t *testing.T) {
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	inspector := NewHostInspector(testDir)
 
