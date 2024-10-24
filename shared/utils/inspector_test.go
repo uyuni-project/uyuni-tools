@@ -22,8 +22,7 @@ db_port=1234
 has_hubxmlrpc=true
 `
 
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	dataPath := path.Join(testDir, "data")
 	testutils.WriteFile(t, dataPath, content)

@@ -371,8 +371,7 @@ func TestConfig(t *testing.T) {
 
 // Test saveBinaryData function.
 func TestSaveBinaryData(t *testing.T) {
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	filepath := path.Join(testDir, "testfile")
 	data := []int8{104, 101, 121, 32, 116, 104, 101, 114, 101, 33}

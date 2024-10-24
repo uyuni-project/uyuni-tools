@@ -86,8 +86,7 @@ func setupTestFiles(t *testing.T, testDir string) TestFilePaths {
 // tests a failure proxy create config generate command when no connection details are provided.
 func TestFailProxyCreateConfigWhenNoConnectionDetailsAreProvided(t *testing.T) {
 	// Setup
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	expectedOutputFilePath := path.Join(testDir, t.Name()+".tar.gz")
 	flags := &proxy.ProxyCreateConfigFlags{}
@@ -105,8 +104,7 @@ func TestFailProxyCreateConfigWhenNoConnectionDetailsAreProvided(t *testing.T) {
 // tests a failure proxy create config generate command when login fails.
 func TestFailProxyCreateConfigWhenLoginFails(t *testing.T) {
 	// Setup structures and expected values
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	expectedOutputFilePath := path.Join(testDir, t.Name()+".tar.gz")
 	flags := &proxy.ProxyCreateConfigFlags{
@@ -135,8 +133,7 @@ func TestFailProxyCreateConfigWhenLoginFails(t *testing.T) {
 // tests a failure proxy create config generate command when ProxyCrt is provided but ProxyKey is missing.
 func TestFailProxyCreateConfigWhenProxyCrtIsProvidedButProxyKeyIsMissing(t *testing.T) {
 	// Setup
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	testFiles := setupTestFiles(t, testDir)
 	flags := &proxy.ProxyCreateConfigFlags{
@@ -158,8 +155,7 @@ func TestFailProxyCreateConfigWhenProxyCrtIsProvidedButProxyKeyIsMissing(t *test
 // tests a failure proxy create config command when proxy config request returns an error.
 func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	// Setup
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	testFiles := setupTestFiles(t, testDir)
 	mockContainerConfigflags := &proxy.ProxyCreateConfigFlags{
@@ -208,8 +204,7 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 // tests a successful proxy create config command when all parameters provided.
 func TestSuccessProxyCreateConfigWhenAllParamsProvidedSuccess(t *testing.T) {
 	// Setup
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	testFiles := setupTestFiles(t, testDir)
 
@@ -263,8 +258,7 @@ func TestSuccessProxyCreateConfigWhenAllParamsProvidedSuccess(t *testing.T) {
 // tests a successful proxy create config command (with generated certificates) when all parameters provided.
 func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing.T) {
 	// Setup
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	testFiles := setupTestFiles(t, testDir)
 

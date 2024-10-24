@@ -32,8 +32,7 @@ Environment="PODMAN_EXTRA_ARGS="
 
 `
 
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	serviceConfDir := path.Join(testDir, "uyuni-server.service.d")
 	if err := os.Mkdir(serviceConfDir, 0750); err != nil {
@@ -70,8 +69,7 @@ Environment=TZ=Europe/Berlin
 Environment="PODMAN_EXTRA_ARGS="
 `
 
-	testDir, cleaner := testutils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	serviceConfDir := path.Join(testDir, "uyuni-server.service.d")
 	if err := os.Mkdir(serviceConfDir, 0750); err != nil {
