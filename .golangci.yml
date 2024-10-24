@@ -79,7 +79,7 @@ linters:
     - revive
       #- staticcheck
     - stylecheck
-      #- unparam
+    - unparam
     - unused
     - whitespace
 
