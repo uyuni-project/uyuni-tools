@@ -52,7 +52,7 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 	args := podman.GetCommonParams()
 
 	if mirrorPath != "" {
-		args = append(args, "-v", mirrorPath+":/mirror:z")
+		args = append(args, "-v", mirrorPath+":/mirror")
 	}
 
 	ports := GetExposedPorts(debug)
@@ -452,7 +452,7 @@ func hasDebugPorts(definition []byte) bool {
 
 func getMirrorPath(definition []byte) string {
 	mirrorPath := ""
-	finder := regexp.MustCompile(`-v +([^:]+):/mirror(?::z)?[[:space:]]`)
+	finder := regexp.MustCompile(`-v +([^:]+):/mirror[[:space:]]`)
 	submatches := finder.FindStringSubmatch(string(definition))
 	if len(submatches) == 2 {
 		mirrorPath = submatches[1]

@@ -56,7 +56,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
         --name uyuni-server \
         --hostname uyuni-server.mgr.internal \
         --rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw \
-		-v   /path/to/mirror:/mirror:z \
+		-v   /path/to/mirror:/mirror \
         -p 80:80 \
         -p 4505:4505 \
         -p [::]:4505:4505`: "/path/to/mirror",
