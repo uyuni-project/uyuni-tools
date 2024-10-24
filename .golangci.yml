@@ -2,63 +2,19 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-run:
-  tests: true
-  skip-dirs:
-    - vendor
-    - examples
-
 linters-settings:
-  dupl:
-    enabled: true
-  errcheck:
-    enabled: true
-  gofmt:
-    enabled: true
-    simplify: true
-  goimports:
-    enabled: true
-  gocyclo:
-    enabled: true
-    min-complexity: 10
-  godot:
-    enabled: true
-  golint:
-    enabled: true
-  ineffassign:
-    enabled: true
-  maligned:
-    enabled: true
-  megacheck:
-    enabled: true
-  misspell:
-    enabled: true
-  revive:
-    rules:
-      - name: exported
-        arguments:
-          - disableStutteringCheck
-  staticcheck:
-    enabled: false
   stylecheck:
-    enabled: true
-    checks: ["ST1005", "ST1019"]
-  structcheck:
-    enabled: true
-  typecheck:
-    enabled: false
-  unused:
-    enabled: true
-  varcheck:
-    enabled: true
-  whitespace:
-    enabled: true
+    dot-import-whitelist:
+      - github.com/uyuni-project/uyuni-tools/shared/l10n
+  gofmt:
+    simplify: true
+  gocyclo:
+    min-complexity: 10
   govet:
     disable:
       - printf
 
 linters:
-  disable-all: true
   enable:
     - unused
     - dupl
@@ -70,22 +26,14 @@ linters:
     - goimports
     - gosimple
       #- gocyclo
-    - revive
     - ineffassign
     - govet
     - lll
-    - megacheck
     - misspell
-    - revive
     - staticcheck
     - stylecheck
     - unparam
     - unused
     - whitespace
-
-issues:
-  include:
-    - EXC0012
-
 
 
