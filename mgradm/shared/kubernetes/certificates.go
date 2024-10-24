@@ -6,7 +6,6 @@ package kubernetes
 
 import (
 	"encoding/base64"
-	"os"
 	"path/filepath"
 	"time"
 
@@ -21,11 +20,11 @@ import (
 )
 
 func installTLSSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) error {
-	crdsDir, err := utils.TempDir()
+	crdsDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(crdsDir)
+	defer cleaner()
 
 	secretPath := filepath.Join(crdsDir, "secret.yaml")
 	log.Info().Msg(L("Creating SSL server certificate secret"))
@@ -60,11 +59,11 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	}
 
 	log.Info().Msg(L("Creating SSL certificate issuer"))
-	crdsDir, err := utils.TempDir()
+	crdsDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return []string{}, err
 	}
-	defer os.RemoveAll(crdsDir)
+	defer cleaner()
 
 	issuerPath := filepath.Join(crdsDir, "issuer.yaml")
 

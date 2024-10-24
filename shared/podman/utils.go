@@ -226,11 +226,11 @@ func Inspect(
 	scc types.SCCCredentials,
 	proxyHost bool,
 ) (*utils.ServerInspectData, error) {
-	scriptDir, err := utils.TempDir()
-	defer os.RemoveAll(scriptDir)
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return nil, err
 	}
+	defer cleaner()
 
 	hostData, err := InspectHost()
 	if err != nil {

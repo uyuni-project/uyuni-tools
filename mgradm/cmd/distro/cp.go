@@ -7,7 +7,6 @@ package distro
 import (
 	"errors"
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -22,7 +21,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func umountAndRemove(mountpoint string) {
+func umount(mountpoint string) {
 	umountCmd := []string{
 		"/usr/bin/umount",
 		mountpoint,
@@ -30,10 +29,6 @@ func umountAndRemove(mountpoint string) {
 
 	if err := utils.RunCmd("/usr/bin/sudo", umountCmd...); err != nil {
 		log.Error().Err(err).Msgf(L("Unable to unmount ISO image, leaving %s intact"), mountpoint)
-	}
-
-	if err := os.Remove(mountpoint); err != nil {
-		log.Error().Err(err).Msgf(L("unable to remove temporary directory, leaving %s intact"), mountpoint)
 	}
 }
 
@@ -67,19 +62,19 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 	return nil
 }
 
-func prepareSource(source string) (string, bool, error) {
+func prepareSource(source string) (string, func(), error) {
 	srcdir := source
-	needremove := false
 
 	if !utils.FileExists(source) {
-		return "", false, fmt.Errorf(L("source %s does not exists"), source)
+		return "", nil, fmt.Errorf(L("source %s does not exists"), source)
 	}
 
+	var cleaner func()
 	if strings.HasSuffix(source, ".iso") {
 		log.Debug().Msg("Source is an ISO image")
-		tmpdir, err := utils.TempDir()
+		tmpdir, cleaner, err := utils.TempDir()
 		if err != nil {
-			return "", needremove, err
+			return "", nil, err
 		}
 		srcdir = tmpdir
 
@@ -91,11 +86,10 @@ func prepareSource(source string) (string, bool, error) {
 		}
 		if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "/usr/bin/sudo", mountCmd...); err != nil {
 			log.Debug().Msgf("Error mounting ISO image: '%s'", out)
-			return "", needremove, fmt.Errorf(L("unable to mount ISO image: %s"), out)
+			return "", cleaner, fmt.Errorf(L("unable to mount ISO image: %s"), out)
 		}
-		needremove = true
 	}
-	return srcdir, needremove, nil
+	return srcdir, cleaner, nil
 }
 
 func copyDistro(srcdir string, distro *types.Distribution, flags *flagpole) error {
@@ -151,12 +145,15 @@ func distroCp(
 		attemptRegistration = true
 	}
 
-	srcdir, needremove, err := prepareSource(source)
+	srcdir, cleaner, err := prepareSource(source)
 	if err != nil {
 		return err
 	}
-	if needremove {
-		defer umountAndRemove(srcdir)
+	if cleaner != nil {
+		defer func() {
+			umount(srcdir)
+			cleaner()
+		}()
 	}
 
 	distribution := types.Distribution{}

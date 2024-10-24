@@ -35,11 +35,11 @@ func createSecret(name string, value string) error {
 		return nil
 	}
 
-	tmpDir, err := utils.TempDir()
+	tmpDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(tmpDir)
+	defer cleaner()
 
 	secretFile := path.Join(tmpDir, "secret")
 	if err := os.WriteFile(secretFile, []byte(value), 600); err != nil {

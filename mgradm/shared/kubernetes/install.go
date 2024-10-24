@@ -7,7 +7,6 @@ package kubernetes
 import (
 	"errors"
 	"fmt"
-	"os"
 	"os/exec"
 
 	"github.com/rs/zerolog/log"
@@ -184,12 +183,6 @@ func Upgrade(
 		return err
 	}
 	kubeconfig := clusterInfos.GetKubeconfig()
-
-	scriptDir, err := utils.TempDir()
-	if err != nil {
-		return err
-	}
-	defer os.RemoveAll(scriptDir)
 
 	//this is needed because folder with script needs to be mounted
 	//check the node before scaling down

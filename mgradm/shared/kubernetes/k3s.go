@@ -6,7 +6,6 @@ package kubernetes
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/rs/zerolog/log"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -37,11 +36,11 @@ func RunPgsqlVersionUpgrade(
 	oldPgsql string,
 	newPgsql string,
 ) error {
-	scriptDir, err := utils.TempDir()
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(scriptDir)
+	defer cleaner()
 	if newPgsql > oldPgsql {
 		log.Info().Msgf(
 			L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"),
@@ -115,11 +114,11 @@ func RunPgsqlVersionUpgrade(
 func RunPgsqlFinalizeScript(
 	serverImage string, pullPolicy string, namespace string, nodeName string, schemaUpdateRequired bool, migration bool,
 ) error {
-	scriptDir, err := utils.TempDir()
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(scriptDir)
+	defer cleaner()
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
 	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(
 		scriptDir, true, schemaUpdateRequired, true, migration, true,
@@ -165,11 +164,11 @@ func RunPgsqlFinalizeScript(
 
 // RunPostUpgradeScript run the script with the changes to apply after the upgrade.
 func RunPostUpgradeScript(serverImage string, pullPolicy string, namespace string, nodeName string) error {
-	scriptDir, err := utils.TempDir()
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(scriptDir)
+	defer cleaner()
 	postUpgradeContainer := "uyuni-post-upgrade"
 	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
 	if err != nil {

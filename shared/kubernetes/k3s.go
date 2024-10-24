@@ -6,7 +6,6 @@ package kubernetes
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
 	"path"
 	"time"
@@ -59,11 +58,11 @@ func InspectKubernetes(namespace string, serverImage string, pullPolicy string) 
 		}
 	}
 
-	scriptDir, err := utils.TempDir()
-	defer os.RemoveAll(scriptDir)
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return nil, err
 	}
+	defer cleaner()
 
 	inspector := utils.NewServerInspector(scriptDir)
 	if err := inspector.GenerateScript(); err != nil {

@@ -154,11 +154,11 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 		}
 	}
 
-	tmpDir, err := shared_utils.TempDir()
+	tmpDir, cleaner, err := shared_utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(tmpDir)
+	defer cleaner()
 
 	// Check the kubernetes cluster setup
 	clusterInfos, err := kubernetes.CheckCluster()
