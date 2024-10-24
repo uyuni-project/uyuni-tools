@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
-	"github.com/uyuni-project/uyuni-tools/shared/testutils/flags_tests"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils/flagstests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -19,17 +19,17 @@ func TestParamsParsing(t *testing.T) {
 	args := []string{
 		"config.tar.gz",
 	}
-	args = append(args, flags_tests.ImageProxyFlagsTestArgs...)
-	args = append(args, flags_tests.PodmanFlagsTestArgs...)
-	args = append(args, flags_tests.SccFlagTestArgs...)
+	args = append(args, flagstests.ImageProxyFlagsTestArgs...)
+	args = append(args, flagstests.PodmanFlagsTestArgs...)
+	args = append(args, flagstests.SccFlagTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(globalFlags *types.GlobalFlags, flags *podman.PodmanProxyFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		flags_tests.AssertProxyImageFlags(t, cmd, &flags.ProxyImageFlags)
-		flags_tests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
-		flags_tests.AssertSccFlag(t, cmd, &flags.SCC)
+		flagstests.AssertProxyImageFlags(t, cmd, &flags.ProxyImageFlags)
+		flagstests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
+		flagstests.AssertSccFlag(t, cmd, &flags.SCC)
 		return nil
 	}
 

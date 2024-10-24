@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
-	"github.com/uyuni-project/uyuni-tools/shared/testutils/flags_tests"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils/flagstests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -19,14 +19,14 @@ func TestParamsParsing(t *testing.T) {
 		"--channel", "parent-channel",
 	}
 
-	args = append(args, flags_tests.APIFlagsTestArgs...)
+	args = append(args, flagstests.APIFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(globalFlags *types.GlobalFlags, flags *flagpole,
 		cmd *cobra.Command, args []string,
 	) error {
 		testutils.AssertEquals(t, "Error parsing --channel", "parent-channel", flags.ChannelLabel)
-		flags_tests.AssertAPIFlags(t, cmd, &flags.ConnectionDetails)
+		flagstests.AssertAPIFlags(t, cmd, &flags.ConnectionDetails)
 		return nil
 	}
 
