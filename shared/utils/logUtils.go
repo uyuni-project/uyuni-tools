@@ -41,7 +41,7 @@ func (l *UyuniLogger) Write(p []byte) (n int, err error) {
 	if err != nil {
 		return 0, err
 	}
-	//using len(p) prevents "zerolog: could not write event: short write" error
+	// using len(p) prevents "zerolog: could not write event: short write" error
 	return len(p), nil
 }
 
@@ -65,7 +65,7 @@ func (c UyuniConsoleWriter) Write(p []byte) (n int, err error) {
 	if err != nil {
 		return 0, err
 	}
-	//using len(p) prevents "zerolog: could not write event: short write" error
+	// using len(p) prevents "zerolog: could not write event: short write" error
 	return len(p), nil
 }
 

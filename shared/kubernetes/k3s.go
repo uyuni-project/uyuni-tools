@@ -93,18 +93,18 @@ func InspectKubernetes(namespace string, serverImage string, pullPolicy string) 
 
 	const podName = "inspector"
 
-	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
+	// delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
 	if err := DeletePod(namespace, podName, ServerFilter); err != nil {
 		return nil, utils.Errorf(err, L("cannot delete %s"), podName)
 	}
 
-	//this is needed because folder with script needs to be mounted
+	// this is needed because folder with script needs to be mounted
 	nodeName, err := GetNode(namespace, ServerFilter)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot find node running uyuni"))
 	}
 
-	//generate deploy data
+	// generate deploy data
 	deployData := types.Deployment{
 		APIVersion: "v1",
 		Spec: &types.Spec{
@@ -122,7 +122,7 @@ func InspectKubernetes(namespace string, serverImage string, pullPolicy string) 
 				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
 		},
 	}
-	//transform deploy data in JSON
+	// transform deploy data in JSON
 	override, err := GenerateOverrideDeployment(deployData)
 	if err != nil {
 		return nil, err

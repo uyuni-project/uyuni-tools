@@ -68,7 +68,7 @@ func uninstallForPodman(
 			}
 		}
 		log.Info().Msg(L("All volumes removed"))
-		//Remove config dir
+		// Remove config dir
 		if err := os.RemoveAll("/etc/uyuni/proxy"); err != nil {
 			log.Warn().Msg(L("Failed to delete /etc/uyuni/proxy folder"))
 		} else {

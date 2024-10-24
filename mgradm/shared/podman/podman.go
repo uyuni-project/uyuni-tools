@@ -222,7 +222,7 @@ func RunMigration(
 		return nil, utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
 
-	//now that everything is migrated, we need to fix SELinux permission
+	// now that everything is migrated, we need to fix SELinux permission
 	for _, volumeMount := range utils.ServerVolumeMounts {
 		mountPoint, err := GetMountPoint(volumeMount.Name)
 		if err != nil {

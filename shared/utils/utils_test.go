@@ -351,19 +351,19 @@ func TestConfig(t *testing.T) {
 		t.Errorf("Unexpected error while reading configuration files: %s", err)
 	}
 
-	//This value is not set by conf file, so it should be the hardcoded default value
+	// This value is not set by conf file, so it should be the hardcoded default value
 	if viper.Get("firstConf") != "hardcodedDefault" {
 		t.Errorf("firstConf is %s, instead of hardcodedDefault", viper.Get("firstConf"))
 	}
-	//This value is set by firstConfFile.yaml
+	// This value is set by firstConfFile.yaml
 	if viper.Get("secondConf") != "firstConfFile" {
 		t.Errorf("secondConf is %s, instead of firstConfFile", viper.Get("secondConf"))
 	}
-	//This value is as first set by firstConfFile.yaml, but then overwritten by secondConfFile.yaml
+	// This value is as first set by firstConfFile.yaml, but then overwritten by secondConfFile.yaml
 	if viper.Get("thirdConf") != "SecondConfFile" {
 		t.Errorf("thirdConf is %s, instead of SecondConfFile", viper.Get("thirdConf"))
 	}
-	//This value is set by secondConfFile.yaml
+	// This value is set by secondConfFile.yaml
 	if viper.Get("fourthconf") != "SecondConfFile" {
 		t.Errorf("fourthconf is %s, instead of SecondConfFile", viper.Get("fourthconf"))
 	}

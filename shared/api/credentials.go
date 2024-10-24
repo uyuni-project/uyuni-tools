@@ -43,7 +43,7 @@ func StoreLoginCreds(client *APIClient) error {
 
 // Remove stored API credentials.
 func RemoveLoginCreds() error {
-	//Future: Multi-server support will need some parsing here
+	// Future: Multi-server support will need some parsing here
 	return os.Remove(getAPICredsFile())
 }
 

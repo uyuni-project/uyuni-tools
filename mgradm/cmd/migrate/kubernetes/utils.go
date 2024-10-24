@@ -72,7 +72,6 @@ func migrateToKubernetes(
 		return err
 	}
 	kubeconfig := clusterInfos.GetKubeconfig()
-	//TODO: check if we need to handle SELinux policies, as we do in podman
 
 	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
 	var sslFlags adm_utils.SslCertFlags
@@ -98,8 +97,8 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot run deploy"))
 	}
 
-	//this is needed because folder with script needs to be mounted
-	//check the node before scaling down
+	// This is needed because folder with script needs to be mounted
+	// check the node before scaling down
 	nodeName, err := shared_kubernetes.GetNode(namespace, shared_kubernetes.ServerFilter)
 	if err != nil {
 		return utils.Errorf(err, L("cannot find node running uyuni"))

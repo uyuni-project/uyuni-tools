@@ -66,7 +66,7 @@ func ReadConfig(cmd *cobra.Command, configPaths ...string) (*viper.Viper, error)
 		}
 	}
 
-	//once global configuration are set, set the local config file as default
+	// once global configuration are set, set the local config file as default
 	v.SetConfigType("yaml")
 	v.SetConfigName(configFilename)
 

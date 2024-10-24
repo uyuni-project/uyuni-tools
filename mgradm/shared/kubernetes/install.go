@@ -190,8 +190,8 @@ func Upgrade(
 	}
 	defer os.RemoveAll(scriptDir)
 
-	//this is needed because folder with script needs to be mounted
-	//check the node before scaling down
+	// this is needed because folder with script needs to be mounted
+	// check the node before scaling down
 	nodeName, err := kubernetes.GetNode(namespace, kubernetes.ServerFilter)
 	if err != nil {
 		return utils.Errorf(err, L("cannot find node running uyuni"))

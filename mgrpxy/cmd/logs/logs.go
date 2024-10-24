@@ -108,7 +108,7 @@ func getContainerNames(cmd *cobra.Command, args []string, toComplete string) ([]
 				" ", "",
 			)
 		} else {
-			//kubernetes log only accepts either 1 container name or the --all-containers flag.
+			// kubernetes log only accepts either 1 container name or the --all-containers flag.
 			return names, cobra.ShellCompDirectiveNoFileComp
 		}
 	}

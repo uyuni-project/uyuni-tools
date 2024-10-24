@@ -98,9 +98,9 @@ func AddImageFlag(cmd *cobra.Command) {
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "image", Title: L("Image Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "image", "image")
-	_ = utils.AddFlagToHelpGroupID(cmd, "registry", "") //without group, since this flag is applied to all the images
+	_ = utils.AddFlagToHelpGroupID(cmd, "registry", "") // without group, since this flag is applied to all the images
 	_ = utils.AddFlagToHelpGroupID(cmd, "tag", "image")
-	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "") //without group, since this flag is applied to all the images
+	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "") // without group, since this flag is applied to all the images
 }
 
 // AddDbUpgradeImageFlag add Database upgrade image flags to a command.

@@ -152,7 +152,7 @@ func RunningImage(cnx *shared.Connection, containerName string) (string, error) 
 
 	case "kubectl":
 
-		//FIXME this will work until containers 0 is uyuni. Then jsonpath should be something like
+		// FIXME this will work until containers 0 is uyuni. Then jsonpath should be something like
 		// {.items[0].spec.containers[?(@.name=="` + containerName + `")].image but there are problems
 		// using RunCmdOutput with an arguments with round brackets
 		args := []string{"get", "pods", kubernetes.ServerFilter, "-o", "jsonpath={.items[0].spec.containers[0].image}"}
