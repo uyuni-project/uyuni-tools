@@ -48,7 +48,7 @@ type TestFilePaths struct {
 }
 
 // Helper function to mock a successful API call to login.
-func mockSuccessfulLoginApiCall() func(conn *api.ConnectionDetails) (*api.APIClient, error) {
+func mockSuccessfulLoginAPICall() func(conn *api.ConnectionDetails) (*api.APIClient, error) {
 	return func(conn *api.ConnectionDetails) (*api.APIClient, error) {
 		client, _ := api.Init(conn)
 		client.Client = &mocks.MockClient{
@@ -147,7 +147,7 @@ func TestFailProxyCreateConfigWhenProxyCrtIsProvidedButProxyKeyIsMissing(t *test
 	expectedErrorMessage := "flag proxyKey is required when flag proxyCrt is provided"
 
 	// Execute
-	err := proxy.ProxyCreateConfig(flags, mockSuccessfulLoginApiCall(), nil, nil)
+	err := proxy.ProxyCreateConfig(flags, mockSuccessfulLoginAPICall(), nil, nil)
 
 	// Assertions
 	testutils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
@@ -186,7 +186,7 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 
 	// Execute providing certs
 	err := proxy.ProxyCreateConfig(
-		mockContainerConfigflags, mockSuccessfulLoginApiCall(), mockContainerConfig, mockCreateConfigGenerate,
+		mockContainerConfigflags, mockSuccessfulLoginAPICall(), mockContainerConfig, mockCreateConfigGenerate,
 	)
 
 	// Assertions providing certs call
@@ -196,7 +196,7 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 
 	// Execute generate certs
 	err = proxy.ProxyCreateConfig(
-		mockContainerConfigGenerateflags, mockSuccessfulLoginApiCall(), mockContainerConfig, mockCreateConfigGenerate,
+		mockContainerConfigGenerateflags, mockSuccessfulLoginAPICall(), mockContainerConfig, mockCreateConfigGenerate,
 	)
 
 	// Assertions generate certs call
@@ -248,7 +248,7 @@ func TestSuccessProxyCreateConfigWhenAllParamsProvidedSuccess(t *testing.T) {
 	}
 
 	// Execute
-	err := proxy.ProxyCreateConfig(flags, mockSuccessfulLoginApiCall(), mockContainerConfig, nil)
+	err := proxy.ProxyCreateConfig(flags, mockSuccessfulLoginAPICall(), mockContainerConfig, nil)
 
 	// Assertions
 	testutils.AssertTrue(t, "Unexpected error executing ProxyCreateConfig", err == nil)
@@ -313,7 +313,7 @@ func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing
 	}
 
 	// Execute
-	err := proxy.ProxyCreateConfig(flags, mockSuccessfulLoginApiCall(), nil, mockCreateConfigGenerate)
+	err := proxy.ProxyCreateConfig(flags, mockSuccessfulLoginAPICall(), nil, mockCreateConfigGenerate)
 
 	// Assertions
 	testutils.AssertTrue(t, "Unexpected error executing ProxyCreateConfigGenerate", err == nil)

@@ -21,8 +21,8 @@ After=uyuni-proxy-pod.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-{{- if .HttpProxyFile }}
-EnvironmentFile={{ .HttpProxyFile }}
+{{- if .HTTPProxyFile }}
+EnvironmentFile={{ .HTTPProxyFile }}
 {{- end }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-ssh.pid %t/uyuni-proxy-ssh.ctr-id
@@ -49,7 +49,7 @@ WantedBy=multi-user.target default.target
 
 // SSHTemplateData SSH information to create systemd file.
 type SSHTemplateData struct {
-	HttpProxyFile string
+	HTTPProxyFile string
 }
 
 // Render will create the systemd configuration file.

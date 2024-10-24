@@ -61,8 +61,8 @@ func migrateToPodman(
 	}
 
 	// Find the SSH Socket and paths for the migration
-	sshAuthSocket := migration_shared.GetSshAuthSocket()
-	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
+	sshAuthSocket := migration_shared.GetSSHAuthSocket()
+	sshConfigPath, sshKnownhostsPath := migration_shared.GetSSHPaths()
 
 	extractedData, err := podman.RunMigration(
 		preparedImage, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn, flags.User, flags.Prepare,
@@ -80,7 +80,7 @@ func migrateToPodman(
 
 	if oldPgVersion != newPgVersion {
 		if err := podman.RunPgsqlVersionUpgrade(
-			authFile, flags.Image.Registry, flags.Image, flags.DbUpgradeImage, oldPgVersion, newPgVersion,
+			authFile, flags.Image.Registry, flags.Image, flags.DBUpgradeImage, oldPgVersion, newPgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
@@ -110,8 +110,8 @@ func migrateToPodman(
 	if flags.Coco.Replicas > 0 {
 		if err = coco.Upgrade(
 			systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
-			extractedData.DbPort, extractedData.DbName,
-			extractedData.DbUser, extractedData.DbPassword,
+			extractedData.DBPort, extractedData.DBName,
+			extractedData.DBUser, extractedData.DBPassword,
 		); err != nil {
 			return utils.Errorf(err, L("cannot setup confidential computing attestation service"))
 		}
@@ -123,7 +123,7 @@ func migrateToPodman(
 	}
 
 	hubReplicas := flags.HubXmlrpc.Replicas
-	if extractedData.HasHubXmlrpcApi {
+	if extractedData.HasHubXmlrpcAPI {
 		log.Info().Msg(L("Enabling Hub XML-RPC API since it is enabled on the migrated server"))
 		hubReplicas = 1
 	}

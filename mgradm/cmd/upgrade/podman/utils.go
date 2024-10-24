@@ -28,6 +28,6 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 	defer cleaner()
 
 	return podman.Upgrade(
-		systemd, authFile, flags.Image.Registry, flags.Image, flags.DbUpgradeImage, flags.Coco, flags.HubXmlrpc,
+		systemd, authFile, flags.Image.Registry, flags.Image, flags.DBUpgradeImage, flags.Coco, flags.HubXmlrpc,
 	)
 }

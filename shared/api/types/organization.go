@@ -6,7 +6,7 @@ package types
 
 // Organization describe an organization in the API.
 type Organization struct {
-	Id                    int
+	ID                    int
 	Name                  string
 	ActiveUsers           int `mapstructure:"active_users"`
 	Systems               int

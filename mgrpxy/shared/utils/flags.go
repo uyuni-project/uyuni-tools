@@ -23,7 +23,7 @@ type ProxyImageFlags struct {
 	Httpd      types.ImageFlags `mapstructure:"httpd"`
 	SaltBroker types.ImageFlags `mapstructure:"saltBroker"`
 	Squid      types.ImageFlags `mapstructure:"squid"`
-	Ssh        types.ImageFlags `mapstructure:"ssh"`
+	SSH        types.ImageFlags `mapstructure:"ssh"`
 	Tftpd      types.ImageFlags `mapstructure:"tftpd"`
 	Tuning     Tuning           `mapstructure:"tuning"`
 }
@@ -45,18 +45,18 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 	case "squid":
 		containerImage = &f.Squid
 	case "ssh":
-		containerImage = &f.Ssh
+		containerImage = &f.SSH
 	case "tftpd":
 		containerImage = &f.Tftpd
 	default:
 		log.Fatal().Msgf(L("Invalid proxy container name: %s"), name)
 	}
 
-	imageUrl, err := utils.ComputeImage(f.Registry, f.Tag, *containerImage)
+	imageURL, err := utils.ComputeImage(f.Registry, f.Tag, *containerImage)
 	if err != nil {
 		log.Fatal().Err(err).Msg(L("failed to compute image URL"))
 	}
-	return imageUrl
+	return imageURL
 }
 
 // AddSCCFlag add SCC flags to a command.

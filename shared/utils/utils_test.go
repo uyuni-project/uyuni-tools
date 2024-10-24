@@ -180,22 +180,22 @@ func TestComputePTF(t *testing.T) {
 	for i, testCase := range data {
 		result := testCase[0]
 		user := testCase[1]
-		ptfId := testCase[2]
+		ptfID := testCase[2]
 		fullImage := testCase[3]
 		suffix := testCase[4]
 
-		actual, err := ComputePTF(user, ptfId, fullImage, suffix)
+		actual, err := ComputePTF(user, ptfID, fullImage, suffix)
 
 		if err != nil {
 			t.Errorf(
 				"Testcase %d: Unexpected error while computing image with %s, %s, %s, %s: %s",
-				i, user, ptfId, fullImage, suffix, err,
+				i, user, ptfID, fullImage, suffix, err,
 			)
 		}
 		if actual != result {
 			t.Errorf(
 				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s, %s",
-				i, result, actual, user, ptfId, fullImage, suffix,
+				i, result, actual, user, ptfID, fullImage, suffix,
 			)
 		}
 	}

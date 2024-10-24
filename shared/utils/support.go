@@ -26,13 +26,13 @@ func GetSupportConfigPath(out string) string {
 
 // GetSupportConfigFileSaveName returns the support config file name.
 func GetSupportConfigFileSaveName() string {
-	hostname_b, err := RunCmdOutput(zerolog.DebugLevel, "hostname")
+	out, err := RunCmdOutput(zerolog.DebugLevel, "hostname")
 	var hostname string
 	if err != nil {
 		log.Warn().Err(err).Msg(L("Unable to detect hostname, using localhost"))
 		hostname = "localhost"
 	} else {
-		hostname = strings.TrimSpace(string(hostname_b))
+		hostname = strings.TrimSpace(string(out))
 	}
 	now := time.Now()
 	return fmt.Sprintf("scc_%s_%s", hostname, now.Format("20060102_1504"))

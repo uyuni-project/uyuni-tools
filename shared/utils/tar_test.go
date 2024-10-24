@@ -16,10 +16,10 @@ import (
 const dataDir = "data"
 const outDir = "out"
 
-const file1_content = "file1 content"
+const file1Content = "file1 content"
 
 var filesData = map[string]string{
-	"file1":     file1_content,
+	"file1":     file1Content,
 	"sub/file2": "file2 content",
 }
 
@@ -89,8 +89,8 @@ func TestWriteTarGz(t *testing.T) {
 	// Check the content of a file
 	if out, err := os.ReadFile(path.Join(testDir, "otherfile1")); err != nil {
 		t.Errorf("failed to read otherfile1: %s", err)
-	} else if string(out) != file1_content {
-		t.Errorf("expected otherfile1 content %s, but got %s", file1_content, string(out))
+	} else if string(out) != file1Content {
+		t.Errorf("expected otherfile1 content %s, but got %s", file1Content, string(out))
 	}
 }
 

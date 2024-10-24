@@ -21,8 +21,8 @@ After=uyuni-proxy-pod.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-{{- if .HttpProxyFile }}
-EnvironmentFile={{ .HttpProxyFile }}
+{{- if .HTTPProxyFile }}
+EnvironmentFile={{ .HTTPProxyFile }}
 {{- end }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-salt-broker.pid %t/uyuni-proxy-salt-broker.ctr-id
@@ -49,7 +49,7 @@ WantedBy=multi-user.target default.target
 
 // SaltBrokerTemplateData represents Salt Broker information to create systemd file.
 type SaltBrokerTemplateData struct {
-	HttpProxyFile string
+	HTTPProxyFile string
 }
 
 // Render will create the systemd configuration file.

@@ -102,7 +102,7 @@ func Upgrade(
 func generateHubXmlrpcSystemdService(systemd podman.Systemd, image string) error {
 	hubXmlrpcData := templates.HubXmlrpcServiceTemplateData{
 		Volumes:    utils.HubXmlrpcVolumeMounts,
-		Ports:      utils.HUB_XMLRPC_PORTS,
+		Ports:      utils.HubXmlrpcPorts,
 		NamePrefix: "uyuni",
 		Network:    podman.UyuniNetwork,
 		Image:      image,

@@ -72,8 +72,8 @@ type certificate struct {
 	issuerHash   string
 	startDate    time.Time
 	endDate      time.Time
-	subjectKeyId string
-	authKeyId    string
+	subjectKeyID string
+	authKeyID    string
 	isCa         bool
 	isRoot       bool
 }
@@ -163,9 +163,9 @@ func extractCertificateData(content []byte) certificate {
 			nextVal = "basicConstraints"
 		} else if strings.HasPrefix(line, "    ") {
 			if nextVal == "subjectKeyId" {
-				cert.subjectKeyId = strings.ToUpper(strings.TrimSpace(line))
+				cert.subjectKeyID = strings.ToUpper(strings.TrimSpace(line))
 			} else if nextVal == "authKeyId" && strings.HasPrefix(line, "    keyid:") {
-				cert.authKeyId = strings.ToUpper(strings.TrimSpace(strings.SplitN(line, ":", 2)[1]))
+				cert.authKeyID = strings.ToUpper(strings.TrimSpace(strings.SplitN(line, ":", 2)[1]))
 			} else if nextVal == "basicConstraints" && strings.Contains(line, "CA:TRUE") {
 				cert.isCa = true
 			} else {
@@ -184,8 +184,8 @@ func extractCertificateData(content []byte) certificate {
 	if cert.subject == cert.issuer {
 		cert.isRoot = true
 		// Some Root CAs might not have their authorityKeyIdentifier set to themself
-		if cert.isCa && cert.authKeyId == "" {
-			cert.authKeyId = cert.subjectKeyId
+		if cert.isCa && cert.authKeyID == "" {
+			cert.authKeyID = cert.subjectKeyID
 		}
 	} else {
 		cert.isRoot = false

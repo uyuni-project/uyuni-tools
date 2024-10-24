@@ -6,8 +6,8 @@ package api
 
 import "net/http"
 
-const root_path_apiv1 = "/rhn/manager/api"
-const api_credentials_store = ".uyuni-api.json"
+const rootPathApiv1 = "/rhn/manager/api"
+const apiCredentialsStore = ".uyuni-api.json"
 
 // APIClient is the API entrypoint structure.
 type APIClient struct {
@@ -56,8 +56,8 @@ type ConnectionDetails struct {
 	Cookie string
 }
 
-// ApiResponse describes the HTTP response where T is the type of the result.
-type ApiResponse[T interface{}] struct {
+// APIResponse describes the HTTP response where T is the type of the result.
+type APIResponse[T interface{}] struct {
 	Result  T
 	Success bool
 	Message string

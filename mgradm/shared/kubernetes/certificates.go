@@ -20,7 +20,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) error {
+func installTLSSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) error {
 	crdsDir, err := utils.TempDir()
 	if err != nil {
 		return err
@@ -29,7 +29,7 @@ func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, root
 
 	secretPath := filepath.Join(crdsDir, "secret.yaml")
 	log.Info().Msg(L("Creating SSL server certificate secret"))
-	tlsSecretData := templates.TlsSecretTemplateData{
+	tlsSecretData := templates.TLSSecretTemplateData{
 		Namespace:   namespace,
 		Name:        "uyuni-cert",
 		Certificate: base64.StdEncoding.EncodeToString(serverCrt),

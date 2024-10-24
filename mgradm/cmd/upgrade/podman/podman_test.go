@@ -17,7 +17,7 @@ func TestParamsParsing(t *testing.T) {
 	args := []string{}
 
 	args = append(args, flagstests.ImageFlagsTestArgs...)
-	args = append(args, flagstests.DbUpdateImageFlagTestArgs...)
+	args = append(args, flagstests.DBUpdateImageFlagTestArgs...)
 	args = append(args, flagstests.CocoFlagsTestArgs...)
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
 	args = append(args, flagstests.SccFlagTestArgs...)
@@ -28,7 +28,7 @@ func TestParamsParsing(t *testing.T) {
 		cmd *cobra.Command, args []string,
 	) error {
 		flagstests.AssertImageFlag(t, cmd, &flags.Image)
-		flagstests.AssertDbUpgradeImageFlag(t, cmd, &flags.DbUpgradeImage)
+		flagstests.AssertDBUpgradeImageFlag(t, cmd, &flags.DBUpgradeImage)
 		flagstests.AssertCocoFlag(t, cmd, &flags.Coco)
 		flagstests.AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)
 		flagstests.AssertSccFlag(t, cmd, &flags.SCC)

@@ -18,8 +18,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// DbFlags can store all values required to connect to a database.
-type DbFlags struct {
+// DBFlags can store all values required to connect to a database.
+type DBFlags struct {
 	Host     string
 	Name     string
 	Port     int
@@ -46,8 +46,8 @@ type InstallFlags struct {
 	IssParent    string
 	Mirror       string
 	Tftp         bool
-	Db           DbFlags
-	ReportDb     DbFlags
+	DB           DBFlags
+	ReportDB     DBFlags
 	Ssl          cmd_utils.SslCertFlags
 	Scc          types.SCCCredentials
 	Debug        DebugFlags
@@ -80,12 +80,12 @@ func emailChecker(value string) bool {
 
 // CheckParameters checks parameters for install command.
 func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
-	if flags.Db.Password == "" {
-		flags.Db.Password = utils.GetRandomBase64(30)
+	if flags.DB.Password == "" {
+		flags.DB.Password = utils.GetRandomBase64(30)
 	}
 
-	if flags.ReportDb.Password == "" {
-		flags.ReportDb.Password = utils.GetRandomBase64(30)
+	if flags.ReportDB.Password == "" {
+		flags.ReportDB.Password = utils.GetRandomBase64(30)
 	}
 
 	// Make sure we have all the required 3rd party flags or none

@@ -51,9 +51,9 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	isK3s := clusterInfos.IsK3s()
 	IsRke2 := clusterInfos.IsRke2()
 	if isK3s {
-		shared_kubernetes.InstallK3sTraefikConfig(shared_utils.PROXY_TCP_PORTS, shared_utils.UDP_PORTS)
+		shared_kubernetes.InstallK3sTraefikConfig(shared_utils.ProxyTCPPorts, shared_utils.UDPPorts)
 	} else if IsRke2 {
-		shared_kubernetes.InstallRke2NginxConfig(shared_utils.PROXY_TCP_PORTS, shared_utils.UDP_PORTS,
+		shared_kubernetes.InstallRke2NginxConfig(shared_utils.ProxyTCPPorts, shared_utils.UDPPorts,
 			flags.Helm.Proxy.Namespace)
 	}
 

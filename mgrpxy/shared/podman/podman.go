@@ -48,17 +48,17 @@ func GenerateSystemdService(
 	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
 
 	log.Info().Msg(L("Generating systemd services"))
-	httpProxyConfig := getHttpProxyConfig()
+	httpProxyConfig := getHTTPProxyConfig()
 
 	ports := []types.PortMap{}
-	ports = append(ports, shared_utils.PROXY_TCP_PORTS...)
-	ports = append(ports, shared_utils.PROXY_PODMAN_PORTS...)
-	ports = append(ports, shared_utils.UDP_PORTS...)
+	ports = append(ports, shared_utils.ProxyTCPPorts...)
+	ports = append(ports, shared_utils.ProxyPodmanPorts...)
+	ports = append(ports, shared_utils.UDPPorts...)
 
 	// Pod
 	dataPod := templates.PodTemplateData{
 		Ports:         ports,
-		HttpProxyFile: httpProxyConfig,
+		HTTPProxyFile: httpProxyConfig,
 		Network:       podman.UyuniNetwork,
 		IPV6Enabled:   ipv6Enabled,
 	}
@@ -70,8 +70,8 @@ func GenerateSystemdService(
 	// Httpd
 	{
 		dataHttpd := templates.HttpdTemplateData{
-			Volumes:       shared_utils.PROXY_HTTPD_VOLUMES,
-			HttpProxyFile: httpProxyConfig,
+			Volumes:       shared_utils.ProxyHttpdVolumes,
+			HTTPProxyFile: httpProxyConfig,
 		}
 		additionHttpdTuningSettings := ""
 		if flags.ProxyImageFlags.Tuning.Httpd != "" {
@@ -91,7 +91,7 @@ func GenerateSystemdService(
 	// Salt broker
 	{
 		dataSaltBroker := templates.SaltBrokerTemplateData{
-			HttpProxyFile: httpProxyConfig,
+			HTTPProxyFile: httpProxyConfig,
 		}
 		if err := generateSystemdFile(dataSaltBroker, "salt-broker", saltBrokerImage, ""); err != nil {
 			return err
@@ -100,8 +100,8 @@ func GenerateSystemdService(
 	// Squid
 	{
 		dataSquid := templates.SquidTemplateData{
-			Volumes:       shared_utils.PROXY_SQUID_VOLUMES,
-			HttpProxyFile: httpProxyConfig,
+			Volumes:       shared_utils.ProxySquidVolumes,
+			HTTPProxyFile: httpProxyConfig,
 		}
 		additionSquidTuningSettings := ""
 		if flags.ProxyImageFlags.Tuning.Squid != "" {
@@ -121,7 +121,7 @@ func GenerateSystemdService(
 	// SSH
 	{
 		dataSSH := templates.SSHTemplateData{
-			HttpProxyFile: httpProxyConfig,
+			HTTPProxyFile: httpProxyConfig,
 		}
 		if err := generateSystemdFile(dataSSH, "ssh", sshImage, ""); err != nil {
 			return err
@@ -130,8 +130,8 @@ func GenerateSystemdService(
 	// Tftpd
 	{
 		dataTftpd := templates.TFTPDTemplateData{
-			Volumes:       shared_utils.PROXY_TFTPD_VOLUMES,
-			HttpProxyFile: httpProxyConfig,
+			Volumes:       shared_utils.ProxyTftpdVolumes,
+			HTTPProxyFile: httpProxyConfig,
 		}
 		if err := generateSystemdFile(dataTftpd, "tftpd", tftpdImage, ""); err != nil {
 			return err
@@ -164,7 +164,7 @@ func generateSystemdFile(template shared_utils.Template, service string, image s
 	return nil
 }
 
-func getHttpProxyConfig() string {
+func getHTTPProxyConfig() string {
 	const httpProxyConfigPath = "/etc/sysconfig/proxy"
 
 	// Only SUSE distros seem to have such a file for HTTP proxy settings
