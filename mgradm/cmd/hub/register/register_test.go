@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
-	"github.com/uyuni-project/uyuni-tools/shared/testutils/flags_tests"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils/flagstests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -20,7 +20,7 @@ func TestParamsParsing(t *testing.T) {
 		args = append(args, "--backend", "kubectl")
 	}
 
-	args = append(args, flags_tests.APIFlagsTestArgs...)
+	args = append(args, flagstests.APIFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(globalFlags *types.GlobalFlags, flags *registerFlags,
@@ -29,7 +29,7 @@ func TestParamsParsing(t *testing.T) {
 		if utils.KubernetesBuilt {
 			testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
 		}
-		flags_tests.AssertAPIFlags(t, cmd, &flags.ConnectionDetails)
+		flagstests.AssertAPIFlags(t, cmd, &flags.ConnectionDetails)
 		return nil
 	}
 

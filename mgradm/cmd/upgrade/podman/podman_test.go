@@ -9,30 +9,30 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
-	"github.com/uyuni-project/uyuni-tools/shared/testutils/flags_tests"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils/flagstests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 func TestParamsParsing(t *testing.T) {
 	args := []string{}
 
-	args = append(args, flags_tests.ImageFlagsTestArgs...)
-	args = append(args, flags_tests.DbUpdateImageFlagTestArgs...)
-	args = append(args, flags_tests.CocoFlagsTestArgs...)
-	args = append(args, flags_tests.HubXmlrpcFlagsTestArgs...)
-	args = append(args, flags_tests.SccFlagTestArgs...)
-	args = append(args, flags_tests.PodmanFlagsTestArgs...)
+	args = append(args, flagstests.ImageFlagsTestArgs...)
+	args = append(args, flagstests.DbUpdateImageFlagTestArgs...)
+	args = append(args, flagstests.CocoFlagsTestArgs...)
+	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
+	args = append(args, flagstests.SccFlagTestArgs...)
+	args = append(args, flagstests.PodmanFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		flags_tests.AssertImageFlag(t, cmd, &flags.Image)
-		flags_tests.AssertDbUpgradeImageFlag(t, cmd, &flags.DbUpgradeImage)
-		flags_tests.AssertCocoFlag(t, cmd, &flags.Coco)
-		flags_tests.AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)
-		flags_tests.AssertSccFlag(t, cmd, &flags.SCC)
-		flags_tests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
+		flagstests.AssertImageFlag(t, cmd, &flags.Image)
+		flagstests.AssertDbUpgradeImageFlag(t, cmd, &flags.DbUpgradeImage)
+		flagstests.AssertCocoFlag(t, cmd, &flags.Coco)
+		flagstests.AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)
+		flagstests.AssertSccFlag(t, cmd, &flags.SCC)
+		flagstests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
 		return nil
 	}
 
