@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils/flags_tests"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils/flags_tests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -39,7 +39,7 @@ func TestParamsParsing(t *testing.T) {
 	globalFlags := types.GlobalFlags{}
 	cmd := newCmd(&globalFlags, tester)
 
-	test_utils.AssertHasAllFlags(t, cmd, args)
+	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
 	if err := cmd.Execute(); err != nil {

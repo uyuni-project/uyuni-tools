@@ -10,7 +10,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 const dataDir = "data"
@@ -25,7 +25,7 @@ var filesData = map[string]string{
 
 // Prepare test files to include in the tarball.
 func setup(t *testing.T) (string, func(t *testing.T)) {
-	dir, clean := test_utils.CreateTmpFolder(t)
+	dir, clean := testutils.CreateTmpFolder(t)
 
 	// Create sub directories for the data and the test
 	for _, dirPath := range []string{dataDir, outDir} {

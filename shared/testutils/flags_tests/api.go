@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 // APIFlagsTestArgs is the slice of parameters to use with AssertAPIFlags.
@@ -23,9 +23,9 @@ var APIFlagsTestArgs = []string{
 
 // AssertAPIFlags checks that all API parameters are parsed correctly.
 func AssertAPIFlags(t *testing.T, cmd *cobra.Command, flags *api.ConnectionDetails) {
-	test_utils.AssertEquals(t, "Error parsing --api-server", "mysrv", flags.Server)
-	test_utils.AssertEquals(t, "Error parsing --api-user", "apiuser", flags.User)
-	test_utils.AssertEquals(t, "Error parsing --api-password", "api-pass", flags.Password)
-	test_utils.AssertEquals(t, "Error parsing --api-cacert", "path/to/ca.crt", flags.CApath)
-	test_utils.AssertTrue(t, "Error parsing --api-insecure", flags.Insecure)
+	testutils.AssertEquals(t, "Error parsing --api-server", "mysrv", flags.Server)
+	testutils.AssertEquals(t, "Error parsing --api-user", "apiuser", flags.User)
+	testutils.AssertEquals(t, "Error parsing --api-password", "api-pass", flags.Password)
+	testutils.AssertEquals(t, "Error parsing --api-cacert", "path/to/ca.crt", flags.CApath)
+	testutils.AssertTrue(t, "Error parsing --api-insecure", flags.Insecure)
 }

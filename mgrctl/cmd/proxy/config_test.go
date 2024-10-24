@@ -15,7 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/api/mocks"
 	proxyApi "github.com/uyuni-project/uyuni-tools/shared/api/proxy"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -52,7 +52,7 @@ func mockSuccessfulLoginApiCall() func(conn *api.ConnectionDetails) (*api.APICli
 	return func(conn *api.ConnectionDetails) (*api.APIClient, error) {
 		client, _ := api.Init(conn)
 		client.Client = &mocks.MockClient{
-			DoFunc: test_utils.SuccessfulLoginTestDo,
+			DoFunc: testutils.SuccessfulLoginTestDo,
 		}
 		return client, nil
 	}
@@ -86,7 +86,7 @@ func setupTestFiles(t *testing.T, testDir string) TestFilePaths {
 // tests a failure proxy create config generate command when no connection details are provided.
 func TestFailProxyCreateConfigWhenNoConnectionDetailsAreProvided(t *testing.T) {
 	// Setup
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	expectedOutputFilePath := path.Join(testDir, t.Name()+".tar.gz")
@@ -97,15 +97,15 @@ func TestFailProxyCreateConfigWhenNoConnectionDetailsAreProvided(t *testing.T) {
 	err := proxy.ProxyCreateConfig(flags, api.Init, proxyApi.ContainerConfig, proxyApi.ContainerConfigGenerate)
 
 	// Assertions
-	test_utils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
-	test_utils.AssertTrue(t, "ProxyCreateConfig error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
-	test_utils.AssertTrue(t, "File configuration file stored", !utils.FileExists(expectedOutputFilePath))
+	testutils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
+	testutils.AssertTrue(t, "ProxyCreateConfig error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
+	testutils.AssertTrue(t, "File configuration file stored", !utils.FileExists(expectedOutputFilePath))
 }
 
 // tests a failure proxy create config generate command when login fails.
 func TestFailProxyCreateConfigWhenLoginFails(t *testing.T) {
 	// Setup structures and expected values
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	expectedOutputFilePath := path.Join(testDir, t.Name()+".tar.gz")
@@ -118,7 +118,7 @@ func TestFailProxyCreateConfigWhenLoginFails(t *testing.T) {
 	mockAPIFunc := func(conn *api.ConnectionDetails) (*api.APIClient, error) {
 		client, _ := api.Init(conn)
 		client.Client = &mocks.MockClient{
-			DoFunc: test_utils.FailedLoginTestDo,
+			DoFunc: testutils.FailedLoginTestDo,
 		}
 		return client, nil
 	}
@@ -127,15 +127,15 @@ func TestFailProxyCreateConfigWhenLoginFails(t *testing.T) {
 	err := proxy.ProxyCreateConfig(flags, mockAPIFunc, proxyApi.ContainerConfig, proxyApi.ContainerConfigGenerate)
 
 	// Assertions
-	test_utils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
-	test_utils.AssertTrue(t, "ProxyCreateConfig error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
-	test_utils.AssertTrue(t, "File configuration file stored", !utils.FileExists(expectedOutputFilePath))
+	testutils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
+	testutils.AssertTrue(t, "ProxyCreateConfig error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
+	testutils.AssertTrue(t, "File configuration file stored", !utils.FileExists(expectedOutputFilePath))
 }
 
 // tests a failure proxy create config generate command when ProxyCrt is provided but ProxyKey is missing.
 func TestFailProxyCreateConfigWhenProxyCrtIsProvidedButProxyKeyIsMissing(t *testing.T) {
 	// Setup
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	testFiles := setupTestFiles(t, testDir)
@@ -150,15 +150,15 @@ func TestFailProxyCreateConfigWhenProxyCrtIsProvidedButProxyKeyIsMissing(t *test
 	err := proxy.ProxyCreateConfig(flags, mockSuccessfulLoginApiCall(), nil, nil)
 
 	// Assertions
-	test_utils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
-	test_utils.AssertTrue(t, "ProxyCreateConfig error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
-	test_utils.AssertTrue(t, "File configuration file stored", !utils.FileExists(testFiles.OutputFilePath))
+	testutils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
+	testutils.AssertTrue(t, "ProxyCreateConfig error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
+	testutils.AssertTrue(t, "File configuration file stored", !utils.FileExists(testFiles.OutputFilePath))
 }
 
 // tests a failure proxy create config command when proxy config request returns an error.
 func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	// Setup
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	testFiles := setupTestFiles(t, testDir)
@@ -190,9 +190,9 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	)
 
 	// Assertions providing certs call
-	test_utils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
-	test_utils.AssertTrue(t, "API proxy config return message", strings.HasSuffix(err.Error(), expectedReturnMessage))
-	test_utils.AssertTrue(t, "File configuration file stored", !utils.FileExists(testFiles.OutputFilePath))
+	testutils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
+	testutils.AssertTrue(t, "API proxy config return message", strings.HasSuffix(err.Error(), expectedReturnMessage))
+	testutils.AssertTrue(t, "File configuration file stored", !utils.FileExists(testFiles.OutputFilePath))
 
 	// Execute generate certs
 	err = proxy.ProxyCreateConfig(
@@ -200,15 +200,15 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	)
 
 	// Assertions generate certs call
-	test_utils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
-	test_utils.AssertTrue(t, "API proxy config return message", strings.HasSuffix(err.Error(), expectedReturnMessage))
-	test_utils.AssertTrue(t, "File configuration file stored", !utils.FileExists(testFiles.OutputFilePath))
+	testutils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
+	testutils.AssertTrue(t, "API proxy config return message", strings.HasSuffix(err.Error(), expectedReturnMessage))
+	testutils.AssertTrue(t, "File configuration file stored", !utils.FileExists(testFiles.OutputFilePath))
 }
 
 // tests a successful proxy create config command when all parameters provided.
 func TestSuccessProxyCreateConfigWhenAllParamsProvidedSuccess(t *testing.T) {
 	// Setup
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	testFiles := setupTestFiles(t, testDir)
@@ -233,17 +233,17 @@ func TestSuccessProxyCreateConfigWhenAllParamsProvidedSuccess(t *testing.T) {
 
 	// Mock containerConfig api call
 	mockContainerConfig := func(client *api.APIClient, request proxyApi.ProxyConfigRequest) (*[]int8, error) {
-		test_utils.AssertEquals(t, "Unexpected proxyName", flags.ProxyName, request.ProxyName)
-		test_utils.AssertEquals(t, "Unexpected proxyPort", flags.ProxyPort, request.ProxyPort)
-		test_utils.AssertEquals(t, "Unexpected server", flags.Server, request.Server)
-		test_utils.AssertEquals(t, "Unexpected maxCache", flags.MaxCache, request.MaxCache)
-		test_utils.AssertEquals(t, "Unexpected email", flags.Email, request.Email)
-		test_utils.AssertEquals(t, "Unexpected caCrt", dummyCaCrtContents, request.RootCA)
-		test_utils.AssertEquals(t, "Unexpected proxyCrt", dummyProxyCrtContents, request.ProxyCrt)
-		test_utils.AssertEquals(t, "Unexpected proxyKey", dummyProxyKeyContents, request.ProxyKey)
-		test_utils.AssertEquals(t, "Number of intermediateCAs", 2, len(request.IntermediateCAs))
-		test_utils.AssertEquals(t, "Unexpected intermediateCA", dummyIntermediateCA1Contents, request.IntermediateCAs[0])
-		test_utils.AssertEquals(t, "Unexpected intermediateCA", dummyIntermediateCA2Contents, request.IntermediateCAs[1])
+		testutils.AssertEquals(t, "Unexpected proxyName", flags.ProxyName, request.ProxyName)
+		testutils.AssertEquals(t, "Unexpected proxyPort", flags.ProxyPort, request.ProxyPort)
+		testutils.AssertEquals(t, "Unexpected server", flags.Server, request.Server)
+		testutils.AssertEquals(t, "Unexpected maxCache", flags.MaxCache, request.MaxCache)
+		testutils.AssertEquals(t, "Unexpected email", flags.Email, request.Email)
+		testutils.AssertEquals(t, "Unexpected caCrt", dummyCaCrtContents, request.RootCA)
+		testutils.AssertEquals(t, "Unexpected proxyCrt", dummyProxyCrtContents, request.ProxyCrt)
+		testutils.AssertEquals(t, "Unexpected proxyKey", dummyProxyKeyContents, request.ProxyKey)
+		testutils.AssertEquals(t, "Number of intermediateCAs", 2, len(request.IntermediateCAs))
+		testutils.AssertEquals(t, "Unexpected intermediateCA", dummyIntermediateCA1Contents, request.IntermediateCAs[0])
+		testutils.AssertEquals(t, "Unexpected intermediateCA", dummyIntermediateCA2Contents, request.IntermediateCAs[1])
 		return &expectedConfigFileData, nil
 	}
 
@@ -251,11 +251,11 @@ func TestSuccessProxyCreateConfigWhenAllParamsProvidedSuccess(t *testing.T) {
 	err := proxy.ProxyCreateConfig(flags, mockSuccessfulLoginApiCall(), mockContainerConfig, nil)
 
 	// Assertions
-	test_utils.AssertTrue(t, "Unexpected error executing ProxyCreateConfig", err == nil)
-	test_utils.AssertTrue(t, "File configuration file was not stored", utils.FileExists(expectedOutputFilePath))
+	testutils.AssertTrue(t, "Unexpected error executing ProxyCreateConfig", err == nil)
+	testutils.AssertTrue(t, "File configuration file was not stored", utils.FileExists(expectedOutputFilePath))
 
-	storedConfigFile := test_utils.ReadFileAsBinary(t, expectedOutputFilePath)
-	test_utils.AssertEquals(t, "File configuration binary doesn't match the response",
+	storedConfigFile := testutils.ReadFileAsBinary(t, expectedOutputFilePath)
+	testutils.AssertEquals(t, "File configuration binary doesn't match the response",
 		fmt.Sprintf("%v", expectedConfigFileData),
 		fmt.Sprintf("%v", storedConfigFile))
 }
@@ -263,7 +263,7 @@ func TestSuccessProxyCreateConfigWhenAllParamsProvidedSuccess(t *testing.T) {
 // tests a successful proxy create config command (with generated certificates) when all parameters provided.
 func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing.T) {
 	// Setup
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	testFiles := setupTestFiles(t, testDir)
@@ -294,21 +294,21 @@ func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing
 
 	// Mock api client & containerConfig
 	mockCreateConfigGenerate := func(client *api.APIClient, request proxyApi.ProxyConfigGenerateRequest) (*[]int8, error) {
-		test_utils.AssertEquals(t, "Unexpected proxyName", flags.ProxyName, request.ProxyName)
-		test_utils.AssertEquals(t, "Unexpected proxyPort", flags.ProxyPort, request.ProxyPort)
-		test_utils.AssertEquals(t, "Unexpected server", flags.Server, request.Server)
-		test_utils.AssertEquals(t, "Unexpected maxCache", flags.MaxCache, request.MaxCache)
-		test_utils.AssertEquals(t, "Unexpected email", flags.Email, request.Email)
-		test_utils.AssertEquals(t, "Unexpected caCrt", dummyCaCrtContents, request.CaCrt)
-		test_utils.AssertEquals(t, "Unexpected caKey", dummyCaKeyContents, request.CaKey)
-		test_utils.AssertEquals(t, "Unexpected caPassword", dummyCaPasswordContents, request.CaPassword)
-		test_utils.AssertEquals(t, "Unexpected cnames", fmt.Sprintf("%v", flags.CNames), fmt.Sprintf("%v", request.Cnames))
-		test_utils.AssertEquals(t, "Unexpected country", flags.Country, request.Country)
-		test_utils.AssertEquals(t, "Unexpected state", flags.State, request.State)
-		test_utils.AssertEquals(t, "Unexpected city", flags.City, request.City)
-		test_utils.AssertEquals(t, "Unexpected org", flags.Org, request.Org)
-		test_utils.AssertEquals(t, "Unexpected orgUnit", flags.OrgUnit, request.OrgUnit)
-		test_utils.AssertEquals(t, "Unexpected sslEmail", flags.SslEmail, request.SslEmail)
+		testutils.AssertEquals(t, "Unexpected proxyName", flags.ProxyName, request.ProxyName)
+		testutils.AssertEquals(t, "Unexpected proxyPort", flags.ProxyPort, request.ProxyPort)
+		testutils.AssertEquals(t, "Unexpected server", flags.Server, request.Server)
+		testutils.AssertEquals(t, "Unexpected maxCache", flags.MaxCache, request.MaxCache)
+		testutils.AssertEquals(t, "Unexpected email", flags.Email, request.Email)
+		testutils.AssertEquals(t, "Unexpected caCrt", dummyCaCrtContents, request.CaCrt)
+		testutils.AssertEquals(t, "Unexpected caKey", dummyCaKeyContents, request.CaKey)
+		testutils.AssertEquals(t, "Unexpected caPassword", dummyCaPasswordContents, request.CaPassword)
+		testutils.AssertEquals(t, "Unexpected cnames", fmt.Sprintf("%v", flags.CNames), fmt.Sprintf("%v", request.Cnames))
+		testutils.AssertEquals(t, "Unexpected country", flags.Country, request.Country)
+		testutils.AssertEquals(t, "Unexpected state", flags.State, request.State)
+		testutils.AssertEquals(t, "Unexpected city", flags.City, request.City)
+		testutils.AssertEquals(t, "Unexpected org", flags.Org, request.Org)
+		testutils.AssertEquals(t, "Unexpected orgUnit", flags.OrgUnit, request.OrgUnit)
+		testutils.AssertEquals(t, "Unexpected sslEmail", flags.SslEmail, request.SslEmail)
 		return &expectedConfigFileData, nil
 	}
 
@@ -316,11 +316,11 @@ func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing
 	err := proxy.ProxyCreateConfig(flags, mockSuccessfulLoginApiCall(), nil, mockCreateConfigGenerate)
 
 	// Assertions
-	test_utils.AssertTrue(t, "Unexpected error executing ProxyCreateConfigGenerate", err == nil)
-	test_utils.AssertTrue(t, "File configuration file was not stored", utils.FileExists(expectedOutputFilePath))
+	testutils.AssertTrue(t, "Unexpected error executing ProxyCreateConfigGenerate", err == nil)
+	testutils.AssertTrue(t, "File configuration file was not stored", utils.FileExists(expectedOutputFilePath))
 
-	storedConfigFile := test_utils.ReadFileAsBinary(t, expectedOutputFilePath)
-	test_utils.AssertEquals(t, "File configuration binary doesn't match the response",
+	storedConfigFile := testutils.ReadFileAsBinary(t, expectedOutputFilePath)
+	testutils.AssertEquals(t, "File configuration binary doesn't match the response",
 		fmt.Sprintf("%v", expectedConfigFileData),
 		fmt.Sprintf("%v", storedConfigFile))
 }

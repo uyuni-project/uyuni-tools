@@ -17,7 +17,7 @@ import (
 	"github.com/chai2010/gettext-go"
 	"github.com/spf13/cobra"
 	l10n_utils "github.com/uyuni-project/uyuni-tools/shared/l10n/utils"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -371,7 +371,7 @@ func TestConfig(t *testing.T) {
 
 // Test saveBinaryData function.
 func TestSaveBinaryData(t *testing.T) {
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	filepath := path.Join(testDir, "testfile")
@@ -379,11 +379,11 @@ func TestSaveBinaryData(t *testing.T) {
 
 	// Save binary data to a file
 	err := SaveBinaryData(filepath, data)
-	test_utils.AssertTrue(t, "Unexpected error executing SaveBinaryData", err == nil)
+	testutils.AssertTrue(t, "Unexpected error executing SaveBinaryData", err == nil)
 
 	// Read the file back and compare contents
-	storedData := test_utils.ReadFileAsBinary(t, filepath)
-	test_utils.AssertEquals(
+	storedData := testutils.ReadFileAsBinary(t, filepath)
+	testutils.AssertEquals(
 		t, "File configuration binary doesn't match",
 		fmt.Sprintf("%v", data), fmt.Sprintf("%v", storedData),
 	)

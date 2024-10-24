@@ -9,7 +9,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -32,7 +32,7 @@ Environment="PODMAN_EXTRA_ARGS="
 
 `
 
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	serviceConfDir := path.Join(testDir, "uyuni-server.service.d")
@@ -42,17 +42,17 @@ Environment="PODMAN_EXTRA_ARGS="
 
 	servicesPath = testDir
 
-	test_utils.WriteFile(t, path.Join(serviceConfDir, "Service.conf"), currentFile)
+	testutils.WriteFile(t, path.Join(serviceConfDir, "Service.conf"), currentFile)
 
 	if err := CleanSystemdConfFile("uyuni-server"); err != nil {
 		t.Errorf("unexpected error: %s", err)
 	}
 
-	actual := test_utils.ReadFile(t, path.Join(serviceConfDir, "generated.conf"))
-	test_utils.AssertEquals(t, "invalid generated.conf file", generatedFile, actual)
+	actual := testutils.ReadFile(t, path.Join(serviceConfDir, "generated.conf"))
+	testutils.AssertEquals(t, "invalid generated.conf file", generatedFile, actual)
 
-	actual = test_utils.ReadFile(t, path.Join(serviceConfDir, "custom.conf"))
-	test_utils.AssertEquals(t, "invalid custom.conf file", customFile, actual)
+	actual = testutils.ReadFile(t, path.Join(serviceConfDir, "custom.conf"))
+	testutils.AssertEquals(t, "invalid custom.conf file", customFile, actual)
 
 	if utils.FileExists(path.Join(serviceConfDir, "Service.conf")) {
 		t.Error("the old Service.conf file is not removed")
@@ -70,7 +70,7 @@ Environment=TZ=Europe/Berlin
 Environment="PODMAN_EXTRA_ARGS="
 `
 
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
+	testDir, cleaner := testutils.CreateTmpFolder(t)
 	defer cleaner()
 
 	serviceConfDir := path.Join(testDir, "uyuni-server.service.d")
@@ -80,16 +80,16 @@ Environment="PODMAN_EXTRA_ARGS="
 
 	servicesPath = testDir
 
-	test_utils.WriteFile(t, path.Join(serviceConfDir, "generated.conf"), generatedFile)
-	test_utils.WriteFile(t, path.Join(serviceConfDir, "custom.conf"), customFile)
+	testutils.WriteFile(t, path.Join(serviceConfDir, "generated.conf"), generatedFile)
+	testutils.WriteFile(t, path.Join(serviceConfDir, "custom.conf"), customFile)
 
 	if err := CleanSystemdConfFile("uyuni-server"); err != nil {
 		t.Errorf("unexpected error: %s", err)
 	}
 
-	actual := test_utils.ReadFile(t, path.Join(serviceConfDir, "generated.conf"))
-	test_utils.AssertEquals(t, "invalid generated.conf file", generatedFile, actual)
+	actual := testutils.ReadFile(t, path.Join(serviceConfDir, "generated.conf"))
+	testutils.AssertEquals(t, "invalid generated.conf file", generatedFile, actual)
 
-	actual = test_utils.ReadFile(t, path.Join(serviceConfDir, "custom.conf"))
-	test_utils.AssertEquals(t, "invalid custom.conf file", customFile, actual)
+	actual = testutils.ReadFile(t, path.Join(serviceConfDir, "custom.conf"))
+	testutils.AssertEquals(t, "invalid custom.conf file", customFile, actual)
 }

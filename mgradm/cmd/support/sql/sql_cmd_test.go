@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -25,19 +25,19 @@ func TestParamsParsing(t *testing.T) {
 	tester := func(globalFlags *types.GlobalFlags, flags *sqlFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		test_utils.AssertEquals(t, "Error parsing --dababase", "reportdb", flags.Database)
-		test_utils.AssertTrue(t, "Error parsing --interactive", flags.Interactive)
-		test_utils.AssertTrue(t, "Error parsing --force", flags.ForceOverwrite)
-		test_utils.AssertEquals(t, "Error parsing --dababase", "reportdb", flags.Database)
-		test_utils.AssertEquals(t, "Error parsing --output", "path/to/output", flags.OutputFile)
-		test_utils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
+		testutils.AssertEquals(t, "Error parsing --dababase", "reportdb", flags.Database)
+		testutils.AssertTrue(t, "Error parsing --interactive", flags.Interactive)
+		testutils.AssertTrue(t, "Error parsing --force", flags.ForceOverwrite)
+		testutils.AssertEquals(t, "Error parsing --dababase", "reportdb", flags.Database)
+		testutils.AssertEquals(t, "Error parsing --output", "path/to/output", flags.OutputFile)
+		testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
 		return nil
 	}
 
 	globalFlags := types.GlobalFlags{}
 	cmd := newCmd(&globalFlags, tester)
 
-	test_utils.AssertHasAllFlags(t, cmd, args)
+	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
 	if err := cmd.Execute(); err != nil {

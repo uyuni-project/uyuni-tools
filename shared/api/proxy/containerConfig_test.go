@@ -14,7 +14,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/api/mocks"
 	"github.com/uyuni-project/uyuni-tools/shared/api/proxy"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 // global access to the testing object.
@@ -128,7 +128,7 @@ func TestFailContainerConfigWhenPostRequestFails(t *testing.T) {
 	}
 	client.Client = &mocks.MockClient{
 		DoFunc: func(req *http.Request) (*http.Response, error) {
-			return test_utils.GetResponse(404, `{}`)
+			return testutils.GetResponse(404, `{}`)
 		},
 	}
 
@@ -136,9 +136,9 @@ func TestFailContainerConfigWhenPostRequestFails(t *testing.T) {
 	result, err := proxy.ContainerConfig(client, proxyConfigRequest)
 
 	// Assertions
-	test_utils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
-	test_utils.AssertTrue(t, "ContainerConfigGenerate error message", strings.Contains(err.Error(), expectedErrorMessage))
-	test_utils.AssertTrue(t, "Result data should be nil", result == nil)
+	testutils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
+	testutils.AssertTrue(t, "ContainerConfigGenerate error message", strings.Contains(err.Error(), expectedErrorMessage))
+	testutils.AssertTrue(t, "Result data should be nil", result == nil)
 }
 
 // Tests ContainerConfig when the post request is successful but the response is unsuccessful.
@@ -153,7 +153,7 @@ func TestFailContainerConfigWhenPostIsUnsuccessful(t *testing.T) {
 	}
 	client.Client = &mocks.MockClient{
 		DoFunc: func(req *http.Request) (*http.Response, error) {
-			return test_utils.GetResponse(200, `{"success": false, "message": "some error message"}`)
+			return testutils.GetResponse(200, `{"success": false, "message": "some error message"}`)
 		},
 	}
 
@@ -161,9 +161,9 @@ func TestFailContainerConfigWhenPostIsUnsuccessful(t *testing.T) {
 	result, err := proxy.ContainerConfig(client, proxyConfigRequest)
 
 	// Assertions
-	test_utils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
-	test_utils.AssertTrue(t, "ContainerConfigGenerate error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
-	test_utils.AssertTrue(t, "Result data should be nil", result == nil)
+	testutils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
+	testutils.AssertTrue(t, "ContainerConfigGenerate error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
+	testutils.AssertTrue(t, "Result data should be nil", result == nil)
 }
 
 // Tests ContainerConfig when all parameters are provided.
@@ -184,20 +184,20 @@ func TestSuccessfulContainerConfigWhenAllParametersAreProvided(t *testing.T) {
 				return nil, err
 			}
 
-			test_utils.AssertEquals(globalT, "ProxyName doesn't match", expectedProxyName, data.ProxyName)
-			test_utils.AssertEquals(globalT, "ProxyPort doesn't match", expectedProxyPort, data.ProxyPort)
-			test_utils.AssertEquals(globalT, "Server doesn't match", expectedServer, data.Server)
-			test_utils.AssertEquals(globalT, "MaxCache doesn't match", expectedMaxCache, data.MaxCache)
-			test_utils.AssertEquals(globalT, "Email doesn't match", expectedEmail, data.Email)
-			test_utils.AssertEquals(globalT, "RootCA doesn't match", expectedRootCA, data.RootCA)
-			test_utils.AssertEquals(globalT, "ProxyCrt doesn't match", expectedProxyCrt, data.ProxyCrt)
-			test_utils.AssertEquals(globalT, "ProxyKey doesn't match", expectedProxyKey, data.ProxyKey)
-			test_utils.AssertEquals(globalT, "intermediateCas don't match",
+			testutils.AssertEquals(globalT, "ProxyName doesn't match", expectedProxyName, data.ProxyName)
+			testutils.AssertEquals(globalT, "ProxyPort doesn't match", expectedProxyPort, data.ProxyPort)
+			testutils.AssertEquals(globalT, "Server doesn't match", expectedServer, data.Server)
+			testutils.AssertEquals(globalT, "MaxCache doesn't match", expectedMaxCache, data.MaxCache)
+			testutils.AssertEquals(globalT, "Email doesn't match", expectedEmail, data.Email)
+			testutils.AssertEquals(globalT, "RootCA doesn't match", expectedRootCA, data.RootCA)
+			testutils.AssertEquals(globalT, "ProxyCrt doesn't match", expectedProxyCrt, data.ProxyCrt)
+			testutils.AssertEquals(globalT, "ProxyKey doesn't match", expectedProxyKey, data.ProxyKey)
+			testutils.AssertEquals(globalT, "intermediateCas don't match",
 				fmt.Sprintf("%v", expectedIntermediateCAs),
 				fmt.Sprintf("%v", data.IntermediateCAs))
 
 			// mock response
-			return test_utils.GetResponse(200, `{"success": true, "result": [1, 2, 3, 4, 5]}`)
+			return testutils.GetResponse(200, `{"success": true, "result": [1, 2, 3, 4, 5]}`)
 		},
 	}
 
@@ -205,9 +205,9 @@ func TestSuccessfulContainerConfigWhenAllParametersAreProvided(t *testing.T) {
 	result, err := proxy.ContainerConfig(client, proxyConfigRequest)
 
 	// Assertions
-	test_utils.AssertTrue(t, "Unexpected error executing ContainerConfigGenerate", err == nil)
-	test_utils.AssertTrue(t, "Result should not be empty", result != nil)
-	test_utils.AssertEquals(
+	testutils.AssertTrue(t, "Unexpected error executing ContainerConfigGenerate", err == nil)
+	testutils.AssertTrue(t, "Result should not be empty", result != nil)
+	testutils.AssertEquals(
 		t, "Result configuration binary doesn't match",
 		fmt.Sprintf("%v", expectedResponseData), fmt.Sprintf("%v", *result),
 	)
@@ -225,7 +225,7 @@ func TestFailContainerConfigGenerateWhenPostRequestFails(t *testing.T) {
 	}
 	client.Client = &mocks.MockClient{
 		DoFunc: func(req *http.Request) (*http.Response, error) {
-			return test_utils.GetResponse(404, `{}`)
+			return testutils.GetResponse(404, `{}`)
 		},
 	}
 
@@ -233,9 +233,9 @@ func TestFailContainerConfigGenerateWhenPostRequestFails(t *testing.T) {
 	result, err := proxy.ContainerConfigGenerate(client, proxyConfigGenerateRequest)
 
 	// Assertions
-	test_utils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
-	test_utils.AssertTrue(t, "ContainerConfigGenerate error message", strings.Contains(err.Error(), expectedErrorMessage))
-	test_utils.AssertTrue(t, "Result data should be nil", result == nil)
+	testutils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
+	testutils.AssertTrue(t, "ContainerConfigGenerate error message", strings.Contains(err.Error(), expectedErrorMessage))
+	testutils.AssertTrue(t, "Result data should be nil", result == nil)
 }
 
 // Tests ContainerConfigGenerate when the post request is successful but the response is unsuccessful.
@@ -250,7 +250,7 @@ func TestFailContainerConfigGenerateWhenPostIsUnsuccessful(t *testing.T) {
 	}
 	client.Client = &mocks.MockClient{
 		DoFunc: func(req *http.Request) (*http.Response, error) {
-			return test_utils.GetResponse(200, `{"success": false, "message": "some error message"}`)
+			return testutils.GetResponse(200, `{"success": false, "message": "some error message"}`)
 		},
 	}
 
@@ -258,9 +258,9 @@ func TestFailContainerConfigGenerateWhenPostIsUnsuccessful(t *testing.T) {
 	result, err := proxy.ContainerConfigGenerate(client, proxyConfigGenerateRequest)
 
 	// Assertions
-	test_utils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
-	test_utils.AssertTrue(t, "ContainerConfigGenerate error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
-	test_utils.AssertTrue(t, "Result data should be nil", result == nil)
+	testutils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
+	testutils.AssertTrue(t, "ContainerConfigGenerate error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
+	testutils.AssertTrue(t, "Result data should be nil", result == nil)
 }
 
 // Tests ContainerConfig when all parameters are provided.
@@ -281,27 +281,27 @@ func TestSuccessfulContainerConfigGenerateWhenAllParametersAreProvided(t *testin
 				return nil, err
 			}
 
-			test_utils.AssertEquals(globalT, "ProxyName doesn't match", expectedProxyName, data.ProxyName)
-			test_utils.AssertEquals(globalT, "ProxyPort doesn't match", expectedProxyPort, data.ProxyPort)
-			test_utils.AssertEquals(globalT, "Server doesn't match", expectedServer, data.Server)
-			test_utils.AssertEquals(globalT, "MaxCache doesn't match", expectedMaxCache, data.MaxCache)
-			test_utils.AssertEquals(globalT, "Email doesn't match", expectedEmail, data.Email)
+			testutils.AssertEquals(globalT, "ProxyName doesn't match", expectedProxyName, data.ProxyName)
+			testutils.AssertEquals(globalT, "ProxyPort doesn't match", expectedProxyPort, data.ProxyPort)
+			testutils.AssertEquals(globalT, "Server doesn't match", expectedServer, data.Server)
+			testutils.AssertEquals(globalT, "MaxCache doesn't match", expectedMaxCache, data.MaxCache)
+			testutils.AssertEquals(globalT, "Email doesn't match", expectedEmail, data.Email)
 
-			test_utils.AssertEquals(globalT, "CaCertificate doesn't match", expectedCaCrt, data.CaCrt)
-			test_utils.AssertEquals(globalT, "CaKey doesn't match", expectedCaKey, data.CaKey)
-			test_utils.AssertEquals(globalT, "CaPassword doesn't match", expectedCaPassword, data.CaPassword)
-			test_utils.AssertEquals(
+			testutils.AssertEquals(globalT, "CaCertificate doesn't match", expectedCaCrt, data.CaCrt)
+			testutils.AssertEquals(globalT, "CaKey doesn't match", expectedCaKey, data.CaKey)
+			testutils.AssertEquals(globalT, "CaPassword doesn't match", expectedCaPassword, data.CaPassword)
+			testutils.AssertEquals(
 				globalT, "Cnames don't match", fmt.Sprintf("%v", expectedCnames), fmt.Sprintf("%v", data.Cnames),
 			)
-			test_utils.AssertEquals(globalT, "Country doesn't match", expectedCountry, data.Country)
-			test_utils.AssertEquals(globalT, "State doesn't match", expectedState, data.State)
-			test_utils.AssertEquals(globalT, "City doesn't match", expectedCity, data.City)
-			test_utils.AssertEquals(globalT, "Org doesn't match", expectedOrg, data.Org)
-			test_utils.AssertEquals(globalT, "OrgUnit doesn't match", expectedOrgUnit, data.OrgUnit)
-			test_utils.AssertEquals(globalT, "SslEmail doesn't match", expectedSslEmail, data.SslEmail)
+			testutils.AssertEquals(globalT, "Country doesn't match", expectedCountry, data.Country)
+			testutils.AssertEquals(globalT, "State doesn't match", expectedState, data.State)
+			testutils.AssertEquals(globalT, "City doesn't match", expectedCity, data.City)
+			testutils.AssertEquals(globalT, "Org doesn't match", expectedOrg, data.Org)
+			testutils.AssertEquals(globalT, "OrgUnit doesn't match", expectedOrgUnit, data.OrgUnit)
+			testutils.AssertEquals(globalT, "SslEmail doesn't match", expectedSslEmail, data.SslEmail)
 
 			// mock response
-			return test_utils.GetResponse(200, `{"success": true, "result": [1, 2, 3, 4, 5]}`)
+			return testutils.GetResponse(200, `{"success": true, "result": [1, 2, 3, 4, 5]}`)
 		},
 	}
 
@@ -309,9 +309,9 @@ func TestSuccessfulContainerConfigGenerateWhenAllParametersAreProvided(t *testin
 	result, err := proxy.ContainerConfigGenerate(client, proxyConfigGenerateRequest)
 
 	// Assertions
-	test_utils.AssertTrue(t, "Unexpected error executing ContainerConfigGenerate", err == nil)
-	test_utils.AssertTrue(t, "Result should not be empty", result != nil)
-	test_utils.AssertEquals(
+	testutils.AssertTrue(t, "Unexpected error executing ContainerConfigGenerate", err == nil)
+	testutils.AssertTrue(t, "Result should not be empty", result != nil)
+	testutils.AssertEquals(
 		t, "Result configuration binary doesn't match",
 		fmt.Sprintf("%v", expectedResponseData), fmt.Sprintf("%v", *result),
 	)

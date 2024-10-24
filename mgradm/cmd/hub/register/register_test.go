@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils/flags_tests"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils/flags_tests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -24,7 +24,7 @@ func TestParamsParsing(t *testing.T) {
 	tester := func(globalFlags *types.GlobalFlags, flags *registerFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		test_utils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
+		testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
 		flags_tests.AssertAPIFlags(t, cmd, &flags.ConnectionDetails)
 		return nil
 	}
@@ -32,7 +32,7 @@ func TestParamsParsing(t *testing.T) {
 	globalFlags := types.GlobalFlags{}
 	cmd := newCmd(&globalFlags, tester)
 
-	test_utils.AssertHasAllFlags(t, cmd, args)
+	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
 	if err := cmd.Execute(); err != nil {
