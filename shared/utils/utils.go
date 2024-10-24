@@ -176,7 +176,9 @@ func YesNo(question string) (bool, error) {
 		if strings.ToLower(response) == "y" || strings.ToLower(response) == "yes" {
 			return true, nil
 		}
-		return false, nil
+		if strings.ToLower(response) == "n" || strings.ToLower(response) == "no" {
+			return false, nil
+		}
 	}
 }
 

@@ -5,6 +5,7 @@
 package kubernetes
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -37,7 +38,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	defer os.RemoveAll(tmpDir)
 
 	if err := shared_utils.ExtractTarGz(configPath, tmpDir); err != nil {
-		return fmt.Errorf(L("failed to extract configuration"))
+		return errors.New(L("failed to extract configuration"))
 	}
 
 	// Check the kubernetes cluster setup

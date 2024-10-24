@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -110,7 +111,7 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 	// Copy the CAs, certificate and key to the container
 	const certDir = "/tmp/uyuni-tools"
 	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "mkdir", "-p", certDir); err != nil {
-		return fmt.Errorf(L("failed to create temporary folder on container to copy certificates to"))
+		return errors.New(L("failed to create temporary folder on container to copy certificates to"))
 	}
 
 	rootCaPath := path.Join(certDir, "root-ca.crt")
@@ -362,7 +363,7 @@ func Upgrade(
 
 	serverImage, err := utils.ComputeImage(registry, utils.DefaultTag, image)
 	if err != nil {
-		return fmt.Errorf(L("failed to compute image URL"))
+		return errors.New(L("failed to compute image URL"))
 	}
 
 	preparedImage, err := podman.PrepareImage(authFile, serverImage, image.PullPolicy, true)

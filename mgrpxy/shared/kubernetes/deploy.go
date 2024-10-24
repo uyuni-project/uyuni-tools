@@ -168,7 +168,9 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 
 	namespace := flags.Helm.Proxy.Namespace
 	if _, err = kubernetes.GetNode(namespace, kubernetes.ProxyApp); err != nil {
-		err = kubernetes.ReplicasTo(namespace, kubernetes.ProxyApp, 1)
+		if err := kubernetes.ReplicasTo(namespace, kubernetes.ProxyApp, 1); err != nil {
+			return err
+		}
 	}
 
 	err = kubernetes.ReplicasTo(namespace, kubernetes.ProxyApp, 0)
@@ -179,7 +181,9 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []stri
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
 		if _, err = kubernetes.GetNode(namespace, kubernetes.ProxyApp); err != nil {
-			err = kubernetes.ReplicasTo(namespace, kubernetes.ProxyApp, 1)
+			if err = kubernetes.ReplicasTo(namespace, kubernetes.ProxyApp, 1); err != nil {
+				log.Error().Err(err).Msg(L("failed to scale replicas to 1"))
+			}
 		}
 	}()
 
