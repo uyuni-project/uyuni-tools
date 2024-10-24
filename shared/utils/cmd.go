@@ -64,7 +64,10 @@ func CommandHelper[T interface{}](
 
 // AddBackendFlag add the flag for setting the backend ('podman', 'podman-remote', 'kubectl').
 func AddBackendFlag(cmd *cobra.Command) {
-	cmd.Flags().String("backend", "", L("tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'. Default guesses which to use."))
+	cmd.Flags().String("backend", "",
+		L(`tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.
+Default guesses which to use.`),
+	)
 }
 
 // AddPullPolicyFlag adds the --pullPolicy flag to a command.

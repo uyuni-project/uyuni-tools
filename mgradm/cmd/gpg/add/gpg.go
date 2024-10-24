@@ -54,10 +54,14 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	if !cnx.TestExistenceInPod(customKeyringPath) {
-		if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "mkdir", "-m", "700", "-p", filepath.Dir(customKeyringPath)); err != nil {
+		if err := adm_utils.ExecCommand(
+			zerolog.InfoLevel, cnx, "mkdir", "-m", "700", "-p", filepath.Dir(customKeyringPath),
+		); err != nil {
 			return utils.Errorf(err, L("failed to create folder %s"), filepath.Dir(customKeyringPath))
 		}
-		if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "gpg", "--no-default-keyring", "--keyring", customKeyringPath, "--fingerprint"); err != nil {
+		if err := adm_utils.ExecCommand(
+			zerolog.InfoLevel, cnx, "gpg", "--no-default-keyring", "--keyring", customKeyringPath, "--fingerprint",
+		); err != nil {
 			return utils.Errorf(err, L("failed to create keyring %s"), customKeyringPath)
 		}
 	}
@@ -126,7 +130,7 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 		return utils.Errorf(err, L("failed to run import key"))
 	}
 
-	//this is for running import-suma-build-keys, who import customer-build-keys.gpg
+	// this is for running import-suma-build-keys, who import customer-build-keys.gpg
 	uyuniUpdateCmd := []string{"systemctl", "restart", "uyuni-update-config"}
 	log.Info().Msgf(L("Running %s"), strings.Join(uyuniUpdateCmd, " "))
 	if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, uyuniUpdateCmd...); err != nil {

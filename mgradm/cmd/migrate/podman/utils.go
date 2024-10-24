@@ -25,7 +25,12 @@ import (
 
 var systemd podman_utils.Systemd = podman_utils.SystemdImpl{}
 
-func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, cmd *cobra.Command, args []string) error {
+func migrateToPodman(
+	globalFlags *types.GlobalFlags,
+	flags *podmanMigrateFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
 	if _, err := exec.LookPath("podman"); err != nil {
 		return fmt.Errorf(L("install podman before running this command"))
 	}

@@ -66,7 +66,9 @@ func WaitForDeployment(namespace string, name string, appName string) error {
 		}
 		time.Sleep(1 * time.Second)
 	}
-	return fmt.Errorf(L("failed to find a ready replica for deployment %[1]s in namespace %[2]s after 120s"), name, namespace)
+	return fmt.Errorf(
+		L("failed to find a ready replica for deployment %[1]s in namespace %[2]s after 120s"), name, namespace,
+	)
 }
 
 // WaitForPulledImage wait that image is pulled.
@@ -232,7 +234,9 @@ func waitForReplica(namespace string, podname string, replica uint) error {
 	if replica == 0 {
 		return waitForReplicaZero(namespace, podname)
 	}
-	cmdArgs := []string{"get", "pod", podname, "-n", namespace, "--output=custom-columns=STATUS:.status.phase", "--no-headers"}
+	cmdArgs := []string{
+		"get", "pod", podname, "-n", namespace, "--output=custom-columns=STATUS:.status.phase", "--no-headers",
+	}
 
 	for i := 0; i < waitSeconds; i++ {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
@@ -274,7 +278,15 @@ func GetPullPolicy(name string) string {
 }
 
 // RunPod runs a pod, waiting for its execution and deleting it.
-func RunPod(namespace string, podname string, filter string, image string, pullPolicy string, command string, override ...string) error {
+func RunPod(
+	namespace string,
+	podname string,
+	filter string,
+	image string,
+	pullPolicy string,
+	command string,
+	override ...string,
+) error {
 	arguments := []string{"run", podname, "-n", namespace, "--image", image, "--image-pull-policy", pullPolicy, filter}
 
 	if len(override) > 0 {
@@ -323,8 +335,13 @@ func DeletePod(namespace string, podname string, filter string) error {
 func waitForPod(namespace string, podname string) error {
 	status := "Succeeded"
 	waitSeconds := 120
-	log.Debug().Msgf("Checking status for %s pod. Waiting %s seconds until status is %s", podname, strconv.Itoa(waitSeconds), status)
-	cmdArgs := []string{"get", "pod", podname, "-n", namespace, "--output=custom-columns=STATUS:.status.phase", "--no-headers"}
+	log.Debug().Msgf(
+		"Checking status for %s pod. Waiting %s seconds until status is %s",
+		podname, strconv.Itoa(waitSeconds), status,
+	)
+	cmdArgs := []string{
+		"get", "pod", podname, "-n", namespace, "--output=custom-columns=STATUS:.status.phase", "--no-headers",
+	}
 	var err error
 	for i := 0; i < waitSeconds; i++ {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)

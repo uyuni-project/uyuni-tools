@@ -20,7 +20,7 @@ import (
 // global access to the testing object.
 var globalT *testing.T
 
-// ProxyConfigGenerateRequestBodyData is the data structure for the request body of the ContainerConfigGenerate API request.
+// ProxyConfigGenerateRequestBodyData is the data structure for the body of the ContainerConfigGenerate API request.
 type ProxyConfigGenerateRequestBodyData struct {
 	ProxyName  string
 	ProxyPort  int
@@ -207,7 +207,10 @@ func TestSuccessfulContainerConfigWhenAllParametersAreProvided(t *testing.T) {
 	// Assertions
 	test_utils.AssertTrue(t, "Unexpected error executing ContainerConfigGenerate", err == nil)
 	test_utils.AssertTrue(t, "Result should not be empty", result != nil)
-	test_utils.AssertEquals(t, "Result configuration binary doesn't match", fmt.Sprintf("%v", expectedResponseData), fmt.Sprintf("%v", *result))
+	test_utils.AssertEquals(
+		t, "Result configuration binary doesn't match",
+		fmt.Sprintf("%v", expectedResponseData), fmt.Sprintf("%v", *result),
+	)
 }
 
 // Tests ContainerConfigGenerate when the post request fails.
@@ -287,7 +290,9 @@ func TestSuccessfulContainerConfigGenerateWhenAllParametersAreProvided(t *testin
 			test_utils.AssertEquals(globalT, "CaCertificate doesn't match", expectedCaCrt, data.CaCrt)
 			test_utils.AssertEquals(globalT, "CaKey doesn't match", expectedCaKey, data.CaKey)
 			test_utils.AssertEquals(globalT, "CaPassword doesn't match", expectedCaPassword, data.CaPassword)
-			test_utils.AssertEquals(globalT, "Cnames don't match", fmt.Sprintf("%v", expectedCnames), fmt.Sprintf("%v", data.Cnames))
+			test_utils.AssertEquals(
+				globalT, "Cnames don't match", fmt.Sprintf("%v", expectedCnames), fmt.Sprintf("%v", data.Cnames),
+			)
 			test_utils.AssertEquals(globalT, "Country doesn't match", expectedCountry, data.Country)
 			test_utils.AssertEquals(globalT, "State doesn't match", expectedState, data.State)
 			test_utils.AssertEquals(globalT, "City doesn't match", expectedCity, data.City)
@@ -306,5 +311,8 @@ func TestSuccessfulContainerConfigGenerateWhenAllParametersAreProvided(t *testin
 	// Assertions
 	test_utils.AssertTrue(t, "Unexpected error executing ContainerConfigGenerate", err == nil)
 	test_utils.AssertTrue(t, "Result should not be empty", result != nil)
-	test_utils.AssertEquals(t, "Result configuration binary doesn't match", fmt.Sprintf("%v", expectedResponseData), fmt.Sprintf("%v", *result))
+	test_utils.AssertEquals(
+		t, "Result configuration binary doesn't match",
+		fmt.Sprintf("%v", expectedResponseData), fmt.Sprintf("%v", *result),
+	)
 }

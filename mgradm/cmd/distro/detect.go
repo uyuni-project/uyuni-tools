@@ -5,6 +5,7 @@
 package distro
 
 import (
+	"errors"
 	"fmt"
 	"path"
 	"path/filepath"
@@ -91,7 +92,9 @@ func getDistroFromDetails(distro string, version string, arch types.Arch, flags 
 	}
 
 	if !ok {
-		return types.Distribution{}, fmt.Errorf(L("distribution not found in product map. Please update productmap or provide channel label"))
+		return types.Distribution{}, errors.New(
+			L("distribution not found in product map. Please update productmap or provide channel label"),
+		)
 	}
 	return distribution, nil
 }
@@ -104,7 +107,9 @@ func getDistroFromTreeinfo(path string, flags *flagpole) (types.Distribution, er
 	treeInfoViper.SetConfigName(".treeinfo")
 	treeInfoViper.AddConfigPath(path)
 	if err := treeInfoViper.ReadInConfig(); err != nil {
-		return types.Distribution{}, fmt.Errorf(L("unable to read distribution treeinfo. Please provide distribution details and/or channel label"))
+		return types.Distribution{}, errors.New(
+			L("unable to read distribution treeinfo. Please provide distribution details and/or channel label"),
+		)
 	}
 
 	dname := treeInfoViper.GetString("release.name")
@@ -115,7 +120,12 @@ func getDistroFromTreeinfo(path string, flags *flagpole) (types.Distribution, er
 	return getDistroFromDetails(dname, dversion, types.GetArch(darch), flags)
 }
 
-func detectDistro(path string, distroDetails types.DistributionDetails, flags *flagpole, distro *types.Distribution) error {
+func detectDistro(
+	path string,
+	distroDetails types.DistributionDetails,
+	flags *flagpole,
+	distro *types.Distribution,
+) error {
 	treeinfopath := filepath.Join(path, ".treeinfo")
 	channelLabel := flags.ChannelLabel
 	if !utils.FileExists(treeinfopath) {
@@ -136,7 +146,10 @@ func detectDistro(path string, distroDetails types.DistributionDetails, flags *f
 				return err
 			}
 		}
-		return fmt.Errorf(L("distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"), treeinfopath)
+		return fmt.Errorf(
+			L("distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"),
+			treeinfopath,
+		)
 	} else {
 		var err error
 		*distro, err = getDistroFromTreeinfo(path, flags)

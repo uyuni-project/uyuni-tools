@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -78,7 +79,10 @@ func GenerateSystemdService(
 			if err != nil {
 				return err
 			}
-			additionHttpdTuningSettings = fmt.Sprintf(`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro`, absPath)
+			additionHttpdTuningSettings = fmt.Sprintf(
+				`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro`,
+				absPath,
+			)
 		}
 		if err := generateSystemdFile(dataHttpd, "httpd", httpdImage, additionHttpdTuningSettings); err != nil {
 			return err
@@ -105,7 +109,10 @@ func GenerateSystemdService(
 			if err != nil {
 				return err
 			}
-			additionSquidTuningSettings = fmt.Sprintf(`Environment=SQUID_EXTRA_CONF=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro`, absPath)
+			additionSquidTuningSettings = fmt.Sprintf(
+				`Environment=SQUID_EXTRA_CONF=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro`,
+				absPath,
+			)
 		}
 		if err := generateSystemdFile(dataSquid, "squid", squidImage, additionSquidTuningSettings); err != nil {
 			return err
@@ -199,7 +206,9 @@ func UnpackConfig(configPath string) error {
 	dirMode := proxyConfigDirInfo.Mode()
 
 	if !(dirMode&0005 != 0 && dirMode&0050 != 0 && dirMode&0500 != 0) {
-		return fmt.Errorf(L("/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."))
+		return errors.New(
+			L("/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."),
+		)
 	}
 
 	if err := shared_utils.ExtractTarGz(configPath, proxyConfigDir); err != nil {

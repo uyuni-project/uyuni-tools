@@ -13,7 +13,10 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetes.KubernetesProxyUpgradeFlags]) *cobra.Command {
+func newCmd(
+	globalFlags *types.GlobalFlags,
+	run utils.CommandFunc[kubernetes.KubernetesProxyUpgradeFlags],
+) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "kubernetes",
 		Short: L("Upgrade a proxy on a running kubernetes cluster"),

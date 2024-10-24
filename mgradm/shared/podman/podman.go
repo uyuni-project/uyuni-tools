@@ -175,10 +175,14 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 
 	// The services need to be restarted
 	log.Info().Msg(L("Restarting services after updating the certificate"))
-	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "systemctl", "restart", "postgresql.service"); err != nil {
+	if err := utils.RunCmd(
+		"podman", "exec", podman.ServerContainerName, "systemctl", "restart", "postgresql.service",
+	); err != nil {
 		return err
 	}
-	return utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
+	return utils.RunCmdStdMapping(
+		zerolog.DebugLevel, "podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart",
+	)
 }
 
 // RunMigration migrate an existing remote server to a container.
@@ -218,7 +222,7 @@ func RunMigration(
 		return nil, utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
 
-	//now that everything is migrated, we need to fix SELinux permission
+	// now that everything is migrated, we need to fix SELinux permission
 	for _, volumeMount := range utils.ServerVolumeMounts {
 		mountPoint, err := GetMountPoint(volumeMount.Name)
 		if err != nil {
@@ -247,7 +251,9 @@ func RunPgsqlVersionUpgrade(
 	oldPgsql string,
 	newPgsql string,
 ) error {
-	log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql)
+	log.Info().Msgf(
+		L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql,
+	)
 
 	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
@@ -282,7 +288,9 @@ func RunPgsqlVersionUpgrade(
 
 		log.Info().Msgf(L("Using database upgrade image %s"), preparedImage)
 
-		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, false)
+		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(
+			scriptDir, oldPgsql, newPgsql, false,
+		)
 		if err != nil {
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
@@ -402,7 +410,10 @@ func Upgrade(
 	} else if inspectedValues.ImagePgVersion == inspectedValues.CurrentPgVersion {
 		log.Info().Msgf(L("Upgrading to %s without changing PostgreSQL version"), inspectedValues.UyuniRelease)
 	} else {
-		return fmt.Errorf(L("trying to downgrade PostgreSQL from %[1]s to %[2]s"), inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion)
+		return fmt.Errorf(
+			L("trying to downgrade PostgreSQL from %[1]s to %[2]s"),
+			inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion,
+		)
 	}
 
 	schemaUpdateRequired := inspectedValues.CurrentPgVersion != inspectedValues.ImagePgVersion

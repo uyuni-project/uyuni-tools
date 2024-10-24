@@ -29,7 +29,12 @@ func startPod() error {
 	}
 }
 
-func installForPodman(globalFlags *types.GlobalFlags, flags *podman.PodmanProxyFlags, cmd *cobra.Command, args []string) error {
+func installForPodman(
+	globalFlags *types.GlobalFlags,
+	flags *podman.PodmanProxyFlags,
+	cmd *cobra.Command,
+	args []string,
+) error {
 	if _, err := exec.LookPath("podman"); err != nil {
 		return fmt.Errorf(L("install podman before running this command"))
 	}

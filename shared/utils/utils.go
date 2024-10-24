@@ -36,7 +36,10 @@ var prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
 var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
 
 // Taken from https://github.com/go-playground/validator/blob/2e1df48/regexes.go#L58
-var fqdnValid = regexp.MustCompile(`^([a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})(\.[a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})*?(\.[a-zA-Z]{1}[a-zA-Z0-9]{0,62})\.?$`)
+var fqdnValid = regexp.MustCompile(
+	`^([a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})(\.[a-zA-Z0-9]{1}[a-zA-Z0-9-]{0,62})*?` +
+		`(\.[a-zA-Z]{1}[a-zA-Z0-9]{0,62})\.?$`,
+)
 
 // InspectResult holds the results of the inspection scripts.
 type InspectResult struct {
@@ -97,7 +100,6 @@ func CheckValidPassword(value *string, prompt string, min int, max int) string {
 // Don't perform any check if min and max are set to 0.
 func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 	if *value == "" && !term.IsTerminal(int(os.Stdin.Fd())) {
-		//return fmt.Errorf(L("not an interactive device"))
 		log.Warn().Msgf(L("not an interactive device, not asking for missing value"))
 		return
 	}
@@ -121,7 +123,6 @@ func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 // Don't perform any check if min and max are set to 0.
 func AskPasswordIfMissingOnce(value *string, prompt string, min int, max int) {
 	if *value == "" && !term.IsTerminal(int(os.Stdin.Fd())) {
-		//return fmt.Errorf(L("not an interactive device"))
 		log.Warn().Msgf(L("not an interactive device, not asking for missing value"))
 		return
 	}
@@ -144,7 +145,6 @@ func AskIfMissing(value *string, prompt string, min int, max int, checker func(s
 		fmt.Print(prompt + prompt_end)
 		newValue, err := reader.ReadString('\n')
 		if err != nil {
-			//return utils.Errorf(err, L("failed to read input"))
 			log.Fatal().Err(err).Msg(L("failed to read input"))
 		}
 		tmpValue := strings.TrimSpace(newValue)
@@ -195,7 +195,12 @@ func RemoveRegistryFromImage(imagePath string) string {
 }
 
 // ComputeImage assembles the container image from its name and tag.
-func ComputeImage(registry string, globalTag string, imageFlags types.ImageFlags, appendToName ...string) (string, error) {
+func ComputeImage(
+	registry string,
+	globalTag string,
+	imageFlags types.ImageFlags,
+	appendToName ...string,
+) (string, error) {
 	if !strings.Contains(DefaultRegistry, registry) {
 		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), registry, DefaultRegistry)
 	}

@@ -26,8 +26,8 @@ func ptfForPodman(
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	//we don't want to perform a postgres version upgrade when installing a PTF.
-	//in that case, we can use the upgrade command.
+	// we don't want to perform a postgres version upgrade when installing a PTF.
+	// in that case, we can use the upgrade command.
 	dummyImage := types.ImageFlags{}
 	dummyCoco := adm_utils.CocoFlags{}
 	dummyHubXmlrpc := adm_utils.HubXmlrpcFlags{}

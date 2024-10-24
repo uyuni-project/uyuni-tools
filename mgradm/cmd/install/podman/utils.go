@@ -6,7 +6,6 @@ package podman
 
 import (
 	"errors"
-	"fmt"
 	"os/exec"
 	"strings"
 
@@ -63,7 +62,9 @@ func installForPodman(
 	defer cleaner()
 
 	if hostData.HasUyuniServer {
-		return fmt.Errorf(L("Server is already initialized! Uninstall before attempting new installation or use upgrade command"))
+		return errors.New(
+			L("Server is already initialized! Uninstall before attempting new installation or use upgrade command"),
+		)
 	}
 
 	flags.CheckParameters(cmd, "podman")

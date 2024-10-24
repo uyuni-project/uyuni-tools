@@ -72,7 +72,9 @@ func uninstallForPodman(
 	err := systemd.ReloadDaemon(!flags.Force)
 
 	if !flags.Force {
-		log.Warn().Msg(L("Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"))
+		log.Warn().Msg(
+			L("Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"),
+		)
 	} else if !flags.Purge.Volumes {
 		log.Warn().Msg(L("Data have been kept, use podman volume commands to clear the volumes"))
 	}

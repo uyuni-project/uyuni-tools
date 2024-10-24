@@ -13,9 +13,21 @@ import (
 func TestGetContainerImage(t *testing.T) {
 	data := [][]string{
 		// Expectect image, value of --registry, value of --tag, value of --http-image, value of --http-tag
-		{"registry/default/image/proxy-httpd:tag", "registry/default/image/", "tag", "registry/default/image/proxy-httpd", ""},
+		{
+			"registry/default/image/proxy-httpd:tag",
+			"registry/default/image/",
+			"tag",
+			"registry/default/image/proxy-httpd",
+			"",
+		},
 		{"registry/default/image/proxy-httpd:tag", "registry", "tag", "registry/default/image/proxy-httpd", ""},
-		{"myregistry.example.com/default/image/proxy-httpd:tag", "myregistry.example.com", "tag", "default/image/proxy-httpd", ""},
+		{
+			"myregistry.example.com/default/image/proxy-httpd:tag",
+			"myregistry.example.com",
+			"tag",
+			"default/image/proxy-httpd",
+			"",
+		},
 		{"default/image/proxy-httpd:mytag", "default/image", "tag", "default/image/proxy-httpd", "mytag"},
 		{"myregistry/path/proxy-httpd:tag", "registry/path", "tag", "myregistry/path/proxy-httpd", ""},
 	}

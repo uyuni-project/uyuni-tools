@@ -90,7 +90,8 @@ func getRhnConfig(cnx *shared.Connection) (map[string]string, error) {
 }
 
 func registerToHub(config map[string]string, cnxDetails *api.ConnectionDetails) error {
-	for _, key := range []string{"java.hostname", "report_db_name", "report_db_port", "report_db_user", "report_db_password"} {
+	keys := []string{"java.hostname", "report_db_name", "report_db_port", "report_db_user", "report_db_password"}
+	for _, key := range keys {
 		if _, ok := config[key]; !ok {
 			return fmt.Errorf(L("mandatory %s entry missing in config"), key)
 		}
