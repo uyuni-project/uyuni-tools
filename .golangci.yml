@@ -74,7 +74,7 @@ linters:
     - ineffassign
     - govet
     - lll
-      #- megacheck
+    - megacheck
     - misspell
     - revive
     - staticcheck
