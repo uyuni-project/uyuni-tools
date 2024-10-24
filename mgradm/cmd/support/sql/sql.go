@@ -154,7 +154,8 @@ func doSql(globalFlags *types.GlobalFlags, flags *sqlFlags, cmd *cobra.Command, 
 
 	err = runCmd(command, output, commandArgs)
 	if err != nil {
-		if exitErr, ok := err.(*exec.ExitError); ok {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
 			log.Info().Err(err).Msg(L("Command failed"))
 			os.Exit(exitErr.ExitCode())
 		}

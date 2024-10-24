@@ -5,6 +5,7 @@
 package utils
 
 import (
+	"errors"
 	"os"
 	"path"
 	"strings"
@@ -33,7 +34,8 @@ func addConfigurationFile(v *viper.Viper, cmd *cobra.Command, configFilename str
 	}
 	if err := v.MergeInConfig(); err != nil {
 		// It's okay if there isn't a config file
-		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
+		var configFileNotFoundErr viper.ConfigFileNotFoundError
+		if !errors.As(err, &configFileNotFoundErr) {
 			// TODO Provide help on the config file format
 			return Errorf(err, L("failed to parse configuration file %s"), v.ConfigFileUsed())
 		}
