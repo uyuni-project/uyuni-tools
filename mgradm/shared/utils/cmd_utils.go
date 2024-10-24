@@ -21,7 +21,7 @@ func (f *SslCertFlags) UseExisting() bool {
 	return f.Server.Cert != "" && f.Server.Key != "" && f.Ca.Root != ""
 }
 
-// Checks that all the required flags are passed if using 3rd party certificates.
+// CheckParameters checks that all the required flags are passed if using 3rd party certificates.
 func (f *SslCertFlags) CheckParameters() {
 	if !f.UseExisting() && (f.Server.Cert != "" || f.Server.Key != "" || f.Ca.Root != "") {
 		log.Fatal().Msg(L("Server certificate, key and root CA need to be all provided"))

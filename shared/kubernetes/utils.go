@@ -28,10 +28,10 @@ const ServerFilter = "-lapp=" + ServerApp
 // ProxyApp represnet the proxy app name.
 const ProxyApp = "uyuni-proxy"
 
-// ServerFilter represents filter used to check proxy app.
+// ProxyFilter represents filter used to check proxy app.
 const ProxyFilter = "-lapp=" + ProxyApp
 
-// waitForDeployment waits at most 60s for a kubernetes deployment to have at least one replica.
+// WaitForDeployment waits at most 60s for a kubernetes deployment to have at least one replica.
 // See [isDeploymentReady] for more details.
 func WaitForDeployment(namespace string, name string, appName string) error {
 	// Find the name of a replica pod
@@ -314,7 +314,7 @@ func RunPod(
 	return nil
 }
 
-// Delete a kubernetes pod named podname.
+// DeletePod deletes a kubernetes pod named podname.
 func DeletePod(namespace string, podname string, filter string) error {
 	isRunning, err := isPodRunning(namespace, podname, filter)
 	if err != nil {

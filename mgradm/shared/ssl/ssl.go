@@ -23,13 +23,14 @@ type CaChain struct {
 	Intermediate []string
 }
 
-// SslPait is a type for SSL Cert and Key.
+// SslPair is a type for SSL Cert and Key.
 type SslPair struct {
 	Cert string
 	Key  string
 }
 
-// Generate the server certificate with the CA chain.
+// OrderCas generates the server certificate with the CA chain.
+//
 // Returns the certificate chain and the root CA.
 func OrderCas(chain *CaChain, serverPair *SslPair) ([]byte, []byte) {
 	CheckPaths(chain, serverPair)
@@ -227,7 +228,7 @@ func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash st
 	return sortedChain.Bytes(), rootCa
 }
 
-// Ensures that all the passed path exists and the required files are available.
+// CheckPaths ensures that all the passed path exists and the required files are available.
 func CheckPaths(chain *CaChain, serverPair *SslPair) {
 	mandatoryFile(chain.Root, "root CA")
 	for _, ca := range chain.Intermediate {
@@ -250,7 +251,7 @@ func optionalFile(file string) {
 	}
 }
 
-// Converts an SSL key to RSA.
+// GetRsaKey converts an SSL key to RSA.
 func GetRsaKey(keyPath string, password string) []byte {
 	// Kubernetes only handles RSA private TLS keys, convert and strip password
 	caPassword := password

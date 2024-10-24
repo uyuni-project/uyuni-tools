@@ -19,7 +19,7 @@ type Group struct {
 	Title string
 }
 
-// Annotation to store the flag group.
+// FlagHelpGroupAnnotation is an annotation to store the flag group to.
 const FlagHelpGroupAnnotation = "cobra_annotation_flag_help_group"
 
 var commandGroups = make(map[*cobra.Command][]Group)
@@ -70,7 +70,7 @@ func usageFunc(cmd *cobra.Command) error {
 	return origUsageFunc(cmd)
 }
 
-// Add new flags group.
+// AddFlagHelpGroup adds a new flags group.
 func AddFlagHelpGroup(cmd *cobra.Command, groups ...*Group) error {
 	for _, group := range groups {
 		commandGroups[cmd] = append(commandGroups[cmd], *group)
@@ -80,7 +80,7 @@ func AddFlagHelpGroup(cmd *cobra.Command, groups ...*Group) error {
 	return nil
 }
 
-// Add flag to a group.
+// AddFlagToHelpGroupID adds a flag to a group.
 func AddFlagToHelpGroupID(cmd *cobra.Command, flag, groupID string) error {
 	lf := cmd.Flags()
 

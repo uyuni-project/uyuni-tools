@@ -109,7 +109,7 @@ var PROXY_HTTPD_VOLUMES = []types.VolumeMount{
 	{Name: "uyuni-proxy-tftpboot", MountPath: "/srv/tftpboot:z"},
 }
 
-// PROXY_HTTPD_VOLUMES volumes used by Squid in  proxy.
+// PROXY_SQUID_VOLUMES volumes used by Squid in  proxy.
 var PROXY_SQUID_VOLUMES = []types.VolumeMount{
 	{Name: "uyuni-proxy-squid-cache", MountPath: "/var/cache/squid:z"},
 }

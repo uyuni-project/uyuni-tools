@@ -55,7 +55,7 @@ Examples:
 	return cmd
 }
 
-// Add support sql command.
+// NewCommand adds support sql command.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return newCmd(globalFlags, doSql)
 }

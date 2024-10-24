@@ -31,7 +31,7 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
 
-// NewCommand returns a new cobra.Command implementing the root command for kinder.
+// NewUyuniadmCommand returns a new cobra.Command implementing the root command for mgradm.
 func NewUyuniadmCommand() (*cobra.Command, error) {
 	globalFlags := &types.GlobalFlags{}
 	name := path.Base(os.Args[0])

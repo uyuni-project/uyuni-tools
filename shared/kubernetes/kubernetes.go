@@ -29,7 +29,7 @@ func (infos ClusterInfos) IsK3s() bool {
 	return strings.Contains(infos.KubeletVersion, "k3s")
 }
 
-// IsRKE2 is true if it's a RKE2 Cluster.
+// IsRke2 is true if it's a RKE2 Cluster.
 func (infos ClusterInfos) IsRke2() bool {
 	return strings.Contains(infos.KubeletVersion, "rke2")
 }

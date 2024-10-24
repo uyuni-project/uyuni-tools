@@ -13,7 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
 )
 
-// HelmFlagsTestArgs is the slice of parameters to use with AssertHelmFlags.
+// ProxyHelmFlagsTestArgs is the slice of parameters to use with AssertHelmFlags.
 var ProxyHelmFlagsTestArgs = []string{
 	"--helm-proxy-namespace", "uyunins",
 	"--helm-proxy-chart", "oci://srv/proxy-helm",
@@ -29,7 +29,7 @@ func AssertProxyHelmFlags(t *testing.T, cmd *cobra.Command, flags *kubernetes.He
 	test_utils.AssertEquals(t, "Error parsing --helm-proxy-values", "path/value.yaml", flags.Proxy.Values)
 }
 
-// ImageFlagsTestArgs is the slice of parameters to use with AssertImageFlags.
+// ImageProxyFlagsTestArgs is the slice of parameters to use with AssertImageFlags.
 var ImageProxyFlagsTestArgs = []string{
 	"--tag", "v1.2.3",
 	"--pullPolicy", "never",
@@ -47,7 +47,7 @@ var ImageProxyFlagsTestArgs = []string{
 	"--tuning-squid", "path/to/squid.conf",
 }
 
-// AssertImageFlags checks that all image flags are parsed correctly.
+// AssertProxyImageFlags checks that all image flags are parsed correctly.
 func AssertProxyImageFlags(t *testing.T, cmd *cobra.Command, flags *utils.ProxyImageFlags) {
 	test_utils.AssertEquals(t, "Error parsing --tag", "v1.2.3", flags.Tag)
 	test_utils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.PullPolicy)

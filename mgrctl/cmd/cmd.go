@@ -20,7 +20,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// NewCommand returns a new cobra.Command implementing the root command for kinder.
+// NewUyunictlCommand returns a new cobra.Command implementing the root command for mgrctl.
 func NewUyunictlCommand() *cobra.Command {
 	globalFlags := &types.GlobalFlags{}
 	name := path.Base(os.Args[0])

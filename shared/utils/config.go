@@ -43,7 +43,8 @@ func addConfigurationFile(v *viper.Viper, cmd *cobra.Command, configFilename str
 	return nil
 }
 
-// Returns user configuration directory.
+// GetUserConfigDir returns the user configuration directory.
+//
 // Can be $XDG_CONFIG_HOME or `homedir/.config`.
 func GetUserConfigDir() string {
 	xdgConfigHome := os.Getenv("XDG_CONFIG_HOME")

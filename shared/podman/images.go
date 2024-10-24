@@ -24,7 +24,7 @@ import (
 
 const rpmImageDir = "/usr/share/suse-docker-images/native/"
 
-// Ensure the container image is pulled or pull it if the pull policy allows it.
+// PrepareImage ensures the container image is pulled or pull it if the pull policy allows it.
 //
 // Returns the image name to use. Note that it may be changed if the image has been loaded from a local RPM package.
 func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled bool) (string, error) {

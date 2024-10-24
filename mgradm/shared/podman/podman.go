@@ -508,7 +508,7 @@ func Inspect(preparedImage string) (*utils.ServerInspectData, error) {
 	return inspectResult, err
 }
 
-// Call cloudguestregistryauth if it is available.
+// CallCloudGuestRegistryAuth calls cloudguestregistryauth if it is available.
 func CallCloudGuestRegistryAuth() error {
 	cloudguestregistryauth := "cloudguestregistryauth"
 
