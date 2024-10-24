@@ -14,7 +14,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// Get details of organization based on organization name.
+// GetOrganizationDetails gets details of organization based on organization name.
 func GetOrganizationDetails(cnxDetails *api.ConnectionDetails, orgName string) (*types.Organization, error) {
 	client, err := api.Init(cnxDetails)
 	if err == nil {

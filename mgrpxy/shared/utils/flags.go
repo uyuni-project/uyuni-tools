@@ -34,7 +34,7 @@ type Tuning struct {
 	Squid string `mapstructure:"squid"`
 }
 
-// Get the full container image name and tag for a container name.
+// GetContainerImage gets the full container image name and tag for a container name.
 func (f *ProxyImageFlags) GetContainerImage(name string) string {
 	var containerImage *types.ImageFlags
 	switch name {

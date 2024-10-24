@@ -15,7 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// Store API credentials for future API use.
+// StoreLoginCreds stores the API credentials for future API use.
 func StoreLoginCreds(client *APIClient) error {
 	if client.AuthCookie.Value == "" {
 		return errors.New(L("not logged in, session cookie is missing"))
@@ -41,7 +41,7 @@ func StoreLoginCreds(client *APIClient) error {
 	return nil
 }
 
-// Remove stored API credentials.
+// RemoveLoginCreds removes the stored API credentials.
 func RemoveLoginCreds() error {
 	// Future: Multi-server support will need some parsing here
 	return os.Remove(getAPICredsFile())
@@ -110,7 +110,8 @@ func loadLoginCreds(connection *ConnectionDetails) error {
 	return nil
 }
 
-// Returns true if credentials file already exists.
+// IsAlreadyLoggedIn returns true if credentials file already exists.
+//
 // Does not check for credentials validity.
 func IsAlreadyLoggedIn() bool {
 	return utils.FileExists(getAPICredsFile())

@@ -9,7 +9,7 @@ import "net/http"
 const root_path_apiv1 = "/rhn/manager/api"
 const api_credentials_store = ".uyuni-api.json"
 
-// API Client is the API entrypoint.
+// APIClient is the API entrypoint structure.
 type APIClient struct {
 
 	// URL to the API endpoint of the target host
@@ -25,12 +25,12 @@ type APIClient struct {
 	Details *ConnectionDetails
 }
 
-// Minimal HTTPClient interface. Primarily for unit testing.
+// HTTPClient is a minimal HTTPClient interface primarily for unit testing.
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-// Connection details for initial API connection.
+// ConnectionDetails holds the details for initial API connection.
 type ConnectionDetails struct {
 
 	// FQDN of the target host.
@@ -56,7 +56,7 @@ type ConnectionDetails struct {
 	Cookie string
 }
 
-// API response where T is the type of the result.
+// ApiResponse describes the HTTP response where T is the type of the result.
 type ApiResponse[T interface{}] struct {
 	Result  T
 	Success bool

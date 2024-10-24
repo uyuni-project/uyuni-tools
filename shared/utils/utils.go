@@ -180,7 +180,7 @@ func YesNo(question string) (bool, error) {
 	}
 }
 
-// Remove registry fqdn from image path.
+// RemoveRegistryFromImage removes registry fqdn from image path.
 func RemoveRegistryFromImage(imagePath string) string {
 	separator := "://"
 	index := strings.Index(imagePath, separator)
@@ -251,7 +251,7 @@ func ComputePTF(user string, ptfId string, fullImage string, suffix string) (str
 	return prefix + submatches[0] + tag, nil
 }
 
-// Get the timezone set on the machine running the tool.
+// GetLocalTimezone returns the timezone set on the current machine.
 func GetLocalTimezone() string {
 	out, err := RunCmdOutput(zerolog.DebugLevel, "timedatectl", "show", "--value", "-p", "Timezone")
 	if err != nil {
@@ -281,7 +281,7 @@ func RemoveDirectory(path string) error {
 	return nil
 }
 
-// Check if a given path exists.
+// FileExists check if path exists.
 func FileExists(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {
@@ -292,7 +292,7 @@ func FileExists(path string) bool {
 	return false
 }
 
-// Returns the content of a file and exit if there was an error.
+// ReadFile returns the content of a file and exit if there was an error.
 func ReadFile(file string) []byte {
 	out, err := os.ReadFile(file)
 	if err != nil {
@@ -301,13 +301,14 @@ func ReadFile(file string) []byte {
 	return out
 }
 
-// Get the value of a file containing a boolean.
+// GetFileBoolean gets the value of a file containing a boolean.
+//
 // This is handy for files from the kernel API.
 func GetFileBoolean(file string) bool {
 	return strings.TrimSpace(string(ReadFile(file))) != "0"
 }
 
-// Uninstalls a file.
+// UninstallFile uninstalls a file.
 func UninstallFile(path string, dryRun bool) {
 	if FileExists(path) {
 		if dryRun {
@@ -416,7 +417,8 @@ func Errorf(err error, message string, args ...any) error {
 	return errors.New(appended)
 }
 
-// Join multiple errors.
+// JoinErrors aggregate multiple multiple errors into one.
+//
 // Replacement for errors.Join which is not available in go 1.19.
 func JoinErrors(errs ...error) error {
 	var messages []string
@@ -450,7 +452,7 @@ func GetFqdn(args []string) (string, error) {
 	return fqdn, nil
 }
 
-// IsValidFDQN returns an error if the argument is not a valid FQDN.
+// IsValidFQDN returns an error if the argument is not a valid FQDN.
 func IsValidFQDN(fqdn string) error {
 	if !IsWellFormedFQDN(fqdn) {
 		return fmt.Errorf(L("%s is not a valid FQDN"), fqdn)
@@ -467,7 +469,7 @@ func IsWellFormedFQDN(fqdn string) bool {
 	return fqdnValid.MatchString(fqdn)
 }
 
-// Check if a given command exists in PATH.
+// CommandExists checks if cmd exists in $PATH.
 func CommandExists(cmd string) bool {
 	_, err := exec.LookPath(cmd)
 	return err == nil

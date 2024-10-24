@@ -36,7 +36,7 @@ type Connection struct {
 	systemd          podman.Systemd
 }
 
-// Create a new connection object.
+// NewConnection creates a new connection object.
 // The backend is either the command to use to connect to the container or the empty string.
 //
 // The empty strings means automatic detection of the backend where the uyuni container is running.
@@ -395,7 +395,7 @@ func (c *Connection) TestExistenceInPod(dstpath string) bool {
 	return true
 }
 
-// Copy the server SSL CA certificate to the host with fqdn as the name of the created file.
+// CopyCaCertificate copies the server SSL CA certificate to the host with fqdn as the name of the created file.
 func (c *Connection) CopyCaCertificate(fqdn string) error {
 	log.Info().Msg(L("Copying the SSL CA certificate to the host"))
 
@@ -491,18 +491,18 @@ func ChooseObjPodmanOrKubernetes[T any](systemd podman.Systemd, podmanOption T, 
 }
 
 // RunSupportConfig will run supportconfig command on given connection.
-func (cnx *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
+func (c *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 	var containerTarball string
 	var files []string
 	extensions := []string{"", ".md5"}
-	containerName, err := cnx.GetPodName()
+	containerName, err := c.GetPodName()
 	if err != nil {
 		return []string{}, err
 	}
 
 	// Run supportconfig in the container if it's running
 	log.Info().Msgf(L("Running supportconfig in  %s"), containerName)
-	out, err := cnx.Exec("supportconfig")
+	out, err := c.Exec("supportconfig")
 	if err != nil {
 		return []string{}, errors.New(L("failed to run supportconfig"))
 	} else {
@@ -513,13 +513,13 @@ func (cnx *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 
 		for _, ext := range extensions {
 			containerTarball = path.Join(tmpDir, containerName+"-supportconfig.txz"+ext)
-			if err := cnx.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
+			if err := c.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
 				return []string{}, utils.Errorf(err, L("cannot copy tarball"))
 			}
 			files = append(files, containerTarball)
 
 			// Remove the generated file in the container
-			if _, err := cnx.Exec("rm", tarballPath+ext); err != nil {
+			if _, err := c.Exec("rm", tarballPath+ext); err != nil {
 				return []string{}, utils.Errorf(err, L("failed to remove %s file in the container"), tarballPath+ext)
 			}
 		}

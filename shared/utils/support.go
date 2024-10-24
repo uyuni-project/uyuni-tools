@@ -76,7 +76,7 @@ func GetContainersFromSystemdFiles(systemdFileList string) []string {
 	return trimmedContainers
 }
 
-// RunSupportConfigOnProxyHost will run supportconfig command on host machine.
+// RunSupportConfigOnHost will run supportconfig command on host machine.
 func RunSupportConfigOnHost(dir string) ([]string, error) {
 	var files []string
 	extensions := []string{"", ".md5"}

@@ -78,7 +78,7 @@ func IsInstalled(tool string) bool {
 	return err == nil
 }
 
-// Return list of environmental variables to be passed to exec.
+// GetEnvironmentVarsList returns list of environmental variables to be passed to exec.
 func GetEnvironmentVarsList() []string {
 	// Taken from /etc/profile and /etc/profile.d/lang
 	return []string{"TERM", "PAGER",

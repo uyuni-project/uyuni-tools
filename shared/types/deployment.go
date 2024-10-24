@@ -27,7 +27,7 @@ type HostPath struct {
 	Type string `json:"type,omitempty"`
 }
 
-// Secret Item for mapping Secret structure.
+// SecretItem for mapping Secret structure.
 type SecretItem struct {
 	Key  string `json:"key,omitempty"`
 	Path string `json:"path,omitempty"`

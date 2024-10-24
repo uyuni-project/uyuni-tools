@@ -216,7 +216,7 @@ func (c *APIClient) Logout() error {
 	return nil
 }
 
-// Check if login credentials are valid.
+// ValidateCreds checks if the login credentials are valid.
 func (c *APIClient) ValidateCreds() bool {
 	err := c.Login()
 	return err == nil

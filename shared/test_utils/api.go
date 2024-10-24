@@ -13,12 +13,12 @@ import (
 
 const defaultCookie = "testCookie"
 
-// Helper function to generate a response with the given status and json body.
+// GetResponse is a helper function to generate a response with the given status and json body.
 func GetResponse(status int, json string) (*http.Response, error) {
 	return GetResponseWithCookie(defaultCookie, status, json)
 }
 
-// Helper function to generate a response with the given status and json body.
+// GetResponseWithCookie is a helper function to generate a response with the given status and json body.
 func GetResponseWithCookie(cookie string, status int, json string) (*http.Response, error) {
 	body := io.NopCloser(bytes.NewReader([]byte(json)))
 	headers := http.Header{}
@@ -34,7 +34,7 @@ func GetResponseWithCookie(cookie string, status int, json string) (*http.Respon
 	}, nil
 }
 
-// Helper function to mock a successful login response.
+// SuccessfulLoginTestDo is a helper function to mock a successful login response.
 func SuccessfulLoginTestDo(req *http.Request) (*http.Response, error) {
 	if req.URL.Path != "/rhn/manager/api/auth/login" {
 		return &http.Response{
@@ -45,7 +45,7 @@ func SuccessfulLoginTestDo(req *http.Request) (*http.Response, error) {
 	return GetResponse(200, `{"success": true}`)
 }
 
-// Helper function to mock a failed login response due to incorrect credentials.
+// FailedLoginTestDo is a helper function to mock a failed login response due to incorrect credentials.
 func FailedLoginTestDo(req *http.Request) (*http.Response, error) {
 	if req.URL.Path != "/rhn/manager/api/auth/login" {
 		return &http.Response{
