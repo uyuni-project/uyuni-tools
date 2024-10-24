@@ -54,10 +54,10 @@ func NewServerInspector(scriptDir string) ServerInspector {
 type CommonInspectData struct {
 	CurrentPgVersion string `mapstructure:"current_pg_version"`
 	ImagePgVersion   string `mapstructure:"image_pg_version"`
-	DbUser           string `mapstructure:"db_user"`
-	DbPassword       string `mapstructure:"db_password"`
-	DbName           string `mapstructure:"db_name"`
-	DbPort           int    `mapstructure:"db_port"`
+	DBUser           string `mapstructure:"db_user"`
+	DBPassword       string `mapstructure:"db_password"`
+	DBName           string `mapstructure:"db_name"`
+	DBPort           int    `mapstructure:"db_port"`
 }
 
 // ServerInspectData are the data extracted by a server inspector.

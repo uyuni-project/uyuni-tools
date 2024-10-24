@@ -29,7 +29,7 @@ import (
 	"golang.org/x/term"
 )
 
-const prompt_end = ": "
+const promptEnd = ": "
 
 var prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
 var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
@@ -44,7 +44,7 @@ var fqdnValid = regexp.MustCompile(
 type InspectResult struct {
 	CommonInspectData `mapstructure:",squash"`
 	Timezone          string
-	HasHubXmlrpcApi   bool `mapstructure:"has_hubxmlrpc"`
+	HasHubXmlrpcAPI   bool `mapstructure:"has_hubxmlrpc"`
 }
 
 func checkValueSize(value string, min int, max int) bool {
@@ -65,7 +65,7 @@ func checkValueSize(value string, min int, max int) bool {
 
 // CheckValidPassword performs check to a given password.
 func CheckValidPassword(value *string, prompt string, min int, max int) string {
-	fmt.Print(prompt + prompt_end)
+	fmt.Print(prompt + promptEnd)
 	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 	if err != nil {
 		log.Fatal().Err(err).Msgf(L("Failed to read password"))
@@ -143,7 +143,7 @@ func AskIfMissing(value *string, prompt string, min int, max int, checker func(s
 
 	reader := bufio.NewReader(os.Stdin)
 	for *value == "" {
-		fmt.Print(prompt + prompt_end)
+		fmt.Print(prompt + promptEnd)
 		newValue, err := reader.ReadString('\n')
 		if err != nil {
 			//return utils.Errorf(err, L("failed to read input"))
@@ -243,13 +243,13 @@ func ComputeImage(
 }
 
 // ComputePTF returns a PTF or Test image from registry.suse.com.
-func ComputePTF(user string, ptfId string, fullImage string, suffix string) (string, error) {
-	prefix := fmt.Sprintf("registry.suse.com/a/%s/%s/", user, ptfId)
+func ComputePTF(user string, ptfID string, fullImage string, suffix string) (string, error) {
+	prefix := fmt.Sprintf("registry.suse.com/a/%s/%s/", user, ptfID)
 	submatches := prodVersionArchRegex.FindStringSubmatch(fullImage)
 	if submatches == nil || len(submatches) > 1 {
 		return "", fmt.Errorf(L("invalid image name: %s"), fullImage)
 	}
-	tag := fmt.Sprintf("latest-%s-%s", suffix, ptfId)
+	tag := fmt.Sprintf("latest-%s-%s", suffix, ptfID)
 	return prefix + submatches[0] + tag, nil
 }
 
@@ -441,11 +441,11 @@ func GetFqdn(args []string) (string, error) {
 	if len(args) == 1 {
 		fqdn = args[0]
 	} else {
-		fqdn_b, err := RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
+		out, err := RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
 		if err != nil {
 			return "", Errorf(err, L("failed to compute server FQDN"))
 		}
-		fqdn = strings.TrimSpace(string(fqdn_b))
+		fqdn = strings.TrimSpace(string(out))
 	}
 	if err := IsValidFQDN(fqdn); err != nil {
 		return "", err

@@ -103,18 +103,18 @@ var HubXmlrpcVolumeMounts = []types.VolumeMount{
 	{MountPath: "/etc/pki/trust/anchors", Name: "ca-cert"},
 }
 
-// PROXY_HTTPD_VOLUMES volumes used by HTTPD in proxy.
-var PROXY_HTTPD_VOLUMES = []types.VolumeMount{
+// ProxyHttpdVolumes volumes used by HTTPD in proxy.
+var ProxyHttpdVolumes = []types.VolumeMount{
 	{Name: "uyuni-proxy-rhn-cache", MountPath: "/var/cache/rhn:z"},
 	{Name: "uyuni-proxy-tftpboot", MountPath: "/srv/tftpboot:z"},
 }
 
-// PROXY_SQUID_VOLUMES volumes used by Squid in  proxy.
-var PROXY_SQUID_VOLUMES = []types.VolumeMount{
+// ProxySquidVolumes volumes used by Squid in  proxy.
+var ProxySquidVolumes = []types.VolumeMount{
 	{Name: "uyuni-proxy-squid-cache", MountPath: "/var/cache/squid:z"},
 }
 
-// PROXY_TFTPD_VOLUMES volumes used by TFTP in proxy.
-var PROXY_TFTPD_VOLUMES = []types.VolumeMount{
+// ProxyTftpdVolumes used by TFTP in proxy.
+var ProxyTftpdVolumes = []types.VolumeMount{
 	{Name: "uyuni-proxy-tftpboot", MountPath: "/srv/tftpboot:ro,z"},
 }

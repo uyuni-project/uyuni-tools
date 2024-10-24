@@ -103,8 +103,8 @@ func AddImageFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "") //without group, since this flag is applied to all the images
 }
 
-// AddDbUpgradeImageFlag add Database upgrade image flags to a command.
-func AddDbUpgradeImageFlag(cmd *cobra.Command) {
+// AddDBUpgradeImageFlag add Database upgrade image flags to a command.
+func AddDBUpgradeImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("dbupgrade-image", "", L("Database upgrade image"))
 	cmd.Flags().String("dbupgrade-tag", "latest", L("Database upgrade image tag"))
 

@@ -25,8 +25,8 @@ func TestParamsParsing(t *testing.T) {
 		cmd *cobra.Command, args []string,
 	) error {
 		testutils.AssertEquals(t, "Error parsing --ptf", "ptf123", flags.PTFId)
-		testutils.AssertEquals(t, "Error parsing --test", "test123", flags.TestId)
-		testutils.AssertEquals(t, "Error parsing --user", "sccuser", flags.CustomerId)
+		testutils.AssertEquals(t, "Error parsing --test", "test123", flags.TestID)
+		testutils.AssertEquals(t, "Error parsing --user", "sccuser", flags.CustomerID)
 		return nil
 	}
 

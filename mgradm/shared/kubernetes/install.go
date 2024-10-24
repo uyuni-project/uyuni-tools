@@ -21,8 +21,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// HELM_APP_NAME is the Helm application name.
-const HELM_APP_NAME = "uyuni"
+// HelmAppName is the Helm application name.
+const HelmAppName = "uyuni"
 
 // Deploy execute a deploy of a given image and helm to a cluster.
 func Deploy(
@@ -44,7 +44,7 @@ func Deploy(
 		if isK3s {
 			InstallK3sTraefikConfig(debug)
 		} else if IsRke2 {
-			kubernetes.InstallRke2NginxConfig(utils.TCP_PORTS, utils.UDP_PORTS, helmFlags.Uyuni.Namespace)
+			kubernetes.InstallRke2NginxConfig(utils.TCPPorts, utils.UDPPorts, helmFlags.Uyuni.Namespace)
 		}
 	}
 
@@ -61,7 +61,7 @@ func Deploy(
 	}
 
 	// Wait for the pod to be started
-	err = kubernetes.WaitForDeployment(helmFlags.Uyuni.Namespace, HELM_APP_NAME, "uyuni")
+	err = kubernetes.WaitForDeployment(helmFlags.Uyuni.Namespace, HelmAppName, "uyuni")
 	if err != nil {
 		return utils.Errorf(err, L("cannot deploy"))
 	}
@@ -100,7 +100,7 @@ func DeployExistingCertificate(
 	// Deploy the SSL Certificate secret and CA configmap
 	serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
 	serverKey := utils.ReadFile(sslFlags.Server.Key)
-	if err := installTlsSecret(helmFlags.Uyuni.Namespace, serverCrt, serverKey, rootCaCrt); err != nil {
+	if err := installTLSSecret(helmFlags.Uyuni.Namespace, serverCrt, serverKey, rootCaCrt); err != nil {
 		return err
 	}
 
@@ -135,7 +135,7 @@ func UyuniUpgrade(serverImage string, pullPolicy string, helmFlags *cmd_utils.He
 	namespace := helmFlags.Uyuni.Namespace
 	chart := helmFlags.Uyuni.Chart
 	version := helmFlags.Uyuni.Version
-	return kubernetes.HelmUpgrade(kubeconfig, namespace, true, "", HELM_APP_NAME, chart, version, helmParams...)
+	return kubernetes.HelmUpgrade(kubeconfig, namespace, true, "", HelmAppName, chart, version, helmParams...)
 }
 
 // Upgrade will upgrade a server in a kubernetes cluster.

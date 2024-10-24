@@ -50,21 +50,21 @@ var getServiceImage = podman_shared.GetServiceImage
 var hasRemoteImage = podman_shared.HasRemoteImage
 
 func (flags *podmanPTFFlags) checkParameters() error {
-	if flags.TestId != "" && flags.PTFId != "" {
+	if flags.TestID != "" && flags.PTFId != "" {
 		return errors.New(L("ptf and test flags cannot be set simultaneously "))
 	}
-	if flags.TestId == "" && flags.PTFId == "" {
+	if flags.TestID == "" && flags.PTFId == "" {
 		return errors.New(L("ptf and test flags cannot be empty simultaneously "))
 	}
-	if flags.CustomerId == "" {
+	if flags.CustomerID == "" {
 		return errors.New(L("user flag cannot be empty"))
 	}
 
 	suffix := "ptf"
-	projectId := flags.PTFId
-	if flags.TestId != "" {
+	projectID := flags.PTFId
+	if flags.TestID != "" {
 		suffix = "test"
-		projectId = flags.TestId
+		projectID = flags.TestID
 	}
 
 	serverImage := getServiceImage(podman_shared.ServerService)
@@ -74,7 +74,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 
 	var err error
 
-	flags.Image.Name, err = utils.ComputePTF(flags.CustomerId, projectId, serverImage, suffix)
+	flags.Image.Name, err = utils.ComputePTF(flags.CustomerID, projectID, serverImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -82,7 +82,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 
 	if cocoImage := getServiceImage(podman_shared.ServerAttestationService + "@"); cocoImage != "" {
 		// If no coco image was found then skip it during the upgrade.
-		cocoImage, err = utils.ComputePTF(flags.CustomerId, projectId, cocoImage, suffix)
+		cocoImage, err = utils.ComputePTF(flags.CustomerID, projectID, cocoImage, suffix)
 		if err != nil {
 			return err
 		}
@@ -94,7 +94,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 
 	if hubImage := getServiceImage(podman_shared.HubXmlrpcService); hubImage != "" {
 		// If no hub xmlrpc api image was found then skip it during the upgrade.
-		hubImage, err = utils.ComputePTF(flags.CustomerId, projectId, hubImage, suffix)
+		hubImage, err = utils.ComputePTF(flags.CustomerID, projectID, hubImage, suffix)
 		if err != nil {
 			return err
 		}

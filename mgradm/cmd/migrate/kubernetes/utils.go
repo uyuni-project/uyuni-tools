@@ -55,8 +55,8 @@ func migrateToKubernetes(
 	}
 
 	// Find the SSH Socket and paths for the migration
-	sshAuthSocket := migration_shared.GetSshAuthSocket()
-	sshConfigPath, sshKnownhostsPath := migration_shared.GetSshPaths()
+	sshAuthSocket := migration_shared.GetSSHAuthSocket()
+	sshConfigPath, sshKnownhostsPath := migration_shared.GetSSHPaths()
 
 	// Prepare the migration script and folder
 	scriptDir, err := adm_utils.GenerateMigrationScript(fqdn, flags.User, true, flags.Prepare)
@@ -169,7 +169,7 @@ func migrateToKubernetes(
 
 	if oldPgVersion != newPgVersion {
 		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image.Registry, flags.Image,
-			flags.DbUpgradeImage, namespace, nodeName, oldPgVersion, newPgVersion,
+			flags.DBUpgradeImage, namespace, nodeName, oldPgVersion, newPgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}

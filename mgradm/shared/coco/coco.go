@@ -32,7 +32,7 @@ func Upgrade(
 		return nil
 	}
 
-	if err := podman.CreateDbSecrets(dbUser, dbPassword); err != nil {
+	if err := podman.CreateDBSecrets(dbUser, dbPassword); err != nil {
 		return err
 	}
 

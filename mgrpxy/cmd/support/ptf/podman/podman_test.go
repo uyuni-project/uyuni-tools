@@ -31,8 +31,8 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertSccFlag(t, cmd, &flags.UpgradeFlags.SCC)
 		flagstests.AssertProxyImageFlags(t, cmd, &flags.UpgradeFlags.ProxyImageFlags)
 		testutils.AssertEquals(t, "Error parsing --ptf", "ptf123", flags.PTFId)
-		testutils.AssertEquals(t, "Error parsing --test", "test123", flags.TestId)
-		testutils.AssertEquals(t, "Error parsing --user", "sccuser", flags.CustomerId)
+		testutils.AssertEquals(t, "Error parsing --test", "test123", flags.TestID)
+		testutils.AssertEquals(t, "Error parsing --user", "sccuser", flags.CustomerID)
 		return nil
 	}
 

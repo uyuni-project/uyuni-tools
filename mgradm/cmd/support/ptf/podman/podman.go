@@ -16,8 +16,8 @@ import (
 type podmanPTFFlags struct {
 	Image      types.ImageFlags `mapstructure:",squash"`
 	PTFId      string           `mapstructure:"ptf"`
-	TestId     string           `mapstructure:"test"`
-	CustomerId string           `mapstructure:"user"`
+	TestID     string           `mapstructure:"test"`
+	CustomerID string           `mapstructure:"user"`
 	SCC        types.SCCCredentials
 	Coco       adm_utils.CocoFlags
 	Hubxmlrpc  adm_utils.HubXmlrpcFlags

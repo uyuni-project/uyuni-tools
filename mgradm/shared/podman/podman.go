@@ -34,12 +34,12 @@ func GetExposedPorts(debug bool) []types.PortMap {
 		utils.NewPortMap("https", 443, 443),
 		utils.NewPortMap("http", 80, 80),
 	}
-	ports = append(ports, utils.TCP_PORTS...)
-	ports = append(ports, utils.TCP_PODMAN_PORTS...)
-	ports = append(ports, utils.UDP_PORTS...)
+	ports = append(ports, utils.TCPPorts...)
+	ports = append(ports, utils.TCPPodmanPorts...)
+	ports = append(ports, utils.UDPPorts...)
 
 	if debug {
-		ports = append(ports, utils.DEBUG_PORTS...)
+		ports = append(ports, utils.DebugPorts...)
 	}
 
 	return ports
@@ -260,21 +260,21 @@ func RunPgsqlVersionUpgrade(
 			"--security-opt", "label=disable",
 		}
 
-		upgradeImageUrl := ""
+		upgradeImageURL := ""
 		if upgradeImage.Name == "" {
-			upgradeImageUrl, err = utils.ComputeImage(registry, utils.DefaultTag, image,
+			upgradeImageURL, err = utils.ComputeImage(registry, utils.DefaultTag, image,
 				fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			upgradeImageUrl, err = utils.ComputeImage(registry, image.Tag, upgradeImage)
+			upgradeImageURL, err = utils.ComputeImage(registry, image.Tag, upgradeImage)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		}
 
-		preparedImage, err := podman.PrepareImage(authFile, upgradeImageUrl, image.PullPolicy, true)
+		preparedImage, err := podman.PrepareImage(authFile, upgradeImageURL, image.PullPolicy, true)
 		if err != nil {
 			return err
 		}
@@ -437,7 +437,7 @@ func Upgrade(
 	log.Info().Msg(L("Waiting for the server to start…"))
 
 	err = coco.Upgrade(authFile, registry, cocoFlags, image,
-		inspectedValues.DbPort, inspectedValues.DbName, inspectedValues.DbUser, inspectedValues.DbPassword)
+		inspectedValues.DBPort, inspectedValues.DBName, inspectedValues.DBUser, inspectedValues.DBPassword)
 	if err != nil {
 		return utils.Errorf(err, L("error upgrading confidential computing service."))
 	}

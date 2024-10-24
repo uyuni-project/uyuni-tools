@@ -25,8 +25,8 @@ func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap)
 	log.Info().Msg(L("Installing K3s Traefik configuration"))
 
 	data := K3sTraefikConfigTemplateData{
-		TcpPorts: tcpPorts,
-		UdpPorts: udpPorts,
+		TCPPorts: tcpPorts,
+		UDPPorts: udpPorts,
 	}
 	if err := utils.WriteTemplateToFile(data, k3sTraefikConfigPath, 0600, false); err != nil {
 		log.Fatal().Err(err).Msgf(L("Failed to write K3s Traefik configuration"))

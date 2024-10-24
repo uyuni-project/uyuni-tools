@@ -118,5 +118,5 @@ func IsAlreadyLoggedIn() bool {
 }
 
 func getAPICredsFile() string {
-	return path.Join(utils.GetUserConfigDir(), api_credentials_store)
+	return path.Join(utils.GetUserConfigDir(), apiCredentialsStore)
 }

@@ -30,8 +30,8 @@ Before=uyuni-proxy-tftpd.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-{{- if .HttpProxyFile }}
-EnvironmentFile={{ .HttpProxyFile }}
+{{- if .HTTPProxyFile }}
+EnvironmentFile={{ .HTTPProxyFile }}
 {{- end }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-pod.pid %t/uyuni-proxy-pod.pod-id
@@ -62,7 +62,7 @@ WantedBy=multi-user.target default.target
 // PodTemplateData POD information to create systemd file.
 type PodTemplateData struct {
 	Ports         []types.PortMap
-	HttpProxyFile string
+	HTTPProxyFile string
 	Network       string
 	IPV6Enabled   bool
 }

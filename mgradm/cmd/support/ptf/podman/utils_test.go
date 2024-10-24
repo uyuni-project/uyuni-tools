@@ -95,7 +95,7 @@ func TestCheckParameters(t *testing.T) {
 
 		flags := podmanPTFFlags{
 			PTFId:      "5678",
-			CustomerId: "1234",
+			CustomerID: "1234",
 		}
 		testCase := fmt.Sprintf("case #%d - ", i+1)
 		actualError := flags.checkParameters()

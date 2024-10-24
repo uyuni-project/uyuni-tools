@@ -49,13 +49,13 @@ func uninstallForPodman(
 	if flags.Purge.Volumes {
 		// Merge all proxy containers volumes into a map
 		volumes := []string{}
-		for _, volume := range utils.PROXY_HTTPD_VOLUMES {
+		for _, volume := range utils.ProxyHttpdVolumes {
 			volumes = append(volumes, volume.Name)
 		}
-		for _, volume := range utils.PROXY_SQUID_VOLUMES {
+		for _, volume := range utils.ProxySquidVolumes {
 			volumes = append(volumes, volume.Name)
 		}
-		for _, volume := range utils.PROXY_TFTPD_VOLUMES {
+		for _, volume := range utils.ProxyTftpdVolumes {
 			volumes = append(volumes, volume.Name)
 		}
 

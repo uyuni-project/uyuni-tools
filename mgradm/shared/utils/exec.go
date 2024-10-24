@@ -194,37 +194,37 @@ func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectDat
 	}
 
 	if isUyuni {
-		cnx_args := []string{"s/Uyuni release //g", "/etc/uyuni-release"}
-		current_uyuni_release, err := cnx.Exec("sed", cnx_args...)
+		cnxArgs := []string{"s/Uyuni release //g", "/etc/uyuni-release"}
+		currentUyuniRelease, err := cnx.Exec("sed", cnxArgs...)
 		if err != nil {
 			return utils.Errorf(err, L("failed to read current uyuni release"))
 		}
-		log.Debug().Msgf("Current release is %s", string(current_uyuni_release))
+		log.Debug().Msgf("Current release is %s", string(currentUyuniRelease))
 		if !isUyuniImage {
 			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
 		}
 		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.UyuniRelease)
-		if utils.CompareVersion(inspectedValues.UyuniRelease, string(current_uyuni_release)) < 0 {
+		if utils.CompareVersion(inspectedValues.UyuniRelease, string(currentUyuniRelease)) < 0 {
 			return fmt.Errorf(
 				L("cannot downgrade from version %[1]s to %[2]s"),
-				string(current_uyuni_release), inspectedValues.UyuniRelease,
+				string(currentUyuniRelease), inspectedValues.UyuniRelease,
 			)
 		}
 	} else {
-		b_current_suse_manager_release, err := cnx.Exec("sed", "s/.*(\\([0-9.]*\\)).*/\\1/g", "/etc/susemanager-release")
-		current_suse_manager_release := strings.TrimSuffix(string(b_current_suse_manager_release), "\n")
+		bCurrentSuseManagerRelease, err := cnx.Exec("sed", "s/.*(\\([0-9.]*\\)).*/\\1/g", "/etc/susemanager-release")
+		currentSuseManagerRelease := strings.TrimSuffix(string(bCurrentSuseManagerRelease), "\n")
 		if err != nil {
 			return utils.Errorf(err, L("failed to read current susemanager release"))
 		}
-		log.Debug().Msgf("Current release is %s", current_suse_manager_release)
+		log.Debug().Msgf("Current release is %s", currentSuseManagerRelease)
 		if !isSumaImage {
 			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
 		}
 		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.SuseManagerRelease)
-		if utils.CompareVersion(inspectedValues.SuseManagerRelease, current_suse_manager_release) < 0 {
+		if utils.CompareVersion(inspectedValues.SuseManagerRelease, currentSuseManagerRelease) < 0 {
 			return fmt.Errorf(
 				L("cannot downgrade from version %[1]s to %[2]s"),
-				current_suse_manager_release, inspectedValues.SuseManagerRelease,
+				currentSuseManagerRelease, inspectedValues.SuseManagerRelease,
 			)
 		}
 	}
@@ -242,11 +242,11 @@ func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectDat
 }
 
 func isUyuni(cnx *shared.Connection) (bool, error) {
-	cnx_args := []string{"/etc/uyuni-release"}
-	_, err := cnx.Exec("cat", cnx_args...)
+	cnxArgs := []string{"/etc/uyuni-release"}
+	_, err := cnx.Exec("cat", cnxArgs...)
 	if err != nil {
-		cnx_args := []string{"/etc/susemanager-release"}
-		_, err := cnx.Exec("cat", cnx_args...)
+		cnxArgs := []string{"/etc/susemanager-release"}
+		_, err := cnx.Exec("cat", cnxArgs...)
 		if err != nil {
 			return false, errors.New(L("cannot find either /etc/uyuni-release or /etc/susemanagere-release"))
 		}

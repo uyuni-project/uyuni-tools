@@ -75,8 +75,8 @@ db_port=1234
 	testutils.AssertEquals(t, "Invalid FQDN", "my.server.name", actual.Fqdn)
 	testutils.AssertEquals(t, "Invalid current postgresql version", "14", actual.CurrentPgVersion)
 	testutils.AssertEquals(t, "Invalid image postgresql version", "16", actual.ImagePgVersion)
-	testutils.AssertEquals(t, "Invalid DB user", "myuser", actual.DbUser)
-	testutils.AssertEquals(t, "Invalid DB password", "mysecret", actual.DbPassword)
-	testutils.AssertEquals(t, "Invalid DB name", "mydb", actual.DbName)
-	testutils.AssertEquals(t, "Invalid DB port", 1234, actual.DbPort)
+	testutils.AssertEquals(t, "Invalid DB user", "myuser", actual.DBUser)
+	testutils.AssertEquals(t, "Invalid DB password", "mysecret", actual.DBPassword)
+	testutils.AssertEquals(t, "Invalid DB name", "mydb", actual.DBName)
+	testutils.AssertEquals(t, "Invalid DB port", 1234, actual.DBPort)
 }

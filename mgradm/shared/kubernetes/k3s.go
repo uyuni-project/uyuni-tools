@@ -19,12 +19,12 @@ import (
 // InstallK3sTraefikConfig installs the K3s Traefik configuration.
 func InstallK3sTraefikConfig(debug bool) {
 	tcpPorts := []types.PortMap{}
-	tcpPorts = append(tcpPorts, utils.TCP_PORTS...)
+	tcpPorts = append(tcpPorts, utils.TCPPorts...)
 	if debug {
-		tcpPorts = append(tcpPorts, utils.DEBUG_PORTS...)
+		tcpPorts = append(tcpPorts, utils.DebugPorts...)
 	}
 
-	kubernetes.InstallK3sTraefikConfig(tcpPorts, utils.UDP_PORTS)
+	kubernetes.InstallK3sTraefikConfig(tcpPorts, utils.UDPPorts)
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
@@ -50,22 +50,22 @@ func RunPgsqlVersionUpgrade(
 
 		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
 
-		upgradeImageUrl := ""
+		upgradeImageURL := ""
 		if upgradeImage.Name == "" {
-			upgradeImageUrl, err = utils.ComputeImage(
+			upgradeImageURL, err = utils.ComputeImage(
 				registry, image.Tag, image, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql),
 			)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			upgradeImageUrl, err = utils.ComputeImage(registry, image.Tag, upgradeImage)
+			upgradeImageURL, err = utils.ComputeImage(registry, image.Tag, upgradeImage)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		}
 
-		log.Info().Msgf(L("Using database upgrade image %s"), upgradeImageUrl)
+		log.Info().Msgf(L("Using database upgrade image %s"), upgradeImageURL)
 		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, true)
 		if err != nil {
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
@@ -101,7 +101,7 @@ func RunPgsqlVersionUpgrade(
 		}
 
 		err = kubernetes.RunPod(
-			namespace, pgsqlVersionUpgradeContainer, kubernetes.ServerFilter, upgradeImageUrl, image.PullPolicy,
+			namespace, pgsqlVersionUpgradeContainer, kubernetes.ServerFilter, upgradeImageURL, image.PullPolicy,
 			"/var/lib/uyuni-tools/"+pgsqlVersionUpgradeScriptName, overridePgsqlVersioUpgrade,
 		)
 		if err != nil {

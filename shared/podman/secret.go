@@ -15,18 +15,18 @@ import (
 )
 
 const (
-	//DbUserSecret is the name of the podman secret containing the database username.
-	DbUserSecret = "uyuni-db-user"
-	//DbUserSecret is the name of the podman secret containing the database password.
-	DbPassSecret = "uyuni-db-pass"
+	//DBUserSecret is the name of the podman secret containing the database username.
+	DBUserSecret = "uyuni-db-user"
+	//DBUserSecret is the name of the podman secret containing the database password.
+	DBPassSecret = "uyuni-db-pass"
 )
 
-// CreateDbSecrets creates the podman secrets for the database credentials.
-func CreateDbSecrets(user string, password string) error {
-	if err := createSecret(DbUserSecret, user); err != nil {
+// CreateDBSecrets creates the podman secrets for the database credentials.
+func CreateDBSecrets(user string, password string) error {
+	if err := createSecret(DBUserSecret, user); err != nil {
 		return err
 	}
-	return createSecret(DbPassSecret, password)
+	return createSecret(DBPassSecret, password)
 }
 
 // createSecret creates a podman secret.

@@ -59,14 +59,14 @@ func AssertImageFlag(t *testing.T, cmd *cobra.Command, flags *types.ImageFlags) 
 	testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.PullPolicy)
 }
 
-// DbUpdateImageFlagTestArgs is the expected values for AssertDbUpgradeImageFlag.
-var DbUpdateImageFlagTestArgs = []string{
+// DBUpdateImageFlagTestArgs is the expected values for AssertDbUpgradeImageFlag.
+var DBUpdateImageFlagTestArgs = []string{
 	"--dbupgrade-image", "dbupgradeimg",
 	"--dbupgrade-tag", "dbupgradetag",
 }
 
-// AssertDbUpgradeImageFlag asserts that all DB upgrade image flags are parsed correctly.
-func AssertDbUpgradeImageFlag(t *testing.T, cmd *cobra.Command, flags *types.ImageFlags) {
+// AssertDBUpgradeImageFlag asserts that all DB upgrade image flags are parsed correctly.
+func AssertDBUpgradeImageFlag(t *testing.T, cmd *cobra.Command, flags *types.ImageFlags) {
 	testutils.AssertEquals(t, "Error parsing --dbupgrade-image", "dbupgradeimg", flags.Name)
 	testutils.AssertEquals(t, "Error parsing --dbupgrade-tag", "dbupgradetag", flags.Tag)
 }

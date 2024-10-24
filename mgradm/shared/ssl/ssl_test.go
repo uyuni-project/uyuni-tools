@@ -67,12 +67,12 @@ func TestReadCertificatesMultiple(t *testing.T) {
 		t.Error("Should be a CA")
 	}
 
-	if actual[1].subjectKeyId != "62:00:25:E4:EE:70:E5:37:2D:1E:9E:AE:4E:B7:3E:FC:62:08:BF:27" {
-		t.Errorf("Wrong subject key id: %s", actual[1].subjectKeyId)
+	if actual[1].subjectKeyID != "62:00:25:E4:EE:70:E5:37:2D:1E:9E:AE:4E:B7:3E:FC:62:08:BF:27" {
+		t.Errorf("Wrong subject key id: %s", actual[1].subjectKeyID)
 	}
 
-	if actual[0].authKeyId != "6E:6D:4B:35:22:23:3E:13:18:A5:93:61:0E:9C:BE:1E:D2:B8:1B:D4" {
-		t.Errorf("Wrong auth key id: %s", actual[0].authKeyId)
+	if actual[0].authKeyID != "6E:6D:4B:35:22:23:3E:13:18:A5:93:61:0E:9C:BE:1E:D2:B8:1B:D4" {
+		t.Errorf("Wrong auth key id: %s", actual[0].authKeyID)
 	}
 }
 
