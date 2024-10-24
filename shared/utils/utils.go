@@ -323,12 +323,17 @@ func UninstallFile(path string, dryRun bool) {
 }
 
 // TempDir creates a temporary directory.
-func TempDir() (string, error) {
+func TempDir() (string, func(), error) {
 	tempDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return "", Errorf(err, L("failed to create temporary directory"))
+		return "", nil, Errorf(err, L("failed to create temporary directory"))
 	}
-	return tempDir, nil
+	cleaner := func() {
+		if err := os.RemoveAll(tempDir); err != nil {
+			log.Error().Err(err).Msg(L("failed to remove temporary directory"))
+		}
+	}
+	return tempDir, cleaner, nil
 }
 
 // GetRandomBase64 generates random base64-encoded data.

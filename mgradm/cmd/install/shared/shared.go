@@ -7,7 +7,6 @@ package shared
 import (
 	"errors"
 	"net/url"
-	"os"
 	"path/filepath"
 	"strconv"
 
@@ -35,11 +34,11 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 		preconfigured = true
 	}
 
-	tmpFolder, err := generateSetupScript(flags, fqdn, env)
-	defer os.RemoveAll(tmpFolder)
+	tmpFolder, cleaner, err := generateSetupScript(flags, fqdn, env)
 	if err != nil {
 		return err
 	}
+	defer cleaner()
 
 	if err := cnx.Copy(filepath.Join(tmpFolder, setupName), "server:/tmp/setup.sh", "root", "root"); err != nil {
 		return utils.Errorf(err, L("cannot copy /tmp/setup.sh"))
@@ -100,7 +99,7 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 // generateSetupScript creates a temporary folder with the setup script to execute in the container.
 // The script exports all the needed environment variables and calls uyuni's mgr-setup.
 // Podman or kubernetes-specific variables can be passed using extraEnv parameter.
-func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]string) (string, error) {
+func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]string) (string, func(), error) {
 	localHostValues := []string{
 		"localhost",
 		"127.0.0.1",
@@ -153,9 +152,9 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 		env[key] = value
 	}
 
-	scriptDir, err := utils.TempDir()
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
 
 	dataTemplate := templates.MgrSetupScriptTemplateData{
@@ -165,10 +164,10 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 
 	scriptPath := filepath.Join(scriptDir, setupName)
 	if err = utils.WriteTemplateToFile(dataTemplate, scriptPath, 0555, true); err != nil {
-		return "", utils.Errorf(err, L("Failed to generate setup script"))
+		return "", cleaner, utils.Errorf(err, L("Failed to generate setup script"))
 	}
 
-	return scriptDir, nil
+	return scriptDir, cleaner, nil
 }
 
 func boolToString(value bool) string {

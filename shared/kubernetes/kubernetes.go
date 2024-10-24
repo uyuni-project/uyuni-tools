@@ -174,11 +174,11 @@ data:
   .dockerconfigjson: %s
 `, namespace, name, base64.StdEncoding.EncodeToString([]byte(configjson)))
 
-	tempDir, err := utils.TempDir()
+	tempDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(tempDir)
+	defer cleaner()
 
 	// Run the job
 	definitionPath := path.Join(tempDir, "definition.yaml")

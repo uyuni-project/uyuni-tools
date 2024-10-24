@@ -7,7 +7,6 @@ package kubernetes
 import (
 	"errors"
 	"fmt"
-	"os"
 	"os/exec"
 
 	"github.com/spf13/cobra"
@@ -31,11 +30,11 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	// Unpack the tarball
 	configPath := utils.GetConfigPath(args)
 
-	tmpDir, err := shared_utils.TempDir()
+	tmpDir, cleaner, err := shared_utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(tmpDir)
+	defer cleaner()
 
 	if err := shared_utils.ExtractTarGz(configPath, tmpDir); err != nil {
 		return errors.New(L("failed to extract configuration"))

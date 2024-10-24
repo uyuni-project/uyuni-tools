@@ -115,10 +115,10 @@ func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) err
 }
 
 // GenerateMigrationScript generates the script that perform migration.
-func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, prepare bool) (string, error) {
-	scriptDir, err := utils.TempDir()
+func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, prepare bool) (string, func(), error) {
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
 
 	data := templates.MigrateScriptTemplateData{
@@ -131,10 +131,10 @@ func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, pr
 
 	scriptPath := filepath.Join(scriptDir, "migrate.sh")
 	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", utils.Errorf(err, L("failed to generate migration script"))
+		return "", cleaner, utils.Errorf(err, L("failed to generate migration script"))
 	}
 
-	return scriptDir, nil
+	return scriptDir, cleaner, nil
 }
 
 // RunningImage returns the image running in the current system.

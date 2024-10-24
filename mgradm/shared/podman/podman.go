@@ -7,7 +7,6 @@ package podman
 import (
 	"errors"
 	"fmt"
-	"os"
 	"os/exec"
 	"path"
 	"path/filepath"
@@ -195,11 +194,11 @@ func RunMigration(
 	user string,
 	prepare bool,
 ) (*utils.InspectResult, error) {
-	scriptDir, err := adm_utils.GenerateMigrationScript(sourceFqdn, user, false, prepare)
+	scriptDir, cleaner, err := adm_utils.GenerateMigrationScript(sourceFqdn, user, false, prepare)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot generate migration script"))
 	}
-	defer os.RemoveAll(scriptDir)
+	defer cleaner()
 
 	extraArgs := []string{
 		"--security-opt", "label=disable",
@@ -255,11 +254,11 @@ func RunPgsqlVersionUpgrade(
 		L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql,
 	)
 
-	scriptDir, err := utils.TempDir()
-	defer os.RemoveAll(scriptDir)
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
+	defer cleaner()
 	if newPgsql > oldPgsql {
 		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
 		extraArgs := []string{
@@ -306,11 +305,11 @@ func RunPgsqlVersionUpgrade(
 
 // RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
 func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migration bool) error {
-	scriptDir, err := utils.TempDir()
-	defer os.RemoveAll(scriptDir)
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
+	defer cleaner()
 
 	extraArgs := []string{
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
@@ -333,11 +332,11 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migra
 
 // RunPostUpgradeScript run the script with the changes to apply after the upgrade.
 func RunPostUpgradeScript(serverImage string) error {
-	scriptDir, err := utils.TempDir()
-	defer os.RemoveAll(scriptDir)
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
+	defer cleaner()
 	postUpgradeContainer := "uyuni-post-upgrade"
 	extraArgs := []string{
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
@@ -482,11 +481,11 @@ func updateServerSystemdService() error {
 
 // Inspect check values on a given image and deploy.
 func Inspect(preparedImage string) (*utils.ServerInspectData, error) {
-	scriptDir, err := utils.TempDir()
-	defer os.RemoveAll(scriptDir)
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return nil, err
 	}
+	defer cleaner()
 
 	inspector := utils.NewServerInspector(scriptDir)
 	if err := inspector.GenerateScript(); err != nil {
