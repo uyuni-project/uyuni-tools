@@ -17,10 +17,10 @@ import (
 )
 
 func podmanStatus(
-	globalFlags *types.GlobalFlags,
-	flags *statusFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *statusFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	// Show the status and that's it if the service is not running
 	if !podman.IsServiceRunning(podman.ServerService) {
