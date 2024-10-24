@@ -190,7 +190,7 @@ func GetContainerImage(authFile string, flags *utils.ProxyImageFlags, name strin
 func UnpackConfig(configPath string) error {
 	log.Info().Msgf(L("Setting up proxy with configuration %s"), configPath)
 	const proxyConfigDir = "/etc/uyuni/proxy"
-	if err := os.MkdirAll(proxyConfigDir, 755); err != nil {
+	if err := os.MkdirAll(proxyConfigDir, 0755); err != nil {
 		return err
 	}
 
@@ -223,7 +223,7 @@ func UnpackConfig(configPath string) error {
 	mode := proxyConfigInfo.Mode()
 
 	if !(mode&0004 != 0 && mode&0040 != 0 && mode&0400 != 0) {
-		return fmt.Errorf(L("/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."))
+		return errors.New(L("/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."))
 	}
 
 	return nil
@@ -235,7 +235,7 @@ func Upgrade(
 	cmd *cobra.Command, args []string,
 ) error {
 	if _, err := exec.LookPath("podman"); err != nil {
-		return fmt.Errorf(L("install podman before running this command"))
+		return errors.New(L("install podman before running this command"))
 	}
 	if err := systemd.StopService(podman.ProxyService); err != nil {
 		return err

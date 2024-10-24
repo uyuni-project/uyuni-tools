@@ -5,6 +5,7 @@
 package kubernetes
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -175,7 +176,7 @@ func Upgrade(
 
 	fqdn := inspectedValues.Fqdn
 	if fqdn == "" {
-		return fmt.Errorf(L("inspect function did non return fqdn value"))
+		return errors.New(L("inspect function did non return fqdn value"))
 	}
 
 	clusterInfos, err := kubernetes.CheckCluster()

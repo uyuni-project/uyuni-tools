@@ -6,7 +6,7 @@ package kubernetes
 
 import (
 	"bytes"
-	"fmt"
+	"errors"
 	"os/exec"
 	"strings"
 
@@ -64,7 +64,7 @@ func HelmUpgrade(kubeconfig string, namespace string, install bool,
 // HelmUninstall runs the helm uninstall command to remove a deployment.
 func HelmUninstall(namespace string, kubeconfig string, deployment string, dryRun bool) error {
 	if namespace == "" {
-		return fmt.Errorf(L("namespace is required"))
+		return errors.New(L("namespace is required"))
 	}
 
 	helmArgs := []string{}

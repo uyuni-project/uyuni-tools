@@ -150,7 +150,7 @@ func (c *Connection) GetNamespace(appName string, filters ...string) (string, er
 		}
 
 		if appName == "" {
-			return "", fmt.Errorf(L("coundn't find app name"))
+			return "", errors.New(L("coundn't find app name"))
 		}
 	}
 
@@ -508,7 +508,7 @@ func (cnx *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 	} else {
 		tarballPath := utils.GetSupportConfigPath(string(out))
 		if tarballPath == "" {
-			return []string{}, fmt.Errorf(L("failed to find container supportconfig tarball from command output"))
+			return []string{}, errors.New(L("failed to find container supportconfig tarball from command output"))
 		}
 
 		for _, ext := range extensions {

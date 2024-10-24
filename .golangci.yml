@@ -77,7 +77,7 @@ linters:
       #- megacheck
     - misspell
     - revive
-      #- staticcheck
+    - staticcheck
     - stylecheck
     - unparam
     - unused

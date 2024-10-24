@@ -6,7 +6,7 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"os"
 	"path"
 
@@ -18,7 +18,7 @@ import (
 // Store API credentials for future API use.
 func StoreLoginCreds(client *APIClient) error {
 	if client.AuthCookie.Value == "" {
-		return fmt.Errorf(L("not logged in, session cookie is missing"))
+		return errors.New(L("not logged in, session cookie is missing"))
 	}
 	// Future: Add support for more servers if needed in the future
 	auth := []authStorage{
@@ -55,7 +55,7 @@ func getLoginCredentials(conn *ConnectionDetails) error {
 	utils.AskPasswordIfMissingOnce(&conn.Password, L("API server password"), 0, 0)
 
 	if conn.User == "" || conn.Password == "" {
-		return fmt.Errorf(L("No credentials provided"))
+		return errors.New(L("No credentials provided"))
 	}
 
 	return nil
@@ -89,7 +89,7 @@ func loadLoginCreds(connection *ConnectionDetails) error {
 	}
 
 	if len(authStore) == 0 {
-		return fmt.Errorf(L("no credentials loaded"))
+		return errors.New(L("no credentials loaded"))
 	}
 
 	// Currently we support storing data only to one server
@@ -98,7 +98,7 @@ func loadLoginCreds(connection *ConnectionDetails) error {
 	authData := authStore[0]
 
 	if connection.Server != "" && connection.Server != authData.Server {
-		return fmt.Errorf(L("specified api server does not match with stored credentials"))
+		return errors.New(L("specified api server does not match with stored credentials"))
 	}
 	connection.Server = authData.Server
 	if authData.CApath != "" {

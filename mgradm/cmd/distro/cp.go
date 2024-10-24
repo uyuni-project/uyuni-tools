@@ -5,6 +5,7 @@
 package distro
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -99,7 +100,7 @@ func prepareSource(source string) (string, bool, error) {
 
 func copyDistro(srcdir string, distro *types.Distribution, flags *flagpole) error {
 	if len(distro.TreeLabel) == 0 {
-		return fmt.Errorf(L("Missing TreeLabel. Please specify distribution name"))
+		return errors.New(L("Missing TreeLabel. Please specify distribution name"))
 	}
 
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)

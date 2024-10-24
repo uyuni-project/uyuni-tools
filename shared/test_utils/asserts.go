@@ -23,7 +23,7 @@ func AssertEquals[T any](t *testing.T, message string, expected T, actual T) {
 // AssertTrue ensures a value is true and raises and error if not.
 func AssertTrue(t *testing.T, message string, actual bool) {
 	if !actual {
-		t.Errorf(message)
+		t.Error(message)
 	}
 }
 

@@ -232,7 +232,7 @@ func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectDat
 	}
 	log.Debug().Msgf("Image %s has PostgreSQL %s", serverImage, inspectedValues.ImagePgVersion)
 	if inspectedValues.CurrentPgVersion == "" {
-		return fmt.Errorf(L("posgresql is not installed in the current deployment"))
+		return errors.New(L("posgresql is not installed in the current deployment"))
 	}
 	log.Debug().Msgf("Current deployment has PostgreSQL %s", inspectedValues.CurrentPgVersion)
 

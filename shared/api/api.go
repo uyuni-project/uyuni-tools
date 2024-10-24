@@ -64,7 +64,7 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
 		if res.StatusCode == 401 {
-			return nil, fmt.Errorf(L("401: unauthorized"))
+			return nil, errors.New(L("401: unauthorized"))
 		}
 		var errResponse map[string]string
 		if res.Body != nil {
@@ -72,10 +72,10 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 			if err == nil {
 				if err = json.Unmarshal(body, &errResponse); err == nil {
 					error_message := fmt.Sprintf("%d: '%s'", res.StatusCode, errResponse["message"])
-					return nil, fmt.Errorf(error_message)
+					return nil, errors.New(error_message)
 				} else {
 					error_message := fmt.Sprintf("%d: '%s'", res.StatusCode, string(body))
-					return nil, fmt.Errorf(error_message)
+					return nil, errors.New(error_message)
 				}
 			}
 		}
@@ -111,7 +111,7 @@ func Init(conn *ConnectionDetails) (*APIClient, error) {
 	}
 
 	if conn.Server == "" {
-		return nil, fmt.Errorf(L("server URL is not provided"))
+		return nil, errors.New(L("server URL is not provided"))
 	}
 	client := &APIClient{
 		Details: conn,
