@@ -137,7 +137,9 @@ $SSH {{ .SourceFqdn }} sh -c "systemctl list-unit-files | grep hub-xmlrpc-api | 
 
 echo "Altering configuration for domain resolution..."
 sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/rhn/rhn.conf;
-sed 's/server\.jabber_server/java\.hostname/' -i /etc/rhn/rhn.conf;
+if ! grep -q '^java.hostname *=' /etc/rhn/rhn.conf; then
+    sed 's/server\.jabber_server/java\.hostname/' -i /etc/rhn/rhn.conf;
+fi
 sed 's/client_use_localhost: false/client_use_localhost: true/' -i /etc/cobbler/settings.yaml;
 
 echo "Altering configuration for container environment..."
