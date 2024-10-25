@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 15:50+0200\n"
+"POT-Creation-Date: 2024-10-25 15:27+0200\n"
 "PO-Revision-Date: 2024-09-26 02:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
@@ -28,11 +28,11 @@ msgstr "キャッシュのクリア"
 msgid "failed retrieving namespace"
 msgstr "ファイル %s への書き込みに失敗しました"
 
-#: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:25
+#: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:27
 msgid "failed to remove cached data"
 msgstr "キャッシュされたデータを削除できませんでした"
 
-#: mgrpxy/cmd/cache/kubernetes.go:33 mgrpxy/cmd/cache/podman.go:29
+#: mgrpxy/cmd/cache/kubernetes.go:33 mgrpxy/cmd/cache/podman.go:31
 msgid "failed to re-create the cache directories"
 msgstr "キャッシュディレクトリを再作成できませんでした"
 
@@ -74,7 +74,7 @@ msgstr "コマンドの実行中: %s"
 msgid "configuration file path"
 msgstr "設定ファイルパス"
 
-#: mgrpxy/cmd/cmd.go:68
+#: mgrpxy/cmd/cmd.go:69
 msgid "application log level"
 msgstr "アプリケーションログレベル"
 
@@ -82,11 +82,11 @@ msgstr "アプリケーションログレベル"
 msgid "Install a new proxy from scratch"
 msgstr "最初から新しいプロキシをインストールする"
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
 msgstr "実行中のkubernetesクラスタに新しいプロキシをインストールする"
 
-#: mgrpxy/cmd/install/kubernetes/kubernetes.go:27
+#: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
 msgid ""
 "Install a new proxy on a running kubernetes cluster.\n"
 "\n"
@@ -115,16 +115,16 @@ msgstr "このコマンドを実行する前に %s をインストールする"
 msgid "failed to extract configuration"
 msgstr "設定の抽出に失敗しました"
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:67
+#: mgrpxy/cmd/install/kubernetes/utils.go:69
 #: mgrpxy/shared/kubernetes/deploy.go:201
 msgid "cannot deploy proxy helm chart"
 msgstr "プロキシhelmチャートを配備できません"
 
-#: mgrpxy/cmd/install/podman/podman.go:21
+#: mgrpxy/cmd/install/podman/podman.go:20
 msgid "Install a new proxy on podman"
 msgstr "podmanに新しいプロキシをインストールする"
 
-#: mgrpxy/cmd/install/podman/podman.go:22
+#: mgrpxy/cmd/install/podman/podman.go:21
 msgid ""
 "Install a new proxy on podman\n"
 "\n"
@@ -143,16 +143,16 @@ msgstr ""
 "\n"
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:217
+#: mgrpxy/cmd/install/podman/utils.go:39 mgrpxy/shared/podman/podman.go:238
 msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
 
-#: mgrpxy/cmd/install/podman/utils.go:37
+#: mgrpxy/cmd/install/podman/utils.go:44
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "プロキシ設定を %s ファイルから抽出できませんでした"
 
-#: mgrpxy/cmd/install/podman/utils.go:47 mgrpxy/shared/podman/podman.go:230
+#: mgrpxy/cmd/install/podman/utils.go:54 mgrpxy/shared/podman/podman.go:251
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.comへのログインに失敗しました"
 
@@ -166,41 +166,46 @@ msgstr "uyuni-proxy配備ネームスペースが見つかりませんでした"
 msgid "failed to find proxy deployment namespace"
 msgstr "uyuni-proxy配備ネームスペースが見つかりませんでした"
 
-#: mgrpxy/cmd/logs/logs.go:36
+#: mgrpxy/cmd/logs/logs.go:38
 msgid "Get the proxy logs"
 msgstr "プロキシログの取得"
 
-#: mgrpxy/cmd/logs/logs.go:37
+#: mgrpxy/cmd/logs/logs.go:39
+#, fuzzy
 msgid ""
 "Get the proxy logs\n"
 "The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman\n"
-"However, you can specify the pod and/or container names to get the logs for specific container(s). See examples for more details."
+"However, you can specify the pod and/or container names to get the logs for specific container(s).\n"
+"See examples for more details."
 msgstr ""
 "プロキシログの取得\n"
 "このコマンドは、インストールされたバックエンドを自動的に検出し、KubernetesまたはPodmanが管理しているコンテナのログを表示します\n"
 "ただし、ポッド名および／またはコンテナ名を指定して、特定のコンテナのログを取得できます。詳細については、例を参照してください。"
 
-#: mgrpxy/cmd/logs/logs.go:62
+#: mgrpxy/cmd/logs/logs.go:65
 msgid "specify if logs should be followed"
 msgstr "ログの追跡を行うかどうかを指定します"
 
-#: mgrpxy/cmd/logs/logs.go:63
+#: mgrpxy/cmd/logs/logs.go:66
 msgid "show timestamps in the log outputs"
 msgstr "ログ出力にタイムスタンプを表示します"
 
-#: mgrpxy/cmd/logs/logs.go:64
+#: mgrpxy/cmd/logs/logs.go:67
 msgid "number of lines to show from the end of the logs"
 msgstr "ログの末尾から表示する行数"
 
-#: mgrpxy/cmd/logs/logs.go:66
-msgid "show logs since a specific time or duration. Supports Go duration strings and RFC3339 format (e.g. 5s, 2m, 3h, 2023-01-02T15:04:05)"
+#: mgrpxy/cmd/logs/logs.go:70
+#, fuzzy
+msgid ""
+"show logs since a specific time or duration.\n"
+"Supports Go duration strings and RFC3339 format (e.g. 3h, 2023-01-02T15:04:05)"
 msgstr "特定の時刻または期間以降のログを表示します。Go期間文字列およびRFC3339形式をサポートしています（5s、2m、3h、2023-01-02T15:04:05など）"
 
-#: mgrpxy/cmd/restart/restart.go:24 mgrpxy/cmd/restart/restart.go:25
+#: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
 msgstr "プロキシの再起動"
 
-#: mgrpxy/cmd/start/start.go:24 mgrpxy/cmd/start/start.go:25
+#: mgrpxy/cmd/start/start.go:23 mgrpxy/cmd/start/start.go:24
 msgid "Start the proxy"
 msgstr "プロキシの起動"
 
@@ -229,23 +234,23 @@ msgstr "%s サービスのステータスを取得できませんでした"
 msgid "failed to get the status of at least one service"
 msgstr "少なくとも1つのサービスのステータスを取得できませんでした"
 
-#: mgrpxy/cmd/status/status.go:25 mgrpxy/cmd/status/status.go:26
+#: mgrpxy/cmd/status/status.go:26 mgrpxy/cmd/status/status.go:27
 msgid "Get the proxy status"
 msgstr "プロキシステータスの取得"
 
-#: mgrpxy/cmd/status/status.go:47
+#: mgrpxy/cmd/status/status.go:53
 msgid "no installed proxy detected"
 msgstr "インストールされているプロキシが検出されませんでした"
 
-#: mgrpxy/cmd/stop/stop.go:24 mgrpxy/cmd/stop/stop.go:25
+#: mgrpxy/cmd/stop/stop.go:23 mgrpxy/cmd/stop/stop.go:24
 msgid "Stop the proxy"
 msgstr "プロキシの停止"
 
-#: mgrpxy/cmd/support/config/config.go:23
+#: mgrpxy/cmd/support/config/config.go:22
 msgid "Extract configuration and logs"
 msgstr "設定とログの抽出"
 
-#: mgrpxy/cmd/support/config/config.go:24
+#: mgrpxy/cmd/support/config/config.go:23
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from \n"
 "the containers for support to help debugging."
@@ -253,15 +258,15 @@ msgstr ""
 "デバッグを支援するため、ホストまたはクラスタの設定とログ、および\n"
 "コンテナから設定とログを抽出します。"
 
-#: mgrpxy/cmd/support/config/config.go:32
+#: mgrpxy/cmd/support/config/config.go:31
 msgid "path where to extract the data"
 msgstr "データを抽出するパス"
 
-#: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:25
+#: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:24
 msgid "Install a PTF or Test package on a kubernetes cluster"
 msgstr "PTFまたはTestパッケージをkubernetesクラスタにインストールする"
 
-#: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:26
+#: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:25
 msgid ""
 "Install a PTR of Test package on a kubernetes cluster\n"
 "\n"
@@ -283,11 +288,11 @@ msgstr ""
 "\n"
 "メモ:リモートクラスタへのインストールはまだサポートされていません。\n"
 
-#: mgrpxy/cmd/support/ptf/podman/podman.go:30
+#: mgrpxy/cmd/support/ptf/podman/podman.go:29
 msgid "Install a PTF or Test package on podman"
 msgstr "PTFまたはTestパッケージをpodmanにインストールする"
 
-#: mgrpxy/cmd/support/ptf/podman/podman.go:31
+#: mgrpxy/cmd/support/ptf/podman/podman.go:30
 msgid ""
 "Install a PTF or Test package on podman\n"
 "\n"
@@ -303,39 +308,39 @@ msgstr ""
 "\n"
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:34
+#: mgrpxy/cmd/support/ptf/podman/utils.go:36
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "ptfとtestフラグを同時に設定することはできません "
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:37
+#: mgrpxy/cmd/support/ptf/podman/utils.go:39
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptfとtestフラグを同時に空にすることはできません "
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:40
+#: mgrpxy/cmd/support/ptf/podman/utils.go:42
 msgid "user flag cannot be empty"
 msgstr "ユーザフラグは空にできません"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:56
+#: mgrpxy/cmd/support/ptf/podman/utils.go:58
 #, javascript-format
 msgid "The httpd ptf image computed is: %s"
 msgstr "計算されたhttpd ptfイメージは %s です"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:66
+#: mgrpxy/cmd/support/ptf/podman/utils.go:68
 #, javascript-format
 msgid "The ssh ptf image computed is: %s"
 msgstr "計算されたssh ptfイメージは %s です"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:76
+#: mgrpxy/cmd/support/ptf/podman/utils.go:78
 #, javascript-format
 msgid "The tftpd ptf image computed is: %s"
 msgstr "計算されたtftpd ptfイメージは %s です"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:86
+#: mgrpxy/cmd/support/ptf/podman/utils.go:88
 #, javascript-format
 msgid "The salt-broker ptf image computed is: %s"
 msgstr "計算されたsalt-broker ptfイメージは %s です"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:96
+#: mgrpxy/cmd/support/ptf/podman/utils.go:98
 #, javascript-format
 msgid "The squid ptf image computed is: %s"
 msgstr "計算されたsquid ptfイメージは %s です"
@@ -364,45 +369,45 @@ msgstr "何もアンインストールされていません。--forceを指定�
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
 msgstr "ボリュームに何の操作も行われていません。使用したストレージクラスによっては、削除されていない可能性があります"
 
-#: mgrpxy/cmd/uninstall/podman.go:65
+#: mgrpxy/cmd/uninstall/podman.go:67
 #, javascript-format
 msgid "cannot delete volume %s"
 msgstr "ボリューム %s を削除できません"
 
-#: mgrpxy/cmd/uninstall/podman.go:68
+#: mgrpxy/cmd/uninstall/podman.go:70
 msgid "All volumes removed"
 msgstr "すべてのボリュームが削除されました"
 
-#: mgrpxy/cmd/uninstall/podman.go:71
+#: mgrpxy/cmd/uninstall/podman.go:73
 msgid "Failed to delete /etc/uyuni/proxy folder"
 msgstr "/etc/uyuni/proxyフォルダを削除できませんでした"
 
-#: mgrpxy/cmd/uninstall/podman.go:73
+#: mgrpxy/cmd/uninstall/podman.go:75
 msgid "/etc/uyuni/proxy folder removed"
 msgstr "/etc/uyuni/proxyフォルダが削除されました"
 
-#: mgrpxy/cmd/uninstall/podman.go:81
+#: mgrpxy/cmd/uninstall/podman.go:83
 #, javascript-format
 msgid "cannot delete image %s"
 msgstr "イメージ %s を削除できません"
 
-#: mgrpxy/cmd/uninstall/podman.go:85
+#: mgrpxy/cmd/uninstall/podman.go:87
 msgid "All images have been removed"
 msgstr "すべてのイメージが削除されました"
 
-#: mgrpxy/cmd/uninstall/podman.go:93
+#: mgrpxy/cmd/uninstall/podman.go:96
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr "何もアンインストールされていません。--forceと--purge-volumesを指定して実行して、データがアンインストールされてクリアされるようにしてください"
 
-#: mgrpxy/cmd/uninstall/podman.go:95
+#: mgrpxy/cmd/uninstall/podman.go:99
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr "データが保管されています。podmanボリュームコマンドを使用して、ボリュームをクリアしてください"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:21
+#: mgrpxy/cmd/uninstall/uninstall.go:20
 msgid "Uninstall a proxy"
 msgstr "プロキシのアンインストール"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:22
+#: mgrpxy/cmd/uninstall/uninstall.go:21
 msgid ""
 "Uninstall a proxy and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
@@ -410,11 +415,11 @@ msgstr ""
 "プロキシ、およびオプションで対応するボリュームをアンインストールします。\n"
 "デフォルトでは、実行される内容のみが出力され、実際に削除するには--forceを使用します。"
 
-#: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:20
+#: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:22
 msgid "Upgrade a proxy on a running kubernetes cluster"
 msgstr "実行中のkubernetesクラスタ上のプロキシをアップグレードする"
 
-#: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:21
+#: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:23
 msgid ""
 "Upgrade a proxy on a running kubernetes cluster.\n"
 "\n"
@@ -428,11 +433,11 @@ msgstr ""
 "\n"
 "メモ: 現時点では、リモートkubernetesクラスタ上でのアップグレードはサポートされていません。\n"
 
-#: mgrpxy/cmd/upgrade/podman/podman.go:21
+#: mgrpxy/cmd/upgrade/podman/podman.go:20
 msgid "Upgrade a proxy on podman"
 msgstr "podmanでプロキシをアップグレードする"
 
-#: mgrpxy/cmd/upgrade/podman/podman.go:22
+#: mgrpxy/cmd/upgrade/podman/podman.go:21
 msgid ""
 "Upgrade a proxy on podman\n"
 "\n"
@@ -481,57 +486,57 @@ msgstr "helmアップグレードを実行できません"
 msgid "failed to write in file %s"
 msgstr "ファイル %s への書き込みに失敗しました"
 
-#: mgrpxy/shared/podman/podman.go:37
+#: mgrpxy/shared/podman/podman.go:45
 msgid "cannot setup network"
 msgstr "ネットワークを設定できません"
 
-#: mgrpxy/shared/podman/podman.go:40
+#: mgrpxy/shared/podman/podman.go:50
 msgid "Generating systemd services"
 msgstr "systemdサービスの生成"
 
-#: mgrpxy/shared/podman/podman.go:133
+#: mgrpxy/shared/podman/podman.go:149
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "systemdファイル「%s」の生成に失敗しました"
 
-#: mgrpxy/shared/podman/podman.go:139
+#: mgrpxy/shared/podman/podman.go:155
 msgid "cannot generate systemd conf file"
 msgstr "systemd confファイルを生成できません"
 
-#: mgrpxy/shared/podman/podman.go:145
+#: mgrpxy/shared/podman/podman.go:161
 msgid "cannot generate systemd conf user configuration file"
 msgstr "systemd confユーザ設定ファイルを生成できません"
 
-#: mgrpxy/shared/podman/podman.go:175
+#: mgrpxy/shared/podman/podman.go:191
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "設定 %s でプロキシを設定しています"
 
-#: mgrpxy/shared/podman/podman.go:193
+#: mgrpxy/shared/podman/podman.go:210
 msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
 msgstr "/etc/uyuni/proxyディレクトリには、すべてのユーザーに読み取りおよび書き込み権限がありません。umask設定を確認してください。"
 
-#: mgrpxy/shared/podman/podman.go:208
+#: mgrpxy/shared/podman/podman.go:226
 msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
 msgstr "/etc/uyuni/proxy/config.yamlには、すべてのユーザーに読み取り権限がありません。umask設定を確認してください。"
 
-#: mgrpxy/shared/podman/podman.go:236
+#: mgrpxy/shared/podman/podman.go:257
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr "httpdイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:240
+#: mgrpxy/shared/podman/podman.go:261
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr "salt-brokerイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:244
+#: mgrpxy/shared/podman/podman.go:265
 msgid "cannot find squid image: it will no be upgraded"
 msgstr "squidイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:248
+#: mgrpxy/shared/podman/podman.go:269
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr "sshイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:252
+#: mgrpxy/shared/podman/podman.go:273
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr "tftpdイメージが見つかりません: アップグレードされません"
 
@@ -549,36 +554,36 @@ msgstr "無効なプロキシコンテナ名: %s"
 msgid "failed to compute image URL"
 msgstr "イメージURLの計算に失敗しました"
 
-#: mgrpxy/shared/utils/flags.go:64
+#: mgrpxy/shared/utils/flags.go:65
 msgid "SUSE Customer Center username. It will be used to pull images from registry.suse.com"
 msgstr "SUSEカスタマーセンターのユーザ名。これは、registry.suse.comからイメージを取得するために使用されます"
 
-#: mgrpxy/shared/utils/flags.go:65
+#: mgrpxy/shared/utils/flags.go:68
 msgid "SUSE Customer Center password. It will be used to pull images from registry.suse.com"
 msgstr "SUSEカスタマーセンターのパスワード。これは、registry.suse.comからイメージを取得するために使用されます"
 
-#: mgrpxy/shared/utils/flags.go:67
+#: mgrpxy/shared/utils/flags.go:71
 msgid "SUSE Customer Center Flags"
 msgstr "SUSEカスタマーセンターのフラグ"
 
-#: mgrpxy/shared/utils/flags.go:74
+#: mgrpxy/shared/utils/flags.go:78
 msgid "image tag"
 msgstr "イメージタグ"
 
-#: mgrpxy/shared/utils/flags.go:83
+#: mgrpxy/shared/utils/flags.go:87
 msgid "HTTPD tuning configuration file"
 msgstr "HTTPDチューニング設定ファイル"
 
-#: mgrpxy/shared/utils/flags.go:84
+#: mgrpxy/shared/utils/flags.go:88
 msgid "Squid tuning configuration file"
 msgstr "Squidチューニング設定ファイル"
 
-#: mgrpxy/shared/utils/flags.go:90
+#: mgrpxy/shared/utils/flags.go:94
 #, javascript-format
 msgid "Image for %s container"
 msgstr "%s コンテナのイメージ"
 
-#: mgrpxy/shared/utils/flags.go:92
+#: mgrpxy/shared/utils/flags.go:96
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s コンテナ用のタグ。設定されている場合はグローバル値を上書きします"

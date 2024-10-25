@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:14+0200\n"
+"POT-Creation-Date: 2024-10-25 15:27+0200\n"
 "PO-Revision-Date: 2024-06-12 10:46+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ko/>\n"
@@ -49,14 +49,14 @@ msgid ""
 "# mgrctl api post user/create login=test password=testXX firstName=F lastName=L email=test@localhost\n"
 "\n"
 "JSON example:\n"
-"# mgrctl api post user/create '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'"
+"# mgrctl api post user/create    '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:60
+#: mgrctl/cmd/api/api.go:62
 msgid "Store login information for future API usage"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:61
+#: mgrctl/cmd/api/api.go:63
 msgid ""
 "Login stores login information for next API calls.\n"
 "\n"
@@ -64,15 +64,15 @@ msgid ""
 "Environment variables are also supported."
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:69
+#: mgrctl/cmd/api/api.go:71
 msgid "Overwrite existing login if exists"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:73
+#: mgrctl/cmd/api/api.go:75
 msgid "Remove stored login information"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:74
+#: mgrctl/cmd/api/api.go:76
 msgid "Logout removes stored login information."
 msgstr ""
 
@@ -101,28 +101,28 @@ msgstr ""
 msgid "Successfully logged out"
 msgstr ""
 
-#: mgrctl/cmd/cmd.go:29
+#: mgrctl/cmd/cmd.go:30
 msgid "Uyuni control tool"
 msgstr "Uyuni 제어 도구"
 
-#: mgrctl/cmd/cmd.go:30
+#: mgrctl/cmd/cmd.go:31
 msgid "Tool to help managing Uyuni servers mainly through their API"
 msgstr "주로 API를 통해 Uyuni 서버를 관리하는 데 유용한 도구"
 
-#: mgrctl/cmd/cmd.go:37
+#: mgrctl/cmd/cmd.go:38
 msgid "configuration file path"
 msgstr "구성 파일 경로"
 
-#: mgrctl/cmd/cmd.go:38
+#: mgrctl/cmd/cmd.go:40
 msgid "application log level"
 msgstr "애플리케이션 로그 수준"
 
-#: mgrctl/cmd/cmd.go:46
+#: mgrctl/cmd/cmd.go:49
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "%s 시작"
 
-#: mgrctl/cmd/cmd.go:47
+#: mgrctl/cmd/cmd.go:50
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "실행 중 명령: %s"
@@ -155,34 +155,165 @@ msgstr "대상 파일에 설정할 그룹 또는 GID"
 msgid "Execute commands inside the uyuni containers using 'sh -c'"
 msgstr "'sh -c'를 사용하여 uyuni 컨테이너 내에서 명령을 실행합니다."
 
-#: mgrctl/cmd/exec/exec.go:43
+#: mgrctl/cmd/exec/exec.go:44
 msgid "environment variables to pass to the command, separated by commas"
 msgstr "명령에 전달할 환경 변수를 쉼표로 구분하여 입력합니다."
 
-#: mgrctl/cmd/exec/exec.go:44
+#: mgrctl/cmd/exec/exec.go:46
 msgid "Pass stdin to the container"
 msgstr "컨테이너에 stdin을 전달합니다."
 
-#: mgrctl/cmd/exec/exec.go:45
+#: mgrctl/cmd/exec/exec.go:47
 msgid "Stdin is a TTY"
 msgstr "Stdin은 TTY입니다."
 
-#: mgrctl/cmd/exec/exec.go:102
+#: mgrctl/cmd/exec/exec.go:104
 msgid "Command failed"
 msgstr "명령 실패"
 
-#: mgrctl/cmd/exec/exec.go:106
+#: mgrctl/cmd/exec/exec.go:108
 msgid "Command returned with exit code 0"
 msgstr "종료 코드 0으로 반환된 명령"
 
-#: mgrctl/cmd/exec/exec.go:120
+#: mgrctl/cmd/exec/exec.go:122
 msgid "cannot write"
 msgstr "쓸 수 없음"
 
-#: mgrctl/cmd/exec/exec.go:136
+#: mgrctl/cmd/exec/exec.go:138
 #, javascript-format
 msgid "Running %s"
 msgstr "%s 실행 중"
+
+#: mgrctl/cmd/proxy/config.go:81 mgrctl/cmd/proxy/config.go:82
+#, fuzzy
+msgid "Create a proxy configuration file"
+msgstr "구성 파일 경로"
+
+#: mgrctl/cmd/proxy/config.go:165
+#, fuzzy
+msgid "failed to connect to the server"
+msgstr "서버에 로그인할 수 없음"
+
+#: mgrctl/cmd/proxy/config.go:180
+#, fuzzy
+msgid "failed to execute proxy configuration api request"
+msgstr "구성을 마샬링 해제하지 못했습니다."
+
+#: mgrctl/cmd/proxy/config.go:185
+msgid "error saving binary data: %v"
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:187
+#, fuzzy, javascript-format
+msgid "Proxy configuration file saved as %s"
+msgstr "구성 파일 경로"
+
+#: mgrctl/cmd/proxy/config.go:201
+msgid "flag proxyKey is required when flag proxyCrt is provided"
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:242
+msgid "Please enter "
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:270
+msgid "Filename to write the configuration to (without extension)."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:273
+msgid "Unique DNS-resolvable FQDN of this proxy."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:274
+msgid "SSH port the proxy listens on."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:275
+msgid "FQDN of the server to connect the proxy to."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:276
+msgid "Maximum cache size in MB."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:277
+#, fuzzy
+msgid "Email of the proxy administrator"
+msgstr "관리자의 성"
+
+#: mgrctl/cmd/proxy/config.go:278
+msgid "Path to the root CA certificate in PEM format."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:281
+msgid "Path to the proxy certificate in PEM format."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:282
+msgid "Path to the proxy certificate private key in PEM format."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:284
+msgid ""
+"Path to an intermediate CA used to sign the proxy certicate in PEM format.\n"
+"May be provided multiple times or separated by commas."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:289
+msgid "Path to the private key of the CA to use to generate a new proxy certificate."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:291
+msgid "Path to a file containing the password of the CA private key, will be prompted if not passed."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:294
+msgid "Alternate name of the proxy to set in the certificate. May be provided multiple times or separated by commas."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:296
+msgid "Country code to set in the certificate."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:297
+msgid "State name to set in the certificate."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:298
+msgid "City name to set in the certificate."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:299
+msgid "Organization name to set in the certificate."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:300
+msgid "Organization unit name to set in the certificate."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:301
+msgid "Email to set in the certificate."
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:311
+msgid "Common Flags"
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:312
+msgid "Provide proxy certificates flags"
+msgstr ""
+
+#: mgrctl/cmd/proxy/config.go:313
+msgid "Generate proxy certificates flags"
+msgstr ""
+
+#: mgrctl/cmd/proxy/proxy.go:18 mgrctl/cmd/proxy/proxy.go:19
+msgid "Manage proxy configurations"
+msgstr ""
+
+#: mgrctl/cmd/proxy/proxy.go:27 mgrctl/cmd/proxy/proxy.go:28
+msgid "Create proxy configurations"
+msgstr ""
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
@@ -211,9 +342,6 @@ msgstr "서버 컨테이너 내에서 터미널 실행"
 
 #~ msgid "The first name of the administrator"
 #~ msgstr "관리자의 이름"
-
-#~ msgid "The last name of the administrator"
-#~ msgstr "관리자의 성"
 
 #~ msgid "The administrator's email"
 #~ msgstr "관리자의 전자 메일"
