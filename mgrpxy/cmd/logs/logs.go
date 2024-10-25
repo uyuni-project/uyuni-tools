@@ -27,8 +27,10 @@ type logsFlags struct {
 	Since      string
 }
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 // NewCommand to get the logs of the server.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[logsFlags]) *cobra.Command {
 	var flags logsFlags
 
 	cmd := &cobra.Command{
@@ -36,7 +38,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short: L("Get the proxy logs"),
 		Long: L(`Get the proxy logs
 The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman
-However, you can specify the pod and/or container names to get the logs for specific container(s). See examples for more details.`),
+However, you can specify the pod and/or container names to get the logs for specific container(s).
+See examples for more details.`),
 		Example: `  Log all relevant containers (Podman and Kubernetes)
 
     $ mgrpxy logs                                                
@@ -54,7 +57,7 @@ However, you can specify the pod and/or container names to get the logs for spec
     $ mgrpxy logs logs uyuni-proxy-httpd uyuni-proxy-ssh`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			flags.Containers = cmd.Flags().Args()
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, logs)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 		ValidArgsFunction: getContainerNames,
 	}
@@ -63,10 +66,18 @@ However, you can specify the pod and/or container names to get the logs for spec
 	cmd.Flags().BoolP("timestamps", "t", false, L("show timestamps in the log outputs"))
 	cmd.Flags().Int("tail", -1, L("number of lines to show from the end of the logs"))
 	cmd.Flags().Lookup("tail").NoOptDefVal = "-1"
-	cmd.Flags().String("since", "", L("show logs since a specific time or duration. Supports Go duration strings and RFC3339 format (e.g. 5s, 2m, 3h, 2023-01-02T15:04:05)"))
+	cmd.Flags().String("since", "",
+		L(`show logs since a specific time or duration.
+Supports Go duration strings and RFC3339 format (e.g. 3h, 2023-01-02T15:04:05)`),
+	)
 
 	cmd.SetUsageTemplate(cmd.UsageTemplate())
 	return cmd
+}
+
+// NewCommand to get the logs of the server.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, logs)
 }
 
 func logs(globalFlags *types.GlobalFlags, flags *logsFlags, cmd *cobra.Command, args []string) error {
@@ -81,7 +92,7 @@ func logs(globalFlags *types.GlobalFlags, flags *logsFlags, cmd *cobra.Command, 
 func getContainerNames(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	var names []string
 
-	if podman.HasService(podman.ProxyService) {
+	if systemd.HasService(podman.ProxyService) {
 		names = getNames(exec.Command("podman", "ps", "--format", "{{.Names}}"), "\n", "uyuni")
 	} else if utils.IsInstalled("kubectl") && utils.IsInstalled("helm") {
 		if len(args) == 0 {
@@ -92,9 +103,12 @@ func getContainerNames(cmd *cobra.Command, args []string, toComplete string) ([]
 			}
 			return []string{podName}, cobra.ShellCompDirectiveNoFileComp
 		} else if len(args) == 1 {
-			names = getNames(exec.Command("kubectl", "get", "pod", args[0], "-o", "jsonpath={.spec.containers[*].name}"), " ", "")
+			names = getNames(
+				exec.Command("kubectl", "get", "pod", args[0], "-o", "jsonpath={.spec.containers[*].name}"),
+				" ", "",
+			)
 		} else {
-			//kubernetes log only accepts either 1 container name or the --all-containers flag.
+			// kubernetes log only accepts either 1 container name or the --all-containers flag.
 			return names, cobra.ShellCompDirectiveNoFileComp
 		}
 	}

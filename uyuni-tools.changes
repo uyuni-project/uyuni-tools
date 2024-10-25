@@ -1,4 +1,36 @@
 -------------------------------------------------------------------
+Mon Oct 14 15:32:26 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Set projectId also for test packages/images
+  * Use SCC credentials to authenticate against registry.suse.com
+    for Kubernetes (bsc#1231157)
+  * Server on Kubernetes uninstallation fixes
+  * mgradm migration should not pull coco and Hub image if replicas == 0
+    (bsc#1229432, bsc#1230136)
+  * Do not allow SUSE Manager downgrade
+  * Prevent completion issue when /var/log/uyuni-tools.log is missing
+  * Fix Proxy shared volume flag
+  * During migration, exclude mgr-sync configuration file (bsc#1228685)
+  * Migrate from pgsql 14 to pgsql 16 pg_hba.conf and postgresql.conf files
+    (bsc#1231206)
+  * During migration, handle empty autoinstallation path (bsc#1230285)
+  * During migration, handle symlinks (bsc#1230288)
+  * During migration, trust the remote sender's file list (bsc#1228424)
+  * Use SCC flags during podman pull
+  * Restore SELinux permission after migration (bsc#1229501)
+  * Share volumes between containers (bsc#1223142)
+  * Save supportconfig in current directory (bsc#1226759)
+  * Fix error code handling on reinstallation (bsc#1230139)
+  * Fix creating first user and organization
+  * Add missing variable quotes for install vars (bsc#1229108)
+  * Add API login and logout calls to allow persistent login
+  * Bump version to 5.1.0
+  * Ensure namespace is defined in all Kubernetes commands
+  * Fix namespace usage on mgrctl cp command
+  * Improve compatibility for updating host trusted certificates
+
+-------------------------------------------------------------------
 Mon Aug 05 10:05:30 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.21-0

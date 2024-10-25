@@ -10,11 +10,13 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 func podmanRestart(
 	globalFlags *types.GlobalFlags,
 	flags *restartFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return podman.RestartService(podman.ProxyService)
+	return systemd.RestartService(podman.ProxyService)
 }

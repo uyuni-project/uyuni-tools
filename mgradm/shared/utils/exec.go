@@ -52,7 +52,12 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 }
 
 // GeneratePgsqlVersionUpgradeScript generates the PostgreSQL version upgrade script.
-func GeneratePgsqlVersionUpgradeScript(scriptDir string, oldPgVersion string, newPgVersion string, kubernetes bool) (string, error) {
+func GeneratePgsqlVersionUpgradeScript(
+	scriptDir string,
+	oldPgVersion string,
+	newPgVersion string,
+	kubernetes bool,
+) (string, error) {
 	data := templates.PostgreSQLVersionUpgradeTemplateData{
 		OldVersion: oldPgVersion,
 		NewVersion: newPgVersion,
@@ -88,10 +93,8 @@ func GenerateFinalizePostgresScript(
 }
 
 // GeneratePostUpgradeScript generates the script to be run after upgrade.
-func GeneratePostUpgradeScript(scriptDir string, cobblerHost string) (string, error) {
-	data := templates.PostUpgradeTemplateData{
-		CobblerHost: cobblerHost,
-	}
+func GeneratePostUpgradeScript(scriptDir string) (string, error) {
+	data := templates.PostUpgradeTemplateData{}
 
 	scriptName := "postUpgrade.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
@@ -149,7 +152,7 @@ func RunningImage(cnx *shared.Connection, containerName string) (string, error) 
 
 	case "kubectl":
 
-		//FIXME this will work until containers 0 is uyuni. Then jsonpath should be something like
+		// FIXME this will work until containers 0 is uyuni. Then jsonpath should be something like
 		// {.items[0].spec.containers[?(@.name=="` + containerName + `")].image but there are problems
 		// using RunCmdOutput with an arguments with round brackets
 		args := []string{"get", "pods", kubernetes.ServerFilter, "-o", "jsonpath={.items[0].spec.containers[0].image}"}

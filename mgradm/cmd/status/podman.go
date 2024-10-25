@@ -16,6 +16,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 func podmanStatus(
 	globalFlags *types.GlobalFlags,
 	flags *statusFlags,
@@ -23,7 +25,7 @@ func podmanStatus(
 	args []string,
 ) error {
 	// Show the status and that's it if the service is not running
-	if !podman.IsServiceRunning(podman.ServerService) {
+	if !systemd.IsServiceRunning(podman.ServerService) {
 		_ = utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", podman.ServerService)
 	} else {
 		// Run spacewalk-service status in the container
@@ -31,14 +33,18 @@ func podmanStatus(
 		_ = adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "spacewalk-service", "status")
 	}
 
-	for i := 0; i < podman.CurrentReplicaCount(podman.ServerAttestationService); i++ {
+	for i := 0; i < systemd.CurrentReplicaCount(podman.ServerAttestationService); i++ {
 		println() // add an empty line between the previous logs and this one
-		_ = utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.ServerAttestationService, i))
+		_ = utils.RunCmdStdMapping(
+			zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.ServerAttestationService, i),
+		)
 	}
 
-	for i := 0; i < podman.CurrentReplicaCount(podman.HubXmlrpcService); i++ {
+	for i := 0; i < systemd.CurrentReplicaCount(podman.HubXmlrpcService); i++ {
 		println() // add an empty line between the previous logs and this one
-		_ = utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.HubXmlrpcService, i))
+		_ = utils.RunCmdStdMapping(
+			zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.HubXmlrpcService, i),
+		)
 	}
 
 	return nil

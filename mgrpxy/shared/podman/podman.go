@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -26,16 +27,25 @@ import (
 type PodmanProxyFlags struct {
 	utils.ProxyImageFlags `mapstructure:",squash"`
 	SCC                   types.SCCCredentials
-	Podman                podman.PodmanFlags `mapstructure:",squash"`
+	Podman                podman.PodmanFlags
 }
 
 // GenerateSystemdService generates all the systemd files required by proxy.
-func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImage string, sshImage string,
-	tftpdImage string, flags *PodmanProxyFlags) error {
-	ipv6Enabled, err := podman.SetupNetwork(true)
+func GenerateSystemdService(
+	systemd podman.Systemd,
+	httpdImage string,
+	saltBrokerImage string,
+	squidImage string,
+	sshImage string,
+	tftpdImage string,
+	flags *PodmanProxyFlags,
+) error {
+	err := podman.SetupNetwork(true)
 	if err != nil {
 		return shared_utils.Errorf(err, L("cannot setup network"))
 	}
+
+	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
 
 	log.Info().Msg(L("Generating systemd services"))
 	httpProxyConfig := getHttpProxyConfig()
@@ -69,7 +79,10 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 			if err != nil {
 				return err
 			}
-			additionHttpdTuningSettings = fmt.Sprintf(`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro`, absPath)
+			additionHttpdTuningSettings = fmt.Sprintf(
+				`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro`,
+				absPath,
+			)
 		}
 		if err := generateSystemdFile(dataHttpd, "httpd", httpdImage, additionHttpdTuningSettings); err != nil {
 			return err
@@ -96,7 +109,10 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 			if err != nil {
 				return err
 			}
-			additionSquidTuningSettings = fmt.Sprintf(`Environment=SQUID_EXTRA_CONF=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro`, absPath)
+			additionSquidTuningSettings = fmt.Sprintf(
+				`Environment=SQUID_EXTRA_CONF=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro`,
+				absPath,
+			)
 		}
 		if err := generateSystemdFile(dataSquid, "squid", squidImage, additionSquidTuningSettings); err != nil {
 			return err
@@ -121,7 +137,7 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 			return err
 		}
 	}
-	return podman.ReloadDaemon(false)
+	return systemd.ReloadDaemon(false)
 }
 
 func generateSystemdFile(template shared_utils.Template, service string, image string, config string) error {
@@ -190,7 +206,9 @@ func UnpackConfig(configPath string) error {
 	dirMode := proxyConfigDirInfo.Mode()
 
 	if !(dirMode&0005 != 0 && dirMode&0050 != 0 && dirMode&0500 != 0) {
-		return fmt.Errorf(L("/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."))
+		return errors.New(
+			L("/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."),
+		)
 	}
 
 	if err := shared_utils.ExtractTarGz(configPath, proxyConfigDir); err != nil {
@@ -212,11 +230,14 @@ func UnpackConfig(configPath string) error {
 }
 
 // Upgrade will upgrade the proxy podman deploy.
-func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra.Command, args []string) error {
+func Upgrade(
+	systemd podman.Systemd, globalFlags *types.GlobalFlags, flags *PodmanProxyFlags,
+	cmd *cobra.Command, args []string,
+) error {
 	if _, err := exec.LookPath("podman"); err != nil {
 		return fmt.Errorf(L("install podman before running this command"))
 	}
-	if err := podman.StopService(podman.ProxyService); err != nil {
+	if err := systemd.StopService(podman.ProxyService); err != nil {
 		return err
 	}
 
@@ -253,19 +274,20 @@ func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra
 	}
 
 	// Setup the systemd service configuration options
-	if err := GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags); err != nil {
+	err = GenerateSystemdService(systemd, httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags)
+	if err != nil {
 		return err
 	}
 
-	return startPod()
+	return startPod(systemd)
 }
 
 // Start the proxy services.
-func startPod() error {
-	ret := podman.IsServiceRunning(podman.ProxyService)
+func startPod(systemd podman.Systemd) error {
+	ret := systemd.IsServiceRunning(podman.ProxyService)
 	if ret {
-		return podman.RestartService(podman.ProxyService)
+		return systemd.RestartService(podman.ProxyService)
 	} else {
-		return podman.EnableService(podman.ProxyService)
+		return systemd.EnableService(podman.ProxyService)
 	}
 }

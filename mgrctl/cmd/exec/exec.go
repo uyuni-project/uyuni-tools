@@ -36,11 +36,13 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Use:   "exec '[command-to-run --with-args]'",
 		Short: L("Execute commands inside the uyuni containers using 'sh -c'"),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 
-	execCmd.Flags().StringSliceP("env", "e", []string{}, L("environment variables to pass to the command, separated by commas"))
+	execCmd.Flags().StringSliceP("env", "e", []string{},
+		L("environment variables to pass to the command, separated by commas"),
+	)
 	execCmd.Flags().BoolP("interactive", "i", false, L("Pass stdin to the container"))
 	execCmd.Flags().BoolP("tty", "t", false, L("Stdin is a TTY"))
 

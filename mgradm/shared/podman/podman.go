@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -44,14 +45,10 @@ func GetExposedPorts(debug bool) []types.PortMap {
 	return ports
 }
 
-// GenerateSystemdService creates a serverY systemd file.
-func GenerateSystemdService(tz string, image string, debug bool, mirrorPath string, podmanArgs []string) error {
-	ipv6Enabled, err := podman.SetupNetwork(false)
-	if err != nil {
-		return utils.Errorf(err, L("cannot setup network"))
-	}
+// GenerateServerSystemdService creates the server systemd service file.
+func GenerateServerSystemdService(mirrorPath string, debug bool) error {
+	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
 
-	log.Info().Msg(L("Enabling system service"))
 	args := podman.GetCommonParams()
 
 	if mirrorPath != "" {
@@ -72,8 +69,30 @@ func GenerateSystemdService(tz string, image string, debug bool, mirrorPath stri
 		Network:     podman.UyuniNetwork,
 		IPV6Enabled: ipv6Enabled,
 	}
-	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, false); err != nil {
+	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
+	}
+
+	return nil
+}
+
+// GenerateSystemdService creates a server systemd file.
+func GenerateSystemdService(
+	systemd podman.Systemd,
+	tz string,
+	image string,
+	debug bool,
+	mirrorPath string,
+	podmanArgs []string,
+) error {
+	err := podman.SetupNetwork(false)
+	if err != nil {
+		return utils.Errorf(err, L("cannot setup network"))
+	}
+
+	log.Info().Msg(L("Enabling system service"))
+	if err := GenerateServerSystemdService(mirrorPath, debug); err != nil {
+		return err
 	}
 
 	if err := podman.GenerateSystemdConfFile("uyuni-server", "generated.conf",
@@ -89,7 +108,7 @@ Environment="PODMAN_EXTRA_ARGS=%s"
 	if err := podman.GenerateSystemdConfFile("uyuni-server", "custom.conf", config, false); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd user configuration file"))
 	}
-	return podman.ReloadDaemon(false)
+	return systemd.ReloadDaemon(false)
 }
 
 // UpdateSslCertificate update SSL certificate.
@@ -156,10 +175,14 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 
 	// The services need to be restarted
 	log.Info().Msg(L("Restarting services after updating the certificate"))
-	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "systemctl", "restart", "postgresql.service"); err != nil {
+	if err := utils.RunCmd(
+		"podman", "exec", podman.ServerContainerName, "systemctl", "restart", "postgresql.service",
+	); err != nil {
 		return err
 	}
-	return utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart")
+	return utils.RunCmdStdMapping(
+		zerolog.DebugLevel, "podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart",
+	)
 }
 
 // RunMigration migrate an existing remote server to a container.
@@ -199,7 +222,7 @@ func RunMigration(
 		return nil, utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
 
-	//now that everything is migrated, we need to fix SELinux permission
+	// now that everything is migrated, we need to fix SELinux permission
 	for _, volumeMount := range utils.ServerVolumeMounts {
 		mountPoint, err := GetMountPoint(volumeMount.Name)
 		if err != nil {
@@ -228,7 +251,9 @@ func RunPgsqlVersionUpgrade(
 	oldPgsql string,
 	newPgsql string,
 ) error {
-	log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql)
+	log.Info().Msgf(
+		L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql,
+	)
 
 	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
@@ -263,7 +288,9 @@ func RunPgsqlVersionUpgrade(
 
 		log.Info().Msgf(L("Using database upgrade image %s"), preparedImage)
 
-		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql, false)
+		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(
+			scriptDir, oldPgsql, newPgsql, false,
+		)
 		if err != nil {
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
@@ -316,7 +343,7 @@ func RunPostUpgradeScript(serverImage string) error {
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
 		"--security-opt", "label=disable",
 	}
-	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
+	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir)
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
@@ -330,6 +357,7 @@ func RunPostUpgradeScript(serverImage string) error {
 
 // Upgrade will upgrade server to the image given as attribute.
 func Upgrade(
+	systemd podman.Systemd,
 	authFile string,
 	registry string,
 	image types.ImageFlags,
@@ -362,12 +390,12 @@ func Upgrade(
 		return err
 	}
 
-	if err := podman.StopService(podman.ServerService); err != nil {
+	if err := systemd.StopService(podman.ServerService); err != nil {
 		return utils.Errorf(err, L("cannot stop service"))
 	}
 
 	defer func() {
-		err = podman.StartService(podman.ServerService)
+		err = systemd.StartService(podman.ServerService)
 	}()
 	if inspectedValues.ImagePgVersion > inspectedValues.CurrentPgVersion {
 		log.Info().Msgf(
@@ -382,7 +410,10 @@ func Upgrade(
 	} else if inspectedValues.ImagePgVersion == inspectedValues.CurrentPgVersion {
 		log.Info().Msgf(L("Upgrading to %s without changing PostgreSQL version"), inspectedValues.UyuniRelease)
 	} else {
-		return fmt.Errorf(L("trying to downgrade PostgreSQL from %[1]s to %[2]s"), inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion)
+		return fmt.Errorf(
+			L("trying to downgrade PostgreSQL from %[1]s to %[2]s"),
+			inspectedValues.CurrentPgVersion, inspectedValues.ImagePgVersion,
+		)
 	}
 
 	schemaUpdateRequired := inspectedValues.CurrentPgVersion != inspectedValues.ImagePgVersion
@@ -403,21 +434,50 @@ func Upgrade(
 	); err != nil {
 		return err
 	}
+
+	if err := updateServerSystemdService(); err != nil {
+		return err
+	}
 	log.Info().Msg(L("Waiting for the server to start…"))
 
-	err = coco.Upgrade(authFile, registry, cocoFlags, image,
+	err = coco.Upgrade(systemd, authFile, registry, cocoFlags, image,
 		inspectedValues.DbPort, inspectedValues.DbName, inspectedValues.DbUser, inspectedValues.DbPassword)
 	if err != nil {
 		return utils.Errorf(err, L("error upgrading confidential computing service."))
 	}
 
 	if err := hub.Upgrade(
-		authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcFlags,
+		systemd, authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcFlags,
 	); err != nil {
 		return err
 	}
 
-	return podman.ReloadDaemon(false)
+	return systemd.ReloadDaemon(false)
+}
+
+var runCmdOutput = utils.RunCmdOutput
+
+func hasDebugPorts(definition []byte) bool {
+	return regexp.MustCompile(`-p 8003:8003`).Match(definition)
+}
+
+func getMirrorPath(definition []byte) string {
+	mirrorPath := ""
+	finder := regexp.MustCompile(`-v +([^:]+):/mirror[[:space:]]`)
+	submatches := finder.FindStringSubmatch(string(definition))
+	if len(submatches) == 2 {
+		mirrorPath = submatches[1]
+	}
+	return mirrorPath
+}
+
+func updateServerSystemdService() error {
+	out, err := runCmdOutput(zerolog.DebugLevel, "systemctl", "cat", podman.ServerService)
+	if err != nil {
+		return utils.Errorf(err, "failed to get %s systemd service definition", podman.ServerService)
+	}
+
+	return GenerateServerSystemdService(getMirrorPath(out), hasDebugPorts(out))
 }
 
 // Inspect check values on a given image and deploy.

@@ -18,14 +18,16 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman_shared.Systemd = podman_shared.SystemdImpl{}
+
 func ptfForPodman(
 	globalFlags *types.GlobalFlags,
 	flags *podmanPTFFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	//we don't want to perform a postgres version upgrade when installing a PTF.
-	//in that case, we can use the upgrade command.
+	// we don't want to perform a postgres version upgrade when installing a PTF.
+	// in that case, we can use the upgrade command.
 	dummyImage := types.ImageFlags{}
 	dummyCoco := adm_utils.CocoFlags{}
 	dummyHubXmlrpc := adm_utils.HubXmlrpcFlags{}
@@ -44,7 +46,7 @@ func ptfForPodman(
 	}
 	defer cleaner()
 
-	return podman.Upgrade(authFile, "", flags.Image, dummyImage, dummyCoco, dummyHubXmlrpc)
+	return podman.Upgrade(systemd, authFile, "", flags.Image, dummyImage, dummyCoco, dummyHubXmlrpc)
 }
 
 func (flags *podmanPTFFlags) checkParameters() error {

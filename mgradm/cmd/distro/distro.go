@@ -31,13 +31,14 @@ type productMapTemplateData struct {
 func getProductMapHelp() string {
 	return L(`Auto installation distribution product mapping.
 
-For distribution to be registered by the Uyuni server it is important to map distribution to the correct software channel.
+For distribution to be registered by the server it is important to map distribution to the correct software channel.
 
-Software channels can be named differently without any corellation to distribution name; it is then needed to allow custom distribution name to software channel mapping.
+Software channels can be named differently without any corellation to distribution name;
+it is then needed to allow custom distribution name to software channel mapping.
 
 One way to set software channel is by flag --channel to the distribution copy command.
 
-For frequent usage it is possible to write custom product mapping to the mgradm configuration file in the following format:
+For frequent usage it is possible to write custom product mapping to the mgradm configuration file as follows:
 
 ProductMap:
   <distribution name>:
@@ -48,10 +49,14 @@ ProductMap:
         TreeName: <custom distribution name>
 
 Where
-* <distribution name> is the name of the distribution, by default taken from '.treeinfo' file from the media. If '.treeinfo' is not found or available, command line option is required and used.
-* <distribution version> is the version of the distribution, by default taken from '.treeinfo' file from the media. If'.treeinfo' is not found, command line option is required and used.
-* <distribution architecture> is distribution architecture, by default taken from '.treeinfo' file from the media. If '.treeinfo' is not found, command line option is required and used.
-* ChannelLabel is the channel label from Uyuni server and which is to be used for this distribution; can be overridden by command line flag.
+* <distribution name> is the name of the distribution, by default taken from '.treeinfo' file from the media.
+  If '.treeinfo' is not found or available, command line option is required and used.
+* <distribution version> is the version of the distribution, by default taken from '.treeinfo' file from the media.
+  If'.treeinfo' is not found, command line option is required and used.
+* <distribution architecture> is distribution architecture, by default taken from '.treeinfo' file from the media.
+  If '.treeinfo' is not found, command line option is required and used.
+* ChannelLabel is the channel label from Uyuni server and which is to be used for this distribution;
+  can be overridden by command line flag.
 * InstallType is used when installer is known (for autoyast or kickstart) or use 'generic_rpm'.
 * TreeName is how the distribution will be presented in the Uyuni server UI. If not set <distribution name> is used.
 
@@ -61,8 +66,7 @@ Build-in product map:
 `)
 }
 
-// NewCommand command for distribution management.
-func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[flagpole]) (*cobra.Command, error) {
 	var flags flagpole
 
 	distroCmd := &cobra.Command{
@@ -87,7 +91,7 @@ If not set, distribution name is attempted to be autodetected:
 Note: API details are required for auto registration.`),
 		Aliases: []string{"cp"},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, distroCp)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 	cpCmd.Flags().String("channel", "", L("Set parent channel for the distribution."))
@@ -115,4 +119,9 @@ Note: API details are required for auto registration.`),
 	distroCmd.AddCommand(cpCmdHelp)
 
 	return distroCmd, nil
+}
+
+// NewCommand command for distribution management.
+func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
+	return newCmd(globalFlags, distroCp)
 }

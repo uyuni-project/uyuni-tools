@@ -14,11 +14,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 type statusFlags struct {
 }
 
-// NewCommand to get the status of the server.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[statusFlags]) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "status",
 		GroupID: "management",
@@ -27,7 +28,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:    cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags statusFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, status)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 	cmd.SetUsageTemplate(cmd.UsageTemplate())
@@ -35,8 +36,13 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return cmd
 }
 
+// NewCommand to get the status of the server.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, status)
+}
+
 func status(globalFlags *types.GlobalFlags, flags *statusFlags, cmd *cobra.Command, args []string) error {
-	if podman.HasService(podman.ProxyService) {
+	if systemd.HasService(podman.ProxyService) {
 		return podmanStatus(globalFlags, flags, cmd, args)
 	}
 

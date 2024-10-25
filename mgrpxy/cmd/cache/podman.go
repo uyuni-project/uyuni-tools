@@ -13,6 +13,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 func podmanCacheClear(
 	globalFlags *types.GlobalFlags,
 	flags *cacheClearFlags,
@@ -29,5 +31,5 @@ func podmanCacheClear(
 		return utils.Errorf(err, L("failed to re-create the cache directories"))
 	}
 
-	return podman.RestartService(podman.ProxyService)
+	return systemd.RestartService(podman.ProxyService)
 }

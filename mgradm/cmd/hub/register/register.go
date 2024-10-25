@@ -19,13 +19,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-type configFlags struct {
+type registerFlags struct {
 	Backend           string
 	ConnectionDetails api.ConnectionDetails `mapstructure:"api"`
 }
 
-// NewCommand command for registering peripheral server to hub.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[registerFlags]) *cobra.Command {
 	registerCmd := &cobra.Command{
 		Use:   "register",
 		Short: L("Register"),
@@ -33,8 +32,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:  cobra.MaximumNArgs(0),
 
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags configFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, register)
+			var flags registerFlags
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 	registerCmd.SetUsageTemplate(registerCmd.UsageTemplate())
@@ -48,7 +47,12 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return registerCmd
 }
 
-func register(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
+// NewCommand command for registering peripheral server to hub.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, register)
+}
+
+func register(globalFlags *types.GlobalFlags, flags *registerFlags, cmd *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	config, err := getRhnConfig(cnx)
 	if err != nil {
@@ -86,7 +90,8 @@ func getRhnConfig(cnx *shared.Connection) (map[string]string, error) {
 }
 
 func registerToHub(config map[string]string, cnxDetails *api.ConnectionDetails) error {
-	for _, key := range []string{"java.hostname", "report_db_name", "report_db_port", "report_db_user", "report_db_password"} {
+	keys := []string{"java.hostname", "report_db_name", "report_db_port", "report_db_user", "report_db_password"}
+	for _, key := range keys {
 		if _, ok := config[key]; !ok {
 			return fmt.Errorf(L("mandatory %s entry missing in config"), key)
 		}

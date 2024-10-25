@@ -13,6 +13,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd shared_podman.Systemd = shared_podman.SystemdImpl{}
+
 func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.Command, args []string) error {
 	hostData, err := shared_podman.InspectHost()
 	if err != nil {
@@ -26,6 +28,6 @@ func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cm
 	defer cleaner()
 
 	return podman.Upgrade(
-		authFile, flags.Image.Registry, flags.Image, flags.DbUpgradeImage, flags.Coco, flags.HubXmlrpc,
+		systemd, authFile, flags.Image.Registry, flags.Image, flags.DbUpgradeImage, flags.Coco, flags.HubXmlrpc,
 	)
 }

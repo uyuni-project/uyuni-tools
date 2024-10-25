@@ -15,6 +15,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 func uninstallForPodman(
 	globalFlags *types.GlobalFlags,
 	flags *utils.UninstallFlags,
@@ -33,12 +35,12 @@ func uninstallForPodman(
 	}
 
 	// Uninstall the service
-	podman.UninstallService("uyuni-proxy-pod", dryRun)
-	podman.UninstallService("uyuni-proxy-httpd", dryRun)
-	podman.UninstallService("uyuni-proxy-salt-broker", dryRun)
-	podman.UninstallService("uyuni-proxy-squid", dryRun)
-	podman.UninstallService("uyuni-proxy-ssh", dryRun)
-	podman.UninstallService("uyuni-proxy-tftpd", dryRun)
+	systemd.UninstallService("uyuni-proxy-pod", dryRun)
+	systemd.UninstallService("uyuni-proxy-httpd", dryRun)
+	systemd.UninstallService("uyuni-proxy-salt-broker", dryRun)
+	systemd.UninstallService("uyuni-proxy-squid", dryRun)
+	systemd.UninstallService("uyuni-proxy-ssh", dryRun)
+	systemd.UninstallService("uyuni-proxy-tftpd", dryRun)
 
 	// Force stop the pod
 	for _, containerName := range podman.ProxyContainerNames {
@@ -66,7 +68,7 @@ func uninstallForPodman(
 			}
 		}
 		log.Info().Msg(L("All volumes removed"))
-		//Remove config dir
+		// Remove config dir
 		if err := os.RemoveAll("/etc/uyuni/proxy"); err != nil {
 			log.Warn().Msg(L("Failed to delete /etc/uyuni/proxy folder"))
 		} else {
@@ -87,10 +89,12 @@ func uninstallForPodman(
 
 	podman.DeleteNetwork(dryRun)
 
-	err := podman.ReloadDaemon(dryRun)
+	err := systemd.ReloadDaemon(dryRun)
 
 	if dryRun {
-		log.Warn().Msg(L("Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"))
+		log.Warn().Msg(
+			L("Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"),
+		)
 	} else if !flags.Purge.Volumes {
 		log.Warn().Msg(L("Data have been kept, use podman volume commands to clear the volumes"))
 	}

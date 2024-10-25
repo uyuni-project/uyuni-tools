@@ -1,1 +1,0 @@
-- during migration, exclude mgr-sync configuration file (bsc#1228685)

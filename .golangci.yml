@@ -73,7 +73,7 @@ linters:
     - revive
     - ineffassign
     - govet
-      #- lll
+    - lll
       #- megacheck
     - misspell
     - revive

@@ -13,6 +13,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 func uninstallForPodman(
 	globalFlags *types.GlobalFlags,
 	flags *utils.UninstallFlags,
@@ -27,12 +29,12 @@ func uninstallForPodman(
 	}
 
 	// Uninstall the service
-	podman.UninstallService("uyuni-server", !flags.Force)
+	systemd.UninstallService("uyuni-server", !flags.Force)
 	// Force stop the pod
 	podman.DeleteContainer(podman.ServerContainerName, !flags.Force)
 
-	podman.UninstallInstantiatedService(podman.ServerAttestationService, !flags.Force)
-	podman.UninstallInstantiatedService(podman.HubXmlrpcService, !flags.Force)
+	systemd.UninstallInstantiatedService(podman.ServerAttestationService, !flags.Force)
+	systemd.UninstallInstantiatedService(podman.HubXmlrpcService, !flags.Force)
 
 	// Remove the volumes
 	if flags.Purge.Volumes {
@@ -67,10 +69,12 @@ func uninstallForPodman(
 
 	podman.DeleteNetwork(!flags.Force)
 
-	err := podman.ReloadDaemon(!flags.Force)
+	err := systemd.ReloadDaemon(!flags.Force)
 
 	if !flags.Force {
-		log.Warn().Msg(L("Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"))
+		log.Warn().Msg(
+			L("Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"),
+		)
 	} else if !flags.Purge.Volumes {
 		log.Warn().Msg(L("Data have been kept, use podman volume commands to clear the volumes"))
 	}

@@ -11,6 +11,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
+//nolint:lll
 const migrationScriptTemplate = `#!/bin/bash
 set -e
 SSH_CONFIG=""

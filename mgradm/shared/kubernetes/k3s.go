@@ -43,13 +43,18 @@ func RunPgsqlVersionUpgrade(
 	}
 	defer os.RemoveAll(scriptDir)
 	if newPgsql > oldPgsql {
-		log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql)
+		log.Info().Msgf(
+			L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"),
+			oldPgsql, newPgsql,
+		)
 
 		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
 
 		upgradeImageUrl := ""
 		if upgradeImage.Name == "" {
-			upgradeImageUrl, err = utils.ComputeImage(registry, image.Tag, image, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
+			upgradeImageUrl, err = utils.ComputeImage(
+				registry, image.Tag, image, fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql),
+			)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
@@ -66,12 +71,12 @@ func RunPgsqlVersionUpgrade(
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
 
-		//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
+		// delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
 		if err := kubernetes.DeletePod(namespace, pgsqlVersionUpgradeContainer, kubernetes.ServerFilter); err != nil {
 			return utils.Errorf(err, L("cannot delete %s"), pgsqlVersionUpgradeContainer)
 		}
 
-		//generate deploy data
+		// generate deploy data
 		pgsqlVersioUpgradeDeployData := types.Deployment{
 			APIVersion: "v1",
 			Spec: &types.Spec{
@@ -89,13 +94,16 @@ func RunPgsqlVersionUpgrade(
 			},
 		}
 
-		//transform deploy in JSON
+		// transform deploy in JSON
 		overridePgsqlVersioUpgrade, err := kubernetes.GenerateOverrideDeployment(pgsqlVersioUpgradeDeployData)
 		if err != nil {
 			return err
 		}
 
-		err = kubernetes.RunPod(namespace, pgsqlVersionUpgradeContainer, kubernetes.ServerFilter, upgradeImageUrl, image.PullPolicy, "/var/lib/uyuni-tools/"+pgsqlVersionUpgradeScriptName, overridePgsqlVersioUpgrade)
+		err = kubernetes.RunPod(
+			namespace, pgsqlVersionUpgradeContainer, kubernetes.ServerFilter, upgradeImageUrl, image.PullPolicy,
+			"/var/lib/uyuni-tools/"+pgsqlVersionUpgradeScriptName, overridePgsqlVersioUpgrade,
+		)
 		if err != nil {
 			return utils.Errorf(err, L("error running container %s"), pgsqlVersionUpgradeContainer)
 		}
@@ -113,15 +121,17 @@ func RunPgsqlFinalizeScript(
 	}
 	defer os.RemoveAll(scriptDir)
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
-	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(scriptDir, true, schemaUpdateRequired, true, migration, true)
+	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(
+		scriptDir, true, schemaUpdateRequired, true, migration, true,
+	)
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
-	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
+	// delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
 	if err := kubernetes.DeletePod(namespace, pgsqlFinalizeContainer, kubernetes.ServerFilter); err != nil {
 		return utils.Errorf(err, L("cannot delete %s"), pgsqlFinalizeContainer)
 	}
-	//generate deploy data
+	// generate deploy data
 	pgsqlFinalizeDeployData := types.Deployment{
 		APIVersion: "v1",
 		Spec: &types.Spec{
@@ -138,12 +148,15 @@ func RunPgsqlFinalizeScript(
 				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
 		},
 	}
-	//transform deploy data in JSON
+	// transform deploy data in JSON
 	overridePgsqlFinalize, err := kubernetes.GenerateOverrideDeployment(pgsqlFinalizeDeployData)
 	if err != nil {
 		return err
 	}
-	err = kubernetes.RunPod(namespace, pgsqlFinalizeContainer, kubernetes.ServerFilter, serverImage, pullPolicy, "/var/lib/uyuni-tools/"+pgsqlFinalizeScriptName, overridePgsqlFinalize)
+	err = kubernetes.RunPod(
+		namespace, pgsqlFinalizeContainer, kubernetes.ServerFilter, serverImage, pullPolicy,
+		"/var/lib/uyuni-tools/"+pgsqlFinalizeScriptName, overridePgsqlFinalize,
+	)
 	if err != nil {
 		return utils.Errorf(err, L("error running container %s"), pgsqlFinalizeContainer)
 	}
@@ -158,16 +171,16 @@ func RunPostUpgradeScript(serverImage string, pullPolicy string, namespace strin
 	}
 	defer os.RemoveAll(scriptDir)
 	postUpgradeContainer := "uyuni-post-upgrade"
-	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir, "localhost")
+	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir)
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
 
-	//delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
+	// delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
 	if err := kubernetes.DeletePod(namespace, postUpgradeContainer, kubernetes.ServerFilter); err != nil {
 		return utils.Errorf(err, L("cannot delete %s"), postUpgradeContainer)
 	}
-	//generate deploy data
+	// generate deploy data
 	postUpgradeDeployData := types.Deployment{
 		APIVersion: "v1",
 		Spec: &types.Spec{
@@ -184,13 +197,16 @@ func RunPostUpgradeScript(serverImage string, pullPolicy string, namespace strin
 				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
 		},
 	}
-	//transform deploy data in JSON
+	// transform deploy data in JSON
 	overridePostUpgrade, err := kubernetes.GenerateOverrideDeployment(postUpgradeDeployData)
 	if err != nil {
 		return err
 	}
 
-	err = kubernetes.RunPod(namespace, postUpgradeContainer, kubernetes.ServerFilter, serverImage, pullPolicy, "/var/lib/uyuni-tools/"+postUpgradeScriptName, overridePostUpgrade)
+	err = kubernetes.RunPod(
+		namespace, postUpgradeContainer, kubernetes.ServerFilter, serverImage, pullPolicy,
+		"/var/lib/uyuni-tools/"+postUpgradeScriptName, overridePostUpgrade,
+	)
 	if err != nil {
 		return utils.Errorf(err, L("error running container %s"), postUpgradeContainer)
 	}

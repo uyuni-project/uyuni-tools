@@ -18,8 +18,7 @@ type kubernetesPTFFlags struct {
 	UpgradeFlags kubernetes.KubernetesProxyUpgradeFlags `mapstructure:",squash"`
 }
 
-// NewCommand for kubernetes installation.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesPTFFlags]) *cobra.Command {
 	kubernetesCmd := &cobra.Command{
 		Use:   "kubernetes",
 		Short: L("Install a PTF or Test package on a kubernetes cluster"),
@@ -37,7 +36,7 @@ NOTE: installing on a remote cluster is not supported yet!
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesPTFFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, ptfForKubernetes)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 
@@ -46,4 +45,9 @@ NOTE: installing on a remote cluster is not supported yet!
 	kubernetes.AddHelmFlags(kubernetesCmd)
 
 	return kubernetesCmd
+}
+
+// NewCommand for kubernetes installation.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, ptfForKubernetes)
 }

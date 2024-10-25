@@ -18,6 +18,7 @@ import (
 // SetupHubXmlrpc prepares the systemd service and starts it if needed.
 // tag is the global images tag.
 func SetupHubXmlrpc(
+	systemd podman.Systemd,
 	authFile string,
 	registry string,
 	pullPolicy string,
@@ -25,7 +26,7 @@ func SetupHubXmlrpc(
 	hubXmlrpcFlags cmd_utils.HubXmlrpcFlags,
 ) error {
 	image := hubXmlrpcFlags.Image
-	currentReplicas := podman.CurrentReplicaCount(podman.HubXmlrpcService)
+	currentReplicas := systemd.CurrentReplicaCount(podman.HubXmlrpcService)
 	log.Debug().Msgf("Current HUB replicas running are %d.", currentReplicas)
 
 	if hubXmlrpcFlags.Replicas == 0 {
@@ -35,7 +36,8 @@ func SetupHubXmlrpc(
 		log.Info().Msgf(L("No changes requested for hub. Keep %d replicas."), currentReplicas)
 	}
 
-	pullEnabled := (hubXmlrpcFlags.Replicas > 0 && hubXmlrpcFlags.IsChanged) || (currentReplicas > 0 && !hubXmlrpcFlags.IsChanged)
+	pullEnabled := (hubXmlrpcFlags.Replicas > 0 && hubXmlrpcFlags.IsChanged) ||
+		(currentReplicas > 0 && !hubXmlrpcFlags.IsChanged)
 
 	hubXmlrpcImage, err := utils.ComputeImage(registry, tag, image)
 
@@ -48,11 +50,11 @@ func SetupHubXmlrpc(
 		return err
 	}
 
-	if err := generateHubXmlrpcSystemdService(preparedImage); err != nil {
+	if err := generateHubXmlrpcSystemdService(systemd, preparedImage); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd service"))
 	}
 
-	if err := EnableHubXmlrpc(hubXmlrpcFlags.Replicas); err != nil {
+	if err := EnableHubXmlrpc(systemd, hubXmlrpcFlags.Replicas); err != nil {
 		return err
 	}
 	return nil
@@ -60,14 +62,14 @@ func SetupHubXmlrpc(
 
 // EnableHubXmlrpc enables the hub xmlrpc service if the number of replicas is 1.
 // This function is meant for installation or migration, to enable or disable the service after, use ScaleService.
-func EnableHubXmlrpc(replicas int) error {
+func EnableHubXmlrpc(systemd podman.Systemd, replicas int) error {
 	if replicas > 1 {
 		log.Warn().Msg(L("Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."))
 		replicas = 1
 	}
 
 	if replicas > 0 {
-		if err := podman.ScaleService(replicas, podman.HubXmlrpcService); err != nil {
+		if err := systemd.ScaleService(replicas, podman.HubXmlrpcService); err != nil {
 			return utils.Errorf(err, L("cannot enable service"))
 		}
 	} else {
@@ -77,20 +79,27 @@ func EnableHubXmlrpc(replicas int) error {
 }
 
 // Upgrade updates the systemd service files and restarts the containers if needed.
-func Upgrade(authFile string, registry string, pullPolicy string, tag string, hubXmlrpcFlags cmd_utils.HubXmlrpcFlags) error {
-	if err := SetupHubXmlrpc(authFile, registry, pullPolicy, tag, hubXmlrpcFlags); err != nil {
+func Upgrade(
+	systemd podman.Systemd,
+	authFile string,
+	registry string,
+	pullPolicy string,
+	tag string,
+	hubXmlrpcFlags cmd_utils.HubXmlrpcFlags,
+) error {
+	if err := SetupHubXmlrpc(systemd, authFile, registry, pullPolicy, tag, hubXmlrpcFlags); err != nil {
 		return err
 	}
 
-	if err := podman.ReloadDaemon(false); err != nil {
+	if err := systemd.ReloadDaemon(false); err != nil {
 		return err
 	}
 
-	return podman.RestartInstantiated(podman.HubXmlrpcService)
+	return systemd.RestartInstantiated(podman.HubXmlrpcService)
 }
 
 // generateHubXmlrpcSystemdService creates the Hub XMLRPC systemd files.
-func generateHubXmlrpcSystemdService(image string) error {
+func generateHubXmlrpcSystemdService(systemd podman.Systemd, image string) error {
 	hubXmlrpcData := templates.HubXmlrpcServiceTemplateData{
 		Volumes:    utils.HubXmlrpcVolumeMounts,
 		Ports:      utils.HUB_XMLRPC_PORTS,
@@ -98,14 +107,18 @@ func generateHubXmlrpcSystemdService(image string) error {
 		Network:    podman.UyuniNetwork,
 		Image:      image,
 	}
-	if err := utils.WriteTemplateToFile(hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0555, true); err != nil {
+	if err := utils.WriteTemplateToFile(
+		hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0555, true,
+	); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
 	environment := fmt.Sprintf("Environment=UYUNI_IMAGE=%s", image)
-	if err := podman.GenerateSystemdConfFile(podman.HubXmlrpcService+"@", "generated.conf", environment, true); err != nil {
+	if err := podman.GenerateSystemdConfFile(
+		podman.HubXmlrpcService+"@", "generated.conf", environment, true,
+	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 
-	return podman.ReloadDaemon(false)
+	return systemd.ReloadDaemon(false)
 }

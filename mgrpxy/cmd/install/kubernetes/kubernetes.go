@@ -19,8 +19,7 @@ type kubernetesProxyInstallFlags struct {
 	Scc                       types.SCCCredentials
 }
 
-// NewCommand install a new proxy on a running kubernetes cluster.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesProxyInstallFlags]) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "kubernetes [path/to/config.tar.gz]",
 		Short: L("Install a new proxy on a running kubernetes cluster"),
@@ -36,7 +35,7 @@ NOTE: for now installing on a remote kubernetes cluster is not supported!
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetesProxyInstallFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, installForKubernetes)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 
@@ -45,4 +44,9 @@ NOTE: for now installing on a remote kubernetes cluster is not supported!
 	kubernetes.AddHelmFlags(cmd)
 
 	return cmd
+}
+
+// NewCommand install a new proxy on a running kubernetes cluster.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, installForKubernetes)
 }

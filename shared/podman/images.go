@@ -43,7 +43,9 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 			log.Debug().Msgf("Image %s is missing", image)
 		}
 	} else {
-		log.Info().Msgf(L("Pull Policy is always. Presence of RPM image will be checked and if it's not present it will be pulled from registry"))
+		log.Info().Msgf(
+			L("Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"),
+		)
 	}
 
 	rpmImageFile := GetRpmImagePath(image)
@@ -233,7 +235,9 @@ func ShowAvailableTag(registry string, image types.ImageFlags) error {
 		return err
 	}
 
-	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", "image", "search", "--list-tags", name, "--format={{.Tag}}"); err != nil {
+	if err := utils.RunCmdStdMapping(
+		zerolog.DebugLevel, "podman", "image", "search", "--list-tags", name, "--format={{.Tag}}",
+	); err != nil {
 		return utils.Errorf(err, L("cannot find any tag for image %s"), image)
 	}
 
@@ -244,7 +248,9 @@ func ShowAvailableTag(registry string, image types.ImageFlags) error {
 func GetRunningImage(container string) (string, error) {
 	log.Info().Msgf(L("Running podman ps --filter=name=%s --format={{ .Image }}"), container)
 
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", fmt.Sprintf("--filter=name=%s", container), "--format='{{ .Image }}'")
+	out, err := utils.RunCmdOutput(
+		zerolog.DebugLevel, "podman", "ps", fmt.Sprintf("--filter=name=%s", container), "--format='{{ .Image }}'",
+	)
 	if err != nil {
 		return "", utils.Errorf(err, L("cannot find any running image for container %s"), container)
 	}
