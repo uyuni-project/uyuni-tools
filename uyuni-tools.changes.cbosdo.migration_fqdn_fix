@@ -1,0 +1,1 @@
+- Only add java.hostname on migrated server if not present
