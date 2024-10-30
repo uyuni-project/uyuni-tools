@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Oct 30 22:57:38 CET 2024 - marina.latini@suse.com
+
+- version 0.1.25-0
+  * Don't migrate enabled systemd services, recreate them (bsc#1232575)
+
+-------------------------------------------------------------------
 Mon Oct 14 13:16:17 CEST 2024 - marina.latini@suse.com
 
 - version 0.1.24-0
