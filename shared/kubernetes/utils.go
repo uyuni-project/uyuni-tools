@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -37,6 +37,8 @@ const (
 const (
 	// ServerComponent is the value of the component label for the server resources.
 	ServerComponent = "server"
+	// DBComponent is the value of the component label for the database resources.
+	DBComponent = "db"
 	// HubApiComponent is the value of the component label for the Hub API resources.
 	HubAPIComponent = "hub-api"
 	// CocoComponent is the value of the component label for the confidential computing attestation resources.
@@ -49,8 +51,22 @@ const ServerFilter = "-l" + AppLabel + "=" + ServerApp
 // ServerFilter represents filter used to check proxy app.
 const ProxyFilter = "-l" + AppLabel + "=" + ProxyApp
 
-// CaIssuerName is the name of the server CA issuer deployed if cert-manager is used.
-const CaIssuerName = "uyuni-ca-issuer"
+// CAIssuerName is the name of the server CA issuer deployed if cert-manager is used.
+const CAIssuerName = "uyuni-ca-issuer"
+
+const (
+	// CertSecretName is the name of the server SSL certificate secret to use.
+	CertSecretName = "uyuni-cert"
+	// DBCertSecretName is the name of the database SSL certificate secret to use.
+	DBCertSecretName = "db-cert"
+
+	// CASecretName is the name of the Secret containing the server TLS root CA certificate and key.
+	CASecretName = "uyuni-ca"
+	// CAConfigName is the name of the ConfigMap containing the server CA certificate.
+	CAConfigName = "uyuni-ca"
+	// CAConfigName is the name of the ConfigMap containing the database CA certificate.
+	DBCAConfigName = "db-ca"
+)
 
 // GetLabels creates the label map with the app and component.
 // The component label may be an empty string to skip it.

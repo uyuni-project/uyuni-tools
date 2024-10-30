@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -13,9 +13,6 @@ import (
 	net "k8s.io/api/networking/v1"
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
-
-// CertSecretName is the name of the server SSL certificate secret to use.
-const CertSecretName = "uyuni-cert"
 
 const (
 	IngressNameSSL         = "uyuni-ingress-ssl"
@@ -76,7 +73,7 @@ func getSSLIngress(namespace string, fqdn string, caIssuer string, ingressName s
 		},
 		Spec: net.IngressSpec{
 			TLS: []net.IngressTLS{
-				{Hosts: []string{fqdn}, SecretName: CertSecretName},
+				{Hosts: []string{fqdn}, SecretName: kubernetes.CertSecretName},
 			},
 			Rules: []net.IngressRule{
 				getIngressWebRule(fqdn),
@@ -162,7 +159,7 @@ func getNoSSLIngress(namespace string, fqdn string, ingressName string) *net.Ing
 		},
 		Spec: net.IngressSpec{
 			TLS: []net.IngressTLS{
-				{Hosts: []string{fqdn}, SecretName: CertSecretName},
+				{Hosts: []string{fqdn}, SecretName: kubernetes.CertSecretName},
 			},
 			Rules: []net.IngressRule{
 				{

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -23,22 +23,22 @@ func Upgrade(
 	registry string,
 	cocoFlags adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
-	dbPort int,
-	dbName string,
-	dbUser string,
-	dbPassword string,
+	db adm_utils.DBFlags,
 ) error {
 	if cocoFlags.Image.Name == "" {
 		// Don't touch the coco service in ptf if not already present.
 		return nil
 	}
 
-	if err := podman.CreateDBSecrets(dbUser, dbPassword); err != nil {
+	if err := podman.CreateCredentialsSecrets(
+		podman.DBUserSecret, db.User,
+		podman.DBPassSecret, db.Password,
+	); err != nil {
 		return err
 	}
 
 	if err := writeCocoServiceFiles(
-		systemd, authFile, registry, cocoFlags, baseImage, dbName, dbPort,
+		systemd, authFile, registry, cocoFlags, baseImage, db,
 	); err != nil {
 		return err
 	}
@@ -55,8 +55,7 @@ func writeCocoServiceFiles(
 	registry string,
 	cocoFlags adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
-	dbName string,
-	dbPort int,
+	db adm_utils.DBFlags,
 ) error {
 	image := cocoFlags.Image
 	currentReplicas := systemd.CurrentReplicaCount(podman.ServerAttestationService)
@@ -88,9 +87,11 @@ func writeCocoServiceFiles(
 	}
 
 	attestationData := templates.AttestationServiceTemplateData{
-		NamePrefix: "uyuni",
-		Network:    podman.UyuniNetwork,
-		Image:      preparedImage,
+		NamePrefix:   "uyuni",
+		Network:      podman.UyuniNetwork,
+		Image:        preparedImage,
+		DBUserSecret: podman.DBUserSecret,
+		DBPassSecret: podman.DBPassSecret,
 	}
 
 	log.Info().Msg(L("Setting up confidential computing attestation service"))
@@ -100,9 +101,9 @@ func writeCocoServiceFiles(
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
-	environment := fmt.Sprintf(`Environment=UYUNI_IMAGE=%s
-Environment=database_connection=jdbc:postgresql://uyuni-server.mgr.internal:%d/%s
-`, preparedImage, dbPort, dbName)
+	environment := fmt.Sprintf(`Environment=UYUNI_SERVER_ATTESTATION_IMAGE=%s
+Environment=database_connection=jdbc:postgresql://%s:%d/%s
+`, preparedImage, db.Host, db.Port, db.Name)
 
 	if err := podman.GenerateSystemdConfFile(
 		podman.ServerAttestationService+"@", "generated.conf", environment, true,
@@ -123,11 +124,10 @@ func SetupCocoContainer(
 	registry string,
 	coco adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
-	dbName string,
-	dbPort int,
+	db adm_utils.DBFlags,
 ) error {
 	if err := writeCocoServiceFiles(
-		systemd, authFile, registry, coco, baseImage, dbName, dbPort,
+		systemd, authFile, registry, coco, baseImage, db,
 	); err != nil {
 		return err
 	}

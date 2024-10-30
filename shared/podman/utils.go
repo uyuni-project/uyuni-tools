@@ -32,6 +32,9 @@ const ServerContainerName = "uyuni-server"
 // HubXmlrpcContainerName is the container name for the Hub XML-RPC API.
 const HubXmlrpcContainerName = "uyuni-hub-xmlrpc"
 
+// DBContainerName represents the database container name.
+const DBContainerName = "uyuni-db"
+
 // ProxyContainerNames represents all the proxy container names.
 var ProxyContainerNames = []string{
 	"uyuni-proxy-httpd",
@@ -63,6 +66,28 @@ func EnablePodmanSocket() error {
 		return utils.Errorf(err, L("failed to enable podman.socket unit"))
 	}
 	return err
+}
+
+// ReadFromContainer read a file from a container.
+func ReadFromContainer(name string, image string, volumes []types.VolumeMount,
+	extraArgs []string, file string) ([]byte, error) {
+	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
+	podmanArgs = append(podmanArgs, extraArgs...)
+	for _, volume := range volumes {
+		if isVolumePresent(volume.Name) {
+			podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath)
+		}
+	}
+	podmanArgs = append(podmanArgs, "--network", UyuniNetwork)
+	podmanArgs = append(podmanArgs, image)
+	podmanArgs = append(podmanArgs, []string{"cat", file}...)
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", podmanArgs...)
+	if err != nil {
+		return []byte{}, utils.Errorf(err, L("failed to run %s container"), name)
+	}
+
+	return out, nil
 }
 
 // RunContainer execute a container.
@@ -222,6 +247,7 @@ func getPodmanVolumeBasePath() (string, error) {
 // Inspect check values on a given image and deploy.
 func Inspect(
 	serverImage string,
+	pgsqlImage string,
 	pullPolicy string,
 	scc types.SCCCredentials,
 ) (*utils.ServerInspectData, error) {
@@ -242,6 +268,11 @@ func Inspect(
 	}
 	defer cleaner()
 
+	podmanArgs := []string{
+		"-v", scriptDir + ":" + utils.InspectContainerDirectory,
+		"--security-opt", "label=disable",
+	}
+
 	preparedImage, err := PrepareImage(authFile, serverImage, pullPolicy, true)
 	if err != nil {
 		return nil, err
@@ -251,12 +282,6 @@ func Inspect(
 	if err := inspector.GenerateScript(); err != nil {
 		return nil, err
 	}
-
-	podmanArgs := []string{
-		"-v", scriptDir + ":" + utils.InspectContainerDirectory,
-		"--security-opt", "label=disable",
-	}
-
 	err = RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
 		[]string{utils.InspectContainerDirectory + "/" + utils.InspectScriptFilename})
 	if err != nil {
@@ -267,6 +292,29 @@ func Inspect(
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot inspect data"))
 	}
+
+	pgsqlPreparedImage, err := PrepareImage(authFile, pgsqlImage, pullPolicy, true)
+	if err != nil {
+		return nil, err
+	}
+
+	dbinspector := utils.NewDBInspector(scriptDir)
+	if err := dbinspector.GenerateScript(); err != nil {
+		return nil, err
+	}
+
+	err = RunContainer("uyuni-db-inspect", pgsqlPreparedImage, utils.PgsqlRequiredVolumeMounts, podmanArgs,
+		[]string{utils.InspectContainerDirectory + "/" + utils.InspectScriptFilename})
+	if err != nil {
+		return nil, err
+	}
+
+	dbInspectResult, err := dbinspector.ReadInspectData()
+	if err != nil {
+		return nil, utils.Errorf(err, L("cannot inspect data"))
+	}
+
+	inspectResult.DBInspectData.ImagePgVersion = dbInspectResult.ImagePgVersion
 
 	return inspectResult, err
 }

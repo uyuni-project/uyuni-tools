@@ -14,36 +14,17 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
-
-func waitForSystemStart(
-	systemd shared_podman.Systemd,
-	cnx *shared.Connection,
-	image string,
-	flags *podmanInstallFlags,
-) error {
-	err := podman.GenerateSystemdService(
-		systemd, flags.Installation.TZ, image, flags.Installation.Debug.Java, flags.Mirror, flags.Podman.Args,
-	)
-	if err != nil {
-		return err
-	}
-
-	log.Info().Msg(L("Waiting for the server to start…"))
-	if err := systemd.EnableService(shared_podman.ServerService); err != nil {
-		return utils.Error(err, L("cannot enable service"))
-	}
-
-	return cnx.WaitForServer()
-}
 
 var systemd shared_podman.Systemd = shared_podman.SystemdImpl{}
 
@@ -81,37 +62,66 @@ func installForPodman(
 	}
 	log.Info().Msgf(L("Setting up the server with the FQDN '%s'"), fqdn)
 
-	image, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Image)
+	preparedImage, preparedPgsqlImage, err := shared_podman.PrepareImages(authFile, flags.Image, flags.Pgsql)
 	if err != nil {
-		return utils.Error(err, L("failed to compute image URL"))
-	}
-
-	preparedImage, err := shared_podman.PrepareImage(authFile, image, flags.Image.PullPolicy, true)
-	if err != nil {
-		return err
+		return utils.Errorf(err, L("cannot prepare images"))
 	}
 
 	if err := shared_podman.SetupNetwork(false); err != nil {
 		return utils.Error(err, L("cannot setup network"))
 	}
 
-	sslArgs, cleaner, err := generateSSLCertificates(preparedImage, &flags.ServerFlags, fqdn)
-	defer cleaner()
-	if err != nil {
+	if err := podman.PrepareSSLCertificates(
+		preparedImage, &flags.Installation.SSL, flags.Installation.TZ, fqdn); err != nil {
 		return err
+	}
+
+	// Create all the database credentials secrets
+	if err := shared_podman.CreateCredentialsSecrets(
+		shared_podman.DBUserSecret, flags.Installation.DB.User,
+		shared_podman.DBPassSecret, flags.Installation.DB.Password,
+	); err != nil {
+		return err
+	}
+
+	if err := shared_podman.CreateCredentialsSecrets(
+		shared_podman.ReportDBUserSecret, flags.Installation.ReportDB.User,
+		shared_podman.ReportDBPassSecret, flags.Installation.ReportDB.Password,
+	); err != nil {
+		return err
+	}
+
+	if flags.ServerFlags.Installation.DB.IsLocal() {
+		// The admin password is not needed for external databases
+		if err := shared_podman.CreateCredentialsSecrets(
+			shared_podman.DBAdminUserSecret, flags.Installation.DB.Admin.User,
+			shared_podman.DBAdminPassSecret, flags.Installation.DB.Admin.Password,
+		); err != nil {
+			return err
+		}
+
+		// Run the DB container setup if the user doesn't set a custom host name for it.
+		if err := pgsql.SetupPgsql(systemd, preparedPgsqlImage); err != nil {
+			return err
+		}
+	} else {
+		log.Info().Msgf(
+			L("Skipped database container setup to use external database %s"),
+			flags.ServerFlags.Installation.DB.Host,
+		)
 	}
 
 	log.Info().Msg(L("Run setup command in the container"))
 
-	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn, sslArgs); err != nil {
+	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn); err != nil {
 		return err
 	}
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
-	if err := waitForSystemStart(systemd, cnx, preparedImage, flags); err != nil {
+	if err := podman.WaitForSystemStart(systemd, cnx, preparedImage, flags.Installation.TZ,
+		flags.Installation.Debug.Java, flags.Mirror, flags.Podman.Args); err != nil {
 		return utils.Error(err, L("cannot wait for system start"))
 	}
-
 	if err := cnx.CopyCaCertificate(fqdn); err != nil {
 		return utils.Error(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
@@ -125,13 +135,9 @@ func installForPodman(
 	}
 
 	if flags.Coco.Replicas > 0 {
-		// This may need to be moved up later once more containers require DB access
-		if err := shared_podman.CreateDBSecrets(flags.Installation.DB.User, flags.Installation.DB.Password); err != nil {
-			return err
-		}
 		if err := coco.SetupCocoContainer(
 			systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
-			flags.Installation.DB.Name, flags.Installation.DB.Port,
+			flags.Installation.DB,
 		); err != nil {
 			return err
 		}
@@ -161,7 +167,7 @@ func installForPodman(
 }
 
 // runSetup execute the setup.
-func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string, sslArgs []string) error {
+func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
 	env := adm_utils.GetSetupEnv(flags.Mirror, &flags.Installation, fqdn, false)
 	envNames := []string{}
 	envValues := []string{}
@@ -178,8 +184,18 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string, sslArgs [
 		"--name", "uyuni-setup",
 		"--network", shared_podman.UyuniNetwork,
 		"-e", "TZ=" + flags.Installation.TZ,
+		"--secret", shared_podman.DBUserSecret + ",type=env,target=MANAGER_USER",
+		"--secret", shared_podman.DBPassSecret + ",type=env,target=MANAGER_PASS",
+		"--secret", shared_podman.ReportDBUserSecret + ",type=env,target=REPORT_DB_USER",
+		"--secret", shared_podman.ReportDBPassSecret + ",type=env,target=REPORT_DB_PASS",
+		"-e REPORT_DB_CA_CERT=" + ssl.DBCAContainerPath,
+		"--secret", shared_podman.DBCASecret + ",type=mount,target=" + ssl.DBCAContainerPath,
+		"--secret", shared_podman.CASecret + ",type=mount,target=" + ssl.CAContainerPath,
+		"--secret", shared_podman.CASecret + ",type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT",
+		"--secret", shared_podman.CASecret + ",type=mount,target=/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT",
+		"--secret", shared_podman.SSLCertSecret + ",type=mount,target=" + ssl.ServerCertPath,
+		"--secret", shared_podman.SSLKeySecret + ",type=mount,target=" + ssl.ServerCertKeyPath,
 	}
-	command = append(command, sslArgs...)
 	for _, volume := range utils.ServerVolumeMounts {
 		command = append(command, "-v", fmt.Sprintf("%s:%s", volume.Name, volume.MountPath))
 	}
@@ -190,7 +206,7 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string, sslArgs [
 	if err != nil {
 		return err
 	}
-	command = append(command, "/usr/bin/sh", "-c", script)
+	command = append(command, "/usr/bin/sh", "-e", "-c", script)
 
 	if _, err := newRunner("podman", command...).Env(envValues).StdMapping().Exec(); err != nil {
 		return utils.Error(err, L("server setup failed"))

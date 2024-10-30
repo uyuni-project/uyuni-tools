@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -28,6 +28,7 @@ type ServerFlags struct {
 	// DBUpgradeImage is the image to use to perform the database upgrade.
 	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	Saline         SalineFlags
+	Pgsql          types.PgsqlFlags
 }
 
 // MigrationFlags contains the parameters that are used only for migration.
@@ -54,8 +55,14 @@ type InstallationFlags struct {
 	Organization string
 }
 
-// CheckParameters checks parameters for install command.
-func (flags *InstallationFlags) CheckParameters(cmd *cobra.Command, command string) {
+// CheckUpgradeParameters verifies the consistency of the parameters for upgrade and migrate commands.
+func (flags *InstallationFlags) CheckUpgradeParameters(cmd *cobra.Command, command string) {
+	flags.setPasswordIfMissing()
+
+	flags.checkUpgradeSSLParameters(cmd, command)
+}
+
+func (flags *InstallationFlags) setPasswordIfMissing() {
 	if flags.DB.Password == "" {
 		flags.DB.Password = utils.GetRandomBase64(30)
 	}
@@ -64,13 +71,38 @@ func (flags *InstallationFlags) CheckParameters(cmd *cobra.Command, command stri
 		flags.ReportDB.Password = utils.GetRandomBase64(30)
 	}
 
+	// The admin password is only needed for local database
+	if flags.DB.IsLocal() && flags.DB.Admin.Password == "" {
+		flags.DB.Admin.Password = utils.GetRandomBase64(30)
+	}
+}
+
+func (flags *InstallationFlags) checkSSLParameters(cmd *cobra.Command, command string) {
 	// Make sure we have all the required 3rd party flags or none
-	flags.SSL.CheckParameters()
+	flags.SSL.CheckParameters(flags.DB.IsLocal())
 
 	// Since we use cert-manager for self-signed certificates on kubernetes we don't need password for it
-	if !flags.SSL.UseExisting() && command == "podman" {
+	if !flags.SSL.UseProvided() && command == "podman" {
 		utils.AskPasswordIfMissing(&flags.SSL.Password, cmd.Flag("ssl-password").Usage, 0, 0)
 	}
+}
+
+func (flags *InstallationFlags) checkUpgradeSSLParameters(cmd *cobra.Command, command string) {
+	isLocalDB := flags.DB.Host == "db"
+	// Make sure we have all the required 3rd party flags or none
+	flags.SSL.CheckUpgradeParameters(isLocalDB)
+
+	// Since we use cert-manager for self-signed certificates on kubernetes we don't need password for it
+	if !flags.SSL.UseProvidedDB() && command == "podman" {
+		utils.AskPasswordIfMissing(&flags.SSL.Password, cmd.Flag("ssl-password").Usage, 0, 0)
+	}
+}
+
+// CheckParameters checks parameters for install command.
+func (flags *InstallationFlags) CheckParameters(cmd *cobra.Command, command string) {
+	flags.setPasswordIfMissing()
+
+	flags.checkSSLParameters(cmd, command)
 
 	// Use the host timezone if the user didn't define one
 	if flags.TZ == "" {
@@ -100,6 +132,11 @@ type DBFlags struct {
 		User     string
 		Password string
 	}
+}
+
+// IsLocal indicates if the database is a local or a third party one.
+func (flags *DBFlags) IsLocal() bool {
+	return flags.Host == "" || flags.Host == "db" || flags.Host == "reportdb"
 }
 
 // DebugFlags contains information about enabled/disabled debug.

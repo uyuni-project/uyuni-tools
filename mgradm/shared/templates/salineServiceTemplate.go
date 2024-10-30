@@ -45,6 +45,8 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- end }}
 	-e TZ=${TZ} \
 	-e NOSSL=${NOSSL} \
+	--secret {{ .CertSecret }},type=mount,target=/etc/pki/tls/certs/spacewalk.crt \
+	--secret {{ .KeySecret }},type=mount,target=/etc/pki/tls/private/spacewalk.key \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_SALINE_IMAGE}'
 ExecStop=/usr/bin/podman stop --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
@@ -65,6 +67,8 @@ type SalineServiceTemplateData struct {
 	SalinePort  int
 	IPV6Enabled bool
 	Volumes     []types.VolumeMount
+	CertSecret  string
+	KeySecret   string
 }
 
 // Render will create the systemd configuration file.

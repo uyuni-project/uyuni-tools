@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -51,7 +51,8 @@ hubxmlrpc:
   replicas: 0
 saline:
   port: 8226
-  replicas: 1`
+  replicas: 1
+`
 
 	dir := t.TempDir()
 	configPath := path.Join(dir, "config.yaml")

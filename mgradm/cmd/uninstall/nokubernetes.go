@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -13,12 +13,10 @@ import (
 )
 
 func uninstallForKubernetes(
-	globalFlags *types.GlobalFlags,
-	flags *utils.UninstallFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *utils.UninstallFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	return nil
 }
-
-const kubernetesHelp = ""

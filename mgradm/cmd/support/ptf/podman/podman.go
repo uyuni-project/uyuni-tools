@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 //go:build ptf
@@ -9,19 +9,17 @@ import (
 	"github.com/spf13/cobra"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type podmanPTFFlags struct {
-	Image      types.ImageFlags `mapstructure:",squash"`
-	PTFId      string           `mapstructure:"ptf"`
-	TestID     string           `mapstructure:"test"`
-	CustomerID string           `mapstructure:"user"`
-	SCC        types.SCCCredentials
-	Coco       adm_utils.CocoFlags
-	Hubxmlrpc  adm_utils.HubXmlrpcFlags
-	Saline     adm_utils.SalineFlags
+	adm_utils.ServerFlags `mapstructure:",squash"`
+	Podman                podman.PodmanFlags
+	PTFId                 string `mapstructure:"ptf"`
+	TestID                string `mapstructure:"test"`
+	CustomerID            string `mapstructure:"user"`
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanPTFFlags]) *cobra.Command {

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -20,6 +20,7 @@ func TestParamsParsing(t *testing.T) {
 	args := flagstests.InstallFlagsTestArgs()
 	args = append(args, flagstests.ServerKubernetesFlagsTestArgs...)
 	args = append(args, flagstests.VolumesFlagsTestExpected...)
+	args = append(args, flagstests.PgsqlFlagsTestArgs...)
 	args = append(args, "srv.fq.dn")
 
 	// Test function asserting that the args are properly parsed
@@ -29,6 +30,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertInstallFlags(t, &flags.ServerFlags)
 		flagstests.AssertServerKubernetesFlags(t, &flags.Kubernetes)
 		flagstests.AssertVolumesFlags(t, &flags.Volumes)
+		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
 		testutils.AssertEquals(t, "Wrong FQDN", "srv.fq.dn", args[0])
 		return nil
 	}

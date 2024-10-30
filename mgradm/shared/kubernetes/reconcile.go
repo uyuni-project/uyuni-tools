@@ -78,8 +78,11 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 			flags.Installation.DB.Name = data.DBName
 		}
 
+		// TODO Do we have a running database deployment?
+
 		// Do we have a running server deploy? which version is it?
 		// If there is no deployment / image, don't check the uyuni / SUMA upgrades
+		// TODO If the DB is already in a separate deployment, there surely is no need to run an inspect on the server pod.
 		var runningData *utils.ServerInspectData
 		if runningImage := getRunningServerImage(namespace); runningImage != "" {
 			runningData, err = kubernetes.InspectServer(namespace, runningImage, "Never", pullSecret)
@@ -108,6 +111,8 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 			if err := kubernetes.ReplicasTo(namespace, ServerDeployName, 0); err != nil {
 				return utils.Error(err, L("cannot set server replicas to 0"))
 			}
+
+			// TODO Scale down the DB container?
 		}
 	}
 
@@ -116,7 +121,14 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 		return err
 	}
 
+	// TODO IsLocal() is not enough for Kubernetes as users can define their own db / reportdb service pointing
+	// to whatever they want
+	localDB := flags.Installation.DB.IsLocal()
+
 	mounts := GetServerMounts()
+	if localDB {
+		mounts = append(mounts, utils.VarPgsqlDataVolumeMount)
+	}
 	mounts = TuneMounts(mounts, &flags.Volumes)
 
 	if err := kubernetes.CreatePersistentVolumeClaims(namespace, mounts); err != nil {
@@ -124,8 +136,10 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 	}
 
 	if hasDatabase {
-		oldPgVersion := inspectedData.CurrentPgVersion
-		newPgVersion := inspectedData.ImagePgVersion
+		oldPgVersion := inspectedData.CommonInspectData.CurrentPgVersion
+		newPgVersion := inspectedData.DBInspectData.ImagePgVersion
+
+		// TODO Split DB upgrade if needed or merge it in another job (which?)
 
 		// Run the DB Upgrade job if needed
 		if oldPgVersion < newPgVersion {
@@ -191,11 +205,11 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 
 	// Deploy the SSL CA and server certificates
 	var caIssuer string
-	if flags.Installation.SSL.UseExisting() {
+	if flags.Installation.SSL.UseProvided() {
 		if err := DeployExistingCertificate(flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SSL); err != nil {
 			return err
 		}
-	} else if !HasIssuer(namespace, kubernetes.CaIssuerName) {
+	} else if !HasIssuer(namespace, kubernetes.CAIssuerName) {
 		// cert-manager is not required for 3rd party certificates, only if we have the CA key.
 		// Note that in an operator we won't be able to install cert-manager and just wait for it to be installed.
 		kubeconfig := clusterInfos.GetKubeconfig()
@@ -219,25 +233,25 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 			}
 
 			// Install the cert-manager issuers
-			if err := DeployReusedCa(namespace, &ca); err != nil {
+			if err := DeployReusedCA(namespace, &ca, fqdn); err != nil {
 				return err
 			}
 		} else {
-			if err := DeployGeneratedCa(flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SSL, fqdn); err != nil {
+			if err := DeployGeneratedCA(flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SSL, fqdn); err != nil {
 				return err
 			}
 		}
 
 		// Wait for issuer to be ready
-		if err := waitForIssuer(flags.Kubernetes.Uyuni.Namespace, kubernetes.CaIssuerName); err != nil {
+		if err := waitForIssuer(flags.Kubernetes.Uyuni.Namespace, kubernetes.CAIssuerName); err != nil {
 			return err
 		}
 
 		// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
-		if err := extractCaCertToConfig(flags.Kubernetes.Uyuni.Namespace); err != nil {
+		if err := extractCACertToConfig(flags.Kubernetes.Uyuni.Namespace); err != nil {
 			return err
 		}
-		caIssuer = kubernetes.CaIssuerName
+		caIssuer = kubernetes.CAIssuerName
 	}
 
 	// Create the Ingress routes before the deployments as those are triggering
@@ -247,7 +261,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 	}
 
 	// Wait for uyuni-cert secret to be ready
-	kubernetes.WaitForSecret(namespace, CertSecretName)
+	kubernetes.WaitForSecret(namespace, kubernetes.CertSecretName)
 
 	// Create the services
 	if err := CreateServices(namespace, flags.Installation.Debug.Java); err != nil {
@@ -268,6 +282,35 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 			namespace, ReportdbSecret, flags.Installation.ReportDB.User, flags.Installation.ReportDB.Password,
 		); err != nil {
 			return err
+		}
+	}
+
+	if !hasDatabase {
+		// Wait for the DB secrets: TLS, ReportDB and DB credentials
+		kubernetes.WaitForSecret(namespace, DBSecret)
+		kubernetes.WaitForSecret(namespace, ReportdbSecret)
+		kubernetes.WaitForSecret(namespace, kubernetes.DBCertSecretName)
+
+		if localDB {
+			// Create the secret for admin credentials
+			if err := CreateBasicAuthSecret(
+				namespace, DBAdminSecret, flags.Installation.DB.Admin.User, flags.Installation.DB.Admin.Password,
+			); err != nil {
+				return err
+			}
+			kubernetes.WaitForSecret(namespace, DBAdminSecret)
+
+			dbImage, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Pgsql.Image)
+			if err != nil {
+				return utils.Error(err, L("failed to compute image URL"))
+			}
+
+			// Create the split DB deployment
+			if err := CreateDBDeployment(
+				namespace, dbImage, flags.Image.PullPolicy, pullSecret, flags.Installation.TZ,
+			); err != nil {
+				return err
+			}
 		}
 	}
 
