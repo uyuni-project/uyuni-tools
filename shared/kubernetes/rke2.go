@@ -16,14 +16,14 @@ import (
 
 const rke2NginxConfigPath = "/var/lib/rancher/rke2/server/manifests/rke2-ingress-nginx-config.yaml"
 
-// InstallRke2NgixConfig install Rke2 Nginx configuration.
+// InstallRke2NginxConfig install Rke2 Nginx configuration.
 func InstallRke2NginxConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap, namespace string) {
 	log.Info().Msg(L("Installing RKE2 Nginx configuration"))
 
 	data := Rke2NginxConfigTemplateData{
 		Namespace: namespace,
-		TcpPorts:  tcpPorts,
-		UdpPorts:  udpPorts,
+		TCPPorts:  tcpPorts,
+		UDPPorts:  udpPorts,
 	}
 	if err := utils.WriteTemplateToFile(data, rke2NginxConfigPath, 0600, false); err != nil {
 		log.Fatal().Err(err).Msgf(L("Failed to write Rke2 nginx configuration"))
@@ -42,7 +42,7 @@ func InstallRke2NginxConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap, 
 	}
 }
 
-// UninstallRke2NgixConfig uninstall Rke2 Nginx configuration.
+// UninstallRke2NginxConfig uninstall Rke2 Nginx configuration.
 func UninstallRke2NginxConfig(dryRun bool) {
 	utils.UninstallFile(rke2NginxConfigPath, dryRun)
 }

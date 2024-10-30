@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -24,16 +24,16 @@ func TestParamsParsing(t *testing.T) {
 	tester := func(globalFlags *types.GlobalFlags, flags *podmanPTFFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		test_utils.AssertEquals(t, "Error parsing --ptf", "ptf123", flags.PTFId)
-		test_utils.AssertEquals(t, "Error parsing --test", "test123", flags.TestId)
-		test_utils.AssertEquals(t, "Error parsing --user", "sccuser", flags.CustomerId)
+		testutils.AssertEquals(t, "Error parsing --ptf", "ptf123", flags.PTFId)
+		testutils.AssertEquals(t, "Error parsing --test", "test123", flags.TestID)
+		testutils.AssertEquals(t, "Error parsing --user", "sccuser", flags.CustomerID)
 		return nil
 	}
 
 	globalFlags := types.GlobalFlags{}
 	cmd := newCmd(&globalFlags, tester)
 
-	test_utils.AssertHasAllFlags(t, cmd, args)
+	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
 	if err := cmd.Execute(); err != nil {

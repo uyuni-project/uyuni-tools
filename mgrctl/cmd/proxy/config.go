@@ -39,7 +39,7 @@ const (
 	proxyKey        = "proxyKey"
 )
 
-// Flags for proxy create config command.
+// ProxyCreateConfigFlags is the structure containing the flags for proxy create config command.
 type ProxyCreateConfigFlags struct {
 	ConnectionDetails api.ConnectionDetails `mapstructure:"api"`
 	ProxyName         string
@@ -63,7 +63,7 @@ type ProxyCreateConfigFlags struct {
 	SslEmail          string
 }
 
-// Set of required fields for validation.
+// ProxyCreateConfigRequiredFields is a set of required fields for validation.
 var ProxyCreateConfigRequiredFields = [6]string{
 	proxyName,
 	server,
@@ -71,7 +71,7 @@ var ProxyCreateConfigRequiredFields = [6]string{
 	caCrt,
 }
 
-// CreateCommand entry command for managing cache.
+// NewConfigCommand creates the command for managing cache.
 // Setup for subcommand to clear (the cache).
 func NewConfigCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	var flags ProxyCreateConfigFlags

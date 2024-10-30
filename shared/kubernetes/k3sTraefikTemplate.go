@@ -19,14 +19,14 @@ metadata:
 spec:
   valuesContent: |-
     ports:
-{{- range .TcpPorts }}
+{{- range .TCPPorts }}
       {{ .Name }}:
         port: {{ .Port }}
         expose: true
         exposedPort: {{ .Exposed }}
         protocol: TCP
 {{- end }}
-{{- range .UdpPorts }}
+{{- range .UDPPorts }}
       {{ .Name }}:
         port: {{ .Port }}
         expose: true
@@ -37,8 +37,8 @@ spec:
 
 // K3sTraefikConfigTemplateData represents information used to create K3s Traefik helm chart.
 type K3sTraefikConfigTemplateData struct {
-	TcpPorts []types.PortMap
-	UdpPorts []types.PortMap
+	TCPPorts []types.PortMap
+	UDPPorts []types.PortMap
 }
 
 // Render will create the helm chart configuation for K3sTraefik.

@@ -5,8 +5,6 @@
 package podman
 
 import (
-	"os"
-
 	"github.com/rs/zerolog"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -54,11 +52,11 @@ func (i *HostInspector) ReadInspectData() (*HostInspectData, error) {
 
 // InspectHost gathers data on the host where to install the server or proxy.
 func InspectHost() (*HostInspectData, error) {
-	scriptDir, err := utils.TempDir()
-	defer os.RemoveAll(scriptDir)
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return nil, err
 	}
+	defer cleaner()
 
 	inspector := NewHostInspector(scriptDir)
 	if err := inspector.GenerateScript(); err != nil {

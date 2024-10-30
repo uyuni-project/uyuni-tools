@@ -29,7 +29,7 @@ func (infos ClusterInfos) IsK3s() bool {
 	return strings.Contains(infos.KubeletVersion, "k3s")
 }
 
-// IsRKE2 is true if it's a RKE2 Cluster.
+// IsRke2 is true if it's a RKE2 Cluster.
 func (infos ClusterInfos) IsRke2() bool {
 	return strings.Contains(infos.KubeletVersion, "rke2")
 }
@@ -174,11 +174,11 @@ data:
   .dockerconfigjson: %s
 `, namespace, name, base64.StdEncoding.EncodeToString([]byte(configjson)))
 
-	tempDir, err := utils.TempDir()
+	tempDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(tempDir)
+	defer cleaner()
 
 	// Run the job
 	definitionPath := path.Join(tempDir, "definition.yaml")

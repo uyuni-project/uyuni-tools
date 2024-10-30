@@ -19,7 +19,7 @@ import (
 // InspectScriptFilename is the inspect script basename.
 const InspectScriptFilename = "inspect.sh"
 
-// InspectOutputFile represents the directory and the basename where the inspect values are stored.
+// InspectContainerDirectory represents the directory and the basename where the inspect values are stored.
 const InspectContainerDirectory = "/var/lib/uyuni-tools"
 const inspectDataFile = "data"
 
@@ -60,7 +60,7 @@ func (i *BaseInspector) GenerateScript() error {
 	return nil
 }
 
-// Return the path to the data file.
+// GetDataPath returns the path to the data file.
 func (i *BaseInspector) GetDataPath() string {
 	if i.DataPath != "" {
 		return i.DataPath
@@ -68,7 +68,7 @@ func (i *BaseInspector) GetDataPath() string {
 	return path.Join(i.ScriptDir, inspectDataFile)
 }
 
-// Return the path to the script file.
+// GetScriptPath returns the path to the script file.
 func (i *BaseInspector) GetScriptPath() string {
 	return path.Join(i.ScriptDir, InspectScriptFilename)
 }

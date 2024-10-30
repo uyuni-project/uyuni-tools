@@ -15,12 +15,12 @@ import (
 
 const containerConfigEndpoint = "proxy/containerConfig"
 
-// Compute and download the configuration file for proxy containers with generated certificates.
+// ContainerConfig computes and downloads the configuration file for proxy containers with generated certificates.
 func ContainerConfig(client *api.APIClient, request ProxyConfigRequest) (*[]int8, error) {
 	return executeRequest(client, ProxyConfigRequestToMap(request))
 }
 
-// Compute and download the configuration file for proxy containers.
+// ContainerConfigGenerate computes and downloads the configuration file for proxy containers.
 func ContainerConfigGenerate(client *api.APIClient, request ProxyConfigGenerateRequest) (*[]int8, error) {
 	return executeRequest(client, ProxyConfigGenerateRequestToMap(request))
 }

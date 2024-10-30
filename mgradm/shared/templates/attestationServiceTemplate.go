@@ -45,7 +45,7 @@ Type=forking
 WantedBy=multi-user.target default.target
 `
 
-// PodmanServiceTemplateData POD information to create systemd file.
+// AttestationServiceTemplateData holds information to create systemd file for coco container.
 type AttestationServiceTemplateData struct {
 	NamePrefix string
 	Image      string

@@ -5,8 +5,8 @@
 package kubernetes
 
 import (
+	"errors"
 	"fmt"
-	"os"
 	"os/exec"
 
 	"github.com/spf13/cobra"
@@ -30,14 +30,14 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	// Unpack the tarball
 	configPath := utils.GetConfigPath(args)
 
-	tmpDir, err := shared_utils.TempDir()
+	tmpDir, cleaner, err := shared_utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(tmpDir)
+	defer cleaner()
 
 	if err := shared_utils.ExtractTarGz(configPath, tmpDir); err != nil {
-		return fmt.Errorf(L("failed to extract configuration"))
+		return errors.New(L("failed to extract configuration"))
 	}
 
 	// Check the kubernetes cluster setup
@@ -50,9 +50,9 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	isK3s := clusterInfos.IsK3s()
 	IsRke2 := clusterInfos.IsRke2()
 	if isK3s {
-		shared_kubernetes.InstallK3sTraefikConfig(shared_utils.PROXY_TCP_PORTS, shared_utils.UDP_PORTS)
+		shared_kubernetes.InstallK3sTraefikConfig(shared_utils.ProxyTCPPorts, shared_utils.UDPPorts)
 	} else if IsRke2 {
-		shared_kubernetes.InstallRke2NginxConfig(shared_utils.PROXY_TCP_PORTS, shared_utils.UDP_PORTS,
+		shared_kubernetes.InstallRke2NginxConfig(shared_utils.ProxyTCPPorts, shared_utils.UDPPorts,
 			flags.Helm.Proxy.Namespace)
 	}
 

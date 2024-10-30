@@ -9,23 +9,21 @@ import (
 	"os/exec"
 	"path"
 	"testing"
-
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
 )
 
 const dataDir = "data"
 const outDir = "out"
 
-const file1_content = "file1 content"
+const file1Content = "file1 content"
 
 var filesData = map[string]string{
-	"file1":     file1_content,
+	"file1":     file1Content,
 	"sub/file2": "file2 content",
 }
 
 // Prepare test files to include in the tarball.
-func setup(t *testing.T) (string, func(t *testing.T)) {
-	dir, clean := test_utils.CreateTmpFolder(t)
+func setup(t *testing.T) string {
+	dir := t.TempDir()
 
 	// Create sub directories for the data and the test
 	for _, dirPath := range []string{dataDir, outDir} {
@@ -49,15 +47,11 @@ func setup(t *testing.T) (string, func(t *testing.T)) {
 		}
 	}
 
-	// Returns the teardown function.
-	return dir, func(t *testing.T) {
-		clean()
-	}
+	return dir
 }
 
 func TestWriteTarGz(t *testing.T) {
-	tmpDir, teardown := setup(t)
-	defer teardown(t)
+	tmpDir := setup(t)
 
 	// Create the tarball
 	tarballPath := path.Join(tmpDir, "test.tar.gz")
@@ -89,14 +83,13 @@ func TestWriteTarGz(t *testing.T) {
 	// Check the content of a file
 	if out, err := os.ReadFile(path.Join(testDir, "otherfile1")); err != nil {
 		t.Errorf("failed to read otherfile1: %s", err)
-	} else if string(out) != file1_content {
-		t.Errorf("expected otherfile1 content %s, but got %s", file1_content, string(out))
+	} else if string(out) != file1Content {
+		t.Errorf("expected otherfile1 content %s, but got %s", file1Content, string(out))
 	}
 }
 
 func TestExtractTarGz(t *testing.T) {
-	tmpDir, teardown := setup(t)
-	defer teardown(t)
+	tmpDir := setup(t)
 
 	// Create an archive using the tar tool
 	tarballPath := path.Join(tmpDir, "test.tar.gz")

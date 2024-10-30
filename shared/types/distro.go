@@ -31,7 +31,7 @@ const (
 	PPC64LE     Arch = "ppc64le"
 )
 
-// Translates string representation of architecture to Arch type.
+// GetArch translates string representation of architecture to Arch type.
 func GetArch(a string) Arch {
 	switch a {
 	case "x86_64":

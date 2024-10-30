@@ -8,7 +8,7 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
 
-// Message appended in the uninstall commands for kubernetes.
+// UninstallHelp returns the message appended in the uninstall commands for kubernetes.
 func UninstallHelp() string {
 	return L(`
 Note that removing the volumes could also be handled automatically depending on the StorageClass used

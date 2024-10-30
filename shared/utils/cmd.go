@@ -12,7 +12,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-// Default path where to look for locale files.
+// LocaleRoot is the default path where to look for locale files.
 //
 // On SUSE distros this should be overridden with /usr/share/locale.
 var LocaleRoot = "locale"
@@ -26,9 +26,11 @@ var DefaultHelmRegistry = "registry.opensuse.org/uyuni"
 // DefaultTag represents the default tag used for image.
 var DefaultTag = "latest"
 
-// DefaultPullP represents the default pull policy used for image.
+// DefaultPullPolicy represents the default pull policy used for image.
 var DefaultPullPolicy = "Always"
 
+// Version is the tools version.
+//
 // This variable needs to be set a build time using git tags.
 var Version = "0.0.0"
 

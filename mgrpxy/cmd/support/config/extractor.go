@@ -5,8 +5,6 @@
 package config
 
 import (
-	"os"
-
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
@@ -19,11 +17,11 @@ var systemd podman.Systemd = podman.SystemdImpl{}
 
 func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
 	// Copy the generated file locally
-	tmpDir, err := utils.TempDir()
+	tmpDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(tmpDir)
+	defer cleaner()
 
 	var fileList []string
 	if systemd.HasService(podman.ProxyService) {

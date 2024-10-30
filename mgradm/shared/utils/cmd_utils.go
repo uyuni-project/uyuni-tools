@@ -21,7 +21,7 @@ func (f *SslCertFlags) UseExisting() bool {
 	return f.Server.Cert != "" && f.Server.Key != "" && f.Ca.Root != ""
 }
 
-// Checks that all the required flags are passed if using 3rd party certificates.
+// CheckParameters checks that all the required flags are passed if using 3rd party certificates.
 func (f *SslCertFlags) CheckParameters() {
 	if !f.UseExisting() && (f.Server.Cert != "" || f.Server.Key != "" || f.Ca.Root != "") {
 		log.Fatal().Msg(L("Server certificate, key and root CA need to be all provided"))
@@ -103,8 +103,8 @@ func AddImageFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "") // without group, since this flag is applied to all the images
 }
 
-// AddDbUpgradeImageFlag add Database upgrade image flags to a command.
-func AddDbUpgradeImageFlag(cmd *cobra.Command) {
+// AddDBUpgradeImageFlag add Database upgrade image flags to a command.
+func AddDBUpgradeImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("dbupgrade-image", "", L("Database upgrade image"))
 	cmd.Flags().String("dbupgrade-tag", "latest", L("Database upgrade image tag"))
 

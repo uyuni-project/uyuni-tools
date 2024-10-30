@@ -13,7 +13,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// Create first organization and user after initial setup without authentication.
+// CreateFirst creates the first organization and user after initial setup without authentication.
+//
 // orgName is the name of the first organization to create and admin the user to create.
 func CreateFirst(cnxDetails *api.ConnectionDetails, orgName string, admin *types.User) (*types.Organization, error) {
 	client, err := api.Init(cnxDetails)

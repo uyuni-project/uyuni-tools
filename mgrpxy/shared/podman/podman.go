@@ -48,17 +48,17 @@ func GenerateSystemdService(
 	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
 
 	log.Info().Msg(L("Generating systemd services"))
-	httpProxyConfig := getHttpProxyConfig()
+	httpProxyConfig := getHTTPProxyConfig()
 
 	ports := []types.PortMap{}
-	ports = append(ports, shared_utils.PROXY_TCP_PORTS...)
-	ports = append(ports, shared_utils.PROXY_PODMAN_PORTS...)
-	ports = append(ports, shared_utils.UDP_PORTS...)
+	ports = append(ports, shared_utils.ProxyTCPPorts...)
+	ports = append(ports, shared_utils.ProxyPodmanPorts...)
+	ports = append(ports, shared_utils.UDPPorts...)
 
 	// Pod
 	dataPod := templates.PodTemplateData{
 		Ports:         ports,
-		HttpProxyFile: httpProxyConfig,
+		HTTPProxyFile: httpProxyConfig,
 		Network:       podman.UyuniNetwork,
 		IPV6Enabled:   ipv6Enabled,
 	}
@@ -70,8 +70,8 @@ func GenerateSystemdService(
 	// Httpd
 	{
 		dataHttpd := templates.HttpdTemplateData{
-			Volumes:       shared_utils.PROXY_HTTPD_VOLUMES,
-			HttpProxyFile: httpProxyConfig,
+			Volumes:       shared_utils.ProxyHttpdVolumes,
+			HTTPProxyFile: httpProxyConfig,
 		}
 		additionHttpdTuningSettings := ""
 		if flags.ProxyImageFlags.Tuning.Httpd != "" {
@@ -91,7 +91,7 @@ func GenerateSystemdService(
 	// Salt broker
 	{
 		dataSaltBroker := templates.SaltBrokerTemplateData{
-			HttpProxyFile: httpProxyConfig,
+			HTTPProxyFile: httpProxyConfig,
 		}
 		if err := generateSystemdFile(dataSaltBroker, "salt-broker", saltBrokerImage, ""); err != nil {
 			return err
@@ -100,8 +100,8 @@ func GenerateSystemdService(
 	// Squid
 	{
 		dataSquid := templates.SquidTemplateData{
-			Volumes:       shared_utils.PROXY_SQUID_VOLUMES,
-			HttpProxyFile: httpProxyConfig,
+			Volumes:       shared_utils.ProxySquidVolumes,
+			HTTPProxyFile: httpProxyConfig,
 		}
 		additionSquidTuningSettings := ""
 		if flags.ProxyImageFlags.Tuning.Squid != "" {
@@ -121,7 +121,7 @@ func GenerateSystemdService(
 	// SSH
 	{
 		dataSSH := templates.SSHTemplateData{
-			HttpProxyFile: httpProxyConfig,
+			HTTPProxyFile: httpProxyConfig,
 		}
 		if err := generateSystemdFile(dataSSH, "ssh", sshImage, ""); err != nil {
 			return err
@@ -130,8 +130,8 @@ func GenerateSystemdService(
 	// Tftpd
 	{
 		dataTftpd := templates.TFTPDTemplateData{
-			Volumes:       shared_utils.PROXY_TFTPD_VOLUMES,
-			HttpProxyFile: httpProxyConfig,
+			Volumes:       shared_utils.ProxyTftpdVolumes,
+			HTTPProxyFile: httpProxyConfig,
 		}
 		if err := generateSystemdFile(dataTftpd, "tftpd", tftpdImage, ""); err != nil {
 			return err
@@ -164,7 +164,7 @@ func generateSystemdFile(template shared_utils.Template, service string, image s
 	return nil
 }
 
-func getHttpProxyConfig() string {
+func getHTTPProxyConfig() string {
 	const httpProxyConfigPath = "/etc/sysconfig/proxy"
 
 	// Only SUSE distros seem to have such a file for HTTP proxy settings
@@ -190,7 +190,7 @@ func GetContainerImage(authFile string, flags *utils.ProxyImageFlags, name strin
 func UnpackConfig(configPath string) error {
 	log.Info().Msgf(L("Setting up proxy with configuration %s"), configPath)
 	const proxyConfigDir = "/etc/uyuni/proxy"
-	if err := os.MkdirAll(proxyConfigDir, 755); err != nil {
+	if err := os.MkdirAll(proxyConfigDir, 0755); err != nil {
 		return err
 	}
 
@@ -223,7 +223,7 @@ func UnpackConfig(configPath string) error {
 	mode := proxyConfigInfo.Mode()
 
 	if !(mode&0004 != 0 && mode&0040 != 0 && mode&0400 != 0) {
-		return fmt.Errorf(L("/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."))
+		return errors.New(L("/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."))
 	}
 
 	return nil
@@ -235,7 +235,7 @@ func Upgrade(
 	cmd *cobra.Command, args []string,
 ) error {
 	if _, err := exec.LookPath("podman"); err != nil {
-		return fmt.Errorf(L("install podman before running this command"))
+		return errors.New(L("install podman before running this command"))
 	}
 	if err := systemd.StopService(podman.ProxyService); err != nil {
 		return err

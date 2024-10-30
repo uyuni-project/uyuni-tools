@@ -7,7 +7,6 @@ package podman
 import (
 	"errors"
 	"fmt"
-	"os"
 	"os/exec"
 	"path"
 	"path/filepath"
@@ -34,12 +33,12 @@ func GetExposedPorts(debug bool) []types.PortMap {
 		utils.NewPortMap("https", 443, 443),
 		utils.NewPortMap("http", 80, 80),
 	}
-	ports = append(ports, utils.TCP_PORTS...)
-	ports = append(ports, utils.TCP_PODMAN_PORTS...)
-	ports = append(ports, utils.UDP_PORTS...)
+	ports = append(ports, utils.TCPPorts...)
+	ports = append(ports, utils.TCPPodmanPorts...)
+	ports = append(ports, utils.UDPPorts...)
 
 	if debug {
-		ports = append(ports, utils.DEBUG_PORTS...)
+		ports = append(ports, utils.DebugPorts...)
 	}
 
 	return ports
@@ -118,7 +117,7 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 	// Copy the CAs, certificate and key to the container
 	const certDir = "/tmp/uyuni-tools"
 	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "mkdir", "-p", certDir); err != nil {
-		return fmt.Errorf(L("failed to create temporary folder on container to copy certificates to"))
+		return errors.New(L("failed to create temporary folder on container to copy certificates to"))
 	}
 
 	rootCaPath := path.Join(certDir, "root-ca.crt")
@@ -195,11 +194,11 @@ func RunMigration(
 	user string,
 	prepare bool,
 ) (*utils.InspectResult, error) {
-	scriptDir, err := adm_utils.GenerateMigrationScript(sourceFqdn, user, false, prepare)
+	scriptDir, cleaner, err := adm_utils.GenerateMigrationScript(sourceFqdn, user, false, prepare)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot generate migration script"))
 	}
-	defer os.RemoveAll(scriptDir)
+	defer cleaner()
 
 	extraArgs := []string{
 		"--security-opt", "label=disable",
@@ -255,11 +254,11 @@ func RunPgsqlVersionUpgrade(
 		L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql,
 	)
 
-	scriptDir, err := utils.TempDir()
-	defer os.RemoveAll(scriptDir)
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
+	defer cleaner()
 	if newPgsql > oldPgsql {
 		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
 		extraArgs := []string{
@@ -267,21 +266,21 @@ func RunPgsqlVersionUpgrade(
 			"--security-opt", "label=disable",
 		}
 
-		upgradeImageUrl := ""
+		upgradeImageURL := ""
 		if upgradeImage.Name == "" {
-			upgradeImageUrl, err = utils.ComputeImage(registry, utils.DefaultTag, image,
+			upgradeImageURL, err = utils.ComputeImage(registry, utils.DefaultTag, image,
 				fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			upgradeImageUrl, err = utils.ComputeImage(registry, image.Tag, upgradeImage)
+			upgradeImageURL, err = utils.ComputeImage(registry, image.Tag, upgradeImage)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		}
 
-		preparedImage, err := podman.PrepareImage(authFile, upgradeImageUrl, image.PullPolicy, true)
+		preparedImage, err := podman.PrepareImage(authFile, upgradeImageURL, image.PullPolicy, true)
 		if err != nil {
 			return err
 		}
@@ -306,11 +305,11 @@ func RunPgsqlVersionUpgrade(
 
 // RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
 func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migration bool) error {
-	scriptDir, err := utils.TempDir()
-	defer os.RemoveAll(scriptDir)
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
+	defer cleaner()
 
 	extraArgs := []string{
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
@@ -333,11 +332,11 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migra
 
 // RunPostUpgradeScript run the script with the changes to apply after the upgrade.
 func RunPostUpgradeScript(serverImage string) error {
-	scriptDir, err := utils.TempDir()
-	defer os.RemoveAll(scriptDir)
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
+	defer cleaner()
 	postUpgradeContainer := "uyuni-post-upgrade"
 	extraArgs := []string{
 		"-v", scriptDir + ":/var/lib/uyuni-tools/",
@@ -371,7 +370,7 @@ func Upgrade(
 
 	serverImage, err := utils.ComputeImage(registry, utils.DefaultTag, image)
 	if err != nil {
-		return fmt.Errorf(L("failed to compute image URL"))
+		return errors.New(L("failed to compute image URL"))
 	}
 
 	preparedImage, err := podman.PrepareImage(authFile, serverImage, image.PullPolicy, true)
@@ -441,7 +440,7 @@ func Upgrade(
 	log.Info().Msg(L("Waiting for the server to start…"))
 
 	err = coco.Upgrade(systemd, authFile, registry, cocoFlags, image,
-		inspectedValues.DbPort, inspectedValues.DbName, inspectedValues.DbUser, inspectedValues.DbPassword)
+		inspectedValues.DBPort, inspectedValues.DBName, inspectedValues.DBUser, inspectedValues.DBPassword)
 	if err != nil {
 		return utils.Errorf(err, L("error upgrading confidential computing service."))
 	}
@@ -482,11 +481,11 @@ func updateServerSystemdService() error {
 
 // Inspect check values on a given image and deploy.
 func Inspect(preparedImage string) (*utils.ServerInspectData, error) {
-	scriptDir, err := utils.TempDir()
-	defer os.RemoveAll(scriptDir)
+	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return nil, err
 	}
+	defer cleaner()
 
 	inspector := utils.NewServerInspector(scriptDir)
 	if err := inspector.GenerateScript(); err != nil {
@@ -512,7 +511,7 @@ func Inspect(preparedImage string) (*utils.ServerInspectData, error) {
 	return inspectResult, err
 }
 
-// Call cloudguestregistryauth if it is available.
+// CallCloudGuestRegistryAuth calls cloudguestregistryauth if it is available.
 func CallCloudGuestRegistryAuth() error {
 	cloudguestregistryauth := "cloudguestregistryauth"
 

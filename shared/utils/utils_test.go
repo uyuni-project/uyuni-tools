@@ -17,7 +17,7 @@ import (
 	"github.com/chai2010/gettext-go"
 	"github.com/spf13/cobra"
 	l10n_utils "github.com/uyuni-project/uyuni-tools/shared/l10n/utils"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -180,22 +180,22 @@ func TestComputePTF(t *testing.T) {
 	for i, testCase := range data {
 		result := testCase[0]
 		user := testCase[1]
-		ptfId := testCase[2]
+		ptfID := testCase[2]
 		fullImage := testCase[3]
 		suffix := testCase[4]
 
-		actual, err := ComputePTF(user, ptfId, fullImage, suffix)
+		actual, err := ComputePTF(user, ptfID, fullImage, suffix)
 
 		if err != nil {
 			t.Errorf(
 				"Testcase %d: Unexpected error while computing image with %s, %s, %s, %s: %s",
-				i, user, ptfId, fullImage, suffix, err,
+				i, user, ptfID, fullImage, suffix, err,
 			)
 		}
 		if actual != result {
 			t.Errorf(
 				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s, %s",
-				i, result, actual, user, ptfId, fullImage, suffix,
+				i, result, actual, user, ptfID, fullImage, suffix,
 			)
 		}
 	}
@@ -371,19 +371,18 @@ func TestConfig(t *testing.T) {
 
 // Test saveBinaryData function.
 func TestSaveBinaryData(t *testing.T) {
-	testDir, cleaner := test_utils.CreateTmpFolder(t)
-	defer cleaner()
+	testDir := t.TempDir()
 
 	filepath := path.Join(testDir, "testfile")
 	data := []int8{104, 101, 121, 32, 116, 104, 101, 114, 101, 33}
 
 	// Save binary data to a file
 	err := SaveBinaryData(filepath, data)
-	test_utils.AssertTrue(t, "Unexpected error executing SaveBinaryData", err == nil)
+	testutils.AssertTrue(t, "Unexpected error executing SaveBinaryData", err == nil)
 
 	// Read the file back and compare contents
-	storedData := test_utils.ReadFileAsBinary(t, filepath)
-	test_utils.AssertEquals(
+	storedData := testutils.ReadFileAsBinary(t, filepath)
+	testutils.AssertEquals(
 		t, "File configuration binary doesn't match",
 		fmt.Sprintf("%v", data), fmt.Sprintf("%v", storedData),
 	)

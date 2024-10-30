@@ -64,18 +64,18 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
 		if res.StatusCode == 401 {
-			return nil, fmt.Errorf(L("401: unauthorized"))
+			return nil, errors.New(L("401: unauthorized"))
 		}
 		var errResponse map[string]string
 		if res.Body != nil {
 			body, err := io.ReadAll(res.Body)
 			if err == nil {
 				if err = json.Unmarshal(body, &errResponse); err == nil {
-					error_message := fmt.Sprintf("%d: '%s'", res.StatusCode, errResponse["message"])
-					return nil, fmt.Errorf(error_message)
+					errorMessage := fmt.Sprintf("%d: '%s'", res.StatusCode, errResponse["message"])
+					return nil, errors.New(errorMessage)
 				} else {
-					error_message := fmt.Sprintf("%d: '%s'", res.StatusCode, string(body))
-					return nil, fmt.Errorf(error_message)
+					errorMessage := fmt.Sprintf("%d: '%s'", res.StatusCode, string(body))
+					return nil, errors.New(errorMessage)
 				}
 			}
 		}
@@ -111,11 +111,11 @@ func Init(conn *ConnectionDetails) (*APIClient, error) {
 	}
 
 	if conn.Server == "" {
-		return nil, fmt.Errorf(L("server URL is not provided"))
+		return nil, errors.New(L("server URL is not provided"))
 	}
 	client := &APIClient{
 		Details: conn,
-		BaseURL: fmt.Sprintf("https://%s%s", conn.Server, root_path_apiv1),
+		BaseURL: fmt.Sprintf("https://%s%s", conn.Server, rootPathApiv1),
 		Client: &http.Client{
 			Timeout: time.Minute,
 			Transport: &http.Transport{
@@ -216,7 +216,7 @@ func (c *APIClient) Logout() error {
 	return nil
 }
 
-// Check if login credentials are valid.
+// ValidateCreds checks if the login credentials are valid.
 func (c *APIClient) ValidateCreds() bool {
 	err := c.Login()
 	return err == nil
@@ -277,7 +277,7 @@ func (c *APIClient) Get(path string) (*http.Response, error) {
 // `data` contains a map of values to add to the POST query. `data` are serialized to the JSON
 //
 // returns a deserialized JSON data to the map.
-func Post[T interface{}](client *APIClient, path string, data map[string]interface{}) (*ApiResponse[T], error) {
+func Post[T interface{}](client *APIClient, path string, data map[string]interface{}) (*APIResponse[T], error) {
 	res, err := client.Post(path, data)
 	if err != nil {
 		return nil, err
@@ -285,7 +285,7 @@ func Post[T interface{}](client *APIClient, path string, data map[string]interfa
 
 	defer res.Body.Close()
 
-	var response ApiResponse[T]
+	var response APIResponse[T]
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
@@ -304,7 +304,7 @@ func Post[T interface{}](client *APIClient, path string, data map[string]interfa
 // `path` specifies API endpoint together with query options
 //
 // returns an ApiResponse with the decoded result.
-func Get[T interface{}](client *APIClient, path string) (*ApiResponse[T], error) {
+func Get[T interface{}](client *APIClient, path string) (*APIResponse[T], error) {
 	res, err := client.Get(path)
 	if err != nil {
 		return nil, err
@@ -312,7 +312,7 @@ func Get[T interface{}](client *APIClient, path string) (*ApiResponse[T], error)
 
 	defer res.Body.Close()
 
-	var response ApiResponse[T]
+	var response APIResponse[T]
 	if err = json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
 	}

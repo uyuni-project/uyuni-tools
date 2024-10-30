@@ -6,12 +6,12 @@ package mocks
 
 import "net/http"
 
-// Mocked api.HTTPClient.
+// MockClient is a mocked api.HTTPClient.
 type MockClient struct {
 	DoFunc func(req *http.Request) (*http.Response, error)
 }
 
-// To fulfil api.HTTPClient interface.
+// Do fulfills the api.HTTPClient interface.
 func (m *MockClient) Do(req *http.Request) (*http.Response, error) {
 	return m.DoFunc(req)
 }

@@ -23,8 +23,8 @@ After=uyuni-proxy-pod.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-{{- if .HttpProxyFile }}
-EnvironmentFile={{ .HttpProxyFile }}
+{{- if .HTTPProxyFile }}
+EnvironmentFile={{ .HTTPProxyFile }}
 {{- end }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-tftpd.pid %t/uyuni-proxy-tftpd.ctr-id
@@ -55,7 +55,7 @@ WantedBy=multi-user.target default.target
 // TFTPDTemplateData represents information used to create TFTPD systemd configuration file.
 type TFTPDTemplateData struct {
 	Volumes       []types.VolumeMount
-	HttpProxyFile string
+	HTTPProxyFile string
 }
 
 // Render will create the TFTPD systemd configuration file.

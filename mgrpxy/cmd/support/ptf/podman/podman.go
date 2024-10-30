@@ -17,8 +17,8 @@ import (
 type podmanPTFFlags struct {
 	UpgradeFlags podman.PodmanProxyFlags `mapstructure:",squash"`
 	PTFId        string                  `mapstructure:"ptf"`
-	TestId       string                  `mapstructure:"test"`
-	CustomerId   string                  `mapstructure:"user"`
+	TestID       string                  `mapstructure:"test"`
+	CustomerID   string                  `mapstructure:"user"`
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run shared_utils.CommandFunc[podmanPTFFlags]) *cobra.Command {

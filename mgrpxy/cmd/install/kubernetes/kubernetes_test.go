@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
-	"github.com/uyuni-project/uyuni-tools/shared/test_utils/flags_tests"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils/flagstests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -18,24 +18,24 @@ func TestParamsParsing(t *testing.T) {
 		"config.tar.gz",
 	}
 
-	args = append(args, flags_tests.ImageProxyFlagsTestArgs...)
-	args = append(args, flags_tests.ProxyHelmFlagsTestArgs...)
-	args = append(args, flags_tests.SccFlagTestArgs...)
+	args = append(args, flagstests.ImageProxyFlagsTestArgs...)
+	args = append(args, flagstests.ProxyHelmFlagsTestArgs...)
+	args = append(args, flagstests.SccFlagTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(globalFlags *types.GlobalFlags, flags *kubernetesProxyInstallFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		flags_tests.AssertProxyImageFlags(t, cmd, &flags.ProxyImageFlags)
-		flags_tests.AssertProxyHelmFlags(t, cmd, &flags.Helm)
-		flags_tests.AssertSccFlag(t, cmd, &flags.Scc)
+		flagstests.AssertProxyImageFlags(t, cmd, &flags.ProxyImageFlags)
+		flagstests.AssertProxyHelmFlags(t, cmd, &flags.Helm)
+		flagstests.AssertSccFlag(t, cmd, &flags.Scc)
 		return nil
 	}
 
 	globalFlags := types.GlobalFlags{}
 	cmd := newCmd(&globalFlags, tester)
 
-	test_utils.AssertHasAllFlags(t, cmd, args)
+	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
 	if err := cmd.Execute(); err != nil {
