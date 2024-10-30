@@ -6,19 +6,20 @@ package utils
 
 import "github.com/uyuni-project/uyuni-tools/shared/types"
 
-// PgsqlRequiredVolumeMounts represents volumes mount used by PostgreSQL.
-var PgsqlRequiredVolumeMounts = []types.VolumeMount{
+// PgsqlRequiredSharedVolumeMounts represents shared volumes mount used by PostgreSQL.
+var PgsqlRequiredSharedVolumeMounts = []types.VolumeMount{
 	{MountPath: "/etc/pki/tls", Name: "etc-tls"},
-	{MountPath: "/var/lib/pgsql", Name: "var-pgsql"},
-	{MountPath: "/etc/rhn", Name: "etc-rhn"},
 	{MountPath: "/etc/pki/spacewalk-tls", Name: "tls-key"},
 }
 
-// PgsqlRequiredVolumes represents volumes used by PostgreSQL.
-var PgsqlRequiredVolumes = []types.Volume{
+// PgsqlRequiredVolumeMounts represents volumes mount used by PostgreSQL.
+var PgsqlRequiredVolumeMounts = append([]types.VolumeMount{
+	{MountPath: "/var/lib/pgsql/data", Name: "var-pgsql"},
+}, PgsqlRequiredSharedVolumeMounts[:]...)
+
+// PgsqlRequiredSharedVolumes represents volumes used by PostgreSQL.
+var PgsqlRequiredSharedVolumes = []types.Volume{
 	{Name: "etc-tls", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-tls"}},
-	{Name: "var-pgsql", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "var-pgsql"}},
-	{Name: "etc-rhn", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-rhn"}},
 	{Name: "tls-key",
 		Secret: &types.Secret{
 			SecretName: "uyuni-cert", Items: []types.SecretItem{
@@ -28,6 +29,11 @@ var PgsqlRequiredVolumes = []types.Volume{
 		},
 	},
 }
+
+// PgsqlRequiredVolumes represents volumes used by PostgreSQL.
+var PgsqlRequiredVolumes = append([]types.Volume{
+	{Name: "var-pgsql", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "var-pgsql"}},
+}, PgsqlRequiredSharedVolumes[:]...)
 
 // EtcServerVolumeMounts represents volumes mounted in /etc folder.
 var EtcServerVolumeMounts = []types.VolumeMount{
@@ -57,8 +63,8 @@ var EtcServerVolumes = []types.Volume{
 	{Name: "etc-sssd", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "etc-sssd"}},
 }
 
-var etcAndPgsqlVolumeMounts = append(PgsqlRequiredVolumeMounts, EtcServerVolumeMounts[:]...)
-var etcAndPgsqlVolumes = append(PgsqlRequiredVolumes, EtcServerVolumes[:]...)
+var etcAndPgsqlVolumeMounts = append(PgsqlRequiredSharedVolumeMounts, EtcServerVolumeMounts[:]...)
+var etcAndPgsqlVolumes = append(PgsqlRequiredSharedVolumes, EtcServerVolumes[:]...)
 
 // ServerVolumeMounts should match the volumes mapping from the container definition in both
 // the helm chart and the systemctl services definitions.

@@ -22,6 +22,9 @@ var servicesPath = "/etc/systemd/system/"
 // ServerService is the name of the systemd service for the server.
 const ServerService = "uyuni-server"
 
+// PgsqlService is the name of the systemd service for the Pgsql container.
+const PgsqlService = "uyuni-pgsql-server"
+
 // ServerAttestationService is the name of the systemd service for the coco attestation container.
 const ServerAttestationService = "uyuni-server-attestation"
 

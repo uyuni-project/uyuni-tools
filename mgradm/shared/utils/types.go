@@ -29,6 +29,13 @@ type SslCertFlags struct {
 	Server   ssl.SslPair
 }
 
+// PgsqlFlags contains settings for Pgsql container.
+type PgsqlFlags struct {
+	Replicas  int
+	Image     types.ImageFlags `mapstructure:",squash"`
+	IsChanged bool
+}
+
 // HubXmlrpcFlags contains settings for Hub XMLRPC container.
 type HubXmlrpcFlags struct {
 	Replicas  int
