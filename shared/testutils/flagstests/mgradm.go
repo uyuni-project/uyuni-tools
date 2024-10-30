@@ -132,7 +132,7 @@ func AssertHubXmlrpcFlag(t *testing.T, flags *utils.HubXmlrpcFlags) {
 	testutils.AssertTrue(t, "Hub should be changed", flags.IsChanged)
 }
 
-// SalineoFlagsTestArgs is the expected values for AssertSalineFlag.
+// SalineFlagsTestArgs is the expected values for AssertSalineFlag.
 var SalineFlagsTestArgs = []string{
 	"--saline-image", "salineimg",
 	"--saline-tag", "salinetag",

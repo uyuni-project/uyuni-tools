@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -113,12 +114,32 @@ func installForPodman(
 		"CERT_PASS":    caPassword,
 	}
 
+	if flags.Installation.ReportDB.Host == "" {
+		flags.Installation.ReportDB.Host = "uyuni-pgsql-server.mgr.internal"
+	}
+
+	if flags.Installation.DB.Host == "" {
+		flags.Installation.DB.Host = "uyuni-pgsql-server.mgr.internal"
+
+		if err := pgsql.SetupPgsql(systemd, authFile, flags.ServerFlags.Pgsql,
+			flags.Installation.DB.Admin.User,
+			flags.Installation.DB.Admin.Password,
+		); err != nil {
+			return err
+		}
+	}
+
 	log.Info().Msg(L("Run setup command in the container"))
 
 	if err := adm_utils.RunSetup(cnx, &flags.ServerFlags, fqdn, env); err != nil {
 		if stopErr := systemd.StopService(shared_podman.ServerService); stopErr != nil {
 			log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
 		}
+		return err
+	}
+
+	log.Info().Msg(L("Enabling SSL in the postgres container"))
+	if err := pgsql.EnableSSL(systemd); err != nil {
 		return err
 	}
 

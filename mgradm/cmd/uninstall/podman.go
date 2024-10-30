@@ -27,6 +27,7 @@ func uninstallForPodman(
 		podman.GetServiceImage(podman.ServerAttestationService + "@"),
 		podman.GetServiceImage(podman.HubXmlrpcService),
 		podman.GetServiceImage(podman.ServerSalineService + "@"),
+		podman.GetServiceImage(podman.PgsqlService),
 	}
 
 	// Uninstall the service
@@ -37,12 +38,16 @@ func uninstallForPodman(
 	systemd.UninstallInstantiatedService(podman.ServerAttestationService, !flags.Force)
 	systemd.UninstallInstantiatedService(podman.HubXmlrpcService, !flags.Force)
 	systemd.UninstallInstantiatedService(podman.ServerSalineService, !flags.Force)
+	systemd.UninstallInstantiatedService(podman.PgsqlService, !flags.Force)
 
 	// Remove the volumes
 	if flags.Purge.Volumes {
 		allOk := true
 		volumes := []string{"cgroup"}
 		for _, volume := range utils.ServerVolumeMounts {
+			volumes = append(volumes, volume.Name)
+		}
+		for _, volume := range utils.PgsqlRequiredVolumeMounts {
 			volumes = append(volumes, volume.Name)
 		}
 		for _, volume := range volumes {
