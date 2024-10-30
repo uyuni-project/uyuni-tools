@@ -21,7 +21,7 @@ After=network-online.target
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-Environment=HUB_API_URL=http://{{ .NamePrefix }}-server.mgr.internal:80/rpc/api
+Environment=HUB_API_URL=http://{{ .ServerHost }}:80/rpc/api
 Environment=HUB_CONNECT_USING_SSL=true
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-hub-xmlrpc-%i.pid %t/%n.ctr-id
@@ -35,18 +35,16 @@ ExecStart=/usr/bin/podman run \
 	--replace \
 	{{- range .Ports }}
         -p {{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
-        {{- end }}
-        {{- range .Volumes }}
-        -v {{ .Name }}:{{ .MountPath }} \
-        {{- end }}
+    {{- end }}
 	-e HUB_API_URL \
 	-e HUB_CONNECT_TIMEOUT \
 	-e HUB_REQUEST_TIMEOUT \
 	-e HUB_CONNECT_USING_SSL \
+	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
 	--name {{ .NamePrefix }}-hub-xmlrpc-%i \
 	--hostname {{ .NamePrefix }}-hub-xmlrpc-%i.mgr.internal \
 	--network {{ .Network }} \
-	${UYUNI_IMAGE}
+	${UYUNI_HUB_XMLRPC_IMAGE}
 
 ExecStop=/usr/bin/podman stop --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
@@ -61,11 +59,13 @@ WantedBy=multi-user.target default.target
 
 // HubXmlrpcServiceTemplateData holds information to create the systemd file.
 type HubXmlrpcServiceTemplateData struct {
-	Volumes    []types.VolumeMount
+	CaSecret   string
+	CaPath     string
 	Ports      []types.PortMap
 	NamePrefix string
 	Image      string
 	Network    string
+	ServerHost string
 }
 
 // Render will create the systemd configuration file.

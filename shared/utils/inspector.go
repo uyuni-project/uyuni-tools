@@ -99,7 +99,20 @@ func ReadInspectData[T any](dataFile string) (*T, error) {
 		return nil, Errorf(err, L("cannot read file %s"), dataFile)
 	}
 
-	return ReadInspectDataString[T](data)
+	log.Debug().Msgf("Filtering empty data from %s", dataFile)
+	lines := strings.Split(string(data), "\n")
+
+	var filteredLines []string
+	for _, line := range lines {
+		if strings.Contains(line, "=") && strings.TrimSpace(strings.SplitN(line, "=", 2)[1]) == "" {
+			continue
+		}
+		filteredLines = append(filteredLines, line)
+	}
+
+	filteredData := []byte(strings.Join(filteredLines, "\n"))
+
+	return ReadInspectDataString[T](filteredData)
 }
 
 // ReadInspectDataString returns an unmarshalled object of type T from the data as a string.

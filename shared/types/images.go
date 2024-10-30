@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -10,6 +10,13 @@ type ImageFlags struct {
 	Name       string `mapstructure:"image"`
 	Tag        string `mapstructure:"tag"`
 	PullPolicy string `mapstructure:"pullPolicy"`
+}
+
+// PgsqlFlags contains settings for Pgsql container.
+type PgsqlFlags struct {
+	Replicas  int
+	Image     ImageFlags `mapstructure:",squash"`
+	IsChanged bool
 }
 
 // ImageMetadata represents the image metadata of an RPM image.

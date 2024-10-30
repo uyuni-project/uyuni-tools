@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -20,6 +20,12 @@ func RunSupportConfigOnPodmanHost(systemd Systemd, dir string) ([]string, error)
 	files, err := utils.RunSupportConfigOnHost()
 	if err != nil {
 		return files, err
+	}
+	logDump, err := createLogDump(dir)
+	if err != nil {
+		log.Warn().Msg(L("No logs file on host to add to the archive"))
+	} else {
+		files = append(files, logDump)
 	}
 
 	systemdDump, err := createSystemdDump(dir)
@@ -56,6 +62,26 @@ func RunSupportConfigOnPodmanHost(systemd Systemd, dir string) ([]string, error)
 	}
 
 	return files, nil
+}
+
+func createLogDump(dir string) (string, error) {
+	logConfig, err := os.Create(path.Join(dir, "logs"))
+	if err != nil {
+		return "", utils.Errorf(err, L("failed to create %s file"), logConfig.Name())
+	}
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "cat", utils.GlobalLogPath)
+	if err != nil {
+		return "", utils.Errorf(err, L("failed to cat %s"), utils.GlobalLogPath)
+	}
+	defer logConfig.Close()
+
+	_, err = logConfig.WriteString("====cat " + utils.GlobalLogPath + "====\n" + string(out))
+	if err != nil {
+		return "", err
+	}
+
+	return logConfig.Name(), nil
 }
 
 func createSystemdDump(dir string) (string, error) {

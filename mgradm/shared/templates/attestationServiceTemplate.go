@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,8 +7,6 @@ package templates
 import (
 	"io"
 	"text/template"
-
-	"github.com/uyuni-project/uyuni-tools/shared/podman"
 )
 
 const attestationServiceTemplate = `
@@ -30,13 +28,13 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--sdnotify=conmon \
 	-d \
 	-e database_connection  \
-	--secret=` + podman.DBUserSecret + `,type=env,target=database_user \
-	--secret=` + podman.DBPassSecret + `,type=env,target=database_password \
+	--secret={{ .DBUserSecret }},type=env,target=database_user \
+	--secret={{ .DBPassSecret }},type=env,target=database_password \
 	--replace \
 	--name {{ .NamePrefix }}-server-attestation-%i \
 	--hostname {{ .NamePrefix }}-server-attestation-%i.mgr.internal \
 	--network {{ .Network }} \
-	${UYUNI_IMAGE}'
+	${UYUNI_SERVER_ATTESTATION_IMAGE}'
 ExecStop=/usr/bin/podman stop --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
 PIDFile=%t/uyuni-server-attestation-%i.pid
@@ -49,9 +47,11 @@ WantedBy=multi-user.target default.target
 
 // AttestationServiceTemplateData holds information to create systemd file for coco container.
 type AttestationServiceTemplateData struct {
-	NamePrefix string
-	Image      string
-	Network    string
+	NamePrefix   string
+	Image        string
+	Network      string
+	DBUserSecret string
+	DBPassSecret string
 }
 
 // Render will create the systemd configuration file.

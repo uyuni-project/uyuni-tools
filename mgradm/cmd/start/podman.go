@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -19,8 +19,10 @@ func podmanStart(
 	_ *cobra.Command,
 	_ []string,
 ) error {
-	err1 := systemd.StartInstantiated(podman.ServerAttestationService)
-	err2 := systemd.StartInstantiated(podman.HubXmlrpcService)
-	err3 := systemd.StartService(podman.ServerService)
-	return utils.JoinErrors(err1, err2, err3)
+	return utils.JoinErrors(
+		systemd.StartService(podman.DBService),
+		systemd.StartInstantiated(podman.ServerAttestationService),
+		systemd.StartInstantiated(podman.HubXmlrpcService),
+		systemd.StartService(podman.ServerService),
+	)
 }

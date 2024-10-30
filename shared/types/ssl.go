@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -24,8 +24,24 @@ type CaChain struct {
 	Key string
 }
 
+// IsThirdParty returns whether the CA chain is a third party one.
+func (c *CaChain) IsThirdParty() bool {
+	return c.IsDefined() && c.Key == ""
+}
+
+// IsDefined returns whether the CA chain is defined.
+// At least the CA root certificate is available.
+func (c *CaChain) IsDefined() bool {
+	return c.Root != ""
+}
+
 // SSLPair is a type for SSL Cert and Key.
 type SSLPair struct {
 	Cert string
 	Key  string
+}
+
+// IsDefined returns whether the SSL pair is defined.
+func (p *SSLPair) IsDefined() bool {
+	return p.Cert != "" && p.Key != ""
 }

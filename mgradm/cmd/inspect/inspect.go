@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -16,6 +16,7 @@ import (
 // InspectFlags are the flags used by inspect commands.
 type inspectFlags struct {
 	Image   types.ImageFlags `mapstructure:",squash"`
+	Pgsql   types.PgsqlFlags
 	SCC     types.SCCCredentials
 	Backend string
 }
@@ -38,6 +39,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[inspectFlags])
 
 	cmd_utils.AddSCCFlag(inspectCmd)
 	cmd_utils.AddImageFlag(inspectCmd)
+	cmd_utils.AddPgsqlFlags(inspectCmd)
 
 	if utils.KubernetesBuilt {
 		utils.AddBackendFlag(inspectCmd)

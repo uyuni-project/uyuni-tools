@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -58,7 +58,7 @@ func TestParamsParsingGeneratedCert(t *testing.T) {
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *proxyCreateConfigFlags, _ *cobra.Command, _ []string) error {
 		assertCommonArgs(t, flags)
-		flagstests.AssertSSLGenerationFlags(t, &flags.SSL.SSLCertGenerationFlags)
+		flagstests.AssertSSLGenerationFlag(t, &flags.SSL.SSLCertGenerationFlags)
 		testutils.AssertEquals(t, "Unexpected SSL CA cert path", "path/to/ca.crt", flags.SSL.Ca.Cert)
 		testutils.AssertEquals(t, "Unexpected SSL CA key path", "path/to/ca.key", flags.SSL.Ca.Key)
 		testutils.AssertEquals(t, "Unexpected SSL CA password", "casecret", flags.SSL.Ca.Password)
