@@ -1,0 +1,1 @@
+- Don't migrate enabled systemd services, recreate them (bsc#1232575)
