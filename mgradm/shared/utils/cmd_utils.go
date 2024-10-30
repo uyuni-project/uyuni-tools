@@ -154,3 +154,21 @@ func AddUpgradeHubXmlrpcFlags(cmd *cobra.Command) {
 Leave it unset if you want to keep the previous number of replicas.`))
 	_ = utils.AddFlagToHelpGroupID(cmd, "hubxmlrpc-replicas", "hubxmlrpc-container")
 }
+
+// AddPgsqlFlags adds hub XML-RPC related parameters to cmd.
+func AddPgsqlFlags(cmd *cobra.Command) {
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "pgsql-container", Title: L("Postgresql Database Container Flags")})
+	AddContainerImageFlags(cmd, "pgsql", L("Postgresql Database"), "pgsql-container", "suse/postgres")
+	cmd.Flags().Int("pgsql-replicas", 1, L("How many replicas of the Postgresql service container should be started."))
+	_ = utils.AddFlagToHelpGroupID(cmd, "pgsql-replicas", "pgsql-container")
+}
+
+// AddUpgradePgsqlFlags adds hub XML-RPC related parameters to cmd upgrade.
+func AddUpgradePgsqlFlags(cmd *cobra.Command) {
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "pgsql-container", Title: L("Postgresql Database Container Flags")})
+	AddContainerImageFlags(cmd, "pgsql", L("Postgresql Database"), "pgsql-container", "pgsql-container")
+	cmd.Flags().Int("pgsql-replicas", 0,
+		L(`How many replicas of the Postgresql service container should be started.
+Leave it unset if you want to keep the previous number of replicas.`))
+	_ = utils.AddFlagToHelpGroupID(cmd, "pgsql-replicas", "pgsql-container")
+}

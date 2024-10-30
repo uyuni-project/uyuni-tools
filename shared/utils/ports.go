@@ -18,7 +18,6 @@ func NewPortMap(name string, exposed int, port int) types.PortMap {
 // TCPPorts are the tcp ports required by the server
 // The port names should be less than 15 characters long and lowercased for traefik to eat them.
 var TCPPorts = []types.PortMap{
-	NewPortMap("postgres", 5432, 5432),
 	NewPortMap("salt-publish", 4505, 4505),
 	NewPortMap("salt-request", 4506, 4506),
 	NewPortMap("cobbler", 25151, 25151),
@@ -26,6 +25,11 @@ var TCPPorts = []types.PortMap{
 	NewPortMap("tasko-jmx-mtrx", 5556, 5556),
 	NewPortMap("tomcat-jmx-mtrx", 5557, 5557),
 	NewPortMap("tasko-mtrx", 9800, 9800),
+}
+
+// PgsqlPorts are the tcp ports required by the postgres server.
+var PgsqlPorts = []types.PortMap{
+	NewPortMap("postgres", 5432, 5432),
 }
 
 // TCPPodmanPorts are the tcp ports required by the server on podman.
