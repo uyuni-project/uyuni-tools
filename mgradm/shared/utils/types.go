@@ -5,7 +5,7 @@
 package utils
 
 import (
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
