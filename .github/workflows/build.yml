@@ -58,7 +58,10 @@ jobs:
             -o ./bin \
             ./...
 
-      - name: Test with the Go CLI
+      - name: Unit tests with all tags
+        run: go test -tags nok8s,ptf ./...
+
+      - name: Unit tests
         run: go test ./...
 
       - name: Upload binaries
