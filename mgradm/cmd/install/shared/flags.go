@@ -14,6 +14,7 @@ import (
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -48,7 +49,7 @@ type InstallFlags struct {
 	Tftp         bool
 	DB           DBFlags
 	ReportDB     DBFlags
-	Ssl          cmd_utils.SslCertFlags
+	Ssl          cmd_utils.InstallSSLFlags
 	Scc          types.SCCCredentials
 	Debug        DebugFlags
 	Image        types.ImageFlags `mapstructure:",squash"`
@@ -162,21 +163,8 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "reportdb-password", "reportdb")
 
 	// For generated CA and certificate
-	cmd.Flags().StringSlice("ssl-cname", []string{}, L("SSL certificate cnames separated by commas"))
-	cmd.Flags().String("ssl-country", "DE", L("SSL certificate country"))
-	cmd.Flags().String("ssl-state", "Bayern", L("SSL certificate state"))
-	cmd.Flags().String("ssl-city", "Nuernberg", L("SSL certificate city"))
-	cmd.Flags().String("ssl-org", "SUSE", L("SSL certificate organization"))
-	cmd.Flags().String("ssl-ou", "SUSE", L("SSL certificate organization unit"))
+	ssl.AddSSLGenerationFlags(cmd)
 	cmd.Flags().String("ssl-password", "", L("Password for the CA key to generate"))
-
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "ssl", Title: L("SSL Certificate Flags")})
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-cname", "ssl")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-country", "ssl")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-state", "ssl")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-city", "ssl")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-org", "ssl")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-ou", "ssl")
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", "ssl")
 
 	// For SSL 3rd party certificates

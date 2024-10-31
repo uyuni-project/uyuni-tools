@@ -17,12 +17,12 @@ import (
 var defaultImage = path.Join(utils.DefaultRegistry, "server")
 
 // UseExisting return true if existing SSL Cert can be used.
-func (f *SslCertFlags) UseExisting() bool {
+func (f *InstallSSLFlags) UseExisting() bool {
 	return f.Server.Cert != "" && f.Server.Key != "" && f.Ca.Root != ""
 }
 
 // CheckParameters checks that all the required flags are passed if using 3rd party certificates.
-func (f *SslCertFlags) CheckParameters() {
+func (f *InstallSSLFlags) CheckParameters() {
 	if !f.UseExisting() && (f.Server.Cert != "" || f.Server.Key != "" || f.Ca.Root != "") {
 		log.Fatal().Msg(L("Server certificate, key and root CA need to be all provided"))
 	}

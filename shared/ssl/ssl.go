@@ -14,25 +14,14 @@ import (
 
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
-
-// CaChain is a type to store CA Chain.
-type CaChain struct {
-	Root         string
-	Intermediate []string
-}
-
-// SslPair is a type for SSL Cert and Key.
-type SslPair struct {
-	Cert string
-	Key  string
-}
 
 // OrderCas generates the server certificate with the CA chain.
 //
 // Returns the certificate chain and the root CA.
-func OrderCas(chain *CaChain, serverPair *SslPair) ([]byte, []byte) {
+func OrderCas(chain *types.CaChain, serverPair *types.SslPair) ([]byte, []byte) {
 	CheckPaths(chain, serverPair)
 
 	// Extract all certificates and their data
@@ -229,7 +218,7 @@ func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash st
 }
 
 // CheckPaths ensures that all the passed path exists and the required files are available.
-func CheckPaths(chain *CaChain, serverPair *SslPair) {
+func CheckPaths(chain *types.CaChain, serverPair *types.SslPair) {
 	mandatoryFile(chain.Root, "root CA")
 	for _, ca := range chain.Intermediate {
 		optionalFile(ca)

@@ -73,7 +73,7 @@ func migrateToKubernetes(
 	kubeconfig := clusterInfos.GetKubeconfig()
 
 	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
-	var sslFlags adm_utils.SslCertFlags
+	var sslFlags adm_utils.InstallSSLFlags
 
 	helmArgs := []string{}
 
@@ -222,10 +222,10 @@ func setupSsl(
 			return []string{}, utils.Errorf(err, L("failed to strip text part from CA certificate"))
 		}
 		cert := base64.StdEncoding.EncodeToString(out)
-		ca := ssl.SslPair{Cert: cert, Key: key}
+		ca := types.SslPair{Cert: cert, Key: key}
 
 		// An empty struct means no third party certificate
-		sslFlags := adm_utils.SslCertFlags{}
+		sslFlags := adm_utils.InstallSSLFlags{}
 		ret, err := kubernetes.DeployCertificate(helm, &sslFlags, cert, &ca, kubeconfig, "", pullPolicy)
 		if err != nil {
 			return []string{}, utils.Errorf(err, L("cannot deploy certificate"))
@@ -233,9 +233,9 @@ func setupSsl(
 		return ret, nil
 	} else {
 		// Handle third party certificates and CA
-		sslFlags := adm_utils.SslCertFlags{
-			Ca: ssl.CaChain{Root: caCert},
-			Server: ssl.SslPair{
+		sslFlags := adm_utils.InstallSSLFlags{
+			Ca: types.CaChain{Root: caCert},
+			Server: types.SslPair{
 				Key:  path.Join(scriptDir, "spacewalk.key"),
 				Cert: path.Join(scriptDir, "spacewalk.crt"),
 			},

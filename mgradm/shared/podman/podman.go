@@ -111,7 +111,7 @@ Environment="PODMAN_EXTRA_ARGS=%s"
 }
 
 // UpdateSslCertificate update SSL certificate.
-func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair *ssl.SslPair) error {
+func UpdateSslCertificate(cnx *shared.Connection, chain *types.CaChain, serverPair *types.SslPair) error {
 	ssl.CheckPaths(chain, serverPair)
 
 	// Copy the CAs, certificate and key to the container
