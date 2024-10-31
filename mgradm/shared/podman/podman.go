@@ -17,12 +17,12 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )

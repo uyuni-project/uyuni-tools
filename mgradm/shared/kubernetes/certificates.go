@@ -11,11 +11,11 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
