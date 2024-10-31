@@ -81,37 +81,37 @@ func NewConfigCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Short: L("Create a proxy configuration file"),
 		Long:  L("Create a proxy configuration file"),
 		Example: `  Create a proxy configuration file providing certificates providing only required parameters
-	
+
     $ mgrctl proxy create config --proxyName="proxy.example.com" --server="server.example.com" \
 		--email="admin@example.com" --caCrt="root_ca.pem" --proxyCrt="proxy_crt.pem" \
 		--proxyKey="proxy_key.pem"
 
   Create a proxy configuration file providing certificates providing  all parameters
-	
+
     $ mgrctl proxy create config --proxyName="proxy.example.com" --server="server.example.com" \
 		--email="admin@example.com" --caCrt="root_ca.pem" --proxyCrt="proxy_crt.pem" \
 		--proxyKey="proxy_key.pem" --intermediateCAs="intermediateCA_1.pem,intermediateCA_2.pem,intermediateCA_3.pem" \
 		-o="proxy-config"
-	
+
   or an alternative format:
 
     $ mgrctl proxy create config --proxyName="proxy.example.com" --server="server.example.com" \
 		--email="admin@example.com" --caCrt="root_ca.pem" --proxyCrt="proxy_crt.pem" \
 		--proxyKey="proxy_key.pem" --intermediateCAs "intermediateCA_1.pem" --intermediateCAs "intermediateCA_2.pem" \
 		--intermediateCAs "intermediateCA_3.pem" -o="proxy-config"
-	
+
   Create a proxy configuration file with generated certificates providing only required parameters
-	
+
     $ mgrctl proxy create config --proxyName="proxy.example.com" --server="server.example.com" \
 		--email="admin@org.com" --caCrt="ca.pem" --caKey="caKey.pem"
-	
+
   Create a proxy configuration file with generated certificates providing only required parameters and ca password
-	
+
     $ mgrctl proxy create config --proxyName="proxy.example.com" --server="server.example.com" \
 		--email="admin@org.com" --caCrt="ca.pem" --caKey="caKey.pem" --caPassword="pass.txt"
 
   Create a proxy configuration file with generated certificates providing all parameters
-	
+
     $ mgrctl proxy create config --proxyName="proxy.example.com" --server="server.example.com" \
 		--email="admin@org.com" --caCrt="ca.pem" --caKey="caKey.pem" --caPassword="pass.txt" \
 		--cnames="proxy_a.example.com,proxy_b.example.com,proxy_c.example.com" --country="DE" \
@@ -119,7 +119,7 @@ func NewConfigCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		--sslEmail="sslEmail@example.com" -o="proxy-config"
 
   or an alternative format:
-	
+
 	$ mgrctl proxy create config --proxyName="proxy.example.com" --server="server.example.com" \
 		--email="admin@org.com" --caCrt="ca.pem" --caKey="caKey.pem" --caPassword="pass.txt" \
 		--cnames="proxy_a.example.com" --cnames="proxy_b.example.com" --cnames="proxy_c.example.com" \

@@ -33,24 +33,24 @@ Certificate:
                     b6:55
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
-            X509v3 Basic Constraints: 
+            X509v3 Basic Constraints:
                 CA:FALSE
-            X509v3 Key Usage: 
+            X509v3 Key Usage:
                 Digital Signature, Key Encipherment
-            X509v3 Extended Key Usage: 
+            X509v3 Extended Key Usage:
                 TLS Web Server Authentication, TLS Web Client Authentication
-            Netscape Cert Type: 
+            Netscape Cert Type:
                 SSL Server
-            Netscape Comment: 
+            Netscape Comment:
                 SSL Generated Certificate
-            X509v3 Subject Key Identifier: 
+            X509v3 Subject Key Identifier:
                 93:88:1D:52:E3:27:6E:73:35:9E:0E:AE:20:9F:E2:2E:58:41:CA:90
-            X509v3 Authority Key Identifier: 
+            X509v3 Authority Key Identifier:
                 keyid:C6:C6:FD:7F:A3:EA:C1:50:0A:7E:33:1D:50:F7:E0:94:3F:93:EA:B7
                 DirName:/C=DE/ST=STATE/O=ORG/OU=ORGUNIT/CN=OrgCa
                 serial:11:B5:B3:C6:0E:7B:13:28:C9:E6:28:3C:F1:40:25:6D:CB:14:EB:3D
 
-            X509v3 Subject Alternative Name: 
+            X509v3 Subject Alternative Name:
                 DNS:uyuni.world-co.com
     Signature Algorithm: sha384WithRSAEncryption
          75:04:ec:e4:e7:cc:3b:00:df:a3:5e:42:70:f4:30:91:17:8c:
@@ -129,17 +129,17 @@ Certificate:
                     4a:57
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
-            X509v3 Basic Constraints: 
+            X509v3 Basic Constraints:
                 CA:TRUE
-            X509v3 Key Usage: 
+            X509v3 Key Usage:
                 Digital Signature, Key Encipherment, Certificate Sign
-            X509v3 Extended Key Usage: 
+            X509v3 Extended Key Usage:
                 TLS Web Server Authentication, TLS Web Client Authentication
-            Netscape Comment: 
+            Netscape Comment:
                 SSL Generated Certificate
-            X509v3 Subject Key Identifier: 
+            X509v3 Subject Key Identifier:
                 C6:C6:FD:7F:A3:EA:C1:50:0A:7E:33:1D:50:F7:E0:94:3F:93:EA:B7
-            X509v3 Authority Key Identifier: 
+            X509v3 Authority Key Identifier:
                 keyid:5B:5B:28:4B:13:37:60:B5:95:D4:5B:47:09:97:59:DF:16:63:AF:D9
                 DirName:/C=DE/ST=STATE/L=CITY/O=ORG/OU=ORGUNIT/CN=RootCA
                 serial:11:B5:B3:C6:0E:7B:13:28:C9:E6:28:3C:F1:40:25:6D:CB:14:EB:3C
@@ -221,17 +221,17 @@ Certificate:
                     e7:3d
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
-            X509v3 Basic Constraints: 
+            X509v3 Basic Constraints:
                 CA:TRUE
-            X509v3 Key Usage: 
+            X509v3 Key Usage:
                 Digital Signature, Key Encipherment, Certificate Sign
-            X509v3 Extended Key Usage: 
+            X509v3 Extended Key Usage:
                 TLS Web Server Authentication, TLS Web Client Authentication
-            Netscape Comment: 
+            Netscape Comment:
                 SSL Generated Certificate
-            X509v3 Subject Key Identifier: 
+            X509v3 Subject Key Identifier:
                 5B:5B:28:4B:13:37:60:B5:95:D4:5B:47:09:97:59:DF:16:63:AF:D9
-            X509v3 Authority Key Identifier: 
+            X509v3 Authority Key Identifier:
                 keyid:33:82:33:48:FA:00:69:FE:13:84:27:0E:1D:98:F6:B4:79:31:CD:43
                 DirName:/C=DE/ST=STATE/L=CITY/O=ORG/OU=ORGUNIT/CN=RootCA
                 serial:03:5D:9E:F7:83:4A:B7:2A:C6:21:9A:5D:11:88:2B:AA:48:C7:5C:DF

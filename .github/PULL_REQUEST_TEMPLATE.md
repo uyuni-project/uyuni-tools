@@ -34,4 +34,3 @@ If you uncheck the checkbox after the PR is created, you will need to re-run `ch
 # Before you merge
 
 Check [How to branch and merge properly](https://github.com/uyuni-project/uyuni/wiki/How-to-branch-and-merge-properly)!
-
