@@ -415,7 +415,7 @@ func Upgrade(
 		return err
 	}
 
-	if err := systemd.ReloadDaemon(false); err != nil {
+	if err := podman.ReloadDaemon(false); err != nil {
 		return err
 	}
 

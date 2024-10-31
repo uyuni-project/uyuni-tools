@@ -11,11 +11,13 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/test_utils"
 	"github.com/uyuni-project/uyuni-tools/shared/test_utils/flags_tests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func TestParamsParsing(t *testing.T) {
-	args := []string{
-		"--backend", "kubectl",
+	args := []string{}
+	if utils.KubernetesBuilt {
+		args = append(args, "--backend", "kubectl")
 	}
 
 	args = append(args, flags_tests.ImageFlagsTestArgs...)
@@ -27,7 +29,9 @@ func TestParamsParsing(t *testing.T) {
 	) error {
 		flags_tests.AssertImageFlag(t, cmd, &flags.Image)
 		flags_tests.AssertSccFlag(t, cmd, &flags.SCC)
-		test_utils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
+		if utils.KubernetesBuilt {
+			test_utils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
+		}
 		return nil
 	}
 
