@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/api/mocks"
 	proxyApi "github.com/uyuni-project/uyuni-tools/shared/api/proxy"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -133,8 +134,12 @@ func TestFailProxyCreateConfigWhenProxyCrtIsProvidedButProxyKeyIsMissing(t *test
 	testFiles := setupTestFiles(t, testDir)
 	flags := &proxyCreateConfigFlags{
 		ConnectionDetails: connectionDetails,
-		CaCrt:             testFiles.CaCrtFilePath,
-		ProxyCrt:          testFiles.ProxyCrtFilePath,
+		Ssl: proxyConfigSslFlags{
+			Ca: caFlags{
+				SslPair: types.SslPair{Cert: testFiles.ProxyCrtFilePath},
+			},
+			Proxy: types.SslPair{Cert: testFiles.ProxyCrtFilePath},
+		},
 	}
 	expectedErrorMessage := "flag proxyKey is required when flag proxyCrt is provided"
 
@@ -155,15 +160,27 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	testFiles := setupTestFiles(t, testDir)
 	mockContainerConfigflags := &proxyCreateConfigFlags{
 		ConnectionDetails: connectionDetails,
-		CaCrt:             testFiles.CaCrtFilePath,
-		ProxyCrt:          testFiles.ProxyCrtFilePath,
-		ProxyKey:          testFiles.ProxyKeyFilePath,
+		Ssl: proxyConfigSslFlags{
+			Ca: caFlags{
+				SslPair: types.SslPair{Cert: testFiles.CaCrtFilePath},
+			},
+			Proxy: types.SslPair{
+				Cert: testFiles.ProxyCrtFilePath,
+				Key:  testFiles.ProxyKeyFilePath,
+			},
+		},
 	}
 	mockContainerConfigGenerateflags := &proxyCreateConfigFlags{
 		ConnectionDetails: connectionDetails,
-		CaCrt:             testFiles.CaCrtFilePath,
-		CaKey:             testFiles.CaKeyFilePath,
-		CaPassword:        testFiles.CaPwdFilePath,
+		Ssl: proxyConfigSslFlags{
+			Ca: caFlags{
+				SslPair: types.SslPair{
+					Cert: testFiles.CaCrtFilePath,
+					Key:  testFiles.CaKeyFilePath,
+				},
+				Password: testFiles.CaPwdFilePath,
+			},
+		},
 	}
 	expectedReturnMessage := "Totally unexpected error"
 
@@ -209,25 +226,33 @@ func TestSuccessProxyCreateConfigWhenAllParamsProvidedSuccess(t *testing.T) {
 
 	flags := &proxyCreateConfigFlags{
 		ConnectionDetails: connectionDetails,
-		ProxyName:         "testProxy",
-		ProxyPort:         8080,
-		Server:            "testServer",
-		MaxCache:          2048,
-		Email:             "example@email.com",
-		Output:            output,
-		CaCrt:             testFiles.CaCrtFilePath,
-		ProxyCrt:          testFiles.ProxyCrtFilePath,
-		ProxyKey:          testFiles.ProxyKeyFilePath,
-		IntermediateCAs:   []string{testFiles.IntermediateCA1FilePath, testFiles.IntermediateCA2FilePath},
+		Proxy: proxyFlags{
+			Name:     "testProxy",
+			Port:     8080,
+			Parent:   "testServer",
+			MaxCache: 2048,
+			Email:    "example@email.com",
+		},
+		Output: output,
+		Ssl: proxyConfigSslFlags{
+			Ca: caFlags{
+				SslPair:      types.SslPair{Cert: testFiles.CaCrtFilePath},
+				Intermediate: []string{testFiles.IntermediateCA1FilePath, testFiles.IntermediateCA2FilePath},
+			},
+			Proxy: types.SslPair{
+				Cert: testFiles.ProxyCrtFilePath,
+				Key:  testFiles.ProxyKeyFilePath,
+			},
+		},
 	}
 
 	// Mock containerConfig api call
 	mockContainerConfig := func(client *api.APIClient, request proxyApi.ProxyConfigRequest) (*[]int8, error) {
-		testutils.AssertEquals(t, "Unexpected proxyName", flags.ProxyName, request.ProxyName)
-		testutils.AssertEquals(t, "Unexpected proxyPort", flags.ProxyPort, request.ProxyPort)
-		testutils.AssertEquals(t, "Unexpected server", flags.Server, request.Server)
-		testutils.AssertEquals(t, "Unexpected maxCache", flags.MaxCache, request.MaxCache)
-		testutils.AssertEquals(t, "Unexpected email", flags.Email, request.Email)
+		testutils.AssertEquals(t, "Unexpected proxyName", flags.Proxy.Name, request.ProxyName)
+		testutils.AssertEquals(t, "Unexpected proxyPort", flags.Proxy.Port, request.ProxyPort)
+		testutils.AssertEquals(t, "Unexpected server", flags.Proxy.Parent, request.Server)
+		testutils.AssertEquals(t, "Unexpected maxCache", flags.Proxy.MaxCache, request.MaxCache)
+		testutils.AssertEquals(t, "Unexpected email", flags.Proxy.Email, request.Email)
 		testutils.AssertEquals(t, "Unexpected caCrt", dummyCaCrtContents, request.RootCA)
 		testutils.AssertEquals(t, "Unexpected proxyCrt", dummyProxyCrtContents, request.ProxyCrt)
 		testutils.AssertEquals(t, "Unexpected proxyKey", dummyProxyKeyContents, request.ProxyKey)
@@ -263,41 +288,51 @@ func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing
 
 	flags := &proxyCreateConfigFlags{
 		ConnectionDetails: connectionDetails,
-		ProxyName:         "testProxy",
-		ProxyPort:         8080,
-		Server:            "testServer",
-		MaxCache:          2048,
-		Email:             "example@email.com",
-		Output:            output,
-		CaCrt:             testFiles.CaCrtFilePath,
-		CaKey:             testFiles.CaKeyFilePath,
-		CaPassword:        testFiles.CaPwdFilePath,
-		CNames:            []string{"altNameA.example.com", "altNameB.example.com"},
-		Country:           "testCountry",
-		State:             "exampleState",
-		City:              "exampleCity",
-		Org:               "exampleOrg",
-		OrgUnit:           "exampleOrgUnit",
-		SslEmail:          "sslEmail@example.com",
+		Proxy: proxyFlags{
+			Name:     "testProxy",
+			Port:     8080,
+			Parent:   "testServer",
+			MaxCache: 2048,
+			Email:    "example@email.com",
+		},
+		Output: output,
+		Ssl: proxyConfigSslFlags{
+			SslCertGenerationFlags: types.SslCertGenerationFlags{
+				Cnames:  []string{"altNameA.example.com", "altNameB.example.com"},
+				Country: "testCountry",
+				State:   "exampleState",
+				City:    "exampleCity",
+				Org:     "exampleOrg",
+				OU:      "exampleOrgUnit",
+				Email:   "sslEmail@example.com",
+			},
+			Ca: caFlags{
+				SslPair: types.SslPair{
+					Cert: testFiles.CaCrtFilePath,
+					Key:  testFiles.CaKeyFilePath,
+				},
+				Password: testFiles.CaPwdFilePath,
+			},
+		},
 	}
 
 	// Mock api client & containerConfig
 	mockCreateConfigGenerate := func(client *api.APIClient, request proxyApi.ProxyConfigGenerateRequest) (*[]int8, error) {
-		testutils.AssertEquals(t, "Unexpected proxyName", flags.ProxyName, request.ProxyName)
-		testutils.AssertEquals(t, "Unexpected proxyPort", flags.ProxyPort, request.ProxyPort)
-		testutils.AssertEquals(t, "Unexpected server", flags.Server, request.Server)
-		testutils.AssertEquals(t, "Unexpected maxCache", flags.MaxCache, request.MaxCache)
-		testutils.AssertEquals(t, "Unexpected email", flags.Email, request.Email)
+		testutils.AssertEquals(t, "Unexpected proxyName", flags.Proxy.Name, request.ProxyName)
+		testutils.AssertEquals(t, "Unexpected proxyPort", flags.Proxy.Port, request.ProxyPort)
+		testutils.AssertEquals(t, "Unexpected server", flags.Proxy.Parent, request.Server)
+		testutils.AssertEquals(t, "Unexpected maxCache", flags.Proxy.MaxCache, request.MaxCache)
+		testutils.AssertEquals(t, "Unexpected email", flags.Proxy.Email, request.Email)
 		testutils.AssertEquals(t, "Unexpected caCrt", dummyCaCrtContents, request.CaCrt)
 		testutils.AssertEquals(t, "Unexpected caKey", dummyCaKeyContents, request.CaKey)
 		testutils.AssertEquals(t, "Unexpected caPassword", dummyCaPasswordContents, request.CaPassword)
-		testutils.AssertEquals(t, "Unexpected cnames", fmt.Sprintf("%v", flags.CNames), fmt.Sprintf("%v", request.Cnames))
-		testutils.AssertEquals(t, "Unexpected country", flags.Country, request.Country)
-		testutils.AssertEquals(t, "Unexpected state", flags.State, request.State)
-		testutils.AssertEquals(t, "Unexpected city", flags.City, request.City)
-		testutils.AssertEquals(t, "Unexpected org", flags.Org, request.Org)
-		testutils.AssertEquals(t, "Unexpected orgUnit", flags.OrgUnit, request.OrgUnit)
-		testutils.AssertEquals(t, "Unexpected sslEmail", flags.SslEmail, request.SslEmail)
+		testutils.AssertEquals(t, "Unexpected cnames", fmt.Sprintf("%v", flags.Ssl.Cnames), fmt.Sprintf("%v", request.Cnames))
+		testutils.AssertEquals(t, "Unexpected country", flags.Ssl.Country, request.Country)
+		testutils.AssertEquals(t, "Unexpected state", flags.Ssl.State, request.State)
+		testutils.AssertEquals(t, "Unexpected city", flags.Ssl.City, request.City)
+		testutils.AssertEquals(t, "Unexpected org", flags.Ssl.Org, request.Org)
+		testutils.AssertEquals(t, "Unexpected orgUnit", flags.Ssl.OU, request.OrgUnit)
+		testutils.AssertEquals(t, "Unexpected sslEmail", flags.Ssl.Email, request.SslEmail)
 		return &expectedConfigFileData, nil
 	}
 

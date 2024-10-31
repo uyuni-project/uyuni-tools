@@ -42,11 +42,11 @@ func proxyCreateConfig(
 	}
 
 	// handle CA certificate path
-	caCertificate := string(utils.ReadFile(flags.CaCrt))
+	caCertificate := string(utils.ReadFile(flags.Ssl.Ca.Cert))
 
 	// Check if ProxyCrt is provided to decide which configuration to run
 	var data *[]int8
-	if flags.ProxyCrt != "" {
+	if flags.Ssl.Proxy.Cert != "" {
 		data, err = handleProxyConfig(client, flags, caCertificate, proxyConfig)
 	} else {
 		data, err = handleProxyConfigGenerate(client, flags, caCertificate, proxyConfigGenerate)
@@ -56,7 +56,7 @@ func proxyCreateConfig(
 		return utils.Errorf(err, L("failed to execute proxy configuration api request"))
 	}
 
-	filename := GetFilename(flags.Output, flags.ProxyName)
+	filename := GetFilename(flags.Output, flags.Proxy.Name)
 	if err := utils.SaveBinaryData(filename, *data); err != nil {
 		return utils.Errorf(err, L("error saving binary data: %v"), err)
 	}
@@ -73,27 +73,27 @@ func handleProxyConfig(
 	proxyConfig func(client *api.APIClient, request proxy.ProxyConfigRequest) (*[]int8, error),
 ) (*[]int8, error) {
 	// Custom validations
-	if flags.ProxyKey == "" {
+	if flags.Ssl.Proxy.Key == "" {
 		return nil, errors.New(L("flag proxyKey is required when flag proxyCrt is provided"))
 	}
 
 	// Read file paths for certificates and keys
-	proxyCrt := string(utils.ReadFile(flags.ProxyCrt))
-	proxyKey := string(utils.ReadFile(flags.ProxyKey))
+	proxyCrt := string(utils.ReadFile(flags.Ssl.Proxy.Cert))
+	proxyKey := string(utils.ReadFile(flags.Ssl.Proxy.Key))
 
 	// Handle intermediate CAs
 	var intermediateCAs []string
-	for _, path := range flags.IntermediateCAs {
+	for _, path := range flags.Ssl.Ca.Intermediate {
 		intermediateCAs = append(intermediateCAs, string(utils.ReadFile(path)))
 	}
 
 	// Prepare the request object & call the proxyConfig function
 	request := proxy.ProxyConfigRequest{
-		ProxyName:       flags.ProxyName,
-		ProxyPort:       flags.ProxyPort,
-		Server:          flags.Server,
-		MaxCache:        flags.MaxCache,
-		Email:           flags.Email,
+		ProxyName:       flags.Proxy.Name,
+		ProxyPort:       flags.Proxy.Port,
+		Server:          flags.Proxy.Parent,
+		MaxCache:        flags.Proxy.MaxCache,
+		Email:           flags.Proxy.Email,
 		RootCA:          caCertificate,
 		ProxyCrt:        proxyCrt,
 		ProxyKey:        proxyKey,
@@ -111,32 +111,32 @@ func handleProxyConfigGenerate(
 	proxyConfigGenerate func(client *api.APIClient, request proxy.ProxyConfigGenerateRequest) (*[]int8, error),
 ) (*[]int8, error) {
 	// CA key and password
-	caKey := string(utils.ReadFile(flags.CaKey))
+	caKey := string(utils.ReadFile(flags.Ssl.Ca.Key))
 
 	var caPasswordRead string
-	if flags.CaPassword == "" {
+	if flags.Ssl.Ca.Password == "" {
 		utils.AskPasswordIfMissingOnce(&caPasswordRead, L("Please enter "+caPassword), 0, 0)
 	} else {
-		caPasswordRead = string(utils.ReadFile(flags.CaPassword))
+		caPasswordRead = string(utils.ReadFile(flags.Ssl.Ca.Password))
 	}
 
 	// Prepare the request object & call the proxyConfigGenerate function
 	request := proxy.ProxyConfigGenerateRequest{
-		ProxyName:  flags.ProxyName,
-		ProxyPort:  flags.ProxyPort,
-		Server:     flags.Server,
-		MaxCache:   flags.MaxCache,
-		Email:      flags.Email,
+		ProxyName:  flags.Proxy.Name,
+		ProxyPort:  flags.Proxy.Port,
+		Server:     flags.Proxy.Parent,
+		MaxCache:   flags.Proxy.MaxCache,
+		Email:      flags.Proxy.Email,
 		CaCrt:      caCertificate,
 		CaKey:      caKey,
 		CaPassword: caPasswordRead,
-		Cnames:     flags.CNames,
-		Country:    flags.Country,
-		State:      flags.State,
-		City:       flags.City,
-		Org:        flags.Org,
-		OrgUnit:    flags.OrgUnit,
-		SslEmail:   flags.SslEmail,
+		Cnames:     flags.Ssl.Cnames,
+		Country:    flags.Ssl.Country,
+		State:      flags.Ssl.State,
+		City:       flags.Ssl.City,
+		Org:        flags.Ssl.Org,
+		OrgUnit:    flags.Ssl.OU,
+		SslEmail:   flags.Ssl.Email,
 	}
 
 	return proxyConfigGenerate(client, request)
