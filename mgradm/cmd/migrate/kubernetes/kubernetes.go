@@ -20,7 +20,7 @@ type kubernetesMigrateFlags struct {
 	shared.MigrateFlags `mapstructure:",squash"`
 	Helm                cmd_utils.HelmFlags
 	SCC                 types.SCCCredentials
-	Ssl                 cmd_utils.SslCertFlags
+	Ssl                 types.SslCertGenerationFlags
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesMigrateFlags]) *cobra.Command {

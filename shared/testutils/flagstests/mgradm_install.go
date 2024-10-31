@@ -34,13 +34,6 @@ var InstallFlagsTestArgs = func() []string {
 		"--reportdb-name", "reportdbname",
 		"--reportdb-host", "reportdbhost",
 		"--reportdb-port", "5678",
-		"--ssl-cname", "cname1",
-		"--ssl-cname", "cname2",
-		"--ssl-country", "OS",
-		"--ssl-state", "sslstate",
-		"--ssl-city", "sslcity",
-		"--ssl-org", "sslorg",
-		"--ssl-ou", "sslou",
 		"--ssl-password", "sslsecret",
 		"--ssl-ca-intermediate", "path/inter1.crt",
 		"--ssl-ca-intermediate", "path/inter2.crt",
@@ -60,6 +53,7 @@ var InstallFlagsTestArgs = func() []string {
 	args = append(args, ImageFlagsTestArgs...)
 	args = append(args, CocoFlagsTestArgs...)
 	args = append(args, HubXmlrpcFlagsTestArgs...)
+	args = append(args, SSLGenerationFlagsTestArgs...)
 
 	return args
 }
@@ -85,12 +79,7 @@ func AssertInstallFlags(t *testing.T, cmd *cobra.Command, flags *shared.InstallF
 	testutils.AssertEquals(t, "Error parsing --reportdb-name", "reportdbname", flags.ReportDB.Name)
 	testutils.AssertEquals(t, "Error parsing --reportdb-host", "reportdbhost", flags.ReportDB.Host)
 	testutils.AssertEquals(t, "Error parsing --reportdb-port", 5678, flags.ReportDB.Port)
-	testutils.AssertEquals(t, "Error parsing --ssl-cname", []string{"cname1", "cname2"}, flags.Ssl.Cnames)
-	testutils.AssertEquals(t, "Error parsing --ssl-country", "OS", flags.Ssl.Country)
-	testutils.AssertEquals(t, "Error parsing --ssl-state", "sslstate", flags.Ssl.State)
-	testutils.AssertEquals(t, "Error parsing --ssl-city", "sslcity", flags.Ssl.City)
-	testutils.AssertEquals(t, "Error parsing --ssl-org", "sslorg", flags.Ssl.Org)
-	testutils.AssertEquals(t, "Error parsing --ssl-ou", "sslou", flags.Ssl.OU)
+	AssertSSLGenerationFlags(t, cmd, &flags.Ssl.SslCertGenerationFlags)
 	testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.Ssl.Password)
 	testutils.AssertEquals(t, "Error parsing --ssl-ca-intermediate",
 		[]string{"path/inter1.crt", "path/inter2.crt"}, flags.Ssl.Ca.Intermediate,

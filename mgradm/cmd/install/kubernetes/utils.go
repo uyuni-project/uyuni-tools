@@ -19,7 +19,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared"
 	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -60,7 +59,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// Deploy the SSL CA or server certificate
-	ca := ssl.SslPair{}
+	ca := types.SslPair{}
 	sslArgs, err := kubernetes.DeployCertificate(&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
 		flags.Image.PullPolicy)
 	if err != nil {
