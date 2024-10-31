@@ -2,28 +2,27 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-package proxy_test
+package proxy
 
 import (
 	"path"
 	"testing"
 
-	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/proxy"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 // Test getFilename function.
 func TestGetFilename(t *testing.T) {
 	// Test when output is empty
-	filename := proxy.GetFilename("", "testProxy.domain.com")
+	filename := GetFilename("", "testProxy.domain.com")
 	testutils.AssertEquals(t, "", "testProxy-config.tar.gz", filename)
 
 	// Test when output is provided
-	filename = proxy.GetFilename("customOutput", "testProxy.domain.com")
+	filename = GetFilename("customOutput", "testProxy.domain.com")
 	testutils.AssertEquals(t, "", "customOutput.tar.gz", filename)
 
 	// Test when output is provided
-	filename = proxy.GetFilename("/var/customOutputWitPath", "testProxy.domain.com")
+	filename = GetFilename("/var/customOutputWitPath", "testProxy.domain.com")
 	testutils.AssertEquals(t, "", "/var/customOutputWitPath.tar.gz", filename)
 }
 

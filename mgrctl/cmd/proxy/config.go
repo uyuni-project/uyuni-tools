@@ -39,8 +39,8 @@ const (
 	proxyKey        = "proxyKey"
 )
 
-// ProxyCreateConfigFlags is the structure containing the flags for proxy create config command.
-type ProxyCreateConfigFlags struct {
+// proxyCreateConfigFlags is the structure containing the flags for proxy create config command.
+type proxyCreateConfigFlags struct {
 	ConnectionDetails api.ConnectionDetails `mapstructure:"api"`
 	ProxyName         string
 	ProxyPort         int
@@ -63,8 +63,8 @@ type ProxyCreateConfigFlags struct {
 	SslEmail          string
 }
 
-// ProxyCreateConfigRequiredFields is a set of required fields for validation.
-var ProxyCreateConfigRequiredFields = [6]string{
+// proxyCreateConfigRequiredFields is a set of required fields for validation.
+var proxyCreateConfigRequiredFields = [6]string{
 	proxyName,
 	server,
 	email,
@@ -74,7 +74,7 @@ var ProxyCreateConfigRequiredFields = [6]string{
 // NewConfigCommand creates the command for managing cache.
 // Setup for subcommand to clear (the cache).
 func NewConfigCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	var flags ProxyCreateConfigFlags
+	var flags proxyCreateConfigFlags
 
 	createConfigCmd := &cobra.Command{
 		Use:   "config",
@@ -133,7 +133,7 @@ func NewConfigCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	addFlags(createConfigCmd)
 
 	// validations
-	utils.MarkMandatoryFlags(createConfigCmd, ProxyCreateConfigRequiredFields[:])
+	utils.MarkMandatoryFlags(createConfigCmd, proxyCreateConfigRequiredFields[:])
 	createConfigCmd.MarkFlagsOneRequired(proxyCrt, caKey)
 	createConfigCmd.MarkFlagsMutuallyExclusive(proxyCrt, caKey)
 
@@ -142,16 +142,16 @@ func NewConfigCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func proxyCreateConfigInit(
 	globalFlags *types.GlobalFlags,
-	flags *ProxyCreateConfigFlags,
+	flags *proxyCreateConfigFlags,
 	cmd *cobra.Command,
 	args []string,
 ) error {
-	return ProxyCreateConfig(flags, api.Init, proxy.ContainerConfig, proxy.ContainerConfigGenerate)
+	return proxyCreateConfig(flags, api.Init, proxy.ContainerConfig, proxy.ContainerConfigGenerate)
 }
 
-// ProxyCreateConfig command handler.
-func ProxyCreateConfig(
-	flags *ProxyCreateConfigFlags,
+// proxyCreateConfig command handler.
+func proxyCreateConfig(
+	flags *proxyCreateConfigFlags,
 	apiInit func(*api.ConnectionDetails) (*api.APIClient, error),
 	proxyConfig func(client *api.APIClient, request proxy.ProxyConfigRequest) (*[]int8, error),
 	proxyConfigGenerate func(client *api.APIClient, request proxy.ProxyConfigGenerateRequest) (*[]int8, error),
@@ -192,7 +192,7 @@ func ProxyCreateConfig(
 // Helper function to handle proxy configuration.
 func handleProxyConfig(
 	client *api.APIClient,
-	flags *ProxyCreateConfigFlags,
+	flags *proxyCreateConfigFlags,
 	caCertificate string,
 	proxyConfig func(client *api.APIClient, request proxy.ProxyConfigRequest) (*[]int8, error),
 ) (*[]int8, error) {
@@ -230,7 +230,7 @@ func handleProxyConfig(
 // Helper function to handle proxy configuration generation.
 func handleProxyConfigGenerate(
 	client *api.APIClient,
-	flags *ProxyCreateConfigFlags,
+	flags *proxyCreateConfigFlags,
 	caCertificate string,
 	proxyConfigGenerate func(client *api.APIClient, request proxy.ProxyConfigGenerateRequest) (*[]int8, error),
 ) (*[]int8, error) {
