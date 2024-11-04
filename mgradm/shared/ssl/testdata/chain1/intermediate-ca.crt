@@ -33,17 +33,17 @@ Certificate:
                     b6:71
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
-            X509v3 Basic Constraints: 
+            X509v3 Basic Constraints:
                 CA:TRUE
-            X509v3 Key Usage: 
+            X509v3 Key Usage:
                 Digital Signature, Key Encipherment, Certificate Sign
-            X509v3 Extended Key Usage: 
+            X509v3 Extended Key Usage:
                 TLS Web Server Authentication, TLS Web Client Authentication
-            Netscape Comment: 
+            Netscape Comment:
                 SSL Generated Certificate
-            X509v3 Subject Key Identifier: 
+            X509v3 Subject Key Identifier:
                 9B:C1:07:5E:AB:5C:7E:6B:9E:E4:23:7B:18:61:34:CB:D0:06:91:3B
-            X509v3 Authority Key Identifier: 
+            X509v3 Authority Key Identifier:
                 keyid:6E:6D:4B:35:22:23:3E:13:18:A5:93:61:0E:9C:BE:1E:D2:B8:1B:D4
                 DirName:/C=DE/ST=STATE/L=CITY/O=ORG/OU=ORGUNIT/CN=RootCA
                 serial:49:96:04:48:85:CB:0D:EC:2C:31:FE:EF:E9:CB:12:2B:DB:80:F8:71
@@ -125,17 +125,17 @@ Certificate:
                     a4:d7
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
-            X509v3 Basic Constraints: 
+            X509v3 Basic Constraints:
                 CA:TRUE
-            X509v3 Key Usage: 
+            X509v3 Key Usage:
                 Digital Signature, Key Encipherment, Certificate Sign
-            X509v3 Extended Key Usage: 
+            X509v3 Extended Key Usage:
                 TLS Web Server Authentication, TLS Web Client Authentication
-            Netscape Comment: 
+            Netscape Comment:
                 SSL Generated Certificate
-            X509v3 Subject Key Identifier: 
+            X509v3 Subject Key Identifier:
                 62:00:25:E4:EE:70:E5:37:2D:1E:9E:AE:4E:B7:3E:FC:62:08:BF:27
-            X509v3 Authority Key Identifier: 
+            X509v3 Authority Key Identifier:
                 keyid:9B:C1:07:5E:AB:5C:7E:6B:9E:E4:23:7B:18:61:34:CB:D0:06:91:3B
                 DirName:/C=DE/ST=STATE/L=CITY/O=ORG/OU=ORGUNIT/CN=RootCA
                 serial:67:63:F5:29:AF:44:BA:79:EF:DD:DC:BF:BB:AB:3E:36:22:B8:71:26

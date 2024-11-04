@@ -10,13 +10,16 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func TestParamsParsing(t *testing.T) {
 	args := []string{
 		"--replicas", "2",
-		"--backend", "kubectl",
 		"some-service",
+	}
+	if utils.KubernetesBuilt {
+		args = append(args, "--backend", "kubectl")
 	}
 
 	// Test function asserting that the args are properly parsed
@@ -24,8 +27,10 @@ func TestParamsParsing(t *testing.T) {
 		cmd *cobra.Command, args []string,
 	) error {
 		testutils.AssertEquals(t, "Error parsing --replicas", 2, flags.Replicas)
-		testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
 		testutils.AssertEquals(t, "Error parsing the service name", "some-service", args[0])
+		if utils.KubernetesBuilt {
+			testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
+		}
 		return nil
 	}
 

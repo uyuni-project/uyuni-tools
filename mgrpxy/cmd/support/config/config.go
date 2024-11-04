@@ -20,7 +20,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[configFlags]) 
 	configCmd := &cobra.Command{
 		Use:   "config",
 		Short: L("Extract configuration and logs"),
-		Long: L(`Extract the host or cluster configuration and logs as well as those from 
+		Long: L(`Extract the host or cluster configuration and logs as well as those from
 the containers for support to help debugging.`),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags configFlags

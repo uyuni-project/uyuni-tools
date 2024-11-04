@@ -18,7 +18,9 @@ func TestParamsParsing(t *testing.T) {
 		"--force",
 		"--purge-volumes",
 		"--purge-images",
-		"--backend", "kubectl",
+	}
+	if utils.KubernetesBuilt {
+		args = append(args, "--backend", "kubectl")
 	}
 
 	// Test function asserting that the args are properly parsed
@@ -28,7 +30,9 @@ func TestParamsParsing(t *testing.T) {
 		testutils.AssertTrue(t, "Error parsing --force", flags.Force)
 		testutils.AssertTrue(t, "Error parsing --purge-volumes", flags.Purge.Volumes)
 		testutils.AssertTrue(t, "Error parsing --purge-images", flags.Purge.Images)
-		testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
+		if utils.KubernetesBuilt {
+			testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
+		}
 		return nil
 	}
 

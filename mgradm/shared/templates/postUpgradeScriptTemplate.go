@@ -26,7 +26,7 @@ else
 	sed 's/pam_auth_service.*/pam_auth_service = susemanager/' -i /etc/rhn/rhn.conf;
 fi
 
-# (bsc#1231206) fix error happened during migration to 5.0.0. 
+# (bsc#1231206) fix error happened during migration to 5.0.0.
 if [ -f /var/lib/pgsql/data-pg14/pg_hba.conf ]; then
     echo "Migrating pgsql 14 pg_hba.conf to pgsql 16"
     cp /var/lib/pgsql/data-pg14/pg_hba.conf /var/lib/pgsql/data
