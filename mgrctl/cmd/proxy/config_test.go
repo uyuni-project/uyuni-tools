@@ -44,7 +44,7 @@ func TestParamsParsingGeneratedCert(t *testing.T) {
 	args = append(args,
 		"--ssl-ca-cert", "path/to/ca.crt",
 		"--ssl-ca-key", "path/to/ca.key",
-		"--ssl-ca-password", "path/to/ca.pass",
+		"--ssl-ca-password", "casecret",
 		"--ssl-email", "ssl@test.com",
 	)
 	args = append(args, flagstests.SSLGenerationFlagsTestArgs...)
@@ -63,7 +63,7 @@ func TestParamsParsingGeneratedCert(t *testing.T) {
 		flagstests.AssertSSLGenerationFlags(t, cmd, &flags.Ssl.SslCertGenerationFlags)
 		testutils.AssertEquals(t, "Unexpected SSL CA cert path", "path/to/ca.crt", flags.Ssl.Ca.Cert)
 		testutils.AssertEquals(t, "Unexpected SSL CA key path", "path/to/ca.key", flags.Ssl.Ca.Key)
-		testutils.AssertEquals(t, "Unexpected SSL CA password path", "path/to/ca.pass", flags.Ssl.Ca.Password)
+		testutils.AssertEquals(t, "Unexpected SSL CA password", "casecret", flags.Ssl.Ca.Password)
 		testutils.AssertEquals(t, "Unexpected SSL email", "ssl@test.com", flags.Ssl.Email)
 		return nil
 	}

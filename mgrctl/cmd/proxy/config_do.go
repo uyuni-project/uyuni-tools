@@ -115,9 +115,9 @@ func handleProxyConfigGenerate(
 
 	var caPasswordRead string
 	if flags.Ssl.Ca.Password == "" {
-		utils.AskPasswordIfMissingOnce(&caPasswordRead, L("Please enter "+caPassword), 0, 0)
+		utils.AskPasswordIfMissingOnce(&caPasswordRead, L("Please enter SSL CA password"), 0, 0)
 	} else {
-		caPasswordRead = string(utils.ReadFile(flags.Ssl.Ca.Password))
+		caPasswordRead = flags.Ssl.Ca.Password
 	}
 
 	// Prepare the request object & call the proxyConfigGenerate function
