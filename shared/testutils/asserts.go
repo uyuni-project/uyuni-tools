@@ -27,8 +27,8 @@ func AssertTrue(t *testing.T, message string, actual bool) {
 	}
 }
 
-// AssertHasAllFlags ensures that all the flags of a command are present in the args slice.
-func AssertHasAllFlags(t *testing.T, cmd *cobra.Command, args []string) {
+// AssertHasAllFlagsIgnores ensures that all but the ignored flags are present in the args slice.
+func AssertHasAllFlagsIgnores(t *testing.T, cmd *cobra.Command, args []string, ignored []string) {
 	// Some flags can be in the form --foo=bar, we only want to check the --foo part.
 	noValueArgs := []string{}
 	for _, arg := range args {
@@ -37,10 +37,15 @@ func AssertHasAllFlags(t *testing.T, cmd *cobra.Command, args []string) {
 
 	cmd.Flags().VisitAll(func(flag *pflag.Flag) {
 		flagString := "--" + flag.Name
-		if !contains(noValueArgs, flagString) {
+		if !contains(ignored, flagString) && !contains(noValueArgs, flagString) {
 			t.Error("Untested flag " + flagString)
 		}
 	})
+}
+
+// AssertHasAllFlags ensures that all the flags of a command are present in the args slice.
+func AssertHasAllFlags(t *testing.T, cmd *cobra.Command, args []string) {
+	AssertHasAllFlagsIgnores(t, cmd, args, []string{})
 }
 
 // contains is copied from utils to avoid to dependency loop.
