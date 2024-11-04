@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -43,14 +44,10 @@ func GetExposedPorts(debug bool) []types.PortMap {
 	return ports
 }
 
-// GenerateSystemdService creates a serverY systemd file.
-func GenerateSystemdService(tz string, image string, debug bool, mirrorPath string, podmanArgs []string) error {
-	ipv6Enabled, err := podman.SetupNetwork(false)
-	if err != nil {
-		return utils.Errorf(err, L("cannot setup network"))
-	}
+// GenerateServerSystemdService creates the server systemd service file.
+func GenerateServerSystemdService(mirrorPath string, debug bool) error {
+	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
 
-	log.Info().Msg(L("Enabling system service"))
 	args := podman.GetCommonParams()
 
 	if mirrorPath != "" {
@@ -71,8 +68,23 @@ func GenerateSystemdService(tz string, image string, debug bool, mirrorPath stri
 		Network:     podman.UyuniNetwork,
 		IPV6Enabled: ipv6Enabled,
 	}
-	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, false); err != nil {
+	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
+	}
+
+	return nil
+}
+
+// GenerateSystemdService creates a server systemd file.
+func GenerateSystemdService(tz string, image string, debug bool, mirrorPath string, podmanArgs []string) error {
+	err := podman.SetupNetwork(false)
+	if err != nil {
+		return utils.Errorf(err, L("cannot setup network"))
+	}
+
+	log.Info().Msg(L("Enabling system service"))
+	if err := GenerateServerSystemdService(mirrorPath, debug); err != nil {
+		return err
 	}
 
 	if err := podman.GenerateSystemdConfFile("uyuni-server", "generated.conf",
@@ -402,6 +414,10 @@ func Upgrade(
 	); err != nil {
 		return err
 	}
+
+	if err := updateServerSystemdService(); err != nil {
+		return err
+	}
 	log.Info().Msg(L("Waiting for the server to start…"))
 
 	err = coco.Upgrade(authFile, registry, cocoFlags, image,
@@ -417,6 +433,31 @@ func Upgrade(
 	}
 
 	return podman.ReloadDaemon(false)
+}
+
+var runCmdOutput = utils.RunCmdOutput
+
+func hasDebugPorts(definition []byte) bool {
+	return regexp.MustCompile(`-p 8003:8003`).Match(definition)
+}
+
+func getMirrorPath(definition []byte) string {
+	mirrorPath := ""
+	finder := regexp.MustCompile(`-v +([^:]+):/mirror[[:space:]]`)
+	submatches := finder.FindStringSubmatch(string(definition))
+	if len(submatches) == 2 {
+		mirrorPath = submatches[1]
+	}
+	return mirrorPath
+}
+
+func updateServerSystemdService() error {
+	out, err := runCmdOutput(zerolog.DebugLevel, "systemctl", "cat", podman.ServerService)
+	if err != nil {
+		return utils.Errorf(err, "failed to get %s systemd service definition", podman.ServerService)
+	}
+
+	return GenerateServerSystemdService(getMirrorPath(out), hasDebugPorts(out))
 }
 
 // Inspect check values on a given image and deploy.
