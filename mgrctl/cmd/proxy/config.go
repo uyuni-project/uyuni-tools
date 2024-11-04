@@ -101,12 +101,12 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[proxyCreateCon
   Create a proxy configuration file with generated certificates providing only required parameters and ca password
 
     $ mgrctl proxy create config --proxy-name="proxy.example.com" --proxy-parent="server.example.com" \
-		--proxy-email="admin@org.com" --ssl-ca-cert="ca.pem" --ssl-ca-key="caKey.pem" --ssl-ca-password="pass.txt"
+		--proxy-email="admin@org.com" --ssl-ca-cert="ca.pem" --ssl-ca-key="caKey.pem" --ssl-ca-password="secret"
 
   Create a proxy configuration file with generated certificates providing all parameters
 
     $ mgrctl proxy create config --proxy-name="proxy.example.com" --proxy-parent="server.example.com" \
-		--proxy-email="admin@org.com" --ssl-ca-cert="ca.pem" --ssl-ca-key="caKey.pem" --ssl-ca-password="pass.txt" \
+		--proxy-email="admin@org.com" --ssl-ca-cert="ca.pem" --ssl-ca-key="caKey.pem" --ssl-ca-password="secret" \
 		--ssl-cnames="proxy_a.example.com,proxy_b.example.com,proxy_c.example.com" --ssl-country="DE" \
 		--ssl-state="Bayern" --ssl-city="Nuernberg" --ssl-org="orgExample" --ssl-ou="orgUnitExample" \
 		--ssl-email="sslEmail@example.com" -o="proxy-config"
@@ -114,10 +114,19 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[proxyCreateCon
   or an alternative format:
 
 	$ mgrctl proxy create config --proxy-name="proxy.example.com" --proxy-parent="server.example.com" \
-		--proxy-email="admin@org.com" --ssl-ca-cert="ca.pem" --ssl-ca-key="caKey.pem" --ssl-ca-password="pass.txt" \
+		--proxy-email="admin@org.com" --ssl-ca-cert="ca.pem" --ssl-ca-key="caKey.pem" --ssl-ca-password="secret" \
 		--ssl-cnames="proxy_a.example.com" --ssl-cnames="proxy_b.example.com" --ssl-cnames="proxy_c.example.com" \
 		--ssl-country="DE" --ssl-state="Bayern" --ssl-city="Nuernberg" --ssl-org="orgExample" --ssl-ou="orgUnitExample" \
-		--ssl-email="sslEmail@example.com" -o="proxy-config"`,
+		--ssl-email="sslEmail@example.com" -o="proxy-config"
+
+  Note that passing the CA password using --ssl-ca-password is not secure, use --config config.yaml with config.yaml
+  containing the following as this will not persist in the shell history. Alternativaly the password can be defined in
+  an UYUNI_SSL_CA_PASSWORD environment variable.
+
+  ssl:
+    ca:
+	  password: secret
+  `,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags proxyCreateConfigFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
@@ -165,7 +174,7 @@ May be provided multiple times or separated by commas.`),
 
 	cmd.Flags().String(caKey, "", L("Path to the private key of the CA to use to generate a new proxy certificate."))
 	cmd.Flags().String(caPassword, "",
-		L("Path to a file containing the password of the CA private key, will be prompted if not passed."),
+		L("Password of the CA private key, will be prompted if not passed."),
 	)
 
 	// Login API flags

@@ -38,7 +38,6 @@ type TestFilePaths struct {
 	CaKeyFilePath           string
 	ProxyCrtFilePath        string
 	ProxyKeyFilePath        string
-	CaPwdFilePath           string
 	IntermediateCA1FilePath string
 	IntermediateCA2FilePath string
 }
@@ -62,7 +61,6 @@ func setupTestFiles(t *testing.T, testDir string) TestFilePaths {
 	caKeyFilePath := createTestFile(testDir, "caKey.pem", dummyCaKeyContents, t)
 	proxyCrtFilePath := createTestFile(testDir, "proxyCrt.pem", dummyProxyCrtContents, t)
 	proxyKeyFilePath := createTestFile(testDir, "proxyKey.txt", dummyProxyKeyContents, t)
-	caPwdFilePath := createTestFile(testDir, "pass.txt", dummyCaPasswordContents, t)
 	intermediateCA1FilePath := createTestFile(testDir, "intermediateCa1.pem", dummyIntermediateCA1Contents, t)
 	intermediateCA2FilePath := createTestFile(testDir, "intermediateCa2.pem", dummyIntermediateCA2Contents, t)
 
@@ -73,7 +71,6 @@ func setupTestFiles(t *testing.T, testDir string) TestFilePaths {
 		CaKeyFilePath:           caKeyFilePath,
 		ProxyCrtFilePath:        proxyCrtFilePath,
 		ProxyKeyFilePath:        proxyKeyFilePath,
-		CaPwdFilePath:           caPwdFilePath,
 		IntermediateCA1FilePath: intermediateCA1FilePath,
 		IntermediateCA2FilePath: intermediateCA2FilePath,
 	}
@@ -178,7 +175,7 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 					Cert: testFiles.CaCrtFilePath,
 					Key:  testFiles.CaKeyFilePath,
 				},
-				Password: testFiles.CaPwdFilePath,
+				Password: dummyCaPasswordContents,
 			},
 		},
 	}
@@ -311,7 +308,7 @@ func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing
 					Cert: testFiles.CaCrtFilePath,
 					Key:  testFiles.CaKeyFilePath,
 				},
-				Password: testFiles.CaPwdFilePath,
+				Password: dummyCaPasswordContents,
 			},
 		},
 	}
