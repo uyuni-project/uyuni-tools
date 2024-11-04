@@ -20,8 +20,7 @@ type podmanPTFFlags struct {
 	SCC        types.SCCCredentials
 }
 
-// NewCommand for podman installation.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanPTFFlags]) *cobra.Command {
 	podmanCmd := &cobra.Command{
 		Use: "podman",
 
@@ -36,11 +35,16 @@ NOTE: for now installing on a remote podman is not supported!
 		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanPTFFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, ptfForPodman)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 
 	utils.AddPTFFlag(podmanCmd)
 
 	return podmanCmd
+}
+
+// NewCommand for podman installation.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, ptfForPodman)
 }

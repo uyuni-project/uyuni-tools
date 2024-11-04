@@ -27,8 +27,7 @@ type logsFlags struct {
 	Since      string
 }
 
-// NewCommand to get the logs of the server.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[logsFlags]) *cobra.Command {
 	var flags logsFlags
 
 	cmd := &cobra.Command{
@@ -54,7 +53,7 @@ However, you can specify the pod and/or container names to get the logs for spec
     $ mgrpxy logs logs uyuni-proxy-httpd uyuni-proxy-ssh`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			flags.Containers = cmd.Flags().Args()
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, logs)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 		ValidArgsFunction: getContainerNames,
 	}
@@ -67,6 +66,11 @@ However, you can specify the pod and/or container names to get the logs for spec
 
 	cmd.SetUsageTemplate(cmd.UsageTemplate())
 	return cmd
+}
+
+// NewCommand to get the logs of the server.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, logs)
 }
 
 func logs(globalFlags *types.GlobalFlags, flags *logsFlags, cmd *cobra.Command, args []string) error {

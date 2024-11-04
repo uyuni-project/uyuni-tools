@@ -16,8 +16,7 @@ type startFlags struct {
 	Backend string
 }
 
-// NewCommand starts the server.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[startFlags]) *cobra.Command {
 	startCmd := &cobra.Command{
 		Use:     "start",
 		GroupID: "management",
@@ -26,7 +25,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Args:    cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags startFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, start)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 	startCmd.SetUsageTemplate(startCmd.UsageTemplate())
@@ -34,6 +33,11 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	utils.AddBackendFlag(startCmd)
 
 	return startCmd
+}
+
+// NewCommand starts the server.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, start)
 }
 
 func start(globalFlags *types.GlobalFlags, flags *startFlags, cmd *cobra.Command, args []string) error {

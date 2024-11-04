@@ -68,10 +68,7 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 
 	installCmd := install.NewCommand(globalFlags)
 	rootCmd.AddCommand(installCmd)
-	uninstallCmd, err := uninstall.NewCommand(globalFlags)
-	if err != nil {
-		return rootCmd, err
-	}
+	uninstallCmd := uninstall.NewCommand(globalFlags)
 	rootCmd.AddCommand(uninstallCmd)
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
 	rootCmd.AddCommand(cache.NewCommand(globalFlags))

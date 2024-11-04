@@ -61,8 +61,7 @@ Build-in product map:
 `)
 }
 
-// NewCommand command for distribution management.
-func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[flagpole]) (*cobra.Command, error) {
 	var flags flagpole
 
 	distroCmd := &cobra.Command{
@@ -87,7 +86,7 @@ If not set, distribution name is attempted to be autodetected:
 Note: API details are required for auto registration.`),
 		Aliases: []string{"cp"},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, distroCp)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 	cpCmd.Flags().String("channel", "", L("Set parent channel for the distribution."))
@@ -115,4 +114,9 @@ Note: API details are required for auto registration.`),
 	distroCmd.AddCommand(cpCmdHelp)
 
 	return distroCmd, nil
+}
+
+// NewCommand command for distribution management.
+func NewCommand(globalFlags *types.GlobalFlags) (*cobra.Command, error) {
+	return newCmd(globalFlags, distroCp)
 }
