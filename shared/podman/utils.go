@@ -68,6 +68,7 @@ func RunContainer(name string, image string, volumes []types.VolumeMount, extraA
 	for _, volume := range volumes {
 		podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath+":z")
 	}
+	podmanArgs = append(podmanArgs, "--network", UyuniNetwork)
 	podmanArgs = append(podmanArgs, image)
 	podmanArgs = append(podmanArgs, cmd...)
 
