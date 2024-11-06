@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2023 SUSE LLC
+SPDX-FileCopyrightText: 2023-2024 SUSE LLC
 
 SPDX-License-Identifier: Apache-2.0
 -->
@@ -53,6 +53,22 @@ For Look at a more details documentation at:
 https://github.com/uyuni-project/uyuni/tree/master/containers/doc/server-kubernetes
 
 # Development documentation
+
+## Install pre-commit hooks
+
+[pre-commit](https://pre-commit.com) helps validating the code before submitting it. Please install the hooks on your machine to enable them:
+
+```
+zypper in python3.XX-pre-commit
+./install-hooks.sh
+```
+
+There are two kind of hooks used in this project:
+
+* `pre-commit` ones are fast checks that are running on each commit.
+* `pre-push` ones are the lengthier ones like builds and unit tests and are only executed when pushing to a remote branch.
+
+The hooks can also all be run manually at any time with `pre-commit run -a`.
 
 ## Sign your Git commits
 
