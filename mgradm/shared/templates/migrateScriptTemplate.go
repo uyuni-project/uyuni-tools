@@ -53,6 +53,9 @@ done
 # No need to migrate zypper's cache
 echo "-/ /var/cache/zypp/**" >> exclude_list
 
+# Migrating the reposync cache files doesn't bring value and contains dangling symlinks (bsc#1231769)
+echo "-/ /var/cache/rhn/reposync/**" >> exclude_list
+
 # exclude mgr-sync configuration file, in this way it would be re-generated (bsc#1228685)
 echo "-/ /root/.mgr-sync" >> exclude_list
 
