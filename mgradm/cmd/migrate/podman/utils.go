@@ -60,6 +60,12 @@ func migrateToPodman(
 		return err
 	}
 
+	// Prepare Uyuni network, migration container needs to run in the same network as resulting image
+	err = podman_utils.SetupNetwork(false)
+	if err != nil {
+		return utils.Errorf(err, L("cannot setup network"))
+	}
+
 	// Find the SSH Socket and paths for the migration
 	sshAuthSocket := migration_shared.GetSSHAuthSocket()
 	sshConfigPath, sshKnownhostsPath := migration_shared.GetSSHPaths()
