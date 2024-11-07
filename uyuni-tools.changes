@@ -3,6 +3,7 @@ Wed Nov 06 20:39:30 CET 2024 - marina.latini@suse.com
 
 - version 0.1.26-0
   * Ignore all zypper caches during migration (bsc#1232769)
+  * Use the uyuni network for all podman containers (bsc#1232817)
 
 -------------------------------------------------------------------
 Wed Oct 30 22:57:38 CET 2024 - marina.latini@suse.com
