@@ -54,7 +54,7 @@ func migrateToPodman(globalFlags *types.GlobalFlags, flags *podmanMigrateFlags, 
 	}
 
 	// Prepare Uyuni network, migration container needs to run in the same network as resulting image
-	_, err = podman_utils.SetupNetwork(false)
+	err = podman_utils.SetupNetwork(false)
 	if err != nil {
 		return utils.Errorf(err, L("cannot setup network"))
 	}
