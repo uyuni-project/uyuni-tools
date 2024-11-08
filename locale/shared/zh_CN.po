@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-25 15:27+0200\n"
+"POT-Creation-Date: 2024-11-08 15:09+0100\n"
 "PO-Revision-Date: 2024-09-26 08:48+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -130,12 +130,12 @@ msgstr ""
 msgid "specified api server does not match with stored credentials"
 msgstr ""
 
-#: shared/api/org/createFirst.go:21
+#: shared/api/org/createFirst.go:22
 #, fuzzy
 msgid "unable to prepare API client"
 msgstr "无法创建登录数据"
 
-#: shared/api/org/createFirst.go:35
+#: shared/api/org/createFirst.go:36
 msgid "failed to create first user and organization"
 msgstr "无法创建第一个用户和组织"
 
@@ -300,8 +300,8 @@ msgstr "必须指定名称空间"
 
 #: shared/kubernetes/helm.go:77 shared/podman/network.go:108
 #: shared/podman/systemd.go:100 shared/podman/systemd.go:179
-#: shared/podman/systemd.go:180 shared/podman/utils.go:132
-#: shared/podman/utils.go:158
+#: shared/podman/systemd.go:180 shared/podman/utils.go:133
+#: shared/podman/utils.go:159
 #, javascript-format
 msgid "Would run %s"
 msgstr "将运行 %s"
@@ -361,7 +361,7 @@ msgstr "找不到运行 uyuni 的节点"
 msgid "cannot run inspect pod"
 msgstr "无法运行检查 pod"
 
-#: shared/kubernetes/k3s.go:137 shared/podman/utils.go:266
+#: shared/kubernetes/k3s.go:137 shared/podman/utils.go:267
 msgid "cannot inspect data"
 msgstr "无法检查数据"
 
@@ -574,11 +574,11 @@ msgstr "找不到与过滤器 %s 匹配的节点名称"
 msgid "cannot serialize pod definition override"
 msgstr "无法序列化 pod 定义覆盖"
 
-#: shared/podman/hostinspector.go:69
+#: shared/podman/hostinspector.go:67
 msgid "failed to run inspect script in host system"
 msgstr "无法在主机系统中运行检查脚本"
 
-#: shared/podman/hostinspector.go:74
+#: shared/podman/hostinspector.go:72
 msgid "cannot inspect host data"
 msgstr "无法检查主机数据"
 
@@ -725,8 +725,8 @@ msgstr "已去除网络"
 msgid "No systemd file to add to the archive"
 msgstr "没有可添加到存档中的 systemd 文件"
 
-#: shared/podman/support.go:40 shared/podman/support.go:90
-#: shared/podman/support.go:116
+#: shared/podman/support.go:40 shared/podman/support.go:94
+#: shared/podman/support.go:124
 #, javascript-format
 msgid "failed to run podman inspect %s"
 msgstr "无法运行 podman inspect %s"
@@ -741,8 +741,8 @@ msgstr "无法提取绑定到容器 %s 的配置文件"
 msgid "failed to run podman logs %s"
 msgstr "无法运行 podman logs %s"
 
-#: shared/podman/support.go:64 shared/podman/support.go:85
-#: shared/podman/support.go:104
+#: shared/podman/support.go:64 shared/podman/support.go:89
+#: shared/podman/support.go:112
 #, javascript-format
 msgid "failed to create %s file"
 msgstr "无法创建 %s 文件"
@@ -751,12 +751,22 @@ msgstr "无法创建 %s 文件"
 msgid "failed to run systemctl cat uyuni-*"
 msgstr "无法运行 systemctl cat uyuni-*"
 
-#: shared/podman/support.go:152
+#: shared/podman/support.go:85
+#, fuzzy
+msgid "failed to close inspect dump file"
+msgstr "无法关闭临时身份验证文件"
+
+#: shared/podman/support.go:108
+#, fuzzy
+msgid "failed to close bound files"
+msgstr "无法创建 %s 文件"
+
+#: shared/podman/support.go:160
 #, javascript-format
 msgid "failed create %s file"
 msgstr "无法创建 %s 文件"
 
-#: shared/podman/support.go:157
+#: shared/podman/support.go:165
 #, javascript-format
 msgid "failed to run journalctl -u %s"
 msgstr "无法运行 journalctl -u %s"
@@ -888,111 +898,206 @@ msgstr "要传递给 podman 的额外参数"
 msgid "failed to enable podman.socket unit"
 msgstr "无法启用 podman.socket 单元"
 
-#: shared/podman/utils.go:76
+#: shared/podman/utils.go:77
 #, javascript-format
 msgid "failed to run %s container"
 msgstr "无法运行 %s 容器"
 
-#: shared/podman/utils.go:87
+#: shared/podman/utils.go:88
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr "将会针对 ID 为 %[2]s 的容器运行 podman kill %[1]s"
 
-#: shared/podman/utils.go:88
+#: shared/podman/utils.go:89
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr "将会针对 ID 为 %[2]s 容器运行 podman remove %[1]s"
 
-#: shared/podman/utils.go:90
+#: shared/podman/utils.go:91
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr "针对 ID 为 %[2]s 的容器运行 podman kill %[1]s"
 
-#: shared/podman/utils.go:93
+#: shared/podman/utils.go:94
 msgid "Failed to kill the server"
 msgstr "无法终止服务器"
 
-#: shared/podman/utils.go:95
+#: shared/podman/utils.go:96
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr "针对 ID 为 %[2]s 的容器运行 podman remove %[1]s"
 
-#: shared/podman/utils.go:98
+#: shared/podman/utils.go:99
 msgid "Error removing container"
 msgstr "去除容器时出错"
 
-#: shared/podman/utils.go:103
+#: shared/podman/utils.go:104
 msgid "Container already removed"
 msgstr "容器已去除"
 
-#: shared/podman/utils.go:134 shared/podman/utils.go:160
+#: shared/podman/utils.go:135 shared/podman/utils.go:161
 #, javascript-format
 msgid "Run %s"
 msgstr "运行 %s"
 
-#: shared/podman/utils.go:137
+#: shared/podman/utils.go:138
 #, javascript-format
 msgid "Failed to remove image %s"
 msgstr "无法去除映像 %s"
 
-#: shared/podman/utils.go:172
+#: shared/podman/utils.go:173
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "卷 %s 挂载在外部,无法去除该目录"
 
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:240
 msgid "failed to login to registry.suse.com"
 msgstr "无法登录 registry.suse.com"
 
-#: shared/utils/cmd.go:56 shared/utils/cmd.go:57
+#: shared/ssl/flags.go:14
+msgid "SSL certificate cnames separated by commas"
+msgstr ""
+
+#: shared/ssl/flags.go:15
+msgid "SSL certificate country"
+msgstr ""
+
+#: shared/ssl/flags.go:16
+#, fuzzy
+msgid "SSL certificate state"
+msgstr "正在将 SSL CA 证书复制到主机"
+
+#: shared/ssl/flags.go:17
+msgid "SSL certificate city"
+msgstr ""
+
+#: shared/ssl/flags.go:18
+msgid "SSL certificate organization"
+msgstr ""
+
+#: shared/ssl/flags.go:19
+msgid "SSL certificate organization unit"
+msgstr ""
+
+#: shared/ssl/flags.go:21
+msgid "SSL Certificate Flags"
+msgstr ""
+
+#: shared/ssl/ssl.go:37
+#, fuzzy
+msgid "Failed to find a non-CA certificate"
+msgstr "找不到主目录"
+
+#: shared/ssl/ssl.go:76
+msgid "expected to find a certificate, got none"
+msgstr ""
+
+#: shared/ssl/ssl.go:82
+#, fuzzy, javascript-format
+msgid "Failed to read certificate file %s"
+msgstr "无法读取文件 %s"
+
+#: shared/ssl/ssl.go:118
+#, fuzzy
+msgid "Failed to extract data from certificate"
+msgstr "无法读取随机数据"
+
+#: shared/ssl/ssl.go:139
+#, fuzzy, javascript-format
+msgid "Failed to parse start date: %s\n"
+msgstr "无法创建 %s"
+
+#: shared/ssl/ssl.go:145
+#, fuzzy, javascript-format
+msgid "Failed to parse end date: %s\n"
+msgstr "无法创建 %s"
+
+#: shared/ssl/ssl.go:189
+msgid "No CA found"
+msgstr ""
+
+#: shared/ssl/ssl.go:196
+msgid "No CA found for server certificate"
+msgstr ""
+
+#: shared/ssl/ssl.go:205
+#, javascript-format
+msgid "Missing CA with subject hash %s"
+msgstr ""
+
+#: shared/ssl/ssl.go:226
+#, fuzzy
+msgid "server certificate is required"
+msgstr "必须提供值"
+
+#: shared/ssl/ssl.go:227
+#, fuzzy
+msgid "server key is required"
+msgstr "必须提供值"
+
+#: shared/ssl/ssl.go:239
+#, javascript-format
+msgid "%s file is not accessible"
+msgstr ""
+
+#: shared/ssl/ssl.go:247
+msgid "Source server SSL CA private key password"
+msgstr ""
+
+#: shared/ssl/ssl.go:254
+#, fuzzy
+msgid "Failed to convert CA private key to RSA"
+msgstr "无法将数据转换为 JSON"
+
+#: shared/utils/cmd.go:58 shared/utils/cmd.go:59
 msgid "failed to unmarshall configuration"
 msgstr "无法解组配置"
 
-#: shared/utils/cmd.go:68
+#: shared/utils/cmd.go:70
 #, fuzzy
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
 msgstr "用于访问容器的工具。可能的值为：'podman', 'podman-remote', 'kubectl'。默认会推测应使用哪个工具。"
 
-#: shared/utils/cmd.go:84
+#: shared/utils/cmd.go:86
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr "设置是否拉取映像。值可以是以下之一：'Never'、'IfNotPresent' 或 'Always'"
 
-#: shared/utils/cmd.go:89
+#: shared/utils/cmd.go:91
 msgid "PTF ID"
 msgstr "PTF ID"
 
-#: shared/utils/cmd.go:90
+#: shared/utils/cmd.go:92
 msgid "Test package ID"
 msgstr "测试软件包 ID"
 
-#: shared/utils/cmd.go:91
+#: shared/utils/cmd.go:93
 msgid "SCC user"
 msgstr "SCC 用户"
 
-#: shared/utils/cmd.go:109
+#: shared/utils/cmd.go:111
 msgid "Actually remove the server"
 msgstr "真正去除服务器"
 
-#: shared/utils/cmd.go:110
+#: shared/utils/cmd.go:112
 msgid "Also remove the volumes"
 msgstr "同时去除卷"
 
-#: shared/utils/cmd.go:111
+#: shared/utils/cmd.go:113
 msgid "Also remove the container images"
 msgstr "同时去除容器映像"
 
-#: shared/utils/config.go:38
+#: shared/utils/config.go:40
 #, javascript-format
 msgid "failed to parse configuration file %s"
 msgstr "无法分析配置文件 %s"
 
-#: shared/utils/config.go:51
+#: shared/utils/config.go:54
 msgid "Failed to find home directory"
 msgstr "找不到主目录"
 
-#: shared/utils/config.go:94
+#: shared/utils/config.go:97
 msgid "failed to bind %[1]s config to parameter %[2]s"
 msgstr "无法将 %[1]s 配置绑定到参数 %[2]s"
 
-#: shared/utils/config.go:106
+#: shared/utils/config.go:109
 msgid ""
 "Usage:{{if .Runnable}}\n"
 "  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}\n"
@@ -1054,24 +1159,25 @@ msgstr ""
 "\n"
 "有关命令的详细信息，请使用 \"{{.CommandPath}} [command] --help\"。{{end}}\n"
 
-#: shared/utils/config.go:140
+#: shared/utils/config.go:143
+#, fuzzy
 msgid ""
 "\n"
 "Configuration:\n"
 "\n"
 "  All the non-global flags can alternatively be passed as configuration.\n"
-"  \n"
+"\n"
 "  The configuration file is a YAML file with entries matching the flag name.\n"
 "  The name of a flag is the part after the '--' of the command line parameter.\n"
 "  Every '_' character in the flag name means a nested property.\n"
-"  \n"
+"\n"
 "  For instance the '--tz CEST' and '--ssl-password secret' will be mapped to\n"
 "  this YAML configuration:\n"
-"  \n"
+"\n"
 "    tz: CEST\n"
 "    ssl:\n"
 "      password: secret\n"
-"  \n"
+"\n"
 "  The configuration file will be searched in the following places and order:\n"
 "  · /etc/uyuni/uyuni-tools.yaml\n"
 "  · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}\n"
@@ -1083,12 +1189,12 @@ msgid ""
 "Environment variables:\n"
 "\n"
 "  All the non-global flags can also be passed as environment variables.\n"
-"  \n"
+"\n"
 "  The environment variable name is the flag name with '-' replaced by with '_'\n"
 "  and the {{ .EnvPrefix }} prefix.\n"
-"  \n"
+"\n"
 "  For example the '--tz CEST' flag will be mapped to '{{ .EnvPrefix }}_TZ'\n"
-"  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD' \n"
+"  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD'\n"
 msgstr ""
 "\n"
 "配置：\n"
@@ -1124,11 +1230,11 @@ msgstr ""
 "  例如，'--tz CEST' 标志对应于 '{{ .EnvPrefix }}_TZ'，\n"
 "  '--ssl-password' 标志对应于 '{{ .EnvPrefix }}_SSL_PASSWORD' \n"
 
-#: shared/utils/config.go:177
+#: shared/utils/config.go:180
 msgid "Help on configuration file and environment variables"
 msgstr "关于配置文件和环境变量的帮助"
 
-#: shared/utils/config.go:186
+#: shared/utils/config.go:189
 msgid "failed to compute config help command"
 msgstr "compute config 帮助命令失败"
 
@@ -1186,11 +1292,11 @@ msgstr "在命令输出中找不到主机 supportconfig Tar 包"
 msgid "supportconfig is not available on the host, skipping it"
 msgstr "无法在主机上使用 supportconfig，正在跳过"
 
-#: shared/utils/tar.go:47
+#: shared/utils/tar.go:48
 msgid "Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"
 msgstr "正在跳过在 %[2]s 文件中提取 %[1]s 的步骤，因为该文件在目标路径之外解析"
 
-#: shared/utils/tar.go:89
+#: shared/utils/tar.go:90
 #, javascript-format
 msgid "failed to write tar.gz to %s"
 msgstr "无法在 %s 中写入 tar.gz"
@@ -1247,103 +1353,108 @@ msgstr "无法读取输入"
 msgid "A value is required"
 msgstr "必须提供值"
 
-#: shared/utils/utils.go:205
+#: shared/utils/utils.go:207
 msgid "Registry %[1]s would be used instead of namespace %[2]s"
 msgstr "将使用注册表 %[1]s 而不是名称空间 %[2]s"
 
-#: shared/utils/utils.go:220 shared/utils/utils.go:246
+#: shared/utils/utils.go:222 shared/utils/utils.go:248
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "映像名称无效：%s"
 
-#: shared/utils/utils.go:224
+#: shared/utils/utils.go:226
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "%s 缺少标记"
 
-#: shared/utils/utils.go:232 shared/utils/utils.go:237
+#: shared/utils/utils.go:234 shared/utils/utils.go:239
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "计算的映像名称为 %s"
 
-#: shared/utils/utils.go:256
+#: shared/utils/utils.go:258
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "无法运行 %s"
 
-#: shared/utils/utils.go:265
+#: shared/utils/utils.go:267
 #, javascript-format
 msgid "cannot check content of %s"
 msgstr "无法检查 %s 的内容"
 
-#: shared/utils/utils.go:277
+#: shared/utils/utils.go:279
 #, javascript-format
 msgid "Cannot remove %s folder"
 msgstr "无法去除 %s 文件夹"
 
-#: shared/utils/utils.go:288
+#: shared/utils/utils.go:290
 #, javascript-format
 msgid "Failed to get %s file informations"
 msgstr "无法获取 %s 文件信息"
 
-#: shared/utils/utils.go:297
+#: shared/utils/utils.go:299
 #, javascript-format
 msgid "Failed to read file %s"
 msgstr "无法读取文件 %s"
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:315
 #, javascript-format
 msgid "Would remove file %s"
 msgstr "将去除文件 %s"
 
-#: shared/utils/utils.go:314
+#: shared/utils/utils.go:317
 #, javascript-format
 msgid "Removing file %s"
 msgstr "正在去除文件 %s"
 
-#: shared/utils/utils.go:316
+#: shared/utils/utils.go:319
 #, javascript-format
 msgid "Failed to remove file %s"
 msgstr "无法去除文件 %s"
 
-#: shared/utils/utils.go:326
+#: shared/utils/utils.go:329
 msgid "failed to create temporary directory"
 msgstr "无法创建临时目录"
 
-#: shared/utils/utils.go:335
+#: shared/utils/utils.go:333
+#, fuzzy
+msgid "failed to remove temporary directory"
+msgstr "无法创建临时目录"
+
+#: shared/utils/utils.go:343
 msgid "Failed to read random data"
 msgstr "无法读取随机数据"
 
-#: shared/utils/utils.go:356
+#: shared/utils/utils.go:364
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "从 %s 下载时出错"
 
-#: shared/utils/utils.go:362
+#: shared/utils/utils.go:370
 #, javascript-format
 msgid "bad status: %s"
 msgstr "不良状态：%s"
 
-#: shared/utils/utils.go:440
+#: shared/utils/utils.go:449
 msgid "failed to compute server FQDN"
 msgstr "无法计算服务器 FQDN"
 
-#: shared/utils/utils.go:454
+#: shared/utils/utils.go:463
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s 不是有效 FQDN"
 
-#: shared/utils/utils.go:458
+#: shared/utils/utils.go:467
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "无法解析 %s"
 
-#: shared/utils/utils.go:483
+#: shared/utils/utils.go:492
 #, fuzzy, javascript-format
 msgid "error creating file %s"
 msgstr "正在去除文件 %s"
 
-#: shared/utils/utils.go:488
+#: shared/utils/utils.go:497
 #, fuzzy, javascript-format
 msgid "error writing file %s"
 msgstr "正在去除文件 %s"

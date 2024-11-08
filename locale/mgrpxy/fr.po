@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-25 15:27+0200\n"
+"POT-Creation-Date: 2024-11-08 15:09+0100\n"
 "PO-Revision-Date: 2024-04-08 11:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -62,21 +62,21 @@ msgstr ""
 msgid "Administrator tools:"
 msgstr "Outil d'administration de proxy Uyuni"
 
-#: mgrpxy/cmd/cmd.go:62
+#: mgrpxy/cmd/cmd.go:61
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "Bienvenue à %s"
 
-#: mgrpxy/cmd/cmd.go:63
+#: mgrpxy/cmd/cmd.go:62
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "Exécution de la commande: %s"
 
-#: mgrpxy/cmd/cmd.go:67
+#: mgrpxy/cmd/cmd.go:66
 msgid "configuration file path"
 msgstr "chemin vers le fichier de configuration"
 
-#: mgrpxy/cmd/cmd.go:69
+#: mgrpxy/cmd/cmd.go:68
 msgid "application log level"
 msgstr "niveau de verbosité de l'application"
 
@@ -119,7 +119,7 @@ msgid "failed to extract configuration"
 msgstr "impossible d'extraire la configuration"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:69
-#: mgrpxy/shared/kubernetes/deploy.go:201
+#: mgrpxy/shared/kubernetes/deploy.go:205
 #, fuzzy
 msgid "cannot deploy proxy helm chart"
 msgstr "impossible de déployer le helm chart du proxy: %s"
@@ -256,7 +256,7 @@ msgstr "impossible d'extraire la configuration"
 
 #: mgrpxy/cmd/support/config/config.go:23
 msgid ""
-"Extract the host or cluster configuration and logs as well as those from \n"
+"Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
 msgstr ""
 
@@ -498,6 +498,11 @@ msgstr "impossible d'exécuter helm upgrade: %s"
 msgid "failed to write in file %s"
 msgstr "impossible de générer le fichier systemd: %s"
 
+#: mgrpxy/shared/kubernetes/deploy.go:185
+#, fuzzy
+msgid "failed to scale replicas to 1"
+msgstr "impossible de créer le répertoire temporaire: %s"
+
 #: mgrpxy/shared/podman/podman.go:45
 #, fuzzy
 msgid "cannot setup network"
@@ -605,10 +610,6 @@ msgstr ""
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "Tag pour le conteneur %sm remplace la valeur globale si définie"
-
-#, fuzzy
-#~ msgid "failed to create temporary directory"
-#~ msgstr "impossible de créer le répertoire temporaire: %s"
 
 #, fuzzy
 #~ msgid "failed to discover the cluster type"

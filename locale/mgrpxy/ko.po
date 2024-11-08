@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-25 15:27+0200\n"
+"POT-Creation-Date: 2024-11-08 15:09+0100\n"
 "PO-Revision-Date: 2024-09-26 12:48+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
@@ -60,21 +60,21 @@ msgstr "서버 관리:"
 msgid "Administrator tools:"
 msgstr "관리자 도구:"
 
-#: mgrpxy/cmd/cmd.go:62
+#: mgrpxy/cmd/cmd.go:61
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "%s 시작"
 
-#: mgrpxy/cmd/cmd.go:63
+#: mgrpxy/cmd/cmd.go:62
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "실행 중 명령: %s"
 
-#: mgrpxy/cmd/cmd.go:67
+#: mgrpxy/cmd/cmd.go:66
 msgid "configuration file path"
 msgstr "구성 파일 경로"
 
-#: mgrpxy/cmd/cmd.go:69
+#: mgrpxy/cmd/cmd.go:68
 msgid "application log level"
 msgstr "애플리케이션 로그 수준"
 
@@ -117,7 +117,7 @@ msgid "failed to extract configuration"
 msgstr "구성을 추출하지 못했습니다."
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:69
-#: mgrpxy/shared/kubernetes/deploy.go:201
+#: mgrpxy/shared/kubernetes/deploy.go:205
 msgid "cannot deploy proxy helm chart"
 msgstr "프록시 helm 차트를 배포할 수 없음"
 
@@ -253,8 +253,9 @@ msgid "Extract configuration and logs"
 msgstr "구성 및 로그 추출"
 
 #: mgrpxy/cmd/support/config/config.go:23
+#, fuzzy
 msgid ""
-"Extract the host or cluster configuration and logs as well as those from \n"
+"Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
 msgstr ""
 "호스트 또는 클러스터의 구성 및 로그와 컨테이너의 구성 및 로그를  \n"
@@ -489,6 +490,11 @@ msgstr "helm 업그레이드를 실행할 수 없음"
 msgid "failed to write in file %s"
 msgstr "%s 파일에 쓰지 못함"
 
+#: mgrpxy/shared/kubernetes/deploy.go:185
+#, fuzzy
+msgid "failed to scale replicas to 1"
+msgstr "임시 디렉토리를 만들지 못함"
+
 #: mgrpxy/shared/podman/podman.go:45
 msgid "cannot setup network"
 msgstr "네트워크를 설정할 수 없음"
@@ -590,9 +596,6 @@ msgstr "%s 컨테이너용 이미지"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
-
-#~ msgid "failed to create temporary directory"
-#~ msgstr "임시 디렉토리를 만들지 못함"
 
 #~ msgid "specify a private registry"
 #~ msgstr "개인 레지스트리 지정"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-25 15:27+0200\n"
+"POT-Creation-Date: 2024-11-08 15:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,21 +58,21 @@ msgstr ""
 msgid "Administrator tools:"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:62
+#: mgrpxy/cmd/cmd.go:61
 #, javascript-format
 msgid "Welcome to %s"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:63
+#: mgrpxy/cmd/cmd.go:62
 #, javascript-format
 msgid "Executing command: %s"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:67
+#: mgrpxy/cmd/cmd.go:66
 msgid "configuration file path"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:69
+#: mgrpxy/cmd/cmd.go:68
 msgid "application log level"
 msgstr ""
 
@@ -107,7 +107,7 @@ msgid "failed to extract configuration"
 msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:69
-#: mgrpxy/shared/kubernetes/deploy.go:201
+#: mgrpxy/shared/kubernetes/deploy.go:205
 msgid "cannot deploy proxy helm chart"
 msgstr ""
 
@@ -229,7 +229,7 @@ msgstr ""
 
 #: mgrpxy/cmd/support/config/config.go:23
 msgid ""
-"Extract the host or cluster configuration and logs as well as those from \n"
+"Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
 msgstr ""
 
@@ -432,6 +432,10 @@ msgstr ""
 #: mgrpxy/shared/kubernetes/deploy.go:142
 #, javascript-format
 msgid "failed to write in file %s"
+msgstr ""
+
+#: mgrpxy/shared/kubernetes/deploy.go:185
+msgid "failed to scale replicas to 1"
 msgstr ""
 
 #: mgrpxy/shared/podman/podman.go:45

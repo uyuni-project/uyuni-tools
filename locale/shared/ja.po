@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-25 15:27+0200\n"
+"POT-Creation-Date: 2024-11-08 15:09+0100\n"
 "PO-Revision-Date: 2024-09-26 12:48+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
@@ -130,12 +130,12 @@ msgstr ""
 msgid "specified api server does not match with stored credentials"
 msgstr ""
 
-#: shared/api/org/createFirst.go:21
+#: shared/api/org/createFirst.go:22
 #, fuzzy
 msgid "unable to prepare API client"
 msgstr "ログインデータを作成できません"
 
-#: shared/api/org/createFirst.go:35
+#: shared/api/org/createFirst.go:36
 msgid "failed to create first user and organization"
 msgstr "最初のユーザと組織の作成に失敗しました"
 
@@ -300,8 +300,8 @@ msgstr "ネームスペースが必要です"
 
 #: shared/kubernetes/helm.go:77 shared/podman/network.go:108
 #: shared/podman/systemd.go:100 shared/podman/systemd.go:179
-#: shared/podman/systemd.go:180 shared/podman/utils.go:132
-#: shared/podman/utils.go:158
+#: shared/podman/systemd.go:180 shared/podman/utils.go:133
+#: shared/podman/utils.go:159
 #, javascript-format
 msgid "Would run %s"
 msgstr "%s を実行します"
@@ -361,7 +361,7 @@ msgstr "uyuniを実行しているノードが見つかりません"
 msgid "cannot run inspect pod"
 msgstr "ポッドを検査できません"
 
-#: shared/kubernetes/k3s.go:137 shared/podman/utils.go:266
+#: shared/kubernetes/k3s.go:137 shared/podman/utils.go:267
 msgid "cannot inspect data"
 msgstr "データを検査できません"
 
@@ -574,11 +574,11 @@ msgstr "フィルタ %s に一致するノード名が見つかりません"
 msgid "cannot serialize pod definition override"
 msgstr "ポッド定義の上書きをシリアライズできません"
 
-#: shared/podman/hostinspector.go:69
+#: shared/podman/hostinspector.go:67
 msgid "failed to run inspect script in host system"
 msgstr "ホストシステムで検査スクリプトを実行できませんでした"
 
-#: shared/podman/hostinspector.go:74
+#: shared/podman/hostinspector.go:72
 msgid "cannot inspect host data"
 msgstr "ホストデータを検査できません"
 
@@ -725,8 +725,8 @@ msgstr "ネットワークが削除されました"
 msgid "No systemd file to add to the archive"
 msgstr "アーカイブに追加するsystemdファイルはありません"
 
-#: shared/podman/support.go:40 shared/podman/support.go:90
-#: shared/podman/support.go:116
+#: shared/podman/support.go:40 shared/podman/support.go:94
+#: shared/podman/support.go:124
 #, javascript-format
 msgid "failed to run podman inspect %s"
 msgstr "podman inspect %s の実行に失敗しました"
@@ -741,8 +741,8 @@ msgstr "コンテナ %s にバインドされた設定ファイルのフェッ�
 msgid "failed to run podman logs %s"
 msgstr "podman logs %sの実行に失敗しました"
 
-#: shared/podman/support.go:64 shared/podman/support.go:85
-#: shared/podman/support.go:104
+#: shared/podman/support.go:64 shared/podman/support.go:89
+#: shared/podman/support.go:112
 #, javascript-format
 msgid "failed to create %s file"
 msgstr "%s ファイルの作成に失敗しました"
@@ -751,12 +751,22 @@ msgstr "%s ファイルの作成に失敗しました"
 msgid "failed to run systemctl cat uyuni-*"
 msgstr "systemctl cat uyuni-*の実行に失敗しました"
 
-#: shared/podman/support.go:152
+#: shared/podman/support.go:85
+#, fuzzy
+msgid "failed to close inspect dump file"
+msgstr "一時認証ファイルを閉じることができませんでした"
+
+#: shared/podman/support.go:108
+#, fuzzy
+msgid "failed to close bound files"
+msgstr "%s ファイルの作成に失敗しました"
+
+#: shared/podman/support.go:160
 #, javascript-format
 msgid "failed create %s file"
 msgstr "%s ファイルの作成に失敗しました"
 
-#: shared/podman/support.go:157
+#: shared/podman/support.go:165
 #, javascript-format
 msgid "failed to run journalctl -u %s"
 msgstr "ournalctl -u %sの実行に失敗しました"
@@ -888,111 +898,206 @@ msgstr "podmanに渡す追加引数"
 msgid "failed to enable podman.socket unit"
 msgstr "podman.socketユニットの有効化に失敗しました"
 
-#: shared/podman/utils.go:76
+#: shared/podman/utils.go:77
 #, javascript-format
 msgid "failed to run %s container"
 msgstr "%s コンテナの実行に失敗しました"
 
-#: shared/podman/utils.go:87
+#: shared/podman/utils.go:88
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr "podman kill %[1]s を実行します (コンテナID %[2]s に対して)"
 
-#: shared/podman/utils.go:88
+#: shared/podman/utils.go:89
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr "podman remove %[1]s を実行します(コンテナID %[2]s に対して)"
 
-#: shared/podman/utils.go:90
+#: shared/podman/utils.go:91
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr "podman kill %[1]s を実行します(コンテナID %[2]s に対して)"
 
-#: shared/podman/utils.go:93
+#: shared/podman/utils.go:94
 msgid "Failed to kill the server"
 msgstr "サーバの強制終了に失敗しました"
 
-#: shared/podman/utils.go:95
+#: shared/podman/utils.go:96
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr "podman remove %[1]s を実行します(コンテナID %[2]s に対して)"
 
-#: shared/podman/utils.go:98
+#: shared/podman/utils.go:99
 msgid "Error removing container"
 msgstr "コンテナ削除エラー"
 
-#: shared/podman/utils.go:103
+#: shared/podman/utils.go:104
 msgid "Container already removed"
 msgstr "コンテナはすでに削除されています"
 
-#: shared/podman/utils.go:134 shared/podman/utils.go:160
+#: shared/podman/utils.go:135 shared/podman/utils.go:161
 #, javascript-format
 msgid "Run %s"
 msgstr "%s の実行"
 
-#: shared/podman/utils.go:137
+#: shared/podman/utils.go:138
 #, javascript-format
 msgid "Failed to remove image %s"
 msgstr "イメージ %s の削除に失敗しました"
 
-#: shared/podman/utils.go:172
+#: shared/podman/utils.go:173
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "ボリューム %s は外部にマウントされているため、ディレクトリを削除できません"
 
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:240
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.comへのログインに失敗しました"
 
-#: shared/utils/cmd.go:56 shared/utils/cmd.go:57
+#: shared/ssl/flags.go:14
+msgid "SSL certificate cnames separated by commas"
+msgstr ""
+
+#: shared/ssl/flags.go:15
+msgid "SSL certificate country"
+msgstr ""
+
+#: shared/ssl/flags.go:16
+#, fuzzy
+msgid "SSL certificate state"
+msgstr "ホストへのSSL CA証明書のコピー"
+
+#: shared/ssl/flags.go:17
+msgid "SSL certificate city"
+msgstr ""
+
+#: shared/ssl/flags.go:18
+msgid "SSL certificate organization"
+msgstr ""
+
+#: shared/ssl/flags.go:19
+msgid "SSL certificate organization unit"
+msgstr ""
+
+#: shared/ssl/flags.go:21
+msgid "SSL Certificate Flags"
+msgstr ""
+
+#: shared/ssl/ssl.go:37
+#, fuzzy
+msgid "Failed to find a non-CA certificate"
+msgstr "ホームディレクトリの検索に失敗しました"
+
+#: shared/ssl/ssl.go:76
+msgid "expected to find a certificate, got none"
+msgstr ""
+
+#: shared/ssl/ssl.go:82
+#, fuzzy, javascript-format
+msgid "Failed to read certificate file %s"
+msgstr "ファイル %s の読み込みに失敗しました"
+
+#: shared/ssl/ssl.go:118
+#, fuzzy
+msgid "Failed to extract data from certificate"
+msgstr "ランダムデータの読み込みに失敗しました"
+
+#: shared/ssl/ssl.go:139
+#, fuzzy, javascript-format
+msgid "Failed to parse start date: %s\n"
+msgstr "%s の作成に失敗しました"
+
+#: shared/ssl/ssl.go:145
+#, fuzzy, javascript-format
+msgid "Failed to parse end date: %s\n"
+msgstr "%s の作成に失敗しました"
+
+#: shared/ssl/ssl.go:189
+msgid "No CA found"
+msgstr ""
+
+#: shared/ssl/ssl.go:196
+msgid "No CA found for server certificate"
+msgstr ""
+
+#: shared/ssl/ssl.go:205
+#, javascript-format
+msgid "Missing CA with subject hash %s"
+msgstr ""
+
+#: shared/ssl/ssl.go:226
+#, fuzzy
+msgid "server certificate is required"
+msgstr "値が必要がです"
+
+#: shared/ssl/ssl.go:227
+#, fuzzy
+msgid "server key is required"
+msgstr "値が必要がです"
+
+#: shared/ssl/ssl.go:239
+#, javascript-format
+msgid "%s file is not accessible"
+msgstr ""
+
+#: shared/ssl/ssl.go:247
+msgid "Source server SSL CA private key password"
+msgstr ""
+
+#: shared/ssl/ssl.go:254
+#, fuzzy
+msgid "Failed to convert CA private key to RSA"
+msgstr "データをJSONに変換できません"
+
+#: shared/utils/cmd.go:58 shared/utils/cmd.go:59
 msgid "failed to unmarshall configuration"
 msgstr "設定のアンマーシャルに失敗しました"
 
-#: shared/utils/cmd.go:68
+#: shared/utils/cmd.go:70
 #, fuzzy
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
 msgstr "コンテナに到達するために使用するツール。指定できる値:「 podman」、「podman-remote」、「kubectl」。デフォルトではどれを使用するかを推測します。"
 
-#: shared/utils/cmd.go:84
+#: shared/utils/cmd.go:86
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr "イメージをプルするかどうかを設定します。値は 「Never」、 「IfNotPresent」、または 「Always」のいずれかになります"
 
-#: shared/utils/cmd.go:89
+#: shared/utils/cmd.go:91
 msgid "PTF ID"
 msgstr "PTF ID"
 
-#: shared/utils/cmd.go:90
+#: shared/utils/cmd.go:92
 msgid "Test package ID"
 msgstr "テストパッケージID"
 
-#: shared/utils/cmd.go:91
+#: shared/utils/cmd.go:93
 msgid "SCC user"
 msgstr "SCCユーザ"
 
-#: shared/utils/cmd.go:109
+#: shared/utils/cmd.go:111
 msgid "Actually remove the server"
 msgstr "実際にサーバを削除する"
 
-#: shared/utils/cmd.go:110
+#: shared/utils/cmd.go:112
 msgid "Also remove the volumes"
 msgstr "ボリュームも削除する"
 
-#: shared/utils/cmd.go:111
+#: shared/utils/cmd.go:113
 msgid "Also remove the container images"
 msgstr "コンテナイメージも削除する"
 
-#: shared/utils/config.go:38
+#: shared/utils/config.go:40
 #, javascript-format
 msgid "failed to parse configuration file %s"
 msgstr "設定ファイル %s の解析に失敗しました"
 
-#: shared/utils/config.go:51
+#: shared/utils/config.go:54
 msgid "Failed to find home directory"
 msgstr "ホームディレクトリの検索に失敗しました"
 
-#: shared/utils/config.go:94
+#: shared/utils/config.go:97
 msgid "failed to bind %[1]s config to parameter %[2]s"
 msgstr "%[1]s 設定をパラメータ %[2]s にバインドできませんでした"
 
-#: shared/utils/config.go:106
+#: shared/utils/config.go:109
 msgid ""
 "Usage:{{if .Runnable}}\n"
 "  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}\n"
@@ -1054,24 +1159,25 @@ msgstr ""
 "\n"
 "コマンドの詳細については、「{{.CommandPath}} [command] --help」を使用してください。{{end}}\n"
 
-#: shared/utils/config.go:140
+#: shared/utils/config.go:143
+#, fuzzy
 msgid ""
 "\n"
 "Configuration:\n"
 "\n"
 "  All the non-global flags can alternatively be passed as configuration.\n"
-"  \n"
+"\n"
 "  The configuration file is a YAML file with entries matching the flag name.\n"
 "  The name of a flag is the part after the '--' of the command line parameter.\n"
 "  Every '_' character in the flag name means a nested property.\n"
-"  \n"
+"\n"
 "  For instance the '--tz CEST' and '--ssl-password secret' will be mapped to\n"
 "  this YAML configuration:\n"
-"  \n"
+"\n"
 "    tz: CEST\n"
 "    ssl:\n"
 "      password: secret\n"
-"  \n"
+"\n"
 "  The configuration file will be searched in the following places and order:\n"
 "  · /etc/uyuni/uyuni-tools.yaml\n"
 "  · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}\n"
@@ -1083,12 +1189,12 @@ msgid ""
 "Environment variables:\n"
 "\n"
 "  All the non-global flags can also be passed as environment variables.\n"
-"  \n"
+"\n"
 "  The environment variable name is the flag name with '-' replaced by with '_'\n"
 "  and the {{ .EnvPrefix }} prefix.\n"
-"  \n"
+"\n"
 "  For example the '--tz CEST' flag will be mapped to '{{ .EnvPrefix }}_TZ'\n"
-"  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD' \n"
+"  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD'\n"
 msgstr ""
 "\n"
 "設定:\n"
@@ -1122,11 +1228,11 @@ msgstr ""
 "  たとえば、「--tz CEST」フラグは「{{ .EnvPrefix }}_TZ」にマップされ、\n"
 "  「--ssl-password」フラグは「{{ .EnvPrefix }}_SSL_PASSWORD」にマップされます。 \n"
 
-#: shared/utils/config.go:177
+#: shared/utils/config.go:180
 msgid "Help on configuration file and environment variables"
 msgstr "設定ファイルと環境変数のヘルプ"
 
-#: shared/utils/config.go:186
+#: shared/utils/config.go:189
 msgid "failed to compute config help command"
 msgstr "config helpコマンドの計算に失敗しました"
 
@@ -1184,11 +1290,11 @@ msgstr "コマンド出力からホストのsupportconfig tarballが見つかり
 msgid "supportconfig is not available on the host, skipping it"
 msgstr "supportconfigはホストで利用できないため、スキップします"
 
-#: shared/utils/tar.go:47
+#: shared/utils/tar.go:48
 msgid "Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"
 msgstr "ターゲットパスの外部で解決されるため、%[1]s ( %[2]s ファイル内)の抽出をスキップします"
 
-#: shared/utils/tar.go:89
+#: shared/utils/tar.go:90
 #, javascript-format
 msgid "failed to write tar.gz to %s"
 msgstr "tar.gzの %s への書き込みに失敗しました"
@@ -1245,103 +1351,108 @@ msgstr "入力の読み込みに失敗しました"
 msgid "A value is required"
 msgstr "値が必要がです"
 
-#: shared/utils/utils.go:205
+#: shared/utils/utils.go:207
 msgid "Registry %[1]s would be used instead of namespace %[2]s"
 msgstr "ネームスペース %[2]s のかわりにレジストリ %[1]s が使用されます"
 
-#: shared/utils/utils.go:220 shared/utils/utils.go:246
+#: shared/utils/utils.go:222 shared/utils/utils.go:248
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "無効なイメージ名: %s"
 
-#: shared/utils/utils.go:224
+#: shared/utils/utils.go:226
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "タグが %s で見つかりません"
 
-#: shared/utils/utils.go:232 shared/utils/utils.go:237
+#: shared/utils/utils.go:234 shared/utils/utils.go:239
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "計算されたイメージ名は %s です"
 
-#: shared/utils/utils.go:256
+#: shared/utils/utils.go:258
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "%s の実行に失敗しました"
 
-#: shared/utils/utils.go:265
+#: shared/utils/utils.go:267
 #, javascript-format
 msgid "cannot check content of %s"
 msgstr "%s の内容を確認できません"
 
-#: shared/utils/utils.go:277
+#: shared/utils/utils.go:279
 #, javascript-format
 msgid "Cannot remove %s folder"
 msgstr "%s フォルダを削除できません"
 
-#: shared/utils/utils.go:288
+#: shared/utils/utils.go:290
 #, javascript-format
 msgid "Failed to get %s file informations"
 msgstr "%s ファイル情報の取得に失敗しました"
 
-#: shared/utils/utils.go:297
+#: shared/utils/utils.go:299
 #, javascript-format
 msgid "Failed to read file %s"
 msgstr "ファイル %s の読み込みに失敗しました"
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:315
 #, javascript-format
 msgid "Would remove file %s"
 msgstr "ファイル %s を削除します"
 
-#: shared/utils/utils.go:314
+#: shared/utils/utils.go:317
 #, javascript-format
 msgid "Removing file %s"
 msgstr "ファイル %s を削除中"
 
-#: shared/utils/utils.go:316
+#: shared/utils/utils.go:319
 #, javascript-format
 msgid "Failed to remove file %s"
 msgstr "ファイル %s の削除に失敗しました"
 
-#: shared/utils/utils.go:326
+#: shared/utils/utils.go:329
 msgid "failed to create temporary directory"
 msgstr "一時ディレクトリの作成に失敗しました"
 
-#: shared/utils/utils.go:335
+#: shared/utils/utils.go:333
+#, fuzzy
+msgid "failed to remove temporary directory"
+msgstr "一時ディレクトリの作成に失敗しました"
+
+#: shared/utils/utils.go:343
 msgid "Failed to read random data"
 msgstr "ランダムデータの読み込みに失敗しました"
 
-#: shared/utils/utils.go:356
+#: shared/utils/utils.go:364
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "%s からのダウンロードでエラーが発生しました"
 
-#: shared/utils/utils.go:362
+#: shared/utils/utils.go:370
 #, javascript-format
 msgid "bad status: %s"
 msgstr "不良ステータス: %s"
 
-#: shared/utils/utils.go:440
+#: shared/utils/utils.go:449
 msgid "failed to compute server FQDN"
 msgstr "サーバFQDNの計算に失敗しました"
 
-#: shared/utils/utils.go:454
+#: shared/utils/utils.go:463
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s は有効なFQDNではありません"
 
-#: shared/utils/utils.go:458
+#: shared/utils/utils.go:467
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "%s を解決できません"
 
-#: shared/utils/utils.go:483
+#: shared/utils/utils.go:492
 #, fuzzy, javascript-format
 msgid "error creating file %s"
 msgstr "ファイル %s を削除中"
 
-#: shared/utils/utils.go:488
+#: shared/utils/utils.go:497
 #, fuzzy, javascript-format
 msgid "error writing file %s"
 msgstr "ファイル %s を削除中"
