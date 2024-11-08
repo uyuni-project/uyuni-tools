@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:19+0200\n"
+"POT-Creation-Date: 2024-11-08 15:18+0100\n"
 "PO-Revision-Date: 2024-04-08 14:10+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -118,12 +118,12 @@ msgstr "chemin vers le fichier de configuration"
 msgid "application log level"
 msgstr "niveau de verbosité de l'application"
 
-#: mgrctl/cmd/cmd.go:46
+#: mgrctl/cmd/cmd.go:45
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "Bienvenue à %s"
 
-#: mgrctl/cmd/cmd.go:47
+#: mgrctl/cmd/cmd.go:46
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "Exécution de la commande: %s"
@@ -168,20 +168,20 @@ msgstr "Passer l'entrée standard au conteneur"
 msgid "Stdin is a TTY"
 msgstr "L'entrée standard est un TTY"
 
-#: mgrctl/cmd/exec/exec.go:98
+#: mgrctl/cmd/exec/exec.go:102
 msgid "Command failed"
 msgstr "La commande a échoué"
 
-#: mgrctl/cmd/exec/exec.go:102
+#: mgrctl/cmd/exec/exec.go:106
 msgid "Command returned with exit code 0"
 msgstr "La commande a été exécutée avec un code de retour de 0"
 
-#: mgrctl/cmd/exec/exec.go:116
+#: mgrctl/cmd/exec/exec.go:120
 #, fuzzy
 msgid "cannot write"
 msgstr "impossible d'écrire: %s"
 
-#: mgrctl/cmd/exec/exec.go:132
+#: mgrctl/cmd/exec/exec.go:136
 #, fuzzy, javascript-format
 msgid "Running %s"
 msgstr "Exécution: %s %s"

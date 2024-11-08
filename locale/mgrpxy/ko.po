@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:19+0200\n"
+"POT-Creation-Date: 2024-11-08 15:18+0100\n"
 "PO-Revision-Date: 2024-09-26 13:48+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy-5-0/ko/>\n"
@@ -22,11 +22,17 @@ msgstr ""
 msgid "Clear the cache"
 msgstr "캐시 지우기"
 
-#: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/cache/podman.go:25
+#: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/restart/kubernetes.go:25
+#: mgrpxy/cmd/start/kubernetes.go:25 mgrpxy/cmd/stop/kubernetes.go:25
+#, fuzzy
+msgid "failed retrieving namespace"
+msgstr "%s 파일에 쓰지 못함"
+
+#: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:25
 msgid "failed to remove cached data"
 msgstr "캐시 데이터 제거 실패"
 
-#: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:29
+#: mgrpxy/cmd/cache/kubernetes.go:33 mgrpxy/cmd/cache/podman.go:29
 msgid "failed to re-create the cache directories"
 msgstr "캐시 디렉토리 재생성 실패"
 
@@ -54,21 +60,21 @@ msgstr "서버 관리:"
 msgid "Administrator tools:"
 msgstr "관리자 도구:"
 
-#: mgrpxy/cmd/cmd.go:62
+#: mgrpxy/cmd/cmd.go:61
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "%s 시작"
 
-#: mgrpxy/cmd/cmd.go:63
+#: mgrpxy/cmd/cmd.go:62
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "실행 중 명령: %s"
 
-#: mgrpxy/cmd/cmd.go:67
+#: mgrpxy/cmd/cmd.go:66
 msgid "configuration file path"
 msgstr "구성 파일 경로"
 
-#: mgrpxy/cmd/cmd.go:68
+#: mgrpxy/cmd/cmd.go:67
 msgid "application log level"
 msgstr "애플리케이션 로그 수준"
 
@@ -106,26 +112,20 @@ msgstr ""
 msgid "install %s before running this command"
 msgstr "이 명령을 실행하기 전 %s 설치"
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:35
-#: mgrpxy/cmd/support/config/extractor.go:22
-#: mgrpxy/shared/kubernetes/deploy.go:159
-msgid "failed to create temporary directory"
-msgstr "임시 디렉토리를 만들지 못함"
-
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
 msgid "failed to extract configuration"
 msgstr "구성을 추출하지 못했습니다."
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:62
-#: mgrpxy/shared/kubernetes/deploy.go:184
+#: mgrpxy/cmd/install/kubernetes/utils.go:67
+#: mgrpxy/shared/kubernetes/deploy.go:201
 msgid "cannot deploy proxy helm chart"
 msgstr "프록시 helm 차트를 배포할 수 없음"
 
-#: mgrpxy/cmd/install/podman/podman.go:21
+#: mgrpxy/cmd/install/podman/podman.go:20
 msgid "Install a new proxy on podman"
 msgstr "podman에 새 프록시 설치"
 
-#: mgrpxy/cmd/install/podman/podman.go:22
+#: mgrpxy/cmd/install/podman/podman.go:21
 msgid ""
 "Install a new proxy on podman\n"
 "\n"
@@ -145,7 +145,7 @@ msgstr ""
 "\n"
 "참고: 현재 원격 podman에 설치하는 기능은 지원되지 않습니다.\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:217
+#: mgrpxy/cmd/install/podman/utils.go:32 mgrpxy/shared/podman/podman.go:219
 msgid "install podman before running this command"
 msgstr "이 명령을 실행하기 전 podman 설치"
 
@@ -154,15 +154,25 @@ msgstr "이 명령을 실행하기 전 podman 설치"
 msgid "failed to extract proxy config from %s file"
 msgstr "%s 파일에서 프록시 구성을 추출하지 못함"
 
-#: mgrpxy/cmd/install/podman/utils.go:47 mgrpxy/shared/podman/podman.go:230
+#: mgrpxy/cmd/install/podman/utils.go:47 mgrpxy/shared/podman/podman.go:232
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.com에 로그인하지 못했습니다."
 
-#: mgrpxy/cmd/logs/logs.go:36
+#: mgrpxy/cmd/logs/kubernetes.go:29
+#, fuzzy
+msgid "failed to find proxy pod"
+msgstr "uyuni-proxy 배포 네임스페이스를 찾지 못함"
+
+#: mgrpxy/cmd/logs/kubernetes.go:33
+#, fuzzy
+msgid "failed to find proxy deployment namespace"
+msgstr "uyuni-proxy 배포 네임스페이스를 찾지 못함"
+
+#: mgrpxy/cmd/logs/logs.go:35
 msgid "Get the proxy logs"
 msgstr "프록시 로그 가져오기"
 
-#: mgrpxy/cmd/logs/logs.go:37
+#: mgrpxy/cmd/logs/logs.go:36
 msgid ""
 "Get the proxy logs\n"
 "The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman\n"
@@ -172,27 +182,27 @@ msgstr ""
 "이 명령은 설치된 백엔드를 자동으로 감지하고 Kubernetes 또는 Podman에서 관리하는 컨테이너의 로그를 표시합니다.\n"
 "그러나 특정 컨테이너에 대한 로그를 가져오기 위해 Pod 및/또는 컨테이너의 이름을 지정할 수 있습니다. 자세한 내용은 예제를 참조하십시오."
 
-#: mgrpxy/cmd/logs/logs.go:62
+#: mgrpxy/cmd/logs/logs.go:61
 msgid "specify if logs should be followed"
 msgstr "로그를 따라야 하는지 지정"
 
-#: mgrpxy/cmd/logs/logs.go:63
+#: mgrpxy/cmd/logs/logs.go:62
 msgid "show timestamps in the log outputs"
 msgstr "로그 출력에 타임스탬프 표시"
 
-#: mgrpxy/cmd/logs/logs.go:64
+#: mgrpxy/cmd/logs/logs.go:63
 msgid "number of lines to show from the end of the logs"
 msgstr "로그의 끝에서 표시할 줄 수"
 
-#: mgrpxy/cmd/logs/logs.go:66
+#: mgrpxy/cmd/logs/logs.go:65
 msgid "show logs since a specific time or duration. Supports Go duration strings and RFC3339 format (e.g. 5s, 2m, 3h, 2023-01-02T15:04:05)"
 msgstr "특정 시간 또는 기간 이후의 로그를 표시합니다. Go 기간 문자열 및 RFC3339 형식 지원(예: 5s, 2m, 3h, 2023-01-02T15:04:05)"
 
-#: mgrpxy/cmd/restart/restart.go:24 mgrpxy/cmd/restart/restart.go:25
+#: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
 msgstr "프록시 다시 시작"
 
-#: mgrpxy/cmd/start/start.go:24 mgrpxy/cmd/start/start.go:25
+#: mgrpxy/cmd/start/start.go:23 mgrpxy/cmd/start/start.go:24
 msgid "Start the proxy"
 msgstr "프록시 시작"
 
@@ -221,23 +231,23 @@ msgstr "서비스 %s의 상태를 가져오지 못했습니다."
 msgid "failed to get the status of at least one service"
 msgstr "하나 이상의 서비스 상태를 가져오지 못했습니다."
 
-#: mgrpxy/cmd/status/status.go:25 mgrpxy/cmd/status/status.go:26
+#: mgrpxy/cmd/status/status.go:24 mgrpxy/cmd/status/status.go:25
 msgid "Get the proxy status"
 msgstr "프록시 상태 가져오기"
 
-#: mgrpxy/cmd/status/status.go:47
+#: mgrpxy/cmd/status/status.go:51
 msgid "no installed proxy detected"
 msgstr "설치된 프록시가 감지되지 않음"
 
-#: mgrpxy/cmd/stop/stop.go:24 mgrpxy/cmd/stop/stop.go:25
+#: mgrpxy/cmd/stop/stop.go:23 mgrpxy/cmd/stop/stop.go:24
 msgid "Stop the proxy"
 msgstr "프록시 중지"
 
-#: mgrpxy/cmd/support/config/config.go:23
+#: mgrpxy/cmd/support/config/config.go:22
 msgid "Extract configuration and logs"
 msgstr "구성 및 로그 추출"
 
-#: mgrpxy/cmd/support/config/config.go:24
+#: mgrpxy/cmd/support/config/config.go:23
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from \n"
 "the containers for support to help debugging."
@@ -245,15 +255,15 @@ msgstr ""
 "호스트 또는 클러스터의 구성 및 로그와 컨테이너의 구성 및 로그를  \n"
 "추출하여 디버깅에 도움이 되도록 지원하십시오."
 
-#: mgrpxy/cmd/support/config/config.go:32
+#: mgrpxy/cmd/support/config/config.go:31
 msgid "path where to extract the data"
 msgstr "데이터 추출 경로"
 
-#: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:25
+#: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:24
 msgid "Install a PTF or Test package on a kubernetes cluster"
 msgstr "Kubernetes 클러스터에 PTF 또는 테스트 패키지 설치"
 
-#: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:26
+#: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:25
 msgid ""
 "Install a PTR of Test package on a kubernetes cluster\n"
 "\n"
@@ -276,11 +286,11 @@ msgstr ""
 "\n"
 "참고: 원격 클러스터에 설치하는 기능은 아직 지원되지 않습니다.\n"
 
-#: mgrpxy/cmd/support/ptf/podman/podman.go:30
+#: mgrpxy/cmd/support/ptf/podman/podman.go:29
 msgid "Install a PTF or Test package on podman"
 msgstr "podman에 PTF 또는 테스트 패키지 설치"
 
-#: mgrpxy/cmd/support/ptf/podman/podman.go:31
+#: mgrpxy/cmd/support/ptf/podman/podman.go:30
 #, fuzzy
 msgid ""
 "Install a PTF or Test package on podman\n"
@@ -392,11 +402,11 @@ msgstr "설치 제거된 항목이 없습니다. 실제로 설치를 제거하�
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr "데이터가 보관된 경우, podman volume 명령을 사용하여 볼륨을 지우십시오."
 
-#: mgrpxy/cmd/uninstall/uninstall.go:21
+#: mgrpxy/cmd/uninstall/uninstall.go:20
 msgid "Uninstall a proxy"
 msgstr "프록시 제거"
 
-#: mgrpxy/cmd/uninstall/uninstall.go:22
+#: mgrpxy/cmd/uninstall/uninstall.go:21
 msgid ""
 "Uninstall a proxy and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
@@ -404,11 +414,11 @@ msgstr ""
 "프록시 및 선택 사항으로 해당 볼륨을 제거합니다.\n"
 "기본적으로 수행되는 작업만 인쇄하고 실제로 제거하려면 --force를 사용합니다."
 
-#: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:20
+#: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:19
 msgid "Upgrade a proxy on a running kubernetes cluster"
 msgstr "실행 중인 Kubernetes 클러스터에서 프록시 업그레이드"
 
-#: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:21
+#: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:20
 msgid ""
 "Upgrade a proxy on a running kubernetes cluster.\n"
 "\n"
@@ -422,11 +432,11 @@ msgstr ""
 "\n"
 "참고: 현재 원격 Kubernetes 클러스터에서의 업그레이드는 지원되지 않습니다.\n"
 
-#: mgrpxy/cmd/upgrade/podman/podman.go:21
+#: mgrpxy/cmd/upgrade/podman/podman.go:20
 msgid "Upgrade a proxy on podman"
 msgstr "podman에서 프록시 업그레이드"
 
-#: mgrpxy/cmd/upgrade/podman/podman.go:22
+#: mgrpxy/cmd/upgrade/podman/podman.go:21
 msgid ""
 "Upgrade a proxy on podman\n"
 "\n"
@@ -479,53 +489,53 @@ msgstr "%s 파일에 쓰지 못함"
 msgid "cannot setup network"
 msgstr "네트워크를 설정할 수 없음"
 
-#: mgrpxy/shared/podman/podman.go:40
+#: mgrpxy/shared/podman/podman.go:42
 msgid "Generating systemd services"
 msgstr "systemd 서비스 생성"
 
-#: mgrpxy/shared/podman/podman.go:133
+#: mgrpxy/shared/podman/podman.go:135
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "systemd 파일 '%s' 생성 실패"
 
-#: mgrpxy/shared/podman/podman.go:139
+#: mgrpxy/shared/podman/podman.go:141
 msgid "cannot generate systemd conf file"
 msgstr "systemd conf 파일을 생성할 수 없음"
 
-#: mgrpxy/shared/podman/podman.go:145
+#: mgrpxy/shared/podman/podman.go:147
 msgid "cannot generate systemd conf user configuration file"
 msgstr "systemd conf 사용자 구성 파일을 생성할 수 없음"
 
-#: mgrpxy/shared/podman/podman.go:175
+#: mgrpxy/shared/podman/podman.go:177
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "구성 %s(으)로 프록시 설정"
 
-#: mgrpxy/shared/podman/podman.go:193
+#: mgrpxy/shared/podman/podman.go:195
 msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
 msgstr "/etc/uyuni/proxy 디렉토리에는 모든 사용자에 대한 읽기 및 쓰기 권한이 없습니다. umask 설정을 확인하십시오."
 
-#: mgrpxy/shared/podman/podman.go:208
+#: mgrpxy/shared/podman/podman.go:210
 msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
 msgstr "/etc/uyuni/proxy/config.yaml에는 모든 사용자에 대한 읽기 권한이 없습니다. umask 설정을 확인하십시오."
 
-#: mgrpxy/shared/podman/podman.go:236
+#: mgrpxy/shared/podman/podman.go:238
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr "httpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:240
+#: mgrpxy/shared/podman/podman.go:242
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr "salt-broker 이미지를 찾을 수 없음 : 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:244
+#: mgrpxy/shared/podman/podman.go:246
 msgid "cannot find squid image: it will no be upgraded"
 msgstr "squid 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:248
+#: mgrpxy/shared/podman/podman.go:250
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr "ssh 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:252
+#: mgrpxy/shared/podman/podman.go:254
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr "tftpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
@@ -577,6 +587,9 @@ msgstr "%s 컨테이너용 이미지"
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
 
+#~ msgid "failed to create temporary directory"
+#~ msgstr "임시 디렉토리를 만들지 못함"
+
 #~ msgid "specify a private registry"
 #~ msgstr "개인 레지스트리 지정"
 
@@ -585,9 +598,6 @@ msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
 
 #~ msgid "no uyuni-proxy helm release installed on the cluster"
 #~ msgstr "클러스터에 설치된 uyuni-proxy helm 릴리스 없음"
-
-#~ msgid "failed to find the uyuni-proxy deployment namespace"
-#~ msgstr "uyuni-proxy 배포 네임스페이스를 찾지 못함"
 
 #~ msgid "cannot inspect host values"
 #~ msgstr "호스트 값 검사할 수 없음"

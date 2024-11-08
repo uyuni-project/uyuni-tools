@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:19+0200\n"
+"POT-Creation-Date: 2024-11-08 15:18+0100\n"
 "PO-Revision-Date: 2024-06-11 07:47+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ja/>\n"
@@ -117,12 +117,12 @@ msgstr "設定ファイルパス"
 msgid "application log level"
 msgstr "アプリケーションログレベル"
 
-#: mgrctl/cmd/cmd.go:46
+#: mgrctl/cmd/cmd.go:45
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "%s へようこそ"
 
-#: mgrctl/cmd/cmd.go:47
+#: mgrctl/cmd/cmd.go:46
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "コマンドの実行中: %s"
@@ -167,19 +167,19 @@ msgstr "コンテナにstdinを渡す"
 msgid "Stdin is a TTY"
 msgstr "StdinはTTYです"
 
-#: mgrctl/cmd/exec/exec.go:98
+#: mgrctl/cmd/exec/exec.go:102
 msgid "Command failed"
 msgstr "コマンドが失敗しました"
 
-#: mgrctl/cmd/exec/exec.go:102
+#: mgrctl/cmd/exec/exec.go:106
 msgid "Command returned with exit code 0"
 msgstr "コマンドは終了コード0で返されました"
 
-#: mgrctl/cmd/exec/exec.go:116
+#: mgrctl/cmd/exec/exec.go:120
 msgid "cannot write"
 msgstr "書き込めません"
 
-#: mgrctl/cmd/exec/exec.go:132
+#: mgrctl/cmd/exec/exec.go:136
 #, javascript-format
 msgid "Running %s"
 msgstr "%s を実行中"

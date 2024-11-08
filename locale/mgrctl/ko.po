@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:19+0200\n"
+"POT-Creation-Date: 2024-11-08 15:18+0100\n"
 "PO-Revision-Date: 2024-06-12 10:46+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ko/>\n"
@@ -117,12 +117,12 @@ msgstr "구성 파일 경로"
 msgid "application log level"
 msgstr "애플리케이션 로그 수준"
 
-#: mgrctl/cmd/cmd.go:46
+#: mgrctl/cmd/cmd.go:45
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "%s 시작"
 
-#: mgrctl/cmd/cmd.go:47
+#: mgrctl/cmd/cmd.go:46
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "실행 중 명령: %s"
@@ -167,19 +167,19 @@ msgstr "컨테이너에 stdin을 전달합니다."
 msgid "Stdin is a TTY"
 msgstr "Stdin은 TTY입니다."
 
-#: mgrctl/cmd/exec/exec.go:98
+#: mgrctl/cmd/exec/exec.go:102
 msgid "Command failed"
 msgstr "명령 실패"
 
-#: mgrctl/cmd/exec/exec.go:102
+#: mgrctl/cmd/exec/exec.go:106
 msgid "Command returned with exit code 0"
 msgstr "종료 코드 0으로 반환된 명령"
 
-#: mgrctl/cmd/exec/exec.go:116
+#: mgrctl/cmd/exec/exec.go:120
 msgid "cannot write"
 msgstr "쓸 수 없음"
 
-#: mgrctl/cmd/exec/exec.go:132
+#: mgrctl/cmd/exec/exec.go:136
 #, javascript-format
 msgid "Running %s"
 msgstr "%s 실행 중"
