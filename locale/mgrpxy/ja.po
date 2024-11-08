@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-25 15:27+0200\n"
+"POT-Creation-Date: 2024-11-08 15:09+0100\n"
 "PO-Revision-Date: 2024-09-26 02:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
@@ -60,21 +60,21 @@ msgstr "サーバ管理:"
 msgid "Administrator tools:"
 msgstr "管理者ツール:"
 
-#: mgrpxy/cmd/cmd.go:62
+#: mgrpxy/cmd/cmd.go:61
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "%s へようこそ"
 
-#: mgrpxy/cmd/cmd.go:63
+#: mgrpxy/cmd/cmd.go:62
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "コマンドの実行中: %s"
 
-#: mgrpxy/cmd/cmd.go:67
+#: mgrpxy/cmd/cmd.go:66
 msgid "configuration file path"
 msgstr "設定ファイルパス"
 
-#: mgrpxy/cmd/cmd.go:69
+#: mgrpxy/cmd/cmd.go:68
 msgid "application log level"
 msgstr "アプリケーションログレベル"
 
@@ -116,7 +116,7 @@ msgid "failed to extract configuration"
 msgstr "設定の抽出に失敗しました"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:69
-#: mgrpxy/shared/kubernetes/deploy.go:201
+#: mgrpxy/shared/kubernetes/deploy.go:205
 msgid "cannot deploy proxy helm chart"
 msgstr "プロキシhelmチャートを配備できません"
 
@@ -251,8 +251,9 @@ msgid "Extract configuration and logs"
 msgstr "設定とログの抽出"
 
 #: mgrpxy/cmd/support/config/config.go:23
+#, fuzzy
 msgid ""
-"Extract the host or cluster configuration and logs as well as those from \n"
+"Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
 msgstr ""
 "デバッグを支援するため、ホストまたはクラスタの設定とログ、および\n"
@@ -486,6 +487,11 @@ msgstr "helmアップグレードを実行できません"
 msgid "failed to write in file %s"
 msgstr "ファイル %s への書き込みに失敗しました"
 
+#: mgrpxy/shared/kubernetes/deploy.go:185
+#, fuzzy
+msgid "failed to scale replicas to 1"
+msgstr "一時ディレクトリの作成に失敗しました"
+
 #: mgrpxy/shared/podman/podman.go:45
 msgid "cannot setup network"
 msgstr "ネットワークを設定できません"
@@ -587,9 +593,6 @@ msgstr "%s コンテナのイメージ"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s コンテナ用のタグ。設定されている場合はグローバル値を上書きします"
-
-#~ msgid "failed to create temporary directory"
-#~ msgstr "一時ディレクトリの作成に失敗しました"
 
 #~ msgid "specify a private registry"
 #~ msgstr "プライベートレジストリを指定してください"
