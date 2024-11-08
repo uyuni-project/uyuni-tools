@@ -12,10 +12,12 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -143,6 +145,14 @@ func installForPodman(
 	if flags.HubXmlrpc.Replicas > 0 {
 		if err := hub.SetupHubXmlrpc(
 			systemd, authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
+		); err != nil {
+			return err
+		}
+	}
+
+	if flags.Saline.Replicas > 0 {
+		if err := saline.SetupSalineContainer(
+			systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image, flags.TZ, viper.GetStringSlice("podman.arg"),
 		); err != nil {
 			return err
 		}

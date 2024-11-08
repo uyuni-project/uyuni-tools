@@ -44,7 +44,7 @@ func ptfForPodman(
 		return err
 	}
 
-	return podman.Upgrade(systemd, authFile, "", flags.Image, dummyImage, flags.Coco, flags.Hubxmlrpc)
+	return podman.Upgrade(systemd, authFile, "", flags.Image, dummyImage, flags.Coco, flags.Hubxmlrpc, flags.Saline)
 }
 
 // variables for unit testing.

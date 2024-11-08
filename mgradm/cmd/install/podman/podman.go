@@ -35,6 +35,7 @@ NOTE: installing on a remote podman is not supported yet!
 			flagsUpdater := func(v *viper.Viper) {
 				flags.InstallFlags.Coco.IsChanged = v.IsSet("coco.replicas")
 				flags.InstallFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+				flags.InstallFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},

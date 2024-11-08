@@ -16,6 +16,7 @@ type UpgradeFlags struct {
 	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	Coco           utils.CocoFlags
 	HubXmlrpc      utils.HubXmlrpcFlags
+	Saline         utils.SalineFlags
 }
 
 // AddUpgradeFlags add upgrade flags to a command.
@@ -26,6 +27,7 @@ func AddUpgradeFlags(cmd *cobra.Command) {
 
 	utils.AddUpgradeCocoFlag(cmd)
 	utils.AddUpgradeHubXmlrpcFlags(cmd)
+	utils.AddUpgradeSalineFlag(cmd)
 }
 
 // AddUpgradeListFlags add upgrade list flags to a command.

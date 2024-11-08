@@ -15,8 +15,10 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
@@ -363,6 +365,7 @@ func Upgrade(
 	upgradeImage types.ImageFlags,
 	cocoFlags adm_utils.CocoFlags,
 	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
+	salineFlags adm_utils.SalineFlags,
 ) error {
 	if err := CallCloudGuestRegistryAuth(); err != nil {
 		return err
@@ -453,6 +456,12 @@ func Upgrade(
 		systemd, authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcFlags,
 	); err != nil {
 		return err
+	}
+
+	if err := saline.Upgrade(systemd, authFile, registry, salineFlags, image,
+		utils.GetLocalTimezone(), viper.GetStringSlice("podman.arg"),
+	); err != nil {
+		return utils.Errorf(err, L("error upgrading saline service."))
 	}
 
 	return systemd.ReloadDaemon(false)

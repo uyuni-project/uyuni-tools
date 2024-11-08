@@ -34,3 +34,11 @@ type CocoFlags struct {
 	Image     types.ImageFlags `mapstructure:",squash"`
 	IsChanged bool
 }
+
+// SalineFlags contains settings for Saline container.
+type SalineFlags struct {
+	Port      int
+	Replicas  int
+	Image     types.ImageFlags `mapstructure:",squash"`
+	IsChanged bool
+}

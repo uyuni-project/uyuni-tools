@@ -78,6 +78,7 @@ var ServerVolumeMounts = append([]types.VolumeMount{
 	{MountPath: "/srv/spacewalk", Name: "srv-spacewalk"},
 	{MountPath: "/root", Name: "root"},
 	{MountPath: "/etc/pki/trust/anchors", Name: "ca-cert"},
+	{MountPath: "/run/salt/master", Name: "run-salt-master"},
 }, etcAndPgsqlVolumeMounts[:]...)
 
 // ServerVolumes match the volume with Persistent Volume Claim.
@@ -96,11 +97,19 @@ var ServerVolumes = append([]types.Volume{
 	{Name: "srv-spacewalk", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "srv-spacewalk"}},
 	{Name: "root", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "root"}},
 	{Name: "ca-cert", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "ca-cert"}},
+	{Name: "run-salt-master", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "run-salt-master"}},
 }, etcAndPgsqlVolumes[:]...)
 
 // HubXmlrpcVolumeMounts represents volumes used by Hub Xmlrpc container.
 var HubXmlrpcVolumeMounts = []types.VolumeMount{
 	{MountPath: "/etc/pki/trust/anchors", Name: "ca-cert"},
+}
+
+// SalineVolumeMounts represents volumes used by Saline container.
+var SalineVolumeMounts = []types.VolumeMount{
+	{Name: "etc-salt", MountPath: "/etc/salt"},
+	{Name: "etc-tls", MountPath: "/etc/pki/tls"},
+	{Name: "run-salt-master", MountPath: "/run/salt/master"},
 }
 
 // ProxyHttpdVolumes volumes used by HTTPD in proxy.
