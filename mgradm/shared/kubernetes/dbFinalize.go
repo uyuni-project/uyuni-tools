@@ -54,7 +54,7 @@ func getDBFinalizeJob(
 	// Prepare the script
 	scriptData := templates.FinalizePostgresTemplateData{
 		RunAutotune:     true,
-		RunReindex:      true,
+		RunReindex:      migration,
 		RunSchemaUpdate: schemaUpdateRequired,
 		Migration:       migration,
 		Kubernetes:      true,
