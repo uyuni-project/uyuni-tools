@@ -7,7 +7,6 @@ package utils
 import (
 	"errors"
 	"fmt"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -36,7 +35,11 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	}
 
 	if command == "kubectl" {
-		commandArgs = append(commandArgs, "-c", "uyuni", "--")
+		namespace, err := cnx.GetNamespace("")
+		if namespace == "" {
+			return utils.Errorf(err, L("failed retrieving namespace"))
+		}
+		commandArgs = append(commandArgs, "-n", namespace, "-c", "uyuni", "--")
 	}
 
 	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
@@ -110,9 +113,9 @@ func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) err
 
 // GenerateMigrationScript generates the script that perform migration.
 func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, prepare bool) (string, error) {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	if err != nil {
-		return "", utils.Errorf(err, L("failed to create temporary directory"))
+		return "", err
 	}
 
 	data := templates.MigrateScriptTemplateData{

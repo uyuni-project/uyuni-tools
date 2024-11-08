@@ -67,6 +67,9 @@ func uninstallForPodman(
 
 	podman.DeleteNetwork(!flags.Force)
 
+	podman.DeleteSecret(podman.DbUserSecret, !flags.Force)
+	podman.DeleteSecret(podman.DbPassSecret, !flags.Force)
+
 	err := podman.ReloadDaemon(!flags.Force)
 
 	if !flags.Force {

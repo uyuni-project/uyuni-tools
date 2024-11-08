@@ -39,6 +39,10 @@ func migrateToKubernetes(
 		}
 	}
 	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
+	namespace, err := cnx.GetNamespace("")
+	if err != nil {
+		return utils.Errorf(err, L("failed retrieving namespace"))
+	}
 
 	serverImage, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Image)
 	if err != nil {
@@ -73,20 +77,30 @@ func migrateToKubernetes(
 	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
 	var sslFlags adm_utils.SslCertFlags
 
+	helmArgs := []string{}
+
+	// Create a secret using SCC credentials if any are provided
+	helmArgs, err = shared_kubernetes.AddSccSecret(helmArgs, flags.Helm.Uyuni.Namespace, &flags.Scc)
+	if err != nil {
+		return err
+	}
+
 	// Deploy for running migration command
-	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm, &sslFlags,
-		clusterInfos, fqdn, false, flags.Prepare,
+	migrationArgs := append(helmArgs,
 		"--set", "migration.ssh.agentSocket="+sshAuthSocket,
 		"--set", "migration.ssh.configPath="+sshConfigPath,
 		"--set", "migration.ssh.knownHostsPath="+sshKnownhostsPath,
 		"--set", "migration.dataPath="+scriptDir,
-	); err != nil {
+	)
+
+	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm, &sslFlags,
+		clusterInfos, fqdn, false, flags.Prepare, migrationArgs...); err != nil {
 		return utils.Errorf(err, L("cannot run deploy"))
 	}
 
 	//this is needed because folder with script needs to be mounted
 	//check the node before scaling down
-	nodeName, err := shared_kubernetes.GetNode("uyuni")
+	nodeName, err := shared_kubernetes.GetNode(namespace, shared_kubernetes.ServerFilter)
 	if err != nil {
 		return utils.Errorf(err, L("cannot find node running uyuni"))
 	}
@@ -101,7 +115,7 @@ func migrateToKubernetes(
 	}
 
 	// After each command we want to scale to 0
-	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 0)
+	err = shared_kubernetes.ReplicasTo(namespace, shared_kubernetes.ServerApp, 0)
 	if err != nil {
 		return utils.Errorf(err, L("cannot set replicas to 0"))
 	}
@@ -113,8 +127,8 @@ func migrateToKubernetes(
 
 	defer func() {
 		// if something is running, we don't need to set replicas to 1
-		if _, err = shared_kubernetes.GetNode("uyuni"); err != nil {
-			err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 1)
+		if _, err = shared_kubernetes.GetNode(namespace, shared_kubernetes.ServerFilter); err != nil {
+			err = shared_kubernetes.ReplicasTo(namespace, shared_kubernetes.ServerApp, 1)
 		}
 	}()
 
@@ -123,10 +137,10 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot setup SSL"))
 	}
 
-	helmArgs := []string{
+	helmArgs = append(helmArgs,
 		"--reset-values",
-		"--set", "timezone=" + extractedData.Timezone,
-	}
+		"--set", "timezone="+extractedData.Timezone,
+	)
 	if flags.Mirror != "" {
 		log.Warn().Msgf(L("The mirror data will not be migrated, ensure it is available at %s"), flags.Mirror)
 		// TODO Handle claims for multi-node clusters
@@ -140,11 +154,11 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot upgrade helm chart to image %s using new SSL certificate"), serverImage)
 	}
 
-	if err := shared_kubernetes.WaitForDeployment(flags.Helm.Uyuni.Namespace, "uyuni", "uyuni"); err != nil {
+	if err := shared_kubernetes.WaitForDeployment(namespace, "uyuni", "uyuni"); err != nil {
 		return utils.Errorf(err, L("cannot wait for deployment of %s"), serverImage)
 	}
 
-	err = shared_kubernetes.ReplicasTo(shared_kubernetes.ServerApp, 0)
+	err = shared_kubernetes.ReplicasTo(namespace, shared_kubernetes.ServerApp, 0)
 	if err != nil {
 		return utils.Errorf(err, L("cannot set replicas to 0"))
 	}
@@ -154,18 +168,18 @@ func migrateToKubernetes(
 
 	if oldPgVersion != newPgVersion {
 		if err := kubernetes.RunPgsqlVersionUpgrade(flags.Image.Registry, flags.Image,
-			flags.DbUpgradeImage, nodeName, oldPgVersion, newPgVersion,
+			flags.DbUpgradeImage, namespace, nodeName, oldPgVersion, newPgVersion,
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	}
 
 	schemaUpdateRequired := oldPgVersion != newPgVersion
-	if err := kubernetes.RunPgsqlFinalizeScript(serverImage, flags.Image.PullPolicy, nodeName, schemaUpdateRequired, true); err != nil {
+	if err := kubernetes.RunPgsqlFinalizeScript(serverImage, flags.Image.PullPolicy, namespace, nodeName, schemaUpdateRequired, true); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalisation script"))
 	}
 
-	if err := kubernetes.RunPostUpgradeScript(serverImage, flags.Image.PullPolicy, nodeName); err != nil {
+	if err := kubernetes.RunPostUpgradeScript(serverImage, flags.Image.PullPolicy, namespace, nodeName); err != nil {
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
@@ -174,7 +188,7 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot upgrade to image %s"), serverImage)
 	}
 
-	if err := shared_kubernetes.WaitForDeployment(flags.Helm.Uyuni.Namespace, "uyuni", "uyuni"); err != nil {
+	if err := shared_kubernetes.WaitForDeployment(namespace, "uyuni", "uyuni"); err != nil {
 		return err
 	}
 
@@ -217,7 +231,9 @@ func setupSsl(helm *adm_utils.HelmFlags, kubeconfig string, scriptDir string, pa
 				Cert: path.Join(scriptDir, "spacewalk.crt"),
 			},
 		}
-		kubernetes.DeployExistingCertificate(helm, &sslFlags, kubeconfig)
+		if err := kubernetes.DeployExistingCertificate(helm, &sslFlags, kubeconfig); err != nil {
+			return []string{}, nil
+		}
 	}
 	return []string{}, nil
 }

@@ -16,8 +16,7 @@ type configFlags struct {
 	Backend string
 }
 
-// NewCommand is the command for creates supportconfig.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[configFlags]) *cobra.Command {
 	configCmd := &cobra.Command{
 		Use:   "config",
 		Short: L("Extract configuration and logs"),
@@ -25,7 +24,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 the containers for support to help debugging.`),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags configFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, extract)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 
@@ -33,4 +32,9 @@ the containers for support to help debugging.`),
 	utils.AddBackendFlag(configCmd)
 
 	return configCmd
+}
+
+// NewCommand is the command for creates supportconfig.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, extract)
 }

@@ -5,12 +5,12 @@
 package podman
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"os/exec"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -44,14 +44,10 @@ func GetExposedPorts(debug bool) []types.PortMap {
 	return ports
 }
 
-// GenerateSystemdService creates a serverY systemd file.
-func GenerateSystemdService(tz string, image string, debug bool, mirrorPath string, podmanArgs []string) error {
-	ipv6Enabled, err := podman.SetupNetwork(false)
-	if err != nil {
-		return utils.Errorf(err, L("cannot setup network"))
-	}
+// GenerateServerSystemdService creates the server systemd service file.
+func GenerateServerSystemdService(mirrorPath string, debug bool) error {
+	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
 
-	log.Info().Msg(L("Enabling system service"))
 	args := podman.GetCommonParams()
 
 	if mirrorPath != "" {
@@ -72,8 +68,23 @@ func GenerateSystemdService(tz string, image string, debug bool, mirrorPath stri
 		Network:     podman.UyuniNetwork,
 		IPV6Enabled: ipv6Enabled,
 	}
-	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, false); err != nil {
+	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
+	}
+
+	return nil
+}
+
+// GenerateSystemdService creates a server systemd file.
+func GenerateSystemdService(tz string, image string, debug bool, mirrorPath string, podmanArgs []string) error {
+	err := podman.SetupNetwork(false)
+	if err != nil {
+		return utils.Errorf(err, L("cannot setup network"))
+	}
+
+	log.Info().Msg(L("Enabling system service"))
+	if err := GenerateServerSystemdService(mirrorPath, debug); err != nil {
+		return err
 	}
 
 	if err := podman.GenerateSystemdConfFile("uyuni-server", "generated.conf",
@@ -138,19 +149,19 @@ func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair
 	}
 
 	// Check and install then using mgr-ssl-cert-setup
-	if _, err := utils.RunCmdOutput(zerolog.InfoLevel, "podman", args...); err != nil {
-		return errors.New(L("failed to update SSL certificate"))
+	if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", args...); err != nil {
+		return utils.Errorf(err, L("failed to update SSL certificate: %s"), out)
 	}
 
 	// Clean the copied files and the now useless ssl-build
 	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", certDir); err != nil {
-		return errors.New(L("failed to remove copied certificate files in the container"))
+		return utils.Errorf(err, L("failed to remove copied certificate files in the container"))
 	}
 
 	const sslbuildPath = "/root/ssl-build"
 	if cnx.TestExistenceInPod(sslbuildPath) {
 		if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", sslbuildPath); err != nil {
-			return errors.New(L("failed to remove now useless ssl-build folder in the container"))
+			return utils.Errorf(err, L("failed to remove now useless ssl-build folder in the container"))
 		}
 	}
 
@@ -230,10 +241,10 @@ func RunPgsqlVersionUpgrade(
 ) error {
 	log.Info().Msgf(L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql)
 
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
 	if newPgsql > oldPgsql {
 		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
@@ -279,10 +290,10 @@ func RunPgsqlVersionUpgrade(
 
 // RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
 func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migration bool) error {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
 
 	extraArgs := []string{
@@ -306,10 +317,10 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migra
 
 // RunPostUpgradeScript run the script with the changes to apply after the upgrade.
 func RunPostUpgradeScript(serverImage string) error {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
 	postUpgradeContainer := "uyuni-post-upgrade"
 	extraArgs := []string{
@@ -403,6 +414,10 @@ func Upgrade(
 	); err != nil {
 		return err
 	}
+
+	if err := updateServerSystemdService(); err != nil {
+		return err
+	}
 	log.Info().Msg(L("Waiting for the server to start…"))
 
 	err = coco.Upgrade(authFile, registry, cocoFlags, image,
@@ -420,12 +435,37 @@ func Upgrade(
 	return podman.ReloadDaemon(false)
 }
 
+var runCmdOutput = utils.RunCmdOutput
+
+func hasDebugPorts(definition []byte) bool {
+	return regexp.MustCompile(`-p 8003:8003`).Match(definition)
+}
+
+func getMirrorPath(definition []byte) string {
+	mirrorPath := ""
+	finder := regexp.MustCompile(`-v +([^:]+):/mirror[[:space:]]`)
+	submatches := finder.FindStringSubmatch(string(definition))
+	if len(submatches) == 2 {
+		mirrorPath = submatches[1]
+	}
+	return mirrorPath
+}
+
+func updateServerSystemdService() error {
+	out, err := runCmdOutput(zerolog.DebugLevel, "systemctl", "cat", podman.ServerService)
+	if err != nil {
+		return utils.Errorf(err, "failed to get %s systemd service definition", podman.ServerService)
+	}
+
+	return GenerateServerSystemdService(getMirrorPath(out), hasDebugPorts(out))
+}
+
 // Inspect check values on a given image and deploy.
 func Inspect(preparedImage string) (*utils.ServerInspectData, error) {
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	defer os.RemoveAll(scriptDir)
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to create temporary directory"))
+		return nil, err
 	}
 
 	inspector := utils.NewServerInspector(scriptDir)

@@ -14,8 +14,7 @@ import (
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// NewCommand install a new proxy on podman from scratch.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run shared_utils.CommandFunc[podman.PodmanProxyFlags]) *cobra.Command {
 	podmanCmd := &cobra.Command{
 		Use:   "podman [path/to/config.tar.gz]",
 		Short: L("Install a new proxy on podman"),
@@ -31,7 +30,7 @@ NOTE: for now installing on a remote podman is not supported!
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podman.PodmanProxyFlags
-			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, installForPodman)
+			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 
@@ -40,4 +39,9 @@ NOTE: for now installing on a remote podman is not supported!
 	shared_podman.AddPodmanArgFlag(podmanCmd)
 
 	return podmanCmd
+}
+
+// NewCommand install a new proxy on podman from scratch.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, installForPodman)
 }

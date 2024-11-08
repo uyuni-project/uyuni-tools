@@ -33,18 +33,20 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 		preconfigured = true
 	}
 
-	tmpFolder := generateSetupScript(flags, fqdn, env)
+	tmpFolder, err := generateSetupScript(flags, fqdn, env)
 	defer os.RemoveAll(tmpFolder)
+	if err != nil {
+		return err
+	}
 
 	if err := cnx.Copy(filepath.Join(tmpFolder, setup_name), "server:/tmp/setup.sh", "root", "root"); err != nil {
 		return utils.Errorf(err, L("cannot copy /tmp/setup.sh"))
 	}
 
-	err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/tmp/setup.sh")
+	err = adm_utils.ExecCommand(zerolog.InfoLevel, cnx, "/tmp/setup.sh")
 	if err != nil && !preconfigured {
 		return utils.Errorf(err, L("error running the setup script"))
 	}
-
 	if err := cnx.CopyCaCertificate(fqdn); err != nil {
 		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
@@ -96,7 +98,7 @@ func RunSetup(cnx *shared.Connection, flags *InstallFlags, fqdn string, env map[
 // generateSetupScript creates a temporary folder with the setup script to execute in the container.
 // The script exports all the needed environment variables and calls uyuni's mgr-setup.
 // Podman or kubernetes-specific variables can be passed using extraEnv parameter.
-func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]string) string {
+func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]string) (string, error) {
 	localHostValues := []string{
 		"localhost",
 		"127.0.0.1",
@@ -149,9 +151,9 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 		env[key] = value
 	}
 
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
+	scriptDir, err := utils.TempDir()
 	if err != nil {
-		log.Fatal().Err(err).Msg(L("failed to create temporary directory"))
+		return "", err
 	}
 
 	dataTemplate := templates.MgrSetupScriptTemplateData{
@@ -161,10 +163,10 @@ func generateSetupScript(flags *InstallFlags, fqdn string, extraEnv map[string]s
 
 	scriptPath := filepath.Join(scriptDir, setup_name)
 	if err = utils.WriteTemplateToFile(dataTemplate, scriptPath, 0555, true); err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to generate setup script"))
+		return "", utils.Errorf(err, L("Failed to generate setup script"))
 	}
 
-	return scriptDir
+	return scriptDir, nil
 }
 
 func boolToString(value bool) string {

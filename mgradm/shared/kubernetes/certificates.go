@@ -20,10 +20,10 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) {
-	crdsDir, err := os.MkdirTemp("", "mgradm-*")
+func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, rootCaCrt []byte) error {
+	crdsDir, err := utils.TempDir()
 	if err != nil {
-		log.Fatal().Err(err).Msgf(L("failed to create temporary directory"))
+		return err
 	}
 	defer os.RemoveAll(crdsDir)
 
@@ -38,14 +38,15 @@ func installTlsSecret(namespace string, serverCrt []byte, serverKey []byte, root
 	}
 
 	if err = utils.WriteTemplateToFile(tlsSecretData, secretPath, 0500, true); err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to generate uyuni-crt secret definition"))
+		return utils.Errorf(err, L("Failed to generate uyuni-crt secret definition"))
 	}
 	err = utils.RunCmd("kubectl", "apply", "-f", secretPath)
 	if err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to create uyuni-crt TLS secret"))
+		return utils.Errorf(err, L("Failed to create uyuni-crt TLS secret"))
 	}
 
-	createCaConfig(rootCaCrt)
+	createCaConfig(namespace, rootCaCrt)
+	return nil
 }
 
 // Install cert-manager and its CRDs using helm in the cert-manager namespace if needed
@@ -59,9 +60,9 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	}
 
 	log.Info().Msg(L("Creating SSL certificate issuer"))
-	crdsDir, err := os.MkdirTemp("", "mgradm-*")
+	crdsDir, err := utils.TempDir()
 	if err != nil {
-		return []string{}, utils.Errorf(err, L("failed to create temporary directory"))
+		return []string{}, err
 	}
 	defer os.RemoveAll(crdsDir)
 
@@ -93,7 +94,7 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 	// Wait for issuer to be ready
 	for i := 0; i < 60; i++ {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "-o=jsonpath={.status.conditions[*].type}",
-			"issuer", "uyuni-ca-issuer")
+			"issuer", "uyuni-ca-issuer", "-n", issuerData.Namespace)
 		if err == nil && string(out) == "Ready" {
 			return []string{"--set-json", "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"}, nil
 		}
@@ -141,20 +142,20 @@ func installCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, image
 	return nil
 }
 
-func extractCaCertToConfig() {
+func extractCaCertToConfig(namespace string) {
 	// TODO Replace with [trust-manager](https://cert-manager.io/docs/projects/trust-manager/) to automate this
 	const jsonPath = "-o=jsonpath={.data.ca\\.crt}"
 
 	log.Info().Msg(L("Extracting CA certificate to a configmap"))
 	// Skip extracting if the configmap is already present
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "configmap", "uyuni-ca", jsonPath)
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "configmap", "uyuni-ca", jsonPath, "-n", namespace)
 	log.Info().Msgf(L("CA cert: %s"), string(out))
 	if err == nil && len(out) > 0 {
 		log.Info().Msg(L("uyuni-ca configmap already existing, skipping extraction"))
 		return
 	}
 
-	out, err = utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "secret", "uyuni-ca", jsonPath)
+	out, err = utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "secret", "uyuni-ca", jsonPath, "-n", namespace)
 	if err != nil {
 		log.Fatal().Err(err).Msgf(L("Failed to get uyuni-ca certificate"))
 	}
@@ -164,12 +165,12 @@ func extractCaCertToConfig() {
 		log.Fatal().Err(err).Msgf(L("Failed to base64 decode CA certificate"))
 	}
 
-	createCaConfig(decoded)
+	createCaConfig(namespace, decoded)
 }
 
-func createCaConfig(ca []byte) {
+func createCaConfig(namespace string, ca []byte) {
 	valueArg := "--from-literal=ca.crt=" + string(ca)
-	if err := utils.RunCmd("kubectl", "create", "configmap", "uyuni-ca", valueArg); err != nil {
+	if err := utils.RunCmd("kubectl", "create", "configmap", "uyuni-ca", valueArg, "-n", namespace); err != nil {
 		log.Fatal().Err(err).Msg(L("Failed to create uyuni-ca config map from certificate"))
 	}
 }

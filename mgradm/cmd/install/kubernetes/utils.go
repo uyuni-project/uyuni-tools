@@ -68,6 +68,12 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 	helmArgs = append(helmArgs, sslArgs...)
 
+	// Create a secret using SCC credentials if any are provided
+	helmArgs, err = shared_kubernetes.AddSccSecret(helmArgs, flags.Helm.Uyuni.Namespace, &flags.Scc)
+	if err != nil {
+		return err
+	}
+
 	// Deploy Uyuni and wait for it to be up
 	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm, &flags.Ssl,
 		clusterInfos, fqdn, flags.Debug.Java, false, helmArgs...,
@@ -81,8 +87,12 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, args[0], envs); err != nil {
-		if stopErr := shared_kubernetes.Stop(shared_kubernetes.ServerFilter); stopErr != nil {
-			log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
+		namespace, err := cnx.GetNamespace("")
+		if err != nil {
+			return shared_utils.Errorf(err, L("failed to stop service"))
+		}
+		if stopErr := shared_kubernetes.Stop(namespace, shared_kubernetes.ServerApp); stopErr != nil {
+			log.Error().Err(stopErr).Msg(L("failed to stop service"))
 		}
 		return err
 	}

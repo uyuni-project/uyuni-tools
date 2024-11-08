@@ -50,7 +50,11 @@ rpm -qa --qf '[%{fileflags},%{filenames}\n]' |grep ",/etc/" | while IFS="," read
     fi
 done
 
-echo "-/ .repo_gpgcheck" >> exclude_list
+# No need to migrate zypper's cache
+echo "-/ /var/cache/zypp/**" >> exclude_list
+
+# Migrating the reposync cache files doesn't bring value and contains dangling symlinks (bsc#1231769)
+echo "-/ /var/cache/rhn/reposync/**" >> exclude_list
 
 # exclude mgr-sync configuration file, in this way it would be re-generated (bsc#1228685)
 echo "-/ /root/.mgr-sync" >> exclude_list
@@ -66,15 +70,30 @@ echo "-/ /etc/sysconfig/rhn/schema-upgrade" >> exclude_list
 # exclude lastlog - it is not needed and can be too large
 echo "-/ /var/log/lastlog" >> exclude_list
 
+# exclude systemd units as they will be recreated later
+echo "-/ /etc/systemd/**" >> exclude_list
+
 for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
+  RSYNC_ARGS=-l
+  # Those folders used to have symlinks in the cloud images.
+  if test "$folder" = "/var/cache" -o "$folder" = "/var/spacewalk" -o \
+          "$folder" = "/var/lib/pgsql"; then
+    RSYNC_ARGS=-L
+  fi
   if $SSH {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."
-    rsync -e "$SSH" --rsync-path='sudo rsync' -avzL --trust-sender -f 'merge exclude_list' {{ .SourceFqdn }}:$folder/ $folder;
+    rsync -e "$SSH" --rsync-path='sudo rsync' -avz $RSYNC_ARGS --trust-sender -f 'merge exclude_list' {{ .SourceFqdn }}:$folder/ $folder;
   else
     echo "Skipping missing $folder..."
   fi
 done;
+
+spacewalk-service enable
+if $SSH {{ .SourceFqdn }} systemctl is-enabled tftp.socket; then
+  echo "Enabling tftp socket..."
+  systemctl enable tftp.socket
+fi
 
 sed -i -e 's|appBase="webapps"|appBase="/usr/share/susemanager/www/tomcat/webapps"|' /etc/tomcat/server.xml
 sed -i -e 's|DocumentRoot\s*"/srv/www/htdocs"|DocumentRoot "/usr/share/susemanager/www/htdocs"|' /etc/apache2/vhosts.d/vhost-ssl.conf

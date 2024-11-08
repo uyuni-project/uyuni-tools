@@ -30,21 +30,25 @@ type gpgAddFlags struct {
 	Force   bool
 }
 
-// NewCommand import gpg keys from 3rd party repository.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[gpgAddFlags]) *cobra.Command {
 	gpgAddKeyCmd := &cobra.Command{
 		Use:   "add [URL]...",
 		Short: L("Add GPG keys for 3rd party repositories"),
 		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags gpgAddFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, gpgAddKeys)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 
 	gpgAddKeyCmd.Flags().BoolP("force", "f", false, L("Import without asking confirmation"))
 	utils.AddBackendFlag(gpgAddKeyCmd)
 	return gpgAddKeyCmd
+}
+
+// NewCommand import gpg keys from 3rd party repository.
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	return newCmd(globalFlags, gpgAddKeys)
 }
 
 func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.Command, args []string) error {
@@ -61,11 +65,11 @@ func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.C
 
 	gpgAddCmd = append(gpgAddCmd, "--keyring", customKeyringPath)
 
-	scriptDir, err := os.MkdirTemp("", "mgradm-*")
-	defer os.RemoveAll(scriptDir)
+	scriptDir, err := utils.TempDir()
 	if err != nil {
-		return utils.Errorf(err, L("failed to create temporary directory"))
+		return err
 	}
+	defer os.RemoveAll(scriptDir)
 
 	for _, keyURL := range args {
 		var hostKeyPath string

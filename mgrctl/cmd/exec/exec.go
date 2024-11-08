@@ -36,7 +36,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Use:   "exec '[command-to-run --with-args]'",
 		Short: L("Execute commands inside the uyuni containers using 'sh -c'"),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
 
@@ -74,7 +74,11 @@ func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, ar
 	commandArgs = append(commandArgs, podName)
 
 	if command == "kubectl" {
-		commandArgs = append(commandArgs, "-c", "uyuni", "--")
+		namespace, err := cnx.GetNamespace("")
+		if namespace == "" {
+			log.Fatal().Err(err)
+		}
+		commandArgs = append(commandArgs, "-n", namespace, "-c", "uyuni", "--")
 	}
 
 	newEnv := []string{}

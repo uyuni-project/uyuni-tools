@@ -120,9 +120,13 @@ func installForPodman(
 	}
 
 	if flags.Coco.Replicas > 0 {
+		// This may need to be moved up later once more containers require DB access
+		if err := shared_podman.CreateDbSecrets(flags.Db.User, flags.Db.Password); err != nil {
+			return err
+		}
 		if err := coco.SetupCocoContainer(
 			authFile, flags.Image.Registry, flags.Coco, flags.Image,
-			flags.Db.Name, flags.Db.Port, flags.Db.User, flags.Db.Password,
+			flags.Db.Name, flags.Db.Port,
 		); err != nil {
 			return err
 		}
