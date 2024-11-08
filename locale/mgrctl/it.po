@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-30 17:19+0200\n"
+"POT-Creation-Date: 2024-11-08 15:18+0100\n"
 "PO-Revision-Date: 2024-05-16 09:49+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/it/>\n"
@@ -116,12 +116,12 @@ msgstr ""
 msgid "application log level"
 msgstr ""
 
-#: mgrctl/cmd/cmd.go:46
+#: mgrctl/cmd/cmd.go:45
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "Benvenuti su %s"
 
-#: mgrctl/cmd/cmd.go:47
+#: mgrctl/cmd/cmd.go:46
 #, javascript-format
 msgid "Executing command: %s"
 msgstr ""
@@ -164,19 +164,19 @@ msgstr ""
 msgid "Stdin is a TTY"
 msgstr ""
 
-#: mgrctl/cmd/exec/exec.go:98
+#: mgrctl/cmd/exec/exec.go:102
 msgid "Command failed"
 msgstr "Comando non riuscito"
 
-#: mgrctl/cmd/exec/exec.go:102
+#: mgrctl/cmd/exec/exec.go:106
 msgid "Command returned with exit code 0"
 msgstr ""
 
-#: mgrctl/cmd/exec/exec.go:116
+#: mgrctl/cmd/exec/exec.go:120
 msgid "cannot write"
 msgstr ""
 
-#: mgrctl/cmd/exec/exec.go:132
+#: mgrctl/cmd/exec/exec.go:136
 #, javascript-format
 msgid "Running %s"
 msgstr ""
