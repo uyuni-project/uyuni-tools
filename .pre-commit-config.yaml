@@ -16,6 +16,9 @@ repos:
   rev: v1.59.1
   hooks:
     - id: golangci-lint
+      fail_fast: true
+      stages:
+        - pre-push
 
 - repo: https://github.com/fsfe/reuse-tool
   rev: v4.0.3
@@ -38,6 +41,7 @@ repos:
     language: script
   - id: build
     name: Build
+    fail_fast: true
     pass_filenames: false
     entry: ./pre-commit-build.sh
     language: script
@@ -45,6 +49,7 @@ repos:
       - pre-push
   - id: build-all-tags
     name: Build with all tags
+    fail_fast: true
     pass_filenames: false
     entry: ./pre-commit-build.sh
     language: script
