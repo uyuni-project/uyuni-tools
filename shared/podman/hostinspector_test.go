@@ -52,7 +52,7 @@ has_uyuni_server=true
 		t.Fatalf("Unexpected error: %s", err)
 	}
 
-	testutils.AssertEquals(t, "Invalid SCC username", "myuser", actual.SccUsername)
-	testutils.AssertEquals(t, "Invalid SCC password", "mysecret", actual.SccPassword)
+	testutils.AssertEquals(t, "Invalid SCC username", "myuser", actual.SCCUsername)
+	testutils.AssertEquals(t, "Invalid SCC password", "mysecret", actual.SCCPassword)
 	testutils.AssertTrue(t, "HasUyuniServer should be true", actual.HasUyuniServer)
 }

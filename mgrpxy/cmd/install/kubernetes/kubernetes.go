@@ -16,7 +16,7 @@ import (
 type kubernetesProxyInstallFlags struct {
 	pxy_utils.ProxyImageFlags `mapstructure:",squash"`
 	Helm                      kubernetes.HelmFlags
-	Scc                       types.SCCCredentials
+	SCC                       types.SCCCredentials
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesProxyInstallFlags]) *cobra.Command {

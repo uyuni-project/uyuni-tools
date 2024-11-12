@@ -20,7 +20,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.DBUpdateImageFlagTestArgs...)
 	args = append(args, flagstests.CocoFlagsTestArgs...)
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
-	args = append(args, flagstests.SccFlagTestArgs...)
+	args = append(args, flagstests.SCCFlagTestArgs...)
 	args = append(args, flagstests.PodmanFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
@@ -31,7 +31,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertDBUpgradeImageFlag(t, cmd, &flags.DBUpgradeImage)
 		flagstests.AssertCocoFlag(t, cmd, &flags.Coco)
 		flagstests.AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)
-		flagstests.AssertSccFlag(t, cmd, &flags.SCC)
+		flagstests.AssertSCCFlag(t, cmd, &flags.SCC)
 		flagstests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
 		return nil
 	}

@@ -24,7 +24,7 @@ func TestParamsParsing(t *testing.T) {
 	}
 
 	args = append(args, flagstests.MirrorFlagTestArgs...)
-	args = append(args, flagstests.SccFlagTestArgs...)
+	args = append(args, flagstests.SCCFlagTestArgs...)
 	args = append(args, flagstests.ImageFlagsTestArgs...)
 	args = append(args, flagstests.DBUpdateImageFlagTestArgs...)
 	args = append(args, flagstests.CocoFlagsTestArgs...)
@@ -37,7 +37,7 @@ func TestParamsParsing(t *testing.T) {
 	) error {
 		testutils.AssertTrue(t, "Prepare not set", flags.Prepare)
 		flagstests.AssertMirrorFlag(t, cmd, flags.Mirror)
-		flagstests.AssertSccFlag(t, cmd, &flags.SCC)
+		flagstests.AssertSCCFlag(t, cmd, &flags.SCC)
 		flagstests.AssertImageFlag(t, cmd, &flags.Image)
 		flagstests.AssertDBUpgradeImageFlag(t, cmd, &flags.DBUpgradeImage)
 		flagstests.AssertCocoFlag(t, cmd, &flags.Coco)

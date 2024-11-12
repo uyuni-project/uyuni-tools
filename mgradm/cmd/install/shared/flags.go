@@ -50,7 +50,7 @@ type InstallFlags struct {
 	DB           DBFlags
 	ReportDB     DBFlags
 	Ssl          cmd_utils.InstallSSLFlags
-	Scc          types.SCCCredentials
+	SCC          types.SCCCredentials
 	Debug        DebugFlags
 	Image        types.ImageFlags `mapstructure:",squash"`
 	Coco         cmd_utils.CocoFlags
