@@ -72,8 +72,6 @@ func EnableHubXmlrpc(systemd podman.Systemd, replicas int) error {
 		if err := systemd.ScaleService(replicas, podman.HubXmlrpcService); err != nil {
 			return utils.Errorf(err, L("cannot enable service"))
 		}
-	} else {
-		log.Info().Msg(L("Not starting Hub XML-RPC API service"))
 	}
 	return nil
 }
@@ -99,7 +97,10 @@ func Upgrade(
 		return err
 	}
 
-	return systemd.RestartInstantiated(podman.HubXmlrpcService)
+	if !hubXmlrpcFlags.IsChanged {
+		return systemd.RestartInstantiated(podman.HubXmlrpcService)
+	}
+	return systemd.ScaleService(hubXmlrpcFlags.Replicas, podman.HubXmlrpcService)
 }
 
 // generateHubXmlrpcSystemdService creates the Hub XMLRPC systemd files.

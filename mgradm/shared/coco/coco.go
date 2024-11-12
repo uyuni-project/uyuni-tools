@@ -39,6 +39,9 @@ func Upgrade(
 		return err
 	}
 
+	if !cocoFlags.IsChanged {
+		return systemd.RestartInstantiated(podman.ServerAttestationService)
+	}
 	return systemd.ScaleService(cocoFlags.Replicas, podman.ServerAttestationService)
 }
 
