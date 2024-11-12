@@ -27,6 +27,11 @@ func Upgrade(
 	dbUser string,
 	dbPassword string,
 ) error {
+	if cocoFlags.Image.Name == "" {
+		// Don't touch the coco service in ptf if not already present.
+		return nil
+	}
+
 	if err := podman.CreateDbSecrets(dbUser, dbPassword); err != nil {
 		return err
 	}
