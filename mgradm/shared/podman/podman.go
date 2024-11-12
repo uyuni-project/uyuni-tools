@@ -434,6 +434,10 @@ func Upgrade(
 		return err
 	}
 
+	if err := systemd.ReloadDaemon(false); err != nil {
+		return err
+	}
+
 	if err := updateServerSystemdService(); err != nil {
 		return err
 	}
