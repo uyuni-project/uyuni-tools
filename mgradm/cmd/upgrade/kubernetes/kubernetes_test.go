@@ -22,7 +22,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.DBUpdateImageFlagTestArgs...)
 	args = append(args, flagstests.CocoFlagsTestArgs...)
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
-	args = append(args, flagstests.SccFlagTestArgs...)
+	args = append(args, flagstests.SCCFlagTestArgs...)
 	args = append(args, flagstests.ServerHelmFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed

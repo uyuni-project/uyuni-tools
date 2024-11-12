@@ -69,7 +69,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	helmArgs = append(helmArgs, sslArgs...)
 
 	// Create a secret using SCC credentials if any are provided
-	helmArgs, err = shared_kubernetes.AddSccSecret(helmArgs, flags.Helm.Uyuni.Namespace, &flags.Scc)
+	helmArgs, err = shared_kubernetes.AddSCCSecret(helmArgs, flags.Helm.Uyuni.Namespace, &flags.SCC)
 	if err != nil {
 		return err
 	}

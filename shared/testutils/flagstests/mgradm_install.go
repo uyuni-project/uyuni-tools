@@ -56,7 +56,7 @@ var InstallFlagsTestArgs = func() []string {
 	}
 
 	args = append(args, MirrorFlagTestArgs...)
-	args = append(args, SccFlagTestArgs...)
+	args = append(args, SCCFlagTestArgs...)
 	args = append(args, ImageFlagsTestArgs...)
 	args = append(args, CocoFlagsTestArgs...)
 	args = append(args, HubXmlrpcFlagsTestArgs...)
@@ -105,7 +105,7 @@ func AssertInstallFlags(t *testing.T, cmd *cobra.Command, flags *shared.InstallF
 	testutils.AssertEquals(t, "Error parsing --admin-lastName", "adminlast", flags.Admin.LastName)
 	testutils.AssertEquals(t, "Error parsing --organization", "someorg", flags.Organization)
 	AssertMirrorFlag(t, cmd, flags.Mirror)
-	AssertSccFlag(t, cmd, &flags.Scc)
+	AssertSCCFlag(t, cmd, &flags.SCC)
 	AssertImageFlag(t, cmd, &flags.Image)
 	AssertCocoFlag(t, cmd, &flags.Coco)
 	AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)

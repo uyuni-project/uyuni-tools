@@ -20,7 +20,7 @@ func TestParamsParsing(t *testing.T) {
 
 	args = append(args, flagstests.ImageProxyFlagsTestArgs...)
 	args = append(args, flagstests.ProxyHelmFlagsTestArgs...)
-	args = append(args, flagstests.SccFlagTestArgs...)
+	args = append(args, flagstests.SCCFlagTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(globalFlags *types.GlobalFlags, flags *kubernetesProxyInstallFlags,
@@ -28,7 +28,7 @@ func TestParamsParsing(t *testing.T) {
 	) error {
 		flagstests.AssertProxyImageFlags(t, cmd, &flags.ProxyImageFlags)
 		flagstests.AssertProxyHelmFlags(t, cmd, &flags.Helm)
-		flagstests.AssertSccFlag(t, cmd, &flags.Scc)
+		flagstests.AssertSCCFlag(t, cmd, &flags.SCC)
 		return nil
 	}
 

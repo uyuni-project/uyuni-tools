@@ -21,14 +21,14 @@ func TestParamsParsing(t *testing.T) {
 		"--user", "sccuser",
 	}
 
-	args = append(args, flagstests.SccFlagTestArgs...)
+	args = append(args, flagstests.SCCFlagTestArgs...)
 	args = append(args, flagstests.ImageProxyFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(globalFlags *types.GlobalFlags, flags *podmanPTFFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		flagstests.AssertSccFlag(t, cmd, &flags.UpgradeFlags.SCC)
+		flagstests.AssertSCCFlag(t, cmd, &flags.UpgradeFlags.SCC)
 		flagstests.AssertProxyImageFlags(t, cmd, &flags.UpgradeFlags.ProxyImageFlags)
 		testutils.AssertEquals(t, "Error parsing --ptf", "ptf123", flags.PTFId)
 		testutils.AssertEquals(t, "Error parsing --test", "test123", flags.TestID)

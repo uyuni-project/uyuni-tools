@@ -192,8 +192,8 @@ data:
 	return nil
 }
 
-// AddSccSecret creates a secret holding the SCC credentials and adds it to the helm args.
-func AddSccSecret(helmArgs []string, namespace string, scc *types.SCCCredentials) ([]string, error) {
+// AddSCCSecret creates a secret holding the SCC credentials and adds it to the helm args.
+func AddSCCSecret(helmArgs []string, namespace string, scc *types.SCCCredentials) ([]string, error) {
 	if scc.User != "" && scc.Password != "" {
 		secretName := "scc-credentials"
 		if err := createDockerSecret(

@@ -19,8 +19,8 @@ import (
 //
 // It returns an authentication file, a cleanup function and an error.
 func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials) (string, func(), error) {
-	sccUser := hostData.SccUsername
-	sccPassword := hostData.SccPassword
+	sccUser := hostData.SCCUsername
+	sccPassword := hostData.SCCPassword
 	if scc.User != "" && scc.Password != "" {
 		log.Info().Msg(L("SCC credentials parameters will be used. SCC credentials from host will be ignored."))
 		sccUser = scc.User

@@ -20,7 +20,7 @@ type MigrateFlags struct {
 	User           string
 	Mirror         string
 	HubXmlrpc      utils.HubXmlrpcFlags
-	Scc            types.SCCCredentials
+	SCC            types.SCCCredentials
 }
 
 // AddMigrateFlags add migration flags to a command.

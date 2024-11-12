@@ -18,7 +18,7 @@ import (
 func TestParamsParsing(t *testing.T) {
 	args := []string{}
 
-	args = append(args, flagstests.SccFlagTestArgs...)
+	args = append(args, flagstests.SCCFlagTestArgs...)
 	args = append(args, flagstests.ImageProxyFlagsTestArgs...)
 	args = append(args, flagstests.PodmanFlagsTestArgs...)
 
@@ -26,7 +26,7 @@ func TestParamsParsing(t *testing.T) {
 	tester := func(globalFlags *types.GlobalFlags, flags *podman.PodmanProxyFlags,
 		cmd *cobra.Command, args []string,
 	) error {
-		flagstests.AssertSccFlag(t, cmd, &flags.SCC)
+		flagstests.AssertSCCFlag(t, cmd, &flags.SCC)
 		flagstests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
 		flagstests.AssertProxyImageFlags(t, cmd, &flags.ProxyImageFlags)
 		return nil

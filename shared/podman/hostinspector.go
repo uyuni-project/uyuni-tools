@@ -40,8 +40,8 @@ func NewHostInspector(scriptDir string) HostInspector {
 
 // HostInspectData are the data returned by the host inspector.
 type HostInspectData struct {
-	SccUsername    string `mapstructure:"scc_username"`
-	SccPassword    string `mapstructure:"scc_password"`
+	SCCUsername    string `mapstructure:"scc_username"`
+	SCCPassword    string `mapstructure:"scc_password"`
 	HasUyuniServer bool   `mapstructure:"has_uyuni_server"`
 }
 
