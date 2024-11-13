@@ -35,30 +35,24 @@ func (f *InstallSSLFlags) CheckParameters() {
 
 // AddHelmInstallFlag add Helm install flags to a command.
 func AddHelmInstallFlag(cmd *cobra.Command) {
-	defaultChart := fmt.Sprintf("oci://%s/server-helm", utils.DefaultHelmRegistry)
-
-	cmd.Flags().String("helm-uyuni-namespace", "default", L("Kubernetes namespace where to install uyuni"))
-	cmd.Flags().String("helm-uyuni-chart", defaultChart, L("URL to the uyuni helm chart"))
-	cmd.Flags().String("helm-uyuni-version", "", L("Version of the uyuni helm chart"))
-	cmd.Flags().String("helm-uyuni-values", "", L("Path to a values YAML file to use for Uyuni helm install"))
-	cmd.Flags().String("helm-certmanager-namespace", "cert-manager",
+	cmd.Flags().String("kubernetes-uyuni-namespace", "default", L("Kubernetes namespace where to install uyuni"))
+	cmd.Flags().String("kubernetes-certmanager-namespace", "cert-manager",
 		L("Kubernetes namespace where to install cert-manager"),
 	)
-	cmd.Flags().String("helm-certmanager-chart", "",
+	cmd.Flags().String("kubernetes-certmanager-chart", "",
 		L("URL to the cert-manager helm chart. To be used for offline installations"),
 	)
-	cmd.Flags().String("helm-certmanager-version", "", L("Version of the cert-manager helm chart"))
-	cmd.Flags().String("helm-certmanager-values", "", L("Path to a values YAML file to use for cert-manager helm install"))
+	cmd.Flags().String("kubernetes-certmanager-version", "", L("Version of the cert-manager helm chart"))
+	cmd.Flags().String("kubernetes-certmanager-values", "",
+		L("Path to a values YAML file to use for cert-manager helm install"),
+	)
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "helm", Title: L("Helm Chart Flags")})
-	_ = utils.AddFlagToHelpGroupID(cmd, "helm-uyuni-namespace", "helm")
-	_ = utils.AddFlagToHelpGroupID(cmd, "helm-uyuni-chart", "helm")
-	_ = utils.AddFlagToHelpGroupID(cmd, "helm-uyuni-version", "helm")
-	_ = utils.AddFlagToHelpGroupID(cmd, "helm-uyuni-values", "helm")
-	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-namespace", "helm")
-	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-chart", "helm")
-	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-version", "helm")
-	_ = utils.AddFlagToHelpGroupID(cmd, "helm-certmanager-values", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "kubernetes-uyuni-namespace", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "kubernetes-certmanager-namespace", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "kubernetes-certmanager-chart", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "kubernetes-certmanager-version", "helm")
+	_ = utils.AddFlagToHelpGroupID(cmd, "kubernetes-certmanager-values", "helm")
 }
 
 const volumesFlagsGroupID = "volumes"

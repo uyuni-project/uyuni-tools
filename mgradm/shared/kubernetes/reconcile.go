@@ -29,7 +29,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 		return errors.New(L("install kubectl before running this command"))
 	}
 
-	namespace := flags.Helm.Uyuni.Namespace
+	namespace := flags.Kubernetes.Uyuni.Namespace
 	// Create the namespace if not present
 	if err := CreateNamespace(namespace); err != nil {
 		return err
@@ -43,7 +43,9 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
 
 	// Create a secret using SCC credentials if any are provided
-	pullSecret, err := kubernetes.GetSCCSecret(flags.Helm.Uyuni.Namespace, &flags.Installation.SCC, kubernetes.ServerApp)
+	pullSecret, err := kubernetes.GetSCCSecret(
+		flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SCC, kubernetes.ServerApp,
+	)
 	if err != nil {
 		return err
 	}
@@ -192,7 +194,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 	// Deploy the SSL CA and server certificates
 	var caIssuer string
 	if flags.Installation.SSL.UseExisting() {
-		if err := DeployExistingCertificate(flags.Helm.Uyuni.Namespace, &flags.Installation.SSL); err != nil {
+		if err := DeployExistingCertificate(flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SSL); err != nil {
 			return err
 		}
 	} else if !HasIssuer(namespace, kubernetes.CaIssuerName) {
@@ -200,7 +202,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 		// Note that in an operator we won't be able to install cert-manager and just wait for it to be installed.
 		kubeconfig := clusterInfos.GetKubeconfig()
 
-		if err := InstallCertManager(&flags.Helm, kubeconfig, flags.Image.PullPolicy); err != nil {
+		if err := InstallCertManager(&flags.Kubernetes, kubeconfig, flags.Image.PullPolicy); err != nil {
 			return utils.Errorf(err, L("cannot install cert manager"))
 		}
 
@@ -223,18 +225,18 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 				return err
 			}
 		} else {
-			if err := DeployGeneratedCa(flags.Helm.Uyuni.Namespace, &flags.Installation.SSL, fqdn); err != nil {
+			if err := DeployGeneratedCa(flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SSL, fqdn); err != nil {
 				return err
 			}
 		}
 
 		// Wait for issuer to be ready
-		if err := waitForIssuer(flags.Helm.Uyuni.Namespace, kubernetes.CaIssuerName); err != nil {
+		if err := waitForIssuer(flags.Kubernetes.Uyuni.Namespace, kubernetes.CaIssuerName); err != nil {
 			return err
 		}
 
 		// Extract the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
-		if err := extractCaCertToConfig(flags.Helm.Uyuni.Namespace); err != nil {
+		if err := extractCaCertToConfig(flags.Kubernetes.Uyuni.Namespace); err != nil {
 			return err
 		}
 		caIssuer = kubernetes.CaIssuerName

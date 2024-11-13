@@ -148,15 +148,15 @@ func waitForIssuer(namespace string, name string) error {
 }
 
 // InstallCertManager deploys the cert-manager helm chart with the CRDs.
-func InstallCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, imagePullPolicy string) error {
+func InstallCertManager(kubernetesFlags *cmd_utils.KubernetesFlags, kubeconfig string, imagePullPolicy string) error {
 	if ready, err := kubernetes.IsDeploymentReady("", "cert-manager"); err != nil {
 		return err
 	} else if !ready {
 		log.Info().Msg(L("Installing cert-manager"))
 		repo := ""
-		chart := helmFlags.CertManager.Chart
-		version := helmFlags.CertManager.Version
-		namespace := helmFlags.CertManager.Namespace
+		chart := kubernetesFlags.CertManager.Chart
+		version := kubernetesFlags.CertManager.Version
+		namespace := kubernetesFlags.CertManager.Namespace
 
 		args := []string{
 			"--set", "crds.enabled=true",
@@ -164,7 +164,7 @@ func InstallCertManager(helmFlags *cmd_utils.HelmFlags, kubeconfig string, image
 			"--set-json", "global.commonLabels={\"installedby\": \"mgradm\"}",
 			"--set", "image.pullPolicy=" + string(kubernetes.GetPullPolicy(imagePullPolicy)),
 		}
-		extraValues := helmFlags.CertManager.Values
+		extraValues := kubernetesFlags.CertManager.Values
 		if extraValues != "" {
 			args = append(args, "-f", extraValues)
 		}

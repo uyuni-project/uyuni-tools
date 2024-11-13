@@ -18,7 +18,7 @@ import (
 
 func TestParamsParsing(t *testing.T) {
 	args := flagstests.InstallFlagsTestArgs()
-	args = append(args, flagstests.ServerHelmFlagsTestArgs...)
+	args = append(args, flagstests.ServerKubernetesFlagsTestArgs...)
 	args = append(args, flagstests.VolumesFlagsTestExpected...)
 	args = append(args, "srv.fq.dn")
 
@@ -27,7 +27,7 @@ func TestParamsParsing(t *testing.T) {
 		_ *cobra.Command, args []string,
 	) error {
 		flagstests.AssertInstallFlags(t, &flags.ServerFlags)
-		flagstests.AssertServerHelmFlags(t, &flags.Helm)
+		flagstests.AssertServerKubernetesFlags(t, &flags.Kubernetes)
 		flagstests.AssertVolumesFlags(t, &flags.Volumes)
 		testutils.AssertEquals(t, "Wrong FQDN", "srv.fq.dn", args[0])
 		return nil

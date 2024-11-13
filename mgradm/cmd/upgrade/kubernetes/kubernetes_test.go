@@ -25,7 +25,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
 	args = append(args, flagstests.SalineFlagsTestArgs...)
 	args = append(args, flagstests.SCCFlagTestArgs...)
-	args = append(args, flagstests.ServerHelmFlagsTestArgs...)
+	args = append(args, flagstests.ServerKubernetesFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *kubernetes.KubernetesServerFlags,
@@ -37,7 +37,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		flagstests.AssertSalineFlag(t, &flags.Saline)
 		// TODO Assert SCC flags
-		flagstests.AssertServerHelmFlags(t, &flags.Helm)
+		flagstests.AssertServerKubernetesFlags(t, &flags.Kubernetes)
 		return nil
 	}
 

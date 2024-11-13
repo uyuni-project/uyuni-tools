@@ -26,7 +26,7 @@ func migrateToKubernetes(
 	_ *cobra.Command,
 	args []string,
 ) error {
-	namespace := flags.Helm.Uyuni.Namespace
+	namespace := flags.Kubernetes.Uyuni.Namespace
 
 	// Create the namespace if not present
 	if err := kubernetes.CreateNamespace(namespace); err != nil {
@@ -61,7 +61,7 @@ func migrateToKubernetes(
 
 	// Create a secret using SCC credentials if any are provided
 	pullSecret, err := shared_kubernetes.GetSCCSecret(
-		flags.Helm.Uyuni.Namespace, &flags.Installation.SCC, shared_kubernetes.ServerApp,
+		flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SCC, shared_kubernetes.ServerApp,
 	)
 	if err != nil {
 		return err

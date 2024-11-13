@@ -15,8 +15,8 @@ type InstallSSLFlags struct {
 	Server                       types.SSLPair
 }
 
-// HelmFlags stores Uyuni and Cert Manager Helm information.
-type HelmFlags struct {
+// KubernetesFlags stores Uyuni and Cert Manager kubernetes specific parameters.
+type KubernetesFlags struct {
 	Uyuni       types.ChartFlags
 	CertManager types.ChartFlags
 }

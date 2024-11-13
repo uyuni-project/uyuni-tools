@@ -35,7 +35,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.CocoFlagsTestArgs...)
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
 	args = append(args, flagstests.SalineFlagsTestArgs...)
-	args = append(args, flagstests.ServerHelmFlagsTestArgs...)
+	args = append(args, flagstests.ServerKubernetesFlagsTestArgs...)
 	args = append(args, flagstests.VolumesFlagsTestExpected...)
 
 	// Test function asserting that the args are properly parsed
@@ -51,7 +51,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		flagstests.AssertSalineFlag(t, &flags.Saline)
 		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.Migration.User)
-		flagstests.AssertServerHelmFlags(t, &flags.Helm)
+		flagstests.AssertServerKubernetesFlags(t, &flags.Kubernetes)
 		flagstests.AssertVolumesFlags(t, &flags.Volumes)
 		testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.Installation.SSL.Password)
 		testutils.AssertEquals(t, "Error parsing --ssh-key-public", "path/ssh.pub", flags.SSH.Key.Public)

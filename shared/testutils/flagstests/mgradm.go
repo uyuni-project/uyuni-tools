@@ -12,24 +12,18 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-// ServerHelmFlagsTestArgs is the expected values for AssertHelmInstallFlags.
-var ServerHelmFlagsTestArgs = []string{
-	"--helm-uyuni-namespace", "uyunins",
-	"--helm-uyuni-chart", "oci://srv/uyuni",
-	"--helm-uyuni-version", "1.2.3",
-	"--helm-uyuni-values", "uyuni/values.yaml",
-	"--helm-certmanager-namespace", "certmanagerns",
-	"--helm-certmanager-chart", "oci://srv/certmanager",
-	"--helm-certmanager-version", "4.5.6",
-	"--helm-certmanager-values", "certmanager/values.yaml",
+// ServerKubernetesFlagsTestArgs are the expected values for AssertServerKubernetesFlags.
+var ServerKubernetesFlagsTestArgs = []string{
+	"--kubernetes-uyuni-namespace", "uyunins",
+	"--kubernetes-certmanager-namespace", "certmanagerns",
+	"--kubernetes-certmanager-chart", "oci://srv/certmanager",
+	"--kubernetes-certmanager-version", "4.5.6",
+	"--kubernetes-certmanager-values", "certmanager/values.yaml",
 }
 
-// AssertServerHelmFlags checks that all Helm flags are parsed correctly.
-func AssertServerHelmFlags(t *testing.T, flags *utils.HelmFlags) {
+// AssertServerKubernetesFlags checks that all Kubernetes flags are parsed correctly.
+func AssertServerKubernetesFlags(t *testing.T, flags *utils.KubernetesFlags) {
 	testutils.AssertEquals(t, "Error parsing --helm-uyuni-namespace", "uyunins", flags.Uyuni.Namespace)
-	testutils.AssertEquals(t, "Error parsing --helm-uyuni-chart", "oci://srv/uyuni", flags.Uyuni.Chart)
-	testutils.AssertEquals(t, "Error parsing --helm-uyuni-version", "1.2.3", flags.Uyuni.Version)
-	testutils.AssertEquals(t, "Error parsing --helm-uyuni-values", "uyuni/values.yaml", flags.Uyuni.Values)
 	testutils.AssertEquals(t, "Error parsing --helm-certmanager-namespace",
 		"certmanagerns", flags.CertManager.Namespace,
 	)
