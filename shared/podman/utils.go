@@ -111,7 +111,7 @@ func DeleteContainer(name string, dryRun bool) {
 
 // GetServiceImage returns the value of the UYUNI_IMAGE variable for a systemd service.
 func GetServiceImage(service string) string {
-	out, err := runCmdOutput(zerolog.DebugLevel, "systemd", "cat", service)
+	out, err := runCmdOutput(zerolog.DebugLevel, "systemctl", "cat", service)
 	if err != nil {
 		log.Warn().Err(err).Msgf(L("failed to get %s systemd service definition"), service)
 		return ""
