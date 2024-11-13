@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-name: l10n-check 
+name: l10n-check
 on:
   push:
     branches:

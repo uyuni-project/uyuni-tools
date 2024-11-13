@@ -33,23 +33,23 @@ Certificate:
                     a5:c1
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
-            X509v3 Basic Constraints: 
+            X509v3 Basic Constraints:
                 CA:FALSE
-            X509v3 Key Usage: 
+            X509v3 Key Usage:
                 Digital Signature, Key Encipherment
-            X509v3 Extended Key Usage: 
+            X509v3 Extended Key Usage:
                 TLS Web Server Authentication, TLS Web Client Authentication
-            Netscape Cert Type: 
+            Netscape Cert Type:
                 SSL Server
-            Netscape Comment: 
+            Netscape Comment:
                 SSL Generated Certificate
-            X509v3 Subject Key Identifier: 
+            X509v3 Subject Key Identifier:
                 FD:F8:AA:26:08:7F:F7:FA:92:1E:68:3F:4A:29:54:E5:7A:A6:0D:42
-            X509v3 Authority Key Identifier: 
+            X509v3 Authority Key Identifier:
                 keyid:62:00:25:E4:EE:70:E5:37:2D:1E:9E:AE:4E:B7:3E:FC:62:08:BF:27
                 DirName:/C=DE/ST=STATE/O=ORG/OU=ORGUNIT/CN=OrgCa
                 serial:67:63:F5:29:AF:44:BA:79:EF:DD:DC:BF:BB:AB:3E:36:22:B8:71:27
-            X509v3 Subject Alternative Name: 
+            X509v3 Subject Alternative Name:
                 DNS:*.example.com
     Signature Algorithm: sha384WithRSAEncryption
     Signature Value:

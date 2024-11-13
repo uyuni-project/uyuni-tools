@@ -38,17 +38,17 @@ The command automatically detects installed backend and displays the logs for co
 However, you can specify the pod and/or container names to get the logs for specific container(s). See examples for more details.`),
 		Example: `  Log all relevant containers (Podman and Kubernetes)
 
-    $ mgrpxy logs                                                
+    $ mgrpxy logs
 
   Log all relevant containers in the specified pod (Kubernetes)
 
-    $ mgrpxy logs uyuni-proxy-pod                                
+    $ mgrpxy logs uyuni-proxy-pod
 
   Log the specified container in the specified pod (Kubernetes)
 
-    $ mgrpxy logs uyuni-proxy-pod httpd                          
+    $ mgrpxy logs uyuni-proxy-pod httpd
 
-  Log the specified containers (Podman)		
+  Log the specified containers (Podman)
 
     $ mgrpxy logs logs uyuni-proxy-httpd uyuni-proxy-ssh`,
 		RunE: func(cmd *cobra.Command, args []string) error {

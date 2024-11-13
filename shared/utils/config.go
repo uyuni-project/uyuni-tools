@@ -141,18 +141,18 @@ func GetConfigHelpCommand() *cobra.Command {
 Configuration:
 
   All the non-global flags can alternatively be passed as configuration.
-  
+
   The configuration file is a YAML file with entries matching the flag name.
   The name of a flag is the part after the '--' of the command line parameter.
   Every '_' character in the flag name means a nested property.
-  
+
   For instance the '--tz CEST' and '--ssl-password secret' will be mapped to
   this YAML configuration:
-  
+
     tz: CEST
     ssl:
       password: secret
-  
+
   The configuration file will be searched in the following places and order:
   · /etc/uyuni/uyuni-tools.yaml
   · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}
@@ -164,12 +164,12 @@ Configuration:
 Environment variables:
 
   All the non-global flags can also be passed as environment variables.
-  
+
   The environment variable name is the flag name with '-' replaced by with '_'
   and the {{ .EnvPrefix }} prefix.
-  
+
   For example the '--tz CEST' flag will be mapped to '{{ .EnvPrefix }}_TZ'
-  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD' 
+  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD'
 `)
 
 	cmd := &cobra.Command{

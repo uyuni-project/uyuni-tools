@@ -86,6 +86,3 @@ linters:
 issues:
   include:
     - EXC0012
-
-
-

@@ -32,7 +32,7 @@ for change in `git diff --numstat | awk '{print $1}'`; do
     if [ $change -gt 1 ]; then
         git add -u
         git commit -m "update strings for translations"
-        exit 
+        exit
     fi
 done
 git reset --hard

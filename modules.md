@@ -14,7 +14,7 @@ In case one wants to add a new sub-command it should decide to in which tool it 
 
 If the new sub-command needs access to the host OS of direct access to a running container then it should be added to MGRADM.
 
-Commands in MGRCTL should use the API only. 
+Commands in MGRCTL should use the API only.
 
 Any command to manage the proxy deployment must be placed in MGRPXY.
 
