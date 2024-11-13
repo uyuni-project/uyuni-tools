@@ -51,8 +51,8 @@ func installTLSSecret(namespace string, serverCrt []byte, serverKey []byte, root
 // Install cert-manager and its CRDs using helm in the cert-manager namespace if needed
 // and then create a self-signed CA and issuers.
 // Returns helm arguments to be added to use the issuer.
-func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.InstallSSLFlags, rootCa string,
-	tlsCert *types.SslPair, kubeconfig, fqdn string, imagePullPolicy string) ([]string, error) {
+func installSSLIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.InstallSSLFlags, rootCa string,
+	tlsCert *types.SSLPair, kubeconfig, fqdn string, imagePullPolicy string) ([]string, error) {
 	// Install cert-manager if needed
 	if err := installCertManager(helmFlags, kubeconfig, imagePullPolicy); err != nil {
 		return []string{}, utils.Errorf(err, L("cannot install cert manager"))
@@ -95,7 +95,7 @@ func installSslIssuers(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.Insta
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "-o=jsonpath={.status.conditions[*].type}",
 			"issuer", "uyuni-ca-issuer", "-n", issuerData.Namespace)
 		if err == nil && string(out) == "Ready" {
-			return []string{"--set-json", "ingressSslAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"}, nil
+			return []string{"--set-json", "ingressSSLAnnotations={\"cert-manager.io/issuer\": \"uyuni-ca-issuer\"}"}, nil
 		}
 		time.Sleep(1 * time.Second)
 	}

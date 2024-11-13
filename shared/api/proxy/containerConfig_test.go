@@ -36,7 +36,7 @@ type ProxyConfigGenerateRequestBodyData struct {
 	City       string
 	Org        string
 	OrgUnit    string
-	SslEmail   string
+	SSLEmail   string
 }
 
 // ProxyConfigRequestBodyData is the data structure for the request body of the ContainerConfig API request.
@@ -75,7 +75,7 @@ const expectedState = "exampleState"
 const expectedCity = "exampleCity"
 const expectedOrg = "exampleOrg"
 const expectedOrgUnit = "exampleOrgUnit"
-const expectedSslEmail = "sslEmail@example.com"
+const expectedSSLEmail = "sslEmail@example.com"
 
 var expectedCnames = []string{"altNameA.example.com", "altNameB.example.com"}
 
@@ -113,7 +113,7 @@ var proxyConfigGenerateRequest = proxy.ProxyConfigGenerateRequest{
 	City:       expectedCity,
 	Org:        expectedOrg,
 	OrgUnit:    expectedOrgUnit,
-	SslEmail:   expectedSslEmail,
+	SSLEmail:   expectedSSLEmail,
 }
 
 // Tests ContainerConfig when the post request fails.
@@ -298,7 +298,7 @@ func TestSuccessfulContainerConfigGenerateWhenAllParametersAreProvided(t *testin
 			testutils.AssertEquals(globalT, "City doesn't match", expectedCity, data.City)
 			testutils.AssertEquals(globalT, "Org doesn't match", expectedOrg, data.Org)
 			testutils.AssertEquals(globalT, "OrgUnit doesn't match", expectedOrgUnit, data.OrgUnit)
-			testutils.AssertEquals(globalT, "SslEmail doesn't match", expectedSslEmail, data.SslEmail)
+			testutils.AssertEquals(globalT, "SSLEmail doesn't match", expectedSSLEmail, data.SSLEmail)
 
 			// mock response
 			return testutils.GetResponse(200, `{"success": true, "result": [1, 2, 3, 4, 5]}`)

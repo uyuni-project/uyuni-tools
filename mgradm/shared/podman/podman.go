@@ -110,8 +110,8 @@ Environment="PODMAN_EXTRA_ARGS=%s"
 	return systemd.ReloadDaemon(false)
 }
 
-// UpdateSslCertificate update SSL certificate.
-func UpdateSslCertificate(cnx *shared.Connection, chain *types.CaChain, serverPair *types.SslPair) error {
+// UpdateSSLCertificate update SSL certificate.
+func UpdateSSLCertificate(cnx *shared.Connection, chain *types.CaChain, serverPair *types.SSLPair) error {
 	ssl.CheckPaths(chain, serverPair)
 
 	// Copy the CAs, certificate and key to the container

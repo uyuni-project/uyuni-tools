@@ -42,11 +42,11 @@ func proxyCreateConfig(
 	}
 
 	// handle CA certificate path
-	caCertificate := string(utils.ReadFile(flags.Ssl.Ca.Cert))
+	caCertificate := string(utils.ReadFile(flags.SSL.Ca.Cert))
 
 	// Check if ProxyCrt is provided to decide which configuration to run
 	var data *[]int8
-	if flags.Ssl.Proxy.Cert != "" {
+	if flags.SSL.Proxy.Cert != "" {
 		data, err = handleProxyConfig(client, flags, caCertificate, proxyConfig)
 	} else {
 		data, err = handleProxyConfigGenerate(client, flags, caCertificate, proxyConfigGenerate)
@@ -73,17 +73,17 @@ func handleProxyConfig(
 	proxyConfig func(client *api.APIClient, request proxy.ProxyConfigRequest) (*[]int8, error),
 ) (*[]int8, error) {
 	// Custom validations
-	if flags.Ssl.Proxy.Key == "" {
+	if flags.SSL.Proxy.Key == "" {
 		return nil, errors.New(L("flag proxyKey is required when flag proxyCrt is provided"))
 	}
 
 	// Read file paths for certificates and keys
-	proxyCrt := string(utils.ReadFile(flags.Ssl.Proxy.Cert))
-	proxyKey := string(utils.ReadFile(flags.Ssl.Proxy.Key))
+	proxyCrt := string(utils.ReadFile(flags.SSL.Proxy.Cert))
+	proxyKey := string(utils.ReadFile(flags.SSL.Proxy.Key))
 
 	// Handle intermediate CAs
 	var intermediateCAs []string
-	for _, path := range flags.Ssl.Ca.Intermediate {
+	for _, path := range flags.SSL.Ca.Intermediate {
 		intermediateCAs = append(intermediateCAs, string(utils.ReadFile(path)))
 	}
 
@@ -111,13 +111,13 @@ func handleProxyConfigGenerate(
 	proxyConfigGenerate func(client *api.APIClient, request proxy.ProxyConfigGenerateRequest) (*[]int8, error),
 ) (*[]int8, error) {
 	// CA key and password
-	caKey := string(utils.ReadFile(flags.Ssl.Ca.Key))
+	caKey := string(utils.ReadFile(flags.SSL.Ca.Key))
 
 	var caPasswordRead string
-	if flags.Ssl.Ca.Password == "" {
+	if flags.SSL.Ca.Password == "" {
 		utils.AskPasswordIfMissingOnce(&caPasswordRead, L("Please enter SSL CA password"), 0, 0)
 	} else {
-		caPasswordRead = flags.Ssl.Ca.Password
+		caPasswordRead = flags.SSL.Ca.Password
 	}
 
 	// Prepare the request object & call the proxyConfigGenerate function
@@ -130,13 +130,13 @@ func handleProxyConfigGenerate(
 		CaCrt:      caCertificate,
 		CaKey:      caKey,
 		CaPassword: caPasswordRead,
-		Cnames:     flags.Ssl.Cnames,
-		Country:    flags.Ssl.Country,
-		State:      flags.Ssl.State,
-		City:       flags.Ssl.City,
-		Org:        flags.Ssl.Org,
-		OrgUnit:    flags.Ssl.OU,
-		SslEmail:   flags.Ssl.Email,
+		Cnames:     flags.SSL.Cnames,
+		Country:    flags.SSL.Country,
+		State:      flags.SSL.State,
+		City:       flags.SSL.City,
+		Org:        flags.SSL.Org,
+		OrgUnit:    flags.SSL.OU,
+		SSLEmail:   flags.SSL.Email,
 	}
 
 	return proxyConfigGenerate(client, request)

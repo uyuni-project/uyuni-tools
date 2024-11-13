@@ -130,7 +130,7 @@ func migrateToKubernetes(
 		}
 	}()
 
-	setupSslArray, err := setupSsl(&flags.Helm, kubeconfig, scriptDir, flags.Ssl.Password, flags.Image.PullPolicy)
+	setupSSLArray, err := setupSSL(&flags.Helm, kubeconfig, scriptDir, flags.SSL.Password, flags.Image.PullPolicy)
 	if err != nil {
 		return utils.Errorf(err, L("cannot setup SSL"))
 	}
@@ -144,7 +144,7 @@ func migrateToKubernetes(
 		// TODO Handle claims for multi-node clusters
 		helmArgs = append(helmArgs, "--set", "mirror.hostPath="+flags.Mirror)
 	}
-	helmArgs = append(helmArgs, setupSslArray...)
+	helmArgs = append(helmArgs, setupSSLArray...)
 
 	// Run uyuni upgrade using the new ssl certificate
 	if err = kubernetes.UyuniUpgrade(
@@ -202,7 +202,7 @@ func migrateToKubernetes(
 
 // updateIssuer replaces the temporary SSL certificate issuer with the source server CA.
 // Return additional helm args to use the SSL certificates.
-func setupSsl(
+func setupSSL(
 	helm *adm_utils.HelmFlags,
 	kubeconfig string,
 	scriptDir string,
@@ -222,7 +222,7 @@ func setupSsl(
 			return []string{}, utils.Errorf(err, L("failed to strip text part from CA certificate"))
 		}
 		cert := base64.StdEncoding.EncodeToString(out)
-		ca := types.SslPair{Cert: cert, Key: key}
+		ca := types.SSLPair{Cert: cert, Key: key}
 
 		// An empty struct means no third party certificate
 		sslFlags := adm_utils.InstallSSLFlags{}
@@ -235,7 +235,7 @@ func setupSsl(
 		// Handle third party certificates and CA
 		sslFlags := adm_utils.InstallSSLFlags{
 			Ca: types.CaChain{Root: caCert},
-			Server: types.SslPair{
+			Server: types.SSLPair{
 				Key:  path.Join(scriptDir, "spacewalk.key"),
 				Cert: path.Join(scriptDir, "spacewalk.crt"),
 			},

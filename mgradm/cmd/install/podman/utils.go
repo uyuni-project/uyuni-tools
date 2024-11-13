@@ -93,20 +93,20 @@ func installForPodman(
 		return utils.Errorf(err, L("cannot wait for system start"))
 	}
 
-	caPassword := flags.Ssl.Password
-	if flags.Ssl.UseExisting() {
+	caPassword := flags.SSL.Password
+	if flags.SSL.UseExisting() {
 		// We need to have a password for the generated CA, even though it will be thrown away after install
 		caPassword = "dummy"
 	}
 
 	env := map[string]string{
-		"CERT_O":       flags.Ssl.Org,
-		"CERT_OU":      flags.Ssl.OU,
-		"CERT_CITY":    flags.Ssl.City,
-		"CERT_STATE":   flags.Ssl.State,
-		"CERT_COUNTRY": flags.Ssl.Country,
-		"CERT_EMAIL":   flags.Ssl.Email,
-		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, flags.Ssl.Cnames...), ","),
+		"CERT_O":       flags.SSL.Org,
+		"CERT_OU":      flags.SSL.OU,
+		"CERT_CITY":    flags.SSL.City,
+		"CERT_STATE":   flags.SSL.State,
+		"CERT_COUNTRY": flags.SSL.Country,
+		"CERT_EMAIL":   flags.SSL.Email,
+		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, flags.SSL.Cnames...), ","),
 		"CERT_PASS":    caPassword,
 	}
 
@@ -144,8 +144,8 @@ func installForPodman(
 		}
 	}
 
-	if flags.Ssl.UseExisting() {
-		if err := podman.UpdateSslCertificate(cnx, &flags.Ssl.Ca, &flags.Ssl.Server); err != nil {
+	if flags.SSL.UseExisting() {
+		if err := podman.UpdateSSLCertificate(cnx, &flags.SSL.Ca, &flags.SSL.Server); err != nil {
 			return utils.Errorf(err, L("cannot update SSL certificate"))
 		}
 	}

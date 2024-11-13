@@ -59,8 +59,8 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// Deploy the SSL CA or server certificate
-	ca := types.SslPair{}
-	sslArgs, err := kubernetes.DeployCertificate(&flags.Helm, &flags.Ssl, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
+	ca := types.SSLPair{}
+	sslArgs, err := kubernetes.DeployCertificate(&flags.Helm, &flags.SSL, "", &ca, clusterInfos.GetKubeconfig(), fqdn,
 		flags.Image.PullPolicy)
 	if err != nil {
 		return shared_utils.Errorf(err, L("cannot deploy certificate"))
@@ -74,7 +74,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// Deploy Uyuni and wait for it to be up
-	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm, &flags.Ssl,
+	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm, &flags.SSL,
 		clusterInfos, fqdn, flags.Debug.Java, false, helmArgs...,
 	); err != nil {
 		return shared_utils.Errorf(err, L("cannot deploy uyuni"))

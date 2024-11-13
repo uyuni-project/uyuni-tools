@@ -21,7 +21,7 @@ import (
 // OrderCas generates the server certificate with the CA chain.
 //
 // Returns the certificate chain and the root CA.
-func OrderCas(chain *types.CaChain, serverPair *types.SslPair) ([]byte, []byte) {
+func OrderCas(chain *types.CaChain, serverPair *types.SSLPair) ([]byte, []byte) {
 	CheckPaths(chain, serverPair)
 
 	// Extract all certificates and their data
@@ -218,7 +218,7 @@ func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash st
 }
 
 // CheckPaths ensures that all the passed path exists and the required files are available.
-func CheckPaths(chain *types.CaChain, serverPair *types.SslPair) {
+func CheckPaths(chain *types.CaChain, serverPair *types.SSLPair) {
 	mandatoryFile(chain.Root, "root CA")
 	for _, ca := range chain.Intermediate {
 		optionalFile(ca)

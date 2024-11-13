@@ -43,6 +43,7 @@ linters-settings:
       - DB
       # Added
       - SCC
+      - SSL
   gofmt:
     simplify: true
   gocyclo:

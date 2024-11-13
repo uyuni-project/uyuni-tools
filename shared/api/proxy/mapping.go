@@ -38,6 +38,6 @@ func ProxyConfigGenerateRequestToMap(request ProxyConfigGenerateRequest) map[str
 		"city":       request.City,
 		"org":        request.Org,
 		"orgUnit":    request.OrgUnit,
-		"sslEmail":   request.SslEmail,
+		"sslEmail":   request.SSLEmail,
 	}
 }

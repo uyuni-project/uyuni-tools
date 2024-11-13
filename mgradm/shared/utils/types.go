@@ -10,9 +10,9 @@ import (
 
 // InstallSSLFlags holds all the flags values related to SSL for installation.
 type InstallSSLFlags struct {
-	types.SslCertGenerationFlags `mapstructure:",squash"`
+	types.SSLCertGenerationFlags `mapstructure:",squash"`
 	Ca                           types.CaChain
-	Server                       types.SslPair
+	Server                       types.SSLPair
 }
 
 // HelmFlags stores Uyuni and Cert Manager Helm information.

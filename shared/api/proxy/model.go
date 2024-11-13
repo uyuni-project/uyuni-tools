@@ -37,5 +37,5 @@ type ProxyConfigGenerateRequest struct {
 	City       string
 	Org        string
 	OrgUnit    string
-	SslEmail   string
+	SSLEmail   string
 }

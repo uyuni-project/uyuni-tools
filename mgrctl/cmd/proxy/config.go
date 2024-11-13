@@ -39,14 +39,14 @@ type proxyFlags struct {
 }
 
 type caFlags struct {
-	types.SslPair `mapstructure:",squash"`
+	types.SSLPair `mapstructure:",squash"`
 	Password      string
 	Intermediate  []string
 }
 
-type proxyConfigSslFlags struct {
-	types.SslCertGenerationFlags `mapstructure:",squash"`
-	Proxy                        types.SslPair
+type proxyConfigSSLFlags struct {
+	types.SSLCertGenerationFlags `mapstructure:",squash"`
+	Proxy                        types.SSLPair
 	Ca                           caFlags
 }
 
@@ -55,7 +55,7 @@ type proxyCreateConfigFlags struct {
 	ConnectionDetails api.ConnectionDetails `mapstructure:"api"`
 	Proxy             proxyFlags
 	Output            string
-	Ssl               proxyConfigSslFlags
+	SSL               proxyConfigSSLFlags
 }
 
 // proxyCreateConfigRequiredFields is a set of required fields for validation.

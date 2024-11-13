@@ -36,7 +36,7 @@ func assertCommonArgs(t *testing.T, cmd *cobra.Command, flags *proxyCreateConfig
 	testutils.AssertEquals(t, "Unexpected proxy max cache", 123456, flags.Proxy.MaxCache)
 	testutils.AssertEquals(t, "Unexpected proxy email", "admin@proxy.test.com", flags.Proxy.Email)
 	testutils.AssertEquals(t, "Unexpected output path", "path/to/output.tgz", flags.Output)
-	testutils.AssertEquals(t, "Unexpected SSL CA cert path", "path/to/ca.crt", flags.Ssl.Ca.Cert)
+	testutils.AssertEquals(t, "Unexpected SSL CA cert path", "path/to/ca.crt", flags.SSL.Ca.Cert)
 }
 
 func TestParamsParsingGeneratedCert(t *testing.T) {
@@ -60,11 +60,11 @@ func TestParamsParsingGeneratedCert(t *testing.T) {
 		cmd *cobra.Command, args []string,
 	) error {
 		assertCommonArgs(t, cmd, flags)
-		flagstests.AssertSSLGenerationFlags(t, cmd, &flags.Ssl.SslCertGenerationFlags)
-		testutils.AssertEquals(t, "Unexpected SSL CA cert path", "path/to/ca.crt", flags.Ssl.Ca.Cert)
-		testutils.AssertEquals(t, "Unexpected SSL CA key path", "path/to/ca.key", flags.Ssl.Ca.Key)
-		testutils.AssertEquals(t, "Unexpected SSL CA password", "casecret", flags.Ssl.Ca.Password)
-		testutils.AssertEquals(t, "Unexpected SSL email", "ssl@test.com", flags.Ssl.Email)
+		flagstests.AssertSSLGenerationFlags(t, cmd, &flags.SSL.SSLCertGenerationFlags)
+		testutils.AssertEquals(t, "Unexpected SSL CA cert path", "path/to/ca.crt", flags.SSL.Ca.Cert)
+		testutils.AssertEquals(t, "Unexpected SSL CA key path", "path/to/ca.key", flags.SSL.Ca.Key)
+		testutils.AssertEquals(t, "Unexpected SSL CA password", "casecret", flags.SSL.Ca.Password)
+		testutils.AssertEquals(t, "Unexpected SSL email", "ssl@test.com", flags.SSL.Email)
 		return nil
 	}
 
@@ -106,12 +106,12 @@ func TestParamsParsingProvidedCert(t *testing.T) {
 		cmd *cobra.Command, args []string,
 	) error {
 		assertCommonArgs(t, cmd, flags)
-		testutils.AssertEquals(t, "Unexpected SSL CA cert path", "path/to/ca.crt", flags.Ssl.Ca.Cert)
+		testutils.AssertEquals(t, "Unexpected SSL CA cert path", "path/to/ca.crt", flags.SSL.Ca.Cert)
 		testutils.AssertEquals(t, "Unexpected SSL intermediate CA cert paths",
-			[]string{"path/to/ca1.crt", "path/to/ca2.crt"}, flags.Ssl.Ca.Intermediate,
+			[]string{"path/to/ca1.crt", "path/to/ca2.crt"}, flags.SSL.Ca.Intermediate,
 		)
-		testutils.AssertEquals(t, "Unexpected Proxy SSL cert path", "path/to/proxy.crt", flags.Ssl.Proxy.Cert)
-		testutils.AssertEquals(t, "Unexpected Proxy SSL key path", "path/to/proxy.key", flags.Ssl.Proxy.Key)
+		testutils.AssertEquals(t, "Unexpected Proxy SSL cert path", "path/to/proxy.crt", flags.SSL.Proxy.Cert)
+		testutils.AssertEquals(t, "Unexpected Proxy SSL key path", "path/to/proxy.key", flags.SSL.Proxy.Key)
 		return nil
 	}
 

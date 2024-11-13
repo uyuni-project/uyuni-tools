@@ -79,14 +79,14 @@ func AssertInstallFlags(t *testing.T, cmd *cobra.Command, flags *shared.InstallF
 	testutils.AssertEquals(t, "Error parsing --reportdb-name", "reportdbname", flags.ReportDB.Name)
 	testutils.AssertEquals(t, "Error parsing --reportdb-host", "reportdbhost", flags.ReportDB.Host)
 	testutils.AssertEquals(t, "Error parsing --reportdb-port", 5678, flags.ReportDB.Port)
-	AssertSSLGenerationFlags(t, cmd, &flags.Ssl.SslCertGenerationFlags)
-	testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.Ssl.Password)
+	AssertSSLGenerationFlags(t, cmd, &flags.SSL.SSLCertGenerationFlags)
+	testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.SSL.Password)
 	testutils.AssertEquals(t, "Error parsing --ssl-ca-intermediate",
-		[]string{"path/inter1.crt", "path/inter2.crt"}, flags.Ssl.Ca.Intermediate,
+		[]string{"path/inter1.crt", "path/inter2.crt"}, flags.SSL.Ca.Intermediate,
 	)
-	testutils.AssertEquals(t, "Error parsing --ssl-ca-root", "path/root.crt", flags.Ssl.Ca.Root)
-	testutils.AssertEquals(t, "Error parsing --ssl-server-cert", "path/srv.crt", flags.Ssl.Server.Cert)
-	testutils.AssertEquals(t, "Error parsing --ssl-server-key", "path/srv.key", flags.Ssl.Server.Key)
+	testutils.AssertEquals(t, "Error parsing --ssl-ca-root", "path/root.crt", flags.SSL.Ca.Root)
+	testutils.AssertEquals(t, "Error parsing --ssl-server-cert", "path/srv.crt", flags.SSL.Server.Cert)
+	testutils.AssertEquals(t, "Error parsing --ssl-server-key", "path/srv.key", flags.SSL.Server.Key)
 	testutils.AssertTrue(t, "Error parsing --debug-java", flags.Debug.Java)
 	testutils.AssertEquals(t, "Error parsing --admin-login", "adminuser", flags.Admin.Login)
 	testutils.AssertEquals(t, "Error parsing --admin-password", "adminpass", flags.Admin.Password)

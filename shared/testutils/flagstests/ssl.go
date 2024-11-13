@@ -24,7 +24,7 @@ var SSLGenerationFlagsTestArgs = []string{
 }
 
 // AssertSSLGenerationFlags checks that all the SSL certificate generation flags are parsed correctly.
-func AssertSSLGenerationFlags(t *testing.T, cmd *cobra.Command, flags *types.SslCertGenerationFlags) {
+func AssertSSLGenerationFlags(t *testing.T, cmd *cobra.Command, flags *types.SSLCertGenerationFlags) {
 	testutils.AssertEquals(t, "Error parsing --ssl-cname", []string{"cname1", "cname2"}, flags.Cnames)
 	testutils.AssertEquals(t, "Error parsing --ssl-country", "OS", flags.Country)
 	testutils.AssertEquals(t, "Error parsing --ssl-state", "sslstate", flags.State)

@@ -4,8 +4,8 @@
 
 package types
 
-// SslCertGenerationFlags stores informations to generate an SSL Certificate.
-type SslCertGenerationFlags struct {
+// SSLCertGenerationFlags stores informations to generate an SSL Certificate.
+type SSLCertGenerationFlags struct {
 	Cnames   []string `mapstructure:"cname"`
 	Country  string
 	State    string
@@ -22,8 +22,8 @@ type CaChain struct {
 	Intermediate []string
 }
 
-// SslPair is a type for SSL Cert and Key.
-type SslPair struct {
+// SSLPair is a type for SSL Cert and Key.
+type SSLPair struct {
 	Cert string
 	Key  string
 }

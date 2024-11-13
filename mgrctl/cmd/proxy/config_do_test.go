@@ -131,11 +131,11 @@ func TestFailProxyCreateConfigWhenProxyCrtIsProvidedButProxyKeyIsMissing(t *test
 	testFiles := setupTestFiles(t, testDir)
 	flags := &proxyCreateConfigFlags{
 		ConnectionDetails: connectionDetails,
-		Ssl: proxyConfigSslFlags{
+		SSL: proxyConfigSSLFlags{
 			Ca: caFlags{
-				SslPair: types.SslPair{Cert: testFiles.ProxyCrtFilePath},
+				SSLPair: types.SSLPair{Cert: testFiles.ProxyCrtFilePath},
 			},
-			Proxy: types.SslPair{Cert: testFiles.ProxyCrtFilePath},
+			Proxy: types.SSLPair{Cert: testFiles.ProxyCrtFilePath},
 		},
 	}
 	expectedErrorMessage := "flag proxyKey is required when flag proxyCrt is provided"
@@ -157,11 +157,11 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	testFiles := setupTestFiles(t, testDir)
 	mockContainerConfigflags := &proxyCreateConfigFlags{
 		ConnectionDetails: connectionDetails,
-		Ssl: proxyConfigSslFlags{
+		SSL: proxyConfigSSLFlags{
 			Ca: caFlags{
-				SslPair: types.SslPair{Cert: testFiles.CaCrtFilePath},
+				SSLPair: types.SSLPair{Cert: testFiles.CaCrtFilePath},
 			},
-			Proxy: types.SslPair{
+			Proxy: types.SSLPair{
 				Cert: testFiles.ProxyCrtFilePath,
 				Key:  testFiles.ProxyKeyFilePath,
 			},
@@ -169,9 +169,9 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	}
 	mockContainerConfigGenerateflags := &proxyCreateConfigFlags{
 		ConnectionDetails: connectionDetails,
-		Ssl: proxyConfigSslFlags{
+		SSL: proxyConfigSSLFlags{
 			Ca: caFlags{
-				SslPair: types.SslPair{
+				SSLPair: types.SSLPair{
 					Cert: testFiles.CaCrtFilePath,
 					Key:  testFiles.CaKeyFilePath,
 				},
@@ -231,12 +231,12 @@ func TestSuccessProxyCreateConfigWhenAllParamsProvidedSuccess(t *testing.T) {
 			Email:    "example@email.com",
 		},
 		Output: output,
-		Ssl: proxyConfigSslFlags{
+		SSL: proxyConfigSSLFlags{
 			Ca: caFlags{
-				SslPair:      types.SslPair{Cert: testFiles.CaCrtFilePath},
+				SSLPair:      types.SSLPair{Cert: testFiles.CaCrtFilePath},
 				Intermediate: []string{testFiles.IntermediateCA1FilePath, testFiles.IntermediateCA2FilePath},
 			},
-			Proxy: types.SslPair{
+			Proxy: types.SSLPair{
 				Cert: testFiles.ProxyCrtFilePath,
 				Key:  testFiles.ProxyKeyFilePath,
 			},
@@ -293,8 +293,8 @@ func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing
 			Email:    "example@email.com",
 		},
 		Output: output,
-		Ssl: proxyConfigSslFlags{
-			SslCertGenerationFlags: types.SslCertGenerationFlags{
+		SSL: proxyConfigSSLFlags{
+			SSLCertGenerationFlags: types.SSLCertGenerationFlags{
 				Cnames:  []string{"altNameA.example.com", "altNameB.example.com"},
 				Country: "testCountry",
 				State:   "exampleState",
@@ -304,7 +304,7 @@ func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing
 				Email:   "sslEmail@example.com",
 			},
 			Ca: caFlags{
-				SslPair: types.SslPair{
+				SSLPair: types.SSLPair{
 					Cert: testFiles.CaCrtFilePath,
 					Key:  testFiles.CaKeyFilePath,
 				},
@@ -323,13 +323,13 @@ func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing
 		testutils.AssertEquals(t, "Unexpected caCrt", dummyCaCrtContents, request.CaCrt)
 		testutils.AssertEquals(t, "Unexpected caKey", dummyCaKeyContents, request.CaKey)
 		testutils.AssertEquals(t, "Unexpected caPassword", dummyCaPasswordContents, request.CaPassword)
-		testutils.AssertEquals(t, "Unexpected cnames", fmt.Sprintf("%v", flags.Ssl.Cnames), fmt.Sprintf("%v", request.Cnames))
-		testutils.AssertEquals(t, "Unexpected country", flags.Ssl.Country, request.Country)
-		testutils.AssertEquals(t, "Unexpected state", flags.Ssl.State, request.State)
-		testutils.AssertEquals(t, "Unexpected city", flags.Ssl.City, request.City)
-		testutils.AssertEquals(t, "Unexpected org", flags.Ssl.Org, request.Org)
-		testutils.AssertEquals(t, "Unexpected orgUnit", flags.Ssl.OU, request.OrgUnit)
-		testutils.AssertEquals(t, "Unexpected sslEmail", flags.Ssl.Email, request.SslEmail)
+		testutils.AssertEquals(t, "Unexpected cnames", fmt.Sprintf("%v", flags.SSL.Cnames), fmt.Sprintf("%v", request.Cnames))
+		testutils.AssertEquals(t, "Unexpected country", flags.SSL.Country, request.Country)
+		testutils.AssertEquals(t, "Unexpected state", flags.SSL.State, request.State)
+		testutils.AssertEquals(t, "Unexpected city", flags.SSL.City, request.City)
+		testutils.AssertEquals(t, "Unexpected org", flags.SSL.Org, request.Org)
+		testutils.AssertEquals(t, "Unexpected orgUnit", flags.SSL.OU, request.OrgUnit)
+		testutils.AssertEquals(t, "Unexpected sslEmail", flags.SSL.Email, request.SSLEmail)
 		return &expectedConfigFileData, nil
 	}
 
