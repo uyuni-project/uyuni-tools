@@ -103,8 +103,8 @@ Environment="PODMAN_EXTRA_ARGS=%s"
 	return podman.ReloadDaemon(false)
 }
 
-// UpdateSslCertificate update SSL certificate.
-func UpdateSslCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair *ssl.SslPair) error {
+// UpdateSSLCertificate update SSL certificate.
+func UpdateSSLCertificate(cnx *shared.Connection, chain *ssl.CaChain, serverPair *ssl.SSLPair) error {
 	ssl.CheckPaths(chain, serverPair)
 
 	// Copy the CAs, certificate and key to the container

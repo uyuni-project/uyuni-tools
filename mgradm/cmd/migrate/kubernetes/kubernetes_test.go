@@ -44,7 +44,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)
 		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.User)
 		flagstests.AssertServerHelmFlags(t, cmd, &flags.Helm)
-		testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.Ssl.Password)
+		testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.SSL.Password)
 		testutils.AssertEquals(t, "Wrong FQDN", "source.fq.dn", args[0])
 		return nil
 	}

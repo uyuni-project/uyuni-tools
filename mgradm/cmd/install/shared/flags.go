@@ -48,7 +48,7 @@ type InstallFlags struct {
 	Tftp         bool
 	DB           DBFlags
 	ReportDB     DBFlags
-	Ssl          cmd_utils.SslCertFlags
+	SSL          cmd_utils.SSLCertFlags
 	SCC          types.SCCCredentials
 	Debug        DebugFlags
 	Image        types.ImageFlags `mapstructure:",squash"`
@@ -89,11 +89,11 @@ func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 	}
 
 	// Make sure we have all the required 3rd party flags or none
-	flags.Ssl.CheckParameters()
+	flags.SSL.CheckParameters()
 
 	// Since we use cert-manager for self-signed certificates on kubernetes we don't need password for it
-	if !flags.Ssl.UseExisting() && command == "podman" {
-		utils.AskPasswordIfMissing(&flags.Ssl.Password, cmd.Flag("ssl-password").Usage, 0, 0)
+	if !flags.SSL.UseExisting() && command == "podman" {
+		utils.AskPasswordIfMissing(&flags.SSL.Password, cmd.Flag("ssl-password").Usage, 0, 0)
 	}
 
 	// Use the host timezone if the user didn't define one
@@ -108,7 +108,7 @@ func (flags *InstallFlags) CheckParameters(cmd *cobra.Command, command string) {
 	utils.AskPasswordIfMissing(&flags.Admin.Password, cmd.Flag("admin-password").Usage, 5, 48)
 	utils.AskIfMissing(&flags.Organization, cmd.Flag("organization").Usage, 3, 128, nil)
 
-	flags.Ssl.Email = flags.Email
+	flags.SSL.Email = flags.Email
 	flags.Admin.Email = flags.Email
 }
 

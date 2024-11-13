@@ -78,7 +78,7 @@ func TestReadCertificatesMultiple(t *testing.T) {
 
 func TestOrderCas(t *testing.T) {
 	chain := CaChain{Root: "testdata/chain1/root-ca.crt", Intermediate: []string{"testdata/chain1/intermediate-ca.crt"}}
-	server := SslPair{Cert: "testdata/chain1/server.crt", Key: "testdata/chain1/server.key"}
+	server := SSLPair{Cert: "testdata/chain1/server.crt", Key: "testdata/chain1/server.key"}
 
 	certs, rootCa := OrderCas(&chain, &server)
 	ordered := strings.Split(string(certs), "-----BEGIN CERTIFICATE-----\n")
@@ -132,7 +132,7 @@ func TestFindServerCertificate(t *testing.T) {
 // Test a CA chain with all the chain in the server certificate file.
 func TestOrderCasChain2(t *testing.T) {
 	chain := CaChain{Root: "testdata/chain2/RHN-ORG-TRUSTED-SSL-CERT", Intermediate: []string{}}
-	server := SslPair{Cert: "testdata/chain2/spacewalk.crt", Key: "testdata/chain2/spacewalk.key"}
+	server := SSLPair{Cert: "testdata/chain2/spacewalk.crt", Key: "testdata/chain2/spacewalk.key"}
 
 	certs, rootCa := OrderCas(&chain, &server)
 	ordered := strings.Split(string(certs), "-----BEGIN CERTIFICATE-----\n")

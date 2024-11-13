@@ -74,7 +74,7 @@ func migrateToKubernetes(
 	//TODO: check if we need to handle SELinux policies, as we do in podman
 
 	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
-	var sslFlags adm_utils.SslCertFlags
+	var sslFlags adm_utils.SSLCertFlags
 
 	helmArgs := []string{}
 
@@ -131,7 +131,7 @@ func migrateToKubernetes(
 		}
 	}()
 
-	setupSslArray, err := setupSsl(&flags.Helm, kubeconfig, scriptDir, flags.Ssl.Password, flags.Image.PullPolicy)
+	setupSSLArray, err := setupSSL(&flags.Helm, kubeconfig, scriptDir, flags.SSL.Password, flags.Image.PullPolicy)
 	if err != nil {
 		return utils.Errorf(err, L("cannot setup SSL"))
 	}
@@ -145,7 +145,7 @@ func migrateToKubernetes(
 		// TODO Handle claims for multi-node clusters
 		helmArgs = append(helmArgs, "--set", "mirror.hostPath="+flags.Mirror)
 	}
-	helmArgs = append(helmArgs, setupSslArray...)
+	helmArgs = append(helmArgs, setupSSLArray...)
 
 	// Run uyuni upgrade using the new ssl certificate
 	if err = kubernetes.UyuniUpgrade(
@@ -203,7 +203,7 @@ func migrateToKubernetes(
 
 // updateIssuer replaces the temporary SSL certificate issuer with the source server CA.
 // Return additional helm args to use the SSL certificates.
-func setupSsl(
+func setupSSL(
 	helm *adm_utils.HelmFlags,
 	kubeconfig string,
 	scriptDir string,
@@ -223,10 +223,10 @@ func setupSsl(
 			return []string{}, utils.Errorf(err, L("failed to strip text part from CA certificate"))
 		}
 		cert := base64.StdEncoding.EncodeToString(out)
-		ca := ssl.SslPair{Cert: cert, Key: key}
+		ca := ssl.SSLPair{Cert: cert, Key: key}
 
 		// An empty struct means no third party certificate
-		sslFlags := adm_utils.SslCertFlags{}
+		sslFlags := adm_utils.SSLCertFlags{}
 		ret, err := kubernetes.DeployCertificate(helm, &sslFlags, cert, &ca, kubeconfig, "", pullPolicy)
 		if err != nil {
 			return []string{}, utils.Errorf(err, L("cannot deploy certificate"))
@@ -234,9 +234,9 @@ func setupSsl(
 		return ret, nil
 	} else {
 		// Handle third party certificates and CA
-		sslFlags := adm_utils.SslCertFlags{
+		sslFlags := adm_utils.SSLCertFlags{
 			Ca: ssl.CaChain{Root: caCert},
-			Server: ssl.SslPair{
+			Server: ssl.SSLPair{
 				Key:  path.Join(scriptDir, "spacewalk.key"),
 				Cert: path.Join(scriptDir, "spacewalk.crt"),
 			},

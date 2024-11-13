@@ -23,8 +23,8 @@ type CaChain struct {
 	Intermediate []string
 }
 
-// SslPair is a type for SSL Cert and Key.
-type SslPair struct {
+// SSLPair is a type for SSL Cert and Key.
+type SSLPair struct {
 	Cert string
 	Key  string
 }
@@ -32,7 +32,7 @@ type SslPair struct {
 // OrderCas generates the server certificate with the CA chain.
 //
 // Returns the certificate chain and the root CA.
-func OrderCas(chain *CaChain, serverPair *SslPair) ([]byte, []byte) {
+func OrderCas(chain *CaChain, serverPair *SSLPair) ([]byte, []byte) {
 	CheckPaths(chain, serverPair)
 
 	// Extract all certificates and their data
@@ -229,7 +229,7 @@ func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash st
 }
 
 // CheckPaths ensures that all the passed path exists and the required files are available.
-func CheckPaths(chain *CaChain, serverPair *SslPair) {
+func CheckPaths(chain *CaChain, serverPair *SSLPair) {
 	mandatoryFile(chain.Root, "root CA")
 	for _, ca := range chain.Intermediate {
 		optionalFile(ca)

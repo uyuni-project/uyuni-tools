@@ -15,8 +15,8 @@ type HelmFlags struct {
 	CertManager types.ChartFlags
 }
 
-// SslCertFlags can store SSL Certs information.
-type SslCertFlags struct {
+// SSLCertFlags can store SSL Certs information.
+type SSLCertFlags struct {
 	Cnames   []string `mapstructure:"cname"`
 	Country  string
 	State    string
@@ -26,7 +26,7 @@ type SslCertFlags struct {
 	Password string
 	Email    string
 	Ca       ssl.CaChain
-	Server   ssl.SslPair
+	Server   ssl.SSLPair
 }
 
 // HubXmlrpcFlags contains settings for Hub XMLRPC container.

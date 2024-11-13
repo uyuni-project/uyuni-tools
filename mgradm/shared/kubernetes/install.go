@@ -29,7 +29,7 @@ func Deploy(
 	registry string,
 	imageFlags *types.ImageFlags,
 	helmFlags *cmd_utils.HelmFlags,
-	sslFlags *cmd_utils.SslCertFlags,
+	sslFlags *cmd_utils.SSLCertFlags,
 	clusterInfos *kubernetes.ClusterInfos,
 	fqdn string,
 	debug bool,
@@ -68,8 +68,8 @@ func Deploy(
 }
 
 // DeployCertificate executre a deploy a new certificate given an helm.
-func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCertFlags, rootCa string,
-	ca *ssl.SslPair, kubeconfig string, fqdn string, imagePullPolicy string) ([]string, error) {
+func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SSLCertFlags, rootCa string,
+	ca *ssl.SSLPair, kubeconfig string, fqdn string, imagePullPolicy string) ([]string, error) {
 	helmArgs := []string{}
 	if sslFlags.UseExisting() {
 		if err := DeployExistingCertificate(helmFlags, sslFlags, kubeconfig); err != nil {
@@ -77,7 +77,7 @@ func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 		}
 	} else {
 		// Install cert-manager and a self-signed issuer ready for use
-		issuerArgs, err := installSslIssuers(helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn, imagePullPolicy)
+		issuerArgs, err := installSSLIssuers(helmFlags, sslFlags, rootCa, ca, kubeconfig, fqdn, imagePullPolicy)
 		if err != nil {
 			return []string{}, utils.Errorf(err, L("cannot install cert-manager and self-sign issuer"))
 		}
@@ -93,7 +93,7 @@ func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.SslCe
 // DeployExistingCertificate execute a deploy of an existing certificate.
 func DeployExistingCertificate(
 	helmFlags *cmd_utils.HelmFlags,
-	sslFlags *cmd_utils.SslCertFlags,
+	sslFlags *cmd_utils.SSLCertFlags,
 	kubeconfig string,
 ) error {
 	// Deploy the SSL Certificate secret and CA configmap
