@@ -8,33 +8,25 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 func TestReadCertificatesRootCa(t *testing.T) {
 	actual := readCertificates("testdata/chain1/root-ca.crt")
-	if len(actual) != 1 {
-		t.Errorf("readCertificates got %d certificates; want 1", len(actual))
-	}
-
-	if !actual[0].isRoot {
-		t.Error("CA should be root")
-	}
+	testutils.AssertEquals(t, "Didn't get the expected certificates count", 1, len(actual))
+	testutils.AssertTrue(t, "CA should be root", actual[0].isRoot)
 }
 
 func TestReadCertificatesNoCa(t *testing.T) {
 	actual := readCertificates("testdata/chain1/server.crt")
-	if len(actual) != 1 {
-		t.Errorf("readCertificates got %d certificates; want 1", len(actual))
-	}
-
-	if actual[0].isCa {
-		t.Error("Shouldn't be a CA certificate")
-	}
+	testutils.AssertEquals(t, "Didn't get the expected certificates count", 1, len(actual))
+	testutils.AssertTrue(t, "Shouldn't be a CA certificate", !actual[0].isCa)
 }
 
 func TestReadCertificatesMultiple(t *testing.T) {
 	actual := readCertificates("testdata/chain1/intermediate-ca.crt")
+	testutils.AssertEquals(t, "Didn't get the expected certificates count", 2, len(actual))
 	if len(actual) != 2 {
 		t.Errorf("readCertificates got %d certificates; want 2", len(actual))
 	}
@@ -45,37 +37,34 @@ func TestReadCertificatesMultiple(t *testing.T) {
 		t.Errorf("Wrong certificate content:\n%s", content)
 	}
 
-	if actual[1].subject != "C = DE, ST = STATE, O = ORG, OU = ORGUNIT, CN = TeamCA" {
-		t.Errorf("Wrong certificate subject: %s", actual[1].subject)
-	}
+	testutils.AssertEquals(t, "Wrong certificate subject",
+		"C=DE, ST=STATE, O=ORG, OU=ORGUNIT, CN=TeamCA",
+		canonicalizeOpenSSLOutput(actual[1].subject),
+	)
 
-	if actual[1].subjectHash != "85a51924" {
-		t.Errorf("Wrong subject hash: %s", actual[1].subjectHash)
-	}
+	testutils.AssertEquals(t, "Wrong subject hash", "85a51924", actual[1].subjectHash)
 
-	if actual[0].issuer != "C = DE, ST = STATE, L = CITY, O = ORG, OU = ORGUNIT, CN = RootCA" {
-		t.Errorf("Wrong certificate issuer: %s", actual[0].issuer)
-	}
+	testutils.AssertEquals(t, "Wrong certificate issuer",
+		"C=DE, ST=STATE, L=CITY, O=ORG, OU=ORGUNIT, CN=RootCA",
+		canonicalizeOpenSSLOutput(actual[0].issuer),
+	)
 
-	if actual[0].issuerHash != "e96ab651" {
-		t.Errorf("Wrong issuer hash: %s", actual[0].issuerHash)
-	}
+	testutils.AssertEquals(t, "Wrong issuer hash", "e96ab651", actual[0].issuerHash)
+	testutils.AssertTrue(t, "CA shouldn't be root", !actual[0].isRoot)
+	testutils.AssertTrue(t, "Should be a CA", actual[0].isCa)
 
-	if actual[0].isRoot {
-		t.Error("CA shouldn't be root")
-	}
+	testutils.AssertEquals(t, "Wrong subject key id",
+		"62:00:25:E4:EE:70:E5:37:2D:1E:9E:AE:4E:B7:3E:FC:62:08:BF:27", actual[1].subjectKeyID,
+	)
 
-	if !actual[0].isCa {
-		t.Error("Should be a CA")
-	}
+	testutils.AssertEquals(t, "Wrong auth key id",
+		"6E:6D:4B:35:22:23:3E:13:18:A5:93:61:0E:9C:BE:1E:D2:B8:1B:D4", actual[0].authKeyID,
+	)
+}
 
-	if actual[1].subjectKeyID != "62:00:25:E4:EE:70:E5:37:2D:1E:9E:AE:4E:B7:3E:FC:62:08:BF:27" {
-		t.Errorf("Wrong subject key id: %s", actual[1].subjectKeyID)
-	}
-
-	if actual[0].authKeyID != "6E:6D:4B:35:22:23:3E:13:18:A5:93:61:0E:9C:BE:1E:D2:B8:1B:D4" {
-		t.Errorf("Wrong auth key id: %s", actual[0].authKeyID)
-	}
+// canonicalizeOpenSSLOutput standardizes openSSL test output across its versions.
+func canonicalizeOpenSSLOutput(value string) string {
+	return strings.ReplaceAll(value, " = ", "=")
 }
 
 func TestOrderCas(t *testing.T) {
@@ -88,9 +77,7 @@ func TestOrderCas(t *testing.T) {
 	certs, rootCa := OrderCas(&chain, &server)
 	ordered := strings.Split(string(certs), "-----BEGIN CERTIFICATE-----\n")
 
-	if ordered[0] != "" {
-		t.Errorf("Found unknown content before first certificate: %s", ordered[0])
-	}
+	testutils.AssertEquals(t, "Found unknown content before first certificate", "", ordered[0])
 	onlyCerts := ordered[1:]
 
 	expected := []struct {
@@ -103,9 +90,7 @@ func TestOrderCas(t *testing.T) {
 	}
 
 	// Do not count the empty first item
-	if len(onlyCerts) != len(expected) {
-		t.Errorf("Wrong number of certificates in the chain: got %d; want %d", len(onlyCerts), len(expected))
-	}
+	testutils.AssertEquals(t, "Wrong number of certificates in the chain", len(expected), len(onlyCerts))
 
 	for i, data := range expected {
 		if !strings.HasPrefix(onlyCerts[i], data.Begin) ||
@@ -125,13 +110,8 @@ func TestFindServerCertificate(t *testing.T) {
 	certsList := readCertificates("testdata/chain2/spacewalk.crt")
 	actual, err := findServerCert(certsList)
 
-	if err != nil {
-		t.Error("Expected to find a certificate, got none")
-	}
-
-	if actual.subjectHash != "78b716a6" {
-		t.Errorf("Wrong subject hash, got %s", actual.subjectHash)
-	}
+	testutils.AssertEquals(t, "Expected to find a certificate, got none", nil, err)
+	testutils.AssertEquals(t, "Wrong subject hash", "78b716a6", actual.subjectHash)
 }
 
 // Test a CA chain with all the chain in the server certificate file.
@@ -142,9 +122,7 @@ func TestOrderCasChain2(t *testing.T) {
 	certs, rootCa := OrderCas(&chain, &server)
 	ordered := strings.Split(string(certs), "-----BEGIN CERTIFICATE-----\n")
 
-	if ordered[0] != "" {
-		t.Errorf("Found unknown content before first certificate: %s", ordered[0])
-	}
+	testutils.AssertEquals(t, "Found unknown content before first certificate", "", ordered[0])
 	onlyCerts := ordered[1:]
 
 	expected := []struct {
@@ -157,9 +135,7 @@ func TestOrderCasChain2(t *testing.T) {
 	}
 
 	// Do not count the empty first item
-	if len(onlyCerts) != len(expected) {
-		t.Errorf("Wrong number of certificates in the chain: got %d; want %d", len(onlyCerts), len(expected))
-	}
+	testutils.AssertEquals(t, "Wrong number of certificates in the chain", len(expected), len(onlyCerts))
 
 	for i, data := range expected {
 		if !strings.HasPrefix(onlyCerts[i], data.Begin) ||
