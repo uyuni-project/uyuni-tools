@@ -8,6 +8,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"regexp"
+	"strconv"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -18,6 +20,7 @@ import (
 )
 
 const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/uyuni-traefik-config.yaml"
+const k3sTraefikMainConfigPath = "/var/lib/rancher/k3s/server/manifests/traefik.yaml"
 
 // InstallK3sTraefikConfig install K3s Traefik configuration.
 func InstallK3sTraefikConfig(ports []types.PortMap) error {
@@ -28,8 +31,14 @@ func InstallK3sTraefikConfig(ports []types.PortMap) error {
 		port.Name = GetTraefikEndpointName(port)
 		endpoints = append(endpoints, port)
 	}
+	version, err := getTraefikChartMajorVersion()
+	if err != nil {
+		return err
+	}
+
 	data := K3sTraefikConfigTemplateData{
-		Ports: endpoints,
+		Ports:         endpoints,
+		ExposeBoolean: version < 27,
 	}
 	if err := utils.WriteTemplateToFile(data, k3sTraefikConfigPath, 0600, true); err != nil {
 		return utils.Errorf(err, L("Failed to write Traefik configuration"))
@@ -102,4 +111,25 @@ func UninstallK3sTraefikConfig(dryRun bool) {
 
 	// Now that it's reinstalled, remove the file
 	utils.UninstallFile(k3sTraefikConfigPath, dryRun)
+}
+
+func getTraefikChartMajorVersion() (int, error) {
+	out, err := os.ReadFile(k3sTraefikMainConfigPath)
+	if err != nil {
+		return 0, utils.Errorf(err, L("failed to read the traefik configuration"))
+	}
+	matches := regexp.MustCompile(`traefik-([0-9]+)`).FindStringSubmatch(string(out))
+	if matches == nil {
+		return 0, errors.New(L("traefik configuration file doesn't contain the helm chart version"))
+	}
+	if len(matches) != 2 {
+		return 0, errors.New(L("failed to find traefik helm chart version"))
+	}
+
+	majorVersion, err := strconv.Atoi(matches[1])
+	if err != nil {
+		return 0, utils.Errorf(err, L(""))
+	}
+
+	return majorVersion, nil
 }
