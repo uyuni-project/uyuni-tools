@@ -53,7 +53,7 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 
 	rootCmd.SetUsageTemplate(utils.GetLocalizedUsageTemplate())
 
-	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
+	rootCmd.PersistentPreRun = func(cmd *cobra.Command, _ []string) {
 		// do not log if running the completion cmd as the output is redirected to create a file to source
 		if cmd.Name() != "completion" && cmd.Name() != "__complete" {
 			utils.LogInit(true)

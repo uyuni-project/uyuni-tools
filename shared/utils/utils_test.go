@@ -29,7 +29,7 @@ type askTestData struct {
 	checker         func(string) bool
 }
 
-func setupConsole(t *testing.T) (*expect.Console, func(t *testing.T)) {
+func setupConsole(t *testing.T) (*expect.Console, func()) {
 	// Set english locale to not depend on the system one
 	gettext.BindLocale(gettext.New("", "", l10n_utils.New("")))
 	gettext.SetLanguage("en")
@@ -47,7 +47,7 @@ func setupConsole(t *testing.T) (*expect.Console, func(t *testing.T)) {
 	os.Stdin = c.Tty()
 	os.Stdout = c.Tty()
 
-	return c, func(t *testing.T) {
+	return c, func() {
 		syscall.Stdin = origStdin
 		os.Stdin = origOsStdin
 		os.Stdout = origStdout
@@ -57,7 +57,7 @@ func setupConsole(t *testing.T) (*expect.Console, func(t *testing.T)) {
 
 func TestAskIfMissing(t *testing.T) {
 	c, teardown := setupConsole(t)
-	defer teardown(t)
+	defer teardown()
 
 	fChecker := func(v string) bool {
 		if !strings.Contains(v, "f") {
@@ -91,7 +91,7 @@ func TestAskIfMissing(t *testing.T) {
 
 func TestCheckValidPassword(t *testing.T) {
 	c, teardown := setupConsole(t)
-	defer teardown(t)
+	defer teardown()
 
 	data := []askTestData{
 		{value: "\n", expectedMessage: "A value is required", min: 1, max: 5},
@@ -117,7 +117,7 @@ func TestCheckValidPassword(t *testing.T) {
 
 func TestPasswordMismatch(t *testing.T) {
 	c, teardown := setupConsole(t)
-	defer teardown(t)
+	defer teardown()
 
 	go func() {
 		sendInput(t, 1, c, "Prompted password: ", "password1\n", "")

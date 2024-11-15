@@ -141,7 +141,7 @@ func SetLogLevel(logLevel string) {
 	zerolog.SetGlobalLevel(globalLevel)
 }
 
-func logCallerMarshalFunction(pc uintptr, file string, line int) string {
+func logCallerMarshalFunction(_ uintptr, file string, line int) string {
 	paths := strings.Split(file, "/")
 	callerFile := file
 	foundSubDir := false

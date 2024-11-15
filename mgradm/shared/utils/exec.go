@@ -105,7 +105,7 @@ func GeneratePostUpgradeScript(scriptDir string) (string, error) {
 }
 
 // RunMigration execute the migration script.
-func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) error {
+func RunMigration(cnx *shared.Connection, scriptName string) error {
 	log.Info().Msg(L("Migrating server"))
 	err := ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/"+scriptName)
 	if err != nil {
@@ -138,7 +138,7 @@ func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, pr
 }
 
 // RunningImage returns the image running in the current system.
-func RunningImage(cnx *shared.Connection, containerName string) (string, error) {
+func RunningImage(cnx *shared.Connection) (string, error) {
 	command, err := cnx.GetCommand()
 
 	switch command {

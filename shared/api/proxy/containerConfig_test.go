@@ -127,7 +127,7 @@ func TestFailContainerConfigWhenPostRequestFails(t *testing.T) {
 		t.FailNow()
 	}
 	client.Client = &mocks.MockClient{
-		DoFunc: func(req *http.Request) (*http.Response, error) {
+		DoFunc: func(_ *http.Request) (*http.Response, error) {
 			return testutils.GetResponse(404, `{}`)
 		},
 	}
@@ -152,7 +152,7 @@ func TestFailContainerConfigWhenPostIsUnsuccessful(t *testing.T) {
 		t.FailNow()
 	}
 	client.Client = &mocks.MockClient{
-		DoFunc: func(req *http.Request) (*http.Response, error) {
+		DoFunc: func(_ *http.Request) (*http.Response, error) {
 			return testutils.GetResponse(200, `{"success": false, "message": "some error message"}`)
 		},
 	}
@@ -224,7 +224,7 @@ func TestFailContainerConfigGenerateWhenPostRequestFails(t *testing.T) {
 		t.FailNow()
 	}
 	client.Client = &mocks.MockClient{
-		DoFunc: func(req *http.Request) (*http.Response, error) {
+		DoFunc: func(_ *http.Request) (*http.Response, error) {
 			return testutils.GetResponse(404, `{}`)
 		},
 	}
@@ -249,7 +249,7 @@ func TestFailContainerConfigGenerateWhenPostIsUnsuccessful(t *testing.T) {
 		t.FailNow()
 	}
 	client.Client = &mocks.MockClient{
-		DoFunc: func(req *http.Request) (*http.Response, error) {
+		DoFunc: func(_ *http.Request) (*http.Response, error) {
 			return testutils.GetResponse(200, `{"success": false, "message": "some error message"}`)
 		},
 	}

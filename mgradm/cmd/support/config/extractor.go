@@ -15,7 +15,7 @@ import (
 
 var systemd podman.Systemd = podman.SystemdImpl{}
 
-func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
+func extract(_ *types.GlobalFlags, flags *configFlags, _ *cobra.Command, _ []string) error {
 	containerName, err := shared.ChooseObjPodmanOrKubernetes(systemd, podman.ServerContainerName, kubernetes.ServerApp)
 	if err != nil {
 		return err
@@ -59,9 +59,5 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 		fileList = append(fileList, fileListHost...)
 	}
 
-	if err := utils.CreateSupportConfigTarball(flags.Output, fileList); err != nil {
-		return err
-	}
-
-	return nil
+	return utils.CreateSupportConfigTarball(flags.Output, fileList)
 }

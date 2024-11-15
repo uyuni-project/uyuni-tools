@@ -21,11 +21,9 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, "srv.fq.dn")
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
-		cmd *cobra.Command, args []string,
-	) error {
-		flagstests.AssertInstallFlags(t, cmd, &flags.InstallFlags)
-		flagstests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
+	tester := func(_ *types.GlobalFlags, flags *podmanInstallFlags, _ *cobra.Command, args []string) error {
+		flagstests.AssertInstallFlags(t, &flags.InstallFlags)
+		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
 		testutils.AssertEquals(t, "Wrong FQDN", "srv.fq.dn", args[0])
 		return nil
 	}
@@ -54,8 +52,8 @@ hubxmlrpc:
 		t.Fatalf("Failed to write config file: %s", err)
 	}
 
-	tester := func(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
-		cmd *cobra.Command, args []string,
+	tester := func(_ *types.GlobalFlags, flags *podmanInstallFlags,
+		_ *cobra.Command, _ []string,
 	) error {
 		testutils.AssertEquals(t, "Coco replicas badly parsed", 2, flags.Coco.Replicas)
 		testutils.AssertTrue(t, "Coco replicas not marked as changed", flags.Coco.IsChanged)
@@ -74,8 +72,8 @@ hubxmlrpc:
 }
 
 func TestParamsNoConfig(t *testing.T) {
-	tester := func(globalFlags *types.GlobalFlags, flags *podmanInstallFlags,
-		cmd *cobra.Command, args []string,
+	tester := func(_ *types.GlobalFlags, flags *podmanInstallFlags,
+		_ *cobra.Command, _ []string,
 	) error {
 		testutils.AssertEquals(t, "Coco replicas badly parsed", 0, flags.Coco.Replicas)
 		testutils.AssertTrue(t, "Coco replicas marked as changed", !flags.Coco.IsChanged)

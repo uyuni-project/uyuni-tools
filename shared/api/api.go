@@ -73,10 +73,9 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 				if err = json.Unmarshal(body, &errResponse); err == nil {
 					errorMessage := fmt.Sprintf("%d: '%s'", res.StatusCode, errResponse["message"])
 					return nil, errors.New(errorMessage)
-				} else {
-					errorMessage := fmt.Sprintf("%d: '%s'", res.StatusCode, string(body))
-					return nil, errors.New(errorMessage)
 				}
+				errorMessage := fmt.Sprintf("%d: '%s'", res.StatusCode, string(body))
+				return nil, errors.New(errorMessage)
 			}
 		}
 		return nil, fmt.Errorf(L("unknown error: %d"), res.StatusCode)
@@ -210,10 +209,7 @@ func (c *APIClient) Logout() error {
 	if _, err := c.Post("auth/logout", nil); err != nil {
 		return utils.Errorf(err, L("failed to logout from the server"))
 	}
-	if err := RemoveLoginCreds(); err != nil {
-		return err
-	}
-	return nil
+	return RemoveLoginCreds()
 }
 
 // ValidateCreds checks if the login credentials are valid.

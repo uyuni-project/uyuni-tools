@@ -7,7 +7,6 @@ package flagstests
 import (
 	"testing"
 
-	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
@@ -24,7 +23,7 @@ var SSLGenerationFlagsTestArgs = []string{
 }
 
 // AssertSSLGenerationFlags checks that all the SSL certificate generation flags are parsed correctly.
-func AssertSSLGenerationFlags(t *testing.T, cmd *cobra.Command, flags *types.SSLCertGenerationFlags) {
+func AssertSSLGenerationFlags(t *testing.T, flags *types.SSLCertGenerationFlags) {
 	testutils.AssertEquals(t, "Error parsing --ssl-cname", []string{"cname1", "cname2"}, flags.Cnames)
 	testutils.AssertEquals(t, "Error parsing --ssl-country", "OS", flags.Country)
 	testutils.AssertEquals(t, "Error parsing --ssl-state", "sslstate", flags.State)

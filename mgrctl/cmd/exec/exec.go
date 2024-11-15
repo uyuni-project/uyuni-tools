@@ -51,7 +51,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return execCmd
 }
 
-func run(globalFlags *types.GlobalFlags, flags *flagpole, cmd *cobra.Command, args []string) error {
+func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	podName, err := cnx.GetPodName()
 	if err != nil {

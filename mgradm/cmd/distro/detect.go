@@ -150,20 +150,19 @@ func detectDistro(
 			L("distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"),
 			treeinfopath,
 		)
-	} else {
-		var err error
-		*distro, err = getDistroFromTreeinfo(path, flags)
-		if err != nil {
-			return err
-		}
+	}
+	var err error
+	*distro, err = getDistroFromTreeinfo(path, flags)
+	if err != nil {
+		return err
+	}
 
-		// Overrides from the command line
-		if distroDetails.Name != "" {
-			distro.TreeLabel = distroDetails.Name
-		}
-		if channelLabel != "" {
-			distro.ChannelLabel = channelLabel
-		}
+	// Overrides from the command line
+	if distroDetails.Name != "" {
+		distro.TreeLabel = distroDetails.Name
+	}
+	if channelLabel != "" {
+		distro.ChannelLabel = channelLabel
 	}
 
 	return nil

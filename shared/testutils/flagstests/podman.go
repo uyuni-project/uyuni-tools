@@ -7,7 +7,6 @@ package flagstests
 import (
 	"testing"
 
-	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
@@ -19,6 +18,6 @@ var PodmanFlagsTestArgs = []string{
 }
 
 // AssertPodmanInstallFlags checks that all podman flags are parsed correctly.
-func AssertPodmanInstallFlags(t *testing.T, cmd *cobra.Command, flags *podman.PodmanFlags) {
+func AssertPodmanInstallFlags(t *testing.T, flags *podman.PodmanFlags) {
 	testutils.AssertEquals(t, "Error parsing --podman-arg", []string{"arg1", "arg2"}, flags.Args)
 }

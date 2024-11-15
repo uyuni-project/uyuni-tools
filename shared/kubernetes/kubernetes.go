@@ -72,9 +72,8 @@ func guessIngress() (string, error) {
 	err := utils.RunCmd("kubectl", "explain", "ingressroutetcp")
 	if err == nil {
 		return "traefik", nil
-	} else {
-		log.Debug().Err(err).Msg("No ingressroutetcp resource deployed")
 	}
+	log.Debug().Err(err).Msg("No ingressroutetcp resource deployed")
 
 	// Look for a pod running the nginx-ingress-controller: there is no other common way to find out
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-A",

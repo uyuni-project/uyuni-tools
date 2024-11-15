@@ -11,6 +11,6 @@ import (
 )
 
 // NewCommand is the command for creates supportptf.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func NewCommand(_ *types.GlobalFlags) *cobra.Command {
 	return nil
 }

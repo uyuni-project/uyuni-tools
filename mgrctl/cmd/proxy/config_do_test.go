@@ -182,10 +182,10 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	expectedReturnMessage := "Totally unexpected error"
 
 	// Mock containerConfig api calls
-	mockContainerConfig := func(client *api.APIClient, request proxyApi.ProxyConfigRequest) (*[]int8, error) {
+	mockContainerConfig := func(_ *api.APIClient, _ proxyApi.ProxyConfigRequest) (*[]int8, error) {
 		return nil, errors.New(expectedReturnMessage)
 	}
-	mockCreateConfigGenerate := func(client *api.APIClient, request proxyApi.ProxyConfigGenerateRequest) (*[]int8, error) {
+	mockCreateConfigGenerate := func(_ *api.APIClient, _ proxyApi.ProxyConfigGenerateRequest) (*[]int8, error) {
 		return nil, errors.New(expectedReturnMessage)
 	}
 
@@ -244,7 +244,7 @@ func TestSuccessProxyCreateConfigWhenAllParamsProvidedSuccess(t *testing.T) {
 	}
 
 	// Mock containerConfig api call
-	mockContainerConfig := func(client *api.APIClient, request proxyApi.ProxyConfigRequest) (*[]int8, error) {
+	mockContainerConfig := func(_ *api.APIClient, request proxyApi.ProxyConfigRequest) (*[]int8, error) {
 		testutils.AssertEquals(t, "Unexpected proxyName", flags.Proxy.Name, request.ProxyName)
 		testutils.AssertEquals(t, "Unexpected proxyPort", flags.Proxy.Port, request.ProxyPort)
 		testutils.AssertEquals(t, "Unexpected server", flags.Proxy.Parent, request.Server)
@@ -314,7 +314,7 @@ func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing
 	}
 
 	// Mock api client & containerConfig
-	mockCreateConfigGenerate := func(client *api.APIClient, request proxyApi.ProxyConfigGenerateRequest) (*[]int8, error) {
+	mockCreateConfigGenerate := func(_ *api.APIClient, request proxyApi.ProxyConfigGenerateRequest) (*[]int8, error) {
 		testutils.AssertEquals(t, "Unexpected proxyName", flags.Proxy.Name, request.ProxyName)
 		testutils.AssertEquals(t, "Unexpected proxyPort", flags.Proxy.Port, request.ProxyPort)
 		testutils.AssertEquals(t, "Unexpected server", flags.Proxy.Parent, request.Server)

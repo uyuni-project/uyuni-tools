@@ -22,10 +22,10 @@ import (
 )
 
 func kuberneteInspect(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *inspectFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	serverImage, err := utils.ComputeImage("", utils.DefaultTag, flags.Image)
 	if err != nil && len(serverImage) > 0 {
@@ -36,7 +36,7 @@ func kuberneteInspect(
 	if len(serverImage) <= 0 {
 		log.Debug().Msg("Use deployed image")
 
-		serverImage, err = adm_utils.RunningImage(cnx, "uyuni")
+		serverImage, err = adm_utils.RunningImage(cnx)
 		if err != nil {
 			return errors.New(L("failed to find the image of the currently running server container: %s"))
 		}

@@ -24,11 +24,9 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.SCCFlagTestArgs...)
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *inspectFlags,
-		cmd *cobra.Command, args []string,
-	) error {
-		flagstests.AssertImageFlag(t, cmd, &flags.Image)
-		flagstests.AssertSCCFlag(t, cmd, &flags.SCC)
+	tester := func(_ *types.GlobalFlags, flags *inspectFlags, _ *cobra.Command, _ []string) error {
+		flagstests.AssertImageFlag(t, &flags.Image)
+		flagstests.AssertSCCFlag(t, &flags.SCC)
 		if utils.KubernetesBuilt {
 			testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
 		}

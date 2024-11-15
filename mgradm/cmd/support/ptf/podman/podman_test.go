@@ -21,9 +21,7 @@ func TestParamsParsing(t *testing.T) {
 	}
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *podmanPTFFlags,
-		cmd *cobra.Command, args []string,
-	) error {
+	tester := func(_ *types.GlobalFlags, flags *podmanPTFFlags, _ *cobra.Command, _ []string) error {
 		testutils.AssertEquals(t, "Error parsing --ptf", "ptf123", flags.PTFId)
 		testutils.AssertEquals(t, "Error parsing --test", "test123", flags.TestID)
 		testutils.AssertEquals(t, "Error parsing --user", "sccuser", flags.CustomerID)

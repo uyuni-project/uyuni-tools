@@ -45,7 +45,7 @@ func waitForSystemStart(
 var systemd shared_podman.Systemd = shared_podman.SystemdImpl{}
 
 func installForPodman(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *podmanInstallFlags,
 	cmd *cobra.Command,
 	args []string,

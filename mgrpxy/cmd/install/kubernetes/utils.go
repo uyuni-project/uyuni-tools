@@ -18,8 +18,8 @@ import (
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func installForKubernetes(globalFlags *types.GlobalFlags,
-	flags *kubernetesProxyInstallFlags, cmd *cobra.Command, args []string,
+func installForKubernetes(_ *types.GlobalFlags,
+	flags *kubernetesProxyInstallFlags, _ *cobra.Command, args []string,
 ) error {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {

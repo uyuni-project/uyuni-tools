@@ -19,7 +19,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "term",
 		Short: L("Run a terminal inside the server container"),
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			execCmd := newExecCmd(globalFlags)
 			execArgs := []string{"-i", "-t"}
 			backend, err := cmd.Flags().GetString("backend")

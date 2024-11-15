@@ -7,7 +7,6 @@ package flagstests
 import (
 	"testing"
 
-	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
@@ -59,7 +58,7 @@ var InstallFlagsTestArgs = func() []string {
 }
 
 // AssertInstallFlags checks that all the install flags are parsed correctly.
-func AssertInstallFlags(t *testing.T, cmd *cobra.Command, flags *shared.InstallFlags) {
+func AssertInstallFlags(t *testing.T, flags *shared.InstallFlags) {
 	testutils.AssertEquals(t, "Error parsing --tz", "CEST", flags.TZ)
 	testutils.AssertEquals(t, "Error parsing --email", "admin@foo.bar", flags.Email)
 	testutils.AssertEquals(t, "Error parsing --emailfrom", "sender@foo.bar", flags.EmailFrom)
@@ -79,7 +78,7 @@ func AssertInstallFlags(t *testing.T, cmd *cobra.Command, flags *shared.InstallF
 	testutils.AssertEquals(t, "Error parsing --reportdb-name", "reportdbname", flags.ReportDB.Name)
 	testutils.AssertEquals(t, "Error parsing --reportdb-host", "reportdbhost", flags.ReportDB.Host)
 	testutils.AssertEquals(t, "Error parsing --reportdb-port", 5678, flags.ReportDB.Port)
-	AssertSSLGenerationFlags(t, cmd, &flags.SSL.SSLCertGenerationFlags)
+	AssertSSLGenerationFlags(t, &flags.SSL.SSLCertGenerationFlags)
 	testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.SSL.Password)
 	testutils.AssertEquals(t, "Error parsing --ssl-ca-intermediate",
 		[]string{"path/inter1.crt", "path/inter2.crt"}, flags.SSL.Ca.Intermediate,
@@ -93,9 +92,9 @@ func AssertInstallFlags(t *testing.T, cmd *cobra.Command, flags *shared.InstallF
 	testutils.AssertEquals(t, "Error parsing --admin-firstName", "adminfirst", flags.Admin.FirstName)
 	testutils.AssertEquals(t, "Error parsing --admin-lastName", "adminlast", flags.Admin.LastName)
 	testutils.AssertEquals(t, "Error parsing --organization", "someorg", flags.Organization)
-	AssertMirrorFlag(t, cmd, flags.Mirror)
-	AssertSCCFlag(t, cmd, &flags.SCC)
-	AssertImageFlag(t, cmd, &flags.Image)
-	AssertCocoFlag(t, cmd, &flags.Coco)
-	AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)
+	AssertMirrorFlag(t, flags.Mirror)
+	AssertSCCFlag(t, &flags.SCC)
+	AssertImageFlag(t, &flags.Image)
+	AssertCocoFlag(t, &flags.Coco)
+	AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 }

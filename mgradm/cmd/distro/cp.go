@@ -125,9 +125,9 @@ func getServerFqdn(flags *flagpole) (string, error) {
 }
 
 func distroCp(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *flagpole,
-	cmd *cobra.Command,
+	_ *cobra.Command,
 	args []string,
 ) error {
 	source := args[0]

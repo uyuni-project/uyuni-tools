@@ -14,10 +14,10 @@ import (
 var systemd podman.Systemd = podman.SystemdImpl{}
 
 func podmanStop(
-	globalFlags *types.GlobalFlags,
-	flags *stopFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *stopFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	err1 := systemd.StopInstantiated(podman.ServerAttestationService)
 	err2 := systemd.StopInstantiated(podman.HubXmlrpcService)

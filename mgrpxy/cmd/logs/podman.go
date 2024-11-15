@@ -15,9 +15,9 @@ import (
 )
 
 func podmanLogs(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *logsFlags,
-	cmd *cobra.Command,
+	_ *cobra.Command,
 	args []string,
 ) error {
 	commandArgs := []string{"logs"}

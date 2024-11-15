@@ -18,9 +18,9 @@ import (
 )
 
 func kubernetesLogs(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *logsFlags,
-	cmd *cobra.Command,
+	_ *cobra.Command,
 	args []string,
 ) error {
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ProxyFilter)

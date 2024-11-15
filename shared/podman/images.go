@@ -39,9 +39,8 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 		if len(presentImage) > 0 {
 			log.Debug().Msgf("Image %s already present", presentImage)
 			return presentImage, nil
-		} else {
-			log.Debug().Msgf("Image %s is missing", image)
 		}
+		log.Debug().Msgf("Image %s is missing", image)
 	} else {
 		log.Info().Msgf(
 			L("Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"),
@@ -68,10 +67,9 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 		if pullEnabled {
 			log.Debug().Msgf("Pulling image %s because it is missing and pull policy is not 'never'", image)
 			return image, pullImage(authFile, image)
-		} else {
-			log.Debug().Msgf("Do not pulling image %s, although the pull policy is not 'never', maybe replicas is zero?", image)
-			return image, nil
 		}
+		log.Debug().Msgf("Do not pulling image %s, although the pull policy is not 'never', maybe replicas is zero?", image)
+		return image, nil
 	}
 
 	return image, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)

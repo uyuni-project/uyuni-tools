@@ -17,10 +17,10 @@ import (
 )
 
 func proxyCreateConfigInit(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *proxyCreateConfigFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	return proxyCreateConfig(flags, api.Init, proxy.ContainerConfig, proxy.ContainerConfigGenerate)
 }
