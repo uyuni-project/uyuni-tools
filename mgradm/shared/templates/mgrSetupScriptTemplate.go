@@ -27,6 +27,34 @@ RESULT=$?
 # The CA needs to be added to the database for Kickstart use.
 /usr/bin/rhn-ssl-dbstore --ca-cert=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
 
+if test -n "{{ .AdminPassword }}"; then
+	{{ if .NoSSL }}
+	CURL_SCHEME="http"
+	{{ else }}
+	CURL_SCHEME="-k https"
+	{{ end }}
+
+	HTTP_CODE=$(curl -o /dev/null -s -w %{http_code} $CURL_SCHEME://localhost/rhn/newlogin/CreateFirstUser.do)
+	if test "$HTTP_CODE" == "200"; then
+		echo "Creating administration user"
+		curl -s -o /tmp/curl_out \
+			-d "orgName={{ .OrgName }}" \
+			-d "adminLogin={{ .AdminLogin }}" \
+			-d "adminPassword={{ .AdminPassword }}" \
+			-d "firstName={{ .AdminFirstName }}" \
+			-d "lastName={{ .AdminLastName }}" \
+			-d "email={{ .AdminEmail }}" \
+			$CURL_SCHEME://localhost/rhn/manager/api/org/createFirst
+		if ! grep -q '^{"success":true' /tmp/curl_out ; then
+			echo "Failed to create the administration user"
+			cat /tmp/curl_out
+		fi
+		rm -f /tmp/curl_out
+	elif test "$HTTP_CODE" == "403"; then
+		echo "Administration user already exists, reusing"
+	fi
+fi
+
 # clean before leaving
 rm $0
 exit $RESULT
@@ -34,8 +62,15 @@ exit $RESULT
 
 // MgrSetupScriptTemplateData represents information used to create setup script.
 type MgrSetupScriptTemplateData struct {
-	Env       map[string]string
-	DebugJava bool
+	Env            map[string]string
+	NoSSL          bool
+	DebugJava      bool
+	AdminPassword  string
+	AdminLogin     string
+	AdminFirstName string
+	AdminLastName  string
+	AdminEmail     string
+	OrgName        string
 }
 
 // Render will create setup script.

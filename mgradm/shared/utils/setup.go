@@ -5,17 +5,14 @@
 package utils
 
 import (
-	"errors"
-	"net/url"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared"
-	"github.com/uyuni-project/uyuni-tools/shared/api"
-	"github.com/uyuni-project/uyuni-tools/shared/api/org"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -51,52 +48,7 @@ func RunSetup(cnx *shared.Connection, flags *ServerFlags, fqdn string, env map[s
 		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
 
-	installFlags := &flags.Installation
-
-	// Call the org.createFirst api if flags are passed
-	// This should not happen since the password is queried and enforced
-	if installFlags.Admin.Password != "" {
-		apiCnx := api.ConnectionDetails{
-			Server:   fqdn,
-			Insecure: false,
-			User:     installFlags.Admin.Login,
-			Password: installFlags.Admin.Password,
-		}
-
-		// Check if there is already admin user with given password and organization with same name
-		client, err := api.Init(&apiCnx)
-		if err != nil {
-			log.Error().Err(err).Msgf(L("unable to prepare API client"))
-		}
-		if err = client.Login(); err == nil {
-			if _, err := org.GetOrganizationDetails(&apiCnx, installFlags.Organization); err == nil {
-				log.Info().Msgf(L("Server organization already exists, reusing"))
-			} else {
-				log.Debug().Err(err).Msg("Error returned by server")
-				log.Warn().Msgf(
-					L("Administration user already exists, but organization %s could not be found"),
-					installFlags.Organization,
-				)
-			}
-		} else {
-			var connError *url.Error
-			if errors.As(err, &connError) {
-				// We were not able to connect to the server at all
-				return err
-			}
-			// We do not have any user existing, create one. CreateFirst skip user login
-			_, err := org.CreateFirst(&apiCnx, installFlags.Organization, &installFlags.Admin)
-			if err != nil {
-				if preconfigured {
-					log.Warn().Msgf(L("Administration user already exists, but provided credentials are not valid"))
-				} else {
-					return err
-				}
-			}
-		}
-	}
-
-	log.Info().Msgf(L("Server set up, login on https://%[1]s with %[2]s user"), fqdn, installFlags.Admin.Login)
+	log.Info().Msgf(L("Server set up, login on https://%[1]s with %[2]s user"), fqdn, flags.Installation.Admin.Login)
 	return nil
 }
 
@@ -166,9 +118,18 @@ func generateSetupScript(
 		return "", nil, err
 	}
 
+	_, noSSL := env["NO_SSL"]
+
 	dataTemplate := templates.MgrSetupScriptTemplateData{
-		Env:       env,
-		DebugJava: flags.Debug.Java,
+		Env:            env,
+		DebugJava:      flags.Debug.Java,
+		OrgName:        flags.Organization,
+		AdminLogin:     flags.Admin.Login,
+		AdminPassword:  strings.ReplaceAll(flags.Admin.Password, `"`, `\"`),
+		AdminFirstName: flags.Admin.FirstName,
+		AdminLastName:  flags.Admin.LastName,
+		AdminEmail:     flags.Admin.Email,
+		NoSSL:          noSSL,
 	}
 
 	scriptPath := filepath.Join(scriptDir, setupName)
