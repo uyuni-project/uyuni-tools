@@ -224,7 +224,6 @@ func Inspect(
 	serverImage string,
 	pullPolicy string,
 	scc types.SCCCredentials,
-	proxyHost bool,
 ) (*utils.ServerInspectData, error) {
 	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {

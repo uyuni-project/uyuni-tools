@@ -32,18 +32,18 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.ServerHelmFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *kubernetesMigrateFlags,
-		cmd *cobra.Command, args []string,
+	tester := func(_ *types.GlobalFlags, flags *kubernetesMigrateFlags,
+		_ *cobra.Command, args []string,
 	) error {
 		testutils.AssertTrue(t, "Prepare not set", flags.Prepare)
-		flagstests.AssertMirrorFlag(t, cmd, flags.Mirror)
-		flagstests.AssertSCCFlag(t, cmd, &flags.SCC)
-		flagstests.AssertImageFlag(t, cmd, &flags.Image)
-		flagstests.AssertDBUpgradeImageFlag(t, cmd, &flags.DBUpgradeImage)
-		flagstests.AssertCocoFlag(t, cmd, &flags.Coco)
-		flagstests.AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)
+		flagstests.AssertMirrorFlag(t, flags.Mirror)
+		flagstests.AssertSCCFlag(t, &flags.SCC)
+		flagstests.AssertImageFlag(t, &flags.Image)
+		flagstests.AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
+		flagstests.AssertCocoFlag(t, &flags.Coco)
+		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.User)
-		flagstests.AssertServerHelmFlags(t, cmd, &flags.Helm)
+		flagstests.AssertServerHelmFlags(t, &flags.Helm)
 		testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.SSL.Password)
 		testutils.AssertEquals(t, "Wrong FQDN", "source.fq.dn", args[0])
 		return nil

@@ -68,8 +68,17 @@ linters:
     - govet
     - lll
     - misspell
+    - revive
     - staticcheck
     - stylecheck
     - unparam
     - unused
     - whitespace
+issues:
+  exclude-rules:
+    - linters:
+        - revive
+      text: "dot-imports"
+    - linters:
+        - revive
+      text: "stutters"

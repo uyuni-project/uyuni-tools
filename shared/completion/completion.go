@@ -14,7 +14,7 @@ import (
 )
 
 // NewCommand  command for generates completion script.
-func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+func NewCommand(_ *types.GlobalFlags) *cobra.Command {
 	shellCompletionCmd := &cobra.Command{
 		Use:                   "completion [bash|zsh|fish|powershell]",
 		Short:                 L("Generate shell completion script"),

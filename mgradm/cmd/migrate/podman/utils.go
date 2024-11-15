@@ -24,9 +24,9 @@ import (
 )
 
 func migrateToPodman(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *podmanMigrateFlags,
-	cmd *cobra.Command,
+	_ *cobra.Command,
 	args []string,
 ) error {
 	if _, err := exec.LookPath("podman"); err != nil {

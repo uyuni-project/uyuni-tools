@@ -23,12 +23,12 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.PodmanFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *podman.PodmanProxyFlags,
-		cmd *cobra.Command, args []string,
+	tester := func(_ *types.GlobalFlags, flags *podman.PodmanProxyFlags,
+		_ *cobra.Command, _ []string,
 	) error {
-		flagstests.AssertSCCFlag(t, cmd, &flags.SCC)
-		flagstests.AssertPodmanInstallFlags(t, cmd, &flags.Podman)
-		flagstests.AssertProxyImageFlags(t, cmd, &flags.ProxyImageFlags)
+		flagstests.AssertSCCFlag(t, &flags.SCC)
+		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
+		flagstests.AssertProxyImageFlags(t, &flags.ProxyImageFlags)
 		return nil
 	}
 

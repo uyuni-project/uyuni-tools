@@ -19,8 +19,8 @@ func TestParamsParsing(t *testing.T) {
 	}
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *configFlags,
-		cmd *cobra.Command, args []string,
+	tester := func(_ *types.GlobalFlags, flags *configFlags,
+		_ *cobra.Command, _ []string,
 	) error {
 		testutils.AssertEquals(t, "Error parsing --output", "path/to/output.tar.gz", flags.Output)
 		testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)

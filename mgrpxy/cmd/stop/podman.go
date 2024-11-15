@@ -11,10 +11,10 @@ import (
 )
 
 func podmanStop(
-	globalFlags *types.GlobalFlags,
-	flags *stopFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *stopFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	return podman.StopService(podman.ProxyService)
 }

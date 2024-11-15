@@ -13,7 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
+func extract(_ *types.GlobalFlags, flags *configFlags, _ *cobra.Command, _ []string) error {
 	// Copy the generated file locally
 	tmpDir, cleaner, err := utils.TempDir()
 	if err != nil {

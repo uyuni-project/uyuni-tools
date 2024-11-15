@@ -13,7 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func upgradePodman(globalFlags *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.Command, args []string) error {
+func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, _ *cobra.Command, _ []string) error {
 	hostData, err := shared_podman.InspectHost()
 	if err != nil {
 		return err

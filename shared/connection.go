@@ -491,23 +491,22 @@ func (c *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 	out, err := c.Exec("supportconfig")
 	if err != nil {
 		return []string{}, errors.New(L("failed to run supportconfig"))
-	} else {
-		tarballPath := utils.GetSupportConfigPath(string(out))
-		if tarballPath == "" {
-			return []string{}, errors.New(L("failed to find container supportconfig tarball from command output"))
+	}
+	tarballPath := utils.GetSupportConfigPath(string(out))
+	if tarballPath == "" {
+		return []string{}, errors.New(L("failed to find container supportconfig tarball from command output"))
+	}
+
+	for _, ext := range extensions {
+		containerTarball = path.Join(tmpDir, containerName+"-supportconfig.txz"+ext)
+		if err := c.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
+			return []string{}, utils.Errorf(err, L("cannot copy tarball"))
 		}
+		files = append(files, containerTarball)
 
-		for _, ext := range extensions {
-			containerTarball = path.Join(tmpDir, containerName+"-supportconfig.txz"+ext)
-			if err := c.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
-				return []string{}, utils.Errorf(err, L("cannot copy tarball"))
-			}
-			files = append(files, containerTarball)
-
-			// Remove the generated file in the container
-			if _, err := c.Exec("rm", tarballPath+ext); err != nil {
-				return []string{}, utils.Errorf(err, L("failed to remove %s file in the container"), tarballPath+ext)
-			}
+		// Remove the generated file in the container
+		if _, err := c.Exec("rm", tarballPath+ext); err != nil {
+			return []string{}, utils.Errorf(err, L("failed to remove %s file in the container"), tarballPath+ext)
 		}
 	}
 	return files, nil

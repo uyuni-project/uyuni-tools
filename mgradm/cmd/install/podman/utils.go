@@ -38,7 +38,7 @@ func waitForSystemStart(cnx *shared.Connection, image string, flags *podmanInsta
 }
 
 func installForPodman(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *podmanInstallFlags,
 	cmd *cobra.Command,
 	args []string,

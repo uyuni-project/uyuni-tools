@@ -15,10 +15,10 @@ import (
 )
 
 func kubernetesScale(
-	globalFlags *types.GlobalFlags,
-	flags *scaleFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *scaleFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	return errors.New(L("kubernetes not supported yet"))
 }

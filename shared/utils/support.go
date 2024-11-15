@@ -77,7 +77,7 @@ func GetContainersFromSystemdFiles(systemdFileList string) []string {
 }
 
 // RunSupportConfigOnHost will run supportconfig command on host machine.
-func RunSupportConfigOnHost(dir string) ([]string, error) {
+func RunSupportConfigOnHost() ([]string, error) {
 	var files []string
 	extensions := []string{"", ".md5"}
 

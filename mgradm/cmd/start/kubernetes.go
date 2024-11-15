@@ -16,10 +16,10 @@ import (
 )
 
 func kubernetesStart(
-	globalFlags *types.GlobalFlags,
-	flags *startFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *startFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
 	namespace, err := cnx.GetNamespace("")

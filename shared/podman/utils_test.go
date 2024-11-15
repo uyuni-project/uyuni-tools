@@ -39,7 +39,7 @@ Environment=UYUNI_IMAGE=myregistry.org/silly/image:tag
 	}
 
 	for _, testData := range data {
-		runCmdOutput = func(logLevel zerolog.Level, command string, args ...string) ([]byte, error) {
+		runCmdOutput = func(_ zerolog.Level, _ string, _ ...string) ([]byte, error) {
 			return []byte(testData.catOut), testData.catErr
 		}
 

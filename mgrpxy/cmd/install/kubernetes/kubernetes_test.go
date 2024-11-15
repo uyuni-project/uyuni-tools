@@ -23,12 +23,12 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.SCCFlagTestArgs...)
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *kubernetesProxyInstallFlags,
-		cmd *cobra.Command, args []string,
+	tester := func(_ *types.GlobalFlags, flags *kubernetesProxyInstallFlags,
+		_ *cobra.Command, _ []string,
 	) error {
-		flagstests.AssertProxyImageFlags(t, cmd, &flags.ProxyImageFlags)
-		flagstests.AssertProxyHelmFlags(t, cmd, &flags.Helm)
-		flagstests.AssertSCCFlag(t, cmd, &flags.SCC)
+		flagstests.AssertProxyImageFlags(t, &flags.ProxyImageFlags)
+		flagstests.AssertProxyHelmFlags(t, &flags.Helm)
+		flagstests.AssertSCCFlag(t, &flags.SCC)
 		return nil
 	}
 

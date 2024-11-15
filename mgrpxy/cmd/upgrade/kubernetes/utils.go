@@ -10,7 +10,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func upgradeKubernetes(globalFlags *types.GlobalFlags,
+func upgradeKubernetes(_ *types.GlobalFlags,
 	flags *kubernetes.KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []string,
 ) error {
 	return kubernetes.Upgrade(flags, cmd, args)

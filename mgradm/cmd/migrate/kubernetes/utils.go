@@ -27,9 +27,9 @@ import (
 )
 
 func migrateToKubernetes(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *kubernetesMigrateFlags,
-	cmd *cobra.Command,
+	_ *cobra.Command,
 	args []string,
 ) error {
 	for _, binary := range []string{"kubectl", "helm"} {
@@ -74,8 +74,6 @@ func migrateToKubernetes(
 	//TODO: check if we need to handle SELinux policies, as we do in podman
 
 	// Install Uyuni with generated CA cert: an empty struct means no 3rd party cert
-	var sslFlags adm_utils.SSLCertFlags
-
 	helmArgs := []string{}
 
 	// Create a secret using SCC credentials if any are provided
@@ -92,7 +90,7 @@ func migrateToKubernetes(
 		"--set", "migration.dataPath="+scriptDir,
 	)
 
-	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm, &sslFlags,
+	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm,
 		clusterInfos, fqdn, false, flags.Prepare, migrationArgs...); err != nil {
 		return utils.Errorf(err, L("cannot run deploy"))
 	}
@@ -104,7 +102,7 @@ func migrateToKubernetes(
 		return utils.Errorf(err, L("cannot find node running uyuni"))
 	}
 	// Run the actual migration
-	if err := adm_utils.RunMigration(cnx, scriptDir, "migrate.sh"); err != nil {
+	if err := adm_utils.RunMigration(cnx, "migrate.sh"); err != nil {
 		return utils.Errorf(err, L("cannot run migration"))
 	}
 
@@ -232,18 +230,17 @@ func setupSSL(
 			return []string{}, utils.Errorf(err, L("cannot deploy certificate"))
 		}
 		return ret, nil
-	} else {
-		// Handle third party certificates and CA
-		sslFlags := adm_utils.SSLCertFlags{
-			Ca: ssl.CaChain{Root: caCert},
-			Server: ssl.SSLPair{
-				Key:  path.Join(scriptDir, "spacewalk.key"),
-				Cert: path.Join(scriptDir, "spacewalk.crt"),
-			},
-		}
-		if err := kubernetes.DeployExistingCertificate(helm, &sslFlags, kubeconfig); err != nil {
-			return []string{}, nil
-		}
+	}
+	// Handle third party certificates and CA
+	sslFlags := adm_utils.SSLCertFlags{
+		Ca: ssl.CaChain{Root: caCert},
+		Server: ssl.SSLPair{
+			Key:  path.Join(scriptDir, "spacewalk.key"),
+			Cert: path.Join(scriptDir, "spacewalk.crt"),
+		},
+	}
+	if err := kubernetes.DeployExistingCertificate(helm, &sslFlags); err != nil {
+		return []string{}, nil
 	}
 	return []string{}, nil
 }

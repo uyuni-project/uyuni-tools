@@ -52,7 +52,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return newCmd(globalFlags, register)
 }
 
-func register(globalFlags *types.GlobalFlags, flags *registerFlags, cmd *cobra.Command, args []string) error {
+func register(_ *types.GlobalFlags, flags *registerFlags, _ *cobra.Command, _ []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	config, err := getRhnConfig(cnx)
 	if err != nil {

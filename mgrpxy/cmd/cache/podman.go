@@ -14,10 +14,10 @@ import (
 )
 
 func podmanCacheClear(
-	globalFlags *types.GlobalFlags,
-	flags *cacheClearFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *cacheClearFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	cnx := shared.NewConnection("podman", "uyuni-proxy-squid", "")
 

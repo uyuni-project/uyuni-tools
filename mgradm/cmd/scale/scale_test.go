@@ -23,9 +23,7 @@ func TestParamsParsing(t *testing.T) {
 	}
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *scaleFlags,
-		cmd *cobra.Command, args []string,
-	) error {
+	tester := func(_ *types.GlobalFlags, flags *scaleFlags, _ *cobra.Command, args []string) error {
 		testutils.AssertEquals(t, "Error parsing --replicas", 2, flags.Replicas)
 		testutils.AssertEquals(t, "Error parsing the service name", "some-service", args[0])
 		if utils.KubernetesBuilt {

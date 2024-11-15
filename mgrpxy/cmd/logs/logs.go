@@ -86,7 +86,7 @@ func logs(globalFlags *types.GlobalFlags, flags *logsFlags, cmd *cobra.Command, 
 	return fn(globalFlags, flags, cmd, args)
 }
 
-func getContainerNames(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+func getContainerNames(_ *cobra.Command, args []string, _ string) ([]string, cobra.ShellCompDirective) {
 	var names []string
 
 	if podman.HasService(podman.ProxyService) {

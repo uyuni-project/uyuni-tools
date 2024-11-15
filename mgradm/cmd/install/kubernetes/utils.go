@@ -24,7 +24,7 @@ import (
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func installForKubernetes(globalFlags *types.GlobalFlags,
+func installForKubernetes(_ *types.GlobalFlags,
 	flags *kubernetesInstallFlags,
 	cmd *cobra.Command,
 	args []string,
@@ -75,7 +75,7 @@ func installForKubernetes(globalFlags *types.GlobalFlags,
 	}
 
 	// Deploy Uyuni and wait for it to be up
-	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm, &flags.SSL,
+	if err := kubernetes.Deploy(cnx, flags.Image.Registry, &flags.Image, &flags.Helm,
 		clusterInfos, fqdn, flags.Debug.Java, false, helmArgs...,
 	); err != nil {
 		return shared_utils.Errorf(err, L("cannot deploy uyuni"))

@@ -20,9 +20,7 @@ func TestParamsParsing(t *testing.T) {
 	}
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *gpgAddFlags,
-		cmd *cobra.Command, args []string,
-	) error {
+	tester := func(_ *types.GlobalFlags, flags *gpgAddFlags, _ *cobra.Command, _ []string) error {
 		testutils.AssertTrue(t, "Error parsing --force", flags.Force)
 		testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
 		return nil

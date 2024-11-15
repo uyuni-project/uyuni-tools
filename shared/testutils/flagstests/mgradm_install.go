@@ -7,7 +7,6 @@ package flagstests
 import (
 	"testing"
 
-	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
@@ -65,7 +64,7 @@ var InstallFlagsTestArgs = func() []string {
 }
 
 // AssertInstallFlags checks that all the install flags are parsed correctly.
-func AssertInstallFlags(t *testing.T, cmd *cobra.Command, flags *shared.InstallFlags) {
+func AssertInstallFlags(t *testing.T, flags *shared.InstallFlags) {
 	testutils.AssertEquals(t, "Error parsing --tz", "CEST", flags.TZ)
 	testutils.AssertEquals(t, "Error parsing --email", "admin@foo.bar", flags.Email)
 	testutils.AssertEquals(t, "Error parsing --emailfrom", "sender@foo.bar", flags.EmailFrom)
@@ -104,9 +103,9 @@ func AssertInstallFlags(t *testing.T, cmd *cobra.Command, flags *shared.InstallF
 	testutils.AssertEquals(t, "Error parsing --admin-firstName", "adminfirst", flags.Admin.FirstName)
 	testutils.AssertEquals(t, "Error parsing --admin-lastName", "adminlast", flags.Admin.LastName)
 	testutils.AssertEquals(t, "Error parsing --organization", "someorg", flags.Organization)
-	AssertMirrorFlag(t, cmd, flags.Mirror)
-	AssertSCCFlag(t, cmd, &flags.SCC)
-	AssertImageFlag(t, cmd, &flags.Image)
-	AssertCocoFlag(t, cmd, &flags.Coco)
-	AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)
+	AssertMirrorFlag(t, flags.Mirror)
+	AssertSCCFlag(t, &flags.SCC)
+	AssertImageFlag(t, &flags.Image)
+	AssertCocoFlag(t, &flags.Coco)
+	AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 }

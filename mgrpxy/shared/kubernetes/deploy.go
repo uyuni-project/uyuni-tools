@@ -146,8 +146,7 @@ func getConfigYaml(directory string) (string, error) {
 }
 
 // Upgrade will upgrade the current kubernetes proxy.
-func Upgrade(flags *KubernetesProxyUpgradeFlags, cmd *cobra.Command, args []string,
-) error {
+func Upgrade(flags *KubernetesProxyUpgradeFlags, _ *cobra.Command, _ []string) error {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {
 			return fmt.Errorf(L("install %s before running this command"), binary)

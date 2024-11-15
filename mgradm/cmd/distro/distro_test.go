@@ -22,11 +22,9 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.APIFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *flagpole,
-		cmd *cobra.Command, args []string,
-	) error {
+	tester := func(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) error {
 		testutils.AssertEquals(t, "Error parsing --channel", "parent-channel", flags.ChannelLabel)
-		flagstests.AssertAPIFlags(t, cmd, &flags.ConnectionDetails)
+		flagstests.AssertAPIFlags(t, &flags.ConnectionDetails)
 		return nil
 	}
 

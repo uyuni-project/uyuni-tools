@@ -26,15 +26,15 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.ServerHelmFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *kubernetesUpgradeFlags,
-		cmd *cobra.Command, args []string,
+	tester := func(_ *types.GlobalFlags, flags *kubernetesUpgradeFlags,
+		_ *cobra.Command, _ []string,
 	) error {
-		flagstests.AssertImageFlag(t, cmd, &flags.Image)
-		flagstests.AssertDBUpgradeImageFlag(t, cmd, &flags.DBUpgradeImage)
-		flagstests.AssertCocoFlag(t, cmd, &flags.Coco)
-		flagstests.AssertHubXmlrpcFlag(t, cmd, &flags.HubXmlrpc)
+		flagstests.AssertImageFlag(t, &flags.Image)
+		flagstests.AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
+		flagstests.AssertCocoFlag(t, &flags.Coco)
+		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		// TODO Assert SCC flags
-		flagstests.AssertServerHelmFlags(t, cmd, &flags.Helm)
+		flagstests.AssertServerHelmFlags(t, &flags.Helm)
 		return nil
 	}
 

@@ -17,9 +17,9 @@ import (
 )
 
 func podmanScale(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *scaleFlags,
-	cmd *cobra.Command,
+	_ *cobra.Command,
 	args []string,
 ) error {
 	newReplicas := flags.Replicas

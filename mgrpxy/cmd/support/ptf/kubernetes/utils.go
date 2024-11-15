@@ -11,7 +11,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-func ptfForKubernetes(globalFlags *types.GlobalFlags,
+func ptfForKubernetes(_ *types.GlobalFlags,
 	flags *kubernetesPTFFlags,
 	cmd *cobra.Command,
 	args []string,

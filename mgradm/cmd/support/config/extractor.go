@@ -13,7 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Command, args []string) error {
+func extract(_ *types.GlobalFlags, flags *configFlags, _ *cobra.Command, _ []string) error {
 	containerName, err := shared.ChooseObjPodmanOrKubernetes(podman.ServerContainerName, kubernetes.ServerApp)
 	if err != nil {
 		return err
@@ -57,9 +57,5 @@ func extract(globalFlags *types.GlobalFlags, flags *configFlags, cmd *cobra.Comm
 		fileList = append(fileList, fileListHost...)
 	}
 
-	if err := utils.CreateSupportConfigTarball(flags.Output, fileList); err != nil {
-		return err
-	}
-
-	return nil
+	return utils.CreateSupportConfigTarball(flags.Output, fileList)
 }

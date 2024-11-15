@@ -223,7 +223,7 @@ func UnpackConfig(configPath string) error {
 }
 
 // Upgrade will upgrade the proxy podman deploy.
-func Upgrade(globalFlags *types.GlobalFlags, flags *PodmanProxyFlags, cmd *cobra.Command, args []string) error {
+func Upgrade(_ *types.GlobalFlags, flags *PodmanProxyFlags, _ *cobra.Command, _ []string) error {
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
 	}
@@ -276,7 +276,6 @@ func startPod() error {
 	ret := podman.IsServiceRunning(podman.ProxyService)
 	if ret {
 		return podman.RestartService(podman.ProxyService)
-	} else {
-		return podman.EnableService(podman.ProxyService)
 	}
+	return podman.EnableService(podman.ProxyService)
 }

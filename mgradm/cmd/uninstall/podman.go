@@ -14,10 +14,10 @@ import (
 )
 
 func uninstallForPodman(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *utils.UninstallFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	// Get the images from the service configs before they are removed
 	images := []string{

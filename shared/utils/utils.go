@@ -392,11 +392,7 @@ func DownloadFile(filepath string, URL string) (err error) {
 
 	// Writer the body to file
 	log.Debug().Msgf("Saving %s to %s", URL, filepath)
-	if err := os.WriteFile(filepath, data, 0644); err != nil {
-		return err
-	}
-
-	return nil
+	return os.WriteFile(filepath, data, 0644)
 }
 
 // CompareVersion compare the server image version and the server deployed  version.

@@ -16,7 +16,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func runLogin(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
+func runLogin(_ *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, _ []string) error {
 	log.Debug().Msg("Running login command")
 
 	if api.IsAlreadyLoggedIn() && !flags.ForceLogin {
@@ -42,7 +42,7 @@ func runLogin(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Comman
 	return nil
 }
 
-func runLogout(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
+func runLogout(_ *types.GlobalFlags, _ *apiFlags, _ *cobra.Command, _ []string) error {
 	log.Debug().Msg("Running logout command")
 
 	if err := api.RemoveLoginCreds(); err != nil {

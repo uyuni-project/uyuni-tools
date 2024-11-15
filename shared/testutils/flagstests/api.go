@@ -7,7 +7,6 @@ package flagstests
 import (
 	"testing"
 
-	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
@@ -22,7 +21,7 @@ var APIFlagsTestArgs = []string{
 }
 
 // AssertAPIFlags checks that all API parameters are parsed correctly.
-func AssertAPIFlags(t *testing.T, cmd *cobra.Command, flags *api.ConnectionDetails) {
+func AssertAPIFlags(t *testing.T, flags *api.ConnectionDetails) {
 	testutils.AssertEquals(t, "Error parsing --api-server", "mysrv", flags.Server)
 	testutils.AssertEquals(t, "Error parsing --api-user", "apiuser", flags.User)
 	testutils.AssertEquals(t, "Error parsing --api-password", "api-pass", flags.Password)

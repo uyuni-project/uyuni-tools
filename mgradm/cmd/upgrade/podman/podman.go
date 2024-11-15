@@ -42,7 +42,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeF
 		Use:   "list",
 		Short: L("List available tags for an image"),
 		Args:  cobra.ExactArgs(0),
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(cmd *cobra.Command, _ []string) {
 			viper, _ := utils.ReadConfig(cmd, utils.GlobalConfigFilename, globalFlags.ConfigPath)
 
 			var flags podmanUpgradeFlags

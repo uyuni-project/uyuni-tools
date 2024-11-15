@@ -7,7 +7,6 @@ package flagstests
 import (
 	"testing"
 
-	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
@@ -22,7 +21,7 @@ var ProxyHelmFlagsTestArgs = []string{
 }
 
 // AssertProxyHelmFlags checks that the proxy helm flags are parsed correctly.
-func AssertProxyHelmFlags(t *testing.T, cmd *cobra.Command, flags *kubernetes.HelmFlags) {
+func AssertProxyHelmFlags(t *testing.T, flags *kubernetes.HelmFlags) {
 	testutils.AssertEquals(t, "Error parsing --helm-proxy-namespace", "uyunins", flags.Proxy.Namespace)
 	testutils.AssertEquals(t, "Error parsing --helm-proxy-chart", "oci://srv/proxy-helm", flags.Proxy.Chart)
 	testutils.AssertEquals(t, "Error parsing --helm-proxy-version", "v1.2.3", flags.Proxy.Version)
@@ -48,7 +47,7 @@ var ImageProxyFlagsTestArgs = []string{
 }
 
 // AssertProxyImageFlags checks that all image flags are parsed correctly.
-func AssertProxyImageFlags(t *testing.T, cmd *cobra.Command, flags *utils.ProxyImageFlags) {
+func AssertProxyImageFlags(t *testing.T, flags *utils.ProxyImageFlags) {
 	testutils.AssertEquals(t, "Error parsing --tag", "v1.2.3", flags.Tag)
 	testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.PullPolicy)
 	testutils.AssertEquals(t, "Error parsing --httpd-image", "path/to/httpd", flags.Httpd.Name)

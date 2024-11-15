@@ -19,7 +19,7 @@ func TestExecute(t *testing.T) {
 
 	newExecCmd = func(globalFlags *types.GlobalFlags) *cobra.Command {
 		execCmd := exec.NewCommand(globalFlags)
-		execCmd.RunE = func(cmd *cobra.Command, args []string) error {
+		execCmd.RunE = func(cmd *cobra.Command, _ []string) error {
 			if interactive, err := cmd.Flags().GetBool("interactive"); err != nil || !interactive {
 				t.Error("interactive flag not passed")
 			}

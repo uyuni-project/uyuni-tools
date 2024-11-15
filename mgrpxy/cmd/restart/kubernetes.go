@@ -14,10 +14,10 @@ import (
 )
 
 func kubernetesRestart(
-	globalFlags *types.GlobalFlags,
-	flags *restartFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *restartFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ProxyFilter)
 	namespace, err := cnx.GetNamespace("")

@@ -12,10 +12,10 @@ import (
 )
 
 func podmanStart(
-	globalFlags *types.GlobalFlags,
-	flags *startFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *startFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	err1 := podman.StartInstantiated(podman.ServerAttestationService)
 	err2 := podman.StartInstantiated(podman.HubXmlrpcService)
