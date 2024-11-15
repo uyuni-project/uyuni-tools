@@ -258,7 +258,7 @@ func GetLocalTimezone() string {
 	if err != nil {
 		log.Fatal().Err(err).Msgf(L("Failed to run %s"), "timedatectl show --value -p Timezone")
 	}
-	return string(out)
+	return strings.TrimSpace(string(out))
 }
 
 // IsEmptyDirectory return true if a given directory is empty.
