@@ -18,7 +18,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func runGet(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
+func runGet(_ *types.GlobalFlags, flags *apiFlags, _ *cobra.Command, args []string) error {
 	log.Debug().Msgf("Running GET command %s", args[0])
 	client, err := api.Init(&flags.ConnectionDetails)
 	if err == nil && (client.Details.User != "" || client.Details.InSession) {

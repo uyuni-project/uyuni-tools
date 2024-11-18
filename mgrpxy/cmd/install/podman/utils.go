@@ -24,15 +24,14 @@ func startPod() error {
 	ret := systemd.IsServiceRunning(shared_podman.ProxyService)
 	if ret {
 		return systemd.RestartService(shared_podman.ProxyService)
-	} else {
-		return systemd.EnableService(shared_podman.ProxyService)
 	}
+	return systemd.EnableService(shared_podman.ProxyService)
 }
 
 func installForPodman(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *podman.PodmanProxyFlags,
-	cmd *cobra.Command,
+	_ *cobra.Command,
 	args []string,
 ) error {
 	if _, err := exec.LookPath("podman"); err != nil {

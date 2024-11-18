@@ -22,8 +22,8 @@ func TestParamsParsing(t *testing.T) {
 	}
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *sqlFlags,
-		cmd *cobra.Command, args []string,
+	tester := func(_ *types.GlobalFlags, flags *sqlFlags,
+		_ *cobra.Command, _ []string,
 	) error {
 		testutils.AssertEquals(t, "Error parsing --dababase", "reportdb", flags.Database)
 		testutils.AssertTrue(t, "Error parsing --interactive", flags.Interactive)

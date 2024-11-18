@@ -14,10 +14,10 @@ import (
 )
 
 func kubernetesCacheClear(
-	globalFlags *types.GlobalFlags,
-	flags *cacheClearFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *cacheClearFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	cnx := shared.NewConnection("kubectl", "squid", kubernetes.ProxyFilter)
 	namespace, err := cnx.GetNamespace("")

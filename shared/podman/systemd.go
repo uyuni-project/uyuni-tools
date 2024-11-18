@@ -346,7 +346,7 @@ func CleanSystemdConfFile(serviceName string) error {
 func (s SystemdImpl) CurrentReplicaCount(name string) int {
 	count := 0
 	for s.ServiceIsEnabled(fmt.Sprintf("%s@%d", name, count)) {
-		count += 1
+		count++
 	}
 	return count
 }

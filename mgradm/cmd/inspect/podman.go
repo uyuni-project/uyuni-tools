@@ -18,10 +18,10 @@ import (
 )
 
 func podmanInspect(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *inspectFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	serverImage, err := utils.ComputeImage("", utils.DefaultTag, flags.Image)
 	if err != nil && len(serverImage) > 0 {
@@ -32,12 +32,12 @@ func podmanInspect(
 		log.Debug().Msg("Use deployed image")
 
 		cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
-		serverImage, err = adm_utils.RunningImage(cnx, shared_podman.ServerContainerName)
+		serverImage, err = adm_utils.RunningImage(cnx)
 		if err != nil {
 			return utils.Errorf(err, L("failed to find the image of the currently running server container"))
 		}
 	}
-	inspectResult, err := shared_podman.Inspect(serverImage, flags.Image.PullPolicy, flags.SCC, false)
+	inspectResult, err := shared_podman.Inspect(serverImage, flags.Image.PullPolicy, flags.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("inspect command failed"))
 	}

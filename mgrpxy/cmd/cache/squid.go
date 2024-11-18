@@ -17,7 +17,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Use:   "cache",
 		Short: L("Manage proxy cache"),
 		Long:  L("Manage proxy cache"),
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(cmd *cobra.Command, _ []string) {
 			_ = cmd.Help()
 		},
 	}

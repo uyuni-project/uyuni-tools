@@ -18,10 +18,10 @@ import (
 var systemd podman.Systemd = podman.SystemdImpl{}
 
 func uninstallForPodman(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *utils.UninstallFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	dryRun := !flags.Force
 

@@ -17,7 +17,7 @@ import (
 
 // RunSupportConfigOnPodmanHost will run supportconfig command on podman machine.
 func RunSupportConfigOnPodmanHost(systemd Systemd, dir string) ([]string, error) {
-	files, err := utils.RunSupportConfigOnHost(dir)
+	files, err := utils.RunSupportConfigOnHost()
 	if err != nil {
 		return files, err
 	}

@@ -23,13 +23,11 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.APIFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *registerFlags,
-		cmd *cobra.Command, args []string,
-	) error {
+	tester := func(_ *types.GlobalFlags, flags *registerFlags, _ *cobra.Command, _ []string) error {
 		if utils.KubernetesBuilt {
 			testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
 		}
-		flagstests.AssertAPIFlags(t, cmd, &flags.ConnectionDetails)
+		flagstests.AssertAPIFlags(t, &flags.ConnectionDetails)
 		return nil
 	}
 

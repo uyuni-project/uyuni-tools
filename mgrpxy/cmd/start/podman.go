@@ -13,10 +13,10 @@ import (
 var systemd podman.Systemd = podman.SystemdImpl{}
 
 func podmanStart(
-	globalFlags *types.GlobalFlags,
-	flags *startFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *startFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	return systemd.StartService(podman.ProxyService)
 }

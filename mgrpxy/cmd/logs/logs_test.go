@@ -22,8 +22,8 @@ func TestParamsParsing(t *testing.T) {
 	}
 
 	// Test function asserting that the args are properly parsed
-	tester := func(globalFlags *types.GlobalFlags, flags *logsFlags,
-		cmd *cobra.Command, args []string,
+	tester := func(_ *types.GlobalFlags, flags *logsFlags,
+		_ *cobra.Command, _ []string,
 	) error {
 		testutils.AssertTrue(t, "Error parsing --follow", flags.Follow)
 		testutils.AssertTrue(t, "Error parsing --timestamps", flags.Timestamps)

@@ -110,7 +110,7 @@ func getBaseCommand(keepStdin bool, flags *sqlFlags, cnx *shared.Connection) (st
 	return command, commandArgs, nil
 }
 
-func doSQL(globalFlags *types.GlobalFlags, flags *sqlFlags, cmd *cobra.Command, args []string) error {
+func doSQL(_ *types.GlobalFlags, flags *sqlFlags, _ *cobra.Command, args []string) error {
 	if flags.Interactive && flags.OutputFile != "" {
 		return errors.New(L("interactive mode cannot work with a file output"))
 	}

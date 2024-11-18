@@ -17,7 +17,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Use:   "proxy",
 		Short: L("Manage proxy configurations"),
 		Long:  L("Manage proxy configurations"),
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(cmd *cobra.Command, _ []string) {
 			_ = cmd.Help()
 		},
 	}
@@ -26,7 +26,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Use:   "create",
 		Short: L("Create proxy configurations"),
 		Long:  L("Create proxy configurations"),
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(cmd *cobra.Command, _ []string) {
 			_ = cmd.Help()
 		},
 	}

@@ -14,10 +14,10 @@ import (
 var systemd podman.Systemd = podman.SystemdImpl{}
 
 func podmanRestart(
-	globalFlags *types.GlobalFlags,
-	flags *restartFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *restartFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	err1 := systemd.RestartService(podman.ServerService)
 	err2 := systemd.RestartInstantiated(podman.ServerAttestationService)

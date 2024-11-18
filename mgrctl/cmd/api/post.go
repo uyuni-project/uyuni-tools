@@ -18,7 +18,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func runPost(globalFlags *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, args []string) error {
+func runPost(_ *types.GlobalFlags, flags *apiFlags, _ *cobra.Command, args []string) error {
 	log.Debug().Msgf("Running POST command %s", args[0])
 	client, err := api.Init(&flags.ConnectionDetails)
 	if err == nil {

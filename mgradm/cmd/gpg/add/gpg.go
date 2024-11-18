@@ -51,7 +51,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return newCmd(globalFlags, gpgAddKeys)
 }
 
-func gpgAddKeys(globalFlags *types.GlobalFlags, flags *gpgAddFlags, cmd *cobra.Command, args []string) error {
+func gpgAddKeys(_ *types.GlobalFlags, flags *gpgAddFlags, _ *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
 	if !cnx.TestExistenceInPod(customKeyringPath) {
 		if err := adm_utils.ExecCommand(

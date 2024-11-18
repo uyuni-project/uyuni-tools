@@ -29,7 +29,6 @@ func Deploy(
 	registry string,
 	imageFlags *types.ImageFlags,
 	helmFlags *cmd_utils.HelmFlags,
-	sslFlags *cmd_utils.InstallSSLFlags,
 	clusterInfos *kubernetes.ClusterInfos,
 	fqdn string,
 	debug bool,
@@ -72,7 +71,7 @@ func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.Insta
 	ca *types.SSLPair, kubeconfig string, fqdn string, imagePullPolicy string) ([]string, error) {
 	helmArgs := []string{}
 	if sslFlags.UseExisting() {
-		if err := DeployExistingCertificate(helmFlags, sslFlags, kubeconfig); err != nil {
+		if err := DeployExistingCertificate(helmFlags, sslFlags); err != nil {
 			return helmArgs, err
 		}
 	} else {
@@ -94,7 +93,6 @@ func DeployCertificate(helmFlags *cmd_utils.HelmFlags, sslFlags *cmd_utils.Insta
 func DeployExistingCertificate(
 	helmFlags *cmd_utils.HelmFlags,
 	sslFlags *cmd_utils.InstallSSLFlags,
-	kubeconfig string,
 ) error {
 	// Deploy the SSL Certificate secret and CA configmap
 	serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
@@ -139,12 +137,12 @@ func UyuniUpgrade(serverImage string, pullPolicy string, helmFlags *cmd_utils.He
 
 // Upgrade will upgrade a server in a kubernetes cluster.
 func Upgrade(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	image *types.ImageFlags,
 	upgradeImage *types.ImageFlags,
 	helm cmd_utils.HelmFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	for _, binary := range []string{"kubectl", "helm"} {
 		if _, err := exec.LookPath(binary); err != nil {

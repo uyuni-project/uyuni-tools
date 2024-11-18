@@ -14,10 +14,10 @@ import (
 )
 
 func kubernetesStop(
-	globalFlags *types.GlobalFlags,
-	flags *stopFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *stopFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ProxyFilter)
 	namespace, err := cnx.GetNamespace("")

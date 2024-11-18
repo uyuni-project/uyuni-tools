@@ -20,10 +20,10 @@ import (
 var systemd podman_shared.Systemd = podman_shared.SystemdImpl{}
 
 func ptfForPodman(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *podmanPTFFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	// Login first to be able to search the registry for PTF images
 	hostData, err := podman_shared.InspectHost()
