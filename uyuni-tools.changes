@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Nov 19 10:17:16 CET 2024 - marina.latini@suse.com
+
+- version 0.1.27-0
+  * Bump the default image tag to 5.0.2
+
+-------------------------------------------------------------------
 Wed Nov 06 20:39:30 CET 2024 - marina.latini@suse.com
 
 - version 0.1.26-0
