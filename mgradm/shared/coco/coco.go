@@ -28,11 +28,18 @@ func Upgrade(
 	dbUser string,
 	dbPassword string,
 ) error {
-	if err := podman.CreateDbSecrets(dbUser, dbPassword); err != nil {
+	if cocoFlags.Image.Name == "" {
+		// Don't touch the coco service in ptf if not already present.
+		return nil
+	}
+
+	if err := podman.CreateDBSecrets(dbUser, dbPassword); err != nil {
 		return err
 	}
 
-	if err := writeCocoServiceFiles(authFile, registry, cocoFlags, baseImage, dbName, dbPort); err != nil {
+	if err := writeCocoServiceFiles(
+		systemd, authFile, registry, cocoFlags, baseImage, dbName, dbPort,
+	); err != nil {
 		return err
 	}
 
@@ -120,7 +127,7 @@ func SetupCocoContainer(
 	dbPort int,
 ) error {
 	if err := writeCocoServiceFiles(
-		authFile, registry, coco, baseImage, dbName, dbPort,
+		systemd, authFile, registry, coco, baseImage, dbName, dbPort,
 	); err != nil {
 		return err
 	}

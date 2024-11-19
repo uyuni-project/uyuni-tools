@@ -6,6 +6,7 @@ package podman
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -31,9 +32,11 @@ NOTE: installing on a remote podman is not supported yet!
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanInstallFlags
-			flags.Coco.IsChanged = cmd.Flags().Changed("coco-replicas")
-			flags.HubXmlrpc.IsChanged = cmd.Flags().Changed("hubxmlrpc-replicas")
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, installForPodman)
+			flagsUpdater := func(v *viper.Viper) {
+				flags.InstallFlags.Coco.IsChanged = v.IsSet("coco.replicas")
+				flags.InstallFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+			}
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
 	}
 
