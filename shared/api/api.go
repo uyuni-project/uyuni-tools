@@ -14,6 +14,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"regexp"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -32,6 +33,12 @@ func AddAPIFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().Bool("api-insecure", false, L("If set, server certificate will not be checked for validity"))
 }
 
+var redactRegex = regexp.MustCompile(`(((pxt-session-cookie)|(JSESSIONID))=)[^ ";]+`)
+
+func redactHeaders(header string) string {
+	return redactRegex.ReplaceAllString(header, "${1}<REDACTED>")
+}
+
 func logTraceHeader(v *http.Header) {
 	// Return early when not in trace loglevel
 	if log.Logger.GetLevel() != zerolog.TraceLevel {
@@ -41,7 +48,7 @@ func logTraceHeader(v *http.Header) {
 	if err != nil {
 		return
 	}
-	log.Trace().Msg(string(b))
+	log.Trace().Msg(redactHeaders(string(b)))
 }
 
 func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {

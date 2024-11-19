@@ -7,6 +7,8 @@ package templates
 import (
 	"io"
 	"text/template"
+
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 )
 
 const attestationServiceTemplate = `
@@ -28,8 +30,8 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--sdnotify=conmon \
 	-d \
 	-e database_connection  \
-	-e database_user \
-	-e database_password \
+	--secret=` + podman.DbUserSecret + `,type=env,target=database_user \
+	--secret=` + podman.DbPassSecret + `,type=env,target=database_password \
 	--replace \
 	--name {{ .NamePrefix }}-server-attestation-%i \
 	--hostname {{ .NamePrefix }}-server-attestation-%i.mgr.internal \
