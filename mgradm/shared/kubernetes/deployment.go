@@ -244,9 +244,12 @@ do
 		if [ "$vol" = "/etc/pki/tls" ]; then
               ln -s /etc/pki/spacewalk-tls/spacewalk.crt /mnt/etc/pki/tls/certs/spacewalk.crt;
               ln -s /etc/pki/spacewalk-tls/spacewalk.key /mnt/etc/pki/tls/private/spacewalk.key;
-              cp /etc/pki/spacewalk-tls/spacewalk.key /mnt/etc/pki/tls/private/pg-spacewalk.key;
-              chown postgres:postgres /mnt/etc/pki/tls/private/pg-spacewalk.key;
 		fi
+	fi
+
+	if [ "$vol" = "/etc/pki/tls" ]; then
+	    cp /etc/pki/spacewalk-tls/spacewalk.key /mnt/etc/pki/tls/private/pg-spacewalk.key;
+	    chown postgres:postgres /mnt/etc/pki/tls/private/pg-spacewalk.key;
 	fi
 done
 `
