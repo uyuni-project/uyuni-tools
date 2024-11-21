@@ -1,0 +1,1 @@
+- Run setup in its own container rather than using exec

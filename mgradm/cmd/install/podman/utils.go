@@ -6,8 +6,8 @@ package podman
 
 import (
 	"errors"
+	"fmt"
 	"os/exec"
-	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -91,35 +91,23 @@ func installForPodman(
 		return err
 	}
 
+	if err := shared_podman.SetupNetwork(false); err != nil {
+		return utils.Errorf(err, L("cannot setup network"))
+	}
+
+	log.Info().Msg(L("Run setup command in the container"))
+
+	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn); err != nil {
+		return err
+	}
+
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 	if err := waitForSystemStart(systemd, cnx, preparedImage, flags); err != nil {
 		return utils.Errorf(err, L("cannot wait for system start"))
 	}
 
-	caPassword := flags.Installation.SSL.Password
-	if flags.Installation.SSL.UseExisting() {
-		// We need to have a password for the generated CA, even though it will be thrown away after install
-		caPassword = "dummy"
-	}
-
-	env := map[string]string{
-		"CERT_O":       flags.Installation.SSL.Org,
-		"CERT_OU":      flags.Installation.SSL.OU,
-		"CERT_CITY":    flags.Installation.SSL.City,
-		"CERT_STATE":   flags.Installation.SSL.State,
-		"CERT_COUNTRY": flags.Installation.SSL.Country,
-		"CERT_EMAIL":   flags.Installation.SSL.Email,
-		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, flags.Installation.SSL.Cnames...), ","),
-		"CERT_PASS":    caPassword,
-	}
-
-	log.Info().Msg(L("Run setup command in the container"))
-
-	if err := adm_utils.RunSetup(cnx, &flags.ServerFlags, fqdn, env); err != nil {
-		if stopErr := systemd.StopService(shared_podman.ServerService); stopErr != nil {
-			log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
-		}
-		return err
+	if err := cnx.CopyCaCertificate(fqdn); err != nil {
+		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
 
 	if path, err := exec.LookPath("uyuni-payg-extract-data"); err == nil {
@@ -173,3 +161,44 @@ func installForPodman(
 	}
 	return nil
 }
+
+// runSetup execute the setup.
+func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
+	env := adm_utils.GetSetupEnv(flags.Mirror, &flags.Installation, fqdn, false)
+	envNames := []string{}
+	envValues := []string{}
+	for key, value := range env {
+		envNames = append(envNames, "-e", key)
+		envValues = append(envValues, fmt.Sprintf("%s=%s", key, value))
+	}
+
+	command := []string{
+		"run",
+		"--rm",
+		"--shm-size=0",
+		"--shm-size-systemd=0",
+		"--name", "uyuni-setup",
+		"--network", shared_podman.UyuniNetwork,
+		"-e", "TZ=" + flags.Installation.TZ,
+	}
+	for _, volume := range utils.ServerVolumeMounts {
+		command = append(command, "-v", fmt.Sprintf("%s:%s:z", volume.Name, volume.MountPath))
+	}
+	command = append(command, envNames...)
+	command = append(command, image)
+
+	script, err := adm_utils.GenerateSetupScript(&flags.Installation, false)
+	if err != nil {
+		return err
+	}
+	command = append(command, "/usr/bin/sh", "-c", script)
+
+	if _, err := newRunner("podman", command...).Env(envValues).StdMapping().Exec(); err != nil {
+		return utils.Errorf(err, L("server setup failed"))
+	}
+
+	log.Info().Msgf(L("Server set up, login on https://%[1]s with %[2]s user"), fqdn, flags.Installation.Admin.Login)
+	return nil
+}
+
+var newRunner = utils.NewRunner

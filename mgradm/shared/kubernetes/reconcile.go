@@ -13,9 +13,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/rs/zerolog/log"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/ssl"
@@ -40,10 +38,8 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
-	cnx := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
-
 	// Create a secret using SCC credentials if any are provided
-	pullSecret, err := kubernetes.GetSCCSecret(
+	pullSecret, err := kubernetes.GetRegistrySecret(
 		flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SCC, kubernetes.ServerApp,
 	)
 	if err != nil {
@@ -53,6 +49,8 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 	// Do we have an existing deployment to upgrade?
 	// This can be freshly synchronized data from a migration or a running instance to upgrade.
 	hasDeployment := kubernetes.HasDeployment(namespace, kubernetes.ServerFilter)
+
+	// Check that the postgresql PVC is bound to a Volume.
 	hasDatabase := kubernetes.HasVolume(namespace, "var-pgsql")
 	isMigration := hasDatabase && !hasDeployment
 
@@ -251,16 +249,59 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 	// Wait for uyuni-cert secret to be ready
 	kubernetes.WaitForSecret(namespace, CertSecretName)
 
-	// Start the server
-	if err := CreateServerDeployment(
-		namespace, serverImage, flags.Image.PullPolicy, flags.Installation.TZ, flags.Installation.Debug.Java,
-		flags.Volumes.Mirror, pullSecret,
-	); err != nil {
+	// Create the services
+	if err := CreateServices(namespace, flags.Installation.Debug.Java); err != nil {
 		return err
 	}
 
-	// Create the services
-	if err := CreateServices(namespace, flags.Installation.Debug.Java); err != nil {
+	// Store the DB credentials in a secret.
+	if flags.Installation.DB.User != "" && flags.Installation.DB.Password != "" {
+		if err := CreateBasicAuthSecret(
+			namespace, DBSecret, flags.Installation.DB.User, flags.Installation.DB.Password,
+		); err != nil {
+			return err
+		}
+	}
+
+	if flags.Installation.ReportDB.User != "" && flags.Installation.ReportDB.Password != "" {
+		if err := CreateBasicAuthSecret(
+			namespace, ReportdbSecret, flags.Installation.ReportDB.User, flags.Installation.ReportDB.Password,
+		); err != nil {
+			return err
+		}
+	}
+
+	// This SCCSecret is used to mount the env variable in the setup job and is different from the
+	// pullSecret as it is of a different type: basic-auth vs docker.
+	if flags.Installation.SCC.User != "" && flags.Installation.SCC.Password != "" {
+		if err := CreateBasicAuthSecret(
+			namespace, SCCSecret, flags.Installation.SCC.User, flags.Installation.SCC.Password,
+		); err != nil {
+			return err
+		}
+	}
+
+	adminSecret := "admin-credentials"
+	if flags.Installation.Admin.Login != "" && flags.Installation.Admin.Password != "" {
+		if err := CreateBasicAuthSecret(
+			namespace, adminSecret, flags.Installation.Admin.Login, flags.Installation.Admin.Password,
+		); err != nil {
+			return err
+		}
+	}
+
+	// TODO For a migration or an upgrade this needs to be skipped
+	// Run the setup script.
+	// The script will be skipped if the server has already been setup.
+	jobName, err := StartSetupJob(
+		namespace, serverImage, kubernetes.GetPullPolicy(flags.Image.PullPolicy), pullSecret,
+		flags.Volumes.Mirror, &flags.Installation, fqdn, adminSecret, DBSecret, ReportdbSecret, SCCSecret,
+	)
+	if err != nil {
+		return err
+	}
+
+	if err := kubernetes.WaitForJob(namespace, jobName, 120); err != nil {
 		return err
 	}
 
@@ -271,34 +312,15 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 		}
 	}
 
-	// Wait for the server deployment to have a running pod before trying to set it up.
-	if err := kubernetes.WaitForRunningDeployment(namespace, ServerDeployName); err != nil {
+	// Start the server
+	if err := CreateServerDeployment(
+		namespace, serverImage, flags.Image.PullPolicy, flags.Installation.TZ, flags.Installation.Debug.Java,
+		flags.Volumes.Mirror, pullSecret,
+	); err != nil {
 		return err
 	}
 
-	// Run the setup only if it hasn't be done before: this is a one-off task.
-	// TODO Ideally we would need a job running at an earlier stage to persist the logs in a kubernetes-friendly way.
-	if neverSetup(namespace, serverImage, flags.Image.PullPolicy, pullSecret) {
-		if err := adm_utils.RunSetup(
-			cnx, &flags.ServerFlags, fqdn, map[string]string{"NO_SSL": "Y"},
-		); err != nil {
-			if stopErr := kubernetes.Stop(namespace, kubernetes.ServerApp); stopErr != nil {
-				log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
-			}
-			return err
-		}
-	}
-
-	// Store the DB credentials in a secret.
-	if flags.Installation.DB.User != "" && flags.Installation.DB.Password != "" {
-		if err := CreateDBSecret(
-			namespace, DBSecret, flags.Installation.DB.User, flags.Installation.DB.Password,
-		); err != nil {
-			return err
-		}
-	}
-
-	deploymentsStarting := []string{}
+	deploymentsStarting := []string{ServerDeployName}
 
 	// Start the Coco Deployments if requested.
 	if replicas := kubernetes.GetReplicas(namespace, CocoDeployName); replicas != 0 && !flags.Coco.IsChanged {
