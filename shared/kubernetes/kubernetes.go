@@ -189,16 +189,16 @@ func createDockerSecret(
 
 // AddSccSecret creates a secret holding the SCC credentials and adds it to the helm args.
 func AddSCCSecret(helmArgs []string, namespace string, scc *types.SCCCredentials, appLabel string) ([]string, error) {
-	secret, err := GetSCCSecret(namespace, scc, appLabel)
+	secret, err := GetRegistrySecret(namespace, scc, appLabel)
 	if secret != "" {
 		helmArgs = append(helmArgs, secret)
 	}
 	return helmArgs, err
 }
 
-// GetSCCSecret creates a secret holding the SCC credentials and returns the secret name.
-func GetSCCSecret(namespace string, scc *types.SCCCredentials, appLabel string) (string, error) {
-	const secretName = "scc-credentials"
+// GetRegistrySecret creates a docker secret holding the SCC credentials and returns the secret name.
+func GetRegistrySecret(namespace string, scc *types.SCCCredentials, appLabel string) (string, error) {
+	const secretName = "registry-credentials"
 
 	// Return the existing secret if any.
 	out, err := runCmdOutput(zerolog.DebugLevel, "kubectl", "get", "-n", namespace, "secret", secretName, "-o", "name")

@@ -11,9 +11,10 @@ import (
 
 //nolint:lll
 const mgrSetupScriptTemplate = `#!/bin/sh
-{{- range $name, $value := .Env }}
-export {{ $name }}='{{ $value }}'
-{{- end }}
+if test -e /root/.MANAGER_SETUP_COMPLETE; then
+	echo "Server appears to be already configured. Installation options may be ignored."
+	exit 0
+fi
 
 {{- if .DebugJava }}
 echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:8003,server=y,suspend=n" ' >> /etc/tomcat/conf.d/remote_debug.conf
@@ -28,11 +29,20 @@ RESULT=$?
 /usr/bin/rhn-ssl-dbstore --ca-cert=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
 
 if test -n "{{ .AdminPassword }}"; then
+    echo "starting tomcat..."
+	(su -s /usr/bin/sh -g tomcat -G www -G susemanager tomcat /usr/lib/tomcat/server start)&
+
+	echo "starting apache2..."
+	/usr/sbin/start_apache2 -k start
+
+	echo "Creating first user..."
 	{{ if .NoSSL }}
 	CURL_SCHEME="http"
 	{{ else }}
-	CURL_SCHEME="-k https"
+	CURL_SCHEME="-L -k https"
 	{{ end }}
+
+	curl -o /tmp/curl-retry -s --retry 7 $CURL_SCHEME://localhost/rhn/newlogin/CreateFirstUser.do
 
 	HTTP_CODE=$(curl -o /dev/null -s -w %{http_code} $CURL_SCHEME://localhost/rhn/newlogin/CreateFirstUser.do)
 	if test "$HTTP_CODE" == "200"; then
@@ -52,17 +62,16 @@ if test -n "{{ .AdminPassword }}"; then
 		rm -f /tmp/curl_out
 	elif test "$HTTP_CODE" == "403"; then
 		echo "Administration user already exists, reusing"
+	else
+		RESULT=1
 	fi
 fi
 
-# clean before leaving
-rm $0
 exit $RESULT
 `
 
 // MgrSetupScriptTemplateData represents information used to create setup script.
 type MgrSetupScriptTemplateData struct {
-	Env            map[string]string
 	NoSSL          bool
 	DebugJava      bool
 	AdminPassword  string

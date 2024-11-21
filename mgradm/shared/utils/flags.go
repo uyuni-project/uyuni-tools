@@ -95,7 +95,6 @@ type DBFlags struct {
 	Port     int
 	User     string
 	Password string
-	Protocol string
 	Provider string
 	Admin    struct {
 		User     string
