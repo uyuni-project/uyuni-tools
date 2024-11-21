@@ -47,7 +47,7 @@ func kuberneteInspect(
 	}
 
 	// Get the SCC credentials secret if existing
-	pullSecret, err := kubernetes.GetSCCSecret(namespace, &types.SCCCredentials{}, kubernetes.ServerApp)
+	pullSecret, err := kubernetes.GetRegistrySecret(namespace, &types.SCCCredentials{}, kubernetes.ServerApp)
 	if err != nil {
 		return err
 	}
