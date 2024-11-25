@@ -16,6 +16,7 @@ type MigrateFlags struct {
 	Prepare        bool
 	Image          types.ImageFlags `mapstructure:",squash"`
 	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
+	Pgsql          utils.PgsqlFlags
 	Coco           utils.CocoFlags
 	User           string
 	Mirror         string
@@ -30,6 +31,7 @@ func AddMigrateFlags(cmd *cobra.Command) {
 	utils.AddSCCFlag(cmd)
 	utils.AddImageFlag(cmd)
 	utils.AddDBUpgradeImageFlag(cmd)
+	utils.AddUpgradePgsqlFlags(cmd)
 	utils.AddUpgradeCocoFlag(cmd)
 	utils.AddUpgradeHubXmlrpcFlags(cmd)
 	cmd.Flags().String("user", "root",

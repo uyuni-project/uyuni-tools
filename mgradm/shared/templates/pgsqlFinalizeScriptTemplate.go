@@ -13,20 +13,6 @@ import (
 const postgresFinalizeScriptTemplate = `#!/bin/bash
 set -e
 
-{{ if .Migration }}
-echo "Adding database access for other containers..."
-db_user=$(sed -n '/^db_user/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
-db_name=$(sed -n '/^db_name/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
-ip=$(ip -o -4 addr show up scope global | head -1 | awk '{print $4}' || true)
-echo "host $db_name $db_user $ip scram-sha-256" >> /var/lib/pgsql/data/pg_hba.conf
-{{ end }}
-
-{{ if .RunAutotune }}
-echo "Running smdba system-check autotuning..."
-smdba system-check autotuning
-{{ end }}
-echo "Starting Postgresql..."
-su -s /bin/bash - postgres -c "/usr/share/postgresql/postgresql-script start"
 {{ if .RunReindex }}
 echo "Reindexing database. This may take a while, please do not cancel it!"
 database=$(sed -n "s/^\s*db_name\s*=\s*\([^ ]*\)\s*$/\1/p" /etc/rhn/rhn.conf)
@@ -57,15 +43,10 @@ where not exists (select 1 from rhntaskorun r join rhntaskotemplate t on r.templ
 join rhntaskobunch b on t.bunch_id = b.id where b.name='update-system-overview-bunch' limit 1);
 EOT
 
-
-echo "Stopping Postgresql..."
-su -s /bin/bash - postgres -c "/usr/share/postgresql/postgresql-script stop"
-echo "DONE"
 `
 
 // FinalizePostgresTemplateData represents information used to create PostgreSQL migration script.
 type FinalizePostgresTemplateData struct {
-	RunAutotune     bool
 	RunReindex      bool
 	RunSchemaUpdate bool
 	Migration       bool

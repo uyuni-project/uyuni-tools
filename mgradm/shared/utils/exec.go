@@ -74,10 +74,9 @@ func GeneratePgsqlVersionUpgradeScript(
 
 // GenerateFinalizePostgresScript generates the script to finalize PostgreSQL upgrade.
 func GenerateFinalizePostgresScript(
-	scriptDir string, runAutotune bool, runReindex bool, runSchemaUpdate bool, migration bool, kubernetes bool,
+	scriptDir string, runReindex bool, runSchemaUpdate bool, migration bool, kubernetes bool,
 ) (string, error) {
 	data := templates.FinalizePostgresTemplateData{
-		RunAutotune:     runAutotune,
 		RunReindex:      runReindex,
 		RunSchemaUpdate: runSchemaUpdate,
 		Migration:       migration,
@@ -115,18 +114,27 @@ func RunMigration(cnx *shared.Connection, tmpPath string, scriptName string) err
 }
 
 // GenerateMigrationScript generates the script that perform migration.
-func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, prepare bool) (string, func(), error) {
+func GenerateMigrationScript(
+	sourceFqdn string,
+	user string,
+	kubernetes bool,
+	prepare bool,
+	dbHost string,
+	reportDBHost string,
+) (string, func(), error) {
 	scriptDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return "", nil, err
 	}
 
 	data := templates.MigrateScriptTemplateData{
-		Volumes:    utils.ServerVolumeMounts,
-		SourceFqdn: sourceFqdn,
-		User:       user,
-		Kubernetes: kubernetes,
-		Prepare:    prepare,
+		Volumes:      append(utils.ServerVolumeMounts, utils.PgsqlDataVolumeMounts[:]...),
+		SourceFqdn:   sourceFqdn,
+		User:         user,
+		Kubernetes:   kubernetes,
+		Prepare:      prepare,
+		DBHost:       dbHost,
+		ReportDBHost: reportDBHost,
 	}
 
 	scriptPath := filepath.Join(scriptDir, "migrate.sh")
@@ -226,16 +234,6 @@ func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectDat
 			)
 		}
 	}
-
-	if inspectedValues.ImagePgVersion == "" {
-		return fmt.Errorf(L("cannot fetch postgresql version from %s"), serverImage)
-	}
-	log.Debug().Msgf("Image %s has PostgreSQL %s", serverImage, inspectedValues.ImagePgVersion)
-	if inspectedValues.CurrentPgVersion == "" {
-		return errors.New(L("posgresql is not installed in the current deployment"))
-	}
-	log.Debug().Msgf("Current deployment has PostgreSQL %s", inspectedValues.CurrentPgVersion)
-
 	return nil
 }
 

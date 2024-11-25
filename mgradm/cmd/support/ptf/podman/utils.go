@@ -31,6 +31,7 @@ func ptfForPodman(
 	dummyImage := types.ImageFlags{}
 	dummyCoco := adm_utils.CocoFlags{}
 	dummyHubXmlrpc := adm_utils.HubXmlrpcFlags{}
+	dummyPgsql := adm_utils.PgsqlFlags{}
 	if err := flags.checkParameters(); err != nil {
 		return err
 	}
@@ -46,7 +47,7 @@ func ptfForPodman(
 	}
 	defer cleaner()
 
-	return podman.Upgrade(systemd, authFile, "", flags.Image, dummyImage, dummyCoco, dummyHubXmlrpc)
+	return podman.Upgrade(systemd, authFile, "", flags.Image, dummyImage, dummyCoco, dummyHubXmlrpc, dummyPgsql)
 }
 
 func (flags *podmanPTFFlags) checkParameters() error {

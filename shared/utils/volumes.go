@@ -12,10 +12,13 @@ var PgsqlRequiredSharedVolumeMounts = []types.VolumeMount{
 	{MountPath: "/etc/pki/spacewalk-tls", Name: "tls-key"},
 }
 
-// PgsqlRequiredVolumeMounts represents volumes mount used by PostgreSQL.
-var PgsqlRequiredVolumeMounts = append([]types.VolumeMount{
+// PgsqlDataVolumeMounts represents volumes mount used by PostgreSQL.
+var PgsqlDataVolumeMounts = []types.VolumeMount{
 	{MountPath: "/var/lib/pgsql/data", Name: "var-pgsql"},
-}, PgsqlRequiredSharedVolumeMounts[:]...)
+}
+
+// PgsqlRequiredVolumeMounts represents volumes mount used by PostgreSQL.
+var PgsqlRequiredVolumeMounts = append(PgsqlDataVolumeMounts, PgsqlRequiredSharedVolumeMounts[:]...)
 
 // PgsqlRequiredSharedVolumes represents volumes used by PostgreSQL.
 var PgsqlRequiredSharedVolumes = []types.Volume{
@@ -30,10 +33,13 @@ var PgsqlRequiredSharedVolumes = []types.Volume{
 	},
 }
 
-// PgsqlRequiredVolumes represents volumes used by PostgreSQL.
-var PgsqlRequiredVolumes = append([]types.Volume{
+// PgsqlDataVolumes represents volumes used by PostgreSQL.
+var PgsqlDataVolumes = []types.Volume{
 	{Name: "var-pgsql", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "var-pgsql"}},
-}, PgsqlRequiredSharedVolumes[:]...)
+}
+
+// PgsqlRequiredVolumes represents volumes used by PostgreSQL.
+var PgsqlRequiredVolumes = append(PgsqlDataVolumes, PgsqlRequiredSharedVolumes[:]...)
 
 // EtcServerVolumeMounts represents volumes mounted in /etc folder.
 var EtcServerVolumeMounts = []types.VolumeMount{
@@ -103,6 +109,12 @@ var ServerVolumes = append([]types.Volume{
 	{Name: "root", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "root"}},
 	{Name: "ca-cert", PersistentVolumeClaim: &types.PersistentVolumeClaim{ClaimName: "ca-cert"}},
 }, etcAndPgsqlVolumes[:]...)
+
+// ServerMigrationVolumeMounts match server + postgres volume mounts, used for migration.
+var ServerMigrationVolumeMounts = append(ServerVolumeMounts, PgsqlDataVolumeMounts[:]...)
+
+// ServerMigrationVolumes match server + postgres volumes, used for migration.
+var ServerMigrationVolumes = append(ServerVolumes, PgsqlDataVolumes[:]...)
 
 // HubXmlrpcVolumeMounts represents volumes used by Hub Xmlrpc container.
 var HubXmlrpcVolumeMounts = []types.VolumeMount{
