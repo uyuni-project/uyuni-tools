@@ -3,8 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 name: 'pre-built devcontainer'
-on: # rebuild any PRs and main branch changes
-  pull_request:
+on:
   push:
     branches:
       - main
