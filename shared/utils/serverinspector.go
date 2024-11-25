@@ -33,6 +33,8 @@ func NewServerInspector(scriptDir string) ServerInspector {
 				"rpm -qa --qf '%{VERSION}\\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1 || true"),
 			types.NewInspectData("current_pg_version",
 				"(test -e /var/lib/pgsql/data/PG_VERSION && cat /var/lib/pgsql/data/PG_VERSION) || true"),
+			types.NewInspectData("current_pg_version_not_migrated",
+				"(test -e /var/lib/pgsql/data/data/PG_VERSION && cat /var/lib/pgsql/data/data/PG_VERSION) || true"),
 			types.NewInspectData("db_user",
 				"cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_user' | cut -d' ' -f3 || true"),
 			types.NewInspectData("db_password",
@@ -41,6 +43,10 @@ func NewServerInspector(scriptDir string) ServerInspector {
 				"cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_name' | cut -d' ' -f3 || true"),
 			types.NewInspectData("db_port",
 				"cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_port' | cut -d' ' -f3 || true"),
+			types.NewInspectData("db_host",
+				"cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_host' | cut -d' ' -f3 || true"),
+			types.NewInspectData("report_db_host",
+				"cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^report_db_host' | cut -d' ' -f3 || true"),
 		},
 		ScriptDir: scriptDir,
 		DataPath:  path.Join(InspectContainerDirectory, inspectDataFile),
@@ -52,12 +58,15 @@ func NewServerInspector(scriptDir string) ServerInspector {
 
 // CommonInspectData are data common between the migration source inspect and server inspector results.
 type CommonInspectData struct {
-	CurrentPgVersion string `mapstructure:"current_pg_version"`
-	ImagePgVersion   string `mapstructure:"image_pg_version"`
-	DBUser           string `mapstructure:"db_user"`
-	DBPassword       string `mapstructure:"db_password"`
-	DBName           string `mapstructure:"db_name"`
-	DBPort           int    `mapstructure:"db_port"`
+	CurrentPgVersion            string `mapstructure:"current_pg_version"`
+	CurrentPgVersionNotMigrated string `mapstructure:"current_pg_version_not_migrated"`
+	ImagePgVersion              string `mapstructure:"image_pg_version"`
+	DBUser                      string `mapstructure:"db_user"`
+	DBPassword                  string `mapstructure:"db_password"`
+	DBName                      string `mapstructure:"db_name"`
+	DBPort                      int    `mapstructure:"db_port"`
+	DBHost                      string `mapstructure:"db_host"`
+	ReportDBHost                string `mapstructure:"report_db_host"`
 }
 
 // ServerInspectData are the data extracted by a server inspector.

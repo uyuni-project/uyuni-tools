@@ -40,7 +40,6 @@ func CreateServices(namespace string, debug bool) error {
 // If debug is true, the Java debug ports will be exposed.
 func GetServices(namespace string, debug bool) []*core.Service {
 	ports := utils.GetServerPorts(debug)
-	ports = append(ports, utils.DBPorts...)
 
 	servicesPorts := map[string][]types.PortMap{}
 	for _, port := range ports {

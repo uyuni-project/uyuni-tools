@@ -22,6 +22,7 @@ type podmanPTFFlags struct {
 	Coco       adm_utils.CocoFlags
 	Hubxmlrpc  adm_utils.HubXmlrpcFlags
 	Saline     adm_utils.SalineFlags
+	Pgsql      adm_utils.PgsqlFlags
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanPTFFlags]) *cobra.Command {

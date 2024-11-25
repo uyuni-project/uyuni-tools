@@ -65,6 +65,8 @@ func (flags *InstallationFlags) CheckParameters(cmd *cobra.Command, command stri
 		flags.ReportDB.Password = utils.GetRandomBase64(30)
 	}
 
+	utils.AskPasswordIfMissing(&flags.DB.Admin.Password, cmd.Flag("db-admin-password").Usage, 5, 48)
+
 	// Make sure we have all the required 3rd party flags or none
 	flags.SSL.CheckParameters()
 

@@ -14,6 +14,7 @@ import (
 	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
 	"github.com/uyuni-project/uyuni-tools/shared"
@@ -92,6 +93,16 @@ func migrateToPodman(
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
+	}
+
+	if err := podman_utils.SetupNetwork(false); err != nil {
+		return err
+	}
+
+	if err := pgsql.Upgrade(
+		systemd, authFile, flags.Pgsql,
+	); err != nil {
+		return err
 	}
 
 	schemaUpdateRequired := oldPgVersion != newPgVersion
