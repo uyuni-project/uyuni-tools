@@ -28,6 +28,9 @@ const ServerAttestationService = "uyuni-server-attestation"
 // HubXmlrpcService is the name of the systemd service for the Hub XMLRPC container.
 const HubXmlrpcService = "uyuni-hub-xmlrpc"
 
+// ServerSalineService is the name of the systemd service for the saline container.
+const ServerSalineService = "uyuni-server-saline"
+
 // ProxyService is the name of the systemd service for the proxy.
 const ProxyService = "uyuni-proxy-pod"
 

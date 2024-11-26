@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -140,6 +141,21 @@ func migrateToPodman(
 			return err
 		}
 		if err := hub.EnableHubXmlrpc(systemd, hubReplicas); err != nil {
+			return err
+		}
+	}
+
+	// Prepare Saline containers
+	if flags.Saline.Replicas > 0 {
+		if err = saline.Upgrade(
+			systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image,
+			extractedData.Timezone, flags.Podman.Args,
+		); err != nil {
+			return utils.Errorf(err, L("cannot setup saline service"))
+		}
+
+		err := systemd.ScaleService(flags.Saline.Replicas, podman_utils.ServerSalineService)
+		if err != nil {
 			return err
 		}
 	}

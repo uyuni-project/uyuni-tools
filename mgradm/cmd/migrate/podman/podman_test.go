@@ -26,6 +26,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.DBUpdateImageFlagTestArgs...)
 	args = append(args, flagstests.CocoFlagsTestArgs...)
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
+	args = append(args, flagstests.SalineFlagsTestArgs...)
 	args = append(args, flagstests.PodmanFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
@@ -37,6 +38,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
 		flagstests.AssertCocoFlag(t, &flags.Coco)
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
+		flagstests.AssertSalineFlag(t, &flags.Saline)
 		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.User)
 		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
 		testutils.AssertEquals(t, "Wrong FQDN", "source.fq.dn", args[0])

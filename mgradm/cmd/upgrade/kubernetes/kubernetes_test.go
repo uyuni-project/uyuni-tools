@@ -22,6 +22,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.DBUpdateImageFlagTestArgs...)
 	args = append(args, flagstests.CocoFlagsTestArgs...)
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
+	args = append(args, flagstests.SalineFlagsTestArgs...)
 	args = append(args, flagstests.SCCFlagTestArgs...)
 	args = append(args, flagstests.ServerHelmFlagsTestArgs...)
 
@@ -33,6 +34,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
 		flagstests.AssertCocoFlag(t, &flags.Coco)
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
+		flagstests.AssertSalineFlag(t, &flags.Saline)
 		// TODO Assert SCC flags
 		flagstests.AssertServerHelmFlags(t, &flags.Helm)
 		return nil

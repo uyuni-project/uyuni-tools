@@ -109,3 +109,20 @@ func AssertHubXmlrpcFlag(t *testing.T, flags *utils.HubXmlrpcFlags) {
 	testutils.AssertEquals(t, "Error parsing --hubxmlrpc-replicas", 1, flags.Replicas)
 	testutils.AssertTrue(t, "Hub should be changed", flags.IsChanged)
 }
+
+// SalineoFlagsTestArgs is the expected values for AssertSalineFlag.
+var SalineFlagsTestArgs = []string{
+	"--saline-image", "salineimg",
+	"--saline-tag", "salinetag",
+	"--saline-replicas", "1",
+	"--saline-port", "8226",
+}
+
+// AssertSalineFlag asserts that all saline flags are parsed correctly.
+func AssertSalineFlag(t *testing.T, flags *utils.SalineFlags) {
+	testutils.AssertEquals(t, "Error parsing --saline-image", "salineimg", flags.Image.Name)
+	testutils.AssertEquals(t, "Error parsing --saline-tag", "salinetag", flags.Image.Tag)
+	testutils.AssertEquals(t, "Error parsing --saline-replicas", 1, flags.Replicas)
+	testutils.AssertEquals(t, "Error parsing --saline-port", 8226, flags.Port)
+	testutils.AssertTrue(t, "Saline should be changed", flags.IsChanged)
+}

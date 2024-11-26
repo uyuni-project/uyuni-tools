@@ -48,6 +48,7 @@ NOTE: migrating to a remote cluster is not supported yet!
 			flagsUpdater := func(v *viper.Viper) {
 				flags.MigrateFlags.Coco.IsChanged = v.IsSet("coco.replicas")
 				flags.MigrateFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+				flags.MigrateFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},

@@ -21,6 +21,7 @@ type podmanPTFFlags struct {
 	SCC        types.SCCCredentials
 	Coco       adm_utils.CocoFlags
 	Hubxmlrpc  adm_utils.HubXmlrpcFlags
+	Saline     adm_utils.SalineFlags
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanPTFFlags]) *cobra.Command {

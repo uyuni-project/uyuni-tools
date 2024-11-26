@@ -55,6 +55,7 @@ type InstallFlags struct {
 	Image        types.ImageFlags `mapstructure:",squash"`
 	Coco         cmd_utils.CocoFlags
 	HubXmlrpc    cmd_utils.HubXmlrpcFlags
+	Saline       cmd_utils.SalineFlags
 	Admin        apiTypes.User
 	Organization string
 }
@@ -187,6 +188,8 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd_utils.AddCocoFlag(cmd)
 
 	cmd_utils.AddHubXmlrpcFlags(cmd)
+
+	cmd_utils.AddSalineFlag(cmd)
 
 	cmd.Flags().String("admin-login", "admin", L("Administrator user name"))
 	cmd.Flags().String("admin-password", "", L("Administrator password"))

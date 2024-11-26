@@ -52,6 +52,7 @@ var InstallFlagsTestArgs = func() []string {
 	args = append(args, ImageFlagsTestArgs...)
 	args = append(args, CocoFlagsTestArgs...)
 	args = append(args, HubXmlrpcFlagsTestArgs...)
+	args = append(args, SalineFlagsTestArgs...)
 	args = append(args, SSLGenerationFlagsTestArgs...)
 
 	return args
@@ -97,4 +98,5 @@ func AssertInstallFlags(t *testing.T, flags *shared.InstallFlags) {
 	AssertImageFlag(t, &flags.Image)
 	AssertCocoFlag(t, &flags.Coco)
 	AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
+	AssertSalineFlag(t, &flags.Saline)
 }

@@ -32,6 +32,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesUpgr
 			flagsUpdater := func(v *viper.Viper) {
 				flags.UpgradeFlags.Coco.IsChanged = v.IsSet("coco.replicas")
 				flags.UpgradeFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+				flags.UpgradeFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
