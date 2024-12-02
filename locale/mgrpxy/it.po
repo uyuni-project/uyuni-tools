@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 15:09+0100\n"
+"POT-Creation-Date: 2024-12-02 08:21+0100\n"
 "PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/it/>\n"
@@ -100,7 +100,7 @@ msgid ""
 msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:26
-#: mgrpxy/shared/kubernetes/deploy.go:153
+#: mgrpxy/shared/kubernetes/deploy.go:152
 #, javascript-format
 msgid "install %s before running this command"
 msgstr "installare %s prima di eseguire questo comando"
@@ -110,7 +110,7 @@ msgid "failed to extract configuration"
 msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:69
-#: mgrpxy/shared/kubernetes/deploy.go:205
+#: mgrpxy/shared/kubernetes/deploy.go:204
 msgid "cannot deploy proxy helm chart"
 msgstr ""
 
@@ -130,16 +130,16 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgrpxy/cmd/install/podman/utils.go:39 mgrpxy/shared/podman/podman.go:238
+#: mgrpxy/cmd/install/podman/utils.go:38 mgrpxy/shared/podman/podman.go:238
 msgid "install podman before running this command"
 msgstr "installare podman prima di eseguire questo comando"
 
-#: mgrpxy/cmd/install/podman/utils.go:44
+#: mgrpxy/cmd/install/podman/utils.go:43
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr ""
 
-#: mgrpxy/cmd/install/podman/utils.go:54 mgrpxy/shared/podman/podman.go:251
+#: mgrpxy/cmd/install/podman/utils.go:53 mgrpxy/shared/podman/podman.go:251
 msgid "failed to login to registry.suse.com"
 msgstr ""
 
@@ -437,7 +437,7 @@ msgstr ""
 msgid "failed to write in file %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgrpxy/shared/kubernetes/deploy.go:185
+#: mgrpxy/shared/kubernetes/deploy.go:184
 #, fuzzy
 msgid "failed to scale replicas to 1"
 msgstr "mancata creazione della directory temporanea: %s"

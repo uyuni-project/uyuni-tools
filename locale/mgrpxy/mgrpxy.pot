@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 15:09+0100\n"
+"POT-Creation-Date: 2024-12-02 08:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,7 +97,7 @@ msgid ""
 msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:26
-#: mgrpxy/shared/kubernetes/deploy.go:153
+#: mgrpxy/shared/kubernetes/deploy.go:152
 #, javascript-format
 msgid "install %s before running this command"
 msgstr ""
@@ -107,7 +107,7 @@ msgid "failed to extract configuration"
 msgstr ""
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:69
-#: mgrpxy/shared/kubernetes/deploy.go:205
+#: mgrpxy/shared/kubernetes/deploy.go:204
 msgid "cannot deploy proxy helm chart"
 msgstr ""
 
@@ -127,16 +127,16 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgrpxy/cmd/install/podman/utils.go:39 mgrpxy/shared/podman/podman.go:238
+#: mgrpxy/cmd/install/podman/utils.go:38 mgrpxy/shared/podman/podman.go:238
 msgid "install podman before running this command"
 msgstr ""
 
-#: mgrpxy/cmd/install/podman/utils.go:44
+#: mgrpxy/cmd/install/podman/utils.go:43
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr ""
 
-#: mgrpxy/cmd/install/podman/utils.go:54 mgrpxy/shared/podman/podman.go:251
+#: mgrpxy/cmd/install/podman/utils.go:53 mgrpxy/shared/podman/podman.go:251
 msgid "failed to login to registry.suse.com"
 msgstr ""
 
@@ -434,7 +434,7 @@ msgstr ""
 msgid "failed to write in file %s"
 msgstr ""
 
-#: mgrpxy/shared/kubernetes/deploy.go:185
+#: mgrpxy/shared/kubernetes/deploy.go:184
 msgid "failed to scale replicas to 1"
 msgstr ""
 
