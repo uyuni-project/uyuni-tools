@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 15:18+0100\n"
+"POT-Creation-Date: 2024-12-02 08:36+0100\n"
 "PO-Revision-Date: 2024-06-12 10:46+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ko/>\n"
@@ -49,14 +49,14 @@ msgid ""
 "# mgrctl api post user/create login=test password=testXX firstName=F lastName=L email=test@localhost\n"
 "\n"
 "JSON example:\n"
-"# mgrctl api post user/create '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'"
+"# mgrctl api post user/create    '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:60
+#: mgrctl/cmd/api/api.go:62
 msgid "Store login information for future API usage"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:61
+#: mgrctl/cmd/api/api.go:63
 msgid ""
 "Login stores login information for next API calls.\n"
 "\n"
@@ -64,15 +64,15 @@ msgid ""
 "Environment variables are also supported."
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:69
+#: mgrctl/cmd/api/api.go:71
 msgid "Overwrite existing login if exists"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:73
+#: mgrctl/cmd/api/api.go:75
 msgid "Remove stored login information"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:74
+#: mgrctl/cmd/api/api.go:76
 msgid "Logout removes stored login information."
 msgstr ""
 
@@ -113,16 +113,16 @@ msgstr "주로 API를 통해 Uyuni 서버를 관리하는 데 유용한 도구"
 msgid "configuration file path"
 msgstr "구성 파일 경로"
 
-#: mgrctl/cmd/cmd.go:38
+#: mgrctl/cmd/cmd.go:39
 msgid "application log level"
 msgstr "애플리케이션 로그 수준"
 
-#: mgrctl/cmd/cmd.go:45
+#: mgrctl/cmd/cmd.go:47
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "%s 시작"
 
-#: mgrctl/cmd/cmd.go:46
+#: mgrctl/cmd/cmd.go:48
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "실행 중 명령: %s"
@@ -151,35 +151,35 @@ msgstr "대상 파일에 설정할 사용자 또는 UID"
 msgid "Group or GID to set on the destination file"
 msgstr "대상 파일에 설정할 그룹 또는 GID"
 
-#: mgrctl/cmd/exec/exec.go:37
+#: mgrctl/cmd/exec/exec.go:38
 msgid "Execute commands inside the uyuni containers using 'sh -c'"
 msgstr "'sh -c'를 사용하여 uyuni 컨테이너 내에서 명령을 실행합니다."
 
-#: mgrctl/cmd/exec/exec.go:43
+#: mgrctl/cmd/exec/exec.go:45
 msgid "environment variables to pass to the command, separated by commas"
 msgstr "명령에 전달할 환경 변수를 쉼표로 구분하여 입력합니다."
 
-#: mgrctl/cmd/exec/exec.go:44
+#: mgrctl/cmd/exec/exec.go:47
 msgid "Pass stdin to the container"
 msgstr "컨테이너에 stdin을 전달합니다."
 
-#: mgrctl/cmd/exec/exec.go:45
+#: mgrctl/cmd/exec/exec.go:48
 msgid "Stdin is a TTY"
 msgstr "Stdin은 TTY입니다."
 
-#: mgrctl/cmd/exec/exec.go:102
+#: mgrctl/cmd/exec/exec.go:106
 msgid "Command failed"
 msgstr "명령 실패"
 
-#: mgrctl/cmd/exec/exec.go:106
+#: mgrctl/cmd/exec/exec.go:110
 msgid "Command returned with exit code 0"
 msgstr "종료 코드 0으로 반환된 명령"
 
-#: mgrctl/cmd/exec/exec.go:120
+#: mgrctl/cmd/exec/exec.go:124
 msgid "cannot write"
 msgstr "쓸 수 없음"
 
-#: mgrctl/cmd/exec/exec.go:136
+#: mgrctl/cmd/exec/exec.go:140
 #, javascript-format
 msgid "Running %s"
 msgstr "%s 실행 중"
