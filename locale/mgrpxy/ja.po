@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 15:09+0100\n"
+"POT-Creation-Date: 2024-12-02 08:21+0100\n"
 "PO-Revision-Date: 2024-09-26 02:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
@@ -106,7 +106,7 @@ msgstr ""
 "メモ: 現時点では、リモートkubernetesクラスタへのインストールはサポートされていません。\n"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:26
-#: mgrpxy/shared/kubernetes/deploy.go:153
+#: mgrpxy/shared/kubernetes/deploy.go:152
 #, javascript-format
 msgid "install %s before running this command"
 msgstr "このコマンドを実行する前に %s をインストールする"
@@ -116,7 +116,7 @@ msgid "failed to extract configuration"
 msgstr "設定の抽出に失敗しました"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:69
-#: mgrpxy/shared/kubernetes/deploy.go:205
+#: mgrpxy/shared/kubernetes/deploy.go:204
 msgid "cannot deploy proxy helm chart"
 msgstr "プロキシhelmチャートを配備できません"
 
@@ -143,16 +143,16 @@ msgstr ""
 "\n"
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:39 mgrpxy/shared/podman/podman.go:238
+#: mgrpxy/cmd/install/podman/utils.go:38 mgrpxy/shared/podman/podman.go:238
 msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
 
-#: mgrpxy/cmd/install/podman/utils.go:44
+#: mgrpxy/cmd/install/podman/utils.go:43
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "プロキシ設定を %s ファイルから抽出できませんでした"
 
-#: mgrpxy/cmd/install/podman/utils.go:54 mgrpxy/shared/podman/podman.go:251
+#: mgrpxy/cmd/install/podman/utils.go:53 mgrpxy/shared/podman/podman.go:251
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.comへのログインに失敗しました"
 
@@ -487,7 +487,7 @@ msgstr "helmアップグレードを実行できません"
 msgid "failed to write in file %s"
 msgstr "ファイル %s への書き込みに失敗しました"
 
-#: mgrpxy/shared/kubernetes/deploy.go:185
+#: mgrpxy/shared/kubernetes/deploy.go:184
 #, fuzzy
 msgid "failed to scale replicas to 1"
 msgstr "一時ディレクトリの作成に失敗しました"

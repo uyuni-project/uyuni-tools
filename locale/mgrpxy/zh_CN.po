@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 15:09+0100\n"
+"POT-Creation-Date: 2024-12-02 08:21+0100\n"
 "PO-Revision-Date: 2024-09-26 08:48+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/zh_CN/>\n"
@@ -107,7 +107,7 @@ msgstr ""
 "注意：目前不支持在远程 kubernetes 群集上安装！\n"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:26
-#: mgrpxy/shared/kubernetes/deploy.go:153
+#: mgrpxy/shared/kubernetes/deploy.go:152
 #, javascript-format
 msgid "install %s before running this command"
 msgstr "在运行此命令前安装 %s"
@@ -117,7 +117,7 @@ msgid "failed to extract configuration"
 msgstr "无法提取配置"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:69
-#: mgrpxy/shared/kubernetes/deploy.go:205
+#: mgrpxy/shared/kubernetes/deploy.go:204
 msgid "cannot deploy proxy helm chart"
 msgstr "无法部署代理 helm 图表"
 
@@ -145,16 +145,16 @@ msgstr ""
 "\n"
 "注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:39 mgrpxy/shared/podman/podman.go:238
+#: mgrpxy/cmd/install/podman/utils.go:38 mgrpxy/shared/podman/podman.go:238
 msgid "install podman before running this command"
 msgstr "在运行此命令前安装 podman"
 
-#: mgrpxy/cmd/install/podman/utils.go:44
+#: mgrpxy/cmd/install/podman/utils.go:43
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "无法从 %s 文件中提取代理配置"
 
-#: mgrpxy/cmd/install/podman/utils.go:54 mgrpxy/shared/podman/podman.go:251
+#: mgrpxy/cmd/install/podman/utils.go:53 mgrpxy/shared/podman/podman.go:251
 msgid "failed to login to registry.suse.com"
 msgstr "无法登录 registry.suse.com"
 
@@ -489,7 +489,7 @@ msgstr "无法执行 helm 升级"
 msgid "failed to write in file %s"
 msgstr "无法在文件 %s 中写入数据"
 
-#: mgrpxy/shared/kubernetes/deploy.go:185
+#: mgrpxy/shared/kubernetes/deploy.go:184
 #, fuzzy
 msgid "failed to scale replicas to 1"
 msgstr "无法创建临时目录"
