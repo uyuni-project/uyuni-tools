@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 15:18+0100\n"
+"POT-Creation-Date: 2024-12-02 08:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,14 +47,14 @@ msgid ""
 "# mgrctl api post user/create login=test password=testXX firstName=F lastName=L email=test@localhost\n"
 "\n"
 "JSON example:\n"
-"# mgrctl api post user/create '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'"
+"# mgrctl api post user/create    '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:60
+#: mgrctl/cmd/api/api.go:62
 msgid "Store login information for future API usage"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:61
+#: mgrctl/cmd/api/api.go:63
 msgid ""
 "Login stores login information for next API calls.\n"
 "\n"
@@ -62,15 +62,15 @@ msgid ""
 "Environment variables are also supported."
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:69
+#: mgrctl/cmd/api/api.go:71
 msgid "Overwrite existing login if exists"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:73
+#: mgrctl/cmd/api/api.go:75
 msgid "Remove stored login information"
 msgstr ""
 
-#: mgrctl/cmd/api/api.go:74
+#: mgrctl/cmd/api/api.go:76
 msgid "Logout removes stored login information."
 msgstr ""
 
@@ -111,16 +111,16 @@ msgstr ""
 msgid "configuration file path"
 msgstr ""
 
-#: mgrctl/cmd/cmd.go:38
+#: mgrctl/cmd/cmd.go:39
 msgid "application log level"
 msgstr ""
 
-#: mgrctl/cmd/cmd.go:45
+#: mgrctl/cmd/cmd.go:47
 #, javascript-format
 msgid "Welcome to %s"
 msgstr ""
 
-#: mgrctl/cmd/cmd.go:46
+#: mgrctl/cmd/cmd.go:48
 #, javascript-format
 msgid "Executing command: %s"
 msgstr ""
@@ -147,35 +147,35 @@ msgstr ""
 msgid "Group or GID to set on the destination file"
 msgstr ""
 
-#: mgrctl/cmd/exec/exec.go:37
+#: mgrctl/cmd/exec/exec.go:38
 msgid "Execute commands inside the uyuni containers using 'sh -c'"
 msgstr ""
 
-#: mgrctl/cmd/exec/exec.go:43
+#: mgrctl/cmd/exec/exec.go:45
 msgid "environment variables to pass to the command, separated by commas"
 msgstr ""
 
-#: mgrctl/cmd/exec/exec.go:44
+#: mgrctl/cmd/exec/exec.go:47
 msgid "Pass stdin to the container"
 msgstr ""
 
-#: mgrctl/cmd/exec/exec.go:45
+#: mgrctl/cmd/exec/exec.go:48
 msgid "Stdin is a TTY"
 msgstr ""
 
-#: mgrctl/cmd/exec/exec.go:102
+#: mgrctl/cmd/exec/exec.go:106
 msgid "Command failed"
 msgstr ""
 
-#: mgrctl/cmd/exec/exec.go:106
+#: mgrctl/cmd/exec/exec.go:110
 msgid "Command returned with exit code 0"
 msgstr ""
 
-#: mgrctl/cmd/exec/exec.go:120
+#: mgrctl/cmd/exec/exec.go:124
 msgid "cannot write"
 msgstr ""
 
-#: mgrctl/cmd/exec/exec.go:136
+#: mgrctl/cmd/exec/exec.go:140
 #, javascript-format
 msgid "Running %s"
 msgstr ""
