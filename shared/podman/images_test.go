@@ -140,7 +140,7 @@ myregistry.org/path/image:latest`,
 	}
 
 	for _, test := range data {
-		runCmdOutput = func(logLevel zerolog.Level, command string, args ...string) ([]byte, error) {
+		runCmdOutput = func(_ zerolog.Level, _ string, _ ...string) ([]byte, error) {
 			return []byte(test.out), test.err
 		}
 		searchedImage := "myregistry.org/path/image:1.2.3"
