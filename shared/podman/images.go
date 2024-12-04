@@ -224,8 +224,8 @@ func pullImage(authFile string, image string) error {
 	return utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", podmanArgs...)
 }
 
-// ShowAvailableTag  returns the list of available tag for a given image.
-func ShowAvailableTag(registry string, image types.ImageFlags) error {
+// ShowAvailableTag returns the list of available tag for a given image.
+func ShowAvailableTag(registry string, image types.ImageFlags, authFile string) error {
 	log.Info().Msgf(L("Running podman image search --list-tags %s --format={{.Tag}}"), image.Name)
 
 	name, err := utils.ComputeImage(registry, utils.DefaultTag, image)
@@ -233,10 +233,20 @@ func ShowAvailableTag(registry string, image types.ImageFlags) error {
 		return err
 	}
 
-	if err := utils.RunCmdStdMapping(
-		zerolog.DebugLevel, "podman", "image", "search", "--list-tags", name, "--format={{.Tag}}",
-	); err != nil {
+	args := []string{"image", "search", "--list-tags", name, "--format={{.Tag}}"}
+	if authFile != "" {
+		args = append(args, "--authfile", authFile)
+	}
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", args...)
+	if err != nil {
 		return utils.Errorf(err, L("cannot find any tag for image %s"), image)
+	}
+
+	for _, line := range strings.Split(strings.TrimSpace(string(out)), "\n") {
+		if !strings.HasSuffix(line, ".sig") && !strings.HasSuffix(line, ".att") {
+			fmt.Println(line)
+		}
 	}
 
 	return nil
