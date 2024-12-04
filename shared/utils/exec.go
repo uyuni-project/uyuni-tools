@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 	"time"
@@ -32,6 +33,98 @@ func (l OutputLogWriter) Write(p []byte) (n int, err error) {
 	}
 	l.Logger.WithLevel(l.LogLevel).CallerSkipFrame(1).Msg(string(p))
 	return
+}
+
+// Runner is a helper object around the exec.Command() function.
+//
+// This is supposed to be created using the NewRunner() function.
+type Runner struct {
+	logger  zerolog.Logger
+	cmd     *exec.Cmd
+	spinner *spinner.Spinner
+}
+
+// NewRunner creates a new runner instance for the command.
+func NewRunner(command string, args ...string) *Runner {
+	runner := Runner{logger: log.Logger}
+	runner.cmd = exec.Command(command, args...)
+	return &runner
+}
+
+// Log sets the log level of the output.
+func (r *Runner) Log(logLevel zerolog.Level) *Runner {
+	r.logger = log.Logger.Level(logLevel)
+	return r
+}
+
+// Spinner sets a spinner with its message.
+// If no message is passed, the command will be used.
+func (r *Runner) Spinner(message string) *Runner {
+	r.spinner = spinner.New(spinner.CharSets[14], 100*time.Millisecond)
+	text := message
+	if message == "" {
+		text = strings.Join(r.cmd.Args, " ")
+	}
+	r.spinner.Suffix = fmt.Sprintf(" %s\n", text)
+	return r
+}
+
+// StdMapping maps the process output and error streams to the the standard ones.
+// This is useful to show the process output in the console and the logs and can be combined with Log().
+func (r *Runner) StdMapping() *Runner {
+	r.cmd.Stdout = r.logger
+	r.cmd.Stderr = r.logger
+	return r
+}
+
+// Env sets environment variables to use for the command.
+func (r *Runner) Env(env []string) *Runner {
+	if r.cmd.Env == nil {
+		r.cmd.Env = os.Environ()
+	}
+	r.cmd.Env = append(r.cmd.Env, env...)
+	return r
+}
+
+// Exec really executes the command and returns its output and error.
+// The error output to used as error message if the StdMapping() function wasn't called.
+func (r *Runner) Exec() ([]byte, error) {
+	if r.spinner != nil {
+		r.spinner.Start()
+	}
+
+	r.logger.Debug().Msgf("Running: %s", strings.Join(r.cmd.Args, " "))
+	var out []byte
+	var err error
+
+	if r.cmd.Stdout != nil {
+		err = r.cmd.Run()
+	} else {
+		out, err = r.cmd.Output()
+	}
+
+	if r.spinner != nil {
+		r.spinner.Stop()
+	}
+
+	var exitErr *exec.ExitError
+	if errors.As(err, &exitErr) {
+		err = &CmdError{exitErr}
+	}
+
+	r.logger.Trace().Msgf("Command output: %s, error: %s", out, err)
+
+	return out, err
+}
+
+// CmdError is a wrapper around exec.ExitError to show the standard error as message.
+type CmdError struct {
+	*exec.ExitError
+}
+
+// Error returns the stderr as error message.
+func (e *CmdError) Error() string {
+	return strings.TrimSpace(string(e.Stderr))
 }
 
 // RunCmd execute a shell command.

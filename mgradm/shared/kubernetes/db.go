@@ -7,6 +7,9 @@
 package kubernetes
 
 import (
+	"strings"
+
+	"github.com/rs/zerolog"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	core "k8s.io/api/core/v1"
@@ -19,12 +22,20 @@ const (
 	DBSecret = "db-credentials"
 	// ReportdbSecret is the name of the report database credentials secret.
 	ReportdbSecret = "reportdb-credentials"
+	SCCSecret      = "scc-credentials"
 	secretUsername = "username"
 	secretPassword = "password"
 )
 
-// CreateDBSecret creates a secret containing the DB credentials.
-func CreateDBSecret(namespace string, name string, user string, password string) error {
+// CreateBasicAuthSecret creates a secret of type basic-auth.
+func CreateBasicAuthSecret(namespace string, name string, user string, password string) error {
+	// Check if the secret is already existing
+	out, err := runCmdOutput(zerolog.DebugLevel, "kubectl", "get", "-n", namespace, "secret", name, "-o", "name")
+	if err == nil && strings.TrimSpace(string(out)) != "" {
+		return nil
+	}
+
+	// Create the secret
 	secret := core.Secret{
 		TypeMeta: meta.TypeMeta{APIVersion: "v1", Kind: "Secret"},
 		ObjectMeta: meta.ObjectMeta{
@@ -40,5 +51,5 @@ func CreateDBSecret(namespace string, name string, user string, password string)
 		Type: core.SecretTypeBasicAuth,
 	}
 
-	return kubernetes.Apply([]runtime.Object{&secret}, L("failed to create the database secret"))
+	return kubernetes.Apply([]runtime.Object{&secret}, L("failed to create the secret"))
 }
