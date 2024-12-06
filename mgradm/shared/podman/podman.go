@@ -526,11 +526,22 @@ func CallCloudGuestRegistryAuth() error {
 
 	path, err := exec.LookPath(cloudguestregistryauth)
 	if err == nil {
-		// the binary is installed
-		return utils.RunCmdStdMapping(zerolog.DebugLevel, path)
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, path); err != nil && isPAYG() {
+			// Not being registered against the cloud registry is  not an error on BYOS.
+			return err
+		}
 	}
 	// silently ignore error if it is missing
 	return nil
+}
+
+func isPAYG() bool {
+	flavorCheckPath := "/usr/bin/instance-flavor-check"
+	if utils.FileExists(flavorCheckPath) {
+		out, _ := utils.RunCmdOutput(zerolog.DebugLevel, flavorCheckPath)
+		return strings.TrimSpace(string(out)) == "PAYG"
+	}
+	return false
 }
 
 // GetMountPoint return folder where a given volume is mounted.
