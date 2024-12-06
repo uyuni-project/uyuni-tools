@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 08:21+0100\n"
+"POT-Creation-Date: 2024-12-06 14:42+0100\n"
 "PO-Revision-Date: 2024-07-18 11:46+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/de/>\n"
@@ -107,7 +107,7 @@ msgstr ""
 msgid "failed to extract configuration"
 msgstr ""
 
-#: mgrpxy/cmd/install/kubernetes/utils.go:69
+#: mgrpxy/cmd/install/kubernetes/utils.go:74
 #: mgrpxy/shared/kubernetes/deploy.go:204
 msgid "cannot deploy proxy helm chart"
 msgstr ""
