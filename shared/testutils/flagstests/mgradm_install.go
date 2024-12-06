@@ -46,7 +46,6 @@ var InstallFlagsTestArgs = func() []string {
 		"--organization", "someorg",
 	}
 
-	args = append(args, MirrorFlagTestArgs...)
 	args = append(args, SCCFlagTestArgs...)
 	args = append(args, ImageFlagsTestArgs...)
 	args = append(args, CocoFlagsTestArgs...)
@@ -96,7 +95,6 @@ func AssertInstallFlags(t *testing.T, flags *utils.ServerFlags) {
 	testutils.AssertEquals(t, "Error parsing --admin-firstName", "adminfirst", flags.Installation.Admin.FirstName)
 	testutils.AssertEquals(t, "Error parsing --admin-lastName", "adminlast", flags.Installation.Admin.LastName)
 	testutils.AssertEquals(t, "Error parsing --organization", "someorg", flags.Installation.Organization)
-	AssertMirrorFlag(t, flags.Mirror)
 	AssertSCCFlag(t, &flags.Installation.SCC)
 	AssertImageFlag(t, &flags.Image)
 	AssertCocoFlag(t, &flags.Coco)
