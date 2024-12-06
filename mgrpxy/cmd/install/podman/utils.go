@@ -74,7 +74,9 @@ func installForPodman(
 	}
 
 	// Setup the systemd service configuration options
-	if err := podman.GenerateSystemdService(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags); err != nil {
+	if err := podman.GenerateSystemdService(
+		httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags,
+	); err != nil {
 		return err
 	}
 

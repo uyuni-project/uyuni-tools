@@ -42,7 +42,7 @@ func createSecret(name string, value string) error {
 	defer cleaner()
 
 	secretFile := path.Join(tmpDir, "secret")
-	if err := os.WriteFile(secretFile, []byte(value), 600); err != nil {
+	if err := os.WriteFile(secretFile, []byte(value), 0600); err != nil {
 		return utils.Errorf(err, L("failed to write %s secret to file"), name)
 	}
 

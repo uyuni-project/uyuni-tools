@@ -44,3 +44,27 @@ func TestParamsParsing(t *testing.T) {
 		t.Errorf("command failed with error: %s", err)
 	}
 }
+
+func TestListParamsParsing(t *testing.T) {
+	args := []string{}
+
+	args = append(args, flagstests.ImageFlagsTestArgs...)
+	args = append(args, flagstests.SCCFlagTestArgs...)
+
+	// Test function asserting that the args are properly parsed
+	tester := func(flags *podmanUpgradeFlags) error {
+		flagstests.AssertImageFlag(t, &flags.Image)
+		flagstests.AssertSCCFlag(t, &flags.SCC)
+		return nil
+	}
+
+	globalFlags := types.GlobalFlags{}
+	cmd := newListCmd(&globalFlags, tester)
+
+	testutils.AssertHasAllFlags(t, cmd, args)
+
+	cmd.SetArgs(args)
+	if err := cmd.Execute(); err != nil {
+		t.Errorf("command failed with error: %s", err)
+	}
+}
