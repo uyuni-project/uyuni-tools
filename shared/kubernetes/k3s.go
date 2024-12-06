@@ -5,10 +5,11 @@
 package kubernetes
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"os/exec"
-	"path"
+	"regexp"
+	"strconv"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -18,36 +19,76 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/k3s-traefik-config.yaml"
+const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/uyuni-traefik-config.yaml"
+const k3sTraefikMainConfigPath = "/var/lib/rancher/k3s/server/manifests/traefik.yaml"
 
 // InstallK3sTraefikConfig install K3s Traefik configuration.
-func InstallK3sTraefikConfig(tcpPorts []types.PortMap, udpPorts []types.PortMap) {
+func InstallK3sTraefikConfig(ports []types.PortMap) error {
 	log.Info().Msg(L("Installing K3s Traefik configuration"))
 
-	data := K3sTraefikConfigTemplateData{
-		TCPPorts: tcpPorts,
-		UDPPorts: udpPorts,
+	endpoints := []types.PortMap{}
+	for _, port := range ports {
+		port.Name = GetTraefikEndpointName(port)
+		endpoints = append(endpoints, port)
 	}
-	if err := utils.WriteTemplateToFile(data, k3sTraefikConfigPath, 0600, false); err != nil {
-		log.Fatal().Err(err).Msgf(L("Failed to write K3s Traefik configuration"))
+	version, err := getTraefikChartMajorVersion()
+	if err != nil {
+		return err
+	}
+
+	data := K3sTraefikConfigTemplateData{
+		Ports:         endpoints,
+		ExposeBoolean: version < 27,
+	}
+	if err := utils.WriteTemplateToFile(data, k3sTraefikConfigPath, 0600, true); err != nil {
+		return utils.Errorf(err, L("Failed to write Traefik configuration"))
 	}
 
 	// Wait for traefik to be back
-	waitForTraefik()
+	return waitForTraefik()
 }
 
-func waitForTraefik() {
+// GetTraefikEndpointName computes the traefik endpoint name from the service and port names.
+// Those names should be less than 15 characters long.
+func GetTraefikEndpointName(portmap types.PortMap) string {
+	svc := shortenName(portmap.Service)
+	name := shortenName(portmap.Name)
+	if name != svc {
+		return fmt.Sprintf("%s-%s", svc, name)
+	}
+	return name
+}
+
+func shortenName(name string) string {
+	shorteningMap := map[string]string{
+		"taskomatic":      "tasko",
+		"metrics":         "mtrx",
+		"postgresql":      "pgsql",
+		"exporter":        "xport",
+		"uyuni-proxy-tcp": "uyuni",
+		"uyuni-proxy-udp": "uyuni",
+	}
+	short := shorteningMap[name]
+	if short == "" {
+		short = name
+	}
+	return short
+}
+
+func waitForTraefik() error {
 	log.Info().Msg(L("Waiting for Traefik to be reloaded"))
-	for i := 0; i < 60; i++ {
+	for i := 0; i < 120; i++ {
 		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "get", "job", "-n", "kube-system",
 			"-o", "jsonpath={.status.completionTime}", "helm-install-traefik")
 		if err == nil {
 			completionTime, err := time.Parse(time.RFC3339, string(out))
 			if err == nil && time.Since(completionTime).Seconds() < 60 {
-				break
+				return nil
 			}
 		}
+		time.Sleep(1 * time.Second)
 	}
+	return errors.New(L("Failed to reload Traefik"))
 }
 
 // UninstallK3sTraefikConfig uninstall K3s Traefik configuration.
@@ -60,7 +101,9 @@ func UninstallK3sTraefikConfig(dryRun bool) {
 			log.Error().Err(err).Msg(L("failed to write empty traefik configuration"))
 		} else {
 			// Wait for traefik to be back
-			waitForTraefik()
+			if err := waitForTraefik(); err != nil {
+				log.Error().Err(err).Msg(L("failed to uninstall traefik configuration"))
+			}
 		}
 	} else {
 		log.Info().Msg(L("Would reinstall Traefik without additionnal configuration"))
@@ -70,72 +113,23 @@ func UninstallK3sTraefikConfig(dryRun bool) {
 	utils.UninstallFile(k3sTraefikConfigPath, dryRun)
 }
 
-// InspectKubernetes check values on a given image and deploy.
-func InspectKubernetes(namespace string, serverImage string, pullPolicy string) (*utils.ServerInspectData, error) {
-	for _, binary := range []string{"kubectl", "helm"} {
-		if _, err := exec.LookPath(binary); err != nil {
-			return nil, fmt.Errorf(L("install %s before running this command"), binary)
-		}
-	}
-
-	scriptDir, cleaner, err := utils.TempDir()
+func getTraefikChartMajorVersion() (int, error) {
+	out, err := os.ReadFile(k3sTraefikMainConfigPath)
 	if err != nil {
-		return nil, err
+		return 0, utils.Errorf(err, L("failed to read the traefik configuration"))
 	}
-	defer cleaner()
-
-	inspector := utils.NewServerInspector(scriptDir)
-	if err := inspector.GenerateScript(); err != nil {
-		return nil, err
+	matches := regexp.MustCompile(`traefik-([0-9]+)`).FindStringSubmatch(string(out))
+	if matches == nil {
+		return 0, errors.New(L("traefik configuration file doesn't contain the helm chart version"))
 	}
-
-	command := path.Join(utils.InspectContainerDirectory, utils.InspectScriptFilename)
-
-	const podName = "inspector"
-
-	// delete pending pod and then check the node, because in presence of more than a pod GetNode return is wrong
-	if err := DeletePod(namespace, podName, ServerFilter); err != nil {
-		return nil, utils.Errorf(err, L("cannot delete %s"), podName)
+	if len(matches) != 2 {
+		return 0, errors.New(L("failed to find traefik helm chart version"))
 	}
 
-	// this is needed because folder with script needs to be mounted
-	nodeName, err := GetNode(namespace, ServerFilter)
+	majorVersion, err := strconv.Atoi(matches[1])
 	if err != nil {
-		return nil, utils.Errorf(err, L("cannot find node running uyuni"))
+		return 0, utils.Errorf(err, L(""))
 	}
 
-	// generate deploy data
-	deployData := types.Deployment{
-		APIVersion: "v1",
-		Spec: &types.Spec{
-			RestartPolicy: "Never",
-			NodeName:      nodeName,
-			Containers: []types.Container{
-				{
-					Name: podName,
-					VolumeMounts: append(utils.PgsqlRequiredVolumeMounts,
-						types.VolumeMount{MountPath: "/var/lib/uyuni-tools", Name: "var-lib-uyuni-tools"}),
-					Image: serverImage,
-				},
-			},
-			Volumes: append(utils.PgsqlRequiredVolumes,
-				types.Volume{Name: "var-lib-uyuni-tools", HostPath: &types.HostPath{Path: scriptDir, Type: "Directory"}}),
-		},
-	}
-	// transform deploy data in JSON
-	override, err := GenerateOverrideDeployment(deployData)
-	if err != nil {
-		return nil, err
-	}
-	err = RunPod(namespace, podName, ServerFilter, serverImage, pullPolicy, command, override)
-	if err != nil {
-		return nil, utils.Errorf(err, L("cannot run inspect pod"))
-	}
-
-	inspectResult, err := inspector.ReadInspectData()
-	if err != nil {
-		return nil, utils.Errorf(err, L("cannot inspect data"))
-	}
-
-	return inspectResult, err
+	return majorVersion, nil
 }

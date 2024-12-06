@@ -12,24 +12,18 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-// ServerHelmFlagsTestArgs is the expected values for AssertHelmInstallFlags.
-var ServerHelmFlagsTestArgs = []string{
-	"--helm-uyuni-namespace", "uyunins",
-	"--helm-uyuni-chart", "oci://srv/uyuni",
-	"--helm-uyuni-version", "1.2.3",
-	"--helm-uyuni-values", "uyuni/values.yaml",
-	"--helm-certmanager-namespace", "certmanagerns",
-	"--helm-certmanager-chart", "oci://srv/certmanager",
-	"--helm-certmanager-version", "4.5.6",
-	"--helm-certmanager-values", "certmanager/values.yaml",
+// ServerKubernetesFlagsTestArgs are the expected values for AssertServerKubernetesFlags.
+var ServerKubernetesFlagsTestArgs = []string{
+	"--kubernetes-uyuni-namespace", "uyunins",
+	"--kubernetes-certmanager-namespace", "certmanagerns",
+	"--kubernetes-certmanager-chart", "oci://srv/certmanager",
+	"--kubernetes-certmanager-version", "4.5.6",
+	"--kubernetes-certmanager-values", "certmanager/values.yaml",
 }
 
-// AssertServerHelmFlags checks that all Helm flags are parsed correctly.
-func AssertServerHelmFlags(t *testing.T, flags *utils.HelmFlags) {
+// AssertServerKubernetesFlags checks that all Kubernetes flags are parsed correctly.
+func AssertServerKubernetesFlags(t *testing.T, flags *utils.KubernetesFlags) {
 	testutils.AssertEquals(t, "Error parsing --helm-uyuni-namespace", "uyunins", flags.Uyuni.Namespace)
-	testutils.AssertEquals(t, "Error parsing --helm-uyuni-chart", "oci://srv/uyuni", flags.Uyuni.Chart)
-	testutils.AssertEquals(t, "Error parsing --helm-uyuni-version", "1.2.3", flags.Uyuni.Version)
-	testutils.AssertEquals(t, "Error parsing --helm-uyuni-values", "uyuni/values.yaml", flags.Uyuni.Values)
 	testutils.AssertEquals(t, "Error parsing --helm-certmanager-namespace",
 		"certmanagerns", flags.CertManager.Namespace,
 	)
@@ -40,6 +34,34 @@ func AssertServerHelmFlags(t *testing.T, flags *utils.HelmFlags) {
 	testutils.AssertEquals(t, "Error parsing --helm-certmanager-values",
 		"certmanager/values.yaml", flags.CertManager.Values,
 	)
+}
+
+// VolumesFlagsTestExpected is the expected values for AssertVolumesFlags.
+var VolumesFlagsTestExpected = []string{
+	"--volumes-class", "MyStorageClass",
+	"--volumes-mirror", "mirror-pv",
+	"--volumes-database-size", "123Gi",
+	"--volumes-database-class", "dbclass",
+	"--volumes-packages-size", "456Gi",
+	"--volumes-packages-class", "pkgclass",
+	"--volumes-www-size", "123Mi",
+	"--volumes-www-class", "wwwclass",
+	"--volumes-cache-size", "789Gi",
+	"--volumes-cache-class", "cacheclass",
+}
+
+// AssertVolumesFlags checks that all the volumes flags are parsed correctly.
+func AssertVolumesFlags(t *testing.T, flags *utils.VolumesFlags) {
+	testutils.AssertEquals(t, "Error parsing --volumes-class", "MyStorageClass", flags.Class)
+	testutils.AssertEquals(t, "Error parsing --volumes-mirror", "mirror-pv", flags.Mirror)
+	testutils.AssertEquals(t, "Error parsing --volumes-database-size", "123Gi", flags.Database.Size)
+	testutils.AssertEquals(t, "Error parsing --volumes-database-class", "dbclass", flags.Database.Class)
+	testutils.AssertEquals(t, "Error parsing --volumes-packages-size", "456Gi", flags.Packages.Size)
+	testutils.AssertEquals(t, "Error parsing --volumes-packages-class", "pkgclass", flags.Packages.Class)
+	testutils.AssertEquals(t, "Error parsing --volumes-www-size", "123Mi", flags.Www.Size)
+	testutils.AssertEquals(t, "Error parsing --volumes-www-class", "wwwclass", flags.Www.Class)
+	testutils.AssertEquals(t, "Error parsing --volumes-cache-size", "789Gi", flags.Cache.Size)
+	testutils.AssertEquals(t, "Error parsing --volumes-cache-class", "cacheclass", flags.Cache.Class)
 }
 
 // ImageFlagsTestArgs is the expected values for AssertImageFlag.
@@ -58,7 +80,7 @@ func AssertImageFlag(t *testing.T, flags *types.ImageFlags) {
 	testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.PullPolicy)
 }
 
-// DBUpdateImageFlagTestArgs is the expected values for AssertDbUpgradeImageFlag.
+// DBUpdateImageFlagTestArgs is the expected values for AssertDBUpgradeImageFlag.
 var DBUpdateImageFlagTestArgs = []string{
 	"--dbupgrade-image", "dbupgradeimg",
 	"--dbupgrade-tag", "dbupgradetag",

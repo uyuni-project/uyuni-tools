@@ -31,18 +31,9 @@ import (
 
 // GetExposedPorts returns the port exposed.
 func GetExposedPorts(debug bool) []types.PortMap {
-	ports := []types.PortMap{
-		utils.NewPortMap("https", 443, 443),
-		utils.NewPortMap("http", 80, 80),
-	}
-	ports = append(ports, utils.TCPPorts...)
+	ports := utils.GetServerPorts(debug)
+	ports = append(ports, utils.NewPortMap(utils.WebServiceName, "https", 443, 443))
 	ports = append(ports, utils.TCPPodmanPorts...)
-	ports = append(ports, utils.UDPPorts...)
-
-	if debug {
-		ports = append(ports, utils.DebugPorts...)
-	}
-
 	return ports
 }
 
@@ -58,7 +49,7 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 
 	ports := GetExposedPorts(debug)
 	if _, err := exec.LookPath("csp-billing-adapter"); err == nil {
-		ports = append(ports, utils.NewPortMap("csp-billing", 18888, 18888))
+		ports = append(ports, utils.NewPortMap("csp", "csp-billing", 18888, 18888))
 		args = append(args, "-e ISPAYG=1")
 	}
 
@@ -289,9 +280,7 @@ func RunPgsqlVersionUpgrade(
 
 		log.Info().Msgf(L("Using database upgrade image %s"), preparedImage)
 
-		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(
-			scriptDir, oldPgsql, newPgsql, false,
-		)
+		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql)
 		if err != nil {
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
@@ -386,9 +375,16 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot inspect podman values"))
 	}
 
-	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
+	runningImage := podman.GetServiceImage(podman.ServerService)
+	var runningData *utils.ServerInspectData
+	if runningImage != "" {
+		runningData, err = Inspect(runningImage)
+		if err != nil {
+			return err
+		}
+	}
 
-	if err := adm_utils.SanityCheck(cnx, inspectedValues, preparedImage); err != nil {
+	if err := adm_utils.SanityCheck(runningData, inspectedValues, preparedImage); err != nil {
 		return err
 	}
 

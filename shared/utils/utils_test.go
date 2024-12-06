@@ -387,3 +387,9 @@ func TestSaveBinaryData(t *testing.T) {
 		fmt.Sprintf("%v", data), fmt.Sprintf("%v", storedData),
 	)
 }
+
+func TestCompareVersion(t *testing.T) {
+	testutils.AssertTrue(t, "2024.07 is not inferior to 2024.13", CompareVersion("2024.07", "2024.13") < 0)
+	testutils.AssertTrue(t, "2024.13 is not superior to 2024.07", CompareVersion("2024.13", "2024.07") > 0)
+	testutils.AssertTrue(t, "2024.13 is not equal to 2024.13", CompareVersion("2024.13", "2024.13") == 0)
+}

@@ -53,7 +53,7 @@ func GenerateSystemdService(
 	ports := []types.PortMap{}
 	ports = append(ports, shared_utils.ProxyTCPPorts...)
 	ports = append(ports, shared_utils.ProxyPodmanPorts...)
-	ports = append(ports, shared_utils.UDPPorts...)
+	ports = append(ports, shared_utils.TftpPorts...)
 
 	// Pod
 	dataPod := templates.PodTemplateData{

@@ -12,12 +12,11 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	install_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -31,7 +30,9 @@ func waitForSystemStart(
 	image string,
 	flags *podmanInstallFlags,
 ) error {
-	err := podman.GenerateSystemdService(systemd, flags.TZ, image, flags.Debug.Java, flags.Mirror, flags.Podman.Args)
+	err := podman.GenerateSystemdService(
+		systemd, flags.Installation.TZ, image, flags.Installation.Debug.Java, flags.Mirror, flags.Podman.Args,
+	)
 	if err != nil {
 		return err
 	}
@@ -57,7 +58,7 @@ func installForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.SCC)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Installation.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
@@ -69,7 +70,7 @@ func installForPodman(
 		)
 	}
 
-	flags.CheckParameters(cmd, "podman")
+	flags.Installation.CheckParameters(cmd, "podman")
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
 	}
@@ -95,26 +96,26 @@ func installForPodman(
 		return utils.Errorf(err, L("cannot wait for system start"))
 	}
 
-	caPassword := flags.SSL.Password
-	if flags.SSL.UseExisting() {
+	caPassword := flags.Installation.SSL.Password
+	if flags.Installation.SSL.UseExisting() {
 		// We need to have a password for the generated CA, even though it will be thrown away after install
 		caPassword = "dummy"
 	}
 
 	env := map[string]string{
-		"CERT_O":       flags.SSL.Org,
-		"CERT_OU":      flags.SSL.OU,
-		"CERT_CITY":    flags.SSL.City,
-		"CERT_STATE":   flags.SSL.State,
-		"CERT_COUNTRY": flags.SSL.Country,
-		"CERT_EMAIL":   flags.SSL.Email,
-		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, flags.SSL.Cnames...), ","),
+		"CERT_O":       flags.Installation.SSL.Org,
+		"CERT_OU":      flags.Installation.SSL.OU,
+		"CERT_CITY":    flags.Installation.SSL.City,
+		"CERT_STATE":   flags.Installation.SSL.State,
+		"CERT_COUNTRY": flags.Installation.SSL.Country,
+		"CERT_EMAIL":   flags.Installation.SSL.Email,
+		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, flags.Installation.SSL.Cnames...), ","),
 		"CERT_PASS":    caPassword,
 	}
 
 	log.Info().Msg(L("Run setup command in the container"))
 
-	if err := install_shared.RunSetup(cnx, &flags.InstallFlags, fqdn, env); err != nil {
+	if err := adm_utils.RunSetup(cnx, &flags.ServerFlags, fqdn, env); err != nil {
 		if stopErr := systemd.StopService(shared_podman.ServerService); stopErr != nil {
 			log.Error().Msgf(L("Failed to stop service: %v"), stopErr)
 		}
@@ -131,12 +132,12 @@ func installForPodman(
 
 	if flags.Coco.Replicas > 0 {
 		// This may need to be moved up later once more containers require DB access
-		if err := shared_podman.CreateDBSecrets(flags.DB.User, flags.DB.Password); err != nil {
+		if err := shared_podman.CreateDBSecrets(flags.Installation.DB.User, flags.Installation.DB.Password); err != nil {
 			return err
 		}
 		if err := coco.SetupCocoContainer(
 			systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
-			flags.DB.Name, flags.DB.Port,
+			flags.Installation.DB.Name, flags.Installation.DB.Port,
 		); err != nil {
 			return err
 		}
@@ -152,14 +153,17 @@ func installForPodman(
 
 	if flags.Saline.Replicas > 0 {
 		if err := saline.SetupSalineContainer(
-			systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image, flags.TZ, viper.GetStringSlice("podman.arg"),
+			systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image,
+			flags.Installation.TZ, flags.Podman.Args,
 		); err != nil {
 			return err
 		}
 	}
 
-	if flags.SSL.UseExisting() {
-		if err := podman.UpdateSSLCertificate(cnx, &flags.SSL.Ca, &flags.SSL.Server); err != nil {
+	if flags.Installation.SSL.UseExisting() {
+		if err := podman.UpdateSSLCertificate(
+			cnx, &flags.Installation.SSL.Ca, &flags.Installation.SSL.Server,
+		); err != nil {
 			return utils.Errorf(err, L("cannot update SSL certificate"))
 		}
 	}

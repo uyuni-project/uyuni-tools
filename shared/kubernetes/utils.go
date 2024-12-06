@@ -6,7 +6,6 @@ package kubernetes
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -17,92 +16,109 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	core "k8s.io/api/core/v1"
 )
 
-// ServerApp represent the server app name.
-const ServerApp = "uyuni"
+const (
+	// AppLabel is the app label name.
+	AppLabel = "app.kubernetes.io/part-of"
+	// ComponentLabel is the component label name.
+	ComponentLabel = "app.kubernetes.io/component"
+)
+
+const (
+	// ServerApp is the server app name.
+	ServerApp = "uyuni"
+
+	// ProxyApp is the proxy app name.
+	ProxyApp = "uyuni-proxy"
+)
+
+const (
+	// ServerComponent is the value of the component label for the server resources.
+	ServerComponent = "server"
+	// HubApiComponent is the value of the component label for the Hub API resources.
+	HubAPIComponent = "hub-api"
+	// CocoComponent is the value of the component label for the confidential computing attestation resources.
+	CocoComponent = "coco"
+)
 
 // ServerFilter represents filter used to check server app.
-const ServerFilter = "-lapp=" + ServerApp
+const ServerFilter = "-l" + AppLabel + "=" + ServerApp
 
-// ProxyApp represnet the proxy app name.
-const ProxyApp = "uyuni-proxy"
+// ServerFilter represents filter used to check proxy app.
+const ProxyFilter = "-l" + AppLabel + "=" + ProxyApp
 
-// ProxyFilter represents filter used to check proxy app.
-const ProxyFilter = "-lapp=" + ProxyApp
+// CaIssuerName is the name of the server CA issuer deployed if cert-manager is used.
+const CaIssuerName = "uyuni-ca-issuer"
 
-// WaitForDeployment waits at most 60s for a kubernetes deployment to have at least one replica.
-// See [isDeploymentReady] for more details.
-func WaitForDeployment(namespace string, name string, appName string) error {
-	// Find the name of a replica pod
-	// Using the app label is a shortcut, not the 100% acurate way to get from deployment to pod
-	podName := ""
-	jsonpath := fmt.Sprintf("jsonpath={.items[?(@.metadata.labels.app==\"%s\")].metadata.name}", appName)
-	cmdArgs := []string{"get", "pod", "-o", jsonpath}
-	cmdArgs = addNamespace(cmdArgs, namespace)
-
-	for i := 0; i < 60; i++ {
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
-		if err == nil {
-			podName = string(out)
-			break
-		}
+// GetLabels creates the label map with the app and component.
+// The component label may be an empty string to skip it.
+func GetLabels(app string, component string) map[string]string {
+	labels := map[string]string{
+		AppLabel: app,
 	}
-
-	// We need to wait for the image to be pulled as this can add quite some time
-	// Setting a timeout on this is very hard since it hightly depends on network speed and image size
-	// List the Pulled events from the pod as we may not see the Pulling if the image was already downloaded
-	err := WaitForPulledImage(namespace, podName)
-	if err != nil {
-		return utils.Errorf(err, L("failed to pull image"))
+	if component != "" {
+		labels[ComponentLabel] = component
 	}
-
-	log.Info().Msgf(L("Waiting for %[1]s deployment to be ready in %[2]s namespace\n"), name, namespace)
-	// Wait for a replica to be ready
-	for i := 0; i < 120; i++ {
-		// TODO Look for pod failures
-		if IsDeploymentReady(namespace, name) {
-			return nil
-		}
-		time.Sleep(1 * time.Second)
-	}
-	return fmt.Errorf(
-		L("failed to find a ready replica for deployment %[1]s in namespace %[2]s after 120s"), name, namespace,
-	)
+	return labels
 }
 
-// WaitForPulledImage wait that image is pulled.
-func WaitForPulledImage(namespace string, podName string) error {
-	log.Info().Msgf(L("Waiting for image of %[1]s pod in %[2]s namespace to be pulled"), podName, namespace)
-	pulledArgs := []string{"get", "event",
-		"-o", "jsonpath={.items[?(@.reason==\"Pulled\")].message}",
-		"--field-selector", "involvedObject.name=" + podName}
+// WaitForDeployment waits for a kubernetes deployment to have at least one replica.
+func WaitForDeployments(namespace string, names ...string) error {
+	log.Info().Msgf(
+		NL("Waiting for %[1]s deployment to be ready in %[2]s namespace\n",
+			"Waiting for %[1]s deployments to be ready in %[2]s namespace\n", len(names)),
+		strings.Join(names, ", "), namespace)
 
-	pulledArgs = addNamespace(pulledArgs, namespace)
-	failedArgs := []string{"get", "event",
-		"-o", "jsonpath={range .items[?(@.reason==\"Failed\")]}{.message}{\"\\n\"}{end}",
-		"--field-selector", "involvedObject.name=" + podName}
-	failedArgs = addNamespace(failedArgs, namespace)
-	for {
-		// Look for events indicating an image pull issue
-		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", failedArgs...)
-		if err != nil {
-			return fmt.Errorf(L("failed to get failed events for pod %s"), podName)
-		}
-		lines := strings.Split(string(out), "\n")
-		for _, line := range lines {
-			if strings.HasPrefix(line, "Failed to pull image") {
-				return errors.New(L("failed to pull image"))
+	deploymentsStarting := names
+	// Wait for ever for all deployments to be ready
+	for len(deploymentsStarting) > 0 {
+		starting := []string{}
+		for _, deploymentName := range deploymentsStarting {
+			ready, err := IsDeploymentReady(namespace, deploymentName)
+			if err != nil {
+				return err
 			}
+			if !ready {
+				starting = append(starting, deploymentName)
+			}
+			deploymentsStarting = starting
+		}
+		if len(deploymentsStarting) > 0 {
+			time.Sleep(1 * time.Second)
+		}
+	}
+	return nil
+}
+
+// WaitForRunningDeployment waits for a deployment to have at least one replica in running state.
+func WaitForRunningDeployment(namespace string, name string) error {
+	log.Info().Msgf(L("Waiting for %[1]s deployment to be started in %[2]s namespace\n"), name, namespace)
+	for {
+		pods, err := getPodsForDeployment(namespace, name)
+		if err != nil {
+			return err
 		}
 
-		// Has the image pull finished?
-		out, err = utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", pulledArgs...)
-		if err != nil {
-			return fmt.Errorf(L("failed to get events for pod %s"), podName)
-		}
-		if len(out) > 0 {
-			break
+		if len(pods) > 0 {
+			jsonPath := "jsonpath={.status.containerStatuses[*].state.running.startedAt}"
+			if len(pods) > 1 {
+				jsonPath = "jsonpath={.items[*].status.containerStatuses[*].state.running.startedAt}"
+			}
+			out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-n", namespace,
+				"-o", jsonPath,
+				strings.Join(pods, " "),
+			)
+			if err != nil {
+				return utils.Errorf(err, L("failed to check if the deployment has running pods"))
+			}
+			if strings.TrimSpace(string(out)) != "" {
+				break
+			}
+			if err := hasAllPodsFailed(namespace, pods, name); err != nil {
+				return err
+			}
 		}
 		time.Sleep(1 * time.Second)
 	}
@@ -110,9 +126,9 @@ func WaitForPulledImage(namespace string, podName string) error {
 }
 
 // IsDeploymentReady returns true if a kubernetes deployment has at least one ready replica.
-// The name can also be a filter parameter like -lapp=uyuni.
+//
 // An empty namespace means searching through all the namespaces.
-func IsDeploymentReady(namespace string, name string) bool {
+func IsDeploymentReady(namespace string, name string) (bool, error) {
 	jsonpath := fmt.Sprintf("jsonpath={.items[?(@.metadata.name==\"%s\")].status.readyReplicas}", name)
 	args := []string{"get", "-o", jsonpath, "deploy"}
 	args = addNamespace(args, namespace)
@@ -121,10 +137,130 @@ func IsDeploymentReady(namespace string, name string) bool {
 	// kubectl errors out if the deployment or namespace doesn't exist
 	if err == nil {
 		if replicas, _ := strconv.Atoi(string(out)); replicas > 0 {
-			return true
+			return true, nil
 		}
 	}
-	return false
+
+	pods, err := getPodsForDeployment(namespace, name)
+	if err != nil {
+		return false, err
+	}
+
+	if err := hasAllPodsFailed(namespace, pods, name); err != nil {
+		return false, err
+	}
+
+	return false, nil
+}
+
+func hasAllPodsFailed(namespace string, names []string, deployment string) error {
+	failedPods := 0
+	for _, podName := range names {
+		if failed, err := isPodFailed(namespace, podName); err != nil {
+			return err
+		} else if failed {
+			failedPods = failedPods + 1
+		}
+	}
+	if len(names) > 0 && failedPods == len(names) {
+		return fmt.Errorf(L("all the pods of %s deployment have a failure"), deployment)
+	}
+	return nil
+}
+
+func getPodsForDeployment(namespace string, name string) ([]string, error) {
+	rs, err := getCurrentDeploymentReplicaSet(namespace, name)
+	if err != nil {
+		return []string{}, err
+	}
+
+	// Check if all replica set pods have failed to start
+	return getPodsFromOwnerReference(namespace, rs)
+}
+
+func getCurrentDeploymentReplicaSet(namespace string, name string) (string, error) {
+	// Get the replicasets matching the deployments and their revision as
+	// Kubernetes doesn't remove the old replicasets after update.
+	revisionPath := "{.metadata.annotations['deployment\\.kubernetes\\.io/revision']}"
+	rsArgs := []string{
+		"get", "rs", "-o",
+		fmt.Sprintf(
+			"jsonpath={range .items[?(@.metadata.ownerReferences[0].name=='%s')]}{.metadata.name},%s {end}",
+			name, revisionPath,
+		),
+	}
+	rsArgs = addNamespace(rsArgs, namespace)
+	out, err := runCmdOutput(zerolog.DebugLevel, "kubectl", rsArgs...)
+	if err != nil {
+		return "", utils.Errorf(err, L("failed to list ReplicaSets for deployment %s"), name)
+	}
+	replicasetsOut := strings.TrimSpace(string(out))
+	// No replica, no deployment
+	if replicasetsOut == "" {
+		return "", nil
+	}
+
+	// Get the current deployment revision to look for
+	out, err = runCmdOutput(zerolog.DebugLevel, "kubectl", "get", "deploy", "-n", namespace, name,
+		"-o", "jsonpath="+revisionPath,
+	)
+	if err != nil {
+		return "", utils.Errorf(err, L("failed to get the %s deployment revision"), name)
+	}
+	revision := strings.TrimSpace(string(out))
+
+	replicasets := strings.Split(replicasetsOut, " ")
+	for _, rs := range replicasets {
+		data := strings.SplitN(rs, ",", 2)
+		if len(data) != 2 {
+			return "", fmt.Errorf(L("invalid replicasset response: :%s"), replicasetsOut)
+		}
+		if data[1] == revision {
+			return data[0], nil
+		}
+	}
+	return "", nil
+}
+
+func getPodsFromOwnerReference(namespace string, owner string) ([]string, error) {
+	jsonpath := fmt.Sprintf("jsonpath={.items[?(@.metadata.ownerReferences[0].name=='%s')].metadata.name}", owner)
+	podArgs := []string{"get", "pod", "-o", jsonpath}
+	podArgs = addNamespace(podArgs, namespace)
+	out, err := runCmdOutput(zerolog.DebugLevel, "kubectl", podArgs...)
+	if err != nil {
+		return []string{}, utils.Errorf(err, L("failed to find pods for owner reference %s"), owner)
+	}
+
+	outStr := strings.TrimSpace(string(out))
+
+	pods := []string{}
+	if outStr != "" {
+		pods = strings.Split(outStr, " ")
+	}
+	return pods, nil
+}
+
+// isPodFailed checks if any of the containers of the pod are in BackOff state.
+//
+// An empty namespace means searching through all the namespaces.
+func isPodFailed(namespace string, name string) (bool, error) {
+	// If a container failed to pull the image it status will have waiting.reason = ImagePullBackOff
+	// If a container crashed its status will have waiting.reason = CrashLoopBackOff
+	filter := fmt.Sprintf(".items[?(@.metadata.name==\"%s\")]", name)
+	jsonpath := fmt.Sprintf("jsonpath={%[1]s.status.containerStatuses[*].state.waiting.reason}"+
+		"{%[1]s.status.initContainerStatuses[*].state.waiting.reason}", filter)
+	args := []string{"get", "pod", "-n", namespace, "-o", jsonpath}
+	args = addNamespace(args, namespace)
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
+	if err != nil {
+		return true, utils.Errorf(err, L("failed to get the status of %s pod"), name)
+	}
+	statuses := string(out)
+	if strings.Contains(statuses, "CrashLoopBackOff") || strings.Contains(statuses, "ImagePullBackOff") {
+		return true, nil
+	}
+	return false, nil
 }
 
 // DeploymentStatus represents the kubernetes deployment status.
@@ -150,35 +286,22 @@ func GetDeploymentStatus(namespace string, name string) (*DeploymentStatus, erro
 	return &status, nil
 }
 
-// ReplicasTo set the replica for an app to the given value.
-// Scale the number of replicas of the server.
-func ReplicasTo(namespace string, app string, replica uint) error {
-	args := []string{"scale", "deploy", app, "--replicas"}
-	log.Debug().Msgf("Setting replicas for pod in %s to %d", app, replica)
-	args = append(args, fmt.Sprint(replica), "-n", namespace)
+// ReplicasTo set the replicas for a deployment to the given value.
+func ReplicasTo(namespace string, name string, replica uint) error {
+	args := []string{"scale", "-n", namespace, "deploy", name, "--replicas", strconv.FormatUint(uint64(replica), 10)}
+	log.Debug().Msgf("Setting replicas for deployment in %s to %d", name, replica)
 
 	_, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
 	if err != nil {
 		return utils.Errorf(err, L("cannot run kubectl %s"), args)
 	}
 
-	pods, err := GetPods(namespace, "-lapp="+app)
-	if err != nil {
-		return utils.Errorf(err, L("cannot get pods for %s"), app)
+	if err := waitForReplicas(namespace, name, replica); err != nil {
+		return err
 	}
 
-	for _, pod := range pods {
-		if len(pod) > 0 {
-			err = waitForReplica(namespace, pod, replica)
-			if err != nil {
-				return utils.Errorf(err, L("replica to %d failed"), replica)
-			}
-		}
-	}
-
-	log.Debug().Msgf("Replicas for pod in %s are now %d", app, replica)
-
-	return err
+	log.Debug().Msgf("Replicas for %s deployment in %s are now %d", name, namespace, replica)
+	return nil
 }
 
 func isPodRunning(namespace string, podname string, filter string) (bool, error) {
@@ -206,36 +329,11 @@ func GetPods(namespace string, filter string) (pods []string, err error) {
 	return pods, err
 }
 
-func waitForReplicaZero(namespace string, podname string) error {
+func waitForReplicas(namespace string, name string, replicas uint) error {
 	waitSeconds := 120
-	cmdArgs := []string{"get", "pod", podname, "-n", namespace}
-
-	for i := 0; i < waitSeconds; i++ {
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
-		/* Assume that if the command return an error at the first iteration, it's because it failed,
-		* next iteration because the pod was actually deleted
-		 */
-		if err != nil && i == 0 {
-			return utils.Errorf(err, L("cannot get pod informations %s"), podname)
-		}
-		outStr := strings.TrimSuffix(string(out), "\n")
-		if len(outStr) == 0 {
-			log.Debug().Msgf("Pod %s has been deleted", podname)
-			return nil
-		}
-		time.Sleep(1 * time.Second)
-	}
-	return fmt.Errorf(L("cannot set replicas for %s to zero"), podname)
-}
-
-func waitForReplica(namespace string, podname string, replica uint) error {
-	waitSeconds := 120
-	log.Debug().Msgf("Checking replica for %s ready to %d", podname, replica)
-	if replica == 0 {
-		return waitForReplicaZero(namespace, podname)
-	}
+	log.Debug().Msgf("Checking replica for %s ready to %d", name, replicas)
 	cmdArgs := []string{
-		"get", "pod", podname, "-n", namespace, "--output=custom-columns=STATUS:.status.phase", "--no-headers",
+		"get", "deploy", name, "-n", namespace, "-o", "jsonpath={.status.readyReplicas}", "--no-headers",
 	}
 
 	for i := 0; i < waitSeconds; i++ {
@@ -243,12 +341,18 @@ func waitForReplica(namespace string, podname string, replica uint) error {
 		if err != nil {
 			return utils.Errorf(err, L("cannot execute %s"), strings.Join(cmdArgs, string(" ")))
 		}
-		outStr := strings.TrimSuffix(string(out), "\n")
-		if string(outStr) == "Running" {
-			log.Debug().Msgf("%s pod replica is now %d", podname, replica)
-			break
+		outStr := strings.TrimSpace(string(out))
+		var readyReplicas uint64
+		if outStr != "" {
+			var err error
+			readyReplicas, err = strconv.ParseUint(outStr, 10, 8)
+			if err != nil {
+				return utils.Errorf(err, L("invalid replicas result"))
+			}
 		}
-		log.Debug().Msgf("Pod %s replica is %s in %d seconds.", podname, string(out), i)
+		if uint(readyReplicas) == replicas {
+			return nil
+		}
 		time.Sleep(1 * time.Second)
 	}
 	return nil
@@ -263,12 +367,12 @@ func addNamespace(args []string, namespace string) []string {
 	return args
 }
 
-// GetPullPolicy return pullpolicy in lower case, if exists.
-func GetPullPolicy(name string) string {
-	policies := map[string]string{
-		"always":       "Always",
-		"never":        "Never",
-		"ifnotpresent": "IfNotPresent",
+// GetPullPolicy returns the kubernetes PullPolicy value, if exists.
+func GetPullPolicy(name string) core.PullPolicy {
+	policies := map[string]core.PullPolicy{
+		"always":       core.PullAlways,
+		"never":        core.PullNever,
+		"ifnotpresent": core.PullIfNotPresent,
 	}
 	policy := policies[strings.ToLower(name)]
 	if policy == "" {
@@ -287,7 +391,10 @@ func RunPod(
 	command string,
 	override ...string,
 ) error {
-	arguments := []string{"run", podname, "-n", namespace, "--image", image, "--image-pull-policy", pullPolicy, filter}
+	arguments := []string{
+		"run", "--rm", "-n", namespace, "--attach", "--pod-running-timeout=3h", "--restart=Never", podname,
+		"--image", image, "--image-pull-policy", pullPolicy, filter,
+	}
 
 	if len(override) > 0 {
 		arguments = append(arguments, `--override-type=strategic`)
@@ -303,14 +410,6 @@ func RunPod(
 		return utils.Errorf(err, PL("The first placeholder is a command",
 			"cannot run %[1]s using image %[2]s"), command, image)
 	}
-	err = waitForPod(namespace, podname)
-	if err != nil {
-		return utils.Errorf(err, L("deleting pod %s. Status fails with error"), podname)
-	}
-
-	defer func() {
-		err = DeletePod(namespace, podname, filter)
-	}()
 	return nil
 }
 
@@ -330,36 +429,6 @@ func DeletePod(namespace string, podname string, filter string) error {
 		return utils.Errorf(err, L("cannot delete pod %s"), podname)
 	}
 	return nil
-}
-
-func waitForPod(namespace string, podname string) error {
-	status := "Succeeded"
-	waitSeconds := 120
-	log.Debug().Msgf(
-		"Checking status for %s pod. Waiting %s seconds until status is %s",
-		podname, strconv.Itoa(waitSeconds), status,
-	)
-	cmdArgs := []string{
-		"get", "pod", podname, "-n", namespace, "--output=custom-columns=STATUS:.status.phase", "--no-headers",
-	}
-	var err error
-	for i := 0; i < waitSeconds; i++ {
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", cmdArgs...)
-		outStr := strings.TrimSuffix(string(out), "\n")
-		if err != nil {
-			return utils.Errorf(err, L("cannot execute %s"), strings.Join(cmdArgs, string(" ")))
-		}
-		if strings.EqualFold(outStr, status) {
-			log.Debug().Msgf("%s pod status is %s", podname, status)
-			return nil
-		}
-		if strings.EqualFold(outStr, "Failed") {
-			return utils.Errorf(err, L("error during execution of %s"), strings.Join(cmdArgs, string(" ")))
-		}
-		log.Debug().Msgf("Pod %s status is %s for %d seconds.", podname, outStr, i)
-		time.Sleep(1 * time.Second)
-	}
-	return utils.Errorf(err, L("pod %[1]s status is not %[2]s in %[3]d seconds"), podname, status, waitSeconds)
 }
 
 // GetNode return the node where the app is running.
@@ -388,4 +457,19 @@ func GenerateOverrideDeployment(deployData types.Deployment) (string, error) {
 		return "", utils.Errorf(err, L("cannot serialize pod definition override"))
 	}
 	return string(ret), nil
+}
+
+// GetRunningImage returns the image of containerName for the server running in the current system.
+func GetRunningImage(containerName string) (string, error) {
+	args := []string{
+		"get", "pods", "-A", ServerFilter,
+		"-o", "jsonpath={.items[0].spec.containers[?(@.name=='" + containerName + "')].image}",
+	}
+	image, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
+
+	log.Debug().Msgf("%[1]s container image is: %[2]s", containerName, image)
+	if err != nil {
+		return "", err
+	}
+	return strings.Trim(string(image), "\n"), nil
 }

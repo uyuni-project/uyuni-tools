@@ -15,7 +15,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared"
-	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -56,12 +55,10 @@ func GeneratePgsqlVersionUpgradeScript(
 	scriptDir string,
 	oldPgVersion string,
 	newPgVersion string,
-	kubernetes bool,
 ) (string, error) {
 	data := templates.PostgreSQLVersionUpgradeTemplateData{
 		OldVersion: oldPgVersion,
 		NewVersion: newPgVersion,
-		Kubernetes: kubernetes,
 	}
 
 	scriptName := "pgsqlVersionUpgrade.sh"
@@ -137,118 +134,70 @@ func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, pr
 	return scriptDir, cleaner, nil
 }
 
-// RunningImage returns the image running in the current system.
-func RunningImage(cnx *shared.Connection) (string, error) {
-	command, err := cnx.GetCommand()
-
-	switch command {
-	case "podman":
-		args := []string{"ps", "--format", "{{.Image}}", "--noheading"}
-		image, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", args...)
-		if err != nil {
-			return "", err
-		}
-		return strings.Trim(string(image), "\n"), nil
-
-	case "kubectl":
-
-		// FIXME this will work until containers 0 is uyuni. Then jsonpath should be something like
-		// {.items[0].spec.containers[?(@.name=="` + containerName + `")].image but there are problems
-		// using RunCmdOutput with an arguments with round brackets
-		args := []string{"get", "pods", kubernetes.ServerFilter, "-o", "jsonpath={.items[0].spec.containers[0].image}"}
-		image, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
-
-		log.Info().Msgf(L("Image is: %s"), image)
-		if err != nil {
-			return "", err
-		}
-		return strings.Trim(string(image), "\n"), nil
-	}
-
-	return command, err
-}
-
 // SanityCheck verifies if an upgrade can be run.
-func SanityCheck(cnx *shared.Connection, inspectedValues *utils.ServerInspectData, serverImage string) error {
-	isUyuni, err := isUyuni(cnx)
-	if err != nil {
-		return utils.Errorf(err, L("cannot check server release"))
-	}
-	isUyuniImage := inspectedValues.UyuniRelease != ""
-	isSumaImage := inspectedValues.SuseManagerRelease != ""
+func SanityCheck(
+	runningValues *utils.ServerInspectData,
+	inspectedValues *utils.ServerInspectData,
+	serverImage string,
+) error {
+	// Skip the uyuni / SUSE Manager release checks if the runningValues is nil.
+	if runningValues != nil {
+		isUyuni := runningValues.UyuniRelease != ""
+		isUyuniImage := inspectedValues.UyuniRelease != ""
+		isSumaImage := inspectedValues.SuseManagerRelease != ""
 
-	if isUyuni && isSumaImage {
-		return fmt.Errorf(
-			L("currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"),
-			inspectedValues.SuseManagerRelease,
-		)
-	}
-
-	if !isUyuni && isUyuniImage {
-		return fmt.Errorf(
-			L("currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"),
-			inspectedValues.UyuniRelease,
-		)
-	}
-
-	if isUyuni {
-		cnxArgs := []string{"s/Uyuni release //g", "/etc/uyuni-release"}
-		currentUyuniRelease, err := cnx.Exec("sed", cnxArgs...)
-		if err != nil {
-			return utils.Errorf(err, L("failed to read current uyuni release"))
-		}
-		log.Debug().Msgf("Current release is %s", string(currentUyuniRelease))
-		if !isUyuniImage {
-			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
-		}
-		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.UyuniRelease)
-		if utils.CompareVersion(inspectedValues.UyuniRelease, string(currentUyuniRelease)) < 0 {
+		if isUyuni && isSumaImage {
 			return fmt.Errorf(
-				L("cannot downgrade from version %[1]s to %[2]s"),
-				string(currentUyuniRelease), inspectedValues.UyuniRelease,
+				L("currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"),
+				inspectedValues.SuseManagerRelease,
 			)
 		}
-	} else {
-		bCurrentSuseManagerRelease, err := cnx.Exec("sed", "s/.*(\\([0-9.]*\\)).*/\\1/g", "/etc/susemanager-release")
-		currentSuseManagerRelease := strings.TrimSuffix(string(bCurrentSuseManagerRelease), "\n")
-		if err != nil {
-			return utils.Errorf(err, L("failed to read current susemanager release"))
-		}
-		log.Debug().Msgf("Current release is %s", currentSuseManagerRelease)
-		if !isSumaImage {
-			return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
-		}
-		log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.SuseManagerRelease)
-		if utils.CompareVersion(inspectedValues.SuseManagerRelease, currentSuseManagerRelease) < 0 {
+
+		if !isUyuni && isUyuniImage {
 			return fmt.Errorf(
-				L("cannot downgrade from version %[1]s to %[2]s"),
-				currentSuseManagerRelease, inspectedValues.SuseManagerRelease,
+				L("currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"),
+				inspectedValues.UyuniRelease,
 			)
+		}
+
+		if isUyuni {
+			currentUyuniRelease := runningValues.UyuniRelease
+			log.Debug().Msgf("Current release is %s", string(currentUyuniRelease))
+			if !isUyuniImage {
+				return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
+			}
+			log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.UyuniRelease)
+			if utils.CompareVersion(inspectedValues.UyuniRelease, string(currentUyuniRelease)) < 0 {
+				return fmt.Errorf(
+					L("cannot downgrade from version %[1]s to %[2]s"),
+					string(currentUyuniRelease), inspectedValues.UyuniRelease,
+				)
+			}
+		} else {
+			currentSuseManagerRelease := runningValues.SuseManagerRelease
+			log.Debug().Msgf("Current release is %s", currentSuseManagerRelease)
+			if !isSumaImage {
+				return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
+			}
+			log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.SuseManagerRelease)
+			if utils.CompareVersion(inspectedValues.SuseManagerRelease, currentSuseManagerRelease) < 0 {
+				return fmt.Errorf(
+					L("cannot downgrade from version %[1]s to %[2]s"),
+					currentSuseManagerRelease, inspectedValues.SuseManagerRelease,
+				)
+			}
 		}
 	}
 
+	// Perform PostgreSQL version checks.
 	if inspectedValues.ImagePgVersion == "" {
-		return fmt.Errorf(L("cannot fetch postgresql version from %s"), serverImage)
+		return fmt.Errorf(L("cannot fetch PostgreSQL version from %s"), serverImage)
 	}
 	log.Debug().Msgf("Image %s has PostgreSQL %s", serverImage, inspectedValues.ImagePgVersion)
 	if inspectedValues.CurrentPgVersion == "" {
-		return errors.New(L("posgresql is not installed in the current deployment"))
+		return errors.New(L("PostgreSQL is not installed in the current deployment"))
 	}
 	log.Debug().Msgf("Current deployment has PostgreSQL %s", inspectedValues.CurrentPgVersion)
 
 	return nil
-}
-
-func isUyuni(cnx *shared.Connection) (bool, error) {
-	cnxArgs := []string{"/etc/uyuni-release"}
-	_, err := cnx.Exec("cat", cnxArgs...)
-	if err != nil {
-		cnxArgs := []string{"/etc/susemanager-release"}
-		_, err := cnx.Exec("cat", cnxArgs...)
-		if err != nil {
-			return false, errors.New(L("cannot find either /etc/uyuni-release or /etc/susemanagere-release"))
-		}
-		return false, nil
-	}
-	return true, nil
 }

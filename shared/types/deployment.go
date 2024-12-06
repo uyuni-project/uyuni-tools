@@ -7,6 +7,8 @@ package types
 type VolumeMount struct {
 	MountPath string `json:"mountPath,omitempty"`
 	Name      string `json:"name,omitempty"`
+	Size      string `json:"size,omitempty"`
+	Class     string `json:"class,omitempty"`
 }
 
 // Container type used for mapping pod definition structure.

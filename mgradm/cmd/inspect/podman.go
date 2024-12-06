@@ -9,10 +9,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -31,13 +29,12 @@ func podmanInspect(
 	if len(serverImage) <= 0 {
 		log.Debug().Msg("Use deployed image")
 
-		cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
-		serverImage, err = adm_utils.RunningImage(cnx)
+		serverImage, err = podman.GetRunningImage(podman.ServerContainerName)
 		if err != nil {
 			return utils.Errorf(err, L("failed to find the image of the currently running server container"))
 		}
 	}
-	inspectResult, err := shared_podman.Inspect(serverImage, flags.Image.PullPolicy, flags.SCC)
+	inspectResult, err := podman.Inspect(serverImage, flags.Image.PullPolicy, flags.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("inspect command failed"))
 	}

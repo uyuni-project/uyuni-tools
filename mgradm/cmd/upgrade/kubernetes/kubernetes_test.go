@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils/flagstests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -24,10 +25,10 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
 	args = append(args, flagstests.SalineFlagsTestArgs...)
 	args = append(args, flagstests.SCCFlagTestArgs...)
-	args = append(args, flagstests.ServerHelmFlagsTestArgs...)
+	args = append(args, flagstests.ServerKubernetesFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
-	tester := func(_ *types.GlobalFlags, flags *kubernetesUpgradeFlags,
+	tester := func(_ *types.GlobalFlags, flags *kubernetes.KubernetesServerFlags,
 		_ *cobra.Command, _ []string,
 	) error {
 		flagstests.AssertImageFlag(t, &flags.Image)
@@ -36,7 +37,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		flagstests.AssertSalineFlag(t, &flags.Saline)
 		// TODO Assert SCC flags
-		flagstests.AssertServerHelmFlags(t, &flags.Helm)
+		flagstests.AssertServerKubernetesFlags(t, &flags.Kubernetes)
 		return nil
 	}
 

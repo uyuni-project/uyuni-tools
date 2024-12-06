@@ -13,9 +13,8 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
-	shared_kubernetes "github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -32,11 +31,11 @@ func kuberneteInspect(
 		return utils.Errorf(err, L("failed to determine image"))
 	}
 
-	cnx := shared.NewConnection("kubectl", "", shared_kubernetes.ServerFilter)
+	cnx := shared.NewConnection("kubectl", "", kubernetes.ServerFilter)
 	if len(serverImage) <= 0 {
 		log.Debug().Msg("Use deployed image")
 
-		serverImage, err = adm_utils.RunningImage(cnx)
+		serverImage, err = kubernetes.GetRunningImage("uyuni")
 		if err != nil {
 			return errors.New(L("failed to find the image of the currently running server container: %s"))
 		}
@@ -46,7 +45,14 @@ func kuberneteInspect(
 	if err != nil {
 		return utils.Errorf(err, L("failed retrieving namespace"))
 	}
-	inspectResult, err := shared_kubernetes.InspectKubernetes(namespace, serverImage, flags.Image.PullPolicy)
+
+	// Get the SCC credentials secret if existing
+	pullSecret, err := kubernetes.GetSCCSecret(namespace, &types.SCCCredentials{}, kubernetes.ServerApp)
+	if err != nil {
+		return err
+	}
+
+	inspectResult, err := kubernetes.InspectServer(namespace, serverImage, flags.Image.PullPolicy, pullSecret)
 	if err != nil {
 		return utils.Errorf(err, L("inspect command failed"))
 	}

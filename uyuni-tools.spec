@@ -291,6 +291,13 @@ Fish command line completion support for %{name_ctl}.
 tar -zxf %{SOURCE1}
 
 %build
+%ifarch i386
+%if 0%{?debian}
+# Disable CGO build for debian 32 bits to avoid cross-compilation
+export CGO_ENABLED=0
+%endif
+%endif
+
 export GOFLAGS=-mod=vendor
 mkdir -p bin
 UTILS_PATH="%{provider_prefix}/shared/utils"

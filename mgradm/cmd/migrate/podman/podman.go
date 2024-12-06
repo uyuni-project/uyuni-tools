@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
+	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -15,9 +16,8 @@ import (
 )
 
 type podmanMigrateFlags struct {
-	shared.MigrateFlags `mapstructure:",squash"`
-	SCC                 types.SCCCredentials
-	Podman              podman_utils.PodmanFlags
+	cmd_utils.ServerFlags `mapstructure:",squash"`
+	Podman                podman_utils.PodmanFlags
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanMigrateFlags]) *cobra.Command {
@@ -38,9 +38,9 @@ NOTE: migrating to a remote podman is not supported yet!
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanMigrateFlags
 			flagsUpdater := func(v *viper.Viper) {
-				flags.MigrateFlags.Coco.IsChanged = v.IsSet("coco.replicas")
-				flags.MigrateFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
-				flags.MigrateFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
+				flags.ServerFlags.Coco.IsChanged = v.IsSet("coco.replicas")
+				flags.ServerFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+				flags.ServerFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},

@@ -10,29 +10,25 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-type kubernetesUpgradeFlags struct {
-	shared.UpgradeFlags `mapstructure:",squash"`
-	Helm                cmd_utils.HelmFlags
-}
-
-func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetesUpgradeFlags]) *cobra.Command {
+func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetes.KubernetesServerFlags]) *cobra.Command {
 	upgradeCmd := &cobra.Command{
 		Use:   "kubernetes",
 		Short: L("Upgrade a local server on kubernetes"),
 		Long:  L("Upgrade a local server on kubernetes"),
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			var flags kubernetesUpgradeFlags
+			var flags kubernetes.KubernetesServerFlags
 			flagsUpdater := func(v *viper.Viper) {
-				flags.UpgradeFlags.Coco.IsChanged = v.IsSet("coco.replicas")
-				flags.UpgradeFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
-				flags.UpgradeFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
+				flags.ServerFlags.Coco.IsChanged = v.IsSet("coco.replicas")
+				flags.ServerFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+				flags.ServerFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},

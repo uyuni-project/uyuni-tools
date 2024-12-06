@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -44,6 +45,21 @@ type BaseInspector struct {
 	ScriptDir string
 	DataPath  string
 	Values    []types.InspectData
+}
+
+// GenerateScriptString creates the inspector script and returns it as a string.
+func (i *BaseInspector) GenerateScriptString() (string, error) {
+	data := templates.InspectTemplateData{
+		Param:      i.Values,
+		OutputFile: i.GetDataPath(),
+	}
+
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return "", err
+	}
+
+	return scriptBuilder.String(), nil
 }
 
 // GenerateScript is a common implementation for all inspectors.
@@ -83,6 +99,13 @@ func ReadInspectData[T any](dataFile string) (*T, error) {
 		return nil, Errorf(err, L("cannot read file %s"), dataFile)
 	}
 
+	return ReadInspectDataString[T](data)
+}
+
+// ReadInspectDataString returns an unmarshalled object of type T from the data as a string.
+//
+// This function is most likely to be used for the implementation of the inspectors, but can also be used directly.
+func ReadInspectDataString[T any](data []byte) (*T, error) {
 	viper.SetConfigType("env")
 	if err := viper.MergeConfig(bytes.NewBuffer(data)); err != nil {
 		return nil, Errorf(err, L("cannot read config"))

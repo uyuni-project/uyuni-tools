@@ -8,21 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
-
-// MigrateFlags represents flag required by migration command.
-type MigrateFlags struct {
-	Prepare        bool
-	Image          types.ImageFlags `mapstructure:",squash"`
-	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
-	Coco           utils.CocoFlags
-	User           string
-	Mirror         string
-	HubXmlrpc      utils.HubXmlrpcFlags
-	SCC            types.SCCCredentials
-	Saline         utils.SalineFlags
-}
 
 // AddMigrateFlags add migration flags to a command.
 func AddMigrateFlags(cmd *cobra.Command) {

@@ -7,17 +7,7 @@ package shared
 import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
-
-// UpgradeFlags represents flags used for upgrading a server.
-type UpgradeFlags struct {
-	Image          types.ImageFlags `mapstructure:",squash"`
-	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
-	Coco           utils.CocoFlags
-	HubXmlrpc      utils.HubXmlrpcFlags
-	Saline         utils.SalineFlags
-}
 
 // AddUpgradeFlags add upgrade flags to a command.
 func AddUpgradeFlags(cmd *cobra.Command) {
@@ -33,4 +23,5 @@ func AddUpgradeFlags(cmd *cobra.Command) {
 // AddUpgradeListFlags add upgrade list flags to a command.
 func AddUpgradeListFlags(cmd *cobra.Command) {
 	utils.AddImageFlag(cmd)
+	utils.AddSCCFlag(cmd)
 }

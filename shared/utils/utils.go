@@ -46,6 +46,7 @@ type InspectResult struct {
 	CommonInspectData `mapstructure:",squash"`
 	Timezone          string
 	HasHubXmlrpcAPI   bool `mapstructure:"has_hubxmlrpc"`
+	Debug             bool `mapstructure:"debug"`
 }
 
 func checkValueSize(value string, min int, max int) bool {
@@ -257,7 +258,7 @@ func GetLocalTimezone() string {
 	if err != nil {
 		log.Fatal().Err(err).Msgf(L("Failed to run %s"), "timedatectl show --value -p Timezone")
 	}
-	return string(out)
+	return strings.TrimSpace(string(out))
 }
 
 // IsEmptyDirectory return true if a given directory is empty.
