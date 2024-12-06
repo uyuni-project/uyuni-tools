@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 08:36+0100\n"
+"POT-Creation-Date: 2024-12-06 14:50+0100\n"
 "PO-Revision-Date: 2024-04-08 14:09+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -631,17 +631,17 @@ msgstr ""
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr ""
 
-#: shared/podman/images.go:239
+#: shared/podman/images.go:243
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr ""
 
-#: shared/podman/images.go:247
+#: shared/podman/images.go:257
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr ""
 
-#: shared/podman/images.go:253
+#: shared/podman/images.go:263
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr ""

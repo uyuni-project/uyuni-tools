@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 08:36+0100\n"
+"POT-Creation-Date: 2024-12-06 14:50+0100\n"
 "PO-Revision-Date: 2024-09-26 13:48+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm-5-0/zh_CN/>\n"
@@ -491,7 +491,7 @@ msgstr "无法启用服务"
 
 #: mgradm/cmd/install/podman/utils.go:53 mgradm/cmd/migrate/podman/utils.go:52
 #: mgradm/cmd/support/ptf/podman/utils.go:34
-#: mgradm/cmd/upgrade/podman/utils.go:24
+#: mgradm/cmd/upgrade/podman/podman.go:72 mgradm/cmd/upgrade/podman/utils.go:24
 msgid "failed to login to registry.suse.com"
 msgstr "无法登录 registry.suse.com"
 
@@ -1275,15 +1275,15 @@ msgstr ""
 msgid "Upgrade a local server on kubernetes"
 msgstr "在 kubernetes 上升级本地服务器"
 
-#: mgradm/cmd/upgrade/podman/podman.go:27
+#: mgradm/cmd/upgrade/podman/podman.go:26
 msgid "Upgrade a local server on podman"
 msgstr "在 podman 上升级本地服务器"
 
-#: mgradm/cmd/upgrade/podman/podman.go:43
+#: mgradm/cmd/upgrade/podman/podman.go:45
 msgid "List available tags for an image"
 msgstr "列出映像的可用标记"
 
-#: mgradm/cmd/upgrade/podman/podman.go:50
+#: mgradm/cmd/upgrade/podman/podman.go:52
 msgid "failed to unmarshall configuration"
 msgstr "无法解组配置"
 
@@ -1295,12 +1295,12 @@ msgstr "升级本地服务器"
 msgid "Setting up confidential computing attestation service"
 msgstr "设置机密计算认证服务"
 
-#: mgradm/shared/coco/coco.go:96 mgradm/shared/hub/xmlrpcapi.go:110
+#: mgradm/shared/coco/coco.go:96 mgradm/shared/hub/xmlrpcapi.go:116
 #: mgradm/shared/podman/podman.go:72
 msgid "failed to generate systemd service unit file"
 msgstr "无法生成 systemd 服务单元文件"
 
-#: mgradm/shared/coco/coco.go:106 mgradm/shared/hub/xmlrpcapi.go:117
+#: mgradm/shared/coco/coco.go:106 mgradm/shared/hub/xmlrpcapi.go:123
 #: mgradm/shared/podman/podman.go:93
 msgid "cannot generate systemd conf file"
 msgstr "无法生成 systemd 配置文件"
