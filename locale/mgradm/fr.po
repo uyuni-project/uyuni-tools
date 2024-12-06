@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 08:36+0100\n"
+"POT-Creation-Date: 2024-12-06 14:50+0100\n"
 "PO-Revision-Date: 2024-04-17 08:03+0000\n"
 "Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools/fr/>\n"
@@ -472,7 +472,7 @@ msgstr "impossible d'activer le service systemd: %s"
 
 #: mgradm/cmd/install/podman/utils.go:53 mgradm/cmd/migrate/podman/utils.go:52
 #: mgradm/cmd/support/ptf/podman/utils.go:34
-#: mgradm/cmd/upgrade/podman/utils.go:24
+#: mgradm/cmd/upgrade/podman/podman.go:72 mgradm/cmd/upgrade/podman/utils.go:24
 msgid "failed to login to registry.suse.com"
 msgstr ""
 
@@ -1273,15 +1273,15 @@ msgstr ""
 msgid "Upgrade a local server on kubernetes"
 msgstr ""
 
-#: mgradm/cmd/upgrade/podman/podman.go:27
+#: mgradm/cmd/upgrade/podman/podman.go:26
 msgid "Upgrade a local server on podman"
 msgstr ""
 
-#: mgradm/cmd/upgrade/podman/podman.go:43
+#: mgradm/cmd/upgrade/podman/podman.go:45
 msgid "List available tags for an image"
 msgstr ""
 
-#: mgradm/cmd/upgrade/podman/podman.go:50
+#: mgradm/cmd/upgrade/podman/podman.go:52
 #, fuzzy
 msgid "failed to unmarshall configuration"
 msgstr "impossible d'exécuter le conteneur %s: %s"
@@ -1294,13 +1294,13 @@ msgstr ""
 msgid "Setting up confidential computing attestation service"
 msgstr ""
 
-#: mgradm/shared/coco/coco.go:96 mgradm/shared/hub/xmlrpcapi.go:110
+#: mgradm/shared/coco/coco.go:96 mgradm/shared/hub/xmlrpcapi.go:116
 #: mgradm/shared/podman/podman.go:72
 #, fuzzy
 msgid "failed to generate systemd service unit file"
 msgstr "impossible de générer le fichier du service systemd: %s"
 
-#: mgradm/shared/coco/coco.go:106 mgradm/shared/hub/xmlrpcapi.go:117
+#: mgradm/shared/coco/coco.go:106 mgradm/shared/hub/xmlrpcapi.go:123
 #: mgradm/shared/podman/podman.go:93
 #, fuzzy
 msgid "cannot generate systemd conf file"

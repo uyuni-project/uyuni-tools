@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 08:36+0100\n"
+"POT-Creation-Date: 2024-12-06 14:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -434,7 +434,7 @@ msgstr ""
 
 #: mgradm/cmd/install/podman/utils.go:53 mgradm/cmd/migrate/podman/utils.go:52
 #: mgradm/cmd/support/ptf/podman/utils.go:34
-#: mgradm/cmd/upgrade/podman/utils.go:24
+#: mgradm/cmd/upgrade/podman/podman.go:72 mgradm/cmd/upgrade/podman/utils.go:24
 msgid "failed to login to registry.suse.com"
 msgstr ""
 
@@ -1163,15 +1163,15 @@ msgstr ""
 msgid "Upgrade a local server on kubernetes"
 msgstr ""
 
-#: mgradm/cmd/upgrade/podman/podman.go:27
+#: mgradm/cmd/upgrade/podman/podman.go:26
 msgid "Upgrade a local server on podman"
 msgstr ""
 
-#: mgradm/cmd/upgrade/podman/podman.go:43
+#: mgradm/cmd/upgrade/podman/podman.go:45
 msgid "List available tags for an image"
 msgstr ""
 
-#: mgradm/cmd/upgrade/podman/podman.go:50
+#: mgradm/cmd/upgrade/podman/podman.go:52
 msgid "failed to unmarshall configuration"
 msgstr ""
 
@@ -1183,12 +1183,12 @@ msgstr ""
 msgid "Setting up confidential computing attestation service"
 msgstr ""
 
-#: mgradm/shared/coco/coco.go:96 mgradm/shared/hub/xmlrpcapi.go:110
+#: mgradm/shared/coco/coco.go:96 mgradm/shared/hub/xmlrpcapi.go:116
 #: mgradm/shared/podman/podman.go:72
 msgid "failed to generate systemd service unit file"
 msgstr ""
 
-#: mgradm/shared/coco/coco.go:106 mgradm/shared/hub/xmlrpcapi.go:117
+#: mgradm/shared/coco/coco.go:106 mgradm/shared/hub/xmlrpcapi.go:123
 #: mgradm/shared/podman/podman.go:93
 msgid "cannot generate systemd conf file"
 msgstr ""
