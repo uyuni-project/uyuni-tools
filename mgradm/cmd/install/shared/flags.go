@@ -20,7 +20,6 @@ func AddInspectFlags(cmd *cobra.Command) {
 
 // AddInstallFlags add flags to installa command.
 func AddInstallFlags(cmd *cobra.Command) {
-	cmd_utils.AddMirrorFlag(cmd)
 	cmd.Flags().String("tz", "", L("Time zone to set on the server. Defaults to the host timezone"))
 	cmd.Flags().String("email", "admin@example.com", L("Administrator e-mail"))
 	cmd.Flags().String("emailfrom", "notifications@example.com", L("E-Mail sending the notifications"))
