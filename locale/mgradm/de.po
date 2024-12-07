@@ -10,7 +10,8 @@ msgstr ""
 "POT-Creation-Date: 2024-12-06 14:50+0100\n"
 "PO-Revision-Date: 2024-07-18 11:46+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/de/>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-"
+"mgradm/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,11 +25,11 @@ msgstr "Uyuni Administrationswerkzeug"
 
 #: mgradm/cmd/cmd.go:41
 msgid "Tool to help administering Uyuni servers in containers"
-msgstr ""
+msgstr "Werkzeug für die Verwaltung von Uyuni-Servern in Containern"
 
 #: mgradm/cmd/cmd.go:48
 msgid "Server Deployment:"
-msgstr ""
+msgstr "Server-Bereitstellung:"
 
 #: mgradm/cmd/cmd.go:52
 msgid "Server Management:"
@@ -54,7 +55,7 @@ msgstr "Konfigurationsdateipfad"
 
 #: mgradm/cmd/cmd.go:73
 msgid "application log level"
-msgstr ""
+msgstr "Anwendungs-Protokollierungsebene"
 
 #: mgradm/cmd/distro/cp.go:31
 #, javascript-format
@@ -62,11 +63,14 @@ msgid "Unable to unmount ISO image, leaving %s intact"
 msgstr ""
 
 #: mgradm/cmd/distro/cp.go:47
-msgid "unable to login and register the distribution. Manual distro registration is required"
+msgid ""
+"unable to login and register the distribution. Manual distro registration is "
+"required"
 msgstr ""
 
 #: mgradm/cmd/distro/cp.go:59
-msgid "unable to register the distribution. Manual distro registration is required"
+msgid ""
+"unable to register the distribution. Manual distro registration is required"
 msgstr ""
 
 #: mgradm/cmd/distro/cp.go:61
@@ -125,50 +129,69 @@ msgid "Continue by registering autoinstallation distribution"
 msgstr ""
 
 #: mgradm/cmd/distro/detect.go:96
-msgid "distribution not found in product map. Please update productmap or provide channel label"
+msgid ""
+"distribution not found in product map. Please update productmap or provide "
+"channel label"
 msgstr ""
 
 #: mgradm/cmd/distro/detect.go:111
-msgid "unable to read distribution treeinfo. Please provide distribution details and/or channel label"
+msgid ""
+"unable to read distribution treeinfo. Please provide distribution details "
+"and/or channel label"
 msgstr ""
 
 #: mgradm/cmd/distro/detect.go:150
 #, javascript-format
-msgid "distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"
+msgid ""
+"distribution treeinfo %s does not exists. Please provide distribution "
+"details and/or channel label"
 msgstr ""
 
 #: mgradm/cmd/distro/distro.go:32
 msgid ""
 "Auto installation distribution product mapping.\n"
 "\n"
-"For distribution to be registered by the server it is important to map distribution to the correct software channel.\n"
+"For distribution to be registered by the server it is important to map "
+"distribution to the correct software channel.\n"
 "\n"
-"Software channels can be named differently without any corellation to distribution name;\n"
-"it is then needed to allow custom distribution name to software channel mapping.\n"
+"Software channels can be named differently without any corellation to "
+"distribution name;\n"
+"it is then needed to allow custom distribution name to software channel "
+"mapping.\n"
 "\n"
-"One way to set software channel is by flag --channel to the distribution copy command.\n"
+"One way to set software channel is by flag --channel to the distribution "
+"copy command.\n"
 "\n"
-"For frequent usage it is possible to write custom product mapping to the mgradm configuration file as follows:\n"
+"For frequent usage it is possible to write custom product mapping to the "
+"mgradm configuration file as follows:\n"
 "\n"
 "ProductMap:\n"
 "  <distribution name>:\n"
 "    <distribution version>:\n"
 "      <distribution architecture>:\n"
 "        ChannelLabel: <channel label>\n"
-"        InstallType: <one of rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpm>\n"
+"        InstallType: <one of rhel_7|rhel_8|rhel_9|sles12generic|"
+"sles15generic|generic_rpm>\n"
 "        TreeName: <custom distribution name>\n"
 "\n"
 "Where\n"
-"* <distribution name> is the name of the distribution, by default taken from '.treeinfo' file from the media.\n"
-"  If '.treeinfo' is not found or available, command line option is required and used.\n"
-"* <distribution version> is the version of the distribution, by default taken from '.treeinfo' file from the media.\n"
+"* <distribution name> is the name of the distribution, by default taken from "
+"'.treeinfo' file from the media.\n"
+"  If '.treeinfo' is not found or available, command line option is required "
+"and used.\n"
+"* <distribution version> is the version of the distribution, by default "
+"taken from '.treeinfo' file from the media.\n"
 "  If'.treeinfo' is not found, command line option is required and used.\n"
-"* <distribution architecture> is distribution architecture, by default taken from '.treeinfo' file from the media.\n"
+"* <distribution architecture> is distribution architecture, by default taken "
+"from '.treeinfo' file from the media.\n"
 "  If '.treeinfo' is not found, command line option is required and used.\n"
-"* ChannelLabel is the channel label from Uyuni server and which is to be used for this distribution;\n"
+"* ChannelLabel is the channel label from Uyuni server and which is to be "
+"used for this distribution;\n"
 "  can be overridden by command line flag.\n"
-"* InstallType is used when installer is known (for autoyast or kickstart) or use 'generic_rpm'.\n"
-"* TreeName is how the distribution will be presented in the Uyuni server UI. If not set <distribution name> is used.\n"
+"* InstallType is used when installer is known (for autoyast or kickstart) or "
+"use 'generic_rpm'.\n"
+"* TreeName is how the distribution will be presented in the Uyuni server UI. "
+"If not set <distribution name> is used.\n"
 "\n"
 "Build-in product map:\n"
 "\n"
@@ -189,9 +212,11 @@ msgstr ""
 
 #: mgradm/cmd/distro/distro.go:83
 msgid ""
-"Takes a path to source iso file or directory with mounted iso and copies it into the container.\n"
+"Takes a path to source iso file or directory with mounted iso and copies it "
+"into the container.\n"
 "\n"
-"Optional parameters 'distribution-name', 'version' and 'arch' specifies custom distribution.\n"
+"Optional parameters 'distribution-name', 'version' and 'arch' specifies "
+"custom distribution.\n"
 "If not set, distribution name is attempted to be autodetected:\n"
 "\n"
 "- use name from '.treeinfo' file if exists\n"
@@ -380,9 +405,11 @@ msgid ""
 "\n"
 "The install command assumes the following:\n"
 "  * kubectl and helm are installed locally\n"
-"  * a working kubectl configuration should be set to connect to the cluster to deploy to\n"
+"  * a working kubectl configuration should be set to connect to the cluster "
+"to deploy to\n"
 "\n"
-"The helm values file will be overridden with the values from the command parameters or configuration.\n"
+"The helm values file will be overridden with the values from the command "
+"parameters or configuration.\n"
 "\n"
 "NOTE: installing on a remote cluster is not supported yet!\n"
 msgstr ""
@@ -440,7 +467,9 @@ msgid "failed to login to registry.suse.com"
 msgstr ""
 
 #: mgradm/cmd/install/podman/utils.go:59
-msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
+msgid ""
+"Server is already initialized! Uninstall before attempting new installation "
+"or use upgrade command"
 msgstr ""
 
 #: mgradm/cmd/install/podman/utils.go:65 mgradm/cmd/migrate/podman/utils.go:33
@@ -620,11 +649,11 @@ msgstr ""
 
 #: mgradm/cmd/install/shared/flags.go:185
 msgid "Server certificate path"
-msgstr ""
+msgstr "Pfad des Serverzertifikats"
 
 #: mgradm/cmd/install/shared/flags.go:186
 msgid "Server key path"
-msgstr ""
+msgstr "Pfad des Serverschlüssels"
 
 #: mgradm/cmd/install/shared/flags.go:188
 msgid "3rd Party SSL Certificate Flags"
@@ -636,19 +665,19 @@ msgstr ""
 
 #: mgradm/cmd/install/shared/flags.go:203
 msgid "Administrator user name"
-msgstr ""
+msgstr "Administrator-Benutzername"
 
 #: mgradm/cmd/install/shared/flags.go:204
 msgid "Administrator password"
-msgstr ""
+msgstr "Administrator-Passwort"
 
 #: mgradm/cmd/install/shared/flags.go:205
 msgid "First name of the administrator"
-msgstr ""
+msgstr "Vorname des Administrators"
 
 #: mgradm/cmd/install/shared/flags.go:206
 msgid "Last name of the administrator"
-msgstr ""
+msgstr "Nachname des Administrators"
 
 #: mgradm/cmd/install/shared/flags.go:207
 msgid "First organization name"
@@ -659,7 +688,9 @@ msgid "First User Flags"
 msgstr ""
 
 #: mgradm/cmd/install/shared/shared.go:32
-msgid "Server appears to be already configured. Installation will continue, but installation options may be ignored."
+msgid ""
+"Server appears to be already configured. Installation will continue, but "
+"installation options may be ignored."
 msgstr ""
 
 #: mgradm/cmd/install/shared/shared.go:44
@@ -686,11 +717,13 @@ msgstr ""
 
 #: mgradm/cmd/install/shared/shared.go:75
 #, javascript-format
-msgid "Administration user already exists, but organization %s could not be found"
+msgid ""
+"Administration user already exists, but organization %s could not be found"
 msgstr ""
 
 #: mgradm/cmd/install/shared/shared.go:87
-msgid "Administration user already exists, but provided credentials are not valid"
+msgid ""
+"Administration user already exists, but provided credentials are not valid"
 msgstr ""
 
 #: mgradm/cmd/install/shared/shared.go:95
@@ -710,15 +743,20 @@ msgid ""
 "Migrate a remote server to containers running on a kubernetes cluster\n"
 "\n"
 "This migration command assumes a few things:\n"
-"  * the SSH configuration for the source server is complete, including user and\n"
+"  * the SSH configuration for the source server is complete, including user "
+"and\n"
 "    all needed options to connect to the machine,\n"
-"  * an SSH agent is started and the key to use to connect to the server is added to it,\n"
+"  * an SSH agent is started and the key to use to connect to the server is "
+"added to it,\n"
 "  * kubectl and helm are installed locally,\n"
-"  * a working kubectl configuration should be set to connect to the cluster to deploy to\n"
+"  * a working kubectl configuration should be set to connect to the cluster "
+"to deploy to\n"
 "\n"
-"When migrating a server with a automatically generated SSL Root CA certificate, the private key\n"
+"When migrating a server with a automatically generated SSL Root CA "
+"certificate, the private key\n"
 "password will be required to convert it to RSA in a kubernetes secret.\n"
-"This is not needed if the source server does not have a generated SSL CA certificate.\n"
+"This is not needed if the source server does not have a generated SSL CA "
+"certificate.\n"
 "\n"
 "NOTE: migrating to a remote cluster is not supported yet!\n"
 msgstr ""
@@ -755,7 +793,9 @@ msgstr ""
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:121
 #: mgradm/cmd/migrate/podman/utils.go:78
-msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
+msgid ""
+"Migration prepared. Run the 'migrate' command without '--prepare' to finish "
+"the migration."
 msgstr ""
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:134
@@ -816,9 +856,11 @@ msgid ""
 "Migrate a remote server to containers running on podman\n"
 "\n"
 "This migration command assumes a few things:\n"
-"  * the SSH configuration for the source server is complete, including user and\n"
+"  * the SSH configuration for the source server is complete, including user "
+"and\n"
 "    all needed options to connect to the machine,\n"
-"  * an SSH agent is started and the key to use to connect to the server is added to it,\n"
+"  * an SSH agent is started and the key to use to connect to the server is "
+"added to it,\n"
 "  * podman is installed locally\n"
 "\n"
 "NOTE: migrating to a remote podman is not supported yet!\n"
@@ -858,11 +900,14 @@ msgid "Server migrated"
 msgstr ""
 
 #: mgradm/cmd/migrate/shared/flags.go:28
-msgid "Prepare the mgration - copy the data without stopping the source server."
+msgid ""
+"Prepare the mgration - copy the data without stopping the source server."
 msgstr ""
 
 #: mgradm/cmd/migrate/shared/flags.go:36
-msgid "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."
+msgid ""
+"User on the source server. Non-root user must have passwordless sudo "
+"privileges (NOPASSWD tag in /etc/sudoers)."
 msgstr ""
 
 #: mgradm/cmd/migrate/shared/shared.go:20
@@ -1052,7 +1097,8 @@ msgstr ""
 
 #: mgradm/cmd/support/sql/sql_cmd.go:26
 msgid ""
-"Execute SQL query either provided in sql-file or passed through standard input.\n"
+"Execute SQL query either provided in sql-file or passed through standard "
+"input.\n"
 "\n"
 "Examples:\n"
 "\n"
@@ -1064,7 +1110,8 @@ msgid ""
 "\n"
 "  # mgradm support sql -i\n"
 "\n"
-"  Running the SQL queries in example.sql file and output them to out.log file\n"
+"  Running the SQL queries in example.sql file and output them to out.log "
+"file\n"
 "\n"
 "  # mgradm support sql example.sql -o out.log\n"
 "\n"
@@ -1116,7 +1163,9 @@ msgid "Nothing has been uninstalled, run with --force to actually uninstall"
 msgstr ""
 
 #: mgradm/cmd/uninstall/kubernetes.go:114
-msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
+msgid ""
+"Volumes have not been touched. Depending on the storage class used, they may "
+"not have been removed"
 msgstr ""
 
 #: mgradm/cmd/uninstall/podman.go:46
@@ -1142,7 +1191,9 @@ msgid "All images have been removed"
 msgstr ""
 
 #: mgradm/cmd/uninstall/podman.go:77
-msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
+msgid ""
+"Nothing has been uninstalled, run with --force and --purge-volumes to "
+"actually uninstall and clear data"
 msgstr ""
 
 #: mgradm/cmd/uninstall/podman.go:80
@@ -1156,7 +1207,8 @@ msgstr ""
 #: mgradm/cmd/uninstall/uninstall.go:21
 msgid ""
 "Uninstall a server and optionally the corresponding volumes.\n"
-"By default it will only print what would be done, use --force to actually remove."
+"By default it will only print what would be done, use --force to actually "
+"remove."
 msgstr ""
 
 #: mgradm/cmd/upgrade/kubernetes/kubernetes.go:27
@@ -1165,14 +1217,17 @@ msgid "Upgrade a local server on kubernetes"
 msgstr ""
 
 #: mgradm/cmd/upgrade/podman/podman.go:26
+#: mgradm/cmd/upgrade/podman/podman.go:27
 msgid "Upgrade a local server on podman"
 msgstr ""
 
 #: mgradm/cmd/upgrade/podman/podman.go:45
+#: mgradm/cmd/upgrade/podman/podman.go:43
 msgid "List available tags for an image"
 msgstr ""
 
 #: mgradm/cmd/upgrade/podman/podman.go:52
+#: mgradm/cmd/upgrade/podman/podman.go:50
 msgid "failed to unmarshall configuration"
 msgstr ""
 
@@ -1185,12 +1240,12 @@ msgid "Setting up confidential computing attestation service"
 msgstr ""
 
 #: mgradm/shared/coco/coco.go:96 mgradm/shared/hub/xmlrpcapi.go:116
-#: mgradm/shared/podman/podman.go:72
+#: mgradm/shared/podman/podman.go:72 mgradm/shared/hub/xmlrpcapi.go:110
 msgid "failed to generate systemd service unit file"
 msgstr ""
 
 #: mgradm/shared/coco/coco.go:106 mgradm/shared/hub/xmlrpcapi.go:123
-#: mgradm/shared/podman/podman.go:93
+#: mgradm/shared/podman/podman.go:93 mgradm/shared/hub/xmlrpcapi.go:117
 msgid "cannot generate systemd conf file"
 msgstr ""
 
@@ -1204,7 +1259,9 @@ msgid "cannot generate systemd service"
 msgstr ""
 
 #: mgradm/shared/hub/xmlrpcapi.go:66
-msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
+msgid ""
+"Multiple Hub XML-RPC container replicas are not currently supported, setting "
+"up only one."
 msgstr ""
 
 #: mgradm/shared/kubernetes/certificates.go:30
@@ -1303,7 +1360,9 @@ msgstr ""
 
 #: mgradm/shared/kubernetes/install.go:204 mgradm/shared/kubernetes/k3s.go:46
 #: mgradm/shared/podman/podman.go:247
-msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
+msgid ""
+"Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version "
+"upgrade…"
 msgstr ""
 
 #: mgradm/shared/kubernetes/install.go:213 mgradm/shared/podman/podman.go:402
@@ -1405,7 +1464,9 @@ msgid "cannot stop service"
 msgstr ""
 
 #: mgradm/shared/podman/podman.go:393
-msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
+msgid ""
+"Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB "
+"version upgrade…"
 msgstr ""
 
 #: mgradm/shared/podman/podman.go:441
@@ -1502,7 +1563,8 @@ msgid "Kubernetes namespace where to install cert-manager"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:43
-msgid "URL to the cert-manager helm chart. To be used for offline installations"
+msgid ""
+"URL to the cert-manager helm chart. To be used for offline installations"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:45
@@ -1530,13 +1592,15 @@ msgstr ""
 #: mgradm/shared/utils/cmd_utils.go:81
 msgid ""
 "SUSE Customer Center username.\n"
-"It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
+"It will be used as SCC credentials for products synchronization and to pull "
+"images from registry.suse.com"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:83
 msgid ""
 "SUSE Customer Center password.\n"
-"It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
+"It will be used as SCC credentials for products synchronization and to pull "
+"images from registry.suse.com"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:86
@@ -1584,12 +1648,14 @@ msgid "confidential computing attestation"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:125
-msgid "How many replicas of the confidential computing container should be started"
+msgid ""
+"How many replicas of the confidential computing container should be started"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:133
 msgid ""
-"How many replicas of the confidential computing container should be started.\n"
+"How many replicas of the confidential computing container should be "
+"started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
 msgstr ""
 
@@ -1599,12 +1665,14 @@ msgid "Hub XML-RPC API"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:143
-msgid "How many replicas of the Hub XML-RPC API service container should be started."
+msgid ""
+"How many replicas of the Hub XML-RPC API service container should be started."
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:153
 msgid ""
-"How many replicas of the Hub XML-RPC API service container should be started.\n"
+"How many replicas of the Hub XML-RPC API service container should be "
+"started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
 msgstr ""
 
@@ -1633,12 +1701,16 @@ msgstr ""
 
 #: mgradm/shared/utils/exec.go:184
 #, javascript-format
-msgid "currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"
+msgid ""
+"currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade "
+"is not supported"
 msgstr ""
 
 #: mgradm/shared/utils/exec.go:191
 #, javascript-format
-msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"
+msgid ""
+"currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade "
+"is not supported"
 msgstr ""
 
 #: mgradm/shared/utils/exec.go:200
