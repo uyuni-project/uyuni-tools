@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2024-07-18 11:46+0000\n"
+"PO-Revision-Date: 2024-12-07 21:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/de/>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrpxy/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.8.4\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -49,7 +50,7 @@ msgstr ""
 
 #: mgrpxy/cmd/cmd.go:43
 msgid "Server Deployment:"
-msgstr ""
+msgstr "Server-Bereitstellung:"
 
 #: mgrpxy/cmd/cmd.go:47
 msgid "Server Management:"
@@ -75,7 +76,7 @@ msgstr "Konfigurationsdateipfad"
 
 #: mgrpxy/cmd/cmd.go:68
 msgid "application log level"
-msgstr ""
+msgstr "Anwendungs-Protokollierungsebene"
 
 #: mgrpxy/cmd/install/install.go:20 mgrpxy/cmd/install/install.go:21
 msgid "Install a new proxy from scratch"
