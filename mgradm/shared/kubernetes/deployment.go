@@ -80,12 +80,18 @@ func getServerDeployment(
 	}
 
 	if mirrorPvName != "" {
-		// Add a mount for the mirror
+		// Add a volume for the mirror
 		mounts = append(mounts, types.VolumeMount{MountPath: "/mirror", Name: mirrorPvName})
 
 		// Add the environment variable for the deployment to use the mirror
 		// This doesn't makes sense for migration as the setup script is not executed
 		envs = append(envs, core.EnvVar{Name: "MIRROR_PATH", Value: "/mirror"})
+
+		// Add the volume mount now since we don't want it in the init container ones.
+		volumeMounts = append(volumeMounts, core.VolumeMount{
+			Name:      mirrorPvName,
+			MountPath: "/mirror",
+		})
 	}
 
 	volumes := kubernetes.CreateVolumes(mounts)
