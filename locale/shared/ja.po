@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:42+0100\n"
+"POT-Creation-Date: 2024-12-12 11:53+0100\n"
 "PO-Revision-Date: 2024-09-26 12:48+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
@@ -428,21 +428,21 @@ msgstr "%s サービスを無効にできませんでした"
 msgid "failed to create %s persistent volume claim"
 msgstr "%s ファイルの作成に失敗しました"
 
-#: shared/kubernetes/pvc.go:83
+#: shared/kubernetes/pvc.go:70
 #, fuzzy
 msgid "failed to parse pv data"
 msgstr "%s の作成に失敗しました"
 
-#: shared/kubernetes/pvc.go:88
-msgid "the %[1]s volume should reference the %[2]s claim in %[3]s namespace"
+#: shared/kubernetes/pvc.go:75
+msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
 msgstr ""
 
-#: shared/kubernetes/pvc.go:94
+#: shared/kubernetes/pvc.go:85
 #, fuzzy
 msgid "failed to run the persistent volume claims"
 msgstr "helm %s の実行に失敗しました"
 
-#: shared/kubernetes/pvc.go:111
+#: shared/kubernetes/pvc.go:102
 #, javascript-format
 msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
 msgstr ""
