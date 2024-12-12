@@ -1,1 +1,0 @@
-- Fix cert-manager image.pullPolicy helm chart value (bsc#1231734)

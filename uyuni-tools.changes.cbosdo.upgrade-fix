@@ -1,2 +1,0 @@
-- Run systemctl daemon-reload after changing the container image config (bsc#1233279)
-- coco-replicas-upgrade

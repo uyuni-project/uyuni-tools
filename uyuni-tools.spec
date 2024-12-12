@@ -44,7 +44,7 @@
 # 0%{?debian} || 0%{?ubuntu}
 
 Name:           %{project}
-Version:        5.1.2
+Version:        5.1.3
 Release:        0
 Summary:        Tools for managing %{productname} container
 License:        Apache-2.0
