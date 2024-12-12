@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:42+0100\n"
+"POT-Creation-Date: 2024-12-12 11:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -407,19 +407,19 @@ msgstr ""
 msgid "failed to create %s persistent volume claim"
 msgstr ""
 
-#: shared/kubernetes/pvc.go:83
+#: shared/kubernetes/pvc.go:70
 msgid "failed to parse pv data"
 msgstr ""
 
-#: shared/kubernetes/pvc.go:88
-msgid "the %[1]s volume should reference the %[2]s claim in %[3]s namespace"
+#: shared/kubernetes/pvc.go:75
+msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
 msgstr ""
 
-#: shared/kubernetes/pvc.go:94
+#: shared/kubernetes/pvc.go:85
 msgid "failed to run the persistent volume claims"
 msgstr ""
 
-#: shared/kubernetes/pvc.go:111
+#: shared/kubernetes/pvc.go:102
 #, javascript-format
 msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
 msgstr ""

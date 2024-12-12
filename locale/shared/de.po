@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2024-10-12 03:48+0000\n"
+"POT-Creation-Date: 2024-12-12 11:53+0100\n"
+"PO-Revision-Date: 2024-12-07 21:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/de/>\n"
 "Language: de\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.8.4\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
-msgstr ""
+msgstr "FQDN des Servers, mit dem eine Verbindung hergestellt werden soll"
 
 #: shared/api/api.go:30
 msgid "API user username"
@@ -37,7 +37,7 @@ msgstr "Pfad zu einer Zertifizierungsdatei der CA"
 
 #: shared/api/api.go:33
 msgid "If set, server certificate will not be checked for validity"
-msgstr ""
+msgstr "Wenn festgelegt, wird das Serverzertifikat nicht auf Gültigkeit geprüft"
 
 #: shared/api/api.go:74
 msgid "401: unauthorized"
@@ -90,14 +90,12 @@ msgid "unable to write credentials store %s"
 msgstr ""
 
 #: shared/api/credentials.go:53
-#, fuzzy
 msgid "API server URL"
-msgstr "API-Server-Passwort"
+msgstr "API-Server-URL"
 
 #: shared/api/credentials.go:54
-#, fuzzy
 msgid "API server user"
-msgstr "API-Server-Passwort"
+msgstr "API-Server-Benutzer"
 
 #: shared/api/credentials.go:55
 msgid "API server password"
@@ -105,24 +103,24 @@ msgstr "API-Server-Passwort"
 
 #: shared/api/credentials.go:58
 msgid "No credentials provided"
-msgstr ""
+msgstr "Keine Anmeldeinformationen angegeben"
 
 #: shared/api/credentials.go:68
 msgid "Cannot load stored credentials"
-msgstr ""
+msgstr "Gespeicherte Anmeldeinformationen können nicht geladen werden"
 
 #: shared/api/credentials.go:83
 #, javascript-format
 msgid "unable to read credentials file %s"
-msgstr ""
+msgstr "Datei mit Anmeldeinformationen %s kann nicht gelesen werden"
 
 #: shared/api/credentials.go:88
 msgid "unable to decode credentials file"
-msgstr ""
+msgstr "Datei mit Anmeldeinformationen kann nicht dekodiert werden"
 
 #: shared/api/credentials.go:92
 msgid "no credentials loaded"
-msgstr ""
+msgstr "keine Anmeldeinformationen geladen"
 
 #: shared/api/credentials.go:101
 msgid "specified api server does not match with stored credentials"
@@ -414,20 +412,20 @@ msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 msgid "failed to create %s persistent volume claim"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/kubernetes/pvc.go:83
+#: shared/kubernetes/pvc.go:70
 #, fuzzy
 msgid "failed to parse pv data"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/kubernetes/pvc.go:88
-msgid "the %[1]s volume should reference the %[2]s claim in %[3]s namespace"
+#: shared/kubernetes/pvc.go:75
+msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
 msgstr ""
 
-#: shared/kubernetes/pvc.go:94
+#: shared/kubernetes/pvc.go:85
 msgid "failed to run the persistent volume claims"
 msgstr ""
 
-#: shared/kubernetes/pvc.go:111
+#: shared/kubernetes/pvc.go:102
 #, javascript-format
 msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
 msgstr ""

@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2024-07-18 11:46+0000\n"
+"PO-Revision-Date: 2024-12-07 21:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/de/>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.8.4\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -24,11 +25,11 @@ msgstr "Uyuni Administrationswerkzeug"
 
 #: mgradm/cmd/cmd.go:41
 msgid "Tool to help administering Uyuni servers in containers"
-msgstr ""
+msgstr "Werkzeug für die Verwaltung von Uyuni-Servern in Containern"
 
 #: mgradm/cmd/cmd.go:48
 msgid "Server Deployment:"
-msgstr ""
+msgstr "Server-Bereitstellung:"
 
 #: mgradm/cmd/cmd.go:52
 msgid "Server Management:"
@@ -54,7 +55,7 @@ msgstr "Konfigurationsdateipfad"
 
 #: mgradm/cmd/cmd.go:73
 msgid "application log level"
-msgstr ""
+msgstr "Anwendungs-Protokollierungsebene"
 
 #: mgradm/cmd/distro/cp.go:31
 #, javascript-format
@@ -558,11 +559,11 @@ msgstr ""
 
 #: mgradm/cmd/install/shared/flags.go:72
 msgid "Server certificate path"
-msgstr ""
+msgstr "Pfad des Serverzertifikats"
 
 #: mgradm/cmd/install/shared/flags.go:73
 msgid "Server key path"
-msgstr ""
+msgstr "Pfad des Serverschlüssels"
 
 #: mgradm/cmd/install/shared/flags.go:75
 msgid "3rd Party SSL Certificate Flags"
@@ -574,19 +575,19 @@ msgstr ""
 
 #: mgradm/cmd/install/shared/flags.go:92
 msgid "Administrator user name"
-msgstr ""
+msgstr "Administrator-Benutzername"
 
 #: mgradm/cmd/install/shared/flags.go:93
 msgid "Administrator password"
-msgstr ""
+msgstr "Administrator-Passwort"
 
 #: mgradm/cmd/install/shared/flags.go:94
 msgid "First name of the administrator"
-msgstr ""
+msgstr "Vorname des Administrators"
 
 #: mgradm/cmd/install/shared/flags.go:95
 msgid "Last name of the administrator"
-msgstr ""
+msgstr "Nachname des Administrators"
 
 #: mgradm/cmd/install/shared/flags.go:96
 msgid "First organization name"
