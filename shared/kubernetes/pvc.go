@@ -53,17 +53,6 @@ func hasPersistentVolumeClaim(namespace string, name string) bool {
 	return err == nil && strings.TrimSpace(string(out)) != ""
 }
 
-// Contains the data extracted from the PV to create the linked PVC for it.
-type pvData struct {
-	ClaimRef struct {
-		Name      string
-		Namespace string
-	}
-	StorageClass string
-	AccessModes  []core.PersistentVolumeAccessMode
-	Size         string
-}
-
 // CreatePersistentVolumeClaimForVolume creates a PVC bound to a specific Volume.
 func CreatePersistentVolumeClaimForVolume(
 	namespace string,
@@ -71,25 +60,27 @@ func CreatePersistentVolumeClaimForVolume(
 ) error {
 	// Get the PV Storage class and claimRef
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel,
-		"kubectl", "get", "pv", volumeName, "-n", namespace,
-		"-o", `jsonpath={"{\"claimRef\": "}{.spec.claimRef}, "storageClass": "{.spec.storageClassName}", `+
-			`"accessModes": {.spec.accessModes}, "size": "{.spec.capacity.storage}{"\"}"}`,
+		"kubectl", "get", "pv", volumeName, "-n", namespace, "-o", "json",
 	)
 	if err != nil {
 		return err
 	}
-	var pv pvData
+	var pv core.PersistentVolume
 	if err := json.Unmarshal(out, &pv); err != nil {
 		return utils.Errorf(err, L("failed to parse pv data"))
 	}
 
 	// Ensure the claimRef of the volume is for our PVC
-	if pv.ClaimRef.Name != volumeName && pv.ClaimRef.Namespace != namespace {
-		return fmt.Errorf(L("the %[1]s volume should reference the %[2]s claim in %[3]s namespace"), volumeName, namespace)
+	if pv.Spec.ClaimRef == nil || pv.Spec.ClaimRef.Name != volumeName && pv.Spec.ClaimRef.Namespace != namespace {
+		return fmt.Errorf(L("the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"), volumeName, namespace)
 	}
 
 	// Create the PVC object
-	pvc := newPersistentVolumeClaim(namespace, volumeName, pv.StorageClass, pv.Size, pv.AccessModes, false)
+	pvc := newPersistentVolumeClaim(
+		namespace, volumeName, pv.Spec.StorageClassName,
+		pv.Spec.Capacity.Storage().String(), pv.Spec.AccessModes, false,
+	)
+	pvc.Spec.VolumeName = volumeName
 
 	return Apply([]runtime.Object{&pvc}, L("failed to run the persistent volume claims"))
 }
