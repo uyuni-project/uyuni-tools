@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:50+0100\n"
+"POT-Creation-Date: 2024-12-13 15:32+0100\n"
 "PO-Revision-Date: 2024-10-13 01:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-"
-"shared-5-0/de/>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared-5-0/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,8 +36,7 @@ msgstr "Pfad zu einer Zertifizierungsdatei der CA"
 
 #: shared/api/api.go:33
 msgid "If set, server certificate will not be checked for validity"
-msgstr ""
-"Wenn festgelegt, wird das Serverzertifikat nicht auf Gültigkeit geprüft"
+msgstr "Wenn festgelegt, wird das Serverzertifikat nicht auf Gültigkeit geprüft"
 
 #: shared/api/api.go:74
 msgid "401: unauthorized"
@@ -163,9 +161,7 @@ msgid "kubectl not configured to connect to a cluster, ignoring"
 msgstr ""
 
 #: shared/connection.go:112
-msgid ""
-"uyuni container is not accessible with one of podman, podman-remote or "
-"kubectl"
+msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
 msgstr ""
 
 #: shared/connection.go:115
@@ -430,14 +426,11 @@ msgstr ""
 #: shared/kubernetes/uninstall.go:13
 msgid ""
 "\n"
-"Note that removing the volumes could also be handled automatically depending "
-"on the StorageClass used\n"
+"Note that removing the volumes could also be handled automatically depending on the StorageClass used\n"
 "when installed on a kubernetes cluster.\n"
 "\n"
-"For instance on a default K3S install, the local-path-provider storage "
-"volumes will\n"
-"be automatically removed when deleting the deployment even if --purge-"
-"volumes argument is not used."
+"For instance on a default K3S install, the local-path-provider storage volumes will\n"
+"be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
 msgstr ""
 
 #: shared/kubernetes/utils.go:57 shared/kubernetes/utils.go:95
@@ -449,9 +442,7 @@ msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgstr ""
 
 #: shared/kubernetes/utils.go:70
-msgid ""
-"failed to find a ready replica for deployment %[1]s in namespace %[2]s after "
-"120s"
+msgid "failed to find a ready replica for deployment %[1]s in namespace %[2]s after 120s"
 msgstr ""
 
 #: shared/kubernetes/utils.go:76
@@ -559,9 +550,7 @@ msgid "Ensure image %s is available"
 msgstr ""
 
 #: shared/podman/images.go:46
-msgid ""
-"Pull Policy is always. Presence of RPM image will be checked and pulled from "
-"registry if not present"
+msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
 msgstr ""
 
 #: shared/podman/images.go:56
@@ -570,8 +559,7 @@ msgid "Cannot use RPM image for %s"
 msgstr ""
 
 #: shared/podman/images.go:58
-msgid ""
-"Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
+msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
 msgstr ""
 
 #: shared/podman/images.go:63
@@ -611,9 +599,7 @@ msgstr ""
 
 #: shared/podman/images.go:215
 #, javascript-format
-msgid ""
-"%s should contains just lower case character, otherwise podman pull would "
-"fails"
+msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr ""
 
 #: shared/podman/images.go:217
@@ -626,25 +612,23 @@ msgstr ""
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr ""
 
-#: shared/podman/images.go:243 shared/podman/images.go:239
+#: shared/podman/images.go:243
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr ""
 
-#: shared/podman/images.go:257 shared/podman/images.go:247
+#: shared/podman/images.go:257
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr ""
 
-#: shared/podman/images.go:263 shared/podman/images.go:253
+#: shared/podman/images.go:263
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr ""
 
 #: shared/podman/login.go:25
-msgid ""
-"SCC credentials parameters will be used. SCC credentials from host will be "
-"ignored."
+msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
 msgstr ""
 
 #: shared/podman/login.go:52
@@ -658,8 +642,7 @@ msgstr ""
 
 #: shared/podman/network.go:43
 #, javascript-format
-msgid ""
-"%s network doesn't have IPv6, deleting existing network to enable IPv6 on it"
+msgid "%s network doesn't have IPv6, deleting existing network to enable IPv6 on it"
 msgstr ""
 
 #: shared/podman/network.go:47
@@ -677,9 +660,7 @@ msgid "failed to find podman's network backend"
 msgstr ""
 
 #: shared/podman/network.go:68
-msgid ""
-"Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on "
-"%[2]s network"
+msgid "Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"
 msgstr ""
 
 #: shared/podman/network.go:77
@@ -818,9 +799,7 @@ msgstr ""
 
 #: shared/podman/systemd.go:149
 #, javascript-format
-msgid ""
-"%s folder contains file created by the user. Please remove them when "
-"uninstallation is completed."
+msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr ""
 
 #: shared/podman/systemd.go:161
@@ -963,15 +942,12 @@ msgstr ""
 
 #: shared/utils/cmd.go:70
 msgid ""
-"tool to use to reach the container. Possible values: 'podman', 'podman-"
-"remote', 'kubectl'.\n"
+"tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
 msgstr ""
 
 #: shared/utils/cmd.go:86
-msgid ""
-"set whether to pull the images or not. The value can be one of 'Never', "
-"'IfNotPresent' or 'Always'"
+msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr ""
 
 #: shared/utils/cmd.go:91
@@ -1021,39 +997,27 @@ msgid ""
 "  {{.NameAndAliases}}{{end}}{{if .HasExample}}\n"
 "\n"
 "Examples:\n"
-"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if "
-"eq (len .Groups) 0}}\n"
+"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if eq (len .Groups) 0}}\n"
 "\n"
-"Available Commands:{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name "
-"\"help\"))}}\n"
-"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{else}}{{range "
-"$group := .Groups}}\n"
+"Available Commands:{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name \"help\"))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{else}}{{range $group := .Groups}}\n"
 "\n"
-"{{.Title}}{{range $cmds}}{{if (and (eq .GroupID $group.ID) (or ."
-"IsAvailableCommand (eq .Name \"help\")))}}\n"
-"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if not ."
-"AllChildCommandsHaveGroup}}\n"
+"{{.Title}}{{range $cmds}}{{if (and (eq .GroupID $group.ID) (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if not .AllChildCommandsHaveGroup}}\n"
 "\n"
-"Additional Commands:{{range $cmds}}{{if (and (eq .GroupID \"\") (or ."
-"IsAvailableCommand (eq .Name \"help\")))}}\n"
-"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{end}}{{end}}"
-"{{if .HasAvailableLocalFlags}}\n"
+"Additional Commands:{{range $cmds}}{{if (and (eq .GroupID \"\") (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
 "\n"
 "Flags:\n"
-"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if ."
-"HasAvailableInheritedFlags}}\n"
+"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}\n"
 "\n"
 "Global Flags:\n"
-"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if ."
-"HasHelpSubCommands}}\n"
+"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}\n"
 "\n"
-"Additional help topics:{{range .Commands}}{{if ."
-"IsAdditionalHelpTopicCommand}}\n"
-"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}"
-"{{if .HasAvailableSubCommands}}\n"
+"Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}\n"
+"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}\n"
 "\n"
-"Use \"{{.CommandPath}} [command] --help\" for more information about a "
-"command.{{end}}\n"
+"Use \"{{.CommandPath}} [command] --help\" for more information about a command.{{end}}\n"
 msgstr ""
 
 #: shared/utils/config.go:143
@@ -1063,22 +1027,18 @@ msgid ""
 "\n"
 "  All the non-global flags can alternatively be passed as configuration.\n"
 "\n"
-"  The configuration file is a YAML file with entries matching the flag "
-"name.\n"
-"  The name of a flag is the part after the '--' of the command line "
-"parameter.\n"
+"  The configuration file is a YAML file with entries matching the flag name.\n"
+"  The name of a flag is the part after the '--' of the command line parameter.\n"
 "  Every '_' character in the flag name means a nested property.\n"
 "\n"
-"  For instance the '--tz CEST' and '--ssl-password secret' will be mapped "
-"to\n"
+"  For instance the '--tz CEST' and '--ssl-password secret' will be mapped to\n"
 "  this YAML configuration:\n"
 "\n"
 "    tz: CEST\n"
 "    ssl:\n"
 "      password: secret\n"
 "\n"
-"  The configuration file will be searched in the following places and "
-"order:\n"
+"  The configuration file will be searched in the following places and order:\n"
 "  · /etc/uyuni/uyuni-tools.yaml\n"
 "  · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}\n"
 "  · $HOME/.config/{{ .Name }}/{{ .ConfigFile }}\n"
@@ -1090,8 +1050,7 @@ msgid ""
 "\n"
 "  All the non-global flags can also be passed as environment variables.\n"
 "\n"
-"  The environment variable name is the flag name with '-' replaced by with "
-"'_'\n"
+"  The environment variable name is the flag name with '-' replaced by with '_'\n"
 "  and the {{ .EnvPrefix }} prefix.\n"
 "\n"
 "  For example the '--tz CEST' flag will be mapped to '{{ .EnvPrefix }}_TZ'\n"
@@ -1161,9 +1120,7 @@ msgid "supportconfig is not available on the host, skipping it"
 msgstr ""
 
 #: shared/utils/tar.go:48
-msgid ""
-"Skipping extraction of %[1]s in %[2]s file as it resolves outside the target "
-"path"
+msgid "Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"
 msgstr ""
 
 #: shared/utils/tar.go:90
