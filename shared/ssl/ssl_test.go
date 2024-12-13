@@ -154,8 +154,16 @@ func TestOrderCasChain2(t *testing.T) {
 func TestGetRsaKey(t *testing.T) {
 	key := testutils.ReadFile(t, "testdata/RootCA.key")
 	actual := string(GetRsaKey(key, "secret"))
-	if !strings.HasPrefix(actual, "-----BEGIN PRIVATE KEY-----\nMIIEugIBADANBgkqhkiG9w0BAQEFAAS") ||
-		!strings.HasSuffix(actual, "DKY9SmW6QD+RJwbMc4M=\n-----END PRIVATE KEY-----\n") {
+
+	// This is what new openssl would generate
+	matchingPKCS8 := strings.HasPrefix(actual, "-----BEGIN PRIVATE KEY-----\nMIIEugIBADANBgkqhkiG9w0BAQEFAAS") &&
+		strings.HasSuffix(actual, "DKY9SmW6QD+RJwbMc4M=\n-----END PRIVATE KEY-----\n")
+
+	// This is what older openssl would generate
+	matchingPKCS1 := strings.HasPrefix(actual, "-----BEGIN RSA PRIVATE KEY-----\nMIIEoAIBAAKCAQEArqQvTR0") &&
+		strings.HasSuffix(actual, "+3i4RXV4XtWHzmQymPUplukA/kScGzHOD\n-----END RSA PRIVATE KEY-----\n")
+
+	if !matchingPKCS1 && !matchingPKCS8 {
 		t.Errorf("Unexpected generated RSA key: %s", actual)
 	}
 }
