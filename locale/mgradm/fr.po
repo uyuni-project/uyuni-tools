@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:50+0100\n"
+"POT-Creation-Date: 2024-12-13 15:32+0100\n"
 "PO-Revision-Date: 2024-04-17 08:03+0000\n"
 "Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools/fr/>\n"
@@ -461,7 +461,7 @@ msgstr ""
 "\n"
 "NOTE: pour l'instant l'installation sur un podman distant n'est pas supportée!\n"
 
-#: mgradm/cmd/install/podman/utils.go:32 mgradm/shared/podman/podman.go:436
+#: mgradm/cmd/install/podman/utils.go:32 mgradm/shared/podman/podman.go:440
 msgid "Waiting for the server to start…"
 msgstr ""
 
@@ -494,7 +494,7 @@ msgstr "Installation du serveur avec le FQDN '%s'"
 #: mgradm/shared/hub/xmlrpcapi.go:44 mgradm/shared/kubernetes/install.go:51
 #: mgradm/shared/kubernetes/install.go:161 mgradm/shared/kubernetes/k3s.go:58
 #: mgradm/shared/kubernetes/k3s.go:63 mgradm/shared/podman/podman.go:267
-#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:365
+#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:369
 #, fuzzy
 msgid "failed to compute image URL"
 msgstr "impossible de calculer l'URL de l'image: %s"
@@ -848,7 +848,7 @@ msgstr "impossible d'attendre le déploiement de %s: %s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:171
 #: mgradm/cmd/migrate/podman/utils.go:89
-#: mgradm/shared/kubernetes/install.go:210 mgradm/shared/podman/podman.go:399
+#: mgradm/shared/kubernetes/install.go:210 mgradm/shared/podman/podman.go:403
 #, fuzzy
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "impossible d'exécuter le script de mise à jour de la version de PostgreSQL: %s"
@@ -860,7 +860,7 @@ msgstr "impossible d'exécuter le script de finalisation de PostgreSQL: %s"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:183
 #: mgradm/cmd/migrate/podman/utils.go:99
-#: mgradm/shared/kubernetes/install.go:227 mgradm/shared/podman/podman.go:416
+#: mgradm/shared/kubernetes/install.go:227 mgradm/shared/podman/podman.go:420
 #, fuzzy
 msgid "cannot run post upgrade script"
 msgstr "impossible d'exécuter le script post mise à jour: %s"
@@ -922,7 +922,7 @@ msgid "cannot run migration script"
 msgstr "impossible d'exécuter le script de migration: %s"
 
 #: mgradm/cmd/migrate/podman/utils.go:95
-#: mgradm/shared/kubernetes/install.go:223 mgradm/shared/podman/podman.go:412
+#: mgradm/shared/kubernetes/install.go:223 mgradm/shared/podman/podman.go:416
 #, fuzzy
 msgid "cannot run PostgreSQL finalize script"
 msgstr "impossible d'exécuter le script de finalisation de PostgreSQL: %s"
@@ -1429,12 +1429,12 @@ msgstr "impossible de mettre le nombre de répliques à 0: %s"
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
 msgstr "Le PostgreSQL précédent est %s, le nouveau est %s. Mise à jour de la version de la base de données..."
 
-#: mgradm/shared/kubernetes/install.go:213 mgradm/shared/podman/podman.go:402
+#: mgradm/shared/kubernetes/install.go:213 mgradm/shared/podman/podman.go:406
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:215 mgradm/shared/podman/podman.go:405
+#: mgradm/shared/kubernetes/install.go:215 mgradm/shared/podman/podman.go:409
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr ""
 
@@ -1526,29 +1526,33 @@ msgstr "impossible d'obtenir la version de PostgreSQL sur le serveur d'origine: 
 msgid "cannot read extracted data"
 msgstr "impossible de lire les données extraites: %s"
 
-#: mgradm/shared/podman/podman.go:375
+#: mgradm/shared/podman/podman.go:379
 #, fuzzy
 msgid "cannot inspect podman values"
 msgstr "impossible d'inspecter les valeurs de l'hôte: %s"
 
-#: mgradm/shared/podman/podman.go:385
+#: mgradm/shared/podman/podman.go:389
 #, fuzzy
 msgid "cannot stop service"
 msgstr "impossible d'activer le service systemd: %s"
 
-#: mgradm/shared/podman/podman.go:393
+#: mgradm/shared/podman/podman.go:397
 #, fuzzy
 msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr "Le PostgreSQL précédent est %s, le nouveau est %s. Mise à jour de la version de la base de données..."
 
-#: mgradm/shared/podman/podman.go:441
+#: mgradm/shared/podman/podman.go:445
 msgid "error upgrading confidential computing service."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:504
+#: mgradm/shared/podman/podman.go:508
 #, fuzzy
 msgid "cannot inspect data"
 msgstr "impossible d'inspecter les valeurs de l'hôte: %s"
+
+#: mgradm/shared/podman/podman.go:524
+msgid "The above error is only relevant if using a public cloud provider registry"
+msgstr ""
 
 #: mgradm/shared/ssl/ssl.go:48
 msgid "Failed to find a non-CA certificate"

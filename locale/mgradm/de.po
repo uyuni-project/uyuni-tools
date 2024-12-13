@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:50+0100\n"
+"POT-Creation-Date: 2024-12-13 15:32+0100\n"
 "PO-Revision-Date: 2024-07-18 11:46+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/de/>\n"
@@ -24,11 +24,11 @@ msgstr "Uyuni Administrationswerkzeug"
 
 #: mgradm/cmd/cmd.go:41
 msgid "Tool to help administering Uyuni servers in containers"
-msgstr ""
+msgstr "Werkzeug für die Verwaltung von Uyuni-Servern in Containern"
 
 #: mgradm/cmd/cmd.go:48
 msgid "Server Deployment:"
-msgstr ""
+msgstr "Server-Bereitstellung:"
 
 #: mgradm/cmd/cmd.go:52
 msgid "Server Management:"
@@ -54,7 +54,7 @@ msgstr "Konfigurationsdateipfad"
 
 #: mgradm/cmd/cmd.go:73
 msgid "application log level"
-msgstr ""
+msgstr "Anwendungs-Protokollierungsebene"
 
 #: mgradm/cmd/distro/cp.go:31
 #, javascript-format
@@ -425,7 +425,7 @@ msgid ""
 "NOTE: installing on a remote podman is not supported yet!\n"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:32 mgradm/shared/podman/podman.go:436
+#: mgradm/cmd/install/podman/utils.go:32 mgradm/shared/podman/podman.go:440
 msgid "Waiting for the server to start…"
 msgstr ""
 
@@ -457,7 +457,7 @@ msgstr ""
 #: mgradm/shared/hub/xmlrpcapi.go:44 mgradm/shared/kubernetes/install.go:51
 #: mgradm/shared/kubernetes/install.go:161 mgradm/shared/kubernetes/k3s.go:58
 #: mgradm/shared/kubernetes/k3s.go:63 mgradm/shared/podman/podman.go:267
-#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:365
+#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:369
 msgid "failed to compute image URL"
 msgstr ""
 
@@ -620,11 +620,11 @@ msgstr ""
 
 #: mgradm/cmd/install/shared/flags.go:185
 msgid "Server certificate path"
-msgstr ""
+msgstr "Pfad des Serverzertifikats"
 
 #: mgradm/cmd/install/shared/flags.go:186
 msgid "Server key path"
-msgstr ""
+msgstr "Pfad des Serverschlüssels"
 
 #: mgradm/cmd/install/shared/flags.go:188
 msgid "3rd Party SSL Certificate Flags"
@@ -636,19 +636,19 @@ msgstr ""
 
 #: mgradm/cmd/install/shared/flags.go:203
 msgid "Administrator user name"
-msgstr ""
+msgstr "Administrator-Benutzername"
 
 #: mgradm/cmd/install/shared/flags.go:204
 msgid "Administrator password"
-msgstr ""
+msgstr "Administrator-Passwort"
 
 #: mgradm/cmd/install/shared/flags.go:205
 msgid "First name of the administrator"
-msgstr ""
+msgstr "Vorname des Administrators"
 
 #: mgradm/cmd/install/shared/flags.go:206
 msgid "Last name of the administrator"
-msgstr ""
+msgstr "Nachname des Administrators"
 
 #: mgradm/cmd/install/shared/flags.go:207
 msgid "First organization name"
@@ -779,7 +779,7 @@ msgstr ""
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:171
 #: mgradm/cmd/migrate/podman/utils.go:89
-#: mgradm/shared/kubernetes/install.go:210 mgradm/shared/podman/podman.go:399
+#: mgradm/shared/kubernetes/install.go:210 mgradm/shared/podman/podman.go:403
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr ""
 
@@ -789,7 +789,7 @@ msgstr ""
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:183
 #: mgradm/cmd/migrate/podman/utils.go:99
-#: mgradm/shared/kubernetes/install.go:227 mgradm/shared/podman/podman.go:416
+#: mgradm/shared/kubernetes/install.go:227 mgradm/shared/podman/podman.go:420
 msgid "cannot run post upgrade script"
 msgstr ""
 
@@ -837,7 +837,7 @@ msgid "cannot run migration script"
 msgstr ""
 
 #: mgradm/cmd/migrate/podman/utils.go:95
-#: mgradm/shared/kubernetes/install.go:223 mgradm/shared/podman/podman.go:412
+#: mgradm/shared/kubernetes/install.go:223 mgradm/shared/podman/podman.go:416
 msgid "cannot run PostgreSQL finalize script"
 msgstr ""
 
@@ -1306,12 +1306,12 @@ msgstr ""
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:213 mgradm/shared/podman/podman.go:402
+#: mgradm/shared/kubernetes/install.go:213 mgradm/shared/podman/podman.go:406
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr ""
 
-#: mgradm/shared/kubernetes/install.go:215 mgradm/shared/podman/podman.go:405
+#: mgradm/shared/kubernetes/install.go:215 mgradm/shared/podman/podman.go:409
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr ""
 
@@ -1396,24 +1396,28 @@ msgstr ""
 msgid "cannot read extracted data"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:375
+#: mgradm/shared/podman/podman.go:379
 msgid "cannot inspect podman values"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:385
+#: mgradm/shared/podman/podman.go:389
 msgid "cannot stop service"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:393
+#: mgradm/shared/podman/podman.go:397
 msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:441
+#: mgradm/shared/podman/podman.go:445
 msgid "error upgrading confidential computing service."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:504
+#: mgradm/shared/podman/podman.go:508
 msgid "cannot inspect data"
+msgstr ""
+
+#: mgradm/shared/podman/podman.go:524
+msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr ""
 
 #: mgradm/shared/ssl/ssl.go:48
