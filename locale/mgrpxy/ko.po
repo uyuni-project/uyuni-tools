@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 08:36+0100\n"
+"POT-Creation-Date: 2025-01-09 13:01+0100\n"
 "PO-Revision-Date: 2024-09-26 13:48+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy-5-0/ko/>\n"
@@ -580,20 +580,24 @@ msgstr ""
 msgid "image tag"
 msgstr "이미지 태그"
 
-#: mgrpxy/shared/utils/flags.go:87
+#: mgrpxy/shared/utils/flags.go:79
+msgid "Specify a registry where to pull the images from"
+msgstr ""
+
+#: mgrpxy/shared/utils/flags.go:88
 msgid "HTTPD tuning configuration file"
 msgstr "HTTPD 튜닝 구성 파일"
 
-#: mgrpxy/shared/utils/flags.go:88
+#: mgrpxy/shared/utils/flags.go:89
 msgid "Squid tuning configuration file"
 msgstr "Squid 튜닝 구성 파일"
 
-#: mgrpxy/shared/utils/flags.go:94
+#: mgrpxy/shared/utils/flags.go:95
 #, javascript-format
 msgid "Image for %s container"
 msgstr "%s 컨테이너용 이미지"
 
-#: mgrpxy/shared/utils/flags.go:96
+#: mgrpxy/shared/utils/flags.go:97
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
