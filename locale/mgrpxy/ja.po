@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 08:36+0100\n"
+"POT-Creation-Date: 2025-01-09 13:01+0100\n"
 "PO-Revision-Date: 2024-09-26 13:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy-5-0/ja/>\n"
@@ -577,20 +577,24 @@ msgstr ""
 msgid "image tag"
 msgstr "イメージタグ"
 
-#: mgrpxy/shared/utils/flags.go:87
+#: mgrpxy/shared/utils/flags.go:79
+msgid "Specify a registry where to pull the images from"
+msgstr ""
+
+#: mgrpxy/shared/utils/flags.go:88
 msgid "HTTPD tuning configuration file"
 msgstr "HTTPDチューニング設定ファイル"
 
-#: mgrpxy/shared/utils/flags.go:88
+#: mgrpxy/shared/utils/flags.go:89
 msgid "Squid tuning configuration file"
 msgstr "Squidチューニング設定ファイル"
 
-#: mgrpxy/shared/utils/flags.go:94
+#: mgrpxy/shared/utils/flags.go:95
 #, javascript-format
 msgid "Image for %s container"
 msgstr "%s コンテナのイメージ"
 
-#: mgrpxy/shared/utils/flags.go:96
+#: mgrpxy/shared/utils/flags.go:97
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s コンテナ用のタグ。設定されている場合はグローバル値を上書きします"
