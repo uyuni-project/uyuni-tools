@@ -1,0 +1,1 @@
+- Relabel proxy config files on SELinux (bsc#1235658)
