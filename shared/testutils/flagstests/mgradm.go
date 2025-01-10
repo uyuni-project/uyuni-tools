@@ -148,3 +148,18 @@ func AssertSalineFlag(t *testing.T, flags *utils.SalineFlags) {
 	testutils.AssertEquals(t, "Error parsing --saline-port", 8226, flags.Port)
 	testutils.AssertTrue(t, "Saline should be changed", flags.IsChanged)
 }
+
+// PgsqlFlagsTestArgs is the expected values for AssertPgsqlFlag.
+var PgsqlFlagsTestArgs = []string{
+	"--pgsql-image", "pgsqlimg",
+	"--pgsql-tag", "pgsqltag",
+	"--pgsql-replicas", "0",
+}
+
+// AssertPgsqlFlag asserts that all pgsql flags are parsed correctly.
+func AssertPgsqlFlag(t *testing.T, flags *utils.PgsqlFlags) {
+	testutils.AssertEquals(t, "Error parsing --pgsql-image", "pgsqlimg", flags.Image.Name)
+	testutils.AssertEquals(t, "Error parsing --pgsql-tag", "pgsqltag", flags.Image.Tag)
+	testutils.AssertEquals(t, "Error parsing --pgsql-replicas", 0, flags.Replicas)
+	testutils.AssertTrue(t, "Pgsql should be changed", flags.IsChanged)
+}

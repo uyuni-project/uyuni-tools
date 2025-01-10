@@ -18,6 +18,7 @@ import (
 func TestParamsParsing(t *testing.T) {
 	args := flagstests.InstallFlagsTestArgs()
 	args = append(args, flagstests.PodmanFlagsTestArgs...)
+	args = append(args, flagstests.PgsqlFlagsTestArgs...)
 	args = append(args, "srv.fq.dn")
 
 	// Test function asserting that the args are properly parsed
@@ -26,6 +27,7 @@ func TestParamsParsing(t *testing.T) {
 	) error {
 		flagstests.AssertInstallFlags(t, &flags.ServerFlags)
 		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
+		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
 		testutils.AssertEquals(t, "Wrong FQDN", "srv.fq.dn", args[0])
 		return nil
 	}
@@ -49,7 +51,10 @@ hubxmlrpc:
   replicas: 0
 saline:
   port: 8226
-  replicas: 1`
+  replicas: 1
+pgsql:
+  replicas: 0
+`
 
 	dir := t.TempDir()
 	configPath := path.Join(dir, "config.yaml")
@@ -67,6 +72,8 @@ saline:
 		testutils.AssertEquals(t, "Saline replicas badly parsed", 1, flags.Saline.Replicas)
 		testutils.AssertEquals(t, "Saline port badly parsed", 8226, flags.Saline.Port)
 		testutils.AssertTrue(t, "Saline flags not marked as changed", flags.Saline.IsChanged)
+		testutils.AssertEquals(t, "Pgsql replicas badly parsed", 0, flags.Pgsql.Replicas)
+		testutils.AssertTrue(t, "Pgsql flags not marked as changed", flags.Pgsql.IsChanged)
 		return nil
 	}
 
@@ -90,6 +97,8 @@ func TestParamsNoConfig(t *testing.T) {
 		testutils.AssertEquals(t, "Saline replicas badly parsed", 0, flags.Saline.Replicas)
 		testutils.AssertEquals(t, "Saline port badly parsed", 8216, flags.Saline.Port)
 		testutils.AssertTrue(t, "Saline flags marked as changed", !flags.Saline.IsChanged)
+		testutils.AssertEquals(t, "Pgsql replicas badly parsed", 1, flags.Pgsql.Replicas)
+		testutils.AssertTrue(t, "Pgsql flags marked as changed", !flags.Pgsql.IsChanged)
 		return nil
 	}
 

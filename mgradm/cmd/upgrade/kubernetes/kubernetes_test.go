@@ -24,6 +24,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.CocoFlagsTestArgs...)
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
 	args = append(args, flagstests.SalineFlagsTestArgs...)
+	args = append(args, flagstests.PgsqlFlagsTestArgs...)
 	args = append(args, flagstests.SCCFlagTestArgs...)
 	args = append(args, flagstests.ServerKubernetesFlagsTestArgs...)
 
@@ -36,6 +37,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertCocoFlag(t, &flags.Coco)
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		flagstests.AssertSalineFlag(t, &flags.Saline)
+		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
 		// TODO Assert SCC flags
 		flagstests.AssertServerKubernetesFlags(t, &flags.Kubernetes)
 		return nil

@@ -409,7 +409,7 @@ func Upgrade(
 	if inspectedValues.CurrentPgVersionNotMigrated != "" ||
 		inspectedValues.DBHost == "localhost" ||
 		inspectedValues.ReportDBHost == "localhost" {
-		log.Info().Msgf(L("Configuring external postgresql %s %s"),
+		log.Info().Msgf(L("Configuring external postgresql. Current version: %[1]s, not migrated version: %[2]s"),
 			inspectedValues.CurrentPgVersion, inspectedValues.CurrentPgVersionNotMigrated)
 
 		if err := RunPgsqlContainerMigration(
