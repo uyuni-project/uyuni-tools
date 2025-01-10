@@ -68,6 +68,11 @@ func GenerateSystemdService(
 	}
 
 	// Httpd
+	volumeOptions := ""
+	if podman.IsSELinuxEnabled() {
+		volumeOptions = ",z"
+	}
+
 	{
 		dataHttpd := templates.HttpdTemplateData{
 			Volumes:       shared_utils.ProxyHttpdVolumes,
@@ -80,8 +85,8 @@ func GenerateSystemdService(
 				return err
 			}
 			additionHttpdTuningSettings = fmt.Sprintf(
-				`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro`,
-				absPath,
+				`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro%s`,
+				absPath, volumeOptions,
 			)
 		}
 		if err := generateSystemdFile(dataHttpd, "httpd", httpdImage, additionHttpdTuningSettings); err != nil {
@@ -110,8 +115,8 @@ func GenerateSystemdService(
 				return err
 			}
 			additionSquidTuningSettings = fmt.Sprintf(
-				`Environment=SQUID_EXTRA_CONF=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro`,
-				absPath,
+				`Environment=SQUID_EXTRA_CONF=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro%s`,
+				absPath, volumeOptions,
 			)
 		}
 		if err := generateSystemdFile(dataSquid, "squid", squidImage, additionSquidTuningSettings); err != nil {
