@@ -84,7 +84,7 @@ do
   fi
   if $SSH {{ .SourceFqdn }} test -e $folder; then
     echo "Copying $folder..."
-    rsync -e "$SSH" --rsync-path='sudo rsync' -avz $RSYNC_ARGS --trust-sender -f 'merge exclude_list' {{ .SourceFqdn }}:$folder/ $folder;
+    rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz $RSYNC_ARGS --trust-sender -f 'merge exclude_list' {{ .SourceFqdn }}:$folder/ $folder;
   else
     echo "Skipping missing $folder..."
   fi
@@ -105,7 +105,7 @@ while IFS="," read -r target path ; do
   if $SSH -n {{ .SourceFqdn }} test -e $path ; then
     echo "Copying distribution $target from $path"
     mkdir -p "/srv/www/distributions/$target"
-    rsync -e "$SSH" --rsync-path='sudo rsync' -avz "{{ .SourceFqdn }}:$path/" "/srv/www/distributions/$target"
+    rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz "{{ .SourceFqdn }}:$path/" "/srv/www/distributions/$target"
   else
     echo "Skipping missing distribution $path..."
   fi
@@ -114,7 +114,7 @@ done < distros
 if $SSH {{ .SourceFqdn }} test -e /etc/tomcat/conf.d; then
   echo "Copying tomcat configuration.."
   mkdir -p /etc/tomcat/conf.d
-  rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/tomcat/conf.d /etc/tomcat/;
+  rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/tomcat/conf.d /etc/tomcat/;
 else
   echo "Skipping tomcat configuration.."
 fi
@@ -184,8 +184,8 @@ cp /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /var/lib/uyuni-tools/RH
 
 if test "extractedSSL" != "1"; then
   # For third party certificates, the CA chain is in the certificate file.
-  rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/pki/tls/private/spacewalk.key /var/lib/uyuni-tools/
-  rsync -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/pki/tls/certs/spacewalk.crt /var/lib/uyuni-tools/
+  rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/pki/tls/private/spacewalk.key /var/lib/uyuni-tools/
+  rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/pki/tls/certs/spacewalk.crt /var/lib/uyuni-tools/
 fi
 
 echo "Removing useless ssl-build folder..."
