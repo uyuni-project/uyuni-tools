@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2024-09-26 12:48+0000\n"
-"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
+"PO-Revision-Date: 2025-01-14 07:50+0000\n"
+"Last-Translator: Seeun Lee <selee@e4net.net>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -662,8 +663,9 @@ msgid "failed to parse migration data file"
 msgstr "마이그레이션 스크립트를 생성하지 못함"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:72
+#, fuzzy
 msgid "found no data file after migration"
-msgstr ""
+msgstr "마이그레이션 후 데이터 파일을 찾을 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:23
 msgid "Migrate a remote server to containers running on a kubernetes cluster"
@@ -713,12 +715,14 @@ msgid "Path to the SSH public key to use to connect to the source server"
 msgstr "Hub 서버에 연결할 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:60
+#, fuzzy
 msgid "Path to the passwordless SSH private key to use to connect to the source server"
-msgstr ""
+msgstr "소스 서버에 연결하는 데 사용할 암호 없는 SSH 개인 키의 경로"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:62
+#, fuzzy
 msgid "Path to the SSH known_hosts file to use to connect to the source server"
-msgstr ""
+msgstr "소스 서버에 연결하는 데 사용할 SSH known_hosts 파일 경로"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:63
 #, fuzzy
@@ -736,12 +740,14 @@ msgid "failed to run the migration job"
 msgstr "마이그레이션 스크립트를 생성하지 못함"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:40
+#, fuzzy
 msgid "no SSH key found to use for migration"
-msgstr ""
+msgstr "마이그레이션에 사용할 SSH 키를 찾을 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:51
+#, fuzzy
 msgid "no SSH known_hosts and configuration found to use for migration"
-msgstr ""
+msgstr "마이그레이션에 사용할 SSH known_hosts 및 구성을 찾을 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:68
 #, fuzzy, javascript-format
@@ -749,8 +755,9 @@ msgid "failed to get %s SSH key secret"
 msgstr "%s 키를 표시하지 못했습니다."
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:79
+#, fuzzy
 msgid "%[1]s secret misses the %[2]s value"
-msgstr ""
+msgstr "%[1]s 시크릿에 %[2]s 값이 누락됨"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:89
 #, fuzzy, javascript-format
@@ -779,8 +786,9 @@ msgstr "종료 날짜를 구문 분석하지 못함: %s\n"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:135
 #: mgradm/cmd/migrate/kubernetes/ssh.go:140
+#, fuzzy
 msgid "%[1]s ConfigMap misses the %[2]s value"
-msgstr ""
+msgstr "%[1]s ConfigMap에 %[2]s 값이 누락됨"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:149
 #, fuzzy, javascript-format
@@ -1254,9 +1262,9 @@ msgid "cannot generate systemd conf file"
 msgstr "systemd conf 파일을 생성할 수 없음"
 
 #: mgradm/shared/hub/xmlrpcapi.go:36
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "No changes requested for hub. Keep %d replicas."
-msgstr ""
+msgstr "허브에 대한 변경 요청이 없습니다. %d 복제본을 유지하십시오."
 
 #: mgradm/shared/hub/xmlrpcapi.go:54
 msgid "cannot generate systemd service"
@@ -1279,8 +1287,9 @@ msgid "Failed to create uyuni-crt TLS secret"
 msgstr "uyuni-crt TLS 비밀 생성 실패"
 
 #: mgradm/shared/kubernetes/certificates.go:68
+#, fuzzy
 msgid "Creating cert-manager issuer for existing CA"
-msgstr ""
+msgstr "기존 CA에 대한 인증서 관리자 발급자 만들기"
 
 #: mgradm/shared/kubernetes/certificates.go:84
 #: mgradm/shared/kubernetes/certificates.go:122
@@ -1348,8 +1357,10 @@ msgid "failed to create the database secret"
 msgstr "uyuni-crt TLS 비밀 생성 실패"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:32
+#, fuzzy
 msgid "Running database finalization, this could be long depending on the size of the database…"
-msgstr ""
+msgstr "데이터베이스 최종 작업 실행 중, 데이터베이스의 크기에 따라 시간이 오래 걸릴 "
+"수 있습니다…"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:38
 #, fuzzy
@@ -1368,8 +1379,9 @@ msgid "Using database upgrade image %s"
 msgstr "데이터베이스 업그레이드 이미지 %s 사용"
 
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:57
+#, fuzzy
 msgid "failed to run the database upgrade job"
-msgstr ""
+msgstr "데이터베이스 업그레이드 작업을 실행하지 못함"
 
 #: mgradm/shared/kubernetes/deployment.go:51
 #, fuzzy
@@ -1397,8 +1409,9 @@ msgid "failed to create the namespace"
 msgstr "이미지를 결정하지 못함"
 
 #: mgradm/shared/kubernetes/postUpgradeJob.go:24
+#, fuzzy
 msgid "Performing post upgrade changes…"
-msgstr ""
+msgstr "업그레이드 후 변경 수행 중…"
 
 #: mgradm/shared/kubernetes/postUpgradeJob.go:31
 #, fuzzy
@@ -1421,8 +1434,9 @@ msgid "cannot set server replicas to 0"
 msgstr "복제본을 0으로 설정할 수 없음"
 
 #: mgradm/shared/kubernetes/reconcile.go:148
+#, fuzzy
 msgid "downgrading database from PostgreSQL %[1]d to %[2]d is not supported"
-msgstr ""
+msgstr "PostgreSQL %[1]d에서 %[2]d(으)로의 데이터베이스 다운그레이드는 지원되지 않음"
 
 #: mgradm/shared/kubernetes/reconcile.go:206
 msgid "cannot install cert manager"
@@ -1445,12 +1459,14 @@ msgstr "supportconfig 실행 실패"
 
 #: mgradm/shared/kubernetes/traefik.go:56
 #: mgradm/shared/kubernetes/traefik.go:63
+#, fuzzy
 msgid "failed to write traefik middleware and routes to file"
-msgstr ""
+msgstr "파일링할 traefik 미들웨어 및 경로를 작성하지 못함"
 
 #: mgradm/shared/kubernetes/traefik.go:70
+#, fuzzy
 msgid "failed to close traefik middleware and routes file"
-msgstr ""
+msgstr "traefik 미들웨어 및 경로 파일을 종료하지 못함"
 
 #: mgradm/shared/kubernetes/traefik.go:74
 #, fuzzy
@@ -1602,12 +1618,15 @@ msgid "Helm Chart Flags"
 msgstr "Helm 차트 플래그"
 
 #: mgradm/shared/utils/cmd_utils.go:62
+#, fuzzy
 msgid "Default storage class for all the volumes"
-msgstr ""
+msgstr "모든 볼륨의 기본 스토리지 클래스"
 
 #: mgradm/shared/utils/cmd_utils.go:64
+#, fuzzy
 msgid "PersistentVolume name to use as a mirror. Empty means no mirror is used"
-msgstr ""
+msgstr "미러로 사용할 PersistentVolume 이름입니다. 비어 있으면 미러가 사용되지 "
+"않음을 의미합니다."
 
 #: mgradm/shared/utils/cmd_utils.go:67
 #, fuzzy
@@ -1615,14 +1634,14 @@ msgid "Volumes Configuration Flags"
 msgstr "구성 파일 경로"
 
 #: mgradm/shared/utils/cmd_utils.go:80
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Requested size for the %s volume"
-msgstr ""
+msgstr "%s 볼륨에 대해 요청된 크기"
 
 #: mgradm/shared/utils/cmd_utils.go:86
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Requested storage class for the %s volume"
-msgstr ""
+msgstr "%s 볼륨에 대해 요청된 스토리지 클래스"
 
 #: mgradm/shared/utils/cmd_utils.go:101
 #, javascript-format
@@ -1728,8 +1747,9 @@ msgid "Saline Flags"
 msgstr "이미지 플래그"
 
 #: mgradm/shared/utils/cmd_utils.go:193 mgradm/shared/utils/cmd_utils.go:204
+#, fuzzy
 msgid "Saline"
-msgstr ""
+msgstr "Saline"
 
 #: mgradm/shared/utils/cmd_utils.go:194
 #, fuzzy
@@ -1739,8 +1759,9 @@ msgid ""
 msgstr "시작해야 하는 기밀 컴퓨팅 컨테이너의 복제본 수. (현재는 0 또는 1만 지원됨)"
 
 #: mgradm/shared/utils/cmd_utils.go:196 mgradm/shared/utils/cmd_utils.go:208
+#, fuzzy
 msgid "Saline port (default: 8216)"
-msgstr ""
+msgstr "Saline 포트(기본값: 8216)"
 
 #: mgradm/shared/utils/cmd_utils.go:205
 #, fuzzy
