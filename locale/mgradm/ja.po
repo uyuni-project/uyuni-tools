@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2025-01-14 14:50+0000\n"
+"PO-Revision-Date: 2025-01-14 17:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgradm/ja/>\n"
@@ -1357,17 +1357,16 @@ msgstr "データベースシークレットの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:32
 msgid "Running database finalization, this could be long depending on the size of the database…"
-msgstr ""
+msgstr "データベースの最終処理中。データベースのサイズによっては、時間がかかる場合が"
+"あります…"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:38
-#, fuzzy
 msgid "failed to run the database finalization job"
-msgstr "発行者定義の生成に失敗しました"
+msgstr "データベースの最終処理ジョブの実行に失敗しました"
 
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:36
-#, fuzzy
 msgid "Upgrading PostgreSQL database from %[1]s to %[2]s…"
-msgstr "PostgreSQLを  %[1]s  から  %[2]s にダウングレードしようとしています"
+msgstr "PostgreSQLデータベースを %[1]s から %[2]s にアップグレードしています…"
 
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:50
 #: mgradm/shared/podman/podman.go:281
@@ -1377,98 +1376,86 @@ msgstr "データベースのアップグレードイメージ %s を使用し�
 
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:57
 msgid "failed to run the database upgrade job"
-msgstr ""
+msgstr "データベースアップグレードジョブの実行に失敗しました"
 
 #: mgradm/shared/kubernetes/deployment.go:51
-#, fuzzy
 msgid "failed to create the server deployment"
-msgstr "一時ディレクトリの作成に失敗しました"
+msgstr "サーバ配備の作成に失敗しました"
 
 #: mgradm/shared/kubernetes/hubApi.go:44
-#, fuzzy
 msgid "failed to create the hub API deployment"
-msgstr "配備ステータスの取得に失敗しました"
+msgstr "ハブAPI配備ステータスの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/hubApi.go:100
-#, fuzzy
 msgid "failed to create the hub API service"
-msgstr "ハブサーバへの接続に失敗しました"
+msgstr "ハブAPIサービスへの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/ingress.go:36
-#, fuzzy
 msgid "failed to create the ingresses"
-msgstr "キーリング %s の作成に失敗しました"
+msgstr "Ingressの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/namespace.go:25
-#, fuzzy
 msgid "failed to create the namespace"
-msgstr "イメージの決定に失敗しました"
+msgstr "ネームスペースの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/postUpgradeJob.go:24
 msgid "Performing post upgrade changes…"
-msgstr ""
+msgstr "アップグレード後の変更を実行しています…"
 
 #: mgradm/shared/kubernetes/postUpgradeJob.go:31
-#, fuzzy
 msgid "failed to run the post upgrade job"
-msgstr "インポートキーの実行に失敗しました"
+msgstr "ホストアップグレードジョブの実行失敗しました"
 
 #: mgradm/shared/kubernetes/reconcile.go:29
-#, fuzzy
 msgid "install kubectl before running this command"
-msgstr "このコマンドを実行する前に %s をインストールする"
+msgstr "このコマンドを実行する前にkubectl をインストールします"
 
 #: mgradm/shared/kubernetes/reconcile.go:105
-#, fuzzy
 msgid "cannot set confidential computing containers replicas to 0"
-msgstr "コンフィデンシャルコンピューティング認証サービスを設定できません"
+msgstr "コンフィデンシャルコンピューティングコンテナレプリカの0に設定できません"
 
 #: mgradm/shared/kubernetes/reconcile.go:111
-#, fuzzy
 msgid "cannot set server replicas to 0"
-msgstr "レプリカを0に設定できません"
+msgstr "サーバレプリカを0に設定できません"
 
 #: mgradm/shared/kubernetes/reconcile.go:148
 msgid "downgrading database from PostgreSQL %[1]d to %[2]d is not supported"
-msgstr ""
+msgstr "PostgreSQL %[1]d から %[2]d "
+"へのデータベースのダウングレードはサポートされていません"
 
 #: mgradm/shared/kubernetes/reconcile.go:206
 msgid "cannot install cert manager"
 msgstr "cert managerをインストールできません"
 
 #: mgradm/shared/kubernetes/reconcile.go:214
-#, fuzzy
 msgid "failed to read Root CA file"
-msgstr "フォルダ %s の作成に失敗しました"
+msgstr "ルートCAファイルの読み込みに失敗しました"
 
 #: mgradm/shared/kubernetes/services.go:30
-#, fuzzy
 msgid "failed to create the service"
-msgstr "サービスを停止できませんでした: %v"
+msgstr "サービスの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/traefik.go:37
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to open %s for writing"
-msgstr "supportconfigの実行に失敗しました"
+msgstr "%s を書き込み用に開けませんでした"
 
 #: mgradm/shared/kubernetes/traefik.go:56
 #: mgradm/shared/kubernetes/traefik.go:63
 msgid "failed to write traefik middleware and routes to file"
-msgstr ""
+msgstr "Traefikミドルウェアとルートをファイルに書き込めませんでした"
 
 #: mgradm/shared/kubernetes/traefik.go:70
 msgid "failed to close traefik middleware and routes file"
-msgstr ""
+msgstr "Traefikミドルウェアとルートファイルを閉じることができませんでした"
 
 #: mgradm/shared/kubernetes/traefik.go:74
-#, fuzzy
 msgid "failed to create traefik middleware and routes"
-msgstr "フォルダ %s の作成に失敗しました"
+msgstr "traefikミドルウェアとルートの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/traefik.go:95
-#, fuzzy
 msgid "failed to write traefik routes to file"
-msgstr "systemdサービスユニットファイルの生成に失敗しました"
+msgstr "traefikルートをファイルに書き込めませんでした"
 
 #: mgradm/shared/podman/podman.go:85
 msgid "Enabling system service"
@@ -1483,9 +1470,9 @@ msgid "failed to create temporary folder on container to copy certificates to"
 msgstr "証明書をコピーするための一時フォルダをコンテナ上に作成できませんでした"
 
 #: mgradm/shared/podman/podman.go:153
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to update SSL certificate: %s"
-msgstr "SSL証明書の更新に失敗しました"
+msgstr "SSL証明書の更新に失敗しました: %s"
 
 #: mgradm/shared/podman/podman.go:158
 msgid "failed to remove copied certificate files in the container"
@@ -1563,23 +1550,21 @@ msgid "error upgrading confidential computing service."
 msgstr "コンフィデンシャルコンピューティングサービスのアップグレード時のエラー"
 
 #: mgradm/shared/podman/podman.go:460
-#, fuzzy
 msgid "error upgrading saline service."
-msgstr "コンフィデンシャルコンピューティングサービスのアップグレード時のエラー"
+msgstr "salineサービスのアップグレード時のエラー。"
 
 #: mgradm/shared/podman/podman.go:517
 msgid "cannot inspect data"
 msgstr "データを検査できません"
 
 #: mgradm/shared/saline/saline.go:66
-#, fuzzy
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
-msgstr "現在、複数のHub XML-RPCコンテナレプリカはサポートされておらず、1つだけ設定できます。"
+msgstr "現在、複数のSalineコンテナレプリカはサポートされておらず、1つだけ設定できます"
+"。"
 
 #: mgradm/shared/saline/saline.go:93
-#, fuzzy
 msgid "Setting up Saline service"
-msgstr "Hub XML-RPC APIサービスを設定しています。"
+msgstr "Salineサービスを設定しています"
 
 #: mgradm/shared/utils/cmd_utils.go:32
 msgid "Server certificate, key and root CA need to be all provided"
@@ -1611,26 +1596,25 @@ msgstr "Helmチャートフラグ"
 
 #: mgradm/shared/utils/cmd_utils.go:62
 msgid "Default storage class for all the volumes"
-msgstr ""
+msgstr "すべてのボリュームのデフォルトのストレージクラス"
 
 #: mgradm/shared/utils/cmd_utils.go:64
 msgid "PersistentVolume name to use as a mirror. Empty means no mirror is used"
-msgstr ""
+msgstr "ミラーとして使用するPersistentVolume名。空の場合、ミラーは使用されません"
 
 #: mgradm/shared/utils/cmd_utils.go:67
-#, fuzzy
 msgid "Volumes Configuration Flags"
-msgstr "設定ファイルパス"
+msgstr "ボリューム設定フラグ"
 
 #: mgradm/shared/utils/cmd_utils.go:80
 #, javascript-format
 msgid "Requested size for the %s volume"
-msgstr ""
+msgstr "%s ボリュームの要求サイズ"
 
 #: mgradm/shared/utils/cmd_utils.go:86
 #, javascript-format
 msgid "Requested storage class for the %s volume"
-msgstr ""
+msgstr "%sボリュームの要求されたストレージクラス"
 
 #: mgradm/shared/utils/cmd_utils.go:101
 #, javascript-format
@@ -1643,18 +1627,22 @@ msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s コンテナ用のタグ。設定されている場合はグローバル値を上書きします"
 
 #: mgradm/shared/utils/cmd_utils.go:113
-#, fuzzy
 msgid ""
 "SUSE Customer Center username.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
-msgstr "SUSEカスタマーセンターのユーザ名。 これは、製品の同期とregistry.suse.comからのイメージの取得のためにSCC資格情報として使用されます"
+msgstr ""
+"SUSEカスタマーセンターのユーザ名。\n"
+"これは、製品の同期とregistry.suse.comからのイメージの取得のためにSCC資格情報"
+"として使用されます"
 
 #: mgradm/shared/utils/cmd_utils.go:115
-#, fuzzy
 msgid ""
 "SUSE Customer Center password.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
-msgstr "SUSEカスタマーセンターのパスワード。これは、製品の同期とregistry.suse.comからのイメージの取得のためにSCC資格情報として使用されます"
+msgstr ""
+"SUSEカスタマーセンターのパスワード。\n"
+"これは、製品の同期とregistry.suse.comからのイメージの取得のためにSCC資格情報"
+"として使用されます"
 
 #: mgradm/shared/utils/cmd_utils.go:118
 msgid "SUSE Customer Center Flags"
@@ -1665,9 +1653,8 @@ msgid "Image"
 msgstr "イメージ"
 
 #: mgradm/shared/utils/cmd_utils.go:126
-#, fuzzy
 msgid "Specify a private registry where pull the images"
-msgstr "プライベートレジストリを指定してください"
+msgstr "イメージをプルするプライベートレジストリを指定してください"
 
 #: mgradm/shared/utils/cmd_utils.go:127
 msgid "Tag Image"
@@ -1702,16 +1689,18 @@ msgid "confidential computing attestation"
 msgstr "コンフィデンシャルコンピューティングの検証"
 
 #: mgradm/shared/utils/cmd_utils.go:157
-#, fuzzy
 msgid "How many replicas of the confidential computing container should be started"
-msgstr "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要があるか(現時点では0または1のみサポート）"
+msgstr "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要が"
+"あるか"
 
 #: mgradm/shared/utils/cmd_utils.go:165
-#, fuzzy
 msgid ""
 "How many replicas of the confidential computing container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
-msgstr "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要があるか(現時点では0または1のみサポート）"
+msgstr ""
+"コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要が"
+"あるか。\n"
+"以前のレプリカ数を維持する場合は、未設定のままにしておきます。"
 
 #: mgradm/shared/utils/cmd_utils.go:172 mgradm/shared/utils/cmd_utils.go:173
 #: mgradm/shared/utils/cmd_utils.go:182 mgradm/shared/utils/cmd_utils.go:183
@@ -1719,44 +1708,47 @@ msgid "Hub XML-RPC API"
 msgstr "Hub XML-RPC API"
 
 #: mgradm/shared/utils/cmd_utils.go:175
-#, fuzzy
 msgid "How many replicas of the Hub XML-RPC API service container should be started."
-msgstr "Hub XML-RPC APIサービスコンテナのレプリカをいくつ起動する必要があるか(現時点では0または1のみサポート）"
+msgstr "Hub XML-RPC APIサービスコンテナのレプリカをいくつ起動する必要があるか。"
 
 #: mgradm/shared/utils/cmd_utils.go:185
-#, fuzzy
 msgid ""
 "How many replicas of the Hub XML-RPC API service container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
-msgstr "Hub XML-RPC APIサービスコンテナのレプリカをいくつ起動する必要があるか(現時点では0または1のみサポート）"
+msgstr ""
+"Hub XML-RPC APIサービスコンテナのレプリカをいくつ起動する必要があるか。\n"
+"以前のレプリカの数を維持したい場合は、未設定のままにしておきます。"
 
 #: mgradm/shared/utils/cmd_utils.go:192 mgradm/shared/utils/cmd_utils.go:203
-#, fuzzy
 msgid "Saline Flags"
-msgstr "イメージフラグ"
+msgstr "Salineフラグ"
 
 #: mgradm/shared/utils/cmd_utils.go:193 mgradm/shared/utils/cmd_utils.go:204
 msgid "Saline"
-msgstr ""
+msgstr "Saline"
 
 #: mgradm/shared/utils/cmd_utils.go:194
-#, fuzzy
 msgid ""
 "How many replicas of the Saline container should be started\n"
 "(only 0 or 1 supported for now)"
-msgstr "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要があるか(現時点では0または1のみサポート）"
+msgstr ""
+"コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要が"
+"あるか\n"
+"(現時点では0または1のみサポート)"
 
 #: mgradm/shared/utils/cmd_utils.go:196 mgradm/shared/utils/cmd_utils.go:208
 msgid "Saline port (default: 8216)"
-msgstr ""
+msgstr "Salineポート(デフォルト: 8216)"
 
 #: mgradm/shared/utils/cmd_utils.go:205
-#, fuzzy
 msgid ""
 "How many replicas of the Saline container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas.\n"
 "(only 0 or 1 supported for now)"
-msgstr "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要があるか(現時点では0または1のみサポート）"
+msgstr ""
+"Salineコンテナのレプリカをいくつ起動する必要があるか。\n"
+"以前のレプリカの数を維持したい場合は、未設定のままにしておきます。\n"
+"(現時点では0または1のみサポート）"
 
 #: mgradm/shared/utils/exec.go:26
 msgid "exec command failed"
@@ -1796,9 +1788,9 @@ msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "バージョン %[1]s から %[2]s にダウングレードできません"
 
 #: mgradm/shared/utils/exec.go:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot fetch PostgreSQL version from %s"
-msgstr "%s からpostgresqlバージョンをフェッチできません"
+msgstr "%s からPostgreSQLバージョンをフェッチできません"
 
 #: mgradm/shared/utils/exec.go:198
 msgid "PostgreSQL is not installed in the current deployment"
