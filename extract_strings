@@ -16,7 +16,7 @@ for MODULE in mgrctl mgradm mgrpxy shared; do
     # Update the po files
     for PO in locale/${MODULE}/*.po; do
         echo -n "Update ${PO}"
-        if msgmerge --no-wrap --update ${PO} locale/${MODULE}/${MODULE}.pot;
+        if msgmerge --previous --no-wrap --update ${PO} locale/${MODULE}/${MODULE}.pot;
         then
             if test -f ${PO}~; then
                 rm ${PO}~
