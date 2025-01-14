@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-08 15:09+0100\n"
-"PO-Revision-Date: 2025-01-14 17:50+0000\n"
+"PO-Revision-Date: 2025-01-15 01:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrctl/ja/>\n"
@@ -89,40 +89,41 @@ msgstr ""
 
 #: mgrctl/cmd/api/api.go:71
 msgid "Overwrite existing login if exists"
-msgstr ""
+msgstr "既存のログインが存在する場合は上書きする"
 
 #: mgrctl/cmd/api/api.go:75
 msgid "Remove stored login information"
-msgstr ""
+msgstr "保存されているログイン情報を削除する"
 
 #: mgrctl/cmd/api/api.go:76
 msgid "Logout removes stored login information."
-msgstr ""
+msgstr "ログアウトすると、保存されているログイン情報が削除されます。"
 
 #: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28
 msgid "unable to login to the server"
 msgstr "サーバにログインできません"
 
 #: mgrctl/cmd/api/get.go:35 mgrctl/cmd/api/post.go:51
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error in query '%s'"
-msgstr "クエリ %s でエラーが発生しました"
+msgstr "クエリ「%s」でエラーが発生しました"
 
 #: mgrctl/cmd/api/login.go:23
 msgid "Refusing to overwrite existing login. Use --force to ignore this check."
-msgstr ""
+msgstr "既存のログインの上書きを拒否します。このチェックを無視するには--"
+"forceを使用します。"
 
 #: mgrctl/cmd/api/login.go:35
 msgid "Failed to validate credentials."
-msgstr ""
+msgstr "資格情報の検証に失敗しました。"
 
 #: mgrctl/cmd/api/login.go:41
 msgid "Login credentials verified."
-msgstr ""
+msgstr "ログイン資格情報が確認されました。"
 
 #: mgrctl/cmd/api/login.go:51
 msgid "Successfully logged out"
-msgstr ""
+msgstr "正常にログアウトしました"
 
 #: mgrctl/cmd/cmd.go:30
 msgid "Uyuni control tool"
@@ -208,107 +209,105 @@ msgid "Running %s"
 msgstr "%s を実行中"
 
 #: mgrctl/cmd/proxy/config.go:72 mgrctl/cmd/proxy/config.go:73
-#, fuzzy
 msgid "Create a proxy configuration file"
-msgstr "設定ファイルパス"
+msgstr "プロキシ設定ファイルの作成"
 
 #: mgrctl/cmd/proxy/config.go:153
 msgid "Filename to write the configuration to (without extension)."
-msgstr ""
+msgstr "設定を書き込むファイル名(拡張子なし)。"
 
 #: mgrctl/cmd/proxy/config.go:156
 msgid "Unique DNS-resolvable FQDN of this proxy."
-msgstr ""
+msgstr "このプロキシの固有のDNS解決可能FQDN。"
 
 #: mgrctl/cmd/proxy/config.go:157
 msgid "SSH port the proxy listens on."
-msgstr ""
+msgstr "プロキシがリスンするSSHポート。"
 
 #: mgrctl/cmd/proxy/config.go:158
 msgid "FQDN of the server to connect the proxy to."
-msgstr ""
+msgstr "プロキシを接続するサーバのFQDN。"
 
 #: mgrctl/cmd/proxy/config.go:159
 msgid "Maximum cache size in MB."
-msgstr ""
+msgstr "最大キャッシュサイズ(MB)。"
 
 #: mgrctl/cmd/proxy/config.go:160
-#, fuzzy
 msgid "Email of the proxy administrator"
-msgstr "管理者の姓"
+msgstr "プロキシ管理者の電子メール"
 
 #: mgrctl/cmd/proxy/config.go:161
 msgid "Path to the root CA certificate in PEM format."
-msgstr ""
+msgstr "PEM形式のルートCA証明書へのパス。"
 
 #: mgrctl/cmd/proxy/config.go:164
 msgid "Path to the proxy certificate in PEM format."
-msgstr ""
+msgstr "PEM形式のプロキシ証明書へのパス。"
 
 #: mgrctl/cmd/proxy/config.go:165
 msgid "Path to the proxy certificate private key in PEM format."
-msgstr ""
+msgstr "PEM形式のプロキシ証明書機密鍵へのパス。"
 
 #: mgrctl/cmd/proxy/config.go:167
 msgid ""
 "Path to an intermediate CA used to sign the proxy certicate in PEM format.\n"
 "May be provided multiple times or separated by commas."
 msgstr ""
+"PEM形式のプロキシ証明書に署名するために使用される中間CAへのパス。\n"
+"複数回指定することも、カンマで区切ることもできます。"
 
 #: mgrctl/cmd/proxy/config.go:173
 msgid "Email to set in the SSL certificate"
-msgstr ""
+msgstr "SSL証明書に設定する電子メールアドレス"
 
 #: mgrctl/cmd/proxy/config.go:175
 msgid "Path to the private key of the CA to use to generate a new proxy certificate."
-msgstr ""
+msgstr "新しいプロキシ証明書の生成に使用するCAの機密鍵へのパス。"
 
 #: mgrctl/cmd/proxy/config.go:177
 msgid "Password of the CA private key, will be prompted if not passed."
-msgstr ""
+msgstr "CA機密鍵のパスワード。渡されていない場合は入力を求められます。"
 
 #: mgrctl/cmd/proxy/config.go:187
 msgid "Common Flags"
-msgstr ""
+msgstr "共通フラグ"
 
 #: mgrctl/cmd/proxy/config.go:188
 msgid "Third party proxy certificates flags"
-msgstr ""
+msgstr "サードパーティのプロキシ証明書フラグ"
 
 #: mgrctl/cmd/proxy/config_do.go:41
-#, fuzzy
 msgid "failed to connect to the server"
-msgstr "サーバにログインできません"
+msgstr "サーバへの接続に失敗しました"
 
 #: mgrctl/cmd/proxy/config_do.go:56
-#, fuzzy
 msgid "failed to execute proxy configuration api request"
-msgstr "設定のアンマーシャルに失敗しました"
+msgstr "プロキシ設定API要求の実行に失敗しました"
 
 #: mgrctl/cmd/proxy/config_do.go:61
 msgid "error saving binary data: %v"
-msgstr ""
+msgstr "バイナリデータの保存中にエラーが発生しました: %v"
 
 #: mgrctl/cmd/proxy/config_do.go:63
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Proxy configuration file saved as %s"
-msgstr "設定ファイルパス"
+msgstr "プロキシ設定ファイルが %s として保存されました"
 
 #: mgrctl/cmd/proxy/config_do.go:77
 msgid "flag proxyKey is required when flag proxyCrt is provided"
-msgstr ""
+msgstr "フラグproxyCrtが指定されている場合は、フラグproxyKeyが必要です"
 
 #: mgrctl/cmd/proxy/config_do.go:118
 msgid "Please enter SSL CA password"
-msgstr ""
+msgstr "SSL CAパスワードを入力してください"
 
 #: mgrctl/cmd/proxy/proxy.go:18 mgrctl/cmd/proxy/proxy.go:19
 msgid "Manage proxy configurations"
-msgstr ""
+msgstr "プロキシ設定の管理"
 
 #: mgrctl/cmd/proxy/proxy.go:27 mgrctl/cmd/proxy/proxy.go:28
 msgid "Create proxy configurations"
-msgstr ""
+msgstr "プロキシ設定の作成"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
