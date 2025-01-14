@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2024-09-26 12:48+0000\n"
-"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
+"PO-Revision-Date: 2025-01-14 14:50+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -138,7 +139,6 @@ msgid "distribution treeinfo %s does not exists. Please provide distribution det
 msgstr "ディストリビューションツリー情報 %s が存在しません。ディストリビューションの詳細および/またはチャンネルラベルを提供してください"
 
 #: mgradm/cmd/distro/distro.go:32
-#, fuzzy
 msgid ""
 "Auto installation distribution product mapping.\n"
 "\n"
@@ -177,30 +177,50 @@ msgid ""
 msgstr ""
 "自動インストールディストリビューション製品のマッピング。\n"
 "\n"
-"Uyuniサーバでディストリビューションを登録するには、ディストリビューションを正しいソフトウェアチャンネルにマッピングすることが重要です。\n"
+"サーバでディストリビューションを登録するには、ディストリビューションを正しい"
+"ソフトウェアチャンネルにマッピングすることが重要です。\n"
 "\n"
-"ソフトウェアチャンネルは、ディストリビューション名と関連付けずに異なる名前を付けることができます。その場合、カスタムディストリビューション名とソフトウェアチャンネルマッピングを許可する必要があります。\n"
+"ソフトウェアチャンネルは、ディストリビューション名と関連付けずに異なる名前を"
+"付けることができます。\n"
+"その場合、カスタムディストリビューション名とソフトウェアチャンネルのマッピン"
+"グを許可する必要があります。\n"
 "\n"
+"ソフトウェアチャンネルを設定する1つの方法は、ディストリビューションコピーコマ"
+"ンドに--channelフラグを付けることです。\n"
 "\n"
-"ソフトウェアチャンネルを設定する1つの方法は、ディストリビューションコピーコマンドに--channelフラグを付けることです。\n"
-"\n"
-"頻繁に使用する場合は、mgradmの設定ファイルに以下のフォーマットでカスタム製品マッピングを書き込むことができます。\n"
+"頻繁に使用する場合は、mgradmの設定ファイルに以下のフォーマットでカスタム製品"
+"マッピングを書き込むことができます。\n"
 "\n"
 "製品マップ:\n"
 "  <ディストリビューション名>:\n"
 "    <ディストリビューションバージョン:\n"
 "      <ディストリビューションアーキテクチャ>:\n"
 "        ChannelLabel: <チャンネルラベル>\n"
-"        InstallType: <rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpmのいずれか>\n"
+"        InstallType: "
+"<rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpmのいずれか>\n"
 "        TreeName: <カスタムディストリビューション名>\n"
 "\n"
 "ここで\n"
-"* <ディストリビューション名> はディストリビューションの名前で、デフォルトではメディアの「.treeinfo」ファイルから取得されます。「.treeinfo」が見つからないか使用できない場合は、コマンドラインオプションが必要であり、使用されます。\n"
-"*<ディストリビューションバージョン>はディストリビューションのバージョンで、デフォルトではメディアの「.treeinfo」ファイルから取得されます。「.treeinfo」が見つからない場合は、コマンドラインオプションが必要であり、使用されます。\n"
-"*<ディストリビューションアーキテクチャ>はディストリビューションのアーキテクチャで、デフォルトではメディアの「.treeinfo」ファイルから取得されます。「.treeinfo」が見つからない場合は、コマンドラインオプションが必要であり、使用されます。\n"
-"* ChannelLabelはUyuniサーバからのチャンネルラベルで、このディストリビューションに使用され、コマンドラインフラグで上書きできません。\n"
-"* InstallType は、インストーラが既知の場合 (autoyastやkickstartの場合)、または「generic_rpm」を使用する場合に使用します。\n"
-"* TreeName は、UyuniサーバーのUIでディストリビューションの表示方法を指定します。設定されていない場合は <ディストリビューション名> が使用されます。\n"
+"* <ディストリビューション名> "
+"はディストリビューションの名前で、デフォルトではメディアの「.treeinfo」ファイ"
+"ルから取得されます。「.treeinfo」が見つからないか使用できない場合は、コマンド"
+"ラインオプションが必要であり、使用されます。\n"
+"*<ディストリビューションバージョン>はディストリビューションのバージョンで、デ"
+"フォルトではメディアの「.treeinfo」ファイルから取得されます。「.treeinfo」が"
+"見つからない場合は、コマンドラインオプションが必要であり、使用されます。\n"
+"*<ディストリビューションアーキテクチャ>はディストリビューションのアーキテクチ"
+"ャで、デフォルトではメディアの「.treeinfo」ファイルから取得されます。「.treei"
+"nfo」が見つからない場合は、コマンドラインオプションが必要であり、使用されます"
+"。\n"
+"* "
+"ChannelLabelはUyuniサーバからのチャンネルラベルで、このディストリビューション"
+"に使用され、コマンドラインフラグで上書きできません。\n"
+"* InstallType は、インストーラが既知の場合 "
+"(autoyastやkickstartの場合)、または「generic_rpm」を使用する場合に使用します"
+"。\n"
+"* TreeName "
+"は、UyuniサーバーのUIでディストリビューションの表示方法を指定します。"
+"設定されていない場合は <ディストリビューション名> が使用されます。\n"
 "\n"
 "ビルトイン製品マップ:\n"
 "\n"
@@ -388,9 +408,8 @@ msgstr "現在実行中のサーバコンテナのイメージが見つかりま
 #: mgradm/cmd/inspect/kubernetes.go:46 mgradm/cmd/restart/kubernetes.go:27
 #: mgradm/cmd/start/kubernetes.go:27 mgradm/cmd/stop/kubernetes.go:27
 #: mgradm/shared/utils/exec.go:39
-#, fuzzy
 msgid "failed retrieving namespace"
-msgstr "イメージの決定に失敗しました"
+msgstr "ネームスペースの取得に失敗しました"
 
 #: mgradm/cmd/inspect/kubernetes.go:57 mgradm/cmd/inspect/podman.go:39
 msgid "inspect command failed"
@@ -401,9 +420,8 @@ msgid "cannot print inspect result"
 msgstr "検査結果を出力できません"
 
 #: mgradm/cmd/inspect/podman.go:34
-#, fuzzy
 msgid "failed to find the image of the currently running server container"
-msgstr "現在実行中のサーバコンテナのイメージが見つかりませんでした: %s"
+msgstr "現在実行中のサーバコンテナのイメージが見つかりませんでした"
 
 #: mgradm/cmd/install/install.go:20 mgradm/cmd/install/install.go:21
 msgid "Install a new server"
@@ -653,25 +671,22 @@ msgid "First User Flags"
 msgstr "最初のユーザのフラグ"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:49
-#, fuzzy
 msgid "failed to parse data extractor pod output"
-msgstr "ソースホストから抽出されたデータを読み込めませんでした"
+msgstr "データ出力機ポッド出力を解析できませんでした"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:65
-#, fuzzy
 msgid "failed to parse migration data file"
 msgstr "移行スクリプトの生成に失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:72
 msgid "found no data file after migration"
-msgstr ""
+msgstr "移行後にデータファイルが見つかりません"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:23
 msgid "Migrate a remote server to containers running on a kubernetes cluster"
 msgstr "リモートサーバをkubernetesクラスタ上で動作するコンテナに移行する"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:24
-#, fuzzy
 msgid ""
 "Migrate a remote server to containers running on a kubernetes cluster\n"
 "\n"
@@ -692,117 +707,116 @@ msgstr ""
 "リモートサーバをkubernetesクラスタ上で動作するコンテナに移行する\n"
 "\n"
 "この移行コマンドは、次のことを前提としています。\n"
-"  * ソースサーバのSSH設定が完了している(ユーザ、およびマシンに接続するために\n"
+"  * ソースサーバのSSH設定が完了している(ユーザ、"
+"およびマシンに接続するために\n"
 "    必要なすべてのオプションを含む)。\n"
-"  *  SSHエージェントが起動し、サーバに接続するために使用する鍵が追加されている。\n"
 "  * kubectlとhelmがローカルにインストールされている。\n"
-"  * 配備先のクラスタに接続するために、動作するkubectl構成が設定されている必要がある。\n"
+"  * "
+"配備先のクラスタに接続するために、動作するkubectl構成が設定されている必要があ"
+"る。\n"
+"\n"
+"ターゲットのKubernetesネームスペースに含まれる場合、SSHパラメータは空欄のまま"
+"にできます。\n"
+"  * configおよびknown_hosts項目を持つuyuni-migration-config ConfigMap\n"
+"  * パスワードなしのキーを持つkeyおよびkey.pub項目を持つuyuni-migration-"
+"keyシークレット\n"
 "\n"
 "自動生成されたSSLルートCA証明書を持つサーバを移行する場合、機密鍵の\n"
 "パスワードをkubernetesシークレットでRSAに変換する必要があります。\n"
 "ソースサーバに生成されたSSL CA証明書がない場合、これは不要です。\n"
-"\n"
-"メモ: リモートクラスタへの移行はまだサポートされていません。\n"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:56
 msgid "SSL CA generated private key password"
 msgstr "SSL CAが生成した機密鍵のパスワード"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:58
-#, fuzzy
 msgid "Path to the SSH public key to use to connect to the source server"
-msgstr "ハブサーバへの接続に失敗しました"
+msgstr "ソースサーバへの接続に使用するSSH公開鍵へのパス"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:60
 msgid "Path to the passwordless SSH private key to use to connect to the source server"
-msgstr ""
+msgstr "ソースサーバへの接続に使用するパスワード不要のSSH秘密鍵へのパス"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:62
 msgid "Path to the SSH known_hosts file to use to connect to the source server"
-msgstr ""
+msgstr "ソースサーバへの接続に使用するSSH known_hostsファイルへのパス"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:63
-#, fuzzy
 msgid "Path to the SSH configuration file to use to connect to the source server"
-msgstr "移行の準備 - ソースサーバを停止せずにデータをコピーします。"
+msgstr "ソースサーバへの接続に使用するSSH設定ファイルへのパス"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:66
-#, fuzzy
 msgid "SSH Configuration Flags"
-msgstr "設定ファイルパス"
+msgstr "SSH設定ファイルフラグ"
 
 #: mgradm/cmd/migrate/kubernetes/migrationJob.go:51
-#, fuzzy
 msgid "failed to run the migration job"
-msgstr "移行スクリプトの生成に失敗しました"
+msgstr "移行ジョブの実行に失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:40
 msgid "no SSH key found to use for migration"
-msgstr ""
+msgstr "移行に使用するSSHキーが見つかりません"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:51
 msgid "no SSH known_hosts and configuration found to use for migration"
-msgstr ""
+msgstr "移行に使用するSSH known_hostsと設定が見つかりません"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:68
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s SSH key secret"
-msgstr "キー %s の表示に失敗しました"
+msgstr "%s SSHキーシークレットの取得に失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:79
 msgid "%[1]s secret misses the %[2]s value"
-msgstr ""
+msgstr "%[1]s シークレットに %[2]s 値が見つかりません"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:89
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to read key file %s"
-msgstr "フォルダ %s の作成に失敗しました"
+msgstr "キーファイル %s の読み込みに失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:94
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to read public key file %s"
-msgstr "証明書ファイル %s の読み込みに失敗しました"
+msgstr "公開鍵ファイル %s の読み込みに失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:111
-#, fuzzy
 msgid "failed to create the SSH migration secret"
-msgstr "移行スクリプトの生成に失敗しました"
+msgstr "SSH移行シークレットの作成に失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:124
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s SSH ConfigMap"
-msgstr "%s の生成に失敗しました"
+msgstr "%s SSH ConfigMapの取得に失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:130
-#, fuzzy
 msgid "failed to parse SSH ConfigMap data"
-msgstr "終了日の解析に失敗しました: %s\n"
+msgstr "SSH ConfigMapデータの解析に失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:135
 #: mgradm/cmd/migrate/kubernetes/ssh.go:140
 msgid "%[1]s ConfigMap misses the %[2]s value"
-msgstr ""
+msgstr "%[1]s ConfigMapに %[2]s 値が見つかりません"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:149
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to read SSH config file %s"
-msgstr "証明書ファイル %s の読み込みに失敗しました"
+msgstr "SSH設定ファイル %s の読み込みに失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:154
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to read SSH known_hosts file %s"
-msgstr "フォルダ %s の作成に失敗しました"
+msgstr "SSH known_hostsファイル %s の読み込みに失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:165
 #: mgradm/shared/kubernetes/certificates.go:236
-#, fuzzy
 msgid "failed to create the SSH migration ConfigMap"
-msgstr "移行スクリプトの生成に失敗しました"
+msgstr "SSH移行ConfigMapの作成に失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:145
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write certificate to %s"
-msgstr "証明書ファイル %s の読み込みに失敗しました"
+msgstr "%s への証明書の書き込みに失敗しました"
 
 #: mgradm/cmd/migrate/migrate.go:20 mgradm/cmd/migrate/migrate.go:21
 msgid "Migrate a remote server to containers"
@@ -875,9 +889,8 @@ msgid "Enabling Hub XML-RPC API since it is enabled on the migrated server"
 msgstr "移行先サーバでHub XML-RPC APIが有効になっているためこれを有効にする"
 
 #: mgradm/cmd/migrate/podman/utils.go:155
-#, fuzzy
 msgid "cannot setup saline service"
-msgstr "サービスを有効にできません"
+msgstr "salineサービスを設定できません"
 
 #: mgradm/cmd/migrate/podman/utils.go:164
 msgid "Server migrated"
@@ -918,7 +931,6 @@ msgid "kubernetes not supported yet"
 msgstr "kubernetesが未サポートです"
 
 #: mgradm/cmd/scale/podman.go:34
-#, fuzzy
 msgid "Multiple Hub XML-RPC API container replicas are not currently supported."
 msgstr "現在、複数のHub XML-RPCコンテナレプリカはサポートされていません。"
 
@@ -988,7 +1000,6 @@ msgid "Extract configuration and logs"
 msgstr "設定とログの抽出"
 
 #: mgradm/cmd/support/config/config.go:23
-#, fuzzy
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
@@ -1033,24 +1044,23 @@ msgid "user flag cannot be empty"
 msgstr "ユーザフラグは空にできません"
 
 #: mgradm/cmd/support/ptf/podman/utils.go:74
-#, fuzzy
 msgid "failed to find server image"
-msgstr "イメージの決定に失敗しました"
+msgstr "サーバイメージが見つかりませんでした"
 
 #: mgradm/cmd/support/ptf/podman/utils.go:83
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The computed image is %s"
-msgstr "計算されたイメージは次のとおりです: %s"
+msgstr "計算されたイメージは %s です"
 
 #: mgradm/cmd/support/ptf/podman/utils.go:93
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The computed confidential computing image is %s"
-msgstr "コンフィデンシャルコンピューティングのフラグ"
+msgstr "計算されたコンフィデンシャルコンピューティングイメージは %s です"
 
 #: mgradm/cmd/support/ptf/podman/utils.go:105
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The computed hub XML-RPC API image is %s"
-msgstr "Hub XML-RPC APIイメージ"
+msgstr "計算されたハブXML-RPC APIイメージは %s です"
 
 #: mgradm/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -1165,9 +1175,8 @@ msgid "Would run %s"
 msgstr "%s を実行します"
 
 #: mgradm/cmd/uninstall/kubernetes.go:67
-#, fuzzy
 msgid "failed to delete server resources"
-msgstr "サーバサービスのステータスの取得に失敗しました: %s"
+msgstr "サーバリソースの削除に失敗しました"
 
 #: mgradm/cmd/uninstall/kubernetes.go:101
 msgid "Nothing has been uninstalled, run with --force to actually uninstall"
@@ -1257,7 +1266,7 @@ msgstr "systemd confファイルを生成できません"
 #: mgradm/shared/hub/xmlrpcapi.go:36
 #, javascript-format
 msgid "No changes requested for hub. Keep %d replicas."
-msgstr ""
+msgstr "ハブに対する変更は要求されていません。%d レプリカを維持します。"
 
 #: mgradm/shared/hub/xmlrpcapi.go:54
 msgid "cannot generate systemd service"
@@ -1281,7 +1290,7 @@ msgstr "uyuni-crt TLSシークレットの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/certificates.go:68
 msgid "Creating cert-manager issuer for existing CA"
-msgstr ""
+msgstr "既存のCA用のcert-manager発行者の作成"
 
 #: mgradm/shared/kubernetes/certificates.go:84
 #: mgradm/shared/kubernetes/certificates.go:122
@@ -1339,14 +1348,12 @@ msgid "Failed to base64 decode CA certificate"
 msgstr "CA証明書のbase64デコードに失敗しました"
 
 #: mgradm/shared/kubernetes/coco.go:38
-#, fuzzy
 msgid "failed to create confidential computing attestations deployment"
-msgstr "コンフィデンシャルコンピューティング認証サービスを設定できません"
+msgstr "コンフィデンシャルコンピューティング認証の配備の作成に失敗しました"
 
 #: mgradm/shared/kubernetes/db.go:43
-#, fuzzy
 msgid "failed to create the database secret"
-msgstr "uyuni-crt TLSシークレットの作成に失敗しました"
+msgstr "データベースシークレットの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:32
 msgid "Running database finalization, this could be long depending on the size of the database…"
