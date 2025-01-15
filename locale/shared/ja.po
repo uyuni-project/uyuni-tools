@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-12 11:53+0100\n"
-"PO-Revision-Date: 2025-01-15 04:50+0000\n"
+"PO-Revision-Date: 2025-01-15 07:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ja/>\n"
@@ -113,7 +113,7 @@ msgstr "保存されている資格情報をロードできません"
 #: shared/api/credentials.go:83
 #, javascript-format
 msgid "unable to read credentials file %s"
-msgstr "ファイル %s を読み込めません"
+msgstr "資格情報ファイル %s を読み込めません"
 
 #: shared/api/credentials.go:88
 msgid "unable to decode credentials file"
@@ -125,7 +125,7 @@ msgstr "資格情報がロードされていません"
 
 #: shared/api/credentials.go:101
 msgid "specified api server does not match with stored credentials"
-msgstr "指定されたAPIサーバが保存されている資格情報と一致しません"
+msgstr "指定されたAPIサーバが、保存されている資格情報と一致しません"
 
 #: shared/api/org/createFirst.go:22
 msgid "unable to prepare API client"
@@ -315,7 +315,7 @@ msgstr "K3s Traefik設定のインストール"
 
 #: shared/kubernetes/k3s.go:44
 msgid "Failed to write Traefik configuration"
-msgstr "Traefik 設定の書き込みに失敗しました"
+msgstr "Traefik設定の書き込みに失敗しました"
 
 #: shared/kubernetes/k3s.go:79
 msgid "Waiting for Traefik to be reloaded"
@@ -414,7 +414,8 @@ msgstr "pvデータの解析に失敗しました"
 
 #: shared/kubernetes/pvc.go:75
 msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
-msgstr "%[1]sボリュームは%[1]sクレームを参照する必要があります(%[2]sネームスペース内)"
+msgstr "%[1]s ボリュームは %[1]s クレームを参照する必要があります(%[2]s "
+"ネームスペース内)"
 
 #: shared/kubernetes/pvc.go:85
 msgid "failed to run the persistent volume claims"
@@ -494,15 +495,11 @@ msgstr ""
 #: shared/kubernetes/utils.go:70
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
-msgstr[0] ""
-"単数形\n"
-"%[1]s 配備の準備を待機中( %[2]s ネームスペース内)\n"
-"複数形\n"
-"%[1]s 配備の準備を待機中( %[2]s ネームスペース内\n"
+msgstr[0] "%[1]s 配備の準備を待機中(%[2]s ネームスペース内)\n"
 
 #: shared/kubernetes/utils.go:97
 msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
-msgstr "%[1]s 配備の準備を待機中( %[2]s ネームスペース内)\n"
+msgstr "%[1]s 配備の準備を待機中(%[2]s ネームスペース内)\n"
 
 #: shared/kubernetes/utils.go:114
 msgid "failed to check if the deployment has running pods"
