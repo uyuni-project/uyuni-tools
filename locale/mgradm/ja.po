@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2025-01-15 15:50+0000\n"
+"PO-Revision-Date: 2025-01-16 01:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgradm/ja/>\n"
@@ -1444,7 +1444,7 @@ msgstr "サービスの作成に失敗しました"
 #: mgradm/shared/kubernetes/traefik.go:37
 #, javascript-format
 msgid "failed to open %s for writing"
-msgstr "%s を書き込み用に開けませんでした"
+msgstr "書き込みのために %s を開けませんでした"
 
 #: mgradm/shared/kubernetes/traefik.go:56
 #: mgradm/shared/kubernetes/traefik.go:63
