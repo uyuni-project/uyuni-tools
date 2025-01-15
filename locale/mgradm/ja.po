@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2025-01-14 17:50+0000\n"
+"PO-Revision-Date: 2025-01-15 07:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgradm/ja/>\n"
@@ -672,11 +672,11 @@ msgstr "最初のユーザのフラグ"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:49
 msgid "failed to parse data extractor pod output"
-msgstr "データ出力機ポッド出力を解析できませんでした"
+msgstr "データ抽出器ポッド出力を解析できませんでした"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:65
 msgid "failed to parse migration data file"
-msgstr "移行スクリプトの生成に失敗しました"
+msgstr "移行データファイルの解析に失敗しました"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:72
 msgid "found no data file after migration"
@@ -718,8 +718,8 @@ msgstr ""
 "ターゲットのKubernetesネームスペースに含まれる場合、SSHパラメータは空欄のまま"
 "にできます。\n"
 "  * configおよびknown_hosts項目を持つuyuni-migration-config ConfigMap\n"
-"  * パスワードなしのキーを持つkeyおよびkey.pub項目を持つuyuni-migration-"
-"keyシークレット\n"
+"  * キーを含むuyuni-migration-"
+"keyシークレットと、パスワードなしのキーを含むkey.pub項目\n"
 "\n"
 "自動生成されたSSLルートCA証明書を持つサーバを移行する場合、機密鍵の\n"
 "パスワードをkubernetesシークレットでRSAに変換する必要があります。\n"
@@ -735,7 +735,7 @@ msgstr "ソースサーバへの接続に使用するSSH公開鍵へのパス"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:60
 msgid "Path to the passwordless SSH private key to use to connect to the source server"
-msgstr "ソースサーバへの接続に使用するパスワード不要のSSH秘密鍵へのパス"
+msgstr "ソースサーバへの接続に使用するパスワードなしのSSH機密鍵へのパス"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:62
 msgid "Path to the SSH known_hosts file to use to connect to the source server"
@@ -747,7 +747,7 @@ msgstr "ソースサーバへの接続に使用するSSH設定ファイルへの
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:66
 msgid "SSH Configuration Flags"
-msgstr "SSH設定ファイルフラグ"
+msgstr "SSH設定フラグ"
 
 #: mgradm/cmd/migrate/kubernetes/migrationJob.go:51
 msgid "failed to run the migration job"
@@ -932,7 +932,7 @@ msgstr "kubernetesが未サポートです"
 
 #: mgradm/cmd/scale/podman.go:34
 msgid "Multiple Hub XML-RPC API container replicas are not currently supported."
-msgstr "現在、複数のHub XML-RPCコンテナレプリカはサポートされていません。"
+msgstr "現在、複数のHub XML-RPC APIコンテナレプリカはサポートされていません。"
 
 #: mgradm/cmd/scale/podman.go:38
 #, javascript-format
@@ -1384,7 +1384,7 @@ msgstr "サーバ配備の作成に失敗しました"
 
 #: mgradm/shared/kubernetes/hubApi.go:44
 msgid "failed to create the hub API deployment"
-msgstr "ハブAPI配備ステータスの作成に失敗しました"
+msgstr "ハブAPI配備の作成に失敗しました"
 
 #: mgradm/shared/kubernetes/hubApi.go:100
 msgid "failed to create the hub API service"
@@ -1404,11 +1404,11 @@ msgstr "アップグレード後の変更を実行しています…"
 
 #: mgradm/shared/kubernetes/postUpgradeJob.go:31
 msgid "failed to run the post upgrade job"
-msgstr "ホストアップグレードジョブの実行失敗しました"
+msgstr "アップグレード後のジョブの実行に失敗しました"
 
 #: mgradm/shared/kubernetes/reconcile.go:29
 msgid "install kubectl before running this command"
-msgstr "このコマンドを実行する前にkubectl をインストールします"
+msgstr "このコマンドを実行する前にkubectlをインストールします"
 
 #: mgradm/shared/kubernetes/reconcile.go:105
 msgid "cannot set confidential computing containers replicas to 0"
@@ -1614,7 +1614,7 @@ msgstr "%s ボリュームの要求サイズ"
 #: mgradm/shared/utils/cmd_utils.go:86
 #, javascript-format
 msgid "Requested storage class for the %s volume"
-msgstr "%sボリュームの要求されたストレージクラス"
+msgstr "%s ボリュームの要求されたストレージクラス"
 
 #: mgradm/shared/utils/cmd_utils.go:101
 #, javascript-format
@@ -1654,7 +1654,7 @@ msgstr "イメージ"
 
 #: mgradm/shared/utils/cmd_utils.go:126
 msgid "Specify a private registry where pull the images"
-msgstr "イメージをプルするプライベートレジストリを指定してください"
+msgstr "イメージを取得するプライベートレジストリを指定してください"
 
 #: mgradm/shared/utils/cmd_utils.go:127
 msgid "Tag Image"
@@ -1732,8 +1732,7 @@ msgid ""
 "How many replicas of the Saline container should be started\n"
 "(only 0 or 1 supported for now)"
 msgstr ""
-"コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要が"
-"あるか\n"
+"Salineコンテナのレプリカをいくつ起動する必要があるか\n"
 "(現時点では0または1のみサポート)"
 
 #: mgradm/shared/utils/cmd_utils.go:196 mgradm/shared/utils/cmd_utils.go:208
