@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -40,7 +40,7 @@ func installForPodman(
 
 	configPath := utils.GetConfigPath(args)
 	if err := podman.UnpackConfig(configPath); err != nil {
-		return shared_utils.Errorf(err, L("failed to extract proxy config from %s file"), configPath)
+		return shared_utils.Errorf(err, L("failed to retrieve proxy config files"))
 	}
 
 	hostData, err := shared_podman.InspectHost()
