@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-12 11:53+0100\n"
-"PO-Revision-Date: 2025-01-15 07:50+0000\n"
+"PO-Revision-Date: 2025-01-15 08:30+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ja/>\n"
@@ -495,7 +495,12 @@ msgstr ""
 #: shared/kubernetes/utils.go:70
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
-msgstr[0] "%[1]s 配備の準備を待機中(%[2]s ネームスペース内)\n"
+msgstr[0] ""
+"単数形\n"
+"%[1]s 配備の準備を待機中(%[2]s ネームスペース内)\n"
+"\n"
+"複数形\n"
+"%[1]s 配備の準備を待機中(%[2]s ネームスペース内)\n"
 
 #: shared/kubernetes/utils.go:97
 msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
@@ -584,7 +589,7 @@ msgstr "ポッド定義の上書きをシリアライズできません"
 #: shared/kubernetes/waiters.go:40
 msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
 msgstr ""
-"%[1]sジョブが失敗しました。詳細については、kubectl logs -n %[2]s --tail=-1 "
+"%[1]s ジョブが失敗しました。詳細については、kubectl logs -n %[2]s --tail=-1 "
 "-ljob-name=%[1]sを実行してください"
 
 #: shared/kubernetes/waiters.go:49
@@ -599,7 +604,7 @@ msgstr "%s ジョブステータスの取得に失敗しました"
 #: shared/kubernetes/waiters.go:65
 #, javascript-format
 msgid "invalid job status response: '%s'"
-msgstr "無効なジョブ ステータス応答: 「%s」"
+msgstr "無効なジョブステータス応答: 「%s」"
 
 #: shared/kubernetes/waiters.go:85
 #, javascript-format
@@ -1109,7 +1114,7 @@ msgstr "openssl rsaプロセス入力ストリームを開けませんでした"
 
 #: shared/ssl/ssl.go:257
 msgid "Failed to write openssl key content to input stream"
-msgstr "openssキーコンテンツを入力ストリームに書き込めませんでした"
+msgstr "opensslキーコンテンツを入力ストリームに書き込めませんでした"
 
 #: shared/ssl/ssl.go:263
 msgid "Failed to convert CA private key to RSA"
