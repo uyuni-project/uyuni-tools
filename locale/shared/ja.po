@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-12 11:53+0100\n"
-"PO-Revision-Date: 2025-01-15 01:50+0000\n"
+"PO-Revision-Date: 2025-01-15 04:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ja/>\n"
@@ -42,7 +42,7 @@ msgstr "設定されている場合、サーバ証明書は有効性をチェッ
 
 #: shared/api/api.go:74
 msgid "401: unauthorized"
-msgstr "401: unauthorized"
+msgstr "401: 権限がありません"
 
 #: shared/api/api.go:88
 #, javascript-format
@@ -994,14 +994,14 @@ msgid "Container already removed"
 msgstr "コンテナはすでに削除されています"
 
 #: shared/podman/utils.go:116
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s systemd service definition"
-msgstr "%s systemdサービスを有効にできませんでした"
+msgstr "%s systemdサービス定義の取得に失敗しました"
 
 #: shared/podman/utils.go:123
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "no UYUNI_IMAGE defined in %s systemd service"
-msgstr "%s systemdサービスを有効にできませんでした"
+msgstr "%s systemdサービスにUYUNI_IMAGEが定義されていません"
 
 #: shared/podman/utils.go:140
 #, javascript-format
@@ -1023,132 +1023,125 @@ msgstr "データを検査できません"
 
 #: shared/ssl/flags.go:14
 msgid "SSL certificate cnames separated by commas"
-msgstr ""
+msgstr "カンマで区切られたSSL証明書のcname"
 
 #: shared/ssl/flags.go:15
 msgid "SSL certificate country"
-msgstr ""
+msgstr "SSL証明書の国"
 
 #: shared/ssl/flags.go:16
-#, fuzzy
 msgid "SSL certificate state"
-msgstr "ホストへのSSL CA証明書のコピー"
+msgstr "SSL証明書の都道府県"
 
 #: shared/ssl/flags.go:17
 msgid "SSL certificate city"
-msgstr ""
+msgstr "SSL証明書の市町村"
 
 #: shared/ssl/flags.go:18
 msgid "SSL certificate organization"
-msgstr ""
+msgstr "SSL証明書の組織"
 
 #: shared/ssl/flags.go:19
 msgid "SSL certificate organization unit"
-msgstr ""
+msgstr "SSL証明書の組織単位"
 
 #: shared/ssl/flags.go:21
 msgid "SSL Certificate Flags"
-msgstr ""
+msgstr "SSL証明書フラグ"
 
 #: shared/ssl/ssl.go:38
-#, fuzzy
 msgid "Failed to find a non-CA certificate"
-msgstr "ホームディレクトリの検索に失敗しました"
+msgstr "CA以外の証明書が見つかりませんでした"
 
 #: shared/ssl/ssl.go:77
 msgid "expected to find a certificate, got none"
-msgstr ""
+msgstr "証明書が見つかることを期待していたが、見つかりませんでした"
 
 #: shared/ssl/ssl.go:83
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to read certificate file %s"
-msgstr "ファイル %s の読み込みに失敗しました"
+msgstr "証明書ファイル %s の読み込みに失敗しました"
 
 #: shared/ssl/ssl.go:119
-#, fuzzy
 msgid "Failed to extract data from certificate"
-msgstr "ランダムデータの読み込みに失敗しました"
+msgstr "証明書からのデータの抽出に失敗しました"
 
 #: shared/ssl/ssl.go:140
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse start date: %s\n"
-msgstr "%s の作成に失敗しました"
+msgstr "開始日の解析に失敗しました: %s\n"
 
 #: shared/ssl/ssl.go:146
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse end date: %s\n"
-msgstr "%s の作成に失敗しました"
+msgstr "終了日の解析に失敗しました: %s\n"
 
 #: shared/ssl/ssl.go:190
 msgid "No CA found"
-msgstr ""
+msgstr "CAが見つかりません"
 
 #: shared/ssl/ssl.go:197
 msgid "No CA found for server certificate"
-msgstr ""
+msgstr "サーバ証明書のCAが見つかりません"
 
 #: shared/ssl/ssl.go:206
 #, javascript-format
 msgid "Missing CA with subject hash %s"
-msgstr ""
+msgstr "サブジェクトハッシュ %s のCAがありません"
 
 #: shared/ssl/ssl.go:227
-#, fuzzy
 msgid "server certificate is required"
-msgstr "値が必要がです"
+msgstr "サーバ証明書が必要がです"
 
 #: shared/ssl/ssl.go:228
-#, fuzzy
 msgid "server key is required"
-msgstr "値が必要がです"
+msgstr "サーバキーが必要がです"
 
 #: shared/ssl/ssl.go:240
 #, javascript-format
 msgid "%s file is not accessible"
-msgstr ""
+msgstr "%s ファイルにアクセスできません"
 
 #: shared/ssl/ssl.go:248
 msgid "Source server SSL CA private key password"
-msgstr ""
+msgstr "ソースサーバSSL CA機密鍵パスワード"
 
 #: shared/ssl/ssl.go:254
 msgid "Failed to open openssl rsa process input stream"
-msgstr ""
+msgstr "openssl rsaプロセス入力ストリームを開けませんでした"
 
 #: shared/ssl/ssl.go:257
-#, fuzzy
 msgid "Failed to write openssl key content to input stream"
-msgstr "%s ファイルの書き込みに失敗しました"
+msgstr "openssキーコンテンツを入力ストリームに書き込めませんでした"
 
 #: shared/ssl/ssl.go:263
-#, fuzzy
 msgid "Failed to convert CA private key to RSA"
-msgstr "データをJSONに変換できません"
+msgstr "CA機密鍵をRSAに変換できませんでした"
 
 #: shared/ssl/ssl.go:273
 msgid "Failed to open openssl x509 process input stream"
-msgstr ""
+msgstr "openssl x509プロセス入力ストリームを開けませんでした"
 
 #: shared/ssl/ssl.go:276
-#, fuzzy
 msgid "Failed to write SSL certificate to input stream"
-msgstr "ファイル %s の読み込みに失敗しました"
+msgstr "SSL証明書を入力ストリームに書き込めませんでした"
 
 #: shared/ssl/ssl.go:280
-#, fuzzy
 msgid "failed to strip text part from CA certificate"
-msgstr "ランダムデータの読み込みに失敗しました"
+msgstr "CA証明書からテキスト部分を削除できませんでした"
 
 #: shared/utils/cmd.go:58 shared/utils/cmd.go:59
 msgid "failed to unmarshall configuration"
 msgstr "設定のアンマーシャルに失敗しました"
 
 #: shared/utils/cmd.go:70
-#, fuzzy
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
-msgstr "コンテナに到達するために使用するツール。指定できる値:「 podman」、「podman-remote」、「kubectl」。デフォルトではどれを使用するかを推測します。"
+msgstr ""
+"コンテナに到達するために使用するツール。指定できる値:「 podman」、「podman-"
+"remote」、「kubectl」。\n"
+"デフォルトではどれを使用するかを推測します。"
 
 #: shared/utils/cmd.go:86
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
@@ -1254,7 +1247,6 @@ msgstr ""
 "コマンドの詳細については、「{{.CommandPath}} [command] --help」を使用してください。{{end}}\n"
 
 #: shared/utils/config.go:143
-#, fuzzy
 msgid ""
 "\n"
 "Configuration:\n"
@@ -1299,11 +1291,12 @@ msgstr ""
 "  フラグの名前はコマンドラインパラメータの「--」以降の部分です。\n"
 "  フラグ名の「_」文字はすべて、ネストされたプロパティを意味します。\n"
 "  \n"
-"  たとえば 「--tz CEST」と「--ssl-password secret」はこのYAML設定にマップされます。\n"
-"  \n"
+"  たとえば 「--tz CEST」と「--ssl-password secret」はこのYAML設定に\n"
+"  マップされます。\n"
+"\n"
 "    tz: CEST\n"
 "    ssl:\n"
-"      パスワード: secret\n"
+"         パスワード: secret\n"
 "  \n"
 "  設定ファイルは以下の場所と順序で検索されます:\n"
 "  · /etc/uyuni/uyuni-tools.yam\n"
@@ -1317,10 +1310,13 @@ msgstr ""
 "\n"
 "  非グローバルフラグはすべて、環境変数として渡すこともできます。\n"
 "  \n"
-"    環境変数名は、フラグ名の「-」を「_」に置き換え、{{ .EnvPrefix }}プレフィックスを付けたものです。\n"
+"  環境変数名は、フラグ名の「-」を「_」に置き換え、{{ .EnvPrefix }}"
+"プレフィックス\n"
+"  を付けたものです。\n"
 "  \n"
 "  たとえば、「--tz CEST」フラグは「{{ .EnvPrefix }}_TZ」にマップされ、\n"
-"  「--ssl-password」フラグは「{{ .EnvPrefix }}_SSL_PASSWORD」にマップされます。 \n"
+"  「--ssl-password」フラグは「{{ .EnvPrefix "
+"}}_SSL_PASSWORD」にマップされます。\n"
 
 #: shared/utils/config.go:180
 msgid "Help on configuration file and environment variables"
@@ -1426,7 +1422,7 @@ msgstr "スペースやタブを含むことはできません"
 #: shared/utils/utils.go:104 shared/utils/utils.go:127
 #: shared/utils/utils.go:140
 msgid "not an interactive device, not asking for missing value"
-msgstr ""
+msgstr "対話型デバイスではないので、不足している値を求めません"
 
 #: shared/utils/utils.go:113
 msgid "Confirm the password"
@@ -1437,7 +1433,6 @@ msgid "Two different passwords have been provided"
 msgstr "2つの異なるパスワードが指定されています"
 
 #: shared/utils/utils.go:149
-#, fuzzy
 msgid "failed to read input"
 msgstr "入力の読み込みに失敗しました"
 
@@ -1509,9 +1504,8 @@ msgid "failed to create temporary directory"
 msgstr "一時ディレクトリの作成に失敗しました"
 
 #: shared/utils/utils.go:334
-#, fuzzy
 msgid "failed to remove temporary directory"
-msgstr "一時ディレクトリの作成に失敗しました"
+msgstr "一時ディレクトリの削除に失敗しました"
 
 #: shared/utils/utils.go:344
 msgid "Failed to read random data"
@@ -1542,14 +1536,14 @@ msgid "cannot resolve %s"
 msgstr "%s を解決できません"
 
 #: shared/utils/utils.go:489
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error creating file %s"
-msgstr "ファイル %s を削除中"
+msgstr "ファイル %s の作成中にエラーが発生しました"
 
 #: shared/utils/utils.go:494
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error writing file %s"
-msgstr "ファイル %s を削除中"
+msgstr "ファイル %s の書き込み中にエラーが発生しました"
 
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "クラスタタイプの検出に失敗しました"
