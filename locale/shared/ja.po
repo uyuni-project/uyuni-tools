@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-12 11:53+0100\n"
-"PO-Revision-Date: 2025-01-15 08:30+0000\n"
+"PO-Revision-Date: 2025-01-15 12:42+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ja/>\n"
@@ -269,7 +269,7 @@ msgstr "%s YAMLファイルの作成に失敗しました"
 #: shared/kubernetes/apply.go:50
 #, javascript-format
 msgid "failed to close %s YAML file"
-msgstr "%s YAMLファイルのクローズに失敗しました"
+msgstr "%s YAMLファイルを閉じることができませんでした"
 
 #: shared/kubernetes/apply.go:57
 msgid "failed to write PVC to file"
