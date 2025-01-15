@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-12 11:53+0100\n"
-"PO-Revision-Date: 2025-01-15 15:50+0000\n"
+"PO-Revision-Date: 2025-01-16 01:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ja/>\n"
@@ -1025,7 +1025,7 @@ msgstr "データを検査できません"
 
 #: shared/ssl/flags.go:14
 msgid "SSL certificate cnames separated by commas"
-msgstr "カンマで区切られたSSL証明書のcname"
+msgstr "カンマで区切られたSSL証明書のcnames"
 
 #: shared/ssl/flags.go:15
 msgid "SSL certificate country"
@@ -1053,11 +1053,11 @@ msgstr "SSL証明書フラグ"
 
 #: shared/ssl/ssl.go:38
 msgid "Failed to find a non-CA certificate"
-msgstr "CA以外の証明書が見つかりませんでした"
+msgstr "非CA証明書の検索に失敗しました"
 
 #: shared/ssl/ssl.go:77
 msgid "expected to find a certificate, got none"
-msgstr "証明書が見つかることを期待していたが、見つかりませんでした"
+msgstr "証明書が見つかると予期していたが、何も見つかりませんでした"
 
 #: shared/ssl/ssl.go:83
 #, javascript-format
@@ -1066,7 +1066,7 @@ msgstr "証明書ファイル %s の読み込みに失敗しました"
 
 #: shared/ssl/ssl.go:119
 msgid "Failed to extract data from certificate"
-msgstr "証明書からのデータの抽出に失敗しました"
+msgstr "証明書からのデータ抽出に失敗しました"
 
 #: shared/ssl/ssl.go:140
 #, javascript-format
@@ -1089,15 +1089,15 @@ msgstr "サーバ証明書のCAが見つかりません"
 #: shared/ssl/ssl.go:206
 #, javascript-format
 msgid "Missing CA with subject hash %s"
-msgstr "件名ハッシュ %s のCAがありません"
+msgstr "件名ハッシュ %s のCAが見つかりません"
 
 #: shared/ssl/ssl.go:227
 msgid "server certificate is required"
-msgstr "サーバ証明書が必要がです"
+msgstr "サーバ証明書が必要です"
 
 #: shared/ssl/ssl.go:228
 msgid "server key is required"
-msgstr "サーバキーが必要がです"
+msgstr "サーバキーが必要です"
 
 #: shared/ssl/ssl.go:240
 #, javascript-format
@@ -1118,7 +1118,7 @@ msgstr "opensslキーコンテンツを入力ストリームに書き込めま�
 
 #: shared/ssl/ssl.go:263
 msgid "Failed to convert CA private key to RSA"
-msgstr "CA機密鍵をRSAに変換できませんでした"
+msgstr "CA機密鍵のRSAへの変換に失敗しました"
 
 #: shared/ssl/ssl.go:273
 msgid "Failed to open openssl x509 process input stream"
