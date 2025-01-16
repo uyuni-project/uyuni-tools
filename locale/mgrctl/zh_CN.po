@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-08 15:09+0100\n"
-"PO-Revision-Date: 2024-06-11 07:46+0000\n"
+"PO-Revision-Date: 2025-01-16 01:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrctl/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: mgrctl/cmd/api/api.go:26
 msgid "JSON over HTTP API helper tool"
@@ -27,13 +28,16 @@ msgid "Call API GET request"
 msgstr "Call API GET 请求"
 
 #: mgrctl/cmd/api/api.go:32
-#, fuzzy
 msgid ""
 "Takes an API path and optional parameters and then issues GET request with them.\n"
 "\n"
 "Example:\n"
 "# mgrctl api get user/getDetails login=test"
-msgstr "接受 API 路径和可选参数，然后使用它们发出 GET 请求。如果提供了用户和口令，则会在调用 API 之前调用登录"
+msgstr ""
+"接受 API 路径和可选参数，然后使用它们发出 GET 请求。\n"
+"\n"
+"示例：\n"
+"# mgrctl api get user/getDetails login=test"
 
 #: mgrctl/cmd/api/api.go:43
 msgid "Call API POST request"
@@ -51,10 +55,22 @@ msgid ""
 "JSON example:\n"
 "# mgrctl api post user/create    '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
 msgstr ""
+"接受 API 路径和可选参数，然后使用它们发出 POST 请求。\n"
+"\n"
+"参数可以是 JSON 编码的字符串，也可以是一个或多个 key=value 对。\n"
+"\n"
+"Key=Value 对示例：\n"
+"# mgrctl api post user/create login=test password=testXX firstName=F "
+"lastName=L email=test@localhost\n"
+"\n"
+"JSON 示例：\n"
+"# mgrctl api post user/create    '{\"login\":\"test\", \"password\":"
+"\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":"
+"\"test@localhost\"}'\n"
 
 #: mgrctl/cmd/api/api.go:62
 msgid "Store login information for future API usage"
-msgstr ""
+msgstr "存储登录信息以便将来使用 API"
 
 #: mgrctl/cmd/api/api.go:63
 msgid ""
@@ -63,43 +79,47 @@ msgid ""
 "User name, password and remote host can be provided using flags or will be asked interactively.\n"
 "Environment variables are also supported."
 msgstr ""
+"登录名用于存储登录信息，以便下次调用 API。\n"
+"\n"
+"用户名、口令和远程主机可以通过标志提供或以交互方式询问。\n"
+"此外还支持环境变量。"
 
 #: mgrctl/cmd/api/api.go:71
 msgid "Overwrite existing login if exists"
-msgstr ""
+msgstr "重写现有登录名（如果存在）"
 
 #: mgrctl/cmd/api/api.go:75
 msgid "Remove stored login information"
-msgstr ""
+msgstr "去除存储的登录信息"
 
 #: mgrctl/cmd/api/api.go:76
 msgid "Logout removes stored login information."
-msgstr ""
+msgstr "注销会去除存储的登录信息。"
 
 #: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28
 msgid "unable to login to the server"
 msgstr "无法登录到服务器"
 
 #: mgrctl/cmd/api/get.go:35 mgrctl/cmd/api/post.go:51
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error in query '%s'"
-msgstr "查询 %s 中存在错误"
+msgstr "查询 \"%s\" 中存在错误"
 
 #: mgrctl/cmd/api/login.go:23
 msgid "Refusing to overwrite existing login. Use --force to ignore this check."
-msgstr ""
+msgstr "将拒绝重写现有登录名。使用 --force 可忽略此检查。"
 
 #: mgrctl/cmd/api/login.go:35
 msgid "Failed to validate credentials."
-msgstr ""
+msgstr "无法验证身份凭证。"
 
 #: mgrctl/cmd/api/login.go:41
 msgid "Login credentials verified."
-msgstr ""
+msgstr "已校验登录身份凭证。"
 
 #: mgrctl/cmd/api/login.go:51
 msgid "Successfully logged out"
-msgstr ""
+msgstr "已成功注销"
 
 #: mgrctl/cmd/cmd.go:30
 msgid "Uyuni control tool"
@@ -185,107 +205,105 @@ msgid "Running %s"
 msgstr "正在运行 %s"
 
 #: mgrctl/cmd/proxy/config.go:72 mgrctl/cmd/proxy/config.go:73
-#, fuzzy
 msgid "Create a proxy configuration file"
-msgstr "配置文件路径"
+msgstr "创建代理配置文件"
 
 #: mgrctl/cmd/proxy/config.go:153
 msgid "Filename to write the configuration to (without extension)."
-msgstr ""
+msgstr "要向其中写入配置的文件名（不含扩展名）。"
 
 #: mgrctl/cmd/proxy/config.go:156
 msgid "Unique DNS-resolvable FQDN of this proxy."
-msgstr ""
+msgstr "此代理的可由 DNS 解析的唯一 FQDN。"
 
 #: mgrctl/cmd/proxy/config.go:157
 msgid "SSH port the proxy listens on."
-msgstr ""
+msgstr "代理侦听的 SSH 端口。"
 
 #: mgrctl/cmd/proxy/config.go:158
 msgid "FQDN of the server to connect the proxy to."
-msgstr ""
+msgstr "代理要连接的服务器的 FQDN。"
 
 #: mgrctl/cmd/proxy/config.go:159
 msgid "Maximum cache size in MB."
-msgstr ""
+msgstr "最大缓存大小（以 MB 为单位）。"
 
 #: mgrctl/cmd/proxy/config.go:160
-#, fuzzy
 msgid "Email of the proxy administrator"
-msgstr "管理员的姓氏"
+msgstr "代理管理员的电子邮件地址"
 
 #: mgrctl/cmd/proxy/config.go:161
 msgid "Path to the root CA certificate in PEM format."
-msgstr ""
+msgstr "PEM 格式根 CA 证书的路径。"
 
 #: mgrctl/cmd/proxy/config.go:164
 msgid "Path to the proxy certificate in PEM format."
-msgstr ""
+msgstr "PEM 格式代理证书的路径。"
 
 #: mgrctl/cmd/proxy/config.go:165
 msgid "Path to the proxy certificate private key in PEM format."
-msgstr ""
+msgstr "PEM 格式代理证书私用密钥的路径。"
 
 #: mgrctl/cmd/proxy/config.go:167
 msgid ""
 "Path to an intermediate CA used to sign the proxy certicate in PEM format.\n"
 "May be provided multiple times or separated by commas."
 msgstr ""
+"用于为 PEM 格式代理证书签名的中间 CA 的路径。\n"
+"可以提供多次或用逗号进行分隔。"
 
 #: mgrctl/cmd/proxy/config.go:173
 msgid "Email to set in the SSL certificate"
-msgstr ""
+msgstr "SSL 证书中设置的电子邮件地址"
 
 #: mgrctl/cmd/proxy/config.go:175
 msgid "Path to the private key of the CA to use to generate a new proxy certificate."
-msgstr ""
+msgstr "用于生成新代理证书的 CA 的私用密钥路径。"
 
 #: mgrctl/cmd/proxy/config.go:177
 msgid "Password of the CA private key, will be prompted if not passed."
-msgstr ""
+msgstr "CA 私用密钥的口令，如果未传递，将会提示提供。"
 
 #: mgrctl/cmd/proxy/config.go:187
 msgid "Common Flags"
-msgstr ""
+msgstr "常用标志"
 
 #: mgrctl/cmd/proxy/config.go:188
 msgid "Third party proxy certificates flags"
-msgstr ""
+msgstr "第三方代理证书标志"
 
 #: mgrctl/cmd/proxy/config_do.go:41
-#, fuzzy
 msgid "failed to connect to the server"
-msgstr "无法登录到服务器"
+msgstr "无法连接到服务器"
 
 #: mgrctl/cmd/proxy/config_do.go:56
-#, fuzzy
 msgid "failed to execute proxy configuration api request"
-msgstr "无法解组配置"
+msgstr "无法执行代理配置 API 请求"
 
 #: mgrctl/cmd/proxy/config_do.go:61
 msgid "error saving binary data: %v"
-msgstr ""
+msgstr "保存二进制数据时出错：%v"
 
 #: mgrctl/cmd/proxy/config_do.go:63
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Proxy configuration file saved as %s"
-msgstr "配置文件路径"
+msgstr "代理配置文件已另存为 %s"
 
 #: mgrctl/cmd/proxy/config_do.go:77
 msgid "flag proxyKey is required when flag proxyCrt is provided"
-msgstr ""
+msgstr "如果提供了标志 proxyCrt，则必须提供标志 proxyKey"
 
 #: mgrctl/cmd/proxy/config_do.go:118
 msgid "Please enter SSL CA password"
-msgstr ""
+msgstr "请输入 SSL CA 口令"
 
 #: mgrctl/cmd/proxy/proxy.go:18 mgrctl/cmd/proxy/proxy.go:19
 msgid "Manage proxy configurations"
-msgstr ""
+msgstr "管理代理配置"
 
 #: mgrctl/cmd/proxy/proxy.go:27 mgrctl/cmd/proxy/proxy.go:28
 msgid "Create proxy configurations"
-msgstr ""
+msgstr "创建代理配置"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
