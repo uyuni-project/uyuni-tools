@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2025-01-14 07:50+0000\n"
+"PO-Revision-Date: 2025-01-16 06:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgradm/ko/>\n"
@@ -139,7 +139,6 @@ msgid "distribution treeinfo %s does not exists. Please provide distribution det
 msgstr "배포 트리 정보 %s이(가) 없습니다. 배포 세부 정보 및/또는 채널 레이블을 입력하십시오."
 
 #: mgradm/cmd/distro/distro.go:32
-#, fuzzy
 msgid ""
 "Auto installation distribution product mapping.\n"
 "\n"
@@ -178,29 +177,44 @@ msgid ""
 msgstr ""
 "자동 설치 배포 제품 매핑.\n"
 "\n"
-"배포를 Uyuni 서버에 등록하려면 배포를 올바른 소프트웨어 채널에 매핑하는 것이 중요합니다.\n"
+"배포를 Uyuni 서버에 등록하려면 배포를 올바른 소프트웨어 채널에 매핑하는 것이 "
+"중요합니다.\n"
 "\n"
-"소프트웨어 채널은 배포 이름과 관계 없이 다른 이름을 지정할 수 있으므로 사용자 지정 배포 이름을 소프트웨어 채널 매핑에 허용해야 합니다.\n"
+"소프트웨어 채널은 배포 이름과 관계 없이 다른 이름을 지정할 수 있으므로 "
+"사용자 지정 배포 이름을 소프트웨어 채널 매핑에 허용해야 합니다.\n"
 "\n"
-"소프트웨어 채널을 설정하는 한 가지 방법은 배포 복사 명령에 --channel 플래그를 지정하는 것입니다.\n"
+"소프트웨어 채널을 설정하는 한 가지 방법은 배포 복사 명령에 --channel "
+"플래그를 지정하는 것입니다.\n"
 "\n"
-"자주 사용하는 경우 사용자 지정 제품 매핑을 다음 형식으로 mgradm 구성 파일에 작성할 수 있습니다:\n"
+"자주 사용하는 경우 사용자 지정 제품 매핑을 다음 형식으로 mgradm 구성 파일에 "
+"작성할 수 있습니다:\n"
 "\n"
 "ProductMap:\n"
 "  <배포 이름>:\n"
 "    <배포 버전>:\n"
 "      <배포 아키텍처>:\n"
 "        ChannelLabel: <채널 레이블>\n"
-"        InstallType: <rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpm 중 하나>\n"
+"        InstallType: <rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|"
+"generic_rpm 중 하나>\n"
 "        TreeName: <사용자 지정 배포 이름>\n"
 "\n"
 "여기서\n"
-"* <배포 이름>은 배포 이름이며, 기본적으로 미디어의 '.treeinfo' 파일에서 가져옵니다. '.treeinfo'를 찾을 수 없거나 사용할 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
-"<배포 버전>은 배포 버전으로, 기본적으로 미디어의 '.treeinfo' 파일에서 가져옵니다. '.treeinfo'를 찾을 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
-"* <배포 아키텍처>는 기본적으로 미디어의 '.treeinfo' 파일에서 가져온 배포 아키텍처입니다. '.treeinfo'를 찾을 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
-"* 채널 레이블은 Uyuni 서버에서 이 배포에 사용할 채널 레이블이며, 명령줄 플래그로 재정의할 수 있습니다.\n"
-"* InstallType은 설치 프로그램이 알려진 경우(autoyast 또는 킥스타트의 경우) 해당 값을 사용하거나 'generic_rpm'을 사용합니다.\n"
-"* TreeName은 배포가 Uyuni 서버 UI에 표시되는 방식입니다. 설정하지 않으면 <배포 이름>이 사용됩니다.\n"
+"* <배포 이름>은 배포 이름이며, 기본적으로 미디어의 '.treeinfo' 파일에서 "
+"가져옵니다.\n"
+"  '.treeinfo'를 찾을 수 없거나 사용할 수 없는 경우, 명령줄 옵션이 필요하며 "
+"사용됩니다.\n"
+"<배포 버전>은 배포 버전으로, 기본적으로 미디어의 '.treeinfo' 파일에서 "
+"가져옵니다.\n"
+"  '.treeinfo'를 찾을 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
+"* <배포 아키텍처>는 기본적으로 미디어의 '.treeinfo' 파일에서 가져온 배포 "
+"아키텍처입니다.\n"
+"  .treeinfo'를 찾을 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
+"* 채널 레이블은 Uyuni 서버에서 이 배포에 사용할 채널 레이블이며,\n"
+"  명령줄 플래그로 재정의할 수 있습니다.\n"
+"* InstallType은 설치 프로그램이 알려진 경우(autoyast 또는 킥스타트의 경우) "
+"해당 값을 사용하거나 'generic_rpm'을 사용합니다.\n"
+"* TreeName은 배포가 Uyuni 서버 UI에 표시되는 방식입니다. 설정하지 않으면 "
+"<배포 이름>이 사용됩니다.\n"
 "\n"
 "빌드인 제품 맵:\n"
 "\n"
@@ -653,7 +667,6 @@ msgid "First User Flags"
 msgstr "첫 번째 사용자 플래그"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:49
-#, fuzzy
 msgid "failed to parse data extractor pod output"
 msgstr "원본 호스트에서 추출한 데이터를 읽지 못했습니다."
 
@@ -672,7 +685,6 @@ msgid "Migrate a remote server to containers running on a kubernetes cluster"
 msgstr "원격 서버를 Kubernetes 클러스터에서 실행되는 컨테이너로 마이그레이션"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:24
-#, fuzzy
 msgid ""
 "Migrate a remote server to containers running on a kubernetes cluster\n"
 "\n"
@@ -695,13 +707,13 @@ msgstr ""
 "이 마이그레이션 명령에서는 몇 가지 사항이 가정됩니다.\n"
 "  * 사용자 및 머신 연결에 필요한 모든 옵션 등\n"
 "    소스 서버의 SSH 구성이 완료되었습니다.\n"
-"  * SSH 에이전트가 시작되고 서버에 연결하는 데 사용할 키가 추가되었습니다.\n"
 "  * kubectl과 helm이 로컬에 설치되어 있습니다.\n"
 "  * 배포할 클러스터에 연결하도록 작동하는 kubectl 구성이 설정되어 있습니다.\n"
 "\n"
 "자동으로 생성된 SSL 루트 CA 인증서가 있는 서버를 마이그레이션하는 경우,\n"
 "개인 키 비밀번호는 Kubernetes 비밀에서 RSA로 변환하는 데 필요합니다.\n"
-"소스 서버에 생성된 SSL CA 인증서가 없는 경우에는 이 작업이 필요하지 않습니다.\n"
+"소스 서버에 생성된 SSL CA 인증서가 없는 경우에는 이 작업이 필요하지 않습니다."
+"\n"
 "\n"
 "참고: 원격 클러스터로의 마이그레이션은 아직 지원되지 않습니다!\n"
 
@@ -720,7 +732,6 @@ msgid "Path to the passwordless SSH private key to use to connect to the source 
 msgstr "소스 서버에 연결하는 데 사용할 암호 없는 SSH 개인 키의 경로"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:62
-#, fuzzy
 msgid "Path to the SSH known_hosts file to use to connect to the source server"
 msgstr "소스 서버에 연결하는 데 사용할 SSH known_hosts 파일 경로"
 
@@ -745,7 +756,6 @@ msgid "no SSH key found to use for migration"
 msgstr "마이그레이션에 사용할 SSH 키를 찾을 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:51
-#, fuzzy
 msgid "no SSH known_hosts and configuration found to use for migration"
 msgstr "마이그레이션에 사용할 SSH known_hosts 및 구성을 찾을 수 없음"
 
@@ -755,7 +765,6 @@ msgid "failed to get %s SSH key secret"
 msgstr "%s 키를 표시하지 못했습니다."
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:79
-#, fuzzy
 msgid "%[1]s secret misses the %[2]s value"
 msgstr "%[1]s 시크릿에 %[2]s 값이 누락됨"
 
@@ -1262,7 +1271,7 @@ msgid "cannot generate systemd conf file"
 msgstr "systemd conf 파일을 생성할 수 없음"
 
 #: mgradm/shared/hub/xmlrpcapi.go:36
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "No changes requested for hub. Keep %d replicas."
 msgstr "허브에 대한 변경 요청이 없습니다. %d 복제본을 유지하십시오."
 
@@ -1357,7 +1366,6 @@ msgid "failed to create the database secret"
 msgstr "uyuni-crt TLS 비밀 생성 실패"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:32
-#, fuzzy
 msgid "Running database finalization, this could be long depending on the size of the database…"
 msgstr "데이터베이스 최종 작업 실행 중, 데이터베이스의 크기에 따라 시간이 오래 걸릴 "
 "수 있습니다…"
@@ -1370,7 +1378,7 @@ msgstr "발급자 정의를 생성하지 못함"
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:36
 #, fuzzy
 msgid "Upgrading PostgreSQL database from %[1]s to %[2]s…"
-msgstr "PostgreSQL을 %[1]s에서 %[2]s(으)로 다운그레이드 시도 중"
+msgstr "PostgreSQL을 %[1]s에서 %[2]s(으)로 업그레이드 중…"
 
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:50
 #: mgradm/shared/podman/podman.go:281
@@ -1464,7 +1472,6 @@ msgid "failed to write traefik middleware and routes to file"
 msgstr "파일링할 traefik 미들웨어 및 경로를 작성하지 못함"
 
 #: mgradm/shared/kubernetes/traefik.go:70
-#, fuzzy
 msgid "failed to close traefik middleware and routes file"
 msgstr "traefik 미들웨어 및 경로 파일을 종료하지 못함"
 
