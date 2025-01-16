@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-12 11:53+0100\n"
-"PO-Revision-Date: 2025-01-14 07:50+0000\n"
+"PO-Revision-Date: 2025-01-16 06:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ko/>\n"
@@ -1195,11 +1195,13 @@ msgid "failed to unmarshall configuration"
 msgstr "구성을 마샬링 해제하지 못했습니다."
 
 #: shared/utils/cmd.go:70
-#, fuzzy
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
-msgstr "컨테이너에 도달하기 위해 사용되는 도구. 가능한 값: 'podman', 'podman-remote', 'kubectl'. 사용할 기본값 추측."
+msgstr ""
+"컨테이너에 도달하기 위해 사용되는 도구. 가능한 값: 'podman', 'podman-"
+"remote', 'kubectl'.\n"
+"사용할 기본값 추측."
 
 #: shared/utils/cmd.go:86
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
