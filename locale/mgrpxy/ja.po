@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2024-09-26 02:48+0000\n"
+"POT-Creation-Date: 2025-01-17 14:58+0100\n"
+"PO-Revision-Date: 2025-01-15 01:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -157,21 +157,18 @@ msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.comへのログインに失敗しました"
 
 #: mgrpxy/cmd/logs/kubernetes.go:29
-#, fuzzy
 msgid "failed to find proxy pod"
-msgstr "uyuni-proxy配備ネームスペースが見つかりませんでした"
+msgstr "プロキシポッドが見つかりませんでした"
 
 #: mgrpxy/cmd/logs/kubernetes.go:33
-#, fuzzy
 msgid "failed to find proxy deployment namespace"
-msgstr "uyuni-proxy配備ネームスペースが見つかりませんでした"
+msgstr "プロキシ配備ネームスペースが見つかりませんでした"
 
 #: mgrpxy/cmd/logs/logs.go:38
 msgid "Get the proxy logs"
 msgstr "プロキシログの取得"
 
 #: mgrpxy/cmd/logs/logs.go:39
-#, fuzzy
 msgid ""
 "Get the proxy logs\n"
 "The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman\n"
@@ -180,7 +177,8 @@ msgid ""
 msgstr ""
 "プロキシログの取得\n"
 "このコマンドは、インストールされたバックエンドを自動的に検出し、KubernetesまたはPodmanが管理しているコンテナのログを表示します\n"
-"ただし、ポッド名および／またはコンテナ名を指定して、特定のコンテナのログを取得できます。詳細については、例を参照してください。"
+"ただし、ポッド名および/またはコンテナ名を指定して、特定のコンテナのログを取得できます。\n"
+"詳細については、例を参照してください。"
 
 #: mgrpxy/cmd/logs/logs.go:65
 msgid "specify if logs should be followed"
@@ -195,11 +193,12 @@ msgid "number of lines to show from the end of the logs"
 msgstr "ログの末尾から表示する行数"
 
 #: mgrpxy/cmd/logs/logs.go:70
-#, fuzzy
 msgid ""
 "show logs since a specific time or duration.\n"
 "Supports Go duration strings and RFC3339 format (e.g. 3h, 2023-01-02T15:04:05)"
-msgstr "特定の時刻または期間以降のログを表示します。Go期間文字列およびRFC3339形式をサポートしています（5s、2m、3h、2023-01-02T15:04:05など）"
+msgstr ""
+"特定の時刻または期間以降のログを表示します。\n"
+"Go期間文字列およびRFC3339形式をサポートしています(3h、2023-01-02T15:04:05など)"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
@@ -488,9 +487,8 @@ msgid "failed to write in file %s"
 msgstr "ファイル %s への書き込みに失敗しました"
 
 #: mgrpxy/shared/kubernetes/deploy.go:184
-#, fuzzy
 msgid "failed to scale replicas to 1"
-msgstr "一時ディレクトリの作成に失敗しました"
+msgstr "レプリカを1にスケールできませんでした"
 
 #: mgrpxy/shared/podman/podman.go:45
 msgid "cannot setup network"
@@ -576,20 +574,24 @@ msgstr "SUSEカスタマーセンターのフラグ"
 msgid "image tag"
 msgstr "イメージタグ"
 
-#: mgrpxy/shared/utils/flags.go:87
+#: mgrpxy/shared/utils/flags.go:79
+msgid "Specify a registry where to pull the images from"
+msgstr ""
+
+#: mgrpxy/shared/utils/flags.go:88
 msgid "HTTPD tuning configuration file"
 msgstr "HTTPDチューニング設定ファイル"
 
-#: mgrpxy/shared/utils/flags.go:88
+#: mgrpxy/shared/utils/flags.go:89
 msgid "Squid tuning configuration file"
 msgstr "Squidチューニング設定ファイル"
 
-#: mgrpxy/shared/utils/flags.go:94
+#: mgrpxy/shared/utils/flags.go:95
 #, javascript-format
 msgid "Image for %s container"
 msgstr "%s コンテナのイメージ"
 
-#: mgrpxy/shared/utils/flags.go:96
+#: mgrpxy/shared/utils/flags.go:97
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s コンテナ用のタグ。設定されている場合はグローバル値を上書きします"

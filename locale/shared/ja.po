@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-12 11:53+0100\n"
-"PO-Revision-Date: 2024-09-26 12:48+0000\n"
-"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
+"PO-Revision-Date: 2025-01-16 01:50+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -41,7 +42,7 @@ msgstr "設定されている場合、サーバ証明書は有効性をチェッ
 
 #: shared/api/api.go:74
 msgid "401: unauthorized"
-msgstr ""
+msgstr "401: 権限がありません"
 
 #: shared/api/api.go:88
 #, javascript-format
@@ -50,16 +51,15 @@ msgstr "不明なエラー: %d"
 
 #: shared/api/api.go:120
 msgid "server URL is not provided"
-msgstr ""
+msgstr "サーバURLが提供されていません"
 
 #: shared/api/api.go:152
 msgid "Cached session is expired."
-msgstr ""
+msgstr "キャッシュされたセッションの有効期限が切れています。"
 
 #: shared/api/api.go:154 shared/api/credentials.go:70
-#, fuzzy
 msgid "Failed to remove stored credentials!"
-msgstr "ファイル %s の削除に失敗しました"
+msgstr "保存されている資格情報の削除に失敗しました!"
 
 #: shared/api/api.go:172
 msgid "Unable to create login data"
@@ -70,9 +70,8 @@ msgid "auth cookie not found in login response"
 msgstr "ログイン応答に認証クッキーが見つかりません"
 
 #: shared/api/api.go:217
-#, fuzzy
 msgid "failed to logout from the server"
-msgstr "サーバへの接続に失敗しました"
+msgstr "サーバからのログアウトに失敗しました"
 
 #: shared/api/api.go:238
 msgid "Unable to convert data to JSON"
@@ -80,27 +79,24 @@ msgstr "データをJSONに変換できません"
 
 #: shared/api/credentials.go:21
 msgid "not logged in, session cookie is missing"
-msgstr ""
+msgstr "ログインしていません。セッションクッキーがありません"
 
 #: shared/api/credentials.go:34
-#, fuzzy
 msgid "unable to create credentials json"
-msgstr "ログインデータを作成できません"
+msgstr "資格情報jsonを作成できません"
 
 #: shared/api/credentials.go:39
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "unable to write credentials store %s"
-msgstr "tar.gzの %s への書き込みに失敗しました"
+msgstr "資格情報ストア %s に書き込めません"
 
 #: shared/api/credentials.go:53
-#, fuzzy
 msgid "API server URL"
-msgstr "APIサーバのパスワード"
+msgstr "APIサーバのURL"
 
 #: shared/api/credentials.go:54
-#, fuzzy
 msgid "API server user"
-msgstr "APIサーバのパスワード"
+msgstr "APIサーバのユーザ"
 
 #: shared/api/credentials.go:55
 msgid "API server password"
@@ -108,33 +104,32 @@ msgstr "APIサーバのパスワード"
 
 #: shared/api/credentials.go:58
 msgid "No credentials provided"
-msgstr ""
+msgstr "資格情報が提供されていません"
 
 #: shared/api/credentials.go:68
 msgid "Cannot load stored credentials"
-msgstr ""
+msgstr "保存されている資格情報をロードできません"
 
 #: shared/api/credentials.go:83
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "unable to read credentials file %s"
-msgstr "ファイル %s の読み込みに失敗しました"
+msgstr "資格情報ファイル %s を読み込めません"
 
 #: shared/api/credentials.go:88
 msgid "unable to decode credentials file"
-msgstr ""
+msgstr "資格情報ファイルをデコードできません"
 
 #: shared/api/credentials.go:92
 msgid "no credentials loaded"
-msgstr ""
+msgstr "資格情報がロードされていません"
 
 #: shared/api/credentials.go:101
 msgid "specified api server does not match with stored credentials"
-msgstr ""
+msgstr "指定されたAPIサーバが、保存されている資格情報と一致しません"
 
 #: shared/api/org/createFirst.go:22
-#, fuzzy
 msgid "unable to prepare API client"
-msgstr "ログインデータを作成できません"
+msgstr "APIクライアントを準備できません"
 
 #: shared/api/org/createFirst.go:36
 msgid "failed to create first user and organization"
@@ -149,9 +144,8 @@ msgid "failed to get organization details"
 msgstr "組織の詳細の取得に失敗しました"
 
 #: shared/api/proxy/containerConfig.go:33
-#, fuzzy
 msgid "failed to create proxy configuration file"
-msgstr "設定ファイル %s の解析に失敗しました"
+msgstr "プロキシ設定ファイル の作成に失敗しました"
 
 #: shared/completion/completion.go:20 shared/completion/completion.go:21
 msgid "Generate shell completion script"
@@ -186,9 +180,8 @@ msgid "coundn't find app name"
 msgstr "アプリ名が見つかりませんでした"
 
 #: shared/connection.go:164
-#, fuzzy
 msgid "failed to guest namespace"
-msgstr "ネームスペースを取得できませんでした "
+msgstr "ゲストネームスペースに失敗しました"
 
 #: shared/connection.go:187
 #, javascript-format
@@ -223,9 +216,8 @@ msgid "unknown container kind: %s"
 msgstr "不明なコンテナの種類: %s"
 
 #: shared/connection.go:382
-#, fuzzy
 msgid "failed to detect the namespace"
-msgstr "ネームスペースを取得できませんでした "
+msgstr "ネームスペースの検出に失敗しました"
 
 #: shared/connection.go:398
 msgid "Copying the SSL CA certificate to the host"
@@ -236,9 +228,8 @@ msgid "Updating host trusted certificates"
 msgstr "ホストの信頼済み証明書の更新"
 
 #: shared/connection.go:425
-#, fuzzy
 msgid "Unable to update host trusted certificates."
-msgstr "ホストの信頼済み証明書の更新"
+msgstr "ホストの信頼済み証明書を更新できません。"
 
 #: shared/connection.go:466 shared/connection.go:487
 msgid "failed to determine suitable backend"
@@ -271,19 +262,18 @@ msgid "failed to remove %s file in the container"
 msgstr "コンテナ内の %s ファイルの削除に失敗しました"
 
 #: shared/kubernetes/apply.go:46
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s YAML file"
-msgstr "%s ファイルの作成に失敗しました"
+msgstr "%s YAMLファイルの作成に失敗しました"
 
 #: shared/kubernetes/apply.go:50
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to close %s YAML file"
-msgstr "%s ファイルの作成に失敗しました"
+msgstr "%s YAMLファイルを閉じることができませんでした"
 
 #: shared/kubernetes/apply.go:57
-#, fuzzy
 msgid "failed to write PVC to file"
-msgstr "%s ファイルの書き込みに失敗しました"
+msgstr "PVCのファイルへの書き込みに失敗しました"
 
 #: shared/kubernetes/helm.go:56
 msgid "failed to upgrade helm chart %[1]s in namespace %[2]s"
@@ -316,61 +306,52 @@ msgid "failed to run helm %s"
 msgstr "helm %s の実行に失敗しました"
 
 #: shared/kubernetes/inspect.go:49
-#, fuzzy
 msgid "failed to parse the inspected data"
-msgstr "検査データのアンマーシャルに失敗しました"
+msgstr "検査データの解析に失敗しました"
 
 #: shared/kubernetes/k3s.go:27
 msgid "Installing K3s Traefik configuration"
 msgstr "K3s Traefik設定のインストール"
 
 #: shared/kubernetes/k3s.go:44
-#, fuzzy
 msgid "Failed to write Traefik configuration"
-msgstr "K3s Traefik設定の書き込みに失敗しました"
+msgstr "Traefik設定の書き込みに失敗しました"
 
 #: shared/kubernetes/k3s.go:79
 msgid "Waiting for Traefik to be reloaded"
 msgstr "Traefikの再ロードを待機中"
 
 #: shared/kubernetes/k3s.go:91
-#, fuzzy
 msgid "Failed to reload Traefik"
-msgstr "ファイル %s の読み込みに失敗しました"
+msgstr "Traefikの再ロードに失敗しました"
 
 #: shared/kubernetes/k3s.go:98
-#, fuzzy
 msgid "Reinstalling Traefik without additionnal configuration"
-msgstr "K3s Traefik設定のインストール"
+msgstr "追加の設定なしでTraefikを再インストール"
 
 #: shared/kubernetes/k3s.go:101
-#, fuzzy
 msgid "failed to write empty traefik configuration"
-msgstr "K3s Traefik設定の書き込みに失敗しました"
+msgstr "空のTraefik設定の書き込みに失敗しました"
 
 #: shared/kubernetes/k3s.go:105
-#, fuzzy
 msgid "failed to uninstall traefik configuration"
-msgstr "K3s Traefik設定の書き込みに失敗しました"
+msgstr "Traefik設定のアンインストールに失敗しました"
 
 #: shared/kubernetes/k3s.go:109
-#, fuzzy
 msgid "Would reinstall Traefik without additionnal configuration"
-msgstr "K3s Traefik設定のインストール"
+msgstr "追加の設定なしでTraefikを再インストールします"
 
 #: shared/kubernetes/k3s.go:119
-#, fuzzy
 msgid "failed to read the traefik configuration"
-msgstr "K3s Traefik設定の書き込みに失敗しました"
+msgstr "Traefik設定の読み込みに失敗しました"
 
 #: shared/kubernetes/k3s.go:123
 msgid "traefik configuration file doesn't contain the helm chart version"
-msgstr ""
+msgstr "traefik設定ファイルにhelmチャートバージョンが含まれていません"
 
 #: shared/kubernetes/k3s.go:126
-#, fuzzy
 msgid "failed to find traefik helm chart version"
-msgstr "kubeletバージョンの取得に失敗しました"
+msgstr "traefik helmチャートバージョンが見つかりませんでした"
 
 #: shared/kubernetes/kubernetes.go:59
 msgid "failed to get kubelet version"
@@ -399,53 +380,52 @@ msgid "Failed to base64 decode secret %s"
 msgstr "シークレット %s のbase64デコードに失敗しました"
 
 #: shared/kubernetes/kubernetes.go:187
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create the %s docker secret"
-msgstr "%s フォルダの作成に失敗しました"
+msgstr "%s Dockerシークレットの作成に失敗しました"
 
 #: shared/kubernetes/kubernetes.go:229
-#, fuzzy
 msgid "failed to get deployment image pull secret"
-msgstr "配備ステータスの解析に失敗しました"
+msgstr "配備イメージのプルシークレットの取得に失敗しました"
 
 #: shared/kubernetes/pod.go:79 shared/kubernetes/pod.go:82
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run the %s pod"
-msgstr "helm %s の実行に失敗しました"
+msgstr "%s ポッドの実行に失敗しました"
 
 #: shared/kubernetes/pod.go:93
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get the %s pod logs"
-msgstr "ポッド %s のイベントを取得できませんでした"
+msgstr "%s ポッドログの取得に失敗しました"
 
 #: shared/kubernetes/pod.go:98
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to delete the %s pod"
-msgstr "%s サービスを無効にできませんでした"
+msgstr "%s ポッドの削除に失敗しました"
 
 #: shared/kubernetes/pvc.go:42
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s persistent volume claim"
-msgstr "%s ファイルの作成に失敗しました"
+msgstr "%s 永続ボリュームのクレームの作成に失敗しました"
 
 #: shared/kubernetes/pvc.go:70
-#, fuzzy
 msgid "failed to parse pv data"
-msgstr "%s の作成に失敗しました"
+msgstr "pvデータの解析に失敗しました"
 
 #: shared/kubernetes/pvc.go:75
 msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
-msgstr ""
+msgstr "%[1]s ボリュームは %[1]s クレームを参照する必要があります(%[2]s "
+"ネームスペース内)"
 
 #: shared/kubernetes/pvc.go:85
-#, fuzzy
 msgid "failed to run the persistent volume claims"
-msgstr "helm %s の実行に失敗しました"
+msgstr "永続ボリュームのクレームの実行に失敗しました"
 
 #: shared/kubernetes/pvc.go:102
 #, javascript-format
 msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
-msgstr ""
+msgstr "PersistentVolumeClaim %s "
+"のサイズは定義されていません。デフォルトの10Miを使用します"
 
 #: shared/kubernetes/rke2.go:21
 msgid "Installing RKE2 Nginx configuration"
@@ -513,50 +493,52 @@ msgstr ""
 "--purge-volumes引数が使用されていなくても、配備を削除するときに自動的に削除されます。"
 
 #: shared/kubernetes/utils.go:70
-#, fuzzy
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
-msgstr[0] "%[1]s 配備の準備を待機中( %[2]s ネームスペース内)\n"
+msgstr[0] ""
+"単数形\n"
+"%[1]s 配備の準備を待機中(%[2]s ネームスペース内)\n"
+"\n"
+"複数形\n"
+"%[1]s 配備の準備を待機中(%[2]s ネームスペース内)\n"
 
 #: shared/kubernetes/utils.go:97
-#, fuzzy
 msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
-msgstr "%[1]s 配備の準備を待機中( %[2]s ネームスペース内)\n"
+msgstr "%[1]s 配備の準備を待機中(%[2]s ネームスペース内)\n"
 
 #: shared/kubernetes/utils.go:114
-#, fuzzy
 msgid "failed to check if the deployment has running pods"
-msgstr "%s 配備ネームスペースが見つかりませんでした"
+msgstr "配備に実行中のポッドがあるかどうかを確認できませんでした"
 
 #: shared/kubernetes/utils.go:166
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "all the pods of %s deployment have a failure"
-msgstr "%s 配備ネームスペースが見つかりませんでした"
+msgstr "%s 配備のすべてのポッドに障害が発生しました"
 
 #: shared/kubernetes/utils.go:195
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to list ReplicaSets for deployment %s"
-msgstr "ポッド %s のイベントを取得できませんでした"
+msgstr "配備 %s のReplicaSetsを一覧表示できませんでした"
 
 #: shared/kubernetes/utils.go:208
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get the %s deployment revision"
-msgstr "%s 配備ネームスペースが見つかりませんでした"
+msgstr "%s 配備リビジョンを取得できませんでした"
 
 #: shared/kubernetes/utils.go:216
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "invalid replicasset response: :%s"
-msgstr "無効なイメージ名: %s"
+msgstr "無効なreplicasset応答: :%s"
 
 #: shared/kubernetes/utils.go:231
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to find pods for owner reference %s"
-msgstr "podmanのネットワークバックエンドが見つかりませんでした"
+msgstr "所有者参照 %s のポッドが見つかりませんでした"
 
 #: shared/kubernetes/utils.go:257
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get the status of %s pod"
-msgstr "ポッド %s のイベントを取得できませんでした"
+msgstr "%s ポッドのステータスを取得できませんでした"
 
 #: shared/kubernetes/utils.go:284
 msgid "failed to parse deployment status"
@@ -578,7 +560,7 @@ msgstr "%s を実行できません"
 
 #: shared/kubernetes/utils.go:350
 msgid "invalid replicas result"
-msgstr ""
+msgstr "無効なレプリカ結果"
 
 #: shared/kubernetes/utils.go:379
 #, javascript-format
@@ -607,33 +589,35 @@ msgstr "ポッド定義の上書きをシリアライズできません"
 #: shared/kubernetes/waiters.go:40
 msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
 msgstr ""
+"%[1]s ジョブが失敗しました。詳細については、kubectl logs -n %[2]s --tail=-1 "
+"-ljob-name=%[1]sを実行してください"
 
 #: shared/kubernetes/waiters.go:49
 msgid "%[1]s job failed to complete within %[2]d seconds"
-msgstr ""
+msgstr "%[1]s ジョブは %[2]d 秒以内に完了できませんでした"
 
 #: shared/kubernetes/waiters.go:61
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s job status"
-msgstr "配備ステータスの解析に失敗しました"
+msgstr "%s ジョブステータスの取得に失敗しました"
 
 #: shared/kubernetes/waiters.go:65
 #, javascript-format
 msgid "invalid job status response: '%s'"
-msgstr ""
+msgstr "無効なジョブステータス応答: 「%s」"
 
 #: shared/kubernetes/waiters.go:85
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s pod status"
-msgstr "ポッド %s のイベントを取得できませんでした"
+msgstr "%s ポッドステータスの取得に失敗しました"
 
 #: shared/kubernetes/waiters.go:92
 msgid "%[1]s pod failed with status %[2]s"
-msgstr ""
+msgstr "%[1]s ポッドはステータス %[2]s で失敗しました"
 
 #: shared/kubernetes/waiters.go:96
 msgid "%[1]s pod failed to complete within %[2]d seconds"
-msgstr ""
+msgstr "%[1]s ポッドは %[2]d 秒以内に完了できませんでした"
 
 #: shared/podman/hostinspector.go:67
 msgid "failed to run inspect script in host system"
@@ -649,9 +633,9 @@ msgid "Ensure image %s is available"
 msgstr "イメージ %s が使用可能であることを確認します"
 
 #: shared/podman/images.go:46
-#, fuzzy
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
-msgstr "プルポリシーが常に適用されます。RPMイメージがあるかどうかがチェックされ、存在しない場合はレジストリからプルされます"
+msgstr "プルポリシーが常に適用されます。RPMイメージがあるかどうかがチェックされ、存在"
+"しない場合はレジストリからプルされます"
 
 #: shared/podman/images.go:56
 #, javascript-format
@@ -783,14 +767,14 @@ msgid "Network removed"
 msgstr "ネットワークが削除されました"
 
 #: shared/podman/secret.go:46
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write %s secret to file"
-msgstr "%s ファイルの書き込みに失敗しました"
+msgstr "%s シークレットのファイルへの書き込みに失敗しました"
 
 #: shared/podman/secret.go:50
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create podman secret %s"
-msgstr "podman inspect %s の実行に失敗しました"
+msgstr "podmanシークレット %s の作成に失敗しました"
 
 #: shared/podman/secret.go:71 shared/podman/utils.go:137
 #: shared/podman/utils.go:163
@@ -799,9 +783,9 @@ msgid "Run %s"
 msgstr "%s の実行"
 
 #: shared/podman/secret.go:73
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to delete %s secret"
-msgstr "%s サービスを無効にできませんでした"
+msgstr "%s シークレットの削除に失敗しました"
 
 #: shared/podman/support.go:27
 msgid "No systemd file to add to the archive"
@@ -834,14 +818,12 @@ msgid "failed to run systemctl cat uyuni-*"
 msgstr "systemctl cat uyuni-*の実行に失敗しました"
 
 #: shared/podman/support.go:85
-#, fuzzy
 msgid "failed to close inspect dump file"
-msgstr "一時認証ファイルを閉じることができませんでした"
+msgstr "検査ダンプファイルを閉じることができませんでした"
 
 #: shared/podman/support.go:108
-#, fuzzy
 msgid "failed to close bound files"
-msgstr "%s ファイルの作成に失敗しました"
+msgstr "バンドルファイルを閉じることができませんでした"
 
 #: shared/podman/support.go:160
 #, javascript-format
@@ -1014,14 +996,14 @@ msgid "Container already removed"
 msgstr "コンテナはすでに削除されています"
 
 #: shared/podman/utils.go:116
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s systemd service definition"
-msgstr "%s systemdサービスを有効にできませんでした"
+msgstr "%s systemdサービス定義の取得に失敗しました"
 
 #: shared/podman/utils.go:123
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "no UYUNI_IMAGE defined in %s systemd service"
-msgstr "%s systemdサービスを有効にできませんでした"
+msgstr "%s systemdサービスにUYUNI_IMAGEが定義されていません"
 
 #: shared/podman/utils.go:140
 #, javascript-format
@@ -1043,132 +1025,125 @@ msgstr "データを検査できません"
 
 #: shared/ssl/flags.go:14
 msgid "SSL certificate cnames separated by commas"
-msgstr ""
+msgstr "カンマで区切られたSSL証明書のcnames"
 
 #: shared/ssl/flags.go:15
 msgid "SSL certificate country"
-msgstr ""
+msgstr "SSL証明書の国"
 
 #: shared/ssl/flags.go:16
-#, fuzzy
 msgid "SSL certificate state"
-msgstr "ホストへのSSL CA証明書のコピー"
+msgstr "SSL証明書の都道府県"
 
 #: shared/ssl/flags.go:17
 msgid "SSL certificate city"
-msgstr ""
+msgstr "SSL証明書の市町村"
 
 #: shared/ssl/flags.go:18
 msgid "SSL certificate organization"
-msgstr ""
+msgstr "SSL証明書の組織"
 
 #: shared/ssl/flags.go:19
 msgid "SSL certificate organization unit"
-msgstr ""
+msgstr "SSL証明書の組織単位"
 
 #: shared/ssl/flags.go:21
 msgid "SSL Certificate Flags"
-msgstr ""
+msgstr "SSL証明書フラグ"
 
 #: shared/ssl/ssl.go:38
-#, fuzzy
 msgid "Failed to find a non-CA certificate"
-msgstr "ホームディレクトリの検索に失敗しました"
+msgstr "非CA証明書の検索に失敗しました"
 
 #: shared/ssl/ssl.go:77
 msgid "expected to find a certificate, got none"
-msgstr ""
+msgstr "証明書が見つかると予期していたが、何も見つかりませんでした"
 
 #: shared/ssl/ssl.go:83
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to read certificate file %s"
-msgstr "ファイル %s の読み込みに失敗しました"
+msgstr "証明書ファイル %s の読み込みに失敗しました"
 
 #: shared/ssl/ssl.go:119
-#, fuzzy
 msgid "Failed to extract data from certificate"
-msgstr "ランダムデータの読み込みに失敗しました"
+msgstr "証明書からのデータ抽出に失敗しました"
 
 #: shared/ssl/ssl.go:140
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse start date: %s\n"
-msgstr "%s の作成に失敗しました"
+msgstr "開始日の解析に失敗しました: %s\n"
 
 #: shared/ssl/ssl.go:146
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse end date: %s\n"
-msgstr "%s の作成に失敗しました"
+msgstr "終了日の解析に失敗しました: %s\n"
 
 #: shared/ssl/ssl.go:190
 msgid "No CA found"
-msgstr ""
+msgstr "CAが見つかりません"
 
 #: shared/ssl/ssl.go:197
 msgid "No CA found for server certificate"
-msgstr ""
+msgstr "サーバ証明書のCAが見つかりません"
 
 #: shared/ssl/ssl.go:206
 #, javascript-format
 msgid "Missing CA with subject hash %s"
-msgstr ""
+msgstr "件名ハッシュ %s のCAが見つかりません"
 
 #: shared/ssl/ssl.go:227
-#, fuzzy
 msgid "server certificate is required"
-msgstr "値が必要がです"
+msgstr "サーバ証明書が必要です"
 
 #: shared/ssl/ssl.go:228
-#, fuzzy
 msgid "server key is required"
-msgstr "値が必要がです"
+msgstr "サーバキーが必要です"
 
 #: shared/ssl/ssl.go:240
 #, javascript-format
 msgid "%s file is not accessible"
-msgstr ""
+msgstr "%s ファイルにアクセスできません"
 
 #: shared/ssl/ssl.go:248
 msgid "Source server SSL CA private key password"
-msgstr ""
+msgstr "ソースサーバSSL CA機密鍵パスワード"
 
 #: shared/ssl/ssl.go:254
 msgid "Failed to open openssl rsa process input stream"
-msgstr ""
+msgstr "openssl rsaプロセス入力ストリームを開けませんでした"
 
 #: shared/ssl/ssl.go:257
-#, fuzzy
 msgid "Failed to write openssl key content to input stream"
-msgstr "%s ファイルの書き込みに失敗しました"
+msgstr "opensslキーコンテンツを入力ストリームに書き込めませんでした"
 
 #: shared/ssl/ssl.go:263
-#, fuzzy
 msgid "Failed to convert CA private key to RSA"
-msgstr "データをJSONに変換できません"
+msgstr "CA機密鍵のRSAへの変換に失敗しました"
 
 #: shared/ssl/ssl.go:273
 msgid "Failed to open openssl x509 process input stream"
-msgstr ""
+msgstr "openssl x509プロセス入力ストリームを開けませんでした"
 
 #: shared/ssl/ssl.go:276
-#, fuzzy
 msgid "Failed to write SSL certificate to input stream"
-msgstr "ファイル %s の読み込みに失敗しました"
+msgstr "SSL証明書を入力ストリームに書き込めませんでした"
 
 #: shared/ssl/ssl.go:280
-#, fuzzy
 msgid "failed to strip text part from CA certificate"
-msgstr "ランダムデータの読み込みに失敗しました"
+msgstr "CA証明書からテキスト部分を削除できませんでした"
 
 #: shared/utils/cmd.go:58 shared/utils/cmd.go:59
 msgid "failed to unmarshall configuration"
 msgstr "設定のアンマーシャルに失敗しました"
 
 #: shared/utils/cmd.go:70
-#, fuzzy
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
-msgstr "コンテナに到達するために使用するツール。指定できる値:「 podman」、「podman-remote」、「kubectl」。デフォルトではどれを使用するかを推測します。"
+msgstr ""
+"コンテナに到達するために使用するツール。指定できる値:「 podman」、「podman-"
+"remote」、「kubectl」。\n"
+"デフォルトではどれを使用するかを推測します。"
 
 #: shared/utils/cmd.go:86
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
@@ -1274,7 +1249,6 @@ msgstr ""
 "コマンドの詳細については、「{{.CommandPath}} [command] --help」を使用してください。{{end}}\n"
 
 #: shared/utils/config.go:143
-#, fuzzy
 msgid ""
 "\n"
 "Configuration:\n"
@@ -1319,11 +1293,12 @@ msgstr ""
 "  フラグの名前はコマンドラインパラメータの「--」以降の部分です。\n"
 "  フラグ名の「_」文字はすべて、ネストされたプロパティを意味します。\n"
 "  \n"
-"  たとえば 「--tz CEST」と「--ssl-password secret」はこのYAML設定にマップされます。\n"
-"  \n"
+"  たとえば 「--tz CEST」と「--ssl-password secret」はこのYAML設定に\n"
+"  マップされます。\n"
+"\n"
 "    tz: CEST\n"
 "    ssl:\n"
-"      パスワード: secret\n"
+"         パスワード: secret\n"
 "  \n"
 "  設定ファイルは以下の場所と順序で検索されます:\n"
 "  · /etc/uyuni/uyuni-tools.yam\n"
@@ -1337,10 +1312,13 @@ msgstr ""
 "\n"
 "  非グローバルフラグはすべて、環境変数として渡すこともできます。\n"
 "  \n"
-"    環境変数名は、フラグ名の「-」を「_」に置き換え、{{ .EnvPrefix }}プレフィックスを付けたものです。\n"
+"  環境変数名は、フラグ名の「-」を「_」に置き換え、{{ .EnvPrefix }}"
+"プレフィックス\n"
+"  を付けたものです。\n"
 "  \n"
 "  たとえば、「--tz CEST」フラグは「{{ .EnvPrefix }}_TZ」にマップされ、\n"
-"  「--ssl-password」フラグは「{{ .EnvPrefix }}_SSL_PASSWORD」にマップされます。 \n"
+"  「--ssl-password」フラグは「{{ .EnvPrefix "
+"}}_SSL_PASSWORD」にマップされます。\n"
 
 #: shared/utils/config.go:180
 msgid "Help on configuration file and environment variables"
@@ -1446,7 +1424,7 @@ msgstr "スペースやタブを含むことはできません"
 #: shared/utils/utils.go:104 shared/utils/utils.go:127
 #: shared/utils/utils.go:140
 msgid "not an interactive device, not asking for missing value"
-msgstr ""
+msgstr "対話型デバイスではないので、不足している値を求めません"
 
 #: shared/utils/utils.go:113
 msgid "Confirm the password"
@@ -1457,7 +1435,6 @@ msgid "Two different passwords have been provided"
 msgstr "2つの異なるパスワードが指定されています"
 
 #: shared/utils/utils.go:149
-#, fuzzy
 msgid "failed to read input"
 msgstr "入力の読み込みに失敗しました"
 
@@ -1529,9 +1506,8 @@ msgid "failed to create temporary directory"
 msgstr "一時ディレクトリの作成に失敗しました"
 
 #: shared/utils/utils.go:334
-#, fuzzy
 msgid "failed to remove temporary directory"
-msgstr "一時ディレクトリの作成に失敗しました"
+msgstr "一時ディレクトリの削除に失敗しました"
 
 #: shared/utils/utils.go:344
 msgid "Failed to read random data"
@@ -1562,14 +1538,14 @@ msgid "cannot resolve %s"
 msgstr "%s を解決できません"
 
 #: shared/utils/utils.go:489
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error creating file %s"
-msgstr "ファイル %s を削除中"
+msgstr "ファイル %s の作成中にエラーが発生しました"
 
 #: shared/utils/utils.go:494
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error writing file %s"
-msgstr "ファイル %s を削除中"
+msgstr "ファイル %s の書き込み中にエラーが発生しました"
 
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "クラスタタイプの検出に失敗しました"

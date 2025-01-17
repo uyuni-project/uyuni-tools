@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2024-09-26 08:48+0000\n"
+"POT-Creation-Date: 2025-01-17 14:58+0100\n"
+"PO-Revision-Date: 2025-01-16 01:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -159,21 +159,18 @@ msgid "failed to login to registry.suse.com"
 msgstr "无法登录 registry.suse.com"
 
 #: mgrpxy/cmd/logs/kubernetes.go:29
-#, fuzzy
 msgid "failed to find proxy pod"
-msgstr "找不到 uyuni-proxy 部署名称空间"
+msgstr "找不到代理 pod"
 
 #: mgrpxy/cmd/logs/kubernetes.go:33
-#, fuzzy
 msgid "failed to find proxy deployment namespace"
-msgstr "找不到 uyuni-proxy 部署名称空间"
+msgstr "找不到代理部署名称空间"
 
 #: mgrpxy/cmd/logs/logs.go:38
 msgid "Get the proxy logs"
 msgstr "获取代理日志"
 
 #: mgrpxy/cmd/logs/logs.go:39
-#, fuzzy
 msgid ""
 "Get the proxy logs\n"
 "The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman\n"
@@ -182,7 +179,8 @@ msgid ""
 msgstr ""
 "获取代理日志\n"
 "该命令会自动检测已安装后端并显示 Kubernetes 或 Podman 管理的容器的日志\n"
-"不过，您可以指定 pod 和/或容器名称以获取特定容器的日志。请参见示例了解更多细节。"
+"不过，您可以指定 pod 和/或容器名称以获取特定容器的日志。\n"
+"请参见示例了解更多细节。"
 
 #: mgrpxy/cmd/logs/logs.go:65
 msgid "specify if logs should be followed"
@@ -197,11 +195,12 @@ msgid "number of lines to show from the end of the logs"
 msgstr "日志末尾处要显示的行数"
 
 #: mgrpxy/cmd/logs/logs.go:70
-#, fuzzy
 msgid ""
 "show logs since a specific time or duration.\n"
 "Supports Go duration strings and RFC3339 format (e.g. 3h, 2023-01-02T15:04:05)"
-msgstr "显示自特定时间或特定时长起的日志。支持 Go 时长字符串和 RFC3339 格式（例如 5s、2m、3h、2023-01-02T15:04:05）"
+msgstr ""
+"显示自特定时间或特定时长起的日志。\n"
+"支持 Go 时长字符串和 RFC3339 格式（例如 3h、2023-01-02T15:04:05）"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
@@ -490,9 +489,8 @@ msgid "failed to write in file %s"
 msgstr "无法在文件 %s 中写入数据"
 
 #: mgrpxy/shared/kubernetes/deploy.go:184
-#, fuzzy
 msgid "failed to scale replicas to 1"
-msgstr "无法创建临时目录"
+msgstr "无法将复本数扩大到 1"
 
 #: mgrpxy/shared/podman/podman.go:45
 msgid "cannot setup network"
@@ -578,20 +576,24 @@ msgstr "SUSE Customer Center 标志"
 msgid "image tag"
 msgstr "映像标记"
 
-#: mgrpxy/shared/utils/flags.go:87
+#: mgrpxy/shared/utils/flags.go:79
+msgid "Specify a registry where to pull the images from"
+msgstr ""
+
+#: mgrpxy/shared/utils/flags.go:88
 msgid "HTTPD tuning configuration file"
 msgstr "HTTPD 微调配置文件"
 
-#: mgrpxy/shared/utils/flags.go:88
+#: mgrpxy/shared/utils/flags.go:89
 msgid "Squid tuning configuration file"
 msgstr "Squid 微调配置文件"
 
-#: mgrpxy/shared/utils/flags.go:94
+#: mgrpxy/shared/utils/flags.go:95
 #, javascript-format
 msgid "Image for %s container"
 msgstr "%s 容器的映像"
 
-#: mgrpxy/shared/utils/flags.go:96
+#: mgrpxy/shared/utils/flags.go:97
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 容器的标记，如果设置，将会覆盖全局值"

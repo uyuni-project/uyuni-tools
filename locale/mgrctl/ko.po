@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-08 15:09+0100\n"
-"PO-Revision-Date: 2024-06-12 10:46+0000\n"
+"PO-Revision-Date: 2025-01-17 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrctl/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: mgrctl/cmd/api/api.go:26
 msgid "JSON over HTTP API helper tool"
@@ -27,13 +28,17 @@ msgid "Call API GET request"
 msgstr "API GET 요청 호출"
 
 #: mgrctl/cmd/api/api.go:32
-#, fuzzy
 msgid ""
 "Takes an API path and optional parameters and then issues GET request with them.\n"
 "\n"
 "Example:\n"
 "# mgrctl api get user/getDetails login=test"
-msgstr "API 경로와 선택 사항 파라미터를 가져온 다음 이를 사용하여 GET 요청을 발급합니다. 사용자 및 비밀번호가 제공된 경우 API를 호출하기 전 로그인을 호출합니다."
+msgstr ""
+"API 경로와 선택 사항 파라미터를 가져온 다음 이를 사용하여 GET 요청을 "
+"발급합니다.\n"
+"\n"
+"예:\n"
+"# mgrctl api get user/getDetails login=test"
 
 #: mgrctl/cmd/api/api.go:43
 msgid "Call API POST request"
@@ -51,10 +56,23 @@ msgid ""
 "JSON example:\n"
 "# mgrctl api post user/create    '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
 msgstr ""
+"API 경로와 파라미터를 받은 후 이를 사용하여 POST 요청을 발행합니다.\n"
+"\n"
+"파라미터는 JSON으로 인코딩된 문자열 또는 하나 이상의 키=값 쌍일 수 있습니다."
+"\n"
+"\n"
+"키=값 쌍 예:\n"
+"# mgrctl api post user/create login=test password=testXX firstName=F "
+"lastName=L email=test@localhost\n"
+"\n"
+"JSON 예:\n"
+"# mgrctl api post user/create    '{\"login\":\"test\", \"password\":"
+"\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":"
+"\"test@localhost\"}'\n"
 
 #: mgrctl/cmd/api/api.go:62
 msgid "Store login information for future API usage"
-msgstr ""
+msgstr "향후 API 사용을 위해 로그인 정보 저장"
 
 #: mgrctl/cmd/api/api.go:63
 msgid ""
@@ -63,43 +81,49 @@ msgid ""
 "User name, password and remote host can be provided using flags or will be asked interactively.\n"
 "Environment variables are also supported."
 msgstr ""
+"로그인은 다음 API 호출을 위해 로그인 정보를 저장합니다.\n"
+"\n"
+"사용자 이름, 암호, 원격 호스트는 플래그를 사용하여 제공하거나 대화형으로 "
+"요청할 수 있습니다.\n"
+"환경 변수도 지원됩니다."
 
 #: mgrctl/cmd/api/api.go:71
 msgid "Overwrite existing login if exists"
-msgstr ""
+msgstr "있는 경우, 기존 로그인 덮어쓰기"
 
 #: mgrctl/cmd/api/api.go:75
 msgid "Remove stored login information"
-msgstr ""
+msgstr "저장된 로그인 정보 제거"
 
 #: mgrctl/cmd/api/api.go:76
 msgid "Logout removes stored login information."
-msgstr ""
+msgstr "로그아웃하면 저장된 로그인 정보가 제거됩니다."
 
 #: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28
 msgid "unable to login to the server"
 msgstr "서버에 로그인할 수 없음"
 
 #: mgrctl/cmd/api/get.go:35 mgrctl/cmd/api/post.go:51
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error in query '%s'"
 msgstr "%s 쿼리의 오류"
 
 #: mgrctl/cmd/api/login.go:23
 msgid "Refusing to overwrite existing login. Use --force to ignore this check."
-msgstr ""
+msgstr "기존 로그인 덮어쓰기를 거부합니다. 이 검사를 무시하려면 --force를 "
+"사용하십시오."
 
 #: mgrctl/cmd/api/login.go:35
 msgid "Failed to validate credentials."
-msgstr ""
+msgstr "자격 증명의 유효성을 검사하지 못했습니다."
 
 #: mgrctl/cmd/api/login.go:41
 msgid "Login credentials verified."
-msgstr ""
+msgstr "로그인 자격 증명이 확인되었습니다."
 
 #: mgrctl/cmd/api/login.go:51
 msgid "Successfully logged out"
-msgstr ""
+msgstr "로그아웃됨"
 
 #: mgrctl/cmd/cmd.go:30
 msgid "Uyuni control tool"
@@ -185,107 +209,105 @@ msgid "Running %s"
 msgstr "%s 실행 중"
 
 #: mgrctl/cmd/proxy/config.go:72 mgrctl/cmd/proxy/config.go:73
-#, fuzzy
 msgid "Create a proxy configuration file"
-msgstr "구성 파일 경로"
+msgstr "프록시 구성 파일 생성"
 
 #: mgrctl/cmd/proxy/config.go:153
 msgid "Filename to write the configuration to (without extension)."
-msgstr ""
+msgstr "구성을 작성할 파일 이름(확장자 제외)입니다."
 
 #: mgrctl/cmd/proxy/config.go:156
 msgid "Unique DNS-resolvable FQDN of this proxy."
-msgstr ""
+msgstr "이 프록시의 DNS 확인 가능한 고유 FQDN입니다."
 
 #: mgrctl/cmd/proxy/config.go:157
 msgid "SSH port the proxy listens on."
-msgstr ""
+msgstr "프록시가 수신 대기하는 SSH 포트입니다."
 
 #: mgrctl/cmd/proxy/config.go:158
 msgid "FQDN of the server to connect the proxy to."
-msgstr ""
+msgstr "프록시를 연결할 서버의 FQDN입니다."
 
 #: mgrctl/cmd/proxy/config.go:159
 msgid "Maximum cache size in MB."
-msgstr ""
+msgstr "최대 캐시 크기(MB)입니다."
 
 #: mgrctl/cmd/proxy/config.go:160
-#, fuzzy
 msgid "Email of the proxy administrator"
-msgstr "관리자의 성"
+msgstr "프록시 관리자의 전자 메일"
 
 #: mgrctl/cmd/proxy/config.go:161
 msgid "Path to the root CA certificate in PEM format."
-msgstr ""
+msgstr "PEM 형식의 루트 CA 인증서 경로입니다."
 
 #: mgrctl/cmd/proxy/config.go:164
 msgid "Path to the proxy certificate in PEM format."
-msgstr ""
+msgstr "PEM 형식의 프록시 인증서 경로입니다."
 
 #: mgrctl/cmd/proxy/config.go:165
 msgid "Path to the proxy certificate private key in PEM format."
-msgstr ""
+msgstr "PEM 형식의 프록시 인증서 개인 키 경로입니다."
 
 #: mgrctl/cmd/proxy/config.go:167
 msgid ""
 "Path to an intermediate CA used to sign the proxy certicate in PEM format.\n"
 "May be provided multiple times or separated by commas."
 msgstr ""
+"PEM 형식으로 프록시 인증서를 서명하는 데 사용하는 중간 CA의 경로입니다.\n"
+"여러 번 입력하거나 쉼표로 구분할 수 있습니다."
 
 #: mgrctl/cmd/proxy/config.go:173
 msgid "Email to set in the SSL certificate"
-msgstr ""
+msgstr "SSL 인증서에서 설정할 전자 메일"
 
 #: mgrctl/cmd/proxy/config.go:175
 msgid "Path to the private key of the CA to use to generate a new proxy certificate."
-msgstr ""
+msgstr "새 프록시 인증서를 생성하는 데 사용할 CA의 개인 키 경로입니다."
 
 #: mgrctl/cmd/proxy/config.go:177
 msgid "Password of the CA private key, will be prompted if not passed."
-msgstr ""
+msgstr "CA 개인 키의 암호로, 입력하지 않으면 메시지가 표시됩니다."
 
 #: mgrctl/cmd/proxy/config.go:187
 msgid "Common Flags"
-msgstr ""
+msgstr "일반 플래그"
 
 #: mgrctl/cmd/proxy/config.go:188
 msgid "Third party proxy certificates flags"
-msgstr ""
+msgstr "서드 파티 프록시 인증서 플래그"
 
 #: mgrctl/cmd/proxy/config_do.go:41
-#, fuzzy
 msgid "failed to connect to the server"
-msgstr "서버에 로그인할 수 없음"
+msgstr "서버에 연결할 수 없음"
 
 #: mgrctl/cmd/proxy/config_do.go:56
-#, fuzzy
 msgid "failed to execute proxy configuration api request"
-msgstr "구성을 마샬링 해제하지 못했습니다."
+msgstr "프록시 구성 API 요청을 실행하지 못함"
 
 #: mgrctl/cmd/proxy/config_do.go:61
 msgid "error saving binary data: %v"
-msgstr ""
+msgstr "바이너리 데이터 저장 중 오류 발생: %v"
 
 #: mgrctl/cmd/proxy/config_do.go:63
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Proxy configuration file saved as %s"
-msgstr "구성 파일 경로"
+msgstr "프록시 구성 파일이 %s(으)로 저장됨"
 
 #: mgrctl/cmd/proxy/config_do.go:77
 msgid "flag proxyKey is required when flag proxyCrt is provided"
-msgstr ""
+msgstr "proxyCrt 플래그가 제공된 경우 proxyKey 플래그가 필수입니다."
 
 #: mgrctl/cmd/proxy/config_do.go:118
 msgid "Please enter SSL CA password"
-msgstr ""
+msgstr "SSL CA 암호를 입력하십시오."
 
 #: mgrctl/cmd/proxy/proxy.go:18 mgrctl/cmd/proxy/proxy.go:19
 msgid "Manage proxy configurations"
-msgstr ""
+msgstr "프록시 구성 관리"
 
 #: mgrctl/cmd/proxy/proxy.go:27 mgrctl/cmd/proxy/proxy.go:28
 msgid "Create proxy configurations"
-msgstr ""
+msgstr "프록시 구성 생성"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"

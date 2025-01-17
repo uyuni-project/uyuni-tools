@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2024-09-26 12:48+0000\n"
-"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
+"POT-Creation-Date: 2025-01-17 14:58+0100\n"
+"PO-Revision-Date: 2025-01-17 07:50+0000\n"
+"Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -138,7 +138,6 @@ msgid "distribution treeinfo %s does not exists. Please provide distribution det
 msgstr "배포 트리 정보 %s이(가) 없습니다. 배포 세부 정보 및/또는 채널 레이블을 입력하십시오."
 
 #: mgradm/cmd/distro/distro.go:32
-#, fuzzy
 msgid ""
 "Auto installation distribution product mapping.\n"
 "\n"
@@ -194,10 +193,14 @@ msgstr ""
 "        TreeName: <사용자 지정 배포 이름>\n"
 "\n"
 "여기서\n"
-"* <배포 이름>은 배포 이름이며, 기본적으로 미디어의 '.treeinfo' 파일에서 가져옵니다. '.treeinfo'를 찾을 수 없거나 사용할 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
-"<배포 버전>은 배포 버전으로, 기본적으로 미디어의 '.treeinfo' 파일에서 가져옵니다. '.treeinfo'를 찾을 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
-"* <배포 아키텍처>는 기본적으로 미디어의 '.treeinfo' 파일에서 가져온 배포 아키텍처입니다. '.treeinfo'를 찾을 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
-"* 채널 레이블은 Uyuni 서버에서 이 배포에 사용할 채널 레이블이며, 명령줄 플래그로 재정의할 수 있습니다.\n"
+"* <배포 이름>은 배포 이름이며, 기본적으로 미디어의 '.treeinfo' 파일에서 가져옵니다.\n"
+"  '.treeinfo'를 찾을 수 없거나 사용할 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
+"<배포 버전>은 배포 버전으로, 기본적으로 미디어의 '.treeinfo' 파일에서 가져옵니다.\n"
+"  '.treeinfo'를 찾을 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
+"* <배포 아키텍처>는 기본적으로 미디어의 '.treeinfo' 파일에서 가져온 배포 아키텍처입니다.\n"
+"  .treeinfo'를 찾을 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
+"* 채널 레이블은 Uyuni 서버에서 이 배포에 사용할 채널 레이블이며,\n"
+"  명령줄 플래그로 재정의할 수 있습니다.\n"
 "* InstallType은 설치 프로그램이 알려진 경우(autoyast 또는 킥스타트의 경우) 해당 값을 사용하거나 'generic_rpm'을 사용합니다.\n"
 "* TreeName은 배포가 Uyuni 서버 UI에 표시되는 방식입니다. 설정하지 않으면 <배포 이름>이 사용됩니다.\n"
 "\n"
@@ -387,9 +390,8 @@ msgstr "현재 실행 중인 서버 컨테이너의 이미지 찾기 실패: %s"
 #: mgradm/cmd/inspect/kubernetes.go:46 mgradm/cmd/restart/kubernetes.go:27
 #: mgradm/cmd/start/kubernetes.go:27 mgradm/cmd/stop/kubernetes.go:27
 #: mgradm/shared/utils/exec.go:39
-#, fuzzy
 msgid "failed retrieving namespace"
-msgstr "이미지를 결정하지 못함"
+msgstr "네임스페이스를 검색하지 못함"
 
 #: mgradm/cmd/inspect/kubernetes.go:57 mgradm/cmd/inspect/podman.go:39
 msgid "inspect command failed"
@@ -400,9 +402,8 @@ msgid "cannot print inspect result"
 msgstr "검사 결과를 인쇄하지 못함"
 
 #: mgradm/cmd/inspect/podman.go:34
-#, fuzzy
 msgid "failed to find the image of the currently running server container"
-msgstr "현재 실행 중인 서버 컨테이너의 이미지 찾기 실패: %s"
+msgstr "현재 실행 중인 서버 컨테이너의 이미지 찾기 실패"
 
 #: mgradm/cmd/install/install.go:20 mgradm/cmd/install/install.go:21
 msgid "Install a new server"
@@ -452,7 +453,7 @@ msgstr ""
 "\n"
 "참고: 원격 podman에 설치하는 기능은 아직 지원되지 않습니다!\n"
 
-#: mgradm/cmd/install/podman/utils.go:40 mgradm/shared/podman/podman.go:443
+#: mgradm/cmd/install/podman/utils.go:40 mgradm/shared/podman/podman.go:447
 msgid "Waiting for the server to start…"
 msgstr "서버가 시작되기를 기다리는 중…"
 
@@ -484,7 +485,7 @@ msgstr "FQDN '%s'(으)로 서버 설정"
 #: mgradm/shared/hub/xmlrpcapi.go:45
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:47
 #: mgradm/shared/kubernetes/reconcile.go:40 mgradm/shared/podman/podman.go:267
-#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:365
+#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:369
 #: mgradm/shared/saline/saline.go:72
 msgid "failed to compute image URL"
 msgstr "이미지 URL을 계산하지 못함"
@@ -652,25 +653,22 @@ msgid "First User Flags"
 msgstr "첫 번째 사용자 플래그"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:49
-#, fuzzy
 msgid "failed to parse data extractor pod output"
 msgstr "원본 호스트에서 추출한 데이터를 읽지 못했습니다."
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:65
-#, fuzzy
 msgid "failed to parse migration data file"
-msgstr "마이그레이션 스크립트를 생성하지 못함"
+msgstr "마이그레이션 데이터 파일을 구문 분석하지 못함"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:72
 msgid "found no data file after migration"
-msgstr ""
+msgstr "마이그레이션 후 데이터 파일을 찾을 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:23
 msgid "Migrate a remote server to containers running on a kubernetes cluster"
 msgstr "원격 서버를 Kubernetes 클러스터에서 실행되는 컨테이너로 마이그레이션"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:24
-#, fuzzy
 msgid ""
 "Migrate a remote server to containers running on a kubernetes cluster\n"
 "\n"
@@ -693,7 +691,6 @@ msgstr ""
 "이 마이그레이션 명령에서는 몇 가지 사항이 가정됩니다.\n"
 "  * 사용자 및 머신 연결에 필요한 모든 옵션 등\n"
 "    소스 서버의 SSH 구성이 완료되었습니다.\n"
-"  * SSH 에이전트가 시작되고 서버에 연결하는 데 사용할 키가 추가되었습니다.\n"
 "  * kubectl과 helm이 로컬에 설치되어 있습니다.\n"
 "  * 배포할 클러스터에 연결하도록 작동하는 kubectl 구성이 설정되어 있습니다.\n"
 "\n"
@@ -708,100 +705,93 @@ msgid "SSL CA generated private key password"
 msgstr "SSL CA 생성 개인 키 비밀번호"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:58
-#, fuzzy
 msgid "Path to the SSH public key to use to connect to the source server"
-msgstr "Hub 서버에 연결할 수 없음"
+msgstr "원본 서버에 연결하는 데 사용할 SSH 공용 키의 경로"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:60
 msgid "Path to the passwordless SSH private key to use to connect to the source server"
-msgstr ""
+msgstr "원본 서버에 연결하는 데 사용할 암호 없는 SSH 개인 키의 경로"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:62
 msgid "Path to the SSH known_hosts file to use to connect to the source server"
-msgstr ""
+msgstr "소스 서버에 연결하는 데 사용할 SSH known_hosts 파일 경로"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:63
-#, fuzzy
 msgid "Path to the SSH configuration file to use to connect to the source server"
-msgstr "마이그레이션 준비 - 원본 서버를 정지하지 않고 데이터를 복사합니다."
+msgstr "원본 서버에 연결하는 데 사용할 SSH 구성 파일의 경로"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:66
-#, fuzzy
 msgid "SSH Configuration Flags"
-msgstr "구성 파일 경로"
+msgstr "SSH 구성 플래그"
 
 #: mgradm/cmd/migrate/kubernetes/migrationJob.go:51
-#, fuzzy
 msgid "failed to run the migration job"
-msgstr "마이그레이션 스크립트를 생성하지 못함"
+msgstr "마이그레이션 작업을 실행하지 못함"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:40
 msgid "no SSH key found to use for migration"
-msgstr ""
+msgstr "마이그레이션에 사용할 SSH 키를 찾을 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:51
 msgid "no SSH known_hosts and configuration found to use for migration"
-msgstr ""
+msgstr "마이그레이션에 사용할 SSH known_hosts 및 구성을 찾을 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:68
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s SSH key secret"
-msgstr "%s 키를 표시하지 못했습니다."
+msgstr "%s SSH 키를 가져오지 못함"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:79
 msgid "%[1]s secret misses the %[2]s value"
-msgstr ""
+msgstr "%[1]s 시크릿에 %[2]s 값이 누락됨"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:89
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to read key file %s"
-msgstr "%s 폴더를 생성할 수 없음"
+msgstr "%s 키 파일을 읽을 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:94
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to read public key file %s"
-msgstr "인증서 파일 %s을(를) 읽지 못했습니다."
+msgstr "%s 공용 키 파일을 읽을 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:111
-#, fuzzy
 msgid "failed to create the SSH migration secret"
-msgstr "마이그레이션 스크립트를 생성하지 못함"
+msgstr "SSH 마이그레이션 비밀을 생성하지 못함"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:124
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s SSH ConfigMap"
-msgstr "%s을(를) 생성하지 못했습니다."
+msgstr "%s SSH ConfigMap을 생성하지 못함"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:130
-#, fuzzy
 msgid "failed to parse SSH ConfigMap data"
-msgstr "종료 날짜를 구문 분석하지 못함: %s\n"
+msgstr "SSH ConfigMap 데이터를 구문 분석하지 못함"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:135
 #: mgradm/cmd/migrate/kubernetes/ssh.go:140
 msgid "%[1]s ConfigMap misses the %[2]s value"
-msgstr ""
+msgstr "%[1]s ConfigMap에 %[2]s 값이 누락됨"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:149
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to read SSH config file %s"
-msgstr "인증서 파일 %s을(를) 읽지 못했습니다."
+msgstr "%s SSH 구성 파일을 읽지 못함"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:154
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to read SSH known_hosts file %s"
-msgstr "%s 폴더를 생성할 수 없음"
+msgstr "%s SSH known_hosts 파일을 읽을 수 없음"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:165
 #: mgradm/shared/kubernetes/certificates.go:236
-#, fuzzy
 msgid "failed to create the SSH migration ConfigMap"
-msgstr "마이그레이션 스크립트를 생성하지 못함"
+msgstr "SSH 마이그레이션 ConfigMap을 생성하지 못함"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:145
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write certificate to %s"
-msgstr "인증서 파일 %s을(를) 읽지 못했습니다."
+msgstr "%s에 대한 인증서를 쓰지 못함"
 
 #: mgradm/cmd/migrate/migrate.go:20 mgradm/cmd/migrate/migrate.go:21
 msgid "Migrate a remote server to containers"
@@ -849,15 +839,15 @@ msgstr "마이그레이션 스크립트를 실행할 수 없음"
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr "마이그레이션이 준비되었습니다. 마이그레이션을 마치려면 ''--prepare''를 제외하고 ''migrate'' 명령을 실행하십시오."
 
-#: mgradm/cmd/migrate/podman/utils.go:93 mgradm/shared/podman/podman.go:406
+#: mgradm/cmd/migrate/podman/utils.go:93 mgradm/shared/podman/podman.go:410
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQL 버전 업그레이드 스크립트를 실행할 수 없음"
 
-#: mgradm/cmd/migrate/podman/utils.go:99 mgradm/shared/podman/podman.go:419
+#: mgradm/cmd/migrate/podman/utils.go:99 mgradm/shared/podman/podman.go:423
 msgid "cannot run PostgreSQL finalize script"
 msgstr "PostgreSQL 최종 스크립트를 실행할 수 없음"
 
-#: mgradm/cmd/migrate/podman/utils.go:103 mgradm/shared/podman/podman.go:423
+#: mgradm/cmd/migrate/podman/utils.go:103 mgradm/shared/podman/podman.go:427
 msgid "cannot run post upgrade script"
 msgstr "업그레이드 후 스크립트를 실행할 수 없음"
 
@@ -874,9 +864,8 @@ msgid "Enabling Hub XML-RPC API since it is enabled on the migrated server"
 msgstr "마이그레이션된 서버에서 활성화되어 있으므로 Hub XML-RPC API 컨테이너 활성화"
 
 #: mgradm/cmd/migrate/podman/utils.go:155
-#, fuzzy
 msgid "cannot setup saline service"
-msgstr "서비스를 활성할 수 없음"
+msgstr "Saline 서비스를 설정할 수 없음"
 
 #: mgradm/cmd/migrate/podman/utils.go:164
 msgid "Server migrated"
@@ -917,9 +906,8 @@ msgid "kubernetes not supported yet"
 msgstr "Kubernetes는 아직 지원되지 않음"
 
 #: mgradm/cmd/scale/podman.go:34
-#, fuzzy
 msgid "Multiple Hub XML-RPC API container replicas are not currently supported."
-msgstr "다중 Hub XML-RPC 컨테이너 복제본은 현재 지원되지 않습니다."
+msgstr "다중 Hub XML-RPC API 컨테이너 복제본은 현재 지원되지 않습니다."
 
 #: mgradm/cmd/scale/podman.go:38
 #, javascript-format
@@ -987,12 +975,11 @@ msgid "Extract configuration and logs"
 msgstr "구성 및 로그 추출"
 
 #: mgradm/cmd/support/config/config.go:23
-#, fuzzy
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
 msgstr ""
-"호스트 또는 클러스터의 구성 및 로그와 컨테이너의 구성 및 로그를  \n"
+"호스트 또는 클러스터의 구성 및 로그와 컨테이너의 구성 및 로그를\n"
 "추출하여 디버깅에 도움이 되도록 지원하십시오."
 
 #: mgradm/cmd/support/config/config.go:31
@@ -1032,24 +1019,23 @@ msgid "user flag cannot be empty"
 msgstr "사용자 플래그를 비워둘 수 없습니다."
 
 #: mgradm/cmd/support/ptf/podman/utils.go:74
-#, fuzzy
 msgid "failed to find server image"
-msgstr "이미지를 결정하지 못함"
+msgstr "서버 이미지를 찾지 못함"
 
 #: mgradm/cmd/support/ptf/podman/utils.go:83
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The computed image is %s"
 msgstr "계산된 이미지: %s"
 
 #: mgradm/cmd/support/ptf/podman/utils.go:93
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The computed confidential computing image is %s"
-msgstr "기밀 컴퓨팅 플래그"
+msgstr "계산된 기밀 컴퓨팅 이미지: %s"
 
 #: mgradm/cmd/support/ptf/podman/utils.go:105
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The computed hub XML-RPC API image is %s"
-msgstr "Hub XML-RPC API 이미지"
+msgstr "계산된 Hub XML-RPC API 이미지: %s"
 
 #: mgradm/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -1164,9 +1150,8 @@ msgid "Would run %s"
 msgstr "%s 실행"
 
 #: mgradm/cmd/uninstall/kubernetes.go:67
-#, fuzzy
 msgid "failed to delete server resources"
-msgstr "서버 서비스 상태를 가져오지 못함: %s"
+msgstr "서버 리소스를 삭제하지 못함"
 
 #: mgradm/cmd/uninstall/kubernetes.go:101
 msgid "Nothing has been uninstalled, run with --force to actually uninstall"
@@ -1256,7 +1241,7 @@ msgstr "systemd conf 파일을 생성할 수 없음"
 #: mgradm/shared/hub/xmlrpcapi.go:36
 #, javascript-format
 msgid "No changes requested for hub. Keep %d replicas."
-msgstr ""
+msgstr "허브에 대한 변경 요청이 없습니다. %d 복제본을 유지하십시오."
 
 #: mgradm/shared/hub/xmlrpcapi.go:54
 msgid "cannot generate systemd service"
@@ -1280,7 +1265,7 @@ msgstr "uyuni-crt TLS 비밀 생성 실패"
 
 #: mgradm/shared/kubernetes/certificates.go:68
 msgid "Creating cert-manager issuer for existing CA"
-msgstr ""
+msgstr "기존 CA에 대한 인증서 관리자 발급자 생성"
 
 #: mgradm/shared/kubernetes/certificates.go:84
 #: mgradm/shared/kubernetes/certificates.go:122
@@ -1338,28 +1323,24 @@ msgid "Failed to base64 decode CA certificate"
 msgstr "CA 인증서를 Base64 디코딩하지 못함"
 
 #: mgradm/shared/kubernetes/coco.go:38
-#, fuzzy
 msgid "failed to create confidential computing attestations deployment"
-msgstr "기밀 컴퓨팅 증명 서비스를 설정할 수 없음"
+msgstr "기밀 컴퓨팅 증명 배포를 생성할 수 없음"
 
 #: mgradm/shared/kubernetes/db.go:43
-#, fuzzy
 msgid "failed to create the database secret"
-msgstr "uyuni-crt TLS 비밀 생성 실패"
+msgstr "데이터베이스 비밀 생성 실패"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:32
 msgid "Running database finalization, this could be long depending on the size of the database…"
-msgstr ""
+msgstr "데이터베이스 최종 작업 실행 중, 데이터베이스의 크기에 따라 시간이 오래 걸릴 수 있습니다…"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:38
-#, fuzzy
 msgid "failed to run the database finalization job"
-msgstr "발급자 정의를 생성하지 못함"
+msgstr "데이터베이스 마무리 작업을 실행하지 못함"
 
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:36
-#, fuzzy
 msgid "Upgrading PostgreSQL database from %[1]s to %[2]s…"
-msgstr "PostgreSQL을 %[1]s에서 %[2]s(으)로 다운그레이드 시도 중"
+msgstr "PostgreSQL 데이터베이스를 %[1]s에서 %[2]s(으)로 업그레이드 중…"
 
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:50
 #: mgradm/shared/podman/podman.go:281
@@ -1369,98 +1350,85 @@ msgstr "데이터베이스 업그레이드 이미지 %s 사용"
 
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:57
 msgid "failed to run the database upgrade job"
-msgstr ""
+msgstr "데이터베이스 업그레이드 작업을 실행하지 못함"
 
 #: mgradm/shared/kubernetes/deployment.go:51
-#, fuzzy
 msgid "failed to create the server deployment"
-msgstr "임시 디렉토리를 만들지 못함"
+msgstr "서버 배포를 생성하지 못함"
 
 #: mgradm/shared/kubernetes/hubApi.go:44
-#, fuzzy
 msgid "failed to create the hub API deployment"
-msgstr "배포 상태를 가져오지 못함"
+msgstr "Hub API 배포를 생성하지 못함"
 
 #: mgradm/shared/kubernetes/hubApi.go:100
-#, fuzzy
 msgid "failed to create the hub API service"
-msgstr "Hub 서버에 연결할 수 없음"
+msgstr "Hub API 서비스를 생성할 수 없음"
 
 #: mgradm/shared/kubernetes/ingress.go:36
-#, fuzzy
 msgid "failed to create the ingresses"
-msgstr "%s 키링을 생성할 수 없음"
+msgstr "인그레스를 생성할 수 없음"
 
 #: mgradm/shared/kubernetes/namespace.go:25
-#, fuzzy
 msgid "failed to create the namespace"
-msgstr "이미지를 결정하지 못함"
+msgstr "네임스페이스를 생성하지 못함"
 
 #: mgradm/shared/kubernetes/postUpgradeJob.go:24
 msgid "Performing post upgrade changes…"
-msgstr ""
+msgstr "업그레이드 후 변경 수행 중…"
 
 #: mgradm/shared/kubernetes/postUpgradeJob.go:31
-#, fuzzy
 msgid "failed to run the post upgrade job"
-msgstr "가져오기 키를 실행하지 못함"
+msgstr "업그레이드 후 작업을 실행하지 못함"
 
 #: mgradm/shared/kubernetes/reconcile.go:29
-#, fuzzy
 msgid "install kubectl before running this command"
-msgstr "이 명령을 실행하기 전 %s 설치"
+msgstr "이 명령을 실행하기 전 kubectl 설치"
 
 #: mgradm/shared/kubernetes/reconcile.go:105
-#, fuzzy
 msgid "cannot set confidential computing containers replicas to 0"
-msgstr "기밀 컴퓨팅 증명 서비스를 설정할 수 없음"
+msgstr "기밀 컴퓨팅 컨테이너 복제본을 0으로 설정할 수 없음"
 
 #: mgradm/shared/kubernetes/reconcile.go:111
-#, fuzzy
 msgid "cannot set server replicas to 0"
-msgstr "복제본을 0으로 설정할 수 없음"
+msgstr "서버 복제본을 0으로 설정할 수 없음"
 
 #: mgradm/shared/kubernetes/reconcile.go:148
 msgid "downgrading database from PostgreSQL %[1]d to %[2]d is not supported"
-msgstr ""
+msgstr "PostgreSQL %[1]d에서 %[2]d(으)로의 데이터베이스 다운그레이드는 지원되지 않음"
 
 #: mgradm/shared/kubernetes/reconcile.go:206
 msgid "cannot install cert manager"
 msgstr "인증서 관리자를 설치할 수 없음"
 
 #: mgradm/shared/kubernetes/reconcile.go:214
-#, fuzzy
 msgid "failed to read Root CA file"
-msgstr "%s 폴더를 생성할 수 없음"
+msgstr "루트 CA 파일을 읽을 수 없음"
 
 #: mgradm/shared/kubernetes/services.go:30
-#, fuzzy
 msgid "failed to create the service"
-msgstr "서비스 중지 실패: %v"
+msgstr "서비스 생성 실패"
 
 #: mgradm/shared/kubernetes/traefik.go:37
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to open %s for writing"
-msgstr "supportconfig 실행 실패"
+msgstr "쓰기 위해 %s을(를) 열지 못함"
 
 #: mgradm/shared/kubernetes/traefik.go:56
 #: mgradm/shared/kubernetes/traefik.go:63
 msgid "failed to write traefik middleware and routes to file"
-msgstr ""
+msgstr "파일링할 traefik 미들웨어 및 경로를 생성하지 못함"
 
 #: mgradm/shared/kubernetes/traefik.go:70
 msgid "failed to close traefik middleware and routes file"
-msgstr ""
+msgstr "traefik 미들웨어 및 경로 파일을 종료하지 못함"
 
 #: mgradm/shared/kubernetes/traefik.go:74
-#, fuzzy
 msgid "failed to create traefik middleware and routes"
-msgstr "%s 폴더를 생성할 수 없음"
+msgstr "traefik 미들웨어 및 경로를 생성할 수 없음"
 
 #: mgradm/shared/kubernetes/traefik.go:95
-#, fuzzy
 msgid "failed to write traefik routes to file"
-msgstr "systemd 서비스 단위 파일을 생성하지 못함"
+msgstr "파일링할 traefik 경로를 쓰지 못함"
 
 #: mgradm/shared/podman/podman.go:85
 msgid "Enabling system service"
@@ -1475,9 +1443,9 @@ msgid "failed to create temporary folder on container to copy certificates to"
 msgstr "인증서를 복사할 컨테이너에 임시 폴더를 만들지 못했습니다."
 
 #: mgradm/shared/podman/podman.go:153
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to update SSL certificate: %s"
-msgstr "SSL 인증서를 업데이트하지 못했습니다."
+msgstr "SSL 인증서를 업데이트하지 못함: %s"
 
 #: mgradm/shared/podman/podman.go:158
 msgid "failed to remove copied certificate files in the container"
@@ -1529,49 +1497,50 @@ msgstr "PostgreSQL 데이터베이스 버전 업그레이드 스크립트를 생
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "PostgreSQL 마무리 스크립트를 생성할 수 없습니다."
 
-#: mgradm/shared/podman/podman.go:375
+#: mgradm/shared/podman/podman.go:379
 msgid "cannot inspect podman values"
 msgstr "podman 값을 검사할 수 없음"
 
-#: mgradm/shared/podman/podman.go:392
+#: mgradm/shared/podman/podman.go:396
 msgid "cannot stop service"
 msgstr "서비스를 중지하지 못함"
 
-#: mgradm/shared/podman/podman.go:400
+#: mgradm/shared/podman/podman.go:404
 msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr "이전 postgresql은 %[1]s(이)고 대신 새 버전은 %[2]s입니다. DB 버전 업그레이드를 수행하는 중…"
 
-#: mgradm/shared/podman/podman.go:409
+#: mgradm/shared/podman/podman.go:413
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr "PostgreSQL 버전을 변경하지 않고 %s(으)로 업그레이드"
 
-#: mgradm/shared/podman/podman.go:412
+#: mgradm/shared/podman/podman.go:416
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr "PostgreSQL을 %[1]s에서 %[2]s(으)로 다운그레이드 시도 중"
 
-#: mgradm/shared/podman/podman.go:448
+#: mgradm/shared/podman/podman.go:452
 msgid "error upgrading confidential computing service."
 msgstr "기밀 컴퓨팅 서비스를 업그레이드하는 중 오류가 발생했습니다."
 
-#: mgradm/shared/podman/podman.go:460
-#, fuzzy
+#: mgradm/shared/podman/podman.go:464
 msgid "error upgrading saline service."
-msgstr "기밀 컴퓨팅 서비스를 업그레이드하는 중 오류가 발생했습니다."
+msgstr "Saline 서비스를 업그레이드하는 중 오류가 발생했습니다."
 
-#: mgradm/shared/podman/podman.go:517
+#: mgradm/shared/podman/podman.go:521
 msgid "cannot inspect data"
 msgstr "데이터를 검사할 수 없음"
 
+#: mgradm/shared/podman/podman.go:537
+msgid "The above error is only relevant if using a public cloud provider registry"
+msgstr ""
+
 #: mgradm/shared/saline/saline.go:66
-#, fuzzy
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
-msgstr "다중 Hub XML-RPC 컨테이너 복제본은 현재 지원되지 않습니다. 하나만 설정하십시오."
+msgstr "다중 Saline 컨테이너 복제본은 현재 지원되지 않습니다. 하나만 설정합니다."
 
 #: mgradm/shared/saline/saline.go:93
-#, fuzzy
 msgid "Setting up Saline service"
-msgstr "Hub XML-RPC API 서비스 활성화"
+msgstr "Saline 서비스 설정"
 
 #: mgradm/shared/utils/cmd_utils.go:32
 msgid "Server certificate, key and root CA need to be all provided"
@@ -1603,26 +1572,25 @@ msgstr "Helm 차트 플래그"
 
 #: mgradm/shared/utils/cmd_utils.go:62
 msgid "Default storage class for all the volumes"
-msgstr ""
+msgstr "모든 볼륨의 기본 스토리지 클래스"
 
 #: mgradm/shared/utils/cmd_utils.go:64
 msgid "PersistentVolume name to use as a mirror. Empty means no mirror is used"
-msgstr ""
+msgstr "미러로 사용할 PersistentVolume 이름입니다. 비어 있으면 미러가 사용되지 않음을 의미합니다."
 
 #: mgradm/shared/utils/cmd_utils.go:67
-#, fuzzy
 msgid "Volumes Configuration Flags"
-msgstr "구성 파일 경로"
+msgstr "볼륨 구성 플래그"
 
 #: mgradm/shared/utils/cmd_utils.go:80
 #, javascript-format
 msgid "Requested size for the %s volume"
-msgstr ""
+msgstr "%s 볼륨에 대해 요청된 크기"
 
 #: mgradm/shared/utils/cmd_utils.go:86
 #, javascript-format
 msgid "Requested storage class for the %s volume"
-msgstr ""
+msgstr "%s 볼륨에 대해 요청된 스토리지 클래스"
 
 #: mgradm/shared/utils/cmd_utils.go:101
 #, javascript-format
@@ -1635,18 +1603,20 @@ msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
 
 #: mgradm/shared/utils/cmd_utils.go:113
-#, fuzzy
 msgid ""
 "SUSE Customer Center username.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
-msgstr "SUSE 고객 센터 사용자 이름. 제품을 동기화하고 registry.suse.com에서 이미지를 가져오기 위한 SCC 자격 증명으로 사용됩니다."
+msgstr ""
+"SUSE 고객 센터 사용자 이름.\n"
+"제품을 동기화하고 registry.suse.com에서 이미지를 가져오기 위한 SCC 자격 증명으로 사용됩니다."
 
 #: mgradm/shared/utils/cmd_utils.go:115
-#, fuzzy
 msgid ""
 "SUSE Customer Center password.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
-msgstr "SUSE 고객 센터 암호. 제품을 동기화하고 registry.suse.com에서 이미지를 가져오기 위한 SCC 자격 증명으로 사용됩니다."
+msgstr ""
+"SUSE 고객 센터 암호.\n"
+"제품을 동기화하고 registry.suse.com에서 이미지를 가져오기 위한 SCC 자격 증명으로 사용됩니다."
 
 #: mgradm/shared/utils/cmd_utils.go:118
 msgid "SUSE Customer Center Flags"
@@ -1658,8 +1628,9 @@ msgstr "이미지"
 
 #: mgradm/shared/utils/cmd_utils.go:126
 #, fuzzy
-msgid "Specify a private registry where pull the images"
-msgstr "개인 레지스트리 지정"
+#| msgid "Specify a private registry where pull the images"
+msgid "Specify a registry where to pull the images from"
+msgstr "이미지를 추출할 개인 레지스트리 지정"
 
 #: mgradm/shared/utils/cmd_utils.go:127
 msgid "Tag Image"
@@ -1694,16 +1665,16 @@ msgid "confidential computing attestation"
 msgstr "기밀 컴퓨팅 증명"
 
 #: mgradm/shared/utils/cmd_utils.go:157
-#, fuzzy
 msgid "How many replicas of the confidential computing container should be started"
-msgstr "시작해야 하는 기밀 컴퓨팅 컨테이너의 복제본 수. (현재는 0 또는 1만 지원됨)"
+msgstr "시작해야 하는 기밀 컴퓨팅 컨테이너의 복제본 수"
 
 #: mgradm/shared/utils/cmd_utils.go:165
-#, fuzzy
 msgid ""
 "How many replicas of the confidential computing container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
-msgstr "시작해야 하는 기밀 컴퓨팅 컨테이너의 복제본 수. (현재는 0 또는 1만 지원됨)"
+msgstr ""
+"시작해야 하는 기밀 컴퓨팅 컨테이너의 복제본 수.\n"
+"이전 복제본 수를 유지하려면 설정하지 않고 그대로 둡니다."
 
 #: mgradm/shared/utils/cmd_utils.go:172 mgradm/shared/utils/cmd_utils.go:173
 #: mgradm/shared/utils/cmd_utils.go:182 mgradm/shared/utils/cmd_utils.go:183
@@ -1711,44 +1682,46 @@ msgid "Hub XML-RPC API"
 msgstr "Hub XML-RPC API"
 
 #: mgradm/shared/utils/cmd_utils.go:175
-#, fuzzy
 msgid "How many replicas of the Hub XML-RPC API service container should be started."
-msgstr "시작해야 하는 Hub XML-RPC API 서비스 컨테이너의 복제본 수(현재는 0 또는 1만 지원됨)"
+msgstr "시작해야 하는 Hub XML-RPC API 서비스 컨테이너의 복제본 수."
 
 #: mgradm/shared/utils/cmd_utils.go:185
-#, fuzzy
 msgid ""
 "How many replicas of the Hub XML-RPC API service container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
-msgstr "시작해야 하는 Hub XML-RPC API 서비스 컨테이너의 복제본 수(현재는 0 또는 1만 지원됨)"
+msgstr ""
+"시작해야 하는 Hub XML-RPC API 서비스 컨테이너의 복제본 수.\n"
+"이전 복제본 수를 유지하려면 설정하지 않고 그대로 둡니다."
 
 #: mgradm/shared/utils/cmd_utils.go:192 mgradm/shared/utils/cmd_utils.go:203
-#, fuzzy
 msgid "Saline Flags"
-msgstr "이미지 플래그"
+msgstr "Saline 플래그"
 
 #: mgradm/shared/utils/cmd_utils.go:193 mgradm/shared/utils/cmd_utils.go:204
 msgid "Saline"
-msgstr ""
+msgstr "Saline"
 
 #: mgradm/shared/utils/cmd_utils.go:194
-#, fuzzy
 msgid ""
 "How many replicas of the Saline container should be started\n"
 "(only 0 or 1 supported for now)"
-msgstr "시작해야 하는 기밀 컴퓨팅 컨테이너의 복제본 수. (현재는 0 또는 1만 지원됨)"
+msgstr ""
+"시작해야 하는 Saline 컨테이너의 복제본 수.\n"
+"(현재는 0 또는 1만 지원됨)"
 
 #: mgradm/shared/utils/cmd_utils.go:196 mgradm/shared/utils/cmd_utils.go:208
 msgid "Saline port (default: 8216)"
-msgstr ""
+msgstr "Saline 포트(기본값: 8216)"
 
 #: mgradm/shared/utils/cmd_utils.go:205
-#, fuzzy
 msgid ""
 "How many replicas of the Saline container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas.\n"
 "(only 0 or 1 supported for now)"
-msgstr "시작해야 하는 기밀 컴퓨팅 컨테이너의 복제본 수. (현재는 0 또는 1만 지원됨)"
+msgstr ""
+"시작해야 하는 Saline 컨테이너의 복제본 수.\n"
+"이전 복제본 수를 유지하려면 설정하지 않고 그대로 둡니다.\n"
+"(현재는 0 또는 1만 지원됨)"
 
 #: mgradm/shared/utils/exec.go:26
 msgid "exec command failed"
@@ -1788,9 +1761,9 @@ msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "버전 %[1]s에서 %[2]s(으)로 다운그레이드할 수 없습니다."
 
 #: mgradm/shared/utils/exec.go:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot fetch PostgreSQL version from %s"
-msgstr "%s에서 postgresql 버전을 가져올 수 없습니다."
+msgstr "%s에서 PostgreSQL 버전을 가져올 수 없음"
 
 #: mgradm/shared/utils/exec.go:198
 msgid "PostgreSQL is not installed in the current deployment"

@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-12 11:53+0100\n"
-"PO-Revision-Date: 2024-09-26 08:48+0000\n"
+"PO-Revision-Date: 2025-01-16 01:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-shared/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -41,7 +42,7 @@ msgstr "如果设置，将不会检查服务器证书的有效性"
 
 #: shared/api/api.go:74
 msgid "401: unauthorized"
-msgstr ""
+msgstr "401：未授权"
 
 #: shared/api/api.go:88
 #, javascript-format
@@ -50,16 +51,15 @@ msgstr "未知错误：%d"
 
 #: shared/api/api.go:120
 msgid "server URL is not provided"
-msgstr ""
+msgstr "未提供服务器 URL"
 
 #: shared/api/api.go:152
 msgid "Cached session is expired."
-msgstr ""
+msgstr "缓存的会话已失效。"
 
 #: shared/api/api.go:154 shared/api/credentials.go:70
-#, fuzzy
 msgid "Failed to remove stored credentials!"
-msgstr "无法去除 %s 文件"
+msgstr "无法去除存储的身份凭证！"
 
 #: shared/api/api.go:172
 msgid "Unable to create login data"
@@ -70,9 +70,8 @@ msgid "auth cookie not found in login response"
 msgstr "在登录响应中找不到身份验证 cookie"
 
 #: shared/api/api.go:217
-#, fuzzy
 msgid "failed to logout from the server"
-msgstr "无法连接到服务器"
+msgstr "无法从服务器注销"
 
 #: shared/api/api.go:238
 msgid "Unable to convert data to JSON"
@@ -80,27 +79,24 @@ msgstr "无法将数据转换为 JSON"
 
 #: shared/api/credentials.go:21
 msgid "not logged in, session cookie is missing"
-msgstr ""
+msgstr "未登录，会话 Cookie 将会丢失"
 
 #: shared/api/credentials.go:34
-#, fuzzy
 msgid "unable to create credentials json"
-msgstr "无法创建登录数据"
+msgstr "无法创建身份凭证 json"
 
 #: shared/api/credentials.go:39
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "unable to write credentials store %s"
-msgstr "无法在 %s 中写入 tar.gz"
+msgstr "无法写入身份凭证存储区 %s"
 
 #: shared/api/credentials.go:53
-#, fuzzy
 msgid "API server URL"
-msgstr "API 服务器口令"
+msgstr "API 服务器 URL"
 
 #: shared/api/credentials.go:54
-#, fuzzy
 msgid "API server user"
-msgstr "API 服务器口令"
+msgstr "API 服务器用户"
 
 #: shared/api/credentials.go:55
 msgid "API server password"
@@ -108,33 +104,32 @@ msgstr "API 服务器口令"
 
 #: shared/api/credentials.go:58
 msgid "No credentials provided"
-msgstr ""
+msgstr "未提供身份凭证"
 
 #: shared/api/credentials.go:68
 msgid "Cannot load stored credentials"
-msgstr ""
+msgstr "无法加载存储的身份凭证"
 
 #: shared/api/credentials.go:83
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "unable to read credentials file %s"
-msgstr "无法读取文件 %s"
+msgstr "无法读取身份凭证文件 %s"
 
 #: shared/api/credentials.go:88
 msgid "unable to decode credentials file"
-msgstr ""
+msgstr "无法对身份凭证文件进行解码"
 
 #: shared/api/credentials.go:92
 msgid "no credentials loaded"
-msgstr ""
+msgstr "未加载身份凭证"
 
 #: shared/api/credentials.go:101
 msgid "specified api server does not match with stored credentials"
-msgstr ""
+msgstr "指定的 API 服务器与存储的身份凭证不匹配"
 
 #: shared/api/org/createFirst.go:22
-#, fuzzy
 msgid "unable to prepare API client"
-msgstr "无法创建登录数据"
+msgstr "无法准备 API 客户端"
 
 #: shared/api/org/createFirst.go:36
 msgid "failed to create first user and organization"
@@ -149,9 +144,8 @@ msgid "failed to get organization details"
 msgstr "无法获取组织细节"
 
 #: shared/api/proxy/containerConfig.go:33
-#, fuzzy
 msgid "failed to create proxy configuration file"
-msgstr "无法分析配置文件 %s"
+msgstr "无法创建代理配置文件"
 
 #: shared/completion/completion.go:20 shared/completion/completion.go:21
 msgid "Generate shell completion script"
@@ -186,9 +180,8 @@ msgid "coundn't find app name"
 msgstr "找不到应用程序名称"
 
 #: shared/connection.go:164
-#, fuzzy
 msgid "failed to guest namespace"
-msgstr "无法检索名称空间 "
+msgstr "无法 guest 名称空间"
 
 #: shared/connection.go:187
 #, javascript-format
@@ -223,9 +216,8 @@ msgid "unknown container kind: %s"
 msgstr "容器类型未知：%s"
 
 #: shared/connection.go:382
-#, fuzzy
 msgid "failed to detect the namespace"
-msgstr "无法检索名称空间 "
+msgstr "无法检测名称空间"
 
 #: shared/connection.go:398
 msgid "Copying the SSL CA certificate to the host"
@@ -236,9 +228,8 @@ msgid "Updating host trusted certificates"
 msgstr "正在更新主机信任的证书"
 
 #: shared/connection.go:425
-#, fuzzy
 msgid "Unable to update host trusted certificates."
-msgstr "正在更新主机信任的证书"
+msgstr "无法更新主机信任的证书。"
 
 #: shared/connection.go:466 shared/connection.go:487
 msgid "failed to determine suitable backend"
@@ -271,19 +262,18 @@ msgid "failed to remove %s file in the container"
 msgstr "无法去除容器中的 %s 文件"
 
 #: shared/kubernetes/apply.go:46
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s YAML file"
-msgstr "无法创建 %s 文件"
+msgstr "无法创建 %s YAML 文件"
 
 #: shared/kubernetes/apply.go:50
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to close %s YAML file"
-msgstr "无法创建 %s 文件"
+msgstr "无法关闭 %s YAML 文件"
 
 #: shared/kubernetes/apply.go:57
-#, fuzzy
 msgid "failed to write PVC to file"
-msgstr "无法写入 %s 文件"
+msgstr "无法将 PVC 写入文件"
 
 #: shared/kubernetes/helm.go:56
 msgid "failed to upgrade helm chart %[1]s in namespace %[2]s"
@@ -316,61 +306,52 @@ msgid "failed to run helm %s"
 msgstr "无法运行 helm %s"
 
 #: shared/kubernetes/inspect.go:49
-#, fuzzy
 msgid "failed to parse the inspected data"
-msgstr "无法解组检查的数据"
+msgstr "无法分析检查的数据"
 
 #: shared/kubernetes/k3s.go:27
 msgid "Installing K3s Traefik configuration"
 msgstr "正在安装 K3s Traefik 配置"
 
 #: shared/kubernetes/k3s.go:44
-#, fuzzy
 msgid "Failed to write Traefik configuration"
-msgstr "无法写入 K3s Traefik 配置"
+msgstr "无法写入 Traefik 配置"
 
 #: shared/kubernetes/k3s.go:79
 msgid "Waiting for Traefik to be reloaded"
 msgstr "正在等待重新装载 Traefik"
 
 #: shared/kubernetes/k3s.go:91
-#, fuzzy
 msgid "Failed to reload Traefik"
-msgstr "无法读取文件 %s"
+msgstr "无法重新加载 Traefik"
 
 #: shared/kubernetes/k3s.go:98
-#, fuzzy
 msgid "Reinstalling Traefik without additionnal configuration"
-msgstr "正在安装 K3s Traefik 配置"
+msgstr "重新安装 Traefik 而不使用额外的配置"
 
 #: shared/kubernetes/k3s.go:101
-#, fuzzy
 msgid "failed to write empty traefik configuration"
-msgstr "无法写入 K3s Traefik 配置"
+msgstr "无法写入空 Traefik 配置"
 
 #: shared/kubernetes/k3s.go:105
-#, fuzzy
 msgid "failed to uninstall traefik configuration"
-msgstr "无法写入 K3s Traefik 配置"
+msgstr "无法卸装 Traefik 配置"
 
 #: shared/kubernetes/k3s.go:109
-#, fuzzy
 msgid "Would reinstall Traefik without additionnal configuration"
-msgstr "正在安装 K3s Traefik 配置"
+msgstr "将重新安装 Traefik 而不使用额外的配置"
 
 #: shared/kubernetes/k3s.go:119
-#, fuzzy
 msgid "failed to read the traefik configuration"
-msgstr "无法写入 K3s Traefik 配置"
+msgstr "无法读取 Traefik 配置"
 
 #: shared/kubernetes/k3s.go:123
 msgid "traefik configuration file doesn't contain the helm chart version"
-msgstr ""
+msgstr "Traefik 配置文件不包含 helm 图表版本"
 
 #: shared/kubernetes/k3s.go:126
-#, fuzzy
 msgid "failed to find traefik helm chart version"
-msgstr "无法获取 kubelet 版本"
+msgstr "找不到 Traefik helm 图表版本"
 
 #: shared/kubernetes/kubernetes.go:59
 msgid "failed to get kubelet version"
@@ -399,53 +380,50 @@ msgid "Failed to base64 decode secret %s"
 msgstr "无法对机密 %s 进行 base64 解码"
 
 #: shared/kubernetes/kubernetes.go:187
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create the %s docker secret"
-msgstr "无法创建 %s 文件夹"
+msgstr "无法创建 %s docker 机密"
 
 #: shared/kubernetes/kubernetes.go:229
-#, fuzzy
 msgid "failed to get deployment image pull secret"
-msgstr "无法分析部署状态"
+msgstr "无法获取部署映像拉取机密"
 
 #: shared/kubernetes/pod.go:79 shared/kubernetes/pod.go:82
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run the %s pod"
-msgstr "无法运行 helm %s"
+msgstr "无法运行 %s pod"
 
 #: shared/kubernetes/pod.go:93
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get the %s pod logs"
-msgstr "无法获取 pod %s 的事件"
+msgstr "无法获取 %s pod 日志"
 
 #: shared/kubernetes/pod.go:98
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to delete the %s pod"
-msgstr "无法禁用 %s 服务"
+msgstr "无法删除 %s pod"
 
 #: shared/kubernetes/pvc.go:42
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s persistent volume claim"
-msgstr "无法创建 %s 文件"
+msgstr "无法创建 %s 永久性卷声明"
 
 #: shared/kubernetes/pvc.go:70
-#, fuzzy
 msgid "failed to parse pv data"
-msgstr "无法创建 %s"
+msgstr "无法分析 pv 数据"
 
 #: shared/kubernetes/pvc.go:75
 msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
-msgstr ""
+msgstr "%[1]s 卷必须引用 %[2]s 名称空间中的 %[1]s 声明"
 
 #: shared/kubernetes/pvc.go:85
-#, fuzzy
 msgid "failed to run the persistent volume claims"
-msgstr "无法运行 helm %s"
+msgstr "无法运行永久性卷声明"
 
 #: shared/kubernetes/pvc.go:102
 #, javascript-format
 msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
-msgstr ""
+msgstr "未为 PersistentVolumeClaim %s 定义大小，将使用 10Mi 作为默认值"
 
 #: shared/kubernetes/rke2.go:21
 msgid "Installing RKE2 Nginx configuration"
@@ -513,50 +491,47 @@ msgstr ""
 "该部署被删除时自动去除，即使未使用 --purge-volumes 参数也是如此。"
 
 #: shared/kubernetes/utils.go:70
-#, fuzzy
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
 msgstr[0] "正在等待 %[1]s 部署在 %[2]s 名称空间中就绪\n"
 
 #: shared/kubernetes/utils.go:97
-#, fuzzy
 msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
-msgstr "正在等待 %[1]s 部署在 %[2]s 名称空间中就绪\n"
+msgstr "正在等待 %[1]s 部署在 %[2]s 名称空间中启动\n"
 
 #: shared/kubernetes/utils.go:114
-#, fuzzy
 msgid "failed to check if the deployment has running pods"
-msgstr "找不到 %s 部署名称空间"
+msgstr "无法检查该部署是否具有正在运行的 pod"
 
 #: shared/kubernetes/utils.go:166
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "all the pods of %s deployment have a failure"
-msgstr "找不到 %s 部署名称空间"
+msgstr "%s 部署的所有 pod 都出现故障"
 
 #: shared/kubernetes/utils.go:195
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to list ReplicaSets for deployment %s"
-msgstr "无法获取 pod %s 的事件"
+msgstr "无法列出部署 %s 的 ReplicaSet"
 
 #: shared/kubernetes/utils.go:208
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get the %s deployment revision"
-msgstr "找不到 %s 部署名称空间"
+msgstr "找不到 %s 部署修订版"
 
 #: shared/kubernetes/utils.go:216
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "invalid replicasset response: :%s"
-msgstr "映像名称无效：%s"
+msgstr "replicasset 响应无效：%s"
 
 #: shared/kubernetes/utils.go:231
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to find pods for owner reference %s"
-msgstr "找不到 podman 的网络后端"
+msgstr "找不到拥有者引用 %s 的 pod"
 
 #: shared/kubernetes/utils.go:257
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get the status of %s pod"
-msgstr "无法获取 pod %s 的事件"
+msgstr "无法获取 %s pod 的状态"
 
 #: shared/kubernetes/utils.go:284
 msgid "failed to parse deployment status"
@@ -578,7 +553,7 @@ msgstr "无法执行 %s"
 
 #: shared/kubernetes/utils.go:350
 msgid "invalid replicas result"
-msgstr ""
+msgstr "复本结果无效"
 
 #: shared/kubernetes/utils.go:379
 #, javascript-format
@@ -606,34 +581,35 @@ msgstr "无法序列化 pod 定义覆盖"
 
 #: shared/kubernetes/waiters.go:40
 msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
-msgstr ""
+msgstr "%[1]s 作业失败，有关细节，请运行 kubectl logs -n %[2]s --tail=-1 -ljob-name=%"
+"[1]s"
 
 #: shared/kubernetes/waiters.go:49
 msgid "%[1]s job failed to complete within %[2]d seconds"
-msgstr ""
+msgstr "%[1]s 作业无法在 %[2]d 秒内完成"
 
 #: shared/kubernetes/waiters.go:61
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s job status"
-msgstr "无法分析部署状态"
+msgstr "无法获取 %s 作业状态"
 
 #: shared/kubernetes/waiters.go:65
 #, javascript-format
 msgid "invalid job status response: '%s'"
-msgstr ""
+msgstr "作业状态响应无效：%s"
 
 #: shared/kubernetes/waiters.go:85
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s pod status"
-msgstr "无法获取 pod %s 的事件"
+msgstr "无法获取 %s pod 状态"
 
 #: shared/kubernetes/waiters.go:92
 msgid "%[1]s pod failed with status %[2]s"
-msgstr ""
+msgstr "%[1]s pod 失败，状态：%[2]s"
 
 #: shared/kubernetes/waiters.go:96
 msgid "%[1]s pod failed to complete within %[2]d seconds"
-msgstr ""
+msgstr "%[1]s pod 无法在 %[2]d 秒内完成"
 
 #: shared/podman/hostinspector.go:67
 msgid "failed to run inspect script in host system"
@@ -649,7 +625,6 @@ msgid "Ensure image %s is available"
 msgstr "请确保映像 %s 可用"
 
 #: shared/podman/images.go:46
-#, fuzzy
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
 msgstr "拉取策略始终如下：先检查 PRM 映像是否存在，如果不存在，则会从注册表拉取"
 
@@ -783,14 +758,14 @@ msgid "Network removed"
 msgstr "已去除网络"
 
 #: shared/podman/secret.go:46
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write %s secret to file"
-msgstr "无法写入 %s 文件"
+msgstr "无法将 %s 机密写入文件"
 
 #: shared/podman/secret.go:50
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create podman secret %s"
-msgstr "无法运行 podman inspect %s"
+msgstr "无法创建 podman 机密 %s"
 
 #: shared/podman/secret.go:71 shared/podman/utils.go:137
 #: shared/podman/utils.go:163
@@ -799,9 +774,9 @@ msgid "Run %s"
 msgstr "运行 %s"
 
 #: shared/podman/secret.go:73
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to delete %s secret"
-msgstr "无法禁用 %s 服务"
+msgstr "无法删除 %s 机密"
 
 #: shared/podman/support.go:27
 msgid "No systemd file to add to the archive"
@@ -834,14 +809,12 @@ msgid "failed to run systemctl cat uyuni-*"
 msgstr "无法运行 systemctl cat uyuni-*"
 
 #: shared/podman/support.go:85
-#, fuzzy
 msgid "failed to close inspect dump file"
-msgstr "无法关闭临时身份验证文件"
+msgstr "无法关闭检查转储文件"
 
 #: shared/podman/support.go:108
-#, fuzzy
 msgid "failed to close bound files"
-msgstr "无法创建 %s 文件"
+msgstr "无法关闭绑定文件"
 
 #: shared/podman/support.go:160
 #, javascript-format
@@ -1014,14 +987,14 @@ msgid "Container already removed"
 msgstr "容器已去除"
 
 #: shared/podman/utils.go:116
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s systemd service definition"
-msgstr "无法启用 %s systemd 服务"
+msgstr "无法获取 %s systemd 服务定义"
 
 #: shared/podman/utils.go:123
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "no UYUNI_IMAGE defined in %s systemd service"
-msgstr "无法启用 %s systemd 服务"
+msgstr "%s systemd 服务中未定义 UYUNI_IMAGE"
 
 #: shared/podman/utils.go:140
 #, javascript-format
@@ -1043,132 +1016,124 @@ msgstr "无法检查数据"
 
 #: shared/ssl/flags.go:14
 msgid "SSL certificate cnames separated by commas"
-msgstr ""
+msgstr "SSL 证书名称（各名称以逗号分隔）"
 
 #: shared/ssl/flags.go:15
 msgid "SSL certificate country"
-msgstr ""
+msgstr "SSL 证书国家/地区"
 
 #: shared/ssl/flags.go:16
-#, fuzzy
 msgid "SSL certificate state"
-msgstr "正在将 SSL CA 证书复制到主机"
+msgstr "SSL 证书州/省"
 
 #: shared/ssl/flags.go:17
 msgid "SSL certificate city"
-msgstr ""
+msgstr "SSL 证书城市"
 
 #: shared/ssl/flags.go:18
 msgid "SSL certificate organization"
-msgstr ""
+msgstr "SSL 证书组织"
 
 #: shared/ssl/flags.go:19
 msgid "SSL certificate organization unit"
-msgstr ""
+msgstr "SSL 证书组织单位"
 
 #: shared/ssl/flags.go:21
 msgid "SSL Certificate Flags"
-msgstr ""
+msgstr "SSL 证书标志"
 
 #: shared/ssl/ssl.go:38
-#, fuzzy
 msgid "Failed to find a non-CA certificate"
-msgstr "找不到主目录"
+msgstr "找不到非 CA 证书"
 
 #: shared/ssl/ssl.go:77
 msgid "expected to find a certificate, got none"
-msgstr ""
+msgstr "预期应找到一个证书，结果未找到任何证书"
 
 #: shared/ssl/ssl.go:83
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to read certificate file %s"
-msgstr "无法读取文件 %s"
+msgstr "无法读取证书文件 %s"
 
 #: shared/ssl/ssl.go:119
-#, fuzzy
 msgid "Failed to extract data from certificate"
-msgstr "无法读取随机数据"
+msgstr "无法从证书提取数据"
 
 #: shared/ssl/ssl.go:140
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse start date: %s\n"
-msgstr "无法创建 %s"
+msgstr "无法分析起始日期：%s\n"
 
 #: shared/ssl/ssl.go:146
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse end date: %s\n"
-msgstr "无法创建 %s"
+msgstr "无法分析终止日期：%s\n"
 
 #: shared/ssl/ssl.go:190
 msgid "No CA found"
-msgstr ""
+msgstr "未找到 CA"
 
 #: shared/ssl/ssl.go:197
 msgid "No CA found for server certificate"
-msgstr ""
+msgstr "未找到服务器证书的 CA"
 
 #: shared/ssl/ssl.go:206
 #, javascript-format
 msgid "Missing CA with subject hash %s"
-msgstr ""
+msgstr "缺少主体哈希为 %s 的 CA"
 
 #: shared/ssl/ssl.go:227
-#, fuzzy
 msgid "server certificate is required"
-msgstr "必须提供值"
+msgstr "必须指定服务器证书"
 
 #: shared/ssl/ssl.go:228
-#, fuzzy
 msgid "server key is required"
-msgstr "必须提供值"
+msgstr "必须指定服务器密钥"
 
 #: shared/ssl/ssl.go:240
 #, javascript-format
 msgid "%s file is not accessible"
-msgstr ""
+msgstr "%s 文件无法访问"
 
 #: shared/ssl/ssl.go:248
 msgid "Source server SSL CA private key password"
-msgstr ""
+msgstr "源服务器 SSL CA 私用密钥口令"
 
 #: shared/ssl/ssl.go:254
 msgid "Failed to open openssl rsa process input stream"
-msgstr ""
+msgstr "无法打开 openssl rsa 流程输入流"
 
 #: shared/ssl/ssl.go:257
-#, fuzzy
 msgid "Failed to write openssl key content to input stream"
-msgstr "无法写入 %s 文件"
+msgstr "无法将 openssl 密钥内容写入输入流"
 
 #: shared/ssl/ssl.go:263
-#, fuzzy
 msgid "Failed to convert CA private key to RSA"
-msgstr "无法将数据转换为 JSON"
+msgstr "无法将 CA 私用密钥转换为 RSA"
 
 #: shared/ssl/ssl.go:273
 msgid "Failed to open openssl x509 process input stream"
-msgstr ""
+msgstr "无法打开 openssl x509 流程输入流"
 
 #: shared/ssl/ssl.go:276
-#, fuzzy
 msgid "Failed to write SSL certificate to input stream"
-msgstr "无法读取文件 %s"
+msgstr "无法将 SSL 证书写入输入流"
 
 #: shared/ssl/ssl.go:280
-#, fuzzy
 msgid "failed to strip text part from CA certificate"
-msgstr "无法读取随机数据"
+msgstr "无法剥离 CA 证书中的文本部分"
 
 #: shared/utils/cmd.go:58 shared/utils/cmd.go:59
 msgid "failed to unmarshall configuration"
 msgstr "无法解组配置"
 
 #: shared/utils/cmd.go:70
-#, fuzzy
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
-msgstr "用于访问容器的工具。可能的值为：'podman', 'podman-remote', 'kubectl'。默认会推测应使用哪个工具。"
+msgstr ""
+"用于访问容器的工具。可能的值为：podman、podman-remote、kubectl。\n"
+"默认会推测应使用哪个工具。"
 
 #: shared/utils/cmd.go:86
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
@@ -1274,7 +1239,6 @@ msgstr ""
 "有关命令的详细信息，请使用 \"{{.CommandPath}} [command] --help\"。{{end}}\n"
 
 #: shared/utils/config.go:143
-#, fuzzy
 msgid ""
 "\n"
 "Configuration:\n"
@@ -1314,18 +1278,18 @@ msgstr ""
 "配置：\n"
 "\n"
 "  所有非全局标志都可作为配置选择性传递。\n"
-"  \n"
+"\n"
 "  配置文件为 YAML 文件，其中包含与标志名称匹配的项。\n"
 "  标志的名称为命令行参数 '--' 后面的部分。\n"
 "  标志名称中的每个 '_' 字符都表示一个嵌套属性。\n"
-"  \n"
+"\n"
 "  例如，'--tz CEST' 和 '--ssl-password secret' 将对应\n"
-"  以下 YAML 配置：\n"
-"  \n"
+"以下 YAML 配置：\n"
+"\n"
 "    tz: CEST\n"
 "    ssl:\n"
 "      password: secret\n"
-"  \n"
+"\n"
 "  系统将在以下位置按如下顺序搜索配置文件：\n"
 "  · /etc/uyuni/uyuni-tools.yaml\n"
 "  · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}\n"
@@ -1337,12 +1301,12 @@ msgstr ""
 "环境变量：\n"
 "\n"
 "  所有非全局标志都可作为环境变量传递。\n"
-"  \n"
+"\n"
 "  环境变量名称与标志名称对应，不过 '-' 会改为 '_'，\n"
 "  并且带有 {{ .EnvPrefix }} 前缀。\n"
-"  \n"
+"\n"
 "  例如，'--tz CEST' 标志对应于 '{{ .EnvPrefix }}_TZ'，\n"
-"  '--ssl-password' 标志对应于 '{{ .EnvPrefix }}_SSL_PASSWORD' \n"
+"  '--ssl-password' 标志对应于 '{{ .EnvPrefix }}_SSL_PASSWORD'\n"
 
 #: shared/utils/config.go:180
 msgid "Help on configuration file and environment variables"
@@ -1448,7 +1412,7 @@ msgstr "不得包含空格或制表符"
 #: shared/utils/utils.go:104 shared/utils/utils.go:127
 #: shared/utils/utils.go:140
 msgid "not an interactive device, not asking for missing value"
-msgstr ""
+msgstr "不是交互设备，不提示提供缺少的值"
 
 #: shared/utils/utils.go:113
 msgid "Confirm the password"
@@ -1459,7 +1423,6 @@ msgid "Two different passwords have been provided"
 msgstr "两次提供的口令不相同"
 
 #: shared/utils/utils.go:149
-#, fuzzy
 msgid "failed to read input"
 msgstr "无法读取输入"
 
@@ -1531,9 +1494,8 @@ msgid "failed to create temporary directory"
 msgstr "无法创建临时目录"
 
 #: shared/utils/utils.go:334
-#, fuzzy
 msgid "failed to remove temporary directory"
-msgstr "无法创建临时目录"
+msgstr "无法去除临时目录"
 
 #: shared/utils/utils.go:344
 msgid "Failed to read random data"
@@ -1564,14 +1526,14 @@ msgid "cannot resolve %s"
 msgstr "无法解析 %s"
 
 #: shared/utils/utils.go:489
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error creating file %s"
-msgstr "正在去除文件 %s"
+msgstr "创建文件 %s 时出错"
 
 #: shared/utils/utils.go:494
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error writing file %s"
-msgstr "正在去除文件 %s"
+msgstr "写入文件 %s 时出错"
 
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "无法发现群集类型"
