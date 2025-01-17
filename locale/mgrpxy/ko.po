@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-06 14:42+0100\n"
-"PO-Revision-Date: 2025-01-16 06:50+0000\n"
+"PO-Revision-Date: 2025-01-17 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrpxy/ko/>\n"
@@ -160,21 +160,18 @@ msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.com에 로그인하지 못했습니다."
 
 #: mgrpxy/cmd/logs/kubernetes.go:29
-#, fuzzy
 msgid "failed to find proxy pod"
-msgstr "uyuni-proxy 배포 네임스페이스를 찾지 못함"
+msgstr "프록시 포드를 찾지 못함"
 
 #: mgrpxy/cmd/logs/kubernetes.go:33
-#, fuzzy
 msgid "failed to find proxy deployment namespace"
-msgstr "uyuni-proxy 배포 네임스페이스를 찾지 못함"
+msgstr "프록시 배포 네임스페이스를 찾지 못함"
 
 #: mgrpxy/cmd/logs/logs.go:38
 msgid "Get the proxy logs"
 msgstr "프록시 로그 가져오기"
 
 #: mgrpxy/cmd/logs/logs.go:39
-#, fuzzy
 msgid ""
 "Get the proxy logs\n"
 "The command automatically detects installed backend and displays the logs for containers managed by Kubernetes or Podman\n"
@@ -184,7 +181,7 @@ msgstr ""
 "프록시 로그 가져오기\n"
 "이 명령은 설치된 백엔드를 자동으로 감지하고 Kubernetes 또는 Podman에서 "
 "관리하는 컨테이너의 로그를 표시합니다.\n"
-"그러나 특정 컨테이너에 대한 로그를 가져오기 위해 Pod 및/또는 컨테이너의 "
+"그러나 특정 컨테이너에 대한 로그를 가져오기 위해 포드 및/또는 컨테이너의 "
 "이름을 지정할 수 있습니다.\n"
 "자세한 내용은 예제를 참조하십시오."
 
@@ -201,7 +198,6 @@ msgid "number of lines to show from the end of the logs"
 msgstr "로그의 끝에서 표시할 줄 수"
 
 #: mgrpxy/cmd/logs/logs.go:70
-#, fuzzy
 msgid ""
 "show logs since a specific time or duration.\n"
 "Supports Go duration strings and RFC3339 format (e.g. 3h, 2023-01-02T15:04:05)"
@@ -497,9 +493,8 @@ msgid "failed to write in file %s"
 msgstr "%s 파일에 쓰지 못함"
 
 #: mgrpxy/shared/kubernetes/deploy.go:184
-#, fuzzy
 msgid "failed to scale replicas to 1"
-msgstr "임시 디렉토리를 만들지 못함"
+msgstr "복제본을 1로 배율 조정하지 못함"
 
 #: mgrpxy/shared/podman/podman.go:45
 msgid "cannot setup network"
