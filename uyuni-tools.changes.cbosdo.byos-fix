@@ -1,0 +1,1 @@
+- Only raise an error if cloudguestregistryauth fails for PAYG (bsc#1233630)

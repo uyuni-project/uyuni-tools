@@ -356,8 +356,12 @@ func Upgrade(
 	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
 	salineFlags adm_utils.SalineFlags,
 ) error {
-	if err := CallCloudGuestRegistryAuth(); err != nil {
-		return err
+	// Calling cloudguestregistryauth only makes sense if using the cloud provider registry.
+	// This check assumes users won't use custom registries that are not the cloud provider one on a cloud image.
+	if !strings.HasPrefix(registry, "registry.suse.com") {
+		if err := CallCloudGuestRegistryAuth(); err != nil {
+			return err
+		}
 	}
 
 	serverImage, err := utils.ComputeImage(registry, utils.DefaultTag, image)
@@ -526,11 +530,24 @@ func CallCloudGuestRegistryAuth() error {
 
 	path, err := exec.LookPath(cloudguestregistryauth)
 	if err == nil {
-		// the binary is installed
-		return utils.RunCmdStdMapping(zerolog.DebugLevel, path)
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, path); err != nil && isPAYG() {
+			// Not being registered against the cloud registry is  not an error on BYOS.
+			return err
+		} else if err != nil {
+			log.Info().Msg(L("The above error is only relevant if using a public cloud provider registry"))
+		}
 	}
 	// silently ignore error if it is missing
 	return nil
+}
+
+func isPAYG() bool {
+	flavorCheckPath := "/usr/bin/instance-flavor-check"
+	if utils.FileExists(flavorCheckPath) {
+		out, _ := utils.RunCmdOutput(zerolog.DebugLevel, flavorCheckPath)
+		return strings.TrimSpace(string(out)) == "PAYG"
+	}
+	return false
 }
 
 // GetMountPoint return folder where a given volume is mounted.

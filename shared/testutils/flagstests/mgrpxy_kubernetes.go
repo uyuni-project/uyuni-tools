@@ -30,6 +30,7 @@ func AssertProxyHelmFlags(t *testing.T, flags *kubernetes.HelmFlags) {
 
 // ImageProxyFlagsTestArgs is the slice of parameters to use with AssertImageFlags.
 var ImageProxyFlagsTestArgs = []string{
+	"--registry", "myregistry.com",
 	"--tag", "v1.2.3",
 	"--pullPolicy", "never",
 	"--httpd-image", "path/to/httpd",
@@ -48,6 +49,7 @@ var ImageProxyFlagsTestArgs = []string{
 
 // AssertProxyImageFlags checks that all image flags are parsed correctly.
 func AssertProxyImageFlags(t *testing.T, flags *utils.ProxyImageFlags) {
+	testutils.AssertEquals(t, "Error parsing --registry", "myregistry.com", flags.Registry)
 	testutils.AssertEquals(t, "Error parsing --tag", "v1.2.3", flags.Tag)
 	testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.PullPolicy)
 	testutils.AssertEquals(t, "Error parsing --httpd-image", "path/to/httpd", flags.Httpd.Name)

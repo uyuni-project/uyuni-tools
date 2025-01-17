@@ -123,7 +123,7 @@ It will be used as SCC credentials for products synchronization and to pull imag
 // AddImageFlag add Image flags to a command.
 func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("image", defaultImage, L("Image"))
-	cmd.Flags().String("registry", utils.DefaultRegistry, L("Specify a private registry where pull the images"))
+	cmd.Flags().String("registry", utils.DefaultRegistry, L("Specify a registry where to pull the images from"))
 	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
 
 	utils.AddPullPolicyFlag(cmd)
