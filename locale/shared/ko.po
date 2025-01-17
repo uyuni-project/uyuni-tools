@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-12 11:53+0100\n"
-"PO-Revision-Date: 2025-01-16 06:50+0000\n"
+"PO-Revision-Date: 2025-01-17 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ko/>\n"
@@ -41,7 +41,6 @@ msgid "If set, server certificate will not be checked for validity"
 msgstr "설정하면 서버 인증서의 유효성을 확인하지 않습니다."
 
 #: shared/api/api.go:74
-#, fuzzy
 msgid "401: unauthorized"
 msgstr "401: 승인되지 않음"
 
@@ -51,19 +50,16 @@ msgid "unknown error: %d"
 msgstr "알 수 없는 오류: %d"
 
 #: shared/api/api.go:120
-#, fuzzy
 msgid "server URL is not provided"
 msgstr "서버 URL이 제공되지 않음"
 
 #: shared/api/api.go:152
-#, fuzzy
 msgid "Cached session is expired."
 msgstr "캐시된 세션이 만료되었습니다."
 
 #: shared/api/api.go:154 shared/api/credentials.go:70
-#, fuzzy
 msgid "Failed to remove stored credentials!"
-msgstr "%s 파일 제거를 하지 못함"
+msgstr "저장된 자격 증명을 제거하지 못했습니다!"
 
 #: shared/api/api.go:172
 msgid "Unable to create login data"
@@ -74,77 +70,66 @@ msgid "auth cookie not found in login response"
 msgstr "로그인 응답에서 인증 쿠키를 찾을 수 없습니다."
 
 #: shared/api/api.go:217
-#, fuzzy
 msgid "failed to logout from the server"
-msgstr "서버에 연결하지 못함"
+msgstr "서버에서 로그아웃하지 못함"
 
 #: shared/api/api.go:238
 msgid "Unable to convert data to JSON"
 msgstr "데이터를 JSON으로 변환할 수 없습니다."
 
 #: shared/api/credentials.go:21
-#, fuzzy
 msgid "not logged in, session cookie is missing"
 msgstr "로그인되지 않음, 세션 쿠키 누락됨"
 
 #: shared/api/credentials.go:34
-#, fuzzy
 msgid "unable to create credentials json"
-msgstr "로그인 데이터를 생성할 수 없습니다."
+msgstr "자격 증명 json을 생성할 수 없음"
 
 #: shared/api/credentials.go:39
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "unable to write credentials store %s"
-msgstr "tar.gz를 %s에 쓰지 못함"
+msgstr "자격 증명 저장소 %s에 쓸 수 없음"
 
 #: shared/api/credentials.go:53
-#, fuzzy
 msgid "API server URL"
-msgstr "API 서버 비밀번호"
+msgstr "API 서버 URL"
 
 #: shared/api/credentials.go:54
-#, fuzzy
 msgid "API server user"
-msgstr "API 서버 비밀번호"
+msgstr "API 서버 사용자"
 
 #: shared/api/credentials.go:55
 msgid "API server password"
 msgstr "API 서버 비밀번호"
 
 #: shared/api/credentials.go:58
-#, fuzzy
 msgid "No credentials provided"
 msgstr "자격 증명이 제공되지 않음"
 
 #: shared/api/credentials.go:68
-#, fuzzy
 msgid "Cannot load stored credentials"
 msgstr "저장된 자격 증명을 로드할 수 없음"
 
 #: shared/api/credentials.go:83
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "unable to read credentials file %s"
-msgstr "%s 파일 읽기 실패"
+msgstr "%s 자격 증명 파일을 읽을 수 없음"
 
 #: shared/api/credentials.go:88
-#, fuzzy
 msgid "unable to decode credentials file"
 msgstr "자격 증명 파일을 디코딩할 수 없음"
 
 #: shared/api/credentials.go:92
-#, fuzzy
 msgid "no credentials loaded"
 msgstr "자격 증명이 로드되지 않음"
 
 #: shared/api/credentials.go:101
-#, fuzzy
 msgid "specified api server does not match with stored credentials"
 msgstr "지정한 API 서버가 저장된 자격 증명과 일치하지 않음"
 
 #: shared/api/org/createFirst.go:22
-#, fuzzy
 msgid "unable to prepare API client"
-msgstr "로그인 데이터를 생성할 수 없습니다."
+msgstr "API 클라이언트를 준비할 수 없음"
 
 #: shared/api/org/createFirst.go:36
 msgid "failed to create first user and organization"
@@ -159,9 +144,8 @@ msgid "failed to get organization details"
 msgstr "조직 세부 정보 가져오기 실패"
 
 #: shared/api/proxy/containerConfig.go:33
-#, fuzzy
 msgid "failed to create proxy configuration file"
-msgstr "구성 파일 %s을(를) 구문 분석하지 못함"
+msgstr "프록시 구성 파일을 생성하지 못함"
 
 #: shared/completion/completion.go:20 shared/completion/completion.go:21
 msgid "Generate shell completion script"
@@ -196,9 +180,8 @@ msgid "coundn't find app name"
 msgstr "앱 이름을 찾을 수 없음"
 
 #: shared/connection.go:164
-#, fuzzy
 msgid "failed to guest namespace"
-msgstr "네임스페이스 가져오기 실패 "
+msgstr "게스트 네임스페이스를 가져오지 못함"
 
 #: shared/connection.go:187
 #, javascript-format
@@ -233,9 +216,8 @@ msgid "unknown container kind: %s"
 msgstr "알 수 없는 컨테이너 종류: %s"
 
 #: shared/connection.go:382
-#, fuzzy
 msgid "failed to detect the namespace"
-msgstr "네임스페이스 가져오기 실패 "
+msgstr "네임스페이스를 발견하지 못함"
 
 #: shared/connection.go:398
 msgid "Copying the SSL CA certificate to the host"
@@ -246,9 +228,8 @@ msgid "Updating host trusted certificates"
 msgstr "호스트 신뢰할 수 있는 인증서 업데이트"
 
 #: shared/connection.go:425
-#, fuzzy
 msgid "Unable to update host trusted certificates."
-msgstr "호스트 신뢰할 수 있는 인증서 업데이트"
+msgstr "호스트 신뢰할 수 있는 인증서를 업데이트할 수 없음"
 
 #: shared/connection.go:466 shared/connection.go:487
 msgid "failed to determine suitable backend"
@@ -281,19 +262,18 @@ msgid "failed to remove %s file in the container"
 msgstr "컨테이너에서 %s 제거 실패"
 
 #: shared/kubernetes/apply.go:46
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s YAML file"
-msgstr "%s 파일 생성 실패"
+msgstr "%s YAML 파일 생성 실패"
 
 #: shared/kubernetes/apply.go:50
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to close %s YAML file"
-msgstr "%s 파일 생성 실패"
+msgstr "%s YAML 파일 닫기 실패"
 
 #: shared/kubernetes/apply.go:57
-#, fuzzy
 msgid "failed to write PVC to file"
-msgstr "%s 파일 쓰기 실패"
+msgstr "PVC를 파일에 쓰기 실패"
 
 #: shared/kubernetes/helm.go:56
 msgid "failed to upgrade helm chart %[1]s in namespace %[2]s"
@@ -326,62 +306,52 @@ msgid "failed to run helm %s"
 msgstr "%s helm을 실행하지 못함"
 
 #: shared/kubernetes/inspect.go:49
-#, fuzzy
 msgid "failed to parse the inspected data"
-msgstr "검사 데이터의 마샬링 취소 실패"
+msgstr "검사 데이터의 구문 분석 실패"
 
 #: shared/kubernetes/k3s.go:27
 msgid "Installing K3s Traefik configuration"
 msgstr "K3s Traefik 구성 설치"
 
 #: shared/kubernetes/k3s.go:44
-#, fuzzy
 msgid "Failed to write Traefik configuration"
-msgstr "K3s Traefik 설정 쓰기 실패"
+msgstr "Traefik 구성 쓰기 실패"
 
 #: shared/kubernetes/k3s.go:79
 msgid "Waiting for Traefik to be reloaded"
 msgstr "Traefik의 다시 로드를 기다리는 중"
 
 #: shared/kubernetes/k3s.go:91
-#, fuzzy
 msgid "Failed to reload Traefik"
-msgstr "%s 파일 읽기 실패"
+msgstr "Traefik 파일 다시 로드 실패"
 
 #: shared/kubernetes/k3s.go:98
-#, fuzzy
 msgid "Reinstalling Traefik without additionnal configuration"
-msgstr "K3s Traefik 구성 설치"
+msgstr "추가 구성 없이 Traefik 다시 설치"
 
 #: shared/kubernetes/k3s.go:101
-#, fuzzy
 msgid "failed to write empty traefik configuration"
-msgstr "K3s Traefik 설정 쓰기 실패"
+msgstr "빈 traefik 구성 쓰기 실패"
 
 #: shared/kubernetes/k3s.go:105
-#, fuzzy
 msgid "failed to uninstall traefik configuration"
-msgstr "K3s Traefik 설정 쓰기 실패"
+msgstr "traefik 구성 제거 실패"
 
 #: shared/kubernetes/k3s.go:109
-#, fuzzy
 msgid "Would reinstall Traefik without additionnal configuration"
-msgstr "K3s Traefik 구성 설치"
+msgstr "추가 구성 없이 Traefik 다시 설치"
 
 #: shared/kubernetes/k3s.go:119
-#, fuzzy
 msgid "failed to read the traefik configuration"
-msgstr "K3s Traefik 설정 쓰기 실패"
+msgstr "traefik 구성 읽기 실패"
 
 #: shared/kubernetes/k3s.go:123
-#, fuzzy
 msgid "traefik configuration file doesn't contain the helm chart version"
 msgstr "traefik 구성 파일에 helm 차트 버전이 포함되어 있지 않음"
 
 #: shared/kubernetes/k3s.go:126
-#, fuzzy
 msgid "failed to find traefik helm chart version"
-msgstr "kubelet 버전을 가져오지 못함"
+msgstr "traefik helm 차트 버전을 찾지 못함"
 
 #: shared/kubernetes/kubernetes.go:59
 msgid "failed to get kubelet version"
@@ -410,52 +380,48 @@ msgid "Failed to base64 decode secret %s"
 msgstr "base64 시크릿 %s을(를) 디코딩하지 못함"
 
 #: shared/kubernetes/kubernetes.go:187
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create the %s docker secret"
-msgstr "%s 폴더를 생성하지 못함"
+msgstr "%s Docker 비밀을 생성하지 못함"
 
 #: shared/kubernetes/kubernetes.go:229
-#, fuzzy
 msgid "failed to get deployment image pull secret"
-msgstr "배포 상태를 구문 분석하지 못함"
+msgstr "배포 이미지 추출 비밀을 가져오지 못함"
 
 #: shared/kubernetes/pod.go:79 shared/kubernetes/pod.go:82
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run the %s pod"
-msgstr "%s helm을 실행하지 못함"
+msgstr "%s 포드를 실행하지 못함"
 
 #: shared/kubernetes/pod.go:93
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get the %s pod logs"
-msgstr "%s Pod에 대한 이벤트를 가져오지 못했습니다."
+msgstr "%s 포드 로그를 가져오지 못함"
 
 #: shared/kubernetes/pod.go:98
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to delete the %s pod"
-msgstr "%s 서비스 비활성화 실패"
+msgstr "%s 포드 삭제 실패"
 
 #: shared/kubernetes/pvc.go:42
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s persistent volume claim"
-msgstr "%s 파일 생성 실패"
+msgstr "%s 영구 볼륨 클레임 생성 실패"
 
 #: shared/kubernetes/pvc.go:70
-#, fuzzy
 msgid "failed to parse pv data"
-msgstr "%s 생성 실패"
+msgstr "pv 데이터 생성 실패"
 
 #: shared/kubernetes/pvc.go:75
-#, fuzzy
 msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
 msgstr "%[1]s 볼륨은 %[2]s 네임스페이스의 %[1]s 클레임을 참조해야 합니다."
 
 #: shared/kubernetes/pvc.go:85
-#, fuzzy
 msgid "failed to run the persistent volume claims"
-msgstr "%s helm을 실행하지 못함"
+msgstr "영구 볼륨 클레임을 실행하지 못함"
 
 #: shared/kubernetes/pvc.go:102
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
 msgstr "PersistentVolumeClaim %s에 크기가 정의되지 않음, 기본값으로 10Mi 사용"
 
@@ -525,50 +491,47 @@ msgstr ""
 "로컬-경로-공급자 스토리지 볼륨이 자동으로 제거됩니다."
 
 #: shared/kubernetes/utils.go:70
-#, fuzzy
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
 msgstr[0] "%[2]s 네임스페이스에서 %[1]s 배포가 준비되기를 기다리는 중\n"
 
 #: shared/kubernetes/utils.go:97
-#, fuzzy
 msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
-msgstr "%[2]s 네임스페이스에서 %[1]s 배포가 준비되기를 기다리는 중\n"
+msgstr "%[2]s 네임스페이스에서 %[1]s 배포가 시작되기를 기다리는 중\n"
 
 #: shared/kubernetes/utils.go:114
-#, fuzzy
 msgid "failed to check if the deployment has running pods"
-msgstr "%s 배포 네임스페이스 찾기 실패"
+msgstr "배포에 실행 중인 포드가 있는지 확인 실패"
 
 #: shared/kubernetes/utils.go:166
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "all the pods of %s deployment have a failure"
-msgstr "%s 배포 네임스페이스 찾기 실패"
+msgstr "%s의 모든 포드 배포에 실패가 있음"
 
 #: shared/kubernetes/utils.go:195
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to list ReplicaSets for deployment %s"
-msgstr "%s Pod에 대한 이벤트를 가져오지 못했습니다."
+msgstr "배포 %s에 대한 ReplicaSets를 나열하지 못함"
 
 #: shared/kubernetes/utils.go:208
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get the %s deployment revision"
-msgstr "%s 배포 네임스페이스 찾기 실패"
+msgstr "%s 배포 개정 가져오기 실패"
 
 #: shared/kubernetes/utils.go:216
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "invalid replicasset response: :%s"
-msgstr "잘못된 이미지 이름: %s"
+msgstr "잘못된 복제본 세트 응답: %s"
 
 #: shared/kubernetes/utils.go:231
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to find pods for owner reference %s"
-msgstr "podman의 네트워크 백엔드를 찾지 못함"
+msgstr "소유자 참조 %s의 포드를 찾지 못함"
 
 #: shared/kubernetes/utils.go:257
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get the status of %s pod"
-msgstr "%s Pod에 대한 이벤트를 가져오지 못했습니다."
+msgstr "%s 포드에 대한 상태를 가져오지 못함"
 
 #: shared/kubernetes/utils.go:284
 msgid "failed to parse deployment status"
@@ -589,7 +552,6 @@ msgid "cannot execute %s"
 msgstr "%s을(를) 실행할 수 없음"
 
 #: shared/kubernetes/utils.go:350
-#, fuzzy
 msgid "invalid replicas result"
 msgstr "유효하지 않은 복제본 결과"
 
@@ -618,41 +580,37 @@ msgid "cannot serialize pod definition override"
 msgstr "Pod 정의 재정의를 직렬화할 수 없음"
 
 #: shared/kubernetes/waiters.go:40
-#, fuzzy
 msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
 msgstr ""
 "%[1]s 작업 실패, 자세한 내용을 살펴보려면 kubectl logs -n %[2]s --tail=-1 "
 "-ljob-name=%[1]s 실행"
 
 #: shared/kubernetes/waiters.go:49
-#, fuzzy
 msgid "%[1]s job failed to complete within %[2]d seconds"
 msgstr "%[1]s 작업이 %[2]d초 이내에 완료되지 않음"
 
 #: shared/kubernetes/waiters.go:61
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s job status"
-msgstr "배포 상태를 구문 분석하지 못함"
+msgstr "%s 작업 상태를 가져오지 못함"
 
 #: shared/kubernetes/waiters.go:65
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "invalid job status response: '%s'"
 msgstr "잘못된 작업 상태 응답: '%s'"
 
 #: shared/kubernetes/waiters.go:85
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s pod status"
-msgstr "%s Pod에 대한 이벤트를 가져오지 못했습니다."
+msgstr "%s 포드 상태를 가져오지 못함"
 
 #: shared/kubernetes/waiters.go:92
-#, fuzzy
 msgid "%[1]s pod failed with status %[2]s"
 msgstr "%[1]s pod가 실패했으며, 상태가 %[2]s임"
 
 #: shared/kubernetes/waiters.go:96
-#, fuzzy
 msgid "%[1]s pod failed to complete within %[2]d seconds"
-msgstr "%[1]s pod가 %[2]d초 내에 완료되지 않음"
+msgstr "%[1]s 포드가 %[2]d초 내에 완료되지 않음"
 
 #: shared/podman/hostinspector.go:67
 msgid "failed to run inspect script in host system"
@@ -668,9 +626,9 @@ msgid "Ensure image %s is available"
 msgstr "%s 이미지를 사용할 수 있는지 확인"
 
 #: shared/podman/images.go:46
-#, fuzzy
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
-msgstr "끌어오기 정책이 항상입니다. RPM 이미지가 있는지 확인하여 이미지가 없는 경우 레지스트리에서 끌어옵니다."
+msgstr "끌어오기 정책이 항상입니다. RPM 이미지가 있는지 확인하여 이미지가 없는 경우 "
+"레지스트리에서 끌어옵니다."
 
 #: shared/podman/images.go:56
 #, javascript-format
@@ -802,14 +760,14 @@ msgid "Network removed"
 msgstr "네트워크 제거됨"
 
 #: shared/podman/secret.go:46
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write %s secret to file"
-msgstr "%s 파일 쓰기 실패"
+msgstr "%s 비밀을 파일에 쓰기 실패"
 
 #: shared/podman/secret.go:50
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create podman secret %s"
-msgstr "podman 조사 %s 실행 실패"
+msgstr "podman 비밀 %s 생성 실패"
 
 #: shared/podman/secret.go:71 shared/podman/utils.go:137
 #: shared/podman/utils.go:163
@@ -818,9 +776,9 @@ msgid "Run %s"
 msgstr "%s 실행"
 
 #: shared/podman/secret.go:73
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to delete %s secret"
-msgstr "%s 서비스 비활성화 실패"
+msgstr "%s 비밀 삭제 실패"
 
 #: shared/podman/support.go:27
 msgid "No systemd file to add to the archive"
@@ -853,14 +811,12 @@ msgid "failed to run systemctl cat uyuni-*"
 msgstr "systemctl cat uyuni-* 실행 실패"
 
 #: shared/podman/support.go:85
-#, fuzzy
 msgid "failed to close inspect dump file"
-msgstr "임시 인증 파일 닫기 실패"
+msgstr "검사 덤프 파일 닫기 실패"
 
 #: shared/podman/support.go:108
-#, fuzzy
 msgid "failed to close bound files"
-msgstr "%s 파일 생성 실패"
+msgstr "바운드 파일 닫기 실패"
 
 #: shared/podman/support.go:160
 #, javascript-format
@@ -1033,14 +989,14 @@ msgid "Container already removed"
 msgstr "컨테이너 이미 제거됨"
 
 #: shared/podman/utils.go:116
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s systemd service definition"
-msgstr "%s systemd service를 활성화하지 못함"
+msgstr "%s systemd service 정의를 가져오지 못함"
 
 #: shared/podman/utils.go:123
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "no UYUNI_IMAGE defined in %s systemd service"
-msgstr "%s systemd service를 활성화하지 못함"
+msgstr "%s systemd service에 정의된 UYUNI_IMAGE 없음"
 
 #: shared/podman/utils.go:140
 #, javascript-format
@@ -1061,134 +1017,113 @@ msgid "cannot inspect data"
 msgstr "데이터를 검사할 수 없음"
 
 #: shared/ssl/flags.go:14
-#, fuzzy
 msgid "SSL certificate cnames separated by commas"
 msgstr "쉼표로 구분된 SSL 인증서 이름"
 
 #: shared/ssl/flags.go:15
-#, fuzzy
 msgid "SSL certificate country"
 msgstr "SSL 인증서 국가"
 
 #: shared/ssl/flags.go:16
-#, fuzzy
 msgid "SSL certificate state"
-msgstr "SSL CA 인증서를 호스트에 복사"
+msgstr "SSL 인증서 시/도"
 
 #: shared/ssl/flags.go:17
-#, fuzzy
 msgid "SSL certificate city"
-msgstr "SSL 인증서 도시"
+msgstr "SSL 인증서 구/군/시"
 
 #: shared/ssl/flags.go:18
-#, fuzzy
 msgid "SSL certificate organization"
 msgstr "SSL 인증서 조직"
 
 #: shared/ssl/flags.go:19
-#, fuzzy
 msgid "SSL certificate organization unit"
 msgstr "SSL 인증서 조직 단위"
 
 #: shared/ssl/flags.go:21
-#, fuzzy
 msgid "SSL Certificate Flags"
 msgstr "SSL 인증서 플래그"
 
 #: shared/ssl/ssl.go:38
-#, fuzzy
 msgid "Failed to find a non-CA certificate"
-msgstr "홈 디렉토리 찾기 실패"
+msgstr "비 CA 인증서를 찾지 못함"
 
 #: shared/ssl/ssl.go:77
-#, fuzzy
 msgid "expected to find a certificate, got none"
 msgstr "인증서가 있을 것으로 예상했지만, 아무것도 찾지 못함"
 
 #: shared/ssl/ssl.go:83
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to read certificate file %s"
-msgstr "%s 파일 읽기 실패"
+msgstr "%s 인증서 파일 읽기 실패"
 
 #: shared/ssl/ssl.go:119
-#, fuzzy
 msgid "Failed to extract data from certificate"
-msgstr "임의 데이터 읽기 실패"
+msgstr "인증서에서 데이터 추출 실패"
 
 #: shared/ssl/ssl.go:140
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse start date: %s\n"
-msgstr "%s 생성 실패"
+msgstr "시작 날짜를 구문 분석하지 못함: %s\n"
 
 #: shared/ssl/ssl.go:146
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse end date: %s\n"
-msgstr "%s 생성 실패"
+msgstr "종료 날짜를 구문 분석하지 못함: %s\n"
 
 #: shared/ssl/ssl.go:190
-#, fuzzy
 msgid "No CA found"
 msgstr "CA 없음"
 
 #: shared/ssl/ssl.go:197
-#, fuzzy
 msgid "No CA found for server certificate"
-msgstr "서버 인증서에 대한 CA 없음"
+msgstr "서버 인증서에 대한 CA를 찾을 수 없음"
 
 #: shared/ssl/ssl.go:206
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Missing CA with subject hash %s"
-msgstr "보안 주체 해시 %s에 CA가 누락됨"
+msgstr "제목 해시 %s에 CA가 누락됨"
 
 #: shared/ssl/ssl.go:227
-#, fuzzy
 msgid "server certificate is required"
-msgstr "값은 필수입니다."
+msgstr "서버 인증서 필수"
 
 #: shared/ssl/ssl.go:228
-#, fuzzy
 msgid "server key is required"
-msgstr "값은 필수입니다."
+msgstr "서버 키 필수"
 
 #: shared/ssl/ssl.go:240
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s file is not accessible"
 msgstr "%s 파일에 액세스할 수 없음"
 
 #: shared/ssl/ssl.go:248
-#, fuzzy
 msgid "Source server SSL CA private key password"
 msgstr "소스 서버 SSL CA 개인 키 암호"
 
 #: shared/ssl/ssl.go:254
-#, fuzzy
 msgid "Failed to open openssl rsa process input stream"
 msgstr "openssl rsa 프로세스 입력 스트림을 열지 못함"
 
 #: shared/ssl/ssl.go:257
-#, fuzzy
 msgid "Failed to write openssl key content to input stream"
-msgstr "%s 파일 쓰기 실패"
+msgstr "입력 스트림에 openssl 키 내용 쓰기 실패"
 
 #: shared/ssl/ssl.go:263
-#, fuzzy
 msgid "Failed to convert CA private key to RSA"
-msgstr "데이터를 JSON으로 변환할 수 없습니다."
+msgstr "CA 개인 키를 RSA로 변환할 수 없음"
 
 #: shared/ssl/ssl.go:273
-#, fuzzy
 msgid "Failed to open openssl x509 process input stream"
 msgstr "openssl x509 프로세스 입력 스트림을 열지 못함"
 
 #: shared/ssl/ssl.go:276
-#, fuzzy
 msgid "Failed to write SSL certificate to input stream"
-msgstr "%s 파일 읽기 실패"
+msgstr "SSL 인증서를 입력 스트림에 쓰기 실패"
 
 #: shared/ssl/ssl.go:280
-#, fuzzy
 msgid "failed to strip text part from CA certificate"
-msgstr "임의 데이터 읽기 실패"
+msgstr "CA 인증서에서 텍스트 부분 스트리핑 실패"
 
 #: shared/utils/cmd.go:58 shared/utils/cmd.go:59
 msgid "failed to unmarshall configuration"
@@ -1307,7 +1242,6 @@ msgstr ""
 "명령에 대한 자세한 내용을 확인하려면 \"{{.CommandPath}} [command] --help\"를 사용하십시오.{{end}}\n"
 
 #: shared/utils/config.go:143
-#, fuzzy
 msgid ""
 "\n"
 "Configuration:\n"
@@ -1375,7 +1309,7 @@ msgstr ""
 "  {{ .EnvPrefix }} 접두사가 붙은 이름입니다.\n"
 "  \n"
 "  예를 들어, ''--tz CEST'' 플래그는 ''{{ .EnvPrefix }}_TZ''에 매핑되고\n"
-"''--ssl-password'' 플래그는 ''{{ .EnvPrefix }}_SSL_PASSWORD''에 매핑됩니다. \n"
+"''--ssl-password'' 플래그는 ''{{ .EnvPrefix }}_SSL_PASSWORD''에 매핑됩니다.\n"
 
 #: shared/utils/config.go:180
 msgid "Help on configuration file and environment variables"
@@ -1480,7 +1414,6 @@ msgstr "공백이나 탭을 포함할 수 없습니다."
 
 #: shared/utils/utils.go:104 shared/utils/utils.go:127
 #: shared/utils/utils.go:140
-#, fuzzy
 msgid "not an interactive device, not asking for missing value"
 msgstr "대화형 장치 아님, 누락 값을 요구하지 않음"
 
@@ -1493,7 +1426,6 @@ msgid "Two different passwords have been provided"
 msgstr "2개의 다른 비밀번호가 입력되었습니다."
 
 #: shared/utils/utils.go:149
-#, fuzzy
 msgid "failed to read input"
 msgstr "입력 읽기 실패"
 
@@ -1565,9 +1497,8 @@ msgid "failed to create temporary directory"
 msgstr "임시 디렉토리를 만들지 못함"
 
 #: shared/utils/utils.go:334
-#, fuzzy
 msgid "failed to remove temporary directory"
-msgstr "임시 디렉토리를 만들지 못함"
+msgstr "임시 디렉토리를 제거하지 못함"
 
 #: shared/utils/utils.go:344
 msgid "Failed to read random data"
@@ -1598,14 +1529,14 @@ msgid "cannot resolve %s"
 msgstr "%s 해결 불가"
 
 #: shared/utils/utils.go:489
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error creating file %s"
-msgstr "%s 파일 제거"
+msgstr "%s 파일 생성 오류"
 
 #: shared/utils/utils.go:494
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error writing file %s"
-msgstr "%s 파일 제거"
+msgstr "%s 파일 쓰기 오류"
 
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "클러스터 유형 검색 실패"
