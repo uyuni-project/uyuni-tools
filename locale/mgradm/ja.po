@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:42+0100\n"
+"POT-Creation-Date: 2025-01-17 14:58+0100\n"
 "PO-Revision-Date: 2025-01-16 01:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgradm/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -177,56 +176,34 @@ msgid ""
 msgstr ""
 "自動インストールディストリビューション製品のマッピング。\n"
 "\n"
-"サーバでディストリビューションを登録するには、ディストリビューションを正しい"
-"ソフトウェアチャンネルにマッピングすることが重要です。\n"
+"サーバでディストリビューションを登録するには、ディストリビューションを正しいソフトウェアチャンネルにマッピングすることが重要です。\n"
 "\n"
-"ソフトウェアチャンネルは、ディストリビューション名と関連付けずに異なる名前を"
-"付けることができます。\n"
-"その場合、カスタムディストリビューション名とソフトウェアチャンネルのマッピン"
-"グを許可する必要があります。\n"
+"ソフトウェアチャンネルは、ディストリビューション名と関連付けずに異なる名前を付けることができます。\n"
+"その場合、カスタムディストリビューション名とソフトウェアチャンネルのマッピングを許可する必要があります。\n"
 "\n"
-"ソフトウェアチャンネルを設定する1つの方法は、ディストリビューションコピーコマ"
-"ンドに--channelフラグを付けることです。\n"
+"ソフトウェアチャンネルを設定する1つの方法は、ディストリビューションコピーコマンドに--channelフラグを付けることです。\n"
 "\n"
-"頻繁に使用する場合は、mgradmの設定ファイルに以下のフォーマットでカスタム製品"
-"マッピングを書き込むことができます。\n"
+"頻繁に使用する場合は、mgradmの設定ファイルに以下のフォーマットでカスタム製品マッピングを書き込むことができます。\n"
 "\n"
 "製品マップ:\n"
 "  <ディストリビューション名>:\n"
 "    <ディストリビューションバージョン:\n"
 "      <ディストリビューションアーキテクチャ>:\n"
 "        ChannelLabel: <チャンネルラベル>\n"
-"        InstallType: "
-"<rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpmのいずれか>\n"
+"        InstallType: <rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpmのいずれか>\n"
 "        TreeName: <カスタムディストリビューション名>\n"
 "\n"
 "ここで\n"
-"* "
-"<ディストリビューション名>はディストリビューションの名前で、デフォルトではメ"
-"ディアの「.treeinfo」ファイルから取得されます。\n"
-"  "
-"「.treeinfo」が見つからないか使用できない場合は、コマンドラインオプションが必"
-"要であり、使用されます。\n"
-"*<ディストリビューションバージョン>はディストリビューションのバージョンで、デ"
-"フォルトではメディアの「.treeinfo」ファイルから取得されます。\n"
-"  "
-"「.treeinfo」が見つからない場合は、コマンドラインオプションが必要であり、使用"
-"されます。\n"
-"*<ディストリビューションアーキテクチャ>はディストリビューションのアーキテクチ"
-"ャで、デフォルトではメディアの「.treeinfo」ファイルから取得されます。\n"
-"  "
-"「.treeinfo」が見つからない場合は、コマンドラインオプションが必要であり、使用"
-"されます。\n"
-"* "
-"ChannelLabelはUyuniサーバからのチャンネルラベルで、このディストリビューション"
-"に使用され、\n"
+"* <ディストリビューション名>はディストリビューションの名前で、デフォルトではメディアの「.treeinfo」ファイルから取得されます。\n"
+"  「.treeinfo」が見つからないか使用できない場合は、コマンドラインオプションが必要であり、使用されます。\n"
+"*<ディストリビューションバージョン>はディストリビューションのバージョンで、デフォルトではメディアの「.treeinfo」ファイルから取得されます。\n"
+"  「.treeinfo」が見つからない場合は、コマンドラインオプションが必要であり、使用されます。\n"
+"*<ディストリビューションアーキテクチャ>はディストリビューションのアーキテクチャで、デフォルトではメディアの「.treeinfo」ファイルから取得されます。\n"
+"  「.treeinfo」が見つからない場合は、コマンドラインオプションが必要であり、使用されます。\n"
+"* ChannelLabelはUyuniサーバからのチャンネルラベルで、このディストリビューションに使用され、\n"
 "  コマンドラインフラグで上書きできません。\n"
-"* "
-"InstallTypeは、インストーラが既知の場合(autoyastやキックスタートの場合)、また"
-"は「generic_rpm」を使用する場合に使用します。\n"
-"* "
-"TreeNameは、UyuniサーバのUIでディストリビューションの表示方法を指定します。設"
-"定されていない場合は<ディストリビューション名>が使用されます。\n"
+"* InstallTypeは、インストーラが既知の場合(autoyastやキックスタートの場合)、または「generic_rpm」を使用する場合に使用します。\n"
+"* TreeNameは、UyuniサーバのUIでディストリビューションの表示方法を指定します。設定されていない場合は<ディストリビューション名>が使用されます。\n"
 "\n"
 "ビルトイン製品マップ:\n"
 "\n"
@@ -477,7 +454,7 @@ msgstr ""
 "\n"
 "メモ: リモートのpodmanへのインストールはまだサポートされていません。\n"
 
-#: mgradm/cmd/install/podman/utils.go:40 mgradm/shared/podman/podman.go:443
+#: mgradm/cmd/install/podman/utils.go:40 mgradm/shared/podman/podman.go:447
 msgid "Waiting for the server to start…"
 msgstr "サーバが起動するのを待機中…"
 
@@ -509,7 +486,7 @@ msgstr "FQDN「%s」を使用してサーバを設定しています"
 #: mgradm/shared/hub/xmlrpcapi.go:45
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:47
 #: mgradm/shared/kubernetes/reconcile.go:40 mgradm/shared/podman/podman.go:267
-#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:365
+#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:369
 #: mgradm/shared/saline/saline.go:72
 msgid "failed to compute image URL"
 msgstr "イメージURLの計算に失敗しました"
@@ -713,19 +690,14 @@ msgstr ""
 "リモートサーバをkubernetesクラスタ上で動作するコンテナに移行する\n"
 "\n"
 "この移行コマンドは、次のことを前提としています。\n"
-"  * ソースサーバのSSH設定が完了している(ユーザ、"
-"およびマシンに接続するために\n"
+"  * ソースサーバのSSH設定が完了している(ユーザ、およびマシンに接続するために\n"
 "    必要なすべてのオプションを含む)。\n"
 "  * kubectlとhelmがローカルにインストールされている。\n"
-"  * "
-"配備先のクラスタに接続するために、動作するkubectl構成が設定されている必要があ"
-"る。\n"
+"  * 配備先のクラスタに接続するために、動作するkubectl構成が設定されている必要がある。\n"
 "\n"
-"ターゲットのKubernetesネームスペースに次のものが含まれている場合、SSHパラメー"
-"タは空欄のままにできます。\n"
+"ターゲットのKubernetesネームスペースに次のものが含まれている場合、SSHパラメータは空欄のままにできます。\n"
 "  * configおよびknown_hosts項目を持つuyuni-migration-config ConfigMap\n"
-"  * パスワードなしのキーを持つkeyおよびkey.pub項目を持つuyuni-migration-"
-"keyシークレット\n"
+"  * パスワードなしのキーを持つkeyおよびkey.pub項目を持つuyuni-migration-keyシークレット\n"
 "\n"
 "自動生成されたSSLルートCA証明書を持つサーバを移行する場合、機密鍵の\n"
 "パスワードをkubernetesシークレットでRSAに変換する必要があります。\n"
@@ -870,15 +842,15 @@ msgstr "移行スクリプトを実行できません"
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr "移行の準備ができました。移行を完了するには、「--prepare」を指定せずに「migrate」コマンドを実行します。"
 
-#: mgradm/cmd/migrate/podman/utils.go:93 mgradm/shared/podman/podman.go:406
+#: mgradm/cmd/migrate/podman/utils.go:93 mgradm/shared/podman/podman.go:410
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQLバージョンアップグレードスクリプトを実行できません"
 
-#: mgradm/cmd/migrate/podman/utils.go:99 mgradm/shared/podman/podman.go:419
+#: mgradm/cmd/migrate/podman/utils.go:99 mgradm/shared/podman/podman.go:423
 msgid "cannot run PostgreSQL finalize script"
 msgstr "PostgreSQL終了処理スクリプトを実行できません"
 
-#: mgradm/cmd/migrate/podman/utils.go:103 mgradm/shared/podman/podman.go:423
+#: mgradm/cmd/migrate/podman/utils.go:103 mgradm/shared/podman/podman.go:427
 msgid "cannot run post upgrade script"
 msgstr "アップグレード後のスクリプトを実行できません"
 
@@ -1363,8 +1335,7 @@ msgstr "データベースシークレットの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:32
 msgid "Running database finalization, this could be long depending on the size of the database…"
-msgstr "データベースの最終処理中。データベースのサイズによっては、時間がかかる場合が"
-"あります…"
+msgstr "データベースの最終処理中。データベースのサイズによっては、時間がかかる場合があります…"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:38
 msgid "failed to run the database finalization job"
@@ -1426,8 +1397,7 @@ msgstr "サーバレプリカを0に設定できません"
 
 #: mgradm/shared/kubernetes/reconcile.go:148
 msgid "downgrading database from PostgreSQL %[1]d to %[2]d is not supported"
-msgstr "PostgreSQL %[1]d から %[2]d "
-"へのデータベースのダウングレードはサポートされていません"
+msgstr "PostgreSQL %[1]d から %[2]d へのデータベースのダウングレードはサポートされていません"
 
 #: mgradm/shared/kubernetes/reconcile.go:206
 msgid "cannot install cert manager"
@@ -1530,43 +1500,46 @@ msgstr "PostgreSQLデータベースのバージョンアップグレードス�
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "PostgreSQL終了処理スクリプトを生成できません"
 
-#: mgradm/shared/podman/podman.go:375
+#: mgradm/shared/podman/podman.go:379
 msgid "cannot inspect podman values"
 msgstr "podman値を検査できません"
 
-#: mgradm/shared/podman/podman.go:392
+#: mgradm/shared/podman/podman.go:396
 msgid "cannot stop service"
 msgstr "サービスを停止できません"
 
-#: mgradm/shared/podman/podman.go:400
+#: mgradm/shared/podman/podman.go:404
 msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr "以前のpostgresqlは %[1]s、新しいpostgresqlは  %[2]s です。DBバージョンのアップグレードを実行中…"
 
-#: mgradm/shared/podman/podman.go:409
+#: mgradm/shared/podman/podman.go:413
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr "PostgreSQLバージョンを変更せずに %s にアップグレードしています"
 
-#: mgradm/shared/podman/podman.go:412
+#: mgradm/shared/podman/podman.go:416
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr "PostgreSQLを  %[1]s  から  %[2]s にダウングレードしようとしています"
 
-#: mgradm/shared/podman/podman.go:448
+#: mgradm/shared/podman/podman.go:452
 msgid "error upgrading confidential computing service."
 msgstr "コンフィデンシャルコンピューティングサービスのアップグレード時のエラー"
 
-#: mgradm/shared/podman/podman.go:460
+#: mgradm/shared/podman/podman.go:464
 msgid "error upgrading saline service."
 msgstr "salineサービスのアップグレード時のエラー。"
 
-#: mgradm/shared/podman/podman.go:517
+#: mgradm/shared/podman/podman.go:521
 msgid "cannot inspect data"
 msgstr "データを検査できません"
 
+#: mgradm/shared/podman/podman.go:537
+msgid "The above error is only relevant if using a public cloud provider registry"
+msgstr ""
+
 #: mgradm/shared/saline/saline.go:66
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
-msgstr "現在、複数のSalineコンテナレプリカはサポートされておらず、1つだけ設定できます"
-"。"
+msgstr "現在、複数のSalineコンテナレプリカはサポートされておらず、1つだけ設定できます。"
 
 #: mgradm/shared/saline/saline.go:93
 msgid "Setting up Saline service"
@@ -1638,8 +1611,7 @@ msgid ""
 "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgstr ""
 "SUSEカスタマーセンターのユーザ名。\n"
-"これは、製品の同期とregistry.suse.comからのイメージの取得のためにSCC資格情報"
-"として使用されます"
+"これは、製品の同期とregistry.suse.comからのイメージの取得のためにSCC資格情報として使用されます"
 
 #: mgradm/shared/utils/cmd_utils.go:115
 msgid ""
@@ -1647,8 +1619,7 @@ msgid ""
 "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgstr ""
 "SUSEカスタマーセンターのパスワード。\n"
-"これは、製品の同期とregistry.suse.comからのイメージの取得のためにSCC資格情報"
-"として使用されます"
+"これは、製品の同期とregistry.suse.comからのイメージの取得のためにSCC資格情報として使用されます"
 
 #: mgradm/shared/utils/cmd_utils.go:118
 msgid "SUSE Customer Center Flags"
@@ -1659,7 +1630,9 @@ msgid "Image"
 msgstr "イメージ"
 
 #: mgradm/shared/utils/cmd_utils.go:126
-msgid "Specify a private registry where pull the images"
+#, fuzzy
+#| msgid "Specify a private registry where pull the images"
+msgid "Specify a registry where to pull the images from"
 msgstr "イメージを取得するプライベートレジストリを指定してください"
 
 #: mgradm/shared/utils/cmd_utils.go:127
@@ -1696,16 +1669,14 @@ msgstr "コンフィデンシャルコンピューティングの検証"
 
 #: mgradm/shared/utils/cmd_utils.go:157
 msgid "How many replicas of the confidential computing container should be started"
-msgstr "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要が"
-"あるか"
+msgstr "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要があるか"
 
 #: mgradm/shared/utils/cmd_utils.go:165
 msgid ""
 "How many replicas of the confidential computing container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
 msgstr ""
-"コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要が"
-"あるか。\n"
+"コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要があるか。\n"
 "以前のレプリカ数を維持する場合は、未設定のままにしておきます。"
 
 #: mgradm/shared/utils/cmd_utils.go:172 mgradm/shared/utils/cmd_utils.go:173

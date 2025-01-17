@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:42+0100\n"
+"POT-Creation-Date: 2025-01-17 14:58+0100\n"
 "PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
@@ -422,7 +422,7 @@ msgid ""
 "NOTE: installing on a remote podman is not supported yet!\n"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:40 mgradm/shared/podman/podman.go:443
+#: mgradm/cmd/install/podman/utils.go:40 mgradm/shared/podman/podman.go:447
 #, fuzzy
 msgid "Waiting for the server to start…"
 msgstr "In attesa che il server si avvii…"
@@ -456,7 +456,7 @@ msgstr "Configurazione del server con FQDN '%s'"
 #: mgradm/shared/hub/xmlrpcapi.go:45
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:47
 #: mgradm/shared/kubernetes/reconcile.go:40 mgradm/shared/podman/podman.go:267
-#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:365
+#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:369
 #: mgradm/shared/saline/saline.go:72
 msgid "failed to compute image URL"
 msgstr "impossibile determinare l'URL dell'immagine"
@@ -803,15 +803,15 @@ msgstr "impossibile ispezionare il pod: %s"
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr ""
 
-#: mgradm/cmd/migrate/podman/utils.go:93 mgradm/shared/podman/podman.go:406
+#: mgradm/cmd/migrate/podman/utils.go:93 mgradm/shared/podman/podman.go:410
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr ""
 
-#: mgradm/cmd/migrate/podman/utils.go:99 mgradm/shared/podman/podman.go:419
+#: mgradm/cmd/migrate/podman/utils.go:99 mgradm/shared/podman/podman.go:423
 msgid "cannot run PostgreSQL finalize script"
 msgstr ""
 
-#: mgradm/cmd/migrate/podman/utils.go:103 mgradm/shared/podman/podman.go:423
+#: mgradm/cmd/migrate/podman/utils.go:103 mgradm/shared/podman/podman.go:427
 #, fuzzy
 msgid "cannot run post upgrade script"
 msgstr "impossibile aggiornare: %s"
@@ -1463,41 +1463,45 @@ msgstr ""
 msgid "cannot generate PostgreSQL finalization script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:375
+#: mgradm/shared/podman/podman.go:379
 #, fuzzy
 msgid "cannot inspect podman values"
 msgstr "impossibile ispezionare i valori dell'host: %s"
 
-#: mgradm/shared/podman/podman.go:392
+#: mgradm/shared/podman/podman.go:396
 #, fuzzy
 msgid "cannot stop service"
 msgstr "impossibile abilitare il servizio: %s"
 
-#: mgradm/shared/podman/podman.go:400
+#: mgradm/shared/podman/podman.go:404
 msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:409
+#: mgradm/shared/podman/podman.go:413
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:412
+#: mgradm/shared/podman/podman.go:416
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:448
+#: mgradm/shared/podman/podman.go:452
 msgid "error upgrading confidential computing service."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:460
+#: mgradm/shared/podman/podman.go:464
 msgid "error upgrading saline service."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:517
+#: mgradm/shared/podman/podman.go:521
 #, fuzzy
 msgid "cannot inspect data"
 msgstr "impossibile copiare: %s"
+
+#: mgradm/shared/podman/podman.go:537
+msgid "The above error is only relevant if using a public cloud provider registry"
+msgstr ""
 
 #: mgradm/shared/saline/saline.go:66
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
@@ -1588,7 +1592,7 @@ msgid "Image"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:126
-msgid "Specify a private registry where pull the images"
+msgid "Specify a registry where to pull the images from"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:127
