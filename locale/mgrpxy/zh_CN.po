@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:42+0100\n"
+"POT-Creation-Date: 2025-01-17 14:58+0100\n"
 "PO-Revision-Date: 2025-01-16 01:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgrpxy/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -577,20 +576,24 @@ msgstr "SUSE Customer Center 标志"
 msgid "image tag"
 msgstr "映像标记"
 
-#: mgrpxy/shared/utils/flags.go:87
+#: mgrpxy/shared/utils/flags.go:79
+msgid "Specify a registry where to pull the images from"
+msgstr ""
+
+#: mgrpxy/shared/utils/flags.go:88
 msgid "HTTPD tuning configuration file"
 msgstr "HTTPD 微调配置文件"
 
-#: mgrpxy/shared/utils/flags.go:88
+#: mgrpxy/shared/utils/flags.go:89
 msgid "Squid tuning configuration file"
 msgstr "Squid 微调配置文件"
 
-#: mgrpxy/shared/utils/flags.go:94
+#: mgrpxy/shared/utils/flags.go:95
 #, javascript-format
 msgid "Image for %s container"
 msgstr "%s 容器的映像"
 
-#: mgrpxy/shared/utils/flags.go:96
+#: mgrpxy/shared/utils/flags.go:97
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 容器的标记，如果设置，将会覆盖全局值"

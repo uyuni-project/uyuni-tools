@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:42+0100\n"
+"POT-Creation-Date: 2025-01-17 14:58+0100\n"
 "PO-Revision-Date: 2025-01-17 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgradm/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -177,44 +176,33 @@ msgid ""
 msgstr ""
 "자동 설치 배포 제품 매핑.\n"
 "\n"
-"배포를 Uyuni 서버에 등록하려면 배포를 올바른 소프트웨어 채널에 매핑하는 것이 "
-"중요합니다.\n"
+"배포를 Uyuni 서버에 등록하려면 배포를 올바른 소프트웨어 채널에 매핑하는 것이 중요합니다.\n"
 "\n"
-"소프트웨어 채널은 배포 이름과 관계 없이 다른 이름을 지정할 수 있으므로 "
-"사용자 지정 배포 이름을 소프트웨어 채널 매핑에 허용해야 합니다.\n"
+"소프트웨어 채널은 배포 이름과 관계 없이 다른 이름을 지정할 수 있으므로 사용자 지정 배포 이름을 소프트웨어 채널 매핑에 허용해야 합니다.\n"
 "\n"
-"소프트웨어 채널을 설정하는 한 가지 방법은 배포 복사 명령에 --channel "
-"플래그를 지정하는 것입니다.\n"
+"소프트웨어 채널을 설정하는 한 가지 방법은 배포 복사 명령에 --channel 플래그를 지정하는 것입니다.\n"
 "\n"
-"자주 사용하는 경우 사용자 지정 제품 매핑을 다음 형식으로 mgradm 구성 파일에 "
-"작성할 수 있습니다:\n"
+"자주 사용하는 경우 사용자 지정 제품 매핑을 다음 형식으로 mgradm 구성 파일에 작성할 수 있습니다:\n"
 "\n"
 "ProductMap:\n"
 "  <배포 이름>:\n"
 "    <배포 버전>:\n"
 "      <배포 아키텍처>:\n"
 "        ChannelLabel: <채널 레이블>\n"
-"        InstallType: <rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|"
-"generic_rpm 중 하나>\n"
+"        InstallType: <rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpm 중 하나>\n"
 "        TreeName: <사용자 지정 배포 이름>\n"
 "\n"
 "여기서\n"
-"* <배포 이름>은 배포 이름이며, 기본적으로 미디어의 '.treeinfo' 파일에서 "
-"가져옵니다.\n"
-"  '.treeinfo'를 찾을 수 없거나 사용할 수 없는 경우, 명령줄 옵션이 필요하며 "
-"사용됩니다.\n"
-"<배포 버전>은 배포 버전으로, 기본적으로 미디어의 '.treeinfo' 파일에서 "
-"가져옵니다.\n"
+"* <배포 이름>은 배포 이름이며, 기본적으로 미디어의 '.treeinfo' 파일에서 가져옵니다.\n"
+"  '.treeinfo'를 찾을 수 없거나 사용할 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
+"<배포 버전>은 배포 버전으로, 기본적으로 미디어의 '.treeinfo' 파일에서 가져옵니다.\n"
 "  '.treeinfo'를 찾을 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
-"* <배포 아키텍처>는 기본적으로 미디어의 '.treeinfo' 파일에서 가져온 배포 "
-"아키텍처입니다.\n"
+"* <배포 아키텍처>는 기본적으로 미디어의 '.treeinfo' 파일에서 가져온 배포 아키텍처입니다.\n"
 "  .treeinfo'를 찾을 수 없는 경우, 명령줄 옵션이 필요하며 사용됩니다.\n"
 "* 채널 레이블은 Uyuni 서버에서 이 배포에 사용할 채널 레이블이며,\n"
 "  명령줄 플래그로 재정의할 수 있습니다.\n"
-"* InstallType은 설치 프로그램이 알려진 경우(autoyast 또는 킥스타트의 경우) "
-"해당 값을 사용하거나 'generic_rpm'을 사용합니다.\n"
-"* TreeName은 배포가 Uyuni 서버 UI에 표시되는 방식입니다. 설정하지 않으면 "
-"<배포 이름>이 사용됩니다.\n"
+"* InstallType은 설치 프로그램이 알려진 경우(autoyast 또는 킥스타트의 경우) 해당 값을 사용하거나 'generic_rpm'을 사용합니다.\n"
+"* TreeName은 배포가 Uyuni 서버 UI에 표시되는 방식입니다. 설정하지 않으면 <배포 이름>이 사용됩니다.\n"
 "\n"
 "빌드인 제품 맵:\n"
 "\n"
@@ -465,7 +453,7 @@ msgstr ""
 "\n"
 "참고: 원격 podman에 설치하는 기능은 아직 지원되지 않습니다!\n"
 
-#: mgradm/cmd/install/podman/utils.go:40 mgradm/shared/podman/podman.go:443
+#: mgradm/cmd/install/podman/utils.go:40 mgradm/shared/podman/podman.go:447
 msgid "Waiting for the server to start…"
 msgstr "서버가 시작되기를 기다리는 중…"
 
@@ -497,7 +485,7 @@ msgstr "FQDN '%s'(으)로 서버 설정"
 #: mgradm/shared/hub/xmlrpcapi.go:45
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:47
 #: mgradm/shared/kubernetes/reconcile.go:40 mgradm/shared/podman/podman.go:267
-#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:365
+#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:369
 #: mgradm/shared/saline/saline.go:72
 msgid "failed to compute image URL"
 msgstr "이미지 URL을 계산하지 못함"
@@ -708,8 +696,7 @@ msgstr ""
 "\n"
 "자동으로 생성된 SSL 루트 CA 인증서가 있는 서버를 마이그레이션하는 경우,\n"
 "개인 키 비밀번호는 Kubernetes 비밀에서 RSA로 변환하는 데 필요합니다.\n"
-"소스 서버에 생성된 SSL CA 인증서가 없는 경우에는 이 작업이 필요하지 않습니다."
-"\n"
+"소스 서버에 생성된 SSL CA 인증서가 없는 경우에는 이 작업이 필요하지 않습니다.\n"
 "\n"
 "참고: 원격 클러스터로의 마이그레이션은 아직 지원되지 않습니다!\n"
 
@@ -852,15 +839,15 @@ msgstr "마이그레이션 스크립트를 실행할 수 없음"
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr "마이그레이션이 준비되었습니다. 마이그레이션을 마치려면 ''--prepare''를 제외하고 ''migrate'' 명령을 실행하십시오."
 
-#: mgradm/cmd/migrate/podman/utils.go:93 mgradm/shared/podman/podman.go:406
+#: mgradm/cmd/migrate/podman/utils.go:93 mgradm/shared/podman/podman.go:410
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQL 버전 업그레이드 스크립트를 실행할 수 없음"
 
-#: mgradm/cmd/migrate/podman/utils.go:99 mgradm/shared/podman/podman.go:419
+#: mgradm/cmd/migrate/podman/utils.go:99 mgradm/shared/podman/podman.go:423
 msgid "cannot run PostgreSQL finalize script"
 msgstr "PostgreSQL 최종 스크립트를 실행할 수 없음"
 
-#: mgradm/cmd/migrate/podman/utils.go:103 mgradm/shared/podman/podman.go:423
+#: mgradm/cmd/migrate/podman/utils.go:103 mgradm/shared/podman/podman.go:427
 msgid "cannot run post upgrade script"
 msgstr "업그레이드 후 스크립트를 실행할 수 없음"
 
@@ -1345,8 +1332,7 @@ msgstr "데이터베이스 비밀 생성 실패"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:32
 msgid "Running database finalization, this could be long depending on the size of the database…"
-msgstr "데이터베이스 최종 작업 실행 중, 데이터베이스의 크기에 따라 시간이 오래 걸릴 "
-"수 있습니다…"
+msgstr "데이터베이스 최종 작업 실행 중, 데이터베이스의 크기에 따라 시간이 오래 걸릴 수 있습니다…"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:38
 msgid "failed to run the database finalization job"
@@ -1511,38 +1497,42 @@ msgstr "PostgreSQL 데이터베이스 버전 업그레이드 스크립트를 생
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "PostgreSQL 마무리 스크립트를 생성할 수 없습니다."
 
-#: mgradm/shared/podman/podman.go:375
+#: mgradm/shared/podman/podman.go:379
 msgid "cannot inspect podman values"
 msgstr "podman 값을 검사할 수 없음"
 
-#: mgradm/shared/podman/podman.go:392
+#: mgradm/shared/podman/podman.go:396
 msgid "cannot stop service"
 msgstr "서비스를 중지하지 못함"
 
-#: mgradm/shared/podman/podman.go:400
+#: mgradm/shared/podman/podman.go:404
 msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr "이전 postgresql은 %[1]s(이)고 대신 새 버전은 %[2]s입니다. DB 버전 업그레이드를 수행하는 중…"
 
-#: mgradm/shared/podman/podman.go:409
+#: mgradm/shared/podman/podman.go:413
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr "PostgreSQL 버전을 변경하지 않고 %s(으)로 업그레이드"
 
-#: mgradm/shared/podman/podman.go:412
+#: mgradm/shared/podman/podman.go:416
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr "PostgreSQL을 %[1]s에서 %[2]s(으)로 다운그레이드 시도 중"
 
-#: mgradm/shared/podman/podman.go:448
+#: mgradm/shared/podman/podman.go:452
 msgid "error upgrading confidential computing service."
 msgstr "기밀 컴퓨팅 서비스를 업그레이드하는 중 오류가 발생했습니다."
 
-#: mgradm/shared/podman/podman.go:460
+#: mgradm/shared/podman/podman.go:464
 msgid "error upgrading saline service."
 msgstr "Saline 서비스를 업그레이드하는 중 오류가 발생했습니다."
 
-#: mgradm/shared/podman/podman.go:517
+#: mgradm/shared/podman/podman.go:521
 msgid "cannot inspect data"
 msgstr "데이터를 검사할 수 없음"
+
+#: mgradm/shared/podman/podman.go:537
+msgid "The above error is only relevant if using a public cloud provider registry"
+msgstr ""
 
 #: mgradm/shared/saline/saline.go:66
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
@@ -1586,8 +1576,7 @@ msgstr "모든 볼륨의 기본 스토리지 클래스"
 
 #: mgradm/shared/utils/cmd_utils.go:64
 msgid "PersistentVolume name to use as a mirror. Empty means no mirror is used"
-msgstr "미러로 사용할 PersistentVolume 이름입니다. 비어 있으면 미러가 사용되지 "
-"않음을 의미합니다."
+msgstr "미러로 사용할 PersistentVolume 이름입니다. 비어 있으면 미러가 사용되지 않음을 의미합니다."
 
 #: mgradm/shared/utils/cmd_utils.go:67
 msgid "Volumes Configuration Flags"
@@ -1619,8 +1608,7 @@ msgid ""
 "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgstr ""
 "SUSE 고객 센터 사용자 이름.\n"
-"제품을 동기화하고 registry.suse.com에서 이미지를 가져오기 위한 SCC 자격 "
-"증명으로 사용됩니다."
+"제품을 동기화하고 registry.suse.com에서 이미지를 가져오기 위한 SCC 자격 증명으로 사용됩니다."
 
 #: mgradm/shared/utils/cmd_utils.go:115
 msgid ""
@@ -1628,8 +1616,7 @@ msgid ""
 "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgstr ""
 "SUSE 고객 센터 암호.\n"
-"제품을 동기화하고 registry.suse.com에서 이미지를 가져오기 위한 SCC 자격 "
-"증명으로 사용됩니다."
+"제품을 동기화하고 registry.suse.com에서 이미지를 가져오기 위한 SCC 자격 증명으로 사용됩니다."
 
 #: mgradm/shared/utils/cmd_utils.go:118
 msgid "SUSE Customer Center Flags"
@@ -1640,7 +1627,9 @@ msgid "Image"
 msgstr "이미지"
 
 #: mgradm/shared/utils/cmd_utils.go:126
-msgid "Specify a private registry where pull the images"
+#, fuzzy
+#| msgid "Specify a private registry where pull the images"
+msgid "Specify a registry where to pull the images from"
 msgstr "이미지를 추출할 개인 레지스트리 지정"
 
 #: mgradm/shared/utils/cmd_utils.go:127
