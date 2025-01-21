@@ -18,6 +18,7 @@ func AddUpgradeFlags(cmd *cobra.Command) {
 	utils.AddUpgradeCocoFlag(cmd)
 	utils.AddUpgradeHubXmlrpcFlags(cmd)
 	utils.AddUpgradeSalineFlag(cmd)
+	utils.AddUpgradePgsqlFlags(cmd)
 }
 
 // AddUpgradeListFlags add upgrade list flags to a command.

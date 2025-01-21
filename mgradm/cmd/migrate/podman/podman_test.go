@@ -28,6 +28,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
 	args = append(args, flagstests.SalineFlagsTestArgs...)
 	args = append(args, flagstests.PodmanFlagsTestArgs...)
+	args = append(args, flagstests.PgsqlFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *podmanMigrateFlags,
@@ -44,6 +45,7 @@ func TestParamsParsing(t *testing.T) {
 		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.Migration.User)
 		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
 		testutils.AssertEquals(t, "Wrong FQDN", "source.fq.dn", args[0])
+		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
 		return nil
 	}
 

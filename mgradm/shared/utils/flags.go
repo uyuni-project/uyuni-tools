@@ -28,6 +28,7 @@ type ServerFlags struct {
 	// DBUpgradeImage is the image to use to perform the database upgrade.
 	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	Saline         SalineFlags
+	Pgsql          PgsqlFlags
 }
 
 // MigrationFlags contains the parameters that are used only for migration.
@@ -63,6 +64,8 @@ func (flags *InstallationFlags) CheckParameters(cmd *cobra.Command, command stri
 	if flags.ReportDB.Password == "" {
 		flags.ReportDB.Password = utils.GetRandomBase64(30)
 	}
+
+	utils.AskPasswordIfMissing(&flags.DB.Admin.Password, cmd.Flag("db-admin-password").Usage, 5, 48)
 
 	// Make sure we have all the required 3rd party flags or none
 	flags.SSL.CheckParameters()

@@ -23,6 +23,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.SalineFlagsTestArgs...)
 	args = append(args, flagstests.SCCFlagTestArgs...)
 	args = append(args, flagstests.PodmanFlagsTestArgs...)
+	args = append(args, flagstests.PgsqlFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *podmanUpgradeFlags,
@@ -35,6 +36,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertSalineFlag(t, &flags.Saline)
 		flagstests.AssertSCCFlag(t, &flags.ServerFlags.Installation.SCC)
 		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
+		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
 		return nil
 	}
 

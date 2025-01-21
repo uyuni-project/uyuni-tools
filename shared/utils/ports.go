@@ -111,7 +111,6 @@ var TftpPorts = []types.PortMap{
 func GetServerPorts(debug bool) []types.PortMap {
 	ports := []types.PortMap{}
 	ports = appendPorts(ports, debug, WebPorts...)
-	ports = appendPorts(ports, debug, ReportDBPorts...)
 	ports = appendPorts(ports, debug, SaltPorts...)
 	ports = appendPorts(ports, debug, CobblerPorts...)
 	ports = appendPorts(ports, debug, TaskoPorts...)

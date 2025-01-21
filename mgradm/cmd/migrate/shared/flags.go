@@ -17,6 +17,7 @@ func AddMigrateFlags(cmd *cobra.Command) {
 	utils.AddSCCFlag(cmd)
 	utils.AddImageFlag(cmd)
 	utils.AddDBUpgradeImageFlag(cmd)
+	utils.AddUpgradePgsqlFlags(cmd)
 	utils.AddUpgradeCocoFlag(cmd)
 	utils.AddUpgradeHubXmlrpcFlags(cmd)
 	utils.AddUpgradeSalineFlag(cmd)

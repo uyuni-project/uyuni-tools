@@ -30,10 +30,13 @@ echo "suse_manager_release=$(sed 's/.*(\([0-9.]\+\).*/\1/g' /etc/susemanager-rel
 echo "fqdn=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^java.hostname' | cut -d' ' -f3 || true)" >> ` + dataPath + `
 echo "image_pg_version=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1 || true)" >> ` + dataPath + `
 echo "current_pg_version=$((test -e /var/lib/pgsql/data/PG_VERSION && cat /var/lib/pgsql/data/PG_VERSION) || true)" >> ` + dataPath + `
+echo "current_pg_version_not_migrated=$((test -e /var/lib/pgsql/data/data/PG_VERSION && cat /var/lib/pgsql/data/data/PG_VERSION) || true)" >> ` + dataPath + `
 echo "db_user=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_user' | cut -d' ' -f3 || true)" >> ` + dataPath + `
 echo "db_password=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_password' | cut -d' ' -f3 || true)" >> ` + dataPath + `
 echo "db_name=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_name' | cut -d' ' -f3 || true)" >> ` + dataPath + `
 echo "db_port=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_port' | cut -d' ' -f3 || true)" >> ` + dataPath + `
+echo "db_host=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_host' | cut -d' ' -f3 || true)" >> ` + dataPath + `
+echo "report_db_host=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^report_db_host' | cut -d' ' -f3 || true)" >> ` + dataPath + `
 exit 0
 `
 

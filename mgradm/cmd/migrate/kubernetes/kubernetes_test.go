@@ -37,6 +37,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.SalineFlagsTestArgs...)
 	args = append(args, flagstests.ServerKubernetesFlagsTestArgs...)
 	args = append(args, flagstests.VolumesFlagsTestExpected...)
+	args = append(args, flagstests.PgsqlFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *kubernetes.KubernetesServerFlags,
@@ -50,6 +51,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertCocoFlag(t, &flags.Coco)
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		flagstests.AssertSalineFlag(t, &flags.Saline)
+		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
 		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.Migration.User)
 		flagstests.AssertServerKubernetesFlags(t, &flags.Kubernetes)
 		flagstests.AssertVolumesFlags(t, &flags.Volumes)

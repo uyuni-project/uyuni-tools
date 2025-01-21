@@ -42,14 +42,6 @@ func TestSanityCheck(t *testing.T) {
 			"", "5.1.0", "17", "2024.07", "", "16",
 			"Upgrade is not supported",
 		},
-		{
-			"2024.07", "", "16", "2024.13", "", "",
-			"cannot fetch PostgreSQL",
-		},
-		{
-			"2024.07", "", "", "2024.13", "", "17",
-			"PostgreSQL is not installed",
-		},
 	}
 
 	for i, test := range data {
