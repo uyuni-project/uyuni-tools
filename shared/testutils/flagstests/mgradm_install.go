@@ -23,7 +23,6 @@ var InstallFlagsTestArgs = func() []string {
 		"--db-name", "dbname",
 		"--db-host", "dbhost",
 		"--db-port", "1234",
-		"--db-protocol", "dbprot",
 		"--db-admin-user", "dbadmin",
 		"--db-admin-password", "dbadminpass",
 		"--db-provider", "aws",
@@ -47,7 +46,6 @@ var InstallFlagsTestArgs = func() []string {
 		"--organization", "someorg",
 	}
 
-	args = append(args, MirrorFlagTestArgs...)
 	args = append(args, SCCFlagTestArgs...)
 	args = append(args, ImageFlagsTestArgs...)
 	args = append(args, CocoFlagsTestArgs...)
@@ -69,7 +67,6 @@ func AssertInstallFlags(t *testing.T, flags *utils.ServerFlags) {
 	testutils.AssertEquals(t, "Error parsing --db-name", "dbname", flags.Installation.DB.Name)
 	testutils.AssertEquals(t, "Error parsing --db-host", "dbhost", flags.Installation.DB.Host)
 	testutils.AssertEquals(t, "Error parsing --db-port", 1234, flags.Installation.DB.Port)
-	testutils.AssertEquals(t, "Error parsing --db-protocol", "dbprot", flags.Installation.DB.Protocol)
 	testutils.AssertEquals(t, "Error parsing --db-admin-user", "dbadmin", flags.Installation.DB.Admin.User)
 	testutils.AssertEquals(t, "Error parsing --db-admin-password", "dbadminpass", flags.Installation.DB.Admin.Password)
 	testutils.AssertEquals(t, "Error parsing --db-provider", "aws", flags.Installation.DB.Provider)
@@ -98,7 +95,6 @@ func AssertInstallFlags(t *testing.T, flags *utils.ServerFlags) {
 	testutils.AssertEquals(t, "Error parsing --admin-firstName", "adminfirst", flags.Installation.Admin.FirstName)
 	testutils.AssertEquals(t, "Error parsing --admin-lastName", "adminlast", flags.Installation.Admin.LastName)
 	testutils.AssertEquals(t, "Error parsing --organization", "someorg", flags.Installation.Organization)
-	AssertMirrorFlag(t, flags.Mirror)
 	AssertSCCFlag(t, &flags.Installation.SCC)
 	AssertImageFlag(t, &flags.Image)
 	AssertCocoFlag(t, &flags.Coco)

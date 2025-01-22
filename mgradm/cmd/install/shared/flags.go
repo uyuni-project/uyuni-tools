@@ -20,7 +20,6 @@ func AddInspectFlags(cmd *cobra.Command) {
 
 // AddInstallFlags add flags to installa command.
 func AddInstallFlags(cmd *cobra.Command) {
-	cmd_utils.AddMirrorFlag(cmd)
 	cmd.Flags().String("tz", "", L("Time zone to set on the server. Defaults to the host timezone"))
 	cmd.Flags().String("email", "admin@example.com", L("Administrator e-mail"))
 	cmd.Flags().String("emailfrom", "notifications@example.com", L("E-Mail sending the notifications"))
@@ -31,7 +30,6 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().String("db-name", "susemanager", L("Database name"))
 	cmd.Flags().String("db-host", "localhost", L("Database host"))
 	cmd.Flags().Int("db-port", 5432, L("Database port"))
-	cmd.Flags().String("db-protocol", "tcp", L("Database protocol"))
 	cmd.Flags().String("db-admin-user", "", L("External database admin user name"))
 	cmd.Flags().String("db-admin-password", "", L("External database admin password"))
 	cmd.Flags().String("db-provider", "", L("External database provider. Possible values 'aws'"))
@@ -42,7 +40,6 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "db-name", "db")
 	_ = utils.AddFlagToHelpGroupID(cmd, "db-host", "db")
 	_ = utils.AddFlagToHelpGroupID(cmd, "db-port", "db")
-	_ = utils.AddFlagToHelpGroupID(cmd, "db-protocol", "db")
 	_ = utils.AddFlagToHelpGroupID(cmd, "db-admin-user", "db")
 	_ = utils.AddFlagToHelpGroupID(cmd, "db-admin-password", "db")
 	_ = utils.AddFlagToHelpGroupID(cmd, "db-provider", "db")

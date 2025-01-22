@@ -44,14 +44,15 @@ func CreateServerDeployment(
 		}
 	}
 
-	serverDeploy := getServerDeployment(
+	serverDeploy := GetServerDeployment(
 		namespace, serverImage, kubernetes.GetPullPolicy(pullPolicy), timezone, debug, mirrorPvName, pullSecret,
 	)
 
 	return kubernetes.Apply([]runtime.Object{serverDeploy}, L("failed to create the server deployment"))
 }
 
-func getServerDeployment(
+// GetServerDeployment computes the deployment object for an Uyuni server.
+func GetServerDeployment(
 	namespace string,
 	image string,
 	pullPolicy core.PullPolicy,
@@ -62,6 +63,101 @@ func getServerDeployment(
 ) *apps.Deployment {
 	var replicas int32 = 1
 
+	runMount, runVolume := kubernetes.CreateTmpfsMount("/run", "256Mi")
+	cgroupMount, cgroupVolume := kubernetes.CreateHostPathMount(
+		"/sys/fs/cgroup", "/sys/fs/cgroup", core.HostPathDirectory,
+	)
+
+	// Compute the needed ports
+	ports := utils.GetServerPorts(debug)
+
+	template := getServerPodTemplate(image, pullPolicy, timezone, pullSecret)
+
+	template.Spec.Volumes = append(template.Spec.Volumes, runVolume, cgroupVolume)
+	template.Spec.Containers[0].Ports = kubernetes.ConvertPortMaps(ports)
+	template.Spec.Containers[0].VolumeMounts = append(template.Spec.Containers[0].VolumeMounts,
+		runMount, cgroupMount,
+	)
+
+	if mirrorPvName != "" {
+		// Add a mount for the mirror
+		template.Spec.Containers[0].VolumeMounts = append(template.Spec.Containers[0].VolumeMounts,
+			core.VolumeMount{
+				Name:      mirrorPvName,
+				MountPath: "/mirror",
+			},
+		)
+
+		// Add the environment variable for the deployment to use the mirror
+		// This doesn't makes sense for migration as the setup script is not executed
+		template.Spec.Containers[0].Env = append(template.Spec.Containers[0].Env,
+			core.EnvVar{Name: "MIRROR_PATH", Value: "/mirror"},
+		)
+	}
+
+	template.Spec.Containers[0].Lifecycle = &core.Lifecycle{
+		PreStop: &core.LifecycleHandler{
+			Exec: &core.ExecAction{
+				Command: []string{"/bin/sh", "-c", "spacewalk-service stop && systemctl stop postgresql"},
+			},
+		},
+	}
+
+	template.Spec.Containers[0].ReadinessProbe = &core.Probe{
+		ProbeHandler: core.ProbeHandler{
+			HTTPGet: &core.HTTPGetAction{
+				Port: intstr.FromInt(80),
+				Path: "/rhn/manager/api/api/getVersion",
+			},
+		},
+		PeriodSeconds:    30,
+		TimeoutSeconds:   20,
+		FailureThreshold: 5,
+	}
+
+	template.Spec.Containers[0].LivenessProbe = &core.Probe{
+		ProbeHandler: core.ProbeHandler{
+			HTTPGet: &core.HTTPGetAction{
+				Port: intstr.FromInt(80),
+				Path: "/rhn/manager/api/api/getVersion",
+			},
+		},
+		InitialDelaySeconds: 60,
+		PeriodSeconds:       60,
+		TimeoutSeconds:      20,
+		FailureThreshold:    5,
+	}
+
+	deployment := apps.Deployment{
+		TypeMeta: meta.TypeMeta{Kind: "Deployment", APIVersion: "apps/v1"},
+		ObjectMeta: meta.ObjectMeta{
+			Name:      ServerDeployName,
+			Namespace: namespace,
+			Labels:    kubernetes.GetLabels(kubernetes.ServerApp, kubernetes.ServerComponent),
+		},
+		Spec: apps.DeploymentSpec{
+			Replicas: &replicas,
+			// As long as the container cannot scale, we need to stick to recreate strategy
+			// or the new deployed pods won't be ready.
+			Strategy: apps.DeploymentStrategy{Type: apps.RecreateDeploymentStrategyType},
+			Selector: &meta.LabelSelector{
+				MatchLabels: map[string]string{kubernetes.ComponentLabel: kubernetes.ServerComponent},
+			},
+			Template: template,
+		},
+	}
+
+	return &deployment
+}
+
+// GetServerPodTemplate computes the pod template with the init container and the minimum viable volumes and mounts.
+// This is intended to be shared with the setup job.
+func getServerPodTemplate(
+	image string,
+	pullPolicy core.PullPolicy,
+	timezone string,
+	pullSecret string,
+) core.PodTemplateSpec {
 	envs := []core.EnvVar{
 		{Name: "TZ", Value: timezone},
 	}
@@ -79,27 +175,7 @@ func getServerDeployment(
 		initMounts = append(initMounts, *initMount)
 	}
 
-	if mirrorPvName != "" {
-		// Add a volume for the mirror
-		mounts = append(mounts, types.VolumeMount{MountPath: "/mirror", Name: mirrorPvName})
-
-		// Add the environment variable for the deployment to use the mirror
-		// This doesn't makes sense for migration as the setup script is not executed
-		envs = append(envs, core.EnvVar{Name: "MIRROR_PATH", Value: "/mirror"})
-
-		// Add the volume mount now since we don't want it in the init container ones.
-		volumeMounts = append(volumeMounts, core.VolumeMount{
-			Name:      mirrorPvName,
-			MountPath: "/mirror",
-		})
-	}
-
 	volumes := kubernetes.CreateVolumes(mounts)
-
-	runMount, runVolume := kubernetes.CreateTmpfsMount("/run", "256Mi")
-	cgroupMount, cgroupVolume := kubernetes.CreateHostPathMount(
-		"/sys/fs/cgroup", "/sys/fs/cgroup", core.HostPathDirectory,
-	)
 
 	caMount := core.VolumeMount{
 		Name:      "ca-cert",
@@ -118,92 +194,40 @@ func getServerDeployment(
 	}
 
 	initMounts = append(initMounts, tlsKeyMount)
-	volumeMounts = append(volumeMounts, runMount, cgroupMount, caMount, tlsKeyMount)
-	volumes = append(volumes, runVolume, cgroupVolume, caVolume, tlsKeyVolume)
+	volumeMounts = append(volumeMounts, caMount, tlsKeyMount)
+	volumes = append(volumes, caVolume, tlsKeyVolume)
 
-	// Compute the needed ports
-	ports := utils.GetServerPorts(debug)
-
-	deployment := apps.Deployment{
-		TypeMeta: meta.TypeMeta{Kind: "Deployment", APIVersion: "apps/v1"},
+	template := core.PodTemplateSpec{
 		ObjectMeta: meta.ObjectMeta{
-			Name:      ServerDeployName,
-			Namespace: namespace,
-			Labels:    kubernetes.GetLabels(kubernetes.ServerApp, kubernetes.ServerComponent),
+			Labels: kubernetes.GetLabels(kubernetes.ServerApp, kubernetes.ServerComponent),
 		},
-		Spec: apps.DeploymentSpec{
-			Replicas: &replicas,
-			// As long as the container cannot scale, we need to stick to recreate strategy
-			// or the new deployed pods won't be ready.
-			Strategy: apps.DeploymentStrategy{Type: apps.RecreateDeploymentStrategyType},
-			Selector: &meta.LabelSelector{
-				MatchLabels: map[string]string{kubernetes.ComponentLabel: kubernetes.ServerComponent},
-			},
-			Template: core.PodTemplateSpec{
-				ObjectMeta: meta.ObjectMeta{
-					Labels: kubernetes.GetLabels(kubernetes.ServerApp, kubernetes.ServerComponent),
-				},
-				Spec: core.PodSpec{
-					InitContainers: []core.Container{
-						{
-							Name:            "init-volumes",
-							Image:           image,
-							ImagePullPolicy: pullPolicy,
-							Command:         []string{"sh", "-x", "-c", initScript},
-							VolumeMounts:    initMounts,
-						},
-					},
-					Containers: []core.Container{
-						{
-							Name:            "uyuni",
-							Image:           image,
-							ImagePullPolicy: pullPolicy,
-							Lifecycle: &core.Lifecycle{
-								PreStop: &core.LifecycleHandler{
-									Exec: &core.ExecAction{
-										Command: []string{"/bin/sh", "-c", "spacewalk-service stop && systemctl stop postgresql"},
-									},
-								},
-							},
-							Ports: kubernetes.ConvertPortMaps(ports),
-							Env:   envs,
-							ReadinessProbe: &core.Probe{
-								ProbeHandler: core.ProbeHandler{
-									HTTPGet: &core.HTTPGetAction{
-										Port: intstr.FromInt(80),
-										Path: "/rhn/metrics",
-									},
-								},
-								PeriodSeconds:    30,
-								TimeoutSeconds:   20,
-								FailureThreshold: 5,
-							},
-							LivenessProbe: &core.Probe{
-								ProbeHandler: core.ProbeHandler{
-									HTTPGet: &core.HTTPGetAction{
-										Port: intstr.FromInt(80),
-										Path: "/rhn/metrics",
-									},
-								},
-								InitialDelaySeconds: 60,
-								PeriodSeconds:       60,
-								TimeoutSeconds:      20,
-								FailureThreshold:    5,
-							},
-							VolumeMounts: volumeMounts,
-						},
-					},
-					Volumes: volumes,
+		Spec: core.PodSpec{
+			InitContainers: []core.Container{
+				{
+					Name:            "init-volumes",
+					Image:           image,
+					ImagePullPolicy: pullPolicy,
+					Command:         []string{"sh", "-x", "-c", initScript},
+					VolumeMounts:    initMounts,
 				},
 			},
+			Containers: []core.Container{
+				{
+					Name:            "uyuni",
+					Image:           image,
+					ImagePullPolicy: pullPolicy,
+					Env:             envs,
+					VolumeMounts:    volumeMounts,
+				},
+			},
+			Volumes: volumes,
 		},
 	}
 
 	if pullSecret != "" {
-		deployment.Spec.Template.Spec.ImagePullSecrets = []core.LocalObjectReference{{Name: pullSecret}}
+		template.Spec.ImagePullSecrets = []core.LocalObjectReference{{Name: pullSecret}}
 	}
-
-	return &deployment
+	return template
 }
 
 const initScript = `
@@ -244,9 +268,12 @@ do
 		if [ "$vol" = "/etc/pki/tls" ]; then
               ln -s /etc/pki/spacewalk-tls/spacewalk.crt /mnt/etc/pki/tls/certs/spacewalk.crt;
               ln -s /etc/pki/spacewalk-tls/spacewalk.key /mnt/etc/pki/tls/private/spacewalk.key;
-              cp /etc/pki/spacewalk-tls/spacewalk.key /mnt/etc/pki/tls/private/pg-spacewalk.key;
-              chown postgres:postgres /mnt/etc/pki/tls/private/pg-spacewalk.key;
 		fi
+	fi
+
+	if [ "$vol" = "/etc/pki/tls" ]; then
+	    cp /etc/pki/spacewalk-tls/spacewalk.key /mnt/etc/pki/tls/private/pg-spacewalk.key;
+	    chown postgres:postgres /mnt/etc/pki/tls/private/pg-spacewalk.key;
 	fi
 done
 `
@@ -314,16 +341,4 @@ func getRunningServerImage(namespace string) string {
 		return ""
 	}
 	return strings.TrimSpace(string(out))
-}
-
-// neverSetup checks if the server container has already been setup setup.
-func neverSetup(namespace string, image string, pullPolicy string, pullSecret string) bool {
-	out, err := kubernetes.RunPodLogs(namespace, "ran-setup-check", image, pullPolicy, pullSecret,
-		[]types.VolumeMount{utils.RootVolumeMount},
-		"ls", "-1a", "/root/",
-	)
-	if err != nil {
-		return false
-	}
-	return !strings.Contains(string(out), ".MANAGER_SETUP_COMPLETE")
 }
