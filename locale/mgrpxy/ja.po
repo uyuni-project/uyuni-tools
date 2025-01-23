@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-17 14:58+0100\n"
+"POT-Creation-Date: 2025-01-23 16:00+0100\n"
 "PO-Revision-Date: 2025-01-15 01:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
@@ -143,7 +143,7 @@ msgstr ""
 "\n"
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:38 mgrpxy/shared/podman/podman.go:238
+#: mgrpxy/cmd/install/podman/utils.go:38 mgrpxy/shared/podman/podman.go:243
 msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
 
@@ -152,7 +152,7 @@ msgstr "このコマンドを実行する前にpodmanをインストールする
 msgid "failed to extract proxy config from %s file"
 msgstr "プロキシ設定を %s ファイルから抽出できませんでした"
 
-#: mgrpxy/cmd/install/podman/utils.go:53 mgrpxy/shared/podman/podman.go:251
+#: mgrpxy/cmd/install/podman/utils.go:53 mgrpxy/shared/podman/podman.go:256
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.comへのログインに失敗しました"
 
@@ -498,49 +498,49 @@ msgstr "ネットワークを設定できません"
 msgid "Generating systemd services"
 msgstr "systemdサービスの生成"
 
-#: mgrpxy/shared/podman/podman.go:149
+#: mgrpxy/shared/podman/podman.go:154
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "systemdファイル「%s」の生成に失敗しました"
 
-#: mgrpxy/shared/podman/podman.go:155
+#: mgrpxy/shared/podman/podman.go:160
 msgid "cannot generate systemd conf file"
 msgstr "systemd confファイルを生成できません"
 
-#: mgrpxy/shared/podman/podman.go:161
+#: mgrpxy/shared/podman/podman.go:166
 msgid "cannot generate systemd conf user configuration file"
 msgstr "systemd confユーザ設定ファイルを生成できません"
 
-#: mgrpxy/shared/podman/podman.go:191
+#: mgrpxy/shared/podman/podman.go:196
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "設定 %s でプロキシを設定しています"
 
-#: mgrpxy/shared/podman/podman.go:210
+#: mgrpxy/shared/podman/podman.go:215
 msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
 msgstr "/etc/uyuni/proxyディレクトリには、すべてのユーザーに読み取りおよび書き込み権限がありません。umask設定を確認してください。"
 
-#: mgrpxy/shared/podman/podman.go:226
+#: mgrpxy/shared/podman/podman.go:231
 msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
 msgstr "/etc/uyuni/proxy/config.yamlには、すべてのユーザーに読み取り権限がありません。umask設定を確認してください。"
 
-#: mgrpxy/shared/podman/podman.go:257
+#: mgrpxy/shared/podman/podman.go:262
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr "httpdイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:261
+#: mgrpxy/shared/podman/podman.go:266
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr "salt-brokerイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:265
+#: mgrpxy/shared/podman/podman.go:270
 msgid "cannot find squid image: it will no be upgraded"
 msgstr "squidイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:269
+#: mgrpxy/shared/podman/podman.go:274
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr "sshイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:273
+#: mgrpxy/shared/podman/podman.go:278
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr "tftpdイメージが見つかりません: アップグレードされません"
 
