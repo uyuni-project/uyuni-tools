@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# SPDX-FileCopyrightText: 2024 SUSE LLC
+# SPDX-FileCopyrightText: 2025 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -24,7 +24,7 @@ if [ "${OSCAPI}" == "https://api.suse.de" ]; then
   esac
 
 # Define the default tag to use
-  sed 's/^tag=%{!?_default_tag:latest}/tag=5.1.0-alpha1/' -i ${SRPM_PKG_DIR}/uyuni-tools.spec
+  sed 's/^tag=%{!?_default_tag:latest}/tag=5.1.0-alpha2/' -i ${SRPM_PKG_DIR}/uyuni-tools.spec
 
   sed "s/namespace='%{_default_namespace}'/namespace='%{_default_namespace}\/%{_arch}'/" -i ${SRPM_PKG_DIR}/uyuni-tools.spec
 
