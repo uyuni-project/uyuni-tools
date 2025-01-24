@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-09 13:01+0100\n"
+"POT-Creation-Date: 2025-01-24 15:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,7 +127,7 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgrpxy/cmd/install/podman/utils.go:36 mgrpxy/shared/podman/podman.go:228
+#: mgrpxy/cmd/install/podman/utils.go:36 mgrpxy/shared/podman/podman.go:233
 msgid "install podman before running this command"
 msgstr ""
 
@@ -136,7 +136,7 @@ msgstr ""
 msgid "failed to extract proxy config from %s file"
 msgstr ""
 
-#: mgrpxy/cmd/install/podman/utils.go:51 mgrpxy/shared/podman/podman.go:241
+#: mgrpxy/cmd/install/podman/utils.go:51 mgrpxy/shared/podman/podman.go:246
 msgid "failed to login to registry.suse.com"
 msgstr ""
 
@@ -446,49 +446,49 @@ msgstr ""
 msgid "Generating systemd services"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:142
+#: mgrpxy/shared/podman/podman.go:147
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:148
+#: mgrpxy/shared/podman/podman.go:153
 msgid "cannot generate systemd conf file"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:154
+#: mgrpxy/shared/podman/podman.go:159
 msgid "cannot generate systemd conf user configuration file"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:184
+#: mgrpxy/shared/podman/podman.go:189
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:203
+#: mgrpxy/shared/podman/podman.go:208
 msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:219
+#: mgrpxy/shared/podman/podman.go:224
 msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:247
+#: mgrpxy/shared/podman/podman.go:252
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:251
+#: mgrpxy/shared/podman/podman.go:256
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:255
+#: mgrpxy/shared/podman/podman.go:260
 msgid "cannot find squid image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:259
+#: mgrpxy/shared/podman/podman.go:264
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:263
+#: mgrpxy/shared/podman/podman.go:268
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr ""
 
