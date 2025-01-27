@@ -35,6 +35,12 @@ if test -n "{{ .AdminPassword }}"; then
 	echo "starting apache2..."
 	/usr/sbin/start_apache2 -k start
 
+	echo "starting taskomatic..."
+	set -a
+	. /usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
+	set +a
+	/usr/sbin/taskomatic &
+
 	echo "Creating first user..."
 	{{ if .NoSSL }}
 	CURL_SCHEME="http"
