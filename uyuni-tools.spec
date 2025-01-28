@@ -275,11 +275,11 @@ Fish command line completion support for %{name_ctl}.
 # Only SUSE distros have a -lang packages, for the others they
 # will all be in the correspdonding tool package.
 %if 0%{?suse_version} || 0%{?sle_version}
-%lang_package -n %{name_ctl}
-%lang_package -n %{name_pxy}
+%{lang_package -n %{name_ctl}}
+%{lang_package -n %{name_pxy}}
 
 %if %{adm_build}
-%lang_package -n %{name_adm}
+%{lang_package -n %{name_adm}}
 %endif
 # %{adm_build}
 
