@@ -105,16 +105,16 @@ var HubXmlrpcVolumeMounts = []types.VolumeMount{
 
 // ProxyHttpdVolumes volumes used by HTTPD in proxy.
 var ProxyHttpdVolumes = []types.VolumeMount{
-	{Name: "uyuni-proxy-rhn-cache", MountPath: "/var/cache/rhn:z"},
-	{Name: "uyuni-proxy-tftpboot", MountPath: "/srv/tftpboot:z"},
+	{Name: "uyuni-proxy-rhn-cache", MountPath: "/var/cache/rhn"},
+	{Name: "uyuni-proxy-tftpboot", MountPath: "/srv/tftpboot"},
 }
 
 // ProxySquidVolumes volumes used by Squid in  proxy.
 var ProxySquidVolumes = []types.VolumeMount{
-	{Name: "uyuni-proxy-squid-cache", MountPath: "/var/cache/squid:z"},
+	{Name: "uyuni-proxy-squid-cache", MountPath: "/var/cache/squid"},
 }
 
 // ProxyTftpdVolumes used by TFTP in proxy.
 var ProxyTftpdVolumes = []types.VolumeMount{
-	{Name: "uyuni-proxy-tftpboot", MountPath: "/srv/tftpboot:ro,z"},
+	{Name: "uyuni-proxy-tftpboot", MountPath: "/srv/tftpboot:ro"},
 }
