@@ -21,14 +21,22 @@
 %global org             uyuni-project
 %global project         uyuni-tools
 %global provider_prefix %{provider}.%{provider_tld}/%{org}/%{project}
-%global productname     Uyuni
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %global namespace       registry.opensuse.org/uyuni
 
+%if "%{productprettyname}" == "Uyuni"
 %if 0%{?suse_version} >= 1600 || 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 12 || 0%{?ubuntu} >= 2004
 %define adm_build    1
 %else
 %define adm_build    0
+%endif
+%else
+%if 0%{?suse_version} >= 1600 || 0%{?sle_version} >= 150400
+%define adm_build 1
+%else
+%define adm_build 0
+%endif
 %endif
 
 %if 0%{?debian}
@@ -51,7 +59,7 @@
 Name:           %{project}
 Version:        5.1.6
 Release:        0
-Summary:        Tools for managing %{productname} container
+Summary:        Tools for managing %{productprettyname} container
 License:        Apache-2.0
 Group:          System/Management
 URL:            https://%{provider_prefix}
@@ -93,11 +101,11 @@ BuildRequires:  golang >= 1.21
 # 0%{?fedora} || 0%{?rhel}
 
 %description
-Tools for managing %{productname} container.
+Tools for managing %{productprettyname} container.
 
 %if %{adm_build}
 %package -n %{name_adm}
-Summary:        Command line tool to install and update %{productname}
+Summary:        Command line tool to install and update %{productprettyname}
 %if 0%{?suse_version}
 Requires:       (aardvark-dns if podman)
 Requires:       (netavark if podman)
@@ -108,11 +116,11 @@ Requires:       (podman >= 4.5.0 if podman)
 %endif
 
 %description -n %{name_adm}
-%{name_adm} is a convenient tool to install and update %{productname} components as containers running
+%{name_adm} is a convenient tool to install and update %{productprettyname} components as containers running
 either on Podman or a Kubernetes cluster.
 
 %package -n %{name_pxy}
-Summary:        Command line tool to install and update %{productname} proxy
+Summary:        Command line tool to install and update %{productprettyname} proxy
 Obsoletes:      uyuni-proxy-systemd-services
 %if 0%{?suse_version}
 Requires:       (aardvark-dns if podman)
@@ -121,7 +129,7 @@ Requires:       (netavark if podman)
 # 0%{?suse_version}
 
 %description -n %{name_pxy}
-%{name_pxy} is a convenient tool to install and update %{productname} proxy components as containers
+%{name_pxy} is a convenient tool to install and update %{productprettyname} proxy components as containers
 running either on Podman or a Kubernetes cluster.
 
 %package -n %{name_adm}-bash-completion
@@ -223,10 +231,10 @@ Fish command line completion support for %{name_pxy}.
 # %{adm_build}
 
 %package -n %{name_ctl}
-Summary:        Command line tool to perform day-to-day operations on %{productname}
+Summary:        Command line tool to perform day-to-day operations on %{productprettyname}
 
 %description -n %{name_ctl}
-%{name_ctl} is a tool helping with dayly tasks on %{productname} components running as containers
+%{name_ctl} is a tool helping with daily tasks on %{productprettyname} components running as containers
 either on Podman or a Kubernetes cluster.
 
 %package -n %{name_ctl}-bash-completion
