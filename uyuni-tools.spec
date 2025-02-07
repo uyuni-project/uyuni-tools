@@ -80,12 +80,12 @@ BuildRequires:  fish
 BuildRequires:  zsh
 # Get the proper Go version on different distros
 %if 0%{?suse_version}
-BuildRequires:  golang(API) >= 1.21
+BuildRequires:  golang(API) >= 1.22
 %endif
 # 0%{?suse_version}
 
 %if 0%{?ubuntu}
-%define go_version      1.21
+%define go_version      1.22
 BuildRequires:  golang-%{go_version}
 %endif
 # 0%{?ubuntu}
@@ -96,7 +96,7 @@ BuildRequires:  golang >= 1.19
 # 0%{?debian}
 
 %if 0%{?fedora} || 0%{?rhel}
-BuildRequires:  golang >= 1.21
+BuildRequires:  golang >= 1.22
 %endif
 # 0%{?fedora} || 0%{?rhel}
 
