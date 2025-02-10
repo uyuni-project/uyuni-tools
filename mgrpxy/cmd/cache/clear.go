@@ -23,14 +23,14 @@ func NewClearCmd(globalFlags *types.GlobalFlags) *cobra.Command {
 		Long:  L("Clear the cache"),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags cacheClearFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, clear)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, clearCmd)
 		},
 	}
 
 	return clearCmd
 }
 
-func clear(globalFlags *types.GlobalFlags, flags *cacheClearFlags, cmd *cobra.Command, args []string) error {
+func clearCmd(globalFlags *types.GlobalFlags, flags *cacheClearFlags, cmd *cobra.Command, args []string) error {
 	fn, err := shared.ChooseProxyPodmanOrKubernetes(cmd.Flags(), podmanCacheClear, kubernetesCacheClear)
 	if err != nil {
 		return err
