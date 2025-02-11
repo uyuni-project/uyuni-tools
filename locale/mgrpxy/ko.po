@@ -8,9 +8,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-23 16:00+0100\n"
-"PO-Revision-Date: 2025-01-17 07:50+0000\n"
+"PO-Revision-Date: 2025-02-11 14:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrpxy/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +27,7 @@ msgstr "캐시 지우기"
 #: mgrpxy/cmd/start/kubernetes.go:25 mgrpxy/cmd/stop/kubernetes.go:25
 #, fuzzy
 msgid "failed retrieving namespace"
-msgstr "%s 파일에 쓰지 못함"
+msgstr "네임스페이스를 검색하지 못함"
 
 #: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:27
 msgid "failed to remove cached data"
@@ -257,8 +258,8 @@ msgid ""
 "Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
 msgstr ""
-"호스트 또는 클러스터의 구성 및 로그와 컨테이너의 구성 및 로그를\n"
-"추출하여 디버깅에 도움이 되도록 지원하십시오."
+"호스트 또는 클러스터 구성 및 로그와 컨테이너에서 로그를 추출하여\n"
+"디버깅에 도움이 되도록 지원하십시오."
 
 #: mgrpxy/cmd/support/config/config.go:31
 msgid "path where to extract the data"
