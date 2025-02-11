@@ -8,9 +8,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-23 16:00+0100\n"
-"PO-Revision-Date: 2025-01-17 07:50+0000\n"
+"PO-Revision-Date: 2025-02-11 14:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -525,7 +526,7 @@ msgstr "podman 소켓을 활성화할 수 없음"
 #, fuzzy
 #| msgid "Server set up"
 msgid "server setup failed"
-msgstr "서버 설정"
+msgstr "서버 설정 실패"
 
 #: mgradm/cmd/install/podman/utils.go:200
 msgid "Server set up, login on https://%[1]s with %[2]s user"
@@ -1330,10 +1331,8 @@ msgid "failed to create confidential computing attestations deployment"
 msgstr "기밀 컴퓨팅 증명 배포를 생성할 수 없음"
 
 #: mgradm/shared/kubernetes/db.go:54
-#, fuzzy
-#| msgid "failed to create the service"
 msgid "failed to create the secret"
-msgstr "서비스 생성 실패"
+msgstr "시크릿 생성 실패"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:32
 msgid "Running database finalization, this could be long depending on the size of the database…"
@@ -1417,7 +1416,7 @@ msgstr "서비스 생성 실패"
 #, fuzzy
 #| msgid "failed to run the post upgrade job"
 msgid "failed to run the setup job"
-msgstr "업그레이드 후 작업을 실행하지 못함"
+msgstr "설치 작업을 실행하지 못함"
 
 #: mgradm/shared/kubernetes/traefik.go:37
 #, javascript-format
@@ -1542,8 +1541,9 @@ msgid "cannot inspect data"
 msgstr "데이터를 검사할 수 없음"
 
 #: mgradm/shared/podman/podman.go:537
+#, fuzzy
 msgid "The above error is only relevant if using a public cloud provider registry"
-msgstr ""
+msgstr "위의 오류는 공용 클라우드 공급자 레지스트리를 사용하는 경우에만 해당됩니다."
 
 #: mgradm/shared/saline/saline.go:66
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
@@ -1641,7 +1641,7 @@ msgstr "이미지"
 #, fuzzy
 #| msgid "Specify a private registry where pull the images"
 msgid "Specify a registry where to pull the images from"
-msgstr "이미지를 추출할 개인 레지스트리 지정"
+msgstr "이미지를 당겨올 레지스트리 지정"
 
 #: mgradm/shared/utils/cmd_utils.go:127
 msgid "Tag Image"
@@ -1792,7 +1792,7 @@ msgstr "유효한 전자 메일 주소 아님"
 #, fuzzy
 #| msgid "Failed to generate setup script"
 msgid "failed to render setup script"
-msgstr "설치 스크립트를 생성하지 못함"
+msgstr "설치 스크립트를 렌더링하지 못함"
 
 #~ msgid "Failed to stop service: %v"
 #~ msgstr "서비스 중지 실패: %v"
