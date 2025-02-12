@@ -32,7 +32,10 @@ import (
 // DeployExistingCertificate execute a deploy of an existing certificate.
 func DeployExistingCertificate(namespace string, sslFlags *cmd_utils.InstallSSLFlags) error {
 	// Deploy the SSL Certificate secret and CA configmap
-	serverCrt, rootCaCrt := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
+	serverCrt, rootCaCrt, err := ssl.OrderCas(&sslFlags.Ca, &sslFlags.Server)
+	if err != nil {
+		return err
+	}
 	serverKey := utils.ReadFile(sslFlags.Server.Key)
 
 	tempDir, cleaner, err := utils.TempDir()

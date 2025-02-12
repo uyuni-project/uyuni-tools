@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -13,19 +13,22 @@ import (
 )
 
 func TestReadCertificatesRootCa(t *testing.T) {
-	actual := readCertificates("testdata/chain1/root-ca.crt")
+	actual, err := readCertificates("testdata/chain1/root-ca.crt")
+	testutils.AssertEquals(t, "error not nil", nil, err)
 	testutils.AssertEquals(t, "Didn't get the expected certificates count", 1, len(actual))
 	testutils.AssertTrue(t, "CA should be root", actual[0].isRoot)
 }
 
 func TestReadCertificatesNoCa(t *testing.T) {
-	actual := readCertificates("testdata/chain1/server.crt")
+	actual, err := readCertificates("testdata/chain1/server.crt")
+	testutils.AssertEquals(t, "error not nil", nil, err)
 	testutils.AssertEquals(t, "Didn't get the expected certificates count", 1, len(actual))
 	testutils.AssertTrue(t, "Shouldn't be a CA certificate", !actual[0].isCa)
 }
 
 func TestReadCertificatesMultiple(t *testing.T) {
-	actual := readCertificates("testdata/chain1/intermediate-ca.crt")
+	actual, err := readCertificates("testdata/chain1/intermediate-ca.crt")
+	testutils.AssertEquals(t, "error not nil", nil, err)
 	testutils.AssertEquals(t, "Didn't get the expected certificates count", 2, len(actual))
 	if len(actual) != 2 {
 		t.Errorf("readCertificates got %d certificates; want 2", len(actual))
@@ -74,7 +77,8 @@ func TestOrderCas(t *testing.T) {
 	}
 	server := types.SSLPair{Cert: "testdata/chain1/server.crt", Key: "testdata/chain1/server.key"}
 
-	certs, rootCa := OrderCas(&chain, &server)
+	certs, rootCa, err := OrderCas(&chain, &server)
+	testutils.AssertEquals(t, "error not nil", nil, err)
 	ordered := strings.Split(string(certs), "-----BEGIN CERTIFICATE-----\n")
 
 	testutils.AssertEquals(t, "Found unknown content before first certificate", "", ordered[0])
@@ -107,7 +111,9 @@ func TestOrderCas(t *testing.T) {
 }
 
 func TestFindServerCertificate(t *testing.T) {
-	certsList := readCertificates("testdata/chain2/spacewalk.crt")
+	certsList, err := readCertificates("testdata/chain2/spacewalk.crt")
+	testutils.AssertEquals(t, "error not nil", nil, err)
+
 	actual, err := findServerCert(certsList)
 
 	testutils.AssertEquals(t, "Expected to find a certificate, got none", nil, err)
@@ -119,7 +125,9 @@ func TestOrderCasChain2(t *testing.T) {
 	chain := types.CaChain{Root: "testdata/chain2/RHN-ORG-TRUSTED-SSL-CERT", Intermediate: []string{}}
 	server := types.SSLPair{Cert: "testdata/chain2/spacewalk.crt", Key: "testdata/chain2/spacewalk.key"}
 
-	certs, rootCa := OrderCas(&chain, &server)
+	certs, rootCa, err := OrderCas(&chain, &server)
+	testutils.AssertEquals(t, "error not nil", nil, err)
+
 	ordered := strings.Split(string(certs), "-----BEGIN CERTIFICATE-----\n")
 
 	testutils.AssertEquals(t, "Found unknown content before first certificate", "", ordered[0])

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,6 +7,7 @@ package ssl
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -22,20 +23,32 @@ import (
 // OrderCas generates the server certificate with the CA chain.
 //
 // Returns the certificate chain and the root CA.
-func OrderCas(chain *types.CaChain, serverPair *types.SSLPair) ([]byte, []byte) {
-	CheckPaths(chain, serverPair)
+func OrderCas(chain *types.CaChain, serverPair *types.SSLPair) ([]byte, []byte, error) {
+	if err := CheckPaths(chain, serverPair); err != nil {
+		return []byte{}, []byte{}, err
+	}
 
 	// Extract all certificates and their data
-	certs := readCertificates(chain.Root)
-	for _, caPath := range chain.Intermediate {
-		certs = append(certs, readCertificates(caPath)...)
+	certs, err := readCertificates(chain.Root)
+	if err != nil {
+		return []byte{}, []byte{}, err
 	}
-	serverCerts := readCertificates(serverPair.Cert)
+	for _, caPath := range chain.Intermediate {
+		intermediateCerts, err := readCertificates(caPath)
+		if err != nil {
+			return []byte{}, []byte{}, err
+		}
+		certs = append(certs, intermediateCerts...)
+	}
+	serverCerts, err := readCertificates(serverPair.Cert)
+	if err != nil {
+		return []byte{}, []byte{}, err
+	}
 	certs = append(certs, serverCerts...)
 
 	serverCert, err := findServerCert(certs)
 	if err != nil {
-		log.Fatal().Msg(L("Failed to find a non-CA certificate"))
+		return []byte{}, []byte{}, errors.New(L("Failed to find a non-CA certificate"))
 	}
 
 	// Map all certificates using their hashes
@@ -77,10 +90,10 @@ func findServerCert(certs []certificate) (*certificate, error) {
 	return nil, errors.New(L("expected to find a certificate, got none"))
 }
 
-func readCertificates(path string) []certificate {
+func readCertificates(path string) ([]certificate, error) {
 	fd, err := os.Open(path)
 	if err != nil {
-		log.Fatal().Err(err).Msgf(L("Failed to read certificate file %s"), path)
+		return []certificate{}, utils.Errorf(err, L("Failed to read certificate file %s"), path)
 	}
 
 	certs := []certificate{}
@@ -96,14 +109,17 @@ func readCertificates(path string) []certificate {
 		}
 
 		// Extract data from the certificate
-		cert := extractCertificateData(out)
+		cert, err := extractCertificateData(out)
+		if err != nil {
+			return []certificate{}, err
+		}
 		certs = append(certs, cert)
 	}
-	return certs
+	return certs, nil
 }
 
 // Extract data from the certificate to help ordering and verifying it.
-func extractCertificateData(content []byte) certificate {
+func extractCertificateData(content []byte) (certificate, error) {
 	args := []string{"x509", "-noout", "-subject", "-subject_hash", "-startdate", "-enddate",
 		"-issuer", "-issuer_hash", "-ext", "subjectKeyIdentifier,authorityKeyIdentifier,basicConstraints"}
 	log.Debug().Msg("Running command openssl " + strings.Join(args, " "))
@@ -116,7 +132,7 @@ func extractCertificateData(content []byte) certificate {
 
 	out, err := cmd.Output()
 	if err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to extract data from certificate"))
+		return certificate{}, utils.Error(err, L("Failed to extract data from certificate"))
 	}
 	lines := strings.Split(string(out), "\n")
 
@@ -137,13 +153,13 @@ func extractCertificateData(content []byte) certificate {
 			date := strings.SplitN(line, "=", 2)[1]
 			cert.startDate, err = time.Parse(timeLayout, date)
 			if err != nil {
-				log.Fatal().Err(err).Msgf(L("Failed to parse start date: %s\n"), date)
+				return cert, utils.Errorf(err, L("Failed to parse start date: %s\n"), date)
 			}
 		} else if strings.HasPrefix(line, "notAfter=") {
 			date := strings.SplitN(line, "=", 2)[1]
 			cert.endDate, err = time.Parse(timeLayout, date)
 			if err != nil {
-				log.Fatal().Err(err).Msgf(L("Failed to parse end date: %s\n"), date)
+				return cert, utils.Errorf(err, L("Failed to parse end date: %s\n"), date)
 			}
 		} else if strings.HasPrefix(line, "X509v3 Subject Key Identifier") {
 			nextVal = "subjectKeyId"
@@ -180,21 +196,21 @@ func extractCertificateData(content []byte) certificate {
 	} else {
 		cert.isRoot = false
 	}
-	return cert
+	return cert, nil
 }
 
 // Prepare the certificate chain starting by the server up to the root CA.
 // Returns the certificate chain and the root CA.
-func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash string) ([]byte, []byte) {
+func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash string) ([]byte, []byte, error) {
 	if len(mapBySubjectHash) == 0 {
-		log.Fatal().Msg(L("No CA found"))
+		return []byte{}, []byte{}, errors.New(L("No CA found"))
 	}
 
 	cert := mapBySubjectHash[serverCertHash]
 	issuerHash := cert.issuerHash
 	_, found := mapBySubjectHash[issuerHash]
 	if issuerHash == "" || !found {
-		log.Fatal().Msg(L("No CA found for server certificate"))
+		return []byte{}, []byte{}, errors.New(L("No CA found for server certificate"))
 	}
 
 	sortedChain := bytes.NewBuffer(mapBySubjectHash[serverCertHash].content)
@@ -203,7 +219,7 @@ func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash st
 	for {
 		cert, found = mapBySubjectHash[issuerHash]
 		if !found {
-			log.Fatal().Msgf(L("Missing CA with subject hash %s"), issuerHash)
+			return []byte{}, []byte{}, fmt.Errorf(L("Missing CA with subject hash %s"), issuerHash)
 		}
 
 		nextHash := cert.issuerHash
@@ -215,30 +231,38 @@ func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash st
 		issuerHash = nextHash
 		sortedChain.Write(cert.content)
 	}
-	return sortedChain.Bytes(), rootCa
+	return sortedChain.Bytes(), rootCa, nil
 }
 
 // CheckPaths ensures that all the passed path exists and the required files are available.
-func CheckPaths(chain *types.CaChain, serverPair *types.SSLPair) {
+func CheckPaths(chain *types.CaChain, serverPair *types.SSLPair) error {
 	mandatoryFile(chain.Root, "root CA")
 	for _, ca := range chain.Intermediate {
-		optionalFile(ca)
+		if err := optionalFile(ca); err != nil {
+			return err
+		}
 	}
-	mandatoryFile(serverPair.Cert, L("server certificate is required"))
-	mandatoryFile(serverPair.Key, L("server key is required"))
+	if err := mandatoryFile(serverPair.Cert, L("server certificate is required")); err != nil {
+		return err
+	}
+	if err := mandatoryFile(serverPair.Key, L("server key is required")); err != nil {
+		return err
+	}
+	return nil
 }
 
-func mandatoryFile(file string, msg string) {
+func mandatoryFile(file string, msg string) error {
 	if file == "" {
-		log.Fatal().Msgf(msg)
+		return errors.New(msg)
 	}
-	optionalFile(file)
+	return optionalFile(file)
 }
 
-func optionalFile(file string) {
+func optionalFile(file string) error {
 	if file != "" && !utils.FileExists(file) {
-		log.Fatal().Msgf(L("%s file is not accessible"), file)
+		return fmt.Errorf(L("%s file is not accessible"), file)
 	}
+	return nil
 }
 
 // Converts an SSL key to RSA.
