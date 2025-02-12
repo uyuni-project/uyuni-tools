@@ -5,6 +5,7 @@
 package ssl
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -173,5 +174,28 @@ func TestGetRsaKey(t *testing.T) {
 
 	if !matchingPKCS1 && !matchingPKCS8 {
 		t.Errorf("Unexpected generated RSA key: %s", actual)
+	}
+}
+
+func TestCheckKey(t *testing.T) {
+	type testData struct {
+		file string
+		err  string
+	}
+
+	testCases := []testData{
+		{"testdata/RootCA.key", "Invalid SSL key, it is probably encrypted"},
+		{"testdata/chain1/server.key", ""},
+	}
+
+	for i, testCase := range testCases {
+		err := CheckKey(testCase.file)
+		if testCase.err == "" {
+			testutils.AssertEquals(t, fmt.Sprintf("case %d: expected no error", i+1), nil, err)
+		} else {
+			testutils.AssertTrue(t, "Error message should state the key is probably encrypted",
+				strings.Contains(err.Error(), testCase.err),
+			)
+		}
 	}
 }

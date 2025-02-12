@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -105,7 +105,9 @@ Environment="PODMAN_EXTRA_ARGS=%s"
 
 // UpdateSSLCertificate update SSL certificate.
 func UpdateSSLCertificate(cnx *shared.Connection, chain *types.CaChain, serverPair *types.SSLPair) error {
-	ssl.CheckPaths(chain, serverPair)
+	if err := ssl.CheckPaths(chain, serverPair); err != nil {
+		return err
+	}
 
 	// Copy the CAs, certificate and key to the container
 	const certDir = "/tmp/uyuni-tools"
