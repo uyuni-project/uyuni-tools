@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-23 16:00+0100\n"
-"PO-Revision-Date: 2025-02-11 14:50+0000\n"
+"PO-Revision-Date: 2025-02-12 09:25+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgradm/ko/>\n"
@@ -523,8 +523,6 @@ msgid "cannot enable podman socket"
 msgstr "podman 소켓을 활성화할 수 없음"
 
 #: mgradm/cmd/install/podman/utils.go:197
-#, fuzzy
-#| msgid "Server set up"
 msgid "server setup failed"
 msgstr "서버 설정 실패"
 
@@ -983,8 +981,8 @@ msgid ""
 "Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
 msgstr ""
-"호스트 또는 클러스터의 구성 및 로그와 컨테이너의 구성 및 로그를\n"
-"추출하여 디버깅에 도움이 되도록 지원하십시오."
+"호스트 또는 클러스터 구성 및 로그와 컨테이너에서 로그를 추출하여\n"
+"디버깅에 도움이 되도록 지원하십시오."
 
 #: mgradm/cmd/support/config/config.go:31
 msgid "path where to extract the data"
@@ -1413,8 +1411,6 @@ msgid "failed to create the service"
 msgstr "서비스 생성 실패"
 
 #: mgradm/shared/kubernetes/setup.go:43
-#, fuzzy
-#| msgid "failed to run the post upgrade job"
 msgid "failed to run the setup job"
 msgstr "설치 작업을 실행하지 못함"
 
@@ -1541,9 +1537,8 @@ msgid "cannot inspect data"
 msgstr "데이터를 검사할 수 없음"
 
 #: mgradm/shared/podman/podman.go:537
-#, fuzzy
 msgid "The above error is only relevant if using a public cloud provider registry"
-msgstr "위의 오류는 공용 클라우드 공급자 레지스트리를 사용하는 경우에만 해당됩니다."
+msgstr "위의 오류는 공용 클라우드 공급자 레지스트리를 사용하는 경우에만 해당됩니다"
 
 #: mgradm/shared/saline/saline.go:66
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
@@ -1638,10 +1633,8 @@ msgid "Image"
 msgstr "이미지"
 
 #: mgradm/shared/utils/cmd_utils.go:126
-#, fuzzy
-#| msgid "Specify a private registry where pull the images"
 msgid "Specify a registry where to pull the images from"
-msgstr "이미지를 당겨올 레지스트리 지정"
+msgstr "이미지를 가져올 레지스트리 지정"
 
 #: mgradm/shared/utils/cmd_utils.go:127
 msgid "Tag Image"
@@ -1789,8 +1782,6 @@ msgid "Not a valid email address"
 msgstr "유효한 전자 메일 주소 아님"
 
 #: mgradm/shared/utils/setup.go:123
-#, fuzzy
-#| msgid "Failed to generate setup script"
 msgid "failed to render setup script"
 msgstr "설치 스크립트를 렌더링하지 못함"
 
