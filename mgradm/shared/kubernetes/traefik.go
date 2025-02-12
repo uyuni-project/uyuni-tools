@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -53,25 +53,25 @@ spec:
     permanent: true
 `, namespace, kubernetes.AppLabel, kubernetes.ServerApp))
 	if err != nil {
-		return utils.Errorf(err, L("failed to write traefik middleware and routes to file"))
+		return utils.Error(err, L("failed to write traefik middleware and routes to file"))
 	}
 
 	// Write the routes from the endpoint to the services
 	for _, endpoint := range getPortList(hub, debug) {
 		_, err := file.WriteString("---\n")
 		if err != nil {
-			return utils.Errorf(err, L("failed to write traefik middleware and routes to file"))
+			return utils.Error(err, L("failed to write traefik middleware and routes to file"))
 		}
 		if err := getTraefixRoute(routeTemplate, file, namespace, endpoint); err != nil {
 			return err
 		}
 	}
 	if err := file.Close(); err != nil {
-		return utils.Errorf(err, L("failed to close traefik middleware and routes file"))
+		return utils.Error(err, L("failed to close traefik middleware and routes file"))
 	}
 
 	if _, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "apply", "-f", filePath); err != nil {
-		return utils.Errorf(err, L("failed to create traefik middleware and routes"))
+		return utils.Error(err, L("failed to create traefik middleware and routes"))
 	}
 	return nil
 }
@@ -92,7 +92,7 @@ func getTraefixRoute(t *template.Template, writer io.Writer, namespace string, e
 		Protocol:  protocol,
 	}
 	if err := t.Execute(writer, data); err != nil {
-		return utils.Errorf(err, L("failed to write traefik routes to file"))
+		return utils.Error(err, L("failed to write traefik routes to file"))
 	}
 	return nil
 }

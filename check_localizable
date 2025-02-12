@@ -10,9 +10,27 @@ grep -r . --include '*.go' --exclude '*_test.go' --exclude-dir='vendor' -n \
     -e 'errors.New("[^"]\+"' \
     -e '\(Fatal\|Error\|Info\|Warn\)()\(\.Err(err)\)\?\.Msgf\?("' \
     -e '\.Flags()\.\(String\|Int\|Bool\)\(Slice\)\?\(Var\)\?P\?([^)]\+, \+"[^"]\+")' \
-    -e '\(Short\|Long\|Title\): \+["`]'
+    -e '\(Short\|Long\|Title\): \+["`]' | while read -r line
+do
+    file=$(echo "$line"i | cut -d: -f1)
+    line_number=$(echo "$line" | cut -d: -f2)
+    previous_line_number=$(expr "$line_number" - 1)
 
-if test $? -eq 0; then
+    # Check if a previous line exists
+    if [ "$previous_line_number" -gt 0 ]; then
+        previous_line=$(sed -n "${previous_line_number}p" ${file})
+
+        # Check if the previous line contains the ignore comment
+        if ! echo "$previous_line" | grep -q "// *l10n-ignore"; then
+            echo "$line"
+        fi
+    else
+        echo "$line" # Print it as there is no previous line to ignore.
+        res=1
+    fi
+done
+
+if test $res -ne 0; then
     echo -e "Fix the non localizable strings\n"
     res=1
 fi

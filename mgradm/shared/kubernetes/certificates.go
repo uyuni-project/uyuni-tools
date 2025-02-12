@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -52,11 +52,11 @@ func DeployExistingCertificate(namespace string, sslFlags *cmd_utils.InstallSSLF
 	}
 
 	if err = utils.WriteTemplateToFile(tlsSecretData, secretPath, 0500, true); err != nil {
-		return utils.Errorf(err, L("Failed to generate uyuni-crt secret definition"))
+		return utils.Error(err, L("Failed to generate uyuni-crt secret definition"))
 	}
 	err = utils.RunCmd("kubectl", "apply", "-f", secretPath)
 	if err != nil {
-		return utils.Errorf(err, L("Failed to create uyuni-crt TLS secret"))
+		return utils.Error(err, L("Failed to create uyuni-crt TLS secret"))
 	}
 
 	// Copy the CA cert into uyuni-ca config map as the container shouldn't have the CA secret
@@ -81,7 +81,7 @@ func DeployReusedCa(namespace string, ca *types.SSLPair) error {
 	}
 
 	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
-		return utils.Errorf(err, L("failed to generate issuer definition"))
+		return utils.Error(err, L("failed to generate issuer definition"))
 	}
 
 	err = utils.RunCmd("kubectl", "apply", "-f", issuerPath)
@@ -101,7 +101,7 @@ func DeployGeneratedCa(
 	log.Info().Msg(L("Creating SSL certificate issuer"))
 	tempDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return utils.Errorf(err, L("failed to create temporary directory"))
+		return utils.Error(err, L("failed to create temporary directory"))
 	}
 	defer os.RemoveAll(tempDir)
 
@@ -119,12 +119,12 @@ func DeployGeneratedCa(
 	}
 
 	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
-		return utils.Errorf(err, L("failed to generate issuer definition"))
+		return utils.Error(err, L("failed to generate issuer definition"))
 	}
 
 	err = utils.RunCmd("kubectl", "apply", "-f", issuerPath)
 	if err != nil {
-		return utils.Errorf(err, L("Failed to create issuer"))
+		return utils.Error(err, L("Failed to create issuer"))
 	}
 
 	return nil
@@ -178,14 +178,14 @@ func InstallCertManager(kubernetesFlags *cmd_utils.KubernetesFlags, kubeconfig s
 		if err := kubernetes.HelmUpgrade(
 			kubeconfig, namespace, true, repo, "cert-manager", chart, version, args...,
 		); err != nil {
-			return utils.Errorf(err, L("cannot run helm upgrade"))
+			return utils.Error(err, L("cannot run helm upgrade"))
 		}
 	}
 
 	// Wait for cert-manager to be ready
 	err := kubernetes.WaitForDeployments("", "cert-manager-webhook")
 	if err != nil {
-		return utils.Errorf(err, L("cannot deploy"))
+		return utils.Error(err, L("cannot deploy"))
 	}
 
 	return nil
@@ -210,12 +210,12 @@ func extractCaCertToConfig(namespace string) error {
 		zerolog.DebugLevel, "kubectl", "get", "secret", "-n", namespace, "uyuni-ca", jsonPath,
 	)
 	if err != nil {
-		return utils.Errorf(err, L("Failed to get uyuni-ca certificate"))
+		return utils.Error(err, L("Failed to get uyuni-ca certificate"))
 	}
 
 	decoded, err := base64.StdEncoding.DecodeString(string(out))
 	if err != nil {
-		return utils.Errorf(err, L("Failed to base64 decode CA certificate"))
+		return utils.Error(err, L("Failed to base64 decode CA certificate"))
 	}
 
 	return createCaConfig(namespace, decoded)
