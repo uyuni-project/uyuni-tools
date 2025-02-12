@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-12 11:53+0100\n"
-"PO-Revision-Date: 2025-01-16 01:50+0000\n"
+"PO-Revision-Date: 2025-02-12 11:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/zh_CN/>\n"
@@ -319,7 +319,7 @@ msgstr "无法写入 Traefik 配置"
 
 #: shared/kubernetes/k3s.go:79
 msgid "Waiting for Traefik to be reloaded"
-msgstr "正在等待重新装载 Traefik"
+msgstr "正在等待重新加载 Traefik"
 
 #: shared/kubernetes/k3s.go:91
 msgid "Failed to reload Traefik"
@@ -435,7 +435,7 @@ msgstr "无法写入 Rke2 nginx 配置"
 
 #: shared/kubernetes/rke2.go:43
 msgid "Waiting for Nginx controller to be reloaded"
-msgstr "正在等待重新装载 Nginx 控制器"
+msgstr "正在等待重新加载 Nginx 控制器"
 
 #: shared/kubernetes/support.go:27
 msgid "cannot retrieve any configmap"
@@ -635,7 +635,7 @@ msgstr "无法使用 %s 的 RPM 映像"
 
 #: shared/podman/images.go:58
 msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
-msgstr "正在使用从 RPM 装载的 %[1]s 映像，而不是其脱机版本 %[2]s"
+msgstr "正在使用从 RPM 加载的 %[1]s 映像，而不是其脱机版本 %[2]s"
 
 #: shared/podman/images.go:63
 #, javascript-format
@@ -887,7 +887,7 @@ msgstr "reset-failed systemd 失败"
 
 #: shared/podman/systemd.go:191
 msgid "failed to reload systemd daemon"
-msgstr "无法重新装载 systemd 守护程序"
+msgstr "无法重新加载 systemd 守护程序"
 
 #: shared/podman/systemd.go:209
 #, javascript-format
