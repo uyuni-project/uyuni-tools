@@ -95,9 +95,15 @@ func installForPodman(
 		return utils.Error(err, L("cannot setup network"))
 	}
 
+	sslArgs, cleaner, err := generateSSLCertificates(preparedImage, &flags.ServerFlags, fqdn)
+	defer cleaner()
+	if err != nil {
+		return err
+	}
+
 	log.Info().Msg(L("Run setup command in the container"))
 
-	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn); err != nil {
+	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn, sslArgs); err != nil {
 		return err
 	}
 
@@ -148,14 +154,6 @@ func installForPodman(
 		}
 	}
 
-	if flags.Installation.SSL.UseExisting() {
-		if err := podman.UpdateSSLCertificate(
-			cnx, &flags.Installation.SSL.Ca, &flags.Installation.SSL.Server,
-		); err != nil {
-			return utils.Errorf(err, L("cannot update SSL certificate"))
-		}
-	}
-
 	if err := shared_podman.EnablePodmanSocket(); err != nil {
 		return utils.Error(err, L("cannot enable podman socket"))
 	}
@@ -163,7 +161,7 @@ func installForPodman(
 }
 
 // runSetup execute the setup.
-func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
+func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string, sslArgs []string) error {
 	env := adm_utils.GetSetupEnv(flags.Mirror, &flags.Installation, fqdn, false)
 	envNames := []string{}
 	envValues := []string{}
@@ -181,6 +179,7 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
 		"--network", shared_podman.UyuniNetwork,
 		"-e", "TZ=" + flags.Installation.TZ,
 	}
+	command = append(command, sslArgs...)
 	for _, volume := range utils.ServerVolumeMounts {
 		command = append(command, "-v", fmt.Sprintf("%s:%s:z", volume.Name, volume.MountPath))
 	}

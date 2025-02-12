@@ -236,7 +236,9 @@ func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash st
 
 // CheckPaths ensures that all the passed path exists and the required files are available.
 func CheckPaths(chain *types.CaChain, serverPair *types.SSLPair) error {
-	mandatoryFile(chain.Root, "root CA")
+	if err := mandatoryFile(chain.Root, "root CA"); err != nil {
+		return err
+	}
 	for _, ca := range chain.Intermediate {
 		if err := optionalFile(ca); err != nil {
 			return err
@@ -304,4 +306,20 @@ func StripTextFromCertificate(certContent string) []byte {
 		log.Fatal().Err(err).Msg(L("failed to strip text part from CA certificate"))
 	}
 	return out
+}
+
+var newRunner = utils.NewRunner
+
+// CheckKey verifies that the SSL key located at keyPath is valid and not encrypted.
+func CheckKey(keyPath string) error {
+	if err := mandatoryFile(keyPath, L("server key is required")); err != nil {
+		return err
+	}
+
+	_, err := newRunner("openssl", "pkey", "-in", keyPath, "-passin", "pass:invalid", "-text", "-noout").Exec()
+	if err != nil {
+		return utils.Error(err, L("Invalid SSL key, it is probably encrypted"))
+	}
+
+	return nil
 }
