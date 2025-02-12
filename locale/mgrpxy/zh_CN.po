@@ -8,9 +8,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-23 16:00+0100\n"
-"PO-Revision-Date: 2025-01-16 01:50+0000\n"
+"PO-Revision-Date: 2025-02-12 09:25+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrpxy/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,9 +25,8 @@ msgstr "清除缓存"
 
 #: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/restart/kubernetes.go:25
 #: mgrpxy/cmd/start/kubernetes.go:25 mgrpxy/cmd/stop/kubernetes.go:25
-#, fuzzy
 msgid "failed retrieving namespace"
-msgstr "无法在文件 %s 中写入数据"
+msgstr "无法检索名称空间"
 
 #: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:27
 msgid "failed to remove cached data"
@@ -252,7 +252,6 @@ msgid "Extract configuration and logs"
 msgstr "提取配置和日志"
 
 #: mgrpxy/cmd/support/config/config.go:23
-#, fuzzy
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
