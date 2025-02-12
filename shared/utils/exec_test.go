@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -51,7 +51,7 @@ func TestRunner(t *testing.T) {
 			if errors.As(err, &cmdErr) {
 				testutils.AssertEquals(t, caseMsg+"Unexpected exit code", test.exit, cmdErr.ExitCode())
 			} else {
-				t.Errorf(caseMsg + "unexpected error type")
+				t.Errorf("%s unexpected error type", caseMsg)
 			}
 		}
 

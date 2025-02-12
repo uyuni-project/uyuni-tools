@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -71,7 +71,7 @@ func (i *BaseInspector) GenerateScript() error {
 	}
 
 	if err := WriteTemplateToFile(data, i.GetScriptPath(), 0555, true); err != nil {
-		return Errorf(err, L("failed to generate inspect script"))
+		return Error(err, L("failed to generate inspect script"))
 	}
 	return nil
 }
@@ -108,12 +108,12 @@ func ReadInspectData[T any](dataFile string) (*T, error) {
 func ReadInspectDataString[T any](data []byte) (*T, error) {
 	viper.SetConfigType("env")
 	if err := viper.MergeConfig(bytes.NewBuffer(data)); err != nil {
-		return nil, Errorf(err, L("cannot read config"))
+		return nil, Error(err, L("cannot read config"))
 	}
 
 	var inspectResult T
 	if err := viper.Unmarshal(&inspectResult); err != nil {
-		return nil, Errorf(err, L("failed to unmarshal the inspected data"))
+		return nil, Error(err, L("failed to unmarshal the inspected data"))
 	}
 	return &inspectResult, nil
 }

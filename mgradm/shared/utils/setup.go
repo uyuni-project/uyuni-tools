@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -120,7 +120,7 @@ func GenerateSetupScript(flags *InstallationFlags, nossl bool) (string, error) {
 	// Prepare the script
 	scriptBuilder := new(strings.Builder)
 	if err := template.Render(scriptBuilder); err != nil {
-		return "", utils.Errorf(err, L("failed to render setup script"))
+		return "", utils.Error(err, L("failed to render setup script"))
 	}
 	return scriptBuilder.String(), nil
 }

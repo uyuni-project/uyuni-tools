@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -44,7 +44,7 @@ func StartDBUpgradeJob(
 		migrationImageURL, err = utils.ComputeImage(registry, image.Tag, migrationImage)
 	}
 	if err != nil {
-		return "", utils.Errorf(err, L("failed to compute image URL"))
+		return "", utils.Error(err, L("failed to compute image URL"))
 	}
 
 	log.Info().Msgf(L("Using database upgrade image %s"), migrationImageURL)
