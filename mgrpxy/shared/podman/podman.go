@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -193,44 +193,61 @@ func GetContainerImage(authFile string, flags *utils.ProxyImageFlags, name strin
 
 // UnpackConfig uncompress the config.tar.gz containing proxy configuration.
 func UnpackConfig(configPath string) error {
-	log.Info().Msgf(L("Setting up proxy with configuration %s"), configPath)
 	const proxyConfigDir = "/etc/uyuni/proxy"
+
+	// Create dir if it doesn't exist & check perms
 	if err := os.MkdirAll(proxyConfigDir, 0755); err != nil {
 		return err
 	}
 
-	if err := shared_utils.ExtractTarGz(configPath, proxyConfigDir); err != nil {
+	if err := checkPermissions(proxyConfigDir, 0005|0050|0500); err != nil {
 		return err
 	}
 
-	proxyConfigDirInfo, err := os.Stat(proxyConfigDir)
+	// Extract the tarball, if provided
+	if configPath != "" {
+		log.Info().Msgf(L("Setting up proxy with configuration %s"), configPath)
+		if err := shared_utils.ExtractTarGz(configPath, proxyConfigDir); err != nil {
+			return shared_utils.Errorf(err, L("failed to extract proxy config from %s file"), configPath)
+		}
+	} else {
+		log.Info().Msg(L("No tarball provided. Will check existing configuration files."))
+	}
+
+	return validateInstallYamlFiles(proxyConfigDir)
+}
+
+// checkPermissions checks if a directory or file has a required permissions.
+func checkPermissions(path string, requiredMode os.FileMode) error {
+	info, err := os.Stat(path)
 	if err != nil {
 		return err
 	}
-
-	dirMode := proxyConfigDirInfo.Mode()
-
-	if !(dirMode&0005 != 0 && dirMode&0050 != 0 && dirMode&0500 != 0) {
-		return errors.New(
-			L("/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."),
-		)
+	if info.Mode()&requiredMode != requiredMode {
+		if info.IsDir() {
+			return fmt.Errorf(L("%s directory has no required permissions. Check your umask settings"), path)
+		}
+		return fmt.Errorf(L("%s file has no required permissions. Check your umask settings"), path)
 	}
+	return nil
+}
 
-	if err := shared_utils.ExtractTarGz(configPath, proxyConfigDir); err != nil {
-		return err
+// validateYamlFiles validates if the required configuration files.
+func validateInstallYamlFiles(dir string) error {
+	yamlFiles := []string{"httpd.yaml", "ssh.yaml", "config.yaml"}
+
+	for _, file := range yamlFiles {
+		filePath := path.Join(dir, file)
+		_, err := os.Stat(filePath)
+		if err != nil {
+			return fmt.Errorf(L("missing required configuration file: %s"), filePath)
+		}
+		if file == "config.yaml" {
+			if err := checkPermissions(filePath, 0004|0040|0400); err != nil {
+				return err
+			}
+		}
 	}
-
-	proxyConfigInfo, err := os.Stat(path.Join(proxyConfigDir, "config.yaml"))
-	if err != nil {
-		return err
-	}
-
-	mode := proxyConfigInfo.Mode()
-
-	if !(mode&0004 != 0 && mode&0040 != 0 && mode&0400 != 0) {
-		return errors.New(L("/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."))
-	}
-
 	return nil
 }
 

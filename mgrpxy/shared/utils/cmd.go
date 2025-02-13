@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -12,6 +12,9 @@ import (
 
 // GetConfigPath returns the configuration path if exists.
 func GetConfigPath(args []string) string {
+	if len(args) == 0 {
+		return ""
+	}
 	configPath := args[0]
 	if !utils.FileExists(configPath) {
 		log.Fatal().Msgf(L("argument is not an existing file: %s"), configPath)
