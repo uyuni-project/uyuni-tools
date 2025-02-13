@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,7 +11,7 @@ import (
 )
 
 // Test that the generated endpoints are valid for traefik.
-func Test_GetTraefikEndpointName(t *testing.T) {
+func TestGetTraefikEndpointName(t *testing.T) {
 	ports := utils.GetServerPorts(true)
 	ports = append(ports, utils.HubXmlrpcPorts...)
 	ports = append(ports, utils.GetProxyPorts()...)
