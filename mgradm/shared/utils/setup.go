@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -66,16 +66,6 @@ func GetSetupEnv(mirror string, flags *InstallationFlags, fqdn string, kubernete
 	if kubernetes {
 		env["NO_SSL"] = "Y"
 	} else {
-		// SSL setup for podman generated certificate
-		env["CERT_O"] = flags.SSL.Org
-		env["CERT_OU"] = flags.SSL.OU
-		env["CERT_CITY"] = flags.SSL.City
-		env["CERT_STATE"] = flags.SSL.State
-		env["CERT_COUNTRY"] = flags.SSL.Country
-		env["CERT_EMAIL"] = flags.SSL.Email
-		env["CERT_CNAMES"] = strings.Join(append([]string{fqdn}, flags.SSL.Cnames...), ",")
-		env["CERT_PASS"] = flags.SSL.Password
-
 		// Only add the credentials for podman as we have secret for Kubernetes.
 		env["MANAGER_USER"] = flags.DB.User
 		env["MANAGER_PASS"] = flags.DB.Password
@@ -120,7 +110,7 @@ func GenerateSetupScript(flags *InstallationFlags, nossl bool) (string, error) {
 	// Prepare the script
 	scriptBuilder := new(strings.Builder)
 	if err := template.Render(scriptBuilder); err != nil {
-		return "", utils.Errorf(err, L("failed to render setup script"))
+		return "", utils.Error(err, L("failed to render setup script"))
 	}
 	return scriptBuilder.String(), nil
 }

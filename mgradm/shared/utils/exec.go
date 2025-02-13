@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -23,7 +23,7 @@ import (
 func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string) error {
 	podName, err := cnx.GetPodName()
 	if err != nil {
-		return utils.Errorf(err, L("exec command failed"))
+		return utils.Error(err, L("exec command failed"))
 	}
 
 	commandArgs := []string{"exec", podName}
@@ -36,7 +36,7 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	if command == "kubectl" {
 		namespace, err := cnx.GetNamespace("")
 		if namespace == "" {
-			return utils.Errorf(err, L("failed retrieving namespace"))
+			return utils.Error(err, L("failed retrieving namespace"))
 		}
 		commandArgs = append(commandArgs, "-n", namespace, "-c", "uyuni", "--")
 	}
@@ -106,7 +106,7 @@ func RunMigration(cnx *shared.Connection, scriptName string) error {
 	log.Info().Msg(L("Migrating server"))
 	err := ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/"+scriptName)
 	if err != nil {
-		return utils.Errorf(err, L("error running the migration script"))
+		return utils.Error(err, L("error running the migration script"))
 	}
 	return nil
 }
@@ -128,7 +128,7 @@ func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, pr
 
 	scriptPath := filepath.Join(scriptDir, "migrate.sh")
 	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", cleaner, utils.Errorf(err, L("failed to generate migration script"))
+		return "", cleaner, utils.Error(err, L("failed to generate migration script"))
 	}
 
 	return scriptDir, cleaner, nil

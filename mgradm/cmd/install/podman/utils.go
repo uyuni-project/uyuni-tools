@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -39,7 +39,7 @@ func waitForSystemStart(
 
 	log.Info().Msg(L("Waiting for the server to start…"))
 	if err := systemd.EnableService(shared_podman.ServerService); err != nil {
-		return utils.Errorf(err, L("cannot enable service"))
+		return utils.Error(err, L("cannot enable service"))
 	}
 
 	return cnx.WaitForServer()
@@ -60,7 +60,7 @@ func installForPodman(
 
 	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Installation.SCC)
 	if err != nil {
-		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return utils.Error(err, L("failed to login to registry.suse.com"))
 	}
 	defer cleaner()
 
@@ -83,7 +83,7 @@ func installForPodman(
 
 	image, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Image)
 	if err != nil {
-		return utils.Errorf(err, L("failed to compute image URL"))
+		return utils.Error(err, L("failed to compute image URL"))
 	}
 
 	preparedImage, err := shared_podman.PrepareImage(authFile, image, flags.Image.PullPolicy, true)
@@ -92,29 +92,35 @@ func installForPodman(
 	}
 
 	if err := shared_podman.SetupNetwork(false); err != nil {
-		return utils.Errorf(err, L("cannot setup network"))
+		return utils.Error(err, L("cannot setup network"))
+	}
+
+	sslArgs, cleaner, err := generateSSLCertificates(preparedImage, &flags.ServerFlags, fqdn)
+	defer cleaner()
+	if err != nil {
+		return err
 	}
 
 	log.Info().Msg(L("Run setup command in the container"))
 
-	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn); err != nil {
+	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn, sslArgs); err != nil {
 		return err
 	}
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 	if err := waitForSystemStart(systemd, cnx, preparedImage, flags); err != nil {
-		return utils.Errorf(err, L("cannot wait for system start"))
+		return utils.Error(err, L("cannot wait for system start"))
 	}
 
 	if err := cnx.CopyCaCertificate(fqdn); err != nil {
-		return utils.Errorf(err, L("failed to add SSL CA certificate to host trusted certificates"))
+		return utils.Error(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
 
 	if path, err := exec.LookPath("uyuni-payg-extract-data"); err == nil {
 		// the binary is installed
 		err = utils.RunCmdStdMapping(zerolog.DebugLevel, path)
 		if err != nil {
-			return utils.Errorf(err, L("failed to extract payg data"))
+			return utils.Error(err, L("failed to extract payg data"))
 		}
 	}
 
@@ -148,22 +154,14 @@ func installForPodman(
 		}
 	}
 
-	if flags.Installation.SSL.UseExisting() {
-		if err := podman.UpdateSSLCertificate(
-			cnx, &flags.Installation.SSL.Ca, &flags.Installation.SSL.Server,
-		); err != nil {
-			return utils.Errorf(err, L("cannot update SSL certificate"))
-		}
-	}
-
 	if err := shared_podman.EnablePodmanSocket(); err != nil {
-		return utils.Errorf(err, L("cannot enable podman socket"))
+		return utils.Error(err, L("cannot enable podman socket"))
 	}
 	return nil
 }
 
 // runSetup execute the setup.
-func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
+func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string, sslArgs []string) error {
 	env := adm_utils.GetSetupEnv(flags.Mirror, &flags.Installation, fqdn, false)
 	envNames := []string{}
 	envValues := []string{}
@@ -181,6 +179,7 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
 		"--network", shared_podman.UyuniNetwork,
 		"-e", "TZ=" + flags.Installation.TZ,
 	}
+	command = append(command, sslArgs...)
 	for _, volume := range utils.ServerVolumeMounts {
 		command = append(command, "-v", fmt.Sprintf("%s:%s:z", volume.Name, volume.MountPath))
 	}
@@ -194,7 +193,7 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
 	command = append(command, "/usr/bin/sh", "-c", script)
 
 	if _, err := newRunner("podman", command...).Env(envValues).StdMapping().Exec(); err != nil {
-		return utils.Errorf(err, L("server setup failed"))
+		return utils.Error(err, L("server setup failed"))
 	}
 
 	log.Info().Msgf(L("Server set up, login on https://%[1]s with %[2]s user"), fqdn, flags.Installation.Admin.Login)

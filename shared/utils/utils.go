@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -70,7 +70,7 @@ func CheckValidPassword(value *string, prompt string, minValue int, maxValue int
 	fmt.Print(prompt + promptEnd)
 	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 	if err != nil {
-		log.Fatal().Err(err).Msgf(L("Failed to read password"))
+		log.Error().Err(err).Msg(L("Failed to read password"))
 		return ""
 	}
 	tmpValue := strings.TrimSpace(string(bytePassword))
@@ -101,7 +101,7 @@ func CheckValidPassword(value *string, prompt string, minValue int, maxValue int
 // Don't perform any check if min and max are set to 0.
 func AskPasswordIfMissing(value *string, prompt string, minValue int, maxValue int) {
 	if *value == "" && !term.IsTerminal(int(os.Stdin.Fd())) {
-		log.Warn().Msgf(L("not an interactive device, not asking for missing value"))
+		log.Warn().Msg(L("not an interactive device, not asking for missing value"))
 		return
 	}
 
@@ -124,7 +124,7 @@ func AskPasswordIfMissing(value *string, prompt string, minValue int, maxValue i
 // Don't perform any check if min and max are set to 0.
 func AskPasswordIfMissingOnce(value *string, prompt string, minValue int, maxValue int) {
 	if *value == "" && !term.IsTerminal(int(os.Stdin.Fd())) {
-		log.Warn().Msgf(L("not an interactive device, not asking for missing value"))
+		log.Warn().Msg(L("not an interactive device, not asking for missing value"))
 		return
 	}
 
@@ -137,7 +137,7 @@ func AskPasswordIfMissingOnce(value *string, prompt string, minValue int, maxVal
 // Don't perform any check if minValue and maxValue are set to 0.
 func AskIfMissing(value *string, prompt string, minValue int, maxValue int, checker func(string) bool) {
 	if *value == "" && !term.IsTerminal(int(os.Stdin.Fd())) {
-		log.Warn().Msgf(L("not an interactive device, not asking for missing value"))
+		log.Warn().Msg(L("not an interactive device, not asking for missing value"))
 		return
 	}
 
@@ -327,7 +327,7 @@ func UninstallFile(path string, dryRun bool) {
 func TempDir() (string, func(), error) {
 	tempDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return "", nil, Errorf(err, L("failed to create temporary directory"))
+		return "", nil, Error(err, L("failed to create temporary directory"))
 	}
 	cleaner := func() {
 		if err := os.RemoveAll(tempDir); err != nil {
@@ -415,8 +415,18 @@ func CompareVersion(imageVersion string, deployedVersion string) int {
 //
 //	Errorf(err, L("the message for %s"), value)
 func Errorf(err error, message string, args ...any) error {
-	appended := fmt.Sprintf(message, args...) + ": " + err.Error()
-	return errors.New(appended)
+	formattedMessage := fmt.Sprintf(message, args...)
+	return Error(err, formattedMessage)
+}
+
+// Error helps providing consistent errors.
+//
+// Instead of fmt.Printf(L("the message: %s"), err) use:
+//
+//	Error(err, L("the message"))
+func Error(err error, message string) error {
+	// l10n-ignore
+	return fmt.Errorf("%s: %w", message, err)
 }
 
 // JoinErrors aggregate multiple multiple errors into one.
@@ -443,7 +453,7 @@ func GetFqdn(args []string) (string, error) {
 	} else {
 		out, err := RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
 		if err != nil {
-			return "", Errorf(err, L("failed to compute server FQDN"))
+			return "", Error(err, L("failed to compute server FQDN"))
 		}
 		fqdn = strings.TrimSpace(string(out))
 	}

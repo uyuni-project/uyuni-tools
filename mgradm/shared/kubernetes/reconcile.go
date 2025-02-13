@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -35,7 +35,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 
 	serverImage, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Image)
 	if err != nil {
-		return utils.Errorf(err, L("failed to compute image URL"))
+		return utils.Error(err, L("failed to compute image URL"))
 	}
 
 	// Create a secret using SCC credentials if any are provided
@@ -100,13 +100,13 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 			// Scale down all deployments relying on the DB since it will be brought down during upgrade.
 			if cocoReplicas > 0 {
 				if err := kubernetes.ReplicasTo(namespace, CocoDeployName, 0); err != nil {
-					return utils.Errorf(err, L("cannot set confidential computing containers replicas to 0"))
+					return utils.Error(err, L("cannot set confidential computing containers replicas to 0"))
 				}
 			}
 
 			// Scale down server deployment if present to upgrade the DB
 			if err := kubernetes.ReplicasTo(namespace, ServerDeployName, 0); err != nil {
-				return utils.Errorf(err, L("cannot set server replicas to 0"))
+				return utils.Error(err, L("cannot set server replicas to 0"))
 			}
 		}
 	}
@@ -201,7 +201,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 		kubeconfig := clusterInfos.GetKubeconfig()
 
 		if err := InstallCertManager(&flags.Kubernetes, kubeconfig, flags.Image.PullPolicy); err != nil {
-			return utils.Errorf(err, L("cannot install cert manager"))
+			return utils.Error(err, L("cannot install cert manager"))
 		}
 
 		if flags.Installation.SSL.UseMigratedCa() {
@@ -209,7 +209,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 			// In an operator we would have to fail now if there is no SSL password as we cannot prompt it.
 			rootCA, err := os.ReadFile(flags.Installation.SSL.Ca.Root)
 			if err != nil {
-				return utils.Errorf(err, L("failed to read Root CA file"))
+				return utils.Error(err, L("failed to read Root CA file"))
 			}
 			ca := types.SSLPair{
 				Key: base64.StdEncoding.EncodeToString(
