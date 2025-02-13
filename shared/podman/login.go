@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -49,7 +49,7 @@ func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials) (string, f
 
 		if err := authFile.Close(); err != nil {
 			os.Remove(authFilePath)
-			return "", nil, utils.Errorf(err, L("failed to close the temporary auth file"))
+			return "", nil, utils.Error(err, L("failed to close the temporary auth file"))
 		}
 
 		return authFilePath, func() {
@@ -57,5 +57,9 @@ func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials) (string, f
 		}, nil
 	}
 
-	return "", func() {}, nil
+	noopCleaner := func() {
+		// Nothing to clean
+	}
+
+	return "", noopCleaner, nil
 }
