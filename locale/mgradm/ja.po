@@ -8,9 +8,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-23 16:00+0100\n"
-"PO-Revision-Date: 2025-01-16 01:50+0000\n"
+"PO-Revision-Date: 2025-02-13 07:37+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -523,10 +524,8 @@ msgid "cannot enable podman socket"
 msgstr "podmanソケットを有効にできません"
 
 #: mgradm/cmd/install/podman/utils.go:197
-#, fuzzy
-#| msgid "Server set up"
 msgid "server setup failed"
-msgstr "サーバの設定"
+msgstr "サーバの設定に失敗しました"
 
 #: mgradm/cmd/install/podman/utils.go:200
 msgid "Server set up, login on https://%[1]s with %[2]s user"
@@ -1333,10 +1332,8 @@ msgid "failed to create confidential computing attestations deployment"
 msgstr "コンフィデンシャルコンピューティング認証の配備の作成に失敗しました"
 
 #: mgradm/shared/kubernetes/db.go:54
-#, fuzzy
-#| msgid "failed to create the service"
 msgid "failed to create the secret"
-msgstr "サービスの作成に失敗しました"
+msgstr "シークレットの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:32
 msgid "Running database finalization, this could be long depending on the size of the database…"
@@ -1417,10 +1414,8 @@ msgid "failed to create the service"
 msgstr "サービスの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/setup.go:43
-#, fuzzy
-#| msgid "failed to run the post upgrade job"
 msgid "failed to run the setup job"
-msgstr "アップグレード後のジョブの実行に失敗しました"
+msgstr "セットアップジョブの実行に失敗しました"
 
 #: mgradm/shared/kubernetes/traefik.go:37
 #, javascript-format
@@ -1546,7 +1541,8 @@ msgstr "データを検査できません"
 
 #: mgradm/shared/podman/podman.go:537
 msgid "The above error is only relevant if using a public cloud provider registry"
-msgstr ""
+msgstr "上記のエラーは、パブリッククラウドプロバイダのレジストリを使用している場合の"
+"み関係します"
 
 #: mgradm/shared/saline/saline.go:66
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
@@ -1641,10 +1637,8 @@ msgid "Image"
 msgstr "イメージ"
 
 #: mgradm/shared/utils/cmd_utils.go:126
-#, fuzzy
-#| msgid "Specify a private registry where pull the images"
 msgid "Specify a registry where to pull the images from"
-msgstr "イメージを取得するプライベートレジストリを指定してください"
+msgstr "イメージを取得するレジストリを指定してください"
 
 #: mgradm/shared/utils/cmd_utils.go:127
 msgid "Tag Image"
@@ -1792,10 +1786,8 @@ msgid "Not a valid email address"
 msgstr "有効な電子メールアドレスではありません"
 
 #: mgradm/shared/utils/setup.go:123
-#, fuzzy
-#| msgid "Failed to generate setup script"
 msgid "failed to render setup script"
-msgstr "セットアップスクリプトの生成に失敗しました"
+msgstr "セットアップスクリプトのレンダリングに失敗しました"
 
 #~ msgid "Failed to stop service: %v"
 #~ msgstr "サービスを停止できませんでした: %v"
