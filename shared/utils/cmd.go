@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -56,7 +56,7 @@ func CommandHelper[T interface{}](
 	}
 	if err := viper.Unmarshal(&flags); err != nil {
 		log.Error().Err(err).Msg(L("failed to unmarshall configuration"))
-		return Errorf(err, L("failed to unmarshall configuration"))
+		return Error(err, L("failed to unmarshall configuration"))
 	}
 	if flagsUpdater != nil {
 		flagsUpdater(viper)

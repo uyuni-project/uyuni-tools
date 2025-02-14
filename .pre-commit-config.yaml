@@ -57,3 +57,8 @@ repos:
       - -tags=nok8s,ptf
     stages:
       - pre-push
+  - id: copyright-year
+    name: Copyright year is up to date in changed files
+    entry: ./update-copyright-year.sh
+    language: script
+    require_serial: true

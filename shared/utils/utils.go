@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -49,28 +49,28 @@ type InspectResult struct {
 	Debug             bool `mapstructure:"debug"`
 }
 
-func checkValueSize(value string, min int, max int) bool {
-	if min == 0 && max == 0 {
+func checkValueSize(value string, minValue int, maxValue int) bool {
+	if minValue == 0 && maxValue == 0 {
 		return true
 	}
 
-	if len(value) < min {
-		fmt.Printf(NL("Has to be more than %d character long", "Has to be more than %d characters long", min), min)
+	if len(value) < minValue {
+		fmt.Printf(NL("Has to be more than %d character long", "Has to be more than %d characters long", minValue), minValue)
 		return false
 	}
-	if len(value) > max {
-		fmt.Printf(NL("Has to be less than %d character long", "Has to be less than %d characters long", max), max)
+	if len(value) > maxValue {
+		fmt.Printf(NL("Has to be less than %d character long", "Has to be less than %d characters long", maxValue), maxValue)
 		return false
 	}
 	return true
 }
 
 // CheckValidPassword performs check to a given password.
-func CheckValidPassword(value *string, prompt string, min int, max int) string {
+func CheckValidPassword(value *string, prompt string, minValue int, maxValue int) string {
 	fmt.Print(prompt + promptEnd)
 	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 	if err != nil {
-		log.Fatal().Err(err).Msgf(L("Failed to read password"))
+		log.Error().Err(err).Msg(L("Failed to read password"))
 		return ""
 	}
 	tmpValue := strings.TrimSpace(string(bytePassword))
@@ -88,7 +88,7 @@ func CheckValidPassword(value *string, prompt string, min int, max int) string {
 		return ""
 	}
 
-	if !checkValueSize(tmpValue, min, max) {
+	if !checkValueSize(tmpValue, minValue, maxValue) {
 		fmt.Println()
 		return ""
 	}
@@ -99,18 +99,18 @@ func CheckValidPassword(value *string, prompt string, min int, max int) string {
 
 // AskPasswordIfMissing asks for password if missing.
 // Don't perform any check if min and max are set to 0.
-func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
+func AskPasswordIfMissing(value *string, prompt string, minValue int, maxValue int) {
 	if *value == "" && !term.IsTerminal(int(os.Stdin.Fd())) {
-		log.Warn().Msgf(L("not an interactive device, not asking for missing value"))
+		log.Warn().Msg(L("not an interactive device, not asking for missing value"))
 		return
 	}
 
 	for *value == "" {
-		firstRound := CheckValidPassword(value, prompt, min, max)
+		firstRound := CheckValidPassword(value, prompt, minValue, maxValue)
 		if firstRound == "" {
 			continue
 		}
-		secondRound := CheckValidPassword(value, L("Confirm the password"), min, max)
+		secondRound := CheckValidPassword(value, L("Confirm the password"), minValue, maxValue)
 		if secondRound != firstRound {
 			fmt.Println(L("Two different passwords have been provided"))
 			*value = ""
@@ -122,22 +122,22 @@ func AskPasswordIfMissing(value *string, prompt string, min int, max int) {
 
 // AskPasswordIfMissingOnce asks for password if missing only once
 // Don't perform any check if min and max are set to 0.
-func AskPasswordIfMissingOnce(value *string, prompt string, min int, max int) {
+func AskPasswordIfMissingOnce(value *string, prompt string, minValue int, maxValue int) {
 	if *value == "" && !term.IsTerminal(int(os.Stdin.Fd())) {
-		log.Warn().Msgf(L("not an interactive device, not asking for missing value"))
+		log.Warn().Msg(L("not an interactive device, not asking for missing value"))
 		return
 	}
 
 	for *value == "" {
-		*value = CheckValidPassword(value, prompt, min, max)
+		*value = CheckValidPassword(value, prompt, minValue, maxValue)
 	}
 }
 
 // AskIfMissing asks for a value if missing.
-// Don't perform any check if min and max are set to 0.
-func AskIfMissing(value *string, prompt string, min int, max int, checker func(string) bool) {
+// Don't perform any check if minValue and maxValue are set to 0.
+func AskIfMissing(value *string, prompt string, minValue int, maxValue int, checker func(string) bool) {
 	if *value == "" && !term.IsTerminal(int(os.Stdin.Fd())) {
-		log.Warn().Msgf(L("not an interactive device, not asking for missing value"))
+		log.Warn().Msg(L("not an interactive device, not asking for missing value"))
 		return
 	}
 
@@ -149,7 +149,7 @@ func AskIfMissing(value *string, prompt string, min int, max int, checker func(s
 			log.Fatal().Err(err).Msg(L("failed to read input"))
 		}
 		tmpValue := strings.TrimSpace(newValue)
-		if checkValueSize(tmpValue, min, max) && (checker == nil || checker(tmpValue)) {
+		if checkValueSize(tmpValue, minValue, maxValue) && (checker == nil || checker(tmpValue)) {
 			*value = tmpValue
 		}
 		fmt.Println()
@@ -327,7 +327,7 @@ func UninstallFile(path string, dryRun bool) {
 func TempDir() (string, func(), error) {
 	tempDir, err := os.MkdirTemp("", "mgradm-*")
 	if err != nil {
-		return "", nil, Errorf(err, L("failed to create temporary directory"))
+		return "", nil, Error(err, L("failed to create temporary directory"))
 	}
 	cleaner := func() {
 		if err := os.RemoveAll(tempDir); err != nil {
@@ -415,8 +415,18 @@ func CompareVersion(imageVersion string, deployedVersion string) int {
 //
 //	Errorf(err, L("the message for %s"), value)
 func Errorf(err error, message string, args ...any) error {
-	appended := fmt.Sprintf(message, args...) + ": " + err.Error()
-	return errors.New(appended)
+	formattedMessage := fmt.Sprintf(message, args...)
+	return Error(err, formattedMessage)
+}
+
+// Error helps providing consistent errors.
+//
+// Instead of fmt.Printf(L("the message: %s"), err) use:
+//
+//	Error(err, L("the message"))
+func Error(err error, message string) error {
+	// l10n-ignore
+	return fmt.Errorf("%s: %w", message, err)
 }
 
 // JoinErrors aggregate multiple multiple errors into one.
@@ -443,7 +453,7 @@ func GetFqdn(args []string) (string, error) {
 	} else {
 		out, err := RunCmdOutput(zerolog.DebugLevel, "hostname", "-f")
 		if err != nil {
-			return "", Errorf(err, L("failed to compute server FQDN"))
+			return "", Error(err, L("failed to compute server FQDN"))
 		}
 		fqdn = strings.TrimSpace(string(out))
 	}

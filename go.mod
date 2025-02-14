@@ -1,8 +1,6 @@
 module github.com/uyuni-project/uyuni-tools
 
-go 1.21
-
-toolchain go1.21.1
+go 1.22
 
 require (
 	github.com/Netflix/go-expect v0.0.0-20220104043353-73e0943537d2
