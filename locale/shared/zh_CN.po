@@ -8,11 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-12 11:53+0100\n"
-"PO-Revision-Date: 2025-01-16 01:50+0000\n"
+"POT-Creation-Date: 2025-02-14 14:19+0100\n"
+"PO-Revision-Date: 2025-02-12 11:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-shared/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -319,7 +318,7 @@ msgstr "无法写入 Traefik 配置"
 
 #: shared/kubernetes/k3s.go:79
 msgid "Waiting for Traefik to be reloaded"
-msgstr "正在等待重新装载 Traefik"
+msgstr "正在等待重新加载 Traefik"
 
 #: shared/kubernetes/k3s.go:91
 msgid "Failed to reload Traefik"
@@ -435,7 +434,7 @@ msgstr "无法写入 Rke2 nginx 配置"
 
 #: shared/kubernetes/rke2.go:43
 msgid "Waiting for Nginx controller to be reloaded"
-msgstr "正在等待重新装载 Nginx 控制器"
+msgstr "正在等待重新加载 Nginx 控制器"
 
 #: shared/kubernetes/support.go:27
 msgid "cannot retrieve any configmap"
@@ -581,8 +580,7 @@ msgstr "无法序列化 pod 定义覆盖"
 
 #: shared/kubernetes/waiters.go:40
 msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
-msgstr "%[1]s 作业失败，有关细节，请运行 kubectl logs -n %[2]s --tail=-1 -ljob-name=%"
-"[1]s"
+msgstr "%[1]s 作业失败，有关细节，请运行 kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s"
 
 #: shared/kubernetes/waiters.go:49
 msgid "%[1]s job failed to complete within %[2]d seconds"
@@ -635,7 +633,7 @@ msgstr "无法使用 %s 的 RPM 映像"
 
 #: shared/podman/images.go:58
 msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
-msgstr "正在使用从 RPM 装载的 %[1]s 映像，而不是其脱机版本 %[2]s"
+msgstr "正在使用从 RPM 加载的 %[1]s 映像，而不是其脱机版本 %[2]s"
 
 #: shared/podman/images.go:63
 #, javascript-format
@@ -887,7 +885,7 @@ msgstr "reset-failed systemd 失败"
 
 #: shared/podman/systemd.go:191
 msgid "failed to reload systemd daemon"
-msgstr "无法重新装载 systemd 守护程序"
+msgstr "无法重新加载 systemd 守护程序"
 
 #: shared/podman/systemd.go:209
 #, javascript-format
@@ -1042,86 +1040,90 @@ msgstr "SSL 证书组织单位"
 msgid "SSL Certificate Flags"
 msgstr "SSL 证书标志"
 
-#: shared/ssl/ssl.go:38
+#: shared/ssl/ssl.go:51
 msgid "Failed to find a non-CA certificate"
 msgstr "找不到非 CA 证书"
 
-#: shared/ssl/ssl.go:77
+#: shared/ssl/ssl.go:90
 msgid "expected to find a certificate, got none"
 msgstr "预期应找到一个证书，结果未找到任何证书"
 
-#: shared/ssl/ssl.go:83
+#: shared/ssl/ssl.go:96
 #, javascript-format
 msgid "Failed to read certificate file %s"
 msgstr "无法读取证书文件 %s"
 
-#: shared/ssl/ssl.go:119
+#: shared/ssl/ssl.go:135
 msgid "Failed to extract data from certificate"
 msgstr "无法从证书提取数据"
 
-#: shared/ssl/ssl.go:140
+#: shared/ssl/ssl.go:156
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
 msgstr "无法分析起始日期：%s\n"
 
-#: shared/ssl/ssl.go:146
+#: shared/ssl/ssl.go:162
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
 msgstr "无法分析终止日期：%s\n"
 
-#: shared/ssl/ssl.go:190
+#: shared/ssl/ssl.go:206
 msgid "No CA found"
 msgstr "未找到 CA"
 
-#: shared/ssl/ssl.go:197
+#: shared/ssl/ssl.go:213
 msgid "No CA found for server certificate"
 msgstr "未找到服务器证书的 CA"
 
-#: shared/ssl/ssl.go:206
+#: shared/ssl/ssl.go:222
 #, javascript-format
 msgid "Missing CA with subject hash %s"
 msgstr "缺少主体哈希为 %s 的 CA"
 
-#: shared/ssl/ssl.go:227
+#: shared/ssl/ssl.go:247
 msgid "server certificate is required"
 msgstr "必须指定服务器证书"
 
-#: shared/ssl/ssl.go:228
+#: shared/ssl/ssl.go:250 shared/ssl/ssl.go:315
 msgid "server key is required"
 msgstr "必须指定服务器密钥"
 
-#: shared/ssl/ssl.go:240
+#: shared/ssl/ssl.go:265
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr "%s 文件无法访问"
 
-#: shared/ssl/ssl.go:248
+#: shared/ssl/ssl.go:274
 msgid "Source server SSL CA private key password"
 msgstr "源服务器 SSL CA 私用密钥口令"
 
-#: shared/ssl/ssl.go:254
+#: shared/ssl/ssl.go:280
 msgid "Failed to open openssl rsa process input stream"
 msgstr "无法打开 openssl rsa 流程输入流"
 
-#: shared/ssl/ssl.go:257
+#: shared/ssl/ssl.go:283
 msgid "Failed to write openssl key content to input stream"
 msgstr "无法将 openssl 密钥内容写入输入流"
 
-#: shared/ssl/ssl.go:263
+#: shared/ssl/ssl.go:289
 msgid "Failed to convert CA private key to RSA"
 msgstr "无法将 CA 私用密钥转换为 RSA"
 
-#: shared/ssl/ssl.go:273
+#: shared/ssl/ssl.go:299
 msgid "Failed to open openssl x509 process input stream"
 msgstr "无法打开 openssl x509 流程输入流"
 
-#: shared/ssl/ssl.go:276
+#: shared/ssl/ssl.go:302
 msgid "Failed to write SSL certificate to input stream"
 msgstr "无法将 SSL 证书写入输入流"
 
-#: shared/ssl/ssl.go:280
+#: shared/ssl/ssl.go:306
 msgid "failed to strip text part from CA certificate"
 msgstr "无法剥离 CA 证书中的文本部分"
+
+#: shared/ssl/ssl.go:321
+msgid "Invalid SSL key, it is probably encrypted"
+msgstr ""
 
 #: shared/utils/cmd.go:58 shared/utils/cmd.go:59
 msgid "failed to unmarshall configuration"
@@ -1511,26 +1513,26 @@ msgstr "从 %s 下载时出错"
 msgid "bad status: %s"
 msgstr "不良状态：%s"
 
-#: shared/utils/utils.go:446
+#: shared/utils/utils.go:456
 msgid "failed to compute server FQDN"
 msgstr "无法计算服务器 FQDN"
 
-#: shared/utils/utils.go:460
+#: shared/utils/utils.go:470
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s 不是有效 FQDN"
 
-#: shared/utils/utils.go:464
+#: shared/utils/utils.go:474
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "无法解析 %s"
 
-#: shared/utils/utils.go:489
+#: shared/utils/utils.go:499
 #, javascript-format
 msgid "error creating file %s"
 msgstr "创建文件 %s 时出错"
 
-#: shared/utils/utils.go:494
+#: shared/utils/utils.go:504
 #, javascript-format
 msgid "error writing file %s"
 msgstr "写入文件 %s 时出错"

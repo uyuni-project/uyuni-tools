@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-12 11:53+0100\n"
+"POT-Creation-Date: 2025-02-14 14:19+0100\n"
 "PO-Revision-Date: 2024-12-07 21:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/de/>\n"
@@ -1041,91 +1041,95 @@ msgstr ""
 msgid "SSL Certificate Flags"
 msgstr ""
 
-#: shared/ssl/ssl.go:38
+#: shared/ssl/ssl.go:51
 msgid "Failed to find a non-CA certificate"
 msgstr ""
 
-#: shared/ssl/ssl.go:77
+#: shared/ssl/ssl.go:90
 msgid "expected to find a certificate, got none"
 msgstr ""
 
-#: shared/ssl/ssl.go:83
+#: shared/ssl/ssl.go:96
 #, fuzzy, javascript-format
 msgid "Failed to read certificate file %s"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/ssl/ssl.go:119
+#: shared/ssl/ssl.go:135
 msgid "Failed to extract data from certificate"
 msgstr ""
 
-#: shared/ssl/ssl.go:140
+#: shared/ssl/ssl.go:156
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
 msgstr ""
 
-#: shared/ssl/ssl.go:146
+#: shared/ssl/ssl.go:162
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
 msgstr ""
 
-#: shared/ssl/ssl.go:190
+#: shared/ssl/ssl.go:206
 msgid "No CA found"
 msgstr ""
 
-#: shared/ssl/ssl.go:197
+#: shared/ssl/ssl.go:213
 msgid "No CA found for server certificate"
 msgstr ""
 
-#: shared/ssl/ssl.go:206
+#: shared/ssl/ssl.go:222
 #, javascript-format
 msgid "Missing CA with subject hash %s"
 msgstr ""
 
-#: shared/ssl/ssl.go:227
+#: shared/ssl/ssl.go:247
 msgid "server certificate is required"
 msgstr ""
 
-#: shared/ssl/ssl.go:228
+#: shared/ssl/ssl.go:250 shared/ssl/ssl.go:315
 #, fuzzy
 msgid "server key is required"
 msgstr "Server-URL ist nicht angegeben"
 
-#: shared/ssl/ssl.go:240
+#: shared/ssl/ssl.go:265
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr ""
 
-#: shared/ssl/ssl.go:248
+#: shared/ssl/ssl.go:274
 msgid "Source server SSL CA private key password"
 msgstr ""
 
-#: shared/ssl/ssl.go:254
+#: shared/ssl/ssl.go:280
 msgid "Failed to open openssl rsa process input stream"
 msgstr ""
 
-#: shared/ssl/ssl.go:257
+#: shared/ssl/ssl.go:283
 #, fuzzy
 msgid "Failed to write openssl key content to input stream"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/ssl/ssl.go:263
+#: shared/ssl/ssl.go:289
 #, fuzzy
 msgid "Failed to convert CA private key to RSA"
 msgstr "Daten können nicht in JSON konvertiert werden"
 
-#: shared/ssl/ssl.go:273
+#: shared/ssl/ssl.go:299
 msgid "Failed to open openssl x509 process input stream"
 msgstr ""
 
-#: shared/ssl/ssl.go:276
+#: shared/ssl/ssl.go:302
 #, fuzzy
 msgid "Failed to write SSL certificate to input stream"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/ssl/ssl.go:280
+#: shared/ssl/ssl.go:306
 #, fuzzy
 msgid "failed to strip text part from CA certificate"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#: shared/ssl/ssl.go:321
+msgid "Invalid SSL key, it is probably encrypted"
+msgstr ""
 
 #: shared/utils/cmd.go:58 shared/utils/cmd.go:59
 msgid "failed to unmarshall configuration"
@@ -1454,26 +1458,26 @@ msgstr ""
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:446
+#: shared/utils/utils.go:456
 msgid "failed to compute server FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:460
+#: shared/utils/utils.go:470
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:464
+#: shared/utils/utils.go:474
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr ""
 
-#: shared/utils/utils.go:489
+#: shared/utils/utils.go:499
 #, javascript-format
 msgid "error creating file %s"
 msgstr ""
 
-#: shared/utils/utils.go:494
+#: shared/utils/utils.go:504
 #, javascript-format
 msgid "error writing file %s"
 msgstr ""

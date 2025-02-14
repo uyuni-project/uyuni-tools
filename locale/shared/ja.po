@@ -8,11 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-12 11:53+0100\n"
+"POT-Creation-Date: 2025-02-14 14:19+0100\n"
 "PO-Revision-Date: 2025-01-16 01:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-shared/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -414,8 +413,7 @@ msgstr "pvデータの解析に失敗しました"
 
 #: shared/kubernetes/pvc.go:75
 msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
-msgstr "%[1]s ボリュームは %[1]s クレームを参照する必要があります(%[2]s "
-"ネームスペース内)"
+msgstr "%[1]s ボリュームは %[1]s クレームを参照する必要があります(%[2]s ネームスペース内)"
 
 #: shared/kubernetes/pvc.go:85
 msgid "failed to run the persistent volume claims"
@@ -424,8 +422,7 @@ msgstr "永続ボリュームのクレームの実行に失敗しました"
 #: shared/kubernetes/pvc.go:102
 #, javascript-format
 msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
-msgstr "PersistentVolumeClaim %s "
-"のサイズは定義されていません。デフォルトの10Miを使用します"
+msgstr "PersistentVolumeClaim %s のサイズは定義されていません。デフォルトの10Miを使用します"
 
 #: shared/kubernetes/rke2.go:21
 msgid "Installing RKE2 Nginx configuration"
@@ -588,9 +585,7 @@ msgstr "ポッド定義の上書きをシリアライズできません"
 
 #: shared/kubernetes/waiters.go:40
 msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
-msgstr ""
-"%[1]s ジョブが失敗しました。詳細については、kubectl logs -n %[2]s --tail=-1 "
-"-ljob-name=%[1]sを実行してください"
+msgstr "%[1]s ジョブが失敗しました。詳細については、kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]sを実行してください"
 
 #: shared/kubernetes/waiters.go:49
 msgid "%[1]s job failed to complete within %[2]d seconds"
@@ -634,8 +629,7 @@ msgstr "イメージ %s が使用可能であることを確認します"
 
 #: shared/podman/images.go:46
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
-msgstr "プルポリシーが常に適用されます。RPMイメージがあるかどうかがチェックされ、存在"
-"しない場合はレジストリからプルされます"
+msgstr "プルポリシーが常に適用されます。RPMイメージがあるかどうかがチェックされ、存在しない場合はレジストリからプルされます"
 
 #: shared/podman/images.go:56
 #, javascript-format
@@ -1051,86 +1045,90 @@ msgstr "SSL証明書の組織単位"
 msgid "SSL Certificate Flags"
 msgstr "SSL証明書フラグ"
 
-#: shared/ssl/ssl.go:38
+#: shared/ssl/ssl.go:51
 msgid "Failed to find a non-CA certificate"
 msgstr "非CA証明書の検索に失敗しました"
 
-#: shared/ssl/ssl.go:77
+#: shared/ssl/ssl.go:90
 msgid "expected to find a certificate, got none"
 msgstr "証明書が見つかると予期していたが、何も見つかりませんでした"
 
-#: shared/ssl/ssl.go:83
+#: shared/ssl/ssl.go:96
 #, javascript-format
 msgid "Failed to read certificate file %s"
 msgstr "証明書ファイル %s の読み込みに失敗しました"
 
-#: shared/ssl/ssl.go:119
+#: shared/ssl/ssl.go:135
 msgid "Failed to extract data from certificate"
 msgstr "証明書からのデータ抽出に失敗しました"
 
-#: shared/ssl/ssl.go:140
+#: shared/ssl/ssl.go:156
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
 msgstr "開始日の解析に失敗しました: %s\n"
 
-#: shared/ssl/ssl.go:146
+#: shared/ssl/ssl.go:162
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
 msgstr "終了日の解析に失敗しました: %s\n"
 
-#: shared/ssl/ssl.go:190
+#: shared/ssl/ssl.go:206
 msgid "No CA found"
 msgstr "CAが見つかりません"
 
-#: shared/ssl/ssl.go:197
+#: shared/ssl/ssl.go:213
 msgid "No CA found for server certificate"
 msgstr "サーバ証明書のCAが見つかりません"
 
-#: shared/ssl/ssl.go:206
+#: shared/ssl/ssl.go:222
 #, javascript-format
 msgid "Missing CA with subject hash %s"
 msgstr "件名ハッシュ %s のCAが見つかりません"
 
-#: shared/ssl/ssl.go:227
+#: shared/ssl/ssl.go:247
 msgid "server certificate is required"
 msgstr "サーバ証明書が必要です"
 
-#: shared/ssl/ssl.go:228
+#: shared/ssl/ssl.go:250 shared/ssl/ssl.go:315
 msgid "server key is required"
 msgstr "サーバキーが必要です"
 
-#: shared/ssl/ssl.go:240
+#: shared/ssl/ssl.go:265
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr "%s ファイルにアクセスできません"
 
-#: shared/ssl/ssl.go:248
+#: shared/ssl/ssl.go:274
 msgid "Source server SSL CA private key password"
 msgstr "ソースサーバSSL CA機密鍵パスワード"
 
-#: shared/ssl/ssl.go:254
+#: shared/ssl/ssl.go:280
 msgid "Failed to open openssl rsa process input stream"
 msgstr "openssl rsaプロセス入力ストリームを開けませんでした"
 
-#: shared/ssl/ssl.go:257
+#: shared/ssl/ssl.go:283
 msgid "Failed to write openssl key content to input stream"
 msgstr "opensslキーコンテンツを入力ストリームに書き込めませんでした"
 
-#: shared/ssl/ssl.go:263
+#: shared/ssl/ssl.go:289
 msgid "Failed to convert CA private key to RSA"
 msgstr "CA機密鍵のRSAへの変換に失敗しました"
 
-#: shared/ssl/ssl.go:273
+#: shared/ssl/ssl.go:299
 msgid "Failed to open openssl x509 process input stream"
 msgstr "openssl x509プロセス入力ストリームを開けませんでした"
 
-#: shared/ssl/ssl.go:276
+#: shared/ssl/ssl.go:302
 msgid "Failed to write SSL certificate to input stream"
 msgstr "SSL証明書を入力ストリームに書き込めませんでした"
 
-#: shared/ssl/ssl.go:280
+#: shared/ssl/ssl.go:306
 msgid "failed to strip text part from CA certificate"
 msgstr "CA証明書からテキスト部分を削除できませんでした"
+
+#: shared/ssl/ssl.go:321
+msgid "Invalid SSL key, it is probably encrypted"
+msgstr ""
 
 #: shared/utils/cmd.go:58 shared/utils/cmd.go:59
 msgid "failed to unmarshall configuration"
@@ -1141,8 +1139,7 @@ msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
 msgstr ""
-"コンテナに到達するために使用するツール。指定できる値:「 podman」、「podman-"
-"remote」、「kubectl」。\n"
+"コンテナに到達するために使用するツール。指定できる値:「 podman」、「podman-remote」、「kubectl」。\n"
 "デフォルトではどれを使用するかを推測します。"
 
 #: shared/utils/cmd.go:86
@@ -1312,13 +1309,11 @@ msgstr ""
 "\n"
 "  非グローバルフラグはすべて、環境変数として渡すこともできます。\n"
 "  \n"
-"  環境変数名は、フラグ名の「-」を「_」に置き換え、{{ .EnvPrefix }}"
-"プレフィックス\n"
+"  環境変数名は、フラグ名の「-」を「_」に置き換え、{{ .EnvPrefix }}プレフィックス\n"
 "  を付けたものです。\n"
 "  \n"
 "  たとえば、「--tz CEST」フラグは「{{ .EnvPrefix }}_TZ」にマップされ、\n"
-"  「--ssl-password」フラグは「{{ .EnvPrefix "
-"}}_SSL_PASSWORD」にマップされます。\n"
+"  「--ssl-password」フラグは「{{ .EnvPrefix }}_SSL_PASSWORD」にマップされます。\n"
 
 #: shared/utils/config.go:180
 msgid "Help on configuration file and environment variables"
@@ -1523,26 +1518,26 @@ msgstr "%s からのダウンロードでエラーが発生しました"
 msgid "bad status: %s"
 msgstr "不良ステータス: %s"
 
-#: shared/utils/utils.go:446
+#: shared/utils/utils.go:456
 msgid "failed to compute server FQDN"
 msgstr "サーバFQDNの計算に失敗しました"
 
-#: shared/utils/utils.go:460
+#: shared/utils/utils.go:470
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s は有効なFQDNではありません"
 
-#: shared/utils/utils.go:464
+#: shared/utils/utils.go:474
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "%s を解決できません"
 
-#: shared/utils/utils.go:489
+#: shared/utils/utils.go:499
 #, javascript-format
 msgid "error creating file %s"
 msgstr "ファイル %s の作成中にエラーが発生しました"
 
-#: shared/utils/utils.go:494
+#: shared/utils/utils.go:504
 #, javascript-format
 msgid "error writing file %s"
 msgstr "ファイル %s の書き込み中にエラーが発生しました"

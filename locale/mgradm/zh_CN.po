@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 16:00+0100\n"
-"PO-Revision-Date: 2025-01-16 01:50+0000\n"
+"POT-Creation-Date: 2025-02-14 14:19+0100\n"
+"PO-Revision-Date: 2025-02-12 09:25+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -103,9 +103,9 @@ msgstr "无法在容器中创建 %s 路径"
 msgid "Copying distribution %s"
 msgstr "正在复制发行套件 %s"
 
-#: mgradm/cmd/distro/cp.go:115 mgradm/shared/podman/podman.go:133
-#: mgradm/shared/podman/podman.go:136 mgradm/shared/podman/podman.go:139
-#: mgradm/shared/podman/podman.go:147
+#: mgradm/cmd/distro/cp.go:115 mgradm/shared/podman/podman.go:135
+#: mgradm/shared/podman/podman.go:138 mgradm/shared/podman/podman.go:141
+#: mgradm/shared/podman/podman.go:149
 #, javascript-format
 msgid "cannot copy %s"
 msgstr "无法复制 %s"
@@ -454,7 +454,19 @@ msgstr ""
 "\n"
 "注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgradm/cmd/install/podman/utils.go:40 mgradm/shared/podman/podman.go:447
+#: mgradm/cmd/install/podman/ssl.go:89
+#, fuzzy
+#| msgid "SSL certificate organization unit"
+msgid "SSL certificates generation failed"
+msgstr "SSL 证书组织单位"
+
+#: mgradm/cmd/install/podman/ssl.go:92
+#, fuzzy
+#| msgid "SSL certificate state"
+msgid "SSL certificates generated"
+msgstr "SSL 证书州/省"
+
+#: mgradm/cmd/install/podman/utils.go:40 mgradm/shared/podman/podman.go:449
 msgid "Waiting for the server to start…"
 msgstr "正在等待服务器启动…"
 
@@ -485,8 +497,8 @@ msgstr "正在使用 FQDN '%s' 设置服务器"
 #: mgradm/cmd/migrate/kubernetes/utils.go:43 mgradm/shared/coco/coco.go:80
 #: mgradm/shared/hub/xmlrpcapi.go:45
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:47
-#: mgradm/shared/kubernetes/reconcile.go:38 mgradm/shared/podman/podman.go:267
-#: mgradm/shared/podman/podman.go:272 mgradm/shared/podman/podman.go:369
+#: mgradm/shared/kubernetes/reconcile.go:38 mgradm/shared/podman/podman.go:269
+#: mgradm/shared/podman/podman.go:274 mgradm/shared/podman/podman.go:371
 #: mgradm/shared/saline/saline.go:72
 msgid "failed to compute image URL"
 msgstr "无法计算映像 URL"
@@ -496,39 +508,33 @@ msgstr "无法计算映像 URL"
 msgid "cannot setup network"
 msgstr "无法设置网络"
 
-#: mgradm/cmd/install/podman/utils.go:98
+#: mgradm/cmd/install/podman/utils.go:104
 msgid "Run setup command in the container"
 msgstr "在容器中运行设置命令"
 
-#: mgradm/cmd/install/podman/utils.go:106
+#: mgradm/cmd/install/podman/utils.go:112
 msgid "cannot wait for system start"
 msgstr "无法等待系统启动"
 
-#: mgradm/cmd/install/podman/utils.go:110
+#: mgradm/cmd/install/podman/utils.go:116
 #: mgradm/cmd/migrate/podman/utils.go:177
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "无法将 SSL CA 证书添加到主机信任的证书列表中"
 
-#: mgradm/cmd/install/podman/utils.go:117
+#: mgradm/cmd/install/podman/utils.go:123
 msgid "failed to extract payg data"
 msgstr "无法提取 payg 数据"
 
-#: mgradm/cmd/install/podman/utils.go:155
-msgid "cannot update SSL certificate"
-msgstr "无法更新 SSL 证书"
-
-#: mgradm/cmd/install/podman/utils.go:160
+#: mgradm/cmd/install/podman/utils.go:158
 #: mgradm/cmd/migrate/podman/utils.go:167
 msgid "cannot enable podman socket"
 msgstr "无法启用 podman 套接字"
 
-#: mgradm/cmd/install/podman/utils.go:197
-#, fuzzy
-#| msgid "Server set up"
+#: mgradm/cmd/install/podman/utils.go:196
 msgid "server setup failed"
-msgstr "服务器设置"
+msgstr "服务器安装失败"
 
-#: mgradm/cmd/install/podman/utils.go:200
+#: mgradm/cmd/install/podman/utils.go:199
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "服务器设置，以 %[2]s 用户身份在 https://%[1]s 上登录"
 
@@ -798,7 +804,7 @@ msgid "failed to read SSH known_hosts file %s"
 msgstr "无法读取 SSH known_hosts 文件 %s"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:165
-#: mgradm/shared/kubernetes/certificates.go:236
+#: mgradm/shared/kubernetes/certificates.go:239
 msgid "failed to create the SSH migration ConfigMap"
 msgstr "无法创建 SSH 迁移配置映射"
 
@@ -849,15 +855,15 @@ msgstr "无法运行迁移脚本"
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr "已完成迁移准备。请运行不含 '--prepare' 的 'migrate' 命令完成迁移。"
 
-#: mgradm/cmd/migrate/podman/utils.go:93 mgradm/shared/podman/podman.go:410
+#: mgradm/cmd/migrate/podman/utils.go:93 mgradm/shared/podman/podman.go:412
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "无法运行 PostgreSQL 版本升级脚本"
 
-#: mgradm/cmd/migrate/podman/utils.go:99 mgradm/shared/podman/podman.go:423
+#: mgradm/cmd/migrate/podman/utils.go:99 mgradm/shared/podman/podman.go:425
 msgid "cannot run PostgreSQL finalize script"
 msgstr "无法运行 PostgreSQL 完成脚本"
 
-#: mgradm/cmd/migrate/podman/utils.go:103 mgradm/shared/podman/podman.go:427
+#: mgradm/cmd/migrate/podman/utils.go:103 mgradm/shared/podman/podman.go:429
 msgid "cannot run post upgrade script"
 msgstr "无法运行升级后脚本"
 
@@ -1257,74 +1263,74 @@ msgstr "无法生成 systemd 服务"
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr "目前不支持多个 Hub XML-RPC 容器复本，将仅设置一个复本。"
 
-#: mgradm/shared/kubernetes/certificates.go:45
+#: mgradm/shared/kubernetes/certificates.go:48
 msgid "Creating SSL server certificate secret"
 msgstr "正在创建 SSL 服务器证书机密"
 
-#: mgradm/shared/kubernetes/certificates.go:55
+#: mgradm/shared/kubernetes/certificates.go:58
 msgid "Failed to generate uyuni-crt secret definition"
 msgstr "无法生成 uyuni-crt 机密定义"
 
-#: mgradm/shared/kubernetes/certificates.go:59
+#: mgradm/shared/kubernetes/certificates.go:62
 msgid "Failed to create uyuni-crt TLS secret"
 msgstr "无法创建 uyuni-crt TLS 机密"
 
-#: mgradm/shared/kubernetes/certificates.go:68
+#: mgradm/shared/kubernetes/certificates.go:71
 msgid "Creating cert-manager issuer for existing CA"
 msgstr "正在为现有 CA 创建 cert-manager issuer"
 
-#: mgradm/shared/kubernetes/certificates.go:84
-#: mgradm/shared/kubernetes/certificates.go:122
+#: mgradm/shared/kubernetes/certificates.go:87
+#: mgradm/shared/kubernetes/certificates.go:125
 msgid "failed to generate issuer definition"
 msgstr "无法生成颁发者定义"
 
-#: mgradm/shared/kubernetes/certificates.go:89
-#: mgradm/shared/kubernetes/certificates.go:127
+#: mgradm/shared/kubernetes/certificates.go:92
+#: mgradm/shared/kubernetes/certificates.go:130
 msgid "Failed to create issuer"
 msgstr "无法创建颁发者"
 
-#: mgradm/shared/kubernetes/certificates.go:101
+#: mgradm/shared/kubernetes/certificates.go:104
 msgid "Creating SSL certificate issuer"
 msgstr "正在创建 SSL 证书颁发者"
 
-#: mgradm/shared/kubernetes/certificates.go:104
+#: mgradm/shared/kubernetes/certificates.go:107
 msgid "failed to create temporary directory"
 msgstr "无法创建临时目录"
 
-#: mgradm/shared/kubernetes/certificates.go:147
+#: mgradm/shared/kubernetes/certificates.go:150
 msgid "Issuer didn't turn ready after 60s"
 msgstr "颁发者未在 60 秒后变为就绪状态"
 
-#: mgradm/shared/kubernetes/certificates.go:155
+#: mgradm/shared/kubernetes/certificates.go:158
 msgid "Installing cert-manager"
 msgstr "正在安装 cert-manager"
 
-#: mgradm/shared/kubernetes/certificates.go:181
+#: mgradm/shared/kubernetes/certificates.go:184
 msgid "cannot run helm upgrade"
 msgstr "无法执行 helm 升级"
 
-#: mgradm/shared/kubernetes/certificates.go:188
+#: mgradm/shared/kubernetes/certificates.go:191
 msgid "cannot deploy"
 msgstr "无法部署"
 
-#: mgradm/shared/kubernetes/certificates.go:198
+#: mgradm/shared/kubernetes/certificates.go:201
 msgid "Extracting CA certificate to a configmap"
 msgstr "正在将 CA 证书提取到配置映射"
 
-#: mgradm/shared/kubernetes/certificates.go:203
+#: mgradm/shared/kubernetes/certificates.go:206
 #, javascript-format
 msgid "CA cert: %s"
 msgstr "CA 证书：%s"
 
-#: mgradm/shared/kubernetes/certificates.go:205
+#: mgradm/shared/kubernetes/certificates.go:208
 msgid "uyuni-ca configmap already existing, skipping extraction"
 msgstr "uyuni-ca 配置映射已存在，正在跳过提取步骤"
 
-#: mgradm/shared/kubernetes/certificates.go:213
+#: mgradm/shared/kubernetes/certificates.go:216
 msgid "Failed to get uyuni-ca certificate"
 msgstr "无法获取 uyuni-ca 证书"
 
-#: mgradm/shared/kubernetes/certificates.go:218
+#: mgradm/shared/kubernetes/certificates.go:221
 msgid "Failed to base64 decode CA certificate"
 msgstr "无法对 CA 证书进行 base64 解码"
 
@@ -1333,10 +1339,8 @@ msgid "failed to create confidential computing attestations deployment"
 msgstr "无法创建机密计算认证部署"
 
 #: mgradm/shared/kubernetes/db.go:54
-#, fuzzy
-#| msgid "failed to create the service"
 msgid "failed to create the secret"
-msgstr "无法创建服务"
+msgstr "无法创建机密"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:32
 msgid "Running database finalization, this could be long depending on the size of the database…"
@@ -1351,7 +1355,7 @@ msgid "Upgrading PostgreSQL database from %[1]s to %[2]s…"
 msgstr "正在将 PostgreSQL 数据库从 %[1]s 升级到 %[2]s…"
 
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:50
-#: mgradm/shared/podman/podman.go:281
+#: mgradm/shared/podman/podman.go:283
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr "正在使用数据库升级映像 %s"
@@ -1417,10 +1421,8 @@ msgid "failed to create the service"
 msgstr "无法创建服务"
 
 #: mgradm/shared/kubernetes/setup.go:43
-#, fuzzy
-#| msgid "failed to run the post upgrade job"
 msgid "failed to run the setup job"
-msgstr "无法运行升级后作业"
+msgstr "无法运行设置作业"
 
 #: mgradm/shared/kubernetes/traefik.go:37
 #, javascript-format
@@ -1452,101 +1454,101 @@ msgstr "正在启用系统服务"
 msgid "cannot generate systemd user configuration file"
 msgstr "无法生成 systemd 用户配置文件"
 
-#: mgradm/shared/podman/podman.go:113
+#: mgradm/shared/podman/podman.go:115
 msgid "failed to create temporary folder on container to copy certificates to"
 msgstr "无法在证书要复制到的容器上创建临时文件夹"
 
-#: mgradm/shared/podman/podman.go:153
+#: mgradm/shared/podman/podman.go:155
 #, javascript-format
 msgid "failed to update SSL certificate: %s"
 msgstr "无法更新 SSL 证书：%s"
 
-#: mgradm/shared/podman/podman.go:158
+#: mgradm/shared/podman/podman.go:160
 msgid "failed to remove copied certificate files in the container"
 msgstr "无法去除容器中已复制的证书文件"
 
-#: mgradm/shared/podman/podman.go:164
+#: mgradm/shared/podman/podman.go:166
 msgid "failed to remove now useless ssl-build folder in the container"
 msgstr "无法去除容器中目前无用的 ssl-build 文件夹"
 
-#: mgradm/shared/podman/podman.go:169
+#: mgradm/shared/podman/podman.go:171
 msgid "Restarting services after updating the certificate"
 msgstr "正在重启动服务（证书已更新）"
 
-#: mgradm/shared/podman/podman.go:192
+#: mgradm/shared/podman/podman.go:194
 msgid "cannot generate migration script"
 msgstr "无法生成迁移脚本"
 
-#: mgradm/shared/podman/podman.go:211 mgradm/shared/utils/exec.go:106
+#: mgradm/shared/podman/podman.go:213 mgradm/shared/utils/exec.go:106
 msgid "Migrating server"
 msgstr "正在迁移服务器"
 
-#: mgradm/shared/podman/podman.go:214
+#: mgradm/shared/podman/podman.go:216
 msgid "cannot run uyuni migration container"
 msgstr "无法运行 uyuni 迁移容器"
 
-#: mgradm/shared/podman/podman.go:221
+#: mgradm/shared/podman/podman.go:223
 #, javascript-format
 msgid "cannot inspect volume %s"
 msgstr "无法检查卷 %s"
 
-#: mgradm/shared/podman/podman.go:224
+#: mgradm/shared/podman/podman.go:226
 #, javascript-format
 msgid "cannot restore %s SELinux permissions"
 msgstr "无法恢复 %s SELinux 权限"
 
-#: mgradm/shared/podman/podman.go:231
+#: mgradm/shared/podman/podman.go:233
 msgid "cannot read extracted data"
 msgstr "无法读取提取的数据"
 
-#: mgradm/shared/podman/podman.go:247
+#: mgradm/shared/podman/podman.go:249
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
 msgstr "旧 PostgreSQL 版本为 %[1]s，新版本为 %[2]s。正在执行数据库版本升级…"
 
-#: mgradm/shared/podman/podman.go:285
+#: mgradm/shared/podman/podman.go:287
 msgid "cannot generate PostgreSQL database version upgrade script"
 msgstr "无法生成 PostgreSQL 数据库版本升级脚本"
 
-#: mgradm/shared/podman/podman.go:314 mgradm/shared/podman/podman.go:338
+#: mgradm/shared/podman/podman.go:316 mgradm/shared/podman/podman.go:340
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "无法生成 PostgreSQL 完成脚本"
 
-#: mgradm/shared/podman/podman.go:379
+#: mgradm/shared/podman/podman.go:381
 msgid "cannot inspect podman values"
 msgstr "无法检查 podman 值"
 
-#: mgradm/shared/podman/podman.go:396
+#: mgradm/shared/podman/podman.go:398
 msgid "cannot stop service"
 msgstr "无法停止服务"
 
-#: mgradm/shared/podman/podman.go:404
+#: mgradm/shared/podman/podman.go:406
 msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr "旧 PostgreSQL 版本为 %[1]s，新版本为 %[2]s。正在执行数据库版本升级…"
 
-#: mgradm/shared/podman/podman.go:413
+#: mgradm/shared/podman/podman.go:415
 #, javascript-format
 msgid "Upgrading to %s without changing PostgreSQL version"
 msgstr "正在升级到 %s，PostgreSQL 版本将不更改"
 
-#: mgradm/shared/podman/podman.go:416
+#: mgradm/shared/podman/podman.go:418
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr "正在尝试将 PostgreSQL 从 %[1]s 降级到 %[2]s"
 
-#: mgradm/shared/podman/podman.go:452
+#: mgradm/shared/podman/podman.go:454
 msgid "error upgrading confidential computing service."
 msgstr "升级机密计算服务时出错。"
 
-#: mgradm/shared/podman/podman.go:464
+#: mgradm/shared/podman/podman.go:466
 msgid "error upgrading saline service."
 msgstr "升级 Saline 服务时出错。"
 
-#: mgradm/shared/podman/podman.go:521
+#: mgradm/shared/podman/podman.go:523
 msgid "cannot inspect data"
 msgstr "无法检查数据"
 
-#: mgradm/shared/podman/podman.go:537
+#: mgradm/shared/podman/podman.go:539
 msgid "The above error is only relevant if using a public cloud provider registry"
-msgstr ""
+msgstr "仅当使用公有云提供商注册表时，才会出现上述错误"
 
 #: mgradm/shared/saline/saline.go:66
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
@@ -1641,10 +1643,8 @@ msgid "Image"
 msgstr "映像"
 
 #: mgradm/shared/utils/cmd_utils.go:126
-#, fuzzy
-#| msgid "Specify a private registry where pull the images"
 msgid "Specify a registry where to pull the images from"
-msgstr "指定从中拉取映像的专用注册表"
+msgstr "指定从中拉取映像的注册表"
 
 #: mgradm/shared/utils/cmd_utils.go:127
 msgid "Tag Image"
@@ -1791,11 +1791,12 @@ msgstr "只能包含字母、数字 . _ 和 -"
 msgid "Not a valid email address"
 msgstr "不是有效的电子邮件地址"
 
-#: mgradm/shared/utils/setup.go:123
-#, fuzzy
-#| msgid "Failed to generate setup script"
+#: mgradm/shared/utils/setup.go:113
 msgid "failed to render setup script"
-msgstr "无法生成设置脚本"
+msgstr "无法显示设置脚本"
+
+#~ msgid "cannot update SSL certificate"
+#~ msgstr "无法更新 SSL 证书"
 
 #~ msgid "Failed to stop service: %v"
 #~ msgstr "无法停止服务：%v"
@@ -1948,17 +1949,11 @@ msgstr "无法生成设置脚本"
 #~ msgid "SSL certificate country"
 #~ msgstr "SSL 证书国家/地区"
 
-#~ msgid "SSL certificate state"
-#~ msgstr "SSL 证书州/省"
-
 #~ msgid "SSL certificate city"
 #~ msgstr "SSL 证书城市"
 
 #~ msgid "SSL certificate organization"
 #~ msgstr "SSL 证书组织"
-
-#~ msgid "SSL certificate organization unit"
-#~ msgstr "SSL 证书组织单位"
 
 #~ msgid "SSL Certificate Flags"
 #~ msgstr "SSL 证书标志"
