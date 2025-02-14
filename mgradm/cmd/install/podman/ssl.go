@@ -83,7 +83,8 @@ func generateSSLCertificates(image string, flags *adm_utils.ServerFlags, fqdn st
 	command = append(command, envNames...)
 	command = append(command, image)
 
-	command = append(command, "/usr/bin/sh", "-x", "-c", sslSetupScript)
+	// Fail fast with `-e`.
+	command = append(command, "/usr/bin/sh", "-e", "-c", sslSetupScript)
 
 	if _, err := newRunner("podman", command...).Env(envValues).StdMapping().Exec(); err != nil {
 		return []string{}, cleaner, utils.Error(err, L("SSL certificates generation failed"))
@@ -95,6 +96,25 @@ func generateSSLCertificates(image string, flags *adm_utils.ServerFlags, fqdn st
 }
 
 const sslSetupScript = `
+	getMachineName() {
+	  hostname="$1"
+
+	  hostname=$(echo "$hostname" | sed 's/\*/_star_/g')
+
+	  field_count=$(echo "$hostname" | awk -F. '{print NF}')
+
+	  if [ "$field_count" -lt 3 ]; then
+		echo "$hostname"
+		return 0
+	  fi
+
+	  end_field=$(expr "$field_count" - 2)
+
+	  result=$(echo "$hostname" | cut -d. -f1-"$end_field")
+
+	  echo "$result"
+	}
+
 	echo "Generating the self-signed SSL CA..."
 	mkdir -p /root/ssl-build
 	rhn-ssl-tool --gen-ca --no-rpm --force --dir /root/ssl-build \
@@ -107,7 +127,7 @@ const sslSetupScript = `
 	echo "Generate apache certificate..."
 	cert_args=""
 	for CERT_CNAME in $CERT_CNAMES; do
-		cert_args="$cert_args --set-cname \"$CERT_CNAME\""
+		cert_args="$cert_args --set-cname $CERT_CNAME"
 	done
 
 	rhn-ssl-tool --gen-server --no-rpm --cert-expiration 3650 \
@@ -117,9 +137,9 @@ const sslSetupScript = `
 	    --set-hostname "$HOSTNAME" --cert-expiration 3650 --set-email "$CERT_EMAIL" \
 		$cert_args
 
-	NAME=${HOSTNAME%%.*}
-	cp /root/ssl-build/${NAME}/server.crt /ssl/server.crt
-	cp /root/ssl-build/${NAME}/server.key /ssl/server.key
+	MACHINE_NAME=$(getMachineName "$HOSTNAME")
+	cp "/root/ssl-build/$MACHINE_NAME/server.crt" /ssl/server.crt
+	cp "/root/ssl-build/$MACHINE_NAME/server.key" /ssl/server.key
 
 	echo "Generating DB certificate..."
 	rhn-ssl-tool --gen-server --no-rpm --cert-expiration 3650 \
