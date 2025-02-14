@@ -107,7 +107,7 @@ const sslSetupScript = `
 	echo "Generate apache certificate..."
 	cert_args=""
 	for CERT_CNAME in $CERT_CNAMES; do
-		cert_args=$cert_args --set-cname $CERT_CNAME
+		cert_args="$cert_args --set-cname $CERT_CNAME"
 	done
 
 	rhn-ssl-tool --gen-server --no-rpm --cert-expiration 3650 \
