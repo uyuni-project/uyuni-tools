@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -27,7 +27,7 @@ The install podman command assumes podman is installed locally.
 
 NOTE: for now installing on a remote podman is not supported!
 `),
-		Args: cobra.ExactArgs(1),
+		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podman.PodmanProxyFlags
 			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
