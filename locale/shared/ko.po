@@ -8,11 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-12 11:53+0100\n"
+"POT-Creation-Date: 2025-02-14 14:19+0100\n"
 "PO-Revision-Date: 2025-01-17 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
-"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-shared/ko/>\n"
+"Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -581,9 +580,7 @@ msgstr "Pod 정의 재정의를 직렬화할 수 없음"
 
 #: shared/kubernetes/waiters.go:40
 msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
-msgstr ""
-"%[1]s 작업 실패, 자세한 내용을 살펴보려면 kubectl logs -n %[2]s --tail=-1 "
-"-ljob-name=%[1]s 실행"
+msgstr "%[1]s 작업 실패, 자세한 내용을 살펴보려면 kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s 실행"
 
 #: shared/kubernetes/waiters.go:49
 msgid "%[1]s job failed to complete within %[2]d seconds"
@@ -627,8 +624,7 @@ msgstr "%s 이미지를 사용할 수 있는지 확인"
 
 #: shared/podman/images.go:46
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
-msgstr "끌어오기 정책이 항상입니다. RPM 이미지가 있는지 확인하여 이미지가 없는 경우 "
-"레지스트리에서 끌어옵니다."
+msgstr "끌어오기 정책이 항상입니다. RPM 이미지가 있는지 확인하여 이미지가 없는 경우 레지스트리에서 끌어옵니다."
 
 #: shared/podman/images.go:56
 #, javascript-format
@@ -1044,86 +1040,90 @@ msgstr "SSL 인증서 조직 단위"
 msgid "SSL Certificate Flags"
 msgstr "SSL 인증서 플래그"
 
-#: shared/ssl/ssl.go:38
+#: shared/ssl/ssl.go:51
 msgid "Failed to find a non-CA certificate"
 msgstr "비 CA 인증서를 찾지 못함"
 
-#: shared/ssl/ssl.go:77
+#: shared/ssl/ssl.go:90
 msgid "expected to find a certificate, got none"
 msgstr "인증서가 있을 것으로 예상했지만, 아무것도 찾지 못함"
 
-#: shared/ssl/ssl.go:83
+#: shared/ssl/ssl.go:96
 #, javascript-format
 msgid "Failed to read certificate file %s"
 msgstr "%s 인증서 파일 읽기 실패"
 
-#: shared/ssl/ssl.go:119
+#: shared/ssl/ssl.go:135
 msgid "Failed to extract data from certificate"
 msgstr "인증서에서 데이터 추출 실패"
 
-#: shared/ssl/ssl.go:140
+#: shared/ssl/ssl.go:156
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
 msgstr "시작 날짜를 구문 분석하지 못함: %s\n"
 
-#: shared/ssl/ssl.go:146
+#: shared/ssl/ssl.go:162
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
 msgstr "종료 날짜를 구문 분석하지 못함: %s\n"
 
-#: shared/ssl/ssl.go:190
+#: shared/ssl/ssl.go:206
 msgid "No CA found"
 msgstr "CA 없음"
 
-#: shared/ssl/ssl.go:197
+#: shared/ssl/ssl.go:213
 msgid "No CA found for server certificate"
 msgstr "서버 인증서에 대한 CA를 찾을 수 없음"
 
-#: shared/ssl/ssl.go:206
+#: shared/ssl/ssl.go:222
 #, javascript-format
 msgid "Missing CA with subject hash %s"
 msgstr "제목 해시 %s에 CA가 누락됨"
 
-#: shared/ssl/ssl.go:227
+#: shared/ssl/ssl.go:247
 msgid "server certificate is required"
 msgstr "서버 인증서 필수"
 
-#: shared/ssl/ssl.go:228
+#: shared/ssl/ssl.go:250 shared/ssl/ssl.go:315
 msgid "server key is required"
 msgstr "서버 키 필수"
 
-#: shared/ssl/ssl.go:240
+#: shared/ssl/ssl.go:265
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr "%s 파일에 액세스할 수 없음"
 
-#: shared/ssl/ssl.go:248
+#: shared/ssl/ssl.go:274
 msgid "Source server SSL CA private key password"
 msgstr "소스 서버 SSL CA 개인 키 암호"
 
-#: shared/ssl/ssl.go:254
+#: shared/ssl/ssl.go:280
 msgid "Failed to open openssl rsa process input stream"
 msgstr "openssl rsa 프로세스 입력 스트림을 열지 못함"
 
-#: shared/ssl/ssl.go:257
+#: shared/ssl/ssl.go:283
 msgid "Failed to write openssl key content to input stream"
 msgstr "입력 스트림에 openssl 키 내용 쓰기 실패"
 
-#: shared/ssl/ssl.go:263
+#: shared/ssl/ssl.go:289
 msgid "Failed to convert CA private key to RSA"
 msgstr "CA 개인 키를 RSA로 변환할 수 없음"
 
-#: shared/ssl/ssl.go:273
+#: shared/ssl/ssl.go:299
 msgid "Failed to open openssl x509 process input stream"
 msgstr "openssl x509 프로세스 입력 스트림을 열지 못함"
 
-#: shared/ssl/ssl.go:276
+#: shared/ssl/ssl.go:302
 msgid "Failed to write SSL certificate to input stream"
 msgstr "SSL 인증서를 입력 스트림에 쓰기 실패"
 
-#: shared/ssl/ssl.go:280
+#: shared/ssl/ssl.go:306
 msgid "failed to strip text part from CA certificate"
 msgstr "CA 인증서에서 텍스트 부분 스트리핑 실패"
+
+#: shared/ssl/ssl.go:321
+msgid "Invalid SSL key, it is probably encrypted"
+msgstr ""
 
 #: shared/utils/cmd.go:58 shared/utils/cmd.go:59
 msgid "failed to unmarshall configuration"
@@ -1134,8 +1134,7 @@ msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
 msgstr ""
-"컨테이너에 도달하기 위해 사용되는 도구. 가능한 값: 'podman', 'podman-"
-"remote', 'kubectl'.\n"
+"컨테이너에 도달하기 위해 사용되는 도구. 가능한 값: 'podman', 'podman-remote', 'kubectl'.\n"
 "사용할 기본값 추측."
 
 #: shared/utils/cmd.go:86
@@ -1514,26 +1513,26 @@ msgstr "%s에서 다운로드하지 못함"
 msgid "bad status: %s"
 msgstr "잘못된 상태: %s"
 
-#: shared/utils/utils.go:446
+#: shared/utils/utils.go:456
 msgid "failed to compute server FQDN"
 msgstr "서버 FQDN 계산 실패"
 
-#: shared/utils/utils.go:460
+#: shared/utils/utils.go:470
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s은(는) 유효한 FQDN이 아닙니다."
 
-#: shared/utils/utils.go:464
+#: shared/utils/utils.go:474
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "%s 해결 불가"
 
-#: shared/utils/utils.go:489
+#: shared/utils/utils.go:499
 #, javascript-format
 msgid "error creating file %s"
 msgstr "%s 파일 생성 오류"
 
-#: shared/utils/utils.go:494
+#: shared/utils/utils.go:504
 #, javascript-format
 msgid "error writing file %s"
 msgstr "%s 파일 쓰기 오류"
