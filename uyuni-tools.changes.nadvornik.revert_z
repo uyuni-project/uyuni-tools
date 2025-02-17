@@ -1,0 +1,1 @@
+- Revert use of :z flag on server volumes (bsc#1235861)

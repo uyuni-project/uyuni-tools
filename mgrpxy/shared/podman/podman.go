@@ -62,9 +62,6 @@ func GenerateSystemdService(httpdImage string, saltBrokerImage string, squidImag
 
 	// Httpd
 	volumeOptions := ""
-	if podman.IsSELinuxEnabled() {
-		volumeOptions = ",z"
-	}
 
 	{
 		dataHttpd := templates.HttpdTemplateData{
