@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"bytes"
 	"errors"
 	"io"
 	"os"
@@ -21,8 +22,9 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// runCmdOutput is a function pointer to use for easies unit testing.
+// runCmd* are a function pointers to use for easies unit testing.
 var runCmdOutput = utils.RunCmdOutput
+var runCmd = utils.RunCmd
 
 const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
 
@@ -151,32 +153,6 @@ func GetServiceImage(service string) string {
 	return matches[1]
 }
 
-// DeleteImage deletes a podman image based on its name.
-// If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
-func DeleteImage(name string, dryRun bool) error {
-	exists := imageExists(name)
-	if exists {
-		if dryRun {
-			log.Info().Msgf(L("Would run %s"), "podman image rm "+name)
-		} else {
-			log.Info().Msgf(L("Run %s"), "podman image rm "+name)
-			err := utils.RunCmd("podman", "image", "rm", name)
-			if err != nil {
-				log.Error().Err(err).Msgf(L("Failed to remove image %s"), name)
-			}
-		}
-	}
-	return nil
-}
-
-func imageExists(volume string) bool {
-	cmd := exec.Command("podman", "image", "exists", volume)
-	if err := cmd.Run(); err != nil {
-		return false
-	}
-	return cmd.ProcessState.ExitCode() == 0
-}
-
 // DeleteVolume deletes a podman volume based on its name.
 // If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
 func DeleteVolume(name string, dryRun bool) error {
@@ -203,6 +179,63 @@ func DeleteVolume(name string, dryRun bool) error {
 				return err
 			}
 		}
+	}
+	return nil
+}
+
+// ExportVolume exports a podman volume based on its name to the specifed targed directory.
+// outputDir option expects already existing directory.
+// If dryRun is set to true, only messages will be logged to explain what would happen.
+func ExportVolume(name string, outputDir string, dryRun bool) error {
+	exists := isVolumePresent(name)
+	if exists {
+		outputFile := path.Join(outputDir, name+".tar")
+		exportCommand := []string{"podman", "volume", "export", "-o", outputFile, name}
+		checksumCommand := []string{"sha256sum", outputFile}
+		if dryRun {
+			log.Info().Msgf(L("Would run %s"), strings.Join(exportCommand, " "))
+			log.Info().Msgf(L("Would run %s"), strings.Join(checksumCommand, " "))
+			return nil
+		}
+		log.Info().Msgf(L("Run %s"), strings.Join(exportCommand, " "))
+		if err := runCmd(exportCommand[0], exportCommand[1:]...); err != nil {
+			return utils.Errorf(err, L("Failed to export volume %s"), name)
+		}
+		output, err := runCmdOutput(zerolog.DebugLevel, checksumCommand[0], checksumCommand[1:]...)
+		if err != nil {
+			return utils.Errorf(err, L("Failed to calculate checksum of volume %s"), name)
+		}
+		if err := os.WriteFile(outputFile+".sha256sum", output, 0622); err != nil {
+			return utils.Errorf(err, L("Failed to write checksum of volume %s to the %s"), name, outputFile+".sha256sum")
+		}
+	}
+	return nil
+}
+
+// ImportVolume imports a podman volume from provided volumePath.
+// If dryRun is set to true, only messages will be logged to exmplain what would happen.
+func ImportVolume(name string, volumePath string, dryRun bool) error {
+	importCommand := []string{"podman", "volume", "import", name, volumePath}
+	checksumCommand := []string{"sha256sum", volumePath}
+	if dryRun {
+		log.Info().Msgf(L("Would run %s"), strings.Join(checksumCommand, " "))
+		log.Info().Msgf(L("Would run %s"), strings.Join(importCommand, " "))
+		return nil
+	}
+	output, err := runCmdOutput(zerolog.DebugLevel, checksumCommand[0], checksumCommand[1:]...)
+	if err != nil {
+		return utils.Errorf(err, L("Failed to calculate checksum of volume %s"), name)
+	}
+	if fileChecksum, err := os.ReadFile(volumePath + ".sha256sum"); err != nil {
+		return utils.Errorf(err, L("Failed to read checksum of volume file %s"), name, volumePath+".sha256sum")
+	} else {
+		if bytes.Equal(output, fileChecksum) {
+			return utils.Errorf(err, L("Checksum does not match for volume %s"), volumePath)
+		}
+	}
+	log.Info().Msgf(L("Run %s"), strings.Join(importCommand, " "))
+	if err := runCmd(importCommand[0], importCommand[1:]...); err != nil {
+		return utils.Errorf(err, L("Failed to export volume %s"), name)
 	}
 	return nil
 }
