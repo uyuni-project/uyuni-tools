@@ -69,9 +69,6 @@ func GenerateSystemdService(
 
 	// Httpd
 	volumeOptions := ""
-	if podman.IsSELinuxEnabled() {
-		volumeOptions = ",z"
-	}
 
 	{
 		dataHttpd := templates.HttpdTemplateData{

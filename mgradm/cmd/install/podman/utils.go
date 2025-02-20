@@ -181,7 +181,7 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string, sslArgs [
 	}
 	command = append(command, sslArgs...)
 	for _, volume := range utils.ServerVolumeMounts {
-		command = append(command, "-v", fmt.Sprintf("%s:%s:z", volume.Name, volume.MountPath))
+		command = append(command, "-v", fmt.Sprintf("%s:%s", volume.Name, volume.MountPath))
 	}
 	command = append(command, envNames...)
 	command = append(command, image)
