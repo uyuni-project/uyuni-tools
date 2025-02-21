@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 16:00+0100\n"
+"POT-Creation-Date: 2025-02-21 09:42+0100\n"
 "PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/it/>\n"
@@ -130,16 +130,16 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgrpxy/cmd/install/podman/utils.go:38 mgrpxy/shared/podman/podman.go:243
+#: mgrpxy/cmd/install/podman/utils.go:38 mgrpxy/shared/podman/podman.go:260
 msgid "install podman before running this command"
 msgstr "installare podman prima di eseguire questo comando"
 
 #: mgrpxy/cmd/install/podman/utils.go:43
-#, javascript-format
-msgid "failed to extract proxy config from %s file"
-msgstr ""
+#, fuzzy
+msgid "failed to retrieve proxy config files"
+msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgrpxy/cmd/install/podman/utils.go:53 mgrpxy/shared/podman/podman.go:256
+#: mgrpxy/cmd/install/podman/utils.go:53 mgrpxy/shared/podman/podman.go:273
 msgid "failed to login to registry.suse.com"
 msgstr ""
 
@@ -466,40 +466,56 @@ msgstr "mancata creazione della directory temporanea: %s"
 msgid "cannot generate systemd conf user configuration file"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgrpxy/shared/podman/podman.go:196
+#: mgrpxy/shared/podman/podman.go:209
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:215
-msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
+#: mgrpxy/shared/podman/podman.go:211
+#, javascript-format
+msgid "failed to extract proxy config from %s file"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:231
-msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
+#: mgrpxy/shared/podman/podman.go:214
+msgid "No tarball provided. Will check existing configuration files."
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:262
+#: mgrpxy/shared/podman/podman.go:228
+#, javascript-format
+msgid "%s directory has no required permissions. Check your umask settings"
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:230
+#, javascript-format
+msgid "%s file has no required permissions. Check your umask settings"
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:243
+#, javascript-format
+msgid "missing required configuration file: %s"
+msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:279
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:266
+#: mgrpxy/shared/podman/podman.go:283
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:270
+#: mgrpxy/shared/podman/podman.go:287
 msgid "cannot find squid image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:274
+#: mgrpxy/shared/podman/podman.go:291
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:278
+#: mgrpxy/shared/podman/podman.go:295
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/utils/cmd.go:17
+#: mgrpxy/shared/utils/cmd.go:20
 #, javascript-format
 msgid "argument is not an existing file: %s"
 msgstr ""
