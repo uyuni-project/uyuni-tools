@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-14 14:19+0100\n"
+"POT-Creation-Date: 2025-02-21 09:42+0100\n"
 "PO-Revision-Date: 2024-12-07 21:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/de/>\n"
@@ -397,11 +397,11 @@ msgid ""
 "NOTE: installing on a remote podman is not supported yet!\n"
 msgstr ""
 
-#: mgradm/cmd/install/podman/ssl.go:89
+#: mgradm/cmd/install/podman/ssl.go:90
 msgid "SSL certificates generation failed"
 msgstr ""
 
-#: mgradm/cmd/install/podman/ssl.go:92
+#: mgradm/cmd/install/podman/ssl.go:93
 #, fuzzy
 #| msgid "Server certificate path"
 msgid "SSL certificates generated"

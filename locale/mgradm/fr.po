@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-14 14:19+0100\n"
+"POT-Creation-Date: 2025-02-21 09:42+0100\n"
 "PO-Revision-Date: 2024-04-17 08:03+0000\n"
 "Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools/fr/>\n"
@@ -429,13 +429,13 @@ msgstr ""
 "\n"
 "NOTE: pour l'instant l'installation sur un podman distant n'est pas supportée!\n"
 
-#: mgradm/cmd/install/podman/ssl.go:89
+#: mgradm/cmd/install/podman/ssl.go:90
 #, fuzzy
 #| msgid "SSL certificate organization unit"
 msgid "SSL certificates generation failed"
 msgstr "Unité d'organisation du certificat SSL"
 
-#: mgradm/cmd/install/podman/ssl.go:92
+#: mgradm/cmd/install/podman/ssl.go:93
 #, fuzzy
 #| msgid "SSL certificate state"
 msgid "SSL certificates generated"

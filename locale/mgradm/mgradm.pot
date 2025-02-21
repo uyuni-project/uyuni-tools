@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-14 14:19+0100\n"
+"POT-Creation-Date: 2025-02-21 09:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -396,11 +396,11 @@ msgid ""
 "NOTE: installing on a remote podman is not supported yet!\n"
 msgstr ""
 
-#: mgradm/cmd/install/podman/ssl.go:89
+#: mgradm/cmd/install/podman/ssl.go:90
 msgid "SSL certificates generation failed"
 msgstr ""
 
-#: mgradm/cmd/install/podman/ssl.go:92
+#: mgradm/cmd/install/podman/ssl.go:93
 msgid "SSL certificates generated"
 msgstr ""
 
