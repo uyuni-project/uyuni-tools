@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-24 15:38+0100\n"
+"POT-Creation-Date: 2025-02-21 09:45+0100\n"
 "PO-Revision-Date: 2024-04-08 11:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -148,7 +148,7 @@ msgstr ""
 "\n"
 "NOTE: pour l'instant l'installation sur un podman distant n'est pas supportée!\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:36 mgrpxy/shared/podman/podman.go:233
+#: mgrpxy/cmd/install/podman/utils.go:36 mgrpxy/shared/podman/podman.go:230
 msgid "install podman before running this command"
 msgstr "installer podman avant d'exécuter cette commande"
 
@@ -157,7 +157,7 @@ msgstr "installer podman avant d'exécuter cette commande"
 msgid "failed to extract proxy config from %s file"
 msgstr "impossible d'extraire la configuration du proxy du fichier %s: %s"
 
-#: mgrpxy/cmd/install/podman/utils.go:51 mgrpxy/shared/podman/podman.go:246
+#: mgrpxy/cmd/install/podman/utils.go:51 mgrpxy/shared/podman/podman.go:243
 msgid "failed to login to registry.suse.com"
 msgstr ""
 
@@ -512,51 +512,51 @@ msgstr "impossible de configurer le réseau: %s"
 msgid "Generating systemd services"
 msgstr "Génération de services systemd"
 
-#: mgrpxy/shared/podman/podman.go:147
+#: mgrpxy/shared/podman/podman.go:144
 #, fuzzy, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "impossible de générer le fichier systemd: %s"
 
-#: mgrpxy/shared/podman/podman.go:153
+#: mgrpxy/shared/podman/podman.go:150
 #, fuzzy
 msgid "cannot generate systemd conf file"
 msgstr "impossible de générer le fichier systemd: %s"
 
-#: mgrpxy/shared/podman/podman.go:159
+#: mgrpxy/shared/podman/podman.go:156
 #, fuzzy
 msgid "cannot generate systemd conf user configuration file"
 msgstr "impossible de générer le fichier systemd: %s"
 
-#: mgrpxy/shared/podman/podman.go:189
+#: mgrpxy/shared/podman/podman.go:186
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "Installation du proxy avec la configuration %s"
 
-#: mgrpxy/shared/podman/podman.go:208
+#: mgrpxy/shared/podman/podman.go:205
 msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:224
+#: mgrpxy/shared/podman/podman.go:221
 msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:252
+#: mgrpxy/shared/podman/podman.go:249
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:256
+#: mgrpxy/shared/podman/podman.go:253
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:260
+#: mgrpxy/shared/podman/podman.go:257
 msgid "cannot find squid image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:264
+#: mgrpxy/shared/podman/podman.go:261
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:268
+#: mgrpxy/shared/podman/podman.go:265
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr ""
 
