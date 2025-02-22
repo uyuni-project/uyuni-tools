@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-21 09:42+0100\n"
-"PO-Revision-Date: 2024-12-07 21:48+0000\n"
+"PO-Revision-Date: 2025-02-22 05:50+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/de/>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrpxy/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.4\n"
+"X-Generator: Weblate 5.10.1\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -484,10 +485,9 @@ msgid "%s file has no required permissions. Check your umask settings"
 msgstr ""
 
 #: mgrpxy/shared/podman/podman.go:243
-#, fuzzy, javascript-format
-#| msgid "configuration file path"
+#, javascript-format
 msgid "missing required configuration file: %s"
-msgstr "Konfigurationsdateipfad"
+msgstr "fehlende erforderliche Konfigurationsdateipfad: %s"
 
 #: mgrpxy/shared/podman/podman.go:279
 msgid "cannot find httpd image: it will no be upgraded"
@@ -512,24 +512,28 @@ msgstr ""
 #: mgrpxy/shared/utils/cmd.go:20
 #, javascript-format
 msgid "argument is not an existing file: %s"
-msgstr ""
+msgstr "Argument ist keine existierende Datei: %s"
 
 #: mgrpxy/shared/utils/flags.go:52
 #, javascript-format
 msgid "Invalid proxy container name: %s"
-msgstr ""
+msgstr "Ungültiger Proxy-Containername: %s"
 
 #: mgrpxy/shared/utils/flags.go:57
 msgid "failed to compute image URL"
-msgstr ""
+msgstr "Abbild-URL konnte nicht berechnet werden"
 
 #: mgrpxy/shared/utils/flags.go:65
 msgid "SUSE Customer Center username. It will be used to pull images from registry.suse.com"
 msgstr ""
+"Benutzername für das SUSE Customer Center. Er wird verwendet, um Abbilder "
+"von registry.suse.com zu beziehen"
 
 #: mgrpxy/shared/utils/flags.go:68
 msgid "SUSE Customer Center password. It will be used to pull images from registry.suse.com"
 msgstr ""
+"Passwort für das SUSE Customer Center. Es wird verwendet, um Abbilder von "
+"registry.suse.com zu beziehen"
 
 #: mgrpxy/shared/utils/flags.go:71
 msgid "SUSE Customer Center Flags"
