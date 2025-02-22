@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-21 09:42+0100\n"
-"PO-Revision-Date: 2024-12-07 21:48+0000\n"
+"PO-Revision-Date: 2025-02-22 05:50+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/de/>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.4\n"
+"X-Generator: Weblate 5.10.1\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -442,7 +443,7 @@ msgstr ""
 #: mgradm/shared/podman/podman.go:274 mgradm/shared/podman/podman.go:371
 #: mgradm/shared/saline/saline.go:72
 msgid "failed to compute image URL"
-msgstr ""
+msgstr "Abbild-URL konnte nicht berechnet werden"
 
 #: mgradm/cmd/install/podman/utils.go:95 mgradm/cmd/migrate/podman/utils.go:67
 #: mgradm/shared/podman/podman.go:82
