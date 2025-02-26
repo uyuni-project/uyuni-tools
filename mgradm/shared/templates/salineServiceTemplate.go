@@ -41,7 +41,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	-p [::]:{{ .SalinePort }}:8216 \
 	{{- end }}
 	{{- range .Volumes }}
-	-v {{ .Name }}:{{ .MountPath }}:z \
+	-v {{ .Name }}:{{ .MountPath }} \
 	{{- end }}
 	-e TZ=${TZ} \
 	-e NOSSL=${NOSSL} \
