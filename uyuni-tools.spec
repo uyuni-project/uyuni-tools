@@ -96,7 +96,7 @@ BuildRequires:  golang >= 1.19
 # 0%{?debian}
 
 %if 0%{?fedora} || 0%{?rhel}
-BuildRequires:  golang >= 1.22
+BuildRequires:  golang >= 1.21
 %endif
 # 0%{?fedora} || 0%{?rhel}
 
