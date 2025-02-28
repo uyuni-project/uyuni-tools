@@ -8,80 +8,87 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-21 09:45+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-02-28 08:53+0000\n"
+"Last-Translator: David Medina <medipas@gmail.com>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgrpxy-5-0/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10.1\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
-msgstr ""
+msgstr "Neteja la memòria cau"
 
 #: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/restart/kubernetes.go:25
 #: mgrpxy/cmd/start/kubernetes.go:25 mgrpxy/cmd/stop/kubernetes.go:25
 msgid "failed retrieving namespace"
-msgstr ""
+msgstr "no s'ha pogut recuperar l'espai de noms"
 
 #: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:25
 msgid "failed to remove cached data"
-msgstr ""
+msgstr "no s'han pogut eliminar les dades de la memòria cau"
 
 #: mgrpxy/cmd/cache/kubernetes.go:33 mgrpxy/cmd/cache/podman.go:29
 msgid "failed to re-create the cache directories"
-msgstr ""
+msgstr "no s'ha pogut tornar a crear els directoris de la memòria cau"
 
 #: mgrpxy/cmd/cache/squid.go:18 mgrpxy/cmd/cache/squid.go:19
 msgid "Manage proxy cache"
-msgstr ""
+msgstr "Gestiona la memòria cau del servidor intermediari"
 
 #: mgrpxy/cmd/cmd.go:35
 msgid "Uyuni proxy administration tool"
-msgstr ""
+msgstr "Eina d'administració del servidor intermediari d'Uyuni"
 
 #: mgrpxy/cmd/cmd.go:36
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr ""
+"Eina per a ajudar a administrar els servidors intermediaris Uyuni en "
+"contenidors"
 
 #: mgrpxy/cmd/cmd.go:43
 msgid "Server Deployment:"
-msgstr ""
+msgstr "Desplegament del servidor:"
 
 #: mgrpxy/cmd/cmd.go:47
 msgid "Server Management:"
-msgstr ""
+msgstr "Gestió del servidor:"
 
 #: mgrpxy/cmd/cmd.go:51
 msgid "Administrator tools:"
-msgstr ""
+msgstr "Eines de l'administrador:"
 
 #: mgrpxy/cmd/cmd.go:61
 #, javascript-format
 msgid "Welcome to %s"
-msgstr ""
+msgstr "Us donem la benvinguda a %s"
 
 #: mgrpxy/cmd/cmd.go:62
 #, javascript-format
 msgid "Executing command: %s"
-msgstr ""
+msgstr "S'està executant l'ordre: %s"
 
 #: mgrpxy/cmd/cmd.go:66
 msgid "configuration file path"
-msgstr ""
+msgstr "camí del fitxer de configuració"
 
 #: mgrpxy/cmd/cmd.go:68
 msgid "application log level"
-msgstr ""
+msgstr "nivell de registre de l'aplicació"
 
 #: mgrpxy/cmd/install/install.go:20 mgrpxy/cmd/install/install.go:21
 msgid "Install a new proxy from scratch"
-msgstr ""
+msgstr "Instal·la un servidor intermediari nou des de zero"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
 msgstr ""
+"Instal·la un servidor intermediari nou en un clúster de kubernetes en "
+"execució"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
 msgid ""
@@ -94,25 +101,35 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote kubernetes cluster is not supported!\n"
 msgstr ""
+"Instal·la un servidor intermediari nou en un clúster de kubernetes en "
+"execució.\n"
+"\n"
+"Només pren el camí a la configuració tarball generada pel servidor\n"
+"com a paràmetre.\n"
+"\n"
+"L'ordre install kubernetes assumeix que el kubectl està instal·lat localment."
+"\n"
+"\n"
+"NOTA: per ara no s'admet la instal·lació en un clúster de kubernetes remot!\n"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:26
 #: mgrpxy/shared/kubernetes/deploy.go:152
 #, javascript-format
 msgid "install %s before running this command"
-msgstr ""
+msgstr "instal·la %s abans d'executar aquesta ordre"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:40
 msgid "failed to extract configuration"
-msgstr ""
+msgstr "no s'ha pogut extreure la configuració"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:69
 #: mgrpxy/shared/kubernetes/deploy.go:204
 msgid "cannot deploy proxy helm chart"
-msgstr ""
+msgstr "no s'ha pogut desplegar el diagrama de timons del servidor intermediari"
 
 #: mgrpxy/cmd/install/podman/podman.go:20
 msgid "Install a new proxy on podman"
-msgstr ""
+msgstr "Instal·la un servidor intermediari nou a podman"
 
 #: mgrpxy/cmd/install/podman/podman.go:21
 msgid ""
@@ -125,31 +142,43 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
+"Instal·la un servidor intermediari nou a podman\n"
+"\n"
+"Només pren el camí a la configuració tarball generada pel servidor\n"
+"com a paràmetre.\n"
+"\n"
+"L'ordre install podman suposa que podman està instal·lat localment.\n"
+"\n"
+"NOTA: per ara no s'admet la instal·lació en un podman remot!\n"
 
 #: mgrpxy/cmd/install/podman/utils.go:36 mgrpxy/shared/podman/podman.go:230
 msgid "install podman before running this command"
-msgstr ""
+msgstr "instal·la podman abans d'executar aquesta ordre"
 
 #: mgrpxy/cmd/install/podman/utils.go:41
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr ""
+"no s'ha pogut extreure la configuració del servidor intermediari del fitxer "
+"%s"
 
 #: mgrpxy/cmd/install/podman/utils.go:51 mgrpxy/shared/podman/podman.go:243
 msgid "failed to login to registry.suse.com"
-msgstr ""
+msgstr "no s'ha pogut iniciar la sessió a register.suse.com"
 
 #: mgrpxy/cmd/logs/kubernetes.go:29
 msgid "failed to find proxy pod"
-msgstr ""
+msgstr "no s'ha pogut trobar el servidor pod"
 
 #: mgrpxy/cmd/logs/kubernetes.go:33
 msgid "failed to find proxy deployment namespace"
 msgstr ""
+"no s'ha pogut trobar l'espai de noms de desplegament del servidor "
+"intermediari"
 
 #: mgrpxy/cmd/logs/logs.go:35
 msgid "Get the proxy logs"
-msgstr ""
+msgstr "Obtenir els registres del servidor intermediari"
 
 #: mgrpxy/cmd/logs/logs.go:36
 msgid ""
@@ -158,87 +187,98 @@ msgid ""
 "However, you can specify the pod and/or container names to get the logs for specific container(s).\n"
 "See examples for more details."
 msgstr ""
+"Obtenir els registres del servidor intermediari\n"
+"L'ordre detecta automàticament el dorsal instal·lat i mostra els registres "
+"dels contenidors gestionats per Kubernetes o Podman\n"
+"No obstant això, podeu especificar els noms de pod i/o contenidor per a "
+"obtenir els registres per a contenidors específics.\n"
+"Vegeu exemples per a més detalls."
 
 #: mgrpxy/cmd/logs/logs.go:62
 msgid "specify if logs should be followed"
-msgstr ""
+msgstr "especifica si s'han de seguir els registres"
 
 #: mgrpxy/cmd/logs/logs.go:63
 msgid "show timestamps in the log outputs"
-msgstr ""
+msgstr "mostra les marques horàries a les sortides del registre"
 
 #: mgrpxy/cmd/logs/logs.go:64
 msgid "number of lines to show from the end of the logs"
-msgstr ""
+msgstr "nombre de línies a mostrar des del final dels registres"
 
 #: mgrpxy/cmd/logs/logs.go:67
 msgid ""
 "show logs since a specific time or duration.\n"
 "Supports Go duration strings and RFC3339 format (e.g. 3h, 2023-01-02T15:04:05)"
 msgstr ""
+"mostra els registres des d'un temps o durada específics.\n"
+"Permet cadenes de durada Go i format RFC3339 (p. ex. 3h, 2023-01-02T15:04:05)"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
-msgstr ""
+msgstr "Reinicia el servidor intermediari"
 
 #: mgrpxy/cmd/start/start.go:23 mgrpxy/cmd/start/start.go:24
 msgid "Start the proxy"
-msgstr ""
+msgstr "Inicia el servidor intermediari"
 
 #: mgrpxy/cmd/status/kubernetes.go:34
 msgid "failed to get deployment status"
-msgstr ""
+msgstr "no s'ha pogut obtenir l'estat de desplegament"
 
 #: mgrpxy/cmd/status/kubernetes.go:37
 msgid "Some replicas are not ready: %[1]d / %[2]d"
-msgstr ""
+msgstr "Algunes rèpliques no estan preparades: %[1]d / %[2]d"
 
 #: mgrpxy/cmd/status/kubernetes.go:41
 msgid "the pod is not running"
-msgstr ""
+msgstr "el pod no s'està executant"
 
 #: mgrpxy/cmd/status/kubernetes.go:44
 msgid "Proxy containers up and running"
-msgstr ""
+msgstr "Contenidors del servidor intermediari en funcionament"
 
 #: mgrpxy/cmd/status/podman.go:30
 #, javascript-format
 msgid "Failed to get status of the %s service"
-msgstr ""
+msgstr "No s'ha pogut obtenir l'estat del servei %s"
 
 #: mgrpxy/cmd/status/podman.go:31
 msgid "failed to get the status of at least one service"
-msgstr ""
+msgstr "no s'ha pogut obtenir l'estat d'almenys un servei"
 
 #: mgrpxy/cmd/status/status.go:24 mgrpxy/cmd/status/status.go:25
 msgid "Get the proxy status"
-msgstr ""
+msgstr "Obtenir l'estat del servidor intermediari"
 
 #: mgrpxy/cmd/status/status.go:51
 msgid "no installed proxy detected"
-msgstr ""
+msgstr "no s'ha detectat cap servidor intermediari instal·lat"
 
 #: mgrpxy/cmd/stop/stop.go:23 mgrpxy/cmd/stop/stop.go:24
 msgid "Stop the proxy"
-msgstr ""
+msgstr "Atura el servidor intermediari"
 
 #: mgrpxy/cmd/support/config/config.go:22
 msgid "Extract configuration and logs"
-msgstr ""
+msgstr "Extreu configuració i registres"
 
 #: mgrpxy/cmd/support/config/config.go:23
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
 msgstr ""
+"Extreu la configuració del servidor o del clúster i els registres, així com "
+"els de\n"
+"els contenidors de suport per ajudar a la depuració."
 
 #: mgrpxy/cmd/support/config/config.go:31
 msgid "path where to extract the data"
-msgstr ""
+msgstr "camí on extreure les dades"
 
 #: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:24
 msgid "Install a PTF or Test package on a kubernetes cluster"
-msgstr ""
+msgstr "Instal·la un paquet PTF o Test en un clúster de kubernetes"
 
 #: mgrpxy/cmd/support/ptf/kubernetes/kubernetes.go:25
 msgid ""
@@ -252,10 +292,21 @@ msgid ""
 "\n"
 "NOTE: installing on a remote cluster is not supported yet!\n"
 msgstr ""
+"Instal·la un paquet PTR de Test en un clúster de kubernetes\n"
+"\n"
+"L'ordre ptf de suport assumeix el següent:\n"
+"  * El kubectl i el helm s'instal·len localment\n"
+"  * s'ha d'establir una configuració de kubectl que funcioni per a connectar-"
+"se al clúster on desplegar\n"
+"\n"
+"El fitxer de valors del helm se sobreescriurà amb els valors dels paràmetres "
+"de l'ordre o de la configuració.\n"
+"\n"
+"NOTA: la instal·lació en un clúster remot encara no està suportada!\n"
 
 #: mgrpxy/cmd/support/ptf/podman/podman.go:29
 msgid "Install a PTF or Test package on podman"
-msgstr ""
+msgstr "Instal·la un paquet PTF o Test a podman"
 
 #: mgrpxy/cmd/support/ptf/podman/podman.go:30
 msgid ""
@@ -266,115 +317,132 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
+"Instal·la un paquet PTF o Test a podman\n"
+"\n"
+"L'ordre de suport ptf podman assumeix que podman està instal·lat localment "
+"i\n"
+"la màquina amfitrió està registrada a SCC.\n"
+"\n"
+"NOTA: per ara no s'admet la instal·lació en un podman remot!\n"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:34
 msgid "ptf and test flags cannot be set simultaneously "
-msgstr ""
+msgstr "ptf i indicadors de prova no es poden establir simultàniament "
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:37
 msgid "ptf and test flags cannot be empty simultaneously "
-msgstr ""
+msgstr "ptf i les banderes de prova no poden estar buides simultàniament "
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:40
 msgid "user flag cannot be empty"
-msgstr ""
+msgstr "l'indicador d'usuari no pot estar buit"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:56
 #, javascript-format
 msgid "The httpd ptf image computed is: %s"
-msgstr ""
+msgstr "La imatge ptf httpd calculada és: %s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:66
 #, javascript-format
 msgid "The ssh ptf image computed is: %s"
-msgstr ""
+msgstr "La imatge ssh ptf calculada és: %s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:76
 #, javascript-format
 msgid "The tftpd ptf image computed is: %s"
-msgstr ""
+msgstr "La imatge tftpd ptf calculada és: %s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:86
 #, javascript-format
 msgid "The salt-broker ptf image computed is: %s"
-msgstr ""
+msgstr "La imatge ptf salt-broker calculada és: %s"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:96
 #, javascript-format
 msgid "The squid ptf image computed is: %s"
-msgstr ""
+msgstr "La imatge ptf del calamar calculada és: %s"
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
-msgstr ""
+msgstr "Instal·la un PTF"
 
 #: mgrpxy/cmd/support/support.go:20 mgrpxy/cmd/support/support.go:21
 msgid "Commands for support operations"
-msgstr ""
+msgstr "Ordres per a operacions de suport"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:26
 msgid "--purge-volumes is ignored on a kubernetes deployment"
-msgstr ""
+msgstr "--purge-volumes s'ignora en un desplegament de kubernetes"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:29
 msgid "--purge-images is ignored on a kubernetes deployment"
-msgstr ""
+msgstr "--purge-images s'ignora en un desplegament de kubernetes"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:65
 msgid "Nothing has been uninstalled, run with --force to actually uninstall"
-msgstr ""
+msgstr "No s'ha desinstal·lat res, executeu amb --force per a desinstal·lar"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:67
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
 msgstr ""
+"No s'han tocat els volums. Depenent de la classe d'emmagatzematge "
+"utilitzada, és possible que no s'hagin eliminat"
 
 #: mgrpxy/cmd/uninstall/podman.go:65
 #, javascript-format
 msgid "cannot delete volume %s"
-msgstr ""
+msgstr "no es pot suprimir el volum %s"
 
 #: mgrpxy/cmd/uninstall/podman.go:68
 msgid "All volumes removed"
-msgstr ""
+msgstr "S'han eliminat tots els volums"
 
 #: mgrpxy/cmd/uninstall/podman.go:71
 msgid "Failed to delete /etc/uyuni/proxy folder"
-msgstr ""
+msgstr "Ha fallat en suprimir la carpeta /etc/uyuni/proxy"
 
 #: mgrpxy/cmd/uninstall/podman.go:73
 msgid "/etc/uyuni/proxy folder removed"
-msgstr ""
+msgstr "s'ha eliminat la carpeta /etc/uyuni/proxy"
 
 #: mgrpxy/cmd/uninstall/podman.go:81
 #, javascript-format
 msgid "cannot delete image %s"
-msgstr ""
+msgstr "no es pot suprimir la imatge %s"
 
 #: mgrpxy/cmd/uninstall/podman.go:85
 msgid "All images have been removed"
-msgstr ""
+msgstr "S'han eliminat totes les imatges"
 
 #: mgrpxy/cmd/uninstall/podman.go:94
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr ""
+"No s'ha desinstal·lat res, executeu amb --force i --purge-volumes per a "
+"desinstal·lar i netejar dades"
 
 #: mgrpxy/cmd/uninstall/podman.go:97
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr ""
+"S'han mantingut les dades, utilitzeu ordres de volum podman per netejar els "
+"volums"
 
 #: mgrpxy/cmd/uninstall/uninstall.go:20
 msgid "Uninstall a proxy"
-msgstr ""
+msgstr "Desinstal·la un servidor intermediari"
 
 #: mgrpxy/cmd/uninstall/uninstall.go:21
 msgid ""
 "Uninstall a proxy and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
 msgstr ""
+"Desinstal·la un proxy i opcionalment els volums corresponents.\n"
+"Per defecte només imprimirà el que es faria, utilitzeu --force per eliminar-"
+"lo."
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:22
 msgid "Upgrade a proxy on a running kubernetes cluster"
 msgstr ""
+"Actualitza un servidor intermediari en un clúster de kubernetes en execució"
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:23
 msgid ""
@@ -384,10 +452,17 @@ msgid ""
 "\n"
 "NOTE: for now upgrading on a remote kubernetes cluster is not supported!\n"
 msgstr ""
+"Actualitzeu un servidor intermediari en un clúster de kubernetes en execució."
+"\n"
+"\n"
+"L'ordre upgrade kubernetes assumeix que el kubectl està instal·lat localment."
+"\n"
+"\n"
+"NOTA: per ara no s'admet l'actualització en un clúster de kubernetes remot!\n"
 
 #: mgrpxy/cmd/upgrade/podman/podman.go:20
 msgid "Upgrade a proxy on podman"
-msgstr ""
+msgstr "Actualitza un servidor intermediari a podman"
 
 #: mgrpxy/cmd/upgrade/podman/podman.go:21
 msgid ""
@@ -397,148 +472,164 @@ msgid ""
 "\n"
 "NOTE: for now upgrading on a remote podman is not supported!\n"
 msgstr ""
+"Actualitza un servidor intermediari a podman\n"
+"\n"
+"L'ordre upgrade podman suposa que podman s'actualitza localment.\n"
+"\n"
+"NOTA: per ara no s'admet l'actualització en un podman remot!\n"
 
 #: mgrpxy/cmd/upgrade/upgrade.go:20 mgrpxy/cmd/upgrade/upgrade.go:21
 msgid "Upgrade a proxy"
-msgstr ""
+msgstr "Actualitza un servidor intermediari"
 
 #: mgrpxy/shared/kubernetes/cmd.go:25
 msgid "Kubernetes namespace where to install the proxy"
-msgstr ""
+msgstr "Espai de noms del Kubernetes on instal·lar el servidor intermediari"
 
 #: mgrpxy/shared/kubernetes/cmd.go:26
 msgid "URL to the proxy helm chart"
-msgstr ""
+msgstr "URL al diagrama del timó del servidor intermediari"
 
 #: mgrpxy/shared/kubernetes/cmd.go:27
 msgid "Version of the proxy helm chart"
-msgstr ""
+msgstr "Versió del diagrama del timó del proxy"
 
 #: mgrpxy/shared/kubernetes/cmd.go:28
 msgid "Path to a values YAML file to use for proxy helm install"
 msgstr ""
+"Camí a un fitxer YAML de valors que s'utilitzarà per a la instal·lació del "
+"timó intermediari"
 
 #: mgrpxy/shared/kubernetes/deploy.go:34
 msgid "Installing Uyuni proxy"
-msgstr ""
+msgstr "S'està instal·lant el servidor intermediari Uyuni"
 
 #: mgrpxy/shared/kubernetes/deploy.go:96
 msgid "cannot run helm upgrade"
-msgstr ""
+msgstr "no es pot executar l'actualització del helm"
 
 #: mgrpxy/shared/kubernetes/deploy.go:112
 #: mgrpxy/shared/kubernetes/deploy.go:127
 #: mgrpxy/shared/kubernetes/deploy.go:142
 #, javascript-format
 msgid "failed to write in file %s"
-msgstr ""
+msgstr "no s'ha pogut escriure al fitxer %s"
 
 #: mgrpxy/shared/kubernetes/deploy.go:184
 msgid "failed to scale replicas to 1"
-msgstr ""
+msgstr "no s'ha pogut escalar les rèpliques a 1"
 
 #: mgrpxy/shared/podman/podman.go:38
 msgid "cannot setup network"
-msgstr ""
+msgstr "no s'ha pogut configurar la xarxa"
 
 #: mgrpxy/shared/podman/podman.go:43
 msgid "Generating systemd services"
-msgstr ""
+msgstr "S'estan generant els serveis de systemd"
 
 #: mgrpxy/shared/podman/podman.go:144
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
-msgstr ""
+msgstr "no s'ha pogut generar el fitxer de systemd «%s»"
 
 #: mgrpxy/shared/podman/podman.go:150
 msgid "cannot generate systemd conf file"
-msgstr ""
+msgstr "no s'ha pogut generar el fitxer conf del systemd"
 
 #: mgrpxy/shared/podman/podman.go:156
 msgid "cannot generate systemd conf user configuration file"
 msgstr ""
+"no s'ha pogut generar el fitxer de configuració de l'usuari «systemd conf»"
 
 #: mgrpxy/shared/podman/podman.go:186
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
-msgstr ""
+msgstr "S'està configurant el servidor intermediari amb configuració %s"
 
 #: mgrpxy/shared/podman/podman.go:205
 msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
 msgstr ""
+"El directori /etc/uyuni/proxy no té permisos de lectura i escriptura per a "
+"tots els usuaris. Comproveu la configuració de l'umask."
 
 #: mgrpxy/shared/podman/podman.go:221
 msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
 msgstr ""
+"/etc/uyuni/proxy/config.yaml no té permisos de lectura per a tots els "
+"usuaris. Comproveu la configuració de l'umask."
 
 #: mgrpxy/shared/podman/podman.go:249
 msgid "cannot find httpd image: it will no be upgraded"
-msgstr ""
+msgstr "no es pot trobar la imatge httpd: no s'actualitzarà"
 
 #: mgrpxy/shared/podman/podman.go:253
 msgid "cannot find salt-broker image: it will no be upgraded"
-msgstr ""
+msgstr "no es pot trobar la imatge salt-broker: no es millorarà"
 
 #: mgrpxy/shared/podman/podman.go:257
 msgid "cannot find squid image: it will no be upgraded"
-msgstr ""
+msgstr "no s'ha pogut trobar la imatge del calamar: no s'actualitzarà"
 
 #: mgrpxy/shared/podman/podman.go:261
 msgid "cannot find ssh image: it will no be upgraded"
-msgstr ""
+msgstr "no es pot trobar la imatge ssh: no s'actualitzarà"
 
 #: mgrpxy/shared/podman/podman.go:265
 msgid "cannot find tftpd image: it will no be upgraded"
-msgstr ""
+msgstr "no es pot trobar la imatge tftpd: no s'actualitzarà"
 
 #: mgrpxy/shared/utils/cmd.go:17
 #, javascript-format
 msgid "argument is not an existing file: %s"
-msgstr ""
+msgstr "l'argument no és un fitxer existent: %s"
 
 #: mgrpxy/shared/utils/flags.go:52
 #, javascript-format
 msgid "Invalid proxy container name: %s"
-msgstr ""
+msgstr "El nom del contenidor del servidor intermediari no és vàlid: %s"
 
 #: mgrpxy/shared/utils/flags.go:57
 msgid "failed to compute image URL"
-msgstr ""
+msgstr "no s'ha pogut calcular l'URL de la imatge"
 
 #: mgrpxy/shared/utils/flags.go:65
 msgid "SUSE Customer Center username. It will be used to pull images from registry.suse.com"
 msgstr ""
+"Nom d'usuari del Centre de Clients SUSE. S'utilitzarà per treure imatges de "
+"register.suse.com"
 
 #: mgrpxy/shared/utils/flags.go:68
 msgid "SUSE Customer Center password. It will be used to pull images from registry.suse.com"
 msgstr ""
+"Contrasenya del Centre de Clients SUSE. S'utilitzarà per treure imatges de "
+"register.suse.com"
 
 #: mgrpxy/shared/utils/flags.go:71
 msgid "SUSE Customer Center Flags"
-msgstr ""
+msgstr "Banderes del Centre de Clients SUSE"
 
 #: mgrpxy/shared/utils/flags.go:78
 msgid "image tag"
-msgstr ""
+msgstr "etiqueta de la imatge"
 
 #: mgrpxy/shared/utils/flags.go:79
 msgid "Specify a registry where to pull the images from"
-msgstr ""
+msgstr "Especifiqueu un registre d'on treure les imatges"
 
 #: mgrpxy/shared/utils/flags.go:88
 msgid "HTTPD tuning configuration file"
-msgstr ""
+msgstr "Fitxer de configuració d'afinació HTTPD"
 
 #: mgrpxy/shared/utils/flags.go:89
 msgid "Squid tuning configuration file"
-msgstr ""
+msgstr "Fitxer de configuració de l'afinació del calamar"
 
 #: mgrpxy/shared/utils/flags.go:95
 #, javascript-format
 msgid "Image for %s container"
-msgstr ""
+msgstr "Imatge per al contenidor %s"
 
 #: mgrpxy/shared/utils/flags.go:97
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
-msgstr ""
+msgstr "Etiqueta per al contenidor %s, anul·la el valor global si s'estableix"
