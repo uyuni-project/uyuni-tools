@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Feb 28 11:18:49 CET 2025 - rosuna@suse.com
+
+- version 5.1.8-0
+  * Generate SSL certificates before the setup
+  * Revert use of :z flag on server volumes (bsc#1235861)
+  * Allow mgrpxy install to use stored configuration
+
+-------------------------------------------------------------------
 Sun Feb 09 19:13:16 CET 2025 - marina.latini@suse.com
 
 - version 5.1.7-0
