@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:52+0100\n"
-"PO-Revision-Date: 2025-02-28 09:19+0000\n"
+"PO-Revision-Date: 2025-03-01 10:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-shared/ca/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -1469,14 +1469,14 @@ msgstr "no s'ha pogut obrir %s per a escriptura"
 #, javascript-format
 msgid "Has to be more than %d character long"
 msgid_plural "Has to be more than %d characters long"
-msgstr[0] "Ha de tenir més de %d caràcters"
+msgstr[0] "Ha de tenir més d'%d caràcter"
 msgstr[1] "Ha de tenir més de %d caràcters"
 
 #: shared/utils/utils.go:62
 #, javascript-format
 msgid "Has to be less than %d character long"
 msgid_plural "Has to be less than %d characters long"
-msgstr[0] "Ha de tenir menys de %d caràcters"
+msgstr[0] "Ha de tenir menys d'%d caràcter"
 msgstr[1] "Ha de tenir menys de %d caràcters"
 
 #: shared/utils/utils.go:73
