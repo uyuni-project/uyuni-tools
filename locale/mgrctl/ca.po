@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:52+0100\n"
-"PO-Revision-Date: 2025-03-01 10:56+0000\n"
+"PO-Revision-Date: 2025-03-03 10:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrctl/ca/>\n"
@@ -21,11 +21,11 @@ msgstr ""
 
 #: mgrctl/cmd/api/api.go:26
 msgid "JSON over HTTP API helper tool"
-msgstr "JSON sobre l'eina d'ajuda de l'API HTTP"
+msgstr "Eina auxiliar de l'API JSON sobre HTTP"
 
 #: mgrctl/cmd/api/api.go:31
 msgid "Call API GET request"
-msgstr "Truca a l'API per obtenir la sol·licitud"
+msgstr "Crida la sol·licitud d'API GET"
 
 #: mgrctl/cmd/api/api.go:32
 msgid ""
@@ -34,15 +34,15 @@ msgid ""
 "Example:\n"
 "# mgrctl api get user/getDetails login=test"
 msgstr ""
-"Pren un camí API i paràmetres opcionals i després emet sol·licitud GET amb "
-"ells.\n"
+"Pren una ruta d'API i paràmetres opcionals i, a continuació, emet una sol·"
+"licitud GET amb aquests.\n"
 "\n"
 "Exemple:\n"
 "# mgrctl api get user/getDetails login=test"
 
 #: mgrctl/cmd/api/api.go:43
 msgid "Call API POST request"
-msgstr "Truca a la sol·licitud de l'API"
+msgstr "Crida la sol·licitud POST de l'API"
 
 #: mgrctl/cmd/api/api.go:44
 msgid ""
@@ -56,23 +56,24 @@ msgid ""
 "JSON example:\n"
 "# mgrctl api post user/create    '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
 msgstr ""
-"Pren un camí i paràmetres de l'API i després emet la sol·licitud POST amb "
-"ells.\n"
+"Pren una ruta d'API i paràmetres i després emet una sol·licitud POST amb "
+"aquests.\n"
 "\n"
-"Els paràmetres poden ser una cadena codificada JSON o un o més parells "
-"clauvaluevalor.\n"
+"Els paràmetres poden ser una cadena codificada JSON o un o més parelles de "
+"clau=valor.\n"
 "\n"
-"Exemple de parells de valors:\n"
-"  mgrctl api post user/create login/test passwordtetestX firstName F "
-"lastName L email test@localhost\n"
+"Exemple de parelles de clau=valor:\n"
+"# mgrctl api post user/create login=test password=testXX firstName=F "
+"lastName=L email=test@localhost\n"
 "\n"
 "Exemple JSON:\n"
-"\", mgrctl api post user/create '{\"login\":\"test\", \"password\":\"testXX\""
-", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
+"# mgrctl api post user/create    '{\"login\":\"test\", \"password\":"
+"\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":"
+"\"test@localhost\"}'\n"
 
 #: mgrctl/cmd/api/api.go:62
 msgid "Store login information for future API usage"
-msgstr "Emmagatzema la informació d'inici de sessió per a l'ús futur de l'API"
+msgstr "Desa la informació d'inici de sessió per al futur ús de l'API"
 
 #: mgrctl/cmd/api/api.go:63
 msgid ""
@@ -81,39 +82,39 @@ msgid ""
 "User name, password and remote host can be provided using flags or will be asked interactively.\n"
 "Environment variables are also supported."
 msgstr ""
-"L'inici de sessió emmagatzema informació d'inici de sessió per a les "
-"properes trucades de l'API.\n"
+"L'inici de sessió desa la informació d'inici de sessió per a les properes "
+"trucades d'API.\n"
 "\n"
 "El nom d'usuari, la contrasenya i l'amfitrió remot es poden proporcionar "
-"utilitzant banderes o es demanaran interactivament.\n"
-"Les variables d'entorn també són compatibles."
+"mitjançant banderes o es demanarà de manera interactiva.\n"
+"També s'admeten variables d'entorn."
 
 #: mgrctl/cmd/api/api.go:71
 msgid "Overwrite existing login if exists"
-msgstr "Sobreescriu l'inici de sessió existent si existeix"
+msgstr "Sobreescriu l'inici de sessió existent si n'hi ha"
 
 #: mgrctl/cmd/api/api.go:75
 msgid "Remove stored login information"
-msgstr "Elimina la informació d'inici de sessió emmagatzemada"
+msgstr "Suprimeix la informació d'inici de sessió desada"
 
 #: mgrctl/cmd/api/api.go:76
 msgid "Logout removes stored login information."
-msgstr "La sortida elimina la informació d'inici de sessió emmagatzemada."
+msgstr "Tancar la sessió suprimeix la informació d'inici de sessió desada."
 
 #: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28
 msgid "unable to login to the server"
-msgstr "no s'ha pogut iniciar la sessió al servidor"
+msgstr "no es pot iniciar sessió al servidor"
 
 #: mgrctl/cmd/api/get.go:35 mgrctl/cmd/api/post.go:51
 #, javascript-format
 msgid "error in query '%s'"
-msgstr "s'ha produït un error en la consulta «%s»"
+msgstr "error a la consulta %s"
 
 #: mgrctl/cmd/api/login.go:23
 msgid "Refusing to overwrite existing login. Use --force to ignore this check."
 msgstr ""
-"S'està negant a sobreescriure l'inici de sessió existent. Utilitzeu --force "
-"per a ignorar aquesta comprovació."
+"Es refusa sobreescriure l'inici de sessió existent. Useu --force per ignorar "
+"aquesta comprovació."
 
 #: mgrctl/cmd/api/login.go:35
 msgid "Failed to validate credentials."
@@ -125,17 +126,17 @@ msgstr "S'han verificat les credencials d'inici de sessió."
 
 #: mgrctl/cmd/api/login.go:51
 msgid "Successfully logged out"
-msgstr "S'ha tancat la sessió correctament"
+msgstr "Sessió tancada correctament"
 
 #: mgrctl/cmd/cmd.go:30
 msgid "Uyuni control tool"
-msgstr "Eina de control Uyuni"
+msgstr "Eina de control d'Uyuni"
 
 #: mgrctl/cmd/cmd.go:31
 msgid "Tool to help managing Uyuni servers mainly through their API"
 msgstr ""
-"Eina per ajudar a gestionar els servidors Uyuni principalment a través de la "
-"seva API"
+"Eina per ajudar a gestionar els servidors d'Uyuni principalment a través de "
+"l'API"
 
 #: mgrctl/cmd/cmd.go:38
 msgid "configuration file path"
@@ -157,15 +158,15 @@ msgstr "S'està executant l'ordre: %s"
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
-msgstr "Copia els fitxers als contenidors i dels contenidors"
+msgstr "Copia fitxers als contenidors i des dels contenidors"
 
 #: mgrctl/cmd/cp/cp.go:30
 msgid ""
 "Takes a source and destination parameters.\n"
 "\tOne of them can be prefixed with 'server:' to indicate the path is within the server pod."
 msgstr ""
-"Pren paràmetres d'origen i de destinació.\n"
-"\tUn d'ells es pot prefixar amb 'servidor:' per indicar que el camí està "
+"Pren uns paràmetres d'origen i de destinació.\n"
+"\tUn d'aquests es pot prefixar amb \"server:\" per indicar que el camí és "
 "dins del pod del servidor."
 
 #: mgrctl/cmd/cp/cp.go:39
@@ -174,23 +175,23 @@ msgstr "no s'ha pogut desfer la configuració del «marshall»"
 
 #: mgrctl/cmd/cp/cp.go:45
 msgid "User or UID to set on the destination file"
-msgstr "Usuari o UID a establir al fitxer de destinació"
+msgstr "Usuari o UID per definir al fitxer de destinació"
 
 #: mgrctl/cmd/cp/cp.go:46
 msgid "Group or GID to set on the destination file"
-msgstr "Grup o GID a establir al fitxer de destinació"
+msgstr "Grup o GID per definir al fitxer de destinació"
 
 #: mgrctl/cmd/exec/exec.go:38
 msgid "Execute commands inside the uyuni containers using 'sh -c'"
-msgstr "Executa les ordres dins dels contenidors uyuni utilitzant «sh -c»"
+msgstr "Executa ordres dins dels contenidors uyuni amb sh -c"
 
 #: mgrctl/cmd/exec/exec.go:45
 msgid "environment variables to pass to the command, separated by commas"
-msgstr "variables d'entorn a passar a l'ordre, separades per comes"
+msgstr "variables d'entorn per passar a l'ordre, separades per comes"
 
 #: mgrctl/cmd/exec/exec.go:47
 msgid "Pass stdin to the container"
-msgstr "Passa l'entrada estàndard al contenidor"
+msgstr "Passa stdin al contenidor"
 
 #: mgrctl/cmd/exec/exec.go:48
 msgid "Stdin is a TTY"
@@ -202,7 +203,7 @@ msgstr "Ha fallat l'ordre"
 
 #: mgrctl/cmd/exec/exec.go:110
 msgid "Command returned with exit code 0"
-msgstr "L'ordre ha retornat amb el codi de sortida 0"
+msgstr "S'ha retornat l'ordre amb el codi de sortida 0"
 
 #: mgrctl/cmd/exec/exec.go:124
 msgid "cannot write"
