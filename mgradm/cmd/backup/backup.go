@@ -12,6 +12,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/create"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/restore"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -61,6 +62,9 @@ func newRestoreCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[shared.
 	restoreCmd.Flags().Bool("skipconfig", false, L("Do not restore podman configuration. Defaults will be used"))
 	restoreCmd.Flags().Bool("norestart", false, L("Do not restart service after restore is done"))
 	restoreCmd.Flags().Bool("dryRun", false, L("Print expected actions, but no action is done"))
+	restoreCmd.Flags().Bool("force", false, L("Force overwrite of existing items"))
+	restoreCmd.Flags().Bool("continue", false, L("Skip existing items and restore the rest"))
+	restoreCmd.Flags().Bool("skipverify", false, L("Skip verification of the backup files"))
 
 	return restoreCmd
 }
@@ -91,9 +95,38 @@ func doBackup(
 		var backupError *shared.BackupError
 		ok := errors.As(err, &backupError)
 		if ok {
-			if backupError.DataRemains {
-				log.Error().Msgf("%s", backupError.Err.Error())
+			log.Error().Msgf("%s", backupError.Err.Error())
+			if backupError.Abort && backupError.DataRemains {
 				return fmt.Errorf(L("Backup aborted, partially backed up files remains in '%s'"), outputDirectory)
+			}
+			if !backupError.Abort {
+				// nolint:lll
+				return errors.New(L("Important data were backed up successfully, but errors were present. Restore will use default values where needed"))
+			}
+		}
+		return err
+	}
+	return nil
+}
+
+// Backup helper to catch errors with unified error message.
+func doRestore(
+	global *types.GlobalFlags,
+	flags *shared.Flagpole,
+	cmd *cobra.Command,
+	args []string,
+) error {
+	err := restore.Restore(global, flags, cmd, args)
+	if err != nil {
+		var backupError *shared.BackupError
+		ok := errors.As(err, &backupError)
+		if ok {
+			if backupError.Abort && backupError.DataRemains {
+				log.Error().Msgf("%s", backupError.Err.Error())
+				return errors.New(L("Restore aborted with partially restored files. Resolve the error and try again"))
+			}
+			if !backupError.Abort {
+				return errors.New(L("Important data were restored successfully, but with warnings"))
 			}
 		}
 		return err
