@@ -5,12 +5,16 @@
 package create
 
 import (
+	"errors"
+	"fmt"
+	"os"
+	"path"
 	"slices"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
-	backup "github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -22,25 +26,31 @@ var runCmdOutput = utils.RunCmdOutput
 
 func Create(
 	_ *types.GlobalFlags,
-	flags *backup.Flagpole,
+	flags *shared.Flagpole,
 	_ *cobra.Command,
 	args []string,
 ) error {
 	dryRun := flags.DryRun
 	outputDirectory := args[0]
-
 	printIntro(outputDirectory, flags)
 
-	if err := backup.SanityChecks(outputDirectory, dryRun); err != nil {
-		return backup.ReportError(err, false)
+	if err := SanityChecks(outputDirectory, dryRun); err != nil {
+		return shared.AbortError(err, false)
+	}
+
+	volumesBackupPath := path.Join(outputDirectory, shared.VolumesSubdir)
+	imagesBackupPath := path.Join(outputDirectory, shared.ImagesSubdir)
+
+	if err := prepareOuputDirs([]string{outputDirectory, volumesBackupPath, imagesBackupPath}, dryRun); err != nil {
+		return shared.AbortError(err, false)
 	}
 
 	volumes := gatherVolumesToBackup(flags.ExtraVolumes, flags.SkipVolumes, flags.SkipDatabase)
 	images := gatherContainerImagesToBackup(flags.SkipImages)
 
 	if !dryRun {
-		if err := backup.StorageCheck(volumes, images, outputDirectory); err != nil {
-			return backup.ReportError(err, false)
+		if err := shared.StorageCheck(volumes, images, outputDirectory); err != nil {
+			return shared.AbortError(err, false)
 		}
 	}
 
@@ -49,38 +59,36 @@ func Create(
 	if !flags.SkipDatabase && !dryRun {
 		log.Info().Msg(L("Stopping server service"))
 		if err := systemd.StopService(podman.ServerService); err != nil {
-			return backup.ReportError(err, false)
+			return shared.AbortError(err, false)
 		}
 		serviceStopped = true
 	}
 
-	if err := backupVolumes(volumes, outputDirectory, dryRun); err != nil {
-		return backup.ReportError(err, true)
+	if err := backupVolumes(volumes, volumesBackupPath, dryRun); err != nil {
+		return shared.AbortError(err, true)
 	}
 
-	if err := backupContainerImages(images, outputDirectory, dryRun); err != nil {
-		return backup.ReportError(err, true)
-	}
+	// Remaining backups are not critical, retore can create default values
+	// so let's only track if there was an error
+	hasError := backupContainerImages(images, imagesBackupPath, dryRun)
 
 	// systemd configuration backup is optional as we have defaults to use
-	backupSystemdServices(outputDirectory, dryRun)
+	hasError = errors.Join(hasError, backupSystemdServices(outputDirectory, dryRun))
 
 	// podman configuration backup is optional as we have defaults to use
-	backupPodmanConfiguration(outputDirectory, dryRun)
+	hasError = errors.Join(hasError, backupPodmanConfiguration(outputDirectory, dryRun))
 
 	// start service if it was stopped before
 	if serviceStopped && !flags.NoRestart && !dryRun {
 		log.Info().Msg(L("Restarting server service"))
-		if err := systemd.StartService(podman.ServerSalineService); err != nil {
-			return backup.ReportError(err, true)
-		}
+		hasError = errors.Join(hasError, systemd.StartService(podman.ServerService))
 	}
 
 	log.Info().Msgf(L("Backup finished into %s"), outputDirectory)
-	return nil
+	return shared.ReportError(hasError)
 }
 
-func printIntro(outputDir string, flags *backup.Flagpole) {
+func printIntro(outputDir string, flags *shared.Flagpole) {
 	log.Debug().Msg("Creating backup with options:")
 	log.Debug().Msgf("output directory: %s", outputDir)
 	log.Debug().Msgf("dry run: %t", flags.DryRun)
@@ -90,6 +98,19 @@ func printIntro(outputDir string, flags *backup.Flagpole) {
 	log.Debug().Msgf("skip images: %t", flags.SkipImages)
 	log.Debug().Msgf("skip volumes: %s", flags.SkipVolumes)
 	log.Debug().Msgf("extra volumes: %s", flags.ExtraVolumes)
+}
+
+func prepareOuputDirs(outputDirs []string, dryRun bool) error {
+	for _, d := range outputDirs {
+		if dryRun {
+			log.Info().Msgf(L("Would create '%s' directory"), d)
+		} else {
+			if err := os.Mkdir(d, 0622); err != nil {
+				return fmt.Errorf(L("unable to create target output directory: %w"), err)
+			}
+		}
+	}
+	return nil
 }
 
 func gatherVolumesToBackup(extraVolumes []string, skipVolumes []string, skipDatabase bool) []string {
@@ -136,25 +157,65 @@ func gatherContainerImagesToBackup(skipImages bool) []string {
 
 func backupContainerImages(images []string, outputDirectory string, dryRun bool) error {
 	log.Info().Msg(L("Backing up container images"))
+	var hasError error
 	for _, image := range images {
 		log.Debug().Msgf("Backing up image %s", image)
 		if err := podman.ExportImage(image, outputDirectory, dryRun); err != nil {
-			return err
+			log.Warn().Err(err).Msgf(L("Not backing up image %s"), image)
+			hasError = errors.Join(hasError, err)
 		}
+	}
+	return hasError
+}
+
+func backupSystemdServices(outputDirectory string, dryRun bool) error {
+	errorMessage := L("Systemd services and configuration was not backed up")
+	log.Info().Msg(L("Backing up Systemd services"))
+
+	if err := exportSystemdConfiguration(outputDirectory, dryRun); err != nil {
+		log.Warn().Err(err).Msg(errorMessage)
+		return err
+	}
+	if err := utils.CreateChecksum(path.Join(outputDirectory, shared.SystemdConfBackupFile)); err != nil {
+		log.Warn().Err(err).Msg(errorMessage)
+		return err
 	}
 	return nil
 }
 
-func backupSystemdServices(outputDirectory string, dryRun bool) {
-	log.Info().Msg(L("Backing up Systemd services"))
-	if err := exportSystemdConfiguration(outputDirectory, dryRun); err != nil {
-		log.Warn().Err(err).Msg("Systemd services and configuration was not backed up")
-	}
-}
-
-func backupPodmanConfiguration(outputDirectory string, dryRun bool) {
+func backupPodmanConfiguration(outputDirectory string, dryRun bool) error {
+	errorMessage := L("Podman configuration was not backed up")
 	log.Info().Msg(L("Backing up podman configuration"))
 	if err := exportPodmanConfiguration(outputDirectory, dryRun); err != nil {
-		log.Warn().Err(err).Msg("Podman configuration was not backed up")
+		log.Warn().Err(err).Msg(errorMessage)
+		return err
 	}
+	if err := utils.CreateChecksum(path.Join(outputDirectory, shared.PodmanConfBackupFile)); err != nil {
+		log.Warn().Err(err).Msg(errorMessage)
+		return err
+	}
+	return nil
+}
+
+func SanityChecks(outputDirectory string, dryRun bool) error {
+	if err := shared.SanityChecks(); err != nil {
+		return err
+	}
+
+	if utils.FileExists(outputDirectory) {
+		if !utils.IsEmptyDirectory(outputDirectory) {
+			return fmt.Errorf(L("output directory %s already exists and is not empty"), outputDirectory)
+		}
+	}
+
+	hostData, err := podman.InspectHost()
+	if err != nil {
+		return err
+	}
+
+	if !hostData.HasUyuniServer {
+		return errors.New(L("server is not initialized."))
+	}
+
+	return nil
 }

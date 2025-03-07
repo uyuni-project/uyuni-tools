@@ -6,14 +6,12 @@ package shared
 
 import (
 	"errors"
-	"fmt"
-	"os"
 	"os/exec"
 
 	//lint:ignore ST1001 Ignore warning on lang tool import
+
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 	"golang.org/x/sys/unix"
 )
@@ -22,6 +20,12 @@ const PodmanConfBackupFile = "podmanBackup.tar"
 const SystemdConfBackupFile = "systemdBackup.tar"
 const NetworkOutputFile = "uyuniNetwork.json"
 const SecretBackupFile = "secrets.json"
+
+const VolumesSubdir = "volumes"
+const ImagesSubdir = "images"
+
+// runCmd* are a function pointers to use for easies unit testing.
+var runCmdOutput = utils.RunCmdOutput
 
 func StorageCheck(volumes []string, images []string, outputDirectory string) error {
 	// check disk space availability based on volume work list and container image list
@@ -39,32 +43,9 @@ func StorageCheck(volumes []string, images []string, outputDirectory string) err
 	return nil
 }
 
-func SanityChecks(outputDirectory string, dryRun bool) error {
-	if utils.FileExists(outputDirectory) {
-		if !utils.IsEmptyDirectory(outputDirectory) {
-			return fmt.Errorf(L("output directory %s already exists and is not empty"), outputDirectory)
-		}
-	} else {
-		if dryRun {
-			log.Info().Msgf(L("Would create '%s' output directory"), outputDirectory)
-		} else {
-			if err := os.Mkdir(outputDirectory, 0622); err != nil {
-				return fmt.Errorf(L("unable to create target output directory: %w"), err)
-			}
-		}
-	}
-
+func SanityChecks() error {
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
-	}
-
-	hostData, err := podman.InspectHost()
-	if err != nil {
-		return err
-	}
-
-	if !hostData.HasUyuniServer {
-		return errors.New(L("server is not initialized."))
 	}
 
 	return nil
