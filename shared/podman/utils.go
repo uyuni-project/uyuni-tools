@@ -5,7 +5,6 @@
 package podman
 
 import (
-	"bytes"
 	"errors"
 	"io"
 	"os"
@@ -191,21 +190,15 @@ func ExportVolume(name string, outputDir string, dryRun bool) error {
 	if exists {
 		outputFile := path.Join(outputDir, name+".tar")
 		exportCommand := []string{"podman", "volume", "export", "-o", outputFile, name}
-		checksumCommand := []string{"sha256sum", outputFile}
 		if dryRun {
 			log.Info().Msgf(L("Would run %s"), strings.Join(exportCommand, " "))
-			log.Info().Msgf(L("Would run %s"), strings.Join(checksumCommand, " "))
 			return nil
 		}
 		log.Info().Msgf(L("Run %s"), strings.Join(exportCommand, " "))
 		if err := runCmd(exportCommand[0], exportCommand[1:]...); err != nil {
 			return utils.Errorf(err, L("Failed to export volume %s"), name)
 		}
-		output, err := runCmdOutput(zerolog.DebugLevel, checksumCommand[0], checksumCommand[1:]...)
-		if err != nil {
-			return utils.Errorf(err, L("Failed to calculate checksum of volume %s"), name)
-		}
-		if err := os.WriteFile(outputFile+".sha256sum", output, 0622); err != nil {
+		if err := utils.CreateChecksum(outputFile); err != nil {
 			return utils.Errorf(err, L("Failed to write checksum of volume %s to the %s"), name, outputFile+".sha256sum")
 		}
 	}
@@ -214,28 +207,20 @@ func ExportVolume(name string, outputDir string, dryRun bool) error {
 
 // ImportVolume imports a podman volume from provided volumePath.
 // If dryRun is set to true, only messages will be logged to exmplain what would happen.
-func ImportVolume(name string, volumePath string, dryRun bool) error {
+func ImportVolume(name string, volumePath string, skipVerify bool, dryRun bool) error {
 	importCommand := []string{"podman", "volume", "import", name, volumePath}
-	checksumCommand := []string{"sha256sum", volumePath}
 	if dryRun {
-		log.Info().Msgf(L("Would run %s"), strings.Join(checksumCommand, " "))
 		log.Info().Msgf(L("Would run %s"), strings.Join(importCommand, " "))
 		return nil
 	}
-	output, err := runCmdOutput(zerolog.DebugLevel, checksumCommand[0], checksumCommand[1:]...)
-	if err != nil {
-		return utils.Errorf(err, L("Failed to calculate checksum of volume %s"), name)
-	}
-	if fileChecksum, err := os.ReadFile(volumePath + ".sha256sum"); err != nil {
-		return utils.Errorf(err, L("Failed to read checksum of volume file %s"), name, volumePath+".sha256sum")
-	} else {
-		if bytes.Equal(output, fileChecksum) {
+	if !skipVerify {
+		if err := utils.ValidateChecksum(volumePath); err != nil {
 			return utils.Errorf(err, L("Checksum does not match for volume %s"), volumePath)
 		}
 	}
 	log.Info().Msgf(L("Run %s"), strings.Join(importCommand, " "))
 	if err := runCmd(importCommand[0], importCommand[1:]...); err != nil {
-		return utils.Errorf(err, L("Failed to export volume %s"), name)
+		return utils.Errorf(err, L("Failed to import volume %s"), name)
 	}
 	return nil
 }
