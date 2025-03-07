@@ -371,7 +371,7 @@ func ExportImage(name string, outputDir string, dryRun bool) error {
 
 func imageExists(image string) bool {
 	err := utils.RunCmd("podman", "image", "exists", image)
-	return err != nil
+	return err == nil
 }
 
 func RestoreImage(imageFile string, dryRun bool) error {
