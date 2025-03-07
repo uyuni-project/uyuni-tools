@@ -506,3 +506,29 @@ func SaveBinaryData(filename string, data []int8) error {
 	}
 	return nil
 }
+
+// CreateChecksum creates sha256 checksum of provided file.
+// Uses system `sha256sum` binary to avoid pulling crypto dependencies.
+func CreateChecksum(file string) error {
+	outputFile := file + ".sha256sum"
+
+	output, err := RunCmdOutput(zerolog.DebugLevel, "sha256sum", file)
+	if err != nil {
+		return Errorf(err, L("Failed to calculate checksum of the file %s"), file)
+	}
+
+	if err := os.WriteFile(outputFile, output, 0622); err != nil {
+		return Errorf(err, L("Failed to write checksum of the file %s to the %s"), file, outputFile)
+	}
+	return nil
+}
+
+// ValidateChecksum checks integrity of the file by checking against stored checksum
+// Uses system `sha256sum` binary to avoid pulling crypt dependencies.
+func ValidateChecksum(file string) error {
+	err := RunCmd("sha256sum", "--check", "--status", file+".sha256sum")
+	if err != nil {
+		return fmt.Errorf(L("Checksum of %s does not match"), file)
+	}
+	return nil
+}
