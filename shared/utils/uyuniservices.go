@@ -60,7 +60,7 @@ var HubXMLRPCImage = types.ImageFlags{
 }
 
 var COCOAttestationImage = types.ImageFlags{
-	Name:       "erver-attestation",
+	Name:       "server-attestation",
 	Tag:        DefaultTag,
 	Registry:   DefaultRegistry,
 	PullPolicy: DefaultPullPolicy,

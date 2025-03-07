@@ -11,13 +11,17 @@ type Flagpole struct {
 	SkipImages   bool     `mapstructure:"skipimages"`
 	SkipConfig   bool     `mapstructure:"skipconfig"`
 	NoRestart    bool     `mapstructure:"norestart"`
-	DryRun       bool     `manstructure:"dryrun"`
+	DryRun       bool     `mapstructure:"dryrun"`
+	ForceRestore bool     `mapstructure:"force"`
+	SkipExisting bool     `mapstructure:"continue"`
+	SkipVerify   bool     `mapstructure:"skipverify"`
 }
 
-// Backup error indicating if something was already backed up or not.
+// Backup error indicating if something was already backed up (resp. restored) or not.
 type BackupError struct {
 	Err         error
 	DataRemains bool
+	Abort       bool
 }
 
 func (e *BackupError) Error() string {
@@ -28,10 +32,27 @@ func (e *BackupError) Unwrap() error {
 	return e.Err
 }
 
-func ReportError(err error, dataRemain bool) *BackupError {
+// Wrap error with metadata indicating this error was fatal and job was aborted.
+func AbortError(err error, dataRemains bool) error {
+	if err == nil {
+		return nil
+	}
 	return &BackupError{
 		Err:         err,
-		DataRemains: dataRemain,
+		DataRemains: dataRemains,
+		Abort:       true,
+	}
+}
+
+// Wrap error with metadata indicating this error was not fatal.
+func ReportError(err error) error {
+	if err == nil {
+		return nil
+	}
+	return &BackupError{
+		Err:         err,
+		DataRemains: true,
+		Abort:       false,
 	}
 }
 
@@ -39,4 +60,15 @@ func ReportError(err error, dataRemain bool) *BackupError {
 type BackupSecretMap struct {
 	Name   string
 	Secret string
+}
+
+type NetworkSubnet struct {
+	Subnet  string
+	Gateway string
+}
+
+type PodanNetworkConfigData struct {
+	Subnets           []NetworkSubnet `mapstructure:"subnets"`
+	NetworkInsterface string          `mapstructure:"network_interface"`
+	NetworkDNSServers []string        `mapstructure:"network_dns_servers"`
 }
