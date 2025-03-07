@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-21 09:42+0100\n"
-"PO-Revision-Date: 2025-02-12 09:25+0000\n"
+"PO-Revision-Date: 2025-03-07 05:27+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
+"uyuni-tools-mgradm/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
@@ -455,16 +456,12 @@ msgstr ""
 "注意：目前不支持在远程 podman 上安装！\n"
 
 #: mgradm/cmd/install/podman/ssl.go:90
-#, fuzzy
-#| msgid "SSL certificate organization unit"
 msgid "SSL certificates generation failed"
-msgstr "SSL 证书组织单位"
+msgstr "SSL 证书生成失败"
 
 #: mgradm/cmd/install/podman/ssl.go:93
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "SSL certificates generated"
-msgstr "SSL 证书州/省"
+msgstr "SSL 证书已生成"
 
 #: mgradm/cmd/install/podman/utils.go:40 mgradm/shared/podman/podman.go:449
 msgid "Waiting for the server to start…"
@@ -726,7 +723,7 @@ msgstr "生成的 SSL CA 私用密钥口令"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:58
 msgid "Path to the SSH public key to use to connect to the source server"
-msgstr "用于连接源服务器的 SSH 公用密钥的路径"
+msgstr "用于连接源服务器的 SSH 公共密钥的路径"
 
 #: mgradm/cmd/migrate/kubernetes/kubernetes.go:60
 msgid "Path to the passwordless SSH private key to use to connect to the source server"
@@ -773,7 +770,7 @@ msgstr "无法读取密钥文件 %s"
 #: mgradm/cmd/migrate/kubernetes/ssh.go:94
 #, javascript-format
 msgid "failed to read public key file %s"
-msgstr "无法读取公用密钥文件 %s"
+msgstr "无法读取公共密钥文件 %s"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:111
 msgid "failed to create the SSH migration secret"
