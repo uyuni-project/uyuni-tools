@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-09 13:01+0100\n"
-"PO-Revision-Date: 2025-03-09 22:56+0000\n"
+"PO-Revision-Date: 2025-03-10 07:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgradm-5-0/ko/>\n"
@@ -321,7 +321,6 @@ msgid "Tools and utilities for Hub management"
 msgstr "Hub 관리를 위한 도구 및 유틸리티"
 
 #: mgradm/cmd/hub/register/register.go:30
-#, fuzzy
 msgid "Register"
 msgstr "등록"
 
@@ -1038,13 +1037,12 @@ msgid "Extract configuration and logs"
 msgstr "구성 및 로그 추출"
 
 #: mgradm/cmd/support/config/config.go:23
-#, fuzzy
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
 msgstr ""
-"호스트 또는 클러스터 구성 및 로그와 컨테이너에서 로그를 추출하여\n"
-"디버깅에 도움이 되도록 지원하십시오."
+"디버깅 지원을 위해 호스트 또는 클러스터 구성 및 로그와\n"
+"컨테이너 로그를 추출합니다."
 
 #: mgradm/cmd/support/config/config.go:31
 msgid "path where to extract the data"
@@ -1665,7 +1663,6 @@ msgid "Image"
 msgstr "이미지"
 
 #: mgradm/shared/utils/cmd_utils.go:94
-#, fuzzy
 msgid "Specify a registry where to pull the images from"
 msgstr "이미지를 가져올 레지스트리를 지정하십시오."
 
