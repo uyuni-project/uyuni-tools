@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:52+0100\n"
-"PO-Revision-Date: 2025-03-09 22:56+0000\n"
+"PO-Revision-Date: 2025-03-10 07:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/"
 "uyuni-tools-mgrpxy/ko/>\n"
@@ -25,7 +25,6 @@ msgstr "캐시 지우기"
 
 #: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/restart/kubernetes.go:25
 #: mgrpxy/cmd/start/kubernetes.go:25 mgrpxy/cmd/stop/kubernetes.go:25
-#, fuzzy
 msgid "failed retrieving namespace"
 msgstr "네임스페이스를 검색하지 못함"
 
@@ -151,8 +150,6 @@ msgid "install podman before running this command"
 msgstr "이 명령을 실행하기 전 podman 설치"
 
 #: mgrpxy/cmd/install/podman/utils.go:43
-#, fuzzy
-#| msgid "failed to extract proxy config from %s file"
 msgid "failed to retrieve proxy config files"
 msgstr "프록시 구성 파일을 검색하지 못함"
 
@@ -254,13 +251,12 @@ msgid "Extract configuration and logs"
 msgstr "구성 및 로그 추출"
 
 #: mgrpxy/cmd/support/config/config.go:23
-#, fuzzy
 msgid ""
 "Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
 msgstr ""
-"호스트 또는 클러스터 구성 및 로그와 컨테이너에서 로그를 추출하여\n"
-"디버깅에 도움이 되도록 지원하십시오."
+"디버깅 지원을 위해 호스트 또는 클러스터 구성 및 로그와\n"
+"컨테이너 로그를 추출합니다."
 
 #: mgrpxy/cmd/support/config/config.go:31
 msgid "path where to extract the data"
@@ -527,25 +523,21 @@ msgid "failed to extract proxy config from %s file"
 msgstr "%s 파일에서 프록시 구성을 추출하지 못함"
 
 #: mgrpxy/shared/podman/podman.go:211
-#, fuzzy
 msgid "No tarball provided. Will check existing configuration files."
-msgstr "tarball이 제공되지 않았습니다. 기존 구성 파일을 확인하십시오."
+msgstr "tarball이 제공되지 않았습니다. 기존 구성 파일을 확인합니다."
 
 #: mgrpxy/shared/podman/podman.go:225
-#, fuzzy, javascript-format
-#| msgid "/etc/uyuni/proxy directory has no read and write permissions for all users. Check your umask settings."
+#, javascript-format
 msgid "%s directory has no required permissions. Check your umask settings"
 msgstr "%s 디렉토리에 필수 권한이 없습니다. umask 설정을 확인하십시오."
 
 #: mgrpxy/shared/podman/podman.go:227
-#, fuzzy, javascript-format
-#| msgid "/etc/uyuni/proxy/config.yaml has no read permissions for all users. Check your umask settings."
+#, javascript-format
 msgid "%s file has no required permissions. Check your umask settings"
 msgstr "%s 파일에 필수 권한이 없습니다. umask 설정을 확인하십시오."
 
 #: mgrpxy/shared/podman/podman.go:240
-#, fuzzy, javascript-format
-#| msgid "Squid tuning configuration file"
+#, javascript-format
 msgid "missing required configuration file: %s"
 msgstr "필수 구성 파일 누락: %s"
 
@@ -600,7 +592,6 @@ msgid "image tag"
 msgstr "이미지 태그"
 
 #: mgrpxy/shared/utils/flags.go:79
-#, fuzzy
 msgid "Specify a registry where to pull the images from"
 msgstr "이미지를 가져올 레지스트리를 지정하십시오."
 
