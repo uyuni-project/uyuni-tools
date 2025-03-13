@@ -208,6 +208,7 @@ func ExportVolume(name string, outputDir string, dryRun bool) error {
 // ImportVolume imports a podman volume from provided volumePath.
 // If dryRun is set to true, only messages will be logged to exmplain what would happen.
 func ImportVolume(name string, volumePath string, skipVerify bool, dryRun bool) error {
+	createCommand := []string{"podman", "volume", "create", "--ignore", name}
 	importCommand := []string{"podman", "volume", "import", name, volumePath}
 	if dryRun {
 		log.Info().Msgf(L("Would run %s"), strings.Join(importCommand, " "))
@@ -217,6 +218,9 @@ func ImportVolume(name string, volumePath string, skipVerify bool, dryRun bool) 
 		if err := utils.ValidateChecksum(volumePath); err != nil {
 			return utils.Errorf(err, L("Checksum does not match for volume %s"), volumePath)
 		}
+	}
+	if err := runCmd(createCommand[0], createCommand[1:]...); err != nil {
+		return utils.Errorf(err, L("Failed to precreate empty volume %s"), name)
 	}
 	log.Info().Msgf(L("Run %s"), strings.Join(importCommand, " "))
 	if err := runCmd(importCommand[0], importCommand[1:]...); err != nil {

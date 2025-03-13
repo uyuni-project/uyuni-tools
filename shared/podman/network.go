@@ -125,3 +125,12 @@ func IsNetworkPresent(network string) bool {
 	}
 	return cmd.ProcessState.ExitCode() == 0
 }
+
+// IsSecretPresent returns true if podman secret is already present.
+func IsSecretPresent(secret string) bool {
+	cmd := exec.Command("podman", "secret", "exists", secret)
+	if err := cmd.Run(); err != nil {
+		return false
+	}
+	return cmd.ProcessState.ExitCode() == 0
+}
