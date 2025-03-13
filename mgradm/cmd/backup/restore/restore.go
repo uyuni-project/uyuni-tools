@@ -22,8 +22,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var systemd podman.Systemd = podman.SystemdImpl{}
-var runCmdOutput = utils.RunCmdOutput
 var runCmdInput = utils.RunCmdInput
 var runCmd = utils.RunCmd
 
@@ -35,6 +33,7 @@ func Restore(
 
 ) error {
 	inputDirectory := args[0]
+	printIntro(inputDirectory, flags)
 	dryRun := flags.DryRun
 	// SanityCheck
 	if err := SanityChecks(inputDirectory, flags); err != nil {
@@ -49,8 +48,6 @@ func Restore(
 	if err != nil {
 		return shared.AbortError(err, false)
 	}
-	// TODO Check backup integrity
-
 	// Restore volumes if provided
 	if err := restoreVolumes(volumes, flags, dryRun); err != nil {
 		return shared.AbortError(err, true)
@@ -69,10 +66,23 @@ func Restore(
 	// Restore systemd config or generate defaults
 	if err := restoreSystemdConfig(inputDirectory, flags); err != nil {
 		hasError = errors.Join(hasError, err)
-		// recreate services defaults
-
+		// TODO: recreate services defaults
 	}
+
 	return shared.ReportError(hasError)
+}
+
+func printIntro(dir string, flags *shared.Flagpole) {
+	log.Debug().Msg("Restoring backup with options:")
+	log.Debug().Msgf("input directory: %s", dir)
+	log.Debug().Msgf("dry run: %t", flags.DryRun)
+	log.Debug().Msgf("skip database: %t", flags.SkipDatabase)
+	log.Debug().Msgf("skip config: %t", flags.SkipConfig)
+	log.Debug().Msgf("skip restart: %t", flags.NoRestart)
+	log.Debug().Msgf("skip images: %t", flags.SkipImages)
+	log.Debug().Msgf("skip volumes: %s", flags.SkipVolumes)
+	log.Debug().Msgf("extra volumes: %s", flags.ExtraVolumes)
+	log.Debug().Msgf("skip existing: %t", flags.SkipExisting)
 }
 
 func SanityChecks(inputDirectory string, flags *shared.Flagpole) error {
@@ -82,7 +92,6 @@ func SanityChecks(inputDirectory string, flags *shared.Flagpole) error {
 
 	if !utils.FileExists(inputDirectory) {
 		return fmt.Errorf(L("input directory %s does not exists"), inputDirectory)
-
 	}
 
 	hostData, err := podman.InspectHost()
@@ -96,7 +105,6 @@ func SanityChecks(inputDirectory string, flags *shared.Flagpole) error {
 		} else {
 			return errors.New(L("server is already initialized. Use force to overwrite"))
 		}
-
 	}
 	// TODO check if images from backup are existing
 
@@ -127,9 +135,21 @@ func gatherVolumesToRestore(source string, flags *shared.Flagpole) ([]string, er
 			continue
 		}
 		volName, _ := strings.CutSuffix(v.Name(), ".tar")
+
+		// Skip volumes set as skipvolume option
 		if slices.Contains(skipVolumes, volName) {
 			log.Info().Msgf(L("Skipping volume %s"), volName)
 			continue
+		}
+
+		// Skip database volumes if skipdatabase option is used
+		if flags.SkipDatabase {
+			for _, v := range utils.PgsqlRequiredVolumeMounts {
+				if volName == v.Name {
+					log.Info().Msgf(L("Skipping database volume %s"), volName)
+					continue
+				}
+			}
 		}
 		if err := runCmd("podman", "volume", "exists", volName); err == nil {
 			if flags.SkipExisting {
@@ -163,8 +183,10 @@ func gatherImagesToRestore(source string, flags *shared.Flagpole) ([]string, err
 
 	output := []string{}
 	for _, image := range images {
-		imageName, _ := strings.CutSuffix(image.Name(), ".tar")
-		output = append(output, imageName)
+		if !strings.HasSuffix(image.Name(), ".tar") {
+			continue
+		}
+		output = append(output, path.Join(imagesDir, image.Name()))
 	}
 	return output, nil
 }
@@ -208,6 +230,7 @@ func restorePodmanConfig(inputDirectory string, flags *shared.Flagpole) error {
 }
 
 func restoreSystemdConfig(inputDirectory string, flags *shared.Flagpole) error {
+	log.Info().Msgf(L("Restoring systemd configuration"))
 	systemdConfigFile := path.Join(inputDirectory, shared.SystemdConfBackupFile)
 	if !utils.FileExists(systemdConfigFile) {
 		return errors.New(L("systemd backup not found in the backup location"))
@@ -218,5 +241,5 @@ func restoreSystemdConfig(inputDirectory string, flags *shared.Flagpole) error {
 		}
 	}
 
-	return nil
+	return restoreSystemdConfiguration(systemdConfigFile, flags)
 }
