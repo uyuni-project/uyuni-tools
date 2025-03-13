@@ -123,7 +123,9 @@ func gatherVolumesToBackup(extraVolumes []string, skipVolumes []string, skipData
 	}
 
 	if skipDatabase {
-		skipVolumes = append(skipVolumes, utils.VarPgsqlVolumeMount.Name)
+		for _, volume := range utils.PgsqlRequiredVolumeMounts {
+			skipVolumes = append(skipVolumes, volume.Name)
+		}
 	}
 	for _, volume := range utils.ServerVolumeMounts {
 		if !slices.Contains(skipVolumes, volume.Name) {

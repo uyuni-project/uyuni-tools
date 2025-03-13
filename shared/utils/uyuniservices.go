@@ -15,19 +15,19 @@ import (
 var UyuniServices = []types.UyuniService{
 	{Name: "uyuni-server",
 		Image:       ServerImage,
-		Description: "",
+		Description: L("Main service"),
 		Replicas:    types.SingleMandatoryReplica,
 		Options:     []types.UyuniServiceOption{}},
 
 	{Name: "uyuni-server-migration",
 		Image:       Migration14To16Image,
-		Description: "",
+		Description: L("Migration helper"),
 		Replicas:    types.SingleOptionalReplica,
 		Options:     []types.UyuniServiceOption{}},
 
 	{Name: "uyuni-server-attestation",
 		Image:       COCOAttestationImage,
-		Description: L("confidential computing attestation"),
+		Description: L("Confidential computing attestation"),
 		Replicas:    types.SingleOptionalReplica,
 		Options:     []types.UyuniServiceOption{}},
 
@@ -41,6 +41,10 @@ var UyuniServices = []types.UyuniService{
 		Image:       SalineImage,
 		Description: L("Saline"),
 		Replicas:    types.SingleOptionalReplica,
+		Options:     []types.UyuniServiceOption{}},
+	{Name: "uyuni-db",
+		Description: L("Database"),
+		Replicas:    types.SingleMandatoryReplica,
 		Options:     []types.UyuniServiceOption{}},
 }
 
@@ -80,4 +84,9 @@ var Migration14To16Image = types.ImageFlags{
 	PullPolicy: DefaultPullPolicy,
 }
 
-// Proxy
+var PostgreSQLImage = types.ImageFlags{
+	Name:       "uyuni-db",
+	Tag:        DefaultTag,
+	Registry:   DefaultRegistry,
+	PullPolicy: DefaultPullPolicy,
+}
