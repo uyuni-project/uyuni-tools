@@ -114,6 +114,7 @@ func gatherVolumesToRestore(source string, flags *shared.Flagpole) ([]string, er
 	if !utils.FileExists(volumeDir) {
 		return []string{}, errors.New(L("No volumes found in the backup"))
 	}
+
 	volumes, err := os.ReadDir(volumeDir)
 	if err != nil {
 		return nil, errors.New(L("Unable to read directory with the volumes"))
@@ -121,9 +122,13 @@ func gatherVolumesToRestore(source string, flags *shared.Flagpole) ([]string, er
 
 	output := []string{}
 	for _, v := range volumes {
+		if strings.HasSuffix(v.Name(), "sha256sum") {
+			// This is checksum file, ignore
+			continue
+		}
 		volName, _ := strings.CutSuffix(v.Name(), ".tar")
 		if slices.Contains(skipVolumes, volName) {
-			log.Info().Msgf(L("Not restoring existing volume %s"), volName)
+			log.Info().Msgf(L("Skipping volume %s"), volName)
 			continue
 		}
 		if err := runCmd("podman", "volume", "exists", volName); err == nil {
@@ -132,11 +137,11 @@ func gatherVolumesToRestore(source string, flags *shared.Flagpole) ([]string, er
 				continue
 			}
 			if !flags.ForceRestore {
-				return nil, errors.New(L("Volume to restore already exists."))
+				return nil, fmt.Errorf(L("Not restoring existing volume %s unless forced"), volName)
 			}
 			log.Info().Msgf(L("Volume %s will be overwriten"), volName)
 		}
-		output = append(output, volName)
+		output = append(output, path.Join(volumeDir, v.Name()))
 	}
 	return output, nil
 }
@@ -167,7 +172,9 @@ func gatherImagesToRestore(source string, flags *shared.Flagpole) ([]string, err
 func restoreVolumes(volumes []string, flags *shared.Flagpole, dryRun bool) error {
 	var hasError error
 	for _, volume := range volumes {
-		if err := podman.ImportVolume(volume, volume, flags.SkipVerify, dryRun); err != nil {
+		volName, _ := strings.CutSuffix(volume, ".tar")
+		_, volName = path.Split(volName)
+		if err := podman.ImportVolume(volName, volume, flags.SkipVerify, dryRun); err != nil {
 			hasError = errors.Join(hasError, err)
 		}
 	}
