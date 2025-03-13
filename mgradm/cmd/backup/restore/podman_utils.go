@@ -49,8 +49,11 @@ func restorePodmanConfiguration(podmanBackupFile string, flags *shared.Flagpole)
 	return hasError
 }
 
+// parseNetworkData decodes stored podman network inspect result.
+// We are not interested in all data, so selectively decode intereting bits.
+// TODO: consider doing this on the backup side.
 func parseNetworkData(data []byte) (networkDetails shared.PodanNetworkConfigData, err error) {
-	networkData := []map[string]interface{}{}
+	var networkData []map[string]json.RawMessage
 	if err = json.Unmarshal(data, &networkData); err != nil {
 		log.Warn().Msg(L("Unable to decode network data backup"))
 		return
@@ -69,9 +72,19 @@ func parseNetworkData(data []byte) (networkDetails shared.PodanNetworkConfigData
 	if _, ok := networkData[0]["network_dns_servers"]; !ok {
 		return
 	}
-	networkDetails.Subnets = networkData[0]["subnets"].([]shared.NetworkSubnet)
-	networkDetails.NetworkInsterface = networkData[0]["network_interface"].(string)
-	networkDetails.NetworkDNSServers = networkData[0]["network_dns_servers"].([]string)
+
+	if err = json.Unmarshal(networkData[0]["subnets"], &networkDetails.Subnets); err != nil {
+		return
+	}
+
+	if err = json.Unmarshal(networkData[0]["network_dns_servers"], &networkDetails.NetworkDNSServers); err != nil {
+		return
+	}
+
+	if err = json.Unmarshal(networkData[0]["network_interface"], &networkDetails.NetworkInsterface); err != nil {
+		return
+	}
+
 	return networkDetails, nil
 }
 
@@ -96,14 +109,15 @@ func restorePodmanNetwork(header *tar.Header, tr *tar.Reader, flags *shared.Flag
 		log.Info().Msgf(L("Would restore network configuration"))
 		return nil
 	}
-	data := make([]byte, header.Size+1)
+	data := make([]byte, header.Size)
 	if _, err := tr.Read(data); err != io.EOF {
 		log.Warn().Msg(L("Failed to read backed up network configuration, trying default"))
 		return errors.Join(err, defaultPodmanNetwork(flags))
 	}
+	log.Trace().Msgf("Loaded network data: %s", data)
 	networkDetails, err := parseNetworkData(data)
 	if err != nil {
-		log.Warn().Msg(L("Failed to decode backed up network configuration, trying default"))
+		log.Warn().Err(err).Msg(L("Failed to decode backed up network configuration, trying default"))
 		return errors.Join(err, defaultPodmanNetwork(flags))
 	}
 
@@ -111,39 +125,47 @@ func restorePodmanNetwork(header *tar.Header, tr *tar.Reader, flags *shared.Flag
 		if flags.ForceRestore {
 			podman.DeleteNetwork(false)
 		} else {
+			log.Warn().Msg(L("Podman network already exists, not restoring unless forced"))
 			return errors.New(L("podman network already exists"))
 		}
 	}
 
-	command := []string{"podman", "network", "create", "interface-name", networkDetails.NetworkInsterface}
+	command := []string{"podman", "network", "create", "--interface-name", networkDetails.NetworkInsterface}
 	for _, v := range networkDetails.Subnets {
-		command = append(command, "--subnets", v.Subnet, "--gateway", v.Gateway)
+		command = append(command, "--subnet", v.Subnet, "--gateway", v.Gateway)
 	}
 	for _, v := range networkDetails.NetworkDNSServers {
 		command = append(command, "--dns", v)
 	}
+	command = append(command, podman.UyuniNetwork)
 	log.Info().Msgf("Restoring podman network")
 	if err := runCmd(command[0], command[1:]...); err != nil {
-		log.Error().Msg(L("Unlable to create podman network"))
+		log.Error().Err(err).Msg(L("Unlable to create podman network"))
 		return err
 	}
 	return nil
 }
 
-func parseSecretsData(data []byte) (secrets []shared.BackupSecretMap, err error) {
-	if err = json.Unmarshal(data, &secrets); err != nil {
-		log.Warn().Msg(L("Unable to decode podman secrets"))
-		return
+func parseSecretsData(data []byte) ([]shared.BackupSecretMap, error) {
+	secrets := []shared.BackupSecretMap{}
+	if err := json.Unmarshal(data, &secrets); err != nil {
+		log.Warn().Err(err).Msg(L("Unable to decode podman secrets"))
+		return nil, err
 	}
-	for _, v := range secrets {
+
+	decodedSecrets := make([]shared.BackupSecretMap, len(secrets))
+	for i, v := range secrets {
 		decoded, err := base64.StdEncoding.DecodeString(v.Secret)
 		if err != nil {
 			log.Warn().Msgf(L("Unable to decode secret %s, using as is"), v.Name)
 		} else {
-			v.Secret = string(decoded[:])
+			decodedSecrets[i] = shared.BackupSecretMap{
+				Name:   v.Name,
+				Secret: string(decoded[:]),
+			}
 		}
 	}
-	return secrets, nil
+	return decodedSecrets, nil
 }
 
 func restorePodmanSecrets(header *tar.Header, tr *tar.Reader, flags *shared.Flagpole) error {
@@ -152,7 +174,7 @@ func restorePodmanSecrets(header *tar.Header, tr *tar.Reader, flags *shared.Flag
 		return nil
 	}
 
-	data := make([]byte, header.Size+1)
+	data := make([]byte, header.Size)
 	if _, err := tr.Read(data); err != io.EOF {
 		log.Warn().Msg(L("Failed to read backed up podman secrets, no secrets were restored"))
 		return err
@@ -165,11 +187,15 @@ func restorePodmanSecrets(header *tar.Header, tr *tar.Reader, flags *shared.Flag
 
 	var hasError error
 	log.Info().Msgf("Restoring podman secrets")
-	baseCommand := []string{"podman", "secret", "create"}
+	baseCommand := []string{"podman", "secret", "create", "--replace"}
 	for _, v := range secrets {
+		if !flags.ForceRestore && podman.IsSecretPresent(v.Name) {
+			log.Error().Msgf(L("Podman secret %s is already present, not restoring unless forced"), v.Name)
+			continue
+		}
 		command := append(baseCommand, v.Name, "-")
 		if err := runCmdInput(command[0], v.Secret, command[1:]...); err != nil {
-			log.Error().Msg(L("Unlable to create podman secret"))
+			log.Error().Msg(L("Unable to create podman secret"))
 			hasError = errors.Join(hasError, err)
 		}
 	}
