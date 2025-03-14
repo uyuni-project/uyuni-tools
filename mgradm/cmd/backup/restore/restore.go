@@ -36,10 +36,13 @@ func Restore(
 	printIntro(inputDirectory, flags)
 	dryRun := flags.DryRun
 	// SanityCheck
-	if err := SanityChecks(inputDirectory, flags); err != nil {
+	if err := sanityChecks(inputDirectory, flags); err != nil {
 		return shared.AbortError(err, false)
 	}
 
+	// Gather the list of volumes and images from the backup location
+	// Both parses provided flags and the produced list has volumes or images
+	// already skipped over if needed.
 	volumes, err := gatherVolumesToRestore(inputDirectory, flags)
 	if err != nil {
 		return shared.AbortError(err, false)
@@ -48,13 +51,18 @@ func Restore(
 	if err != nil {
 		return shared.AbortError(err, false)
 	}
-	// Restore volumes if provided
+
+	// Restore provided volumes
+	// An error with volume restore is considered serious so we abort
+	// --continue can be used to skip over already imported images once error
+	// is resolved
 	if err := restoreVolumes(volumes, flags, dryRun); err != nil {
 		return shared.AbortError(err, true)
 	}
 
+	// Everything below is not considered a serious error as it can be recreated from
+	// defaults, but there may be a data loss
 	var hasError error
-	// Restore images if provided
 	if err := restoreImages(images, dryRun); err != nil {
 		hasError = err
 	}
@@ -85,7 +93,7 @@ func printIntro(dir string, flags *shared.Flagpole) {
 	log.Debug().Msgf("skip existing: %t", flags.SkipExisting)
 }
 
-func SanityChecks(inputDirectory string, flags *shared.Flagpole) error {
+func sanityChecks(inputDirectory string, flags *shared.Flagpole) error {
 	if err := shared.SanityChecks(); err != nil {
 		return err
 	}
@@ -106,11 +114,13 @@ func SanityChecks(inputDirectory string, flags *shared.Flagpole) error {
 			return errors.New(L("server is already initialized. Use force to overwrite"))
 		}
 	}
-	// TODO check if images from backup are existing
-
 	return nil
 }
 
+// gatherVolumesToRestore produces a list of volumes to be imported.
+// It takes a list from the backup source, checks if volume already exists and if it is
+// to be skipped.
+// Special `--skipvolume all` handing will cause to return empty list.
 func gatherVolumesToRestore(source string, flags *shared.Flagpole) ([]string, error) {
 	skipVolumes := flags.SkipVolumes
 	if len(skipVolumes) == 1 && skipVolumes[0] == "all" {
@@ -166,6 +176,8 @@ func gatherVolumesToRestore(source string, flags *shared.Flagpole) ([]string, er
 	return output, nil
 }
 
+// gatherImagesTorRestore produces a list of images to be imported.
+// It checks if images are to be skipped, in which case it returns empty list.
 func gatherImagesToRestore(source string, flags *shared.Flagpole) ([]string, error) {
 	if flags.SkipImages {
 		log.Debug().Msg("Skipping restoring of images")
