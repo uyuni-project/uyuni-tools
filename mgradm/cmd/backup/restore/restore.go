@@ -151,7 +151,7 @@ func gatherVolumesToRestore(source string, flags *shared.Flagpole) ([]string, er
 				}
 			}
 		}
-		if err := runCmd("podman", "volume", "exists", volName); err == nil {
+		if podman.IsVolumePresent(volName) {
 			if flags.SkipExisting {
 				log.Info().Msgf(L("Not restoring existing volume %s"), volName)
 				continue
@@ -197,7 +197,7 @@ func restoreVolumes(volumes []string, flags *shared.Flagpole, dryRun bool) error
 		volName, _ := strings.CutSuffix(volume, ".tar")
 		_, volName = path.Split(volName)
 		if err := podman.ImportVolume(volName, volume, flags.SkipVerify, dryRun); err != nil {
-			hasError = errors.Join(hasError, err)
+			hasError = errors.Join(hasError, handleVolumeHacks(volName, err))
 		}
 	}
 	return hasError

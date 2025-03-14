@@ -155,7 +155,7 @@ func GetServiceImage(service string) string {
 // DeleteVolume deletes a podman volume based on its name.
 // If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
 func DeleteVolume(name string, dryRun bool) error {
-	exists := isVolumePresent(name)
+	exists := IsVolumePresent(name)
 	if exists {
 		if dryRun {
 			log.Info().Msgf(L("Would run %s"), "podman volume rm "+name)
@@ -166,7 +166,7 @@ func DeleteVolume(name string, dryRun bool) error {
 				// Check if the volume is not mounted - for example var-pgsql - as second storage device
 				// We need to compute volume path ourselves because above `podman volume rm` call may have
 				// already removed volume from podman internal structures
-				basePath, errBasePath := getPodmanVolumeBasePath()
+				basePath, errBasePath := GetPodmanVolumeBasePath()
 				if errBasePath != nil {
 					return errBasePath
 				}
@@ -186,7 +186,7 @@ func DeleteVolume(name string, dryRun bool) error {
 // outputDir option expects already existing directory.
 // If dryRun is set to true, only messages will be logged to explain what would happen.
 func ExportVolume(name string, outputDir string, dryRun bool) error {
-	exists := isVolumePresent(name)
+	exists := IsVolumePresent(name)
 	if exists {
 		outputFile := path.Join(outputDir, name+".tar")
 		exportCommand := []string{"podman", "volume", "export", "-o", outputFile, name}
@@ -229,7 +229,7 @@ func ImportVolume(name string, volumePath string, skipVerify bool, dryRun bool) 
 	return nil
 }
 
-func isVolumePresent(volume string) bool {
+func IsVolumePresent(volume string) bool {
 	var exitError *exec.ExitError
 	cmd := exec.Command("podman", "volume", "exists", volume)
 	if err := cmd.Run(); err != nil && errors.As(err, &exitError) {
@@ -260,7 +260,8 @@ func isVolumePathEmpty(volume string) bool {
 	return errors.Is(err, io.EOF)
 }
 
-func getPodmanVolumeBasePath() (string, error) {
+// GetPodmanVolumeBasePath returns the path to the volume on the host system
+func GetPodmanVolumeBasePath() (string, error) {
 	cmd := exec.Command("podman", "system", "info", "--format={{ .Store.VolumePath }}")
 	out, err := cmd.Output()
 	return strings.TrimSpace(string(out)), err
