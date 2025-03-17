@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Mar 17 11:33:05 CET 2025 - rosuna@suse.com
+
+- version 0.1.29-0
+  * Relabel proxy config files on SELinux (bsc#1235658)
+  * Escape lang_package macro properly
+  * Revert use of :z flag on server volumes (bsc#1235861)
+  * Bump the default image tag to 5.0.4
+
+-------------------------------------------------------------------
 Fri Jan 17 14:37:44 CET 2025 - rosuna@suse.com
 
 - version 0.1.28-0
