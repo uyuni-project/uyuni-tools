@@ -16,9 +16,14 @@ import (
 
 var defaultImage = path.Join(utils.DefaultRegistry, "server")
 
-// UseExisting return true if existing SSL Cert can be used.
-func (f *InstallSSLFlags) UseExisting() bool {
+// UseProvided return true if server can use an SSL Cert provided by flags.
+func (f *InstallSSLFlags) UseProvided() bool {
 	return f.Server.IsDefined() && f.Ca.IsThirdParty()
+}
+
+// UseProvidedDB return true if DB can use an SSL Cert provided by flags.
+func (f *InstallSSLFlags) UseProvidedDB() bool {
+	return f.DB.IsDefined() && f.DB.CA.IsThirdParty()
 }
 
 // UseMigratedCa returns true if a migrated CA and key can be used.
@@ -31,11 +36,11 @@ func (f *InstallSSLFlags) UseMigratedCa() bool {
 // localDB indicates whether the SSL certificates for the database need to be checked.
 // Those are not needed for external databases.
 func (f *InstallSSLFlags) CheckParameters(localDB bool) {
-	if !f.UseExisting() && (f.Server.Cert != "" || f.Server.Key != "" || f.Ca.IsDefined()) {
+	if !f.UseProvided() && (f.Server.Cert != "" || f.Server.Key != "" || f.Ca.IsDefined()) {
 		log.Fatal().Msg(L("Server certificate, key and root CA need to be all provided"))
 	}
 
-	if f.UseExisting() && localDB && !f.DB.IsDefined() {
+	if f.UseProvided() && localDB && !f.DB.IsDefined() {
 		log.Fatal().Msg(L("Database certificate and key need to be provided"))
 	}
 }

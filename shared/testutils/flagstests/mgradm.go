@@ -85,20 +85,24 @@ var ReportDBFlagsTestArgs = []string{
 	"--reportdb-port", "5678",
 }
 
-// InstallSSLFlagsTestArgs is the expected values for InstallSSLFlagsTestArg.
-var InstallSSLFlagsTestArgs = []string{
-	"--ssl-password", "sslsecret",
-	"--ssl-ca-intermediate", "path/inter1.crt",
-	"--ssl-ca-intermediate", "path/inter2.crt",
-	"--ssl-ca-root", "path/root.crt",
-	"--ssl-server-cert", "path/srv.crt",
-	"--ssl-server-key", "path/srv.key",
+// InstallDBSSLFlagsTestArgs is the expected values for InstallSSLFlagsTestArg for the DB.
+var InstallDBSSLFlagsTestArgs = []string{
 	"--ssl-db-ca-intermediate", "path/dbinter1.crt",
 	"--ssl-db-ca-intermediate", "path/dbinter2.crt",
 	"--ssl-db-ca-root", "path/dbroot.crt",
 	"--ssl-db-cert", "path/dbsrv.crt",
 	"--ssl-db-key", "path/dbsrv.key",
 }
+
+// InstallSSLFlagsTestArgs is the expected values for InstallSSLFlagsTestArg.
+var InstallSSLFlagsTestArgs = append([]string{
+	"--ssl-password", "sslsecret",
+	"--ssl-ca-intermediate", "path/inter1.crt",
+	"--ssl-ca-intermediate", "path/inter2.crt",
+	"--ssl-ca-root", "path/root.crt",
+	"--ssl-server-cert", "path/srv.crt",
+	"--ssl-server-key", "path/srv.key",
+}, InstallDBSSLFlagsTestArgs...)
 
 // ImageFlagsTestArgs is the expected values for AssertImageFlag.
 var ImageFlagsTestArgs = []string{
@@ -226,11 +230,16 @@ func AssertInstallSSLFlag(t *testing.T, flags *utils.InstallSSLFlags) {
 	testutils.AssertEquals(t, "Error parsing --ssl-ca-root", "path/root.crt", flags.Ca.Root)
 	testutils.AssertEquals(t, "Error parsing --ssl-server-cert", "path/srv.crt", flags.Server.Cert)
 	testutils.AssertEquals(t, "Error parsing --ssl-server-key", "path/srv.key", flags.Server.Key)
+	AssertInstallDBSSLFlag(t, &flags.DB)
+	AssertSSLGenerationFlag(t, &flags.SSLCertGenerationFlags)
+}
+
+// AssertInstallDBSSLFlag asserts that all InstallSSLFlags flags are parsed correctly.
+func AssertInstallDBSSLFlag(t *testing.T, flags *utils.SSLFlags) {
 	//FIXME
 	//testutils.AssertEquals(t, "Error parsing --ssl-db-ca-intermediate",
 	// []string{"path/dbinter1.crt, path/dbinter2.crt"}, flags.DB.CA.Intermediate)
-	testutils.AssertEquals(t, "Error parsing --ssl-db-ca-root", "path/dbroot.crt", flags.DB.CA.Root)
-	testutils.AssertEquals(t, "Error parsing --ssl-db-cert", "path/dbsrv.crt", flags.DB.Cert)
-	testutils.AssertEquals(t, "Error parsing --ssl-db-key", "path/dbsrv.key", flags.DB.Key)
-	AssertSSLGenerationFlag(t, &flags.SSLCertGenerationFlags)
+	testutils.AssertEquals(t, "Error parsing --ssl-db-ca-root", "path/dbroot.crt", flags.CA.Root)
+	testutils.AssertEquals(t, "Error parsing --ssl-db-cert", "path/dbsrv.crt", flags.Cert)
+	testutils.AssertEquals(t, "Error parsing --ssl-db-key", "path/dbsrv.key", flags.Key)
 }

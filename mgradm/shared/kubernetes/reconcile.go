@@ -191,7 +191,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 
 	// Deploy the SSL CA and server certificates
 	var caIssuer string
-	if flags.Installation.SSL.UseExisting() {
+	if flags.Installation.SSL.UseProvided() {
 		if err := DeployExistingCertificate(flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SSL); err != nil {
 			return err
 		}

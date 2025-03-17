@@ -84,7 +84,7 @@ func (flags *InstallationFlags) checkSSLParameters(cmd *cobra.Command, command s
 	flags.SSL.CheckParameters(isLocalDB)
 
 	// Since we use cert-manager for self-signed certificates on kubernetes we don't need password for it
-	if !flags.SSL.UseExisting() && command == "podman" {
+	if !flags.SSL.UseProvided() && command == "podman" {
 		utils.AskPasswordIfMissing(&flags.SSL.Password, cmd.Flag("ssl-password").Usage, 0, 0)
 	}
 }

@@ -5,7 +5,6 @@
 package podman
 
 import (
-	"errors"
 	"fmt"
 	"os/exec"
 	"path"
@@ -22,7 +21,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/ssl"
@@ -111,82 +109,6 @@ Environment="PODMAN_EXTRA_ARGS=%s"
 		return utils.Errorf(err, L("cannot generate systemd user configuration file"))
 	}
 	return systemd.ReloadDaemon(false)
-}
-
-// UpdateSSLCertificate update SSL certificate.
-func UpdateSSLCertificate(cnx *shared.Connection, chain *types.CaChain, serverPair *types.SSLPair) error {
-	if err := ssl.CheckPaths(chain, serverPair); err != nil {
-		return err
-	}
-
-	// Copy the CAs, certificate and key to the container
-	const certDir = "/tmp/uyuni-tools"
-	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "mkdir", "-p", certDir); err != nil {
-		return errors.New(L("failed to create temporary folder on container to copy certificates to"))
-	}
-
-	rootCaPath := path.Join(certDir, "root-ca.crt")
-	serverCrtPath := path.Join(certDir, "server.crt")
-	serverKeyPath := path.Join(certDir, "server.key")
-
-	log.Debug().Msgf("Intermediate CA flags: %v", chain.Intermediate)
-
-	args := []string{
-		"exec",
-		podman.ServerContainerName,
-		"mgr-ssl-cert-setup",
-		"-vvv",
-		"--root-ca-file", rootCaPath,
-		"--server-cert-file", serverCrtPath,
-		"--server-key-file", serverKeyPath,
-	}
-
-	if err := cnx.Copy(chain.Root, "server:"+rootCaPath, "root", "root"); err != nil {
-		return utils.Errorf(err, L("cannot copy %s"), rootCaPath)
-	}
-	if err := cnx.Copy(serverPair.Cert, "server:"+serverCrtPath, "root", "root"); err != nil {
-		return utils.Errorf(err, L("cannot copy %s"), serverCrtPath)
-	}
-	if err := cnx.Copy(serverPair.Key, "server:"+serverKeyPath, "root", "root"); err != nil {
-		return utils.Errorf(err, L("cannot copy %s"), serverKeyPath)
-	}
-
-	for i, ca := range chain.Intermediate {
-		caFilename := fmt.Sprintf("ca-%d.crt", i)
-		caPath := path.Join(certDir, caFilename)
-		args = append(args, "--intermediate-ca-file", caPath)
-		if err := cnx.Copy(ca, "server:"+caPath, "root", "root"); err != nil {
-			return utils.Errorf(err, L("cannot copy %s"), caPath)
-		}
-	}
-
-	// Check and install then using mgr-ssl-cert-setup
-	if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", args...); err != nil {
-		return utils.Errorf(err, L("failed to update SSL certificate: %s"), out)
-	}
-
-	// Clean the copied files and the now useless ssl-build
-	if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", certDir); err != nil {
-		return utils.Errorf(err, L("failed to remove copied certificate files in the container"))
-	}
-
-	const sslbuildPath = "/root/ssl-build"
-	if cnx.TestExistenceInPod(sslbuildPath) {
-		if err := utils.RunCmd("podman", "exec", podman.ServerContainerName, "rm", "-rf", sslbuildPath); err != nil {
-			return utils.Errorf(err, L("failed to remove now useless ssl-build folder in the container"))
-		}
-	}
-
-	// The services need to be restarted
-	log.Info().Msg(L("Restarting services after updating the certificate"))
-	if err := utils.RunCmd(
-		"podman", "exec", podman.ServerContainerName, "systemctl", "restart", "postgresql.service",
-	); err != nil {
-		return err
-	}
-	return utils.RunCmdStdMapping(
-		zerolog.DebugLevel, "podman", "exec", podman.ServerContainerName, "spacewalk-service", "restart",
-	)
 }
 
 // RunMigration migrate an existing remote server to a container.
@@ -447,14 +369,6 @@ func Upgrade(
 		return err
 	}
 
-	if err := systemd.StopService(podman.ServerService); err != nil {
-		return utils.Errorf(err, L("cannot stop service"))
-	}
-
-	defer func() {
-		err = systemd.StartService(podman.ServerService)
-	}()
-
 	if inspectedValues.CommonInspectData.CurrentPgVersionNotMigrated != "" ||
 		inspectedValues.DBHost == "localhost" ||
 		inspectedValues.ReportDBHost == "localhost" {
@@ -509,6 +423,13 @@ func Upgrade(
 		}
 	}
 
+	if err := systemd.StopService(podman.ServerService); err != nil {
+		return utils.Errorf(err, L("cannot stop service"))
+	}
+
+	defer func() {
+		err = systemd.StartService(podman.ServerService)
+	}()
 	if inspectedValues.DBInspectData.ImagePgVersion > inspectedValues.CommonInspectData.CurrentPgVersion {
 		log.Info().Msgf(
 			L("Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"),

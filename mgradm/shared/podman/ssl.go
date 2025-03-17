@@ -12,6 +12,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/ssl"
@@ -62,10 +63,21 @@ func GenerateSSLCertificates(image string, ssl *adm_utils.InstallSSLFlags, tz st
 		return err
 	}
 
-	if ssl.UseExisting() {
+	var ca *types.CaChain
+	var pair *types.SSLPair
+
+	var dbCa *types.CaChain
+	var dbPair *types.SSLPair
+
+	if ssl.UseProvided() {
+		ca = &ssl.Ca
+		pair = &ssl.Server
+	}
+
+	if ca != nil && pair != nil {
 		serverDir := path.Join(tempDir, "server")
 		if err := prepareThirdPartyCertificate(
-			&ssl.Ca, &ssl.Server, serverDir,
+			ca, pair, serverDir,
 		); err != nil {
 			return err
 		}
@@ -74,15 +86,39 @@ func GenerateSSLCertificates(image string, ssl *adm_utils.InstallSSLFlags, tz st
 		if err := shared_podman.CreateTLSSecrets(
 			shared_podman.CASecret, path.Join(serverDir, "ca.crt"),
 			shared_podman.SSLCertSecret, path.Join(serverDir, "server.crt"),
-			shared_podman.SSLKeySecret, ssl.Server.Key,
+			shared_podman.SSLKeySecret, pair.Key,
 		); err != nil {
 			return err
 		}
+	}
 
+	if ssl.UseProvidedDB() {
+		dbCa = &ssl.DB.CA
+		dbPair = &ssl.DB.SSLPair
+	} else if ssl.UseProvided() {
+		//if DB SSL info are not provided, use the server one.
+		dbCa = &ssl.Ca
+		dbPair = &ssl.Server
+	} else if ssl.DB.IsDefined() && !ssl.DB.CA.IsThirdParty() {
+		//let's use the CA already present in the server
+		dbPair = &ssl.DB.SSLPair
+	}
+
+	if dbPair != nil {
 		dbDir := path.Join(tempDir, "db")
+		if dbCa == nil {
+			log.Debug().Msg("A 3rd party SSL was set, but not a CA. Use the CA from the server.")
+			cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
+			const containerCertPath = "server:/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
+			if err := cnx.Copy(containerCertPath, dbDir, "root", "root"); err != nil {
+				return err
+			}
+			dbCa = &types.CaChain{Root: path.Join(dbDir)}
+		}
+
 		if err := prepareThirdPartyCertificate(
-			&ssl.DB.CA,
-			&ssl.DB.SSLPair,
+			dbCa,
+			dbPair,
 			dbDir,
 		); err != nil {
 			return err
@@ -92,11 +128,10 @@ func GenerateSSLCertificates(image string, ssl *adm_utils.InstallSSLFlags, tz st
 		if err := shared_podman.CreateTLSSecrets(
 			shared_podman.DBCASecret, path.Join(dbDir, "ca.crt"),
 			shared_podman.DBSSLCertSecret, path.Join(dbDir, "server.crt"),
-			shared_podman.DBSSLKeySecret, ssl.DB.Key,
+			shared_podman.DBSSLKeySecret, dbPair.Key,
 		); err != nil {
 			return err
 		}
-
 		return nil
 	}
 
