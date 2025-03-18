@@ -17,11 +17,11 @@ jobs:
     name: localizable
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
       - name: Check localizable strings
         shell: bash -x {0}
         run: ./check_localizable
-      - uses: cbosdo/gettext-go-lint@gettext-go-lint-0.1.1-0
+      - uses: cbosdo/gettext-go-lint@118d756ec8dc7b45cd5e560dcaaecf45fd17d891 # gettext-go-lint-0.1.1-0
         name: Localizable strings linter
         with:
           keywords: L,NL,PL
