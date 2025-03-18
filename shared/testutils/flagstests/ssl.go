@@ -20,7 +20,6 @@ var SSLGenerationFlagsTestArgs = []string{
 	"--ssl-city", "sslcity",
 	"--ssl-org", "sslorg",
 	"--ssl-ou", "sslou",
-	//"--ssl-password", "sslsecret",
 }
 
 // AssertSSLGenerationFlag checks that all the SSL certificate generation flags are parsed correctly.

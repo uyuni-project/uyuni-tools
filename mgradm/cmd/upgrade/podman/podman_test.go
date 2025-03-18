@@ -27,7 +27,7 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.PgsqlFlagsTestArgs...)
 	args = append(args, flagstests.DBFlagsTestArgs...)
 	args = append(args, flagstests.ReportDBFlagsTestArgs...)
-	args = append(args, flagstests.InstallSSLFlagsTestArgs...)
+	args = append(args, flagstests.InstallDBSSLFlagsTestArgs...)
 	args = append(args, flagstests.SSLGenerationFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
@@ -44,7 +44,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
 		flagstests.AssertDBFlag(t, &flags.Installation.DB)
 		flagstests.AssertReportDBFlag(t, &flags.Installation.ReportDB)
-		flagstests.AssertInstallSSLFlag(t, &flags.Installation.SSL)
+		flagstests.AssertInstallDBSSLFlag(t, &flags.Installation.SSL.DB)
 		flagstests.AssertSSLGenerationFlag(t, &flags.Installation.SSL.SSLCertGenerationFlags)
 		testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.ServerFlags.Installation.SSL.Password)
 		return nil

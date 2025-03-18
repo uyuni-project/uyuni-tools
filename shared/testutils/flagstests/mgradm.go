@@ -92,11 +92,11 @@ var InstallDBSSLFlagsTestArgs = []string{
 	"--ssl-db-ca-root", "path/dbroot.crt",
 	"--ssl-db-cert", "path/dbsrv.crt",
 	"--ssl-db-key", "path/dbsrv.key",
+	"--ssl-password", "sslsecret",
 }
 
 // InstallSSLFlagsTestArgs is the expected values for InstallSSLFlagsTestArg.
 var InstallSSLFlagsTestArgs = append([]string{
-	"--ssl-password", "sslsecret",
 	"--ssl-ca-intermediate", "path/inter1.crt",
 	"--ssl-ca-intermediate", "path/inter2.crt",
 	"--ssl-ca-root", "path/root.crt",
