@@ -33,8 +33,7 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 	/*
 	* DB service doesn't exists means the server is not splitted yet.
 	* In this case we need to create the SSL certificate.
-	* //TODO handling 3rd party certificates
-	* //TODO handling external DB
+	* // TODO handling external DB
 	 */
 	if !systemd.HasService(shared_podman.DBService) {
 		flags.Installation.CheckUpgradeParameters(cmd, "podman")
