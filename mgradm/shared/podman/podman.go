@@ -369,6 +369,22 @@ func Upgrade(
 		return err
 	}
 
+	if err := systemd.StopService(podman.ServerService); err != nil {
+		return utils.Errorf(err, L("cannot stop service"))
+	}
+	defer func() {
+		err = systemd.StartService(podman.ServerService)
+	}()
+
+	if systemd.HasService(podman.DBService) {
+		if err := systemd.StopService(podman.DBService); err != nil {
+			return utils.Errorf(err, L("cannot stop service"))
+		}
+		defer func() {
+			err = systemd.StartService(podman.DBService)
+		}()
+	}
+
 	if inspectedValues.CommonInspectData.CurrentPgVersionNotMigrated != "" ||
 		inspectedValues.DBHost == "localhost" ||
 		inspectedValues.ReportDBHost == "localhost" {
@@ -423,13 +439,6 @@ func Upgrade(
 		}
 	}
 
-	if err := systemd.StopService(podman.ServerService); err != nil {
-		return utils.Errorf(err, L("cannot stop service"))
-	}
-
-	defer func() {
-		err = systemd.StartService(podman.ServerService)
-	}()
 	if inspectedValues.DBInspectData.ImagePgVersion > inspectedValues.CommonInspectData.CurrentPgVersion {
 		log.Info().Msgf(
 			L("Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"),

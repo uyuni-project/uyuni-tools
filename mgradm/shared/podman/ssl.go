@@ -12,7 +12,6 @@ import (
 
 	"github.com/rs/zerolog/log"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/ssl"
@@ -76,17 +75,35 @@ func GenerateSSLCertificates(image string, ssl *adm_utils.InstallSSLFlags, tz st
 
 	if ca != nil && pair != nil {
 		serverDir := path.Join(tempDir, "server")
-		if err := prepareThirdPartyCertificate(
-			ca, pair, serverDir,
+		if err := prepareThirdPartyCertificate(ca, pair, serverDir); err != nil {
+			return err
+		}
+		// Create secrets for CA
+		if err := shared_podman.CreateCASecrets(
+			shared_podman.CASecret, path.Join(serverDir, "ca.crt"),
 		); err != nil {
 			return err
 		}
+	}
+	if ca == nil {
+		serverDir := path.Join(tempDir, "server")
+		rootCA, err := shared_podman.ReadFromContainer("uyuni-read-ca", image, utils.ServerVolumeMounts, nil,
+			"/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT")
+		if err != nil {
+			return utils.Errorf(err, L("cannot run uyuni-read-ca container"))
+		}
 
-		// Create secrets for the server key and certificate
-		if err := shared_podman.CreateTLSSecrets(
-			shared_podman.CASecret, path.Join(serverDir, "ca.crt"),
-			shared_podman.SSLCertSecret, path.Join(serverDir, "server.crt"),
-			shared_podman.SSLKeySecret, pair.Key,
+		if err := os.Mkdir(serverDir, 0600); err != nil {
+			return err
+		}
+
+		caPath := path.Join(serverDir, "ca.crt")
+		if err = os.WriteFile(caPath, rootCA, 0600); err != nil {
+			return err
+		}
+
+		if err := shared_podman.CreateCASecrets(
+			shared_podman.CASecret, caPath,
 		); err != nil {
 			return err
 		}
@@ -95,35 +112,13 @@ func GenerateSSLCertificates(image string, ssl *adm_utils.InstallSSLFlags, tz st
 	if ssl.UseProvidedDB() {
 		dbCa = &ssl.DB.CA
 		dbPair = &ssl.DB.SSLPair
-	} else if ssl.UseProvided() {
-		//if DB SSL info are not provided, use the server one.
-		dbCa = &ssl.Ca
-		dbPair = &ssl.Server
-	} else if ssl.DB.IsDefined() && !ssl.DB.CA.IsThirdParty() {
-		//let's use the CA already present in the server
-		dbPair = &ssl.DB.SSLPair
 	}
 
 	if dbPair != nil {
 		dbDir := path.Join(tempDir, "db")
-		if dbCa == nil {
-			log.Debug().Msg("A 3rd party SSL was set, but not a CA. Use the CA from the server.")
-			cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
-			const containerCertPath = "server:/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
-			if err := cnx.Copy(containerCertPath, dbDir, "root", "root"); err != nil {
-				return err
-			}
-			dbCa = &types.CaChain{Root: path.Join(dbDir)}
-		}
-
-		if err := prepareThirdPartyCertificate(
-			dbCa,
-			dbPair,
-			dbDir,
-		); err != nil {
+		if err := prepareThirdPartyCertificate(dbCa, dbPair, dbDir); err != nil {
 			return err
 		}
-
 		// Create secrets for the database key and certificate
 		if err := shared_podman.CreateTLSSecrets(
 			shared_podman.DBCASecret, path.Join(dbDir, "ca.crt"),
@@ -132,6 +127,9 @@ func GenerateSSLCertificates(image string, ssl *adm_utils.InstallSSLFlags, tz st
 		); err != nil {
 			return err
 		}
+	}
+
+	if !ssl.UseProvided() {
 		return nil
 	}
 

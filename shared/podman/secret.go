@@ -49,25 +49,30 @@ func CreateCredentialsSecrets(userSecret string, user string, passwordSecret str
 	return createSecret(passwordSecret, password)
 }
 
+// CreateCASecrets creates SSL CA.
+func CreateCASecrets(
+	caSecret string, caPath string,
+) error {
+	if err := createSecretFromFile(caSecret, caPath); err != nil {
+		return utils.Errorf(err, L("failed to create %s secret"), CASecret)
+	}
+	return nil
+}
+
 // CreateTLSSecrets creates SSL CA, Certificate and key secrets.
 func CreateTLSSecrets(
 	caSecret string, caPath string,
 	certSecret string, certPath string,
 	keySecret string, keyPath string,
 ) error {
-	if err := createSecretFromFile(caSecret, caPath); err != nil {
-		return utils.Errorf(err, L("failed to create %s secret"), CASecret)
-	}
-
 	if err := createSecretFromFile(certSecret, certPath); err != nil {
-		return utils.Errorf(err, L("failed to create %s secret"), DBSSLCertSecret)
+		return utils.Errorf(err, L("failed to create %s secret"), SSLCertSecret)
 	}
 
 	if err := createSecretFromFile(keySecret, keyPath); err != nil {
-		return utils.Errorf(err, L("failed to create %s secret"), DBSSLKeySecret)
+		return utils.Errorf(err, L("failed to create %s secret"), SSLKeySecret)
 	}
-
-	return nil
+	return CreateCASecrets(caSecret, caPath)
 }
 
 // createSecret creates a podman secret.

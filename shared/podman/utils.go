@@ -68,6 +68,26 @@ func EnablePodmanSocket() error {
 	return err
 }
 
+// ReadFromContainer read a file from a container.
+func ReadFromContainer(name string, image string, volumes []types.VolumeMount,
+	extraArgs []string, file string) ([]byte, error) {
+	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
+	podmanArgs = append(podmanArgs, extraArgs...)
+	for _, volume := range volumes {
+		podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath)
+	}
+	podmanArgs = append(podmanArgs, "--network", UyuniNetwork)
+	podmanArgs = append(podmanArgs, image)
+	podmanArgs = append(podmanArgs, []string{"cat", file}...)
+
+	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", podmanArgs...)
+	if err != nil {
+		return []byte{}, utils.Errorf(err, L("failed to run %s container"), name)
+	}
+
+	return out, nil
+}
+
 // RunContainer execute a container.
 func RunContainer(name string, image string, volumes []types.VolumeMount, extraArgs []string, cmd []string) error {
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)

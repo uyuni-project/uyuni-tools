@@ -16,6 +16,8 @@ import (
 
 var defaultImage = path.Join(utils.DefaultRegistry, "server")
 
+// TODO need no duplicate functions between Server and DB, refactor required.
+
 // UseProvided return true if server can use an SSL Cert provided by flags.
 func (f *InstallSSLFlags) UseProvided() bool {
 	return f.Server.IsDefined() && f.Ca.IsThirdParty()
@@ -38,6 +40,20 @@ func (f *InstallSSLFlags) UseMigratedCa() bool {
 func (f *InstallSSLFlags) CheckParameters(localDB bool) {
 	if !f.UseProvided() && (f.Server.Cert != "" || f.Server.Key != "" || f.Ca.IsDefined()) {
 		log.Fatal().Msg(L("Server certificate, key and root CA need to be all provided"))
+	}
+
+	if f.UseProvided() && localDB && !f.DB.IsDefined() {
+		log.Fatal().Msg(L("Database certificate and key need to be provided"))
+	}
+}
+
+// CheckUpgradeParameters checks that all the required flags are passed if using 3rd party certificates.
+//
+// localDB indicates whether the SSL certificates for the database need to be checked.
+// Those are not needed for external databases.
+func (f *InstallSSLFlags) CheckUpgradeParameters(localDB bool) {
+	if !f.UseProvidedDB() && (f.DB.Cert != "" || f.DB.Key != "" || f.DB.IsDefined()) {
+		log.Fatal().Msg(L("DB certificate, key and root CA need to be all provided"))
 	}
 
 	if f.UseProvided() && localDB && !f.DB.IsDefined() {
