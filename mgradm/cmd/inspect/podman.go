@@ -23,11 +23,11 @@ func podmanInspect(
 ) error {
 	serverImage, err := utils.ComputeImage("", utils.DefaultTag, flags.Image)
 	if err != nil && len(serverImage) > 0 {
-		return utils.Errorf(err, L("failed to determine image"))
+		return utils.Errorf(err, L("failed to determine server image"))
 	}
 
 	if len(serverImage) <= 0 {
-		log.Debug().Msg("Use deployed image")
+		log.Debug().Msg("Use already deployed server image")
 
 		serverImage, err = podman.GetRunningImage(podman.ServerContainerName)
 		if err != nil {
@@ -35,14 +35,14 @@ func podmanInspect(
 		}
 	}
 
-	log.Info().Msgf(L("pgsql image %[1]s"), flags.Pgsql.Image.Name)
+	log.Debug().Msgf("Wanted database image %[1]s", flags.Pgsql.Image.Name)
 	pgsqlImage, err := utils.ComputeImage("", utils.DefaultTag, flags.Pgsql.Image)
 	if err != nil && len(pgsqlImage) > 0 {
 		return utils.Errorf(err, L("failed to determine pgsql image"))
 	}
 
 	if len(pgsqlImage) <= 0 {
-		log.Debug().Msg("Use deployed pgsqlimage")
+		log.Debug().Msg("Use already deployed database image")
 
 		pgsqlImage, err = podman.GetRunningImage(podman.DBContainerName)
 		if err != nil {
