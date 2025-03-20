@@ -20,8 +20,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// DBCAContainerPath is the path to the DB Root CA certificate in the server container.
-const DBCAContainerPath = "/etc/pki/trust/anchors/db-ca.crt"
+const (
+	// CAContainerPath is the path to the Root CA certificate in the server container.
+	CAContainerPath = "/etc/pki/trust/anchors/uyuni-ca.crt"
+	// DBCAContainerPath is the path to the DB Root CA certificate in the server container.
+	DBCAContainerPath = "/etc/pki/trust/anchors/uyuni-db-ca.crt"
+)
 
 // OrderCas generates the server certificate with the CA chain.
 //

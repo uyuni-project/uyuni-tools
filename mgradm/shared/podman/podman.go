@@ -41,8 +41,6 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
 
 	args := podman.GetCommonParams()
-	// TODO Add the SSL certs and key secrets here to avoid their volumes
-	args = append(args, "--secret", podman.DBCASecret+",type=mount,target="+ssl.DBCAContainerPath)
 
 	if mirrorPath != "" {
 		args = append(args, "-v", mirrorPath+":/mirror")
@@ -55,19 +53,16 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 	}
 
 	data := templates.PodmanServiceTemplateData{
-		Volumes:         utils.ServerVolumeMounts,
-		NamePrefix:      "uyuni",
-		Args:            strings.Join(args, " "),
-		Ports:           ports,
-		Network:         podman.UyuniNetwork,
-		IPV6Enabled:     ipv6Enabled,
-		CaSecret:        podman.CASecret,
-		AdminUser:       podman.DBAdminUserSecret,
-		AdminPassword:   podman.DBPassSecret,
-		ManagerUser:     podman.DBUserSecret,
-		ManagerPassword: podman.DBPassSecret,
-		ReportUser:      podman.ReportDBUserSecret,
-		ReportPassword:  podman.ReportDBPassSecret,
+		Volumes:     utils.ServerVolumeMounts,
+		NamePrefix:  "uyuni",
+		Args:        strings.Join(args, " "),
+		Ports:       ports,
+		Network:     podman.UyuniNetwork,
+		IPV6Enabled: ipv6Enabled,
+		CaSecret:    podman.CASecret,
+		CaPath:      ssl.CAContainerPath,
+		DBCaSecret:  podman.DBCASecret,
+		DBCaPath:    ssl.DBCAContainerPath,
 	}
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))

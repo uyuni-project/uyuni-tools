@@ -47,13 +47,8 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- end }}
 	-e TZ=${TZ} \
 	--network {{ .Network }} \
-	--secret {{ .CaSecret }},type=mount,target=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
-	--secret {{ .AdminUser }},type=env,target=POSTGRES_USER \
-	--secret {{ .AdminPassword }},type=env,target=POSTGRES_PASSWORD \
-	--secret {{ .ManagerUser }},type=env,target=MANAGER_USER \
-	--secret {{ .ManagerPassword }},type=env,target=MANAGER_PASS \
-	--secret {{ .ReportUser }},type=env,target=REPORT_DB_USER \
-	--secret {{ .ReportPassword }},type=env,target=REPORT_DB_PASS \
+	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
+	--secret {{ .DBCaSecret }},type=mount,target={{ .DBCaPath }} \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 ExecStop=/usr/bin/podman exec \
     uyuni-server \
@@ -85,6 +80,9 @@ type PodmanServiceTemplateData struct {
 	Network         string
 	IPV6Enabled     bool
 	CaSecret        string
+	CaPath          string
+	DBCaSecret      string
+	DBCaPath        string
 	CertSecret      string
 	KeySecret       string
 	AdminUser       string
