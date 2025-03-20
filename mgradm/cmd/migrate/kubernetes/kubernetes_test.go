@@ -35,9 +35,14 @@ func TestParamsParsing(t *testing.T) {
 	args = append(args, flagstests.CocoFlagsTestArgs...)
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
 	args = append(args, flagstests.SalineFlagsTestArgs...)
+	args = append(args, flagstests.SCCFlagTestArgs...)
 	args = append(args, flagstests.ServerKubernetesFlagsTestArgs...)
 	args = append(args, flagstests.VolumesFlagsTestExpected...)
 	args = append(args, flagstests.PgsqlFlagsTestArgs...)
+	args = append(args, flagstests.DBFlagsTestArgs...)
+	args = append(args, flagstests.ReportDBFlagsTestArgs...)
+	args = append(args, flagstests.InstallDBSSLFlagsTestArgs...)
+	args = append(args, flagstests.SSLGenerationFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *kubernetes.KubernetesServerFlags,
@@ -45,22 +50,27 @@ func TestParamsParsing(t *testing.T) {
 	) error {
 		testutils.AssertTrue(t, "Prepare not set", flags.Migration.Prepare)
 		flagstests.AssertMirrorFlag(t, flags.Mirror)
-		flagstests.AssertSCCFlag(t, &flags.Installation.SCC)
+		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.Migration.User)
+		testutils.AssertEquals(t, "Wrong FQDN", "source.fq.dn", args[0])
 		flagstests.AssertImageFlag(t, &flags.Image)
 		flagstests.AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
 		flagstests.AssertCocoFlag(t, &flags.Coco)
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		flagstests.AssertSalineFlag(t, &flags.Saline)
+		flagstests.AssertSCCFlag(t, &flags.Installation.SCC)
 		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
-		testutils.AssertEquals(t, "Error parsing --user", "sudoer", flags.Migration.User)
+		flagstests.AssertDBFlag(t, &flags.Installation.DB)
+		flagstests.AssertReportDBFlag(t, &flags.Installation.ReportDB)
+		flagstests.AssertInstallDBSSLFlag(t, &flags.Installation.SSL.DB)
+		flagstests.AssertSSLGenerationFlag(t, &flags.Installation.SSL.SSLCertGenerationFlags)
+		testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.Installation.SSL.Password)
 		flagstests.AssertServerKubernetesFlags(t, &flags.Kubernetes)
 		flagstests.AssertVolumesFlags(t, &flags.Volumes)
-		testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.Installation.SSL.Password)
 		testutils.AssertEquals(t, "Error parsing --ssh-key-public", "path/ssh.pub", flags.SSH.Key.Public)
 		testutils.AssertEquals(t, "Error parsing --ssh-key-private", "path/ssh", flags.SSH.Key.Private)
 		testutils.AssertEquals(t, "Error parsing --ssh-knownhosts", "path/known_hosts", flags.SSH.Knownhosts)
 		testutils.AssertEquals(t, "Error parsing --ssh-config", "path/config", flags.SSH.Config)
-		testutils.AssertEquals(t, "Wrong FQDN", "source.fq.dn", args[0])
+
 		return nil
 	}
 

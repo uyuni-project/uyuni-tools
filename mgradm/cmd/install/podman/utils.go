@@ -26,27 +26,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func waitForSystemStart(
-	systemd shared_podman.Systemd,
-	cnx *shared.Connection,
-	image string,
-	flags *podmanInstallFlags,
-) error {
-	err := podman.GenerateSystemdService(
-		systemd, flags.Installation.TZ, image, flags.Installation.Debug.Java, flags.Mirror, flags.Podman.Args,
-	)
-	if err != nil {
-		return err
-	}
-
-	log.Info().Msg(L("Waiting for the server to start…"))
-	if err := systemd.EnableService(shared_podman.ServerService); err != nil {
-		return utils.Error(err, L("cannot enable service"))
-	}
-
-	return cnx.WaitForServer()
-}
-
 var systemd shared_podman.Systemd = shared_podman.SystemdImpl{}
 
 func installForPodman(
@@ -144,7 +123,8 @@ func installForPodman(
 	}
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
-	if err := waitForSystemStart(systemd, cnx, preparedImage, flags); err != nil {
+	if err := podman.WaitForSystemStart(systemd, cnx, preparedImage, flags.Installation.TZ,
+		flags.Installation.Debug.Java, flags.Mirror, flags.Podman.Args); err != nil {
 		return utils.Error(err, L("cannot wait for system start"))
 	}
 	if err := cnx.CopyCaCertificate(fqdn); err != nil {

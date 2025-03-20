@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -16,7 +16,7 @@ import (
 )
 
 type podmanMigrateFlags struct {
-	cmd_utils.ServerFlags `mapstructure:",squash"`
+	adm_utils.ServerFlags `mapstructure:",squash"`
 	Podman                podman_utils.PodmanFlags
 }
 
@@ -47,6 +47,7 @@ NOTE: migrating to a remote podman is not supported yet!
 		},
 	}
 
+	adm_utils.AddMirrorFlag(migrateCmd)
 	shared.AddMigrateFlags(migrateCmd)
 	podman_utils.AddPodmanArgFlag(migrateCmd)
 
