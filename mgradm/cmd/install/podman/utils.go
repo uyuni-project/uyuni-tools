@@ -97,7 +97,7 @@ func installForPodman(
 		return utils.Error(err, L("cannot setup network"))
 	}
 
-	if err = podman.GenerateSSLCertificates(
+	if err = podman.PrepareSSLCertificates(
 		preparedImage, &flags.Installation.SSL, flags.Installation.TZ, fqdn); err != nil {
 		return err
 	}

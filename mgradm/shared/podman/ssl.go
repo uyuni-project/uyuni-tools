@@ -53,8 +53,68 @@ func prepareThirdPartyCertificate(caChain *types.CaChain, pair *types.SSLPair, o
 
 var newRunner = utils.NewRunner
 
-// generateSSLCertificates creates the self-signed certificates if needed.
-func GenerateSSLCertificates(image string, ssl *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+// PrepareSSLCertificates prepares SSL environment for the server and database.
+// If 3rd party certificates are provided, it uses them, else new certificates are generated.
+// This function is called in both new installation and upgrade scenarios.
+func PrepareSSLCertificates(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+	// Prepare Server certificates
+	if err := prepareServerSSLcertificates(image, sslFlags, tz, fqdn); err != nil {
+		return err
+	}
+	// Prepare database certificates
+	if err := prepareDatabaseSSLcertificates(image, sslFlags, tz, fqdn); err != nil {
+		return err
+	}
+	return nil
+}
+
+func prepareServerSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+	tempDir, cleaner, err := utils.TempDir()
+	defer cleaner()
+	if err != nil {
+		return err
+	}
+
+	// Check for provided certificates
+	if sslFlags.UseProvided() {
+		log.Info().Msg(L("Using provided 3rd party server certificates"))
+		ca := &sslFlags.Ca
+		pair := &sslFlags.Server
+
+		serverDir := path.Join(tempDir, "server")
+		if err := prepareThirdPartyCertificate(ca, pair, serverDir); err != nil {
+			return err
+		}
+		// Create secrets for CA
+		return shared_podman.CreateTLSSecrets(
+			shared_podman.CASecret, path.Join(serverDir, "ca.crt"),
+			shared_podman.SSLCertSecret, path.Join(serverDir, "server.crt"),
+			shared_podman.SSLKeySecret, pair.Key,
+		)
+	}
+	// Not provided but check for upgrade scenario
+	// Check if this is not an upgrade scenario and there is existing CA
+	rootCA, err := shared_podman.ReadFromContainer("uyuni-read-ca", image, utils.ServerVolumeMounts, nil,
+		ssl.CAContainerPath)
+	if err == nil {
+		log.Info().Msg(L("Reusing existing server CA certificate"))
+
+		caPath := path.Join(tempDir, "existing-ca.crt")
+		if err = os.WriteFile(caPath, rootCA, 0444); err != nil {
+			return utils.Errorf(err, L("cannot write existing CA certificate"))
+		}
+
+		// TODO: load server cert and key as secrets
+		return shared_podman.CreateCASecrets(
+			shared_podman.CASecret, caPath,
+		)
+	}
+
+	// Not provided and not an upgrade, generate new
+	return generateServerCertificate(image, sslFlags, tz, fqdn)
+}
+
+func prepareDatabaseSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
 	// Write the ordered cert and Root CA to temp files
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
@@ -62,88 +122,28 @@ func GenerateSSLCertificates(image string, ssl *adm_utils.InstallSSLFlags, tz st
 		return err
 	}
 
-	var ca *types.CaChain
-	var pair *types.SSLPair
+	if sslFlags.UseProvidedDB() {
+		log.Info().Msg(L("Using provided 3rd party database certificates"))
+		dbCa := &sslFlags.DB.CA
+		dbPair := &sslFlags.DB.SSLPair
 
-	var dbCa *types.CaChain
-	var dbPair *types.SSLPair
-
-	if ssl.UseProvided() {
-		ca = &ssl.Ca
-		pair = &ssl.Server
-	}
-
-	if ca != nil && pair != nil {
-		serverDir := path.Join(tempDir, "server")
-		if err := prepareThirdPartyCertificate(ca, pair, serverDir); err != nil {
-			return err
-		}
-		// Create secrets for CA
-		if err := shared_podman.CreateCASecrets(
-			shared_podman.CASecret, path.Join(serverDir, "ca.crt"),
-		); err != nil {
-			return err
-		}
-	}
-	if ca == nil {
-		serverDir := path.Join(tempDir, "server")
-		rootCA, err := shared_podman.ReadFromContainer("uyuni-read-ca", image, utils.ServerVolumeMounts, nil,
-			"/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT")
-		if err != nil {
-			return utils.Errorf(err, L("cannot run uyuni-read-ca container"))
-		}
-
-		if err := os.Mkdir(serverDir, 0600); err != nil {
-			return err
-		}
-
-		caPath := path.Join(serverDir, "ca.crt")
-		if err = os.WriteFile(caPath, rootCA, 0600); err != nil {
-			return err
-		}
-
-		if err := shared_podman.CreateCASecrets(
-			shared_podman.CASecret, caPath,
-		); err != nil {
-			return err
-		}
-	}
-
-	if ssl.UseProvidedDB() {
-		dbCa = &ssl.DB.CA
-		dbPair = &ssl.DB.SSLPair
-	}
-
-	if dbPair != nil {
 		dbDir := path.Join(tempDir, "db")
 		if err := prepareThirdPartyCertificate(dbCa, dbPair, dbDir); err != nil {
 			return err
 		}
 		// Create secrets for the database key and certificate
-		if err := shared_podman.CreateTLSSecrets(
+		return shared_podman.CreateTLSSecrets(
 			shared_podman.DBCASecret, path.Join(dbDir, "ca.crt"),
 			shared_podman.DBSSLCertSecret, path.Join(dbDir, "server.crt"),
 			shared_podman.DBSSLKeySecret, dbPair.Key,
-		); err != nil {
-			return err
-		}
+		)
 	}
 
-	if !ssl.UseProvided() {
-		return nil
-	}
+	// Not provided and not an upgrade, generate new
+	return generateDatabaseCertificate(image, sslFlags, tz, fqdn)
+}
 
-	env := map[string]string{
-		"CERT_O":       ssl.Org,
-		"CERT_OU":      ssl.OU,
-		"CERT_CITY":    ssl.City,
-		"CERT_STATE":   ssl.State,
-		"CERT_COUNTRY": ssl.Country,
-		"CERT_EMAIL":   ssl.Email,
-		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, ssl.Cnames...), " "),
-		"CERT_PASS":    ssl.Password,
-		"HOSTNAME":     fqdn,
-	}
+func runSSLContainer(script string, workdir string, image string, tz string, env map[string]string) error {
 	envNames := []string{}
 	envValues := []string{}
 	for key, value := range env {
@@ -158,28 +158,74 @@ func GenerateSSLCertificates(image string, ssl *adm_utils.InstallSSLFlags, tz st
 		"--network", shared_podman.UyuniNetwork,
 		"-e", "TZ=" + tz,
 		"-v", utils.RootVolumeMount.Name + ":" + utils.RootVolumeMount.MountPath,
-		"-v", tempDir + ":/ssl:z", // Bind mount for the generated certificates
+		"-v", workdir + ":/ssl:z", // Bind mount for the generated certificates
 	}
 	command = append(command, envNames...)
 	command = append(command, image)
 
 	// Fail fast with `-e`.
-	command = append(command, "/usr/bin/sh", "-e", "-c", sslSetupScript)
+	command = append(command, "/usr/bin/sh", "-e", "-c", script)
 
-	if _, err := newRunner("podman", command...).Env(envValues).StdMapping().Exec(); err != nil {
-		return utils.Error(err, L("SSL certificates generation failed"))
+	_, err := newRunner("podman", command...).Env(envValues).StdMapping().Exec()
+	return err
+}
+
+func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+	tempDir, cleaner, err := utils.TempDir()
+	defer cleaner()
+	if err != nil {
+		return err
 	}
 
-	log.Info().Msg(L("SSL certificates generated"))
+	env := map[string]string{
+		"CERT_O":       sslFlags.Org,
+		"CERT_OU":      sslFlags.OU,
+		"CERT_CITY":    sslFlags.City,
+		"CERT_STATE":   sslFlags.State,
+		"CERT_COUNTRY": sslFlags.Country,
+		"CERT_EMAIL":   sslFlags.Email,
+		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, sslFlags.Cnames...), " "),
+		"CERT_PASS":    sslFlags.Password,
+		"HOSTNAME":     fqdn,
+	}
+	if err := runSSLContainer(sslSetupServerScript, tempDir, image, tz, env); err != nil {
+		return utils.Error(err, L("Server SSL certificates generation failed"))
+	}
+
+	log.Info().Msg(L("Server SSL certificates generated"))
 
 	// Create secret for the database key and certificate
-	if err := shared_podman.CreateTLSSecrets(
+	return shared_podman.CreateTLSSecrets(
 		shared_podman.CASecret, path.Join(tempDir, "ca.crt"),
 		shared_podman.SSLCertSecret, path.Join(tempDir, "server.crt"),
 		shared_podman.SSLKeySecret, path.Join(tempDir, "server.key"),
-	); err != nil {
+	)
+}
+
+func generateDatabaseCertificate(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+	// Write the ordered cert and Root CA to temp files
+	tempDir, cleaner, err := utils.TempDir()
+	defer cleaner()
+	if err != nil {
 		return err
 	}
+
+	env := map[string]string{
+		"CERT_O":       sslFlags.Org,
+		"CERT_OU":      sslFlags.OU,
+		"CERT_CITY":    sslFlags.City,
+		"CERT_STATE":   sslFlags.State,
+		"CERT_COUNTRY": sslFlags.Country,
+		"CERT_EMAIL":   sslFlags.Email,
+		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, sslFlags.Cnames...), " "),
+		"CERT_PASS":    sslFlags.Password,
+		"HOSTNAME":     fqdn,
+	}
+	if err := runSSLContainer(sslSetupDatabaseScript, tempDir, image, tz, env); err != nil {
+		return utils.Error(err, L("Database SSL certificates generation failed"))
+	}
+
+	log.Info().Msg(L("Database SSL certificates generated"))
 
 	// Create secret for the database key and certificate
 	if err := shared_podman.CreateTLSSecrets(
@@ -193,7 +239,7 @@ func GenerateSSLCertificates(image string, ssl *adm_utils.InstallSSLFlags, tz st
 	return nil
 }
 
-const sslSetupScript = `
+const sslSetupServerScript = `
 	getMachineName() {
 	  hostname="$1"
 
@@ -238,7 +284,12 @@ const sslSetupScript = `
 	MACHINE_NAME=$(getMachineName "$HOSTNAME")
 	cp "/root/ssl-build/$MACHINE_NAME/server.crt" /ssl/server.crt
 	cp "/root/ssl-build/$MACHINE_NAME/server.key" /ssl/server.key
+`
 
+// This is assuming CA cert is generated by server script.
+// If we in any point in the future allow mix of 3rd party server and self signed ca for database
+// this will need to be updated to include check for ca cert and build if needed.
+const sslSetupDatabaseScript = `
 	echo "Generating DB certificate..."
 	rhn-ssl-tool --gen-server --no-rpm --cert-expiration 3650 \
 		--dir /root/ssl-build --password "$CERT_PASS" \
@@ -247,6 +298,7 @@ const sslSetupScript = `
 	    --set-hostname reportdb.mgr.internal --cert-expiration 3650 --set-email "$CERT_EMAIL" \
 		--set-cname reportdb --set-cname db $cert_args
 
+	cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /ssl/ca.crt
 	cp /root/ssl-build/reportdb/server.crt /ssl/reportdb.crt
 	cp /root/ssl-build/reportdb/server.key /ssl/reportdb.key
 `

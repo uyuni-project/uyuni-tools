@@ -399,7 +399,7 @@ func Upgrade(
 			return err
 		}
 
-		if err = GenerateSSLCertificates(preparedServerImage, &ssl, tz, fqdn); err != nil {
+		if err = PrepareSSLCertificates(preparedServerImage, &ssl, tz, fqdn); err != nil {
 			return err
 		}
 
