@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -68,7 +68,7 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 			log.Debug().Msgf("Pulling image %s because it is missing and pull policy is not 'never'", image)
 			return image, pullImage(authFile, image)
 		}
-		log.Debug().Msgf("Do not pulling image %s, although the pull policy is not 'never', maybe replicas is zero?", image)
+		log.Debug().Msgf("Not pulling image %s, although the pull policy is not 'never', maybe replicas is zero?", image)
 		return image, nil
 	}
 
@@ -119,6 +119,10 @@ func GetRpmImagePath(image string) string {
 	log.Debug().Msgf("Looking for installed RPM package containing %s image", image)
 
 	rpmImageFile, tag := GetRpmImageName(image)
+	if !utils.FileExists(rpmImageDir) {
+		log.Info().Msgf(L("skipping loading image from RPM as %s doesn't exist"), rpmImageDir)
+		return ""
+	}
 
 	files, err := os.ReadDir(rpmImageDir)
 	if err != nil {

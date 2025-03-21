@@ -47,10 +47,12 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- end }}
 	-e TZ=${TZ} \
 	--network {{ .Network }} \
+	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
+	--secret {{ .DBCaSecret }},type=mount,target={{ .DBCaPath }} \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 ExecStop=/usr/bin/podman exec \
     uyuni-server \
-    /bin/bash -c 'spacewalk-service stop && systemctl stop postgresql'
+    /bin/bash -c 'spacewalk-service stop'
 ExecStop=/usr/bin/podman stop \
 	--ignore -t 10 \
 	--cidfile=%t/%n.ctr-id
@@ -70,13 +72,25 @@ WantedBy=multi-user.target default.target
 
 // PodmanServiceTemplateData POD information to create systemd file.
 type PodmanServiceTemplateData struct {
-	Volumes     []types.VolumeMount
-	NamePrefix  string
-	Args        string
-	Ports       []types.PortMap
-	Image       string
-	Network     string
-	IPV6Enabled bool
+	Volumes         []types.VolumeMount
+	NamePrefix      string
+	Args            string
+	Ports           []types.PortMap
+	Image           string
+	Network         string
+	IPV6Enabled     bool
+	CaSecret        string
+	CaPath          string
+	DBCaSecret      string
+	DBCaPath        string
+	CertSecret      string
+	KeySecret       string
+	AdminUser       string
+	AdminPassword   string
+	ManagerUser     string
+	ManagerPassword string
+	ReportUser      string
+	ReportPassword  string
 }
 
 // Render will create the systemd configuration file.

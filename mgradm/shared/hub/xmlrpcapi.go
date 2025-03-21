@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -32,12 +32,11 @@ func SetupHubXmlrpc(
 	if hubXmlrpcFlags.Replicas == 0 {
 		log.Debug().Msg("No HUB requested.")
 	}
-	if !hubXmlrpcFlags.IsChanged {
+	if !hubXmlrpcFlags.IsChanged && hubXmlrpcFlags.Replicas == currentReplicas {
 		log.Info().Msgf(L("No changes requested for hub. Keep %d replicas."), currentReplicas)
 	}
 
-	pullEnabled := (hubXmlrpcFlags.Replicas > 0 && hubXmlrpcFlags.IsChanged) ||
-		(currentReplicas > 0 && !hubXmlrpcFlags.IsChanged)
+	pullEnabled := hubXmlrpcFlags.Replicas > 0 || (currentReplicas > 0 && !hubXmlrpcFlags.IsChanged)
 
 	hubXmlrpcImage, err := utils.ComputeImage(registry, tag, image)
 

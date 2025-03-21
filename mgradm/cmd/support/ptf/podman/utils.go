@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 //go:build ptf
@@ -11,6 +11,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	podman_shared "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -31,7 +32,7 @@ func ptfForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.SCC)
+	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.Installation.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
@@ -40,11 +41,28 @@ func ptfForPodman(
 	//we don't want to perform a postgres version upgrade when installing a PTF.
 	//in that case, we can use the upgrade command.
 	dummyImage := types.ImageFlags{}
+	dummyDB := adm_utils.DBFlags{}
+	dummyReportDB := adm_utils.DBFlags{}
+	dummySSL := adm_utils.InstallSSLFlags{}
+
 	if err := flags.checkParameters(); err != nil {
 		return err
 	}
 
-	return podman.Upgrade(systemd, authFile, "", flags.Image, dummyImage, flags.Coco, flags.Hubxmlrpc, flags.Saline)
+	return podman.Upgrade(systemd, authFile,
+		"",
+		dummyDB,
+		dummyReportDB,
+		dummySSL,
+		flags.Image,
+		dummyImage,
+		flags.Coco,
+		flags.HubXmlrpc,
+		flags.Saline,
+		flags.Pgsql,
+		flags.Installation.SCC,
+		flags.Installation.TZ,
+	)
 }
 
 // variables for unit testing.
@@ -101,8 +119,8 @@ func (flags *podmanPTFFlags) checkParameters() error {
 			return err
 		}
 		if hasRemoteImage(hubImage) {
-			flags.Hubxmlrpc.Image.Name = hubImage
-			log.Info().Msgf(L("The computed hub XML-RPC API image is %s"), flags.Hubxmlrpc.Image.Name)
+			flags.HubXmlrpc.Image.Name = hubImage
+			log.Info().Msgf(L("The computed hub XML-RPC API image is %s"), flags.HubXmlrpc.Image.Name)
 		}
 	}
 

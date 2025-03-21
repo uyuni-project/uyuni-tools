@@ -44,6 +44,7 @@ var fqdnValid = regexp.MustCompile(
 // InspectResult holds the results of the inspection scripts.
 type InspectResult struct {
 	CommonInspectData `mapstructure:",squash"`
+	DBInspectData     `mapstructure:",squash"`
 	Timezone          string
 	HasHubXmlrpcAPI   bool `mapstructure:"has_hubxmlrpc"`
 	Debug             bool `mapstructure:"debug"`

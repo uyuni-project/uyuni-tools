@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -24,6 +24,10 @@ func podmanStatus(
 	_ *cobra.Command,
 	_ []string,
 ) error {
+	if systemd.HasService(podman.DBService) {
+		_ = utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", podman.DBService)
+	}
+
 	// Show the status and that's it if the service is not running
 	if !systemd.IsServiceRunning(podman.ServerService) {
 		_ = utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", podman.ServerService)

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -14,6 +14,7 @@ import (
 	migration_shared "github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
 	"github.com/uyuni-project/uyuni-tools/shared"
@@ -83,8 +84,8 @@ func migrateToPodman(
 		return nil
 	}
 
-	oldPgVersion := extractedData.CurrentPgVersion
-	newPgVersion := extractedData.ImagePgVersion
+	oldPgVersion := extractedData.CommonInspectData.CurrentPgVersion
+	newPgVersion := extractedData.DBInspectData.ImagePgVersion
 
 	if oldPgVersion != newPgVersion {
 		if err := podman.RunPgsqlVersionUpgrade(
@@ -92,6 +93,16 @@ func migrateToPodman(
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
+	}
+
+	if err := podman_utils.SetupNetwork(false); err != nil {
+		return err
+	}
+
+	if err := pgsql.Upgrade(
+		systemd, authFile, flags.Pgsql,
+	); err != nil {
+		return err
 	}
 
 	schemaUpdateRequired := oldPgVersion != newPgVersion

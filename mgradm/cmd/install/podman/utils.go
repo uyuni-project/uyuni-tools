@@ -14,12 +14,14 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -95,15 +97,49 @@ func installForPodman(
 		return utils.Error(err, L("cannot setup network"))
 	}
 
-	sslArgs, cleaner, err := generateSSLCertificates(preparedImage, &flags.ServerFlags, fqdn)
-	defer cleaner()
-	if err != nil {
+	if err = podman.PrepareSSLCertificates(
+		preparedImage, &flags.Installation.SSL, flags.Installation.TZ, fqdn); err != nil {
 		return err
+	}
+
+	// Create all the database credentials secrets
+	if err := shared_podman.CreateCredentialsSecrets(
+		shared_podman.DBUserSecret, flags.Installation.DB.User,
+		shared_podman.DBPassSecret, flags.Installation.DB.Password,
+	); err != nil {
+		return err
+	}
+
+	if err := shared_podman.CreateCredentialsSecrets(
+		shared_podman.ReportDBUserSecret, flags.Installation.ReportDB.User,
+		shared_podman.ReportDBPassSecret, flags.Installation.ReportDB.Password,
+	); err != nil {
+		return err
+	}
+
+	if flags.ServerFlags.Installation.DB.IsLocal() {
+		// The admin password is not needed for external databases
+		if err := shared_podman.CreateCredentialsSecrets(
+			shared_podman.DBAdminUserSecret, flags.Installation.DB.Admin.User,
+			shared_podman.DBAdminPassSecret, flags.Installation.DB.Admin.Password,
+		); err != nil {
+			return err
+		}
+
+		// Run the DB container setup if the user doesn't set a custom host name for it.
+		if err := pgsql.SetupPgsql(systemd, authFile, &flags.ServerFlags.Pgsql, &flags.Image); err != nil {
+			return err
+		}
+	} else {
+		log.Info().Msgf(
+			L("Skipped database container setup to use external database %s"),
+			flags.ServerFlags.Installation.DB.Host,
+		)
 	}
 
 	log.Info().Msg(L("Run setup command in the container"))
 
-	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn, sslArgs); err != nil {
+	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn); err != nil {
 		return err
 	}
 
@@ -111,7 +147,6 @@ func installForPodman(
 	if err := waitForSystemStart(systemd, cnx, preparedImage, flags); err != nil {
 		return utils.Error(err, L("cannot wait for system start"))
 	}
-
 	if err := cnx.CopyCaCertificate(fqdn); err != nil {
 		return utils.Error(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
@@ -125,10 +160,6 @@ func installForPodman(
 	}
 
 	if flags.Coco.Replicas > 0 {
-		// This may need to be moved up later once more containers require DB access
-		if err := shared_podman.CreateDBSecrets(flags.Installation.DB.User, flags.Installation.DB.Password); err != nil {
-			return err
-		}
 		if err := coco.SetupCocoContainer(
 			systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
 			flags.Installation.DB.Name, flags.Installation.DB.Port,
@@ -161,7 +192,7 @@ func installForPodman(
 }
 
 // runSetup execute the setup.
-func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string, sslArgs []string) error {
+func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
 	env := adm_utils.GetSetupEnv(flags.Mirror, &flags.Installation, fqdn, false)
 	envNames := []string{}
 	envValues := []string{}
@@ -178,8 +209,17 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string, sslArgs [
 		"--name", "uyuni-setup",
 		"--network", shared_podman.UyuniNetwork,
 		"-e", "TZ=" + flags.Installation.TZ,
+		"--secret", shared_podman.DBUserSecret + ",type=env,target=MANAGER_USER",
+		"--secret", shared_podman.DBPassSecret + ",type=env,target=MANAGER_PASS",
+		"--secret", shared_podman.ReportDBUserSecret + ",type=env,target=REPORT_DB_USER",
+		"--secret", shared_podman.ReportDBPassSecret + ",type=env,target=REPORT_DB_PASS",
+		"-e REPORT_DB_CA_CERT=" + ssl.DBCAContainerPath,
+		"--secret", shared_podman.DBCASecret + ",type=mount,target=" + ssl.DBCAContainerPath,
+		"--secret", shared_podman.CASecret + ",type=mount,target=/ssl/ca.crt",
+		// TODO Directly deploy them and skip SSL checks in container?
+		"--secret", shared_podman.SSLCertSecret + ",type=mount,target=/ssl/server.crt",
+		"--secret", shared_podman.SSLKeySecret + ",type=mount,target=/ssl/server.key",
 	}
-	command = append(command, sslArgs...)
 	for _, volume := range utils.ServerVolumeMounts {
 		command = append(command, "-v", fmt.Sprintf("%s:%s", volume.Name, volume.MountPath))
 	}
@@ -190,7 +230,7 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string, sslArgs [
 	if err != nil {
 		return err
 	}
-	command = append(command, "/usr/bin/sh", "-c", script)
+	command = append(command, "/usr/bin/sh", "-e", "-c", script)
 
 	if _, err := newRunner("podman", command...).Env(envValues).StdMapping().Exec(); err != nil {
 		return utils.Error(err, L("server setup failed"))

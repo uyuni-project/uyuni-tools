@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -28,12 +28,14 @@ func TestServerInspectorGenerate(t *testing.T) {
 echo "uyuni_release=$(cat /etc/*release | grep 'Uyuni release' | cut -d ' ' -f3 || true)" >> ` + dataPath + `
 echo "suse_manager_release=$(sed 's/.*(\([0-9.]\+\).*/\1/g' /etc/susemanager-release || true)" >> ` + dataPath + `
 echo "fqdn=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^java.hostname' | cut -d' ' -f3 || true)" >> ` + dataPath + `
-echo "image_pg_version=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1 || true)" >> ` + dataPath + `
-echo "current_pg_version=$((test -e /var/lib/pgsql/data/PG_VERSION && cat /var/lib/pgsql/data/PG_VERSION) || true)" >> ` + dataPath + `
+echo "current_pg_version=$((psql -V | awk '{print $3}' | cut -d. -f1) || true)" >> ` + dataPath + `
+echo "current_pg_version_not_migrated=$((test -e /var/lib/pgsql/data/data/PG_VERSION && cat /var/lib/pgsql/data/data/PG_VERSION) || true)" >> ` + dataPath + `
 echo "db_user=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_user' | cut -d' ' -f3 || true)" >> ` + dataPath + `
 echo "db_password=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_password' | cut -d' ' -f3 || true)" >> ` + dataPath + `
 echo "db_name=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_name' | cut -d' ' -f3 || true)" >> ` + dataPath + `
 echo "db_port=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_port' | cut -d' ' -f3 || true)" >> ` + dataPath + `
+echo "db_host=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^db_host' | cut -d' ' -f3 || true)" >> ` + dataPath + `
+echo "report_db_host=$(cat /etc/rhn/rhn.conf 2>/dev/null | grep -m1 '^report_db_host' | cut -d' ' -f3 || true)" >> ` + dataPath + `
 exit 0
 `
 
@@ -71,8 +73,8 @@ db_port=1234
 	testutils.AssertEquals(t, "Invalid uyuni release", "2024.5", actual.UyuniRelease)
 	testutils.AssertEquals(t, "Invalid SUSE Manager release", "5.0.0", actual.SuseManagerRelease)
 	testutils.AssertEquals(t, "Invalid FQDN", "my.server.name", actual.Fqdn)
-	testutils.AssertEquals(t, "Invalid current postgresql version", "14", actual.CurrentPgVersion)
-	testutils.AssertEquals(t, "Invalid image postgresql version", "16", actual.ImagePgVersion)
+	testutils.AssertEquals(t, "Invalid current postgresql version", "14", actual.CommonInspectData.CurrentPgVersion)
+	testutils.AssertEquals(t, "Invalid image postgresql version", "16", actual.DBInspectData.ImagePgVersion)
 	testutils.AssertEquals(t, "Invalid DB user", "myuser", actual.DBUser)
 	testutils.AssertEquals(t, "Invalid DB password", "mysecret", actual.DBPassword)
 	testutils.AssertEquals(t, "Invalid DB name", "mydb", actual.DBName)

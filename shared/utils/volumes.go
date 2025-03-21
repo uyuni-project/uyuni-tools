@@ -9,38 +9,24 @@ import "github.com/uyuni-project/uyuni-tools/shared/types"
 // EtcRhnVolumeMount defines the /etc/rhn volume mount.
 var EtcRhnVolumeMount = types.VolumeMount{MountPath: "/etc/rhn", Name: "etc-rhn", Size: "1Mi"}
 
-// VarPgsqlVolumeMount defines the /var/lib/pgsql volume mount.
-var VarPgsqlVolumeMount = types.VolumeMount{MountPath: "/var/lib/pgsql", Name: "var-pgsql", Size: "50Gi"}
+// VarPgsqlDataVolumeMount defines the /var/lib/pgsql/data volume mount.
+var VarPgsqlDataVolumeMount = types.VolumeMount{MountPath: "/var/lib/pgsql/data", Name: "var-pgsql", Size: "50Gi"}
+
+// VolumeMount defines the /etc/pki/tls volume mount.
+var TLSVolumeMount = types.VolumeMount{MountPath: "/etc/pki/tls", Name: "etc-tls", Size: "1Mi"}
 
 // RootVolumeMount defines the /root volume mount.
 var RootVolumeMount = types.VolumeMount{MountPath: "/root", Name: "root", Size: "1Mi"}
 
 // PgsqlRequiredVolumeMounts represents volumes mount used by PostgreSQL.
 var PgsqlRequiredVolumeMounts = []types.VolumeMount{
-	{MountPath: "/etc/pki/tls", Name: "etc-tls", Size: "1Mi"},
-	VarPgsqlVolumeMount,
-	EtcRhnVolumeMount,
-	{MountPath: "/etc/pki/spacewalk-tls", Name: "tls-key"},
+	VarPgsqlDataVolumeMount,
+	TLSVolumeMount,
 }
-
-// etcServerVolumeMounts represents volumes mounted in /etc folder.
-var etcServerVolumeMounts = []types.VolumeMount{
-	{MountPath: "/etc/apache2", Name: "etc-apache2", Size: "1Mi"},
-	{MountPath: "/etc/systemd/system/multi-user.target.wants", Name: "etc-systemd-multi", Size: "1Mi"},
-	{MountPath: "/etc/systemd/system/sockets.target.wants", Name: "etc-systemd-sockets", Size: "1Mi"},
-	{MountPath: "/etc/salt", Name: "etc-salt", Size: "1Mi"},
-	{MountPath: "/etc/tomcat", Name: "etc-tomcat", Size: "1Mi"},
-	{MountPath: "/etc/cobbler", Name: "etc-cobbler", Size: "1Mi"},
-	{MountPath: "/etc/sysconfig", Name: "etc-sysconfig", Size: "20Mi"},
-	{MountPath: "/etc/postfix", Name: "etc-postfix", Size: "1Mi"},
-	{MountPath: "/etc/sssd", Name: "etc-sssd", Size: "1Mi"},
-}
-
-var etcAndPgsqlVolumeMounts = append(PgsqlRequiredVolumeMounts, etcServerVolumeMounts[:]...)
 
 // ServerVolumeMounts should match the volumes mapping from the container definition in both
 // the helm chart and the systemctl services definitions.
-var ServerVolumeMounts = append([]types.VolumeMount{
+var ServerVolumeMounts = []types.VolumeMount{
 	{MountPath: "/var/lib/cobbler", Name: "var-cobbler", Size: "10Mi"},
 	{MountPath: "/var/lib/rhn/search", Name: "var-search", Size: "10Gi"},
 	{MountPath: "/var/lib/salt", Name: "var-salt", Size: "10Mi"},
@@ -57,7 +43,22 @@ var ServerVolumeMounts = append([]types.VolumeMount{
 	RootVolumeMount,
 	{MountPath: "/etc/pki/trust/anchors/", Name: "ca-cert"},
 	{MountPath: "/run/salt/master", Name: "run-salt-master"},
-}, etcAndPgsqlVolumeMounts[:]...)
+	{MountPath: "/etc/apache2", Name: "etc-apache2", Size: "1Mi"},
+	{MountPath: "/etc/systemd/system/multi-user.target.wants", Name: "etc-systemd-multi", Size: "1Mi"},
+	{MountPath: "/etc/systemd/system/sockets.target.wants", Name: "etc-systemd-sockets", Size: "1Mi"},
+	{MountPath: "/etc/salt", Name: "etc-salt", Size: "1Mi"},
+	{MountPath: "/etc/tomcat", Name: "etc-tomcat", Size: "1Mi"},
+	{MountPath: "/etc/cobbler", Name: "etc-cobbler", Size: "1Mi"},
+	{MountPath: "/etc/sysconfig", Name: "etc-sysconfig", Size: "20Mi"},
+	{MountPath: "/etc/postfix", Name: "etc-postfix", Size: "1Mi"},
+	{MountPath: "/etc/sssd", Name: "etc-sssd", Size: "1Mi"},
+	TLSVolumeMount,
+	{MountPath: "/etc/pki/spacewalk-tls", Name: "tls-key"},
+	EtcRhnVolumeMount,
+}
+
+// ServerMigrationVolumeMounts match server + postgres volume mounts, used for migration.
+var ServerMigrationVolumeMounts = append(ServerVolumeMounts, VarPgsqlDataVolumeMount, EtcRhnVolumeMount)
 
 // HubXmlrpcVolumeMounts represents volumes used by Hub Xmlrpc container.
 var HubXmlrpcVolumeMounts = []types.VolumeMount{
@@ -67,7 +68,7 @@ var HubXmlrpcVolumeMounts = []types.VolumeMount{
 // SalineVolumeMounts represents volumes used by Saline container.
 var SalineVolumeMounts = []types.VolumeMount{
 	{Name: "etc-salt", MountPath: "/etc/salt"},
-	{Name: "etc-tls", MountPath: "/etc/pki/tls"},
+	TLSVolumeMount,
 	{Name: "run-salt-master", MountPath: "/run/salt/master"},
 }
 

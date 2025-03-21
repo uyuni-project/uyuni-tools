@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,11 +22,13 @@ func TestParamsParsing(t *testing.T) {
 
 	args = append(args, flagstests.ImageFlagsTestArgs...)
 	args = append(args, flagstests.SCCFlagTestArgs...)
+	args = append(args, flagstests.PgsqlFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *inspectFlags, _ *cobra.Command, _ []string) error {
 		flagstests.AssertImageFlag(t, &flags.Image)
 		flagstests.AssertSCCFlag(t, &flags.SCC)
+		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
 		if utils.KubernetesBuilt {
 			testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
 		}

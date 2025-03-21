@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -23,18 +23,34 @@ func podmanInspect(
 ) error {
 	serverImage, err := utils.ComputeImage("", utils.DefaultTag, flags.Image)
 	if err != nil && len(serverImage) > 0 {
-		return utils.Errorf(err, L("failed to determine image"))
+		return utils.Errorf(err, L("failed to determine server image"))
 	}
 
 	if len(serverImage) <= 0 {
-		log.Debug().Msg("Use deployed image")
+		log.Debug().Msg("Use already deployed server image")
 
 		serverImage, err = podman.GetRunningImage(podman.ServerContainerName)
 		if err != nil {
 			return utils.Errorf(err, L("failed to find the image of the currently running server container"))
 		}
 	}
-	inspectResult, err := podman.Inspect(serverImage, flags.Image.PullPolicy, flags.SCC)
+
+	log.Debug().Msgf("Wanted database image %[1]s", flags.Pgsql.Image.Name)
+	pgsqlImage, err := utils.ComputeImage("", utils.DefaultTag, flags.Pgsql.Image)
+	if err != nil && len(pgsqlImage) > 0 {
+		return utils.Errorf(err, L("failed to determine pgsql image"))
+	}
+
+	if len(pgsqlImage) <= 0 {
+		log.Debug().Msg("Use already deployed database image")
+
+		pgsqlImage, err = podman.GetRunningImage(podman.DBContainerName)
+		if err != nil {
+			return utils.Errorf(err, L("failed to find the image of the currently running db container"))
+		}
+	}
+
+	inspectResult, err := podman.Inspect(serverImage, pgsqlImage, flags.Image.PullPolicy, flags.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("inspect command failed"))
 	}

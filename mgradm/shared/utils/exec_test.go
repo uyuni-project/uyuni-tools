@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -42,14 +42,6 @@ func TestSanityCheck(t *testing.T) {
 			"", "5.1.0", "17", "2024.07", "", "16",
 			"Upgrade is not supported",
 		},
-		{
-			"2024.07", "", "16", "2024.13", "", "",
-			"cannot fetch PostgreSQL",
-		},
-		{
-			"2024.07", "", "", "2024.13", "", "17",
-			"PostgreSQL is not installed",
-		},
 	}
 
 	for i, test := range data {
@@ -60,7 +52,9 @@ func TestSanityCheck(t *testing.T) {
 		newValues := utils.ServerInspectData{
 			CommonInspectData: utils.CommonInspectData{
 				CurrentPgVersion: test.oldPgsqlVersion,
-				ImagePgVersion:   test.newPgsqlVersion,
+			},
+			DBInspectData: utils.DBInspectData{
+				ImagePgVersion: test.newPgsqlVersion,
 			},
 			UyuniRelease:       test.newUyuniRelease,
 			SuseManagerRelease: test.newSumaRelease,

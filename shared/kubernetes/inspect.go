@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -36,7 +36,7 @@ func InspectServer(
 
 	out, err := RunPodLogs(
 		namespace, podName, serverImage, pullPolicy, pullSecret,
-		[]types.VolumeMount{utils.EtcRhnVolumeMount, utils.VarPgsqlVolumeMount},
+		[]types.VolumeMount{utils.EtcRhnVolumeMount, utils.VarPgsqlDataVolumeMount},
 		"sh", "-c", script,
 	)
 	if err != nil {

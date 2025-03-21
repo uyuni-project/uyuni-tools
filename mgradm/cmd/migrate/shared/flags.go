@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -17,6 +17,7 @@ func AddMigrateFlags(cmd *cobra.Command) {
 	utils.AddSCCFlag(cmd)
 	utils.AddImageFlag(cmd)
 	utils.AddDBUpgradeImageFlag(cmd)
+	utils.AddPgsqlFlags(cmd)
 	utils.AddUpgradeCocoFlag(cmd)
 	utils.AddUpgradeHubXmlrpcFlags(cmd)
 	utils.AddUpgradeSalineFlag(cmd)
