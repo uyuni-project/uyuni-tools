@@ -12,6 +12,7 @@ import (
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	batch "k8s.io/api/batch/v1"
 	core "k8s.io/api/core/v1"
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -116,6 +117,7 @@ func GetSetupJob(
 				Optional:             &optional,
 			},
 		}},
+		{Name: "REPORT_DB_CA_CERT", Value: ssl.DBCAContainerPath},
 		// EXTERNALDB_* variables are not passed yet: only for AWS and it probably doesn't make sense for kubernetes yet.
 	}
 
@@ -151,6 +153,11 @@ func GetSetupJob(
 		envVars = append(envVars, core.EnvVar{Name: "MIRROR_PATH", Value: "/mirror"})
 	}
 	template.Spec.Containers[0].Env = envVars
+	template.Spec.Volumes = append(template.Spec.Volumes,
+		kubernetes.CreateConfigVolume("db-ca", kubernetes.DBCAConfigName),
+	)
+
+	// TODO Add initContainer waiting for the db and reportdb services to be responding
 
 	job := batch.Job{
 		TypeMeta: meta.TypeMeta{Kind: "Job", APIVersion: "batch/v1"},

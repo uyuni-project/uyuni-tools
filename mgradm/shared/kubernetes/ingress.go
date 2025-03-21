@@ -14,9 +14,6 @@ import (
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// CertSecretName is the name of the server SSL certificate secret to use.
-const CertSecretName = "uyuni-cert"
-
 const (
 	IngressNameSSL         = "uyuni-ingress-ssl"
 	IngressNameSSLRedirect = "uyuni-ingress-ssl-redirect"
@@ -76,7 +73,7 @@ func getSSLIngress(namespace string, fqdn string, caIssuer string, ingressName s
 		},
 		Spec: net.IngressSpec{
 			TLS: []net.IngressTLS{
-				{Hosts: []string{fqdn}, SecretName: CertSecretName},
+				{Hosts: []string{fqdn}, SecretName: kubernetes.CertSecretName},
 			},
 			Rules: []net.IngressRule{
 				getIngressWebRule(fqdn),
@@ -162,7 +159,7 @@ func getNoSSLIngress(namespace string, fqdn string, ingressName string) *net.Ing
 		},
 		Spec: net.IngressSpec{
 			TLS: []net.IngressTLS{
-				{Hosts: []string{fqdn}, SecretName: CertSecretName},
+				{Hosts: []string{fqdn}, SecretName: kubernetes.CertSecretName},
 			},
 			Rules: []net.IngressRule{
 				{

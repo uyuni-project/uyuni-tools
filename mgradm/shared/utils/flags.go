@@ -72,16 +72,14 @@ func (flags *InstallationFlags) setPasswordIfMissing() {
 	}
 
 	// The admin password is only needed for local database
-	isLocalDB := flags.DB.Host == "db"
-	if isLocalDB && flags.DB.Admin.Password == "" {
+	if flags.DB.IsLocal() && flags.DB.Admin.Password == "" {
 		flags.DB.Admin.Password = utils.GetRandomBase64(30)
 	}
 }
 
 func (flags *InstallationFlags) checkSSLParameters(cmd *cobra.Command, command string) {
-	isLocalDB := flags.DB.Host == "db"
 	// Make sure we have all the required 3rd party flags or none
-	flags.SSL.CheckParameters(isLocalDB)
+	flags.SSL.CheckParameters(flags.DB.IsLocal())
 
 	// Since we use cert-manager for self-signed certificates on kubernetes we don't need password for it
 	if !flags.SSL.UseProvided() && command == "podman" {
@@ -134,6 +132,11 @@ type DBFlags struct {
 		User     string
 		Password string
 	}
+}
+
+// IsLocal indicates if the database is a local or a third party one.
+func (flags *DBFlags) IsLocal() bool {
+	return flags.Host == "" || flags.Host == "db" || flags.Host == "reportdb"
 }
 
 // DebugFlags contains information about enabled/disabled debug.

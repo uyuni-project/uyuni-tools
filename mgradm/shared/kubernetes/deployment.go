@@ -11,6 +11,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -177,15 +178,24 @@ func getServerPodTemplate(
 
 	volumes := kubernetes.CreateVolumes(mounts)
 
+	const caVolumeName = "ca-cert"
+	const dbcaVolumeName = "db-ca-cert"
 	caMount := core.VolumeMount{
-		Name:      "ca-cert",
+		Name:      caVolumeName,
 		MountPath: "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT",
+		ReadOnly:  true,
+		SubPath:   "ca.crt",
+	}
+	dbcaMount := core.VolumeMount{
+		Name:      dbcaVolumeName,
+		MountPath: ssl.DBCAContainerPath,
 		ReadOnly:  true,
 		SubPath:   "ca.crt",
 	}
 	tlsKeyMount := core.VolumeMount{Name: "tls-key", MountPath: "/etc/pki/spacewalk-tls"}
 
-	caVolume := kubernetes.CreateConfigVolume("ca-cert", "uyuni-ca")
+	caVolume := kubernetes.CreateConfigVolume(caVolumeName, kubernetes.CAConfigName)
+	dbcaVolume := kubernetes.CreateConfigVolume(dbcaVolumeName, kubernetes.DBCAConfigName)
 	tlsKeyVolume := kubernetes.CreateSecretVolume("tls-key", "uyuni-cert")
 	var keyMode int32 = 0400
 	tlsKeyVolume.VolumeSource.Secret.Items = []core.KeyToPath{
@@ -194,8 +204,8 @@ func getServerPodTemplate(
 	}
 
 	initMounts = append(initMounts, tlsKeyMount)
-	volumeMounts = append(volumeMounts, caMount, tlsKeyMount)
-	volumes = append(volumes, caVolume, tlsKeyVolume)
+	volumeMounts = append(volumeMounts, caMount, dbcaMount, tlsKeyMount)
+	volumes = append(volumes, caVolume, dbcaVolume, tlsKeyVolume)
 
 	template := core.PodTemplateSpec{
 		ObjectMeta: meta.ObjectMeta{

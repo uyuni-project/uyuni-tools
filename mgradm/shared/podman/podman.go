@@ -413,7 +413,7 @@ func Upgrade(
 			return err
 		}
 
-		if db.Host == "db" {
+		if db.IsLocal() {
 			// The admin password is not needed for external databases
 			if err := podman.CreateCredentialsSecrets(
 				podman.DBAdminUserSecret, db.Admin.User,
