@@ -268,16 +268,12 @@ for vol in /var/lib/cobbler \
 		   /etc/cobbler \
 		   /etc/sysconfig \
 		   /etc/postfix \
-		   /etc/sssd \
-		   /etc/pki/tls
+		   /etc/sssd
 do
 	chown --reference=$vol /mnt$vol;
 	chmod --reference=$vol /mnt$vol;
 	if [ -z "$(ls -A /mnt$vol)" ]; then
     	cp -a $vol/. /mnt$vol;
-		if [ "$vol" = "/srv/www" ]; then
-            ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /mnt$vol/RHN-ORG-TRUSTED-SSL-CERT;
-		fi
 	fi
 done
 `
@@ -289,9 +285,8 @@ func GetServerMounts() []types.VolumeMount {
 	mounts := []types.VolumeMount{}
 	mountsSet := map[string]types.VolumeMount{}
 	for _, mount := range serverMounts {
-		switch mount.Name {
 		// Skip mounts that are not PVCs
-		case "ca-cert", "tls-key":
+		if mount.Name == "ca-cert" {
 			continue
 		}
 		if _, exists := mountsSet[mount.Name]; !exists {
