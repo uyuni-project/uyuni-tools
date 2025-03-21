@@ -20,6 +20,12 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
+// Map the service names to the component label that are not the server.
+var serviceMap = map[string]string{
+	utils.DBServiceName:       kubernetes.DBComponent,
+	utils.ReportdbServiceName: kubernetes.DBComponent,
+}
+
 // CreateServices creates the kubernetes services for the server.
 //
 // If debug is true, the Java debug ports will be exposed.
@@ -40,6 +46,8 @@ func CreateServices(namespace string, debug bool) error {
 // If debug is true, the Java debug ports will be exposed.
 func GetServices(namespace string, debug bool) []*core.Service {
 	ports := utils.GetServerPorts(debug)
+	ports = append(ports, utils.DBPorts...)
+	ports = append(ports, utils.ReportDBPorts...)
 
 	servicesPorts := map[string][]types.PortMap{}
 	for _, port := range ports {
@@ -57,8 +65,13 @@ func GetServices(namespace string, debug bool) []*core.Service {
 		if svcPorts[0].Protocol == "udp" {
 			protocol = core.ProtocolUDP
 		}
+		// Do we have a split component for that service already?
+		component := kubernetes.ServerComponent
+		if comp, exists := serviceMap[svcPorts[0].Service]; exists {
+			component = comp
+		}
 		services = append(services,
-			getService(namespace, kubernetes.ServerApp, kubernetes.ServerComponent, svcPorts[0].Service, protocol, svcPorts...),
+			getService(namespace, kubernetes.ServerApp, component, svcPorts[0].Service, protocol, svcPorts...),
 		)
 	}
 	return services

@@ -192,10 +192,13 @@ func getServerPodTemplate(
 		ReadOnly:  true,
 		SubPath:   "ca.crt",
 	}
+	// TODO: This was probably needed only for postgresql and can be removed now
 	tlsKeyMount := core.VolumeMount{Name: "tls-key", MountPath: "/etc/pki/spacewalk-tls"}
 
 	caVolume := kubernetes.CreateConfigVolume(caVolumeName, kubernetes.CAConfigName)
 	dbcaVolume := kubernetes.CreateConfigVolume(dbcaVolumeName, kubernetes.DBCAConfigName)
+
+	// TODO We probably don't need any SSL key in the setup / server containers any more
 	tlsKeyVolume := kubernetes.CreateSecretVolume("tls-key", "uyuni-cert")
 	var keyMode int32 = 0400
 	tlsKeyVolume.VolumeSource.Secret.Items = []core.KeyToPath{

@@ -19,6 +19,8 @@ const (
 	ReportdbServiceName = "reportdb"
 	// DBServiceName is the name of the server internal database service.
 	DBServiceName = "db"
+	// DBExporterServiceName is the name of the Prometheus database exporter service.
+	DBExporterServiceName = "db"
 	// TaskoServiceName is the name of the server taskomatic service.
 	TaskoServiceName = "taskomatic"
 	// TftpServiceName is the name of the server tftp service.
@@ -55,7 +57,7 @@ var WebPorts = []types.PortMap{
 
 // DBExporterPorts is the list of ports for the db exporter service.
 var DBExporterPorts = []types.PortMap{
-	NewPortMap(ReportdbServiceName, "exporter", 9187, 9187),
+	NewPortMap(DBExporterServiceName, "exporter", 9187, 9187),
 }
 
 // ReportDBPorts is the list of ports for the server report db service.
