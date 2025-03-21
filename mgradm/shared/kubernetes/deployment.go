@@ -186,29 +186,30 @@ func getServerPodTemplate(
 		ReadOnly:  true,
 		SubPath:   "ca.crt",
 	}
+	caSaltMount := core.VolumeMount{
+		Name:      caVolumeName,
+		MountPath: "/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT",
+		ReadOnly:  true,
+		SubPath:   "ca.crt",
+	}
+	caPubMount := core.VolumeMount{
+		Name:      caVolumeName,
+		MountPath: "/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT",
+		ReadOnly:  true,
+		SubPath:   "ca.crt",
+	}
 	dbcaMount := core.VolumeMount{
 		Name:      dbcaVolumeName,
 		MountPath: ssl.DBCAContainerPath,
 		ReadOnly:  true,
 		SubPath:   "ca.crt",
 	}
-	// TODO: This was probably needed only for postgresql and can be removed now
-	tlsKeyMount := core.VolumeMount{Name: "tls-key", MountPath: "/etc/pki/spacewalk-tls"}
 
 	caVolume := kubernetes.CreateConfigVolume(caVolumeName, kubernetes.CAConfigName)
 	dbcaVolume := kubernetes.CreateConfigVolume(dbcaVolumeName, kubernetes.DBCAConfigName)
 
-	// TODO We probably don't need any SSL key in the setup / server containers any more
-	tlsKeyVolume := kubernetes.CreateSecretVolume("tls-key", "uyuni-cert")
-	var keyMode int32 = 0400
-	tlsKeyVolume.VolumeSource.Secret.Items = []core.KeyToPath{
-		{Key: "tls.crt", Path: "spacewalk.crt"},
-		{Key: "tls.key", Path: "spacewalk.key", Mode: &keyMode},
-	}
-
-	initMounts = append(initMounts, tlsKeyMount)
-	volumeMounts = append(volumeMounts, caMount, dbcaMount, tlsKeyMount)
-	volumes = append(volumes, caVolume, dbcaVolume, tlsKeyVolume)
+	volumeMounts = append(volumeMounts, caMount, caSaltMount, caPubMount, dbcaMount)
+	volumes = append(volumes, caVolume, dbcaVolume)
 
 	template := core.PodTemplateSpec{
 		ObjectMeta: meta.ObjectMeta{
@@ -277,16 +278,6 @@ do
 		if [ "$vol" = "/srv/www" ]; then
             ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /mnt$vol/RHN-ORG-TRUSTED-SSL-CERT;
 		fi
-
-		if [ "$vol" = "/etc/pki/tls" ]; then
-              ln -s /etc/pki/spacewalk-tls/spacewalk.crt /mnt/etc/pki/tls/certs/spacewalk.crt;
-              ln -s /etc/pki/spacewalk-tls/spacewalk.key /mnt/etc/pki/tls/private/spacewalk.key;
-		fi
-	fi
-
-	if [ "$vol" = "/etc/pki/tls" ]; then
-	    cp /etc/pki/spacewalk-tls/spacewalk.key /mnt/etc/pki/tls/private/pg-spacewalk.key;
-	    chown postgres:postgres /mnt/etc/pki/tls/private/pg-spacewalk.key;
 	fi
 done
 `
