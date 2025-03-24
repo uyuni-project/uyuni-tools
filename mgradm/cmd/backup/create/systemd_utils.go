@@ -72,6 +72,7 @@ func gatherSystemdItems() []string {
 
 	for _, service := range utils.UyuniServices {
 		serviceName := service.Name
+
 		if service.Replicas == types.SingleOptionalReplica {
 			// with optional or more replicas we have service template, check if the service exists at all
 			serviceName = serviceName + "@"
@@ -79,7 +80,14 @@ func gatherSystemdItems() []string {
 				log.Debug().Msgf("Service file %s does not exists, skipping", serviceName)
 				continue
 			}
+		} else if serviceName == "uyuni-db" {
+			// special handling of uyuni-db service when we do backup after mgradm update but berfore upgrade
+			if _, err := os.Stat(podman.GetServicePath(serviceName)); errors.Is(err, os.ErrNotExist) {
+				log.Debug().Msgf("Service file %s does not exists, skipping", serviceName)
+				continue
+			}
 		}
+
 		result = append(result, podman.GetServicePath(serviceName))
 		// For single mandatory replica following returns 0 so loop is skipped
 		for i := 0; i < systemd.CurrentReplicaCount(service.Name); i++ {
