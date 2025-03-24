@@ -101,10 +101,9 @@ func prepareServerSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFl
 
 		caPath := path.Join(tempDir, "existing-ca.crt")
 		if err = os.WriteFile(caPath, rootCA, 0444); err != nil {
-			return utils.Errorf(err, L("cannot write existing CA certificate"))
+			return utils.Error(err, L("cannot write existing CA certificate"))
 		}
 
-		// TODO: load server cert and key as secrets
 		return shared_podman.CreateCASecrets(
 			shared_podman.CASecret, caPath,
 		)

@@ -215,10 +215,11 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
 		"--secret", shared_podman.ReportDBPassSecret + ",type=env,target=REPORT_DB_PASS",
 		"-e REPORT_DB_CA_CERT=" + ssl.DBCAContainerPath,
 		"--secret", shared_podman.DBCASecret + ",type=mount,target=" + ssl.DBCAContainerPath,
-		"--secret", shared_podman.CASecret + ",type=mount,target=/ssl/ca.crt",
-		// TODO Directly deploy them and skip SSL checks in container?
-		"--secret", shared_podman.SSLCertSecret + ",type=mount,target=/ssl/server.crt",
-		"--secret", shared_podman.SSLKeySecret + ",type=mount,target=/ssl/server.key",
+		"--secret", shared_podman.CASecret + ",type=mount,target=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT",
+		"--secret", shared_podman.CASecret + ",type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT",
+		"--secret", shared_podman.CASecret + ",type=mount,target=/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT",
+		"--secret", shared_podman.SSLCertSecret + ",type=mount,target=/etc/pki/tls/certs/spacewalk.crt",
+		"--secret", shared_podman.SSLKeySecret + ",type=mount,target=/etc/pki/tls/private/spacewalk.key",
 	}
 	for _, volume := range utils.ServerVolumeMounts {
 		command = append(command, "-v", fmt.Sprintf("%s:%s", volume.Name, volume.MountPath))
