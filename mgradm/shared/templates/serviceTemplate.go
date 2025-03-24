@@ -48,6 +48,10 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	-e TZ=${TZ} \
 	--network {{ .Network }} \
 	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
+	--secret {{ .CaSecret }},type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT \
+	--secret {{ .CaSecret }},type=mount,target=/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
+	--secret {{ .CertSecret }},type=mount,target=/etc/pki/tls/certs/spacewalk.crt \
+	--secret {{ .KeySecret }},type=mount,target=/etc/pki/tls/private/spacewalk.key \
 	--secret {{ .DBCaSecret }},type=mount,target={{ .DBCaPath }} \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 ExecStop=/usr/bin/podman exec \

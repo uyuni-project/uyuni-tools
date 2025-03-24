@@ -88,6 +88,9 @@ func writeSalineServiceFiles(
 		Image:       preparedImage,
 		SalinePort:  salineFlags.Port,
 		IPV6Enabled: ipv6Enabled,
+		// TODO Remove the certificate and use Ingress / Apache to proxy Saline
+		CertSecret: podman.SSLCertSecret,
+		KeySecret:  podman.SSLKeySecret,
 	}
 
 	log.Info().Msg(L("Setting up Saline service"))

@@ -12,16 +12,12 @@ var EtcRhnVolumeMount = types.VolumeMount{MountPath: "/etc/rhn", Name: "etc-rhn"
 // VarPgsqlDataVolumeMount defines the /var/lib/pgsql/data volume mount.
 var VarPgsqlDataVolumeMount = types.VolumeMount{MountPath: "/var/lib/pgsql/data", Name: "var-pgsql", Size: "50Gi"}
 
-// VolumeMount defines the /etc/pki/tls volume mount.
-var TLSVolumeMount = types.VolumeMount{MountPath: "/etc/pki/tls", Name: "etc-tls", Size: "1Mi"}
-
 // RootVolumeMount defines the /root volume mount.
 var RootVolumeMount = types.VolumeMount{MountPath: "/root", Name: "root", Size: "1Mi"}
 
 // PgsqlRequiredVolumeMounts represents volumes mount used by PostgreSQL.
 var PgsqlRequiredVolumeMounts = []types.VolumeMount{
 	VarPgsqlDataVolumeMount,
-	TLSVolumeMount,
 }
 
 // ServerVolumeMounts should match the volumes mapping from the container definition in both
@@ -52,8 +48,6 @@ var ServerVolumeMounts = []types.VolumeMount{
 	{MountPath: "/etc/sysconfig", Name: "etc-sysconfig", Size: "20Mi"},
 	{MountPath: "/etc/postfix", Name: "etc-postfix", Size: "1Mi"},
 	{MountPath: "/etc/sssd", Name: "etc-sssd", Size: "1Mi"},
-	TLSVolumeMount,
-	{MountPath: "/etc/pki/spacewalk-tls", Name: "tls-key"},
 	EtcRhnVolumeMount,
 }
 
@@ -68,7 +62,6 @@ var HubXmlrpcVolumeMounts = []types.VolumeMount{
 // SalineVolumeMounts represents volumes used by Saline container.
 var SalineVolumeMounts = []types.VolumeMount{
 	{Name: "etc-salt", MountPath: "/etc/salt"},
-	TLSVolumeMount,
 	{Name: "run-salt-master", MountPath: "/run/salt/master"},
 }
 

@@ -61,6 +61,8 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 		IPV6Enabled: ipv6Enabled,
 		CaSecret:    podman.CASecret,
 		CaPath:      ssl.CAContainerPath,
+		CertSecret:  podman.SSLCertSecret,
+		KeySecret:   podman.SSLKeySecret,
 		DBCaSecret:  podman.DBCASecret,
 		DBCaPath:    ssl.DBCAContainerPath,
 	}
