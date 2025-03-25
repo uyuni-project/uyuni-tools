@@ -26,6 +26,9 @@ if [ -d /var/lib/pgsql/data/data ] ; then
     report_db_name=$(sed -n '/^report_db_name/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
     echo "host $report_db_name $report_db_user all scram-sha-256" >> /var/lib/pgsql/data/pg_hba.conf
 
+    echo "host postgres postgres 127.0.0.1/32 scram-sha-256" >> /var/lib/pgsql/data/pg_hba.conf
+    echo "host postgres postgres ::1/128 scram-sha-256" >> /var/lib/pgsql/data/pg_hba.conf
+
     ls -la /var/lib/pgsql/data
 
 fi
