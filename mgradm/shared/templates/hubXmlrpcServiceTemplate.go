@@ -35,14 +35,12 @@ ExecStart=/usr/bin/podman run \
 	--replace \
 	{{- range .Ports }}
         -p {{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
-        {{- end }}
-        {{- range .Volumes }}
-        -v {{ .Name }}:{{ .MountPath }} \
-        {{- end }}
+    {{- end }}
 	-e HUB_API_URL \
 	-e HUB_CONNECT_TIMEOUT \
 	-e HUB_REQUEST_TIMEOUT \
 	-e HUB_CONNECT_USING_SSL \
+	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
 	--name {{ .NamePrefix }}-hub-xmlrpc-%i \
 	--hostname {{ .NamePrefix }}-hub-xmlrpc-%i.mgr.internal \
 	--network {{ .Network }} \
@@ -61,7 +59,8 @@ WantedBy=multi-user.target default.target
 
 // HubXmlrpcServiceTemplateData holds information to create the systemd file.
 type HubXmlrpcServiceTemplateData struct {
-	Volumes    []types.VolumeMount
+	CaSecret   string
+	CaPath     string
 	Ports      []types.PortMap
 	NamePrefix string
 	Image      string

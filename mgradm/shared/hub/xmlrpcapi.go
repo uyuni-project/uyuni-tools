@@ -12,6 +12,7 @@ import (
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -105,7 +106,8 @@ func Upgrade(
 // generateHubXmlrpcSystemdService creates the Hub XMLRPC systemd files.
 func generateHubXmlrpcSystemdService(systemd podman.Systemd, image string) error {
 	hubXmlrpcData := templates.HubXmlrpcServiceTemplateData{
-		Volumes:    utils.HubXmlrpcVolumeMounts,
+		CaSecret:   podman.CASecret,
+		CaPath:     ssl.CAContainerPath,
 		Ports:      utils.HubXmlrpcPorts,
 		NamePrefix: "uyuni",
 		Network:    podman.UyuniNetwork,

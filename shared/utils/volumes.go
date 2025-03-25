@@ -54,11 +54,6 @@ var ServerVolumeMounts = []types.VolumeMount{
 // ServerMigrationVolumeMounts match server + postgres volume mounts, used for migration.
 var ServerMigrationVolumeMounts = append(ServerVolumeMounts, VarPgsqlDataVolumeMount, EtcRhnVolumeMount)
 
-// HubXmlrpcVolumeMounts represents volumes used by Hub Xmlrpc container.
-var HubXmlrpcVolumeMounts = []types.VolumeMount{
-	{MountPath: "/etc/pki/trust/anchors", Name: "ca-cert"},
-}
-
 // SalineVolumeMounts represents volumes used by Saline container.
 var SalineVolumeMounts = []types.VolumeMount{
 	{Name: "etc-salt", MountPath: "/etc/salt"},
