@@ -93,20 +93,21 @@ func prepareServerSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFl
 		)
 	}
 	// Not provided but check for upgrade scenario
-	// Check if this is not an upgrade scenario and there is existing CA
-	rootCA, err := shared_podman.ReadFromContainer("uyuni-read-ca", image, utils.ServerVolumeMounts, nil,
-		ssl.CAContainerPath)
-	if err == nil {
-		log.Info().Msg(L("Reusing existing server CA certificate"))
+	// Check if this is an upgrade scenario and there is existing CA
+	for _, cafile := range []string{ssl.CAContainerPath, "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"} {
+		rootCA, err := shared_podman.ReadFromContainer("uyuni-read-ca", image, utils.ServerVolumeMounts, nil, cafile)
+		if err == nil {
+			log.Info().Msgf(L("Reusing existing server CA certificate %s"), cafile)
 
-		caPath := path.Join(tempDir, "existing-ca.crt")
-		if err = os.WriteFile(caPath, rootCA, 0444); err != nil {
-			return utils.Error(err, L("cannot write existing CA certificate"))
+			caPath := path.Join(tempDir, "existing-ca.crt")
+			if err = os.WriteFile(caPath, rootCA, 0444); err != nil {
+				return utils.Error(err, L("cannot write existing CA certificate"))
+			}
+
+			return shared_podman.CreateCASecrets(
+				shared_podman.CASecret, caPath,
+			)
 		}
-
-		return shared_podman.CreateCASecrets(
-			shared_podman.CASecret, caPath,
-		)
 	}
 
 	// Not provided and not an upgrade, generate new
