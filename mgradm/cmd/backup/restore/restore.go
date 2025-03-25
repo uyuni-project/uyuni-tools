@@ -16,6 +16,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
+	podman_mgradm "github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -24,6 +25,7 @@ import (
 
 var runCmdInput = utils.RunCmdInput
 var runCmd = utils.RunCmd
+var systemd = podman.SystemdImpl{}
 
 func Restore(
 	_ *types.GlobalFlags,
@@ -75,6 +77,10 @@ func Restore(
 	if err := restoreSystemdConfig(inputDirectory, flags); err != nil {
 		hasError = errors.Join(hasError, err)
 		// TODO: recreate services defaults
+	}
+
+	if flags.Restart {
+		hasError = podman_mgradm.StartServices()
 	}
 
 	return shared.ReportError(hasError)
@@ -253,5 +259,8 @@ func restoreSystemdConfig(inputDirectory string, flags *shared.Flagpole) error {
 		}
 	}
 
-	return restoreSystemdConfiguration(systemdConfigFile, flags)
+	if err := restoreSystemdConfiguration(systemdConfigFile, flags); err != nil {
+		return err
+	}
+	return systemd.ReloadDaemon(flags.DryRun)
 }

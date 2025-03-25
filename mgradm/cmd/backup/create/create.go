@@ -15,13 +15,13 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
+	podman_mgradm "github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var systemd podman.Systemd = podman.SystemdImpl{}
 var runCmdOutput = utils.RunCmdOutput
 
 func Create(
@@ -58,7 +58,7 @@ func Create(
 	serviceStopped := false
 	if !flags.SkipDatabase && !dryRun {
 		log.Info().Msg(L("Stopping server service"))
-		if err := systemd.StopService(podman.ServerService); err != nil {
+		if err := podman_mgradm.StopServices(); err != nil {
 			return shared.AbortError(err, false)
 		}
 		serviceStopped = true
@@ -81,7 +81,7 @@ func Create(
 	// start service if it was stopped before
 	if serviceStopped && !flags.NoRestart && !dryRun {
 		log.Info().Msg(L("Restarting server service"))
-		hasError = errors.Join(hasError, systemd.StartService(podman.ServerService))
+		hasError = errors.Join(hasError, podman_mgradm.StartServices())
 	}
 
 	log.Info().Msgf(L("Backup finished into %s"), outputDirectory)
