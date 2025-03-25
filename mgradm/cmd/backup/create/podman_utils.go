@@ -140,7 +140,7 @@ func backupPodmanSecrets(dryRun bool) ([]byte, error) {
 	}
 	output, err = json.Marshal(backupSecretMap)
 	if err != nil {
-		log.Warn().Err(err).Msg("Unable to encode secrets backup")
+		log.Warn().Err(err).Msg(L("Unable to encode secrets backup"))
 		return nil, err
 	}
 	return output, nil

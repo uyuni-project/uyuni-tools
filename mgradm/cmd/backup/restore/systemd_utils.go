@@ -62,7 +62,7 @@ func restoreSystemdConfiguration(backupSource string, flags *shared.Flagpole) er
 			}
 			fh.Close()
 		default:
-			log.Warn().Msgf("Unknown filetype of %s", header.Name)
+			log.Warn().Msgf(L("Unknown filetype of %s"), header.Name)
 			continue
 		}
 

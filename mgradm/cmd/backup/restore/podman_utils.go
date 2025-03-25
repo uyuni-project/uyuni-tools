@@ -139,7 +139,7 @@ func restorePodmanNetwork(header *tar.Header, tr *tar.Reader, flags *shared.Flag
 		command = append(command, "--dns", v)
 	}
 	command = append(command, podman.UyuniNetwork)
-	log.Info().Msgf("Restoring podman network")
+	log.Info().Msg(L("Restoring podman network"))
 	if err := runCmd(command[0], command[1:]...); err != nil {
 		log.Error().Err(err).Msg(L("Unlable to create podman network"))
 		return err
@@ -187,7 +187,7 @@ func restorePodmanSecrets(header *tar.Header, tr *tar.Reader, flags *shared.Flag
 	}
 
 	var hasError error
-	log.Info().Msgf("Restoring podman secrets")
+	log.Info().Msg(L("Restoring podman secrets"))
 	baseCommand := []string{"podman", "secret", "create", "--replace"}
 	for _, v := range secrets {
 		if !flags.ForceRestore && podman.IsSecretPresent(v.Name) {
