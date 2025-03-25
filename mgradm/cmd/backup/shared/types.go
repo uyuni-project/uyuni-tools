@@ -11,6 +11,7 @@ type Flagpole struct {
 	SkipImages   bool     `mapstructure:"skipimages"`
 	SkipConfig   bool     `mapstructure:"skipconfig"`
 	NoRestart    bool     `mapstructure:"norestart"`
+	Restart      bool     `mapstructure:"restart"`
 	DryRun       bool     `mapstructure:"dryrun"`
 	ForceRestore bool     `mapstructure:"force"`
 	SkipExisting bool     `mapstructure:"continue"`
