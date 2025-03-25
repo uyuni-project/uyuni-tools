@@ -31,6 +31,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 // GetExposedPorts returns the port exposed.
 func GetExposedPorts(debug bool) []types.PortMap {
 	ports := utils.GetServerPorts(debug)
@@ -277,14 +279,16 @@ func RunPostUpgradeScript(serverImage string) error {
 	}
 	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir)
 	if err != nil {
-		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
+		return utils.Errorf(err, L("cannot generate PostgreSQL upgrade script"))
 	}
 	err = podman.RunContainer(postUpgradeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
 		[]string{"/var/lib/uyuni-tools/" + postUpgradeScriptName})
 	if err != nil {
 		return err
 	}
-	return nil
+
+	// apply changes
+	return systemd.RestartService(podman.DBService)
 }
 
 // Upgrade will upgrade server to the image given as attribute.
@@ -363,7 +367,7 @@ func Upgrade(
 	if newPgVersion > oldPgVersion {
 		log.Info().Msgf(
 			L("Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"),
-			oldPgVersion, newPgVersion,
+			strconv.Itoa(oldPgVersion), strconv.Itoa(newPgVersion),
 		)
 		if err := RunPgsqlVersionUpgrade(
 			authFile, registry, pgsqlFlags.Image, upgradeImage, strconv.Itoa(oldPgVersion),
@@ -376,7 +380,7 @@ func Upgrade(
 	} else {
 		return fmt.Errorf(
 			L("trying to downgrade PostgreSQL from %[1]s to %[2]s"),
-			oldPgVersion, newPgVersion,
+			strconv.Itoa(oldPgVersion), strconv.Itoa(newPgVersion),
 		)
 	}
 
