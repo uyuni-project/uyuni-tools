@@ -20,11 +20,13 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 func exportSystemdConfiguration(outputDir string, dryRun bool) error {
 	filesToBackup := gatherSystemdItems()
 
 	if dryRun {
-		log.Info().Msgf("Would backup %s", filesToBackup)
+		log.Info().Msgf(L("Would backup %s"), filesToBackup)
 		return nil
 	}
 	// Create output file
