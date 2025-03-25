@@ -95,6 +95,7 @@ func doBackup(
 		var backupError *shared.BackupError
 		ok := errors.As(err, &backupError)
 		if ok {
+			// l10n-ignore
 			log.Error().Msgf("%s", backupError.Err.Error())
 			if backupError.Abort && backupError.DataRemains {
 				return fmt.Errorf(L("Backup aborted, partially backed up files remains in '%s'"), outputDirectory)
