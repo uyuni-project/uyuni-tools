@@ -114,24 +114,31 @@ func prepareOuputDirs(outputDirs []string, dryRun bool) error {
 }
 
 func gatherVolumesToBackup(extraVolumes []string, skipVolumes []string, skipDatabase bool) []string {
-	// Construct work volume list
+	// Construct work volume list, start with extra volumes
 	volumes := extraVolumes
 
-	// Extra handling to skip all, except extra added
+	//First add databasse volumes
+	if !skipDatabase {
+		for _, volume := range utils.PgsqlRequiredVolumeMounts {
+			volumes = append(volumes, volume.Name)
+		}
+	}
+
+	// Extra handling to skip all other volues
 	if len(skipVolumes) == 1 && skipVolumes[0] == "all" {
 		return volumes
 	}
 
-	if skipDatabase {
-		for _, volume := range utils.PgsqlRequiredVolumeMounts {
-			skipVolumes = append(skipVolumes, volume.Name)
-		}
-	}
+	// Add other server volumes and skip if needed
 	for _, volume := range utils.ServerVolumeMounts {
 		if !slices.Contains(skipVolumes, volume.Name) {
 			volumes = append(volumes, volume.Name)
 		}
 	}
+
+	// Remove duplicates
+	slices.Sort(volumes)
+	volumes = slices.Compact(volumes)
 	return volumes
 }
 
@@ -178,6 +185,9 @@ func backupSystemdServices(outputDirectory string, dryRun bool) error {
 		log.Warn().Err(err).Msg(errorMessage)
 		return err
 	}
+	if dryRun {
+		return nil
+	}
 	if err := utils.CreateChecksum(path.Join(outputDirectory, shared.SystemdConfBackupFile)); err != nil {
 		log.Warn().Err(err).Msg(errorMessage)
 		return err
@@ -191,6 +201,9 @@ func backupPodmanConfiguration(outputDirectory string, dryRun bool) error {
 	if err := exportPodmanConfiguration(outputDirectory, dryRun); err != nil {
 		log.Warn().Err(err).Msg(errorMessage)
 		return err
+	}
+	if dryRun {
+		return nil
 	}
 	if err := utils.CreateChecksum(path.Join(outputDirectory, shared.PodmanConfBackupFile)); err != nil {
 		log.Warn().Err(err).Msg(errorMessage)

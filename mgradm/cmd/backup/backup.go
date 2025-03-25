@@ -60,7 +60,7 @@ func newRestoreCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[shared.
 	restoreCmd.Flags().Bool("skipdatabase", false, L("Do not restore database volume"))
 	restoreCmd.Flags().Bool("skipimages", false, L("Skip restore of container images"))
 	restoreCmd.Flags().Bool("skipconfig", false, L("Do not restore podman configuration. Defaults will be used"))
-	restoreCmd.Flags().Bool("norestart", false, L("Do not restart service after restore is done"))
+	restoreCmd.Flags().Bool("restart", false, L("Restart service after restore is done"))
 	restoreCmd.Flags().Bool("dryRun", false, L("Print expected actions, but no action is done"))
 	restoreCmd.Flags().Bool("force", false, L("Force overwrite of existing items"))
 	restoreCmd.Flags().Bool("continue", false, L("Skip existing items and restore the rest"))
