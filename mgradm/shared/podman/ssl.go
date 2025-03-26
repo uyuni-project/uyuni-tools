@@ -92,22 +92,14 @@ func prepareServerSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFl
 			shared_podman.SSLKeySecret, pair.Key,
 		)
 	}
-	// Not provided but check for upgrade scenario
+
 	// Check if this is an upgrade scenario and there is existing CA
-	for _, cafile := range []string{ssl.CAContainerPath, "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"} {
-		rootCA, err := shared_podman.ReadFromContainer("uyuni-read-ca", image, utils.ServerVolumeMounts, nil, cafile)
-		if err == nil {
-			log.Info().Msgf(L("Reusing existing server CA certificate %s"), cafile)
-
-			caPath := path.Join(tempDir, "existing-ca.crt")
-			if err = os.WriteFile(caPath, rootCA, 0444); err != nil {
-				return utils.Error(err, L("cannot write existing CA certificate"))
-			}
-
-			return shared_podman.CreateCASecrets(
-				shared_podman.CASecret, caPath,
-			)
-		}
+	if reused, err := reuseExistingCertificates(image, tempDir, false); reused && err == nil {
+		// We succeffuly loaded existing certificates
+		return nil
+	} else if reused && err != nil {
+		// We found certificates, but there was trouble loading it
+		return err
 	}
 
 	// Not provided and not an upgrade, generate new
@@ -139,8 +131,85 @@ func prepareDatabaseSSLcertificates(image string, sslFlags *adm_utils.InstallSSL
 		)
 	}
 
+	// Check if this is an upgrade scenario and there is existing CA
+	if reused, err := reuseExistingCertificates(image, tempDir, true); reused && err == nil {
+		// We succeffuly loaded existing certificates
+		return nil
+	} else if reused && err != nil {
+		// We found certificates, but there was trouble loading it
+		return err
+	}
+
 	// Not provided and not an upgrade, generate new
 	return generateDatabaseCertificate(image, sslFlags, tz, fqdn)
+}
+
+func reuseExistingCertificates(image string, tempDir string, isDatabaseCheck bool) (bool, error) {
+	// Basic init
+	caPath := path.Join(tempDir, "existing-ca.crt")
+	serverCert := path.Join(tempDir, "existing-server.crt")
+	serverKey := path.Join(tempDir, "existing-key.crt")
+
+	// Paths for server side checking
+	volumes := utils.ServerVolumeMounts
+	caCheckPath := ssl.CAContainerPath
+	crtCheckPath := ssl.ServerCertPath
+	keyCheckPath := ssl.ServerCertKeyPath
+
+	if isDatabaseCheck {
+		// Path for database side checking
+		volumes = utils.PgsqlRequiredVolumeMounts
+		caCheckPath = ssl.DBCAContainerPath
+		crtCheckPath = ssl.DBCertPath
+		keyCheckPath = ssl.DBCertKeyPath
+	}
+
+	const containerName = "uyuni-read-certs"
+
+	// Check if we have existing CA
+	rootCA, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
+		caCheckPath)
+	if err != nil {
+		return false, nil
+	}
+
+	if err = os.WriteFile(caPath, rootCA, 0444); err != nil {
+		return true, utils.Error(err, L("cannot write existing CA certificate"))
+	}
+
+	// Check for server certificate
+	cert, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
+		crtCheckPath)
+	if err != nil {
+		return false, nil
+	}
+	if err = os.WriteFile(serverCert, cert, 0444); err != nil {
+		return true, utils.Error(err, L("cannot write existing server certificate"))
+	}
+
+	// Check for server certificate key
+	keyData, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
+		keyCheckPath)
+	if err != nil {
+		return false, nil
+	}
+	if err = os.WriteFile(serverKey, keyData, 0400); err != nil {
+		return true, utils.Error(err, L("cannot write existing server key"))
+	}
+
+	log.Info().Msg(L("Reusing existing certificates"))
+	if isDatabaseCheck {
+		return true, shared_podman.CreateTLSSecrets(
+			shared_podman.DBCASecret, caPath,
+			shared_podman.DBSSLCertSecret, serverCert,
+			shared_podman.DBSSLKeySecret, serverKey,
+		)
+	}
+	return true, shared_podman.CreateTLSSecrets(
+		shared_podman.CASecret, caPath,
+		shared_podman.SSLCertSecret, serverCert,
+		shared_podman.SSLKeySecret, serverKey,
+	)
 }
 
 func runSSLContainer(script string, workdir string, image string, tz string, env map[string]string) error {
