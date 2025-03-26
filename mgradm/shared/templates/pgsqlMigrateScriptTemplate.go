@@ -15,7 +15,7 @@ set -e -x
 
 if [ -d /var/lib/pgsql/data/data ] ; then
     shopt -s dotglob
-	rsync -av --exclude=pg_hba.conf /var/lib/pgsql/data/data/ /var/lib/pgsql/data/ 2>/dev/null
+	rsync -a --exclude=pg_hba.conf /var/lib/pgsql/data/data/ /var/lib/pgsql/data/ 2>/dev/null
     rm -rf /var/lib/pgsql/data/data
 
     echo "Adding database access for other containers..."
@@ -28,9 +28,6 @@ if [ -d /var/lib/pgsql/data/data ] ; then
 
     echo "host postgres postgres 127.0.0.1/32 scram-sha-256" >> /var/lib/pgsql/data/pg_hba.conf
     echo "host postgres postgres ::1/128 scram-sha-256" >> /var/lib/pgsql/data/pg_hba.conf
-
-    ls -la /var/lib/pgsql/data
-
 fi
 
 {{ if .ReportDBHost }}
@@ -40,7 +37,6 @@ sed 's/^report_db_host = .*/report_db_host = {{ .ReportDBHost }}/' -i /etc/rhn/r
 {{ if .DBHost }}
 sed 's/^db_host = .*/db_host = {{ .DBHost }}/' -i /etc/rhn/rhn.conf;
 {{ end }}
-
 
 echo "DONE"`
 
