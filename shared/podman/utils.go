@@ -74,7 +74,9 @@ func ReadFromContainer(name string, image string, volumes []types.VolumeMount,
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
 	for _, volume := range volumes {
-		podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath)
+		if isVolumePresent(volume.Name) {
+			podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath)
+		}
 	}
 	podmanArgs = append(podmanArgs, "--network", UyuniNetwork)
 	podmanArgs = append(podmanArgs, image)

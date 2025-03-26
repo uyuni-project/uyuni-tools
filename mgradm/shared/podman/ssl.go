@@ -145,20 +145,45 @@ func prepareDatabaseSSLcertificates(image string, sslFlags *adm_utils.InstallSSL
 }
 
 func reuseExistingCertificates(image string, tempDir string, isDatabaseCheck bool) (bool, error) {
+	// Upgrading from 5.1+ with all cerst in secrets
+	if reuseExistingCertificatesFromSecrets(isDatabaseCheck) {
+		return true, nil
+	}
+
+	// Upgrading from 5.0- with all certs in files
+	return reuseExistingCertificatesFromMounts(image, tempDir, isDatabaseCheck)
+}
+
+func reuseExistingCertificatesFromSecrets(isDatabaseCheck bool) bool {
+	if isDatabaseCheck {
+		return shared_podman.HasSecret(shared_podman.DBCASecret) &&
+			shared_podman.HasSecret(shared_podman.DBSSLCertSecret) &&
+			shared_podman.HasSecret(shared_podman.DBSSLKeySecret)
+	}
+	return shared_podman.HasSecret(shared_podman.CASecret) &&
+		shared_podman.HasSecret(shared_podman.SSLCertSecret) &&
+		shared_podman.HasSecret(shared_podman.SSLKeySecret)
+}
+
+func reuseExistingCertificatesFromMounts(image string, tempDir string, isDatabaseCheck bool) (bool, error) {
 	// Basic init
 	caPath := path.Join(tempDir, "existing-ca.crt")
 	serverCert := path.Join(tempDir, "existing-server.crt")
 	serverKey := path.Join(tempDir, "existing-key.crt")
 
+	// No longer used by 5.1+, but contain existing certs in migration scenarios
+	etcTLSVolume := types.VolumeMount{Name: "etc-tls", MountPath: "/etc/pki/tls"}
+
 	// Paths for server side checking
-	volumes := utils.ServerVolumeMounts
+	volumes := append(utils.ServerVolumeMounts, etcTLSVolume)
 	caCheckPath := ssl.CAContainerPath
 	crtCheckPath := ssl.ServerCertPath
 	keyCheckPath := ssl.ServerCertKeyPath
 
 	if isDatabaseCheck {
-		// Path for database side checking
-		volumes = utils.PgsqlRequiredVolumeMounts
+		// Path for database side checking.
+		// It is necessary to include etc-tls and ca-cert volume mounts to simulate non-split installation
+		volumes = append(utils.PgsqlRequiredVolumeMounts, etcTLSVolume, utils.CaCertVolumeMount)
 		caCheckPath = ssl.DBCAContainerPath
 		crtCheckPath = ssl.DBCertPath
 		keyCheckPath = ssl.DBCertKeyPath
@@ -170,6 +195,7 @@ func reuseExistingCertificates(image string, tempDir string, isDatabaseCheck boo
 	rootCA, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
 		caCheckPath)
 	if err != nil {
+		log.Debug().Err(err).Msgf("CA file %s not found", caCheckPath)
 		return false, nil
 	}
 
@@ -181,6 +207,7 @@ func reuseExistingCertificates(image string, tempDir string, isDatabaseCheck boo
 	cert, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
 		crtCheckPath)
 	if err != nil {
+		log.Debug().Err(err).Msgf("Cert file %s not found", crtCheckPath)
 		return false, nil
 	}
 	if err = os.WriteFile(serverCert, cert, 0444); err != nil {
@@ -191,6 +218,7 @@ func reuseExistingCertificates(image string, tempDir string, isDatabaseCheck boo
 	keyData, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
 		keyCheckPath)
 	if err != nil {
+		log.Debug().Err(err).Msgf("Cert Key file %s not found", keyCheckPath)
 		return false, nil
 	}
 	if err = os.WriteFile(serverKey, keyData, 0400); err != nil {

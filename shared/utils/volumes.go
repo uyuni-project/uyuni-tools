@@ -20,6 +20,9 @@ var PgsqlRequiredVolumeMounts = []types.VolumeMount{
 	VarPgsqlDataVolumeMount,
 }
 
+// CaCertVolumeMount represents volume for CA certificates.
+var CaCertVolumeMount = types.VolumeMount{MountPath: "/etc/pki/trust/anchors/", Name: "ca-cert"}
+
 // ServerVolumeMounts should match the volumes mapping from the container definition in both
 // the helm chart and the systemctl services definitions.
 var ServerVolumeMounts = []types.VolumeMount{
@@ -37,7 +40,7 @@ var ServerVolumeMounts = []types.VolumeMount{
 	{MountPath: "/srv/susemanager", Name: "srv-susemanager", Size: "1Mi"},
 	{MountPath: "/srv/spacewalk", Name: "srv-spacewalk", Size: "10Mi"},
 	RootVolumeMount,
-	{MountPath: "/etc/pki/trust/anchors/", Name: "ca-cert"},
+	CaCertVolumeMount,
 	{MountPath: "/run/salt/master", Name: "run-salt-master"},
 	{MountPath: "/etc/apache2", Name: "etc-apache2", Size: "1Mi"},
 	{MountPath: "/etc/systemd/system/multi-user.target.wants", Name: "etc-systemd-multi", Size: "1Mi"},
