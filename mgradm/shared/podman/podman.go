@@ -386,9 +386,7 @@ func Upgrade(
 		)
 	}
 
-	if err := pgsql.Upgrade(
-		systemd, authFile, pgsqlFlags,
-	); err != nil {
+	if err := pgsql.Upgrade(preparedPgsqlImage, systemd); err != nil {
 		return err
 	}
 
@@ -582,9 +580,7 @@ func Migrate(
 		return utils.Errorf(err, L("cannot configure db container"))
 	}
 
-	if err := pgsql.Upgrade(
-		systemd, authFile, pgsqlFlags,
-	); err != nil {
+	if err := pgsql.Upgrade(preparedPgsqlImage, systemd); err != nil {
 		return err
 	}
 

@@ -62,22 +62,9 @@ func EnablePgsql(systemd podman.Systemd) error {
 
 // Upgrade updates the systemd service files and restarts the containers if needed.
 func Upgrade(
+	preparedImage string,
 	systemd podman.Systemd,
-	authFile string,
-	pgsqlFlags cmd_utils.PgsqlFlags,
 ) error {
-	image := pgsqlFlags.Image
-	pgsqlImage, err := utils.ComputeImage(pgsqlFlags.Image.Registry, pgsqlFlags.Image.Tag, image)
-
-	if err != nil {
-		return utils.Error(err, L("failed to compute image URL"))
-	}
-
-	preparedImage, err := podman.PrepareImage(authFile, pgsqlImage, pgsqlFlags.Image.PullPolicy, true)
-	if err != nil {
-		return err
-	}
-
 	if err := generatePgsqlSystemdService(systemd, preparedImage); err != nil {
 		return utils.Error(err, L("cannot generate systemd service"))
 	}
