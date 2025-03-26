@@ -50,8 +50,8 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
 	--secret {{ .CaSecret }},type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT \
 	--secret {{ .CaSecret }},type=mount,target=/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
-	--secret {{ .CertSecret }},type=mount,target=/etc/pki/tls/certs/spacewalk.crt \
-	--secret {{ .KeySecret }},type=mount,target=/etc/pki/tls/private/spacewalk.key \
+	--secret {{ .CertSecret }},type=mount,target={{ .CertPath }} \
+	--secret {{ .KeySecret }},type=mount,target={{ .KeyPath }} \
 	--secret {{ .DBCaSecret }},type=mount,target={{ .DBCaPath }} \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 ExecStop=/usr/bin/podman exec \
@@ -88,7 +88,9 @@ type PodmanServiceTemplateData struct {
 	DBCaSecret      string
 	DBCaPath        string
 	CertSecret      string
+	CertPath        string
 	KeySecret       string
+	KeyPath         string
 	AdminUser       string
 	AdminPassword   string
 	ManagerUser     string

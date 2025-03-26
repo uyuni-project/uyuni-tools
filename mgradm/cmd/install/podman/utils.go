@@ -195,11 +195,11 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
 		"--secret", shared_podman.ReportDBPassSecret + ",type=env,target=REPORT_DB_PASS",
 		"-e REPORT_DB_CA_CERT=" + ssl.DBCAContainerPath,
 		"--secret", shared_podman.DBCASecret + ",type=mount,target=" + ssl.DBCAContainerPath,
-		"--secret", shared_podman.CASecret + ",type=mount,target=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT",
+		"--secret", shared_podman.CASecret + ",type=mount,target=" + ssl.CAContainerPath,
 		"--secret", shared_podman.CASecret + ",type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT",
 		"--secret", shared_podman.CASecret + ",type=mount,target=/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT",
-		"--secret", shared_podman.SSLCertSecret + ",type=mount,target=/etc/pki/tls/certs/spacewalk.crt",
-		"--secret", shared_podman.SSLKeySecret + ",type=mount,target=/etc/pki/tls/private/spacewalk.key",
+		"--secret", shared_podman.SSLCertSecret + ",type=mount,target=" + ssl.ServerCertPath,
+		"--secret", shared_podman.SSLKeySecret + ",type=mount,target=" + ssl.ServerCertKeyPath,
 	}
 	for _, volume := range utils.ServerVolumeMounts {
 		command = append(command, "-v", fmt.Sprintf("%s:%s", volume.Name, volume.MountPath))

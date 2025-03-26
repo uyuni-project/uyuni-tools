@@ -12,6 +12,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -105,8 +106,11 @@ func generatePgsqlSystemdService(
 		Network:         podman.UyuniNetwork,
 		Image:           image,
 		CaSecret:        podman.DBCASecret,
+		CaPath:          ssl.DBCAContainerPath,
 		CertSecret:      podman.DBSSLCertSecret,
+		CertPath:        ssl.DBCertPath,
 		KeySecret:       podman.DBSSLKeySecret,
+		KeyPath:         ssl.DBCertKeyPath,
 		AdminUser:       podman.DBAdminUserSecret,
 		AdminPassword:   podman.DBAdminPassSecret,
 		ManagerUser:     podman.DBUserSecret,

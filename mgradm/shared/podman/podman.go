@@ -67,7 +67,9 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 		CaSecret:    podman.CASecret,
 		CaPath:      ssl.CAContainerPath,
 		CertSecret:  podman.SSLCertSecret,
+		CertPath:    ssl.ServerCertPath,
 		KeySecret:   podman.SSLKeySecret,
+		KeyPath:     ssl.ServerCertKeyPath,
 		DBCaSecret:  podman.DBCASecret,
 		DBCaPath:    ssl.DBCAContainerPath,
 	}

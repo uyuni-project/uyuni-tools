@@ -20,11 +20,20 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// ! Any changes below needs to be double checked against upgrade/migration scenario !
 const (
 	// CAContainerPath is the path to the Root CA certificate in the server container.
-	CAContainerPath = "/etc/pki/trust/anchors/uyuni-ca.crt"
+	CAContainerPath = "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
 	// DBCAContainerPath is the path to the DB Root CA certificate in the server container.
-	DBCAContainerPath = "/etc/pki/trust/anchors/uyuni-db-ca.crt"
+	DBCAContainerPath = "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
+	// ServerCertPath is the path to the server certificate in the server container.
+	ServerCertPath = "/etc/pki/tls/certs/spacewalk.crt"
+	// ServerCertKeyPath is the path to the server certificate key in the server container.
+	ServerCertKeyPath = "/etc/pki/tls/private/spacewalk.key"
+	// DBCertPath is the path to the database certificate in the database container.
+	DBCertPath = "/etc/pki/tls/certs/spacewalk.crt"
+	// DBCertKeyPaht is the path to the database certificate in the database container.
+	DBCertKeyPath = "/etc/pki/tls/private/pg-spacewalk.key"
 )
 
 // OrderCas generates the server certificate with the CA chain.

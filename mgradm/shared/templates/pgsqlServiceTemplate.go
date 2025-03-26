@@ -37,9 +37,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--hostname {{ .NamePrefix }}-db.mgr.internal \
 	--network-alias db \
 	--network-alias reportdb \
-	--secret {{ .CaSecret }},type=mount,target=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
-	--secret {{ .KeySecret }},type=mount,uid=999,mode=0400,target=/etc/pki/tls/private/pg-spacewalk.key \
-	--secret {{ .CertSecret }},type=mount,target=/etc/pki/tls/certs/spacewalk.crt \
+	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
+	--secret {{ .KeySecret }},type=mount,uid=999,mode=0400,target={{ .KeyPath }} \
+	--secret {{ .CertSecret }},type=mount,target={{ .CertPath }} \
 	--secret {{ .AdminUser }},type=env,target=POSTGRES_USER \
 	--secret {{ .AdminPassword }},type=env,target=POSTGRES_PASSWORD \
 	--secret {{ .ManagerUser }},type=env,target=MANAGER_USER \
@@ -83,8 +83,11 @@ type PgsqlServiceTemplateData struct {
 	Network         string
 	IPV6Enabled     bool
 	CaSecret        string
+	CaPath          string
 	CertSecret      string
+	CertPath        string
 	KeySecret       string
+	KeyPath         string
 	AdminUser       string
 	AdminPassword   string
 	ManagerUser     string
