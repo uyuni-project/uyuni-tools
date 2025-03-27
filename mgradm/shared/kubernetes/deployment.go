@@ -205,11 +205,21 @@ func getServerPodTemplate(
 		SubPath:   "ca.crt",
 	}
 
+	const tlsVolumeName = "tls"
+	certMount := core.VolumeMount{Name: tlsVolumeName, MountPath: "/etc/pki/"}
+
 	caVolume := kubernetes.CreateConfigVolume(caVolumeName, kubernetes.CAConfigName)
 	dbcaVolume := kubernetes.CreateConfigVolume(dbcaVolumeName, kubernetes.DBCAConfigName)
 
-	volumeMounts = append(volumeMounts, caMount, caSaltMount, caPubMount, dbcaMount)
-	volumes = append(volumes, caVolume, dbcaVolume)
+	var secretMode int32 = 0400
+	tlsVolume := kubernetes.CreateSecretVolume(tlsVolumeName, kubernetes.CertSecretName)
+	tlsVolume.Secret.Items = []core.KeyToPath{
+		{Key: "tls.crt", Path: "tls/certs/spacewalk.crt"},
+		{Key: "tls.key", Path: "tls/private/spacewalk.key", Mode: &secretMode},
+	}
+
+	volumeMounts = append(volumeMounts, caMount, caSaltMount, caPubMount, dbcaMount, certMount)
+	volumes = append(volumes, caVolume, dbcaVolume, tlsVolume)
 
 	template := core.PodTemplateSpec{
 		ObjectMeta: meta.ObjectMeta{
@@ -285,10 +295,6 @@ func GetServerMounts() []types.VolumeMount {
 	mounts := []types.VolumeMount{}
 	mountsSet := map[string]types.VolumeMount{}
 	for _, mount := range serverMounts {
-		// Skip mounts that are not PVCs
-		if mount.Name == "ca-cert" {
-			continue
-		}
 		if _, exists := mountsSet[mount.Name]; !exists {
 			mounts = append(mounts, mount)
 			mountsSet[mount.Name] = mount
