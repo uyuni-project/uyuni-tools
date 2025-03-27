@@ -28,7 +28,7 @@ type ServerFlags struct {
 	// DBUpgradeImage is the image to use to perform the database upgrade.
 	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	Saline         SalineFlags
-	Pgsql          PgsqlFlags
+	Pgsql          types.PgsqlFlags
 }
 
 // MigrationFlags contains the parameters that are used only for migration.

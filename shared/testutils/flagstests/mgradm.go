@@ -196,7 +196,7 @@ var PgsqlFlagsTestArgs = []string{
 }
 
 // AssertPgsqlFlag asserts that all pgsql flags are parsed correctly.
-func AssertPgsqlFlag(t *testing.T, flags *utils.PgsqlFlags) {
+func AssertPgsqlFlag(t *testing.T, flags *types.PgsqlFlags) {
 	testutils.AssertEquals(t, "Error parsing --pgsql-image", "pgsqlimg", flags.Image.Name)
 	testutils.AssertEquals(t, "Error parsing --pgsql-tag", "pgsqltag", flags.Image.Tag)
 }

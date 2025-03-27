@@ -31,6 +31,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 // GetExposedPorts returns the port exposed.
 func GetExposedPorts(debug bool) []types.PortMap {
 	ports := utils.GetServerPorts(debug)
@@ -302,7 +304,7 @@ func Upgrade(
 	cocoFlags adm_utils.CocoFlags,
 	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
 	salineFlags adm_utils.SalineFlags,
-	pgsqlFlags adm_utils.PgsqlFlags,
+	pgsqlFlags types.PgsqlFlags,
 	scc types.SCCCredentials,
 	tz string,
 ) error {
@@ -320,7 +322,7 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot setup network"))
 	}
 
-	preparedServerImage, preparedPgsqlImage, err := prepareImages(authFile, image, pgsqlFlags)
+	preparedServerImage, preparedPgsqlImage, err := podman.PrepareImages(authFile, image, pgsqlFlags)
 	if err != nil {
 		return utils.Errorf(err, L("cannot prepare images"))
 	}
@@ -357,7 +359,7 @@ func Upgrade(
 			newPgVersion, oldPgVersion)
 
 		if err := configureSplittedDBContainer(
-			preparedServerImage, systemd, authFile, db, reportdb, ssl, image, pgsqlFlags, tz); err != nil {
+			preparedServerImage, preparedPgsqlImage, systemd, db, reportdb, ssl, tz); err != nil {
 			return utils.Errorf(err, L("cannot configure db container"))
 		}
 	}
@@ -473,7 +475,7 @@ func Migrate(
 	cocoFlags adm_utils.CocoFlags,
 	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
 	salineFlags adm_utils.SalineFlags,
-	pgsqlFlags adm_utils.PgsqlFlags,
+	pgsqlFlags types.PgsqlFlags,
 	scc types.SCCCredentials,
 	tz string,
 	prepare bool,
@@ -505,7 +507,7 @@ func Migrate(
 	sshAuthSocket := GetSSHAuthSocket()
 	sshConfigPath, sshKnownhostsPath := GetSSHPaths()
 
-	preparedServerImage, preparedPgsqlImage, err := prepareImages(authFile, image, pgsqlFlags)
+	preparedServerImage, preparedPgsqlImage, err := podman.PrepareImages(authFile, image, pgsqlFlags)
 	if err != nil {
 		return utils.Errorf(err, L("cannot prepare images"))
 	}
@@ -572,7 +574,7 @@ func Migrate(
 	}
 
 	if err := configureSplittedDBContainer(
-		preparedServerImage, systemd, authFile, db, reportdb, ssl, image, pgsqlFlags, tz); err != nil {
+		preparedServerImage, preparedPgsqlImage, systemd, db, reportdb, ssl, tz); err != nil {
 		return utils.Errorf(err, L("cannot configure db container"))
 	}
 
@@ -670,6 +672,19 @@ func RunPgsqlContainerMigration(serverImage string, dbHost string, reportDBHost 
 	return err
 }
 
+// RunPgsqlContainerMigration migrate to separate postgres container.
+func RunConfigPgsl(pgsqlImage string) error {
+	podmanArgs := []string{
+		"--security-opt", "label=disable",
+		"--entrypoint", "/docker-entrypoint-initdb.d/uyuni-postgres-config.sh",
+	}
+	if err := podman.RunContainer("uyuni-db-config", pgsqlImage, utils.ServerMigrationVolumeMounts,
+		podmanArgs, []string{}); err != nil {
+		return err
+	}
+	return systemd.RestartService(podman.DBService)
+}
+
 // CallCloudGuestRegistryAuth calls cloudguestregistryauth if it is available.
 func CallCloudGuestRegistryAuth() error {
 	cloudguestregistryauth := "cloudguestregistryauth"
@@ -759,62 +774,13 @@ func prepareHost(
 	return inspectedValues, adm_utils.SanityCheck(runningData, inspectedValues, preparedServerImage)
 }
 
-func prepareImages(
-	authFile string,
-	image types.ImageFlags,
-	pgsqlFlags adm_utils.PgsqlFlags,
-) (string, string, error) {
-	serverImage, err := utils.ComputeImage("", utils.DefaultTag, image)
-	if err != nil && len(serverImage) > 0 {
-		return "", "", utils.Errorf(err, L("failed to determine image"))
-	}
-
-	if len(serverImage) <= 0 {
-		log.Debug().Msg("Use deployed image")
-
-		serverImage, err = podman.GetRunningImage(podman.ServerContainerName)
-		if err != nil {
-			return "", "", utils.Errorf(err, L("failed to find the image of the currently running server container"))
-		}
-	}
-
-	log.Info().Msgf(L("pgsql image %[1]s"), pgsqlFlags.Image)
-	pgsqlImage, err := utils.ComputeImage("", utils.DefaultTag, pgsqlFlags.Image)
-	if err != nil && len(pgsqlImage) > 0 {
-		return "", "", utils.Errorf(err, L("failed to determine pgsql image"))
-	}
-
-	if len(pgsqlImage) <= 0 {
-		log.Debug().Msg("Use deployed pgsqlimage")
-
-		pgsqlImage, err = podman.GetRunningImage(podman.DBContainerName)
-		if err != nil {
-			return "", "", utils.Errorf(err, L("failed to find the image of the currently running db container"))
-		}
-	}
-
-	preparedServerImage, err := podman.PrepareImage(authFile, serverImage, image.PullPolicy, true)
-	if err != nil {
-		return preparedServerImage, "", err
-	}
-
-	preparedPgsqlImage, err := podman.PrepareImage(authFile, pgsqlImage, image.PullPolicy, true)
-	if err != nil {
-		return preparedServerImage, preparedPgsqlImage, err
-	}
-
-	return preparedServerImage, preparedPgsqlImage, nil
-}
-
 func configureSplittedDBContainer(
 	serverImage string,
+	pgsqlImage string,
 	systemd podman.Systemd,
-	authFile string,
 	db adm_utils.DBFlags,
 	reportdb adm_utils.DBFlags,
 	ssl adm_utils.InstallSSLFlags,
-	image types.ImageFlags,
-	pgsqlFlags adm_utils.PgsqlFlags,
 	tz string,
 ) error {
 	if err := RunPgsqlContainerMigration(serverImage, "db", "reportdb"); err != nil {
@@ -854,7 +820,7 @@ func configureSplittedDBContainer(
 		}
 
 		// Run the DB container setup if the user doesn't set a custom host name for it.
-		if err := pgsql.SetupPgsql(systemd, authFile, &pgsqlFlags, &image); err != nil {
+		if err := pgsql.SetupPgsql(systemd, pgsqlImage); err != nil {
 			return err
 		}
 	} else {
@@ -863,5 +829,5 @@ func configureSplittedDBContainer(
 			db.Host,
 		)
 	}
-	return nil
+	return RunConfigPgsl(pgsqlImage)
 }

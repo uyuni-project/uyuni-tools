@@ -16,7 +16,7 @@ import (
 // InspectFlags are the flags used by inspect commands.
 type inspectFlags struct {
 	Image   types.ImageFlags `mapstructure:",squash"`
-	Pgsql   cmd_utils.PgsqlFlags
+	Pgsql   types.PgsqlFlags
 	SCC     types.SCCCredentials
 	Backend string
 }

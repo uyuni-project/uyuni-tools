@@ -75,6 +75,53 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 	return image, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)
 }
 
+func PrepareImages(
+	authFile string,
+	image types.ImageFlags,
+	pgsqlFlags types.PgsqlFlags,
+) (string, string, error) {
+	serverImage, err := utils.ComputeImage("", utils.DefaultTag, image)
+	if err != nil && len(serverImage) > 0 {
+		return "", "", utils.Errorf(err, L("failed to determine image"))
+	}
+
+	if len(serverImage) <= 0 {
+		log.Debug().Msg("Use deployed image")
+
+		serverImage, err = GetRunningImage(ServerContainerName)
+		if err != nil {
+			return "", "", utils.Errorf(err, L("failed to find the image of the currently running server container"))
+		}
+	}
+
+	log.Info().Msgf(L("pgsql image %[1]s"), pgsqlFlags.Image)
+	pgsqlImage, err := utils.ComputeImage("", utils.DefaultTag, pgsqlFlags.Image)
+	if err != nil && len(pgsqlImage) > 0 {
+		return "", "", utils.Errorf(err, L("failed to determine pgsql image"))
+	}
+
+	if len(pgsqlImage) <= 0 {
+		log.Debug().Msg("Use deployed pgsqlimage")
+
+		pgsqlImage, err = GetRunningImage(DBContainerName)
+		if err != nil {
+			return "", "", utils.Errorf(err, L("failed to find the image of the currently running db container"))
+		}
+	}
+
+	preparedServerImage, err := PrepareImage(authFile, serverImage, image.PullPolicy, true)
+	if err != nil {
+		return preparedServerImage, "", err
+	}
+
+	preparedPgsqlImage, err := PrepareImage(authFile, pgsqlImage, image.PullPolicy, true)
+	if err != nil {
+		return preparedServerImage, preparedPgsqlImage, err
+	}
+
+	return preparedServerImage, preparedPgsqlImage, nil
+}
+
 // GetRpmImageName return the RPM Image name and the tag, given an image.
 func GetRpmImageName(image string) (rpmImageFile string, tag string) {
 	pattern := regexp.MustCompile(`^https?://|^docker://|^oci://`)

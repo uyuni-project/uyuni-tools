@@ -62,14 +62,9 @@ func installForPodman(
 	}
 	log.Info().Msgf(L("Setting up the server with the FQDN '%s'"), fqdn)
 
-	image, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Image)
+	preparedImage, preparedPgsqlImage, err := shared_podman.PrepareImages(authFile, flags.Image, flags.Pgsql)
 	if err != nil {
-		return utils.Error(err, L("failed to compute image URL"))
-	}
-
-	preparedImage, err := shared_podman.PrepareImage(authFile, image, flags.Image.PullPolicy, true)
-	if err != nil {
-		return err
+		return utils.Errorf(err, L("cannot prepare images"))
 	}
 
 	if err := shared_podman.SetupNetwork(false); err != nil {
@@ -106,7 +101,7 @@ func installForPodman(
 		}
 
 		// Run the DB container setup if the user doesn't set a custom host name for it.
-		if err := pgsql.SetupPgsql(systemd, authFile, &flags.ServerFlags.Pgsql, &flags.Image); err != nil {
+		if err := pgsql.SetupPgsql(systemd, preparedPgsqlImage); err != nil {
 			return err
 		}
 	} else {

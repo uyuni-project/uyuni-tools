@@ -8,7 +8,6 @@ import (
 	"fmt"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
-	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -17,26 +16,31 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// SetupPgsql prepares the systemd service and starts it if needed.
-func SetupPgsql(
-	systemd podman.Systemd,
+func PreparePgsqlImage(
 	authFile string,
-	pgsqlFlags *cmd_utils.PgsqlFlags,
+	pgsqlFlags *types.PgsqlFlags,
 	globalImageFlags *types.ImageFlags,
-) error {
+) (string, error) {
 	image := pgsqlFlags.Image
 	pgsqlImage, err := utils.ComputeImage(globalImageFlags.Registry, globalImageFlags.Tag, image)
 
 	if err != nil {
-		return utils.Error(err, L("failed to compute image URL"))
+		return "", utils.Error(err, L("failed to compute image URL"))
 	}
 
 	preparedImage, err := podman.PrepareImage(authFile, pgsqlImage, globalImageFlags.PullPolicy, true)
 	if err != nil {
-		return err
+		return "", err
 	}
+	return preparedImage, err
+}
 
-	if err := generatePgsqlSystemdService(systemd, preparedImage); err != nil {
+// SetupPgsql prepares the systemd service and starts it if needed.
+func SetupPgsql(
+	systemd podman.Systemd,
+	pgsqlImage string,
+) error {
+	if err := generatePgsqlSystemdService(systemd, pgsqlImage); err != nil {
 		return utils.Error(err, L("cannot generate systemd service"))
 	}
 
