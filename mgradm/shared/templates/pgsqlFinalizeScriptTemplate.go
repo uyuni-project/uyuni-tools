@@ -42,14 +42,6 @@ where not exists (select 1 from rhntaskorun r join rhntaskotemplate t on r.templ
 join rhntaskobunch b on t.bunch_id = b.id where b.name='update-system-overview-bunch' limit 1);
 EOT
 {{ end }}
-
-
-# Redirect logs to stdout
-spacewalk-sql --select-mode - <<EOT
-ALTER SYSTEM SET logging_collector = 'off';
-SELECT pg_reload_conf();
-EOT
-
 `
 
 // FinalizePostgresTemplateData represents information used to create PostgreSQL migration script.
