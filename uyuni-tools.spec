@@ -57,7 +57,7 @@
 # 0%{?debian} || 0%{?ubuntu}
 
 Name:           %{project}
-Version:        5.1.7
+Version:        5.1.8
 Release:        0
 Summary:        Tools for managing %{productprettyname} container
 License:        Apache-2.0
@@ -96,7 +96,7 @@ BuildRequires:  golang >= 1.19
 # 0%{?debian}
 
 %if 0%{?fedora} || 0%{?rhel}
-BuildRequires:  golang >= 1.22
+BuildRequires:  golang >= 1.21
 %endif
 # 0%{?fedora} || 0%{?rhel}
 
