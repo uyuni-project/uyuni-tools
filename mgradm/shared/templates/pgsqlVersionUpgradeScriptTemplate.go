@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -14,21 +14,23 @@ const postgreSQLVersionUpgradeScriptTemplate = `#!/bin/bash
 set -e
 echo "PostgreSQL version upgrade"
 
+ls -la /var/lib/pgsql/data/
 OLD_VERSION={{ .OldVersion }}
 NEW_VERSION={{ .NewVersion }}
-FAST_UPGRADE=--link
 
 echo "Testing presence of postgresql$NEW_VERSION..."
 test -d /usr/lib/postgresql$NEW_VERSION/bin
 echo "Testing presence of postgresql$OLD_VERSION..."
 test -d /usr/lib/postgresql$OLD_VERSION/bin
 
-# Create a backup copy of the data to prepare DB upgrade.
-echo "Backing up the database files ..."
-mv /var/lib/pgsql/data /var/lib/pgsql/data-pg$OLD_VERSION
+echo "Create a backup at /var/lib/pgsql/data-backup..."
+mkdir -p /var/lib/pgsql/data-backup
+chown postgres:postgres /var/lib/pgsql/data-backup
+chmod 700 /var/lib/pgsql/data-backup
+shopt -s dotglob
+mv /var/lib/pgsql/data/* /var/lib/pgsql/data-backup
 
 echo "Create new database directory..."
-mkdir -p /var/lib/pgsql/data
 chown -R postgres:postgres /var/lib/pgsql
 
 if [ -e /etc/pki/tls/private/pg-spacewalk.key ]; then
@@ -51,18 +53,13 @@ su -s /bin/bash - postgres -c "initdb -D /var/lib/pgsql/data --locale=$POSTGRES_
 echo "Successfully initialized new postgresql $NEW_VERSION database."
 
 echo "Temporarily disable SSL in the old posgresql configuration"
-cp /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf.bak
-sed 's/^ssl/#ssl/' -i /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf
+cp /var/lib/pgsql/data-backup/postgresql.conf /var/lib/pgsql/data-backup/postgresql.conf.bak
+sed 's/^ssl/#ssl/' -i /var/lib/pgsql/data-backup/postgresql.conf
 
-su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql$OLD_VERSION/bin --new-bindir=/usr/lib/postgresql$NEW_VERSION/bin --old-datadir=/var/lib/pgsql/data-pg$OLD_VERSION --new-datadir=/var/lib/pgsql/data $FAST_UPGRADE"
+su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql$OLD_VERSION/bin --new-bindir=/usr/lib/postgresql$NEW_VERSION/bin --old-datadir=/var/lib/pgsql/data-backup --new-datadir=/var/lib/pgsql/data"
 
 echo "Enable SSL again"
-cp /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf.bak /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf
-
-cp /var/lib/pgsql/data-pg$OLD_VERSION/pg_hba.conf /var/lib/pgsql/data
-mv /var/lib/pgsql/data-pg$OLD_VERSION/pg_hba.conf /var/lib/pgsql/data-pg$OLD_VERSION/pg_hba.conf.migrated
-cp /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf /var/lib/pgsql/data/
-mv /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf /var/lib/pgsql/data-pg$OLD_VERSION/postgresql.conf.migrated
+cp /var/lib/pgsql/data-backup/postgresql.conf.bak /var/lib/pgsql/data-backup/postgresql.conf
 
 echo "DONE"`
 

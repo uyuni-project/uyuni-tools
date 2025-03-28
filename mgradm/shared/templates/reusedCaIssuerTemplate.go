@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,24 +11,25 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 )
 
-const uyuniCaIssuer = `apiVersion: cert-manager.io/v1
+const uyuniCAIssuer = `apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: ` + kubernetes.CaIssuerName + `
-  namespace: {{ .Namespace }}
+  name: ` + kubernetes.CAIssuerName + `
+  namespace: {{ .IssuerTemplate.Namespace }}
   labels:
     app: ` + kubernetes.ServerApp + `
 spec:
   ca:
-    secretName: uyuni-ca
+    secretName: ` + kubernetes.CASecretName + `
+---
 `
 
-const reusedCaIssuerTemplate = `apiVersion: v1
+const reusedCAIssuerTemplate = `apiVersion: v1
 kind: Secret
 type: kubernetes.io/tls
 metadata:
-  name: uyuni-ca
-  namespace: {{ .Namespace }}
+  name: ` + kubernetes.CASecretName + `
+  namespace: {{ .IssuerTemplate.Namespace }}
   labels:
     app: ` + kubernetes.ServerApp + `
 data:
@@ -38,15 +39,35 @@ data:
 ---
 `
 
-// ReusedCaIssuerTemplateData is a template to render cert-manager issuer from an existing root CA.
-type ReusedCaIssuerTemplateData struct {
-	Namespace   string
-	Certificate string
-	Key         string
+// NewReusedCAIssuerTemplate creates a new ReusedCAIssuerTemplate object.
+func NewReusedCAIssuerTemplate(
+	namespace string,
+	fqdn string,
+	certificate string,
+	key string,
+) ReusedCAIssuerTemplate {
+	template := ReusedCAIssuerTemplate{
+		IssuerTemplate: IssuerTemplate{
+			Namespace: namespace,
+			FQDN:      fqdn,
+		},
+		Certificate: certificate,
+		Key:         key,
+	}
+	template.template = template
+	return template
 }
 
-// Render creates issuer file.
-func (data ReusedCaIssuerTemplateData) Render(wr io.Writer) error {
-	t := template.Must(template.New("issuer").Parse(reusedCaIssuerTemplate + uyuniCaIssuer))
+// ReusedCAIssuerTemplate is a template to render cert-manager issuer from an existing root CA.
+type ReusedCAIssuerTemplate struct {
+	IssuerTemplate
+	Certificate string
+	Key         string
+	Template    string
+}
+
+// Render writers the issuer text in the wr parameter.
+func (data ReusedCAIssuerTemplate) Render(wr io.Writer) error {
+	t := template.Must(template.New("issuer").Parse(reusedCAIssuerTemplate + uyuniCAIssuer))
 	return t.Execute(wr, data)
 }

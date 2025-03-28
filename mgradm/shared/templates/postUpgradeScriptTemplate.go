@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -25,23 +25,6 @@ if [ $? -eq 1 ]; then
 else
 	sed 's/pam_auth_service.*/pam_auth_service = susemanager/' -i /etc/rhn/rhn.conf;
 fi
-
-# (bsc#1231206) fix error happened during migration to 5.0.0.
-if [ -f /var/lib/pgsql/data-pg14/pg_hba.conf ]; then
-    echo "Migrating pgsql 14 pg_hba.conf to pgsql 16"
-    cp /var/lib/pgsql/data-pg14/pg_hba.conf /var/lib/pgsql/data
-    mv /var/lib/pgsql/data-pg14/pg_hba.conf /var/lib/pgsql/data-pg14/pg_hba.conf.migrated
-    db_user=$(sed -n '/^db_user/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
-    db_name=$(sed -n '/^db_name/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
-    ip=$(ip -o -4 addr show up scope global | head -1 | awk '{print $4}' || true)
-    echo "host $db_name $db_user $ip scram-sha-256" >> /var/lib/pgsql/data/pg_hba.conf
-fi
-if [ -f /var/lib/pgsql/data-pg14/postgresql.conf ]; then
-    echo "Migrating pgsql 14 postgresql.conf to pgsql 16"
-    cp /var/lib/pgsql/data-pg14/postgresql.conf /var/lib/pgsql/data/
-    mv /var/lib/pgsql/data-pg14/postgresql.conf /var/lib/pgsql/data-pg14/postgresql.conf.migrated
-fi
-# end (bsc#1231206)
 
 echo "DONE"`
 

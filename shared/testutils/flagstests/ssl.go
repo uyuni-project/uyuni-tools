@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,8 +22,8 @@ var SSLGenerationFlagsTestArgs = []string{
 	"--ssl-ou", "sslou",
 }
 
-// AssertSSLGenerationFlags checks that all the SSL certificate generation flags are parsed correctly.
-func AssertSSLGenerationFlags(t *testing.T, flags *types.SSLCertGenerationFlags) {
+// AssertSSLGenerationFlag checks that all the SSL certificate generation flags are parsed correctly.
+func AssertSSLGenerationFlag(t *testing.T, flags *types.SSLCertGenerationFlags) {
 	testutils.AssertEquals(t, "Error parsing --ssl-cname", []string{"cname1", "cname2"}, flags.Cnames)
 	testutils.AssertEquals(t, "Error parsing --ssl-country", "OS", flags.Country)
 	testutils.AssertEquals(t, "Error parsing --ssl-state", "sslstate", flags.State)

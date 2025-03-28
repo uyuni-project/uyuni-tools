@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -140,7 +140,8 @@ $SSH {{ .SourceFqdn }} sh -c "systemctl list-unit-files | grep hub-xmlrpc-api | 
 (test $($SSH {{ .SourceFqdn }} grep jdwp -r /etc/tomcat/conf.d/ /etc/rhn/taskomatic.conf | wc -l) -gt 0 && echo debug=true || echo debug=false) >>/var/lib/uyuni-tools/data
 
 echo "Altering configuration for domain resolution..."
-sed 's/report_db_host = {{ .SourceFqdn }}/report_db_host = localhost/' -i /etc/rhn/rhn.conf;
+sed 's/^db_host = .*/db_host = {{ .DBHost }}/' -i /etc/rhn/rhn.conf;
+sed 's/^report_db_host = .*/report_db_host = {{ .ReportDBHost }}/' -i /etc/rhn/rhn.conf;
 if ! grep -q '^java.hostname *=' /etc/rhn/rhn.conf; then
     sed 's/server\.jabber_server/java\.hostname/' -i /etc/rhn/rhn.conf;
 fi
@@ -199,11 +200,13 @@ echo "DONE"`
 
 // MigrateScriptTemplateData represents migration information used to create migration script.
 type MigrateScriptTemplateData struct {
-	Volumes    []types.VolumeMount
-	SourceFqdn string
-	User       string
-	Kubernetes bool
-	Prepare    bool
+	Volumes      []types.VolumeMount
+	SourceFqdn   string
+	User         string
+	Kubernetes   bool
+	Prepare      bool
+	DBHost       string
+	ReportDBHost string
 }
 
 // Render will create migration script.

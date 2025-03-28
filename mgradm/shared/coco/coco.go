@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -33,7 +33,10 @@ func Upgrade(
 		return nil
 	}
 
-	if err := podman.CreateDBSecrets(dbUser, dbPassword); err != nil {
+	if err := podman.CreateCredentialsSecrets(
+		podman.DBUserSecret, dbUser,
+		podman.DBPassSecret, dbPassword,
+	); err != nil {
 		return err
 	}
 

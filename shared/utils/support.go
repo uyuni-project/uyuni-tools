@@ -85,7 +85,7 @@ func RunSupportConfigOnHost() ([]string, error) {
 	if _, err := exec.LookPath("supportconfig"); err == nil {
 		out, err := RunCmdOutput(zerolog.DebugLevel, "supportconfig")
 		if err != nil {
-			return []string{}, Error(err, L("failed to run supportconfig on the host"))
+			log.Error().Err(err).Msgf(L("failed to run supportconfig on the host"))
 		}
 		tarballPath := GetSupportConfigPath(string(out))
 

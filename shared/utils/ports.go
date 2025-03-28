@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -19,6 +19,8 @@ const (
 	ReportdbServiceName = "reportdb"
 	// DBServiceName is the name of the server internal database service.
 	DBServiceName = "db"
+	// DBExporterServiceName is the name of the Prometheus database exporter service.
+	DBExporterServiceName = "db"
 	// TaskoServiceName is the name of the server taskomatic service.
 	TaskoServiceName = "taskomatic"
 	// TftpServiceName is the name of the server tftp service.
@@ -53,16 +55,19 @@ var WebPorts = []types.PortMap{
 	NewPortMap(WebServiceName, "http", 80, 80),
 }
 
+// DBExporterPorts is the list of ports for the db exporter service.
+var DBExporterPorts = []types.PortMap{
+	NewPortMap(DBExporterServiceName, "exporter", 9187, 9187),
+}
+
 // ReportDBPorts is the list of ports for the server report db service.
 var ReportDBPorts = []types.PortMap{
 	NewPortMap(ReportdbServiceName, "pgsql", 5432, 5432),
-	NewPortMap(ReportdbServiceName, "exporter", 9187, 9187),
 }
 
 // DBPorts is the list of ports for the server internal db service.
 var DBPorts = []types.PortMap{
 	NewPortMap(DBServiceName, "pgsql", 5432, 5432),
-	NewPortMap(DBServiceName, "exporter", 9187, 9187),
 }
 
 // SaltPorts is the list of ports for the server salt service.
@@ -111,13 +116,13 @@ var TftpPorts = []types.PortMap{
 func GetServerPorts(debug bool) []types.PortMap {
 	ports := []types.PortMap{}
 	ports = appendPorts(ports, debug, WebPorts...)
-	ports = appendPorts(ports, debug, ReportDBPorts...)
 	ports = appendPorts(ports, debug, SaltPorts...)
 	ports = appendPorts(ports, debug, CobblerPorts...)
 	ports = appendPorts(ports, debug, TaskoPorts...)
 	ports = appendPorts(ports, debug, TomcatPorts...)
 	ports = appendPorts(ports, debug, SearchPorts...)
 	ports = appendPorts(ports, debug, TftpPorts...)
+	ports = appendPorts(ports, debug, DBExporterPorts...)
 
 	return ports
 }

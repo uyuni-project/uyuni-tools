@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 //go:build ptf
@@ -108,6 +108,6 @@ func TestCheckParameters(t *testing.T) {
 		)
 		testutils.AssertEquals(t, testCase+"unexpected image", test.expectedImage, flags.Image.Name)
 		testutils.AssertEquals(t, testCase+"unexpected coco image", test.expectedCocoImage, flags.Coco.Image.Name)
-		testutils.AssertEquals(t, testCase+"unexpected hub image", test.expectedHubImage, flags.Hubxmlrpc.Image.Name)
+		testutils.AssertEquals(t, testCase+"unexpected hub image", test.expectedHubImage, flags.HubXmlrpc.Image.Name)
 	}
 }

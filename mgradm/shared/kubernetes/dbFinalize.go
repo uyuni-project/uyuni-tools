@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -53,7 +53,6 @@ func getDBFinalizeJob(
 
 	// Prepare the script
 	scriptData := templates.FinalizePostgresTemplateData{
-		RunAutotune:     true,
 		RunReindex:      migration,
 		RunSchemaUpdate: schemaUpdateRequired,
 		Migration:       migration,

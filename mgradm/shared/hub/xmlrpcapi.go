@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -12,6 +12,7 @@ import (
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -32,12 +33,11 @@ func SetupHubXmlrpc(
 	if hubXmlrpcFlags.Replicas == 0 {
 		log.Debug().Msg("No HUB requested.")
 	}
-	if !hubXmlrpcFlags.IsChanged {
+	if !hubXmlrpcFlags.IsChanged && hubXmlrpcFlags.Replicas == currentReplicas {
 		log.Info().Msgf(L("No changes requested for hub. Keep %d replicas."), currentReplicas)
 	}
 
-	pullEnabled := (hubXmlrpcFlags.Replicas > 0 && hubXmlrpcFlags.IsChanged) ||
-		(currentReplicas > 0 && !hubXmlrpcFlags.IsChanged)
+	pullEnabled := hubXmlrpcFlags.Replicas > 0 || (currentReplicas > 0 && !hubXmlrpcFlags.IsChanged)
 
 	hubXmlrpcImage, err := utils.ComputeImage(registry, tag, image)
 
@@ -106,7 +106,8 @@ func Upgrade(
 // generateHubXmlrpcSystemdService creates the Hub XMLRPC systemd files.
 func generateHubXmlrpcSystemdService(systemd podman.Systemd, image string) error {
 	hubXmlrpcData := templates.HubXmlrpcServiceTemplateData{
-		Volumes:    utils.HubXmlrpcVolumeMounts,
+		CaSecret:   podman.CASecret,
+		CaPath:     ssl.CAContainerPath,
 		Ports:      utils.HubXmlrpcPorts,
 		NamePrefix: "uyuni",
 		Network:    podman.UyuniNetwork,

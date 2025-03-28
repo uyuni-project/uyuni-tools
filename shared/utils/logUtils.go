@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -24,7 +24,7 @@ var redactRegex = regexp.MustCompile(`([pP]assword[\t :"\\]+)[^\t "\\]+`)
 // The default directory where log files are written.
 const logDir = "/var/log/"
 const logFileName = "uyuni-tools.log"
-const globalLogPath = logDir + logFileName
+const GlobalLogPath = logDir + logFileName
 
 // UyuniLogger is an io.WriteCloser that writes to the specified filename.
 type UyuniLogger struct {
@@ -92,18 +92,18 @@ func LogInit(logToConsole bool) {
 	multi := zerolog.MultiLevelWriter(writers...)
 	log.Logger = zerolog.New(multi).With().Timestamp().Stack().Logger()
 
-	if fileWriter.logger.Filename != globalLogPath {
+	if fileWriter.logger.Filename != GlobalLogPath {
 		log.Warn().Msgf(
 			L("Couldn't open %[1]s file for writing, writing log to %[2]s"),
-			globalLogPath, fileWriter.logger.Filename,
+			GlobalLogPath, fileWriter.logger.Filename,
 		)
 	}
 }
 
 func getFileWriter() *UyuniLogger {
-	logPath := globalLogPath
+	logPath := GlobalLogPath
 
-	if file, err := os.OpenFile(globalLogPath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0600); err != nil {
+	if file, err := os.OpenFile(GlobalLogPath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0600); err != nil {
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
 			logPath = path.Join(".", logFileName)

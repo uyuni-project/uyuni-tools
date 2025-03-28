@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -21,6 +21,9 @@ var servicesPath = "/etc/systemd/system/"
 
 // ServerService is the name of the systemd service for the server.
 const ServerService = "uyuni-server"
+
+// DBService is the name of the systemd service for the database container.
+const DBService = "uyuni-db"
 
 // ServerAttestationService is the name of the systemd service for the coco attestation container.
 const ServerAttestationService = "uyuni-server-attestation"

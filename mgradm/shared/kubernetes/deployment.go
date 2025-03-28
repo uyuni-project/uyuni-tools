@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,6 +11,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -177,25 +178,48 @@ func getServerPodTemplate(
 
 	volumes := kubernetes.CreateVolumes(mounts)
 
+	const caVolumeName = "ca-cert"
+	const dbcaVolumeName = "db-ca-cert"
 	caMount := core.VolumeMount{
-		Name:      "ca-cert",
+		Name:      caVolumeName,
 		MountPath: "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT",
 		ReadOnly:  true,
 		SubPath:   "ca.crt",
 	}
-	tlsKeyMount := core.VolumeMount{Name: "tls-key", MountPath: "/etc/pki/spacewalk-tls"}
-
-	caVolume := kubernetes.CreateConfigVolume("ca-cert", "uyuni-ca")
-	tlsKeyVolume := kubernetes.CreateSecretVolume("tls-key", "uyuni-cert")
-	var keyMode int32 = 0400
-	tlsKeyVolume.VolumeSource.Secret.Items = []core.KeyToPath{
-		{Key: "tls.crt", Path: "spacewalk.crt"},
-		{Key: "tls.key", Path: "spacewalk.key", Mode: &keyMode},
+	caSaltMount := core.VolumeMount{
+		Name:      caVolumeName,
+		MountPath: "/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT",
+		ReadOnly:  true,
+		SubPath:   "ca.crt",
+	}
+	caPubMount := core.VolumeMount{
+		Name:      caVolumeName,
+		MountPath: "/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT",
+		ReadOnly:  true,
+		SubPath:   "ca.crt",
+	}
+	dbcaMount := core.VolumeMount{
+		Name:      dbcaVolumeName,
+		MountPath: ssl.DBCAContainerPath,
+		ReadOnly:  true,
+		SubPath:   "ca.crt",
 	}
 
-	initMounts = append(initMounts, tlsKeyMount)
-	volumeMounts = append(volumeMounts, caMount, tlsKeyMount)
-	volumes = append(volumes, caVolume, tlsKeyVolume)
+	const tlsVolumeName = "tls"
+	certMount := core.VolumeMount{Name: tlsVolumeName, MountPath: "/etc/pki/"}
+
+	caVolume := kubernetes.CreateConfigVolume(caVolumeName, kubernetes.CAConfigName)
+	dbcaVolume := kubernetes.CreateConfigVolume(dbcaVolumeName, kubernetes.DBCAConfigName)
+
+	var secretMode int32 = 0400
+	tlsVolume := kubernetes.CreateSecretVolume(tlsVolumeName, kubernetes.CertSecretName)
+	tlsVolume.Secret.Items = []core.KeyToPath{
+		{Key: "tls.crt", Path: "tls/certs/spacewalk.crt"},
+		{Key: "tls.key", Path: "tls/private/spacewalk.key", Mode: &secretMode},
+	}
+
+	volumeMounts = append(volumeMounts, caMount, caSaltMount, caPubMount, dbcaMount, certMount)
+	volumes = append(volumes, caVolume, dbcaVolume, tlsVolume)
 
 	template := core.PodTemplateSpec{
 		ObjectMeta: meta.ObjectMeta{
@@ -254,26 +278,12 @@ for vol in /var/lib/cobbler \
 		   /etc/cobbler \
 		   /etc/sysconfig \
 		   /etc/postfix \
-		   /etc/sssd \
-		   /etc/pki/tls
+		   /etc/sssd
 do
 	chown --reference=$vol /mnt$vol;
 	chmod --reference=$vol /mnt$vol;
 	if [ -z "$(ls -A /mnt$vol)" ]; then
     	cp -a $vol/. /mnt$vol;
-		if [ "$vol" = "/srv/www" ]; then
-            ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /mnt$vol/RHN-ORG-TRUSTED-SSL-CERT;
-		fi
-
-		if [ "$vol" = "/etc/pki/tls" ]; then
-              ln -s /etc/pki/spacewalk-tls/spacewalk.crt /mnt/etc/pki/tls/certs/spacewalk.crt;
-              ln -s /etc/pki/spacewalk-tls/spacewalk.key /mnt/etc/pki/tls/private/spacewalk.key;
-		fi
-	fi
-
-	if [ "$vol" = "/etc/pki/tls" ]; then
-	    cp /etc/pki/spacewalk-tls/spacewalk.key /mnt/etc/pki/tls/private/pg-spacewalk.key;
-	    chown postgres:postgres /mnt/etc/pki/tls/private/pg-spacewalk.key;
 	fi
 done
 `
@@ -285,11 +295,6 @@ func GetServerMounts() []types.VolumeMount {
 	mounts := []types.VolumeMount{}
 	mountsSet := map[string]types.VolumeMount{}
 	for _, mount := range serverMounts {
-		switch mount.Name {
-		// Skip mounts that are not PVCs
-		case "ca-cert", "tls-key":
-			continue
-		}
 		if _, exists := mountsSet[mount.Name]; !exists {
 			mounts = append(mounts, mount)
 			mountsSet[mount.Name] = mount

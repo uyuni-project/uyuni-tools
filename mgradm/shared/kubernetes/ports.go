@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -14,6 +14,7 @@ import (
 // getPortList returns compiled lists of tcp and udp ports..
 func getPortList(hub bool, debug bool) []types.PortMap {
 	ports := utils.GetServerPorts(debug)
+	ports = append(ports, utils.ReportDBPorts...)
 	if hub {
 		ports = append(ports, utils.HubXmlrpcPorts...)
 	}
