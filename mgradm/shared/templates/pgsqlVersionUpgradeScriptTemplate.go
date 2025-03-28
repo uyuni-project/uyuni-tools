@@ -61,11 +61,6 @@ su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql$OLD_V
 echo "Enable SSL again"
 cp /var/lib/pgsql/data-backup/postgresql.conf.bak /var/lib/pgsql/data-backup/postgresql.conf
 
-cp /var/lib/pgsql/data-backup/pg_hba.conf /var/lib/pgsql/data
-mv /var/lib/pgsql/data-backup/pg_hba.conf /var/lib/pgsql/data-backup/pg_hba.conf.migrated
-cp /var/lib/pgsql/data-backup/postgresql.conf /var/lib/pgsql/data/
-mv /var/lib/pgsql/data-backup/postgresql.conf /var/lib/pgsql/data-backup/postgresql.conf.migrated
-
 echo "DONE"`
 
 // PostgreSQLVersionUpgradeTemplateData represents information used to create PostgreSQL upgrade script.

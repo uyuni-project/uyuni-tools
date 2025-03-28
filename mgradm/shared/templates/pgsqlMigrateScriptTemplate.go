@@ -15,16 +15,8 @@ set -e -x
 
 if [ -d /var/lib/pgsql/data/data ] ; then
     shopt -s dotglob
-	rsync -a --exclude=pg_hba.conf /var/lib/pgsql/data/data/ /var/lib/pgsql/data/ 2>/dev/null
+	rsync -a --exclude=/var/lib/pgsql/data/data/pg_hba.conf /var/lib/pgsql/data/data/ /var/lib/pgsql/data/ 2>/dev/null
     rm -rf /var/lib/pgsql/data/data
-
-    echo "Adding database access for other containers..."
-    db_user=$(sed -n '/^db_user/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
-    db_name=$(sed -n '/^db_name/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
-    echo "host $db_name $db_user all scram-sha-256" >> /var/lib/pgsql/data/pg_hba.conf
-    report_db_user=$(sed -n '/^report_db_user/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
-    report_db_name=$(sed -n '/^report_db_name/{s/^.*=[ \t]\+\(.*\)$/\1/ ; p}' /etc/rhn/rhn.conf)
-    echo "host $report_db_name $report_db_user all scram-sha-256" >> /var/lib/pgsql/data/pg_hba.conf
 
 fi
 
