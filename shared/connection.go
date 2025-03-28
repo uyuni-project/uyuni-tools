@@ -537,11 +537,16 @@ func (c *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 	log.Info().Msgf(L("Running supportconfig in  %s"), containerName)
 	out, err := c.Exec("supportconfig")
 	if err != nil {
-		return []string{}, errors.New(L("failed to run supportconfig"))
+		/* do not return here.
+		* supportconfig might return some error if some info is not generated
+		* but we need to raise an error only if tarball is not generated.
+		* In any case, show the error.
+		 */
+		log.Error().Err(err).Msg(L("failed to run supportconfig"))
 	}
 	tarballPath := utils.GetSupportConfigPath(string(out))
 	if tarballPath == "" {
-		return []string{}, errors.New(L("failed to find container supportconfig tarball from command output"))
+		return []string{}, utils.Errorf(err, L("failed to find container supportconfig tarball from command output"))
 	}
 
 	for _, ext := range extensions {
