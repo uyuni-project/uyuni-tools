@@ -46,8 +46,7 @@ fi
 echo "DONE"`
 
 // PostUpgradeTemplateData represents information used to create post upgrade.
-type PostUpgradeTemplateData struct {
-}
+type PostUpgradeTemplateData struct{}
 
 // Render will create script for finalizing PostgreSQL upgrade.
 func (data PostUpgradeTemplateData) Render(wr io.Writer) error {

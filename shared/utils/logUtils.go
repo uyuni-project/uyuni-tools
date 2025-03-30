@@ -22,9 +22,11 @@ import (
 var redactRegex = regexp.MustCompile(`([pP]assword[\t :"\\]+)[^\t "\\]+`)
 
 // The default directory where log files are written.
-const logDir = "/var/log/"
-const logFileName = "uyuni-tools.log"
-const globalLogPath = logDir + logFileName
+const (
+	logDir        = "/var/log/"
+	logFileName   = "uyuni-tools.log"
+	globalLogPath = logDir + logFileName
+)
 
 // UyuniLogger is an io.WriteCloser that writes to the specified filename.
 type UyuniLogger struct {
@@ -103,7 +105,7 @@ func LogInit(logToConsole bool) {
 func getFileWriter() *UyuniLogger {
 	logPath := globalLogPath
 
-	if file, err := os.OpenFile(globalLogPath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0600); err != nil {
+	if file, err := os.OpenFile(globalLogPath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0o600); err != nil {
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
 			logPath = path.Join(".", logFileName)

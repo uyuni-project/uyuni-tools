@@ -194,7 +194,7 @@ func runCmd(command string, output string, args []string) error {
 		runCmd.Stdout = copyWriter{Stream: os.Stdout}
 	} else {
 		log.Trace().Msgf("Output is FILE %s", output)
-		f, err := os.OpenFile(output, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0600)
+		f, err := os.OpenFile(output, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0o600)
 		if err != nil {
 			return err
 		}

@@ -141,7 +141,7 @@ func migrateToKubernetes(
 
 func writeToFile(content string, file string, flag *string) error {
 	if content != "" {
-		if err := os.WriteFile(file, []byte(content), 0600); err != nil {
+		if err := os.WriteFile(file, []byte(content), 0o600); err != nil {
 			return utils.Errorf(err, L("failed to write certificate to %s"), file)
 		}
 		*flag = file

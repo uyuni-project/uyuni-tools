@@ -11,8 +11,10 @@ import (
 	"testing"
 )
 
-const dataDir = "data"
-const outDir = "out"
+const (
+	dataDir = "data"
+	outDir  = "out"
+)
 
 const file1Content = "file1 content"
 
@@ -28,7 +30,7 @@ func setup(t *testing.T) string {
 	// Create sub directories for the data and the test
 	for _, dirPath := range []string{dataDir, outDir} {
 		subDir := path.Join(dir, dirPath)
-		if err := os.Mkdir(subDir, 0700); err != nil {
+		if err := os.Mkdir(subDir, 0o700); err != nil {
 			t.Fatalf("failed to create %s directory: %s", dirPath, err)
 		}
 	}
@@ -38,11 +40,11 @@ func setup(t *testing.T) string {
 		filePath := path.Dir(name)
 		if filePath != "." {
 			absDir := path.Join(dir, dataDir, filePath)
-			if err := os.MkdirAll(absDir, 0700); err != nil {
+			if err := os.MkdirAll(absDir, 0o700); err != nil {
 				t.Fatalf("failed to create subdirectory %s for test: %s", absDir, err)
 			}
 		}
-		if err := os.WriteFile(path.Join(dir, dataDir, name), []byte(content), 0700); err != nil {
+		if err := os.WriteFile(path.Join(dir, dataDir, name), []byte(content), 0o700); err != nil {
 			t.Fatalf("failed to write test data file %s: %s", name, err)
 		}
 	}

@@ -12,10 +12,10 @@ import (
 
 func TestCheckDirPermissions(t *testing.T) {
 	tempDir := t.TempDir()
-	if err := os.MkdirAll(tempDir, 0755); err != nil {
+	if err := os.MkdirAll(tempDir, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := checkPermissions(tempDir, 0005|0050|0500); err != nil {
+	if err := checkPermissions(tempDir, 0o005|0o050|0o500); err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
 }
@@ -37,7 +37,7 @@ func TestValidateYamlFiles(t *testing.T) {
 
 	// Change the permission of config.yaml to 0600 to simulate a permission error
 	configFilePath := path.Join(tempDir, "config.yaml")
-	if err := os.Chmod(configFilePath, 0600); err != nil {
+	if err := os.Chmod(configFilePath, 0o600); err != nil {
 		t.Fatalf("Failed to change permissions for %s: %v", configFilePath, err)
 	}
 	if err := validateInstallYamlFiles(tempDir); err == nil {
@@ -45,7 +45,7 @@ func TestValidateYamlFiles(t *testing.T) {
 	}
 
 	// Restore the correct permissions for the next test run
-	if err := os.Chmod(configFilePath, 0644); err != nil {
+	if err := os.Chmod(configFilePath, 0o644); err != nil {
 		t.Fatalf("Failed to restore permissions for %s: %v", configFilePath, err)
 	}
 

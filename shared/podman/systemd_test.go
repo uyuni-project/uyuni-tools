@@ -35,7 +35,7 @@ Environment="PODMAN_EXTRA_ARGS="
 	testDir := t.TempDir()
 
 	serviceConfDir := path.Join(testDir, "uyuni-server.service.d")
-	if err := os.Mkdir(serviceConfDir, 0750); err != nil {
+	if err := os.Mkdir(serviceConfDir, 0o750); err != nil {
 		t.Fatalf("failed to create fake service configuration directory: %s", err)
 	}
 
@@ -72,7 +72,7 @@ Environment="PODMAN_EXTRA_ARGS="
 	testDir := t.TempDir()
 
 	serviceConfDir := path.Join(testDir, "uyuni-server.service.d")
-	if err := os.Mkdir(serviceConfDir, 0750); err != nil {
+	if err := os.Mkdir(serviceConfDir, 0o750); err != nil {
 		t.Fatalf("failed to create fake service configuration directory: %s", err)
 	}
 

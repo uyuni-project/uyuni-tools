@@ -14,8 +14,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-type statusFlags struct {
-}
+type statusFlags struct{}
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[statusFlags]) *cobra.Command {
 	cmd := &cobra.Command{

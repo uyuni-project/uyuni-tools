@@ -37,8 +37,8 @@ func ptfForPodman(
 	}
 	defer cleaner()
 
-	//we don't want to perform a postgres version upgrade when installing a PTF.
-	//in that case, we can use the upgrade command.
+	// we don't want to perform a postgres version upgrade when installing a PTF.
+	// in that case, we can use the upgrade command.
 	dummyImage := types.ImageFlags{}
 	if err := flags.checkParameters(); err != nil {
 		return err
@@ -48,8 +48,10 @@ func ptfForPodman(
 }
 
 // variables for unit testing.
-var getServiceImage = podman_shared.GetServiceImage
-var hasRemoteImage = podman_shared.HasRemoteImage
+var (
+	getServiceImage = podman_shared.GetServiceImage
+	hasRemoteImage  = podman_shared.HasRemoteImage
+)
 
 func (flags *podmanPTFFlags) checkParameters() error {
 	if flags.TestID != "" && flags.PTFId != "" {

@@ -13,7 +13,7 @@ import (
 // NewCommand entry command for managing cache.
 // Setup for subcommand to clear (the cache).
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	var cacheCmd = &cobra.Command{
+	cacheCmd := &cobra.Command{
 		Use:   "cache",
 		Short: L("Manage proxy cache"),
 		Long:  L("Manage proxy cache"),

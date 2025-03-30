@@ -18,9 +18,11 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
 
-const envPrefix = "UYUNI"
-const appName = "uyuni-tools"
-const configFilename = "config.yaml"
+const (
+	envPrefix      = "UYUNI"
+	appName        = "uyuni-tools"
+	configFilename = "config.yaml"
+)
 
 // GlobalConfigFilename is the path for the global configuration.
 const GlobalConfigFilename = "/etc/uyuni/uyuni-tools.yaml"
@@ -140,7 +142,7 @@ Use "{{.CommandPath}} [command] --help" for more information about a command.{{e
 
 // GetConfigHelpCommand provides a help command describing the config file and environment variables.
 func GetConfigHelpCommand() *cobra.Command {
-	var configTemplate = L(`
+	configTemplate := L(`
 Configuration:
 
   All the non-global flags can alternatively be passed as configuration.

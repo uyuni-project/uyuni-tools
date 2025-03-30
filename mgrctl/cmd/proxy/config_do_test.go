@@ -24,13 +24,15 @@ import (
 var connectionDetails = api.ConnectionDetails{User: "testUser", Password: "testPwd", Server: "testServer"}
 
 // dummy file contents.
-const dummyCaCrtContents = "caCrt contents"
-const dummyCaKeyContents = "caKey contents"
-const dummyCaPasswordContents = "caPwd"
-const dummyProxyCrtContents = "proxyCrt contents"
-const dummyProxyKeyContents = "dummy proxyKey"
-const dummyIntermediateCA1Contents = "dummy IntermediateCA 1 contents"
-const dummyIntermediateCA2Contents = "dummy IntermediateCA 2 contents"
+const (
+	dummyCaCrtContents           = "caCrt contents"
+	dummyCaKeyContents           = "caKey contents"
+	dummyCaPasswordContents      = "caPwd"
+	dummyProxyCrtContents        = "proxyCrt contents"
+	dummyProxyKeyContents        = "dummy proxyKey"
+	dummyIntermediateCA1Contents = "dummy IntermediateCA 1 contents"
+	dummyIntermediateCA2Contents = "dummy IntermediateCA 2 contents"
+)
 
 type TestFilePaths struct {
 	OutputFilePath          string

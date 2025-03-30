@@ -17,10 +17,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/api/mocks"
 )
 
-const user = "mytestuser"
-const password = "mytestpassword"
-const server = "mytestserver"
-const cookie = "mytestpxtcookie"
+const (
+	user     = "mytestuser"
+	password = "mytestpassword"
+	server   = "mytestserver"
+	cookie   = "mytestpxtcookie"
+)
 
 // Test happy path for credentials store.
 func TestCredentialsStore(t *testing.T) {
@@ -92,7 +94,7 @@ func TestCredentialsCleanup(t *testing.T) {
 // Write malformed credentials file to check autocleanup of wrong credentials.
 func TestAutocleanup(t *testing.T) {
 	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
-	err := os.WriteFile(getAPICredsFile(), []byte(""), 0600)
+	err := os.WriteFile(getAPICredsFile(), []byte(""), 0o600)
 	if err != nil {
 		t.Fail()
 	}

@@ -32,8 +32,10 @@ import (
 
 const promptEnd = ": "
 
-var prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
-var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
+var (
+	prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
+	imageValid           = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
+)
 
 // Taken from https://github.com/go-playground/validator/blob/2e1df48/regexes.go#L58
 var fqdnValid = regexp.MustCompile(
@@ -391,7 +393,7 @@ func DownloadFile(filepath string, URL string) (err error) {
 
 	// Writer the body to file
 	log.Debug().Msgf("Saving %s to %s", URL, filepath)
-	return os.WriteFile(filepath, data, 0644)
+	return os.WriteFile(filepath, data, 0o644)
 }
 
 // CompareVersion compare the server image version and the server deployed  version.

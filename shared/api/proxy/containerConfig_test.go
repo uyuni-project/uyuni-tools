@@ -53,36 +53,44 @@ type ProxyConfigRequestBodyData struct {
 }
 
 // common connection details (for generating the client).
-const user = "testUser"
-const password = "testPwd"
-const server = "testServer"
+const (
+	user     = "testUser"
+	password = "testPwd"
+	server   = "testServer"
+)
 
 var connectionDetails = &api.ConnectionDetails{User: user, Password: password, Server: server}
 
 // common expected values for both ContainerConfig and ContainerConfigGenerate calls.
-const expectedProxyName = "testProxy"
-const expectedProxyPort = 8080
-const expectedServer = "testServer"
-const expectedMaxCache = 100
-const expectedEmail = "test@email.com"
+const (
+	expectedProxyName = "testProxy"
+	expectedProxyPort = 8080
+	expectedServer    = "testServer"
+	expectedMaxCache  = 100
+	expectedEmail     = "test@email.com"
+)
 
 // expected values for ContainerConfig.
-const expectedCaCrt = "caCrt contents"
-const expectedCaKey = "caKey contents"
-const expectedCaPassword = "caPwd"
-const expectedCountry = "testCountry"
-const expectedState = "exampleState"
-const expectedCity = "exampleCity"
-const expectedOrg = "exampleOrg"
-const expectedOrgUnit = "exampleOrgUnit"
-const expectedSSLEmail = "sslEmail@example.com"
+const (
+	expectedCaCrt      = "caCrt contents"
+	expectedCaKey      = "caKey contents"
+	expectedCaPassword = "caPwd"
+	expectedCountry    = "testCountry"
+	expectedState      = "exampleState"
+	expectedCity       = "exampleCity"
+	expectedOrg        = "exampleOrg"
+	expectedOrgUnit    = "exampleOrgUnit"
+	expectedSSLEmail   = "sslEmail@example.com"
+)
 
 var expectedCnames = []string{"altNameA.example.com", "altNameB.example.com"}
 
 // expected values for ContainerConfigGenerate.
-const expectedRootCA = "rootCA contents"
-const expectedProxyCrt = "proxyCrt contents"
-const expectedProxyKey = "proxyKey contents"
+const (
+	expectedRootCA   = "rootCA contents"
+	expectedProxyCrt = "proxyCrt contents"
+	expectedProxyKey = "proxyKey contents"
+)
 
 var expectedIntermediateCAs = []string{"intermediateCA1", "intermediateCA2"}
 

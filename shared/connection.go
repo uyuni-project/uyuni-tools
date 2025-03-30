@@ -314,7 +314,7 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 		return err
 	}
 
-	var namespace, namespacePrefix = "", ""
+	namespace, namespacePrefix := "", ""
 	if command == "kubectl" {
 		namespace, err = c.GetNamespace("")
 		if err != nil {

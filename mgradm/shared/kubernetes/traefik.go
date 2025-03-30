@@ -32,7 +32,7 @@ func CreateTraefikRoutes(namespace string, hub bool, debug bool) error {
 	defer cleaner()
 
 	filePath := path.Join(tempDir, "routes.yaml")
-	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0700)
+	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o700)
 	if err != nil {
 		return utils.Errorf(err, L("failed to open %s for writing"), filePath)
 	}

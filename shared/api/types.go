@@ -6,12 +6,13 @@ package api
 
 import "net/http"
 
-const rootPathApiv1 = "/rhn/manager/api"
-const apiCredentialsStore = ".uyuni-api.json"
+const (
+	rootPathApiv1       = "/rhn/manager/api"
+	apiCredentialsStore = ".uyuni-api.json"
+)
 
 // APIClient is the API entrypoint structure.
 type APIClient struct {
-
 	// URL to the API endpoint of the target host
 	BaseURL string
 
@@ -32,7 +33,6 @@ type HTTPClient interface {
 
 // ConnectionDetails holds the details for initial API connection.
 type ConnectionDetails struct {
-
 	// FQDN of the target host.
 	Server string
 

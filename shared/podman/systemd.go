@@ -35,8 +35,7 @@ const ServerSalineService = "uyuni-server-saline"
 const ProxyService = "uyuni-proxy-pod"
 
 // SystemdImpl implements the Systemd interface.
-type SystemdImpl struct {
-}
+type SystemdImpl struct{}
 
 // HasService returns if a systemd service is installed.
 // name is the name of the service without the '.service' part.
@@ -276,7 +275,7 @@ func GenerateSystemdConfFile(serviceName string, filename string, body string, w
 	systemdFilePath := GetServicePath(serviceName)
 
 	systemdConfFolder := systemdFilePath + ".d"
-	if err := os.MkdirAll(systemdConfFolder, 0750); err != nil {
+	if err := os.MkdirAll(systemdConfFolder, 0o750); err != nil {
 		return utils.Errorf(err, L("failed to create %s folder"), systemdConfFolder)
 	}
 	systemdConfFilePath := path.Join(systemdConfFolder, filename)
@@ -286,7 +285,7 @@ func GenerateSystemdConfFile(serviceName string, filename string, body string, w
 		header = confHeader
 	}
 	content := []byte(fmt.Sprintf("%s[Service]\n%s\n", header, body))
-	if err := os.WriteFile(systemdConfFilePath, content, 0640); err != nil {
+	if err := os.WriteFile(systemdConfFilePath, content, 0o640); err != nil {
 		return utils.Errorf(err, L("cannot write %s file"), systemdConfFilePath)
 	}
 
@@ -331,7 +330,7 @@ func CleanSystemdConfFile(serviceName string) error {
 
 		if hasCustom {
 			customPath := path.Join(systemdFilePath, "custom.conf")
-			if err := os.WriteFile(customPath, []byte(custom), 0644); err != nil {
+			if err := os.WriteFile(customPath, []byte(custom), 0o644); err != nil {
 				return utils.Errorf(err, L("failed to write %s file"), customPath)
 			}
 		}

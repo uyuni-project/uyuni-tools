@@ -19,8 +19,10 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-const k3sTraefikConfigPath = "/var/lib/rancher/k3s/server/manifests/uyuni-traefik-config.yaml"
-const k3sTraefikMainConfigPath = "/var/lib/rancher/k3s/server/manifests/traefik.yaml"
+const (
+	k3sTraefikConfigPath     = "/var/lib/rancher/k3s/server/manifests/uyuni-traefik-config.yaml"
+	k3sTraefikMainConfigPath = "/var/lib/rancher/k3s/server/manifests/traefik.yaml"
+)
 
 // InstallK3sTraefikConfig install K3s Traefik configuration.
 func InstallK3sTraefikConfig(ports []types.PortMap) error {
@@ -40,7 +42,7 @@ func InstallK3sTraefikConfig(ports []types.PortMap) error {
 		Ports:         endpoints,
 		ExposeBoolean: version < 27,
 	}
-	if err := utils.WriteTemplateToFile(data, k3sTraefikConfigPath, 0600, true); err != nil {
+	if err := utils.WriteTemplateToFile(data, k3sTraefikConfigPath, 0o600, true); err != nil {
 		return utils.Errorf(err, L("Failed to write Traefik configuration"))
 	}
 
@@ -96,7 +98,7 @@ func UninstallK3sTraefikConfig(dryRun bool) {
 	// Write a blank file first to get traefik to be reinstalled
 	if !dryRun {
 		log.Info().Msg(L("Reinstalling Traefik without additionnal configuration"))
-		err := os.WriteFile(k3sTraefikConfigPath, []byte{}, 0600)
+		err := os.WriteFile(k3sTraefikConfigPath, []byte{}, 0o600)
 		if err != nil {
 			log.Error().Err(err).Msg(L("failed to write empty traefik configuration"))
 		} else {

@@ -102,7 +102,6 @@ func readCertificates(path string) ([]certificate, error) {
 		cmd := exec.Command("openssl", "x509")
 		cmd.Stdin = fd
 		out, err := cmd.Output()
-
 		if err != nil {
 			// openssl got an invalid certificate or the end of the file
 			break
@@ -120,8 +119,10 @@ func readCertificates(path string) ([]certificate, error) {
 
 // Extract data from the certificate to help ordering and verifying it.
 func extractCertificateData(content []byte) (certificate, error) {
-	args := []string{"x509", "-noout", "-subject", "-subject_hash", "-startdate", "-enddate",
-		"-issuer", "-issuer_hash", "-ext", "subjectKeyIdentifier,authorityKeyIdentifier,basicConstraints"}
+	args := []string{
+		"x509", "-noout", "-subject", "-subject_hash", "-startdate", "-enddate",
+		"-issuer", "-issuer_hash", "-ext", "subjectKeyIdentifier,authorityKeyIdentifier,basicConstraints",
+	}
 	log.Debug().Msg("Running command openssl " + strings.Join(args, " "))
 	cmd := exec.Command("openssl", args...)
 

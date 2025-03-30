@@ -54,7 +54,7 @@ func DeployExistingCertificate(namespace string, sslFlags *cmd_utils.InstallSSLF
 		RootCa:      base64.StdEncoding.EncodeToString(rootCaCrt),
 	}
 
-	if err = utils.WriteTemplateToFile(tlsSecretData, secretPath, 0500, true); err != nil {
+	if err = utils.WriteTemplateToFile(tlsSecretData, secretPath, 0o500, true); err != nil {
 		return utils.Error(err, L("Failed to generate uyuni-crt secret definition"))
 	}
 	err = utils.RunCmd("kubectl", "apply", "-f", secretPath)
@@ -83,7 +83,7 @@ func DeployReusedCa(namespace string, ca *types.SSLPair) error {
 		Certificate: ca.Cert,
 	}
 
-	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
+	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0o500, true); err != nil {
 		return utils.Error(err, L("failed to generate issuer definition"))
 	}
 
@@ -121,7 +121,7 @@ func DeployGeneratedCa(
 		Fqdn:      fqdn,
 	}
 
-	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0500, true); err != nil {
+	if err = utils.WriteTemplateToFile(issuerData, issuerPath, 0o500, true); err != nil {
 		return utils.Error(err, L("failed to generate issuer definition"))
 	}
 

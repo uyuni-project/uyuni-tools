@@ -107,7 +107,7 @@ func getSSHYaml(directory string) (string, error) {
 	}
 
 	sshYamlFilename := filepath.Join(directory, "ssh.yaml")
-	err = os.WriteFile(sshYamlFilename, []byte(sshPayload), 0644)
+	err = os.WriteFile(sshYamlFilename, []byte(sshPayload), 0o644)
 	if err != nil {
 		return "", shared_utils.Errorf(err, L("failed to write in file %s"), sshYamlFilename)
 	}
@@ -122,7 +122,7 @@ func getHTTPDYaml(directory string) (string, error) {
 	}
 
 	httpdYamlFilename := filepath.Join(directory, "httpd.yaml")
-	err = os.WriteFile(httpdYamlFilename, []byte(httpdPayload), 0644)
+	err = os.WriteFile(httpdYamlFilename, []byte(httpdPayload), 0o644)
 	if err != nil {
 		return "", shared_utils.Errorf(err, L("failed to write in file %s"), httpdYamlFilename)
 	}
@@ -137,7 +137,7 @@ func getConfigYaml(directory string) (string, error) {
 	}
 
 	configYamlFilename := filepath.Join(directory, "config.yaml")
-	err = os.WriteFile(configYamlFilename, []byte(configPayload), 0644)
+	err = os.WriteFile(configYamlFilename, []byte(configPayload), 0o644)
 	if err != nil {
 		return "", shared_utils.Errorf(err, L("failed to write in file %s"), configYamlFilename)
 	}

@@ -40,7 +40,6 @@ func SetupHubXmlrpc(
 		(currentReplicas > 0 && !hubXmlrpcFlags.IsChanged)
 
 	hubXmlrpcImage, err := utils.ComputeImage(registry, tag, image)
-
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -113,7 +112,7 @@ func generateHubXmlrpcSystemdService(systemd podman.Systemd, image string) error
 		Image:      image,
 	}
 	if err := utils.WriteTemplateToFile(
-		hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0555, true,
+		hubXmlrpcData, podman.GetServicePath(podman.HubXmlrpcService+"@"), 0o555, true,
 	); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}

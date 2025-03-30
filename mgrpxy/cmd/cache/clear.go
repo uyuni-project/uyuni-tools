@@ -12,12 +12,11 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-type cacheClearFlags struct {
-}
+type cacheClearFlags struct{}
 
 // NewClearCmd creates the command to clear the cache.
 func NewClearCmd(globalFlags *types.GlobalFlags) *cobra.Command {
-	var clearCmd = &cobra.Command{
+	clearCmd := &cobra.Command{
 		Use:   "clear",
 		Short: L("Clear the cache"),
 		Long:  L("Clear the cache"),

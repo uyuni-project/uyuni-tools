@@ -22,7 +22,8 @@ import (
 // If repo is not empty, the --repo parameter will be passed.
 // If version is not empty, the --version parameter will be passed.
 func HelmUpgrade(kubeconfig string, namespace string, install bool,
-	repo string, name string, chart string, version string, args ...string) error {
+	repo string, name string, chart string, version string, args ...string,
+) error {
 	helmArgs := []string{
 		"upgrade",
 		"-n", namespace,

@@ -21,8 +21,10 @@ import (
 const InspectScriptFilename = "inspect.sh"
 
 // InspectContainerDirectory represents the directory and the basename where the inspect values are stored.
-const InspectContainerDirectory = "/var/lib/uyuni-tools"
-const inspectDataFile = "data"
+const (
+	InspectContainerDirectory = "/var/lib/uyuni-tools"
+	inspectDataFile           = "data"
+)
 
 // Inspector implementations can generate a inspection script and parse its results.
 // The returned type T depends on the data that are written to the file.
@@ -70,7 +72,7 @@ func (i *BaseInspector) GenerateScript() error {
 		OutputFile: i.GetDataPath(),
 	}
 
-	if err := WriteTemplateToFile(data, i.GetScriptPath(), 0555, true); err != nil {
+	if err := WriteTemplateToFile(data, i.GetScriptPath(), 0o555, true); err != nil {
 		return Error(err, L("failed to generate inspect script"))
 	}
 	return nil

@@ -96,7 +96,7 @@ func writeCocoServiceFiles(
 	log.Info().Msg(L("Setting up confidential computing attestation service"))
 
 	if err := utils.WriteTemplateToFile(attestationData,
-		podman.GetServicePath(podman.ServerAttestationService+"@"), 0555, true); err != nil {
+		podman.GetServicePath(podman.ServerAttestationService+"@"), 0o555, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 

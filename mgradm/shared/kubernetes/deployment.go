@@ -187,7 +187,7 @@ func getServerPodTemplate(
 
 	caVolume := kubernetes.CreateConfigVolume("ca-cert", "uyuni-ca")
 	tlsKeyVolume := kubernetes.CreateSecretVolume("tls-key", "uyuni-cert")
-	var keyMode int32 = 0400
+	var keyMode int32 = 0o400
 	tlsKeyVolume.VolumeSource.Secret.Items = []core.KeyToPath{
 		{Key: "tls.crt", Path: "spacewalk.crt"},
 		{Key: "tls.key", Path: "spacewalk.key", Mode: &keyMode},

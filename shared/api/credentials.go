@@ -34,7 +34,7 @@ func StoreLoginCreds(client *APIClient) error {
 		return utils.Errorf(err, L("unable to create credentials json"))
 	}
 
-	err = os.WriteFile(getAPICredsFile(), authData, 0600)
+	err = os.WriteFile(getAPICredsFile(), authData, 0o600)
 	if err != nil {
 		return utils.Errorf(err, L("unable to write credentials store %s"), getAPICredsFile())
 	}

@@ -93,7 +93,7 @@ func writeSalineServiceFiles(
 	log.Info().Msg(L("Setting up Saline service"))
 
 	if err := utils.WriteTemplateToFile(salineData,
-		podman.GetServicePath(podman.ServerSalineService+"@"), 0555, true); err != nil {
+		podman.GetServicePath(podman.ServerSalineService+"@"), 0o555, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 

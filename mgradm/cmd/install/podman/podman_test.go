@@ -55,7 +55,7 @@ saline:
 
 	dir := t.TempDir()
 	configPath := path.Join(dir, "config.yaml")
-	if err := os.WriteFile(configPath, []byte(config), 0600); err != nil {
+	if err := os.WriteFile(configPath, []byte(config), 0o600); err != nil {
 		t.Fatalf("Failed to write config file: %s", err)
 	}
 

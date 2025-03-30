@@ -147,7 +147,7 @@ func generateSystemdFile(template shared_utils.Template, service string, image s
 
 	const systemdPath = "/etc/systemd/system"
 	path := path.Join(systemdPath, name)
-	if err := shared_utils.WriteTemplateToFile(template, path, 0644, true); err != nil {
+	if err := shared_utils.WriteTemplateToFile(template, path, 0o644, true); err != nil {
 		return shared_utils.Errorf(err, L("failed to generate systemd file '%s'"), path)
 	}
 
@@ -193,11 +193,11 @@ func UnpackConfig(configPath string) error {
 	const proxyConfigDir = "/etc/uyuni/proxy"
 
 	// Create dir if it doesn't exist & check perms
-	if err := os.MkdirAll(proxyConfigDir, 0755); err != nil {
+	if err := os.MkdirAll(proxyConfigDir, 0o755); err != nil {
 		return err
 	}
 
-	if err := checkPermissions(proxyConfigDir, 0005|0050|0500); err != nil {
+	if err := checkPermissions(proxyConfigDir, 0o005|0o050|0o500); err != nil {
 		return err
 	}
 
@@ -240,7 +240,7 @@ func validateInstallYamlFiles(dir string) error {
 			return fmt.Errorf(L("missing required configuration file: %s"), filePath)
 		}
 		if file == "config.yaml" {
-			if err := checkPermissions(filePath, 0004|0040|0400); err != nil {
+			if err := checkPermissions(filePath, 0o004|0o040|0o400); err != nil {
 				return err
 			}
 		}

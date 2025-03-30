@@ -11,7 +11,7 @@ import (
 
 // WriteFile writes the content in a file at the given path and fails if anything wrong happens.
 func WriteFile(t *testing.T, path string, content string) {
-	if err := os.WriteFile(path, []byte(content), 0755); err != nil {
+	if err := os.WriteFile(path, []byte(content), 0o755); err != nil {
 		t.Fatalf("failed to write test file %s: %s", path, err)
 	}
 }

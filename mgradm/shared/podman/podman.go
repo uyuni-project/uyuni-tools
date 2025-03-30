@@ -61,7 +61,7 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 		Network:     podman.UyuniNetwork,
 		IPV6Enabled: ipv6Enabled,
 	}
-	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, true); err != nil {
+	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0o555, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
@@ -228,7 +228,6 @@ func RunMigration(
 	}
 
 	extractedData, err := utils.ReadInspectData[utils.InspectResult](path.Join(scriptDir, "data"))
-
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot read extracted data"))
 	}

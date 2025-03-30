@@ -66,7 +66,7 @@ func getMigrationJob(
 	pubKeyMount := core.VolumeMount{Name: "ssh-key", MountPath: "/root/.ssh/id_rsa.pub", SubPath: "id_rsa.pub"}
 
 	keyVolume := kubernetes.CreateSecretVolume("ssh-key", "uyuni-migration-key")
-	var keyMode int32 = 0600
+	var keyMode int32 = 0o600
 	keyVolume.VolumeSource.Secret.Items = []core.KeyToPath{
 		{Key: "key", Path: "id_rsa", Mode: &keyMode},
 		{Key: "key.pub", Path: "id_rsa.pub"},

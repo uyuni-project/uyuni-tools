@@ -35,7 +35,7 @@ func InstallRke2NginxConfig(ports []types.PortMap, namespace string) error {
 		TCPPorts:  tcpPorts,
 		UDPPorts:  udpPorts,
 	}
-	if err := utils.WriteTemplateToFile(data, rke2NginxConfigPath, 0600, true); err != nil {
+	if err := utils.WriteTemplateToFile(data, rke2NginxConfigPath, 0o600, true); err != nil {
 		return utils.Errorf(err, L("Failed to write Rke2 nginx configuration"))
 	}
 

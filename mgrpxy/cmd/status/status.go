@@ -16,8 +16,7 @@ import (
 
 var systemd podman.Systemd = podman.SystemdImpl{}
 
-type statusFlags struct {
-}
+type statusFlags struct{}
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[statusFlags]) *cobra.Command {
 	cmd := &cobra.Command{

@@ -185,7 +185,6 @@ func TestComputePTF(t *testing.T) {
 		suffix := testCase[4]
 
 		actual, err := ComputePTF(user, ptfID, fullImage, suffix)
-
 		if err != nil {
 			t.Errorf(
 				"Testcase %d: Unexpected error while computing image with %s, %s, %s, %s: %s",
@@ -263,7 +262,6 @@ func TestComputeImage(t *testing.T) {
 		appendToImage := testCase[4:]
 
 		actual, err := ComputeImage(testCase[3], "defaulttag", image, appendToImage...)
-
 		if err != nil {
 			t.Errorf(
 				"Testcase %d: Unexpected error while computing image with %s, %s, %s: %s",
@@ -303,6 +301,7 @@ func TestIsWellFormedFQDN(t *testing.T) {
 		}
 	}
 }
+
 func TestComputeImageError(t *testing.T) {
 	data := [][]string{
 		{"registry:path/to/image:tag:tag", "bar"},

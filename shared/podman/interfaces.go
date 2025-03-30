@@ -6,7 +6,6 @@ package podman
 
 // Systemd is an interface providing systemd operations.
 type Systemd interface {
-
 	// HasService returns if a systemd service is installed.
 	// name is the name of the service without the '.service' part.
 	HasService(name string) bool

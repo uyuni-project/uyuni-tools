@@ -63,7 +63,7 @@ func GeneratePgsqlVersionUpgradeScript(
 
 	scriptName := "pgsqlVersionUpgrade.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
-	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+	if err := utils.WriteTemplateToFile(data, scriptPath, 0o555, true); err != nil {
 		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
 	}
 	return scriptName, nil
@@ -83,7 +83,7 @@ func GenerateFinalizePostgresScript(
 
 	scriptName := "pgsqlFinalize.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
-	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+	if err := utils.WriteTemplateToFile(data, scriptPath, 0o555, true); err != nil {
 		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
 	}
 	return scriptName, nil
@@ -95,7 +95,7 @@ func GeneratePostUpgradeScript(scriptDir string) (string, error) {
 
 	scriptName := "postUpgrade.sh"
 	scriptPath := filepath.Join(scriptDir, scriptName)
-	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+	if err := utils.WriteTemplateToFile(data, scriptPath, 0o555, true); err != nil {
 		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
 	}
 	return scriptName, nil
@@ -127,7 +127,7 @@ func GenerateMigrationScript(sourceFqdn string, user string, kubernetes bool, pr
 	}
 
 	scriptPath := filepath.Join(scriptDir, "migrate.sh")
-	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
+	if err = utils.WriteTemplateToFile(data, scriptPath, 0o555, true); err != nil {
 		return "", cleaner, utils.Error(err, L("failed to generate migration script"))
 	}
 

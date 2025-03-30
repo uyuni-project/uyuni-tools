@@ -15,9 +15,9 @@ import (
 )
 
 const (
-	//DBUserSecret is the name of the podman secret containing the database username.
+	// DBUserSecret is the name of the podman secret containing the database username.
 	DBUserSecret = "uyuni-db-user"
-	//DBUserSecret is the name of the podman secret containing the database password.
+	// DBUserSecret is the name of the podman secret containing the database password.
 	DBPassSecret = "uyuni-db-pass"
 )
 
@@ -42,7 +42,7 @@ func createSecret(name string, value string) error {
 	defer cleaner()
 
 	secretFile := path.Join(tmpDir, "secret")
-	if err := os.WriteFile(secretFile, []byte(value), 0600); err != nil {
+	if err := os.WriteFile(secretFile, []byte(value), 0o600); err != nil {
 		return utils.Errorf(err, L("failed to write %s secret to file"), name)
 	}
 
