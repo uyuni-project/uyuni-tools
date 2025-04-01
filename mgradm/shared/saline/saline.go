@@ -33,7 +33,13 @@ func Upgrade(
 		return err
 	}
 
-	return systemd.ScaleService(salineFlags.Replicas, podman.ServerSalineService)
+	if salineFlags.Replicas > 0 {
+		if systemd.IsServiceRunning(podman.SalineService) {
+			return systemd.RestartService(podman.SalineService)
+		}
+		return systemd.EnableService(podman.SalineService)
+	}
+	return systemd.DisableService(podman.SalineService)
 }
 
 func writeSalineServiceFiles(
@@ -46,8 +52,6 @@ func writeSalineServiceFiles(
 	podmanArgs []string,
 ) error {
 	image := salineFlags.Image
-	currentReplicas := systemd.CurrentReplicaCount(podman.ServerSalineService)
-	log.Debug().Msgf("Current Saline replicas running are %d.", currentReplicas)
 
 	if image.Tag == "" {
 		if baseImage.Tag != "" {
@@ -69,7 +73,7 @@ func writeSalineServiceFiles(
 
 	salineImage, err := utils.ComputeImage(registry, baseImage.Tag, image)
 	if err != nil {
-		return utils.Errorf(err, L("failed to compute image URL"))
+		return utils.Error(err, L("failed to compute image URL"))
 	}
 
 	pullEnabled := salineFlags.Replicas > 0 && salineFlags.IsChanged
@@ -79,42 +83,35 @@ func writeSalineServiceFiles(
 		return err
 	}
 
-	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
-
 	salineData := templates.SalineServiceTemplateData{
-		NamePrefix:  "uyuni",
-		Network:     podman.UyuniNetwork,
-		Volumes:     utils.SalineVolumeMounts,
-		Image:       preparedImage,
-		SalinePort:  salineFlags.Port,
-		IPV6Enabled: ipv6Enabled,
-		// TODO Remove the certificate and use Ingress / Apache to proxy Saline
-		CertSecret: podman.SSLCertSecret,
-		KeySecret:  podman.SSLKeySecret,
+		NamePrefix: "uyuni",
+		Network:    podman.UyuniNetwork,
+		Volumes:    utils.SalineVolumeMounts,
+		Image:      preparedImage,
 	}
 
 	log.Info().Msg(L("Setting up Saline service"))
 
 	if err := utils.WriteTemplateToFile(salineData,
-		podman.GetServicePath(podman.ServerSalineService+"@"), 0555, true); err != nil {
-		return utils.Errorf(err, L("failed to generate systemd service unit file"))
+		podman.GetServicePath(podman.SalineService), 0555, true); err != nil {
+		return utils.Error(err, L("failed to generate systemd service unit file"))
 	}
 
 	environment := fmt.Sprintf(`Environment=UYUNI_SALINE_IMAGE=%s`, preparedImage)
 
 	if err := podman.GenerateSystemdConfFile(
-		podman.ServerSalineService+"@", "generated.conf", environment, true,
+		podman.SalineService, "generated.conf", environment, true,
 	); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd conf file"))
+		return utils.Error(err, L("cannot generate systemd conf file"))
 	}
 
 	config := fmt.Sprintf(`Environment=TZ=%s
 Environment="PODMAN_EXTRA_ARGS=%s"
 `, strings.TrimSpace(tz), strings.Join(podmanArgs, " "))
 
-	if err := podman.GenerateSystemdConfFile(podman.ServerSalineService+"@", "custom.conf",
+	if err := podman.GenerateSystemdConfFile(podman.SalineService, "custom.conf",
 		config, false); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd user configuration file"))
+		return utils.Error(err, L("cannot generate systemd user configuration file"))
 	}
 
 	if err := systemd.ReloadDaemon(false); err != nil {
@@ -138,5 +135,5 @@ func SetupSalineContainer(
 	); err != nil {
 		return err
 	}
-	return systemd.ScaleService(salineFlags.Replicas, podman.ServerSalineService)
+	return systemd.EnableService(podman.SalineService)
 }
