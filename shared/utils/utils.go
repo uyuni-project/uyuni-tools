@@ -518,7 +518,7 @@ func CreateChecksum(file string) error {
 	}
 
 	if err := os.WriteFile(outputFile, output, 0622); err != nil {
-		return Errorf(err, L("Failed to write checksum of the file %s to the %s"), file, outputFile)
+		return Errorf(err, L("Failed to write checksum of the file %[1]s to the %[2]s"), file, outputFile)
 	}
 	return nil
 }

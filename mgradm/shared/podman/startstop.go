@@ -10,8 +10,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 )
 
-var systemd podman.Systemd = podman.SystemdImpl{}
-
 func StartServices() error {
 	return errors.Join(
 		systemd.StartService(podman.DBService),
