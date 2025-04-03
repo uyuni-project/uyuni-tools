@@ -47,20 +47,10 @@ func restoreSystemdConfiguration(backupSource string, flags *shared.Flagpole) er
 				continue
 			}
 		case tar.TypeReg:
-			fh, err := os.Create(header.Name)
-			if err != nil {
-				log.Warn().Err(err).Msgf(L("Unable to create %s"), header.Name)
+			if err := restoreSystemdFile(header, tr); err != nil {
 				hasError = errors.Join(hasError, err)
 				continue
 			}
-			if _, err := io.Copy(fh, tr); err != nil {
-				log.Warn().Err(err).Msgf(L("Unable to restore content of %s"), header.Name)
-				hasError = errors.Join(hasError, err)
-				fh.Close()
-				os.Remove(header.Name)
-				continue
-			}
-			fh.Close()
 		default:
 			log.Warn().Msgf(L("Unknown filetype of %s"), header.Name)
 			continue
@@ -72,6 +62,22 @@ func restoreSystemdConfiguration(backupSource string, flags *shared.Flagpole) er
 		}
 	}
 	return hasError
+}
+
+func restoreSystemdFile(header *tar.Header, tr *tar.Reader) error {
+	fh, err := os.Create(header.Name)
+	if err != nil {
+		log.Warn().Err(err).Msgf(L("Unable to create %s"), header.Name)
+		return err
+	}
+	if _, err := io.Copy(fh, tr); err != nil {
+		log.Warn().Err(err).Msgf(L("Unable to restore content of %s"), header.Name)
+		fh.Close()
+		os.Remove(header.Name)
+		return err
+	}
+	fh.Close()
+	return nil
 }
 
 func restoreFileAttributes(filename string, th *tar.Header) error {
