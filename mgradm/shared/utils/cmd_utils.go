@@ -218,7 +218,7 @@ func AddMirrorFlag(cmd *cobra.Command) {
 // AddCocoFlag adds the confidential computing related parameters to cmd.
 func AddCocoFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
-	AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"), "coco-container", "server-attestation")
+	AddContainerImageFlags(cmd, "coco", L("Confidential computing attestation"), "coco-container", "server-attestation")
 	cmd.Flags().Int("coco-replicas", 0, L("How many replicas of the confidential computing container should be started"))
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
 }
@@ -226,7 +226,7 @@ func AddCocoFlag(cmd *cobra.Command) {
 // AddUpgradeCocoFlag adds the confidential computing related parameters to cmd upgrade.
 func AddUpgradeCocoFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
-	AddContainerImageFlags(cmd, "coco", L("confidential computing attestation"), "coco-container", "server-attestation")
+	AddContainerImageFlags(cmd, "coco", L("Confidential computing attestation"), "coco-container", "server-attestation")
 	cmd.Flags().Int("coco-replicas", 0, L(`How many replicas of the confidential computing container should be started.
 Leave it unset if you want to keep the previous number of replicas.`))
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")

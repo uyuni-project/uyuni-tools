@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"path"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -75,7 +76,7 @@ func ReadFromContainer(name string, image string, volumes []types.VolumeMount,
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
 	for _, volume := range volumes {
-		if isVolumePresent(volume.Name) {
+		if IsVolumePresent(volume.Name) {
 			podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath)
 		}
 	}
@@ -152,6 +153,19 @@ func GetServiceImage(service string) string {
 	return matches[1]
 }
 
+// GetImageVirtualSize returns the size of the image with its layers.
+func GetImageVirtualSize(name string) (size int64, err error) {
+	out, err := utils.NewRunner("podman", "inspect", "--format", "{{.VirtualSize}}", name).
+		Log(zerolog.DebugLevel).
+		Exec()
+	if err != nil {
+		return
+	}
+	sizeStr := strings.TrimSpace(string(out))
+	size, err = strconv.ParseInt(sizeStr, 10, 64)
+	return
+}
+
 // DeleteVolume deletes a podman volume based on its name.
 // If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
 func DeleteVolume(name string, dryRun bool) error {
@@ -182,7 +196,7 @@ func DeleteVolume(name string, dryRun bool) error {
 	return nil
 }
 
-// ExportVolume exports a podman volume based on its name to the specifed targed directory.
+// ExportVolume exports a podman volume based on its name to the specified targed directory.
 // outputDir option expects already existing directory.
 // If dryRun is set to true, only messages will be logged to explain what would happen.
 func ExportVolume(name string, outputDir string, dryRun bool) error {
@@ -199,7 +213,7 @@ func ExportVolume(name string, outputDir string, dryRun bool) error {
 			return utils.Errorf(err, L("Failed to export volume %s"), name)
 		}
 		if err := utils.CreateChecksum(outputFile); err != nil {
-			return utils.Errorf(err, L("Failed to write checksum of volume %s to the %s"), name, outputFile+".sha256sum")
+			return utils.Errorf(err, L("Failed to write checksum of volume %[1]s to the %[2]s"), name, outputFile+".sha256sum")
 		}
 	}
 	return nil
@@ -260,11 +274,24 @@ func isVolumePathEmpty(volume string) bool {
 	return errors.Is(err, io.EOF)
 }
 
-// GetPodmanVolumeBasePath returns the path to the volume on the host system
+// GetPodmanVolumeBasePath returns the path to all volumes on the host system.
 func GetPodmanVolumeBasePath() (string, error) {
 	cmd := exec.Command("podman", "system", "info", "--format={{ .Store.VolumePath }}")
 	out, err := cmd.Output()
 	return strings.TrimSpace(string(out)), err
+}
+
+// GetVolumeMountPoint returns the path to the volume mount point on the host system.
+// This shouldn't be confused with GetPodmanVolumeBasePath() that returns the path to the folder containing all volumes.
+func GetVolumeMountPoint(name string) (path string, err error) {
+	out, err := utils.NewRunner("podman", "volume", "inspect", "--format", "{{.Mountpoint}}", name).
+		Log(zerolog.DebugLevel).
+		Exec()
+	if err != nil {
+		return
+	}
+	path = strings.TrimSpace(string(out))
+	return
 }
 
 // Inspect check values on a given image and deploy.

@@ -34,7 +34,7 @@ func Create(
 	outputDirectory := args[0]
 	printIntro(outputDirectory, flags)
 
-	if err := SanityChecks(outputDirectory, dryRun); err != nil {
+	if err := SanityChecks(outputDirectory); err != nil {
 		return shared.AbortError(err, false)
 	}
 
@@ -54,7 +54,7 @@ func Create(
 		}
 	}
 
-	// stop service if database is to be backedup. Otherwise do a live backup
+	// stop service if database is to be backed up. Otherwise do a live backup
 	serviceStopped := false
 	if !flags.SkipDatabase && !dryRun {
 		log.Info().Msg(L("Stopping server service"))
@@ -68,7 +68,7 @@ func Create(
 		return shared.AbortError(err, true)
 	}
 
-	// Remaining backups are not critical, retore can create default values
+	// Remaining backups are not critical, restore can create default values
 	// so let's only track if there was an error
 	hasError := backupContainerImages(images, imagesBackupPath, dryRun)
 
@@ -212,7 +212,7 @@ func backupPodmanConfiguration(outputDirectory string, dryRun bool) error {
 	return nil
 }
 
-func SanityChecks(outputDirectory string, dryRun bool) error {
+func SanityChecks(outputDirectory string) error {
 	if err := shared.SanityChecks(); err != nil {
 		return err
 	}
