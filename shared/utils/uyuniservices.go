@@ -37,7 +37,7 @@ var UyuniServices = []types.UyuniService{
 		Replicas:    types.SingleOptionalReplica,
 		Options:     []types.UyuniServiceOption{}},
 
-	{Name: "uyuni-server-saline",
+	{Name: "uyuni-saline",
 		Image:       SalineImage,
 		Description: L("Saline"),
 		Replicas:    types.SingleOptionalReplica,
