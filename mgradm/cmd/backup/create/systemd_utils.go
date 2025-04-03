@@ -6,7 +6,6 @@ package create
 
 import (
 	"archive/tar"
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -16,7 +15,6 @@ import (
 	backup "github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -73,21 +71,9 @@ func gatherSystemdItems() []string {
 	result := []string{}
 
 	for _, service := range utils.UyuniServices {
-		serviceName := service.Name
-
-		if service.Replicas == types.SingleOptionalReplica {
-			// with optional or more replicas we have service template, check if the service exists at all
-			serviceName = serviceName + "@"
-			if _, err := os.Stat(podman.GetServicePath(serviceName)); errors.Is(err, os.ErrNotExist) {
-				log.Debug().Msgf("Service file %s does not exists, skipping", serviceName)
-				continue
-			}
-		} else if serviceName == "uyuni-db" {
-			// special handling of uyuni-db service when we do backup after mgradm update but berfore upgrade
-			if _, err := os.Stat(podman.GetServicePath(serviceName)); errors.Is(err, os.ErrNotExist) {
-				log.Debug().Msgf("Service file %s does not exists, skipping", serviceName)
-				continue
-			}
+		serviceName, skip := findService(service.Name)
+		if skip {
+			continue
 		}
 
 		result = append(result, podman.GetServicePath(serviceName))
@@ -98,7 +84,7 @@ func gatherSystemdItems() []string {
 		serviceConfDir := podman.GetServiceConfFolder(serviceName)
 		serviceFiles, err := os.ReadDir(serviceConfDir)
 		if err != nil {
-			log.Debug().Msgf("Service conf directory %s not found, skipping", serviceConfDir)
+			log.Debug().Msgf("Service configuration directory %s not found, skipping", serviceConfDir)
 			continue
 		}
 		result = append(result, serviceConfDir)
@@ -107,4 +93,18 @@ func gatherSystemdItems() []string {
 		}
 	}
 	return result
+}
+
+func findService(name string) (serviceName string, skip bool) {
+	skip = false
+	serviceName = name
+	if !systemd.HasService(serviceName) {
+		// with optional or more replicas we have service template, check if the service exists at all
+		serviceName = name + "@"
+		if !systemd.HasService(serviceName) {
+			log.Debug().Msgf("No service found for %s, skipping", name)
+			skip = true
+		}
+	}
+	return
 }
