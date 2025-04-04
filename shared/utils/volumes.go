@@ -21,7 +21,7 @@ var PgsqlRequiredVolumeMounts = []types.VolumeMount{
 }
 
 // CaCertVolumeMount represents volume for CA certificates.
-var CaCertVolumeMount = types.VolumeMount{MountPath: "/etc/pki/trust/anchors/", Name: "ca-certs"}
+var CaCertVolumeMount = types.VolumeMount{MountPath: "/etc/pki/trust/anchors/", Name: "ca-cert"}
 
 // ServerVolumeMounts should match the volumes mapping from the container definition in both
 // the helm chart and the systemctl services definitions.
