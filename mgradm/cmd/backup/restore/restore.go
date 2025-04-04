@@ -76,7 +76,6 @@ func Restore(
 	// Restore systemd config or generate defaults
 	if err := restoreSystemdConfig(inputDirectory, flags); err != nil {
 		hasError = errors.Join(hasError, err)
-		// TODO: recreate services defaults
 	}
 
 	if flags.Restart {
@@ -251,7 +250,8 @@ func restoreSystemdConfig(inputDirectory string, flags *shared.Flagpole) error {
 	log.Info().Msgf(L("Restoring systemd configuration"))
 	systemdConfigFile := path.Join(inputDirectory, shared.SystemdConfBackupFile)
 	if !utils.FileExists(systemdConfigFile) {
-		return errors.New(L("systemd backup not found in the backup location"))
+		log.Warn().Msg(L("systemd backup not found in the backup location, generating defaults"))
+		return generateDefaltSystemdServices(flags)
 	}
 	if !flags.SkipVerify {
 		if err := utils.ValidateChecksum(systemdConfigFile); err != nil {
