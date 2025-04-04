@@ -70,15 +70,15 @@ func parseNetworkData(data []byte) (networkDetails shared.PodanNetworkConfigData
 	if _, ok := networkData[0]["network_interface"]; !ok {
 		return
 	}
-	if _, ok := networkData[0]["network_dns_servers"]; !ok {
-		return
+
+	// Optional
+	if _, ok := networkData[0]["network_dns_servers"]; ok {
+		if err = json.Unmarshal(networkData[0]["network_dns_servers"], &networkDetails.NetworkDNSServers); err != nil {
+			return
+		}
 	}
 
 	if err = json.Unmarshal(networkData[0]["subnets"], &networkDetails.Subnets); err != nil {
-		return
-	}
-
-	if err = json.Unmarshal(networkData[0]["network_dns_servers"], &networkDetails.NetworkDNSServers); err != nil {
 		return
 	}
 
@@ -188,11 +188,15 @@ func restorePodmanSecrets(header *tar.Header, tr *tar.Reader, flags *shared.Flag
 
 	var hasError error
 	log.Info().Msg(L("Restoring podman secrets"))
-	baseCommand := []string{"podman", "secret", "create", "--replace"}
+	baseCommand := []string{"podman", "secret", "create"}
 	for _, v := range secrets {
-		if !flags.ForceRestore && podman.IsSecretPresent(v.Name) {
-			log.Error().Msgf(L("Podman secret %s is already present, not restoring unless forced"), v.Name)
-			continue
+		if podman.IsSecretPresent(v.Name) {
+			if flags.ForceRestore {
+				baseCommand = append(baseCommand, "--replace")
+			} else {
+				log.Error().Msgf(L("Podman secret %s is already present, not restoring unless forced"), v.Name)
+				continue
+			}
 		}
 		command := append(baseCommand, v.Name, "-")
 		if err := runCmdInput(command[0], v.Secret, command[1:]...); err != nil {
