@@ -158,7 +158,9 @@ func gatherContainerImagesToBackup(skipImages bool) []string {
 
 	if !skipImages {
 		for _, service := range utils.UyuniServices {
-			images = append(images, service.Image.Name)
+			if present, err := podman.IsImagePresent(service.Image.Name); err == nil && len(present) > 0 {
+				images = append(images, service.Image.Name)
+			}
 		}
 	}
 	return images
