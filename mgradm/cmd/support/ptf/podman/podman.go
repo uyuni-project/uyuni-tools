@@ -15,11 +15,12 @@ import (
 )
 
 type podmanPTFFlags struct {
-	adm_utils.ServerFlags `mapstructure:",squash"`
-	Podman                podman.PodmanFlags
-	PTFId                 string `mapstructure:"ptf"`
-	TestID                string `mapstructure:"test"`
-	CustomerID            string `mapstructure:"user"`
+	adm_utils.ServerFlags  `mapstructure:",squash"`
+	adm_utils.UpgradeFlags `mapstructure:",squash"`
+	Podman                 podman.PodmanFlags
+	PTFId                  string `mapstructure:"ptf"`
+	TestID                 string `mapstructure:"test"`
+	CustomerID             string `mapstructure:"user"`
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanPTFFlags]) *cobra.Command {

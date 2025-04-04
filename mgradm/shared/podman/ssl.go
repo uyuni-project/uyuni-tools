@@ -56,19 +56,47 @@ var newRunner = utils.NewRunner
 // PrepareSSLCertificates prepares SSL environment for the server and database.
 // If 3rd party certificates are provided, it uses them, else new certificates are generated.
 // This function is called in both new installation and upgrade scenarios.
-func PrepareSSLCertificates(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+func PrepareSSLCertificates(
+	image string,
+	sslFlags *adm_utils.SSLFlags,
+	dbSSLFlags *adm_utils.SSLFlags,
+	genSSLFlags *types.SSLCertGenerationFlags,
+	tz string,
+	fqdn string) error {
 	// Prepare Server certificates
-	if err := prepareServerSSLcertificates(image, sslFlags, tz, fqdn); err != nil {
+	if err := prepareServerSSLcertificates(image, sslFlags, genSSLFlags, tz, fqdn); err != nil {
 		return err
 	}
 	// Prepare database certificates
-	if err := prepareDatabaseSSLcertificates(image, sslFlags, tz, fqdn); err != nil {
+	if err := prepareDatabaseSSLcertificates(image, dbSSLFlags, genSSLFlags, tz, fqdn); err != nil {
 		return err
 	}
 	return nil
 }
 
-func prepareServerSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+func UseProvidedSSLForServer(sslFlags *adm_utils.SSLFlags, tempDir string) error {
+	log.Info().Msg(L("Using provided 3rd party server certificates"))
+	ca := &sslFlags.CA
+	pair := &sslFlags.Pair
+
+	serverDir := path.Join(tempDir, "server")
+	if err := prepareThirdPartyCertificate(ca, pair, serverDir); err != nil {
+		return err
+	}
+	// Create secrets for CA
+	return shared_podman.CreateTLSSecrets(
+		shared_podman.CASecret, path.Join(serverDir, "ca.crt"),
+		shared_podman.SSLCertSecret, path.Join(serverDir, "server.crt"),
+		shared_podman.SSLKeySecret, pair.Key,
+	)
+}
+
+func prepareServerSSLcertificates(
+	image string,
+	sslFlags *adm_utils.SSLFlags,
+	genSSLFlags *types.SSLCertGenerationFlags,
+	tz string,
+	fqdn string) error {
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
 	if err != nil {
@@ -77,20 +105,7 @@ func prepareServerSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFl
 
 	// Check for provided certificates
 	if sslFlags.UseProvided() {
-		log.Info().Msg(L("Using provided 3rd party server certificates"))
-		ca := &sslFlags.Ca
-		pair := &sslFlags.Server
-
-		serverDir := path.Join(tempDir, "server")
-		if err := prepareThirdPartyCertificate(ca, pair, serverDir); err != nil {
-			return err
-		}
-		// Create secrets for CA
-		return shared_podman.CreateTLSSecrets(
-			shared_podman.CASecret, path.Join(serverDir, "ca.crt"),
-			shared_podman.SSLCertSecret, path.Join(serverDir, "server.crt"),
-			shared_podman.SSLKeySecret, pair.Key,
-		)
+		return UseProvidedSSLForServer(sslFlags, tempDir)
 	}
 
 	// Check if this is an upgrade scenario and there is existing CA
@@ -103,10 +118,32 @@ func prepareServerSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFl
 	}
 
 	// Not provided and not an upgrade, generate new
-	return generateServerCertificate(image, sslFlags, tz, fqdn)
+	return generateServerCertificate(image, genSSLFlags, tz, fqdn)
 }
 
-func prepareDatabaseSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+func UseProvidedSSLForDB(sslFlags *adm_utils.SSLFlags, tempDir string) error {
+	log.Info().Msg(L("Using provided 3rd party database certificates"))
+	dbCa := &sslFlags.CA
+	dbPair := &sslFlags.Pair
+
+	dbDir := path.Join(tempDir, "db")
+	if err := prepareThirdPartyCertificate(dbCa, dbPair, dbDir); err != nil {
+		return err
+	}
+	// Create secrets for the database key and certificate
+	return shared_podman.CreateTLSSecrets(
+		shared_podman.DBCASecret, path.Join(dbDir, "ca.crt"),
+		shared_podman.DBSSLCertSecret, path.Join(dbDir, "server.crt"),
+		shared_podman.DBSSLKeySecret, dbPair.Key,
+	)
+}
+
+func prepareDatabaseSSLcertificates(
+	image string,
+	sslFlags *adm_utils.SSLFlags,
+	genSSLFlags *types.SSLCertGenerationFlags,
+	tz string,
+	fqdn string) error {
 	// Write the ordered cert and Root CA to temp files
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
@@ -114,21 +151,8 @@ func prepareDatabaseSSLcertificates(image string, sslFlags *adm_utils.InstallSSL
 		return err
 	}
 
-	if sslFlags.UseProvidedDB() {
-		log.Info().Msg(L("Using provided 3rd party database certificates"))
-		dbCa := &sslFlags.DB.CA
-		dbPair := &sslFlags.DB.SSLPair
-
-		dbDir := path.Join(tempDir, "db")
-		if err := prepareThirdPartyCertificate(dbCa, dbPair, dbDir); err != nil {
-			return err
-		}
-		// Create secrets for the database key and certificate
-		return shared_podman.CreateTLSSecrets(
-			shared_podman.DBCASecret, path.Join(dbDir, "ca.crt"),
-			shared_podman.DBSSLCertSecret, path.Join(dbDir, "server.crt"),
-			shared_podman.DBSSLKeySecret, dbPair.Key,
-		)
+	if sslFlags.UseProvided() {
+		return UseProvidedSSLForDB(sslFlags, tempDir)
 	}
 
 	// Check if this is an upgrade scenario and there is existing CA
@@ -141,7 +165,7 @@ func prepareDatabaseSSLcertificates(image string, sslFlags *adm_utils.InstallSSL
 	}
 
 	// Not provided and not an upgrade, generate new
-	return generateDatabaseCertificate(image, sslFlags, tz, fqdn)
+	return generateDatabaseCertificate(image, genSSLFlags, tz, fqdn)
 }
 
 func reuseExistingCertificates(image string, tempDir string, isDatabaseCheck bool) (bool, error) {
@@ -267,24 +291,32 @@ func runSSLContainer(script string, workdir string, image string, tz string, env
 	return err
 }
 
-func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+func genEnvForCertificate(genSSLFlags *types.SSLCertGenerationFlags, fqdn string) map[string]string {
+	return map[string]string{
+		"CERT_O":       genSSLFlags.Org,
+		"CERT_OU":      genSSLFlags.OU,
+		"CERT_CITY":    genSSLFlags.City,
+		"CERT_STATE":   genSSLFlags.State,
+		"CERT_COUNTRY": genSSLFlags.Country,
+		"CERT_EMAIL":   genSSLFlags.Email,
+		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, genSSLFlags.Cnames...), " "),
+		"CERT_PASS":    genSSLFlags.Password,
+		"HOSTNAME":     fqdn,
+	}
+}
+
+func generateServerCertificate(
+	image string,
+	genSSLFlags *types.SSLCertGenerationFlags,
+	tz string,
+	fqdn string) error {
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
 	if err != nil {
 		return err
 	}
 
-	env := map[string]string{
-		"CERT_O":       sslFlags.Org,
-		"CERT_OU":      sslFlags.OU,
-		"CERT_CITY":    sslFlags.City,
-		"CERT_STATE":   sslFlags.State,
-		"CERT_COUNTRY": sslFlags.Country,
-		"CERT_EMAIL":   sslFlags.Email,
-		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, sslFlags.Cnames...), " "),
-		"CERT_PASS":    sslFlags.Password,
-		"HOSTNAME":     fqdn,
-	}
+	env := genEnvForCertificate(genSSLFlags, fqdn)
 	if err := runSSLContainer(sslSetupServerScript, tempDir, image, tz, env); err != nil {
 		return utils.Error(err, L("Server SSL certificates generation failed"))
 	}
@@ -299,7 +331,11 @@ func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags
 	)
 }
 
-func generateDatabaseCertificate(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+func generateDatabaseCertificate(
+	image string,
+	genSSLFlags *types.SSLCertGenerationFlags,
+	tz string,
+	fqdn string) error {
 	// Write the ordered cert and Root CA to temp files
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
@@ -307,17 +343,8 @@ func generateDatabaseCertificate(image string, sslFlags *adm_utils.InstallSSLFla
 		return err
 	}
 
-	env := map[string]string{
-		"CERT_O":       sslFlags.Org,
-		"CERT_OU":      sslFlags.OU,
-		"CERT_CITY":    sslFlags.City,
-		"CERT_STATE":   sslFlags.State,
-		"CERT_COUNTRY": sslFlags.Country,
-		"CERT_EMAIL":   sslFlags.Email,
-		"CERT_CNAMES":  strings.Join(append([]string{fqdn}, sslFlags.Cnames...), " "),
-		"CERT_PASS":    sslFlags.Password,
-		"HOSTNAME":     fqdn,
-	}
+	env := genEnvForCertificate(genSSLFlags, fqdn)
+
 	if err := runSSLContainer(sslSetupDatabaseScript, tempDir, image, tz, env); err != nil {
 		return utils.Error(err, L("Database SSL certificates generation failed"))
 	}
