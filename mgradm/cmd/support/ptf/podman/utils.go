@@ -32,7 +32,7 @@ func ptfForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.Installation.SCC)
+	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
@@ -43,7 +43,7 @@ func ptfForPodman(
 	dummyImage := types.ImageFlags{}
 	dummyDB := adm_utils.DBFlags{}
 	dummyReportDB := adm_utils.DBFlags{}
-	dummySSL := adm_utils.InstallSSLFlags{}
+	dummySSL := adm_utils.UpgradeSSLFlags{}
 
 	if err := flags.checkParameters(); err != nil {
 		return err
@@ -53,15 +53,15 @@ func ptfForPodman(
 		"",
 		dummyDB,
 		dummyReportDB,
-		dummySSL,
+		&dummySSL,
 		flags.Image,
 		dummyImage,
 		flags.Coco,
 		flags.HubXmlrpc,
 		flags.Saline,
 		flags.Pgsql,
-		flags.Installation.SCC,
-		flags.Installation.TZ,
+		flags.SCC,
+		flags.TZ,
 	)
 }
 

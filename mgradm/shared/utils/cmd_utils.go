@@ -18,44 +18,48 @@ import (
 var defaultImage = path.Join(utils.DefaultRegistry, "server")
 
 // UseProvided return true if server can use an SSL Cert provided by flags.
-func (f *InstallSSLFlags) UseProvided() bool {
-	return f.Server.IsDefined() && f.Ca.IsThirdParty()
-}
-
-// UseProvidedDB return true if DB can use an SSL Cert provided by flags.
-func (f *InstallSSLFlags) UseProvidedDB() bool {
-	return f.DB.IsDefined() && f.DB.CA.IsThirdParty()
+func (f *SSLFlags) UseProvided() bool {
+	return f.Pair.IsDefined() && f.CA.IsThirdParty()
 }
 
 // UseMigratedCa returns true if a migrated CA and key can be used.
-func (f *InstallSSLFlags) UseMigratedCa() bool {
-	return f.Ca.Root != "" && f.Ca.Key != ""
+func (f *SSLFlags) UseMigratedCa() bool {
+	return f.CA.Root != "" && f.CA.Key != ""
 }
 
 // CheckParameters checks that all the required flags are passed if using 3rd party certificates.
 //
 // localDB indicates whether the SSL certificates for the database need to be checked.
 // Those are not needed for external databases.
-func (f *InstallSSLFlags) CheckParameters(localDB bool) {
-	if !f.UseProvided() && (f.Server.Cert != "" || f.Server.Key != "" || f.Ca.IsDefined()) {
+func (f *SSLFlags) CheckParameters(localDB bool) {
+	if !f.UseProvided() && (f.Pair.Cert != "" || f.Pair.Key != "" || f.CA.IsDefined()) {
 		log.Fatal().Msg(L("Server certificate, key and root CA need to be all provided"))
 	}
 
-	if f.UseProvided() && localDB && !f.DB.IsDefined() {
+	if f.UseProvided() && localDB && !f.Pair.IsDefined() {
 		log.Fatal().Msg(L("Database certificate and key need to be provided"))
 	}
 }
 
-// CheckUpgradeParameters checks that all the required flags are passed if using 3rd party certificates.
+// CheckParameters checks that all the required flags are passed if using 3rd party certificates.
+// localDB indicates whether the SSL certificates for the database need to be checked.
+// Those are not needed for external databases.
+func (f *InstallSSLFlags) CheckParameters(localDB bool) {
+	f.DB.CheckParameters(localDB)
+
+	if f.Server.UseProvided() && localDB && !f.DB.Pair.IsDefined() {
+		log.Fatal().Msg(L("Database certificate and key need to be provided"))
+	}
+}
+
+// CheckParameters checks that all the required flags are passed if using 3rd party certificates.
 //
 // localDB indicates whether the SSL certificates for the database need to be checked.
 // Those are not needed for external databases.
-func (f *InstallSSLFlags) CheckUpgradeParameters(localDB bool) {
-	if !f.UseProvidedDB() && (f.DB.Cert != "" || f.DB.Key != "" || f.DB.IsDefined()) {
-		log.Fatal().Msg(L("DB certificate, key and root CA need to be all provided"))
-	}
+func (f *UpgradeSSLFlags) CheckParameters(localDB bool) {
+	f.DB.CheckParameters(localDB)
 
-	if f.UseProvided() && localDB && !f.DB.IsDefined() {
+	if f.DB.UseProvided() && localDB && !f.DB.Pair.IsDefined() {
 		log.Fatal().Msg(L("Database certificate and key need to be provided"))
 	}
 }
@@ -210,11 +214,6 @@ func AddDBUpgradeImageFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-tag", "dbupgrade-image")
 }
 
-// AddMirrorFlag adds the flag for the mirror.
-func AddMirrorFlag(cmd *cobra.Command) {
-	cmd.Flags().String("mirror", "", L("Path to mirrored packages mounted on the host"))
-}
-
 // AddCocoFlag adds the confidential computing related parameters to cmd.
 func AddCocoFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
@@ -283,11 +282,54 @@ func AddPgsqlFlags(cmd *cobra.Command) {
 
 // AddServerFlags add flags common to install, upgrade and migrate.
 func AddServerFlags(cmd *cobra.Command) {
+	cmd.Flags().String("mirror", "", L("Path to mirrored packages mounted on the host"))
+	cmd.Flags().String("tz", "", L("Time zone to set on the server. Defaults to the host timezone"))
 	AddImageFlag(cmd)
+	AddDBUpgradeImageFlag(cmd)
 	AddSCCFlag(cmd)
 	AddPgsqlFlags(cmd)
 	AddDBFlags(cmd)
 	AddReportDBFlags(cmd)
+	AddCocoFlag(cmd)
+	AddHubXmlrpcFlags(cmd)
+	AddSalineFlag(cmd)
+}
+
+// AddInstallSSLFlag adds the ssl parameters used during installation.
+func AddInstallSSLFlag(cmd *cobra.Command) {
+	ssl.AddSSLGenerationFlags(cmd)
+	// For SSL 3rd party certificates
+	cmd.Flags().StringSlice("ssl-server-ca-intermediate", []string{}, L("Intermediate CA certificate path"))
+	cmd.Flags().String("ssl-server-ca-root", "", L("Root CA certificate path"))
+	cmd.Flags().String("ssl-server-cert", "", L("Server certificate path"))
+	cmd.Flags().String("ssl-server-key", "", L("Server key path"))
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "ssl3rd", Title: L("3rd Party SSL Certificate Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-server-ca-intermediate", "ssl3rd")
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-server-ca-root", "ssl3rd")
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-server-cert", "ssl3rd")
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-server-key", "ssl3rd")
+
+	// For generated CA and certificate
+	cmd.Flags().String("ssl-password", "", L("Password for the CA key to generate"))
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", "ssl")
+
+	// For SSL 3rd party certificates
+	cmd.Flags().StringSlice("ssl-db-ca-intermediate", []string{},
+		L("Intermediate CA certificate path for the database if different from the server one"))
+	cmd.Flags().String("ssl-db-ca-root", "",
+		L("Root CA certificate path for the database if different from the server one"))
+	cmd.Flags().String("ssl-db-cert", "", L("Database certificate path"))
+	cmd.Flags().String("ssl-db-key", "", L("Database key path"))
+
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-ca-intermediate", "ssl3rd")
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-ca-root", "ssl3rd")
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-cert", "ssl3rd")
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-key", "ssl3rd")
+}
+
+// AddUpgradeSSLFlag adds the ssl parameters used during upgrade.
+func AddUpgradeSSLFlag(cmd *cobra.Command) {
 	ssl.AddSSLGenerationFlags(cmd)
 
 	// For generated CA and certificate
@@ -307,4 +349,10 @@ func AddServerFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-ca-root", "ssl3rd")
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-cert", "ssl3rd")
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-key", "ssl3rd")
+}
+
+// AddUpgradeFlags add upgrade flags to a command.
+func AddUpgradeFlags(cmd *cobra.Command) {
+	AddServerFlags(cmd)
+	AddUpgradeSSLFlag(cmd)
 }

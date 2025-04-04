@@ -16,8 +16,10 @@ import (
 )
 
 type podmanMigrateFlags struct {
-	adm_utils.ServerFlags `mapstructure:",squash"`
-	Podman                podman_utils.PodmanFlags
+	adm_utils.ServerFlags    `mapstructure:",squash"`
+	adm_utils.MigrationFlags `mapstructure:",squash"`
+	adm_utils.UpgradeFlags   `mapstructure:",squash"`
+	Podman                   podman_utils.PodmanFlags
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanMigrateFlags]) *cobra.Command {
@@ -47,8 +49,8 @@ NOTE: migrating to a remote podman is not supported yet!
 		},
 	}
 
-	adm_utils.AddMirrorFlag(migrateCmd)
 	shared.AddMigrateFlags(migrateCmd)
+	adm_utils.AddUpgradeFlags(migrateCmd)
 	podman_utils.AddPodmanArgFlag(migrateCmd)
 
 	return migrateCmd

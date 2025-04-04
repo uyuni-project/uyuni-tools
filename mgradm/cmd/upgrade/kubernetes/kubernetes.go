@@ -9,7 +9,6 @@ package kubernetes
 import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/kubernetes"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -35,8 +34,9 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[kubernetes.Kub
 		},
 	}
 
-	shared.AddUpgradeFlags(upgradeCmd)
+	cmd_utils.AddUpgradeFlags(upgradeCmd)
 	cmd_utils.AddHelmInstallFlag(upgradeCmd)
+	cmd_utils.AddVolumesFlags(upgradeCmd)
 
 	return upgradeCmd
 }

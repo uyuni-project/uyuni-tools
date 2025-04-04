@@ -39,7 +39,7 @@ func installForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Installation.SCC)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.SCC)
 	if err != nil {
 		return utils.Error(err, L("failed to login to registry.suse.com"))
 	}
@@ -51,7 +51,8 @@ func installForPodman(
 		)
 	}
 
-	flags.Installation.CheckParameters(cmd, "podman")
+	flags.InstallationFlags.CheckParameters(cmd, "podman")
+
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
 	}
@@ -72,30 +73,30 @@ func installForPodman(
 	}
 
 	if err := podman.PrepareSSLCertificates(
-		preparedImage, &flags.Installation.SSL, flags.Installation.TZ, fqdn); err != nil {
+		preparedImage, &flags.SSL.Server, &flags.SSL.DB, &flags.SSL.SSLCertGenerationFlags, flags.TZ, fqdn); err != nil {
 		return err
 	}
 
 	// Create all the database credentials secrets
 	if err := shared_podman.CreateCredentialsSecrets(
-		shared_podman.DBUserSecret, flags.Installation.DB.User,
-		shared_podman.DBPassSecret, flags.Installation.DB.Password,
+		shared_podman.DBUserSecret, flags.ServerFlags.DB.User,
+		shared_podman.DBPassSecret, flags.ServerFlags.DB.Password,
 	); err != nil {
 		return err
 	}
 
 	if err := shared_podman.CreateCredentialsSecrets(
-		shared_podman.ReportDBUserSecret, flags.Installation.ReportDB.User,
-		shared_podman.ReportDBPassSecret, flags.Installation.ReportDB.Password,
+		shared_podman.ReportDBUserSecret, flags.ReportDB.User,
+		shared_podman.ReportDBPassSecret, flags.ReportDB.Password,
 	); err != nil {
 		return err
 	}
 
-	if flags.ServerFlags.Installation.DB.IsLocal() {
+	if flags.ServerFlags.DB.IsLocal() {
 		// The admin password is not needed for external databases
 		if err := shared_podman.CreateCredentialsSecrets(
-			shared_podman.DBAdminUserSecret, flags.Installation.DB.Admin.User,
-			shared_podman.DBAdminPassSecret, flags.Installation.DB.Admin.Password,
+			shared_podman.DBAdminUserSecret, flags.ServerFlags.DB.Admin.User,
+			shared_podman.DBAdminPassSecret, flags.ServerFlags.DB.Admin.Password,
 		); err != nil {
 			return err
 		}
@@ -107,19 +108,24 @@ func installForPodman(
 	} else {
 		log.Info().Msgf(
 			L("Skipped database container setup to use external database %s"),
-			flags.ServerFlags.Installation.DB.Host,
+			flags.ServerFlags.DB.Host,
 		)
 	}
 
 	log.Info().Msg(L("Run setup command in the container"))
 
-	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn); err != nil {
+	if err := runSetup(
+		preparedImage,
+		&flags.InstallationFlags,
+		fqdn,
+		flags.ServerFlags.Mirror,
+		flags.TZ); err != nil {
 		return err
 	}
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
-	if err := podman.WaitForSystemStart(systemd, cnx, preparedImage, flags.Installation.TZ,
-		flags.Installation.Debug.Java, flags.Mirror, flags.Podman.Args); err != nil {
+	if err := podman.WaitForSystemStart(systemd, cnx, preparedImage, flags.TZ,
+		flags.Debug.Java, flags.Mirror, flags.Podman.Args); err != nil {
 		return utils.Error(err, L("cannot wait for system start"))
 	}
 	if err := cnx.CopyCaCertificate(fqdn); err != nil {
@@ -137,7 +143,7 @@ func installForPodman(
 	if flags.Coco.Replicas > 0 {
 		if err := coco.SetupCocoContainer(
 			systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
-			flags.Installation.DB,
+			flags.ServerFlags.DB,
 		); err != nil {
 			return err
 		}
@@ -154,7 +160,7 @@ func installForPodman(
 	if flags.Saline.Replicas > 0 {
 		if err := saline.SetupSalineContainer(
 			systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image,
-			flags.Installation.TZ, flags.Podman.Args,
+			flags.TZ, flags.Podman.Args,
 		); err != nil {
 			return err
 		}
@@ -167,8 +173,8 @@ func installForPodman(
 }
 
 // runSetup execute the setup.
-func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
-	env := adm_utils.GetSetupEnv(flags.Mirror, &flags.Installation, fqdn, false)
+func runSetup(image string, flags *adm_utils.InstallationFlags, mirror string, fqdn string, tz string) error {
+	env := adm_utils.GetSetupEnv(mirror, flags, fqdn, false)
 	envNames := []string{}
 	envValues := []string{}
 	for key, value := range env {
@@ -183,7 +189,7 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
 		"--shm-size-systemd=0",
 		"--name", "uyuni-setup",
 		"--network", shared_podman.UyuniNetwork,
-		"-e", "TZ=" + flags.Installation.TZ,
+		"-e", "TZ=" + tz,
 		"--secret", shared_podman.DBUserSecret + ",type=env,target=MANAGER_USER",
 		"--secret", shared_podman.DBPassSecret + ",type=env,target=MANAGER_PASS",
 		"--secret", shared_podman.ReportDBUserSecret + ",type=env,target=REPORT_DB_USER",
@@ -202,7 +208,7 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
 	command = append(command, envNames...)
 	command = append(command, image)
 
-	script, err := adm_utils.GenerateSetupScript(&flags.Installation, false)
+	script, err := adm_utils.GenerateSetupScript(flags, false)
 	if err != nil {
 		return err
 	}
@@ -212,7 +218,7 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
 		return utils.Error(err, L("server setup failed"))
 	}
 
-	log.Info().Msgf(L("Server set up, login on https://%[1]s with %[2]s user"), fqdn, flags.Installation.Admin.Login)
+	log.Info().Msgf(L("Server set up, login on https://%[1]s with %[2]s user"), fqdn, flags.Admin.Login)
 	return nil
 }
 

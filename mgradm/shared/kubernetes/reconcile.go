@@ -205,8 +205,10 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 
 	// Deploy the SSL CA and server certificates
 	var caIssuer string
-	if flags.Installation.SSL.UseProvided() {
-		if err := DeployExistingCertificate(flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SSL); err != nil {
+	if flags.Installation.SSL.Server.UseProvided() {
+		if err := DeployExistingCertificate(flags.Kubernetes.Uyuni.Namespace,
+			&flags.Installation.SSL.Server,
+			&flags.Installation.SSL.DB); err != nil {
 			return err
 		}
 	} else if !HasIssuer(namespace, kubernetes.CAIssuerName) {
@@ -218,16 +220,16 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 			return utils.Error(err, L("cannot install cert manager"))
 		}
 
-		if flags.Installation.SSL.UseMigratedCa() {
+		if flags.Installation.SSL.Server.UseMigratedCa() {
 			// Convert CA to RSA to use in a Kubernetes TLS secret.
 			// In an operator we would have to fail now if there is no SSL password as we cannot prompt it.
-			rootCA, err := os.ReadFile(flags.Installation.SSL.Ca.Root)
+			rootCA, err := os.ReadFile(flags.Installation.SSL.Server.CA.Root)
 			if err != nil {
 				return utils.Error(err, L("failed to read Root CA file"))
 			}
 			ca := types.SSLPair{
 				Key: base64.StdEncoding.EncodeToString(
-					ssl.GetRsaKey(flags.Installation.SSL.Ca.Key, flags.Installation.SSL.Password),
+					ssl.GetRsaKey(flags.Installation.SSL.Server.CA.Key, flags.Installation.SSL.Password),
 				),
 				Cert: base64.StdEncoding.EncodeToString(ssl.StripTextFromCertificate(string(rootCA))),
 			}
@@ -237,7 +239,10 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 				return err
 			}
 		} else {
-			if err := DeployGeneratedCA(flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SSL, fqdn); err != nil {
+			if err := DeployGeneratedCA(
+				flags.Kubernetes.Uyuni.Namespace,
+				&flags.Installation.SSL.SSLCertGenerationFlags,
+				fqdn); err != nil {
 				return err
 			}
 		}
@@ -307,7 +312,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 
 			// Create the split DB deployment
 			if err := CreateDBDeployment(
-				namespace, dbImage, flags.Image.PullPolicy, pullSecret, flags.Installation.TZ,
+				namespace, dbImage, flags.Image.PullPolicy, pullSecret, flags.TZ,
 			); err != nil {
 				return err
 			}
@@ -338,7 +343,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 	// The script will be skipped if the server has already been setup.
 	jobName, err := StartSetupJob(
 		namespace, serverImage, kubernetes.GetPullPolicy(flags.Image.PullPolicy), pullSecret,
-		flags.Volumes.Mirror, &flags.Installation, fqdn, adminSecret, DBSecret, ReportdbSecret, SCCSecret,
+		flags.Volumes.Mirror, &flags.Installation, fqdn, adminSecret, DBSecret, ReportdbSecret, SCCSecret, flags.TZ,
 	)
 	if err != nil {
 		return err
@@ -357,7 +362,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 
 	// Start the server
 	if err := CreateServerDeployment(
-		namespace, serverImage, flags.Image.PullPolicy, flags.Installation.TZ, flags.Installation.Debug.Java,
+		namespace, serverImage, flags.Image.PullPolicy, flags.TZ, flags.Installation.Debug.Java,
 		flags.Volumes.Mirror, pullSecret,
 	); err != nil {
 		return err

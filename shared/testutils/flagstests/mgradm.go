@@ -14,6 +14,7 @@ import (
 
 // ServerKubernetesFlagsTestArgs are the expected values for AssertServerKubernetesFlags.
 var ServerKubernetesFlagsTestArgs = []string{
+	"--tz", "CEST",
 	"--kubernetes-uyuni-namespace", "uyunins",
 	"--kubernetes-certmanager-namespace", "certmanagerns",
 	"--kubernetes-certmanager-chart", "oci://srv/certmanager",
@@ -97,9 +98,9 @@ var InstallDBSSLFlagsTestArgs = []string{
 
 // InstallSSLFlagsTestArgs is the expected values for InstallSSLFlagsTestArg.
 var InstallSSLFlagsTestArgs = append([]string{
-	"--ssl-ca-intermediate", "path/inter1.crt",
-	"--ssl-ca-intermediate", "path/inter2.crt",
-	"--ssl-ca-root", "path/root.crt",
+	"--ssl-server-ca-intermediate", "path/inter1.crt",
+	"--ssl-server-ca-intermediate", "path/inter2.crt",
+	"--ssl-server-ca-root", "path/root.crt",
 	"--ssl-server-cert", "path/srv.crt",
 	"--ssl-server-key", "path/srv.key",
 }, InstallDBSSLFlagsTestArgs...)
@@ -120,8 +121,8 @@ func AssertImageFlag(t *testing.T, flags *types.ImageFlags) {
 	testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.PullPolicy)
 }
 
-// DBUpdateImageFlagTestArgs is the expected values for AssertDBUpgradeImageFlag.
-var DBUpdateImageFlagTestArgs = []string{
+// DBUpgradeImageFlagTestArgs is the expected values for AssertDBUpgradeImageFlag.
+var DBUpgradeImageFlagTestArgs = []string{
 	"--dbupgrade-image", "dbupgradeimg",
 	"--dbupgrade-tag", "dbupgradetag",
 }
@@ -140,6 +141,11 @@ var MirrorFlagTestArgs = []string{
 // AssertMirrorFlag asserts that all mirror flags are parsed correctly.
 func AssertMirrorFlag(t *testing.T, value string) {
 	testutils.AssertEquals(t, "Error parsing --mirror", "/path/to/mirror", value)
+}
+
+// AssertTZFlag asserts that TZ flags are parsed correctly.
+func AssertTZFlag(t *testing.T, value string) {
+	testutils.AssertEquals(t, "Error parsing --tz", "CEST", value)
 }
 
 // CocoFlagsTestArgs is the expected values for AssertCocoFlag.
@@ -226,10 +232,10 @@ func AssertReportDBFlag(t *testing.T, flags *utils.DBFlags) {
 func AssertInstallSSLFlag(t *testing.T, flags *utils.InstallSSLFlags) {
 	testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.Password)
 	testutils.AssertEquals(t, "Error parsing --ssl-ca-intermediate",
-		[]string{"path/inter1.crt", "path/inter2.crt"}, flags.Ca.Intermediate)
-	testutils.AssertEquals(t, "Error parsing --ssl-ca-root", "path/root.crt", flags.Ca.Root)
-	testutils.AssertEquals(t, "Error parsing --ssl-server-cert", "path/srv.crt", flags.Server.Cert)
-	testutils.AssertEquals(t, "Error parsing --ssl-server-key", "path/srv.key", flags.Server.Key)
+		[]string{"path/inter1.crt", "path/inter2.crt"}, flags.Server.CA.Intermediate)
+	testutils.AssertEquals(t, "Error parsing --ssl-ca-root", "path/root.crt", flags.Server.CA.Root)
+	testutils.AssertEquals(t, "Error parsing --ssl-server-cert", "path/srv.crt", flags.Server.Pair.Cert)
+	testutils.AssertEquals(t, "Error parsing --ssl-server-key", "path/srv.key", flags.Server.Pair.Key)
 	AssertInstallDBSSLFlag(t, &flags.DB)
 	AssertSSLGenerationFlag(t, &flags.SSLCertGenerationFlags)
 }
@@ -239,6 +245,6 @@ func AssertInstallDBSSLFlag(t *testing.T, flags *utils.SSLFlags) {
 	testutils.AssertEquals(t, "Error parsing --ssl-db-ca-intermediate",
 		[]string{"path/dbinter1.crt", "path/dbinter2.crt"}, flags.CA.Intermediate)
 	testutils.AssertEquals(t, "Error parsing --ssl-db-ca-root", "path/dbroot.crt", flags.CA.Root)
-	testutils.AssertEquals(t, "Error parsing --ssl-db-cert", "path/dbsrv.crt", flags.Cert)
-	testutils.AssertEquals(t, "Error parsing --ssl-db-key", "path/dbsrv.key", flags.Key)
+	testutils.AssertEquals(t, "Error parsing --ssl-db-cert", "path/dbsrv.crt", flags.Pair.Cert)
+	testutils.AssertEquals(t, "Error parsing --ssl-db-key", "path/dbsrv.key", flags.Pair.Key)
 }

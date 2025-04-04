@@ -10,15 +10,19 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 )
 
-// ServerFlagsTestArgs is the slide of server-related command parameters to use with AssertServerFlags.
-var ServerFlagsTestArgs = func() []string {
-	args := []string{}
+// UpgradeFlagsTestArgs is the slice of command parameters to use with AssertUpgradeFlags.
+var UpgradeFlagsTestArgs = func() []string {
+	args := []string{
+		"--mirror", "/path/to/mirror",
+		"--tz", "CEST",
+	}
+	args = append(args, MirrorFlagTestArgs...)
 	args = append(args, SCCFlagTestArgs...)
 	args = append(args, PgsqlFlagsTestArgs...)
 	args = append(args, DBFlagsTestArgs...)
 	args = append(args, ReportDBFlagsTestArgs...)
-	args = append(args, InstallDBSSLFlagsTestArgs...)
 	args = append(args, SSLGenerationFlagsTestArgs...)
+	args = append(args, InstallDBSSLFlagsTestArgs...)
 	args = append(args, SalineFlagsTestArgs...)
 	args = append(args, ImageFlagsTestArgs...)
 	args = append(args, DBUpgradeImageFlagTestArgs...)
@@ -27,15 +31,9 @@ var ServerFlagsTestArgs = func() []string {
 	return args
 }
 
-// AssertServerFlags checks that all the server-related common flags are parsed correctly.
-func AssertServerFlags(t *testing.T, flags *utils.ServerFlags) {
-	AssertMirrorFlag(t, flags.Mirror)
-	AssertTZFlag(t, flags.TZ)
-	AssertImageFlag(t, &flags.Image)
-	AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
-	AssertCocoFlag(t, &flags.Coco)
-	AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
-	AssertSalineFlag(t, &flags.Saline)
-	AssertPgsqlFlag(t, &flags.Pgsql)
+// AssertInstallFlags checks that all the install flags are parsed correctly.
+func AssertUpgradeFlags(t *testing.T, flags *utils.UpgradeFlags) {
+	AssertSCCFlag(t, &flags.SCC)
 	AssertDBFlag(t, &flags.DB)
+	AssertReportDBFlag(t, &flags.ReportDB)
 }

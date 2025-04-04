@@ -16,8 +16,9 @@ import (
 )
 
 type podmanUpgradeFlags struct {
-	cmd_utils.ServerFlags `mapstructure:",squash"`
-	Podman                podman.PodmanFlags
+	cmd_utils.ServerFlags  `mapstructure:",squash"`
+	cmd_utils.UpgradeFlags `mapstructure:",squash"`
+	Podman                 podman.PodmanFlags
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeFlags]) *cobra.Command {
@@ -31,11 +32,12 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeF
 				flags.ServerFlags.Coco.IsChanged = v.IsSet("coco.replicas")
 				flags.ServerFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
 				flags.ServerFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
+				flags.ServerFlags.Pgsql.IsChanged = v.IsSet("pgsql.replicas")
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
 	}
-	shared.AddUpgradeFlags(cmd)
+	cmd_utils.AddUpgradeFlags(cmd)
 	podman.AddPodmanArgFlag(cmd)
 	return cmd
 }
@@ -68,7 +70,7 @@ func listTags(flags *podmanUpgradeFlags) error {
 		return err
 	}
 
-	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.Installation.SCC)
+	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}

@@ -49,8 +49,8 @@ This is not needed if the source server does not have a generated SSL CA certifi
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
 	}
-	cmd_utils.AddMirrorFlag(cmd)
 	shared.AddMigrateFlags(cmd)
+	cmd_utils.AddUpgradeFlags(cmd)
 	cmd_utils.AddHelmInstallFlag(cmd)
 	cmd_utils.AddVolumesFlags(cmd)
 

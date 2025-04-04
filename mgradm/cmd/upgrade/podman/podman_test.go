@@ -14,15 +14,16 @@ import (
 )
 
 func TestParamsParsing(t *testing.T) {
-	args := flagstests.ServerFlagsTestArgs()
+	args := flagstests.UpgradeFlagsTestArgs()
 	args = append(args, flagstests.PodmanFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *podmanUpgradeFlags,
 		_ *cobra.Command, _ []string,
 	) error {
-		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
 		flagstests.AssertServerFlags(t, &flags.ServerFlags)
+		flagstests.AssertUpgradeFlags(t, &flags.UpgradeFlags)
+		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
 		return nil
 	}
 
@@ -46,7 +47,7 @@ func TestListParamsParsing(t *testing.T) {
 	// Test function asserting that the args are properly parsed
 	tester := func(flags *podmanUpgradeFlags) error {
 		flagstests.AssertImageFlag(t, &flags.Image)
-		flagstests.AssertSCCFlag(t, &flags.Installation.SCC)
+		flagstests.AssertSCCFlag(t, &flags.SCC)
 		return nil
 	}
 

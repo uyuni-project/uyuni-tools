@@ -17,38 +17,18 @@ import (
 )
 
 func TestParamsParsing(t *testing.T) {
-	args := []string{}
+	args := flagstests.UpgradeFlagsTestArgs()
 
-	args = append(args, "--ssl-password", "sslsecret")
-	args = append(args, flagstests.ImageFlagsTestArgs...)
-	args = append(args, flagstests.DBUpdateImageFlagTestArgs...)
-	args = append(args, flagstests.CocoFlagsTestArgs...)
-	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
-	args = append(args, flagstests.SalineFlagsTestArgs...)
-	args = append(args, flagstests.PgsqlFlagsTestArgs...)
-	args = append(args, flagstests.SCCFlagTestArgs...)
 	args = append(args, flagstests.ServerKubernetesFlagsTestArgs...)
-	args = append(args, flagstests.DBFlagsTestArgs...)
-	args = append(args, flagstests.ReportDBFlagsTestArgs...)
-	args = append(args, flagstests.InstallDBSSLFlagsTestArgs...)
-	args = append(args, flagstests.SSLGenerationFlagsTestArgs...)
+	args = append(args, flagstests.VolumesFlagsTestExpected...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *kubernetes.KubernetesServerFlags,
 		_ *cobra.Command, _ []string,
 	) error {
-		flagstests.AssertImageFlag(t, &flags.Image)
-		flagstests.AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
-		flagstests.AssertCocoFlag(t, &flags.Coco)
-		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
-		flagstests.AssertSalineFlag(t, &flags.Saline)
-		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
-		flagstests.AssertSCCFlag(t, &flags.ServerFlags.Installation.SCC)
-		flagstests.AssertServerKubernetesFlags(t, &flags.Kubernetes)
-		flagstests.AssertDBFlag(t, &flags.Installation.DB)
-		flagstests.AssertReportDBFlag(t, &flags.Installation.ReportDB)
-		flagstests.AssertInstallDBSSLFlag(t, &flags.Installation.SSL.DB)
-		flagstests.AssertSSLGenerationFlag(t, &flags.Installation.SSL.SSLCertGenerationFlags)
+		flagstests.AssertMirrorFlag(t, flags.Mirror)
+		flagstests.AssertUpgradeFlags(t, &flags.Upgrade)
+		flagstests.AssertVolumesFlags(t, &flags.Volumes)
 		return nil
 	}
 

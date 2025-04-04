@@ -17,18 +17,16 @@ import (
 
 func TestParamsParsing(t *testing.T) {
 	args := flagstests.InstallFlagsTestArgs()
-	args = append(args, flagstests.MirrorFlagTestArgs...)
 	args = append(args, flagstests.PodmanFlagsTestArgs...)
-	args = append(args, "srv.fq.dn")
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *podmanInstallFlags,
 		_ *cobra.Command, args []string,
 	) error {
-		flagstests.AssertMirrorFlag(t, flags.Mirror)
-		flagstests.AssertInstallFlags(t, &flags.ServerFlags)
-		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
 		testutils.AssertEquals(t, "Wrong FQDN", "srv.fq.dn", args[0])
+		flagstests.AssertServerFlags(t, &flags.ServerFlags)
+		flagstests.AssertInstallFlags(t, &flags.InstallationFlags)
+		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
 		return nil
 	}
 
