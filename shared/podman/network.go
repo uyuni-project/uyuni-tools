@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -120,6 +120,15 @@ func DeleteNetwork(dryRun bool) {
 // IsNetworkPresent returns whether a network is already present.
 func IsNetworkPresent(network string) bool {
 	cmd := exec.Command("podman", "network", "exists", network)
+	if err := cmd.Run(); err != nil {
+		return false
+	}
+	return cmd.ProcessState.ExitCode() == 0
+}
+
+// IsSecretPresent returns true if podman secret is already present.
+func IsSecretPresent(secret string) bool {
+	cmd := exec.Command("podman", "secret", "exists", secret)
 	if err := cmd.Run(); err != nil {
 		return false
 	}
