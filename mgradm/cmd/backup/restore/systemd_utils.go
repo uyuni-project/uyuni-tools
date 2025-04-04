@@ -7,12 +7,16 @@ package restore
 import (
 	"archive/tar"
 	"errors"
+	"fmt"
 	"io"
 	"os"
 
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func restoreSystemdConfiguration(backupSource string, flags *shared.Flagpole) error {
@@ -86,4 +90,23 @@ func restoreFileAttributes(filename string, th *tar.Header) error {
 	e = errors.Join(e, os.Chown(filename, th.Uid, th.Gid))
 	e = errors.Join(e, os.Chtimes(filename, th.AccessTime, th.ModTime))
 	return e
+}
+
+func generateDefaltSystemdServices(flags *shared.Flagpole) error {
+	if flags.DryRun {
+		log.Info().Msg(L("Would generate default systemd services"))
+		return nil
+	}
+	// Generate minimum set - uyuni-db and uyuni-server services - like we do on default install
+	serverImage := fmt.Sprintf("%s%s:%s", utils.ServerImage.Registry, utils.ServerImage.Name, utils.ServerImage.Tag)
+	dbImage := fmt.Sprintf("%s%s:%s",
+		utils.PostgreSQLImage.Registry,
+		utils.PostgreSQLImage.Name,
+		utils.PostgreSQLImage.Tag)
+
+	return errors.Join(
+		podman.GenerateSystemdService(systemd, "", serverImage, false, "", []string{}),
+		pgsql.GeneratePgsqlSystemdService(systemd, dbImage),
+		systemd.ReloadDaemon(false),
+	)
 }
