@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"path"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -21,8 +22,9 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// runCmdOutput is a function pointer to use for easies unit testing.
+// runCmd* are a function pointers to use for easies unit testing.
 var runCmdOutput = utils.RunCmdOutput
+var runCmd = utils.RunCmd
 
 const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
 
@@ -74,7 +76,7 @@ func ReadFromContainer(name string, image string, volumes []types.VolumeMount,
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
 	for _, volume := range volumes {
-		if isVolumePresent(volume.Name) {
+		if IsVolumePresent(volume.Name) {
 			podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath)
 		}
 	}
@@ -151,36 +153,23 @@ func GetServiceImage(service string) string {
 	return matches[1]
 }
 
-// DeleteImage deletes a podman image based on its name.
-// If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
-func DeleteImage(name string, dryRun bool) error {
-	exists := imageExists(name)
-	if exists {
-		if dryRun {
-			log.Info().Msgf(L("Would run %s"), "podman image rm "+name)
-		} else {
-			log.Info().Msgf(L("Run %s"), "podman image rm "+name)
-			err := utils.RunCmd("podman", "image", "rm", name)
-			if err != nil {
-				log.Error().Err(err).Msgf(L("Failed to remove image %s"), name)
-			}
-		}
+// GetImageVirtualSize returns the size of the image with its layers.
+func GetImageVirtualSize(name string) (size int64, err error) {
+	out, err := utils.NewRunner("podman", "inspect", "--format", "{{.VirtualSize}}", name).
+		Log(zerolog.DebugLevel).
+		Exec()
+	if err != nil {
+		return
 	}
-	return nil
-}
-
-func imageExists(volume string) bool {
-	cmd := exec.Command("podman", "image", "exists", volume)
-	if err := cmd.Run(); err != nil {
-		return false
-	}
-	return cmd.ProcessState.ExitCode() == 0
+	sizeStr := strings.TrimSpace(string(out))
+	size, err = strconv.ParseInt(sizeStr, 10, 64)
+	return
 }
 
 // DeleteVolume deletes a podman volume based on its name.
 // If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
 func DeleteVolume(name string, dryRun bool) error {
-	exists := isVolumePresent(name)
+	exists := IsVolumePresent(name)
 	if exists {
 		if dryRun {
 			log.Info().Msgf(L("Would run %s"), "podman volume rm "+name)
@@ -191,7 +180,7 @@ func DeleteVolume(name string, dryRun bool) error {
 				// Check if the volume is not mounted - for example var-pgsql - as second storage device
 				// We need to compute volume path ourselves because above `podman volume rm` call may have
 				// already removed volume from podman internal structures
-				basePath, errBasePath := getPodmanVolumeBasePath()
+				basePath, errBasePath := GetPodmanVolumeBasePath()
 				if errBasePath != nil {
 					return errBasePath
 				}
@@ -207,7 +196,54 @@ func DeleteVolume(name string, dryRun bool) error {
 	return nil
 }
 
-func isVolumePresent(volume string) bool {
+// ExportVolume exports a podman volume based on its name to the specified targed directory.
+// outputDir option expects already existing directory.
+// If dryRun is set to true, only messages will be logged to explain what would happen.
+func ExportVolume(name string, outputDir string, dryRun bool) error {
+	exists := IsVolumePresent(name)
+	if exists {
+		outputFile := path.Join(outputDir, name+".tar")
+		exportCommand := []string{"podman", "volume", "export", "-o", outputFile, name}
+		if dryRun {
+			log.Info().Msgf(L("Would run %s"), strings.Join(exportCommand, " "))
+			return nil
+		}
+		log.Info().Msgf(L("Run %s"), strings.Join(exportCommand, " "))
+		if err := runCmd(exportCommand[0], exportCommand[1:]...); err != nil {
+			return utils.Errorf(err, L("Failed to export volume %s"), name)
+		}
+		if err := utils.CreateChecksum(outputFile); err != nil {
+			return utils.Errorf(err, L("Failed to write checksum of volume %[1]s to the %[2]s"), name, outputFile+".sha256sum")
+		}
+	}
+	return nil
+}
+
+// ImportVolume imports a podman volume from provided volumePath.
+// If dryRun is set to true, only messages will be logged to exmplain what would happen.
+func ImportVolume(name string, volumePath string, skipVerify bool, dryRun bool) error {
+	createCommand := []string{"podman", "volume", "create", "--ignore", name}
+	importCommand := []string{"podman", "volume", "import", name, volumePath}
+	if dryRun {
+		log.Info().Msgf(L("Would run %s"), strings.Join(importCommand, " "))
+		return nil
+	}
+	if !skipVerify {
+		if err := utils.ValidateChecksum(volumePath); err != nil {
+			return utils.Errorf(err, L("Checksum does not match for volume %s"), volumePath)
+		}
+	}
+	if err := runCmd(createCommand[0], createCommand[1:]...); err != nil {
+		return utils.Errorf(err, L("Failed to precreate empty volume %s"), name)
+	}
+	log.Info().Msgf(L("Run %s"), strings.Join(importCommand, " "))
+	if err := runCmd(importCommand[0], importCommand[1:]...); err != nil {
+		return utils.Errorf(err, L("Failed to import volume %s"), name)
+	}
+	return nil
+}
+
+func IsVolumePresent(volume string) bool {
 	var exitError *exec.ExitError
 	cmd := exec.Command("podman", "volume", "exists", volume)
 	if err := cmd.Run(); err != nil && errors.As(err, &exitError) {
@@ -238,10 +274,24 @@ func isVolumePathEmpty(volume string) bool {
 	return errors.Is(err, io.EOF)
 }
 
-func getPodmanVolumeBasePath() (string, error) {
+// GetPodmanVolumeBasePath returns the path to all volumes on the host system.
+func GetPodmanVolumeBasePath() (string, error) {
 	cmd := exec.Command("podman", "system", "info", "--format={{ .Store.VolumePath }}")
 	out, err := cmd.Output()
 	return strings.TrimSpace(string(out)), err
+}
+
+// GetVolumeMountPoint returns the path to the volume mount point on the host system.
+// This shouldn't be confused with GetPodmanVolumeBasePath() that returns the path to the folder containing all volumes.
+func GetVolumeMountPoint(name string) (path string, err error) {
+	out, err := utils.NewRunner("podman", "volume", "inspect", "--format", "{{.Mountpoint}}", name).
+		Log(zerolog.DebugLevel).
+		Exec()
+	if err != nil {
+		return
+	}
+	path = strings.TrimSpace(string(out))
+	return
 }
 
 // Inspect check values on a given image and deploy.
