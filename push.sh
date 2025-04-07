@@ -46,4 +46,4 @@ else
 fi
 
 # Add the version_details value for use in the version tag
-sed "/^%global productname.*$/a%global version_details ${VERSION} $COMMIT_ID" -i ${SRPM_PKG_DIR}/uyuni-tools.spec
+sed "/^%global provider_prefix.*$/a%global version_details ${VERSION} $COMMIT_ID" -i ${SRPM_PKG_DIR}/uyuni-tools.spec
