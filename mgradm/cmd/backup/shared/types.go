@@ -68,7 +68,7 @@ type NetworkSubnet struct {
 	Gateway string
 }
 
-type PodanNetworkConfigData struct {
+type PodmanNetworkConfigData struct {
 	Subnets           []NetworkSubnet `mapstructure:"subnets"`
 	NetworkInsterface string          `mapstructure:"network_interface"`
 	NetworkDNSServers []string        `mapstructure:"network_dns_servers"`
