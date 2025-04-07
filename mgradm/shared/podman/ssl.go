@@ -110,7 +110,7 @@ func prepareServerSSLcertificates(
 
 	// Check if this is an upgrade scenario and there is existing CA
 	if reused, err := reuseExistingCertificates(image, tempDir, false); reused && err == nil {
-		// We succeffuly loaded existing certificates
+		// We successfully loaded existing certificates
 		return nil
 	} else if reused && err != nil {
 		// We found certificates, but there was trouble loading it
