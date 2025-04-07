@@ -6,6 +6,7 @@ package podman
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"path"
@@ -97,6 +98,9 @@ func createSecret(name string, value string) error {
 func createSecretFromFile(name string, secretFile string) error {
 	if HasSecret(name) {
 		return nil
+	}
+	if !utils.FileExists(secretFile) {
+		return fmt.Errorf(L("File %s doesn't exists"), secretFile)
 	}
 
 	if err := utils.RunCmd("podman", "secret", "create", name, secretFile); err != nil {
