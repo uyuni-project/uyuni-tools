@@ -17,6 +17,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func restorePodmanConfiguration(podmanBackupFile string, flags *shared.Flagpole) error {
@@ -40,9 +41,9 @@ func restorePodmanConfiguration(podmanBackupFile string, flags *shared.Flagpole)
 		}
 		switch header.Name {
 		case shared.NetworkOutputFile:
-			hasError = errors.Join(hasError, restorePodmanNetwork(header, tr, flags))
+			hasError = utils.JoinErrors(hasError, restorePodmanNetwork(header, tr, flags))
 		case shared.SecretBackupFile:
-			hasError = errors.Join(hasError, restorePodmanSecrets(header, tr, flags))
+			hasError = utils.JoinErrors(hasError, restorePodmanSecrets(header, tr, flags))
 		default:
 			log.Warn().Msgf(L("Ignoring unexpected file in the podman backup %s"), header.Name)
 		}
@@ -112,13 +113,13 @@ func restorePodmanNetwork(header *tar.Header, tr *tar.Reader, flags *shared.Flag
 	data := make([]byte, header.Size)
 	if _, err := tr.Read(data); err != io.EOF {
 		log.Warn().Msg(L("Failed to read backed up network configuration, trying default"))
-		return errors.Join(err, defaultPodmanNetwork(flags))
+		return utils.JoinErrors(err, defaultPodmanNetwork(flags))
 	}
 	log.Trace().Msgf("Loaded network data: %s", data)
 	networkDetails, err := parseNetworkData(data)
 	if err != nil {
 		log.Warn().Err(err).Msg(L("Failed to decode backed up network configuration, trying default"))
-		return errors.Join(err, defaultPodmanNetwork(flags))
+		return utils.JoinErrors(err, defaultPodmanNetwork(flags))
 	}
 
 	if podman.IsNetworkPresent(podman.UyuniNetwork) {
@@ -200,7 +201,7 @@ func restorePodmanSecrets(header *tar.Header, tr *tar.Reader, flags *shared.Flag
 		command := append(baseCommand, v.Name, "-")
 		if err := runCmdInput(command[0], v.Secret, command[1:]...); err != nil {
 			log.Error().Msg(L("Unable to create podman secret"))
-			hasError = errors.Join(hasError, err)
+			hasError = utils.JoinErrors(hasError, err)
 		}
 	}
 	return hasError

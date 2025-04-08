@@ -5,13 +5,12 @@
 package podman
 
 import (
-	"errors"
-
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func StartServices() error {
-	return errors.Join(
+	return utils.JoinErrors(
 		systemd.StartService(podman.DBService),
 		systemd.StartInstantiated(podman.ServerAttestationService),
 		systemd.StartInstantiated(podman.HubXmlrpcService),
@@ -20,7 +19,7 @@ func StartServices() error {
 }
 
 func StopServices() error {
-	return errors.Join(
+	return utils.JoinErrors(
 		systemd.StopInstantiated(podman.ServerAttestationService),
 		systemd.StopInstantiated(podman.HubXmlrpcService),
 		systemd.StopService(podman.ServerService),
