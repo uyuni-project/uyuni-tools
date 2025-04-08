@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"slices"
 	"strings"
 
 	"github.com/rs/zerolog/log"
@@ -71,11 +70,11 @@ func Restore(
 
 	// Restore podman config or generate defaults
 	if err := restorePodmanConfig(inputDirectory, flags); err != nil {
-		hasError = errors.Join(hasError, err)
+		hasError = utils.JoinErrors(hasError, err)
 	}
 	// Restore systemd config or generate defaults
 	if err := restoreSystemdConfig(inputDirectory, flags); err != nil {
-		hasError = errors.Join(hasError, err)
+		hasError = utils.JoinErrors(hasError, err)
 	}
 
 	if flags.Restart {
@@ -149,10 +148,10 @@ func gatherVolumesToRestore(source string, flags *shared.Flagpole) ([]string, er
 			// This is checksum file, ignore
 			continue
 		}
-		volName, _ := strings.CutSuffix(v.Name(), ".tar")
+		volName := strings.TrimSuffix(v.Name(), ".tar")
 
 		// Skip volumes set as skipvolume option
-		if slices.Contains(skipVolumes, volName) {
+		if utils.Contains(skipVolumes, volName) {
 			log.Info().Msgf(L("Skipping volume %s"), volName)
 			continue
 		}
@@ -211,10 +210,10 @@ func gatherImagesToRestore(source string, flags *shared.Flagpole) ([]string, err
 func restoreVolumes(volumes []string, flags *shared.Flagpole, dryRun bool) error {
 	var hasError error
 	for _, volume := range volumes {
-		volName, _ := strings.CutSuffix(volume, ".tar")
+		volName := strings.TrimSuffix(volume, ".tar")
 		_, volName = path.Split(volName)
 		if err := podman.ImportVolume(volName, volume, flags.SkipVerify, dryRun); err != nil {
-			hasError = errors.Join(hasError, handleVolumeHacks(volName, err))
+			hasError = utils.JoinErrors(hasError, handleVolumeHacks(volName, err))
 		}
 	}
 	return hasError
@@ -224,7 +223,7 @@ func restoreImages(images []string, dryRun bool) error {
 	var hasErrors error
 	for _, image := range images {
 		if err := podman.RestoreImage(image, dryRun); err != nil {
-			hasErrors = errors.Join(hasErrors, err)
+			hasErrors = utils.JoinErrors(hasErrors, err)
 		}
 	}
 	return hasErrors
@@ -239,7 +238,7 @@ func restorePodmanConfig(inputDirectory string, flags *shared.Flagpole) error {
 
 	if !flags.SkipVerify {
 		if err := utils.ValidateChecksum(podmanConfigFile); err != nil {
-			return errors.Join(err, errors.New(L("Unable to validate podman backup file")))
+			return utils.JoinErrors(err, errors.New(L("Unable to validate podman backup file")))
 		}
 	}
 
@@ -255,7 +254,7 @@ func restoreSystemdConfig(inputDirectory string, flags *shared.Flagpole) error {
 	}
 	if !flags.SkipVerify {
 		if err := utils.ValidateChecksum(systemdConfigFile); err != nil {
-			return errors.Join(err, errors.New(L("Unable to validate systemd backup file")))
+			return utils.JoinErrors(err, errors.New(L("Unable to validate systemd backup file")))
 		}
 	}
 
