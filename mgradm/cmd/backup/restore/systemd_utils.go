@@ -6,7 +6,6 @@ package restore
 
 import (
 	"archive/tar"
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -47,12 +46,12 @@ func restoreSystemdConfiguration(backupSource string, flags *shared.Flagpole) er
 		case tar.TypeDir:
 			if err := os.MkdirAll(header.Name, header.FileInfo().Mode()); err != nil {
 				log.Warn().Msgf(L("Unable to create directory %s"), header.Name)
-				hasError = errors.Join(hasError, err)
+				hasError = utils.JoinErrors(hasError, err)
 				continue
 			}
 		case tar.TypeReg:
 			if err := restoreSystemdFile(header, tr); err != nil {
-				hasError = errors.Join(hasError, err)
+				hasError = utils.JoinErrors(hasError, err)
 				continue
 			}
 		default:
@@ -62,7 +61,7 @@ func restoreSystemdConfiguration(backupSource string, flags *shared.Flagpole) er
 
 		if err := restoreFileAttributes(header.Name, header); err != nil {
 			log.Warn().Err(err).Msgf(L("Unable to restore file details for %s"), header.Name)
-			hasError = errors.Join(hasError, err)
+			hasError = utils.JoinErrors(hasError, err)
 		}
 	}
 	return hasError
@@ -86,9 +85,9 @@ func restoreSystemdFile(header *tar.Header, tr *tar.Reader) error {
 
 func restoreFileAttributes(filename string, th *tar.Header) error {
 	var e error
-	e = errors.Join(e, os.Chmod(filename, th.FileInfo().Mode()))
-	e = errors.Join(e, os.Chown(filename, th.Uid, th.Gid))
-	e = errors.Join(e, os.Chtimes(filename, th.AccessTime, th.ModTime))
+	e = utils.JoinErrors(e, os.Chmod(filename, th.FileInfo().Mode()))
+	e = utils.JoinErrors(e, os.Chown(filename, th.Uid, th.Gid))
+	e = utils.JoinErrors(e, os.Chtimes(filename, th.AccessTime, th.ModTime))
 	return e
 }
 
@@ -104,7 +103,7 @@ func generateDefaltSystemdServices(flags *shared.Flagpole) error {
 		utils.PostgreSQLImage.Name,
 		utils.PostgreSQLImage.Tag)
 
-	return errors.Join(
+	return utils.JoinErrors(
 		podman.GenerateSystemdService(systemd, "", serverImage, false, "", []string{}),
 		pgsql.GeneratePgsqlSystemdService(systemd, dbImage),
 		systemd.ReloadDaemon(false),
