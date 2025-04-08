@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -19,13 +19,19 @@ import (
 func TestParamsParsing(t *testing.T) {
 	args := []string{}
 
+	args = append(args, "--ssl-password", "sslsecret")
 	args = append(args, flagstests.ImageFlagsTestArgs...)
 	args = append(args, flagstests.DBUpdateImageFlagTestArgs...)
 	args = append(args, flagstests.CocoFlagsTestArgs...)
 	args = append(args, flagstests.HubXmlrpcFlagsTestArgs...)
 	args = append(args, flagstests.SalineFlagsTestArgs...)
+	args = append(args, flagstests.PgsqlFlagsTestArgs...)
 	args = append(args, flagstests.SCCFlagTestArgs...)
 	args = append(args, flagstests.ServerKubernetesFlagsTestArgs...)
+	args = append(args, flagstests.DBFlagsTestArgs...)
+	args = append(args, flagstests.ReportDBFlagsTestArgs...)
+	args = append(args, flagstests.InstallDBSSLFlagsTestArgs...)
+	args = append(args, flagstests.SSLGenerationFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *kubernetes.KubernetesServerFlags,
@@ -36,8 +42,13 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertCocoFlag(t, &flags.Coco)
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		flagstests.AssertSalineFlag(t, &flags.Saline)
-		// TODO Assert SCC flags
+		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
+		flagstests.AssertSCCFlag(t, &flags.ServerFlags.Installation.SCC)
 		flagstests.AssertServerKubernetesFlags(t, &flags.Kubernetes)
+		flagstests.AssertDBFlag(t, &flags.Installation.DB)
+		flagstests.AssertReportDBFlag(t, &flags.Installation.ReportDB)
+		flagstests.AssertInstallDBSSLFlag(t, &flags.Installation.SSL.DB)
+		flagstests.AssertSSLGenerationFlag(t, &flags.Installation.SSL.SSLCertGenerationFlags)
 		return nil
 	}
 

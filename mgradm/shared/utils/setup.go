@@ -16,25 +16,6 @@ import (
 // GetSetupEnv computes the environment variables required by the setup script from the flags.
 // As the requirements are slightly different for kubernetes there is a toggle parameter for it.
 func GetSetupEnv(mirror string, flags *InstallationFlags, fqdn string, kubernetes bool) map[string]string {
-	localHostValues := []string{
-		"localhost",
-		"127.0.0.1",
-		"::1",
-		fqdn,
-	}
-
-	localDB := utils.Contains(localHostValues, flags.DB.Host)
-
-	dbHost := flags.DB.Host
-	reportdbHost := flags.ReportDB.Host
-
-	if localDB {
-		dbHost = "localhost"
-		if reportdbHost == "" {
-			reportdbHost = "localhost"
-		}
-	}
-
 	dbPort := "5432"
 	if flags.DB.Port != 0 {
 		dbPort = strconv.Itoa(flags.DB.Port)
@@ -50,31 +31,22 @@ func GetSetupEnv(mirror string, flags *InstallationFlags, fqdn string, kubernete
 		"MANAGER_ADMIN_EMAIL": flags.Email,
 		"MANAGER_MAIL_FROM":   flags.EmailFrom,
 		"MANAGER_ENABLE_TFTP": boolToString(flags.Tftp),
-		"LOCAL_DB":            boolToString(localDB),
 		"MANAGER_DB_NAME":     flags.DB.Name,
-		"MANAGER_DB_HOST":     dbHost,
+		"MANAGER_DB_HOST":     flags.DB.Host,
 		"MANAGER_DB_PORT":     dbPort,
-		"MANAGER_DB_PROTOCOL": "tcp",
 		"REPORT_DB_NAME":      flags.ReportDB.Name,
-		"REPORT_DB_HOST":      reportdbHost,
+		"REPORT_DB_HOST":      flags.ReportDB.Host,
 		"REPORT_DB_PORT":      reportdbPort,
 		"EXTERNALDB_PROVIDER": flags.DB.Provider,
 		"ISS_PARENT":          flags.IssParent,
-		"ACTIVATE_SLP":        "N", // Deprecated, will be removed soon
 	}
 
 	if kubernetes {
 		env["NO_SSL"] = "Y"
 	} else {
 		// Only add the credentials for podman as we have secret for Kubernetes.
-		env["MANAGER_USER"] = flags.DB.User
-		env["MANAGER_PASS"] = flags.DB.Password
 		env["ADMIN_USER"] = flags.Admin.Login
 		env["ADMIN_PASS"] = flags.Admin.Password
-		env["REPORT_DB_USER"] = flags.ReportDB.User
-		env["REPORT_DB_PASS"] = flags.ReportDB.Password
-		env["EXTERNALDB_ADMIN_USER"] = flags.DB.Admin.User
-		env["EXTERNALDB_ADMIN_PASS"] = flags.DB.Admin.Password
 		env["SCC_USER"] = flags.SCC.User
 		env["SCC_PASS"] = flags.SCC.Password
 	}

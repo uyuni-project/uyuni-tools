@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -26,7 +26,8 @@ func uninstallForPodman(
 		podman.GetServiceImage(podman.ServerService),
 		podman.GetServiceImage(podman.ServerAttestationService + "@"),
 		podman.GetServiceImage(podman.HubXmlrpcService),
-		podman.GetServiceImage(podman.ServerSalineService + "@"),
+		podman.GetServiceImage(podman.SalineService),
+		podman.GetServiceImage(podman.DBService),
 	}
 
 	// Uninstall the service
@@ -36,13 +37,17 @@ func uninstallForPodman(
 
 	systemd.UninstallInstantiatedService(podman.ServerAttestationService, !flags.Force)
 	systemd.UninstallInstantiatedService(podman.HubXmlrpcService, !flags.Force)
-	systemd.UninstallInstantiatedService(podman.ServerSalineService, !flags.Force)
+	systemd.UninstallService(podman.SalineService, !flags.Force)
+	systemd.UninstallService(podman.DBService, !flags.Force)
 
 	// Remove the volumes
 	if flags.Purge.Volumes {
 		allOk := true
 		volumes := []string{"cgroup"}
 		for _, volume := range utils.ServerVolumeMounts {
+			volumes = append(volumes, volume.Name)
+		}
+		for _, volume := range utils.PgsqlRequiredVolumeMounts {
 			volumes = append(volumes, volume.Name)
 		}
 		for _, volume := range volumes {
@@ -71,8 +76,18 @@ func uninstallForPodman(
 
 	podman.DeleteNetwork(!flags.Force)
 
+	podman.DeleteSecret(podman.ReportDBUserSecret, !flags.Force)
+	podman.DeleteSecret(podman.ReportDBPassSecret, !flags.Force)
 	podman.DeleteSecret(podman.DBUserSecret, !flags.Force)
 	podman.DeleteSecret(podman.DBPassSecret, !flags.Force)
+	podman.DeleteSecret(podman.DBAdminUserSecret, !flags.Force)
+	podman.DeleteSecret(podman.DBAdminPassSecret, !flags.Force)
+	podman.DeleteSecret(podman.DBSSLCertSecret, !flags.Force)
+	podman.DeleteSecret(podman.DBSSLKeySecret, !flags.Force)
+	podman.DeleteSecret(podman.DBCASecret, !flags.Force)
+	podman.DeleteSecret(podman.CASecret, !flags.Force)
+	podman.DeleteSecret(podman.SSLCertSecret, !flags.Force)
+	podman.DeleteSecret(podman.SSLKeySecret, !flags.Force)
 
 	err := systemd.ReloadDaemon(!flags.Force)
 

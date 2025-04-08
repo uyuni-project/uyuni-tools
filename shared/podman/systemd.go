@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,14 +22,17 @@ var servicesPath = "/etc/systemd/system/"
 // ServerService is the name of the systemd service for the server.
 const ServerService = "uyuni-server"
 
+// DBService is the name of the systemd service for the database container.
+const DBService = "uyuni-db"
+
 // ServerAttestationService is the name of the systemd service for the coco attestation container.
 const ServerAttestationService = "uyuni-server-attestation"
 
 // HubXmlrpcService is the name of the systemd service for the Hub XMLRPC container.
 const HubXmlrpcService = "uyuni-hub-xmlrpc"
 
-// ServerSalineService is the name of the systemd service for the saline container.
-const ServerSalineService = "uyuni-server-saline"
+// SalineService is the name of the systemd service for the saline container.
+const SalineService = "uyuni-saline"
 
 // ProxyService is the name of the systemd service for the proxy.
 const ProxyService = "uyuni-proxy-pod"

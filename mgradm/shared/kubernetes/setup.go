@@ -12,6 +12,7 @@ import (
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	batch "k8s.io/api/batch/v1"
 	core "k8s.io/api/core/v1"
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -73,6 +74,21 @@ func GetSetupJob(
 
 	optional := false
 
+	dbUserEnv := core.EnvVar{Name: "MANAGER_USER", ValueFrom: &core.EnvVarSource{
+		SecretKeyRef: &core.SecretKeySelector{
+			LocalObjectReference: core.LocalObjectReference{Name: dbSecret},
+			Key:                  "username",
+			Optional:             &optional,
+		},
+	}}
+	reportdbUserEnv := core.EnvVar{Name: "REPORT_DB_USER", ValueFrom: &core.EnvVarSource{
+		SecretKeyRef: &core.SecretKeySelector{
+			LocalObjectReference: core.LocalObjectReference{Name: reportdbSecret},
+			Key:                  "username",
+			Optional:             &optional,
+		},
+	}}
+
 	envVars := []core.EnvVar{
 		{Name: "ADMIN_USER", ValueFrom: &core.EnvVarSource{
 			SecretKeyRef: &core.SecretKeySelector{
@@ -88,13 +104,7 @@ func GetSetupJob(
 				Optional:             &optional,
 			},
 		}},
-		{Name: "MANAGER_USER", ValueFrom: &core.EnvVarSource{
-			SecretKeyRef: &core.SecretKeySelector{
-				LocalObjectReference: core.LocalObjectReference{Name: dbSecret},
-				Key:                  "username",
-				Optional:             &optional,
-			},
-		}},
+		dbUserEnv,
 		{Name: "MANAGER_PASS", ValueFrom: &core.EnvVarSource{
 			SecretKeyRef: &core.SecretKeySelector{
 				LocalObjectReference: core.LocalObjectReference{Name: dbSecret},
@@ -102,13 +112,7 @@ func GetSetupJob(
 				Optional:             &optional,
 			},
 		}},
-		{Name: "REPORT_DB_USER", ValueFrom: &core.EnvVarSource{
-			SecretKeyRef: &core.SecretKeySelector{
-				LocalObjectReference: core.LocalObjectReference{Name: reportdbSecret},
-				Key:                  "username",
-				Optional:             &optional,
-			},
-		}},
+		reportdbUserEnv,
 		{Name: "REPORT_DB_PASS", ValueFrom: &core.EnvVarSource{
 			SecretKeyRef: &core.SecretKeySelector{
 				LocalObjectReference: core.LocalObjectReference{Name: reportdbSecret},
@@ -116,6 +120,7 @@ func GetSetupJob(
 				Optional:             &optional,
 			},
 		}},
+		{Name: "REPORT_DB_CA_CERT", Value: ssl.DBCAContainerPath},
 		// EXTERNALDB_* variables are not passed yet: only for AWS and it probably doesn't make sense for kubernetes yet.
 	}
 
@@ -151,6 +156,40 @@ func GetSetupJob(
 		envVars = append(envVars, core.EnvVar{Name: "MIRROR_PATH", Value: "/mirror"})
 	}
 	template.Spec.Containers[0].Env = envVars
+	template.Spec.Volumes = append(template.Spec.Volumes,
+		kubernetes.CreateConfigVolume("db-ca", kubernetes.DBCAConfigName),
+	)
+
+	// Add initContainer waiting for the db and reportdb services to be responding
+	template.Spec.InitContainers = append(template.Spec.InitContainers,
+		core.Container{
+			Name:            "db-waiter",
+			Image:           image,
+			ImagePullPolicy: pullPolicy,
+			Env: []core.EnvVar{
+				{Name: "MANAGER_DB_HOST", Value: env["MANAGER_DB_HOST"]},
+				{Name: "MANAGER_DB_PORT", Value: env["MANAGER_DB_PORT"]},
+				{Name: "MANAGER_DB_NAME", Value: env["MANAGER_DB_NAME"]},
+				dbUserEnv,
+				{Name: "REPORT_DB_HOST", Value: env["REPORT_DB_HOST"]},
+				{Name: "REPORT_DB_PORT", Value: env["REPORT_DB_PORT"]},
+				{Name: "REPORT_DB_NAME", Value: env["REPORT_DB_NAME"]},
+				reportdbUserEnv,
+			},
+			Command: []string{
+				"sh", "-c",
+				`
+until pg_isready -U $MANAGER_USER -h $MANAGER_DB_HOST -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME; do
+	sleep 60
+done
+
+until pg_isready -U $REPORT_DB_USER -h $REPORT_DB_HOST -p $REPORT_DB_PORT -d $REPORT_DB_NAME; do
+	sleep 60
+done
+`,
+			},
+		},
+	)
 
 	job := batch.Job{
 		TypeMeta: meta.TypeMeta{Kind: "Job", APIVersion: "batch/v1"},

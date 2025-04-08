@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -235,6 +235,24 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 	return utils.RunCmdOutput(zerolog.DebugLevel, cmd, cmdArgs...)
 }
 
+// Healthcheck runs healthcheck command inside the container.
+func (c *Connection) Healthcheck() ([]byte, error) {
+	if c.podName == "" {
+		if _, err := c.GetPodName(); c.podName == "" {
+			return nil, utils.Errorf(err, L("Healthcheck not executed"))
+		}
+	}
+
+	cmd, cmdErr := c.GetCommand()
+	if cmdErr != nil {
+		return nil, cmdErr
+	}
+
+	cmdArgs := []string{"healthcheck", "run", c.podName}
+
+	return utils.RunCmdOutput(zerolog.DebugLevel, cmd, cmdArgs...)
+}
+
 // WaitForContainer waits up to 10 sec for the container to appear.
 func (c *Connection) WaitForContainer() error {
 	for i := 0; i < 10; i++ {
@@ -298,6 +316,21 @@ func (c *Connection) WaitForServer() error {
 		time.Sleep(1 * time.Second)
 	}
 	return errors.New(L("server didn't start within 120s. Check for the service status"))
+}
+
+// WaitForHealthcheck waits at most 60s for healtcheck to succeed.
+func (c *Connection) WaitForHealthcheck() error {
+	// Wait for the system to be up
+	for i := 0; i < 60; i++ {
+		_, err := c.Healthcheck()
+		if err != nil {
+			log.Debug().Err(err)
+			time.Sleep(1 * time.Second)
+			continue
+		}
+		return nil
+	}
+	return errors.New(L("container didn't start within 60s. Check for the service status"))
 }
 
 // Copy transfers a file to or from the container.
@@ -501,11 +534,16 @@ func (c *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 	log.Info().Msgf(L("Running supportconfig in  %s"), containerName)
 	out, err := c.Exec("supportconfig")
 	if err != nil {
-		return []string{}, errors.New(L("failed to run supportconfig"))
+		/* do not return here.
+		* supportconfig might return some error if some info is not generated
+		* but we need to raise an error only if tarball is not generated.
+		* In any case, show the error.
+		 */
+		log.Error().Err(err).Msg(L("failed to run supportconfig"))
 	}
 	tarballPath := utils.GetSupportConfigPath(string(out))
 	if tarballPath == "" {
-		return []string{}, errors.New(L("failed to find container supportconfig tarball from command output"))
+		return []string{}, utils.Errorf(err, L("failed to find container supportconfig tarball from command output"))
 	}
 
 	for _, ext := range extensions {

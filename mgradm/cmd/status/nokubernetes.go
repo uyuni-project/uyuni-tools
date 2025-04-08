@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,10 +15,10 @@ import (
 )
 
 func kubernetesStatus(
-	globalFlags *types.GlobalFlags,
-	flags *statusFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *types.GlobalFlags,
+	_ *statusFlags,
+	_ *cobra.Command,
+	_ []string,
 ) error {
 	return errors.New(L("built without kubernetes support"))
 }

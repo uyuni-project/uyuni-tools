@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -63,6 +63,46 @@ func AssertVolumesFlags(t *testing.T, flags *utils.VolumesFlags) {
 	testutils.AssertEquals(t, "Error parsing --volumes-cache-size", "789Gi", flags.Cache.Size)
 	testutils.AssertEquals(t, "Error parsing --volumes-cache-class", "cacheclass", flags.Cache.Class)
 }
+
+// DBFlagsTestArgs is the expected values for DBFlag.
+var DBFlagsTestArgs = []string{
+	"--db-user", "dbuser",
+	"--db-password", "dbpass",
+	"--db-name", "dbname",
+	"--db-host", "dbhost",
+	"--db-port", "1234",
+	"--db-admin-user", "dbadmin",
+	"--db-admin-password", "dbadminpass",
+	"--db-provider", "aws",
+}
+
+// ReportDBFlagsTestArgs is the expected values for ReportDBFlag.
+var ReportDBFlagsTestArgs = []string{
+	"--reportdb-user", "reportdbuser",
+	"--reportdb-password", "reportdbpass",
+	"--reportdb-name", "reportdbname",
+	"--reportdb-host", "reportdbhost",
+	"--reportdb-port", "5678",
+}
+
+// InstallDBSSLFlagsTestArgs is the expected values for InstallSSLFlagsTestArg for the DB.
+var InstallDBSSLFlagsTestArgs = []string{
+	"--ssl-db-ca-intermediate", "path/dbinter1.crt",
+	"--ssl-db-ca-intermediate", "path/dbinter2.crt",
+	"--ssl-db-ca-root", "path/dbroot.crt",
+	"--ssl-db-cert", "path/dbsrv.crt",
+	"--ssl-db-key", "path/dbsrv.key",
+	"--ssl-password", "sslsecret",
+}
+
+// InstallSSLFlagsTestArgs is the expected values for InstallSSLFlagsTestArg.
+var InstallSSLFlagsTestArgs = append([]string{
+	"--ssl-ca-intermediate", "path/inter1.crt",
+	"--ssl-ca-intermediate", "path/inter2.crt",
+	"--ssl-ca-root", "path/root.crt",
+	"--ssl-server-cert", "path/srv.crt",
+	"--ssl-server-key", "path/srv.key",
+}, InstallDBSSLFlagsTestArgs...)
 
 // ImageFlagsTestArgs is the expected values for AssertImageFlag.
 var ImageFlagsTestArgs = []string{
@@ -132,7 +172,7 @@ func AssertHubXmlrpcFlag(t *testing.T, flags *utils.HubXmlrpcFlags) {
 	testutils.AssertTrue(t, "Hub should be changed", flags.IsChanged)
 }
 
-// SalineoFlagsTestArgs is the expected values for AssertSalineFlag.
+// SalineFlagsTestArgs is the expected values for AssertSalineFlag.
 var SalineFlagsTestArgs = []string{
 	"--saline-image", "salineimg",
 	"--saline-tag", "salinetag",
@@ -147,4 +187,58 @@ func AssertSalineFlag(t *testing.T, flags *utils.SalineFlags) {
 	testutils.AssertEquals(t, "Error parsing --saline-replicas", 1, flags.Replicas)
 	testutils.AssertEquals(t, "Error parsing --saline-port", 8226, flags.Port)
 	testutils.AssertTrue(t, "Saline should be changed", flags.IsChanged)
+}
+
+// PgsqlFlagsTestArgs is the expected values for AssertPgsqlFlag.
+var PgsqlFlagsTestArgs = []string{
+	"--pgsql-image", "pgsqlimg",
+	"--pgsql-tag", "pgsqltag",
+}
+
+// AssertPgsqlFlag asserts that all pgsql flags are parsed correctly.
+func AssertPgsqlFlag(t *testing.T, flags *types.PgsqlFlags) {
+	testutils.AssertEquals(t, "Error parsing --pgsql-image", "pgsqlimg", flags.Image.Name)
+	testutils.AssertEquals(t, "Error parsing --pgsql-tag", "pgsqltag", flags.Image.Tag)
+}
+
+// AssertDBFlag asserts that all DB flags are parsed correctly.
+func AssertDBFlag(t *testing.T, flags *utils.DBFlags) {
+	testutils.AssertEquals(t, "Error parsing --db-user", "dbuser", flags.User)
+	testutils.AssertEquals(t, "Error parsing --db-pass", "dbpass", flags.Password)
+	testutils.AssertEquals(t, "Error parsing --db-name", "dbname", flags.Name)
+	testutils.AssertEquals(t, "Error parsing --db-host", "dbhost", flags.Host)
+	testutils.AssertEquals(t, "Error parsing --db-port", 1234, flags.Port)
+	testutils.AssertEquals(t, "Error parsing --db-admin-user", "dbadmin", flags.Admin.User)
+	testutils.AssertEquals(t, "Error parsing --db-admin-password", "dbadminpass", flags.Admin.Password)
+	testutils.AssertEquals(t, "Error parsing --db-provider", "aws", flags.Provider)
+}
+
+// AssertReportDBFlag asserts that all ReportDB flags are parsed correctly.
+func AssertReportDBFlag(t *testing.T, flags *utils.DBFlags) {
+	testutils.AssertEquals(t, "Error parsing --reportdb-user", "reportdbuser", flags.User)
+	testutils.AssertEquals(t, "Error parsing --reportdb-password", "reportdbpass", flags.Password)
+	testutils.AssertEquals(t, "Error parsing --reportdb-name", "reportdbname", flags.Name)
+	testutils.AssertEquals(t, "Error parsing --reportdb-host", "reportdbhost", flags.Host)
+	testutils.AssertEquals(t, "Error parsing --reportdb-port", 5678, flags.Port)
+}
+
+// AssertInstallSSLFlag asserts that all InstallSSLFlags flags are parsed correctly.
+func AssertInstallSSLFlag(t *testing.T, flags *utils.InstallSSLFlags) {
+	testutils.AssertEquals(t, "Error parsing --ssl-password", "sslsecret", flags.Password)
+	testutils.AssertEquals(t, "Error parsing --ssl-ca-intermediate",
+		[]string{"path/inter1.crt", "path/inter2.crt"}, flags.Ca.Intermediate)
+	testutils.AssertEquals(t, "Error parsing --ssl-ca-root", "path/root.crt", flags.Ca.Root)
+	testutils.AssertEquals(t, "Error parsing --ssl-server-cert", "path/srv.crt", flags.Server.Cert)
+	testutils.AssertEquals(t, "Error parsing --ssl-server-key", "path/srv.key", flags.Server.Key)
+	AssertInstallDBSSLFlag(t, &flags.DB)
+	AssertSSLGenerationFlag(t, &flags.SSLCertGenerationFlags)
+}
+
+// AssertInstallDBSSLFlag asserts that all InstallSSLFlags flags are parsed correctly.
+func AssertInstallDBSSLFlag(t *testing.T, flags *utils.SSLFlags) {
+	testutils.AssertEquals(t, "Error parsing --ssl-db-ca-intermediate",
+		[]string{"path/dbinter1.crt", "path/dbinter2.crt"}, flags.CA.Intermediate)
+	testutils.AssertEquals(t, "Error parsing --ssl-db-ca-root", "path/dbroot.crt", flags.CA.Root)
+	testutils.AssertEquals(t, "Error parsing --ssl-db-cert", "path/dbsrv.crt", flags.Cert)
+	testutils.AssertEquals(t, "Error parsing --ssl-db-key", "path/dbsrv.key", flags.Key)
 }

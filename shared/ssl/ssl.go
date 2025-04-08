@@ -20,35 +20,53 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// ! Any changes below needs to be double checked against upgrade/migration scenario !
+const (
+	// CAContainerPath is the path to the Root CA certificate in the server container.
+	CAContainerPath = "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
+	// DBCAContainerPath is the path to the DB Root CA certificate in the server container.
+	DBCAContainerPath = "/etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT"
+	// ServerCertPath is the path to the server certificate in the server container.
+	ServerCertPath = "/etc/pki/tls/certs/spacewalk.crt"
+	// ServerCertKeyPath is the path to the server certificate key in the server container.
+	ServerCertKeyPath = "/etc/pki/tls/private/spacewalk.key"
+	// DBCertPath is the path to the database certificate in the database container.
+	DBCertPath = "/etc/pki/tls/certs/spacewalk.crt"
+	// DBCertKeyPaht is the path to the database certificate in the database container.
+	DBCertKeyPath = "/etc/pki/tls/private/pg-spacewalk.key"
+)
+
 // OrderCas generates the server certificate with the CA chain.
 //
 // Returns the certificate chain and the root CA.
-func OrderCas(chain *types.CaChain, serverPair *types.SSLPair) ([]byte, []byte, error) {
-	if err := CheckPaths(chain, serverPair); err != nil {
-		return []byte{}, []byte{}, err
+func OrderCas(chain *types.CaChain, serverPair *types.SSLPair) (orderedCert []byte, rootCA []byte, err error) {
+	if err = CheckPaths(chain, serverPair); err != nil {
+		return
 	}
 
 	// Extract all certificates and their data
 	certs, err := readCertificates(chain.Root)
 	if err != nil {
-		return []byte{}, []byte{}, err
+		return
 	}
 	for _, caPath := range chain.Intermediate {
-		intermediateCerts, err := readCertificates(caPath)
+		var intermediateCerts []certificate
+		intermediateCerts, err = readCertificates(caPath)
 		if err != nil {
-			return []byte{}, []byte{}, err
+			return
 		}
 		certs = append(certs, intermediateCerts...)
 	}
 	serverCerts, err := readCertificates(serverPair.Cert)
 	if err != nil {
-		return []byte{}, []byte{}, err
+		return
 	}
 	certs = append(certs, serverCerts...)
 
 	serverCert, err := findServerCert(certs)
 	if err != nil {
-		return []byte{}, []byte{}, errors.New(L("Failed to find a non-CA certificate"))
+		err = errors.New(L("Failed to find a non-CA certificate"))
+		return
 	}
 
 	// Map all certificates using their hashes
@@ -201,37 +219,43 @@ func extractCertificateData(content []byte) (certificate, error) {
 
 // Prepare the certificate chain starting by the server up to the root CA.
 // Returns the certificate chain and the root CA.
-func sortCertificates(mapBySubjectHash map[string]certificate, serverCertHash string) ([]byte, []byte, error) {
+func sortCertificates(
+	mapBySubjectHash map[string]certificate,
+	serverCertHash string,
+) (orderedCert []byte, rootCA []byte, err error) {
 	if len(mapBySubjectHash) == 0 {
-		return []byte{}, []byte{}, errors.New(L("No CA found"))
+		err = errors.New(L("No CA found"))
+		return
 	}
 
 	cert := mapBySubjectHash[serverCertHash]
 	issuerHash := cert.issuerHash
 	_, found := mapBySubjectHash[issuerHash]
 	if issuerHash == "" || !found {
-		return []byte{}, []byte{}, errors.New(L("No CA found for server certificate"))
+		err = errors.New(L("No CA found for server certificate"))
+		return
 	}
 
 	sortedChain := bytes.NewBuffer(mapBySubjectHash[serverCertHash].content)
-	var rootCa []byte
 
 	for {
 		cert, found = mapBySubjectHash[issuerHash]
 		if !found {
-			return []byte{}, []byte{}, fmt.Errorf(L("Missing CA with subject hash %s"), issuerHash)
+			err = fmt.Errorf(L("Missing CA with subject hash %s"), issuerHash)
+			return
 		}
 
 		nextHash := cert.issuerHash
 		if nextHash == issuerHash {
 			// Found Root CA, we can exit
-			rootCa = cert.content
+			rootCA = cert.content
 			break
 		}
 		issuerHash = nextHash
 		sortedChain.Write(cert.content)
 	}
-	return sortedChain.Bytes(), rootCa, nil
+	orderedCert = sortedChain.Bytes()
+	return orderedCert, rootCA, nil
 }
 
 // CheckPaths ensures that all the passed path exists and the required files are available.

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -68,11 +68,57 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 			log.Debug().Msgf("Pulling image %s because it is missing and pull policy is not 'never'", image)
 			return image, pullImage(authFile, image)
 		}
-		log.Debug().Msgf("Do not pulling image %s, although the pull policy is not 'never', maybe replicas is zero?", image)
+		log.Debug().Msgf("Not pulling image %s, although the pull policy is not 'never', maybe replicas is zero?", image)
 		return image, nil
 	}
 
 	return image, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)
+}
+
+func PrepareImages(
+	authFile string,
+	image types.ImageFlags,
+	pgsqlFlags types.PgsqlFlags,
+) (string, string, error) {
+	serverImage, err := utils.ComputeImage(image.Registry, utils.DefaultTag, image)
+	if err != nil && len(serverImage) > 0 {
+		return "", "", utils.Error(err, L("failed to determine image"))
+	}
+
+	if len(serverImage) <= 0 {
+		log.Debug().Msg("Use deployed image")
+
+		serverImage, err = GetRunningImage(ServerContainerName)
+		if err != nil {
+			return "", "", utils.Error(err, L("failed to find the image of the currently running server container"))
+		}
+	}
+
+	pgsqlImage, err := utils.ComputeImage(image.Registry, utils.DefaultTag, pgsqlFlags.Image)
+	if err != nil && len(pgsqlImage) > 0 {
+		return "", "", utils.Error(err, L("failed to determine pgsql image"))
+	}
+
+	if len(pgsqlImage) <= 0 {
+		log.Debug().Msg("Use deployed pgsqlimage")
+
+		pgsqlImage, err = GetRunningImage(DBContainerName)
+		if err != nil {
+			return "", "", utils.Error(err, L("failed to find the image of the currently running db container"))
+		}
+	}
+
+	preparedServerImage, err := PrepareImage(authFile, serverImage, image.PullPolicy, true)
+	if err != nil {
+		return preparedServerImage, "", err
+	}
+
+	preparedPgsqlImage, err := PrepareImage(authFile, pgsqlImage, image.PullPolicy, true)
+	if err != nil {
+		return preparedServerImage, preparedPgsqlImage, err
+	}
+
+	return preparedServerImage, preparedPgsqlImage, nil
 }
 
 // GetRpmImageName return the RPM Image name and the tag, given an image.
@@ -119,6 +165,10 @@ func GetRpmImagePath(image string) string {
 	log.Debug().Msgf("Looking for installed RPM package containing %s image", image)
 
 	rpmImageFile, tag := GetRpmImageName(image)
+	if !utils.FileExists(rpmImageDir) {
+		log.Info().Msgf(L("skipping loading image from RPM as %s doesn't exist"), rpmImageDir)
+		return ""
+	}
 
 	files, err := os.ReadDir(rpmImageDir)
 	if err != nil {
@@ -279,4 +329,61 @@ func HasRemoteImage(image string) bool {
 	}
 	imageFinder := regexp.MustCompile("(?Um)^" + image + "$")
 	return imageFinder.Match(out)
+}
+
+// DeleteImage deletes a podman image based on its name.
+// If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
+func DeleteImage(name string, dryRun bool) error {
+	exists := imageExists(name)
+	if exists {
+		if dryRun {
+			log.Info().Msgf(L("Would run %s"), "podman image rm "+name)
+		} else {
+			log.Info().Msgf(L("Run %s"), "podman image rm "+name)
+			err := utils.RunCmd("podman", "image", "rm", name)
+			if err != nil {
+				return utils.Errorf(err, L("Failed to remove image %s"), name)
+			}
+		}
+	}
+	return nil
+}
+
+// ExportImage saves a podman image based on its name to a specified directory.
+// outputDir option expects already existing directory.
+// If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
+func ExportImage(name string, outputDir string, dryRun bool) error {
+	exists := imageExists(name)
+	if exists {
+		saveCommand := []string{"podman", "image", "save", "--quiet", "-o", path.Join(outputDir, name+".tar"), name}
+		if dryRun {
+			log.Info().Msgf(L("Would run %s"), strings.Join(saveCommand, " "))
+		} else {
+			log.Info().Msgf(L("Run %s"), strings.Join(saveCommand, " "))
+			err := utils.RunCmd(saveCommand[0], saveCommand[1:]...)
+			if err != nil {
+				return utils.Errorf(err, L("Failed to export image %s"), name)
+			}
+		}
+	}
+	return nil
+}
+
+func imageExists(image string) bool {
+	err := utils.RunCmd("podman", "image", "exists", image)
+	return err == nil
+}
+
+func RestoreImage(imageFile string, dryRun bool) error {
+	restoreCommand := []string{"podman", "image", "import", "--quiet", imageFile}
+	if dryRun {
+		log.Info().Msgf(L("Would run %s"), strings.Join(restoreCommand, " "))
+	} else {
+		log.Info().Msgf(L("Run %s"), strings.Join(restoreCommand, " "))
+		err := utils.RunCmd(restoreCommand[0], restoreCommand[1:]...)
+		if err != nil {
+			return utils.Errorf(err, L("Failed to restore image %s"), imageFile)
+		}
+	}
+	return nil
 }

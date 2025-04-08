@@ -62,3 +62,6 @@ repos:
     entry: ./update-copyright-year.sh
     language: script
     require_serial: true
+    stages:
+      - pre-push
+      - pre-commit

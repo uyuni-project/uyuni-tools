@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -14,25 +14,33 @@ import (
 
 func TestGetRpmImageName(t *testing.T) {
 	data := [][]string{
-		{"suse-manager-5.0-x86_64-proxy-httpd", "latest", "registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd"},
-		{"suse-manager-5.0-x86_64-proxy-httpd", "latest", "registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:latest"},
-		{"suse-manager-5.0-x86_64-proxy-httpd", "beta1", "registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:beta1"},
 		{
-			"suse-manager-5.0-x86_64-proxy-httpd",
-			"5.0.0",
-			"http://registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:5.0.0",
+			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"latest",
+			"registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql"},
+		{
+			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"latest",
+			"registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql:latest"},
+		{
+			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"5.1.0",
+			"http://registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
 		},
 		{
-			"suse-manager-5.0-x86_64-proxy-httpd",
-			"5.0.0",
-			"https://registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:5.0.0",
+			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"5.1.0",
+			"https://registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
 		},
 		{
-			"suse-manager-5.0-x86_64-proxy-httpd",
-			"5.0.0",
-			"docker://registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:5.0.0",
+			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"5.1.0",
+			"docker://registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
 		},
-		{"suse-manager-5.0-x86_64-proxy-httpd", "5.0.0", "oci://registry.suse.com/suse/manager/5.0/x86_64/proxy-httpd:5.0.0"},
+		{
+			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"latest",
+			"oci://registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql"},
 	}
 
 	for i, testCase := range data {
@@ -53,25 +61,26 @@ func TestGetRpmImageName(t *testing.T) {
 
 func TestMatchingMetadata(t *testing.T) {
 	jsonData := []byte(`{
-		"image": {
-			"name": "suse-manager-5.0-x86_64-proxy-tftpd",
-			"tags": ["latest", "5.0.0-beta1", "5.0.0-beta1.59.128"],
-			"file": "suse-manager-5.0-x86_64-proxy-tftpd-latest.x86_64-59.128.tar"
-		}
-	}`)
+  "image": {
+    "name": "multi-linux-manager-5.1-x86_64-server",
+    "tags": [   "5.1.0-beta1",   "5.1.0-beta1.12.55",   "latest" ] ,
+    "file": "multi-linux-manager-5.1-x86_64-server-5.1.0-beta1.x86_64-12.55.tar"
+  }
+}
+`)
 
 	data := [][]string{
 		{
-			"/usr/share/suse-docker-images/native/suse-manager-5.0-x86_64-proxy-tftpd-latest.x86_64-59.128.tar",
-			"suse-manager-5.0-x86_64-proxy-httpd",
-			"latest",
+			"/usr/share/suse-docker-images/native/multi-linux-manager-5.1-x86_64-server-5.1.0-beta1.x86_64-12.55.tar",
+			"multi-linux-manager-5.1-x86_64-server",
+			"5.1.0-beta1.12.55",
 		},
 		{
-			"/usr/share/suse-docker-images/native/suse-manager-5.0-x86_64-proxy-tftpd-latest.x86_64-59.128.tar",
-			"suse-manager-5.0-x86_64-proxy-httpd",
-			"5.0.0-beta1.59.128",
+			"/usr/share/suse-docker-images/native/multi-linux-manager-5.1-x86_64-server-5.1.0-beta1.x86_64-12.55.tar",
+			"multi-linux-manager-5.1-x86_64-server",
+			"latest",
 		},
-		{"", "suse-manager-5.0-x86_64-proxy-httpd", "missing_tag"},
+		{"", "multi-linux-manager-5.1-x86_64-server", "missing_tag"},
 		{"", "missing_image", "missing_tag"},
 		{"", "missing_image", "latest"},
 	}
