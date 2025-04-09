@@ -298,7 +298,7 @@ func Upgrade(
 	registry string,
 	db adm_utils.DBFlags,
 	reportdb adm_utils.DBFlags,
-	ssl adm_utils.InstallSSLFlags,
+	ssl *adm_utils.UpgradeSSLFlags,
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
 	cocoFlags adm_utils.CocoFlags,
@@ -477,7 +477,7 @@ func Migrate(
 	registry string,
 	db adm_utils.DBFlags,
 	reportdb adm_utils.DBFlags,
-	ssl adm_utils.InstallSSLFlags,
+	ssl *adm_utils.UpgradeSSLFlags,
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
 	cocoFlags adm_utils.CocoFlags,
@@ -811,7 +811,7 @@ func configureSplitDBContainer(
 	systemd podman.Systemd,
 	db adm_utils.DBFlags,
 	reportdb adm_utils.DBFlags,
-	ssl adm_utils.InstallSSLFlags,
+	ssl *adm_utils.UpgradeSSLFlags,
 	tz string,
 ) error {
 	if err := RunPgsqlContainerMigration(serverImage, "db", "reportdb"); err != nil {
@@ -822,7 +822,9 @@ func configureSplitDBContainer(
 		return err
 	}
 
-	if err = PrepareSSLCertificates(serverImage, &ssl, tz, fqdn); err != nil {
+	dummyServerSSL := adm_utils.SSLFlags{}
+	if err = PrepareSSLCertificates(
+		serverImage, &dummyServerSSL, &ssl.DB, &ssl.SSLCertGenerationFlags, tz, fqdn); err != nil {
 		return err
 	}
 

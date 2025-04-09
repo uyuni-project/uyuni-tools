@@ -30,13 +30,13 @@ func migrateToPodman(
 		return err
 	}
 
-	authFile, cleaner, err := podman_utils.PodmanLogin(hostData, flags.Installation.SCC)
+	authFile, cleaner, err := podman_utils.PodmanLogin(hostData, flags.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
 	defer cleaner()
 
-	flags.Installation.CheckUpgradeParameters(cmd, "podman")
+	flags.UpgradeFlags.CheckParameters(cmd, "podman")
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
 	}
@@ -44,20 +44,20 @@ func migrateToPodman(
 	return podman.Migrate(
 		systemd, authFile,
 		flags.Image.Registry,
-		flags.Installation.DB,
-		flags.Installation.ReportDB,
-		flags.Installation.SSL,
+		flags.ServerFlags.DB,
+		flags.ReportDB,
+		flags.SSL,
 		flags.Image,
 		flags.DBUpgradeImage,
 		flags.Coco,
 		flags.HubXmlrpc,
 		flags.Saline,
 		flags.Pgsql,
-		flags.Installation.SCC,
-		flags.Installation.TZ,
-		flags.Migration.Prepare,
-		flags.Migration.User,
-		flags.Installation.Debug.Java,
+		flags.SCC,
+		flags.TZ,
+		flags.Prepare,
+		flags.User,
+		flags.Debug.Java,
 		flags.Mirror,
 		flags.Podman,
 		args,

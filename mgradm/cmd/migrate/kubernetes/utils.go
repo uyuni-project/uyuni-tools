@@ -94,7 +94,7 @@ func migrateToKubernetes(
 		return err
 	}
 
-	flags.Installation.TZ = extractedData.Data.Timezone
+	flags.TZ = extractedData.Data.Timezone
 	flags.Installation.Debug.Java = extractedData.Data.Debug
 	if extractedData.Data.HasHubXmlrpcAPI {
 		flags.HubXmlrpc.Replicas = 1
@@ -114,24 +114,24 @@ func migrateToKubernetes(
 
 	// Extract the SSL data as files and pass them as arguments to share code with installation.
 	if err := writeToFile(
-		extractedData.CaCert, path.Join(sslDir, "ca.crt"), &flags.Installation.SSL.Ca.Root,
+		extractedData.CaCert, path.Join(sslDir, "ca.crt"), &flags.Installation.SSL.Server.CA.Root,
 	); err != nil {
 		return err
 	}
 
 	// The CA key shouldn't be stored as a temporary file.
 	if extractedData.CaKey != "" {
-		flags.Installation.SSL.Ca.Key = extractedData.CaKey
+		flags.Installation.SSL.Server.Pair.Key = extractedData.CaKey
 	}
 
 	if err := writeToFile(
-		extractedData.ServerCert, path.Join(sslDir, "srv.crt"), &flags.Installation.SSL.Server.Cert,
+		extractedData.ServerCert, path.Join(sslDir, "srv.crt"), &flags.Installation.SSL.Server.Pair.Cert,
 	); err != nil {
 		return err
 	}
 
 	if err := writeToFile(
-		extractedData.ServerKey, path.Join(sslDir, "srv.key"), &flags.Installation.SSL.Server.Key,
+		extractedData.ServerKey, path.Join(sslDir, "srv.key"), &flags.Installation.SSL.Server.Pair.Key,
 	); err != nil {
 		return err
 	}

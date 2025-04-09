@@ -5,7 +5,10 @@
 package podman
 
 import (
+	"errors"
+	"fmt"
 	"os"
+	"os/exec"
 	"path"
 	"strings"
 
@@ -96,6 +99,9 @@ func createSecretFromFile(name string, secretFile string) error {
 	if HasSecret(name) {
 		return nil
 	}
+	if !utils.FileExists(secretFile) {
+		return fmt.Errorf(L("File %s doesn't exists"), secretFile)
+	}
 
 	if err := utils.RunCmd("podman", "secret", "create", name, secretFile); err != nil {
 		return utils.Errorf(err, L("failed to create podman secret %s"), name)
@@ -106,7 +112,13 @@ func createSecretFromFile(name string, secretFile string) error {
 
 // HasSecret returns whether the secret is defined or not.
 func HasSecret(name string) bool {
-	return utils.RunCmd("podman", "secret", "exists", name) == nil
+	var exitError *exec.ExitError
+	cmd := exec.Command("podman", "secret", "exists", name)
+	if err := cmd.Run(); err != nil && errors.As(err, &exitError) {
+		log.Debug().Err(err).Msgf("podman volume exists %s", name)
+		return false
+	}
+	return cmd.ProcessState.Success()
 }
 
 // DeleteSecret removes a podman secret.

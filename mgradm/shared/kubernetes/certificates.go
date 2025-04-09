@@ -30,9 +30,9 @@ import (
 )
 
 // DeployExistingCertificate execute a deploy of an existing certificate.
-func DeployExistingCertificate(namespace string, sslFlags *cmd_utils.InstallSSLFlags) error {
+func DeployExistingCertificate(namespace string, sslFlags *cmd_utils.SSLFlags, dbSSLFlags *cmd_utils.SSLFlags) error {
 	if err := createTLSCertificate(
-		namespace, kubernetes.CASecretName, kubernetes.CAConfigName, &sslFlags.Ca, &sslFlags.Server,
+		namespace, kubernetes.CASecretName, kubernetes.CAConfigName, &sslFlags.CA, &sslFlags.Pair,
 	); err != nil {
 		return err
 	}
@@ -40,13 +40,13 @@ func DeployExistingCertificate(namespace string, sslFlags *cmd_utils.InstallSSLF
 	// Handle the DB certificate
 	var dbCA *types.CaChain
 	var dbPair *types.SSLPair
-	if sslFlags.UseProvidedDB() {
-		dbCA = &sslFlags.DB.CA
-		dbPair = &sslFlags.DB.SSLPair
-	} else if sslFlags.DB.IsDefined() && !sslFlags.DB.CA.IsThirdParty() {
+	if dbSSLFlags.UseProvided() {
+		dbCA = &dbSSLFlags.CA
+		dbPair = &dbSSLFlags.Pair
+	} else if dbSSLFlags.Pair.IsDefined() && !dbSSLFlags.CA.IsThirdParty() {
 		//let's use the CA already present in the server
-		dbCA = &sslFlags.Ca
-		dbPair = &sslFlags.DB.SSLPair
+		dbCA = &sslFlags.CA
+		dbPair = &dbSSLFlags.Pair
 	} else {
 		return errors.New(L("Database SSL certificate and key have to be defined"))
 	}
@@ -105,7 +105,7 @@ func DeployReusedCA(namespace string, ca *types.SSLPair, fqdn string) error {
 // DeployGenerateCA deploys a new SSL CA using cert-manager.
 func DeployGeneratedCA(
 	namespace string,
-	sslFlags *cmd_utils.InstallSSLFlags,
+	genSSLFlags *types.SSLCertGenerationFlags,
 	fqdn string,
 ) error {
 	log.Info().Msg(L("Creating SSL certificate issuer"))
@@ -113,12 +113,12 @@ func DeployGeneratedCA(
 	return templates.NewGeneratedCAIssuerTemplate(
 		namespace,
 		fqdn,
-		sslFlags.Country,
-		sslFlags.State,
-		sslFlags.City,
-		sslFlags.Org,
-		sslFlags.OU,
-		sslFlags.Email,
+		genSSLFlags.Country,
+		genSSLFlags.State,
+		genSSLFlags.City,
+		genSSLFlags.Org,
+		genSSLFlags.OU,
+		genSSLFlags.Email,
 	).Apply()
 }
 

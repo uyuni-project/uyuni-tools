@@ -33,10 +33,11 @@ func StartSetupJob(
 	dbSecret string,
 	reportdbSecret string,
 	sccSecret string,
+	tz string,
 ) (string, error) {
 	job, err := GetSetupJob(
 		namespace, image, pullPolicy, pullSecret, mirrorPvName, flags, fqdn,
-		adminSecret, dbSecret, reportdbSecret, sccSecret,
+		adminSecret, dbSecret, reportdbSecret, sccSecret, tz,
 	)
 	if err != nil {
 		return "", err
@@ -57,11 +58,12 @@ func GetSetupJob(
 	dbSecret string,
 	reportdbSecret string,
 	sccSecret string,
+	tz string,
 ) (*batch.Job, error) {
 	var maxFailures int32
 	timestamp := time.Now().Format("20060102150405")
 
-	template := getServerPodTemplate(image, pullPolicy, flags.TZ, pullSecret)
+	template := getServerPodTemplate(image, pullPolicy, tz, pullSecret)
 
 	script, err := adm_utils.GenerateSetupScript(flags, true)
 	if err != nil {
