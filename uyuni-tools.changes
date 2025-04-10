@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 10 15:41:24 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.9-0
+  * Move PostgreSQL to a separate container
+  * Increase WaitForServer timeout to 120s
+  * Add mgradm backup and restore commands
+
+-------------------------------------------------------------------
 Fri Feb 28 11:18:49 CET 2025 - rosuna@suse.com
 
 - version 5.1.8-0
