@@ -74,6 +74,9 @@ echo "-/ /var/log/lastlog" >> exclude_list
 # exclude systemd units as they will be recreated later
 echo "-/ /etc/systemd/**" >> exclude_list
 
+# Exclude py2*-compat-salt.conf as they can't work in the container
+echo "-/ /etc/salt/master.d/py2*-compat-salt.conf" >> exclude_list
+
 for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
   RSYNC_ARGS=-l
