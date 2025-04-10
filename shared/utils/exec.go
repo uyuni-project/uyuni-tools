@@ -174,6 +174,19 @@ func RunCmdOutput(logLevel zerolog.Level, command string, args ...string) ([]byt
 	return output, err
 }
 
+// RunCmdInput execute a shell command and pass input string to the StdIn.
+func RunCmdInput(command string, input string, args ...string) error {
+	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond) // Build our new spinner
+	s.Suffix = fmt.Sprintf(" %s %s\n", command, strings.Join(args, " "))
+	s.Start() // Start the spinner
+	log.Debug().Msgf("Running: %s %s", command, strings.Join(args, " "))
+	cmd := exec.Command(command, args...)
+	cmd.Stdin = strings.NewReader(input)
+	err := cmd.Run()
+	s.Stop()
+	return err
+}
+
 // IsInstalled checks if a tool is in the path.
 func IsInstalled(tool string) bool {
 	_, err := exec.LookPath(tool)

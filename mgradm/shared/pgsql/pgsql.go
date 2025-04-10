@@ -40,7 +40,7 @@ func SetupPgsql(
 	systemd podman.Systemd,
 	pgsqlImage string,
 ) error {
-	if err := generatePgsqlSystemdService(systemd, pgsqlImage); err != nil {
+	if err := GeneratePgsqlSystemdService(systemd, pgsqlImage); err != nil {
 		return utils.Error(err, L("cannot generate systemd service"))
 	}
 
@@ -69,7 +69,7 @@ func Upgrade(
 	preparedImage string,
 	systemd podman.Systemd,
 ) error {
-	if err := generatePgsqlSystemdService(systemd, preparedImage); err != nil {
+	if err := GeneratePgsqlSystemdService(systemd, preparedImage); err != nil {
 		return utils.Error(err, L("cannot generate systemd service"))
 	}
 
@@ -85,8 +85,8 @@ func Upgrade(
 	return cnx.WaitForHealthcheck()
 }
 
-// generatePgsqlSystemdService creates the DB container systemd files.
-func generatePgsqlSystemdService(
+// GeneratePgsqlSystemdService creates the DB container systemd files.
+func GeneratePgsqlSystemdService(
 	systemd podman.Systemd,
 	image string,
 ) error {

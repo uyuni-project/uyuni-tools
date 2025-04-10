@@ -24,7 +24,7 @@ if [ "${OSCAPI}" == "https://api.suse.de" ]; then
   esac
 
 # Define the default tag to use
-  sed 's/^tag=%{!?_default_tag:latest}/tag=5.1.0-beta1/' -i ${SRPM_PKG_DIR}/uyuni-tools.spec
+  sed 's/^tag=%{!?_default_tag:latest}/tag=5.1.0-beta2/' -i ${SRPM_PKG_DIR}/uyuni-tools.spec
 
   sed "s/namespace='%{_default_namespace}'/namespace='%{_default_namespace}\/%{_arch}'/" -i ${SRPM_PKG_DIR}/uyuni-tools.spec
 
@@ -46,4 +46,4 @@ else
 fi
 
 # Add the version_details value for use in the version tag
-sed "/^%global productname.*$/a%global version_details ${VERSION} $COMMIT_ID" -i ${SRPM_PKG_DIR}/uyuni-tools.spec
+sed "/^%global provider_prefix.*$/a%global version_details ${VERSION} $COMMIT_ID" -i ${SRPM_PKG_DIR}/uyuni-tools.spec
