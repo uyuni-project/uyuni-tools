@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-04 11:45+0200\n"
+"POT-Creation-Date: 2025-04-10 15:22+0200\n"
 "PO-Revision-Date: 2025-03-10 07:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
@@ -210,7 +210,9 @@ msgid "container didn't start within 10s."
 msgstr "컨테이너가 10초 이내에 시작되지 않았습니다."
 
 #: shared/connection.go:318
-msgid "server didn't start within 60s. Check for the service status"
+#, fuzzy
+#| msgid "server didn't start within 60s. Check for the service status"
+msgid "server didn't start within 120s. Check for the service status"
 msgstr "서버가 60초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
 
 #: shared/connection.go:333
@@ -296,10 +298,12 @@ msgstr "%[2]s 네임스페이스에서 helm 차트 %[1]s을(를) 설치하지 �
 msgid "namespace is required"
 msgstr "네임스페이스는 필수입니다."
 
-#: shared/kubernetes/helm.go:77 shared/podman/network.go:108
-#: shared/podman/secret.go:121 shared/podman/systemd.go:106
-#: shared/podman/systemd.go:185 shared/podman/systemd.go:186
-#: shared/podman/utils.go:160 shared/podman/utils.go:186
+#: shared/kubernetes/helm.go:77 shared/podman/images.go:340
+#: shared/podman/images.go:360 shared/podman/images.go:380
+#: shared/podman/network.go:108 shared/podman/secret.go:121
+#: shared/podman/systemd.go:106 shared/podman/systemd.go:185
+#: shared/podman/systemd.go:186 shared/podman/utils.go:175
+#: shared/podman/utils.go:208 shared/podman/utils.go:228
 #, javascript-format
 msgid "Would run %s"
 msgstr "%s 실행"
@@ -737,6 +741,31 @@ msgstr "실행 중 podman ps --filter=name=%s --format={{ .Image }}"
 msgid "cannot find any running image for container %s"
 msgstr "%s 컨테이너에 대한 실행 이미지를 찾을 수 없음"
 
+#: shared/podman/images.go:342 shared/podman/images.go:362
+#: shared/podman/images.go:382 shared/podman/secret.go:123
+#: shared/podman/utils.go:177 shared/podman/utils.go:211
+#: shared/podman/utils.go:239
+#, javascript-format
+msgid "Run %s"
+msgstr "%s 실행"
+
+#: shared/podman/images.go:345
+#, javascript-format
+msgid "Failed to remove image %s"
+msgstr "%s 이미지를 제거하지 못함"
+
+#: shared/podman/images.go:365
+#, fuzzy, javascript-format
+#| msgid "Failed to remove image %s"
+msgid "Failed to export image %s"
+msgstr "%s 이미지를 제거하지 못함"
+
+#: shared/podman/images.go:385
+#, fuzzy, javascript-format
+#| msgid "Failed to remove image %s"
+msgid "Failed to restore image %s"
+msgstr "%s 이미지를 제거하지 못함"
+
 #: shared/podman/login.go:25
 msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
 msgstr "SCC 자격 증명 매개변수가 사용됩니다. 호스트의 SCC 자격 증명은 무시됩니다."
@@ -808,12 +837,6 @@ msgstr "%s 비밀을 파일에 쓰기 실패"
 #, javascript-format
 msgid "failed to create podman secret %s"
 msgstr "podman 비밀 %s 생성 실패"
-
-#: shared/podman/secret.go:123 shared/podman/utils.go:162
-#: shared/podman/utils.go:188
-#, javascript-format
-msgid "Run %s"
-msgstr "%s 실행"
 
 #: shared/podman/secret.go:125
 #, javascript-format
@@ -999,72 +1022,95 @@ msgstr "서비스를 활성할 수 없음"
 msgid "cannot disable service"
 msgstr "서비스 비활성화 실패"
 
-#: shared/podman/utils.go:59
+#: shared/podman/utils.go:61
 msgid "Extra arguments to pass to podman"
 msgstr "podman에게 전달할 추가 인자"
 
-#: shared/podman/utils.go:66
+#: shared/podman/utils.go:68
 msgid "failed to enable podman.socket unit"
 msgstr "podman.socket 단위 활성화하지 못함"
 
-#: shared/podman/utils.go:87 shared/podman/utils.go:106
+#: shared/podman/utils.go:89 shared/podman/utils.go:108
 #, javascript-format
 msgid "failed to run %s container"
 msgstr "%s 컨테이너를 실행하지 못함"
 
-#: shared/podman/utils.go:117
+#: shared/podman/utils.go:119
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr "컨테이너 ID: %[2]s에 대해 podman kill %[1]s을(를) 실행하시겠습니까?"
 
-#: shared/podman/utils.go:118
+#: shared/podman/utils.go:120
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr "컨테이너 ID: %[2]s에 대해 podman remove %[1]s을(를) 실행하시겠습니까?"
 
-#: shared/podman/utils.go:120
+#: shared/podman/utils.go:122
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr "컨테이너 id %[2]s에 대해 podman kill %[1]s 실행"
 
-#: shared/podman/utils.go:123
+#: shared/podman/utils.go:125
 msgid "Failed to kill the server"
 msgstr "서버 종료 실패"
 
-#: shared/podman/utils.go:125
+#: shared/podman/utils.go:127
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr "컨테이너 id %[2]s에 대해 podman remove %[1]s 실행"
 
-#: shared/podman/utils.go:128
+#: shared/podman/utils.go:130
 msgid "Error removing container"
 msgstr "컨테이너 제거 중 오류 발생"
 
-#: shared/podman/utils.go:133
+#: shared/podman/utils.go:135
 msgid "Container already removed"
 msgstr "컨테이너 이미 제거됨"
 
-#: shared/podman/utils.go:141
+#: shared/podman/utils.go:143
 #, javascript-format
 msgid "failed to get %s systemd service definition"
 msgstr "%s systemd service 정의를 가져오지 못함"
 
-#: shared/podman/utils.go:148
+#: shared/podman/utils.go:150
 #, javascript-format
 msgid "no UYUNI_IMAGE defined in %s systemd service"
 msgstr "%s systemd service에 정의된 UYUNI_IMAGE 없음"
 
-#: shared/podman/utils.go:165
-#, javascript-format
-msgid "Failed to remove image %s"
-msgstr "%s 이미지를 제거하지 못함"
-
-#: shared/podman/utils.go:200
+#: shared/podman/utils.go:189
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "볼륨 %s이(가) 외부에 탑재되어 있어, 디렉토리를 제거할 수 없습니다"
 
-#: shared/podman/utils.go:267
+#: shared/podman/utils.go:213
+#, fuzzy, javascript-format
+#| msgid "Failed to remove volume %s"
+msgid "Failed to export volume %s"
+msgstr "%s 볼륨 제거 실패"
+
+#: shared/podman/utils.go:216
+#, fuzzy
+msgid "Failed to write checksum of volume %[1]s to the %[2]s"
+msgstr "볼륨 폴더 %s을(를) %s에 연결 실패: %s"
+
+#: shared/podman/utils.go:233
+#, javascript-format
+msgid "Checksum does not match for volume %s"
+msgstr ""
+
+#: shared/podman/utils.go:237
+#, fuzzy, javascript-format
+#| msgid "Failed to remove volume %s"
+msgid "Failed to precreate empty volume %s"
+msgstr "%s 볼륨 제거 실패"
+
+#: shared/podman/utils.go:241
+#, fuzzy, javascript-format
+#| msgid "Failed to remove volume %s"
+msgid "Failed to import volume %s"
+msgstr "%s 볼륨 제거 실패"
+
+#: shared/podman/utils.go:317
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.com에 로그인하지 못했습니다."
 
-#: shared/podman/utils.go:293 shared/podman/utils.go:314
+#: shared/podman/utils.go:343 shared/podman/utils.go:364
 msgid "cannot inspect data"
 msgstr "데이터를 검사할 수 없음"
 
@@ -1593,6 +1639,48 @@ msgstr "%s 파일 생성 오류"
 msgid "error writing file %s"
 msgstr "%s 파일 쓰기 오류"
 
+#: shared/utils/utils.go:517
+#, fuzzy, javascript-format
+#| msgid "Failed to remove file %s"
+msgid "Failed to calculate checksum of the file %s"
+msgstr "%s 파일 제거 실패"
+
+#: shared/utils/utils.go:521
+#, fuzzy
+msgid "Failed to write checksum of the file %[1]s to the %[2]s"
+msgstr "볼륨 폴더 %s을(를) %s에 연결 실패: %s"
+
+#: shared/utils/utils.go:531
+#, javascript-format
+msgid "Checksum of %s does not match"
+msgstr ""
+
+#: shared/utils/uyuniservices.go:18
+#, fuzzy
+#| msgid "cannot enable service"
+msgid "Main service"
+msgstr "서비스를 활성할 수 없음"
+
+#: shared/utils/uyuniservices.go:24
+msgid "Migration helper"
+msgstr ""
+
+#: shared/utils/uyuniservices.go:30
+msgid "Confidential computing attestation"
+msgstr ""
+
+#: shared/utils/uyuniservices.go:36
+msgid "Hub XML-RPC API"
+msgstr ""
+
+#: shared/utils/uyuniservices.go:42
+msgid "Saline"
+msgstr ""
+
+#: shared/utils/uyuniservices.go:46
+msgid "Database"
+msgstr ""
+
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "클러스터 유형 검색 실패"
 
@@ -1686,10 +1774,6 @@ msgstr "%s 파일 쓰기 오류"
 #~ msgid "pod %[1]s replicas have not reached %[2]d in %[3]s seconds"
 #~ msgstr "Pod %[1]s 복제본이 %[3]s초 후에 %[2]d에 도달하지 못함"
 
-#, javascript-format
-#~ msgid "Failed to remove volume %s"
-#~ msgstr "%s 볼륨 제거 실패"
-
 #~ msgid "cannot inspect host values"
 #~ msgstr "호스트 값 검사할 수 없음"
 
@@ -1715,10 +1799,6 @@ msgstr "%s 파일 쓰기 오류"
 #, fuzzy, javascript-format
 #~ msgid "failed to create volumes folder %s"
 #~ msgstr "볼륨 폴더 %s 만들기 실패: %s"
-
-#, fuzzy
-#~ msgid "failed to link volume folder %[1]s to %[2]s"
-#~ msgstr "볼륨 폴더 %s을(를) %s에 연결 실패: %s"
 
 #, fuzzy
 #~ msgid "failed to get podman's volumes folder"

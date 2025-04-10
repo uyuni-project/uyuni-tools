@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-04 11:45+0200\n"
+"POT-Creation-Date: 2025-04-10 15:22+0200\n"
 "PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
@@ -18,42 +18,473 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.5.5\n"
 
-#: mgradm/cmd/cmd.go:40
+#: mgradm/cmd/backup/backup.go:28
+msgid "Create backup"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:29
+msgid "Create backup of the already configured Uyuni system"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:35
+msgid "Skip backup of selected volumes"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:36
+msgid "Backup additional volumes to the build-in ones"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:37
+msgid "Do not backup database volume, allow online backup."
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:38
+msgid "Do not backup container images"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:39
+msgid "Do not backup podman configuration. On restore defaults will be used"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:40
+msgid "Do not restart services after backup is done"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:41 mgradm/cmd/backup/backup.go:64
+msgid "Print expected actions, but no action is done"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:52
+msgid "Restore backup from the directory"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:53
+msgid "Restore backup of the previously configured Uyuni system from a specified directory"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:59
+msgid "Skip restore of selected volumes"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:60
+msgid "Do not restore database volume"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:61
+msgid "Skip restore of container images"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:62
+msgid "Do not restore podman configuration. Defaults will be used"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:63
+msgid "Restart service after restore is done"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:65
+msgid "Force overwrite of existing items"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:66
+msgid "Skip existing items and restore the rest"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:67
+msgid "Skip verification of the backup files"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:77
+msgid "Backup solution"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:78
+#, fuzzy
+#| msgid "Tools for autoinstallation distributions management"
+msgid "Tools for local backup management"
+msgstr "Strumenti di autoinstallazione delle distribuzioni"
+
+#: mgradm/cmd/backup/backup.go:101
+#, javascript-format
+msgid "Backup aborted, partially backed up files remains in '%s'"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:105
+msgid "Important data were backed up successfully, but errors were present. Restore will use default values where needed"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:125
+msgid "Encountered problems:"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:127
+msgid "Restore aborted with partially restored files. Resolve the error and try again"
+msgstr ""
+
+#: mgradm/cmd/backup/backup.go:130
+msgid "Important data were restored successfully, but with warnings"
+msgstr ""
+
+#: mgradm/cmd/backup/create/create.go:59
+msgid "Stopping server service"
+msgstr ""
+
+#: mgradm/cmd/backup/create/create.go:82
+msgid "Restarting server service"
+msgstr ""
+
+#: mgradm/cmd/backup/create/create.go:86
+#, javascript-format
+msgid "Backup finished into %s"
+msgstr ""
+
+#: mgradm/cmd/backup/create/create.go:105
+#, fuzzy, javascript-format
+msgid "Would create '%s' directory"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/cmd/backup/create/create.go:108
+#, fuzzy
+#| msgid "failed to create temporary directory: %s"
+msgid "unable to create target output directory: %w"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/cmd/backup/create/create.go:149
+msgid "Backing up container volumes"
+msgstr ""
+
+#: mgradm/cmd/backup/create/create.go:173
+msgid "Backing up container images"
+msgstr ""
+
+#: mgradm/cmd/backup/create/create.go:178
+#, javascript-format
+msgid "Not backing up image %s"
+msgstr ""
+
+#: mgradm/cmd/backup/create/create.go:186
+msgid "Systemd services and configuration was not backed up"
+msgstr ""
+
+#: mgradm/cmd/backup/create/create.go:187
+#, fuzzy
+msgid "Backing up Systemd services"
+msgstr "impossibile abilitare il servizio: %s"
+
+#: mgradm/cmd/backup/create/create.go:204
+msgid "Podman configuration was not backed up"
+msgstr ""
+
+#: mgradm/cmd/backup/create/create.go:205
+msgid "Backing up podman configuration"
+msgstr ""
+
+#: mgradm/cmd/backup/create/create.go:227
+#, javascript-format
+msgid "output directory %s already exists and is not empty"
+msgstr ""
+
+#: mgradm/cmd/backup/create/create.go:237
+msgid "server is not initialized."
+msgstr ""
+
+#: mgradm/cmd/backup/create/podman_utils.go:36
+#, fuzzy
+#| msgid "failed to create temporary directory: %s"
+msgid "failed to create podman backup tarball: %w"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/cmd/backup/create/podman_utils.go:46
+msgid "Network was not backed up"
+msgstr ""
+
+#: mgradm/cmd/backup/create/podman_utils.go:62
+msgid "Podman secrets were not backed up"
+msgstr ""
+
+#: mgradm/cmd/backup/create/podman_utils.go:82
+#: mgradm/cmd/backup/create/podman_utils.go:97
+#: mgradm/cmd/uninstall/kubernetes.go:64
+#, javascript-format
+msgid "Would run %s"
+msgstr ""
+
+#: mgradm/cmd/backup/create/podman_utils.go:87
+#, fuzzy
+msgid "Failed to export network data"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/cmd/backup/create/podman_utils.go:102
+#, fuzzy
+msgid "Failed to export secrets data"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/cmd/backup/create/podman_utils.go:122
+#, fuzzy
+msgid "Failed to read secrets data"
+msgstr "mancata identificazione dell'immagine: %s"
+
+#: mgradm/cmd/backup/create/podman_utils.go:128
+#: mgradm/cmd/backup/restore/podman_utils.go:153
+msgid "Unable to decode podman secrets"
+msgstr ""
+
+#: mgradm/cmd/backup/create/podman_utils.go:143
+#, fuzzy
+msgid "Unable to encode secrets backup"
+msgstr "mancata identificazione dell'immagine: %s"
+
+#: mgradm/cmd/backup/create/systemd_utils.go:27
+#, javascript-format
+msgid "Would backup %s"
+msgstr ""
+
+#: mgradm/cmd/backup/create/systemd_utils.go:33
+#, fuzzy
+msgid "failed to create Systemd backup tarball: %w"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/cmd/backup/restore/podman_utils.go:48
+#, javascript-format
+msgid "Ignoring unexpected file in the podman backup %s"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:59
+msgid "Unable to decode network data backup"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:63
+msgid "Incorrect network data backup"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:97
+#: mgradm/cmd/backup/restore/podman_utils.go:130
+msgid "podman network already exists"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:102
+msgid "Unable to create podman network! Check the error and create network manually before starting the service"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:110
+msgid "Would restore network configuration"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:115
+msgid "Failed to read backed up network configuration, trying default"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:121
+msgid "Failed to decode backed up network configuration, trying default"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:129
+msgid "Podman network already exists, not restoring unless forced"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:142
+msgid "Restoring podman network"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:144
+#, fuzzy
+msgid "Unlable to create podman network"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/cmd/backup/restore/podman_utils.go:161
+#, javascript-format
+msgid "Unable to decode secret %s, using as is"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:174
+msgid "Would restore podman secrets"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:180
+msgid "Failed to read backed up podman secrets, no secrets were restored"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:185
+msgid "Failed to decode backed up podman secrets, no secrets were restored"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:190
+msgid "Restoring podman secrets"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:197
+#, javascript-format
+msgid "Podman secret %s is already present, not restoring unless forced"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/podman_utils.go:203
+#, fuzzy
+msgid "Unable to create podman secret"
+msgstr "mancata identificazione dell'immagine: %s"
+
+#: mgradm/cmd/backup/restore/restore.go:106
+#, fuzzy, javascript-format
+#| msgid "source %s does not exists"
+msgid "input directory %s does not exists"
+msgstr "la risorsa %s non esiste"
+
+#: mgradm/cmd/backup/restore/restore.go:116
+msgid "Restoring over already initialized server"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:118
+msgid "server is already initialized. Use force to overwrite"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:137
+msgid "No volumes found in the backup"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:142
+msgid "Unable to read directory with the volumes"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:155
+#, javascript-format
+msgid "Skipping volume %s"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:163
+#, fuzzy, javascript-format
+msgid "Skipping database volume %s"
+msgstr "impossibile aggiornare: %s"
+
+#: mgradm/cmd/backup/restore/restore.go:170
+#, fuzzy, javascript-format
+msgid "Not restoring existing volume %s"
+msgstr "impossible eliminare il volume %s"
+
+#: mgradm/cmd/backup/restore/restore.go:174
+#, javascript-format
+msgid "Not restoring existing volume %s unless forced"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:176
+#, javascript-format
+msgid "Volume %s will be overwriten"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:193
+msgid "No images found in the backup"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:197
+msgid "Unable to read directory with the images"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:235
+msgid "podman config backup not found in the backup location, trying defaults"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:241
+msgid "Unable to validate podman backup file"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:249
+#, fuzzy
+msgid "Restoring systemd configuration"
+msgstr "impossibile abilitare il servizio: %s"
+
+#: mgradm/cmd/backup/restore/restore.go:252
+msgid "systemd backup not found in the backup location, generating defaults"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/restore.go:257
+#, fuzzy
+msgid "Unable to validate systemd backup file"
+msgstr "impossibile abilitare il servizio: %s"
+
+#: mgradm/cmd/backup/restore/systemd_utils.go:40
+#, javascript-format
+msgid "Would restore %s"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/systemd_utils.go:48
+#, fuzzy, javascript-format
+#| msgid "failed to create temporary directory: %s"
+msgid "Unable to create directory %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/cmd/backup/restore/systemd_utils.go:58
+#, javascript-format
+msgid "Unknown filetype of %s"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/systemd_utils.go:63
+#, fuzzy, javascript-format
+msgid "Unable to restore file details for %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/cmd/backup/restore/systemd_utils.go:73
+#, fuzzy, javascript-format
+msgid "Unable to create %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/cmd/backup/restore/systemd_utils.go:77
+#, javascript-format
+msgid "Unable to restore content of %s"
+msgstr ""
+
+#: mgradm/cmd/backup/restore/systemd_utils.go:96
+#, fuzzy
+msgid "Would generate default systemd services"
+msgstr "impossibile abilitare il servizio: %s"
+
+#: mgradm/cmd/backup/shared/utils.go:31
+#, fuzzy, javascript-format
+msgid "unable to determine target %s storage size"
+msgstr "mancata identificazione dell'immagine: %s"
+
+#: mgradm/cmd/backup/shared/utils.go:61
+msgid "insufficient space on target device"
+msgstr ""
+
+#: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/podman/utils.go:56
+#: mgradm/cmd/migrate/podman/utils.go:41 mgradm/cmd/upgrade/podman/utils.go:35
+msgid "install podman before running this command"
+msgstr "installare podman prima di eseguire questo comando"
+
+#: mgradm/cmd/cmd.go:41
 msgid "Uyuni administration tool"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:41
+#: mgradm/cmd/cmd.go:42
 msgid "Tool to help administering Uyuni servers in containers"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:48
+#: mgradm/cmd/cmd.go:49
 msgid "Server Deployment:"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:52
+#: mgradm/cmd/cmd.go:53
 msgid "Server Management:"
 msgstr "Gestione del Server:"
 
-#: mgradm/cmd/cmd.go:56
+#: mgradm/cmd/cmd.go:57
 #, fuzzy
 msgid "Administrator tools:"
 msgstr "Password amministratore"
 
-#: mgradm/cmd/cmd.go:66
+#: mgradm/cmd/cmd.go:67
 #, javascript-format
 msgid "Welcome to %s"
 msgstr "Benvenuti su %s"
 
-#: mgradm/cmd/cmd.go:67
+#: mgradm/cmd/cmd.go:68
 #, javascript-format
 msgid "Executing command: %s"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:71
+#: mgradm/cmd/cmd.go:72
 msgid "configuration file path"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:73
+#: mgradm/cmd/cmd.go:74
 msgid "application log level"
 msgstr ""
 
@@ -444,11 +875,6 @@ msgstr ""
 #: mgradm/cmd/install/podman/utils.go:50
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
 msgstr ""
-
-#: mgradm/cmd/install/podman/utils.go:56 mgradm/cmd/migrate/podman/utils.go:41
-#: mgradm/cmd/upgrade/podman/utils.go:35
-msgid "install podman before running this command"
-msgstr "installare podman prima di eseguire questo comando"
 
 #: mgradm/cmd/install/podman/utils.go:63
 #, javascript-format
@@ -967,11 +1393,6 @@ msgstr ""
 
 #: mgradm/cmd/uninstall/kubernetes.go:31
 msgid "--purge-images is ignored on a kubernetes deployment"
-msgstr ""
-
-#: mgradm/cmd/uninstall/kubernetes.go:64
-#, javascript-format
-msgid "Would run %s"
 msgstr ""
 
 #: mgradm/cmd/uninstall/kubernetes.go:67
@@ -1697,7 +2118,7 @@ msgid "Confidential Computing Flags"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:221 mgradm/shared/utils/cmd_utils.go:229
-msgid "confidential computing attestation"
+msgid "Confidential computing attestation"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:222
@@ -1840,10 +2261,6 @@ msgstr "mancata identificazione dell'immagine: %s"
 #~ msgstr "impossibile abilitare il servizio: %s"
 
 #, fuzzy
-#~ msgid "failed to create temporary directory"
-#~ msgstr "mancata creazione della directory temporanea: %s"
-
-#, fuzzy
 #~ msgid "cannot inspect data"
 #~ msgstr "impossibile copiare: %s"
 
@@ -1854,10 +2271,6 @@ msgstr "mancata identificazione dell'immagine: %s"
 #, fuzzy
 #~ msgid "Failed to stop service: %v"
 #~ msgstr "mancata identificazione dell'immagine: %s"
-
-#, fuzzy
-#~ msgid "failed to create the database secret"
-#~ msgstr "mancata creazione della directory temporanea: %s"
 
 #, fuzzy
 #~ msgid "cannot copy /tmp/setup.sh"
@@ -1906,10 +2319,6 @@ msgstr "mancata identificazione dell'immagine: %s"
 #, javascript-format
 #~ msgid "unable to remove temporary directory, leaving %s intact"
 #~ msgstr "impossibile rimuovere la directory temporanea, %s è inalterata"
-
-#, javascript-format
-#~ msgid "failed to create temporary directory: %s"
-#~ msgstr "mancata creazione della directory temporanea: %s"
 
 #, fuzzy
 #~ msgid "cannot inspect host values"
