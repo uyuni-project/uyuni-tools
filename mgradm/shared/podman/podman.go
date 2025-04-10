@@ -215,13 +215,15 @@ func RunMigration(
 	}
 
 	//now that everything is migrated, we need to fix SELinux permission
-	for _, volumeMount := range utils.ServerVolumeMounts {
-		mountPoint, err := GetMountPoint(volumeMount.Name)
-		if err != nil {
-			return nil, utils.Errorf(err, L("cannot inspect volume %s"), volumeMount)
-		}
-		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "restorecon", "-F", "-r", "-v", mountPoint); err != nil {
-			return nil, utils.Errorf(err, L("cannot restore %s SELinux permissions"), mountPoint)
+	if utils.IsInstalled("restorecon") {
+		for _, volumeMount := range utils.ServerVolumeMounts {
+			mountPoint, err := GetMountPoint(volumeMount.Name)
+			if err != nil {
+				return nil, utils.Errorf(err, L("cannot inspect volume %s"), volumeMount)
+			}
+			if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "restorecon", "-F", "-r", "-v", mountPoint); err != nil {
+				return nil, utils.Errorf(err, L("cannot restore %s SELinux permissions"), mountPoint)
+			}
 		}
 	}
 
