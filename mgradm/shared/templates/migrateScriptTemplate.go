@@ -74,6 +74,9 @@ echo "-/ /var/log/lastlog" >> exclude_list
 # exclude systemd units as they will be recreated later
 echo "-/ /etc/systemd/**" >> exclude_list
 
+# uyuni issue #10055. Some old system might have this file
+echo "-/ /etc/apache2/vhosts.d/cobbler.conf" >> exclude_list
+
 for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
   RSYNC_ARGS=-l
