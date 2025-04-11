@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,6 +7,7 @@ package gpg
 import (
 	"github.com/spf13/cobra"
 	gpgadd "github.com/uyuni-project/uyuni-tools/mgradm/cmd/gpg/add"
+	gpglist "github.com/uyuni-project/uyuni-tools/mgradm/cmd/gpg/list"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
@@ -21,6 +22,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	}
 
 	gpgKeyCmd.AddCommand(gpgadd.NewCommand(globalFlags))
+	gpgKeyCmd.AddCommand(gpglist.NewCommand(globalFlags))
 
 	return gpgKeyCmd
 }
