@@ -112,6 +112,10 @@ while IFS="," read -r target path ; do
     echo "Copying distribution $target from $path"
     mkdir -p "/srv/www/distributions/$target"
     rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz "{{ .SourceFqdn }}:$path/" "/srv/www/distributions/$target"
+	# Adjust cobbler distro configuration
+	for config in $(grep "$path/" -r /var/lib/cobbler/collections/distros/ -l); do
+		sed "s|$path/|/srv/www/distributions/$target/|g" -i $config
+	done
   else
     echo "Skipping missing distribution $path..."
   fi

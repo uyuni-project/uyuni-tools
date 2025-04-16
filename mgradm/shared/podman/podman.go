@@ -602,7 +602,7 @@ func Migrate(
 	}
 
 	if err := saline.Upgrade(systemd, authFile, registry, salineFlags, image,
-		utils.GetLocalTimezone(), viper.GetStringSlice("podman.arg"),
+		utils.GetLocalTimezone(), podmanArgs.Args,
 	); err != nil {
 		return utils.Errorf(err, L("error upgrading saline service."))
 	}
