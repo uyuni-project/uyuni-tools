@@ -25,10 +25,9 @@ func Upgrade(
 	salineFlags adm_utils.SalineFlags,
 	baseImage types.ImageFlags,
 	tz string,
-	podmanArgs []string,
 ) error {
 	if err := writeSalineServiceFiles(
-		systemd, authFile, registry, salineFlags, baseImage, tz, podmanArgs,
+		systemd, authFile, registry, salineFlags, baseImage, tz,
 	); err != nil {
 		return err
 	}
@@ -49,7 +48,6 @@ func writeSalineServiceFiles(
 	salineFlags adm_utils.SalineFlags,
 	baseImage types.ImageFlags,
 	tz string,
-	podmanArgs []string,
 ) error {
 	image := salineFlags.Image
 
@@ -106,8 +104,7 @@ func writeSalineServiceFiles(
 	}
 
 	config := fmt.Sprintf(`Environment=TZ=%s
-Environment="PODMAN_EXTRA_ARGS=%s"
-`, strings.TrimSpace(tz), strings.Join(podmanArgs, " "))
+`, strings.TrimSpace(tz))
 
 	if err := podman.GenerateSystemdConfFile(podman.SalineService, "custom.conf",
 		config, false); err != nil {
@@ -128,11 +125,8 @@ func SetupSalineContainer(
 	salineFlags adm_utils.SalineFlags,
 	baseImage types.ImageFlags,
 	tz string,
-	podmanArgs []string,
 ) error {
-	if err := writeSalineServiceFiles(
-		systemd, authFile, registry, salineFlags, baseImage, tz, podmanArgs,
-	); err != nil {
+	if err := writeSalineServiceFiles(systemd, authFile, registry, salineFlags, baseImage, tz); err != nil {
 		return err
 	}
 	return systemd.EnableService(podman.SalineService)
