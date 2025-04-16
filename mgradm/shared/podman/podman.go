@@ -16,7 +16,6 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
@@ -439,9 +438,7 @@ func Upgrade(
 		return err
 	}
 
-	if err := saline.Upgrade(systemd, authFile, registry, salineFlags, image,
-		utils.GetLocalTimezone(), viper.GetStringSlice("podman.arg"),
-	); err != nil {
+	if err := saline.Upgrade(systemd, authFile, registry, salineFlags, image, utils.GetLocalTimezone()); err != nil {
 		return utils.Errorf(err, L("error upgrading saline service."))
 	}
 
@@ -601,9 +598,7 @@ func Migrate(
 		return err
 	}
 
-	if err := saline.Upgrade(systemd, authFile, registry, salineFlags, image,
-		utils.GetLocalTimezone(), podmanArgs.Args,
-	); err != nil {
+	if err := saline.Upgrade(systemd, authFile, registry, salineFlags, image, utils.GetLocalTimezone()); err != nil {
 		return utils.Errorf(err, L("error upgrading saline service."))
 	}
 

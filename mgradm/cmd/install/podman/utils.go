@@ -153,8 +153,7 @@ func installForPodman(
 
 	if flags.Saline.Replicas > 0 {
 		if err := saline.SetupSalineContainer(
-			systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image,
-			flags.Installation.TZ, flags.Podman.Args,
+			systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image, flags.Installation.TZ,
 		); err != nil {
 			return err
 		}
