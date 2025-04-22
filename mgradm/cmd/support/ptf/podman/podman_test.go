@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 //go:build ptf
@@ -18,6 +18,7 @@ func TestParamsParsing(t *testing.T) {
 		"--ptf", "ptf123",
 		"--test", "test123",
 		"--user", "sccuser",
+		"--pullPolicy", "never",
 	}
 
 	// Test function asserting that the args are properly parsed
@@ -25,6 +26,7 @@ func TestParamsParsing(t *testing.T) {
 		testutils.AssertEquals(t, "Error parsing --ptf", "ptf123", flags.PTFId)
 		testutils.AssertEquals(t, "Error parsing --test", "test123", flags.TestID)
 		testutils.AssertEquals(t, "Error parsing --user", "sccuser", flags.CustomerID)
+		testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.Image.PullPolicy)
 		return nil
 	}
 

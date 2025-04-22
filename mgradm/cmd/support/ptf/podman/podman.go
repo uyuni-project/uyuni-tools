@@ -42,6 +42,7 @@ NOTE: for now installing on a remote podman is not supported!
 	}
 
 	utils.AddPTFFlag(podmanCmd)
+	utils.AddPullPolicyFlag(podmanCmd)
 
 	return podmanCmd
 }
