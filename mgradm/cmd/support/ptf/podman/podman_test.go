@@ -10,6 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils/flagstests"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -20,6 +21,7 @@ func TestParamsParsing(t *testing.T) {
 		"--user", "sccuser",
 		"--pullPolicy", "never",
 	}
+	args = append(args, flagstests.SCCFlagTestArgs...)
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *podmanPTFFlags, _ *cobra.Command, _ []string) error {
@@ -27,6 +29,7 @@ func TestParamsParsing(t *testing.T) {
 		testutils.AssertEquals(t, "Error parsing --test", "test123", flags.TestID)
 		testutils.AssertEquals(t, "Error parsing --user", "sccuser", flags.CustomerID)
 		testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.Image.PullPolicy)
+		flagstests.AssertSCCFlag(t, &flags.ServerFlags.Installation.SCC)
 		return nil
 	}
 
