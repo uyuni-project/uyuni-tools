@@ -9,6 +9,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -97,7 +98,8 @@ func createSecretFromFile(name string, secretFile string) error {
 		return nil
 	}
 
-	if err := utils.RunCmd("podman", "secret", "create", name, secretFile); err != nil {
+	runner := utils.NewRunner("podman", "secret", "create", name, secretFile).Log(zerolog.DebugLevel)
+	if _, err := runner.Exec(); err != nil {
 		return utils.Errorf(err, L("failed to create podman secret %s"), name)
 	}
 
@@ -121,7 +123,8 @@ func DeleteSecret(name string, dryRun bool) {
 		log.Info().Msgf(L("Would run %s"), command)
 	} else {
 		log.Info().Msgf(L("Run %s"), command)
-		if err := utils.RunCmd("podman", args...); err != nil {
+		runner := utils.NewRunner("podman", args...).Log(zerolog.DebugLevel)
+		if _, err := runner.Exec(); err != nil {
 			log.Error().Err(err).Msgf(L("Failed to delete %s secret"), name)
 		}
 	}
