@@ -94,7 +94,12 @@ func PrepareImages(
 		}
 	}
 
-	pgsqlImage, err := utils.ComputeImage(image.Registry, utils.DefaultTag, pgsqlFlags.Image)
+	globalTag := utils.DefaultTag
+	if image.Tag != "" {
+		globalTag = image.Tag
+	}
+
+	pgsqlImage, err := utils.ComputeImage(image.Registry, globalTag, pgsqlFlags.Image)
 	if err != nil && len(pgsqlImage) > 0 {
 		return "", "", utils.Error(err, L("failed to determine pgsql image"))
 	}
