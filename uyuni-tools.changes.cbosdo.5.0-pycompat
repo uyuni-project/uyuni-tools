@@ -1,0 +1,1 @@
+- Don't migrate py2*-compat-salt.conf files (bsc#1240626)

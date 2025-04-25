@@ -1,0 +1,1 @@
+- allow --tag parameter to override --pgsql-tag if missing (bsc#1241289)
