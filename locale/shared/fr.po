@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-10 15:22+0200\n"
+"POT-Creation-Date: 2025-04-25 09:43+0200\n"
 "PO-Revision-Date: 2024-04-08 14:09+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -308,8 +308,8 @@ msgstr ""
 msgid "namespace is required"
 msgstr "Une valeur est requise"
 
-#: shared/kubernetes/helm.go:77 shared/podman/images.go:340
-#: shared/podman/images.go:360 shared/podman/images.go:380
+#: shared/kubernetes/helm.go:77 shared/podman/images.go:345
+#: shared/podman/images.go:365 shared/podman/images.go:385
 #: shared/podman/network.go:108 shared/podman/secret.go:121
 #: shared/podman/systemd.go:106 shared/podman/systemd.go:185
 #: shared/podman/systemd.go:186 shared/podman/utils.go:175
@@ -691,95 +691,95 @@ msgstr "Impossible de supprimer le fichier %s"
 msgid "failed to find the image of the currently running server container"
 msgstr ""
 
-#: shared/podman/images.go:99
+#: shared/podman/images.go:104
 #, fuzzy
 msgid "failed to determine pgsql image"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/podman/images.go:107
+#: shared/podman/images.go:112
 #, fuzzy
 msgid "failed to find the image of the currently running db container"
 msgstr "impossible de se connecter au serveur: %s"
 
-#: shared/podman/images.go:132
+#: shared/podman/images.go:137
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
 msgstr ""
 
-#: shared/podman/images.go:150
+#: shared/podman/images.go:155
 msgid "cannot unmarshal image RPM metadata"
 msgstr ""
 
-#: shared/podman/images.go:169
+#: shared/podman/images.go:174
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
 msgstr ""
 
-#: shared/podman/images.go:199
+#: shared/podman/images.go:204
 #, fuzzy, javascript-format
 msgid "Cannot unmarshal metadata file %s"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/podman/images.go:221
+#: shared/podman/images.go:226
 #, javascript-format
 msgid "error parsing: %s"
 msgstr ""
 
-#: shared/podman/images.go:229 shared/podman/images.go:243
-#: shared/podman/images.go:258
+#: shared/podman/images.go:234 shared/podman/images.go:248
+#: shared/podman/images.go:263
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
 msgstr ""
 
-#: shared/podman/images.go:265
+#: shared/podman/images.go:270
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr ""
 
-#: shared/podman/images.go:267
+#: shared/podman/images.go:272
 #, javascript-format
 msgid "Running podman pull %s"
 msgstr ""
 
-#: shared/podman/images.go:279
+#: shared/podman/images.go:284
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr ""
 
-#: shared/podman/images.go:293
+#: shared/podman/images.go:298
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr ""
 
-#: shared/podman/images.go:307
+#: shared/podman/images.go:312
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr ""
 
-#: shared/podman/images.go:313
+#: shared/podman/images.go:318
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr ""
 
-#: shared/podman/images.go:342 shared/podman/images.go:362
-#: shared/podman/images.go:382 shared/podman/secret.go:123
+#: shared/podman/images.go:347 shared/podman/images.go:367
+#: shared/podman/images.go:387 shared/podman/secret.go:123
 #: shared/podman/utils.go:177 shared/podman/utils.go:211
 #: shared/podman/utils.go:239
 #, javascript-format
 msgid "Run %s"
 msgstr ""
 
-#: shared/podman/images.go:345
+#: shared/podman/images.go:350
 #, fuzzy, javascript-format
 msgid "Failed to remove image %s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/podman/images.go:365
+#: shared/podman/images.go:370
 #, fuzzy, javascript-format
 msgid "Failed to export image %s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/podman/images.go:385
+#: shared/podman/images.go:390
 #, fuzzy, javascript-format
 msgid "Failed to restore image %s"
 msgstr "Impossible de supprimer le fichier %s"

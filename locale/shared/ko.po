@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-10 15:22+0200\n"
+"POT-Creation-Date: 2025-04-25 09:43+0200\n"
 "PO-Revision-Date: 2025-03-10 07:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
@@ -298,8 +298,8 @@ msgstr "%[2]s 네임스페이스에서 helm 차트 %[1]s을(를) 설치하지 �
 msgid "namespace is required"
 msgstr "네임스페이스는 필수입니다."
 
-#: shared/kubernetes/helm.go:77 shared/podman/images.go:340
-#: shared/podman/images.go:360 shared/podman/images.go:380
+#: shared/kubernetes/helm.go:77 shared/podman/images.go:345
+#: shared/podman/images.go:365 shared/podman/images.go:385
 #: shared/podman/network.go:108 shared/podman/secret.go:121
 #: shared/podman/systemd.go:106 shared/podman/systemd.go:185
 #: shared/podman/systemd.go:186 shared/podman/utils.go:175
@@ -669,98 +669,98 @@ msgstr "적합한 백엔드를 확인하지 못했습니다."
 msgid "failed to find the image of the currently running server container"
 msgstr ""
 
-#: shared/podman/images.go:99
+#: shared/podman/images.go:104
 #, fuzzy
 #| msgid "failed to determine suitable backend"
 msgid "failed to determine pgsql image"
 msgstr "적합한 백엔드를 확인하지 못했습니다."
 
-#: shared/podman/images.go:107
+#: shared/podman/images.go:112
 #, fuzzy
 #| msgid "failed to fetch the config files bound to container %s"
 msgid "failed to find the image of the currently running db container"
 msgstr "컨테이너 %s에 바인딩된 구성 파일을 가져오지 못했습니다."
 
-#: shared/podman/images.go:132
+#: shared/podman/images.go:137
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
 msgstr "이미지 이름 '%s'을(를) 올바르게 파싱할 수 없습니다. 로컬 이미지를 사용할 수 없습니다."
 
-#: shared/podman/images.go:150
+#: shared/podman/images.go:155
 msgid "cannot unmarshal image RPM metadata"
 msgstr "이미지 RPM 메타데이터를 마샬링 해제할 수 없음"
 
-#: shared/podman/images.go:169
+#: shared/podman/images.go:174
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
 msgstr ""
 
-#: shared/podman/images.go:199
+#: shared/podman/images.go:204
 #, javascript-format
 msgid "Cannot unmarshal metadata file %s"
 msgstr "%s 메타데이터 파일을 마샬링 해제할 수 없음"
 
-#: shared/podman/images.go:221
+#: shared/podman/images.go:226
 #, javascript-format
 msgid "error parsing: %s"
 msgstr "구문 분석 중 오류 발생: %s"
 
-#: shared/podman/images.go:229 shared/podman/images.go:243
-#: shared/podman/images.go:258
+#: shared/podman/images.go:234 shared/podman/images.go:248
+#: shared/podman/images.go:263
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
 msgstr "%s 이미지를 이미 끌어왔는지 확인하지 못했습니다."
 
-#: shared/podman/images.go:265
+#: shared/podman/images.go:270
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr "%s에는 소문자만 포함되어야 하며, 그렇지 않으면 podman pull이 실패하게 됩니다."
 
-#: shared/podman/images.go:267
+#: shared/podman/images.go:272
 #, javascript-format
 msgid "Running podman pull %s"
 msgstr "실행 중 podman 끌어오기 %s"
 
-#: shared/podman/images.go:279
+#: shared/podman/images.go:284
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr "실행 중 podman 이미지 검색 --list-tags %s --format={{.Tag}}"
 
-#: shared/podman/images.go:293
+#: shared/podman/images.go:298
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr "%s 이미지에 대한 태그를 찾을 수 없음"
 
-#: shared/podman/images.go:307
+#: shared/podman/images.go:312
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr "실행 중 podman ps --filter=name=%s --format={{ .Image }}"
 
-#: shared/podman/images.go:313
+#: shared/podman/images.go:318
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr "%s 컨테이너에 대한 실행 이미지를 찾을 수 없음"
 
-#: shared/podman/images.go:342 shared/podman/images.go:362
-#: shared/podman/images.go:382 shared/podman/secret.go:123
+#: shared/podman/images.go:347 shared/podman/images.go:367
+#: shared/podman/images.go:387 shared/podman/secret.go:123
 #: shared/podman/utils.go:177 shared/podman/utils.go:211
 #: shared/podman/utils.go:239
 #, javascript-format
 msgid "Run %s"
 msgstr "%s 실행"
 
-#: shared/podman/images.go:345
+#: shared/podman/images.go:350
 #, javascript-format
 msgid "Failed to remove image %s"
 msgstr "%s 이미지를 제거하지 못함"
 
-#: shared/podman/images.go:365
+#: shared/podman/images.go:370
 #, fuzzy, javascript-format
 #| msgid "Failed to remove image %s"
 msgid "Failed to export image %s"
 msgstr "%s 이미지를 제거하지 못함"
 
-#: shared/podman/images.go:385
+#: shared/podman/images.go:390
 #, fuzzy, javascript-format
 #| msgid "Failed to remove image %s"
 msgid "Failed to restore image %s"
