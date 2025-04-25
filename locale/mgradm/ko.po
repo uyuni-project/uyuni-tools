@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-10 15:22+0200\n"
+"POT-Creation-Date: 2025-04-25 09:43+0200\n"
 "PO-Revision-Date: 2025-03-10 07:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
@@ -761,7 +761,7 @@ msgid "failed to copy %[1]s to %[2]s"
 msgstr "%[1]s을(를) %[2]s(으)로 복사하지 못함"
 
 #: mgradm/cmd/gpg/add/gpg.go:128 mgradm/cmd/gpg/add/gpg.go:135
-#: mgradm/cmd/support/sql/sql.go:188
+#: mgradm/cmd/gpg/list/gpg.go:62 mgradm/cmd/support/sql/sql.go:188
 #, javascript-format
 msgid "Running %s"
 msgstr "%s 실행 중"
@@ -774,9 +774,27 @@ msgstr "가져오기 키를 실행하지 못함"
 msgid "failed to restart uyuni-update-config"
 msgstr "uyuni-update-config를 다시 시작하지 못함"
 
-#: mgradm/cmd/gpg/gpg.go:19
+#: mgradm/cmd/gpg/gpg.go:20
 msgid "Manage GPG keys for 3rd party repositories"
 msgstr "타사 리포지토리에 대한 GPG 키 관리"
+
+#: mgradm/cmd/gpg/list/gpg.go:33
+msgid "List GPG keys"
+msgstr ""
+
+#: mgradm/cmd/gpg/list/gpg.go:34
+msgid "List GPG keys from custom keyring (default) or system keyring"
+msgstr ""
+
+#: mgradm/cmd/gpg/list/gpg.go:41
+msgid "List keys from system keyring"
+msgstr ""
+
+#: mgradm/cmd/gpg/list/gpg.go:66
+#, fuzzy
+#| msgid "failed to create keyring %s"
+msgid "failed to list keys in selected keyring"
+msgstr "%s 키링을 생성할 수 없음"
 
 #: mgradm/cmd/hub/hub.go:19
 msgid "Hub management"
@@ -951,19 +969,19 @@ msgstr "서버가 이미 초기화되었습니다! 새 설치를 시도하기 �
 msgid "Setting up the server with the FQDN '%s'"
 msgstr "FQDN '%s'(으)로 서버 설정"
 
-#: mgradm/cmd/install/podman/utils.go:67 mgradm/shared/podman/podman.go:327
-#: mgradm/shared/podman/podman.go:520
+#: mgradm/cmd/install/podman/utils.go:67 mgradm/shared/podman/podman.go:329
+#: mgradm/shared/podman/podman.go:522
 #, fuzzy
 #| msgid "cannot upgrade to image %s"
 msgid "cannot prepare images"
 msgstr "%s 이미지로 업그레이드할 수 없음"
 
 #: mgradm/cmd/install/podman/utils.go:71 mgradm/shared/podman/podman.go:94
-#: mgradm/shared/podman/podman.go:322 mgradm/shared/podman/podman.go:512
+#: mgradm/shared/podman/podman.go:324 mgradm/shared/podman/podman.go:514
 msgid "cannot setup network"
 msgstr "네트워크를 설정할 수 없음"
 
-#: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:859
+#: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:861
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr ""
@@ -972,7 +990,7 @@ msgstr ""
 msgid "Run setup command in the container"
 msgstr "컨테이너에서 설정 명령 실행"
 
-#: mgradm/cmd/install/podman/utils.go:123 mgradm/shared/podman/podman.go:580
+#: mgradm/cmd/install/podman/utils.go:123 mgradm/shared/podman/podman.go:582
 msgid "cannot wait for system start"
 msgstr "시스템 시작을 기다릴 수 없음"
 
@@ -1200,7 +1218,7 @@ msgstr "SSH 마이그레이션 ConfigMap을 생성하지 못함"
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:47
 #: mgradm/shared/kubernetes/reconcile.go:38
 #: mgradm/shared/kubernetes/reconcile.go:305 mgradm/shared/pgsql/pgsql.go:28
-#: mgradm/shared/podman/podman.go:212 mgradm/shared/podman/podman.go:217
+#: mgradm/shared/podman/podman.go:214 mgradm/shared/podman/podman.go:219
 #: mgradm/shared/saline/saline.go:76
 msgid "failed to compute image URL"
 msgstr "이미지 URL을 계산하지 못함"
@@ -1605,7 +1623,7 @@ msgstr "systemd 서비스를 생성할 수 없음"
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr "다중 Hub XML-RPC 컨테이너 복제본은 현재 지원되지 않습니다. 하나만 설정하십시오."
 
-#: mgradm/shared/hub/xmlrpcapi.go:73 mgradm/shared/podman/podman.go:467
+#: mgradm/shared/hub/xmlrpcapi.go:73 mgradm/shared/podman/podman.go:469
 msgid "cannot enable service"
 msgstr "서비스를 활성할 수 없음"
 
@@ -1717,7 +1735,7 @@ msgid "Upgrading PostgreSQL database from %[1]s to %[2]s…"
 msgstr "PostgreSQL 데이터베이스를 %[1]s에서 %[2]s(으)로 업그레이드 중…"
 
 #: mgradm/shared/kubernetes/dbUpgradeJob.go:50
-#: mgradm/shared/podman/podman.go:226
+#: mgradm/shared/podman/podman.go:228
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr "데이터베이스 업그레이드 이미지 %s 사용"
@@ -1840,121 +1858,121 @@ msgstr "서버 마이그레이션"
 msgid "cannot run uyuni migration container"
 msgstr "uyuni 마이그레이션 컨테이너를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:166
+#: mgradm/shared/podman/podman.go:167
 #, javascript-format
 msgid "cannot inspect volume %s"
 msgstr "%s 볼륨을 검사할 수 없음"
 
-#: mgradm/shared/podman/podman.go:169
+#: mgradm/shared/podman/podman.go:170
 #, javascript-format
 msgid "cannot restore %s SELinux permissions"
 msgstr "%s SELinux 권한을 복구할 수 없음"
 
-#: mgradm/shared/podman/podman.go:176
+#: mgradm/shared/podman/podman.go:178
 msgid "cannot read extracted data"
 msgstr "추출된 데이터를 읽을 수 없음"
 
-#: mgradm/shared/podman/podman.go:192
+#: mgradm/shared/podman/podman.go:194
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
 msgstr "이전 PostgreSQL은 %[1]s(이)고 새 버전은 %[2]s입니다. DB 버전 업그레이드 중…"
 
-#: mgradm/shared/podman/podman.go:230
+#: mgradm/shared/podman/podman.go:232
 msgid "cannot generate PostgreSQL database version upgrade script"
 msgstr "PostgreSQL 데이터베이스 버전 업그레이드 스크립트를 생성할 수 없습니다."
 
-#: mgradm/shared/podman/podman.go:260 mgradm/shared/podman/podman.go:284
+#: mgradm/shared/podman/podman.go:262 mgradm/shared/podman/podman.go:286
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "PostgreSQL 마무리 스크립트를 생성할 수 없습니다."
 
-#: mgradm/shared/podman/podman.go:332 mgradm/shared/podman/podman.go:544
+#: mgradm/shared/podman/podman.go:334 mgradm/shared/podman/podman.go:546
 #, fuzzy
 #| msgid "cannot upgrade"
 msgid "cannot prepare host"
 msgstr "업그레이드할 수 없음"
 
-#: mgradm/shared/podman/podman.go:337 mgradm/shared/podman/podman.go:345
-#: mgradm/shared/podman/podman.go:614
+#: mgradm/shared/podman/podman.go:339 mgradm/shared/podman/podman.go:347
+#: mgradm/shared/podman/podman.go:616
 msgid "cannot stop service"
 msgstr "서비스를 중지하지 못함"
 
-#: mgradm/shared/podman/podman.go:358 mgradm/shared/podman/podman.go:551
+#: mgradm/shared/podman/podman.go:360 mgradm/shared/podman/podman.go:553
 msgid "Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:363 mgradm/shared/podman/podman.go:560
+#: mgradm/shared/podman/podman.go:365 mgradm/shared/podman/podman.go:562
 #, fuzzy
 #| msgid "cannot read data from container"
 msgid "cannot configure db container"
 msgstr "컨테이너에서 데이터를 읽을 수 없음"
 
-#: mgradm/shared/podman/podman.go:369 mgradm/shared/podman/podman.go:788
+#: mgradm/shared/podman/podman.go:371 mgradm/shared/podman/podman.go:790
 #, fuzzy
 #| msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgid "Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr "이전 postgresql은 %[1]s(이)고 대신 새 버전은 %[2]s입니다. DB 버전 업그레이드를 수행하는 중…"
 
-#: mgradm/shared/podman/podman.go:376 mgradm/shared/podman/podman.go:795
-#: mgradm/shared/podman/podman.go:818
+#: mgradm/shared/podman/podman.go:378 mgradm/shared/podman/podman.go:797
+#: mgradm/shared/podman/podman.go:820
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQL 버전 업그레이드 스크립트를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:379 mgradm/shared/podman/podman.go:798
+#: mgradm/shared/podman/podman.go:381 mgradm/shared/podman/podman.go:800
 #, fuzzy
 #| msgid "Upgrading to %s without changing PostgreSQL version"
 msgid "Upgrading without changing PostgreSQL version"
 msgstr "PostgreSQL 버전을 변경하지 않고 %s(으)로 업그레이드"
 
-#: mgradm/shared/podman/podman.go:382 mgradm/shared/podman/podman.go:801
+#: mgradm/shared/podman/podman.go:384 mgradm/shared/podman/podman.go:803
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr "PostgreSQL을 %[1]s에서 %[2]s(으)로 다운그레이드 시도 중"
 
-#: mgradm/shared/podman/podman.go:394 mgradm/shared/podman/podman.go:570
+#: mgradm/shared/podman/podman.go:396 mgradm/shared/podman/podman.go:572
 msgid "cannot run PostgreSQL finalize script"
 msgstr "PostgreSQL 최종 스크립트를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:398 mgradm/shared/podman/podman.go:574
+#: mgradm/shared/podman/podman.go:400 mgradm/shared/podman/podman.go:576
 msgid "cannot run post upgrade script"
 msgstr "업그레이드 후 스크립트를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:418 mgradm/shared/podman/podman.go:465
+#: mgradm/shared/podman/podman.go:420 mgradm/shared/podman/podman.go:467
 msgid "Waiting for the server to start…"
 msgstr "서버가 시작되기를 기다리는 중…"
 
-#: mgradm/shared/podman/podman.go:431 mgradm/shared/podman/podman.go:593
+#: mgradm/shared/podman/podman.go:433 mgradm/shared/podman/podman.go:595
 msgid "error upgrading confidential computing service."
 msgstr "기밀 컴퓨팅 서비스를 업그레이드하는 중 오류가 발생했습니다."
 
-#: mgradm/shared/podman/podman.go:443 mgradm/shared/podman/podman.go:605
+#: mgradm/shared/podman/podman.go:445 mgradm/shared/podman/podman.go:607
 msgid "error upgrading saline service."
 msgstr "Saline 서비스를 업그레이드하는 중 오류가 발생했습니다."
 
-#: mgradm/shared/podman/podman.go:535
+#: mgradm/shared/podman/podman.go:537
 msgid "cannot run migration script"
 msgstr "마이그레이션 스크립트를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:538
+#: mgradm/shared/podman/podman.go:540
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr "마이그레이션이 준비되었습니다. 마이그레이션을 마치려면 ''--prepare''를 제외하고 ''migrate'' 명령을 실행하십시오."
 
-#: mgradm/shared/podman/podman.go:663
+#: mgradm/shared/podman/podman.go:665
 #, fuzzy
 #| msgid "failed to generate migration script"
 msgid "failed to generate postgresql migration script"
 msgstr "마이그레이션 스크립트를 생성하지 못함"
 
-#: mgradm/shared/podman/podman.go:699
+#: mgradm/shared/podman/podman.go:701
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr "위의 오류는 공용 클라우드 공급자 레지스트리를 사용하는 경우에만 해당됩니다"
 
-#: mgradm/shared/podman/podman.go:729
+#: mgradm/shared/podman/podman.go:731
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr "SSH_AUTH_SOCK이 정의되지 않았습니다. SSH 에이전트를 시작하고 다시 시도하십시오."
 
-#: mgradm/shared/podman/podman.go:739
+#: mgradm/shared/podman/podman.go:741
 msgid "Failed to find home directory to look for SSH config"
 msgstr "SSH 구성을 찾을 홈 디렉토리를 찾지 못했습니다."
 
-#: mgradm/shared/podman/podman.go:763
+#: mgradm/shared/podman/podman.go:765
 msgid "cannot inspect podman values"
 msgstr "podman 값을 검사할 수 없음"
 

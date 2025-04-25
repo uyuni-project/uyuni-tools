@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-10 15:22+0200\n"
-"PO-Revision-Date: 2025-04-04 12:56+0000\n"
+"POT-Creation-Date: 2025-04-25 09:43+0200\n"
+"PO-Revision-Date: 2025-04-10 15:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -210,10 +210,8 @@ msgid "container didn't start within 10s."
 msgstr "el contenidor no va començar en 10 anys."
 
 #: shared/connection.go:318
-#, fuzzy
-#| msgid "server didn't start within 60s. Check for the service status"
 msgid "server didn't start within 120s. Check for the service status"
-msgstr "El servidor no va començar en els anys 60. Comprova l'estat del servei"
+msgstr "el servidor no s'ha iniciat durant 120 segons. Comproveu l'estat del servei"
 
 #: shared/connection.go:333
 msgid "container didn't start within 60s. Check for the service status"
@@ -296,8 +294,8 @@ msgstr "no s'ha pogut instal·lar el diagrama de helm %[1]s a l'espai de noms %[
 msgid "namespace is required"
 msgstr "l'espai de noms és obligatori"
 
-#: shared/kubernetes/helm.go:77 shared/podman/images.go:340
-#: shared/podman/images.go:360 shared/podman/images.go:380
+#: shared/kubernetes/helm.go:77 shared/podman/images.go:345
+#: shared/podman/images.go:365 shared/podman/images.go:385
 #: shared/podman/network.go:108 shared/podman/secret.go:121
 #: shared/podman/systemd.go:106 shared/podman/systemd.go:185
 #: shared/podman/systemd.go:186 shared/podman/utils.go:175
@@ -666,98 +664,96 @@ msgstr "no s'ha pogut determinar la imatge"
 msgid "failed to find the image of the currently running server container"
 msgstr "no s'ha pogut trobar la imatge del contenidor del servidor actualment en execució"
 
-#: shared/podman/images.go:99
+#: shared/podman/images.go:104
 msgid "failed to determine pgsql image"
 msgstr "no s'ha pogut determinar la imatge pgsql"
 
-#: shared/podman/images.go:107
+#: shared/podman/images.go:112
 msgid "failed to find the image of the currently running db container"
 msgstr "no s'ha pogut trobar la imatge del contenidor de db en execució"
 
-#: shared/podman/images.go:132
+#: shared/podman/images.go:137
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
 msgstr "No es pot analitzar correctament el nom de la imatge «%s», no es pot utilitzar la imatge local"
 
-#: shared/podman/images.go:150
+#: shared/podman/images.go:155
 msgid "cannot unmarshal image RPM metadata"
 msgstr "no es poden desfer les metadades RPM de la imatge"
 
-#: shared/podman/images.go:169
+#: shared/podman/images.go:174
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
 msgstr "s'omet la càrrega de la imatge des de l'RPM perquè %s no existeix"
 
-#: shared/podman/images.go:199
+#: shared/podman/images.go:204
 #, javascript-format
 msgid "Cannot unmarshal metadata file %s"
 msgstr "No es pot desfer el fitxer de metadades %s"
 
-#: shared/podman/images.go:221
+#: shared/podman/images.go:226
 #, javascript-format
 msgid "error parsing: %s"
 msgstr "s'ha produït un error en analitzar: %s"
 
-#: shared/podman/images.go:229 shared/podman/images.go:243
-#: shared/podman/images.go:258
+#: shared/podman/images.go:234 shared/podman/images.go:248
+#: shared/podman/images.go:263
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
 msgstr "no s'ha pogut comprovar si la imatge %s ja s'ha tirat"
 
-#: shared/podman/images.go:265
+#: shared/podman/images.go:270
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr "%s hauria de contenir només un caràcter en minúscula, en cas contrari l'estirada de podman fallaria"
 
-#: shared/podman/images.go:267
+#: shared/podman/images.go:272
 #, javascript-format
 msgid "Running podman pull %s"
 msgstr "S'està executant la podman pull %s"
 
-#: shared/podman/images.go:279
+#: shared/podman/images.go:284
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr "S'està executant la cerca d'imatges de podman --list-tags %s --format.{{.Tag}}"
 
-#: shared/podman/images.go:293
+#: shared/podman/images.go:298
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr "no s'ha pogut trobar cap etiqueta per a la imatge %s"
 
-#: shared/podman/images.go:307
+#: shared/podman/images.go:312
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr "S'està executant el podman ps --filter.name.%s --format.{{ .Imatge}}"
 
-#: shared/podman/images.go:313
+#: shared/podman/images.go:318
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 
-#: shared/podman/images.go:342 shared/podman/images.go:362
-#: shared/podman/images.go:382 shared/podman/secret.go:123
+#: shared/podman/images.go:347 shared/podman/images.go:367
+#: shared/podman/images.go:387 shared/podman/secret.go:123
 #: shared/podman/utils.go:177 shared/podman/utils.go:211
 #: shared/podman/utils.go:239
 #, javascript-format
 msgid "Run %s"
 msgstr "Executa %s"
 
-#: shared/podman/images.go:345
+#: shared/podman/images.go:350
 #, javascript-format
 msgid "Failed to remove image %s"
 msgstr "No s'ha pogut eliminar la imatge %s"
 
-#: shared/podman/images.go:365
-#, fuzzy, javascript-format
-#| msgid "Failed to remove image %s"
+#: shared/podman/images.go:370
+#, javascript-format
 msgid "Failed to export image %s"
-msgstr "No s'ha pogut eliminar la imatge %s"
+msgstr "No s'ha pogut exportar la imatge %s"
 
-#: shared/podman/images.go:385
-#, fuzzy, javascript-format
-#| msgid "Failed to remove image %s"
+#: shared/podman/images.go:390
+#, javascript-format
 msgid "Failed to restore image %s"
-msgstr "No s'ha pogut eliminar la imatge %s"
+msgstr "No s'ha pogut restaurar la imatge %s"
 
 #: shared/podman/login.go:25
 msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
@@ -1068,31 +1064,28 @@ msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "El volum %s està muntat externament, no es pot eliminar el directori"
 
 #: shared/podman/utils.go:213
-#, fuzzy, javascript-format
-#| msgid "Failed to remove file %s"
+#, javascript-format
 msgid "Failed to export volume %s"
-msgstr "No s'ha pogut eliminar el fitxer %s"
+msgstr "No s'ha pogut exportar el volum %s"
 
 #: shared/podman/utils.go:216
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
-msgstr ""
+msgstr "No s'ha pogut escriure la suma de comprovació del volum %[1]s a %[2]s"
 
 #: shared/podman/utils.go:233
 #, javascript-format
 msgid "Checksum does not match for volume %s"
-msgstr ""
+msgstr "La suma de comprovació no coincideix per al volum %s"
 
 #: shared/podman/utils.go:237
-#, fuzzy, javascript-format
-#| msgid "failed to create podman secret %s"
+#, javascript-format
 msgid "Failed to precreate empty volume %s"
-msgstr "no s'ha pogut crear el secret podman %s"
+msgstr "No s'ha pogut crear prèviament el volum buit %s"
 
 #: shared/podman/utils.go:241
-#, fuzzy, javascript-format
-#| msgid "Failed to remove file %s"
+#, javascript-format
 msgid "Failed to import volume %s"
-msgstr "No s'ha pogut eliminar el fitxer %s"
+msgstr "No s'ha pogut importar el fitxer %s"
 
 #: shared/podman/utils.go:317
 msgid "failed to login to registry.suse.com"
@@ -1630,42 +1623,39 @@ msgid "error writing file %s"
 msgstr "s'ha produït un error en escriure el fitxer %s"
 
 #: shared/utils/utils.go:517
-#, fuzzy, javascript-format
-#| msgid "Failed to remove file %s"
+#, javascript-format
 msgid "Failed to calculate checksum of the file %s"
-msgstr "No s'ha pogut eliminar el fitxer %s"
+msgstr "No s'ha pogut calcular la suma de comprovació del fitxer %s"
 
 #: shared/utils/utils.go:521
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
-msgstr ""
+msgstr "No s'ha pogut escriure la suma de comprovació del fitxer %[1]s al %[2]s"
 
 #: shared/utils/utils.go:531
 #, javascript-format
 msgid "Checksum of %s does not match"
-msgstr ""
+msgstr "La suma de comprovació de %s no coincideix"
 
 #: shared/utils/uyuniservices.go:18
-#, fuzzy
-#| msgid "cannot enable service"
 msgid "Main service"
-msgstr "no es pot activar el servei"
+msgstr "Servei principal"
 
 #: shared/utils/uyuniservices.go:24
 msgid "Migration helper"
-msgstr ""
+msgstr "Assistent de migració"
 
 #: shared/utils/uyuniservices.go:30
 msgid "Confidential computing attestation"
-msgstr ""
+msgstr "Certificació computacional confidencial"
 
 #: shared/utils/uyuniservices.go:36
 msgid "Hub XML-RPC API"
-msgstr ""
+msgstr "Concentrador XML-RPC API"
 
 #: shared/utils/uyuniservices.go:42
 msgid "Saline"
-msgstr ""
+msgstr "Salina"
 
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
-msgstr ""
+msgstr "Base de dades"
