@@ -59,6 +59,7 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 			utils.LogInit(true)
 			utils.SetLogLevel(globalFlags.LogLevel)
 			log.Info().Msgf(L("Welcome to %s"), name)
+			log.info().Msgf(L("Use of this software implies acceptance of the End User License Agreement."))
 			log.Info().Msgf(L("Executing command: %s"), cmd.Name())
 		}
 	}
