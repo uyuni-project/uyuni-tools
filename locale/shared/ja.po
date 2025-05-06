@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:43+0200\n"
+"POT-Creation-Date: 2025-05-06 11:34+0200\n"
 "PO-Revision-Date: 2025-03-08 07:56+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
@@ -300,7 +300,7 @@ msgstr "ネームスペースが必要です"
 
 #: shared/kubernetes/helm.go:77 shared/podman/images.go:345
 #: shared/podman/images.go:365 shared/podman/images.go:385
-#: shared/podman/network.go:108 shared/podman/secret.go:121
+#: shared/podman/network.go:108 shared/podman/secret.go:123
 #: shared/podman/systemd.go:106 shared/podman/systemd.go:185
 #: shared/podman/systemd.go:186 shared/podman/utils.go:175
 #: shared/podman/utils.go:208 shared/podman/utils.go:228
@@ -747,7 +747,7 @@ msgid "cannot find any running image for container %s"
 msgstr "コンテナ %s に対して実行中のイメージが見つかりません"
 
 #: shared/podman/images.go:347 shared/podman/images.go:367
-#: shared/podman/images.go:387 shared/podman/secret.go:123
+#: shared/podman/images.go:387 shared/podman/secret.go:125
 #: shared/podman/utils.go:177 shared/podman/utils.go:211
 #: shared/podman/utils.go:239
 #, javascript-format
@@ -826,24 +826,24 @@ msgstr "ネットワーク %s の削除に失敗しました"
 msgid "Network removed"
 msgstr "ネットワークが削除されました"
 
-#: shared/podman/secret.go:57 shared/podman/secret.go:69
-#: shared/podman/secret.go:73
+#: shared/podman/secret.go:58 shared/podman/secret.go:70
+#: shared/podman/secret.go:74
 #, fuzzy, javascript-format
 #| msgid "failed to create %s folder"
 msgid "failed to create %s secret"
 msgstr "%s フォルダの作成に失敗しました"
 
-#: shared/podman/secret.go:88
+#: shared/podman/secret.go:89
 #, javascript-format
 msgid "failed to write %s secret to file"
 msgstr "%s シークレットのファイルへの書き込みに失敗しました"
 
-#: shared/podman/secret.go:101
+#: shared/podman/secret.go:103
 #, javascript-format
 msgid "failed to create podman secret %s"
 msgstr "podmanシークレット %s の作成に失敗しました"
 
-#: shared/podman/secret.go:125
+#: shared/podman/secret.go:128
 #, javascript-format
 msgid "Failed to delete %s secret"
 msgstr "%s シークレットの削除に失敗しました"

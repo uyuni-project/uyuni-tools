@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:43+0200\n"
+"POT-Creation-Date: 2025-05-06 11:34+0200\n"
 "PO-Revision-Date: 2024-12-07 21:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/de/>\n"
@@ -298,7 +298,7 @@ msgstr ""
 
 #: shared/kubernetes/helm.go:77 shared/podman/images.go:345
 #: shared/podman/images.go:365 shared/podman/images.go:385
-#: shared/podman/network.go:108 shared/podman/secret.go:121
+#: shared/podman/network.go:108 shared/podman/secret.go:123
 #: shared/podman/systemd.go:106 shared/podman/systemd.go:185
 #: shared/podman/systemd.go:186 shared/podman/utils.go:175
 #: shared/podman/utils.go:208 shared/podman/utils.go:228
@@ -735,7 +735,7 @@ msgid "cannot find any running image for container %s"
 msgstr ""
 
 #: shared/podman/images.go:347 shared/podman/images.go:367
-#: shared/podman/images.go:387 shared/podman/secret.go:123
+#: shared/podman/images.go:387 shared/podman/secret.go:125
 #: shared/podman/utils.go:177 shared/podman/utils.go:211
 #: shared/podman/utils.go:239
 #, javascript-format
@@ -812,23 +812,23 @@ msgstr ""
 msgid "Network removed"
 msgstr ""
 
-#: shared/podman/secret.go:57 shared/podman/secret.go:69
-#: shared/podman/secret.go:73
+#: shared/podman/secret.go:58 shared/podman/secret.go:70
+#: shared/podman/secret.go:74
 #, fuzzy, javascript-format
 msgid "failed to create %s secret"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/podman/secret.go:88
+#: shared/podman/secret.go:89
 #, fuzzy, javascript-format
 msgid "failed to write %s secret to file"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/podman/secret.go:101
+#: shared/podman/secret.go:103
 #, fuzzy, javascript-format
 msgid "failed to create podman secret %s"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/podman/secret.go:125
+#: shared/podman/secret.go:128
 #, fuzzy, javascript-format
 msgid "Failed to delete %s secret"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"

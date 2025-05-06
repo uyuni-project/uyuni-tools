@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:43+0200\n"
+"POT-Creation-Date: 2025-05-06 11:34+0200\n"
 "PO-Revision-Date: 2025-03-07 05:27+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -300,7 +300,7 @@ msgstr "必须指定名称空间"
 
 #: shared/kubernetes/helm.go:77 shared/podman/images.go:345
 #: shared/podman/images.go:365 shared/podman/images.go:385
-#: shared/podman/network.go:108 shared/podman/secret.go:121
+#: shared/podman/network.go:108 shared/podman/secret.go:123
 #: shared/podman/systemd.go:106 shared/podman/systemd.go:185
 #: shared/podman/systemd.go:186 shared/podman/utils.go:175
 #: shared/podman/utils.go:208 shared/podman/utils.go:228
@@ -742,7 +742,7 @@ msgid "cannot find any running image for container %s"
 msgstr "未找到容器 %s 的任何运行中映像"
 
 #: shared/podman/images.go:347 shared/podman/images.go:367
-#: shared/podman/images.go:387 shared/podman/secret.go:123
+#: shared/podman/images.go:387 shared/podman/secret.go:125
 #: shared/podman/utils.go:177 shared/podman/utils.go:211
 #: shared/podman/utils.go:239
 #, javascript-format
@@ -821,24 +821,24 @@ msgstr "无法去除网络 %s"
 msgid "Network removed"
 msgstr "已去除网络"
 
-#: shared/podman/secret.go:57 shared/podman/secret.go:69
-#: shared/podman/secret.go:73
+#: shared/podman/secret.go:58 shared/podman/secret.go:70
+#: shared/podman/secret.go:74
 #, fuzzy, javascript-format
 #| msgid "failed to create %s folder"
 msgid "failed to create %s secret"
 msgstr "无法创建 %s 文件夹"
 
-#: shared/podman/secret.go:88
+#: shared/podman/secret.go:89
 #, javascript-format
 msgid "failed to write %s secret to file"
 msgstr "无法将 %s 机密写入文件"
 
-#: shared/podman/secret.go:101
+#: shared/podman/secret.go:103
 #, javascript-format
 msgid "failed to create podman secret %s"
 msgstr "无法创建 podman 机密 %s"
 
-#: shared/podman/secret.go:125
+#: shared/podman/secret.go:128
 #, javascript-format
 msgid "Failed to delete %s secret"
 msgstr "无法删除 %s 机密"
