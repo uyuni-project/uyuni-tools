@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-25 09:43+0200\n"
+"POT-Creation-Date: 2025-05-06 11:34+0200\n"
 "PO-Revision-Date: 2025-04-10 15:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
@@ -296,7 +296,7 @@ msgstr "l'espai de noms és obligatori"
 
 #: shared/kubernetes/helm.go:77 shared/podman/images.go:345
 #: shared/podman/images.go:365 shared/podman/images.go:385
-#: shared/podman/network.go:108 shared/podman/secret.go:121
+#: shared/podman/network.go:108 shared/podman/secret.go:123
 #: shared/podman/systemd.go:106 shared/podman/systemd.go:185
 #: shared/podman/systemd.go:186 shared/podman/utils.go:175
 #: shared/podman/utils.go:208 shared/podman/utils.go:228
@@ -733,7 +733,7 @@ msgid "cannot find any running image for container %s"
 msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 
 #: shared/podman/images.go:347 shared/podman/images.go:367
-#: shared/podman/images.go:387 shared/podman/secret.go:123
+#: shared/podman/images.go:387 shared/podman/secret.go:125
 #: shared/podman/utils.go:177 shared/podman/utils.go:211
 #: shared/podman/utils.go:239
 #, javascript-format
@@ -810,23 +810,23 @@ msgstr "No s'ha pogut eliminar la xarxa %s"
 msgid "Network removed"
 msgstr "S'ha suprimit la xarxa"
 
-#: shared/podman/secret.go:57 shared/podman/secret.go:69
-#: shared/podman/secret.go:73
+#: shared/podman/secret.go:58 shared/podman/secret.go:70
+#: shared/podman/secret.go:74
 #, javascript-format
 msgid "failed to create %s secret"
 msgstr "no s'ha pogut crear el següent: %s secret"
 
-#: shared/podman/secret.go:88
+#: shared/podman/secret.go:89
 #, javascript-format
 msgid "failed to write %s secret to file"
 msgstr "no s'ha pogut escriure el secret %s al fitxer"
 
-#: shared/podman/secret.go:101
+#: shared/podman/secret.go:103
 #, javascript-format
 msgid "failed to create podman secret %s"
 msgstr "no s'ha pogut crear el secret podman %s"
 
-#: shared/podman/secret.go:125
+#: shared/podman/secret.go:128
 #, javascript-format
 msgid "Failed to delete %s secret"
 msgstr "No s'ha pogut suprimir el secret %s"
