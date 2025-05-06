@@ -5,15 +5,27 @@
 package config
 
 import (
+	"os"
+
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 var systemd podman.Systemd = podman.SystemdImpl{}
+
+func filesRemover(files []string) {
+	for _, file := range files {
+		if err := os.Remove(file); err != nil {
+			log.Error().Err(err).Msgf(L("failed to remove %s temporary file"), file)
+		}
+	}
+}
 
 func extract(_ *types.GlobalFlags, flags *configFlags, _ *cobra.Command, _ []string) error {
 	containerName, err := shared.ChooseObjPodmanOrKubernetes(systemd, podman.ServerContainerName, kubernetes.ServerApp)
@@ -39,6 +51,7 @@ func extract(_ *types.GlobalFlags, flags *configFlags, _ *cobra.Command, _ []str
 	if systemd.HasService(podman.ServerService) {
 		fileListHost, err = podman.RunSupportConfigOnPodmanHost(systemd, tmpDir)
 	}
+	defer filesRemover(fileListHost)
 	if err != nil {
 		return err
 	}
