@@ -358,7 +358,7 @@ const sslSetupServerScript = `
 
 	echo "Generating the self-signed SSL CA..."
 	mkdir -p /root/ssl-build
-	rhn-ssl-tool --gen-ca --no-rpm --force --dir /root/ssl-build \
+	rhn-ssl-tool --gen-ca --force --dir /root/ssl-build \
 		--password "$CERT_PASS" \
 		--set-country "$CERT_COUNTRY" --set-state "$CERT_STATE" --set-city "$CERT_CITY" \
 	    --set-org "$CERT_O" --set-org-unit "$CERT_OU" \
@@ -371,7 +371,7 @@ const sslSetupServerScript = `
 		cert_args="$cert_args --set-cname $CERT_CNAME"
 	done
 
-	rhn-ssl-tool --gen-server --no-rpm --cert-expiration 3650 \
+	rhn-ssl-tool --gen-server --cert-expiration 3650 \
 		--dir /root/ssl-build --password "$CERT_PASS" \
 		--set-country "$CERT_COUNTRY" --set-state "$CERT_STATE" --set-city "$CERT_CITY" \
 	    --set-org "$CERT_O" --set-org-unit "$CERT_OU" \
@@ -388,7 +388,7 @@ const sslSetupServerScript = `
 // this will need to be updated to include check for ca cert and build if needed.
 const sslSetupDatabaseScript = `
 	echo "Generating DB certificate..."
-	rhn-ssl-tool --gen-server --no-rpm --cert-expiration 3650 \
+	rhn-ssl-tool --gen-server --cert-expiration 3650 \
 		--dir /root/ssl-build --password "$CERT_PASS" \
 		--set-country "$CERT_COUNTRY" --set-state "$CERT_STATE" --set-city "$CERT_CITY" \
 	    --set-org "$CERT_O" --set-org-unit "$CERT_OU" \
