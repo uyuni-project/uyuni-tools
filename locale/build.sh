@@ -16,7 +16,11 @@ for domain in mgrctl mgradm mgrpxy; do
         locale_dir=${PREFIX}${lang}/LC_MESSAGES
         install -vd -m 0755 ${locale_dir}
 
-        msgcat -o ${locale_dir}/${domain}.po ${po_file} ${locales_dir}/shared/${lang}.po
+        if test -e ${locales_dir}/shared/${lang}.po; then
+            msgcat -o ${locale_dir}/${domain}.po ${po_file} ${locales_dir}/shared/${lang}.po
+        else
+            cp ${po_file} ${locale_dir}/${domain}.po
+        fi
         msgfmt -c -o ${locale_dir}/${domain}.mo ${locale_dir}/${domain}.po
         if test $? -ne 0;
         then
