@@ -1,24 +1,11 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 {
   "name": "uyuni-tools-devcontainer",
   "build": { "dockerfile": "Dockerfile" },
 
-  // Features to add to the dev container. More info: https://containers.dev/features.
-  "features": {
-    "ghcr.io/guiyomh/features/golangci-lint:0": {},
-    "ghcr.io/stuartleeks/dev-container-features/dev-tunnels:0": {},
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/duduribeiro/devcontainer-features/neovim:1": { "version": "nightly" },
-    "ghcr.io/devcontainers/features/python:1": {
-      "toolsToInstall": "pre-commit"
-    }
-  },
-
   // Configure tool-specific properties.
-  // "customizations": {},
-
   "customizations": {
     "vscode": {
       "extensions": [
