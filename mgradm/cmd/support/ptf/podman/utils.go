@@ -100,27 +100,24 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	}
 	log.Info().Msgf(L("The computed image is %s"), flags.Image.Name)
 
-	if cocoImage := getServiceImage(podman_shared.ServerAttestationService + "@"); cocoImage != "" {
-		// If no coco image was found then skip it during the upgrade.
-		cocoImage, err = utils.ComputePTF(flags.CustomerID, projectID, cocoImage, suffix)
-		if err != nil {
-			return err
-		}
-		if hasRemoteImage(cocoImage) {
-			flags.Coco.Image.Name = cocoImage
-			log.Info().Msgf(L("The computed confidential computing image is %s"), flags.Coco.Image.Name)
-		}
+	images := map[string]*string{
+		podman_shared.ServerAttestationService + "@": &flags.Coco.Image.Name,
+		podman_shared.HubXmlrpcService:               &flags.HubXmlrpc.Image.Name,
+		podman_shared.SalineService:                  &flags.Saline.Image.Name,
+		podman_shared.DBService:                      &flags.Pgsql.Image.Name,
 	}
 
-	if hubImage := getServiceImage(podman_shared.HubXmlrpcService); hubImage != "" {
-		// If no hub xmlrpc api image was found then skip it during the upgrade.
-		hubImage, err = utils.ComputePTF(flags.CustomerID, projectID, hubImage, suffix)
-		if err != nil {
-			return err
-		}
-		if hasRemoteImage(hubImage) {
-			flags.HubXmlrpc.Image.Name = hubImage
-			log.Info().Msgf(L("The computed hub XML-RPC API image is %s"), flags.HubXmlrpc.Image.Name)
+	for service, pointer := range images {
+		if containerImage := getServiceImage(service); containerImage != "" {
+			// If no image was found then skip it during the upgrade.
+			containerImage, err = utils.ComputePTF(flags.CustomerID, projectID, containerImage, suffix)
+			if err != nil {
+				return err
+			}
+			if hasRemoteImage(containerImage) {
+				*pointer = containerImage
+				log.Info().Msgf(L("The %[1]s service image is %[2]s"), service, *pointer)
+			}
 		}
 	}
 
