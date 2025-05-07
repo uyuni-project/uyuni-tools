@@ -38,7 +38,10 @@ func Upgrade(
 		}
 		return systemd.EnableService(podman.SalineService)
 	}
-	return systemd.DisableService(podman.SalineService)
+	if systemd.ServiceIsEnabled(podman.SalineService) {
+		return systemd.DisableService(podman.SalineService)
+	}
+	return nil
 }
 
 func writeSalineServiceFiles(
@@ -60,10 +63,8 @@ func writeSalineServiceFiles(
 	}
 	if !salineFlags.IsChanged {
 		log.Debug().Msg("Saline settings are not changed.")
-		return nil
 	} else if salineFlags.Replicas == 0 {
 		log.Debug().Msg("No Saline requested.")
-		return nil
 	} else if salineFlags.Replicas > 1 {
 		log.Warn().Msg(L("Multiple Saline container replicas are not currently supported, setting up only one."))
 		salineFlags.Replicas = 1
@@ -91,14 +92,14 @@ func writeSalineServiceFiles(
 	log.Info().Msg(L("Setting up Saline service"))
 
 	if err := utils.WriteTemplateToFile(salineData,
-		podman.GetServicePath(podman.SalineService), 0555, true); err != nil {
+		podman.GetServicePath(podman.SalineService+"@"), 0555, true); err != nil {
 		return utils.Error(err, L("failed to generate systemd service unit file"))
 	}
 
 	environment := fmt.Sprintf(`Environment=UYUNI_SALINE_IMAGE=%s`, preparedImage)
 
 	if err := podman.GenerateSystemdConfFile(
-		podman.SalineService, "generated.conf", environment, true,
+		podman.SalineService+"@", "generated.conf", environment, true,
 	); err != nil {
 		return utils.Error(err, L("cannot generate systemd conf file"))
 	}
@@ -129,5 +130,21 @@ func SetupSalineContainer(
 	if err := writeSalineServiceFiles(systemd, authFile, registry, salineFlags, baseImage, tz); err != nil {
 		return err
 	}
-	return systemd.EnableService(podman.SalineService)
+	return EnableSaline(systemd, salineFlags.Replicas)
+}
+
+// EnableSaline enables the saline service if the number of replicas is 1.
+// This function is meant for installation or migration, to enable or disable the service after, use ScaleService.
+func EnableSaline(systemd podman.Systemd, replicas int) error {
+	if replicas > 1 {
+		log.Warn().Msg(L("Multiple Saline container replicas are not currently supported, setting up only one."))
+		replicas = 1
+	}
+
+	if replicas > 0 {
+		if err := systemd.ScaleService(replicas, podman.SalineService); err != nil {
+			return utils.Errorf(err, L("cannot enable service"))
+		}
+	}
+	return nil
 }
