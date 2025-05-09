@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -29,9 +29,9 @@ func podmanScale(
 	if service == podman.ServerAttestationService {
 		return systemd.ScaleService(newReplicas, service)
 	}
-	if service == podman.HubXmlrpcService {
+	if service == podman.HubXmlrpcService || service == podman.SalineService {
 		if newReplicas > 1 {
-			return errors.New(L("Multiple Hub XML-RPC API container replicas are not currently supported."))
+			return errors.New(L("Multiple container replicas are not currently supported."))
 		}
 		return systemd.ScaleService(newReplicas, service)
 	}
