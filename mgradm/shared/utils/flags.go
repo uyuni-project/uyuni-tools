@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/cobra"
 	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -55,6 +56,8 @@ type InstallationFlags struct {
 	Organization string
 }
 
+var systemd podman.Systemd = podman.SystemdImpl{}
+
 // CheckUpgradeParameters verifies the consistency of the parameters for upgrade and migrate commands.
 func (flags *InstallationFlags) CheckUpgradeParameters(cmd *cobra.Command, command string) {
 	flags.setPasswordIfMissing()
@@ -93,7 +96,7 @@ func (flags *InstallationFlags) checkUpgradeSSLParameters(cmd *cobra.Command, co
 	flags.SSL.CheckUpgradeParameters(isLocalDB)
 
 	// Since we use cert-manager for self-signed certificates on kubernetes we don't need password for it
-	if !flags.SSL.UseProvidedDB() && command == "podman" {
+	if !flags.SSL.UseProvidedDB() && command == "podman" && !systemd.HasService(podman.DBService) {
 		utils.AskPasswordIfMissing(&flags.SSL.Password, cmd.Flag("ssl-password").Usage, 0, 0)
 	}
 }
