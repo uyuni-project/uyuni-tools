@@ -15,32 +15,32 @@ import (
 func TestGetRpmImageName(t *testing.T) {
 	data := [][]string{
 		{
-			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
 			"latest",
-			"registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql"},
+			"registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql"},
 		{
-			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
 			"latest",
-			"registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql:latest"},
+			"registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:latest"},
 		{
-			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
 			"5.1.0",
-			"http://registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
+			"http://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
 		},
 		{
-			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
 			"5.1.0",
-			"https://registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
+			"https://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
 		},
 		{
-			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
 			"5.1.0",
-			"docker://registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
+			"docker://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
 		},
 		{
-			"multi-linux-manager-5.1-x86_64-server-postgresql",
+			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
 			"latest",
-			"oci://registry.suse.com/multi-linux-manager/5.1/x86_64/server-postgresql"},
+			"oci://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql"},
 	}
 
 	for i, testCase := range data {
