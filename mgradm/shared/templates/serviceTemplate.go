@@ -46,6 +46,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	-v {{ .Name }}:{{ .MountPath }} \
 	{{- end }}
 	-e TZ=${TZ} \
+	-e UYUNI_HOSTNAME=${UYUNI_HOSTNAME} \
 	--network {{ .Network }} \
 	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
 	--secret {{ .CaSecret }},type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT \
