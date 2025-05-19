@@ -281,7 +281,7 @@ func AddPgsqlFlags(cmd *cobra.Command) {
 	AddContainerImageFlags(cmd, "pgsql", L("PostgreSQL Database"), "pgsql-container", "server-postgresql")
 }
 
-// AddServerFlags add flags common to install, upgrade and migrate.
+// AddServerFlags add flags common to install.
 func AddServerFlags(cmd *cobra.Command) {
 	AddImageFlag(cmd)
 	AddSCCFlag(cmd)
