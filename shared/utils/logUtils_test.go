@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -27,6 +27,14 @@ func TestRedact(t *testing.T) {
 		{
 			`{"adminLogin":"admin","adminPassword":"secret","email":"no@email.com"}`,
 			`{"adminLogin":"admin","adminPassword":"<REDACTED>","email":"no@email.com"}`,
+		},
+		{
+			`password\n`,
+			`password\n`,
+		},
+		{
+			`\"password\": \"foo\"`,
+			`\"password\": \"<REDACTED>\"`,
 		},
 	}
 
