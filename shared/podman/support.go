@@ -156,24 +156,10 @@ func fetchBoundFileCommand(dir string, container string) (string, error) {
 		if len(boundFile) <= 0 {
 			continue
 		}
-		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "find", boundFile, "-type", "f")
-		if err != nil {
-			return "", err
-		}
-
-		fileList := strings.Split(strings.TrimSpace(string(out)), "\n")
-		for _, file := range fileList {
-			_, err = boundFilesDump.WriteString("====" + file + "====" + "\n")
-			if err != nil {
-				return "", err
-			}
-			out, err := utils.RunCmdOutput(zerolog.DebugLevel, "cat", file)
-			if err != nil {
-				return "", err
-			}
-			_, err = boundFilesDump.WriteString(string(out) + "\n")
-			if err != nil {
-				return "", err
+		if stat, err := os.Stat(boundFile); err == nil && stat.Mode().IsRegular() {
+			_, err = boundFilesDump.WriteString("====" + boundFile + "====" + "\n")
+			if allErrors := utils.JoinErrors(err, utils.CopyFile(boundFile, boundFilesDump)); allErrors != nil {
+				return "", allErrors
 			}
 		}
 	}
