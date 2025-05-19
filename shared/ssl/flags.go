@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -25,4 +25,20 @@ func AddSSLGenerationFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-city", "ssl")
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-org", "ssl")
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-ou", "ssl")
+}
+
+func AddSSLDBFlags(cmd *cobra.Command) {
+	// For SSL 3rd party certificates
+	cmd.Flags().StringSlice("ssl-db-ca-intermediate", []string{},
+		L("Intermediate CA certificate path for the database if different from the server one"))
+	cmd.Flags().String("ssl-db-ca-root", "",
+		L("Root CA certificate path for the database if different from the server one"))
+	cmd.Flags().String("ssl-db-cert", "", L("Database certificate path"))
+	cmd.Flags().String("ssl-db-key", "", L("Database key path"))
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "ssl3rd", Title: L("3rd Party SSL Certificate Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-ca-intermediate", "ssl3rd")
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-ca-root", "ssl3rd")
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-cert", "ssl3rd")
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-key", "ssl3rd")
 }
