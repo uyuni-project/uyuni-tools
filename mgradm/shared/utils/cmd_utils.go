@@ -290,7 +290,4 @@ func AddServerFlags(cmd *cobra.Command) {
 	AddReportDBFlags(cmd)
 	ssl.AddSSLGenerationFlags(cmd)
 	ssl.AddSSLDBThirdPartyFlags(cmd)
-
-	cmd.Flags().String("ssl-password", "", L("Password for the CA key to generate"))
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", ssl.GeneratedFlagsGroup)
 }
