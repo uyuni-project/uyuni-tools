@@ -96,7 +96,7 @@ Environment="PODMAN_EXTRA_ARGS="
 
 func TestGetServiceProperty(t *testing.T) {
 	newRunner = testutils.FakeRunnerGenerator("TestProperty=foo bar\n", nil)
-	tested := SystemdImpl{}
+	tested := NewSystemd()
 	actual, err := tested.GetServiceProperty("myservice", "TestProperty")
 	testutils.AssertTrue(t, "No error expected", err == nil)
 	testutils.AssertEquals(t, "Wrong expected property", "foo bar", actual)
@@ -104,7 +104,7 @@ func TestGetServiceProperty(t *testing.T) {
 
 func TestGetServicePropertyError(t *testing.T) {
 	newRunner = testutils.FakeRunnerGenerator("", errors.New("Test error"))
-	tested := SystemdImpl{}
+	tested := NewSystemd()
 	actual, err := tested.GetServiceProperty("myservice", "TestProperty")
 	testutils.AssertTrue(t, "Error message missing the root error message", strings.Contains(err.Error(), "Test error"))
 	testutils.AssertTrue(t, "Unexpected error description",

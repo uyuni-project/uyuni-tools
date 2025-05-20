@@ -17,7 +17,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var systemd podman_utils.Systemd = podman_utils.SystemdImpl{}
+var systemd podman_utils.Systemd = podman_utils.NewSystemd()
 
 func migrateToPodman(
 	_ *types.GlobalFlags,

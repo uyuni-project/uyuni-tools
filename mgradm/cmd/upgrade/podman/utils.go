@@ -16,7 +16,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var systemd shared_podman.Systemd = shared_podman.SystemdImpl{}
+var systemd shared_podman.Systemd = shared_podman.NewSystemd()
 
 func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.Command, _ []string) error {
 	hostData, err := shared_podman.InspectHost()

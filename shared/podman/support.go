@@ -195,7 +195,7 @@ func hostedContainers(systemd Systemd) ([]string, error) {
 	if err != nil {
 		return []string{}, err
 	}
-	servicesList := systemd.GetServicesFromSystemdFiles(string(systemdFiles))
+	servicesList := getServicesFromSystemdFiles(systemd, string(systemdFiles))
 
 	var containerList []string
 
@@ -207,4 +207,21 @@ func hostedContainers(systemd Systemd) ([]string, error) {
 	}
 
 	return containerList, nil
+}
+
+// getServicesFromSystemdFiles return the uyuni enabled services as string list.
+func getServicesFromSystemdFiles(systemd Systemd, systemdFileList string) []string {
+	services := strings.Replace(string(systemdFileList), "/etc/systemd/system/", "", -1)
+	services = strings.Replace(services, ".service", "", -1)
+	servicesList := strings.Split(strings.TrimSpace(services), "\n")
+
+	var trimmedServices []string
+	for _, service := range servicesList {
+		if systemd.ServiceIsEnabled(service) {
+			trimmedServices = append(trimmedServices, strings.TrimSpace(service))
+		} else {
+			log.Debug().Msgf("service %s is not enabled. Do not run any action on the container.", service)
+		}
+	}
+	return trimmedServices
 }
