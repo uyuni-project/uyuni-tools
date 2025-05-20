@@ -37,8 +37,8 @@ chown -R postgres:postgres /var/lib/pgsql
 
 if [ -e /etc/pki/tls/private/pg-spacewalk.key ]; then
 	echo "Enforce key permission"
-	chown -R postgres:postgres /etc/pki/tls/private/pg-spacewalk.key
-	chown -R postgres:postgres /etc/pki/tls/certs/spacewalk.crt
+	chown postgres:postgres /etc/pki/tls/private/pg-spacewalk.key
+	chown postgres:postgres /etc/pki/tls/certs/spacewalk.crt
 fi
 
 echo "Initialize new postgresql $NEW_VERSION database..."
