@@ -61,7 +61,11 @@ func CommandHelper[T interface{}](
 	if flagsUpdater != nil {
 		flagsUpdater(viper)
 	}
-	return fn(globalFlags, flags, cmd, args)
+	err = fn(globalFlags, flags, cmd, args)
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
+	return err
 }
 
 // AddBackendFlag add the flag for setting the backend ('podman', 'podman-remote', 'kubectl').
