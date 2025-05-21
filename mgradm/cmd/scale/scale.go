@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -28,8 +28,9 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[scaleFlags]) *
 		Short:   L("Adjust the replicas for services supporting it."),
 		Long: L(`Adjust the replicas for services supporting it.
 Supported services:
-  - uyuni-server-attestation
   - uyuni-hub-xmlrpc
+  - uyuni-saline
+  - uyuni-server-attestation
 `),
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
