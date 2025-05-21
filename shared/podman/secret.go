@@ -93,9 +93,10 @@ func createSecret(name string, value string) error {
 }
 
 // createSecretFromFile creates a podman secret from a file.
+// Removes any already existing secret with that name.
 func createSecretFromFile(name string, secretFile string) error {
-	if HasSecret(name) {
-		return nil
+	if err := deleteSecret(name, false); err != nil {
+		return err
 	}
 
 	runner := utils.NewRunner("podman", "secret", "create", name, secretFile).Log(zerolog.DebugLevel)
@@ -113,8 +114,14 @@ func HasSecret(name string) bool {
 
 // DeleteSecret removes a podman secret.
 func DeleteSecret(name string, dryRun bool) {
+	if err := deleteSecret(name, dryRun); err != nil {
+		log.Error().Err(err).Send()
+	}
+}
+
+func deleteSecret(name string, dryRun bool) error {
 	if !HasSecret(name) {
-		return
+		return nil
 	}
 
 	args := []string{"secret", "rm", name}
@@ -122,10 +129,20 @@ func DeleteSecret(name string, dryRun bool) {
 	if dryRun {
 		log.Info().Msgf(L("Would run %s"), command)
 	} else {
-		log.Info().Msgf(L("Run %s"), command)
 		runner := utils.NewRunner("podman", args...).Log(zerolog.DebugLevel)
 		if _, err := runner.Exec(); err != nil {
-			log.Error().Err(err).Msgf(L("Failed to delete %s secret"), name)
+			return utils.Errorf(err, L("Failed to delete %s secret"), name)
 		}
 	}
+	return nil
+}
+
+// GetSecret gets the content of a podman secret given its name.
+func GetSecret(name string) (string, error) {
+	out, err := newRunner("podman", "secret", "inspect", "--showsecret", name, "--format", "{{.SecretData}}").
+		Exec()
+	if err != nil {
+		return "", utils.Errorf(err, L("failed to get the content of the %s secret"), name)
+	}
+	return strings.TrimSpace(string(out)), nil
 }
