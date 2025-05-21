@@ -24,6 +24,7 @@ echo "Testing presence of postgresql$OLD_VERSION..."
 test -d /usr/lib/postgresql$OLD_VERSION/bin
 
 echo "Create a backup at /var/lib/pgsql/data-backup..."
+test -d "/var/lib/pgsql/data-backup" && mv "/var/lib/pgsql/data-backup" "/var/lib/pgsql/data-backup-$(date '+%Y%m%d_%H%M%S')"
 mkdir -p /var/lib/pgsql/data-backup
 chown postgres:postgres /var/lib/pgsql/data-backup
 chmod 700 /var/lib/pgsql/data-backup
