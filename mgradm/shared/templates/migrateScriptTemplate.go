@@ -20,6 +20,11 @@ if test -e /tmp/ssh_config; then
 fi
 SSH="ssh -o User={{ .User }} -A $SSH_CONFIG "
 
+if $SSH {{ .SourceFqdn }} "[[ ! -f /etc/susemanager-release && ! -f /etc/uyuni-release ]]"; then
+  echo "Cannot find neither /etc/susemanager-release nor /etc/uyuni-release. Is the source a no-containerized server?"
+  exit 1
+fi
+
 {{ if .Prepare }}
 echo "Preparing migration..."
 $SSH {{ .SourceFqdn }} "sudo systemctl start postgresql.service"
