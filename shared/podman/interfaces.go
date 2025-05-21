@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -62,6 +62,9 @@ type Systemd interface {
 
 	// StopInstantiated stops all replicas.
 	StopInstantiated(name string) error
+
+	// Show calls the systemctl show command and returns the output.
+	Show(service string, property string) (string, error)
 
 	// GetServicesFromSystemdFiles return the uyuni enabled services as string list.
 	GetServicesFromSystemdFiles(systemdFileList string) []string
