@@ -159,7 +159,7 @@ func generateSystemdFile(template shared_utils.Template, service string, image s
 	}
 
 	if config != "" {
-		if err := podman.GenerateSystemdConfFile("uyuni-proxy-"+service, "custom.conf", config, false); err != nil {
+		if err := podman.GenerateSystemdConfFile("uyuni-proxy-"+service, podman.CustomConf, config, false); err != nil {
 			return shared_utils.Errorf(err, L("cannot generate systemd conf user configuration file"))
 		}
 	}
