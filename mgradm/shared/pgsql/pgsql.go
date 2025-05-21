@@ -49,7 +49,7 @@ func SetupPgsql(
 	}
 	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
 	if err := cnx.WaitForHealthcheck(); err != nil {
-		return err
+		return utils.Errorf(err, L("%s fails healtcheck"), podman.DBContainerName)
 	}
 
 	return nil
@@ -81,8 +81,16 @@ func Upgrade(
 		return err
 	}
 
+	if err := systemd.StartService(podman.DBService); err != nil {
+		return err
+	}
+
 	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
-	return cnx.WaitForHealthcheck()
+	if err := cnx.WaitForHealthcheck(); err != nil {
+		return utils.Errorf(err, L("%s fails healtcheck"), podman.DBContainerName)
+	}
+
+	return nil
 }
 
 // GeneratePgsqlSystemdService creates the DB container systemd files.
