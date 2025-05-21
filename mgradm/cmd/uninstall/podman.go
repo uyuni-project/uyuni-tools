@@ -25,8 +25,8 @@ func uninstallForPodman(
 	images := []string{
 		podman.GetServiceImage(podman.ServerService),
 		podman.GetServiceImage(podman.ServerAttestationService + "@"),
-		podman.GetServiceImage(podman.HubXmlrpcService),
-		podman.GetServiceImage(podman.SalineService),
+		podman.GetServiceImage(podman.HubXmlrpcService + "@"),
+		podman.GetServiceImage(podman.SalineService + "@"),
 		podman.GetServiceImage(podman.DBService),
 	}
 
@@ -37,7 +37,7 @@ func uninstallForPodman(
 
 	systemd.UninstallInstantiatedService(podman.ServerAttestationService, !flags.Force)
 	systemd.UninstallInstantiatedService(podman.HubXmlrpcService, !flags.Force)
-	systemd.UninstallService(podman.SalineService, !flags.Force)
+	systemd.UninstallInstantiatedService(podman.SalineService, !flags.Force)
 	systemd.UninstallService(podman.DBService, !flags.Force)
 
 	// Remove the volumes
