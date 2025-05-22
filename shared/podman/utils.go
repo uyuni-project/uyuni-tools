@@ -96,6 +96,8 @@ func ReadFromContainer(name string, image string, volumes []types.VolumeMount,
 func RunContainer(name string, image string, volumes []types.VolumeMount, extraArgs []string, cmd []string) error {
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
+	podmanArgs = append(podmanArgs, "--shm-size=0")
+	podmanArgs = append(podmanArgs, "--shm-size-systemd=0")
 	for _, volume := range volumes {
 		podmanArgs = append(podmanArgs, "-v", volume.Name+":"+volume.MountPath)
 	}
