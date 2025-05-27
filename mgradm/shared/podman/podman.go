@@ -371,7 +371,7 @@ func Upgrade(
 			oldPgVersion, newPgVersion,
 		)
 		if err := RunPgsqlVersionUpgrade(
-			authFile, registry, pgsqlFlags.Image, upgradeImage, strconv.Itoa(oldPgVersion),
+			authFile, registry, image, upgradeImage, strconv.Itoa(oldPgVersion),
 			strconv.Itoa(newPgVersion),
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
