@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:34+0200\n"
-"PO-Revision-Date: 2025-03-08 07:56+0000\n"
+"PO-Revision-Date: 2025-05-28 08:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -16,51 +16,51 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: mgradm/cmd/backup/backup.go:28
 msgid "Create backup"
-msgstr ""
+msgstr "バックアップを作成"
 
 #: mgradm/cmd/backup/backup.go:29
 msgid "Create backup of the already configured Uyuni system"
-msgstr ""
+msgstr "すでに設定されているUyuniシステムのバックアップを作成する"
 
 #: mgradm/cmd/backup/backup.go:35
 msgid "Skip backup of selected volumes"
-msgstr ""
+msgstr "選択したボリュームのバックアップをスキップする"
 
 #: mgradm/cmd/backup/backup.go:36
 msgid "Backup additional volumes to the build-in ones"
-msgstr ""
+msgstr "内蔵ボリュームに追加ボリュームをバックアップする"
 
 #: mgradm/cmd/backup/backup.go:37
 msgid "Do not backup database volume, allow online backup."
-msgstr ""
+msgstr "データベースボリュームをバックアップせず、オンラインバックアップを許可します。"
 
 #: mgradm/cmd/backup/backup.go:38
 msgid "Do not backup container images"
-msgstr ""
+msgstr "コンテナイメージをバックアップしない"
 
 #: mgradm/cmd/backup/backup.go:39
 msgid "Do not backup podman configuration. On restore defaults will be used"
-msgstr ""
+msgstr "podmanの設定をバックアップしないでください。復元時にはデフォルトが使用されます"
 
 #: mgradm/cmd/backup/backup.go:40
 msgid "Do not restart services after backup is done"
-msgstr ""
+msgstr "バックアップが完了したらサービスを再起動しないでください"
 
 #: mgradm/cmd/backup/backup.go:41 mgradm/cmd/backup/backup.go:64
 msgid "Print expected actions, but no action is done"
-msgstr ""
+msgstr "予期されるアクションをプリントしますが、アクションは実行されません"
 
 #: mgradm/cmd/backup/backup.go:52
 msgid "Restore backup from the directory"
-msgstr ""
+msgstr "ディレクトリからバックアップを復元する"
 
 #: mgradm/cmd/backup/backup.go:53
 msgid "Restore backup of the previously configured Uyuni system from a specified directory"
-msgstr ""
+msgstr "指定されたディレクトリから、以前に設定されたUyuniシステムのバックアップを復元する"
 
 #: mgradm/cmd/backup/backup.go:59
 msgid "Skip restore of selected volumes"
