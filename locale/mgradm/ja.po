@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:34+0200\n"
-"PO-Revision-Date: 2025-05-28 08:59+0000\n"
+"PO-Revision-Date: 2025-05-28 11:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -64,54 +64,48 @@ msgstr "指定されたディレクトリから、以前に設定されたUyuni�
 
 #: mgradm/cmd/backup/backup.go:59
 msgid "Skip restore of selected volumes"
-msgstr ""
+msgstr "選択したボリュームの復元をスキップする"
 
 #: mgradm/cmd/backup/backup.go:60
-#, fuzzy
-#| msgid "Also remove the volumes"
 msgid "Do not restore database volume"
-msgstr "ボリュームも削除する"
+msgstr "データベースボリュームを復元しない"
 
 #: mgradm/cmd/backup/backup.go:61
 msgid "Skip restore of container images"
-msgstr ""
+msgstr "コンテナイメージの復元をスキップする"
 
 #: mgradm/cmd/backup/backup.go:62
 msgid "Do not restore podman configuration. Defaults will be used"
-msgstr ""
+msgstr "podmanの設定を復元しないでください。デフォルトが使用されます"
 
 #: mgradm/cmd/backup/backup.go:63
 msgid "Restart service after restore is done"
-msgstr ""
+msgstr "復元が完了したらサービスを再起動します"
 
 #: mgradm/cmd/backup/backup.go:65
-#, fuzzy
-#| msgid "Force overwrite of output file if already exists"
 msgid "Force overwrite of existing items"
-msgstr "出力ファイルがすでに存在する場合、強制的に上書きします"
+msgstr "既存の項目を強制的に上書きする"
 
 #: mgradm/cmd/backup/backup.go:66
 msgid "Skip existing items and restore the rest"
-msgstr ""
+msgstr "既存の項目をスキップして残りを復元する"
 
 #: mgradm/cmd/backup/backup.go:67
 msgid "Skip verification of the backup files"
-msgstr ""
+msgstr "バックアップファイルの検証をスキップする"
 
 #: mgradm/cmd/backup/backup.go:77
 msgid "Backup solution"
-msgstr ""
+msgstr "バックアップソリューション"
 
 #: mgradm/cmd/backup/backup.go:78
-#, fuzzy
-#| msgid "Tools for autoinstallation distributions management"
 msgid "Tools for local backup management"
-msgstr "自動インストールディストリビューション管理用ツール"
+msgstr "ローカルバックアップ管理用ツール"
 
 #: mgradm/cmd/backup/backup.go:101
 #, javascript-format
 msgid "Backup aborted, partially backed up files remains in '%s'"
-msgstr ""
+msgstr "バックアップが中止されました。部分的にバックアップされたファイルが「%s」に残っています"
 
 #: mgradm/cmd/backup/backup.go:105
 msgid "Important data were backed up successfully, but errors were present. Restore will use default values where needed"
