@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:34+0200\n"
-"PO-Revision-Date: 2025-03-07 05:27+0000\n"
+"PO-Revision-Date: 2025-05-28 08:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -203,23 +203,19 @@ msgstr "无法检索名称空间 "
 
 #: shared/connection.go:242
 msgid "Healthcheck not executed"
-msgstr ""
+msgstr "未执行健康检查"
 
 #: shared/connection.go:281
 msgid "container didn't start within 10s."
 msgstr "容器未在 10 秒内启动。"
 
 #: shared/connection.go:318
-#, fuzzy
-#| msgid "server didn't start within 60s. Check for the service status"
 msgid "server didn't start within 120s. Check for the service status"
-msgstr "服务器未在 60 秒内启动。请检查服务状态"
+msgstr "服务器未在 120 秒内启动。请检查服务状态"
 
 #: shared/connection.go:333
-#, fuzzy
-#| msgid "server didn't start within 60s. Check for the service status"
 msgid "container didn't start within 60s. Check for the service status"
-msgstr "服务器未在 60 秒内启动。请检查服务状态"
+msgstr "容器未在 60 秒内启动。请检查服务状态"
 
 #: shared/connection.go:373 shared/connection.go:420
 #, javascript-format
@@ -660,26 +656,20 @@ msgid "image %s is missing and cannot be fetched"
 msgstr "映像 %s 缺失，无法提取"
 
 #: shared/podman/images.go:85
-#, fuzzy
-#| msgid "failed to determine suitable backend"
 msgid "failed to determine image"
-msgstr "无法确定合适的后端"
+msgstr "无法确定映像"
 
 #: shared/podman/images.go:93
 msgid "failed to find the image of the currently running server container"
-msgstr ""
+msgstr "找不到目前正在运行的服务器容器的映像"
 
 #: shared/podman/images.go:104
-#, fuzzy
-#| msgid "failed to determine suitable backend"
 msgid "failed to determine pgsql image"
-msgstr "无法确定合适的后端"
+msgstr "无法确定 pgsql 映像"
 
 #: shared/podman/images.go:112
-#, fuzzy
-#| msgid "failed to fetch the config files bound to container %s"
 msgid "failed to find the image of the currently running db container"
-msgstr "无法提取绑定到容器 %s 的配置文件"
+msgstr "找不到目前正在运行的数据库容器的映像"
 
 #: shared/podman/images.go:137
 #, javascript-format
@@ -693,7 +683,7 @@ msgstr "无法解组映像 RPM 元数据"
 #: shared/podman/images.go:174
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
-msgstr ""
+msgstr "正在跳过从 RPM 加载映像步骤，因为 %s 不存在"
 
 #: shared/podman/images.go:204
 #, javascript-format
@@ -755,16 +745,14 @@ msgid "Failed to remove image %s"
 msgstr "无法去除映像 %s"
 
 #: shared/podman/images.go:370
-#, fuzzy, javascript-format
-#| msgid "Failed to remove image %s"
+#, javascript-format
 msgid "Failed to export image %s"
-msgstr "无法去除映像 %s"
+msgstr "无法导出映像 %s"
 
 #: shared/podman/images.go:390
-#, fuzzy, javascript-format
-#| msgid "Failed to remove image %s"
+#, javascript-format
 msgid "Failed to restore image %s"
-msgstr "无法去除映像 %s"
+msgstr "无法恢复映像 %s"
 
 #: shared/podman/login.go:25
 msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
@@ -823,10 +811,9 @@ msgstr "已去除网络"
 
 #: shared/podman/secret.go:58 shared/podman/secret.go:70
 #: shared/podman/secret.go:74
-#, fuzzy, javascript-format
-#| msgid "failed to create %s folder"
+#, javascript-format
 msgid "failed to create %s secret"
-msgstr "无法创建 %s 文件夹"
+msgstr "无法创建 %s 机密"
 
 #: shared/podman/secret.go:89
 #, javascript-format
@@ -844,10 +831,8 @@ msgid "Failed to delete %s secret"
 msgstr "无法删除 %s 机密"
 
 #: shared/podman/support.go:26
-#, fuzzy
-#| msgid "No systemd file to add to the archive"
 msgid "No logs file on host to add to the archive"
-msgstr "没有可添加到存档中的 systemd 文件"
+msgstr "主机上没有可添加到存档中的日志文件"
 
 #: shared/podman/support.go:33
 msgid "No systemd file to add to the archive"
@@ -876,10 +861,9 @@ msgid "failed to create %s file"
 msgstr "无法创建 %s 文件"
 
 #: shared/podman/support.go:75
-#, fuzzy, javascript-format
-#| msgid "failed to create %s"
+#, javascript-format
 msgid "failed to cat %s"
-msgstr "无法创建 %s"
+msgstr "无法查看 %s 的内容"
 
 #: shared/podman/support.go:95
 msgid "failed to run systemctl cat uyuni-*"
@@ -1079,32 +1063,28 @@ msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "卷 %s 挂载在外部,无法去除该目录"
 
 #: shared/podman/utils.go:213
-#, fuzzy, javascript-format
-#| msgid "Failed to remove volume %s"
+#, javascript-format
 msgid "Failed to export volume %s"
-msgstr "无法去除卷 %s"
+msgstr "无法导出卷 %s"
 
 #: shared/podman/utils.go:216
-#, fuzzy
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
-msgstr "无法将卷文件夹 %s 关联到 %s：%s"
+msgstr "无法将卷 %[1]s 的校验和写入 %[2]s"
 
 #: shared/podman/utils.go:233
 #, javascript-format
 msgid "Checksum does not match for volume %s"
-msgstr ""
+msgstr "校验和与卷 %s 不匹配"
 
 #: shared/podman/utils.go:237
-#, fuzzy, javascript-format
-#| msgid "Failed to remove volume %s"
+#, javascript-format
 msgid "Failed to precreate empty volume %s"
-msgstr "无法去除卷 %s"
+msgstr "无法预先创建空卷 %s"
 
 #: shared/podman/utils.go:241
-#, fuzzy, javascript-format
-#| msgid "Failed to remove volume %s"
+#, javascript-format
 msgid "Failed to import volume %s"
-msgstr "无法去除卷 %s"
+msgstr "无法导入卷 %s"
 
 #: shared/podman/utils.go:317
 msgid "failed to login to registry.suse.com"
@@ -1640,46 +1620,42 @@ msgid "error writing file %s"
 msgstr "写入文件 %s 时出错"
 
 #: shared/utils/utils.go:517
-#, fuzzy, javascript-format
-#| msgid "Failed to remove file %s"
+#, javascript-format
 msgid "Failed to calculate checksum of the file %s"
-msgstr "无法去除文件 %s"
+msgstr "无法计算文件 %s 的校验和"
 
 #: shared/utils/utils.go:521
-#, fuzzy
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
-msgstr "无法将卷文件夹 %s 关联到 %s：%s"
+msgstr "无法将文件 %[1]s 的校验和写入 %[2]s"
 
 #: shared/utils/utils.go:531
 #, javascript-format
 msgid "Checksum of %s does not match"
-msgstr ""
+msgstr "%s 的校验和不匹配"
 
 #: shared/utils/uyuniservices.go:18
-#, fuzzy
-#| msgid "cannot enable service"
 msgid "Main service"
-msgstr "无法启用服务"
+msgstr "主服务"
 
 #: shared/utils/uyuniservices.go:24
 msgid "Migration helper"
-msgstr ""
+msgstr "迁移助手"
 
 #: shared/utils/uyuniservices.go:30
 msgid "Confidential computing attestation"
-msgstr ""
+msgstr "机密计算认证"
 
 #: shared/utils/uyuniservices.go:36
 msgid "Hub XML-RPC API"
-msgstr ""
+msgstr "Hub XML-RPC API"
 
 #: shared/utils/uyuniservices.go:42
 msgid "Saline"
-msgstr ""
+msgstr "Saline"
 
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
-msgstr ""
+msgstr "数据库"
 
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "无法发现群集类型"
