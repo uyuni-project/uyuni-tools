@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:34+0200\n"
-"PO-Revision-Date: 2025-05-28 11:59+0000\n"
+"PO-Revision-Date: 2025-05-29 01:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -109,106 +109,91 @@ msgstr "バックアップが中止されました。部分的にバックアッ
 
 #: mgradm/cmd/backup/backup.go:105
 msgid "Important data were backed up successfully, but errors were present. Restore will use default values where needed"
-msgstr ""
+msgstr "重要なデータは正常にバックアップされましたが、エラーが発生しました。復元では必要に応じてデフォルト値が使用されます"
 
 #: mgradm/cmd/backup/backup.go:125
 msgid "Encountered problems:"
-msgstr ""
+msgstr "発生した問題:"
 
 #: mgradm/cmd/backup/backup.go:127
 msgid "Restore aborted with partially restored files. Resolve the error and try again"
-msgstr ""
+msgstr "復元が中止され、一部のファイルが復元されました。エラーを解決して再試行してください"
 
 #: mgradm/cmd/backup/backup.go:130
 msgid "Important data were restored successfully, but with warnings"
-msgstr ""
+msgstr "重要なデータは正常に復元されましたが、警告が発生しました"
 
 #: mgradm/cmd/backup/create/create.go:59
-#, fuzzy
-#| msgid "Stop the server"
 msgid "Stopping server service"
-msgstr "サーバの停止"
+msgstr "サーバサービスの停止"
 
 #: mgradm/cmd/backup/create/create.go:82
-#, fuzzy
-#| msgid "Restart the server"
 msgid "Restarting server service"
-msgstr "サーバの再起動"
+msgstr "サーバサービスの再起動"
 
 #: mgradm/cmd/backup/create/create.go:86
 #, javascript-format
 msgid "Backup finished into %s"
-msgstr ""
+msgstr "%s へのバックアップが完了しました"
 
 #: mgradm/cmd/backup/create/create.go:105
-#, fuzzy, javascript-format
-#| msgid "failed to create temporary directory"
+#, javascript-format
 msgid "Would create '%s' directory"
-msgstr "一時ディレクトリの作成に失敗しました"
+msgstr "「%s」ディレクトリを作成します"
 
 #: mgradm/cmd/backup/create/create.go:108
-#, fuzzy
-#| msgid "failed to create temporary directory: %s"
 msgid "unable to create target output directory: %w"
-msgstr "一時ディレクトリの作成に失敗しました: %s"
+msgstr "ターゲット出力ディレクトリを作成できません: %w"
 
 #: mgradm/cmd/backup/create/create.go:149
 msgid "Backing up container volumes"
-msgstr ""
+msgstr "コンテナボリュームのバックアップ"
 
 #: mgradm/cmd/backup/create/create.go:173
 msgid "Backing up container images"
-msgstr ""
+msgstr "コンテナイメージのバックアップ"
 
 #: mgradm/cmd/backup/create/create.go:178
 #, javascript-format
 msgid "Not backing up image %s"
-msgstr ""
+msgstr "イメージ %s をバックアップしていません"
 
 #: mgradm/cmd/backup/create/create.go:186
 msgid "Systemd services and configuration was not backed up"
-msgstr ""
+msgstr "Systemdのサービスと設定がバックアップされませんでした"
 
 #: mgradm/cmd/backup/create/create.go:187
-#, fuzzy
-#| msgid "Enabling system service"
 msgid "Backing up Systemd services"
-msgstr "システムサービスの有効化"
+msgstr "Systemdのサービスのバックアップ"
 
 #: mgradm/cmd/backup/create/create.go:204
 msgid "Podman configuration was not backed up"
-msgstr ""
+msgstr "podmanの設定がバックアップされませんでした"
 
 #: mgradm/cmd/backup/create/create.go:205
-#, fuzzy
-#| msgid "failed to unmarshall configuration"
 msgid "Backing up podman configuration"
-msgstr "設定のアンマーシャルに失敗しました"
+msgstr "podman設定のバックアップ"
 
 #: mgradm/cmd/backup/create/create.go:227
 #, javascript-format
 msgid "output directory %s already exists and is not empty"
-msgstr ""
+msgstr "出力ディレクトリ %s はすでに存在し、空ではありません"
 
 #: mgradm/cmd/backup/create/create.go:237
-#, fuzzy
-#| msgid "server setup failed"
 msgid "server is not initialized."
-msgstr "サーバの設定に失敗しました"
+msgstr "サーバが初期化されていません。"
 
 #: mgradm/cmd/backup/create/podman_utils.go:36
-#, fuzzy
-#| msgid "failed to create temporary directory: %s"
 msgid "failed to create podman backup tarball: %w"
-msgstr "一時ディレクトリの作成に失敗しました: %s"
+msgstr "podmanのバックアップtarballの作成に失敗しました: %w"
 
 #: mgradm/cmd/backup/create/podman_utils.go:46
 msgid "Network was not backed up"
-msgstr ""
+msgstr "ネットワークはバックアップされませんでした"
 
 #: mgradm/cmd/backup/create/podman_utils.go:62
 msgid "Podman secrets were not backed up"
-msgstr ""
+msgstr "podmanのシークレットはバックアップされませんでした"
 
 #: mgradm/cmd/backup/create/podman_utils.go:82
 #: mgradm/cmd/backup/create/podman_utils.go:97
@@ -218,261 +203,227 @@ msgid "Would run %s"
 msgstr "%s を実行します"
 
 #: mgradm/cmd/backup/create/podman_utils.go:87
-#, fuzzy
-#| msgid "failed to extract payg data"
 msgid "Failed to export network data"
-msgstr "paygデータの抽出に失敗しました"
+msgstr "ネットワークデータのエクスポートに失敗しました"
 
 #: mgradm/cmd/backup/create/podman_utils.go:102
-#, fuzzy
-#| msgid "failed to extract payg data"
 msgid "Failed to export secrets data"
-msgstr "paygデータの抽出に失敗しました"
+msgstr "シークレットデータのエクスポートに失敗しました"
 
 #: mgradm/cmd/backup/create/podman_utils.go:122
-#, fuzzy
-#| msgid "failed to create the secret"
 msgid "Failed to read secrets data"
-msgstr "シークレットの作成に失敗しました"
+msgstr "シークレットデータの読み込みに失敗しました"
 
 #: mgradm/cmd/backup/create/podman_utils.go:128
 #: mgradm/cmd/backup/restore/podman_utils.go:153
 msgid "Unable to decode podman secrets"
-msgstr ""
+msgstr "podmanのシークレットをデコードできません"
 
 #: mgradm/cmd/backup/create/podman_utils.go:143
-#, fuzzy
-#| msgid "failed to render setup script"
 msgid "Unable to encode secrets backup"
-msgstr "セットアップスクリプトのレンダリングに失敗しました"
+msgstr "シークレットのバックアップをエンコードできません"
 
 #: mgradm/cmd/backup/create/systemd_utils.go:27
-#, fuzzy, javascript-format
-#| msgid "Would run %s"
+#, javascript-format
 msgid "Would backup %s"
-msgstr "%s を実行します"
+msgstr "%s をバックアップします"
 
 #: mgradm/cmd/backup/create/systemd_utils.go:33
-#, fuzzy
-#| msgid "failed to create the database secret"
 msgid "failed to create Systemd backup tarball: %w"
-msgstr "データベースシークレットの作成に失敗しました"
+msgstr "Systemdのバックアップtarballの作成に失敗しました: %w"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:48
 #, javascript-format
 msgid "Ignoring unexpected file in the podman backup %s"
-msgstr ""
+msgstr "podmanのバックアップ %s 内の予期しないファイルを無視します"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:59
 msgid "Unable to decode network data backup"
-msgstr ""
+msgstr "ネットワークデータのバックアップをデコードできません"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:63
 msgid "Incorrect network data backup"
-msgstr ""
+msgstr "ネットワークデータのバックアップが正しくありません"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:97
 #: mgradm/cmd/backup/restore/podman_utils.go:130
 msgid "podman network already exists"
-msgstr ""
+msgstr "podmanのネットワークはすでに存在します"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:102
 msgid "Unable to create podman network! Check the error and create network manually before starting the service"
-msgstr ""
+msgstr "podmanのネットワークを作成できません。エラーを確認し、サービスを開始する前に手動でネットワークを作成してください"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:110
-#, fuzzy
-#| msgid "failed to unmarshall configuration"
 msgid "Would restore network configuration"
-msgstr "設定のアンマーシャルに失敗しました"
+msgstr "ネットワーク設定を復元します"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:115
 msgid "Failed to read backed up network configuration, trying default"
-msgstr ""
+msgstr "バックアップされたネットワーク設定の読み込みに失敗しました。デフォルトを試行しています"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:121
 msgid "Failed to decode backed up network configuration, trying default"
-msgstr ""
+msgstr "バックアップされたネットワーク設定のデコードに失敗しました。デフォルトを試行しています"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:129
 msgid "Podman network already exists, not restoring unless forced"
-msgstr ""
+msgstr "podmanのネットワークはすでに存在しており、強制されない限り復元されません"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:142
 msgid "Restoring podman network"
-msgstr ""
+msgstr "podmanのネットワークの復元"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:144
-#, fuzzy
-#| msgid "failed to create temporary directory"
 msgid "Unlable to create podman network"
-msgstr "一時ディレクトリの作成に失敗しました"
+msgstr "podmanのネットワークを作成できません"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:161
-#, fuzzy, javascript-format
-#| msgid "Unable to detect hostname, using localhost"
+#, javascript-format
 msgid "Unable to decode secret %s, using as is"
-msgstr "ローカルホストを使用してホスト名を検出できません"
+msgstr "シークレット %s をデコードできません。そのまま使用します"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:174
 msgid "Would restore podman secrets"
-msgstr ""
+msgstr "podmanのシークレットを復元します"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:180
 msgid "Failed to read backed up podman secrets, no secrets were restored"
-msgstr ""
+msgstr "バックアップされたpodmanのシークレットの読み込みに失敗しました。シークレットは復元されませんでした"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:185
 msgid "Failed to decode backed up podman secrets, no secrets were restored"
-msgstr ""
+msgstr "バックアップされたpodmanのシークレットのデコードに失敗しました。シークレットは復元されませんでした"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:190
 msgid "Restoring podman secrets"
-msgstr ""
+msgstr "podmanのシークレットの復元"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:197
 #, javascript-format
 msgid "Podman secret %s is already present, not restoring unless forced"
-msgstr ""
+msgstr "podmanのシークレット %s はすでに存在しており、強制されない限り復元されません"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:203
-#, fuzzy
-#| msgid "failed to create the secret"
 msgid "Unable to create podman secret"
-msgstr "シークレットの作成に失敗しました"
+msgstr "podmanのシークレットを作成できません"
 
 #: mgradm/cmd/backup/restore/restore.go:106
-#, fuzzy, javascript-format
-#| msgid "source %s does not exists"
+#, javascript-format
 msgid "input directory %s does not exists"
-msgstr "ソース %s が存在しません"
+msgstr "入力ディレクトリ %s が存在しません"
 
 #: mgradm/cmd/backup/restore/restore.go:116
 msgid "Restoring over already initialized server"
-msgstr ""
+msgstr "すでに初期化されたサーバの復元"
 
 #: mgradm/cmd/backup/restore/restore.go:118
 msgid "server is already initialized. Use force to overwrite"
-msgstr ""
+msgstr "サーバーはすでに初期化されています。強制的に上書きしてください"
 
 #: mgradm/cmd/backup/restore/restore.go:137
 msgid "No volumes found in the backup"
-msgstr ""
+msgstr "バックアップにボリュームが見つかりません"
 
 #: mgradm/cmd/backup/restore/restore.go:142
 msgid "Unable to read directory with the volumes"
-msgstr ""
+msgstr "ボリュームのあるディレクトリを読み込むことができません"
 
 #: mgradm/cmd/backup/restore/restore.go:155
 #, javascript-format
 msgid "Skipping volume %s"
-msgstr ""
+msgstr "ボリューム %s をスキップしています"
 
 #: mgradm/cmd/backup/restore/restore.go:163
-#, fuzzy, javascript-format
-#| msgid "Using database upgrade image %s"
+#, javascript-format
 msgid "Skipping database volume %s"
-msgstr "データベースのアップグレードイメージ %s を使用しています"
+msgstr "データベースボリューム %s をスキップしています"
 
 #: mgradm/cmd/backup/restore/restore.go:170
-#, fuzzy, javascript-format
-#| msgid "cannot inspect volume %s"
+#, javascript-format
 msgid "Not restoring existing volume %s"
-msgstr "ボリューム %s を検査できません"
+msgstr "既存のボリューム %s を復元しません"
 
 #: mgradm/cmd/backup/restore/restore.go:174
 #, javascript-format
 msgid "Not restoring existing volume %s unless forced"
-msgstr ""
+msgstr "強制されない限り、既存のボリューム %s を復元しません"
 
 #: mgradm/cmd/backup/restore/restore.go:176
 #, javascript-format
 msgid "Volume %s will be overwriten"
-msgstr ""
+msgstr "ボリューム %s は上書きされます"
 
 #: mgradm/cmd/backup/restore/restore.go:193
 msgid "No images found in the backup"
-msgstr ""
+msgstr "バックアップにイメージが見つかりません"
 
 #: mgradm/cmd/backup/restore/restore.go:197
 msgid "Unable to read directory with the images"
-msgstr ""
+msgstr "イメージのあるディレクトリを読み込むことができません"
 
 #: mgradm/cmd/backup/restore/restore.go:235
 msgid "podman config backup not found in the backup location, trying defaults"
-msgstr ""
+msgstr "podmanのconfigバックアップがバックアップ場所に見つかりません。デフォルトを試しています"
 
 #: mgradm/cmd/backup/restore/restore.go:241
-#, fuzzy
-#| msgid "unable to cleanup source file"
 msgid "Unable to validate podman backup file"
-msgstr "ソースファイルをクリーンアップできません"
+msgstr "podmanのバックアップファイルを検証できません"
 
 #: mgradm/cmd/backup/restore/restore.go:249
-#, fuzzy
-#| msgid "cannot generate systemd user configuration file"
 msgid "Restoring systemd configuration"
-msgstr "systemdユーザ設定ファイルを生成できません"
+msgstr "systemd設定の復元"
 
 #: mgradm/cmd/backup/restore/restore.go:252
 msgid "systemd backup not found in the backup location, generating defaults"
-msgstr ""
+msgstr "バックアップ場所にsystemdのバックアップが見つからないため、デフォルトが生成されます"
 
 #: mgradm/cmd/backup/restore/restore.go:257
-#, fuzzy
-#| msgid "failed to generate systemd service unit file"
 msgid "Unable to validate systemd backup file"
-msgstr "systemdサービスユニットファイルの生成に失敗しました"
+msgstr "systemdのバックアップファイルを検証できません"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:40
-#, fuzzy, javascript-format
-#| msgid "Would run %s"
+#, javascript-format
 msgid "Would restore %s"
-msgstr "%s を実行します"
+msgstr "%s を復元します"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:48
-#, fuzzy, javascript-format
-#| msgid "failed to create temporary directory %s"
+#, javascript-format
 msgid "Unable to create directory %s"
-msgstr "一時ディレクトリ %s の作成に失敗しました"
+msgstr "ディレクトリ %s を作成できません"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:58
 #, javascript-format
 msgid "Unknown filetype of %s"
-msgstr ""
+msgstr "%s のファイルタイプが不明です"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:63
-#, fuzzy, javascript-format
-#| msgid "failed to create folder %s"
+#, javascript-format
 msgid "Unable to restore file details for %s"
-msgstr "フォルダ %s の作成に失敗しました"
+msgstr "%s のファイルの詳細を復元できません"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:73
-#, fuzzy, javascript-format
-#| msgid "Failed to create issuer"
+#, javascript-format
 msgid "Unable to create %s"
-msgstr "発行者の作成に失敗しました"
+msgstr "%s を作成できません"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:77
 #, javascript-format
 msgid "Unable to restore content of %s"
-msgstr ""
+msgstr "%s のコンテンツを復元できません"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:96
-#, fuzzy
-#| msgid "cannot generate systemd service"
 msgid "Would generate default systemd services"
-msgstr "systemdサービスを生成できません"
+msgstr "デフォルトのsystemdのサービスを生成します"
 
 #: mgradm/cmd/backup/shared/utils.go:31
-#, fuzzy, javascript-format
-#| msgid "failed to determine image"
+#, javascript-format
 msgid "unable to determine target %s storage size"
-msgstr "イメージの決定に失敗しました"
+msgstr "ターゲット %s のストレージサイズを決定できません"
 
 #: mgradm/cmd/backup/shared/utils.go:61
 msgid "insufficient space on target device"
-msgstr ""
+msgstr "ターゲットデバイスの空き容量が不足しています"
 
 #: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/podman/utils.go:56
 #: mgradm/cmd/migrate/podman/utils.go:41 mgradm/cmd/upgrade/podman/utils.go:35
@@ -775,21 +726,19 @@ msgstr "サードパーティリポジトリのGPGキーの管理"
 
 #: mgradm/cmd/gpg/list/gpg.go:33
 msgid "List GPG keys"
-msgstr ""
+msgstr "GPGキーを一覧にする"
 
 #: mgradm/cmd/gpg/list/gpg.go:34
 msgid "List GPG keys from custom keyring (default) or system keyring"
-msgstr ""
+msgstr "カスタムキーリング(デフォルト)またはシステムキーリングからのGPGキーを一覧にする"
 
 #: mgradm/cmd/gpg/list/gpg.go:41
 msgid "List keys from system keyring"
-msgstr ""
+msgstr "システムキーリングからのキーを一覧にする"
 
 #: mgradm/cmd/gpg/list/gpg.go:66
-#, fuzzy
-#| msgid "failed to create keyring %s"
 msgid "failed to list keys in selected keyring"
-msgstr "キーリング %s の作成に失敗しました"
+msgstr "選択したキーリングのキーを一覧にできませんでした"
 
 #: mgradm/cmd/hub/hub.go:19
 msgid "Hub management"
@@ -880,26 +829,20 @@ msgid "cannot print inspect result"
 msgstr "検査結果を出力できません"
 
 #: mgradm/cmd/inspect/podman.go:26
-#, fuzzy
-#| msgid "failed to determine image"
 msgid "failed to determine server image"
-msgstr "イメージの決定に失敗しました"
+msgstr "サーバイメージの決定に失敗しました"
 
 #: mgradm/cmd/inspect/podman.go:34
 msgid "failed to find the image of the currently running server container"
 msgstr "現在実行中のサーバコンテナのイメージが見つかりませんでした"
 
 #: mgradm/cmd/inspect/podman.go:41
-#, fuzzy
-#| msgid "failed to determine image"
 msgid "failed to determine pgsql image"
-msgstr "イメージの決定に失敗しました"
+msgstr "pgsqlイメージの決定に失敗しました"
 
 #: mgradm/cmd/inspect/podman.go:49
-#, fuzzy
-#| msgid "failed to find the image of the currently running server container"
 msgid "failed to find the image of the currently running db container"
-msgstr "現在実行中のサーバコンテナのイメージが見つかりませんでした"
+msgstr "現在実行中のdbコンテナのイメージが見つかりませんでした"
 
 #: mgradm/cmd/install/install.go:20 mgradm/cmd/install/install.go:21
 msgid "Install a new server"
@@ -966,10 +909,8 @@ msgstr "FQDN「%s」を使用してサーバを設定しています"
 
 #: mgradm/cmd/install/podman/utils.go:67 mgradm/shared/podman/podman.go:328
 #: mgradm/shared/podman/podman.go:519
-#, fuzzy
-#| msgid "cannot upgrade to image %s"
 msgid "cannot prepare images"
-msgstr "イメージ %s にアップグレードできません"
+msgstr "イメージを準備できません"
 
 #: mgradm/cmd/install/podman/utils.go:71 mgradm/shared/podman/podman.go:93
 #: mgradm/shared/podman/podman.go:323 mgradm/shared/podman/podman.go:511
@@ -979,7 +920,7 @@ msgstr "ネットワークを設定できません"
 #: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:856
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
-msgstr ""
+msgstr "外部データベース %s を使用するためにデータベース コンテナのセットアップをスキップしました"
 
 #: mgradm/cmd/install/podman/utils.go:114
 msgid "Run setup command in the container"
@@ -1625,26 +1566,22 @@ msgid "cannot enable service"
 msgstr "サービスを有効にできません"
 
 #: mgradm/shared/kubernetes/certificates.go:51
-#, fuzzy
-#| msgid "SSL certificates generation failed"
 msgid "Database SSL certificate and key have to be defined"
-msgstr "SSL証明書の生成に失敗しました"
+msgstr "データベースのSSL証明書とキーを定義する必要があります"
 
 #: mgradm/shared/kubernetes/certificates.go:78
 msgid "Creating SSL server certificate secret"
 msgstr "SSLサーバ証明書シークレットの作成"
 
 #: mgradm/shared/kubernetes/certificates.go:88
-#, fuzzy, javascript-format
-#| msgid "failed to generate issuer definition"
+#, javascript-format
 msgid "Failed to generate %s secret definition"
-msgstr "発行者定義の生成に失敗しました"
+msgstr "%s シークレット定義の生成に失敗しました"
 
 #: mgradm/shared/kubernetes/certificates.go:92
-#, fuzzy, javascript-format
-#| msgid "Failed to create uyuni-crt TLS secret"
+#, javascript-format
 msgid "Failed to create %s TLS secret"
-msgstr "uyuni-crt TLSシークレットの作成に失敗しました"
+msgstr "%s TLSシークレットの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/certificates.go:101
 msgid "Creating cert-manager issuer for existing CA"
@@ -1671,10 +1608,8 @@ msgid "cannot deploy"
 msgstr "配備できません"
 
 #: mgradm/shared/kubernetes/certificates.go:190
-#, fuzzy
-#| msgid "Extracting CA certificate to a configmap"
 msgid "Extracting CA certificate to a ConfigMap"
-msgstr "CA証明書を設定マップに抽出する"
+msgstr "CA証明書をConfigMapに抽出する"
 
 #: mgradm/shared/kubernetes/certificates.go:195
 #, javascript-format
@@ -1682,28 +1617,23 @@ msgid "CA cert: %s"
 msgstr "CA証明書: %s"
 
 #: mgradm/shared/kubernetes/certificates.go:197
-#, fuzzy, javascript-format
-#| msgid "uyuni-ca configmap already existing, skipping extraction"
+#, javascript-format
 msgid "%s ConfigMap already existing, skipping extraction"
-msgstr "uyuni-ca設定マップはすでに存在します。抽出をスキップします"
+msgstr "%s ConfigMapはすでに存在します。抽出をスキップします"
 
 #: mgradm/shared/kubernetes/certificates.go:205
-#, fuzzy, javascript-format
-#| msgid "Failed to get uyuni-ca certificate"
+#, javascript-format
 msgid "Failed to get %s certificate"
-msgstr "uyuni-ca証明書を取得できませんでした"
+msgstr "%s 証明書を取得できませんでした"
 
 #: mgradm/shared/kubernetes/certificates.go:210
-#, fuzzy
-#| msgid "Failed to base64 decode CA certificate"
 msgid "failed to base64 decode CA certificate"
 msgstr "CA証明書のbase64デコードに失敗しました"
 
 #: mgradm/shared/kubernetes/certificates.go:233
-#, fuzzy, javascript-format
-#| msgid "failed to create the SSH migration ConfigMap"
+#, javascript-format
 msgid "failed to create the %s ConfigMap"
-msgstr "SSH移行ConfigMapの作成に失敗しました"
+msgstr "%s ConfigMapの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/coco.go:38
 msgid "failed to create confidential computing attestations deployment"
@@ -1714,10 +1644,8 @@ msgid "failed to create the secret"
 msgstr "シークレットの作成に失敗しました"
 
 #: mgradm/shared/kubernetes/db.go:74
-#, fuzzy
-#| msgid "failed to create the server deployment"
 msgid "failed to create the database deployment"
-msgstr "サーバ配備の作成に失敗しました"
+msgstr "データベース配備の作成に失敗しました"
 
 #: mgradm/shared/kubernetes/dbFinalize.go:32
 msgid "Running database finalization, this could be long depending on the size of the database…"
@@ -1824,16 +1752,13 @@ msgid "failed to write traefik routes to file"
 msgstr "traefikルートをファイルに書き込めませんでした"
 
 #: mgradm/shared/pgsql/pgsql.go:62
-#, fuzzy, javascript-format
-#| msgid "cannot enable service"
+#, javascript-format
 msgid "cannot enable %s service"
-msgstr "サービスを有効にできません"
+msgstr "%s サービスを有効にできません"
 
 #: mgradm/shared/pgsql/pgsql.go:121
-#, fuzzy
-#| msgid "cannot generate systemd user configuration file"
 msgid "cannot generate systemd configuration file"
-msgstr "systemdユーザ設定ファイルを生成できません"
+msgstr "systemd設定ファイルを生成できません"
 
 #: mgradm/shared/podman/podman.go:96
 msgid "Enabling system service"
@@ -1882,10 +1807,8 @@ msgid "cannot generate PostgreSQL finalization script"
 msgstr "PostgreSQL終了処理スクリプトを生成できません"
 
 #: mgradm/shared/podman/podman.go:333 mgradm/shared/podman/podman.go:543
-#, fuzzy
-#| msgid "cannot upgrade"
 msgid "cannot prepare host"
-msgstr "アップグレードできません"
+msgstr "ホストを準備できません"
 
 #: mgradm/shared/podman/podman.go:338 mgradm/shared/podman/podman.go:346
 #: mgradm/shared/podman/podman.go:611
@@ -1894,19 +1817,15 @@ msgstr "サービスを停止できません"
 
 #: mgradm/shared/podman/podman.go:359 mgradm/shared/podman/podman.go:550
 msgid "Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"
-msgstr ""
+msgstr "分割されたPostgreSQLコンテナを設定しています。イメージバージョン: %[1]s、移行されていないバージョン: %[2]s"
 
 #: mgradm/shared/podman/podman.go:364 mgradm/shared/podman/podman.go:559
-#, fuzzy
-#| msgid "cannot read data from container"
 msgid "cannot configure db container"
-msgstr "コンテナからデータを読み込めません"
+msgstr "dbコンテナを設定できません"
 
 #: mgradm/shared/podman/podman.go:370 mgradm/shared/podman/podman.go:785
-#, fuzzy
-#| msgid "Previous postgresql is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgid "Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
-msgstr "以前のpostgresqlは %[1]s、新しいpostgresqlは  %[2]s です。DBバージョンのアップグレードを実行中…"
+msgstr "以前のPostgreSQLは %[1]s、新しいPostgreSQLは  %[2]s です。DBバージョンのアップグレードを実行中…"
 
 #: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:792
 #: mgradm/shared/podman/podman.go:815
@@ -1914,10 +1833,8 @@ msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQLバージョンアップグレードスクリプトを実行できません"
 
 #: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:795
-#, fuzzy
-#| msgid "Upgrading to %s without changing PostgreSQL version"
 msgid "Upgrading without changing PostgreSQL version"
-msgstr "PostgreSQLバージョンを変更せずに %s にアップグレードしています"
+msgstr "PostgreSQLバージョンを変更せずにアップグレードしています"
 
 #: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:798
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
@@ -1952,10 +1869,8 @@ msgid "Migration prepared. Run the 'migrate' command without '--prepare' to fini
 msgstr "移行の準備ができました。移行を完了するには、「--prepare」を指定せずに「migrate」コマンドを実行します。"
 
 #: mgradm/shared/podman/podman.go:660
-#, fuzzy
-#| msgid "failed to generate migration script"
 msgid "failed to generate postgresql migration script"
-msgstr "移行スクリプトの生成に失敗しました"
+msgstr "postgresql移行スクリプトの生成に失敗しました"
 
 #: mgradm/shared/podman/podman.go:696
 msgid "The above error is only relevant if using a public cloud provider registry"
@@ -1974,64 +1889,44 @@ msgid "cannot inspect podman values"
 msgstr "podman値を検査できません"
 
 #: mgradm/shared/podman/ssl.go:80
-#, fuzzy
-#| msgid "Restarting services after updating the certificate"
 msgid "Using provided 3rd party server certificates"
-msgstr "証明書更新後のサービスの再起動"
+msgstr "提供されたサードパーティのサーバ証明書を使用する"
 
 #: mgradm/shared/podman/ssl.go:118
-#, fuzzy
-#| msgid "Restarting services after updating the certificate"
 msgid "Using provided 3rd party database certificates"
-msgstr "証明書更新後のサービスの再起動"
+msgstr "提供されたサードパーティのデータベース証明書を使用する"
 
 #: mgradm/shared/podman/ssl.go:203
-#, fuzzy
-#| msgid "cannot update SSL certificate"
 msgid "cannot write existing CA certificate"
-msgstr "SSL証明書を更新できません"
+msgstr "既存のCA証明書を書き込めません"
 
 #: mgradm/shared/podman/ssl.go:214
-#, fuzzy
-#| msgid "Creating SSL server certificate secret"
 msgid "cannot write existing server certificate"
-msgstr "SSLサーバ証明書シークレットの作成"
+msgstr "既存のサーバ証明書を書き込めません"
 
 #: mgradm/shared/podman/ssl.go:225
-#, fuzzy
-#| msgid "cannot generate systemd service file"
 msgid "cannot write existing server key"
-msgstr "systemdサービスファイルを生成できません"
+msgstr "既存のサーバキーを書き込めません"
 
 #: mgradm/shared/podman/ssl.go:228
-#, fuzzy
-#| msgid "Restarting services after updating the certificate"
 msgid "Reusing existing certificates"
-msgstr "証明書更新後のサービスの再起動"
+msgstr "既存の証明書の再利用"
 
 #: mgradm/shared/podman/ssl.go:289
-#, fuzzy
-#| msgid "SSL certificates generation failed"
 msgid "Server SSL certificates generation failed"
-msgstr "SSL証明書の生成に失敗しました"
+msgstr "サーバのSSL証明書の生成に失敗しました"
 
 #: mgradm/shared/podman/ssl.go:292
-#, fuzzy
-#| msgid "SSL certificates generated"
 msgid "Server SSL certificates generated"
-msgstr "SSL証明書が生成されました"
+msgstr "サーバのSSL証明書が生成されました"
 
 #: mgradm/shared/podman/ssl.go:322
-#, fuzzy
-#| msgid "SSL certificates generation failed"
 msgid "Database SSL certificates generation failed"
-msgstr "SSL証明書の生成に失敗しました"
+msgstr "データベースのSSL証明書の生成に失敗しました"
 
 #: mgradm/shared/podman/ssl.go:325
-#, fuzzy
-#| msgid "SSL certificates generated"
 msgid "Database SSL certificates generated"
-msgstr "SSL証明書が生成されました"
+msgstr "データベースのSSL証明書が生成されました"
 
 #: mgradm/shared/saline/saline.go:68
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
@@ -2044,41 +1939,32 @@ msgstr "Salineサービスを設定しています"
 #: mgradm/shared/templates/certificate.go:56
 #, javascript-format
 msgid "%s certificate needs at least one DNS entry"
-msgstr ""
+msgstr "%s 証明書には少なくとも1つのDNSエントリが必要です"
 
 #: mgradm/shared/templates/issuerTemplate.go:56
-#, fuzzy
-#| msgid "failed to render setup script"
 msgid "failed to render issuer template"
-msgstr "セットアップスクリプトのレンダリングに失敗しました"
+msgstr "発行者テンプレートのレンダリングに失敗しました"
 
 #: mgradm/shared/templates/issuerTemplate.go:62
-#, fuzzy, javascript-format
-#| msgid "failed to write certificate to %s"
+#, javascript-format
 msgid "failed to write issuer and certificates to %s file"
-msgstr "%s への証明書の書き込みに失敗しました"
+msgstr "%s への発行者と証明書の書き込みに失敗しました"
 
 #: mgradm/shared/templates/issuerTemplate.go:67
-#, fuzzy
-#| msgid "failed to create the namespace"
 msgid "failed to apply template"
-msgstr "ネームスペースの作成に失敗しました"
+msgstr "テンプレートの適用に失敗しました"
 
 #: mgradm/shared/utils/cmd_utils.go:41
 msgid "Server certificate, key and root CA need to be all provided"
 msgstr "サーバ証明書、キー、ルートCAをすべて提供する必要があります"
 
 #: mgradm/shared/utils/cmd_utils.go:45 mgradm/shared/utils/cmd_utils.go:59
-#, fuzzy
-#| msgid "Server certificate, key and root CA need to be all provided"
 msgid "Database certificate and key need to be provided"
-msgstr "サーバ証明書、キー、ルートCAをすべて提供する必要があります"
+msgstr "データベース証明書とキーを提供する必要があります"
 
 #: mgradm/shared/utils/cmd_utils.go:55
-#, fuzzy
-#| msgid "Server certificate, key and root CA need to be all provided"
 msgid "DB certificate, key and root CA need to be all provided"
-msgstr "サーバ証明書、キー、ルートCAをすべて提供する必要があります"
+msgstr "DB証明書、キー、ルートCAをすべて提供する必要があります"
 
 #: mgradm/shared/utils/cmd_utils.go:65
 msgid "Kubernetes namespace where to install uyuni"
@@ -2181,16 +2067,12 @@ msgid "Database port"
 msgstr "データベースポート"
 
 #: mgradm/shared/utils/cmd_utils.go:161
-#, fuzzy
-#| msgid "External database admin user name"
 msgid "Database admin user name"
-msgstr "外部データベース管理者のユーザ名"
+msgstr "データベース管理者のユーザ名"
 
 #: mgradm/shared/utils/cmd_utils.go:162
-#, fuzzy
-#| msgid "External database admin password"
 msgid "Database admin password"
-msgstr "外部データベース管理者のパスワード"
+msgstr "データベース管理者のパスワード"
 
 #: mgradm/shared/utils/cmd_utils.go:163
 msgid "External database provider. Possible values 'aws'"
@@ -2257,8 +2139,6 @@ msgid "Confidential Computing Flags"
 msgstr "コンフィデンシャルコンピューティングのフラグ"
 
 #: mgradm/shared/utils/cmd_utils.go:221 mgradm/shared/utils/cmd_utils.go:229
-#, fuzzy
-#| msgid "confidential computing attestation"
 msgid "Confidential computing attestation"
 msgstr "コンフィデンシャルコンピューティングの検証"
 
@@ -2323,11 +2203,11 @@ msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:280
 msgid "PostgreSQL Database Container Flags"
-msgstr ""
+msgstr "PostgreSQLデータベースコンテナフラグ"
 
 #: mgradm/shared/utils/cmd_utils.go:281
 msgid "PostgreSQL Database"
-msgstr ""
+msgstr "PostgreSQLデータベース"
 
 #: mgradm/shared/utils/cmd_utils.go:294
 msgid "Password for the CA key to generate"
@@ -2335,11 +2215,11 @@ msgstr "生成するCAキーのパスワード"
 
 #: mgradm/shared/utils/cmd_utils.go:299
 msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr ""
+msgstr "サーバのものと異なる場合のデータベースの中間CA証明書のパス"
 
 #: mgradm/shared/utils/cmd_utils.go:301
 msgid "Root CA certificate path for the database if different from the server one"
-msgstr ""
+msgstr "サーバのものと異なる場合のデータベースのルートCA証明書のパス"
 
 #: mgradm/shared/utils/cmd_utils.go:302
 #, fuzzy
