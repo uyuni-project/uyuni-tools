@@ -40,6 +40,9 @@ $SSH {{ .SourceFqdn }} "sudo systemctl stop postgresql.service"
 while IFS="," read -r target path ; do
   if $SSH -n {{ .SourceFqdn }} test -e "$path" ; then
     echo "-/ $path"
+
+    # protect the targets that can be already synced in --prepare phase
+    echo "P/ /srv/www/distributions/$target"
   fi
 done < distros > exclude_list
 
