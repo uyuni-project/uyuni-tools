@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:34+0200\n"
-"PO-Revision-Date: 2025-05-29 10:59+0000\n"
+"PO-Revision-Date: 2025-05-29 13:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
@@ -121,25 +121,29 @@ msgid "Tools for local backup management"
 msgstr "로컬 백업 관리용 도구"
 
 #: mgradm/cmd/backup/backup.go:101
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Backup aborted, partially backed up files remains in '%s'"
-msgstr ""
+msgstr "백업이 중단되었습니다. 부분 백업된 파일은 '%s'에 유지됩니다."
 
 #: mgradm/cmd/backup/backup.go:105
+#, fuzzy
 msgid "Important data were backed up successfully, but errors were present. Restore will use default values where needed"
-msgstr ""
+msgstr "중요한 데이터가 백업되었지만, 오류가 발생했습니다. 필요한 경우 기본값을 사용하여 복원합니다."
 
 #: mgradm/cmd/backup/backup.go:125
+#, fuzzy
 msgid "Encountered problems:"
-msgstr ""
+msgstr "발생한 문제:"
 
 #: mgradm/cmd/backup/backup.go:127
+#, fuzzy
 msgid "Restore aborted with partially restored files. Resolve the error and try again"
-msgstr ""
+msgstr "부분적으로 복원된 파일을 사용한 복원이 중단되었습니다. 오류를 해결하고 다시 시도하십시오."
 
 #: mgradm/cmd/backup/backup.go:130
+#, fuzzy
 msgid "Important data were restored successfully, but with warnings"
-msgstr ""
+msgstr "중요 데이터가 복원되었지만, 경고가 발생했습니다."
 
 #: mgradm/cmd/backup/create/create.go:59
 msgid "Stopping server service"
@@ -150,9 +154,9 @@ msgid "Restarting server service"
 msgstr "서버 서비스 다시 시작"
 
 #: mgradm/cmd/backup/create/create.go:86
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Backup finished into %s"
-msgstr ""
+msgstr "%s(으)로의 백업이 완료됨"
 
 #: mgradm/cmd/backup/create/create.go:105
 #, javascript-format
@@ -164,38 +168,42 @@ msgid "unable to create target output directory: %w"
 msgstr "대상 출력 디렉토리를 만들 수 없음: %w"
 
 #: mgradm/cmd/backup/create/create.go:149
+#, fuzzy
 msgid "Backing up container volumes"
-msgstr ""
+msgstr "컨테이너 볼륨 백업"
 
 #: mgradm/cmd/backup/create/create.go:173
+#, fuzzy
 msgid "Backing up container images"
-msgstr ""
+msgstr "컨테이너 이미지 백업"
 
 #: mgradm/cmd/backup/create/create.go:178
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Not backing up image %s"
-msgstr ""
+msgstr "이미지 %s 백업 안 함"
 
 #: mgradm/cmd/backup/create/create.go:186
+#, fuzzy
 msgid "Systemd services and configuration was not backed up"
-msgstr ""
+msgstr "systemd 서비스 및 구성이 백업되지 않음"
 
 #: mgradm/cmd/backup/create/create.go:187
 msgid "Backing up Systemd services"
 msgstr "Systemd 서비스 백업"
 
 #: mgradm/cmd/backup/create/create.go:204
+#, fuzzy
 msgid "Podman configuration was not backed up"
-msgstr ""
+msgstr "podman 구성이 백업되지 않음"
 
 #: mgradm/cmd/backup/create/create.go:205
 msgid "Backing up podman configuration"
 msgstr "podman 구성 백업"
 
 #: mgradm/cmd/backup/create/create.go:227
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "output directory %s already exists and is not empty"
-msgstr ""
+msgstr "출력 디렉토리 %s이(가) 이미 있고 비어 있지 않습니다."
 
 #: mgradm/cmd/backup/create/create.go:237
 msgid "server is not initialized."
@@ -206,12 +214,14 @@ msgid "failed to create podman backup tarball: %w"
 msgstr "podman 백업 tarball을 만들지 못함: %w"
 
 #: mgradm/cmd/backup/create/podman_utils.go:46
+#, fuzzy
 msgid "Network was not backed up"
-msgstr ""
+msgstr "네트워크가 백업되지 않음"
 
 #: mgradm/cmd/backup/create/podman_utils.go:62
+#, fuzzy
 msgid "Podman secrets were not backed up"
-msgstr ""
+msgstr "podman 시크릿이 백업되지 않음"
 
 #: mgradm/cmd/backup/create/podman_utils.go:82
 #: mgradm/cmd/backup/create/podman_utils.go:97
@@ -234,8 +244,9 @@ msgstr "시크릿 데이터 읽기 실패"
 
 #: mgradm/cmd/backup/create/podman_utils.go:128
 #: mgradm/cmd/backup/restore/podman_utils.go:153
+#, fuzzy
 msgid "Unable to decode podman secrets"
-msgstr ""
+msgstr "podman 시크릿을 디코딩할 수 없음"
 
 #: mgradm/cmd/backup/create/podman_utils.go:143
 msgid "Unable to encode secrets backup"
@@ -251,46 +262,54 @@ msgid "failed to create Systemd backup tarball: %w"
 msgstr "Systemd 백업 tarball 만들기 실패: %w"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:48
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Ignoring unexpected file in the podman backup %s"
-msgstr ""
+msgstr "podman 백업 %s에서 예기치 않은 파일을 무시합니다."
 
 #: mgradm/cmd/backup/restore/podman_utils.go:59
+#, fuzzy
 msgid "Unable to decode network data backup"
-msgstr ""
+msgstr "네트워크 데이터 백업을 디코딩할 수 없음"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:63
+#, fuzzy
 msgid "Incorrect network data backup"
-msgstr ""
+msgstr "잘못된 네트워크 데이터 백업"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:97
 #: mgradm/cmd/backup/restore/podman_utils.go:130
+#, fuzzy
 msgid "podman network already exists"
-msgstr ""
+msgstr "podman 네트워크가 이미 있음"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:102
+#, fuzzy
 msgid "Unable to create podman network! Check the error and create network manually before starting the service"
-msgstr ""
+msgstr "podman 네트워크를 생성할 수 없습니다! 서비스를 시작하기 전에 오류를 확인하고 네트워크를 수동으로 생성하십시오."
 
 #: mgradm/cmd/backup/restore/podman_utils.go:110
 msgid "Would restore network configuration"
 msgstr "네트워크 구성 복원"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:115
+#, fuzzy
 msgid "Failed to read backed up network configuration, trying default"
-msgstr ""
+msgstr "백업된 네트워크 구성의 읽기에 실패하여 기본값으로 시도합니다."
 
 #: mgradm/cmd/backup/restore/podman_utils.go:121
+#, fuzzy
 msgid "Failed to decode backed up network configuration, trying default"
-msgstr ""
+msgstr "백업된 네트워크 구성의 디코딩에 실패하여 기본값으로 시도합니다."
 
 #: mgradm/cmd/backup/restore/podman_utils.go:129
+#, fuzzy
 msgid "Podman network already exists, not restoring unless forced"
-msgstr ""
+msgstr "podman 네트워크가 이미 존재하며, 강제로 복원하지 않는 한 복원되지 않습니다."
 
 #: mgradm/cmd/backup/restore/podman_utils.go:142
+#, fuzzy
 msgid "Restoring podman network"
-msgstr ""
+msgstr "podman 네트워크 복원"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:144
 msgid "Unlable to create podman network"
@@ -302,25 +321,29 @@ msgid "Unable to decode secret %s, using as is"
 msgstr "%s 시크릿을 그대로 사용하여 디코딩할 수 없음"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:174
+#, fuzzy
 msgid "Would restore podman secrets"
-msgstr ""
+msgstr "podman 시크릿 복원"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:180
+#, fuzzy
 msgid "Failed to read backed up podman secrets, no secrets were restored"
-msgstr ""
+msgstr "백업된 podman 시크릿의 읽기에 실패했으며, 시크릿이 복원되지 않았습니다."
 
 #: mgradm/cmd/backup/restore/podman_utils.go:185
+#, fuzzy
 msgid "Failed to decode backed up podman secrets, no secrets were restored"
-msgstr ""
+msgstr "백업된 podman 시크릿의 디코딩에 실패했으며, 시크릿이 복원되지 않았습니다."
 
 #: mgradm/cmd/backup/restore/podman_utils.go:190
+#, fuzzy
 msgid "Restoring podman secrets"
-msgstr ""
+msgstr "podman 시크릿 복원"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:197
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Podman secret %s is already present, not restoring unless forced"
-msgstr ""
+msgstr "podman 시크릿 %s이(가) 이미 존재하며, 강제로 복원하지 않는 한 복원되지 않습니다."
 
 #: mgradm/cmd/backup/restore/podman_utils.go:203
 msgid "Unable to create podman secret"
@@ -332,25 +355,29 @@ msgid "input directory %s does not exists"
 msgstr "입력 디렉토리 %s이(가) 없습니다."
 
 #: mgradm/cmd/backup/restore/restore.go:116
+#, fuzzy
 msgid "Restoring over already initialized server"
-msgstr ""
+msgstr "이미 초기화된 서버 복원"
 
 #: mgradm/cmd/backup/restore/restore.go:118
+#, fuzzy
 msgid "server is already initialized. Use force to overwrite"
-msgstr ""
+msgstr "서버가 이미 초기화되어 있습니다. 강제 덮어쓰기를 사용하십시오."
 
 #: mgradm/cmd/backup/restore/restore.go:137
+#, fuzzy
 msgid "No volumes found in the backup"
-msgstr ""
+msgstr "백업에서 볼륨을 찾을 수 없습니다."
 
 #: mgradm/cmd/backup/restore/restore.go:142
+#, fuzzy
 msgid "Unable to read directory with the volumes"
-msgstr ""
+msgstr "볼륨이 있는 디렉토리를 읽을 수 없습니다."
 
 #: mgradm/cmd/backup/restore/restore.go:155
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Skipping volume %s"
-msgstr ""
+msgstr "볼륨 %s 건너뛰기"
 
 #: mgradm/cmd/backup/restore/restore.go:163
 #, javascript-format
@@ -363,26 +390,29 @@ msgid "Not restoring existing volume %s"
 msgstr "기존 볼륨 %s을(를) 복원할 수 없음"
 
 #: mgradm/cmd/backup/restore/restore.go:174
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Not restoring existing volume %s unless forced"
-msgstr ""
+msgstr "강제로 복원하지 않는 한 기본 볼륨 %s 복원 안 함"
 
 #: mgradm/cmd/backup/restore/restore.go:176
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Volume %s will be overwriten"
-msgstr ""
+msgstr "%s 볼륨을 덮어씁니다."
 
 #: mgradm/cmd/backup/restore/restore.go:193
+#, fuzzy
 msgid "No images found in the backup"
-msgstr ""
+msgstr "백업에서 이미지를 찾을 수 없음"
 
 #: mgradm/cmd/backup/restore/restore.go:197
+#, fuzzy
 msgid "Unable to read directory with the images"
-msgstr ""
+msgstr "이미지가 포함된 디렉토리를 읽을 수 없음"
 
 #: mgradm/cmd/backup/restore/restore.go:235
+#, fuzzy
 msgid "podman config backup not found in the backup location, trying defaults"
-msgstr ""
+msgstr "podman 구성 백업을 백업 위치에서 찾을 수 없습니다. 기본값을 시도합니다."
 
 #: mgradm/cmd/backup/restore/restore.go:241
 msgid "Unable to validate podman backup file"
@@ -393,8 +423,9 @@ msgid "Restoring systemd configuration"
 msgstr "systemd 구성 복원"
 
 #: mgradm/cmd/backup/restore/restore.go:252
+#, fuzzy
 msgid "systemd backup not found in the backup location, generating defaults"
-msgstr ""
+msgstr "systemd 백업을 백업 위치에서 찾을 수 없습니다. 기본값을 생성합니다."
 
 #: mgradm/cmd/backup/restore/restore.go:257
 msgid "Unable to validate systemd backup file"
@@ -411,9 +442,9 @@ msgid "Unable to create directory %s"
 msgstr "%s 디렉토리를 만들 수 없음"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:58
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Unknown filetype of %s"
-msgstr ""
+msgstr "알 수 없는 파일 유형 %s"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:63
 #, javascript-format
@@ -426,9 +457,9 @@ msgid "Unable to create %s"
 msgstr "%s을(를) 만들 수 없음"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:77
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Unable to restore content of %s"
-msgstr ""
+msgstr "%s의 컨텐트를 복원할 수 없음"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:96
 msgid "Would generate default systemd services"
@@ -440,8 +471,9 @@ msgid "unable to determine target %s storage size"
 msgstr "대상 %s 저장소 크기를 확인할 수 없음"
 
 #: mgradm/cmd/backup/shared/utils.go:61
+#, fuzzy
 msgid "insufficient space on target device"
-msgstr ""
+msgstr "대상 장치에 공간이 충분하지 않음"
 
 #: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/podman/utils.go:56
 #: mgradm/cmd/migrate/podman/utils.go:41 mgradm/cmd/upgrade/podman/utils.go:35
@@ -742,16 +774,19 @@ msgid "Manage GPG keys for 3rd party repositories"
 msgstr "타사 리포지토리에 대한 GPG 키 관리"
 
 #: mgradm/cmd/gpg/list/gpg.go:33
+#, fuzzy
 msgid "List GPG keys"
-msgstr ""
+msgstr "GPG 키 나열"
 
 #: mgradm/cmd/gpg/list/gpg.go:34
+#, fuzzy
 msgid "List GPG keys from custom keyring (default) or system keyring"
-msgstr ""
+msgstr "사용자 지정 키링(기본값) 또는 시스템 키링에서 GPG 키 나열"
 
 #: mgradm/cmd/gpg/list/gpg.go:41
+#, fuzzy
 msgid "List keys from system keyring"
-msgstr ""
+msgstr "시스템 키링에서 키 나열"
 
 #: mgradm/cmd/gpg/list/gpg.go:66
 msgid "failed to list keys in selected keyring"
@@ -935,9 +970,9 @@ msgid "cannot setup network"
 msgstr "네트워크를 설정할 수 없음"
 
 #: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:856
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Skipped database container setup to use external database %s"
-msgstr ""
+msgstr "외부 데이터베이스 %s을(를) 사용하기 위해 데이터베이스 컨테이너 설정 건너뛰기"
 
 #: mgradm/cmd/install/podman/utils.go:114
 msgid "Run setup command in the container"
@@ -1831,8 +1866,9 @@ msgid "cannot stop service"
 msgstr "서비스를 중지하지 못함"
 
 #: mgradm/shared/podman/podman.go:359 mgradm/shared/podman/podman.go:550
+#, fuzzy
 msgid "Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"
-msgstr ""
+msgstr "분할 PostgreSQL 컨테이너를 구성하는 중입니다. 이미지 버전: %[1]s, 마이그레이션되지 않은 버전: %[2]s"
 
 #: mgradm/shared/podman/podman.go:364 mgradm/shared/podman/podman.go:559
 msgid "cannot configure db container"
@@ -1952,9 +1988,9 @@ msgid "Setting up Saline service"
 msgstr "Saline 서비스 설정"
 
 #: mgradm/shared/templates/certificate.go:56
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "%s certificate needs at least one DNS entry"
-msgstr ""
+msgstr "%s 인증서에는 1개 이상의 DNS 항목이 필요합니다."
 
 #: mgradm/shared/templates/issuerTemplate.go:56
 msgid "failed to render issuer template"
@@ -2217,24 +2253,28 @@ msgstr ""
 "(현재는 0 또는 1만 지원됨)"
 
 #: mgradm/shared/utils/cmd_utils.go:280
+#, fuzzy
 msgid "PostgreSQL Database Container Flags"
-msgstr ""
+msgstr "PostgreSQL 데이터베이스 컨테이너 플래그"
 
 #: mgradm/shared/utils/cmd_utils.go:281
+#, fuzzy
 msgid "PostgreSQL Database"
-msgstr ""
+msgstr "PostgreSQL 데이터베이스"
 
 #: mgradm/shared/utils/cmd_utils.go:294
 msgid "Password for the CA key to generate"
 msgstr "생성할 CA 키의 비밀번호"
 
 #: mgradm/shared/utils/cmd_utils.go:299
+#, fuzzy
 msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr ""
+msgstr "서버와 다른 경우 데이터베이스의 중간 CA 인증서 경로"
 
 #: mgradm/shared/utils/cmd_utils.go:301
+#, fuzzy
 msgid "Root CA certificate path for the database if different from the server one"
-msgstr ""
+msgstr "서버와 다른 경우 데이터베이스의 루트 CA 인증서 경로"
 
 #: mgradm/shared/utils/cmd_utils.go:302
 msgid "Database certificate path"
