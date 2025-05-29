@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:34+0200\n"
-"PO-Revision-Date: 2025-03-08 07:56+0000\n"
+"PO-Revision-Date: 2025-05-29 01:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -675,16 +675,12 @@ msgid "failed to find the image of the currently running server container"
 msgstr ""
 
 #: shared/podman/images.go:104
-#, fuzzy
-#| msgid "failed to determine suitable backend"
 msgid "failed to determine pgsql image"
-msgstr "適切なバックエンドを決定できませんでした"
+msgstr "pgsqlイメージの決定に失敗しました"
 
 #: shared/podman/images.go:112
-#, fuzzy
-#| msgid "failed to fetch the config files bound to container %s"
 msgid "failed to find the image of the currently running db container"
-msgstr "コンテナ %s にバインドされた設定ファイルのフェッチに失敗しました"
+msgstr "現在実行中のdbコンテナのイメージが見つかりませんでした"
 
 #: shared/podman/images.go:137
 #, javascript-format
@@ -1672,7 +1668,7 @@ msgstr ""
 
 #: shared/utils/uyuniservices.go:30
 msgid "Confidential computing attestation"
-msgstr ""
+msgstr "コンフィデンシャルコンピューティングの検証"
 
 #: shared/utils/uyuniservices.go:36
 msgid "Hub XML-RPC API"
