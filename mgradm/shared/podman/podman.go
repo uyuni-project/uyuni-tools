@@ -565,7 +565,7 @@ func Migrate(
 
 	schemaUpdateRequired :=
 		oldPgVersion != newPgVersion
-	if err := RunPgsqlFinalizeScript(preparedServerImage, schemaUpdateRequired, false); err != nil {
+	if err := RunPgsqlFinalizeScript(preparedServerImage, schemaUpdateRequired, true); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
 
