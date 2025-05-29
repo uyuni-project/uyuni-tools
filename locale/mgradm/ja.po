@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:34+0200\n"
-"PO-Revision-Date: 2025-05-29 01:59+0000\n"
+"PO-Revision-Date: 2025-05-29 04:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -920,7 +920,7 @@ msgstr "ネットワークを設定できません"
 #: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:856
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
-msgstr "外部データベース %s を使用するためにデータベース コンテナのセットアップをスキップしました"
+msgstr "外部データベース %s を使用するためにデータベースコンテナのセットアップをスキップしました"
 
 #: mgradm/cmd/install/podman/utils.go:114
 msgid "Run setup command in the container"
@@ -1825,7 +1825,7 @@ msgstr "dbコンテナを設定できません"
 
 #: mgradm/shared/podman/podman.go:370 mgradm/shared/podman/podman.go:785
 msgid "Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
-msgstr "以前のPostgreSQLは %[1]s、新しいPostgreSQLは  %[2]s です。DBバージョンのアップグレードを実行中…"
+msgstr "以前のPostgreSQLは %[1]s、新しいPostgreSQLは %[2]s です。DBバージョンのアップグレードを実行中…"
 
 #: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:792
 #: mgradm/shared/podman/podman.go:815
@@ -2222,16 +2222,12 @@ msgid "Root CA certificate path for the database if different from the server on
 msgstr "サーバのものと異なる場合のデータベースのルートCA証明書のパス"
 
 #: mgradm/shared/utils/cmd_utils.go:302
-#, fuzzy
-#| msgid "Server certificate path"
 msgid "Database certificate path"
-msgstr "サーバ証明書のパス"
+msgstr "データベース証明書のパス"
 
 #: mgradm/shared/utils/cmd_utils.go:303
-#, fuzzy
-#| msgid "Database port"
 msgid "Database key path"
-msgstr "データベースポート"
+msgstr "データベースキーパス"
 
 #: mgradm/shared/utils/exec.go:25
 msgid "exec command failed"
