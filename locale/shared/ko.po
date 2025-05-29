@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:34+0200\n"
-"PO-Revision-Date: 2025-05-29 04:59+0000\n"
+"PO-Revision-Date: 2025-05-29 10:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
 "Language: ko\n"
@@ -661,25 +661,18 @@ msgid "image %s is missing and cannot be fetched"
 msgstr "%s 이미지가 누락되어 가져올 수 없습니다."
 
 #: shared/podman/images.go:85
-#, fuzzy
-#| msgid "failed to determine suitable backend"
 msgid "failed to determine image"
 msgstr "이미지를 확인하지 못함"
 
 #: shared/podman/images.go:93
-#, fuzzy
 msgid "failed to find the image of the currently running server container"
 msgstr "현재 실행 중인 서버 컨테이너의 이미지를 찾지 못함"
 
 #: shared/podman/images.go:104
-#, fuzzy
-#| msgid "failed to determine suitable backend"
 msgid "failed to determine pgsql image"
 msgstr "pgsql 이미지를 확인하지 못함"
 
 #: shared/podman/images.go:112
-#, fuzzy
-#| msgid "failed to fetch the config files bound to container %s"
 msgid "failed to find the image of the currently running db container"
 msgstr "현재 실행 중인 db 컨테이너의 이미지를 찾지 못함"
 
@@ -1669,17 +1662,14 @@ msgid "Migration helper"
 msgstr "마이그레이션 도우미"
 
 #: shared/utils/uyuniservices.go:30
-#, fuzzy
 msgid "Confidential computing attestation"
 msgstr "기밀 컴퓨팅 증명"
 
 #: shared/utils/uyuniservices.go:36
-#, fuzzy
 msgid "Hub XML-RPC API"
 msgstr "Hub XML-RPC API"
 
 #: shared/utils/uyuniservices.go:42
-#, fuzzy
 msgid "Saline"
 msgstr "Saline"
 
