@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-06 11:34+0200\n"
-"PO-Revision-Date: 2025-03-10 07:56+0000\n"
+"PO-Revision-Date: 2025-05-29 04:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
 "Language: ko\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -202,8 +202,9 @@ msgid "failed to retrieve namespace "
 msgstr "네임스페이스 가져오기 실패 "
 
 #: shared/connection.go:242
+#, fuzzy
 msgid "Healthcheck not executed"
-msgstr ""
+msgstr "상태 확인이 실행되지 않음"
 
 #: shared/connection.go:281
 msgid "container didn't start within 10s."
@@ -213,13 +214,13 @@ msgstr "컨테이너가 10초 이내에 시작되지 않았습니다."
 #, fuzzy
 #| msgid "server didn't start within 60s. Check for the service status"
 msgid "server didn't start within 120s. Check for the service status"
-msgstr "서버가 60초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
+msgstr "서버가 120초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
 
 #: shared/connection.go:333
 #, fuzzy
 #| msgid "server didn't start within 60s. Check for the service status"
 msgid "container didn't start within 60s. Check for the service status"
-msgstr "서버가 60초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
+msgstr "컨테이너가 60초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
 
 #: shared/connection.go:373 shared/connection.go:420
 #, javascript-format
@@ -663,23 +664,24 @@ msgstr "%s 이미지가 누락되어 가져올 수 없습니다."
 #, fuzzy
 #| msgid "failed to determine suitable backend"
 msgid "failed to determine image"
-msgstr "적합한 백엔드를 확인하지 못했습니다."
+msgstr "이미지를 확인하지 못함"
 
 #: shared/podman/images.go:93
+#, fuzzy
 msgid "failed to find the image of the currently running server container"
-msgstr ""
+msgstr "현재 실행 중인 서버 컨테이너의 이미지를 찾지 못함"
 
 #: shared/podman/images.go:104
 #, fuzzy
 #| msgid "failed to determine suitable backend"
 msgid "failed to determine pgsql image"
-msgstr "적합한 백엔드를 확인하지 못했습니다."
+msgstr "pgsql 이미지를 확인하지 못함"
 
 #: shared/podman/images.go:112
 #, fuzzy
 #| msgid "failed to fetch the config files bound to container %s"
 msgid "failed to find the image of the currently running db container"
-msgstr "컨테이너 %s에 바인딩된 구성 파일을 가져오지 못했습니다."
+msgstr "현재 실행 중인 db 컨테이너의 이미지를 찾지 못함"
 
 #: shared/podman/images.go:137
 #, javascript-format
@@ -691,9 +693,9 @@ msgid "cannot unmarshal image RPM metadata"
 msgstr "이미지 RPM 메타데이터를 마샬링 해제할 수 없음"
 
 #: shared/podman/images.go:174
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
-msgstr ""
+msgstr "%s이(가) 존재하지 않으므로 RPM에서 이미지 로드 건너뛰기"
 
 #: shared/podman/images.go:204
 #, javascript-format
@@ -758,13 +760,13 @@ msgstr "%s 이미지를 제거하지 못함"
 #, fuzzy, javascript-format
 #| msgid "Failed to remove image %s"
 msgid "Failed to export image %s"
-msgstr "%s 이미지를 제거하지 못함"
+msgstr "%s 이미지를 내보내지 못함"
 
 #: shared/podman/images.go:390
 #, fuzzy, javascript-format
 #| msgid "Failed to remove image %s"
 msgid "Failed to restore image %s"
-msgstr "%s 이미지를 제거하지 못함"
+msgstr "%s 이미지를 복원하지 못함"
 
 #: shared/podman/login.go:25
 msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
@@ -826,7 +828,7 @@ msgstr "네트워크 제거됨"
 #, fuzzy, javascript-format
 #| msgid "failed to create %s folder"
 msgid "failed to create %s secret"
-msgstr "%s 폴더를 생성하지 못함"
+msgstr "%s 시크릿을 생성하지 못함"
 
 #: shared/podman/secret.go:89
 #, javascript-format
@@ -847,7 +849,7 @@ msgstr "%s 비밀 삭제 실패"
 #, fuzzy
 #| msgid "No systemd file to add to the archive"
 msgid "No logs file on host to add to the archive"
-msgstr "아카이브에 추가할 systemd 파일 없음"
+msgstr "아카이브에 추가할 호스트의 로그 파일 없음"
 
 #: shared/podman/support.go:33
 msgid "No systemd file to add to the archive"
@@ -879,7 +881,7 @@ msgstr "%s 파일 생성 실패"
 #, fuzzy, javascript-format
 #| msgid "failed to create %s"
 msgid "failed to cat %s"
-msgstr "%s 생성 실패"
+msgstr "cat %s 실패"
 
 #: shared/podman/support.go:95
 msgid "failed to run systemctl cat uyuni-*"
@@ -1082,29 +1084,29 @@ msgstr "볼륨 %s이(가) 외부에 탑재되어 있어, 디렉토리를 제거�
 #, fuzzy, javascript-format
 #| msgid "Failed to remove volume %s"
 msgid "Failed to export volume %s"
-msgstr "%s 볼륨 제거 실패"
+msgstr "%s 볼륨 내보내기 실패"
 
 #: shared/podman/utils.go:216
 #, fuzzy
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
-msgstr "볼륨 폴더 %s을(를) %s에 연결 실패: %s"
+msgstr "볼륨 %[1]s의 체크섬을 %[2]s에 쓰기 실패"
 
 #: shared/podman/utils.go:233
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Checksum does not match for volume %s"
-msgstr ""
+msgstr "%s 볼륨에 대한 체크섬이 일치하지 않음"
 
 #: shared/podman/utils.go:237
 #, fuzzy, javascript-format
 #| msgid "Failed to remove volume %s"
 msgid "Failed to precreate empty volume %s"
-msgstr "%s 볼륨 제거 실패"
+msgstr "빈 볼륨 %s을(를) 미리 생성하지 못함"
 
 #: shared/podman/utils.go:241
 #, fuzzy, javascript-format
 #| msgid "Failed to remove volume %s"
 msgid "Failed to import volume %s"
-msgstr "%s 볼륨 제거 실패"
+msgstr "%s 볼륨 가져오기 실패"
 
 #: shared/podman/utils.go:317
 msgid "failed to login to registry.suse.com"
@@ -1643,43 +1645,48 @@ msgstr "%s 파일 쓰기 오류"
 #, fuzzy, javascript-format
 #| msgid "Failed to remove file %s"
 msgid "Failed to calculate checksum of the file %s"
-msgstr "%s 파일 제거 실패"
+msgstr "%s 파일의 체크섬 계산 실패"
 
 #: shared/utils/utils.go:521
 #, fuzzy
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
-msgstr "볼륨 폴더 %s을(를) %s에 연결 실패: %s"
+msgstr "%[1]s 파일의 체크섬을 %[2]s에 쓰기 실패"
 
 #: shared/utils/utils.go:531
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Checksum of %s does not match"
-msgstr ""
+msgstr "%s의 체크섬이 일치하지 않음"
 
 #: shared/utils/uyuniservices.go:18
 #, fuzzy
 #| msgid "cannot enable service"
 msgid "Main service"
-msgstr "서비스를 활성할 수 없음"
+msgstr "기본 서비스"
 
 #: shared/utils/uyuniservices.go:24
+#, fuzzy
 msgid "Migration helper"
-msgstr ""
+msgstr "마이그레이션 도우미"
 
 #: shared/utils/uyuniservices.go:30
+#, fuzzy
 msgid "Confidential computing attestation"
-msgstr ""
+msgstr "기밀 컴퓨팅 증명"
 
 #: shared/utils/uyuniservices.go:36
+#, fuzzy
 msgid "Hub XML-RPC API"
-msgstr ""
+msgstr "Hub XML-RPC API"
 
 #: shared/utils/uyuniservices.go:42
+#, fuzzy
 msgid "Saline"
-msgstr ""
+msgstr "Saline"
 
 #: shared/utils/uyuniservices.go:46
+#, fuzzy
 msgid "Database"
-msgstr ""
+msgstr "데이터베이스"
 
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "클러스터 유형 검색 실패"
