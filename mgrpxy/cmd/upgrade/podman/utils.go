@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,7 +11,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-var systemd shared_podman.Systemd = shared_podman.SystemdImpl{}
+var systemd shared_podman.Systemd = shared_podman.NewSystemd()
 
 func upgradePodman(
 	globalFlags *types.GlobalFlags,
