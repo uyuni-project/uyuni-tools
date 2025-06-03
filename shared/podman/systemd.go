@@ -58,6 +58,10 @@ func (s SystemdImpl) ServiceIsEnabled(name string) bool {
 // DisableService disables a service
 // name is the name of the service without the '.service' part.
 func (s SystemdImpl) DisableService(name string) error {
+	if !s.ServiceIsEnabled(name) {
+		log.Debug().Msgf("%s is already disabled.", name)
+		return nil
+	}
 	if err := utils.RunCmd("systemctl", "disable", "--now", name); err != nil {
 		return utils.Errorf(err, L("failed to disable %s systemd service"), name)
 	}
@@ -232,6 +236,10 @@ func (s SystemdImpl) StopService(service string) error {
 
 // EnableService enables and starts a systemd service.
 func (s SystemdImpl) EnableService(service string) error {
+	if s.ServiceIsEnabled(service) {
+		log.Debug().Msgf("%s is already enabled.", service)
+		return nil
+	}
 	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
 		return utils.Errorf(err, L("failed to enable %s systemd service"), service)
 	}
