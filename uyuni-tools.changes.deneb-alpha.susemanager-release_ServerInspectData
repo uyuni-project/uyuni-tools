@@ -1,0 +1,2 @@
+- Extract the version number from /etc/susemanager-release only if 
+  that config file exists
