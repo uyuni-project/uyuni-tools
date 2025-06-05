@@ -356,7 +356,7 @@ func Upgrade(
 	if inspectedValues.CommonInspectData.CurrentPgVersionNotMigrated != "" ||
 		inspectedValues.DBHost == "localhost" ||
 		inspectedValues.ReportDBHost == "localhost" {
-		log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"),
+		log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
 			newPgVersion, oldPgVersion)
 
 		if err := configureSplitDBContainer(
@@ -547,7 +547,7 @@ func Migrate(
 
 	newPgVersion, _ := strconv.Atoi(inspectedValues.DBInspectData.ImagePgVersion)
 
-	log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"),
+	log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
 		newPgVersion, oldPgVersion)
 
 	if err := upgradeDB(newPgVersion, oldPgVersion, upgradeImage, authFile, registry, pgsqlFlags.Image); err != nil {
