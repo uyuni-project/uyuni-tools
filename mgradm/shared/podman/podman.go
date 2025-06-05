@@ -811,9 +811,6 @@ func configureSplitDBContainer(
 	ssl adm_utils.InstallSSLFlags,
 	tz string,
 ) error {
-	if err := RunPgsqlContainerMigration(serverImage, "db", "reportdb"); err != nil {
-		return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
-	}
 	fqdn, err := utils.GetFqdn([]string{})
 	if err != nil {
 		return err
@@ -821,6 +818,10 @@ func configureSplitDBContainer(
 
 	if err = PrepareSSLCertificates(serverImage, &ssl, tz, fqdn); err != nil {
 		return err
+	}
+
+	if err := RunPgsqlContainerMigration(serverImage, "db", "reportdb"); err != nil {
+		return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 	}
 
 	// Create all the database credentials secrets

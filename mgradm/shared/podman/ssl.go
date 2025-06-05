@@ -68,6 +68,22 @@ func PrepareSSLCertificates(image string, sslFlags *adm_utils.InstallSSLFlags, t
 	return nil
 }
 
+func validateCA(image string, sslFlags *adm_utils.InstallSSLFlags, tz string) error {
+	tempDir, cleaner, err := utils.TempDir()
+	defer cleaner()
+	if err != nil {
+		return err
+	}
+	env := map[string]string{
+		"CERT_PASS": sslFlags.Password,
+	}
+
+	if err := runSSLContainer(sslValidateCA, tempDir, image, tz, env); err != nil {
+		return utils.Error(err, L("CA validation failed!"))
+	}
+	return nil
+}
+
 func prepareServerSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
@@ -307,6 +323,10 @@ func generateDatabaseCertificate(image string, sslFlags *adm_utils.InstallSSLFla
 		return err
 	}
 
+	if err := validateCA(image, sslFlags, tz); err != nil {
+		return utils.Error(err, L("Cannot generate database certificate"))
+	}
+
 	env := map[string]string{
 		"CERT_O":       sslFlags.Org,
 		"CERT_OU":      sslFlags.OU,
@@ -398,4 +418,18 @@ const sslSetupDatabaseScript = `
 	cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /ssl/ca.crt
 	cp /root/ssl-build/reportdb/server.crt /ssl/reportdb.crt
 	cp /root/ssl-build/reportdb/server.key /ssl/reportdb.key
+`
+const sslValidateCA = `
+	CA_KEY=/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY
+	CA_PASS_FILE=/ssl/ca_pass
+	trap "test -f \"$CA_PASS_FILE\" && /bin/rm -f -- \"$CA_PASS_FILE\" " 0 1 2 3 13 15
+
+	echo "Validating CA..."
+	echo "$CERT_PASS" > "$CA_PASS_FILE"
+
+	test -f $CA_KEY || (echo "CA key is not available" && exit 1)
+	test -r "$CA_KEY" || (echo "CA key is not readable" && exit 2)
+
+	openssl rsa -noout -in "/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY" -passin "file:$CA_PASS_FILE" || \
+	    (echo "Wrong CA key password" && exit 3)
 `
