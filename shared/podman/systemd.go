@@ -111,7 +111,7 @@ func (s SystemdImpl) UninstallService(name string, dryRun bool) {
 		} else {
 			log.Info().Msgf(L("Disable %s service"), name)
 			// disable server
-			err := utils.RunCmd("systemctl", "disable", "--now", name)
+			err := s.DisableService(name)
 			if err != nil {
 				log.Error().Err(err).Msgf(L("Failed to disable %s service"), name)
 			}
