@@ -117,6 +117,25 @@ func installForPodman(
 		return err
 	}
 
+	if err := coco.SetupCocoContainer(
+		systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
+		flags.Installation.DB,
+	); err != nil {
+		return err
+	}
+
+	if err := hub.SetupHubXmlrpc(
+		systemd, authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
+	); err != nil {
+		return err
+	}
+
+	if err := saline.SetupSalineContainer(
+		systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image, flags.Installation.TZ,
+	); err != nil {
+		return err
+	}
+
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 	if err := podman.WaitForSystemStart(systemd, cnx, preparedImage, flags.Installation.TZ,
 		flags.Installation.Debug.Java, flags.Mirror, flags.Podman.Args); err != nil {
@@ -133,32 +152,6 @@ func installForPodman(
 			return utils.Error(err, L("failed to extract payg data"))
 		}
 	}
-
-	if flags.Coco.Replicas > 0 {
-		if err := coco.SetupCocoContainer(
-			systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
-			flags.Installation.DB,
-		); err != nil {
-			return err
-		}
-	}
-
-	if flags.HubXmlrpc.Replicas > 0 {
-		if err := hub.SetupHubXmlrpc(
-			systemd, authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
-		); err != nil {
-			return err
-		}
-	}
-
-	if flags.Saline.Replicas > 0 {
-		if err := saline.SetupSalineContainer(
-			systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image, flags.Installation.TZ,
-		); err != nil {
-			return err
-		}
-	}
-
 	if err := shared_podman.EnablePodmanSocket(); err != nil {
 		return utils.Error(err, L("cannot enable podman socket"))
 	}

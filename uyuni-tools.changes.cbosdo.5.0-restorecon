@@ -1,1 +1,0 @@
-- Check for restorecon before using it (bsc#1240698)

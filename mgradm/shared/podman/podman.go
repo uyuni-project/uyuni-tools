@@ -356,7 +356,7 @@ func Upgrade(
 	if inspectedValues.CommonInspectData.CurrentPgVersionNotMigrated != "" ||
 		inspectedValues.DBHost == "localhost" ||
 		inspectedValues.ReportDBHost == "localhost" {
-		log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"),
+		log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
 			newPgVersion, oldPgVersion)
 
 		if err := configureSplitDBContainer(
@@ -547,7 +547,7 @@ func Migrate(
 
 	newPgVersion, _ := strconv.Atoi(inspectedValues.DBInspectData.ImagePgVersion)
 
-	log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"),
+	log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
 		newPgVersion, oldPgVersion)
 
 	if err := upgradeDB(newPgVersion, oldPgVersion, upgradeImage, authFile, registry, pgsqlFlags.Image); err != nil {
@@ -565,7 +565,7 @@ func Migrate(
 
 	schemaUpdateRequired :=
 		oldPgVersion != newPgVersion
-	if err := RunPgsqlFinalizeScript(preparedServerImage, schemaUpdateRequired, false); err != nil {
+	if err := RunPgsqlFinalizeScript(preparedServerImage, schemaUpdateRequired, true); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
 
@@ -811,9 +811,6 @@ func configureSplitDBContainer(
 	ssl adm_utils.InstallSSLFlags,
 	tz string,
 ) error {
-	if err := RunPgsqlContainerMigration(serverImage, "db", "reportdb"); err != nil {
-		return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
-	}
 	fqdn, err := utils.GetFqdn([]string{})
 	if err != nil {
 		return err
@@ -821,6 +818,10 @@ func configureSplitDBContainer(
 
 	if err = PrepareSSLCertificates(serverImage, &ssl, tz, fqdn); err != nil {
 		return err
+	}
+
+	if err := RunPgsqlContainerMigration(serverImage, "db", "reportdb"); err != nil {
+		return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 	}
 
 	// Create all the database credentials secrets

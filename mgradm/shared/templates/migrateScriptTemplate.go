@@ -20,6 +20,11 @@ if test -e /tmp/ssh_config; then
 fi
 SSH="ssh -o User={{ .User }} -A $SSH_CONFIG "
 
+if $SSH {{ .SourceFqdn }} "[[ ! -f /etc/susemanager-release && ! -f /etc/uyuni-release ]]"; then
+  echo "Cannot find neither /etc/susemanager-release nor /etc/uyuni-release. Is the source a no-containerized server?"
+  exit 1
+fi
+
 {{ if .Prepare }}
 echo "Preparing migration..."
 $SSH {{ .SourceFqdn }} "sudo systemctl start postgresql.service"
@@ -40,6 +45,9 @@ $SSH {{ .SourceFqdn }} "sudo systemctl stop postgresql.service"
 while IFS="," read -r target path ; do
   if $SSH -n {{ .SourceFqdn }} test -e "$path" ; then
     echo "-/ $path"
+
+    # protect the targets that can be already synced in --prepare phase
+    echo "P/ /srv/www/distributions/$target"
   fi
 done < distros > exclude_list
 

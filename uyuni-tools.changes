@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Tue May 13 14:58:11 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.11-0
+  * Always create all necessary systemd files (bsc#1242595)
+  * Patch saline and database images if needed mgradm support ptf
+
+-------------------------------------------------------------------
+Mon May 12 22:54:33 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.10-0
+  * Don't migrate py2*-compat-salt.conf files (bsc#1240626)
+  * Check for restorecon before using it (bsc#1240698)
+  * Adjust the distro path in cobbler files after migration
+    (bsc#1238929)
+  * Remove rhn-ssl-tool --gen-server RPM feature and options
+    (bsc#1235696)
+  * Add mgradm support ptf podman --pullPolicy flag. (bsc#1236877)
+  * Cleanup host supportconfig files (bsc#1242174)
+  * allow --tag parameter to override --pgsql-tag if missing (bsc#1241289)
+  * Don't migrate /etc/apache2/vhosts.d/cobbler.conf
+  * add gpg list command to mgradm
+
+-------------------------------------------------------------------
 Thu Apr 10 15:41:24 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.9-0
