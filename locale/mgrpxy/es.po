@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-26 13:52+0100\n"
+"POT-Creation-Date: 2025-06-06 09:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -63,15 +63,19 @@ msgid "Welcome to %s"
 msgstr ""
 
 #: mgrpxy/cmd/cmd.go:62
+msgid "Use of this software implies acceptance of the End User License Agreement."
+msgstr ""
+
+#: mgrpxy/cmd/cmd.go:63
 #, javascript-format
 msgid "Executing command: %s"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:66
+#: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:68
+#: mgrpxy/cmd/cmd.go:69
 msgid "application log level"
 msgstr ""
 

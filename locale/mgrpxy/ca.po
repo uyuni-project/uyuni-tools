@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-26 13:52+0100\n"
+"POT-Creation-Date: 2025-06-06 09:21+0200\n"
 "PO-Revision-Date: 2025-02-27 09:02+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgrpxy/ca/>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,9 +45,7 @@ msgstr "Eina d'administració del servidor intermediari d'Uyuni"
 
 #: mgrpxy/cmd/cmd.go:36
 msgid "Tool to help administering Uyuni proxies in containers"
-msgstr ""
-"Eina per a ajudar a administrar els servidors intermediaris Uyuni en "
-"contenidors"
+msgstr "Eina per a ajudar a administrar els servidors intermediaris Uyuni en contenidors"
 
 #: mgrpxy/cmd/cmd.go:43
 msgid "Server Deployment:"
@@ -68,15 +65,19 @@ msgid "Welcome to %s"
 msgstr "Us donem la benvinguda a %s"
 
 #: mgrpxy/cmd/cmd.go:62
+msgid "Use of this software implies acceptance of the End User License Agreement."
+msgstr ""
+
+#: mgrpxy/cmd/cmd.go:63
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "S'està executant l'ordre: %s"
 
-#: mgrpxy/cmd/cmd.go:66
+#: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
 msgstr "camí del fitxer de configuració"
 
-#: mgrpxy/cmd/cmd.go:68
+#: mgrpxy/cmd/cmd.go:69
 msgid "application log level"
 msgstr "nivell de registre de l'aplicació"
 
@@ -86,9 +87,7 @@ msgstr "Instal·la un servidor intermediari nou des de zero"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:25
 msgid "Install a new proxy on a running kubernetes cluster"
-msgstr ""
-"Instal·la un servidor intermediari nou en un clúster de kubernetes en "
-"execució"
+msgstr "Instal·la un servidor intermediari nou en un clúster de kubernetes en execució"
 
 #: mgrpxy/cmd/install/kubernetes/kubernetes.go:26
 msgid ""
@@ -101,14 +100,12 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote kubernetes cluster is not supported!\n"
 msgstr ""
-"Instal·la un servidor intermediari nou en un clúster de kubernetes en "
-"execució.\n"
+"Instal·la un servidor intermediari nou en un clúster de kubernetes en execució.\n"
 "\n"
 "Només pren el camí a la configuració tarball generada pel servidor\n"
 "com a paràmetre.\n"
 "\n"
-"L'ordre install kubernetes assumeix que el kubectl està instal·lat localment."
-"\n"
+"L'ordre install kubernetes assumeix que el kubectl està instal·lat localment.\n"
 "\n"
 "NOTA: per ara no s'admet la instal·lació en un clúster de kubernetes remot!\n"
 
@@ -157,9 +154,7 @@ msgstr "instal·la podman abans d'executar aquesta ordre"
 
 #: mgrpxy/cmd/install/podman/utils.go:43
 msgid "failed to retrieve proxy config files"
-msgstr ""
-"no s'han pogut recuperar els fitxers de configuració del servidor "
-"intermediari"
+msgstr "no s'han pogut recuperar els fitxers de configuració del servidor intermediari"
 
 #: mgrpxy/cmd/install/podman/utils.go:53 mgrpxy/shared/podman/podman.go:270
 msgid "failed to login to registry.suse.com"
@@ -171,9 +166,7 @@ msgstr "no s'ha pogut trobar el servidor pod"
 
 #: mgrpxy/cmd/logs/kubernetes.go:33
 msgid "failed to find proxy deployment namespace"
-msgstr ""
-"no s'ha pogut trobar l'espai de noms de desplegament del servidor "
-"intermediari"
+msgstr "no s'ha pogut trobar l'espai de noms de desplegament del servidor intermediari"
 
 #: mgrpxy/cmd/logs/logs.go:38
 msgid "Get the proxy logs"
@@ -187,10 +180,8 @@ msgid ""
 "See examples for more details."
 msgstr ""
 "Obtenir els registres del servidor intermediari\n"
-"L'ordre detecta automàticament el dorsal instal·lat i mostra els registres "
-"dels contenidors gestionats per Kubernetes o Podman\n"
-"No obstant això, podeu especificar els noms de pod i/o contenidor per a "
-"obtenir els registres per a contenidors específics.\n"
+"L'ordre detecta automàticament el dorsal instal·lat i mostra els registres dels contenidors gestionats per Kubernetes o Podman\n"
+"No obstant això, podeu especificar els noms de pod i/o contenidor per a obtenir els registres per a contenidors específics.\n"
 "Vegeu exemples per a més detalls."
 
 #: mgrpxy/cmd/logs/logs.go:65
@@ -267,8 +258,7 @@ msgid ""
 "Extract the host or cluster configuration and logs as well as those from\n"
 "the containers for support to help debugging."
 msgstr ""
-"Extreu la configuració del servidor o del clúster i els registres, així com "
-"els de\n"
+"Extreu la configuració del servidor o del clúster i els registres, així com els de\n"
 "els contenidors de suport per ajudar a la depuració."
 
 #: mgrpxy/cmd/support/config/config.go:31
@@ -295,11 +285,9 @@ msgstr ""
 "\n"
 "L'ordre ptf de suport assumeix el següent:\n"
 "  * El kubectl i el helm s'instal·len localment\n"
-"  * s'ha d'establir una configuració de kubectl que funcioni per a connectar-"
-"se al clúster on desplegar\n"
+"  * s'ha d'establir una configuració de kubectl que funcioni per a connectar-se al clúster on desplegar\n"
 "\n"
-"El fitxer de valors del helm se sobreescriurà amb els valors dels paràmetres "
-"de l'ordre o de la configuració.\n"
+"El fitxer de valors del helm se sobreescriurà amb els valors dels paràmetres de l'ordre o de la configuració.\n"
 "\n"
 "NOTA: la instal·lació en un clúster remot encara no està suportada!\n"
 
@@ -318,8 +306,7 @@ msgid ""
 msgstr ""
 "Instal·la un paquet PTF o Test a podman\n"
 "\n"
-"L'ordre de suport ptf podman assumeix que podman està instal·lat localment "
-"i\n"
+"L'ordre de suport ptf podman assumeix que podman està instal·lat localment i\n"
 "la màquina amfitrió està registrada a SCC.\n"
 "\n"
 "NOTA: per ara no s'admet la instal·lació en un podman remot!\n"
@@ -383,9 +370,7 @@ msgstr "No s'ha desinstal·lat res, executeu amb --force per a desinstal·lar"
 
 #: mgrpxy/cmd/uninstall/kubernetes.go:67
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
-msgstr ""
-"No s'han tocat els volums. Depenent de la classe d'emmagatzematge "
-"utilitzada, és possible que no s'hagin eliminat"
+msgstr "No s'han tocat els volums. Depenent de la classe d'emmagatzematge utilitzada, és possible que no s'hagin eliminat"
 
 #: mgrpxy/cmd/uninstall/podman.go:67
 #, javascript-format
@@ -415,15 +400,11 @@ msgstr "S'han eliminat totes les imatges"
 
 #: mgrpxy/cmd/uninstall/podman.go:96
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
-msgstr ""
-"No s'ha desinstal·lat res, executeu amb --force i --purge-volumes per a "
-"desinstal·lar i netejar dades"
+msgstr "No s'ha desinstal·lat res, executeu amb --force i --purge-volumes per a desinstal·lar i netejar dades"
 
 #: mgrpxy/cmd/uninstall/podman.go:99
 msgid "Data have been kept, use podman volume commands to clear the volumes"
-msgstr ""
-"S'han mantingut les dades, utilitzeu ordres de volum podman per netejar els "
-"volums"
+msgstr "S'han mantingut les dades, utilitzeu ordres de volum podman per netejar els volums"
 
 #: mgrpxy/cmd/uninstall/uninstall.go:20
 msgid "Uninstall a proxy"
@@ -435,13 +416,11 @@ msgid ""
 "By default it will only print what would be done, use --force to actually remove."
 msgstr ""
 "Desinstal·la un proxy i opcionalment els volums corresponents.\n"
-"Per defecte només imprimirà el que es faria, utilitzeu --force per eliminar-"
-"lo."
+"Per defecte només imprimirà el que es faria, utilitzeu --force per eliminar-lo."
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:22
 msgid "Upgrade a proxy on a running kubernetes cluster"
-msgstr ""
-"Actualitza un servidor intermediari en un clúster de kubernetes en execució"
+msgstr "Actualitza un servidor intermediari en un clúster de kubernetes en execució"
 
 #: mgrpxy/cmd/upgrade/kubernetes/kubernetes.go:23
 msgid ""
@@ -451,11 +430,9 @@ msgid ""
 "\n"
 "NOTE: for now upgrading on a remote kubernetes cluster is not supported!\n"
 msgstr ""
-"Actualitzeu un servidor intermediari en un clúster de kubernetes en execució."
+"Actualitzeu un servidor intermediari en un clúster de kubernetes en execució.\n"
 "\n"
-"\n"
-"L'ordre upgrade kubernetes assumeix que el kubectl està instal·lat localment."
-"\n"
+"L'ordre upgrade kubernetes assumeix que el kubectl està instal·lat localment.\n"
 "\n"
 "NOTA: per ara no s'admet l'actualització en un clúster de kubernetes remot!\n"
 
@@ -495,9 +472,7 @@ msgstr "Versió del diagrama del timó del proxy"
 
 #: mgrpxy/shared/kubernetes/cmd.go:28
 msgid "Path to a values YAML file to use for proxy helm install"
-msgstr ""
-"Camí a un fitxer YAML de valors que s'utilitzarà per a la instal·lació del "
-"timó intermediari"
+msgstr "Camí a un fitxer YAML de valors que s'utilitzarà per a la instal·lació del timó intermediari"
 
 #: mgrpxy/shared/kubernetes/deploy.go:34
 msgid "Installing Uyuni proxy"
@@ -537,8 +512,7 @@ msgstr "no s'ha pogut generar el fitxer conf del systemd"
 
 #: mgrpxy/shared/podman/podman.go:163
 msgid "cannot generate systemd conf user configuration file"
-msgstr ""
-"no s'ha pogut generar el fitxer de configuració de l'usuari «systemd conf»"
+msgstr "no s'ha pogut generar el fitxer de configuració de l'usuari «systemd conf»"
 
 #: mgrpxy/shared/podman/podman.go:206
 #, javascript-format
@@ -548,28 +522,21 @@ msgstr "S'està configurant el servidor intermediari amb configuració %s"
 #: mgrpxy/shared/podman/podman.go:208
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
-msgstr ""
-"no s'ha pogut extreure la configuració del servidor intermediari del fitxer "
-"%s"
+msgstr "no s'ha pogut extreure la configuració del servidor intermediari del fitxer %s"
 
 #: mgrpxy/shared/podman/podman.go:211
 msgid "No tarball provided. Will check existing configuration files."
-msgstr ""
-"No s'ha proporcionat cap tarball. Comprovarà els fitxers de configuració "
-"existents."
+msgstr "No s'ha proporcionat cap tarball. Comprovarà els fitxers de configuració existents."
 
 #: mgrpxy/shared/podman/podman.go:225
 #, javascript-format
 msgid "%s directory has no required permissions. Check your umask settings"
-msgstr ""
-"El directori %s no té permisos necessaris. Comproveu la configuració de "
-"l'umask"
+msgstr "El directori %s no té permisos necessaris. Comproveu la configuració de l'umask"
 
 #: mgrpxy/shared/podman/podman.go:227
 #, javascript-format
 msgid "%s file has no required permissions. Check your umask settings"
-msgstr ""
-"El fitxer %s no té permisos necessaris. Comproveu la configuració de l'umask"
+msgstr "El fitxer %s no té permisos necessaris. Comproveu la configuració de l'umask"
 
 #: mgrpxy/shared/podman/podman.go:240
 #, javascript-format
@@ -612,15 +579,11 @@ msgstr "no s'ha pogut calcular l'URL de la imatge"
 
 #: mgrpxy/shared/utils/flags.go:65
 msgid "SUSE Customer Center username. It will be used to pull images from registry.suse.com"
-msgstr ""
-"Nom d'usuari del Centre de Clients SUSE. S'utilitzarà per treure imatges de "
-"register.suse.com"
+msgstr "Nom d'usuari del Centre de Clients SUSE. S'utilitzarà per treure imatges de register.suse.com"
 
 #: mgrpxy/shared/utils/flags.go:68
 msgid "SUSE Customer Center password. It will be used to pull images from registry.suse.com"
-msgstr ""
-"Contrasenya del Centre de Clients SUSE. S'utilitzarà per treure imatges de "
-"register.suse.com"
+msgstr "Contrasenya del Centre de Clients SUSE. S'utilitzarà per treure imatges de register.suse.com"
 
 #: mgrpxy/shared/utils/flags.go:71
 msgid "SUSE Customer Center Flags"

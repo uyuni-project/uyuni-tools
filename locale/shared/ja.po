@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-06 11:34+0200\n"
-"PO-Revision-Date: 2025-03-08 07:56+0000\n"
+"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"PO-Revision-Date: 2025-05-30 06:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -203,23 +203,19 @@ msgstr "ネームスペースを取得できませんでした "
 
 #: shared/connection.go:242
 msgid "Healthcheck not executed"
-msgstr ""
+msgstr "ヘルスチェックは実行されませんでした"
 
 #: shared/connection.go:281
 msgid "container didn't start within 10s."
 msgstr "コンテナが10秒以内に起動しませんでした。"
 
 #: shared/connection.go:318
-#, fuzzy
-#| msgid "server didn't start within 60s. Check for the service status"
 msgid "server didn't start within 120s. Check for the service status"
-msgstr "サーバが60秒以内に起動しませんでした。サービスステータスを確認します"
+msgstr "サーバが120秒以内に起動しませんでした。サービスステータスを確認します"
 
 #: shared/connection.go:333
-#, fuzzy
-#| msgid "server didn't start within 60s. Check for the service status"
 msgid "container didn't start within 60s. Check for the service status"
-msgstr "サーバが60秒以内に起動しませんでした。サービスステータスを確認します"
+msgstr "コンテナが60秒以内に起動しませんでした。サービスステータスを確認します"
 
 #: shared/connection.go:373 shared/connection.go:420
 #, javascript-format
@@ -301,9 +297,9 @@ msgstr "ネームスペースが必要です"
 #: shared/kubernetes/helm.go:77 shared/podman/images.go:345
 #: shared/podman/images.go:365 shared/podman/images.go:385
 #: shared/podman/network.go:108 shared/podman/secret.go:123
-#: shared/podman/systemd.go:106 shared/podman/systemd.go:185
-#: shared/podman/systemd.go:186 shared/podman/utils.go:175
-#: shared/podman/utils.go:208 shared/podman/utils.go:228
+#: shared/podman/systemd.go:110 shared/podman/systemd.go:189
+#: shared/podman/systemd.go:190 shared/podman/utils.go:177
+#: shared/podman/utils.go:210 shared/podman/utils.go:230
 #, javascript-format
 msgid "Would run %s"
 msgstr "%s を実行します"
@@ -665,26 +661,20 @@ msgid "image %s is missing and cannot be fetched"
 msgstr "イメージ %s が見つからないのでフェッチできません"
 
 #: shared/podman/images.go:85
-#, fuzzy
-#| msgid "failed to determine suitable backend"
 msgid "failed to determine image"
-msgstr "適切なバックエンドを決定できませんでした"
+msgstr "イメージの決定に失敗しました"
 
 #: shared/podman/images.go:93
 msgid "failed to find the image of the currently running server container"
-msgstr ""
+msgstr "現在実行中のサーバコンテナのイメージが見つかりませんでした"
 
 #: shared/podman/images.go:104
-#, fuzzy
-#| msgid "failed to determine suitable backend"
 msgid "failed to determine pgsql image"
-msgstr "適切なバックエンドを決定できませんでした"
+msgstr "pgsqlイメージの決定に失敗しました"
 
 #: shared/podman/images.go:112
-#, fuzzy
-#| msgid "failed to fetch the config files bound to container %s"
 msgid "failed to find the image of the currently running db container"
-msgstr "コンテナ %s にバインドされた設定ファイルのフェッチに失敗しました"
+msgstr "現在実行中のdbコンテナのイメージが見つかりませんでした"
 
 #: shared/podman/images.go:137
 #, javascript-format
@@ -698,7 +688,7 @@ msgstr "イメージRPMメタデータをアンマーシャルできません"
 #: shared/podman/images.go:174
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
-msgstr ""
+msgstr "%s が存在しないため、RPMからのイメージのロードをスキップします"
 
 #: shared/podman/images.go:204
 #, javascript-format
@@ -748,8 +738,8 @@ msgstr "コンテナ %s に対して実行中のイメージが見つかりま�
 
 #: shared/podman/images.go:347 shared/podman/images.go:367
 #: shared/podman/images.go:387 shared/podman/secret.go:125
-#: shared/podman/utils.go:177 shared/podman/utils.go:211
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:179 shared/podman/utils.go:213
+#: shared/podman/utils.go:241
 #, javascript-format
 msgid "Run %s"
 msgstr "%s の実行"
@@ -760,16 +750,14 @@ msgid "Failed to remove image %s"
 msgstr "イメージ %s の削除に失敗しました"
 
 #: shared/podman/images.go:370
-#, fuzzy, javascript-format
-#| msgid "Failed to remove image %s"
+#, javascript-format
 msgid "Failed to export image %s"
-msgstr "イメージ %s の削除に失敗しました"
+msgstr "イメージ %s のエクスポートに失敗しました"
 
 #: shared/podman/images.go:390
-#, fuzzy, javascript-format
-#| msgid "Failed to remove image %s"
+#, javascript-format
 msgid "Failed to restore image %s"
-msgstr "イメージ %s の削除に失敗しました"
+msgstr "イメージ %s の復元に失敗しました"
 
 #: shared/podman/login.go:25
 msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
@@ -828,10 +816,9 @@ msgstr "ネットワークが削除されました"
 
 #: shared/podman/secret.go:58 shared/podman/secret.go:70
 #: shared/podman/secret.go:74
-#, fuzzy, javascript-format
-#| msgid "failed to create %s folder"
+#, javascript-format
 msgid "failed to create %s secret"
-msgstr "%s フォルダの作成に失敗しました"
+msgstr "%s シークレットの作成に失敗しました"
 
 #: shared/podman/secret.go:89
 #, javascript-format
@@ -849,10 +836,8 @@ msgid "Failed to delete %s secret"
 msgstr "%s シークレットの削除に失敗しました"
 
 #: shared/podman/support.go:26
-#, fuzzy
-#| msgid "No systemd file to add to the archive"
 msgid "No logs file on host to add to the archive"
-msgstr "アーカイブに追加するsystemdファイルはありません"
+msgstr "アーカイブに追加するログファイルがホストにありません"
 
 #: shared/podman/support.go:33
 msgid "No systemd file to add to the archive"
@@ -881,10 +866,9 @@ msgid "failed to create %s file"
 msgstr "%s ファイルの作成に失敗しました"
 
 #: shared/podman/support.go:75
-#, fuzzy, javascript-format
-#| msgid "failed to create %s"
+#, javascript-format
 msgid "failed to cat %s"
-msgstr "%s の作成に失敗しました"
+msgstr "%s のcatに失敗しました"
 
 #: shared/podman/support.go:95
 msgid "failed to run systemctl cat uyuni-*"
@@ -898,132 +882,132 @@ msgstr "検査ダンプファイルを閉じることができませんでした
 msgid "failed to close bound files"
 msgstr "バンドルファイルを閉じることができませんでした"
 
-#: shared/podman/support.go:186
+#: shared/podman/support.go:172
 #, javascript-format
 msgid "failed create %s file"
 msgstr "%s ファイルの作成に失敗しました"
 
-#: shared/podman/support.go:191
+#: shared/podman/support.go:177
 #, javascript-format
 msgid "failed to run journalctl -u %s"
 msgstr "ournalctl -u %sの実行に失敗しました"
 
-#: shared/podman/systemd.go:62
+#: shared/podman/systemd.go:66
 #, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr "%s systemdサービスを無効にできませんでした"
 
-#: shared/podman/systemd.go:103
+#: shared/podman/systemd.go:107
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "Systemdには %s.serviceユニットがありません"
 
-#: shared/podman/systemd.go:108
+#: shared/podman/systemd.go:112
 #, javascript-format
 msgid "Disable %s service"
 msgstr "%s サービスを無効にする"
 
-#: shared/podman/systemd.go:112 shared/podman/systemd.go:174
+#: shared/podman/systemd.go:116 shared/podman/systemd.go:178
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "%s サービスを無効にできませんでした"
 
-#: shared/podman/systemd.go:124 shared/podman/systemd.go:141
+#: shared/podman/systemd.go:128 shared/podman/systemd.go:145
 #, javascript-format
 msgid "Would remove %s"
 msgstr "%s を削除します"
 
-#: shared/podman/systemd.go:127 shared/podman/systemd.go:143
+#: shared/podman/systemd.go:131 shared/podman/systemd.go:147
 #, javascript-format
 msgid "Remove %s"
 msgstr "%s の削除"
 
-#: shared/podman/systemd.go:129
+#: shared/podman/systemd.go:133
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "%s.serviceファイルの削除に失敗しました"
 
-#: shared/podman/systemd.go:145
+#: shared/podman/systemd.go:149
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "ファイル %s の削除に失敗しました"
 
-#: shared/podman/systemd.go:152
+#: shared/podman/systemd.go:156
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "空の場合は、%s を削除します"
 
-#: shared/podman/systemd.go:159
+#: shared/podman/systemd.go:163
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "%s フォルダには、ユーザが作成したファイルが含まれます。アンインストール後にそれらのファイルを削除してください。"
 
-#: shared/podman/systemd.go:171
+#: shared/podman/systemd.go:175
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "%s を0個のレプリカにスケールします"
 
-#: shared/podman/systemd.go:190
+#: shared/podman/systemd.go:194
 msgid "failed to reset-failed systemd"
 msgstr "systemdのreset-failedに失敗しました"
 
-#: shared/podman/systemd.go:194
+#: shared/podman/systemd.go:198
 msgid "failed to reload systemd daemon"
 msgstr "systemdデーモンの再ロードに失敗しました"
 
-#: shared/podman/systemd.go:212
+#: shared/podman/systemd.go:216
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "systemd %s.serviceの再起動に失敗しました"
 
-#: shared/podman/systemd.go:220
+#: shared/podman/systemd.go:224
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "systemd %s.serviceの起動に失敗しました"
 
-#: shared/podman/systemd.go:228
+#: shared/podman/systemd.go:232
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "systemd %s.serviceの停止に失敗しました"
 
-#: shared/podman/systemd.go:236
+#: shared/podman/systemd.go:244
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "%s systemdサービスを有効にできませんでした"
 
-#: shared/podman/systemd.go:283
+#: shared/podman/systemd.go:291
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "%s フォルダの作成に失敗しました"
 
-#: shared/podman/systemd.go:293
+#: shared/podman/systemd.go:301
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "%s ファイルを書き込めません"
 
-#: shared/podman/systemd.go:338
+#: shared/podman/systemd.go:346
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "%s ファイルの書き込みに失敗しました"
 
-#: shared/podman/systemd.go:343
+#: shared/podman/systemd.go:351
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "古い %s systemdサービス設定ファイルの削除に失敗しました"
 
-#: shared/podman/systemd.go:365
+#: shared/podman/systemd.go:373
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "サービス %[1]s にはすでに %[2]d 個のレプリカがあります。"
 
-#: shared/podman/systemd.go:368
+#: shared/podman/systemd.go:376
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "%[1]s を %[2]d から %[3]d レプリカにスケールします。"
 
-#: shared/podman/systemd.go:372
+#: shared/podman/systemd.go:380
 msgid "cannot enable service"
 msgstr "サービスを有効にできません"
 
-#: shared/podman/systemd.go:378
+#: shared/podman/systemd.go:386
 msgid "cannot disable service"
 msgstr "サービスを無効にできませんでした"
 
@@ -1035,87 +1019,83 @@ msgstr "podmanに渡す追加引数"
 msgid "failed to enable podman.socket unit"
 msgstr "podman.socketユニットの有効化に失敗しました"
 
-#: shared/podman/utils.go:89 shared/podman/utils.go:108
+#: shared/podman/utils.go:89 shared/podman/utils.go:110
 #, javascript-format
 msgid "failed to run %s container"
 msgstr "%s コンテナの実行に失敗しました"
 
-#: shared/podman/utils.go:119
+#: shared/podman/utils.go:121
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr "podman kill %[1]s を実行します (コンテナID %[2]s に対して)"
 
-#: shared/podman/utils.go:120
+#: shared/podman/utils.go:122
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr "podman remove %[1]s を実行します(コンテナID %[2]s に対して)"
 
-#: shared/podman/utils.go:122
+#: shared/podman/utils.go:124
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr "podman kill %[1]s を実行します(コンテナID %[2]s に対して)"
 
-#: shared/podman/utils.go:125
+#: shared/podman/utils.go:127
 msgid "Failed to kill the server"
 msgstr "サーバの強制終了に失敗しました"
 
-#: shared/podman/utils.go:127
+#: shared/podman/utils.go:129
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr "podman remove %[1]s を実行します(コンテナID %[2]s に対して)"
 
-#: shared/podman/utils.go:130
+#: shared/podman/utils.go:132
 msgid "Error removing container"
 msgstr "コンテナ削除エラー"
 
-#: shared/podman/utils.go:135
+#: shared/podman/utils.go:137
 msgid "Container already removed"
 msgstr "コンテナはすでに削除されています"
 
-#: shared/podman/utils.go:143
+#: shared/podman/utils.go:145
 #, javascript-format
 msgid "failed to get %s systemd service definition"
 msgstr "%s systemdサービス定義の取得に失敗しました"
 
-#: shared/podman/utils.go:150
+#: shared/podman/utils.go:152
 #, javascript-format
 msgid "no UYUNI_IMAGE defined in %s systemd service"
 msgstr "%s systemdサービスにUYUNI_IMAGEが定義されていません"
 
-#: shared/podman/utils.go:189
+#: shared/podman/utils.go:191
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "ボリューム %s は外部にマウントされているため、ディレクトリを削除できません"
 
-#: shared/podman/utils.go:213
-#, fuzzy, javascript-format
-#| msgid "Failed to remove volume %s"
+#: shared/podman/utils.go:215
+#, javascript-format
 msgid "Failed to export volume %s"
-msgstr "ボリューム %s の削除に失敗しました"
+msgstr "ボリューム %s のエクスポートに失敗しました"
 
-#: shared/podman/utils.go:216
-#, fuzzy
+#: shared/podman/utils.go:218
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
-msgstr "ボリュームフォルダ %s を %s にリンクできませんでした: %s"
+msgstr "ボリューム %[1]s のチェックサムを %[2]s に書き込めませんでした"
 
-#: shared/podman/utils.go:233
+#: shared/podman/utils.go:235
 #, javascript-format
 msgid "Checksum does not match for volume %s"
-msgstr ""
+msgstr "ボリューム %s のチェックサムが一致しません"
 
-#: shared/podman/utils.go:237
-#, fuzzy, javascript-format
-#| msgid "Failed to remove volume %s"
+#: shared/podman/utils.go:239
+#, javascript-format
 msgid "Failed to precreate empty volume %s"
-msgstr "ボリューム %s の削除に失敗しました"
+msgstr "空のボリューム %s の事前作成に失敗しました"
 
-#: shared/podman/utils.go:241
-#, fuzzy, javascript-format
-#| msgid "Failed to remove volume %s"
+#: shared/podman/utils.go:243
+#, javascript-format
 msgid "Failed to import volume %s"
-msgstr "ボリューム %s の削除に失敗しました"
+msgstr "ボリューム %s のインポートに失敗しました"
 
-#: shared/podman/utils.go:317
+#: shared/podman/utils.go:319
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.comへのログインに失敗しました"
 
-#: shared/podman/utils.go:343 shared/podman/utils.go:364
+#: shared/podman/utils.go:345 shared/podman/utils.go:366
 msgid "cannot inspect data"
 msgstr "データを検査できません"
 
@@ -1425,11 +1405,72 @@ msgstr "設定ファイルと環境変数のヘルプ"
 msgid "failed to compute config help command"
 msgstr "config helpコマンドの計算に失敗しました"
 
+#: shared/utils/files.go:21
+#, javascript-format
+msgid "cannot check content of %s"
+msgstr "%s の内容を確認できません"
+
+#: shared/utils/files.go:33
+#, javascript-format
+msgid "Cannot remove %s folder"
+msgstr "%s フォルダを削除できません"
+
+#: shared/utils/files.go:44
+#, javascript-format
+msgid "Failed to get %s file informations"
+msgstr "%s ファイル情報の取得に失敗しました"
+
+#: shared/utils/files.go:53
+#, javascript-format
+msgid "Failed to read file %s"
+msgstr "ファイル %s の読み込みに失敗しました"
+
+#: shared/utils/files.go:69
+#, javascript-format
+msgid "Would remove file %s"
+msgstr "ファイル %s を削除します"
+
+#: shared/utils/files.go:71
+#, javascript-format
+msgid "Removing file %s"
+msgstr "ファイル %s を削除中"
+
+#: shared/utils/files.go:73
+#, javascript-format
+msgid "Failed to remove file %s"
+msgstr "ファイル %s の削除に失敗しました"
+
+#: shared/utils/files.go:83
+msgid "failed to create temporary directory"
+msgstr "一時ディレクトリの作成に失敗しました"
+
+#: shared/utils/files.go:87
+msgid "failed to remove temporary directory"
+msgstr "一時ディレクトリの削除に失敗しました"
+
+#: shared/utils/files.go:97
+#, fuzzy, javascript-format
+#| msgid "failed to write %s file"
+msgid "fails to open %s file"
+msgstr "%s ファイルの書き込みに失敗しました"
+
+#: shared/utils/files.go:109
+#, fuzzy, javascript-format
+#| msgid "failed to create %s file"
+msgid "failed to read %s file"
+msgstr "%s ファイルの作成に失敗しました"
+
+#: shared/utils/files.go:113
+#, fuzzy, javascript-format
+#| msgid "failed to create %s file"
+msgid "failed to copy %s file"
+msgstr "%s ファイルの作成に失敗しました"
+
 #: shared/utils/flaggroups.go:56
 msgid "Flags:\n"
 msgstr "フラグ:\n"
 
-#: shared/utils/flaggroups.go:95
+#: shared/utils/flaggroups.go:108
 msgid "no such flag help group: %v"
 msgstr "そのようなフラグヘルプグループはありません: %v"
 
@@ -1564,127 +1605,80 @@ msgid "Failed to run %s"
 msgstr "%s の実行に失敗しました"
 
 #: shared/utils/utils.go:269
-#, javascript-format
-msgid "cannot check content of %s"
-msgstr "%s の内容を確認できません"
-
-#: shared/utils/utils.go:281
-#, javascript-format
-msgid "Cannot remove %s folder"
-msgstr "%s フォルダを削除できません"
-
-#: shared/utils/utils.go:292
-#, javascript-format
-msgid "Failed to get %s file informations"
-msgstr "%s ファイル情報の取得に失敗しました"
-
-#: shared/utils/utils.go:301
-#, javascript-format
-msgid "Failed to read file %s"
-msgstr "ファイル %s の読み込みに失敗しました"
-
-#: shared/utils/utils.go:317
-#, javascript-format
-msgid "Would remove file %s"
-msgstr "ファイル %s を削除します"
-
-#: shared/utils/utils.go:319
-#, javascript-format
-msgid "Removing file %s"
-msgstr "ファイル %s を削除中"
-
-#: shared/utils/utils.go:321
-#, javascript-format
-msgid "Failed to remove file %s"
-msgstr "ファイル %s の削除に失敗しました"
-
-#: shared/utils/utils.go:331
-msgid "failed to create temporary directory"
-msgstr "一時ディレクトリの作成に失敗しました"
-
-#: shared/utils/utils.go:335
-msgid "failed to remove temporary directory"
-msgstr "一時ディレクトリの削除に失敗しました"
-
-#: shared/utils/utils.go:345
 msgid "Failed to read random data"
 msgstr "ランダムデータの読み込みに失敗しました"
 
-#: shared/utils/utils.go:366
+#: shared/utils/utils.go:290
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "%s からのダウンロードでエラーが発生しました"
 
-#: shared/utils/utils.go:372
+#: shared/utils/utils.go:296
 #, javascript-format
 msgid "bad status: %s"
 msgstr "不良ステータス: %s"
 
-#: shared/utils/utils.go:457
+#: shared/utils/utils.go:381
 msgid "failed to compute server FQDN"
 msgstr "サーバFQDNの計算に失敗しました"
 
-#: shared/utils/utils.go:471
+#: shared/utils/utils.go:395
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s は有効なFQDNではありません"
 
-#: shared/utils/utils.go:475
+#: shared/utils/utils.go:399
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "%s を解決できません"
 
-#: shared/utils/utils.go:500
+#: shared/utils/utils.go:424
 #, javascript-format
 msgid "error creating file %s"
 msgstr "ファイル %s の作成中にエラーが発生しました"
 
-#: shared/utils/utils.go:505
+#: shared/utils/utils.go:429
 #, javascript-format
 msgid "error writing file %s"
 msgstr "ファイル %s の書き込み中にエラーが発生しました"
 
-#: shared/utils/utils.go:517
-#, fuzzy, javascript-format
-#| msgid "Failed to remove file %s"
+#: shared/utils/utils.go:441
+#, javascript-format
 msgid "Failed to calculate checksum of the file %s"
-msgstr "ファイル %s の削除に失敗しました"
+msgstr "ファイル %s のチェックサムの計算に失敗しました"
 
-#: shared/utils/utils.go:521
-#, fuzzy
+#: shared/utils/utils.go:445
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
-msgstr "ボリュームフォルダ %s を %s にリンクできませんでした: %s"
+msgstr "ファイル %[1]s のチェックサムを %[2]s に書き込めませんでした"
 
-#: shared/utils/utils.go:531
+#: shared/utils/utils.go:455
 #, javascript-format
 msgid "Checksum of %s does not match"
-msgstr ""
+msgstr "%s のチェックサムが一致しません"
 
 #: shared/utils/uyuniservices.go:18
-#, fuzzy
-#| msgid "cannot enable service"
 msgid "Main service"
-msgstr "サービスを有効にできません"
+msgstr "主なサービス"
 
 #: shared/utils/uyuniservices.go:24
 msgid "Migration helper"
-msgstr ""
+msgstr "移行ヘルパー"
 
 #: shared/utils/uyuniservices.go:30
 msgid "Confidential computing attestation"
-msgstr ""
+msgstr "コンフィデンシャルコンピューティングの検証"
 
 #: shared/utils/uyuniservices.go:36
 msgid "Hub XML-RPC API"
-msgstr ""
+msgstr "Hub XML-RPC API"
 
 #: shared/utils/uyuniservices.go:42
 msgid "Saline"
-msgstr ""
+msgstr "Saline"
 
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
-msgstr ""
+msgstr "データベース"
 
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "クラスタタイプの検出に失敗しました"
