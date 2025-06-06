@@ -19,7 +19,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-var redactRegex = regexp.MustCompile(`([pP]assword[\t :"\\]+)[^\t "\\]+`)
+var redactRegex = regexp.MustCompile(`([pP]assword[\t :"\\]+)[^\\][^\t "\\]+`)
 
 // The default directory where log files are written.
 const logDir = "/var/log/"
