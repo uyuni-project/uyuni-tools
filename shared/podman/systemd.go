@@ -386,5 +386,5 @@ func (s SystemdImpl) ScaleService(replicas int, name string) error {
 			return utils.Errorf(err, L("cannot disable service"))
 		}
 	}
-	return nil
+	return s.RestartInstantiated(name)
 }
