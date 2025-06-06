@@ -24,7 +24,7 @@ if [ "${OSCAPI}" == "https://api.suse.de" ]; then
   esac
 
 # Define the default tag to use
-  sed 's/^tag=%{!?_default_tag:latest}/tag=5.1.0-RC/' -i ${SRPM_PKG_DIR}/uyuni-tools.spec
+  sed 's/^tag=%{!?_default_tag:latest}/tag=5.1.0/' -i ${SRPM_PKG_DIR}/uyuni-tools.spec
 
   sed "s/namespace='%{_default_namespace}'/namespace='%{_default_namespace}\/%{_arch}'/" -i ${SRPM_PKG_DIR}/uyuni-tools.spec
 
