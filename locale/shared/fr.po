@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-06 11:34+0200\n"
+"POT-Creation-Date: 2025-06-06 09:21+0200\n"
 "PO-Revision-Date: 2024-04-08 14:09+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -311,9 +311,9 @@ msgstr "Une valeur est requise"
 #: shared/kubernetes/helm.go:77 shared/podman/images.go:345
 #: shared/podman/images.go:365 shared/podman/images.go:385
 #: shared/podman/network.go:108 shared/podman/secret.go:123
-#: shared/podman/systemd.go:106 shared/podman/systemd.go:185
-#: shared/podman/systemd.go:186 shared/podman/utils.go:175
-#: shared/podman/utils.go:208 shared/podman/utils.go:228
+#: shared/podman/systemd.go:110 shared/podman/systemd.go:189
+#: shared/podman/systemd.go:190 shared/podman/utils.go:177
+#: shared/podman/utils.go:210 shared/podman/utils.go:230
 #, javascript-format
 msgid "Would run %s"
 msgstr ""
@@ -763,8 +763,8 @@ msgstr ""
 
 #: shared/podman/images.go:347 shared/podman/images.go:367
 #: shared/podman/images.go:387 shared/podman/secret.go:125
-#: shared/podman/utils.go:177 shared/podman/utils.go:211
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:179 shared/podman/utils.go:213
+#: shared/podman/utils.go:241
 #, javascript-format
 msgid "Run %s"
 msgstr ""
@@ -912,133 +912,133 @@ msgstr "impossible de créer le répertoire %s: %s"
 msgid "failed to close bound files"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/podman/support.go:186
+#: shared/podman/support.go:172
 #, fuzzy, javascript-format
 msgid "failed create %s file"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/podman/support.go:191
+#: shared/podman/support.go:177
 #, fuzzy, javascript-format
 msgid "failed to run journalctl -u %s"
 msgstr "impossible d'exécuter helm %s: %s"
 
-#: shared/podman/systemd.go:62
+#: shared/podman/systemd.go:66
 #, fuzzy, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr "Impossible de tuer le serveur"
 
-#: shared/podman/systemd.go:103
+#: shared/podman/systemd.go:107
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr ""
 
-#: shared/podman/systemd.go:108
+#: shared/podman/systemd.go:112
 #, javascript-format
 msgid "Disable %s service"
 msgstr ""
 
-#: shared/podman/systemd.go:112 shared/podman/systemd.go:174
+#: shared/podman/systemd.go:116 shared/podman/systemd.go:178
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr ""
 
-#: shared/podman/systemd.go:124 shared/podman/systemd.go:141
+#: shared/podman/systemd.go:128 shared/podman/systemd.go:145
 #, javascript-format
 msgid "Would remove %s"
 msgstr ""
 
-#: shared/podman/systemd.go:127 shared/podman/systemd.go:143
+#: shared/podman/systemd.go:131 shared/podman/systemd.go:147
 #, javascript-format
 msgid "Remove %s"
 msgstr ""
 
-#: shared/podman/systemd.go:129
+#: shared/podman/systemd.go:133
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr ""
 
-#: shared/podman/systemd.go:145
+#: shared/podman/systemd.go:149
 #, fuzzy, javascript-format
 msgid "Failed to remove %s file"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/podman/systemd.go:152
+#: shared/podman/systemd.go:156
 #, fuzzy, javascript-format
 msgid "Would remove %s if empty"
 msgstr "Supprimerait le fichier %s"
 
-#: shared/podman/systemd.go:159
+#: shared/podman/systemd.go:163
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr ""
 
-#: shared/podman/systemd.go:171
+#: shared/podman/systemd.go:175
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr ""
 
-#: shared/podman/systemd.go:190
+#: shared/podman/systemd.go:194
 msgid "failed to reset-failed systemd"
 msgstr ""
 
-#: shared/podman/systemd.go:194
+#: shared/podman/systemd.go:198
 msgid "failed to reload systemd daemon"
 msgstr ""
 
-#: shared/podman/systemd.go:212
+#: shared/podman/systemd.go:216
 #, fuzzy, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "impossible de se connecter au serveur: %s"
 
-#: shared/podman/systemd.go:220
+#: shared/podman/systemd.go:224
 #, fuzzy, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "impossible d'exécuter helm %s: %s"
 
-#: shared/podman/systemd.go:228
+#: shared/podman/systemd.go:232
 #, fuzzy, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "Impossible de tuer le serveur"
 
-#: shared/podman/systemd.go:236
+#: shared/podman/systemd.go:244
 #, fuzzy, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "Impossible de tuer le serveur"
 
-#: shared/podman/systemd.go:283
+#: shared/podman/systemd.go:291
 #, fuzzy, javascript-format
 msgid "failed to create %s folder"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/podman/systemd.go:293
+#: shared/podman/systemd.go:301
 #, fuzzy, javascript-format
 msgid "cannot write %s file"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/podman/systemd.go:338
+#: shared/podman/systemd.go:346
 #, fuzzy, javascript-format
 msgid "failed to write %s file"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/podman/systemd.go:343
+#: shared/podman/systemd.go:351
 #, fuzzy, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/podman/systemd.go:365
+#: shared/podman/systemd.go:373
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr ""
 
-#: shared/podman/systemd.go:368
+#: shared/podman/systemd.go:376
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr ""
 
-#: shared/podman/systemd.go:372
+#: shared/podman/systemd.go:380
 #, fuzzy
 msgid "cannot enable service"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/podman/systemd.go:378
+#: shared/podman/systemd.go:386
 #, fuzzy
 msgid "cannot disable service"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
@@ -1052,86 +1052,86 @@ msgstr ""
 msgid "failed to enable podman.socket unit"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/podman/utils.go:89 shared/podman/utils.go:108
+#: shared/podman/utils.go:89 shared/podman/utils.go:110
 #, fuzzy, javascript-format
 msgid "failed to run %s container"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/podman/utils.go:119
+#: shared/podman/utils.go:121
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:120
+#: shared/podman/utils.go:122
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:122
+#: shared/podman/utils.go:124
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:125
+#: shared/podman/utils.go:127
 msgid "Failed to kill the server"
 msgstr "Impossible de tuer le serveur"
 
-#: shared/podman/utils.go:127
+#: shared/podman/utils.go:129
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:130
+#: shared/podman/utils.go:132
 msgid "Error removing container"
 msgstr ""
 
-#: shared/podman/utils.go:135
+#: shared/podman/utils.go:137
 msgid "Container already removed"
 msgstr ""
 
-#: shared/podman/utils.go:143
+#: shared/podman/utils.go:145
 #, fuzzy, javascript-format
 msgid "failed to get %s systemd service definition"
 msgstr "Impossible de tuer le serveur"
 
-#: shared/podman/utils.go:150
+#: shared/podman/utils.go:152
 #, fuzzy, javascript-format
 msgid "no UYUNI_IMAGE defined in %s systemd service"
 msgstr "Impossible de tuer le serveur"
 
-#: shared/podman/utils.go:189
+#: shared/podman/utils.go:191
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr ""
 
-#: shared/podman/utils.go:213
+#: shared/podman/utils.go:215
 #, fuzzy, javascript-format
 #| msgid "Failed to remove file %s"
 msgid "Failed to export volume %s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/podman/utils.go:216
+#: shared/podman/utils.go:218
 #, fuzzy
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr "impossible de lier le répertoire du volume %s vers %s: %s"
 
-#: shared/podman/utils.go:233
+#: shared/podman/utils.go:235
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr ""
 
-#: shared/podman/utils.go:237
+#: shared/podman/utils.go:239
 #, fuzzy, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr "impossible d'exécuter helm %s: %s"
 
-#: shared/podman/utils.go:241
+#: shared/podman/utils.go:243
 #, fuzzy, javascript-format
 #| msgid "Failed to remove file %s"
 msgid "Failed to import volume %s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/podman/utils.go:317
+#: shared/podman/utils.go:319
 msgid "failed to login to registry.suse.com"
 msgstr ""
 
-#: shared/podman/utils.go:343 shared/podman/utils.go:364
+#: shared/podman/utils.go:345 shared/podman/utils.go:366
 msgid "cannot inspect data"
 msgstr ""
 
@@ -1442,11 +1442,71 @@ msgstr ""
 msgid "failed to compute config help command"
 msgstr "impossible de créer la commande d'aide config"
 
+#: shared/utils/files.go:21
+#, javascript-format
+msgid "cannot check content of %s"
+msgstr ""
+
+#: shared/utils/files.go:33
+#, fuzzy, javascript-format
+msgid "Cannot remove %s folder"
+msgstr "impossible de créer le répertoire %s: %s"
+
+#: shared/utils/files.go:44
+#, javascript-format
+msgid "Failed to get %s file informations"
+msgstr "Impossible d'obtenir les informations du fichier %s"
+
+#: shared/utils/files.go:53
+#, javascript-format
+msgid "Failed to read file %s"
+msgstr "Impossible de lire le fichier %s"
+
+#: shared/utils/files.go:69
+#, javascript-format
+msgid "Would remove file %s"
+msgstr "Supprimerait le fichier %s"
+
+#: shared/utils/files.go:71
+#, javascript-format
+msgid "Removing file %s"
+msgstr "Suppression du fichier %s"
+
+#: shared/utils/files.go:73
+#, javascript-format
+msgid "Failed to remove file %s"
+msgstr "Impossible de supprimer le fichier %s"
+
+#: shared/utils/files.go:83
+#, fuzzy
+msgid "failed to create temporary directory"
+msgstr "impossible de créer le répertoire %s: %s"
+
+#: shared/utils/files.go:87
+#, fuzzy
+msgid "failed to remove temporary directory"
+msgstr "impossible de créer le répertoire %s: %s"
+
+#: shared/utils/files.go:97
+#, fuzzy, javascript-format
+msgid "fails to open %s file"
+msgstr "impossible de créer le répertoire %s: %s"
+
+#: shared/utils/files.go:109
+#, fuzzy, javascript-format
+msgid "failed to read %s file"
+msgstr "impossible de créer le répertoire %s: %s"
+
+#: shared/utils/files.go:113
+#, fuzzy, javascript-format
+msgid "failed to copy %s file"
+msgstr "impossible de créer le répertoire %s: %s"
+
 #: shared/utils/flaggroups.go:56
 msgid "Flags:\n"
 msgstr ""
 
-#: shared/utils/flaggroups.go:95
+#: shared/utils/flaggroups.go:108
 msgid "no such flag help group: %v"
 msgstr ""
 
@@ -1589,101 +1649,56 @@ msgid "Failed to run %s"
 msgstr "Erreur lors de l'exécution de %s"
 
 #: shared/utils/utils.go:269
-#, javascript-format
-msgid "cannot check content of %s"
-msgstr ""
-
-#: shared/utils/utils.go:281
-#, fuzzy, javascript-format
-msgid "Cannot remove %s folder"
-msgstr "impossible de créer le répertoire %s: %s"
-
-#: shared/utils/utils.go:292
-#, javascript-format
-msgid "Failed to get %s file informations"
-msgstr "Impossible d'obtenir les informations du fichier %s"
-
-#: shared/utils/utils.go:301
-#, javascript-format
-msgid "Failed to read file %s"
-msgstr "Impossible de lire le fichier %s"
-
-#: shared/utils/utils.go:317
-#, javascript-format
-msgid "Would remove file %s"
-msgstr "Supprimerait le fichier %s"
-
-#: shared/utils/utils.go:319
-#, javascript-format
-msgid "Removing file %s"
-msgstr "Suppression du fichier %s"
-
-#: shared/utils/utils.go:321
-#, javascript-format
-msgid "Failed to remove file %s"
-msgstr "Impossible de supprimer le fichier %s"
-
-#: shared/utils/utils.go:331
-#, fuzzy
-msgid "failed to create temporary directory"
-msgstr "impossible de créer le répertoire %s: %s"
-
-#: shared/utils/utils.go:335
-#, fuzzy
-msgid "failed to remove temporary directory"
-msgstr "impossible de créer le répertoire %s: %s"
-
-#: shared/utils/utils.go:345
 msgid "Failed to read random data"
 msgstr "Impossible de lire des données aléatoires"
 
-#: shared/utils/utils.go:366
+#: shared/utils/utils.go:290
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:372
+#: shared/utils/utils.go:296
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:457
+#: shared/utils/utils.go:381
 #, fuzzy
 msgid "failed to compute server FQDN"
 msgstr "impossible de se connecter au serveur: %s"
 
-#: shared/utils/utils.go:471
+#: shared/utils/utils.go:395
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:475
+#: shared/utils/utils.go:399
 #, fuzzy, javascript-format
 msgid "cannot resolve %s"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/utils/utils.go:500
+#: shared/utils/utils.go:424
 #, fuzzy, javascript-format
 msgid "error creating file %s"
 msgstr "Suppression du fichier %s"
 
-#: shared/utils/utils.go:505
+#: shared/utils/utils.go:429
 #, fuzzy, javascript-format
 msgid "error writing file %s"
 msgstr "Suppression du fichier %s"
 
-#: shared/utils/utils.go:517
+#: shared/utils/utils.go:441
 #, fuzzy, javascript-format
 #| msgid "Failed to remove file %s"
 msgid "Failed to calculate checksum of the file %s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/utils/utils.go:521
+#: shared/utils/utils.go:445
 #, fuzzy
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "impossible de lier le répertoire du volume %s vers %s: %s"
 
-#: shared/utils/utils.go:531
+#: shared/utils/utils.go:455
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr ""
