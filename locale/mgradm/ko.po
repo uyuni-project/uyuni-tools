@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-06 11:34+0200\n"
+"POT-Creation-Date: 2025-06-06 09:21+0200\n"
 "PO-Revision-Date: 2025-05-30 06:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
@@ -456,15 +456,19 @@ msgid "Welcome to %s"
 msgstr "%s 시작"
 
 #: mgradm/cmd/cmd.go:68
+msgid "Use of this software implies acceptance of the End User License Agreement."
+msgstr ""
+
+#: mgradm/cmd/cmd.go:69
 #, javascript-format
 msgid "Executing command: %s"
 msgstr "실행 중 명령: %s"
 
-#: mgradm/cmd/cmd.go:72
+#: mgradm/cmd/cmd.go:73
 msgid "configuration file path"
 msgstr "구성 파일 경로"
 
-#: mgradm/cmd/cmd.go:74
+#: mgradm/cmd/cmd.go:75
 msgid "application log level"
 msgstr "애플리케이션 로그 수준"
 
@@ -916,7 +920,7 @@ msgstr "이미지를 준비할 수 없음"
 msgid "cannot setup network"
 msgstr "네트워크를 설정할 수 없음"
 
-#: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:856
+#: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:857
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr "외부 데이터베이스 %s을(를) 사용하기 위해 데이터베이스 컨테이너 설정 건너뛰기"
@@ -925,27 +929,27 @@ msgstr "외부 데이터베이스 %s을(를) 사용하기 위해 데이터베이
 msgid "Run setup command in the container"
 msgstr "컨테이너에서 설정 명령 실행"
 
-#: mgradm/cmd/install/podman/utils.go:123 mgradm/shared/podman/podman.go:579
+#: mgradm/cmd/install/podman/utils.go:142 mgradm/shared/podman/podman.go:579
 msgid "cannot wait for system start"
 msgstr "시스템 시작을 기다릴 수 없음"
 
-#: mgradm/cmd/install/podman/utils.go:126
+#: mgradm/cmd/install/podman/utils.go:145
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "SSL CA 인증서를 호스트의 신뢰할 수 있는 인증서에 추가하지 못했습니다."
 
-#: mgradm/cmd/install/podman/utils.go:133
+#: mgradm/cmd/install/podman/utils.go:152
 msgid "failed to extract payg data"
 msgstr "payg 데이터를 추출하지 못함"
 
-#: mgradm/cmd/install/podman/utils.go:163
+#: mgradm/cmd/install/podman/utils.go:156
 msgid "cannot enable podman socket"
 msgstr "podman 소켓을 활성화할 수 없음"
 
-#: mgradm/cmd/install/podman/utils.go:211
+#: mgradm/cmd/install/podman/utils.go:204
 msgid "server setup failed"
 msgstr "서버 설정 실패"
 
-#: mgradm/cmd/install/podman/utils.go:214
+#: mgradm/cmd/install/podman/utils.go:207
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "서버 설정, https://%[1]s에 %[2]s 사용자로 로그인"
 
@@ -985,35 +989,31 @@ msgstr "서버 인증서 경로"
 msgid "Server key path"
 msgstr "서버 키 경로"
 
-#: mgradm/cmd/install/shared/flags.go:30 mgradm/shared/utils/cmd_utils.go:305
-msgid "3rd Party SSL Certificate Flags"
-msgstr "타사 SSL 인증서 플래그"
-
-#: mgradm/cmd/install/shared/flags.go:36
+#: mgradm/cmd/install/shared/flags.go:35
 msgid "Enable tomcat and taskomatic remote debugging"
 msgstr "Tomcat 및 Taskomatic 원격 디버깅 활성화"
 
-#: mgradm/cmd/install/shared/flags.go:44
+#: mgradm/cmd/install/shared/flags.go:43
 msgid "Administrator user name"
 msgstr "관리자 사용자 이름"
 
-#: mgradm/cmd/install/shared/flags.go:45
+#: mgradm/cmd/install/shared/flags.go:44
 msgid "Administrator password"
 msgstr "관리자 비밀번호"
 
-#: mgradm/cmd/install/shared/flags.go:46
+#: mgradm/cmd/install/shared/flags.go:45
 msgid "First name of the administrator"
 msgstr "관리자의 이름"
 
-#: mgradm/cmd/install/shared/flags.go:47
+#: mgradm/cmd/install/shared/flags.go:46
 msgid "Last name of the administrator"
 msgstr "관리자의 성"
 
-#: mgradm/cmd/install/shared/flags.go:48
+#: mgradm/cmd/install/shared/flags.go:47
 msgid "First organization name"
 msgstr "첫 번째 조직 이름"
 
-#: mgradm/cmd/install/shared/flags.go:50
+#: mgradm/cmd/install/shared/flags.go:49
 msgid "First User Flags"
 msgstr "첫 번째 사용자 플래그"
 
@@ -1154,7 +1154,7 @@ msgstr "SSH 마이그레이션 ConfigMap을 생성하지 못함"
 #: mgradm/shared/kubernetes/reconcile.go:38
 #: mgradm/shared/kubernetes/reconcile.go:305 mgradm/shared/pgsql/pgsql.go:28
 #: mgradm/shared/podman/podman.go:213 mgradm/shared/podman/podman.go:218
-#: mgradm/shared/saline/saline.go:74
+#: mgradm/shared/saline/saline.go:75
 msgid "failed to compute image URL"
 msgstr "이미지 URL을 계산하지 못함"
 
@@ -1216,7 +1216,9 @@ msgid "kubernetes not supported yet"
 msgstr "Kubernetes는 아직 지원되지 않음"
 
 #: mgradm/cmd/scale/podman.go:34
-msgid "Multiple Hub XML-RPC API container replicas are not currently supported."
+#, fuzzy
+#| msgid "Multiple Hub XML-RPC API container replicas are not currently supported."
+msgid "Multiple container replicas are not currently supported."
 msgstr "다중 Hub XML-RPC API 컨테이너 복제본은 현재 지원되지 않습니다."
 
 #: mgradm/cmd/scale/podman.go:38
@@ -1233,11 +1235,18 @@ msgid "Adjust the replicas for services supporting it."
 msgstr "이를 지원하는 서비스에 대한 복제본을 조정합니다."
 
 #: mgradm/cmd/scale/scale.go:29
+#, fuzzy
+#| msgid ""
+#| "Adjust the replicas for services supporting it.\n"
+#| "Supported services:\n"
+#| "  - uyuni-server-attestation\n"
+#| "  - uyuni-hub-xmlrpc\n"
 msgid ""
 "Adjust the replicas for services supporting it.\n"
 "Supported services:\n"
-"  - uyuni-server-attestation\n"
 "  - uyuni-hub-xmlrpc\n"
+"  - uyuni-saline\n"
+"  - uyuni-server-attestation\n"
 msgstr ""
 "이를 지원하는 서비스에 대한 복제본을 조정하십시오.\n"
 "지원되는 서비스:\n"
@@ -1296,6 +1305,11 @@ msgstr ""
 msgid "path where to extract the data"
 msgstr "데이터 추출 경로"
 
+#: mgradm/cmd/support/config/extractor.go:25
+#, fuzzy, javascript-format
+msgid "failed to remove %s temporary file"
+msgstr "인증서 파일 %s을(를) 읽지 못했습니다."
+
 #: mgradm/cmd/support/ptf/podman/podman.go:29
 msgid "Install a PTF or Test package on podman"
 msgstr "podman에 PTF 또는 테스트 패키지 설치"
@@ -1337,15 +1351,11 @@ msgstr "서버 이미지를 찾지 못함"
 msgid "The computed image is %s"
 msgstr "계산된 이미지: %s"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:111
-#, javascript-format
-msgid "The computed confidential computing image is %s"
-msgstr "계산된 기밀 컴퓨팅 이미지: %s"
-
-#: mgradm/cmd/support/ptf/podman/utils.go:123
-#, javascript-format
-msgid "The computed hub XML-RPC API image is %s"
-msgstr "계산된 Hub XML-RPC API 이미지: %s"
+#: mgradm/cmd/support/ptf/podman/utils.go:119
+#, fuzzy
+#| msgid "The computed image is %s"
+msgid "The %[1]s service image is %[2]s"
+msgstr "계산된 이미지: %s"
 
 #: mgradm/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -1534,13 +1544,13 @@ msgid "Setting up confidential computing attestation service"
 msgstr "기밀 컴퓨팅 증명 서비스 설정"
 
 #: mgradm/shared/coco/coco.go:101 mgradm/shared/hub/xmlrpcapi.go:120
-#: mgradm/shared/pgsql/pgsql.go:115 mgradm/shared/podman/podman.go:76
-#: mgradm/shared/saline/saline.go:95
+#: mgradm/shared/pgsql/pgsql.go:123 mgradm/shared/podman/podman.go:76
+#: mgradm/shared/saline/saline.go:96
 msgid "failed to generate systemd service unit file"
 msgstr "systemd 서비스 단위 파일을 생성하지 못함"
 
 #: mgradm/shared/coco/coco.go:111 mgradm/shared/hub/xmlrpcapi.go:127
-#: mgradm/shared/podman/podman.go:104 mgradm/shared/saline/saline.go:103
+#: mgradm/shared/podman/podman.go:104 mgradm/shared/saline/saline.go:104
 msgid "cannot generate systemd conf file"
 msgstr "systemd conf 파일을 생성할 수 없음"
 
@@ -1559,6 +1569,7 @@ msgid "Multiple Hub XML-RPC container replicas are not currently supported, sett
 msgstr "다중 Hub XML-RPC 컨테이너 복제본은 현재 지원되지 않습니다. 하나만 설정하십시오."
 
 #: mgradm/shared/hub/xmlrpcapi.go:73 mgradm/shared/podman/podman.go:466
+#: mgradm/shared/saline/saline.go:146
 msgid "cannot enable service"
 msgstr "서비스를 활성할 수 없음"
 
@@ -1748,12 +1759,17 @@ msgstr "traefik 미들웨어 및 경로를 생성할 수 없음"
 msgid "failed to write traefik routes to file"
 msgstr "파일링할 traefik 경로를 쓰지 못함"
 
+#: mgradm/shared/pgsql/pgsql.go:52 mgradm/shared/pgsql/pgsql.go:90
+#, javascript-format
+msgid "%s fails healtcheck"
+msgstr ""
+
 #: mgradm/shared/pgsql/pgsql.go:62
 #, javascript-format
 msgid "cannot enable %s service"
 msgstr "%s 서비스를 활성할 수 없음"
 
-#: mgradm/shared/pgsql/pgsql.go:121
+#: mgradm/shared/pgsql/pgsql.go:129
 msgid "cannot generate systemd configuration file"
 msgstr "systemd 구성 파일을 생성할 수 없음"
 
@@ -1761,7 +1777,7 @@ msgstr "systemd 구성 파일을 생성할 수 없음"
 msgid "Enabling system service"
 msgstr "시스템 서비스 활성화"
 
-#: mgradm/shared/podman/podman.go:112 mgradm/shared/saline/saline.go:111
+#: mgradm/shared/podman/podman.go:112 mgradm/shared/saline/saline.go:112
 msgid "cannot generate systemd user configuration file"
 msgstr "systemd 사용자 구성 파일을 생성할 수 없음"
 
@@ -1813,7 +1829,9 @@ msgid "cannot stop service"
 msgstr "서비스를 중지하지 못함"
 
 #: mgradm/shared/podman/podman.go:359 mgradm/shared/podman/podman.go:550
-msgid "Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"
+#, fuzzy
+#| msgid "Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"
+msgid "Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"
 msgstr "분할 PostgreSQL 컨테이너를 구성하는 중입니다. 이미지 버전: %[1]s, 마이그레이션되지 않은 버전: %[2]s"
 
 #: mgradm/shared/podman/podman.go:364 mgradm/shared/podman/podman.go:559
@@ -1825,7 +1843,7 @@ msgid "Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB v
 msgstr "이전 PostgreSQL은 %[1]s(이)고 대신 새 버전은 %[2]s입니다. DB 버전 업그레이드를 수행하는 중…"
 
 #: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:792
-#: mgradm/shared/podman/podman.go:815
+#: mgradm/shared/podman/podman.go:824
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQL 버전 업그레이드 스크립트를 실행할 수 없음"
 
@@ -1885,51 +1903,61 @@ msgstr "SSH 구성을 찾을 홈 디렉토리를 찾지 못했습니다."
 msgid "cannot inspect podman values"
 msgstr "podman 값을 검사할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:80
+#: mgradm/shared/podman/ssl.go:82
+msgid "CA validation failed!"
+msgstr ""
+
+#: mgradm/shared/podman/ssl.go:96
 msgid "Using provided 3rd party server certificates"
 msgstr "제공된 타사 서버 인증서 사용"
 
-#: mgradm/shared/podman/ssl.go:118
+#: mgradm/shared/podman/ssl.go:134
 msgid "Using provided 3rd party database certificates"
 msgstr "제공된 타사 데이터베이스 인증서 사용"
 
-#: mgradm/shared/podman/ssl.go:203
+#: mgradm/shared/podman/ssl.go:219
 msgid "cannot write existing CA certificate"
 msgstr "기존 CA 인증서를 작성할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:214
+#: mgradm/shared/podman/ssl.go:230
 msgid "cannot write existing server certificate"
 msgstr "기존 서버 인증서를 작성할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:225
+#: mgradm/shared/podman/ssl.go:241
 msgid "cannot write existing server key"
 msgstr "기존 서버 키를 작성할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:228
+#: mgradm/shared/podman/ssl.go:244
 msgid "Reusing existing certificates"
 msgstr "기존 인증서 재사용"
 
-#: mgradm/shared/podman/ssl.go:289
+#: mgradm/shared/podman/ssl.go:305
 msgid "Server SSL certificates generation failed"
 msgstr "서버 SSL 인증서 생성 실패"
 
-#: mgradm/shared/podman/ssl.go:292
+#: mgradm/shared/podman/ssl.go:308
 msgid "Server SSL certificates generated"
 msgstr "서버 SSL 인증서 생성됨"
 
-#: mgradm/shared/podman/ssl.go:322
+#: mgradm/shared/podman/ssl.go:327
+#, fuzzy
+#| msgid "cannot generate systemd service"
+msgid "Cannot generate database certificate"
+msgstr "systemd 서비스를 생성할 수 없음"
+
+#: mgradm/shared/podman/ssl.go:342
 msgid "Database SSL certificates generation failed"
 msgstr "데이터베이스 SSL 인증서 생성 실패"
 
-#: mgradm/shared/podman/ssl.go:325
+#: mgradm/shared/podman/ssl.go:345
 msgid "Database SSL certificates generated"
 msgstr "데이터베이스 SSL 인증서 생성됨"
 
-#: mgradm/shared/saline/saline.go:68
+#: mgradm/shared/saline/saline.go:69 mgradm/shared/saline/saline.go:140
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
 msgstr "다중 Saline 컨테이너 복제본은 현재 지원되지 않습니다. 하나만 설정합니다."
 
-#: mgradm/shared/saline/saline.go:91
+#: mgradm/shared/saline/saline.go:92
 msgid "Setting up Saline service"
 msgstr "Saline 서비스 설정"
 
@@ -2226,6 +2254,10 @@ msgstr "데이터베이스 인증서 경로"
 msgid "Database key path"
 msgstr "데이터베이스 키 경로"
 
+#: mgradm/shared/utils/cmd_utils.go:305
+msgid "3rd Party SSL Certificate Flags"
+msgstr "타사 SSL 인증서 플래그"
+
 #: mgradm/shared/utils/exec.go:25
 msgid "exec command failed"
 msgstr "exec 명령 실패"
@@ -2263,17 +2295,25 @@ msgstr "이미지 %s에서 릴리스를 가져올 수 없습니다."
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "버전 %[1]s에서 %[2]s(으)로 다운그레이드할 수 없습니다."
 
-#: mgradm/shared/utils/flags.go:153
+#: mgradm/shared/utils/flags.go:156
 msgid "Can only contain letters, digits . _ and -"
 msgstr "문자, 숫자 . _ 및 -만 포함할 수 있음"
 
-#: mgradm/shared/utils/flags.go:161
+#: mgradm/shared/utils/flags.go:164
 msgid "Not a valid email address"
 msgstr "유효한 전자 메일 주소 아님"
 
 #: mgradm/shared/utils/setup.go:85
 msgid "failed to render setup script"
 msgstr "설치 스크립트를 렌더링하지 못함"
+
+#, javascript-format
+#~ msgid "The computed confidential computing image is %s"
+#~ msgstr "계산된 기밀 컴퓨팅 이미지: %s"
+
+#, javascript-format
+#~ msgid "The computed hub XML-RPC API image is %s"
+#~ msgstr "계산된 Hub XML-RPC API 이미지: %s"
 
 #~ msgid "SSL CA generated private key password"
 #~ msgstr "SSL CA 생성 개인 키 비밀번호"
@@ -2596,10 +2636,6 @@ msgstr "설치 스크립트를 렌더링하지 못함"
 
 #~ msgid "Actually remove the server"
 #~ msgstr "실제로 서버 제거"
-
-#, fuzzy, javascript-format
-#~ msgid "Failed to remove %s.service file"
-#~ msgstr "인증서 파일 %s을(를) 읽지 못했습니다."
 
 #~ msgid "set whether to pull the images or not during upgrade. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 #~ msgstr "업그레이드 중에 이미지를 가져올지 여부를 설정합니다. 값은 'Never', 'IfNotPresent' 또는 'Always' 중 하나를 사용할 수 있습니다."

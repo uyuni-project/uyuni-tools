@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-06 11:34+0200\n"
+"POT-Creation-Date: 2025-06-06 09:21+0200\n"
 "PO-Revision-Date: 2025-05-28 08:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -297,9 +297,9 @@ msgstr "必须指定名称空间"
 #: shared/kubernetes/helm.go:77 shared/podman/images.go:345
 #: shared/podman/images.go:365 shared/podman/images.go:385
 #: shared/podman/network.go:108 shared/podman/secret.go:123
-#: shared/podman/systemd.go:106 shared/podman/systemd.go:185
-#: shared/podman/systemd.go:186 shared/podman/utils.go:175
-#: shared/podman/utils.go:208 shared/podman/utils.go:228
+#: shared/podman/systemd.go:110 shared/podman/systemd.go:189
+#: shared/podman/systemd.go:190 shared/podman/utils.go:177
+#: shared/podman/utils.go:210 shared/podman/utils.go:230
 #, javascript-format
 msgid "Would run %s"
 msgstr "将运行 %s"
@@ -733,8 +733,8 @@ msgstr "未找到容器 %s 的任何运行中映像"
 
 #: shared/podman/images.go:347 shared/podman/images.go:367
 #: shared/podman/images.go:387 shared/podman/secret.go:125
-#: shared/podman/utils.go:177 shared/podman/utils.go:211
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:179 shared/podman/utils.go:213
+#: shared/podman/utils.go:241
 #, javascript-format
 msgid "Run %s"
 msgstr "运行 %s"
@@ -877,132 +877,132 @@ msgstr "无法关闭检查转储文件"
 msgid "failed to close bound files"
 msgstr "无法关闭绑定文件"
 
-#: shared/podman/support.go:186
+#: shared/podman/support.go:172
 #, javascript-format
 msgid "failed create %s file"
 msgstr "无法创建 %s 文件"
 
-#: shared/podman/support.go:191
+#: shared/podman/support.go:177
 #, javascript-format
 msgid "failed to run journalctl -u %s"
 msgstr "无法运行 journalctl -u %s"
 
-#: shared/podman/systemd.go:62
+#: shared/podman/systemd.go:66
 #, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr "无法禁用 %s systemd 服务"
 
-#: shared/podman/systemd.go:103
+#: shared/podman/systemd.go:107
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "Systemd 没有 %s.service 单元"
 
-#: shared/podman/systemd.go:108
+#: shared/podman/systemd.go:112
 #, javascript-format
 msgid "Disable %s service"
 msgstr "禁用 %s 服务"
 
-#: shared/podman/systemd.go:112 shared/podman/systemd.go:174
+#: shared/podman/systemd.go:116 shared/podman/systemd.go:178
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "无法禁用 %s 服务"
 
-#: shared/podman/systemd.go:124 shared/podman/systemd.go:141
+#: shared/podman/systemd.go:128 shared/podman/systemd.go:145
 #, javascript-format
 msgid "Would remove %s"
 msgstr "将去除 %s"
 
-#: shared/podman/systemd.go:127 shared/podman/systemd.go:143
+#: shared/podman/systemd.go:131 shared/podman/systemd.go:147
 #, javascript-format
 msgid "Remove %s"
 msgstr "去除 %s"
 
-#: shared/podman/systemd.go:129
+#: shared/podman/systemd.go:133
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "无法去除 %s.service 文件"
 
-#: shared/podman/systemd.go:145
+#: shared/podman/systemd.go:149
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "无法去除 %s 文件"
 
-#: shared/podman/systemd.go:152
+#: shared/podman/systemd.go:156
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "将去除 %s（如果为空）"
 
-#: shared/podman/systemd.go:159
+#: shared/podman/systemd.go:163
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "%s 文件夹包含该用户创建的文件。卸装完毕后，请去除这些文件。"
 
-#: shared/podman/systemd.go:171
+#: shared/podman/systemd.go:175
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "会将 %s 扩缩到 0 个复本"
 
-#: shared/podman/systemd.go:190
+#: shared/podman/systemd.go:194
 msgid "failed to reset-failed systemd"
 msgstr "reset-failed systemd 失败"
 
-#: shared/podman/systemd.go:194
+#: shared/podman/systemd.go:198
 msgid "failed to reload systemd daemon"
 msgstr "无法重新加载 systemd 守护程序"
 
-#: shared/podman/systemd.go:212
+#: shared/podman/systemd.go:216
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "无法重启动 systemd %s.service"
 
-#: shared/podman/systemd.go:220
+#: shared/podman/systemd.go:224
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "无法启动 systemd %s.service"
 
-#: shared/podman/systemd.go:228
+#: shared/podman/systemd.go:232
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "无法停止 systemd %s.service"
 
-#: shared/podman/systemd.go:236
+#: shared/podman/systemd.go:244
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "无法启用 %s systemd 服务"
 
-#: shared/podman/systemd.go:283
+#: shared/podman/systemd.go:291
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "无法创建 %s 文件夹"
 
-#: shared/podman/systemd.go:293
+#: shared/podman/systemd.go:301
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "无法写入 %s 文件"
 
-#: shared/podman/systemd.go:338
+#: shared/podman/systemd.go:346
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "无法写入 %s 文件"
 
-#: shared/podman/systemd.go:343
+#: shared/podman/systemd.go:351
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "无法去除旧 %s systemd 服务配置文件"
 
-#: shared/podman/systemd.go:365
+#: shared/podman/systemd.go:373
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "服务 %[1]s 已有 %[2]d 个复本。"
 
-#: shared/podman/systemd.go:368
+#: shared/podman/systemd.go:376
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "将 %[1]s 的复本数从 %[2]d 个扩缩到 %[3]d 个。"
 
-#: shared/podman/systemd.go:372
+#: shared/podman/systemd.go:380
 msgid "cannot enable service"
 msgstr "无法启用服务"
 
-#: shared/podman/systemd.go:378
+#: shared/podman/systemd.go:386
 msgid "cannot disable service"
 msgstr "无法禁用服务"
 
@@ -1014,83 +1014,83 @@ msgstr "要传递给 podman 的额外参数"
 msgid "failed to enable podman.socket unit"
 msgstr "无法启用 podman.socket 单元"
 
-#: shared/podman/utils.go:89 shared/podman/utils.go:108
+#: shared/podman/utils.go:89 shared/podman/utils.go:110
 #, javascript-format
 msgid "failed to run %s container"
 msgstr "无法运行 %s 容器"
 
-#: shared/podman/utils.go:119
+#: shared/podman/utils.go:121
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr "将会针对 ID 为 %[2]s 的容器运行 podman kill %[1]s"
 
-#: shared/podman/utils.go:120
+#: shared/podman/utils.go:122
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr "将会针对 ID 为 %[2]s 容器运行 podman remove %[1]s"
 
-#: shared/podman/utils.go:122
+#: shared/podman/utils.go:124
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr "针对 ID 为 %[2]s 的容器运行 podman kill %[1]s"
 
-#: shared/podman/utils.go:125
+#: shared/podman/utils.go:127
 msgid "Failed to kill the server"
 msgstr "无法终止服务器"
 
-#: shared/podman/utils.go:127
+#: shared/podman/utils.go:129
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr "针对 ID 为 %[2]s 的容器运行 podman remove %[1]s"
 
-#: shared/podman/utils.go:130
+#: shared/podman/utils.go:132
 msgid "Error removing container"
 msgstr "去除容器时出错"
 
-#: shared/podman/utils.go:135
+#: shared/podman/utils.go:137
 msgid "Container already removed"
 msgstr "容器已去除"
 
-#: shared/podman/utils.go:143
+#: shared/podman/utils.go:145
 #, javascript-format
 msgid "failed to get %s systemd service definition"
 msgstr "无法获取 %s systemd 服务定义"
 
-#: shared/podman/utils.go:150
+#: shared/podman/utils.go:152
 #, javascript-format
 msgid "no UYUNI_IMAGE defined in %s systemd service"
 msgstr "%s systemd 服务中未定义 UYUNI_IMAGE"
 
-#: shared/podman/utils.go:189
+#: shared/podman/utils.go:191
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "卷 %s 挂载在外部,无法去除该目录"
 
-#: shared/podman/utils.go:213
+#: shared/podman/utils.go:215
 #, javascript-format
 msgid "Failed to export volume %s"
 msgstr "无法导出卷 %s"
 
-#: shared/podman/utils.go:216
+#: shared/podman/utils.go:218
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr "无法将卷 %[1]s 的校验和写入 %[2]s"
 
-#: shared/podman/utils.go:233
+#: shared/podman/utils.go:235
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr "校验和与卷 %s 不匹配"
 
-#: shared/podman/utils.go:237
+#: shared/podman/utils.go:239
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr "无法预先创建空卷 %s"
 
-#: shared/podman/utils.go:241
+#: shared/podman/utils.go:243
 #, javascript-format
 msgid "Failed to import volume %s"
 msgstr "无法导入卷 %s"
 
-#: shared/podman/utils.go:317
+#: shared/podman/utils.go:319
 msgid "failed to login to registry.suse.com"
 msgstr "无法登录 registry.suse.com"
 
-#: shared/podman/utils.go:343 shared/podman/utils.go:364
+#: shared/podman/utils.go:345 shared/podman/utils.go:366
 msgid "cannot inspect data"
 msgstr "无法检查数据"
 
@@ -1400,11 +1400,72 @@ msgstr "关于配置文件和环境变量的帮助"
 msgid "failed to compute config help command"
 msgstr "compute config 帮助命令失败"
 
+#: shared/utils/files.go:21
+#, javascript-format
+msgid "cannot check content of %s"
+msgstr "无法检查 %s 的内容"
+
+#: shared/utils/files.go:33
+#, javascript-format
+msgid "Cannot remove %s folder"
+msgstr "无法去除 %s 文件夹"
+
+#: shared/utils/files.go:44
+#, javascript-format
+msgid "Failed to get %s file informations"
+msgstr "无法获取 %s 文件信息"
+
+#: shared/utils/files.go:53
+#, javascript-format
+msgid "Failed to read file %s"
+msgstr "无法读取文件 %s"
+
+#: shared/utils/files.go:69
+#, javascript-format
+msgid "Would remove file %s"
+msgstr "将去除文件 %s"
+
+#: shared/utils/files.go:71
+#, javascript-format
+msgid "Removing file %s"
+msgstr "正在去除文件 %s"
+
+#: shared/utils/files.go:73
+#, javascript-format
+msgid "Failed to remove file %s"
+msgstr "无法去除文件 %s"
+
+#: shared/utils/files.go:83
+msgid "failed to create temporary directory"
+msgstr "无法创建临时目录"
+
+#: shared/utils/files.go:87
+msgid "failed to remove temporary directory"
+msgstr "无法去除临时目录"
+
+#: shared/utils/files.go:97
+#, fuzzy, javascript-format
+#| msgid "failed to write %s file"
+msgid "fails to open %s file"
+msgstr "无法写入 %s 文件"
+
+#: shared/utils/files.go:109
+#, fuzzy, javascript-format
+#| msgid "failed to create %s file"
+msgid "failed to read %s file"
+msgstr "无法创建 %s 文件"
+
+#: shared/utils/files.go:113
+#, fuzzy, javascript-format
+#| msgid "failed to create %s file"
+msgid "failed to copy %s file"
+msgstr "无法创建 %s 文件"
+
 #: shared/utils/flaggroups.go:56
 msgid "Flags:\n"
 msgstr "标志：\n"
 
-#: shared/utils/flaggroups.go:95
+#: shared/utils/flaggroups.go:108
 msgid "no such flag help group: %v"
 msgstr "不存在以下标志帮助组：%v"
 
@@ -1539,96 +1600,53 @@ msgid "Failed to run %s"
 msgstr "无法运行 %s"
 
 #: shared/utils/utils.go:269
-#, javascript-format
-msgid "cannot check content of %s"
-msgstr "无法检查 %s 的内容"
-
-#: shared/utils/utils.go:281
-#, javascript-format
-msgid "Cannot remove %s folder"
-msgstr "无法去除 %s 文件夹"
-
-#: shared/utils/utils.go:292
-#, javascript-format
-msgid "Failed to get %s file informations"
-msgstr "无法获取 %s 文件信息"
-
-#: shared/utils/utils.go:301
-#, javascript-format
-msgid "Failed to read file %s"
-msgstr "无法读取文件 %s"
-
-#: shared/utils/utils.go:317
-#, javascript-format
-msgid "Would remove file %s"
-msgstr "将去除文件 %s"
-
-#: shared/utils/utils.go:319
-#, javascript-format
-msgid "Removing file %s"
-msgstr "正在去除文件 %s"
-
-#: shared/utils/utils.go:321
-#, javascript-format
-msgid "Failed to remove file %s"
-msgstr "无法去除文件 %s"
-
-#: shared/utils/utils.go:331
-msgid "failed to create temporary directory"
-msgstr "无法创建临时目录"
-
-#: shared/utils/utils.go:335
-msgid "failed to remove temporary directory"
-msgstr "无法去除临时目录"
-
-#: shared/utils/utils.go:345
 msgid "Failed to read random data"
 msgstr "无法读取随机数据"
 
-#: shared/utils/utils.go:366
+#: shared/utils/utils.go:290
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "从 %s 下载时出错"
 
-#: shared/utils/utils.go:372
+#: shared/utils/utils.go:296
 #, javascript-format
 msgid "bad status: %s"
 msgstr "不良状态：%s"
 
-#: shared/utils/utils.go:457
+#: shared/utils/utils.go:381
 msgid "failed to compute server FQDN"
 msgstr "无法计算服务器 FQDN"
 
-#: shared/utils/utils.go:471
+#: shared/utils/utils.go:395
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s 不是有效 FQDN"
 
-#: shared/utils/utils.go:475
+#: shared/utils/utils.go:399
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "无法解析 %s"
 
-#: shared/utils/utils.go:500
+#: shared/utils/utils.go:424
 #, javascript-format
 msgid "error creating file %s"
 msgstr "创建文件 %s 时出错"
 
-#: shared/utils/utils.go:505
+#: shared/utils/utils.go:429
 #, javascript-format
 msgid "error writing file %s"
 msgstr "写入文件 %s 时出错"
 
-#: shared/utils/utils.go:517
+#: shared/utils/utils.go:441
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "无法计算文件 %s 的校验和"
 
-#: shared/utils/utils.go:521
+#: shared/utils/utils.go:445
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "无法将文件 %[1]s 的校验和写入 %[2]s"
 
-#: shared/utils/utils.go:531
+#: shared/utils/utils.go:455
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "%s 的校验和不匹配"
