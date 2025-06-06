@@ -117,25 +117,6 @@ func installForPodman(
 		return err
 	}
 
-	if err := coco.SetupCocoContainer(
-		systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
-		flags.Installation.DB,
-	); err != nil {
-		return err
-	}
-
-	if err := hub.SetupHubXmlrpc(
-		systemd, authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
-	); err != nil {
-		return err
-	}
-
-	if err := saline.SetupSalineContainer(
-		systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image, flags.Installation.TZ,
-	); err != nil {
-		return err
-	}
-
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 	if err := podman.WaitForSystemStart(systemd, cnx, preparedImage, flags.Installation.TZ,
 		flags.Installation.Debug.Java, flags.Mirror, flags.Podman.Args); err != nil {
@@ -154,6 +135,25 @@ func installForPodman(
 	}
 	if err := shared_podman.EnablePodmanSocket(); err != nil {
 		return utils.Error(err, L("cannot enable podman socket"))
+	}
+
+	if err := coco.SetupCocoContainer(
+		systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
+		flags.Installation.DB,
+	); err != nil {
+		return err
+	}
+
+	if err := hub.SetupHubXmlrpc(
+		systemd, authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
+	); err != nil {
+		return err
+	}
+
+	if err := saline.SetupSalineContainer(
+		systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image, flags.Installation.TZ,
+	); err != nil {
+		return err
 	}
 	return nil
 }
