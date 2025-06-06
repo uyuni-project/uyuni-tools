@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-26 13:52+0100\n"
+"POT-Creation-Date: 2025-06-06 09:21+0200\n"
 "PO-Revision-Date: 2025-03-03 10:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
-"uyuni-tools-mgrctl/ca/>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,8 +33,7 @@ msgid ""
 "Example:\n"
 "# mgrctl api get user/getDetails login=test"
 msgstr ""
-"Pren una ruta d'API i paràmetres opcionals i, a continuació, emet una sol·"
-"licitud GET amb aquests.\n"
+"Pren una ruta d'API i paràmetres opcionals i, a continuació, emet una sol·licitud GET amb aquests.\n"
 "\n"
 "Exemple:\n"
 "# mgrctl api get user/getDetails login=test"
@@ -56,20 +54,15 @@ msgid ""
 "JSON example:\n"
 "# mgrctl api post user/create    '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
 msgstr ""
-"Pren una ruta d'API i paràmetres i després emet una sol·licitud POST amb "
-"aquests.\n"
+"Pren una ruta d'API i paràmetres i després emet una sol·licitud POST amb aquests.\n"
 "\n"
-"Els paràmetres poden ser una cadena codificada JSON o un o més parelles de "
-"clau=valor.\n"
+"Els paràmetres poden ser una cadena codificada JSON o un o més parelles de clau=valor.\n"
 "\n"
 "Exemple de parelles de clau=valor:\n"
-"# mgrctl api post user/create login=test password=testXX firstName=F "
-"lastName=L email=test@localhost\n"
+"# mgrctl api post user/create login=test password=testXX firstName=F lastName=L email=test@localhost\n"
 "\n"
 "Exemple JSON:\n"
-"# mgrctl api post user/create    '{\"login\":\"test\", \"password\":"
-"\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":"
-"\"test@localhost\"}'\n"
+"# mgrctl api post user/create    '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
 
 #: mgrctl/cmd/api/api.go:62
 msgid "Store login information for future API usage"
@@ -82,11 +75,9 @@ msgid ""
 "User name, password and remote host can be provided using flags or will be asked interactively.\n"
 "Environment variables are also supported."
 msgstr ""
-"L'inici de sessió desa la informació d'inici de sessió per a les properes "
-"trucades d'API.\n"
+"L'inici de sessió desa la informació d'inici de sessió per a les properes trucades d'API.\n"
 "\n"
-"El nom d'usuari, la contrasenya i l'amfitrió remot es poden proporcionar "
-"mitjançant banderes o es demanarà de manera interactiva.\n"
+"El nom d'usuari, la contrasenya i l'amfitrió remot es poden proporcionar mitjançant banderes o es demanarà de manera interactiva.\n"
 "També s'admeten variables d'entorn."
 
 #: mgrctl/cmd/api/api.go:71
@@ -112,9 +103,7 @@ msgstr "error a la consulta %s"
 
 #: mgrctl/cmd/api/login.go:23
 msgid "Refusing to overwrite existing login. Use --force to ignore this check."
-msgstr ""
-"Es refusa sobreescriure l'inici de sessió existent. Useu --force per ignorar "
-"aquesta comprovació."
+msgstr "Es refusa sobreescriure l'inici de sessió existent. Useu --force per ignorar aquesta comprovació."
 
 #: mgrctl/cmd/api/login.go:35
 msgid "Failed to validate credentials."
@@ -134,9 +123,7 @@ msgstr "Eina de control d'Uyuni"
 
 #: mgrctl/cmd/cmd.go:31
 msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr ""
-"Eina per ajudar a gestionar els servidors d'Uyuni principalment a través de "
-"l'API"
+msgstr "Eina per ajudar a gestionar els servidors d'Uyuni principalment a través de l'API"
 
 #: mgrctl/cmd/cmd.go:38
 msgid "configuration file path"
@@ -166,8 +153,7 @@ msgid ""
 "\tOne of them can be prefixed with 'server:' to indicate the path is within the server pod."
 msgstr ""
 "Pren uns paràmetres d'origen i de destinació.\n"
-"\tUn d'aquests es pot prefixar amb \"server:\" per indicar que el camí és "
-"dins del pod del servidor."
+"\tUn d'aquests es pot prefixar amb \"server:\" per indicar que el camí és dins del pod del servidor."
 
 #: mgrctl/cmd/cp/cp.go:39
 msgid "failed to unmarshall configuration"
@@ -259,8 +245,7 @@ msgid ""
 "Path to an intermediate CA used to sign the proxy certicate in PEM format.\n"
 "May be provided multiple times or separated by commas."
 msgstr ""
-"Camí a una CA intermèdia utilitzada per signar el certificat proxy en format "
-"PEM.\n"
+"Camí a una CA intermèdia utilitzada per signar el certificat proxy en format PEM.\n"
 "Es pot proporcionar diverses vegades o separar per comes."
 
 #: mgrctl/cmd/proxy/config.go:173
@@ -269,14 +254,11 @@ msgstr "Correu electrònic a establir al certificat SSL"
 
 #: mgrctl/cmd/proxy/config.go:175
 msgid "Path to the private key of the CA to use to generate a new proxy certificate."
-msgstr ""
-"Camí a la clau privada de la CA a utilitzar per generar un certificat "
-"intermediari nou."
+msgstr "Camí a la clau privada de la CA a utilitzar per generar un certificat intermediari nou."
 
 #: mgrctl/cmd/proxy/config.go:177
 msgid "Password of the CA private key, will be prompted if not passed."
-msgstr ""
-"Contrasenya de la clau privada de la CA, es preguntarà si no s'ha passat."
+msgstr "Contrasenya de la clau privada de la CA, es preguntarà si no s'ha passat."
 
 #: mgrctl/cmd/proxy/config.go:187
 msgid "Common Flags"
@@ -292,9 +274,7 @@ msgstr "no s'ha pogut connectar al servidor"
 
 #: mgrctl/cmd/proxy/config_do.go:56
 msgid "failed to execute proxy configuration api request"
-msgstr ""
-"no s'ha pogut executar la petició api de configuració del servidor "
-"intermediari"
+msgstr "no s'ha pogut executar la petició api de configuració del servidor intermediari"
 
 #: mgrctl/cmd/proxy/config_do.go:61
 msgid "error saving binary data: %v"
