@@ -208,15 +208,14 @@ func gatherImagesToRestore(source string, flags *shared.Flagpole) ([]string, err
 }
 
 func restoreVolumes(volumes []string, flags *shared.Flagpole, dryRun bool) error {
-	var hasError error
 	for _, volume := range volumes {
 		volName := strings.TrimSuffix(volume, ".tar")
 		_, volName = path.Split(volName)
 		if err := podman.ImportVolume(volName, volume, flags.SkipVerify, dryRun); err != nil {
-			hasError = utils.JoinErrors(hasError, handleVolumeHacks(volName, err))
+			return err
 		}
 	}
-	return hasError
+	return nil
 }
 
 func restoreImages(images []string, dryRun bool) error {

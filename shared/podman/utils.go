@@ -225,7 +225,14 @@ func ExportVolume(name string, outputDir string, dryRun bool) error {
 // If dryRun is set to true, only messages will be logged to exmplain what would happen.
 func ImportVolume(name string, volumePath string, skipVerify bool, dryRun bool) error {
 	createCommand := []string{"podman", "volume", "create", "--ignore", name}
-	importCommand := []string{"podman", "volume", "import", name, volumePath}
+
+	basePath, err := GetPodmanVolumeBasePath()
+	if err != nil {
+		log.Debug().Msg("cannot get base volume path")
+		return err
+	}
+	importCommand := []string{"tar", "xf", volumePath, "-C", path.Join(basePath, name, "_data")}
+
 	if dryRun {
 		log.Info().Msgf(L("Would run %s"), strings.Join(importCommand, " "))
 		return nil
