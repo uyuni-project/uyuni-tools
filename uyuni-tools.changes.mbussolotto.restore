@@ -1,0 +1,1 @@
+- Restore volumes using tar instead of podman import (bsc#1244127)
