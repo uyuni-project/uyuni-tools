@@ -373,7 +373,7 @@ func Inspect(
 		return nil, utils.Errorf(err, L("cannot inspect data"))
 	}
 
-	inspectResult.DBInspectData.ImagePgVersion = dbInspectResult.ImagePgVersion
+	inspectResult.ImagePgVersion = dbInspectResult.ImagePgVersion
 
 	return inspectResult, err
 }

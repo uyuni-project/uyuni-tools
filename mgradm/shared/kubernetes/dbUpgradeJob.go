@@ -54,7 +54,7 @@ func StartDBUpgradeJob(
 		return "", err
 	}
 
-	return job.ObjectMeta.Name, kubernetes.Apply([]runtime.Object{job}, L("failed to run the database upgrade job"))
+	return job.Name, kubernetes.Apply([]runtime.Object{job}, L("failed to run the database upgrade job"))
 }
 
 func getDBUpgradeJob(

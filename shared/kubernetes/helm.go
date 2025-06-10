@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -52,9 +52,10 @@ func HelmUpgrade(kubeconfig string, namespace string, install bool,
 	}
 	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "helm", helmArgs...); err != nil {
 		// TODO We cannot use the command variable in the message as that would break localization
-		if command == "upgrade" {
+		switch command {
+		case "upgrade":
 			return utils.Errorf(err, L("failed to upgrade helm chart %[1]s in namespace %[2]s"), chart, namespace)
-		} else if command == "install" {
+		case "install":
 			return utils.Errorf(err, L("failed to install helm chart %[1]s in namespace %[2]s"), chart, namespace)
 		}
 	}

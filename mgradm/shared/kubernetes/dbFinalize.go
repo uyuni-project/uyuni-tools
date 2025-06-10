@@ -35,7 +35,7 @@ func StartDBFinalizeJob(
 		return "", err
 	}
 
-	return job.ObjectMeta.Name, kubernetes.Apply([]runtime.Object{job}, L("failed to run the database finalization job"))
+	return job.Name, kubernetes.Apply([]runtime.Object{job}, L("failed to run the database finalization job"))
 }
 
 func getDBFinalizeJob(

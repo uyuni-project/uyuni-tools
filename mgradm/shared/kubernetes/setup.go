@@ -41,7 +41,7 @@ func StartSetupJob(
 	if err != nil {
 		return "", err
 	}
-	return job.ObjectMeta.Name, kubernetes.Apply([]*batch.Job{job}, L("failed to run the setup job"))
+	return job.Name, kubernetes.Apply([]*batch.Job{job}, L("failed to run the setup job"))
 }
 
 // GetSetupJob creates the job definition object for the setup.

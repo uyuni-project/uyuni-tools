@@ -43,7 +43,7 @@ func TestParamsParsing(t *testing.T) {
 		flagstests.AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
 		flagstests.AssertSalineFlag(t, &flags.Saline)
 		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
-		flagstests.AssertSCCFlag(t, &flags.ServerFlags.Installation.SCC)
+		flagstests.AssertSCCFlag(t, &flags.Installation.SCC)
 		flagstests.AssertServerKubernetesFlags(t, &flags.Kubernetes)
 		flagstests.AssertDBFlag(t, &flags.Installation.DB)
 		flagstests.AssertReportDBFlag(t, &flags.Installation.ReportDB)

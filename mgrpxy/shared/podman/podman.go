@@ -76,8 +76,8 @@ func GenerateSystemdService(
 			HTTPProxyFile: httpProxyConfig,
 		}
 		additionHttpdTuningSettings := ""
-		if flags.ProxyImageFlags.Tuning.Httpd != "" {
-			absPath, err := filepath.Abs(flags.ProxyImageFlags.Tuning.Httpd)
+		if flags.Tuning.Httpd != "" {
+			absPath, err := filepath.Abs(flags.Tuning.Httpd)
 			if err != nil {
 				return err
 			}
@@ -106,8 +106,8 @@ func GenerateSystemdService(
 			HTTPProxyFile: httpProxyConfig,
 		}
 		additionSquidTuningSettings := ""
-		if flags.ProxyImageFlags.Tuning.Squid != "" {
-			absPath, err := filepath.Abs(flags.ProxyImageFlags.Tuning.Squid)
+		if flags.Tuning.Squid != "" {
+			absPath, err := filepath.Abs(flags.Tuning.Squid)
 			if err != nil {
 				return err
 			}

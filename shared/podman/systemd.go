@@ -85,8 +85,8 @@ func GetServiceConfPath(name string) string {
 
 // GetServicesFromSystemdFiles return the uyuni enabled services as string list.
 func (s SystemdImpl) GetServicesFromSystemdFiles(systemdFileList string) []string {
-	services := strings.Replace(string(systemdFileList), "/etc/systemd/system/", "", -1)
-	services = strings.Replace(services, ".service", "", -1)
+	services := strings.ReplaceAll(string(systemdFileList), "/etc/systemd/system/", "")
+	services = strings.ReplaceAll(services, ".service", "")
 	servicesList := strings.Split(strings.TrimSpace(services), "\n")
 
 	var trimmedServices []string

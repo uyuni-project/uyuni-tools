@@ -29,7 +29,7 @@ func TestParamsParsing(t *testing.T) {
 		testutils.AssertEquals(t, "Error parsing --test", "test123", flags.TestID)
 		testutils.AssertEquals(t, "Error parsing --user", "sccuser", flags.CustomerID)
 		testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.Image.PullPolicy)
-		flagstests.AssertSCCFlag(t, &flags.ServerFlags.Installation.SCC)
+		flagstests.AssertSCCFlag(t, &flags.Installation.SCC)
 		return nil
 	}
 
