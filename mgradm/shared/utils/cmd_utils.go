@@ -258,7 +258,7 @@ func AddSalineFlag(cmd *cobra.Command) {
 	AddContainerImageFlags(cmd, "saline", L("Saline"), "saline-container", "server-saline")
 	cmd.Flags().Int("saline-replicas", 0, L(`How many replicas of the Saline container should be started
 (only 0 or 1 supported for now)`))
-	cmd.Flags().Int("saline-port", 8216, L("Saline port (default: 8216)"))
+	cmd.Flags().Int("saline-port", 8216, L("Saline port"))
 	_ = utils.AddFlagToHelpGroupID(cmd, "saline-replicas", "saline-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "saline-port", "saline-container")
 }
@@ -270,7 +270,7 @@ func AddUpgradeSalineFlag(cmd *cobra.Command) {
 	cmd.Flags().Int("saline-replicas", 0, L(`How many replicas of the Saline container should be started.
 Leave it unset if you want to keep the previous number of replicas.
 (only 0 or 1 supported for now)`))
-	cmd.Flags().Int("saline-port", 8216, L("Saline port (default: 8216)"))
+	cmd.Flags().Int("saline-port", 8216, L("Saline port"))
 	_ = utils.AddFlagToHelpGroupID(cmd, "saline-replicas", "saline-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "saline-port", "saline-container")
 }
