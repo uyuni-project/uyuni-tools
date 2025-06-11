@@ -281,10 +281,10 @@ func (c *Connection) WaitForContainer() error {
 	return errors.New(L("container didn't start within 10s."))
 }
 
-// WaitForHealthcheck waits at most 60s for healtcheck to succeed.
+// WaitForHealthcheck waits at most 120s for healtcheck to succeed.
 func (c *Connection) WaitForHealthcheck() error {
 	// Wait for the system to be up
-	for i := 0; i < 60; i++ {
+	for i := 0; i < 120; i++ {
 		_, err := c.Healthcheck()
 		if err != nil {
 			log.Debug().Err(err)
@@ -293,7 +293,7 @@ func (c *Connection) WaitForHealthcheck() error {
 		}
 		return nil
 	}
-	return errors.New(L("container didn't start within 60s. Check for the service status"))
+	return errors.New(L("container didn't start within 120s. Check for the service status"))
 }
 
 // Copy transfers a file to or from the container.
