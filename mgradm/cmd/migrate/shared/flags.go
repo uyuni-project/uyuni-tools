@@ -13,7 +13,7 @@ import (
 
 // AddMigrateFlags add migration flags to a command.
 func AddMigrateFlags(cmd *cobra.Command) {
-	cmd.Flags().Bool("prepare", false, L("Prepare the mgration - copy the data without stopping the source server."))
+	cmd.Flags().Bool("prepare", false, L("Prepare the migration - copy the data without stopping the source server."))
 
 	cmd.Flags().String("user", "root",
 		L("User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."),
