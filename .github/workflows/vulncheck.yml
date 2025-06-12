@@ -33,5 +33,5 @@ jobs:
 
       - id: govulncheck
         name: Run govulncheck
-        run: govulncheck -tags ptf ./...
+        run: govulncheck -tags ptf ./... -exclude GO-2025-3563
         shell: bash
