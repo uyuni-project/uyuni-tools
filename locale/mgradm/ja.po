@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-06-13 07:59+0000\n"
+"PO-Revision-Date: 2025-06-13 10:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -272,7 +272,7 @@ msgstr "podmanのネットワークはすでに存在しており、強制され
 
 #: mgradm/cmd/backup/restore/podman_utils.go:142
 msgid "Restoring podman network"
-msgstr "podmanのネットワークの復元"
+msgstr "podmanネットワークの復元"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:144
 msgid "Unlable to create podman network"
@@ -319,7 +319,7 @@ msgstr "すでに初期化されたサーバの復元"
 
 #: mgradm/cmd/backup/restore/restore.go:118
 msgid "server is already initialized. Use force to overwrite"
-msgstr "サーバーはすでに初期化されています。強制的に上書きしてください"
+msgstr "サーバはすでに初期化されています。強制的に上書きしてください"
 
 #: mgradm/cmd/backup/restore/restore.go:137
 msgid "No volumes found in the backup"
@@ -376,7 +376,7 @@ msgstr "systemd設定の復元"
 
 #: mgradm/cmd/backup/restore/restore.go:252
 msgid "systemd backup not found in the backup location, generating defaults"
-msgstr "バックアップ場所にsystemdのバックアップが見つからないため、デフォルトが生成されます"
+msgstr "バックアップの場所にsystemdのバックアップが見つかりません。デフォルトが生成されます"
 
 #: mgradm/cmd/backup/restore/restore.go:257
 msgid "Unable to validate systemd backup file"
@@ -457,7 +457,7 @@ msgstr "%s へようこそ"
 
 #: mgradm/cmd/cmd.go:68
 msgid "Use of this software implies acceptance of the End User License Agreement."
-msgstr ""
+msgstr "このソフトウェアを使用すると、エンドユーザライセンス契約に同意したことになります。"
 
 #: mgradm/cmd/cmd.go:69
 #, javascript-format
@@ -2115,7 +2115,7 @@ msgid ""
 "SUSE Customer Center username.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgstr ""
-"SUSEカスタマーセンターのユーザ名。\n"
+"SUSEカスタマーセンターのユーザ名。 \n"
 "これは、製品の同期とregistry.suse.comからのイメージの取得のためにSCC資格情報として使用されます"
 
 #: mgradm/shared/utils/cmd_utils.go:180
@@ -2123,7 +2123,7 @@ msgid ""
 "SUSE Customer Center password.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgstr ""
-"SUSEカスタマーセンターのパスワード。\n"
+"SUSEカスタマーセンターのパスワード。 \n"
 "これは、製品の同期とregistry.suse.comからのイメージの取得のためにSCC資格情報として使用されます"
 
 #: mgradm/shared/utils/cmd_utils.go:183
