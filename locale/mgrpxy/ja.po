@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-05-29 04:59+0000\n"
+"PO-Revision-Date: 2025-06-13 10:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
 "Language: ja\n"
@@ -66,7 +66,7 @@ msgstr "%s へようこそ"
 
 #: mgrpxy/cmd/cmd.go:62
 msgid "Use of this software implies acceptance of the End User License Agreement."
-msgstr ""
+msgstr "このソフトウェアを使用すると、エンドユーザライセンス契約に同意したことになります。"
 
 #: mgrpxy/cmd/cmd.go:63
 #, javascript-format
