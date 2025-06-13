@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-06-13 04:59+0000\n"
+"PO-Revision-Date: 2025-06-13 07:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -68,7 +68,7 @@ msgstr "選択したボリュームの復元をスキップする"
 
 #: mgradm/cmd/backup/backup.go:60
 msgid "Do not restore database volume"
-msgstr "データベースボリュームを復元しない"
+msgstr "データベースボリュームを復元しません"
 
 #: mgradm/cmd/backup/backup.go:61
 msgid "Skip restore of container images"
@@ -84,7 +84,7 @@ msgstr "復元が完了したらサービスを再起動します"
 
 #: mgradm/cmd/backup/backup.go:65
 msgid "Force overwrite of existing items"
-msgstr "既存の項目を強制的に上書きする"
+msgstr "既存の項目を強制的に上書きします"
 
 #: mgradm/cmd/backup/backup.go:66
 msgid "Skip existing items and restore the rest"
@@ -164,7 +164,7 @@ msgstr "Systemdのサービスと設定がバックアップされませんで�
 
 #: mgradm/cmd/backup/create/create.go:187
 msgid "Backing up Systemd services"
-msgstr "Systemdのサービスのバックアップ"
+msgstr "Systemdサービスのバックアップ"
 
 #: mgradm/cmd/backup/create/create.go:204
 msgid "Podman configuration was not backed up"
@@ -414,7 +414,7 @@ msgstr "%s のコンテンツを復元できません"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:96
 msgid "Would generate default systemd services"
-msgstr "デフォルトのsystemdのサービスを生成します"
+msgstr "デフォルトのsystemdサービスを生成します"
 
 #: mgradm/cmd/backup/shared/utils.go:31
 #, javascript-format
@@ -593,7 +593,7 @@ msgstr ""
 "サーバでディストリビューションを登録するには、ディストリビューションを正しいソフトウェアチャンネルにマッピングすることが重要です。\n"
 "\n"
 "ソフトウェアチャンネルは、ディストリビューション名と関連付けずに異なる名前を付けることができます。\n"
-"その場合、カスタムディストリビューション名とソフトウェアチャンネルのマッピングを許可する必要があります。\n"
+"その場合、カスタムディストリビューション名とソフトウェアチャンネルマッピングを許可する必要があります。\n"
 "\n"
 "ソフトウェアチャンネルを設定する1つの方法は、ディストリビューションコピーコマンドに--channelフラグを付けることです。\n"
 "\n"
@@ -608,16 +608,16 @@ msgstr ""
 "        TreeName: <カスタムディストリビューション名>\n"
 "\n"
 "ここで\n"
-"* <ディストリビューション名>はディストリビューションの名前で、デフォルトではメディアの「.treeinfo」ファイルから取得されます。\n"
+"* <ディストリビューション名> はディストリビューションの名前で、デフォルトではメディアの「.treeinfo」ファイルから取得されます。\n"
 "  「.treeinfo」が見つからないか使用できない場合は、コマンドラインオプションが必要であり、使用されます。\n"
 "*<ディストリビューションバージョン>はディストリビューションのバージョンで、デフォルトではメディアの「.treeinfo」ファイルから取得されます。\n"
 "  「.treeinfo」が見つからない場合は、コマンドラインオプションが必要であり、使用されます。\n"
-"*<ディストリビューションアーキテクチャ>はディストリビューションのアーキテクチャで、デフォルトではメディアの「.treeinfo」ファイルから取得されます。\n"
+"*<ディストリビューションアーキテクチャ>はディストリビューションのアーキテクチャで、デフォルトではメディアの 「.treeinfo」ファイルから取得されます。\n"
 "  「.treeinfo」が見つからない場合は、コマンドラインオプションが必要であり、使用されます。\n"
-"* ChannelLabelはUyuniサーバからのチャンネルラベルで、このディストリビューションに使用され、\n"
+"* ChannelLabelはUyuniサーバからのチャンネルラベルで、このディストリビューションに使用され、;\n"
 "  コマンドラインフラグで上書きできません。\n"
-"* InstallTypeは、インストーラが既知の場合(autoyastやキックスタートの場合)、または「generic_rpm」を使用する場合に使用します。\n"
-"* TreeNameは、UyuniサーバのUIでディストリビューションの表示方法を指定します。設定されていない場合は<ディストリビューション名>が使用されます。\n"
+"* InstallType は、インストーラが既知の場合 (autoyastやキックスタートの場合)、または「generic_rpm」を使用する場合に使用します。\n"
+"* TreeName は、UyuniサーバのUIでディストリビューションの表示方法を指定します。設定されていない場合は <ディストリビューション名> が使用されます。\n"
 "\n"
 "ビルトイン製品マップ:\n"
 "\n"
@@ -1309,9 +1309,9 @@ msgid "path where to extract the data"
 msgstr "データを抽出するパス"
 
 #: mgradm/cmd/support/config/extractor.go:25
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to remove %s temporary file"
-msgstr "証明書ファイル %s の読み込みに失敗しました"
+msgstr "一時ファイル %s の削除に失敗しました"
 
 #: mgradm/cmd/support/ptf/podman/podman.go:29
 msgid "Install a PTF or Test package on podman"
@@ -1804,7 +1804,7 @@ msgstr "ボリューム %s を検査できません"
 #: mgradm/shared/podman/podman.go:169
 #, javascript-format
 msgid "cannot restore %s SELinux permissions"
-msgstr "%s のSELinuxパーミッションを復元できません"
+msgstr "%s SELinuxパーミッションを復元できません"
 
 #: mgradm/shared/podman/podman.go:177
 msgid "cannot read extracted data"
@@ -2180,7 +2180,7 @@ msgid ""
 "Leave it unset if you want to keep the previous number of replicas."
 msgstr ""
 "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要があるか。\n"
-"以前のレプリカ数を維持する場合は、未設定のままにしておきます。"
+"以前のレプリカ数を維持する場合ｇは、未設定のままにしておきます。"
 
 #: mgradm/shared/utils/cmd_utils.go:237 mgradm/shared/utils/cmd_utils.go:238
 #: mgradm/shared/utils/cmd_utils.go:247 mgradm/shared/utils/cmd_utils.go:248
