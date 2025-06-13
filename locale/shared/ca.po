@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-06-06 13:59+0000\n"
+"PO-Revision-Date: 2025-06-13 13:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -1070,22 +1070,22 @@ msgstr "No s'ha pogut exportar el volum %s"
 
 #: shared/podman/utils.go:218
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
-msgstr "No s'ha pogut escriure la suma de comprovació del volum %[1]s a %[2]s"
+msgstr "No s'ha pogut escriure la suma de verificació del volum %[1]s a %[2]s"
 
 #: shared/podman/utils.go:235
 #, javascript-format
 msgid "Checksum does not match for volume %s"
-msgstr "La suma de comprovació no coincideix per al volum %s"
+msgstr "La suma de verificació no coincideix per al volum %s"
 
 #: shared/podman/utils.go:239
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
-msgstr "No s'ha pogut crear prèviament el volum buit %s"
+msgstr "No s'ha pogut precrear el volum buit %s"
 
 #: shared/podman/utils.go:243
 #, javascript-format
 msgid "Failed to import volume %s"
-msgstr "No s'ha pogut importar el fitxer %s"
+msgstr "No s'ha pogut importar el volum %s"
 
 #: shared/podman/utils.go:319
 msgid "failed to login to registry.suse.com"
@@ -1640,16 +1640,16 @@ msgstr "s'ha produït un error en escriure el fitxer %s"
 #: shared/utils/utils.go:441
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
-msgstr "No s'ha pogut calcular la suma de comprovació del fitxer %s"
+msgstr "No s'ha pogut calcular la suma de verificació del fitxer %s"
 
 #: shared/utils/utils.go:445
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
-msgstr "No s'ha pogut escriure la suma de comprovació del fitxer %[1]s al %[2]s"
+msgstr "No s'ha pogut escriure la suma de verificació del fitxer %[1]s a %[2]s"
 
 #: shared/utils/utils.go:455
 #, javascript-format
 msgid "Checksum of %s does not match"
-msgstr "La suma de comprovació de %s no coincideix"
+msgstr "La suma de verificació de %s no coincideix"
 
 #: shared/utils/uyuniservices.go:18
 msgid "Main service"
@@ -1661,15 +1661,15 @@ msgstr "Assistent de migració"
 
 #: shared/utils/uyuniservices.go:30
 msgid "Confidential computing attestation"
-msgstr "Certificació computacional confidencial"
+msgstr "Certificació d'informàtica confidencial"
 
 #: shared/utils/uyuniservices.go:36
 msgid "Hub XML-RPC API"
-msgstr "Concentrador XML-RPC API"
+msgstr "API del concentrador XML-RPC"
 
 #: shared/utils/uyuniservices.go:42
 msgid "Saline"
-msgstr "Salina"
+msgstr "Saline"
 
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
