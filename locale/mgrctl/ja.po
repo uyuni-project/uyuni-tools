@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-05-29 04:59+0000\n"
+"PO-Revision-Date: 2025-06-14 03:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ja/>\n"
 "Language: ja\n"
@@ -77,7 +77,7 @@ msgid ""
 msgstr ""
 "ログインすると、次のAPI呼び出しのためのログイン情報が保存されます。\n"
 "\n"
-"ユーザ名、パスワード、リモート ホストは、フラグを使用して指定することも、対話形式で尋ねることもできます。\n"
+"ユーザ名、パスワード、リモートホストは、フラグを使用して指定することも、対話形式で尋ねることもできます。 \n"
 "環境変数もサポートされています。"
 
 #: mgrctl/cmd/api/api.go:71
@@ -115,7 +115,7 @@ msgstr "ログイン資格情報が確認されました。"
 
 #: mgrctl/cmd/api/login.go:51
 msgid "Successfully logged out"
-msgstr "正常にログアウトしました"
+msgstr "常にログアウトしました"
 
 #: mgrctl/cmd/cmd.go:30
 msgid "Uyuni control tool"
