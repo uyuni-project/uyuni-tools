@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-06-14 08:59+0000\n"
+"PO-Revision-Date: 2025-06-14 14:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
@@ -1074,7 +1074,7 @@ msgstr "ボリューム %s のエクスポートに失敗しました"
 
 #: shared/podman/utils.go:218
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
-msgstr "ボリューム %[1]s のチェックサム %[2]s に書き込めませんでした"
+msgstr "ボリューム %[1]s のチェックサムを %[2]s に書き込めませんでした"
 
 #: shared/podman/utils.go:235
 #, javascript-format
