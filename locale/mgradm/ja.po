@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-06-14 14:59+0000\n"
+"PO-Revision-Date: 2025-06-15 05:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -475,7 +475,7 @@ msgstr "アプリケーションログレベル"
 #: mgradm/cmd/distro/cp.go:31
 #, javascript-format
 msgid "Unable to unmount ISO image, leaving %s intact"
-msgstr "ISOイメージをアンマウントできません。%s はそのまま残ります。"
+msgstr "ISOイメージをアンマウントできません。%s はそのまま残ります"
 
 #: mgradm/cmd/distro/cp.go:47
 msgid "unable to login and register the distribution. Manual distro registration is required"
@@ -1856,7 +1856,7 @@ msgstr "PostgreSQLバージョンを変更せずにアップグレードして�
 
 #: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:798
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
-msgstr "PostgreSQLを  %[1]s  から  %[2]s にダウングレードしようとしています"
+msgstr "PostgreSQLを %[1]s から %[2]s にダウングレードしようとしています"
 
 #: mgradm/shared/podman/podman.go:395 mgradm/shared/podman/podman.go:569
 msgid "cannot run PostgreSQL finalize script"
