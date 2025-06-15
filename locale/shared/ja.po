@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-06-14 14:59+0000\n"
+"PO-Revision-Date: 2025-06-15 05:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
@@ -58,7 +58,7 @@ msgstr "キャッシュされたセッションの有効期限が切れていま
 
 #: shared/api/api.go:154 shared/api/credentials.go:70
 msgid "Failed to remove stored credentials!"
-msgstr "保存されている資格情報の削除に失敗しました!"
+msgstr "保存されている資格情報の削除に失敗しました。"
 
 #: shared/api/api.go:172
 msgid "Unable to create login data"
@@ -284,7 +284,7 @@ msgstr "PVCのファイルへの書き込みに失敗しました"
 
 #: shared/kubernetes/helm.go:56
 msgid "failed to upgrade helm chart %[1]s in namespace %[2]s"
-msgstr "helmチャート  %[1]s (ネームスペース %[2]s 内)のアップグレードに失敗しました"
+msgstr "helmチャート %[1]s (ネームスペース %[2]s 内)のアップグレードに失敗しました"
 
 #: shared/kubernetes/helm.go:58
 msgid "failed to install helm chart %[1]s in namespace %[2]s"
@@ -381,7 +381,7 @@ msgstr "kubectl get configMap %[1]s %[2]s に失敗しました"
 
 #: shared/kubernetes/kubernetes.go:148
 msgid "failed to run kubectl get secret %[1]s %[2]s"
-msgstr "kubectl get secret  %[1]s %[2]s の実行に失敗しました"
+msgstr "kubectl get secret %[1]s %[2]s の実行に失敗しました"
 
 #: shared/kubernetes/kubernetes.go:152
 #, javascript-format
