@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-06-13 10:59+0000\n"
+"PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ko/>\n"
 "Language: ko\n"
@@ -27,14 +27,13 @@ msgid "Call API GET request"
 msgstr "API GET 요청 호출"
 
 #: mgrctl/cmd/api/api.go:32
-#, fuzzy
 msgid ""
 "Takes an API path and optional parameters and then issues GET request with them.\n"
 "\n"
 "Example:\n"
 "# mgrctl api get user/getDetails login=test"
 msgstr ""
-"API 경로와 선택 사항 파라미터를 가져온 다음, 이를 사용하여 GET 요청을 발급합니다.\n"
+"API 경로와 선택 사항 파라미터를 가져온 다음, 이를 사용하여 GET 요청을 발행합니다.\n"
 "\n"
 "예:\n"
 "# mgrctl api get user/getDetails login=test"
@@ -66,38 +65,30 @@ msgstr ""
 "# mgrctl api post user/create    '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
 
 #: mgrctl/cmd/api/api.go:62
-#, fuzzy
 msgid "Store login information for future API usage"
 msgstr "향후에 API를 사용하기 위해 로그인 정보 저장"
 
 #: mgrctl/cmd/api/api.go:63
-#, fuzzy
 msgid ""
 "Login stores login information for next API calls.\n"
 "\n"
 "User name, password and remote host can be provided using flags or will be asked interactively.\n"
 "Environment variables are also supported."
 msgstr ""
-"다음번 API 호출을 위해 로그인에서 로그인 정보를 저장합니다.\n"
+"로그인은 이후 API 호출에 사용할 로그인 정보를 저장합니다.\n"
 "\n"
-"\n"
-"\n"
-"사용자 이름, 비밀번호 및 원격 호스트는 플래그를 사용하여 제공하거나 대화형으로 요청할 수 있습니다.\n"
-"\n"
+"사용자 이름, 암호 및 원격 호스트는 플래그를 통해 입력하거나 대화형으로 입력할 수 있습니다.\n"
 "환경 변수도 지원됩니다."
 
 #: mgrctl/cmd/api/api.go:71
-#, fuzzy
 msgid "Overwrite existing login if exists"
-msgstr "있는 경우 기존 로그인 덮어쓰기"
+msgstr "기존 로그인 정보가 존재할 경우 해당 정보 덮어쓰기"
 
 #: mgrctl/cmd/api/api.go:75
-#, fuzzy
 msgid "Remove stored login information"
 msgstr "저장된 로그인 정보 제거"
 
 #: mgrctl/cmd/api/api.go:76
-#, fuzzy
 msgid "Logout removes stored login information."
 msgstr "로그아웃하면 저장된 로그인 정보가 제거됩니다."
 
@@ -106,27 +97,23 @@ msgid "unable to login to the server"
 msgstr "서버에 로그인할 수 없음"
 
 #: mgrctl/cmd/api/get.go:35 mgrctl/cmd/api/post.go:51
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error in query '%s'"
 msgstr "'%s' 쿼리의 오류"
 
 #: mgrctl/cmd/api/login.go:23
-#, fuzzy
 msgid "Refusing to overwrite existing login. Use --force to ignore this check."
 msgstr "기존 로그인 덮어쓰기를 거부합니다. 이 검사를 무시하려면 --force를 사용하십시오."
 
 #: mgrctl/cmd/api/login.go:35
-#, fuzzy
 msgid "Failed to validate credentials."
-msgstr "자격 증명의 유효성을 검사하지 못했습니다."
+msgstr "자격 증명의 유효성을 검증하지 못했습니다."
 
 #: mgrctl/cmd/api/login.go:41
-#, fuzzy
 msgid "Login credentials verified."
 msgstr "로그인 자격 증명이 확인되었습니다."
 
 #: mgrctl/cmd/api/login.go:51
-#, fuzzy
 msgid "Successfully logged out"
 msgstr "로그아웃됨"
 
