@@ -108,7 +108,7 @@ func GenerateSystemdService(
 Environment="PODMAN_EXTRA_ARGS=%s"
 `, strings.TrimSpace(tz), strings.Join(podmanArgs, " "))
 
-	if err := podman.GenerateSystemdConfFile("uyuni-server", "custom.conf", config, false); err != nil {
+	if err := podman.GenerateSystemdConfFile("uyuni-server", podman.CustomConf, config, false); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd user configuration file"))
 	}
 	return systemd.ReloadDaemon(false)
@@ -413,7 +413,7 @@ func Upgrade(
 		return err
 	}
 
-	if err := updateServerSystemdService(); err != nil {
+	if err := UpdateServerSystemdService(); err != nil {
 		return err
 	}
 	log.Info().Msg(L("Waiting for the server to start…"))
@@ -633,7 +633,8 @@ func getMirrorPath(definition []byte) string {
 	return mirrorPath
 }
 
-func updateServerSystemdService() error {
+// UpdateServerSystemdService refreshes the server systemd service file.
+func UpdateServerSystemdService() error {
 	out, err := runCmdOutput(zerolog.DebugLevel, "systemctl", "cat", podman.ServerService)
 	if err != nil {
 		return utils.Errorf(err, "failed to get %s systemd service definition", podman.ServerService)
