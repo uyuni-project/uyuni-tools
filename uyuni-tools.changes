@@ -1,4 +1,33 @@
 -------------------------------------------------------------------
+Tue Jun 17 16:40:04 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.12-0
+  * Add the info message about End User License Agreement
+  * Remove duplicate parameters in mgradm install podman --help
+  * Change the first message of each tool to include the full
+    command and parameters
+  * support: don't dump files in bound folders (bsc#1243297)
+  * Extract the version number from /etc/susemanager-release only
+    if that config file exists
+  * During migration, improve info about usage on ssl-password and
+    logs (bsc#1243009)
+  * Start saline containers and the other after server is running
+  * Fix computed migration image name (bsc#1243725)
+  * During upgrade, pgsql service needs to be started before
+    healtcheck (bsc#1243402)
+  * During migration, check if the source server is a no-containerized
+    server (bsc#1243396)
+  * During migration, check if backup is already existing (bsc#1243105)
+  * Restore volumes using tar instead of podman import (bsc#1244127)
+  * Fix several bugs related to saline service (bsc#1243329)
+  * Purge saline and hubxmlrpc image (bsc#1243359)
+  * Remove SHM size limits from all containers (bsc#1243274)
+  * Fix log: pgsql version is a number
+  * During upgrade, wait server is up and running (bsc#1244023)
+  * Fix migration of autoinstallable distributions (bsc#1243802)
+  * Check for valid CA before attempting DB upgrade
+
+-------------------------------------------------------------------
 Tue May 13 14:58:11 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.11-0
