@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-06-16 07:59+0000\n"
+"PO-Revision-Date: 2025-06-17 08:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
 "Language: ko\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.12.1\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -1124,7 +1124,7 @@ msgstr "SSL 인증서 플래그"
 
 #: shared/ssl/ssl.go:68
 msgid "Failed to find a non-CA certificate"
-msgstr "비 CA 인증서를 찾지 못함"
+msgstr "비 CA 인증서를 찾지 못했습니다."
 
 #: shared/ssl/ssl.go:108
 msgid "expected to find a certificate, got none"
@@ -1133,11 +1133,11 @@ msgstr "인증서가 있을 것으로 예상했지만, 아무것도 찾지 못�
 #: shared/ssl/ssl.go:114
 #, javascript-format
 msgid "Failed to read certificate file %s"
-msgstr "%s 인증서 파일 읽기 실패"
+msgstr "인증서 파일 %s을(를) 읽지 못했습니다."
 
 #: shared/ssl/ssl.go:153
 msgid "Failed to extract data from certificate"
-msgstr "인증서에서 데이터 추출 실패"
+msgstr "인증서에서 데이터를 추출하지 못했습니다."
 
 #: shared/ssl/ssl.go:174
 #, javascript-format
@@ -1155,7 +1155,7 @@ msgstr "CA 없음"
 
 #: shared/ssl/ssl.go:235
 msgid "No CA found for server certificate"
-msgstr "서버 인증서에 대한 CA를 찾을 수 없음"
+msgstr "서버 인증서에 대한 CA를 찾을 수 없습니다."
 
 #: shared/ssl/ssl.go:244
 #, javascript-format
@@ -1189,7 +1189,7 @@ msgstr "입력 스트림에 openssl 키 내용 쓰기 실패"
 
 #: shared/ssl/ssl.go:313
 msgid "Failed to convert CA private key to RSA"
-msgstr "CA 개인 키를 RSA로 변환할 수 없음"
+msgstr "CA 개인 키를 RSA로 변환하지 못했습니다."
 
 #: shared/ssl/ssl.go:323
 msgid "Failed to open openssl x509 process input stream"
