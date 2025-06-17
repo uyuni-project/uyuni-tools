@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-05-30 06:59+0000\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
+"PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ko/>\n"
 "Language: ko\n"
@@ -33,7 +33,7 @@ msgid ""
 "Example:\n"
 "# mgrctl api get user/getDetails login=test"
 msgstr ""
-"API 경로와 선택 사항 파라미터를 가져온 다음 이를 사용하여 GET 요청을 발급합니다.\n"
+"API 경로와 선택 사항 파라미터를 가져온 다음, 이를 사용하여 GET 요청을 발행합니다.\n"
 "\n"
 "예:\n"
 "# mgrctl api get user/getDetails login=test"
@@ -66,7 +66,7 @@ msgstr ""
 
 #: mgrctl/cmd/api/api.go:62
 msgid "Store login information for future API usage"
-msgstr "향후 API 사용을 위해 로그인 정보 저장"
+msgstr "향후에 API를 사용하기 위해 로그인 정보 저장"
 
 #: mgrctl/cmd/api/api.go:63
 msgid ""
@@ -75,14 +75,14 @@ msgid ""
 "User name, password and remote host can be provided using flags or will be asked interactively.\n"
 "Environment variables are also supported."
 msgstr ""
-"로그인은 다음 API 호출을 위해 로그인 정보를 저장합니다.\n"
+"로그인은 이후 API 호출에 사용할 로그인 정보를 저장합니다.\n"
 "\n"
-"사용자 이름, 암호, 원격 호스트는 플래그를 사용하여 제공하거나 대화형으로 요청할 수 있습니다.\n"
+"사용자 이름, 암호 및 원격 호스트는 플래그를 통해 입력하거나 대화형으로 입력할 수 있습니다.\n"
 "환경 변수도 지원됩니다."
 
 #: mgrctl/cmd/api/api.go:71
 msgid "Overwrite existing login if exists"
-msgstr "있는 경우, 기존 로그인 덮어쓰기"
+msgstr "기존 로그인 정보가 존재할 경우 해당 정보 덮어쓰기"
 
 #: mgrctl/cmd/api/api.go:75
 msgid "Remove stored login information"
@@ -99,7 +99,7 @@ msgstr "서버에 로그인할 수 없음"
 #: mgrctl/cmd/api/get.go:35 mgrctl/cmd/api/post.go:51
 #, javascript-format
 msgid "error in query '%s'"
-msgstr "%s 쿼리의 오류"
+msgstr "'%s' 쿼리의 오류"
 
 #: mgrctl/cmd/api/login.go:23
 msgid "Refusing to overwrite existing login. Use --force to ignore this check."
@@ -107,7 +107,7 @@ msgstr "기존 로그인 덮어쓰기를 거부합니다. 이 검사를 무시�
 
 #: mgrctl/cmd/api/login.go:35
 msgid "Failed to validate credentials."
-msgstr "자격 증명의 유효성을 검사하지 못했습니다."
+msgstr "자격 증명의 유효성을 검증하지 못했습니다."
 
 #: mgrctl/cmd/api/login.go:41
 msgid "Login credentials verified."
@@ -117,31 +117,26 @@ msgstr "로그인 자격 증명이 확인되었습니다."
 msgid "Successfully logged out"
 msgstr "로그아웃됨"
 
-#: mgrctl/cmd/cmd.go:30
+#: mgrctl/cmd/cmd.go:31
 msgid "Uyuni control tool"
 msgstr "Uyuni 제어 도구"
 
-#: mgrctl/cmd/cmd.go:31
+#: mgrctl/cmd/cmd.go:32
 msgid "Tool to help managing Uyuni servers mainly through their API"
 msgstr "주로 API를 통해 Uyuni 서버를 관리하는 데 유용한 도구"
 
-#: mgrctl/cmd/cmd.go:38
+#: mgrctl/cmd/cmd.go:39
 msgid "configuration file path"
 msgstr "구성 파일 경로"
 
-#: mgrctl/cmd/cmd.go:40
+#: mgrctl/cmd/cmd.go:41
 msgid "application log level"
 msgstr "애플리케이션 로그 수준"
 
-#: mgrctl/cmd/cmd.go:48
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "%s 시작"
-
 #: mgrctl/cmd/cmd.go:49
 #, javascript-format
-msgid "Executing command: %s"
-msgstr "실행 중 명령: %s"
+msgid "Starting %s"
+msgstr ""
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
@@ -304,6 +299,14 @@ msgstr "프록시 구성 생성"
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "서버 컨테이너 내에서 터미널 실행"
+
+#, javascript-format
+#~ msgid "Welcome to %s"
+#~ msgstr "%s 시작"
+
+#, javascript-format
+#~ msgid "Executing command: %s"
+#~ msgstr "실행 중 명령: %s"
 
 #~ msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
 #~ msgstr "API 경로와 파라미터를 받은 가져온 이를 사용하여 POST 요청을 발급합니다. 사용자 및 비밀번호는 필수입니다. 파라미터는 JSON 인코딩된 문자열 또는 하나 이상의 키=값 쌍일 수 있습니다."

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-05-30 06:59+0000\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
+"PO-Revision-Date: 2025-06-17 08:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
 "Language: ko\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.12.1\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -78,11 +78,11 @@ msgstr "데이터를 JSON으로 변환할 수 없습니다."
 
 #: shared/api/credentials.go:21
 msgid "not logged in, session cookie is missing"
-msgstr "로그인되지 않음, 세션 쿠키 누락됨"
+msgstr "로그인되지 않음, 세션 쿠키가 누락됨"
 
 #: shared/api/credentials.go:34
 msgid "unable to create credentials json"
-msgstr "자격 증명 json을 생성할 수 없음"
+msgstr "자격 증명 json을 만들 수 없음"
 
 #: shared/api/credentials.go:39
 #, javascript-format
@@ -103,7 +103,7 @@ msgstr "API 서버 비밀번호"
 
 #: shared/api/credentials.go:58
 msgid "No credentials provided"
-msgstr "자격 증명이 제공되지 않음"
+msgstr "자격 증명 제공되지 않음"
 
 #: shared/api/credentials.go:68
 msgid "Cannot load stored credentials"
@@ -112,7 +112,7 @@ msgstr "저장된 자격 증명을 로드할 수 없음"
 #: shared/api/credentials.go:83
 #, javascript-format
 msgid "unable to read credentials file %s"
-msgstr "%s 자격 증명 파일을 읽을 수 없음"
+msgstr "자격 증명 파일 %s을(를) 읽을 수 없음"
 
 #: shared/api/credentials.go:88
 msgid "unable to decode credentials file"
@@ -124,7 +124,7 @@ msgstr "자격 증명이 로드되지 않음"
 
 #: shared/api/credentials.go:101
 msgid "specified api server does not match with stored credentials"
-msgstr "지정한 API 서버가 저장된 자격 증명과 일치하지 않음"
+msgstr "지정된 API 서버가 저장된 자격 증명과 일치하지 않음"
 
 #: shared/api/org/createFirst.go:22
 msgid "unable to prepare API client"
@@ -209,61 +209,59 @@ msgstr "상태 확인이 실행되지 않음"
 msgid "container didn't start within 10s."
 msgstr "컨테이너가 10초 이내에 시작되지 않았습니다."
 
-#: shared/connection.go:318
-msgid "server didn't start within 120s. Check for the service status"
-msgstr "서버가 120초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
-
-#: shared/connection.go:333
-msgid "container didn't start within 60s. Check for the service status"
+#: shared/connection.go:296
+#, fuzzy
+#| msgid "container didn't start within 60s. Check for the service status"
+msgid "container didn't start within 120s. Check for the service status"
 msgstr "컨테이너가 60초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
 
-#: shared/connection.go:373 shared/connection.go:420
+#: shared/connection.go:336 shared/connection.go:383
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr "알 수 없는 컨테이너 종류: %s"
 
-#: shared/connection.go:415
+#: shared/connection.go:378
 msgid "failed to detect the namespace"
 msgstr "네임스페이스를 발견하지 못함"
 
-#: shared/connection.go:431
+#: shared/connection.go:394
 msgid "Copying the SSL CA certificate to the host"
 msgstr "SSL CA 인증서를 호스트에 복사"
 
-#: shared/connection.go:450
+#: shared/connection.go:413
 msgid "Updating host trusted certificates"
 msgstr "호스트 신뢰할 수 있는 인증서 업데이트"
 
-#: shared/connection.go:458
+#: shared/connection.go:421
 msgid "Unable to update host trusted certificates."
 msgstr "호스트 신뢰할 수 있는 인증서를 업데이트할 수 없음"
 
-#: shared/connection.go:499 shared/connection.go:520
+#: shared/connection.go:462 shared/connection.go:483
 msgid "failed to determine suitable backend"
 msgstr "적합한 백엔드를 확인하지 못했습니다."
 
-#: shared/connection.go:509
+#: shared/connection.go:472
 msgid "no supported backend found"
 msgstr "지원되는 백엔드를 찾을 수 없습니다."
 
-#: shared/connection.go:534
+#: shared/connection.go:497
 #, javascript-format
 msgid "Running supportconfig in  %s"
 msgstr "%s에서 supportconfig 실행 중"
 
-#: shared/connection.go:542
+#: shared/connection.go:505
 msgid "failed to run supportconfig"
 msgstr "supportconfig 실행 실패"
 
-#: shared/connection.go:546
+#: shared/connection.go:509
 msgid "failed to find container supportconfig tarball from command output"
 msgstr "명령 출력에서 컨테이너 supportconfig tarball을 찾지 못함"
 
-#: shared/connection.go:552
+#: shared/connection.go:515
 msgid "cannot copy tarball"
 msgstr "tarball을 복사할 수 없음"
 
-#: shared/connection.go:558
+#: shared/connection.go:521
 #, javascript-format
 msgid "failed to remove %s file in the container"
 msgstr "컨테이너에서 %s 제거 실패"
@@ -299,7 +297,7 @@ msgstr "네임스페이스는 필수입니다."
 #: shared/podman/network.go:108 shared/podman/secret.go:123
 #: shared/podman/systemd.go:110 shared/podman/systemd.go:189
 #: shared/podman/systemd.go:190 shared/podman/utils.go:177
-#: shared/podman/utils.go:210 shared/podman/utils.go:230
+#: shared/podman/utils.go:210 shared/podman/utils.go:237
 #, javascript-format
 msgid "Would run %s"
 msgstr "%s 실행"
@@ -395,7 +393,7 @@ msgstr "%s Docker 비밀을 생성하지 못함"
 
 #: shared/kubernetes/kubernetes.go:229
 msgid "failed to get deployment image pull secret"
-msgstr "배포 이미지 추출 비밀을 가져오지 못함"
+msgstr "배포 이미지 끌어오기 시크릿을 가져오지 못함"
 
 #: shared/kubernetes/pod.go:79 shared/kubernetes/pod.go:82
 #, javascript-format
@@ -634,7 +632,7 @@ msgstr "%s 이미지를 사용할 수 있는지 확인"
 
 #: shared/podman/images.go:46
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
-msgstr "끌어오기 정책이 항상입니다. RPM 이미지가 있는지 확인하여 이미지가 없는 경우 레지스트리에서 끌어옵니다."
+msgstr "끌어오기 정책이 항상으로 지정되어 있습니다. RPM 이미지가 있는지 확인하여 이미지가 없는 경우 레지스트리에서 끌어옵니다."
 
 #: shared/podman/images.go:56
 #, javascript-format
@@ -734,7 +732,7 @@ msgstr "%s 컨테이너에 대한 실행 이미지를 찾을 수 없음"
 #: shared/podman/images.go:347 shared/podman/images.go:367
 #: shared/podman/images.go:387 shared/podman/secret.go:125
 #: shared/podman/utils.go:179 shared/podman/utils.go:213
-#: shared/podman/utils.go:241
+#: shared/podman/utils.go:248
 #, javascript-format
 msgid "Run %s"
 msgstr "%s 실행"
@@ -818,17 +816,17 @@ msgstr "%s 시크릿을 생성하지 못함"
 #: shared/podman/secret.go:89
 #, javascript-format
 msgid "failed to write %s secret to file"
-msgstr "%s 비밀을 파일에 쓰기 실패"
+msgstr "%s 시크릿을 파일에 쓰지 못함"
 
 #: shared/podman/secret.go:103
 #, javascript-format
 msgid "failed to create podman secret %s"
-msgstr "podman 비밀 %s 생성 실패"
+msgstr "podman 시크릿 %s 만들기 실패"
 
 #: shared/podman/secret.go:128
 #, javascript-format
 msgid "Failed to delete %s secret"
-msgstr "%s 비밀 삭제 실패"
+msgstr "%s 시크릿 삭제 실패"
 
 #: shared/podman/support.go:26
 msgid "No logs file on host to add to the archive"
@@ -871,7 +869,7 @@ msgstr "systemctl cat uyuni-* 실행 실패"
 
 #: shared/podman/support.go:111
 msgid "failed to close inspect dump file"
-msgstr "검사 덤프 파일 닫기 실패"
+msgstr "덤프 파일 검사 닫기 실패"
 
 #: shared/podman/support.go:134
 msgid "failed to close bound files"
@@ -1050,12 +1048,12 @@ msgstr "컨테이너 이미 제거됨"
 #: shared/podman/utils.go:145
 #, javascript-format
 msgid "failed to get %s systemd service definition"
-msgstr "%s systemd service 정의를 가져오지 못함"
+msgstr "%s systemd 서비스 정의를 가져오지 못함"
 
 #: shared/podman/utils.go:152
 #, javascript-format
 msgid "no UYUNI_IMAGE defined in %s systemd service"
-msgstr "%s systemd service에 정의된 UYUNI_IMAGE 없음"
+msgstr "%s systemd 서비스에 정의된 UYUNI_IMAGE 없음"
 
 #: shared/podman/utils.go:191
 #, javascript-format
@@ -1069,28 +1067,28 @@ msgstr "%s 볼륨 내보내기 실패"
 
 #: shared/podman/utils.go:218
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
-msgstr "볼륨 %[1]s의 체크섬을 %[2]s에 쓰기 실패"
+msgstr "볼륨 %[1]의 체크섬을 %[2]에 쓰지 못함"
 
-#: shared/podman/utils.go:235
+#: shared/podman/utils.go:242
 #, javascript-format
 msgid "Checksum does not match for volume %s"
-msgstr "%s 볼륨에 대한 체크섬이 일치하지 않음"
+msgstr "볼륨 %s에 대한 체크섬이 일치하지 않음"
 
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:246
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
-msgstr "빈 볼륨 %s을(를) 미리 생성하지 못함"
+msgstr "비어 있는 볼륨 %s 미리 만들기 실패"
 
-#: shared/podman/utils.go:243
+#: shared/podman/utils.go:250
 #, javascript-format
 msgid "Failed to import volume %s"
 msgstr "%s 볼륨 가져오기 실패"
 
-#: shared/podman/utils.go:319
+#: shared/podman/utils.go:326
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.com에 로그인하지 못했습니다."
 
-#: shared/podman/utils.go:345 shared/podman/utils.go:366
+#: shared/podman/utils.go:352 shared/podman/utils.go:373
 msgid "cannot inspect data"
 msgstr "데이터를 검사할 수 없음"
 
@@ -1122,9 +1120,35 @@ msgstr "SSL 인증서 조직 단위"
 msgid "SSL Certificate Flags"
 msgstr "SSL 인증서 플래그"
 
+#: shared/ssl/flags.go:33
+msgid "Intermediate CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:35
+msgid "Root CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:36
+#, fuzzy
+#| msgid "SSL certificate state"
+msgid "Database certificate path"
+msgstr "SSL 인증서 시/도"
+
+#: shared/ssl/flags.go:37
+#, fuzzy
+#| msgid "Database"
+msgid "Database key path"
+msgstr "데이터베이스"
+
+#: shared/ssl/flags.go:39
+#, fuzzy
+#| msgid "SSL Certificate Flags"
+msgid "3rd Party SSL Certificate Flags"
+msgstr "SSL 인증서 플래그"
+
 #: shared/ssl/ssl.go:68
 msgid "Failed to find a non-CA certificate"
-msgstr "비 CA 인증서를 찾지 못함"
+msgstr "비 CA 인증서를 찾지 못했습니다."
 
 #: shared/ssl/ssl.go:108
 msgid "expected to find a certificate, got none"
@@ -1133,11 +1157,11 @@ msgstr "인증서가 있을 것으로 예상했지만, 아무것도 찾지 못�
 #: shared/ssl/ssl.go:114
 #, javascript-format
 msgid "Failed to read certificate file %s"
-msgstr "%s 인증서 파일 읽기 실패"
+msgstr "인증서 파일 %s을(를) 읽지 못했습니다."
 
 #: shared/ssl/ssl.go:153
 msgid "Failed to extract data from certificate"
-msgstr "인증서에서 데이터 추출 실패"
+msgstr "인증서에서 데이터를 추출하지 못했습니다."
 
 #: shared/ssl/ssl.go:174
 #, javascript-format
@@ -1155,7 +1179,7 @@ msgstr "CA 없음"
 
 #: shared/ssl/ssl.go:235
 msgid "No CA found for server certificate"
-msgstr "서버 인증서에 대한 CA를 찾을 수 없음"
+msgstr "서버 인증서에 대한 CA를 찾을 수 없습니다."
 
 #: shared/ssl/ssl.go:244
 #, javascript-format
@@ -1189,7 +1213,7 @@ msgstr "입력 스트림에 openssl 키 내용 쓰기 실패"
 
 #: shared/ssl/ssl.go:313
 msgid "Failed to convert CA private key to RSA"
-msgstr "CA 개인 키를 RSA로 변환할 수 없음"
+msgstr "CA 개인 키를 RSA로 변환하지 못했습니다."
 
 #: shared/ssl/ssl.go:323
 msgid "Failed to open openssl x509 process input stream"
@@ -1216,8 +1240,8 @@ msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
 msgstr ""
-"컨테이너에 도달하기 위해 사용되는 도구. 가능한 값: 'podman', 'podman-remote', 'kubectl'.\n"
-"사용할 기본값 추측."
+"컨테이너에 도달하기 위해 사용되는 도구입니다. 사용 가능한 값: 'podman', 'podman-remote', 'kubectl'.\n"
+"기본 설정에서는 적합한 도구를 추정하여 사용합니다."
 
 #: shared/utils/cmd.go:86
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
@@ -1361,20 +1385,20 @@ msgstr ""
 "\n"
 "구성:\n"
 "\n"
-"  모든 비전역 플래그를 구성으로 전달할 수도 있습니다.\n"
+"  모든 비전역 플래그들은 설정 파일을 통해서도 전달할 수 있습니다.\n"
 "  \n"
-"  구성 파일은 플래그 이름과 일치하는 항목이 포함된 YAML 파일입니다.\n"
+"  구성 파일은 YAML 형식으로 작성되며, 각 항목은 플래그 이름과 일치해야 합니다.\n"
 "  플래그의 이름은 명령줄 파라미터의 ''--'' 뒤에 오는 부분입니다.\n"
 "  플래그 이름의 모든 ''_'' 문자는 중첩된 속성을 의미합니다.\n"
 "  \n"
 "  예를 들어, ''--tz CEST'' 및 ''--ssl-password secret''는\n"
-"  이 YAML 구성에 매핑됩니다:\n"
+"  다음과 같은 YAML 구성에 매핑됩니다:\n"
 "  \n"
 "    tz: CEST\n"
 "    ssl:\n"
-"      비밀번호: secret\n"
+"      password: secret\n"
 "  \n"
-"  구성 파일은 다음과 같은 위치에서 순서대로 검색됩니다.\n"
+"  구성 파일은 다음 순서로 검색됩니다.\n"
 "  /etc/uyuni/uyuni-tools.yaml\n"
 "  · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}\n"
 "  · $HOME/.config/{{ .Name }}/{{ .ConfigFile }}\n"
@@ -1386,8 +1410,8 @@ msgstr ""
 "\n"
 "  전역 플래그가 아닌 모든 플래그는 환경 변수로 전달할 수도 있습니다.\n"
 "  \n"
-"  환경 변수 이름은 ''-''가 ''_''로 대체된 플래그 이름과\n"
-"  {{ .EnvPrefix }} 접두사가 붙은 이름입니다.\n"
+"  환경 변수 이름은 플래그 이름에서 ''-''를 ''_''로 바꾸고\n"
+"  {{ .EnvPrefix }} 접두사를 붙여 만듭니다.\n"
 "  \n"
 "  예를 들어, ''--tz CEST'' 플래그는 ''{{ .EnvPrefix }}_TZ''에 매핑되고\n"
 "''--ssl-password'' 플래그는 ''{{ .EnvPrefix }}_SSL_PASSWORD''에 매핑됩니다.\n"
@@ -1444,22 +1468,19 @@ msgid "failed to remove temporary directory"
 msgstr "임시 디렉토리를 제거하지 못함"
 
 #: shared/utils/files.go:97
-#, fuzzy, javascript-format
-#| msgid "failed to write %s file"
+#, javascript-format
 msgid "fails to open %s file"
-msgstr "%s 파일 쓰기 실패"
+msgstr "%s 파일 열기 실패"
 
 #: shared/utils/files.go:109
-#, fuzzy, javascript-format
-#| msgid "failed to create %s file"
+#, javascript-format
 msgid "failed to read %s file"
-msgstr "%s 파일 생성 실패"
+msgstr "%s 파일 읽기 실패"
 
 #: shared/utils/files.go:113
-#, fuzzy, javascript-format
-#| msgid "failed to create %s file"
+#, javascript-format
 msgid "failed to copy %s file"
-msgstr "%s 파일 생성 실패"
+msgstr "%s 파일 복사 실패"
 
 #: shared/utils/flaggroups.go:56
 msgid "Flags:\n"
@@ -1557,7 +1578,7 @@ msgstr "공백이나 탭을 포함할 수 없습니다."
 #: shared/utils/utils.go:105 shared/utils/utils.go:128
 #: shared/utils/utils.go:141
 msgid "not an interactive device, not asking for missing value"
-msgstr "대화형 장치 아님, 누락 값을 요구하지 않음"
+msgstr "대화형 장치가 아니며, 누락된 값을 요구하지 않음"
 
 #: shared/utils/utils.go:114
 msgid "Confirm the password"
@@ -1640,11 +1661,11 @@ msgstr "%s 파일 쓰기 오류"
 #: shared/utils/utils.go:441
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
-msgstr "%s 파일의 체크섬 계산 실패"
+msgstr "파일 %s의 체크섬을 계산하지 못함"
 
 #: shared/utils/utils.go:445
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
-msgstr "%[1]s 파일의 체크섬을 %[2]s에 쓰기 실패"
+msgstr "%[1] 파일의 체크섬을 %[2]에 쓰지 못함"
 
 #: shared/utils/utils.go:455
 #, javascript-format
@@ -1657,7 +1678,7 @@ msgstr "기본 서비스"
 
 #: shared/utils/uyuniservices.go:24
 msgid "Migration helper"
-msgstr "마이그레이션 도우미"
+msgstr "마이그레이션 헬퍼"
 
 #: shared/utils/uyuniservices.go:30
 msgid "Confidential computing attestation"
@@ -1674,6 +1695,9 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "데이터베이스"
+
+#~ msgid "server didn't start within 120s. Check for the service status"
+#~ msgstr "서버가 120초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
 
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "클러스터 유형 검색 실패"

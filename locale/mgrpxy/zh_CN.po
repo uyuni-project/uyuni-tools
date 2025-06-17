@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-05-28 08:59+0000\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
+"PO-Revision-Date: 2025-06-12 08:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -39,39 +39,34 @@ msgstr "无法重新创建缓存目录"
 msgid "Manage proxy cache"
 msgstr "管理代理缓存"
 
-#: mgrpxy/cmd/cmd.go:35
+#: mgrpxy/cmd/cmd.go:36
 msgid "Uyuni proxy administration tool"
 msgstr "Uyuni 代理管理工具"
 
-#: mgrpxy/cmd/cmd.go:36
+#: mgrpxy/cmd/cmd.go:37
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr "用于帮助管理容器中的 Uyuni 代理的工具"
 
-#: mgrpxy/cmd/cmd.go:43
+#: mgrpxy/cmd/cmd.go:44
 msgid "Server Deployment:"
 msgstr "服务器部署："
 
-#: mgrpxy/cmd/cmd.go:47
+#: mgrpxy/cmd/cmd.go:48
 msgid "Server Management:"
 msgstr "服务器管理："
 
-#: mgrpxy/cmd/cmd.go:51
+#: mgrpxy/cmd/cmd.go:52
 msgid "Administrator tools:"
 msgstr "管理员工具："
 
-#: mgrpxy/cmd/cmd.go:61
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "欢迎使用 %s"
-
 #: mgrpxy/cmd/cmd.go:62
-msgid "Use of this software implies acceptance of the End User License Agreement."
+#, javascript-format
+msgid "Starting %s"
 msgstr ""
 
 #: mgrpxy/cmd/cmd.go:63
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "正在执行命令：%s"
+msgid "Use of this software implies acceptance of the End User License Agreement."
+msgstr "使用此软件即表示您接受本《最终用户许可协议》。"
 
 #: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
@@ -201,7 +196,7 @@ msgid ""
 "show logs since a specific time or duration.\n"
 "Supports Go duration strings and RFC3339 format (e.g. 3h, 2023-01-02T15:04:05)"
 msgstr ""
-"显示自特定时间或特定时长起的日志。\n"
+"显示自特定时间或特定时长以来的日志。\n"
 "支持 Go 时长字符串和 RFC3339 格式（例如 3h、2023-01-02T15:04:05）"
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
@@ -614,6 +609,14 @@ msgstr "%s 容器的映像"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 容器的标记，如果设置，将会覆盖全局值"
+
+#, javascript-format
+#~ msgid "Welcome to %s"
+#~ msgstr "欢迎使用 %s"
+
+#, javascript-format
+#~ msgid "Executing command: %s"
+#~ msgstr "正在执行命令：%s"
 
 #~ msgid "specify a private registry"
 #~ msgstr "指定私用注册表"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: 2024-12-07 21:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/de/>\n"
@@ -100,31 +100,26 @@ msgstr ""
 msgid "Successfully logged out"
 msgstr ""
 
-#: mgrctl/cmd/cmd.go:30
+#: mgrctl/cmd/cmd.go:31
 msgid "Uyuni control tool"
 msgstr ""
 
-#: mgrctl/cmd/cmd.go:31
+#: mgrctl/cmd/cmd.go:32
 msgid "Tool to help managing Uyuni servers mainly through their API"
 msgstr ""
 
-#: mgrctl/cmd/cmd.go:38
+#: mgrctl/cmd/cmd.go:39
 msgid "configuration file path"
 msgstr "Konfigurationsdateipfad"
 
-#: mgrctl/cmd/cmd.go:40
+#: mgrctl/cmd/cmd.go:41
 msgid "application log level"
 msgstr "Anwendungs-Protokollierungsebene"
 
-#: mgrctl/cmd/cmd.go:48
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "Willkommen bei %s"
-
 #: mgrctl/cmd/cmd.go:49
 #, javascript-format
-msgid "Executing command: %s"
-msgstr "Befehl ausführen: %s"
+msgid "Starting %s"
+msgstr ""
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
@@ -284,3 +279,11 @@ msgstr ""
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr ""
+
+#, javascript-format
+#~ msgid "Welcome to %s"
+#~ msgstr "Willkommen bei %s"
+
+#, javascript-format
+#~ msgid "Executing command: %s"
+#~ msgstr "Befehl ausführen: %s"

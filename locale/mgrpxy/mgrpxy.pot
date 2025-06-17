@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,38 +38,33 @@ msgstr ""
 msgid "Manage proxy cache"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:35
+#: mgrpxy/cmd/cmd.go:36
 msgid "Uyuni proxy administration tool"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:36
+#: mgrpxy/cmd/cmd.go:37
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:43
+#: mgrpxy/cmd/cmd.go:44
 msgid "Server Deployment:"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:47
+#: mgrpxy/cmd/cmd.go:48
 msgid "Server Management:"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:51
+#: mgrpxy/cmd/cmd.go:52
 msgid "Administrator tools:"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:61
-#, javascript-format
-msgid "Welcome to %s"
-msgstr ""
-
 #: mgrpxy/cmd/cmd.go:62
-msgid "Use of this software implies acceptance of the End User License Agreement."
+#, javascript-format
+msgid "Starting %s"
 msgstr ""
 
 #: mgrpxy/cmd/cmd.go:63
-#, javascript-format
-msgid "Executing command: %s"
+msgid "Use of this software implies acceptance of the End User License Agreement."
 msgstr ""
 
 #: mgrpxy/cmd/cmd.go:67
