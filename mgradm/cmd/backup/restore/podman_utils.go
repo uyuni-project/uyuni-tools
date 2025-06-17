@@ -11,7 +11,6 @@ import (
 	"errors"
 	"io"
 	"os"
-	"path"
 
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
@@ -205,40 +204,4 @@ func restorePodmanSecrets(header *tar.Header, tr *tar.Reader, flags *shared.Flag
 		}
 	}
 	return hasError
-}
-
-// handleVolumeHacks handles special import cicrumstances.
-// etc-apache2 volume has a trailing mime.type link which podman import reports as an error.
-// etc-postfix volume has a trailing cacerts link which podman import reports as an error.
-func handleVolumeHacks(volume string, inErr error) error {
-	// Quick return if everything is ok
-	// or if something happened and volume was not imported at all
-	if inErr == nil || !podman.IsVolumePresent(volume) {
-		return inErr
-	}
-	// special handling of apache2 and postfix volume with trailing links
-	basePath, err := podman.GetPodmanVolumeBasePath()
-	if err != nil {
-		log.Debug().Msg("cannot get base volume path")
-		return inErr
-	}
-	switch volume {
-	case "etc-apache2":
-		log.Debug().Msg("Special apache2 volume handling")
-		volumePath := path.Join(basePath, "etc-apache2", "_data")
-		if err := os.Symlink("../mime.types", path.Join(volumePath, "mime.types")); err != nil {
-			log.Debug().Err(err).Msgf("cannot create link %s for %s", path.Join(volumePath, "mime.types"), "../mime.types")
-			return inErr
-		}
-		return nil
-	case "etc-postfix":
-		log.Debug().Msg("Special postfix volume handling")
-		volumePath := path.Join(basePath, "etc-postfix", "_data")
-		if err := os.Symlink("../../ssl/certs", path.Join(volumePath, "ssl", "cacerts")); err != nil {
-			log.Debug().Err(err).Msgf("cannot create link %s for %s", path.Join(volumePath, "ssl", "cacerts"), "../../ssl/certs")
-			return inErr
-		}
-		return nil
-	}
-	return inErr
 }

@@ -8,11 +8,12 @@ import (
 	"github.com/spf13/cobra"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // AddMigrateFlags add migration flags to a command.
 func AddMigrateFlags(cmd *cobra.Command) {
-	cmd.Flags().Bool("prepare", false, L("Prepare the mgration - copy the data without stopping the source server."))
+	cmd.Flags().Bool("prepare", false, L("Prepare the migration - copy the data without stopping the source server."))
 
 	cmd.Flags().String("user", "root",
 		L("User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."),
@@ -23,4 +24,7 @@ func AddMigrateFlags(cmd *cobra.Command) {
 	adm_utils.AddUpgradeCocoFlag(cmd)
 	adm_utils.AddUpgradeHubXmlrpcFlags(cmd)
 	adm_utils.AddUpgradeSalineFlag(cmd)
+
+	cmd.Flags().String("ssl-password", "", L("Current Server CA password"))
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", "ssl")
 }

@@ -52,4 +52,7 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "admin-firstName", "first-user")
 	_ = utils.AddFlagToHelpGroupID(cmd, "admin-lastName", "first-user")
 	_ = utils.AddFlagToHelpGroupID(cmd, "organization", "first-user")
+
+	cmd.Flags().String("ssl-password", "", L("Password for the CA key to generate"))
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", "ssl")
 }

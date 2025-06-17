@@ -258,7 +258,7 @@ func AddSalineFlag(cmd *cobra.Command) {
 	AddContainerImageFlags(cmd, "saline", L("Saline"), "saline-container", "server-saline")
 	cmd.Flags().Int("saline-replicas", 0, L(`How many replicas of the Saline container should be started
 (only 0 or 1 supported for now)`))
-	cmd.Flags().Int("saline-port", 8216, L("Saline port (default: 8216)"))
+	cmd.Flags().Int("saline-port", 8216, L("Saline port"))
 	_ = utils.AddFlagToHelpGroupID(cmd, "saline-replicas", "saline-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "saline-port", "saline-container")
 }
@@ -270,7 +270,7 @@ func AddUpgradeSalineFlag(cmd *cobra.Command) {
 	cmd.Flags().Int("saline-replicas", 0, L(`How many replicas of the Saline container should be started.
 Leave it unset if you want to keep the previous number of replicas.
 (only 0 or 1 supported for now)`))
-	cmd.Flags().Int("saline-port", 8216, L("Saline port (default: 8216)"))
+	cmd.Flags().Int("saline-port", 8216, L("Saline port"))
 	_ = utils.AddFlagToHelpGroupID(cmd, "saline-replicas", "saline-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "saline-port", "saline-container")
 }
@@ -281,7 +281,7 @@ func AddPgsqlFlags(cmd *cobra.Command) {
 	AddContainerImageFlags(cmd, "pgsql", L("PostgreSQL Database"), "pgsql-container", "server-postgresql")
 }
 
-// AddServerFlags add flags common to install, upgrade and migrate.
+// AddServerFlags add flags common to install.
 func AddServerFlags(cmd *cobra.Command) {
 	AddImageFlag(cmd)
 	AddSCCFlag(cmd)
@@ -289,22 +289,5 @@ func AddServerFlags(cmd *cobra.Command) {
 	AddDBFlags(cmd)
 	AddReportDBFlags(cmd)
 	ssl.AddSSLGenerationFlags(cmd)
-
-	// For generated CA and certificate
-	cmd.Flags().String("ssl-password", "", L("Password for the CA key to generate"))
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", "ssl")
-
-	// For SSL 3rd party certificates
-	cmd.Flags().StringSlice("ssl-db-ca-intermediate", []string{},
-		L("Intermediate CA certificate path for the database if different from the server one"))
-	cmd.Flags().String("ssl-db-ca-root", "",
-		L("Root CA certificate path for the database if different from the server one"))
-	cmd.Flags().String("ssl-db-cert", "", L("Database certificate path"))
-	cmd.Flags().String("ssl-db-key", "", L("Database key path"))
-
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "ssl3rd", Title: L("3rd Party SSL Certificate Flags")})
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-ca-intermediate", "ssl3rd")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-ca-root", "ssl3rd")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-cert", "ssl3rd")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-key", "ssl3rd")
+	ssl.AddSSLDBFlags(cmd)
 }

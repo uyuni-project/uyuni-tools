@@ -371,7 +371,7 @@ func Upgrade(
 			oldPgVersion, newPgVersion,
 		)
 		if err := RunPgsqlVersionUpgrade(
-			authFile, registry, pgsqlFlags.Image, upgradeImage, strconv.Itoa(oldPgVersion),
+			authFile, registry, image, upgradeImage, strconv.Itoa(oldPgVersion),
 			strconv.Itoa(newPgVersion),
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
@@ -416,7 +416,16 @@ func Upgrade(
 	if err := updateServerSystemdService(); err != nil {
 		return err
 	}
+
 	log.Info().Msg(L("Waiting for the server to start…"))
+	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
+	if err := systemd.StartService(podman.ServerService); err != nil {
+		return utils.Error(err, L("cannot start service"))
+	}
+
+	if err := cnx.WaitForHealthcheck(); err != nil {
+		log.Warn().Err(err)
+	}
 
 	inspectedDB := adm_utils.DBFlags{
 		Name:     inspectedValues.DBName,
@@ -466,7 +475,7 @@ func WaitForSystemStart(
 		return utils.Error(err, L("cannot enable service"))
 	}
 
-	return cnx.WaitForServer()
+	return cnx.WaitForHealthcheck()
 }
 
 // Migrate will migrate a server to the image given as attribute.

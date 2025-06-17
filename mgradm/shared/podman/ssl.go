@@ -211,7 +211,7 @@ func reuseExistingCertificatesFromMounts(image string, tempDir string, isDatabas
 	rootCA, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
 		caCheckPath)
 	if err != nil {
-		log.Debug().Err(err).Msgf("CA file %s not found", caCheckPath)
+		log.Info().Msgf(L("CA file %s not found. New CA and certificates will be created."), caCheckPath)
 		return false, nil
 	}
 
@@ -223,7 +223,7 @@ func reuseExistingCertificatesFromMounts(image string, tempDir string, isDatabas
 	cert, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
 		crtCheckPath)
 	if err != nil {
-		log.Debug().Err(err).Msgf("Cert file %s not found", crtCheckPath)
+		log.Info().Msgf(L("Cert file %s not found. A new certificate will be created."), crtCheckPath)
 		return false, nil
 	}
 	if err = os.WriteFile(serverCert, cert, 0444); err != nil {
@@ -234,7 +234,7 @@ func reuseExistingCertificatesFromMounts(image string, tempDir string, isDatabas
 	keyData, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
 		keyCheckPath)
 	if err != nil {
-		log.Debug().Err(err).Msgf("Cert Key file %s not found", keyCheckPath)
+		log.Info().Msgf(L("Cert key file %s not found. A new certificate will be created."), keyCheckPath)
 		return false, nil
 	}
 	if err = os.WriteFile(serverKey, keyData, 0400); err != nil {
@@ -302,7 +302,7 @@ func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags
 		"HOSTNAME":     fqdn,
 	}
 	if err := runSSLContainer(sslSetupServerScript, tempDir, image, tz, env); err != nil {
-		return utils.Error(err, L("Server SSL certificates generation failed"))
+		return utils.Error(err, L("Failed to generate server SSL certificates. Please check the input parameters."))
 	}
 
 	log.Info().Msg(L("Server SSL certificates generated"))
@@ -339,7 +339,7 @@ func generateDatabaseCertificate(image string, sslFlags *adm_utils.InstallSSLFla
 		"HOSTNAME":     fqdn,
 	}
 	if err := runSSLContainer(sslSetupDatabaseScript, tempDir, image, tz, env); err != nil {
-		return utils.Error(err, L("Database SSL certificates generation failed"))
+		return utils.Error(err, L("Failed to generate server Database SSL certificates. Please check the input parameters."))
 	}
 
 	log.Info().Msg(L("Database SSL certificates generated"))
