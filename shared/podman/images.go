@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -226,7 +227,7 @@ func loadRpmImage(rpmImageBasePath string) (string, error) {
 	return "", fmt.Errorf(L("error parsing: %s"), string(out))
 }
 
-// IsImagePresent return true if the image is present.
+// IsImagePresent returns the image name if the image is present.
 func IsImagePresent(image string) (string, error) {
 	log.Debug().Msgf("Checking for %s", image)
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "images", "--format={{ .Repository }}", image)
@@ -354,18 +355,21 @@ func DeleteImage(name string, dryRun bool) error {
 	return nil
 }
 
+var newRunner = utils.NewRunner
+
 // ExportImage saves a podman image based on its name to a specified directory.
 // outputDir option expects already existing directory.
 // If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
 func ExportImage(name string, outputDir string, dryRun bool) error {
 	exists := imageExists(name)
 	if exists {
-		saveCommand := []string{"podman", "image", "save", "--quiet", "-o", path.Join(outputDir, name+".tar"), name}
+		baseName, _, _ := strings.Cut(filepath.Base(name), ":")
+		saveCommand := []string{"podman", "image", "save", "--quiet", "-o", path.Join(outputDir, baseName+".tar"), name}
 		if dryRun {
 			log.Info().Msgf(L("Would run %s"), strings.Join(saveCommand, " "))
 		} else {
 			log.Info().Msgf(L("Run %s"), strings.Join(saveCommand, " "))
-			err := utils.RunCmd(saveCommand[0], saveCommand[1:]...)
+			_, err := newRunner(saveCommand[0], saveCommand[1:]...).Exec()
 			if err != nil {
 				return utils.Errorf(err, L("Failed to export image %s"), name)
 			}
@@ -385,7 +389,7 @@ func RestoreImage(imageFile string, dryRun bool) error {
 		log.Info().Msgf(L("Would run %s"), strings.Join(restoreCommand, " "))
 	} else {
 		log.Info().Msgf(L("Run %s"), strings.Join(restoreCommand, " "))
-		err := utils.RunCmd(restoreCommand[0], restoreCommand[1:]...)
+		_, err := newRunner(restoreCommand[0], restoreCommand[1:]...).Exec()
 		if err != nil {
 			return utils.Errorf(err, L("Failed to restore image %s"), imageFile)
 		}

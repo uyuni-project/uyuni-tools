@@ -10,6 +10,7 @@ import (
 	"io"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 	backup "github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
@@ -76,20 +77,20 @@ func gatherSystemdItems() []string {
 			continue
 		}
 
-		result = append(result, podman.GetServicePath(serviceName))
-		// For single mandatory replica following returns 0 so loop is skipped
-		for i := 0; i < systemd.CurrentReplicaCount(service.Name); i++ {
-			result = append(result, podman.GetServicePath(fmt.Sprintf("%s%d", serviceName, i)))
-		}
-		serviceConfDir := podman.GetServiceConfFolder(serviceName)
-		serviceFiles, err := os.ReadDir(serviceConfDir)
+		servicePath, err := systemd.GetServiceProperty(serviceName, podman.FragmentPath)
 		if err != nil {
-			log.Debug().Msgf("Service configuration directory %s not found, skipping", serviceConfDir)
+			log.Debug().Err(err).Msgf("failed to get the path to the %s service file", serviceName)
+			// Skipping the dropins since we would likely get a similar error.
 			continue
 		}
-		result = append(result, serviceConfDir)
-		for _, entry := range serviceFiles {
-			result = append(result, path.Join(serviceConfDir, entry.Name()))
+		result = append(result, servicePath)
+
+		// Get the drop in files
+		dropIns, err := systemd.GetServiceProperty(serviceName, podman.DropInPaths)
+		if err != nil {
+			log.Debug().Err(err).Msgf("failed to get the path to the %s service configuration files", serviceName)
+		} else {
+			result = append(result, strings.Split(dropIns, " ")...)
 		}
 	}
 	return result

@@ -1,0 +1,2 @@
+- Fix mgradm backup create handling of images and systemd files
+  (bsc#1244563)
