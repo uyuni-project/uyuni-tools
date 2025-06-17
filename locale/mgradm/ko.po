@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
@@ -215,7 +215,7 @@ msgid "Failed to read secrets data"
 msgstr "시크릿 데이터를 읽지 못함"
 
 #: mgradm/cmd/backup/create/podman_utils.go:128
-#: mgradm/cmd/backup/restore/podman_utils.go:153
+#: mgradm/cmd/backup/restore/podman_utils.go:152
 msgid "Unable to decode podman secrets"
 msgstr "podman 시크릿을 디코딩할 수 없음"
 
@@ -232,79 +232,79 @@ msgstr "%s 백업"
 msgid "failed to create Systemd backup tarball: %w"
 msgstr "Systemd 백업 tarball을 만들지 못함: %w"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:48
+#: mgradm/cmd/backup/restore/podman_utils.go:47
 #, javascript-format
 msgid "Ignoring unexpected file in the podman backup %s"
 msgstr "podman 백업 %s에서 예기치 않은 파일 무시"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:59
+#: mgradm/cmd/backup/restore/podman_utils.go:58
 msgid "Unable to decode network data backup"
 msgstr "네트워크 데이터 백업을 디코딩할 수 없음"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:63
+#: mgradm/cmd/backup/restore/podman_utils.go:62
 msgid "Incorrect network data backup"
 msgstr "잘못된 네트워크 데이터 백업"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:97
-#: mgradm/cmd/backup/restore/podman_utils.go:130
+#: mgradm/cmd/backup/restore/podman_utils.go:96
+#: mgradm/cmd/backup/restore/podman_utils.go:129
 msgid "podman network already exists"
 msgstr "podman 네트워크 이미 있음"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:102
+#: mgradm/cmd/backup/restore/podman_utils.go:101
 msgid "Unable to create podman network! Check the error and create network manually before starting the service"
 msgstr "podman 네트워크를 생성할 수 없습니다. 서비스를 시작하기 전에 오류를 확인하고 네트워크를 수동으로 생성하십시오."
 
-#: mgradm/cmd/backup/restore/podman_utils.go:110
+#: mgradm/cmd/backup/restore/podman_utils.go:109
 msgid "Would restore network configuration"
 msgstr "네트워크 구성 복원"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:115
+#: mgradm/cmd/backup/restore/podman_utils.go:114
 msgid "Failed to read backed up network configuration, trying default"
 msgstr "백업된 네트워크 구성을 읽지 못해 기본값을 시도합니다."
 
-#: mgradm/cmd/backup/restore/podman_utils.go:121
+#: mgradm/cmd/backup/restore/podman_utils.go:120
 msgid "Failed to decode backed up network configuration, trying default"
 msgstr "백업된 네트워크 구성을 디코딩하지 못해 기본값을 시도합니다."
 
-#: mgradm/cmd/backup/restore/podman_utils.go:129
+#: mgradm/cmd/backup/restore/podman_utils.go:128
 msgid "Podman network already exists, not restoring unless forced"
 msgstr "Podman 네트워크가 이미 있으며 강제하지 않는 한 복원되지 않음"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:142
+#: mgradm/cmd/backup/restore/podman_utils.go:141
 msgid "Restoring podman network"
 msgstr "podman 네트워크 복원"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:144
+#: mgradm/cmd/backup/restore/podman_utils.go:143
 msgid "Unlable to create podman network"
 msgstr "podman 네트워크를 만들지 못함"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:161
+#: mgradm/cmd/backup/restore/podman_utils.go:160
 #, javascript-format
 msgid "Unable to decode secret %s, using as is"
 msgstr "시크릿 %s을(를) 디코딩할 수 없어 그대로 사용함"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:174
+#: mgradm/cmd/backup/restore/podman_utils.go:173
 msgid "Would restore podman secrets"
 msgstr "podman 시크릿 복원"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:180
+#: mgradm/cmd/backup/restore/podman_utils.go:179
 msgid "Failed to read backed up podman secrets, no secrets were restored"
 msgstr "백업된 podman 시크릿을 읽지 못했으며, 시크릿이 복원되지 않았습니다."
 
-#: mgradm/cmd/backup/restore/podman_utils.go:185
+#: mgradm/cmd/backup/restore/podman_utils.go:184
 msgid "Failed to decode backed up podman secrets, no secrets were restored"
 msgstr "백업된 podman 시크릿을 디코딩하지 못했으며, 시크릿이 복원되지 않았습니다."
 
-#: mgradm/cmd/backup/restore/podman_utils.go:190
+#: mgradm/cmd/backup/restore/podman_utils.go:189
 msgid "Restoring podman secrets"
 msgstr "podman 시크릿 복원"
 
-#: mgradm/cmd/backup/restore/podman_utils.go:197
+#: mgradm/cmd/backup/restore/podman_utils.go:196
 #, javascript-format
 msgid "Podman secret %s is already present, not restoring unless forced"
 msgstr "podman 시크릿 %s이(가) 이미 있으며 강제로 복원하지 않는 한 복원되지 않습니다."
 
-#: mgradm/cmd/backup/restore/podman_utils.go:203
+#: mgradm/cmd/backup/restore/podman_utils.go:202
 msgid "Unable to create podman secret"
 msgstr "podman 시크릿을 만들지 못함"
 
@@ -362,23 +362,23 @@ msgstr "백업에서 이미지를 찾을 수 없음"
 msgid "Unable to read directory with the images"
 msgstr "이미지가 포함된 디렉토리를 읽을 수 없음"
 
-#: mgradm/cmd/backup/restore/restore.go:235
+#: mgradm/cmd/backup/restore/restore.go:234
 msgid "podman config backup not found in the backup location, trying defaults"
 msgstr "podman 구성 백업을 백업 위치에서 찾을 수 없어 기본값을 시도합니다."
 
-#: mgradm/cmd/backup/restore/restore.go:241
+#: mgradm/cmd/backup/restore/restore.go:240
 msgid "Unable to validate podman backup file"
 msgstr "podman 백업 파일의 유효성을 검증할 수 없음"
 
-#: mgradm/cmd/backup/restore/restore.go:249
+#: mgradm/cmd/backup/restore/restore.go:248
 msgid "Restoring systemd configuration"
 msgstr "systemd 구성 복원"
 
-#: mgradm/cmd/backup/restore/restore.go:252
+#: mgradm/cmd/backup/restore/restore.go:251
 msgid "systemd backup not found in the backup location, generating defaults"
 msgstr "systemd 백업을 백업 위치에서 찾을 수 없어 기본값을 생성합니다."
 
-#: mgradm/cmd/backup/restore/restore.go:257
+#: mgradm/cmd/backup/restore/restore.go:256
 msgid "Unable to validate systemd backup file"
 msgstr "systemd 백업 파일의 유효성을 검증할 수 없음"
 
@@ -430,39 +430,34 @@ msgstr "대상 장치의 공간이 충분하지 않음"
 msgid "install podman before running this command"
 msgstr "이 명령을 실행하기 전 podman 설치"
 
-#: mgradm/cmd/cmd.go:41
+#: mgradm/cmd/cmd.go:42
 msgid "Uyuni administration tool"
 msgstr "Uyuni 관리 도구"
 
-#: mgradm/cmd/cmd.go:42
+#: mgradm/cmd/cmd.go:43
 msgid "Tool to help administering Uyuni servers in containers"
 msgstr "컨테이너에서 Uyuni 서버를 관리하는 데 유용한 도구"
 
-#: mgradm/cmd/cmd.go:49
+#: mgradm/cmd/cmd.go:50
 msgid "Server Deployment:"
 msgstr "서버 배포:"
 
-#: mgradm/cmd/cmd.go:53
+#: mgradm/cmd/cmd.go:54
 msgid "Server Management:"
 msgstr "서버 관리:"
 
-#: mgradm/cmd/cmd.go:57
+#: mgradm/cmd/cmd.go:58
 msgid "Administrator tools:"
 msgstr "관리자 도구:"
 
-#: mgradm/cmd/cmd.go:67
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "%s 시작"
-
 #: mgradm/cmd/cmd.go:68
-msgid "Use of this software implies acceptance of the End User License Agreement."
-msgstr "이 소프트웨어를 사용하면 최종 사용자 라이선스 계약에 동의하는 것으로 간주됩니다."
+#, javascript-format
+msgid "Starting %s"
+msgstr ""
 
 #: mgradm/cmd/cmd.go:69
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "실행 중 명령: %s"
+msgid "Use of this software implies acceptance of the End User License Agreement."
+msgstr "이 소프트웨어를 사용하면 최종 사용자 라이선스 계약에 동의하는 것으로 간주됩니다."
 
 #: mgradm/cmd/cmd.go:73
 msgid "configuration file path"
@@ -912,16 +907,16 @@ msgid "Setting up the server with the FQDN '%s'"
 msgstr "FQDN '%s'(으)로 서버 설정"
 
 #: mgradm/cmd/install/podman/utils.go:67 mgradm/shared/podman/podman.go:328
-#: mgradm/shared/podman/podman.go:519
+#: mgradm/shared/podman/podman.go:528
 msgid "cannot prepare images"
 msgstr "이미지를 준비할 수 없음"
 
 #: mgradm/cmd/install/podman/utils.go:71 mgradm/shared/podman/podman.go:93
-#: mgradm/shared/podman/podman.go:323 mgradm/shared/podman/podman.go:511
+#: mgradm/shared/podman/podman.go:323 mgradm/shared/podman/podman.go:520
 msgid "cannot setup network"
 msgstr "네트워크를 설정할 수 없음"
 
-#: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:857
+#: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:866
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr "외부 데이터베이스 %s을(를) 사용하기 위해 데이터베이스 컨테이너 설정 건너뛰기"
@@ -930,19 +925,19 @@ msgstr "외부 데이터베이스 %s을(를) 사용하기 위해 데이터베이
 msgid "Run setup command in the container"
 msgstr "컨테이너에서 설정 명령 실행"
 
-#: mgradm/cmd/install/podman/utils.go:142 mgradm/shared/podman/podman.go:579
+#: mgradm/cmd/install/podman/utils.go:123 mgradm/shared/podman/podman.go:588
 msgid "cannot wait for system start"
 msgstr "시스템 시작을 기다릴 수 없음"
 
-#: mgradm/cmd/install/podman/utils.go:145
+#: mgradm/cmd/install/podman/utils.go:126
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "SSL CA 인증서를 호스트의 신뢰할 수 있는 인증서에 추가하지 못했습니다."
 
-#: mgradm/cmd/install/podman/utils.go:152
+#: mgradm/cmd/install/podman/utils.go:133
 msgid "failed to extract payg data"
 msgstr "payg 데이터를 추출하지 못함"
 
-#: mgradm/cmd/install/podman/utils.go:156
+#: mgradm/cmd/install/podman/utils.go:137
 msgid "cannot enable podman socket"
 msgstr "podman 소켓을 활성화할 수 없음"
 
@@ -1017,6 +1012,10 @@ msgstr "첫 번째 조직 이름"
 #: mgradm/cmd/install/shared/flags.go:49
 msgid "First User Flags"
 msgstr "첫 번째 사용자 플래그"
+
+#: mgradm/cmd/install/shared/flags.go:56
+msgid "Password for the CA key to generate"
+msgstr "생성할 CA 키의 비밀번호"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:49
 msgid "failed to parse data extractor pod output"
@@ -1194,13 +1193,21 @@ msgstr ""
 "\n"
 "참고: 원격 podman으로의 마이그레이션은 아직 지원되지 않습니다!\n"
 
-#: mgradm/cmd/migrate/shared/flags.go:15
-msgid "Prepare the mgration - copy the data without stopping the source server."
+#: mgradm/cmd/migrate/shared/flags.go:16
+#, fuzzy
+#| msgid "Prepare the mgration - copy the data without stopping the source server."
+msgid "Prepare the migration - copy the data without stopping the source server."
 msgstr "마이그레이션 준비 - 원본 서버를 정지하지 않고 데이터를 복사합니다."
 
-#: mgradm/cmd/migrate/shared/flags.go:18
+#: mgradm/cmd/migrate/shared/flags.go:19
 msgid "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."
 msgstr "소스 서버의 사용자. 루트가 아닌 사용자는 비밀번호 없는 sudo 권한이 있어야 합니다(/etc/sudoers의 NOPASSWD 태그)."
+
+#: mgradm/cmd/migrate/shared/flags.go:28 mgradm/cmd/upgrade/shared/flags.go:23
+#, fuzzy
+#| msgid "Source server SSL CA private key password"
+msgid "Current Server CA password"
+msgstr "소스 서버 SSL CA 개인 키 비밀번호"
 
 #: mgradm/cmd/restart/nokubernetes.go:23 mgradm/cmd/scale/nokubernetes.go:23
 #: mgradm/cmd/start/nokubernetes.go:23 mgradm/cmd/status/nokubernetes.go:23
@@ -1569,7 +1576,7 @@ msgstr "systemd 서비스를 생성할 수 없음"
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr "다중 Hub XML-RPC 컨테이너 복제본은 현재 지원되지 않습니다. 하나만 설정하십시오."
 
-#: mgradm/shared/hub/xmlrpcapi.go:73 mgradm/shared/podman/podman.go:466
+#: mgradm/shared/hub/xmlrpcapi.go:73 mgradm/shared/podman/podman.go:475
 #: mgradm/shared/saline/saline.go:146
 msgid "cannot enable service"
 msgstr "서비스를 활성할 수 없음"
@@ -1820,87 +1827,93 @@ msgstr "PostgreSQL 데이터베이스 버전 업그레이드 스크립트를 생
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "PostgreSQL 마무리 스크립트를 생성할 수 없습니다."
 
-#: mgradm/shared/podman/podman.go:333 mgradm/shared/podman/podman.go:543
+#: mgradm/shared/podman/podman.go:333 mgradm/shared/podman/podman.go:552
 msgid "cannot prepare host"
 msgstr "호스트를 준비할 수 없음"
 
 #: mgradm/shared/podman/podman.go:338 mgradm/shared/podman/podman.go:346
-#: mgradm/shared/podman/podman.go:611
+#: mgradm/shared/podman/podman.go:620
 msgid "cannot stop service"
 msgstr "서비스를 중지하지 못함"
 
-#: mgradm/shared/podman/podman.go:359 mgradm/shared/podman/podman.go:550
+#: mgradm/shared/podman/podman.go:359 mgradm/shared/podman/podman.go:559
 #, fuzzy
 #| msgid "Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"
 msgid "Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"
 msgstr "분할 PostgreSQL 컨테이너를 구성하는 중입니다. 이미지 버전: %[1]s, 마이그레이션되지 않은 버전: %[2]s"
 
-#: mgradm/shared/podman/podman.go:364 mgradm/shared/podman/podman.go:559
+#: mgradm/shared/podman/podman.go:364 mgradm/shared/podman/podman.go:568
 msgid "cannot configure db container"
 msgstr "db 컨테이너를 구성할 수 없음"
 
-#: mgradm/shared/podman/podman.go:370 mgradm/shared/podman/podman.go:785
+#: mgradm/shared/podman/podman.go:370 mgradm/shared/podman/podman.go:794
 msgid "Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr "이전 PostgreSQL은 %[1]s(이)고 대신 새 버전은 %[2]s입니다. DB 버전 업그레이드를 수행하는 중…"
 
-#: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:792
-#: mgradm/shared/podman/podman.go:824
+#: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:801
+#: mgradm/shared/podman/podman.go:833
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQL 버전 업그레이드 스크립트를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:795
+#: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:804
 msgid "Upgrading without changing PostgreSQL version"
 msgstr "PostgreSQL 버전을 변경하지 않고 업그레이드"
 
-#: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:798
+#: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:807
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr "PostgreSQL을 %[1]s에서 %[2]s(으)로 다운그레이드 시도 중"
 
-#: mgradm/shared/podman/podman.go:395 mgradm/shared/podman/podman.go:569
+#: mgradm/shared/podman/podman.go:395 mgradm/shared/podman/podman.go:578
 msgid "cannot run PostgreSQL finalize script"
 msgstr "PostgreSQL 최종 스크립트를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:399 mgradm/shared/podman/podman.go:573
+#: mgradm/shared/podman/podman.go:399 mgradm/shared/podman/podman.go:582
 msgid "cannot run post upgrade script"
 msgstr "업그레이드 후 스크립트를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:419 mgradm/shared/podman/podman.go:464
+#: mgradm/shared/podman/podman.go:420 mgradm/shared/podman/podman.go:473
 msgid "Waiting for the server to start…"
 msgstr "서버가 시작되기를 기다리는 중…"
 
-#: mgradm/shared/podman/podman.go:432 mgradm/shared/podman/podman.go:592
+#: mgradm/shared/podman/podman.go:423
+#, fuzzy
+#| msgid "cannot stop service"
+msgid "cannot start service"
+msgstr "서비스를 중지하지 못함"
+
+#: mgradm/shared/podman/podman.go:441 mgradm/shared/podman/podman.go:601
 msgid "error upgrading confidential computing service."
 msgstr "기밀 컴퓨팅 서비스를 업그레이드하는 중 오류가 발생했습니다."
 
-#: mgradm/shared/podman/podman.go:442 mgradm/shared/podman/podman.go:602
+#: mgradm/shared/podman/podman.go:451 mgradm/shared/podman/podman.go:611
 msgid "error upgrading saline service."
 msgstr "Saline 서비스를 업그레이드하는 중 오류가 발생했습니다."
 
-#: mgradm/shared/podman/podman.go:534
+#: mgradm/shared/podman/podman.go:543
 msgid "cannot run migration script"
 msgstr "마이그레이션 스크립트를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:537
+#: mgradm/shared/podman/podman.go:546
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr "마이그레이션이 준비되었습니다. 마이그레이션을 마치려면 ''--prepare''를 제외하고 ''migrate'' 명령을 실행하십시오."
 
-#: mgradm/shared/podman/podman.go:660
+#: mgradm/shared/podman/podman.go:669
 msgid "failed to generate postgresql migration script"
 msgstr "postgresql 마이그레이션 스크립트를 생성하지 못함"
 
-#: mgradm/shared/podman/podman.go:696
+#: mgradm/shared/podman/podman.go:705
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr "위 오류는 공용 클라우드 공급자 레지스트리를 사용하는 경우에만 해당됩니다."
 
-#: mgradm/shared/podman/podman.go:726
+#: mgradm/shared/podman/podman.go:735
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr "SSH_AUTH_SOCK이 정의되지 않았습니다. SSH 에이전트를 시작하고 다시 시도하십시오."
 
-#: mgradm/shared/podman/podman.go:736
+#: mgradm/shared/podman/podman.go:745
 msgid "Failed to find home directory to look for SSH config"
 msgstr "SSH 구성을 찾을 홈 디렉토리를 찾지 못했습니다."
 
-#: mgradm/shared/podman/podman.go:760
+#: mgradm/shared/podman/podman.go:769
 msgid "cannot inspect podman values"
 msgstr "podman 값을 검사할 수 없음"
 
@@ -1916,13 +1929,28 @@ msgstr "제공된 타사 서버 인증서 사용"
 msgid "Using provided 3rd party database certificates"
 msgstr "제공된 타사 데이터베이스 인증서 사용"
 
+#: mgradm/shared/podman/ssl.go:214
+#, javascript-format
+msgid "CA file %s not found. New CA and certificates will be created."
+msgstr ""
+
 #: mgradm/shared/podman/ssl.go:219
 msgid "cannot write existing CA certificate"
 msgstr "기존 CA 인증서를 작성할 수 없음"
 
+#: mgradm/shared/podman/ssl.go:226
+#, javascript-format
+msgid "Cert file %s not found. A new certificate will be created."
+msgstr ""
+
 #: mgradm/shared/podman/ssl.go:230
 msgid "cannot write existing server certificate"
 msgstr "기존 서버 인증서를 작성할 수 없음"
+
+#: mgradm/shared/podman/ssl.go:237
+#, javascript-format
+msgid "Cert key file %s not found. A new certificate will be created."
+msgstr ""
 
 #: mgradm/shared/podman/ssl.go:241
 msgid "cannot write existing server key"
@@ -1933,8 +1961,10 @@ msgid "Reusing existing certificates"
 msgstr "기존 인증서 재사용"
 
 #: mgradm/shared/podman/ssl.go:305
-msgid "Server SSL certificates generation failed"
-msgstr "서버 SSL 인증서 생성 실패"
+#, fuzzy
+#| msgid "failed to remove copied certificate files in the container"
+msgid "Failed to generate server SSL certificates. Please check the input parameters."
+msgstr "컨테이너에서 복사한 인증서 파일을 제거하지 못했습니다."
 
 #: mgradm/shared/podman/ssl.go:308
 msgid "Server SSL certificates generated"
@@ -1947,8 +1977,8 @@ msgid "Cannot generate database certificate"
 msgstr "systemd 서비스를 생성할 수 없음"
 
 #: mgradm/shared/podman/ssl.go:342
-msgid "Database SSL certificates generation failed"
-msgstr "데이터베이스 SSL 인증서 생성 실패"
+msgid "Failed to generate server Database SSL certificates. Please check the input parameters."
+msgstr ""
 
 #: mgradm/shared/podman/ssl.go:345
 msgid "Database SSL certificates generated"
@@ -2214,8 +2244,10 @@ msgstr ""
 "(현재는 0 또는 1만 지원됨)"
 
 #: mgradm/shared/utils/cmd_utils.go:261 mgradm/shared/utils/cmd_utils.go:273
-msgid "Saline port (default: 8216)"
-msgstr "Saline 포트(기본값: 8216)"
+#, fuzzy
+#| msgid "Saline"
+msgid "Saline port"
+msgstr "Saline"
 
 #: mgradm/shared/utils/cmd_utils.go:270
 msgid ""
@@ -2234,30 +2266,6 @@ msgstr "PostgreSQL 데이터베이스 컨테이너 플래그"
 #: mgradm/shared/utils/cmd_utils.go:281
 msgid "PostgreSQL Database"
 msgstr "PostgreSQL 데이터베이스"
-
-#: mgradm/shared/utils/cmd_utils.go:294
-msgid "Password for the CA key to generate"
-msgstr "생성할 CA 키의 비밀번호"
-
-#: mgradm/shared/utils/cmd_utils.go:299
-msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr "서버와 다른 경우 데이터베이스의 중간 CA 인증서 경로"
-
-#: mgradm/shared/utils/cmd_utils.go:301
-msgid "Root CA certificate path for the database if different from the server one"
-msgstr "서버와 다른 경우 데이터베이스의 루트 CA 인증서 경로"
-
-#: mgradm/shared/utils/cmd_utils.go:302
-msgid "Database certificate path"
-msgstr "데이터베이스 인증서 경로"
-
-#: mgradm/shared/utils/cmd_utils.go:303
-msgid "Database key path"
-msgstr "데이터베이스 키 경로"
-
-#: mgradm/shared/utils/cmd_utils.go:305
-msgid "3rd Party SSL Certificate Flags"
-msgstr "타사 SSL 인증서 플래그"
 
 #: mgradm/shared/utils/exec.go:25
 msgid "exec command failed"
@@ -2309,6 +2317,38 @@ msgid "failed to render setup script"
 msgstr "설치 스크립트를 렌더링하지 못함"
 
 #, javascript-format
+#~ msgid "Welcome to %s"
+#~ msgstr "%s 시작"
+
+#, javascript-format
+#~ msgid "Executing command: %s"
+#~ msgstr "실행 중 명령: %s"
+
+#~ msgid "Server SSL certificates generation failed"
+#~ msgstr "서버 SSL 인증서 생성 실패"
+
+#~ msgid "Database SSL certificates generation failed"
+#~ msgstr "데이터베이스 SSL 인증서 생성 실패"
+
+#~ msgid "Saline port (default: 8216)"
+#~ msgstr "Saline 포트(기본값: 8216)"
+
+#~ msgid "Intermediate CA certificate path for the database if different from the server one"
+#~ msgstr "서버와 다른 경우 데이터베이스의 중간 CA 인증서 경로"
+
+#~ msgid "Root CA certificate path for the database if different from the server one"
+#~ msgstr "서버와 다른 경우 데이터베이스의 루트 CA 인증서 경로"
+
+#~ msgid "Database certificate path"
+#~ msgstr "데이터베이스 인증서 경로"
+
+#~ msgid "Database key path"
+#~ msgstr "데이터베이스 키 경로"
+
+#~ msgid "3rd Party SSL Certificate Flags"
+#~ msgstr "타사 SSL 인증서 플래그"
+
+#, javascript-format
 #~ msgid "The computed confidential computing image is %s"
 #~ msgstr "계산된 기밀 컴퓨팅 이미지: %s"
 
@@ -2343,9 +2383,6 @@ msgstr "설치 스크립트를 렌더링하지 못함"
 #, javascript-format
 #~ msgid "failed to update SSL certificate: %s"
 #~ msgstr "SSL 인증서를 업데이트하지 못함: %s"
-
-#~ msgid "failed to remove copied certificate files in the container"
-#~ msgstr "컨테이너에서 복사한 인증서 파일을 제거하지 못했습니다."
 
 #~ msgid "failed to remove now useless ssl-build folder in the container"
 #~ msgstr "컨테이너에서 더 이상 사용되지 않는 ssl-build 폴더를 제거하지 못했습니다."
@@ -2539,9 +2576,6 @@ msgstr "설치 스크립트를 렌더링하지 못함"
 #, javascript-format
 #~ msgid "%s file is not accessible"
 #~ msgstr "%s 파일에 액세스할 수 없음"
-
-#~ msgid "Source server SSL CA private key password"
-#~ msgstr "소스 서버 SSL CA 개인 키 비밀번호"
 
 #~ msgid "Failed to convert CA private key to RSA"
 #~ msgstr "CA 개인 키를 RSA로 변환하지 못했습니다."

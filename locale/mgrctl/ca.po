@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: 2025-03-03 10:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ca/>\n"
@@ -117,31 +117,26 @@ msgstr "S'han verificat les credencials d'inici de sessió."
 msgid "Successfully logged out"
 msgstr "Sessió tancada correctament"
 
-#: mgrctl/cmd/cmd.go:30
+#: mgrctl/cmd/cmd.go:31
 msgid "Uyuni control tool"
 msgstr "Eina de control d'Uyuni"
 
-#: mgrctl/cmd/cmd.go:31
+#: mgrctl/cmd/cmd.go:32
 msgid "Tool to help managing Uyuni servers mainly through their API"
 msgstr "Eina per ajudar a gestionar els servidors d'Uyuni principalment a través de l'API"
 
-#: mgrctl/cmd/cmd.go:38
+#: mgrctl/cmd/cmd.go:39
 msgid "configuration file path"
 msgstr "camí del fitxer de configuració"
 
-#: mgrctl/cmd/cmd.go:40
+#: mgrctl/cmd/cmd.go:41
 msgid "application log level"
 msgstr "nivell de registre de l'aplicació"
 
-#: mgrctl/cmd/cmd.go:48
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "Us donem la benvinguda a %s"
-
 #: mgrctl/cmd/cmd.go:49
 #, javascript-format
-msgid "Executing command: %s"
-msgstr "S'està executant l'ordre: %s"
+msgid "Starting %s"
+msgstr ""
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
@@ -304,3 +299,11 @@ msgstr "Crea configuracions del servidor intermediari"
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "Executa un terminal dins del contenidor del servidor"
+
+#, javascript-format
+#~ msgid "Welcome to %s"
+#~ msgstr "Us donem la benvinguda a %s"
+
+#, javascript-format
+#~ msgid "Executing command: %s"
+#~ msgstr "S'està executant l'ordre: %s"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: 2025-06-14 14:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
@@ -39,39 +39,34 @@ msgstr "キャッシュディレクトリを再作成できませんでした"
 msgid "Manage proxy cache"
 msgstr "プロキシキャッシュの管理"
 
-#: mgrpxy/cmd/cmd.go:35
+#: mgrpxy/cmd/cmd.go:36
 msgid "Uyuni proxy administration tool"
 msgstr "Uyuniプロキシ管理ツール"
 
-#: mgrpxy/cmd/cmd.go:36
+#: mgrpxy/cmd/cmd.go:37
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr "Uyuniプロキシのコンテナ管理を支援するツール"
 
-#: mgrpxy/cmd/cmd.go:43
+#: mgrpxy/cmd/cmd.go:44
 msgid "Server Deployment:"
 msgstr "サーバ配備:"
 
-#: mgrpxy/cmd/cmd.go:47
+#: mgrpxy/cmd/cmd.go:48
 msgid "Server Management:"
 msgstr "サーバ管理:"
 
-#: mgrpxy/cmd/cmd.go:51
+#: mgrpxy/cmd/cmd.go:52
 msgid "Administrator tools:"
 msgstr "管理者ツール:"
 
-#: mgrpxy/cmd/cmd.go:61
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "%s へようこそ"
-
 #: mgrpxy/cmd/cmd.go:62
-msgid "Use of this software implies acceptance of the End User License Agreement."
-msgstr "このソフトウェアを使用すると、エンドユーザライセンス契約に同意したことになります。"
+#, javascript-format
+msgid "Starting %s"
+msgstr ""
 
 #: mgrpxy/cmd/cmd.go:63
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "コマンドの実行中: %s"
+msgid "Use of this software implies acceptance of the End User License Agreement."
+msgstr "このソフトウェアを使用すると、エンドユーザライセンス契約に同意したことになります。"
 
 #: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
@@ -612,6 +607,14 @@ msgstr "%s コンテナのイメージ"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s コンテナ用のタグ。設定されている場合はグローバル値を上書きします"
+
+#, javascript-format
+#~ msgid "Welcome to %s"
+#~ msgstr "%s へようこそ"
+
+#, javascript-format
+#~ msgid "Executing command: %s"
+#~ msgstr "コマンドの実行中: %s"
 
 #~ msgid "specify a private registry"
 #~ msgstr "プライベートレジストリを指定してください"

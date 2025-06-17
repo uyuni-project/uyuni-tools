@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
@@ -39,39 +39,34 @@ msgstr "캐시 디렉토리 재생성 실패"
 msgid "Manage proxy cache"
 msgstr "프록시 캐시 관리"
 
-#: mgrpxy/cmd/cmd.go:35
+#: mgrpxy/cmd/cmd.go:36
 msgid "Uyuni proxy administration tool"
 msgstr "Uyuni 프록시 관리 도구"
 
-#: mgrpxy/cmd/cmd.go:36
+#: mgrpxy/cmd/cmd.go:37
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr "컨테이너에서 Uyuni 프록시를 관리하는 데 유용한 도구"
 
-#: mgrpxy/cmd/cmd.go:43
+#: mgrpxy/cmd/cmd.go:44
 msgid "Server Deployment:"
 msgstr "서버 배포:"
 
-#: mgrpxy/cmd/cmd.go:47
+#: mgrpxy/cmd/cmd.go:48
 msgid "Server Management:"
 msgstr "서버 관리:"
 
-#: mgrpxy/cmd/cmd.go:51
+#: mgrpxy/cmd/cmd.go:52
 msgid "Administrator tools:"
 msgstr "관리자 도구:"
 
-#: mgrpxy/cmd/cmd.go:61
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "%s 시작"
-
 #: mgrpxy/cmd/cmd.go:62
-msgid "Use of this software implies acceptance of the End User License Agreement."
-msgstr "이 소프트웨어를 사용하면 최종 사용자 라이선스 계약에 동의하는 것으로 간주됩니다."
+#, javascript-format
+msgid "Starting %s"
+msgstr ""
 
 #: mgrpxy/cmd/cmd.go:63
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "실행 중 명령: %s"
+msgid "Use of this software implies acceptance of the End User License Agreement."
+msgstr "이 소프트웨어를 사용하면 최종 사용자 라이선스 계약에 동의하는 것으로 간주됩니다."
 
 #: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
@@ -615,6 +610,14 @@ msgstr "%s 컨테이너용 이미지"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
+
+#, javascript-format
+#~ msgid "Welcome to %s"
+#~ msgstr "%s 시작"
+
+#, javascript-format
+#~ msgid "Executing command: %s"
+#~ msgstr "실행 중 명령: %s"
 
 #~ msgid "specify a private registry"
 #~ msgstr "개인 레지스트리 지정"
