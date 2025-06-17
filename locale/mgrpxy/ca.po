@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: 2025-06-06 13:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
@@ -39,39 +39,34 @@ msgstr "no s'ha pogut tornar a crear els directoris de la memòria cau"
 msgid "Manage proxy cache"
 msgstr "Gestiona la memòria cau del servidor intermediari"
 
-#: mgrpxy/cmd/cmd.go:35
+#: mgrpxy/cmd/cmd.go:36
 msgid "Uyuni proxy administration tool"
 msgstr "Eina d'administració del servidor intermediari d'Uyuni"
 
-#: mgrpxy/cmd/cmd.go:36
+#: mgrpxy/cmd/cmd.go:37
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr "Eina per a ajudar a administrar els servidors intermediaris Uyuni en contenidors"
 
-#: mgrpxy/cmd/cmd.go:43
+#: mgrpxy/cmd/cmd.go:44
 msgid "Server Deployment:"
 msgstr "Desplegament del servidor:"
 
-#: mgrpxy/cmd/cmd.go:47
+#: mgrpxy/cmd/cmd.go:48
 msgid "Server Management:"
 msgstr "Gestió del servidor:"
 
-#: mgrpxy/cmd/cmd.go:51
+#: mgrpxy/cmd/cmd.go:52
 msgid "Administrator tools:"
 msgstr "Eines de l'administrador:"
 
-#: mgrpxy/cmd/cmd.go:61
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "Us donem la benvinguda a %s"
-
 #: mgrpxy/cmd/cmd.go:62
-msgid "Use of this software implies acceptance of the End User License Agreement."
-msgstr "L'ús d'aquest programari implica l'acceptació de l'Acord de llicència d'usuari final."
+#, javascript-format
+msgid "Starting %s"
+msgstr ""
 
 #: mgrpxy/cmd/cmd.go:63
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "S'està executant l'ordre: %s"
+msgid "Use of this software implies acceptance of the End User License Agreement."
+msgstr "L'ús d'aquest programari implica l'acceptació de l'Acord de llicència d'usuari final."
 
 #: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
@@ -614,3 +609,11 @@ msgstr "Imatge per al contenidor %s"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "Etiqueta per al contenidor %s, anul·la el valor global si s'estableix"
+
+#, javascript-format
+#~ msgid "Welcome to %s"
+#~ msgstr "Us donem la benvinguda a %s"
+
+#, javascript-format
+#~ msgid "Executing command: %s"
+#~ msgstr "S'està executant l'ordre: %s"

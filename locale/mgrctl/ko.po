@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ko/>\n"
@@ -117,31 +117,26 @@ msgstr "로그인 자격 증명이 확인되었습니다."
 msgid "Successfully logged out"
 msgstr "로그아웃됨"
 
-#: mgrctl/cmd/cmd.go:30
+#: mgrctl/cmd/cmd.go:31
 msgid "Uyuni control tool"
 msgstr "Uyuni 제어 도구"
 
-#: mgrctl/cmd/cmd.go:31
+#: mgrctl/cmd/cmd.go:32
 msgid "Tool to help managing Uyuni servers mainly through their API"
 msgstr "주로 API를 통해 Uyuni 서버를 관리하는 데 유용한 도구"
 
-#: mgrctl/cmd/cmd.go:38
+#: mgrctl/cmd/cmd.go:39
 msgid "configuration file path"
 msgstr "구성 파일 경로"
 
-#: mgrctl/cmd/cmd.go:40
+#: mgrctl/cmd/cmd.go:41
 msgid "application log level"
 msgstr "애플리케이션 로그 수준"
 
-#: mgrctl/cmd/cmd.go:48
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "%s 시작"
-
 #: mgrctl/cmd/cmd.go:49
 #, javascript-format
-msgid "Executing command: %s"
-msgstr "실행 중 명령: %s"
+msgid "Starting %s"
+msgstr ""
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
@@ -304,6 +299,14 @@ msgstr "프록시 구성 생성"
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "서버 컨테이너 내에서 터미널 실행"
+
+#, javascript-format
+#~ msgid "Welcome to %s"
+#~ msgstr "%s 시작"
+
+#, javascript-format
+#~ msgid "Executing command: %s"
+#~ msgstr "실행 중 명령: %s"
 
 #~ msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
 #~ msgstr "API 경로와 파라미터를 받은 가져온 이를 사용하여 POST 요청을 발급합니다. 사용자 및 비밀번호는 필수입니다. 파라미터는 JSON 인코딩된 문자열 또는 하나 이상의 키=값 쌍일 수 있습니다."

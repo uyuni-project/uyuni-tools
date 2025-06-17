@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: 2025-06-12 08:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -209,61 +209,59 @@ msgstr "未执行健康检查"
 msgid "container didn't start within 10s."
 msgstr "容器未在 10 秒内启动。"
 
-#: shared/connection.go:318
-msgid "server didn't start within 120s. Check for the service status"
-msgstr "服务器未在 120 秒内启动。请检查服务状态"
-
-#: shared/connection.go:333
-msgid "container didn't start within 60s. Check for the service status"
+#: shared/connection.go:296
+#, fuzzy
+#| msgid "container didn't start within 60s. Check for the service status"
+msgid "container didn't start within 120s. Check for the service status"
 msgstr "容器未在 60 秒内启动。请检查服务状态"
 
-#: shared/connection.go:373 shared/connection.go:420
+#: shared/connection.go:336 shared/connection.go:383
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr "容器类型未知：%s"
 
-#: shared/connection.go:415
+#: shared/connection.go:378
 msgid "failed to detect the namespace"
 msgstr "无法检测名称空间"
 
-#: shared/connection.go:431
+#: shared/connection.go:394
 msgid "Copying the SSL CA certificate to the host"
 msgstr "正在将 SSL CA 证书复制到主机"
 
-#: shared/connection.go:450
+#: shared/connection.go:413
 msgid "Updating host trusted certificates"
 msgstr "正在更新主机信任的证书"
 
-#: shared/connection.go:458
+#: shared/connection.go:421
 msgid "Unable to update host trusted certificates."
 msgstr "无法更新主机信任的证书。"
 
-#: shared/connection.go:499 shared/connection.go:520
+#: shared/connection.go:462 shared/connection.go:483
 msgid "failed to determine suitable backend"
 msgstr "无法确定合适的后端"
 
-#: shared/connection.go:509
+#: shared/connection.go:472
 msgid "no supported backend found"
 msgstr "未找到支持的后端"
 
-#: shared/connection.go:534
+#: shared/connection.go:497
 #, javascript-format
 msgid "Running supportconfig in  %s"
 msgstr "正在 %s 中运行 supportconfig"
 
-#: shared/connection.go:542
+#: shared/connection.go:505
 msgid "failed to run supportconfig"
 msgstr "无法运行 supportconfig"
 
-#: shared/connection.go:546
+#: shared/connection.go:509
 msgid "failed to find container supportconfig tarball from command output"
 msgstr "在命令输出中找不到容器 supportconfig Tar 包"
 
-#: shared/connection.go:552
+#: shared/connection.go:515
 msgid "cannot copy tarball"
 msgstr "无法复制 Tar 包"
 
-#: shared/connection.go:558
+#: shared/connection.go:521
 #, javascript-format
 msgid "failed to remove %s file in the container"
 msgstr "无法去除容器中的 %s 文件"
@@ -299,7 +297,7 @@ msgstr "必须指定名称空间"
 #: shared/podman/network.go:108 shared/podman/secret.go:123
 #: shared/podman/systemd.go:110 shared/podman/systemd.go:189
 #: shared/podman/systemd.go:190 shared/podman/utils.go:177
-#: shared/podman/utils.go:210 shared/podman/utils.go:230
+#: shared/podman/utils.go:210 shared/podman/utils.go:237
 #, javascript-format
 msgid "Would run %s"
 msgstr "将运行 %s"
@@ -734,7 +732,7 @@ msgstr "未找到容器 %s 的任何运行中映像"
 #: shared/podman/images.go:347 shared/podman/images.go:367
 #: shared/podman/images.go:387 shared/podman/secret.go:125
 #: shared/podman/utils.go:179 shared/podman/utils.go:213
-#: shared/podman/utils.go:241
+#: shared/podman/utils.go:248
 #, javascript-format
 msgid "Run %s"
 msgstr "运行 %s"
@@ -1071,26 +1069,26 @@ msgstr "无法导出卷 %s"
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr "无法将卷 %[1]s 的校验和写入 %[2]s"
 
-#: shared/podman/utils.go:235
+#: shared/podman/utils.go:242
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr "校验和与卷 %s 不匹配"
 
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:246
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr "无法预先创建空卷 %s"
 
-#: shared/podman/utils.go:243
+#: shared/podman/utils.go:250
 #, javascript-format
 msgid "Failed to import volume %s"
 msgstr "无法导入卷 %s"
 
-#: shared/podman/utils.go:319
+#: shared/podman/utils.go:326
 msgid "failed to login to registry.suse.com"
 msgstr "无法登录 registry.suse.com"
 
-#: shared/podman/utils.go:345 shared/podman/utils.go:366
+#: shared/podman/utils.go:352 shared/podman/utils.go:373
 msgid "cannot inspect data"
 msgstr "无法检查数据"
 
@@ -1120,6 +1118,32 @@ msgstr "SSL 证书组织单位"
 
 #: shared/ssl/flags.go:21
 msgid "SSL Certificate Flags"
+msgstr "SSL 证书标志"
+
+#: shared/ssl/flags.go:33
+msgid "Intermediate CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:35
+msgid "Root CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:36
+#, fuzzy
+#| msgid "SSL certificate state"
+msgid "Database certificate path"
+msgstr "SSL 证书州/省"
+
+#: shared/ssl/flags.go:37
+#, fuzzy
+#| msgid "Database"
+msgid "Database key path"
+msgstr "数据库"
+
+#: shared/ssl/flags.go:39
+#, fuzzy
+#| msgid "SSL Certificate Flags"
+msgid "3rd Party SSL Certificate Flags"
 msgstr "SSL 证书标志"
 
 #: shared/ssl/ssl.go:68
@@ -1671,6 +1695,9 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "数据库"
+
+#~ msgid "server didn't start within 120s. Check for the service status"
+#~ msgstr "服务器未在 120 秒内启动。请检查服务状态"
 
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "无法发现群集类型"

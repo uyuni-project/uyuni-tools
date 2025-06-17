@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: 2025-06-17 08:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
@@ -209,61 +209,59 @@ msgstr "상태 확인이 실행되지 않음"
 msgid "container didn't start within 10s."
 msgstr "컨테이너가 10초 이내에 시작되지 않았습니다."
 
-#: shared/connection.go:318
-msgid "server didn't start within 120s. Check for the service status"
-msgstr "서버가 120초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
-
-#: shared/connection.go:333
-msgid "container didn't start within 60s. Check for the service status"
+#: shared/connection.go:296
+#, fuzzy
+#| msgid "container didn't start within 60s. Check for the service status"
+msgid "container didn't start within 120s. Check for the service status"
 msgstr "컨테이너가 60초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
 
-#: shared/connection.go:373 shared/connection.go:420
+#: shared/connection.go:336 shared/connection.go:383
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr "알 수 없는 컨테이너 종류: %s"
 
-#: shared/connection.go:415
+#: shared/connection.go:378
 msgid "failed to detect the namespace"
 msgstr "네임스페이스를 발견하지 못함"
 
-#: shared/connection.go:431
+#: shared/connection.go:394
 msgid "Copying the SSL CA certificate to the host"
 msgstr "SSL CA 인증서를 호스트에 복사"
 
-#: shared/connection.go:450
+#: shared/connection.go:413
 msgid "Updating host trusted certificates"
 msgstr "호스트 신뢰할 수 있는 인증서 업데이트"
 
-#: shared/connection.go:458
+#: shared/connection.go:421
 msgid "Unable to update host trusted certificates."
 msgstr "호스트 신뢰할 수 있는 인증서를 업데이트할 수 없음"
 
-#: shared/connection.go:499 shared/connection.go:520
+#: shared/connection.go:462 shared/connection.go:483
 msgid "failed to determine suitable backend"
 msgstr "적합한 백엔드를 확인하지 못했습니다."
 
-#: shared/connection.go:509
+#: shared/connection.go:472
 msgid "no supported backend found"
 msgstr "지원되는 백엔드를 찾을 수 없습니다."
 
-#: shared/connection.go:534
+#: shared/connection.go:497
 #, javascript-format
 msgid "Running supportconfig in  %s"
 msgstr "%s에서 supportconfig 실행 중"
 
-#: shared/connection.go:542
+#: shared/connection.go:505
 msgid "failed to run supportconfig"
 msgstr "supportconfig 실행 실패"
 
-#: shared/connection.go:546
+#: shared/connection.go:509
 msgid "failed to find container supportconfig tarball from command output"
 msgstr "명령 출력에서 컨테이너 supportconfig tarball을 찾지 못함"
 
-#: shared/connection.go:552
+#: shared/connection.go:515
 msgid "cannot copy tarball"
 msgstr "tarball을 복사할 수 없음"
 
-#: shared/connection.go:558
+#: shared/connection.go:521
 #, javascript-format
 msgid "failed to remove %s file in the container"
 msgstr "컨테이너에서 %s 제거 실패"
@@ -299,7 +297,7 @@ msgstr "네임스페이스는 필수입니다."
 #: shared/podman/network.go:108 shared/podman/secret.go:123
 #: shared/podman/systemd.go:110 shared/podman/systemd.go:189
 #: shared/podman/systemd.go:190 shared/podman/utils.go:177
-#: shared/podman/utils.go:210 shared/podman/utils.go:230
+#: shared/podman/utils.go:210 shared/podman/utils.go:237
 #, javascript-format
 msgid "Would run %s"
 msgstr "%s 실행"
@@ -734,7 +732,7 @@ msgstr "%s 컨테이너에 대한 실행 이미지를 찾을 수 없음"
 #: shared/podman/images.go:347 shared/podman/images.go:367
 #: shared/podman/images.go:387 shared/podman/secret.go:125
 #: shared/podman/utils.go:179 shared/podman/utils.go:213
-#: shared/podman/utils.go:241
+#: shared/podman/utils.go:248
 #, javascript-format
 msgid "Run %s"
 msgstr "%s 실행"
@@ -1071,26 +1069,26 @@ msgstr "%s 볼륨 내보내기 실패"
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr "볼륨 %[1]의 체크섬을 %[2]에 쓰지 못함"
 
-#: shared/podman/utils.go:235
+#: shared/podman/utils.go:242
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr "볼륨 %s에 대한 체크섬이 일치하지 않음"
 
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:246
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr "비어 있는 볼륨 %s 미리 만들기 실패"
 
-#: shared/podman/utils.go:243
+#: shared/podman/utils.go:250
 #, javascript-format
 msgid "Failed to import volume %s"
 msgstr "%s 볼륨 가져오기 실패"
 
-#: shared/podman/utils.go:319
+#: shared/podman/utils.go:326
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.com에 로그인하지 못했습니다."
 
-#: shared/podman/utils.go:345 shared/podman/utils.go:366
+#: shared/podman/utils.go:352 shared/podman/utils.go:373
 msgid "cannot inspect data"
 msgstr "데이터를 검사할 수 없음"
 
@@ -1120,6 +1118,32 @@ msgstr "SSL 인증서 조직 단위"
 
 #: shared/ssl/flags.go:21
 msgid "SSL Certificate Flags"
+msgstr "SSL 인증서 플래그"
+
+#: shared/ssl/flags.go:33
+msgid "Intermediate CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:35
+msgid "Root CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:36
+#, fuzzy
+#| msgid "SSL certificate state"
+msgid "Database certificate path"
+msgstr "SSL 인증서 시/도"
+
+#: shared/ssl/flags.go:37
+#, fuzzy
+#| msgid "Database"
+msgid "Database key path"
+msgstr "데이터베이스"
+
+#: shared/ssl/flags.go:39
+#, fuzzy
+#| msgid "SSL Certificate Flags"
+msgid "3rd Party SSL Certificate Flags"
 msgstr "SSL 인증서 플래그"
 
 #: shared/ssl/ssl.go:68
@@ -1671,6 +1695,9 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "데이터베이스"
+
+#~ msgid "server didn't start within 120s. Check for the service status"
+#~ msgstr "서버가 120초 이내에 시작되지 않았습니다. 서비스 상태를 확인하십시오."
 
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "클러스터 유형 검색 실패"

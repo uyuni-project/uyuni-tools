@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: 2024-04-08 11:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -41,40 +41,35 @@ msgstr "impossible de créer le répertoire temporaire: %s"
 msgid "Manage proxy cache"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:35
+#: mgrpxy/cmd/cmd.go:36
 msgid "Uyuni proxy administration tool"
 msgstr "Outil d'administration de proxy Uyuni"
 
-#: mgrpxy/cmd/cmd.go:36
+#: mgrpxy/cmd/cmd.go:37
 msgid "Tool to help administering Uyuni proxies in containers"
 msgstr "Outil pour aider à administrer des proxy Uyuni dans des conteneurs"
 
-#: mgrpxy/cmd/cmd.go:43
+#: mgrpxy/cmd/cmd.go:44
 msgid "Server Deployment:"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:47
+#: mgrpxy/cmd/cmd.go:48
 msgid "Server Management:"
 msgstr ""
 
-#: mgrpxy/cmd/cmd.go:51
+#: mgrpxy/cmd/cmd.go:52
 #, fuzzy
 msgid "Administrator tools:"
 msgstr "Outil d'administration de proxy Uyuni"
 
-#: mgrpxy/cmd/cmd.go:61
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "Bienvenue à %s"
-
 #: mgrpxy/cmd/cmd.go:62
-msgid "Use of this software implies acceptance of the End User License Agreement."
+#, javascript-format
+msgid "Starting %s"
 msgstr ""
 
 #: mgrpxy/cmd/cmd.go:63
-#, javascript-format
-msgid "Executing command: %s"
-msgstr "Exécution de la commande: %s"
+msgid "Use of this software implies acceptance of the End User License Agreement."
+msgstr ""
 
 #: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
@@ -634,6 +629,14 @@ msgstr ""
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "Tag pour le conteneur %sm remplace la valeur globale si définie"
+
+#, javascript-format
+#~ msgid "Welcome to %s"
+#~ msgstr "Bienvenue à %s"
+
+#, javascript-format
+#~ msgid "Executing command: %s"
+#~ msgstr "Exécution de la commande: %s"
 
 #, fuzzy
 #~ msgid "failed to discover the cluster type"
