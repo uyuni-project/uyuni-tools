@@ -1,1 +1,0 @@
-- during migration, check if the source server is a no-containerized server (bsc#1243396)

@@ -1,1 +1,0 @@
-- during upgrade, pgsql service needs to be started before healtcheck (bsc#1243402)
