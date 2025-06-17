@@ -281,47 +281,10 @@ func (c *Connection) WaitForContainer() error {
 	return errors.New(L("container didn't start within 10s."))
 }
 
-// WaitForServer waits at most 120s for multi-user systemd target to be reached.
-func (c *Connection) WaitForServer() error {
-	// Wait for the system to be up
-	for i := 0; i < 120; i++ {
-		podName, err := c.GetPodName()
-		if err != nil {
-			log.Debug().Err(err)
-			time.Sleep(1 * time.Second)
-			continue
-		}
-
-		namespace, err := c.GetNamespace("")
-		if err != nil {
-			return err
-		}
-
-		args := []string{"exec", podName}
-		command, err := c.GetCommand()
-		if err != nil {
-			return err
-		}
-
-		if command == "kubectl" {
-			args = append(args, "-n", namespace, "--")
-		}
-		args = append(args, "systemctl", "is-active", "-q", "multi-user.target")
-		output := utils.RunCmd(command, args...)
-		isActive := output == nil
-
-		if isActive {
-			return nil
-		}
-		time.Sleep(1 * time.Second)
-	}
-	return errors.New(L("server didn't start within 120s. Check for the service status"))
-}
-
-// WaitForHealthcheck waits at most 60s for healtcheck to succeed.
+// WaitForHealthcheck waits at most 120s for healtcheck to succeed.
 func (c *Connection) WaitForHealthcheck() error {
 	// Wait for the system to be up
-	for i := 0; i < 60; i++ {
+	for i := 0; i < 120; i++ {
 		_, err := c.Healthcheck()
 		if err != nil {
 			log.Debug().Err(err)
@@ -330,7 +293,7 @@ func (c *Connection) WaitForHealthcheck() error {
 		}
 		return nil
 	}
-	return errors.New(L("container didn't start within 60s. Check for the service status"))
+	return errors.New(L("container didn't start within 120s. Check for the service status"))
 }
 
 // Copy transfers a file to or from the container.
