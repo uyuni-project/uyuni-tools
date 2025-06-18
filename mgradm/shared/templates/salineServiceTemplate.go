@@ -42,7 +42,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- end }}
 	-e TZ=${TZ} \
 	-e NOSSL=YES \
-	${PODMAN_EXTRA_ARGS} ${UYUNI_SALINE_IMAGE}'
+	${UYUNI_SALINE_IMAGE}'
 ExecStop=/usr/bin/podman stop --ignore -t 10 --cidfile=%t/%n.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n.ctr-id
 PIDFile=%t/uyuni-saline.pid
