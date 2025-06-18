@@ -1,0 +1,2 @@
+- Use FQDN of the source to generate certificates during migration
+  (bsc#1244847)
