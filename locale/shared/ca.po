@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-17 17:33+0200\n"
-"PO-Revision-Date: 2025-06-13 13:59+0000\n"
+"PO-Revision-Date: 2025-06-18 10:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.12.1\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -210,10 +210,8 @@ msgid "container didn't start within 10s."
 msgstr "el contenidor no va començar en 10 anys."
 
 #: shared/connection.go:296
-#, fuzzy
-#| msgid "container didn't start within 60s. Check for the service status"
 msgid "container didn't start within 120s. Check for the service status"
-msgstr "el contenidor no s'ha iniciat en 60 segons. Comproveu l'estat del servei."
+msgstr "el contenidor no s'ha iniciat en 120 segons. Comproveu l'estat del servei."
 
 #: shared/connection.go:336 shared/connection.go:383
 #, javascript-format
@@ -1123,29 +1121,23 @@ msgstr "Banderes de certificat SSL"
 
 #: shared/ssl/flags.go:33
 msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr ""
+msgstr "Camí del certificat CA intermedi per a la base de dades si és diferent de la del servidor"
 
 #: shared/ssl/flags.go:35
 msgid "Root CA certificate path for the database if different from the server one"
-msgstr ""
+msgstr "Camí del certificat CA d'arrel per a la base de dades si és diferent de la del servidor"
 
 #: shared/ssl/flags.go:36
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "Database certificate path"
-msgstr "Estat del certificat SSL"
+msgstr "Camí del certificat de la base de dades"
 
 #: shared/ssl/flags.go:37
-#, fuzzy
-#| msgid "Database"
 msgid "Database key path"
-msgstr "Base de dades"
+msgstr "Camí de la clau de la base de dades"
 
 #: shared/ssl/flags.go:39
-#, fuzzy
-#| msgid "SSL Certificate Flags"
 msgid "3rd Party SSL Certificate Flags"
-msgstr "Banderes de certificat SSL"
+msgstr "Banderes del certificat SSL de tercers"
 
 #: shared/ssl/ssl.go:68
 msgid "Failed to find a non-CA certificate"
