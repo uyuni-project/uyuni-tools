@@ -573,6 +573,11 @@ func Migrate(
 		return utils.Errorf(err, L("cannot configure db container"))
 	}
 
+	// At this point we should have all certificates in the secrets form, we can remove temporary volume
+	if err := podman.DeleteVolume(utils.EtcTLSTmpVolumeMount.Name, false); err != nil {
+		log.Warn().Err(err).Msg(L("cannot remove temporary etc-tls volume"))
+	}
+
 	if err := pgsql.Upgrade(preparedPgsqlImage, systemd); err != nil {
 		return err
 	}
@@ -678,7 +683,7 @@ func RunPgsqlContainerMigration(serverImage string, dbHost string, reportDBHost 
 		"-v", scriptDir + ":" + scriptDir,
 		"--security-opt", "label=disable",
 	}
-	err = podman.RunContainer("uyuni-db-migrate", serverImage, utils.ServerMigrationVolumeMounts, podmanArgs,
+	err = podman.RunContainer("uyuni-db-migrate", serverImage, utils.DatabaseMigrationVolumeMounts, podmanArgs,
 		[]string{scriptPath})
 
 	return err
@@ -690,7 +695,7 @@ func RunConfigPgsl(pgsqlImage string) error {
 		"--security-opt", "label=disable",
 		"--entrypoint", "/docker-entrypoint-initdb.d/uyuni-postgres-config.sh",
 	}
-	if err := podman.RunContainer("uyuni-db-config", pgsqlImage, utils.ServerMigrationVolumeMounts,
+	if err := podman.RunContainer("uyuni-db-config", pgsqlImage, utils.PgsqlRequiredVolumeMounts,
 		podmanArgs, []string{}); err != nil {
 		return err
 	}
