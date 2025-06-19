@@ -23,6 +23,9 @@ var PgsqlRequiredVolumeMounts = []types.VolumeMount{
 // CaCertVolumeMount represents volume for CA certificates.
 var CaCertVolumeMount = types.VolumeMount{MountPath: "/etc/pki/trust/anchors/", Name: "ca-cert"}
 
+// EtcTLSTmpVolumeMount represents temporary volume for SSL certificates.
+var EtcTLSTmpVolumeMount = types.VolumeMount{MountPath: "/etc/pki/tls/", Name: "etc-tls", Size: "1Mi"}
+
 // ServerVolumeMounts should match the volumes mapping from the container definition in both
 // the helm chart and the systemctl services definitions.
 var ServerVolumeMounts = []types.VolumeMount{
@@ -55,7 +58,10 @@ var ServerVolumeMounts = []types.VolumeMount{
 }
 
 // ServerMigrationVolumeMounts match server + postgres volume mounts, used for migration.
-var ServerMigrationVolumeMounts = append(ServerVolumeMounts, VarPgsqlDataVolumeMount, EtcRhnVolumeMount)
+var ServerMigrationVolumeMounts = append(ServerVolumeMounts, VarPgsqlDataVolumeMount, EtcTLSTmpVolumeMount)
+
+// DatabaseMigrationVolumeMounts match database + etc/rhn volume mounts, used for database migration.
+var DatabaseMigrationVolumeMounts = []types.VolumeMount{EtcRhnVolumeMount, VarPgsqlDataVolumeMount}
 
 // SalineVolumeMounts represents volumes used by Saline container.
 var SalineVolumeMounts = []types.VolumeMount{
