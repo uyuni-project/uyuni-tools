@@ -371,10 +371,6 @@ func Upgrade(
 	}
 
 	if newPgVersion > oldPgVersion {
-		log.Info().Msgf(
-			L("Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"),
-			oldPgVersion, newPgVersion,
-		)
 		if err := RunPgsqlVersionUpgrade(
 			authFile, registry, image, upgradeImage, strconv.Itoa(oldPgVersion),
 			strconv.Itoa(newPgVersion),
@@ -564,7 +560,7 @@ func Migrate(
 	log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
 		newPgVersion, oldPgVersion)
 
-	if err := upgradeDB(newPgVersion, oldPgVersion, upgradeImage, authFile, registry, pgsqlFlags.Image); err != nil {
+	if err := upgradeDB(newPgVersion, oldPgVersion, upgradeImage, authFile, registry, image); err != nil {
 		return err
 	}
 
@@ -797,15 +793,11 @@ func upgradeDB(
 	upgradeImage types.ImageFlags,
 	authFile string,
 	registry string,
-	dbImage types.ImageFlags,
+	image types.ImageFlags,
 ) error {
 	if newPgVersion > oldPgVersion {
-		log.Info().Msgf(
-			L("Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"),
-			oldPgVersion, newPgVersion,
-		)
 		if err := RunPgsqlVersionUpgrade(
-			authFile, registry, dbImage, upgradeImage, strconv.Itoa(oldPgVersion),
+			authFile, registry, image, upgradeImage, strconv.Itoa(oldPgVersion),
 			strconv.Itoa(newPgVersion),
 		); err != nil {
 			return utils.Error(err, L("cannot run PostgreSQL version upgrade script"))
