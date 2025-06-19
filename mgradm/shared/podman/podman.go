@@ -323,6 +323,11 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot setup network"))
 	}
 
+	fqdn, err := utils.GetFqdn([]string{})
+	if err != nil {
+		return err
+	}
+
 	preparedServerImage, preparedPgsqlImage, err := podman.PrepareImages(authFile, image, pgsqlFlags)
 	if err != nil {
 		return utils.Errorf(err, L("cannot prepare images"))
@@ -360,7 +365,7 @@ func Upgrade(
 			newPgVersion, oldPgVersion)
 
 		if err := configureSplitDBContainer(
-			preparedServerImage, preparedPgsqlImage, systemd, db, reportdb, ssl, tz); err != nil {
+			preparedServerImage, preparedPgsqlImage, systemd, db, reportdb, ssl, tz, fqdn); err != nil {
 			return utils.Errorf(err, L("cannot configure db container"))
 		}
 	}
@@ -564,7 +569,7 @@ func Migrate(
 	}
 
 	if err := configureSplitDBContainer(
-		preparedServerImage, preparedPgsqlImage, systemd, db, reportdb, ssl, tz); err != nil {
+		preparedServerImage, preparedPgsqlImage, systemd, db, reportdb, ssl, tz, sourceFqdn); err != nil {
 		return utils.Errorf(err, L("cannot configure db container"))
 	}
 
@@ -819,13 +824,9 @@ func configureSplitDBContainer(
 	reportdb adm_utils.DBFlags,
 	ssl adm_utils.InstallSSLFlags,
 	tz string,
+	fqdn string,
 ) error {
-	fqdn, err := utils.GetFqdn([]string{})
-	if err != nil {
-		return err
-	}
-
-	if err = PrepareSSLCertificates(serverImage, &ssl, tz, fqdn); err != nil {
+	if err := PrepareSSLCertificates(serverImage, &ssl, tz, fqdn); err != nil {
 		return err
 	}
 
