@@ -371,10 +371,6 @@ func Upgrade(
 	}
 
 	if newPgVersion > oldPgVersion {
-		log.Info().Msgf(
-			L("Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"),
-			oldPgVersion, newPgVersion,
-		)
 		if err := RunPgsqlVersionUpgrade(
 			authFile, registry, image, upgradeImage, strconv.Itoa(oldPgVersion),
 			strconv.Itoa(newPgVersion),
@@ -564,13 +560,18 @@ func Migrate(
 	log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
 		newPgVersion, oldPgVersion)
 
-	if err := upgradeDB(newPgVersion, oldPgVersion, upgradeImage, authFile, registry, pgsqlFlags.Image); err != nil {
+	if err := upgradeDB(newPgVersion, oldPgVersion, upgradeImage, authFile, registry, image); err != nil {
 		return err
 	}
 
 	if err := configureSplitDBContainer(
 		preparedServerImage, preparedPgsqlImage, systemd, db, reportdb, ssl, tz, sourceFqdn); err != nil {
 		return utils.Errorf(err, L("cannot configure db container"))
+	}
+
+	// At this point we should have all certificates in the secrets form, we can remove temporary volume
+	if err := podman.DeleteVolume(utils.EtcTLSTmpVolumeMount.Name, false); err != nil {
+		log.Warn().Err(err).Msg(L("cannot remove temporary etc-tls volume"))
 	}
 
 	if err := pgsql.Upgrade(preparedPgsqlImage, systemd); err != nil {
@@ -678,7 +679,7 @@ func RunPgsqlContainerMigration(serverImage string, dbHost string, reportDBHost 
 		"-v", scriptDir + ":" + scriptDir,
 		"--security-opt", "label=disable",
 	}
-	err = podman.RunContainer("uyuni-db-migrate", serverImage, utils.ServerMigrationVolumeMounts, podmanArgs,
+	err = podman.RunContainer("uyuni-db-migrate", serverImage, utils.DatabaseMigrationVolumeMounts, podmanArgs,
 		[]string{scriptPath})
 
 	return err
@@ -690,7 +691,7 @@ func RunConfigPgsl(pgsqlImage string) error {
 		"--security-opt", "label=disable",
 		"--entrypoint", "/docker-entrypoint-initdb.d/uyuni-postgres-config.sh",
 	}
-	if err := podman.RunContainer("uyuni-db-config", pgsqlImage, utils.ServerMigrationVolumeMounts,
+	if err := podman.RunContainer("uyuni-db-config", pgsqlImage, utils.PgsqlRequiredVolumeMounts,
 		podmanArgs, []string{}); err != nil {
 		return err
 	}
@@ -792,15 +793,11 @@ func upgradeDB(
 	upgradeImage types.ImageFlags,
 	authFile string,
 	registry string,
-	dbImage types.ImageFlags,
+	image types.ImageFlags,
 ) error {
 	if newPgVersion > oldPgVersion {
-		log.Info().Msgf(
-			L("Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"),
-			oldPgVersion, newPgVersion,
-		)
 		if err := RunPgsqlVersionUpgrade(
-			authFile, registry, dbImage, upgradeImage, strconv.Itoa(oldPgVersion),
+			authFile, registry, image, upgradeImage, strconv.Itoa(oldPgVersion),
 			strconv.Itoa(newPgVersion),
 		); err != nil {
 			return utils.Error(err, L("cannot run PostgreSQL version upgrade script"))
