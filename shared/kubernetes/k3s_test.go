@@ -13,7 +13,6 @@ import (
 // Test that the generated endpoints are valid for traefik.
 func TestGetTraefikEndpointName(t *testing.T) {
 	ports := utils.GetServerPorts(true)
-	ports = append(ports, utils.HubXmlrpcPorts...)
 	ports = append(ports, utils.GetProxyPorts()...)
 
 	for _, port := range ports {
