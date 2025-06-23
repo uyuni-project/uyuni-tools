@@ -54,8 +54,12 @@ func CreateSupportConfigTarball(outputFolder string, files []string) error {
 	}
 
 	for _, file := range files {
+		if !FileExists(file) {
+			log.Trace().Msgf("excluding file %s from tarball", file)
+			continue
+		}
 		if err := tarball.AddFile(file, path.Join(supportFileName, path.Base(file))); err != nil {
-			return Errorf(err, L("failed to add %s to tarball"), path.Base(file))
+			log.Warn().Err(err).Msgf(L("failed to add %s to tarball"), path.Base(file))
 		}
 	}
 	tarball.Close()
