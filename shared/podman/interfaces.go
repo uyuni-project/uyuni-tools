@@ -1,8 +1,16 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package podman
+
+const (
+	// FragmentPath is a systemd property containing the path of the service file.
+	FragmentPath = "FragmentPath"
+
+	// DropInPaths is a systemd property containing the paths of the service configuration file separated by a space.
+	DropInPaths = "DropInPaths"
+)
 
 // Systemd is an interface providing systemd operations.
 type Systemd interface {
@@ -65,4 +73,7 @@ type Systemd interface {
 
 	// GetServicesFromSystemdFiles return the uyuni enabled services as string list.
 	GetServicesFromSystemdFiles(systemdFileList string) []string
+
+	// GetServiceProperty returns the value of a systemd service property.
+	GetServiceProperty(service string, property string) (string, error)
 }

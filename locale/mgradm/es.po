@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -213,7 +213,7 @@ msgid "Failed to read secrets data"
 msgstr ""
 
 #: mgradm/cmd/backup/create/podman_utils.go:128
-#: mgradm/cmd/backup/restore/podman_utils.go:153
+#: mgradm/cmd/backup/restore/podman_utils.go:152
 msgid "Unable to decode podman secrets"
 msgstr ""
 
@@ -230,79 +230,79 @@ msgstr ""
 msgid "failed to create Systemd backup tarball: %w"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:48
+#: mgradm/cmd/backup/restore/podman_utils.go:47
 #, javascript-format
 msgid "Ignoring unexpected file in the podman backup %s"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:59
+#: mgradm/cmd/backup/restore/podman_utils.go:58
 msgid "Unable to decode network data backup"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:63
+#: mgradm/cmd/backup/restore/podman_utils.go:62
 msgid "Incorrect network data backup"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:97
-#: mgradm/cmd/backup/restore/podman_utils.go:130
+#: mgradm/cmd/backup/restore/podman_utils.go:96
+#: mgradm/cmd/backup/restore/podman_utils.go:129
 msgid "podman network already exists"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:102
+#: mgradm/cmd/backup/restore/podman_utils.go:101
 msgid "Unable to create podman network! Check the error and create network manually before starting the service"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:110
+#: mgradm/cmd/backup/restore/podman_utils.go:109
 msgid "Would restore network configuration"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:115
+#: mgradm/cmd/backup/restore/podman_utils.go:114
 msgid "Failed to read backed up network configuration, trying default"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:121
+#: mgradm/cmd/backup/restore/podman_utils.go:120
 msgid "Failed to decode backed up network configuration, trying default"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:129
+#: mgradm/cmd/backup/restore/podman_utils.go:128
 msgid "Podman network already exists, not restoring unless forced"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:142
+#: mgradm/cmd/backup/restore/podman_utils.go:141
 msgid "Restoring podman network"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:144
+#: mgradm/cmd/backup/restore/podman_utils.go:143
 msgid "Unlable to create podman network"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:161
+#: mgradm/cmd/backup/restore/podman_utils.go:160
 #, javascript-format
 msgid "Unable to decode secret %s, using as is"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:174
+#: mgradm/cmd/backup/restore/podman_utils.go:173
 msgid "Would restore podman secrets"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:180
+#: mgradm/cmd/backup/restore/podman_utils.go:179
 msgid "Failed to read backed up podman secrets, no secrets were restored"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:185
+#: mgradm/cmd/backup/restore/podman_utils.go:184
 msgid "Failed to decode backed up podman secrets, no secrets were restored"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:190
+#: mgradm/cmd/backup/restore/podman_utils.go:189
 msgid "Restoring podman secrets"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:197
+#: mgradm/cmd/backup/restore/podman_utils.go:196
 #, javascript-format
 msgid "Podman secret %s is already present, not restoring unless forced"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/podman_utils.go:203
+#: mgradm/cmd/backup/restore/podman_utils.go:202
 msgid "Unable to create podman secret"
 msgstr ""
 
@@ -360,23 +360,23 @@ msgstr ""
 msgid "Unable to read directory with the images"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/restore.go:235
+#: mgradm/cmd/backup/restore/restore.go:234
 msgid "podman config backup not found in the backup location, trying defaults"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/restore.go:241
+#: mgradm/cmd/backup/restore/restore.go:240
 msgid "Unable to validate podman backup file"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/restore.go:249
+#: mgradm/cmd/backup/restore/restore.go:248
 msgid "Restoring systemd configuration"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/restore.go:252
+#: mgradm/cmd/backup/restore/restore.go:251
 msgid "systemd backup not found in the backup location, generating defaults"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/restore.go:257
+#: mgradm/cmd/backup/restore/restore.go:256
 msgid "Unable to validate systemd backup file"
 msgstr ""
 
@@ -428,38 +428,33 @@ msgstr ""
 msgid "install podman before running this command"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:41
+#: mgradm/cmd/cmd.go:42
 msgid "Uyuni administration tool"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:42
+#: mgradm/cmd/cmd.go:43
 msgid "Tool to help administering Uyuni servers in containers"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:49
+#: mgradm/cmd/cmd.go:50
 msgid "Server Deployment:"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:53
+#: mgradm/cmd/cmd.go:54
 msgid "Server Management:"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:57
+#: mgradm/cmd/cmd.go:58
 msgid "Administrator tools:"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:67
-#, javascript-format
-msgid "Welcome to %s"
-msgstr ""
-
 #: mgradm/cmd/cmd.go:68
-msgid "Use of this software implies acceptance of the End User License Agreement."
+#, javascript-format
+msgid "Starting %s"
 msgstr ""
 
 #: mgradm/cmd/cmd.go:69
-#, javascript-format
-msgid "Executing command: %s"
+msgid "Use of this software implies acceptance of the End User License Agreement."
 msgstr ""
 
 #: mgradm/cmd/cmd.go:73
@@ -853,16 +848,16 @@ msgid "Setting up the server with the FQDN '%s'"
 msgstr ""
 
 #: mgradm/cmd/install/podman/utils.go:67 mgradm/shared/podman/podman.go:328
-#: mgradm/shared/podman/podman.go:519
+#: mgradm/shared/podman/podman.go:528
 msgid "cannot prepare images"
 msgstr ""
 
 #: mgradm/cmd/install/podman/utils.go:71 mgradm/shared/podman/podman.go:93
-#: mgradm/shared/podman/podman.go:323 mgradm/shared/podman/podman.go:511
+#: mgradm/shared/podman/podman.go:323 mgradm/shared/podman/podman.go:520
 msgid "cannot setup network"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:857
+#: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:866
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr ""
@@ -871,19 +866,19 @@ msgstr ""
 msgid "Run setup command in the container"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:142 mgradm/shared/podman/podman.go:579
+#: mgradm/cmd/install/podman/utils.go:123 mgradm/shared/podman/podman.go:588
 msgid "cannot wait for system start"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:145
+#: mgradm/cmd/install/podman/utils.go:126
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:152
+#: mgradm/cmd/install/podman/utils.go:133
 msgid "failed to extract payg data"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:156
+#: mgradm/cmd/install/podman/utils.go:137
 msgid "cannot enable podman socket"
 msgstr ""
 
@@ -957,6 +952,10 @@ msgstr ""
 
 #: mgradm/cmd/install/shared/flags.go:49
 msgid "First User Flags"
+msgstr ""
+
+#: mgradm/cmd/install/shared/flags.go:56
+msgid "Password for the CA key to generate"
 msgstr ""
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:49
@@ -1113,12 +1112,16 @@ msgid ""
 "NOTE: migrating to a remote podman is not supported yet!\n"
 msgstr ""
 
-#: mgradm/cmd/migrate/shared/flags.go:15
-msgid "Prepare the mgration - copy the data without stopping the source server."
+#: mgradm/cmd/migrate/shared/flags.go:16
+msgid "Prepare the migration - copy the data without stopping the source server."
 msgstr ""
 
-#: mgradm/cmd/migrate/shared/flags.go:18
+#: mgradm/cmd/migrate/shared/flags.go:19
 msgid "User on the source server. Non-root user must have passwordless sudo privileges (NOPASSWD tag in /etc/sudoers)."
+msgstr ""
+
+#: mgradm/cmd/migrate/shared/flags.go:28 mgradm/cmd/upgrade/shared/flags.go:23
+msgid "Current Server CA password"
 msgstr ""
 
 #: mgradm/cmd/restart/nokubernetes.go:23 mgradm/cmd/scale/nokubernetes.go:23
@@ -1448,7 +1451,7 @@ msgstr ""
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr ""
 
-#: mgradm/shared/hub/xmlrpcapi.go:73 mgradm/shared/podman/podman.go:466
+#: mgradm/shared/hub/xmlrpcapi.go:73 mgradm/shared/podman/podman.go:475
 #: mgradm/shared/saline/saline.go:146
 msgid "cannot enable service"
 msgstr ""
@@ -1699,85 +1702,89 @@ msgstr ""
 msgid "cannot generate PostgreSQL finalization script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:333 mgradm/shared/podman/podman.go:543
+#: mgradm/shared/podman/podman.go:333 mgradm/shared/podman/podman.go:552
 msgid "cannot prepare host"
 msgstr ""
 
 #: mgradm/shared/podman/podman.go:338 mgradm/shared/podman/podman.go:346
-#: mgradm/shared/podman/podman.go:611
+#: mgradm/shared/podman/podman.go:620
 msgid "cannot stop service"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:359 mgradm/shared/podman/podman.go:550
+#: mgradm/shared/podman/podman.go:359 mgradm/shared/podman/podman.go:559
 msgid "Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:364 mgradm/shared/podman/podman.go:559
+#: mgradm/shared/podman/podman.go:364 mgradm/shared/podman/podman.go:568
 msgid "cannot configure db container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:370 mgradm/shared/podman/podman.go:785
+#: mgradm/shared/podman/podman.go:370 mgradm/shared/podman/podman.go:794
 msgid "Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:792
-#: mgradm/shared/podman/podman.go:824
+#: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:801
+#: mgradm/shared/podman/podman.go:833
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:795
+#: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:804
 msgid "Upgrading without changing PostgreSQL version"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:798
+#: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:807
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:395 mgradm/shared/podman/podman.go:569
+#: mgradm/shared/podman/podman.go:395 mgradm/shared/podman/podman.go:578
 msgid "cannot run PostgreSQL finalize script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:399 mgradm/shared/podman/podman.go:573
+#: mgradm/shared/podman/podman.go:399 mgradm/shared/podman/podman.go:582
 msgid "cannot run post upgrade script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:419 mgradm/shared/podman/podman.go:464
+#: mgradm/shared/podman/podman.go:420 mgradm/shared/podman/podman.go:473
 msgid "Waiting for the server to start…"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:432 mgradm/shared/podman/podman.go:592
+#: mgradm/shared/podman/podman.go:423
+msgid "cannot start service"
+msgstr ""
+
+#: mgradm/shared/podman/podman.go:441 mgradm/shared/podman/podman.go:601
 msgid "error upgrading confidential computing service."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:442 mgradm/shared/podman/podman.go:602
+#: mgradm/shared/podman/podman.go:451 mgradm/shared/podman/podman.go:611
 msgid "error upgrading saline service."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:534
+#: mgradm/shared/podman/podman.go:543
 msgid "cannot run migration script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:537
+#: mgradm/shared/podman/podman.go:546
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:660
+#: mgradm/shared/podman/podman.go:669
 msgid "failed to generate postgresql migration script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:696
+#: mgradm/shared/podman/podman.go:705
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:726
+#: mgradm/shared/podman/podman.go:735
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:736
+#: mgradm/shared/podman/podman.go:745
 msgid "Failed to find home directory to look for SSH config"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:760
+#: mgradm/shared/podman/podman.go:769
 msgid "cannot inspect podman values"
 msgstr ""
 
@@ -1793,12 +1800,27 @@ msgstr ""
 msgid "Using provided 3rd party database certificates"
 msgstr ""
 
+#: mgradm/shared/podman/ssl.go:214
+#, javascript-format
+msgid "CA file %s not found. New CA and certificates will be created."
+msgstr ""
+
 #: mgradm/shared/podman/ssl.go:219
 msgid "cannot write existing CA certificate"
 msgstr ""
 
+#: mgradm/shared/podman/ssl.go:226
+#, javascript-format
+msgid "Cert file %s not found. A new certificate will be created."
+msgstr ""
+
 #: mgradm/shared/podman/ssl.go:230
 msgid "cannot write existing server certificate"
+msgstr ""
+
+#: mgradm/shared/podman/ssl.go:237
+#, javascript-format
+msgid "Cert key file %s not found. A new certificate will be created."
 msgstr ""
 
 #: mgradm/shared/podman/ssl.go:241
@@ -1810,7 +1832,7 @@ msgid "Reusing existing certificates"
 msgstr ""
 
 #: mgradm/shared/podman/ssl.go:305
-msgid "Server SSL certificates generation failed"
+msgid "Failed to generate server SSL certificates. Please check the input parameters."
 msgstr ""
 
 #: mgradm/shared/podman/ssl.go:308
@@ -1822,7 +1844,7 @@ msgid "Cannot generate database certificate"
 msgstr ""
 
 #: mgradm/shared/podman/ssl.go:342
-msgid "Database SSL certificates generation failed"
+msgid "Failed to generate server Database SSL certificates. Please check the input parameters."
 msgstr ""
 
 #: mgradm/shared/podman/ssl.go:345
@@ -2079,7 +2101,7 @@ msgid ""
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:261 mgradm/shared/utils/cmd_utils.go:273
-msgid "Saline port (default: 8216)"
+msgid "Saline port"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:270
@@ -2095,30 +2117,6 @@ msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:281
 msgid "PostgreSQL Database"
-msgstr ""
-
-#: mgradm/shared/utils/cmd_utils.go:294
-msgid "Password for the CA key to generate"
-msgstr ""
-
-#: mgradm/shared/utils/cmd_utils.go:299
-msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr ""
-
-#: mgradm/shared/utils/cmd_utils.go:301
-msgid "Root CA certificate path for the database if different from the server one"
-msgstr ""
-
-#: mgradm/shared/utils/cmd_utils.go:302
-msgid "Database certificate path"
-msgstr ""
-
-#: mgradm/shared/utils/cmd_utils.go:303
-msgid "Database key path"
-msgstr ""
-
-#: mgradm/shared/utils/cmd_utils.go:305
-msgid "3rd Party SSL Certificate Flags"
 msgstr ""
 
 #: mgradm/shared/utils/exec.go:25

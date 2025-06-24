@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -209,61 +209,57 @@ msgstr ""
 msgid "container didn't start within 10s."
 msgstr ""
 
-#: shared/connection.go:318
-msgid "server didn't start within 120s. Check for the service status"
+#: shared/connection.go:296
+msgid "container didn't start within 120s. Check for the service status"
 msgstr ""
 
-#: shared/connection.go:333
-msgid "container didn't start within 60s. Check for the service status"
-msgstr ""
-
-#: shared/connection.go:373 shared/connection.go:420
+#: shared/connection.go:336 shared/connection.go:383
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr ""
 
-#: shared/connection.go:415
+#: shared/connection.go:378
 msgid "failed to detect the namespace"
 msgstr ""
 
-#: shared/connection.go:431
+#: shared/connection.go:394
 msgid "Copying the SSL CA certificate to the host"
 msgstr ""
 
-#: shared/connection.go:450
+#: shared/connection.go:413
 msgid "Updating host trusted certificates"
 msgstr ""
 
-#: shared/connection.go:458
+#: shared/connection.go:421
 msgid "Unable to update host trusted certificates."
 msgstr ""
 
-#: shared/connection.go:499 shared/connection.go:520
+#: shared/connection.go:462 shared/connection.go:483
 msgid "failed to determine suitable backend"
 msgstr ""
 
-#: shared/connection.go:509
+#: shared/connection.go:472
 msgid "no supported backend found"
 msgstr ""
 
-#: shared/connection.go:534
+#: shared/connection.go:497
 #, javascript-format
 msgid "Running supportconfig in  %s"
 msgstr ""
 
-#: shared/connection.go:542
+#: shared/connection.go:505
 msgid "failed to run supportconfig"
 msgstr ""
 
-#: shared/connection.go:546
+#: shared/connection.go:509
 msgid "failed to find container supportconfig tarball from command output"
 msgstr ""
 
-#: shared/connection.go:552
+#: shared/connection.go:515
 msgid "cannot copy tarball"
 msgstr ""
 
-#: shared/connection.go:558
+#: shared/connection.go:521
 #, javascript-format
 msgid "failed to remove %s file in the container"
 msgstr ""
@@ -299,7 +295,7 @@ msgstr ""
 #: shared/podman/network.go:108 shared/podman/secret.go:123
 #: shared/podman/systemd.go:110 shared/podman/systemd.go:189
 #: shared/podman/systemd.go:190 shared/podman/utils.go:177
-#: shared/podman/utils.go:210 shared/podman/utils.go:230
+#: shared/podman/utils.go:210 shared/podman/utils.go:237
 #, javascript-format
 msgid "Would run %s"
 msgstr ""
@@ -729,7 +725,7 @@ msgstr ""
 #: shared/podman/images.go:347 shared/podman/images.go:367
 #: shared/podman/images.go:387 shared/podman/secret.go:125
 #: shared/podman/utils.go:179 shared/podman/utils.go:213
-#: shared/podman/utils.go:241
+#: shared/podman/utils.go:248
 #, javascript-format
 msgid "Run %s"
 msgstr ""
@@ -1066,26 +1062,26 @@ msgstr ""
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:235
+#: shared/podman/utils.go:242
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr ""
 
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:246
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr ""
 
-#: shared/podman/utils.go:243
+#: shared/podman/utils.go:250
 #, javascript-format
 msgid "Failed to import volume %s"
 msgstr ""
 
-#: shared/podman/utils.go:319
+#: shared/podman/utils.go:326
 msgid "failed to login to registry.suse.com"
 msgstr ""
 
-#: shared/podman/utils.go:345 shared/podman/utils.go:366
+#: shared/podman/utils.go:352 shared/podman/utils.go:373
 msgid "cannot inspect data"
 msgstr ""
 
@@ -1115,6 +1111,26 @@ msgstr ""
 
 #: shared/ssl/flags.go:21
 msgid "SSL Certificate Flags"
+msgstr ""
+
+#: shared/ssl/flags.go:33
+msgid "Intermediate CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:35
+msgid "Root CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:36
+msgid "Database certificate path"
+msgstr ""
+
+#: shared/ssl/flags.go:37
+msgid "Database key path"
+msgstr ""
+
+#: shared/ssl/flags.go:39
+msgid "3rd Party SSL Certificate Flags"
 msgstr ""
 
 #: shared/ssl/ssl.go:68

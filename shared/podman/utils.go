@@ -146,10 +146,10 @@ func GetServiceImage(service string) string {
 		return ""
 	}
 
-	imageFinder := regexp.MustCompile(`UYUNI_IMAGE=(.*)`)
+	imageFinder := regexp.MustCompile(`UYUNI.*_IMAGE=(.*)`)
 	matches := imageFinder.FindStringSubmatch(string(out))
 	if len(matches) < 2 {
-		log.Warn().Msgf(L("no UYUNI_IMAGE defined in %s systemd service"), service)
+		log.Warn().Msgf(L("no UYUNI.*_IMAGE defined in %s systemd service"), service)
 		return ""
 	}
 	return matches[1]

@@ -1,2 +1,0 @@
-- fix several bugs related to saline service (bsc#1243329)
-- purge saline and hubxmlrpc image (bsc#1243359)

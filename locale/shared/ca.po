@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
-"PO-Revision-Date: 2025-04-10 15:56+0000\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
+"PO-Revision-Date: 2025-06-13 13:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -209,61 +209,59 @@ msgstr "Comprovació de salut no executada"
 msgid "container didn't start within 10s."
 msgstr "el contenidor no va començar en 10 anys."
 
-#: shared/connection.go:318
-msgid "server didn't start within 120s. Check for the service status"
-msgstr "el servidor no s'ha iniciat durant 120 segons. Comproveu l'estat del servei"
-
-#: shared/connection.go:333
-msgid "container didn't start within 60s. Check for the service status"
+#: shared/connection.go:296
+#, fuzzy
+#| msgid "container didn't start within 60s. Check for the service status"
+msgid "container didn't start within 120s. Check for the service status"
 msgstr "el contenidor no s'ha iniciat en 60 segons. Comproveu l'estat del servei."
 
-#: shared/connection.go:373 shared/connection.go:420
+#: shared/connection.go:336 shared/connection.go:383
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr "tipus de contenidor desconegut: %s"
 
-#: shared/connection.go:415
+#: shared/connection.go:378
 msgid "failed to detect the namespace"
 msgstr "no s'ha pogut detectar l'espai de noms"
 
-#: shared/connection.go:431
+#: shared/connection.go:394
 msgid "Copying the SSL CA certificate to the host"
 msgstr "S'està copiant el certificat SSL CA a l'amfitrió"
 
-#: shared/connection.go:450
+#: shared/connection.go:413
 msgid "Updating host trusted certificates"
 msgstr "S'estan actualitzant els certificats de confiança de l'amfitrió"
 
-#: shared/connection.go:458
+#: shared/connection.go:421
 msgid "Unable to update host trusted certificates."
 msgstr "No s'han pogut actualitzar els certificats de confiança de l'amfitrió."
 
-#: shared/connection.go:499 shared/connection.go:520
+#: shared/connection.go:462 shared/connection.go:483
 msgid "failed to determine suitable backend"
 msgstr "no s'ha pogut determinar el dorsal adequat"
 
-#: shared/connection.go:509
+#: shared/connection.go:472
 msgid "no supported backend found"
 msgstr "no s'ha trobat cap dorsal compatible"
 
-#: shared/connection.go:534
+#: shared/connection.go:497
 #, javascript-format
 msgid "Running supportconfig in  %s"
 msgstr "S'està executant supportconfig a %s"
 
-#: shared/connection.go:542
+#: shared/connection.go:505
 msgid "failed to run supportconfig"
 msgstr "no s'ha pogut executar supportconfig"
 
-#: shared/connection.go:546
+#: shared/connection.go:509
 msgid "failed to find container supportconfig tarball from command output"
 msgstr "no s'ha pogut trobar el contenidor supportconfig tarball des de la sortida d'ordres"
 
-#: shared/connection.go:552
+#: shared/connection.go:515
 msgid "cannot copy tarball"
 msgstr "no es pot copiar el fitxer tar"
 
-#: shared/connection.go:558
+#: shared/connection.go:521
 #, javascript-format
 msgid "failed to remove %s file in the container"
 msgstr "no s'ha pogut eliminar el fitxer %s al contenidor"
@@ -299,7 +297,7 @@ msgstr "l'espai de noms és obligatori"
 #: shared/podman/network.go:108 shared/podman/secret.go:123
 #: shared/podman/systemd.go:110 shared/podman/systemd.go:189
 #: shared/podman/systemd.go:190 shared/podman/utils.go:177
-#: shared/podman/utils.go:210 shared/podman/utils.go:230
+#: shared/podman/utils.go:210 shared/podman/utils.go:237
 #, javascript-format
 msgid "Would run %s"
 msgstr "S'executaria %s"
@@ -735,7 +733,7 @@ msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 #: shared/podman/images.go:347 shared/podman/images.go:367
 #: shared/podman/images.go:387 shared/podman/secret.go:125
 #: shared/podman/utils.go:179 shared/podman/utils.go:213
-#: shared/podman/utils.go:241
+#: shared/podman/utils.go:248
 #, javascript-format
 msgid "Run %s"
 msgstr "Executa %s"
@@ -1070,28 +1068,28 @@ msgstr "No s'ha pogut exportar el volum %s"
 
 #: shared/podman/utils.go:218
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
-msgstr "No s'ha pogut escriure la suma de comprovació del volum %[1]s a %[2]s"
+msgstr "No s'ha pogut escriure la suma de verificació del volum %[1]s a %[2]s"
 
-#: shared/podman/utils.go:235
+#: shared/podman/utils.go:242
 #, javascript-format
 msgid "Checksum does not match for volume %s"
-msgstr "La suma de comprovació no coincideix per al volum %s"
+msgstr "La suma de verificació no coincideix per al volum %s"
 
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:246
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
-msgstr "No s'ha pogut crear prèviament el volum buit %s"
+msgstr "No s'ha pogut precrear el volum buit %s"
 
-#: shared/podman/utils.go:243
+#: shared/podman/utils.go:250
 #, javascript-format
 msgid "Failed to import volume %s"
-msgstr "No s'ha pogut importar el fitxer %s"
+msgstr "No s'ha pogut importar el volum %s"
 
-#: shared/podman/utils.go:319
+#: shared/podman/utils.go:326
 msgid "failed to login to registry.suse.com"
 msgstr "no s'ha pogut iniciar la sessió a register.suse.com"
 
-#: shared/podman/utils.go:345 shared/podman/utils.go:366
+#: shared/podman/utils.go:352 shared/podman/utils.go:373
 msgid "cannot inspect data"
 msgstr "no es poden inspeccionar les dades"
 
@@ -1121,6 +1119,32 @@ msgstr "Unitat d'organització del certificat SSL"
 
 #: shared/ssl/flags.go:21
 msgid "SSL Certificate Flags"
+msgstr "Banderes de certificat SSL"
+
+#: shared/ssl/flags.go:33
+msgid "Intermediate CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:35
+msgid "Root CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:36
+#, fuzzy
+#| msgid "SSL certificate state"
+msgid "Database certificate path"
+msgstr "Estat del certificat SSL"
+
+#: shared/ssl/flags.go:37
+#, fuzzy
+#| msgid "Database"
+msgid "Database key path"
+msgstr "Base de dades"
+
+#: shared/ssl/flags.go:39
+#, fuzzy
+#| msgid "SSL Certificate Flags"
+msgid "3rd Party SSL Certificate Flags"
 msgstr "Banderes de certificat SSL"
 
 #: shared/ssl/ssl.go:68
@@ -1445,22 +1469,19 @@ msgid "failed to remove temporary directory"
 msgstr "no s'ha pogut eliminar el directori temporal"
 
 #: shared/utils/files.go:97
-#, fuzzy, javascript-format
-#| msgid "failed to write %s file"
+#, javascript-format
 msgid "fails to open %s file"
-msgstr "no s'ha pogut escriure el fitxer %s"
+msgstr "no s'ha pogut obrir el fitxer %s"
 
 #: shared/utils/files.go:109
-#, fuzzy, javascript-format
-#| msgid "failed to create %s file"
+#, javascript-format
 msgid "failed to read %s file"
-msgstr "no s'ha pogut crear el fitxer %s"
+msgstr "no s'ha pogut llegir el fitxer %s"
 
 #: shared/utils/files.go:113
-#, fuzzy, javascript-format
-#| msgid "failed to create %s file"
+#, javascript-format
 msgid "failed to copy %s file"
-msgstr "no s'ha pogut crear el fitxer %s"
+msgstr "no s'ha pogut copiar el fitxer %s"
 
 #: shared/utils/flaggroups.go:56
 msgid "Flags:\n"
@@ -1643,16 +1664,16 @@ msgstr "s'ha produït un error en escriure el fitxer %s"
 #: shared/utils/utils.go:441
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
-msgstr "No s'ha pogut calcular la suma de comprovació del fitxer %s"
+msgstr "No s'ha pogut calcular la suma de verificació del fitxer %s"
 
 #: shared/utils/utils.go:445
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
-msgstr "No s'ha pogut escriure la suma de comprovació del fitxer %[1]s al %[2]s"
+msgstr "No s'ha pogut escriure la suma de verificació del fitxer %[1]s a %[2]s"
 
 #: shared/utils/utils.go:455
 #, javascript-format
 msgid "Checksum of %s does not match"
-msgstr "La suma de comprovació de %s no coincideix"
+msgstr "La suma de verificació de %s no coincideix"
 
 #: shared/utils/uyuniservices.go:18
 msgid "Main service"
@@ -1664,16 +1685,19 @@ msgstr "Assistent de migració"
 
 #: shared/utils/uyuniservices.go:30
 msgid "Confidential computing attestation"
-msgstr "Certificació computacional confidencial"
+msgstr "Certificació d'informàtica confidencial"
 
 #: shared/utils/uyuniservices.go:36
 msgid "Hub XML-RPC API"
-msgstr "Concentrador XML-RPC API"
+msgstr "API del concentrador XML-RPC"
 
 #: shared/utils/uyuniservices.go:42
 msgid "Saline"
-msgstr "Salina"
+msgstr "Saline"
 
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "Base de dades"
+
+#~ msgid "server didn't start within 120s. Check for the service status"
+#~ msgstr "el servidor no s'ha iniciat durant 120 segons. Comproveu l'estat del servei"

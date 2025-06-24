@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 09:21+0200\n"
+"POT-Creation-Date: 2025-06-17 17:33+0200\n"
 "PO-Revision-Date: 2024-04-08 14:10+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -102,31 +102,26 @@ msgstr ""
 msgid "Successfully logged out"
 msgstr ""
 
-#: mgrctl/cmd/cmd.go:30
+#: mgrctl/cmd/cmd.go:31
 msgid "Uyuni control tool"
 msgstr "Outil de contrôle d'Uyuni"
 
-#: mgrctl/cmd/cmd.go:31
+#: mgrctl/cmd/cmd.go:32
 msgid "Tool to help managing Uyuni servers mainly through their API"
 msgstr "Outil pour aider à gérer des serveurs Uyuni, principalement via leur API"
 
-#: mgrctl/cmd/cmd.go:38
+#: mgrctl/cmd/cmd.go:39
 msgid "configuration file path"
 msgstr "chemin vers le fichier de configuration"
 
-#: mgrctl/cmd/cmd.go:40
+#: mgrctl/cmd/cmd.go:41
 msgid "application log level"
 msgstr "niveau de verbosité de l'application"
 
-#: mgrctl/cmd/cmd.go:48
-#, javascript-format
-msgid "Welcome to %s"
-msgstr "Bienvenue à %s"
-
 #: mgrctl/cmd/cmd.go:49
 #, javascript-format
-msgid "Executing command: %s"
-msgstr "Exécution de la commande: %s"
+msgid "Starting %s"
+msgstr ""
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
@@ -292,6 +287,14 @@ msgstr ""
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "Exécuter un terminal dans le conteneur du serveur"
+
+#, javascript-format
+#~ msgid "Welcome to %s"
+#~ msgstr "Bienvenue à %s"
+
+#, javascript-format
+#~ msgid "Executing command: %s"
+#~ msgstr "Exécution de la commande: %s"
 
 #~ msgid "Takes an API path and parameters and then issues POST request with them. User and password are mandatory. Parameters can be either JSON encoded string or one or more key=value pairs."
 #~ msgstr "Effectue une requête POST avec un chemin d'API et des paramètres. L'utilisateur et le mot de passe sont obligatoires. Les paramètres peuvent être soit une chaîne de caractères encodée en JSON ou une ou plusieurs paire clé=valeur."

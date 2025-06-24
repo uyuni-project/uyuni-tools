@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,6 +7,7 @@ package cmd
 import (
 	"os"
 	"path"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -45,8 +46,7 @@ func NewUyunictlCommand() *cobra.Command {
 		if cmd.Name() != "completion" {
 			utils.LogInit((cmd.Name() != "exec" && cmd.Name() != "term") || globalFlags.LogLevel == "trace")
 			utils.SetLogLevel(globalFlags.LogLevel)
-			log.Info().Msgf(L("Welcome to %s"), name)
-			log.Info().Msgf(L("Executing command: %s"), cmd.Name())
+			log.Info().Msgf(L("Starting %s"), strings.Join(os.Args, " "))
 		}
 	}
 

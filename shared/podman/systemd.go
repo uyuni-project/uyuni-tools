@@ -73,6 +73,18 @@ func GetServicePath(name string) string {
 	return path.Join(servicesPath, name+".service")
 }
 
+func (s SystemdImpl) GetServiceProperty(service string, property string) (string, error) {
+	serviceName := service
+	if strings.HasSuffix(service, "@") {
+		serviceName = service + "0"
+	}
+	out, err := newRunner("systemctl", "show", "-p", property, serviceName).Exec()
+	if err != nil {
+		return "", utils.Errorf(err, L("Failed to get the %[1]s property from %[2]s service"), property, service)
+	}
+	return strings.TrimPrefix(strings.TrimSpace(string(out)), property+"="), nil
+}
+
 // GetServiceConfFolder return the conf folder for systemd services.
 func GetServiceConfFolder(name string) string {
 	return path.Join(servicesPath, name+".service.d")
