@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -20,17 +21,7 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().Bool("tftp", true, L("Enable TFTP"))
 
 	cmd_utils.AddServerFlags(cmd)
-
-	// For SSL 3rd party certificates
-	cmd.Flags().StringSlice("ssl-ca-intermediate", []string{}, L("Intermediate CA certificate path"))
-	cmd.Flags().String("ssl-ca-root", "", L("Root CA certificate path"))
-	cmd.Flags().String("ssl-server-cert", "", L("Server certificate path"))
-	cmd.Flags().String("ssl-server-key", "", L("Server key path"))
-
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-ca-intermediate", "ssl3rd")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-ca-root", "ssl3rd")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-server-cert", "ssl3rd")
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-server-key", "ssl3rd")
+	ssl.AddSSLThirdPartyFlags(cmd)
 
 	cmd.Flags().Bool("debug-java", false, L("Enable tomcat and taskomatic remote debugging"))
 
@@ -52,7 +43,4 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "admin-firstName", "first-user")
 	_ = utils.AddFlagToHelpGroupID(cmd, "admin-lastName", "first-user")
 	_ = utils.AddFlagToHelpGroupID(cmd, "organization", "first-user")
-
-	cmd.Flags().String("ssl-password", "", L("Password for the CA key to generate"))
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", "ssl")
 }
