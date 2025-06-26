@@ -19,7 +19,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func prepareThirdPartyCertificate(caChain *types.CaChain, pair *types.SSLPair, outDir string) error {
+func prepareThirdPartyCertificate(caChain *types.CaChain, pair *types.SSLPair, outDir string, fqdns ...string) error {
 	// OrderCas checks the chain of certificates to report problems early
 	// We also sort the certificates of the chain in a single blob for Apache and PostgreSQL
 	var orderedCert, rootCA []byte
@@ -48,7 +48,12 @@ func prepareThirdPartyCertificate(caChain *types.CaChain, pair *types.SSLPair, o
 		return err
 	}
 
-	return nil
+	errors := []error{}
+	for _, fqdn := range fqdns {
+		errors = append(errors, ssl.VerifyHostname(caPath, serverCertPath, fqdn))
+	}
+
+	return utils.JoinErrors(errors...)
 }
 
 var newRunner = utils.NewRunner
@@ -136,9 +141,10 @@ func prepareDatabaseSSLcertificates(image string, sslFlags *adm_utils.InstallSSL
 		dbPair := &sslFlags.DB.SSLPair
 
 		dbDir := path.Join(tempDir, "db")
-		if err := prepareThirdPartyCertificate(dbCa, dbPair, dbDir); err != nil {
+		if err := prepareThirdPartyCertificate(dbCa, dbPair, dbDir, fqdn, "db", "reportdb"); err != nil {
 			return err
 		}
+
 		// Create secrets for the database key and certificate
 		return shared_podman.CreateTLSSecrets(
 			shared_podman.DBCASecret, path.Join(dbDir, "ca.crt"),
