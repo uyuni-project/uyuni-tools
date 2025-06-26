@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -346,4 +347,19 @@ func CheckKey(keyPath string) error {
 	}
 
 	return nil
+}
+
+// nochecktime disables time verification and should only be for unit tests as the test cert isn't refreshed.
+var nochecktime = false
+
+// VerifyHostname checks that the certificate at certPath is matching the hostname.
+func VerifyHostname(caPath string, certPath string, hostname string) error {
+	args := []string{"verify"}
+	if nochecktime {
+		args = append(args, "-no_check_time")
+	}
+	args = append(args, "-trusted", certPath, "-trusted", caPath, "-verify_hostname", hostname, certPath)
+	// The certPath needs to be added as trusted too since it could be a bundle with intermediate certs.
+	_, err := newRunner("openssl", args...).Log(zerolog.DebugLevel).Exec()
+	return err
 }
