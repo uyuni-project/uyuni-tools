@@ -65,9 +65,7 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 	}
 
 	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", L("configuration file path"))
-	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "",
-		L("application log level")+"(trace|debug|info|warn|error|fatal|panic)",
-	)
+	utils.AddLogLevelFlags(rootCmd, &globalFlags.LogLevel)
 
 	installCmd := install.NewCommand(globalFlags)
 	rootCmd.AddCommand(installCmd)
