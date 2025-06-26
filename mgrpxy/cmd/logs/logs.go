@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -27,7 +27,7 @@ type logsFlags struct {
 	Since      string
 }
 
-var systemd podman.Systemd = podman.SystemdImpl{}
+var systemd podman.Systemd = podman.NewSystemd()
 
 // NewCommand to get the logs of the server.
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[logsFlags]) *cobra.Command {

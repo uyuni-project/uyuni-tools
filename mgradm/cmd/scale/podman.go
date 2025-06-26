@@ -16,7 +16,7 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
 
-var systemd podman.Systemd = podman.SystemdImpl{}
+var systemd podman.Systemd = podman.NewSystemd()
 
 func podmanScale(
 	_ *types.GlobalFlags,

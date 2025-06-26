@@ -56,7 +56,7 @@ type InstallationFlags struct {
 	Organization string
 }
 
-var systemd podman.Systemd = podman.SystemdImpl{}
+var systemd podman.Systemd = podman.NewSystemd()
 
 // CheckUpgradeParameters verifies the consistency of the parameters for upgrade and migrate commands.
 func (flags *InstallationFlags) CheckUpgradeParameters(cmd *cobra.Command, command string) {
