@@ -418,7 +418,7 @@ const sslSetupDatabaseScript = `
 		--dir /root/ssl-build --password "$CERT_PASS" \
 		--set-country "$CERT_COUNTRY" --set-state "$CERT_STATE" --set-city "$CERT_CITY" \
 	    --set-org "$CERT_O" --set-org-unit "$CERT_OU" \
-	    --set-hostname reportdb.mgr.internal --cert-expiration 3650 --set-email "$CERT_EMAIL" \
+	    --cert-expiration 3650 --set-email "$CERT_EMAIL" \
 		--set-cname reportdb --set-cname db $cert_args
 
 	cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /ssl/ca.crt
