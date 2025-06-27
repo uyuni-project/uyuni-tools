@@ -7,7 +7,6 @@ package utils
 import (
 	"fmt"
 	"os/exec"
-	"path/filepath"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -51,7 +50,6 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 
 // GeneratePgsqlVersionUpgradeScript generates the PostgreSQL version upgrade script.
 func GeneratePgsqlVersionUpgradeScript(
-	scriptDir string,
 	oldPgVersion string,
 	newPgVersion string,
 	backupDir string,
@@ -62,17 +60,16 @@ func GeneratePgsqlVersionUpgradeScript(
 		BackupDir:  backupDir,
 	}
 
-	scriptName := "pgsqlVersionUpgrade.sh"
-	scriptPath := filepath.Join(scriptDir, scriptName)
-	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return "", utils.Error(err, L("failed to render database upgrade script"))
 	}
-	return scriptName, nil
+	return scriptBuilder.String(), nil
 }
 
 // GenerateFinalizePostgresScript generates the script to finalize PostgreSQL upgrade.
 func GenerateFinalizePostgresScript(
-	scriptDir string, runReindex bool, runSchemaUpdate bool, migration bool, kubernetes bool,
+	runReindex bool, runSchemaUpdate bool, migration bool, kubernetes bool,
 ) (string, error) {
 	data := templates.FinalizePostgresTemplateData{
 		RunReindex:      runReindex,
@@ -81,24 +78,22 @@ func GenerateFinalizePostgresScript(
 		Kubernetes:      kubernetes,
 	}
 
-	scriptName := "pgsqlFinalize.sh"
-	scriptPath := filepath.Join(scriptDir, scriptName)
-	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return "", utils.Error(err, L("failed to render database finalization script"))
 	}
-	return scriptName, nil
+	return scriptBuilder.String(), nil
 }
 
 // GeneratePostUpgradeScript generates the script to be run after upgrade.
-func GeneratePostUpgradeScript(scriptDir string) (string, error) {
+func GeneratePostUpgradeScript() (string, error) {
 	data := templates.PostUpgradeTemplateData{}
 
-	scriptName := "postUpgrade.sh"
-	scriptPath := filepath.Join(scriptDir, scriptName)
-	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return "", utils.Error(err, L("failed to render database post upgrade script"))
 	}
-	return scriptName, nil
+	return scriptBuilder.String(), nil
 }
 
 // RunMigration execute the migration script.
@@ -119,12 +114,7 @@ func GenerateMigrationScript(
 	prepare bool,
 	dbHost string,
 	reportDBHost string,
-) (string, func(), error) {
-	scriptDir, cleaner, err := utils.TempDir()
-	if err != nil {
-		return "", nil, err
-	}
-
+) (string, error) {
 	// For podman we want to backup tls certificates to the temporary volume we
 	// later use when creating secrets.
 	volumes := append(utils.ServerVolumeMounts, utils.VarPgsqlDataVolumeMount)
@@ -142,12 +132,12 @@ func GenerateMigrationScript(
 		ReportDBHost: reportDBHost,
 	}
 
-	scriptPath := filepath.Join(scriptDir, "migrate.sh")
-	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", cleaner, utils.Error(err, L("failed to generate migration script"))
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return "", utils.Error(err, L("failed to generate migration script"))
 	}
 
-	return scriptDir, cleaner, nil
+	return scriptBuilder.String(), nil
 }
 
 // SanityCheck verifies if an upgrade can be run.

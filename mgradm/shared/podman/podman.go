@@ -124,7 +124,13 @@ func RunMigration(
 	user string,
 	prepare bool,
 ) (*utils.InspectResult, error) {
-	scriptDir, cleaner, err := adm_utils.GenerateMigrationScript(
+	scriptDir, cleaner, err := utils.TempDir()
+	defer cleaner()
+	if err != nil {
+		return nil, err
+	}
+
+	script, err := adm_utils.GenerateMigrationScript(
 		sourceFqdn,
 		user,
 		false,
@@ -135,7 +141,6 @@ func RunMigration(
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot generate migration script"))
 	}
-	defer cleaner()
 
 	extraArgs := []string{
 		"--security-opt", "label=disable",
@@ -154,7 +159,7 @@ func RunMigration(
 
 	log.Info().Msg(L("Migrating server"))
 	if err := podman.RunContainer("uyuni-migration", preparedImage, utils.ServerMigrationVolumeMounts, extraArgs,
-		[]string{"/var/lib/uyuni-tools/migrate.sh"}); err != nil {
+		[]string{"bash", "-e", "-c", script}); err != nil {
 		return nil, utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
 
@@ -193,19 +198,14 @@ func RunPgsqlVersionUpgrade(
 		L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql,
 	)
 
-	scriptDir, cleaner, err := utils.TempDir()
-	if err != nil {
-		return err
-	}
-	defer cleaner()
 	if newPgsql > oldPgsql {
 		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
 		extraArgs := []string{
-			"-v", scriptDir + ":/var/lib/uyuni-tools/",
 			"--security-opt", "label=disable",
 		}
 
 		upgradeImageURL := ""
+		var err error
 		if upgradeImage.Name == "" {
 			upgradeImageURL, err = utils.ComputeImage(registry, utils.DefaultTag, image,
 				fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
@@ -231,14 +231,14 @@ func RunPgsqlVersionUpgrade(
 		volumeMounts := append(utils.PgsqlRequiredVolumeMounts,
 			types.VolumeMount{MountPath: "/var/lib/pgsql/data-backup", Name: "var-pgsql-backup"})
 
-		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(
-			scriptDir, oldPgsql, newPgsql, "/var/lib/pgsql/data-backup")
+		script, err := adm_utils.GeneratePgsqlVersionUpgradeScript(
+			oldPgsql, newPgsql, "/var/lib/pgsql/data-backup")
 		if err != nil {
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
 
 		err = podman.RunContainer(pgsqlVersionUpgradeContainer, preparedImage, volumeMounts, extraArgs,
-			[]string{"/var/lib/uyuni-tools/" + pgsqlVersionUpgradeScriptName})
+			[]string{"bash", "-e", "-c", script})
 		if err != nil {
 			return err
 		}
@@ -248,54 +248,32 @@ func RunPgsqlVersionUpgrade(
 
 // RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
 func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migration bool) error {
-	scriptDir, cleaner, err := utils.TempDir()
-	if err != nil {
-		return err
-	}
-	defer cleaner()
-
 	extraArgs := []string{
-		"-v", scriptDir + ":/var/lib/uyuni-tools/",
 		"--security-opt", "label=disable",
 		"--network", podman.UyuniNetwork,
 	}
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
-	pgsqlFinalizeScriptName, err := adm_utils.GenerateFinalizePostgresScript(
-		scriptDir, true, schemaUpdateRequired, migration, false,
-	)
+	script, err := adm_utils.GenerateFinalizePostgresScript(true, schemaUpdateRequired, migration, false)
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
-	err = podman.RunContainer(pgsqlFinalizeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
-		[]string{"/var/lib/uyuni-tools/" + pgsqlFinalizeScriptName})
-	if err != nil {
-		return err
-	}
-	return nil
+	return podman.RunContainer(pgsqlFinalizeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
+		[]string{"bash", "-e", "-c", script})
 }
 
 // RunPostUpgradeScript run the script with the changes to apply after the upgrade.
 func RunPostUpgradeScript(serverImage string) error {
-	scriptDir, cleaner, err := utils.TempDir()
-	if err != nil {
-		return err
-	}
-	defer cleaner()
 	postUpgradeContainer := "uyuni-post-upgrade"
 	extraArgs := []string{
-		"-v", scriptDir + ":/var/lib/uyuni-tools/",
 		"--security-opt", "label=disable",
 	}
-	postUpgradeScriptName, err := adm_utils.GeneratePostUpgradeScript(scriptDir)
+	script, err := adm_utils.GeneratePostUpgradeScript()
 	if err != nil {
 		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
 	}
-	err = podman.RunContainer(postUpgradeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
-		[]string{"/var/lib/uyuni-tools/" + postUpgradeScriptName})
-	if err != nil {
-		return err
-	}
-	return nil
+	// Post upgrade script expects some commands to fail and checks their result, don't use sh -e.
+	return podman.RunContainer(postUpgradeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
+		[]string{"bash", "-c", script})
 }
 
 // Upgrade will upgrade server to the image given as attribute.
@@ -669,30 +647,21 @@ func updateServerSystemdService() error {
 
 // RunPgsqlContainerMigration migrate to separate postgres container.
 func RunPgsqlContainerMigration(serverImage string, dbHost string, reportDBHost string) error {
-	scriptDir, cleaner, err := utils.TempDir()
-	if err != nil {
-		return err
-	}
-	defer cleaner()
-
 	data := templates.PgsqlMigrateScriptTemplateData{
 		DBHost:       dbHost,
 		ReportDBHost: reportDBHost,
 	}
 
-	scriptPath := filepath.Join(scriptDir, "pgmigrate.sh")
-	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return utils.Errorf(err, L("failed to generate postgresql migration script"))
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return utils.Error(err, L("failed to generate postgresql migration script"))
 	}
 
 	podmanArgs := []string{
-		"-v", scriptDir + ":" + scriptDir,
 		"--security-opt", "label=disable",
 	}
-	err = podman.RunContainer("uyuni-db-migrate", serverImage, utils.DatabaseMigrationVolumeMounts, podmanArgs,
-		[]string{scriptPath})
-
-	return err
+	return podman.RunContainer("uyuni-db-migrate", serverImage, utils.DatabaseMigrationVolumeMounts, podmanArgs,
+		[]string{"sh", "-e", "-c", scriptBuilder.String()})
 }
 
 // RunPgsqlContainerMigration migrate to separate postgres container.

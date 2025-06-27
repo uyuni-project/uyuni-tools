@@ -79,11 +79,10 @@ func prepareSource(source string) (string, func(), error) {
 	var cleaner func()
 	if strings.HasSuffix(source, ".iso") {
 		log.Debug().Msg("Source is an ISO image")
-		tmpdir, cleaner, err := utils.TempDir()
+		srcdir, cleaner, err := utils.TempDir()
 		if err != nil {
 			return "", nil, err
 		}
-		srcdir = tmpdir
 
 		mountCmd := []string{}
 		if !isRoot() {
