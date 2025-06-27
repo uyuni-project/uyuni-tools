@@ -18,6 +18,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -92,8 +93,10 @@ func ReadFromContainer(name string, image string, volumes []types.VolumeMount,
 	return out, nil
 }
 
-// RunContainer execute a container.
-func RunContainer(name string, image string, volumes []types.VolumeMount, extraArgs []string, cmd []string) error {
+// PrepareContainerRunArgs computes the common podman arguments to run a container.
+func PrepareContainerRunArgs(
+	name string, image string, volumes []types.VolumeMount, extraArgs []string, cmd []string,
+) []string {
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
 	podmanArgs = append(podmanArgs, "--shm-size=0")
@@ -105,6 +108,12 @@ func RunContainer(name string, image string, volumes []types.VolumeMount, extraA
 	podmanArgs = append(podmanArgs, image)
 	podmanArgs = append(podmanArgs, cmd...)
 
+	return podmanArgs
+}
+
+// RunContainer execute a container.
+func RunContainer(name string, image string, volumes []types.VolumeMount, extraArgs []string, cmd []string) error {
+	podmanArgs := PrepareContainerRunArgs(name, image, volumes, extraArgs, cmd)
 	err := utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", podmanArgs...)
 	if err != nil {
 		return utils.Errorf(err, L("failed to run %s container"), name)
@@ -310,12 +319,6 @@ func Inspect(
 	pullPolicy string,
 	scc types.SCCCredentials,
 ) (*utils.ServerInspectData, error) {
-	scriptDir, cleaner, err := utils.TempDir()
-	if err != nil {
-		return nil, err
-	}
-	defer cleaner()
-
 	hostData, err := InspectHost()
 	if err != nil {
 		return nil, err
@@ -327,53 +330,52 @@ func Inspect(
 	}
 	defer cleaner()
 
+	inspectResult, err := containerInspect[utils.ServerInspectData](
+		serverImage, authFile, pullPolicy, utils.NewServerInspector(),
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	dbData, err := containerInspect[utils.DBInspectData](
+		pgsqlImage, authFile, pullPolicy, utils.NewDBInspector(),
+	)
+	if err != nil {
+		return nil, err
+	}
+	inspectResult.DBInspectData.ImagePgVersion = dbData.ImagePgVersion
+
+	return inspectResult, err
+}
+
+func containerInspect[T any](
+	image string, authFile string, pullPolicy string, inspector templates.InspectTemplateData,
+) (*T, error) {
 	podmanArgs := []string{
-		"-v", scriptDir + ":" + utils.InspectContainerDirectory,
 		"--security-opt", "label=disable",
 	}
 
-	preparedImage, err := PrepareImage(authFile, serverImage, pullPolicy, true)
+	preparedImage, err := PrepareImage(authFile, image, pullPolicy, true)
 	if err != nil {
 		return nil, err
 	}
 
-	inspector := utils.NewServerInspector(scriptDir)
-	if err := inspector.GenerateScript(); err != nil {
-		return nil, err
-	}
-	err = RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
-		[]string{utils.InspectContainerDirectory + "/" + utils.InspectScriptFilename})
+	script, err := inspector.GenerateScript()
 	if err != nil {
 		return nil, err
 	}
 
-	inspectResult, err := inspector.ReadInspectData()
-	if err != nil {
-		return nil, utils.Errorf(err, L("cannot inspect data"))
-	}
-
-	pgsqlPreparedImage, err := PrepareImage(authFile, pgsqlImage, pullPolicy, true)
+	args := PrepareContainerRunArgs("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
+		[]string{"sh", "-c", script})
+	out, err := newRunner("podman", args...).Log(zerolog.DebugLevel).Exec()
 	if err != nil {
 		return nil, err
 	}
 
-	dbinspector := utils.NewDBInspector(scriptDir)
-	if err := dbinspector.GenerateScript(); err != nil {
-		return nil, err
-	}
-
-	err = RunContainer("uyuni-db-inspect", pgsqlPreparedImage, utils.PgsqlRequiredVolumeMounts, podmanArgs,
-		[]string{utils.InspectContainerDirectory + "/" + utils.InspectScriptFilename})
-	if err != nil {
-		return nil, err
-	}
-
-	dbInspectResult, err := dbinspector.ReadInspectData()
+	inspectResult, err := utils.ReadInspectData[T](out)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot inspect data"))
 	}
 
-	inspectResult.DBInspectData.ImagePgVersion = dbInspectResult.ImagePgVersion
-
-	return inspectResult, err
+	return inspectResult, nil
 }

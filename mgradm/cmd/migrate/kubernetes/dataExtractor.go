@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -60,7 +60,7 @@ func extractMigrationData(
 		} else if file == "spacewalk.key" {
 			result.ServerKey = content
 		} else if file == "data" {
-			parsedData, err := utils.ReadInspectDataString[utils.InspectResult]([]byte(content))
+			parsedData, err := utils.ReadInspectData[utils.InspectResult]([]byte(content))
 			if err != nil {
 				return nil, utils.Errorf(err, L("failed to parse migration data file"))
 			}
