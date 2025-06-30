@@ -164,16 +164,8 @@ func RunMigration(
 	}
 
 	// now that everything is migrated, we need to fix SELinux permission
-	if utils.IsInstalled("restorecon") {
-		for _, volumeMount := range utils.ServerVolumeMounts {
-			mountPoint, err := GetMountPoint(volumeMount.Name)
-			if err != nil {
-				return nil, utils.Errorf(err, L("cannot inspect volume %s"), volumeMount)
-			}
-			if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "restorecon", "-F", "-r", "-v", mountPoint); err != nil {
-				return nil, utils.Errorf(err, L("cannot restore %s SELinux permissions"), mountPoint)
-			}
-		}
+	if err := restoreSELinuxContext(); err != nil {
+		return nil, err
 	}
 
 	dataPath := path.Join(scriptDir, "data")
@@ -189,6 +181,21 @@ func RunMigration(
 	}
 
 	return extractedData, nil
+}
+
+func restoreSELinuxContext() error {
+	if utils.IsInstalled("restorecon") {
+		for _, volumeMount := range utils.ServerVolumeMounts {
+			mountPoint, err := GetMountPoint(volumeMount.Name)
+			if err != nil {
+				return utils.Errorf(err, L("cannot inspect volume %s"), volumeMount)
+			}
+			if err := utils.RunCmdStdMapping(zerolog.DebugLevel, "restorecon", "-F", "-r", "-v", mountPoint); err != nil {
+				return utils.Errorf(err, L("cannot restore %s SELinux permissions"), mountPoint)
+			}
+		}
+	}
+	return nil
 }
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
