@@ -12,7 +12,7 @@ import (
 )
 
 //nolint:lll
-const migrationScriptTemplate = `#!/bin/bash
+const migrationScriptTemplate = `
 set -e
 SSH_CONFIG=""
 if test -e /tmp/ssh_config; then
@@ -144,15 +144,15 @@ echo "Extracting time zone..."
 $SSH {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
 
 echo "Extracting postgresql versions..."
-image_pg_version=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1)
-current_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)
-echo "image_pg_version=$image_pg_version" >> /var/lib/uyuni-tools/data
-echo "current_pg_version=$current_pg_version" >> /var/lib/uyuni-tools/data
+echo "current_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)" >> /var/lib/uyuni-tools/data
+echo "current_libc_version=2.31" >> /var/lib/uyuni-tools/data
 
 grep '^db_user' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 grep '^db_password' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 grep '^db_name' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 grep '^db_port' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
+grep '^report_db_user' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
+grep '^report_db_password' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 
 $SSH {{ .SourceFqdn }} sh -c "systemctl list-unit-files | grep hub-xmlrpc-api | grep -q active && echo has_hubxmlrpc=true || echo has_hubxmlrpc=false" >>/var/lib/uyuni-tools/data
 (test $($SSH {{ .SourceFqdn }} grep jdwp -r /etc/tomcat/conf.d/ /etc/rhn/taskomatic.conf | wc -l) -gt 0 && echo debug=true || echo debug=false) >>/var/lib/uyuni-tools/data

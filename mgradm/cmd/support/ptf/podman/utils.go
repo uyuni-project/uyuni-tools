@@ -60,7 +60,6 @@ func ptfForPodman(
 		flags.HubXmlrpc,
 		flags.Saline,
 		flags.Pgsql,
-		flags.Installation.SCC,
 		flags.Installation.TZ,
 	)
 }

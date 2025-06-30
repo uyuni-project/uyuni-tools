@@ -45,7 +45,7 @@ func InspectHost() (*HostInspectData, error) {
 		return nil, err
 	}
 
-	out, err := newRunner("sh", "-c", script).Log(zerolog.DebugLevel).Exec()
+	out, err := newRunner("bash", "-c", script).Log(zerolog.DebugLevel).Exec()
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to run inspect script in host system"))
 	}

@@ -5,6 +5,7 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
@@ -141,57 +142,55 @@ func GenerateMigrationScript(
 }
 
 // SanityCheck verifies if an upgrade can be run.
-func SanityCheck(
-	runningValues *utils.ServerInspectData,
-	inspectedValues *utils.ServerInspectData,
-	serverImage string,
-) error {
+func SanityCheck(runningValues *utils.ServerInspectData, inspectedValues *utils.ServerInspectData) error {
 	// Skip the uyuni / SUSE Manager release checks if the runningValues is nil.
-	if runningValues != nil {
-		isUyuni := runningValues.UyuniRelease != ""
-		isUyuniImage := inspectedValues.UyuniRelease != ""
-		isSumaImage := inspectedValues.SuseManagerRelease != ""
+	if runningValues == nil {
+		return nil
+	}
 
-		if isUyuni && isSumaImage {
+	isUyuni := runningValues.UyuniRelease != ""
+	isUyuniImage := inspectedValues.UyuniRelease != ""
+	isSumaImage := inspectedValues.SuseManagerRelease != ""
+
+	if isUyuni && isSumaImage {
+		return fmt.Errorf(
+			L("currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"),
+			inspectedValues.SuseManagerRelease,
+		)
+	}
+
+	if !isUyuni && isUyuniImage {
+		return fmt.Errorf(
+			L("currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"),
+			inspectedValues.UyuniRelease,
+		)
+	}
+
+	if isUyuni {
+		currentUyuniRelease := runningValues.UyuniRelease
+		log.Debug().Msgf("Current release is %s", string(currentUyuniRelease))
+		if !isUyuniImage {
+			return errors.New(L("cannot fetch release from server image"))
+		}
+		log.Debug().Msgf("Server image release is %s", inspectedValues.UyuniRelease)
+		if utils.CompareVersion(inspectedValues.UyuniRelease, string(currentUyuniRelease)) < 0 {
 			return fmt.Errorf(
-				L("currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"),
-				inspectedValues.SuseManagerRelease,
+				L("cannot downgrade from version %[1]s to %[2]s"),
+				string(currentUyuniRelease), inspectedValues.UyuniRelease,
 			)
 		}
-
-		if !isUyuni && isUyuniImage {
-			return fmt.Errorf(
-				L("currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"),
-				inspectedValues.UyuniRelease,
-			)
+	} else {
+		currentSuseManagerRelease := runningValues.SuseManagerRelease
+		log.Debug().Msgf("Current release is %s", currentSuseManagerRelease)
+		if !isSumaImage {
+			return errors.New(L("cannot fetch release from server image"))
 		}
-
-		if isUyuni {
-			currentUyuniRelease := runningValues.UyuniRelease
-			log.Debug().Msgf("Current release is %s", string(currentUyuniRelease))
-			if !isUyuniImage {
-				return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
-			}
-			log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.UyuniRelease)
-			if utils.CompareVersion(inspectedValues.UyuniRelease, string(currentUyuniRelease)) < 0 {
-				return fmt.Errorf(
-					L("cannot downgrade from version %[1]s to %[2]s"),
-					string(currentUyuniRelease), inspectedValues.UyuniRelease,
-				)
-			}
-		} else {
-			currentSuseManagerRelease := runningValues.SuseManagerRelease
-			log.Debug().Msgf("Current release is %s", currentSuseManagerRelease)
-			if !isSumaImage {
-				return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
-			}
-			log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.SuseManagerRelease)
-			if utils.CompareVersion(inspectedValues.SuseManagerRelease, currentSuseManagerRelease) < 0 {
-				return fmt.Errorf(
-					L("cannot downgrade from version %[1]s to %[2]s"),
-					currentSuseManagerRelease, inspectedValues.SuseManagerRelease,
-				)
-			}
+		log.Debug().Msgf("Server image release is %s", inspectedValues.SuseManagerRelease)
+		if utils.CompareVersion(inspectedValues.SuseManagerRelease, currentSuseManagerRelease) < 0 {
+			return fmt.Errorf(
+				L("cannot downgrade from version %[1]s to %[2]s"),
+				currentSuseManagerRelease, inspectedValues.SuseManagerRelease,
+			)
 		}
 	}
 	return nil

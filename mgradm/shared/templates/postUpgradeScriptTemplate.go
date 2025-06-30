@@ -9,7 +9,7 @@ import (
 	"text/template"
 )
 
-const postUpgradeScriptTemplate = `#!/bin/bash
+const postUpgradeScriptTemplate = `
 sed 's/cobbler\.host.*/cobbler\.host = localhost/' -i /etc/rhn/rhn.conf;
 grep uyuni_authentication_endpoint /etc/cobbler/settings.yaml
 if [ $? -eq 1 ]; then
