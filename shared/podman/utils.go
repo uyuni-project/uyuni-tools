@@ -312,52 +312,33 @@ func GetVolumeMountPoint(name string) (path string, err error) {
 	return
 }
 
-// Inspect check values on a given image and deploy.
-func Inspect(
-	serverImage string,
-	pgsqlImage string,
-	pullPolicy string,
-	scc types.SCCCredentials,
-) (*utils.ServerInspectData, error) {
-	hostData, err := InspectHost()
-	if err != nil {
-		return nil, err
-	}
-
-	authFile, cleaner, err := PodmanLogin(hostData, scc)
-	if err != nil {
-		return nil, utils.Errorf(err, L("failed to login to registry.suse.com"))
-	}
-	defer cleaner()
-
-	inspectResult, err := containerInspect[utils.ServerInspectData](
-		serverImage, authFile, pullPolicy, utils.NewServerInspector(),
+// Inspect check values on given images.
+// The images are assumed to be already available locally.
+func Inspect(serverImage string, pgsqlImage string) (*utils.ServerInspectData, error) {
+	inspectResult, err := ContainerInspect[utils.ServerInspectData](
+		serverImage, utils.ServerVolumeMounts, utils.NewServerInspector(),
 	)
 	if err != nil {
 		return nil, err
 	}
 
-	dbData, err := containerInspect[utils.DBInspectData](
-		pgsqlImage, authFile, pullPolicy, utils.NewDBInspector(),
+	dbData, err := ContainerInspect[utils.DBInspectData](
+		pgsqlImage, utils.PgsqlRequiredVolumeMounts, utils.NewDBInspector(),
 	)
 	if err != nil {
 		return nil, err
 	}
-	inspectResult.DBInspectData.ImagePgVersion = dbData.ImagePgVersion
+	inspectResult.DBInspectData = *dbData
 
 	return inspectResult, err
 }
 
-func containerInspect[T any](
-	image string, authFile string, pullPolicy string, inspector templates.InspectTemplateData,
+// ContainerInspect runs an inspector script on a container image.
+func ContainerInspect[T any](
+	image string, volumes []types.VolumeMount, inspector templates.InspectTemplateData,
 ) (*T, error) {
 	podmanArgs := []string{
 		"--security-opt", "label=disable",
-	}
-
-	preparedImage, err := PrepareImage(authFile, image, pullPolicy, true)
-	if err != nil {
-		return nil, err
 	}
 
 	script, err := inspector.GenerateScript()
@@ -365,8 +346,7 @@ func containerInspect[T any](
 		return nil, err
 	}
 
-	args := PrepareContainerRunArgs("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
-		[]string{"sh", "-c", script})
+	args := PrepareContainerRunArgs("uyuni-inspect", image, volumes, podmanArgs, []string{"bash", "-c", script})
 	out, err := newRunner("podman", args...).Log(zerolog.DebugLevel).Exec()
 	if err != nil {
 		return nil, err

@@ -26,6 +26,7 @@ func NewServerInspector() templates.InspectTemplateData {
 				"(psql -V | awk '{print $3}' | cut -d. -f1) || true"),
 			types.NewInspectData("current_pg_version_not_migrated",
 				"(test -e /var/lib/pgsql/data/data/PG_VERSION && cat /var/lib/pgsql/data/data/PG_VERSION) || true"),
+			types.NewInspectData("current_libc_version", "ldd --version | head -n1 | sed 's/^ldd (GNU libc) //'"),
 			types.NewInspectData("db_user",
 				`sed -n '/^db_user/{s/^db_user[[:space:]]*=[[:space:]]*\(.*\)/\1/;p}' /etc/rhn/rhn.conf || true`),
 			types.NewInspectData("db_password",
@@ -46,11 +47,14 @@ func NewServerInspector() templates.InspectTemplateData {
 type CommonInspectData struct {
 	CurrentPgVersion            string `mapstructure:"current_pg_version"`
 	CurrentPgVersionNotMigrated string `mapstructure:"current_pg_version_not_migrated"`
+	CurrentLibcVersion          string `mapstructure:"current_libc_version"`
 	DBUser                      string `mapstructure:"db_user"`
 	DBPassword                  string `mapstructure:"db_password"`
 	DBName                      string `mapstructure:"db_name"`
 	DBPort                      int    `mapstructure:"db_port"`
 	DBHost                      string `mapstructure:"db_host"`
+	ReportDBUser                string `mapstructure:"report_db_user"`
+	ReportDBPassword            string `mapstructure:"report_db_password"`
 	ReportDBHost                string `mapstructure:"report_db_host"`
 }
 
