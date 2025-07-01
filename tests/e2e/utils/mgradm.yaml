@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+db:
+  name: susemanager
+  host: db
+  user: spacewalk
+  password: spacewalk
+  port: 5432
+  adminUser: postgres
+  adminPassword: postgres
+
+ssl:
+  password: spacewalk
+  country: ES
+  state: Tarragona
+  city: Cambrils
+  organization: Uyuni
+  org_unit: QE
+
+email: galaxy-noise@uyuni.org
+emailFrom: root@uyuni.org
+registry: registry.opensuse.org/systemsmanagement/uyuni/master/containerfile
+
+tag: latest
+
+debug:
+  java: true
+
+organization: Uyuni
+admin:
+  password: admin
+  login: admin
+  firstName: Admin
+  lastName: Admin
+  email: galaxy-noise@uyuni.org
+tz:
+  Europe/Madrid

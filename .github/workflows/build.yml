@@ -59,10 +59,10 @@ jobs:
             ./...
 
       - name: Unit tests with all tags
-        run: go test -tags nok8s,ptf ./...
+        run: go test -tags ptf $(go list ./... | grep -v 'tests/e2e')
 
       - name: Unit tests
-        run: go test ./...
+        run: go test $(go list ./... | grep -v 'tests/e2e')
 
       - name: Upload binaries
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #v4.6.1
