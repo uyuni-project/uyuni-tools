@@ -418,6 +418,10 @@ func Upgrade(
 		return err
 	}
 
+	if err := systemd.ReloadDaemon(false); err != nil {
+		return err
+	}
+
 	log.Info().Msg(L("Waiting for the server to start…"))
 	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
 	if err := systemd.StartService(podman.ServerService); err != nil {
