@@ -1,0 +1,2 @@
+- Reload systemd daemon before starting the uyuni-server during an
+  upgrade (bsc#1245779)
