@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jul 04 17:17:20 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.15-0
+  * Reload systemd daemon before starting the uyuni-server during an
+    upgrade (bsc#1245779)
+
+-------------------------------------------------------------------
 Fri Jun 20 16:38:08 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.14-0
