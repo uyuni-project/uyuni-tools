@@ -263,6 +263,15 @@ func AddSalineFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "saline-port", "saline-container")
 }
 
+// AddSaltEventProcessorFlag adds the Salt event processor related parameters to cmd.
+func AddSaltEventProcessorFlag(cmd *cobra.Command) {
+	//TODO: check if naming works
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "saltevent-container", Title: L("Salt Event Processor Flags")})
+	AddContainerImageFlags(cmd, "saltevent", L("Salt event processor"), "saltevent-container", "server-salt-event-processor")
+	cmd.Flags().Int("saltevent-replicas", 0, L("How many replicas of the Salt event processor container should be started"))
+	_ = utils.AddFlagToHelpGroupID(cmd, "saltevent-replicas", "saltevent-container")
+}
+
 // AddUpgradeSalineFlag adds the Saline related parameters to cmd upgrade.
 func AddUpgradeSalineFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "saline-container", Title: L("Saline Flags")})

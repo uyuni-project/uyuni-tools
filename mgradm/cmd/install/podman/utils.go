@@ -7,6 +7,7 @@ package podman
 import (
 	"errors"
 	"fmt"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saltEventProcessor"
 	"os/exec"
 
 	"github.com/rs/zerolog"
@@ -155,6 +156,13 @@ func installForPodman(
 	); err != nil {
 		return err
 	}
+
+	if err := saltEventProcessor.SetupSaltEventProcessorContainer(
+		systemd, authFile, flags.Image.Registry, flags.SaltEventProcessor, flags.Image, flags.Installation.DB,
+	); err != nil {
+		return err
+	}
+
 	return nil
 }
 
