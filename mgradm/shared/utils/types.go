@@ -54,6 +54,13 @@ type SalineFlags struct {
 	IsChanged bool
 }
 
+// SaltEventProcessorFlags contains settings for Salt event processor container.
+type SaltEventProcessorFlags struct {
+	Replicas  int
+	Image     types.ImageFlags `mapstructure:",squash"`
+	IsChanged bool
+}
+
 // VolumeFlags stores the persistent volume claims configuration.
 type VolumesFlags struct {
 	// Class is the default storage class for all the persistent volume claims.
