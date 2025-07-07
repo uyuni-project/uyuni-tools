@@ -92,7 +92,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 		}
 
 		// Run sanity checks for upgrade
-		if err := adm_utils.SanityCheck(runningData, &inspectedData, serverImage); err != nil {
+		if err := adm_utils.SanityCheck(runningData, &inspectedData); err != nil {
 			return err
 		}
 

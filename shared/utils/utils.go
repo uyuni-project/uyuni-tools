@@ -319,19 +319,47 @@ func DownloadFile(filepath string, URL string) (err error) {
 	return os.WriteFile(filepath, data, 0644)
 }
 
+// maxInts compensates the absence of max on Debian 12's go version.
+func maxInts(a int, b int) int {
+	if a < b {
+		return b
+	}
+	return a
+}
+
 // CompareVersion compare the server image version and the server deployed  version.
 func CompareVersion(imageVersion string, deployedVersion string) int {
-	re := regexp.MustCompile(`\((.*?)\)`)
-	imageVersionCleaned := strings.ReplaceAll(imageVersion, ".", "")
-	imageVersionCleaned = strings.TrimSpace(imageVersionCleaned)
-	imageVersionCleaned = re.ReplaceAllString(imageVersionCleaned, "")
-	imageVersionInt, _ := strconv.Atoi(imageVersionCleaned)
+	image := versionAsSlice(imageVersion)
+	deployed := versionAsSlice(deployedVersion)
 
-	deployedVersionCleaned := strings.ReplaceAll(deployedVersion, ".", "")
-	deployedVersionCleaned = strings.TrimSpace(deployedVersionCleaned)
-	deployedVersionCleaned = re.ReplaceAllString(deployedVersionCleaned, "")
-	deployedVersionInt, _ := strconv.Atoi(deployedVersionCleaned)
-	return imageVersionInt - deployedVersionInt
+	maxLen := maxInts(len(image), len(deployed))
+	return getPaddedVersion(image, maxLen) - getPaddedVersion(deployed, maxLen)
+}
+
+func versionAsSlice(version string) []string {
+	re := regexp.MustCompile(`[^0-9]`)
+	parts := strings.Split(version, ".")
+	result := make([]string, len(parts))
+	for i, part := range parts {
+		result[i] = re.ReplaceAllString(part, "")
+	}
+	return result
+}
+
+func getPaddedVersion(version []string, size int) int {
+	padded := version
+	if len(version) != size {
+		padded = make([]string, size)
+		copy(padded, version)
+		for i, part := range padded {
+			if part == "" {
+				padded[i] = "0"
+			}
+		}
+	}
+
+	result, _ := strconv.Atoi(strings.Join(padded, ""))
+	return result
 }
 
 // Errorf helps providing consistent errors.

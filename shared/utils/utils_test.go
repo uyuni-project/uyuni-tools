@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -392,4 +392,9 @@ func TestCompareVersion(t *testing.T) {
 	testutils.AssertTrue(t, "2024.07 is not inferior to 2024.13", CompareVersion("2024.07", "2024.13") < 0)
 	testutils.AssertTrue(t, "2024.13 is not superior to 2024.07", CompareVersion("2024.13", "2024.07") > 0)
 	testutils.AssertTrue(t, "2024.13 is not equal to 2024.13", CompareVersion("2024.13", "2024.13") == 0)
+
+	testutils.AssertEquals(t, "invalid padded version", 5041, getPaddedVersion(versionAsSlice("5.0.4.1"), 4))
+	testutils.AssertEquals(t, "invalid padded version", 5100, getPaddedVersion(versionAsSlice("5.1.0"), 4))
+	testutils.AssertTrue(t, "5.1.0 is not superior to 5.0.4.1", CompareVersion("5.1.0", "5.0.4.1") > 0)
+	testutils.AssertTrue(t, "5.1-rc is not superior to 5.0.4.1", CompareVersion("5.1-rc", "5.0.4.1") > 0)
 }

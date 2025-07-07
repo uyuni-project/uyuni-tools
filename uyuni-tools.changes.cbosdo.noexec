@@ -1,0 +1,1 @@
+- Stop executing scripts in temporary folder (bsc#1243704)
