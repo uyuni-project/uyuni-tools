@@ -17,6 +17,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/eventprocessor"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
@@ -301,9 +302,11 @@ func Upgrade(
 	cocoFlags adm_utils.CocoFlags,
 	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
 	salineFlags adm_utils.SalineFlags,
+	eventProcessorFlags adm_utils.EventProcessorFlags,
 	pgsqlFlags types.PgsqlFlags,
 	tftpdFlags adm_utils.TFTPDFlags,
 	tz string,
+	debugFlag bool,
 ) error {
 	// Calling cloudguestregistryauth only makes sense if using the cloud provider registry.
 	// This check assumes users won't use custom registries that are not the cloud provider one on a cloud image.
@@ -483,6 +486,7 @@ func Upgrade(
 		hub.Upgrade(systemd, authFile, image, hubXmlrpcFlags),
 		saline.Upgrade(systemd, authFile, image, salineFlags, utils.GetLocalTimezone()),
 		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn, hasTFTP),
+		eventprocessor.Upgrade(systemd, authFile, image, eventProcessorFlags, inspectedDB, debugFlag),
 		systemd.ReloadDaemon(false),
 	)
 }

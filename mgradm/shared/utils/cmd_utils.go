@@ -5,6 +5,7 @@
 package utils
 
 import (
+	"fmt"
 	"path"
 
 	"github.com/rs/zerolog/log"
@@ -157,6 +158,21 @@ func AddUpgradeCocoFlag(cmd *cobra.Command) {
 	cmd.Flags().Int("coco-replicas", 0, L(`How many replicas of the confidential computing container should be started.
 Leave it unset if you want to keep the previous number of replicas.`))
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
+}
+
+// AddEventProcessorFlag adds the event processor related parameters to cmd.
+func AddEventProcessorFlag(cmd *cobra.Command, upgrade bool) {
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "event-processor", Title: L("Event Processor Flags")})
+	utils.AddContainerImageFlags(cmd, "eventprocessor", L("Event processor"),
+		"event-processor", "server-salt-event-processor")
+	description := L(`How many replicas of the events processor container should be started.
+One is the minimum required value.`)
+	if upgrade {
+		description = fmt.Sprintf("%s\n%s", description,
+			L("Leave it unset if you want to keep the previous number of replicas."))
+	}
+	cmd.Flags().Int("eventprocessor-replicas", 1, description)
+	_ = utils.AddFlagToHelpGroupID(cmd, "eventprocessor-replicas", "eventprocessor-container")
 }
 
 // AddHubXmlrpcFlags adds hub XML-RPC related parameters to cmd.

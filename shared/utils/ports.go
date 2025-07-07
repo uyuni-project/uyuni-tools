@@ -34,6 +34,9 @@ const (
 
 	// ProxyUDPServiceName is the name of the proxy UDP service.
 	ProxyUDPServiceName = "uyuni-proxy-udp"
+
+	// EventProcessorServiceName is the name of the server event processing service.
+	EventProcessorServiceName = "eventprocessor"
 )
 
 // NewPortMap is a constructor for PortMap type.
@@ -88,6 +91,10 @@ var TomcatPorts = []types.PortMap{
 // SearchPorts is the list of ports for the server search service.
 var SearchPorts = []types.PortMap{
 	NewPortMap(SearchServiceName, "debug", 8002, 8002),
+}
+
+var EventProcessorPorts = []types.PortMap{
+	NewPortMap(EventProcessorServiceName, "debug", 8004, 8004),
 }
 
 // GetServerPorts returns all the server container ports.

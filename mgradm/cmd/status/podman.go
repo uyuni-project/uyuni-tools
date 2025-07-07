@@ -51,6 +51,13 @@ func podmanStatus(
 		)
 	}
 
+	for i := 0; i < systemd.CurrentReplicaCount(podman.EventProcessorService); i++ {
+		println() // add an empty line between the previous logs and this one
+		_ = utils.RunCmdStdMapping(
+			zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.EventProcessorService, i),
+		)
+	}
+
 	if systemd.HasService(podman.TFTPService) {
 		_ = utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", podman.TFTPService)
 	}
