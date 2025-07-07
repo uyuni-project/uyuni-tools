@@ -175,5 +175,5 @@ go build -o bin/mgrpxy ./mgrpxy
 
 Run the tests
 ```bash
-ginkgo ./tests/e2e
+ginkgo -vv ./tests/e2e
 ```

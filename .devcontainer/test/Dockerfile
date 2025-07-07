@@ -1,7 +1,13 @@
 FROM registry.opensuse.org/uyuni/init:latest
+ARG TARGETARCH
 
 # Install necessary packages, clean up afterwards
-RUN set -euo pipefail; zypper -n in --no-recommends curl git tar gzip make gcc podman; zypper -n clean; rm -rf /var/log/*
+RUN set -euo pipefail; zypper -n in --no-recommends hostname curl git vi tar make gcc podman; zypper -n clean; rm -rf /var/log/*
+
+# Ensure Podman uses netavark
+RUN mkdir -p /etc/containers && \
+    echo '[network]' > /etc/containers/containers.conf && \
+    echo 'network_backend = "netavark"' >> /etc/containers/containers.conf
 
 # Install Go
 RUN curl -LO https://go.dev/dl/go1.21.13.linux-${TARGETARCH}.tar.gz

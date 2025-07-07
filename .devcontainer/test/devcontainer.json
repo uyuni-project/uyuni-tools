@@ -12,13 +12,14 @@
     "--privileged",
     "--cgroupns=host",
     "-v", "/sys/fs/cgroup:/sys/fs/cgroup:rw",
-    "--cap-add", "NET_RAW",
-    "--tmpfs", "/run",
-    "--hostname", "uyuni-testbed.mgr.internal",
-    "--name", "uyuni-tools-devcontainer-e2e-tests"
+    "--cap-add=NET_RAW",
+    "--tmpfs=/run",
+    "--hostname=test.lab.internal",
+    "--name=uyuni-tools-devcontainer-e2e-tests"
   ],
   "containerEnv": {
-    "container": "docker"
+    "container": "docker",
+    "HOSTNAME": "test"
   },
   "remoteUser": "root",
   "overrideCommand": false,
@@ -32,5 +33,6 @@
       }
     }
   },
-  "workspaceFolder": "/workspace"
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "echo \"127.0.0.1 $(hostname)\" | sudo tee -a /etc/hosts && echo \"127.0.0.1 $(hostname -s).lab.internal $(hostname -s)\" | sudo tee -a /etc/hosts",
 }
