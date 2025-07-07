@@ -33,9 +33,6 @@ ExecStart=/usr/bin/podman run \
 	--sdnotify=conmon \
 	-d \
 	--replace \
-	{{- range .Ports }}
-        -p {{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
-    {{- end }}
 	-e HUB_API_URL \
 	-e HUB_CONNECT_TIMEOUT \
 	-e HUB_REQUEST_TIMEOUT \
@@ -61,7 +58,6 @@ WantedBy=multi-user.target default.target
 type HubXmlrpcServiceTemplateData struct {
 	CaSecret   string
 	CaPath     string
-	Ports      []types.PortMap
 	NamePrefix string
 	Image      string
 	Network    string

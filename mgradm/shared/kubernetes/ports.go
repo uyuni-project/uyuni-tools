@@ -15,9 +15,6 @@ import (
 func getPortList(hub bool, debug bool) []types.PortMap {
 	ports := utils.GetServerPorts(debug)
 	ports = append(ports, utils.ReportDBPorts...)
-	if hub {
-		ports = append(ports, utils.HubXmlrpcPorts...)
-	}
 
 	return ports
 }
