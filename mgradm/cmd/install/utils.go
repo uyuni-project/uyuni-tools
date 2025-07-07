@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/db"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/eventprocessor"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
@@ -115,6 +116,10 @@ func installForPodman(
 		hub.SetupHubXmlrpc(systemd, authFile, flags.Image, flags.HubXmlrpc),
 		saline.SetupSalineContainer(systemd, authFile, flags.Image, flags.Saline, flags.Installation.TZ),
 		tftp.SetupTFTPContainer(systemd, authFile, flags.Image, flags.TFTPD, fqdn, false),
+		eventprocessor.SetupEventProcessorContainer(
+			systemd, authFile, flags.Image, flags.EventProcessor, flags.Installation.DB,
+			flags.Installation.Debug.Java,
+		),
 	)
 }
 
@@ -157,5 +162,6 @@ func setupDatabase(dbFlags types.DBFlags, reportdbFlags types.DBFlags, preparedI
 			return err
 		}
 	}
+
 	return nil
 }
