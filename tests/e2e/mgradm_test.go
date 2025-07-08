@@ -5,8 +5,6 @@
 package e2e_test
 
 import (
-	"fmt"
-
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/uyuni-project/uyuni-tools/tests/e2e/utils"
@@ -17,8 +15,8 @@ const backend = "podman"
 var _ = ginkgo.Describe("mgradm tests", func() {
 	// Ensure that the environment is clean before each test.
 	ginkgo.BeforeEach(func() {
-		ginkgo.By(fmt.Sprintf("Running mgradm cleanup: uninstall --backend %s --force --purge-volumes", backend))
-		cleanupArgs := []string{"uninstall", "--backend", backend, "--force", "--purge-volumes"}
+		ginkgo.By("Running mgradm cleanup: uninstall --force --purge-volumes")
+		cleanupArgs := []string{"uninstall", "--force", "--purge-volumes"}
 		output, err := utils.RunMgradmCommand(cleanupArgs)
 		gomega.Expect(err).To(gomega.Succeed(), "Failed to run mgradm cleanup command. Error: %v\nOutput: %s", err, output)
 	})

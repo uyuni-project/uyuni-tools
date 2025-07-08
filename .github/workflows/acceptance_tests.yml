@@ -1,0 +1,103 @@
+name: Acceptance Tests
+
+on:
+  pull_request:
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
+
+jobs:
+  acceptance-tests:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+
+      - name: Download binaries from Build workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const workflow_id = 'build.yml';
+            const branch = context.payload.pull_request ? context.payload.pull_request.head.ref : context.ref.replace('refs/heads/', '');
+            
+            // Find the most recent successful run of the 'Build' workflow on the same branch
+            const { data: workflowRuns } = await github.rest.actions.listWorkflowRuns({
+              owner,
+              repo,
+              workflow_id,
+              branch,
+              status: 'success',
+              event: 'pull_request'
+            });
+            
+            const buildRun = workflowRuns.workflow_runs[0];
+            
+            if (!buildRun) {
+              console.log('No successful build run found for this branch.');
+              process.exit(1);
+            }
+            
+            console.log(`Found build run: ${buildRun.id}`);
+            
+            // List artifacts for the found build run
+            const { data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({
+              owner,
+              repo,
+              run_id: buildRun.id,
+            });
+            
+            const binaryArtifact = artifacts.artifacts.find(artifact => artifact.name === 'binaries');
+            
+            if (!binaryArtifact) {
+              console.log('No "binaries" artifact found in the build run.');
+              process.exit(1);
+            }
+            
+            console.log(`Downloading artifact: ${binaryArtifact.name}`);
+            const download = await github.rest.actions.downloadArtifact({
+              owner,
+              repo,
+              artifact_id: binaryArtifact.id,
+              archive_format: 'zip',
+            });
+            
+            // Save the zip file
+            const fs = require('fs');
+            fs.writeFileSync(`${binaryArtifact.name}.zip`, Buffer.from(download.data));
+            
+            // Unzip the artifact
+            const { execSync } = require('child_process');
+            execSync(`unzip ${binaryArtifact.name}.zip -d ./bin`);
+            console.log('Binaries downloaded and unzipped to ./bin');
+
+      - name: Setup Go
+        uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 #v5.3.0
+        with:
+          go-version: '1.21'
+
+      - name: Install necessary packages
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y --no-install-recommends \
+            hostname \
+            curl \
+            git \
+            tar \
+            make \
+            gcc \
+            podman
+
+      - name: Install Ginkgo v2.20.1
+        run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.20.1
+
+      - name: Run acceptance tests using downloaded binaries
+        run: |
+          export PATH=$(pwd)/bin:$PATH
+          ginkgo -vv ./tests/e2e
