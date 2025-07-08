@@ -26,6 +26,7 @@ var _ = ginkgo.BeforeSuite(func() {
 	// Initialize the exported variables from the utils package
 	utils.MgradmPath = filepath.Join(pwd, "..", "..", "bin", "mgradm")
 	utils.MgrctlPath = filepath.Join(pwd, "..", "..", "bin", "mgrctl")
+	utils.MgrpxyPath = filepath.Join(pwd, "..", "..", "bin", "mgrpxy")
 	utils.MgradmConfigPath = filepath.Join(pwd, "utils", "mgradm.yaml")
 
 	_, err = os.Stat(utils.MgradmPath)
@@ -34,6 +35,10 @@ var _ = ginkgo.BeforeSuite(func() {
 	_, err = os.Stat(utils.MgrctlPath)
 	gomega.Expect(err).To(gomega.Succeed(), "mgrctl binary not found at %s. Error: %v", utils.MgrctlPath, err)
 
+	_, err = os.Stat(utils.MgrpxyPath)
+	gomega.Expect(err).To(gomega.Succeed(), "mgrpxy binary not found at %s. Error: %v", utils.MgrpxyPath, err)
+
 	ginkgo.GinkgoWriter.Printf("Using mgradm: %s\n", utils.MgradmPath)
 	ginkgo.GinkgoWriter.Printf("Using mgrctl: %s\n", utils.MgrctlPath)
+	ginkgo.GinkgoWriter.Printf("Using mgrpxy: %s\n", utils.MgrpxyPath)
 })
