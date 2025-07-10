@@ -37,6 +37,15 @@ NOTE: installing on a remote podman is not supported yet!
 				flags.ServerFlags.Coco.IsChanged = v.IsSet("coco.replicas")
 				flags.ServerFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
 				flags.ServerFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
+
+				if flags.Installation.SSL.Ca.IsThirdParty() && !flags.Installation.SSL.DB.CA.IsThirdParty() {
+					flags.Installation.SSL.DB.CA.Root = flags.Installation.SSL.Ca.Root
+					flags.Installation.SSL.DB.CA.Intermediate = flags.Installation.SSL.Ca.Intermediate
+				}
+				if flags.Installation.SSL.Server.IsDefined() && !flags.Installation.SSL.DB.IsDefined() {
+					flags.Installation.SSL.DB.Cert = flags.Installation.SSL.Server.Cert
+					flags.Installation.SSL.DB.Key = flags.Installation.SSL.Server.Key
+				}
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
