@@ -201,7 +201,9 @@ func hostedContainers(systemd Systemd) ([]string, error) {
 
 	for _, service := range servicesList {
 		service = strings.Replace(service, ".service", "", -1)
-		containerList = append(containerList, strings.Replace(service, "@", "", -1))
+		// we can collect container data only from the first instance
+		// and assume there's no difference with other intances
+		containerList = append(containerList, strings.Replace(service, "@", "-0", -1))
 	}
 
 	return containerList, nil
