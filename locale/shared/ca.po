@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-17 17:33+0200\n"
-"PO-Revision-Date: 2025-06-18 10:59+0000\n"
+"PO-Revision-Date: 2025-07-11 11:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.1\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -401,7 +401,7 @@ msgstr "no s'ha pogut executar el pod %s"
 #: shared/kubernetes/pod.go:93
 #, javascript-format
 msgid "failed to get the %s pod logs"
-msgstr "no s'han pogut obtenir els registres de %s pod"
+msgstr "No s'han pogut obtenir els registres del pod %s"
 
 #: shared/kubernetes/pod.go:98
 #, javascript-format
