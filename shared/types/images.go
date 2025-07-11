@@ -4,6 +4,14 @@
 
 package types
 
+import (
+	"net/url"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+)
+
 // ImageFlags represents the flags used by an image.
 type ImageFlags struct {
 	Registry   string `mapstructure:"registry"`
@@ -35,4 +43,26 @@ type Metadata struct {
 type SCCCredentials struct {
 	User     string
 	Password string
+}
+
+// RegistryFQDN return the registry FQDN
+func (flags *ImageFlags) RegistryFQDN() string {
+	reg := flags.Registry
+
+	hasScheme := strings.Contains(reg, "://")
+	toParse := reg
+	if !hasScheme {
+		toParse = "dummy://" + reg
+	}
+
+	u, err := url.Parse(toParse)
+	if err != nil {
+		log.Error().Msgf(L("Cannot extract FQDN from %s: this will be used as FQDN"))
+		return reg
+	}
+
+	if hasScheme {
+		return u.Scheme + "://" + u.Host
+	}
+	return u.Host
 }
