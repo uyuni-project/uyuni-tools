@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -257,12 +257,13 @@ func TestComputeImage(t *testing.T) {
 	for i, testCase := range data {
 		result := testCase[0]
 		image := types.ImageFlags{
-			Name: testCase[1],
-			Tag:  testCase[2],
+			Name:     testCase[1],
+			Tag:      testCase[2],
+			Registry: testCase[3],
 		}
 		appendToImage := testCase[4:]
 
-		actual, err := ComputeImage(testCase[3], "defaulttag", image, appendToImage...)
+		actual, err := ComputeImage(image, appendToImage...)
 
 		if err != nil {
 			t.Errorf(
@@ -314,7 +315,7 @@ func TestComputeImageError(t *testing.T) {
 			Tag:  testCase[1],
 		}
 
-		_, err := ComputeImage("defaultregistry", "defaulttag", image)
+		_, err := ComputeImage(image)
 		if err == nil {
 			t.Errorf("Expected error for %s with tag %s, got none", image.Name, image.Tag)
 		}

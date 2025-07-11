@@ -19,7 +19,6 @@ import (
 //
 // It returns an authentication file, a cleanup function and an error.
 func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials, image types.ImageFlags) (string, func(), error) {
-	registryFQDN := image.RegistryFQDN()
 	sccUser := hostData.SCCUsername
 	sccPassword := hostData.SCCPassword
 	if scc.User != "" && scc.Password != "" {
@@ -36,7 +35,8 @@ func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials, image type
 			"auth": "%s"
 		}
 	}
-}`, registryFQDN, token)
+}`, image.RegistryFQDN, token)
+		log.Trace().Msgf("auth:\n %s \n =====", authFileContent)
 		authFile, err := os.CreateTemp("", "mgradm-")
 		if err != nil {
 			return "", nil, err

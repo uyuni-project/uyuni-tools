@@ -127,21 +127,27 @@ func (flags *ServerFlags) setRegistryIfMissing() {
 	globalRegistry := utils.DefaultRegistry
 	if flags.Image.Registry != "" {
 		globalRegistry = flags.Image.Registry
+		flags.Image.GetRegistryFQDN()
 	}
 	if flags.Coco.Image.Registry == "" {
 		flags.Coco.Image.Registry = globalRegistry
+		flags.Coco.Image.GetRegistryFQDN()
 	}
 	if flags.DBUpgradeImage.Registry == "" {
 		flags.DBUpgradeImage.Registry = globalRegistry
+		flags.DBUpgradeImage.GetRegistryFQDN()
 	}
 	if flags.HubXmlrpc.Image.Registry == "" {
 		flags.HubXmlrpc.Image.Registry = globalRegistry
+		flags.HubXmlrpc.Image.GetRegistryFQDN()
 	}
 	if flags.Pgsql.Image.Registry == "" {
 		flags.Pgsql.Image.Registry = globalRegistry
+		flags.Pgsql.Image.GetRegistryFQDN()
 	}
 	if flags.Saline.Image.Registry == "" {
-		flags.Pgsql.Image.Registry = globalRegistry
+		flags.Saline.Image.Registry = globalRegistry
+		flags.Saline.Image.GetRegistryFQDN()
 	}
 }
 

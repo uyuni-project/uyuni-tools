@@ -63,18 +63,23 @@ func (flags *ProxyImageFlags) setRegistryIfMissing() {
 	}
 	if flags.Httpd.Registry == "" {
 		flags.Httpd.Registry = globalRegistry
+		flags.Httpd.GetRegistryFQDN()
 	}
 	if flags.SSH.Registry == "" {
 		flags.SSH.Registry = globalRegistry
+		flags.SSH.GetRegistryFQDN()
 	}
 	if flags.SaltBroker.Registry == "" {
 		flags.SaltBroker.Registry = globalRegistry
+		flags.SaltBroker.GetRegistryFQDN()
 	}
 	if flags.Squid.Registry == "" {
 		flags.Squid.Registry = globalRegistry
+		flags.Squid.GetRegistryFQDN()
 	}
 	if flags.Tftpd.Registry == "" {
 		flags.Tftpd.Registry = globalRegistry
+		flags.Tftpd.GetRegistryFQDN()
 	}
 }
 
@@ -100,6 +105,12 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 		containerImage = &f.Tftpd
 	default:
 		log.Fatal().Msgf(L("Invalid proxy container name: %s"), name)
+	}
+	if containerImage.Registry == "" {
+		containerImage.Registry = f.Registry
+	}
+	if containerImage.Tag == "" {
+		containerImage.Tag = f.Tag
 	}
 
 	imageURL, err := utils.ComputeImage(*containerImage)

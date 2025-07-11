@@ -14,10 +14,11 @@ import (
 
 // ImageFlags represents the flags used by an image.
 type ImageFlags struct {
-	Registry   string `mapstructure:"registry"`
-	Name       string `mapstructure:"image"`
-	Tag        string `mapstructure:"tag"`
-	PullPolicy string `mapstructure:"pullPolicy"`
+	Registry     string `mapstructure:"registry"`
+	RegistryFQDN string `mapstructure:"registryFQDN"`
+	Name         string `mapstructure:"image"`
+	Tag          string `mapstructure:"tag"`
+	PullPolicy   string `mapstructure:"pullPolicy"`
 }
 
 // PgsqlFlags contains settings for Pgsql container.
@@ -46,7 +47,7 @@ type SCCCredentials struct {
 }
 
 // RegistryFQDN return the registry FQDN
-func (flags *ImageFlags) RegistryFQDN() string {
+func (flags *ImageFlags) GetRegistryFQDN() string {
 	reg := flags.Registry
 
 	hasScheme := strings.Contains(reg, "://")
@@ -58,11 +59,15 @@ func (flags *ImageFlags) RegistryFQDN() string {
 	u, err := url.Parse(toParse)
 	if err != nil {
 		log.Error().Msgf(L("Cannot extract FQDN from %s: this will be used as FQDN"))
-		return reg
+		flags.RegistryFQDN = reg
+		return flags.RegistryFQDN
 	}
 
 	if hasScheme {
-		return u.Scheme + "://" + u.Host
+		flags.RegistryFQDN = u.Scheme + "://" + u.Host
+		return flags.RegistryFQDN
 	}
-	return u.Host
+
+	flags.RegistryFQDN = u.Host
+	return flags.RegistryFQDN
 }

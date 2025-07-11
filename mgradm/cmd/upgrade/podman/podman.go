@@ -70,7 +70,7 @@ func listTags(flags *podmanUpgradeFlags) error {
 
 	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.Installation.SCC, flags.Image)
 	if err != nil {
-		return utils.Errorf(err, L("failed to login to %s"), flags.Image.RegistryFQDN())
+		return utils.Errorf(err, L("failed to login to %s"), flags.Image.RegistryFQDN)
 	}
 	defer cleaner()
 

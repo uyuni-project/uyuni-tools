@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -34,8 +34,8 @@ func TestGetContainerImage(t *testing.T) {
 
 	for i, testCase := range data {
 		proxyFlags := ProxyImageFlags{
-			Tag:      testCase[2],
 			Registry: testCase[1],
+			Tag:      testCase[2],
 			Httpd: types.ImageFlags{
 				Name: testCase[3],
 				Tag:  testCase[4],
