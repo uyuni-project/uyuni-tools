@@ -22,7 +22,7 @@ func PreparePgsqlImage(
 	globalImageFlags *types.ImageFlags,
 ) (string, error) {
 	image := pgsqlFlags.Image
-	pgsqlImage, err := utils.ComputeImage(globalImageFlags.Registry, globalImageFlags.Tag, image)
+	pgsqlImage, err := utils.ComputeImage(image)
 
 	if err != nil {
 		return "", utils.Error(err, L("failed to compute image URL"))
@@ -32,7 +32,7 @@ func PreparePgsqlImage(
 	if err != nil {
 		return "", err
 	}
-	return preparedImage, err
+	return preparedImage.Name, err
 }
 
 // SetupPgsql prepares the systemd service and starts it if needed.

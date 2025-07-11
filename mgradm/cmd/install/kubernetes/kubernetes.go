@@ -61,6 +61,7 @@ func installForKubernetes(
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	flags.ServerFlags.CheckParameters()
 	flags.Installation.CheckParameters(cmd, "kubectl")
 	return kubernetes.Reconcile(flags, args[0])
 }

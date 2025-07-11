@@ -24,12 +24,13 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 		return err
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Installation.SCC)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Installation.SCC, flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
 	defer cleaner()
 
+	flags.ServerFlags.CheckParameters()
 	flags.Installation.CheckUpgradeParameters(cmd, "podman")
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))

@@ -74,7 +74,7 @@ func writeCocoServiceFiles(
 		log.Debug().Msg("No Confidential Computing requested.")
 	}
 
-	cocoImage, err := utils.ComputeImage(registry, baseImage.Tag, image)
+	cocoImage, err := utils.ComputeImage(image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -89,7 +89,7 @@ func writeCocoServiceFiles(
 	attestationData := templates.AttestationServiceTemplateData{
 		NamePrefix:   "uyuni",
 		Network:      podman.UyuniNetwork,
-		Image:        preparedImage,
+		Image:        preparedImage.Name,
 		DBUserSecret: podman.DBUserSecret,
 		DBPassSecret: podman.DBPassSecret,
 	}
@@ -103,7 +103,7 @@ func writeCocoServiceFiles(
 
 	environment := fmt.Sprintf(`Environment=UYUNI_SERVER_ATTESTATION_IMAGE=%s
 Environment=database_connection=jdbc:postgresql://%s:%d/%s
-`, preparedImage, db.Host, db.Port, db.Name)
+`, preparedImage.Name, db.Host, db.Port, db.Name)
 
 	if err := podman.GenerateSystemdConfFile(
 		podman.ServerAttestationService+"@", "generated.conf", environment, true,

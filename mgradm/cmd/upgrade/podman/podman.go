@@ -68,9 +68,9 @@ func listTags(flags *podmanUpgradeFlags) error {
 		return err
 	}
 
-	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.Installation.SCC)
+	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.Installation.SCC, flags.Image)
 	if err != nil {
-		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return utils.Errorf(err, L("failed to login to %s"), flags.Image.RegistryFQDN())
 	}
 	defer cleaner()
 

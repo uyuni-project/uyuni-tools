@@ -185,7 +185,7 @@ func GetContainerImage(authFile string, flags *utils.ProxyImageFlags, name strin
 		return "", err
 	}
 
-	return preparedImage, nil
+	return preparedImage.Name, nil
 }
 
 // UnpackConfig uncompress the config.tar.gz containing proxy configuration.
@@ -265,7 +265,7 @@ func Upgrade(
 		return err
 	}
 
-	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.SCC)
+	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.SCC, flags.Httpd)
 	if err != nil {
 		return shared_utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}

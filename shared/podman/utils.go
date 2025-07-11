@@ -305,9 +305,8 @@ func GetVolumeMountPoint(name string) (path string, err error) {
 
 // Inspect check values on a given image and deploy.
 func Inspect(
-	serverImage string,
-	pgsqlImage string,
-	pullPolicy string,
+	serverImage types.ImageFlags,
+	pgsqlImage types.ImageFlags,
 	scc types.SCCCredentials,
 ) (*utils.ServerInspectData, error) {
 	scriptDir, cleaner, err := utils.TempDir()
@@ -321,7 +320,7 @@ func Inspect(
 		return nil, err
 	}
 
-	authFile, cleaner, err := PodmanLogin(hostData, scc)
+	authFile, cleaner, err := PodmanLogin(hostData, scc, serverImage)
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}
@@ -332,7 +331,7 @@ func Inspect(
 		"--security-opt", "label=disable",
 	}
 
-	preparedImage, err := PrepareImage(authFile, serverImage, pullPolicy, true)
+	preparedImage, err := PrepareImage(authFile, serverImage.Name, serverImage.PullPolicy, true)
 	if err != nil {
 		return nil, err
 	}
@@ -341,7 +340,7 @@ func Inspect(
 	if err := inspector.GenerateScript(); err != nil {
 		return nil, err
 	}
-	err = RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
+	err = RunContainer("uyuni-inspect", preparedImage.Name, utils.ServerVolumeMounts, podmanArgs,
 		[]string{utils.InspectContainerDirectory + "/" + utils.InspectScriptFilename})
 	if err != nil {
 		return nil, err
@@ -352,7 +351,7 @@ func Inspect(
 		return nil, utils.Errorf(err, L("cannot inspect data"))
 	}
 
-	pgsqlPreparedImage, err := PrepareImage(authFile, pgsqlImage, pullPolicy, true)
+	pgsqlPreparedImage, err := PrepareImage(authFile, pgsqlImage.Name, pgsqlImage.PullPolicy, true)
 	if err != nil {
 		return nil, err
 	}
@@ -362,7 +361,7 @@ func Inspect(
 		return nil, err
 	}
 
-	err = RunContainer("uyuni-db-inspect", pgsqlPreparedImage, utils.PgsqlRequiredVolumeMounts, podmanArgs,
+	err = RunContainer("uyuni-db-inspect", pgsqlPreparedImage.Name, utils.PgsqlRequiredVolumeMounts, podmanArgs,
 		[]string{utils.InspectContainerDirectory + "/" + utils.InspectScriptFilename})
 	if err != nil {
 		return nil, err

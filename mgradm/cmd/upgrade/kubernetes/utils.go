@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -18,5 +18,6 @@ func upgradeKubernetes(
 	_ *cobra.Command,
 	_ []string,
 ) error {
+	flags.ServerFlags.CheckParameters()
 	return kubernetes.Reconcile(flags, "")
 }

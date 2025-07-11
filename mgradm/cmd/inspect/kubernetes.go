@@ -26,7 +26,7 @@ func kuberneteInspect(
 	_ *cobra.Command,
 	_ []string,
 ) error {
-	serverImage, err := utils.ComputeImage("", utils.DefaultTag, flags.Image)
+	serverImage, err := utils.ComputeImage(flags.Image)
 	if err != nil && len(serverImage) > 0 {
 		return utils.Errorf(err, L("failed to determine image"))
 	}

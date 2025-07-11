@@ -34,6 +34,56 @@ type Tuning struct {
 	Squid string `mapstructure:"squid"`
 }
 
+func (flags *ProxyImageFlags) setTagIfMissing() {
+	globalTag := utils.DefaultTag
+	if flags.Tag != "" {
+		globalTag = flags.Tag
+	}
+	if flags.Httpd.Tag == "" {
+		flags.Httpd.Tag = globalTag
+	}
+	if flags.SSH.Tag == "" {
+		flags.SSH.Tag = globalTag
+	}
+	if flags.SaltBroker.Tag == "" {
+		flags.SaltBroker.Tag = globalTag
+	}
+	if flags.Squid.Tag == "" {
+		flags.Squid.Tag = globalTag
+	}
+	if flags.Tftpd.Tag == "" {
+		flags.Tftpd.Tag = globalTag
+	}
+}
+
+func (flags *ProxyImageFlags) setRegistryIfMissing() {
+	globalRegistry := utils.DefaultRegistry
+	if flags.Registry != "" {
+		globalRegistry = flags.Registry
+	}
+	if flags.Httpd.Registry == "" {
+		flags.Httpd.Registry = globalRegistry
+	}
+	if flags.SSH.Registry == "" {
+		flags.SSH.Registry = globalRegistry
+	}
+	if flags.SaltBroker.Registry == "" {
+		flags.SaltBroker.Registry = globalRegistry
+	}
+	if flags.Squid.Registry == "" {
+		flags.Squid.Registry = globalRegistry
+	}
+	if flags.Tftpd.Registry == "" {
+		flags.Tftpd.Registry = globalRegistry
+	}
+}
+
+// CheckParameters checks parameters for server parameters.
+func (flags *ProxyImageFlags) CheckParameters() {
+	flags.setRegistryIfMissing()
+	flags.setTagIfMissing()
+}
+
 // GetContainerImage gets the full container image name and tag for a container name.
 func (f *ProxyImageFlags) GetContainerImage(name string) string {
 	var containerImage *types.ImageFlags
@@ -52,7 +102,7 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 		log.Fatal().Msgf(L("Invalid proxy container name: %s"), name)
 	}
 
-	imageURL, err := utils.ComputeImage(f.Registry, f.Tag, *containerImage)
+	imageURL, err := utils.ComputeImage(*containerImage)
 	if err != nil {
 		log.Fatal().Err(err).Msg(L("failed to compute image URL"))
 	}

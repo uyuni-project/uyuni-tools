@@ -207,13 +207,13 @@ func RunPgsqlVersionUpgrade(
 
 		upgradeImageURL := ""
 		if upgradeImage.Name == "" {
-			upgradeImageURL, err = utils.ComputeImage(registry, utils.DefaultTag, image,
+			upgradeImageURL, err = utils.ComputeImage(image,
 				fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			upgradeImageURL, err = utils.ComputeImage(registry, image.Tag, upgradeImage)
+			upgradeImageURL, err = utils.ComputeImage(upgradeImage)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
@@ -231,7 +231,7 @@ func RunPgsqlVersionUpgrade(
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
 
-		err = podman.RunContainer(pgsqlVersionUpgradeContainer, preparedImage, utils.PgsqlRequiredVolumeMounts, extraArgs,
+		err = podman.RunContainer(pgsqlVersionUpgradeContainer, preparedImage.Name, utils.PgsqlRequiredVolumeMounts, extraArgs,
 			[]string{"/var/lib/uyuni-tools/" + pgsqlVersionUpgradeScriptName})
 		if err != nil {
 			return err
@@ -333,7 +333,7 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot prepare images"))
 	}
 
-	inspectedValues, err := prepareHost(preparedServerImage, preparedPgsqlImage, image.PullPolicy, scc)
+	inspectedValues, err := prepareHost(preparedServerImage, preparedPgsqlImage, scc)
 	if err != nil {
 		return utils.Errorf(err, L("cannot prepare host"))
 	}
@@ -365,7 +365,7 @@ func Upgrade(
 			newPgVersion, oldPgVersion)
 
 		if err := configureSplitDBContainer(
-			preparedServerImage, preparedPgsqlImage, systemd, db, reportdb, ssl, tz, fqdn); err != nil {
+			preparedServerImage.Name, preparedPgsqlImage.Name, systemd, db, reportdb, ssl, tz, fqdn); err != nil {
 			return utils.Errorf(err, L("cannot configure db container"))
 		}
 	}
@@ -386,17 +386,17 @@ func Upgrade(
 		)
 	}
 
-	if err := pgsql.Upgrade(preparedPgsqlImage, systemd); err != nil {
+	if err := pgsql.Upgrade(preparedPgsqlImage.Name, systemd); err != nil {
 		return err
 	}
 
 	schemaUpdateRequired :=
 		oldPgVersion != newPgVersion
-	if err := RunPgsqlFinalizeScript(preparedServerImage, schemaUpdateRequired, false); err != nil {
+	if err := RunPgsqlFinalizeScript(preparedServerImage.Name, schemaUpdateRequired, false); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
 
-	if err := RunPostUpgradeScript(preparedServerImage); err != nil {
+	if err := RunPostUpgradeScript(preparedServerImage.Name); err != nil {
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
@@ -405,7 +405,7 @@ func Upgrade(
 	}
 
 	if err := podman.GenerateSystemdConfFile("uyuni-server", "generated.conf",
-		"Environment=UYUNI_IMAGE="+preparedServerImage, true,
+		"Environment=UYUNI_IMAGE="+preparedServerImage.Name, true,
 	); err != nil {
 		return err
 	}
@@ -524,9 +524,15 @@ func Migrate(
 	if err != nil {
 		return utils.Errorf(err, L("cannot setup network"))
 	}
+
 	// Find the SSH Socket and paths for the migration
 	sshAuthSocket := GetSSHAuthSocket()
 	sshConfigPath, sshKnownhostsPath := GetSSHPaths()
+
+	fqdn, err := utils.GetFqdn([]string{})
+	if err != nil {
+		return err
+	}
 
 	preparedServerImage, preparedPgsqlImage, err := podman.PrepareImages(authFile, image, pgsqlFlags)
 	if err != nil {
@@ -541,7 +547,7 @@ func Migrate(
 	}
 
 	_, err = RunMigration(
-		preparedServerImage, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn,
+		preparedServerImage.Name, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn,
 		user, prepare,
 	)
 	if err != nil {
@@ -552,7 +558,7 @@ func Migrate(
 		return nil
 	}
 
-	inspectedValues, err := prepareHost(preparedServerImage, preparedPgsqlImage, image.PullPolicy, scc)
+	inspectedValues, err := prepareHost(preparedServerImage, preparedPgsqlImage, scc)
 	if err != nil {
 		return utils.Errorf(err, L("cannot prepare host"))
 	}
@@ -569,31 +575,26 @@ func Migrate(
 	}
 
 	if err := configureSplitDBContainer(
-		preparedServerImage, preparedPgsqlImage, systemd, db, reportdb, ssl, tz, sourceFqdn); err != nil {
+		preparedServerImage.Name, preparedPgsqlImage.Name, systemd, db, reportdb, ssl, tz, fqdn); err != nil {
 		return utils.Errorf(err, L("cannot configure db container"))
 	}
 
-	// At this point we should have all certificates in the secrets form, we can remove temporary volume
-	if err := podman.DeleteVolume(utils.EtcTLSTmpVolumeMount.Name, false); err != nil {
-		log.Warn().Err(err).Msg(L("cannot remove temporary etc-tls volume"))
-	}
-
-	if err := pgsql.Upgrade(preparedPgsqlImage, systemd); err != nil {
+	if err := pgsql.Upgrade(preparedPgsqlImage.Name, systemd); err != nil {
 		return err
 	}
 
 	schemaUpdateRequired :=
 		oldPgVersion != newPgVersion
-	if err := RunPgsqlFinalizeScript(preparedServerImage, schemaUpdateRequired, true); err != nil {
+	if err := RunPgsqlFinalizeScript(preparedServerImage.Name, schemaUpdateRequired, true); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
 
-	if err := RunPostUpgradeScript(preparedServerImage); err != nil {
+	if err := RunPostUpgradeScript(preparedServerImage.Name); err != nil {
 		return utils.Errorf(err, L("cannot run post upgrade script"))
 	}
 
 	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
-	if err := WaitForSystemStart(systemd, cnx, preparedServerImage, tz,
+	if err := WaitForSystemStart(systemd, cnx, preparedServerImage.Name, tz,
 		debug, mirror, podmanArgs.Args); err != nil {
 		return utils.Error(err, L("cannot wait for system start"))
 	}
@@ -769,12 +770,12 @@ func GetSSHPaths() (string, string) {
 }
 
 func prepareHost(
-	preparedServerImage string,
-	preparedPgsqlImage string,
-	pullPolicy string,
+	preparedServerImage types.ImageFlags,
+	preparedPgsqlImage types.ImageFlags,
 	scc types.SCCCredentials,
 ) (*utils.ServerInspectData, error) {
-	inspectedValues, err := podman.Inspect(preparedServerImage, preparedPgsqlImage, pullPolicy, scc)
+
+	inspectedValues, err := podman.Inspect(preparedServerImage, preparedPgsqlImage, scc)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot inspect podman values"))
 	}
@@ -782,13 +783,13 @@ func prepareHost(
 	runningImage := podman.GetServiceImage(podman.ServerService)
 	var runningData *utils.ServerInspectData
 	if runningImage != "" {
-		runningData, err = podman.Inspect(preparedServerImage, preparedPgsqlImage, pullPolicy, scc)
+		runningData, err = podman.Inspect(preparedServerImage, preparedPgsqlImage, scc)
 		if err != nil {
 			return inspectedValues, err
 		}
 	}
 
-	return inspectedValues, adm_utils.SanityCheck(runningData, inspectedValues, preparedServerImage)
+	return inspectedValues, adm_utils.SanityCheck(runningData, inspectedValues, preparedServerImage.Name)
 }
 
 func upgradeDB(

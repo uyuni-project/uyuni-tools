@@ -200,23 +200,16 @@ func RemoveRegistryFromImage(imagePath string) string {
 
 // ComputeImage assembles the container image from its name and tag.
 func ComputeImage(
-	registry string,
-	globalTag string,
 	imageFlags types.ImageFlags,
 	appendToName ...string,
 ) (string, error) {
-	if !strings.Contains(DefaultRegistry, registry) {
-		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), registry, DefaultRegistry)
+
+	if !strings.Contains(DefaultRegistry, imageFlags.Registry) {
+		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), imageFlags.Registry, DefaultRegistry)
 	}
 	name := imageFlags.Name
-	if !strings.Contains(imageFlags.Name, registry) {
-		name = path.Join(registry, RemoveRegistryFromImage(imageFlags.Name))
-	}
-
-	// Compute the tag
-	tag := globalTag
-	if imageFlags.Tag != "" {
-		tag = imageFlags.Tag
+	if !strings.Contains(imageFlags.Name, imageFlags.Registry) {
+		name = path.Join(imageFlags.Registry, RemoveRegistryFromImage(imageFlags.Name))
 	}
 
 	submatches := imageValid.FindStringSubmatch(name)
@@ -224,14 +217,14 @@ func ComputeImage(
 		return "", fmt.Errorf(L("invalid image name: %s"), name)
 	}
 	if submatches[2] == `` {
-		if len(tag) <= 0 {
+		if len(imageFlags.Tag) <= 0 {
 			return name, fmt.Errorf(L("tag missing on %s"), name)
 		}
 		if len(appendToName) > 0 {
 			name = name + strings.Join(appendToName, ``)
 		}
 		// No tag provided in the URL name, append the one passed
-		imageName := fmt.Sprintf("%s:%s", name, tag)
+		imageName := fmt.Sprintf("%s:%s", name, imageFlags.Tag)
 		imageName = strings.ToLower(imageName) // podman does not accept repo in upper case
 		log.Info().Msgf(L("Computed image name is %s"), imageName)
 		return imageName, nil

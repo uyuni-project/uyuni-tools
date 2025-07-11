@@ -37,6 +37,7 @@ func installForPodman(
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
 	}
+	flags.ProxyImageFlags.CheckParameters()
 
 	configPath := utils.GetConfigPath(args)
 	if err := podman.UnpackConfig(configPath); err != nil {
@@ -48,7 +49,7 @@ func installForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.SCC)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.SCC, flags.Httpd)
 	if err != nil {
 		return shared_utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}

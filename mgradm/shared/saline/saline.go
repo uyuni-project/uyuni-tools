@@ -70,7 +70,7 @@ func writeSalineServiceFiles(
 		salineFlags.Replicas = 1
 	}
 
-	salineImage, err := utils.ComputeImage(registry, baseImage.Tag, image)
+	salineImage, err := utils.ComputeImage(image)
 	if err != nil {
 		return utils.Error(err, L("failed to compute image URL"))
 	}
@@ -86,7 +86,7 @@ func writeSalineServiceFiles(
 		NamePrefix: "uyuni",
 		Network:    podman.UyuniNetwork,
 		Volumes:    utils.SalineVolumeMounts,
-		Image:      preparedImage,
+		Image:      preparedImage.Name,
 	}
 
 	log.Info().Msg(L("Setting up Saline service"))
@@ -96,7 +96,7 @@ func writeSalineServiceFiles(
 		return utils.Error(err, L("failed to generate systemd service unit file"))
 	}
 
-	environment := fmt.Sprintf(`Environment=UYUNI_SALINE_IMAGE=%s`, preparedImage)
+	environment := fmt.Sprintf(`Environment=UYUNI_SALINE_IMAGE=%s`, preparedImage.Name)
 
 	if err := podman.GenerateSystemdConfFile(
 		podman.SalineService+"@", "generated.conf", environment, true,

@@ -28,18 +28,18 @@ const rpmImageDir = "/usr/share/suse-docker-images/native/"
 // PrepareImage ensures the container image is pulled or pull it if the pull policy allows it.
 //
 // Returns the image name to use. Note that it may be changed if the image has been loaded from a local RPM package.
-func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled bool) (string, error) {
+func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled bool) (types.ImageFlags, error) {
 	if strings.ToLower(pullPolicy) != "always" {
 		log.Info().Msgf(L("Ensure image %s is available"), image)
 
 		presentImage, err := IsImagePresent(image)
 		if err != nil {
-			return image, err
+			return types.ImageFlags{Name: image, PullPolicy: pullPolicy}, err
 		}
 
 		if len(presentImage) > 0 {
 			log.Debug().Msgf("Image %s already present", presentImage)
-			return presentImage, nil
+			return types.ImageFlags{Name: presentImage, PullPolicy: pullPolicy}, nil
 		}
 		log.Debug().Msgf("Image %s is missing", image)
 	} else {
@@ -58,7 +58,7 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 		} else {
 			log.Info().Msgf(L("Using the %[1]s image loaded from the RPM instead of its online version %[2]s"),
 				strings.TrimSpace(loadedImage), image)
-			return loadedImage, nil
+			return types.ImageFlags{Name: loadedImage, PullPolicy: pullPolicy}, nil
 		}
 	} else {
 		log.Info().Msgf(L("Cannot find RPM image for %s"), image)
@@ -67,23 +67,23 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 	if strings.ToLower(pullPolicy) != "never" {
 		if pullEnabled {
 			log.Debug().Msgf("Pulling image %s because it is missing and pull policy is not 'never'", image)
-			return image, pullImage(authFile, image)
+			return types.ImageFlags{Name: image, PullPolicy: pullPolicy}, pullImage(authFile, image)
 		}
 		log.Debug().Msgf("Not pulling image %s, although the pull policy is not 'never', maybe replicas is zero?", image)
-		return image, nil
+		return types.ImageFlags{Name: image, PullPolicy: pullPolicy}, nil
 	}
 
-	return image, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)
+	return types.ImageFlags{Name: image, PullPolicy: pullPolicy}, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)
 }
 
 func PrepareImages(
 	authFile string,
 	image types.ImageFlags,
 	pgsqlFlags types.PgsqlFlags,
-) (string, string, error) {
-	serverImage, err := utils.ComputeImage(image.Registry, utils.DefaultTag, image)
+) (types.ImageFlags, types.ImageFlags, error) {
+	serverImage, err := utils.ComputeImage(image)
 	if err != nil && len(serverImage) > 0 {
-		return "", "", utils.Error(err, L("failed to determine image"))
+		return types.ImageFlags{}, types.ImageFlags{}, utils.Error(err, L("failed to determine image"))
 	}
 
 	if len(serverImage) <= 0 {
@@ -91,18 +91,13 @@ func PrepareImages(
 
 		serverImage, err = GetRunningImage(ServerContainerName)
 		if err != nil {
-			return "", "", utils.Error(err, L("failed to find the image of the currently running server container"))
+			return types.ImageFlags{}, types.ImageFlags{}, utils.Error(err, L("failed to find the image of the currently running server container"))
 		}
 	}
 
-	globalTag := utils.DefaultTag
-	if image.Tag != "" {
-		globalTag = image.Tag
-	}
-
-	pgsqlImage, err := utils.ComputeImage(image.Registry, globalTag, pgsqlFlags.Image)
+	pgsqlImage, err := utils.ComputeImage(pgsqlFlags.Image)
 	if err != nil && len(pgsqlImage) > 0 {
-		return "", "", utils.Error(err, L("failed to determine pgsql image"))
+		return types.ImageFlags{}, types.ImageFlags{}, utils.Error(err, L("failed to determine pgsql image"))
 	}
 
 	if len(pgsqlImage) <= 0 {
@@ -110,13 +105,13 @@ func PrepareImages(
 
 		pgsqlImage, err = GetRunningImage(DBContainerName)
 		if err != nil {
-			return "", "", utils.Error(err, L("failed to find the image of the currently running db container"))
+			return types.ImageFlags{}, types.ImageFlags{}, utils.Error(err, L("failed to find the image of the currently running db container"))
 		}
 	}
 
 	preparedServerImage, err := PrepareImage(authFile, serverImage, image.PullPolicy, true)
 	if err != nil {
-		return preparedServerImage, "", err
+		return preparedServerImage, types.ImageFlags{}, err
 	}
 
 	preparedPgsqlImage, err := PrepareImage(authFile, pgsqlImage, image.PullPolicy, true)
@@ -284,7 +279,8 @@ func pullImage(authFile string, image string) error {
 func ShowAvailableTag(registry string, image types.ImageFlags, authFile string) error {
 	log.Info().Msgf(L("Running podman image search --list-tags %s --format={{.Tag}}"), image.Name)
 
-	name, err := utils.ComputeImage(registry, utils.DefaultTag, image)
+	image.Registry = registry
+	name, err := utils.ComputeImage(image)
 	if err != nil {
 		return err
 	}

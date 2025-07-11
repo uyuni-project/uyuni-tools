@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -19,5 +19,6 @@ func upgradePodman(
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	flags.ProxyImageFlags.CheckParameters()
 	return podman.Upgrade(systemd, globalFlags, flags, cmd, args)
 }

@@ -18,7 +18,8 @@ import (
 // PodmanLogin logs in the registry.suse.com registry if needed.
 //
 // It returns an authentication file, a cleanup function and an error.
-func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials) (string, func(), error) {
+func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials, image types.ImageFlags) (string, func(), error) {
+	registryFQDN := image.RegistryFQDN()
 	sccUser := hostData.SCCUsername
 	sccPassword := hostData.SCCPassword
 	if scc.User != "" && scc.Password != "" {
@@ -31,11 +32,11 @@ func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials) (string, f
 		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", sccUser, sccPassword)))
 		authFileContent := fmt.Sprintf(`{
 	"auths": {
-		"registry.suse.com" : {
+		"%s" : {
 			"auth": "%s"
 		}
 	}
-}`, token)
+}`, registryFQDN, token)
 		authFile, err := os.CreateTemp("", "mgradm-")
 		if err != nil {
 			return "", nil, err

@@ -101,6 +101,56 @@ func (flags *InstallationFlags) checkUpgradeSSLParameters(cmd *cobra.Command, co
 	}
 }
 
+func (flags *ServerFlags) setTagIfMissing() {
+	globalTag := utils.DefaultTag
+	if flags.Image.Tag != "" {
+		globalTag = flags.Image.Tag
+	}
+	if flags.Coco.Image.Tag == "" {
+		flags.Coco.Image.Tag = globalTag
+	}
+	if flags.DBUpgradeImage.Tag == "" {
+		flags.DBUpgradeImage.Tag = globalTag
+	}
+	if flags.HubXmlrpc.Image.Tag == "" {
+		flags.HubXmlrpc.Image.Tag = globalTag
+	}
+	if flags.Pgsql.Image.Tag == "" {
+		flags.Pgsql.Image.Tag = globalTag
+	}
+	if flags.Saline.Image.Tag == "" {
+		flags.Pgsql.Image.Tag = globalTag
+	}
+}
+
+func (flags *ServerFlags) setRegistryIfMissing() {
+	globalRegistry := utils.DefaultRegistry
+	if flags.Image.Registry != "" {
+		globalRegistry = flags.Image.Registry
+	}
+	if flags.Coco.Image.Registry == "" {
+		flags.Coco.Image.Registry = globalRegistry
+	}
+	if flags.DBUpgradeImage.Registry == "" {
+		flags.DBUpgradeImage.Registry = globalRegistry
+	}
+	if flags.HubXmlrpc.Image.Registry == "" {
+		flags.HubXmlrpc.Image.Registry = globalRegistry
+	}
+	if flags.Pgsql.Image.Registry == "" {
+		flags.Pgsql.Image.Registry = globalRegistry
+	}
+	if flags.Saline.Image.Registry == "" {
+		flags.Pgsql.Image.Registry = globalRegistry
+	}
+}
+
+// CheckParameters checks parameters for server parameters.
+func (flags *ServerFlags) CheckParameters() {
+	flags.setRegistryIfMissing()
+	flags.setTagIfMissing()
+}
+
 // CheckParameters checks parameters for install command.
 func (flags *InstallationFlags) CheckParameters(cmd *cobra.Command, command string) {
 	flags.setPasswordIfMissing()

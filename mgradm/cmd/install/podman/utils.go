@@ -39,7 +39,7 @@ func installForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Installation.SCC)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Installation.SCC, flags.Image)
 	if err != nil {
 		return utils.Error(err, L("failed to login to registry.suse.com"))
 	}
@@ -51,6 +51,7 @@ func installForPodman(
 		)
 	}
 
+	flags.ServerFlags.CheckParameters()
 	flags.Installation.CheckParameters(cmd, "podman")
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
@@ -72,7 +73,7 @@ func installForPodman(
 	}
 
 	if err := podman.PrepareSSLCertificates(
-		preparedImage, &flags.Installation.SSL, flags.Installation.TZ, fqdn); err != nil {
+		preparedImage.Name, &flags.Installation.SSL, flags.Installation.TZ, fqdn); err != nil {
 		return err
 	}
 
@@ -101,7 +102,7 @@ func installForPodman(
 		}
 
 		// Run the DB container setup if the user doesn't set a custom host name for it.
-		if err := pgsql.SetupPgsql(systemd, preparedPgsqlImage); err != nil {
+		if err := pgsql.SetupPgsql(systemd, preparedPgsqlImage.Name); err != nil {
 			return err
 		}
 	} else {
@@ -113,12 +114,12 @@ func installForPodman(
 
 	log.Info().Msg(L("Run setup command in the container"))
 
-	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn); err != nil {
+	if err := runSetup(preparedImage.Name, &flags.ServerFlags, fqdn); err != nil {
 		return err
 	}
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
-	if err := podman.WaitForSystemStart(systemd, cnx, preparedImage, flags.Installation.TZ,
+	if err := podman.WaitForSystemStart(systemd, cnx, preparedImage.Name, flags.Installation.TZ,
 		flags.Installation.Debug.Java, flags.Mirror, flags.Podman.Args); err != nil {
 		return utils.Error(err, L("cannot wait for system start"))
 	}

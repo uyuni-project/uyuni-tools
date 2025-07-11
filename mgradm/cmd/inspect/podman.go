@@ -21,7 +21,7 @@ func podmanInspect(
 	_ *cobra.Command,
 	_ []string,
 ) error {
-	serverImage, err := utils.ComputeImage("", utils.DefaultTag, flags.Image)
+	serverImage, err := utils.ComputeImage(flags.Image)
 	if err != nil && len(serverImage) > 0 {
 		return utils.Errorf(err, L("failed to determine server image"))
 	}
@@ -30,13 +30,14 @@ func podmanInspect(
 		log.Debug().Msg("Use already deployed server image")
 
 		serverImage, err = podman.GetRunningImage(podman.ServerContainerName)
+		flags.Image.Name = serverImage
 		if err != nil {
 			return utils.Errorf(err, L("failed to find the image of the currently running server container"))
 		}
 	}
 
 	log.Debug().Msgf("Wanted database image %[1]s", flags.Pgsql.Image.Name)
-	pgsqlImage, err := utils.ComputeImage("", utils.DefaultTag, flags.Pgsql.Image)
+	pgsqlImage, err := utils.ComputeImage(flags.Pgsql.Image)
 	if err != nil && len(pgsqlImage) > 0 {
 		return utils.Errorf(err, L("failed to determine pgsql image"))
 	}
@@ -45,12 +46,13 @@ func podmanInspect(
 		log.Debug().Msg("Use already deployed database image")
 
 		pgsqlImage, err = podman.GetRunningImage(podman.DBContainerName)
+		flags.Pgsql.Image.Name = pgsqlImage
 		if err != nil {
 			return utils.Errorf(err, L("failed to find the image of the currently running db container"))
 		}
 	}
 
-	inspectResult, err := podman.Inspect(serverImage, pgsqlImage, flags.Image.PullPolicy, flags.SCC)
+	inspectResult, err := podman.Inspect(flags.Image, flags.Pgsql.Image, flags.SCC)
 	if err != nil {
 		return utils.Errorf(err, L("inspect command failed"))
 	}

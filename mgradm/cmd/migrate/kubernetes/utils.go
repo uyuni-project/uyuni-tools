@@ -26,6 +26,7 @@ func migrateToKubernetes(
 	_ *cobra.Command,
 	args []string,
 ) error {
+	flags.ServerFlags.CheckParameters()
 	namespace := flags.Kubernetes.Uyuni.Namespace
 
 	// Create the namespace if not present
@@ -38,7 +39,7 @@ func migrateToKubernetes(
 		return err
 	}
 
-	serverImage, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Image)
+	serverImage, err := utils.ComputeImage(flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
