@@ -27,10 +27,10 @@ type ServerFlags struct {
 	Migration    MigrationFlags    `mapstructure:",squash"`
 	Installation InstallationFlags `mapstructure:",squash"`
 	// DBUpgradeImage is the image to use to perform the database upgrade.
-	DBUpgradeImage     types.ImageFlags `mapstructure:"dbupgrade"`
-	Saline             SalineFlags
-	SaltEventProcessor SaltEventProcessorFlags `mapstructure:",squash"`
-	Pgsql              types.PgsqlFlags
+	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
+	Saline         SalineFlags
+	EventProcessor EventProcessorFlags `mapstructure:"eventprocessor"`
+	Pgsql          types.PgsqlFlags
 }
 
 // MigrationFlags contains the parameters that are used only for migration.

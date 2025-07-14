@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-package saltEventProcessor
+package eventProcessor
 
 import (
 	"github.com/rs/zerolog/log"
@@ -12,16 +12,16 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// Upgrade salt event processor
+// Upgrade event processor
 func Upgrade(
 	systemd podman.Systemd,
 	authFile string,
 	registry string,
-	saltEventProcessorFlags adm_utils.SaltEventProcessorFlags,
+	eventProcessorFlags adm_utils.EventProcessorFlags,
 	baseImage types.ImageFlags,
 	db adm_utils.DBFlags,
 ) error {
-	if saltEventProcessorFlags.Image.Name == "" {
+	if eventProcessorFlags.Image.Name == "" {
 		return nil
 	}
 	// call podman secret create to store the secret from temp file to podman
@@ -34,16 +34,16 @@ func Upgrade(
 
 }
 
-func writeSaltEventProcessorFiles(
+func writeEventProcessorFiles(
 	systemd podman.Systemd,
 	authFile string,
 	registry string,
-	saltEventProcessorFlags adm_utils.SaltEventProcessorFlags,
+	eventProcessorFlags adm_utils.EventProcessorFlags,
 	baseImage types.ImageFlags,
 	db adm_utils.DBFlags,
 ) error {
-	image := saltEventProcessorFlags.Image
-	currentReplicas := systemd.CurrentReplicaCount(podman.SaltEventProcessorService)
+	image := eventProcessorFlags.Image
+	currentReplicas := systemd.CurrentReplicaCount(podman.EventProcessorService)
 	log.Debug().Msgf("Current running Salt event processor replicas are %d", currentReplicas)
 
 	if image.Tag == "" {
@@ -54,11 +54,11 @@ func writeSaltEventProcessorFiles(
 		}
 	}
 
-	if !saltEventProcessorFlags.IsChanged {
+	if !eventProcessorFlags.IsChanged {
 		log.Debug().Msgf("Salt event processor settings are not changed.")
 	}
 
-	if saltEventProcessorFlags.Replicas == 0 {
+	if eventProcessorFlags.Replicas == 0 {
 		log.Debug().Msgf("No Salt event processor server requested")
 	}
 
@@ -67,8 +67,8 @@ func writeSaltEventProcessorFiles(
 		return utils.Errorf(err, L("Failed to compute salt event processor image URL"))
 	}
 
-	pullEnabled := (saltEventProcessorFlags.IsChanged && saltEventProcessorFlags.Replicas > 0) ||
-		(!saltEventProcessorFlags.IsChanged && currentReplicas > 0)
+	pullEnabled := (eventProcessorFlags.IsChanged && eventProcessorFlags.Replicas > 0) ||
+		(!eventProcessorFlags.IsChanged && currentReplicas > 0)
 
 	preparedImage, err := podman.PrepareImage(authFile, saltEventProcessorImage, baseImage.PullPolicy, pullEnabled)
 	if err != nil {
@@ -76,18 +76,18 @@ func writeSaltEventProcessorFiles(
 	}
 }
 
-func SetupSaltEventProcessorContainer(
+func SetupEventProcessorContainer(
 	systemd podman.Systemd,
 	authFile string,
 	registry string,
-	saltEventProcessorFlags adm_utils.SaltEventProcessorFlags,
+	eventProcessorFlags adm_utils.EventProcessorFlags,
 	baseImage types.ImageFlags,
 	db adm_utils.DBFlags,
 ) error {
-	if err := writeSaltEventProcessorFiles(
-		systemd, authFile, registry, saltEventProcessorFlags, baseImage, db,
+	if err := writeEventProcessorFiles(
+		systemd, authFile, registry, eventProcessorFlags, baseImage, db,
 	); err != nil {
 		return err
 	}
-	return systemd.ScaleService(saltEventProcessorFlags.Replicas, podman.SaltEventProcessorService)
+	return systemd.ScaleService(eventProcessorFlags.Replicas, podman.EventProcessorService)
 }
