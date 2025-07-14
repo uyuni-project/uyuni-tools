@@ -51,7 +51,7 @@ func installForPodman(
 
 	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.SCC, flags.Httpd)
 	if err != nil {
-		return shared_utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return shared_utils.Errorf(err, L("failed to login to %s"), flags.Httpd.RegistryFQDN)
 	}
 	defer cleaner()
 

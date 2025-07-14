@@ -188,8 +188,8 @@ func createDockerSecret(
 }
 
 // AddSccSecret creates a secret holding the SCC credentials and adds it to the helm args.
-func AddSCCSecret(helmArgs []string, namespace string, scc *types.SCCCredentials, appLabel string) ([]string, error) {
-	secret, err := GetRegistrySecret(namespace, scc, appLabel)
+func AddSCCSecret(helmArgs []string, namespace string, scc *types.SCCCredentials, appLabel string, registry string) ([]string, error) {
+	secret, err := GetRegistrySecret(namespace, scc, appLabel, registry)
 	if secret != "" {
 		helmArgs = append(helmArgs, secret)
 	}
@@ -197,7 +197,7 @@ func AddSCCSecret(helmArgs []string, namespace string, scc *types.SCCCredentials
 }
 
 // GetRegistrySecret creates a docker secret holding the SCC credentials and returns the secret name.
-func GetRegistrySecret(namespace string, scc *types.SCCCredentials, appLabel string) (string, error) {
+func GetRegistrySecret(namespace string, scc *types.SCCCredentials, appLabel string, registry string) (string, error) {
 	const secretName = "registry-credentials"
 
 	// Return the existing secret if any.
@@ -209,7 +209,7 @@ func GetRegistrySecret(namespace string, scc *types.SCCCredentials, appLabel str
 	// Create the secret if SCC user and password are passed.
 	if scc.User != "" && scc.Password != "" {
 		if err := createDockerSecret(
-			namespace, secretName, "registry.suse.com", scc.User, scc.Password, appLabel,
+			namespace, secretName, registry, scc.User, scc.Password, appLabel,
 		); err != nil {
 			return "", err
 		}

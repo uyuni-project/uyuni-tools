@@ -15,7 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// PodmanLogin logs in the registry.suse.com registry if needed.
+// PodmanLogin logs in registry if needed.
 //
 // It returns an authentication file, a cleanup function and an error.
 func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials, image types.ImageFlags) (string, func(), error) {
@@ -27,7 +27,6 @@ func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials, image type
 		sccPassword = scc.Password
 	}
 	if sccUser != "" && sccPassword != "" {
-		// We have SCC credentials, so we are pretty likely to need registry.suse.com
 		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", sccUser, sccPassword)))
 		authFileContent := fmt.Sprintf(`{
 	"auths": {
@@ -36,7 +35,6 @@ func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials, image type
 		}
 	}
 }`, image.RegistryFQDN, token)
-		log.Trace().Msgf("auth:\n %s \n =====", authFileContent)
 		authFile, err := os.CreateTemp("", "mgradm-")
 		if err != nil {
 			return "", nil, err

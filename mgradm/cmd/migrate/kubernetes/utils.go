@@ -63,7 +63,7 @@ func migrateToKubernetes(
 	// Create a secret using SCC credentials if any are provided
 	pullSecret, err := shared_kubernetes.GetRegistrySecret(
 		flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SCC, shared_kubernetes.ServerApp,
-	)
+		flags.Image.RegistryFQDN)
 	if err != nil {
 		return err
 	}

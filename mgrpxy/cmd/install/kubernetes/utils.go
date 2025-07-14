@@ -63,7 +63,7 @@ func installForKubernetes(_ *types.GlobalFlags,
 	helmArgs := []string{"--set", "ingress=" + clusterInfos.Ingress}
 	helmArgs, err = shared_kubernetes.AddSCCSecret(
 		helmArgs, flags.Helm.Proxy.Namespace, &flags.SCC, shared_kubernetes.ProxyApp,
-	)
+		flags.Httpd.RegistryFQDN)
 	if err != nil {
 		return err
 	}

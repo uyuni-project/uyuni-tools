@@ -26,6 +26,8 @@ func ptfForPodman(
 	_ *cobra.Command,
 	_ []string,
 ) error {
+	flags.ServerFlags.CheckParameters()
+
 	// Login first to be able to search the registry for PTF images
 	hostData, err := podman_shared.InspectHost()
 	if err != nil {
@@ -34,7 +36,7 @@ func ptfForPodman(
 
 	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.Installation.SCC, flags.Image)
 	if err != nil {
-		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return utils.Errorf(err, L("failed to login to %s"), flags.Image.RegistryFQDN)
 	}
 	defer cleaner()
 
@@ -94,7 +96,8 @@ func (flags *podmanPTFFlags) checkParameters() error {
 
 	var err error
 
-	flags.Image.Name, err = utils.ComputePTF(flags.CustomerID, projectID, serverImage, suffix)
+	flags.Image.Name = serverImage
+	flags.Image.Name, err = utils.ComputePTF(flags.CustomerID, projectID, flags.Image, suffix)
 	if err != nil {
 		return err
 	}
@@ -110,7 +113,8 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	for service, pointer := range images {
 		if containerImage := getServiceImage(service); containerImage != "" {
 			// If no image was found then skip it during the upgrade.
-			containerImage, err = utils.ComputePTF(flags.CustomerID, projectID, containerImage, suffix)
+			flags.Image.Name = containerImage
+			containerImage, err = utils.ComputePTF(flags.CustomerID, projectID, flags.Image, suffix)
 			if err != nil {
 				return err
 			}

@@ -40,8 +40,8 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 
 	// Create a secret using SCC credentials if any are provided
 	pullSecret, err := kubernetes.GetRegistrySecret(
-		flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SCC, kubernetes.ServerApp,
-	)
+		flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SCC,
+		kubernetes.ServerApp, flags.Image.RegistryFQDN)
 	if err != nil {
 		return err
 	}

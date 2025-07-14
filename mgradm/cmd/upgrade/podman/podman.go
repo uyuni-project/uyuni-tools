@@ -63,6 +63,7 @@ func newListCmd(globalFlags *types.GlobalFlags, run func(*podmanUpgradeFlags) er
 }
 
 func listTags(flags *podmanUpgradeFlags) error {
+	flags.ServerFlags.CheckParameters()
 	hostData, err := podman.InspectHost()
 	if err != nil {
 		return err

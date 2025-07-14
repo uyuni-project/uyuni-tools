@@ -322,7 +322,7 @@ func Inspect(
 
 	authFile, cleaner, err := PodmanLogin(hostData, scc, serverImage)
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return nil, utils.Errorf(err, L("failed to login to %s"), serverImage.RegistryFQDN)
 	}
 	defer cleaner()
 

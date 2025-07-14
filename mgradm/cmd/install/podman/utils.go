@@ -38,10 +38,15 @@ func installForPodman(
 	if err != nil {
 		return err
 	}
+	flags.ServerFlags.CheckParameters()
+	flags.Installation.CheckParameters(cmd, "podman")
+	if _, err := exec.LookPath("podman"); err != nil {
+		return errors.New(L("install podman before running this command"))
+	}
 
 	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Installation.SCC, flags.Image)
 	if err != nil {
-		return utils.Error(err, L("failed to login to registry.suse.com"))
+		return utils.Errorf(err, L("failed to login to %s"), flags.Image.RegistryFQDN)
 	}
 	defer cleaner()
 
@@ -49,12 +54,6 @@ func installForPodman(
 		return errors.New(
 			L("Server is already initialized! Uninstall before attempting new installation or use upgrade command"),
 		)
-	}
-
-	flags.ServerFlags.CheckParameters()
-	flags.Installation.CheckParameters(cmd, "podman")
-	if _, err := exec.LookPath("podman"); err != nil {
-		return errors.New(L("install podman before running this command"))
 	}
 
 	fqdn, err := utils.GetFqdn(args)
