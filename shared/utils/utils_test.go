@@ -173,6 +173,8 @@ func TestComputePTF(t *testing.T) {
 			"a196136",
 			"27977",
 			"registry.suse.com/suse/manager/5.0/x86_64/proxy-helm:latest",
+			"registry.suse.com/suse/manager/5.0/x86_64/",
+			"registry.suse.com",
 			"ptf",
 		},
 	}
@@ -181,8 +183,12 @@ func TestComputePTF(t *testing.T) {
 		result := testCase[0]
 		user := testCase[1]
 		ptfID := testCase[2]
-		fullImage := testCase[3]
-		suffix := testCase[4]
+		fullImage := types.ImageFlags{
+			Name:         testCase[3],
+			Registry:     testCase[4],
+			RegistryFQDN: testCase[5],
+		}
+		suffix := testCase[6]
 
 		actual, err := ComputePTF(user, ptfID, fullImage, suffix)
 

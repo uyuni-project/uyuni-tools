@@ -46,8 +46,8 @@ type SCCCredentials struct {
 	Password string
 }
 
-// RegistryFQDN return the registry FQDN
-func (flags *ImageFlags) GetRegistryFQDN() string {
+// ComputeRegistryFQDN return the registry FQDN.
+func (flags *ImageFlags) ComputeRegistryFQDN() string {
 	reg := flags.Registry
 
 	hasScheme := strings.Contains(reg, "://")

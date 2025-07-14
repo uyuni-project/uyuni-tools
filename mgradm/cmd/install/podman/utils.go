@@ -138,20 +138,20 @@ func installForPodman(
 	}
 
 	if err := coco.SetupCocoContainer(
-		systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
+		systemd, authFile, flags.Coco, flags.Image,
 		flags.Installation.DB,
 	); err != nil {
 		return err
 	}
 
 	if err := hub.SetupHubXmlrpc(
-		systemd, authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
+		systemd, authFile, flags.Image.PullPolicy, flags.HubXmlrpc,
 	); err != nil {
 		return err
 	}
 
 	if err := saline.SetupSalineContainer(
-		systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image, flags.Installation.TZ,
+		systemd, authFile, flags.Saline, flags.Image, flags.Installation.TZ,
 	); err != nil {
 		return err
 	}

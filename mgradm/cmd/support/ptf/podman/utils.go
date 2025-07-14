@@ -52,7 +52,6 @@ func ptfForPodman(
 	}
 
 	return podman.Upgrade(systemd, authFile,
-		"",
 		dummyDB,
 		dummyReportDB,
 		dummySSL,
@@ -103,24 +102,22 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	}
 	log.Info().Msgf(L("The computed image is %s"), flags.Image.Name)
 
-	images := map[string]*string{
-		podman_shared.ServerAttestationService + "@": &flags.Coco.Image.Name,
-		podman_shared.HubXmlrpcService:               &flags.HubXmlrpc.Image.Name,
-		podman_shared.SalineService:                  &flags.Saline.Image.Name,
-		podman_shared.DBService:                      &flags.Pgsql.Image.Name,
+	images := map[string]*types.ImageFlags{
+		podman_shared.ServerAttestationService + "@": &flags.Coco.Image,
+		podman_shared.HubXmlrpcService:               &flags.HubXmlrpc.Image,
+		podman_shared.SalineService:                  &flags.Saline.Image,
+		podman_shared.DBService:                      &flags.Pgsql.Image,
 	}
 
 	for service, pointer := range images {
 		if containerImage := getServiceImage(service); containerImage != "" {
 			// If no image was found then skip it during the upgrade.
-			flags.Image.Name = containerImage
-			containerImage, err = utils.ComputePTF(flags.CustomerID, projectID, flags.Image, suffix)
+			containerImage, err = utils.ComputePTF(flags.CustomerID, projectID, *pointer, suffix)
 			if err != nil {
 				return err
 			}
 			if hasRemoteImage(containerImage) {
-				*pointer = containerImage
-				log.Info().Msgf(L("The %[1]s service image is %[2]s"), service, *pointer)
+				log.Info().Msgf(L("The %[1]s service image is %[2]s"), service, containerImage)
 			}
 		}
 	}

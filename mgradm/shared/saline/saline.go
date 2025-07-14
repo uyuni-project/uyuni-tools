@@ -21,13 +21,12 @@ import (
 func Upgrade(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
 	salineFlags adm_utils.SalineFlags,
 	baseImage types.ImageFlags,
 	tz string,
 ) error {
 	if err := writeSalineServiceFiles(
-		systemd, authFile, registry, salineFlags, baseImage, tz,
+		systemd, authFile, salineFlags, baseImage, tz,
 	); err != nil {
 		return err
 	}
@@ -47,7 +46,6 @@ func Upgrade(
 func writeSalineServiceFiles(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
 	salineFlags adm_utils.SalineFlags,
 	baseImage types.ImageFlags,
 	tz string,
@@ -122,12 +120,11 @@ func writeSalineServiceFiles(
 func SetupSalineContainer(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
 	salineFlags adm_utils.SalineFlags,
 	baseImage types.ImageFlags,
 	tz string,
 ) error {
-	if err := writeSalineServiceFiles(systemd, authFile, registry, salineFlags, baseImage, tz); err != nil {
+	if err := writeSalineServiceFiles(systemd, authFile, salineFlags, baseImage, tz); err != nil {
 		return err
 	}
 	return EnableSaline(systemd, salineFlags.Replicas)

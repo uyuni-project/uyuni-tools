@@ -21,9 +21,7 @@ import (
 func SetupHubXmlrpc(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
 	pullPolicy string,
-	tag string,
 	hubXmlrpcFlags cmd_utils.HubXmlrpcFlags,
 ) error {
 	image := hubXmlrpcFlags.Image
@@ -80,16 +78,14 @@ func EnableHubXmlrpc(systemd podman.Systemd, replicas int) error {
 func Upgrade(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
 	pullPolicy string,
-	tag string,
 	hubXmlrpcFlags cmd_utils.HubXmlrpcFlags,
 ) error {
 	if hubXmlrpcFlags.Image.Name == "" {
 		// Don't touch the hub service in ptf if not already present.
 		return nil
 	}
-	if err := SetupHubXmlrpc(systemd, authFile, registry, pullPolicy, tag, hubXmlrpcFlags); err != nil {
+	if err := SetupHubXmlrpc(systemd, authFile, pullPolicy, hubXmlrpcFlags); err != nil {
 		return err
 	}
 

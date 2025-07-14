@@ -44,7 +44,6 @@ func migrateToPodman(
 
 	return podman.Migrate(
 		systemd, authFile,
-		flags.Image.Registry,
 		flags.Installation.DB,
 		flags.Installation.ReportDB,
 		flags.Installation.SSL,

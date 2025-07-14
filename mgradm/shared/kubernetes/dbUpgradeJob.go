@@ -26,7 +26,6 @@ const DBUpgradeJobName = "uyuni-db-upgrade"
 // StartDBUpgradeJob starts the database upgrade job.
 func StartDBUpgradeJob(
 	namespace string,
-	registry string,
 	image types.ImageFlags,
 	migrationImage types.ImageFlags,
 	pullSecret string,

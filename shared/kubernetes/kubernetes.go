@@ -188,7 +188,12 @@ func createDockerSecret(
 }
 
 // AddSccSecret creates a secret holding the SCC credentials and adds it to the helm args.
-func AddSCCSecret(helmArgs []string, namespace string, scc *types.SCCCredentials, appLabel string, registry string) ([]string, error) {
+func AddSCCSecret(
+	helmArgs []string,
+	namespace string,
+	scc *types.SCCCredentials,
+	appLabel string,
+	registry string) ([]string, error) {
 	secret, err := GetRegistrySecret(namespace, scc, appLabel, registry)
 	if secret != "" {
 		helmArgs = append(helmArgs, secret)

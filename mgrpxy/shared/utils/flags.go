@@ -63,23 +63,23 @@ func (flags *ProxyImageFlags) setRegistryIfMissing() {
 	}
 	if flags.Httpd.Registry == "" {
 		flags.Httpd.Registry = globalRegistry
-		flags.Httpd.GetRegistryFQDN()
+		flags.Httpd.ComputeRegistryFQDN()
 	}
 	if flags.SSH.Registry == "" {
 		flags.SSH.Registry = globalRegistry
-		flags.SSH.GetRegistryFQDN()
+		flags.SSH.ComputeRegistryFQDN()
 	}
 	if flags.SaltBroker.Registry == "" {
 		flags.SaltBroker.Registry = globalRegistry
-		flags.SaltBroker.GetRegistryFQDN()
+		flags.SaltBroker.ComputeRegistryFQDN()
 	}
 	if flags.Squid.Registry == "" {
 		flags.Squid.Registry = globalRegistry
-		flags.Squid.GetRegistryFQDN()
+		flags.Squid.ComputeRegistryFQDN()
 	}
 	if flags.Tftpd.Registry == "" {
 		flags.Tftpd.Registry = globalRegistry
-		flags.Tftpd.GetRegistryFQDN()
+		flags.Tftpd.ComputeRegistryFQDN()
 	}
 }
 
@@ -90,27 +90,27 @@ func (flags *ProxyImageFlags) CheckParameters() {
 }
 
 // GetContainerImage gets the full container image name and tag for a container name.
-func (f *ProxyImageFlags) GetContainerImage(name string) string {
+func (flags *ProxyImageFlags) GetContainerImage(name string) string {
 	var containerImage *types.ImageFlags
 	switch name {
 	case "httpd":
-		containerImage = &f.Httpd
+		containerImage = &flags.Httpd
 	case "salt-broker":
-		containerImage = &f.SaltBroker
+		containerImage = &flags.SaltBroker
 	case "squid":
-		containerImage = &f.Squid
+		containerImage = &flags.Squid
 	case "ssh":
-		containerImage = &f.SSH
+		containerImage = &flags.SSH
 	case "tftpd":
-		containerImage = &f.Tftpd
+		containerImage = &flags.Tftpd
 	default:
 		log.Fatal().Msgf(L("Invalid proxy container name: %s"), name)
 	}
 	if containerImage.Registry == "" {
-		containerImage.Registry = f.Registry
+		containerImage.Registry = flags.Registry
 	}
 	if containerImage.Tag == "" {
-		containerImage.Tag = f.Tag
+		containerImage.Tag = flags.Tag
 	}
 
 	imageURL, err := utils.ComputeImage(*containerImage)

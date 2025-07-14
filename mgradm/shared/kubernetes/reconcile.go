@@ -144,7 +144,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 		// Run the DB Upgrade job if needed
 		if oldPgVersion < newPgVersion {
 			jobName, err := StartDBUpgradeJob(
-				namespace, flags.Image.Registry, flags.Image, flags.DBUpgradeImage, pullSecret,
+				namespace, flags.Image, flags.DBUpgradeImage, pullSecret,
 				oldPgVersion, newPgVersion,
 			)
 			if err != nil {

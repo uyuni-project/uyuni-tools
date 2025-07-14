@@ -24,17 +24,18 @@ func TestRegistryFQDN(t *testing.T) {
 			Expected: `registry.suse.com`,
 		},
 		{
-			Input:    ImageFlags{Registry: `updates.suse.com/SUSE/Updates/SLE-Product-SUSE-Manager-Proxy/4.3-LTS/x86_64/update`},
+			Input: ImageFlags{
+				Registry: `updates.suse.com/SUSE/Updates/SLE-Product-SUSE-Manager-Proxy/4.3-LTS/x86_64/update`},
 			Expected: `updates.suse.com`,
 		},
 		{
-			Input:    ImageFlags{Registry: `https://updates.suse.com/SUSE/Updates/SLE-Product-SUSE-Manager-Proxy/4.3-LTS/x86_64/update`},
+			Input: ImageFlags{
+				Registry: `https://updates.suse.com/SUSE/Updates/SLE-Product-SUSE-Manager-Proxy/4.3-LTS/x86_64/update`},
 			Expected: `https://updates.suse.com`,
 		},
 	}
 	for i, testCase := range data {
-
-		actual := testCase.Input.GetRegistryFQDN()
+		actual := testCase.Input.ComputeRegistryFQDN()
 
 		if actual != testCase.Expected {
 			t.Errorf("Testcase %d: Expected %s got %s when registry %s", i, testCase.Expected, actual, testCase.Input.Registry)

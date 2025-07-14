@@ -73,7 +73,8 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 		return types.ImageFlags{Name: image, PullPolicy: pullPolicy}, nil
 	}
 
-	return types.ImageFlags{Name: image, PullPolicy: pullPolicy}, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)
+	return types.ImageFlags{Name: image, PullPolicy: pullPolicy},
+		fmt.Errorf(L("image %s is missing and cannot be fetched"), image)
 }
 
 func PrepareImages(
@@ -91,7 +92,8 @@ func PrepareImages(
 
 		serverImage, err = GetRunningImage(ServerContainerName)
 		if err != nil {
-			return types.ImageFlags{}, types.ImageFlags{}, utils.Error(err, L("failed to find the image of the currently running server container"))
+			return types.ImageFlags{}, types.ImageFlags{},
+				utils.Error(err, L("failed to find the image of the currently running server container"))
 		}
 	}
 
@@ -105,7 +107,8 @@ func PrepareImages(
 
 		pgsqlImage, err = GetRunningImage(DBContainerName)
 		if err != nil {
-			return types.ImageFlags{}, types.ImageFlags{}, utils.Error(err, L("failed to find the image of the currently running db container"))
+			return types.ImageFlags{}, types.ImageFlags{},
+				utils.Error(err, L("failed to find the image of the currently running db container"))
 		}
 	}
 
