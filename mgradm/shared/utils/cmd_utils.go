@@ -237,8 +237,12 @@ func AddEventProcessorFlag(cmd *cobra.Command) {
 	//TODO: check if naming works
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "event-processor", Title: L("Event Processor Flags")})
 	AddContainerImageFlags(cmd, "eventprocessor", L("Event processor"), "event-processor", "server-salt-event-processor")
-	//cmd.Flags().Int("saltevent-replicas", 0, L("How many replicas of the event processor container should be started"))
-	//_ = utils.AddFlagToHelpGroupID(cmd, "saltevent-replicas", "event-processor")
+}
+
+// AddUpgradeEventProcessorFlag adds the event processor related parameters to cmd upgrade.
+func AddUpgradeEventProcessorFlag(cmd *cobra.Command) {
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "event-processor", Title: L("Event Processor Flags")})
+	AddContainerImageFlags(cmd, "eventprocessor", L("Event processor"), "event-processor", "server-salt-event-processor")
 }
 
 // AddHubXmlrpcFlags adds hub XML-RPC related parameters to cmd.
