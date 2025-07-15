@@ -232,6 +232,15 @@ Leave it unset if you want to keep the previous number of replicas.`))
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
 }
 
+// AddEventProcessorFlag adds the event processor related parameters to cmd.
+func AddEventProcessorFlag(cmd *cobra.Command) {
+	//TODO: check if naming works
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "event-processor", Title: L("Event Processor Flags")})
+	AddContainerImageFlags(cmd, "eventprocessor", L("Event processor"), "event-processor", "server-salt-event-processor")
+	//cmd.Flags().Int("saltevent-replicas", 0, L("How many replicas of the event processor container should be started"))
+	//_ = utils.AddFlagToHelpGroupID(cmd, "saltevent-replicas", "event-processor")
+}
+
 // AddHubXmlrpcFlags adds hub XML-RPC related parameters to cmd.
 func AddHubXmlrpcFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API")})
@@ -261,15 +270,6 @@ func AddSalineFlag(cmd *cobra.Command) {
 	cmd.Flags().Int("saline-port", 8216, L("Saline port"))
 	_ = utils.AddFlagToHelpGroupID(cmd, "saline-replicas", "saline-container")
 	_ = utils.AddFlagToHelpGroupID(cmd, "saline-port", "saline-container")
-}
-
-// AddEventProcessorFlag adds the event processor related parameters to cmd.
-func AddEventProcessorFlag(cmd *cobra.Command) {
-	//TODO: check if naming works
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "event-processor", Title: L("Event Processor Flags")})
-	AddContainerImageFlags(cmd, "event-processor", L("Event processor"), "event-processor", "server-salt-event-processor")
-	//cmd.Flags().Int("saltevent-replicas", 0, L("How many replicas of the event processor container should be started"))
-	//_ = utils.AddFlagToHelpGroupID(cmd, "saltevent-replicas", "event-processor")
 }
 
 // AddUpgradeSalineFlag adds the Saline related parameters to cmd upgrade.

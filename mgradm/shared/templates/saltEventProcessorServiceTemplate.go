@@ -1,12 +1,12 @@
 package templates
 
 import (
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"io"
 	"text/template"
 )
 
 // SaltEventProcessorServiceTemplateData represents the data for salt event processor service.
-
 const saltEventProcessorServiceTemplate = `
 [Unit]
 Description=Uyuni Salt Event Processor Container
@@ -25,7 +25,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
     --sdnotify=conmon \
     -d \
     -e db_name={{ .DBName }} \
-    -e db_port={{ .DBPort }} \
+	{{- range .DBPort }}
+	-e db_port={{ .Port }} \
+	{{- end }}
     -e db_host={{ .DBHost }} \
     --secret={{ .DBUserSecret }},type=env,target=db_user \
     --secret={{ .DBPassSecret }},type=env,target=db_password \
@@ -33,7 +35,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
     --name {{ .NamePrefix }}-salt-event-processor-%i \
     --hostname {{ .NamePrefix }}-server-event-processor-%i.mgr.internal \
     --network {{ .Network }} \
-    ${UYUNI_SALT_EVENT_PROCESSOR_IMAGE}'
+    ${UYUNI_EVENT_PROCESSOR_IMAGE}'
 ExecStop=/usr/bin/podman stop --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
 PIDFile=%t/uyuni-server-event-processor-%i.pid
@@ -47,11 +49,12 @@ WantedBy=multi-user.target default.target
 
 type EventProcessorServiceTemplateData struct {
 	NamePrefix   string // "uyuni"
-	Network      string // "uyuni-server"
-	DBUserSecret string // "uyuni-db-user"
-	DBPassSecret string // "uyuni-db-pass"
-	DBName       string // "susemanager"
-	DBPort       int    //  5432
+	Image        string
+	Network      string          // "uyuni-server"
+	DBUserSecret string          // "uyuni-db-user"
+	DBPassSecret string          // "uyuni-db-pass"
+	DBName       string          // "susemanager"
+	DBPort       []types.PortMap //  5432
 	//DBBackend    string // "postgresql"
 	DBHost string // "db"
 }
