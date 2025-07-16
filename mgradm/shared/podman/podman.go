@@ -298,7 +298,6 @@ func RunPostUpgradeScript(serverImage string) error {
 func Upgrade(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
 	db adm_utils.DBFlags,
 	reportdb adm_utils.DBFlags,
 	ssl adm_utils.InstallSSLFlags,
@@ -312,7 +311,7 @@ func Upgrade(
 ) error {
 	// Calling cloudguestregistryauth only makes sense if using the cloud provider registry.
 	// This check assumes users won't use custom registries that are not the cloud provider one on a cloud image.
-	if !strings.HasPrefix(registry, "registry.suse.com") {
+	if !strings.HasPrefix(image.Registry.Host, "registry.suse.com") {
 		if err := CallCloudGuestRegistryAuth(); err != nil {
 			return err
 		}
@@ -373,7 +372,7 @@ func Upgrade(
 
 	if newPgVersion > oldPgVersion {
 		if err := RunPgsqlVersionUpgrade(
-			authFile, registry, image, upgradeImage, strconv.Itoa(oldPgVersion),
+			authFile, image.Registry.Host, image, upgradeImage, strconv.Itoa(oldPgVersion),
 			strconv.Itoa(newPgVersion),
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
@@ -441,19 +440,19 @@ func Upgrade(
 		Host:     db.Host,
 	}
 
-	err = coco.Upgrade(systemd, authFile, registry, cocoFlags, image, inspectedDB)
+	err = coco.Upgrade(systemd, authFile, cocoFlags, image, inspectedDB)
 
 	if err != nil {
 		return utils.Errorf(err, L("error upgrading confidential computing service."))
 	}
 
 	if err := hub.Upgrade(
-		systemd, authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcFlags,
+		systemd, authFile, image, hubXmlrpcFlags,
 	); err != nil {
 		return err
 	}
 
-	if err := saline.Upgrade(systemd, authFile, registry, salineFlags, image, utils.GetLocalTimezone()); err != nil {
+	if err := saline.Upgrade(systemd, authFile, image, salineFlags, utils.GetLocalTimezone()); err != nil {
 		return utils.Errorf(err, L("error upgrading saline service."))
 	}
 
@@ -488,7 +487,6 @@ func WaitForSystemStart(
 func Migrate(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
 	db adm_utils.DBFlags,
 	reportdb adm_utils.DBFlags,
 	ssl adm_utils.InstallSSLFlags,
@@ -506,7 +504,7 @@ func Migrate(
 ) error {
 	// Calling cloudguestregistryauth only makes sense if using the cloud provider registry.
 	// This check assumes users won't use custom registries that are not the cloud provider one on a cloud image.
-	if !strings.HasPrefix(registry, "registry.suse.com") {
+	if !strings.HasPrefix(image.Registry.Host, "registry.suse.com") {
 		if err := CallCloudGuestRegistryAuth(); err != nil {
 			return err
 		}
@@ -564,7 +562,7 @@ func Migrate(
 	log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
 		newPgVersion, oldPgVersion)
 
-	if err := upgradeDB(newPgVersion, oldPgVersion, upgradeImage, authFile, registry, image); err != nil {
+	if err := upgradeDB(newPgVersion, oldPgVersion, upgradeImage, authFile, image.Registry.Host, image); err != nil {
 		return err
 	}
 
@@ -616,7 +614,7 @@ func Migrate(
 		Host:     db.Host,
 	}
 
-	err = coco.Upgrade(systemd, authFile, registry, cocoFlags, image, inspectedDB)
+	err = coco.Upgrade(systemd, authFile, cocoFlags, image, inspectedDB)
 	if err != nil {
 		return utils.Errorf(err, L("error upgrading confidential computing service."))
 	}
@@ -626,12 +624,12 @@ func Migrate(
 		hubXmlrpcFlags.Replicas = 1
 	}
 	if err := hub.Upgrade(
-		systemd, authFile, registry, image.PullPolicy, image.Tag, hubXmlrpcFlags,
+		systemd, authFile, image, hubXmlrpcFlags,
 	); err != nil {
 		return err
 	}
 
-	if err := saline.Upgrade(systemd, authFile, registry, salineFlags, image, utils.GetLocalTimezone()); err != nil {
+	if err := saline.Upgrade(systemd, authFile, image, salineFlags, utils.GetLocalTimezone()); err != nil {
 		return utils.Errorf(err, L("error upgrading saline service."))
 	}
 

@@ -27,6 +27,7 @@ func TestParamsParsing(t *testing.T) {
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *inspectFlags, _ *cobra.Command, _ []string) error {
 		flagstests.AssertImageFlag(t, &flags.Image)
+		flagstests.AssertRegistryFlag(t, &flags.Image.Registry)
 		flagstests.AssertSCCFlag(t, &flags.SCC)
 		flagstests.AssertPgsqlFlag(t, &flags.Pgsql)
 		if utils.KubernetesBuilt {
