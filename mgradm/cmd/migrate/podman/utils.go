@@ -14,7 +14,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 var systemd podman_utils.Systemd = podman_utils.NewSystemd()
@@ -30,9 +29,9 @@ func migrateToPodman(
 		return err
 	}
 
-	authFile, cleaner, err := podman_utils.PodmanLogin(hostData, flags.Installation.SCC)
+	authFile, cleaner, err := podman_utils.PodmanLogin(hostData, flags.Image.Registry)
 	if err != nil {
-		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return err
 	}
 	defer cleaner()
 
@@ -43,7 +42,6 @@ func migrateToPodman(
 
 	return podman.Migrate(
 		systemd, authFile,
-		flags.Image.Registry,
 		flags.Installation.DB,
 		flags.Installation.ReportDB,
 		flags.Installation.SSL,

@@ -13,6 +13,7 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/ssl"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -21,9 +22,7 @@ import (
 func SetupHubXmlrpc(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
-	pullPolicy string,
-	tag string,
+	baseImage types.ImageFlags,
 	hubXmlrpcFlags cmd_utils.HubXmlrpcFlags,
 ) error {
 	image := hubXmlrpcFlags.Image
@@ -39,13 +38,13 @@ func SetupHubXmlrpc(
 
 	pullEnabled := hubXmlrpcFlags.Replicas > 0 || (currentReplicas > 0 && !hubXmlrpcFlags.IsChanged)
 
-	hubXmlrpcImage, err := utils.ComputeImage(registry, tag, image)
+	hubXmlrpcImage, err := utils.ComputeImage(baseImage.Registry.Host, baseImage.Tag, image)
 
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
-	preparedImage, err := podman.PrepareImage(authFile, hubXmlrpcImage, pullPolicy, pullEnabled)
+	preparedImage, err := podman.PrepareImage(authFile, hubXmlrpcImage, baseImage.PullPolicy, pullEnabled)
 	if err != nil {
 		return err
 	}
@@ -80,16 +79,14 @@ func EnableHubXmlrpc(systemd podman.Systemd, replicas int) error {
 func Upgrade(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
-	pullPolicy string,
-	tag string,
+	baseImage types.ImageFlags,
 	hubXmlrpcFlags cmd_utils.HubXmlrpcFlags,
 ) error {
 	if hubXmlrpcFlags.Image.Name == "" {
 		// Don't touch the hub service in ptf if not already present.
 		return nil
 	}
-	if err := SetupHubXmlrpc(systemd, authFile, registry, pullPolicy, tag, hubXmlrpcFlags); err != nil {
+	if err := SetupHubXmlrpc(systemd, authFile, baseImage, hubXmlrpcFlags); err != nil {
 		return err
 	}
 

@@ -13,7 +13,6 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 var systemd shared_podman.Systemd = shared_podman.NewSystemd()
@@ -24,9 +23,9 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 		return err
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Installation.SCC)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Image.Registry)
 	if err != nil {
-		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return err
 	}
 	defer cleaner()
 
@@ -37,7 +36,6 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 
 	return podman.Upgrade(
 		systemd, authFile,
-		flags.Image.Registry,
 		flags.Installation.DB,
 		flags.Installation.ReportDB,
 		flags.Installation.SSL,
