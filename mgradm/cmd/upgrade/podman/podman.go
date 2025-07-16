@@ -31,6 +31,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeF
 				flags.ServerFlags.Coco.IsChanged = v.IsSet("coco.replicas")
 				flags.ServerFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
 				flags.ServerFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
+				utils.DefaultSCCRegistry = flags.Installation.SCC.Registry
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
@@ -70,7 +71,7 @@ func listTags(flags *podmanUpgradeFlags) error {
 
 	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.Installation.SCC)
 	if err != nil {
-		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return err
 	}
 	defer cleaner()
 

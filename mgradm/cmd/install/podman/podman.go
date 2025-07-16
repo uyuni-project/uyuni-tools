@@ -46,6 +46,7 @@ NOTE: installing on a remote podman is not supported yet!
 					flags.Installation.SSL.DB.Cert = flags.Installation.SSL.Server.Cert
 					flags.Installation.SSL.DB.Key = flags.Installation.SSL.Server.Key
 				}
+				utils.DefaultSCCRegistry = flags.Installation.SCC.Registry
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},

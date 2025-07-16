@@ -50,7 +50,7 @@ type InstallationFlags struct {
 	DB           DBFlags
 	ReportDB     DBFlags
 	SSL          InstallSSLFlags
-	SCC          types.SCCCredentials
+	SCC          types.SCCCredentials `mapstructure:"scc"`
 	Debug        DebugFlags
 	Admin        apiTypes.User
 	Organization string

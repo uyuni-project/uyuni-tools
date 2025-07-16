@@ -33,6 +33,7 @@ type Metadata struct {
 
 // SCCCredentials can store SCC Credentials.
 type SCCCredentials struct {
-	User     string
-	Password string
+	User     string `json:"user"`
+	Password string `json:"password"`
+	Registry string `json:"registry"`
 }

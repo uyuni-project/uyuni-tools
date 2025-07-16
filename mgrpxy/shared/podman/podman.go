@@ -39,7 +39,6 @@ var newRunner = shared_utils.NewRunner
 // PodmanProxyFlags are the flags used by podman proxy install and upgrade command.
 type PodmanProxyFlags struct {
 	utils.ProxyImageFlags `mapstructure:",squash"`
-	SCC                   types.SCCCredentials
 	Podman                podman.PodmanFlags
 }
 
@@ -293,7 +292,7 @@ func Upgrade(
 
 	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.SCC)
 	if err != nil {
-		return shared_utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return err
 	}
 	defer cleaner()
 

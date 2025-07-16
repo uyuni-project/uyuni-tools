@@ -30,6 +30,7 @@ NOTE: for now installing on a remote podman is not supported!
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podman.PodmanProxyFlags
+			shared_utils.DefaultSCCRegistry = flags.SCC.Registry
 			return shared_utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}

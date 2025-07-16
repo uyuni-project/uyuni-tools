@@ -45,7 +45,7 @@ func ptfForPodman(
 
 	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.UpgradeFlags.SCC)
 	if err != nil {
-		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return err
 	}
 	defer cleaner()
 
