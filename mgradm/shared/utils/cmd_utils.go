@@ -176,13 +176,17 @@ func AddDBFlags(cmd *cobra.Command) {
 // AddSCCFlag add SCC flags to a command.
 func AddSCCFlag(cmd *cobra.Command) {
 	cmd.Flags().String("scc-user", "", L(`SUSE Customer Center username.
-It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com`))
+It will be used as SCC credentials for products synchronization and to pull images from SCC registry`))
 	cmd.Flags().String("scc-password", "", L(`SUSE Customer Center password.
-It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com`))
-
+It will be used as SCC credentials for products synchronization and to pull images from SCC registry`))
+	cmd.Flags().String("scc-registry", "registry.suse.com", L(`SUSE Customer Center registry`))
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "scc", Title: L("SUSE Customer Center Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "scc-user", "scc")
 	_ = utils.AddFlagToHelpGroupID(cmd, "scc-password", "scc")
+	// This was intentionally comment because we want this flag but we don't want to show
+	// it help message. This should be use if an alternative SCC than registry.suse.com is
+	// used
+	_ = utils.AddFlagToHelpGroupID(cmd, "scc-registry", "scc")
 }
 
 // AddImageFlag add Image flags to a command.

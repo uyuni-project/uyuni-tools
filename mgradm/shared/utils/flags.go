@@ -121,6 +121,8 @@ func (flags *InstallationFlags) CheckParameters(cmd *cobra.Command, command stri
 
 	flags.SSL.Email = flags.Email
 	flags.Admin.Email = flags.Email
+
+	utils.DefaultRegistry = flags.SCC.Registry
 }
 
 // DBFlags can store all values required to connect to a database.

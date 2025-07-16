@@ -15,7 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// PodmanLogin logs in the registry.suse.com registry if needed.
+// PodmanLogin logs in the SCC registry registry if needed.
 //
 // It returns an authentication file, a cleanup function and an error.
 func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials) (string, func(), error) {
@@ -27,29 +27,29 @@ func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials) (string, f
 		sccPassword = scc.Password
 	}
 	if sccUser != "" && sccPassword != "" {
-		// We have SCC credentials, so we are pretty likely to need registry.suse.com
 		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", sccUser, sccPassword)))
 		authFileContent := fmt.Sprintf(`{
 	"auths": {
-		"registry.suse.com" : {
+		"%s" : {
 			"auth": "%s"
 		}
 	}
-}`, token)
+}`, scc.Registry, token)
 		authFile, err := os.CreateTemp("", "mgradm-")
 		if err != nil {
-			return "", nil, err
+			return "", nil, utils.Errorf(err, L("failed to login to %s"), scc.Registry)
 		}
 		authFilePath := authFile.Name()
 
 		if _, err := authFile.Write([]byte(authFileContent)); err != nil {
 			os.Remove(authFilePath)
-			return "", nil, err
+			return "", nil, utils.Errorf(err, L("failed to login to %s"), scc.Registry)
 		}
 
 		if err := authFile.Close(); err != nil {
 			os.Remove(authFilePath)
-			return "", nil, utils.Error(err, L("failed to close the temporary auth file"))
+			return "", nil, utils.Errorf(err,
+				L("failed to close the temporary auth file. Failed to login to %s"), scc.Registry)
 		}
 
 		return authFilePath, func() {

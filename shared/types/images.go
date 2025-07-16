@@ -35,4 +35,5 @@ type Metadata struct {
 type SCCCredentials struct {
 	User     string
 	Password string
+	Registry string
 }

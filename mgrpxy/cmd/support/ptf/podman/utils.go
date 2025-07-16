@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 //go:build ptf
@@ -51,7 +51,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.Httpd.Name, err = utils.ComputePTF(flags.CustomerID, projectID, httpdImage, suffix)
+	flags.UpgradeFlags.Httpd.Name, err = utils.ComputePTF(flags.UpgradeFlags.SCC.Registry, flags.CustomerID, projectID, httpdImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -61,7 +61,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.SSH.Name, err = utils.ComputePTF(flags.CustomerID, projectID, sshImage, suffix)
+	flags.UpgradeFlags.SSH.Name, err = utils.ComputePTF(flags.UpgradeFlags.SCC.Registry, flags.CustomerID, projectID, sshImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -71,7 +71,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.Tftpd.Name, err = utils.ComputePTF(flags.CustomerID, projectID, tftpdImage, suffix)
+	flags.UpgradeFlags.Tftpd.Name, err = utils.ComputePTF(flags.UpgradeFlags.SCC.Registry, flags.CustomerID, projectID, tftpdImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -81,7 +81,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.SaltBroker.Name, err = utils.ComputePTF(flags.CustomerID, projectID, saltBrokerImage, suffix)
+	flags.UpgradeFlags.SaltBroker.Name, err = utils.ComputePTF(flags.UpgradeFlags.SCC.Registry, flags.CustomerID, projectID, saltBrokerImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if err != nil {
 		return err
 	}
-	flags.UpgradeFlags.Squid.Name, err = utils.ComputePTF(flags.CustomerID, projectID, squidImage, suffix)
+	flags.UpgradeFlags.Squid.Name, err = utils.ComputePTF(flags.UpgradeFlags.SCC.Registry, flags.CustomerID, projectID, squidImage, suffix)
 	if err != nil {
 		return err
 	}

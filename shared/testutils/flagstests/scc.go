@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,10 +15,12 @@ import (
 var SCCFlagTestArgs = []string{
 	"--scc-user", "mysccuser",
 	"--scc-password", "mysccpass",
+	"--scc-registry", "myregistry.com",
 }
 
 // AssertSCCFlag checks that all SCC flags are parsed correctly.
 func AssertSCCFlag(t *testing.T, flags *types.SCCCredentials) {
 	testutils.AssertEquals(t, "Error parsing --scc-user", "mysccuser", flags.User)
 	testutils.AssertEquals(t, "Error parsing --scc-password", "mysccpass", flags.Password)
+	testutils.AssertEquals(t, "Error parsing --scc-registry", "myregistry.com", flags.Registry)
 }
