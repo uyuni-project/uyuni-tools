@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -170,6 +170,15 @@ func TestComputePTF(t *testing.T) {
 	data := [][]string{
 		{
 			"registry.suse.com/a/a196136/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977",
+			"registry.suse.com",
+			"a196136",
+			"27977",
+			"registry.suse.com/suse/manager/5.0/x86_64/proxy-helm:latest",
+			"ptf",
+		},
+		{
+			"mysccregistry.com/a/a196136/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977",
+			"mysccregistry.com",
 			"a196136",
 			"27977",
 			"registry.suse.com/suse/manager/5.0/x86_64/proxy-helm:latest",
@@ -179,23 +188,24 @@ func TestComputePTF(t *testing.T) {
 
 	for i, testCase := range data {
 		result := testCase[0]
-		user := testCase[1]
-		ptfID := testCase[2]
-		fullImage := testCase[3]
-		suffix := testCase[4]
+		registry := testCase[1]
+		user := testCase[2]
+		ptfID := testCase[3]
+		fullImage := testCase[4]
+		suffix := testCase[5]
 
-		actual, err := ComputePTF(user, ptfID, fullImage, suffix)
+		actual, err := ComputePTF(registry, user, ptfID, fullImage, suffix)
 
 		if err != nil {
 			t.Errorf(
-				"Testcase %d: Unexpected error while computing image with %s, %s, %s, %s: %s",
-				i, user, ptfID, fullImage, suffix, err,
+				"Testcase %d: Unexpected error while computing image with %s, %s, %s, %s, %s: %s",
+				i, registry, user, ptfID, fullImage, suffix, err,
 			)
 		}
 		if actual != result {
 			t.Errorf(
-				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s, %s",
-				i, result, actual, user, ptfID, fullImage, suffix,
+				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s, %s, %s",
+				i, result, actual, registry, user, ptfID, fullImage, suffix,
 			)
 		}
 	}

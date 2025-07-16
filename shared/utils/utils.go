@@ -14,6 +14,7 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"path"
@@ -242,9 +243,9 @@ func ComputeImage(
 	return imageName, nil
 }
 
-// ComputePTF returns a PTF or Test image from registry.suse.com.
-func ComputePTF(user string, ptfID string, fullImage string, suffix string) (string, error) {
-	prefix := fmt.Sprintf("registry.suse.com/a/%s/%s/", user, ptfID)
+// ComputePTF returns a PTF or Test image from a given registry.
+func ComputePTF(registry string, user string, ptfID string, fullImage string, suffix string) (string, error) {
+	prefix := fmt.Sprintf("%s/a/%s/%s/", registry, user, ptfID)
 	submatches := prodVersionArchRegex.FindStringSubmatch(fullImage)
 	if submatches == nil || len(submatches) > 1 {
 		return "", fmt.Errorf(L("invalid image name: %s"), fullImage)
@@ -387,6 +388,29 @@ func GetFqdn(args []string) (string, error) {
 	}
 
 	return fqdn, nil
+}
+
+// ComputeRegistryFQDN return FQDN.
+func ComputeFQDN(URL string) string {
+	reg := URL
+
+	hasScheme := strings.Contains(reg, "://")
+	toParse := reg
+	if !hasScheme {
+		toParse = "dummy://" + reg
+	}
+
+	u, err := url.Parse(toParse)
+	if err != nil {
+		log.Error().Msgf(L("Cannot extract FQDN from %s: this will be used as FQDN"))
+		return reg
+	}
+
+	if hasScheme {
+		return u.Scheme + "://" + u.Host
+	}
+
+	return u.Host
 }
 
 // IsValidFQDN returns an error if the argument is not a valid FQDN.
