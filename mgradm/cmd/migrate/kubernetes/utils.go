@@ -23,9 +23,10 @@ const migrationDataPvcName = "migration-data"
 func migrateToKubernetes(
 	_ *types.GlobalFlags,
 	flags *kubernetes.KubernetesServerFlags,
-	_ *cobra.Command,
+	cmd *cobra.Command,
 	args []string,
 ) error {
+	flags.Installation.CheckUpgradeParameters(cmd, "kubectl")
 	namespace := flags.Kubernetes.Uyuni.Namespace
 
 	// Create the namespace if not present
@@ -38,7 +39,7 @@ func migrateToKubernetes(
 		return err
 	}
 
-	serverImage, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Image)
+	serverImage, err := utils.ComputeImage(flags.Image.Registry.Host, utils.DefaultTag, flags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -61,7 +62,7 @@ func migrateToKubernetes(
 
 	// Create a secret using SCC credentials if any are provided
 	pullSecret, err := shared_kubernetes.GetRegistrySecret(
-		flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SCC, shared_kubernetes.ServerApp,
+		flags.Kubernetes.Uyuni.Namespace, &flags.Image.Registry, shared_kubernetes.ServerApp,
 	)
 	if err != nil {
 		return err
