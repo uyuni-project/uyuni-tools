@@ -20,7 +20,6 @@ import (
 func Upgrade(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
 	cocoFlags adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
 	db adm_utils.DBFlags,
@@ -38,7 +37,7 @@ func Upgrade(
 	}
 
 	if err := writeCocoServiceFiles(
-		systemd, authFile, registry, cocoFlags, baseImage, db,
+		systemd, authFile, cocoFlags, baseImage, db,
 	); err != nil {
 		return err
 	}
@@ -52,7 +51,6 @@ func Upgrade(
 func writeCocoServiceFiles(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
 	cocoFlags adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
 	db adm_utils.DBFlags,
@@ -74,7 +72,7 @@ func writeCocoServiceFiles(
 		log.Debug().Msg("No Confidential Computing requested.")
 	}
 
-	cocoImage, err := utils.ComputeImage(registry, baseImage.Tag, image)
+	cocoImage, err := utils.ComputeImage(baseImage.Registry.Host, baseImage.Tag, image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
@@ -121,13 +119,12 @@ Environment=database_connection=jdbc:postgresql://%s:%d/%s
 func SetupCocoContainer(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
 	coco adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
 	db adm_utils.DBFlags,
 ) error {
 	if err := writeCocoServiceFiles(
-		systemd, authFile, registry, coco, baseImage, db,
+		systemd, authFile, coco, baseImage, db,
 	); err != nil {
 		return err
 	}

@@ -15,41 +15,42 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// PodmanLogin logs in the registry.suse.com registry if needed.
+// PodmanLogin logs in the registry if needed.
 //
 // It returns an authentication file, a cleanup function and an error.
-func PodmanLogin(hostData *HostInspectData, scc types.SCCCredentials) (string, func(), error) {
-	sccUser := hostData.SCCUsername
-	sccPassword := hostData.SCCPassword
-	if scc.User != "" && scc.Password != "" {
-		log.Info().Msg(L("SCC credentials parameters will be used. SCC credentials from host will be ignored."))
-		sccUser = scc.User
-		sccPassword = scc.Password
+func PodmanLogin(hostData *HostInspectData, registry types.Registry) (string, func(), error) {
+	User := hostData.SCCUsername
+	Password := hostData.SCCPassword
+	if registry.User != "" && registry.Password != "" {
+		log.Info().Msg(L("Registry parameters will be used. SCC credentials from host will be ignored."))
+		User = registry.User
+		Password = registry.Password
 	}
-	if sccUser != "" && sccPassword != "" {
-		// We have SCC credentials, so we are pretty likely to need registry.suse.com
-		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", sccUser, sccPassword)))
+	if User != "" && Password != "" {
+		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", User, Password)))
 		authFileContent := fmt.Sprintf(`{
 	"auths": {
-		"registry.suse.com" : {
+		"%s" : {
 			"auth": "%s"
 		}
 	}
-}`, token)
+}`, registry.Host, token)
+
 		authFile, err := os.CreateTemp("", "mgradm-")
 		if err != nil {
-			return "", nil, err
+			return "", nil, utils.Errorf(err, L("failed to set authentication for %s"), registry.Host)
 		}
 		authFilePath := authFile.Name()
 
 		if _, err := authFile.Write([]byte(authFileContent)); err != nil {
 			os.Remove(authFilePath)
-			return "", nil, err
+			return "", nil, utils.Errorf(err, L("failed to set authentication for %s"), registry.Host)
 		}
 
 		if err := authFile.Close(); err != nil {
 			os.Remove(authFilePath)
-			return "", nil, utils.Error(err, L("failed to close the temporary auth file"))
+			return "", nil, utils.Errorf(err,
+				L("failed to close the temporary auth file. Cannot set authentication for %s"), registry.Host)
 		}
 
 		return authFilePath, func() {

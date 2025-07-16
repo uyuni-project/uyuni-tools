@@ -33,14 +33,14 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 		return err
 	}
 
-	serverImage, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Image)
+	serverImage, err := utils.ComputeImage(flags.Image.Registry.Host, utils.DefaultTag, flags.Image)
 	if err != nil {
 		return utils.Error(err, L("failed to compute image URL"))
 	}
 
 	// Create a secret using SCC credentials if any are provided
 	pullSecret, err := kubernetes.GetRegistrySecret(
-		flags.Kubernetes.Uyuni.Namespace, &flags.Installation.SCC, kubernetes.ServerApp,
+		flags.Kubernetes.Uyuni.Namespace, &flags.Image.Registry, kubernetes.ServerApp,
 	)
 	if err != nil {
 		return err
@@ -144,7 +144,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 		// Run the DB Upgrade job if needed
 		if oldPgVersion < newPgVersion {
 			jobName, err := StartDBUpgradeJob(
-				namespace, flags.Image.Registry, flags.Image, flags.DBUpgradeImage, pullSecret,
+				namespace, flags.Image.Registry.Host, flags.Image, flags.DBUpgradeImage, pullSecret,
 				oldPgVersion, newPgVersion,
 			)
 			if err != nil {
@@ -300,7 +300,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 			}
 			kubernetes.WaitForSecret(namespace, DBAdminSecret)
 
-			dbImage, err := utils.ComputeImage(flags.Image.Registry, utils.DefaultTag, flags.Pgsql.Image)
+			dbImage, err := utils.ComputeImage(flags.Image.Registry.Host, utils.DefaultTag, flags.Pgsql.Image)
 			if err != nil {
 				return utils.Error(err, L("failed to compute image URL"))
 			}
@@ -371,7 +371,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 		flags.Coco.Replicas = replicas
 	}
 	if flags.Coco.Replicas > 0 {
-		cocoImage, err := utils.ComputeImage(flags.Image.Registry, flags.Image.Tag, flags.Coco.Image)
+		cocoImage, err := utils.ComputeImage(flags.Image.Registry.Host, flags.Image.Tag, flags.Coco.Image)
 		if err != nil {
 			return err
 		}
@@ -387,7 +387,7 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 	// In an operator mind, the user would just change the custom resource to enable the feature.
 	if needsHub {
 		// Install Hub API deployment, service
-		hubAPIImage, err := utils.ComputeImage(flags.Image.Registry, flags.Image.Tag, flags.HubXmlrpc.Image)
+		hubAPIImage, err := utils.ComputeImage(flags.Image.Registry.Host, flags.Image.Tag, flags.HubXmlrpc.Image)
 		if err != nil {
 			return err
 		}

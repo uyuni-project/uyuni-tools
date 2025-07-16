@@ -1,0 +1,3 @@
+- add --registry-host, --registry-user and --registry-password
+  to pull images from an authenticate registry
+- deprecate --registry

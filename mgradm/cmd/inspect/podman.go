@@ -50,7 +50,8 @@ func podmanInspect(
 		}
 	}
 
-	preparedServerImage, preparedDBImage, err := prepareImages(serverImage, pgsqlImage, flags.Image.PullPolicy, flags.SCC)
+	preparedServerImage, preparedDBImage, err :=
+		prepareImages(serverImage, pgsqlImage, flags.Image.PullPolicy, flags.Image.Registry)
 	if err != nil {
 		return err
 	}
@@ -70,14 +71,14 @@ func podmanInspect(
 }
 
 func prepareImages(
-	server string, pgsql string, pullPolicy string, scc types.SCCCredentials,
+	server string, pgsql string, pullPolicy string, registry types.Registry,
 ) (serverImage string, dbImage string, err error) {
 	hostData, err := podman.InspectHost()
 	if err != nil {
 		return "", "", err
 	}
 
-	authFile, cleaner, err := podman.PodmanLogin(hostData, scc)
+	authFile, cleaner, err := podman.PodmanLogin(hostData, registry)
 	if err != nil {
 		return "", "", utils.Errorf(err, L("failed to login to registry.suse.com"))
 	}

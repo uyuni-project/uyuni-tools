@@ -68,13 +68,13 @@ func listTags(flags *podmanUpgradeFlags) error {
 		return err
 	}
 
-	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.Installation.SCC)
+	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.Image.Registry)
 	if err != nil {
-		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return err
 	}
 	defer cleaner()
 
-	return podman.ShowAvailableTag(flags.Image.Registry, flags.Image, authFile)
+	return podman.ShowAvailableTag(flags.Image.Registry.Host, flags.Image, authFile)
 }
 
 // NewCommand to upgrade a podman server.

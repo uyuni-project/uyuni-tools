@@ -39,9 +39,14 @@ func installForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Installation.SCC)
+	flags.Installation.CheckParameters(cmd, "podman")
+	if _, err := exec.LookPath("podman"); err != nil {
+		return errors.New(L("install podman before running this command"))
+	}
+
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Image.Registry)
 	if err != nil {
-		return utils.Error(err, L("failed to login to registry.suse.com"))
+		return err
 	}
 	defer cleaner()
 
@@ -50,12 +55,6 @@ func installForPodman(
 			L("Server is already initialized! Uninstall before attempting new installation or use upgrade command"),
 		)
 	}
-
-	flags.Installation.CheckParameters(cmd, "podman")
-	if _, err := exec.LookPath("podman"); err != nil {
-		return errors.New(L("install podman before running this command"))
-	}
-
 	fqdn, err := utils.GetFqdn(args)
 	if err != nil {
 		return err
@@ -138,20 +137,20 @@ func installForPodman(
 	}
 
 	if err := coco.SetupCocoContainer(
-		systemd, authFile, flags.Image.Registry, flags.Coco, flags.Image,
+		systemd, authFile, flags.Coco, flags.Image,
 		flags.Installation.DB,
 	); err != nil {
 		return err
 	}
 
 	if err := hub.SetupHubXmlrpc(
-		systemd, authFile, flags.Image.Registry, flags.Image.PullPolicy, flags.Image.Tag, flags.HubXmlrpc,
+		systemd, authFile, flags.Image, flags.HubXmlrpc,
 	); err != nil {
 		return err
 	}
 
 	if err := saline.SetupSalineContainer(
-		systemd, authFile, flags.Image.Registry, flags.Saline, flags.Image, flags.Installation.TZ,
+		systemd, authFile, flags.Image, flags.Saline, flags.Installation.TZ,
 	); err != nil {
 		return err
 	}

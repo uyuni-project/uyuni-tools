@@ -50,7 +50,8 @@ type InstallationFlags struct {
 	DB           DBFlags
 	ReportDB     DBFlags
 	SSL          InstallSSLFlags
-	SCC          types.SCCCredentials
+	SCC          types.SCCCredentials `mapstructure:"scc"`
+	Registry     types.Registry
 	Debug        DebugFlags
 	Admin        apiTypes.User
 	Organization string
@@ -61,7 +62,6 @@ var systemd podman.Systemd = podman.NewSystemd()
 // CheckUpgradeParameters verifies the consistency of the parameters for upgrade and migrate commands.
 func (flags *InstallationFlags) CheckUpgradeParameters(cmd *cobra.Command, command string) {
 	flags.setPasswordIfMissing()
-
 	flags.checkUpgradeSSLParameters(cmd, command)
 }
 

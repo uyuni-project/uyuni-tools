@@ -54,6 +54,7 @@ func CommandHelper[T interface{}](
 	if err != nil {
 		return err
 	}
+
 	if err := viper.Unmarshal(&flags); err != nil {
 		log.Error().Err(err).Msg(L("failed to unmarshall configuration"))
 		return Error(err, L("failed to unmarshall configuration"))
@@ -88,6 +89,12 @@ Default guesses which to use.`),
 func AddPullPolicyFlag(cmd *cobra.Command) {
 	cmd.Flags().String("pullPolicy", DefaultPullPolicy,
 		L("set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"))
+}
+
+func AddRegistryFlag(cmd *cobra.Command) {
+	cmd.Flags().String("registry-host", DefaultRegistry, L("registry TODO"))
+	cmd.Flags().String("registry-user", "", L("user TODO"))
+	cmd.Flags().String("registry-password", "", L("password TODO"))
 }
 
 // AddPTFFlag add PTF flag to a command.
