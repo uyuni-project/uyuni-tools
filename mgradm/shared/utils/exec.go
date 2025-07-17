@@ -54,10 +54,12 @@ func GeneratePgsqlVersionUpgradeScript(
 	scriptDir string,
 	oldPgVersion string,
 	newPgVersion string,
+	backupDir string,
 ) (string, error) {
 	data := templates.PostgreSQLVersionUpgradeTemplateData{
 		OldVersion: oldPgVersion,
 		NewVersion: newPgVersion,
+		BackupDir:  backupDir,
 	}
 
 	scriptName := "pgsqlVersionUpgrade.sh"
