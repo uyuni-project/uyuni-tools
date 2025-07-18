@@ -52,7 +52,7 @@ func podmanStatus(
 	}
 
 	_ = utils.RunCmdStdMapping(
-		zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.EventProcessorService, 0), // refer to ScaleService // TODO: check if follow the pattern, or enforce 1 here
+		zerolog.DebugLevel, "systemctl", "status", "--no-pager", podman.EventProcessorService+"@0", // refer to ScaleService
 	)
 
 	return nil

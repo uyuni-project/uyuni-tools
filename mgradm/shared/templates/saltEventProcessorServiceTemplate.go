@@ -1,7 +1,6 @@
 package templates
 
 import (
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"io"
 	"text/template"
 )
@@ -24,11 +23,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
     --cgroups=no-conmon \
     --sdnotify=conmon \
     -d \
-    -e db_name={{ .DBName }} \
-	{{- range .DBPort }}
-	-e db_port={{ .Port }} \
-	{{- end }}
-    -e db_host={{ .DBHost }} \
+    -e db_name=${UYUNI_DB_NAME} \
+	-e db_port=${UYUNI_DB_PORT} \
+    -e db_host=${UYUNI_DB_HOST} \
     --secret={{ .DBUserSecret }},type=env,target=db_user \
     --secret={{ .DBPassSecret }},type=env,target=db_password \
     --replace \
@@ -50,13 +47,13 @@ WantedBy=multi-user.target default.target
 type EventProcessorServiceTemplateData struct {
 	NamePrefix   string // "uyuni"
 	Image        string
-	Network      string          // "uyuni-server"
-	DBUserSecret string          // "uyuni-db-user"
-	DBPassSecret string          // "uyuni-db-pass"
-	DBName       string          // "susemanager"
-	DBPort       []types.PortMap //  5432
+	Network      string // "uyuni-server"
+	DBUserSecret string // "uyuni-db-user"
+	DBPassSecret string // "uyuni-db-pass"
+	//DBName       string          // "susemanager"    //TODO: remove
+	//DBPort       []types.PortMap //  5432
 	//DBBackend    string // "postgresql"
-	DBHost string // "db"
+	//DBHost string // "db"
 }
 
 // Render will create the systemd configuration file.

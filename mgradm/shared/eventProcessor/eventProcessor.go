@@ -9,6 +9,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -28,7 +29,7 @@ func Upgrade(
 	}
 
 	if err := writeEventProcessorFiles(
-		systemd, authFile, registry, eventProcessorFlags, baseImage,
+		systemd, authFile, registry, eventProcessorFlags, baseImage, db,
 	); err != nil {
 		return err
 	}
@@ -45,18 +46,11 @@ func writeEventProcessorFiles(
 	registry string,
 	eventProcessorFlags adm_utils.EventProcessorFlags,
 	baseImage types.ImageFlags,
+	db adm_utils.DBFlags,
 ) error {
 	image := eventProcessorFlags.Image
 
 	log.Debug().Msgf("Current running event processor replica is enforced to be 1")
-
-	if image.Tag == "" {
-		if baseImage.Tag == "" {
-			image.Tag = baseImage.Tag
-		} else {
-			image.Tag = "latest"
-		}
-	}
 
 	if !eventProcessorFlags.IsChanged {
 		log.Debug().Msgf("Event processor settings are not changed.")
@@ -78,9 +72,9 @@ func writeEventProcessorFiles(
 		Network:      podman.UyuniNetwork,
 		DBUserSecret: podman.DBUserSecret,
 		DBPassSecret: podman.DBPassSecret,
-		DBName:       "susemanager", // TODO: check if we should hard code it here or set in the systemd config file
-		DBPort:       utils.DBPorts,
-		DBHost:       "db",
+		//DBName:       "susemanager", // TODO: set in the systemd config file
+		//DBPort:       utils.DBPorts,
+		//DBHost:       "db",
 	}
 
 	log.Info().Msg(L("Setting up event processor service"))
@@ -92,7 +86,11 @@ func writeEventProcessorFiles(
 	}
 
 	// TODO: check if we should code DB related environment in systemd conf
-	environment := fmt.Sprintf(`Environment=UYUNI_EVENT_PROCESSOR_IMAGE=%s`, preparedImage) // UYUNI_EVENT_PROCESSOR_IMAGE is used in template
+	environment := fmt.Sprintf(`Environment=UYUNI_EVENT_PROCESSOR_IMAGE=%s
+Environment=UYUNI_DB_NAME=%s
+Environment=UYUNI_DB_PORT=%d
+Environment=UYUNI_DB_Host=%s`,
+		preparedImage, db.Name, db.Port, db.Host) // TODO: UYUNI_EVENT_PROCESSOR_IMAGE is used in template
 
 	if err := podman.GenerateSystemdConfFile(
 		podman.EventProcessorService+"@", "generated.conf", environment, true,
@@ -113,9 +111,10 @@ func SetupEventProcessorContainer(
 	registry string,
 	eventProcessorFlags adm_utils.EventProcessorFlags,
 	baseImage types.ImageFlags,
+	db adm_utils.DBFlags,
 ) error {
 	if err := writeEventProcessorFiles(
-		systemd, authFile, registry, eventProcessorFlags, baseImage,
+		systemd, authFile, registry, eventProcessorFlags, baseImage, db,
 	); err != nil {
 		return err
 	}

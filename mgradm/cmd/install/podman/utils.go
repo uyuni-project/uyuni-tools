@@ -146,7 +146,7 @@ func installForPodman(
 	}
 
 	if err := eventProcessor.SetupEventProcessorContainer(
-		systemd, authFile, flags.Image.Registry, flags.EventProcessor, flags.Image,
+		systemd, authFile, flags.Image.Registry, flags.EventProcessor, flags.Image, flags.Installation.DB,
 	); err != nil {
 		return err
 	}

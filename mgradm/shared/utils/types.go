@@ -48,7 +48,6 @@ type CocoFlags struct {
 
 // EventProcessorFlags contains settings for event processor container.
 type EventProcessorFlags struct {
-	// Replicas  int              // TODO: Check if need replica flag if enforce single replica
 	Image     types.ImageFlags `mapstructure:",squash"`
 	IsChanged bool
 }
