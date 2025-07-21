@@ -50,9 +50,9 @@ type EventProcessorServiceTemplateData struct {
 	Network      string // "uyuni-server"
 	DBUserSecret string // "uyuni-db-user"
 	DBPassSecret string // "uyuni-db-pass"
+	DBBackend    string // "postgresql"
 	//DBName       string          // "susemanager"    //TODO: remove
 	//DBPort       []types.PortMap //  5432
-	//DBBackend    string // "postgresql"
 	//DBHost string // "db"
 }
 

@@ -72,6 +72,7 @@ func writeEventProcessorFiles(
 		Network:      podman.UyuniNetwork,
 		DBUserSecret: podman.DBUserSecret,
 		DBPassSecret: podman.DBPassSecret,
+		DBBackend:    "postgres",
 		//DBName:       "susemanager", // TODO: set in the systemd config file
 		//DBPort:       utils.DBPorts,
 		//DBHost:       "db",
