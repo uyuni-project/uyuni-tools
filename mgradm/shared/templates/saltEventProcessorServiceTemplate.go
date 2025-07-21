@@ -35,7 +35,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
     ${UYUNI_EVENT_PROCESSOR_IMAGE}'
 ExecStop=/usr/bin/podman stop --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
-PIDFile=%t/uyuni-server-event-processor-%i.pid
+PIDFile=%t/uyuni-salt-event-processor-%i.pid
 TimeoutStopSec=60
 TimeoutStartSec=60
 Type=forking
@@ -50,9 +50,9 @@ type EventProcessorServiceTemplateData struct {
 	Network      string // "uyuni-server"
 	DBUserSecret string // "uyuni-db-user"
 	DBPassSecret string // "uyuni-db-pass"
+	DBBackend    string // "postgresql"
 	//DBName       string          // "susemanager"    //TODO: remove
 	//DBPort       []types.PortMap //  5432
-	//DBBackend    string // "postgresql"
 	//DBHost string // "db"
 }
 

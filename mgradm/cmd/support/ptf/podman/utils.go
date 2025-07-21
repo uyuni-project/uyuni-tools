@@ -59,6 +59,7 @@ func ptfForPodman(
 		flags.Coco,
 		flags.HubXmlrpc,
 		flags.Saline,
+		flags.EventProcessor,
 		flags.Pgsql,
 		flags.Installation.SCC,
 		flags.Installation.TZ,

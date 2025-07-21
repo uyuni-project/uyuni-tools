@@ -13,6 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"strings"
 )
 
 // Upgrade event processor
@@ -56,9 +57,28 @@ func writeEventProcessorFiles(
 		log.Debug().Msgf("Event processor settings are not changed.")
 	}
 
-	eventProcessorImage, err := utils.ComputeImage(registry, baseImage.Tag, image)
-	if err != nil {
-		return utils.Errorf(err, L("Failed to compute event processor image URL"))
+	//eventProcessorImage, err := utils.ComputeImage(registry, baseImage.Tag, image)
+	//if err != nil {
+	//	return utils.Errorf(err, L("Failed to compute event processor image URL"))
+	//}
+
+	// TODO: Temporary solution to install image in my OBS branch, should be remove in production
+	var eventProcessorImage string
+	var err error
+
+	// Check if the image name already contains a full registry path
+	if strings.Contains(image.Name, "registry.opensuse.org") {
+		eventProcessorImage = image.Name
+		if image.Tag != "" && !strings.Contains(image.Name, ":") {
+			eventProcessorImage += ":" + image.Tag
+		} else if !strings.Contains(image.Name, ":") {
+			eventProcessorImage += ":" + baseImage.Tag
+		}
+	} else {
+		eventProcessorImage, err = utils.ComputeImage(registry, baseImage.Tag, image)
+		if err != nil {
+			return utils.Errorf(err, L("Failed to compute event processor image URL"))
+		}
 	}
 
 	// Always enable pulling if service is requested (since we enforced single replica)
@@ -72,6 +92,7 @@ func writeEventProcessorFiles(
 		Network:      podman.UyuniNetwork,
 		DBUserSecret: podman.DBUserSecret,
 		DBPassSecret: podman.DBPassSecret,
+		DBBackend:    "postgres",
 		//DBName:       "susemanager", // TODO: set in the systemd config file
 		//DBPort:       utils.DBPorts,
 		//DBHost:       "db",
@@ -89,7 +110,7 @@ func writeEventProcessorFiles(
 	environment := fmt.Sprintf(`Environment=UYUNI_EVENT_PROCESSOR_IMAGE=%s
 Environment=UYUNI_DB_NAME=%s
 Environment=UYUNI_DB_PORT=%d
-Environment=UYUNI_DB_Host=%s`,
+Environment=UYUNI_DB_HOST=%s`,
 		preparedImage, db.Name, db.Port, db.Host) // TODO: UYUNI_EVENT_PROCESSOR_IMAGE is used in template
 
 	if err := podman.GenerateSystemdConfFile(
