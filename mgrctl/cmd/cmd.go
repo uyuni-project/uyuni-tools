@@ -37,9 +37,7 @@ func NewUyunictlCommand() *cobra.Command {
 	rootCmd.SetUsageTemplate(utils.GetLocalizedUsageTemplate())
 
 	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", L("configuration file path"))
-	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "",
-		L("application log level")+"(trace|debug|info|warn|error|fatal|panic)",
-	)
+	utils.AddLogLevelFlags(rootCmd, &globalFlags.LogLevel)
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, _ []string) {
 		// do not log if running the completion cmd as the output is redirect to create a file to source
