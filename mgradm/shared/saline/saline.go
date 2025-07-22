@@ -32,16 +32,7 @@ func Upgrade(
 		return err
 	}
 
-	if salineFlags.Replicas > 0 {
-		if systemd.IsServiceRunning(podman.SalineService) {
-			return systemd.RestartService(podman.SalineService)
-		}
-		return systemd.EnableService(podman.SalineService)
-	}
-	if systemd.ServiceIsEnabled(podman.SalineService) {
-		return systemd.DisableService(podman.SalineService)
-	}
-	return nil
+	return systemd.ScaleService(salineFlags.Replicas, podman.SalineService)
 }
 
 func writeSalineServiceFiles(
