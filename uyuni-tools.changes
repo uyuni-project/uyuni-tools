@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 22 16:37:57 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.17-0
+  * upgrade saline should use scale function (bsc#1246864)
+
+-------------------------------------------------------------------
 Tue Jul 22 12:11:36 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.16-0
