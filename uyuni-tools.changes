@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jul 22 12:11:36 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.16-0
+  * Use database backup volume as temporary backup location
+    (bsc#1246628)
+
+-------------------------------------------------------------------
 Fri Jul 04 17:17:20 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.15-0
