@@ -226,12 +226,18 @@ func RunPgsqlVersionUpgrade(
 
 		log.Info().Msgf(L("Using database upgrade image %s"), preparedImage)
 
-		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(scriptDir, oldPgsql, newPgsql)
+		// We need an aditional volume for database backup during the migration
+		// Create or reuse var-pgsql-backup volume
+		volumeMounts := append(utils.PgsqlRequiredVolumeMounts,
+			types.VolumeMount{MountPath: "/var/lib/pgsql/data-backup", Name: "var-pgsql-backup"})
+
+		pgsqlVersionUpgradeScriptName, err := adm_utils.GeneratePgsqlVersionUpgradeScript(
+			scriptDir, oldPgsql, newPgsql, "/var/lib/pgsql/data-backup")
 		if err != nil {
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
 
-		err = podman.RunContainer(pgsqlVersionUpgradeContainer, preparedImage, utils.PgsqlRequiredVolumeMounts, extraArgs,
+		err = podman.RunContainer(pgsqlVersionUpgradeContainer, preparedImage, volumeMounts, extraArgs,
 			[]string{"/var/lib/uyuni-tools/" + pgsqlVersionUpgradeScriptName})
 		if err != nil {
 			return err

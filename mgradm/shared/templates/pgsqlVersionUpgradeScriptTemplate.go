@@ -14,7 +14,6 @@ const postgreSQLVersionUpgradeScriptTemplate = `#!/bin/bash
 set -e
 echo "PostgreSQL version upgrade"
 
-ls -la /var/lib/pgsql/data/
 OLD_VERSION={{ .OldVersion }}
 NEW_VERSION={{ .NewVersion }}
 
@@ -23,13 +22,15 @@ test -d /usr/lib/postgresql$NEW_VERSION/bin
 echo "Testing presence of postgresql$OLD_VERSION..."
 test -d /usr/lib/postgresql$OLD_VERSION/bin
 
-echo "Create a backup at /var/lib/pgsql/data-backup..."
-test -d "/var/lib/pgsql/data-backup" && mv "/var/lib/pgsql/data-backup" "/var/lib/pgsql/data-backup-$(date '+%Y%m%d_%H%M%S')"
-mkdir -p /var/lib/pgsql/data-backup
-chown postgres:postgres /var/lib/pgsql/data-backup
-chmod 700 /var/lib/pgsql/data-backup
+BACKUP_DIR={{ .BackupDir }}/backup
+
+echo "Create a database backup at $BACKUP_DIR"
+test -d "$BACKUP_DIR" && mv "$BACKUP_DIR" "${BACKUP_DIR}$(date '+%Y%m%d_%H%M%S')"
+mkdir -p "$BACKUP_DIR"
+chown postgres:postgres "$BACKUP_DIR"
+chmod 700 "$BACKUP_DIR"
 shopt -s dotglob
-mv /var/lib/pgsql/data/* /var/lib/pgsql/data-backup
+mv /var/lib/pgsql/data/* "$BACKUP_DIR"
 
 echo "Create new database directory..."
 chown -R postgres:postgres /var/lib/pgsql
@@ -54,13 +55,13 @@ su -s /bin/bash - postgres -c "initdb -D /var/lib/pgsql/data --locale=$POSTGRES_
 echo "Successfully initialized new postgresql $NEW_VERSION database."
 
 echo "Temporarily disable SSL in the old posgresql configuration"
-cp /var/lib/pgsql/data-backup/postgresql.conf /var/lib/pgsql/data-backup/postgresql.conf.bak
-sed 's/^ssl/#ssl/' -i /var/lib/pgsql/data-backup/postgresql.conf
+cp "${BACKUP_DIR}/postgresql.conf" "${BACKUP_DIR}/postgresql.conf.bak"
+sed 's/^ssl/#ssl/' -i "${BACKUP_DIR}/postgresql.conf"
 
-su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql$OLD_VERSION/bin --new-bindir=/usr/lib/postgresql$NEW_VERSION/bin --old-datadir=/var/lib/pgsql/data-backup --new-datadir=/var/lib/pgsql/data"
+su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql$OLD_VERSION/bin --new-bindir=/usr/lib/postgresql$NEW_VERSION/bin --old-datadir=\"$BACKUP_DIR\" --new-datadir=/var/lib/pgsql/data"
 
 echo "Enable SSL again"
-cp /var/lib/pgsql/data-backup/postgresql.conf.bak /var/lib/pgsql/data-backup/postgresql.conf
+cp "${BACKUP_DIR}/postgresql.conf.bak" "${BACKUP_DIR}/postgresql.conf"
 
 echo "DONE"`
 
@@ -68,6 +69,7 @@ echo "DONE"`
 type PostgreSQLVersionUpgradeTemplateData struct {
 	OldVersion string
 	NewVersion string
+	BackupDir  string
 }
 
 // Render will create PostgreSQL upgrade script.
