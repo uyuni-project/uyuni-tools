@@ -1,4 +1,41 @@
 -------------------------------------------------------------------
+Tue Jul 22 16:37:57 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.17-0
+  * upgrade saline should use scale function (bsc#1246864)
+
+-------------------------------------------------------------------
+Tue Jul 22 12:11:36 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.16-0
+  * Use database backup volume as temporary backup location
+    (bsc#1246628)
+
+-------------------------------------------------------------------
+Fri Jul 04 17:17:20 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.15-0
+  * Reload systemd daemon before starting the uyuni-server during an
+    upgrade (bsc#1245779)
+
+-------------------------------------------------------------------
+Fri Jun 20 16:38:08 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.14-0
+  * Fix mgradm backup create handling of images and systemd files
+    (bsc#1244563)
+  * migrate existing TLS certificates from 4.3 systems
+    (bsc#1244847)
+  * Use FQDN of the source to generate certificates during migration
+    (bsc#1244847)
+
+-------------------------------------------------------------------
+Tue Jun 17 18:46:54 CEST 2025 - marina.latini@suse.com
+
+- version 5.1.13-0
+  * Update translation strings
+
+-------------------------------------------------------------------
 Tue Jun 17 16:40:04 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.12-0

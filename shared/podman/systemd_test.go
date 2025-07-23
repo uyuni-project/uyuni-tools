@@ -1,12 +1,14 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package podman
 
 import (
+	"errors"
 	"os"
 	"path"
+	"strings"
 	"testing"
 
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
@@ -90,4 +92,22 @@ Environment="PODMAN_EXTRA_ARGS="
 
 	actual = testutils.ReadFile(t, path.Join(serviceConfDir, "custom.conf"))
 	testutils.AssertEquals(t, "invalid custom.conf file", customFile, actual)
+}
+
+func TestGetServiceProperty(t *testing.T) {
+	newRunner = testutils.FakeRunnerGenerator("TestProperty=foo bar\n", nil)
+	tested := SystemdImpl{}
+	actual, err := tested.GetServiceProperty("myservice", "TestProperty")
+	testutils.AssertTrue(t, "No error expected", err == nil)
+	testutils.AssertEquals(t, "Wrong expected property", "foo bar", actual)
+}
+
+func TestGetServicePropertyError(t *testing.T) {
+	newRunner = testutils.FakeRunnerGenerator("", errors.New("Test error"))
+	tested := SystemdImpl{}
+	actual, err := tested.GetServiceProperty("myservice", "TestProperty")
+	testutils.AssertTrue(t, "Error message missing the root error message", strings.Contains(err.Error(), "Test error"))
+	testutils.AssertTrue(t, "Unexpected error description",
+		strings.Contains(err.Error(), "Failed to get the TestProperty property from myservice service"))
+	testutils.AssertEquals(t, "Wrong expected property", "", actual)
 }

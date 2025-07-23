@@ -54,10 +54,12 @@ func GeneratePgsqlVersionUpgradeScript(
 	scriptDir string,
 	oldPgVersion string,
 	newPgVersion string,
+	backupDir string,
 ) (string, error) {
 	data := templates.PostgreSQLVersionUpgradeTemplateData{
 		OldVersion: oldPgVersion,
 		NewVersion: newPgVersion,
+		BackupDir:  backupDir,
 	}
 
 	scriptName := "pgsqlVersionUpgrade.sh"
@@ -123,8 +125,15 @@ func GenerateMigrationScript(
 		return "", nil, err
 	}
 
+	// For podman we want to backup tls certificates to the temporary volume we
+	// later use when creating secrets.
+	volumes := append(utils.ServerVolumeMounts, utils.VarPgsqlDataVolumeMount)
+	if !kubernetes {
+		volumes = append(volumes, utils.EtcTLSTmpVolumeMount)
+	}
+
 	data := templates.MigrateScriptTemplateData{
-		Volumes:      append(utils.ServerVolumeMounts, utils.VarPgsqlDataVolumeMount),
+		Volumes:      volumes,
 		SourceFqdn:   sourceFqdn,
 		User:         user,
 		Kubernetes:   kubernetes,
