@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-17 17:33+0200\n"
+"POT-Creation-Date: 2025-07-23 08:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -147,37 +147,37 @@ msgstr ""
 msgid "Backing up container volumes"
 msgstr ""
 
-#: mgradm/cmd/backup/create/create.go:173
+#: mgradm/cmd/backup/create/create.go:181
 msgid "Backing up container images"
 msgstr ""
 
-#: mgradm/cmd/backup/create/create.go:178
+#: mgradm/cmd/backup/create/create.go:186
 #, javascript-format
 msgid "Not backing up image %s"
 msgstr ""
 
-#: mgradm/cmd/backup/create/create.go:186
+#: mgradm/cmd/backup/create/create.go:194
 msgid "Systemd services and configuration was not backed up"
 msgstr ""
 
-#: mgradm/cmd/backup/create/create.go:187
+#: mgradm/cmd/backup/create/create.go:195
 msgid "Backing up Systemd services"
 msgstr ""
 
-#: mgradm/cmd/backup/create/create.go:204
+#: mgradm/cmd/backup/create/create.go:212
 msgid "Podman configuration was not backed up"
 msgstr ""
 
-#: mgradm/cmd/backup/create/create.go:205
+#: mgradm/cmd/backup/create/create.go:213
 msgid "Backing up podman configuration"
 msgstr ""
 
-#: mgradm/cmd/backup/create/create.go:227
+#: mgradm/cmd/backup/create/create.go:235
 #, javascript-format
 msgid "output directory %s already exists and is not empty"
 msgstr ""
 
-#: mgradm/cmd/backup/create/create.go:237
+#: mgradm/cmd/backup/create/create.go:245
 msgid "server is not initialized."
 msgstr ""
 
@@ -221,12 +221,12 @@ msgstr ""
 msgid "Unable to encode secrets backup"
 msgstr ""
 
-#: mgradm/cmd/backup/create/systemd_utils.go:27
+#: mgradm/cmd/backup/create/systemd_utils.go:28
 #, javascript-format
 msgid "Would backup %s"
 msgstr ""
 
-#: mgradm/cmd/backup/create/systemd_utils.go:33
+#: mgradm/cmd/backup/create/systemd_utils.go:34
 msgid "failed to create Systemd backup tarball: %w"
 msgstr ""
 
@@ -847,17 +847,17 @@ msgstr ""
 msgid "Setting up the server with the FQDN '%s'"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:67 mgradm/shared/podman/podman.go:328
-#: mgradm/shared/podman/podman.go:528
+#: mgradm/cmd/install/podman/utils.go:67 mgradm/shared/podman/podman.go:339
+#: mgradm/shared/podman/podman.go:539
 msgid "cannot prepare images"
 msgstr ""
 
 #: mgradm/cmd/install/podman/utils.go:71 mgradm/shared/podman/podman.go:93
-#: mgradm/shared/podman/podman.go:323 mgradm/shared/podman/podman.go:520
+#: mgradm/shared/podman/podman.go:329 mgradm/shared/podman/podman.go:531
 msgid "cannot setup network"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:866
+#: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:874
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr ""
@@ -866,7 +866,7 @@ msgstr ""
 msgid "Run setup command in the container"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:123 mgradm/shared/podman/podman.go:588
+#: mgradm/cmd/install/podman/utils.go:123 mgradm/shared/podman/podman.go:604
 msgid "cannot wait for system start"
 msgstr ""
 
@@ -1082,7 +1082,7 @@ msgstr ""
 #: mgradm/shared/kubernetes/reconcile.go:38
 #: mgradm/shared/kubernetes/reconcile.go:305 mgradm/shared/pgsql/pgsql.go:28
 #: mgradm/shared/podman/podman.go:213 mgradm/shared/podman/podman.go:218
-#: mgradm/shared/saline/saline.go:75
+#: mgradm/shared/saline/saline.go:66
 msgid "failed to compute image URL"
 msgstr ""
 
@@ -1428,12 +1428,12 @@ msgstr ""
 
 #: mgradm/shared/coco/coco.go:101 mgradm/shared/hub/xmlrpcapi.go:120
 #: mgradm/shared/pgsql/pgsql.go:123 mgradm/shared/podman/podman.go:76
-#: mgradm/shared/saline/saline.go:96
+#: mgradm/shared/saline/saline.go:87
 msgid "failed to generate systemd service unit file"
 msgstr ""
 
 #: mgradm/shared/coco/coco.go:111 mgradm/shared/hub/xmlrpcapi.go:127
-#: mgradm/shared/podman/podman.go:104 mgradm/shared/saline/saline.go:104
+#: mgradm/shared/podman/podman.go:104 mgradm/shared/saline/saline.go:95
 msgid "cannot generate systemd conf file"
 msgstr ""
 
@@ -1451,8 +1451,8 @@ msgstr ""
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr ""
 
-#: mgradm/shared/hub/xmlrpcapi.go:73 mgradm/shared/podman/podman.go:475
-#: mgradm/shared/saline/saline.go:146
+#: mgradm/shared/hub/xmlrpcapi.go:73 mgradm/shared/podman/podman.go:486
+#: mgradm/shared/saline/saline.go:137
 msgid "cannot enable service"
 msgstr ""
 
@@ -1660,7 +1660,7 @@ msgstr ""
 msgid "Enabling system service"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:112 mgradm/shared/saline/saline.go:112
+#: mgradm/shared/podman/podman.go:112 mgradm/shared/saline/saline.go:103
 msgid "cannot generate systemd user configuration file"
 msgstr ""
 
@@ -1668,7 +1668,7 @@ msgstr ""
 msgid "cannot generate migration script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:155 mgradm/shared/utils/exec.go:104
+#: mgradm/shared/podman/podman.go:155 mgradm/shared/utils/exec.go:106
 msgid "Migrating server"
 msgstr ""
 
@@ -1694,97 +1694,97 @@ msgstr ""
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:231
+#: mgradm/shared/podman/podman.go:237
 msgid "cannot generate PostgreSQL database version upgrade script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:261 mgradm/shared/podman/podman.go:285
+#: mgradm/shared/podman/podman.go:267 mgradm/shared/podman/podman.go:291
 msgid "cannot generate PostgreSQL finalization script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:333 mgradm/shared/podman/podman.go:552
+#: mgradm/shared/podman/podman.go:344 mgradm/shared/podman/podman.go:563
 msgid "cannot prepare host"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:338 mgradm/shared/podman/podman.go:346
-#: mgradm/shared/podman/podman.go:620
+#: mgradm/shared/podman/podman.go:349 mgradm/shared/podman/podman.go:357
+#: mgradm/shared/podman/podman.go:636
 msgid "cannot stop service"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:359 mgradm/shared/podman/podman.go:559
+#: mgradm/shared/podman/podman.go:370 mgradm/shared/podman/podman.go:570
 msgid "Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:364 mgradm/shared/podman/podman.go:568
+#: mgradm/shared/podman/podman.go:375 mgradm/shared/podman/podman.go:579
 msgid "cannot configure db container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:370 mgradm/shared/podman/podman.go:794
-msgid "Previous PostgreSQL is %[1]s, instead new one is %[2]s. Performing a DB version upgrade…"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:801
-#: mgradm/shared/podman/podman.go:833
+#: mgradm/shared/podman/podman.go:384 mgradm/shared/podman/podman.go:813
+#: mgradm/shared/podman/podman.go:841
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:804
+#: mgradm/shared/podman/podman.go:387 mgradm/shared/podman/podman.go:816
 msgid "Upgrading without changing PostgreSQL version"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:807
+#: mgradm/shared/podman/podman.go:390 mgradm/shared/podman/podman.go:819
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:395 mgradm/shared/podman/podman.go:578
+#: mgradm/shared/podman/podman.go:402 mgradm/shared/podman/podman.go:594
 msgid "cannot run PostgreSQL finalize script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:399 mgradm/shared/podman/podman.go:582
+#: mgradm/shared/podman/podman.go:406 mgradm/shared/podman/podman.go:598
 msgid "cannot run post upgrade script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:420 mgradm/shared/podman/podman.go:473
+#: mgradm/shared/podman/podman.go:431 mgradm/shared/podman/podman.go:484
 msgid "Waiting for the server to start…"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:423
+#: mgradm/shared/podman/podman.go:434
 msgid "cannot start service"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:441 mgradm/shared/podman/podman.go:601
+#: mgradm/shared/podman/podman.go:452 mgradm/shared/podman/podman.go:617
 msgid "error upgrading confidential computing service."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:451 mgradm/shared/podman/podman.go:611
+#: mgradm/shared/podman/podman.go:462 mgradm/shared/podman/podman.go:627
 msgid "error upgrading saline service."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:543
+#: mgradm/shared/podman/podman.go:554
 msgid "cannot run migration script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:546
+#: mgradm/shared/podman/podman.go:557
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:669
+#: mgradm/shared/podman/podman.go:584
+msgid "cannot remove temporary etc-tls volume"
+msgstr ""
+
+#: mgradm/shared/podman/podman.go:685
 msgid "failed to generate postgresql migration script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:705
+#: mgradm/shared/podman/podman.go:721
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:735
+#: mgradm/shared/podman/podman.go:751
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:745
+#: mgradm/shared/podman/podman.go:761
 msgid "Failed to find home directory to look for SSH config"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:769
+#: mgradm/shared/podman/podman.go:785
 msgid "cannot inspect podman values"
 msgstr ""
 
@@ -1851,11 +1851,11 @@ msgstr ""
 msgid "Database SSL certificates generated"
 msgstr ""
 
-#: mgradm/shared/saline/saline.go:69 mgradm/shared/saline/saline.go:140
+#: mgradm/shared/saline/saline.go:60 mgradm/shared/saline/saline.go:131
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
 msgstr ""
 
-#: mgradm/shared/saline/saline.go:92
+#: mgradm/shared/saline/saline.go:83
 msgid "Setting up Saline service"
 msgstr ""
 
@@ -2123,36 +2123,36 @@ msgstr ""
 msgid "exec command failed"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:66 mgradm/shared/utils/exec.go:85
-#: mgradm/shared/utils/exec.go:97
+#: mgradm/shared/utils/exec.go:68 mgradm/shared/utils/exec.go:87
+#: mgradm/shared/utils/exec.go:99
 #, javascript-format
 msgid "failed to generate %s"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:107
+#: mgradm/shared/utils/exec.go:109
 msgid "error running the migration script"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:138
+#: mgradm/shared/utils/exec.go:147
 msgid "failed to generate migration script"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:158
+#: mgradm/shared/utils/exec.go:167
 #, javascript-format
 msgid "currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:165
+#: mgradm/shared/utils/exec.go:174
 #, javascript-format
 msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:174 mgradm/shared/utils/exec.go:187
+#: mgradm/shared/utils/exec.go:183 mgradm/shared/utils/exec.go:196
 #, javascript-format
 msgid "cannot fetch release from image %s"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:179 mgradm/shared/utils/exec.go:192
+#: mgradm/shared/utils/exec.go:188 mgradm/shared/utils/exec.go:201
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr ""
 

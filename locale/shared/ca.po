@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-17 17:33+0200\n"
+"POT-Creation-Date: 2025-07-23 08:56+0200\n"
 "PO-Revision-Date: 2025-07-11 11:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
@@ -290,11 +290,11 @@ msgstr "no s'ha pogut instal·lar el diagrama de helm %[1]s a l'espai de noms %[
 msgid "namespace is required"
 msgstr "l'espai de noms és obligatori"
 
-#: shared/kubernetes/helm.go:77 shared/podman/images.go:345
-#: shared/podman/images.go:365 shared/podman/images.go:385
+#: shared/kubernetes/helm.go:77 shared/podman/images.go:346
+#: shared/podman/images.go:369 shared/podman/images.go:389
 #: shared/podman/network.go:108 shared/podman/secret.go:123
-#: shared/podman/systemd.go:110 shared/podman/systemd.go:189
-#: shared/podman/systemd.go:190 shared/podman/utils.go:177
+#: shared/podman/systemd.go:122 shared/podman/systemd.go:201
+#: shared/podman/systemd.go:202 shared/podman/utils.go:177
 #: shared/podman/utils.go:210 shared/podman/utils.go:237
 #, javascript-format
 msgid "Would run %s"
@@ -624,129 +624,129 @@ msgstr "no s'ha pogut executar l'script d'inspecció en el sistema amfitrió"
 msgid "cannot inspect host data"
 msgstr "no es poden inspeccionar les dades de l'amfitrió"
 
-#: shared/podman/images.go:32
+#: shared/podman/images.go:33
 #, javascript-format
 msgid "Ensure image %s is available"
 msgstr "Assegura que la imatge %s està disponible"
 
-#: shared/podman/images.go:46
+#: shared/podman/images.go:47
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
 msgstr "La política de pícnic és sempre. La presència de la imatge RPM es comprovarà i es retirarà del registre si no hi és"
 
-#: shared/podman/images.go:56
+#: shared/podman/images.go:57
 #, javascript-format
 msgid "Cannot use RPM image for %s"
 msgstr "No es pot utilitzar la imatge RPM per a %s"
 
-#: shared/podman/images.go:58
+#: shared/podman/images.go:59
 msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
 msgstr "Utilitzant la imatge %[1]s carregada des del RPM en lloc de la seva versió en línia %[2]s"
 
-#: shared/podman/images.go:63
+#: shared/podman/images.go:64
 #, javascript-format
 msgid "Cannot find RPM image for %s"
 msgstr "No s'ha pogut trobar la imatge RPM per a %s"
 
-#: shared/podman/images.go:75
+#: shared/podman/images.go:76
 #, javascript-format
 msgid "image %s is missing and cannot be fetched"
 msgstr "manca la imatge %s i no es pot recuperar"
 
-#: shared/podman/images.go:85
+#: shared/podman/images.go:86
 msgid "failed to determine image"
 msgstr "no s'ha pogut determinar la imatge"
 
-#: shared/podman/images.go:93
+#: shared/podman/images.go:94
 msgid "failed to find the image of the currently running server container"
 msgstr "no s'ha pogut trobar la imatge del contenidor del servidor actualment en execució"
 
-#: shared/podman/images.go:104
+#: shared/podman/images.go:105
 msgid "failed to determine pgsql image"
 msgstr "no s'ha pogut determinar la imatge pgsql"
 
-#: shared/podman/images.go:112
+#: shared/podman/images.go:113
 msgid "failed to find the image of the currently running db container"
 msgstr "no s'ha pogut trobar la imatge del contenidor de db en execució"
 
-#: shared/podman/images.go:137
+#: shared/podman/images.go:138
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
 msgstr "No es pot analitzar correctament el nom de la imatge «%s», no es pot utilitzar la imatge local"
 
-#: shared/podman/images.go:155
+#: shared/podman/images.go:156
 msgid "cannot unmarshal image RPM metadata"
 msgstr "no es poden desfer les metadades RPM de la imatge"
 
-#: shared/podman/images.go:174
+#: shared/podman/images.go:175
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
 msgstr "s'omet la càrrega de la imatge des de l'RPM perquè %s no existeix"
 
-#: shared/podman/images.go:204
+#: shared/podman/images.go:205
 #, javascript-format
 msgid "Cannot unmarshal metadata file %s"
 msgstr "No es pot desfer el fitxer de metadades %s"
 
-#: shared/podman/images.go:226
+#: shared/podman/images.go:227
 #, javascript-format
 msgid "error parsing: %s"
 msgstr "s'ha produït un error en analitzar: %s"
 
-#: shared/podman/images.go:234 shared/podman/images.go:248
-#: shared/podman/images.go:263
+#: shared/podman/images.go:235 shared/podman/images.go:249
+#: shared/podman/images.go:264
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
 msgstr "no s'ha pogut comprovar si la imatge %s ja s'ha tirat"
 
-#: shared/podman/images.go:270
+#: shared/podman/images.go:271
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr "%s hauria de contenir només un caràcter en minúscula, en cas contrari l'estirada de podman fallaria"
 
-#: shared/podman/images.go:272
+#: shared/podman/images.go:273
 #, javascript-format
 msgid "Running podman pull %s"
 msgstr "S'està executant la podman pull %s"
 
-#: shared/podman/images.go:284
+#: shared/podman/images.go:285
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr "S'està executant la cerca d'imatges de podman --list-tags %s --format.{{.Tag}}"
 
-#: shared/podman/images.go:298
+#: shared/podman/images.go:299
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr "no s'ha pogut trobar cap etiqueta per a la imatge %s"
 
-#: shared/podman/images.go:312
+#: shared/podman/images.go:313
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr "S'està executant el podman ps --filter.name.%s --format.{{ .Imatge}}"
 
-#: shared/podman/images.go:318
+#: shared/podman/images.go:319
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 
-#: shared/podman/images.go:347 shared/podman/images.go:367
-#: shared/podman/images.go:387 shared/podman/secret.go:125
+#: shared/podman/images.go:348 shared/podman/images.go:371
+#: shared/podman/images.go:391 shared/podman/secret.go:125
 #: shared/podman/utils.go:179 shared/podman/utils.go:213
 #: shared/podman/utils.go:248
 #, javascript-format
 msgid "Run %s"
 msgstr "Executa %s"
 
-#: shared/podman/images.go:350
+#: shared/podman/images.go:351
 #, javascript-format
 msgid "Failed to remove image %s"
 msgstr "No s'ha pogut eliminar la imatge %s"
 
-#: shared/podman/images.go:370
+#: shared/podman/images.go:374
 #, javascript-format
 msgid "Failed to export image %s"
 msgstr "No s'ha pogut exportar la imatge %s"
 
-#: shared/podman/images.go:390
+#: shared/podman/images.go:394
 #, javascript-format
 msgid "Failed to restore image %s"
 msgstr "No s'ha pogut restaurar la imatge %s"
@@ -889,117 +889,123 @@ msgstr "no s'ha pogut executar journalctl -u %s"
 msgid "failed to disable %s systemd service"
 msgstr "no s'ha pogut inhabilitar el servei systemd %s"
 
-#: shared/podman/systemd.go:107
+#: shared/podman/systemd.go:83
+#, fuzzy
+#| msgid "failed to get the %s deployment revision"
+msgid "Failed to get the %[1]s property from %[2]s service"
+msgstr "no s'ha pogut obtenir la revisió de desplegament %s"
+
+#: shared/podman/systemd.go:119
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "El Systemd no té %s.unitat de servei"
 
-#: shared/podman/systemd.go:112
+#: shared/podman/systemd.go:124
 #, javascript-format
 msgid "Disable %s service"
 msgstr "Desactiva el servei %s"
 
-#: shared/podman/systemd.go:116 shared/podman/systemd.go:178
+#: shared/podman/systemd.go:128 shared/podman/systemd.go:190
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "No s'ha pogut desactivar el servei %s"
 
-#: shared/podman/systemd.go:128 shared/podman/systemd.go:145
+#: shared/podman/systemd.go:140 shared/podman/systemd.go:157
 #, javascript-format
 msgid "Would remove %s"
 msgstr "Eliminaria %s"
 
-#: shared/podman/systemd.go:131 shared/podman/systemd.go:147
+#: shared/podman/systemd.go:143 shared/podman/systemd.go:159
 #, javascript-format
 msgid "Remove %s"
 msgstr "Elimina %s"
 
-#: shared/podman/systemd.go:133
+#: shared/podman/systemd.go:145
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "No s'ha pogut eliminar el fitxer %s.service"
 
-#: shared/podman/systemd.go:149
+#: shared/podman/systemd.go:161
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "No s'ha pogut eliminar el fitxer %s"
 
-#: shared/podman/systemd.go:156
+#: shared/podman/systemd.go:168
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "Eliminaria %s si està buit"
 
-#: shared/podman/systemd.go:163
+#: shared/podman/systemd.go:175
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "La carpeta %s conté el fitxer creat per l'usuari. Si us plau, elimineu-los quan s'hagi completat la desinstal·lació."
 
-#: shared/podman/systemd.go:175
+#: shared/podman/systemd.go:187
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "S'escalaria %s a 0 rèpliques"
 
-#: shared/podman/systemd.go:194
+#: shared/podman/systemd.go:206
 msgid "failed to reset-failed systemd"
 msgstr "no s'ha pogut restablir el «systemd» fallit"
 
-#: shared/podman/systemd.go:198
+#: shared/podman/systemd.go:210
 msgid "failed to reload systemd daemon"
 msgstr "no s'ha pogut tornar a carregar el dimoni del systemd"
 
-#: shared/podman/systemd.go:216
+#: shared/podman/systemd.go:228
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "no s'ha pogut reiniciar systemd %s.service"
 
-#: shared/podman/systemd.go:224
+#: shared/podman/systemd.go:236
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "no s'ha pogut iniciar systemd %s.service"
 
-#: shared/podman/systemd.go:232
+#: shared/podman/systemd.go:244
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "no s'ha pogut aturar systemd %s.service"
 
-#: shared/podman/systemd.go:244
+#: shared/podman/systemd.go:256
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "no s'ha pogut habilitar el servei «systemd» de %s"
 
-#: shared/podman/systemd.go:291
+#: shared/podman/systemd.go:303
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "no s'ha pogut crear la carpeta %s"
 
-#: shared/podman/systemd.go:301
+#: shared/podman/systemd.go:313
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "no es pot escriure el fitxer %s"
 
-#: shared/podman/systemd.go:346
+#: shared/podman/systemd.go:358
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "no s'ha pogut escriure el fitxer %s"
 
-#: shared/podman/systemd.go:351
+#: shared/podman/systemd.go:363
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "no s'ha pogut eliminar l'antic fitxer de configuració del servei systemd %s"
 
-#: shared/podman/systemd.go:373
+#: shared/podman/systemd.go:385
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "El servei %[1]s ja té %[2]d rèpliques."
 
-#: shared/podman/systemd.go:376
+#: shared/podman/systemd.go:388
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "Escala %[1]s de %[2]d a %[3]d rèpliques."
 
-#: shared/podman/systemd.go:380
+#: shared/podman/systemd.go:392
 msgid "cannot enable service"
 msgstr "no es pot activar el servei"
 
-#: shared/podman/systemd.go:386
+#: shared/podman/systemd.go:398
 msgid "cannot disable service"
 msgstr "no es pot desactivar el servei"
 
@@ -1050,8 +1056,9 @@ msgid "failed to get %s systemd service definition"
 msgstr "no s'ha pogut obtenir la definició del servei systemd de %s"
 
 #: shared/podman/utils.go:152
-#, javascript-format
-msgid "no UYUNI_IMAGE defined in %s systemd service"
+#, fuzzy, javascript-format
+#| msgid "no UYUNI_IMAGE defined in %s systemd service"
+msgid "no UYUNI.*_IMAGE defined in %s systemd service"
 msgstr "no s'ha definit UYUNIIMAGE al servei systemd %s"
 
 #: shared/podman/utils.go:191

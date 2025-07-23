@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-17 17:33+0200\n"
+"POT-Creation-Date: 2025-07-23 08:56+0200\n"
 "PO-Revision-Date: 2025-06-17 08:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
@@ -292,11 +292,11 @@ msgstr "%[2]s 네임스페이스에서 helm 차트 %[1]s을(를) 설치하지 �
 msgid "namespace is required"
 msgstr "네임스페이스는 필수입니다."
 
-#: shared/kubernetes/helm.go:77 shared/podman/images.go:345
-#: shared/podman/images.go:365 shared/podman/images.go:385
+#: shared/kubernetes/helm.go:77 shared/podman/images.go:346
+#: shared/podman/images.go:369 shared/podman/images.go:389
 #: shared/podman/network.go:108 shared/podman/secret.go:123
-#: shared/podman/systemd.go:110 shared/podman/systemd.go:189
-#: shared/podman/systemd.go:190 shared/podman/utils.go:177
+#: shared/podman/systemd.go:122 shared/podman/systemd.go:201
+#: shared/podman/systemd.go:202 shared/podman/utils.go:177
 #: shared/podman/utils.go:210 shared/podman/utils.go:237
 #, javascript-format
 msgid "Would run %s"
@@ -625,129 +625,129 @@ msgstr "호스트 시스템에서 검사 스크립트를 실행할 수 없음"
 msgid "cannot inspect host data"
 msgstr "호스트 데이터를 검사할 수 없음"
 
-#: shared/podman/images.go:32
+#: shared/podman/images.go:33
 #, javascript-format
 msgid "Ensure image %s is available"
 msgstr "%s 이미지를 사용할 수 있는지 확인"
 
-#: shared/podman/images.go:46
+#: shared/podman/images.go:47
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
 msgstr "끌어오기 정책이 항상으로 지정되어 있습니다. RPM 이미지가 있는지 확인하여 이미지가 없는 경우 레지스트리에서 끌어옵니다."
 
-#: shared/podman/images.go:56
+#: shared/podman/images.go:57
 #, javascript-format
 msgid "Cannot use RPM image for %s"
 msgstr "%s에 RPM 이미지를 사용할 수 없음"
 
-#: shared/podman/images.go:58
+#: shared/podman/images.go:59
 msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
 msgstr "온라인 버전 %[2]s 대신 RPM에서 로드한 %[1]s 이미지 사용"
 
-#: shared/podman/images.go:63
+#: shared/podman/images.go:64
 #, javascript-format
 msgid "Cannot find RPM image for %s"
 msgstr "%s에 대한 RPM 이미지를 찾을 수 없습니다."
 
-#: shared/podman/images.go:75
+#: shared/podman/images.go:76
 #, javascript-format
 msgid "image %s is missing and cannot be fetched"
 msgstr "%s 이미지가 누락되어 가져올 수 없습니다."
 
-#: shared/podman/images.go:85
+#: shared/podman/images.go:86
 msgid "failed to determine image"
 msgstr "이미지를 확인하지 못함"
 
-#: shared/podman/images.go:93
+#: shared/podman/images.go:94
 msgid "failed to find the image of the currently running server container"
 msgstr "현재 실행 중인 서버 컨테이너의 이미지를 찾지 못함"
 
-#: shared/podman/images.go:104
+#: shared/podman/images.go:105
 msgid "failed to determine pgsql image"
 msgstr "pgsql 이미지를 확인하지 못함"
 
-#: shared/podman/images.go:112
+#: shared/podman/images.go:113
 msgid "failed to find the image of the currently running db container"
 msgstr "현재 실행 중인 db 컨테이너의 이미지를 찾지 못함"
 
-#: shared/podman/images.go:137
+#: shared/podman/images.go:138
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
 msgstr "이미지 이름 '%s'을(를) 올바르게 파싱할 수 없습니다. 로컬 이미지를 사용할 수 없습니다."
 
-#: shared/podman/images.go:155
+#: shared/podman/images.go:156
 msgid "cannot unmarshal image RPM metadata"
 msgstr "이미지 RPM 메타데이터를 마샬링 해제할 수 없음"
 
-#: shared/podman/images.go:174
+#: shared/podman/images.go:175
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
 msgstr "%s이(가) 존재하지 않으므로 RPM에서 이미지 로드 건너뛰기"
 
-#: shared/podman/images.go:204
+#: shared/podman/images.go:205
 #, javascript-format
 msgid "Cannot unmarshal metadata file %s"
 msgstr "%s 메타데이터 파일을 마샬링 해제할 수 없음"
 
-#: shared/podman/images.go:226
+#: shared/podman/images.go:227
 #, javascript-format
 msgid "error parsing: %s"
 msgstr "구문 분석 중 오류 발생: %s"
 
-#: shared/podman/images.go:234 shared/podman/images.go:248
-#: shared/podman/images.go:263
+#: shared/podman/images.go:235 shared/podman/images.go:249
+#: shared/podman/images.go:264
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
 msgstr "%s 이미지를 이미 끌어왔는지 확인하지 못했습니다."
 
-#: shared/podman/images.go:270
+#: shared/podman/images.go:271
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr "%s에는 소문자만 포함되어야 하며, 그렇지 않으면 podman pull이 실패하게 됩니다."
 
-#: shared/podman/images.go:272
+#: shared/podman/images.go:273
 #, javascript-format
 msgid "Running podman pull %s"
 msgstr "실행 중 podman 끌어오기 %s"
 
-#: shared/podman/images.go:284
+#: shared/podman/images.go:285
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr "실행 중 podman 이미지 검색 --list-tags %s --format={{.Tag}}"
 
-#: shared/podman/images.go:298
+#: shared/podman/images.go:299
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr "%s 이미지에 대한 태그를 찾을 수 없음"
 
-#: shared/podman/images.go:312
+#: shared/podman/images.go:313
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr "실행 중 podman ps --filter=name=%s --format={{ .Image }}"
 
-#: shared/podman/images.go:318
+#: shared/podman/images.go:319
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr "%s 컨테이너에 대한 실행 이미지를 찾을 수 없음"
 
-#: shared/podman/images.go:347 shared/podman/images.go:367
-#: shared/podman/images.go:387 shared/podman/secret.go:125
+#: shared/podman/images.go:348 shared/podman/images.go:371
+#: shared/podman/images.go:391 shared/podman/secret.go:125
 #: shared/podman/utils.go:179 shared/podman/utils.go:213
 #: shared/podman/utils.go:248
 #, javascript-format
 msgid "Run %s"
 msgstr "%s 실행"
 
-#: shared/podman/images.go:350
+#: shared/podman/images.go:351
 #, javascript-format
 msgid "Failed to remove image %s"
 msgstr "%s 이미지를 제거하지 못함"
 
-#: shared/podman/images.go:370
+#: shared/podman/images.go:374
 #, javascript-format
 msgid "Failed to export image %s"
 msgstr "%s 이미지를 내보내지 못함"
 
-#: shared/podman/images.go:390
+#: shared/podman/images.go:394
 #, javascript-format
 msgid "Failed to restore image %s"
 msgstr "%s 이미지를 복원하지 못함"
@@ -890,117 +890,123 @@ msgstr "journalctl -u %s 실행 실패"
 msgid "failed to disable %s systemd service"
 msgstr "%s systemd 서비스를 비활성화하지 못함"
 
-#: shared/podman/systemd.go:107
+#: shared/podman/systemd.go:83
+#, fuzzy
+#| msgid "failed to get the %s deployment revision"
+msgid "Failed to get the %[1]s property from %[2]s service"
+msgstr "%s 배포 개정 가져오기 실패"
+
+#: shared/podman/systemd.go:119
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "Systemd에 %s.service 단위가 없습니다."
 
-#: shared/podman/systemd.go:112
+#: shared/podman/systemd.go:124
 #, javascript-format
 msgid "Disable %s service"
 msgstr "%s 서비스 비활성화"
 
-#: shared/podman/systemd.go:116 shared/podman/systemd.go:178
+#: shared/podman/systemd.go:128 shared/podman/systemd.go:190
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "%s 서비스 비활성화 실패"
 
-#: shared/podman/systemd.go:128 shared/podman/systemd.go:145
+#: shared/podman/systemd.go:140 shared/podman/systemd.go:157
 #, javascript-format
 msgid "Would remove %s"
 msgstr "%s 제거"
 
-#: shared/podman/systemd.go:131 shared/podman/systemd.go:147
+#: shared/podman/systemd.go:143 shared/podman/systemd.go:159
 #, javascript-format
 msgid "Remove %s"
 msgstr "%s 제거"
 
-#: shared/podman/systemd.go:133
+#: shared/podman/systemd.go:145
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "%s.service 파일 제거 실패"
 
-#: shared/podman/systemd.go:149
+#: shared/podman/systemd.go:161
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "%s 파일 제거를 하지 못함"
 
-#: shared/podman/systemd.go:156
+#: shared/podman/systemd.go:168
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "비어 있으면, %s을(를) 제거"
 
-#: shared/podman/systemd.go:163
+#: shared/podman/systemd.go:175
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "%s 폴더에는 사용자가 만든 파일이 들어 있습니다. 설치 제거가 완료되면 해당 파일을 제거하십시오."
 
-#: shared/podman/systemd.go:175
+#: shared/podman/systemd.go:187
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "%s을(를) 0 복제본으로 확장"
 
-#: shared/podman/systemd.go:194
+#: shared/podman/systemd.go:206
 msgid "failed to reset-failed systemd"
 msgstr "reset-failed systemd 실패"
 
-#: shared/podman/systemd.go:198
+#: shared/podman/systemd.go:210
 msgid "failed to reload systemd daemon"
 msgstr "systemd 데몬을 다시 로드하지 못함"
 
-#: shared/podman/systemd.go:216
+#: shared/podman/systemd.go:228
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "systemd %s.service를 다시 시작하지 못함"
 
-#: shared/podman/systemd.go:224
+#: shared/podman/systemd.go:236
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "systemd %s.service를 시작하지 못함"
 
-#: shared/podman/systemd.go:232
+#: shared/podman/systemd.go:244
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "systemd %s.service를 중지하지 못함"
 
-#: shared/podman/systemd.go:244
+#: shared/podman/systemd.go:256
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "%s systemd service를 활성화하지 못함"
 
-#: shared/podman/systemd.go:291
+#: shared/podman/systemd.go:303
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "%s 폴더를 생성하지 못함"
 
-#: shared/podman/systemd.go:301
+#: shared/podman/systemd.go:313
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "%s 파일을 쓸 수 없음"
 
-#: shared/podman/systemd.go:346
+#: shared/podman/systemd.go:358
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "%s 파일 쓰기 실패"
 
-#: shared/podman/systemd.go:351
+#: shared/podman/systemd.go:363
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "오래된 %s systemd 서비스 구성 파일 제거 실패"
 
-#: shared/podman/systemd.go:373
+#: shared/podman/systemd.go:385
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "%[1]s 서비스에 이미 %[2]d개 복제본이 있습니다."
 
-#: shared/podman/systemd.go:376
+#: shared/podman/systemd.go:388
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "%[2]d개에서 %[3]d개 복제본으로 %[1]s 확장"
 
-#: shared/podman/systemd.go:380
+#: shared/podman/systemd.go:392
 msgid "cannot enable service"
 msgstr "서비스를 활성할 수 없음"
 
-#: shared/podman/systemd.go:386
+#: shared/podman/systemd.go:398
 msgid "cannot disable service"
 msgstr "서비스 비활성화 실패"
 
@@ -1051,8 +1057,9 @@ msgid "failed to get %s systemd service definition"
 msgstr "%s systemd 서비스 정의를 가져오지 못함"
 
 #: shared/podman/utils.go:152
-#, javascript-format
-msgid "no UYUNI_IMAGE defined in %s systemd service"
+#, fuzzy, javascript-format
+#| msgid "no UYUNI_IMAGE defined in %s systemd service"
+msgid "no UYUNI.*_IMAGE defined in %s systemd service"
 msgstr "%s systemd 서비스에 정의된 UYUNI_IMAGE 없음"
 
 #: shared/podman/utils.go:191
