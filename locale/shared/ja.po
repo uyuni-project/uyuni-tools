@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-17 17:33+0200\n"
+"POT-Creation-Date: 2025-07-23 08:56+0200\n"
 "PO-Revision-Date: 2025-06-16 14:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
@@ -292,11 +292,11 @@ msgstr "helmチャート %[1]s (ネームスペース %[2]s 内)のインスト�
 msgid "namespace is required"
 msgstr "ネームスペースが必要です"
 
-#: shared/kubernetes/helm.go:77 shared/podman/images.go:345
-#: shared/podman/images.go:365 shared/podman/images.go:385
+#: shared/kubernetes/helm.go:77 shared/podman/images.go:346
+#: shared/podman/images.go:369 shared/podman/images.go:389
 #: shared/podman/network.go:108 shared/podman/secret.go:123
-#: shared/podman/systemd.go:110 shared/podman/systemd.go:189
-#: shared/podman/systemd.go:190 shared/podman/utils.go:177
+#: shared/podman/systemd.go:122 shared/podman/systemd.go:201
+#: shared/podman/systemd.go:202 shared/podman/utils.go:177
 #: shared/podman/utils.go:210 shared/podman/utils.go:237
 #, javascript-format
 msgid "Would run %s"
@@ -630,129 +630,129 @@ msgstr "ホストシステムで検査スクリプトを実行できませんで
 msgid "cannot inspect host data"
 msgstr "ホストデータを検査できません"
 
-#: shared/podman/images.go:32
+#: shared/podman/images.go:33
 #, javascript-format
 msgid "Ensure image %s is available"
 msgstr "イメージ %s が使用可能であることを確認します"
 
-#: shared/podman/images.go:46
+#: shared/podman/images.go:47
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
 msgstr "プルポリシーが常に適用されます。RPMイメージがあるかどうかがチェックされ、存在しない場合はレジストリからプルされます"
 
-#: shared/podman/images.go:56
+#: shared/podman/images.go:57
 #, javascript-format
 msgid "Cannot use RPM image for %s"
 msgstr "%s のRPMイメージを使用できません"
 
-#: shared/podman/images.go:58
+#: shared/podman/images.go:59
 msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
 msgstr "RPM からロードされた %[1]s イメージを使用(オンラインバージョン %[2]s ではない)"
 
-#: shared/podman/images.go:63
+#: shared/podman/images.go:64
 #, javascript-format
 msgid "Cannot find RPM image for %s"
 msgstr "%s のRPMイメージが見つかりません"
 
-#: shared/podman/images.go:75
+#: shared/podman/images.go:76
 #, javascript-format
 msgid "image %s is missing and cannot be fetched"
 msgstr "イメージ %s が見つからないのでフェッチできません"
 
-#: shared/podman/images.go:85
+#: shared/podman/images.go:86
 msgid "failed to determine image"
 msgstr "イメージの決定に失敗しました"
 
-#: shared/podman/images.go:93
+#: shared/podman/images.go:94
 msgid "failed to find the image of the currently running server container"
 msgstr "現在実行中のサーバコンテナのイメージが見つかりませんでした"
 
-#: shared/podman/images.go:104
+#: shared/podman/images.go:105
 msgid "failed to determine pgsql image"
 msgstr "pgsqlイメージの決定に失敗しました"
 
-#: shared/podman/images.go:112
+#: shared/podman/images.go:113
 msgid "failed to find the image of the currently running db container"
 msgstr "現在実行中のdbコンテナのイメージが見つかりませんでした"
 
-#: shared/podman/images.go:137
+#: shared/podman/images.go:138
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
 msgstr "イメージ名「%s」を正しく解析できません。ローカルイメージを使用できません"
 
-#: shared/podman/images.go:155
+#: shared/podman/images.go:156
 msgid "cannot unmarshal image RPM metadata"
 msgstr "イメージRPMメタデータをアンマーシャルできません"
 
-#: shared/podman/images.go:174
+#: shared/podman/images.go:175
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
 msgstr "%s が存在しないため、RPMからのイメージのロードをスキップします"
 
-#: shared/podman/images.go:204
+#: shared/podman/images.go:205
 #, javascript-format
 msgid "Cannot unmarshal metadata file %s"
 msgstr "メタデータファイル %s をアンマーシャルできません"
 
-#: shared/podman/images.go:226
+#: shared/podman/images.go:227
 #, javascript-format
 msgid "error parsing: %s"
 msgstr "解析エラー: %s"
 
-#: shared/podman/images.go:234 shared/podman/images.go:248
-#: shared/podman/images.go:263
+#: shared/podman/images.go:235 shared/podman/images.go:249
+#: shared/podman/images.go:264
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
 msgstr "イメージ %s がすでにプルされているかどうかの確認に失敗しました"
 
-#: shared/podman/images.go:270
+#: shared/podman/images.go:271
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr "%s には小文字のみを含める必要があります。含めない場合、podmanのプルは失敗します"
 
-#: shared/podman/images.go:272
+#: shared/podman/images.go:273
 #, javascript-format
 msgid "Running podman pull %s"
 msgstr "podmanのプル %s の実行中"
 
-#: shared/podman/images.go:284
+#: shared/podman/images.go:285
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr "podmanイメージ検索--list-tags %s --format={{.Tag}}の実行中"
 
-#: shared/podman/images.go:298
+#: shared/podman/images.go:299
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr "イメージ %s のタグが見つかりません"
 
-#: shared/podman/images.go:312
+#: shared/podman/images.go:313
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr "podman ps --filter=name=%s --format={{ .Image }}の実行中"
 
-#: shared/podman/images.go:318
+#: shared/podman/images.go:319
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr "コンテナ %s に対して実行中のイメージが見つかりません"
 
-#: shared/podman/images.go:347 shared/podman/images.go:367
-#: shared/podman/images.go:387 shared/podman/secret.go:125
+#: shared/podman/images.go:348 shared/podman/images.go:371
+#: shared/podman/images.go:391 shared/podman/secret.go:125
 #: shared/podman/utils.go:179 shared/podman/utils.go:213
 #: shared/podman/utils.go:248
 #, javascript-format
 msgid "Run %s"
 msgstr "%s の実行"
 
-#: shared/podman/images.go:350
+#: shared/podman/images.go:351
 #, javascript-format
 msgid "Failed to remove image %s"
 msgstr "イメージ %s の削除に失敗しました"
 
-#: shared/podman/images.go:370
+#: shared/podman/images.go:374
 #, javascript-format
 msgid "Failed to export image %s"
 msgstr "イメージ %s のエクスポートに失敗しました"
 
-#: shared/podman/images.go:390
+#: shared/podman/images.go:394
 #, javascript-format
 msgid "Failed to restore image %s"
 msgstr "イメージ %s の復元に失敗しました"
@@ -895,117 +895,123 @@ msgstr "ournalctl -u %sの実行に失敗しました"
 msgid "failed to disable %s systemd service"
 msgstr "%s systemdサービスを無効にできませんでした"
 
-#: shared/podman/systemd.go:107
+#: shared/podman/systemd.go:83
+#, fuzzy
+#| msgid "failed to get the %s deployment revision"
+msgid "Failed to get the %[1]s property from %[2]s service"
+msgstr "%s 配備リビジョンを取得できませんでした"
+
+#: shared/podman/systemd.go:119
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "Systemdには %s.serviceユニットがありません"
 
-#: shared/podman/systemd.go:112
+#: shared/podman/systemd.go:124
 #, javascript-format
 msgid "Disable %s service"
 msgstr "%s サービスを無効にする"
 
-#: shared/podman/systemd.go:116 shared/podman/systemd.go:178
+#: shared/podman/systemd.go:128 shared/podman/systemd.go:190
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "%s サービスを無効にできませんでした"
 
-#: shared/podman/systemd.go:128 shared/podman/systemd.go:145
+#: shared/podman/systemd.go:140 shared/podman/systemd.go:157
 #, javascript-format
 msgid "Would remove %s"
 msgstr "%s を削除します"
 
-#: shared/podman/systemd.go:131 shared/podman/systemd.go:147
+#: shared/podman/systemd.go:143 shared/podman/systemd.go:159
 #, javascript-format
 msgid "Remove %s"
 msgstr "%s の削除"
 
-#: shared/podman/systemd.go:133
+#: shared/podman/systemd.go:145
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "%s.serviceファイルの削除に失敗しました"
 
-#: shared/podman/systemd.go:149
+#: shared/podman/systemd.go:161
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "ファイル %s の削除に失敗しました"
 
-#: shared/podman/systemd.go:156
+#: shared/podman/systemd.go:168
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "空の場合は、%s を削除します"
 
-#: shared/podman/systemd.go:163
+#: shared/podman/systemd.go:175
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "%s フォルダには、ユーザが作成したファイルが含まれます。アンインストール後にそれらのファイルを削除してください。"
 
-#: shared/podman/systemd.go:175
+#: shared/podman/systemd.go:187
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "%s を0個のレプリカにスケールします"
 
-#: shared/podman/systemd.go:194
+#: shared/podman/systemd.go:206
 msgid "failed to reset-failed systemd"
 msgstr "systemdのreset-failedに失敗しました"
 
-#: shared/podman/systemd.go:198
+#: shared/podman/systemd.go:210
 msgid "failed to reload systemd daemon"
 msgstr "systemdデーモンの再ロードに失敗しました"
 
-#: shared/podman/systemd.go:216
+#: shared/podman/systemd.go:228
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "systemd %s.serviceの再起動に失敗しました"
 
-#: shared/podman/systemd.go:224
+#: shared/podman/systemd.go:236
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "systemd %s.serviceの起動に失敗しました"
 
-#: shared/podman/systemd.go:232
+#: shared/podman/systemd.go:244
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "systemd %s.serviceの停止に失敗しました"
 
-#: shared/podman/systemd.go:244
+#: shared/podman/systemd.go:256
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "%s systemdサービスを有効にできませんでした"
 
-#: shared/podman/systemd.go:291
+#: shared/podman/systemd.go:303
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "%s フォルダの作成に失敗しました"
 
-#: shared/podman/systemd.go:301
+#: shared/podman/systemd.go:313
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "%s ファイルを書き込めません"
 
-#: shared/podman/systemd.go:346
+#: shared/podman/systemd.go:358
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "%s ファイルの書き込みに失敗しました"
 
-#: shared/podman/systemd.go:351
+#: shared/podman/systemd.go:363
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "古い %s systemdサービス設定ファイルの削除に失敗しました"
 
-#: shared/podman/systemd.go:373
+#: shared/podman/systemd.go:385
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "サービス %[1]s にはすでに %[2]d 個のレプリカがあります。"
 
-#: shared/podman/systemd.go:376
+#: shared/podman/systemd.go:388
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "%[1]s を %[2]d から %[3]d レプリカにスケールします。"
 
-#: shared/podman/systemd.go:380
+#: shared/podman/systemd.go:392
 msgid "cannot enable service"
 msgstr "サービスを有効にできません"
 
-#: shared/podman/systemd.go:386
+#: shared/podman/systemd.go:398
 msgid "cannot disable service"
 msgstr "サービスを無効にできませんでした"
 
@@ -1056,8 +1062,9 @@ msgid "failed to get %s systemd service definition"
 msgstr "%s systemdサービス定義の取得に失敗しました"
 
 #: shared/podman/utils.go:152
-#, javascript-format
-msgid "no UYUNI_IMAGE defined in %s systemd service"
+#, fuzzy, javascript-format
+#| msgid "no UYUNI_IMAGE defined in %s systemd service"
+msgid "no UYUNI.*_IMAGE defined in %s systemd service"
 msgstr "%s systemdサービスにUYUNI_IMAGEが定義されていません"
 
 #: shared/podman/utils.go:191
