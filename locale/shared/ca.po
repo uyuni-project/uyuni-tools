@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-23 08:56+0200\n"
-"PO-Revision-Date: 2025-07-11 11:59+0000\n"
+"PO-Revision-Date: 2025-07-23 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -890,10 +890,8 @@ msgid "failed to disable %s systemd service"
 msgstr "no s'ha pogut inhabilitar el servei systemd %s"
 
 #: shared/podman/systemd.go:83
-#, fuzzy
-#| msgid "failed to get the %s deployment revision"
 msgid "Failed to get the %[1]s property from %[2]s service"
-msgstr "no s'ha pogut obtenir la revisió de desplegament %s"
+msgstr "Ha fallat obtenir la propietat %[1]s del servei %[2]s"
 
 #: shared/podman/systemd.go:119
 #, javascript-format
@@ -1056,10 +1054,9 @@ msgid "failed to get %s systemd service definition"
 msgstr "no s'ha pogut obtenir la definició del servei systemd de %s"
 
 #: shared/podman/utils.go:152
-#, fuzzy, javascript-format
-#| msgid "no UYUNI_IMAGE defined in %s systemd service"
+#, javascript-format
 msgid "no UYUNI.*_IMAGE defined in %s systemd service"
-msgstr "no s'ha definit UYUNIIMAGE al servei systemd %s"
+msgstr "no s'ha definit cap UYUNI.*_IMAGE al servei de systemd %s"
 
 #: shared/podman/utils.go:191
 #, javascript-format
