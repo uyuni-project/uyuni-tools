@@ -176,10 +176,11 @@ func AddDBFlags(cmd *cobra.Command) {
 // AddSCCFlag add SCC flags to a command.
 func AddSCCFlag(cmd *cobra.Command) {
 	cmd.Flags().String("scc-user", "", L(`SUSE Customer Center username.
-It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com`))
+It will be used as SCC credentials for products synchronization and to pull images from SCC registry`))
 	cmd.Flags().String("scc-password", "", L(`SUSE Customer Center password.
-It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com`))
-
+It will be used as SCC credentials for products synchronization and to pull images from SCC registry`))
+	cmd.Flags().String("scc-registry", "registry.suse.com", L(`SUSE Customer Center registry`))
+	_ = cmd.Flags().MarkHidden("scc-registry")
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "scc", Title: L("SUSE Customer Center Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "scc-user", "scc")
 	_ = utils.AddFlagToHelpGroupID(cmd, "scc-password", "scc")

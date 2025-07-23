@@ -209,7 +209,7 @@ func GetRegistrySecret(namespace string, scc *types.SCCCredentials, appLabel str
 	// Create the secret if SCC user and password are passed.
 	if scc.User != "" && scc.Password != "" {
 		if err := createDockerSecret(
-			namespace, secretName, "registry.suse.com", scc.User, scc.Password, appLabel,
+			namespace, secretName, scc.Registry, scc.User, scc.Password, appLabel,
 		); err != nil {
 			return "", err
 		}
