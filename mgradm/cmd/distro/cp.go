@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,6 +7,7 @@ package distro
 import (
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -21,13 +22,19 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func umount(mountpoint string) {
-	umountCmd := []string{
-		"/usr/bin/umount",
-		mountpoint,
-	}
+func isRoot() bool {
+	return os.Geteuid() == 0
+}
 
-	if err := utils.RunCmd("/usr/bin/sudo", umountCmd...); err != nil {
+func umount(mountpoint string) {
+	umountCmd := []string{}
+
+	if !isRoot() {
+		umountCmd = []string{"/usr/bin/sudo"}
+	}
+	umountCmd = append(umountCmd, "/usr/bin/umount", mountpoint)
+
+	if err := utils.RunCmd(umountCmd[0], umountCmd[1:]...); err != nil {
 		log.Error().Err(err).Msgf(L("Unable to unmount ISO image, leaving %s intact"), mountpoint)
 	}
 }
@@ -78,16 +85,18 @@ func prepareSource(source string) (string, func(), error) {
 		}
 		srcdir = tmpdir
 
-		mountCmd := []string{
-			"/usr/bin/mount",
-			"-o", "ro,loop",
-			source,
-			srcdir,
+		mountCmd := []string{}
+		if !isRoot() {
+			mountCmd = []string{"/usr/bin/sudo"}
 		}
-		if out, err := utils.RunCmdOutput(zerolog.DebugLevel, "/usr/bin/sudo", mountCmd...); err != nil {
+		mountCmd = append(mountCmd, "/usr/bin/mount", "-o", "ro,loop", source, srcdir)
+
+		if out, err := utils.RunCmdOutput(zerolog.DebugLevel, mountCmd[0], mountCmd[1:]...); err != nil {
 			log.Debug().Msgf("Error mounting ISO image: '%s'", out)
 			return "", cleaner, fmt.Errorf(L("unable to mount ISO image: %s"), out)
 		}
+		// Not sure why, but cleaner is not setup once we leave if statement :/
+		return srcdir, cleaner, nil
 	}
 	return srcdir, cleaner, nil
 }
@@ -146,14 +155,18 @@ func distroCp(
 	}
 
 	srcdir, cleaner, err := prepareSource(source)
-	if err != nil {
-		return err
-	}
+	// Non-nil cleaner means tmpdir was successful, but mount failed. We need to defer cleanup
 	if cleaner != nil {
 		defer func() {
-			umount(srcdir)
+			// If on top err is nill, all was successful, need umount
+			if err == nil {
+				umount(srcdir)
+			}
 			cleaner()
 		}()
+	}
+	if err != nil {
+		return err
 	}
 
 	distribution := types.Distribution{}
@@ -162,7 +175,7 @@ func distroCp(
 		if attemptRegistration {
 			return err
 		}
-		log.Debug().Msgf("Would not be able to auto register")
+		log.Debug().Msg("Would not be able to auto register")
 		if len(distroDetails.Name) == 0 {
 			// If there is no hint, just use ISO/dir name
 			distroDetails.Name = getNameFromSource(source)
