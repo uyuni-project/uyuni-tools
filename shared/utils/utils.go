@@ -14,7 +14,6 @@ import (
 	"io"
 	"net"
 	"net/http"
-	"net/url"
 	"os"
 	"os/exec"
 	"path"
@@ -388,29 +387,6 @@ func GetFqdn(args []string) (string, error) {
 	}
 
 	return fqdn, nil
-}
-
-// ComputeRegistryFQDN return FQDN.
-func ComputeFQDN(URL string) string {
-	reg := URL
-
-	hasScheme := strings.Contains(reg, "://")
-	toParse := reg
-	if !hasScheme {
-		toParse = "dummy://" + reg
-	}
-
-	u, err := url.Parse(toParse)
-	if err != nil {
-		log.Error().Msgf(L("Cannot extract FQDN from %s: this will be used as FQDN"))
-		return reg
-	}
-
-	if hasScheme {
-		return u.Scheme + "://" + u.Host
-	}
-
-	return u.Host
 }
 
 // IsValidFQDN returns an error if the argument is not a valid FQDN.
