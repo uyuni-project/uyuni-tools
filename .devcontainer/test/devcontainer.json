@@ -1,0 +1,38 @@
+// SPDX-FileCopyrightText: 2025 SUSE LLC
+//
+// SPDX-License-Identifier: Apache-2.0
+
+{
+  "name": "uyuni-tools-devcontainer-e2e-tests",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": [
+    "--rm",
+    "--privileged",
+    "--cgroupns=host",
+    "-v", "/sys/fs/cgroup:/sys/fs/cgroup:rw",
+    "--cap-add=NET_RAW",
+    "--tmpfs=/run",
+    "--hostname=test.lab.internal",
+    "--name=uyuni-tools-devcontainer-e2e-tests"
+  ],
+  "containerEnv": {
+    "container": "docker",
+    "HOSTNAME": "test"
+  },
+  "remoteUser": "root",
+  "overrideCommand": false,
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.Go"
+      ],
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      }
+    }
+  },
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "echo \"127.0.0.1 $(hostname)\" | sudo tee -a /etc/hosts && echo \"127.0.0.1 $(hostname -s).lab.internal $(hostname -s)\" | sudo tee -a /etc/hosts",
+}
