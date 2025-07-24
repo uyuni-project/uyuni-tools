@@ -42,8 +42,9 @@ type Connection struct {
 // container is the name of a container to look for when detecting the command.
 // kubernetesFilter is a filter parameter to use to match a pod.
 func NewConnection(backend string, container string, kubernetesFilter string) *Connection {
+	systemd := podman.NewSystemd()
 	cnx := Connection{
-		backend: backend, container: container, kubernetesFilter: kubernetesFilter, systemd: new(podman.SystemdImpl),
+		backend: backend, container: container, kubernetesFilter: kubernetesFilter, systemd: systemd,
 	}
 
 	return &cnx

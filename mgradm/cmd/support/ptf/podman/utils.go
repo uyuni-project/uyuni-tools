@@ -18,7 +18,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var systemd podman_shared.Systemd = podman_shared.SystemdImpl{}
+var systemd podman_shared.Systemd = podman_shared.NewSystemd()
 
 func ptfForPodman(
 	_ *types.GlobalFlags,
