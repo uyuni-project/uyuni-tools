@@ -26,6 +26,7 @@ func uninstallForPodman(
 		podman.GetServiceImage(podman.ServerService),
 		podman.GetServiceImage(podman.ServerAttestationService + "@"),
 		podman.GetServiceImage(podman.HubXmlrpcService + "@"),
+		podman.GetServiceImage(podman.EventProcessorService + "@"),
 		podman.GetServiceImage(podman.SalineService + "@"),
 		podman.GetServiceImage(podman.DBService),
 	}
@@ -34,9 +35,9 @@ func uninstallForPodman(
 	systemd.UninstallService("uyuni-server", !flags.Force)
 	// Force stop the pod
 	podman.DeleteContainer(podman.ServerContainerName, !flags.Force)
-
 	systemd.UninstallInstantiatedService(podman.ServerAttestationService, !flags.Force)
 	systemd.UninstallInstantiatedService(podman.HubXmlrpcService, !flags.Force)
+	systemd.UninstallInstantiatedService(podman.EventProcessorService, !flags.Force)
 	systemd.UninstallInstantiatedService(podman.SalineService, !flags.Force)
 	systemd.UninstallService(podman.DBService, !flags.Force)
 

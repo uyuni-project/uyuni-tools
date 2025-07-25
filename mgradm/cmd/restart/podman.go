@@ -24,5 +24,6 @@ func podmanRestart(
 		systemd.RestartService(podman.ServerService),
 		systemd.RestartInstantiated(podman.ServerAttestationService),
 		systemd.RestartInstantiated(podman.HubXmlrpcService),
+		systemd.RestartInstantiated(podman.EventProcessorService),
 	)
 }

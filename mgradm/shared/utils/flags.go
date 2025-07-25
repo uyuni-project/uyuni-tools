@@ -29,6 +29,7 @@ type ServerFlags struct {
 	// DBUpgradeImage is the image to use to perform the database upgrade.
 	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	Saline         SalineFlags
+	EventProcessor EventProcessorFlags `mapstructure:"eventprocessor"`
 	Pgsql          types.PgsqlFlags
 }
 
