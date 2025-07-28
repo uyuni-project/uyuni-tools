@@ -19,6 +19,9 @@ type DistributionDetails struct {
 	Arch    Arch
 }
 
+// ProductMap contains mapping of distro, version arch to the Distribution.
+type ProductMap map[string]map[string]map[Arch]Distribution
+
 // Arch type to store architecture.
 type Arch string
 
