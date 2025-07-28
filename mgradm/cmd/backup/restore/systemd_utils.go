@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
@@ -68,6 +69,10 @@ func restoreSystemdConfiguration(backupSource string, flags *shared.Flagpole) er
 }
 
 func restoreSystemdFile(header *tar.Header, tr *tar.Reader) error {
+	// Systemd backup may not package directories anymore, so be sure they are present
+	if err := os.MkdirAll(filepath.Dir(header.Name), 0750); err != nil {
+		log.Warn().Msgf(L("Unable to create directories for %s"), header.Name)
+	}
 	fh, err := os.Create(header.Name)
 	if err != nil {
 		log.Warn().Err(err).Msgf(L("Unable to create %s"), header.Name)

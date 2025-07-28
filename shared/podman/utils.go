@@ -240,7 +240,9 @@ func ImportVolume(name string, volumePath string, skipVerify bool, dryRun bool) 
 		log.Debug().Msg("cannot get base volume path")
 		return err
 	}
-	importCommand := []string{"tar", "xf", volumePath, "-C", path.Join(basePath, name, "_data")}
+	targetPath := path.Join(basePath, name, "_data")
+	importCommand := []string{"tar", "xf", volumePath, "-C", targetPath}
+	restoreconCommand := []string{"restorecon", "-rF", targetPath}
 
 	if dryRun {
 		log.Info().Msgf(L("Would run %s"), strings.Join(importCommand, " "))
@@ -257,6 +259,11 @@ func ImportVolume(name string, volumePath string, skipVerify bool, dryRun bool) 
 	log.Info().Msgf(L("Run %s"), strings.Join(importCommand, " "))
 	if err := runCmd(importCommand[0], importCommand[1:]...); err != nil {
 		return utils.Errorf(err, L("Failed to import volume %s"), name)
+	}
+	if utils.IsInstalled("restorecon") {
+		if err := utils.RunCmd(restoreconCommand[0], restoreconCommand[1:]...); err != nil {
+			log.Warn().Err(err).Msgf(L("Unable to restore selinux context for %s, manual action is required"), targetPath)
+		}
 	}
 	return nil
 }
