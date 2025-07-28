@@ -24,17 +24,17 @@ RequiresMountsFor=%t/containers
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
-ExecStartPre=/bin/rm -f %t/uyuni-saline.pid %t/%n.ctr-id
-ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-saline
+ExecStartPre=/bin/rm -f %t/uyuni-saline-%i.pid %t/%n.ctr-id
+ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-saline-%i
 ExecStart=/bin/sh -c '/usr/bin/podman run \
-	--conmon-pidfile %t/uyuni-saline.pid \
-	--cidfile=%t/%n.ctr-id \
+	--conmon-pidfile %t/uyuni-saline-%i.pid \
+	--cidfile=%t/%n-%i.ctr-id \
 	--cgroups=no-conmon \
 	--sdnotify=conmon \
 	--security-opt label=type:container_init_t \
 	-d \
-	--name {{ .NamePrefix }}-saline \
-	--hostname {{ .NamePrefix }}-saline.mgr.internal \
+	--name {{ .NamePrefix }}-saline-%i \
+	--hostname {{ .NamePrefix }}-saline-%i.mgr.internal \
 	--network-alias saline \
 	--network {{ .Network }} \
 	{{- range .Volumes }}
@@ -43,9 +43,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	-e TZ=${TZ} \
 	-e NOSSL=YES \
 	${UYUNI_SALINE_IMAGE}'
-ExecStop=/usr/bin/podman stop --ignore -t 10 --cidfile=%t/%n.ctr-id
-ExecStopPost=/usr/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n.ctr-id
-PIDFile=%t/uyuni-saline.pid
+ExecStop=/usr/bin/podman stop --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
+ExecStopPost=/usr/bin/podman rm -f --ignore -t 10 --cidfile=%t/%n-%i.ctr-id
+PIDFile=%t/uyuni-saline-%i.pid
 TimeoutStopSec=20
 TimeoutStartSec=10
 Type=forking
