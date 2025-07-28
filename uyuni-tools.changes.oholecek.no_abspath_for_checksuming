@@ -1,0 +1,2 @@
+- Do not require backups to be at the same location for restoring
+  (bsc#1246906)

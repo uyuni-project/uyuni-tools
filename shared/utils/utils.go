@@ -436,11 +436,12 @@ func SaveBinaryData(filename string, data []int8) error {
 func CreateChecksum(file string) error {
 	outputFile := file + ".sha256sum"
 
-	output, err := RunCmdOutput(zerolog.DebugLevel, "sha256sum", file)
+	output, err := NewRunner("sha256sum", file).Exec()
 	if err != nil {
 		return Errorf(err, L("Failed to calculate checksum of the file %s"), file)
 	}
-
+	// We want only checksum, drop the filepath
+	output = bytes.Split(output, []byte(" "))[0]
 	if err := os.WriteFile(outputFile, output, 0622); err != nil {
 		return Errorf(err, L("Failed to write checksum of the file %[1]s to the %[2]s"), file, outputFile)
 	}
@@ -450,8 +451,19 @@ func CreateChecksum(file string) error {
 // ValidateChecksum checks integrity of the file by checking against stored checksum
 // Uses system `sha256sum` binary to avoid pulling crypt dependencies.
 func ValidateChecksum(file string) error {
-	err := RunCmd("sha256sum", "--check", "--status", file+".sha256sum")
+	checksum, err := NewRunner("sha256sum", file).Exec()
 	if err != nil {
+		return Errorf(err, L("Failed to calculate checksum of the file %s"), file)
+	}
+	// We want only checksum, drop the filepath
+	checksum = bytes.Split(checksum, []byte(" "))[0]
+
+	output, err := os.ReadFile(file + ".sha256sum")
+	if err != nil {
+		return Errorf(err, L("Failed to read checksum of the file %[1]s"), file)
+	}
+	// Split by space to work with older backups
+	if !bytes.Equal(checksum, bytes.Split(output, []byte(" "))[0]) {
 		return fmt.Errorf(L("Checksum of %s does not match"), file)
 	}
 	return nil
