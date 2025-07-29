@@ -129,6 +129,18 @@ while IFS="," read -r target path ; do
   fi
 done < distros
 
+echo "Migrating auto-installation snippets..."
+$SSH {{ .SourceFqdn }} "find /var/lib/cobbler/snippets/spacewalk/* -type d" > snippets_dirs
+while read -r snippets_dir ; do
+  if $SSH -n {{ .SourceFqdn }} test -e $snippets_dir; then
+    echo "Copying autoinstallation snippets from $snippets_dir..."
+    mkdir -p "$snippets_dir"
+    rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz "{{ .SourceFqdn }}:$snippets_dir" "$snippets_dir";
+  else
+    echo "Skipping autoinstallation snippets from $snippets_dir.."
+  fi
+done < snippets_dirs
+
 if $SSH {{ .SourceFqdn }} test -e /etc/tomcat/conf.d; then
   echo "Copying tomcat configuration.."
   mkdir -p /etc/tomcat/conf.d
