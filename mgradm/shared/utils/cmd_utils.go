@@ -234,7 +234,6 @@ Leave it unset if you want to keep the previous number of replicas.`))
 
 // AddEventProcessorFlag adds the event processor related parameters to cmd.
 func AddEventProcessorFlag(cmd *cobra.Command) {
-	//TODO: check if naming works
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "event-processor", Title: L("Event Processor Flags")})
 	AddContainerImageFlags(cmd, "eventprocessor", L("Event processor"), "event-processor", "server-salt-event-processor")
 }

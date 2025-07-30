@@ -26,7 +26,7 @@ func Upgrade(
 	db adm_utils.DBFlags,
 ) error {
 	if eventProcessorFlags.Image.Name == "" {
-		return nil
+		return fmt.Errorf(L("image is required"))
 	}
 
 	if err := writeEventProcessorFiles(
@@ -35,10 +35,7 @@ func Upgrade(
 		return err
 	}
 
-	if !eventProcessorFlags.IsChanged {
-		return systemd.RestartInstantiated(podman.EventProcessorService)
-	}
-	return systemd.ScaleService(1, podman.EventProcessorService) // TODO: we can't scale here with 1 replica, what to upgrade?
+	return systemd.ScaleService(1, podman.EventProcessorService)
 }
 
 func writeEventProcessorFiles(
@@ -93,9 +90,6 @@ func writeEventProcessorFiles(
 		DBUserSecret: podman.DBUserSecret,
 		DBPassSecret: podman.DBPassSecret,
 		DBBackend:    "postgres",
-		//DBName:       "susemanager", // TODO: set in the systemd config file
-		//DBPort:       utils.DBPorts,
-		//DBHost:       "db",
 	}
 
 	log.Info().Msg(L("Setting up event processor service"))
@@ -106,12 +100,11 @@ func writeEventProcessorFiles(
 		return utils.Errorf(err, L("Failed to generate systemd service unit file"))
 	}
 
-	// TODO: check if we should code DB related environment in systemd conf
 	environment := fmt.Sprintf(`Environment=UYUNI_EVENT_PROCESSOR_IMAGE=%s
 Environment=UYUNI_DB_NAME=%s
 Environment=UYUNI_DB_PORT=%d
 Environment=UYUNI_DB_HOST=%s`,
-		preparedImage, db.Name, db.Port, db.Host) // TODO: UYUNI_EVENT_PROCESSOR_IMAGE is used in template
+		preparedImage, db.Name, db.Port, db.Host)
 
 	if err := podman.GenerateSystemdConfFile(
 		podman.EventProcessorService+"@", "generated.conf", environment, true,

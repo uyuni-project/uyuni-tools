@@ -8,7 +8,7 @@ import (
 // SaltEventProcessorServiceTemplateData represents the data for salt event processor service.
 const saltEventProcessorServiceTemplate = `
 [Unit]
-Description=Uyuni Salt Event Processor Container
+Description=Uyuni Event Processor Container
 Wants=network.target
 After=network-online.target
 
@@ -26,6 +26,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
     -e db_name=${UYUNI_DB_NAME} \
 	-e db_port=${UYUNI_DB_PORT} \
     -e db_host=${UYUNI_DB_HOST} \
+	-e db_backend=postgresql \
     --secret={{ .DBUserSecret }},type=env,target=db_user \
     --secret={{ .DBPassSecret }},type=env,target=db_password \
     --replace \
@@ -51,9 +52,6 @@ type EventProcessorServiceTemplateData struct {
 	DBUserSecret string // "uyuni-db-user"
 	DBPassSecret string // "uyuni-db-pass"
 	DBBackend    string // "postgresql"
-	//DBName       string          // "susemanager"    //TODO: remove
-	//DBPort       []types.PortMap //  5432
-	//DBHost string // "db"
 }
 
 // Render will create the systemd configuration file.

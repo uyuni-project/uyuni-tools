@@ -37,7 +37,6 @@ NOTE: installing on a remote podman is not supported yet!
 				flags.ServerFlags.Coco.IsChanged = v.IsSet("coco.replicas")
 				flags.ServerFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
 				flags.ServerFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
-				flags.ServerFlags.EventProcessor.IsChanged = v.IsSet("eventprocessor.image") || v.IsSet("eventprocessor.tag") // AddContainerImageFlags // TODO: check if needs to detect change of these two
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
