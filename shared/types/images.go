@@ -6,10 +6,11 @@ package types
 
 // ImageFlags represents the flags used by an image.
 type ImageFlags struct {
-	Registry   string `mapstructure:"registry"`
-	Name       string `mapstructure:"image"`
-	Tag        string `mapstructure:"tag"`
-	PullPolicy string `mapstructure:"pullPolicy"`
+	Registry        string `mapstructure:"registry"`
+	Name            string `mapstructure:"image"`
+	Tag             string `mapstructure:"tag"`
+	PullPolicy      string `mapstructure:"pullPolicy"`
+	SkipComputation bool   // Internal field, not a command flag, indicates if the image should be computed or not
 }
 
 // PgsqlFlags contains settings for Pgsql container.

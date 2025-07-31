@@ -41,61 +41,41 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	if flags.CustomerID == "" {
 		return errors.New(L("user flag cannot be empty"))
 	}
+
 	suffix := "ptf"
 	projectID := flags.PTFId
 	if flags.TestID != "" {
 		suffix = "test"
 		projectID = flags.TestID
 	}
-	httpdImage, err := podman_shared.GetRunningImage("httpd")
-	if err != nil {
-		return err
-	}
-	flags.UpgradeFlags.Httpd.Name, err = utils.ComputePTF(flags.UpgradeFlags.SCC.Registry, flags.CustomerID, projectID, httpdImage, suffix)
-	if err != nil {
-		return err
-	}
-	log.Info().Msgf(L("The httpd ptf image computed is: %s"), flags.UpgradeFlags.Httpd.Name)
 
-	sshImage, err := podman_shared.GetRunningImage("ssh")
-	if err != nil {
-		return err
+	proxyImages := []struct {
+		serviceName string
+		imageFlag   *types.ImageFlags
+	}{
+		{"httpd", &flags.UpgradeFlags.Httpd},
+		{"ssh", &flags.UpgradeFlags.SSH},
+		{"tftpd", &flags.UpgradeFlags.Tftpd},
+		{"salt-broker", &flags.UpgradeFlags.SaltBroker},
+		{"squid", &flags.UpgradeFlags.Squid},
 	}
-	flags.UpgradeFlags.SSH.Name, err = utils.ComputePTF(flags.UpgradeFlags.SCC.Registry, flags.CustomerID, projectID, sshImage, suffix)
-	if err != nil {
-		return err
-	}
-	log.Info().Msgf(L("The ssh ptf image computed is: %s"), flags.UpgradeFlags.SSH.Name)
 
-	tftpdImage, err := podman_shared.GetRunningImage("tftpd")
-	if err != nil {
-		return err
-	}
-	flags.UpgradeFlags.Tftpd.Name, err = utils.ComputePTF(flags.UpgradeFlags.SCC.Registry, flags.CustomerID, projectID, tftpdImage, suffix)
-	if err != nil {
-		return err
-	}
-	log.Info().Msgf(L("The tftpd ptf image computed is: %s"), flags.UpgradeFlags.Tftpd.Name)
+	// Process each pxy image
+	for _, config := range proxyImages {
+		runningImage, err := podman_shared.GetRunningImage(config.serviceName)
+		if err != nil {
+			return err
+		}
 
-	saltBrokerImage, err := podman_shared.GetRunningImage("salt-broker")
-	if err != nil {
-		return err
-	}
-	flags.UpgradeFlags.SaltBroker.Name, err = utils.ComputePTF(flags.UpgradeFlags.SCC.Registry, flags.CustomerID, projectID, saltBrokerImage, suffix)
-	if err != nil {
-		return err
-	}
-	log.Info().Msgf(L("The salt-broker ptf image computed is: %s"), flags.UpgradeFlags.SaltBroker.Name)
+		config.imageFlag.Name, err = utils.ComputePTF(flags.UpgradeFlags.SCC.Registry, flags.CustomerID, projectID,
+			runningImage, suffix)
+		if err != nil {
+			return err
+		}
+		config.imageFlag.SkipComputation = true
 
-	squidImage, err := podman_shared.GetRunningImage("squid")
-	if err != nil {
-		return err
+		log.Info().Msgf(L("The %[1]s ptf image computed is: %[2]s"), config.serviceName, config.imageFlag.Name)
 	}
-	flags.UpgradeFlags.Squid.Name, err = utils.ComputePTF(flags.UpgradeFlags.SCC.Registry, flags.CustomerID, projectID, squidImage, suffix)
-	if err != nil {
-		return err
-	}
-	log.Info().Msgf(L("The squid ptf image computed is: %s"), flags.UpgradeFlags.Squid.Name)
 
 	return nil
 }

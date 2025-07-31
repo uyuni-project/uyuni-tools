@@ -271,26 +271,21 @@ func Upgrade(
 	}
 	defer cleaner()
 
-	httpdImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "httpd")
-	if err != nil {
-		log.Warn().Msgf(L("cannot find httpd image: it will no be upgraded"))
+	// Helper function to get or resolve image (ptf)
+	getImageNameOrResolve := func(name string) string {
+		image, err := GetContainerImage(authFile, &flags.ProxyImageFlags, name)
+		if err != nil {
+			log.Warn().Msgf(L("cannot find %s image: it will not be upgraded"), name)
+			return ""
+		}
+		return image
 	}
-	saltBrokerImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "salt-broker")
-	if err != nil {
-		log.Warn().Msgf(L("cannot find salt-broker image: it will no be upgraded"))
-	}
-	squidImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "squid")
-	if err != nil {
-		log.Warn().Msgf(L("cannot find squid image: it will no be upgraded"))
-	}
-	sshImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "ssh")
-	if err != nil {
-		log.Warn().Msgf(L("cannot find ssh image: it will no be upgraded"))
-	}
-	tftpdImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "tftpd")
-	if err != nil {
-		log.Warn().Msgf(L("cannot find tftpd image: it will no be upgraded"))
-	}
+
+	httpdImage := getImageNameOrResolve("httpd")
+	saltBrokerImage := getImageNameOrResolve("salt-broker")
+	squidImage := getImageNameOrResolve("squid")
+	sshImage := getImageNameOrResolve("ssh")
+	tftpdImage := getImageNameOrResolve("tftpd")
 
 	// Setup the systemd service configuration options
 	err = GenerateSystemdService(systemd, httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags)

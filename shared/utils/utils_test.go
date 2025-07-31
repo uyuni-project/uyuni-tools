@@ -167,47 +167,125 @@ func sendInput(
 }
 
 func TestComputePTF(t *testing.T) {
-	data := [][]string{
+	// Constants
+	const (
+		defaultPtfID      = "27977"
+		defaultUser       = "150158"
+		defaultSuffix     = "ptf"
+		baseRegistryHost  = "registry.suse.com"
+		defaultRegistry50 = "registry.suse.com/suse/manager/5.0/x86_64"
+		defaultRegistry51 = "registry.suse.com/suse/multi-linux-manager/5.1/x86_64"
+	)
+
+	tests := []struct {
+		name                 string
+		registry             string
+		user                 string
+		ptfID                string
+		fullImage            string
+		suffix               string
+		expected             string
+		expectedErrorMessage string
+	}{
+		// Success cases - 5.0 Manager
 		{
-			"registry.suse.com/a/a196136/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977",
-			"registry.suse.com",
-			"a196136",
-			"27977",
-			"registry.suse.com/suse/manager/5.0/x86_64/proxy-helm:latest",
-			"ptf",
+			name:      "success 5.0 container with 5.0 registry",
+			registry:  defaultRegistry50,
+			fullImage: defaultRegistry50 + "/proxy-tftpd:5.0.0",
+			expected:  "registry.suse.com/a/150158/27977/suse/manager/5.0/x86_64/proxy-tftpd:latest-ptf-27977",
 		},
 		{
-			"mysccregistry.com/a/a196136/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977",
-			"mysccregistry.com",
-			"a196136",
-			"27977",
-			"registry.suse.com/suse/manager/5.0/x86_64/proxy-helm:latest",
-			"ptf",
+			name:      "success 5.0 rpm container with 5.0 registry",
+			registry:  defaultRegistry50,
+			fullImage: "localhost/suse/manager/5.0/x86_64/proxy-ssh:5.0.0",
+			expected:  "registry.suse.com/a/150158/27977/suse/manager/5.0/x86_64/proxy-ssh:latest-ptf-27977",
+		},
+		{
+			name:      "success 5.0 container and base registry host",
+			registry:  baseRegistryHost,
+			fullImage: defaultRegistry50 + "/proxy-tftpd:latest",
+			expected:  "registry.suse.com/a/150158/27977/suse/manager/5.0/x86_64/proxy-tftpd:latest-ptf-27977",
+		},
+		{
+			name:      "success 5.0 container and custom registry",
+			registry:  "mysccregistry.com",
+			fullImage: defaultRegistry50 + "/proxy-helm:latest",
+			expected:  "mysccregistry.com/a/150158/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977",
+		},
+		{
+			name:      "success 5.0 rpm container and custom registry",
+			registry:  "mysccregistry.com",
+			fullImage: "localhost/suse/manager/5.0/x86_64/proxy-helm:latest",
+			expected:  "mysccregistry.com/a/150158/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977",
+		},
+
+		// Success cases - 5.1 Multi-Linux Manager
+		{
+			name:      "success 5.1 container with 5.1 registry",
+			registry:  defaultRegistry51,
+			fullImage: defaultRegistry51 + "/proxy-tftpd:5.1.0",
+			expected:  "registry.suse.com/a/150158/27977/suse/multi-linux-manager/5.1/x86_64/proxy-tftpd:latest-ptf-27977",
+		},
+
+		// Failure cases
+		{
+			name:                 "fail invalid image",
+			registry:             baseRegistryHost,
+			fullImage:            "some.domain.com/not/matching/suse/proxy-helm:latest",
+			expectedErrorMessage: "invalid image name: some.domain.com/not/matching/suse/proxy-helm:latest",
+		},
+		{
+			name:      "fail 5.0 container and invalid custom registry",
+			registry:  "mysccregistry.com/invalid/path",
+			fullImage: defaultRegistry50 + "/proxy-helm:latest",
+			expectedErrorMessage: "image path 'suse/manager/5.0/x86_64/proxy-helm:' does not start with registry " +
+				"path 'invalid/path'",
+		},
+		{
+			name:      "fail 5.0 container with 5.1 registry",
+			registry:  defaultRegistry51,
+			fullImage: defaultRegistry50 + "/proxy-salt-broker:5.0.0",
+			expectedErrorMessage: "image path 'suse/manager/5.0/x86_64/proxy-salt-broker:' does not start with " +
+				"registry path 'suse/multi-linux-manager/5.1/x86_64'",
+		},
+		{
+			name:      "fail 5.1 container with 5.0 registry",
+			registry:  defaultRegistry50,
+			fullImage: defaultRegistry51 + "/proxy-squid:5.0.0",
+			expectedErrorMessage: "image path 'suse/multi-linux-manager/5.1/x86_64/proxy-squid:' does not start with" +
+				" registry path 'suse/manager/5.0/x86_64'",
 		},
 	}
 
-	for i, testCase := range data {
-		result := testCase[0]
-		registry := testCase[1]
-		user := testCase[2]
-		ptfID := testCase[3]
-		fullImage := testCase[4]
-		suffix := testCase[5]
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ptfID := defaultPtfID
+			if tt.ptfID != "" {
+				ptfID = tt.ptfID
+			}
+			user := defaultUser
+			if tt.user != "" {
+				user = tt.user
+			}
+			suffix := defaultSuffix
+			if tt.suffix != "" {
+				suffix = tt.suffix
+			}
 
-		actual, err := ComputePTF(registry, user, ptfID, fullImage, suffix)
-
-		if err != nil {
-			t.Errorf(
-				"Testcase %d: Unexpected error while computing image with %s, %s, %s, %s, %s: %s",
-				i, registry, user, ptfID, fullImage, suffix, err,
-			)
-		}
-		if actual != result {
-			t.Errorf(
-				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s, %s, %s",
-				i, result, actual, registry, user, ptfID, fullImage, suffix,
-			)
-		}
+			actual, err := ComputePTF(tt.registry, user, ptfID, tt.fullImage, suffix)
+			if err != nil {
+				if tt.expectedErrorMessage == "" {
+					t.Errorf("Unexpected error while executing ComputePTF('%s', '%s', '%s', '%s', '%s'): %s",
+						tt.registry, tt.user, tt.ptfID, tt.fullImage, tt.suffix, err)
+				} else if !strings.Contains(err.Error(), tt.expectedErrorMessage) {
+					t.Errorf("Expected error message to contain '%s', but got: %s",
+						tt.expectedErrorMessage, err.Error())
+				}
+			} else if actual != tt.expected {
+				t.Errorf("ComputePTF('%s', '%s', '%s', '%s', '%s') = %s\nexpected: %s",
+					tt.registry, tt.user, tt.ptfID, tt.fullImage, tt.suffix, actual, tt.expected)
+			}
+		})
 	}
 }
 
@@ -402,4 +480,177 @@ func TestCompareVersion(t *testing.T) {
 	testutils.AssertTrue(t, "2024.07 is not inferior to 2024.13", CompareVersion("2024.07", "2024.13") < 0)
 	testutils.AssertTrue(t, "2024.13 is not superior to 2024.07", CompareVersion("2024.13", "2024.07") > 0)
 	testutils.AssertTrue(t, "2024.13 is not equal to 2024.13", CompareVersion("2024.13", "2024.13") == 0)
+}
+
+// TestRemoveRegistryFromImage tests the RemoveRegistryFromImage function.
+func TestRemoveRegistryFromImage(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{
+			name:     "regular registry",
+			input:    "registry.example.com/some/name/space/image",
+			expected: "some/name/space/image",
+		},
+		{
+			name:     "url with protocol",
+			input:    "https://registry.example.com/some/name/space/image",
+			expected: "some/name/space/image",
+		},
+		{
+			name:     "empty string",
+			input:    "",
+			expected: "",
+		},
+		{
+			name:     "only registry fqdn",
+			input:    "registry.example.com",
+			expected: "",
+		},
+		{
+			name:     "registry with port",
+			input:    "registry:5000/no/problemo/namespace/image",
+			expected: "no/problemo/namespace/image",
+		},
+		{
+			name:     "path only",
+			input:    "path/only/image",
+			expected: "path/only/image",
+		},
+		{
+			name:     "single component",
+			input:    "image",
+			expected: "image",
+		},
+		{
+			name:     "protocol with path",
+			input:    "http://registry.example.com/path/to/image",
+			expected: "path/to/image",
+		},
+		{
+			name:     "complex registry with multiple dots",
+			input:    "my.complex.registry.com/org/project/image",
+			expected: "org/project/image",
+		},
+		{
+			name:     "localhost registry",
+			input:    "localhost:5000/my/image",
+			expected: "my/image",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			actual := RemoveRegistryFromImage(tt.input)
+
+			if actual != tt.expected {
+				t.Errorf("RemoveRegistryFromImage(%q) = %q, expected %q", tt.input, actual, tt.expected)
+			}
+		})
+	}
+}
+
+func TestSplitRegistryHostAndPath(t *testing.T) {
+	// Constants
+	const (
+		exampleRegistry      = "registry.example.com"
+		localhostWithPort    = "localhost:5000"
+		suseRegistryWithPort = "registry.suse.com:443"
+		complexRegistry      = "my.complex.registry.com"
+	)
+
+	tests := []struct {
+		name         string
+		registry     string
+		expectedHost string
+		expectedPath string
+	}{
+		{
+			name:         "registry with path",
+			registry:     exampleRegistry + "/path/to/namespace",
+			expectedHost: exampleRegistry,
+			expectedPath: "path/to/namespace",
+		},
+		{
+			name:         "registry with single path component",
+			registry:     exampleRegistry + "/namespace",
+			expectedHost: exampleRegistry,
+			expectedPath: "namespace",
+		},
+		{
+			name:         "registry without path",
+			registry:     exampleRegistry,
+			expectedHost: exampleRegistry,
+			expectedPath: "",
+		},
+		{
+			name:         "localhost registry with port and path",
+			registry:     localhostWithPort + "/my/namespace",
+			expectedHost: localhostWithPort,
+			expectedPath: "my/namespace",
+		},
+		{
+			name:         "localhost registry with port only",
+			registry:     localhostWithPort,
+			expectedHost: localhostWithPort,
+			expectedPath: "",
+		},
+		{
+			name:         "registry with port and path",
+			registry:     suseRegistryWithPort + "/suse/manager/5.0/x86_64",
+			expectedHost: suseRegistryWithPort,
+			expectedPath: "suse/manager/5.0/x86_64",
+		},
+		{
+			name:         "registry with port only",
+			registry:     suseRegistryWithPort,
+			expectedHost: suseRegistryWithPort,
+			expectedPath: "",
+		},
+		{
+			name:         "complex path",
+			registry:     complexRegistry + "/org/project/sub/namespace",
+			expectedHost: complexRegistry,
+			expectedPath: "org/project/sub/namespace",
+		},
+		{
+			name:         "empty registry",
+			registry:     "",
+			expectedHost: "",
+			expectedPath: "",
+		},
+		{
+			name:         "registry starting with slash",
+			registry:     "/path/only",
+			expectedHost: "",
+			expectedPath: "path/only",
+		},
+		{
+			name:         "registry with multiple slashes",
+			registry:     exampleRegistry + "/path/with/many/slashes",
+			expectedHost: exampleRegistry,
+			expectedPath: "path/with/many/slashes",
+		},
+		{
+			name:         "single component without slash",
+			registry:     "localhost",
+			expectedHost: "localhost",
+			expectedPath: "",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			actualHost, actualPath := SplitRegistryHostAndPath(tt.registry)
+
+			if actualHost != tt.expectedHost {
+				t.Errorf("SplitRegistryHostAndPath(%q) host = %q, expected %q", tt.registry, actualHost, tt.expectedHost)
+			}
+			if actualPath != tt.expectedPath {
+				t.Errorf("SplitRegistryHostAndPath(%q) path = %q, expected %q", tt.registry, actualPath, tt.expectedPath)
+			}
+		})
+	}
 }
