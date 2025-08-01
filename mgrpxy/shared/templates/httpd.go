@@ -39,6 +39,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- range .Volumes }}
 	-v {{ .Name }}:{{ .MountPath }} \
 	{{- end }}
+	{{- if .SystemIDSecret }}
+	--secret {{ .SystemIDSecret }},type=mount,mode=0444,target="/etc/sysconfig/rhn/systemid" \
+	{{- end }}
 	${HTTPD_EXTRA_CONF} --name uyuni-proxy-httpd \
 	${UYUNI_IMAGE}'
 
@@ -54,8 +57,9 @@ WantedBy=multi-user.target default.target
 
 // HttpdTemplateData represents HTTPD information to create systemd file.
 type HttpdTemplateData struct {
-	Volumes       []types.VolumeMount
-	HTTPProxyFile string
+	Volumes        []types.VolumeMount
+	HTTPProxyFile  string
+	SystemIDSecret string
 }
 
 // Render will create the systemd configuration file.

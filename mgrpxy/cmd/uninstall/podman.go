@@ -9,6 +9,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	pxy_podman "github.com/uyuni-project/uyuni-tools/mgrpxy/shared/podman"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -88,6 +89,10 @@ func uninstallForPodman(
 	}
 
 	podman.DeleteNetwork(dryRun)
+
+	if podman.HasSecret(pxy_podman.SystemIDSecret) {
+		podman.DeleteSecret(pxy_podman.SystemIDSecret, false)
+	}
 
 	err := systemd.ReloadDaemon(dryRun)
 
