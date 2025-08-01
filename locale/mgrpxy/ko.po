@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-23 08:56+0200\n"
+"POT-Creation-Date: 2025-08-01 16:07+0200\n"
 "PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
@@ -71,10 +71,6 @@ msgstr "이 소프트웨어를 사용하면 최종 사용자 라이선스 계약
 #: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
 msgstr "구성 파일 경로"
-
-#: mgrpxy/cmd/cmd.go:69
-msgid "application log level"
-msgstr "애플리케이션 로그 수준"
 
 #: mgrpxy/cmd/install/install.go:20 mgrpxy/cmd/install/install.go:21
 msgid "Install a new proxy from scratch"
@@ -610,6 +606,9 @@ msgstr "%s 컨테이너용 이미지"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
+
+#~ msgid "application log level"
+#~ msgstr "애플리케이션 로그 수준"
 
 #, javascript-format
 #~ msgid "Welcome to %s"
