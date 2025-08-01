@@ -24,6 +24,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/restart"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/scale"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/server"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/start"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/status"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/stop"
@@ -71,9 +72,7 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 	}
 
 	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", L("configuration file path"))
-	rootCmd.PersistentFlags().StringVar(&globalFlags.LogLevel, "logLevel", "",
-		L("application log level")+"(trace|debug|info|warn|error|fatal|panic)",
-	)
+	utils.AddLogLevelFlags(rootCmd, &globalFlags.LogLevel)
 
 	migrateCmd := migrate.NewCommand(globalFlags)
 	rootCmd.AddCommand(migrateCmd)
@@ -99,6 +98,7 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 	rootCmd.AddCommand(upgrade.NewCommand(globalFlags))
 	rootCmd.AddCommand(gpg.NewCommand(globalFlags))
 	rootCmd.AddCommand(backup.NewCommand(globalFlags))
+	rootCmd.AddCommand(server.NewCommand(globalFlags))
 
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
 

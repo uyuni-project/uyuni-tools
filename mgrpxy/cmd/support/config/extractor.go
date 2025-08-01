@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -13,7 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var systemd podman.Systemd = podman.SystemdImpl{}
+var systemd podman.Systemd = podman.NewSystemd()
 
 func extract(_ *types.GlobalFlags, flags *configFlags, _ *cobra.Command, _ []string) error {
 	// Copy the generated file locally

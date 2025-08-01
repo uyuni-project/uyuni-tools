@@ -59,7 +59,7 @@ func TestSanityCheck(t *testing.T) {
 			UyuniRelease:       test.newUyuniRelease,
 			SuseManagerRelease: test.newSumaRelease,
 		}
-		err := SanityCheck(&runningValues, &newValues, "path/to/image")
+		err := SanityCheck(&runningValues, &newValues)
 		if test.errorPart != "" {
 			if err != nil {
 				testutils.AssertTrue(

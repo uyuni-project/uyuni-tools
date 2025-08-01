@@ -319,19 +319,47 @@ func DownloadFile(filepath string, URL string) (err error) {
 	return os.WriteFile(filepath, data, 0644)
 }
 
+// maxInts compensates the absence of max on Debian 12's go version.
+func maxInts(a int, b int) int {
+	if a < b {
+		return b
+	}
+	return a
+}
+
 // CompareVersion compare the server image version and the server deployed  version.
 func CompareVersion(imageVersion string, deployedVersion string) int {
-	re := regexp.MustCompile(`\((.*?)\)`)
-	imageVersionCleaned := strings.ReplaceAll(imageVersion, ".", "")
-	imageVersionCleaned = strings.TrimSpace(imageVersionCleaned)
-	imageVersionCleaned = re.ReplaceAllString(imageVersionCleaned, "")
-	imageVersionInt, _ := strconv.Atoi(imageVersionCleaned)
+	image := versionAsSlice(imageVersion)
+	deployed := versionAsSlice(deployedVersion)
 
-	deployedVersionCleaned := strings.ReplaceAll(deployedVersion, ".", "")
-	deployedVersionCleaned = strings.TrimSpace(deployedVersionCleaned)
-	deployedVersionCleaned = re.ReplaceAllString(deployedVersionCleaned, "")
-	deployedVersionInt, _ := strconv.Atoi(deployedVersionCleaned)
-	return imageVersionInt - deployedVersionInt
+	maxLen := maxInts(len(image), len(deployed))
+	return getPaddedVersion(image, maxLen) - getPaddedVersion(deployed, maxLen)
+}
+
+func versionAsSlice(version string) []string {
+	re := regexp.MustCompile(`[^0-9]`)
+	parts := strings.Split(version, ".")
+	result := make([]string, len(parts))
+	for i, part := range parts {
+		result[i] = re.ReplaceAllString(part, "")
+	}
+	return result
+}
+
+func getPaddedVersion(version []string, size int) int {
+	padded := version
+	if len(version) != size {
+		padded = make([]string, size)
+		copy(padded, version)
+		for i, part := range padded {
+			if part == "" {
+				padded[i] = "0"
+			}
+		}
+	}
+
+	result, _ := strconv.Atoi(strings.Join(padded, ""))
+	return result
 }
 
 // Errorf helps providing consistent errors.
@@ -436,11 +464,12 @@ func SaveBinaryData(filename string, data []int8) error {
 func CreateChecksum(file string) error {
 	outputFile := file + ".sha256sum"
 
-	output, err := RunCmdOutput(zerolog.DebugLevel, "sha256sum", file)
+	output, err := NewRunner("sha256sum", file).Exec()
 	if err != nil {
 		return Errorf(err, L("Failed to calculate checksum of the file %s"), file)
 	}
-
+	// We want only checksum, drop the filepath
+	output = bytes.Split(output, []byte(" "))[0]
 	if err := os.WriteFile(outputFile, output, 0622); err != nil {
 		return Errorf(err, L("Failed to write checksum of the file %[1]s to the %[2]s"), file, outputFile)
 	}
@@ -450,8 +479,19 @@ func CreateChecksum(file string) error {
 // ValidateChecksum checks integrity of the file by checking against stored checksum
 // Uses system `sha256sum` binary to avoid pulling crypt dependencies.
 func ValidateChecksum(file string) error {
-	err := RunCmd("sha256sum", "--check", "--status", file+".sha256sum")
+	checksum, err := NewRunner("sha256sum", file).Exec()
 	if err != nil {
+		return Errorf(err, L("Failed to calculate checksum of the file %s"), file)
+	}
+	// We want only checksum, drop the filepath
+	checksum = bytes.Split(checksum, []byte(" "))[0]
+
+	output, err := os.ReadFile(file + ".sha256sum")
+	if err != nil {
+		return Errorf(err, L("Failed to read checksum of the file %[1]s"), file)
+	}
+	// Split by space to work with older backups
+	if !bytes.Equal(checksum, bytes.Split(output, []byte(" "))[0]) {
 		return fmt.Errorf(L("Checksum of %s does not match"), file)
 	}
 	return nil

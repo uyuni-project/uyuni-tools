@@ -17,7 +17,7 @@ import (
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var systemd shared_podman.Systemd = shared_podman.SystemdImpl{}
+var systemd shared_podman.Systemd = shared_podman.NewSystemd()
 
 // Start the proxy services.
 func startPod() error {

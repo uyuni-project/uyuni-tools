@@ -18,6 +18,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -92,8 +93,10 @@ func ReadFromContainer(name string, image string, volumes []types.VolumeMount,
 	return out, nil
 }
 
-// RunContainer execute a container.
-func RunContainer(name string, image string, volumes []types.VolumeMount, extraArgs []string, cmd []string) error {
+// PrepareContainerRunArgs computes the common podman arguments to run a container.
+func PrepareContainerRunArgs(
+	name string, image string, volumes []types.VolumeMount, extraArgs []string, cmd []string,
+) []string {
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
 	podmanArgs = append(podmanArgs, extraArgs...)
 	podmanArgs = append(podmanArgs, "--shm-size=0")
@@ -105,6 +108,12 @@ func RunContainer(name string, image string, volumes []types.VolumeMount, extraA
 	podmanArgs = append(podmanArgs, image)
 	podmanArgs = append(podmanArgs, cmd...)
 
+	return podmanArgs
+}
+
+// RunContainer execute a container.
+func RunContainer(name string, image string, volumes []types.VolumeMount, extraArgs []string, cmd []string) error {
+	podmanArgs := PrepareContainerRunArgs(name, image, volumes, extraArgs, cmd)
 	err := utils.RunCmdStdMapping(zerolog.DebugLevel, "podman", podmanArgs...)
 	if err != nil {
 		return utils.Errorf(err, L("failed to run %s container"), name)
@@ -231,7 +240,9 @@ func ImportVolume(name string, volumePath string, skipVerify bool, dryRun bool) 
 		log.Debug().Msg("cannot get base volume path")
 		return err
 	}
-	importCommand := []string{"tar", "xf", volumePath, "-C", path.Join(basePath, name, "_data")}
+	targetPath := path.Join(basePath, name, "_data")
+	importCommand := []string{"tar", "xf", volumePath, "-C", targetPath}
+	restoreconCommand := []string{"restorecon", "-rF", targetPath}
 
 	if dryRun {
 		log.Info().Msgf(L("Would run %s"), strings.Join(importCommand, " "))
@@ -248,6 +259,11 @@ func ImportVolume(name string, volumePath string, skipVerify bool, dryRun bool) 
 	log.Info().Msgf(L("Run %s"), strings.Join(importCommand, " "))
 	if err := runCmd(importCommand[0], importCommand[1:]...); err != nil {
 		return utils.Errorf(err, L("Failed to import volume %s"), name)
+	}
+	if utils.IsInstalled("restorecon") {
+		if err := utils.RunCmd(restoreconCommand[0], restoreconCommand[1:]...); err != nil {
+			log.Warn().Err(err).Msgf(L("Unable to restore selinux context for %s, manual action is required"), targetPath)
+		}
 	}
 	return nil
 }
@@ -303,77 +319,50 @@ func GetVolumeMountPoint(name string) (path string, err error) {
 	return
 }
 
-// Inspect check values on a given image and deploy.
-func Inspect(
-	serverImage string,
-	pgsqlImage string,
-	pullPolicy string,
-	scc types.SCCCredentials,
-) (*utils.ServerInspectData, error) {
-	scriptDir, cleaner, err := utils.TempDir()
-	if err != nil {
-		return nil, err
-	}
-	defer cleaner()
-
-	hostData, err := InspectHost()
+// Inspect check values on given images.
+// The images are assumed to be already available locally.
+func Inspect(serverImage string, pgsqlImage string) (*utils.ServerInspectData, error) {
+	inspectResult, err := ContainerInspect[utils.ServerInspectData](
+		serverImage, utils.ServerVolumeMounts, utils.NewServerInspector(),
+	)
 	if err != nil {
 		return nil, err
 	}
 
-	authFile, cleaner, err := PodmanLogin(hostData, scc)
+	dbData, err := ContainerInspect[utils.DBInspectData](
+		pgsqlImage, utils.PgsqlRequiredVolumeMounts, utils.NewDBInspector(),
+	)
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return nil, err
 	}
-	defer cleaner()
+	inspectResult.DBInspectData = *dbData
 
+	return inspectResult, err
+}
+
+// ContainerInspect runs an inspector script on a container image.
+func ContainerInspect[T any](
+	image string, volumes []types.VolumeMount, inspector templates.InspectTemplateData,
+) (*T, error) {
 	podmanArgs := []string{
-		"-v", scriptDir + ":" + utils.InspectContainerDirectory,
 		"--security-opt", "label=disable",
 	}
 
-	preparedImage, err := PrepareImage(authFile, serverImage, pullPolicy, true)
+	script, err := inspector.GenerateScript()
 	if err != nil {
 		return nil, err
 	}
 
-	inspector := utils.NewServerInspector(scriptDir)
-	if err := inspector.GenerateScript(); err != nil {
-		return nil, err
-	}
-	err = RunContainer("uyuni-inspect", preparedImage, utils.ServerVolumeMounts, podmanArgs,
-		[]string{utils.InspectContainerDirectory + "/" + utils.InspectScriptFilename})
+	args := PrepareContainerRunArgs("uyuni-inspect", image, volumes, podmanArgs, []string{"bash", "-c", script})
+	out, err := newRunner("podman", args...).Log(zerolog.DebugLevel).Exec()
 	if err != nil {
 		return nil, err
 	}
 
-	inspectResult, err := inspector.ReadInspectData()
+	inspectResult, err := utils.ReadInspectData[T](out)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot inspect data"))
 	}
 
-	pgsqlPreparedImage, err := PrepareImage(authFile, pgsqlImage, pullPolicy, true)
-	if err != nil {
-		return nil, err
-	}
-
-	dbinspector := utils.NewDBInspector(scriptDir)
-	if err := dbinspector.GenerateScript(); err != nil {
-		return nil, err
-	}
-
-	err = RunContainer("uyuni-db-inspect", pgsqlPreparedImage, utils.PgsqlRequiredVolumeMounts, podmanArgs,
-		[]string{utils.InspectContainerDirectory + "/" + utils.InspectScriptFilename})
-	if err != nil {
-		return nil, err
-	}
-
-	dbInspectResult, err := dbinspector.ReadInspectData()
-	if err != nil {
-		return nil, utils.Errorf(err, L("cannot inspect data"))
-	}
-
-	inspectResult.DBInspectData.ImagePgVersion = dbInspectResult.ImagePgVersion
-
-	return inspectResult, err
+	return inspectResult, nil
 }

@@ -24,7 +24,7 @@ import (
 
 var runCmdInput = utils.RunCmdInput
 var runCmd = utils.RunCmd
-var systemd = podman.SystemdImpl{}
+var systemd = podman.NewSystemd()
 
 func Restore(
 	_ *types.GlobalFlags,

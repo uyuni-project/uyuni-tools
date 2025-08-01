@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -19,13 +19,21 @@ import (
 
 type flagpole struct {
 	Backend           string
-	ChannelLabel      string `mapstructure:"channel"`
-	ProductMap        map[string]map[string]map[types.Arch]types.Distribution
+	ChannelLabel      string                `mapstructure:"channel"`
+	ProductMap        types.ProductMap      `mapstructure:"ProductMap"`
 	ConnectionDetails api.ConnectionDetails `mapstructure:"api"`
 }
 
 type productMapTemplateData struct {
-	DefaultProductMap string
+	DefaultProductMapRender string
+	ProductMapRender        string
+}
+
+func prettyPrint(productMap types.ProductMap) string {
+	if prettyPrintedProductMapBytes, err := yaml.Marshal(map[string]interface{}{"ProductMap": productMap}); err == nil {
+		return string(prettyPrintedProductMapBytes)
+	}
+	return ""
 }
 
 func getProductMapHelp() string {
@@ -46,7 +54,7 @@ ProductMap:
       <distribution architecture>:
         ChannelLabel: <channel label>
         InstallType: <one of rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpm>
-        TreeName: <custom distribution name>
+        TreeLabel: <custom distribution name>
 
 Where
 * <distribution name> is the name of the distribution, by default taken from '.treeinfo' file from the media.
@@ -58,12 +66,41 @@ Where
 * ChannelLabel is the channel label from Uyuni server and which is to be used for this distribution;
   can be overridden by command line flag.
 * InstallType is used when installer is known (for autoyast or kickstart) or use 'generic_rpm'.
-* TreeName is how the distribution will be presented in the Uyuni server UI. If not set <distribution name> is used.
+* TreeLabel is how the distribution will be presented in the Uyuni server UI. If not set <distribution name> is used.
 
 Build-in product map:
 
-{{ .DefaultProductMap }}
+{{ .DefaultProductMapRender }}
 `)
+}
+
+func showHelp(_ *types.GlobalFlags,
+	flags *flagpole,
+	_ *cobra.Command,
+	_ []string,
+) error {
+	mergedMaps := make(types.ProductMap, len(defaultProductMap))
+	for k, v := range defaultProductMap {
+		mergedMaps[k] = v
+	}
+	for distro, versions := range flags.ProductMap {
+		if _, ok := mergedMaps[distro]; ok {
+			for version, archs := range versions {
+				if _, ok := mergedMaps[distro][version]; ok {
+					for arch, distroDetail := range archs {
+						// product map from config file has prio, overwrite
+						mergedMaps[distro][version][arch] = distroDetail
+					}
+				} else {
+					mergedMaps[distro][version] = archs
+				}
+			}
+		} else {
+			mergedMaps[distro] = versions
+		}
+	}
+	print(prettyPrint(mergedMaps))
+	return nil
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[flagpole]) (*cobra.Command, error) {
@@ -98,17 +135,17 @@ Note: API details are required for auto registration.`),
 
 	cpCmdHelp := &cobra.Command{
 		Use:   "productmap",
-		Short: L("Help on using custom distribution product map"),
-	}
-	prettyPrintedProductMap := ""
-	if prettyPrintedProductMapBytes, err := yaml.Marshal(map[string]interface{}{"ProductMap": productMap}); err == nil {
-		prettyPrintedProductMap = string(prettyPrintedProductMapBytes)
+		Short: L("Show distribution product map"),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, showHelp)
+		},
 	}
 
 	t := template.Must(template.New("help").Parse(getProductMapHelp()))
 	var helpBuilder strings.Builder
 	if err := t.Execute(&helpBuilder, productMapTemplateData{
-		DefaultProductMap: prettyPrintedProductMap,
+		DefaultProductMapRender: prettyPrint(defaultProductMap),
+		ProductMapRender:        prettyPrint(flags.ProductMap),
 	}); err != nil {
 		log.Fatal().Err(err).Msg(L("failed to compute config help command"))
 	}

@@ -12,7 +12,7 @@ import (
 )
 
 //nolint:lll
-const migrationScriptTemplate = `#!/bin/bash
+const migrationScriptTemplate = `
 set -e
 SSH_CONFIG=""
 if test -e /tmp/ssh_config; then
@@ -129,6 +129,18 @@ while IFS="," read -r target path ; do
   fi
 done < distros
 
+echo "Migrating auto-installation snippets..."
+$SSH {{ .SourceFqdn }} "find /var/lib/cobbler/snippets/spacewalk/* -type d" > snippets_dirs
+while read -r snippets_dir ; do
+  if $SSH -n {{ .SourceFqdn }} test -e $snippets_dir; then
+    echo "Copying autoinstallation snippets from $snippets_dir..."
+    mkdir -p "$snippets_dir"
+    rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz "{{ .SourceFqdn }}:$snippets_dir" "$snippets_dir";
+  else
+    echo "Skipping autoinstallation snippets from $snippets_dir.."
+  fi
+done < snippets_dirs
+
 if $SSH {{ .SourceFqdn }} test -e /etc/tomcat/conf.d; then
   echo "Copying tomcat configuration.."
   mkdir -p /etc/tomcat/conf.d
@@ -144,15 +156,15 @@ echo "Extracting time zone..."
 $SSH {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
 
 echo "Extracting postgresql versions..."
-image_pg_version=$(rpm -qa --qf '%{VERSION}\n' 'name=postgresql[0-8][0-9]-server'  | cut -d. -f1 | sort -n | tail -1)
-current_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)
-echo "image_pg_version=$image_pg_version" >> /var/lib/uyuni-tools/data
-echo "current_pg_version=$current_pg_version" >> /var/lib/uyuni-tools/data
+echo "current_pg_version=$(cat /var/lib/pgsql/data/PG_VERSION)" >> /var/lib/uyuni-tools/data
+echo "current_libc_version=2.31" >> /var/lib/uyuni-tools/data
 
 grep '^db_user' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 grep '^db_password' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 grep '^db_name' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 grep '^db_port' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
+grep '^report_db_user' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
+grep '^report_db_password' /etc/rhn/rhn.conf | sed 's/[ \t]//g' >>/var/lib/uyuni-tools/data
 
 $SSH {{ .SourceFqdn }} sh -c "systemctl list-unit-files | grep hub-xmlrpc-api | grep -q active && echo has_hubxmlrpc=true || echo has_hubxmlrpc=false" >>/var/lib/uyuni-tools/data
 (test $($SSH {{ .SourceFqdn }} grep jdwp -r /etc/tomcat/conf.d/ /etc/rhn/taskomatic.conf | wc -l) -gt 0 && echo debug=true || echo debug=false) >>/var/lib/uyuni-tools/data
@@ -163,7 +175,7 @@ sed 's/^report_db_host = .*/report_db_host = {{ .ReportDBHost }}/' -i /etc/rhn/r
 if ! grep -q '^java.hostname *=' /etc/rhn/rhn.conf; then
     sed 's/server\.jabber_server/java\.hostname/' -i /etc/rhn/rhn.conf;
 fi
-sed 's/client_use_localhost: false/client_use_localhost: true/' -i /etc/cobbler/settings.yaml;
+echo 'client_use_localhost: true' >> /etc/cobbler/settings.d/zz-uyuni.settings;
 
 echo "Altering configuration for container environment..."
 sed 's/address=[^:]*:/address=*:/' -i /etc/rhn/taskomatic.conf;

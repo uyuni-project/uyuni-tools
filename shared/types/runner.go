@@ -19,6 +19,9 @@ type Runner interface {
 	// This is useful to show the process output in the console and the logs and can be combined with Log().
 	StdMapping() Runner
 
+	// InputString adds a string as input of the process.
+	InputString(input string) Runner
+
 	// Env sets environment variables to use for the command.
 	Env(env []string) Runner
 

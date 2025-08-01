@@ -5,9 +5,9 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"os/exec"
-	"path/filepath"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -51,7 +51,6 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 
 // GeneratePgsqlVersionUpgradeScript generates the PostgreSQL version upgrade script.
 func GeneratePgsqlVersionUpgradeScript(
-	scriptDir string,
 	oldPgVersion string,
 	newPgVersion string,
 	backupDir string,
@@ -62,17 +61,16 @@ func GeneratePgsqlVersionUpgradeScript(
 		BackupDir:  backupDir,
 	}
 
-	scriptName := "pgsqlVersionUpgrade.sh"
-	scriptPath := filepath.Join(scriptDir, scriptName)
-	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return "", utils.Error(err, L("failed to render database upgrade script"))
 	}
-	return scriptName, nil
+	return scriptBuilder.String(), nil
 }
 
 // GenerateFinalizePostgresScript generates the script to finalize PostgreSQL upgrade.
 func GenerateFinalizePostgresScript(
-	scriptDir string, runReindex bool, runSchemaUpdate bool, migration bool, kubernetes bool,
+	runReindex bool, runSchemaUpdate bool, migration bool, kubernetes bool,
 ) (string, error) {
 	data := templates.FinalizePostgresTemplateData{
 		RunReindex:      runReindex,
@@ -81,24 +79,22 @@ func GenerateFinalizePostgresScript(
 		Kubernetes:      kubernetes,
 	}
 
-	scriptName := "pgsqlFinalize.sh"
-	scriptPath := filepath.Join(scriptDir, scriptName)
-	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return "", utils.Error(err, L("failed to render database finalization script"))
 	}
-	return scriptName, nil
+	return scriptBuilder.String(), nil
 }
 
 // GeneratePostUpgradeScript generates the script to be run after upgrade.
-func GeneratePostUpgradeScript(scriptDir string) (string, error) {
+func GeneratePostUpgradeScript() (string, error) {
 	data := templates.PostUpgradeTemplateData{}
 
-	scriptName := "postUpgrade.sh"
-	scriptPath := filepath.Join(scriptDir, scriptName)
-	if err := utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", fmt.Errorf(L("failed to generate %s"), scriptName)
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return "", utils.Error(err, L("failed to render database post upgrade script"))
 	}
-	return scriptName, nil
+	return scriptBuilder.String(), nil
 }
 
 // RunMigration execute the migration script.
@@ -119,12 +115,7 @@ func GenerateMigrationScript(
 	prepare bool,
 	dbHost string,
 	reportDBHost string,
-) (string, func(), error) {
-	scriptDir, cleaner, err := utils.TempDir()
-	if err != nil {
-		return "", nil, err
-	}
-
+) (string, error) {
 	// For podman we want to backup tls certificates to the temporary volume we
 	// later use when creating secrets.
 	volumes := append(utils.ServerVolumeMounts, utils.VarPgsqlDataVolumeMount)
@@ -142,66 +133,64 @@ func GenerateMigrationScript(
 		ReportDBHost: reportDBHost,
 	}
 
-	scriptPath := filepath.Join(scriptDir, "migrate.sh")
-	if err = utils.WriteTemplateToFile(data, scriptPath, 0555, true); err != nil {
-		return "", cleaner, utils.Error(err, L("failed to generate migration script"))
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return "", utils.Error(err, L("failed to generate migration script"))
 	}
 
-	return scriptDir, cleaner, nil
+	return scriptBuilder.String(), nil
 }
 
 // SanityCheck verifies if an upgrade can be run.
-func SanityCheck(
-	runningValues *utils.ServerInspectData,
-	inspectedValues *utils.ServerInspectData,
-	serverImage string,
-) error {
+func SanityCheck(runningValues *utils.ServerInspectData, inspectedValues *utils.ServerInspectData) error {
 	// Skip the uyuni / SUSE Manager release checks if the runningValues is nil.
-	if runningValues != nil {
-		isUyuni := runningValues.UyuniRelease != ""
-		isUyuniImage := inspectedValues.UyuniRelease != ""
-		isSumaImage := inspectedValues.SuseManagerRelease != ""
+	if runningValues == nil {
+		return nil
+	}
 
-		if isUyuni && isSumaImage {
+	isUyuni := runningValues.UyuniRelease != ""
+	isUyuniImage := inspectedValues.UyuniRelease != ""
+	isSumaImage := inspectedValues.SuseManagerRelease != ""
+
+	if isUyuni && isSumaImage {
+		return fmt.Errorf(
+			L("currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"),
+			inspectedValues.SuseManagerRelease,
+		)
+	}
+
+	if !isUyuni && isUyuniImage {
+		return fmt.Errorf(
+			L("currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"),
+			inspectedValues.UyuniRelease,
+		)
+	}
+
+	if isUyuni {
+		currentUyuniRelease := runningValues.UyuniRelease
+		log.Debug().Msgf("Current release is %s", string(currentUyuniRelease))
+		if !isUyuniImage {
+			return errors.New(L("cannot fetch release from server image"))
+		}
+		log.Debug().Msgf("Server image release is %s", inspectedValues.UyuniRelease)
+		if utils.CompareVersion(inspectedValues.UyuniRelease, string(currentUyuniRelease)) < 0 {
 			return fmt.Errorf(
-				L("currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"),
-				inspectedValues.SuseManagerRelease,
+				L("cannot downgrade from version %[1]s to %[2]s"),
+				string(currentUyuniRelease), inspectedValues.UyuniRelease,
 			)
 		}
-
-		if !isUyuni && isUyuniImage {
-			return fmt.Errorf(
-				L("currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"),
-				inspectedValues.UyuniRelease,
-			)
+	} else {
+		currentSuseManagerRelease := runningValues.SuseManagerRelease
+		log.Debug().Msgf("Current release is %s", currentSuseManagerRelease)
+		if !isSumaImage {
+			return errors.New(L("cannot fetch release from server image"))
 		}
-
-		if isUyuni {
-			currentUyuniRelease := runningValues.UyuniRelease
-			log.Debug().Msgf("Current release is %s", string(currentUyuniRelease))
-			if !isUyuniImage {
-				return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
-			}
-			log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.UyuniRelease)
-			if utils.CompareVersion(inspectedValues.UyuniRelease, string(currentUyuniRelease)) < 0 {
-				return fmt.Errorf(
-					L("cannot downgrade from version %[1]s to %[2]s"),
-					string(currentUyuniRelease), inspectedValues.UyuniRelease,
-				)
-			}
-		} else {
-			currentSuseManagerRelease := runningValues.SuseManagerRelease
-			log.Debug().Msgf("Current release is %s", currentSuseManagerRelease)
-			if !isSumaImage {
-				return fmt.Errorf(L("cannot fetch release from image %s"), serverImage)
-			}
-			log.Debug().Msgf("Image %s is %s", serverImage, inspectedValues.SuseManagerRelease)
-			if utils.CompareVersion(inspectedValues.SuseManagerRelease, currentSuseManagerRelease) < 0 {
-				return fmt.Errorf(
-					L("cannot downgrade from version %[1]s to %[2]s"),
-					currentSuseManagerRelease, inspectedValues.SuseManagerRelease,
-				)
-			}
+		log.Debug().Msgf("Server image release is %s", inspectedValues.SuseManagerRelease)
+		if utils.CompareVersion(inspectedValues.SuseManagerRelease, currentSuseManagerRelease) < 0 {
+			return fmt.Errorf(
+				L("cannot downgrade from version %[1]s to %[2]s"),
+				currentSuseManagerRelease, inspectedValues.SuseManagerRelease,
+			)
 		}
 	}
 	return nil

@@ -26,6 +26,10 @@ func (r fakeRunner) StdMapping() types.Runner {
 	return r
 }
 
+func (r fakeRunner) InputString(_ string) types.Runner {
+	return r
+}
+
 func (r fakeRunner) Env(_ []string) types.Runner {
 	return r
 }

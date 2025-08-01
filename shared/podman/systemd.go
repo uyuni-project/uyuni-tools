@@ -12,6 +12,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -37,28 +38,68 @@ const SalineService = "uyuni-saline"
 // ProxyService is the name of the systemd service for the proxy.
 const ProxyService = "uyuni-proxy-pod"
 
-// SystemdImpl implements the Systemd interface.
-type SystemdImpl struct {
+// CustomConf is the name of the custom configuration file of services.
+const CustomConf = "custom.conf"
+
+// Interface to perform systemd calls.
+// This is not meant to be used elsewhere than in the SystemdImpl class and the unit tests.
+type SystemdDriver interface {
+	// HasService returns if a systemd service is installed.
+	// name is the name of the service without the '.service' part.
+	HasService(name string) bool
+
+	// ServiceIsEnabled returns if a service is enabled
+	// name is the name of the service without the '.service' part.
+	ServiceIsEnabled(name string) bool
+
+	// DisableService disables a service
+	// name is the name of the service without the '.service' part.
+	DisableService(name string) error
+
+	// ReloadDaemon resets the failed state of services and reload the systemd daemon.
+	// If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
+	ReloadDaemon() error
+
+	// IsServiceRunning returns whether the systemd service is started or not.
+	IsServiceRunning(service string) bool
+
+	// RestartService restarts the systemd service.
+	RestartService(service string) error
+
+	// StartService starts the systemd service.
+	StartService(service string) error
+
+	// StopService starts the systemd service.
+	StopService(service string) error
+
+	// EnableService enables and starts a systemd service.
+	EnableService(service string) error
+
+	// GetServiceProperty returns the value of a systemd service property.
+	GetServiceProperty(service string, property string) (string, error)
+}
+
+type systemdDriverImpl struct {
 }
 
 // HasService returns if a systemd service is installed.
 // name is the name of the service without the '.service' part.
-func (s SystemdImpl) HasService(name string) bool {
+func (d *systemdDriverImpl) HasService(name string) bool {
 	err := utils.RunCmd("systemctl", "list-unit-files", name+".service")
 	return err == nil
 }
 
 // ServiceIsEnabled returns if a service is enabled
 // name is the name of the service without the '.service' part.
-func (s SystemdImpl) ServiceIsEnabled(name string) bool {
+func (d *systemdDriverImpl) ServiceIsEnabled(name string) bool {
 	err := utils.RunCmd("systemctl", "is-enabled", name+".service")
 	return err == nil
 }
 
 // DisableService disables a service
 // name is the name of the service without the '.service' part.
-func (s SystemdImpl) DisableService(name string) error {
-	if !s.ServiceIsEnabled(name) {
+func (d *systemdDriverImpl) DisableService(name string) error {
+	if !d.ServiceIsEnabled(name) {
 		log.Debug().Msgf("%s is already disabled.", name)
 		return nil
 	}
@@ -68,12 +109,66 @@ func (s SystemdImpl) DisableService(name string) error {
 	return nil
 }
 
-// GetServicePath return the path for a given service.
-func GetServicePath(name string) string {
-	return path.Join(servicesPath, name+".service")
+// ReloadDaemon resets the failed state of services and reload the systemd daemon.
+// If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
+func (d *systemdDriverImpl) ReloadDaemon() error {
+	err := utils.RunCmd("systemctl", "reset-failed")
+	if err != nil {
+		return errors.New(L("failed to reset-failed systemd"))
+	}
+	err = utils.RunCmd("systemctl", "daemon-reload")
+	if err != nil {
+		return errors.New(L("failed to reload systemd daemon"))
+	}
+	return nil
 }
 
-func (s SystemdImpl) GetServiceProperty(service string, property string) (string, error) {
+// IsServiceRunning returns whether the systemd service is started or not.
+func (d *systemdDriverImpl) IsServiceRunning(service string) bool {
+	cmd := exec.Command("systemctl", "is-active", "-q", service)
+	if err := cmd.Run(); err != nil {
+		return false
+	}
+	return cmd.ProcessState.ExitCode() == 0
+}
+
+// RestartService restarts the systemd service.
+func (d *systemdDriverImpl) RestartService(service string) error {
+	if err := utils.RunCmd("systemctl", "restart", service); err != nil {
+		return utils.Errorf(err, L("failed to restart systemd %s.service"), service)
+	}
+	return nil
+}
+
+// StartService starts the systemd service.
+func (d *systemdDriverImpl) StartService(service string) error {
+	if err := utils.RunCmd("systemctl", "start", service); err != nil {
+		return utils.Errorf(err, L("failed to start systemd %s.service"), service)
+	}
+	return nil
+}
+
+// StopService starts the systemd service.
+func (d *systemdDriverImpl) StopService(service string) error {
+	if err := utils.RunCmd("systemctl", "stop", service); err != nil {
+		return utils.Errorf(err, L("failed to stop systemd %s.service"), service)
+	}
+	return nil
+}
+
+// EnableService enables and starts a systemd service.
+func (d *systemdDriverImpl) EnableService(service string) error {
+	if d.ServiceIsEnabled(service) {
+		log.Debug().Msgf("%s is already enabled.", service)
+		return nil
+	}
+	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
+		return utils.Errorf(err, L("failed to enable %s systemd service"), service)
+	}
+	return nil
+}
+
+func (d *systemdDriverImpl) GetServiceProperty(service string, property string) (string, error) {
 	serviceName := service
 	if strings.HasSuffix(service, "@") {
 		serviceName = service + "0"
@@ -83,6 +178,54 @@ func (s SystemdImpl) GetServiceProperty(service string, property string) (string
 		return "", utils.Errorf(err, L("Failed to get the %[1]s property from %[2]s service"), property, service)
 	}
 	return strings.TrimPrefix(strings.TrimSpace(string(out)), property+"="), nil
+}
+
+// NewSystemd returns a new Systemd instance.
+func NewSystemd() Systemd {
+	driver := systemdDriverImpl{}
+	return SystemdImpl{
+		driver: &driver,
+	}
+}
+
+// NewSystemdWithDriver returns a new Systemd instance with a custom driver.
+func NewSystemdWithDriver(driver SystemdDriver) Systemd {
+	return SystemdImpl{
+		driver: driver,
+	}
+}
+
+// SystemdImpl implements the Systemd interface.
+type SystemdImpl struct {
+	// driver actually calls the systemd executable.
+	driver SystemdDriver
+}
+
+// HasService returns if a systemd service is installed.
+// name is the name of the service without the '.service' part.
+func (s SystemdImpl) HasService(name string) bool {
+	return s.driver.HasService(name)
+}
+
+// ServiceIsEnabled returns if a service is enabled
+// name is the name of the service without the '.service' part.
+func (s SystemdImpl) ServiceIsEnabled(name string) bool {
+	return s.driver.ServiceIsEnabled(name)
+}
+
+// DisableService disables a service
+// name is the name of the service without the '.service' part.
+func (s SystemdImpl) DisableService(name string) error {
+	return s.driver.DisableService(name)
+}
+
+// GetServicePath return the path for a given service.
+func GetServicePath(name string) string {
+	return path.Join(servicesPath, name+".service")
+}
+
+func (s SystemdImpl) GetServiceProperty(service string, property string) (string, error) {
+	return s.driver.GetServiceProperty(service, property)
 }
 
 // GetServiceConfFolder return the conf folder for systemd services.
@@ -95,23 +238,6 @@ func GetServiceConfPath(name string) string {
 	return path.Join(GetServiceConfFolder(name), "generated.conf")
 }
 
-// GetServicesFromSystemdFiles return the uyuni enabled services as string list.
-func (s SystemdImpl) GetServicesFromSystemdFiles(systemdFileList string) []string {
-	services := strings.Replace(string(systemdFileList), "/etc/systemd/system/", "", -1)
-	services = strings.Replace(services, ".service", "", -1)
-	servicesList := strings.Split(strings.TrimSpace(services), "\n")
-
-	var trimmedServices []string
-	for _, service := range servicesList {
-		if s.ServiceIsEnabled(service) {
-			trimmedServices = append(trimmedServices, strings.TrimSpace(service))
-		} else {
-			log.Debug().Msgf("service %s is not enabled. Do not run any action on the container.", service)
-		}
-	}
-	return trimmedServices
-}
-
 // UninstallService stops and remove a systemd service.
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
 func (s SystemdImpl) UninstallService(name string, dryRun bool) {
@@ -122,10 +248,9 @@ func (s SystemdImpl) UninstallService(name string, dryRun bool) {
 			log.Info().Msgf(L("Would run %s"), "systemctl disable --now "+name)
 		} else {
 			log.Info().Msgf(L("Disable %s service"), name)
-			// disable server
 			err := s.DisableService(name)
 			if err != nil {
-				log.Error().Err(err).Msgf(L("Failed to disable %s service"), name)
+				log.Error().Err(err).Send()
 			}
 		}
 		uninstallServiceFiles(name, dryRun)
@@ -201,61 +326,34 @@ func (s SystemdImpl) ReloadDaemon(dryRun bool) error {
 		log.Info().Msgf(L("Would run %s"), "systemctl reset-failed")
 		log.Info().Msgf(L("Would run %s"), "systemctl daemon-reload")
 	} else {
-		err := utils.RunCmd("systemctl", "reset-failed")
-		if err != nil {
-			return errors.New(L("failed to reset-failed systemd"))
-		}
-		err = utils.RunCmd("systemctl", "daemon-reload")
-		if err != nil {
-			return errors.New(L("failed to reload systemd daemon"))
-		}
+		return s.driver.ReloadDaemon()
 	}
 	return nil
 }
 
 // IsServiceRunning returns whether the systemd service is started or not.
 func (s SystemdImpl) IsServiceRunning(service string) bool {
-	cmd := exec.Command("systemctl", "is-active", "-q", service)
-	if err := cmd.Run(); err != nil {
-		return false
-	}
-	return cmd.ProcessState.ExitCode() == 0
+	return s.driver.IsServiceRunning(service)
 }
 
 // RestartService restarts the systemd service.
 func (s SystemdImpl) RestartService(service string) error {
-	if err := utils.RunCmd("systemctl", "restart", service); err != nil {
-		return utils.Errorf(err, L("failed to restart systemd %s.service"), service)
-	}
-	return nil
+	return s.driver.RestartService(service)
 }
 
 // StartService starts the systemd service.
 func (s SystemdImpl) StartService(service string) error {
-	if err := utils.RunCmd("systemctl", "start", service); err != nil {
-		return utils.Errorf(err, L("failed to start systemd %s.service"), service)
-	}
-	return nil
+	return s.driver.StartService(service)
 }
 
 // StopService starts the systemd service.
 func (s SystemdImpl) StopService(service string) error {
-	if err := utils.RunCmd("systemctl", "stop", service); err != nil {
-		return utils.Errorf(err, L("failed to stop systemd %s.service"), service)
-	}
-	return nil
+	return s.driver.StopService(service)
 }
 
 // EnableService enables and starts a systemd service.
 func (s SystemdImpl) EnableService(service string) error {
-	if s.ServiceIsEnabled(service) {
-		log.Debug().Msgf("%s is already enabled.", service)
-		return nil
-	}
-	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
-		return utils.Errorf(err, L("failed to enable %s systemd service"), service)
-	}
-	return nil
+	return s.driver.EnableService(service)
 }
 
 // StartInstantiated starts all replicas.
@@ -286,6 +384,49 @@ func (s SystemdImpl) StopInstantiated(service string) error {
 		errList = append(errList, err)
 	}
 	return utils.JoinErrors(errList...)
+}
+
+// CurrentReplicaCount returns the current enabled replica count for a template service
+// name is the name of the service without the '.service' part.
+func (s SystemdImpl) CurrentReplicaCount(name string) int {
+	count := 0
+	for s.ServiceIsEnabled(fmt.Sprintf("%s@%d", name, count)) {
+		count++
+	}
+	return count
+}
+
+// ScaleService scales a templated systemd service to the requested number of replicas.
+// name is the name of the service without the '.service' part.
+func (s SystemdImpl) ScaleService(replicas int, name string) error {
+	currentReplicas := s.CurrentReplicaCount(name)
+	if currentReplicas == replicas {
+		log.Info().Msgf(L("Service %[1]s already has %[2]d replicas."), name, currentReplicas)
+		return nil
+	}
+	log.Info().Msgf(L("Scale %[1]s from %[2]d to %[3]d replicas."), name, currentReplicas, replicas)
+	for i := currentReplicas; i < replicas; i++ {
+		serviceName := fmt.Sprintf("%s@%d", name, i)
+		if err := s.EnableService(serviceName); err != nil {
+			return utils.Errorf(err, L("cannot enable service"))
+		}
+	}
+	for i := replicas; i < currentReplicas; i++ {
+		serviceName := fmt.Sprintf("%s@%d", name, i)
+		if err := s.DisableService(serviceName); err != nil {
+			return utils.Errorf(err, L("cannot disable service"))
+		}
+	}
+	return s.RestartInstantiated(name)
+}
+
+// Show calls the systemctl show command and returns the output.
+func (s SystemdImpl) Show(service string, property string) (string, error) {
+	out, err := newRunner("systemctl", "show", "--property", property, service).Log(zerolog.DebugLevel).Exec()
+	if err != nil {
+		return "", utils.Errorf(err, L("failed to show %[1]s property of %[2] systemd service"), property, service)
+	}
+	return strings.TrimSpace(string(out)), nil
 }
 
 // confHeader is the header for the generated systemd configuration files.
@@ -353,7 +494,7 @@ func CleanSystemdConfFile(serviceName string) error {
 		}
 
 		if hasCustom {
-			customPath := path.Join(systemdFilePath, "custom.conf")
+			customPath := path.Join(systemdFilePath, CustomConf)
 			if err := os.WriteFile(customPath, []byte(custom), 0644); err != nil {
 				return utils.Errorf(err, L("failed to write %s file"), customPath)
 			}
@@ -365,38 +506,4 @@ func CleanSystemdConfFile(serviceName string) error {
 	}
 
 	return nil
-}
-
-// CurrentReplicaCount returns the current enabled replica count for a template service
-// name is the name of the service without the '.service' part.
-func (s SystemdImpl) CurrentReplicaCount(name string) int {
-	count := 0
-	for s.ServiceIsEnabled(fmt.Sprintf("%s@%d", name, count)) {
-		count++
-	}
-	return count
-}
-
-// ScaleService scales a templated systemd service to the requested number of replicas.
-// name is the name of the service without the '.service' part.
-func (s SystemdImpl) ScaleService(replicas int, name string) error {
-	currentReplicas := s.CurrentReplicaCount(name)
-	if currentReplicas == replicas {
-		log.Info().Msgf(L("Service %[1]s already has %[2]d replicas."), name, currentReplicas)
-		return nil
-	}
-	log.Info().Msgf(L("Scale %[1]s from %[2]d to %[3]d replicas."), name, currentReplicas, replicas)
-	for i := currentReplicas; i < replicas; i++ {
-		serviceName := fmt.Sprintf("%s@%d", name, i)
-		if err := s.EnableService(serviceName); err != nil {
-			return utils.Errorf(err, L("cannot enable service"))
-		}
-	}
-	for i := replicas; i < currentReplicas; i++ {
-		serviceName := fmt.Sprintf("%s@%d", name, i)
-		if err := s.DisableService(serviceName); err != nil {
-			return utils.Errorf(err, L("cannot disable service"))
-		}
-	}
-	return s.RestartInstantiated(name)
 }

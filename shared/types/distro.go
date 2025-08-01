@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -18,6 +18,9 @@ type DistributionDetails struct {
 	Version string
 	Arch    Arch
 }
+
+// ProductMap contains mapping of distro, version arch to the Distribution.
+type ProductMap map[string]map[string]map[Arch]Distribution
 
 // Arch type to store architecture.
 type Arch string

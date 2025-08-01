@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -46,6 +46,20 @@ func AssertHasAllFlagsIgnores(t *testing.T, cmd *cobra.Command, args []string, i
 // AssertHasAllFlags ensures that all the flags of a command are present in the args slice.
 func AssertHasAllFlags(t *testing.T, cmd *cobra.Command, args []string) {
 	AssertHasAllFlagsIgnores(t, cmd, args, []string{})
+}
+
+// AssertContains ensures a slice contains the expected value.
+func AssertContains(t *testing.T, message string, actual []string, expected string) {
+	if !contains(actual, expected) {
+		t.Error(message)
+	}
+}
+
+// AssertNotContains ensures a slice contains the expected value.
+func AssertNotContains(t *testing.T, message string, actual []string, expected string) {
+	if contains(actual, expected) {
+		t.Error(message)
+	}
 }
 
 // contains is copied from utils to avoid to dependency loop.

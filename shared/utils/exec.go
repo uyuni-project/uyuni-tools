@@ -88,6 +88,12 @@ func (r *runnerImpl) Env(env []string) types.Runner {
 	return r
 }
 
+// InputString adds a string as input of the process.
+func (r *runnerImpl) InputString(input string) types.Runner {
+	r.cmd.Stdin = strings.NewReader(input)
+	return r
+}
+
 // Exec really executes the command and returns its output and error.
 // The error output to used as error message if the StdMapping() function wasn't called.
 func (r *runnerImpl) Exec() ([]byte, error) {
