@@ -44,10 +44,10 @@ const (
 
 // CreateCredentialsSecrets creates the podman secrets, one for the user name and one for the password.
 func CreateCredentialsSecrets(userSecret string, user string, passwordSecret string, password string) error {
-	if err := createSecret(userSecret, user); err != nil {
+	if err := CreateSecret(userSecret, user); err != nil {
 		return err
 	}
-	return createSecret(passwordSecret, password)
+	return CreateSecret(passwordSecret, password)
 }
 
 // CreateCASecrets creates SSL CA.
@@ -77,7 +77,7 @@ func CreateTLSSecrets(
 }
 
 // createSecret creates a podman secret.
-func createSecret(name string, value string) error {
+func CreateSecret(name string, value string) error {
 	tmpDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err

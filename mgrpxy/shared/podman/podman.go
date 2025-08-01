@@ -5,6 +5,9 @@
 package podman
 
 import (
+	"bytes"
+	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -12,6 +15,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -21,6 +25,12 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
+)
+
+const (
+	SystemIDEvent         = "suse/systemid/generate"
+	SystemIDEventResponse = "suse/systemid/generated"
+	SystemIDSecret        = "uyuni-proxy-systemid"
 )
 
 // PodmanProxyFlags are the flags used by podman proxy install and upgrade command.
@@ -75,6 +85,10 @@ func GenerateSystemdService(
 			Volumes:       shared_utils.ProxyHttpdVolumes,
 			HTTPProxyFile: httpProxyConfig,
 		}
+		if podman.HasSecret(SystemIDSecret) {
+			dataHttpd.SystemIDSecret = SystemIDSecret
+		}
+
 		additionHttpdTuningSettings := ""
 		if flags.ProxyImageFlags.Tuning.Httpd != "" {
 			absPath, err := filepath.Abs(flags.ProxyImageFlags.Tuning.Httpd)
@@ -265,6 +279,17 @@ func Upgrade(
 		return err
 	}
 
+	// Check if we are a salt minion registered to SMLM and if so, try to get up to date systemid
+	if hostData.HasSaltMinion {
+		if err := GetSystemID(); err != nil {
+			log.Warn().Err(err).Msg(L("Unable to fetch up to date systemid, using one from the provided configuration file"))
+			// If we previously created secret, remove it
+			if podman.HasSecret(SystemIDSecret) {
+				podman.DeleteSecret(SystemIDSecret, false)
+			}
+		}
+	}
+
 	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.SCC)
 	if err != nil {
 		return shared_utils.Errorf(err, L("failed to login to registry.suse.com"))
@@ -308,4 +333,82 @@ func startPod(systemd podman.Systemd) error {
 		return systemd.RestartService(podman.ProxyService)
 	}
 	return systemd.EnableService(podman.ProxyService)
+}
+
+func getSystemIDEvent() ([]byte, error) {
+	// Start the event listener in the background
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	eventListenerCmd := exec.CommandContext(
+		ctx,
+		"venv-salt-call",
+		"state.event",
+		"tagmatch="+SystemIDEventResponse,
+		"count=1",
+		"--out=quiet",
+	)
+	var out bytes.Buffer
+	eventListenerCmd.Stdout = &out
+
+	log.Debug().Msg("Starting event listener")
+	if err := eventListenerCmd.Start(); err != nil {
+		return nil, err
+	}
+
+	// Allow event listener to start
+	time.Sleep(time.Second)
+
+	// Trigger the even
+	fireEventCmd := exec.Command(
+		"venv-salt-call",
+		"event.send",
+		SystemIDEvent,
+	)
+	log.Debug().Msg("Asking for up to date systemid")
+	if err := fireEventCmd.Run(); err != nil {
+		return nil, err
+	}
+
+	// Wait for the event listener to finish, we are waiting for one event at most 10s
+	err := eventListenerCmd.Wait()
+	if err != nil {
+		if ctx.Err() == context.DeadlineExceeded {
+			return nil, ctx.Err()
+		}
+		return nil, err
+	}
+	return out.Bytes(), nil
+}
+
+func parseSystemIDEvent(event []byte) (string, error) {
+	found := bytes.HasPrefix(event, []byte(SystemIDEventResponse))
+	if !found {
+		return "", errors.New(L("Not a system id event"))
+	}
+	jsonData := map[string]string{}
+	err := json.Unmarshal(event[len(SystemIDEventResponse):], &jsonData)
+	if err != nil {
+		return "", err
+	}
+	data, ok := jsonData["data"]
+	if !ok {
+		return "", errors.New(L("System id not found in returned event"))
+	}
+	return data, nil
+}
+
+func GetSystemID() error {
+	event, err := getSystemIDEvent()
+	if err != nil {
+		return err
+	}
+
+	systemid, err := parseSystemIDEvent(event)
+	if err != nil {
+		return err
+	}
+	log.Trace().Msgf("SystemID: %s", systemid)
+
+	return podman.CreateSecret(SystemIDSecret, systemid)
 }
