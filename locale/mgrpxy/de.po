@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-23 08:56+0200\n"
+"POT-Creation-Date: 2025-08-01 16:07+0200\n"
 "PO-Revision-Date: 2025-02-22 05:50+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/de/>\n"
@@ -71,10 +71,6 @@ msgstr ""
 #: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
 msgstr "Konfigurationsdateipfad"
-
-#: mgrpxy/cmd/cmd.go:69
-msgid "application log level"
-msgstr "Anwendungs-Protokollierungsebene"
 
 #: mgrpxy/cmd/install/install.go:20 mgrpxy/cmd/install/install.go:21
 msgid "Install a new proxy from scratch"
@@ -558,6 +554,9 @@ msgstr ""
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr ""
+
+#~ msgid "application log level"
+#~ msgstr "Anwendungs-Protokollierungsebene"
 
 #, javascript-format
 #~ msgid "Welcome to %s"

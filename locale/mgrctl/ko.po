@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-23 08:56+0200\n"
+"POT-Creation-Date: 2025-08-01 16:07+0200\n"
 "PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ko/>\n"
@@ -129,11 +129,7 @@ msgstr "주로 API를 통해 Uyuni 서버를 관리하는 데 유용한 도구"
 msgid "configuration file path"
 msgstr "구성 파일 경로"
 
-#: mgrctl/cmd/cmd.go:41
-msgid "application log level"
-msgstr "애플리케이션 로그 수준"
-
-#: mgrctl/cmd/cmd.go:49
+#: mgrctl/cmd/cmd.go:47
 #, javascript-format
 msgid "Starting %s"
 msgstr ""
@@ -299,6 +295,9 @@ msgstr "프록시 구성 생성"
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "서버 컨테이너 내에서 터미널 실행"
+
+#~ msgid "application log level"
+#~ msgstr "애플리케이션 로그 수준"
 
 #, javascript-format
 #~ msgid "Welcome to %s"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-23 08:56+0200\n"
+"POT-Creation-Date: 2025-08-01 16:07+0200\n"
 "PO-Revision-Date: 2025-06-18 10:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
@@ -71,10 +71,6 @@ msgstr "L'ús d'aquest programari implica l'acceptació de l'Acord de llicència
 #: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
 msgstr "camí del fitxer de configuració"
-
-#: mgrpxy/cmd/cmd.go:69
-msgid "application log level"
-msgstr "nivell de registre de l'aplicació"
 
 #: mgrpxy/cmd/install/install.go:20 mgrpxy/cmd/install/install.go:21
 msgid "Install a new proxy from scratch"
@@ -609,6 +605,9 @@ msgstr "Imatge per al contenidor %s"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "Etiqueta per al contenidor %s, anul·la el valor global si s'estableix"
+
+#~ msgid "application log level"
+#~ msgstr "nivell de registre de l'aplicació"
 
 #, javascript-format
 #~ msgid "Welcome to %s"

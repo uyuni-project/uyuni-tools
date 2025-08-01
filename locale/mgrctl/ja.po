@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-23 08:56+0200\n"
+"POT-Creation-Date: 2025-08-01 16:07+0200\n"
 "PO-Revision-Date: 2025-06-14 14:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ja/>\n"
@@ -129,11 +129,7 @@ msgstr "主にAPIを通じてUyuniサーバを管理するのに役立つツー�
 msgid "configuration file path"
 msgstr "設定ファイルパス"
 
-#: mgrctl/cmd/cmd.go:41
-msgid "application log level"
-msgstr "アプリケーションログレベル"
-
-#: mgrctl/cmd/cmd.go:49
+#: mgrctl/cmd/cmd.go:47
 #, javascript-format
 msgid "Starting %s"
 msgstr ""
@@ -299,6 +295,9 @@ msgstr "プロキシ設定の作成"
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "サーバコンテナ内で端末を実行する"
+
+#~ msgid "application log level"
+#~ msgstr "アプリケーションログレベル"
 
 #, javascript-format
 #~ msgid "Welcome to %s"
