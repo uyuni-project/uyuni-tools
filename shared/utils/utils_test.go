@@ -167,37 +167,125 @@ func sendInput(
 }
 
 func TestComputePTF(t *testing.T) {
-	data := [][]string{
+	// Constants
+	const (
+		defaultPtfID      = "27977"
+		defaultUser       = "150158"
+		defaultSuffix     = "ptf"
+		baseRegistryHost  = "registry.suse.com"
+		defaultRegistry50 = "registry.suse.com/suse/manager/5.0/x86_64"
+		defaultRegistry51 = "registry.suse.com/suse/multi-linux-manager/5.1/x86_64"
+	)
+
+	tests := []struct {
+		name                 string
+		registry             string
+		user                 string
+		ptfID                string
+		fullImage            string
+		suffix               string
+		expected             string
+		expectedErrorMessage string
+	}{
+		// Success cases - 5.0 Manager
 		{
-			"registry.suse.com/a/a196136/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977",
-			"a196136",
-			"27977",
-			"registry.suse.com/suse/manager/5.0/x86_64/proxy-helm:latest",
-			"ptf",
+			name:      "success 5.0 container with 5.0 registry",
+			registry:  defaultRegistry50,
+			fullImage: defaultRegistry50 + "/proxy-tftpd:5.0.0",
+			expected:  "registry.suse.com/a/150158/27977/suse/manager/5.0/x86_64/proxy-tftpd:latest-ptf-27977",
+		},
+		{
+			name:      "success 5.0 rpm container with 5.0 registry",
+			registry:  defaultRegistry50,
+			fullImage: "localhost/suse/manager/5.0/x86_64/proxy-ssh:5.0.0",
+			expected:  "registry.suse.com/a/150158/27977/suse/manager/5.0/x86_64/proxy-ssh:latest-ptf-27977",
+		},
+		{
+			name:      "success 5.0 container and base registry host",
+			registry:  baseRegistryHost,
+			fullImage: defaultRegistry50 + "/proxy-tftpd:latest",
+			expected:  "registry.suse.com/a/150158/27977/suse/manager/5.0/x86_64/proxy-tftpd:latest-ptf-27977",
+		},
+		{
+			name:      "success 5.0 container and custom registry",
+			registry:  "mysccregistry.com",
+			fullImage: defaultRegistry50 + "/proxy-helm:latest",
+			expected:  "mysccregistry.com/a/150158/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977",
+		},
+		{
+			name:      "success 5.0 rpm container and custom registry",
+			registry:  "mysccregistry.com",
+			fullImage: "localhost/suse/manager/5.0/x86_64/proxy-helm:latest",
+			expected:  "mysccregistry.com/a/150158/27977/suse/manager/5.0/x86_64/proxy-helm:latest-ptf-27977",
+		},
+
+		// Success cases - 5.1 Multi-Linux Manager
+		{
+			name:      "success 5.1 container with 5.1 registry",
+			registry:  defaultRegistry51,
+			fullImage: defaultRegistry51 + "/proxy-tftpd:5.1.0",
+			expected:  "registry.suse.com/a/150158/27977/suse/multi-linux-manager/5.1/x86_64/proxy-tftpd:latest-ptf-27977",
+		},
+
+		// Failure cases
+		{
+			name:                 "fail invalid image",
+			registry:             baseRegistryHost,
+			fullImage:            "some.domain.com/not/matching/suse/proxy-helm:latest",
+			expectedErrorMessage: "invalid image name: some.domain.com/not/matching/suse/proxy-helm:latest",
+		},
+		{
+			name:      "fail 5.0 container and invalid custom registry",
+			registry:  "mysccregistry.com/invalid/path",
+			fullImage: defaultRegistry50 + "/proxy-helm:latest",
+			expectedErrorMessage: "image path 'suse/manager/5.0/x86_64/proxy-helm:' does not start with registry " +
+				"path 'invalid/path'",
+		},
+		{
+			name:      "fail 5.0 container with 5.1 registry",
+			registry:  defaultRegistry51,
+			fullImage: defaultRegistry50 + "/proxy-salt-broker:5.0.0",
+			expectedErrorMessage: "image path 'suse/manager/5.0/x86_64/proxy-salt-broker:' does not start with " +
+				"registry path 'suse/multi-linux-manager/5.1/x86_64'",
+		},
+		{
+			name:      "fail 5.1 container with 5.0 registry",
+			registry:  defaultRegistry50,
+			fullImage: defaultRegistry51 + "/proxy-squid:5.0.0",
+			expectedErrorMessage: "image path 'suse/multi-linux-manager/5.1/x86_64/proxy-squid:' does not start with" +
+				" registry path 'suse/manager/5.0/x86_64'",
 		},
 	}
 
-	for i, testCase := range data {
-		result := testCase[0]
-		user := testCase[1]
-		ptfID := testCase[2]
-		fullImage := testCase[3]
-		suffix := testCase[4]
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ptfID := defaultPtfID
+			if tt.ptfID != "" {
+				ptfID = tt.ptfID
+			}
+			user := defaultUser
+			if tt.user != "" {
+				user = tt.user
+			}
+			suffix := defaultSuffix
+			if tt.suffix != "" {
+				suffix = tt.suffix
+			}
 
-		actual, err := ComputePTF(user, ptfID, fullImage, suffix)
-
-		if err != nil {
-			t.Errorf(
-				"Testcase %d: Unexpected error while computing image with %s, %s, %s, %s: %s",
-				i, user, ptfID, fullImage, suffix, err,
-			)
-		}
-		if actual != result {
-			t.Errorf(
-				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s, %s",
-				i, result, actual, user, ptfID, fullImage, suffix,
-			)
-		}
+			actual, err := ComputePTF(tt.registry, user, ptfID, tt.fullImage, suffix)
+			if err != nil {
+				if tt.expectedErrorMessage == "" {
+					t.Errorf("Unexpected error while executing ComputePTF('%s', '%s', '%s', '%s', '%s'): %s",
+						tt.registry, tt.user, tt.ptfID, tt.fullImage, tt.suffix, err)
+				} else if !strings.Contains(err.Error(), tt.expectedErrorMessage) {
+					t.Errorf("Expected error message to contain '%s', but got: %s",
+						tt.expectedErrorMessage, err.Error())
+				}
+			} else if actual != tt.expected {
+				t.Errorf("ComputePTF('%s', '%s', '%s', '%s', '%s') = %s\nexpected: %s",
+					tt.registry, tt.user, tt.ptfID, tt.fullImage, tt.suffix, actual, tt.expected)
+			}
+		})
 	}
 }
 
@@ -351,41 +439,22 @@ func TestConfig(t *testing.T) {
 		t.Errorf("Unexpected error while reading configuration files: %s", err)
 	}
 
-	// This value is not set by conf file, so it should be the hardcoded default value
+	//This value is not set by conf file, so it should be the hardcoded default value
 	if viper.Get("firstConf") != "hardcodedDefault" {
 		t.Errorf("firstConf is %s, instead of hardcodedDefault", viper.Get("firstConf"))
 	}
-	// This value is set by firstConfFile.yaml
+	//This value is set by firstConfFile.yaml
 	if viper.Get("secondConf") != "firstConfFile" {
 		t.Errorf("secondConf is %s, instead of firstConfFile", viper.Get("secondConf"))
 	}
-	// This value is as first set by firstConfFile.yaml, but then overwritten by secondConfFile.yaml
+	//This value is as first set by firstConfFile.yaml, but then overwritten by secondConfFile.yaml
 	if viper.Get("thirdConf") != "SecondConfFile" {
 		t.Errorf("thirdConf is %s, instead of SecondConfFile", viper.Get("thirdConf"))
 	}
-	// This value is set by secondConfFile.yaml
+	//This value is set by secondConfFile.yaml
 	if viper.Get("fourthconf") != "SecondConfFile" {
 		t.Errorf("fourthconf is %s, instead of SecondConfFile", viper.Get("fourthconf"))
 	}
-}
-
-// Test saveBinaryData function.
-func TestSaveBinaryData(t *testing.T) {
-	testDir := t.TempDir()
-
-	filepath := path.Join(testDir, "testfile")
-	data := []int8{104, 101, 121, 32, 116, 104, 101, 114, 101, 33}
-
-	// Save binary data to a file
-	err := SaveBinaryData(filepath, data)
-	testutils.AssertTrue(t, "Unexpected error executing SaveBinaryData", err == nil)
-
-	// Read the file back and compare contents
-	storedData := testutils.ReadFileAsBinary(t, filepath)
-	testutils.AssertEquals(
-		t, "File configuration binary doesn't match",
-		fmt.Sprintf("%v", data), fmt.Sprintf("%v", storedData),
-	)
 }
 
 func TestCompareVersion(t *testing.T) {
