@@ -1,0 +1,2 @@
+- Fix recomputing proxy images when installing a ptf or test
+  (bsc#1246553)
