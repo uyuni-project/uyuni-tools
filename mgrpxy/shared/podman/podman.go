@@ -33,6 +33,9 @@ const (
 	SystemIDSecret        = "uyuni-proxy-systemid"
 )
 
+var contextRunner = shared_utils.NewRunnerWithContext
+var newRunner = shared_utils.NewRunner
+
 // PodmanProxyFlags are the flags used by podman proxy install and upgrade command.
 type PodmanProxyFlags struct {
 	utils.ProxyImageFlags `mapstructure:",squash"`
@@ -281,12 +284,10 @@ func Upgrade(
 
 	// Check if we are a salt minion registered to SMLM and if so, try to get up to date systemid
 	if hostData.HasSaltMinion {
+		// If we previously created systemid secret, remove it
+		podman.DeleteSecret(SystemIDSecret, false)
 		if err := GetSystemID(); err != nil {
 			log.Warn().Err(err).Msg(L("Unable to fetch up to date systemid, using one from the provided configuration file"))
-			// If we previously created secret, remove it
-			if podman.HasSecret(SystemIDSecret) {
-				podman.DeleteSecret(SystemIDSecret, false)
-			}
 		}
 	}
 
@@ -340,7 +341,7 @@ func getSystemIDEvent() ([]byte, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	eventListenerCmd := shared_utils.NewRunnerWithContext(
+	eventListenerCmd := contextRunner(
 		ctx,
 		"venv-salt-call",
 		"state.event",
@@ -359,7 +360,7 @@ func getSystemIDEvent() ([]byte, error) {
 	time.Sleep(time.Second)
 
 	// Trigger the even
-	fireEventCmd := shared_utils.NewRunner(
+	fireEventCmd := newRunner(
 		"venv-salt-call",
 		"event.send",
 		SystemIDEvent,

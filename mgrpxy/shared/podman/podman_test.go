@@ -7,7 +7,10 @@ package podman
 import (
 	"os"
 	"path"
+	"strconv"
 	"testing"
+
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestCheckDirPermissions(t *testing.T) {
@@ -54,4 +57,35 @@ func TestValidateYamlFiles(t *testing.T) {
 	if err := validateInstallYamlFiles(tempDir); err == nil {
 		t.Errorf("Expected an error due to missing httpd.yaml, but got none")
 	}
+}
+
+func TestGetSystemID(t *testing.T) {
+	// event output
+	systemid := `<?xml version=\"1.0\"?><params><param><value><struct><member><name>username</name>` +
+		`<value><string>admin</string></value></member><member><name>os_release</name><value><string>6.1</string>` +
+		`</value></member><member><name>operating_system</name><value><string>SL-Micro</string></value></member>` +
+		`<member><name>architecture</name><value><string>x86_64-redhat-linux</string></value></member><member>` +
+		`<name>system_id</name><value><string>ID-1000010001</string></value></member><member><name>type</name><value>` +
+		`<string>REAL</string></value></member><member><name>fields</name><value><array><data><value>` +
+		`<string>system_id</string></value><value><string>os_release</string></value><value><string>operating_system` +
+		`</string></value><value><string>architecture</string></value><value><string>username</string></value><value>` +
+		`<string>type</string></value></data></array></value></member><member><name>checksum</name><value>` +
+		`<string>1aaa4427328cfd7fbd613693802e0920d9f1c1ea2b3d31a869ed1ac3fbfe4174</string></value></member></struct>` +
+		`</value></param></params>`
+
+	event := `suse/systemid/generated {"data": "` + systemid + `", "_stamp": "2025-08-04T12:04:29.403745"}`
+
+	// create custom runners
+	contextRunner = testutils.FakeContextRunnerGenerator(event, nil)
+	newRunner = testutils.FakeRunnerGenerator("", nil)
+
+	received, err := getSystemIDEvent()
+	testutils.AssertNoError(t, "error during obtaining systemid", err)
+	testutils.AssertEquals(t, "received event differs", []byte(event), received)
+
+	receivedSystemid, err := parseSystemIDEvent(received)
+	testutils.AssertNoError(t, "error during event decoding", err)
+	// unquote raw string before comparing.
+	unquotedSystemid, _ := strconv.Unquote(`"` + systemid + `"`)
+	testutils.AssertEquals(t, "received systemid differs", unquotedSystemid, receivedSystemid)
 }
