@@ -5,6 +5,8 @@
 package testutils
 
 import (
+	"bytes"
+
 	"github.com/rs/zerolog"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
@@ -26,6 +28,10 @@ func (r fakeRunner) StdMapping() types.Runner {
 	return r
 }
 
+func (r fakeRunner) Std(_ *bytes.Buffer) types.Runner {
+	return r
+}
+
 func (r fakeRunner) InputString(_ string) types.Runner {
 	return r
 }
@@ -36,6 +42,14 @@ func (r fakeRunner) Env(_ []string) types.Runner {
 
 func (r fakeRunner) Exec() ([]byte, error) {
 	return r.out, r.err
+}
+
+func (r fakeRunner) Start() error {
+	return r.err
+}
+
+func (r fakeRunner) Wait() error {
+	return r.err
 }
 
 // FakeRunnerGenerator creates NewRunner function generating a FakeRunner.
