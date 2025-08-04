@@ -340,7 +340,7 @@ func getSystemIDEvent() ([]byte, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	eventListenerCmd := exec.CommandContext(
+	eventListenerCmd := shared_utils.NewRunnerWithContext(
 		ctx,
 		"venv-salt-call",
 		"state.event",
@@ -349,10 +349,9 @@ func getSystemIDEvent() ([]byte, error) {
 		"--out=quiet",
 	)
 	var out bytes.Buffer
-	eventListenerCmd.Stdout = &out
 
 	log.Debug().Msg("Starting event listener")
-	if err := eventListenerCmd.Start(); err != nil {
+	if err := eventListenerCmd.Std(&out).Start(); err != nil {
 		return nil, err
 	}
 
@@ -360,13 +359,13 @@ func getSystemIDEvent() ([]byte, error) {
 	time.Sleep(time.Second)
 
 	// Trigger the even
-	fireEventCmd := exec.Command(
+	fireEventCmd := shared_utils.NewRunner(
 		"venv-salt-call",
 		"event.send",
 		SystemIDEvent,
 	)
 	log.Debug().Msg("Asking for up to date systemid")
-	if err := fireEventCmd.Run(); err != nil {
+	if _, err := fireEventCmd.Exec(); err != nil {
 		return nil, err
 	}
 
