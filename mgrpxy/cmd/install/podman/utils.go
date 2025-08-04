@@ -49,14 +49,13 @@ func installForPodman(
 		return err
 	}
 
+	// If we previously created systemid secret, remove it
+	shared_podman.DeleteSecret(podman.SystemIDSecret, false)
+
 	// Check if we are a salt minion registered to SMLM and if so, try to get up to date systemid
 	if hostData.HasSaltMinion {
 		if err := podman.GetSystemID(); err != nil {
 			log.Warn().Err(err).Msg(L("Unable to fetch up to date systemid, using one from the provided configuration file"))
-			// If we previously created secret, remove it
-			if shared_podman.HasSecret(podman.SystemIDSecret) {
-				shared_podman.DeleteSecret(podman.SystemIDSecret, false)
-			}
 		}
 	}
 
