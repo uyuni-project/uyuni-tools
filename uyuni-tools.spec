@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-tools
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -57,7 +57,7 @@
 # 0%{?debian} || 0%{?ubuntu}
 
 Name:           %{project}
-Version:        5.1.18
+Version:        5.2.0
 Release:        0
 Summary:        Tools for managing %{productprettyname} container
 License:        Apache-2.0
