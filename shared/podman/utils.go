@@ -27,6 +27,8 @@ import (
 var runCmdOutput = utils.RunCmdOutput
 var runCmd = utils.RunCmd
 
+var runner = utils.NewRunner
+
 const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
 
 // ServerContainerName represents the server container name.
@@ -85,7 +87,7 @@ func ReadFromContainer(name string, image string, volumes []types.VolumeMount,
 	podmanArgs = append(podmanArgs, image)
 	podmanArgs = append(podmanArgs, []string{"cat", file}...)
 
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", podmanArgs...)
+	out, err := runner("podman", podmanArgs...).Spinner("").Exec()
 	if err != nil {
 		return []byte{}, utils.Errorf(err, L("failed to run %s container"), name)
 	}
