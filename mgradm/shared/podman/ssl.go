@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -317,6 +318,13 @@ func runSSLContainer(script string, workdir string, image string, tz string, env
 }
 
 func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+	// This generally should not happen, otherwise we would ask for CA password in parameters check.
+	// However there are some paths, e.g. upgrade reusing existing certs and db provided 3rd party certs where we
+	// do not check for the password, but on existing certs check we can fail and drop here.
+	if sslFlags.Password == "" {
+		return errors.New(L("Cannot generate new certificates without a CA password. Please check input options"))
+	}
+
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
 	if err != nil {
