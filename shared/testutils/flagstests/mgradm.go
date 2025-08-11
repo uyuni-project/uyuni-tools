@@ -96,13 +96,13 @@ var InstallDBSSLFlagsTestArgs = []string{
 }
 
 // InstallSSLFlagsTestArgs is the expected values for InstallSSLFlagsTestArg.
-var InstallSSLFlagsTestArgs = append([]string{
+var InstallSSLFlagsTestArgs = []string{
 	"--ssl-ca-intermediate", "path/inter1.crt",
 	"--ssl-ca-intermediate", "path/inter2.crt",
 	"--ssl-ca-root", "path/root.crt",
 	"--ssl-server-cert", "path/srv.crt",
 	"--ssl-server-key", "path/srv.key",
-}, InstallDBSSLFlagsTestArgs...)
+}
 
 // ImageFlagsTestArgs is the expected values for AssertImageFlag.
 var ImageFlagsTestArgs = []string{
@@ -230,8 +230,6 @@ func AssertInstallSSLFlag(t *testing.T, flags *utils.InstallSSLFlags) {
 	testutils.AssertEquals(t, "Error parsing --ssl-ca-root", "path/root.crt", flags.Ca.Root)
 	testutils.AssertEquals(t, "Error parsing --ssl-server-cert", "path/srv.crt", flags.Server.Cert)
 	testutils.AssertEquals(t, "Error parsing --ssl-server-key", "path/srv.key", flags.Server.Key)
-	AssertInstallDBSSLFlag(t, &flags.DB)
-	AssertSSLGenerationFlag(t, &flags.SSLCertGenerationFlags)
 }
 
 // AssertInstallDBSSLFlag asserts that all InstallSSLFlags flags are parsed correctly.

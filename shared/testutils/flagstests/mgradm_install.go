@@ -42,6 +42,7 @@ var InstallFlagsTestArgs = func() []string {
 	args = append(args, DBFlagsTestArgs...)
 	args = append(args, ReportDBFlagsTestArgs...)
 	args = append(args, InstallSSLFlagsTestArgs...)
+	args = append(args, InstallDBSSLFlagsTestArgs...)
 
 	return args
 }
@@ -68,4 +69,5 @@ func AssertInstallFlags(t *testing.T, flags *utils.ServerFlags) {
 	AssertDBFlag(t, &flags.Installation.DB)
 	AssertReportDBFlag(t, &flags.Installation.ReportDB)
 	AssertInstallSSLFlag(t, &flags.Installation.SSL)
+	AssertInstallDBSSLFlag(t, &flags.Installation.SSL.DB)
 }
