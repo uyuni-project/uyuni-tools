@@ -7,6 +7,7 @@ package podman
 
 import (
 	"errors"
+	"os/exec"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -20,18 +21,71 @@ import (
 var systemd podman_shared.Systemd = podman_shared.NewSystemd()
 
 func ptfForPodman(
-	globalFlags *types.GlobalFlags,
+	_ *types.GlobalFlags,
 	flags *podmanPTFFlags,
-	cmd *cobra.Command,
-	args []string,
+	_ *cobra.Command,
+	_ []string,
 ) error {
-	if err := flags.checkParameters(); err != nil {
+	if _, err := exec.LookPath("podman"); err != nil {
+		return errors.New(L("install podman before running this command"))
+	}
+
+	if err := updateParameters(flags); err != nil {
 		return err
 	}
-	return podman.Upgrade(systemd, globalFlags, &flags.UpgradeFlags, cmd, args)
+
+	if err := systemd.StopService(podman_shared.ProxyService); err != nil {
+		return err
+	}
+
+	hostData, err := podman_shared.InspectHost()
+	if err != nil {
+		return err
+	}
+
+	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.UpgradeFlags.SCC)
+	if err != nil {
+		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+	}
+	defer cleaner()
+
+	httpdImage, err := podman_shared.PrepareImage(authFile, flags.UpgradeFlags.Httpd.Name,
+		flags.UpgradeFlags.PullPolicy, true)
+	if err != nil {
+		log.Warn().Msgf(L("cannot find httpd image: it will no be upgraded"))
+	}
+	saltBrokerImage, err := podman_shared.PrepareImage(authFile, flags.UpgradeFlags.SaltBroker.Name,
+		flags.UpgradeFlags.PullPolicy, true)
+	if err != nil {
+		log.Warn().Msgf(L("cannot find salt-broker image: it will no be upgraded"))
+	}
+	squidImage, err := podman_shared.PrepareImage(authFile, flags.UpgradeFlags.Squid.Name,
+		flags.UpgradeFlags.PullPolicy, true)
+	if err != nil {
+		log.Warn().Msgf(L("cannot find squid image: it will no be upgraded"))
+	}
+	sshImage, err := podman_shared.PrepareImage(authFile, flags.UpgradeFlags.SSH.Name,
+		flags.UpgradeFlags.PullPolicy, true)
+	if err != nil {
+		log.Warn().Msgf(L("cannot find ssh image: it will no be upgraded"))
+	}
+	tftpdImage, err := podman_shared.PrepareImage(authFile, flags.UpgradeFlags.Tftpd.Name,
+		flags.UpgradeFlags.PullPolicy, true)
+	if err != nil {
+		log.Warn().Msgf(L("cannot find tftpd image: it will no be upgraded"))
+	}
+
+	// Setup the systemd service configuration options
+	err = podman.GenerateSystemdService(systemd, httpdImage, saltBrokerImage, squidImage, sshImage,
+		tftpdImage, &flags.UpgradeFlags)
+	if err != nil {
+		return err
+	}
+
+	return podman.StartPod(systemd)
 }
 
-func (flags *podmanPTFFlags) checkParameters() error {
+func updateParameters(flags *podmanPTFFlags) error {
 	if flags.TestID != "" && flags.PTFId != "" {
 		return errors.New(L("ptf and test flags cannot be set simultaneously "))
 	}
@@ -64,12 +118,11 @@ func (flags *podmanPTFFlags) checkParameters() error {
 		if err != nil {
 			return err
 		}
-		config.imageFlag.Name, err = utils.ComputePTF(flags.UpgradeFlags.ProxyImageFlags.Registry, flags.CustomerID, projectID,
-			runningImage, suffix)
+		config.imageFlag.Name, err = utils.ComputePTF(flags.UpgradeFlags.ProxyImageFlags.Registry,
+			flags.CustomerID, projectID, runningImage, suffix)
 		if err != nil {
 			return err
 		}
-		config.imageFlag.SkipComputation = true
 		log.Info().Msgf(L("The %[1]s ptf image computed is: %[2]s"), config.serviceName, config.imageFlag.Name)
 	}
 

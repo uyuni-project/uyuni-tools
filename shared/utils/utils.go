@@ -214,11 +214,6 @@ func ComputeImage(
 	imageFlags types.ImageFlags,
 	appendToName ...string,
 ) (string, error) {
-	if imageFlags.SkipComputation {
-		log.Debug().Msgf("Skipping image recomputation for %s", imageFlags.Name)
-		return imageFlags.Name, nil
-	}
-
 	if !strings.Contains(DefaultRegistry, registry) {
 		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), registry, DefaultRegistry)
 	}
@@ -267,7 +262,7 @@ func ComputePTF(registry string, user string, ptfID string, fullImage string, su
 
 	registryHost, registryPath := SplitRegistryHostAndPath(registry)
 	if registryPath != "" && !strings.HasPrefix(imagePath, registryPath) {
-		return "", fmt.Errorf("image path '%s' does not start with registry path '%s'", imagePath, registryPath)
+		return "", fmt.Errorf(L("image path '%[1]s' does not start with registry path '%[2]s'"), imagePath, registryPath)
 	}
 
 	tag := fmt.Sprintf("latest-%s-%s", suffix, ptfID)
