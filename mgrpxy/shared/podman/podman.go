@@ -298,11 +298,11 @@ func Upgrade(
 		return err
 	}
 
-	return startPod(systemd)
+	return StartPod(systemd)
 }
 
 // Start the proxy services.
-func startPod(systemd podman.Systemd) error {
+func StartPod(systemd podman.Systemd) error {
 	ret := systemd.IsServiceRunning(podman.ProxyService)
 	if ret {
 		return systemd.RestartService(podman.ProxyService)
