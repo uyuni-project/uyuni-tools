@@ -6,6 +6,7 @@ package utils
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -43,6 +44,14 @@ func NewRunner(command string, args ...string) types.Runner {
 	return &runner
 }
 
+// NewRunnerWithContext creates a new runner instance for the command,
+// interuptable based on provided context.
+func NewRunnerWithContext(ctx context.Context, command string, args ...string) types.Runner {
+	runner := runnerImpl{logger: log.Logger}
+	runner.cmd = exec.CommandContext(ctx, command, args...)
+	return &runner
+}
+
 // runnerImpl is a helper object around the exec.Command() function.
 // It implements the Runner interface.
 //
@@ -76,6 +85,13 @@ func (r *runnerImpl) Spinner(message string) types.Runner {
 func (r *runnerImpl) StdMapping() types.Runner {
 	r.cmd.Stdout = r.logger
 	r.cmd.Stderr = r.logger
+	return r
+}
+
+// Std maps the process output to the out bytes buffer.
+// This is useful to get process output for backgrounds tasks.
+func (r *runnerImpl) Std(out *bytes.Buffer) types.Runner {
+	r.cmd.Stdout = out
 	return r
 }
 
@@ -123,6 +139,24 @@ func (r *runnerImpl) Exec() ([]byte, error) {
 	r.logger.Trace().Msgf("Command output: %s, error: %s", out, err)
 
 	return out, err
+}
+
+// Start starts the command, particularly for commands to run in the background.
+func (r *runnerImpl) Start() error {
+	r.logger.Debug().Msgf("Starting: %s", strings.Join(r.cmd.Args, " "))
+
+	err := r.cmd.Start()
+	var exitErr *exec.ExitError
+	if errors.As(err, &exitErr) {
+		err = &CmdError{exitErr}
+	}
+
+	return err
+}
+
+// Wait waits for the command running in the background to ends.
+func (r *runnerImpl) Wait() error {
+	return r.cmd.Wait()
 }
 
 // CmdError is a wrapper around exec.ExitError to show the standard error as message.

@@ -27,6 +27,13 @@ func AssertTrue(t *testing.T, message string, actual bool) {
 	}
 }
 
+// AssertNoError ensures error was not produced.
+func AssertNoError(t *testing.T, message string, err error) {
+	if err != nil {
+		t.Errorf(message+"err: %v", err)
+	}
+}
+
 // AssertHasAllFlagsIgnores ensures that all but the ignored flags are present in the args slice.
 func AssertHasAllFlagsIgnores(t *testing.T, cmd *cobra.Command, args []string, ignored []string) {
 	// Some flags can be in the form --foo=bar, we only want to check the --foo part.

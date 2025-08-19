@@ -18,14 +18,17 @@ func NewHostInspector() templates.InspectTemplateData {
 		Values: []types.InspectData{
 			types.NewInspectData(
 				"scc_username",
-				"cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep username | cut -d= -f2 || true"),
+				"cat /etc/zypp/credentials.d/SCCcredentials 2>/dev/null | grep username | cut -d= -f2 || true"),
 			types.NewInspectData(
 				"scc_password",
-				"cat /etc/zypp/credentials.d/SCCcredentials 2>&1 /dev/null | grep password | cut -d= -f2 || true"),
+				"cat /etc/zypp/credentials.d/SCCcredentials 2>/dev/null | grep password | cut -d= -f2 || true"),
 
 			types.NewInspectData(
 				"has_uyuni_server",
 				"systemctl list-unit-files uyuni-server.service >/dev/null && echo true || echo false"),
+			types.NewInspectData(
+				"has_salt_minion",
+				"systemctl list-unit-files venv-salt-minion.service >/dev/null && echo true || echo false"),
 		},
 	}
 }
@@ -35,6 +38,7 @@ type HostInspectData struct {
 	SCCUsername    string `mapstructure:"scc_username"`
 	SCCPassword    string `mapstructure:"scc_password"`
 	HasUyuniServer bool   `mapstructure:"has_uyuni_server"`
+	HasSaltMinion  bool   `mapstructure:"has_salt_minion"`
 }
 
 // InspectHost gathers data on the host where to install the server or proxy.
