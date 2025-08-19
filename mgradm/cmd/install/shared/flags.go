@@ -8,7 +8,6 @@ import (
 	"github.com/spf13/cobra"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -21,7 +20,6 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().Bool("tftp", true, L("Enable TFTP"))
 
 	cmd_utils.AddServerFlags(cmd)
-	ssl.AddSSLThirdPartyFlags(cmd)
 
 	cmd.Flags().Bool("debug-java", false, L("Enable tomcat and taskomatic remote debugging"))
 

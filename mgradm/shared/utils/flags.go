@@ -91,9 +91,8 @@ func (flags *InstallationFlags) checkSSLParameters(cmd *cobra.Command, command s
 }
 
 func (flags *InstallationFlags) checkUpgradeSSLParameters(cmd *cobra.Command, command string) {
-	isLocalDB := flags.DB.Host == "db"
 	// Make sure we have all the required 3rd party flags or none
-	flags.SSL.CheckUpgradeParameters(isLocalDB)
+	flags.SSL.CheckUpgradeParameters(flags.DB.IsLocal())
 
 	// Since we use cert-manager for self-signed certificates on kubernetes we don't need password for it
 	if !flags.SSL.UseProvidedDB() && command == "podman" && !systemd.HasService(podman.DBService) {
