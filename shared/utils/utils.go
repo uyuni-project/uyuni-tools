@@ -214,11 +214,6 @@ func ComputeImage(
 	imageFlags types.ImageFlags,
 	appendToName ...string,
 ) (string, error) {
-	if imageFlags.SkipComputation {
-		log.Debug().Msgf("Skipping image recomputation for %s", imageFlags.Name)
-		return imageFlags.Name, nil
-	}
-
 	if !strings.Contains(DefaultRegistry, registry) {
 		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), registry, DefaultRegistry)
 	}
