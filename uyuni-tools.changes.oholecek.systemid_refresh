@@ -1,0 +1,2 @@
+- Automatically get up-to-date systemid file on salt based proxy
+  hosts (bsc#1246789)
