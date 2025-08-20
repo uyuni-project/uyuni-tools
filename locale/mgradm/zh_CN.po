@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 16:07+0200\n"
+"POT-Creation-Date: 2025-08-20 17:56+0200\n"
 "PO-Revision-Date: 2025-06-12 08:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
@@ -990,51 +990,51 @@ msgstr "服务器安装失败"
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "服务器设置，以 %[2]s 用户身份在 https://%[1]s 上登录"
 
-#: mgradm/cmd/install/shared/flags.go:17
+#: mgradm/cmd/install/shared/flags.go:16
 msgid "Time zone to set on the server. Defaults to the host timezone"
 msgstr "要在服务器上设置的时区。默认设为主机时区"
 
-#: mgradm/cmd/install/shared/flags.go:18
+#: mgradm/cmd/install/shared/flags.go:17
 msgid "Administrator e-mail"
 msgstr "管理员电子邮件地址"
 
-#: mgradm/cmd/install/shared/flags.go:19
+#: mgradm/cmd/install/shared/flags.go:18
 msgid "E-Mail sending the notifications"
 msgstr "发送通知的电子邮件地址"
 
-#: mgradm/cmd/install/shared/flags.go:20
+#: mgradm/cmd/install/shared/flags.go:19
 msgid "InterServerSync v1 parent FQDN"
 msgstr "InterServerSync v1 父 FQDN"
 
-#: mgradm/cmd/install/shared/flags.go:21
+#: mgradm/cmd/install/shared/flags.go:20
 msgid "Enable TFTP"
 msgstr "启用 TFTP"
 
-#: mgradm/cmd/install/shared/flags.go:26
+#: mgradm/cmd/install/shared/flags.go:24
 msgid "Enable tomcat and taskomatic remote debugging"
 msgstr "启用 tomcat 和 taskomatic 远程调试"
 
-#: mgradm/cmd/install/shared/flags.go:34
+#: mgradm/cmd/install/shared/flags.go:32
 msgid "Administrator user name"
 msgstr "管理员用户名"
 
-#: mgradm/cmd/install/shared/flags.go:35
+#: mgradm/cmd/install/shared/flags.go:33
 msgid "Administrator password"
 msgstr "管理员口令"
 
-#: mgradm/cmd/install/shared/flags.go:36
+#: mgradm/cmd/install/shared/flags.go:34
 msgid "First name of the administrator"
 msgstr "管理员的名字"
 
-#: mgradm/cmd/install/shared/flags.go:37
+#: mgradm/cmd/install/shared/flags.go:35
 msgid "Last name of the administrator"
 msgstr "管理员的姓氏"
 
-#: mgradm/cmd/install/shared/flags.go:38
+#: mgradm/cmd/install/shared/flags.go:36
 msgid "First organization name"
 msgstr "第一个组织名称"
 
-#: mgradm/cmd/install/shared/flags.go:40
+#: mgradm/cmd/install/shared/flags.go:38
 msgid "First User Flags"
 msgstr "第一个用户标志"
 
@@ -1340,7 +1340,7 @@ msgid ""
 "a refresh of the pillars of each registered system will be triggered.\n"
 msgstr ""
 
-#: mgradm/cmd/server/rename/rename.go:47 mgradm/shared/utils/cmd_utils.go:294
+#: mgradm/cmd/server/rename/rename.go:47 mgradm/shared/utils/cmd_utils.go:295
 msgid "Password for the CA key to generate"
 msgstr "要生成的 CA 密钥的口令"
 
@@ -1427,28 +1427,28 @@ msgstr ""
 "\n"
 "注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:73
+#: mgradm/cmd/support/ptf/podman/utils.go:74
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "不能同时设置 ptf 和 test 标志 "
 
-#: mgradm/cmd/support/ptf/podman/utils.go:76
+#: mgradm/cmd/support/ptf/podman/utils.go:77
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptf 和 test 标志不能同时为空 "
 
-#: mgradm/cmd/support/ptf/podman/utils.go:79
+#: mgradm/cmd/support/ptf/podman/utils.go:80
 msgid "user flag cannot be empty"
 msgstr "user 标志不能为空"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:91
+#: mgradm/cmd/support/ptf/podman/utils.go:92
 msgid "failed to find server image"
 msgstr "找不到服务器映像"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:100
+#: mgradm/cmd/support/ptf/podman/utils.go:101
 #, javascript-format
 msgid "The computed image is %s"
 msgstr "计算出的映像为 %s"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:118
+#: mgradm/cmd/support/ptf/podman/utils.go:119
 #, fuzzy
 #| msgid "The computed image is %s"
 msgid "The %[1]s service image is %[2]s"
@@ -2022,70 +2022,76 @@ msgstr "找不到可查找 SSH 配置的主目录"
 msgid "cannot inspect podman values"
 msgstr "无法检查 podman 值"
 
-#: mgradm/shared/podman/ssl.go:87
+#: mgradm/shared/podman/ssl.go:88
 msgid "CA validation failed!"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:101
+#: mgradm/shared/podman/ssl.go:102
 msgid "Using provided 3rd party server certificates"
 msgstr "正在使用提供的第三方服务器证书"
 
-#: mgradm/shared/podman/ssl.go:139
+#: mgradm/shared/podman/ssl.go:140
 msgid "Using provided 3rd party database certificates"
 msgstr "正在使用提供的第三方数据库证书"
 
-#: mgradm/shared/podman/ssl.go:242
+#: mgradm/shared/podman/ssl.go:243
 #, javascript-format
 msgid "CA file %s not found. New CA and certificates will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:247
+#: mgradm/shared/podman/ssl.go:248
 msgid "cannot write existing CA certificate"
 msgstr "无法写入现有 CA 证书"
 
-#: mgradm/shared/podman/ssl.go:254
+#: mgradm/shared/podman/ssl.go:255
 #, javascript-format
 msgid "Cert file %s not found. A new certificate will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:258
+#: mgradm/shared/podman/ssl.go:259
 msgid "cannot write existing server certificate"
 msgstr "无法写入现有服务器证书"
 
-#: mgradm/shared/podman/ssl.go:270
+#: mgradm/shared/podman/ssl.go:271
 #, javascript-format
 msgid "Cert key file %s not found. A new certificate will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:274
+#: mgradm/shared/podman/ssl.go:275
 msgid "cannot write existing server key"
 msgstr "无法写入现有服务器密钥"
 
-#: mgradm/shared/podman/ssl.go:277
+#: mgradm/shared/podman/ssl.go:278
 msgid "Reusing existing certificates"
 msgstr "正在重复使用现有证书"
 
-#: mgradm/shared/podman/ssl.go:338
+#: mgradm/shared/podman/ssl.go:325
+#, fuzzy
+#| msgid "failed to remove copied certificate files in the container"
+msgid "Cannot generate new certificates without a CA password. Please check input options"
+msgstr "无法去除容器中已复制的证书文件"
+
+#: mgradm/shared/podman/ssl.go:346
 #, fuzzy
 #| msgid "failed to remove copied certificate files in the container"
 msgid "Failed to generate server SSL certificates. Please check the input parameters."
 msgstr "无法去除容器中已复制的证书文件"
 
-#: mgradm/shared/podman/ssl.go:341
+#: mgradm/shared/podman/ssl.go:349
 msgid "Server SSL certificates generated"
 msgstr "已生成服务器 SSL 证书"
 
-#: mgradm/shared/podman/ssl.go:360
+#: mgradm/shared/podman/ssl.go:368
 #, fuzzy
 #| msgid "cannot generate systemd service"
 msgid "Cannot generate database certificate"
 msgstr "无法生成 systemd 服务"
 
-#: mgradm/shared/podman/ssl.go:375
+#: mgradm/shared/podman/ssl.go:383
 msgid "Failed to generate server Database SSL certificates. Please check the input parameters."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:378
+#: mgradm/shared/podman/ssl.go:386
 msgid "Database SSL certificates generated"
 msgstr "已生成数据库 SSL 证书"
 
@@ -2422,11 +2428,11 @@ msgstr "无法从映像 %s 中提取版本信息"
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "无法从版本 %[1]s 降级到 %[2]s"
 
-#: mgradm/shared/utils/flags.go:156
+#: mgradm/shared/utils/flags.go:155
 msgid "Can only contain letters, digits . _ and -"
 msgstr "只能包含字母、数字 . _ 和 -"
 
-#: mgradm/shared/utils/flags.go:164
+#: mgradm/shared/utils/flags.go:163
 msgid "Not a valid email address"
 msgstr "不是有效的电子邮件地址"
 

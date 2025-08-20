@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 16:07+0200\n"
+"POT-Creation-Date: 2025-08-20 17:56+0200\n"
 "PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
@@ -303,8 +303,8 @@ msgstr ""
 #: shared/podman/images.go:369 shared/podman/images.go:389
 #: shared/podman/network.go:108 shared/podman/secret.go:130
 #: shared/podman/systemd.go:248 shared/podman/systemd.go:326
-#: shared/podman/systemd.go:327 shared/podman/utils.go:186
-#: shared/podman/utils.go:219 shared/podman/utils.go:248
+#: shared/podman/systemd.go:327 shared/podman/utils.go:188
+#: shared/podman/utils.go:221 shared/podman/utils.go:250
 #, javascript-format
 msgid "Would run %s"
 msgstr ""
@@ -630,11 +630,11 @@ msgstr ""
 msgid "%[1]s pod failed to complete within %[2]d seconds"
 msgstr ""
 
-#: shared/podman/hostinspector.go:50
+#: shared/podman/hostinspector.go:54
 msgid "failed to run inspect script in host system"
 msgstr ""
 
-#: shared/podman/hostinspector.go:55
+#: shared/podman/hostinspector.go:59
 #, fuzzy
 msgid "cannot inspect host data"
 msgstr "impossibile ispezionare i valori dell'host: %s"
@@ -747,8 +747,8 @@ msgid "cannot find any running image for container %s"
 msgstr "impossibile trovare il nodo che ha in esecuzione uyuni: %s"
 
 #: shared/podman/images.go:348 shared/podman/images.go:371
-#: shared/podman/images.go:391 shared/podman/utils.go:188
-#: shared/podman/utils.go:222 shared/podman/utils.go:259
+#: shared/podman/images.go:391 shared/podman/utils.go:190
+#: shared/podman/utils.go:224 shared/podman/utils.go:261
 #, javascript-format
 msgid "Run %s"
 msgstr ""
@@ -1040,92 +1040,92 @@ msgstr "mancata creazione della directory temporanea: %s"
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/podman/utils.go:62
+#: shared/podman/utils.go:64
 msgid "Extra arguments to pass to podman"
 msgstr ""
 
-#: shared/podman/utils.go:69
+#: shared/podman/utils.go:71
 msgid "failed to enable podman.socket unit"
 msgstr ""
 
-#: shared/podman/utils.go:90 shared/podman/utils.go:119
+#: shared/podman/utils.go:92 shared/podman/utils.go:121
 #, javascript-format
 msgid "failed to run %s container"
 msgstr ""
 
-#: shared/podman/utils.go:130
+#: shared/podman/utils.go:132
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:131
+#: shared/podman/utils.go:133
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:133
+#: shared/podman/utils.go:135
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:136
+#: shared/podman/utils.go:138
 msgid "Failed to kill the server"
 msgstr ""
 
-#: shared/podman/utils.go:138
+#: shared/podman/utils.go:140
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:141
+#: shared/podman/utils.go:143
 msgid "Error removing container"
 msgstr ""
 
-#: shared/podman/utils.go:146
+#: shared/podman/utils.go:148
 msgid "Container already removed"
 msgstr ""
 
-#: shared/podman/utils.go:154
+#: shared/podman/utils.go:156
 #, fuzzy, javascript-format
 msgid "failed to get %s systemd service definition"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/podman/utils.go:161
+#: shared/podman/utils.go:163
 #, fuzzy, javascript-format
 msgid "no UYUNI.*_IMAGE defined in %s systemd service"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/podman/utils.go:200
+#: shared/podman/utils.go:202
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr ""
 
-#: shared/podman/utils.go:224
+#: shared/podman/utils.go:226
 #, fuzzy, javascript-format
 msgid "Failed to export volume %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/podman/utils.go:227
+#: shared/podman/utils.go:229
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:253
+#: shared/podman/utils.go:255
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr ""
 
-#: shared/podman/utils.go:257
+#: shared/podman/utils.go:259
 #, fuzzy, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/podman/utils.go:261
+#: shared/podman/utils.go:263
 #, fuzzy, javascript-format
 msgid "Failed to import volume %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/podman/utils.go:265
+#: shared/podman/utils.go:267
 #, javascript-format
 msgid "Unable to restore selinux context for %s, manual action is required"
 msgstr ""
 
-#: shared/podman/utils.go:364
+#: shared/podman/utils.go:366
 #, fuzzy
 msgid "cannot inspect data"
 msgstr "impossibile ispezionare i valori dell'host: %s"
@@ -1589,84 +1589,84 @@ msgstr "mancata creazione della directory temporanea: %s"
 msgid "A value is required"
 msgstr ""
 
-#: shared/utils/utils.go:209
+#: shared/utils/utils.go:218
 msgid "Registry %[1]s would be used instead of namespace %[2]s"
 msgstr ""
 
-#: shared/utils/utils.go:224 shared/utils/utils.go:250
+#: shared/utils/utils.go:233 shared/utils/utils.go:259
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr ""
 
-#: shared/utils/utils.go:228
+#: shared/utils/utils.go:237
 #, javascript-format
 msgid "tag missing on %s"
 msgstr ""
 
-#: shared/utils/utils.go:236 shared/utils/utils.go:241
+#: shared/utils/utils.go:245 shared/utils/utils.go:250
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr ""
 
-#: shared/utils/utils.go:260
+#: shared/utils/utils.go:276
 #, javascript-format
 msgid "Failed to run %s"
 msgstr ""
 
-#: shared/utils/utils.go:269
+#: shared/utils/utils.go:285
 msgid "Failed to read random data"
 msgstr ""
 
-#: shared/utils/utils.go:290
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:296
+#: shared/utils/utils.go:312
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:409
+#: shared/utils/utils.go:425
 #, fuzzy
 msgid "failed to compute server FQDN"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/utils/utils.go:423
+#: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:427
+#: shared/utils/utils.go:443
 #, fuzzy, javascript-format
 msgid "cannot resolve %s"
 msgstr "impossible eliminare %s"
 
-#: shared/utils/utils.go:452
+#: shared/utils/utils.go:468
 #, fuzzy, javascript-format
 msgid "error creating file %s"
 msgstr "impossibile leggere la configurazione: %s"
 
-#: shared/utils/utils.go:457
+#: shared/utils/utils.go:473
 #, javascript-format
 msgid "error writing file %s"
 msgstr ""
 
-#: shared/utils/utils.go:469 shared/utils/utils.go:484
+#: shared/utils/utils.go:485 shared/utils/utils.go:500
 #, fuzzy, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:490
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr ""
 
-#: shared/utils/utils.go:491
+#: shared/utils/utils.go:507
 #, fuzzy
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/utils/utils.go:495
+#: shared/utils/utils.go:511
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 16:07+0200\n"
+"POT-Creation-Date: 2025-08-20 17:56+0200\n"
 "PO-Revision-Date: 2025-06-17 08:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
@@ -296,8 +296,8 @@ msgstr "네임스페이스는 필수입니다."
 #: shared/podman/images.go:369 shared/podman/images.go:389
 #: shared/podman/network.go:108 shared/podman/secret.go:130
 #: shared/podman/systemd.go:248 shared/podman/systemd.go:326
-#: shared/podman/systemd.go:327 shared/podman/utils.go:186
-#: shared/podman/utils.go:219 shared/podman/utils.go:248
+#: shared/podman/systemd.go:327 shared/podman/utils.go:188
+#: shared/podman/utils.go:221 shared/podman/utils.go:250
 #, javascript-format
 msgid "Would run %s"
 msgstr "%s 실행"
@@ -617,11 +617,11 @@ msgstr "%[1]s pod가 실패했으며, 상태가 %[2]s임"
 msgid "%[1]s pod failed to complete within %[2]d seconds"
 msgstr "%[1]s 포드가 %[2]d초 내에 완료되지 않음"
 
-#: shared/podman/hostinspector.go:50
+#: shared/podman/hostinspector.go:54
 msgid "failed to run inspect script in host system"
 msgstr "호스트 시스템에서 검사 스크립트를 실행할 수 없음"
 
-#: shared/podman/hostinspector.go:55
+#: shared/podman/hostinspector.go:59
 msgid "cannot inspect host data"
 msgstr "호스트 데이터를 검사할 수 없음"
 
@@ -730,8 +730,8 @@ msgid "cannot find any running image for container %s"
 msgstr "%s 컨테이너에 대한 실행 이미지를 찾을 수 없음"
 
 #: shared/podman/images.go:348 shared/podman/images.go:371
-#: shared/podman/images.go:391 shared/podman/utils.go:188
-#: shared/podman/utils.go:222 shared/podman/utils.go:259
+#: shared/podman/images.go:391 shared/podman/utils.go:190
+#: shared/podman/utils.go:224 shared/podman/utils.go:261
 #, javascript-format
 msgid "Run %s"
 msgstr "%s 실행"
@@ -1021,93 +1021,93 @@ msgstr "%s 파일 쓰기 실패"
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "오래된 %s systemd 서비스 구성 파일 제거 실패"
 
-#: shared/podman/utils.go:62
+#: shared/podman/utils.go:64
 msgid "Extra arguments to pass to podman"
 msgstr "podman에게 전달할 추가 인자"
 
-#: shared/podman/utils.go:69
+#: shared/podman/utils.go:71
 msgid "failed to enable podman.socket unit"
 msgstr "podman.socket 단위 활성화하지 못함"
 
-#: shared/podman/utils.go:90 shared/podman/utils.go:119
+#: shared/podman/utils.go:92 shared/podman/utils.go:121
 #, javascript-format
 msgid "failed to run %s container"
 msgstr "%s 컨테이너를 실행하지 못함"
 
-#: shared/podman/utils.go:130
+#: shared/podman/utils.go:132
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr "컨테이너 ID: %[2]s에 대해 podman kill %[1]s을(를) 실행하시겠습니까?"
 
-#: shared/podman/utils.go:131
+#: shared/podman/utils.go:133
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr "컨테이너 ID: %[2]s에 대해 podman remove %[1]s을(를) 실행하시겠습니까?"
 
-#: shared/podman/utils.go:133
+#: shared/podman/utils.go:135
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr "컨테이너 id %[2]s에 대해 podman kill %[1]s 실행"
 
-#: shared/podman/utils.go:136
+#: shared/podman/utils.go:138
 msgid "Failed to kill the server"
 msgstr "서버 종료 실패"
 
-#: shared/podman/utils.go:138
+#: shared/podman/utils.go:140
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr "컨테이너 id %[2]s에 대해 podman remove %[1]s 실행"
 
-#: shared/podman/utils.go:141
+#: shared/podman/utils.go:143
 msgid "Error removing container"
 msgstr "컨테이너 제거 중 오류 발생"
 
-#: shared/podman/utils.go:146
+#: shared/podman/utils.go:148
 msgid "Container already removed"
 msgstr "컨테이너 이미 제거됨"
 
-#: shared/podman/utils.go:154
+#: shared/podman/utils.go:156
 #, javascript-format
 msgid "failed to get %s systemd service definition"
 msgstr "%s systemd 서비스 정의를 가져오지 못함"
 
-#: shared/podman/utils.go:161
+#: shared/podman/utils.go:163
 #, fuzzy, javascript-format
 #| msgid "no UYUNI_IMAGE defined in %s systemd service"
 msgid "no UYUNI.*_IMAGE defined in %s systemd service"
 msgstr "%s systemd 서비스에 정의된 UYUNI_IMAGE 없음"
 
-#: shared/podman/utils.go:200
+#: shared/podman/utils.go:202
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "볼륨 %s이(가) 외부에 탑재되어 있어, 디렉토리를 제거할 수 없습니다"
 
-#: shared/podman/utils.go:224
+#: shared/podman/utils.go:226
 #, javascript-format
 msgid "Failed to export volume %s"
 msgstr "%s 볼륨 내보내기 실패"
 
-#: shared/podman/utils.go:227
+#: shared/podman/utils.go:229
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr "볼륨 %[1]의 체크섬을 %[2]에 쓰지 못함"
 
-#: shared/podman/utils.go:253
+#: shared/podman/utils.go:255
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr "볼륨 %s에 대한 체크섬이 일치하지 않음"
 
-#: shared/podman/utils.go:257
+#: shared/podman/utils.go:259
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr "비어 있는 볼륨 %s 미리 만들기 실패"
 
-#: shared/podman/utils.go:261
+#: shared/podman/utils.go:263
 #, javascript-format
 msgid "Failed to import volume %s"
 msgstr "%s 볼륨 가져오기 실패"
 
-#: shared/podman/utils.go:265
+#: shared/podman/utils.go:267
 #, javascript-format
 msgid "Unable to restore selinux context for %s, manual action is required"
 msgstr ""
 
-#: shared/podman/utils.go:364
+#: shared/podman/utils.go:366
 msgid "cannot inspect data"
 msgstr "데이터를 검사할 수 없음"
 
@@ -1640,84 +1640,84 @@ msgstr "입력 읽기 실패"
 msgid "A value is required"
 msgstr "값은 필수입니다."
 
-#: shared/utils/utils.go:209
+#: shared/utils/utils.go:218
 msgid "Registry %[1]s would be used instead of namespace %[2]s"
 msgstr "%[2]s 네임스페이스 대신 %[1]s 레지스트리가 사용됩니다."
 
-#: shared/utils/utils.go:224 shared/utils/utils.go:250
+#: shared/utils/utils.go:233 shared/utils/utils.go:259
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "잘못된 이미지 이름: %s"
 
-#: shared/utils/utils.go:228
+#: shared/utils/utils.go:237
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "%s에 태그 누락"
 
-#: shared/utils/utils.go:236 shared/utils/utils.go:241
+#: shared/utils/utils.go:245 shared/utils/utils.go:250
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "계산된 이미지 이름: %s"
 
-#: shared/utils/utils.go:260
+#: shared/utils/utils.go:276
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "%s 실행 실패"
 
-#: shared/utils/utils.go:269
+#: shared/utils/utils.go:285
 msgid "Failed to read random data"
 msgstr "임의 데이터 읽기 실패"
 
-#: shared/utils/utils.go:290
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "%s에서 다운로드하지 못함"
 
-#: shared/utils/utils.go:296
+#: shared/utils/utils.go:312
 #, javascript-format
 msgid "bad status: %s"
 msgstr "잘못된 상태: %s"
 
-#: shared/utils/utils.go:409
+#: shared/utils/utils.go:425
 msgid "failed to compute server FQDN"
 msgstr "서버 FQDN 계산 실패"
 
-#: shared/utils/utils.go:423
+#: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s은(는) 유효한 FQDN이 아닙니다."
 
-#: shared/utils/utils.go:427
+#: shared/utils/utils.go:443
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "%s 해결 불가"
 
-#: shared/utils/utils.go:452
+#: shared/utils/utils.go:468
 #, javascript-format
 msgid "error creating file %s"
 msgstr "%s 파일 생성 오류"
 
-#: shared/utils/utils.go:457
+#: shared/utils/utils.go:473
 #, javascript-format
 msgid "error writing file %s"
 msgstr "%s 파일 쓰기 오류"
 
-#: shared/utils/utils.go:469 shared/utils/utils.go:484
+#: shared/utils/utils.go:485 shared/utils/utils.go:500
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "파일 %s의 체크섬을 계산하지 못함"
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:490
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "%[1] 파일의 체크섬을 %[2]에 쓰지 못함"
 
-#: shared/utils/utils.go:491
+#: shared/utils/utils.go:507
 #, fuzzy
 #| msgid "Failed to calculate checksum of the file %s"
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "파일 %s의 체크섬을 계산하지 못함"
 
-#: shared/utils/utils.go:495
+#: shared/utils/utils.go:511
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "%s의 체크섬이 일치하지 않음"
