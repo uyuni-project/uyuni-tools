@@ -25,7 +25,8 @@ else
 fi
 
 if test -e /etc/sysconfig/prometheus-postgres_exporter/systemd/60-server.conf; then
-        sed 's/\/etc\/postgres_exporter\//\/etc\/sysconfig\/prometheus-postgres_exporter\//' -i /etc/sysconfig/prometheus-postgres_exporter/systemd/60-server.conf;
+        sed 's/\/etc\/postgres_exporter\//\/etc\/sysconfig\/prometheus-postgres_exporter\//' \
+        -i /etc/sysconfig/prometheus-postgres_exporter/systemd/60-server.conf;
 fi
 
 echo "DONE"`
