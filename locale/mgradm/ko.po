@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 16:07+0200\n"
+"POT-Creation-Date: 2025-08-20 17:56+0200\n"
 "PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
@@ -990,51 +990,51 @@ msgstr "서버 설정 실패"
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "서버 설정, https://%[1]s에 %[2]s 사용자로 로그인"
 
-#: mgradm/cmd/install/shared/flags.go:17
+#: mgradm/cmd/install/shared/flags.go:16
 msgid "Time zone to set on the server. Defaults to the host timezone"
 msgstr "서버에서 설정할 표준 시간대입니다. 기본값은 호스트 표준 시간대입니다."
 
-#: mgradm/cmd/install/shared/flags.go:18
+#: mgradm/cmd/install/shared/flags.go:17
 msgid "Administrator e-mail"
 msgstr "관리자 전자 메일"
 
-#: mgradm/cmd/install/shared/flags.go:19
+#: mgradm/cmd/install/shared/flags.go:18
 msgid "E-Mail sending the notifications"
 msgstr "알림을 보내는 전자 메일"
 
-#: mgradm/cmd/install/shared/flags.go:20
+#: mgradm/cmd/install/shared/flags.go:19
 msgid "InterServerSync v1 parent FQDN"
 msgstr "InterServerSync v1 상위 FQDN"
 
-#: mgradm/cmd/install/shared/flags.go:21
+#: mgradm/cmd/install/shared/flags.go:20
 msgid "Enable TFTP"
 msgstr "TFTP 활성화"
 
-#: mgradm/cmd/install/shared/flags.go:26
+#: mgradm/cmd/install/shared/flags.go:24
 msgid "Enable tomcat and taskomatic remote debugging"
 msgstr "Tomcat 및 Taskomatic 원격 디버깅 활성화"
 
-#: mgradm/cmd/install/shared/flags.go:34
+#: mgradm/cmd/install/shared/flags.go:32
 msgid "Administrator user name"
 msgstr "관리자 사용자 이름"
 
-#: mgradm/cmd/install/shared/flags.go:35
+#: mgradm/cmd/install/shared/flags.go:33
 msgid "Administrator password"
 msgstr "관리자 비밀번호"
 
-#: mgradm/cmd/install/shared/flags.go:36
+#: mgradm/cmd/install/shared/flags.go:34
 msgid "First name of the administrator"
 msgstr "관리자의 이름"
 
-#: mgradm/cmd/install/shared/flags.go:37
+#: mgradm/cmd/install/shared/flags.go:35
 msgid "Last name of the administrator"
 msgstr "관리자의 성"
 
-#: mgradm/cmd/install/shared/flags.go:38
+#: mgradm/cmd/install/shared/flags.go:36
 msgid "First organization name"
 msgstr "첫 번째 조직 이름"
 
-#: mgradm/cmd/install/shared/flags.go:40
+#: mgradm/cmd/install/shared/flags.go:38
 msgid "First User Flags"
 msgstr "첫 번째 사용자 플래그"
 
@@ -1338,7 +1338,7 @@ msgid ""
 "a refresh of the pillars of each registered system will be triggered.\n"
 msgstr ""
 
-#: mgradm/cmd/server/rename/rename.go:47 mgradm/shared/utils/cmd_utils.go:294
+#: mgradm/cmd/server/rename/rename.go:47 mgradm/shared/utils/cmd_utils.go:295
 msgid "Password for the CA key to generate"
 msgstr "생성할 CA 키의 비밀번호"
 
@@ -1425,28 +1425,28 @@ msgstr ""
 "\n"
 "참고: 현재 원격 podman에 설치하는 기능은 지원되지 않습니다!\n"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:73
+#: mgradm/cmd/support/ptf/podman/utils.go:74
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "ptf와 테스트 플래그를 동시에 설정할 수 없음 "
 
-#: mgradm/cmd/support/ptf/podman/utils.go:76
+#: mgradm/cmd/support/ptf/podman/utils.go:77
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptf와 테스트 플래그를 동시에 비워둘 수없음 "
 
-#: mgradm/cmd/support/ptf/podman/utils.go:79
+#: mgradm/cmd/support/ptf/podman/utils.go:80
 msgid "user flag cannot be empty"
 msgstr "사용자 플래그를 비워둘 수 없습니다."
 
-#: mgradm/cmd/support/ptf/podman/utils.go:91
+#: mgradm/cmd/support/ptf/podman/utils.go:92
 msgid "failed to find server image"
 msgstr "서버 이미지를 찾지 못함"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:100
+#: mgradm/cmd/support/ptf/podman/utils.go:101
 #, javascript-format
 msgid "The computed image is %s"
 msgstr "계산된 이미지는 %s입니다."
 
-#: mgradm/cmd/support/ptf/podman/utils.go:118
+#: mgradm/cmd/support/ptf/podman/utils.go:119
 #, fuzzy
 #| msgid "The computed image is %s"
 msgid "The %[1]s service image is %[2]s"
@@ -2020,70 +2020,76 @@ msgstr "SSH 구성을 찾을 홈 디렉토리를 찾지 못했습니다."
 msgid "cannot inspect podman values"
 msgstr "podman 값을 검사할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:87
+#: mgradm/shared/podman/ssl.go:88
 msgid "CA validation failed!"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:101
+#: mgradm/shared/podman/ssl.go:102
 msgid "Using provided 3rd party server certificates"
 msgstr "제공된 타사 서버 인증서 사용"
 
-#: mgradm/shared/podman/ssl.go:139
+#: mgradm/shared/podman/ssl.go:140
 msgid "Using provided 3rd party database certificates"
 msgstr "제공된 타사 데이터베이스 인증서 사용"
 
-#: mgradm/shared/podman/ssl.go:242
+#: mgradm/shared/podman/ssl.go:243
 #, javascript-format
 msgid "CA file %s not found. New CA and certificates will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:247
+#: mgradm/shared/podman/ssl.go:248
 msgid "cannot write existing CA certificate"
 msgstr "기존 CA 인증서를 작성할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:254
+#: mgradm/shared/podman/ssl.go:255
 #, javascript-format
 msgid "Cert file %s not found. A new certificate will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:258
+#: mgradm/shared/podman/ssl.go:259
 msgid "cannot write existing server certificate"
 msgstr "기존 서버 인증서를 작성할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:270
+#: mgradm/shared/podman/ssl.go:271
 #, javascript-format
 msgid "Cert key file %s not found. A new certificate will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:274
+#: mgradm/shared/podman/ssl.go:275
 msgid "cannot write existing server key"
 msgstr "기존 서버 키를 작성할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:277
+#: mgradm/shared/podman/ssl.go:278
 msgid "Reusing existing certificates"
 msgstr "기존 인증서 재사용"
 
-#: mgradm/shared/podman/ssl.go:338
+#: mgradm/shared/podman/ssl.go:325
+#, fuzzy
+#| msgid "failed to remove copied certificate files in the container"
+msgid "Cannot generate new certificates without a CA password. Please check input options"
+msgstr "컨테이너에서 복사한 인증서 파일을 제거하지 못했습니다."
+
+#: mgradm/shared/podman/ssl.go:346
 #, fuzzy
 #| msgid "failed to remove copied certificate files in the container"
 msgid "Failed to generate server SSL certificates. Please check the input parameters."
 msgstr "컨테이너에서 복사한 인증서 파일을 제거하지 못했습니다."
 
-#: mgradm/shared/podman/ssl.go:341
+#: mgradm/shared/podman/ssl.go:349
 msgid "Server SSL certificates generated"
 msgstr "서버 SSL 인증서 생성됨"
 
-#: mgradm/shared/podman/ssl.go:360
+#: mgradm/shared/podman/ssl.go:368
 #, fuzzy
 #| msgid "cannot generate systemd service"
 msgid "Cannot generate database certificate"
 msgstr "systemd 서비스를 생성할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:375
+#: mgradm/shared/podman/ssl.go:383
 msgid "Failed to generate server Database SSL certificates. Please check the input parameters."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:378
+#: mgradm/shared/podman/ssl.go:386
 msgid "Database SSL certificates generated"
 msgstr "데이터베이스 SSL 인증서 생성됨"
 
@@ -2420,11 +2426,11 @@ msgstr "이미지 %s에서 릴리스를 가져올 수 없습니다."
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "버전 %[1]s에서 %[2]s(으)로 다운그레이드할 수 없습니다."
 
-#: mgradm/shared/utils/flags.go:156
+#: mgradm/shared/utils/flags.go:155
 msgid "Can only contain letters, digits . _ and -"
 msgstr "문자, 숫자 . _ 및 -만 포함할 수 있음"
 
-#: mgradm/shared/utils/flags.go:164
+#: mgradm/shared/utils/flags.go:163
 msgid "Not a valid email address"
 msgstr "유효한 전자 메일 주소 아님"
 

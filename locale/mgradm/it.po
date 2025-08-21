@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 16:07+0200\n"
+"POT-Creation-Date: 2025-08-20 17:56+0200\n"
 "PO-Revision-Date: 2024-05-16 09:23+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
@@ -948,51 +948,51 @@ msgstr ""
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:17
+#: mgradm/cmd/install/shared/flags.go:16
 msgid "Time zone to set on the server. Defaults to the host timezone"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:18
+#: mgradm/cmd/install/shared/flags.go:17
 msgid "Administrator e-mail"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:19
+#: mgradm/cmd/install/shared/flags.go:18
 msgid "E-Mail sending the notifications"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:20
+#: mgradm/cmd/install/shared/flags.go:19
 msgid "InterServerSync v1 parent FQDN"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:21
+#: mgradm/cmd/install/shared/flags.go:20
 msgid "Enable TFTP"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:26
+#: mgradm/cmd/install/shared/flags.go:24
 msgid "Enable tomcat and taskomatic remote debugging"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:34
+#: mgradm/cmd/install/shared/flags.go:32
 msgid "Administrator user name"
 msgstr "Nome utente amministratore"
 
-#: mgradm/cmd/install/shared/flags.go:35
+#: mgradm/cmd/install/shared/flags.go:33
 msgid "Administrator password"
 msgstr "Password amministratore"
 
-#: mgradm/cmd/install/shared/flags.go:36
+#: mgradm/cmd/install/shared/flags.go:34
 msgid "First name of the administrator"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:37
+#: mgradm/cmd/install/shared/flags.go:35
 msgid "Last name of the administrator"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:38
+#: mgradm/cmd/install/shared/flags.go:36
 msgid "First organization name"
 msgstr ""
 
-#: mgradm/cmd/install/shared/flags.go:40
+#: mgradm/cmd/install/shared/flags.go:38
 msgid "First User Flags"
 msgstr ""
 
@@ -1260,7 +1260,7 @@ msgid ""
 "a refresh of the pillars of each registered system will be triggered.\n"
 msgstr ""
 
-#: mgradm/cmd/server/rename/rename.go:47 mgradm/shared/utils/cmd_utils.go:294
+#: mgradm/cmd/server/rename/rename.go:47 mgradm/shared/utils/cmd_utils.go:295
 msgid "Password for the CA key to generate"
 msgstr ""
 
@@ -1341,29 +1341,29 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:73
+#: mgradm/cmd/support/ptf/podman/utils.go:74
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:76
+#: mgradm/cmd/support/ptf/podman/utils.go:77
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:79
+#: mgradm/cmd/support/ptf/podman/utils.go:80
 msgid "user flag cannot be empty"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:91
+#: mgradm/cmd/support/ptf/podman/utils.go:92
 #, fuzzy
 msgid "failed to find server image"
 msgstr "mancata identificazione dell'immagine: %s"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:100
+#: mgradm/cmd/support/ptf/podman/utils.go:101
 #, fuzzy, javascript-format
 msgid "The computed image is %s"
 msgstr "impossibile determinare l'URL dell'immagine: %s"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:118
+#: mgradm/cmd/support/ptf/podman/utils.go:119
 #, fuzzy
 msgid "The %[1]s service image is %[2]s"
 msgstr "impossibile determinare l'URL dell'immagine: %s"
@@ -1948,70 +1948,74 @@ msgstr ""
 msgid "cannot inspect podman values"
 msgstr "impossibile ispezionare i valori dell'host: %s"
 
-#: mgradm/shared/podman/ssl.go:87
+#: mgradm/shared/podman/ssl.go:88
 msgid "CA validation failed!"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:101
+#: mgradm/shared/podman/ssl.go:102
 msgid "Using provided 3rd party server certificates"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:139
+#: mgradm/shared/podman/ssl.go:140
 msgid "Using provided 3rd party database certificates"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:242
+#: mgradm/shared/podman/ssl.go:243
 #, javascript-format
 msgid "CA file %s not found. New CA and certificates will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:247
+#: mgradm/shared/podman/ssl.go:248
 #, fuzzy
 msgid "cannot write existing CA certificate"
 msgstr "impossibile installare il certificato: %s"
 
-#: mgradm/shared/podman/ssl.go:254
+#: mgradm/shared/podman/ssl.go:255
 #, javascript-format
 msgid "Cert file %s not found. A new certificate will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:258
+#: mgradm/shared/podman/ssl.go:259
 #, fuzzy
 msgid "cannot write existing server certificate"
 msgstr "impossibile installare il certificato: %s"
 
-#: mgradm/shared/podman/ssl.go:270
+#: mgradm/shared/podman/ssl.go:271
 #, javascript-format
 msgid "Cert key file %s not found. A new certificate will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:274
+#: mgradm/shared/podman/ssl.go:275
 #, fuzzy
 msgid "cannot write existing server key"
 msgstr "impossibile abilitare il servizio: %s"
 
-#: mgradm/shared/podman/ssl.go:277
+#: mgradm/shared/podman/ssl.go:278
 msgid "Reusing existing certificates"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:338
+#: mgradm/shared/podman/ssl.go:325
+msgid "Cannot generate new certificates without a CA password. Please check input options"
+msgstr ""
+
+#: mgradm/shared/podman/ssl.go:346
 msgid "Failed to generate server SSL certificates. Please check the input parameters."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:341
+#: mgradm/shared/podman/ssl.go:349
 msgid "Server SSL certificates generated"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:360
+#: mgradm/shared/podman/ssl.go:368
 #, fuzzy
 msgid "Cannot generate database certificate"
 msgstr "impossibile abilitare il servizio: %s"
 
-#: mgradm/shared/podman/ssl.go:375
+#: mgradm/shared/podman/ssl.go:383
 msgid "Failed to generate server Database SSL certificates. Please check the input parameters."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:378
+#: mgradm/shared/podman/ssl.go:386
 #, fuzzy
 msgid "Database SSL certificates generated"
 msgstr "impossibile installare il certificato: %s"
@@ -2336,11 +2340,11 @@ msgstr "impossibile abilitare il servizio: %s"
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/shared/utils/flags.go:156
+#: mgradm/shared/utils/flags.go:155
 msgid "Can only contain letters, digits . _ and -"
 msgstr ""
 
-#: mgradm/shared/utils/flags.go:164
+#: mgradm/shared/utils/flags.go:163
 msgid "Not a valid email address"
 msgstr ""
 

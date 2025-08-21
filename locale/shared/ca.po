@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 16:07+0200\n"
+"POT-Creation-Date: 2025-08-20 17:56+0200\n"
 "PO-Revision-Date: 2025-07-11 11:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
@@ -294,8 +294,8 @@ msgstr "l'espai de noms és obligatori"
 #: shared/podman/images.go:369 shared/podman/images.go:389
 #: shared/podman/network.go:108 shared/podman/secret.go:130
 #: shared/podman/systemd.go:248 shared/podman/systemd.go:326
-#: shared/podman/systemd.go:327 shared/podman/utils.go:186
-#: shared/podman/utils.go:219 shared/podman/utils.go:248
+#: shared/podman/systemd.go:327 shared/podman/utils.go:188
+#: shared/podman/utils.go:221 shared/podman/utils.go:250
 #, javascript-format
 msgid "Would run %s"
 msgstr "S'executaria %s"
@@ -616,11 +616,11 @@ msgstr "%[1]s pod ha fallat amb l'estat %[2]s"
 msgid "%[1]s pod failed to complete within %[2]d seconds"
 msgstr "%[1]s pod no s'ha pogut completar en %[2]d segons"
 
-#: shared/podman/hostinspector.go:50
+#: shared/podman/hostinspector.go:54
 msgid "failed to run inspect script in host system"
 msgstr "no s'ha pogut executar l'script d'inspecció en el sistema amfitrió"
 
-#: shared/podman/hostinspector.go:55
+#: shared/podman/hostinspector.go:59
 msgid "cannot inspect host data"
 msgstr "no es poden inspeccionar les dades de l'amfitrió"
 
@@ -729,8 +729,8 @@ msgid "cannot find any running image for container %s"
 msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 
 #: shared/podman/images.go:348 shared/podman/images.go:371
-#: shared/podman/images.go:391 shared/podman/utils.go:188
-#: shared/podman/utils.go:222 shared/podman/utils.go:259
+#: shared/podman/images.go:391 shared/podman/utils.go:190
+#: shared/podman/utils.go:224 shared/podman/utils.go:261
 #, javascript-format
 msgid "Run %s"
 msgstr "Executa %s"
@@ -1020,93 +1020,93 @@ msgstr "no s'ha pogut escriure el fitxer %s"
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "no s'ha pogut eliminar l'antic fitxer de configuració del servei systemd %s"
 
-#: shared/podman/utils.go:62
+#: shared/podman/utils.go:64
 msgid "Extra arguments to pass to podman"
 msgstr "Arguments addicionals a passar a podman"
 
-#: shared/podman/utils.go:69
+#: shared/podman/utils.go:71
 msgid "failed to enable podman.socket unit"
 msgstr "no s'ha pogut habilitar la unitat podman.socket"
 
-#: shared/podman/utils.go:90 shared/podman/utils.go:119
+#: shared/podman/utils.go:92 shared/podman/utils.go:121
 #, javascript-format
 msgid "failed to run %s container"
 msgstr "no s'ha pogut executar el contenidor %s"
 
-#: shared/podman/utils.go:130
+#: shared/podman/utils.go:132
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr "S'executaria podman kill %[1]s per a l'ID de contenidor %[2]s"
 
-#: shared/podman/utils.go:131
+#: shared/podman/utils.go:133
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr "S'executaria podman remove %[1]s per a l'ID de contenidor %[2]s"
 
-#: shared/podman/utils.go:133
+#: shared/podman/utils.go:135
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr "Executa podman kill %[1]s per a l'ID de contenidor %[2]s"
 
-#: shared/podman/utils.go:136
+#: shared/podman/utils.go:138
 msgid "Failed to kill the server"
 msgstr "No s'ha pogut matar el servidor"
 
-#: shared/podman/utils.go:138
+#: shared/podman/utils.go:140
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr "Executa podman remove %[1]s per a l'ID de contenidor %[2]s"
 
-#: shared/podman/utils.go:141
+#: shared/podman/utils.go:143
 msgid "Error removing container"
 msgstr "S'ha produït un error en eliminar el contenidor"
 
-#: shared/podman/utils.go:146
+#: shared/podman/utils.go:148
 msgid "Container already removed"
 msgstr "Contenidor ja eliminat"
 
-#: shared/podman/utils.go:154
+#: shared/podman/utils.go:156
 #, javascript-format
 msgid "failed to get %s systemd service definition"
 msgstr "no s'ha pogut obtenir la definició del servei systemd de %s"
 
-#: shared/podman/utils.go:161
+#: shared/podman/utils.go:163
 #, fuzzy, javascript-format
 #| msgid "no UYUNI_IMAGE defined in %s systemd service"
 msgid "no UYUNI.*_IMAGE defined in %s systemd service"
 msgstr "no s'ha definit UYUNIIMAGE al servei systemd %s"
 
-#: shared/podman/utils.go:200
+#: shared/podman/utils.go:202
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "El volum %s està muntat externament, no es pot eliminar el directori"
 
-#: shared/podman/utils.go:224
+#: shared/podman/utils.go:226
 #, javascript-format
 msgid "Failed to export volume %s"
 msgstr "No s'ha pogut exportar el volum %s"
 
-#: shared/podman/utils.go:227
+#: shared/podman/utils.go:229
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr "No s'ha pogut escriure la suma de verificació del volum %[1]s a %[2]s"
 
-#: shared/podman/utils.go:253
+#: shared/podman/utils.go:255
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr "La suma de verificació no coincideix per al volum %s"
 
-#: shared/podman/utils.go:257
+#: shared/podman/utils.go:259
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr "No s'ha pogut precrear el volum buit %s"
 
-#: shared/podman/utils.go:261
+#: shared/podman/utils.go:263
 #, javascript-format
 msgid "Failed to import volume %s"
 msgstr "No s'ha pogut importar el volum %s"
 
-#: shared/podman/utils.go:265
+#: shared/podman/utils.go:267
 #, javascript-format
 msgid "Unable to restore selinux context for %s, manual action is required"
 msgstr ""
 
-#: shared/podman/utils.go:364
+#: shared/podman/utils.go:366
 msgid "cannot inspect data"
 msgstr "no es poden inspeccionar les dades"
 
@@ -1635,84 +1635,84 @@ msgstr "no s'ha pogut llegir l'entrada"
 msgid "A value is required"
 msgstr "Es requereix un valor"
 
-#: shared/utils/utils.go:209
+#: shared/utils/utils.go:218
 msgid "Registry %[1]s would be used instead of namespace %[2]s"
 msgstr "El registre %[1]s s'utilitzaria en lloc de l'espai de noms %[2]s"
 
-#: shared/utils/utils.go:224 shared/utils/utils.go:250
+#: shared/utils/utils.go:233 shared/utils/utils.go:259
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "el nom de la imatge no és vàlid: %s"
 
-#: shared/utils/utils.go:228
+#: shared/utils/utils.go:237
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "falta l'etiqueta a %s"
 
-#: shared/utils/utils.go:236 shared/utils/utils.go:241
+#: shared/utils/utils.go:245 shared/utils/utils.go:250
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "El nom de la imatge calculada és %s"
 
-#: shared/utils/utils.go:260
+#: shared/utils/utils.go:276
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "No s'ha pogut executar %s"
 
-#: shared/utils/utils.go:269
+#: shared/utils/utils.go:285
 msgid "Failed to read random data"
 msgstr "No s'han pogut llegir les dades aleatòries"
 
-#: shared/utils/utils.go:290
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "s'ha produït un error en baixar de %s"
 
-#: shared/utils/utils.go:296
+#: shared/utils/utils.go:312
 #, javascript-format
 msgid "bad status: %s"
 msgstr "estat incorrecte: %s"
 
-#: shared/utils/utils.go:409
+#: shared/utils/utils.go:425
 msgid "failed to compute server FQDN"
 msgstr "no s'ha pogut calcular el servidor FQDN"
 
-#: shared/utils/utils.go:423
+#: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s no és un FQDN vàlid"
 
-#: shared/utils/utils.go:427
+#: shared/utils/utils.go:443
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "no es pot resoldre %s"
 
-#: shared/utils/utils.go:452
+#: shared/utils/utils.go:468
 #, javascript-format
 msgid "error creating file %s"
 msgstr "s'ha produït un error en crear el fitxer %s"
 
-#: shared/utils/utils.go:457
+#: shared/utils/utils.go:473
 #, javascript-format
 msgid "error writing file %s"
 msgstr "s'ha produït un error en escriure el fitxer %s"
 
-#: shared/utils/utils.go:469 shared/utils/utils.go:484
+#: shared/utils/utils.go:485 shared/utils/utils.go:500
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "No s'ha pogut calcular la suma de verificació del fitxer %s"
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:490
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "No s'ha pogut escriure la suma de verificació del fitxer %[1]s a %[2]s"
 
-#: shared/utils/utils.go:491
+#: shared/utils/utils.go:507
 #, fuzzy
 #| msgid "Failed to calculate checksum of the file %s"
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "No s'ha pogut calcular la suma de verificació del fitxer %s"
 
-#: shared/utils/utils.go:495
+#: shared/utils/utils.go:511
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "La suma de verificació de %s no coincideix"

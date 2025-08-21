@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 16:07+0200\n"
+"POT-Creation-Date: 2025-08-20 17:56+0200\n"
 "PO-Revision-Date: 2025-06-14 14:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
@@ -137,15 +137,23 @@ msgstr ""
 "\n"
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:38 mgrpxy/shared/podman/podman.go:257
+#: mgrpxy/cmd/install/podman/utils.go:39
+#: mgrpxy/cmd/support/ptf/podman/utils.go:30 mgrpxy/shared/podman/podman.go:274
 msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
 
-#: mgrpxy/cmd/install/podman/utils.go:43
+#: mgrpxy/cmd/install/podman/utils.go:44
 msgid "failed to retrieve proxy config files"
 msgstr "プロキシ設定ファイルの取得に失敗しました"
 
-#: mgrpxy/cmd/install/podman/utils.go:53 mgrpxy/shared/podman/podman.go:270
+#: mgrpxy/cmd/install/podman/utils.go:58 mgrpxy/shared/podman/podman.go:290
+#, fuzzy
+#| msgid "cannot generate systemd conf user configuration file"
+msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
+msgstr "systemd confユーザ設定ファイルを生成できません"
+
+#: mgrpxy/cmd/install/podman/utils.go:64
+#: mgrpxy/cmd/support/ptf/podman/utils.go:48 mgrpxy/shared/podman/podman.go:296
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.comへのログインに失敗しました"
 
@@ -300,42 +308,43 @@ msgstr ""
 "\n"
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:36
+#: mgrpxy/cmd/support/ptf/podman/utils.go:54 mgrpxy/shared/podman/podman.go:302
+msgid "cannot find httpd image: it will no be upgraded"
+msgstr "httpdイメージが見つかりません: アップグレードされません"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:58 mgrpxy/shared/podman/podman.go:306
+msgid "cannot find salt-broker image: it will no be upgraded"
+msgstr "salt-brokerイメージが見つかりません: アップグレードされません"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:62 mgrpxy/shared/podman/podman.go:310
+msgid "cannot find squid image: it will no be upgraded"
+msgstr "squidイメージが見つかりません: アップグレードされません"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:66 mgrpxy/shared/podman/podman.go:314
+msgid "cannot find ssh image: it will no be upgraded"
+msgstr "sshイメージが見つかりません: アップグレードされません"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:70 mgrpxy/shared/podman/podman.go:318
+msgid "cannot find tftpd image: it will no be upgraded"
+msgstr "tftpdイメージが見つかりません: アップグレードされません"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:84
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "ptfとtestフラグを同時に設定することはできません "
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:39
+#: mgrpxy/cmd/support/ptf/podman/utils.go:87
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptfとtestフラグを同時に空にすることはできません "
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:42
+#: mgrpxy/cmd/support/ptf/podman/utils.go:90
 msgid "user flag cannot be empty"
 msgstr "ユーザフラグは空にできません"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:58
-#, javascript-format
-msgid "The httpd ptf image computed is: %s"
-msgstr "計算されたhttpd ptfイメージは %s です"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:68
-#, javascript-format
-msgid "The ssh ptf image computed is: %s"
+#: mgrpxy/cmd/support/ptf/podman/utils.go:120
+#, fuzzy
+#| msgid "The ssh ptf image computed is: %s"
+msgid "The %[1]s ptf image computed is: %[2]s"
 msgstr "計算されたssh ptfイメージは %s です"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:78
-#, javascript-format
-msgid "The tftpd ptf image computed is: %s"
-msgstr "計算されたtftpd ptfイメージは %s です"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:88
-#, javascript-format
-msgid "The salt-broker ptf image computed is: %s"
-msgstr "計算されたsalt-broker ptfイメージは %s です"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:98
-#, javascript-format
-msgid "The squid ptf image computed is: %s"
-msgstr "計算されたsquid ptfイメージは %s です"
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -361,37 +370,37 @@ msgstr "何もアンインストールされていません。--forceを指定�
 msgid "Volumes have not been touched. Depending on the storage class used, they may not have been removed"
 msgstr "ボリュームに何の操作も行われていません。使用したストレージクラスによっては、削除されていない可能性があります"
 
-#: mgrpxy/cmd/uninstall/podman.go:67
+#: mgrpxy/cmd/uninstall/podman.go:68
 #, javascript-format
 msgid "cannot delete volume %s"
 msgstr "ボリューム %s を削除できません"
 
-#: mgrpxy/cmd/uninstall/podman.go:70
+#: mgrpxy/cmd/uninstall/podman.go:71
 msgid "All volumes removed"
 msgstr "すべてのボリュームが削除されました"
 
-#: mgrpxy/cmd/uninstall/podman.go:73
+#: mgrpxy/cmd/uninstall/podman.go:74
 msgid "Failed to delete /etc/uyuni/proxy folder"
 msgstr "/etc/uyuni/proxyフォルダを削除できませんでした"
 
-#: mgrpxy/cmd/uninstall/podman.go:75
+#: mgrpxy/cmd/uninstall/podman.go:76
 msgid "/etc/uyuni/proxy folder removed"
 msgstr "/etc/uyuni/proxyフォルダが削除されました"
 
-#: mgrpxy/cmd/uninstall/podman.go:83
+#: mgrpxy/cmd/uninstall/podman.go:84
 #, javascript-format
 msgid "cannot delete image %s"
 msgstr "イメージ %s を削除できません"
 
-#: mgrpxy/cmd/uninstall/podman.go:87
+#: mgrpxy/cmd/uninstall/podman.go:88
 msgid "All images have been removed"
 msgstr "すべてのイメージが削除されました"
 
-#: mgrpxy/cmd/uninstall/podman.go:96
+#: mgrpxy/cmd/uninstall/podman.go:101
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr "何もアンインストールされていません。--forceと--purge-volumesを指定して実行して、データがアンインストールされてクリアされるようにしてください"
 
-#: mgrpxy/cmd/uninstall/podman.go:99
+#: mgrpxy/cmd/uninstall/podman.go:104
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr "データが保管されています。podmanボリュームコマンドを使用して、ボリュームをクリアしてください"
 
@@ -482,75 +491,63 @@ msgstr "ファイル %s への書き込みに失敗しました"
 msgid "failed to scale replicas to 1"
 msgstr "レプリカを1にスケールできませんでした"
 
-#: mgrpxy/shared/podman/podman.go:45
+#: mgrpxy/shared/podman/podman.go:58
 msgid "cannot setup network"
 msgstr "ネットワークを設定できません"
 
-#: mgrpxy/shared/podman/podman.go:50
+#: mgrpxy/shared/podman/podman.go:63
 msgid "Generating systemd services"
 msgstr "systemdサービスの生成"
 
-#: mgrpxy/shared/podman/podman.go:151
+#: mgrpxy/shared/podman/podman.go:168
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "systemdファイル「%s」の生成に失敗しました"
 
-#: mgrpxy/shared/podman/podman.go:157
+#: mgrpxy/shared/podman/podman.go:174
 msgid "cannot generate systemd conf file"
 msgstr "systemd confファイルを生成できません"
 
-#: mgrpxy/shared/podman/podman.go:163
+#: mgrpxy/shared/podman/podman.go:180
 msgid "cannot generate systemd conf user configuration file"
 msgstr "systemd confユーザ設定ファイルを生成できません"
 
-#: mgrpxy/shared/podman/podman.go:206
+#: mgrpxy/shared/podman/podman.go:223
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "設定 %s でプロキシを設定しています"
 
-#: mgrpxy/shared/podman/podman.go:208
+#: mgrpxy/shared/podman/podman.go:225
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "プロキシ設定を %s ファイルから抽出できませんでした"
 
-#: mgrpxy/shared/podman/podman.go:211
+#: mgrpxy/shared/podman/podman.go:228
 msgid "No tarball provided. Will check existing configuration files."
 msgstr "tarballは提供されていません。既存の設定ファイルを確認します。"
 
-#: mgrpxy/shared/podman/podman.go:225
+#: mgrpxy/shared/podman/podman.go:242
 #, javascript-format
 msgid "%s directory has no required permissions. Check your umask settings"
 msgstr "%s ディレクトリに必要な権限がありません。umask設定を確認してください"
 
-#: mgrpxy/shared/podman/podman.go:227
+#: mgrpxy/shared/podman/podman.go:244
 #, javascript-format
 msgid "%s file has no required permissions. Check your umask settings"
 msgstr "%s ファイルに必要な権限がありません。umask設定を確認してください"
 
-#: mgrpxy/shared/podman/podman.go:240
+#: mgrpxy/shared/podman/podman.go:257
 #, javascript-format
 msgid "missing required configuration file: %s"
 msgstr "必要な設定ファイルが見つかりません: %s"
 
-#: mgrpxy/shared/podman/podman.go:276
-msgid "cannot find httpd image: it will no be upgraded"
-msgstr "httpdイメージが見つかりません: アップグレードされません"
+#: mgrpxy/shared/podman/podman.go:387
+msgid "Not a system id event"
+msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:280
-msgid "cannot find salt-broker image: it will no be upgraded"
-msgstr "salt-brokerイメージが見つかりません: アップグレードされません"
-
-#: mgrpxy/shared/podman/podman.go:284
-msgid "cannot find squid image: it will no be upgraded"
-msgstr "squidイメージが見つかりません: アップグレードされません"
-
-#: mgrpxy/shared/podman/podman.go:288
-msgid "cannot find ssh image: it will no be upgraded"
-msgstr "sshイメージが見つかりません: アップグレードされません"
-
-#: mgrpxy/shared/podman/podman.go:292
-msgid "cannot find tftpd image: it will no be upgraded"
-msgstr "tftpdイメージが見つかりません: アップグレードされません"
+#: mgrpxy/shared/podman/podman.go:396
+msgid "System id not found in returned event"
+msgstr ""
 
 #: mgrpxy/shared/utils/cmd.go:20
 #, javascript-format
@@ -603,6 +600,22 @@ msgstr "%s コンテナのイメージ"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s コンテナ用のタグ。設定されている場合はグローバル値を上書きします"
+
+#, javascript-format
+#~ msgid "The httpd ptf image computed is: %s"
+#~ msgstr "計算されたhttpd ptfイメージは %s です"
+
+#, javascript-format
+#~ msgid "The tftpd ptf image computed is: %s"
+#~ msgstr "計算されたtftpd ptfイメージは %s です"
+
+#, javascript-format
+#~ msgid "The salt-broker ptf image computed is: %s"
+#~ msgstr "計算されたsalt-broker ptfイメージは %s です"
+
+#, javascript-format
+#~ msgid "The squid ptf image computed is: %s"
+#~ msgstr "計算されたsquid ptfイメージは %s です"
 
 #~ msgid "application log level"
 #~ msgstr "アプリケーションログレベル"
