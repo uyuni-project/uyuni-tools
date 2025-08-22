@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-23 08:56+0200\n"
+"POT-Creation-Date: 2025-08-22 10:06+0200\n"
 "PO-Revision-Date: 2024-04-08 14:10+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -114,11 +114,7 @@ msgstr "Outil pour aider à gérer des serveurs Uyuni, principalement via leur A
 msgid "configuration file path"
 msgstr "chemin vers le fichier de configuration"
 
-#: mgrctl/cmd/cmd.go:41
-msgid "application log level"
-msgstr "niveau de verbosité de l'application"
-
-#: mgrctl/cmd/cmd.go:49
+#: mgrctl/cmd/cmd.go:47
 #, javascript-format
 msgid "Starting %s"
 msgstr ""
@@ -287,6 +283,9 @@ msgstr ""
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "Exécuter un terminal dans le conteneur du serveur"
+
+#~ msgid "application log level"
+#~ msgstr "niveau de verbosité de l'application"
 
 #, javascript-format
 #~ msgid "Welcome to %s"
