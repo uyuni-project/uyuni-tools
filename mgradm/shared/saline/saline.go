@@ -98,7 +98,7 @@ func writeSalineServiceFiles(
 	config := fmt.Sprintf(`Environment=TZ=%s
 `, strings.TrimSpace(tz))
 
-	if err := podman.GenerateSystemdConfFile(podman.SalineService+"@", "custom.conf",
+	if err := podman.GenerateSystemdConfFile(podman.SalineService+"@", podman.CustomConf,
 		config, false); err != nil {
 		return utils.Error(err, L("cannot generate systemd user configuration file"))
 	}

@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -19,7 +20,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func prepareThirdPartyCertificate(caChain *types.CaChain, pair *types.SSLPair, outDir string) error {
+func prepareThirdPartyCertificate(caChain *types.CaChain, pair *types.SSLPair, outDir string, fqdns ...string) error {
 	// OrderCas checks the chain of certificates to report problems early
 	// We also sort the certificates of the chain in a single blob for Apache and PostgreSQL
 	var orderedCert, rootCA []byte
@@ -48,7 +49,12 @@ func prepareThirdPartyCertificate(caChain *types.CaChain, pair *types.SSLPair, o
 		return err
 	}
 
-	return nil
+	errors := []error{}
+	for _, fqdn := range fqdns {
+		errors = append(errors, ssl.VerifyHostname(caPath, serverCertPath, fqdn))
+	}
+
+	return utils.JoinErrors(errors...)
 }
 
 var newRunner = utils.NewRunner
@@ -110,8 +116,8 @@ func prepareServerSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFl
 	}
 
 	// Check if this is an upgrade scenario and there is existing CA
-	if reused, err := reuseExistingCertificates(image, tempDir, false); reused && err == nil {
-		// We succeffuly loaded existing certificates
+	if reused, err := reuseExistingCertificates(image, tempDir, fqdn, false); reused && err == nil {
+		// We successfully loaded existing certificates
 		return nil
 	} else if reused && err != nil {
 		// We found certificates, but there was trouble loading it
@@ -136,9 +142,10 @@ func prepareDatabaseSSLcertificates(image string, sslFlags *adm_utils.InstallSSL
 		dbPair := &sslFlags.DB.SSLPair
 
 		dbDir := path.Join(tempDir, "db")
-		if err := prepareThirdPartyCertificate(dbCa, dbPair, dbDir); err != nil {
+		if err := prepareThirdPartyCertificate(dbCa, dbPair, dbDir, fqdn, "db", "reportdb"); err != nil {
 			return err
 		}
+
 		// Create secrets for the database key and certificate
 		return shared_podman.CreateTLSSecrets(
 			shared_podman.DBCASecret, path.Join(dbDir, "ca.crt"),
@@ -148,8 +155,8 @@ func prepareDatabaseSSLcertificates(image string, sslFlags *adm_utils.InstallSSL
 	}
 
 	// Check if this is an upgrade scenario and there is existing CA
-	if reused, err := reuseExistingCertificates(image, tempDir, true); reused && err == nil {
-		// We succeffuly loaded existing certificates
+	if reused, err := reuseExistingCertificates(image, tempDir, fqdn, true); reused && err == nil {
+		// We successfully loaded existing certificates
 		return nil
 	} else if reused && err != nil {
 		// We found certificates, but there was trouble loading it
@@ -160,14 +167,32 @@ func prepareDatabaseSSLcertificates(image string, sslFlags *adm_utils.InstallSSL
 	return generateDatabaseCertificate(image, sslFlags, tz, fqdn)
 }
 
-func reuseExistingCertificates(image string, tempDir string, isDatabaseCheck bool) (bool, error) {
-	// Upgrading from 5.1+ with all cerst in secrets
+func reuseExistingCertificates(image string, tempDir string, fqdn string, isDatabaseCheck bool) (bool, error) {
+	// Upgrading from 5.1+ with all certificates as secrets
 	if reuseExistingCertificatesFromSecrets(isDatabaseCheck) {
-		return true, nil
+		secretName := shared_podman.SSLCertSecret
+		if isDatabaseCheck {
+			secretName = shared_podman.DBSSLCertSecret
+		}
+		return isFQDNMatchingCertificateSecret(fqdn, secretName), nil
 	}
 
 	// Upgrading from 5.0- with all certs in files
-	return reuseExistingCertificatesFromMounts(image, tempDir, isDatabaseCheck)
+	return reuseExistingCertificatesFromMounts(image, tempDir, fqdn, isDatabaseCheck)
+}
+
+func isFQDNMatchingCertificateSecret(fqdn string, secretName string) bool {
+	cert, err := shared_podman.GetSecret(secretName)
+	if err != nil {
+		log.Error().Err(err).Send()
+		return false
+	}
+	return isFQDNMatchingCertificate(fqdn, cert)
+}
+
+func isFQDNMatchingCertificate(fqdn string, cert string) bool {
+	_, err := newRunner("openssl", "verify", "-verify_hostname", fqdn).InputString(cert).Exec()
+	return err == nil
 }
 
 func reuseExistingCertificatesFromSecrets(isDatabaseCheck bool) bool {
@@ -181,13 +206,17 @@ func reuseExistingCertificatesFromSecrets(isDatabaseCheck bool) bool {
 		shared_podman.HasSecret(shared_podman.SSLKeySecret)
 }
 
-func reuseExistingCertificatesFromMounts(image string, tempDir string, isDatabaseCheck bool) (bool, error) {
-	// Basic init
+func reuseExistingCertificatesFromMounts(
+	image string,
+	tempDir string,
+	fqdn string,
+	isDatabaseCheck bool,
+) (bool, error) {
 	caPath := path.Join(tempDir, "existing-ca.crt")
 	serverCert := path.Join(tempDir, "existing-server.crt")
 	serverKey := path.Join(tempDir, "existing-key.crt")
 
-	// No longer used by 5.1+, but contain existing certs in migration scenarios
+	// No longer used by 5.1+, but contains existing certs in migration scenarios
 	etcTLSVolume := types.VolumeMount{Name: "etc-tls", MountPath: "/etc/pki/tls"}
 
 	// Paths for server side checking
@@ -228,6 +257,11 @@ func reuseExistingCertificatesFromMounts(image string, tempDir string, isDatabas
 	}
 	if err = os.WriteFile(serverCert, cert, 0444); err != nil {
 		return true, utils.Error(err, L("cannot write existing server certificate"))
+	}
+
+	// We cannot reuse certificates not matching the requested FQDN
+	if !isFQDNMatchingCertificate(fqdn, string(cert)) {
+		return false, nil
 	}
 
 	// Check for server certificate key
@@ -284,6 +318,13 @@ func runSSLContainer(script string, workdir string, image string, tz string, env
 }
 
 func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+	// This generally should not happen, otherwise we would ask for CA password in parameters check.
+	// However there are some paths, e.g. upgrade reusing existing certs and db provided 3rd party certs where we
+	// do not check for the password, but on existing certs check we can fail and drop here.
+	if sslFlags.Password == "" {
+		return errors.New(L("Cannot generate new certificates without a CA password. Please check input options"))
+	}
+
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
 	if err != nil {
@@ -376,13 +417,16 @@ const sslSetupServerScript = `
 	  echo "$result"
 	}
 
-	echo "Generating the self-signed SSL CA..."
-	mkdir -p /root/ssl-build
-	rhn-ssl-tool --gen-ca --force --dir /root/ssl-build \
-		--password "$CERT_PASS" \
-		--set-country "$CERT_COUNTRY" --set-state "$CERT_STATE" --set-city "$CERT_CITY" \
-	    --set-org "$CERT_O" --set-org-unit "$CERT_OU" \
-	    --set-common-name "$HOSTNAME" --cert-expiration 3650
+	# Only generate a CA is we don't have it yet
+	if ! test -e /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT; then
+		echo "Generating the self-signed SSL CA..."
+		mkdir -p /root/ssl-build
+		rhn-ssl-tool --gen-ca --force --dir /root/ssl-build \
+			--password "$CERT_PASS" \
+			--set-country "$CERT_COUNTRY" --set-state "$CERT_STATE" --set-city "$CERT_CITY" \
+			--set-org "$CERT_O" --set-org-unit "$CERT_OU" \
+			--set-common-name "$HOSTNAME" --cert-expiration 3650
+	fi
 	cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /ssl/ca.crt
 
 	echo "Generate apache certificate..."
@@ -406,18 +450,41 @@ const sslSetupServerScript = `
 // This is assuming CA cert is generated by server script.
 // If we in any point in the future allow mix of 3rd party server and self signed ca for database
 // this will need to be updated to include check for ca cert and build if needed.
+
+// WORKAROUND we used /root/ssl-build/$MACHINE_NAME but because
+// rhn-ssl-tool generates the certs in that folder, using hostname.
+// rhn-ssl-tool, if provided, should use cname as dst folder.
 const sslSetupDatabaseScript = `
+	getMachineName() {
+	  hostname="$1"
+
+	  hostname=$(echo "$hostname" | sed 's/\*/_star_/g')
+
+	  field_count=$(echo "$hostname" | awk -F. '{print NF}')
+
+	  if [ "$field_count" -lt 3 ]; then
+		echo "$hostname"
+		return 0
+	  fi
+
+	  end_field=$(expr "$field_count" - 2)
+
+	  result=$(echo "$hostname" | cut -d. -f1-"$end_field")
+
+	  echo "$result"
+	}
 	echo "Generating DB certificate..."
 	rhn-ssl-tool --gen-server --cert-expiration 3650 \
 		--dir /root/ssl-build --password "$CERT_PASS" \
 		--set-country "$CERT_COUNTRY" --set-state "$CERT_STATE" --set-city "$CERT_CITY" \
 	    --set-org "$CERT_O" --set-org-unit "$CERT_OU" \
-	    --set-hostname reportdb.mgr.internal --cert-expiration 3650 --set-email "$CERT_EMAIL" \
+	    --cert-expiration 3650 --set-email "$CERT_EMAIL" \
 		--set-cname reportdb --set-cname db $cert_args
 
 	cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /ssl/ca.crt
-	cp /root/ssl-build/reportdb/server.crt /ssl/reportdb.crt
-	cp /root/ssl-build/reportdb/server.key /ssl/reportdb.key
+	MACHINE_NAME=$(getMachineName "$HOSTNAME")
+	cp /root/ssl-build/$MACHINE_NAME/server.crt /ssl/reportdb.crt
+	cp /root/ssl-build/$MACHINE_NAME/server.key /ssl/reportdb.key
 `
 const sslValidateCA = `
 	CA_KEY=/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY

@@ -10,7 +10,7 @@ import (
 )
 
 //nolint:lll
-const pgsqlMigrationScriptTemplate = `#!/bin/bash
+const pgsqlMigrationScriptTemplate = `
 set -e -x
 
 if [ -d /var/lib/pgsql/data/data ] ; then

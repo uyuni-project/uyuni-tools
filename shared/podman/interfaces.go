@@ -71,9 +71,9 @@ type Systemd interface {
 	// StopInstantiated stops all replicas.
 	StopInstantiated(name string) error
 
-	// GetServicesFromSystemdFiles return the uyuni enabled services as string list.
-	GetServicesFromSystemdFiles(systemdFileList string) []string
-
 	// GetServiceProperty returns the value of a systemd service property.
 	GetServiceProperty(service string, property string) (string, error)
+
+	// Show calls the systemctl show command and returns the output.
+	Show(service string, property string) (string, error)
 }

@@ -61,7 +61,11 @@ func CommandHelper[T interface{}](
 	if flagsUpdater != nil {
 		flagsUpdater(viper)
 	}
-	return fn(globalFlags, flags, cmd, args)
+	err = fn(globalFlags, flags, cmd, args)
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
+	return err
 }
 
 // AddBackendFlag add the flag for setting the backend ('podman', 'podman-remote', 'kubectl').
@@ -114,5 +118,18 @@ func AddUninstallFlags(cmd *cobra.Command, withBackend bool) {
 
 	if withBackend {
 		AddBackendFlag(cmd)
+	}
+}
+
+// AddLogLevelFlags adds the --logLevel and --loglevel flags to a command.
+func AddLogLevelFlags(cmd *cobra.Command, logLevel *string) {
+	cmd.PersistentFlags().StringVar(logLevel, "logLevel", "",
+		L("application log level")+"(trace|debug|info|warn|error|fatal|panic)",
+	)
+	cmd.PersistentFlags().StringVar(logLevel, "loglevel", "",
+		L("application log level")+"(trace|debug|info|warn|error|fatal|panic)",
+	)
+	if err := cmd.PersistentFlags().MarkHidden("loglevel"); err != nil {
+		log.Warn().Err(err).Msg(L("Failed to hide --loglevel parameter"))
 	}
 }

@@ -17,6 +17,7 @@ var ServerFlagsTestArgs = func() []string {
 	args = append(args, PgsqlFlagsTestArgs...)
 	args = append(args, DBFlagsTestArgs...)
 	args = append(args, ReportDBFlagsTestArgs...)
+	args = append(args, InstallSSLFlagsTestArgs...)
 	args = append(args, InstallDBSSLFlagsTestArgs...)
 	args = append(args, SSLGenerationFlagsTestArgs...)
 	args = append(args, SalineFlagsTestArgs...)
@@ -39,5 +40,6 @@ func AssertServerFlags(t *testing.T, flags *utils.ServerFlags) {
 	AssertDBFlag(t, &flags.Installation.DB)
 	AssertReportDBFlag(t, &flags.Installation.ReportDB)
 	AssertInstallDBSSLFlag(t, &flags.Installation.SSL.DB)
+	AssertInstallSSLFlag(t, &flags.Installation.SSL)
 	AssertSSLGenerationFlag(t, &flags.Installation.SSL.SSLCertGenerationFlags)
 }

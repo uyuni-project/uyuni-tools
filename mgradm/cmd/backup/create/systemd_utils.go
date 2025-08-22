@@ -10,6 +10,7 @@ import (
 	"io"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/rs/zerolog/log"
@@ -19,7 +20,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var systemd podman.Systemd = podman.SystemdImpl{}
+var systemd podman.Systemd = podman.NewSystemd()
 
 func exportSystemdConfiguration(outputDir string, dryRun bool) error {
 	filesToBackup := gatherSystemdItems()
@@ -90,7 +91,9 @@ func gatherSystemdItems() []string {
 		if err != nil {
 			log.Debug().Err(err).Msgf("failed to get the path to the %s service configuration files", serviceName)
 		} else {
-			result = append(result, strings.Split(dropIns, " ")...)
+			dropIns := strings.Split(dropIns, " ")
+			result = append(result, filepath.Dir(dropIns[0]))
+			result = append(result, dropIns[:]...)
 		}
 	}
 	return result

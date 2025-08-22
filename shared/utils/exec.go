@@ -6,6 +6,7 @@ package utils
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -40,6 +41,14 @@ func (l OutputLogWriter) Write(p []byte) (n int, err error) {
 func NewRunner(command string, args ...string) types.Runner {
 	runner := runnerImpl{logger: log.Logger}
 	runner.cmd = exec.Command(command, args...)
+	return &runner
+}
+
+// NewRunnerWithContext creates a new runner instance for the command,
+// interuptable based on provided context.
+func NewRunnerWithContext(ctx context.Context, command string, args ...string) types.Runner {
+	runner := runnerImpl{logger: log.Logger}
+	runner.cmd = exec.CommandContext(ctx, command, args...)
 	return &runner
 }
 
@@ -79,12 +88,25 @@ func (r *runnerImpl) StdMapping() types.Runner {
 	return r
 }
 
+// Std maps the process output to the out bytes buffer.
+// This is useful to get process output for backgrounds tasks.
+func (r *runnerImpl) Std(out *bytes.Buffer) types.Runner {
+	r.cmd.Stdout = out
+	return r
+}
+
 // Env sets environment variables to use for the command.
 func (r *runnerImpl) Env(env []string) types.Runner {
 	if r.cmd.Env == nil {
 		r.cmd.Env = os.Environ()
 	}
 	r.cmd.Env = append(r.cmd.Env, env...)
+	return r
+}
+
+// InputString adds a string as input of the process.
+func (r *runnerImpl) InputString(input string) types.Runner {
+	r.cmd.Stdin = strings.NewReader(input)
 	return r
 }
 
@@ -117,6 +139,24 @@ func (r *runnerImpl) Exec() ([]byte, error) {
 	r.logger.Trace().Msgf("Command output: %s, error: %s", out, err)
 
 	return out, err
+}
+
+// Start starts the command, particularly for commands to run in the background.
+func (r *runnerImpl) Start() error {
+	r.logger.Debug().Msgf("Starting: %s", strings.Join(r.cmd.Args, " "))
+
+	err := r.cmd.Start()
+	var exitErr *exec.ExitError
+	if errors.As(err, &exitErr) {
+		err = &CmdError{exitErr}
+	}
+
+	return err
+}
+
+// Wait waits for the command running in the background to ends.
+func (r *runnerImpl) Wait() error {
+	return r.cmd.Wait()
 }
 
 // CmdError is a wrapper around exec.ExitError to show the standard error as message.

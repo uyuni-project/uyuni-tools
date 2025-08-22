@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -69,7 +69,7 @@ func gpgAddKeys(_ *types.GlobalFlags, flags *gpgAddFlags, _ *cobra.Command, args
 
 	gpgAddCmd = append(gpgAddCmd, "--keyring", customKeyringPath)
 
-	scriptDir, cleaner, err := utils.TempDir()
+	tmpDir, cleaner, err := utils.TempDir()
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func gpgAddKeys(_ *types.GlobalFlags, flags *gpgAddFlags, _ *cobra.Command, args
 			}
 
 			keyname = path.Base(parsedURL.Path)
-			hostKeyPath = filepath.Join(scriptDir, keyname)
+			hostKeyPath = filepath.Join(tmpDir, keyname)
 			if err := utils.DownloadFile(hostKeyPath, keyURL); err != nil {
 				log.Error().Err(err).Msgf(L("failed to download %s"), keyURL)
 				continue

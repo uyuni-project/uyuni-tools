@@ -5,7 +5,6 @@
 package utils
 
 import (
-	"path"
 	"testing"
 
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
@@ -22,12 +21,7 @@ db_port=1234
 has_hubxmlrpc=true
 `
 
-	testDir := t.TempDir()
-
-	dataPath := path.Join(testDir, "data")
-	testutils.WriteFile(t, dataPath, content)
-
-	actual, err := ReadInspectData[InspectResult](dataPath)
+	actual, err := ReadInspectData[InspectResult]([]byte(content))
 	if err != nil {
 		t.Fatalf("Unexpected failure: %s", err)
 	}

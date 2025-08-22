@@ -195,14 +195,33 @@ func hostedContainers(systemd Systemd) ([]string, error) {
 	if err != nil {
 		return []string{}, err
 	}
-	servicesList := systemd.GetServicesFromSystemdFiles(string(systemdFiles))
+	servicesList := getServicesFromSystemdFiles(systemd, string(systemdFiles))
 
 	var containerList []string
 
 	for _, service := range servicesList {
 		service = strings.Replace(service, ".service", "", -1)
-		containerList = append(containerList, strings.Replace(service, "@", "", -1))
+		// we can collect container data only from the first instance
+		// and assume there's no difference with other intances
+		containerList = append(containerList, strings.Replace(service, "@", "-0", -1))
 	}
 
 	return containerList, nil
+}
+
+// getServicesFromSystemdFiles return the uyuni enabled services as string list.
+func getServicesFromSystemdFiles(systemd Systemd, systemdFileList string) []string {
+	services := strings.Replace(string(systemdFileList), "/etc/systemd/system/", "", -1)
+	services = strings.Replace(services, ".service", "", -1)
+	servicesList := strings.Split(strings.TrimSpace(services), "\n")
+
+	var trimmedServices []string
+	for _, service := range servicesList {
+		if systemd.ServiceIsEnabled(service) {
+			trimmedServices = append(trimmedServices, strings.TrimSpace(service))
+		} else {
+			log.Debug().Msgf("service %s is not enabled. Do not run any action on the container.", service)
+		}
+	}
+	return trimmedServices
 }

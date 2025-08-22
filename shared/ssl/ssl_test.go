@@ -6,6 +6,8 @@ package ssl
 
 import (
 	"fmt"
+	"os"
+	"path"
 	"strings"
 	"testing"
 
@@ -198,4 +200,35 @@ func TestCheckKey(t *testing.T) {
 			)
 		}
 	}
+}
+
+func TestVerifyHostname(t *testing.T) {
+	chain := types.CaChain{
+		Root:         "testdata/chain1/root-ca.crt",
+		Intermediate: []string{"testdata/chain1/intermediate-ca.crt"},
+	}
+	server := types.SSLPair{Cert: "testdata/chain1/server.crt", Key: "testdata/chain1/server.key"}
+
+	certs, rootCa, err := OrderCas(&chain, &server)
+	testutils.AssertEquals(t, "Ordering certificate chain shouldn't have raised an error", nil, err)
+
+	dir, err := os.MkdirTemp("", "tools-tests")
+	defer func() {
+		os.RemoveAll(dir)
+	}()
+	testutils.AssertEquals(t, "Creating a temporary directory shouldn't fail", nil, err)
+
+	tmpca := path.Join(dir, "ca.crt")
+	tmpcert := path.Join(dir, "srv.crt")
+
+	testutils.WriteFile(t, tmpca, string(rootCa))
+	testutils.WriteFile(t, tmpcert, string(certs))
+
+	// openssl verifies time by default and our test certificates are never updated and expired.
+	nochecktime = true
+	err = VerifyHostname(tmpca, tmpcert, "failed.fqdn")
+	testutils.AssertTrue(t, "Unexpected error message", strings.Contains(err.Error(), "hostname mismatch"))
+
+	err = VerifyHostname(tmpca, tmpcert, "test.example.com")
+	testutils.AssertEquals(t, "Unexpected error", nil, err)
 }

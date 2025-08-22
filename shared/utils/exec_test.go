@@ -5,10 +5,13 @@
 package utils
 
 import (
+	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -82,4 +85,20 @@ func ExampleRunner() {
 	}
 	fmt.Println(strings.TrimSpace(string(out)))
 	// Output: Hello world
+}
+
+func TestContextRunner(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	defer cancel()
+
+	testData := []byte("Hello world")
+
+	runner := NewRunnerWithContext(ctx, "sh", "-c", fmt.Sprintf(`echo -n "%s"`, testData))
+	var out bytes.Buffer
+	err := runner.Std(&out).Start()
+	testutils.AssertTrue(t, "Unexpected start failure", err == nil)
+	err = runner.Wait()
+	testutils.AssertTrue(t, "Unexpected wait failure", err == nil)
+
+	testutils.AssertEquals(t, "Output does not match", out.Bytes(), testData)
 }

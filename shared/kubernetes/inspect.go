@@ -21,15 +21,8 @@ func InspectServer(
 ) (*utils.ServerInspectData, error) {
 	podName := "uyuni-image-inspector"
 
-	tempDir, cleaner, err := utils.TempDir()
-	if err != nil {
-		return nil, err
-	}
-	defer cleaner()
-	inspector := utils.NewServerInspector(tempDir)
-	// We need the inspector to write to the pod's logs instead of a file
-	inspector.DataPath = "/dev/stdout"
-	script, err := inspector.GenerateScriptString()
+	inspector := utils.NewServerInspector()
+	script, err := inspector.GenerateScript()
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +37,7 @@ func InspectServer(
 	}
 
 	// Parse the data
-	inspectedData, err := utils.ReadInspectDataString[utils.ServerInspectData]([]byte(out))
+	inspectedData, err := utils.ReadInspectData[utils.ServerInspectData]([]byte(out))
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to parse the inspected data"))
 	}

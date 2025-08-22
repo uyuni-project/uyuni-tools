@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -392,4 +392,105 @@ func TestCompareVersion(t *testing.T) {
 	testutils.AssertTrue(t, "2024.07 is not inferior to 2024.13", CompareVersion("2024.07", "2024.13") < 0)
 	testutils.AssertTrue(t, "2024.13 is not superior to 2024.07", CompareVersion("2024.13", "2024.07") > 0)
 	testutils.AssertTrue(t, "2024.13 is not equal to 2024.13", CompareVersion("2024.13", "2024.13") == 0)
+
+	testutils.AssertEquals(t, "invalid padded version", 5041, getPaddedVersion(versionAsSlice("5.0.4.1"), 4))
+	testutils.AssertEquals(t, "invalid padded version", 5100, getPaddedVersion(versionAsSlice("5.1.0"), 4))
+	testutils.AssertTrue(t, "5.1.0 is not superior to 5.0.4.1", CompareVersion("5.1.0", "5.0.4.1") > 0)
+	testutils.AssertTrue(t, "5.1-rc is not superior to 5.0.4.1", CompareVersion("5.1-rc", "5.0.4.1") > 0)
+}
+
+func TestCreatingChecksumFile(t *testing.T) {
+	testDir := t.TempDir()
+	filepath := path.Join(testDir, "testfile")
+
+	err := os.WriteFile(filepath, []byte("testfiledata"), 0666)
+	testutils.AssertTrue(t, "Failed to prepare test data file", err == nil)
+
+	err = CreateChecksum(filepath)
+	testutils.AssertTrue(t, "Failed to calculate checksum", err == nil)
+
+	out, err := os.ReadFile(filepath + ".sha256sum")
+	testutils.AssertTrue(t, "Failed to read checksum file", err == nil)
+
+	testutils.AssertEquals(t, "Checksum does not match", out,
+		[]byte("886d35a29af629be5c45ff24320dd4d48ee8860b25a9a724f8ac88cf15755a22"))
+}
+
+func TestValidatingChecksumFile(t *testing.T) {
+	testDir := t.TempDir()
+	filepath := path.Join(testDir, "testfile")
+
+	err := os.WriteFile(filepath, []byte("testfiledata"), 0666)
+	testutils.AssertTrue(t, "Failed to prepare test data file", err == nil)
+
+	err = CreateChecksum(filepath)
+	testutils.AssertTrue(t, "Failed to calculate checksum", err == nil)
+
+	err = ValidateChecksum(filepath)
+	testutils.AssertTrue(t, "Failed to validate checksum", err == nil)
+}
+
+func TestFailedValidation(t *testing.T) {
+	testDir := t.TempDir()
+	filepath := path.Join(testDir, "testfile")
+
+	err := os.WriteFile(filepath, []byte("testfiledata"), 0666)
+	testutils.AssertTrue(t, "Failed to prepare test data file", err == nil)
+
+	err = os.WriteFile(filepath+".sha256sum", []byte("wrongchecksum"), 0666)
+	testutils.AssertTrue(t, "Failed to write checksum file", err == nil)
+
+	err = ValidateChecksum(filepath)
+	testutils.AssertTrue(t, "Checksum validation passed when should have not", err != nil)
+}
+
+func TestValidationInDifferentDir(t *testing.T) {
+	testDir := t.TempDir()
+	filepath := path.Join(testDir, "testfile")
+
+	err := os.WriteFile(filepath, []byte("testfiledata"), 0666)
+	testutils.AssertTrue(t, "Failed to prepare test data file", err == nil)
+
+	err = CreateChecksum(filepath)
+	testutils.AssertTrue(t, "Failed to calculate checksum", err == nil)
+
+	testDir2 := t.TempDir()
+
+	filepath2 := path.Join(testDir2, "testfile")
+	fh, err := os.OpenFile(filepath2, os.O_CREATE|os.O_WRONLY, 0666)
+	testutils.AssertTrue(t, "Could not create new file", err == nil)
+	err = CopyFile(filepath, fh)
+	testutils.AssertTrue(t, "Could not copy test file", err == nil)
+	err = fh.Close()
+	testutils.AssertTrue(t, "Could not close new file", err == nil)
+
+	fh, err = os.OpenFile(filepath2+".sha256sum", os.O_CREATE|os.O_WRONLY, 0666)
+	testutils.AssertTrue(t, "Could not create new file", err == nil)
+	err = CopyFile(filepath+".sha256sum", fh)
+	testutils.AssertTrue(t, "Could not copy test file", err == nil)
+	err = fh.Close()
+	testutils.AssertTrue(t, "Could not close new file", err == nil)
+
+	err = os.Remove(filepath)
+	testutils.AssertTrue(t, "Could not remove original file", err == nil)
+	err = os.Remove(filepath + ".sha256sum")
+	testutils.AssertTrue(t, "Could not remove original checksum file", err == nil)
+
+	err = ValidateChecksum(filepath2)
+	testutils.AssertTrue(t, "Failed to validate checksum", err == nil)
+}
+
+func TestValidatingOlderChecksumFile(t *testing.T) {
+	testDir := t.TempDir()
+	filepath := path.Join(testDir, "testfile")
+
+	err := os.WriteFile(filepath, []byte("testfiledata"), 0666)
+	testutils.AssertTrue(t, "Failed to prepare test data file", err == nil)
+
+	err = os.WriteFile(filepath+".sha256sum",
+		[]byte("886d35a29af629be5c45ff24320dd4d48ee8860b25a9a724f8ac88cf15755a22 /path/to/testfile"), 0666)
+	testutils.AssertTrue(t, "Failed to write test data checksum", err == nil)
+
+	err = ValidateChecksum(filepath)
+	testutils.AssertTrue(t, "Failed to validate checksum", err == nil)
 }

@@ -7,8 +7,6 @@ package shared
 import (
 	"github.com/spf13/cobra"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // AddUpgradeFlags add upgrade flags to a command.
@@ -19,9 +17,6 @@ func AddUpgradeFlags(cmd *cobra.Command) {
 	adm_utils.AddUpgradeCocoFlag(cmd)
 	adm_utils.AddUpgradeHubXmlrpcFlags(cmd)
 	adm_utils.AddUpgradeSalineFlag(cmd)
-
-	cmd.Flags().String("ssl-password", "", L("Current Server CA password"))
-	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", "ssl")
 }
 
 // AddUpgradeListFlags add upgrade list flags to a command.

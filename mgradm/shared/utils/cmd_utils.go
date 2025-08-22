@@ -281,7 +281,7 @@ func AddPgsqlFlags(cmd *cobra.Command) {
 	AddContainerImageFlags(cmd, "pgsql", L("PostgreSQL Database"), "pgsql-container", "server-postgresql")
 }
 
-// AddServerFlags add flags common to install.
+// AddServerFlags add flags common to install, upgrade and migration.
 func AddServerFlags(cmd *cobra.Command) {
 	AddImageFlag(cmd)
 	AddSCCFlag(cmd)
@@ -289,5 +289,9 @@ func AddServerFlags(cmd *cobra.Command) {
 	AddDBFlags(cmd)
 	AddReportDBFlags(cmd)
 	ssl.AddSSLGenerationFlags(cmd)
-	ssl.AddSSLDBFlags(cmd)
+	ssl.AddSSLThirdPartyFlags(cmd)
+	ssl.AddSSLDBThirdPartyFlags(cmd)
+
+	cmd.Flags().String("ssl-password", "", L("Password for the CA key to generate"))
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", ssl.GeneratedFlagsGroup)
 }

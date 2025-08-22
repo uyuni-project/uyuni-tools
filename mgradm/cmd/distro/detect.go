@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -18,23 +18,24 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var productMap = map[string]map[string]map[types.Arch]types.Distribution{
-	"SUSE Linux Enterprise": {
-		"15 SP4": {
+// Viper unmarshal keys in lowercase, we need to keep our bundled product map lowerkey as well.
+var defaultProductMap = types.ProductMap{
+	"suse linux enterprise": {
+		"15 sp4": {
 			types.AMD64: {
 				TreeLabel:    "SLES15SP4",
 				InstallType:  "sles15generic",
 				ChannelLabel: "sle-product-sles15-sp4-pool-x86_64",
 			},
 		},
-		"15 SP5": {
+		"15 sp5": {
 			types.AMD64: {
 				TreeLabel:    "SLES15SP5",
 				InstallType:  "sles15generic",
 				ChannelLabel: "sle-product-sles15-sp5-pool-x86_64",
 			},
 		},
-		"15 SP6": {
+		"15 sp6": {
 			types.AMD64: {
 				TreeLabel:    "SLES15SP6",
 				InstallType:  "sles15generic",
@@ -46,7 +47,19 @@ var productMap = map[string]map[string]map[types.Arch]types.Distribution{
 				ChannelLabel: "sle-product-sles15-sp6-pool-aarch64",
 			},
 		},
-		"12 SP5": {
+		"15 sp7": {
+			types.AMD64: {
+				TreeLabel:    "SLES15SP7",
+				InstallType:  "sles15generic",
+				ChannelLabel: "sle-product-sles15-sp7-pool-x86_64",
+			},
+			types.AArch64: {
+				TreeLabel:    "SLES15SP7",
+				InstallType:  "sles15generic",
+				ChannelLabel: "sle-product-sles15-sp7-pool-aarch64",
+			},
+		},
+		"12 sp5": {
 			types.AMD64: {
 				TreeLabel:    "SLES12SP5",
 				InstallType:  "sles12generic",
@@ -55,7 +68,7 @@ var productMap = map[string]map[string]map[types.Arch]types.Distribution{
 		},
 	},
 
-	"Red Hat Enterprise Linux": {
+	"red hat enterprise linux": {
 		"7": {
 			types.AMD64: {
 				TreeLabel:    "RHEL7",
@@ -85,10 +98,14 @@ func getDistroFromDetails(distro string, version string, arch types.Arch, flags 
 	var distribution types.Distribution
 	var ok bool
 
+	// product map is all lowercase, make sure we match case sensitive go lookup
+	distro = strings.ToLower(distro)
+	version = strings.ToLower(version)
+
 	if productFromConfig[distro] != nil {
 		distribution, ok = productFromConfig[distro][version][arch]
-	} else if productMap[distro] != nil {
-		distribution, ok = productMap[distro][version][arch]
+	} else if defaultProductMap[distro] != nil {
+		distribution, ok = defaultProductMap[distro][version][arch]
 	}
 
 	if !ok {
@@ -128,24 +145,24 @@ func detectDistro(
 ) error {
 	treeinfopath := filepath.Join(path, ".treeinfo")
 	channelLabel := flags.ChannelLabel
-	if !utils.FileExists(treeinfopath) {
-		log.Debug().Msgf(".treeinfo %s does not exists", treeinfopath)
-		if distroDetails.Name != "" {
-			if channelLabel != "" {
-				log.Debug().Msg("Using channel override")
-				*distro = types.Distribution{
-					InstallType:  "generic_rpm",
-					TreeLabel:    distroDetails.Name,
-					ChannelLabel: channelLabel,
-				}
-				return nil
-			} else if distroDetails.Version != "" && distroDetails.Arch != types.UnknownArch {
-				log.Debug().Msg("Using distro details override")
-				var err error
-				*distro, err = getDistroFromDetails(distroDetails.Name, distroDetails.Version, distroDetails.Arch, flags)
-				return err
+	if distroDetails.Name != "" {
+		if channelLabel != "" {
+			log.Debug().Msg("Using channel override")
+			*distro = types.Distribution{
+				InstallType:  "suse",
+				TreeLabel:    distroDetails.Name,
+				ChannelLabel: channelLabel,
 			}
+			return nil
+		} else if distroDetails.Version != "" && distroDetails.Arch != types.UnknownArch {
+			log.Debug().Msg("Using distro details override")
+			var err error
+			*distro, err = getDistroFromDetails(distroDetails.Name, distroDetails.Version, distroDetails.Arch, flags)
+			return err
 		}
+	} else if utils.FileExists(treeinfopath) {
+		log.Debug().Msgf("Using .treeinfo %s", treeinfopath)
+	} else {
 		return fmt.Errorf(
 			L("distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"),
 			treeinfopath,

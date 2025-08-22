@@ -17,7 +17,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var systemd podman_utils.Systemd = podman_utils.SystemdImpl{}
+var systemd podman_utils.Systemd = podman_utils.NewSystemd()
 
 func migrateToPodman(
 	_ *types.GlobalFlags,
@@ -53,11 +53,8 @@ func migrateToPodman(
 		flags.HubXmlrpc,
 		flags.Saline,
 		flags.Pgsql,
-		flags.Installation.SCC,
-		flags.Installation.TZ,
 		flags.Migration.Prepare,
 		flags.Migration.User,
-		flags.Installation.Debug.Java,
 		flags.Mirror,
 		flags.Podman,
 		args,

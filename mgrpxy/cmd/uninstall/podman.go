@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,13 +9,14 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	pxy_podman "github.com/uyuni-project/uyuni-tools/mgrpxy/shared/podman"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var systemd podman.Systemd = podman.SystemdImpl{}
+var systemd podman.Systemd = podman.NewSystemd()
 
 func uninstallForPodman(
 	_ *types.GlobalFlags,
@@ -88,6 +89,10 @@ func uninstallForPodman(
 	}
 
 	podman.DeleteNetwork(dryRun)
+
+	if podman.HasSecret(pxy_podman.SystemIDSecret) {
+		podman.DeleteSecret(pxy_podman.SystemIDSecret, false)
+	}
 
 	err := systemd.ReloadDaemon(dryRun)
 
