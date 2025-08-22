@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-23 08:56+0200\n"
+"POT-Creation-Date: 2025-08-22 10:06+0200\n"
 "PO-Revision-Date: 2025-06-18 10:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ca/>\n"
@@ -129,11 +129,7 @@ msgstr "Eina per ajudar a gestionar els servidors d'Uyuni principalment a travé
 msgid "configuration file path"
 msgstr "camí del fitxer de configuració"
 
-#: mgrctl/cmd/cmd.go:41
-msgid "application log level"
-msgstr "nivell de registre de l'aplicació"
-
-#: mgrctl/cmd/cmd.go:49
+#: mgrctl/cmd/cmd.go:47
 #, javascript-format
 msgid "Starting %s"
 msgstr "S'inicia %s"
@@ -299,6 +295,9 @@ msgstr "Crea configuracions del servidor intermediari"
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
 msgstr "Executa un terminal dins del contenidor del servidor"
+
+#~ msgid "application log level"
+#~ msgstr "nivell de registre de l'aplicació"
 
 #, javascript-format
 #~ msgid "Welcome to %s"
