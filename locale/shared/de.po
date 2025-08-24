@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 10:06+0200\n"
-"PO-Revision-Date: 2024-12-07 21:48+0000\n"
+"PO-Revision-Date: 2025-08-24 07:59+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/de/>\n"
 "Language: de\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.4\n"
+"X-Generator: Weblate 5.13\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -1146,11 +1146,11 @@ msgstr ""
 
 #: shared/ssl/flags.go:40
 msgid "Server certificate path"
-msgstr ""
+msgstr "Pfad des Serverzertifikats"
 
 #: shared/ssl/flags.go:41
 msgid "Server key path"
-msgstr ""
+msgstr "Pfad des Serverschlüssels"
 
 #: shared/ssl/flags.go:43 shared/ssl/flags.go:59
 msgid "3rd Party SSL Certificate Flags"
