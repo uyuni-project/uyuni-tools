@@ -6,6 +6,7 @@ package podman
 
 import (
 	"fmt"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/eventProcessor"
 	"os"
 	"os/exec"
 	"path"
@@ -307,6 +308,7 @@ func Upgrade(
 	cocoFlags adm_utils.CocoFlags,
 	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
 	salineFlags adm_utils.SalineFlags,
+	eventProcessorFlags adm_utils.EventProcessorFlags,
 	pgsqlFlags types.PgsqlFlags,
 	tz string,
 ) error {
@@ -457,6 +459,10 @@ func Upgrade(
 		return utils.Errorf(err, L("error upgrading saline service."))
 	}
 
+	if err := eventProcessor.Upgrade(systemd, authFile, registry, eventProcessorFlags, image, inspectedDB); err != nil {
+		return utils.Errorf(err, L("error upgrading event processor service."))
+	}
+
 	return systemd.ReloadDaemon(false)
 }
 
@@ -497,6 +503,7 @@ func Migrate(
 	cocoFlags adm_utils.CocoFlags,
 	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
 	salineFlags adm_utils.SalineFlags,
+	eventProcessorFlags adm_utils.EventProcessorFlags,
 	pgsqlFlags types.PgsqlFlags,
 	prepare bool,
 	user string,
@@ -633,6 +640,10 @@ func Migrate(
 
 	if err := saline.Upgrade(systemd, authFile, registry, salineFlags, image, utils.GetLocalTimezone()); err != nil {
 		return utils.Errorf(err, L("error upgrading saline service."))
+	}
+
+	if err := eventProcessor.Upgrade(systemd, authFile, registry, eventProcessorFlags, image, inspectedDB); err != nil {
+		return utils.Errorf(err, L("error upgrading event processor service."))
 	}
 
 	return systemd.ReloadDaemon(false)
