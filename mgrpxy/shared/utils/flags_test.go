@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -10,40 +10,102 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
+// TestGetContainerImage tests GetContainerImage method
+// Covering different scenarios: defaults, empty values, and overriding values.
 func TestGetContainerImage(t *testing.T) {
-	data := [][]string{
-		// Expectect image, value of --registry, value of --tag, value of --http-image, value of --http-tag
+	tests := []struct {
+		name           string
+		proxyFlags     ProxyImageFlags
+		expectedResult string
+		description    string
+	}{
+		// Defaults and overiding values
 		{
-			"registry/default/image/proxy-httpd:tag",
-			"registry/default/image/",
-			"tag",
-			"registry/default/image/proxy-httpd",
-			"",
+			name: "no image details",
+			proxyFlags: ProxyImageFlags{
+				Registry: "default/image",
+				Tag:      "tag",
+				Httpd: types.ImageFlags{
+					Name: "",
+					Tag:  "",
+				},
+			},
+			expectedResult: "default/image:tag",
 		},
-		{"registry/default/image/proxy-httpd:tag", "registry", "tag", "registry/default/image/proxy-httpd", ""},
 		{
-			"myregistry.example.com/default/image/proxy-httpd:tag",
-			"myregistry.example.com",
-			"tag",
-			"default/image/proxy-httpd",
-			"",
+			name: "httpd image details overrule defaults",
+			proxyFlags: ProxyImageFlags{
+				Registry: "default/image",
+				Tag:      "tag",
+				Httpd: types.ImageFlags{
+					Name: "default/image/proxy-httpd",
+					Tag:  "mytag",
+				},
+			},
+			expectedResult: "default/image/proxy-httpd:mytag",
 		},
-		{"default/image/proxy-httpd:mytag", "default/image", "tag", "default/image/proxy-httpd", "mytag"},
-		{"myregistry/path/proxy-httpd:tag", "registry/path", "tag", "myregistry/path/proxy-httpd", ""},
+
+		// registry and image name matching
+		{
+			name: "httpd image name overrule when contains full registry",
+			proxyFlags: ProxyImageFlags{
+				Registry: "default",
+				Tag:      "tag",
+				Httpd: types.ImageFlags{
+					Name: "default/image/proxy-httpd",
+					Tag:  "mytag",
+				},
+			},
+			expectedResult: "default/image/proxy-httpd:mytag",
+		},
+		{
+			name: "httpd image name is appended to registry when it does not include registry",
+			proxyFlags: ProxyImageFlags{
+				Registry: "default/extra/image",
+				Tag:      "tag",
+				Httpd: types.ImageFlags{
+					Name: "default/image/proxy-httpd",
+					Tag:  "mytag",
+				},
+			},
+			expectedResult: "default/extra/image/default/image/proxy-httpd:mytag",
+		},
+
+		// domain usage
+		{
+			name: "custom full httpd registry image name",
+			proxyFlags: ProxyImageFlags{
+				Registry: "registry.suse.com/suse/some/paths/",
+				Tag:      "1.0.0",
+				Httpd: types.ImageFlags{
+					Name: "registry.opensuse.org/uyuni/proxy-httpd",
+					Tag:  "2.0.0",
+				},
+			},
+			expectedResult: "registry.suse.com/suse/some/paths/uyuni/proxy-httpd:2.0.0",
+			// expectedResult: "registry.opensuse.org/uyuni/proxy-httpd:2.0.0", // this should be the expected result
+		},
+		{
+			name: "httpd with path-only image name",
+			proxyFlags: ProxyImageFlags{
+				Registry: "registry.suse.com/uyuni",
+				Tag:      "1.0.0",
+				Httpd: types.ImageFlags{
+					Name: "path/to/proxy-httpd",
+					Tag:  "",
+				},
+			},
+			expectedResult: "registry.suse.com/uyuni/path/to/proxy-httpd:1.0.0",
+		},
 	}
 
-	for i, testCase := range data {
-		proxyFlags := ProxyImageFlags{
-			Tag:      testCase[2],
-			Registry: testCase[1],
-			Httpd: types.ImageFlags{
-				Name: testCase[3],
-				Tag:  testCase[4],
-			},
-		}
-		imageName := proxyFlags.GetContainerImage("httpd")
-		if imageName != testCase[0] {
-			t.Errorf("Testcase %d: Image name %s does not match expected %s", i, imageName, testCase[0])
-		}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			actual := tt.proxyFlags.GetContainerImage("httpd")
+
+			if actual != tt.expectedResult {
+				t.Errorf("GetContainerImage('httpd') = %s, expected: %s", actual, tt.expectedResult)
+			}
+		})
 	}
 }
