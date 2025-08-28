@@ -409,6 +409,32 @@ func TestComputeImageError(t *testing.T) {
 	}
 }
 
+func TestSplitRegistryHostAndPath(t *testing.T) {
+	data := [][]string{
+		{"registry.suse.com", "registry.suse.com", ""},
+		{"registry.suse.com/suse", "registry.suse.com", "suse"},
+		{"registry.suse.com/suse/multi", "registry.suse.com", "suse/multi"},
+		{"docker://registry.suse.com", "registry.suse.com", ""},
+		{"docker://registry.suse.com/", "registry.suse.com", ""},
+		{"docker://registry.suse.com/suse/multi", "registry.suse.com", "suse/multi"},
+	}
+
+	for _, testCase := range data {
+		input := testCase[0]
+		host := testCase[1]
+		path := testCase[2]
+
+		resultHost, resultPath := SplitRegistryHostAndPath(input)
+		if resultHost != host {
+			t.Errorf("Expected host for %s is %s, got %s ", input, host, resultHost)
+		}
+
+		if resultPath != path {
+			t.Errorf("Expected path for %s is %s, got %s ", input, path, resultPath)
+		}
+	}
+}
+
 func TestConfig(t *testing.T) {
 	type fakeFlags struct {
 		firstConf  string
