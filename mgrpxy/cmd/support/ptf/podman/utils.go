@@ -30,6 +30,8 @@ func ptfForPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
+	utils.DefaultSCCRegistry = flags.SCC.Registry
+
 	if err := updateParameters(flags); err != nil {
 		return err
 	}

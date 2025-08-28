@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -26,6 +26,8 @@ func installForKubernetes(_ *types.GlobalFlags,
 			return fmt.Errorf(L("install %s before running this command"), binary)
 		}
 	}
+
+	shared_utils.DefaultSCCRegistry = flags.SCC.Registry
 
 	// Unpack the tarball
 	configPath := utils.GetConfigPath(args)

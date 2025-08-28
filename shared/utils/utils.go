@@ -215,16 +215,26 @@ func ComputeImage(
 	appendToName ...string,
 ) (string, error) {
 	name := imageFlags.Name
-	//if scc registry is set just use it
-	if DefaultSCCRegistry != DefaultRegistry {
-		nameSplit := strings.Split(imageFlags.Name, "/")
-		name = path.Join(DefaultSCCRegistry, nameSplit[len(nameSplit)-1])
-	}
+
 	if !strings.Contains(DefaultRegistry, registry) {
 		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), registry, DefaultRegistry)
 	}
-	if !strings.Contains(imageFlags.Name, registry) {
-		name = path.Join(registry, RemoveRegistryFromImage(imageFlags.Name))
+
+	if DefaultSCCRegistry != DefaultRegistry {
+		sccHost, sccPath := SplitRegistryHostAndPath(DefaultSCCRegistry)
+		_, registryPath := SplitRegistryHostAndPath(registry)
+		nameSplit := strings.Split(imageFlags.Name, "/")
+		name = nameSplit[len(nameSplit)-1]
+		if sccPath == "" {
+			registry = path.Join(sccHost, registryPath)
+		} else {
+			registry = DefaultSCCRegistry
+		}
+		name = path.Join(registry, name)
+	}
+
+	if !strings.Contains(name, registry) {
+		name = path.Join(registry, RemoveRegistryFromImage(name))
 	}
 
 	// Compute the tag

@@ -308,6 +308,7 @@ func Upgrade(
 	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
 	salineFlags adm_utils.SalineFlags,
 	pgsqlFlags types.PgsqlFlags,
+	sccFlags types.SCCCredentials,
 	tz string,
 ) error {
 	// Calling cloudguestregistryauth only makes sense if using the cloud provider registry.
@@ -317,6 +318,8 @@ func Upgrade(
 			return err
 		}
 	}
+
+	utils.DefaultSCCRegistry = sccFlags.Registry
 
 	// Prepare Uyuni network, migration container needs to run in the same network as resulting image
 	err := podman.SetupNetwork(false)

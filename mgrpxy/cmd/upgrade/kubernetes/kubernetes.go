@@ -29,7 +29,6 @@ NOTE: for now upgrading on a remote kubernetes cluster is not supported!
 		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetes.KubernetesProxyUpgradeFlags
-			utils.DefaultSCCRegistry = flags.SCC.Registry
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}

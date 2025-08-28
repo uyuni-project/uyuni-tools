@@ -276,6 +276,8 @@ func Upgrade(
 		return err
 	}
 
+	shared_utils.DefaultSCCRegistry = flags.SCC.Registry
+
 	hostData, err := podman.InspectHost()
 	if err != nil {
 		return err

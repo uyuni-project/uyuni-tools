@@ -38,7 +38,6 @@ NOTE: for now installing on a remote podman is not supported!
 		Args: cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanPTFFlags
-			utils.DefaultSCCRegistry = flags.Installation.SCC.Registry
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}

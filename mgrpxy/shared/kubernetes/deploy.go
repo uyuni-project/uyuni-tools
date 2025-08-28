@@ -155,6 +155,8 @@ func Upgrade(flags *KubernetesProxyUpgradeFlags, _ *cobra.Command, _ []string) e
 		}
 	}
 
+	shared_utils.DefaultSCCRegistry = flags.SCC.Registry
+
 	tmpDir, cleaner, err := shared_utils.TempDir()
 	if err != nil {
 		return err

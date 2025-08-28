@@ -39,6 +39,8 @@ func installForPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
+	shared_utils.DefaultSCCRegistry = flags.SCC.Registry
+
 	configPath := utils.GetConfigPath(args)
 	if err := podman.UnpackConfig(configPath); err != nil {
 		return shared_utils.Errorf(err, L("failed to retrieve proxy config files"))
