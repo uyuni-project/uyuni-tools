@@ -200,6 +200,12 @@ func RemoveRegistryFromImage(imagePath string) string {
 
 // SplitRegistryHostAndPath splits a registry string into domain and path.
 func SplitRegistryHostAndPath(registry string) (domain string, path string) {
+	separator := "://"
+	index := strings.Index(registry, separator)
+	if index != -1 {
+		registry = registry[index+len(separator):]
+	}
+
 	idx := strings.Index(registry, "/")
 	if idx == -1 {
 		return registry, ""
