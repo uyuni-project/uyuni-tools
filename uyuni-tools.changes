@@ -1,4 +1,37 @@
 -------------------------------------------------------------------
+Fri Aug 29 10:30:43 CEST 2025 - rosuna@suse.com
+
+- version 5.1.19-0
+  * Add a lowercase version of --logLevel (bsc#1243611)
+  * Stop executing scripts in temporary folder (bsc#1243704)
+  * support config: collect podman inspect for hub container
+    (bsc#1245099)
+  * Use new dedicated path for Cobbler settings (bsc#1244027)
+  * Migrate custom auto installation snippets (bsc#1246320)
+  * Add SUSE Linux Enterprise 15 SP7 to buildin productmap
+  * Fix loading product map from mgradm configuration file
+    (bsc#1246068)
+  * Fix channel override for distro copy
+  * Do not use sudo when running as a root user (bsc#1246882)
+  * Do not require backups to be at the same location for restoring
+    (bsc#1246906)
+  * Fix recomputing proxy images when installing a PTF or TEST
+    (bsc#1246553)
+  * Add mgradm server rename to change the server FQDN (bsc#1229825)
+  * If no DB SSL CA parameter is given, use the other one
+    (bsc#1245120)
+  * More fault tolerant mgradm stop (bsc#1243331)
+  * Backup systemd dropin directory too and create if missing
+  * Add 3rd party SSL options for upgrade and migration scenarios
+  * Do not consider stderr output of podman as an error
+    (bsc#1247836)
+  * Restore SELinux contexts for restored backup volumes
+    (bsc#1244127)
+  * Automatically get up-to-date systemid file on salt based proxy
+    hosts (bsc#1246789)
+  * Bump the default image tag to 5.1.1
+
+-------------------------------------------------------------------
 Thu Jul 24 16:15:22 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.18-0

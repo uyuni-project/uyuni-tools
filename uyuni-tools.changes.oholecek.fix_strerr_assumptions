@@ -1,2 +1,0 @@
-- Do not consider stderr output of podman as an error
-  (bsc#1247836)

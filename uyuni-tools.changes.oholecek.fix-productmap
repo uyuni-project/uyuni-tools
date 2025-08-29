@@ -1,3 +1,0 @@
-- Add SLE15SP7 to buildin productmap
-- Fix loading product map from mgradm configuration file (bsc#1246068)
-- Fix channel override for distro copy

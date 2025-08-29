@@ -1,2 +1,0 @@
-- support config: collect podman inspect for hub container
-  (bsc#1245099)
