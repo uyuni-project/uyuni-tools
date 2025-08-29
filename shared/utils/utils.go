@@ -32,7 +32,7 @@ import (
 
 const promptEnd = ": "
 
-var prodVersionArchRegex = regexp.MustCompile(`suse\/manager\/.*:`)
+var prodVersionArchRegex = regexp.MustCompile(`suse\/(?:multi-linux-)?manager\/.*:`)
 var imageValid = regexp.MustCompile("^((?:[^:/]+(?::[0-9]+)?/)?[^:]+)(?::([^:]+))?$")
 
 // Taken from https://github.com/go-playground/validator/blob/2e1df48/regexes.go#L58
@@ -198,6 +198,15 @@ func RemoveRegistryFromImage(imagePath string) string {
 	return strings.Join(parts, "/")
 }
 
+// SplitRegistryHostAndPath splits a registry string into domain and path.
+func SplitRegistryHostAndPath(registry string) (domain string, path string) {
+	idx := strings.Index(registry, "/")
+	if idx == -1 {
+		return registry, ""
+	}
+	return registry[:idx], registry[idx+1:]
+}
+
 // ComputeImage assembles the container image from its name and tag.
 func ComputeImage(
 	registry string,
@@ -242,15 +251,22 @@ func ComputeImage(
 	return imageName, nil
 }
 
-// ComputePTF returns a PTF or Test image from registry.suse.com.
-func ComputePTF(user string, ptfID string, fullImage string, suffix string) (string, error) {
-	prefix := fmt.Sprintf("registry.suse.com/a/%s/%s/", user, ptfID)
+// The fullImage must contain the pattern `suse/manager/...` or `suse/multi-linux-manager/...`
+// If registry has a path, then, the fullImage must start with that path.
+func ComputePTF(registry string, user string, ptfID string, fullImage string, suffix string) (string, error) {
 	submatches := prodVersionArchRegex.FindStringSubmatch(fullImage)
-	if submatches == nil || len(submatches) > 1 {
+	if submatches == nil || len(submatches) != 1 {
 		return "", fmt.Errorf(L("invalid image name: %s"), fullImage)
 	}
+	imagePath := submatches[0]
+
+	registryHost, registryPath := SplitRegistryHostAndPath(registry)
+	if registryPath != "" && !strings.HasPrefix(imagePath, registryPath) {
+		return "", fmt.Errorf(L("image path '%[1]s' does not start with registry path '%[2]s'"), imagePath, registryPath)
+	}
+
 	tag := fmt.Sprintf("latest-%s-%s", suffix, ptfID)
-	return prefix + submatches[0] + tag, nil
+	return fmt.Sprintf("%s/a/%s/%s/%s%s", registryHost, strings.ToLower(user), ptfID, imagePath, tag), nil
 }
 
 // GetLocalTimezone returns the timezone set on the current machine.
