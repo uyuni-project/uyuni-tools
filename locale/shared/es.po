@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 10:06+0200\n"
+"POT-Creation-Date: 2025-08-26 17:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1548,82 +1548,86 @@ msgstr ""
 msgid "A value is required"
 msgstr ""
 
-#: shared/utils/utils.go:209
+#: shared/utils/utils.go:218
 msgid "Registry %[1]s would be used instead of namespace %[2]s"
 msgstr ""
 
-#: shared/utils/utils.go:224 shared/utils/utils.go:250
+#: shared/utils/utils.go:233 shared/utils/utils.go:259
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr ""
 
-#: shared/utils/utils.go:228
+#: shared/utils/utils.go:237
 #, javascript-format
 msgid "tag missing on %s"
 msgstr ""
 
-#: shared/utils/utils.go:236 shared/utils/utils.go:241
+#: shared/utils/utils.go:245 shared/utils/utils.go:250
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr ""
 
-#: shared/utils/utils.go:260
+#: shared/utils/utils.go:265
+msgid "image path '%[1]s' does not start with registry path '%[2]s'"
+msgstr ""
+
+#: shared/utils/utils.go:276
 #, javascript-format
 msgid "Failed to run %s"
 msgstr ""
 
-#: shared/utils/utils.go:269
+#: shared/utils/utils.go:285
 msgid "Failed to read random data"
 msgstr ""
 
-#: shared/utils/utils.go:290
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:296
+#: shared/utils/utils.go:312
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:409
+#: shared/utils/utils.go:425
 msgid "failed to compute server FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:423
+#: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:427
+#: shared/utils/utils.go:443
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr ""
 
-#: shared/utils/utils.go:452
+#: shared/utils/utils.go:468
 #, javascript-format
 msgid "error creating file %s"
 msgstr ""
 
-#: shared/utils/utils.go:457
+#: shared/utils/utils.go:473
 #, javascript-format
 msgid "error writing file %s"
 msgstr ""
 
-#: shared/utils/utils.go:469 shared/utils/utils.go:484
+#: shared/utils/utils.go:485 shared/utils/utils.go:500
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr ""
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:490
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr ""
 
-#: shared/utils/utils.go:491
+#: shared/utils/utils.go:507
 msgid "Failed to read checksum of the file %[1]s"
 msgstr ""
 
-#: shared/utils/utils.go:495
+#: shared/utils/utils.go:511
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr ""

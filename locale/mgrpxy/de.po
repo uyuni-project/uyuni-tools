@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 10:06+0200\n"
+"POT-Creation-Date: 2025-08-26 17:38+0200\n"
 "PO-Revision-Date: 2025-02-22 05:50+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/de/>\n"
@@ -123,7 +123,8 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgrpxy/cmd/install/podman/utils.go:39 mgrpxy/shared/podman/podman.go:274
+#: mgrpxy/cmd/install/podman/utils.go:39
+#: mgrpxy/cmd/support/ptf/podman/utils.go:30 mgrpxy/shared/podman/podman.go:274
 msgid "install podman before running this command"
 msgstr ""
 
@@ -135,7 +136,8 @@ msgstr ""
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr ""
 
-#: mgrpxy/cmd/install/podman/utils.go:64 mgrpxy/shared/podman/podman.go:296
+#: mgrpxy/cmd/install/podman/utils.go:64
+#: mgrpxy/cmd/support/ptf/podman/utils.go:48 mgrpxy/shared/podman/podman.go:296
 msgid "failed to login to registry.suse.com"
 msgstr ""
 
@@ -267,41 +269,40 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:36
+#: mgrpxy/cmd/support/ptf/podman/utils.go:55 mgrpxy/shared/podman/podman.go:302
+msgid "cannot find httpd image: it will no be upgraded"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:60 mgrpxy/shared/podman/podman.go:306
+msgid "cannot find salt-broker image: it will no be upgraded"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:65 mgrpxy/shared/podman/podman.go:310
+msgid "cannot find squid image: it will no be upgraded"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:70 mgrpxy/shared/podman/podman.go:314
+msgid "cannot find ssh image: it will no be upgraded"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:75 mgrpxy/shared/podman/podman.go:318
+msgid "cannot find tftpd image: it will no be upgraded"
+msgstr ""
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:90
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr ""
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:39
+#: mgrpxy/cmd/support/ptf/podman/utils.go:93
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr ""
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:42
+#: mgrpxy/cmd/support/ptf/podman/utils.go:96
 msgid "user flag cannot be empty"
 msgstr ""
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:58
-#, javascript-format
-msgid "The httpd ptf image computed is: %s"
-msgstr ""
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:68
-#, javascript-format
-msgid "The ssh ptf image computed is: %s"
-msgstr ""
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:78
-#, javascript-format
-msgid "The tftpd ptf image computed is: %s"
-msgstr ""
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:88
-#, javascript-format
-msgid "The salt-broker ptf image computed is: %s"
-msgstr ""
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:98
-#, javascript-format
-msgid "The squid ptf image computed is: %s"
+#: mgrpxy/cmd/support/ptf/podman/utils.go:126
+msgid "The %[1]s ptf image computed is: %[2]s"
 msgstr ""
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
@@ -486,26 +487,6 @@ msgstr ""
 #, javascript-format
 msgid "missing required configuration file: %s"
 msgstr "fehlende erforderliche Konfigurationsdateipfad: %s"
-
-#: mgrpxy/shared/podman/podman.go:302
-msgid "cannot find httpd image: it will no be upgraded"
-msgstr ""
-
-#: mgrpxy/shared/podman/podman.go:306
-msgid "cannot find salt-broker image: it will no be upgraded"
-msgstr ""
-
-#: mgrpxy/shared/podman/podman.go:310
-msgid "cannot find squid image: it will no be upgraded"
-msgstr ""
-
-#: mgrpxy/shared/podman/podman.go:314
-msgid "cannot find ssh image: it will no be upgraded"
-msgstr ""
-
-#: mgrpxy/shared/podman/podman.go:318
-msgid "cannot find tftpd image: it will no be upgraded"
-msgstr ""
 
 #: mgrpxy/shared/podman/podman.go:387
 msgid "Not a system id event"

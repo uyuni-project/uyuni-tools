@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 10:06+0200\n"
+"POT-Creation-Date: 2025-08-26 14:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1269,28 +1269,28 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:73
+#: mgradm/cmd/support/ptf/podman/utils.go:74
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:76
+#: mgradm/cmd/support/ptf/podman/utils.go:77
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:79
+#: mgradm/cmd/support/ptf/podman/utils.go:80
 msgid "user flag cannot be empty"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:91
+#: mgradm/cmd/support/ptf/podman/utils.go:92
 msgid "failed to find server image"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:100
+#: mgradm/cmd/support/ptf/podman/utils.go:101
 #, javascript-format
 msgid "The computed image is %s"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:118
+#: mgradm/cmd/support/ptf/podman/utils.go:119
 msgid "The %[1]s service image is %[2]s"
 msgstr ""
 

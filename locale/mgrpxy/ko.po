@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 10:06+0200\n"
+"POT-Creation-Date: 2025-08-26 17:38+0200\n"
 "PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
@@ -139,7 +139,8 @@ msgstr ""
 "\n"
 "참고: 현재 원격 podman에 설치하는 기능은 지원되지 않습니다.\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:39 mgrpxy/shared/podman/podman.go:274
+#: mgrpxy/cmd/install/podman/utils.go:39
+#: mgrpxy/cmd/support/ptf/podman/utils.go:30 mgrpxy/shared/podman/podman.go:274
 msgid "install podman before running this command"
 msgstr "이 명령을 실행하기 전 podman 설치"
 
@@ -153,7 +154,8 @@ msgstr "프록시 구성 파일을 검색하지 못함"
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr "systemd conf 사용자 구성 파일을 생성할 수 없음"
 
-#: mgrpxy/cmd/install/podman/utils.go:64 mgrpxy/shared/podman/podman.go:296
+#: mgrpxy/cmd/install/podman/utils.go:64
+#: mgrpxy/cmd/support/ptf/podman/utils.go:48 mgrpxy/shared/podman/podman.go:296
 msgid "failed to login to registry.suse.com"
 msgstr "registry.suse.com에 로그인하지 못했습니다."
 
@@ -309,42 +311,43 @@ msgstr ""
 "\n"
 "참고: 현재 원격 podman에 설치하는 기능은 지원되지 않습니다!\n"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:36
+#: mgrpxy/cmd/support/ptf/podman/utils.go:55 mgrpxy/shared/podman/podman.go:302
+msgid "cannot find httpd image: it will no be upgraded"
+msgstr "httpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:60 mgrpxy/shared/podman/podman.go:306
+msgid "cannot find salt-broker image: it will no be upgraded"
+msgstr "salt-broker 이미지를 찾을 수 없음 : 업그레이드되지 않습니다."
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:65 mgrpxy/shared/podman/podman.go:310
+msgid "cannot find squid image: it will no be upgraded"
+msgstr "squid 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:70 mgrpxy/shared/podman/podman.go:314
+msgid "cannot find ssh image: it will no be upgraded"
+msgstr "ssh 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:75 mgrpxy/shared/podman/podman.go:318
+msgid "cannot find tftpd image: it will no be upgraded"
+msgstr "tftpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:90
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "ptf와 테스트 플래그를 동시에 설정할 수 없음 "
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:39
+#: mgrpxy/cmd/support/ptf/podman/utils.go:93
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptf와 테스트 플래그를 동시에 비워둘 수없음 "
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:42
+#: mgrpxy/cmd/support/ptf/podman/utils.go:96
 msgid "user flag cannot be empty"
 msgstr "사용자 플래그를 비워둘 수 없습니다."
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:58
-#, javascript-format
-msgid "The httpd ptf image computed is: %s"
-msgstr "계산된 httpd ptf 이미지: %s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:68
-#, javascript-format
-msgid "The ssh ptf image computed is: %s"
+#: mgrpxy/cmd/support/ptf/podman/utils.go:126
+#, fuzzy
+#| msgid "The ssh ptf image computed is: %s"
+msgid "The %[1]s ptf image computed is: %[2]s"
 msgstr "계산된 ssh ptf 이미지: %s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:78
-#, javascript-format
-msgid "The tftpd ptf image computed is: %s"
-msgstr "계산된 tftpd ptf 이미지: %s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:88
-#, javascript-format
-msgid "The salt-broker ptf image computed is: %s"
-msgstr "계산된 salt-broker ptf 이미지: %s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:98
-#, javascript-format
-msgid "The squid ptf image computed is: %s"
-msgstr "계산된 squid ptf 이미지: %s"
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -541,26 +544,6 @@ msgstr "%s 파일에 필수 권한이 없습니다. umask 설정을 확인하십
 msgid "missing required configuration file: %s"
 msgstr "필수 구성 파일 누락: %s"
 
-#: mgrpxy/shared/podman/podman.go:302
-msgid "cannot find httpd image: it will no be upgraded"
-msgstr "httpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
-
-#: mgrpxy/shared/podman/podman.go:306
-msgid "cannot find salt-broker image: it will no be upgraded"
-msgstr "salt-broker 이미지를 찾을 수 없음 : 업그레이드되지 않습니다."
-
-#: mgrpxy/shared/podman/podman.go:310
-msgid "cannot find squid image: it will no be upgraded"
-msgstr "squid 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
-
-#: mgrpxy/shared/podman/podman.go:314
-msgid "cannot find ssh image: it will no be upgraded"
-msgstr "ssh 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
-
-#: mgrpxy/shared/podman/podman.go:318
-msgid "cannot find tftpd image: it will no be upgraded"
-msgstr "tftpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
-
 #: mgrpxy/shared/podman/podman.go:387
 msgid "Not a system id event"
 msgstr ""
@@ -620,6 +603,22 @@ msgstr "%s 컨테이너용 이미지"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
+
+#, javascript-format
+#~ msgid "The httpd ptf image computed is: %s"
+#~ msgstr "계산된 httpd ptf 이미지: %s"
+
+#, javascript-format
+#~ msgid "The tftpd ptf image computed is: %s"
+#~ msgstr "계산된 tftpd ptf 이미지: %s"
+
+#, javascript-format
+#~ msgid "The salt-broker ptf image computed is: %s"
+#~ msgstr "계산된 salt-broker ptf 이미지: %s"
+
+#, javascript-format
+#~ msgid "The squid ptf image computed is: %s"
+#~ msgstr "계산된 squid ptf 이미지: %s"
 
 #~ msgid "application log level"
 #~ msgstr "애플리케이션 로그 수준"

@@ -4,25 +4,24 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #: shared/kubernetes/k3s.go:131
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 10:06+0200\n"
-"PO-Revision-Date: 2024-04-08 14:09+0200\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2025-08-26 17:38+0200\n"
+"PO-Revision-Date: 2025-08-25 09:59+0000\n"
+"Last-Translator: David D <dadu042@mailo.com>\n"
+"Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.13\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
-msgstr ""
+msgstr "FQDN du serveur à connecter à"
 
 #: shared/api/api.go:30
 msgid "API user username"
@@ -30,7 +29,7 @@ msgstr ""
 
 #: shared/api/api.go:31
 msgid "Password for the API user"
-msgstr ""
+msgstr "Mot de passe pour l’utilisateur API"
 
 #: shared/api/api.go:32
 msgid "Path to a cert file of the CA"
@@ -47,15 +46,15 @@ msgstr ""
 #: shared/api/api.go:88
 #, javascript-format
 msgid "unknown error: %d"
-msgstr ""
+msgstr "erreur inconnue : %d"
 
 #: shared/api/api.go:120
 msgid "server URL is not provided"
-msgstr ""
+msgstr "URL du serveur n’est pas fournie"
 
 #: shared/api/api.go:152
 msgid "Cached session is expired."
-msgstr ""
+msgstr "La session en cache a expiré."
 
 #: shared/api/api.go:154 shared/api/credentials.go:70
 #, fuzzy
@@ -1672,87 +1671,91 @@ msgstr "Impossible de lire la saisie"
 msgid "A value is required"
 msgstr "Une valeur est requise"
 
-#: shared/utils/utils.go:209
+#: shared/utils/utils.go:218
 msgid "Registry %[1]s would be used instead of namespace %[2]s"
 msgstr ""
 
-#: shared/utils/utils.go:224 shared/utils/utils.go:250
+#: shared/utils/utils.go:233 shared/utils/utils.go:259
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "nom d'image invalid: %s"
 
-#: shared/utils/utils.go:228
+#: shared/utils/utils.go:237
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "tag missing dans %s"
 
-#: shared/utils/utils.go:236 shared/utils/utils.go:241
+#: shared/utils/utils.go:245 shared/utils/utils.go:250
 #, fuzzy, javascript-format
 msgid "Computed image name is %s"
 msgstr "nom d'image invalid: %s"
 
-#: shared/utils/utils.go:260
+#: shared/utils/utils.go:265
+msgid "image path '%[1]s' does not start with registry path '%[2]s'"
+msgstr ""
+
+#: shared/utils/utils.go:276
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "Erreur lors de l'exécution de %s"
 
-#: shared/utils/utils.go:269
+#: shared/utils/utils.go:285
 msgid "Failed to read random data"
 msgstr "Impossible de lire des données aléatoires"
 
-#: shared/utils/utils.go:290
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:296
+#: shared/utils/utils.go:312
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:409
+#: shared/utils/utils.go:425
 #, fuzzy
 msgid "failed to compute server FQDN"
 msgstr "impossible de se connecter au serveur: %s"
 
-#: shared/utils/utils.go:423
+#: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:427
+#: shared/utils/utils.go:443
 #, fuzzy, javascript-format
 msgid "cannot resolve %s"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/utils/utils.go:452
+#: shared/utils/utils.go:468
 #, fuzzy, javascript-format
 msgid "error creating file %s"
 msgstr "Suppression du fichier %s"
 
-#: shared/utils/utils.go:457
+#: shared/utils/utils.go:473
 #, fuzzy, javascript-format
 msgid "error writing file %s"
 msgstr "Suppression du fichier %s"
 
-#: shared/utils/utils.go:469 shared/utils/utils.go:484
+#: shared/utils/utils.go:485 shared/utils/utils.go:500
 #, fuzzy, javascript-format
 #| msgid "Failed to remove file %s"
 msgid "Failed to calculate checksum of the file %s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:490
 #, fuzzy
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "impossible de lier le répertoire du volume %s vers %s: %s"
 
-#: shared/utils/utils.go:491
+#: shared/utils/utils.go:507
 #, fuzzy
 #| msgid "Failed to remove file %s"
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/utils/utils.go:495
+#: shared/utils/utils.go:511
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr ""
