@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 10:06+0200\n"
+"POT-Creation-Date: 2025-08-26 17:38+0200\n"
 "PO-Revision-Date: 2025-06-12 08:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/zh_CN/>\n"
@@ -139,7 +139,8 @@ msgstr ""
 "\n"
 "注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:39 mgrpxy/shared/podman/podman.go:274
+#: mgrpxy/cmd/install/podman/utils.go:39
+#: mgrpxy/cmd/support/ptf/podman/utils.go:30 mgrpxy/shared/podman/podman.go:274
 msgid "install podman before running this command"
 msgstr "在运行此命令前安装 podman"
 
@@ -153,7 +154,8 @@ msgstr "无法检索代理配置文件"
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr "无法生成 systemd conf 用户配置文件"
 
-#: mgrpxy/cmd/install/podman/utils.go:64 mgrpxy/shared/podman/podman.go:296
+#: mgrpxy/cmd/install/podman/utils.go:64
+#: mgrpxy/cmd/support/ptf/podman/utils.go:48 mgrpxy/shared/podman/podman.go:296
 msgid "failed to login to registry.suse.com"
 msgstr "无法登录 registry.suse.com"
 
@@ -308,42 +310,43 @@ msgstr ""
 "\n"
 "注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:36
+#: mgrpxy/cmd/support/ptf/podman/utils.go:55 mgrpxy/shared/podman/podman.go:302
+msgid "cannot find httpd image: it will no be upgraded"
+msgstr "找不到 httpd 映像：将不升级该映像"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:60 mgrpxy/shared/podman/podman.go:306
+msgid "cannot find salt-broker image: it will no be upgraded"
+msgstr "找不到 salt-broker 映像：将不升级该映像"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:65 mgrpxy/shared/podman/podman.go:310
+msgid "cannot find squid image: it will no be upgraded"
+msgstr "找不到 squid 映像：将不升级该映像"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:70 mgrpxy/shared/podman/podman.go:314
+msgid "cannot find ssh image: it will no be upgraded"
+msgstr "找不到 ssh 映像：将不升级该映像"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:75 mgrpxy/shared/podman/podman.go:318
+msgid "cannot find tftpd image: it will no be upgraded"
+msgstr "找不到 tftpd 映像：将不升级该映像"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:90
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "不能同时设置 ptf 和 test 标志 "
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:39
+#: mgrpxy/cmd/support/ptf/podman/utils.go:93
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptf 和 test 标志不能同时为空 "
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:42
+#: mgrpxy/cmd/support/ptf/podman/utils.go:96
 msgid "user flag cannot be empty"
 msgstr "user 标志不能为空"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:58
-#, javascript-format
-msgid "The httpd ptf image computed is: %s"
-msgstr "计算出的 httpd ptf 映像为：%s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:68
-#, javascript-format
-msgid "The ssh ptf image computed is: %s"
+#: mgrpxy/cmd/support/ptf/podman/utils.go:126
+#, fuzzy
+#| msgid "The ssh ptf image computed is: %s"
+msgid "The %[1]s ptf image computed is: %[2]s"
 msgstr "计算出的 ssh ptf 映像为：%s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:78
-#, javascript-format
-msgid "The tftpd ptf image computed is: %s"
-msgstr "计算出的 tftpd ptf 映像为：%s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:88
-#, javascript-format
-msgid "The salt-broker ptf image computed is: %s"
-msgstr "计算出的 salt-broker ptf 映像为：%s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:98
-#, javascript-format
-msgid "The squid ptf image computed is: %s"
-msgstr "计算出的 squid ptf 映像为：%s"
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -540,26 +543,6 @@ msgstr "%s 文件没有所需的权限。请检查您的 umask 设置"
 msgid "missing required configuration file: %s"
 msgstr "缺少所需的配置文件 %s"
 
-#: mgrpxy/shared/podman/podman.go:302
-msgid "cannot find httpd image: it will no be upgraded"
-msgstr "找不到 httpd 映像：将不升级该映像"
-
-#: mgrpxy/shared/podman/podman.go:306
-msgid "cannot find salt-broker image: it will no be upgraded"
-msgstr "找不到 salt-broker 映像：将不升级该映像"
-
-#: mgrpxy/shared/podman/podman.go:310
-msgid "cannot find squid image: it will no be upgraded"
-msgstr "找不到 squid 映像：将不升级该映像"
-
-#: mgrpxy/shared/podman/podman.go:314
-msgid "cannot find ssh image: it will no be upgraded"
-msgstr "找不到 ssh 映像：将不升级该映像"
-
-#: mgrpxy/shared/podman/podman.go:318
-msgid "cannot find tftpd image: it will no be upgraded"
-msgstr "找不到 tftpd 映像：将不升级该映像"
-
 #: mgrpxy/shared/podman/podman.go:387
 msgid "Not a system id event"
 msgstr ""
@@ -619,6 +602,22 @@ msgstr "%s 容器的映像"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 容器的标记，如果设置，将会覆盖全局值"
+
+#, javascript-format
+#~ msgid "The httpd ptf image computed is: %s"
+#~ msgstr "计算出的 httpd ptf 映像为：%s"
+
+#, javascript-format
+#~ msgid "The tftpd ptf image computed is: %s"
+#~ msgstr "计算出的 tftpd ptf 映像为：%s"
+
+#, javascript-format
+#~ msgid "The salt-broker ptf image computed is: %s"
+#~ msgstr "计算出的 salt-broker ptf 映像为：%s"
+
+#, javascript-format
+#~ msgid "The squid ptf image computed is: %s"
+#~ msgstr "计算出的 squid ptf 映像为：%s"
 
 #~ msgid "application log level"
 #~ msgstr "应用程序日志级别"

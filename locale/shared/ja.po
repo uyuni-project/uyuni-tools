@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 10:06+0200\n"
+"POT-Creation-Date: 2025-08-26 17:38+0200\n"
 "PO-Revision-Date: 2025-06-16 14:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
@@ -1643,84 +1643,88 @@ msgstr "入力の読み込みに失敗しました"
 msgid "A value is required"
 msgstr "値が必要がです"
 
-#: shared/utils/utils.go:209
+#: shared/utils/utils.go:218
 msgid "Registry %[1]s would be used instead of namespace %[2]s"
 msgstr "ネームスペース %[2]s のかわりにレジストリ %[1]s が使用されます"
 
-#: shared/utils/utils.go:224 shared/utils/utils.go:250
+#: shared/utils/utils.go:233 shared/utils/utils.go:259
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "無効なイメージ名: %s"
 
-#: shared/utils/utils.go:228
+#: shared/utils/utils.go:237
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "タグが %s で見つかりません"
 
-#: shared/utils/utils.go:236 shared/utils/utils.go:241
+#: shared/utils/utils.go:245 shared/utils/utils.go:250
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "計算されたイメージ名は %s です"
 
-#: shared/utils/utils.go:260
+#: shared/utils/utils.go:265
+msgid "image path '%[1]s' does not start with registry path '%[2]s'"
+msgstr ""
+
+#: shared/utils/utils.go:276
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "%s の実行に失敗しました"
 
-#: shared/utils/utils.go:269
+#: shared/utils/utils.go:285
 msgid "Failed to read random data"
 msgstr "ランダムデータの読み込みに失敗しました"
 
-#: shared/utils/utils.go:290
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "%s からのダウンロードでエラーが発生しました"
 
-#: shared/utils/utils.go:296
+#: shared/utils/utils.go:312
 #, javascript-format
 msgid "bad status: %s"
 msgstr "不良ステータス: %s"
 
-#: shared/utils/utils.go:409
+#: shared/utils/utils.go:425
 msgid "failed to compute server FQDN"
 msgstr "サーバFQDNの計算に失敗しました"
 
-#: shared/utils/utils.go:423
+#: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s は有効なFQDNではありません"
 
-#: shared/utils/utils.go:427
+#: shared/utils/utils.go:443
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "%s を解決できません"
 
-#: shared/utils/utils.go:452
+#: shared/utils/utils.go:468
 #, javascript-format
 msgid "error creating file %s"
 msgstr "ファイル %s の作成中にエラーが発生しました"
 
-#: shared/utils/utils.go:457
+#: shared/utils/utils.go:473
 #, javascript-format
 msgid "error writing file %s"
 msgstr "ファイル %s の書き込み中にエラーが発生しました"
 
-#: shared/utils/utils.go:469 shared/utils/utils.go:484
+#: shared/utils/utils.go:485 shared/utils/utils.go:500
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "ファイル %s のチェックサムの計算に失敗しました"
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:490
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "ファイル %[1]s のチェックサムを %[2]s に書き込めませんでした"
 
-#: shared/utils/utils.go:491
+#: shared/utils/utils.go:507
 #, fuzzy
 #| msgid "Failed to calculate checksum of the file %s"
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "ファイル %s のチェックサムの計算に失敗しました"
 
-#: shared/utils/utils.go:495
+#: shared/utils/utils.go:511
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "%s のチェックサムが一致しません"

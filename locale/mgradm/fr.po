@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 10:06+0200\n"
+"POT-Creation-Date: 2025-08-26 14:51+0200\n"
 "PO-Revision-Date: 2025-08-25 09:59+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/fr/>\n"
@@ -1401,29 +1401,29 @@ msgstr ""
 "\n"
 "NOTE: pour l'instant l'installation sur un podman distant n'est pas supportée!\n"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:73
+#: mgradm/cmd/support/ptf/podman/utils.go:74
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:76
+#: mgradm/cmd/support/ptf/podman/utils.go:77
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:79
+#: mgradm/cmd/support/ptf/podman/utils.go:80
 msgid "user flag cannot be empty"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/podman/utils.go:91
+#: mgradm/cmd/support/ptf/podman/utils.go:92
 #, fuzzy
 msgid "failed to find server image"
 msgstr "impossible de déterminer l'image: %s"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:100
+#: mgradm/cmd/support/ptf/podman/utils.go:101
 #, fuzzy, javascript-format
 msgid "The computed image is %s"
 msgstr "impossible de déterminer l'image: %s"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:118
+#: mgradm/cmd/support/ptf/podman/utils.go:119
 #, fuzzy
 msgid "The %[1]s service image is %[2]s"
 msgstr "impossible de déterminer l'image: %s"

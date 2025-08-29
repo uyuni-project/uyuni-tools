@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 10:06+0200\n"
+"POT-Creation-Date: 2025-08-26 17:38+0200\n"
 "PO-Revision-Date: 2025-06-18 10:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
@@ -139,7 +139,8 @@ msgstr ""
 "\n"
 "NOTA: per ara no s'admet la instal·lació en un podman remot!\n"
 
-#: mgrpxy/cmd/install/podman/utils.go:39 mgrpxy/shared/podman/podman.go:274
+#: mgrpxy/cmd/install/podman/utils.go:39
+#: mgrpxy/cmd/support/ptf/podman/utils.go:30 mgrpxy/shared/podman/podman.go:274
 msgid "install podman before running this command"
 msgstr "instal·la podman abans d'executar aquesta ordre"
 
@@ -153,7 +154,8 @@ msgstr "no s'han pogut recuperar els fitxers de configuració del servidor inter
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr "no s'ha pogut generar el fitxer de configuració de l'usuari «systemd conf»"
 
-#: mgrpxy/cmd/install/podman/utils.go:64 mgrpxy/shared/podman/podman.go:296
+#: mgrpxy/cmd/install/podman/utils.go:64
+#: mgrpxy/cmd/support/ptf/podman/utils.go:48 mgrpxy/shared/podman/podman.go:296
 msgid "failed to login to registry.suse.com"
 msgstr "no s'ha pogut iniciar la sessió a register.suse.com"
 
@@ -308,42 +310,43 @@ msgstr ""
 "\n"
 "NOTA: per ara no s'admet la instal·lació en un podman remot!\n"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:36
+#: mgrpxy/cmd/support/ptf/podman/utils.go:55 mgrpxy/shared/podman/podman.go:302
+msgid "cannot find httpd image: it will no be upgraded"
+msgstr "no es pot trobar la imatge httpd: no s'actualitzarà"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:60 mgrpxy/shared/podman/podman.go:306
+msgid "cannot find salt-broker image: it will no be upgraded"
+msgstr "no es pot trobar la imatge salt-broker: no es millorarà"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:65 mgrpxy/shared/podman/podman.go:310
+msgid "cannot find squid image: it will no be upgraded"
+msgstr "no s'ha pogut trobar la imatge del calamar: no s'actualitzarà"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:70 mgrpxy/shared/podman/podman.go:314
+msgid "cannot find ssh image: it will no be upgraded"
+msgstr "no es pot trobar la imatge ssh: no s'actualitzarà"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:75 mgrpxy/shared/podman/podman.go:318
+msgid "cannot find tftpd image: it will no be upgraded"
+msgstr "no es pot trobar la imatge tftpd: no s'actualitzarà"
+
+#: mgrpxy/cmd/support/ptf/podman/utils.go:90
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "ptf i indicadors de prova no es poden establir simultàniament "
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:39
+#: mgrpxy/cmd/support/ptf/podman/utils.go:93
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptf i les banderes de prova no poden estar buides simultàniament "
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:42
+#: mgrpxy/cmd/support/ptf/podman/utils.go:96
 msgid "user flag cannot be empty"
 msgstr "l'indicador d'usuari no pot estar buit"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:58
-#, javascript-format
-msgid "The httpd ptf image computed is: %s"
-msgstr "La imatge ptf httpd calculada és: %s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:68
-#, javascript-format
-msgid "The ssh ptf image computed is: %s"
+#: mgrpxy/cmd/support/ptf/podman/utils.go:126
+#, fuzzy
+#| msgid "The ssh ptf image computed is: %s"
+msgid "The %[1]s ptf image computed is: %[2]s"
 msgstr "La imatge ssh ptf calculada és: %s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:78
-#, javascript-format
-msgid "The tftpd ptf image computed is: %s"
-msgstr "La imatge tftpd ptf calculada és: %s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:88
-#, javascript-format
-msgid "The salt-broker ptf image computed is: %s"
-msgstr "La imatge ptf salt-broker calculada és: %s"
-
-#: mgrpxy/cmd/support/ptf/podman/utils.go:98
-#, javascript-format
-msgid "The squid ptf image computed is: %s"
-msgstr "La imatge ptf del calamar calculada és: %s"
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -540,26 +543,6 @@ msgstr "El fitxer %s no té permisos necessaris. Comproveu la configuració de l
 msgid "missing required configuration file: %s"
 msgstr "falta el fitxer de configuració requerit: %s"
 
-#: mgrpxy/shared/podman/podman.go:302
-msgid "cannot find httpd image: it will no be upgraded"
-msgstr "no es pot trobar la imatge httpd: no s'actualitzarà"
-
-#: mgrpxy/shared/podman/podman.go:306
-msgid "cannot find salt-broker image: it will no be upgraded"
-msgstr "no es pot trobar la imatge salt-broker: no es millorarà"
-
-#: mgrpxy/shared/podman/podman.go:310
-msgid "cannot find squid image: it will no be upgraded"
-msgstr "no s'ha pogut trobar la imatge del calamar: no s'actualitzarà"
-
-#: mgrpxy/shared/podman/podman.go:314
-msgid "cannot find ssh image: it will no be upgraded"
-msgstr "no es pot trobar la imatge ssh: no s'actualitzarà"
-
-#: mgrpxy/shared/podman/podman.go:318
-msgid "cannot find tftpd image: it will no be upgraded"
-msgstr "no es pot trobar la imatge tftpd: no s'actualitzarà"
-
 #: mgrpxy/shared/podman/podman.go:387
 msgid "Not a system id event"
 msgstr ""
@@ -619,6 +602,22 @@ msgstr "Imatge per al contenidor %s"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "Etiqueta per al contenidor %s, anul·la el valor global si s'estableix"
+
+#, javascript-format
+#~ msgid "The httpd ptf image computed is: %s"
+#~ msgstr "La imatge ptf httpd calculada és: %s"
+
+#, javascript-format
+#~ msgid "The tftpd ptf image computed is: %s"
+#~ msgstr "La imatge tftpd ptf calculada és: %s"
+
+#, javascript-format
+#~ msgid "The salt-broker ptf image computed is: %s"
+#~ msgstr "La imatge ptf salt-broker calculada és: %s"
+
+#, javascript-format
+#~ msgid "The squid ptf image computed is: %s"
+#~ msgstr "La imatge ptf del calamar calculada és: %s"
 
 #~ msgid "application log level"
 #~ msgstr "nivell de registre de l'aplicació"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-22 10:06+0200\n"
+"POT-Creation-Date: 2025-08-26 14:51+0200\n"
 "PO-Revision-Date: 2025-06-16 14:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
@@ -1427,28 +1427,28 @@ msgstr ""
 "\n"
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:73
+#: mgradm/cmd/support/ptf/podman/utils.go:74
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "ptfとtestフラグを同時に設定することはできません "
 
-#: mgradm/cmd/support/ptf/podman/utils.go:76
+#: mgradm/cmd/support/ptf/podman/utils.go:77
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptfとtestフラグを同時に空にすることはできません "
 
-#: mgradm/cmd/support/ptf/podman/utils.go:79
+#: mgradm/cmd/support/ptf/podman/utils.go:80
 msgid "user flag cannot be empty"
 msgstr "ユーザフラグは空にできません"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:91
+#: mgradm/cmd/support/ptf/podman/utils.go:92
 msgid "failed to find server image"
 msgstr "サーバイメージが見つかりませんでした"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:100
+#: mgradm/cmd/support/ptf/podman/utils.go:101
 #, javascript-format
 msgid "The computed image is %s"
 msgstr "計算されたイメージは %s です"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:118
+#: mgradm/cmd/support/ptf/podman/utils.go:119
 #, fuzzy
 #| msgid "The computed image is %s"
 msgid "The %[1]s service image is %[2]s"
