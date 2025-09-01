@@ -48,6 +48,12 @@ ExecStartPre=/bin/sh -c '/usr/bin/podman pod create --infra-conmon-pidfile %t/uy
 		--replace ${PODMAN_EXTRA_ARGS}'
 
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/uyuni-proxy-pod.pod-id
+
+# Workaround for nft 1.1.4 and netavark incompatibility boo#1248848
+ExecStopPost=/bin/sh -c '/sbin/nft list tables | grep -q netavark && \
+	/sbin/nft flush table inet netavark && \
+	/usr/bin/podman network reload -a'
+
 ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/uyuni-proxy-pod.pod-id -t 10
 ExecStopPost=/usr/bin/podman pod rm --ignore -f --pod-id-file %t/uyuni-proxy-pod.pod-id
 
