@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Sep 02 14:37:01 CEST 2025 - rosuna@suse.com
+
+- version 5.1.20-0
+  * Add migration for server monitoring configuration (bsc#1247688)
+
+-------------------------------------------------------------------
 Fri Aug 29 10:30:43 CEST 2025 - rosuna@suse.com
 
 - version 5.1.19-0
