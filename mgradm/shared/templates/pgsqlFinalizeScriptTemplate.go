@@ -14,19 +14,16 @@ const postgresFinalizeScriptTemplate = `
 {{ if .RunReindex }}
 # Reindexing may not be needed for every collation change, but better be on the safe side.
 echo "Reindexing database. This may take a while, please do not cancel it!"
-database=$(sed -n "s/^\s*db_name\s*=\s*\([^ ]*\)\s*$/\1/p" /etc/rhn/rhn.conf)
-spacewalk-sql --select-mode - <<<"REINDEX DATABASE \"${database}\";"
+productdb=$(sed -n "s/^\s*db_name\s*=\s*\([^ ]*\)\s*$/\1/p" /etc/rhn/rhn.conf)
+reportdb=$(sed -n "s/^\s*report_db_name\s*=\s*\([^ ]*\)\s*$/\1/p" /etc/rhn/rhn.conf)
+spacewalk-sql --select-mode - <<<"REINDEX DATABASE \"${productdb}\";"
 
 # After reindexing, alter the collation version
 # Some databases like template0 may not accept changes and that's fine
 set +e
-for dbname in $(echo -e "\\pset tuples_only\n\\l\n" | spacewalk-sql --select-mode - | grep -v "is on" | cut -d '|' -f 1); do
-    if test -n "$dbname";
-    then
-		echo "Refreshing collation of database $dbname"
-        spacewalk-sql --select-mode - <<<"ALTER DATABASE $dbname REFRESH COLLATION VERSION;"
-    fi
-done
+echo "Refreshing collations"
+spacewalk-sql - <<<"ALTER DATABASE $productdb REFRESH COLLATION VERSION;"
+spacewalk-sql --reportdb - <<<"ALTER DATABASE $reportdb REFRESH COLLATION VERSION;"
 set -e
 {{ end }}
 
