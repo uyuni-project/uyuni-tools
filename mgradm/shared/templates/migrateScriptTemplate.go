@@ -149,6 +149,25 @@ else
   echo "Skipping tomcat configuration.."
 fi
 
+echo "Migrating monitoring configuration..."
+declare -A monitoring_conf
+monitoring_conf+=([/usr/lib/systemd/system/tomcat.service.d/jmx.conf]="/etc/sysconfig/tomcat/systemd/")
+monitoring_conf+=([/usr/lib/systemd/system/taskomatic.service.d/jmx.conf]="/etc/sysconfig/taskomatic/systemd/")
+monitoring_conf+=([/etc/postgres_exporter/postgres_exporter_queries.yaml]="/etc/sysconfig/prometheus-postgres_exporter/")
+monitoring_conf+=([/etc/systemd/system/prometheus-postgres_exporter.service.d/60-server.conf]="/etc/sysconfig/prometheus-postgres_exporter/systemd/")
+monitoring_conf+=([/etc/postgres_exporter/pg_passwd]="/etc/sysconfig/prometheus-postgres_exporter/")
+for config_file in ${!monitoring_conf[@]}
+do
+  if $SSH {{ .SourceFqdn }} test -e ${config_file}; then
+    mkdir -p "${monitoring_conf[${config_file}]}"
+    rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz "{{ .SourceFqdn }}:${config_file}" "${monitoring_conf[${config_file}]}";
+  fi
+done
+if $SSH {{ .SourceFqdn }} systemctl is-enabled prometheus-postgres_exporter.service; then
+  echo "Enabling prometheus-postgres_exporter service..."
+  ln -s /usr/lib/systemd/system/prometheus-postgres_exporter.service /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service
+fi
+
 rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 
