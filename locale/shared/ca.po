@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-26 17:38+0200\n"
-"PO-Revision-Date: 2025-08-02 09:46+0000\n"
+"PO-Revision-Date: 2025-09-03 10:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.13\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -827,10 +827,9 @@ msgid "Failed to delete %s secret"
 msgstr "No s'ha pogut suprimir el secret %s"
 
 #: shared/podman/secret.go:145
-#, fuzzy, javascript-format
-#| msgid "failed to connect to the server"
+#, javascript-format
 msgid "failed to get the content of the %s secret"
-msgstr "no s'ha pogut connectar al servidor"
+msgstr "No s'ha pogut obtenir el contingut del secret %s"
 
 #: shared/podman/support.go:26
 msgid "No logs file on host to add to the archive"
@@ -993,10 +992,8 @@ msgid "cannot disable service"
 msgstr "no es pot desactivar el servei"
 
 #: shared/podman/systemd.go:427
-#, fuzzy
-#| msgid "Failed to get the %[1]s property from %[2]s service"
 msgid "failed to show %[1]s property of %[2] systemd service"
-msgstr "Ha fallat obtenir la propietat de %[1]s des del servei %[2]s"
+msgstr "No s'ha pogut mostrar la propietat %[1]s del servei systemd %[2]"
 
 #: shared/podman/systemd.go:444
 #, javascript-format
@@ -1101,7 +1098,7 @@ msgstr "No s'ha pogut importar el volum %s"
 #: shared/podman/utils.go:267
 #, javascript-format
 msgid "Unable to restore selinux context for %s, manual action is required"
-msgstr ""
+msgstr "No es pot restaurar el context de selinux per a %s, cal una acció manual."
 
 #: shared/podman/utils.go:366
 msgid "cannot inspect data"
@@ -1136,28 +1133,20 @@ msgid "SSL Certificate Flags"
 msgstr "Banderes de certificat SSL"
 
 #: shared/ssl/flags.go:38
-#, fuzzy
-#| msgid "Database certificate path"
 msgid "Intermediate CA certificate path"
-msgstr "Camí del certificat de la base de dades"
+msgstr "Camí del certificat CA intermedi"
 
 #: shared/ssl/flags.go:39
-#, fuzzy
-#| msgid "Database certificate path"
 msgid "Root CA certificate path"
-msgstr "Camí del certificat de la base de dades"
+msgstr "Camí del certificat CA d'arrel"
 
 #: shared/ssl/flags.go:40
-#, fuzzy
-#| msgid "Database certificate path"
 msgid "Server certificate path"
-msgstr "Camí del certificat de la base de dades"
+msgstr "Camí del certificat del servidor"
 
 #: shared/ssl/flags.go:41
-#, fuzzy
-#| msgid "Database key path"
 msgid "Server key path"
-msgstr "Camí de la clau de la base de dades"
+msgstr "Camí de la clau del servidor"
 
 #: shared/ssl/flags.go:43 shared/ssl/flags.go:59
 msgid "3rd Party SSL Certificate Flags"
@@ -1306,13 +1295,11 @@ msgstr "Elimina també les imatges del contenidor"
 
 #: shared/utils/cmd.go:127 shared/utils/cmd.go:130
 msgid "application log level"
-msgstr ""
+msgstr "nivell de registre de l'aplicació"
 
 #: shared/utils/cmd.go:133
-#, fuzzy
-#| msgid "Failed to find home directory"
 msgid "Failed to hide --loglevel parameter"
-msgstr "No s'ha pogut trobar el directori d'inici"
+msgstr "No s'ha pogut ocultar el paràmetre --loglevel"
 
 #: shared/utils/config.go:40
 #, javascript-format
@@ -1653,7 +1640,7 @@ msgstr "El nom de la imatge calculada és %s"
 
 #: shared/utils/utils.go:265
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
-msgstr ""
+msgstr "El camí de la imatge %[1]s no comença amb la ruta del registre %[2]s"
 
 #: shared/utils/utils.go:276
 #, javascript-format
@@ -1708,10 +1695,8 @@ msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "No s'ha pogut escriure la suma de verificació del fitxer %[1]s a %[2]s"
 
 #: shared/utils/utils.go:507
-#, fuzzy
-#| msgid "Failed to calculate checksum of the file %s"
 msgid "Failed to read checksum of the file %[1]s"
-msgstr "No s'ha pogut calcular la suma de verificació del fitxer %s"
+msgstr "No s'ha pogut llegir la suma de verificació del fitxer %[1]s"
 
 #: shared/utils/utils.go:511
 #, javascript-format
