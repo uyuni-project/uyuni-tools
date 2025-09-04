@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-26 17:38+0200\n"
-"PO-Revision-Date: 2025-09-03 10:59+0000\n"
+"PO-Revision-Date: 2025-09-04 10:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -1134,7 +1134,7 @@ msgstr "Banderes de certificat SSL"
 
 #: shared/ssl/flags.go:38
 msgid "Intermediate CA certificate path"
-msgstr "Camí del certificat CA intermedi"
+msgstr "Camí intermedi del certificat de CA"
 
 #: shared/ssl/flags.go:39
 msgid "Root CA certificate path"
