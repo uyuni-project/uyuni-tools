@@ -55,6 +55,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret {{ .KeySecret }},type=mount,target={{ .KeyPath }} \
 	--secret {{ .DBCaSecret }},type=mount,target={{ .DBCaPath }} \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
+
 ExecStop=/usr/bin/podman exec \
     uyuni-server \
     /bin/bash -c 'spacewalk-service stop'
@@ -65,6 +66,10 @@ ExecStopPost=/usr/bin/podman rm \
 	-f \
 	--ignore -t 10 \
 	--cidfile=%t/%n.ctr-id
+# Workaround for nft 1.1.4 and netavark incompatibility boo#1248848
+ExecStopPost=/bin/sh -c '/sbin/nft list tables | grep -q netavark && \
+	/sbin/nft flush table inet netavark && \
+	/usr/bin/podman network reload -a'
 
 PIDFile=%t/uyuni-server.pid
 TimeoutStopSec=180
