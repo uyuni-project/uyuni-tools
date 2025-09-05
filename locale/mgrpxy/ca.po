@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-26 17:38+0200\n"
-"PO-Revision-Date: 2025-06-18 10:59+0000\n"
+"PO-Revision-Date: 2025-09-03 10:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.1\n"
+"X-Generator: Weblate 5.13\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -149,10 +149,8 @@ msgid "failed to retrieve proxy config files"
 msgstr "no s'han pogut recuperar els fitxers de configuració del servidor intermediari"
 
 #: mgrpxy/cmd/install/podman/utils.go:58 mgrpxy/shared/podman/podman.go:290
-#, fuzzy
-#| msgid "cannot generate systemd conf user configuration file"
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
-msgstr "no s'ha pogut generar el fitxer de configuració de l'usuari «systemd conf»"
+msgstr "No s'ha pogut obtenir l'ID del sistema actualitzat, se n'usa un del fitxer de configuració proporcionat."
 
 #: mgrpxy/cmd/install/podman/utils.go:64
 #: mgrpxy/cmd/support/ptf/podman/utils.go:48 mgrpxy/shared/podman/podman.go:296
@@ -343,10 +341,8 @@ msgid "user flag cannot be empty"
 msgstr "l'indicador d'usuari no pot estar buit"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:126
-#, fuzzy
-#| msgid "The ssh ptf image computed is: %s"
 msgid "The %[1]s ptf image computed is: %[2]s"
-msgstr "La imatge ssh ptf calculada és: %s"
+msgstr "La imatge ptf de %[1]s calculada és %[2]s"
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -545,11 +541,11 @@ msgstr "falta el fitxer de configuració requerit: %s"
 
 #: mgrpxy/shared/podman/podman.go:387
 msgid "Not a system id event"
-msgstr ""
+msgstr "No és un esdeveniment d'ID del sistema"
 
 #: mgrpxy/shared/podman/podman.go:396
 msgid "System id not found in returned event"
-msgstr ""
+msgstr "No s'ha trobat l'ID del sistema a l'esdeveniment retornat"
 
 #: mgrpxy/shared/utils/cmd.go:20
 #, javascript-format
