@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-26 14:51+0200\n"
-"PO-Revision-Date: 2025-08-25 09:59+0000\n"
+"PO-Revision-Date: 2025-09-03 16:59+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/fr/>\n"
 "Language: fr\n"
@@ -821,9 +821,8 @@ msgstr "impossible de déterminer l'image du conteneur actuel du serveur: %s"
 #: mgradm/cmd/inspect/kubernetes.go:46 mgradm/cmd/restart/kubernetes.go:27
 #: mgradm/cmd/start/kubernetes.go:27 mgradm/cmd/stop/kubernetes.go:27
 #: mgradm/shared/utils/exec.go:38
-#, fuzzy
 msgid "failed retrieving namespace"
-msgstr "impossible de déterminer l'image: %s"
+msgstr "échec de la récupération de l’espace de noms"
 
 #: mgradm/cmd/inspect/kubernetes.go:57 mgradm/cmd/inspect/podman.go:59
 #, fuzzy
@@ -927,9 +926,8 @@ msgstr "impossible de mettre à jour avec l'image %s: %s"
 
 #: mgradm/cmd/install/podman/utils.go:71 mgradm/shared/podman/podman.go:93
 #: mgradm/shared/podman/podman.go:324 mgradm/shared/podman/podman.go:523
-#, fuzzy
 msgid "cannot setup network"
-msgstr "impossible de configurer le réseau: %s"
+msgstr "échec à configurer le réseau"
 
 #: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:876
 #, javascript-format
@@ -1329,13 +1327,12 @@ msgid "failed to find the uyuni deployment namespace"
 msgstr ""
 
 #: mgradm/cmd/status/kubernetes.go:38
-#, fuzzy
 msgid "failed to get deployment status"
-msgstr "impossible de générer le script d'inspection: %s"
+msgstr "échec à obtenir le statut du déploiement"
 
 #: mgradm/cmd/status/kubernetes.go:41
 msgid "Some replicas are not ready: %[1]d / %[2]d"
-msgstr ""
+msgstr "Certaines répliques ne sont pas prêtes : %[1]d / %[2]d"
 
 #: mgradm/cmd/status/kubernetes.go:45
 msgid "the pod is not running"
@@ -1551,9 +1548,9 @@ msgid "Some volumes have not been removed completely"
 msgstr "Tous les volumes ont été supprimés"
 
 #: mgradm/cmd/uninstall/podman.go:70
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot delete image %s"
-msgstr "impossible de supprimer le volue %s: %s"
+msgstr "impossible de supprimer l'image %s"
 
 #: mgradm/cmd/uninstall/podman.go:74
 #, fuzzy
@@ -1615,9 +1612,8 @@ msgstr "impossible de générer le fichier du service systemd: %s"
 
 #: mgradm/shared/coco/coco.go:111 mgradm/shared/hub/xmlrpcapi.go:127
 #: mgradm/shared/podman/podman.go:104 mgradm/shared/saline/saline.go:95
-#, fuzzy
 msgid "cannot generate systemd conf file"
-msgstr "impossible de générer le fichier de configuration du service systemd: %s"
+msgstr "ne peut pas générer le fichier conf systemd"
 
 #: mgradm/shared/hub/xmlrpcapi.go:37
 #, javascript-format
@@ -1679,9 +1675,8 @@ msgid "Installing cert-manager"
 msgstr "Installation de cert-manager"
 
 #: mgradm/shared/kubernetes/certificates.go:173
-#, fuzzy
 msgid "cannot run helm upgrade"
-msgstr "impossible d'exécuter helm upgrade: %s"
+msgstr "ne peut pas exécuter helm upgrade"
 
 #: mgradm/shared/kubernetes/certificates.go:180
 #, fuzzy
