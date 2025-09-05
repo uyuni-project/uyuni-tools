@@ -50,7 +50,7 @@ type InstallationFlags struct {
 	DB           DBFlags
 	ReportDB     DBFlags
 	SSL          InstallSSLFlags
-	SCC          types.SCCCredentials
+	SCC          types.SCCCredentials `mapstructure:"scc"`
 	Debug        DebugFlags
 	Admin        apiTypes.User
 	Organization string
@@ -61,8 +61,8 @@ var systemd podman.Systemd = podman.NewSystemd()
 // CheckUpgradeParameters verifies the consistency of the parameters for upgrade and migrate commands.
 func (flags *InstallationFlags) CheckUpgradeParameters(cmd *cobra.Command, command string) {
 	flags.setPasswordIfMissing()
-
 	flags.checkUpgradeSSLParameters(cmd, command)
+	utils.DefaultSCCRegistry = flags.SCC.Registry
 }
 
 func (flags *InstallationFlags) setPasswordIfMissing() {
@@ -120,6 +120,7 @@ func (flags *InstallationFlags) CheckParameters(cmd *cobra.Command, command stri
 
 	flags.SSL.Email = flags.Email
 	flags.Admin.Email = flags.Email
+	utils.DefaultSCCRegistry = flags.SCC.Registry
 }
 
 // DBFlags can store all values required to connect to a database.

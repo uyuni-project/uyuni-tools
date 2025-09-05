@@ -200,6 +200,12 @@ func RemoveRegistryFromImage(imagePath string) string {
 
 // SplitRegistryHostAndPath splits a registry string into domain and path.
 func SplitRegistryHostAndPath(registry string) (domain string, path string) {
+	separator := "://"
+	index := strings.Index(registry, separator)
+	if index != -1 {
+		registry = registry[index+len(separator):]
+	}
+
 	idx := strings.Index(registry, "/")
 	if idx == -1 {
 		return registry, ""
@@ -214,12 +220,27 @@ func ComputeImage(
 	imageFlags types.ImageFlags,
 	appendToName ...string,
 ) (string, error) {
+	name := imageFlags.Name
+
 	if !strings.Contains(DefaultRegistry, registry) {
 		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), registry, DefaultRegistry)
 	}
-	name := imageFlags.Name
-	if !strings.Contains(imageFlags.Name, registry) {
-		name = path.Join(registry, RemoveRegistryFromImage(imageFlags.Name))
+
+	if DefaultSCCRegistry != DefaultRegistry {
+		sccHost, sccPath := SplitRegistryHostAndPath(DefaultSCCRegistry)
+		_, registryPath := SplitRegistryHostAndPath(registry)
+		nameSplit := strings.Split(imageFlags.Name, "/")
+		name = nameSplit[len(nameSplit)-1]
+		if sccPath == "" {
+			registry = path.Join(sccHost, registryPath)
+		} else {
+			registry = DefaultSCCRegistry
+		}
+		name = path.Join(registry, name)
+	}
+
+	if !strings.Contains(name, registry) {
+		name = path.Join(registry, RemoveRegistryFromImage(name))
 	}
 
 	// Compute the tag

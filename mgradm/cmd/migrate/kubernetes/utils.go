@@ -23,9 +23,10 @@ const migrationDataPvcName = "migration-data"
 func migrateToKubernetes(
 	_ *types.GlobalFlags,
 	flags *kubernetes.KubernetesServerFlags,
-	_ *cobra.Command,
+	cmd *cobra.Command,
 	args []string,
 ) error {
+	flags.Installation.CheckUpgradeParameters(cmd, "kubectl")
 	namespace := flags.Kubernetes.Uyuni.Namespace
 
 	// Create the namespace if not present
