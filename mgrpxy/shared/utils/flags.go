@@ -6,7 +6,6 @@ package utils
 
 import (
 	"fmt"
-	"path"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -17,6 +16,7 @@ import (
 
 // ProxyImageFlags are the flags used by install proxy command.
 type ProxyImageFlags struct {
+	Registry   types.Registry       `mapstructure:"registry"`
 	Tag        string               `mapstructure:"tag"`
 	PullPolicy string               `mapstructure:"pullPolicy"`
 	Httpd      types.ImageFlags     `mapstructure:"httpd"`
@@ -25,7 +25,6 @@ type ProxyImageFlags struct {
 	SSH        types.ImageFlags     `mapstructure:"ssh"`
 	Tftpd      types.ImageFlags     `mapstructure:"tftpd"`
 	Tuning     Tuning               `mapstructure:"tuning"`
-	Registry   types.Registry       `mapstructure:"registry"`
 	SCC        types.SCCCredentials `mapstructure:"scc"`
 }
 
@@ -76,6 +75,8 @@ func AddSCCFlag(cmd *cobra.Command) {
 // AddImageFlags will add the proxy install flags to a command.
 func AddImageFlags(cmd *cobra.Command) {
 	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))
+	cmd.Flags().String("registry", utils.DefaultRegistry, L("Specify a registry where to pull the images from"))
+	_ = cmd.Flags().MarkDeprecated("registry", "please use --registry-host instead")
 	utils.AddPullPolicyFlag(cmd)
 
 	addContainerImageFlags(cmd, "httpd", "httpd")

@@ -5,6 +5,10 @@
 package utils
 
 import (
+	"errors"
+	"reflect"
+
+	"github.com/go-viper/mapstructure/v2"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -55,10 +59,20 @@ func CommandHelper[T interface{}](
 		return err
 	}
 
-	if err := viper.Unmarshal(&flags); err != nil {
-		log.Error().Err(err).Msg(L("failed to unmarshall configuration"))
-		return Error(err, L("failed to unmarshall configuration"))
+	decoder, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{
+		DecodeHook: mapstructure.ComposeDecodeHookFunc(
+			StringToRegistryHook(),
+		),
+		Result: &flags,
+	})
+	if err != nil {
+		return err
 	}
+
+	if err = decoder.Decode(viper.AllSettings()); err != nil {
+		return err
+	}
+
 	if flagsUpdater != nil {
 		flagsUpdater(viper)
 	}
@@ -67,6 +81,30 @@ func CommandHelper[T interface{}](
 		log.Error().Err(err).Send()
 	}
 	return err
+}
+
+func StringToRegistryHook() mapstructure.DecodeHookFunc {
+	return func(
+		_ reflect.Type,
+		t reflect.Type,
+		data interface{},
+	) (interface{}, error) {
+		// Only intercept if the target is Registry
+		if t != reflect.TypeOf(types.Registry{}) {
+			return data, nil
+		}
+
+		switch val := data.(type) {
+		case string:
+			// If Registry is a string, create Registry struct with Host = string
+			return types.Registry{Host: val}, nil
+		case map[string]interface{}:
+			// If it's a map, decode normally
+			return data, nil
+		default:
+			return data, errors.New(L("cannot decode into Registry"))
+		}
+	}
 }
 
 // AddBackendFlag add the flag for setting the backend ('podman', 'podman-remote', 'kubectl').
@@ -92,9 +130,13 @@ func AddPullPolicyFlag(cmd *cobra.Command) {
 }
 
 func AddRegistryFlag(cmd *cobra.Command) {
-	cmd.Flags().String("registry-host", DefaultRegistry, L("registry TODO"))
-	cmd.Flags().String("registry-user", "", L("user TODO"))
-	cmd.Flags().String("registry-password", "", L("password TODO"))
+	cmd.Flags().String("registry-host", DefaultRegistry,
+		L("Specify a registry where to pull the images from. It will be concatenated with image name"))
+	cmd.Flags().String("registry-user", "", L("User if registry requires an authentication"))
+	cmd.Flags().String("registry-password", "", L("Password if registry requires an authentication"))
+	_ = AddFlagToHelpGroupID(cmd, "registry-host", "")
+	_ = AddFlagToHelpGroupID(cmd, "registry-user", "")
+	_ = AddFlagToHelpGroupID(cmd, "registry-password", "")
 }
 
 // AddPTFFlag add PTF flag to a command.
