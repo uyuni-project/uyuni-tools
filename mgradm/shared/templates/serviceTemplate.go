@@ -38,9 +38,6 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{ .Args }} \
 	{{- range .Ports }}
 	-p {{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
-        {{- if $.IPV6Enabled }}
-	-p [::]:{{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
-        {{- end }}
 	{{- end }}
 	{{- range .Volumes }}
 	-v {{ .Name }}:{{ .MountPath }} \
@@ -66,10 +63,6 @@ ExecStopPost=/usr/bin/podman rm \
 	-f \
 	--ignore -t 10 \
 	--cidfile=%t/%n.ctr-id
-# Workaround for nft 1.1.4 and netavark incompatibility boo#1248848
-ExecStopPost=/bin/sh -c '/sbin/nft list tables | grep -q netavark && \
-	/sbin/nft flush table inet netavark && \
-	/usr/bin/podman network reload -a'
 
 PIDFile=%t/uyuni-server.pid
 TimeoutStopSec=180

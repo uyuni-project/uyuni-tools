@@ -1,0 +1,2 @@
+- Remove extra ipv6 mapping and nftables workaround
+  (bsc#1248848)
