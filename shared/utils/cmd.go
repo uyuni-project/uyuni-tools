@@ -6,6 +6,7 @@ package utils
 
 import (
 	"errors"
+	"path"
 	"reflect"
 
 	"github.com/go-viper/mapstructure/v2"
@@ -22,13 +23,19 @@ import (
 var LocaleRoot = "locale"
 
 // DefaultRegistry represents the default name used for container image.
-var DefaultRegistry = "registry.opensuse.org/uyuni"
+var DefaultRegistry = "registry.opensuse.org"
 
 // DefaultHelmRegistry represents the default name used for helm charts.
 var DefaultHelmRegistry = "registry.opensuse.org/uyuni"
 
 // DefaultTag represents the default tag used for image.
 var DefaultTag = "latest"
+
+// DefaultImagePrefix represents the default name used for image.
+var DefaultImagePrefix = "uyuni"
+
+// DefaultImage represents the default image name.
+var DefaultImage = path.Join(DefaultImagePrefix, "server")
 
 // DefaultPullPolicy represents the default pull policy used for image.
 var DefaultPullPolicy = "Always"
