@@ -48,9 +48,6 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret {{ .ReportPassword }},type=env,target=REPORT_DB_PASS \
 	{{- range .Ports }}
 	-p {{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
-        {{- if $.IPV6Enabled }}
-	-p [::]:{{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
-        {{- end }}
 	{{- end }}
         {{- range .Volumes }}
         -v {{ .Name }}:{{ .MountPath }} \
