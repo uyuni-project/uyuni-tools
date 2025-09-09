@@ -15,7 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var defaultImage = path.Join(utils.DefaultRegistry, "server")
+var defaultImage = path.Join(utils.DefaultImagePrefix, "server")
 
 // UseProvided return true if server can use an SSL Cert provided by flags.
 func (f *InstallSSLFlags) UseProvided() bool {
@@ -123,7 +123,7 @@ func AddContainerImageFlags(
 	groupName string,
 	imageName string,
 ) {
-	defaultImage := path.Join(utils.DefaultRegistry, imageName)
+	defaultImage := path.Join(utils.DefaultImagePrefix, imageName)
 	cmd.Flags().String(container+"-image", defaultImage,
 		fmt.Sprintf(L("Image for %s container"), displayName))
 	cmd.Flags().String(container+"-tag", "",

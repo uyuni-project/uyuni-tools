@@ -6,6 +6,7 @@ package utils
 
 import (
 	"fmt"
+	"path"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -91,7 +92,7 @@ func AddImageFlags(cmd *cobra.Command) {
 }
 
 func addContainerImageFlags(cmd *cobra.Command, paramName string, imageName string) {
-	defaultImage := path.Join(utils.DefaultRegistry, "proxy-"+imageName)
+	defaultImage := path.Join(utils.DefaultImagePrefix, "proxy-"+imageName)
 	cmd.Flags().String(paramName+"-image", defaultImage,
 		fmt.Sprintf(L("Image for %s container"), imageName))
 	cmd.Flags().String(paramName+"-tag", "",
