@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-28 15:48+0200\n"
-"PO-Revision-Date: 2025-08-25 09:59+0000\n"
+"PO-Revision-Date: 2025-09-09 17:59+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/fr/>\n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.13.1\n"
 
 #: mgrctl/cmd/api/api.go:26
 msgid "JSON over HTTP API helper tool"
@@ -246,9 +246,8 @@ msgid "Third party proxy certificates flags"
 msgstr ""
 
 #: mgrctl/cmd/proxy/config_do.go:41
-#, fuzzy
 msgid "failed to connect to the server"
-msgstr "impossible de se connecter au serveur: %s"
+msgstr "impossible de se connecter au serveur"
 
 #: mgrctl/cmd/proxy/config_do.go:56
 #, fuzzy
