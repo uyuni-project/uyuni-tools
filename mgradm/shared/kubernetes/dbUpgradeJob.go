@@ -26,7 +26,6 @@ const DBUpgradeJobName = "uyuni-db-upgrade"
 // StartDBUpgradeJob starts the database upgrade job.
 func StartDBUpgradeJob(
 	namespace string,
-	registry string,
 	image types.ImageFlags,
 	migrationImage types.ImageFlags,
 	pullSecret string,
@@ -39,9 +38,9 @@ func StartDBUpgradeJob(
 	var err error
 	if migrationImage.Name == "" {
 		imageName := fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql)
-		migrationImageURL, err = utils.ComputeImage(registry, image.Tag, image, imageName)
+		migrationImageURL, err = utils.ComputeImage(image.Registry.Host, image.Tag, image, imageName)
 	} else {
-		migrationImageURL, err = utils.ComputeImage(registry, image.Tag, migrationImage)
+		migrationImageURL, err = utils.ComputeImage(image.Registry.Host, image.Tag, migrationImage)
 	}
 	if err != nil {
 		return "", utils.Error(err, L("failed to compute image URL"))
