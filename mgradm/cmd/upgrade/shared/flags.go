@@ -18,7 +18,7 @@ func AddUpgradeFlags(cmd *cobra.Command) {
 	adm_utils.AddDBUpgradeImageFlag(cmd)
 	adm_utils.AddUpgradeCocoFlag(cmd)
 	adm_utils.AddUpgradeHubXmlrpcFlags(cmd)
-	adm_utils.AddUpgradeEventProcessorFlag(cmd)
+	adm_utils.AddEventProcessorFlag(cmd)
 	adm_utils.AddUpgradeSalineFlag(cmd)
 
 	cmd.Flags().String("ssl-password", "", L("Current Server CA password"))
