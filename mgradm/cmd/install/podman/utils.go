@@ -7,8 +7,9 @@ package podman
 import (
 	"errors"
 	"fmt"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/eventProcessor"
 	"os/exec"
+
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/eventProcessor"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -147,6 +148,7 @@ func installForPodman(
 
 	if err := eventProcessor.SetupEventProcessorContainer(
 		systemd, authFile, flags.Image.Registry, flags.EventProcessor, flags.Image, flags.Installation.DB,
+		flags.Installation.Debug.Java,
 	); err != nil {
 		return err
 	}

@@ -62,5 +62,6 @@ func migrateToPodman(
 		flags.Mirror,
 		flags.Podman,
 		args,
+		flags.Installation.Debug.Java,
 	)
 }

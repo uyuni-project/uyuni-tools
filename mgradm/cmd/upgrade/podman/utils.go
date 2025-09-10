@@ -50,5 +50,6 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 		flags.Pgsql,
 		flags.Installation.SCC,
 		flags.Installation.TZ,
+		flags.Installation.Debug.Java,
 	)
 }

@@ -6,7 +6,6 @@ package podman
 
 import (
 	"fmt"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/eventProcessor"
 	"os"
 	"os/exec"
 	"path"
@@ -14,6 +13,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/eventProcessor"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -316,6 +317,7 @@ func Upgrade(
 	pgsqlFlags types.PgsqlFlags,
 	scc types.SCCCredentials,
 	tz string,
+	debugFlag bool,
 ) error {
 	// Calling cloudguestregistryauth only makes sense if using the cloud provider registry.
 	// This check assumes users won't use custom registries that are not the cloud provider one on a cloud image.
@@ -464,7 +466,7 @@ func Upgrade(
 		return utils.Errorf(err, L("error upgrading saline service."))
 	}
 
-	if err := eventProcessor.Upgrade(systemd, authFile, registry, eventProcessorFlags, image, inspectedDB); err != nil {
+	if err := eventProcessor.Upgrade(systemd, authFile, registry, eventProcessorFlags, image, inspectedDB, debugFlag); err != nil {
 		return utils.Errorf(err, L("error upgrading event processor service."))
 	}
 
@@ -518,6 +520,7 @@ func Migrate(
 	mirror string,
 	podmanArgs podman.PodmanFlags,
 	args []string,
+	debugFlag bool,
 ) error {
 	// Calling cloudguestregistryauth only makes sense if using the cloud provider registry.
 	// This check assumes users won't use custom registries that are not the cloud provider one on a cloud image.
@@ -634,7 +637,7 @@ func Migrate(
 		return utils.Errorf(err, L("error upgrading saline service."))
 	}
 
-	if err := eventProcessor.Upgrade(systemd, authFile, registry, eventProcessorFlags, image, inspectedDB); err != nil {
+	if err := eventProcessor.Upgrade(systemd, authFile, registry, eventProcessorFlags, image, inspectedDB, debugFlag); err != nil {
 		return utils.Errorf(err, L("error upgrading event processor service."))
 	}
 

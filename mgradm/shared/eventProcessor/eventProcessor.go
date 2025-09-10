@@ -6,6 +6,8 @@ package eventProcessor
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -13,7 +15,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	"strings"
 )
 
 // Upgrade event processor
@@ -24,13 +25,14 @@ func Upgrade(
 	eventProcessorFlags adm_utils.EventProcessorFlags,
 	baseImage types.ImageFlags,
 	db adm_utils.DBFlags,
+	debugJava bool,
 ) error {
 	if eventProcessorFlags.Image.Name == "" {
 		return fmt.Errorf(L("image is required"))
 	}
 
 	if err := writeEventProcessorFiles(
-		systemd, authFile, registry, eventProcessorFlags, baseImage, db,
+		systemd, authFile, registry, eventProcessorFlags, baseImage, db, debugJava,
 	); err != nil {
 		return err
 	}
@@ -45,6 +47,7 @@ func writeEventProcessorFiles(
 	eventProcessorFlags adm_utils.EventProcessorFlags,
 	baseImage types.ImageFlags,
 	db adm_utils.DBFlags,
+	debugJava bool,
 ) error {
 	image := eventProcessorFlags.Image
 
@@ -84,12 +87,19 @@ func writeEventProcessorFiles(
 		return err
 	}
 
+	// Control debug port expose from container to client
+	var ports []types.PortMap
+	if debugJava {
+		ports = utils.EventProcessorPorts
+	}
+
 	eventProcessorData := templates.EventProcessorServiceTemplateData{
 		NamePrefix:   "uyuni",
 		Network:      podman.UyuniNetwork,
 		DBUserSecret: podman.DBUserSecret,
 		DBPassSecret: podman.DBPassSecret,
 		DBBackend:    "postgres",
+		Ports:        ports,
 	}
 
 	log.Info().Msg(L("Setting up event processor service"))
@@ -100,11 +110,20 @@ func writeEventProcessorFiles(
 		return utils.Errorf(err, L("Failed to generate systemd service unit file"))
 	}
 
+	// Add conditional debug server inside container
+	var javaOpts string
+	if debugJava {
+		javaOpts = "-Xdebug -Xrunjdwp:transport=dt_socket,address=*:8004,server=y,suspend=n"
+	} else {
+		javaOpts = ""
+	}
+
 	environment := fmt.Sprintf(`Environment=UYUNI_EVENT_PROCESSOR_IMAGE=%s
 Environment=UYUNI_DB_NAME=%s
 Environment=UYUNI_DB_PORT=%d
-Environment=UYUNI_DB_HOST=%s`,
-		preparedImage, db.Name, db.Port, db.Host)
+Environment=UYUNI_DB_HOST=%s
+Environment=JAVA_OPTS="%s"`,
+		preparedImage, db.Name, db.Port, db.Host, javaOpts)
 
 	if err := podman.GenerateSystemdConfFile(
 		podman.EventProcessorService+"@", "generated.conf", environment, true,
@@ -126,9 +145,10 @@ func SetupEventProcessorContainer(
 	eventProcessorFlags adm_utils.EventProcessorFlags,
 	baseImage types.ImageFlags,
 	db adm_utils.DBFlags,
+	debugJava bool,
 ) error {
 	if err := writeEventProcessorFiles(
-		systemd, authFile, registry, eventProcessorFlags, baseImage, db,
+		systemd, authFile, registry, eventProcessorFlags, baseImage, db, debugJava,
 	); err != nil {
 		return err
 	}

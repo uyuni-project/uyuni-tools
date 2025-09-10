@@ -3,6 +3,8 @@ package templates
 import (
 	"io"
 	"text/template"
+
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 // SaltEventProcessorServiceTemplateData represents the data for salt event processor service.
@@ -23,10 +25,14 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
     --cgroups=no-conmon \
     --sdnotify=conmon \
     -d \
+	{{- range .Ports }}
+        -p {{ .Exposed }}:{{ .Port }}{{if .Protocol}}/{{ .Protocol }}{{end}} \
+    {{- end }}
     -e db_name=${UYUNI_DB_NAME} \
 	-e db_port=${UYUNI_DB_PORT} \
     -e db_host=${UYUNI_DB_HOST} \
 	-e db_backend=postgresql \
+    -e JAVA_OPTS="${JAVA_OPTS}" \
     --secret={{ .DBUserSecret }},type=env,target=db_user \
     --secret={{ .DBPassSecret }},type=env,target=db_password \
     --replace \
@@ -46,12 +52,13 @@ WantedBy=multi-user.target default.target
 `
 
 type EventProcessorServiceTemplateData struct {
-	NamePrefix   string // "uyuni"
+	NamePrefix   string
 	Image        string
-	Network      string // "uyuni-server"
-	DBUserSecret string // "uyuni-db-user"
-	DBPassSecret string // "uyuni-db-pass"
-	DBBackend    string // "postgresql"
+	Network      string
+	DBUserSecret string
+	DBPassSecret string
+	DBBackend    string
+	Ports        []types.PortMap
 }
 
 // Render will create the systemd configuration file.
