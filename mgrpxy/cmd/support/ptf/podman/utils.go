@@ -43,7 +43,7 @@ func ptfForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.UpgradeFlags.Registry)
+	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.UpgradeFlags.Registry, flags.SCC)
 	if err != nil {
 		return err
 	}
