@@ -215,33 +215,18 @@ func SplitRegistryHostAndPath(registry string) (domain string, path string) {
 
 // ComputeImage assembles the container image from its name and tag.
 func ComputeImage(
-	registry string,
+	globalRegistry string,
 	globalTag string,
 	imageFlags types.ImageFlags,
 	appendToName ...string,
 ) (string, error) {
-	name := imageFlags.Name
-
-	if !strings.Contains(DefaultRegistry, registry) {
-		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), registry, DefaultRegistry)
+	// Compute the registry
+	registry := globalRegistry
+	if imageFlags.Registry.Host != "" {
+		registry = imageFlags.Registry.Host
 	}
 
-	if DefaultSCCRegistry != DefaultRegistry {
-		sccHost, sccPath := SplitRegistryHostAndPath(DefaultSCCRegistry)
-		_, registryPath := SplitRegistryHostAndPath(registry)
-		nameSplit := strings.Split(imageFlags.Name, "/")
-		name = nameSplit[len(nameSplit)-1]
-		if sccPath == "" {
-			registry = path.Join(sccHost, registryPath)
-		} else {
-			registry = DefaultSCCRegistry
-		}
-		name = path.Join(registry, name)
-	}
-
-	if !strings.Contains(name, registry) {
-		name = path.Join(registry, RemoveRegistryFromImage(name))
-	}
+	name := path.Join(registry, imageFlags.Name)
 
 	// Compute the tag
 	tag := globalTag

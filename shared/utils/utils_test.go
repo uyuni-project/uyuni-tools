@@ -307,28 +307,14 @@ func TestComputeImage(t *testing.T) {
 		{
 			// bsc#1226436
 			"registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile/suse/manager/5.0/x86_64/server:bar",
-			"registry.suse.com/suse/manager/5.0/x86_64/server",
+			"suse/manager/5.0/x86_64/server",
 			"bar",
 			"registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile",
 			"",
 		},
 		{
 			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
-			"registry.suse.com/suse/manager/5.0/x86_64/server",
-			"5.0.0",
-			"cloud.com",
-			"",
-		},
-		{
-			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
 			"/suse/manager/5.0/x86_64/server",
-			"5.0.0",
-			"cloud.com",
-			"",
-		},
-		{
-			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
-			"suse/manager/5.0/x86_64/server",
 			"5.0.0",
 			"cloud.com",
 			"",
