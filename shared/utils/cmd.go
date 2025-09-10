@@ -26,7 +26,7 @@ var LocaleRoot = "locale"
 var DefaultRegistry = "registry.opensuse.org"
 
 // DefaultHelmRegistry represents the default name used for helm charts.
-var DefaultHelmRegistry = "registry.opensuse.org/uyuni"
+var DefaultHelmRegistry = "registry.opensuse.org"
 
 // DefaultTag represents the default tag used for image.
 var DefaultTag = "latest"
@@ -36,6 +36,9 @@ var DefaultImagePrefix = "uyuni"
 
 // DefaultImage represents the default image name.
 var DefaultImage = path.Join(DefaultImagePrefix, "server")
+
+// DefaultProxyChart represents the default proxy chart.
+var DefaultProxyChart = path.Join(DefaultImagePrefix, "proxy-chart")
 
 // DefaultPullPolicy represents the default pull policy used for image.
 var DefaultPullPolicy = "Always"
