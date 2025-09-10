@@ -328,19 +328,14 @@ pull_policy=%{!?_default_pull_policy:Always}
 # "%{?_default_pull_policy}" != ""
 
 namespace=%{namespace}
-helm_registry=%{namespace}
+helm_namespace=%{namespace}
 %if "%{?_default_namespace}" != ""
-  # Set both container and helm chart namespaces as this can be the same value
   namespace='%{_default_namespace}'
-  helm_registry='%{_default_namespace}'
 %endif
-# "%{?_default_namespace}" != ""
 
-# We may have additional config for helm registry as the path is different in OBS devel projects
 %if "%{?_default_helm_registry}" != ""
-  helm_registry='%{_default_helm_registry}'
+  helm_namespace='%{_default_helm_registry}'
 %endif
-# "%{?_default_helm_registry}" != ""
 
 go_tags=""
 %if "%{?_uyuni_tools_tags}" != ""
@@ -360,13 +355,29 @@ go_path=""
 %endif
 # 0%{?ubuntu}
 
+registry="${namespace%%%%/*}"
+imageprefix="${namespace#*/}"
+
+# --- same for helm_registry ---
+helmregistry="${helm_namespace%%%%/*}"
+helmimageprefix="${helm_namespace#*/}"
+
 GOLD_FLAGS="-X '${UTILS_PATH}.Version=%{version} for ${tag} image (%{version_details}) (compilation tag: %{_uyuni_tools_tags})' -X ${UTILS_PATH}.LocaleRoot=%{_datadir}/locale"
+
 if test -n "${namespace}"; then
-    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultRegistry=${namespace}"
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultRegistry=${registry}"
 fi
 
 if test -n "${helm_registry}"; then
-    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultHelmRegistry=${helm_registry}"
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultHelmRegistry=${helmregistry}"
+fi
+
+if test -n "${imageprefix}"; then
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultImagePrefix=${imageprefix}"
+fi
+
+if test -n "${helmimageprefix}"; then
+    GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultHelmImagePrefix=${helmimageprefix}"
 fi
 
 if test -n "${tag}"; then
