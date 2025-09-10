@@ -35,30 +35,14 @@ func TestGetContainerImage(t *testing.T) {
 			expectedResult: "default/image:tag",
 		},
 		{
-			name: "httpd image details overrule defaults",
+			name: "httpd image with registry",
 			proxyFlags: ProxyImageFlags{
 				Registry: types.Registry{
-					Host: "default/image",
+					Host: "default",
 				},
 				Tag: "tag",
 				Httpd: types.ImageFlags{
-					Name: "default/image/proxy-httpd",
-					Tag:  "mytag",
-				},
-			},
-			expectedResult: "default/image/proxy-httpd:mytag",
-		},
-
-		// registry and image name matching
-		{
-			name: "httpd image name overrule when contains full registry",
-			proxyFlags: ProxyImageFlags{
-				Registry: types.Registry{
-					Host: "default/image",
-				},
-				Tag: "tag",
-				Httpd: types.ImageFlags{
-					Name: "default/image/proxy-httpd",
+					Name: "image/proxy-httpd",
 					Tag:  "mytag",
 				},
 			},
@@ -88,7 +72,7 @@ func TestGetContainerImage(t *testing.T) {
 				},
 				Tag: "1.0.0",
 				Httpd: types.ImageFlags{
-					Name: "registry.opensuse.org/uyuni/proxy-httpd",
+					Name: "uyuni/proxy-httpd",
 					Tag:  "2.0.0",
 				},
 			},

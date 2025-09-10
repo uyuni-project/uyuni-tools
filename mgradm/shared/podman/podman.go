@@ -201,7 +201,6 @@ func restoreSELinuxContext() error {
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
 func RunPgsqlVersionUpgrade(
 	authFile string,
-	registry string,
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
 	oldPgsql string,
@@ -220,13 +219,13 @@ func RunPgsqlVersionUpgrade(
 		upgradeImageURL := ""
 		var err error
 		if upgradeImage.Name == "" {
-			upgradeImageURL, err = utils.ComputeImage(registry, utils.DefaultTag, image,
+			upgradeImageURL, err = utils.ComputeImage(image.Registry.Host, utils.DefaultTag, image,
 				fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
 		} else {
-			upgradeImageURL, err = utils.ComputeImage(registry, image.Tag, upgradeImage)
+			upgradeImageURL, err = utils.ComputeImage(image.Registry.Host, image.Tag, upgradeImage)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
@@ -372,7 +371,7 @@ func Upgrade(
 
 	if newPgVersion > oldPgVersion {
 		if err := RunPgsqlVersionUpgrade(
-			authFile, image.Registry.Host, image, upgradeImage, strconv.Itoa(oldPgVersion),
+			authFile, image, upgradeImage, strconv.Itoa(oldPgVersion),
 			strconv.Itoa(newPgVersion),
 		); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
@@ -562,7 +561,7 @@ func Migrate(
 	log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
 		newPgVersion, oldPgVersion)
 
-	if err := upgradeDB(newPgVersion, oldPgVersion, upgradeImage, authFile, image.Registry.Host, image); err != nil {
+	if err := upgradeDB(newPgVersion, oldPgVersion, upgradeImage, authFile, image); err != nil {
 		return err
 	}
 
@@ -802,12 +801,11 @@ func upgradeDB(
 	oldPgVersion int,
 	upgradeImage types.ImageFlags,
 	authFile string,
-	registry string,
 	image types.ImageFlags,
 ) error {
 	if newPgVersion > oldPgVersion {
 		if err := RunPgsqlVersionUpgrade(
-			authFile, registry, image, upgradeImage, strconv.Itoa(oldPgVersion),
+			authFile, image, upgradeImage, strconv.Itoa(oldPgVersion),
 			strconv.Itoa(newPgVersion),
 		); err != nil {
 			return utils.Error(err, L("cannot run PostgreSQL version upgrade script"))
