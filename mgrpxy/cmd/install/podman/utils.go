@@ -59,7 +59,7 @@ func installForPodman(
 		}
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Registry)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Registry, flags.SCC)
 	if err != nil {
 		return err
 	}

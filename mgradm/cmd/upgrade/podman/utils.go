@@ -23,7 +23,7 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 		return err
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Image.Registry)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Image.Registry, flags.Installation.SCC)
 	if err != nil {
 		return err
 	}

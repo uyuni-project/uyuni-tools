@@ -29,7 +29,7 @@ func migrateToPodman(
 		return err
 	}
 
-	authFile, cleaner, err := podman_utils.PodmanLogin(hostData, flags.Image.Registry)
+	authFile, cleaner, err := podman_utils.PodmanLogin(hostData, flags.Image.Registry, flags.Installation.SCC)
 	if err != nil {
 		return err
 	}

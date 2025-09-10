@@ -68,7 +68,7 @@ func listTags(flags *podmanUpgradeFlags) error {
 		return err
 	}
 
-	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.Image.Registry)
+	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.Image.Registry, flags.Installation.SCC)
 	if err != nil {
 		return err
 	}

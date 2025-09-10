@@ -44,7 +44,7 @@ func installForPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
-	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Image.Registry)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Image.Registry, flags.Installation.SCC)
 	if err != nil {
 		return err
 	}

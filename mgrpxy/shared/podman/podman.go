@@ -290,7 +290,7 @@ func Upgrade(
 		}
 	}
 
-	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.Registry)
+	authFile, cleaner, err := podman.PodmanLogin(hostData, flags.Registry, flags.SCC)
 	if err != nil {
 		return err
 	}
