@@ -143,6 +143,8 @@ func AddPullPolicyFlag(cmd *cobra.Command) {
 }
 
 func AddRegistryFlag(cmd *cobra.Command) {
+	cmd.Flags().String("registry", DefaultRegistry, L("Specify a registry where to pull the images from"))
+	_ = cmd.Flags().MarkDeprecated("registry", "please use --registry-host instead")
 	cmd.Flags().String("registry-host", DefaultRegistry,
 		L("Specify a registry where to pull the images from. It will be concatenated with image name"))
 	cmd.Flags().String("registry-user", "", L("User if registry requires an authentication"))
