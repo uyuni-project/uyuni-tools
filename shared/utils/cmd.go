@@ -149,9 +149,11 @@ func AddRegistryFlag(cmd *cobra.Command) {
 		L("Specify a registry where to pull the images from. It will be concatenated with image name"))
 	cmd.Flags().String("registry-user", "", L("User if registry requires an authentication"))
 	cmd.Flags().String("registry-password", "", L("Password if registry requires an authentication"))
-	_ = AddFlagToHelpGroupID(cmd, "registry-host", "")
-	_ = AddFlagToHelpGroupID(cmd, "registry-user", "")
-	_ = AddFlagToHelpGroupID(cmd, "registry-password", "")
+
+	_ = AddFlagHelpGroup(cmd, &Group{ID: "registry", Title: L("Registry Flags")})
+	_ = AddFlagToHelpGroupID(cmd, "registry-host", "registry")
+	_ = AddFlagToHelpGroupID(cmd, "registry-user", "registry")
+	_ = AddFlagToHelpGroupID(cmd, "registry-password", "registry")
 }
 
 // AddPTFFlag add PTF flag to a command.
