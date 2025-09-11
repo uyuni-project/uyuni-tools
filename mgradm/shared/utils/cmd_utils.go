@@ -188,8 +188,6 @@ It will be used as SCC credentials for products synchronization and to pull imag
 func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("image", defaultImage, L("Image"))
 	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
-	cmd.Flags().String("registry", utils.DefaultRegistry, L("Specify a registry where to pull the images from"))
-	_ = cmd.Flags().MarkDeprecated("registry", "please use --registry-host instead")
 
 	utils.AddPullPolicyFlag(cmd)
 	utils.AddRegistryFlag(cmd)

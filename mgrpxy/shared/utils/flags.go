@@ -76,8 +76,6 @@ func AddSCCFlag(cmd *cobra.Command) {
 // AddImageFlags will add the proxy install flags to a command.
 func AddImageFlags(cmd *cobra.Command) {
 	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))
-	cmd.Flags().String("registry", utils.DefaultRegistry, L("Specify a registry where to pull the images from"))
-	_ = cmd.Flags().MarkDeprecated("registry", "please use --registry-host instead")
 	utils.AddPullPolicyFlag(cmd)
 
 	addContainerImageFlags(cmd, "httpd", "httpd")
