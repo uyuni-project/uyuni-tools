@@ -182,22 +182,6 @@ func YesNo(question string) (bool, error) {
 	}
 }
 
-// RemoveRegistryFromImage removes registry fqdn from image path.
-func RemoveRegistryFromImage(imagePath string) string {
-	separator := "://"
-	index := strings.Index(imagePath, separator)
-	if index != -1 {
-		imagePath = imagePath[index+len(separator):]
-	}
-
-	parts := strings.Split(imagePath, "/")
-	if strings.Contains(parts[0], ".") || strings.Contains(parts[0], ":") || index != -1 {
-		// first part is a registry fqdn
-		parts = parts[1:]
-	}
-	return strings.Join(parts, "/")
-}
-
 // SplitRegistryHostAndPath splits a registry string into domain and path.
 func SplitRegistryHostAndPath(registry string) (domain string, path string) {
 	separator := "://"
