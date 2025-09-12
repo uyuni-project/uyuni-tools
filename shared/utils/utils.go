@@ -210,7 +210,11 @@ func ComputeImage(
 		registry = imageFlags.Registry.Host
 	}
 
-	name := path.Join(registry, imageFlags.Name)
+	name := imageFlags.Name
+
+	if !StartWithFQDN(name) {
+		name = path.Join(registry, imageFlags.Name)
+	}
 
 	// Compute the tag
 	tag := globalTag
@@ -438,6 +442,12 @@ func IsValidFQDN(fqdn string) error {
 // IsWellFormedFQDN returns an false if the argument is not a well formed FQDN.
 func IsWellFormedFQDN(fqdn string) bool {
 	return fqdnValid.MatchString(fqdn)
+}
+
+// StartWithFQDN returns true if the argument start with a well formed FQDN.
+func StartWithFQDN(url string) bool {
+	fqdn, _ := SplitRegistryHostAndPath(url)
+	return IsWellFormedFQDN(fqdn)
 }
 
 // CommandExists checks if cmd exists in $PATH.
