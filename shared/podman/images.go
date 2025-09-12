@@ -313,7 +313,7 @@ func GetRunningImage(container string) (string, error) {
 	log.Info().Msgf(L("Running podman ps --filter=name=%s --format={{ .Image }}"), container)
 
 	out, err := utils.RunCmdOutput(
-		zerolog.DebugLevel, "podman", "ps", fmt.Sprintf("--filter=name=%s", container), "--format='{{ .Image }}'",
+		zerolog.DebugLevel, "podman", "ps", fmt.Sprintf("--filter=name=%s", container), "--format={{ .Image }}",
 	)
 	if err != nil {
 		return "", utils.Errorf(err, L("cannot find any running image for container %s"), container)
