@@ -396,11 +396,12 @@ func TestComputeImage(t *testing.T) {
 			registry:      "cloud.com",
 			appendToImage: []string{""},
 		},
+		// ignore registry if name contains fqdn
 		{
 			expected:      "cloud.com/my/path/server:5.0.0",
-			name:          "my/path/server",
+			name:          "cloud.com/my/path/server:5.0.0",
 			tag:           "5.0.0",
-			registry:      "cloud.com",
+			registry:      "registy.suse.com",
 			appendToImage: []string{""},
 		},
 	}
