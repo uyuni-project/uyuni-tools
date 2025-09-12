@@ -106,7 +106,7 @@ func PrepareImages(
 	}
 
 	if len(pgsqlImage) <= 0 {
-		log.Debug().Msg("Use deployed pgsqlimage")
+		log.Debug().Msg("Use deployed postgresql image")
 
 		pgsqlImage, err = GetRunningImage(DBContainerName)
 		if err != nil {
