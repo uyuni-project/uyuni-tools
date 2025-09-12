@@ -54,7 +54,6 @@ linters-settings:
 
 linters:
   enable:
-    - unused
     - dupl
     - errcheck
     - errname

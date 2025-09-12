@@ -17,9 +17,10 @@ import (
 type podmanPTFFlags struct {
 	adm_utils.ServerFlags `mapstructure:",squash"`
 	Podman                podman.PodmanFlags
-	PTFId                 string `mapstructure:"ptf"`
-	TestID                string `mapstructure:"test"`
-	CustomerID            string `mapstructure:"user"`
+	PTFId                 string               `mapstructure:"ptf"`
+	TestID                string               `mapstructure:"test"`
+	CustomerID            string               `mapstructure:"user"`
+	SCC                   types.SCCCredentials `mapstructure:"scc"`
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanPTFFlags]) *cobra.Command {
@@ -44,6 +45,7 @@ NOTE: for now installing on a remote podman is not supported!
 	adm_utils.AddSCCFlag(podmanCmd)
 	utils.AddPTFFlag(podmanCmd)
 	utils.AddPullPolicyFlag(podmanCmd)
+	utils.AddRegistryFlag(podmanCmd)
 
 	return podmanCmd
 }

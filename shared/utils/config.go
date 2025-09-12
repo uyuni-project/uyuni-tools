@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -93,8 +93,15 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) error {
 	var errors []error
 	cmd.Flags().VisitAll(func(f *pflag.Flag) {
 		configName := strings.ReplaceAll(f.Name, "-", ".")
+		// Retrocompatibility: --registry maps to registry-host
+		if configName == "registry" {
+			configName = "registry.host"
+		}
 		if err := v.BindPFlag(configName, f); err != nil {
 			errors = append(errors, Errorf(err, L("failed to bind %[1]s config to parameter %[2]s"), configName, f.Name))
+		}
+		if f.Name == "registry" && f.Changed {
+			v.Set("registry.host", f.Value.String())
 		}
 	})
 

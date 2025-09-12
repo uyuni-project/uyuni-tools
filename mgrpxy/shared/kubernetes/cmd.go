@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -20,7 +20,7 @@ type HelmFlags struct {
 
 // AddHelmFlags add helm flags to a command.
 func AddHelmFlags(cmd *cobra.Command) {
-	defaultChart := fmt.Sprintf("oci://%s/proxy-helm", utils.DefaultHelmRegistry)
+	defaultChart := fmt.Sprintf("oci://%s/%s", utils.DefaultHelmRegistry, utils.DefaultProxyChart)
 
 	cmd.Flags().String("helm-proxy-namespace", "default", L("Kubernetes namespace where to install the proxy"))
 	cmd.Flags().String("helm-proxy-chart", defaultChart, L("URL to the proxy helm chart"))
