@@ -103,7 +103,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	images := map[string]*string{
 		podman_shared.ServerAttestationService + "@": &flags.Coco.Image.Name,
 		podman_shared.HubXmlrpcService:               &flags.HubXmlrpc.Image.Name,
-		podman_shared.SalineService:                  &flags.Saline.Image.Name,
+		podman_shared.SalineService + "@":            &flags.Saline.Image.Name,
 		podman_shared.DBService:                      &flags.Pgsql.Image.Name,
 	}
 

@@ -45,6 +45,11 @@ func writeSalineServiceFiles(
 ) error {
 	image := salineFlags.Image
 
+	if image.Name == "" {
+		// Don't touch the saline service in ptf if not already present.
+		return nil
+	}
+
 	if image.Tag == "" {
 		if baseImage.Tag != "" {
 			image.Tag = baseImage.Tag

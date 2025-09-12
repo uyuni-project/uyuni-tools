@@ -21,7 +21,7 @@ func TestCheckParameters(t *testing.T) {
 			podman.ServerService:                  image,
 			podman.ServerAttestationService + "@": cocoImage,
 			podman.HubXmlrpcService:               hubImage,
-			podman.SalineService:                  salineImage,
+			podman.SalineService + "@":            salineImage,
 			podman.DBService:                      dbImage,
 		}
 	}
