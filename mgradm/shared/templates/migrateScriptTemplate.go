@@ -171,6 +171,14 @@ fi
 rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 
+echo "Migrating custom SSL CA certificates..."
+rsync -e "$SSH" --rsync-path='sudo rsync' -avz --trust-sender \
+    --exclude='/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT' \
+    --ignore-missing-args \
+    {{ .SourceFqdn }}:/usr/share/pki/trust/anchors/ \
+    {{ .SourceFqdn }}:/etc/pki/trust/anchors/ \
+    /etc/pki/trust/anchors/
+
 echo "Extracting time zone..."
 $SSH {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
 
