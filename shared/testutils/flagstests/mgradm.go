@@ -105,19 +105,37 @@ var InstallSSLFlagsTestArgs = []string{
 }
 
 // ImageFlagsTestArgs is the expected values for AssertImageFlag.
-var ImageFlagsTestArgs = []string{
+var ImageOnlyFlagsTestArgs = []string{
 	"--image", "path/to/image",
-	"--registry", "myregistry",
+	"--registry", "myOldRegistry",
 	"--tag", "v1.2.3",
 	"--pullPolicy", "never",
 }
 
+// RegistryFlagsTestArgs is the expected values for AssertRegistryFlag.
+var RegistryImageFlagsTestArgs = []string{
+	"--registry-host", "myregistry",
+	"--registry-user", "user",
+	"--registry-password", "password",
+}
+
+var ImageFlagsTestArgs = append(ImageOnlyFlagsTestArgs, RegistryImageFlagsTestArgs...)
+
 // AssertImageFlag checks that all image flags are parsed correctly.
 func AssertImageFlag(t *testing.T, flags *types.ImageFlags) {
 	testutils.AssertEquals(t, "Error parsing --image", "path/to/image", flags.Name)
-	testutils.AssertEquals(t, "Error parsing --registry", "myregistry", flags.Registry)
+	testutils.AssertEquals(t, "Error parsing --registry", "myOldRegistry", flags.Registry.Host)
 	testutils.AssertEquals(t, "Error parsing --tag", "v1.2.3", flags.Tag)
 	testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.PullPolicy)
+
+	AssertRegistryFlag(t, &flags.Registry)
+}
+
+// AssertRegistryFlag checks that all registry flags are parsed correctly.
+func AssertRegistryFlag(t *testing.T, flags *types.Registry) {
+	testutils.AssertEquals(t, "Error parsing --registry-host", "myOldRegistry", flags.Host)
+	testutils.AssertEquals(t, "Error parsing --registry-user", "user", flags.User)
+	testutils.AssertEquals(t, "Error parsing --registry-password", "password", flags.Password)
 }
 
 // DBUpdateImageFlagTestArgs is the expected values for AssertDBUpgradeImageFlag.

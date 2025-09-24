@@ -23,8 +23,10 @@ func TestGetContainerImage(t *testing.T) {
 		{
 			name: "no image details",
 			proxyFlags: ProxyImageFlags{
-				Registry: "default/image",
-				Tag:      "tag",
+				Registry: types.Registry{
+					Host: "default/image",
+				},
+				Tag: "tag",
 				Httpd: types.ImageFlags{
 					Name: "",
 					Tag:  "",
@@ -33,26 +35,14 @@ func TestGetContainerImage(t *testing.T) {
 			expectedResult: "default/image:tag",
 		},
 		{
-			name: "httpd image details overrule defaults",
+			name: "httpd image with registry",
 			proxyFlags: ProxyImageFlags{
-				Registry: "default/image",
-				Tag:      "tag",
-				Httpd: types.ImageFlags{
-					Name: "default/image/proxy-httpd",
-					Tag:  "mytag",
+				Registry: types.Registry{
+					Host: "default",
 				},
-			},
-			expectedResult: "default/image/proxy-httpd:mytag",
-		},
-
-		// registry and image name matching
-		{
-			name: "httpd image name overrule when contains full registry",
-			proxyFlags: ProxyImageFlags{
-				Registry: "default",
-				Tag:      "tag",
+				Tag: "tag",
 				Httpd: types.ImageFlags{
-					Name: "default/image/proxy-httpd",
+					Name: "image/proxy-httpd",
 					Tag:  "mytag",
 				},
 			},
@@ -61,8 +51,10 @@ func TestGetContainerImage(t *testing.T) {
 		{
 			name: "httpd image name is appended to registry when it does not include registry",
 			proxyFlags: ProxyImageFlags{
-				Registry: "default/extra/image",
-				Tag:      "tag",
+				Registry: types.Registry{
+					Host: "default/extra/image",
+				},
+				Tag: "tag",
 				Httpd: types.ImageFlags{
 					Name: "default/image/proxy-httpd",
 					Tag:  "mytag",
@@ -75,10 +67,12 @@ func TestGetContainerImage(t *testing.T) {
 		{
 			name: "custom full httpd registry image name",
 			proxyFlags: ProxyImageFlags{
-				Registry: "registry.suse.com/suse/some/paths/",
-				Tag:      "1.0.0",
+				Registry: types.Registry{
+					Host: "registry.suse.com/suse/some/paths/",
+				},
+				Tag: "1.0.0",
 				Httpd: types.ImageFlags{
-					Name: "registry.opensuse.org/uyuni/proxy-httpd",
+					Name: "uyuni/proxy-httpd",
 					Tag:  "2.0.0",
 				},
 			},
@@ -88,8 +82,10 @@ func TestGetContainerImage(t *testing.T) {
 		{
 			name: "httpd with path-only image name",
 			proxyFlags: ProxyImageFlags{
-				Registry: "registry.suse.com/uyuni",
-				Tag:      "1.0.0",
+				Registry: types.Registry{
+					Host: "registry.suse.com/uyuni",
+				},
+				Tag: "1.0.0",
 				Httpd: types.ImageFlags{
 					Name: "path/to/proxy-httpd",
 					Tag:  "",

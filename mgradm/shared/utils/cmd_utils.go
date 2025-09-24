@@ -15,7 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var defaultImage = path.Join(utils.DefaultRegistry, "server")
+var defaultImage = path.Join(utils.DefaultImagePrefix, "server")
 
 // UseProvided return true if server can use an SSL Cert provided by flags.
 func (f *InstallSSLFlags) UseProvided() bool {
@@ -123,7 +123,7 @@ func AddContainerImageFlags(
 	groupName string,
 	imageName string,
 ) {
-	defaultImage := path.Join(utils.DefaultRegistry, imageName)
+	defaultImage := path.Join(utils.DefaultImagePrefix, imageName)
 	cmd.Flags().String(container+"-image", defaultImage,
 		fmt.Sprintf(L("Image for %s container"), displayName))
 	cmd.Flags().String(container+"-tag", "",
@@ -176,10 +176,9 @@ func AddDBFlags(cmd *cobra.Command) {
 // AddSCCFlag add SCC flags to a command.
 func AddSCCFlag(cmd *cobra.Command) {
 	cmd.Flags().String("scc-user", "", L(`SUSE Customer Center username.
-It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com`))
+It will be used as SCC credentials for products synchronization and to pull images from SCC registry`))
 	cmd.Flags().String("scc-password", "", L(`SUSE Customer Center password.
-It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com`))
-
+It will be used as SCC credentials for products synchronization and to pull images from SCC registry`))
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "scc", Title: L("SUSE Customer Center Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "scc-user", "scc")
 	_ = utils.AddFlagToHelpGroupID(cmd, "scc-password", "scc")
@@ -188,16 +187,17 @@ It will be used as SCC credentials for products synchronization and to pull imag
 // AddImageFlag add Image flags to a command.
 func AddImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("image", defaultImage, L("Image"))
-	cmd.Flags().String("registry", utils.DefaultRegistry, L("Specify a registry where to pull the images from"))
 	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
 
 	utils.AddPullPolicyFlag(cmd)
+	utils.AddRegistryFlag(cmd)
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "image", Title: L("Image Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "image", "image")
-	_ = utils.AddFlagToHelpGroupID(cmd, "registry", "") // without group, since this flag is applied to all the images
 	_ = utils.AddFlagToHelpGroupID(cmd, "tag", "image")
-	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "") // without group, since this flag is applied to all the images
+	// without group, since this flag is applied to all the images
+	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "")
+	_ = utils.AddFlagToHelpGroupID(cmd, "registry", "")
 }
 
 // AddDBUpgradeImageFlag add Database upgrade image flags to a command.

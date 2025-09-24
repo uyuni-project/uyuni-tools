@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 //go:build ptf
@@ -16,6 +16,7 @@ import (
 
 type podmanPTFFlags struct {
 	UpgradeFlags podman.PodmanProxyFlags `mapstructure:",squash"`
+	SCC          types.SCCCredentials    `mapstructure:"scc"`
 	PTFId        string                  `mapstructure:"ptf"`
 	TestID       string                  `mapstructure:"test"`
 	CustomerID   string                  `mapstructure:"user"`

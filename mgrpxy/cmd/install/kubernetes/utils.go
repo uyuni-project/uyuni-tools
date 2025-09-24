@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -60,8 +60,8 @@ func installForKubernetes(_ *types.GlobalFlags,
 	}
 
 	helmArgs := []string{"--set", "ingress=" + clusterInfos.Ingress}
-	helmArgs, err = shared_kubernetes.AddSCCSecret(
-		helmArgs, flags.Helm.Proxy.Namespace, &flags.SCC, shared_kubernetes.ProxyApp,
+	helmArgs, err = shared_kubernetes.AddRegistry(
+		helmArgs, flags.Helm.Proxy.Namespace, &flags.Registry, shared_kubernetes.ProxyApp,
 	)
 	if err != nil {
 		return err
