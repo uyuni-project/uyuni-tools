@@ -147,3 +147,33 @@ One POT file for each tool and one for the `shared` folder will be generated in 
 The translation files should be named after the target language next to the corresponding PO file.
 The `.mo` files should not be committed in the source tree as they are build results.
 Those are generated using the `locale/build.sh` script.
+
+### To run End-To-End tests
+
+To run the tests, first set up a virtual machine with a Linux system, such as Leap 15.6. Then, connect your IntelliJ to this VM and proceed to the next steps:
+
+Install dependencies and force Podman to use netavark and aardvark-dns
+```bash
+zypper -n install curl git tar gzip make gcc podman netavark aardvark-dns
+podman system reset
+```
+
+Install Go and Ginkgo
+```bash
+curl -LO https://go.dev/dl/go1.21.13.linux-amd64.tar.gz
+tar -C $HOME -xzf go1.21.13.linux-amd64.tar.gz
+export PATH="$HOME/go/bin:$PATH"
+go install github.com/onsi/ginkgo/v2/ginkgo@v2.20.1
+```
+
+Build the tools from the source code folder
+```bash
+go build -o bin/mgradm ./mgradm
+go build -o bin/mgrctl ./mgrctl
+go build -o bin/mgrpxy ./mgrpxy
+```
+
+Run the tests
+```bash
+ginkgo -vv ./tests/e2e
+```
