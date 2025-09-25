@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-26 17:38+0200\n"
-"PO-Revision-Date: 2025-09-08 08:59+0000\n"
+"PO-Revision-Date: 2025-09-25 10:59+0000\n"
 "Last-Translator: Antonio Gemelli <antonio.gemelli@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.1\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -25,11 +25,11 @@ msgstr "FQDN del server a cui connettersi"
 
 #: shared/api/api.go:30
 msgid "API user username"
-msgstr ""
+msgstr "Credenziali utente API"
 
 #: shared/api/api.go:31
 msgid "Password for the API user"
-msgstr ""
+msgstr "Credenziali (password) dell’utente API"
 
 #: shared/api/api.go:32
 msgid "Path to a cert file of the CA"
