@@ -42,6 +42,13 @@ var UyuniServices = []types.UyuniService{
 		Description: L("Saline"),
 		Replicas:    types.SingleOptionalReplica,
 		Options:     []types.UyuniServiceOption{}},
+
+	{Name: "uyuni-server-salt-event-processor",
+		Image:       SaltEventProcessorImage,
+		Description: L("Salt event processor"),
+		Replicas:    types.SingleOptionalReplica,
+		Options:     []types.UyuniServiceOption{}},
+
 	{Name: "uyuni-db",
 		Description: L("Database"),
 		Replicas:    types.SingleMandatoryReplica,
@@ -75,6 +82,14 @@ var COCOAttestationImage = types.ImageFlags{
 // Saline holds the flags to tune the saline container image.
 var SalineImage = types.ImageFlags{
 	Name:       "server-saline",
+	Tag:        DefaultTag,
+	Registry:   DefaultRegistry,
+	PullPolicy: DefaultPullPolicy,
+}
+
+// SaltEventProcessorImage holds the flags to tune the Salt event processor container image.
+var SaltEventProcessorImage = types.ImageFlags{
+	Name:       "server-salt-event-processor",
 	Tag:        DefaultTag,
 	Registry:   DefaultRegistry,
 	PullPolicy: DefaultPullPolicy,
