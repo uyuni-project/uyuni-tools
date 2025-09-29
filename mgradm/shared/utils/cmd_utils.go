@@ -203,7 +203,7 @@ func AddImageFlag(cmd *cobra.Command) {
 // AddDBUpgradeImageFlag add Database upgrade image flags to a command.
 func AddDBUpgradeImageFlag(cmd *cobra.Command) {
 	cmd.Flags().String("dbupgrade-image", "", L("Database upgrade image"))
-	cmd.Flags().String("dbupgrade-tag", "latest", L("Database upgrade image tag"))
+	cmd.Flags().String("dbupgrade-tag", "", L("Database upgrade image tag, overrides the default value if set"))
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "dbupgrade-image", Title: L("Database Upgrade Image Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "dbupgrade-image", "dbupgrade-image")
