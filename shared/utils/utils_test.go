@@ -290,7 +290,12 @@ func TestComputePTF(t *testing.T) {
 }
 
 func TestComputeImage(t *testing.T) {
-	data := [][]string{
+	cases := []struct {
+		expected string
+		name     string
+		tag      string
+		registry string
+	}{
 		{"registry:5000/path/to/image:foo", "registry:5000/path/to/image:foo", "bar", ""},
 		{"registry:5000/path/to/image:foo", "REGISTRY:5000/path/to/image:foo", "bar", ""},
 		{"registry:5000/path/to/image:foo", "REGISTRY:5000/path/to/image:foo", "BAR", ""},
@@ -299,69 +304,63 @@ func TestComputeImage(t *testing.T) {
 		{"registry/path/to/image:bar", "registry/path/to/image", "bar", ""},
 		{"registry/path/to/image:bar", "path/to/image", "bar", "registry"},
 		{"registry:5000/path/to/image:foo", "path/to/image:foo", "BAR", "REGISTRY:5000"},
-		{"registry:5000/path/to/image-migration-14-16:foo", "registry:5000/path/to/image:foo", "bar", "", "-migration-14-16"},
-		{"registry:5000/path/to/image-migration-14-16:bar", "registry:5000/path/to/image", "bar", "", "-migration-14-16"},
-		{"registry/path/to/image-migration-14-16:foo", "registry/path/to/image:foo", "bar", "", "-migration-14-16"},
-		{"registry/path/to/image-migration-14-16:bar", "registry/path/to/image", "bar", "", "-migration-14-16"},
-		{"registry/path/to/image-migration-14-16:bar", "path/to/image", "bar", "registry", "-migration-14-16"},
+		{"registry:5000/path/to/image-migration-14-16:foo", "registry:5000/path/to/image-migration-14-16:foo", "bar", ""},
+		{"registry:5000/path/to/image-migration-14-16:bar", "registry:5000/path/to/image-migration-14-16", "bar", ""},
+		{"registry/path/to/image-migration-14-16:foo", "registry/path/to/image-migration-14-16:foo", "bar", ""},
+		{"registry/path/to/image-migration-14-16:bar", "registry/path/to/image-migration-14-16", "bar", ""},
+		{"registry/path/to/image-migration-14-16:bar", "path/to/image-migration-14-16", "bar", "registry"},
 		{
 			// bsc#1226436
 			"registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile/suse/manager/5.0/x86_64/server:bar",
 			"registry.suse.com/suse/manager/5.0/x86_64/server",
 			"bar",
 			"registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile",
-			"",
 		},
 		{
 			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
 			"registry.suse.com/suse/manager/5.0/x86_64/server",
 			"5.0.0",
 			"cloud.com",
-			"",
 		},
 		{
 			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
 			"/suse/manager/5.0/x86_64/server",
 			"5.0.0",
 			"cloud.com",
-			"",
 		},
 		{
 			"cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
 			"suse/manager/5.0/x86_64/server",
 			"5.0.0",
 			"cloud.com",
-			"",
 		},
 		{
 			"cloud.com/my/path/server:5.0.0",
 			"my/path/server",
 			"5.0.0",
 			"cloud.com",
-			"",
 		},
 	}
 
-	for i, testCase := range data {
-		result := testCase[0]
+	for i, testCase := range cases {
+		result := testCase.expected
 		image := types.ImageFlags{
-			Name: testCase[1],
-			Tag:  testCase[2],
+			Name: testCase.name,
+			Tag:  testCase.tag,
 		}
-		appendToImage := testCase[4:]
 
-		actual, err := ComputeImage(testCase[3], "defaulttag", image, appendToImage...)
+		actual, err := ComputeImage(testCase.registry, "defaulttag", image)
 
 		if err != nil {
 			t.Errorf(
-				"Testcase %d: Unexpected error while computing image with %s, %s, %s: %s",
-				i, image.Name, image.Tag, appendToImage, err,
+				"Testcase %d: Unexpected error while computing image with %s, %s: %s",
+				i, image.Name, image.Tag, err,
 			)
 		}
 		if actual != result {
 			t.Errorf(
-				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s",
-				i, result, actual, image.Name, image.Tag, appendToImage,
+				"Testcase %d: Expected %s got %s when computing image with %s, %s",
+				i, result, actual, image.Name, image.Tag,
 			)
 		}
 	}

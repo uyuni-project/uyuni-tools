@@ -38,11 +38,9 @@ func StartDBUpgradeJob(
 	var migrationImageURL string
 	var err error
 	if migrationImage.Name == "" {
-		imageName := fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql)
-		migrationImageURL, err = utils.ComputeImage(registry, image.Tag, image, imageName)
-	} else {
-		migrationImageURL, err = utils.ComputeImage(registry, image.Tag, migrationImage)
+		migrationImage.Name = fmt.Sprintf("%s-migration-%s-%s", image.Name, oldPgsql, newPgsql)
 	}
+	migrationImageURL, err = utils.ComputeImage(registry, image.Tag, migrationImage)
 	if err != nil {
 		return "", utils.Error(err, L("failed to compute image URL"))
 	}

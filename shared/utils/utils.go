@@ -212,7 +212,6 @@ func ComputeImage(
 	registry string,
 	globalTag string,
 	imageFlags types.ImageFlags,
-	appendToName ...string,
 ) (string, error) {
 	if !strings.Contains(DefaultRegistry, registry) {
 		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), registry, DefaultRegistry)
@@ -236,17 +235,13 @@ func ComputeImage(
 		if len(tag) <= 0 {
 			return name, fmt.Errorf(L("tag missing on %s"), name)
 		}
-		if len(appendToName) > 0 {
-			name = name + strings.Join(appendToName, ``)
-		}
 		// No tag provided in the URL name, append the one passed
 		imageName := fmt.Sprintf("%s:%s", name, tag)
 		imageName = strings.ToLower(imageName) // podman does not accept repo in upper case
 		log.Info().Msgf(L("Computed image name is %s"), imageName)
 		return imageName, nil
 	}
-	imageName := submatches[1] + strings.Join(appendToName, ``) + `:` + submatches[2]
-	imageName = strings.ToLower(imageName) // podman does not accept repo in upper case
+	imageName := strings.ToLower(name) // podman does not accept repo in upper case
 	log.Info().Msgf(L("Computed image name is %s"), imageName)
 	return imageName, nil
 }
