@@ -5,9 +5,11 @@
 package podman
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
 func TestHasDebugPorts(t *testing.T) {
@@ -64,5 +66,56 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	for definition, expected := range data {
 		actual := getMirrorPath([]byte(definition))
 		testutils.AssertEquals(t, "Unexpected result for "+definition, expected, actual)
+	}
+}
+
+func TestRunPgsqlVersionUpgrade(t *testing.T) {
+	cases := []struct {
+		registry      string
+		image         types.ImageFlags
+		upgradeImage  types.ImageFlags
+		expectedImage string
+	}{
+		// Default Uyuni case with global tag set
+		{
+			"registry.opensuse.org/uyuni",
+			types.ImageFlags{
+				Name:       "registry.opensuse.org/uyuni/server",
+				Tag:        "2025.08",
+				PullPolicy: "ifnotpresent",
+			},
+			types.ImageFlags{},
+			"registry.opensuse.org/uyuni/server-migration-14-16:2025.08",
+		},
+		// own registry case with a special image for the main server but not upgrade
+		{
+			"registry.example.com/product",
+			types.ImageFlags{
+				Name:       "registry.example.com/product/server",
+				Tag:        "fix-123",
+				PullPolicy: "always",
+			},
+			types.ImageFlags{
+				Name: "registry.example.com/product/server-migration-14-16",
+				Tag:  "4.5.2",
+			},
+			"registry.example.com/product/server-migration-14-16:4.5.2",
+		},
+	}
+
+	expectedAuthfile := "authfile to pass"
+	for i, testCase := range cases {
+		prepareImage = func(authFile string, image string, pullPolicy string, _ bool) (string, error) {
+			// test that the image computation
+			testutils.AssertEquals(t, "auth file not passed down", expectedAuthfile, authFile)
+			testutils.AssertEquals(t, fmt.Sprintf("case %d: wrong image", i), testCase.expectedImage, image)
+			testutils.AssertEquals(t, fmt.Sprintf("case %d: wrong pull policy", i), testCase.image.PullPolicy, pullPolicy)
+			return image, nil
+		}
+		runContainer = func(_ string, image string, _ []types.VolumeMount, _ []string, _ []string) error {
+			testutils.AssertEquals(t, fmt.Sprintf("case %d: wrong image used for container", i), testCase.expectedImage, image)
+			return nil
+		}
+		_ = RunPgsqlVersionUpgrade(expectedAuthfile, testCase.image, testCase.upgradeImage, "14", "16")
 	}
 }

@@ -198,6 +198,9 @@ func restoreSELinuxContext() error {
 	return nil
 }
 
+var prepareImage = podman.PrepareImage
+var runContainer = podman.RunContainer
+
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
 func RunPgsqlVersionUpgrade(
 	authFile string,
@@ -219,8 +222,10 @@ func RunPgsqlVersionUpgrade(
 		upgradeImageURL := ""
 		var err error
 		if upgradeImage.Name == "" {
-			upgradeImageURL, err = utils.ComputeImage(image.Registry.Host, utils.DefaultTag, image,
-				fmt.Sprintf("-migration-%s-%s", oldPgsql, newPgsql))
+			if upgradeImage.Name == "" {
+				upgradeImage.Name = fmt.Sprintf("%s-migration-%s-%s", image.Name, oldPgsql, newPgsql)
+			}
+			upgradeImageURL, err = utils.ComputeImage(image.Registry.Host, image.Tag, upgradeImage)
 			if err != nil {
 				return utils.Errorf(err, L("failed to compute image URL"))
 			}
@@ -231,14 +236,14 @@ func RunPgsqlVersionUpgrade(
 			}
 		}
 
-		preparedImage, err := podman.PrepareImage(authFile, upgradeImageURL, image.PullPolicy, true)
+		preparedImage, err := prepareImage(authFile, upgradeImageURL, image.PullPolicy, true)
 		if err != nil {
 			return err
 		}
 
 		log.Info().Msgf(L("Using database upgrade image %s"), preparedImage)
 
-		// We need an aditional volume for database backup during the migration
+		// We need an additional volume for database backup during the migration
 		// Create or reuse var-pgsql-backup volume
 		volumeMounts := append(utils.PgsqlRequiredVolumeMounts,
 			types.VolumeMount{MountPath: "/var/lib/pgsql/data-backup", Name: "var-pgsql-backup"})
@@ -249,7 +254,7 @@ func RunPgsqlVersionUpgrade(
 			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
 		}
 
-		err = podman.RunContainer(pgsqlVersionUpgradeContainer, preparedImage, volumeMounts, extraArgs,
+		err = runContainer(pgsqlVersionUpgradeContainer, preparedImage, volumeMounts, extraArgs,
 			[]string{"bash", "-e", "-c", script})
 		if err != nil {
 			return err
