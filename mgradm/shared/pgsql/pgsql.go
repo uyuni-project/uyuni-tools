@@ -22,7 +22,7 @@ func PreparePgsqlImage(
 	globalImageFlags *types.ImageFlags,
 ) (string, error) {
 	image := pgsqlFlags.Image
-	pgsqlImage, err := utils.ComputeImage(globalImageFlags.Registry, globalImageFlags.Tag, image)
+	pgsqlImage, err := utils.ComputeImage(globalImageFlags.Registry.Host, globalImageFlags.Tag, image)
 
 	if err != nil {
 		return "", utils.Error(err, L("failed to compute image URL"))
