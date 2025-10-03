@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-26 17:38+0200\n"
+"POT-Creation-Date: 2025-10-02 09:46+0200\n"
 "PO-Revision-Date: 2025-06-14 14:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
@@ -100,7 +100,7 @@ msgstr ""
 "メモ: 現時点では、リモートkubernetesクラスタへのインストールはサポートされていません。\n"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:26
-#: mgrpxy/shared/kubernetes/deploy.go:152
+#: mgrpxy/shared/kubernetes/deploy.go:154
 #, javascript-format
 msgid "install %s before running this command"
 msgstr "このコマンドを実行する前に %s をインストールする"
@@ -110,7 +110,7 @@ msgid "failed to extract configuration"
 msgstr "設定の抽出に失敗しました"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:74
-#: mgrpxy/shared/kubernetes/deploy.go:204
+#: mgrpxy/shared/kubernetes/deploy.go:206
 msgid "cannot deploy proxy helm chart"
 msgstr "プロキシhelmチャートを配備できません"
 
@@ -138,7 +138,7 @@ msgstr ""
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
 #: mgrpxy/cmd/install/podman/utils.go:39
-#: mgrpxy/cmd/support/ptf/podman/utils.go:30 mgrpxy/shared/podman/podman.go:274
+#: mgrpxy/cmd/support/ptf/podman/utils.go:30 mgrpxy/shared/podman/podman.go:273
 msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
 
@@ -146,16 +146,11 @@ msgstr "このコマンドを実行する前にpodmanをインストールする
 msgid "failed to retrieve proxy config files"
 msgstr "プロキシ設定ファイルの取得に失敗しました"
 
-#: mgrpxy/cmd/install/podman/utils.go:58 mgrpxy/shared/podman/podman.go:290
+#: mgrpxy/cmd/install/podman/utils.go:58 mgrpxy/shared/podman/podman.go:289
 #, fuzzy
 #| msgid "cannot generate systemd conf user configuration file"
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr "systemd confユーザ設定ファイルを生成できません"
-
-#: mgrpxy/cmd/install/podman/utils.go:64
-#: mgrpxy/cmd/support/ptf/podman/utils.go:48 mgrpxy/shared/podman/podman.go:296
-msgid "failed to login to registry.suse.com"
-msgstr "registry.suse.comへのログインに失敗しました"
 
 #: mgrpxy/cmd/logs/kubernetes.go:29
 msgid "failed to find proxy pod"
@@ -288,11 +283,11 @@ msgstr ""
 "\n"
 "メモ:リモートクラスタへのインストールはまだサポートされていません。\n"
 
-#: mgrpxy/cmd/support/ptf/podman/podman.go:29
+#: mgrpxy/cmd/support/ptf/podman/podman.go:30
 msgid "Install a PTF or Test package on podman"
 msgstr "PTFまたはTestパッケージをpodmanにインストールする"
 
-#: mgrpxy/cmd/support/ptf/podman/podman.go:30
+#: mgrpxy/cmd/support/ptf/podman/podman.go:31
 msgid ""
 "Install a PTF or Test package on podman\n"
 "\n"
@@ -308,23 +303,23 @@ msgstr ""
 "\n"
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:55 mgrpxy/shared/podman/podman.go:302
+#: mgrpxy/cmd/support/ptf/podman/utils.go:55 mgrpxy/shared/podman/podman.go:301
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr "httpdイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:60 mgrpxy/shared/podman/podman.go:306
+#: mgrpxy/cmd/support/ptf/podman/utils.go:60 mgrpxy/shared/podman/podman.go:305
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr "salt-brokerイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:65 mgrpxy/shared/podman/podman.go:310
+#: mgrpxy/cmd/support/ptf/podman/utils.go:65 mgrpxy/shared/podman/podman.go:309
 msgid "cannot find squid image: it will no be upgraded"
 msgstr "squidイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:70 mgrpxy/shared/podman/podman.go:314
+#: mgrpxy/cmd/support/ptf/podman/utils.go:70 mgrpxy/shared/podman/podman.go:313
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr "sshイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:75 mgrpxy/shared/podman/podman.go:318
+#: mgrpxy/cmd/support/ptf/podman/utils.go:75 mgrpxy/shared/podman/podman.go:317
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr "tftpdイメージが見つかりません: アップグレードされません"
 
@@ -472,80 +467,80 @@ msgstr "プロキシhelmチャートのバージョン"
 msgid "Path to a values YAML file to use for proxy helm install"
 msgstr "プロキシhelmインストールに使用する値YAMLファイルへのパス"
 
-#: mgrpxy/shared/kubernetes/deploy.go:34
+#: mgrpxy/shared/kubernetes/deploy.go:36
 msgid "Installing Uyuni proxy"
 msgstr "Uyuniプロキシのインストール"
 
-#: mgrpxy/shared/kubernetes/deploy.go:96
+#: mgrpxy/shared/kubernetes/deploy.go:98
 msgid "cannot run helm upgrade"
 msgstr "helmアップグレードを実行できません"
 
-#: mgrpxy/shared/kubernetes/deploy.go:112
-#: mgrpxy/shared/kubernetes/deploy.go:127
-#: mgrpxy/shared/kubernetes/deploy.go:142
+#: mgrpxy/shared/kubernetes/deploy.go:114
+#: mgrpxy/shared/kubernetes/deploy.go:129
+#: mgrpxy/shared/kubernetes/deploy.go:144
 #, javascript-format
 msgid "failed to write in file %s"
 msgstr "ファイル %s への書き込みに失敗しました"
 
-#: mgrpxy/shared/kubernetes/deploy.go:184
+#: mgrpxy/shared/kubernetes/deploy.go:186
 msgid "failed to scale replicas to 1"
 msgstr "レプリカを1にスケールできませんでした"
 
-#: mgrpxy/shared/podman/podman.go:58
+#: mgrpxy/shared/podman/podman.go:57
 msgid "cannot setup network"
 msgstr "ネットワークを設定できません"
 
-#: mgrpxy/shared/podman/podman.go:63
+#: mgrpxy/shared/podman/podman.go:62
 msgid "Generating systemd services"
 msgstr "systemdサービスの生成"
 
-#: mgrpxy/shared/podman/podman.go:168
+#: mgrpxy/shared/podman/podman.go:167
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "systemdファイル「%s」の生成に失敗しました"
 
-#: mgrpxy/shared/podman/podman.go:174
+#: mgrpxy/shared/podman/podman.go:173
 msgid "cannot generate systemd conf file"
 msgstr "systemd confファイルを生成できません"
 
-#: mgrpxy/shared/podman/podman.go:180
+#: mgrpxy/shared/podman/podman.go:179
 msgid "cannot generate systemd conf user configuration file"
 msgstr "systemd confユーザ設定ファイルを生成できません"
 
-#: mgrpxy/shared/podman/podman.go:223
+#: mgrpxy/shared/podman/podman.go:222
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "設定 %s でプロキシを設定しています"
 
-#: mgrpxy/shared/podman/podman.go:225
+#: mgrpxy/shared/podman/podman.go:224
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "プロキシ設定を %s ファイルから抽出できませんでした"
 
-#: mgrpxy/shared/podman/podman.go:228
+#: mgrpxy/shared/podman/podman.go:227
 msgid "No tarball provided. Will check existing configuration files."
 msgstr "tarballは提供されていません。既存の設定ファイルを確認します。"
 
-#: mgrpxy/shared/podman/podman.go:242
+#: mgrpxy/shared/podman/podman.go:241
 #, javascript-format
 msgid "%s directory has no required permissions. Check your umask settings"
 msgstr "%s ディレクトリに必要な権限がありません。umask設定を確認してください"
 
-#: mgrpxy/shared/podman/podman.go:244
+#: mgrpxy/shared/podman/podman.go:243
 #, javascript-format
 msgid "%s file has no required permissions. Check your umask settings"
 msgstr "%s ファイルに必要な権限がありません。umask設定を確認してください"
 
-#: mgrpxy/shared/podman/podman.go:257
+#: mgrpxy/shared/podman/podman.go:256
 #, javascript-format
 msgid "missing required configuration file: %s"
 msgstr "必要な設定ファイルが見つかりません: %s"
 
-#: mgrpxy/shared/podman/podman.go:387
+#: mgrpxy/shared/podman/podman.go:386
 msgid "Not a system id event"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:396
+#: mgrpxy/shared/podman/podman.go:395
 msgid "System id not found in returned event"
 msgstr ""
 
@@ -554,21 +549,25 @@ msgstr ""
 msgid "argument is not an existing file: %s"
 msgstr "引数は既存のファイルではありません: %s"
 
-#: mgrpxy/shared/utils/flags.go:52
+#: mgrpxy/shared/utils/flags.go:53
 #, javascript-format
 msgid "Invalid proxy container name: %s"
 msgstr "無効なプロキシコンテナ名: %s"
 
-#: mgrpxy/shared/utils/flags.go:57
+#: mgrpxy/shared/utils/flags.go:58
 msgid "failed to compute image URL"
 msgstr "イメージURLの計算に失敗しました"
 
-#: mgrpxy/shared/utils/flags.go:65
-msgid "SUSE Customer Center username. It will be used to pull images from registry.suse.com"
+#: mgrpxy/shared/utils/flags.go:66
+#, fuzzy
+#| msgid "SUSE Customer Center username. It will be used to pull images from registry.suse.com"
+msgid "SUSE Customer Center username. It will be used to pull images from SCC registry"
 msgstr "SUSEカスタマーセンターのユーザ名。これは、registry.suse.comからイメージを取得するために使用されます"
 
-#: mgrpxy/shared/utils/flags.go:68
-msgid "SUSE Customer Center password. It will be used to pull images from registry.suse.com"
+#: mgrpxy/shared/utils/flags.go:69
+#, fuzzy
+#| msgid "SUSE Customer Center password. It will be used to pull images from registry.suse.com"
+msgid "SUSE Customer Center password. It will be used to pull images from SCC registry"
 msgstr "SUSEカスタマーセンターのパスワード。これは、registry.suse.comからイメージを取得するために使用されます"
 
 #: mgrpxy/shared/utils/flags.go:71
@@ -579,15 +578,11 @@ msgstr "SUSEカスタマーセンターのフラグ"
 msgid "image tag"
 msgstr "イメージタグ"
 
-#: mgrpxy/shared/utils/flags.go:79
-msgid "Specify a registry where to pull the images from"
-msgstr "イメージを取得するレジストリを指定してください"
-
-#: mgrpxy/shared/utils/flags.go:88
+#: mgrpxy/shared/utils/flags.go:87
 msgid "HTTPD tuning configuration file"
 msgstr "HTTPDチューニング設定ファイル"
 
-#: mgrpxy/shared/utils/flags.go:89
+#: mgrpxy/shared/utils/flags.go:88
 msgid "Squid tuning configuration file"
 msgstr "Squidチューニング設定ファイル"
 
@@ -600,6 +595,12 @@ msgstr "%s コンテナのイメージ"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s コンテナ用のタグ。設定されている場合はグローバル値を上書きします"
+
+#~ msgid "failed to login to registry.suse.com"
+#~ msgstr "registry.suse.comへのログインに失敗しました"
+
+#~ msgid "Specify a registry where to pull the images from"
+#~ msgstr "イメージを取得するレジストリを指定してください"
 
 #, javascript-format
 #~ msgid "The httpd ptf image computed is: %s"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-26 17:38+0200\n"
+"POT-Creation-Date: 2025-10-02 09:46+0200\n"
 "PO-Revision-Date: 2025-09-09 17:59+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/fr/>\n"
@@ -766,13 +766,26 @@ msgstr "Impossible de supprimer le fichier %s"
 msgid "Failed to restore image %s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/podman/login.go:25
-msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+#: shared/podman/login.go:28
+msgid "Registry is registry.suse.com. Using SCC credentials."
 msgstr ""
 
-#: shared/podman/login.go:52
-#, fuzzy
-msgid "failed to close the temporary auth file"
+#: shared/podman/login.go:30
+msgid "SCC credentials has been provided, SCChost credentials will be ignored."
+msgstr ""
+
+#: shared/podman/login.go:35
+msgid "Registry parameters will be used. SCC credentials from host will be ignored."
+msgstr ""
+
+#: shared/podman/login.go:60 shared/podman/login.go:66
+#, fuzzy, javascript-format
+msgid "failed to set authentication for %s"
+msgstr "impossible d'écrire l'archive tar.gz vers %s: %s"
+
+#: shared/podman/login.go:72
+#, fuzzy, javascript-format
+msgid "failed to close the temporary auth file. Cannot set authentication for %s"
 msgstr "impossible de créer le répertoire %s: %s"
 
 #: shared/podman/network.go:32
@@ -1290,50 +1303,71 @@ msgstr "Impossible de lire des données aléatoires"
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr ""
 
-#: shared/utils/cmd.go:58 shared/utils/cmd.go:59
-msgid "failed to unmarshall configuration"
-msgstr "erreur d'analyse du fichier de configuration"
+#: shared/utils/cmd.go:118
+#, fuzzy
+msgid "cannot decode into Registry"
+msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/utils/cmd.go:74
+#: shared/utils/cmd.go:126
 #, fuzzy
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
 msgstr "outil à utiliser pour accéder au conteneur. Valeurs possibles: 'podman', 'podman-remote', 'kubectl'. Par défaut la valeur à utiliser sera détectée."
 
-#: shared/utils/cmd.go:90
+#: shared/utils/cmd.go:142
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr "défini si les images doivent être téléchargées ou pas. La valeur peut être une parmi 'Never', 'IfNotPresent' ou 'Always'"
 
-#: shared/utils/cmd.go:95
+#: shared/utils/cmd.go:146
+msgid "Specify a registry where to pull the images from"
+msgstr ""
+
+#: shared/utils/cmd.go:149
+msgid "Specify a registry where to pull the images from. It will be concatenated with image name"
+msgstr ""
+
+#: shared/utils/cmd.go:150
+msgid "User if registry requires an authentication"
+msgstr ""
+
+#: shared/utils/cmd.go:151
+msgid "Password if registry requires an authentication"
+msgstr ""
+
+#: shared/utils/cmd.go:153
+msgid "Registry Flags"
+msgstr ""
+
+#: shared/utils/cmd.go:161
 msgid "PTF ID"
 msgstr ""
 
-#: shared/utils/cmd.go:96
+#: shared/utils/cmd.go:162
 msgid "Test package ID"
 msgstr ""
 
-#: shared/utils/cmd.go:97
+#: shared/utils/cmd.go:163
 msgid "SCC user"
 msgstr ""
 
-#: shared/utils/cmd.go:115
+#: shared/utils/cmd.go:181
 msgid "Actually remove the server"
 msgstr ""
 
-#: shared/utils/cmd.go:116
+#: shared/utils/cmd.go:182
 msgid "Also remove the volumes"
 msgstr ""
 
-#: shared/utils/cmd.go:117
+#: shared/utils/cmd.go:183
 msgid "Also remove the container images"
 msgstr ""
 
-#: shared/utils/cmd.go:127 shared/utils/cmd.go:130
+#: shared/utils/cmd.go:193 shared/utils/cmd.go:196
 msgid "application log level"
 msgstr ""
 
-#: shared/utils/cmd.go:133
+#: shared/utils/cmd.go:199
 #, fuzzy
 #| msgid "Failed to find home directory"
 msgid "Failed to hide --loglevel parameter"
@@ -1348,12 +1382,12 @@ msgstr "erreur d'analyse du fichier de configuration %s: %s"
 msgid "Failed to find home directory"
 msgstr "Impossible de trouver le repertoire home"
 
-#: shared/utils/config.go:97
+#: shared/utils/config.go:101
 #, fuzzy
 msgid "failed to bind %[1]s config to parameter %[2]s"
 msgstr "impossible de lier la configuration %s au paramètre %s: %s"
 
-#: shared/utils/config.go:109
+#: shared/utils/config.go:116
 #, fuzzy
 msgid ""
 "Usage:{{if .Runnable}}\n"
@@ -1410,7 +1444,7 @@ msgstr ""
 "\n"
 "Utiliser \"{{.CommandPath}} [command] --help\" pour plus d'informations à propos d'une commande.{{end}}\n"
 
-#: shared/utils/config.go:143
+#: shared/utils/config.go:150
 #, fuzzy
 msgid ""
 "\n"
@@ -1479,11 +1513,11 @@ msgstr ""
 "  Par exemple le paramètre '--tz CEST' sera associé à '{{ .EnvPrefix }}_TZ'\n"
 "  et '--ssl-password' flags à '{{ .EnvPrefix }}_SSL_PASSWORD' \n"
 
-#: shared/utils/config.go:180
+#: shared/utils/config.go:187
 msgid "Help on configuration file and environment variables"
 msgstr ""
 
-#: shared/utils/config.go:189
+#: shared/utils/config.go:196
 msgid "failed to compute config help command"
 msgstr "impossible de créer la commande d'aide config"
 
@@ -1581,16 +1615,16 @@ msgstr ""
 msgid "failed to add %s to tarball"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/utils/support.go:92
+#: shared/utils/support.go:94
 #, fuzzy
 msgid "failed to run supportconfig on the host"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/utils/support.go:102
+#: shared/utils/support.go:104
 msgid "failed to find host supportconfig tarball from command output"
 msgstr ""
 
-#: shared/utils/support.go:105
+#: shared/utils/support.go:107
 msgid "supportconfig is not available on the host, skipping it"
 msgstr ""
 
@@ -1659,59 +1693,55 @@ msgstr "Impossible de lire la saisie"
 msgid "A value is required"
 msgstr "Une valeur est requise"
 
-#: shared/utils/utils.go:218
-msgid "Registry %[1]s would be used instead of namespace %[2]s"
-msgstr ""
-
-#: shared/utils/utils.go:233 shared/utils/utils.go:259
+#: shared/utils/utils.go:227 shared/utils/utils.go:253
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "nom d'image invalid: %s"
 
-#: shared/utils/utils.go:237
+#: shared/utils/utils.go:231
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "tag missing dans %s"
 
-#: shared/utils/utils.go:245 shared/utils/utils.go:250
+#: shared/utils/utils.go:239 shared/utils/utils.go:244
 #, fuzzy, javascript-format
 msgid "Computed image name is %s"
 msgstr "nom d'image invalid: %s"
 
-#: shared/utils/utils.go:265
+#: shared/utils/utils.go:259
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr ""
 
-#: shared/utils/utils.go:276
+#: shared/utils/utils.go:270
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "Erreur lors de l'exécution de %s"
 
-#: shared/utils/utils.go:285
+#: shared/utils/utils.go:279
 msgid "Failed to read random data"
 msgstr "Impossible de lire des données aléatoires"
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:300
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:425
+#: shared/utils/utils.go:419
 #, fuzzy
 msgid "failed to compute server FQDN"
 msgstr "impossible de se connecter au serveur: %s"
 
-#: shared/utils/utils.go:439
+#: shared/utils/utils.go:433
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:443
+#: shared/utils/utils.go:437
 #, fuzzy, javascript-format
 msgid "cannot resolve %s"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
@@ -1773,6 +1803,9 @@ msgstr ""
 msgid "Database"
 msgstr ""
 
+#~ msgid "failed to unmarshall configuration"
+#~ msgstr "erreur d'analyse du fichier de configuration"
+
 #, fuzzy
 #~ msgid "failed to generate inspect script"
 #~ msgstr "impossible de créer le répertoire %s: %s"
@@ -1784,10 +1817,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "failed to discover the cluster type"
 #~ msgstr "impossible de se connecter au serveur: %s"
-
-#, fuzzy, javascript-format
-#~ msgid "cannot delete %s"
-#~ msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
 #, fuzzy, javascript-format
 #~ msgid "failed to write %s secret definition file"

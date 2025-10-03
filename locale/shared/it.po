@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-26 17:38+0200\n"
+"POT-Creation-Date: 2025-10-02 09:46+0200\n"
 "PO-Revision-Date: 2025-09-25 10:59+0000\n"
 "Last-Translator: Antonio Gemelli <antonio.gemelli@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
@@ -768,13 +768,26 @@ msgstr "mancata creazione della directory temporanea: %s"
 msgid "Failed to restore image %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/podman/login.go:25
-msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+#: shared/podman/login.go:28
+msgid "Registry is registry.suse.com. Using SCC credentials."
 msgstr ""
 
-#: shared/podman/login.go:52
-#, fuzzy
-msgid "failed to close the temporary auth file"
+#: shared/podman/login.go:30
+msgid "SCC credentials has been provided, SCChost credentials will be ignored."
+msgstr ""
+
+#: shared/podman/login.go:35
+msgid "Registry parameters will be used. SCC credentials from host will be ignored."
+msgstr ""
+
+#: shared/podman/login.go:60 shared/podman/login.go:66
+#, fuzzy, javascript-format
+msgid "failed to set authentication for %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: shared/podman/login.go:72
+#, fuzzy, javascript-format
+msgid "failed to close the temporary auth file. Cannot set authentication for %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
 #: shared/podman/network.go:32
@@ -1282,49 +1295,71 @@ msgstr "mancata creazione della directory temporanea: %s"
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr ""
 
-#: shared/utils/cmd.go:58 shared/utils/cmd.go:59
-msgid "failed to unmarshall configuration"
-msgstr ""
+#: shared/utils/cmd.go:118
+#, fuzzy
+#| msgid "cannot delete %s"
+msgid "cannot decode into Registry"
+msgstr "impossible eliminare %s"
 
-#: shared/utils/cmd.go:74
+#: shared/utils/cmd.go:126
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
 msgstr ""
 
-#: shared/utils/cmd.go:90
+#: shared/utils/cmd.go:142
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr ""
 
-#: shared/utils/cmd.go:95
+#: shared/utils/cmd.go:146
+msgid "Specify a registry where to pull the images from"
+msgstr ""
+
+#: shared/utils/cmd.go:149
+msgid "Specify a registry where to pull the images from. It will be concatenated with image name"
+msgstr ""
+
+#: shared/utils/cmd.go:150
+msgid "User if registry requires an authentication"
+msgstr ""
+
+#: shared/utils/cmd.go:151
+msgid "Password if registry requires an authentication"
+msgstr ""
+
+#: shared/utils/cmd.go:153
+msgid "Registry Flags"
+msgstr ""
+
+#: shared/utils/cmd.go:161
 msgid "PTF ID"
 msgstr ""
 
-#: shared/utils/cmd.go:96
+#: shared/utils/cmd.go:162
 msgid "Test package ID"
 msgstr ""
 
-#: shared/utils/cmd.go:97
+#: shared/utils/cmd.go:163
 msgid "SCC user"
 msgstr ""
 
-#: shared/utils/cmd.go:115
+#: shared/utils/cmd.go:181
 msgid "Actually remove the server"
 msgstr ""
 
-#: shared/utils/cmd.go:116
+#: shared/utils/cmd.go:182
 msgid "Also remove the volumes"
 msgstr ""
 
-#: shared/utils/cmd.go:117
+#: shared/utils/cmd.go:183
 msgid "Also remove the container images"
 msgstr ""
 
-#: shared/utils/cmd.go:127 shared/utils/cmd.go:130
+#: shared/utils/cmd.go:193 shared/utils/cmd.go:196
 msgid "application log level"
 msgstr ""
 
-#: shared/utils/cmd.go:133
+#: shared/utils/cmd.go:199
 #, fuzzy
 msgid "Failed to hide --loglevel parameter"
 msgstr "mancata creazione della directory temporanea: %s"
@@ -1338,11 +1373,11 @@ msgstr ""
 msgid "Failed to find home directory"
 msgstr ""
 
-#: shared/utils/config.go:97
+#: shared/utils/config.go:101
 msgid "failed to bind %[1]s config to parameter %[2]s"
 msgstr ""
 
-#: shared/utils/config.go:109
+#: shared/utils/config.go:116
 msgid ""
 "Usage:{{if .Runnable}}\n"
 "  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}\n"
@@ -1375,7 +1410,7 @@ msgid ""
 "Use \"{{.CommandPath}} [command] --help\" for more information about a command.{{end}}\n"
 msgstr ""
 
-#: shared/utils/config.go:143
+#: shared/utils/config.go:150
 msgid ""
 "\n"
 "Configuration:\n"
@@ -1412,11 +1447,11 @@ msgid ""
 "  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD'\n"
 msgstr ""
 
-#: shared/utils/config.go:180
+#: shared/utils/config.go:187
 msgid "Help on configuration file and environment variables"
 msgstr ""
 
-#: shared/utils/config.go:189
+#: shared/utils/config.go:196
 msgid "failed to compute config help command"
 msgstr ""
 
@@ -1514,15 +1549,15 @@ msgstr ""
 msgid "failed to add %s to tarball"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/utils/support.go:92
+#: shared/utils/support.go:94
 msgid "failed to run supportconfig on the host"
 msgstr ""
 
-#: shared/utils/support.go:102
+#: shared/utils/support.go:104
 msgid "failed to find host supportconfig tarball from command output"
 msgstr ""
 
-#: shared/utils/support.go:105
+#: shared/utils/support.go:107
 msgid "supportconfig is not available on the host, skipping it"
 msgstr ""
 
@@ -1589,59 +1624,55 @@ msgstr "mancata creazione della directory temporanea: %s"
 msgid "A value is required"
 msgstr ""
 
-#: shared/utils/utils.go:218
-msgid "Registry %[1]s would be used instead of namespace %[2]s"
-msgstr ""
-
-#: shared/utils/utils.go:233 shared/utils/utils.go:259
+#: shared/utils/utils.go:227 shared/utils/utils.go:253
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr ""
 
-#: shared/utils/utils.go:237
+#: shared/utils/utils.go:231
 #, javascript-format
 msgid "tag missing on %s"
 msgstr ""
 
-#: shared/utils/utils.go:245 shared/utils/utils.go:250
+#: shared/utils/utils.go:239 shared/utils/utils.go:244
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr ""
 
-#: shared/utils/utils.go:265
+#: shared/utils/utils.go:259
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr ""
 
-#: shared/utils/utils.go:276
+#: shared/utils/utils.go:270
 #, javascript-format
 msgid "Failed to run %s"
 msgstr ""
 
-#: shared/utils/utils.go:285
+#: shared/utils/utils.go:279
 msgid "Failed to read random data"
 msgstr ""
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:300
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:425
+#: shared/utils/utils.go:419
 #, fuzzy
 msgid "failed to compute server FQDN"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: shared/utils/utils.go:439
+#: shared/utils/utils.go:433
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:443
+#: shared/utils/utils.go:437
 #, fuzzy, javascript-format
 msgid "cannot resolve %s"
 msgstr "impossible eliminare %s"
@@ -1711,10 +1742,6 @@ msgstr ""
 #, javascript-format
 #~ msgid "install %s before running this command"
 #~ msgstr "installare %s prima di eseguire questo comando"
-
-#, javascript-format
-#~ msgid "cannot delete %s"
-#~ msgstr "impossible eliminare %s"
 
 #, fuzzy
 #~ msgid "cannot find node running uyuni"

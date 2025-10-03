@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-26 17:38+0200\n"
+"POT-Creation-Date: 2025-10-02 09:46+0200\n"
 "PO-Revision-Date: 2025-06-12 08:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -751,12 +751,32 @@ msgstr "无法导出映像 %s"
 msgid "Failed to restore image %s"
 msgstr "无法恢复映像 %s"
 
-#: shared/podman/login.go:25
-msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+#: shared/podman/login.go:28
+msgid "Registry is registry.suse.com. Using SCC credentials."
+msgstr ""
+
+#: shared/podman/login.go:30
+#, fuzzy
+#| msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+msgid "SCC credentials has been provided, SCChost credentials will be ignored."
 msgstr "将使用 SCC 身份凭证参数，并忽略来自主机的 SCC 身份凭证。"
 
-#: shared/podman/login.go:52
-msgid "failed to close the temporary auth file"
+#: shared/podman/login.go:35
+#, fuzzy
+#| msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+msgid "Registry parameters will be used. SCC credentials from host will be ignored."
+msgstr "将使用 SCC 身份凭证参数，并忽略来自主机的 SCC 身份凭证。"
+
+#: shared/podman/login.go:60 shared/podman/login.go:66
+#, fuzzy, javascript-format
+#| msgid "failed to get the status of %s pod"
+msgid "failed to set authentication for %s"
+msgstr "无法获取 %s pod 的状态"
+
+#: shared/podman/login.go:72
+#, fuzzy, javascript-format
+#| msgid "failed to close the temporary auth file"
+msgid "failed to close the temporary auth file. Cannot set authentication for %s"
 msgstr "无法关闭临时身份验证文件"
 
 #: shared/podman/network.go:32
@@ -1274,11 +1294,13 @@ msgstr "无法剥离 CA 证书中的文本部分"
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr "SSL 密钥无效，它可能已加密"
 
-#: shared/utils/cmd.go:58 shared/utils/cmd.go:59
-msgid "failed to unmarshall configuration"
-msgstr "无法解组配置"
+#: shared/utils/cmd.go:118
+#, fuzzy
+#| msgid "cannot delete %s"
+msgid "cannot decode into Registry"
+msgstr "无法删除 %s"
 
-#: shared/utils/cmd.go:74
+#: shared/utils/cmd.go:126
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
@@ -1286,39 +1308,59 @@ msgstr ""
 "用于访问容器的工具。可能的值为：podman、podman-remote、kubectl。\n"
 "默认会推测应使用哪个工具。"
 
-#: shared/utils/cmd.go:90
+#: shared/utils/cmd.go:142
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr "设置是否拉取映像。值可以是以下之一：'Never'、'IfNotPresent' 或 'Always'"
 
-#: shared/utils/cmd.go:95
+#: shared/utils/cmd.go:146
+msgid "Specify a registry where to pull the images from"
+msgstr ""
+
+#: shared/utils/cmd.go:149
+msgid "Specify a registry where to pull the images from. It will be concatenated with image name"
+msgstr ""
+
+#: shared/utils/cmd.go:150
+msgid "User if registry requires an authentication"
+msgstr ""
+
+#: shared/utils/cmd.go:151
+msgid "Password if registry requires an authentication"
+msgstr ""
+
+#: shared/utils/cmd.go:153
+msgid "Registry Flags"
+msgstr ""
+
+#: shared/utils/cmd.go:161
 msgid "PTF ID"
 msgstr "PTF ID"
 
-#: shared/utils/cmd.go:96
+#: shared/utils/cmd.go:162
 msgid "Test package ID"
 msgstr "测试软件包 ID"
 
-#: shared/utils/cmd.go:97
+#: shared/utils/cmd.go:163
 msgid "SCC user"
 msgstr "SCC 用户"
 
-#: shared/utils/cmd.go:115
+#: shared/utils/cmd.go:181
 msgid "Actually remove the server"
 msgstr "真正去除服务器"
 
-#: shared/utils/cmd.go:116
+#: shared/utils/cmd.go:182
 msgid "Also remove the volumes"
 msgstr "同时去除卷"
 
-#: shared/utils/cmd.go:117
+#: shared/utils/cmd.go:183
 msgid "Also remove the container images"
 msgstr "同时去除容器映像"
 
-#: shared/utils/cmd.go:127 shared/utils/cmd.go:130
+#: shared/utils/cmd.go:193 shared/utils/cmd.go:196
 msgid "application log level"
 msgstr ""
 
-#: shared/utils/cmd.go:133
+#: shared/utils/cmd.go:199
 #, fuzzy
 #| msgid "Failed to find home directory"
 msgid "Failed to hide --loglevel parameter"
@@ -1333,11 +1375,11 @@ msgstr "无法分析配置文件 %s"
 msgid "Failed to find home directory"
 msgstr "找不到主目录"
 
-#: shared/utils/config.go:97
+#: shared/utils/config.go:101
 msgid "failed to bind %[1]s config to parameter %[2]s"
 msgstr "无法将 %[1]s 配置绑定到参数 %[2]s"
 
-#: shared/utils/config.go:109
+#: shared/utils/config.go:116
 msgid ""
 "Usage:{{if .Runnable}}\n"
 "  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}\n"
@@ -1399,7 +1441,7 @@ msgstr ""
 "\n"
 "有关命令的详细信息，请使用 \"{{.CommandPath}} [command] --help\"。{{end}}\n"
 
-#: shared/utils/config.go:143
+#: shared/utils/config.go:150
 msgid ""
 "\n"
 "Configuration:\n"
@@ -1469,11 +1511,11 @@ msgstr ""
 "  例如，'--tz CEST' 标志对应于 '{{ .EnvPrefix }}_TZ'，\n"
 "  '--ssl-password' 标志对应于 '{{ .EnvPrefix }}_SSL_PASSWORD'\n"
 
-#: shared/utils/config.go:180
+#: shared/utils/config.go:187
 msgid "Help on configuration file and environment variables"
 msgstr "关于配置文件和环境变量的帮助"
 
-#: shared/utils/config.go:189
+#: shared/utils/config.go:196
 msgid "failed to compute config help command"
 msgstr "compute config 帮助命令失败"
 
@@ -1568,15 +1610,15 @@ msgstr "正在准备 Tar 包"
 msgid "failed to add %s to tarball"
 msgstr "无法将 %s 添加到 Tar 包"
 
-#: shared/utils/support.go:92
+#: shared/utils/support.go:94
 msgid "failed to run supportconfig on the host"
 msgstr "无法在主机上运行 supportconfig"
 
-#: shared/utils/support.go:102
+#: shared/utils/support.go:104
 msgid "failed to find host supportconfig tarball from command output"
 msgstr "在命令输出中找不到主机 supportconfig Tar 包"
 
-#: shared/utils/support.go:105
+#: shared/utils/support.go:107
 msgid "supportconfig is not available on the host, skipping it"
 msgstr "无法在主机上使用 supportconfig，正在跳过"
 
@@ -1640,58 +1682,54 @@ msgstr "无法读取输入"
 msgid "A value is required"
 msgstr "必须提供值"
 
-#: shared/utils/utils.go:218
-msgid "Registry %[1]s would be used instead of namespace %[2]s"
-msgstr "将使用注册表 %[1]s 而不是名称空间 %[2]s"
-
-#: shared/utils/utils.go:233 shared/utils/utils.go:259
+#: shared/utils/utils.go:227 shared/utils/utils.go:253
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "映像名称无效：%s"
 
-#: shared/utils/utils.go:237
+#: shared/utils/utils.go:231
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "%s 缺少标记"
 
-#: shared/utils/utils.go:245 shared/utils/utils.go:250
+#: shared/utils/utils.go:239 shared/utils/utils.go:244
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "计算的映像名称为 %s"
 
-#: shared/utils/utils.go:265
+#: shared/utils/utils.go:259
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr ""
 
-#: shared/utils/utils.go:276
+#: shared/utils/utils.go:270
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "无法运行 %s"
 
-#: shared/utils/utils.go:285
+#: shared/utils/utils.go:279
 msgid "Failed to read random data"
 msgstr "无法读取随机数据"
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:300
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "从 %s 下载时出错"
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "bad status: %s"
 msgstr "不良状态：%s"
 
-#: shared/utils/utils.go:425
+#: shared/utils/utils.go:419
 msgid "failed to compute server FQDN"
 msgstr "无法计算服务器 FQDN"
 
-#: shared/utils/utils.go:439
+#: shared/utils/utils.go:433
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s 不是有效 FQDN"
 
-#: shared/utils/utils.go:443
+#: shared/utils/utils.go:437
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "无法解析 %s"
@@ -1750,6 +1788,12 @@ msgstr "Saline"
 msgid "Database"
 msgstr "数据库"
 
+#~ msgid "failed to unmarshall configuration"
+#~ msgstr "无法解组配置"
+
+#~ msgid "Registry %[1]s would be used instead of namespace %[2]s"
+#~ msgstr "将使用注册表 %[1]s 而不是名称空间 %[2]s"
+
 #~ msgid "failed to login to registry.suse.com"
 #~ msgstr "无法登录 registry.suse.com"
 
@@ -1783,10 +1827,6 @@ msgstr "数据库"
 #, javascript-format
 #~ msgid "install %s before running this command"
 #~ msgstr "在运行此命令前安装 %s"
-
-#, javascript-format
-#~ msgid "cannot delete %s"
-#~ msgstr "无法删除 %s"
 
 #~ msgid "cannot find node running uyuni"
 #~ msgstr "找不到运行 uyuni 的节点"
