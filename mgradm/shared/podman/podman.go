@@ -696,6 +696,9 @@ func RunPgsqlContainerMigration(serverImage string, dbHost string, reportDBHost 
 func RunConfigPgsl(pgsqlImage string) error {
 	podmanArgs := []string{
 		"--security-opt", "label=disable",
+		"--secret", fmt.Sprintf("%s,type=mount,target=%s", podman.DBCASecret, ssl.DBCAContainerPath),
+		"--secret", fmt.Sprintf("%s,type=mount,uid=999,mode=0400,target=%s", podman.DBSSLKeySecret, ssl.DBCertKeyPath),
+		"--secret", fmt.Sprintf("%s,type=mount,target=%s", podman.DBSSLCertSecret, ssl.DBCertPath),
 		"--entrypoint", "/docker-entrypoint-initdb.d/uyuni-postgres-config.sh",
 	}
 	if err := podman.RunContainer("uyuni-db-config", pgsqlImage, utils.PgsqlRequiredVolumeMounts,
@@ -836,7 +839,7 @@ func configureSplitDBContainer(
 	}
 
 	if err := RunPgsqlContainerMigration(serverImage, "db", "reportdb"); err != nil {
-		return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
+		return utils.Errorf(err, L("PostgreSQL migration failure"))
 	}
 
 	// Create all the database credentials secrets
