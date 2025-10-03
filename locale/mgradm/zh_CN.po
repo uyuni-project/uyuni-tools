@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-26 14:51+0200\n"
+"POT-Creation-Date: 2025-10-03 09:34+0200\n"
 "PO-Revision-Date: 2025-06-12 08:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
@@ -431,8 +431,8 @@ msgstr "无法确定目标 %s 的存储空间大小"
 msgid "insufficient space on target device"
 msgstr "目标设备上的空间不足"
 
-#: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/podman/utils.go:56
-#: mgradm/cmd/migrate/podman/utils.go:41 mgradm/cmd/upgrade/podman/utils.go:35
+#: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/podman/utils.go:44
+#: mgradm/cmd/migrate/podman/utils.go:40 mgradm/cmd/upgrade/podman/utils.go:34
 msgid "install podman before running this command"
 msgstr "在运行此命令前安装 podman"
 
@@ -859,11 +859,11 @@ msgstr "找不到目前正在运行的服务器容器的映像：%s"
 msgid "failed retrieving namespace"
 msgstr "无法检索名称空间"
 
-#: mgradm/cmd/inspect/kubernetes.go:57 mgradm/cmd/inspect/podman.go:59
+#: mgradm/cmd/inspect/kubernetes.go:57 mgradm/cmd/inspect/podman.go:60
 msgid "inspect command failed"
 msgstr "检查命令失败"
 
-#: mgradm/cmd/inspect/kubernetes.go:62 mgradm/cmd/inspect/podman.go:63
+#: mgradm/cmd/inspect/kubernetes.go:62 mgradm/cmd/inspect/podman.go:64
 msgid "cannot print inspect result"
 msgstr "无法列显检查结果"
 
@@ -883,12 +883,11 @@ msgstr "无法确定 pgsql 映像"
 msgid "failed to find the image of the currently running db container"
 msgstr "找不到目前正在运行的数据库容器的映像"
 
-#: mgradm/cmd/inspect/podman.go:82 mgradm/cmd/install/podman/utils.go:44
-#: mgradm/cmd/migrate/podman/utils.go:35
-#: mgradm/cmd/support/ptf/podman/utils.go:37
-#: mgradm/cmd/upgrade/podman/podman.go:73 mgradm/cmd/upgrade/podman/utils.go:29
-msgid "failed to login to registry.suse.com"
-msgstr "无法登录 registry.suse.com"
+#: mgradm/cmd/inspect/podman.go:83
+#, fuzzy, javascript-format
+#| msgid "failed to download %s"
+msgid "failed to login to %s"
+msgstr "无法下载 %s"
 
 #: mgradm/cmd/install/install.go:20 mgradm/cmd/install/install.go:21
 msgid "Install a new server"
@@ -938,55 +937,55 @@ msgstr ""
 "\n"
 "注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgradm/cmd/install/podman/utils.go:50
+#: mgradm/cmd/install/podman/utils.go:55
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
 msgstr "服务器已初始化！请先将其卸装，再尝试进行全新安装或使用升级命令"
 
-#: mgradm/cmd/install/podman/utils.go:63
+#: mgradm/cmd/install/podman/utils.go:62
 #, javascript-format
 msgid "Setting up the server with the FQDN '%s'"
 msgstr "正在使用 FQDN '%s' 设置服务器"
 
-#: mgradm/cmd/install/podman/utils.go:67 mgradm/shared/podman/podman.go:334
-#: mgradm/shared/podman/podman.go:531
+#: mgradm/cmd/install/podman/utils.go:66 mgradm/shared/podman/podman.go:332
+#: mgradm/shared/podman/podman.go:528
 msgid "cannot prepare images"
 msgstr "无法准备映像"
 
-#: mgradm/cmd/install/podman/utils.go:71 mgradm/shared/podman/podman.go:93
-#: mgradm/shared/podman/podman.go:324 mgradm/shared/podman/podman.go:523
+#: mgradm/cmd/install/podman/utils.go:70 mgradm/shared/podman/podman.go:93
+#: mgradm/shared/podman/podman.go:322 mgradm/shared/podman/podman.go:520
 msgid "cannot setup network"
 msgstr "无法设置网络"
 
-#: mgradm/cmd/install/podman/utils.go:109 mgradm/shared/podman/podman.go:876
+#: mgradm/cmd/install/podman/utils.go:108 mgradm/shared/podman/podman.go:872
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr "已跳过数据库容器设置步骤，将使用外部数据库 %s"
 
-#: mgradm/cmd/install/podman/utils.go:114
+#: mgradm/cmd/install/podman/utils.go:113
 msgid "Run setup command in the container"
 msgstr "在容器中运行设置命令"
 
-#: mgradm/cmd/install/podman/utils.go:123 mgradm/shared/podman/podman.go:608
+#: mgradm/cmd/install/podman/utils.go:122 mgradm/shared/podman/podman.go:605
 msgid "cannot wait for system start"
 msgstr "无法等待系统启动"
 
-#: mgradm/cmd/install/podman/utils.go:126
+#: mgradm/cmd/install/podman/utils.go:125
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "无法将 SSL CA 证书添加到主机信任的证书列表中"
 
-#: mgradm/cmd/install/podman/utils.go:133
+#: mgradm/cmd/install/podman/utils.go:132
 msgid "failed to extract payg data"
 msgstr "无法提取 payg 数据"
 
-#: mgradm/cmd/install/podman/utils.go:137
+#: mgradm/cmd/install/podman/utils.go:136
 msgid "cannot enable podman socket"
 msgstr "无法启用 podman 套接字"
 
-#: mgradm/cmd/install/podman/utils.go:204
+#: mgradm/cmd/install/podman/utils.go:203
 msgid "server setup failed"
 msgstr "服务器安装失败"
 
-#: mgradm/cmd/install/podman/utils.go:207
+#: mgradm/cmd/install/podman/utils.go:206
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "服务器设置，以 %[2]s 用户身份在 https://%[1]s 上登录"
 
@@ -1171,17 +1170,17 @@ msgstr "无法读取 SSH known_hosts 文件 %s"
 msgid "failed to create the SSH migration ConfigMap"
 msgstr "无法创建 SSH 迁移配置映射"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:43 mgradm/shared/coco/coco.go:79
-#: mgradm/shared/hub/xmlrpcapi.go:45
-#: mgradm/shared/kubernetes/dbUpgradeJob.go:47
+#: mgradm/cmd/migrate/kubernetes/utils.go:44 mgradm/shared/coco/coco.go:77
+#: mgradm/shared/hub/xmlrpcapi.go:44
+#: mgradm/shared/kubernetes/dbUpgradeJob.go:46
 #: mgradm/shared/kubernetes/reconcile.go:38
 #: mgradm/shared/kubernetes/reconcile.go:305 mgradm/shared/pgsql/pgsql.go:28
-#: mgradm/shared/podman/podman.go:226 mgradm/shared/podman/podman.go:231
-#: mgradm/shared/saline/saline.go:66
+#: mgradm/shared/podman/podman.go:225 mgradm/shared/podman/podman.go:230
+#: mgradm/shared/saline/saline.go:69
 msgid "failed to compute image URL"
 msgstr "无法计算映像 URL"
 
-#: mgradm/cmd/migrate/kubernetes/utils.go:145
+#: mgradm/cmd/migrate/kubernetes/utils.go:146
 #, javascript-format
 msgid "failed to write certificate to %s"
 msgstr "无法向 %s 中写入证书"
@@ -1407,11 +1406,11 @@ msgstr "从中提取数据的路径"
 msgid "failed to remove %s temporary file"
 msgstr "无法去除 %s 临时文件"
 
-#: mgradm/cmd/support/ptf/podman/podman.go:29
+#: mgradm/cmd/support/ptf/podman/podman.go:30
 msgid "Install a PTF or Test package on podman"
 msgstr "在 podman 上安装 PTF 或测试软件包"
 
-#: mgradm/cmd/support/ptf/podman/podman.go:30
+#: mgradm/cmd/support/ptf/podman/podman.go:31
 msgid ""
 "Install a PTF or Test package on podman\n"
 "\n"
@@ -1427,28 +1426,28 @@ msgstr ""
 "\n"
 "注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:74
+#: mgradm/cmd/support/ptf/podman/utils.go:72
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "不能同时设置 ptf 和 test 标志 "
 
-#: mgradm/cmd/support/ptf/podman/utils.go:77
+#: mgradm/cmd/support/ptf/podman/utils.go:75
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptf 和 test 标志不能同时为空 "
 
-#: mgradm/cmd/support/ptf/podman/utils.go:80
+#: mgradm/cmd/support/ptf/podman/utils.go:78
 msgid "user flag cannot be empty"
 msgstr "user 标志不能为空"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:92
+#: mgradm/cmd/support/ptf/podman/utils.go:90
 msgid "failed to find server image"
 msgstr "找不到服务器映像"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:101
+#: mgradm/cmd/support/ptf/podman/utils.go:99
 #, javascript-format
 msgid "The computed image is %s"
 msgstr "计算出的映像为 %s"
 
-#: mgradm/cmd/support/ptf/podman/utils.go:119
+#: mgradm/cmd/support/ptf/podman/utils.go:118
 #, fuzzy
 #| msgid "The computed image is %s"
 msgid "The %[1]s service image is %[2]s"
@@ -1636,37 +1635,37 @@ msgstr "无法解组配置"
 msgid "Upgrade local server"
 msgstr "升级本地服务器"
 
-#: mgradm/shared/coco/coco.go:97
+#: mgradm/shared/coco/coco.go:95
 msgid "Setting up confidential computing attestation service"
 msgstr "设置机密计算认证服务"
 
-#: mgradm/shared/coco/coco.go:101 mgradm/shared/hub/xmlrpcapi.go:120
+#: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:117
 #: mgradm/shared/pgsql/pgsql.go:123 mgradm/shared/podman/podman.go:76
-#: mgradm/shared/saline/saline.go:87
+#: mgradm/shared/saline/saline.go:90
 msgid "failed to generate systemd service unit file"
 msgstr "无法生成 systemd 服务单元文件"
 
-#: mgradm/shared/coco/coco.go:111 mgradm/shared/hub/xmlrpcapi.go:127
-#: mgradm/shared/podman/podman.go:104 mgradm/shared/saline/saline.go:95
+#: mgradm/shared/coco/coco.go:109 mgradm/shared/hub/xmlrpcapi.go:124
+#: mgradm/shared/podman/podman.go:104 mgradm/shared/saline/saline.go:98
 msgid "cannot generate systemd conf file"
 msgstr "无法生成 systemd 配置文件"
 
-#: mgradm/shared/hub/xmlrpcapi.go:37
+#: mgradm/shared/hub/xmlrpcapi.go:36
 #, javascript-format
 msgid "No changes requested for hub. Keep %d replicas."
 msgstr "未针对 Hub 请求更改。保留 %d 个复本。"
 
-#: mgradm/shared/hub/xmlrpcapi.go:54 mgradm/shared/pgsql/pgsql.go:44
+#: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:44
 #: mgradm/shared/pgsql/pgsql.go:73
 msgid "cannot generate systemd service"
 msgstr "无法生成 systemd 服务"
 
-#: mgradm/shared/hub/xmlrpcapi.go:67
+#: mgradm/shared/hub/xmlrpcapi.go:66
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr "目前不支持多个 Hub XML-RPC 容器复本，将仅设置一个复本。"
 
-#: mgradm/shared/hub/xmlrpcapi.go:73 mgradm/shared/podman/podman.go:481
-#: mgradm/shared/saline/saline.go:137
+#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:479
+#: mgradm/shared/saline/saline.go:140
 msgid "cannot enable service"
 msgstr "无法启用服务"
 
@@ -1760,17 +1759,17 @@ msgstr "正在运行数据库最终确定，此过程可能需要很长时间，
 msgid "failed to run the database finalization job"
 msgstr "无法运行数据库最终确定作业"
 
-#: mgradm/shared/kubernetes/dbUpgradeJob.go:36
+#: mgradm/shared/kubernetes/dbUpgradeJob.go:35
 msgid "Upgrading PostgreSQL database from %[1]s to %[2]s…"
 msgstr "正在将 PostgreSQL 数据库从 %[1]s 升级到 %[2]s…"
 
-#: mgradm/shared/kubernetes/dbUpgradeJob.go:50
-#: mgradm/shared/podman/podman.go:240
+#: mgradm/shared/kubernetes/dbUpgradeJob.go:49
+#: mgradm/shared/podman/podman.go:239
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr "正在使用数据库升级映像 %s"
 
-#: mgradm/shared/kubernetes/dbUpgradeJob.go:57
+#: mgradm/shared/kubernetes/dbUpgradeJob.go:56
 msgid "failed to run the database upgrade job"
 msgstr "无法运行数据库升级作业"
 
@@ -1874,7 +1873,7 @@ msgstr "无法生成 systemd 配置文件"
 msgid "Enabling system service"
 msgstr "正在启用系统服务"
 
-#: mgradm/shared/podman/podman.go:112 mgradm/shared/saline/saline.go:103
+#: mgradm/shared/podman/podman.go:112 mgradm/shared/saline/saline.go:106
 msgid "cannot generate systemd user configuration file"
 msgstr "无法生成 systemd 用户配置文件"
 
@@ -1910,115 +1909,115 @@ msgstr "无法检查卷 %s"
 msgid "cannot restore %s SELinux permissions"
 msgstr "无法恢复 %s SELinux 权限"
 
-#: mgradm/shared/podman/podman.go:211
+#: mgradm/shared/podman/podman.go:210
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
 msgstr "旧 PostgreSQL 版本为 %[1]s，新版本为 %[2]s。正在执行数据库版本升级…"
 
-#: mgradm/shared/podman/podman.go:250
+#: mgradm/shared/podman/podman.go:249
 msgid "cannot generate PostgreSQL database version upgrade script"
 msgstr "无法生成 PostgreSQL 数据库版本升级脚本"
 
-#: mgradm/shared/podman/podman.go:265
+#: mgradm/shared/podman/podman.go:264
 #, fuzzy
 #| msgid "failed to run the database finalization job"
 msgid "No need to run database finalization script"
 msgstr "无法运行数据库最终确定作业"
 
-#: mgradm/shared/podman/podman.go:276 mgradm/shared/podman/podman.go:290
+#: mgradm/shared/podman/podman.go:275 mgradm/shared/podman/podman.go:289
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "无法生成 PostgreSQL 完成脚本"
 
-#: mgradm/shared/podman/podman.go:344 mgradm/shared/podman/podman.go:352
-#: mgradm/shared/podman/podman.go:644
+#: mgradm/shared/podman/podman.go:342 mgradm/shared/podman/podman.go:350
+#: mgradm/shared/podman/podman.go:641
 msgid "cannot stop service"
 msgstr "无法停止服务"
 
-#: mgradm/shared/podman/podman.go:365 mgradm/shared/podman/podman.go:564
+#: mgradm/shared/podman/podman.go:363 mgradm/shared/podman/podman.go:561
 #, fuzzy
 #| msgid "Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"
 msgid "Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"
 msgstr "正在配置拆分的 PostgreSQL 容器。映像版本：%[1]s，未迁移版本：%[2]s"
 
-#: mgradm/shared/podman/podman.go:370 mgradm/shared/podman/podman.go:581
+#: mgradm/shared/podman/podman.go:368 mgradm/shared/podman/podman.go:578
 msgid "cannot configure db container"
 msgstr "无法配置数据库容器"
 
-#: mgradm/shared/podman/podman.go:379 mgradm/shared/podman/podman.go:815
-#: mgradm/shared/podman/podman.go:843
+#: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:811
+#: mgradm/shared/podman/podman.go:839
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "无法运行 PostgreSQL 版本升级脚本"
 
-#: mgradm/shared/podman/podman.go:382 mgradm/shared/podman/podman.go:818
+#: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:814
 msgid "Upgrading without changing PostgreSQL version"
 msgstr "正在升级，PostgreSQL 版本将不更改"
 
-#: mgradm/shared/podman/podman.go:385 mgradm/shared/podman/podman.go:821
+#: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:817
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr "正在尝试将 PostgreSQL 从 %[1]s 降级到 %[2]s"
 
-#: mgradm/shared/podman/podman.go:397 mgradm/shared/podman/podman.go:597
+#: mgradm/shared/podman/podman.go:395 mgradm/shared/podman/podman.go:594
 msgid "cannot run PostgreSQL finalize script"
 msgstr "无法运行 PostgreSQL 完成脚本"
 
-#: mgradm/shared/podman/podman.go:401 mgradm/shared/podman/podman.go:601
+#: mgradm/shared/podman/podman.go:399 mgradm/shared/podman/podman.go:598
 msgid "cannot run post upgrade script"
 msgstr "无法运行升级后脚本"
 
-#: mgradm/shared/podman/podman.go:426 mgradm/shared/podman/podman.go:479
+#: mgradm/shared/podman/podman.go:424 mgradm/shared/podman/podman.go:477
 msgid "Waiting for the server to start…"
 msgstr "正在等待服务器启动…"
 
-#: mgradm/shared/podman/podman.go:429
+#: mgradm/shared/podman/podman.go:427
 #, fuzzy
 #| msgid "cannot stop service"
 msgid "cannot start service"
 msgstr "无法停止服务"
 
-#: mgradm/shared/podman/podman.go:447 mgradm/shared/podman/podman.go:621
+#: mgradm/shared/podman/podman.go:445 mgradm/shared/podman/podman.go:618
 msgid "error upgrading confidential computing service."
 msgstr "升级机密计算服务时出错。"
 
-#: mgradm/shared/podman/podman.go:457 mgradm/shared/podman/podman.go:635
+#: mgradm/shared/podman/podman.go:455 mgradm/shared/podman/podman.go:632
 msgid "error upgrading saline service."
 msgstr "升级 Saline 服务时出错。"
 
-#: mgradm/shared/podman/podman.go:546
+#: mgradm/shared/podman/podman.go:543
 msgid "cannot run migration script"
 msgstr "无法运行迁移脚本"
 
-#: mgradm/shared/podman/podman.go:549
+#: mgradm/shared/podman/podman.go:546
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr "已完成迁移准备。请运行不含 '--prepare' 的 'migrate' 命令完成迁移。"
 
-#: mgradm/shared/podman/podman.go:557
+#: mgradm/shared/podman/podman.go:554
 #, fuzzy
 #| msgid "failed to find server image"
 msgid "failed to inspect database container image"
 msgstr "找不到服务器映像"
 
-#: mgradm/shared/podman/podman.go:586
+#: mgradm/shared/podman/podman.go:583
 #, fuzzy
 #| msgid "failed to remove %s temporary file"
 msgid "cannot remove temporary etc-tls volume"
 msgstr "无法去除 %s 临时文件"
 
-#: mgradm/shared/podman/podman.go:688
+#: mgradm/shared/podman/podman.go:685
 msgid "failed to generate postgresql migration script"
 msgstr "无法生成 postgresql 迁移脚本"
 
-#: mgradm/shared/podman/podman.go:721
+#: mgradm/shared/podman/podman.go:718
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr "仅当使用公有云提供商注册表时，才会出现上述错误"
 
-#: mgradm/shared/podman/podman.go:751
+#: mgradm/shared/podman/podman.go:748
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr "未定义 SSH_AUTH_SOCK，请启动 SSH 代理，然后重试"
 
-#: mgradm/shared/podman/podman.go:761
+#: mgradm/shared/podman/podman.go:758
 msgid "Failed to find home directory to look for SSH config"
 msgstr "找不到可查找 SSH 配置的主目录"
 
-#: mgradm/shared/podman/podman.go:783
+#: mgradm/shared/podman/podman.go:780
 msgid "cannot inspect podman values"
 msgstr "无法检查 podman 值"
 
@@ -2095,11 +2094,11 @@ msgstr ""
 msgid "Database SSL certificates generated"
 msgstr "已生成数据库 SSL 证书"
 
-#: mgradm/shared/saline/saline.go:60 mgradm/shared/saline/saline.go:131
+#: mgradm/shared/saline/saline.go:63 mgradm/shared/saline/saline.go:134
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
 msgstr "目前不支持多个 Saline 容器复本，将仅设置一个复本。"
 
-#: mgradm/shared/saline/saline.go:83
+#: mgradm/shared/saline/saline.go:86
 msgid "Setting up Saline service"
 msgstr "正在设置 Saline 服务"
 
@@ -2250,38 +2249,42 @@ msgid "Database Flags"
 msgstr "数据库标志"
 
 #: mgradm/shared/utils/cmd_utils.go:178
+#, fuzzy
+#| msgid ""
+#| "SUSE Customer Center username.\n"
+#| "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgid ""
 "SUSE Customer Center username.\n"
-"It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
+"It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
 msgstr ""
 "SUSE Customer Center 用户名。\n"
 "将用作 SCC 身份凭证进行产品同步以及从 registry.suse.com 拉取映像"
 
 #: mgradm/shared/utils/cmd_utils.go:180
+#, fuzzy
+#| msgid ""
+#| "SUSE Customer Center password.\n"
+#| "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgid ""
 "SUSE Customer Center password.\n"
-"It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
+"It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
 msgstr ""
 "SUSE Customer Center 口令。\n"
 "将用作 SCC 身份凭证进行产品同步以及从 registry.suse.com 拉取映像"
 
-#: mgradm/shared/utils/cmd_utils.go:183
+#: mgradm/shared/utils/cmd_utils.go:182
 msgid "SUSE Customer Center Flags"
 msgstr "SUSE Customer Center 标志"
 
-#: mgradm/shared/utils/cmd_utils.go:190
+#: mgradm/shared/utils/cmd_utils.go:189
 msgid "Image"
 msgstr "映像"
 
-#: mgradm/shared/utils/cmd_utils.go:191
-msgid "Specify a registry where to pull the images from"
-msgstr "指定从中拉取映像的注册表"
-
-#: mgradm/shared/utils/cmd_utils.go:192
+#: mgradm/shared/utils/cmd_utils.go:190
 msgid "Tag Image"
 msgstr "标记映像"
 
-#: mgradm/shared/utils/cmd_utils.go:196
+#: mgradm/shared/utils/cmd_utils.go:195
 msgid "Image Flags"
 msgstr "映像标志"
 
@@ -2439,6 +2442,12 @@ msgstr "不是有效的电子邮件地址"
 #: mgradm/shared/utils/setup.go:85
 msgid "failed to render setup script"
 msgstr "无法显示设置脚本"
+
+#~ msgid "failed to login to registry.suse.com"
+#~ msgstr "无法登录 registry.suse.com"
+
+#~ msgid "Specify a registry where to pull the images from"
+#~ msgstr "指定从中拉取映像的注册表"
 
 #~ msgid "application log level"
 #~ msgstr "应用程序日志级别"

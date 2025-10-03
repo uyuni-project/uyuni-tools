@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-26 17:38+0200\n"
+"POT-Creation-Date: 2025-10-02 09:46+0200\n"
 "PO-Revision-Date: 2025-06-17 08:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
@@ -751,12 +751,32 @@ msgstr "%s 이미지를 내보내지 못함"
 msgid "Failed to restore image %s"
 msgstr "%s 이미지를 복원하지 못함"
 
-#: shared/podman/login.go:25
-msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+#: shared/podman/login.go:28
+msgid "Registry is registry.suse.com. Using SCC credentials."
+msgstr ""
+
+#: shared/podman/login.go:30
+#, fuzzy
+#| msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+msgid "SCC credentials has been provided, SCChost credentials will be ignored."
 msgstr "SCC 자격 증명 매개변수가 사용됩니다. 호스트의 SCC 자격 증명은 무시됩니다."
 
-#: shared/podman/login.go:52
-msgid "failed to close the temporary auth file"
+#: shared/podman/login.go:35
+#, fuzzy
+#| msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
+msgid "Registry parameters will be used. SCC credentials from host will be ignored."
+msgstr "SCC 자격 증명 매개변수가 사용됩니다. 호스트의 SCC 자격 증명은 무시됩니다."
+
+#: shared/podman/login.go:60 shared/podman/login.go:66
+#, fuzzy, javascript-format
+#| msgid "failed to get the status of %s pod"
+msgid "failed to set authentication for %s"
+msgstr "%s 포드에 대한 상태를 가져오지 못함"
+
+#: shared/podman/login.go:72
+#, fuzzy, javascript-format
+#| msgid "failed to close the temporary auth file"
+msgid "failed to close the temporary auth file. Cannot set authentication for %s"
 msgstr "임시 인증 파일 닫기 실패"
 
 #: shared/podman/network.go:32
@@ -1274,11 +1294,13 @@ msgstr "CA 인증서에서 텍스트 부분 스트리핑 실패"
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr "유효하지 않은 SSL 키, 암호화되었을 수 있습니다."
 
-#: shared/utils/cmd.go:58 shared/utils/cmd.go:59
-msgid "failed to unmarshall configuration"
-msgstr "구성을 마샬링 해제하지 못했습니다."
+#: shared/utils/cmd.go:118
+#, fuzzy
+#| msgid "cannot delete %s"
+msgid "cannot decode into Registry"
+msgstr "%s을(를) 삭제할 수 없음"
 
-#: shared/utils/cmd.go:74
+#: shared/utils/cmd.go:126
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
@@ -1286,39 +1308,59 @@ msgstr ""
 "컨테이너에 도달하기 위해 사용되는 도구입니다. 사용 가능한 값: 'podman', 'podman-remote', 'kubectl'.\n"
 "기본 설정에서는 적합한 도구를 추정하여 사용합니다."
 
-#: shared/utils/cmd.go:90
+#: shared/utils/cmd.go:142
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr "이미지를 가져올지 여부를 설정합니다. 값은 'Never', 'IfNotPresent' 또는 'Always' 중 하나를 사용할 수 있습니다."
 
-#: shared/utils/cmd.go:95
+#: shared/utils/cmd.go:146
+msgid "Specify a registry where to pull the images from"
+msgstr ""
+
+#: shared/utils/cmd.go:149
+msgid "Specify a registry where to pull the images from. It will be concatenated with image name"
+msgstr ""
+
+#: shared/utils/cmd.go:150
+msgid "User if registry requires an authentication"
+msgstr ""
+
+#: shared/utils/cmd.go:151
+msgid "Password if registry requires an authentication"
+msgstr ""
+
+#: shared/utils/cmd.go:153
+msgid "Registry Flags"
+msgstr ""
+
+#: shared/utils/cmd.go:161
 msgid "PTF ID"
 msgstr "PTF ID"
 
-#: shared/utils/cmd.go:96
+#: shared/utils/cmd.go:162
 msgid "Test package ID"
 msgstr "테스트 패키지 ID"
 
-#: shared/utils/cmd.go:97
+#: shared/utils/cmd.go:163
 msgid "SCC user"
 msgstr "SCC 사용자"
 
-#: shared/utils/cmd.go:115
+#: shared/utils/cmd.go:181
 msgid "Actually remove the server"
 msgstr "실제로 서버 제거"
 
-#: shared/utils/cmd.go:116
+#: shared/utils/cmd.go:182
 msgid "Also remove the volumes"
 msgstr "볼륨도 제거"
 
-#: shared/utils/cmd.go:117
+#: shared/utils/cmd.go:183
 msgid "Also remove the container images"
 msgstr "컨테이너 이미지도 제거"
 
-#: shared/utils/cmd.go:127 shared/utils/cmd.go:130
+#: shared/utils/cmd.go:193 shared/utils/cmd.go:196
 msgid "application log level"
 msgstr ""
 
-#: shared/utils/cmd.go:133
+#: shared/utils/cmd.go:199
 #, fuzzy
 #| msgid "Failed to find home directory"
 msgid "Failed to hide --loglevel parameter"
@@ -1333,11 +1375,11 @@ msgstr "구성 파일 %s을(를) 구문 분석하지 못함"
 msgid "Failed to find home directory"
 msgstr "홈 디렉토리 찾기 실패"
 
-#: shared/utils/config.go:97
+#: shared/utils/config.go:101
 msgid "failed to bind %[1]s config to parameter %[2]s"
 msgstr "%[1]s 구성을 %[2]s 파라미터에 바인딩하지 못함"
 
-#: shared/utils/config.go:109
+#: shared/utils/config.go:116
 msgid ""
 "Usage:{{if .Runnable}}\n"
 "  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}\n"
@@ -1399,7 +1441,7 @@ msgstr ""
 "\n"
 "명령에 대한 자세한 내용을 확인하려면 \"{{.CommandPath}} [command] --help\"를 사용하십시오.{{end}}\n"
 
-#: shared/utils/config.go:143
+#: shared/utils/config.go:150
 msgid ""
 "\n"
 "Configuration:\n"
@@ -1469,11 +1511,11 @@ msgstr ""
 "  예를 들어, ''--tz CEST'' 플래그는 ''{{ .EnvPrefix }}_TZ''에 매핑되고\n"
 "''--ssl-password'' 플래그는 ''{{ .EnvPrefix }}_SSL_PASSWORD''에 매핑됩니다.\n"
 
-#: shared/utils/config.go:180
+#: shared/utils/config.go:187
 msgid "Help on configuration file and environment variables"
 msgstr "구성 파일 및 환경 변수에 대한 도움말"
 
-#: shared/utils/config.go:189
+#: shared/utils/config.go:196
 msgid "failed to compute config help command"
 msgstr "구성 도움말 명령을 계산하지 못함"
 
@@ -1568,15 +1610,15 @@ msgstr "tarball 준비 중"
 msgid "failed to add %s to tarball"
 msgstr "%s을(를) tarball에 추가 실패"
 
-#: shared/utils/support.go:92
+#: shared/utils/support.go:94
 msgid "failed to run supportconfig on the host"
 msgstr "호스트에서 supportconfig 실행 실패"
 
-#: shared/utils/support.go:102
+#: shared/utils/support.go:104
 msgid "failed to find host supportconfig tarball from command output"
 msgstr "명령 출력에서 호스트 supportconfig tarball 찾기 실패"
 
-#: shared/utils/support.go:105
+#: shared/utils/support.go:107
 msgid "supportconfig is not available on the host, skipping it"
 msgstr "호스트에서 supportconfig 사용 불가, 건너뛰는 중"
 
@@ -1640,58 +1682,54 @@ msgstr "입력 읽기 실패"
 msgid "A value is required"
 msgstr "값은 필수입니다."
 
-#: shared/utils/utils.go:218
-msgid "Registry %[1]s would be used instead of namespace %[2]s"
-msgstr "%[2]s 네임스페이스 대신 %[1]s 레지스트리가 사용됩니다."
-
-#: shared/utils/utils.go:233 shared/utils/utils.go:259
+#: shared/utils/utils.go:227 shared/utils/utils.go:253
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "잘못된 이미지 이름: %s"
 
-#: shared/utils/utils.go:237
+#: shared/utils/utils.go:231
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "%s에 태그 누락"
 
-#: shared/utils/utils.go:245 shared/utils/utils.go:250
+#: shared/utils/utils.go:239 shared/utils/utils.go:244
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "계산된 이미지 이름: %s"
 
-#: shared/utils/utils.go:265
+#: shared/utils/utils.go:259
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr ""
 
-#: shared/utils/utils.go:276
+#: shared/utils/utils.go:270
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "%s 실행 실패"
 
-#: shared/utils/utils.go:285
+#: shared/utils/utils.go:279
 msgid "Failed to read random data"
 msgstr "임의 데이터 읽기 실패"
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:300
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "%s에서 다운로드하지 못함"
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "bad status: %s"
 msgstr "잘못된 상태: %s"
 
-#: shared/utils/utils.go:425
+#: shared/utils/utils.go:419
 msgid "failed to compute server FQDN"
 msgstr "서버 FQDN 계산 실패"
 
-#: shared/utils/utils.go:439
+#: shared/utils/utils.go:433
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s은(는) 유효한 FQDN이 아닙니다."
 
-#: shared/utils/utils.go:443
+#: shared/utils/utils.go:437
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "%s 해결 불가"
@@ -1750,6 +1788,12 @@ msgstr "Saline"
 msgid "Database"
 msgstr "데이터베이스"
 
+#~ msgid "failed to unmarshall configuration"
+#~ msgstr "구성을 마샬링 해제하지 못했습니다."
+
+#~ msgid "Registry %[1]s would be used instead of namespace %[2]s"
+#~ msgstr "%[2]s 네임스페이스 대신 %[1]s 레지스트리가 사용됩니다."
+
 #~ msgid "failed to login to registry.suse.com"
 #~ msgstr "registry.suse.com에 로그인하지 못했습니다."
 
@@ -1783,10 +1827,6 @@ msgstr "데이터베이스"
 #, javascript-format
 #~ msgid "install %s before running this command"
 #~ msgstr "이 명령을 실행하기 전 %s 설치"
-
-#, javascript-format
-#~ msgid "cannot delete %s"
-#~ msgstr "%s을(를) 삭제할 수 없음"
 
 #~ msgid "cannot find node running uyuni"
 #~ msgstr "uyuni를 실행하는 노드를 찾을 수 없음"
