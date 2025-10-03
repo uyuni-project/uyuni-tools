@@ -27,9 +27,5 @@ func podmanCacheClear(
 		return utils.Errorf(err, L("failed to remove cached data"))
 	}
 
-	if _, err := cnx.Exec("sh", "-c", "squid -z --foreground"); err != nil {
-		return utils.Errorf(err, L("failed to re-create the cache directories"))
-	}
-
 	return systemd.RestartService(podman.ProxyService)
 }

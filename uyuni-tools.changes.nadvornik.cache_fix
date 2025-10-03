@@ -1,0 +1,1 @@
+- Fix calling of squid -z in mgrpxy cache clear (bsc#1247644)

@@ -29,9 +29,5 @@ func kubernetesCacheClear(
 		return utils.Errorf(err, L("failed to remove cached data"))
 	}
 
-	if _, err := cnx.Exec("squid", "-z", "--foreground"); err != nil {
-		return utils.Errorf(err, L("failed to re-create the cache directories"))
-	}
-
 	return kubernetes.Restart(namespace, kubernetes.ProxyApp)
 }
