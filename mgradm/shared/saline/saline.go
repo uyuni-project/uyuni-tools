@@ -21,13 +21,12 @@ import (
 func Upgrade(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
-	salineFlags adm_utils.SalineFlags,
 	baseImage types.ImageFlags,
+	salineFlags adm_utils.SalineFlags,
 	tz string,
 ) error {
 	if err := writeSalineServiceFiles(
-		systemd, authFile, registry, salineFlags, baseImage, tz,
+		systemd, authFile, baseImage, salineFlags, tz,
 	); err != nil {
 		return err
 	}
@@ -38,12 +37,16 @@ func Upgrade(
 func writeSalineServiceFiles(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
-	salineFlags adm_utils.SalineFlags,
 	baseImage types.ImageFlags,
+	salineFlags adm_utils.SalineFlags,
 	tz string,
 ) error {
 	image := salineFlags.Image
+
+	if image.Name == "" {
+		// Don't touch the saline service in ptf if not already present.
+		return nil
+	}
 
 	if image.Tag == "" {
 		if baseImage.Tag != "" {
@@ -61,7 +64,7 @@ func writeSalineServiceFiles(
 		salineFlags.Replicas = 1
 	}
 
-	salineImage, err := utils.ComputeImage(registry, baseImage.Tag, image)
+	salineImage, err := utils.ComputeImage(baseImage.Registry.Host, baseImage.Tag, image)
 	if err != nil {
 		return utils.Error(err, L("failed to compute image URL"))
 	}
@@ -113,12 +116,12 @@ func writeSalineServiceFiles(
 func SetupSalineContainer(
 	systemd podman.Systemd,
 	authFile string,
-	registry string,
-	salineFlags adm_utils.SalineFlags,
 	baseImage types.ImageFlags,
+	salineFlags adm_utils.SalineFlags,
 	tz string,
 ) error {
-	if err := writeSalineServiceFiles(systemd, authFile, registry, salineFlags, baseImage, tz); err != nil {
+	if err := writeSalineServiceFiles(systemd,
+		authFile, baseImage, salineFlags, tz); err != nil {
 		return err
 	}
 	return EnableSaline(systemd, salineFlags.Replicas)

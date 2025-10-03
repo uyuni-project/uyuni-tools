@@ -50,48 +50,60 @@ var UyuniServices = []types.UyuniService{
 
 // ServerImage holds the flags to tune the server container image.
 var ServerImage = types.ImageFlags{
-	Name:       "server",
-	Tag:        DefaultTag,
-	Registry:   DefaultRegistry,
+	Name: "server",
+	Tag:  DefaultTag,
+	Registry: types.Registry{
+		Host: DefaultRegistry,
+	},
 	PullPolicy: DefaultPullPolicy,
 }
 
 // HubXMLRPCImage holds the flags to tune the hub XML-RPC API container image.
 var HubXMLRPCImage = types.ImageFlags{
-	Name:       "server-hub-xmlrpc-api",
-	Tag:        DefaultTag,
-	Registry:   DefaultRegistry,
+	Name: "server-hub-xmlrpc-api",
+	Tag:  DefaultTag,
+	Registry: types.Registry{
+		Host: DefaultRegistry,
+	},
 	PullPolicy: DefaultPullPolicy,
 }
 
 // COCOAttestationImage holds the flags to tune the confidential computing attestation container image.
 var COCOAttestationImage = types.ImageFlags{
-	Name:       "server-attestation",
-	Tag:        DefaultTag,
-	Registry:   DefaultRegistry,
+	Name: "server-attestation",
+	Tag:  DefaultTag,
+	Registry: types.Registry{
+		Host: DefaultRegistry,
+	},
 	PullPolicy: DefaultPullPolicy,
 }
 
 // Saline holds the flags to tune the saline container image.
 var SalineImage = types.ImageFlags{
-	Name:       "server-saline",
-	Tag:        DefaultTag,
-	Registry:   DefaultRegistry,
+	Name: "server-saline",
+	Tag:  DefaultTag,
+	Registry: types.Registry{
+		Host: DefaultRegistry,
+	},
 	PullPolicy: DefaultPullPolicy,
 }
 
 // Migration14To16Image holds the flags to tune the DB migration container image.
 var Migration14To16Image = types.ImageFlags{
-	Name:       "server-migration-14-16",
-	Tag:        DefaultTag,
-	Registry:   DefaultRegistry,
+	Name: "server-migration-14-16",
+	Tag:  DefaultTag,
+	Registry: types.Registry{
+		Host: DefaultRegistry,
+	},
 	PullPolicy: DefaultPullPolicy,
 }
 
 // PostgreSQLImage holds the flags to tune the DB container image.
 var PostgreSQLImage = types.ImageFlags{
-	Name:       "uyuni-db",
-	Tag:        DefaultTag,
-	Registry:   DefaultRegistry,
+	Name: "uyuni-db",
+	Tag:  DefaultTag,
+	Registry: types.Registry{
+		Host: DefaultRegistry,
+	},
 	PullPolicy: DefaultPullPolicy,
 }

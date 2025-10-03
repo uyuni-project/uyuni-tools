@@ -80,6 +80,8 @@ func GetContainersFromSystemdFiles(systemdFileList string) []string {
 	return trimmedContainers
 }
 
+var newRunner = NewRunner
+
 // RunSupportConfigOnHost will run supportconfig command on host machine.
 func RunSupportConfigOnHost() ([]string, error) {
 	var files []string
@@ -87,7 +89,7 @@ func RunSupportConfigOnHost() ([]string, error) {
 
 	// Run supportconfig on the host if installed
 	if _, err := exec.LookPath("supportconfig"); err == nil {
-		out, err := RunCmdOutput(zerolog.DebugLevel, "supportconfig")
+		out, err := newRunner("supportconfig").Spinner("").StdMapping().Exec()
 		if err != nil {
 			log.Error().Err(err).Msgf(L("failed to run supportconfig on the host"))
 		}

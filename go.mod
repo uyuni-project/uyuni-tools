@@ -17,6 +17,7 @@ require (
 	github.com/creack/pty v1.1.18 // indirect
 	github.com/fatih/color v1.7.0 // indirect
 	github.com/go-logr/logr v1.3.0 // indirect
+	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect

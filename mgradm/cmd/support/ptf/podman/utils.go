@@ -32,9 +32,9 @@ func ptfForPodman(
 		return err
 	}
 
-	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.Installation.SCC)
+	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.Image.Registry, flags.SCC)
 	if err != nil {
-		return utils.Errorf(err, L("failed to login to registry.suse.com"))
+		return err
 	}
 	defer cleaner()
 
@@ -50,7 +50,6 @@ func ptfForPodman(
 	}
 
 	return podman.Upgrade(systemd, authFile,
-		"",
 		dummyDB,
 		dummyReportDB,
 		dummySSL,
@@ -69,7 +68,6 @@ var getServiceImage = podman_shared.GetServiceImage
 var hasRemoteImage = podman_shared.HasRemoteImage
 
 func (flags *podmanPTFFlags) checkParameters() error {
-	sccRegistry := "registry.suse.com"
 	if flags.TestID != "" && flags.PTFId != "" {
 		return errors.New(L("ptf and test flags cannot be set simultaneously "))
 	}
@@ -94,7 +92,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 
 	var err error
 
-	flags.Image.Name, err = utils.ComputePTF(sccRegistry, flags.CustomerID, projectID, serverImage, suffix)
+	flags.Image.Name, err = utils.ComputePTF(flags.Image.Registry.Host, flags.CustomerID, projectID, serverImage, suffix)
 	if err != nil {
 		return err
 	}
@@ -103,14 +101,15 @@ func (flags *podmanPTFFlags) checkParameters() error {
 	images := map[string]*string{
 		podman_shared.ServerAttestationService + "@": &flags.Coco.Image.Name,
 		podman_shared.HubXmlrpcService:               &flags.HubXmlrpc.Image.Name,
-		podman_shared.SalineService:                  &flags.Saline.Image.Name,
+		podman_shared.SalineService + "@":            &flags.Saline.Image.Name,
 		podman_shared.DBService:                      &flags.Pgsql.Image.Name,
 	}
 
 	for service, pointer := range images {
 		if containerImage := getServiceImage(service); containerImage != "" {
 			// If no image was found then skip it during the upgrade.
-			containerImage, err = utils.ComputePTF(sccRegistry, flags.CustomerID, projectID, containerImage, suffix)
+			containerImage, err =
+				utils.ComputePTF(flags.Image.Registry.Host, flags.CustomerID, projectID, containerImage, suffix)
 			if err != nil {
 				return err
 			}

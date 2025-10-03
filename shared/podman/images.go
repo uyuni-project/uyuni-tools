@@ -81,7 +81,7 @@ func PrepareImages(
 	image types.ImageFlags,
 	pgsqlFlags types.PgsqlFlags,
 ) (string, string, error) {
-	serverImage, err := utils.ComputeImage(image.Registry, utils.DefaultTag, image)
+	serverImage, err := utils.ComputeImage(image.Registry.Host, utils.DefaultTag, image)
 	if err != nil && len(serverImage) > 0 {
 		return "", "", utils.Error(err, L("failed to determine image"))
 	}
@@ -100,7 +100,7 @@ func PrepareImages(
 		globalTag = image.Tag
 	}
 
-	pgsqlImage, err := utils.ComputeImage(image.Registry, globalTag, pgsqlFlags.Image)
+	pgsqlImage, err := utils.ComputeImage(image.Registry.Host, globalTag, pgsqlFlags.Image)
 	if err != nil && len(pgsqlImage) > 0 {
 		return "", "", utils.Error(err, L("failed to determine pgsql image"))
 	}
@@ -313,7 +313,7 @@ func GetRunningImage(container string) (string, error) {
 	log.Info().Msgf(L("Running podman ps --filter=name=%s --format={{ .Image }}"), container)
 
 	out, err := utils.RunCmdOutput(
-		zerolog.DebugLevel, "podman", "ps", fmt.Sprintf("--filter=name=%s", container), "--format='{{ .Image }}'",
+		zerolog.DebugLevel, "podman", "ps", fmt.Sprintf("--filter=name=%s", container), "--format={{ .Image }}",
 	)
 	if err != nil {
 		return "", utils.Errorf(err, L("cannot find any running image for container %s"), container)

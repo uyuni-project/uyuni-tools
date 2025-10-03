@@ -150,6 +150,10 @@ else
 fi
 
 echo "Migrating monitoring configuration..."
+if test -f /etc/sysconfig/prometheus-postgres_exporter; then
+  echo "The server monitoring configuration is too old, reapply after the migration"
+  rm /etc/sysconfig/prometheus-postgres_exporter
+fi
 declare -A monitoring_conf
 monitoring_conf+=([/usr/lib/systemd/system/tomcat.service.d/jmx.conf]="/etc/sysconfig/tomcat/systemd/")
 monitoring_conf+=([/usr/lib/systemd/system/taskomatic.service.d/jmx.conf]="/etc/sysconfig/taskomatic/systemd/")
@@ -163,6 +167,7 @@ do
     rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz "{{ .SourceFqdn }}:${config_file}" "${monitoring_conf[${config_file}]}";
   fi
 done
+rm -f /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service
 if $SSH {{ .SourceFqdn }} systemctl is-enabled prometheus-postgres_exporter.service; then
   echo "Enabling prometheus-postgres_exporter service..."
   ln -s /usr/lib/systemd/system/prometheus-postgres_exporter.service /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service

@@ -182,24 +182,14 @@ func YesNo(question string) (bool, error) {
 	}
 }
 
-// RemoveRegistryFromImage removes registry fqdn from image path.
-func RemoveRegistryFromImage(imagePath string) string {
-	separator := "://"
-	index := strings.Index(imagePath, separator)
-	if index != -1 {
-		imagePath = imagePath[index+len(separator):]
-	}
-
-	parts := strings.Split(imagePath, "/")
-	if strings.Contains(parts[0], ".") || strings.Contains(parts[0], ":") || index != -1 {
-		// first part is a registry fqdn
-		parts = parts[1:]
-	}
-	return strings.Join(parts, "/")
-}
-
 // SplitRegistryHostAndPath splits a registry string into domain and path.
 func SplitRegistryHostAndPath(registry string) (domain string, path string) {
+	separator := "://"
+	index := strings.Index(registry, separator)
+	if index != -1 {
+		registry = registry[index+len(separator):]
+	}
+
 	idx := strings.Index(registry, "/")
 	if idx == -1 {
 		return registry, ""
@@ -209,17 +199,21 @@ func SplitRegistryHostAndPath(registry string) (domain string, path string) {
 
 // ComputeImage assembles the container image from its name and tag.
 func ComputeImage(
-	registry string,
+	globalRegistry string,
 	globalTag string,
 	imageFlags types.ImageFlags,
 	appendToName ...string,
 ) (string, error) {
-	if !strings.Contains(DefaultRegistry, registry) {
-		log.Info().Msgf(L("Registry %[1]s would be used instead of namespace %[2]s"), registry, DefaultRegistry)
+	// Compute the registry
+	registry := globalRegistry
+	if imageFlags.Registry.Host != "" {
+		registry = imageFlags.Registry.Host
 	}
+
 	name := imageFlags.Name
-	if !strings.Contains(imageFlags.Name, registry) {
-		name = path.Join(registry, RemoveRegistryFromImage(imageFlags.Name))
+
+	if !StartWithFQDN(name) {
+		name = path.Join(registry, imageFlags.Name)
 	}
 
 	// Compute the tag
@@ -448,6 +442,12 @@ func IsValidFQDN(fqdn string) error {
 // IsWellFormedFQDN returns an false if the argument is not a well formed FQDN.
 func IsWellFormedFQDN(fqdn string) bool {
 	return fqdnValid.MatchString(fqdn)
+}
+
+// StartWithFQDN returns true if the argument start with a well formed FQDN.
+func StartWithFQDN(url string) bool {
+	fqdn, _ := SplitRegistryHostAndPath(url)
+	return IsWellFormedFQDN(fqdn)
 }
 
 // CommandExists checks if cmd exists in $PATH.

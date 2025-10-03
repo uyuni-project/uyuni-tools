@@ -17,15 +17,16 @@ import (
 
 // ProxyImageFlags are the flags used by install proxy command.
 type ProxyImageFlags struct {
-	Registry   string           `mapstructure:"registry"`
-	Tag        string           `mapstructure:"tag"`
-	PullPolicy string           `mapstructure:"pullPolicy"`
-	Httpd      types.ImageFlags `mapstructure:"httpd"`
-	SaltBroker types.ImageFlags `mapstructure:"saltBroker"`
-	Squid      types.ImageFlags `mapstructure:"squid"`
-	SSH        types.ImageFlags `mapstructure:"ssh"`
-	Tftpd      types.ImageFlags `mapstructure:"tftpd"`
-	Tuning     Tuning           `mapstructure:"tuning"`
+	Registry   types.Registry       `mapstructure:"registry"`
+	Tag        string               `mapstructure:"tag"`
+	PullPolicy string               `mapstructure:"pullPolicy"`
+	Httpd      types.ImageFlags     `mapstructure:"httpd"`
+	SaltBroker types.ImageFlags     `mapstructure:"saltBroker"`
+	Squid      types.ImageFlags     `mapstructure:"squid"`
+	SSH        types.ImageFlags     `mapstructure:"ssh"`
+	Tftpd      types.ImageFlags     `mapstructure:"tftpd"`
+	Tuning     Tuning               `mapstructure:"tuning"`
+	SCC        types.SCCCredentials `mapstructure:"scc"`
 }
 
 // Tuning are the custom configuration file provide by users.
@@ -52,7 +53,7 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 		log.Fatal().Msgf(L("Invalid proxy container name: %s"), name)
 	}
 
-	imageURL, err := utils.ComputeImage(f.Registry, f.Tag, *containerImage)
+	imageURL, err := utils.ComputeImage(f.Registry.Host, f.Tag, *containerImage)
 	if err != nil {
 		log.Fatal().Err(err).Msg(L("failed to compute image URL"))
 	}
@@ -62,12 +63,11 @@ func (f *ProxyImageFlags) GetContainerImage(name string) string {
 // AddSCCFlag add SCC flags to a command.
 func AddSCCFlag(cmd *cobra.Command) {
 	cmd.Flags().String("scc-user", "",
-		L("SUSE Customer Center username. It will be used to pull images from registry.suse.com"),
+		L("SUSE Customer Center username. It will be used to pull images from SCC registry"),
 	)
 	cmd.Flags().String("scc-password", "",
-		L("SUSE Customer Center password. It will be used to pull images from registry.suse.com"),
+		L("SUSE Customer Center password. It will be used to pull images from SCC registry"),
 	)
-
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "scc", Title: L("SUSE Customer Center Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "scc-user", "scc")
 	_ = utils.AddFlagToHelpGroupID(cmd, "scc-password", "scc")
@@ -76,7 +76,6 @@ func AddSCCFlag(cmd *cobra.Command) {
 // AddImageFlags will add the proxy install flags to a command.
 func AddImageFlags(cmd *cobra.Command) {
 	cmd.Flags().String("tag", utils.DefaultTag, L("image tag"))
-	cmd.Flags().String("registry", utils.DefaultRegistry, L("Specify a registry where to pull the images from"))
 	utils.AddPullPolicyFlag(cmd)
 
 	addContainerImageFlags(cmd, "httpd", "httpd")
@@ -87,10 +86,11 @@ func AddImageFlags(cmd *cobra.Command) {
 
 	cmd.Flags().String("tuning-httpd", "", L("HTTPD tuning configuration file"))
 	cmd.Flags().String("tuning-squid", "", L("Squid tuning configuration file"))
+	utils.AddRegistryFlag(cmd)
 }
 
 func addContainerImageFlags(cmd *cobra.Command, paramName string, imageName string) {
-	defaultImage := path.Join(utils.DefaultRegistry, "proxy-"+imageName)
+	defaultImage := path.Join(utils.DefaultImagePrefix, "proxy-"+imageName)
 	cmd.Flags().String(paramName+"-image", defaultImage,
 		fmt.Sprintf(L("Image for %s container"), imageName))
 	cmd.Flags().String(paramName+"-tag", "",
