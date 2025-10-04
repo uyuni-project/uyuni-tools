@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-02 09:46+0200\n"
-"PO-Revision-Date: 2025-09-04 10:59+0000\n"
+"PO-Revision-Date: 2025-10-04 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -348,15 +348,15 @@ msgstr "Reinstal·laria Traefik sense configuració addicional"
 
 #: shared/kubernetes/k3s.go:119
 msgid "failed to read the traefik configuration"
-msgstr "no s'ha pogut llegir la configuració del traefik"
+msgstr "No s'ha pogut llegir la configuració de Traefik"
 
 #: shared/kubernetes/k3s.go:123
 msgid "traefik configuration file doesn't contain the helm chart version"
-msgstr "El fitxer de configuració de traefik no conté la versió del diagrama de helm"
+msgstr "El fitxer de configuració de Traefik no conté la versió del gràfic de Helm"
 
 #: shared/kubernetes/k3s.go:126
 msgid "failed to find traefik helm chart version"
-msgstr "no s'ha pogut trobar la versió del diagrama de helm de traefik"
+msgstr "No s'ha pogut trobar la versió del gràfic Traefik Helm"
 
 #: shared/kubernetes/kubernetes.go:59
 msgid "failed to get kubelet version"
@@ -752,31 +752,25 @@ msgstr "No s'ha pogut restaurar la imatge %s"
 
 #: shared/podman/login.go:28
 msgid "Registry is registry.suse.com. Using SCC credentials."
-msgstr ""
+msgstr "El registre és registry.suse.com. S'usen les credencials SCC."
 
 #: shared/podman/login.go:30
-#, fuzzy
-#| msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
 msgid "SCC credentials has been provided, SCChost credentials will be ignored."
-msgstr "S'utilitzaran els paràmetres de les credencials SCC. S'ignoraran les credencials SCC del servidor."
+msgstr "S'han proporcionat les credencials SCC; les credencials d'amfitrió de SCC s'ignoraran."
 
 #: shared/podman/login.go:35
-#, fuzzy
-#| msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
 msgid "Registry parameters will be used. SCC credentials from host will be ignored."
-msgstr "S'utilitzaran els paràmetres de les credencials SCC. S'ignoraran les credencials SCC del servidor."
+msgstr "S'usaran els paràmetres del registre. S'ignoraran les credencials SCC de l'amfitrió."
 
 #: shared/podman/login.go:60 shared/podman/login.go:66
-#, fuzzy, javascript-format
-#| msgid "failed to get the status of %s pod"
+#, javascript-format
 msgid "failed to set authentication for %s"
-msgstr "no s'ha pogut obtenir l'estat de %s pod"
+msgstr "No s'ha pogut configurar l'autenticació per a %s"
 
 #: shared/podman/login.go:72
-#, fuzzy, javascript-format
-#| msgid "failed to close the temporary auth file"
+#, javascript-format
 msgid "failed to close the temporary auth file. Cannot set authentication for %s"
-msgstr "no s'ha pogut tancar el fitxer temporal d'autenticació"
+msgstr "No s'ha pogut tancar el fitxer d'autenticació temporal. No es pot definir l'autenticació per a %s"
 
 #: shared/podman/network.go:32
 #, javascript-format
@@ -1274,10 +1268,8 @@ msgid "Invalid SSL key, it is probably encrypted"
 msgstr "Clau SSL no vàlida, probablement està encriptada"
 
 #: shared/utils/cmd.go:118
-#, fuzzy
-#| msgid "cannot check content of %s"
 msgid "cannot decode into Registry"
-msgstr "no es pot comprovar el contingut de %s"
+msgstr "no es pot descodificar al registre"
 
 #: shared/utils/cmd.go:126
 msgid ""
@@ -1293,23 +1285,23 @@ msgstr "estableix si s'han d'estirar les imatges o no. El valor pot ser un de 'N
 
 #: shared/utils/cmd.go:146
 msgid "Specify a registry where to pull the images from"
-msgstr ""
+msgstr "Especifiqueu un registre des d'on extreure les imatges"
 
 #: shared/utils/cmd.go:149
 msgid "Specify a registry where to pull the images from. It will be concatenated with image name"
-msgstr ""
+msgstr "Especifiqueu un registre des d'on extreure les imatges. Es concatenarà amb el nom de la imatge."
 
 #: shared/utils/cmd.go:150
 msgid "User if registry requires an authentication"
-msgstr ""
+msgstr "Usuari, si el registre requereix autenticació"
 
 #: shared/utils/cmd.go:151
 msgid "Password if registry requires an authentication"
-msgstr ""
+msgstr "Contrasenya, si el registre requereix autenticació"
 
 #: shared/utils/cmd.go:153
 msgid "Registry Flags"
-msgstr ""
+msgstr "Banderes del registre"
 
 #: shared/utils/cmd.go:161
 msgid "PTF ID"
