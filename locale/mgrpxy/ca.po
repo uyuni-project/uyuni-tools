@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-02 09:46+0200\n"
-"PO-Revision-Date: 2025-09-03 10:59+0000\n"
+"PO-Revision-Date: 2025-10-04 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -557,16 +557,12 @@ msgid "failed to compute image URL"
 msgstr "no s'ha pogut calcular l'URL de la imatge"
 
 #: mgrpxy/shared/utils/flags.go:66
-#, fuzzy
-#| msgid "SUSE Customer Center username. It will be used to pull images from registry.suse.com"
 msgid "SUSE Customer Center username. It will be used to pull images from SCC registry"
-msgstr "Nom d'usuari del Centre de Clients SUSE. S'utilitzarà per treure imatges de register.suse.com"
+msgstr "Nom d'usuari del Centre de clients de SUSE. S'usarà per obtenir imatges del registre SCC."
 
 #: mgrpxy/shared/utils/flags.go:69
-#, fuzzy
-#| msgid "SUSE Customer Center password. It will be used to pull images from registry.suse.com"
 msgid "SUSE Customer Center password. It will be used to pull images from SCC registry"
-msgstr "Contrasenya del Centre de Clients SUSE. S'utilitzarà per treure imatges de register.suse.com"
+msgstr "Contrasenya del Centre de clients de SUSE. S'usarà per extreure imatges del registre SCC."
 
 #: mgrpxy/shared/utils/flags.go:71
 msgid "SUSE Customer Center Flags"
