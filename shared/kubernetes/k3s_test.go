@@ -6,7 +6,9 @@ package kubernetes
 
 import (
 	"testing"
+	"time"
 
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -22,5 +24,14 @@ func TestGetTraefikEndpointName(t *testing.T) {
 		if len(actual) > 15 {
 			t.Errorf("Traefik endpoint name has more than 15 characters: %s", actual)
 		}
+	}
+}
+
+func TestWaitForTraefik(t *testing.T) {
+	// Test that the time zone is properly handled
+	installTime := time.Now().In(time.UTC).Add(time.Second * 42)
+	newRunner = testutils.FakeRunnerGenerator(installTime.Format("2006-01-02T15:04:05Z"), nil)
+	if err := waitForTraefik(); err != nil {
+		t.Errorf("Unexpected error: %s", err)
 	}
 }
