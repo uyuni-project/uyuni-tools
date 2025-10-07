@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -75,14 +75,16 @@ func shortenName(name string) string {
 	return short
 }
 
+var newRunner = utils.NewRunner
+
 func waitForTraefik() error {
 	log.Info().Msg(L("Waiting for Traefik to be reloaded"))
 	for i := 0; i < 120; i++ {
-		out, err := utils.RunCmdOutput(zerolog.TraceLevel, "kubectl", "get", "job", "-n", "kube-system",
-			"-o", "jsonpath={.status.completionTime}", "helm-install-traefik")
+		out, err := newRunner("kubectl", "get", "job", "-n", "kube-system",
+			"-o", "jsonpath={.status.completionTime}", "helm-install-traefik").Log(zerolog.TraceLevel).Exec()
 		if err == nil {
 			completionTime, err := time.Parse(time.RFC3339, string(out))
-			if err == nil && time.Since(completionTime).Seconds() < 60 {
+			if err == nil && time.Since(completionTime.Local()).Seconds() < 60 {
 				return nil
 			}
 		}
