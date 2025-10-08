@@ -21,7 +21,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-var systemd podman.Systemd = podman.SystemdImpl{}
+var systemd podman.Systemd = podman.NewSystemd()
 
 func renameForPodman(_ *types.GlobalFlags, flags *renameFlags, _ *cobra.Command, args []string) error {
 	fqdn, err := utils.GetFqdn(args)

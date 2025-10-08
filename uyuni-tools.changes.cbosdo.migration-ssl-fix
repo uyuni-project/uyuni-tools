@@ -1,0 +1,2 @@
+- Add SSL secrets to the db setup container during migration.
+  bsc#1250976
