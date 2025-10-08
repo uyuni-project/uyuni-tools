@@ -88,6 +88,8 @@ echo "-/ /etc/salt/master.d/py2*-compat-salt.conf" >> exclude_list
 # uyuni issue #10055. Some old system might have this file
 echo "-/ /etc/apache2/vhosts.d/cobbler.conf" >> exclude_list
 
+$SSH {{ .SourceFqdn }} 'cat /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT >/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT-nolink'
+
 for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
   RSYNC_ARGS=-l
@@ -173,9 +175,6 @@ if $SSH {{ .SourceFqdn }} systemctl is-enabled prometheus-postgres_exporter.serv
   ln -s /usr/lib/systemd/system/prometheus-postgres_exporter.service /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service
 fi
 
-rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
-ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
-
 echo "Migrating custom SSL CA certificates..."
 rsync -e "$SSH" --rsync-path='sudo rsync' -avz --trust-sender \
     --exclude='/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT' \
@@ -183,6 +182,11 @@ rsync -e "$SSH" --rsync-path='sudo rsync' -avz --trust-sender \
     {{ .SourceFqdn }}:/usr/share/pki/trust/anchors/ \
     {{ .SourceFqdn }}:/etc/pki/trust/anchors/ \
     /etc/pki/trust/anchors/
+
+rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
+rm /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+mv /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT-nolink /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 
 echo "Extracting time zone..."
 $SSH {{ .SourceFqdn }} timedatectl show -p Timezone >/var/lib/uyuni-tools/data
