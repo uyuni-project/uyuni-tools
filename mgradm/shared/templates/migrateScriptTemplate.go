@@ -88,6 +88,8 @@ echo "-/ /etc/salt/master.d/py2*-compat-salt.conf" >> exclude_list
 # uyuni issue #10055. Some old system might have this file
 echo "-/ /etc/apache2/vhosts.d/cobbler.conf" >> exclude_list
 
+$SSH {{ .SourceFqdn }} 'cat /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT >/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT-nolink'
+
 for folder in {{ range .Volumes }}{{ .MountPath }} {{ end }};
 do
   RSYNC_ARGS=-l
@@ -174,6 +176,7 @@ if $SSH {{ .SourceFqdn }} systemctl is-enabled prometheus-postgres_exporter.serv
 fi
 
 rm -f /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
+mv /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT-nolink /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
 ln -s /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT;
 
 echo "Migrating custom SSL CA certificates..."
