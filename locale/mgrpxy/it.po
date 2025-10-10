@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-02 09:46+0200\n"
+"POT-Creation-Date: 2025-10-10 09:54+0200\n"
 "PO-Revision-Date: 2025-09-25 10:59+0000\n"
 "Last-Translator: Antonio Gemelli <antonio.gemelli@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/it/>\n"
@@ -31,11 +31,6 @@ msgstr "mancata creazione della directory temporanea: %s"
 #: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:27
 msgid "failed to remove cached data"
 msgstr "Non è stato possibile eliminare i dati della cache"
-
-#: mgrpxy/cmd/cache/kubernetes.go:33 mgrpxy/cmd/cache/podman.go:31
-#, fuzzy
-msgid "failed to re-create the cache directories"
-msgstr "mancata creazione della directory temporanea: %s"
 
 #: mgrpxy/cmd/cache/squid.go:18 mgrpxy/cmd/cache/squid.go:19
 msgid "Manage proxy cache"
@@ -546,6 +541,10 @@ msgstr ""
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr ""
+
+#, fuzzy
+#~ msgid "failed to re-create the cache directories"
+#~ msgstr "mancata creazione della directory temporanea: %s"
 
 #, javascript-format
 #~ msgid "Welcome to %s"

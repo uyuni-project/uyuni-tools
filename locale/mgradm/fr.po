@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 09:34+0200\n"
+"POT-Creation-Date: 2025-10-10 09:54+0200\n"
 "PO-Revision-Date: 2025-09-03 16:59+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/fr/>\n"
@@ -927,7 +927,7 @@ msgstr "impossible de mettre à jour avec l'image %s: %s"
 msgid "cannot setup network"
 msgstr "échec à configurer le réseau"
 
-#: mgradm/cmd/install/podman/utils.go:108 mgradm/shared/podman/podman.go:872
+#: mgradm/cmd/install/podman/utils.go:108 mgradm/shared/podman/podman.go:875
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr ""
@@ -1942,18 +1942,17 @@ msgstr ""
 msgid "cannot configure db container"
 msgstr "impossible de lire les données du conteneur: %s"
 
-#: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:811
-#: mgradm/shared/podman/podman.go:839
+#: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:814
 #, fuzzy
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "impossible d'exécuter le script de mise à jour de la version de PostgreSQL: %s"
 
-#: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:814
+#: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:817
 #, fuzzy
 msgid "Upgrading without changing PostgreSQL version"
 msgstr "impossible d'exécuter le script de mise à jour de la version de PostgreSQL: %s"
 
-#: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:817
+#: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:820
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr ""
 
@@ -2008,22 +2007,26 @@ msgstr "Impossible de lire le fichier de certificat %s"
 msgid "failed to generate postgresql migration script"
 msgstr "impossible de générer le script de migration: %s"
 
-#: mgradm/shared/podman/podman.go:718
+#: mgradm/shared/podman/podman.go:721
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:748
+#: mgradm/shared/podman/podman.go:751
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr "SSH_AUTH_SOCK n'est pas défini, démarrer un agent SSH et réessayer"
 
-#: mgradm/shared/podman/podman.go:758
+#: mgradm/shared/podman/podman.go:761
 msgid "Failed to find home directory to look for SSH config"
 msgstr "Impossible de trouver le répertoire home pour chercher la configuration SSH"
 
-#: mgradm/shared/podman/podman.go:780
+#: mgradm/shared/podman/podman.go:783
 #, fuzzy
 msgid "cannot inspect podman values"
 msgstr "impossible d'inspecter les valeurs de l'hôte: %s"
+
+#: mgradm/shared/podman/podman.go:842
+msgid "PostgreSQL migration failure"
+msgstr ""
 
 #: mgradm/shared/podman/ssl.go:88
 msgid "CA validation failed!"

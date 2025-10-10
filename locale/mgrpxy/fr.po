@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-02 09:46+0200\n"
+"POT-Creation-Date: 2025-10-10 09:54+0200\n"
 "PO-Revision-Date: 2025-09-03 16:59+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/fr/>\n"
@@ -30,10 +30,6 @@ msgstr "échec de la récupération de l’espace de noms"
 #: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:27
 msgid "failed to remove cached data"
 msgstr "échec à supprimer les données en cache"
-
-#: mgrpxy/cmd/cache/kubernetes.go:33 mgrpxy/cmd/cache/podman.go:31
-msgid "failed to re-create the cache directories"
-msgstr "échoué à recréer les répertoires de cache"
 
 #: mgrpxy/cmd/cache/squid.go:18 mgrpxy/cmd/cache/squid.go:19
 msgid "Manage proxy cache"
@@ -584,6 +580,9 @@ msgstr ""
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "Tag pour le conteneur %sm remplace la valeur globale si définie"
+
+#~ msgid "failed to re-create the cache directories"
+#~ msgstr "échoué à recréer les répertoires de cache"
 
 #~ msgid "application log level"
 #~ msgstr "niveau de verbosité de l'application"

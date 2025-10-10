@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-02 09:46+0200\n"
+"POT-Creation-Date: 2025-10-10 09:54+0200\n"
 "PO-Revision-Date: 2025-10-04 09:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
@@ -30,10 +30,6 @@ msgstr "no s'ha pogut recuperar l'espai de noms"
 #: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:27
 msgid "failed to remove cached data"
 msgstr "no s'han pogut eliminar les dades de la memòria cau"
-
-#: mgrpxy/cmd/cache/kubernetes.go:33 mgrpxy/cmd/cache/podman.go:31
-msgid "failed to re-create the cache directories"
-msgstr "no s'ha pogut tornar a crear els directoris de la memòria cau"
 
 #: mgrpxy/cmd/cache/squid.go:18 mgrpxy/cmd/cache/squid.go:19
 msgid "Manage proxy cache"
@@ -589,6 +585,9 @@ msgstr "Imatge per al contenidor %s"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "Etiqueta per al contenidor %s, anul·la el valor global si s'estableix"
+
+#~ msgid "failed to re-create the cache directories"
+#~ msgstr "no s'ha pogut tornar a crear els directoris de la memòria cau"
 
 #~ msgid "failed to login to registry.suse.com"
 #~ msgstr "no s'ha pogut iniciar la sessió a register.suse.com"
