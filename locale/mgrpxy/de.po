@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-02 09:46+0200\n"
+"POT-Creation-Date: 2025-10-10 09:54+0200\n"
 "PO-Revision-Date: 2025-02-22 05:50+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/de/>\n"
@@ -29,10 +29,6 @@ msgstr ""
 
 #: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:27
 msgid "failed to remove cached data"
-msgstr ""
-
-#: mgrpxy/cmd/cache/kubernetes.go:33 mgrpxy/cmd/cache/podman.go:31
-msgid "failed to re-create the cache directories"
 msgstr ""
 
 #: mgrpxy/cmd/cache/squid.go:18 mgrpxy/cmd/cache/squid.go:19

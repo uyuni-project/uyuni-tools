@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-02 09:46+0200\n"
+"POT-Creation-Date: 2025-10-10 09:54+0200\n"
 "PO-Revision-Date: 2025-06-16 07:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
@@ -30,10 +30,6 @@ msgstr "네임스페이스를 검색하지 못함"
 #: mgrpxy/cmd/cache/kubernetes.go:29 mgrpxy/cmd/cache/podman.go:27
 msgid "failed to remove cached data"
 msgstr "캐시 데이터 제거 실패"
-
-#: mgrpxy/cmd/cache/kubernetes.go:33 mgrpxy/cmd/cache/podman.go:31
-msgid "failed to re-create the cache directories"
-msgstr "캐시 디렉토리 재생성 실패"
 
 #: mgrpxy/cmd/cache/squid.go:18 mgrpxy/cmd/cache/squid.go:19
 msgid "Manage proxy cache"
@@ -598,6 +594,9 @@ msgstr "%s 컨테이너용 이미지"
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
+
+#~ msgid "failed to re-create the cache directories"
+#~ msgstr "캐시 디렉토리 재생성 실패"
 
 #~ msgid "failed to login to registry.suse.com"
 #~ msgstr "registry.suse.com에 로그인하지 못했습니다."

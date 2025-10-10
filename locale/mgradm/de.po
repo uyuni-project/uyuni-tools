@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-03 09:34+0200\n"
+"POT-Creation-Date: 2025-10-10 09:54+0200\n"
 "PO-Revision-Date: 2025-02-22 05:50+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/de/>\n"
@@ -868,7 +868,7 @@ msgstr ""
 msgid "cannot setup network"
 msgstr ""
 
-#: mgradm/cmd/install/podman/utils.go:108 mgradm/shared/podman/podman.go:872
+#: mgradm/cmd/install/podman/utils.go:108 mgradm/shared/podman/podman.go:875
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr ""
@@ -1778,16 +1778,15 @@ msgstr ""
 msgid "cannot configure db container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:811
-#: mgradm/shared/podman/podman.go:839
+#: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:814
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:814
+#: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:817
 msgid "Upgrading without changing PostgreSQL version"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:817
+#: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:820
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr ""
 
@@ -1839,20 +1838,24 @@ msgstr "Abbild-URL konnte nicht berechnet werden"
 msgid "failed to generate postgresql migration script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:718
+#: mgradm/shared/podman/podman.go:721
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:748
+#: mgradm/shared/podman/podman.go:751
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:758
+#: mgradm/shared/podman/podman.go:761
 msgid "Failed to find home directory to look for SSH config"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:780
+#: mgradm/shared/podman/podman.go:783
 msgid "cannot inspect podman values"
+msgstr ""
+
+#: mgradm/shared/podman/podman.go:842
+msgid "PostgreSQL migration failure"
 msgstr ""
 
 #: mgradm/shared/podman/ssl.go:88
