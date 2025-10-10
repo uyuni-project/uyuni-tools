@@ -2,14 +2,34 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM opensuse/tumbleweed:latest
+FROM registry.opensuse.org/opensuse/tumbleweed:latest
 
 RUN set -euo pipefail; \
     curl -o uyuni-tools.gpg https://build.opensuse.org/projects/systemsmanagement:Uyuni:Utils/signing_keys/download?kind=gpg && \
     rpm --import uyuni-tools.gpg && \
     zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Utils/openSUSE_Tumbleweed/ uyuni-utils && \
-    zypper -n in go1.21 go1.21-doc golangci-lint git-core curl neovim python313-pre-commit python313 gpg2 \
-        sed grep gettext-tools util-linux less awk uyuni-releng-tools
+    zypper -n in \
+    awk \
+    bash-completion \
+    curl \
+    gettext-tools \
+    git-core \
+    go1.23 \
+    go1.23-doc \
+    gpg2 \
+    grep \
+    less \
+    neovim \
+    openssh \
+    python313 \
+    python313-pre-commit \
+    sed \
+    uyuni-releng-tools \
+    util-linux
+
+RUN curl -sSfL https://github.com/golangci/golangci-lint/releases/download/v1.64.8/golangci-lint-1.64.8-linux-amd64.tar.gz | tar -xz &&  \
+    mv golangci-lint-1.64.8-linux-amd64/golangci-lint /usr/local/bin/ && \
+    rm -rf golangci-lint-1.64.8-linux-amd64
 
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
