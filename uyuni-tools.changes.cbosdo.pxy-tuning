@@ -1,0 +1,2 @@
+- Detect custom apache and squid config in the /etc/uyuni/proxy
+  folder

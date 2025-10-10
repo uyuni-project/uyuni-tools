@@ -31,6 +31,8 @@ const (
 	SystemIDEvent         = "suse/systemid/generate"
 	SystemIDEventResponse = "suse/systemid/generated"
 	SystemIDSecret        = "uyuni-proxy-systemid"
+	defaultApacheConf     = "/etc/uyuni/proxy/apache.conf"
+	defaultSquidConf      = "/etc/uyuni/proxy/squid.conf"
 )
 
 var contextRunner = shared_utils.NewRunnerWithContext
@@ -92,14 +94,15 @@ func GenerateSystemdService(
 		}
 
 		additionHttpdTuningSettings := ""
-		if flags.ProxyImageFlags.Tuning.Httpd != "" {
-			absPath, err := filepath.Abs(flags.ProxyImageFlags.Tuning.Httpd)
-			if err != nil {
-				return err
-			}
+		additionHTTPConfPath, err := getPathOrDefault(flags.ProxyImageFlags.Tuning.Httpd, defaultApacheConf)
+		if err != nil {
+			return err
+		}
+
+		if additionHTTPConfPath != "" {
 			additionHttpdTuningSettings = fmt.Sprintf(
 				`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro%s`,
-				absPath, volumeOptions,
+				additionHTTPConfPath, volumeOptions,
 			)
 		}
 		if err := generateSystemdFile(dataHttpd, "httpd", httpdImage, additionHttpdTuningSettings); err != nil {
@@ -122,14 +125,14 @@ func GenerateSystemdService(
 			HTTPProxyFile: httpProxyConfig,
 		}
 		additionSquidTuningSettings := ""
-		if flags.ProxyImageFlags.Tuning.Squid != "" {
-			absPath, err := filepath.Abs(flags.ProxyImageFlags.Tuning.Squid)
-			if err != nil {
-				return err
-			}
+		additionSquidConfPath, err := getPathOrDefault(flags.ProxyImageFlags.Tuning.Squid, defaultSquidConf)
+		if err != nil {
+			return err
+		}
+		if additionSquidConfPath != "" {
 			additionSquidTuningSettings = fmt.Sprintf(
 				`Environment=SQUID_EXTRA_CONF=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro%s`,
-				absPath, volumeOptions,
+				additionSquidConfPath, volumeOptions,
 			)
 		}
 		if err := generateSystemdFile(dataSquid, "squid", squidImage, additionSquidTuningSettings); err != nil {
@@ -156,6 +159,21 @@ func GenerateSystemdService(
 		}
 	}
 	return systemd.ReloadDaemon(false)
+}
+
+func getPathOrDefault(flag string, defaultPath string) (string, error) {
+	result := ""
+	if flag != "" {
+		var err error
+		result, err = filepath.Abs(flag)
+		if err != nil {
+			return "", err
+		}
+	} else if shared_utils.FileExists(defaultPath) {
+		result = defaultPath
+	}
+
+	return result, nil
 }
 
 func generateSystemdFile(template shared_utils.Template, service string, image string, config string) error {

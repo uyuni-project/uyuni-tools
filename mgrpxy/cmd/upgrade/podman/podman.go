@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -21,6 +21,9 @@ func newCmd(globalFlags *types.GlobalFlags, run shared_utils.CommandFunc[podman.
 		Long: L(`Upgrade a proxy on podman
 
 The upgrade podman command assumes podman is upgraded locally.
+
+/etc/uyuni/proxy/apache.conf and /etc/uyuni/squid.conf will be used as tuning files
+for apache and squid if available and not superseded by the matching command arguments.
 
 NOTE: for now upgrading on a remote podman is not supported!
 `),
