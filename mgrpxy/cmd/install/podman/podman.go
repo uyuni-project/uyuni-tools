@@ -25,6 +25,9 @@ as parameter.
 
 The install podman command assumes podman is installed locally.
 
+/etc/uyuni/proxy/apache.conf and /etc/uyuni/squid.conf will be used as tuning files
+for apache and squid if available and not superseded by the matching command arguments.
+
 NOTE: for now installing on a remote podman is not supported!
 `),
 		Args: cobra.MaximumNArgs(1),
