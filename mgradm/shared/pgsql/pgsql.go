@@ -44,7 +44,10 @@ func SetupPgsql(
 		return utils.Error(err, L("cannot generate systemd service"))
 	}
 
-	if err := EnablePgsql(systemd); err != nil {
+	if err := systemd.EnableService(podman.DBService); err != nil {
+		return err
+	}
+	if err := systemd.StartService(podman.DBService); err != nil {
 		return err
 	}
 	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
@@ -52,15 +55,6 @@ func SetupPgsql(
 		return utils.Errorf(err, L("%s fails healtcheck"), podman.DBContainerName)
 	}
 
-	return nil
-}
-
-// EnablePgsql enables the database service.
-// This function is meant for installation or migration, to enable and start the service.
-func EnablePgsql(systemd podman.Systemd) error {
-	if err := systemd.EnableService(podman.DBService); err != nil {
-		return utils.Errorf(err, L("cannot enable %s service"), podman.DBService)
-	}
 	return nil
 }
 
@@ -77,7 +71,7 @@ func Upgrade(
 		return err
 	}
 
-	if err := EnablePgsql(systemd); err != nil {
+	if err := systemd.EnableService(podman.DBService); err != nil {
 		return err
 	}
 
