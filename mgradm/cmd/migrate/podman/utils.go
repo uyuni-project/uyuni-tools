@@ -50,11 +50,13 @@ func migrateToPodman(
 		flags.Coco,
 		flags.HubXmlrpc,
 		flags.Saline,
+		flags.EventProcessor,
 		flags.Pgsql,
 		flags.Migration.Prepare,
 		flags.Migration.User,
 		flags.Mirror,
 		flags.Podman,
 		args,
+		flags.Installation.Debug.Java,
 	)
 }
