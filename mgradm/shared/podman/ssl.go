@@ -171,27 +171,56 @@ func reuseExistingCertificates(image string, tempDir string, fqdn string, isData
 	// Upgrading from 5.1+ with all certificates as secrets
 	if reuseExistingCertificatesFromSecrets(isDatabaseCheck) {
 		secretName := shared_podman.SSLCertSecret
+		caSecretName := shared_podman.CASecret
 		if isDatabaseCheck {
 			secretName = shared_podman.DBSSLCertSecret
+			caSecretName = shared_podman.DBCASecret
 		}
-		return isFQDNMatchingCertificateSecret(fqdn, secretName), nil
+		return isFQDNMatchingCertificateSecret(fqdn, secretName, caSecretName), nil
 	}
 
 	// Upgrading from 5.0- with all certs in files
 	return reuseExistingCertificatesFromMounts(image, tempDir, fqdn, isDatabaseCheck)
 }
 
-func isFQDNMatchingCertificateSecret(fqdn string, secretName string) bool {
+func isFQDNMatchingCertificateSecret(fqdn string, secretName string, caSecretName string) bool {
 	cert, err := shared_podman.GetSecret(secretName)
 	if err != nil {
 		log.Error().Err(err).Send()
 		return false
 	}
-	return isFQDNMatchingCertificate(fqdn, cert)
+
+	tmpDir, cleaner, err := utils.TempDir()
+	defer cleaner()
+	if err != nil {
+		log.Error().Err(err).Send()
+		return false
+	}
+	caPath := path.Join(tmpDir, "ca.crt")
+	certPath := path.Join(tmpDir, "toverify.crt")
+
+	caCert, err := shared_podman.GetSecret(caSecretName)
+	if err != nil {
+		log.Error().Err(err).Send()
+		return false
+	}
+
+	if err := os.WriteFile(caPath, []byte(caCert), 0700); err != nil {
+		log.Error().Err(err).Send()
+		return false
+	}
+
+	if err := os.WriteFile(certPath, []byte(cert), 0700); err != nil {
+		log.Error().Err(err).Send()
+		return false
+	}
+
+	return isFQDNMatchingCertificate(fqdn, certPath, caPath)
 }
 
-func isFQDNMatchingCertificate(fqdn string, cert string) bool {
-	_, err := newRunner("openssl", "verify", "-verify_hostname", fqdn).InputString(cert).Exec()
+func isFQDNMatchingCertificate(fqdn string, certPath string, caPath string) bool {
+	err := ssl.VerifyHostname(caPath, certPath, fqdn)
+	log.Debug().Msgf("SSL verification error: %s", err)
 	return err == nil
 }
 
@@ -260,7 +289,8 @@ func reuseExistingCertificatesFromMounts(
 	}
 
 	// We cannot reuse certificates not matching the requested FQDN
-	if !isFQDNMatchingCertificate(fqdn, string(cert)) {
+	if !isFQDNMatchingCertificate(fqdn, serverCert, caPath) {
+		log.Info().Msgf(L("Cert file %[1]s doesn't match %[2]s FQDN. A new certificate will be created."), crtCheckPath, fqdn)
 		return false, nil
 	}
 

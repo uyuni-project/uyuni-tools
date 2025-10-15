@@ -358,8 +358,11 @@ func VerifyHostname(caPath string, certPath string, hostname string) error {
 	if nochecktime {
 		args = append(args, "-no_check_time")
 	}
-	args = append(args, "-trusted", certPath, "-trusted", caPath, "-verify_hostname", hostname, certPath)
+	args = append(args, "-untrusted", certPath, "-CAfile", caPath, "-verify_hostname", hostname, certPath)
 	// The certPath needs to be added as trusted too since it could be a bundle with intermediate certs.
 	_, err := newRunner("openssl", args...).Log(zerolog.DebugLevel).Exec()
-	return err
+	if err != nil {
+		return utils.Errorf(err, L("failed to validate hostname %s"), hostname)
+	}
+	return nil
 }
