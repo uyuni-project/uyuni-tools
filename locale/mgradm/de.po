@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-10 09:54+0200\n"
-"PO-Revision-Date: 2025-02-22 05:50+0000\n"
+"PO-Revision-Date: 2025-10-19 15:59+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/de/>\n"
 "Language: de\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.1\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: mgradm/cmd/backup/backup.go:28
 msgid "Create backup"
@@ -113,15 +113,15 @@ msgstr ""
 
 #: mgradm/cmd/backup/backup.go:125
 msgid "Encountered problems:"
-msgstr ""
+msgstr "Aufgetretene Probleme:"
 
 #: mgradm/cmd/backup/backup.go:127
 msgid "Restore aborted with partially restored files. Resolve the error and try again"
-msgstr ""
+msgstr "Wiederherstellung mit teilweise wiederhergestellten Dateien abgebrochen. Beheben Sie den Fehler und versuchen Sie es erneut"
 
 #: mgradm/cmd/backup/backup.go:130
 msgid "Important data were restored successfully, but with warnings"
-msgstr ""
+msgstr "Wichtige Daten wurden erfolgreich wiederhergestellt, jedoch mit Warnungen"
 
 #: mgradm/cmd/backup/create/create.go:59
 msgid "Stopping server service"
