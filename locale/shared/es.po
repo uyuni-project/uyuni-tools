@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: shared/kubernetes/k3s.go:131
+#: shared/kubernetes/k3s.go:133
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 09:54+0200\n"
+"POT-Creation-Date: 2025-10-27 10:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -321,39 +321,39 @@ msgstr ""
 msgid "Failed to write Traefik configuration"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:79
+#: shared/kubernetes/k3s.go:81
 msgid "Waiting for Traefik to be reloaded"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:91
+#: shared/kubernetes/k3s.go:93
 msgid "Failed to reload Traefik"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:98
+#: shared/kubernetes/k3s.go:100
 msgid "Reinstalling Traefik without additionnal configuration"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:101
+#: shared/kubernetes/k3s.go:103
 msgid "failed to write empty traefik configuration"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:105
+#: shared/kubernetes/k3s.go:107
 msgid "failed to uninstall traefik configuration"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:109
+#: shared/kubernetes/k3s.go:111
 msgid "Would reinstall Traefik without additionnal configuration"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:119
+#: shared/kubernetes/k3s.go:121
 msgid "failed to read the traefik configuration"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:123
+#: shared/kubernetes/k3s.go:125
 msgid "traefik configuration file doesn't contain the helm chart version"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:126
+#: shared/kubernetes/k3s.go:128
 msgid "failed to find traefik helm chart version"
 msgstr ""
 
@@ -1260,6 +1260,11 @@ msgstr ""
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr ""
 
+#: shared/ssl/ssl.go:365
+#, javascript-format
+msgid "failed to validate hostname %s"
+msgstr ""
+
 #: shared/utils/cmd.go:118
 msgid "cannot decode into Registry"
 msgstr ""
@@ -1582,82 +1587,82 @@ msgstr ""
 msgid "A value is required"
 msgstr ""
 
-#: shared/utils/utils.go:227 shared/utils/utils.go:253
+#: shared/utils/utils.go:226 shared/utils/utils.go:248
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr ""
 
-#: shared/utils/utils.go:231
+#: shared/utils/utils.go:230
 #, javascript-format
 msgid "tag missing on %s"
 msgstr ""
 
-#: shared/utils/utils.go:239 shared/utils/utils.go:244
+#: shared/utils/utils.go:235 shared/utils/utils.go:239
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr ""
 
-#: shared/utils/utils.go:259
+#: shared/utils/utils.go:254
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr ""
 
-#: shared/utils/utils.go:270
+#: shared/utils/utils.go:265
 #, javascript-format
 msgid "Failed to run %s"
 msgstr ""
 
-#: shared/utils/utils.go:279
+#: shared/utils/utils.go:274
 msgid "Failed to read random data"
 msgstr ""
 
-#: shared/utils/utils.go:300
+#: shared/utils/utils.go:295
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:301
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:419
+#: shared/utils/utils.go:414
 msgid "failed to compute server FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:433
+#: shared/utils/utils.go:428
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:437
+#: shared/utils/utils.go:432
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr ""
 
-#: shared/utils/utils.go:468
+#: shared/utils/utils.go:463
 #, javascript-format
 msgid "error creating file %s"
 msgstr ""
 
-#: shared/utils/utils.go:473
+#: shared/utils/utils.go:468
 #, javascript-format
 msgid "error writing file %s"
 msgstr ""
 
-#: shared/utils/utils.go:485 shared/utils/utils.go:500
+#: shared/utils/utils.go:480 shared/utils/utils.go:495
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr ""
 
-#: shared/utils/utils.go:490
+#: shared/utils/utils.go:485
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr ""
 
-#: shared/utils/utils.go:507
+#: shared/utils/utils.go:502
 msgid "Failed to read checksum of the file %[1]s"
 msgstr ""
 
-#: shared/utils/utils.go:511
+#: shared/utils/utils.go:506
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr ""

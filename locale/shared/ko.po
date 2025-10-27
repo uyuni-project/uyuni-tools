@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: shared/kubernetes/k3s.go:131
+#: shared/kubernetes/k3s.go:133
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 09:54+0200\n"
+"POT-Creation-Date: 2025-10-27 10:21+0100\n"
 "PO-Revision-Date: 2025-06-17 08:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
@@ -324,39 +324,39 @@ msgstr "K3s Traefik 구성 설치"
 msgid "Failed to write Traefik configuration"
 msgstr "Traefik 구성 쓰기 실패"
 
-#: shared/kubernetes/k3s.go:79
+#: shared/kubernetes/k3s.go:81
 msgid "Waiting for Traefik to be reloaded"
 msgstr "Traefik의 다시 로드를 기다리는 중"
 
-#: shared/kubernetes/k3s.go:91
+#: shared/kubernetes/k3s.go:93
 msgid "Failed to reload Traefik"
 msgstr "Traefik 파일 다시 로드 실패"
 
-#: shared/kubernetes/k3s.go:98
+#: shared/kubernetes/k3s.go:100
 msgid "Reinstalling Traefik without additionnal configuration"
 msgstr "추가 구성 없이 Traefik 다시 설치"
 
-#: shared/kubernetes/k3s.go:101
+#: shared/kubernetes/k3s.go:103
 msgid "failed to write empty traefik configuration"
 msgstr "빈 traefik 구성 쓰기 실패"
 
-#: shared/kubernetes/k3s.go:105
+#: shared/kubernetes/k3s.go:107
 msgid "failed to uninstall traefik configuration"
 msgstr "traefik 구성 제거 실패"
 
-#: shared/kubernetes/k3s.go:109
+#: shared/kubernetes/k3s.go:111
 msgid "Would reinstall Traefik without additionnal configuration"
 msgstr "추가 구성 없이 Traefik 다시 설치"
 
-#: shared/kubernetes/k3s.go:119
+#: shared/kubernetes/k3s.go:121
 msgid "failed to read the traefik configuration"
 msgstr "traefik 구성 읽기 실패"
 
-#: shared/kubernetes/k3s.go:123
+#: shared/kubernetes/k3s.go:125
 msgid "traefik configuration file doesn't contain the helm chart version"
 msgstr "traefik 구성 파일에 helm 차트 버전이 포함되어 있지 않음"
 
-#: shared/kubernetes/k3s.go:126
+#: shared/kubernetes/k3s.go:128
 msgid "failed to find traefik helm chart version"
 msgstr "traefik helm 차트 버전을 찾지 못함"
 
@@ -1294,6 +1294,12 @@ msgstr "CA 인증서에서 텍스트 부분 스트리핑 실패"
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr "유효하지 않은 SSL 키, 암호화되었을 수 있습니다."
 
+#: shared/ssl/ssl.go:365
+#, fuzzy, javascript-format
+#| msgid "failed to write in %s"
+msgid "failed to validate hostname %s"
+msgstr "%s에 쓰기 실패"
+
 #: shared/utils/cmd.go:118
 #, fuzzy
 #| msgid "cannot delete %s"
@@ -1682,84 +1688,84 @@ msgstr "입력 읽기 실패"
 msgid "A value is required"
 msgstr "값은 필수입니다."
 
-#: shared/utils/utils.go:227 shared/utils/utils.go:253
+#: shared/utils/utils.go:226 shared/utils/utils.go:248
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "잘못된 이미지 이름: %s"
 
-#: shared/utils/utils.go:231
+#: shared/utils/utils.go:230
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "%s에 태그 누락"
 
-#: shared/utils/utils.go:239 shared/utils/utils.go:244
+#: shared/utils/utils.go:235 shared/utils/utils.go:239
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "계산된 이미지 이름: %s"
 
-#: shared/utils/utils.go:259
+#: shared/utils/utils.go:254
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr ""
 
-#: shared/utils/utils.go:270
+#: shared/utils/utils.go:265
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "%s 실행 실패"
 
-#: shared/utils/utils.go:279
+#: shared/utils/utils.go:274
 msgid "Failed to read random data"
 msgstr "임의 데이터 읽기 실패"
 
-#: shared/utils/utils.go:300
+#: shared/utils/utils.go:295
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "%s에서 다운로드하지 못함"
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:301
 #, javascript-format
 msgid "bad status: %s"
 msgstr "잘못된 상태: %s"
 
-#: shared/utils/utils.go:419
+#: shared/utils/utils.go:414
 msgid "failed to compute server FQDN"
 msgstr "서버 FQDN 계산 실패"
 
-#: shared/utils/utils.go:433
+#: shared/utils/utils.go:428
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s은(는) 유효한 FQDN이 아닙니다."
 
-#: shared/utils/utils.go:437
+#: shared/utils/utils.go:432
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "%s 해결 불가"
 
-#: shared/utils/utils.go:468
+#: shared/utils/utils.go:463
 #, javascript-format
 msgid "error creating file %s"
 msgstr "%s 파일 생성 오류"
 
-#: shared/utils/utils.go:473
+#: shared/utils/utils.go:468
 #, javascript-format
 msgid "error writing file %s"
 msgstr "%s 파일 쓰기 오류"
 
-#: shared/utils/utils.go:485 shared/utils/utils.go:500
+#: shared/utils/utils.go:480 shared/utils/utils.go:495
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "파일 %s의 체크섬을 계산하지 못함"
 
-#: shared/utils/utils.go:490
+#: shared/utils/utils.go:485
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "%[1] 파일의 체크섬을 %[2]에 쓰지 못함"
 
-#: shared/utils/utils.go:507
+#: shared/utils/utils.go:502
 #, fuzzy
 #| msgid "Failed to calculate checksum of the file %s"
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "파일 %s의 체크섬을 계산하지 못함"
 
-#: shared/utils/utils.go:511
+#: shared/utils/utils.go:506
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "%s의 체크섬이 일치하지 않음"
