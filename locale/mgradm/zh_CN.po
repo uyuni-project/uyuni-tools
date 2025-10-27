@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 09:54+0200\n"
+"POT-Creation-Date: 2025-10-27 10:21+0100\n"
 "PO-Revision-Date: 2025-06-12 08:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
@@ -946,17 +946,17 @@ msgstr "服务器已初始化！请先将其卸装，再尝试进行全新安装
 msgid "Setting up the server with the FQDN '%s'"
 msgstr "正在使用 FQDN '%s' 设置服务器"
 
-#: mgradm/cmd/install/podman/utils.go:66 mgradm/shared/podman/podman.go:332
-#: mgradm/shared/podman/podman.go:528
+#: mgradm/cmd/install/podman/utils.go:66 mgradm/shared/podman/podman.go:337
+#: mgradm/shared/podman/podman.go:533
 msgid "cannot prepare images"
 msgstr "无法准备映像"
 
 #: mgradm/cmd/install/podman/utils.go:70 mgradm/shared/podman/podman.go:93
-#: mgradm/shared/podman/podman.go:322 mgradm/shared/podman/podman.go:520
+#: mgradm/shared/podman/podman.go:327 mgradm/shared/podman/podman.go:525
 msgid "cannot setup network"
 msgstr "无法设置网络"
 
-#: mgradm/cmd/install/podman/utils.go:108 mgradm/shared/podman/podman.go:875
+#: mgradm/cmd/install/podman/utils.go:108 mgradm/shared/podman/podman.go:880
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr "已跳过数据库容器设置步骤，将使用外部数据库 %s"
@@ -965,7 +965,7 @@ msgstr "已跳过数据库容器设置步骤，将使用外部数据库 %s"
 msgid "Run setup command in the container"
 msgstr "在容器中运行设置命令"
 
-#: mgradm/cmd/install/podman/utils.go:122 mgradm/shared/podman/podman.go:605
+#: mgradm/cmd/install/podman/utils.go:122 mgradm/shared/podman/podman.go:610
 msgid "cannot wait for system start"
 msgstr "无法等待系统启动"
 
@@ -1172,10 +1172,10 @@ msgstr "无法创建 SSH 迁移配置映射"
 
 #: mgradm/cmd/migrate/kubernetes/utils.go:44 mgradm/shared/coco/coco.go:77
 #: mgradm/shared/hub/xmlrpcapi.go:44
-#: mgradm/shared/kubernetes/dbUpgradeJob.go:46
+#: mgradm/shared/kubernetes/dbUpgradeJob.go:44
 #: mgradm/shared/kubernetes/reconcile.go:38
 #: mgradm/shared/kubernetes/reconcile.go:305 mgradm/shared/pgsql/pgsql.go:28
-#: mgradm/shared/podman/podman.go:225 mgradm/shared/podman/podman.go:230
+#: mgradm/shared/podman/podman.go:230 mgradm/shared/podman/podman.go:235
 #: mgradm/shared/saline/saline.go:69
 msgid "failed to compute image URL"
 msgstr "无法计算映像 URL"
@@ -1640,7 +1640,7 @@ msgid "Setting up confidential computing attestation service"
 msgstr "设置机密计算认证服务"
 
 #: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:117
-#: mgradm/shared/pgsql/pgsql.go:123 mgradm/shared/podman/podman.go:76
+#: mgradm/shared/pgsql/pgsql.go:117 mgradm/shared/podman/podman.go:76
 #: mgradm/shared/saline/saline.go:90
 msgid "failed to generate systemd service unit file"
 msgstr "无法生成 systemd 服务单元文件"
@@ -1656,7 +1656,7 @@ msgid "No changes requested for hub. Keep %d replicas."
 msgstr "未针对 Hub 请求更改。保留 %d 个复本。"
 
 #: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:44
-#: mgradm/shared/pgsql/pgsql.go:73
+#: mgradm/shared/pgsql/pgsql.go:67
 msgid "cannot generate systemd service"
 msgstr "无法生成 systemd 服务"
 
@@ -1664,7 +1664,7 @@ msgstr "无法生成 systemd 服务"
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr "目前不支持多个 Hub XML-RPC 容器复本，将仅设置一个复本。"
 
-#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:479
+#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:484
 #: mgradm/shared/saline/saline.go:140
 msgid "cannot enable service"
 msgstr "无法启用服务"
@@ -1763,13 +1763,13 @@ msgstr "无法运行数据库最终确定作业"
 msgid "Upgrading PostgreSQL database from %[1]s to %[2]s…"
 msgstr "正在将 PostgreSQL 数据库从 %[1]s 升级到 %[2]s…"
 
-#: mgradm/shared/kubernetes/dbUpgradeJob.go:49
-#: mgradm/shared/podman/podman.go:239
+#: mgradm/shared/kubernetes/dbUpgradeJob.go:47
+#: mgradm/shared/podman/podman.go:244
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr "正在使用数据库升级映像 %s"
 
-#: mgradm/shared/kubernetes/dbUpgradeJob.go:56
+#: mgradm/shared/kubernetes/dbUpgradeJob.go:54
 msgid "failed to run the database upgrade job"
 msgstr "无法运行数据库升级作业"
 
@@ -1855,17 +1855,12 @@ msgstr "无法创建 Traefik 中间件和路由"
 msgid "failed to write traefik routes to file"
 msgstr "无法向文件写入 Traefik 路由"
 
-#: mgradm/shared/pgsql/pgsql.go:52 mgradm/shared/pgsql/pgsql.go:90
+#: mgradm/shared/pgsql/pgsql.go:55 mgradm/shared/pgsql/pgsql.go:84
 #, javascript-format
 msgid "%s fails healtcheck"
 msgstr ""
 
-#: mgradm/shared/pgsql/pgsql.go:62
-#, javascript-format
-msgid "cannot enable %s service"
-msgstr "无法启用 %s 服务"
-
-#: mgradm/shared/pgsql/pgsql.go:129
+#: mgradm/shared/pgsql/pgsql.go:123
 msgid "cannot generate systemd configuration file"
 msgstr "无法生成 systemd 配置文件"
 
@@ -1909,118 +1904,118 @@ msgstr "无法检查卷 %s"
 msgid "cannot restore %s SELinux permissions"
 msgstr "无法恢复 %s SELinux 权限"
 
-#: mgradm/shared/podman/podman.go:210
+#: mgradm/shared/podman/podman.go:213
 msgid "Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"
 msgstr "旧 PostgreSQL 版本为 %[1]s，新版本为 %[2]s。正在执行数据库版本升级…"
 
-#: mgradm/shared/podman/podman.go:249
+#: mgradm/shared/podman/podman.go:254
 msgid "cannot generate PostgreSQL database version upgrade script"
 msgstr "无法生成 PostgreSQL 数据库版本升级脚本"
 
-#: mgradm/shared/podman/podman.go:264
+#: mgradm/shared/podman/podman.go:269
 #, fuzzy
 #| msgid "failed to run the database finalization job"
 msgid "No need to run database finalization script"
 msgstr "无法运行数据库最终确定作业"
 
-#: mgradm/shared/podman/podman.go:275 mgradm/shared/podman/podman.go:289
+#: mgradm/shared/podman/podman.go:280 mgradm/shared/podman/podman.go:294
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "无法生成 PostgreSQL 完成脚本"
 
-#: mgradm/shared/podman/podman.go:342 mgradm/shared/podman/podman.go:350
-#: mgradm/shared/podman/podman.go:641
+#: mgradm/shared/podman/podman.go:347 mgradm/shared/podman/podman.go:355
+#: mgradm/shared/podman/podman.go:646
 msgid "cannot stop service"
 msgstr "无法停止服务"
 
-#: mgradm/shared/podman/podman.go:363 mgradm/shared/podman/podman.go:561
+#: mgradm/shared/podman/podman.go:368 mgradm/shared/podman/podman.go:566
 #, fuzzy
 #| msgid "Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"
 msgid "Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"
 msgstr "正在配置拆分的 PostgreSQL 容器。映像版本：%[1]s，未迁移版本：%[2]s"
 
-#: mgradm/shared/podman/podman.go:368 mgradm/shared/podman/podman.go:578
+#: mgradm/shared/podman/podman.go:373 mgradm/shared/podman/podman.go:583
 msgid "cannot configure db container"
 msgstr "无法配置数据库容器"
 
-#: mgradm/shared/podman/podman.go:377 mgradm/shared/podman/podman.go:814
+#: mgradm/shared/podman/podman.go:382 mgradm/shared/podman/podman.go:819
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "无法运行 PostgreSQL 版本升级脚本"
 
-#: mgradm/shared/podman/podman.go:380 mgradm/shared/podman/podman.go:817
+#: mgradm/shared/podman/podman.go:385 mgradm/shared/podman/podman.go:822
 msgid "Upgrading without changing PostgreSQL version"
 msgstr "正在升级，PostgreSQL 版本将不更改"
 
-#: mgradm/shared/podman/podman.go:383 mgradm/shared/podman/podman.go:820
+#: mgradm/shared/podman/podman.go:388 mgradm/shared/podman/podman.go:825
 msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgstr "正在尝试将 PostgreSQL 从 %[1]s 降级到 %[2]s"
 
-#: mgradm/shared/podman/podman.go:395 mgradm/shared/podman/podman.go:594
+#: mgradm/shared/podman/podman.go:400 mgradm/shared/podman/podman.go:599
 msgid "cannot run PostgreSQL finalize script"
 msgstr "无法运行 PostgreSQL 完成脚本"
 
-#: mgradm/shared/podman/podman.go:399 mgradm/shared/podman/podman.go:598
+#: mgradm/shared/podman/podman.go:404 mgradm/shared/podman/podman.go:603
 msgid "cannot run post upgrade script"
 msgstr "无法运行升级后脚本"
 
-#: mgradm/shared/podman/podman.go:424 mgradm/shared/podman/podman.go:477
+#: mgradm/shared/podman/podman.go:429 mgradm/shared/podman/podman.go:482
 msgid "Waiting for the server to start…"
 msgstr "正在等待服务器启动…"
 
-#: mgradm/shared/podman/podman.go:427
+#: mgradm/shared/podman/podman.go:432
 #, fuzzy
 #| msgid "cannot stop service"
 msgid "cannot start service"
 msgstr "无法停止服务"
 
-#: mgradm/shared/podman/podman.go:445 mgradm/shared/podman/podman.go:618
+#: mgradm/shared/podman/podman.go:450 mgradm/shared/podman/podman.go:623
 msgid "error upgrading confidential computing service."
 msgstr "升级机密计算服务时出错。"
 
-#: mgradm/shared/podman/podman.go:455 mgradm/shared/podman/podman.go:632
+#: mgradm/shared/podman/podman.go:460 mgradm/shared/podman/podman.go:637
 msgid "error upgrading saline service."
 msgstr "升级 Saline 服务时出错。"
 
-#: mgradm/shared/podman/podman.go:543
+#: mgradm/shared/podman/podman.go:548
 msgid "cannot run migration script"
 msgstr "无法运行迁移脚本"
 
-#: mgradm/shared/podman/podman.go:546
+#: mgradm/shared/podman/podman.go:551
 msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 msgstr "已完成迁移准备。请运行不含 '--prepare' 的 'migrate' 命令完成迁移。"
 
-#: mgradm/shared/podman/podman.go:554
+#: mgradm/shared/podman/podman.go:559
 #, fuzzy
 #| msgid "failed to find server image"
 msgid "failed to inspect database container image"
 msgstr "找不到服务器映像"
 
-#: mgradm/shared/podman/podman.go:583
+#: mgradm/shared/podman/podman.go:588
 #, fuzzy
 #| msgid "failed to remove %s temporary file"
 msgid "cannot remove temporary etc-tls volume"
 msgstr "无法去除 %s 临时文件"
 
-#: mgradm/shared/podman/podman.go:685
+#: mgradm/shared/podman/podman.go:690
 msgid "failed to generate postgresql migration script"
 msgstr "无法生成 postgresql 迁移脚本"
 
-#: mgradm/shared/podman/podman.go:721
+#: mgradm/shared/podman/podman.go:726
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr "仅当使用公有云提供商注册表时，才会出现上述错误"
 
-#: mgradm/shared/podman/podman.go:751
+#: mgradm/shared/podman/podman.go:756
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr "未定义 SSH_AUTH_SOCK，请启动 SSH 代理，然后重试"
 
-#: mgradm/shared/podman/podman.go:761
+#: mgradm/shared/podman/podman.go:766
 msgid "Failed to find home directory to look for SSH config"
 msgstr "找不到可查找 SSH 配置的主目录"
 
-#: mgradm/shared/podman/podman.go:783
+#: mgradm/shared/podman/podman.go:788
 msgid "cannot inspect podman values"
 msgstr "无法检查 podman 值"
 
-#: mgradm/shared/podman/podman.go:842
+#: mgradm/shared/podman/podman.go:847
 #, fuzzy
 #| msgid "PostgreSQL Database"
 msgid "PostgreSQL migration failure"
@@ -2038,64 +2033,68 @@ msgstr "正在使用提供的第三方服务器证书"
 msgid "Using provided 3rd party database certificates"
 msgstr "正在使用提供的第三方数据库证书"
 
-#: mgradm/shared/podman/ssl.go:243
+#: mgradm/shared/podman/ssl.go:272
 #, javascript-format
 msgid "CA file %s not found. New CA and certificates will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:248
+#: mgradm/shared/podman/ssl.go:277
 msgid "cannot write existing CA certificate"
 msgstr "无法写入现有 CA 证书"
 
-#: mgradm/shared/podman/ssl.go:255
+#: mgradm/shared/podman/ssl.go:284
 #, javascript-format
 msgid "Cert file %s not found. A new certificate will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:259
+#: mgradm/shared/podman/ssl.go:288
 msgid "cannot write existing server certificate"
 msgstr "无法写入现有服务器证书"
 
-#: mgradm/shared/podman/ssl.go:271
+#: mgradm/shared/podman/ssl.go:293
+msgid "Cert file %[1]s doesn't match %[2]s FQDN. A new certificate will be created."
+msgstr ""
+
+#: mgradm/shared/podman/ssl.go:301
 #, javascript-format
 msgid "Cert key file %s not found. A new certificate will be created."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:275
+#: mgradm/shared/podman/ssl.go:305
 msgid "cannot write existing server key"
 msgstr "无法写入现有服务器密钥"
 
-#: mgradm/shared/podman/ssl.go:278
+#: mgradm/shared/podman/ssl.go:308
 msgid "Reusing existing certificates"
 msgstr "正在重复使用现有证书"
 
-#: mgradm/shared/podman/ssl.go:325
+#: mgradm/shared/podman/ssl.go:355
 #, fuzzy
 #| msgid "failed to remove copied certificate files in the container"
 msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgstr "无法去除容器中已复制的证书文件"
 
-#: mgradm/shared/podman/ssl.go:346
+#: mgradm/shared/podman/ssl.go:376
 #, fuzzy
 #| msgid "failed to remove copied certificate files in the container"
 msgid "Failed to generate server SSL certificates. Please check the input parameters."
 msgstr "无法去除容器中已复制的证书文件"
 
-#: mgradm/shared/podman/ssl.go:349
+#: mgradm/shared/podman/ssl.go:379
 msgid "Server SSL certificates generated"
 msgstr "已生成服务器 SSL 证书"
 
-#: mgradm/shared/podman/ssl.go:368
+#: mgradm/shared/podman/ssl.go:398
 #, fuzzy
 #| msgid "cannot generate systemd service"
 msgid "Cannot generate database certificate"
 msgstr "无法生成 systemd 服务"
 
-#: mgradm/shared/podman/ssl.go:383
+#: mgradm/shared/podman/ssl.go:412
 msgid "Failed to generate server Database SSL certificates. Please check the input parameters."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:386
+#: mgradm/shared/podman/ssl.go:415
 msgid "Database SSL certificates generated"
 msgstr "已生成数据库 SSL 证书"
 
@@ -2298,8 +2297,10 @@ msgid "Database upgrade image"
 msgstr "数据库升级映像"
 
 #: mgradm/shared/utils/cmd_utils.go:206
-msgid "Database upgrade image tag"
-msgstr "数据库升级映像标记"
+#, fuzzy
+#| msgid "Tag for %s container, overrides the global value if set"
+msgid "Database upgrade image tag, overrides the default value if set"
+msgstr "%s 容器的标记，如果设置，将会覆盖全局值"
 
 #: mgradm/shared/utils/cmd_utils.go:208
 msgid "Database Upgrade Image Flags"
@@ -2447,6 +2448,13 @@ msgstr "不是有效的电子邮件地址"
 #: mgradm/shared/utils/setup.go:85
 msgid "failed to render setup script"
 msgstr "无法显示设置脚本"
+
+#, javascript-format
+#~ msgid "cannot enable %s service"
+#~ msgstr "无法启用 %s 服务"
+
+#~ msgid "Database upgrade image tag"
+#~ msgstr "数据库升级映像标记"
 
 #~ msgid "failed to login to registry.suse.com"
 #~ msgstr "无法登录 registry.suse.com"

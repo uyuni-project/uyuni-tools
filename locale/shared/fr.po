@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: shared/kubernetes/k3s.go:131
+#: shared/kubernetes/k3s.go:133
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 09:54+0200\n"
+"POT-Creation-Date: 2025-10-27 10:21+0100\n"
 "PO-Revision-Date: 2025-09-09 17:59+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/fr/>\n"
@@ -329,39 +329,39 @@ msgstr ""
 msgid "Failed to write Traefik configuration"
 msgstr "Erreur lors de l'écriture de la configuration Traefik pour K3s"
 
-#: shared/kubernetes/k3s.go:79
+#: shared/kubernetes/k3s.go:81
 msgid "Waiting for Traefik to be reloaded"
 msgstr "En attente que Traefik soit rechargé"
 
-#: shared/kubernetes/k3s.go:91
+#: shared/kubernetes/k3s.go:93
 msgid "Failed to reload Traefik"
 msgstr "Échec du rechargement de Traefik"
 
-#: shared/kubernetes/k3s.go:98
+#: shared/kubernetes/k3s.go:100
 msgid "Reinstalling Traefik without additionnal configuration"
 msgstr "Réinstallation de Traefik sans configuration supplémentaire"
 
-#: shared/kubernetes/k3s.go:101
+#: shared/kubernetes/k3s.go:103
 msgid "failed to write empty traefik configuration"
 msgstr "n’a pas réussi à écrire une configuration de traefik vide"
 
-#: shared/kubernetes/k3s.go:105
+#: shared/kubernetes/k3s.go:107
 msgid "failed to uninstall traefik configuration"
 msgstr "échec à désinstaller la configuration de Traefik"
 
-#: shared/kubernetes/k3s.go:109
+#: shared/kubernetes/k3s.go:111
 msgid "Would reinstall Traefik without additionnal configuration"
 msgstr "Réinstallerait Traefik sans configuration supplémentaire"
 
-#: shared/kubernetes/k3s.go:119
+#: shared/kubernetes/k3s.go:121
 msgid "failed to read the traefik configuration"
 msgstr "échec à lire la configuration de Traefik"
 
-#: shared/kubernetes/k3s.go:123
+#: shared/kubernetes/k3s.go:125
 msgid "traefik configuration file doesn't contain the helm chart version"
 msgstr ""
 
-#: shared/kubernetes/k3s.go:126
+#: shared/kubernetes/k3s.go:128
 #, fuzzy
 msgid "failed to find traefik helm chart version"
 msgstr "impossible de se connecter au serveur: %s"
@@ -1303,6 +1303,11 @@ msgstr "Impossible de lire des données aléatoires"
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr ""
 
+#: shared/ssl/ssl.go:365
+#, fuzzy, javascript-format
+msgid "failed to validate hostname %s"
+msgstr "impossible d'écrire l'archive tar.gz vers %s: %s"
+
 #: shared/utils/cmd.go:118
 #, fuzzy
 msgid "cannot decode into Registry"
@@ -1693,87 +1698,87 @@ msgstr "Impossible de lire la saisie"
 msgid "A value is required"
 msgstr "Une valeur est requise"
 
-#: shared/utils/utils.go:227 shared/utils/utils.go:253
+#: shared/utils/utils.go:226 shared/utils/utils.go:248
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "nom d'image invalid: %s"
 
-#: shared/utils/utils.go:231
+#: shared/utils/utils.go:230
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "tag missing dans %s"
 
-#: shared/utils/utils.go:239 shared/utils/utils.go:244
+#: shared/utils/utils.go:235 shared/utils/utils.go:239
 #, fuzzy, javascript-format
 msgid "Computed image name is %s"
 msgstr "nom d'image invalid: %s"
 
-#: shared/utils/utils.go:259
+#: shared/utils/utils.go:254
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr ""
 
-#: shared/utils/utils.go:270
+#: shared/utils/utils.go:265
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "Erreur lors de l'exécution de %s"
 
-#: shared/utils/utils.go:279
+#: shared/utils/utils.go:274
 msgid "Failed to read random data"
 msgstr "Impossible de lire des données aléatoires"
 
-#: shared/utils/utils.go:300
+#: shared/utils/utils.go:295
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:301
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:419
+#: shared/utils/utils.go:414
 #, fuzzy
 msgid "failed to compute server FQDN"
 msgstr "impossible de se connecter au serveur: %s"
 
-#: shared/utils/utils.go:433
+#: shared/utils/utils.go:428
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:437
+#: shared/utils/utils.go:432
 #, fuzzy, javascript-format
 msgid "cannot resolve %s"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/utils/utils.go:468
+#: shared/utils/utils.go:463
 #, fuzzy, javascript-format
 msgid "error creating file %s"
 msgstr "Suppression du fichier %s"
 
-#: shared/utils/utils.go:473
+#: shared/utils/utils.go:468
 #, fuzzy, javascript-format
 msgid "error writing file %s"
 msgstr "Suppression du fichier %s"
 
-#: shared/utils/utils.go:485 shared/utils/utils.go:500
+#: shared/utils/utils.go:480 shared/utils/utils.go:495
 #, fuzzy, javascript-format
 #| msgid "Failed to remove file %s"
 msgid "Failed to calculate checksum of the file %s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/utils/utils.go:490
+#: shared/utils/utils.go:485
 #, fuzzy
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "impossible de lier le répertoire du volume %s vers %s: %s"
 
-#: shared/utils/utils.go:507
+#: shared/utils/utils.go:502
 #, fuzzy
 #| msgid "Failed to remove file %s"
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/utils/utils.go:511
+#: shared/utils/utils.go:506
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr ""
