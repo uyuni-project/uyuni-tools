@@ -1,1 +1,0 @@
-- Fix systemd object initialization in server rename. bsc#1250981

@@ -1,4 +1,65 @@
 -------------------------------------------------------------------
+Mon Oct 27 16:08:24 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Actually use the --dbupgrade-tag parameter when computing the
+    image URL (bsc#1249400)
+  * Remove extraneous quotes when getting the running image
+    (bsc#1249434)
+  * Handle CA files with symlinks during migration (bsc#1251044)
+  * Add a lowercase version of --logLevel (bsc#1243611)
+  * Adjust traefik exposed configuration for chart v27+ (bsc#1247721)
+  * Add mgradm server rename to change the server FQDN (bsc#1229825)
+  * Fix systemd object initialization in server rename. bsc#1250981
+  * Add SSL secrets to the db setup container during migration.
+    bsc#1250976
+  * Stop executing scripts in temporary folder (bsc#1243704)
+  * Detect custom apache and squid config in the /etc/uyuni/proxy
+    folder
+  * If no DB SSL CA parameter is given, use the other one
+    (bsc#1245120)
+  * More fault tolerant mgradm stop (bsc#1243331)
+  * Convert the traefik install time to local time (bsc#1251138)
+  * Fix generated DB certificate subject alternate names
+  * support config: collect podman inspect for hub container
+    (bsc#1245099)
+  * add --registry-host, --registry-user and --registry-password
+    to pull images from an authenticate registry
+  * deprecate --registry
+  * bump golang to 1.23
+  * Unify backup create and restore dryrun option case
+  * Use new dedicated path for Cobbler settings (bsc#1244027)
+Migrate custom auto installation snippets (bsc#1246320)
+  * Fix calling of squid -z in mgrpxy cache clear (bsc#1247644)
+  * Always start database container even if enabled
+  * Backup systemd dropin directory too and create if missing
+  * Fix cobbler config migration to standalone files
+  * Update only our relevant collations instead of all available
+  * Add SLE15SP7 to buildin productmap
+  * Fix loading product map from mgradm configuration file (bsc#1246068)
+  * Fix channel override for distro copy
+  * Do not use sudo when running as a root user (bsc#1246882)
+  * Add 3rd party SSL options for upgrade and migration scenarios
+  * Do not consider stderr output of podman as an error
+    (bsc#1247836)
+  * Add workaround for nft-1.1.4 and netavark incompatibility
+    Netavark nft table is cleared and recreated after container stop
+    (boo#1248848)
+  * Do not require backups to be at the same location for restoring
+    (bsc#1246906)
+  * Remove extra ipv6 mapping and nftables workaround
+    (bsc#1248848)
+  * Restore SELinux contexts for restored backup volumes
+    (bsc#1244127)
+  * Automatically get up-to-date systemid file on salt based proxy
+    hosts (bsc#1246789)
+  * Fix recomputing proxy images when installing a ptf or test
+    (bsc#1246553)
+  * Migrate custom SSL CA certificates (bsc#1232641)
+Remove old PostgreSQL exporter environment file before migration
+  * Add migration for server monitoring configuration (bsc#1247688)
+
+-------------------------------------------------------------------
 Thu Jul 24 16:15:22 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.18-0

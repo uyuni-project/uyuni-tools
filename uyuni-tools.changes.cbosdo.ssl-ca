@@ -1,2 +1,0 @@
-- If no DB SSL CA parameter is given, use the other one
-  (bsc#1245120)

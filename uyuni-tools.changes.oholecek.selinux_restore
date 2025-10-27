@@ -1,2 +1,0 @@
-- Restore SELinux contexts for restored backup volumes
-  (bsc#1244127)
