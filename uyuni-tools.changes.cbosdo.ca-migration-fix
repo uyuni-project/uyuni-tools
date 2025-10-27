@@ -1,0 +1,1 @@
+- Handle CA files with symlinks during migration (bsc#1251044)

@@ -291,118 +291,102 @@ func TestComputePTF(t *testing.T) {
 
 func TestComputeImage(t *testing.T) {
 	tests := []struct {
-		expected      string
-		name          string
-		tag           string
-		registry      string
-		appendToImage []string
+		expected string
+		name     string
+		tag      string
+		registry string
 	}{
 		{
-			expected:      "registry:5000/path/to/image:foo",
-			name:          "REGISTRY:5000/path/to/image:foo",
-			tag:           "bar",
-			registry:      "",
-			appendToImage: []string{""},
+			expected: "registry:5000/path/to/image:foo",
+			name:     "REGISTRY:5000/path/to/image:foo",
+			tag:      "bar",
+			registry: "",
 		},
 		{
-			expected:      "registry:5000/path/to/image:foo",
-			name:          "REGISTRY:5000/path/to/image:foo",
-			tag:           "BAR",
-			registry:      "",
-			appendToImage: []string{""},
+			expected: "registry:5000/path/to/image:foo",
+			name:     "REGISTRY:5000/path/to/image:foo",
+			tag:      "BAR",
+			registry: "",
 		},
 		{
-			expected:      "registry:5000/path/to/image:bar",
-			name:          "registry:5000/path/to/image",
-			tag:           "bar",
-			registry:      "",
-			appendToImage: []string{""},
+			expected: "registry:5000/path/to/image:bar",
+			name:     "registry:5000/path/to/image",
+			tag:      "bar",
+			registry: "",
 		},
 		{
-			expected:      "registry/path/to/image:foo",
-			name:          "registry/path/to/image:foo",
-			tag:           "bar",
-			registry:      "",
-			appendToImage: []string{""},
+			expected: "registry/path/to/image:foo",
+			name:     "registry/path/to/image:foo",
+			tag:      "bar",
+			registry: "",
 		},
 		{
-			expected:      "registry/path/to/image:bar",
-			name:          "registry/path/to/image",
-			tag:           "bar",
-			registry:      "",
-			appendToImage: []string{""},
+			expected: "registry/path/to/image:bar",
+			name:     "registry/path/to/image",
+			tag:      "bar",
+			registry: "",
 		},
 		{
-			expected:      "registry/path/to/image:bar",
-			name:          "path/to/image",
-			tag:           "bar",
-			registry:      "registry",
-			appendToImage: []string{""},
+			expected: "registry/path/to/image:bar",
+			name:     "path/to/image",
+			tag:      "bar",
+			registry: "registry",
 		},
 		{
-			expected:      "registry:5000/path/to/image:foo",
-			name:          "path/to/image:foo",
-			tag:           "BAR",
-			registry:      "REGISTRY:5000",
-			appendToImage: []string{""},
+			expected: "registry:5000/path/to/image:foo",
+			name:     "path/to/image:foo",
+			tag:      "BAR",
+			registry: "REGISTRY:5000",
 		},
 		{
-			expected:      "registry:5000/path/to/image-migration-14-16:foo",
-			name:          "registry:5000/path/to/image:foo",
-			tag:           "bar",
-			registry:      "",
-			appendToImage: []string{"-migration-14-16"},
+			expected: "registry:5000/path/to/image-migration-14-16:foo",
+			name:     "registry:5000/path/to/image-migration-14-16:foo",
+			tag:      "bar",
+			registry: "",
 		},
 		{
-			expected:      "registry:5000/path/to/image-migration-14-16:bar",
-			name:          "registry:5000/path/to/image",
-			tag:           "bar",
-			registry:      "",
-			appendToImage: []string{"-migration-14-16"},
+			expected: "registry:5000/path/to/image-migration-14-16:bar",
+			name:     "registry:5000/path/to/image-migration-14-16",
+			tag:      "bar",
+			registry: "",
 		},
 		{
-			expected:      "registry/path/to/image-migration-14-16:foo",
-			name:          "registry/path/to/image:foo",
-			tag:           "bar",
-			registry:      "",
-			appendToImage: []string{"-migration-14-16"},
+			expected: "registry/path/to/image-migration-14-16:foo",
+			name:     "registry/path/to/image-migration-14-16:foo",
+			tag:      "bar",
+			registry: "",
 		},
 		{
-			expected:      "registry/path/to/image-migration-14-16:bar",
-			name:          "registry/path/to/image",
-			tag:           "bar",
-			registry:      "",
-			appendToImage: []string{"-migration-14-16"},
+			expected: "registry/path/to/image-migration-14-16:bar",
+			name:     "registry/path/to/image-migration-14-16",
+			tag:      "bar",
+			registry: "",
 		},
 		{
-			expected:      "registry/path/to/image-migration-14-16:bar",
-			name:          "path/to/image",
-			tag:           "bar",
-			registry:      "registry",
-			appendToImage: []string{"-migration-14-16"},
+			expected: "registry/path/to/image-migration-14-16:bar",
+			name:     "path/to/image-migration-14-16",
+			tag:      "bar",
+			registry: "registry",
 		},
 		{
 			expected: "registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile/" +
 				"suse/manager/5.0/x86_64/server:bar",
-			name:          "suse/manager/5.0/x86_64/server",
-			tag:           "bar",
-			registry:      "registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile",
-			appendToImage: []string{""},
+			name:     "suse/manager/5.0/x86_64/server",
+			tag:      "bar",
+			registry: "registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile",
 		},
 		{
-			expected:      "cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
-			name:          "/suse/manager/5.0/x86_64/server",
-			tag:           "5.0.0",
-			registry:      "cloud.com",
-			appendToImage: []string{""},
+			expected: "cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
+			name:     "/suse/manager/5.0/x86_64/server",
+			tag:      "5.0.0",
+			registry: "cloud.com",
 		},
 		// ignore registry if name contains fqdn
 		{
-			expected:      "cloud.com/my/path/server:5.0.0",
-			name:          "cloud.com/my/path/server:5.0.0",
-			tag:           "5.0.0",
-			registry:      "registy.suse.com",
-			appendToImage: []string{""},
+			expected: "cloud.com/my/path/server:5.0.0",
+			name:     "cloud.com/my/path/server:5.0.0",
+			tag:      "5.0.0",
+			registry: "registy.suse.com",
 		},
 	}
 
@@ -412,18 +396,18 @@ func TestComputeImage(t *testing.T) {
 			Tag:  testCase.tag,
 		}
 
-		actual, err := ComputeImage(testCase.registry, "defaulttag", image, testCase.appendToImage...)
+		actual, err := ComputeImage(testCase.registry, "defaulttag", image)
 
 		if err != nil {
 			t.Errorf(
-				"Testcase %d: Unexpected error while computing image with %s, %s, %s, %s: %s",
-				i, testCase.registry, image.Name, image.Tag, strings.Join(testCase.appendToImage, ","), err,
+				"Testcase %d: Unexpected error while computing image with %s, %s, %s: %s",
+				i, testCase.registry, image.Name, image.Tag, err,
 			)
 		}
 		if actual != testCase.expected {
 			t.Errorf(
-				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s, %s",
-				i, testCase.expected, actual, testCase.registry, image.Name, image.Tag, strings.Join(testCase.appendToImage, ","),
+				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s",
+				i, testCase.expected, actual, testCase.registry, image.Name, image.Tag,
 			)
 		}
 	}
