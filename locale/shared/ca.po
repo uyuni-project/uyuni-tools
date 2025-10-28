@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:21+0100\n"
-"PO-Revision-Date: 2025-10-06 10:59+0000\n"
+"PO-Revision-Date: 2025-10-28 16:59+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -328,7 +328,7 @@ msgstr "S'està esperant que el Traefik es torni a carregar"
 
 #: shared/kubernetes/k3s.go:93
 msgid "Failed to reload Traefik"
-msgstr "No s'ha pogut tornar a carregar el Traefik"
+msgstr "No s'ha pogut tornar a carregar Traefik"
 
 #: shared/kubernetes/k3s.go:100
 msgid "Reinstalling Traefik without additionnal configuration"
@@ -1268,10 +1268,9 @@ msgid "Invalid SSL key, it is probably encrypted"
 msgstr "Clau SSL no vàlida, probablement està encriptada"
 
 #: shared/ssl/ssl.go:365
-#, fuzzy, javascript-format
-#| msgid "failed to write in %s"
+#, javascript-format
 msgid "failed to validate hostname %s"
-msgstr "no s'ha pogut escriure a %s"
+msgstr "no s'ha pogut validar el nom d'amfitrió %s"
 
 #: shared/utils/cmd.go:118
 msgid "cannot decode into Registry"
