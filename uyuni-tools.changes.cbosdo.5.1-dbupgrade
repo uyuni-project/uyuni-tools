@@ -1,2 +1,0 @@
-- Actually use the --dbupgrade-tag parameter when computing the
-  image URL (bsc#1249400)
