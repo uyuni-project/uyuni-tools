@@ -42,6 +42,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- if .SystemIDSecret }}
 	--secret {{ .SystemIDSecret }},type=mount,mode=0444,target="/etc/sysconfig/rhn/systemid" \
 	{{- end }}
+	{{- if .HTTPProxyFile }}
+	--env-file {{ .HTTPProxyFile }} \
+	{{- end }}
 	${HTTPD_EXTRA_CONF} --name uyuni-proxy-httpd \
 	${UYUNI_IMAGE}'
 

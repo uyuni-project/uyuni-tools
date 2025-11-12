@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -34,6 +34,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--pod-id-file %t/uyuni-proxy-pod.pod-id -d \
 	--replace -dt \
 	-v /etc/uyuni/proxy:/etc/uyuni:ro \
+	{{- if .HTTPProxyFile }}
+	--env-file {{ .HTTPProxyFile }} \
+	{{- end }}
 	--name uyuni-proxy-salt-broker \
 	${UYUNI_IMAGE}'
 
