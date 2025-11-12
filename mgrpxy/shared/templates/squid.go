@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -38,6 +38,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	-v /etc/uyuni/proxy:/etc/uyuni:ro \
 	{{- range .Volumes }}
 	-v {{ .Name }}:{{ .MountPath }} \
+	{{- end }}
+	{{- if .HTTPProxyFile }}
+	--env-file {{ .HTTPProxyFile }} \
 	{{- end }}
 	${SQUID_EXTRA_CONF} --name uyuni-proxy-squid \
 	${UYUNI_IMAGE}'
