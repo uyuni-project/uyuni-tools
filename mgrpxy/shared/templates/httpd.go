@@ -23,9 +23,6 @@ After=uyuni-proxy-pod.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-{{- if .HTTPProxyFile }}
-EnvironmentFile={{ .HTTPProxyFile }}
-{{- end }}
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-httpd.pid %t/uyuni-proxy-httpd.ctr-id
 
@@ -41,6 +38,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- end }}
 	{{- if .SystemIDSecret }}
 	--secret {{ .SystemIDSecret }},type=mount,mode=0444,target="/etc/sysconfig/rhn/systemid" \
+	{{- end }}
+	{{- if .HTTPProxyFile }}
+	-v {{ .HTTPProxyFile }}:{{ .HTTPProxyFile }}:ro \
 	{{- end }}
 	${HTTPD_EXTRA_CONF} --name uyuni-proxy-httpd \
 	${UYUNI_IMAGE}'
