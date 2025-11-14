@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:21+0100\n"
-"PO-Revision-Date: 2025-06-16 07:59+0000\n"
+"PO-Revision-Date: 2025-11-14 21:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -56,9 +56,9 @@ msgid "Administrator tools:"
 msgstr "관리자 도구:"
 
 #: mgrpxy/cmd/cmd.go:62
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Starting %s"
-msgstr ""
+msgstr "문자열 %s"
 
 #: mgrpxy/cmd/cmd.go:63
 msgid "Use of this software implies acceptance of the End User License Agreement."
@@ -146,6 +146,10 @@ msgstr ""
 "\n"
 "podman 설치 명령은 podman이 로컬에 설치되어 있다고 가정합니다.\n"
 "\n"
+"\n"
+"/etc/uyuni/proxy/apache.conf and /etc/uyuni/squid.conf는 사용 가능하고 일치하는 명령 인수로 대체되지 않는 경우\n"
+"apache 및 squid에 대한 튜닝 파일로 사용됩니다.\n"
+"\n"
 "참고: 현재 원격 podman에 설치하는 기능은 지원되지 않습니다.\n"
 
 #: mgrpxy/cmd/install/podman/utils.go:39
@@ -161,7 +165,7 @@ msgstr "프록시 구성 파일을 검색하지 못함"
 #, fuzzy
 #| msgid "cannot generate systemd conf user configuration file"
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
-msgstr "systemd conf 사용자 구성 파일을 생성할 수 없음"
+msgstr "제공된 구성 파일의 시스템 ID를 사용하여 최신 시스템 ID를 가져올 수 없습니다."
 
 #: mgrpxy/cmd/logs/kubernetes.go:29
 msgid "failed to find proxy pod"
@@ -351,7 +355,7 @@ msgstr "사용자 플래그를 비워둘 수 없습니다."
 #, fuzzy
 #| msgid "The ssh ptf image computed is: %s"
 msgid "The %[1]s ptf image computed is: %[2]s"
-msgstr "계산된 ssh ptf 이미지: %s"
+msgstr "계산된 %[1]s ptf 이미지: %[2]s"
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -466,6 +470,9 @@ msgstr ""
 "podman에서 프록시 업그레이드\n"
 "\n"
 "업그레이드 podman 명령은 podman이 로컬로 업그레이드되었다고 가정합니다.\n"
+"/etc/uyuni/proxy/apache.conf and /etc/uyuni/squid.conf는 사용 가능하고 일치하는 명령 인수로 대체되지 않는 경우\n"
+"\n"
+"에 대한 튜닝 파일로 사용됩니다.\n"
 "\n"
 "참고: 현재 원격 podman에서의 업그레이드는 지원되지 않습니다.\n"
 
@@ -559,12 +566,14 @@ msgid "missing required configuration file: %s"
 msgstr "필수 구성 파일 누락: %s"
 
 #: mgrpxy/shared/podman/podman.go:404
+#, fuzzy
 msgid "Not a system id event"
-msgstr ""
+msgstr "시스템 ID 이벤트 아님"
 
 #: mgrpxy/shared/podman/podman.go:413
+#, fuzzy
 msgid "System id not found in returned event"
-msgstr ""
+msgstr "반환된 이벤트에서 시스템 ID를 찾을 수 없음"
 
 #: mgrpxy/shared/utils/cmd.go:20
 #, javascript-format
@@ -584,13 +593,13 @@ msgstr "이미지 URL을 계산하지 못함"
 #, fuzzy
 #| msgid "SUSE Customer Center username. It will be used to pull images from registry.suse.com"
 msgid "SUSE Customer Center username. It will be used to pull images from SCC registry"
-msgstr "SUSE 고객 센터 사용자 이름입니다. registry.suse.com에서 이미지를 가져오기 위한 용도로 사용됩니다."
+msgstr "SUSE 고객 센터 사용자 이름입니다. SCC 레지스트리에서 이미지를 가져오기 위한 용도로 사용됩니다."
 
 #: mgrpxy/shared/utils/flags.go:69
 #, fuzzy
 #| msgid "SUSE Customer Center password. It will be used to pull images from registry.suse.com"
 msgid "SUSE Customer Center password. It will be used to pull images from SCC registry"
-msgstr "SUSE 고객 센터 암호입니다. registry.suse.com에서 이미지를 가져오기 위한 용도로 사용됩니다."
+msgstr "SUSE 고객 센터 암호입니다. SCC 레지스트리에서 이미지를 가져오기 위한 용도로 사용됩니다."
 
 #: mgrpxy/shared/utils/flags.go:71
 msgid "SUSE Customer Center Flags"
