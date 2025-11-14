@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:21+0100\n"
-"PO-Revision-Date: 2025-06-12 08:59+0000\n"
+"PO-Revision-Date: 2025-11-14 09:05+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: mgradm/cmd/backup/backup.go:28
 msgid "Create backup"
@@ -403,10 +403,9 @@ msgid "Unable to restore file details for %s"
 msgstr "无法恢复 %s 的文件细节"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:74
-#, fuzzy, javascript-format
-#| msgid "Unable to create directory %s"
+#, javascript-format
 msgid "Unable to create directories for %s"
-msgstr "无法创建目录 %s"
+msgstr "无法为 %s 创建目录"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:78
 #, javascript-format
@@ -459,7 +458,7 @@ msgstr "管理员工具："
 #: mgradm/cmd/cmd.go:69
 #, javascript-format
 msgid "Starting %s"
-msgstr ""
+msgstr "正在启动 %s"
 
 #: mgradm/cmd/cmd.go:70
 msgid "Use of this software implies acceptance of the End User License Agreement."
@@ -549,42 +548,6 @@ msgid "distribution treeinfo %s does not exists. Please provide distribution det
 msgstr "发行套件树信息 %s 不存在。请提供发行套件细节和/或通道标签"
 
 #: mgradm/cmd/distro/distro.go:40
-#, fuzzy
-#| msgid ""
-#| "Auto installation distribution product mapping.\n"
-#| "\n"
-#| "For distribution to be registered by the server it is important to map distribution to the correct software channel.\n"
-#| "\n"
-#| "Software channels can be named differently without any corellation to distribution name;\n"
-#| "it is then needed to allow custom distribution name to software channel mapping.\n"
-#| "\n"
-#| "One way to set software channel is by flag --channel to the distribution copy command.\n"
-#| "\n"
-#| "For frequent usage it is possible to write custom product mapping to the mgradm configuration file as follows:\n"
-#| "\n"
-#| "ProductMap:\n"
-#| "  <distribution name>:\n"
-#| "    <distribution version>:\n"
-#| "      <distribution architecture>:\n"
-#| "        ChannelLabel: <channel label>\n"
-#| "        InstallType: <one of rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpm>\n"
-#| "        TreeName: <custom distribution name>\n"
-#| "\n"
-#| "Where\n"
-#| "* <distribution name> is the name of the distribution, by default taken from '.treeinfo' file from the media.\n"
-#| "  If '.treeinfo' is not found or available, command line option is required and used.\n"
-#| "* <distribution version> is the version of the distribution, by default taken from '.treeinfo' file from the media.\n"
-#| "  If'.treeinfo' is not found, command line option is required and used.\n"
-#| "* <distribution architecture> is distribution architecture, by default taken from '.treeinfo' file from the media.\n"
-#| "  If '.treeinfo' is not found, command line option is required and used.\n"
-#| "* ChannelLabel is the channel label from Uyuni server and which is to be used for this distribution;\n"
-#| "  can be overridden by command line flag.\n"
-#| "* InstallType is used when installer is known (for autoyast or kickstart) or use 'generic_rpm'.\n"
-#| "* TreeName is how the distribution will be presented in the Uyuni server UI. If not set <distribution name> is used.\n"
-#| "\n"
-#| "Build-in product map:\n"
-#| "\n"
-#| "{{ .DefaultProductMap }}\n"
 msgid ""
 "Auto installation distribution product mapping.\n"
 "\n"
@@ -638,7 +601,7 @@ msgstr ""
 "      <distribution architecture>:\n"
 "        ChannelLabel: <channel label>\n"
 "        InstallType: <one of rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpm>\n"
-"        TreeName: <custom distribution name>\n"
+"        TreeLabel: <custom distribution name>\n"
 "\n"
 "其中\n"
 "* <distribution name> 是发行套件的名称，默认取自媒体中的 \".treeinfo\" 文件。\n"
@@ -646,11 +609,11 @@ msgstr ""
 "* <distribution version> 是发行套件的版本，默认取自媒体中的 \".treeinfo\" 文件。\n"
 "  如果找不到 \".treeinfo\"，则需要使用命令行选项。\n"
 "* <distribution architecture> 是发行套件体系结构，默认取自媒体中的 \".treeinfo\" 文件。\n"
-"  如果找不到 \".treeinfo\"，则需要提供并将使用命令行选项。\n"
+"  如果找不到 \".treeinfo\"，则需要使用命令行选项。\n"
 "* ChannelLabel 是 Uyuni 服务器提供的通道标签，将用于此发行套件；\n"
-"  可以被命令行标志覆盖。\n"
+"  可被命令行标志覆盖。\n"
 "* 如果 autoyast 或 kickstart 可以识别安装程序，则使用 InstallType，否则使用 \"generic_rpm\"。\n"
-"* TreeName 是发行套件在 Uyuni 服务器 UI 中的显示方式。如果未设置，则会使用 <distribution name>。\n"
+"* TreeLabel 是发行套件在 Uyuni 服务器 UI 中的显示方式。如果未设置，则会使用 <distribution name>。\n"
 "\n"
 "内置产品映射：\n"
 "\n"
@@ -695,10 +658,8 @@ msgid "Set parent channel for the distribution."
 msgstr "设置发行套件的父通道。"
 
 #: mgradm/cmd/distro/distro.go:138
-#, fuzzy
-#| msgid "Help on using custom distribution product map"
 msgid "Show distribution product map"
-msgstr "有关使用自定义发行套件产品映射的帮助"
+msgstr "显示发行套件产品映射"
 
 #: mgradm/cmd/distro/distro.go:150
 msgid "failed to compute config help command"
@@ -884,10 +845,9 @@ msgid "failed to find the image of the currently running db container"
 msgstr "找不到目前正在运行的数据库容器的映像"
 
 #: mgradm/cmd/inspect/podman.go:83
-#, fuzzy, javascript-format
-#| msgid "failed to download %s"
+#, javascript-format
 msgid "failed to login to %s"
-msgstr "无法下载 %s"
+msgstr "无法登录 %s"
 
 #: mgradm/cmd/install/install.go:20 mgradm/cmd/install/install.go:21
 msgid "Install a new server"
@@ -1216,8 +1176,6 @@ msgstr ""
 "注意：目前不支持迁移到远程 podman！\n"
 
 #: mgradm/cmd/migrate/shared/flags.go:15
-#, fuzzy
-#| msgid "Prepare the mgration - copy the data without stopping the source server."
 msgid "Prepare the migration - copy the data without stopping the source server."
 msgstr "准备迁移 - 在不停止源服务器的情况下复制数据。"
 
@@ -1240,10 +1198,8 @@ msgid "kubernetes not supported yet"
 msgstr "尚不支持 kubernetes"
 
 #: mgradm/cmd/scale/podman.go:34
-#, fuzzy
-#| msgid "Multiple Hub XML-RPC API container replicas are not currently supported."
 msgid "Multiple container replicas are not currently supported."
-msgstr "目前不支持多个 Hub XML-RPC API 容器复本。"
+msgstr "目前不支持多个容器复本。"
 
 #: mgradm/cmd/scale/podman.go:38
 #, javascript-format
@@ -1259,12 +1215,6 @@ msgid "Adjust the replicas for services supporting it."
 msgstr "调整支持该功能的服务的复本数。"
 
 #: mgradm/cmd/scale/scale.go:29
-#, fuzzy
-#| msgid ""
-#| "Adjust the replicas for services supporting it.\n"
-#| "Supported services:\n"
-#| "  - uyuni-server-attestation\n"
-#| "  - uyuni-hub-xmlrpc\n"
 msgid ""
 "Adjust the replicas for services supporting it.\n"
 "Supported services:\n"
@@ -1274,59 +1224,50 @@ msgid ""
 msgstr ""
 "调整支持该功能的服务的复本数。\n"
 "支持的服务：\n"
-"  - uyuni-server-attestation\n"
 "  - uyuni-hub-xmlrpc\n"
+"  - uyuni-saline\n"
+"  - uyuni-server-attestation\n"
 
 #: mgradm/cmd/server/rename/kubernetes.go:17
 msgid "not implemented yet"
-msgstr ""
+msgstr "尚未实现"
 
 #: mgradm/cmd/server/rename/podman.go:35
-#, fuzzy
-#| msgid "Server SSL certificates generated"
 msgid "Preparing SSL certificates to match the new hostname"
-msgstr "已生成服务器 SSL 证书"
+msgstr "正在准备 SSL 证书以与新主机名匹配"
 
 #: mgradm/cmd/server/rename/podman.go:40
-#, fuzzy
-#| msgid "Stopping server service"
 msgid "Stopping the server container"
-msgstr "正在停止服务器服务"
+msgstr "正在停止服务器容器"
 
 #: mgradm/cmd/server/rename/podman.go:45
 #, javascript-format
 msgid "Changing the UYUNI_HOSTNAME to %s"
-msgstr ""
+msgstr "正在将 UYUNI_HOSTNAME 更改为 %s"
 
 #: mgradm/cmd/server/rename/podman.go:56
-#, fuzzy
-#| msgid "Start the server"
 msgid "Starting the server container"
-msgstr "启动服务器"
+msgstr "正在启动服务器容器"
 
 #: mgradm/cmd/server/rename/podman.go:62
 msgid ""
 "The renaming continues inside the server container.\n"
 "The logs can be found in journalctl -u uyuni-config-update.service output."
 msgstr ""
+"重命名操作将在服务器容器内继续执行。\n"
+"日志可在 journalctl -u uyuni-config-update.service 命令输出中查看。"
 
 #: mgradm/cmd/server/rename/podman.go:109
-#, fuzzy
-#| msgid "failed to run supportconfig on the host"
 msgid "failed to write custom.conf with the new hostname"
-msgstr "无法在主机上运行 supportconfig"
+msgstr "无法将新主机名写入 custom.conf 文件"
 
 #: mgradm/cmd/server/rename/podman.go:120
-#, fuzzy
-#| msgid "failed to read SSH config file %s"
 msgid "failed to read the custom.conf file"
-msgstr "无法读取 SSH 配置文件 %s"
+msgstr "无法读取 custom.conf 文件"
 
 #: mgradm/cmd/server/rename/rename.go:26
-#, fuzzy
-#| msgid "failed to connect to the Hub server"
 msgid "Change the host name of the server"
-msgstr "无法连接到 Hub 服务器"
+msgstr "更改服务器主机名"
 
 #: mgradm/cmd/server/rename/rename.go:27
 msgid ""
@@ -1338,16 +1279,21 @@ msgid ""
 "The uyuni-server container will be stopped during the rename and\n"
 "a refresh of the pillars of each registered system will be triggered.\n"
 msgstr ""
+"将服务器的 FQDN 设置为新值。\n"
+"如果未传入完全限定域名，将使用运行中计算机的当前 FQDN。\n"
+"\n"
+"如要更改服务器名称，可能需要更新 SSL 证书以匹配新名称，\n"
+"同时还需要调整容器内的各类配置。\n"
+"重命名期间会停止 uyuni-server 容器，\n"
+"并触发所有已注册系统的 Pillar 信息刷新。\n"
 
 #: mgradm/cmd/server/rename/rename.go:47 mgradm/shared/utils/cmd_utils.go:295
 msgid "Password for the CA key to generate"
 msgstr "要生成的 CA 密钥的口令"
 
 #: mgradm/cmd/server/server.go:19
-#, fuzzy
-#| msgid "Server Management:"
 msgid "Server management utilities"
-msgstr "服务器管理："
+msgstr "服务器管理实用程序"
 
 #: mgradm/cmd/start/start.go:23 mgradm/cmd/start/start.go:24
 msgid "Start the server"
@@ -1448,10 +1394,8 @@ msgid "The computed image is %s"
 msgstr "计算出的映像为 %s"
 
 #: mgradm/cmd/support/ptf/podman/utils.go:118
-#, fuzzy
-#| msgid "The computed image is %s"
 msgid "The %[1]s service image is %[2]s"
-msgstr "计算出的映像为 %s"
+msgstr "%[1]s 服务映像版本为 %[2]s"
 
 #: mgradm/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -1858,7 +1802,7 @@ msgstr "无法向文件写入 Traefik 路由"
 #: mgradm/shared/pgsql/pgsql.go:55 mgradm/shared/pgsql/pgsql.go:84
 #, javascript-format
 msgid "%s fails healtcheck"
-msgstr ""
+msgstr "%s 健康检查失败"
 
 #: mgradm/shared/pgsql/pgsql.go:123
 msgid "cannot generate systemd configuration file"
@@ -1885,10 +1829,9 @@ msgid "cannot run uyuni migration container"
 msgstr "无法运行 uyuni 迁移容器"
 
 #: mgradm/shared/podman/podman.go:174
-#, fuzzy, javascript-format
-#| msgid "failed to read key file %s"
+#, javascript-format
 msgid "Failed to read file %s"
-msgstr "无法读取密钥文件 %s"
+msgstr "无法读取文件 %s"
 
 #: mgradm/shared/podman/podman.go:180
 msgid "cannot read extracted data"
@@ -1913,10 +1856,8 @@ msgid "cannot generate PostgreSQL database version upgrade script"
 msgstr "无法生成 PostgreSQL 数据库版本升级脚本"
 
 #: mgradm/shared/podman/podman.go:269
-#, fuzzy
-#| msgid "failed to run the database finalization job"
 msgid "No need to run database finalization script"
-msgstr "无法运行数据库最终确定作业"
+msgstr "无需运行数据库完成脚本"
 
 #: mgradm/shared/podman/podman.go:280 mgradm/shared/podman/podman.go:294
 msgid "cannot generate PostgreSQL finalization script"
@@ -1928,10 +1869,8 @@ msgid "cannot stop service"
 msgstr "无法停止服务"
 
 #: mgradm/shared/podman/podman.go:368 mgradm/shared/podman/podman.go:566
-#, fuzzy
-#| msgid "Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"
 msgid "Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"
-msgstr "正在配置拆分的 PostgreSQL 容器。映像版本：%[1]s，未迁移版本：%[2]s"
+msgstr "正在配置分离式 PostgreSQL 容器。映像版本：%[1]d，未迁移版本：%[2]d"
 
 #: mgradm/shared/podman/podman.go:373 mgradm/shared/podman/podman.go:583
 msgid "cannot configure db container"
@@ -1962,10 +1901,8 @@ msgid "Waiting for the server to start…"
 msgstr "正在等待服务器启动…"
 
 #: mgradm/shared/podman/podman.go:432
-#, fuzzy
-#| msgid "cannot stop service"
 msgid "cannot start service"
-msgstr "无法停止服务"
+msgstr "无法启动服务"
 
 #: mgradm/shared/podman/podman.go:450 mgradm/shared/podman/podman.go:623
 msgid "error upgrading confidential computing service."
@@ -1984,16 +1921,12 @@ msgid "Migration prepared. Run the 'migrate' command without '--prepare' to fini
 msgstr "已完成迁移准备。请运行不含 '--prepare' 的 'migrate' 命令完成迁移。"
 
 #: mgradm/shared/podman/podman.go:559
-#, fuzzy
-#| msgid "failed to find server image"
 msgid "failed to inspect database container image"
-msgstr "找不到服务器映像"
+msgstr "无法检查数据库容器映像"
 
 #: mgradm/shared/podman/podman.go:588
-#, fuzzy
-#| msgid "failed to remove %s temporary file"
 msgid "cannot remove temporary etc-tls volume"
-msgstr "无法去除 %s 临时文件"
+msgstr "无法去除临时 etc-tls 卷"
 
 #: mgradm/shared/podman/podman.go:690
 msgid "failed to generate postgresql migration script"
@@ -2016,14 +1949,12 @@ msgid "cannot inspect podman values"
 msgstr "无法检查 podman 值"
 
 #: mgradm/shared/podman/podman.go:847
-#, fuzzy
-#| msgid "PostgreSQL Database"
 msgid "PostgreSQL migration failure"
-msgstr "PostgreSQL 数据库"
+msgstr "PostgreSQL 迁移失败"
 
 #: mgradm/shared/podman/ssl.go:88
 msgid "CA validation failed!"
-msgstr ""
+msgstr "CA 验证失败！"
 
 #: mgradm/shared/podman/ssl.go:102
 msgid "Using provided 3rd party server certificates"
@@ -2036,7 +1967,7 @@ msgstr "正在使用提供的第三方数据库证书"
 #: mgradm/shared/podman/ssl.go:272
 #, javascript-format
 msgid "CA file %s not found. New CA and certificates will be created."
-msgstr ""
+msgstr "未找到 CA 文件 %s。将创建新的 CA 和证书。"
 
 #: mgradm/shared/podman/ssl.go:277
 msgid "cannot write existing CA certificate"
@@ -2045,7 +1976,7 @@ msgstr "无法写入现有 CA 证书"
 #: mgradm/shared/podman/ssl.go:284
 #, javascript-format
 msgid "Cert file %s not found. A new certificate will be created."
-msgstr ""
+msgstr "未找到证书文件 %s。将创建新证书。"
 
 #: mgradm/shared/podman/ssl.go:288
 msgid "cannot write existing server certificate"
@@ -2053,12 +1984,12 @@ msgstr "无法写入现有服务器证书"
 
 #: mgradm/shared/podman/ssl.go:293
 msgid "Cert file %[1]s doesn't match %[2]s FQDN. A new certificate will be created."
-msgstr ""
+msgstr "证书文件 %[1]s 与 %[2]s 的 FQDN 不匹配。将创建新证书。"
 
 #: mgradm/shared/podman/ssl.go:301
 #, javascript-format
 msgid "Cert key file %s not found. A new certificate will be created."
-msgstr ""
+msgstr "未找到证书密钥文件 %s。将创建新证书。"
 
 #: mgradm/shared/podman/ssl.go:305
 msgid "cannot write existing server key"
@@ -2069,30 +2000,24 @@ msgid "Reusing existing certificates"
 msgstr "正在重复使用现有证书"
 
 #: mgradm/shared/podman/ssl.go:355
-#, fuzzy
-#| msgid "failed to remove copied certificate files in the container"
 msgid "Cannot generate new certificates without a CA password. Please check input options"
-msgstr "无法去除容器中已复制的证书文件"
+msgstr "无 CA 口令无法生成新证书，请检查输入选项"
 
 #: mgradm/shared/podman/ssl.go:376
-#, fuzzy
-#| msgid "failed to remove copied certificate files in the container"
 msgid "Failed to generate server SSL certificates. Please check the input parameters."
-msgstr "无法去除容器中已复制的证书文件"
+msgstr "服务器 SSL 证书生成失败，请检查输入参数。"
 
 #: mgradm/shared/podman/ssl.go:379
 msgid "Server SSL certificates generated"
 msgstr "已生成服务器 SSL 证书"
 
 #: mgradm/shared/podman/ssl.go:398
-#, fuzzy
-#| msgid "cannot generate systemd service"
 msgid "Cannot generate database certificate"
-msgstr "无法生成 systemd 服务"
+msgstr "无法生成数据库证书"
 
 #: mgradm/shared/podman/ssl.go:412
 msgid "Failed to generate server Database SSL certificates. Please check the input parameters."
-msgstr ""
+msgstr "服务器数据库 SSL 证书生成失败，请检查输入参数。"
 
 #: mgradm/shared/podman/ssl.go:415
 msgid "Database SSL certificates generated"
@@ -2253,28 +2178,20 @@ msgid "Database Flags"
 msgstr "数据库标志"
 
 #: mgradm/shared/utils/cmd_utils.go:178
-#, fuzzy
-#| msgid ""
-#| "SUSE Customer Center username.\n"
-#| "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgid ""
 "SUSE Customer Center username.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
 msgstr ""
 "SUSE Customer Center 用户名。\n"
-"将用作 SCC 身份凭证进行产品同步以及从 registry.suse.com 拉取映像"
+"将用作 SCC 身份凭证进行产品同步以及从 SCC 注册表拉取映像"
 
 #: mgradm/shared/utils/cmd_utils.go:180
-#, fuzzy
-#| msgid ""
-#| "SUSE Customer Center password.\n"
-#| "It will be used as SCC credentials for products synchronization and to pull images from registry.suse.com"
 msgid ""
 "SUSE Customer Center password.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
 msgstr ""
 "SUSE Customer Center 口令。\n"
-"将用作 SCC 身份凭证进行产品同步以及从 registry.suse.com 拉取映像"
+"将用作 SCC 身份凭证进行产品同步以及从 SCC 注册表拉取映像"
 
 #: mgradm/shared/utils/cmd_utils.go:182
 msgid "SUSE Customer Center Flags"
@@ -2297,10 +2214,8 @@ msgid "Database upgrade image"
 msgstr "数据库升级映像"
 
 #: mgradm/shared/utils/cmd_utils.go:206
-#, fuzzy
-#| msgid "Tag for %s container, overrides the global value if set"
 msgid "Database upgrade image tag, overrides the default value if set"
-msgstr "%s 容器的标记，如果设置，将会覆盖全局值"
+msgstr "数据库升级映像标记，如果设置将覆盖默认值"
 
 #: mgradm/shared/utils/cmd_utils.go:208
 msgid "Database Upgrade Image Flags"
@@ -2364,10 +2279,8 @@ msgstr ""
 "（目前仅支持 0 或 1 个）"
 
 #: mgradm/shared/utils/cmd_utils.go:261 mgradm/shared/utils/cmd_utils.go:273
-#, fuzzy
-#| msgid "Saline"
 msgid "Saline port"
-msgstr "Saline"
+msgstr "Saline 端口"
 
 #: mgradm/shared/utils/cmd_utils.go:270
 msgid ""
@@ -2392,22 +2305,16 @@ msgid "exec command failed"
 msgstr "执行命令失败"
 
 #: mgradm/shared/utils/exec.go:66
-#, fuzzy
-#| msgid "failed to render setup script"
 msgid "failed to render database upgrade script"
-msgstr "无法显示设置脚本"
+msgstr "无法生成数据库升级脚本"
 
 #: mgradm/shared/utils/exec.go:84
-#, fuzzy
-#| msgid "failed to run the database finalization job"
 msgid "failed to render database finalization script"
-msgstr "无法运行数据库最终确定作业"
+msgstr "无法生成数据库完成脚本"
 
 #: mgradm/shared/utils/exec.go:95
-#, fuzzy
-#| msgid "failed to render setup script"
 msgid "failed to render database post upgrade script"
-msgstr "无法显示设置脚本"
+msgstr "无法生成数据库升级后脚本"
 
 #: mgradm/shared/utils/exec.go:105
 msgid "error running the migration script"
@@ -2428,10 +2335,8 @@ msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgra
 msgstr "目前安装了 Uyuni %s，但映像为 SUSE Manager。不支持升级"
 
 #: mgradm/shared/utils/exec.go:173 mgradm/shared/utils/exec.go:186
-#, fuzzy
-#| msgid "cannot fetch release from image %s"
 msgid "cannot fetch release from server image"
-msgstr "无法从映像 %s 中提取版本信息"
+msgstr "无法从服务器映像提取版本信息"
 
 #: mgradm/shared/utils/exec.go:178 mgradm/shared/utils/exec.go:191
 msgid "cannot downgrade from version %[1]s to %[2]s"
