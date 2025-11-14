@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:21+0100\n"
-"PO-Revision-Date: 2025-06-16 07:59+0000\n"
+"PO-Revision-Date: 2025-11-14 21:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: mgradm/cmd/backup/backup.go:28
 msgid "Create backup"
@@ -406,7 +406,7 @@ msgstr "%s의 파일 세부 사항을 복원할 수 없음"
 #, fuzzy, javascript-format
 #| msgid "Unable to create directory %s"
 msgid "Unable to create directories for %s"
-msgstr "디렉토리 %s을(를) 만들 수 없음"
+msgstr "%s에 대한 디렉토리를 만들 수 없음"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:78
 #, javascript-format
@@ -457,9 +457,9 @@ msgid "Administrator tools:"
 msgstr "관리자 도구:"
 
 #: mgradm/cmd/cmd.go:69
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Starting %s"
-msgstr ""
+msgstr "문자열 %s"
 
 #: mgradm/cmd/cmd.go:70
 msgid "Use of this software implies acceptance of the End User License Agreement."
@@ -638,7 +638,7 @@ msgstr ""
 "      <배포 아키텍처>:\n"
 "        ChannelLabel: <채널 레이블>\n"
 "        InstallType: <rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpm 중 하나>\n"
-"        TreeName: <사용자 지정 배포 이름>\n"
+"        TreeLabel: <사용자 지정 배포 이름>\n"
 "\n"
 "여기서\n"
 "* <배포 이름>은 배포 이름이며, 기본적으로 미디어의 '.treeinfo' 파일에서 가져옵니다.\n"
@@ -650,11 +650,11 @@ msgstr ""
 "* 채널 레이블은 Uyuni 서버에서 사용하는 채널 라벨로, 이 배포판에 적용되며;\n"
 "  명령줄 플래그로 덮어쓸 수 있습니다.\n"
 "* InstallType은 설치 프로그램이 알려진 경우(autoyast 또는 kickstart의 경우) 해당 값을 사용하거나 'generic_rpm'을 사용합니다.\n"
-"* TreeName은 Uyuni 서버 UI에 표시될 배포판 이름입니다. 설정하지 않으면 <배포 이름>이 사용됩니다.\n"
+"* TreeLabel은 Uyuni 서버 UI에 표시될 배포판 이름입니다. 설정하지 않으면 <배포 이름>이 사용됩니다.\n"
 "\n"
 "빌드인 제품 맵:\n"
 "\n"
-"{{ .DefaultProductMap }}\n"
+"{{ .DefaultProductMapRenderp }}\n"
 
 #: mgradm/cmd/distro/distro.go:112
 msgid "Distributions management"
@@ -698,7 +698,7 @@ msgstr "배포의 상위 채널을 설정합니다."
 #, fuzzy
 #| msgid "Help on using custom distribution product map"
 msgid "Show distribution product map"
-msgstr "사용자 정의 배포 제품 맵 사용에 대한 도움말"
+msgstr "배포 제품 맵 표시"
 
 #: mgradm/cmd/distro/distro.go:150
 msgid "failed to compute config help command"
@@ -887,7 +887,7 @@ msgstr "현재 실행 중인 db 컨테이너의 이미지를 찾지 못함"
 #, fuzzy, javascript-format
 #| msgid "failed to download %s"
 msgid "failed to login to %s"
-msgstr "%s을(를) 다운로드하지 못했습니다."
+msgstr "%s에 로그인하지 못함"
 
 #: mgradm/cmd/install/install.go:20 mgradm/cmd/install/install.go:21
 msgid "Install a new server"
@@ -1241,7 +1241,7 @@ msgstr "Kubernetes는 아직 지원되지 않음"
 #, fuzzy
 #| msgid "Multiple Hub XML-RPC API container replicas are not currently supported."
 msgid "Multiple container replicas are not currently supported."
-msgstr "다중 Hub XML-RPC API 컨테이너 복제본은 현재 지원되지 않습니다."
+msgstr "다중 컨테이너 복제본은 현재 지원되지 않습니다."
 
 #: mgradm/cmd/scale/podman.go:38
 #, javascript-format
@@ -1272,61 +1272,68 @@ msgid ""
 msgstr ""
 "이를 지원하는 서비스에 대한 복제본을 조정하십시오.\n"
 "지원되는 서비스:\n"
-"  - uyuni-server-attestation\n"
 "  - uyuni-hub-xmlrpc\n"
+"  - uyuni-saline\n"
+"  - uyuni-server-attestation\n"
 
 #: mgradm/cmd/server/rename/kubernetes.go:17
+#, fuzzy
 msgid "not implemented yet"
-msgstr ""
+msgstr "아직 구현되지 않음"
 
 #: mgradm/cmd/server/rename/podman.go:35
 #, fuzzy
 #| msgid "Server SSL certificates generated"
 msgid "Preparing SSL certificates to match the new hostname"
-msgstr "서버 SSL 인증서 생성됨"
+msgstr "새 호스트 이름과 일치하도록 SSL 인증서 준비하기"
 
 #: mgradm/cmd/server/rename/podman.go:40
 #, fuzzy
 #| msgid "Stopping server service"
 msgid "Stopping the server container"
-msgstr "서버 서비스를 중지하는 중"
+msgstr "서버 컨테이너를 중지하는 중"
 
 #: mgradm/cmd/server/rename/podman.go:45
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Changing the UYUNI_HOSTNAME to %s"
-msgstr ""
+msgstr "UYUNI_HOSTNAME을 %s(으)로 변경하는 중"
 
 #: mgradm/cmd/server/rename/podman.go:56
 #, fuzzy
 #| msgid "Start the server"
 msgid "Starting the server container"
-msgstr "서버 시작"
+msgstr "서버 컨테이너를 시작하는 중"
 
 #: mgradm/cmd/server/rename/podman.go:62
+#, fuzzy
 msgid ""
 "The renaming continues inside the server container.\n"
 "The logs can be found in journalctl -u uyuni-config-update.service output."
 msgstr ""
+"서버 컨테이너 내에서 이름 변경이 계속 진행됩니다.\n"
+"\n"
+"로그는 journalctl -u uyuni-config-update.service 출력에서 찾을 수 있습니다."
 
 #: mgradm/cmd/server/rename/podman.go:109
 #, fuzzy
 #| msgid "failed to run supportconfig on the host"
 msgid "failed to write custom.conf with the new hostname"
-msgstr "호스트에서 supportconfig를 실행하지 못함"
+msgstr "새 호스트 이름으로 custom.conf를 작성하지 못함"
 
 #: mgradm/cmd/server/rename/podman.go:120
 #, fuzzy
 #| msgid "failed to read SSH config file %s"
 msgid "failed to read the custom.conf file"
-msgstr "%s SSH 구성 파일을 읽지 못함"
+msgstr "custom.conf 파일을 읽지 못함"
 
 #: mgradm/cmd/server/rename/rename.go:26
 #, fuzzy
 #| msgid "failed to connect to the Hub server"
 msgid "Change the host name of the server"
-msgstr "Hub 서버에 연결할 수 없음"
+msgstr "서버의 호스트 이름 변경"
 
 #: mgradm/cmd/server/rename/rename.go:27
+#, fuzzy
 msgid ""
 "Set the FQDN of the server to a new value.\n"
 "If no Fully Qualified Domain Name is passed, the one from the running machine will be used.\n"
@@ -1336,6 +1343,19 @@ msgid ""
 "The uyuni-server container will be stopped during the rename and\n"
 "a refresh of the pillars of each registered system will be triggered.\n"
 msgstr ""
+"서버의 FQDN을 새 값으로 설정합니다.\n"
+"\n"
+"정규화된 도메인 이름이 전달되지 않으면 실행 중인 컴퓨터의 이름이 사용됩니다.\n"
+"\n"
+"\n"
+"\n"
+"서버의 이름을 변경하려면 새 이름과 일치하도록 SSL 인증서를 업데이트해야 할 수도 있습니다,\n"
+"\n"
+"또한, 컨테이너 내부의 다양한 구성을 변경해야 할 수도 있습니다.\n"
+"\n"
+"이름 변경 중에는 uyuni-서버 컨테이너가 중지되고\n"
+"\n"
+"등록된 각 시스템의 열이 새로 고쳐집니다.\n"
 
 #: mgradm/cmd/server/rename/rename.go:47 mgradm/shared/utils/cmd_utils.go:295
 msgid "Password for the CA key to generate"
@@ -1345,7 +1365,7 @@ msgstr "생성할 CA 키의 비밀번호"
 #, fuzzy
 #| msgid "Server Management:"
 msgid "Server management utilities"
-msgstr "서버 관리:"
+msgstr "서버 관리 유틸리티"
 
 #: mgradm/cmd/start/start.go:23 mgradm/cmd/start/start.go:24
 msgid "Start the server"
@@ -1449,7 +1469,7 @@ msgstr "계산된 이미지는 %s입니다."
 #, fuzzy
 #| msgid "The computed image is %s"
 msgid "The %[1]s service image is %[2]s"
-msgstr "계산된 이미지: %s"
+msgstr "%[1]s 서비스 이미지는 %[2]s입니다."
 
 #: mgradm/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -1854,9 +1874,9 @@ msgid "failed to write traefik routes to file"
 msgstr "파일링할 traefik 경로를 쓰지 못함"
 
 #: mgradm/shared/pgsql/pgsql.go:55 mgradm/shared/pgsql/pgsql.go:84
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "%s fails healtcheck"
-msgstr ""
+msgstr "%s의 상태 검사 실패"
 
 #: mgradm/shared/pgsql/pgsql.go:123
 msgid "cannot generate systemd configuration file"
@@ -1886,7 +1906,7 @@ msgstr "uyuni 마이그레이션 컨테이너를 실행할 수 없음"
 #, fuzzy, javascript-format
 #| msgid "failed to read key file %s"
 msgid "Failed to read file %s"
-msgstr "%s 키 파일을 읽을 수 없음"
+msgstr "%s 파일을 읽을 수 없음"
 
 #: mgradm/shared/podman/podman.go:180
 msgid "cannot read extracted data"
@@ -1914,7 +1934,7 @@ msgstr "PostgreSQL 데이터베이스 버전 업그레이드 스크립트를 생
 #, fuzzy
 #| msgid "failed to run the database finalization job"
 msgid "No need to run database finalization script"
-msgstr "데이터베이스 마무리 작업을 실행하지 못함"
+msgstr "데이터베이스 마무리 스크립트를 실행할 필요 없음"
 
 #: mgradm/shared/podman/podman.go:280 mgradm/shared/podman/podman.go:294
 msgid "cannot generate PostgreSQL finalization script"
@@ -1929,7 +1949,7 @@ msgstr "서비스를 중지하지 못함"
 #, fuzzy
 #| msgid "Configuring split PostgreSQL container. Image version: %[1]s, not migrated version: %[2]s"
 msgid "Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"
-msgstr "분할 PostgreSQL 컨테이너를 구성하는 중입니다. 이미지 버전: %[1]s, 마이그레이션되지 않은 버전: %[2]s"
+msgstr "분할 PostgreSQL 컨테이너를 구성하는 중입니다. 이미지 버전: %[1]d, 마이그레이션되지 않은 버전: %[2]d"
 
 #: mgradm/shared/podman/podman.go:373 mgradm/shared/podman/podman.go:583
 msgid "cannot configure db container"
@@ -1963,7 +1983,7 @@ msgstr "서버가 시작되기를 기다리는 중…"
 #, fuzzy
 #| msgid "cannot stop service"
 msgid "cannot start service"
-msgstr "서비스를 중지하지 못함"
+msgstr "서비스 시작할 수 없음"
 
 #: mgradm/shared/podman/podman.go:450 mgradm/shared/podman/podman.go:623
 msgid "error upgrading confidential computing service."
@@ -1985,13 +2005,13 @@ msgstr "마이그레이션이 준비되었습니다. 마이그레이션을 마�
 #, fuzzy
 #| msgid "failed to find server image"
 msgid "failed to inspect database container image"
-msgstr "서버 이미지를 찾지 못함"
+msgstr "데이터베이스 컨테이너 이미지 검사 실패"
 
 #: mgradm/shared/podman/podman.go:588
 #, fuzzy
 #| msgid "failed to remove %s temporary file"
 msgid "cannot remove temporary etc-tls volume"
-msgstr "%s 임시 파일을 제거하지 못함"
+msgstr "임시 etc-tls 볼륨을 제거할 수 없음"
 
 #: mgradm/shared/podman/podman.go:690
 msgid "failed to generate postgresql migration script"
@@ -2017,11 +2037,12 @@ msgstr "podman 값을 검사할 수 없음"
 #, fuzzy
 #| msgid "PostgreSQL Database"
 msgid "PostgreSQL migration failure"
-msgstr "PostgreSQL 데이터베이스"
+msgstr "PostgreSQL 마이그레이션 실패"
 
 #: mgradm/shared/podman/ssl.go:88
+#, fuzzy
 msgid "CA validation failed!"
-msgstr ""
+msgstr "CA 유효성 검사 실패!"
 
 #: mgradm/shared/podman/ssl.go:102
 msgid "Using provided 3rd party server certificates"
@@ -2032,31 +2053,32 @@ msgid "Using provided 3rd party database certificates"
 msgstr "제공된 타사 데이터베이스 인증서 사용"
 
 #: mgradm/shared/podman/ssl.go:272
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "CA file %s not found. New CA and certificates will be created."
-msgstr ""
+msgstr "CA 파일 %s을(를) 찾을 수 없습니다. 새 CA 및 인증서가 생성됩니다."
 
 #: mgradm/shared/podman/ssl.go:277
 msgid "cannot write existing CA certificate"
 msgstr "기존 CA 인증서를 작성할 수 없음"
 
 #: mgradm/shared/podman/ssl.go:284
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Cert file %s not found. A new certificate will be created."
-msgstr ""
+msgstr "인증서 파일 %sdmf(를) 찾을 수 없습니다. 새 인증서가 생성됩니다."
 
 #: mgradm/shared/podman/ssl.go:288
 msgid "cannot write existing server certificate"
 msgstr "기존 서버 인증서를 작성할 수 없음"
 
 #: mgradm/shared/podman/ssl.go:293
+#, fuzzy
 msgid "Cert file %[1]s doesn't match %[2]s FQDN. A new certificate will be created."
-msgstr ""
+msgstr "인증서 파일 %[1]이(가) %[2]의 FQDN과 일치하지 않습니다. 새 인증서가 생성됩니다."
 
 #: mgradm/shared/podman/ssl.go:301
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Cert key file %s not found. A new certificate will be created."
-msgstr ""
+msgstr "인증서 키 파일 %s을(를) 찾을 수 없습니다. 새 인증서가 생성됩니다."
 
 #: mgradm/shared/podman/ssl.go:305
 msgid "cannot write existing server key"
@@ -2070,13 +2092,13 @@ msgstr "기존 인증서 재사용"
 #, fuzzy
 #| msgid "failed to remove copied certificate files in the container"
 msgid "Cannot generate new certificates without a CA password. Please check input options"
-msgstr "컨테이너에서 복사한 인증서 파일을 제거하지 못했습니다."
+msgstr "CA 비밀번호가 없으면 새 인증서를 생성할 수 없습니다. 입력 옵션을 확인하십시오."
 
 #: mgradm/shared/podman/ssl.go:376
 #, fuzzy
 #| msgid "failed to remove copied certificate files in the container"
 msgid "Failed to generate server SSL certificates. Please check the input parameters."
-msgstr "컨테이너에서 복사한 인증서 파일을 제거하지 못했습니다."
+msgstr "서버 SSL 인증서를 생성하지 못했습니다. 입력 파라미터를 확인하십시오."
 
 #: mgradm/shared/podman/ssl.go:379
 msgid "Server SSL certificates generated"
@@ -2086,11 +2108,12 @@ msgstr "서버 SSL 인증서 생성됨"
 #, fuzzy
 #| msgid "cannot generate systemd service"
 msgid "Cannot generate database certificate"
-msgstr "systemd 서비스를 생성할 수 없음"
+msgstr "데이터베이스 인증서를 생성할 수 없음"
 
 #: mgradm/shared/podman/ssl.go:412
+#, fuzzy
 msgid "Failed to generate server Database SSL certificates. Please check the input parameters."
-msgstr ""
+msgstr "서버 데이터베이스 SSL 인증서를 생성하지 못했습니다. 입력 파라미터를 확인하십시오."
 
 #: mgradm/shared/podman/ssl.go:415
 msgid "Database SSL certificates generated"
@@ -2272,7 +2295,7 @@ msgid ""
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
 msgstr ""
 "SUSE 고객 센터 암호입니다.\n"
-"제품 동기화 및 registry.suse.com에서 이미지를 가져오기 위한 SCC 자격 증명으로 사용됩니다."
+"제품 동기화 및 SCC 레지스트리에서 이미지를 가져오기 위한 SCC 자격 증명으로 사용됩니다."
 
 #: mgradm/shared/utils/cmd_utils.go:182
 msgid "SUSE Customer Center Flags"
@@ -2298,7 +2321,7 @@ msgstr "데이터베이스 업그레이드 이미지"
 #, fuzzy
 #| msgid "Tag for %s container, overrides the global value if set"
 msgid "Database upgrade image tag, overrides the default value if set"
-msgstr "%s 컨테이너에 대한 태그, 설정된 경우 전역 값 재정의"
+msgstr "데이터베이스 업그레이드 이미지 태그가 설정된 경우 기본값을 재정의합니다."
 
 #: mgradm/shared/utils/cmd_utils.go:208
 msgid "Database Upgrade Image Flags"
@@ -2365,7 +2388,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Saline"
 msgid "Saline port"
-msgstr "Saline"
+msgstr "Saline 포트"
 
 #: mgradm/shared/utils/cmd_utils.go:270
 msgid ""
@@ -2393,19 +2416,19 @@ msgstr "exec 명령 실패"
 #, fuzzy
 #| msgid "failed to render setup script"
 msgid "failed to render database upgrade script"
-msgstr "설치 스크립트를 렌더링하지 못함"
+msgstr "데이터베이스 업그레이드 스크립트를 렌더링하지 못함"
 
 #: mgradm/shared/utils/exec.go:84
 #, fuzzy
 #| msgid "failed to run the database finalization job"
 msgid "failed to render database finalization script"
-msgstr "데이터베이스 마무리 작업을 실행하지 못함"
+msgstr "데이터베이스 마무리 작업 스크립트를 렌더링하지 못함"
 
 #: mgradm/shared/utils/exec.go:95
 #, fuzzy
 #| msgid "failed to render setup script"
 msgid "failed to render database post upgrade script"
-msgstr "설치 스크립트를 렌더링하지 못함"
+msgstr "데이터베이스 포스트 업그레이드 스크립트를 렌더링하지 못함"
 
 #: mgradm/shared/utils/exec.go:105
 msgid "error running the migration script"
@@ -2429,7 +2452,7 @@ msgstr "현재 Uyuni %s가 설치되어 있지만, 이미지가 SUSE Manager입�
 #, fuzzy
 #| msgid "cannot fetch release from image %s"
 msgid "cannot fetch release from server image"
-msgstr "이미지 %s에서 릴리스를 가져올 수 없습니다."
+msgstr "서버 이미지에서 릴리스를 가져올 수 없음"
 
 #: mgradm/shared/utils/exec.go:178 mgradm/shared/utils/exec.go:191
 msgid "cannot downgrade from version %[1]s to %[2]s"
