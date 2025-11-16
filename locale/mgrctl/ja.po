@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:21+0100\n"
-"PO-Revision-Date: 2025-11-15 05:04+0000\n"
+"PO-Revision-Date: 2025-11-16 19:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ja/>\n"
 "Language: ja\n"
@@ -132,7 +132,7 @@ msgstr "設定ファイルパス"
 #: mgrctl/cmd/cmd.go:47
 #, javascript-format
 msgid "Starting %s"
-msgstr "%sを開始しています"
+msgstr "%s を開始しています"
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
