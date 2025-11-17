@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:21+0100\n"
-"PO-Revision-Date: 2025-11-14 21:04+0000\n"
+"PO-Revision-Date: 2025-11-17 09:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ko/>\n"
 "Language: ko\n"
@@ -130,9 +130,9 @@ msgid "configuration file path"
 msgstr "구성 파일 경로"
 
 #: mgrctl/cmd/cmd.go:47
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Starting %s"
-msgstr "문자열 %s"
+msgstr "%s 시작"
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
