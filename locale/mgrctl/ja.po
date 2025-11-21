@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-27 10:21+0100\n"
-"PO-Revision-Date: 2025-06-14 14:59+0000\n"
+"PO-Revision-Date: 2025-11-16 19:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: mgrctl/cmd/api/api.go:26
 msgid "JSON over HTTP API helper tool"
@@ -132,7 +132,7 @@ msgstr "設定ファイルパス"
 #: mgrctl/cmd/cmd.go:47
 #, javascript-format
 msgid "Starting %s"
-msgstr ""
+msgstr "%s を開始しています"
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
