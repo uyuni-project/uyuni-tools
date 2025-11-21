@@ -191,7 +191,7 @@ func createDockerSecret(
 func AddRegistry(helmArgs []string, namespace string, registry *types.Registry, appLabel string) ([]string, error) {
 	secret, err := GetRegistrySecret(namespace, registry, appLabel)
 	if secret != "" {
-		helmArgs = append(helmArgs, secret)
+		helmArgs = append(helmArgs, "--set", "registrySecret="+secret)
 	}
 	return helmArgs, err
 }
