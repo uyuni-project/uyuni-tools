@@ -29,7 +29,7 @@ var runCmd = utils.RunCmd
 
 var runner = utils.NewRunner
 
-const commonArgs = "--rm --cap-add NET_RAW --tmpfs /run -v cgroup:/sys/fs/cgroup:rw"
+const commonArgs = "--rm --cap-add NET_RAW"
 
 // ServerContainerName represents the server container name.
 const ServerContainerName = "uyuni-server"
