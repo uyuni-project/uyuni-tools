@@ -160,7 +160,7 @@ func (d *systemdDriverImpl) StopService(service string) error {
 func (d *systemdDriverImpl) EnableService(service string) error {
 	if d.ServiceIsEnabled(service) {
 		log.Debug().Msgf("%s is already enabled.", service)
-		return nil
+		return d.StartService(service)
 	}
 	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
 		return utils.Errorf(err, L("failed to enable %s systemd service"), service)

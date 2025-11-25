@@ -33,6 +33,7 @@ type ProxyImageFlags struct {
 type Tuning struct {
 	Httpd string `mapstructure:"httpd"`
 	Squid string `mapstructure:"squid"`
+	SSH   string `mapstructure:"ssh"`
 }
 
 // GetContainerImage gets the full container image name and tag for a container name.
@@ -86,6 +87,7 @@ func AddImageFlags(cmd *cobra.Command) {
 
 	cmd.Flags().String("tuning-httpd", "", L("HTTPD tuning configuration file"))
 	cmd.Flags().String("tuning-squid", "", L("Squid tuning configuration file"))
+	cmd.Flags().String("tuning-ssh", "", L("SSH server tuning configuration file"))
 	utils.AddRegistryFlag(cmd)
 }
 

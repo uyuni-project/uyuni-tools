@@ -80,6 +80,14 @@ func Deploy(imageFlags *utils.ProxyImageFlags, helmFlags *HelmFlags, configDir s
 		helmParams = append(helmParams, "--set-file", "squid_tuning="+absPath)
 	}
 
+	if len(imageFlags.Tuning.SSH) > 0 {
+		absPath, err := filepath.Abs(imageFlags.Tuning.SSH)
+		if err != nil {
+			return err
+		}
+		helmParams = append(helmParams, "--set-file", "ssh_tuning="+absPath)
+	}
+
 	helmParams = append(helmParams,
 		"--set", "images.proxy-httpd="+imageFlags.GetContainerImage("httpd"),
 		"--set", "images.proxy-salt-broker="+imageFlags.GetContainerImage("salt-broker"),

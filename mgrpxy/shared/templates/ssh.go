@@ -34,7 +34,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- if .HTTPProxyFile }}
 	-v {{ .HTTPProxyFile }}:{{ .HTTPProxyFile }}:ro \
 	{{- end }}
-	--name uyuni-proxy-ssh \
+	${SSH_EXTRA_CONF} --name uyuni-proxy-ssh \
 	${UYUNI_IMAGE}'
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/uyuni-proxy-ssh.ctr-id -t 10
