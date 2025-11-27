@@ -1,1 +1,0 @@
-- Remove cgroup mount for podman containers (bsc#1253347)

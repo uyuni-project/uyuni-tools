@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Nov 27 11:23:45 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Read env var from http conf file (bsc#1253282)
+  * Fix helm upgrade parameters (bsc#1253966)
+  * Add ssh tuning to configure sshd (bsc#1253738)
+  * Remove cgroup mount for podman containers (bsc#1253347)
+
+-------------------------------------------------------------------
 Mon Oct 27 16:08:24 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0
