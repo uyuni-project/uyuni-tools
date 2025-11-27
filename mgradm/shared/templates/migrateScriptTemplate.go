@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -171,8 +171,10 @@ do
 done
 rm -f /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service
 if $SSH {{ .SourceFqdn }} systemctl is-enabled prometheus-postgres_exporter.service; then
-  echo "Enabling prometheus-postgres_exporter service..."
-  ln -s /usr/lib/systemd/system/prometheus-postgres_exporter.service /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service
+  if test ! -e /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service; then
+    echo "Enabling prometheus-postgres_exporter service..."
+    ln -s /usr/lib/systemd/system/prometheus-postgres_exporter.service /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service
+  fi
 fi
 
 echo "Migrating custom SSL CA certificates..."
