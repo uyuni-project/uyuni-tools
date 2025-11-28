@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -151,7 +151,7 @@ func extractCertificateData(content []byte) (certificate, error) {
 
 	out, err := cmd.Output()
 	if err != nil {
-		return certificate{}, utils.Error(err, L("Failed to extract data from certificate"))
+		return certificate{}, utils.Errorf(err, L("Failed to extract data from certificate:\n%s"), string(content))
 	}
 	lines := strings.Split(string(out), "\n")
 
@@ -225,7 +225,7 @@ func sortCertificates(
 	serverCertHash string,
 ) (orderedCert []byte, rootCA []byte, err error) {
 	if len(mapBySubjectHash) == 0 {
-		err = errors.New(L("No CA found"))
+		err = errors.New(L("no CA certificate found in the files"))
 		return
 	}
 
@@ -233,7 +233,11 @@ func sortCertificates(
 	issuerHash := cert.issuerHash
 	_, found := mapBySubjectHash[issuerHash]
 	if issuerHash == "" || !found {
-		err = errors.New(L("No CA found for server certificate"))
+		err = fmt.Errorf(
+			L(`please check the CA chain, including intermediate CA certificates provided.
+The chain is missing the CA with subject %[1]s (hash: %[2]s)`),
+			issuerHash, cert.issuer,
+		)
 		return
 	}
 
@@ -242,7 +246,11 @@ func sortCertificates(
 	for {
 		cert, found = mapBySubjectHash[issuerHash]
 		if !found {
-			err = fmt.Errorf(L("Missing CA with subject hash %s"), issuerHash)
+			err = fmt.Errorf(
+				L(`please check the CA chain, including intermediate CA certificates provided.
+The chain is missing the CA with subject %[1]s (hash: %[2]s)`),
+				issuerHash, cert.issuer,
+			)
 			return
 		}
 
