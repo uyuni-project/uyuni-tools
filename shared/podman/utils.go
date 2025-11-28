@@ -73,7 +73,7 @@ func EnablePodmanSocket() error {
 	return err
 }
 
-// ReadFromContainer read a file from a container.
+// ReadFromContainer reads a file from a container.
 func ReadFromContainer(name string, image string, volumes []types.VolumeMount,
 	extraArgs []string, file string) ([]byte, error) {
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)
