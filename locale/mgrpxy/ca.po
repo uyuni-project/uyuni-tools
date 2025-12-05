@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-27 10:21+0100\n"
-"PO-Revision-Date: 2025-10-28 16:59+0000\n"
+"POT-Creation-Date: 2025-12-05 09:25+0100\n"
+"PO-Revision-Date: 2025-11-26 11:05+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -97,7 +97,7 @@ msgstr ""
 "NOTA: per ara no s'admet la instal·lació en un clúster de kubernetes remot!\n"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:26
-#: mgrpxy/shared/kubernetes/deploy.go:154
+#: mgrpxy/shared/kubernetes/deploy.go:162
 #, javascript-format
 msgid "install %s before running this command"
 msgstr "instal·la %s abans d'executar aquesta ordre"
@@ -107,7 +107,7 @@ msgid "failed to extract configuration"
 msgstr "no s'ha pogut extreure la configuració"
 
 #: mgrpxy/cmd/install/kubernetes/utils.go:74
-#: mgrpxy/shared/kubernetes/deploy.go:206
+#: mgrpxy/shared/kubernetes/deploy.go:214
 msgid "cannot deploy proxy helm chart"
 msgstr "no s'ha pogut desplegar el diagrama de timons del servidor intermediari"
 
@@ -142,7 +142,7 @@ msgstr ""
 "NOTA: per ara no s'admet la instal·lació en un podman remot!\n"
 
 #: mgrpxy/cmd/install/podman/utils.go:39
-#: mgrpxy/cmd/support/ptf/podman/utils.go:30 mgrpxy/shared/podman/podman.go:291
+#: mgrpxy/cmd/support/ptf/podman/utils.go:30 mgrpxy/shared/podman/podman.go:303
 msgid "install podman before running this command"
 msgstr "instal·la podman abans d'executar aquesta ordre"
 
@@ -150,7 +150,7 @@ msgstr "instal·la podman abans d'executar aquesta ordre"
 msgid "failed to retrieve proxy config files"
 msgstr "no s'han pogut recuperar els fitxers de configuració del servidor intermediari"
 
-#: mgrpxy/cmd/install/podman/utils.go:58 mgrpxy/shared/podman/podman.go:307
+#: mgrpxy/cmd/install/podman/utils.go:58 mgrpxy/shared/podman/podman.go:319
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr "No s'ha pogut obtenir l'ID del sistema actualitzat, se n'usa un del fitxer de configuració proporcionat."
 
@@ -305,23 +305,23 @@ msgstr ""
 "\n"
 "NOTA: per ara no s'admet la instal·lació en un podman remot!\n"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:55 mgrpxy/shared/podman/podman.go:319
+#: mgrpxy/cmd/support/ptf/podman/utils.go:55 mgrpxy/shared/podman/podman.go:331
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr "no es pot trobar la imatge httpd: no s'actualitzarà"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:60 mgrpxy/shared/podman/podman.go:323
+#: mgrpxy/cmd/support/ptf/podman/utils.go:60 mgrpxy/shared/podman/podman.go:335
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr "no es pot trobar la imatge salt-broker: no es millorarà"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:65 mgrpxy/shared/podman/podman.go:327
+#: mgrpxy/cmd/support/ptf/podman/utils.go:65 mgrpxy/shared/podman/podman.go:339
 msgid "cannot find squid image: it will no be upgraded"
 msgstr "no s'ha pogut trobar la imatge del calamar: no s'actualitzarà"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:70 mgrpxy/shared/podman/podman.go:331
+#: mgrpxy/cmd/support/ptf/podman/utils.go:70 mgrpxy/shared/podman/podman.go:343
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr "no es pot trobar la imatge ssh: no s'actualitzarà"
 
-#: mgrpxy/cmd/support/ptf/podman/utils.go:75 mgrpxy/shared/podman/podman.go:335
+#: mgrpxy/cmd/support/ptf/podman/utils.go:75 mgrpxy/shared/podman/podman.go:347
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr "no es pot trobar la imatge tftpd: no s'actualitzarà"
 
@@ -477,76 +477,76 @@ msgstr "Camí a un fitxer YAML de valors que s'utilitzarà per a la instal·laci
 msgid "Installing Uyuni proxy"
 msgstr "S'està instal·lant el servidor intermediari Uyuni"
 
-#: mgrpxy/shared/kubernetes/deploy.go:98
+#: mgrpxy/shared/kubernetes/deploy.go:106
 msgid "cannot run helm upgrade"
 msgstr "no es pot executar l'actualització del helm"
 
-#: mgrpxy/shared/kubernetes/deploy.go:114
-#: mgrpxy/shared/kubernetes/deploy.go:129
-#: mgrpxy/shared/kubernetes/deploy.go:144
+#: mgrpxy/shared/kubernetes/deploy.go:122
+#: mgrpxy/shared/kubernetes/deploy.go:137
+#: mgrpxy/shared/kubernetes/deploy.go:152
 #, javascript-format
 msgid "failed to write in file %s"
 msgstr "no s'ha pogut escriure al fitxer %s"
 
-#: mgrpxy/shared/kubernetes/deploy.go:186
+#: mgrpxy/shared/kubernetes/deploy.go:194
 msgid "failed to scale replicas to 1"
 msgstr "no s'ha pogut escalar les rèpliques a 1"
 
-#: mgrpxy/shared/podman/podman.go:59
+#: mgrpxy/shared/podman/podman.go:60
 msgid "cannot setup network"
 msgstr "no s'ha pogut configurar la xarxa"
 
-#: mgrpxy/shared/podman/podman.go:64
+#: mgrpxy/shared/podman/podman.go:65
 msgid "Generating systemd services"
 msgstr "S'estan generant els serveis de systemd"
 
-#: mgrpxy/shared/podman/podman.go:185
+#: mgrpxy/shared/podman/podman.go:197
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "no s'ha pogut generar el fitxer de systemd «%s»"
 
-#: mgrpxy/shared/podman/podman.go:191
+#: mgrpxy/shared/podman/podman.go:203
 msgid "cannot generate systemd conf file"
 msgstr "no s'ha pogut generar el fitxer conf del systemd"
 
-#: mgrpxy/shared/podman/podman.go:197
+#: mgrpxy/shared/podman/podman.go:209
 msgid "cannot generate systemd conf user configuration file"
 msgstr "no s'ha pogut generar el fitxer de configuració de l'usuari «systemd conf»"
 
-#: mgrpxy/shared/podman/podman.go:240
+#: mgrpxy/shared/podman/podman.go:252
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "S'està configurant el servidor intermediari amb configuració %s"
 
-#: mgrpxy/shared/podman/podman.go:242
+#: mgrpxy/shared/podman/podman.go:254
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "no s'ha pogut extreure la configuració del servidor intermediari del fitxer %s"
 
-#: mgrpxy/shared/podman/podman.go:245
+#: mgrpxy/shared/podman/podman.go:257
 msgid "No tarball provided. Will check existing configuration files."
 msgstr "No s'ha proporcionat cap tarball. Comprovarà els fitxers de configuració existents."
 
-#: mgrpxy/shared/podman/podman.go:259
+#: mgrpxy/shared/podman/podman.go:271
 #, javascript-format
 msgid "%s directory has no required permissions. Check your umask settings"
 msgstr "El directori %s no té permisos necessaris. Comproveu la configuració de l'umask"
 
-#: mgrpxy/shared/podman/podman.go:261
+#: mgrpxy/shared/podman/podman.go:273
 #, javascript-format
 msgid "%s file has no required permissions. Check your umask settings"
 msgstr "El fitxer %s no té permisos necessaris. Comproveu la configuració de l'umask"
 
-#: mgrpxy/shared/podman/podman.go:274
+#: mgrpxy/shared/podman/podman.go:286
 #, javascript-format
 msgid "missing required configuration file: %s"
 msgstr "falta el fitxer de configuració requerit: %s"
 
-#: mgrpxy/shared/podman/podman.go:404
+#: mgrpxy/shared/podman/podman.go:416
 msgid "Not a system id event"
 msgstr "No és un esdeveniment d'ID del sistema"
 
-#: mgrpxy/shared/podman/podman.go:413
+#: mgrpxy/shared/podman/podman.go:425
 msgid "System id not found in returned event"
 msgstr "No s'ha trobat l'ID del sistema a l'esdeveniment retornat"
 
@@ -555,45 +555,51 @@ msgstr "No s'ha trobat l'ID del sistema a l'esdeveniment retornat"
 msgid "argument is not an existing file: %s"
 msgstr "l'argument no és un fitxer existent: %s"
 
-#: mgrpxy/shared/utils/flags.go:53
+#: mgrpxy/shared/utils/flags.go:54
 #, javascript-format
 msgid "Invalid proxy container name: %s"
 msgstr "El nom del contenidor del servidor intermediari no és vàlid: %s"
 
-#: mgrpxy/shared/utils/flags.go:58
+#: mgrpxy/shared/utils/flags.go:59
 msgid "failed to compute image URL"
 msgstr "no s'ha pogut calcular l'URL de la imatge"
 
-#: mgrpxy/shared/utils/flags.go:66
+#: mgrpxy/shared/utils/flags.go:67
 msgid "SUSE Customer Center username. It will be used to pull images from SCC registry"
 msgstr "Nom d'usuari del Centre de clients de SUSE. S'usarà per obtenir imatges del registre SCC."
 
-#: mgrpxy/shared/utils/flags.go:69
+#: mgrpxy/shared/utils/flags.go:70
 msgid "SUSE Customer Center password. It will be used to pull images from SCC registry"
 msgstr "Contrasenya del Centre de clients de SUSE. S'usarà per extreure imatges del registre SCC."
 
-#: mgrpxy/shared/utils/flags.go:71
+#: mgrpxy/shared/utils/flags.go:72
 msgid "SUSE Customer Center Flags"
 msgstr "Banderes del Centre de Clients SUSE"
 
-#: mgrpxy/shared/utils/flags.go:78
+#: mgrpxy/shared/utils/flags.go:79
 msgid "image tag"
 msgstr "etiqueta de la imatge"
 
-#: mgrpxy/shared/utils/flags.go:87
+#: mgrpxy/shared/utils/flags.go:88
 msgid "HTTPD tuning configuration file"
 msgstr "Fitxer de configuració d'afinació HTTPD"
 
-#: mgrpxy/shared/utils/flags.go:88
+#: mgrpxy/shared/utils/flags.go:89
 msgid "Squid tuning configuration file"
 msgstr "Fitxer de configuració de l'afinació del calamar"
 
-#: mgrpxy/shared/utils/flags.go:95
+#: mgrpxy/shared/utils/flags.go:90
+#, fuzzy
+#| msgid "HTTPD tuning configuration file"
+msgid "SSH server tuning configuration file"
+msgstr "Fitxer de configuració d'afinació HTTPD"
+
+#: mgrpxy/shared/utils/flags.go:97
 #, javascript-format
 msgid "Image for %s container"
 msgstr "Imatge per al contenidor %s"
 
-#: mgrpxy/shared/utils/flags.go:97
+#: mgrpxy/shared/utils/flags.go:99
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "Etiqueta per al contenidor %s, anul·la el valor global si s'estableix"
