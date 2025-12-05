@@ -33,6 +33,7 @@ const (
 	SystemIDSecret        = "uyuni-proxy-systemid"
 	defaultApacheConf     = "/etc/uyuni/proxy/apache.conf"
 	defaultSquidConf      = "/etc/uyuni/proxy/squid.conf"
+	defaultSSHConf        = "/etc/uyuni/proxy/ssh.conf"
 )
 
 var contextRunner = shared_utils.NewRunnerWithContext
@@ -144,7 +145,18 @@ func GenerateSystemdService(
 		dataSSH := templates.SSHTemplateData{
 			HTTPProxyFile: httpProxyConfig,
 		}
-		if err := generateSystemdFile(dataSSH, "ssh", sshImage, ""); err != nil {
+		additionSSHTuningSettings := ""
+		additionSSHConfPath, err := getPathOrDefault(flags.ProxyImageFlags.Tuning.SSH, defaultSSHConf)
+		if err != nil {
+			return err
+		}
+		if additionSSHConfPath != "" {
+			additionSSHTuningSettings = fmt.Sprintf(
+				`Environment=SSH_EXTRA_CONF=-v%s:/etc/ssh/sshd_config.d/99-tuning.conf:ro%s`,
+				additionSSHConfPath, volumeOptions,
+			)
+		}
+		if err := generateSystemdFile(dataSSH, "ssh", sshImage, additionSSHTuningSettings); err != nil {
 			return err
 		}
 	}

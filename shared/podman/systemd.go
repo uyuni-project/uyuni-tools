@@ -160,7 +160,7 @@ func (d *systemdDriverImpl) StopService(service string) error {
 func (d *systemdDriverImpl) EnableService(service string) error {
 	if d.ServiceIsEnabled(service) {
 		log.Debug().Msgf("%s is already enabled.", service)
-		return nil
+		return d.StartService(service)
 	}
 	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
 		return utils.Errorf(err, L("failed to enable %s systemd service"), service)
@@ -440,7 +440,7 @@ func GenerateSystemdConfFile(serviceName string, filename string, body string, w
 	systemdFilePath := GetServicePath(serviceName)
 
 	systemdConfFolder := systemdFilePath + ".d"
-	if err := os.MkdirAll(systemdConfFolder, 0750); err != nil {
+	if err := os.MkdirAll(systemdConfFolder, 0755); err != nil {
 		return utils.Errorf(err, L("failed to create %s folder"), systemdConfFolder)
 	}
 	systemdConfFilePath := path.Join(systemdConfFolder, filename)
@@ -450,7 +450,7 @@ func GenerateSystemdConfFile(serviceName string, filename string, body string, w
 		header = confHeader
 	}
 	content := []byte(fmt.Sprintf("%s[Service]\n%s\n", header, body))
-	if err := os.WriteFile(systemdConfFilePath, content, 0640); err != nil {
+	if err := os.WriteFile(systemdConfFilePath, content, 0644); err != nil {
 		return utils.Errorf(err, L("cannot write %s file"), systemdConfFilePath)
 	}
 

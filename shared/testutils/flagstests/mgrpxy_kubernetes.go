@@ -45,6 +45,7 @@ var ImageProxyFlagsTestArgs = []string{
 	"--tftpd-tag", "tftpd-tag",
 	"--tuning-httpd", "path/to/httpd.conf",
 	"--tuning-squid", "path/to/squid.conf",
+	"--tuning-ssh", "path/to/ssh.conf",
 	"--registry-host", "myregistry.com",
 	"--registry-user", "user",
 	"--registry-password", "password",
@@ -70,4 +71,5 @@ func AssertProxyImageFlags(t *testing.T, flags *utils.ProxyImageFlags) {
 	testutils.AssertEquals(t, "Error parsing --tftpd-tag", "tftpd-tag", flags.Tftpd.Tag)
 	testutils.AssertEquals(t, "Error parsing --tuning-httpd", "path/to/httpd.conf", flags.Tuning.Httpd)
 	testutils.AssertEquals(t, "Error parsing --tuning-squid", "path/to/squid.conf", flags.Tuning.Squid)
+	testutils.AssertEquals(t, "Error parsing --tuning-ssh", "path/to/ssh.conf", flags.Tuning.SSH)
 }
