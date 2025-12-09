@@ -2,82 +2,89 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-linters-settings:
-  stylecheck:
-    dot-import-whitelist:
-      - github.com/uyuni-project/uyuni-tools/shared/l10n
-    initialisms:
-      # Default
-      - ACL
-      - API
-      - ASCII
-      - CPU
-      - DNS
-      - EOF
-      - GUID
-      - HTML
-      - HTTP
-      - HTTPS
-      - ID
-      - IP
-      - JSON
-      - RPC
-      - SLA
-      - SMTP
-      - SQL
-      - SSH
-      - TCP
-      - TLS
-      - TTL
-      - UDP
-      - UI
-      - GID
-      - UID
-      - UUID
-      - URI
-      - URL
-      - UTF8
-      - VM
-      - XML
-      - RTP
-      - DB
-      # Added
-      - SCC
-      - SSL
-  gofmt:
-    simplify: true
-  gocyclo:
-    min-complexity: 10
-  govet:
-    disable:
-      - printf
-
+version: "2"
 linters:
   enable:
     - dupl
-    - errcheck
     - errname
     - errorlint
     - godot
-    - gofmt
-    - goimports
-    - gosimple
-      #- gocyclo
-    - ineffassign
-    - govet
     - lll
     - misspell
     - revive
     - staticcheck
-    - stylecheck
     - unparam
-    - unused
     - whitespace
-issues:
-  exclude-rules:
-    - linters:
-        - revive
-      text: "dot-imports"
-    - linters:
-        - revive
-      text: "stutters"
+  settings:
+    gocyclo:
+      min-complexity: 10
+    govet:
+      disable:
+        - printf
+    staticcheck:
+      initialisms:
+        # Default
+        - ACL
+        - API
+        - ASCII
+        - CPU
+        - DNS
+        - EOF
+        - GUID
+        - HTML
+        - HTTP
+        - HTTPS
+        - ID
+        - IP
+        - JSON
+        - RPC
+        - SLA
+        - SMTP
+        - SQL
+        - SSH
+        - TCP
+        - TLS
+        - TTL
+        - UDP
+        - UI
+        - GID
+        - UID
+        - UUID
+        - URI
+        - URL
+        - UTF8
+        - VM
+        - XML
+        - RTP
+        - DB
+        # Added
+        - SCC
+        - SSL
+      dot-import-whitelist:
+        - github.com/uyuni-project/uyuni-tools/shared/l10n
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - revive
+        text: dot-imports
+      - linters:
+          - revive
+        text: stutters
+      - linters:
+          - revive
+        text: "meaningless package names"
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    gofmt:
+      simplify: true
+  exclusions:
+    generated: lax
