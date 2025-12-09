@@ -39,7 +39,7 @@ func CreateTraefikRoutes(namespace string, hub bool, debug bool) error {
 	defer file.Close()
 
 	// Write the SSL Redirect middleware
-	_, err = file.WriteString(fmt.Sprintf(`
+	_, err = fmt.Fprintf(file, `
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
@@ -51,7 +51,7 @@ spec:
   redirectScheme:
     scheme: https
     permanent: true
-`, namespace, kubernetes.AppLabel, kubernetes.ServerApp))
+`, namespace, kubernetes.AppLabel, kubernetes.ServerApp)
 	if err != nil {
 		return utils.Error(err, L("failed to write traefik middleware and routes to file"))
 	}

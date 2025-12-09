@@ -90,7 +90,7 @@ func installForPodman(
 		return err
 	}
 
-	if flags.ServerFlags.Installation.DB.IsLocal() {
+	if flags.Installation.DB.IsLocal() {
 		// The admin password is not needed for external databases
 		if err := shared_podman.CreateCredentialsSecrets(
 			shared_podman.DBAdminUserSecret, flags.Installation.DB.Admin.User,
@@ -106,7 +106,7 @@ func installForPodman(
 	} else {
 		log.Info().Msgf(
 			L("Skipped database container setup to use external database %s"),
-			flags.ServerFlags.Installation.DB.Host,
+			flags.Installation.DB.Host,
 		)
 	}
 

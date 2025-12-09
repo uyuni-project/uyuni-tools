@@ -100,7 +100,7 @@ func GenerateSystemdService(
 		}
 
 		additionHttpdTuningSettings := ""
-		additionHTTPConfPath, err := getPathOrDefault(flags.ProxyImageFlags.Tuning.Httpd, defaultApacheConf)
+		additionHTTPConfPath, err := getPathOrDefault(flags.Tuning.Httpd, defaultApacheConf)
 		if err != nil {
 			return err
 		}
@@ -131,7 +131,7 @@ func GenerateSystemdService(
 			HTTPProxyFile: httpProxyConfig,
 		}
 		additionSquidTuningSettings := ""
-		additionSquidConfPath, err := getPathOrDefault(flags.ProxyImageFlags.Tuning.Squid, defaultSquidConf)
+		additionSquidConfPath, err := getPathOrDefault(flags.Tuning.Squid, defaultSquidConf)
 		if err != nil {
 			return err
 		}
@@ -151,7 +151,7 @@ func GenerateSystemdService(
 			HTTPProxyFile: httpProxyConfig,
 		}
 		additionSSHTuningSettings := ""
-		additionSSHConfPath, err := getPathOrDefault(flags.ProxyImageFlags.Tuning.SSH, defaultSSHConf)
+		additionSSHConfPath, err := getPathOrDefault(flags.Tuning.SSH, defaultSSHConf)
 		if err != nil {
 			return err
 		}

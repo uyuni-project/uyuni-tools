@@ -149,7 +149,7 @@ func distroCp(
 		}
 	}
 
-	attemptRegistration := false
+	var attemptRegistration bool
 	if flags.ConnectionDetails.User != "" && flags.ConnectionDetails.Password != "" {
 		attemptRegistration = true
 	}
