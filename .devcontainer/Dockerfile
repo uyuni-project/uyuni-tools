@@ -14,8 +14,8 @@ RUN set -euo pipefail; \
     curl \
     gettext-tools \
     git-core \
-    go1.23 \
-    go1.23-doc \
+    go1.24 \
+    go1.24-doc \
     gpg2 \
     grep \
     less \
