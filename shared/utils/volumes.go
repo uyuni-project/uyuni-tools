@@ -57,6 +57,9 @@ var ServerVolumeMounts = []types.VolumeMount{
 	EtcRhnVolumeMount,
 }
 
+// SSLMigrationVolumeMounts are the mounts needed to extract the SSL certificates for a migration.
+var SSLMigrationVolumeMounts = []types.VolumeMount{EtcTLSTmpVolumeMount, RootVolumeMount, CaCertVolumeMount}
+
 // ServerMigrationVolumeMounts match server + postgres volume mounts, used for migration.
 var ServerMigrationVolumeMounts = append(ServerVolumeMounts, VarPgsqlDataVolumeMount, EtcTLSTmpVolumeMount)
 

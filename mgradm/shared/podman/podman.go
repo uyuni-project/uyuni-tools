@@ -114,6 +114,74 @@ Environment="PODMAN_EXTRA_ARGS=%s"
 	return systemd.ReloadDaemon(false)
 }
 
+func RunSSLMigration(
+	preparedImage string,
+	sshAuthSocket string,
+	sshConfigPath string,
+	sshKnownhostsPath string,
+	sourceFqdn string,
+	user string,
+) (*utils.InspectResult, error) {
+	scriptDir, cleaner, err := utils.TempDir()
+	defer cleaner()
+	if err != nil {
+		return nil, err
+	}
+
+	t := templates.SSLMigrateScriptTemplateData{
+		Volumes:    utils.SSLMigrationVolumeMounts,
+		SourceFqdn: sourceFqdn,
+		User:       user,
+	}
+
+	scriptBuilder := new(strings.Builder)
+	if err := t.Render(scriptBuilder); err != nil {
+		return nil, utils.Error(err, L("failed to generate SSL migration script"))
+	}
+
+	script := scriptBuilder.String()
+
+	extraArgs := []string{
+		"--security-opt", "label=disable",
+		"-e", "SSH_AUTH_SOCK",
+		"-v", filepath.Dir(sshAuthSocket) + ":" + filepath.Dir(sshAuthSocket),
+		"-v", scriptDir + ":/var/lib/uyuni-tools/",
+	}
+
+	if sshConfigPath != "" {
+		extraArgs = append(extraArgs, "-v", sshConfigPath+":/tmp/ssh_config")
+	}
+
+	if sshKnownhostsPath != "" {
+		extraArgs = append(extraArgs, "-v", sshKnownhostsPath+":/etc/ssh/ssh_known_hosts")
+	}
+
+	log.Info().Msgf(L("Migrating SSL certificates from the source server %s"), sourceFqdn)
+	if err := podman.RunContainer("uyuni-ssl-migration", preparedImage, utils.SSLMigrationVolumeMounts, extraArgs,
+		[]string{"bash", "-e", "-c", script}); err != nil {
+		return nil, utils.Errorf(err, L("cannot run uyuni SSL migration container"))
+	}
+
+	// now that everything is migrated, we need to fix SELinux permission
+	if err := restoreSELinuxContext(utils.SSLMigrationVolumeMounts); err != nil {
+		return nil, err
+	}
+
+	dataPath := path.Join(scriptDir, "data")
+	data, err := os.ReadFile(dataPath)
+	if err != nil {
+		log.Fatal().Err(err).Msgf(L("Failed to read file %s"), dataPath)
+	}
+
+	extractedData, err := utils.ReadInspectData[utils.InspectResult](data)
+
+	if err != nil {
+		return nil, utils.Errorf(err, L("cannot read extracted data"))
+	}
+
+	return extractedData, nil
+}
+
 // RunMigration migrate an existing remote server to a container.
 func RunMigration(
 	preparedImage string,
@@ -123,23 +191,22 @@ func RunMigration(
 	sourceFqdn string,
 	user string,
 	prepare bool,
-) (*utils.InspectResult, error) {
+) error {
 	scriptDir, cleaner, err := utils.TempDir()
 	defer cleaner()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	script, err := adm_utils.GenerateMigrationScript(
 		sourceFqdn,
 		user,
-		false,
 		prepare,
 		"uyuni-pgsql-server.mgr.internal",
 		"uyuni-pgsql-server.mgr.internal",
 	)
 	if err != nil {
-		return nil, utils.Errorf(err, L("cannot generate migration script"))
+		return utils.Errorf(err, L("cannot generate migration script"))
 	}
 
 	extraArgs := []string{
@@ -160,32 +227,20 @@ func RunMigration(
 	log.Info().Msg(L("Migrating server"))
 	if err := podman.RunContainer("uyuni-migration", preparedImage, utils.ServerMigrationVolumeMounts, extraArgs,
 		[]string{"bash", "-e", "-c", script}); err != nil {
-		return nil, utils.Errorf(err, L("cannot run uyuni migration container"))
+		return utils.Errorf(err, L("cannot run uyuni migration container"))
 	}
 
 	// now that everything is migrated, we need to fix SELinux permission
-	if err := restoreSELinuxContext(); err != nil {
-		return nil, err
+	if err := restoreSELinuxContext(utils.ServerVolumeMounts); err != nil {
+		return err
 	}
 
-	dataPath := path.Join(scriptDir, "data")
-	data, err := os.ReadFile(dataPath)
-	if err != nil {
-		log.Fatal().Err(err).Msgf(L("Failed to read file %s"), dataPath)
-	}
-
-	extractedData, err := utils.ReadInspectData[utils.InspectResult](data)
-
-	if err != nil {
-		return nil, utils.Errorf(err, L("cannot read extracted data"))
-	}
-
-	return extractedData, nil
+	return nil
 }
 
-func restoreSELinuxContext() error {
+func restoreSELinuxContext(volumes []types.VolumeMount) error {
 	if utils.IsInstalled("restorecon") {
-		for _, volumeMount := range utils.ServerVolumeMounts {
+		for _, volumeMount := range volumes {
 			mountPoint, err := GetMountPoint(volumeMount.Name)
 			if err != nil {
 				return utils.Errorf(err, L("cannot inspect volume %s"), volumeMount)
@@ -368,8 +423,12 @@ func Upgrade(
 		log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
 			newPgVersion, oldPgVersion)
 
+		if err := PrepareSSLCertificates(preparedServerImage, &ssl, tz, fqdn); err != nil {
+			return err
+		}
+
 		if err := configureSplitDBContainer(
-			preparedServerImage, preparedPgsqlImage, systemd, db, reportdb, ssl, tz, fqdn); err != nil {
+			preparedServerImage, preparedPgsqlImage, systemd, db, reportdb); err != nil {
 			return utils.Errorf(err, L("cannot configure db container"))
 		}
 	}
@@ -540,7 +599,18 @@ func Migrate(
 		return err
 	}
 
-	inspectedValues, err := RunMigration(
+	inspectedValues, err := RunSSLMigration(
+		preparedServerImage, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn, user,
+	)
+	if err != nil {
+		return utils.Errorf(err, L("cannot run SSL migration script"))
+	}
+
+	if err := PrepareSSLCertificates(preparedServerImage, &ssl, inspectedValues.Timezone, sourceFqdn); err != nil {
+		return err
+	}
+
+	err = RunMigration(
 		preparedServerImage, sshAuthSocket, sshConfigPath, sshKnownhostsPath, sourceFqdn,
 		user, prepare,
 	)
@@ -577,9 +647,7 @@ func Migrate(
 	reportdb.User = inspectedValues.ReportDBUser
 	reportdb.Password = inspectedValues.ReportDBPassword
 
-	if err := configureSplitDBContainer(
-		preparedServerImage, preparedPgsqlImage, systemd, db, reportdb, ssl, inspectedValues.Timezone, sourceFqdn,
-	); err != nil {
+	if err := configureSplitDBContainer(preparedServerImage, preparedPgsqlImage, systemd, db, reportdb); err != nil {
 		return utils.Errorf(err, L("cannot configure db container"))
 	}
 
@@ -835,14 +903,7 @@ func configureSplitDBContainer(
 	systemd podman.Systemd,
 	db adm_utils.DBFlags,
 	reportdb adm_utils.DBFlags,
-	ssl adm_utils.InstallSSLFlags,
-	tz string,
-	fqdn string,
 ) error {
-	if err := PrepareSSLCertificates(serverImage, &ssl, tz, fqdn); err != nil {
-		return err
-	}
-
 	if err := RunPgsqlContainerMigration(serverImage, "db", "reportdb"); err != nil {
 		return utils.Errorf(err, L("PostgreSQL migration failure"))
 	}
