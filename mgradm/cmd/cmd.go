@@ -66,12 +66,18 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 		if cmd.Name() != "completion" {
 			utils.LogInit(true)
 			utils.SetLogLevel(globalFlags.LogLevel)
+			utils.SetShouldPreserveTmpDir(globalFlags.KeepTempDir)
 			log.Info().Msgf(L("Starting %s"), strings.Join(os.Args, " "))
 			log.Info().Msgf(L("Use of this software implies acceptance of the End User License Agreement."))
 		}
 	}
 
 	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", L("configuration file path"))
+	rootCmd.PersistentFlags().BoolVarP(&globalFlags.KeepTempDir, "keepTemp", "", false,
+		L("keep temporary directories for debugging purpose"))
+	if err := rootCmd.PersistentFlags().MarkHidden("keepTemp"); err != nil {
+		log.Warn().Err(err).Msg("Failed to hide keepTemp flag")
+	}
 	utils.AddLogLevelFlags(rootCmd, &globalFlags.LogLevel)
 
 	migrateCmd := migrate.NewCommand(globalFlags)
