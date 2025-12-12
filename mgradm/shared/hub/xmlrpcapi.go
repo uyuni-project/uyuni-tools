@@ -105,7 +105,6 @@ func generateHubXmlrpcSystemdService(systemd podman.Systemd, image string, serve
 	hubXmlrpcData := templates.HubXmlrpcServiceTemplateData{
 		CaSecret:   podman.CASecret,
 		CaPath:     ssl.CAContainerPath,
-		Ports:      utils.HubXmlrpcPorts,
 		NamePrefix: "uyuni",
 		Network:    podman.UyuniNetwork,
 		Image:      image,
