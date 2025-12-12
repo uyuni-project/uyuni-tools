@@ -35,6 +35,9 @@ const HubXmlrpcService = "uyuni-hub-xmlrpc"
 // SalineService is the name of the systemd service for the saline container.
 const SalineService = "uyuni-saline"
 
+// EventProcessorService is the name of the systemd service for the Salt Event Processor container.
+const EventProcessorService = "uyuni-event-processor"
+
 // ProxyService is the name of the systemd service for the proxy.
 const ProxyService = "uyuni-proxy-pod"
 
