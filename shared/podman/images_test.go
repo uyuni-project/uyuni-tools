@@ -156,7 +156,7 @@ myregistry.org/path/image:latest`,
 			return []byte(test.out), test.err
 		}
 		searchedImage := "myregistry.org/path/image:1.2.3"
-		testutils.AssertEquals(t, "Unexpected result", test.expected, HasRemoteImage(searchedImage))
+		testutils.AssertEquals(t, "Unexpected result", test.expected, HasRemoteImage(searchedImage, ""))
 	}
 }
 

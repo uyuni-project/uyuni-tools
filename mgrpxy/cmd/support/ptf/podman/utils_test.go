@@ -24,7 +24,7 @@ func TestUpdateParametersValidation(t *testing.T) {
 
 	// Mock getServiceImage to return empty string to skip image processing logic
 	getServiceImage = func(_ string) string { return "" }
-	hasRemoteImage = func(_ string) bool { return false }
+	hasRemoteImage = func(_ string, _ string) bool { return false }
 
 	defer func() {
 		// Restore original functions after test completion
@@ -103,7 +103,7 @@ func TestUpdateParametersValidation(t *testing.T) {
 				CustomerID: tt.customerID,
 			}
 
-			err := updateParameters(&flags)
+			err := updateParameters(&flags, "")
 
 			if tt.expectError {
 				if err == nil {
@@ -166,7 +166,7 @@ func TestUpdateParametersImageLogicOverrideOneImage(t *testing.T) {
 	for _, service := range allServices {
 		t.Run("Override_Only_"+service, func(t *testing.T) {
 			// Mock hasRemoteImage to return true only for the image of the current service
-			hasRemoteImage = func(image string) bool {
+			hasRemoteImage = func(image string, _ string) bool {
 				return strings.Contains(image, strings.ReplaceAll(service, "uyuni-proxy-", ""))
 			}
 
@@ -184,7 +184,7 @@ func TestUpdateParametersImageLogicOverrideOneImage(t *testing.T) {
 				CustomerID: "sccuser",
 			}
 
-			err := updateParameters(&flags)
+			err := updateParameters(&flags, "")
 
 			if err != nil {
 				t.Fatalf("updateParameters() failed with unexpected error: %s", err)
@@ -226,7 +226,7 @@ func TestUpdateParametersImageLogicNoRemoteImage(t *testing.T) {
 		}
 
 		// Mock hasRemoteImage to always return false
-		hasRemoteImage = func(_ string) bool {
+		hasRemoteImage = func(_ string, _ string) bool {
 			return false
 		}
 
@@ -244,7 +244,7 @@ func TestUpdateParametersImageLogicNoRemoteImage(t *testing.T) {
 			CustomerID: "sccuser",
 		}
 
-		err := updateParameters(&flags)
+		err := updateParameters(&flags, "")
 
 		if err != nil {
 			t.Fatalf("updateParameters() failed with unexpected error: %s", err)

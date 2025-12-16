@@ -26,6 +26,8 @@ import (
 
 var rpmImageDir = "/usr/share/suse-docker-images/native/"
 
+var newRunner = utils.NewRunner
+
 // PrepareImage ensures the container image is pulled or pull it if the pull policy allows it.
 //
 // Returns the image name to use. Note that it may be changed if the image has been loaded from a local RPM package.
@@ -335,13 +337,20 @@ func GetRunningImage(container string) (string, error) {
 // HasRemoteImage returns true if the image is available remotely.
 //
 // The image has to be a full image with registry, path and tag.
-func HasRemoteImage(image string) bool {
-	out, err := runCmdOutput(zerolog.DebugLevel,
-		"podman", "search", "--list-tags", "--format", "{{.Name}}:{{.Tag}}", image,
-	)
+func HasRemoteImage(image string, authFile string) bool {
+	args := []string{"search", "--list-tags", "--format", "{{.Name}}:{{.Tag}}", image}
+
+	if authFile != "" {
+		args = append(args, "--authfile", authFile)
+	}
+
+	out, err := utils.RunCmdOutput(
+		zerolog.DebugLevel, "podman", args...)
+
 	if err != nil {
 		return false
 	}
+
 	imageFinder := regexp.MustCompile("(?Um)^" + image + "$")
 	return imageFinder.Match(out)
 }
@@ -363,8 +372,6 @@ func DeleteImage(name string, dryRun bool) error {
 	}
 	return nil
 }
-
-var newRunner = utils.NewRunner
 
 // ExportImage saves a podman image based on its name to a specified directory.
 // outputDir option expects already existing directory.

@@ -30,24 +30,23 @@ func ptfForPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
-	if err := updateParameters(flags); err != nil {
+	hostData, err := podman_shared.InspectHost()
+	if err != nil {
+		return err
+	}
+	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.UpgradeFlags.Registry, flags.SCC)
+	if err != nil {
+		return err
+	}
+	defer cleaner()
+
+	if err := updateParameters(flags, authFile); err != nil {
 		return err
 	}
 
 	if err := systemd.StopService(podman_shared.ProxyService); err != nil {
 		return err
 	}
-
-	hostData, err := podman_shared.InspectHost()
-	if err != nil {
-		return err
-	}
-
-	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.UpgradeFlags.Registry, flags.SCC)
-	if err != nil {
-		return err
-	}
-	defer cleaner()
 
 	pullPolicy := flags.UpgradeFlags.PullPolicy
 	httpdImage := getImage(authFile, flags.UpgradeFlags.Httpd.Name, pullPolicy)
@@ -96,7 +95,7 @@ func checkIDs(flags *podmanPTFFlags) error {
 	return nil
 }
 
-func updateParameters(flags *podmanPTFFlags) error {
+func updateParameters(flags *podmanPTFFlags, authFile string) error {
 	if err := checkIDs(flags); err != nil {
 		return err
 	}
@@ -127,7 +126,7 @@ func updateParameters(flags *podmanPTFFlags) error {
 			if err != nil {
 				return err
 			}
-			if hasRemoteImage(newImage) {
+			if hasRemoteImage(newImage, authFile) {
 				config.imageFlag.Name = newImage
 				log.Info().Msgf(L("The %[1]s service image is %[2]s"), config.serviceName, newImage)
 			} else {
