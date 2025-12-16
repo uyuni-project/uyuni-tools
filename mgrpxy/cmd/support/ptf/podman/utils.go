@@ -127,8 +127,14 @@ func updateParameters(flags *podmanPTFFlags) error {
 			if err != nil {
 				return err
 			}
-			config.imageFlag.Name = newImage
+			if hasRemoteImage(newImage) {
+				config.imageFlag.Name = newImage
+				log.Info().Msgf(L("The %[1]s service image is %[2]s"), config.serviceName, newImage)
+			} else {
+				config.imageFlag.Name = ""
+			}
 		}
 	}
+
 	return nil
 }
