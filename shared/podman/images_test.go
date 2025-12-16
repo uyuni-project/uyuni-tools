@@ -6,6 +6,9 @@ package podman
 
 import (
 	"errors"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/rs/zerolog"
@@ -154,5 +157,74 @@ myregistry.org/path/image:latest`,
 		}
 		searchedImage := "myregistry.org/path/image:1.2.3"
 		testutils.AssertEquals(t, "Unexpected result", test.expected, HasRemoteImage(searchedImage))
+	}
+}
+
+func TestPrepareImage(t *testing.T) {
+	tempDir := t.TempDir()
+
+	origRpmDir := rpmImageDir
+	rpmImageDir = filepath.Join(tempDir, "rpms")
+	_ = os.MkdirAll(rpmImageDir, 0755)
+	defer func() { rpmImageDir = origRpmDir }()
+
+	tests := []struct {
+		name          string
+		image         string
+		pullPolicy    string
+		pullEnabled   bool
+		expectedImage string
+		expectError   bool
+		expectedMsg   string
+	}{
+		//testing just the error
+		{
+			name:          "test without tag",
+			image:         "registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql",
+			pullPolicy:    "IfNotPresent",
+			pullEnabled:   true,
+			expectedImage: "",
+			expectError:   true,
+			expectedMsg:   "Cannot prepare image %s because tag is missing",
+		},
+		{
+			name:          "test without registry",
+			image:         "suse/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
+			pullPolicy:    "IfNotPresent",
+			pullEnabled:   true,
+			expectedImage: "",
+			expectError:   true,
+			expectedMsg:   "Cannot prepare image %s because registry is missing",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			// Run the function under test
+			// The PATH is already modified by setupFakeBin, so it calls our script
+			res, err := PrepareImage("", tc.image, tc.pullPolicy, tc.pullEnabled)
+
+			if tc.expectError {
+				if err == nil {
+					t.Errorf("Expected error but got success")
+				}
+				if tc.expectedMsg != "" {
+					if !strings.Contains(err.Error(), tc.expectedMsg) {
+						t.Errorf("Expected error message to contain %q, got %q", tc.expectedMsg, err.Error())
+					}
+				}
+			} else {
+				if err != nil {
+					t.Errorf("Unexpected error: %v", err)
+				}
+				if tc.name == "Image Missing, RPM Available" {
+					if res == "" {
+						t.Errorf("Expected RPM path, got empty")
+					}
+				} else if res != tc.expectedImage {
+					t.Errorf("Expected %q, got %q", tc.expectedImage, res)
+				}
+			}
+		})
 	}
 }

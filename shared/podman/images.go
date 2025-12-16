@@ -7,6 +7,7 @@ package podman
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/url"
@@ -23,12 +24,20 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-const rpmImageDir = "/usr/share/suse-docker-images/native/"
+var rpmImageDir = "/usr/share/suse-docker-images/native/"
 
 // PrepareImage ensures the container image is pulled or pull it if the pull policy allows it.
 //
 // Returns the image name to use. Note that it may be changed if the image has been loaded from a local RPM package.
 func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled bool) (string, error) {
+	//image here should start with registry and end with tag
+	if !hasRegistry(image) {
+		return "", errors.New(L("Cannot prepare image %s because registry is missing"))
+	}
+	if !hasTag(image) {
+		return "", errors.New(L("Cannot prepare image %s because tag is missing"))
+	}
+
 	if strings.ToLower(pullPolicy) != "always" {
 		log.Info().Msgf(L("Ensure image %s is available"), image)
 
@@ -395,4 +404,21 @@ func RestoreImage(imageFile string, dryRun bool) error {
 		}
 	}
 	return nil
+}
+
+func hasRegistry(image string) bool {
+	parts := strings.SplitN(image, "/", 2)
+	if len(parts) > 1 {
+		domain := parts[0]
+		if strings.ContainsAny(domain, ".:") || domain == "localhost" {
+			return true
+		}
+	}
+
+	return false
+}
+
+func hasTag(image string) bool {
+	lastColon := strings.LastIndex(image, ":")
+	return lastColon != -1
 }
