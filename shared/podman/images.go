@@ -344,8 +344,7 @@ func HasRemoteImage(image string, authFile string) bool {
 		args = append(args, "--authfile", authFile)
 	}
 
-	out, err := utils.RunCmdOutput(
-		zerolog.DebugLevel, "podman", args...)
+	out, err := newRunner("podman", args...).Exec()
 
 	if err != nil {
 		return false
