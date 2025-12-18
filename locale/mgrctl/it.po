@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-05 09:25+0100\n"
 "PO-Revision-Date: 2025-12-18 13:04+0000\n"
-"Last-Translator: Alessio Matozzi <alessio.matozzi@studenti.unipg.it>\n"
+"Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgstr "Strumento di supporto alle API JSON su HTTP"
 
 #: mgrctl/cmd/api/api.go:31
 msgid "Call API GET request"
-msgstr "Call API GET request: Esegui richiesta GET all’API"
+msgstr "Esegui richiesta GET all’API"
 
 #: mgrctl/cmd/api/api.go:32
 msgid ""
