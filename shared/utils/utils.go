@@ -252,6 +252,8 @@ func ComputePTF(registry string, user string, ptfID string, fullImage string, su
 	tag := fmt.Sprintf("latest-%s-%s", suffix, ptfID)
 
 	registryHost, registryPath := SplitRegistryHostAndPath(registry)
+	// registry.suse.de is an internal registry and ptf containers here
+	// are shipped in a slightly different path
 	if registryHost == "registry.suse.de" {
 		sep := "containerfile/"
 		idx := strings.Index(registry, sep)
