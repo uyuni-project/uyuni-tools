@@ -1,8 +1,7 @@
-//go:build ptf
-
 // SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
+//go:build ptf
 package podman
 
 import (
