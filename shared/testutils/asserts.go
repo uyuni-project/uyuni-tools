@@ -34,6 +34,19 @@ func AssertNoError(t *testing.T, message string, err error) {
 	}
 }
 
+// AssertError ensures error mesasge was produced.
+func AssertError(t *testing.T, message string, err error) {
+	t.Helper() // Important: Marks this function as a test helper
+
+	if err == nil {
+		t.Fatal("Expected error but got success")
+	}
+
+	if message != "" && !strings.Contains(err.Error(), message) {
+		t.Errorf("Expected error message to contain %q, got %q", message, err.Error())
+	}
+}
+
 // AssertHasAllFlagsIgnores ensures that all but the ignored flags are present in the args slice.
 func AssertHasAllFlagsIgnores(t *testing.T, cmd *cobra.Command, args []string, ignored []string) {
 	// Some flags can be in the form --foo=bar, we only want to check the --foo part.

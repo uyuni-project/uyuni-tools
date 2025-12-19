@@ -7,8 +7,9 @@ package podman
 import (
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
+
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestGetRpmImageName(t *testing.T) {
@@ -153,31 +154,31 @@ func TestPrepareImage(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			// Run the function under test
-			// The PATH is already modified by setupFakeBin, so it calls our script
 			res, err := PrepareImage("", tc.image, tc.pullPolicy, tc.pullEnabled)
 
 			if tc.expectError {
-				if err == nil {
-					t.Errorf("Expected error but got success")
-				}
-				if tc.expectedMsg != "" {
-					if !strings.Contains(err.Error(), tc.expectedMsg) {
-						t.Errorf("Expected error message to contain %q, got %q", tc.expectedMsg, err.Error())
-					}
-				}
-			} else {
-				if err != nil {
-					t.Errorf("Unexpected error: %v", err)
-				}
-				if tc.name == "Image Missing, RPM Available" {
-					if res == "" {
-						t.Errorf("Expected RPM path, got empty")
-					}
-				} else if res != tc.expectedImage {
-					t.Errorf("Expected %q, got %q", tc.expectedImage, res)
-				}
+				testutils.AssertError(t, tc.expectedMsg, err)
+				return
 			}
+
+			assertSuccess(t, res, tc.expectedImage, err)
 		})
+	}
+}
+
+func assertSuccess(t *testing.T, gotResult string, expectedResult string, err error) {
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+
+	if expectedResult != "" {
+		if gotResult != expectedResult {
+			t.Errorf("Expected %q, got %q", expectedResult, gotResult)
+		}
+		return
+	}
+
+	if gotResult == "" {
+		t.Errorf("Expected a valid image path, got empty string")
 	}
 }
