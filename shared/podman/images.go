@@ -7,6 +7,7 @@ package podman
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/url"
@@ -23,12 +24,22 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-const rpmImageDir = "/usr/share/suse-docker-images/native/"
+var rpmImageDir = "/usr/share/suse-docker-images/native/"
+
+var newRunner = utils.NewRunner
 
 // PrepareImage ensures the container image is pulled or pull it if the pull policy allows it.
 //
 // Returns the image name to use. Note that it may be changed if the image has been loaded from a local RPM package.
 func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled bool) (string, error) {
+	//image here should start with registry and end with tag
+	if !hasRegistry(image) {
+		return "", errors.New(L("Cannot prepare image %s because registry is missing"))
+	}
+	if !hasTag(image) {
+		return "", errors.New(L("Cannot prepare image %s because tag is missing"))
+	}
+
 	if strings.ToLower(pullPolicy) != "always" {
 		log.Info().Msgf(L("Ensure image %s is available"), image)
 
@@ -48,20 +59,8 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 		)
 	}
 
-	rpmImageFile := GetRpmImagePath(image)
-
-	if len(rpmImageFile) > 0 {
-		log.Debug().Msgf("Image %s present as RPM. Loading it", image)
-		loadedImage, err := loadRpmImage(rpmImageFile)
-		if err != nil {
-			log.Warn().Err(err).Msgf(L("Cannot use RPM image for %s"), image)
-		} else {
-			log.Info().Msgf(L("Using the %[1]s image loaded from the RPM instead of its online version %[2]s"),
-				strings.TrimSpace(loadedImage), image)
-			return loadedImage, nil
-		}
-	} else {
-		log.Info().Msgf(L("Cannot find RPM image for %s"), image)
+	if loadedImage, ok := tryLoadRpmImage(image); ok {
+		return loadedImage, nil
 	}
 
 	if strings.ToLower(pullPolicy) != "never" {
@@ -74,6 +73,27 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 	}
 
 	return image, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)
+}
+
+func tryLoadRpmImage(image string) (string, bool) {
+	rpmImageFile := GetRpmImagePath(image)
+
+	if len(rpmImageFile) == 0 {
+		log.Info().Msgf(L("Cannot find RPM image for %s"), image)
+		return "", false
+	}
+
+	log.Debug().Msgf("Image %s present as RPM. Loading it", image)
+	loadedImage, err := loadRpmImage(rpmImageFile)
+	if err != nil {
+		// Log warning but do not fail; allow falling back to standard pull
+		log.Warn().Err(err).Msgf(L("Cannot use RPM image for %s"), image)
+		return "", false
+	}
+
+	log.Info().Msgf(L("Using the %[1]s image loaded from the RPM instead of its online version %[2]s"),
+		strings.TrimSpace(loadedImage), image)
+	return loadedImage, true
 }
 
 func PrepareImages(
@@ -326,13 +346,19 @@ func GetRunningImage(container string) (string, error) {
 // HasRemoteImage returns true if the image is available remotely.
 //
 // The image has to be a full image with registry, path and tag.
-func HasRemoteImage(image string) bool {
-	out, err := runCmdOutput(zerolog.DebugLevel,
-		"podman", "search", "--list-tags", "--format", "{{.Name}}:{{.Tag}}", image,
-	)
+func HasRemoteImage(image string, authFile string) bool {
+	args := []string{"search", "--list-tags", "--format", "{{.Name}}:{{.Tag}}", image}
+
+	if authFile != "" {
+		args = append(args, "--authfile", authFile)
+	}
+
+	out, err := newRunner("podman", args...).Exec()
+
 	if err != nil {
 		return false
 	}
+
 	imageFinder := regexp.MustCompile("(?Um)^" + image + "$")
 	return imageFinder.Match(out)
 }
@@ -354,8 +380,6 @@ func DeleteImage(name string, dryRun bool) error {
 	}
 	return nil
 }
-
-var newRunner = utils.NewRunner
 
 // ExportImage saves a podman image based on its name to a specified directory.
 // outputDir option expects already existing directory.
@@ -395,4 +419,21 @@ func RestoreImage(imageFile string, dryRun bool) error {
 		}
 	}
 	return nil
+}
+
+func hasRegistry(image string) bool {
+	parts := strings.SplitN(image, "/", 2)
+	if len(parts) > 1 {
+		domain := parts[0]
+		if strings.ContainsAny(domain, ".:") || domain == "localhost" {
+			return true
+		}
+	}
+
+	return false
+}
+
+func hasTag(image string) bool {
+	lastColon := strings.LastIndex(image, ":")
+	return lastColon != -1
 }

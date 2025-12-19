@@ -45,7 +45,7 @@ func ptfForPodman(
 	dummyReportDB := adm_utils.DBFlags{}
 	dummySSL := adm_utils.InstallSSLFlags{}
 
-	if err := flags.checkParameters(); err != nil {
+	if err := flags.checkParameters(authFile); err != nil {
 		return err
 	}
 
@@ -67,7 +67,7 @@ func ptfForPodman(
 var getServiceImage = podman_shared.GetServiceImage
 var hasRemoteImage = podman_shared.HasRemoteImage
 
-func (flags *podmanPTFFlags) checkParameters() error {
+func (flags *podmanPTFFlags) checkParameters(authFile string) error {
 	if flags.TestID != "" && flags.PTFId != "" {
 		return errors.New(L("ptf and test flags cannot be set simultaneously "))
 	}
@@ -113,7 +113,7 @@ func (flags *podmanPTFFlags) checkParameters() error {
 			if err != nil {
 				return err
 			}
-			if hasRemoteImage(containerImage) {
+			if hasRemoteImage(containerImage, authFile) {
 				*pointer = containerImage
 				log.Info().Msgf(L("The %[1]s service image is %[2]s"), service, *pointer)
 			}

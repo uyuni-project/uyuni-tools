@@ -34,6 +34,11 @@ const (
 	defaultApacheConf     = "/etc/uyuni/proxy/apache.conf"
 	defaultSquidConf      = "/etc/uyuni/proxy/squid.conf"
 	defaultSSHConf        = "/etc/uyuni/proxy/ssh.conf"
+	ServiceHTTPd          = "uyuni-proxy-httpd"
+	ServiceSSH            = "uyuni-proxy-ssh"
+	ServiceSquid          = "uyuni-proxy-squid"
+	ServiceSaltBroker     = "uyuni-proxy-salt-broker"
+	ServiceTFTFd          = "uyuni-proxy-tftpd"
 )
 
 var contextRunner = shared_utils.NewRunnerWithContext
