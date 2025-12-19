@@ -59,20 +59,8 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 		)
 	}
 
-	rpmImageFile := GetRpmImagePath(image)
-
-	if len(rpmImageFile) > 0 {
-		log.Debug().Msgf("Image %s present as RPM. Loading it", image)
-		loadedImage, err := loadRpmImage(rpmImageFile)
-		if err != nil {
-			log.Warn().Err(err).Msgf(L("Cannot use RPM image for %s"), image)
-		} else {
-			log.Info().Msgf(L("Using the %[1]s image loaded from the RPM instead of its online version %[2]s"),
-				strings.TrimSpace(loadedImage), image)
-			return loadedImage, nil
-		}
-	} else {
-		log.Info().Msgf(L("Cannot find RPM image for %s"), image)
+	if loadedImage, ok := tryLoadRpmImage(image); ok {
+		return loadedImage, nil
 	}
 
 	if strings.ToLower(pullPolicy) != "never" {
@@ -85,6 +73,27 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 	}
 
 	return image, fmt.Errorf(L("image %s is missing and cannot be fetched"), image)
+}
+
+func tryLoadRpmImage(image string) (string, bool) {
+	rpmImageFile := GetRpmImagePath(image)
+
+	if len(rpmImageFile) == 0 {
+		log.Info().Msgf(L("Cannot find RPM image for %s"), image)
+		return "", false
+	}
+
+	log.Debug().Msgf("Image %s present as RPM. Loading it", image)
+	loadedImage, err := loadRpmImage(rpmImageFile)
+	if err != nil {
+		// Log warning but do not fail; allow falling back to standard pull
+		log.Warn().Err(err).Msgf(L("Cannot use RPM image for %s"), image)
+		return "", false
+	}
+
+	log.Info().Msgf(L("Using the %[1]s image loaded from the RPM instead of its online version %[2]s"),
+		strings.TrimSpace(loadedImage), image)
+	return loadedImage, true
 }
 
 func PrepareImages(
