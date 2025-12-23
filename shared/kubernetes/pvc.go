@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2025 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -36,10 +36,10 @@ func CreatePersistentVolumeClaims(
 	)
 
 	for _, pvc := range pvcs {
-		if !hasPersistentVolumeClaim(pvc.ObjectMeta.Namespace, pvc.ObjectMeta.Name) {
+		if !hasPersistentVolumeClaim(pvc.Namespace, pvc.Name) {
 			if err := Apply(
 				[]*core.PersistentVolumeClaim{pvc},
-				fmt.Sprintf(L("failed to create %s persistent volume claim"), pvc.ObjectMeta.Name),
+				fmt.Sprintf(L("failed to create %s persistent volume claim"), pvc.Name),
 			); err != nil {
 				return err
 			}
@@ -110,7 +110,7 @@ func GetPersistentVolumeClaims(
 			[]core.PersistentVolumeAccessMode{accessMode},
 			matchPvByLabel,
 		)
-		pv.ObjectMeta.SetLabels(labels)
+		pv.SetLabels(labels)
 		claims = append(claims, &pv)
 	}
 

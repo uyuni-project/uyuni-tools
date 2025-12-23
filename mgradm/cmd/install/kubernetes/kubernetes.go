@@ -35,10 +35,10 @@ NOTE: installing on a remote cluster is not supported yet!
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags kubernetes.KubernetesServerFlags
 			flagsUpdater := func(v *viper.Viper) {
-				flags.ServerFlags.Coco.IsChanged = v.IsSet("coco.replicas")
-				flags.ServerFlags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
-				flags.ServerFlags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
-				flags.ServerFlags.Pgsql.IsChanged = v.IsSet("pgsql.replicas")
+				flags.Coco.IsChanged = v.IsSet("coco.replicas")
+				flags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
+				flags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
+				flags.Pgsql.IsChanged = v.IsSet("pgsql.replicas")
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},

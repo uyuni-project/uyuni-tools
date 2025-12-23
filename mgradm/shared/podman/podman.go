@@ -359,10 +359,10 @@ func Upgrade(
 		}()
 	}
 
-	oldPgVersion, _ := strconv.Atoi(inspectedValues.CommonInspectData.CurrentPgVersion)
-	newPgVersion, _ := strconv.Atoi(inspectedValues.DBInspectData.ImagePgVersion)
+	oldPgVersion, _ := strconv.Atoi(inspectedValues.CurrentPgVersion)
+	newPgVersion, _ := strconv.Atoi(inspectedValues.ImagePgVersion)
 
-	if inspectedValues.CommonInspectData.CurrentPgVersionNotMigrated != "" ||
+	if inspectedValues.CurrentPgVersionNotMigrated != "" ||
 		inspectedValues.DBHost == "localhost" ||
 		inspectedValues.ReportDBHost == "localhost" {
 		log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
@@ -561,7 +561,7 @@ func Migrate(
 	inspectedValues.DBInspectData = *dbData
 
 	oldPgVersion, _ := strconv.Atoi(inspectedValues.CurrentPgVersion)
-	newPgVersion, _ := strconv.Atoi(inspectedValues.DBInspectData.ImagePgVersion)
+	newPgVersion, _ := strconv.Atoi(inspectedValues.ImagePgVersion)
 
 	log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
 		newPgVersion, oldPgVersion)
