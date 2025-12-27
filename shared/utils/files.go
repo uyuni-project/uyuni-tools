@@ -9,10 +9,17 @@ import (
 	"io"
 	"os"
 	"strings"
+	"sync/atomic"
 
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
+
+var preserveTmpDir atomic.Bool
+
+func SetShouldPreserveTmpDir(shouldPreserve bool) {
+	preserveTmpDir.Store(shouldPreserve)
+}
 
 // IsEmptyDirectory return true if a given directory is empty.
 func IsEmptyDirectory(path string) bool {
@@ -82,9 +89,15 @@ func TempDir() (string, func(), error) {
 	if err != nil {
 		return "", nil, Error(err, L("failed to create temporary directory"))
 	}
+
+	shouldPreserveTmpDir := preserveTmpDir.Load()
 	cleaner := func() {
-		if err := os.RemoveAll(tempDir); err != nil {
-			log.Error().Err(err).Msg(L("failed to remove temporary directory"))
+		if shouldPreserveTmpDir {
+			log.Info().Msgf(L("Generated temporary directory will be preserved: %s"), tempDir)
+		} else {
+			if err := os.RemoveAll(tempDir); err != nil {
+				log.Error().Err(err).Msg(L("failed to remove temporary directory"))
+			}
 		}
 	}
 	return tempDir, cleaner, nil
