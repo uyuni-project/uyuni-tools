@@ -88,7 +88,6 @@ func writeCocoServiceFiles(
 	attestationData := templates.AttestationServiceTemplateData{
 		NamePrefix:   "uyuni",
 		Network:      podman.UyuniNetwork,
-		Image:        preparedImage,
 		DBUserSecret: podman.DBUserSecret,
 		DBPassSecret: podman.DBPassSecret,
 	}

@@ -77,7 +77,6 @@ type PgsqlServiceTemplateData struct {
 	Volumes         []types.VolumeMount
 	NamePrefix      string
 	Ports           []types.PortMap
-	Image           string
 	Network         string
 	IPV6Enabled     bool
 	CaSecret        string

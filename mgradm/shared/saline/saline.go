@@ -83,7 +83,6 @@ func writeSalineServiceFiles(
 		NamePrefix: "uyuni",
 		Network:    podman.UyuniNetwork,
 		Volumes:    utils.SalineVolumeMounts,
-		Image:      preparedImage,
 	}
 
 	log.Info().Msg(L("Setting up Saline service"))

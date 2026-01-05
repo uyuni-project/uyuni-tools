@@ -80,7 +80,6 @@ type PodmanServiceTemplateData struct {
 	NamePrefix      string
 	Args            string
 	Ports           []types.PortMap
-	Image           string
 	Network         string
 	IPV6Enabled     bool
 	CaSecret        string
