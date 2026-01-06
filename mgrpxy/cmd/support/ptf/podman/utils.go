@@ -120,7 +120,7 @@ func updateParameters(flags *podmanPTFFlags, authFile string) error {
 	for _, config := range proxyImages {
 		if containerImage := getServiceImage(config.serviceName); containerImage != "" {
 			// If no image was found then skip it during the upgrade.
-			newImage, err := utils.ComputePTF(flags.UpgradeFlags.ProxyImageFlags.Registry.Host, flags.CustomerID, projectID,
+			newImage, err := utils.ComputePTF(flags.UpgradeFlags.Registry.Host, flags.CustomerID, projectID,
 				containerImage, suffix)
 			log.Debug().Msgf("computed PTF image url: %s", newImage)
 			if err != nil {

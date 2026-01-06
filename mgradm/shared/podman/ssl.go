@@ -123,42 +123,45 @@ func PrepareSSLCertificates(image string, sslFlags *adm_utils.InstallSSLFlags, t
 	// Do we have secrets or certificates from volumes to reuse?
 	if !serverCertReady {
 		// Check if this is an upgrade scenario and there is existing CA and cert/key pair
-		if serverCertReady, err = reuseExistingCertificates(image, fqdn, false); serverCertReady && err != nil {
-			// we found certificates, but there was trouble loading it
-			return err
-		}
-		// we successfully loaded existing certificates
-		log.Info().Msg(L("Reusing the existing server certificate"))
+		serverCertReady, err = reuseExistingCertificates(image, fqdn, false)
+	}
+	if serverCertReady && err != nil {
+		// we found certificates, but there was trouble loading it
+		return err
 	}
 
 	if !dbCertReady {
 		// Check if this is an upgrade scenario and there is existing CA and cert/key pair
-		if dbCertReady, err = reuseExistingCertificates(image, fqdn, true); dbCertReady && err != nil {
-			// we found certificates, but there was trouble loading it
-			return err
-		}
-		// we successfully loaded existing certificates
-		log.Info().Msg(L("Reusing the existing database certificate"))
+		dbCertReady, err = reuseExistingCertificates(image, fqdn, true)
+	}
+	if dbCertReady && err != nil {
+		// we found certificates, but there was trouble loading it
+		return err
 	}
 
 	if dbCertReady && serverCertReady {
+		log.Info().Msg(L("Reusing the existing server and database certificates"))
 		return nil
 	}
 
 	log.Info().Msg(L("Generating both the server and database certificates since one is missing"))
-	// Do we have generated certificates files?
-	_, err = shared_podman.ReadFromContainer(
-		"ca-key-reader", image, []types.VolumeMount{utils.RootVolumeMount}, []string{},
-		"/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY",
-	)
-	if err != nil {
-		return utils.Error(err,
-			L("Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."))
+	// No need to check the CA if there is no server cert to reuse: it's likely not there too as in install.
+	if serverCertReady {
+		// Do we have generated certificates files?
+		_, err = shared_podman.ReadFromContainer(
+			"ca-key-reader", image, []types.VolumeMount{utils.RootVolumeMount}, []string{},
+			"/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY",
+		)
+		if err != nil {
+			return utils.Error(err,
+				L("Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."))
+		}
+
+		if err := validateCA(image, sslFlags, tz); err != nil {
+			return err
+		}
 	}
 
-	if err := validateCA(image, sslFlags, tz); err != nil {
-		return err
-	}
 	// Generate them all in order to have the same expiration date on both.
 	return utils.JoinErrors(
 		generateServerCertificate(image, sslFlags, tz, fqdn),
@@ -485,6 +488,18 @@ const sslSetupServerScript = `
 
 	  echo "$result"
 	}
+
+	# Only generate a CA is we don't have it yet, like for install
+	if ! test -e /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT; then
+		echo "Generating the self-signed SSL CA..."
+		mkdir -p /root/ssl-build
+		rhn-ssl-tool --gen-ca --force --dir /root/ssl-build \
+			--password "$CERT_PASS" \
+			--set-country "$CERT_COUNTRY" --set-state "$CERT_STATE" --set-city "$CERT_CITY" \
+			--set-org "$CERT_O" --set-org-unit "$CERT_OU" \
+			--set-common-name "$HOSTNAME" --cert-expiration 3650
+	fi
+
 	cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /ssl/ca.crt
 
 	echo "Generate apache certificate..."
