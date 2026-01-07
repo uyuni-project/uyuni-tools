@@ -72,6 +72,14 @@ echo "-/ /root/.mgr-sync" >> exclude_list
 echo "-/ /etc/sysconfig/tomcat" >> exclude_list
 echo "-/ /etc/tomcat/tomcat.conf" >> exclude_list
 
+# exclude krb5 configuration. All settings should be store in /etc/rhn/krb5.conf.d
+echo "-/ /etc/krb5.conf.d" >> exclude_list
+
+# exclude /etc/rhn/krb5.conf.d configuration.
+# This folder should not exists in 4.3, but it's created by the Dockerfile in a persisted folder
+# This should prevents "rsync --delete" to delete it
+echo "-/ /etc/rhn/krb5.conf.d" >> exclude_list
+
 # exclude schema migration files
 echo "-/ /etc/sysconfig/rhn/reportdb-schema-upgrade" >> exclude_list
 echo "-/ /etc/sysconfig/rhn/schema-upgrade" >> exclude_list
@@ -149,6 +157,14 @@ if $SSH {{ .SourceFqdn }} test -e /etc/tomcat/conf.d; then
   rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/tomcat/conf.d /etc/tomcat/;
 else
   echo "Skipping tomcat configuration.."
+fi
+
+if $SSH {{ .SourceFqdn }} test -e /etc/krb5.conf.d; then
+  echo "Copying krb5 configuration.."
+  mkdir -p /etc/rhn/krb5.conf.d
+  rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/krb5.conf.d /etc/rhn/;
+else
+  echo "Skipping krb5 configuration.."
 fi
 
 echo "Migrating monitoring configuration..."
