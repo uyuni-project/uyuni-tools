@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,6 +9,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -59,6 +60,7 @@ func NewRunnerWithContext(ctx context.Context, command string, args ...string) t
 type runnerImpl struct {
 	logger  zerolog.Logger
 	cmd     *exec.Cmd
+	output  *bytes.Buffer
 	spinner *spinner.Spinner
 }
 
@@ -80,11 +82,27 @@ func (r *runnerImpl) Spinner(message string) types.Runner {
 	return r
 }
 
+type WriterFunc func([]byte) (int, error)
+
+func (f WriterFunc) Write(p []byte) (int, error) { return f(p) }
+
 // StdMapping maps the process output and error streams to the standard ones.
 // This is useful to show the process output in the console and the logs and can be combined with Log().
 func (r *runnerImpl) StdMapping() types.Runner {
-	r.cmd.Stdout = r.logger
-	r.cmd.Stderr = r.logger
+	//we don't want spinner since we're using command stdoutput
+	r.spinner = nil
+	r.output = new(bytes.Buffer)
+
+	zerologWriter := WriterFunc(func(p []byte) (int, error) {
+		r.logger.Info().Msg(string(bytes.TrimSpace(p)))
+		return len(p), nil
+	})
+
+	multi := io.MultiWriter(r.output, zerologWriter)
+
+	r.cmd.Stdout = multi
+	r.cmd.Stderr = multi
+
 	return r
 }
 
@@ -123,6 +141,9 @@ func (r *runnerImpl) Exec() ([]byte, error) {
 
 	if r.cmd.Stdout != nil {
 		err = r.cmd.Run()
+		if r.output != nil {
+			out = r.output.Bytes()
+		}
 	} else {
 		out, err = r.cmd.Output()
 	}
