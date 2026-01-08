@@ -21,6 +21,9 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
+// MaxOutputSize is the maximum size of StdMapping output stored.
+const MaxOutputSize = 1024 * 1024
+
 // OutputLogWriter contains information output the logger and the loglevel.
 type OutputLogWriter struct {
 	Logger   zerolog.Logger
@@ -60,7 +63,7 @@ func NewRunnerWithContext(ctx context.Context, command string, args ...string) t
 type runnerImpl struct {
 	logger  zerolog.Logger
 	cmd     *exec.Cmd
-	output  *bytes.Buffer
+	output  *RingBuffer
 	spinner *spinner.Spinner
 }
 
@@ -91,7 +94,7 @@ func (f WriterFunc) Write(p []byte) (int, error) { return f(p) }
 func (r *runnerImpl) StdMapping() types.Runner {
 	//we don't want spinner since we're using command stdoutput
 	r.spinner = nil
-	r.output = new(bytes.Buffer)
+	r.output = NewRingBuffer(MaxOutputSize)
 
 	zerologWriter := WriterFunc(func(p []byte) (int, error) {
 		r.logger.Info().Msg(string(bytes.TrimSpace(p)))
