@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -58,8 +58,8 @@ db_port=1234
 	testutils.AssertEquals(t, "Invalid uyuni release", "2024.5", actual.UyuniRelease)
 	testutils.AssertEquals(t, "Invalid SUSE Manager release", "5.0.0", actual.SuseManagerRelease)
 	testutils.AssertEquals(t, "Invalid FQDN", "my.server.name", actual.Fqdn)
-	testutils.AssertEquals(t, "Invalid current postgresql version", "14", actual.CommonInspectData.CurrentPgVersion)
-	testutils.AssertEquals(t, "Invalid image postgresql version", "16", actual.DBInspectData.ImagePgVersion)
+	testutils.AssertEquals(t, "Invalid current postgresql version", "14", actual.CurrentPgVersion)
+	testutils.AssertEquals(t, "Invalid image postgresql version", "16", actual.ImagePgVersion)
 	testutils.AssertEquals(t, "Invalid DB user", "myuser", actual.DBUser)
 	testutils.AssertEquals(t, "Invalid DB password", "mysecret", actual.DBPassword)
 	testutils.AssertEquals(t, "Invalid DB name", "mydb", actual.DBName)

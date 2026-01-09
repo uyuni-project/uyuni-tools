@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -51,15 +51,16 @@ func extractMigrationData(
 
 	var result MigrationData
 	for file, content := range files {
-		if file == "RHN-ORG-PRIVATE-SSL-KEY" {
+		switch file {
+		case "RHN-ORG-PRIVATE-SSL-KEY":
 			result.CaKey = content
-		} else if file == "RHN-ORG-TRUSTED-SSL-CERT" {
+		case "RHN-ORG-TRUSTED-SSL-CERT":
 			result.CaCert = content
-		} else if file == "spacewalk.crt" {
+		case "spacewalk.crt":
 			result.ServerCert = content
-		} else if file == "spacewalk.key" {
+		case "spacewalk.key":
 			result.ServerKey = content
-		} else if file == "data" {
+		case "data":
 			parsedData, err := utils.ReadInspectData[utils.InspectResult]([]byte(content))
 			if err != nil {
 				return nil, utils.Errorf(err, L("failed to parse migration data file"))

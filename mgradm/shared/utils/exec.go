@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -111,7 +111,6 @@ func RunMigration(cnx *shared.Connection, scriptName string) error {
 func GenerateMigrationScript(
 	sourceFqdn string,
 	user string,
-	kubernetes bool,
 	prepare bool,
 	dbHost string,
 	reportDBHost string,
@@ -119,15 +118,13 @@ func GenerateMigrationScript(
 	// For podman we want to backup tls certificates to the temporary volume we
 	// later use when creating secrets.
 	volumes := append(utils.ServerVolumeMounts, utils.VarPgsqlDataVolumeMount)
-	if !kubernetes {
-		volumes = append(volumes, utils.EtcTLSTmpVolumeMount)
-	}
+	volumes = append(volumes, utils.EtcTLSTmpVolumeMount)
 
 	data := templates.MigrateScriptTemplateData{
 		Volumes:      volumes,
 		SourceFqdn:   sourceFqdn,
 		User:         user,
-		Kubernetes:   kubernetes,
+		Kubernetes:   false,
 		Prepare:      prepare,
 		DBHost:       dbHost,
 		ReportDBHost: reportDBHost,

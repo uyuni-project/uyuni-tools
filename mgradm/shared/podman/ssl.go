@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -20,11 +20,23 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-func prepareThirdPartyCertificate(caChain *types.CaChain, pair *types.SSLPair, outDir string, fqdns ...string) error {
+func prepareThirdPartyCertificate(
+	caChain *types.CaChain,
+	pair *types.SSLPair,
+	caSecretName string,
+	certSecretName string,
+	keySecretName string,
+	fqdns ...string,
+) error {
+	tempDir, cleaner, err := utils.TempDir()
+	defer cleaner()
+	if err != nil {
+		return err
+	}
+
 	// OrderCas checks the chain of certificates to report problems early
 	// We also sort the certificates of the chain in a single blob for Apache and PostgreSQL
 	var orderedCert, rootCA []byte
-	var err error
 	if orderedCert, rootCA, err = ssl.OrderCas(caChain, pair); err != nil {
 		return err
 	}
@@ -34,17 +46,13 @@ func prepareThirdPartyCertificate(caChain *types.CaChain, pair *types.SSLPair, o
 		return err
 	}
 
-	if err := os.Mkdir(outDir, 0600); err != nil {
-		return err
-	}
-
 	// Write the ordered cert and Root CA to temp files
-	caPath := path.Join(outDir, "ca.crt")
+	caPath := path.Join(tempDir, "ca.crt")
 	if err = os.WriteFile(caPath, rootCA, 0600); err != nil {
 		return err
 	}
 
-	serverCertPath := path.Join(outDir, "server.crt")
+	serverCertPath := path.Join(tempDir, "server.crt")
 	if err = os.WriteFile(serverCertPath, orderedCert, 0600); err != nil {
 		return err
 	}
@@ -54,27 +62,115 @@ func prepareThirdPartyCertificate(caChain *types.CaChain, pair *types.SSLPair, o
 		errors = append(errors, ssl.VerifyHostname(caPath, serverCertPath, fqdn))
 	}
 
-	return utils.JoinErrors(errors...)
+	err = utils.JoinErrors(errors...)
+	if err != nil {
+		return err
+	}
+
+	// Create secrets for CA
+	return shared_podman.CreateTLSSecrets(
+		caSecretName, path.Join(tempDir, "ca.crt"),
+		certSecretName, path.Join(tempDir, "server.crt"),
+		keySecretName, pair.Key,
+	)
 }
 
 var newRunner = utils.NewRunner
+
+func prepareThirdPartyCertificates(
+	sslFlags *adm_utils.InstallSSLFlags, fqdn string,
+) (serverCertReady bool, dbCertReady bool, err error) {
+	var errs []error
+
+	// Check if we have been provided certificates as parameters
+	if sslFlags.UseProvided() {
+		log.Info().Msg(L("Using provided 3rd party server certificates"))
+		if err := prepareThirdPartyCertificate(&sslFlags.Ca, &sslFlags.Server,
+			shared_podman.CASecret, shared_podman.SSLCertSecret, shared_podman.SSLKeySecret, fqdn,
+		); err != nil {
+			errs = append(errs, err)
+		}
+		serverCertReady = true
+	}
+
+	if sslFlags.UseProvidedDB() {
+		log.Info().Msg(L("Using provided 3rd party database certificates"))
+		if err := prepareThirdPartyCertificate(
+			&sslFlags.DB.CA, &sslFlags.DB.SSLPair, shared_podman.DBCASecret,
+			shared_podman.DBSSLCertSecret, shared_podman.DBSSLKeySecret, fqdn, "db", "reportdb",
+		); err != nil {
+			errs = append(errs, err)
+		}
+		dbCertReady = true
+	}
+
+	err = utils.JoinErrors(errs...)
+	return
+}
 
 // PrepareSSLCertificates prepares SSL environment for the server and database.
 // If 3rd party certificates are provided, it uses them, else new certificates are generated.
 // This function is called in both new installation and upgrade scenarios.
 func PrepareSSLCertificates(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
-	// Prepare Server certificates
-	if err := prepareServerSSLcertificates(image, sslFlags, tz, fqdn); err != nil {
+	var serverCertReady bool
+	var dbCertReady bool
+
+	serverCertReady, dbCertReady, err := prepareThirdPartyCertificates(sslFlags, fqdn)
+	if err != nil {
+		return utils.Errorf(err, L("Failed to create secrets from the provided SSL arguments"))
+	}
+
+	// Do we have secrets or certificates from volumes to reuse?
+	if !serverCertReady {
+		// Check if this is an upgrade scenario and there is existing CA and cert/key pair
+		serverCertReady, err = reuseExistingCertificates(image, fqdn, false)
+	}
+	if serverCertReady && err != nil {
+		// we found certificates, but there was trouble loading it
 		return err
 	}
-	// Prepare database certificates
-	if err := prepareDatabaseSSLcertificates(image, sslFlags, tz, fqdn); err != nil {
+
+	if !dbCertReady {
+		// Check if this is an upgrade scenario and there is existing CA and cert/key pair
+		dbCertReady, err = reuseExistingCertificates(image, fqdn, true)
+	}
+	if dbCertReady && err != nil {
+		// we found certificates, but there was trouble loading it
 		return err
 	}
-	return nil
+
+	if dbCertReady && serverCertReady {
+		log.Info().Msg(L("Reusing the existing server and database certificates"))
+		return nil
+	}
+
+	log.Info().Msg(L("Generating both the server and database certificates since one is missing"))
+	// No need to check the CA if there is no server cert to reuse: it's likely not there too as in install.
+	if serverCertReady {
+		// Do we have generated certificates files?
+		_, err = shared_podman.ReadFromContainer(
+			"ca-key-reader", image, []types.VolumeMount{utils.RootVolumeMount}, []string{},
+			"/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY",
+		)
+		if err != nil {
+			return utils.Error(err,
+				L("Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."))
+		}
+
+		if err := validateCA(image, sslFlags, tz); err != nil {
+			return err
+		}
+	}
+
+	// Generate them all in order to have the same expiration date on both.
+	return utils.JoinErrors(
+		generateServerCertificate(image, sslFlags, tz, fqdn),
+		generateDatabaseCertificate(image, sslFlags, tz, fqdn),
+	)
 }
 
 func validateCA(image string, sslFlags *adm_utils.InstallSSLFlags, tz string) error {
+	log.Info().Msg(L("Verifying the CA key password…"))
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
 	if err != nil {
@@ -85,105 +181,43 @@ func validateCA(image string, sslFlags *adm_utils.InstallSSLFlags, tz string) er
 	}
 
 	if err := runSSLContainer(sslValidateCA, tempDir, image, tz, env); err != nil {
-		return utils.Error(err, L("CA validation failed!"))
+		return errors.New(L("Failed to verify the CA key password!"))
 	}
 	return nil
 }
 
-func prepareServerSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
-	tempDir, cleaner, err := utils.TempDir()
-	defer cleaner()
-	if err != nil {
-		return err
-	}
-
-	// Check for provided certificates
-	if sslFlags.UseProvided() {
-		log.Info().Msg(L("Using provided 3rd party server certificates"))
-		ca := &sslFlags.Ca
-		pair := &sslFlags.Server
-
-		serverDir := path.Join(tempDir, "server")
-		if err := prepareThirdPartyCertificate(ca, pair, serverDir); err != nil {
-			return err
-		}
-		// Create secrets for CA
-		return shared_podman.CreateTLSSecrets(
-			shared_podman.CASecret, path.Join(serverDir, "ca.crt"),
-			shared_podman.SSLCertSecret, path.Join(serverDir, "server.crt"),
-			shared_podman.SSLKeySecret, pair.Key,
-		)
-	}
-
-	// Check if this is an upgrade scenario and there is existing CA
-	if reused, err := reuseExistingCertificates(image, tempDir, fqdn, false); reused && err == nil {
-		// We successfully loaded existing certificates
-		return nil
-	} else if reused && err != nil {
-		// We found certificates, but there was trouble loading it
-		return err
-	}
-
-	// Not provided and not an upgrade, generate new
-	return generateServerCertificate(image, sslFlags, tz, fqdn)
-}
-
-func prepareDatabaseSSLcertificates(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+func reuseExistingCertificates(image string, fqdn string, isDatabaseCheck bool) (reused bool, err error) {
 	// Write the ordered cert and Root CA to temp files
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
 	if err != nil {
-		return err
+		return
 	}
 
-	if sslFlags.UseProvidedDB() {
-		log.Info().Msg(L("Using provided 3rd party database certificates"))
-		dbCa := &sslFlags.DB.CA
-		dbPair := &sslFlags.DB.SSLPair
-
-		dbDir := path.Join(tempDir, "db")
-		if err := prepareThirdPartyCertificate(dbCa, dbPair, dbDir, fqdn, "db", "reportdb"); err != nil {
-			return err
-		}
-
-		// Create secrets for the database key and certificate
-		return shared_podman.CreateTLSSecrets(
-			shared_podman.DBCASecret, path.Join(dbDir, "ca.crt"),
-			shared_podman.DBSSLCertSecret, path.Join(dbDir, "server.crt"),
-			shared_podman.DBSSLKeySecret, dbPair.Key,
-		)
-	}
-
-	// Check if this is an upgrade scenario and there is existing CA
-	if reused, err := reuseExistingCertificates(image, tempDir, fqdn, true); reused && err == nil {
-		// We successfully loaded existing certificates
-		return nil
-	} else if reused && err != nil {
-		// We found certificates, but there was trouble loading it
-		return err
-	}
-
-	// Not provided and not an upgrade, generate new
-	return generateDatabaseCertificate(image, sslFlags, tz, fqdn)
-}
-
-func reuseExistingCertificates(image string, tempDir string, fqdn string, isDatabaseCheck bool) (bool, error) {
 	// Upgrading from 5.1+ with all certificates as secrets
 	if reuseExistingCertificatesFromSecrets(isDatabaseCheck) {
 		secretName := shared_podman.SSLCertSecret
 		caSecretName := shared_podman.CASecret
+		fqdns := []string{fqdn}
+		msg := L("Reusing the existing server certificate secrets")
 		if isDatabaseCheck {
 			secretName = shared_podman.DBSSLCertSecret
 			caSecretName = shared_podman.DBCASecret
+			fqdns = append(fqdns, "db", "reportdb")
+			msg = L("Reusing the existing database certificate secrets")
 		}
-		return isFQDNMatchingCertificateSecret(fqdn, secretName, caSecretName), nil
+		reused = isFQDNMatchingCertificateSecret(secretName, caSecretName, fqdns...)
+		if reused {
+			log.Info().Msg(msg)
+		}
+		return
 	}
 
 	// Upgrading from 5.0- with all certs in files
 	return reuseExistingCertificatesFromMounts(image, tempDir, fqdn, isDatabaseCheck)
 }
 
-func isFQDNMatchingCertificateSecret(fqdn string, secretName string, caSecretName string) bool {
+func isFQDNMatchingCertificateSecret(secretName string, caSecretName string, fqdns ...string) bool {
 	cert, err := shared_podman.GetSecret(secretName)
 	if err != nil {
 		log.Error().Err(err).Send()
@@ -215,12 +249,25 @@ func isFQDNMatchingCertificateSecret(fqdn string, secretName string, caSecretNam
 		return false
 	}
 
-	return isFQDNMatchingCertificate(fqdn, certPath, caPath)
+	missingFQDNs := []string{}
+	for _, fqdn := range fqdns {
+		if !isFQDNMatchingCertificate(fqdn, certPath, caPath) {
+			missingFQDNs = append(missingFQDNs, fqdn)
+		}
+	}
+	if len(missingFQDNs) > 0 {
+		log.Error().Msgf(L("Missing SANs or subjects in certificate of secret %[1]: %[2]s"),
+			secretName, strings.Join(fqdns, ", "))
+		return false
+	}
+	return true
 }
 
 func isFQDNMatchingCertificate(fqdn string, certPath string, caPath string) bool {
 	err := ssl.VerifyHostname(caPath, certPath, fqdn)
-	log.Debug().Msgf("SSL verification error: %s", err)
+	if err != nil {
+		log.Debug().Msgf("SSL verification error: %s", err)
+	}
 	return err == nil
 }
 
@@ -245,31 +292,28 @@ func reuseExistingCertificatesFromMounts(
 	serverCert := path.Join(tempDir, "existing-server.crt")
 	serverKey := path.Join(tempDir, "existing-key.crt")
 
-	// No longer used by 5.1+, but contains existing certs in migration scenarios
-	etcTLSVolume := types.VolumeMount{Name: "etc-tls", MountPath: "/etc/pki/tls"}
+	msg := L("Reusing the existing server certificate files")
 
 	// Paths for server side checking
-	volumes := append(utils.ServerVolumeMounts, etcTLSVolume)
 	caCheckPath := ssl.CAContainerPath
 	crtCheckPath := ssl.ServerCertPath
 	keyCheckPath := ssl.ServerCertKeyPath
 
 	if isDatabaseCheck {
 		// Path for database side checking.
-		// It is necessary to include etc-tls and ca-cert volume mounts to simulate non-split installation
-		volumes = append(utils.PgsqlRequiredVolumeMounts, etcTLSVolume, utils.CaCertVolumeMount)
 		caCheckPath = ssl.DBCAContainerPath
 		crtCheckPath = ssl.DBCertPath
 		keyCheckPath = ssl.DBCertKeyPath
+		msg = L("Reusing the existing database certificate files")
 	}
 
 	const containerName = "uyuni-read-certs"
 
 	// Check if we have existing CA
-	rootCA, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
+	rootCA, err := shared_podman.ReadFromContainer(containerName, image, utils.SSLMigrationVolumeMounts, nil,
 		caCheckPath)
 	if err != nil {
-		log.Info().Msgf(L("CA file %s not found. New CA and certificates will be created."), caCheckPath)
+		log.Info().Msgf(L("CA file %s not found."), caCheckPath)
 		return false, nil
 	}
 
@@ -278,10 +322,10 @@ func reuseExistingCertificatesFromMounts(
 	}
 
 	// Check for server certificate
-	cert, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
+	cert, err := shared_podman.ReadFromContainer(containerName, image, utils.SSLMigrationVolumeMounts, nil,
 		crtCheckPath)
 	if err != nil {
-		log.Info().Msgf(L("Cert file %s not found. A new certificate will be created."), crtCheckPath)
+		log.Info().Msgf(L("Certificate file %s not found."), crtCheckPath)
 		return false, nil
 	}
 	if err = os.WriteFile(serverCert, cert, 0444); err != nil {
@@ -290,22 +334,22 @@ func reuseExistingCertificatesFromMounts(
 
 	// We cannot reuse certificates not matching the requested FQDN
 	if !isFQDNMatchingCertificate(fqdn, serverCert, caPath) {
-		log.Info().Msgf(L("Cert file %[1]s doesn't match %[2]s FQDN. A new certificate will be created."), crtCheckPath, fqdn)
+		log.Warn().Msgf(L("Certificate file %[1]s doesn't match %[2]s FQDN."), crtCheckPath, fqdn)
 		return false, nil
 	}
 
 	// Check for server certificate key
-	keyData, err := shared_podman.ReadFromContainer(containerName, image, volumes, nil,
+	keyData, err := shared_podman.ReadFromContainer(containerName, image, utils.SSLMigrationVolumeMounts, nil,
 		keyCheckPath)
 	if err != nil {
-		log.Info().Msgf(L("Cert key file %s not found. A new certificate will be created."), keyCheckPath)
+		log.Warn().Msgf(L("Certificate key file %s not found."), keyCheckPath)
 		return false, nil
 	}
 	if err = os.WriteFile(serverKey, keyData, 0400); err != nil {
 		return true, utils.Error(err, L("cannot write existing server key"))
 	}
 
-	log.Info().Msg(L("Reusing existing certificates"))
+	log.Info().Msg(msg)
 	if isDatabaseCheck {
 		return true, shared_podman.CreateTLSSecrets(
 			shared_podman.DBCASecret, caPath,
@@ -344,6 +388,7 @@ func runSSLContainer(script string, workdir string, image string, tz string, env
 	command = append(command, "/usr/bin/sh", "-e", "-c", script)
 
 	_, err := newRunner("podman", command...).Env(envValues).StdMapping().Exec()
+
 	return err
 }
 
@@ -354,6 +399,7 @@ func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags
 	if sslFlags.Password == "" {
 		return errors.New(L("Cannot generate new certificates without a CA password. Please check input options"))
 	}
+	log.Info().Msg(L("Generating the server certificate…"))
 
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
@@ -373,10 +419,10 @@ func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags
 		"HOSTNAME":     fqdn,
 	}
 	if err := runSSLContainer(sslSetupServerScript, tempDir, image, tz, env); err != nil {
-		return utils.Error(err, L("Failed to generate server SSL certificates. Please check the input parameters."))
+		return utils.Error(err, L("Failed to generate server SSL certificate. Please check the input parameters."))
 	}
 
-	log.Info().Msg(L("Server SSL certificates generated"))
+	log.Info().Msg(L("Server SSL certificate generated"))
 
 	// Create secret for the database key and certificate
 	return shared_podman.CreateTLSSecrets(
@@ -387,15 +433,12 @@ func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags
 }
 
 func generateDatabaseCertificate(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+	log.Info().Msg(L("Generating the database certificate…"))
 	// Write the ordered cert and Root CA to temp files
 	tempDir, cleaner, err := utils.TempDir()
 	defer cleaner()
 	if err != nil {
 		return err
-	}
-
-	if err := validateCA(image, sslFlags, tz); err != nil {
-		return utils.Error(err, L("Cannot generate database certificate"))
 	}
 
 	env := map[string]string{
@@ -409,10 +452,10 @@ func generateDatabaseCertificate(image string, sslFlags *adm_utils.InstallSSLFla
 		"CERT_PASS":    sslFlags.Password,
 	}
 	if err := runSSLContainer(sslSetupDatabaseScript, tempDir, image, tz, env); err != nil {
-		return utils.Error(err, L("Failed to generate server Database SSL certificates. Please check the input parameters."))
+		return utils.Error(err, L("Failed to generate database SSL certificate"))
 	}
 
-	log.Info().Msg(L("Database SSL certificates generated"))
+	log.Info().Msg(L("Database SSL certificate generated"))
 
 	// Create secret for the database key and certificate
 	if err := shared_podman.CreateTLSSecrets(
@@ -446,7 +489,7 @@ const sslSetupServerScript = `
 	  echo "$result"
 	}
 
-	# Only generate a CA is we don't have it yet
+	# Only generate a CA is we don't have it yet, like for install
 	if ! test -e /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT; then
 		echo "Generating the self-signed SSL CA..."
 		mkdir -p /root/ssl-build
@@ -456,6 +499,7 @@ const sslSetupServerScript = `
 			--set-org "$CERT_O" --set-org-unit "$CERT_OU" \
 			--set-common-name "$HOSTNAME" --cert-expiration 3650
 	fi
+
 	cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /ssl/ca.crt
 
 	echo "Generate apache certificate..."
@@ -502,12 +546,11 @@ const sslValidateCA = `
 	CA_PASS_FILE=/ssl/ca_pass
 	trap "test -f \"$CA_PASS_FILE\" && /bin/rm -f -- \"$CA_PASS_FILE\" " 0 1 2 3 13 15
 
-	echo "Validating CA..."
 	echo "$CERT_PASS" > "$CA_PASS_FILE"
 
 	test -f $CA_KEY || (echo "CA key is not available" && exit 1)
 	test -r "$CA_KEY" || (echo "CA key is not readable" && exit 2)
 
 	openssl rsa -noout -in "/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY" -passin "file:$CA_PASS_FILE" || \
-	    (echo "Wrong CA key password" && exit 3)
+	    (echo "Wrong CA key password" 1>&2 && exit 3)
 `

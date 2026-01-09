@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 //go:build ptf
@@ -30,7 +30,17 @@ func ptfForPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
-	if err := updateParameters(flags); err != nil {
+	hostData, err := podman_shared.InspectHost()
+	if err != nil {
+		return err
+	}
+	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.UpgradeFlags.Registry, flags.SCC)
+	if err != nil {
+		return err
+	}
+	defer cleaner()
+
+	if err := updateParameters(flags, authFile); err != nil {
 		return err
 	}
 
@@ -38,42 +48,12 @@ func ptfForPodman(
 		return err
 	}
 
-	hostData, err := podman_shared.InspectHost()
-	if err != nil {
-		return err
-	}
-
-	authFile, cleaner, err := podman_shared.PodmanLogin(hostData, flags.UpgradeFlags.Registry, flags.SCC)
-	if err != nil {
-		return err
-	}
-	defer cleaner()
-
-	httpdImage, err := podman_shared.PrepareImage(authFile, flags.UpgradeFlags.Httpd.Name,
-		flags.UpgradeFlags.PullPolicy, true)
-	if err != nil {
-		log.Warn().Msgf(L("cannot find httpd image: it will no be upgraded"))
-	}
-	saltBrokerImage, err := podman_shared.PrepareImage(authFile, flags.UpgradeFlags.SaltBroker.Name,
-		flags.UpgradeFlags.PullPolicy, true)
-	if err != nil {
-		log.Warn().Msgf(L("cannot find salt-broker image: it will no be upgraded"))
-	}
-	squidImage, err := podman_shared.PrepareImage(authFile, flags.UpgradeFlags.Squid.Name,
-		flags.UpgradeFlags.PullPolicy, true)
-	if err != nil {
-		log.Warn().Msgf(L("cannot find squid image: it will no be upgraded"))
-	}
-	sshImage, err := podman_shared.PrepareImage(authFile, flags.UpgradeFlags.SSH.Name,
-		flags.UpgradeFlags.PullPolicy, true)
-	if err != nil {
-		log.Warn().Msgf(L("cannot find ssh image: it will no be upgraded"))
-	}
-	tftpdImage, err := podman_shared.PrepareImage(authFile, flags.UpgradeFlags.Tftpd.Name,
-		flags.UpgradeFlags.PullPolicy, true)
-	if err != nil {
-		log.Warn().Msgf(L("cannot find tftpd image: it will no be upgraded"))
-	}
+	pullPolicy := flags.UpgradeFlags.PullPolicy
+	httpdImage := getImage(authFile, flags.UpgradeFlags.Httpd.Name, pullPolicy)
+	saltBrokerImage := getImage(authFile, flags.UpgradeFlags.SaltBroker.Name, pullPolicy)
+	squidImage := getImage(authFile, flags.UpgradeFlags.Squid.Name, pullPolicy)
+	sshImage := getImage(authFile, flags.UpgradeFlags.SSH.Name, pullPolicy)
+	tftpdImage := getImage(authFile, flags.UpgradeFlags.Tftpd.Name, pullPolicy)
 
 	// Setup the systemd service configuration options
 	err = podman.GenerateSystemdService(systemd, httpdImage, saltBrokerImage, squidImage, sshImage,
@@ -85,7 +65,24 @@ func ptfForPodman(
 	return podman.StartPod(systemd)
 }
 
-func updateParameters(flags *podmanPTFFlags) error {
+func getImage(authFile string, image string, policy string) string {
+	var newImage string
+	var err error
+	if image != "" {
+		newImage, err = podman_shared.PrepareImage(authFile, image, policy, true)
+		if err != nil {
+			log.Warn().Msgf(L("cannot find %s image: it will no be upgraded"), image)
+		}
+	}
+
+	return newImage
+}
+
+// variables for unit testing.
+var getServiceImage = podman_shared.GetServiceImage
+var hasRemoteImage = podman_shared.HasRemoteImage
+
+func checkIDs(flags *podmanPTFFlags) error {
 	if flags.TestID != "" && flags.PTFId != "" {
 		return errors.New(L("ptf and test flags cannot be set simultaneously "))
 	}
@@ -94,6 +91,13 @@ func updateParameters(flags *podmanPTFFlags) error {
 	}
 	if flags.CustomerID == "" {
 		return errors.New(L("user flag cannot be empty"))
+	}
+	return nil
+}
+
+func updateParameters(flags *podmanPTFFlags, authFile string) error {
+	if err := checkIDs(flags); err != nil {
+		return err
 	}
 	suffix := "ptf"
 	projectID := flags.PTFId
@@ -106,24 +110,29 @@ func updateParameters(flags *podmanPTFFlags) error {
 		serviceName string
 		imageFlag   *types.ImageFlags
 	}{
-		{"httpd", &flags.UpgradeFlags.Httpd},
-		{"ssh", &flags.UpgradeFlags.SSH},
-		{"tftpd", &flags.UpgradeFlags.Tftpd},
-		{"salt-broker", &flags.UpgradeFlags.SaltBroker},
-		{"squid", &flags.UpgradeFlags.Squid},
+		{podman.ServiceHTTPd, &flags.UpgradeFlags.Httpd},
+		{podman.ServiceSSH, &flags.UpgradeFlags.SSH},
+		{podman.ServiceTFTFd, &flags.UpgradeFlags.Tftpd},
+		{podman.ServiceSaltBroker, &flags.UpgradeFlags.SaltBroker},
+		{podman.ServiceSquid, &flags.UpgradeFlags.Squid},
 	}
 	// Process each pxy image
 	for _, config := range proxyImages {
-		runningImage, err := podman_shared.GetRunningImage(config.serviceName)
-		if err != nil {
-			return err
+		if containerImage := getServiceImage(config.serviceName); containerImage != "" {
+			// If no image was found then skip it during the upgrade.
+			newImage, err := utils.ComputePTF(flags.UpgradeFlags.Registry.Host, flags.CustomerID, projectID,
+				containerImage, suffix)
+			log.Debug().Msgf("computed PTF image url: %s", newImage)
+			if err != nil {
+				return err
+			}
+			if hasRemoteImage(newImage, authFile) {
+				config.imageFlag.Name = newImage
+				log.Info().Msgf(L("The %[1]s service image is %[2]s"), config.serviceName, newImage)
+			} else {
+				config.imageFlag.Name = ""
+			}
 		}
-		config.imageFlag.Name, err = utils.ComputePTF(flags.UpgradeFlags.Registry.Host,
-			flags.CustomerID, projectID, runningImage, suffix)
-		if err != nil {
-			return err
-		}
-		log.Info().Msgf(L("The %[1]s ptf image computed is: %[2]s"), config.serviceName, config.imageFlag.Name)
 	}
 
 	return nil

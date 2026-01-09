@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -32,7 +32,7 @@ var serviceMap = map[string]string{
 func CreateServices(namespace string, debug bool) error {
 	services := GetServices(namespace, debug)
 	for _, svc := range services {
-		if !hasCustomService(namespace, svc.ObjectMeta.Name) {
+		if !hasCustomService(namespace, svc.Name) {
 			if err := kubernetes.Apply([]*core.Service{svc}, L("failed to create the service")); err != nil {
 				return err
 			}

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 //go:build ptf
@@ -34,8 +34,8 @@ func TestParamsParsing(t *testing.T) {
 		testutils.AssertEquals(t, "Error parsing --user", "sccuser", flags.CustomerID)
 		testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.Image.PullPolicy)
 		testutils.AssertEquals(t, "Error parsing --registry", "myOldRegistry", flags.Image.Registry.Host)
-		flagstests.AssertRegistryFlag(t, &flags.ServerFlags.Image.Registry)
-		flagstests.AssertSCCFlag(t, &flags.ServerFlags.Installation.SCC)
+		flagstests.AssertRegistryFlag(t, &flags.Image.Registry)
+		flagstests.AssertSCCFlag(t, &flags.Installation.SCC)
 		return nil
 	}
 

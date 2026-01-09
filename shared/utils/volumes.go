@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -56,6 +56,9 @@ var ServerVolumeMounts = []types.VolumeMount{
 	{MountPath: "/etc/sssd", Name: "etc-sssd", Size: "1Mi"},
 	EtcRhnVolumeMount,
 }
+
+// SSLMigrationVolumeMounts are the mounts needed to extract the SSL certificates for a migration.
+var SSLMigrationVolumeMounts = []types.VolumeMount{EtcTLSTmpVolumeMount, RootVolumeMount, CaCertVolumeMount}
 
 // ServerMigrationVolumeMounts match server + postgres volume mounts, used for migration.
 var ServerMigrationVolumeMounts = append(ServerVolumeMounts, VarPgsqlDataVolumeMount, EtcTLSTmpVolumeMount)

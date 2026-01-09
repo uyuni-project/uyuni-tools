@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 //go:build ptf
@@ -113,7 +113,7 @@ func TestCheckParameters(t *testing.T) {
 		getServiceImage = func(service string) string {
 			return test.serviceImages[service]
 		}
-		hasRemoteImage = func(image string) bool {
+		hasRemoteImage = func(image string, _ string) bool {
 			return test.hasRemoteImages[image]
 		}
 
@@ -129,7 +129,7 @@ func TestCheckParameters(t *testing.T) {
 			},
 		}
 		testCase := fmt.Sprintf("case #%d - ", i+1)
-		actualError := flags.checkParameters()
+		actualError := flags.checkParameters("")
 		errMessage := ""
 		if actualError != nil {
 			errMessage = actualError.Error()

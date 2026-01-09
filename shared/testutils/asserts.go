@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -31,6 +31,19 @@ func AssertTrue(t *testing.T, message string, actual bool) {
 func AssertNoError(t *testing.T, message string, err error) {
 	if err != nil {
 		t.Errorf(message+"err: %v", err)
+	}
+}
+
+// AssertError ensures error mesasge was produced.
+func AssertError(t *testing.T, message string, err error) {
+	t.Helper() // Important: Marks this function as a test helper
+
+	if err == nil {
+		t.Fatal("Expected error but got success")
+	}
+
+	if message != "" && !strings.Contains(err.Error(), message) {
+		t.Errorf("Expected error message to contain %q, got %q", message, err.Error())
 	}
 }
 

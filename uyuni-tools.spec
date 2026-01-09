@@ -57,7 +57,7 @@
 # 0%{?debian} || 0%{?ubuntu}
 
 Name:           %{project}
-Version:        5.2.2
+Version:        5.2.3
 Release:        0
 Summary:        Tools for managing %{productprettyname} container
 License:        Apache-2.0
@@ -82,7 +82,7 @@ BuildRequires:  fish
 BuildRequires:  zsh
 # Get the proper Go version on different distros
 %if 0%{?suse_version}
-BuildRequires:  golang(API) >= 1.23
+BuildRequires:  golang(API) >= 1.24
 %endif
 # 0%{?suse_version}
 

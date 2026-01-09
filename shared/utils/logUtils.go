@@ -1,10 +1,12 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package utils
 
 import (
+	"bytes"
+	"encoding/json"
 	"io"
 	"os"
 	"path"
@@ -61,9 +63,18 @@ func (l *UyuniLogger) Rotate() error {
 
 // Write transforms the JSON input with formatters and appends to w.Out.
 func (c UyuniConsoleWriter) Write(p []byte) (n int, err error) {
-	_, err = c.consoleWriter.Write([]byte(redact(string(p))))
-	if err != nil {
-		return 0, err
+	var evt map[string]any
+	d := json.NewDecoder(bytes.NewReader(p))
+	if err := d.Decode(&evt); err != nil {
+		return n, Error(err, L("failed to decode message to log"))
+	}
+	message, ok := evt["message"].([]byte)
+	if ok {
+		evt["message"] = []byte(redact(string(message)))
+	}
+	e := json.NewEncoder(c.consoleWriter)
+	if err := e.Encode(evt); err != nil {
+		return n, Error(err, L("failed to encode log event"))
 	}
 	// using len(p) prevents "zerolog: could not write event: short write" error
 	return len(p), nil

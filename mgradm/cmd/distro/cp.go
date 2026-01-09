@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -149,7 +149,7 @@ func distroCp(
 		}
 	}
 
-	attemptRegistration := false
+	var attemptRegistration bool
 	if flags.ConnectionDetails.User != "" && flags.ConnectionDetails.Password != "" {
 		attemptRegistration = true
 	}

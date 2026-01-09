@@ -1,14 +1,14 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package podman
 
 import (
-	"errors"
+	"os"
+	"path/filepath"
 	"testing"
 
-	"github.com/rs/zerolog"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
@@ -114,45 +114,71 @@ func TestMatchingMetadata(t *testing.T) {
 	}
 }
 
-func TestHasRemoteImage(t *testing.T) {
-	type testData struct {
-		out      string
-		err      error
-		expected bool
+func TestPrepareImage(t *testing.T) {
+	tempDir := t.TempDir()
+
+	origRpmDir := rpmImageDir
+	rpmImageDir = filepath.Join(tempDir, "rpms")
+	_ = os.MkdirAll(rpmImageDir, 0755)
+	defer func() { rpmImageDir = origRpmDir }()
+
+	tests := []struct {
+		name          string
+		image         string
+		pullPolicy    string
+		pullEnabled   bool
+		expectedImage string
+		expectError   bool
+		expectedMsg   string
+	}{
+		//testing just the error
+		{
+			name:          "test without tag",
+			image:         "registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql",
+			pullPolicy:    "IfNotPresent",
+			pullEnabled:   true,
+			expectedImage: "",
+			expectError:   true,
+			expectedMsg:   "Cannot prepare image %s because tag is missing",
+		},
+		{
+			name:          "test without registry",
+			image:         "suse/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
+			pullPolicy:    "IfNotPresent",
+			pullEnabled:   true,
+			expectedImage: "",
+			expectError:   true,
+			expectedMsg:   "Cannot prepare image %s because registry is missing",
+		},
 	}
 
-	data := []testData{
-		{
-			`Error: 1 error occurred:
-	* getting repository tags: fetching tags list: repository name not known to registry
-`,
-			errors.New("exit code 125"),
-			false,
-		},
-		{
-			`myregistry.org/path/image:1.2.2
-myregistry.org/path/image:1.2.3
-myregistry.org/path/image:1.2.3.4
-myregistry.org/path/image:1.2
-myregistry.org/path/image:latest`,
-			nil,
-			true,
-		},
-		{
-			`myregistry.org/path/image:1.2.1
-myregistry.org/path/image:1.2.1.2
-myregistry.org/path/image:1.2
-myregistry.org/path/image:latest`,
-			nil,
-			false,
-		},
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			res, err := PrepareImage("", tc.image, tc.pullPolicy, tc.pullEnabled)
+
+			if tc.expectError {
+				testutils.AssertError(t, tc.expectedMsg, err)
+				return
+			}
+
+			assertSuccess(t, res, tc.expectedImage, err)
+		})
+	}
+}
+
+func assertSuccess(t *testing.T, gotResult string, expectedResult string, err error) {
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
 	}
 
-	for _, test := range data {
-		runCmdOutput = func(_ zerolog.Level, _ string, _ ...string) ([]byte, error) {
-			return []byte(test.out), test.err
+	if expectedResult != "" {
+		if gotResult != expectedResult {
+			t.Errorf("Expected %q, got %q", expectedResult, gotResult)
 		}
-		searchedImage := "myregistry.org/path/image:1.2.3"
-		testutils.AssertEquals(t, "Unexpected result", test.expected, HasRemoteImage(searchedImage))
+		return
+	}
+
+	if gotResult == "" {
+		t.Errorf("Expected a valid image path, got empty string")
 	}
 }

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -28,7 +28,7 @@ func StartPostUpgradeJob(namespace string, image string, pullPolicy string, pull
 		return "", err
 	}
 
-	return job.ObjectMeta.Name, kubernetes.Apply([]runtime.Object{job}, L("failed to run the post upgrade job"))
+	return job.Name, kubernetes.Apply([]runtime.Object{job}, L("failed to run the post upgrade job"))
 }
 
 func getPostUpgradeJob(namespace string, image string, pullPolicy string, pullSecret string) (*batch.Job, error) {

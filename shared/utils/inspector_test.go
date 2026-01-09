@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -27,8 +27,8 @@ has_hubxmlrpc=true
 	}
 
 	testutils.AssertEquals(t, "Invalid timezone", "Europe/Berlin", actual.Timezone)
-	testutils.AssertEquals(t, "Invalid current postgresql version", "14", actual.CommonInspectData.CurrentPgVersion)
-	testutils.AssertEquals(t, "Invalid image postgresql version", "16", actual.DBInspectData.ImagePgVersion)
+	testutils.AssertEquals(t, "Invalid current postgresql version", "14", actual.CurrentPgVersion)
+	testutils.AssertEquals(t, "Invalid image postgresql version", "16", actual.ImagePgVersion)
 	testutils.AssertEquals(t, "Invalid DB user", "myuser", actual.DBUser)
 	testutils.AssertEquals(t, "Invalid DB password", "mysecret", actual.DBPassword)
 	testutils.AssertEquals(t, "Invalid DB name", "mydb", actual.DBName)

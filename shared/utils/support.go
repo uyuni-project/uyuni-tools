@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -68,8 +68,8 @@ func CreateSupportConfigTarball(outputFolder string, files []string) error {
 
 // GetContainersFromSystemdFiles parse a string of systemdfile and return a list of containers.
 func GetContainersFromSystemdFiles(systemdFileList string) []string {
-	serviceList := strings.Replace(string(systemdFileList), "/etc/systemd/system/", "", -1)
-	containers := strings.Replace(serviceList, ".service", "", -1)
+	serviceList := strings.ReplaceAll(string(systemdFileList), "/etc/systemd/system/", "")
+	containers := strings.ReplaceAll(serviceList, ".service", "")
 
 	containerList := strings.Split(strings.TrimSpace(containers), "\n")
 

@@ -1,0 +1,1 @@
+- During migration, krb5.conf.d should be copied in /etc/rhn (bsc#1254478)

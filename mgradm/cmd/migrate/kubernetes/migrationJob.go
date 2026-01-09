@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -48,7 +48,7 @@ func startMigrationJob(
 	}
 
 	// Run the job
-	return job.ObjectMeta.Name, kubernetes.Apply([]runtime.Object{job}, L("failed to run the migration job"))
+	return job.Name, kubernetes.Apply([]runtime.Object{job}, L("failed to run the migration job"))
 }
 
 func getMigrationJob(
@@ -67,7 +67,7 @@ func getMigrationJob(
 
 	keyVolume := kubernetes.CreateSecretVolume("ssh-key", "uyuni-migration-key")
 	var keyMode int32 = 0600
-	keyVolume.VolumeSource.Secret.Items = []core.KeyToPath{
+	keyVolume.Secret.Items = []core.KeyToPath{
 		{Key: "key", Path: "id_rsa", Mode: &keyMode},
 		{Key: "key.pub", Path: "id_rsa.pub"},
 	}

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -249,12 +249,23 @@ func ComputePTF(registry string, user string, ptfID string, fullImage string, su
 	}
 	imagePath := submatches[0]
 
+	tag := fmt.Sprintf("latest-%s-%s", suffix, ptfID)
+
 	registryHost, registryPath := SplitRegistryHostAndPath(registry)
+	// registry.suse.de is an internal registry and ptf containers here
+	// are shipped in a slightly different path
+	if registryHost == "registry.suse.de" {
+		sep := "containerfile/"
+		idx := strings.Index(registry, sep)
+		if idx > 1 {
+			imagePath = registry[idx+len(sep):]
+		}
+		return fmt.Sprintf("%s/ptf/%s/containers/a/%s%s", registryHost, ptfID, imagePath, tag), nil
+	}
 	if registryPath != "" && !strings.HasPrefix(imagePath, registryPath) {
 		return "", fmt.Errorf(L("image path '%[1]s' does not start with registry path '%[2]s'"), imagePath, registryPath)
 	}
 
-	tag := fmt.Sprintf("latest-%s-%s", suffix, ptfID)
 	return fmt.Sprintf("%s/a/%s/%s/%s%s", registryHost, strings.ToLower(user), ptfID, imagePath, tag), nil
 }
 

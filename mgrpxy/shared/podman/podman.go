@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -34,6 +34,11 @@ const (
 	defaultApacheConf     = "/etc/uyuni/proxy/apache.conf"
 	defaultSquidConf      = "/etc/uyuni/proxy/squid.conf"
 	defaultSSHConf        = "/etc/uyuni/proxy/ssh.conf"
+	ServiceHTTPd          = "uyuni-proxy-httpd"
+	ServiceSSH            = "uyuni-proxy-ssh"
+	ServiceSquid          = "uyuni-proxy-squid"
+	ServiceSaltBroker     = "uyuni-proxy-salt-broker"
+	ServiceTFTFd          = "uyuni-proxy-tftpd"
 )
 
 var contextRunner = shared_utils.NewRunnerWithContext
@@ -95,7 +100,7 @@ func GenerateSystemdService(
 		}
 
 		additionHttpdTuningSettings := ""
-		additionHTTPConfPath, err := getPathOrDefault(flags.ProxyImageFlags.Tuning.Httpd, defaultApacheConf)
+		additionHTTPConfPath, err := getPathOrDefault(flags.Tuning.Httpd, defaultApacheConf)
 		if err != nil {
 			return err
 		}
@@ -126,7 +131,7 @@ func GenerateSystemdService(
 			HTTPProxyFile: httpProxyConfig,
 		}
 		additionSquidTuningSettings := ""
-		additionSquidConfPath, err := getPathOrDefault(flags.ProxyImageFlags.Tuning.Squid, defaultSquidConf)
+		additionSquidConfPath, err := getPathOrDefault(flags.Tuning.Squid, defaultSquidConf)
 		if err != nil {
 			return err
 		}
@@ -146,7 +151,7 @@ func GenerateSystemdService(
 			HTTPProxyFile: httpProxyConfig,
 		}
 		additionSSHTuningSettings := ""
-		additionSSHConfPath, err := getPathOrDefault(flags.ProxyImageFlags.Tuning.SSH, defaultSSHConf)
+		additionSSHConfPath, err := getPathOrDefault(flags.Tuning.SSH, defaultSSHConf)
 		if err != nil {
 			return err
 		}

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -200,10 +200,10 @@ func hostedContainers(systemd Systemd) ([]string, error) {
 	var containerList []string
 
 	for _, service := range servicesList {
-		service = strings.Replace(service, ".service", "", -1)
+		service = strings.ReplaceAll(service, ".service", "")
 		// we can collect container data only from the first instance
-		// and assume there's no difference with other intances
-		containerList = append(containerList, strings.Replace(service, "@", "-0", -1))
+		// and assume there's no difference with other instances
+		containerList = append(containerList, strings.ReplaceAll(service, "@", "-0"))
 	}
 
 	return containerList, nil
@@ -211,8 +211,8 @@ func hostedContainers(systemd Systemd) ([]string, error) {
 
 // getServicesFromSystemdFiles return the uyuni enabled services as string list.
 func getServicesFromSystemdFiles(systemd Systemd, systemdFileList string) []string {
-	services := strings.Replace(string(systemdFileList), "/etc/systemd/system/", "", -1)
-	services = strings.Replace(services, ".service", "", -1)
+	services := strings.ReplaceAll(string(systemdFileList), "/etc/systemd/system/", "")
+	services = strings.ReplaceAll(services, ".service", "")
 	servicesList := strings.Split(strings.TrimSpace(services), "\n")
 
 	var trimmedServices []string

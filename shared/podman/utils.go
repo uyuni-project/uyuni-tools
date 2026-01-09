@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -73,7 +73,7 @@ func EnablePodmanSocket() error {
 	return err
 }
 
-// ReadFromContainer read a file from a container.
+// ReadFromContainer reads a file from a container.
 func ReadFromContainer(name string, image string, volumes []types.VolumeMount,
 	extraArgs []string, file string) ([]byte, error) {
 	podmanArgs := append([]string{"run", "--name", name}, GetCommonParams()...)

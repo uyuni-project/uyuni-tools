@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -71,6 +71,14 @@ echo "-/ /root/.mgr-sync" >> exclude_list
 # exclude tomcat default configuration. All settings should be store in /etc/tomcat/conf.d/
 echo "-/ /etc/sysconfig/tomcat" >> exclude_list
 echo "-/ /etc/tomcat/tomcat.conf" >> exclude_list
+
+# exclude krb5 configuration. All settings should be store in /etc/rhn/krb5.conf.d
+echo "-/ /etc/krb5.conf.d" >> exclude_list
+
+# exclude /etc/rhn/krb5.conf.d configuration.
+# This folder should not exists in 4.3, but it's created by the Dockerfile in a persisted folder
+# This should prevents "rsync --delete" to delete it
+echo "-/ /etc/rhn/krb5.conf.d" >> exclude_list
 
 # exclude schema migration files
 echo "-/ /etc/sysconfig/rhn/reportdb-schema-upgrade" >> exclude_list
@@ -151,6 +159,14 @@ else
   echo "Skipping tomcat configuration.."
 fi
 
+if $SSH {{ .SourceFqdn }} test -e /etc/krb5.conf.d; then
+  echo "Copying krb5 configuration.."
+  mkdir -p /etc/rhn/krb5.conf.d
+  rsync --delete -e "$SSH" --rsync-path='sudo rsync' -avz {{ .SourceFqdn }}:/etc/krb5.conf.d /etc/rhn/;
+else
+  echo "Skipping krb5 configuration.."
+fi
+
 echo "Migrating monitoring configuration..."
 if test -f /etc/sysconfig/prometheus-postgres_exporter; then
   echo "The server monitoring configuration is too old, reapply after the migration"
@@ -171,8 +187,10 @@ do
 done
 rm -f /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service
 if $SSH {{ .SourceFqdn }} systemctl is-enabled prometheus-postgres_exporter.service; then
-  echo "Enabling prometheus-postgres_exporter service..."
-  ln -s /usr/lib/systemd/system/prometheus-postgres_exporter.service /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service
+  if test ! -e /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service; then
+    echo "Enabling prometheus-postgres_exporter service..."
+    ln -s /usr/lib/systemd/system/prometheus-postgres_exporter.service /etc/systemd/system/multi-user.target.wants/prometheus-postgres_exporter.service
+  fi
 fi
 
 echo "Migrating custom SSL CA certificates..."

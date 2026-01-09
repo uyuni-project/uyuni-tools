@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -109,7 +109,7 @@ func TestSSLCAParams(t *testing.T) {
 	tester := func(_ *types.GlobalFlags, flags *podmanInstallFlags,
 		_ *cobra.Command, _ []string,
 	) error {
-		DBSSL := flags.ServerFlags.Installation.SSL.DB
+		DBSSL := flags.Installation.SSL.DB
 		testutils.AssertTrue(t, "SSL DB CA flags not reused", DBSSL.CA.IsThirdParty())
 		testutils.AssertEquals(t, "Wrong SSL DB CA root", "path/to/ca.crt", DBSSL.CA.Root)
 		testutils.AssertEquals(t, "Wrong SSL DB intermediate cert", "path/to/intermediate0.crt", DBSSL.CA.Intermediate[0])

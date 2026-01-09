@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -136,8 +136,8 @@ func Reconcile(flags *KubernetesServerFlags, fqdn string) error {
 	}
 
 	if hasDatabase {
-		oldPgVersion := inspectedData.CommonInspectData.CurrentPgVersion
-		newPgVersion := inspectedData.DBInspectData.ImagePgVersion
+		oldPgVersion := inspectedData.CurrentPgVersion
+		newPgVersion := inspectedData.ImagePgVersion
 
 		// TODO Split DB upgrade if needed or merge it in another job (which?)
 
