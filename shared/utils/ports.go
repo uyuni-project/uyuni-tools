@@ -142,11 +142,6 @@ var TCPPodmanPorts = []types.PortMap{
 	NewPortMap("tomcat", "node-exporter", 9100, 9100),
 }
 
-// HubXmlrpcPorts are the tcp ports required by the Hub XMLRPC API service.
-var HubXmlrpcPorts = []types.PortMap{
-	NewPortMap(HubAPIServiceName, "xmlrpc", 2830, 2830),
-}
-
 // ProxyTCPPorts are the tcp ports required by the proxy.
 var ProxyTCPPorts = []types.PortMap{
 	NewPortMap(ProxyTCPServiceName, "ssh", 8022, 22),
