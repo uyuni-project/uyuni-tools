@@ -1,0 +1,1 @@
+- Support config command parse correctly supportconfig output (bsc#1255781)
