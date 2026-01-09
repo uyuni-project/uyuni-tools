@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-05 09:25+0100\n"
+"POT-Creation-Date: 2026-01-09 11:40+0100\n"
 "PO-Revision-Date: 2025-11-26 10:53+0000\n"
 "Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -280,20 +280,20 @@ msgstr "无法关闭 %s YAML 文件"
 msgid "failed to write PVC to file"
 msgstr "无法将 PVC 写入文件"
 
-#: shared/kubernetes/helm.go:56
+#: shared/kubernetes/helm.go:57
 msgid "failed to upgrade helm chart %[1]s in namespace %[2]s"
 msgstr "无法升级名称空间 %[2]s 中的 helm 图表 %[1]s"
 
-#: shared/kubernetes/helm.go:58
+#: shared/kubernetes/helm.go:59
 msgid "failed to install helm chart %[1]s in namespace %[2]s"
 msgstr "无法在名称空间 %[2]s 中安装 helm 图表 %[1]s"
 
-#: shared/kubernetes/helm.go:67
+#: shared/kubernetes/helm.go:68
 msgid "namespace is required"
 msgstr "必须指定名称空间"
 
-#: shared/kubernetes/helm.go:77 shared/podman/images.go:346
-#: shared/podman/images.go:369 shared/podman/images.go:389
+#: shared/kubernetes/helm.go:78 shared/podman/images.go:372
+#: shared/podman/images.go:393 shared/podman/images.go:413
 #: shared/podman/network.go:108 shared/podman/secret.go:130
 #: shared/podman/systemd.go:248 shared/podman/systemd.go:326
 #: shared/podman/systemd.go:327 shared/podman/utils.go:188
@@ -302,12 +302,12 @@ msgstr "必须指定名称空间"
 msgid "Would run %s"
 msgstr "将运行 %s"
 
-#: shared/kubernetes/helm.go:79
+#: shared/kubernetes/helm.go:80
 #, javascript-format
 msgid "Uninstalling %s"
 msgstr "正在卸装 %s"
 
-#: shared/kubernetes/helm.go:81
+#: shared/kubernetes/helm.go:82
 #, javascript-format
 msgid "failed to run helm %s"
 msgstr "无法运行 helm %s"
@@ -625,128 +625,138 @@ msgstr "无法在主机系统中运行检查脚本"
 msgid "cannot inspect host data"
 msgstr "无法检查主机数据"
 
-#: shared/podman/images.go:33
+#: shared/podman/images.go:37
+#, javascript-format
+msgid "Cannot prepare image %s because registry is missing"
+msgstr ""
+
+#: shared/podman/images.go:40
+#, javascript-format
+msgid "Cannot prepare image %s because tag is missing"
+msgstr ""
+
+#: shared/podman/images.go:44
 #, javascript-format
 msgid "Ensure image %s is available"
 msgstr "请确保映像 %s 可用"
 
-#: shared/podman/images.go:47
+#: shared/podman/images.go:58
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
 msgstr "拉取策略始终如下：先检查 PRM 映像是否存在，如果不存在，则会从仓库拉取"
 
-#: shared/podman/images.go:57
-#, javascript-format
-msgid "Cannot use RPM image for %s"
-msgstr "无法使用 %s 的 RPM 映像"
-
-#: shared/podman/images.go:59
-msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
-msgstr "正在使用从 RPM 加载的 %[1]s 映像，而不是其脱机版本 %[2]s"
-
-#: shared/podman/images.go:64
-#, javascript-format
-msgid "Cannot find RPM image for %s"
-msgstr "找不到 %s 的 RPM 映像"
-
-#: shared/podman/images.go:76
+#: shared/podman/images.go:75
 #, javascript-format
 msgid "image %s is missing and cannot be fetched"
 msgstr "映像 %s 缺失，无法提取"
 
-#: shared/podman/images.go:86
+#: shared/podman/images.go:82
+#, javascript-format
+msgid "Cannot find RPM image for %s"
+msgstr "找不到 %s 的 RPM 映像"
+
+#: shared/podman/images.go:90
+#, javascript-format
+msgid "Cannot use RPM image for %s"
+msgstr "无法使用 %s 的 RPM 映像"
+
+#: shared/podman/images.go:94
+msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
+msgstr "正在使用从 RPM 加载的 %[1]s 映像，而不是其脱机版本 %[2]s"
+
+#: shared/podman/images.go:106
 msgid "failed to determine image"
 msgstr "无法确定映像"
 
-#: shared/podman/images.go:94
+#: shared/podman/images.go:114
 msgid "failed to find the image of the currently running server container"
 msgstr "找不到目前正在运行的服务器容器的映像"
 
-#: shared/podman/images.go:105
+#: shared/podman/images.go:125
 msgid "failed to determine pgsql image"
 msgstr "无法确定 pgsql 映像"
 
-#: shared/podman/images.go:113
+#: shared/podman/images.go:133
 msgid "failed to find the image of the currently running db container"
 msgstr "找不到目前正在运行的数据库容器的映像"
 
-#: shared/podman/images.go:138
+#: shared/podman/images.go:158
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
 msgstr "无法正确分析映像名称 '%s'，本地映像无法使用"
 
-#: shared/podman/images.go:156
+#: shared/podman/images.go:176
 msgid "cannot unmarshal image RPM metadata"
 msgstr "无法解组映像 RPM 元数据"
 
-#: shared/podman/images.go:175
+#: shared/podman/images.go:195
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
 msgstr "正在跳过从 RPM 加载映像步骤，因为 %s 不存在"
 
-#: shared/podman/images.go:205
+#: shared/podman/images.go:225
 #, javascript-format
 msgid "Cannot unmarshal metadata file %s"
 msgstr "无法解组元数据文件 %s"
 
-#: shared/podman/images.go:227
+#: shared/podman/images.go:247
 #, javascript-format
 msgid "error parsing: %s"
 msgstr "分析时出错：%s"
 
-#: shared/podman/images.go:235 shared/podman/images.go:249
-#: shared/podman/images.go:264
+#: shared/podman/images.go:255 shared/podman/images.go:269
+#: shared/podman/images.go:284
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
 msgstr "无法检查是否已拉取映像 %s"
 
-#: shared/podman/images.go:271
+#: shared/podman/images.go:291
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr "%s 应该仅包含小写字符，否则 podman 拉取操作将会失败"
 
-#: shared/podman/images.go:273
+#: shared/podman/images.go:293
 #, javascript-format
 msgid "Running podman pull %s"
 msgstr "正在运行 podman pull %s"
 
-#: shared/podman/images.go:285
+#: shared/podman/images.go:305
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr "正在运行 podman image search --list-tags %s --format={{.Tag}}"
 
-#: shared/podman/images.go:299
+#: shared/podman/images.go:319
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr "未找到映像 %s 的任何标记"
 
-#: shared/podman/images.go:313
+#: shared/podman/images.go:333
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr "正在运行 podman ps --filter=name=%s --format={{ .Image }}"
 
-#: shared/podman/images.go:319
+#: shared/podman/images.go:339
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr "未找到容器 %s 的任何运行中映像"
 
-#: shared/podman/images.go:348 shared/podman/images.go:371
-#: shared/podman/images.go:391 shared/podman/utils.go:190
+#: shared/podman/images.go:374 shared/podman/images.go:395
+#: shared/podman/images.go:415 shared/podman/utils.go:190
 #: shared/podman/utils.go:224 shared/podman/utils.go:261
 #, javascript-format
 msgid "Run %s"
 msgstr "运行 %s"
 
-#: shared/podman/images.go:351
+#: shared/podman/images.go:377
 #, javascript-format
 msgid "Failed to remove image %s"
 msgstr "无法去除映像 %s"
 
-#: shared/podman/images.go:374
+#: shared/podman/images.go:398
 #, javascript-format
 msgid "Failed to export image %s"
 msgstr "无法导出映像 %s"
 
-#: shared/podman/images.go:394
+#: shared/podman/images.go:418
 #, javascript-format
 msgid "Failed to restore image %s"
 msgstr "无法恢复映像 %s"
@@ -1223,7 +1233,11 @@ msgid "Failed to read certificate file %s"
 msgstr "无法读取证书文件 %s"
 
 #: shared/ssl/ssl.go:154
-msgid "Failed to extract data from certificate"
+#, fuzzy, javascript-format
+#| msgid "Failed to extract data from certificate"
+msgid ""
+"Failed to extract data from certificate:\n"
+"%s"
 msgstr "无法从证书提取数据"
 
 #: shared/ssl/ssl.go:175
@@ -1237,64 +1251,63 @@ msgid "Failed to parse end date: %s\n"
 msgstr "无法分析终止日期：%s\n"
 
 #: shared/ssl/ssl.go:228
-msgid "No CA found"
-msgstr "未找到 CA"
+#, fuzzy
+#| msgid "SSL certificate state"
+msgid "no CA certificate found in the files"
+msgstr "SSL 证书州/省"
 
-#: shared/ssl/ssl.go:236
-msgid "No CA found for server certificate"
-msgstr "未找到服务器证书的 CA"
+#: shared/ssl/ssl.go:237 shared/ssl/ssl.go:250
+msgid ""
+"please check the CA chain, including intermediate CA certificates provided.\n"
+"The chain is missing the CA with subject %[1]s (hash: %[2]s)"
+msgstr ""
 
-#: shared/ssl/ssl.go:245
-#, javascript-format
-msgid "Missing CA with subject hash %s"
-msgstr "缺少主体哈希为 %s 的 CA"
-
-#: shared/ssl/ssl.go:272
+#: shared/ssl/ssl.go:280
 msgid "server certificate is required"
 msgstr "必须指定服务器证书"
 
-#: shared/ssl/ssl.go:275 shared/ssl/ssl.go:340
+#: shared/ssl/ssl.go:283 shared/ssl/ssl.go:348
 msgid "server key is required"
 msgstr "必须指定服务器密钥"
 
-#: shared/ssl/ssl.go:290
+#: shared/ssl/ssl.go:298
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr "%s 文件无法访问"
 
-#: shared/ssl/ssl.go:299
+#: shared/ssl/ssl.go:307
 msgid "Source server SSL CA private key password"
 msgstr "源服务器 SSL CA 私用密钥口令"
 
-#: shared/ssl/ssl.go:305
+#: shared/ssl/ssl.go:313
 msgid "Failed to open openssl rsa process input stream"
 msgstr "无法打开 openssl rsa 流程输入流"
 
-#: shared/ssl/ssl.go:308
+#: shared/ssl/ssl.go:316
 msgid "Failed to write openssl key content to input stream"
 msgstr "无法将 openssl 密钥内容写入输入流"
 
-#: shared/ssl/ssl.go:314
+#: shared/ssl/ssl.go:322
 msgid "Failed to convert CA private key to RSA"
 msgstr "无法将 CA 私用密钥转换为 RSA"
 
-#: shared/ssl/ssl.go:324
+#: shared/ssl/ssl.go:332
 msgid "Failed to open openssl x509 process input stream"
 msgstr "无法打开 openssl x509 流程输入流"
 
-#: shared/ssl/ssl.go:327
+#: shared/ssl/ssl.go:335
 msgid "Failed to write SSL certificate to input stream"
 msgstr "无法将 SSL 证书写入输入流"
 
-#: shared/ssl/ssl.go:331
+#: shared/ssl/ssl.go:339
 msgid "failed to strip text part from CA certificate"
 msgstr "无法剥离 CA 证书中的文本部分"
 
-#: shared/ssl/ssl.go:346
+#: shared/ssl/ssl.go:354
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr "SSL 密钥无效，它可能已加密"
 
-#: shared/ssl/ssl.go:365
+#: shared/ssl/ssl.go:373
 #, fuzzy, javascript-format
 #| msgid "failed to write in %s"
 msgid "failed to validate hostname %s"
@@ -1599,7 +1612,18 @@ msgstr "无法读取配置"
 msgid "failed to unmarshal the inspected data"
 msgstr "无法解组检查的数据"
 
-#: shared/utils/logUtils.go:97
+#: shared/utils/logUtils.go:69
+#, fuzzy
+#| msgid "failed to get the %s pod logs"
+msgid "failed to decode message to log"
+msgstr "无法获取 %s pod 日志"
+
+#: shared/utils/logUtils.go:77
+#, fuzzy
+msgid "failed to encode log event"
+msgstr "无法禁用 %s 服务"
+
+#: shared/utils/logUtils.go:108
 msgid "Couldn't open %[1]s file for writing, writing log to %[2]s"
 msgstr "无法打开 %[1]s 文件写入数据，正在将日志写入 %[2]s"
 
@@ -1703,69 +1727,69 @@ msgstr "%s 缺少标记"
 msgid "Computed image name is %s"
 msgstr "计算的映像名称为 %s"
 
-#: shared/utils/utils.go:254
+#: shared/utils/utils.go:266
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr ""
 
-#: shared/utils/utils.go:265
+#: shared/utils/utils.go:276
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "无法运行 %s"
 
-#: shared/utils/utils.go:274
+#: shared/utils/utils.go:285
 msgid "Failed to read random data"
 msgstr "无法读取随机数据"
 
-#: shared/utils/utils.go:295
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "从 %s 下载时出错"
 
-#: shared/utils/utils.go:301
+#: shared/utils/utils.go:312
 #, javascript-format
 msgid "bad status: %s"
 msgstr "不良状态：%s"
 
-#: shared/utils/utils.go:414
+#: shared/utils/utils.go:425
 msgid "failed to compute server FQDN"
 msgstr "无法计算服务器 FQDN"
 
-#: shared/utils/utils.go:428
+#: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s 不是有效 FQDN"
 
-#: shared/utils/utils.go:432
+#: shared/utils/utils.go:443
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "无法解析 %s"
 
-#: shared/utils/utils.go:463
+#: shared/utils/utils.go:474
 #, javascript-format
 msgid "error creating file %s"
 msgstr "创建文件 %s 时出错"
 
-#: shared/utils/utils.go:468
+#: shared/utils/utils.go:479
 #, javascript-format
 msgid "error writing file %s"
 msgstr "写入文件 %s 时出错"
 
-#: shared/utils/utils.go:480 shared/utils/utils.go:495
+#: shared/utils/utils.go:491 shared/utils/utils.go:506
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "无法计算文件 %s 的校验和"
 
-#: shared/utils/utils.go:485
+#: shared/utils/utils.go:496
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "无法将文件 %[1]s 的校验和写入 %[2]s"
 
-#: shared/utils/utils.go:502
+#: shared/utils/utils.go:513
 #, fuzzy
 #| msgid "Failed to calculate checksum of the file %s"
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "无法计算文件 %s 的校验和"
 
-#: shared/utils/utils.go:506
+#: shared/utils/utils.go:517
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "%s 的校验和不匹配"
@@ -1793,6 +1817,16 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "数据库"
+
+#~ msgid "No CA found"
+#~ msgstr "未找到 CA"
+
+#~ msgid "No CA found for server certificate"
+#~ msgstr "未找到服务器证书的 CA"
+
+#, javascript-format
+#~ msgid "Missing CA with subject hash %s"
+#~ msgstr "缺少主体哈希为 %s 的 CA"
 
 #~ msgid "failed to unmarshall configuration"
 #~ msgstr "无法解组配置"
@@ -1843,10 +1877,6 @@ msgstr "数据库"
 #, fuzzy, javascript-format
 #~ msgid "failed to write %s secret definition file"
 #~ msgstr "无法写入 %s 文件"
-
-#, fuzzy, javascript-format
-#~ msgid "failed to define %s secret"
-#~ msgstr "无法禁用 %s 服务"
 
 #~ msgid "failed to pull image"
 #~ msgstr "无法拉取映像"

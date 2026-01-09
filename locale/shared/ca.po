@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-05 09:25+0100\n"
+"POT-Creation-Date: 2026-01-09 11:40+0100\n"
 "PO-Revision-Date: 2025-11-26 11:07+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
@@ -278,20 +278,20 @@ msgstr "no s'ha pogut tancar el fitxer YAML %s"
 msgid "failed to write PVC to file"
 msgstr "no s'ha pogut escriure el PVC al fitxer"
 
-#: shared/kubernetes/helm.go:56
+#: shared/kubernetes/helm.go:57
 msgid "failed to upgrade helm chart %[1]s in namespace %[2]s"
 msgstr "no s'ha pogut actualitzar el diagrama de helm %[1]s a l'espai de noms %[2]s"
 
-#: shared/kubernetes/helm.go:58
+#: shared/kubernetes/helm.go:59
 msgid "failed to install helm chart %[1]s in namespace %[2]s"
 msgstr "no s'ha pogut instal·lar el diagrama de helm %[1]s a l'espai de noms %[2]s"
 
-#: shared/kubernetes/helm.go:67
+#: shared/kubernetes/helm.go:68
 msgid "namespace is required"
 msgstr "l'espai de noms és obligatori"
 
-#: shared/kubernetes/helm.go:77 shared/podman/images.go:346
-#: shared/podman/images.go:369 shared/podman/images.go:389
+#: shared/kubernetes/helm.go:78 shared/podman/images.go:372
+#: shared/podman/images.go:393 shared/podman/images.go:413
 #: shared/podman/network.go:108 shared/podman/secret.go:130
 #: shared/podman/systemd.go:248 shared/podman/systemd.go:326
 #: shared/podman/systemd.go:327 shared/podman/utils.go:188
@@ -300,12 +300,12 @@ msgstr "l'espai de noms és obligatori"
 msgid "Would run %s"
 msgstr "S'executaria %s"
 
-#: shared/kubernetes/helm.go:79
+#: shared/kubernetes/helm.go:80
 #, javascript-format
 msgid "Uninstalling %s"
 msgstr "S'està desinstal·lant %s"
 
-#: shared/kubernetes/helm.go:81
+#: shared/kubernetes/helm.go:82
 #, javascript-format
 msgid "failed to run helm %s"
 msgstr "no s'ha pogut executar el timó %s"
@@ -624,128 +624,138 @@ msgstr "no s'ha pogut executar l'script d'inspecció en el sistema amfitrió"
 msgid "cannot inspect host data"
 msgstr "no es poden inspeccionar les dades de l'amfitrió"
 
-#: shared/podman/images.go:33
+#: shared/podman/images.go:37
+#, javascript-format
+msgid "Cannot prepare image %s because registry is missing"
+msgstr ""
+
+#: shared/podman/images.go:40
+#, javascript-format
+msgid "Cannot prepare image %s because tag is missing"
+msgstr ""
+
+#: shared/podman/images.go:44
 #, javascript-format
 msgid "Ensure image %s is available"
 msgstr "Assegura que la imatge %s està disponible"
 
-#: shared/podman/images.go:47
+#: shared/podman/images.go:58
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
 msgstr "La política de pícnic és sempre. La presència de la imatge RPM es comprovarà i es retirarà del registre si no hi és"
 
-#: shared/podman/images.go:57
-#, javascript-format
-msgid "Cannot use RPM image for %s"
-msgstr "No es pot utilitzar la imatge RPM per a %s"
-
-#: shared/podman/images.go:59
-msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
-msgstr "Utilitzant la imatge %[1]s carregada des del RPM en lloc de la seva versió en línia %[2]s"
-
-#: shared/podman/images.go:64
-#, javascript-format
-msgid "Cannot find RPM image for %s"
-msgstr "No s'ha pogut trobar la imatge RPM per a %s"
-
-#: shared/podman/images.go:76
+#: shared/podman/images.go:75
 #, javascript-format
 msgid "image %s is missing and cannot be fetched"
 msgstr "manca la imatge %s i no es pot recuperar"
 
-#: shared/podman/images.go:86
+#: shared/podman/images.go:82
+#, javascript-format
+msgid "Cannot find RPM image for %s"
+msgstr "No s'ha pogut trobar la imatge RPM per a %s"
+
+#: shared/podman/images.go:90
+#, javascript-format
+msgid "Cannot use RPM image for %s"
+msgstr "No es pot utilitzar la imatge RPM per a %s"
+
+#: shared/podman/images.go:94
+msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
+msgstr "Utilitzant la imatge %[1]s carregada des del RPM en lloc de la seva versió en línia %[2]s"
+
+#: shared/podman/images.go:106
 msgid "failed to determine image"
 msgstr "no s'ha pogut determinar la imatge"
 
-#: shared/podman/images.go:94
+#: shared/podman/images.go:114
 msgid "failed to find the image of the currently running server container"
 msgstr "no s'ha pogut trobar la imatge del contenidor del servidor actualment en execució"
 
-#: shared/podman/images.go:105
+#: shared/podman/images.go:125
 msgid "failed to determine pgsql image"
 msgstr "no s'ha pogut determinar la imatge pgsql"
 
-#: shared/podman/images.go:113
+#: shared/podman/images.go:133
 msgid "failed to find the image of the currently running db container"
 msgstr "no s'ha pogut trobar la imatge del contenidor de db en execució"
 
-#: shared/podman/images.go:138
+#: shared/podman/images.go:158
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
 msgstr "No es pot analitzar correctament el nom de la imatge «%s», no es pot utilitzar la imatge local"
 
-#: shared/podman/images.go:156
+#: shared/podman/images.go:176
 msgid "cannot unmarshal image RPM metadata"
 msgstr "no es poden desfer les metadades RPM de la imatge"
 
-#: shared/podman/images.go:175
+#: shared/podman/images.go:195
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
 msgstr "s'omet la càrrega de la imatge des de l'RPM perquè %s no existeix"
 
-#: shared/podman/images.go:205
+#: shared/podman/images.go:225
 #, javascript-format
 msgid "Cannot unmarshal metadata file %s"
 msgstr "No es pot desfer el fitxer de metadades %s"
 
-#: shared/podman/images.go:227
+#: shared/podman/images.go:247
 #, javascript-format
 msgid "error parsing: %s"
 msgstr "s'ha produït un error en analitzar: %s"
 
-#: shared/podman/images.go:235 shared/podman/images.go:249
-#: shared/podman/images.go:264
+#: shared/podman/images.go:255 shared/podman/images.go:269
+#: shared/podman/images.go:284
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
 msgstr "no s'ha pogut comprovar si la imatge %s ja s'ha tirat"
 
-#: shared/podman/images.go:271
+#: shared/podman/images.go:291
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr "%s hauria de contenir només un caràcter en minúscula, en cas contrari l'estirada de podman fallaria"
 
-#: shared/podman/images.go:273
+#: shared/podman/images.go:293
 #, javascript-format
 msgid "Running podman pull %s"
 msgstr "S'està executant la podman pull %s"
 
-#: shared/podman/images.go:285
+#: shared/podman/images.go:305
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr "S'està executant la cerca d'imatges de podman --list-tags %s --format.{{.Tag}}"
 
-#: shared/podman/images.go:299
+#: shared/podman/images.go:319
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr "no s'ha pogut trobar cap etiqueta per a la imatge %s"
 
-#: shared/podman/images.go:313
+#: shared/podman/images.go:333
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr "S'està executant el podman ps --filter.name.%s --format.{{ .Imatge}}"
 
-#: shared/podman/images.go:319
+#: shared/podman/images.go:339
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 
-#: shared/podman/images.go:348 shared/podman/images.go:371
-#: shared/podman/images.go:391 shared/podman/utils.go:190
+#: shared/podman/images.go:374 shared/podman/images.go:395
+#: shared/podman/images.go:415 shared/podman/utils.go:190
 #: shared/podman/utils.go:224 shared/podman/utils.go:261
 #, javascript-format
 msgid "Run %s"
 msgstr "Executa %s"
 
-#: shared/podman/images.go:351
+#: shared/podman/images.go:377
 #, javascript-format
 msgid "Failed to remove image %s"
 msgstr "No s'ha pogut eliminar la imatge %s"
 
-#: shared/podman/images.go:374
+#: shared/podman/images.go:398
 #, javascript-format
 msgid "Failed to export image %s"
 msgstr "No s'ha pogut exportar la imatge %s"
 
-#: shared/podman/images.go:394
+#: shared/podman/images.go:418
 #, javascript-format
 msgid "Failed to restore image %s"
 msgstr "No s'ha pogut restaurar la imatge %s"
@@ -1196,7 +1206,11 @@ msgid "Failed to read certificate file %s"
 msgstr "No s'ha pogut llegir el fitxer de certificat %s"
 
 #: shared/ssl/ssl.go:154
-msgid "Failed to extract data from certificate"
+#, fuzzy, javascript-format
+#| msgid "Failed to extract data from certificate"
+msgid ""
+"Failed to extract data from certificate:\n"
+"%s"
 msgstr "No s'han pogut extreure les dades del certificat"
 
 #: shared/ssl/ssl.go:175
@@ -1210,64 +1224,63 @@ msgid "Failed to parse end date: %s\n"
 msgstr "No s'ha pogut analitzar la data de finalització: %s\n"
 
 #: shared/ssl/ssl.go:228
-msgid "No CA found"
-msgstr "No s'ha trobat cap CA"
+#, fuzzy
+#| msgid "Root CA certificate path"
+msgid "no CA certificate found in the files"
+msgstr "Camí del certificat CA d'arrel"
 
-#: shared/ssl/ssl.go:236
-msgid "No CA found for server certificate"
-msgstr "No s'ha trobat cap CA per al certificat del servidor"
+#: shared/ssl/ssl.go:237 shared/ssl/ssl.go:250
+msgid ""
+"please check the CA chain, including intermediate CA certificates provided.\n"
+"The chain is missing the CA with subject %[1]s (hash: %[2]s)"
+msgstr ""
 
-#: shared/ssl/ssl.go:245
-#, javascript-format
-msgid "Missing CA with subject hash %s"
-msgstr "Falta la CA amb el resum de l'assumpte %s"
-
-#: shared/ssl/ssl.go:272
+#: shared/ssl/ssl.go:280
 msgid "server certificate is required"
 msgstr "es requereix el certificat del servidor"
 
-#: shared/ssl/ssl.go:275 shared/ssl/ssl.go:340
+#: shared/ssl/ssl.go:283 shared/ssl/ssl.go:348
 msgid "server key is required"
 msgstr "es requereix la clau del servidor"
 
-#: shared/ssl/ssl.go:290
+#: shared/ssl/ssl.go:298
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr "El fitxer %s no és accessible"
 
-#: shared/ssl/ssl.go:299
+#: shared/ssl/ssl.go:307
 msgid "Source server SSL CA private key password"
 msgstr "Contrasenya de la clau privada de la CA del servidor d'origen"
 
-#: shared/ssl/ssl.go:305
+#: shared/ssl/ssl.go:313
 msgid "Failed to open openssl rsa process input stream"
 msgstr "No s'ha pogut obrir el flux d'entrada del procés opensl rsa"
 
-#: shared/ssl/ssl.go:308
+#: shared/ssl/ssl.go:316
 msgid "Failed to write openssl key content to input stream"
 msgstr "No s'ha pogut escriure el contingut de la clau opensl al flux d'entrada"
 
-#: shared/ssl/ssl.go:314
+#: shared/ssl/ssl.go:322
 msgid "Failed to convert CA private key to RSA"
 msgstr "No s'ha pogut convertir la clau privada CA a RSA"
 
-#: shared/ssl/ssl.go:324
+#: shared/ssl/ssl.go:332
 msgid "Failed to open openssl x509 process input stream"
 msgstr "No s'ha pogut obrir el flux d'entrada del procés openssl x509"
 
-#: shared/ssl/ssl.go:327
+#: shared/ssl/ssl.go:335
 msgid "Failed to write SSL certificate to input stream"
 msgstr "No s'ha pogut escriure el certificat SSL al flux d'entrada"
 
-#: shared/ssl/ssl.go:331
+#: shared/ssl/ssl.go:339
 msgid "failed to strip text part from CA certificate"
 msgstr "no s'ha pogut suprimir la part de text del certificat de la CA"
 
-#: shared/ssl/ssl.go:346
+#: shared/ssl/ssl.go:354
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr "Clau SSL no vàlida, probablement està encriptada"
 
-#: shared/ssl/ssl.go:365
+#: shared/ssl/ssl.go:373
 #, javascript-format
 msgid "failed to validate hostname %s"
 msgstr "no s'ha pogut validar el nom d'amfitrió %s"
@@ -1567,7 +1580,19 @@ msgstr "no es pot llegir la configuració"
 msgid "failed to unmarshal the inspected data"
 msgstr "no s'han pogut desmarcar les dades inspeccionades"
 
-#: shared/utils/logUtils.go:97
+#: shared/utils/logUtils.go:69
+#, fuzzy
+#| msgid "failed to get the %s pod logs"
+msgid "failed to decode message to log"
+msgstr "No s'han pogut obtenir els registres del pod %s"
+
+#: shared/utils/logUtils.go:77
+#, fuzzy
+#| msgid "failed to run podman logs %s"
+msgid "failed to encode log event"
+msgstr "no s'han pogut executar els registres podman %s"
+
+#: shared/utils/logUtils.go:108
 msgid "Couldn't open %[1]s file for writing, writing log to %[2]s"
 msgstr "No s'ha pogut obrir el fitxer %[1]s per a escriptura, s'està escrivint el registre a %[2]s"
 
@@ -1673,67 +1698,67 @@ msgstr "falta l'etiqueta a %s"
 msgid "Computed image name is %s"
 msgstr "El nom de la imatge calculada és %s"
 
-#: shared/utils/utils.go:254
+#: shared/utils/utils.go:266
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr "El camí de la imatge %[1]s no comença amb la ruta del registre %[2]s"
 
-#: shared/utils/utils.go:265
+#: shared/utils/utils.go:276
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "No s'ha pogut executar %s"
 
-#: shared/utils/utils.go:274
+#: shared/utils/utils.go:285
 msgid "Failed to read random data"
 msgstr "No s'han pogut llegir les dades aleatòries"
 
-#: shared/utils/utils.go:295
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "s'ha produït un error en baixar de %s"
 
-#: shared/utils/utils.go:301
+#: shared/utils/utils.go:312
 #, javascript-format
 msgid "bad status: %s"
 msgstr "estat incorrecte: %s"
 
-#: shared/utils/utils.go:414
+#: shared/utils/utils.go:425
 msgid "failed to compute server FQDN"
 msgstr "no s'ha pogut calcular el servidor FQDN"
 
-#: shared/utils/utils.go:428
+#: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s no és un FQDN vàlid"
 
-#: shared/utils/utils.go:432
+#: shared/utils/utils.go:443
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "no es pot resoldre %s"
 
-#: shared/utils/utils.go:463
+#: shared/utils/utils.go:474
 #, javascript-format
 msgid "error creating file %s"
 msgstr "s'ha produït un error en crear el fitxer %s"
 
-#: shared/utils/utils.go:468
+#: shared/utils/utils.go:479
 #, javascript-format
 msgid "error writing file %s"
 msgstr "s'ha produït un error en escriure el fitxer %s"
 
-#: shared/utils/utils.go:480 shared/utils/utils.go:495
+#: shared/utils/utils.go:491 shared/utils/utils.go:506
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "No s'ha pogut calcular la suma de verificació del fitxer %s"
 
-#: shared/utils/utils.go:485
+#: shared/utils/utils.go:496
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "No s'ha pogut escriure la suma de verificació del fitxer %[1]s a %[2]s"
 
-#: shared/utils/utils.go:502
+#: shared/utils/utils.go:513
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "No s'ha pogut llegir la suma de verificació del fitxer %[1]s"
 
-#: shared/utils/utils.go:506
+#: shared/utils/utils.go:517
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "La suma de verificació de %s no coincideix"
@@ -1761,6 +1786,16 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "Base de dades"
+
+#~ msgid "No CA found"
+#~ msgstr "No s'ha trobat cap CA"
+
+#~ msgid "No CA found for server certificate"
+#~ msgstr "No s'ha trobat cap CA per al certificat del servidor"
+
+#, javascript-format
+#~ msgid "Missing CA with subject hash %s"
+#~ msgstr "Falta la CA amb el resum de l'assumpte %s"
 
 #~ msgid "failed to unmarshall configuration"
 #~ msgstr "no s'ha pogut desfer la configuració del «marshall»"
