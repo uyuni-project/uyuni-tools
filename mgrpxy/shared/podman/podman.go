@@ -157,7 +157,7 @@ func GenerateSystemdService(
 		}
 		if additionSSHConfPath != "" {
 			additionSSHTuningSettings = fmt.Sprintf(
-				`Environment=SSH_EXTRA_CONF=-v%s:/etc/ssh/sshd_config.d/99-tuning.conf:ro%s`,
+				`Environment=SSH_EXTRA_CONF=-v%s:/etc/ssh/sshd_config.d/10-tuning.conf:ro%s`,
 				additionSSHConfPath, volumeOptions,
 			)
 		}
