@@ -1,4 +1,8 @@
 -------------------------------------------------------------------
+Fri Jan 09 2026 - Mihir Dixit <dixitmihir1@gmail.com>
+
+- feat(mgradm): check for podman binary before installation starts (Fixes #621)
+-------------------------------------------------------------------
 Tue Dec 09 14:03:52 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.3-0
