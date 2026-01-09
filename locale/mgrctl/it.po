@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-05 09:25+0100\n"
-"PO-Revision-Date: 2025-11-26 10:50+0000\n"
-"Last-Translator: Antonio Gemelli <antonio.gemelli@suse.com>\n"
+"POT-Creation-Date: 2026-01-09 11:40+0100\n"
+"PO-Revision-Date: 2025-12-18 13:04+0000\n"
+"Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15\n"
 
 #: mgrctl/cmd/api/api.go:26
 msgid "JSON over HTTP API helper tool"
@@ -24,7 +24,7 @@ msgstr "Strumento di supporto alle API JSON su HTTP"
 
 #: mgrctl/cmd/api/api.go:31
 msgid "Call API GET request"
-msgstr "Call API GET request: Esegui richiesta GET all’API"
+msgstr "Esegui richiesta GET all’API"
 
 #: mgrctl/cmd/api/api.go:32
 msgid ""
@@ -40,7 +40,7 @@ msgstr ""
 
 #: mgrctl/cmd/api/api.go:43
 msgid "Call API POST request"
-msgstr ""
+msgstr "Esegui richiesta POST all’API"
 
 #: mgrctl/cmd/api/api.go:44
 msgid ""
