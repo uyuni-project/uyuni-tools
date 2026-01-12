@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-09 11:40+0100\n"
-"PO-Revision-Date: 2025-12-08 22:04+0000\n"
+"PO-Revision-Date: 2026-01-12 20:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -306,10 +306,9 @@ msgstr ""
 "NOTA: per ara no s'admet la instal·lació en un podman remot!\n"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:74
-#, fuzzy, javascript-format
-#| msgid "cannot find ssh image: it will no be upgraded"
+#, javascript-format
 msgid "cannot find %s image: it will no be upgraded"
-msgstr "no es pot trobar la imatge ssh: no s'actualitzarà"
+msgstr "no es pot trobar la imatge %s: no s'actualitzarà"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:87
 msgid "ptf and test flags cannot be set simultaneously "
@@ -324,10 +323,8 @@ msgid "user flag cannot be empty"
 msgstr "l'indicador d'usuari no pot estar buit"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:131
-#, fuzzy
-#| msgid "The %[1]s ptf image computed is: %[2]s"
 msgid "The %[1]s service image is %[2]s"
-msgstr "La imatge ptf de %[1]s calculada és %[2]s"
+msgstr "La imatge del servei %[1]s és %[2]s"
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
