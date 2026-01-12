@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-09 11:40+0100\n"
-"PO-Revision-Date: 2025-11-26 11:07+0000\n"
+"PO-Revision-Date: 2026-01-12 20:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -627,12 +627,12 @@ msgstr "no es poden inspeccionar les dades de l'amfitrió"
 #: shared/podman/images.go:37
 #, javascript-format
 msgid "Cannot prepare image %s because registry is missing"
-msgstr ""
+msgstr "No es pot preparar la imatge %s perquè falta el registre."
 
 #: shared/podman/images.go:40
 #, javascript-format
 msgid "Cannot prepare image %s because tag is missing"
-msgstr ""
+msgstr "No es pot preparar la imatge %s perquè falta l'etiqueta."
 
 #: shared/podman/images.go:44
 #, javascript-format
@@ -1206,12 +1206,13 @@ msgid "Failed to read certificate file %s"
 msgstr "No s'ha pogut llegir el fitxer de certificat %s"
 
 #: shared/ssl/ssl.go:154
-#, fuzzy, javascript-format
-#| msgid "Failed to extract data from certificate"
+#, javascript-format
 msgid ""
 "Failed to extract data from certificate:\n"
 "%s"
-msgstr "No s'han pogut extreure les dades del certificat"
+msgstr ""
+"No s'han pogut extreure les dades del certificat:\n"
+"%s"
 
 #: shared/ssl/ssl.go:175
 #, javascript-format
@@ -1224,16 +1225,16 @@ msgid "Failed to parse end date: %s\n"
 msgstr "No s'ha pogut analitzar la data de finalització: %s\n"
 
 #: shared/ssl/ssl.go:228
-#, fuzzy
-#| msgid "Root CA certificate path"
 msgid "no CA certificate found in the files"
-msgstr "Camí del certificat CA d'arrel"
+msgstr "no s'ha trobat cap certificat de CA als fitxers"
 
 #: shared/ssl/ssl.go:237 shared/ssl/ssl.go:250
 msgid ""
 "please check the CA chain, including intermediate CA certificates provided.\n"
 "The chain is missing the CA with subject %[1]s (hash: %[2]s)"
 msgstr ""
+"Si us plau, comproveu la cadena de CA, inclosos els certificats de CA intermedis proporcionats.\n"
+"A la cadena li falta el CA amb l'assumpte %[1]s (hash: %[2]s)"
 
 #: shared/ssl/ssl.go:280
 msgid "server certificate is required"
@@ -1581,16 +1582,12 @@ msgid "failed to unmarshal the inspected data"
 msgstr "no s'han pogut desmarcar les dades inspeccionades"
 
 #: shared/utils/logUtils.go:69
-#, fuzzy
-#| msgid "failed to get the %s pod logs"
 msgid "failed to decode message to log"
-msgstr "No s'han pogut obtenir els registres del pod %s"
+msgstr "No s'ha pogut descodificar el missatge al registre."
 
 #: shared/utils/logUtils.go:77
-#, fuzzy
-#| msgid "failed to run podman logs %s"
 msgid "failed to encode log event"
-msgstr "no s'han pogut executar els registres podman %s"
+msgstr "no s'ha pogut codificar l'esdeveniment de registre"
 
 #: shared/utils/logUtils.go:108
 msgid "Couldn't open %[1]s file for writing, writing log to %[2]s"
