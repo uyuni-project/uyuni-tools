@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -43,10 +43,5 @@ func status(globalFlags *types.GlobalFlags, flags *statusFlags, cmd *cobra.Comma
 	if systemd.HasService(podman.ServerService) {
 		return podmanStatus(globalFlags, flags, cmd, args)
 	}
-
-	if utils.IsInstalled("kubectl") && utils.IsInstalled("helm") {
-		return kubernetesStatus(globalFlags, flags, cmd, args)
-	}
-
 	return errors.New(L("no installed server detected"))
 }

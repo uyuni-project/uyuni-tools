@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -19,18 +19,12 @@ func TestParamsParsing(t *testing.T) {
 		"--purge-volumes",
 		"--purge-images",
 	}
-	if utils.KubernetesBuilt {
-		args = append(args, "--backend", "kubectl")
-	}
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *utils.UninstallFlags, _ *cobra.Command, _ []string) error {
 		testutils.AssertTrue(t, "Error parsing --force", flags.Force)
 		testutils.AssertTrue(t, "Error parsing --purge-volumes", flags.Purge.Volumes)
 		testutils.AssertTrue(t, "Error parsing --purge-images", flags.Purge.Images)
-		if utils.KubernetesBuilt {
-			testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
-		}
 		return nil
 	}
 

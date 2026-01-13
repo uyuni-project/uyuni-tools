@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -6,7 +6,6 @@ package install
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install/podman"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -21,10 +20,6 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Long:    L("Install a new server"),
 	}
 	installCmd.AddCommand(podman.NewCommand(globalFlags))
-
-	if kubernetesCmd := kubernetes.NewCommand(globalFlags); kubernetesCmd != nil {
-		installCmd.AddCommand(kubernetesCmd)
-	}
 
 	return installCmd
 }
