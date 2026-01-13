@@ -274,21 +274,13 @@ func RunPgsqlVersionUpgrade(
 			"--security-opt", "label=disable",
 		}
 
-		upgradeImageURL := ""
-		var err error
 		if upgradeImage.Name == "" {
-			if upgradeImage.Name == "" {
-				upgradeImage.Name = fmt.Sprintf("%s-migration-%s-%s", image.Name, oldPgsql, newPgsql)
-			}
-			upgradeImageURL, err = utils.ComputeImage(image.Registry.Host, image.Tag, upgradeImage)
-			if err != nil {
-				return utils.Errorf(err, L("failed to compute image URL"))
-			}
-		} else {
-			upgradeImageURL, err = utils.ComputeImage(image.Registry.Host, image.Tag, upgradeImage)
-			if err != nil {
-				return utils.Errorf(err, L("failed to compute image URL"))
-			}
+			upgradeImage.Name = "server-database-migration"
+		}
+
+		upgradeImageURL, err := utils.ComputeImage(image.Registry.Host, image.Tag, upgradeImage)
+		if err != nil {
+			return utils.Errorf(err, L("failed to compute image URL"))
 		}
 
 		preparedImage, err := prepareImage(authFile, upgradeImageURL, image.PullPolicy, true)
