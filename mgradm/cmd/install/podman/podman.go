@@ -34,8 +34,7 @@ The install podman command assumes podman is installed locally.
 NOTE: installing on a remote podman is not supported yet!
 `),
 		Args: cobra.MaximumNArgs(1),
-		// ADDED: Check for podman binary
-		PreRunE: func(cmd *cobra.Command, args []string) error {
+		PreRunE: func(_ *cobra.Command, _ []string) error {
 			if _, err := exec.LookPath("podman"); err != nil {
 				return fmt.Errorf("podman not found in PATH: please install podman before running this command")
 			}
