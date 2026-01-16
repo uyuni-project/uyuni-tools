@@ -1,8 +1,8 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
-package podman
+package upgrade
 
 import (
 	"errors"
@@ -10,26 +10,20 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
-	podman_utils "github.com/uyuni-project/uyuni-tools/shared/podman"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
-
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	shared_podman "github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-var systemd podman_utils.Systemd = podman_utils.NewSystemd()
+var systemd shared_podman.Systemd = shared_podman.NewSystemd()
 
-func migrateToPodman(
-	_ *types.GlobalFlags,
-	flags *podmanMigrateFlags,
-	cmd *cobra.Command,
-	args []string,
-) error {
-	hostData, err := podman_utils.InspectHost()
+func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.Command, _ []string) error {
+	hostData, err := shared_podman.InspectHost()
 	if err != nil {
 		return err
 	}
 
-	authFile, cleaner, err := podman_utils.PodmanLogin(hostData, flags.Image.Registry, flags.Installation.SCC)
+	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Image.Registry, flags.Installation.SCC)
 	if err != nil {
 		return err
 	}
@@ -40,7 +34,7 @@ func migrateToPodman(
 		return errors.New(L("install podman before running this command"))
 	}
 
-	return podman.Migrate(
+	return podman.Upgrade(
 		systemd, authFile,
 		flags.Installation.DB,
 		flags.Installation.ReportDB,
@@ -51,10 +45,6 @@ func migrateToPodman(
 		flags.HubXmlrpc,
 		flags.Saline,
 		flags.Pgsql,
-		flags.Migration.Prepare,
-		flags.Migration.User,
-		flags.Mirror,
-		flags.Podman,
-		args,
+		flags.Installation.TZ,
 	)
 }
