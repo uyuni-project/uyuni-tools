@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-09 11:40+0100\n"
+"POT-Creation-Date: 2026-01-15 15:51+0100\n"
 "PO-Revision-Date: 2026-01-12 20:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
@@ -1606,10 +1606,6 @@ msgstr "Preparant el tarball"
 msgid "failed to add %s to tarball"
 msgstr "no s'ha pogut afegir %s a tarball"
 
-#: shared/utils/support.go:94
-msgid "failed to run supportconfig on the host"
-msgstr "no s'ha pogut executar supportconfig a l'amfitrió"
-
 #: shared/utils/support.go:104
 msgid "failed to find host supportconfig tarball from command output"
 msgstr "no s'ha pogut trobar l'amfitrió supportconfig tarball des de la sortida de l'ordre"
@@ -1783,6 +1779,9 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "Base de dades"
+
+#~ msgid "failed to run supportconfig on the host"
+#~ msgstr "no s'ha pogut executar supportconfig a l'amfitrió"
 
 #~ msgid "No CA found"
 #~ msgstr "No s'ha trobat cap CA"

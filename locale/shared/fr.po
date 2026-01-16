@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-09 11:40+0100\n"
+"POT-Creation-Date: 2026-01-15 15:51+0100\n"
 "PO-Revision-Date: 2025-11-26 10:49+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/fr/>\n"
@@ -1639,11 +1639,6 @@ msgstr ""
 msgid "failed to add %s to tarball"
 msgstr "impossible de créer le répertoire %s: %s"
 
-#: shared/utils/support.go:94
-#, fuzzy
-msgid "failed to run supportconfig on the host"
-msgstr "impossible de créer le répertoire %s: %s"
-
 #: shared/utils/support.go:104
 msgid "failed to find host supportconfig tarball from command output"
 msgstr ""
@@ -1826,6 +1821,10 @@ msgstr ""
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr ""
+
+#, fuzzy
+#~ msgid "failed to run supportconfig on the host"
+#~ msgstr "impossible de créer le répertoire %s: %s"
 
 #~ msgid "failed to unmarshall configuration"
 #~ msgstr "erreur d'analyse du fichier de configuration"
