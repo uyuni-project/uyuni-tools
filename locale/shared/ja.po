@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-09 11:40+0100\n"
+"POT-Creation-Date: 2026-01-15 15:51+0100\n"
 "PO-Revision-Date: 2025-11-26 10:56+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
@@ -1643,10 +1643,6 @@ msgstr "tarballの準備中"
 msgid "failed to add %s to tarball"
 msgstr "%s をtarballに追加できませんでした"
 
-#: shared/utils/support.go:94
-msgid "failed to run supportconfig on the host"
-msgstr "ホスト上でsupportconfigを実行できませんでした"
-
 #: shared/utils/support.go:104
 msgid "failed to find host supportconfig tarball from command output"
 msgstr "コマンド出力からホストのsupportconfig tarballが見つかりませんでした"
@@ -1820,6 +1816,9 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "データベース"
+
+#~ msgid "failed to run supportconfig on the host"
+#~ msgstr "ホスト上でsupportconfigを実行できませんでした"
 
 #~ msgid "No CA found"
 #~ msgstr "CAが見つかりません"
