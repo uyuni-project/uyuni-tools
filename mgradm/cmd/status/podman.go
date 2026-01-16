@@ -51,5 +51,9 @@ func podmanStatus(
 		)
 	}
 
+	_ = utils.RunCmdStdMapping(
+		zerolog.DebugLevel, "systemctl", "status", "--no-pager", podman.EventProcessorService+"@0", // refer to ScaleService
+	)
+
 	return nil
 }

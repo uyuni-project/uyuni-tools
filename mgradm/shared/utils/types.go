@@ -46,6 +46,12 @@ type CocoFlags struct {
 	IsChanged bool
 }
 
+// EventProcessorFlags contains settings for event processor container.
+type EventProcessorFlags struct {
+	Image     types.ImageFlags `mapstructure:",squash"`
+	IsChanged bool
+}
+
 // SalineFlags contains settings for Saline container.
 type SalineFlags struct {
 	Port      int

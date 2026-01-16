@@ -17,6 +17,7 @@ func StartServices() error {
 	errs := utils.JoinErrors(
 		dbErr,
 		systemd.StartInstantiated(podman.ServerAttestationService),
+		systemd.StartInstantiated(podman.EventProcessorService),
 		systemd.StartInstantiated(podman.HubXmlrpcService),
 		systemd.StartInstantiated(podman.SalineService),
 		systemd.StartService(podman.ServerService),
@@ -32,6 +33,7 @@ func StartServices() error {
 func StopServices() error {
 	errs := utils.JoinErrors(
 		systemd.StopInstantiated(podman.ServerAttestationService),
+		systemd.StopInstantiated(podman.EventProcessorService),
 		systemd.StopInstantiated(podman.HubXmlrpcService),
 		systemd.StopInstantiated(podman.SalineService),
 		systemd.StopService(podman.ServerService),

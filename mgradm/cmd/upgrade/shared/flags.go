@@ -16,6 +16,7 @@ func AddUpgradeFlags(cmd *cobra.Command) {
 	adm_utils.AddDBUpgradeImageFlag(cmd)
 	adm_utils.AddUpgradeCocoFlag(cmd)
 	adm_utils.AddUpgradeHubXmlrpcFlags(cmd)
+	adm_utils.AddEventProcessorFlag(cmd)
 	adm_utils.AddUpgradeSalineFlag(cmd)
 }
 

@@ -29,6 +29,8 @@ func AddInstallFlags(cmd *cobra.Command) {
 
 	cmd_utils.AddSalineFlag(cmd)
 
+	cmd_utils.AddEventProcessorFlag(cmd)
+
 	cmd.Flags().String("admin-login", "admin", L("Administrator user name"))
 	cmd.Flags().String("admin-password", "", L("Administrator password"))
 	cmd.Flags().String("admin-firstName", "Administrator", L("First name of the administrator"))
