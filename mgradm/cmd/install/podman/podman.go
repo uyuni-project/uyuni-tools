@@ -55,6 +55,17 @@ NOTE: installing on a remote podman is not supported yet!
 					flags.Installation.SSL.DB.Cert = flags.Installation.SSL.Server.Cert
 					flags.Installation.SSL.DB.Key = flags.Installation.SSL.Server.Key
 				}
+
+				// The flag was renamed to server-image, so we manually assign it
+				flags.Podman.Name = v.GetString("server-image")
+
+				// Logic for server-tag: prefer specific tag, fallback to global tag
+				serverTag := v.GetString("server-tag")
+				if serverTag != "" {
+					flags.Podman.Tag = serverTag
+				} else {
+					flags.Podman.Tag = v.GetString("tag")
+				}
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},
