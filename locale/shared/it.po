@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-09 11:40+0100\n"
+"POT-Creation-Date: 2026-01-15 15:51+0100\n"
 "PO-Revision-Date: 2025-11-26 10:50+0000\n"
 "Last-Translator: Antonio Gemelli <antonio.gemelli@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
@@ -1573,10 +1573,6 @@ msgstr ""
 #, fuzzy, javascript-format
 msgid "failed to add %s to tarball"
 msgstr "mancata creazione della directory temporanea: %s"
-
-#: shared/utils/support.go:94
-msgid "failed to run supportconfig on the host"
-msgstr ""
 
 #: shared/utils/support.go:104
 msgid "failed to find host supportconfig tarball from command output"
