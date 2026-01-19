@@ -274,12 +274,10 @@ func isFQDNMatchingCertificate(fqdn string, certPath string, caPath string) bool
 func reuseExistingCertificatesFromSecrets(isDatabaseCheck bool) bool {
 	if isDatabaseCheck {
 		return shared_podman.HasSecret(shared_podman.DBCASecret) &&
-			shared_podman.HasSecret(shared_podman.DBSSLCertSecret) &&
-			shared_podman.HasSecret(shared_podman.DBSSLKeySecret)
+			shared_podman.HasSecret(shared_podman.DBSSLCertSecret)
 	}
 	return shared_podman.HasSecret(shared_podman.CASecret) &&
-		shared_podman.HasSecret(shared_podman.SSLCertSecret) &&
-		shared_podman.HasSecret(shared_podman.SSLKeySecret)
+		shared_podman.HasSecret(shared_podman.SSLCertSecret)
 }
 
 func reuseExistingCertificatesFromMounts(
