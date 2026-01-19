@@ -39,11 +39,6 @@
 %endif
 %endif
 
-%if 0%{?debian}
-# Don't build kubernetes support for Debian since go is too old (<1.21) there.
-%define _uyuni_tools_tags nok8s
-%endif
-
 %define name_adm mgradm
 %define name_ctl mgrctl
 %define name_pxy mgrpxy

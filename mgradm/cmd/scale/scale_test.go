@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -10,7 +10,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func TestParamsParsing(t *testing.T) {
@@ -18,17 +17,11 @@ func TestParamsParsing(t *testing.T) {
 		"--replicas", "2",
 		"some-service",
 	}
-	if utils.KubernetesBuilt {
-		args = append(args, "--backend", "kubectl")
-	}
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *scaleFlags, _ *cobra.Command, args []string) error {
 		testutils.AssertEquals(t, "Error parsing --replicas", 2, flags.Replicas)
 		testutils.AssertEquals(t, "Error parsing the service name", "some-service", args[0])
-		if utils.KubernetesBuilt {
-			testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
-		}
 		return nil
 	}
 

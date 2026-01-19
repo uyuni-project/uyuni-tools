@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -196,6 +196,8 @@ func AddRegistry(helmArgs []string, namespace string, registry *types.Registry, 
 	return helmArgs, err
 }
 
+var runCmdOutput = utils.RunCmdOutput
+
 // GetRegistrySecret creates a docker secret holding the registry credentials and returns the secret name.
 func GetRegistrySecret(namespace string, registry *types.Registry, appLabel string) (string, error) {
 	const secretName = "registry-credentials"
@@ -230,12 +232,4 @@ func GetDeploymentImagePullSecret(namespace string, filter string) (string, erro
 	}
 
 	return strings.TrimSpace(string(out)), nil
-}
-
-// HasResource checks if a resource is available on the cluster.
-func HasResource(name string) bool {
-	if err := utils.RunCmd("kubectl", "explain", name); err != nil {
-		return false
-	}
-	return true
 }

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -26,7 +26,8 @@ By default it will only print what would be done, use --force to actually remove
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
 	}
-	utils.AddUninstallFlags(uninstallCmd, true)
+	utils.AddUninstallFlags(uninstallCmd)
+	utils.AddBackendFlag(uninstallCmd)
 
 	return uninstallCmd
 }

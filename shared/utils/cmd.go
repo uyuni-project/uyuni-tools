@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -177,14 +177,10 @@ type UninstallFlags struct {
 }
 
 // AddUninstallFlags adds the common flags for uninstall commands.
-func AddUninstallFlags(cmd *cobra.Command, withBackend bool) {
+func AddUninstallFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolP("force", "f", false, L("Actually remove the server"))
 	cmd.Flags().Bool("purge-volumes", false, L("Also remove the volumes"))
 	cmd.Flags().Bool("purge-images", false, L("Also remove the container images"))
-
-	if withBackend {
-		AddBackendFlag(cmd)
-	}
 }
 
 // AddLogLevelFlags adds the --logLevel and --loglevel flags to a command.

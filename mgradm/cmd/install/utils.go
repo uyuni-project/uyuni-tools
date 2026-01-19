@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-package podman
+package install
 
 import (
 	"errors"
@@ -75,42 +75,12 @@ func installForPodman(
 		return err
 	}
 
-	// Create all the database credentials secrets
-	if err := shared_podman.CreateCredentialsSecrets(
-		shared_podman.DBUserSecret, flags.Installation.DB.User,
-		shared_podman.DBPassSecret, flags.Installation.DB.Password,
-	); err != nil {
+	// Create all the database credentials secrets and setup the DB
+	if err := setupDatabase(flags.Installation.DB, flags.Installation.ReportDB, preparedPgsqlImage); err != nil {
 		return err
 	}
 
-	if err := shared_podman.CreateCredentialsSecrets(
-		shared_podman.ReportDBUserSecret, flags.Installation.ReportDB.User,
-		shared_podman.ReportDBPassSecret, flags.Installation.ReportDB.Password,
-	); err != nil {
-		return err
-	}
-
-	if flags.Installation.DB.IsLocal() {
-		// The admin password is not needed for external databases
-		if err := shared_podman.CreateCredentialsSecrets(
-			shared_podman.DBAdminUserSecret, flags.Installation.DB.Admin.User,
-			shared_podman.DBAdminPassSecret, flags.Installation.DB.Admin.Password,
-		); err != nil {
-			return err
-		}
-
-		// Run the DB container setup if the user doesn't set a custom host name for it.
-		if err := pgsql.SetupPgsql(systemd, preparedPgsqlImage); err != nil {
-			return err
-		}
-	} else {
-		log.Info().Msgf(
-			L("Skipped database container setup to use external database %s"),
-			flags.Installation.DB.Host,
-		)
-	}
-
-	log.Info().Msg(L("Run setup command in the container"))
+	log.Info().Msg(L("Run setup command"))
 
 	if err := runSetup(preparedImage, &flags.ServerFlags, fqdn); err != nil {
 		return err
@@ -132,27 +102,48 @@ func installForPodman(
 			return utils.Error(err, L("failed to extract payg data"))
 		}
 	}
-	if err := shared_podman.EnablePodmanSocket(); err != nil {
-		return utils.Error(err, L("cannot enable podman socket"))
-	}
 
-	if err := coco.SetupCocoContainer(
-		systemd, authFile, flags.Coco, flags.Image,
-		flags.Installation.DB,
+	return utils.JoinErrors(
+		shared_podman.EnablePodmanSocket(),
+		coco.SetupCocoContainer(systemd, authFile, flags.Coco, flags.Image, flags.Installation.DB),
+		hub.SetupHubXmlrpc(systemd, authFile, flags.Image, flags.HubXmlrpc),
+		saline.SetupSalineContainer(systemd, authFile, flags.Image, flags.Saline, flags.Installation.TZ),
+	)
+}
+
+func setupDatabase(dbFlags adm_utils.DBFlags, reportdbFlags adm_utils.DBFlags, preparedImage string) error {
+	if err := shared_podman.CreateCredentialsSecrets(
+		shared_podman.DBUserSecret, dbFlags.User,
+		shared_podman.DBPassSecret, dbFlags.Password,
 	); err != nil {
 		return err
 	}
 
-	if err := hub.SetupHubXmlrpc(
-		systemd, authFile, flags.Image, flags.HubXmlrpc,
+	if err := shared_podman.CreateCredentialsSecrets(
+		shared_podman.ReportDBUserSecret, reportdbFlags.User,
+		shared_podman.ReportDBPassSecret, reportdbFlags.Password,
 	); err != nil {
 		return err
 	}
 
-	if err := saline.SetupSalineContainer(
-		systemd, authFile, flags.Image, flags.Saline, flags.Installation.TZ,
-	); err != nil {
-		return err
+	if dbFlags.IsLocal() {
+		// The admin password is not needed for external databases
+		if err := shared_podman.CreateCredentialsSecrets(
+			shared_podman.DBAdminUserSecret, dbFlags.Admin.User,
+			shared_podman.DBAdminPassSecret, dbFlags.Admin.Password,
+		); err != nil {
+			return err
+		}
+
+		// Run the DB container setup if the user doesn't set a custom host name for it.
+		if err := pgsql.SetupPgsql(systemd, preparedImage); err != nil {
+			return err
+		}
+	} else {
+		log.Info().Msgf(
+			L("Skipped database container setup to use external database %s"),
+			dbFlags.Host,
+		)
 	}
 	return nil
 }

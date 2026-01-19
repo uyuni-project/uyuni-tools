@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -14,9 +14,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	core "k8s.io/api/core/v1"
 )
 
 const (
@@ -34,39 +32,11 @@ const (
 	ProxyApp = "uyuni-proxy"
 )
 
-const (
-	// ServerComponent is the value of the component label for the server resources.
-	ServerComponent = "server"
-	// DBComponent is the value of the component label for the database resources.
-	DBComponent = "db"
-	// HubApiComponent is the value of the component label for the Hub API resources.
-	HubAPIComponent = "hub-api"
-	// CocoComponent is the value of the component label for the confidential computing attestation resources.
-	CocoComponent = "coco"
-)
-
 // ServerFilter represents filter used to check server app.
 const ServerFilter = "-l" + AppLabel + "=" + ServerApp
 
 // ServerFilter represents filter used to check proxy app.
 const ProxyFilter = "-l" + AppLabel + "=" + ProxyApp
-
-// CAIssuerName is the name of the server CA issuer deployed if cert-manager is used.
-const CAIssuerName = "uyuni-ca-issuer"
-
-const (
-	// CertSecretName is the name of the server SSL certificate secret to use.
-	CertSecretName = "uyuni-cert"
-	// DBCertSecretName is the name of the database SSL certificate secret to use.
-	DBCertSecretName = "db-cert"
-
-	// CASecretName is the name of the Secret containing the server TLS root CA certificate and key.
-	CASecretName = "uyuni-ca"
-	// CAConfigName is the name of the ConfigMap containing the server CA certificate.
-	CAConfigName = "uyuni-ca"
-	// CAConfigName is the name of the ConfigMap containing the database CA certificate.
-	DBCAConfigName = "db-ca"
-)
 
 // GetLabels creates the label map with the app and component.
 // The component label may be an empty string to skip it.
@@ -92,7 +62,7 @@ func WaitForDeployments(namespace string, names ...string) error {
 	for len(deploymentsStarting) > 0 {
 		starting := []string{}
 		for _, deploymentName := range deploymentsStarting {
-			ready, err := IsDeploymentReady(namespace, deploymentName)
+			ready, err := isDeploymentReady(namespace, deploymentName)
 			if err != nil {
 				return err
 			}
@@ -108,43 +78,10 @@ func WaitForDeployments(namespace string, names ...string) error {
 	return nil
 }
 
-// WaitForRunningDeployment waits for a deployment to have at least one replica in running state.
-func WaitForRunningDeployment(namespace string, name string) error {
-	log.Info().Msgf(L("Waiting for %[1]s deployment to be started in %[2]s namespace\n"), name, namespace)
-	for {
-		pods, err := getPodsForDeployment(namespace, name)
-		if err != nil {
-			return err
-		}
-
-		if len(pods) > 0 {
-			jsonPath := "jsonpath={.status.containerStatuses[*].state.running.startedAt}"
-			if len(pods) > 1 {
-				jsonPath = "jsonpath={.items[*].status.containerStatuses[*].state.running.startedAt}"
-			}
-			out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", "-n", namespace,
-				"-o", jsonPath,
-				strings.Join(pods, " "),
-			)
-			if err != nil {
-				return utils.Errorf(err, L("failed to check if the deployment has running pods"))
-			}
-			if strings.TrimSpace(string(out)) != "" {
-				break
-			}
-			if err := hasAllPodsFailed(namespace, pods, name); err != nil {
-				return err
-			}
-		}
-		time.Sleep(1 * time.Second)
-	}
-	return nil
-}
-
-// IsDeploymentReady returns true if a kubernetes deployment has at least one ready replica.
+// isDeploymentReady returns true if a kubernetes deployment has at least one ready replica.
 //
 // An empty namespace means searching through all the namespaces.
-func IsDeploymentReady(namespace string, name string) (bool, error) {
+func isDeploymentReady(namespace string, name string) (bool, error) {
 	jsonpath := fmt.Sprintf("jsonpath={.items[?(@.metadata.name==\"%s\")].status.readyReplicas}", name)
 	args := []string{"get", "-o", jsonpath, "deploy"}
 	args = addNamespace(args, namespace)
@@ -320,14 +257,6 @@ func ReplicasTo(namespace string, name string, replica uint) error {
 	return nil
 }
 
-func isPodRunning(namespace string, podname string, filter string) (bool, error) {
-	pods, err := GetPods(namespace, filter)
-	if err != nil {
-		return false, utils.Errorf(err, L("cannot check if pod %[1]s is running in app %[2]s"), podname, filter)
-	}
-	return utils.Contains(pods, podname), nil
-}
-
 // GetPods return the list of the pod given a filter.
 func GetPods(namespace string, filter string) (pods []string, err error) {
 	log.Debug().Msgf("Checking all pods for %s", filter)
@@ -384,67 +313,17 @@ func addNamespace(args []string, namespace string) []string {
 }
 
 // GetPullPolicy returns the kubernetes PullPolicy value, if exists.
-func GetPullPolicy(name string) core.PullPolicy {
-	policies := map[string]core.PullPolicy{
-		"always":       core.PullAlways,
-		"never":        core.PullNever,
-		"ifnotpresent": core.PullIfNotPresent,
+func GetPullPolicy(name string) string {
+	policies := map[string]string{
+		"always":       "Always",
+		"never":        "Never",
+		"ifnotpresent": "IfNotPresent",
 	}
 	policy := policies[strings.ToLower(name)]
 	if policy == "" {
 		log.Fatal().Msgf(L("%s is not a valid image pull policy value"), name)
 	}
 	return policy
-}
-
-// RunPod runs a pod, waiting for its execution and deleting it.
-func RunPod(
-	namespace string,
-	podname string,
-	filter string,
-	image string,
-	pullPolicy string,
-	command string,
-	override ...string,
-) error {
-	arguments := []string{
-		"run", "--rm", "-n", namespace, "--attach", "--pod-running-timeout=3h", "--restart=Never", podname,
-		"--image", image, "--image-pull-policy", pullPolicy, filter,
-	}
-
-	if len(override) > 0 {
-		arguments = append(arguments, `--override-type=strategic`)
-		for _, arg := range override {
-			overrideParam := "--overrides=" + arg
-			arguments = append(arguments, overrideParam)
-		}
-	}
-
-	arguments = append(arguments, "--command", "--", command)
-	err := utils.RunCmdStdMapping(zerolog.DebugLevel, "kubectl", arguments...)
-	if err != nil {
-		return utils.Errorf(err, PL("The first placeholder is a command",
-			"cannot run %[1]s using image %[2]s"), command, image)
-	}
-	return nil
-}
-
-// DeletePod deletes a kubernetes pod named podname.
-func DeletePod(namespace string, podname string, filter string) error {
-	isRunning, err := isPodRunning(namespace, podname, filter)
-	if err != nil {
-		return utils.Errorf(err, L("cannot delete pod %s"), podname)
-	}
-	if !isRunning {
-		log.Debug().Msgf("no need to delete pod %s because is not running", podname)
-		return nil
-	}
-	arguments := []string{"delete", "pod", podname, "-n", namespace}
-	_, err = utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", arguments...)
-	if err != nil {
-		return utils.Errorf(err, L("cannot delete pod %s"), podname)
-	}
-	return nil
 }
 
 // GetNode return the node where the app is running.
@@ -464,28 +343,4 @@ func GetNode(namespace string, filter string) (string, error) {
 		return "", fmt.Errorf(L("cannot find node name matching filter %s"), filter)
 	}
 	return nodeName, nil
-}
-
-// GenerateOverrideDeployment generate a JSON files represents the deployment information.
-func GenerateOverrideDeployment(deployData types.Deployment) (string, error) {
-	ret, err := json.Marshal(deployData)
-	if err != nil {
-		return "", utils.Errorf(err, L("cannot serialize pod definition override"))
-	}
-	return string(ret), nil
-}
-
-// GetRunningImage returns the image of containerName for the server running in the current system.
-func GetRunningImage(containerName string) (string, error) {
-	args := []string{
-		"get", "pods", "-A", ServerFilter,
-		"-o", "jsonpath={.items[0].spec.containers[?(@.name=='" + containerName + "')].image}",
-	}
-	image, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", args...)
-
-	log.Debug().Msgf("%[1]s container image is: %[2]s", containerName, image)
-	if err != nil {
-		return "", err
-	}
-	return strings.Trim(string(image), "\n"), nil
 }

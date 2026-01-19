@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -28,7 +28,7 @@ func InstallK3sTraefikConfig(ports []types.PortMap) error {
 
 	endpoints := []types.PortMap{}
 	for _, port := range ports {
-		port.Name = GetTraefikEndpointName(port)
+		port.Name = getTraefikEndpointName(port)
 		endpoints = append(endpoints, port)
 	}
 	version, err := getTraefikChartMajorVersion()
@@ -48,9 +48,9 @@ func InstallK3sTraefikConfig(ports []types.PortMap) error {
 	return waitForTraefik()
 }
 
-// GetTraefikEndpointName computes the traefik endpoint name from the service and port names.
+// getTraefikEndpointName computes the traefik endpoint name from the service and port names.
 // Those names should be less than 15 characters long.
-func GetTraefikEndpointName(portmap types.PortMap) string {
+func getTraefikEndpointName(portmap types.PortMap) string {
 	svc := shortenName(portmap.Service)
 	name := shortenName(portmap.Name)
 	if name != svc {
