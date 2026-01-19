@@ -295,17 +295,18 @@ func RunPgsqlVersionUpgrade(
 		volumeMounts := append(utils.PgsqlRequiredVolumeMounts,
 			types.VolumeMount{MountPath: "/var/lib/pgsql/data-backup", Name: "var-pgsql-backup"})
 
-		script, err := adm_utils.GeneratePgsqlVersionUpgradeScript(
-			oldPgsql, newPgsql, "/var/lib/pgsql/data-backup")
-		if err != nil {
-			return utils.Errorf(err, L("cannot generate PostgreSQL database version upgrade script"))
+		env := map[string]string{
+			"OLD_VERSION": oldPgsql,
+			"NEW_VERSION": newPgsql,
+			"BACKUP_PATH": "/var/lib/pgsql/data-backup",
 		}
 
-		err = runContainer(pgsqlVersionUpgradeContainer, preparedImage, volumeMounts, extraArgs,
-			[]string{"bash", "-e", "-c", script})
-		if err != nil {
-			return err
+		for key, value := range env {
+			extraArgs = append(extraArgs, "-e", fmt.Sprintf("%s=%s", key, value))
 		}
+
+		return runContainer(pgsqlVersionUpgradeContainer, preparedImage, volumeMounts, extraArgs,
+			[]string{"/bin/bash", "-e", "-c", "/usr/bin/pgsqlVersionUpgrade.sh"})
 	}
 	return nil
 }

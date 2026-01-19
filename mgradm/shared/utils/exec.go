@@ -49,25 +49,6 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	return runCmd.Run()
 }
 
-// GeneratePgsqlVersionUpgradeScript generates the PostgreSQL version upgrade script.
-func GeneratePgsqlVersionUpgradeScript(
-	oldPgVersion string,
-	newPgVersion string,
-	backupDir string,
-) (string, error) {
-	data := templates.PostgreSQLVersionUpgradeTemplateData{
-		OldVersion: oldPgVersion,
-		NewVersion: newPgVersion,
-		BackupDir:  backupDir,
-	}
-
-	scriptBuilder := new(strings.Builder)
-	if err := data.Render(scriptBuilder); err != nil {
-		return "", utils.Error(err, L("failed to render database upgrade script"))
-	}
-	return scriptBuilder.String(), nil
-}
-
 // GeneratePostUpgradeScript generates the script to be run after upgrade.
 func GeneratePostUpgradeScript() (string, error) {
 	data := templates.PostUpgradeTemplateData{}
