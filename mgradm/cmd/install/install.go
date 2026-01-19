@@ -5,6 +5,9 @@
 package install
 
 import (
+	"fmt"
+	"os/exec"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -41,6 +44,10 @@ NOTE: installing on a remote podman is not supported yet!
 			return cobra.MaximumNArgs(1)(cmd, args)
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
+			if _, err := exec.LookPath("podman"); err != nil {
+				return fmt.Errorf("podman is not installed. Please install podman before running this command")
+			}
+
 			var flags podmanInstallFlags
 			flagsUpdater := func(v *viper.Viper) {
 				flags.Coco.IsChanged = v.IsSet("coco.replicas")
@@ -54,6 +61,16 @@ NOTE: installing on a remote podman is not supported yet!
 				if flags.Installation.SSL.Server.IsDefined() && !flags.Installation.SSL.DB.IsDefined() {
 					flags.Installation.SSL.DB.Cert = flags.Installation.SSL.Server.Cert
 					flags.Installation.SSL.DB.Key = flags.Installation.SSL.Server.Key
+				}
+				// 1. Assign "server-image" flag to the Name field
+				flags.Podman.Name = v.GetString("server-image")
+
+				// 2. Logic: Prefer "server-tag", fallback to global "tag"
+				serverTag := v.GetString("server-tag")
+				if serverTag != "" {
+					flags.Podman.Tag = serverTag
+				} else {
+					flags.Podman.Tag = v.GetString("tag")
 				}
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
