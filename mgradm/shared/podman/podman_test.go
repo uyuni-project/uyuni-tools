@@ -124,6 +124,6 @@ func TestRunPgsqlVersionUpgrade(t *testing.T) {
 			testutils.AssertEquals(t, fmt.Sprintf("case %d: wrong image used for container", i), testCase.expectedImage, image)
 			return nil
 		}
-		_ = RunPgsqlVersionUpgrade(expectedAuthfile, testCase.image, testCase.upgradeImage, "14", "16")
+		_ = RunPgsqlVersionUpgrade(expectedAuthfile, testCase.image, testCase.upgradeImage, []types.VolumeMount{})
 	}
 }
