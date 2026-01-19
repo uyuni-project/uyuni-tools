@@ -257,17 +257,25 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migra
 		return nil
 	}
 
+	env := map[string]string{
+		"RUN_REINDEX":       strconv.FormatBool(collationChange),
+		"RUN_SCHEMA_UPDATE": strconv.FormatBool(schemaUpdateRequired),
+		"MIGRATION":         strconv.FormatBool(migration),
+	}
+
 	extraArgs := []string{
 		"--security-opt", "label=disable",
 		"--network", podman.UyuniNetwork,
 	}
-	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
-	script, err := adm_utils.GenerateFinalizePostgresScript(collationChange, schemaUpdateRequired, migration, false)
-	if err != nil {
-		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
+
+	for key, value := range env {
+		extraArgs = append(extraArgs, "-e", fmt.Sprintf("%s=%s", key, value))
 	}
+
+	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
+
 	return podman.RunContainer(pgsqlFinalizeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
-		[]string{"bash", "-e", "-c", script})
+		[]string{"/usr/bin/sh", "-e", "-c", "/usr/local/bin/pgsqlFinalize.sh"})
 }
 
 // RunPostUpgradeScript run the script with the changes to apply after the upgrade.

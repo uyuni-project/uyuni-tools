@@ -68,24 +68,6 @@ func GeneratePgsqlVersionUpgradeScript(
 	return scriptBuilder.String(), nil
 }
 
-// GenerateFinalizePostgresScript generates the script to finalize PostgreSQL upgrade.
-func GenerateFinalizePostgresScript(
-	runReindex bool, runSchemaUpdate bool, migration bool, kubernetes bool,
-) (string, error) {
-	data := templates.FinalizePostgresTemplateData{
-		RunReindex:      runReindex,
-		RunSchemaUpdate: runSchemaUpdate,
-		Migration:       migration,
-		Kubernetes:      kubernetes,
-	}
-
-	scriptBuilder := new(strings.Builder)
-	if err := data.Render(scriptBuilder); err != nil {
-		return "", utils.Error(err, L("failed to render database finalization script"))
-	}
-	return scriptBuilder.String(), nil
-}
-
 // GeneratePostUpgradeScript generates the script to be run after upgrade.
 func GeneratePostUpgradeScript() (string, error) {
 	data := templates.PostUpgradeTemplateData{}
