@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-07 15:50+0100\n"
-"PO-Revision-Date: 2025-11-26 10:51+0000\n"
+"PO-Revision-Date: 2026-01-19 09:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: mgradm/cmd/backup/backup.go:28
 msgid "Create backup"
@@ -48,7 +48,7 @@ msgstr "不备份 podman 配置。恢复时将使用默认值"
 
 #: mgradm/cmd/backup/backup.go:40
 msgid "Do not restart services after backup is done"
-msgstr "完成备份后不重启动服务"
+msgstr "完成备份后不重启服务"
 
 #: mgradm/cmd/backup/backup.go:41 mgradm/cmd/backup/backup.go:64
 msgid "Print expected actions, but no action is done"
@@ -80,7 +80,7 @@ msgstr "不恢复 podman 配置。将使用默认值"
 
 #: mgradm/cmd/backup/backup.go:63
 msgid "Restart service after restore is done"
-msgstr "完成恢复后重启动服务"
+msgstr "完成恢复后重启服务"
 
 #: mgradm/cmd/backup/backup.go:65
 msgid "Force overwrite of existing items"
@@ -129,7 +129,7 @@ msgstr "正在停止服务器服务"
 
 #: mgradm/cmd/backup/create/create.go:82
 msgid "Restarting server service"
-msgstr "正在重启动服务器服务"
+msgstr "正在重启服务器服务"
 
 #: mgradm/cmd/backup/create/create.go:86
 #, javascript-format
@@ -686,7 +686,7 @@ msgstr "无法创建密钥环 %s"
 #: mgradm/cmd/gpg/add/gpg.go:89
 #, javascript-format
 msgid "failed to parse %s"
-msgstr "无法分析 %s"
+msgstr "无法解析 %s"
 
 #: mgradm/cmd/gpg/add/gpg.go:96
 #, javascript-format
@@ -718,7 +718,7 @@ msgstr "无法运行导入密钥"
 
 #: mgradm/cmd/gpg/add/gpg.go:137
 msgid "failed to restart uyuni-update-config"
-msgstr "无法重启动 uyuni-update-config"
+msgstr "无法重启 uyuni-update-config"
 
 #: mgradm/cmd/gpg/gpg.go:20
 msgid "Manage GPG keys for 3rd party repositories"
@@ -999,11 +999,11 @@ msgstr "第一个用户标志"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:49
 msgid "failed to parse data extractor pod output"
-msgstr "无法分析数据提取器 pod 输出"
+msgstr "无法解析数据提取器 pod 输出"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:66
 msgid "failed to parse migration data file"
-msgstr "无法分析迁移数据文件"
+msgstr "无法解析迁移数据文件"
 
 #: mgradm/cmd/migrate/kubernetes/dataExtractor.go:73
 msgid "found no data file after migration"
@@ -1109,7 +1109,7 @@ msgstr "无法获取 %s SSH 配置映射"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:130
 msgid "failed to parse SSH ConfigMap data"
-msgstr "无法分析SSH 配置映射数据"
+msgstr "无法解析 SSH 配置映射数据"
 
 #: mgradm/cmd/migrate/kubernetes/ssh.go:135
 #: mgradm/cmd/migrate/kubernetes/ssh.go:140
@@ -1191,7 +1191,7 @@ msgstr "已构建，但不含 kubernetes 支持"
 
 #: mgradm/cmd/restart/restart.go:23 mgradm/cmd/restart/restart.go:24
 msgid "Restart the server"
-msgstr "重启动服务器"
+msgstr "重启服务器"
 
 #: mgradm/cmd/scale/kubernetes.go:23
 msgid "kubernetes not supported yet"
@@ -1817,22 +1817,17 @@ msgid "cannot generate systemd user configuration file"
 msgstr "无法生成 systemd 用户配置文件"
 
 #: mgradm/shared/podman/podman.go:139
-#, fuzzy
-#| msgid "failed to generate migration script"
 msgid "failed to generate SSL migration script"
-msgstr "无法生成迁移脚本"
+msgstr "SSL 迁移脚本生成失败"
 
 #: mgradm/shared/podman/podman.go:159
-#, fuzzy, javascript-format
-#| msgid "Preparing SSL certificates to match the new hostname"
+#, javascript-format
 msgid "Migrating SSL certificates from the source server %s"
-msgstr "正在准备 SSL 证书以与新主机名匹配"
+msgstr "正在从源服务器 %s 迁移 SSL 证书"
 
 #: mgradm/shared/podman/podman.go:162
-#, fuzzy
-#| msgid "cannot run uyuni migration container"
 msgid "cannot run uyuni SSL migration container"
-msgstr "无法运行 uyuni 迁移容器"
+msgstr "无法运行 uyuni SSL 迁移容器"
 
 #: mgradm/shared/podman/podman.go:173
 #, javascript-format
@@ -1931,10 +1926,8 @@ msgid "error upgrading saline service."
 msgstr "升级 Saline 服务时出错。"
 
 #: mgradm/shared/podman/podman.go:606
-#, fuzzy
-#| msgid "cannot run migration script"
 msgid "cannot run SSL migration script"
-msgstr "无法运行迁移脚本"
+msgstr "无法运行 SSL 迁移脚本"
 
 #: mgradm/shared/podman/podman.go:618
 msgid "cannot run migration script"
@@ -1985,69 +1978,53 @@ msgid "Using provided 3rd party database certificates"
 msgstr "正在使用提供的第三方数据库证书"
 
 #: mgradm/shared/podman/ssl.go:120
-#, fuzzy
-#| msgid "failed to create the server deployment"
 msgid "Failed to create secrets from the provided SSL arguments"
-msgstr "无法创建服务器部署"
+msgstr "无法通过提供的 SSL 参数创建机密"
 
 #: mgradm/shared/podman/ssl.go:143
-#, fuzzy
-#| msgid "Reusing existing certificates"
 msgid "Reusing the existing server and database certificates"
-msgstr "正在重复使用现有证书"
+msgstr "正在重复使用现有服务器和数据库证书"
 
 #: mgradm/shared/podman/ssl.go:147
 msgid "Generating both the server and database certificates since one is missing"
-msgstr ""
+msgstr "正在生成服务器和数据库证书，原因是缺少其中一个证书"
 
 #: mgradm/shared/podman/ssl.go:157
-#, fuzzy
-#| msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgid "Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."
-msgstr "无 CA 口令无法生成新证书，请检查输入选项"
+msgstr "未找到 SSL CA 密钥，无法生成证书。请设置第三方证书。"
 
 #: mgradm/shared/podman/ssl.go:173
 msgid "Verifying the CA key password…"
-msgstr ""
+msgstr "正在验证 CA 密钥口令…"
 
 #: mgradm/shared/podman/ssl.go:184
-#, fuzzy
-#| msgid "Failed to convert CA private key to RSA"
 msgid "Failed to verify the CA key password!"
-msgstr "无法将 CA 私用密钥转换为 RSA"
+msgstr "CA 密钥口令验证失败！"
 
 #: mgradm/shared/podman/ssl.go:202
-#, fuzzy
-#| msgid "Reusing existing certificates"
 msgid "Reusing the existing server certificate secrets"
-msgstr "正在重复使用现有证书"
+msgstr "正在重复使用现有服务器证书机密"
 
 #: mgradm/shared/podman/ssl.go:207
-#, fuzzy
-#| msgid "Reusing existing certificates"
 msgid "Reusing the existing database certificate secrets"
-msgstr "正在重复使用现有证书"
+msgstr "正在重复使用现有数据库证书机密"
 
 #: mgradm/shared/podman/ssl.go:259
 msgid "Missing SANs or subjects in certificate of secret %[1]: %[2]s"
-msgstr ""
+msgstr "机密 %[1] 的证书中缺少 SAN 或主体：%[2]s"
 
 #: mgradm/shared/podman/ssl.go:295
-#, fuzzy
-#| msgid "Reusing existing certificates"
 msgid "Reusing the existing server certificate files"
-msgstr "正在重复使用现有证书"
+msgstr "正在重复使用现有服务器证书文件"
 
 #: mgradm/shared/podman/ssl.go:307
-#, fuzzy
-#| msgid "Reusing existing certificates"
 msgid "Reusing the existing database certificate files"
-msgstr "正在重复使用现有证书"
+msgstr "正在重复使用现有数据库证书文件"
 
 #: mgradm/shared/podman/ssl.go:316
 #, javascript-format
 msgid "CA file %s not found."
-msgstr ""
+msgstr "找不到 CA 文件 %s。"
 
 #: mgradm/shared/podman/ssl.go:321
 msgid "cannot write existing CA certificate"
@@ -2056,22 +2033,20 @@ msgstr "无法写入现有 CA 证书"
 #: mgradm/shared/podman/ssl.go:328
 #, javascript-format
 msgid "Certificate file %s not found."
-msgstr ""
+msgstr "找不到证书文件 %s。"
 
 #: mgradm/shared/podman/ssl.go:332
 msgid "cannot write existing server certificate"
 msgstr "无法写入现有服务器证书"
 
 #: mgradm/shared/podman/ssl.go:337
-#, fuzzy
-#| msgid "Cert file %[1]s doesn't match %[2]s FQDN. A new certificate will be created."
 msgid "Certificate file %[1]s doesn't match %[2]s FQDN."
-msgstr "证书文件 %[1]s 与 %[2]s 的 FQDN 不匹配。将创建新证书。"
+msgstr "证书文件 %[1]s 与 %[2]s 的 FQDN 不匹配。"
 
 #: mgradm/shared/podman/ssl.go:345
 #, javascript-format
 msgid "Certificate key file %s not found."
-msgstr ""
+msgstr "找不到证书密钥文件 %s。"
 
 #: mgradm/shared/podman/ssl.go:349
 msgid "cannot write existing server key"
@@ -2082,38 +2057,26 @@ msgid "Cannot generate new certificates without a CA password. Please check inpu
 msgstr "无 CA 口令无法生成新证书，请检查输入选项"
 
 #: mgradm/shared/podman/ssl.go:402
-#, fuzzy
-#| msgid "Creating SSL server certificate secret"
 msgid "Generating the server certificate…"
-msgstr "正在创建 SSL 服务器证书机密"
+msgstr "正在生成服务器证书…"
 
 #: mgradm/shared/podman/ssl.go:422
-#, fuzzy
-#| msgid "Failed to generate server SSL certificates. Please check the input parameters."
 msgid "Failed to generate server SSL certificate. Please check the input parameters."
 msgstr "服务器 SSL 证书生成失败，请检查输入参数。"
 
 #: mgradm/shared/podman/ssl.go:425
-#, fuzzy
-#| msgid "Server SSL certificates generated"
 msgid "Server SSL certificate generated"
 msgstr "已生成服务器 SSL 证书"
 
 #: mgradm/shared/podman/ssl.go:436
-#, fuzzy
-#| msgid "Cannot generate database certificate"
 msgid "Generating the database certificate…"
-msgstr "无法生成数据库证书"
+msgstr "正在生成数据库证书…"
 
 #: mgradm/shared/podman/ssl.go:455
-#, fuzzy
-#| msgid "Cannot generate database certificate"
 msgid "Failed to generate database SSL certificate"
-msgstr "无法生成数据库证书"
+msgstr "数据库 SSL 证书生成失败"
 
 #: mgradm/shared/podman/ssl.go:458
-#, fuzzy
-#| msgid "Database SSL certificates generated"
 msgid "Database SSL certificate generated"
 msgstr "已生成数据库 SSL 证书"
 
