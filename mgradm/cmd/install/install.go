@@ -37,16 +37,7 @@ func updateFlags(flags *podmanInstallFlags, v *viper.Viper) {
 		flags.Installation.SSL.DB.Cert = flags.Installation.SSL.Server.Cert
 		flags.Installation.SSL.DB.Key = flags.Installation.SSL.Server.Key
 	}
-
-	// FIX #673: Server Tag Logic
-	flags.Podman.Name = v.GetString("server-image")
-
-	serverTag := v.GetString("server-tag")
-	if serverTag != "" {
-		flags.Podman.Tag = serverTag
-	} else {
-		flags.Podman.Tag = v.GetString("tag")
-	}
+	// Note: server-image and server-tag are now handled automatically by the mapstructure tags in utils.go
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanInstallFlags]) *cobra.Command {
@@ -62,9 +53,9 @@ The command assumes podman is installed locally.
 NOTE: installing on a remote podman is not supported yet!
 `),
 		Args: func(cmd *cobra.Command, args []string) error {
+			// ensure the right amount of args, managing podman
 			if len(args) > 0 && args[0] == "podman" {
-				copy(args, args[1:])
-				args = args[:len(args)-1]
+				return cobra.MaximumNArgs(2)(cmd, args)
 			}
 			return cobra.MaximumNArgs(1)(cmd, args)
 		},
@@ -74,8 +65,12 @@ NOTE: installing on a remote podman is not supported yet!
 				return fmt.Errorf("podman is not installed. Please install podman before running this command")
 			}
 
+			// If the alias "install podman" is used, "podman" will be the first arg.
+			if len(args) > 0 && args[0] == "podman" {
+				args = args[1:]
+			}
+
 			var flags podmanInstallFlags
-			// We call the helper function here instead of defining the logic inline.
 			flagsUpdater := func(v *viper.Viper) {
 				updateFlags(&flags, v)
 			}
