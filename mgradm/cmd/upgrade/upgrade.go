@@ -24,7 +24,12 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeF
 		GroupID: "deploy",
 		Aliases: []string{"upgrade podman"},
 		Short:   L("Upgrade a local server on podman"),
-		Args:    cobra.ExactArgs(0),
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) > 0 && args[0] == "podman" {
+				return cobra.ExactArgs(1)(cmd, args)
+			}
+			return cobra.ExactArgs(0)(cmd, args)
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags podmanUpgradeFlags
 			flagsUpdater := func(v *viper.Viper) {
@@ -44,7 +49,12 @@ func newListCmd(globalFlags *types.GlobalFlags, run func(*podmanUpgradeFlags) er
 	listCmd := &cobra.Command{
 		Use:   "list",
 		Short: L("List available tags for an image"),
-		Args:  cobra.ExactArgs(0),
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) > 0 && args[0] == "podman" {
+				return cobra.ExactArgs(1)(cmd, args)
+			}
+			return cobra.ExactArgs(0)(cmd, args)
+		},
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			viper, _ := utils.ReadConfig(cmd, utils.GlobalConfigFilename, globalFlags.ConfigPath)
 
