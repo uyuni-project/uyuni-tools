@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-06 18:02+0100\n"
-"PO-Revision-Date: 2025-11-26 11:02+0000\n"
+"PO-Revision-Date: 2026-01-20 04:04+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/de/>\n"
 "Language: de\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
-msgstr ""
+msgstr "Cache löschen"
 
 #: mgrpxy/cmd/cache/kubernetes.go:25 mgrpxy/cmd/restart/kubernetes.go:25
 #: mgrpxy/cmd/start/kubernetes.go:25 mgrpxy/cmd/stop/kubernetes.go:25
