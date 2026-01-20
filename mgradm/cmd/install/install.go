@@ -32,15 +32,18 @@ The command assumes podman is installed locally.
 NOTE: installing on a remote podman is not supported yet!
 `),
 		Args: func(cmd *cobra.Command, args []string) error {
-			// If the alias "install podman" is used, "podman" will be the first arg.
-			// We remove it from the args slice so it isn't treated as the FQDN.
+			// ensure the right amount of args, managing podman
 			if len(args) > 0 && args[0] == "podman" {
-				copy(args, args[1:])
-				args = args[:len(args)-1]
+				return cobra.MaximumNArgs(2)(cmd, args)
 			}
 			return cobra.MaximumNArgs(1)(cmd, args)
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
+			// If the alias "install podman" is used, "podman" will be the first arg.
+			// We remove it from the args slice so it isn't treated as the FQDN.
+			if len(args) > 0 && args[0] == "podman" {
+				args = args[1:]
+			}
 			var flags podmanInstallFlags
 			flagsUpdater := func(v *viper.Viper) {
 				flags.Coco.IsChanged = v.IsSet("coco.replicas")
