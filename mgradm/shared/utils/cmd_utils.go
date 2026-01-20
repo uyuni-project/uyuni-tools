@@ -186,26 +186,19 @@ It will be used as SCC credentials for products synchronization and to pull imag
 
 // AddImageFlag add Image flags to a command.
 func AddImageFlag(cmd *cobra.Command) {
-	// FIX #673: Rename "image" to "server-image" for clarity
-	cmd.Flags().String("server-image", defaultImage, L("Image for uyuni server container"))
-	cmd.Flags().String("server-tag", "", L("Tag for uyuni server container. If empty, the global tag will be used"))
-	// Keep global "tag" (used as fallback)
-	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
+    cmd.Flags().String("server-image", defaultImage, L("Image for uyuni server container"))
+    cmd.Flags().String("server-tag", "", L("Tag for uyuni server container. If empty, the global tag will be used"))
+    cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
 
-	utils.AddPullPolicyFlag(cmd)
-	utils.AddRegistryFlag(cmd)
+    utils.AddPullPolicyFlag(cmd)
+    utils.AddRegistryFlag(cmd)
 
-	// Update Help Groups
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "image", Title: L("Image Flags")})
-
-	// Register the new flags to the "image" group
-	_ = utils.AddFlagToHelpGroupID(cmd, "server-image", "image")
-	_ = utils.AddFlagToHelpGroupID(cmd, "server-tag", "image")
-	_ = utils.AddFlagToHelpGroupID(cmd, "tag", "image")
-
-	// without group, since this flag is applied to all the images
-	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "")
-	_ = utils.AddFlagToHelpGroupID(cmd, "registry", "")
+    _ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "image", Title: L("Image Flags")})
+    _ = utils.AddFlagToHelpGroupID(cmd, "server-image", "image")
+    _ = utils.AddFlagToHelpGroupID(cmd, "server-tag", "image")
+    _ = utils.AddFlagToHelpGroupID(cmd, "tag", "image")
+    _ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "")
+    _ = utils.AddFlagToHelpGroupID(cmd, "registry", "")
 }
 
 // AddDBUpgradeImageFlag add Database upgrade image flags to a command.
