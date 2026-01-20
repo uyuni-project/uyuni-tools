@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-07 15:50+0100\n"
-"PO-Revision-Date: 2026-01-20 04:04+0000\n"
+"PO-Revision-Date: 2026-01-20 12:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
@@ -1392,7 +1392,6 @@ msgid "The computed image is %s"
 msgstr "계산된 이미지는 %s입니다."
 
 #: mgradm/cmd/support/ptf/podman/utils.go:118
-#, fuzzy
 msgid "The %[1]s service image is %[2]s"
 msgstr "%[1]s 서비스 이미지는 %[2]s입니다."
 
