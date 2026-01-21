@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -147,7 +147,8 @@ func AddImageFlag(cmd *cobra.Command) {
 
 // AddDBUpgradeImageFlag add Database upgrade image flags to a command.
 func AddDBUpgradeImageFlag(cmd *cobra.Command) {
-	cmd.Flags().String("dbupgrade-image", "", L("Database upgrade image"))
+	defaultImage := path.Join(utils.DefaultImagePrefix, "server-database-migration")
+	cmd.Flags().String("dbupgrade-image", defaultImage, L("Database upgrade image"))
 	cmd.Flags().String("dbupgrade-tag", "", L("Database upgrade image tag, overrides the default value if set"))
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "dbupgrade-image", Title: L("Database Upgrade Image Flags")})
