@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -78,16 +78,18 @@ func TestRunPgsqlVersionUpgrade(t *testing.T) {
 	}{
 		// Default Uyuni case with global tag set
 		{
-			"registry.opensuse.org/uyuni",
+			"registry.opensuse.org",
 			types.ImageFlags{
-				Name: "registry.opensuse.org/uyuni/server",
+				Name: "uyuni/server",
 				Registry: types.Registry{
-					Host: "registry.opensuse.org/uyuni",
+					Host: "registry.opensuse.org",
 				},
 				Tag:        "2025.08",
 				PullPolicy: "ifnotpresent",
 			},
-			types.ImageFlags{},
+			types.ImageFlags{
+				Name: "uyuni/server-database-migration",
+			},
 			"registry.opensuse.org/uyuni/server-database-migration:2025.08",
 		},
 		// own registry case with a special image for the main server but not upgrade
