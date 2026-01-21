@@ -24,6 +24,30 @@ test -d /usr/lib/postgresql$OLD_VERSION/bin
 
 BACKUP_DIR={{ .BackupDir }}/backup
 
+restore_database() {
+    echo "Migration failed. Restoring original database..."
+    if [ -d "$BACKUP_DIR" ] && [ "$(ls -A "$BACKUP_DIR")" ]; then
+        if [ -f "$BACKUP_DIR/postgresql.conf.bak" ]; then
+            echo "Restoring postgresql.conf..."
+            mv "$BACKUP_DIR/postgresql.conf.bak" "$BACKUP_DIR/postgresql.conf"
+        fi
+        if [ -f "$BACKUP_DIR/pg_hba.conf.bak" ]; then
+            echo "Restoring pg_hba.conf..."
+            mv "$BACKUP_DIR/pg_hba.conf.bak" "$BACKUP_DIR/pg_hba.conf"
+        fi
+        echo "Cleaning up /var/lib/pgsql/data..."
+        rm -rf /var/lib/pgsql/data/*
+        echo "Restoring from $BACKUP_DIR..."
+        shopt -s dotglob
+        mv "$BACKUP_DIR"/* /var/lib/pgsql/data/
+        shopt -u dotglob
+        echo "Database restored."
+    fi
+}
+
+trap restore_database ERR
+
+
 echo "Create a database backup at $BACKUP_DIR"
 test -d "$BACKUP_DIR" && mv "$BACKUP_DIR" "${BACKUP_DIR}$(date '+%Y%m%d_%H%M%S')"
 mkdir -p "$BACKUP_DIR"
@@ -31,6 +55,7 @@ chown postgres:postgres "$BACKUP_DIR"
 chmod 700 "$BACKUP_DIR"
 shopt -s dotglob
 mv /var/lib/pgsql/data/* "$BACKUP_DIR"
+shopt -u dotglob
 
 echo "Create new database directory..."
 chown -R postgres:postgres /var/lib/pgsql
@@ -52,16 +77,32 @@ fi
 echo "Running initdb using postgres user"
 echo "Any suggested command from the console should be run using postgres user"
 su -s /bin/bash - postgres -c "initdb -D /var/lib/pgsql/data --locale=$POSTGRES_LANG"
+su -s /bin/bash - postgres -c "pg_checksums --disable --pgdata /var/lib/pgsql/data"
+
 echo "Successfully initialized new postgresql $NEW_VERSION database."
 
 echo "Temporarily disable SSL in the old posgresql configuration"
 cp "${BACKUP_DIR}/postgresql.conf" "${BACKUP_DIR}/postgresql.conf.bak"
 sed 's/^ssl/#ssl/' -i "${BACKUP_DIR}/postgresql.conf"
 
+echo "Temporarily allow local postgres user connection "
+cp "${BACKUP_DIR}/pg_hba.conf" "${BACKUP_DIR}/pg_hba.conf.bak"
+echo "local all postgres trust" >> "${BACKUP_DIR}/pg_hba.conf"
+cp "/var/lib/pgsql/data/pg_hba.conf" "/var/lib/pgsql/data/pg_hba.conf.bak"
+echo "local all postgres trust" >> "/var/lib/pgsql/data/pg_hba.conf"
+
 su -s /bin/bash - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql$OLD_VERSION/bin --new-bindir=/usr/lib/postgresql$NEW_VERSION/bin --old-datadir=\"$BACKUP_DIR\" --new-datadir=/var/lib/pgsql/data"
 
 echo "Enable SSL again"
-cp "${BACKUP_DIR}/postgresql.conf.bak" "${BACKUP_DIR}/postgresql.conf"
+mv "${BACKUP_DIR}/postgresql.conf.bak" "${BACKUP_DIR}/postgresql.conf"
+
+echo "Restore pg_hba.conf and postgresql.conf"
+mv "${BACKUP_DIR}/pg_hba.conf.bak" "${BACKUP_DIR}/pg_hba.conf"
+cp "${BACKUP_DIR}/pg_hba.conf" "/var/lib/pgsql/data/pg_hba.conf"
+cp "${BACKUP_DIR}/postgresql.conf" "/var/lib/pgsql/data/postgresql.conf"
+
+echo "Reenabling checksums"
+su -s /bin/bash - postgres -c "pg_checksums --enable --pgdata /var/lib/pgsql/data"
 
 echo "DONE"`
 

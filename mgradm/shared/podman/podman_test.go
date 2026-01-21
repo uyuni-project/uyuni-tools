@@ -80,26 +80,32 @@ func TestRunPgsqlVersionUpgrade(t *testing.T) {
 		{
 			"registry.opensuse.org/uyuni",
 			types.ImageFlags{
-				Name:       "registry.opensuse.org/uyuni/server",
+				Name: "registry.opensuse.org/uyuni/server",
+				Registry: types.Registry{
+					Host: "registry.opensuse.org/uyuni",
+				},
 				Tag:        "2025.08",
 				PullPolicy: "ifnotpresent",
 			},
 			types.ImageFlags{},
-			"registry.opensuse.org/uyuni/server-migration-14-16:2025.08",
+			"registry.opensuse.org/uyuni/server-database-migration:2025.08",
 		},
 		// own registry case with a special image for the main server but not upgrade
 		{
 			"registry.example.com/product",
 			types.ImageFlags{
-				Name:       "registry.example.com/product/server",
+				Name: "registry.example.com/product/server",
+				Registry: types.Registry{
+					Host: "registry.opensuse.org/uyuni",
+				},
 				Tag:        "fix-123",
 				PullPolicy: "always",
 			},
 			types.ImageFlags{
-				Name: "registry.example.com/product/server-migration-14-16",
+				Name: "registry.example.com/product/server-database-migration",
 				Tag:  "4.5.2",
 			},
-			"registry.example.com/product/server-migration-14-16:4.5.2",
+			"registry.example.com/product/server-database-migration:4.5.2",
 		},
 	}
 
