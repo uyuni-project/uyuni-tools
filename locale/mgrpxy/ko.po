@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-06 18:02+0100\n"
-"PO-Revision-Date: 2026-01-20 12:04+0000\n"
+"PO-Revision-Date: 2026-01-21 03:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
 "Language: ko\n"
@@ -307,8 +307,7 @@ msgstr ""
 "참고: 현재 원격 podman에 설치하는 기능은 지원되지 않습니다!\n"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:74
-#, fuzzy, javascript-format
-#| msgid "cannot find ssh image: it will no be upgraded"
+#, javascript-format
 msgid "cannot find %s image: it will no be upgraded"
 msgstr "%s 이미지를 찾을 수 없음: 업그레이드되지 않음"
 
@@ -596,8 +595,6 @@ msgid "Squid tuning configuration file"
 msgstr "Squid 튜닝 구성 파일"
 
 #: mgrpxy/shared/utils/flags.go:90
-#, fuzzy
-#| msgid "HTTPD tuning configuration file"
 msgid "SSH server tuning configuration file"
 msgstr "SSH 서버 튜닝 구성 파일"
 
