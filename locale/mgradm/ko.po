@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-07 15:50+0100\n"
-"PO-Revision-Date: 2026-01-20 12:04+0000\n"
+"PO-Revision-Date: 2026-01-21 03:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
@@ -1815,20 +1815,15 @@ msgid "cannot generate systemd user configuration file"
 msgstr "systemd 사용자 구성 파일을 생성할 수 없음"
 
 #: mgradm/shared/podman/podman.go:139
-#, fuzzy
-#| msgid "failed to generate migration script"
 msgid "failed to generate SSL migration script"
 msgstr "SSL 마이그레이션 스크립트를 생성하지 못함"
 
 #: mgradm/shared/podman/podman.go:159
-#, fuzzy, javascript-format
-#| msgid "Preparing SSL certificates to match the new hostname"
+#, javascript-format
 msgid "Migrating SSL certificates from the source server %s"
 msgstr "소스 서버 %s에서 SSL 인증서 마이그레이션"
 
 #: mgradm/shared/podman/podman.go:162
-#, fuzzy
-#| msgid "cannot run uyuni migration container"
 msgid "cannot run uyuni SSL migration container"
 msgstr "uyuni SSL 마이그레이션 컨테이너를 실행할 수 없음"
 
@@ -1929,8 +1924,6 @@ msgid "error upgrading saline service."
 msgstr "Saline 서비스를 업그레이드하는 중 오류가 발생했습니다."
 
 #: mgradm/shared/podman/podman.go:606
-#, fuzzy
-#| msgid "cannot run migration script"
 msgid "cannot run SSL migration script"
 msgstr "SSL 마이그레이션 스크립트를 실행할 수 없음"
 
@@ -1983,48 +1976,34 @@ msgid "Using provided 3rd party database certificates"
 msgstr "제공된 타사 데이터베이스 인증서 사용"
 
 #: mgradm/shared/podman/ssl.go:120
-#, fuzzy
-#| msgid "failed to create the server deployment"
 msgid "Failed to create secrets from the provided SSL arguments"
 msgstr "제공된 SSL 인수에서 시크릿을 생성하지 못함"
 
 #: mgradm/shared/podman/ssl.go:143
-#, fuzzy
-#| msgid "Reusing existing certificates"
 msgid "Reusing the existing server and database certificates"
 msgstr "기존 서버 및 데이터베이스 인증서 재사용"
 
 #: mgradm/shared/podman/ssl.go:147
-#, fuzzy
 msgid "Generating both the server and database certificates since one is missing"
 msgstr "서버 인증서 및 데이터베이스 인증서 중 하나가 누락되었으므로 둘 다 생성"
 
 #: mgradm/shared/podman/ssl.go:157
-#, fuzzy
-#| msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgid "Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."
 msgstr "SSL CA 키를 찾을 수 없어 인증서를 생성할 수 없습니다. 타사 인증서를 설정하십시오."
 
 #: mgradm/shared/podman/ssl.go:173
-#, fuzzy
 msgid "Verifying the CA key password…"
 msgstr "CA 키 비밀번호 확인 중…"
 
 #: mgradm/shared/podman/ssl.go:184
-#, fuzzy
-#| msgid "Failed to convert CA private key to RSA"
 msgid "Failed to verify the CA key password!"
 msgstr "CA 키 비밀번호를 확인하지 못했습니다!"
 
 #: mgradm/shared/podman/ssl.go:202
-#, fuzzy
-#| msgid "Reusing existing certificates"
 msgid "Reusing the existing server certificate secrets"
 msgstr "기존 서버 인증서 시크릿 재사용"
 
 #: mgradm/shared/podman/ssl.go:207
-#, fuzzy
-#| msgid "Reusing existing certificates"
 msgid "Reusing the existing database certificate secrets"
 msgstr "기존 데이터베이스 인증서 시크릿 재사용"
 
@@ -2033,19 +2012,15 @@ msgid "Missing SANs or subjects in certificate of secret %[1]: %[2]s"
 msgstr "시크릿 %[1]의 인증서에 SAN 또는 주체 없음:"
 
 #: mgradm/shared/podman/ssl.go:295
-#, fuzzy
-#| msgid "Reusing existing certificates"
 msgid "Reusing the existing server certificate files"
 msgstr "기존 서버 인증서 파일 재사용"
 
 #: mgradm/shared/podman/ssl.go:307
-#, fuzzy
-#| msgid "Reusing existing certificates"
 msgid "Reusing the existing database certificate files"
 msgstr "기존 데이터베이스 인증서 파일 재사용"
 
 #: mgradm/shared/podman/ssl.go:316
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "CA file %s not found."
 msgstr "CA 파일 %s이(가) 없습니다."
 
@@ -2054,7 +2029,7 @@ msgid "cannot write existing CA certificate"
 msgstr "기존 CA 인증서를 작성할 수 없음"
 
 #: mgradm/shared/podman/ssl.go:328
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Certificate file %s not found."
 msgstr "인증서 파일 %s이(가) 없습니다."
 
@@ -2063,13 +2038,11 @@ msgid "cannot write existing server certificate"
 msgstr "기존 서버 인증서를 작성할 수 없음"
 
 #: mgradm/shared/podman/ssl.go:337
-#, fuzzy
-#| msgid "Cert file %[1]s doesn't match %[2]s FQDN. A new certificate will be created."
 msgid "Certificate file %[1]s doesn't match %[2]s FQDN."
 msgstr "인증서 파일 %[1]이(가) %[2] FQDN과 일치하지 않습니다."
 
 #: mgradm/shared/podman/ssl.go:345
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Certificate key file %s not found."
 msgstr "인증서 키 파일 %s이(가) 없습니다."
 
@@ -2082,38 +2055,26 @@ msgid "Cannot generate new certificates without a CA password. Please check inpu
 msgstr "CA 비밀번호가 없으면 새 인증서를 생성할 수 없습니다. 입력 옵션을 확인하십시오."
 
 #: mgradm/shared/podman/ssl.go:402
-#, fuzzy
-#| msgid "Creating SSL server certificate secret"
 msgid "Generating the server certificate…"
 msgstr "서버 인증서 생성 중…"
 
 #: mgradm/shared/podman/ssl.go:422
-#, fuzzy
-#| msgid "Failed to generate server SSL certificates. Please check the input parameters."
 msgid "Failed to generate server SSL certificate. Please check the input parameters."
 msgstr "서버 SSL 인증서를 생성하지 못했습니다. 입력 파라미터를 확인하십시오."
 
 #: mgradm/shared/podman/ssl.go:425
-#, fuzzy
-#| msgid "Server SSL certificates generated"
 msgid "Server SSL certificate generated"
 msgstr "서버 SSL 인증서 생성됨"
 
 #: mgradm/shared/podman/ssl.go:436
-#, fuzzy
-#| msgid "Cannot generate database certificate"
 msgid "Generating the database certificate…"
 msgstr "데이터베이스 인증서 생성 중…"
 
 #: mgradm/shared/podman/ssl.go:455
-#, fuzzy
-#| msgid "Cannot generate database certificate"
 msgid "Failed to generate database SSL certificate"
 msgstr "데이터베이스 SSL 인증서를 생성하지 못함"
 
 #: mgradm/shared/podman/ssl.go:458
-#, fuzzy
-#| msgid "Database SSL certificates generated"
 msgid "Database SSL certificate generated"
 msgstr "데이터베이스 SSL 인증서 생성됨"
 
