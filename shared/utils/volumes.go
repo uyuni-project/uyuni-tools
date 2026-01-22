@@ -10,7 +10,7 @@ import "github.com/uyuni-project/uyuni-tools/shared/types"
 var EtcRhnVolumeMount = types.VolumeMount{MountPath: "/etc/rhn", Name: "etc-rhn", Size: "1Mi"}
 
 // VarPgsqlDataVolumeMount defines the /var/lib/pgsql/data volume mount.
-var VarPgsqlDataVolumeMount = types.VolumeMount{MountPath: "/var/lib/pgsql/data", Name: "var-pgsql", Size: "50Gi"}
+var VarPgsqlDataVolumeMount = types.VolumeMount{MountPath: "/var/lib/pgsql/data", Name: "var-pgsql18", Size: "50Gi"}
 
 // RootVolumeMount defines the /root volume mount.
 var RootVolumeMount = types.VolumeMount{MountPath: "/root", Name: "root", Size: "1Mi"}

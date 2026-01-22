@@ -288,21 +288,20 @@ func RunPgsqlVersionUpgrade(
 
 		// We need an additional volume for database backup during the migration
 		// Create or reuse var-pgsql-backup volume
-		volumeMounts := append(utils.PgsqlRequiredVolumeMounts,
-			types.VolumeMount{MountPath: "/var/lib/pgsql/data-backup", Name: "var-pgsql-backup"})
-
-		env := map[string]string{
-			"OLD_VERSION": oldPgsql,
-			"NEW_VERSION": newPgsql,
-			"BACKUP_PATH": "/var/lib/pgsql/data-backup",
-		}
-
-		for key, value := range env {
-			extraArgs = append(extraArgs, "-e", fmt.Sprintf("%s=%s", key, value))
+		volumeMounts := []types.VolumeMount{
+			{
+				MountPath: "/var/lib/pgsql",
+				Name:      "var-pgsql",
+			},
+			{
+				MountPath: "/var/lib/pgsql18",
+				Name:      "var-pgsql18",
+			},
+			utils.EtcTLSTmpVolumeMount,
 		}
 
 		return runContainer(pgsqlVersionUpgradeContainer, preparedImage, volumeMounts, extraArgs,
-			[]string{"/bin/bash", "-e", "-c", "/usr/bin/pgsqlVersionUpgrade.sh"})
+			[]string{})
 	}
 	return nil
 }
@@ -332,7 +331,7 @@ func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, migra
 	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
 
 	return podman.RunContainer(pgsqlFinalizeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
-		[]string{"/usr/bin/sh", "-e", "-c", "/usr/local/bin/pgsqlFinalize.sh"})
+		[]string{"/usr/bin/sh", "-e", "-c", "/docker-entrypoint-init.d/90-pgsqlFinalize.sh"})
 }
 
 // RunPostUpgradeScript run the script with the changes to apply after the upgrade.
@@ -420,8 +419,26 @@ func Upgrade(
 		log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
 			newPgVersion, oldPgVersion)
 
+		currentPgVersionNotMigrated, _ := strconv.Atoi(inspectedValues.CurrentPgVersionNotMigrated)
+
 		if err := PrepareSSLCertificates(preparedServerImage, &ssl, tz, fqdn); err != nil {
 			return err
+		}
+
+		if newPgVersion > currentPgVersionNotMigrated {
+			if err := RunPgsqlVersionUpgrade(
+				authFile, image, upgradeImage, strconv.Itoa(currentPgVersionNotMigrated),
+				strconv.Itoa(newPgVersion),
+			); err != nil {
+				return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
+			}
+		} else if newPgVersion == oldPgVersion {
+			log.Info().Msg(L("Upgrading without changing PostgreSQL version"))
+		} else {
+			return fmt.Errorf(
+				L("trying to downgrade PostgreSQL from %[1]s to %[2]s"),
+				oldPgVersion, newPgVersion,
+			)
 		}
 
 		if err := configureSplitDBContainer(
