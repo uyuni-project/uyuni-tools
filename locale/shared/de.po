@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 15:51+0100\n"
+"POT-Creation-Date: 2026-01-16 16:46+0100\n"
 "PO-Revision-Date: 2025-11-26 11:05+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/de/>\n"
@@ -312,11 +312,6 @@ msgstr ""
 msgid "failed to run helm %s"
 msgstr ""
 
-#: shared/kubernetes/inspect.go:42
-#, fuzzy
-msgid "failed to parse the inspected data"
-msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
-
 #: shared/kubernetes/k3s.go:27
 msgid "Installing K3s Traefik configuration"
 msgstr ""
@@ -394,46 +389,8 @@ msgstr ""
 msgid "failed to create the %s docker secret"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/kubernetes/kubernetes.go:229
+#: shared/kubernetes/kubernetes.go:231
 msgid "failed to get deployment image pull secret"
-msgstr ""
-
-#: shared/kubernetes/pod.go:79 shared/kubernetes/pod.go:82
-#, fuzzy, javascript-format
-msgid "failed to run the %s pod"
-msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
-
-#: shared/kubernetes/pod.go:93
-#, fuzzy, javascript-format
-msgid "failed to get the %s pod logs"
-msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
-
-#: shared/kubernetes/pod.go:98
-#, fuzzy, javascript-format
-msgid "failed to delete the %s pod"
-msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
-
-#: shared/kubernetes/pvc.go:42
-#, fuzzy, javascript-format
-msgid "failed to create %s persistent volume claim"
-msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
-
-#: shared/kubernetes/pvc.go:70
-#, fuzzy
-msgid "failed to parse pv data"
-msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
-
-#: shared/kubernetes/pvc.go:75
-msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
-msgstr ""
-
-#: shared/kubernetes/pvc.go:85
-msgid "failed to run the persistent volume claims"
-msgstr ""
-
-#: shared/kubernetes/pvc.go:102
-#, javascript-format
-msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
 msgstr ""
 
 #: shared/kubernetes/rke2.go:21
@@ -495,125 +452,68 @@ msgid ""
 "be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
 msgstr ""
 
-#: shared/kubernetes/utils.go:86
+#: shared/kubernetes/utils.go:56
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
 msgstr[0] ""
 msgstr[1] ""
 
-#: shared/kubernetes/utils.go:113
-msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
-msgstr ""
-
-#: shared/kubernetes/utils.go:130
-msgid "failed to check if the deployment has running pods"
-msgstr ""
-
-#: shared/kubernetes/utils.go:182
+#: shared/kubernetes/utils.go:119
 #, javascript-format
 msgid "all the pods of %s deployment have a failure"
 msgstr ""
 
-#: shared/kubernetes/utils.go:211
+#: shared/kubernetes/utils.go:148
 #, javascript-format
 msgid "failed to list ReplicaSets for deployment %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:224
+#: shared/kubernetes/utils.go:161
 #, fuzzy, javascript-format
 msgid "failed to get the %s deployment revision"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/kubernetes/utils.go:232
+#: shared/kubernetes/utils.go:169
 #, javascript-format
 msgid "invalid replicasset response: :%s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:247
+#: shared/kubernetes/utils.go:184
 #, javascript-format
 msgid "failed to find pods for owner reference %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:273
+#: shared/kubernetes/utils.go:210
 #, javascript-format
 msgid "failed to get the status of %s pod"
 msgstr ""
 
-#: shared/kubernetes/utils.go:300
+#: shared/kubernetes/utils.go:237
 msgid "failed to parse deployment status"
 msgstr ""
 
-#: shared/kubernetes/utils.go:312
+#: shared/kubernetes/utils.go:249
 #, javascript-format
 msgid "cannot run kubectl %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:326
-msgid "cannot check if pod %[1]s is running in app %[2]s"
-msgstr ""
-
-#: shared/kubernetes/utils.go:337 shared/kubernetes/utils.go:358
+#: shared/kubernetes/utils.go:266 shared/kubernetes/utils.go:287
 #, javascript-format
 msgid "cannot execute %s"
 msgstr ""
 
-#: shared/kubernetes/utils.go:366
+#: shared/kubernetes/utils.go:295
 msgid "invalid replicas result"
 msgstr ""
 
-#: shared/kubernetes/utils.go:395
+#: shared/kubernetes/utils.go:324
 #, javascript-format
 msgid "%s is not a valid image pull policy value"
 msgstr ""
 
-#: shared/kubernetes/utils.go:427
-msgctxt "The first placeholder is a command"
-msgid "cannot run %[1]s using image %[2]s"
-msgstr ""
-
-#: shared/kubernetes/utils.go:436 shared/kubernetes/utils.go:445
-#, javascript-format
-msgid "cannot delete pod %s"
-msgstr ""
-
-#: shared/kubernetes/utils.go:464
+#: shared/kubernetes/utils.go:343
 #, javascript-format
 msgid "cannot find node name matching filter %s"
-msgstr ""
-
-#: shared/kubernetes/utils.go:473
-msgid "cannot serialize pod definition override"
-msgstr ""
-
-#: shared/kubernetes/waiters.go:40
-msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
-msgstr ""
-
-#: shared/kubernetes/waiters.go:49
-msgid "%[1]s job failed to complete within %[2]d seconds"
-msgstr ""
-
-#: shared/kubernetes/waiters.go:61
-#, fuzzy, javascript-format
-msgid "failed to get %s job status"
-msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
-
-#: shared/kubernetes/waiters.go:65
-#, javascript-format
-msgid "invalid job status response: '%s'"
-msgstr ""
-
-#: shared/kubernetes/waiters.go:85
-#, fuzzy, javascript-format
-msgid "failed to get %s pod status"
-msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
-
-#: shared/kubernetes/waiters.go:92
-msgid "%[1]s pod failed with status %[2]s"
-msgstr ""
-
-#: shared/kubernetes/waiters.go:96
-msgid "%[1]s pod failed to complete within %[2]d seconds"
 msgstr ""
 
 #: shared/podman/hostinspector.go:54
@@ -1349,11 +1249,11 @@ msgstr ""
 msgid "Also remove the container images"
 msgstr ""
 
-#: shared/utils/cmd.go:193 shared/utils/cmd.go:196
+#: shared/utils/cmd.go:189 shared/utils/cmd.go:192
 msgid "application log level"
 msgstr ""
 
-#: shared/utils/cmd.go:199
+#: shared/utils/cmd.go:195
 #, fuzzy
 msgid "Failed to hide --loglevel parameter"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
@@ -1725,3 +1625,35 @@ msgstr ""
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr ""
+
+#, fuzzy
+#~ msgid "failed to parse the inspected data"
+#~ msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#, fuzzy, javascript-format
+#~ msgid "failed to run the %s pod"
+#~ msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#, fuzzy, javascript-format
+#~ msgid "failed to get the %s pod logs"
+#~ msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#, fuzzy, javascript-format
+#~ msgid "failed to delete the %s pod"
+#~ msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#, fuzzy, javascript-format
+#~ msgid "failed to create %s persistent volume claim"
+#~ msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#, fuzzy
+#~ msgid "failed to parse pv data"
+#~ msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#, fuzzy, javascript-format
+#~ msgid "failed to get %s job status"
+#~ msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#, fuzzy, javascript-format
+#~ msgid "failed to get %s pod status"
+#~ msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"

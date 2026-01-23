@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 15:51+0100\n"
+"POT-Creation-Date: 2026-01-16 16:46+0100\n"
 "PO-Revision-Date: 2026-01-12 20:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
@@ -310,10 +310,6 @@ msgstr "S'està desinstal·lant %s"
 msgid "failed to run helm %s"
 msgstr "no s'ha pogut executar el timó %s"
 
-#: shared/kubernetes/inspect.go:42
-msgid "failed to parse the inspected data"
-msgstr "no s'han pogut analitzar les dades inspeccionades"
-
 #: shared/kubernetes/k3s.go:27
 msgid "Installing K3s Traefik configuration"
 msgstr "S'està instal·lant la configuració del Traefik del K3s"
@@ -389,46 +385,9 @@ msgstr "No s'ha pogut descodificar en base64 el secret %s"
 msgid "failed to create the %s docker secret"
 msgstr "no s'ha pogut crear el secret de l'acoblador %s"
 
-#: shared/kubernetes/kubernetes.go:229
+#: shared/kubernetes/kubernetes.go:231
 msgid "failed to get deployment image pull secret"
 msgstr "no s'ha pogut obtenir el secret d'extracció de la imatge de desplegament"
-
-#: shared/kubernetes/pod.go:79 shared/kubernetes/pod.go:82
-#, javascript-format
-msgid "failed to run the %s pod"
-msgstr "no s'ha pogut executar el pod %s"
-
-#: shared/kubernetes/pod.go:93
-#, javascript-format
-msgid "failed to get the %s pod logs"
-msgstr "No s'han pogut obtenir els registres del pod %s"
-
-#: shared/kubernetes/pod.go:98
-#, javascript-format
-msgid "failed to delete the %s pod"
-msgstr "no s'ha pogut suprimir el pod %s"
-
-#: shared/kubernetes/pvc.go:42
-#, javascript-format
-msgid "failed to create %s persistent volume claim"
-msgstr "no s'ha pogut crear la reclamació de volum persistent %s"
-
-#: shared/kubernetes/pvc.go:70
-msgid "failed to parse pv data"
-msgstr "no s'han pogut analitzar les dades pv"
-
-#: shared/kubernetes/pvc.go:75
-msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
-msgstr "el volum %[1]s ha de fer referència a la reclamació %[1]s a l'espai de noms %[2]s"
-
-#: shared/kubernetes/pvc.go:85
-msgid "failed to run the persistent volume claims"
-msgstr "no s'han pogut executar les reclamacions de volum persistents"
-
-#: shared/kubernetes/pvc.go:102
-#, javascript-format
-msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
-msgstr "no s'ha definit cap mida per a PersistentVolumeClaim %s, s'usarà 10Mi com a predeterminat"
 
 #: shared/kubernetes/rke2.go:21
 msgid "Installing RKE2 Nginx configuration"
@@ -495,126 +454,69 @@ msgstr ""
 "Per exemple, en una instal·lació predeterminada del K3S, els volums d'emmagatzematge del proveïdor de camins locals seran\n"
 "s'eliminarà automàticament en suprimir el desplegament encara que no s'utilitzi l'argument --purge-volumes."
 
-#: shared/kubernetes/utils.go:86
+#: shared/kubernetes/utils.go:56
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
 msgstr[0] "S'està esperant que el desplegament %[1]s estigui llest a l'espai de noms %[2]s\n"
 msgstr[1] "S'està esperant que %[1]s desplegaments estigui llest a l'espai de noms %[2]s\n"
 
-#: shared/kubernetes/utils.go:113
-msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
-msgstr "S'està esperant que s'iniciï el desplegament %[1]s a l'espai de noms %[2]s\n"
-
-#: shared/kubernetes/utils.go:130
-msgid "failed to check if the deployment has running pods"
-msgstr "no s'ha pogut comprovar si el desplegament té pods en execució"
-
-#: shared/kubernetes/utils.go:182
+#: shared/kubernetes/utils.go:119
 #, javascript-format
 msgid "all the pods of %s deployment have a failure"
 msgstr "tots els pods del desplegament %s tenen un error"
 
-#: shared/kubernetes/utils.go:211
+#: shared/kubernetes/utils.go:148
 #, javascript-format
 msgid "failed to list ReplicaSets for deployment %s"
 msgstr "no s'ha pogut llistar els ReplicaSets per al desplegament %s"
 
-#: shared/kubernetes/utils.go:224
+#: shared/kubernetes/utils.go:161
 #, javascript-format
 msgid "failed to get the %s deployment revision"
 msgstr "no s'ha pogut obtenir la revisió de desplegament %s"
 
-#: shared/kubernetes/utils.go:232
+#: shared/kubernetes/utils.go:169
 #, javascript-format
 msgid "invalid replicasset response: :%s"
 msgstr "resposta del conjunt de rèpliques no vàlida: :%s"
 
-#: shared/kubernetes/utils.go:247
+#: shared/kubernetes/utils.go:184
 #, javascript-format
 msgid "failed to find pods for owner reference %s"
 msgstr "no s'han pogut trobar els pods per a la referència del propietari %s"
 
-#: shared/kubernetes/utils.go:273
+#: shared/kubernetes/utils.go:210
 #, javascript-format
 msgid "failed to get the status of %s pod"
 msgstr "no s'ha pogut obtenir l'estat de %s pod"
 
-#: shared/kubernetes/utils.go:300
+#: shared/kubernetes/utils.go:237
 msgid "failed to parse deployment status"
 msgstr "no s'ha pogut analitzar l'estat del desplegament"
 
-#: shared/kubernetes/utils.go:312
+#: shared/kubernetes/utils.go:249
 #, javascript-format
 msgid "cannot run kubectl %s"
 msgstr "no es pot executar el kubectl %s"
 
-#: shared/kubernetes/utils.go:326
-msgid "cannot check if pod %[1]s is running in app %[2]s"
-msgstr "no es pot comprovar si el pod %[1]s s'està executant a l'aplicació %[2]s"
-
-#: shared/kubernetes/utils.go:337 shared/kubernetes/utils.go:358
+#: shared/kubernetes/utils.go:266 shared/kubernetes/utils.go:287
 #, javascript-format
 msgid "cannot execute %s"
 msgstr "no es pot executar %s"
 
-#: shared/kubernetes/utils.go:366
+#: shared/kubernetes/utils.go:295
 msgid "invalid replicas result"
 msgstr "resultat de rèpliques no vàlid"
 
-#: shared/kubernetes/utils.go:395
+#: shared/kubernetes/utils.go:324
 #, javascript-format
 msgid "%s is not a valid image pull policy value"
 msgstr "%s no és un valor vàlid de política d'extracció d'imatges"
 
-#: shared/kubernetes/utils.go:427
-msgctxt "The first placeholder is a command"
-msgid "cannot run %[1]s using image %[2]s"
-msgstr "no es pot executar %[1]s utilitzant la imatge %[2]s"
-
-#: shared/kubernetes/utils.go:436 shared/kubernetes/utils.go:445
-#, javascript-format
-msgid "cannot delete pod %s"
-msgstr "no es pot suprimir el pod %s"
-
-#: shared/kubernetes/utils.go:464
+#: shared/kubernetes/utils.go:343
 #, javascript-format
 msgid "cannot find node name matching filter %s"
 msgstr "no s'ha pogut trobar el nom del node que coincideix amb el filtre %s"
-
-#: shared/kubernetes/utils.go:473
-msgid "cannot serialize pod definition override"
-msgstr "no s'ha pogut serialitzar la sobreescriptura de la definició del pod"
-
-#: shared/kubernetes/waiters.go:40
-msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
-msgstr "%[1]s ha fallat la tasca, executeu els registres del kubectl -n %[2]s --tail,-1 -ljob-name,%[1]s per als detalls"
-
-#: shared/kubernetes/waiters.go:49
-msgid "%[1]s job failed to complete within %[2]d seconds"
-msgstr "%[1]s tasca no s'ha pogut completar en %[2]d segons"
-
-#: shared/kubernetes/waiters.go:61
-#, javascript-format
-msgid "failed to get %s job status"
-msgstr "no s'ha pogut obtenir l'estat de la tasca %s"
-
-#: shared/kubernetes/waiters.go:65
-#, javascript-format
-msgid "invalid job status response: '%s'"
-msgstr "la resposta a l'estat de la tasca no és vàlida: «%s»"
-
-#: shared/kubernetes/waiters.go:85
-#, javascript-format
-msgid "failed to get %s pod status"
-msgstr "no s'ha pogut obtenir l'estat de %s pod"
-
-#: shared/kubernetes/waiters.go:92
-msgid "%[1]s pod failed with status %[2]s"
-msgstr "%[1]s pod ha fallat amb l'estat %[2]s"
-
-#: shared/kubernetes/waiters.go:96
-msgid "%[1]s pod failed to complete within %[2]d seconds"
-msgstr "%[1]s pod no s'ha pogut completar en %[2]d segons"
 
 #: shared/podman/hostinspector.go:54
 msgid "failed to run inspect script in host system"
@@ -1346,11 +1248,11 @@ msgstr "Elimina també els volums"
 msgid "Also remove the container images"
 msgstr "Elimina també les imatges del contenidor"
 
-#: shared/utils/cmd.go:193 shared/utils/cmd.go:196
+#: shared/utils/cmd.go:189 shared/utils/cmd.go:192
 msgid "application log level"
 msgstr "nivell de registre de l'aplicació"
 
-#: shared/utils/cmd.go:199
+#: shared/utils/cmd.go:195
 msgid "Failed to hide --loglevel parameter"
 msgstr "No s'ha pogut ocultar el paràmetre --loglevel"
 
@@ -1779,6 +1681,82 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "Base de dades"
+
+#~ msgid "failed to parse the inspected data"
+#~ msgstr "no s'han pogut analitzar les dades inspeccionades"
+
+#, javascript-format
+#~ msgid "failed to run the %s pod"
+#~ msgstr "no s'ha pogut executar el pod %s"
+
+#, javascript-format
+#~ msgid "failed to get the %s pod logs"
+#~ msgstr "No s'han pogut obtenir els registres del pod %s"
+
+#, javascript-format
+#~ msgid "failed to delete the %s pod"
+#~ msgstr "no s'ha pogut suprimir el pod %s"
+
+#, javascript-format
+#~ msgid "failed to create %s persistent volume claim"
+#~ msgstr "no s'ha pogut crear la reclamació de volum persistent %s"
+
+#~ msgid "failed to parse pv data"
+#~ msgstr "no s'han pogut analitzar les dades pv"
+
+#~ msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
+#~ msgstr "el volum %[1]s ha de fer referència a la reclamació %[1]s a l'espai de noms %[2]s"
+
+#~ msgid "failed to run the persistent volume claims"
+#~ msgstr "no s'han pogut executar les reclamacions de volum persistents"
+
+#, javascript-format
+#~ msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
+#~ msgstr "no s'ha definit cap mida per a PersistentVolumeClaim %s, s'usarà 10Mi com a predeterminat"
+
+#~ msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
+#~ msgstr "S'està esperant que s'iniciï el desplegament %[1]s a l'espai de noms %[2]s\n"
+
+#~ msgid "failed to check if the deployment has running pods"
+#~ msgstr "no s'ha pogut comprovar si el desplegament té pods en execució"
+
+#~ msgid "cannot check if pod %[1]s is running in app %[2]s"
+#~ msgstr "no es pot comprovar si el pod %[1]s s'està executant a l'aplicació %[2]s"
+
+#~ msgctxt "The first placeholder is a command"
+#~ msgid "cannot run %[1]s using image %[2]s"
+#~ msgstr "no es pot executar %[1]s utilitzant la imatge %[2]s"
+
+#, javascript-format
+#~ msgid "cannot delete pod %s"
+#~ msgstr "no es pot suprimir el pod %s"
+
+#~ msgid "cannot serialize pod definition override"
+#~ msgstr "no s'ha pogut serialitzar la sobreescriptura de la definició del pod"
+
+#~ msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
+#~ msgstr "%[1]s ha fallat la tasca, executeu els registres del kubectl -n %[2]s --tail,-1 -ljob-name,%[1]s per als detalls"
+
+#~ msgid "%[1]s job failed to complete within %[2]d seconds"
+#~ msgstr "%[1]s tasca no s'ha pogut completar en %[2]d segons"
+
+#, javascript-format
+#~ msgid "failed to get %s job status"
+#~ msgstr "no s'ha pogut obtenir l'estat de la tasca %s"
+
+#, javascript-format
+#~ msgid "invalid job status response: '%s'"
+#~ msgstr "la resposta a l'estat de la tasca no és vàlida: «%s»"
+
+#, javascript-format
+#~ msgid "failed to get %s pod status"
+#~ msgstr "no s'ha pogut obtenir l'estat de %s pod"
+
+#~ msgid "%[1]s pod failed with status %[2]s"
+#~ msgstr "%[1]s pod ha fallat amb l'estat %[2]s"
+
+#~ msgid "%[1]s pod failed to complete within %[2]d seconds"
+#~ msgstr "%[1]s pod no s'ha pogut completar en %[2]d segons"
 
 #~ msgid "failed to run supportconfig on the host"
 #~ msgstr "no s'ha pogut executar supportconfig a l'amfitrió"

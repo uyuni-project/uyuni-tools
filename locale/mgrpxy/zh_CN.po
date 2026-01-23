@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-06 18:02+0100\n"
-"PO-Revision-Date: 2025-11-26 10:53+0000\n"
+"POT-Creation-Date: 2026-01-16 16:46+0100\n"
+"PO-Revision-Date: 2026-01-19 09:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -200,7 +200,7 @@ msgstr ""
 
 #: mgrpxy/cmd/restart/restart.go:23 mgrpxy/cmd/restart/restart.go:24
 msgid "Restart the proxy"
-msgstr "重启动代理"
+msgstr "重启代理"
 
 #: mgrpxy/cmd/start/start.go:23 mgrpxy/cmd/start/start.go:24
 msgid "Start the proxy"
@@ -306,10 +306,9 @@ msgstr ""
 "注意：目前不支持在远程 podman 上安装！\n"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:74
-#, fuzzy, javascript-format
-#| msgid "cannot find ssh image: it will no be upgraded"
+#, javascript-format
 msgid "cannot find %s image: it will no be upgraded"
-msgstr "找不到 ssh 映像：将不升级该映像"
+msgstr "找不到 %s 映像：将不升级该映像"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:87
 msgid "ptf and test flags cannot be set simultaneously "
@@ -324,10 +323,8 @@ msgid "user flag cannot be empty"
 msgstr "user 标志不能为空"
 
 #: mgrpxy/cmd/support/ptf/podman/utils.go:131
-#, fuzzy
-#| msgid "The %[1]s ptf image computed is: %[2]s"
 msgid "The %[1]s service image is %[2]s"
-msgstr "计算得出的 %[1]s PTF 映像为：%[2]s"
+msgstr "%[1]s 服务映像版本为 %[2]s"
 
 #: mgrpxy/cmd/support/ptf/ptf.go:20
 msgid "Install a PTF"
@@ -597,10 +594,8 @@ msgid "Squid tuning configuration file"
 msgstr "Squid 微调配置文件"
 
 #: mgrpxy/shared/utils/flags.go:90
-#, fuzzy
-#| msgid "HTTPD tuning configuration file"
 msgid "SSH server tuning configuration file"
-msgstr "HTTPD 微调配置文件"
+msgstr "SSH 服务器调优配置文件"
 
 #: mgrpxy/shared/utils/flags.go:97
 #, javascript-format

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 15:51+0100\n"
+"POT-Creation-Date: 2026-01-16 16:46+0100\n"
 "PO-Revision-Date: 2025-11-26 10:58+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
@@ -312,10 +312,6 @@ msgstr "%s 설치 제거"
 msgid "failed to run helm %s"
 msgstr "%s helm을 실행하지 못함"
 
-#: shared/kubernetes/inspect.go:42
-msgid "failed to parse the inspected data"
-msgstr "검사 데이터의 구문 분석 실패"
-
 #: shared/kubernetes/k3s.go:27
 msgid "Installing K3s Traefik configuration"
 msgstr "K3s Traefik 구성 설치"
@@ -391,46 +387,9 @@ msgstr "base64 시크릿 %s을(를) 디코딩하지 못함"
 msgid "failed to create the %s docker secret"
 msgstr "%s Docker 비밀을 생성하지 못함"
 
-#: shared/kubernetes/kubernetes.go:229
+#: shared/kubernetes/kubernetes.go:231
 msgid "failed to get deployment image pull secret"
 msgstr "배포 이미지 끌어오기 시크릿을 가져오지 못함"
-
-#: shared/kubernetes/pod.go:79 shared/kubernetes/pod.go:82
-#, javascript-format
-msgid "failed to run the %s pod"
-msgstr "%s 포드를 실행하지 못함"
-
-#: shared/kubernetes/pod.go:93
-#, javascript-format
-msgid "failed to get the %s pod logs"
-msgstr "%s 포드 로그를 가져오지 못함"
-
-#: shared/kubernetes/pod.go:98
-#, javascript-format
-msgid "failed to delete the %s pod"
-msgstr "%s 포드 삭제 실패"
-
-#: shared/kubernetes/pvc.go:42
-#, javascript-format
-msgid "failed to create %s persistent volume claim"
-msgstr "%s 영구 볼륨 클레임 생성 실패"
-
-#: shared/kubernetes/pvc.go:70
-msgid "failed to parse pv data"
-msgstr "pv 데이터 생성 실패"
-
-#: shared/kubernetes/pvc.go:75
-msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
-msgstr "%[1]s 볼륨은 %[2]s 네임스페이스의 %[1]s 클레임을 참조해야 합니다."
-
-#: shared/kubernetes/pvc.go:85
-msgid "failed to run the persistent volume claims"
-msgstr "영구 볼륨 클레임을 실행하지 못함"
-
-#: shared/kubernetes/pvc.go:102
-#, javascript-format
-msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
-msgstr "PersistentVolumeClaim %s에 크기가 정의되지 않음, 기본값으로 10Mi 사용"
 
 #: shared/kubernetes/rke2.go:21
 msgid "Installing RKE2 Nginx configuration"
@@ -497,125 +456,68 @@ msgstr ""
 "예를 들어, 기본 K3S 설치 프로그램에서는 --purge-volumes 인수를 사용하지 않더라도 배포를 삭제할 때\n"
 "로컬-경로-공급자 스토리지 볼륨이 자동으로 제거됩니다."
 
-#: shared/kubernetes/utils.go:86
+#: shared/kubernetes/utils.go:56
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
 msgstr[0] "%[2]s 네임스페이스에서 %[1]s 배포가 준비되기를 기다리는 중\n"
 
-#: shared/kubernetes/utils.go:113
-msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
-msgstr "%[2]s 네임스페이스에서 %[1]s 배포가 시작되기를 기다리는 중\n"
-
-#: shared/kubernetes/utils.go:130
-msgid "failed to check if the deployment has running pods"
-msgstr "배포에 실행 중인 포드가 있는지 확인 실패"
-
-#: shared/kubernetes/utils.go:182
+#: shared/kubernetes/utils.go:119
 #, javascript-format
 msgid "all the pods of %s deployment have a failure"
 msgstr "%s의 모든 포드 배포에 실패가 있음"
 
-#: shared/kubernetes/utils.go:211
+#: shared/kubernetes/utils.go:148
 #, javascript-format
 msgid "failed to list ReplicaSets for deployment %s"
 msgstr "배포 %s에 대한 ReplicaSets를 나열하지 못함"
 
-#: shared/kubernetes/utils.go:224
+#: shared/kubernetes/utils.go:161
 #, javascript-format
 msgid "failed to get the %s deployment revision"
 msgstr "%s 배포 개정 가져오기 실패"
 
-#: shared/kubernetes/utils.go:232
+#: shared/kubernetes/utils.go:169
 #, javascript-format
 msgid "invalid replicasset response: :%s"
 msgstr "잘못된 복제본 세트 응답: %s"
 
-#: shared/kubernetes/utils.go:247
+#: shared/kubernetes/utils.go:184
 #, javascript-format
 msgid "failed to find pods for owner reference %s"
 msgstr "소유자 참조 %s의 포드를 찾지 못함"
 
-#: shared/kubernetes/utils.go:273
+#: shared/kubernetes/utils.go:210
 #, javascript-format
 msgid "failed to get the status of %s pod"
 msgstr "%s 포드에 대한 상태를 가져오지 못함"
 
-#: shared/kubernetes/utils.go:300
+#: shared/kubernetes/utils.go:237
 msgid "failed to parse deployment status"
 msgstr "배포 상태를 구문 분석하지 못함"
 
-#: shared/kubernetes/utils.go:312
+#: shared/kubernetes/utils.go:249
 #, javascript-format
 msgid "cannot run kubectl %s"
 msgstr "%s kubectl을 실행할 수 없음"
 
-#: shared/kubernetes/utils.go:326
-msgid "cannot check if pod %[1]s is running in app %[2]s"
-msgstr "앱 %[2]s에서 %[1]s Pod가 실행 중인지 확인할 수 없음"
-
-#: shared/kubernetes/utils.go:337 shared/kubernetes/utils.go:358
+#: shared/kubernetes/utils.go:266 shared/kubernetes/utils.go:287
 #, javascript-format
 msgid "cannot execute %s"
 msgstr "%s을(를) 실행할 수 없음"
 
-#: shared/kubernetes/utils.go:366
+#: shared/kubernetes/utils.go:295
 msgid "invalid replicas result"
 msgstr "유효하지 않은 복제본 결과"
 
-#: shared/kubernetes/utils.go:395
+#: shared/kubernetes/utils.go:324
 #, javascript-format
 msgid "%s is not a valid image pull policy value"
 msgstr "%s은(는) 올바른 이미지 끌어오기 정책 값이 아닙니다."
 
-#: shared/kubernetes/utils.go:427
-msgctxt "The first placeholder is a command"
-msgid "cannot run %[1]s using image %[2]s"
-msgstr "%[2]s 이미지를 사용하여 %[1]s을(를) 실행할 수 없음"
-
-#: shared/kubernetes/utils.go:436 shared/kubernetes/utils.go:445
-#, javascript-format
-msgid "cannot delete pod %s"
-msgstr "%s Pod를 삭제할 수 없음"
-
-#: shared/kubernetes/utils.go:464
+#: shared/kubernetes/utils.go:343
 #, javascript-format
 msgid "cannot find node name matching filter %s"
 msgstr "노드 이름과 일치하는 %s 필터를 찾을 수 없습니다."
-
-#: shared/kubernetes/utils.go:473
-msgid "cannot serialize pod definition override"
-msgstr "Pod 정의 재정의를 직렬화할 수 없음"
-
-#: shared/kubernetes/waiters.go:40
-msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
-msgstr "%[1]s 작업 실패, 자세한 내용을 살펴보려면 kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s 실행"
-
-#: shared/kubernetes/waiters.go:49
-msgid "%[1]s job failed to complete within %[2]d seconds"
-msgstr "%[1]s 작업이 %[2]d초 이내에 완료되지 않음"
-
-#: shared/kubernetes/waiters.go:61
-#, javascript-format
-msgid "failed to get %s job status"
-msgstr "%s 작업 상태를 가져오지 못함"
-
-#: shared/kubernetes/waiters.go:65
-#, javascript-format
-msgid "invalid job status response: '%s'"
-msgstr "잘못된 작업 상태 응답: '%s'"
-
-#: shared/kubernetes/waiters.go:85
-#, javascript-format
-msgid "failed to get %s pod status"
-msgstr "%s 포드 상태를 가져오지 못함"
-
-#: shared/kubernetes/waiters.go:92
-msgid "%[1]s pod failed with status %[2]s"
-msgstr "%[1]s pod가 실패했으며, 상태가 %[2]s임"
-
-#: shared/kubernetes/waiters.go:96
-msgid "%[1]s pod failed to complete within %[2]d seconds"
-msgstr "%[1]s 포드가 %[2]d초 내에 완료되지 않음"
 
 #: shared/podman/hostinspector.go:54
 msgid "failed to run inspect script in host system"
@@ -1375,11 +1277,11 @@ msgstr "볼륨도 제거"
 msgid "Also remove the container images"
 msgstr "컨테이너 이미지도 제거"
 
-#: shared/utils/cmd.go:193 shared/utils/cmd.go:196
+#: shared/utils/cmd.go:189 shared/utils/cmd.go:192
 msgid "application log level"
 msgstr ""
 
-#: shared/utils/cmd.go:199
+#: shared/utils/cmd.go:195
 #, fuzzy
 #| msgid "Failed to find home directory"
 msgid "Failed to hide --loglevel parameter"
@@ -1813,6 +1715,82 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "데이터베이스"
+
+#~ msgid "failed to parse the inspected data"
+#~ msgstr "검사 데이터의 구문 분석 실패"
+
+#, javascript-format
+#~ msgid "failed to run the %s pod"
+#~ msgstr "%s 포드를 실행하지 못함"
+
+#, javascript-format
+#~ msgid "failed to get the %s pod logs"
+#~ msgstr "%s 포드 로그를 가져오지 못함"
+
+#, javascript-format
+#~ msgid "failed to delete the %s pod"
+#~ msgstr "%s 포드 삭제 실패"
+
+#, javascript-format
+#~ msgid "failed to create %s persistent volume claim"
+#~ msgstr "%s 영구 볼륨 클레임 생성 실패"
+
+#~ msgid "failed to parse pv data"
+#~ msgstr "pv 데이터 생성 실패"
+
+#~ msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
+#~ msgstr "%[1]s 볼륨은 %[2]s 네임스페이스의 %[1]s 클레임을 참조해야 합니다."
+
+#~ msgid "failed to run the persistent volume claims"
+#~ msgstr "영구 볼륨 클레임을 실행하지 못함"
+
+#, javascript-format
+#~ msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
+#~ msgstr "PersistentVolumeClaim %s에 크기가 정의되지 않음, 기본값으로 10Mi 사용"
+
+#~ msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
+#~ msgstr "%[2]s 네임스페이스에서 %[1]s 배포가 시작되기를 기다리는 중\n"
+
+#~ msgid "failed to check if the deployment has running pods"
+#~ msgstr "배포에 실행 중인 포드가 있는지 확인 실패"
+
+#~ msgid "cannot check if pod %[1]s is running in app %[2]s"
+#~ msgstr "앱 %[2]s에서 %[1]s Pod가 실행 중인지 확인할 수 없음"
+
+#~ msgctxt "The first placeholder is a command"
+#~ msgid "cannot run %[1]s using image %[2]s"
+#~ msgstr "%[2]s 이미지를 사용하여 %[1]s을(를) 실행할 수 없음"
+
+#, javascript-format
+#~ msgid "cannot delete pod %s"
+#~ msgstr "%s Pod를 삭제할 수 없음"
+
+#~ msgid "cannot serialize pod definition override"
+#~ msgstr "Pod 정의 재정의를 직렬화할 수 없음"
+
+#~ msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
+#~ msgstr "%[1]s 작업 실패, 자세한 내용을 살펴보려면 kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s 실행"
+
+#~ msgid "%[1]s job failed to complete within %[2]d seconds"
+#~ msgstr "%[1]s 작업이 %[2]d초 이내에 완료되지 않음"
+
+#, javascript-format
+#~ msgid "failed to get %s job status"
+#~ msgstr "%s 작업 상태를 가져오지 못함"
+
+#, javascript-format
+#~ msgid "invalid job status response: '%s'"
+#~ msgstr "잘못된 작업 상태 응답: '%s'"
+
+#, javascript-format
+#~ msgid "failed to get %s pod status"
+#~ msgstr "%s 포드 상태를 가져오지 못함"
+
+#~ msgid "%[1]s pod failed with status %[2]s"
+#~ msgstr "%[1]s pod가 실패했으며, 상태가 %[2]s임"
+
+#~ msgid "%[1]s pod failed to complete within %[2]d seconds"
+#~ msgstr "%[1]s 포드가 %[2]d초 내에 완료되지 않음"
 
 #~ msgid "failed to run supportconfig on the host"
 #~ msgstr "호스트에서 supportconfig 실행 실패"
