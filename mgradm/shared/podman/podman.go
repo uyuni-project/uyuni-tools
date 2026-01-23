@@ -410,14 +410,26 @@ func Upgrade(
 		}()
 	}
 
-	oldPgVersion, _ := strconv.Atoi(inspectedValues.CurrentPgVersion)
-	newPgVersion, _ := strconv.Atoi(inspectedValues.ImagePgVersion)
+	oldPgVersion, _ := strconv.Atoi(inspectedValues.ContainerInspectData.PgVersion)
+	newPgVersion, _ := strconv.Atoi(inspectedValues.DBInspectData.PgVersion)
+
+	if newPgVersion > oldPgVersion {
+		if err := RunPgsqlVersionUpgrade(authFile, image, upgradeImage); err != nil {
+			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
+		}
+	} else if newPgVersion == oldPgVersion {
+		log.Info().Msg(L("Upgrading without changing PostgreSQL version"))
+	} else {
+		return fmt.Errorf(
+			L("trying to downgrade PostgreSQL from %[1]s to %[2]s"),
+			oldPgVersion, newPgVersion,
+		)
+	}
 
 	if inspectedValues.CurrentPgVersionNotMigrated != "" ||
 		inspectedValues.DBHost == "localhost" ||
 		inspectedValues.ReportDBHost == "localhost" {
-		log.Info().Msgf(L("Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"),
-			newPgVersion, oldPgVersion)
+		log.Info().Msgf(L("Configuring split PostgreSQL container"))
 
 		currentPgVersionNotMigrated, _ := strconv.Atoi(inspectedValues.CurrentPgVersionNotMigrated)
 
@@ -468,7 +480,7 @@ func Upgrade(
 	}
 
 	schemaUpdateRequired := oldPgVersion != newPgVersion
-	collationChange := inspectedValues.CurrentLibcVersion != inspectedValues.ImageLibcVersion
+	collationChange := inspectedValues.ServerInspectData.LibcVersion != inspectedValues.ContainerInspectData.LibcVersion
 	if err := RunPgsqlFinalizeScript(preparedServerImage, schemaUpdateRequired, false, collationChange); err != nil {
 		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
 	}
@@ -864,26 +876,13 @@ func GetSSHPaths() (string, string) {
 func prepareHost(
 	preparedServerImage string,
 	preparedPgsqlImage string,
-) (*utils.ServerInspectData, error) {
+) (*utils.InspectData, error) {
 	inspectedValues, err := podman.Inspect(preparedServerImage, preparedPgsqlImage)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot inspect podman values"))
 	}
 
-	runningServerImage := podman.GetServiceImage(podman.ServerService)
-	runningDBImage := runningServerImage
-	if systemd.HasService(podman.DBService) {
-		runningDBImage = podman.GetServiceImage(podman.DBService)
-	}
-	var runningData *utils.ServerInspectData
-	if runningServerImage != "" && runningDBImage != "" {
-		runningData, err = podman.Inspect(runningServerImage, runningDBImage)
-		if err != nil {
-			return inspectedValues, err
-		}
-	}
-
-	return inspectedValues, adm_utils.SanityCheck(runningData, inspectedValues)
+	return inspectedValues, adm_utils.SanityCheck(inspectedValues)
 }
 
 func upgradeDB(
