@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,7 +7,6 @@ package inspect
 import (
 	"github.com/spf13/cobra"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -41,22 +40,10 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[inspectFlags])
 	cmd_utils.AddImageFlag(inspectCmd)
 	cmd_utils.AddPgsqlFlags(inspectCmd)
 
-	if utils.KubernetesBuilt {
-		utils.AddBackendFlag(inspectCmd)
-	}
-
 	return inspectCmd
 }
 
 // NewCommand for extracting information from image and deployment.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	return newCmd(globalFlags, inspect)
-}
-
-func inspect(globalFlags *types.GlobalFlags, flags *inspectFlags, cmd *cobra.Command, args []string) error {
-	fn, err := shared.ChoosePodmanOrKubernetes(cmd.Flags(), podmanInspect, kuberneteInspect)
-	if err != nil {
-		return err
-	}
-	return fn(globalFlags, flags, cmd, args)
+	return newCmd(globalFlags, podmanInspect)
 }

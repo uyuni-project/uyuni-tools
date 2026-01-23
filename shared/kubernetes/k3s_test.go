@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -19,7 +19,7 @@ func TestGetTraefikEndpointName(t *testing.T) {
 	ports = append(ports, utils.GetProxyPorts()...)
 
 	for _, port := range ports {
-		actual := GetTraefikEndpointName(port)
+		actual := getTraefikEndpointName(port)
 		// Traefik would fail if the name is longer than 15 characters
 		if len(actual) > 15 {
 			t.Errorf("Traefik endpoint name has more than 15 characters: %s", actual)

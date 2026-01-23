@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -56,18 +56,6 @@ func extract(_ *types.GlobalFlags, flags *configFlags, _ *cobra.Command, _ []str
 		fileListHost, err = podman.RunSupportConfigOnPodmanHost(systemd, tmpDir)
 	}
 	defer filesRemover(fileListHost)
-	if err != nil {
-		return err
-	}
-
-	if utils.IsInstalled("kubectl") && utils.IsInstalled("helm") {
-		var namespace string
-		namespace, err = cnx.GetNamespace("")
-		if err != nil {
-			return err
-		}
-		fileListHost, err = kubernetes.RunSupportConfigOnKubernetesHost(tmpDir, namespace, kubernetes.ServerFilter)
-	}
 	if err != nil {
 		return err
 	}

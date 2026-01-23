@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -433,7 +433,7 @@ func ChoosePodmanOrKubernetes[F interface{}](
 ) (utils.CommandFunc[F], error) {
 	backend := "podman"
 	runningBinary := filepath.Base(os.Args[0])
-	if utils.KubernetesBuilt || runningBinary == "mgrpxy" {
+	if runningBinary == "mgrpxy" {
 		backend, _ = flags.GetString("backend")
 	}
 

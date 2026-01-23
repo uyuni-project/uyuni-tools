@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,7 +7,6 @@ package rename
 import (
 	"github.com/spf13/cobra"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
-	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -35,7 +34,7 @@ a refresh of the pillars of each registered system will be triggered.
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var flags renameFlags
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, rename)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, renameForPodman)
 		},
 	}
 
@@ -47,13 +46,4 @@ a refresh of the pillars of each registered system will be triggered.
 	cmd.Flags().String("ssl-password", "", L("Password for the CA key to generate"))
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", ssl.GeneratedFlagsGroup)
 	return cmd
-}
-
-func rename(globalFlags *types.GlobalFlags, flags *renameFlags, cmd *cobra.Command, args []string) error {
-	fn, err := shared.ChoosePodmanOrKubernetes(cmd.Flags(), renameForPodman, renameForKubernetes)
-	if err != nil {
-		return err
-	}
-
-	return fn(globalFlags, flags, cmd, args)
 }

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -96,7 +96,7 @@ func Deploy(imageFlags *utils.ProxyImageFlags, helmFlags *HelmFlags, configDir s
 		"--set", "images.proxy-tftpd="+imageFlags.GetContainerImage("tftpd"),
 		"--set", "repository="+imageFlags.Registry.Host,
 		"--set", "version="+imageFlags.Tag,
-		"--set", "pullPolicy="+string(kubernetes.GetPullPolicy(imageFlags.PullPolicy)))
+		"--set", "pullPolicy="+kubernetes.GetPullPolicy(imageFlags.PullPolicy))
 
 	helmParams = append(helmParams, helmArgs...)
 

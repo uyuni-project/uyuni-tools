@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -20,7 +20,6 @@ import (
 )
 
 type registerFlags struct {
-	Backend           string
 	ConnectionDetails api.ConnectionDetails `mapstructure:"api"`
 }
 
@@ -38,10 +37,6 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[registerFlags]
 	}
 	registerCmd.SetUsageTemplate(registerCmd.UsageTemplate())
 
-	if utils.KubernetesBuilt {
-		utils.AddBackendFlag(registerCmd)
-	}
-
 	api.AddAPIFlags(registerCmd)
 
 	return registerCmd
@@ -53,7 +48,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 }
 
 func register(_ *types.GlobalFlags, flags *registerFlags, _ *cobra.Command, _ []string) error {
-	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	cnx := shared.NewConnection("podman", podman.ServerContainerName, kubernetes.ServerFilter)
 	config, err := getRhnConfig(cnx)
 	if err != nil {
 		return err

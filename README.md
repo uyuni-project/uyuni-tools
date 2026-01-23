@@ -10,7 +10,7 @@ SPDX-License-Identifier: Apache-2.0
 
 **These tools are work in progress**
 
-* `mgradm` used to help administer Uyuni servers on K8s and Podman
+* `mgradm` used to help administer Uyuni servers on Podman
 * `mgrctl` used to help managing Uyuni servers mainly through its API
 * `mgrpxy` used to help managing Uyuni proxies
 
@@ -45,12 +45,6 @@ This is not needed when using the package from OBS as it defaulting with this im
 Other sub-commands are also available. Explore the tool with the help command.
 
 A tool named `mgrctl` is also available with useful commands.
-
-## K3s deployment
-
-For Look at a more details documentation at:
-
-https://github.com/uyuni-project/uyuni/tree/master/containers/doc/server-kubernetes
 
 # Development documentation
 
@@ -114,7 +108,6 @@ Macros:
 
 To disable features at build time pass the `-tags` parameter with the following values in a comma-separated list:
 
-* `nok8s`: will disable Kubernetes support
 * `ptf`: will enable ptf support commands build
 
 ## Localization
