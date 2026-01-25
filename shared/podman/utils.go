@@ -52,6 +52,8 @@ var ProxyContainerNames = []string{
 // PodmanFlags stores the podman arguments.
 type PodmanFlags struct {
 	Args []string `mapstructure:"arg"`
+	Name string `mapstructure:"server-image"`
+	Tag  string `mapstructure:"server-tag"`
 }
 
 // GetCommonParams splits the common arguments.
