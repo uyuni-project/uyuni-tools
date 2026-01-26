@@ -97,47 +97,6 @@ func GeneratePostUpgradeScript() (string, error) {
 	return scriptBuilder.String(), nil
 }
 
-// RunMigration execute the migration script.
-func RunMigration(cnx *shared.Connection, scriptName string) error {
-	log.Info().Msg(L("Migrating server"))
-	err := ExecCommand(zerolog.InfoLevel, cnx, "/var/lib/uyuni-tools/"+scriptName)
-	if err != nil {
-		return utils.Error(err, L("error running the migration script"))
-	}
-	return nil
-}
-
-// GenerateMigrationScript generates the script that perform migration.
-func GenerateMigrationScript(
-	sourceFqdn string,
-	user string,
-	prepare bool,
-	dbHost string,
-	reportDBHost string,
-) (string, error) {
-	// For podman we want to backup tls certificates to the temporary volume we
-	// later use when creating secrets.
-	volumes := append(utils.ServerVolumeMounts, utils.VarPgsqlDataVolumeMount)
-	volumes = append(volumes, utils.EtcTLSTmpVolumeMount)
-
-	data := templates.MigrateScriptTemplateData{
-		Volumes:      volumes,
-		SourceFqdn:   sourceFqdn,
-		User:         user,
-		Kubernetes:   false,
-		Prepare:      prepare,
-		DBHost:       dbHost,
-		ReportDBHost: reportDBHost,
-	}
-
-	scriptBuilder := new(strings.Builder)
-	if err := data.Render(scriptBuilder); err != nil {
-		return "", utils.Error(err, L("failed to generate migration script"))
-	}
-
-	return scriptBuilder.String(), nil
-}
-
 // SanityCheck verifies if an upgrade can be run.
 func SanityCheck(runningValues *utils.ServerInspectData, inspectedValues *utils.ServerInspectData) error {
 	// Skip the uyuni / SUSE Manager release checks if the runningValues is nil.

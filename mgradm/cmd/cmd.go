@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,17 +11,12 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/shared/completion"
-	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
-
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/distro"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/gpg"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install"
-	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/migrate"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/restart"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/scale"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/server"
@@ -31,7 +26,10 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/support"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/uninstall"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/upgrade"
+	"github.com/uyuni-project/uyuni-tools/shared/completion"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // NewUyuniadmCommand returns a new cobra.Command implementing the root command for mgradm.
@@ -73,9 +71,6 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 
 	rootCmd.PersistentFlags().StringVarP(&globalFlags.ConfigPath, "config", "c", "", L("configuration file path"))
 	utils.AddLogLevelFlags(rootCmd, &globalFlags.LogLevel)
-
-	migrateCmd := migrate.NewCommand(globalFlags)
-	rootCmd.AddCommand(migrateCmd)
 
 	installCmd := install.NewCommand(globalFlags)
 	rootCmd.AddCommand(installCmd)
