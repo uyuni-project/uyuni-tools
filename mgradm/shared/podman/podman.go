@@ -361,21 +361,7 @@ func Upgrade(
 		)
 	}
 
-	if newPgVersion > oldPgVersion {
-		if err := RunPgsqlVersionUpgrade(authFile, image, upgradeImage); err != nil {
-			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
-		}
-	} else if newPgVersion == oldPgVersion {
-		log.Info().Msg(L("Upgrading without changing PostgreSQL version"))
-	} else {
-		return fmt.Errorf(
-			L("trying to downgrade PostgreSQL from %[1]s to %[2]s"),
-			oldPgVersion, newPgVersion,
-		)
-	}
-
-	if inspectedValues.CurrentPgVersionNotMigrated != "" ||
-		inspectedValues.DBHost == "localhost" ||
+	if inspectedValues.DBHost == "localhost" ||
 		inspectedValues.ReportDBHost == "localhost" {
 		log.Info().Msgf(L("Configuring split PostgreSQL container"))
 
