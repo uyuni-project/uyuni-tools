@@ -261,49 +261,40 @@ func RunPgsqlVersionUpgrade(
 	authFile string,
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
-	oldPgsql string,
-	newPgsql string,
 ) error {
-	log.Info().Msgf(
-		L("Previous PostgreSQL is %[1]s, new one is %[2]s. Performing a DB version upgrade…"), oldPgsql, newPgsql,
-	)
-
-	if newPgsql > oldPgsql {
-		pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
-		extraArgs := []string{
-			"--security-opt", "label=disable",
-		}
-
-		upgradeImageURL, err := utils.ComputeImage(image.Registry.Host, image.Tag, upgradeImage)
-		if err != nil {
-			return utils.Errorf(err, L("failed to compute image URL"))
-		}
-
-		preparedImage, err := prepareImage(authFile, upgradeImageURL, image.PullPolicy, true)
-		if err != nil {
-			return err
-		}
-
-		log.Info().Msgf(L("Using database upgrade image %s"), preparedImage)
-
-		// We need an additional volume for database backup during the migration
-		// Create or reuse var-pgsql-backup volume
-		volumeMounts := []types.VolumeMount{
-			{
-				MountPath: "/var/lib/pgsql",
-				Name:      "var-pgsql",
-			},
-			{
-				MountPath: "/var/lib/pgsql18",
-				Name:      "var-pgsql18",
-			},
-			utils.EtcTLSTmpVolumeMount,
-		}
-
-		return runContainer(pgsqlVersionUpgradeContainer, preparedImage, volumeMounts, extraArgs,
-			[]string{})
+	pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
+	extraArgs := []string{
+		"--security-opt", "label=disable",
 	}
-	return nil
+
+	upgradeImageURL, err := utils.ComputeImage(image.Registry.Host, image.Tag, upgradeImage)
+	if err != nil {
+		return utils.Errorf(err, L("failed to compute image URL"))
+	}
+
+	preparedImage, err := prepareImage(authFile, upgradeImageURL, image.PullPolicy, true)
+	if err != nil {
+		return err
+	}
+
+	log.Info().Msgf(L("Using database upgrade image %s"), preparedImage)
+
+	// We need an additional volume for database backup during the migration
+	// Create or reuse var-pgsql-backup volume
+	volumeMounts := []types.VolumeMount{
+		{
+			MountPath: "/var/lib/pgsql",
+			Name:      "var-pgsql",
+		},
+		{
+			MountPath: "/var/lib/pgsql18",
+			Name:      "var-pgsql18",
+		},
+		utils.EtcTLSTmpVolumeMount,
+	}
+
+	return runContainer(pgsqlVersionUpgradeContainer, preparedImage, volumeMounts, extraArgs,
+		[]string{})
 }
 
 // RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
@@ -426,44 +417,8 @@ func Upgrade(
 		)
 	}
 
-	if inspectedValues.CurrentPgVersionNotMigrated != "" ||
-		inspectedValues.DBHost == "localhost" ||
-		inspectedValues.ReportDBHost == "localhost" {
-		log.Info().Msgf(L("Configuring split PostgreSQL container"))
-
-		currentPgVersionNotMigrated, _ := strconv.Atoi(inspectedValues.CurrentPgVersionNotMigrated)
-
-		if err := PrepareSSLCertificates(preparedServerImage, &ssl, tz, fqdn); err != nil {
-			return err
-		}
-
-		if newPgVersion > currentPgVersionNotMigrated {
-			if err := RunPgsqlVersionUpgrade(
-				authFile, image, upgradeImage, strconv.Itoa(currentPgVersionNotMigrated),
-				strconv.Itoa(newPgVersion),
-			); err != nil {
-				return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
-			}
-		} else if newPgVersion == oldPgVersion {
-			log.Info().Msg(L("Upgrading without changing PostgreSQL version"))
-		} else {
-			return fmt.Errorf(
-				L("trying to downgrade PostgreSQL from %[1]s to %[2]s"),
-				oldPgVersion, newPgVersion,
-			)
-		}
-
-		if err := configureSplitDBContainer(
-			preparedServerImage, preparedPgsqlImage, systemd, db, reportdb); err != nil {
-			return utils.Errorf(err, L("cannot configure db container"))
-		}
-	}
-
 	if newPgVersion > oldPgVersion {
-		if err := RunPgsqlVersionUpgrade(
-			authFile, image, upgradeImage, strconv.Itoa(oldPgVersion),
-			strconv.Itoa(newPgVersion),
-		); err != nil {
+		if err := RunPgsqlVersionUpgrade(authFile, image, upgradeImage); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	} else if newPgVersion == oldPgVersion {
@@ -473,6 +428,21 @@ func Upgrade(
 			L("trying to downgrade PostgreSQL from %[1]s to %[2]s"),
 			oldPgVersion, newPgVersion,
 		)
+	}
+
+	if inspectedValues.CurrentPgVersionNotMigrated != "" ||
+		inspectedValues.DBHost == "localhost" ||
+		inspectedValues.ReportDBHost == "localhost" {
+		log.Info().Msgf(L("Configuring split PostgreSQL container"))
+
+		if err := PrepareSSLCertificates(preparedServerImage, &ssl, tz, fqdn); err != nil {
+			return err
+		}
+
+		if err := configureSplitDBContainer(
+			preparedServerImage, preparedPgsqlImage, systemd, db, reportdb); err != nil {
+			return utils.Errorf(err, L("cannot configure db container"))
+		}
 	}
 
 	if err := pgsql.Upgrade(preparedPgsqlImage, systemd); err != nil {
