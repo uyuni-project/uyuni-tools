@@ -1,1 +1,0 @@
-- Ssl Key file can miss if CA password is blank (bsc#1254154)
