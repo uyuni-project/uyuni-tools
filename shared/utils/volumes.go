@@ -9,15 +9,18 @@ import "github.com/uyuni-project/uyuni-tools/shared/types"
 // EtcRhnVolumeMount defines the /etc/rhn volume mount.
 var EtcRhnVolumeMount = types.VolumeMount{MountPath: "/etc/rhn", Name: "etc-rhn", Size: "1Mi"}
 
+// VarPgsql16DataVolumeMount defines the PostgreSQL 16 backup.
+var VarPgsql16DataVolumeMount = types.VolumeMount{MountPath: "/var/lib/pgsql16/data", Name: "var-pgsql", Size: "50Gi"}
+
 // VarPgsqlDataVolumeMount defines the /var/lib/pgsql/data volume mount.
-var VarPgsqlDataVolumeMount = types.VolumeMount{MountPath: "/var/lib/pgsql/data", Name: "var-pgsql18", Size: "50Gi"}
+var VarPgsql18DataVolumeMount = types.VolumeMount{MountPath: "/var/lib/pgsql/data", Name: "var-pgsql18", Size: "50Gi"}
 
 // RootVolumeMount defines the /root volume mount.
 var RootVolumeMount = types.VolumeMount{MountPath: "/root", Name: "root", Size: "1Mi"}
 
 // PgsqlRequiredVolumeMounts represents volumes mount used by PostgreSQL.
 var PgsqlRequiredVolumeMounts = []types.VolumeMount{
-	VarPgsqlDataVolumeMount,
+	VarPgsql18DataVolumeMount,
 }
 
 // CaCertVolumeMount represents volume for CA certificates.
@@ -60,11 +63,12 @@ var ServerVolumeMounts = []types.VolumeMount{
 // SSLMigrationVolumeMounts are the mounts needed to extract the SSL certificates for a migration.
 var SSLMigrationVolumeMounts = []types.VolumeMount{EtcTLSTmpVolumeMount, RootVolumeMount, CaCertVolumeMount}
 
-// ServerMigrationVolumeMounts match server + postgres volume mounts, used for migration.
-var ServerMigrationVolumeMounts = append(ServerVolumeMounts, VarPgsqlDataVolumeMount, EtcTLSTmpVolumeMount)
-
 // DatabaseMigrationVolumeMounts match database + etc/rhn volume mounts, used for database migration.
-var DatabaseMigrationVolumeMounts = []types.VolumeMount{EtcRhnVolumeMount, VarPgsqlDataVolumeMount}
+var DatabaseMigrationVolumeMounts = []types.VolumeMount{
+	EtcRhnVolumeMount,
+	VarPgsql16DataVolumeMount,
+	VarPgsql18DataVolumeMount,
+}
 
 // SalineVolumeMounts represents volumes used by Saline container.
 var SalineVolumeMounts = []types.VolumeMount{
