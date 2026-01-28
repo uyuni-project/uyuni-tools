@@ -184,11 +184,7 @@ func runSetup(image string, flags *adm_utils.ServerFlags, fqdn string) error {
 	command = append(command, envNames...)
 	command = append(command, image)
 
-	script, err := adm_utils.GenerateSetupScript(&flags.Installation, false)
-	if err != nil {
-		return err
-	}
-	command = append(command, "/usr/bin/sh", "-e", "-c", script)
+	command = append(command, "/usr/bin/bash", "-e", "-c", "/docker-entrypoint-init.d/00-mgrSetup.sh")
 
 	if _, err := newRunner("podman", command...).Env(envValues).StdMapping().Exec(); err != nil {
 		return utils.Error(err, L("server setup failed"))
