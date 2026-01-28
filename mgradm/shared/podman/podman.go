@@ -204,7 +204,7 @@ var runContainer = podman.RunContainer
 func RunPgsqlVersionUpgrade(
 	authFile string,
 	image types.ImageFlags,
-	upgradeImage types.ImageFlags,
+	upgradeImage types.ImageFlags, volumeMounts []types.VolumeMount,
 ) error {
 	pgsqlVersionUpgradeContainer := "uyuni-upgrade-pgsql"
 	extraArgs := []string{
@@ -222,20 +222,6 @@ func RunPgsqlVersionUpgrade(
 	}
 
 	log.Info().Msgf(L("Using database upgrade image %s"), preparedImage)
-
-	// We need an additional volume for database backup during the migration
-	// Create or reuse var-pgsql-backup volume
-	volumeMounts := []types.VolumeMount{
-		{
-			MountPath: "/var/lib/pgsql",
-			Name:      "var-pgsql",
-		},
-		{
-			MountPath: "/var/lib/pgsql18",
-			Name:      "var-pgsql18",
-		},
-		utils.EtcTLSTmpVolumeMount,
-	}
 
 	return runContainer(pgsqlVersionUpgradeContainer, preparedImage, volumeMounts, extraArgs,
 		[]string{})
@@ -348,8 +334,30 @@ func Upgrade(
 	oldPgVersion, _ := strconv.Atoi(inspectedValues.ContainerInspectData.PgVersion)
 	newPgVersion, _ := strconv.Atoi(inspectedValues.DBInspectData.PgVersion)
 
+	// We need an additional volume for database backup during the migration
+	// Create or reuse var-pgsql-backup volume
+	upgradeVolumeMounts := []types.VolumeMount{
+		{
+			MountPath: "/var/lib/pgsql18",
+			Name:      "var-pgsql18",
+		},
+		utils.EtcTLSTmpVolumeMount,
+	}
+
+	if strings.HasPrefix(inspectedValues.ContainerInspectData.SuseManagerRelease, "5.0") {
+		upgradeVolumeMounts = append(upgradeVolumeMounts, types.VolumeMount{
+			MountPath: "/var/lib/pgsql",
+			Name:      "var-pgsql",
+		})
+	} else {
+		upgradeVolumeMounts = append(upgradeVolumeMounts, types.VolumeMount{
+			MountPath: "/var/lib/pgsql/data",
+			Name:      "var-pgsql",
+		})
+	}
+
 	if newPgVersion > oldPgVersion {
-		if err := RunPgsqlVersionUpgrade(authFile, image, upgradeImage); err != nil {
+		if err := RunPgsqlVersionUpgrade(authFile, image, upgradeImage, upgradeVolumeMounts); err != nil {
 			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	} else if newPgVersion == oldPgVersion {
