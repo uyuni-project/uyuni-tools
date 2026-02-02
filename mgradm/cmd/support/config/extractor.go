@@ -13,6 +13,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/ssl"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -46,10 +47,21 @@ func extract(_ *types.GlobalFlags, flags *configFlags, _ *cobra.Command, _ []str
 	}
 	defer cleaner()
 
-	fileList, err := cnx.RunSupportConfig(tmpDir)
+	var fileList []string
+
+	// Collect SSL certificate
+	sslInfoFile, sslErr := ssl.CollectSSLCertInfo(tmpDir, cnx.Exec)
+	if sslErr != nil {
+		log.Warn().Err(sslErr).Msg(L("failed to collect SSL certificate information"))
+	} else {
+		fileList = append(fileList, sslInfoFile)
+	}
+
+	containerFiles, err := cnx.RunSupportConfig(tmpDir)
 	if err != nil {
 		return err
 	}
+	fileList = append(fileList, containerFiles...)
 
 	var fileListHost []string
 	if systemd.HasService(podman.ServerService) {
