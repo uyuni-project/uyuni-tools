@@ -33,7 +33,7 @@ const (
 )
 
 // ServerFilter represents filter used to check server app.
-const ServerFilter = "-l" + AppLabel + "=" + ServerApp
+var ServerFilter = fmt.Sprintf("-l%s=%s,%s=%s", AppLabel, ServerApp, ComponentLabel, "server")
 
 // ServerFilter represents filter used to check proxy app.
 const ProxyFilter = "-l" + AppLabel + "=" + ProxyApp

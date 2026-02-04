@@ -1,0 +1,2 @@
+- Adjust mgrctl server filter to work with the new helm chart
+  labels
