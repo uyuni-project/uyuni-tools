@@ -248,6 +248,10 @@ func UnpackConfig(configPath string) error {
 		return err
 	}
 
+	if err := os.Chmod(proxyConfigDir, 0755); err != nil {
+		return err
+	}
+
 	if err := checkPermissions(proxyConfigDir, 0005|0050|0500); err != nil {
 		return err
 	}
@@ -291,6 +295,10 @@ func validateInstallYamlFiles(dir string) error {
 			return fmt.Errorf(L("missing required configuration file: %s"), filePath)
 		}
 		if file == "config.yaml" {
+			if err := os.Chmod(filePath, 0644); err != nil {
+				return err
+			}
+
 			if err := checkPermissions(filePath, 0004|0040|0400); err != nil {
 				return err
 			}
