@@ -21,10 +21,21 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 var runner = utils.NewRunner
+
+// SetRunner allows mocking the runner for tests.
+func SetRunner(r func(command string, args ...string) types.Runner) {
+	runner = r
+}
+
+// ResetRunner resets the runner to the default implementation.
+func ResetRunner() {
+	runner = utils.NewRunner
+}
 
 // Connection contains information about how to connect to the server.
 type Connection struct {
