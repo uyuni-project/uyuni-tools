@@ -311,7 +311,7 @@ func GetPodmanVolumeBasePath() (string, error) {
 // GetVolumeMountPoint returns the path to the volume mount point on the host system.
 // This shouldn't be confused with GetPodmanVolumeBasePath() that returns the path to the folder containing all volumes.
 func GetVolumeMountPoint(name string) (path string, err error) {
-	out, err := utils.NewRunner("podman", "volume", "inspect", "--format", "{{.Mountpoint}}", name).
+	out, err := runner("podman", "volume", "inspect", "--format", "{{.Mountpoint}}", name).
 		Log(zerolog.DebugLevel).
 		Exec()
 	if err != nil {
