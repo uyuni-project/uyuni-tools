@@ -14,8 +14,7 @@ const pgsqlMigrationScriptTemplate = `
 set -e -x
 
 if [ -d /var/lib/pgsql/data/data ] ; then
-    shopt -s dotglob
-	rsync -a --exclude=/var/lib/pgsql/data/data/pg_hba.conf /var/lib/pgsql/data/data/ /var/lib/pgsql/data/ 2>/dev/null
+    cp -alf /var/lib/pgsql/data/data/. /var/lib/pgsql/data/
     rm -rf /var/lib/pgsql/data/data
 fi
 

@@ -1,0 +1,1 @@
+- Optimize postgres migration disk space usage (bsc#1257447)
