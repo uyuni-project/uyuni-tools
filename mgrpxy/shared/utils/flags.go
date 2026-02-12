@@ -1,13 +1,10 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package utils
 
 import (
-	"fmt"
-	"path"
-
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -83,7 +80,7 @@ func AddImageFlags(cmd *cobra.Command) {
 	addContainerImageFlags(cmd, "saltbroker", "salt-broker")
 	addContainerImageFlags(cmd, "squid", "squid")
 	addContainerImageFlags(cmd, "ssh", "ssh")
-	addContainerImageFlags(cmd, "tftpd", "tftpd")
+	utils.AddTFTPDFlags(cmd, false, "")
 
 	cmd.Flags().String("tuning-httpd", "", L("HTTPD tuning configuration file"))
 	cmd.Flags().String("tuning-squid", "", L("Squid tuning configuration file"))
@@ -92,9 +89,5 @@ func AddImageFlags(cmd *cobra.Command) {
 }
 
 func addContainerImageFlags(cmd *cobra.Command, paramName string, imageName string) {
-	defaultImage := path.Join(utils.DefaultImagePrefix, "proxy-"+imageName)
-	cmd.Flags().String(paramName+"-image", defaultImage,
-		fmt.Sprintf(L("Image for %s container"), imageName))
-	cmd.Flags().String(paramName+"-tag", "",
-		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), imageName))
+	utils.AddContainerImageFlags(cmd, paramName, imageName, "", "proxy-"+imageName)
 }

@@ -17,6 +17,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/tftp"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -108,6 +109,7 @@ func installForPodman(
 		coco.SetupCocoContainer(systemd, authFile, flags.Coco, flags.Image, flags.Installation.DB),
 		hub.SetupHubXmlrpc(systemd, authFile, flags.Image, flags.HubXmlrpc),
 		saline.SetupSalineContainer(systemd, authFile, flags.Image, flags.Saline, flags.Installation.TZ),
+		tftp.SetupTFTPContainer(systemd, authFile, flags.Image, flags.TFTPD, fqdn),
 	)
 }
 

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -23,8 +23,6 @@ const (
 	DBExporterServiceName = "db"
 	// TaskoServiceName is the name of the server taskomatic service.
 	TaskoServiceName = "taskomatic"
-	// TftpServiceName is the name of the server tftp service.
-	TftpServiceName = "tftp"
 	// TomcatServiceName is the name of the server tomcat service.
 	TomcatServiceName = "tomcat"
 	// SearchServiceName is the name of the server search service.
@@ -99,17 +97,6 @@ var SearchPorts = []types.PortMap{
 	NewPortMap(SearchServiceName, "debug", 8002, 8002),
 }
 
-// TftpPorts is the list of ports for the server tftp service.
-var TftpPorts = []types.PortMap{
-	{
-		Service:  TftpServiceName,
-		Name:     "tftp",
-		Exposed:  69,
-		Port:     69,
-		Protocol: "udp",
-	},
-}
-
 // GetServerPorts returns all the server container ports.
 //
 // if debug is set to true, the debug ports are added to the list.
@@ -121,7 +108,6 @@ func GetServerPorts(debug bool) []types.PortMap {
 	ports = appendPorts(ports, debug, TaskoPorts...)
 	ports = appendPorts(ports, debug, TomcatPorts...)
 	ports = appendPorts(ports, debug, SearchPorts...)
-	ports = appendPorts(ports, debug, TftpPorts...)
 	ports = appendPorts(ports, debug, DBExporterPorts...)
 
 	return ports

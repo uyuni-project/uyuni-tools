@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,6 +22,10 @@ func StartServices() error {
 		systemd.StartService(podman.ServerService),
 	)
 
+	if systemd.ServiceIsEnabled(podman.TFTPService) {
+		errs = utils.JoinErrors(errs, systemd.StartService(podman.TFTPService))
+	}
+
 	if systemd.HasService(podman.SalineService + "@") {
 		errs = utils.JoinErrors(errs, systemd.StartInstantiated(podman.SalineService))
 	}
@@ -43,6 +47,10 @@ func StopServices() error {
 
 	if systemd.HasService(podman.SalineService + "@") {
 		errs = utils.JoinErrors(errs, systemd.StopInstantiated(podman.SalineService))
+	}
+
+	if systemd.ServiceIsEnabled(podman.TFTPService) {
+		errs = utils.JoinErrors(errs, systemd.StopService(podman.TFTPService))
 	}
 	return errs
 }
