@@ -16,31 +16,12 @@ SPDX-License-Identifier: Apache-2.0
 
 # Deployment rolling release
 
-## For Podman deployment
-Requirement:
-  - openSUSE Leap Micro 15.5
-  - Podman installed
+## For Podman deployment for the Server
 
-*Note that other distros with a recent Podman installed could work but they have not been tested.
-Please report issues if any arises on those distributions.*
+- Instructions for the Uyuni Stable version: https://www.uyuni-project.org/pages/stable-version.html
+- Instructions for the Uyuni Development/Master version: https://www.uyuni-project.org/pages/devel-version.html
 
-Add uyuni-tool repository:
-```
-zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/ContainerUtils/openSUSE_Leap_Micro_5.5/ uyuni-container-utils
-```
-
-Install `mgradm` package: `transactional-update pkg install mgradm`
-
-Run `mgradm` command to install Uyuni server on Podman:
-```
-mgradm install podman
-```
-
-If you build `uyuni-tools` on your machine, add the `--image registry.opensuse.org/systemsmanagement/uyuni/stable/containers/uyuni/server` option to the install command.
-This is not needed when using the package from OBS as it defaulting with this image at build time.
-
-**NOTE**: rolling image url is: registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server
-
+**NOTE**: If you want to deploy Development/Master you need to specify `--image systemsmanagement/uyuni/master/containers/uyuni/server` for the server.
 
 Other sub-commands are also available. Explore the tool with the help command.
 
@@ -72,7 +53,13 @@ If you are not doing it already, check out the [GitHub documentation](https://do
 
 ## Building
 
+Create the bin directory if it does not exist:
+`mkdir bin`
+
+And then build:
 `go build -o ./bin ./...` will produce the binaries in the root folder with `0.0.0` as version.
+
+### Extras
 
 To produce shell completion scripts for a given shell you can run:
 
