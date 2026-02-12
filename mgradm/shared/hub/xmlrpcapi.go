@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -108,7 +108,6 @@ func generateHubXmlrpcSystemdService(systemd podman.Systemd, image string, serve
 		Ports:      utils.HubXmlrpcPorts,
 		NamePrefix: "uyuni",
 		Network:    podman.UyuniNetwork,
-		Image:      image,
 		ServerHost: serverHost,
 	}
 	if err := utils.WriteTemplateToFile(

@@ -45,6 +45,7 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 		flags.HubXmlrpc,
 		flags.Saline,
 		flags.Pgsql,
+		flags.TFTPD,
 		flags.Installation.TZ,
 	)
 }
