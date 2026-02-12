@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //go:build ptf
 
-package podman
+package ptf
 
 import (
 	"fmt"

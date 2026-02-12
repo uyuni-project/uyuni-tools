@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -18,7 +18,6 @@ func TestParamsParsing(t *testing.T) {
 		"--force",
 		"--purge-volumes",
 		"--purge-images",
-		"--backend", "kubectl",
 	}
 
 	// Test function asserting that the args are properly parsed
@@ -28,7 +27,6 @@ func TestParamsParsing(t *testing.T) {
 		testutils.AssertTrue(t, "Error parsing --force", flags.Force)
 		testutils.AssertTrue(t, "Error parsing --purge-volumes", flags.Purge.Volumes)
 		testutils.AssertTrue(t, "Error parsing --purge-images", flags.Purge.Images)
-		testutils.AssertEquals(t, "Error parsing --backend", "kubectl", flags.Backend)
 		return nil
 	}
 
