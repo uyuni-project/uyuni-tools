@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -45,21 +45,25 @@ func TestSanityCheck(t *testing.T) {
 	}
 
 	for i, test := range data {
-		runningValues := utils.ServerInspectData{
-			UyuniRelease:       test.oldUyuniRelease,
-			SuseManagerRelease: test.oldSumaRelease,
-		}
-		newValues := utils.ServerInspectData{
-			CommonInspectData: utils.CommonInspectData{
-				CurrentPgVersion: test.oldPgsqlVersion,
+		// newValues represents the data inspected from the new image/server
+		newValues := utils.InspectData{
+			ServerInspectData: utils.ServerInspectData{
+				UyuniRelease:       test.newUyuniRelease,
+				SuseManagerRelease: test.newSumaRelease,
 			},
 			DBInspectData: utils.DBInspectData{
-				ImagePgVersion: test.newPgsqlVersion,
+				PgVersion: test.newPgsqlVersion,
 			},
-			UyuniRelease:       test.newUyuniRelease,
-			SuseManagerRelease: test.newSumaRelease,
+			ContainerInspectData: utils.ContainerInspectData{
+				UyuniRelease:       test.oldUyuniRelease,
+				SuseManagerRelease: test.oldSumaRelease,
+				PgVersion:          test.oldPgsqlVersion,
+			},
 		}
-		err := SanityCheck(&runningValues, &newValues)
+
+		// Ensure SanityCheck signature accepts (*ContainerInspectData, *InspectData)
+		err := SanityCheck(&newValues)
+
 		if test.errorPart != "" {
 			if err != nil {
 				testutils.AssertTrue(

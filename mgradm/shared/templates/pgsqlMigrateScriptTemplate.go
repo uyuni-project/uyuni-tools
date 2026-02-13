@@ -10,13 +10,8 @@ import (
 )
 
 //nolint:lll
-const pgsqlMigrationScriptTemplate = `
+const splitContainerSettingsScriptTemplate = `
 set -e -x
-
-if [ -d /var/lib/pgsql/data/data ] ; then
-    cp -alf /var/lib/pgsql/data/data/. /var/lib/pgsql/data/
-    rm -rf /var/lib/pgsql/data/data
-fi
 
 {{ if .ReportDBHost }}
 sed 's/^report_db_host = .*/report_db_host = {{ .ReportDBHost }}/' -i /etc/rhn/rhn.conf;
@@ -28,14 +23,15 @@ sed 's/^db_host = .*/db_host = {{ .DBHost }}/' -i /etc/rhn/rhn.conf;
 
 echo "DONE"`
 
-// MigrateScriptTemplateData represents migration information used to create migration script.
-type PgsqlMigrateScriptTemplateData struct {
+// SplitContainerSettingsScriptTemplateData represents the information that needs
+// to be changed when db container is separated by the server.
+type SplitContainerSettingsScriptTemplateData struct {
 	DBHost       string
 	ReportDBHost string
 }
 
 // Render will create migration script.
-func (data PgsqlMigrateScriptTemplateData) Render(wr io.Writer) error {
-	t := template.Must(template.New("script").Parse(pgsqlMigrationScriptTemplate))
+func (data SplitContainerSettingsScriptTemplateData) Render(wr io.Writer) error {
+	t := template.Must(template.New("script").Parse(splitContainerSettingsScriptTemplate))
 	return t.Execute(wr, data)
 }

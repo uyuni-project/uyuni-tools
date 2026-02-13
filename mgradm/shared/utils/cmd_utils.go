@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -58,61 +58,6 @@ func (f *InstallSSLFlags) CheckUpgradeParameters(localDB bool) {
 	if f.UseProvided() && localDB && !f.DB.IsDefined() {
 		log.Fatal().Msg(L("Database certificate and key need to be provided"))
 	}
-}
-
-// AddHelmInstallFlag add Helm install flags to a command.
-func AddHelmInstallFlag(cmd *cobra.Command) {
-	cmd.Flags().String("kubernetes-uyuni-namespace", "default", L("Kubernetes namespace where to install uyuni"))
-	cmd.Flags().String("kubernetes-certmanager-namespace", "cert-manager",
-		L("Kubernetes namespace where to install cert-manager"),
-	)
-	cmd.Flags().String("kubernetes-certmanager-chart", "",
-		L("URL to the cert-manager helm chart. To be used for offline installations"),
-	)
-	cmd.Flags().String("kubernetes-certmanager-version", "", L("Version of the cert-manager helm chart"))
-	cmd.Flags().String("kubernetes-certmanager-values", "",
-		L("Path to a values YAML file to use for cert-manager helm install"),
-	)
-
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "helm", Title: L("Helm Chart Flags")})
-	_ = utils.AddFlagToHelpGroupID(cmd, "kubernetes-uyuni-namespace", "helm")
-	_ = utils.AddFlagToHelpGroupID(cmd, "kubernetes-certmanager-namespace", "helm")
-	_ = utils.AddFlagToHelpGroupID(cmd, "kubernetes-certmanager-chart", "helm")
-	_ = utils.AddFlagToHelpGroupID(cmd, "kubernetes-certmanager-version", "helm")
-	_ = utils.AddFlagToHelpGroupID(cmd, "kubernetes-certmanager-values", "helm")
-}
-
-const volumesFlagsGroupID = "volumes"
-
-// AddVolumesFlags adds the Kubernetes volumes configuration parameters to the command.
-func AddVolumesFlags(cmd *cobra.Command) {
-	cmd.Flags().String("volumes-class", "", L("Default storage class for all the volumes"))
-	cmd.Flags().String("volumes-mirror", "",
-		L("PersistentVolume name to use as a mirror. Empty means no mirror is used"),
-	)
-
-	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: volumesFlagsGroupID, Title: L("Volumes Configuration Flags")})
-	_ = utils.AddFlagToHelpGroupID(cmd, "volumes-class", volumesFlagsGroupID)
-	_ = utils.AddFlagToHelpGroupID(cmd, "volumes-mirror", volumesFlagsGroupID)
-
-	addVolumeFlags(cmd, "database", "var-pgsql", "50Gi")
-	addVolumeFlags(cmd, "packages", "var-spacewalk", "100Gi")
-	addVolumeFlags(cmd, "www", "srv-www", "100Gi")
-	addVolumeFlags(cmd, "cache", "var-cache", "10Gi")
-}
-
-func addVolumeFlags(cmd *cobra.Command, name string, volumeName string, size string) {
-	sizeName := fmt.Sprintf("volumes-%s-size", name)
-	cmd.Flags().String(
-		sizeName, size, fmt.Sprintf(L("Requested size for the %s volume"), volumeName),
-	)
-	_ = utils.AddFlagToHelpGroupID(cmd, sizeName, volumesFlagsGroupID)
-
-	className := fmt.Sprintf("volumes-%s-class", name)
-	cmd.Flags().String(
-		className, "", fmt.Sprintf(L("Requested storage class for the %s volume"), volumeName),
-	)
-	_ = utils.AddFlagToHelpGroupID(cmd, className, volumesFlagsGroupID)
 }
 
 // AddContainerImageFlags add container image flags to command.
@@ -202,7 +147,8 @@ func AddImageFlag(cmd *cobra.Command) {
 
 // AddDBUpgradeImageFlag add Database upgrade image flags to a command.
 func AddDBUpgradeImageFlag(cmd *cobra.Command) {
-	cmd.Flags().String("dbupgrade-image", "", L("Database upgrade image"))
+	defaultImage := path.Join(utils.DefaultImagePrefix, "server-database-migration")
+	cmd.Flags().String("dbupgrade-image", defaultImage, L("Database upgrade image"))
 	cmd.Flags().String("dbupgrade-tag", "", L("Database upgrade image tag, overrides the default value if set"))
 
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "dbupgrade-image", Title: L("Database Upgrade Image Flags")})

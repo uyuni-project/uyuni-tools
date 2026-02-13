@@ -323,27 +323,37 @@ func GetVolumeMountPoint(name string) (path string, err error) {
 
 // Inspect check values on given images.
 // The images are assumed to be already available locally.
-func Inspect(serverImage string, pgsqlImage string) (*utils.ServerInspectData, error) {
-	inspectResult, err := ContainerInspect[utils.ServerInspectData](
+func Inspect(serverImage string, pgsqlImage string) (*utils.InspectData, error) {
+	serverData, err := ImageInspect[utils.ServerInspectData](
 		serverImage, utils.ServerVolumeMounts, utils.NewServerInspector(),
 	)
 	if err != nil {
 		return nil, err
 	}
 
-	dbData, err := ContainerInspect[utils.DBInspectData](
+	dbData, err := ImageInspect[utils.DBInspectData](
 		pgsqlImage, utils.PgsqlRequiredVolumeMounts, utils.NewDBInspector(),
 	)
 	if err != nil {
 		return nil, err
 	}
-	inspectResult.DBInspectData = *dbData
 
-	return inspectResult, err
+	runningData, err := RunningContainerInspect[utils.ContainerInspectData](
+		utils.NewContainerInspector(),
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &utils.InspectData{
+		ServerInspectData:    *serverData,
+		DBInspectData:        *dbData,
+		ContainerInspectData: *runningData,
+	}, err
 }
 
-// ContainerInspect runs an inspector script on a container image.
-func ContainerInspect[T any](
+// ImageInspect runs an inspector script on a image.
+func ImageInspect[T any](
 	image string, volumes []types.VolumeMount, inspector templates.InspectTemplateData,
 ) (*T, error) {
 	podmanArgs := []string{
@@ -356,6 +366,29 @@ func ContainerInspect[T any](
 	}
 
 	args := PrepareContainerRunArgs("uyuni-inspect", image, volumes, podmanArgs, []string{"bash", "-c", script})
+	out, err := newRunner("podman", args...).Log(zerolog.DebugLevel).Exec()
+	if err != nil {
+		return nil, err
+	}
+
+	inspectResult, err := utils.ReadInspectData[T](out)
+	if err != nil {
+		return nil, utils.Errorf(err, L("cannot inspect data"))
+	}
+
+	return inspectResult, nil
+}
+
+// RunningContainerInspect runs an inspector script on a container image.
+func RunningContainerInspect[T any](
+	inspector templates.InspectTemplateData,
+) (*T, error) {
+	script, err := inspector.GenerateScript()
+	if err != nil {
+		return nil, err
+	}
+
+	args := []string{"exec", "-ti", "uyuni-server", "bash", "-c", script}
 	out, err := newRunner("podman", args...).Log(zerolog.DebugLevel).Exec()
 	if err != nil {
 		return nil, err
