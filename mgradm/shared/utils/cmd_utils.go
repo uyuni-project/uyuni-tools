@@ -5,7 +5,6 @@
 package utils
 
 import (
-	"fmt"
 	"path"
 
 	"github.com/rs/zerolog/log"
@@ -57,26 +56,6 @@ func (f *InstallSSLFlags) CheckUpgradeParameters(localDB bool) {
 
 	if f.UseProvided() && localDB && !f.DB.IsDefined() {
 		log.Fatal().Msg(L("Database certificate and key need to be provided"))
-	}
-}
-
-// AddContainerImageFlags add container image flags to command.
-func AddContainerImageFlags(
-	cmd *cobra.Command,
-	container string,
-	displayName string,
-	groupName string,
-	imageName string,
-) {
-	defaultImage := path.Join(utils.DefaultImagePrefix, imageName)
-	cmd.Flags().String(container+"-image", defaultImage,
-		fmt.Sprintf(L("Image for %s container"), displayName))
-	cmd.Flags().String(container+"-tag", "",
-		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), displayName))
-
-	if groupName != "" {
-		_ = utils.AddFlagToHelpGroupID(cmd, container+"-image", groupName)
-		_ = utils.AddFlagToHelpGroupID(cmd, container+"-tag", groupName)
 	}
 }
 
@@ -164,7 +143,8 @@ func AddMirrorFlag(cmd *cobra.Command) {
 // AddCocoFlag adds the confidential computing related parameters to cmd.
 func AddCocoFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
-	AddContainerImageFlags(cmd, "coco", L("Confidential computing attestation"), "coco-container", "server-attestation")
+	utils.AddContainerImageFlags(cmd, "coco", L("Confidential computing attestation"),
+		"coco-container", "server-attestation")
 	cmd.Flags().Int("coco-replicas", 0, L("How many replicas of the confidential computing container should be started"))
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
 }
@@ -172,7 +152,8 @@ func AddCocoFlag(cmd *cobra.Command) {
 // AddUpgradeCocoFlag adds the confidential computing related parameters to cmd upgrade.
 func AddUpgradeCocoFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
-	AddContainerImageFlags(cmd, "coco", L("Confidential computing attestation"), "coco-container", "server-attestation")
+	utils.AddContainerImageFlags(cmd, "coco", L("Confidential computing attestation"),
+		"coco-container", "server-attestation")
 	cmd.Flags().Int("coco-replicas", 0, L(`How many replicas of the confidential computing container should be started.
 Leave it unset if you want to keep the previous number of replicas.`))
 	_ = utils.AddFlagToHelpGroupID(cmd, "coco-replicas", "coco-container")
@@ -181,7 +162,7 @@ Leave it unset if you want to keep the previous number of replicas.`))
 // AddHubXmlrpcFlags adds hub XML-RPC related parameters to cmd.
 func AddHubXmlrpcFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API")})
-	AddContainerImageFlags(cmd, "hubxmlrpc", L("Hub XML-RPC API"), "hubxmlrpc-container", "server-hub-xmlrpc-api")
+	utils.AddContainerImageFlags(cmd, "hubxmlrpc", L("Hub XML-RPC API"), "hubxmlrpc-container", "server-hub-xmlrpc-api")
 	cmd.Flags().Int("hubxmlrpc-replicas", 0,
 		L("How many replicas of the Hub XML-RPC API service container should be started."),
 	)
@@ -191,7 +172,7 @@ func AddHubXmlrpcFlags(cmd *cobra.Command) {
 // AddUpgradeHubXmlrpcFlags adds hub XML-RPC related parameters to cmd upgrade.
 func AddUpgradeHubXmlrpcFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API")})
-	AddContainerImageFlags(cmd, "hubxmlrpc", L("Hub XML-RPC API"), "hubxmlrpc-container", "server-hub-xmlrpc-api")
+	utils.AddContainerImageFlags(cmd, "hubxmlrpc", L("Hub XML-RPC API"), "hubxmlrpc-container", "server-hub-xmlrpc-api")
 	cmd.Flags().Int("hubxmlrpc-replicas", 0,
 		L(`How many replicas of the Hub XML-RPC API service container should be started.
 Leave it unset if you want to keep the previous number of replicas.`))
@@ -201,7 +182,7 @@ Leave it unset if you want to keep the previous number of replicas.`))
 // AddSalineFlag adds the Saline related parameters to cmd.
 func AddSalineFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "saline-container", Title: L("Saline Flags")})
-	AddContainerImageFlags(cmd, "saline", L("Saline"), "saline-container", "server-saline")
+	utils.AddContainerImageFlags(cmd, "saline", L("Saline"), "saline-container", "server-saline")
 	cmd.Flags().Int("saline-replicas", 0, L(`How many replicas of the Saline container should be started
 (only 0 or 1 supported for now)`))
 	cmd.Flags().Int("saline-port", 8216, L("Saline port"))
@@ -212,7 +193,7 @@ func AddSalineFlag(cmd *cobra.Command) {
 // AddUpgradeSalineFlag adds the Saline related parameters to cmd upgrade.
 func AddUpgradeSalineFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "saline-container", Title: L("Saline Flags")})
-	AddContainerImageFlags(cmd, "saline", L("Saline"), "saline-container", "server-saline")
+	utils.AddContainerImageFlags(cmd, "saline", L("Saline"), "saline-container", "server-saline")
 	cmd.Flags().Int("saline-replicas", 0, L(`How many replicas of the Saline container should be started.
 Leave it unset if you want to keep the previous number of replicas.
 (only 0 or 1 supported for now)`))
@@ -224,7 +205,7 @@ Leave it unset if you want to keep the previous number of replicas.
 // AddPgsqlFlags adds PostgreSQL related parameters to cmd.
 func AddPgsqlFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "pgsql-container", Title: L("PostgreSQL Database Container Flags")})
-	AddContainerImageFlags(cmd, "pgsql", L("PostgreSQL Database"), "pgsql-container", "server-postgresql")
+	utils.AddContainerImageFlags(cmd, "pgsql", L("PostgreSQL Database"), "pgsql-container", "server-postgresql")
 }
 
 // AddServerFlags add flags common to install, upgrade and migration.

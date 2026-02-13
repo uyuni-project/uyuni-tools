@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -28,6 +28,7 @@ func uninstallForPodman(
 		podman.GetServiceImage(podman.HubXmlrpcService + "@"),
 		podman.GetServiceImage(podman.SalineService + "@"),
 		podman.GetServiceImage(podman.DBService),
+		podman.GetServiceImage(podman.TFTPService),
 	}
 
 	// Uninstall the service
@@ -39,6 +40,7 @@ func uninstallForPodman(
 	systemd.UninstallInstantiatedService(podman.HubXmlrpcService, !flags.Force)
 	systemd.UninstallInstantiatedService(podman.SalineService, !flags.Force)
 	systemd.UninstallService(podman.DBService, !flags.Force)
+	systemd.UninstallService(podman.TFTPService, !flags.Force)
 
 	// Remove the volumes
 	if flags.Purge.Volumes {

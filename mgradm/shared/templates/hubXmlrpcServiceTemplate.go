@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -63,7 +63,6 @@ type HubXmlrpcServiceTemplateData struct {
 	CaPath     string
 	Ports      []types.PortMap
 	NamePrefix string
-	Image      string
 	Network    string
 	ServerHost string
 }

@@ -9,7 +9,6 @@ import (
 )
 
 // GetSetupEnv computes the environment variables required by the setup script from the flags.
-// As the requirements are slightly different for kubernetes there is a toggle parameter for it.
 func GetSetupEnv(mirror string, flags *InstallationFlags, fqdn string) map[string]string {
 	dbPort := "5432"
 	if flags.DB.Port != 0 {
@@ -25,7 +24,6 @@ func GetSetupEnv(mirror string, flags *InstallationFlags, fqdn string) map[strin
 		"UYUNI_FQDN":          fqdn,
 		"MANAGER_ADMIN_EMAIL": flags.Email,
 		"MANAGER_MAIL_FROM":   flags.EmailFrom,
-		"MANAGER_ENABLE_TFTP": boolToString(flags.Tftp),
 		"MANAGER_DB_NAME":     flags.DB.Name,
 		"MANAGER_DB_HOST":     flags.DB.Host,
 		"MANAGER_DB_PORT":     dbPort,
@@ -50,11 +48,4 @@ func GetSetupEnv(mirror string, flags *InstallationFlags, fqdn string) map[strin
 	}
 
 	return env
-}
-
-func boolToString(value bool) string {
-	if value {
-		return "Y"
-	}
-	return "N"
 }

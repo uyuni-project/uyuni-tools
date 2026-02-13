@@ -6,6 +6,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"path"
 	"reflect"
 
@@ -193,5 +194,36 @@ func AddLogLevelFlags(cmd *cobra.Command, logLevel *string) {
 	)
 	if err := cmd.PersistentFlags().MarkHidden("loglevel"); err != nil {
 		log.Warn().Err(err).Msg(L("Failed to hide --loglevel parameter"))
+	}
+}
+
+// AddTFTPDFlags adds the command flags for TFTP.
+func AddTFTPDFlags(cmd *cobra.Command, allowDisable bool, groupName string) {
+	AddContainerImageFlags(cmd, "tftpd", L("TFTPD"), groupName, "shared-tftpd")
+	if allowDisable {
+		cmd.Flags().Bool("tftpd-disable", true, L("Do not start the TFTP server container"))
+		if groupName != "" {
+			_ = AddFlagToHelpGroupID(cmd, "tftpd-disable", groupName)
+		}
+	}
+}
+
+// AddContainerImageFlags add container image flags to command.
+func AddContainerImageFlags(
+	cmd *cobra.Command,
+	container string,
+	displayName string,
+	groupName string,
+	imageName string,
+) {
+	defaultImage := path.Join(DefaultImagePrefix, imageName)
+	cmd.Flags().String(container+"-image", defaultImage,
+		fmt.Sprintf(L("Image for %s container"), displayName))
+	cmd.Flags().String(container+"-tag", "",
+		fmt.Sprintf(L("Tag for %s container, overrides the global value if set"), displayName))
+
+	if groupName != "" {
+		_ = AddFlagToHelpGroupID(cmd, container+"-image", groupName)
+		_ = AddFlagToHelpGroupID(cmd, container+"-tag", groupName)
 	}
 }

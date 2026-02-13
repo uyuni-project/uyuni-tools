@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -34,6 +34,9 @@ const HubXmlrpcService = "uyuni-hub-xmlrpc"
 
 // SalineService is the name of the systemd service for the saline container.
 const SalineService = "uyuni-saline"
+
+// TFTPService is the name of the systemd service for the TFTP container.
+const TFTPService = "uyuni-tftp"
 
 // ProxyService is the name of the systemd service for the proxy.
 const ProxyService = "uyuni-proxy-pod"

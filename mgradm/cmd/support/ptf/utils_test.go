@@ -17,7 +17,7 @@ import (
 
 func TestCheckParameters(t *testing.T) {
 	createServiceImages := func(
-		image string, cocoImage string, hubImage string, salineImage string, dbImage string,
+		image string, cocoImage string, hubImage string, salineImage string, dbImage string, tftpImage string,
 	) map[string]string {
 		return map[string]string{
 			podman.ServerService:                  image,
@@ -25,6 +25,7 @@ func TestCheckParameters(t *testing.T) {
 			podman.HubXmlrpcService:               hubImage,
 			podman.SalineService + "@":            salineImage,
 			podman.DBService:                      dbImage,
+			podman.TFTPService:                    tftpImage,
 		}
 	}
 	type testData struct {
@@ -35,14 +36,16 @@ func TestCheckParameters(t *testing.T) {
 		expectedHubImage    string
 		expectedSalineImage string
 		expectedDBImage     string
+		expectedTFTPImage   string
 		expectedError       string
 	}
 
 	data := []testData{
 		{
-			createServiceImages("registry.suse.com/suse/manager/5.0/x86_64/server:5.0.0", "", "", "", ""),
+			createServiceImages("registry.suse.com/suse/manager/5.0/x86_64/server:5.0.0", "", "", "", "", ""),
 			map[string]bool{},
 			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server:latest-ptf-5678",
+			"",
 			"",
 			"",
 			"",
@@ -56,24 +59,28 @@ func TestCheckParameters(t *testing.T) {
 				"registry.suse.com/suse/manager/5.0/x86_64/server-hub-xmlrpc-api:5.0.0",
 				"registry.suse.com/suse/manager/5.0/x86_64/server-saline:5.0.0",
 				"registry.suse.com/suse/manager/5.0/x86_64/server-postgresql:5.0.0",
+				"registry.suse.com/suse/manager/5.0/x86_64/shared-tftpd:5.0.0",
 			),
 			map[string]bool{
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-attestation:latest-ptf-5678":    true,
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-hub-xmlrpc-api:latest-ptf-5678": true,
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-saline:latest-ptf-5678":         true,
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-postgresql:latest-ptf-5678":     true,
+				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/shared-tftpd:latest-ptf-5678":          true,
 			},
 			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server:latest-ptf-5678",
 			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-attestation:latest-ptf-5678",
 			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-hub-xmlrpc-api:latest-ptf-5678",
 			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-saline:latest-ptf-5678",
 			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-postgresql:latest-ptf-5678",
+			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/shared-tftpd:latest-ptf-5678",
 			"",
 		},
 		{
 			createServiceImages(
 				"registry.suse.com/suse/manager/5.0/x86_64/server:5.0.0",
 				"registry.suse.com/suse/manager/5.0/x86_64/server-attestation:5.0.0",
+				"",
 				"",
 				"",
 				"",
@@ -88,6 +95,7 @@ func TestCheckParameters(t *testing.T) {
 			"",
 			"",
 			"",
+			"",
 		},
 		{
 			createServiceImages(
@@ -96,10 +104,12 @@ func TestCheckParameters(t *testing.T) {
 				"registry.suse.com/suse/manager/5.0/x86_64/server-hub-xmlrpc-api:5.0.0",
 				"",
 				"",
+				"",
 			),
 			map[string]bool{
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-hub-xmlrpc-api:latest-ptf-5678": true,
 			},
+			"",
 			"",
 			"",
 			"",

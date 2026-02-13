@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -238,6 +238,20 @@ func AssertReportDBFlag(t *testing.T, flags *utils.DBFlags) {
 	testutils.AssertEquals(t, "Error parsing --reportdb-name", "reportdbname", flags.Name)
 	testutils.AssertEquals(t, "Error parsing --reportdb-host", "reportdbhost", flags.Host)
 	testutils.AssertEquals(t, "Error parsing --reportdb-port", 5678, flags.Port)
+}
+
+// TFTPDFlagsTestArgs is the expected values for AssertTFTPDFlag.
+var TFTPDFlagsTestArgs = []string{
+	"--tftpd-image", "tftpdimg",
+	"--tftpd-tag", "tftpdtag",
+	"--tftpd-disable",
+}
+
+// AssertTFTPDFlag asserts that all TFTPD flags are parsed correctly.
+func AssertTFTPDFlag(t *testing.T, flags *utils.TFTPDFlags) {
+	testutils.AssertEquals(t, "Error parsing --tftpd-image", "tftpdimg", flags.Image.Name)
+	testutils.AssertEquals(t, "Error parsing --tftpd-tag", "tftpdtag", flags.Image.Tag)
+	testutils.AssertEquals(t, "Error parsing --tftpd-disable", true, flags.Disable)
 }
 
 // AssertInstallSSLFlag asserts that all InstallSSLFlags flags are parsed correctly.
