@@ -367,7 +367,10 @@ func StartPod(systemd podman.Systemd) error {
 	if ret {
 		return systemd.RestartService(podman.ProxyService)
 	}
-	return systemd.EnableService(podman.ProxyService)
+	if err := systemd.EnableService(podman.ProxyService); err != nil {
+		return err
+	}
+	return systemd.StartService(podman.ProxyService)
 }
 
 func getSystemIDEvent() ([]byte, error) {

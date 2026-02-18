@@ -20,15 +20,6 @@ import (
 
 var systemd shared_podman.Systemd = shared_podman.NewSystemd()
 
-// Start the proxy services.
-func startPod() error {
-	ret := systemd.IsServiceRunning(shared_podman.ProxyService)
-	if ret {
-		return systemd.RestartService(shared_podman.ProxyService)
-	}
-	return systemd.EnableService(shared_podman.ProxyService)
-}
-
 func installForPodman(
 	_ *types.GlobalFlags,
 	flags *podman.PodmanProxyFlags,
@@ -92,5 +83,5 @@ func installForPodman(
 		return err
 	}
 
-	return startPod()
+	return podman.StartPod(systemd)
 }
