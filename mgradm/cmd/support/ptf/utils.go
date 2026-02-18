@@ -97,7 +97,7 @@ func (flags *podmanPTFFlags) checkParameters(authFile string) error {
 	if err != nil {
 		return err
 	}
-	log.Info().Msgf(L("The computed image is %s"), flags.Image.Name)
+	log.Info().Msgf(L("The computed PTF image is %s"), flags.Image.Name)
 
 	images := map[string]*string{
 		podman_shared.ServerAttestationService + "@": &flags.Coco.Image.Name,
@@ -110,6 +110,7 @@ func (flags *podmanPTFFlags) checkParameters(authFile string) error {
 	for service, pointer := range images {
 		if containerImage := getServiceImage(service); containerImage != "" {
 			// If no image was found then skip it during the upgrade.
+			currentImage := containerImage
 			containerImage, err =
 				utils.ComputePTF(flags.Image.Registry.Host, flags.CustomerID, projectID, containerImage, suffix)
 			if err != nil {
@@ -118,9 +119,12 @@ func (flags *podmanPTFFlags) checkParameters(authFile string) error {
 			if hasRemoteImage(containerImage, authFile) {
 				*pointer = containerImage
 				log.Info().Msgf(L("The %[1]s service image is %[2]s"), service, *pointer)
+			} else {
+				log.Info().Msgf(L("Cannot find PTF for %s"), service)
+				*pointer = currentImage
+				log.Info().Msgf(L("The %[1]s service image is %[2]s"), service, *pointer)
 			}
 		}
 	}
-
 	return nil
 }
