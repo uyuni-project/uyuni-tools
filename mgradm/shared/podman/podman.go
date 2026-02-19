@@ -21,6 +21,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/tftp"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -301,6 +302,7 @@ func Upgrade(
 	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
 	salineFlags adm_utils.SalineFlags,
 	pgsqlFlags types.PgsqlFlags,
+	tftpdFlags adm_utils.TFTPDFlags,
 	tz string,
 ) error {
 	// Calling cloudguestregistryauth only makes sense if using the cloud provider registry.
@@ -472,23 +474,13 @@ func Upgrade(
 		Host:     db.Host,
 	}
 
-	err = coco.Upgrade(systemd, authFile, cocoFlags, image, inspectedDB)
-
-	if err != nil {
-		return utils.Errorf(err, L("error upgrading confidential computing service."))
-	}
-
-	if err := hub.Upgrade(
-		systemd, authFile, image, hubXmlrpcFlags,
-	); err != nil {
-		return err
-	}
-
-	if err := saline.Upgrade(systemd, authFile, image, salineFlags, utils.GetLocalTimezone()); err != nil {
-		return utils.Errorf(err, L("error upgrading saline service."))
-	}
-
-	return systemd.ReloadDaemon(false)
+	return utils.JoinErrors(
+		coco.Upgrade(systemd, authFile, cocoFlags, image, inspectedDB),
+		hub.Upgrade(systemd, authFile, image, hubXmlrpcFlags),
+		saline.Upgrade(systemd, authFile, image, salineFlags, utils.GetLocalTimezone()),
+		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn),
+		systemd.ReloadDaemon(false),
+	)
 }
 
 func WaitForSystemStart(

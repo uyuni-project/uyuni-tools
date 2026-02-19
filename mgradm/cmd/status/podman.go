@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -49,6 +49,10 @@ func podmanStatus(
 		_ = utils.RunCmdStdMapping(
 			zerolog.DebugLevel, "systemctl", "status", "--no-pager", fmt.Sprintf("%s@%d", podman.HubXmlrpcService, i),
 		)
+	}
+
+	if systemd.HasService(podman.TFTPService) {
+		_ = utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", podman.TFTPService)
 	}
 
 	return nil

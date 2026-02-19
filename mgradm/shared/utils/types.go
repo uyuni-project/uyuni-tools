@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -50,6 +50,13 @@ type CocoFlags struct {
 type SalineFlags struct {
 	Port      int
 	Replicas  int
+	Image     types.ImageFlags `mapstructure:",squash"`
+	IsChanged bool
+}
+
+// TFTPDFlags contains settings for the TFTP container.
+type TFTPDFlags struct {
+	Disable   bool
 	Image     types.ImageFlags `mapstructure:",squash"`
 	IsChanged bool
 }

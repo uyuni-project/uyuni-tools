@@ -59,6 +59,7 @@ func ptfForPodman(
 		flags.HubXmlrpc,
 		flags.Saline,
 		flags.Pgsql,
+		flags.TFTPD,
 		flags.Installation.TZ,
 	)
 }
@@ -103,6 +104,7 @@ func (flags *podmanPTFFlags) checkParameters(authFile string) error {
 		podman_shared.HubXmlrpcService:               &flags.HubXmlrpc.Image.Name,
 		podman_shared.SalineService + "@":            &flags.Saline.Image.Name,
 		podman_shared.DBService:                      &flags.Pgsql.Image.Name,
+		podman_shared.TFTPService:                    &flags.TFTPD.Image.Name,
 	}
 
 	for service, pointer := range images {
