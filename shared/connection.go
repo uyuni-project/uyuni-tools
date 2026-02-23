@@ -488,26 +488,45 @@ func ChooseObjPodmanOrKubernetes[T any](systemd podman.Systemd, podmanOption T, 
 func (c *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 	var containerTarball string
 	var files []string
+	var tarballPath string
 	extensions := []string{"", ".md5"}
 	containerName, err := c.GetPodName()
 	if err != nil {
 		return []string{}, err
 	}
 
+	// 10000 is what os.MkDirTemp uses
+	const maxBatchNameAttempts = 10000
+	batchName := ""
+	for i := 0; i < maxBatchNameAttempts; i++ {
+		suffix, err := utils.RandomHexString(4) // 8 hex chars
+		if err != nil {
+			return []string{}, fmt.Errorf("failed to generate supportconfig suffix: %w", err)
+		}
+
+		candidateBatchName := "uyuni-server-container-" + suffix
+		candidateTarballPath := fmt.Sprintf("/var/log/scc_%s.txz", candidateBatchName)
+
+		if !c.TestExistenceInPod(candidateTarballPath) {
+			batchName = candidateBatchName
+			tarballPath = candidateTarballPath
+			break
+		}
+	}
+	if batchName == "" {
+		return []string{},
+			fmt.Errorf("failed to generate unique supportconfig batch name after %d attempts", maxBatchNameAttempts)
+	}
+
 	// Run supportconfig in the container if it's running
-	log.Info().Msgf(L("Running supportconfig in  %s"), containerName)
-	out, err := c.Exec("supportconfig")
-	if err != nil {
+	log.Info().Msgf(L("Running supportconfig in %s"), containerName)
+	if _, err = c.Exec("/sbin/supportconfig", "-B", batchName); err != nil {
 		/* do not return here.
 		* supportconfig might return some error if some info is not generated
 		* but we need to raise an error only if tarball is not generated.
-		* In any case, show the error.
+		* In any case, show the error but as a warning and not as a failed run
 		 */
-		log.Error().Err(err).Msg(L("failed to run supportconfig"))
-	}
-	tarballPath := utils.GetSupportConfigPath(string(out))
-	if tarballPath == "" {
-		return []string{}, utils.Errorf(err, L("failed to find container supportconfig tarball from command output"))
+		log.Warn().Err(err).Msg(L("Some parts of supportconfig were not successful"))
 	}
 
 	for _, ext := range extensions {

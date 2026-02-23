@@ -85,23 +85,51 @@ var newRunner = NewRunner
 // RunSupportConfigOnHost will run supportconfig command on host machine.
 func RunSupportConfigOnHost() ([]string, error) {
 	var files []string
-	extensions := []string{"", ".md5"}
-
 	// Run supportconfig on the host if installed
-	if _, err := exec.LookPath("supportconfig"); err == nil {
-		out, err := newRunner("supportconfig").Spinner("").StdMapping().Exec()
+	if _, err := exec.LookPath("/sbin/supportconfig"); err == nil {
+		var tarballPath string
+		extensions := []string{"", ".md5"}
+
 		if err != nil {
-			log.Error().Err(err)
+			return []string{}, err
 		}
-		tarballPath := GetSupportConfigPath(string(out))
+
+		// 10000 is what os.MkDirTemp uses
+		const maxBatchNameAttempts = 10000
+		batchName := ""
+		for i := 0; i < maxBatchNameAttempts; i++ {
+			suffix, err := RandomHexString(4) // 8 hex chars
+			if err != nil {
+				return []string{}, fmt.Errorf("failed to generate supportconfig suffix: %w", err)
+			}
+
+			candidateBatchName := "host-support-config-" + suffix
+			candidateTarballPath := fmt.Sprintf("/var/log/scc_%s.txz", candidateBatchName)
+
+			if !FileExists(candidateTarballPath) {
+				batchName = candidateBatchName
+				tarballPath = candidateTarballPath
+				break
+			}
+		}
+		if batchName == "" {
+			return []string{},
+				fmt.Errorf("failed to generate unique supportconfig batch name after %d attempts", maxBatchNameAttempts)
+		}
+
+		log.Info().Msg(L("Running supportconfig on the host"))
+		err = RunCmd("/sbin/supportconfig", "-B", batchName)
+		if err != nil {
+			log.Info().Err(err).Msg(L("Some parts of supportconfig were not successful"))
+		}
 
 		// Look for the generated supportconfig file
-		if tarballPath != "" && FileExists(tarballPath) {
+		if FileExists(tarballPath) {
 			for _, ext := range extensions {
 				files = append(files, tarballPath+ext)
 			}
 		} else {
-			return []string{}, errors.New(L("failed to find host supportconfig tarball from command output"))
+			return []string{}, errors.New(L("failed to find host supportconfig tarball"))
 		}
 	} else {
 		log.Warn().Msg(L("supportconfig is not available on the host, skipping it"))
