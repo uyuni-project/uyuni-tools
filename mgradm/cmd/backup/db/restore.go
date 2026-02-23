@@ -32,7 +32,6 @@ func Restore(force bool) error {
 		return err
 	}
 
-	log.Info().Msg(L("Restoring backup data..."))
 	image := podman.GetServiceImage(podman.DBService)
 	if image == "" {
 		return errors.New(L("failed to determine database image"))
@@ -41,14 +40,6 @@ func Restore(force bool) error {
 	volumes := []types.VolumeMount{
 		utils.VarPgsqlDataVolumeMount,
 		utils.VarPgsqlBackupVolumeMount,
-	}
-
-	// Modify postgresql.conf and set restore_command to RestoreCommand
-	updates := map[string]string{
-		"restore_command": RestoreCommand(),
-	}
-	if err := UpdatePostgresConfig(updates); err != nil {
-		return err
 	}
 
 	// Actual data moving is in the restore script rendered and executed below
@@ -62,8 +53,17 @@ func Restore(force bool) error {
 		return utils.Error(err, L("failed to generate postgresql restore script"))
 	}
 
+	log.Info().Msg(L("Restoring base backup..."))
 	if err := podman.RunContainer("uyuni-restore", image, volumes, []string{},
 		[]string{"bash", "-e", "-c", scriptBuilder.String()}); err != nil {
+		return err
+	}
+
+	// Modify postgresql.conf and set restore_command to RestoreCommand
+	updates := map[string]string{
+		"restore_command": RestoreCommand(),
+	}
+	if err := UpdatePostgresConfig(updates); err != nil {
 		return err
 	}
 
@@ -72,7 +72,7 @@ func Restore(force bool) error {
 		return err
 	}
 
-	log.Info().Msg(L("Restore complete. Database is recovering."))
+	log.Info().Msg(L("Base backup restore complete. Database is recovering."))
 	// TODO: add waiting until db is restored
 	return nil
 }

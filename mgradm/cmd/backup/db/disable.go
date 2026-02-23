@@ -14,7 +14,23 @@ import (
 )
 
 func Disable(flags *Flagpole) error {
-	log.Info().Msg(L("Disable DB backup"))
+	log.Info().Msg(L("Disabling DB backup"))
+
+	wasRunning := false
+	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
+	if _, err := cnx.GetPodName(); err == nil {
+		wasRunning = true
+		if !flags.Force {
+			res, err := utils.YesNo(L("Database service needs to be restarted to reload backup configurations, continue"))
+			if err != nil || !res {
+				log.Info().Msg(L("Backup reconfiguration aborted"))
+				return nil
+			}
+		}
+		if err := systemd.StopService(podman.DBService); err != nil {
+			return err
+		}
+	}
 
 	// Modify postgresql.conf and set archive_mode to off
 	updates := map[string]string{
@@ -22,15 +38,6 @@ func Disable(flags *Flagpole) error {
 	}
 	if err := UpdatePostgresConfig(updates); err != nil {
 		return err
-	}
-
-	// Reload postgres config if postgres container is running
-	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
-	if _, err := cnx.GetPodName(); err == nil {
-		log.Debug().Msg("Reloading postgresql config")
-		if _, err := cnx.Exec("/usr/bin/psql", "-U", "postgres", "-tAc", "SELECT pg_reload_conf();"); err != nil {
-			return err
-		}
 	}
 
 	if flags.Purge.Volume {
@@ -47,5 +54,11 @@ func Disable(flags *Flagpole) error {
 		log.Info().Msgf(L("Backup volume '%s' removed"), utils.VarPgsqlBackupVolumeMount.Name)
 	}
 
-	return nil
+	if wasRunning {
+		log.Info().Msg("Restarting postgresql config")
+		if err := systemd.StartService(podman.DBService); err != nil {
+			return err
+		}
+	}
+	return Status()
 }

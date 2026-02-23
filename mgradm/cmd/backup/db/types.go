@@ -35,5 +35,5 @@ func ArchiveCommand() string {
 }
 
 func RestoreCommand() string {
-	return fmt.Sprintf("/usr/bin/cp %s/%%f %%p", utils.VarPgsqlBackupVolumeMount.MountPath)
+	return fmt.Sprintf("'/usr/bin/cp %s/%%f %%p'", utils.VarPgsqlBackupVolumeMount.MountPath)
 }

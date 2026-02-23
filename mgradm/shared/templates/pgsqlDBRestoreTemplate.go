@@ -23,7 +23,7 @@ find "{{ .Datadir }}" -mindepth 1 -delete
 
 echo "Restoring basebackup..."
 tar -xf "{{ .Basebackup }}" -C "{{ .Datadir }}"
-chown -R postgres:postgres "{{ .Datadir }}
+chown -R postgres:postgres "{{ .Datadir }}"
 
 echo "Signal postgresql to start in recovery mode"
 touch "{{ .Datadir }}/recovery.signal"
