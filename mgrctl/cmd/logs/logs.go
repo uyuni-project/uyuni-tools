@@ -5,7 +5,10 @@
 package logs
 
 import (
+	"errors"
 	"fmt"
+	"os"
+	os_exec "os/exec"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -63,6 +66,10 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) er
 		return err
 	}
 
+	if flags.Files != "" && !flags.Reposync {
+		return errors.New(L("--files flag can only be used with --reposync"))
+	}
+
 	var paths []string
 	if flags.Taskomatic {
 		paths = append(paths, "/var/log/rhn/rhn_tasko*.log")
@@ -75,7 +82,10 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) er
 	}
 	if flags.Reposync {
 		if flags.Files != "" {
-			findCmd := fmt.Sprintf("find /var/log/rhn/reposync/ -type f | grep -E '%s'", flags.Files)
+			script := "files=$(find /var/log/rhn/reposync/ -type f | grep -E %q); " +
+				"if [ -z \"$files\" ]; then echo 'No matching reposync logs found.' >&2; exit 1; fi; " +
+				"echo $files"
+			findCmd := fmt.Sprintf(script, flags.Files)
 			paths = append(paths, fmt.Sprintf("$(%s)", findCmd))
 		} else {
 			paths = append(paths, "/var/log/rhn/reposync/*.log")
@@ -83,7 +93,7 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) er
 	}
 
 	if len(paths) == 0 {
-		return fmt.Errorf(L("please specify at least one service to get logs for (e.g., --web, --salt)"))
+		return errors.New(L("please specify at least one service to get logs for (e.g., --web, --salt)"))
 	}
 
 	tailCmd := "tail"
@@ -108,5 +118,15 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) er
 	commandArgs = append(commandArgs, "bash", "-c", shCmd)
 
 	// Re-use the execution logic from the exec package
-	return exec.RunRawCmd(command, commandArgs)
+	err = exec.RunRawCmd(command, commandArgs)
+
+	if err != nil {
+		var exitErr *os_exec.ExitError
+		if errors.As(err, &exitErr) {
+			os.Exit(exitErr.ExitCode())
+		}
+		return err
+	}
+
+	return nil
 }
