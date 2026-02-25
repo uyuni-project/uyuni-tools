@@ -12,7 +12,6 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/exec"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -31,6 +30,9 @@ type flagpole struct {
 	Backend    string
 }
 
+// runCmd allows unit tests to mock or skip the main execution loop.
+var runCmd = run
+
 // NewCommand returns a new cobra.Command for logs.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	var flags flagpole
@@ -39,7 +41,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Use:   "logs",
 		Short: L("Show or follow logs of Uyuni services inside the container"),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, runCmd)
 		},
 	}
 
@@ -47,7 +49,8 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	logsCmd.Flags().Bool("web", false, L("Show Web UI logs"))
 	logsCmd.Flags().Bool("salt", false, L("Show Salt logs"))
 	logsCmd.Flags().Bool("reposync", false, L("Show Reposync logs"))
-	logsCmd.Flags().String("files", "", L("Regex to filter reposync log files"))
+	logsCmd.Flags().String("files", "",
+		L("Regular expression to filter reposync log files (matches against the full file path)"))
 	logsCmd.Flags().BoolP("follow", "f", false, L("Follow log output"))
 
 	utils.AddBackendFlag(logsCmd)
@@ -70,13 +73,19 @@ func getLogPaths(flags *flagpole) []string {
 		paths = append(paths, "/var/log/rhn/rhn_web*.log")
 	}
 	if flags.Salt {
-		paths = append(paths, "/var/log/salt/api", "/var/log/salt/master", "/var/log/salt/minion")
+		// Minion does not run inside the Uyuni server container
+		paths = append(paths, "/var/log/salt/api", "/var/log/salt/master")
 	}
 	if flags.Reposync {
 		if flags.Files != "" {
 			script := "files=$(find /var/log/rhn/reposync/ -type f | grep -E %q); " +
-				"if [ -z \"$files\" ]; then echo 'No matching reposync logs found.' >&2; exit 1; fi; " +
-				"echo $files"
+				"if [ -z \"$files\" ]; then "
+			// Use literal path on follow so tail can wait for file creation
+			if flags.Follow {
+				script += "echo \"/var/log/rhn/reposync/*.log\"; else echo $files; fi"
+			} else {
+				script += "echo 'No matching reposync logs found.' >&2; exit 1; fi; echo $files"
+			}
 			paths = append(paths, fmt.Sprintf("$(%s)", fmt.Sprintf(script, flags.Files)))
 		} else {
 			paths = append(paths, "/var/log/rhn/reposync/*.log")
@@ -108,7 +117,7 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) er
 
 	tailCmd := "tail"
 	if flags.Follow {
-		tailCmd += " -f"
+		tailCmd += " -F"
 	}
 
 	shCmd := fmt.Sprintf("%s %s", tailCmd, strings.Join(paths, " "))
@@ -125,8 +134,8 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) er
 	}
 
 	commandArgs = append(commandArgs, "bash", "-c", shCmd)
-	err = exec.RunRawCmd(command, commandArgs)
 
+	_, err = utils.NewRunner(command, commandArgs...).Exec()
 	if err != nil {
 		var exitErr *os_exec.ExitError
 		if errors.As(err, &exitErr) {
