@@ -54,22 +54,14 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	return logsCmd
 }
 
-func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) error {
-	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
-	podName, err := cnx.GetPodName()
-	if err != nil {
-		return err
-	}
-
-	command, err := cnx.GetCommand()
-	if err != nil {
-		return err
-	}
-
+func validateFlags(flags *flagpole) error {
 	if flags.Files != "" && !flags.Reposync {
 		return errors.New(L("--files flag can only be used with --reposync"))
 	}
+	return nil
+}
 
+func getLogPaths(flags *flagpole) []string {
 	var paths []string
 	if flags.Taskomatic {
 		paths = append(paths, "/var/log/rhn/rhn_tasko*.log")
@@ -85,15 +77,33 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) er
 			script := "files=$(find /var/log/rhn/reposync/ -type f | grep -E %q); " +
 				"if [ -z \"$files\" ]; then echo 'No matching reposync logs found.' >&2; exit 1; fi; " +
 				"echo $files"
-			findCmd := fmt.Sprintf(script, flags.Files)
-			paths = append(paths, fmt.Sprintf("$(%s)", findCmd))
+			paths = append(paths, fmt.Sprintf("$(%s)", fmt.Sprintf(script, flags.Files)))
 		} else {
 			paths = append(paths, "/var/log/rhn/reposync/*.log")
 		}
 	}
+	return paths
+}
 
+func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) error {
+	if err := validateFlags(flags); err != nil {
+		return err
+	}
+
+	paths := getLogPaths(flags)
 	if len(paths) == 0 {
 		return errors.New(L("please specify at least one service to get logs for (e.g., --web, --salt)"))
+	}
+
+	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	podName, err := cnx.GetPodName()
+	if err != nil {
+		return err
+	}
+
+	command, err := cnx.GetCommand()
+	if err != nil {
+		return err
 	}
 
 	tailCmd := "tail"
@@ -102,7 +112,6 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) er
 	}
 
 	shCmd := fmt.Sprintf("%s %s", tailCmd, strings.Join(paths, " "))
-
 	commandArgs := []string{"exec", "-i", "-t"}
 
 	if command == "kubectl" {
@@ -116,8 +125,6 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) er
 	}
 
 	commandArgs = append(commandArgs, "bash", "-c", shCmd)
-
-	// Re-use the execution logic from the exec package
 	err = exec.RunRawCmd(command, commandArgs)
 
 	if err != nil {
@@ -127,6 +134,5 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, _ []string) er
 		}
 		return err
 	}
-
 	return nil
 }
