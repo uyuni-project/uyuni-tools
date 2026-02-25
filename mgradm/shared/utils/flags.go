@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -30,6 +30,7 @@ type ServerFlags struct {
 	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	Saline         SalineFlags
 	Pgsql          types.PgsqlFlags
+	TFTPD          TFTPDFlags
 }
 
 // MigrationFlags contains the parameters that are used only for migration.

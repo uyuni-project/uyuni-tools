@@ -5,6 +5,7 @@
 package install
 
 import (
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	cmd_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -18,6 +19,9 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd.Flags().String("emailfrom", "notifications@example.com", L("E-Mail sending the notifications"))
 	cmd.Flags().String("issParent", "", L("InterServerSync v1 parent FQDN"))
 	cmd.Flags().Bool("tftp", true, L("Enable TFTP"))
+	if err := cmd.Flags().MarkDeprecated("tftp", "Use --tftpd-disable instead"); err != nil {
+		log.Error().Err(err).Msg(L("failed to mark tftp deprecated"))
+	}
 
 	cmd_utils.AddServerFlags(cmd)
 
@@ -28,6 +32,9 @@ func AddInstallFlags(cmd *cobra.Command) {
 	cmd_utils.AddHubXmlrpcFlags(cmd)
 
 	cmd_utils.AddSalineFlag(cmd)
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "tftpd-container", Title: L("TFTPD Flags")})
+	utils.AddTFTPDFlags(cmd, true, "tftpd-container")
 
 	cmd.Flags().String("admin-login", "admin", L("Administrator user name"))
 	cmd.Flags().String("admin-password", "", L("Administrator password"))

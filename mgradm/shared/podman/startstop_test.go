@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -37,18 +37,18 @@ func TestStartServices(t *testing.T) {
 			expectedStarted: []string{podman.ServerService, podman.DBService},
 			expectedNotStarted: []string{
 				podman.HubXmlrpcService + "@", podman.ServerAttestationService + "@",
-				podman.SalineService + "@",
+				podman.SalineService + "@", podman.TFTPService,
 			},
 		},
 		// Regular case with an instance of all services.
 		{
 			installed: allServices,
 			enabled: []string{
-				podman.ServerService, podman.DBService,
+				podman.ServerService, podman.DBService, podman.TFTPService,
 				podman.HubXmlrpcService + "@0", podman.ServerAttestationService + "@0", podman.SalineService + "@0",
 			},
 			expectedStarted: []string{
-				podman.ServerService, podman.DBService,
+				podman.ServerService, podman.DBService, podman.TFTPService,
 				podman.HubXmlrpcService + "@0", podman.ServerAttestationService + "@0", podman.SalineService + "@0",
 			},
 			expectedNotStarted: []string{},
@@ -61,7 +61,7 @@ func TestStartServices(t *testing.T) {
 			enabled:         []string{podman.ServerService},
 			expectedStarted: []string{podman.ServerService},
 			expectedNotStarted: []string{
-				podman.HubXmlrpcService + "@", podman.ServerAttestationService + "@", podman.DBService,
+				podman.HubXmlrpcService + "@", podman.ServerAttestationService + "@", podman.DBService, podman.TFTPService,
 			},
 		},
 		// Error case where both the server and the DB service fail to start
@@ -70,7 +70,7 @@ func TestStartServices(t *testing.T) {
 			enabled:   []string{podman.ServerService, podman.DBService},
 			expectedNotStarted: []string{
 				podman.ServerService, podman.DBService, podman.HubXmlrpcService + "@",
-				podman.ServerAttestationService + "@", podman.SalineService + "@",
+				podman.ServerAttestationService + "@", podman.SalineService + "@", podman.TFTPService,
 			},
 			startErrors: map[string]error{
 				podman.ServerService: errors.New("failed to start server"),
@@ -119,22 +119,22 @@ func TestStopServices(t *testing.T) {
 			started:   []string{podman.ServerService, podman.DBService},
 			expectedNotStarted: []string{
 				podman.ServerService, podman.DBService, podman.HubXmlrpcService + "@",
-				podman.ServerAttestationService + "@", podman.SalineService + "@",
+				podman.ServerAttestationService + "@", podman.SalineService + "@", podman.TFTPService,
 			},
 		},
 		// Regular case with an instance of all services.
 		{
 			installed: allServices,
 			enabled: []string{
-				podman.ServerService, podman.DBService,
+				podman.ServerService, podman.DBService, podman.TFTPService,
 				podman.HubXmlrpcService + "@0", podman.ServerAttestationService + "@0", podman.SalineService + "@0",
 			},
 			started: []string{
-				podman.ServerService, podman.DBService,
+				podman.ServerService, podman.DBService, podman.TFTPService,
 				podman.HubXmlrpcService + "@0", podman.ServerAttestationService + "@0", podman.SalineService + "@0",
 			},
 			expectedNotStarted: []string{
-				podman.ServerService, podman.DBService,
+				podman.ServerService, podman.DBService, podman.TFTPService,
 				podman.HubXmlrpcService + "@0", podman.ServerAttestationService + "@0", podman.SalineService + "@0",
 			},
 		},
@@ -145,6 +145,7 @@ func TestStopServices(t *testing.T) {
 			started:   []string{podman.ServerService},
 			expectedNotStarted: []string{
 				podman.ServerService, podman.HubXmlrpcService + "@", podman.ServerAttestationService + "@", podman.DBService,
+				podman.TFTPService,
 			},
 		},
 		// Error case where both the server and the DB service fail to start
@@ -155,7 +156,7 @@ func TestStopServices(t *testing.T) {
 			expectedStarted: []string{podman.ServerService, podman.DBService},
 			expectedNotStarted: []string{
 				podman.HubXmlrpcService + "@",
-				podman.ServerAttestationService + "@", podman.SalineService + "@",
+				podman.ServerAttestationService + "@", podman.SalineService + "@", podman.TFTPService,
 			},
 			stopErrors: map[string]error{
 				podman.ServerService: errors.New("failed to stop server"),
