@@ -6,9 +6,12 @@ package db
 
 import (
 	"errors"
+	"os"
 	"path"
 	"strings"
+	"time"
 
+	"github.com/briandowns/spinner"
 	"github.com/rs/zerolog/log"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
@@ -73,6 +76,26 @@ func Restore(force bool) error {
 	}
 
 	log.Info().Msg(L("Base backup restore complete. Database is recovering."))
-	// TODO: add waiting until db is restored
+
+	mountPoint, err := podman.GetVolumeMountPoint(utils.VarPgsqlDataVolumeMount.Name)
+	if err != nil {
+		return err
+	}
+	recoverySignalPath := path.Join(mountPoint, "recovery.signal")
+
+	if _, err := os.Stat(recoverySignalPath); err == nil {
+		s := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
+		s.Suffix = L(" Database is still recovering...")
+		s.Start()
+		for {
+			if _, err := os.Stat(recoverySignalPath); os.IsNotExist(err) {
+				break
+			}
+			time.Sleep(2 * time.Second)
+		}
+		s.Stop()
+	}
+
+	log.Info().Msg(L("Database is restored."))
 	return nil
 }
