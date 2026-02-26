@@ -73,7 +73,6 @@ func GenerateSystemdService(
 	ports := []types.PortMap{}
 	ports = append(ports, shared_utils.ProxyTCPPorts...)
 	ports = append(ports, shared_utils.ProxyPodmanPorts...)
-	ports = append(ports, shared_utils.TftpPorts...)
 
 	// Pod
 	dataPod := templates.PodTemplateData{
@@ -367,7 +366,10 @@ func StartPod(systemd podman.Systemd) error {
 	if ret {
 		return systemd.RestartService(podman.ProxyService)
 	}
-	return systemd.EnableService(podman.ProxyService)
+	if err := systemd.EnableService(podman.ProxyService); err != nil {
+		return err
+	}
+	return systemd.StartService(podman.ProxyService)
 }
 
 func getSystemIDEvent() ([]byte, error) {

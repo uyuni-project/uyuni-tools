@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 15:51+0100\n"
+"POT-Creation-Date: 2026-01-16 16:46+0100\n"
 "PO-Revision-Date: 2025-11-26 10:53+0000\n"
 "Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -312,10 +312,6 @@ msgstr "正在卸装 %s"
 msgid "failed to run helm %s"
 msgstr "无法运行 helm %s"
 
-#: shared/kubernetes/inspect.go:42
-msgid "failed to parse the inspected data"
-msgstr "无法分析检查的数据"
-
 #: shared/kubernetes/k3s.go:27
 msgid "Installing K3s Traefik configuration"
 msgstr "正在安装 K3s Traefik 配置"
@@ -391,46 +387,9 @@ msgstr "无法对机密 %s 进行 base64 解码"
 msgid "failed to create the %s docker secret"
 msgstr "无法创建 %s docker 机密"
 
-#: shared/kubernetes/kubernetes.go:229
+#: shared/kubernetes/kubernetes.go:231
 msgid "failed to get deployment image pull secret"
 msgstr "无法获取部署映像拉取机密"
-
-#: shared/kubernetes/pod.go:79 shared/kubernetes/pod.go:82
-#, javascript-format
-msgid "failed to run the %s pod"
-msgstr "无法运行 %s pod"
-
-#: shared/kubernetes/pod.go:93
-#, javascript-format
-msgid "failed to get the %s pod logs"
-msgstr "无法获取 %s pod 日志"
-
-#: shared/kubernetes/pod.go:98
-#, javascript-format
-msgid "failed to delete the %s pod"
-msgstr "无法删除 %s pod"
-
-#: shared/kubernetes/pvc.go:42
-#, javascript-format
-msgid "failed to create %s persistent volume claim"
-msgstr "无法创建 %s 永久性卷声明"
-
-#: shared/kubernetes/pvc.go:70
-msgid "failed to parse pv data"
-msgstr "无法分析 pv 数据"
-
-#: shared/kubernetes/pvc.go:75
-msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
-msgstr "%[1]s 卷必须引用 %[2]s 名称空间中的 %[1]s 声明"
-
-#: shared/kubernetes/pvc.go:85
-msgid "failed to run the persistent volume claims"
-msgstr "无法运行永久性卷声明"
-
-#: shared/kubernetes/pvc.go:102
-#, javascript-format
-msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
-msgstr "未为 PersistentVolumeClaim %s 定义大小，将使用 10Mi 作为默认值"
 
 #: shared/kubernetes/rke2.go:21
 msgid "Installing RKE2 Nginx configuration"
@@ -497,125 +456,68 @@ msgstr ""
 "例如，在使用默认配置安装的 K3S 系统上，local-path-provider 存储卷将会在\n"
 "该部署被删除时自动去除，即使未使用 --purge-volumes 参数也是如此。"
 
-#: shared/kubernetes/utils.go:86
+#: shared/kubernetes/utils.go:56
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
 msgstr[0] "正在等待 %[1]s 部署在 %[2]s 名称空间中就绪\n"
 
-#: shared/kubernetes/utils.go:113
-msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
-msgstr "正在等待 %[1]s 部署在 %[2]s 名称空间中启动\n"
-
-#: shared/kubernetes/utils.go:130
-msgid "failed to check if the deployment has running pods"
-msgstr "无法检查该部署是否具有正在运行的 pod"
-
-#: shared/kubernetes/utils.go:182
+#: shared/kubernetes/utils.go:119
 #, javascript-format
 msgid "all the pods of %s deployment have a failure"
 msgstr "%s 部署的所有 pod 都出现故障"
 
-#: shared/kubernetes/utils.go:211
+#: shared/kubernetes/utils.go:148
 #, javascript-format
 msgid "failed to list ReplicaSets for deployment %s"
 msgstr "无法列出部署 %s 的 ReplicaSet"
 
-#: shared/kubernetes/utils.go:224
+#: shared/kubernetes/utils.go:161
 #, javascript-format
 msgid "failed to get the %s deployment revision"
 msgstr "找不到 %s 部署修订版"
 
-#: shared/kubernetes/utils.go:232
+#: shared/kubernetes/utils.go:169
 #, javascript-format
 msgid "invalid replicasset response: :%s"
 msgstr "replicasset 响应无效：%s"
 
-#: shared/kubernetes/utils.go:247
+#: shared/kubernetes/utils.go:184
 #, javascript-format
 msgid "failed to find pods for owner reference %s"
 msgstr "找不到拥有者引用 %s 的 pod"
 
-#: shared/kubernetes/utils.go:273
+#: shared/kubernetes/utils.go:210
 #, javascript-format
 msgid "failed to get the status of %s pod"
 msgstr "无法获取 %s pod 的状态"
 
-#: shared/kubernetes/utils.go:300
+#: shared/kubernetes/utils.go:237
 msgid "failed to parse deployment status"
 msgstr "无法分析部署状态"
 
-#: shared/kubernetes/utils.go:312
+#: shared/kubernetes/utils.go:249
 #, javascript-format
 msgid "cannot run kubectl %s"
 msgstr "无法运行 kubectl %s"
 
-#: shared/kubernetes/utils.go:326
-msgid "cannot check if pod %[1]s is running in app %[2]s"
-msgstr "无法检查 pod %[1]s 是否正在应用程序 %[2]s 中运行"
-
-#: shared/kubernetes/utils.go:337 shared/kubernetes/utils.go:358
+#: shared/kubernetes/utils.go:266 shared/kubernetes/utils.go:287
 #, javascript-format
 msgid "cannot execute %s"
 msgstr "无法执行 %s"
 
-#: shared/kubernetes/utils.go:366
+#: shared/kubernetes/utils.go:295
 msgid "invalid replicas result"
 msgstr "复本结果无效"
 
-#: shared/kubernetes/utils.go:395
+#: shared/kubernetes/utils.go:324
 #, javascript-format
 msgid "%s is not a valid image pull policy value"
 msgstr "%s 不是有效的映像拉取策略值"
 
-#: shared/kubernetes/utils.go:427
-msgctxt "The first placeholder is a command"
-msgid "cannot run %[1]s using image %[2]s"
-msgstr "无法使用映像 %[2]s 运行 %[1]s"
-
-#: shared/kubernetes/utils.go:436 shared/kubernetes/utils.go:445
-#, javascript-format
-msgid "cannot delete pod %s"
-msgstr "无法删除 pod %s"
-
-#: shared/kubernetes/utils.go:464
+#: shared/kubernetes/utils.go:343
 #, javascript-format
 msgid "cannot find node name matching filter %s"
 msgstr "找不到与过滤器 %s 匹配的节点名称"
-
-#: shared/kubernetes/utils.go:473
-msgid "cannot serialize pod definition override"
-msgstr "无法序列化 pod 定义覆盖"
-
-#: shared/kubernetes/waiters.go:40
-msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
-msgstr "%[1]s 作业失败，有关细节，请运行 kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s"
-
-#: shared/kubernetes/waiters.go:49
-msgid "%[1]s job failed to complete within %[2]d seconds"
-msgstr "%[1]s 作业无法在 %[2]d 秒内完成"
-
-#: shared/kubernetes/waiters.go:61
-#, javascript-format
-msgid "failed to get %s job status"
-msgstr "无法获取 %s 作业状态"
-
-#: shared/kubernetes/waiters.go:65
-#, javascript-format
-msgid "invalid job status response: '%s'"
-msgstr "作业状态响应无效：%s"
-
-#: shared/kubernetes/waiters.go:85
-#, javascript-format
-msgid "failed to get %s pod status"
-msgstr "无法获取 %s pod 状态"
-
-#: shared/kubernetes/waiters.go:92
-msgid "%[1]s pod failed with status %[2]s"
-msgstr "%[1]s pod 失败，状态：%[2]s"
-
-#: shared/kubernetes/waiters.go:96
-msgid "%[1]s pod failed to complete within %[2]d seconds"
-msgstr "%[1]s pod 无法在 %[2]d 秒内完成"
 
 #: shared/podman/hostinspector.go:54
 msgid "failed to run inspect script in host system"
@@ -1375,11 +1277,11 @@ msgstr "同时去除卷"
 msgid "Also remove the container images"
 msgstr "同时去除容器映像"
 
-#: shared/utils/cmd.go:193 shared/utils/cmd.go:196
+#: shared/utils/cmd.go:189 shared/utils/cmd.go:192
 msgid "application log level"
 msgstr ""
 
-#: shared/utils/cmd.go:199
+#: shared/utils/cmd.go:195
 #, fuzzy
 #| msgid "Failed to find home directory"
 msgid "Failed to hide --loglevel parameter"
@@ -1813,6 +1715,82 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "数据库"
+
+#~ msgid "failed to parse the inspected data"
+#~ msgstr "无法分析检查的数据"
+
+#, javascript-format
+#~ msgid "failed to run the %s pod"
+#~ msgstr "无法运行 %s pod"
+
+#, javascript-format
+#~ msgid "failed to get the %s pod logs"
+#~ msgstr "无法获取 %s pod 日志"
+
+#, javascript-format
+#~ msgid "failed to delete the %s pod"
+#~ msgstr "无法删除 %s pod"
+
+#, javascript-format
+#~ msgid "failed to create %s persistent volume claim"
+#~ msgstr "无法创建 %s 永久性卷声明"
+
+#~ msgid "failed to parse pv data"
+#~ msgstr "无法分析 pv 数据"
+
+#~ msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
+#~ msgstr "%[1]s 卷必须引用 %[2]s 名称空间中的 %[1]s 声明"
+
+#~ msgid "failed to run the persistent volume claims"
+#~ msgstr "无法运行永久性卷声明"
+
+#, javascript-format
+#~ msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
+#~ msgstr "未为 PersistentVolumeClaim %s 定义大小，将使用 10Mi 作为默认值"
+
+#~ msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
+#~ msgstr "正在等待 %[1]s 部署在 %[2]s 名称空间中启动\n"
+
+#~ msgid "failed to check if the deployment has running pods"
+#~ msgstr "无法检查该部署是否具有正在运行的 pod"
+
+#~ msgid "cannot check if pod %[1]s is running in app %[2]s"
+#~ msgstr "无法检查 pod %[1]s 是否正在应用程序 %[2]s 中运行"
+
+#~ msgctxt "The first placeholder is a command"
+#~ msgid "cannot run %[1]s using image %[2]s"
+#~ msgstr "无法使用映像 %[2]s 运行 %[1]s"
+
+#, javascript-format
+#~ msgid "cannot delete pod %s"
+#~ msgstr "无法删除 pod %s"
+
+#~ msgid "cannot serialize pod definition override"
+#~ msgstr "无法序列化 pod 定义覆盖"
+
+#~ msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
+#~ msgstr "%[1]s 作业失败，有关细节，请运行 kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s"
+
+#~ msgid "%[1]s job failed to complete within %[2]d seconds"
+#~ msgstr "%[1]s 作业无法在 %[2]d 秒内完成"
+
+#, javascript-format
+#~ msgid "failed to get %s job status"
+#~ msgstr "无法获取 %s 作业状态"
+
+#, javascript-format
+#~ msgid "invalid job status response: '%s'"
+#~ msgstr "作业状态响应无效：%s"
+
+#, javascript-format
+#~ msgid "failed to get %s pod status"
+#~ msgstr "无法获取 %s pod 状态"
+
+#~ msgid "%[1]s pod failed with status %[2]s"
+#~ msgstr "%[1]s pod 失败，状态：%[2]s"
+
+#~ msgid "%[1]s pod failed to complete within %[2]d seconds"
+#~ msgstr "%[1]s pod 无法在 %[2]d 秒内完成"
 
 #~ msgid "failed to run supportconfig on the host"
 #~ msgstr "无法在主机上运行 supportconfig"

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,26 +7,9 @@ package flagstests
 import (
 	"testing"
 
-	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/kubernetes"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
-
-// ProxyHelmFlagsTestArgs is the slice of parameters to use with AssertHelmFlags.
-var ProxyHelmFlagsTestArgs = []string{
-	"--helm-proxy-namespace", "uyunins",
-	"--helm-proxy-chart", "oci://srv/proxy-helm",
-	"--helm-proxy-version", "v1.2.3",
-	"--helm-proxy-values", "path/value.yaml",
-}
-
-// AssertProxyHelmFlags checks that the proxy helm flags are parsed correctly.
-func AssertProxyHelmFlags(t *testing.T, flags *kubernetes.HelmFlags) {
-	testutils.AssertEquals(t, "Error parsing --helm-proxy-namespace", "uyunins", flags.Proxy.Namespace)
-	testutils.AssertEquals(t, "Error parsing --helm-proxy-chart", "oci://srv/proxy-helm", flags.Proxy.Chart)
-	testutils.AssertEquals(t, "Error parsing --helm-proxy-version", "v1.2.3", flags.Proxy.Version)
-	testutils.AssertEquals(t, "Error parsing --helm-proxy-values", "path/value.yaml", flags.Proxy.Values)
-}
 
 // ImageProxyFlagsTestArgs is the slice of parameters to use with AssertImageFlags.
 var ImageProxyFlagsTestArgs = []string{

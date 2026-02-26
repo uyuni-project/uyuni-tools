@@ -60,11 +60,11 @@ var ServerVolumeMounts = []types.VolumeMount{
 // SSLMigrationVolumeMounts are the mounts needed to extract the SSL certificates for a migration.
 var SSLMigrationVolumeMounts = []types.VolumeMount{EtcTLSTmpVolumeMount, RootVolumeMount, CaCertVolumeMount}
 
-// ServerMigrationVolumeMounts match server + postgres volume mounts, used for migration.
-var ServerMigrationVolumeMounts = append(ServerVolumeMounts, VarPgsqlDataVolumeMount, EtcTLSTmpVolumeMount)
-
 // DatabaseMigrationVolumeMounts match database + etc/rhn volume mounts, used for database migration.
-var DatabaseMigrationVolumeMounts = []types.VolumeMount{EtcRhnVolumeMount, VarPgsqlDataVolumeMount}
+var DatabaseMigrationVolumeMounts = []types.VolumeMount{
+	EtcRhnVolumeMount,
+	VarPgsqlDataVolumeMount,
+}
 
 // SalineVolumeMounts represents volumes used by Saline container.
 var SalineVolumeMounts = []types.VolumeMount{

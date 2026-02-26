@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -41,6 +41,22 @@ const (
 	// DBSSLKeySecret is the name of the podman secret containing the report database SSL certificate key.
 	DBSSLKeySecret = "uyuni-db-key"
 )
+
+// CreateCredentialsSecretsIfMissing creates the podman secrets, one for the user name and one for the password.
+func CreateCredentialsSecretsIfMissing(userSecret string, user string, passwordSecret string, password string) error {
+	if !HasSecret(userSecret) && !HasSecret(passwordSecret) {
+		if err := CreateCredentialsSecrets(
+			userSecret, user,
+			passwordSecret, password,
+		); err != nil {
+			return err
+		}
+	} else {
+		log.Info().Msgf(
+			L("Secrets %[1]s and %[2]s, already exists"), userSecret, passwordSecret)
+	}
+	return nil
+}
 
 // CreateCredentialsSecrets creates the podman secrets, one for the user name and one for the password.
 func CreateCredentialsSecrets(userSecret string, user string, passwordSecret string, password string) error {

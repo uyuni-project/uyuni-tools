@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -26,6 +26,7 @@ var ServerFlagsTestArgs = func() []string {
 	args = append(args, DBUpdateImageFlagTestArgs...)
 	args = append(args, CocoFlagsTestArgs...)
 	args = append(args, HubXmlrpcFlagsTestArgs...)
+	args = append(args, TFTPDFlagsTestArgs...)
 	return args
 }
 
@@ -44,4 +45,5 @@ func AssertServerFlags(t *testing.T, flags *utils.ServerFlags) {
 	AssertInstallDBSSLFlag(t, &flags.Installation.SSL.DB)
 	AssertInstallSSLFlag(t, &flags.Installation.SSL)
 	AssertSSLGenerationFlag(t, &flags.Installation.SSL.SSLCertGenerationFlags)
+	AssertTFTPDFlag(t, &flags.TFTPD)
 }

@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Jan 27 10:49:03 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.4-0
+  * Fix images handling in mgrpxy support ptf (bsc#1250940)
+  * Ssl Key file can miss if CA password is blank (bsc#1254154)
+  * Bump golang to 1.24
+  * Move the SSL checks at the begining of the migration
+  * Support config command parse correctly supportconfig output (bsc#1255781)
+  * Remove kubernetes code for the mgrdam
+  * During migration, krb5.conf.d should be copied in /etc/rhn (bsc#1254478)
+  * Use single universal image to migrate between postgresql
+    versions
+
+-------------------------------------------------------------------
 Tue Dec 09 14:03:52 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.3-0

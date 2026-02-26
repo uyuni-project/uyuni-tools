@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-15 15:51+0100\n"
+"POT-Creation-Date: 2026-01-16 16:46+0100\n"
 "PO-Revision-Date: 2025-11-26 10:56+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
@@ -312,10 +312,6 @@ msgstr "%s をアンインストールしています"
 msgid "failed to run helm %s"
 msgstr "helm %s の実行に失敗しました"
 
-#: shared/kubernetes/inspect.go:42
-msgid "failed to parse the inspected data"
-msgstr "検査データの解析に失敗しました"
-
 #: shared/kubernetes/k3s.go:27
 msgid "Installing K3s Traefik configuration"
 msgstr "K3s Traefik設定のインストール"
@@ -391,46 +387,9 @@ msgstr "シークレット %s のbase64デコードに失敗しました"
 msgid "failed to create the %s docker secret"
 msgstr "%s Dockerシークレットの作成に失敗しました"
 
-#: shared/kubernetes/kubernetes.go:229
+#: shared/kubernetes/kubernetes.go:231
 msgid "failed to get deployment image pull secret"
 msgstr "配備イメージのプルシークレットの取得に失敗しました"
-
-#: shared/kubernetes/pod.go:79 shared/kubernetes/pod.go:82
-#, javascript-format
-msgid "failed to run the %s pod"
-msgstr "%s ポッドの実行に失敗しました"
-
-#: shared/kubernetes/pod.go:93
-#, javascript-format
-msgid "failed to get the %s pod logs"
-msgstr "%s ポッドログの取得に失敗しました"
-
-#: shared/kubernetes/pod.go:98
-#, javascript-format
-msgid "failed to delete the %s pod"
-msgstr "%s ポッドの削除に失敗しました"
-
-#: shared/kubernetes/pvc.go:42
-#, javascript-format
-msgid "failed to create %s persistent volume claim"
-msgstr "%s 永続ボリュームのクレームの作成に失敗しました"
-
-#: shared/kubernetes/pvc.go:70
-msgid "failed to parse pv data"
-msgstr "pvデータの解析に失敗しました"
-
-#: shared/kubernetes/pvc.go:75
-msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
-msgstr "%[1]s ボリュームは %[1]s クレームを参照する必要があります(%[2]s ネームスペース内)"
-
-#: shared/kubernetes/pvc.go:85
-msgid "failed to run the persistent volume claims"
-msgstr "永続ボリュームのクレームの実行に失敗しました"
-
-#: shared/kubernetes/pvc.go:102
-#, javascript-format
-msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
-msgstr "PersistentVolumeClaim %s のサイズは定義されていません。デフォルトの10Miを使用します"
 
 #: shared/kubernetes/rke2.go:21
 msgid "Installing RKE2 Nginx configuration"
@@ -497,7 +456,7 @@ msgstr ""
 "たとえば、デフォルトのK3Sインストールでは、local-path-providerストレージボリュームは、\n"
 "--purge-volumes引数が使用されていなくても、配備を削除するときに自動的に削除されます。"
 
-#: shared/kubernetes/utils.go:86
+#: shared/kubernetes/utils.go:56
 msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
 msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
 msgstr[0] ""
@@ -507,120 +466,63 @@ msgstr[0] ""
 "複数形\n"
 "%[1]s 配備の準備を待機中(%[2]s ネームスペース内)\n"
 
-#: shared/kubernetes/utils.go:113
-msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
-msgstr "%[1]s 配備の準備を待機中(%[2]s ネームスペース内)\n"
-
-#: shared/kubernetes/utils.go:130
-msgid "failed to check if the deployment has running pods"
-msgstr "配備に実行中のポッドがあるかどうかを確認できませんでした"
-
-#: shared/kubernetes/utils.go:182
+#: shared/kubernetes/utils.go:119
 #, javascript-format
 msgid "all the pods of %s deployment have a failure"
 msgstr "%s 配備のすべてのポッドに障害が発生しました"
 
-#: shared/kubernetes/utils.go:211
+#: shared/kubernetes/utils.go:148
 #, javascript-format
 msgid "failed to list ReplicaSets for deployment %s"
 msgstr "配備 %s のReplicaSetsを一覧表示できませんでした"
 
-#: shared/kubernetes/utils.go:224
+#: shared/kubernetes/utils.go:161
 #, javascript-format
 msgid "failed to get the %s deployment revision"
 msgstr "%s 配備リビジョンを取得できませんでした"
 
-#: shared/kubernetes/utils.go:232
+#: shared/kubernetes/utils.go:169
 #, javascript-format
 msgid "invalid replicasset response: :%s"
 msgstr "無効なreplicasset応答: :%s"
 
-#: shared/kubernetes/utils.go:247
+#: shared/kubernetes/utils.go:184
 #, javascript-format
 msgid "failed to find pods for owner reference %s"
 msgstr "所有者参照 %s のポッドが見つかりませんでした"
 
-#: shared/kubernetes/utils.go:273
+#: shared/kubernetes/utils.go:210
 #, javascript-format
 msgid "failed to get the status of %s pod"
 msgstr "%s ポッドのステータスを取得できませんでした"
 
-#: shared/kubernetes/utils.go:300
+#: shared/kubernetes/utils.go:237
 msgid "failed to parse deployment status"
 msgstr "配備ステータスの解析に失敗しました"
 
-#: shared/kubernetes/utils.go:312
+#: shared/kubernetes/utils.go:249
 #, javascript-format
 msgid "cannot run kubectl %s"
 msgstr "kubectl %s を実行できません"
 
-#: shared/kubernetes/utils.go:326
-msgid "cannot check if pod %[1]s is running in app %[2]s"
-msgstr "ポッド %[1]sがアプリ %[2]s で実行中かどうかを確認できません"
-
-#: shared/kubernetes/utils.go:337 shared/kubernetes/utils.go:358
+#: shared/kubernetes/utils.go:266 shared/kubernetes/utils.go:287
 #, javascript-format
 msgid "cannot execute %s"
 msgstr "%s を実行できません"
 
-#: shared/kubernetes/utils.go:366
+#: shared/kubernetes/utils.go:295
 msgid "invalid replicas result"
 msgstr "無効なレプリカ結果"
 
-#: shared/kubernetes/utils.go:395
+#: shared/kubernetes/utils.go:324
 #, javascript-format
 msgid "%s is not a valid image pull policy value"
 msgstr "%s は有効なイメージプルポリシーの値ではありません"
 
-#: shared/kubernetes/utils.go:427
-msgctxt "The first placeholder is a command"
-msgid "cannot run %[1]s using image %[2]s"
-msgstr "%[1]s を実行できません(イメージ %[2]s を使用)"
-
-#: shared/kubernetes/utils.go:436 shared/kubernetes/utils.go:445
-#, javascript-format
-msgid "cannot delete pod %s"
-msgstr "ポッド %s を削除できません"
-
-#: shared/kubernetes/utils.go:464
+#: shared/kubernetes/utils.go:343
 #, javascript-format
 msgid "cannot find node name matching filter %s"
 msgstr "フィルタ %s に一致するノード名が見つかりません"
-
-#: shared/kubernetes/utils.go:473
-msgid "cannot serialize pod definition override"
-msgstr "ポッド定義の上書きをシリアライズできません"
-
-#: shared/kubernetes/waiters.go:40
-msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
-msgstr "%[1]s ジョブが失敗しました。詳細については、kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]sを実行してください"
-
-#: shared/kubernetes/waiters.go:49
-msgid "%[1]s job failed to complete within %[2]d seconds"
-msgstr "%[1]s ジョブは %[2]d 秒以内に完了できませんでした"
-
-#: shared/kubernetes/waiters.go:61
-#, javascript-format
-msgid "failed to get %s job status"
-msgstr "%s ジョブステータスの取得に失敗しました"
-
-#: shared/kubernetes/waiters.go:65
-#, javascript-format
-msgid "invalid job status response: '%s'"
-msgstr "無効なジョブステータス応答: 「%s」"
-
-#: shared/kubernetes/waiters.go:85
-#, javascript-format
-msgid "failed to get %s pod status"
-msgstr "%s ポッドステータスの取得に失敗しました"
-
-#: shared/kubernetes/waiters.go:92
-msgid "%[1]s pod failed with status %[2]s"
-msgstr "%[1]s ポッドはステータス %[2]s で失敗しました"
-
-#: shared/kubernetes/waiters.go:96
-msgid "%[1]s pod failed to complete within %[2]d seconds"
-msgstr "%[1]s ポッドは %[2]d 秒以内に完了できませんでした"
 
 #: shared/podman/hostinspector.go:54
 msgid "failed to run inspect script in host system"
@@ -1380,11 +1282,11 @@ msgstr "ボリュームも削除する"
 msgid "Also remove the container images"
 msgstr "コンテナイメージも削除する"
 
-#: shared/utils/cmd.go:193 shared/utils/cmd.go:196
+#: shared/utils/cmd.go:189 shared/utils/cmd.go:192
 msgid "application log level"
 msgstr ""
 
-#: shared/utils/cmd.go:199
+#: shared/utils/cmd.go:195
 #, fuzzy
 #| msgid "Failed to find home directory"
 msgid "Failed to hide --loglevel parameter"
@@ -1816,6 +1718,82 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "データベース"
+
+#~ msgid "failed to parse the inspected data"
+#~ msgstr "検査データの解析に失敗しました"
+
+#, javascript-format
+#~ msgid "failed to run the %s pod"
+#~ msgstr "%s ポッドの実行に失敗しました"
+
+#, javascript-format
+#~ msgid "failed to get the %s pod logs"
+#~ msgstr "%s ポッドログの取得に失敗しました"
+
+#, javascript-format
+#~ msgid "failed to delete the %s pod"
+#~ msgstr "%s ポッドの削除に失敗しました"
+
+#, javascript-format
+#~ msgid "failed to create %s persistent volume claim"
+#~ msgstr "%s 永続ボリュームのクレームの作成に失敗しました"
+
+#~ msgid "failed to parse pv data"
+#~ msgstr "pvデータの解析に失敗しました"
+
+#~ msgid "the %[1]s volume has to reference the %[1]s claim in %[2]s namespace"
+#~ msgstr "%[1]s ボリュームは %[1]s クレームを参照する必要があります(%[2]s ネームスペース内)"
+
+#~ msgid "failed to run the persistent volume claims"
+#~ msgstr "永続ボリュームのクレームの実行に失敗しました"
+
+#, javascript-format
+#~ msgid "no size defined for PersistentVolumeClaim %s, using 10Mi as default"
+#~ msgstr "PersistentVolumeClaim %s のサイズは定義されていません。デフォルトの10Miを使用します"
+
+#~ msgid "Waiting for %[1]s deployment to be started in %[2]s namespace\n"
+#~ msgstr "%[1]s 配備の準備を待機中(%[2]s ネームスペース内)\n"
+
+#~ msgid "failed to check if the deployment has running pods"
+#~ msgstr "配備に実行中のポッドがあるかどうかを確認できませんでした"
+
+#~ msgid "cannot check if pod %[1]s is running in app %[2]s"
+#~ msgstr "ポッド %[1]sがアプリ %[2]s で実行中かどうかを確認できません"
+
+#~ msgctxt "The first placeholder is a command"
+#~ msgid "cannot run %[1]s using image %[2]s"
+#~ msgstr "%[1]s を実行できません(イメージ %[2]s を使用)"
+
+#, javascript-format
+#~ msgid "cannot delete pod %s"
+#~ msgstr "ポッド %s を削除できません"
+
+#~ msgid "cannot serialize pod definition override"
+#~ msgstr "ポッド定義の上書きをシリアライズできません"
+
+#~ msgid "%[1]s job failed, run kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]s for details"
+#~ msgstr "%[1]s ジョブが失敗しました。詳細については、kubectl logs -n %[2]s --tail=-1 -ljob-name=%[1]sを実行してください"
+
+#~ msgid "%[1]s job failed to complete within %[2]d seconds"
+#~ msgstr "%[1]s ジョブは %[2]d 秒以内に完了できませんでした"
+
+#, javascript-format
+#~ msgid "failed to get %s job status"
+#~ msgstr "%s ジョブステータスの取得に失敗しました"
+
+#, javascript-format
+#~ msgid "invalid job status response: '%s'"
+#~ msgstr "無効なジョブステータス応答: 「%s」"
+
+#, javascript-format
+#~ msgid "failed to get %s pod status"
+#~ msgstr "%s ポッドステータスの取得に失敗しました"
+
+#~ msgid "%[1]s pod failed with status %[2]s"
+#~ msgstr "%[1]s ポッドはステータス %[2]s で失敗しました"
+
+#~ msgid "%[1]s pod failed to complete within %[2]d seconds"
+#~ msgstr "%[1]s ポッドは %[2]d 秒以内に完了できませんでした"
 
 #~ msgid "failed to run supportconfig on the host"
 #~ msgstr "ホスト上でsupportconfigを実行できませんでした"
