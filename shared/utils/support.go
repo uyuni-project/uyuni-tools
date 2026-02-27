@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"os/exec"
 	"path"
-	"regexp"
 	"strings"
 	"time"
 
@@ -17,12 +16,6 @@ import (
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
-
-// GetSupportConfigPath returns the support config tarball path.
-func GetSupportConfigPath(out string) string {
-	re := regexp.MustCompile(`/var/log/scc_(.*?)\.txz`)
-	return re.FindString(out)
-}
 
 // GetSupportConfigFileSaveName returns the support config file name.
 func GetSupportConfigFileSaveName() string {
