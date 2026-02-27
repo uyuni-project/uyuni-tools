@@ -80,6 +80,9 @@ type SystemdDriver interface {
 
 	// GetServiceProperty returns the value of a systemd service property.
 	GetServiceProperty(service string, property string) (string, error)
+
+	// GetServiceDefinition returns the output of systemctl cat for a service.
+	GetServiceDefinition(service string) (string, error)
 }
 
 type systemdDriverImpl struct {
@@ -183,6 +186,18 @@ func (d *systemdDriverImpl) GetServiceProperty(service string, property string) 
 	return strings.TrimPrefix(strings.TrimSpace(string(out)), property+"="), nil
 }
 
+func (d *systemdDriverImpl) GetServiceDefinition(service string) (string, error) {
+	serviceName := service
+	if strings.HasSuffix(service, "@") {
+		serviceName = service + "0"
+	}
+	out, err := newRunner("systemctl", "cat", serviceName).Exec()
+	if err != nil {
+		return "", utils.Errorf(err, L("Failed to get the definition from %[2]s service"), service)
+	}
+	return strings.TrimSpace(string(out)), nil
+}
+
 // NewSystemd returns a new Systemd instance.
 func NewSystemd() Systemd {
 	driver := systemdDriverImpl{}
@@ -229,6 +244,10 @@ func GetServicePath(name string) string {
 
 func (s SystemdImpl) GetServiceProperty(service string, property string) (string, error) {
 	return s.driver.GetServiceProperty(service, property)
+}
+
+func (s SystemdImpl) GetServiceDefinition(service string) (string, error) {
+	return s.driver.GetServiceDefinition(service)
 }
 
 // GetServiceConfFolder return the conf folder for systemd services.
@@ -452,7 +471,7 @@ func GenerateSystemdConfFile(serviceName string, filename string, body string, w
 	if withHeader {
 		header = confHeader
 	}
-	content := []byte(fmt.Sprintf("%s[Service]\n%s\n", header, body))
+	content := fmt.Appendf([]byte(header), "[Service]\n%s\n", body)
 	if err := os.WriteFile(systemdConfFilePath, content, 0644); err != nil {
 		return utils.Errorf(err, L("cannot write %s file"), systemdConfFilePath)
 	}
