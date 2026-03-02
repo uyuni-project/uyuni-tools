@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-01 10:57+0100\n"
-"PO-Revision-Date: 2026-01-12 20:04+0000\n"
+"PO-Revision-Date: 2026-03-02 11:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.16.1\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -557,7 +557,7 @@ msgstr "S'ha suprimit la xarxa"
 
 #: shared/podman/secret.go:56
 msgid "Secrets %[1]s and %[2]s, already exists"
-msgstr ""
+msgstr "Els secrets %[1]s i %[2]s ja existeixen."
 
 #: shared/podman/secret.go:74 shared/podman/secret.go:86
 #: shared/podman/secret.go:90
@@ -1086,22 +1086,21 @@ msgstr "No s'ha pogut ocultar el paràmetre --loglevel"
 
 #: shared/utils/cmd.go:202
 msgid "TFTPD"
-msgstr ""
+msgstr "TFTPD"
 
 #: shared/utils/cmd.go:204
 msgid "Start the TFTP server container"
-msgstr ""
+msgstr "Inicia el contenidor del servidor TFTP"
 
 #: shared/utils/cmd.go:221
-#, fuzzy, javascript-format
-#| msgid "failed to run %s container"
+#, javascript-format
 msgid "Image for %s container"
-msgstr "no s'ha pogut executar el contenidor %s"
+msgstr "Imatge per al contenidor %s"
 
 #: shared/utils/cmd.go:223
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
-msgstr ""
+msgstr "Etiqueta per al contenidor %s, anul·la el valor global si s'estableix"
 
 #: shared/utils/config.go:40
 #, javascript-format
