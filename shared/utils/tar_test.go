@@ -88,6 +88,78 @@ func TestWriteTarGz(t *testing.T) {
 	}
 }
 
+func TestWriteTarGzDirectory(t *testing.T) {
+	tmpDir := setup(t)
+
+	// Create the tarball
+	tarballPath := path.Join(tmpDir, "test-dir.tar.gz")
+	tarball, err := NewTarGz(tarballPath)
+	if err != nil {
+		t.Fatalf("failed to create tarball: %s", err)
+	}
+	if err := tarball.AddFile(path.Join(tmpDir, dataDir), "collected"); err != nil {
+		t.Fatalf("failed to add directory to tarball: %s", err)
+	}
+	tarball.Close()
+
+	// Check the tarball using the tar utility
+	testDir := path.Join(tmpDir, outDir)
+	if out, err := exec.Command("tar", "xzf", tarballPath, "-C", testDir).CombinedOutput(); err != nil {
+		t.Fatalf("failed to extract generated tarball: %s", string(out))
+	}
+
+	// Ensure all files from the source directory are present in the archive path
+	for name, content := range filesData {
+		outputPath := path.Join(testDir, "collected", name)
+		if out, err := os.ReadFile(outputPath); err != nil {
+			t.Errorf("failed to read %s: %s", outputPath, err)
+		} else if string(out) != content {
+			t.Errorf("expected %s content %s, but got %s", outputPath, content, string(out))
+		}
+	}
+}
+
+func TestWriteTarGzDirectoryDoesNotFollowSymlink(t *testing.T) {
+	tmpDir := setup(t)
+
+	dataPath := path.Join(tmpDir, dataDir)
+	if err := os.Symlink(".", path.Join(dataPath, "loop")); err != nil {
+		t.Fatalf("failed to create test symlink: %s", err)
+	}
+
+	tarballPath := path.Join(tmpDir, "test-symlink.tar.gz")
+	tarball, err := NewTarGz(tarballPath)
+	if err != nil {
+		t.Fatalf("failed to create tarball: %s", err)
+	}
+	if err := tarball.AddFile(dataPath, "collected"); err != nil {
+		t.Fatalf("failed to add directory with symlink to tarball: %s", err)
+	}
+	tarball.Close()
+
+	testDir := path.Join(tmpDir, outDir)
+	if out, err := exec.Command("tar", "xzf", tarballPath, "-C", testDir).CombinedOutput(); err != nil {
+		t.Fatalf("failed to extract generated tarball: %s", string(out))
+	}
+
+	loopPath := path.Join(testDir, "collected", "loop")
+	info, err := os.Lstat(loopPath)
+	if err != nil {
+		t.Fatalf("failed to stat extracted symlink: %s", err)
+	}
+	if info.Mode()&os.ModeSymlink == 0 {
+		t.Fatalf("expected %s to be a symlink", loopPath)
+	}
+
+	link, err := os.Readlink(loopPath)
+	if err != nil {
+		t.Fatalf("failed to read extracted symlink target: %s", err)
+	}
+	if link != "." {
+		t.Fatalf("expected symlink target '.' but got %q", link)
+	}
+}
+
 func TestExtractTarGz(t *testing.T) {
 	tmpDir := setup(t)
 
