@@ -1,0 +1,5 @@
+- Use static supportconfig name to avoid dynamic search
+  (bsc#1257941)
+- Do not nest multiple tarball files and instead collect
+  all files into one tarball (bsc#1252964)
+- Show where final tarball was generated (bsc#1259208)

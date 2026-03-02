@@ -25,7 +25,7 @@ func filesRemover(files []string) {
 			log.Trace().Msgf("%s will not removed since it doesn't exists", file)
 			continue
 		}
-		if err := os.Remove(file); err != nil {
+		if err := os.RemoveAll(file); err != nil {
 			log.Error().Err(err).Msgf(L("failed to remove %s temporary file"), file)
 		}
 	}

@@ -7,6 +7,7 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"path"
 	"strings"
@@ -38,6 +39,12 @@ func CreateSupportConfigTarball(outputFolder string, files []string) error {
 	// Pack it all into a tarball
 	log.Info().Msg(L("Preparing the tarball"))
 
+	if outputFolder == "" || outputFolder == "." {
+		// on error returns "", so behavior like before
+		outputFolder, _ = os.Getwd()
+	}
+	log.Debug().Msgf("Output folder %s", outputFolder)
+
 	supportFileName := GetSupportConfigFileSaveName()
 	supportFilePath := path.Join(outputFolder, fmt.Sprintf("%s.tar.gz", supportFileName))
 
@@ -56,6 +63,7 @@ func CreateSupportConfigTarball(outputFolder string, files []string) error {
 		}
 	}
 	tarball.Close()
+	log.Info().Msgf(L("Support config tarball created at %s"), supportFilePath)
 	return nil
 }
 
@@ -80,8 +88,8 @@ func RunSupportConfigOnHost() ([]string, error) {
 	var files []string
 	// Run supportconfig on the host if installed
 	if _, err := exec.LookPath("/sbin/supportconfig"); err == nil {
-		var tarballPath string
-		extensions := []string{"", ".md5"}
+		var sourceDir string
+		const sourceBaseDir = "/var/log"
 
 		if err != nil {
 			return []string{}, err
@@ -101,8 +109,9 @@ func RunSupportConfigOnHost() ([]string, error) {
 
 			if !FileExists(candidateTarballPath) {
 				batchName = candidateBatchName
-				tarballPath = candidateTarballPath
+				sourceDir = path.Join(sourceBaseDir, "scc_"+candidateBatchName)
 				break
+
 			}
 		}
 		if batchName == "" {
@@ -111,16 +120,14 @@ func RunSupportConfigOnHost() ([]string, error) {
 		}
 
 		log.Info().Msg(L("Running supportconfig on the host"))
-		err = RunCmd("/sbin/supportconfig", "-B", batchName)
+		err = RunCmd("/sbin/supportconfig", "-B", batchName, "-t", sourceBaseDir)
 		if err != nil {
 			log.Info().Err(err).Msg(L("Some parts of supportconfig were not successful"))
 		}
 
 		// Look for the generated supportconfig file
-		if FileExists(tarballPath) {
-			for _, ext := range extensions {
-				files = append(files, tarballPath+ext)
-			}
+		if FileExists(sourceDir) {
+			files = append(files, sourceDir)
 		} else {
 			return []string{}, errors.New(L("failed to find host supportconfig tarball"))
 		}
