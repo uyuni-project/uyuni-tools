@@ -522,7 +522,7 @@ func ValidateChecksum(file string) error {
 // RandomHexString returns a cryptographically secure random hex string.
 func RandomHexString(nBytes int) (string, error) {
 	if nBytes <= 0 {
-		return "", fmt.Errorf("nBytes must be > 0")
+		return "", errors.New(L("nBytes must be > 0"))
 	}
 
 	b := make([]byte, nBytes)

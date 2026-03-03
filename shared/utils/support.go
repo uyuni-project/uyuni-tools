@@ -81,8 +81,6 @@ func GetContainersFromSystemdFiles(systemdFileList string) []string {
 	return trimmedContainers
 }
 
-var newRunner = NewRunner
-
 // RunSupportConfigOnHost will run supportconfig command on host machine.
 func RunSupportConfigOnHost() ([]string, error) {
 	var files []string
@@ -101,7 +99,7 @@ func RunSupportConfigOnHost() ([]string, error) {
 		for i := 0; i < maxBatchNameAttempts; i++ {
 			suffix, err := RandomHexString(4) // 8 hex chars
 			if err != nil {
-				return []string{}, fmt.Errorf("failed to generate supportconfig suffix: %w", err)
+				return []string{}, fmt.Errorf(L("failed to generate supportconfig suffix: %w"), err)
 			}
 
 			candidateBatchName := "host-support-config-" + suffix
@@ -111,12 +109,11 @@ func RunSupportConfigOnHost() ([]string, error) {
 				batchName = candidateBatchName
 				sourceDir = path.Join(sourceBaseDir, "scc_"+candidateBatchName)
 				break
-
 			}
 		}
 		if batchName == "" {
 			return []string{},
-				fmt.Errorf("failed to generate unique supportconfig batch name after %d attempts", maxBatchNameAttempts)
+				fmt.Errorf(L("failed to generate unique supportconfig batch name after %d attempts"), maxBatchNameAttempts)
 		}
 
 		log.Info().Msg(L("Running supportconfig on the host"))

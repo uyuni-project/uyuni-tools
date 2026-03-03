@@ -501,7 +501,7 @@ func (c *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 	for i := 0; i < maxBatchNameAttempts; i++ {
 		suffix, err := utils.RandomHexString(4) // 8 hex chars
 		if err != nil {
-			return []string{}, fmt.Errorf("failed to generate supportconfig suffix: %w", err)
+			return []string{}, fmt.Errorf(L("failed to generate supportconfig suffix: %w"), err)
 		}
 
 		candidateBatchName := "uyuni-server-container-" + suffix
@@ -513,7 +513,7 @@ func (c *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 	}
 	if batchName == "" {
 		return []string{},
-			fmt.Errorf("failed to generate unique supportconfig batch name after %d attempts", maxBatchNameAttempts)
+			fmt.Errorf(L("failed to generate unique supportconfig batch name after %d attempts"), maxBatchNameAttempts)
 	}
 
 	// Run supportconfig in the container if it's running
