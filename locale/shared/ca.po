@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: shared/kubernetes/k3s.go:133
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-16 16:46+0100\n"
+"POT-Creation-Date: 2026-03-01 10:57+0100\n"
 "PO-Revision-Date: 2026-01-12 20:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
@@ -264,142 +263,14 @@ msgstr "no es pot copiar el fitxer tar"
 msgid "failed to remove %s file in the container"
 msgstr "no s'ha pogut eliminar el fitxer %s al contenidor"
 
-#: shared/kubernetes/apply.go:46
-#, javascript-format
-msgid "failed to create %s YAML file"
-msgstr "no s'ha pogut crear el fitxer YAML %s"
-
-#: shared/kubernetes/apply.go:50
-#, javascript-format
-msgid "failed to close %s YAML file"
-msgstr "no s'ha pogut tancar el fitxer YAML %s"
-
-#: shared/kubernetes/apply.go:57
-msgid "failed to write PVC to file"
-msgstr "no s'ha pogut escriure el PVC al fitxer"
-
-#: shared/kubernetes/helm.go:57
-msgid "failed to upgrade helm chart %[1]s in namespace %[2]s"
-msgstr "no s'ha pogut actualitzar el diagrama de helm %[1]s a l'espai de noms %[2]s"
-
-#: shared/kubernetes/helm.go:59
-msgid "failed to install helm chart %[1]s in namespace %[2]s"
-msgstr "no s'ha pogut instal·lar el diagrama de helm %[1]s a l'espai de noms %[2]s"
-
-#: shared/kubernetes/helm.go:68
-msgid "namespace is required"
-msgstr "l'espai de noms és obligatori"
-
-#: shared/kubernetes/helm.go:78 shared/podman/images.go:372
-#: shared/podman/images.go:393 shared/podman/images.go:413
-#: shared/podman/network.go:108 shared/podman/secret.go:130
-#: shared/podman/systemd.go:248 shared/podman/systemd.go:326
-#: shared/podman/systemd.go:327 shared/podman/utils.go:188
-#: shared/podman/utils.go:221 shared/podman/utils.go:250
-#, javascript-format
-msgid "Would run %s"
-msgstr "S'executaria %s"
-
-#: shared/kubernetes/helm.go:80
-#, javascript-format
-msgid "Uninstalling %s"
-msgstr "S'està desinstal·lant %s"
-
-#: shared/kubernetes/helm.go:82
-#, javascript-format
-msgid "failed to run helm %s"
-msgstr "no s'ha pogut executar el timó %s"
-
-#: shared/kubernetes/k3s.go:27
-msgid "Installing K3s Traefik configuration"
-msgstr "S'està instal·lant la configuració del Traefik del K3s"
-
-#: shared/kubernetes/k3s.go:44
-msgid "Failed to write Traefik configuration"
-msgstr "No s'ha pogut escriure la configuració del Traefik"
-
-#: shared/kubernetes/k3s.go:81
-msgid "Waiting for Traefik to be reloaded"
-msgstr "S'està esperant que el Traefik es torni a carregar"
-
-#: shared/kubernetes/k3s.go:93
-msgid "Failed to reload Traefik"
-msgstr "No s'ha pogut tornar a carregar Traefik"
-
-#: shared/kubernetes/k3s.go:100
-msgid "Reinstalling Traefik without additionnal configuration"
-msgstr "Reinstal·lació de Traefik sense configuració additiva"
-
-#: shared/kubernetes/k3s.go:103
-msgid "failed to write empty traefik configuration"
-msgstr "no s'ha pogut escriure la configuració de traefik buida"
-
-#: shared/kubernetes/k3s.go:107
-msgid "failed to uninstall traefik configuration"
-msgstr "no s'ha pogut desinstal·lar la configuració del traefik"
-
-#: shared/kubernetes/k3s.go:111
-msgid "Would reinstall Traefik without additionnal configuration"
-msgstr "Reinstal·laria Traefik sense configuració addicional"
-
-#: shared/kubernetes/k3s.go:121
-msgid "failed to read the traefik configuration"
-msgstr "No s'ha pogut llegir la configuració de Traefik"
-
-#: shared/kubernetes/k3s.go:125
-msgid "traefik configuration file doesn't contain the helm chart version"
-msgstr "El fitxer de configuració de Traefik no conté la versió del gràfic de Helm"
-
-#: shared/kubernetes/k3s.go:128
-msgid "failed to find traefik helm chart version"
-msgstr "No s'ha pogut trobar la versió del gràfic Traefik Helm"
-
-#: shared/kubernetes/kubernetes.go:59
+#: shared/kubernetes/kubernetes.go:52
 msgid "failed to get kubelet version"
 msgstr "no s'ha pogut obtenir la versió del kubelet"
 
-#: shared/kubernetes/kubernetes.go:84
-msgid "failed to get pod commands to look for nginx controller"
-msgstr "no s'han pogut obtenir les ordres pod per a cercar el controlador nginx"
-
-#: shared/kubernetes/kubernetes.go:98
+#: shared/kubernetes/kubernetes.go:67
 #, javascript-format
 msgid "cannot stop %s"
 msgstr "no es pot aturar %s"
-
-#: shared/kubernetes/kubernetes.go:138
-msgid "failed to run kubectl get configMap %[1]s %[2]s"
-msgstr "no s'ha pogut executar el kubectl get configMap %[1]s %[2]s"
-
-#: shared/kubernetes/kubernetes.go:148
-msgid "failed to run kubectl get secret %[1]s %[2]s"
-msgstr "no s'ha pogut executar el kubectl get secret %[1]s %[2]s"
-
-#: shared/kubernetes/kubernetes.go:152
-#, javascript-format
-msgid "Failed to base64 decode secret %s"
-msgstr "No s'ha pogut descodificar en base64 el secret %s"
-
-#: shared/kubernetes/kubernetes.go:187
-#, javascript-format
-msgid "failed to create the %s docker secret"
-msgstr "no s'ha pogut crear el secret de l'acoblador %s"
-
-#: shared/kubernetes/kubernetes.go:231
-msgid "failed to get deployment image pull secret"
-msgstr "no s'ha pogut obtenir el secret d'extracció de la imatge de desplegament"
-
-#: shared/kubernetes/rke2.go:21
-msgid "Installing RKE2 Nginx configuration"
-msgstr "S'està instal·lant la configuració de RKE2 Nginx"
-
-#: shared/kubernetes/rke2.go:39
-msgid "Failed to write Rke2 nginx configuration"
-msgstr "No s'ha pogut escriure la configuració de Nginx Rke2"
-
-#: shared/kubernetes/rke2.go:43
-msgid "Waiting for Nginx controller to be reloaded"
-msgstr "S'està esperant que es torni a carregar el controlador Nginx"
 
 #: shared/kubernetes/support.go:27
 msgid "cannot retrieve any configmap"
@@ -438,82 +309,25 @@ msgstr "no s'ha pogut obtenir la informació del pod %s"
 msgid "failed to write in %s"
 msgstr "no s'ha pogut escriure a %s"
 
-#: shared/kubernetes/uninstall.go:13
-msgid ""
-"\n"
-"Note that removing the volumes could also be handled automatically depending on the StorageClass used\n"
-"when installed on a kubernetes cluster.\n"
-"\n"
-"For instance on a default K3S install, the local-path-provider storage volumes will\n"
-"be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
-msgstr ""
-"\n"
-"Tingueu en compte que l'eliminació dels volums també es pot gestionar automàticament depenent de la classe d'emmagatzematge utilitzada\n"
-"quan s'instal·la en un clúster de kubernetes.\n"
-"\n"
-"Per exemple, en una instal·lació predeterminada del K3S, els volums d'emmagatzematge del proveïdor de camins locals seran\n"
-"s'eliminarà automàticament en suprimir el desplegament encara que no s'utilitzi l'argument --purge-volumes."
-
-#: shared/kubernetes/utils.go:56
-msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
-msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
-msgstr[0] "S'està esperant que el desplegament %[1]s estigui llest a l'espai de noms %[2]s\n"
-msgstr[1] "S'està esperant que %[1]s desplegaments estigui llest a l'espai de noms %[2]s\n"
-
-#: shared/kubernetes/utils.go:119
-#, javascript-format
-msgid "all the pods of %s deployment have a failure"
-msgstr "tots els pods del desplegament %s tenen un error"
-
-#: shared/kubernetes/utils.go:148
-#, javascript-format
-msgid "failed to list ReplicaSets for deployment %s"
-msgstr "no s'ha pogut llistar els ReplicaSets per al desplegament %s"
-
-#: shared/kubernetes/utils.go:161
-#, javascript-format
-msgid "failed to get the %s deployment revision"
-msgstr "no s'ha pogut obtenir la revisió de desplegament %s"
-
-#: shared/kubernetes/utils.go:169
-#, javascript-format
-msgid "invalid replicasset response: :%s"
-msgstr "resposta del conjunt de rèpliques no vàlida: :%s"
-
-#: shared/kubernetes/utils.go:184
-#, javascript-format
-msgid "failed to find pods for owner reference %s"
-msgstr "no s'han pogut trobar els pods per a la referència del propietari %s"
-
-#: shared/kubernetes/utils.go:210
-#, javascript-format
-msgid "failed to get the status of %s pod"
-msgstr "no s'ha pogut obtenir l'estat de %s pod"
-
-#: shared/kubernetes/utils.go:237
+#: shared/kubernetes/utils.go:59
 msgid "failed to parse deployment status"
 msgstr "no s'ha pogut analitzar l'estat del desplegament"
 
-#: shared/kubernetes/utils.go:249
+#: shared/kubernetes/utils.go:71
 #, javascript-format
 msgid "cannot run kubectl %s"
 msgstr "no es pot executar el kubectl %s"
 
-#: shared/kubernetes/utils.go:266 shared/kubernetes/utils.go:287
+#: shared/kubernetes/utils.go:88 shared/kubernetes/utils.go:109
 #, javascript-format
 msgid "cannot execute %s"
 msgstr "no es pot executar %s"
 
-#: shared/kubernetes/utils.go:295
+#: shared/kubernetes/utils.go:117
 msgid "invalid replicas result"
 msgstr "resultat de rèpliques no vàlid"
 
-#: shared/kubernetes/utils.go:324
-#, javascript-format
-msgid "%s is not a valid image pull policy value"
-msgstr "%s no és un valor vàlid de política d'extracció d'imatges"
-
-#: shared/kubernetes/utils.go:343
+#: shared/kubernetes/utils.go:142
 #, javascript-format
 msgid "cannot find node name matching filter %s"
 msgstr "no s'ha pogut trobar el nom del node que coincideix amb el filtre %s"
@@ -640,6 +454,16 @@ msgstr "S'està executant el podman ps --filter.name.%s --format.{{ .Imatge}}"
 msgid "cannot find any running image for container %s"
 msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 
+#: shared/podman/images.go:372 shared/podman/images.go:393
+#: shared/podman/images.go:413 shared/podman/network.go:108
+#: shared/podman/secret.go:146 shared/podman/systemd.go:251
+#: shared/podman/systemd.go:329 shared/podman/systemd.go:330
+#: shared/podman/utils.go:188 shared/podman/utils.go:221
+#: shared/podman/utils.go:250
+#, javascript-format
+msgid "Would run %s"
+msgstr "S'executaria %s"
+
 #: shared/podman/images.go:374 shared/podman/images.go:395
 #: shared/podman/images.go:415 shared/podman/utils.go:190
 #: shared/podman/utils.go:224 shared/podman/utils.go:261
@@ -731,28 +555,32 @@ msgstr "No s'ha pogut eliminar la xarxa %s"
 msgid "Network removed"
 msgstr "S'ha suprimit la xarxa"
 
-#: shared/podman/secret.go:58 shared/podman/secret.go:70
-#: shared/podman/secret.go:74
+#: shared/podman/secret.go:56
+msgid "Secrets %[1]s and %[2]s, already exists"
+msgstr ""
+
+#: shared/podman/secret.go:74 shared/podman/secret.go:86
+#: shared/podman/secret.go:90
 #, javascript-format
 msgid "failed to create %s secret"
 msgstr "no s'ha pogut crear el següent: %s secret"
 
-#: shared/podman/secret.go:89
+#: shared/podman/secret.go:105
 #, javascript-format
 msgid "failed to write %s secret to file"
 msgstr "no s'ha pogut escriure el secret %s al fitxer"
 
-#: shared/podman/secret.go:104
+#: shared/podman/secret.go:120
 #, javascript-format
 msgid "failed to create podman secret %s"
 msgstr "no s'ha pogut crear el secret podman %s"
 
-#: shared/podman/secret.go:134
+#: shared/podman/secret.go:150
 #, javascript-format
 msgid "Failed to delete %s secret"
 msgstr "No s'ha pogut suprimir el secret %s"
 
-#: shared/podman/secret.go:145
+#: shared/podman/secret.go:161
 #, javascript-format
 msgid "failed to get the content of the %s secret"
 msgstr "No s'ha pogut obtenir el contingut del secret %s"
@@ -814,129 +642,129 @@ msgstr "no s'ha pogut crear el fitxer %s"
 msgid "failed to run journalctl -u %s"
 msgstr "no s'ha pogut executar journalctl -u %s"
 
-#: shared/podman/systemd.go:107
+#: shared/podman/systemd.go:110
 #, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr "no s'ha pogut inhabilitar el servei systemd %s"
 
-#: shared/podman/systemd.go:117
+#: shared/podman/systemd.go:120
 msgid "failed to reset-failed systemd"
 msgstr "no s'ha pogut restablir el «systemd» fallit"
 
-#: shared/podman/systemd.go:121
+#: shared/podman/systemd.go:124
 msgid "failed to reload systemd daemon"
 msgstr "no s'ha pogut tornar a carregar el dimoni del systemd"
 
-#: shared/podman/systemd.go:138
+#: shared/podman/systemd.go:141
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "no s'ha pogut reiniciar systemd %s.service"
 
-#: shared/podman/systemd.go:146
+#: shared/podman/systemd.go:149
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "no s'ha pogut iniciar systemd %s.service"
 
-#: shared/podman/systemd.go:154
+#: shared/podman/systemd.go:157
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "no s'ha pogut aturar systemd %s.service"
 
-#: shared/podman/systemd.go:166
+#: shared/podman/systemd.go:169
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "no s'ha pogut habilitar el servei «systemd» de %s"
 
-#: shared/podman/systemd.go:178
+#: shared/podman/systemd.go:181
 msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "Ha fallat obtenir la propietat de %[1]s des del servei %[2]s"
 
-#: shared/podman/systemd.go:245
+#: shared/podman/systemd.go:248
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "El Systemd no té %s.unitat de servei"
 
-#: shared/podman/systemd.go:250
+#: shared/podman/systemd.go:253
 #, javascript-format
 msgid "Disable %s service"
 msgstr "Desactiva el servei %s"
 
-#: shared/podman/systemd.go:265 shared/podman/systemd.go:282
+#: shared/podman/systemd.go:268 shared/podman/systemd.go:285
 #, javascript-format
 msgid "Would remove %s"
 msgstr "Eliminaria %s"
 
-#: shared/podman/systemd.go:268 shared/podman/systemd.go:284
+#: shared/podman/systemd.go:271 shared/podman/systemd.go:287
 #, javascript-format
 msgid "Remove %s"
 msgstr "Elimina %s"
 
-#: shared/podman/systemd.go:270
+#: shared/podman/systemd.go:273
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "No s'ha pogut eliminar el fitxer %s.service"
 
-#: shared/podman/systemd.go:286
+#: shared/podman/systemd.go:289
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "No s'ha pogut eliminar el fitxer %s"
 
-#: shared/podman/systemd.go:293
+#: shared/podman/systemd.go:296
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "Eliminaria %s si està buit"
 
-#: shared/podman/systemd.go:300
+#: shared/podman/systemd.go:303
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "La carpeta %s conté el fitxer creat per l'usuari. Si us plau, elimineu-los quan s'hagi completat la desinstal·lació."
 
-#: shared/podman/systemd.go:312
+#: shared/podman/systemd.go:315
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "S'escalaria %s a 0 rèpliques"
 
-#: shared/podman/systemd.go:315
+#: shared/podman/systemd.go:318
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "No s'ha pogut desactivar el servei %s"
 
-#: shared/podman/systemd.go:404
+#: shared/podman/systemd.go:407
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "El servei %[1]s ja té %[2]d rèpliques."
 
-#: shared/podman/systemd.go:407
+#: shared/podman/systemd.go:410
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "Escala %[1]s de %[2]d a %[3]d rèpliques."
 
-#: shared/podman/systemd.go:411
+#: shared/podman/systemd.go:414
 msgid "cannot enable service"
 msgstr "no es pot activar el servei"
 
-#: shared/podman/systemd.go:417
+#: shared/podman/systemd.go:420
 msgid "cannot disable service"
 msgstr "no es pot desactivar el servei"
 
-#: shared/podman/systemd.go:427
+#: shared/podman/systemd.go:430
 msgid "failed to show %[1]s property of %[2] systemd service"
 msgstr "No s'ha pogut mostrar la propietat %[1]s del servei systemd %[2]"
 
-#: shared/podman/systemd.go:444
+#: shared/podman/systemd.go:447
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "no s'ha pogut crear la carpeta %s"
 
-#: shared/podman/systemd.go:454
+#: shared/podman/systemd.go:457
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "no es pot escriure el fitxer %s"
 
-#: shared/podman/systemd.go:499
+#: shared/podman/systemd.go:502
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "no s'ha pogut escriure el fitxer %s"
 
-#: shared/podman/systemd.go:504
+#: shared/podman/systemd.go:507
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "no s'ha pogut eliminar l'antic fitxer de configuració del servei systemd %s"
@@ -1026,7 +854,7 @@ msgstr "No s'ha pogut importar el volum %s"
 msgid "Unable to restore selinux context for %s, manual action is required"
 msgstr "No es pot restaurar el context de selinux per a %s, cal una acció manual."
 
-#: shared/podman/utils.go:366
+#: shared/podman/utils.go:376 shared/podman/utils.go:399
 msgid "cannot inspect data"
 msgstr "no es poden inspeccionar les dades"
 
@@ -1188,11 +1016,11 @@ msgstr "Clau SSL no vàlida, probablement està encriptada"
 msgid "failed to validate hostname %s"
 msgstr "no s'ha pogut validar el nom d'amfitrió %s"
 
-#: shared/utils/cmd.go:118
+#: shared/utils/cmd.go:119
 msgid "cannot decode into Registry"
 msgstr "no es pot descodificar al registre"
 
-#: shared/utils/cmd.go:126
+#: shared/utils/cmd.go:127
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
@@ -1200,61 +1028,80 @@ msgstr ""
 "eina a utilitzar per arribar al contenidor. Valors possibles: 'podman', 'podman-remote', 'kubectl'.\n"
 "Endevinacions predeterminades que s'han d'utilitzar."
 
-#: shared/utils/cmd.go:142
+#: shared/utils/cmd.go:143
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr "estableix si s'han d'estirar les imatges o no. El valor pot ser un de 'Never', 'IfNotPresent' o 'Always'"
 
-#: shared/utils/cmd.go:146
+#: shared/utils/cmd.go:147
 msgid "Specify a registry where to pull the images from"
 msgstr "Especifiqueu un registre des d'on treure les imatges"
 
-#: shared/utils/cmd.go:149
+#: shared/utils/cmd.go:150
 msgid "Specify a registry where to pull the images from. It will be concatenated with image name"
 msgstr "Especifiqueu un registre des d'on extreure les imatges. Es concatenarà amb el nom de la imatge."
 
-#: shared/utils/cmd.go:150
+#: shared/utils/cmd.go:151
 msgid "User if registry requires an authentication"
 msgstr "Usuari, si el registre requereix autenticació"
 
-#: shared/utils/cmd.go:151
+#: shared/utils/cmd.go:152
 msgid "Password if registry requires an authentication"
 msgstr "Contrasenya, si el registre requereix autenticació"
 
-#: shared/utils/cmd.go:153
+#: shared/utils/cmd.go:154
 msgid "Registry Flags"
 msgstr "Banderes del registre"
 
-#: shared/utils/cmd.go:161
+#: shared/utils/cmd.go:162
 msgid "PTF ID"
 msgstr "ID PTF"
 
-#: shared/utils/cmd.go:162
+#: shared/utils/cmd.go:163
 msgid "Test package ID"
 msgstr "ID del paquet de prova"
 
-#: shared/utils/cmd.go:163
+#: shared/utils/cmd.go:164
 msgid "SCC user"
 msgstr "Usuari SCC"
 
-#: shared/utils/cmd.go:181
+#: shared/utils/cmd.go:182
 msgid "Actually remove the server"
 msgstr "Elimina el servidor"
 
-#: shared/utils/cmd.go:182
+#: shared/utils/cmd.go:183
 msgid "Also remove the volumes"
 msgstr "Elimina també els volums"
 
-#: shared/utils/cmd.go:183
+#: shared/utils/cmd.go:184
 msgid "Also remove the container images"
 msgstr "Elimina també les imatges del contenidor"
 
-#: shared/utils/cmd.go:189 shared/utils/cmd.go:192
+#: shared/utils/cmd.go:190 shared/utils/cmd.go:193
 msgid "application log level"
 msgstr "nivell de registre de l'aplicació"
 
-#: shared/utils/cmd.go:195
+#: shared/utils/cmd.go:196
 msgid "Failed to hide --loglevel parameter"
 msgstr "No s'ha pogut ocultar el paràmetre --loglevel"
+
+#: shared/utils/cmd.go:202
+msgid "TFTPD"
+msgstr ""
+
+#: shared/utils/cmd.go:204
+msgid "Start the TFTP server container"
+msgstr ""
+
+#: shared/utils/cmd.go:221
+#, fuzzy, javascript-format
+#| msgid "failed to run %s container"
+msgid "Image for %s container"
+msgstr "no s'ha pogut executar el contenidor %s"
+
+#: shared/utils/cmd.go:223
+#, javascript-format
+msgid "Tag for %s container, overrides the global value if set"
+msgstr ""
 
 #: shared/utils/config.go:40
 #, javascript-format
@@ -1535,125 +1382,125 @@ msgstr "El fitxer %s ja està present, no se sobreescriu"
 msgid "failed to open %s for writing"
 msgstr "no s'ha pogut obrir %s per a escriptura"
 
-#: shared/utils/utils.go:59
+#: shared/utils/utils.go:58
 #, javascript-format
 msgid "Has to be more than %d character long"
 msgid_plural "Has to be more than %d characters long"
 msgstr[0] "Ha de tenir més d'%d caràcter"
 msgstr[1] "Ha de tenir més de %d caràcters"
 
-#: shared/utils/utils.go:63
+#: shared/utils/utils.go:62
 #, javascript-format
 msgid "Has to be less than %d character long"
 msgid_plural "Has to be less than %d characters long"
 msgstr[0] "Ha de tenir menys d'%d caràcter"
 msgstr[1] "Ha de tenir menys de %d caràcters"
 
-#: shared/utils/utils.go:74
+#: shared/utils/utils.go:73
 msgid "Failed to read password"
 msgstr "No s'ha pogut llegir la contrasenya"
 
-#: shared/utils/utils.go:88
+#: shared/utils/utils.go:87
 msgid "Cannot contain spaces or tabs"
 msgstr "No es poden contenir espais o pestanyes"
 
-#: shared/utils/utils.go:105 shared/utils/utils.go:128
-#: shared/utils/utils.go:141
+#: shared/utils/utils.go:104 shared/utils/utils.go:127
+#: shared/utils/utils.go:140
 msgid "not an interactive device, not asking for missing value"
 msgstr "no és un dispositiu interactiu, no es demana el valor que manca"
 
-#: shared/utils/utils.go:114
+#: shared/utils/utils.go:113
 msgid "Confirm the password"
 msgstr "Confirmeu la contrasenya"
 
-#: shared/utils/utils.go:116
+#: shared/utils/utils.go:115
 msgid "Two different passwords have been provided"
 msgstr "S'han proporcionat dues contrasenyes diferents"
 
-#: shared/utils/utils.go:150
+#: shared/utils/utils.go:149
 msgid "failed to read input"
 msgstr "no s'ha pogut llegir l'entrada"
 
-#: shared/utils/utils.go:158
+#: shared/utils/utils.go:157
 msgid "A value is required"
 msgstr "Es requereix un valor"
 
-#: shared/utils/utils.go:226 shared/utils/utils.go:248
+#: shared/utils/utils.go:225 shared/utils/utils.go:247
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "el nom de la imatge no és vàlid: %s"
 
-#: shared/utils/utils.go:230
+#: shared/utils/utils.go:229
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "falta l'etiqueta a %s"
 
-#: shared/utils/utils.go:235 shared/utils/utils.go:239
+#: shared/utils/utils.go:234 shared/utils/utils.go:238
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "El nom de la imatge calculada és %s"
 
-#: shared/utils/utils.go:266
+#: shared/utils/utils.go:265
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr "El camí de la imatge %[1]s no comença amb la ruta del registre %[2]s"
 
-#: shared/utils/utils.go:276
+#: shared/utils/utils.go:275
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "No s'ha pogut executar %s"
 
-#: shared/utils/utils.go:285
+#: shared/utils/utils.go:284
 msgid "Failed to read random data"
 msgstr "No s'han pogut llegir les dades aleatòries"
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:305
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "s'ha produït un error en baixar de %s"
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:311
 #, javascript-format
 msgid "bad status: %s"
 msgstr "estat incorrecte: %s"
 
-#: shared/utils/utils.go:425
+#: shared/utils/utils.go:424
 msgid "failed to compute server FQDN"
 msgstr "no s'ha pogut calcular el servidor FQDN"
 
-#: shared/utils/utils.go:439
+#: shared/utils/utils.go:438
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s no és un FQDN vàlid"
 
-#: shared/utils/utils.go:443
+#: shared/utils/utils.go:442
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "no es pot resoldre %s"
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:473
 #, javascript-format
 msgid "error creating file %s"
 msgstr "s'ha produït un error en crear el fitxer %s"
 
-#: shared/utils/utils.go:479
+#: shared/utils/utils.go:478
 #, javascript-format
 msgid "error writing file %s"
 msgstr "s'ha produït un error en escriure el fitxer %s"
 
-#: shared/utils/utils.go:491 shared/utils/utils.go:506
+#: shared/utils/utils.go:490 shared/utils/utils.go:505
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "No s'ha pogut calcular la suma de verificació del fitxer %s"
 
-#: shared/utils/utils.go:496
+#: shared/utils/utils.go:495
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "No s'ha pogut escriure la suma de verificació del fitxer %[1]s a %[2]s"
 
-#: shared/utils/utils.go:513
+#: shared/utils/utils.go:512
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "No s'ha pogut llegir la suma de verificació del fitxer %[1]s"
 
-#: shared/utils/utils.go:517
+#: shared/utils/utils.go:516
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "La suma de verificació de %s no coincideix"
@@ -1681,6 +1528,144 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "Base de dades"
+
+#, javascript-format
+#~ msgid "failed to create %s YAML file"
+#~ msgstr "no s'ha pogut crear el fitxer YAML %s"
+
+#, javascript-format
+#~ msgid "failed to close %s YAML file"
+#~ msgstr "no s'ha pogut tancar el fitxer YAML %s"
+
+#~ msgid "failed to write PVC to file"
+#~ msgstr "no s'ha pogut escriure el PVC al fitxer"
+
+#~ msgid "failed to upgrade helm chart %[1]s in namespace %[2]s"
+#~ msgstr "no s'ha pogut actualitzar el diagrama de helm %[1]s a l'espai de noms %[2]s"
+
+#~ msgid "failed to install helm chart %[1]s in namespace %[2]s"
+#~ msgstr "no s'ha pogut instal·lar el diagrama de helm %[1]s a l'espai de noms %[2]s"
+
+#~ msgid "namespace is required"
+#~ msgstr "l'espai de noms és obligatori"
+
+#, javascript-format
+#~ msgid "Uninstalling %s"
+#~ msgstr "S'està desinstal·lant %s"
+
+#, javascript-format
+#~ msgid "failed to run helm %s"
+#~ msgstr "no s'ha pogut executar el timó %s"
+
+#~ msgid "Installing K3s Traefik configuration"
+#~ msgstr "S'està instal·lant la configuració del Traefik del K3s"
+
+#~ msgid "Failed to write Traefik configuration"
+#~ msgstr "No s'ha pogut escriure la configuració del Traefik"
+
+#~ msgid "Waiting for Traefik to be reloaded"
+#~ msgstr "S'està esperant que el Traefik es torni a carregar"
+
+#~ msgid "Failed to reload Traefik"
+#~ msgstr "No s'ha pogut tornar a carregar Traefik"
+
+#~ msgid "Reinstalling Traefik without additionnal configuration"
+#~ msgstr "Reinstal·lació de Traefik sense configuració additiva"
+
+#~ msgid "failed to write empty traefik configuration"
+#~ msgstr "no s'ha pogut escriure la configuració de traefik buida"
+
+#~ msgid "failed to uninstall traefik configuration"
+#~ msgstr "no s'ha pogut desinstal·lar la configuració del traefik"
+
+#~ msgid "Would reinstall Traefik without additionnal configuration"
+#~ msgstr "Reinstal·laria Traefik sense configuració addicional"
+
+#~ msgid "failed to read the traefik configuration"
+#~ msgstr "No s'ha pogut llegir la configuració de Traefik"
+
+#~ msgid "traefik configuration file doesn't contain the helm chart version"
+#~ msgstr "El fitxer de configuració de Traefik no conté la versió del gràfic de Helm"
+
+#~ msgid "failed to find traefik helm chart version"
+#~ msgstr "No s'ha pogut trobar la versió del gràfic Traefik Helm"
+
+#~ msgid "failed to get pod commands to look for nginx controller"
+#~ msgstr "no s'han pogut obtenir les ordres pod per a cercar el controlador nginx"
+
+#~ msgid "failed to run kubectl get configMap %[1]s %[2]s"
+#~ msgstr "no s'ha pogut executar el kubectl get configMap %[1]s %[2]s"
+
+#~ msgid "failed to run kubectl get secret %[1]s %[2]s"
+#~ msgstr "no s'ha pogut executar el kubectl get secret %[1]s %[2]s"
+
+#, javascript-format
+#~ msgid "Failed to base64 decode secret %s"
+#~ msgstr "No s'ha pogut descodificar en base64 el secret %s"
+
+#, javascript-format
+#~ msgid "failed to create the %s docker secret"
+#~ msgstr "no s'ha pogut crear el secret de l'acoblador %s"
+
+#~ msgid "failed to get deployment image pull secret"
+#~ msgstr "no s'ha pogut obtenir el secret d'extracció de la imatge de desplegament"
+
+#~ msgid "Installing RKE2 Nginx configuration"
+#~ msgstr "S'està instal·lant la configuració de RKE2 Nginx"
+
+#~ msgid "Failed to write Rke2 nginx configuration"
+#~ msgstr "No s'ha pogut escriure la configuració de Nginx Rke2"
+
+#~ msgid "Waiting for Nginx controller to be reloaded"
+#~ msgstr "S'està esperant que es torni a carregar el controlador Nginx"
+
+#~ msgid ""
+#~ "\n"
+#~ "Note that removing the volumes could also be handled automatically depending on the StorageClass used\n"
+#~ "when installed on a kubernetes cluster.\n"
+#~ "\n"
+#~ "For instance on a default K3S install, the local-path-provider storage volumes will\n"
+#~ "be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
+#~ msgstr ""
+#~ "\n"
+#~ "Tingueu en compte que l'eliminació dels volums també es pot gestionar automàticament depenent de la classe d'emmagatzematge utilitzada\n"
+#~ "quan s'instal·la en un clúster de kubernetes.\n"
+#~ "\n"
+#~ "Per exemple, en una instal·lació predeterminada del K3S, els volums d'emmagatzematge del proveïdor de camins locals seran\n"
+#~ "s'eliminarà automàticament en suprimir el desplegament encara que no s'utilitzi l'argument --purge-volumes."
+
+#~ msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
+#~ msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
+#~ msgstr[0] "S'està esperant que el desplegament %[1]s estigui llest a l'espai de noms %[2]s\n"
+#~ msgstr[1] "S'està esperant que %[1]s desplegaments estigui llest a l'espai de noms %[2]s\n"
+
+#, javascript-format
+#~ msgid "all the pods of %s deployment have a failure"
+#~ msgstr "tots els pods del desplegament %s tenen un error"
+
+#, javascript-format
+#~ msgid "failed to list ReplicaSets for deployment %s"
+#~ msgstr "no s'ha pogut llistar els ReplicaSets per al desplegament %s"
+
+#, javascript-format
+#~ msgid "failed to get the %s deployment revision"
+#~ msgstr "no s'ha pogut obtenir la revisió de desplegament %s"
+
+#, javascript-format
+#~ msgid "invalid replicasset response: :%s"
+#~ msgstr "resposta del conjunt de rèpliques no vàlida: :%s"
+
+#, javascript-format
+#~ msgid "failed to find pods for owner reference %s"
+#~ msgstr "no s'han pogut trobar els pods per a la referència del propietari %s"
+
+#, javascript-format
+#~ msgid "failed to get the status of %s pod"
+#~ msgstr "no s'ha pogut obtenir l'estat de %s pod"
+
+#, javascript-format
+#~ msgid "%s is not a valid image pull policy value"
+#~ msgstr "%s no és un valor vàlid de política d'extracció d'imatges"
 
 #~ msgid "failed to parse the inspected data"
 #~ msgstr "no s'han pogut analitzar les dades inspeccionades"

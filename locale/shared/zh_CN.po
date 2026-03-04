@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: shared/kubernetes/k3s.go:133
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-16 16:46+0100\n"
+"POT-Creation-Date: 2026-03-01 10:57+0100\n"
 "PO-Revision-Date: 2025-11-26 10:53+0000\n"
 "Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -266,142 +265,14 @@ msgstr "无法复制 Tar 包"
 msgid "failed to remove %s file in the container"
 msgstr "无法去除容器中的 %s 文件"
 
-#: shared/kubernetes/apply.go:46
-#, javascript-format
-msgid "failed to create %s YAML file"
-msgstr "无法创建 %s YAML 文件"
-
-#: shared/kubernetes/apply.go:50
-#, javascript-format
-msgid "failed to close %s YAML file"
-msgstr "无法关闭 %s YAML 文件"
-
-#: shared/kubernetes/apply.go:57
-msgid "failed to write PVC to file"
-msgstr "无法将 PVC 写入文件"
-
-#: shared/kubernetes/helm.go:57
-msgid "failed to upgrade helm chart %[1]s in namespace %[2]s"
-msgstr "无法升级名称空间 %[2]s 中的 helm 图表 %[1]s"
-
-#: shared/kubernetes/helm.go:59
-msgid "failed to install helm chart %[1]s in namespace %[2]s"
-msgstr "无法在名称空间 %[2]s 中安装 helm 图表 %[1]s"
-
-#: shared/kubernetes/helm.go:68
-msgid "namespace is required"
-msgstr "必须指定名称空间"
-
-#: shared/kubernetes/helm.go:78 shared/podman/images.go:372
-#: shared/podman/images.go:393 shared/podman/images.go:413
-#: shared/podman/network.go:108 shared/podman/secret.go:130
-#: shared/podman/systemd.go:248 shared/podman/systemd.go:326
-#: shared/podman/systemd.go:327 shared/podman/utils.go:188
-#: shared/podman/utils.go:221 shared/podman/utils.go:250
-#, javascript-format
-msgid "Would run %s"
-msgstr "将运行 %s"
-
-#: shared/kubernetes/helm.go:80
-#, javascript-format
-msgid "Uninstalling %s"
-msgstr "正在卸装 %s"
-
-#: shared/kubernetes/helm.go:82
-#, javascript-format
-msgid "failed to run helm %s"
-msgstr "无法运行 helm %s"
-
-#: shared/kubernetes/k3s.go:27
-msgid "Installing K3s Traefik configuration"
-msgstr "正在安装 K3s Traefik 配置"
-
-#: shared/kubernetes/k3s.go:44
-msgid "Failed to write Traefik configuration"
-msgstr "无法写入 Traefik 配置"
-
-#: shared/kubernetes/k3s.go:81
-msgid "Waiting for Traefik to be reloaded"
-msgstr "正在等待重新加载 Traefik"
-
-#: shared/kubernetes/k3s.go:93
-msgid "Failed to reload Traefik"
-msgstr "无法重新加载 Traefik"
-
-#: shared/kubernetes/k3s.go:100
-msgid "Reinstalling Traefik without additionnal configuration"
-msgstr "重新安装 Traefik 而不使用额外的配置"
-
-#: shared/kubernetes/k3s.go:103
-msgid "failed to write empty traefik configuration"
-msgstr "无法写入空 Traefik 配置"
-
-#: shared/kubernetes/k3s.go:107
-msgid "failed to uninstall traefik configuration"
-msgstr "无法卸装 Traefik 配置"
-
-#: shared/kubernetes/k3s.go:111
-msgid "Would reinstall Traefik without additionnal configuration"
-msgstr "将重新安装 Traefik 而不使用额外的配置"
-
-#: shared/kubernetes/k3s.go:121
-msgid "failed to read the traefik configuration"
-msgstr "无法读取 Traefik 配置"
-
-#: shared/kubernetes/k3s.go:125
-msgid "traefik configuration file doesn't contain the helm chart version"
-msgstr "Traefik 配置文件不包含 helm 图表版本"
-
-#: shared/kubernetes/k3s.go:128
-msgid "failed to find traefik helm chart version"
-msgstr "找不到 Traefik helm 图表版本"
-
-#: shared/kubernetes/kubernetes.go:59
+#: shared/kubernetes/kubernetes.go:52
 msgid "failed to get kubelet version"
 msgstr "无法获取 kubelet 版本"
 
-#: shared/kubernetes/kubernetes.go:84
-msgid "failed to get pod commands to look for nginx controller"
-msgstr "无法获取用于查找 nginx 控制器的 pod 命令"
-
-#: shared/kubernetes/kubernetes.go:98
+#: shared/kubernetes/kubernetes.go:67
 #, javascript-format
 msgid "cannot stop %s"
 msgstr "无法停止 %s"
-
-#: shared/kubernetes/kubernetes.go:138
-msgid "failed to run kubectl get configMap %[1]s %[2]s"
-msgstr "kubectl get configMap %[1]s %[2]s 运行失败"
-
-#: shared/kubernetes/kubernetes.go:148
-msgid "failed to run kubectl get secret %[1]s %[2]s"
-msgstr "kubectl get secret %[1]s %[2]s 运行失败"
-
-#: shared/kubernetes/kubernetes.go:152
-#, javascript-format
-msgid "Failed to base64 decode secret %s"
-msgstr "无法对机密 %s 进行 base64 解码"
-
-#: shared/kubernetes/kubernetes.go:187
-#, javascript-format
-msgid "failed to create the %s docker secret"
-msgstr "无法创建 %s docker 机密"
-
-#: shared/kubernetes/kubernetes.go:231
-msgid "failed to get deployment image pull secret"
-msgstr "无法获取部署映像拉取机密"
-
-#: shared/kubernetes/rke2.go:21
-msgid "Installing RKE2 Nginx configuration"
-msgstr "正在安装 RKE2 Nginx 配置"
-
-#: shared/kubernetes/rke2.go:39
-msgid "Failed to write Rke2 nginx configuration"
-msgstr "无法写入 Rke2 nginx 配置"
-
-#: shared/kubernetes/rke2.go:43
-msgid "Waiting for Nginx controller to be reloaded"
-msgstr "正在等待重新加载 Nginx 控制器"
 
 #: shared/kubernetes/support.go:27
 msgid "cannot retrieve any configmap"
@@ -440,81 +311,25 @@ msgstr "无法提取 pod %s 的信息"
 msgid "failed to write in %s"
 msgstr "无法在 %s 中写入数据"
 
-#: shared/kubernetes/uninstall.go:13
-msgid ""
-"\n"
-"Note that removing the volumes could also be handled automatically depending on the StorageClass used\n"
-"when installed on a kubernetes cluster.\n"
-"\n"
-"For instance on a default K3S install, the local-path-provider storage volumes will\n"
-"be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
-msgstr ""
-"\n"
-"请注意，系统还可能会自动去除相应卷，具体取决于\n"
-"在 kubernetes 群集上安装时使用的 StorageClass。\n"
-"\n"
-"例如，在使用默认配置安装的 K3S 系统上，local-path-provider 存储卷将会在\n"
-"该部署被删除时自动去除，即使未使用 --purge-volumes 参数也是如此。"
-
-#: shared/kubernetes/utils.go:56
-msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
-msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
-msgstr[0] "正在等待 %[1]s 部署在 %[2]s 名称空间中就绪\n"
-
-#: shared/kubernetes/utils.go:119
-#, javascript-format
-msgid "all the pods of %s deployment have a failure"
-msgstr "%s 部署的所有 pod 都出现故障"
-
-#: shared/kubernetes/utils.go:148
-#, javascript-format
-msgid "failed to list ReplicaSets for deployment %s"
-msgstr "无法列出部署 %s 的 ReplicaSet"
-
-#: shared/kubernetes/utils.go:161
-#, javascript-format
-msgid "failed to get the %s deployment revision"
-msgstr "找不到 %s 部署修订版"
-
-#: shared/kubernetes/utils.go:169
-#, javascript-format
-msgid "invalid replicasset response: :%s"
-msgstr "replicasset 响应无效：%s"
-
-#: shared/kubernetes/utils.go:184
-#, javascript-format
-msgid "failed to find pods for owner reference %s"
-msgstr "找不到拥有者引用 %s 的 pod"
-
-#: shared/kubernetes/utils.go:210
-#, javascript-format
-msgid "failed to get the status of %s pod"
-msgstr "无法获取 %s pod 的状态"
-
-#: shared/kubernetes/utils.go:237
+#: shared/kubernetes/utils.go:59
 msgid "failed to parse deployment status"
 msgstr "无法分析部署状态"
 
-#: shared/kubernetes/utils.go:249
+#: shared/kubernetes/utils.go:71
 #, javascript-format
 msgid "cannot run kubectl %s"
 msgstr "无法运行 kubectl %s"
 
-#: shared/kubernetes/utils.go:266 shared/kubernetes/utils.go:287
+#: shared/kubernetes/utils.go:88 shared/kubernetes/utils.go:109
 #, javascript-format
 msgid "cannot execute %s"
 msgstr "无法执行 %s"
 
-#: shared/kubernetes/utils.go:295
+#: shared/kubernetes/utils.go:117
 msgid "invalid replicas result"
 msgstr "复本结果无效"
 
-#: shared/kubernetes/utils.go:324
-#, javascript-format
-msgid "%s is not a valid image pull policy value"
-msgstr "%s 不是有效的映像拉取策略值"
-
-#: shared/kubernetes/utils.go:343
+#: shared/kubernetes/utils.go:142
 #, javascript-format
 msgid "cannot find node name matching filter %s"
 msgstr "找不到与过滤器 %s 匹配的节点名称"
@@ -641,6 +456,16 @@ msgstr "正在运行 podman ps --filter=name=%s --format={{ .Image }}"
 msgid "cannot find any running image for container %s"
 msgstr "未找到容器 %s 的任何运行中映像"
 
+#: shared/podman/images.go:372 shared/podman/images.go:393
+#: shared/podman/images.go:413 shared/podman/network.go:108
+#: shared/podman/secret.go:146 shared/podman/systemd.go:251
+#: shared/podman/systemd.go:329 shared/podman/systemd.go:330
+#: shared/podman/utils.go:188 shared/podman/utils.go:221
+#: shared/podman/utils.go:250
+#, javascript-format
+msgid "Would run %s"
+msgstr "将运行 %s"
+
 #: shared/podman/images.go:374 shared/podman/images.go:395
 #: shared/podman/images.go:415 shared/podman/utils.go:190
 #: shared/podman/utils.go:224 shared/podman/utils.go:261
@@ -738,28 +563,32 @@ msgstr "无法去除网络 %s"
 msgid "Network removed"
 msgstr "已去除网络"
 
-#: shared/podman/secret.go:58 shared/podman/secret.go:70
-#: shared/podman/secret.go:74
+#: shared/podman/secret.go:56
+msgid "Secrets %[1]s and %[2]s, already exists"
+msgstr ""
+
+#: shared/podman/secret.go:74 shared/podman/secret.go:86
+#: shared/podman/secret.go:90
 #, javascript-format
 msgid "failed to create %s secret"
 msgstr "无法创建 %s 机密"
 
-#: shared/podman/secret.go:89
+#: shared/podman/secret.go:105
 #, javascript-format
 msgid "failed to write %s secret to file"
 msgstr "无法将 %s 机密写入文件"
 
-#: shared/podman/secret.go:104
+#: shared/podman/secret.go:120
 #, javascript-format
 msgid "failed to create podman secret %s"
 msgstr "无法创建 podman 机密 %s"
 
-#: shared/podman/secret.go:134
+#: shared/podman/secret.go:150
 #, javascript-format
 msgid "Failed to delete %s secret"
 msgstr "无法删除 %s 机密"
 
-#: shared/podman/secret.go:145
+#: shared/podman/secret.go:161
 #, fuzzy, javascript-format
 #| msgid "failed to connect to the server"
 msgid "failed to get the content of the %s secret"
@@ -822,133 +651,133 @@ msgstr "无法创建 %s 文件"
 msgid "failed to run journalctl -u %s"
 msgstr "无法运行 journalctl -u %s"
 
-#: shared/podman/systemd.go:107
+#: shared/podman/systemd.go:110
 #, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr "无法禁用 %s systemd 服务"
 
-#: shared/podman/systemd.go:117
+#: shared/podman/systemd.go:120
 msgid "failed to reset-failed systemd"
 msgstr "reset-failed systemd 失败"
 
-#: shared/podman/systemd.go:121
+#: shared/podman/systemd.go:124
 msgid "failed to reload systemd daemon"
 msgstr "无法重新加载 systemd 守护程序"
 
-#: shared/podman/systemd.go:138
+#: shared/podman/systemd.go:141
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "无法重启动 systemd %s.service"
 
-#: shared/podman/systemd.go:146
+#: shared/podman/systemd.go:149
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "无法启动 systemd %s.service"
 
-#: shared/podman/systemd.go:154
+#: shared/podman/systemd.go:157
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "无法停止 systemd %s.service"
 
-#: shared/podman/systemd.go:166
+#: shared/podman/systemd.go:169
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "无法启用 %s systemd 服务"
 
-#: shared/podman/systemd.go:178
+#: shared/podman/systemd.go:181
 #, fuzzy
 #| msgid "failed to get the %s deployment revision"
 msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "找不到 %s 部署修订版"
 
-#: shared/podman/systemd.go:245
+#: shared/podman/systemd.go:248
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "Systemd 没有 %s.service 单元"
 
-#: shared/podman/systemd.go:250
+#: shared/podman/systemd.go:253
 #, javascript-format
 msgid "Disable %s service"
 msgstr "禁用 %s 服务"
 
-#: shared/podman/systemd.go:265 shared/podman/systemd.go:282
+#: shared/podman/systemd.go:268 shared/podman/systemd.go:285
 #, javascript-format
 msgid "Would remove %s"
 msgstr "将去除 %s"
 
-#: shared/podman/systemd.go:268 shared/podman/systemd.go:284
+#: shared/podman/systemd.go:271 shared/podman/systemd.go:287
 #, javascript-format
 msgid "Remove %s"
 msgstr "去除 %s"
 
-#: shared/podman/systemd.go:270
+#: shared/podman/systemd.go:273
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "无法去除 %s.service 文件"
 
-#: shared/podman/systemd.go:286
+#: shared/podman/systemd.go:289
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "无法去除 %s 文件"
 
-#: shared/podman/systemd.go:293
+#: shared/podman/systemd.go:296
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "将去除 %s（如果为空）"
 
-#: shared/podman/systemd.go:300
+#: shared/podman/systemd.go:303
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "%s 文件夹包含该用户创建的文件。卸装完毕后，请去除这些文件。"
 
-#: shared/podman/systemd.go:312
+#: shared/podman/systemd.go:315
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "会将 %s 扩缩到 0 个复本"
 
-#: shared/podman/systemd.go:315
+#: shared/podman/systemd.go:318
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "无法禁用 %s 服务"
 
-#: shared/podman/systemd.go:404
+#: shared/podman/systemd.go:407
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "服务 %[1]s 已有 %[2]d 个复本。"
 
-#: shared/podman/systemd.go:407
+#: shared/podman/systemd.go:410
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "将 %[1]s 的复本数从 %[2]d 个扩缩到 %[3]d 个。"
 
-#: shared/podman/systemd.go:411
+#: shared/podman/systemd.go:414
 msgid "cannot enable service"
 msgstr "无法启用服务"
 
-#: shared/podman/systemd.go:417
+#: shared/podman/systemd.go:420
 msgid "cannot disable service"
 msgstr "无法禁用服务"
 
-#: shared/podman/systemd.go:427
+#: shared/podman/systemd.go:430
 #, fuzzy
 #| msgid "failed to get the %s deployment revision"
 msgid "failed to show %[1]s property of %[2] systemd service"
 msgstr "找不到 %s 部署修订版"
 
-#: shared/podman/systemd.go:444
+#: shared/podman/systemd.go:447
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "无法创建 %s 文件夹"
 
-#: shared/podman/systemd.go:454
+#: shared/podman/systemd.go:457
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "无法写入 %s 文件"
 
-#: shared/podman/systemd.go:499
+#: shared/podman/systemd.go:502
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "无法写入 %s 文件"
 
-#: shared/podman/systemd.go:504
+#: shared/podman/systemd.go:507
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "无法去除旧 %s systemd 服务配置文件"
@@ -1039,7 +868,7 @@ msgstr "无法导入卷 %s"
 msgid "Unable to restore selinux context for %s, manual action is required"
 msgstr ""
 
-#: shared/podman/utils.go:366
+#: shared/podman/utils.go:376 shared/podman/utils.go:399
 msgid "cannot inspect data"
 msgstr "无法检查数据"
 
@@ -1215,13 +1044,13 @@ msgstr "SSL 密钥无效，它可能已加密"
 msgid "failed to validate hostname %s"
 msgstr "无法在 %s 中写入数据"
 
-#: shared/utils/cmd.go:118
+#: shared/utils/cmd.go:119
 #, fuzzy
 #| msgid "cannot delete %s"
 msgid "cannot decode into Registry"
 msgstr "无法删除 %s"
 
-#: shared/utils/cmd.go:126
+#: shared/utils/cmd.go:127
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
@@ -1229,63 +1058,82 @@ msgstr ""
 "用于访问容器的工具。可能的值为：podman、podman-remote、kubectl。\n"
 "默认会推测应使用哪个工具。"
 
-#: shared/utils/cmd.go:142
+#: shared/utils/cmd.go:143
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
 msgstr "设置是否拉取映像。值可以是以下之一：'Never'、'IfNotPresent' 或 'Always'"
 
-#: shared/utils/cmd.go:146
+#: shared/utils/cmd.go:147
 msgid "Specify a registry where to pull the images from"
 msgstr ""
 
-#: shared/utils/cmd.go:149
+#: shared/utils/cmd.go:150
 msgid "Specify a registry where to pull the images from. It will be concatenated with image name"
 msgstr ""
 
-#: shared/utils/cmd.go:150
+#: shared/utils/cmd.go:151
 msgid "User if registry requires an authentication"
 msgstr ""
 
-#: shared/utils/cmd.go:151
+#: shared/utils/cmd.go:152
 msgid "Password if registry requires an authentication"
 msgstr ""
 
-#: shared/utils/cmd.go:153
+#: shared/utils/cmd.go:154
 msgid "Registry Flags"
 msgstr ""
 
-#: shared/utils/cmd.go:161
+#: shared/utils/cmd.go:162
 msgid "PTF ID"
 msgstr "PTF ID"
 
-#: shared/utils/cmd.go:162
+#: shared/utils/cmd.go:163
 msgid "Test package ID"
 msgstr "测试软件包 ID"
 
-#: shared/utils/cmd.go:163
+#: shared/utils/cmd.go:164
 msgid "SCC user"
 msgstr "SCC 用户"
 
-#: shared/utils/cmd.go:181
+#: shared/utils/cmd.go:182
 msgid "Actually remove the server"
 msgstr "真正去除服务器"
 
-#: shared/utils/cmd.go:182
+#: shared/utils/cmd.go:183
 msgid "Also remove the volumes"
 msgstr "同时去除卷"
 
-#: shared/utils/cmd.go:183
+#: shared/utils/cmd.go:184
 msgid "Also remove the container images"
 msgstr "同时去除容器映像"
 
-#: shared/utils/cmd.go:189 shared/utils/cmd.go:192
+#: shared/utils/cmd.go:190 shared/utils/cmd.go:193
 msgid "application log level"
 msgstr ""
 
-#: shared/utils/cmd.go:195
+#: shared/utils/cmd.go:196
 #, fuzzy
 #| msgid "Failed to find home directory"
 msgid "Failed to hide --loglevel parameter"
 msgstr "找不到主目录"
+
+#: shared/utils/cmd.go:202
+msgid "TFTPD"
+msgstr ""
+
+#: shared/utils/cmd.go:204
+msgid "Start the TFTP server container"
+msgstr ""
+
+#: shared/utils/cmd.go:221
+#, fuzzy, javascript-format
+#| msgid "failed to run %s container"
+msgid "Image for %s container"
+msgstr "无法运行 %s 容器"
+
+#: shared/utils/cmd.go:223
+#, javascript-format
+msgid "Tag for %s container, overrides the global value if set"
+msgstr ""
 
 #: shared/utils/config.go:40
 #, javascript-format
@@ -1569,125 +1417,125 @@ msgstr "%s 文件已存在，将不重写"
 msgid "failed to open %s for writing"
 msgstr "无法打开 %s 以写入数据"
 
-#: shared/utils/utils.go:59
+#: shared/utils/utils.go:58
 #, javascript-format
 msgid "Has to be more than %d character long"
 msgid_plural "Has to be more than %d characters long"
 msgstr[0] "包含的字符数必须大于 %d"
 
-#: shared/utils/utils.go:63
+#: shared/utils/utils.go:62
 #, javascript-format
 msgid "Has to be less than %d character long"
 msgid_plural "Has to be less than %d characters long"
 msgstr[0] "包含的字符数必须小于 %d"
 
-#: shared/utils/utils.go:74
+#: shared/utils/utils.go:73
 msgid "Failed to read password"
 msgstr "无法读取口令"
 
-#: shared/utils/utils.go:88
+#: shared/utils/utils.go:87
 msgid "Cannot contain spaces or tabs"
 msgstr "不得包含空格或制表符"
 
-#: shared/utils/utils.go:105 shared/utils/utils.go:128
-#: shared/utils/utils.go:141
+#: shared/utils/utils.go:104 shared/utils/utils.go:127
+#: shared/utils/utils.go:140
 msgid "not an interactive device, not asking for missing value"
 msgstr "不是交互设备，不提示提供缺少的值"
 
-#: shared/utils/utils.go:114
+#: shared/utils/utils.go:113
 msgid "Confirm the password"
 msgstr "确认口令"
 
-#: shared/utils/utils.go:116
+#: shared/utils/utils.go:115
 msgid "Two different passwords have been provided"
 msgstr "两次提供的口令不相同"
 
-#: shared/utils/utils.go:150
+#: shared/utils/utils.go:149
 msgid "failed to read input"
 msgstr "无法读取输入"
 
-#: shared/utils/utils.go:158
+#: shared/utils/utils.go:157
 msgid "A value is required"
 msgstr "必须提供值"
 
-#: shared/utils/utils.go:226 shared/utils/utils.go:248
+#: shared/utils/utils.go:225 shared/utils/utils.go:247
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "映像名称无效：%s"
 
-#: shared/utils/utils.go:230
+#: shared/utils/utils.go:229
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "%s 缺少标记"
 
-#: shared/utils/utils.go:235 shared/utils/utils.go:239
+#: shared/utils/utils.go:234 shared/utils/utils.go:238
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "计算的映像名称为 %s"
 
-#: shared/utils/utils.go:266
+#: shared/utils/utils.go:265
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr ""
 
-#: shared/utils/utils.go:276
+#: shared/utils/utils.go:275
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "无法运行 %s"
 
-#: shared/utils/utils.go:285
+#: shared/utils/utils.go:284
 msgid "Failed to read random data"
 msgstr "无法读取随机数据"
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:305
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "从 %s 下载时出错"
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:311
 #, javascript-format
 msgid "bad status: %s"
 msgstr "不良状态：%s"
 
-#: shared/utils/utils.go:425
+#: shared/utils/utils.go:424
 msgid "failed to compute server FQDN"
 msgstr "无法计算服务器 FQDN"
 
-#: shared/utils/utils.go:439
+#: shared/utils/utils.go:438
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s 不是有效 FQDN"
 
-#: shared/utils/utils.go:443
+#: shared/utils/utils.go:442
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "无法解析 %s"
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:473
 #, javascript-format
 msgid "error creating file %s"
 msgstr "创建文件 %s 时出错"
 
-#: shared/utils/utils.go:479
+#: shared/utils/utils.go:478
 #, javascript-format
 msgid "error writing file %s"
 msgstr "写入文件 %s 时出错"
 
-#: shared/utils/utils.go:491 shared/utils/utils.go:506
+#: shared/utils/utils.go:490 shared/utils/utils.go:505
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "无法计算文件 %s 的校验和"
 
-#: shared/utils/utils.go:496
+#: shared/utils/utils.go:495
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "无法将文件 %[1]s 的校验和写入 %[2]s"
 
-#: shared/utils/utils.go:513
+#: shared/utils/utils.go:512
 #, fuzzy
 #| msgid "Failed to calculate checksum of the file %s"
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "无法计算文件 %s 的校验和"
 
-#: shared/utils/utils.go:517
+#: shared/utils/utils.go:516
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "%s 的校验和不匹配"
@@ -1715,6 +1563,143 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "数据库"
+
+#, javascript-format
+#~ msgid "failed to create %s YAML file"
+#~ msgstr "无法创建 %s YAML 文件"
+
+#, javascript-format
+#~ msgid "failed to close %s YAML file"
+#~ msgstr "无法关闭 %s YAML 文件"
+
+#~ msgid "failed to write PVC to file"
+#~ msgstr "无法将 PVC 写入文件"
+
+#~ msgid "failed to upgrade helm chart %[1]s in namespace %[2]s"
+#~ msgstr "无法升级名称空间 %[2]s 中的 helm 图表 %[1]s"
+
+#~ msgid "failed to install helm chart %[1]s in namespace %[2]s"
+#~ msgstr "无法在名称空间 %[2]s 中安装 helm 图表 %[1]s"
+
+#~ msgid "namespace is required"
+#~ msgstr "必须指定名称空间"
+
+#, javascript-format
+#~ msgid "Uninstalling %s"
+#~ msgstr "正在卸装 %s"
+
+#, javascript-format
+#~ msgid "failed to run helm %s"
+#~ msgstr "无法运行 helm %s"
+
+#~ msgid "Installing K3s Traefik configuration"
+#~ msgstr "正在安装 K3s Traefik 配置"
+
+#~ msgid "Failed to write Traefik configuration"
+#~ msgstr "无法写入 Traefik 配置"
+
+#~ msgid "Waiting for Traefik to be reloaded"
+#~ msgstr "正在等待重新加载 Traefik"
+
+#~ msgid "Failed to reload Traefik"
+#~ msgstr "无法重新加载 Traefik"
+
+#~ msgid "Reinstalling Traefik without additionnal configuration"
+#~ msgstr "重新安装 Traefik 而不使用额外的配置"
+
+#~ msgid "failed to write empty traefik configuration"
+#~ msgstr "无法写入空 Traefik 配置"
+
+#~ msgid "failed to uninstall traefik configuration"
+#~ msgstr "无法卸装 Traefik 配置"
+
+#~ msgid "Would reinstall Traefik without additionnal configuration"
+#~ msgstr "将重新安装 Traefik 而不使用额外的配置"
+
+#~ msgid "failed to read the traefik configuration"
+#~ msgstr "无法读取 Traefik 配置"
+
+#~ msgid "traefik configuration file doesn't contain the helm chart version"
+#~ msgstr "Traefik 配置文件不包含 helm 图表版本"
+
+#~ msgid "failed to find traefik helm chart version"
+#~ msgstr "找不到 Traefik helm 图表版本"
+
+#~ msgid "failed to get pod commands to look for nginx controller"
+#~ msgstr "无法获取用于查找 nginx 控制器的 pod 命令"
+
+#~ msgid "failed to run kubectl get configMap %[1]s %[2]s"
+#~ msgstr "kubectl get configMap %[1]s %[2]s 运行失败"
+
+#~ msgid "failed to run kubectl get secret %[1]s %[2]s"
+#~ msgstr "kubectl get secret %[1]s %[2]s 运行失败"
+
+#, javascript-format
+#~ msgid "Failed to base64 decode secret %s"
+#~ msgstr "无法对机密 %s 进行 base64 解码"
+
+#, javascript-format
+#~ msgid "failed to create the %s docker secret"
+#~ msgstr "无法创建 %s docker 机密"
+
+#~ msgid "failed to get deployment image pull secret"
+#~ msgstr "无法获取部署映像拉取机密"
+
+#~ msgid "Installing RKE2 Nginx configuration"
+#~ msgstr "正在安装 RKE2 Nginx 配置"
+
+#~ msgid "Failed to write Rke2 nginx configuration"
+#~ msgstr "无法写入 Rke2 nginx 配置"
+
+#~ msgid "Waiting for Nginx controller to be reloaded"
+#~ msgstr "正在等待重新加载 Nginx 控制器"
+
+#~ msgid ""
+#~ "\n"
+#~ "Note that removing the volumes could also be handled automatically depending on the StorageClass used\n"
+#~ "when installed on a kubernetes cluster.\n"
+#~ "\n"
+#~ "For instance on a default K3S install, the local-path-provider storage volumes will\n"
+#~ "be automatically removed when deleting the deployment even if --purge-volumes argument is not used."
+#~ msgstr ""
+#~ "\n"
+#~ "请注意，系统还可能会自动去除相应卷，具体取决于\n"
+#~ "在 kubernetes 群集上安装时使用的 StorageClass。\n"
+#~ "\n"
+#~ "例如，在使用默认配置安装的 K3S 系统上，local-path-provider 存储卷将会在\n"
+#~ "该部署被删除时自动去除，即使未使用 --purge-volumes 参数也是如此。"
+
+#~ msgid "Waiting for %[1]s deployment to be ready in %[2]s namespace\n"
+#~ msgid_plural "Waiting for %[1]s deployments to be ready in %[2]s namespace\n"
+#~ msgstr[0] "正在等待 %[1]s 部署在 %[2]s 名称空间中就绪\n"
+
+#, javascript-format
+#~ msgid "all the pods of %s deployment have a failure"
+#~ msgstr "%s 部署的所有 pod 都出现故障"
+
+#, javascript-format
+#~ msgid "failed to list ReplicaSets for deployment %s"
+#~ msgstr "无法列出部署 %s 的 ReplicaSet"
+
+#, javascript-format
+#~ msgid "failed to get the %s deployment revision"
+#~ msgstr "找不到 %s 部署修订版"
+
+#, javascript-format
+#~ msgid "invalid replicasset response: :%s"
+#~ msgstr "replicasset 响应无效：%s"
+
+#, javascript-format
+#~ msgid "failed to find pods for owner reference %s"
+#~ msgstr "找不到拥有者引用 %s 的 pod"
+
+#, javascript-format
+#~ msgid "failed to get the status of %s pod"
+#~ msgstr "无法获取 %s pod 的状态"
+
+#, javascript-format
+#~ msgid "%s is not a valid image pull policy value"
+#~ msgstr "%s 不是有效的映像拉取策略值"
 
 #~ msgid "failed to parse the inspected data"
 #~ msgstr "无法分析检查的数据"
