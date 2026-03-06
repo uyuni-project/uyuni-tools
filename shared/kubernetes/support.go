@@ -26,52 +26,36 @@ func RunSupportConfigOnKubernetesHost(dir string, namespace string, filter strin
 	// Collect cluster-wide information
 	if clusterInfoFilename, err := fetchClusterInfo(dir); err == nil {
 		files = append(files, clusterInfoFilename)
-	} else {
-		log.Warn().Msg(L("cannot retrieve cluster info"))
 	}
 
 	if nodeFilename, err := fetchNodeInfo(dir); err == nil {
 		files = append(files, nodeFilename)
-	} else {
-		log.Warn().Msg(L("cannot retrieve node information"))
 	}
 
 	if eventsFilename, err := fetchEvents(dir, namespace); err == nil {
 		files = append(files, eventsFilename)
-	} else {
-		log.Warn().Msg(L("cannot retrieve events"))
 	}
 
 	// Collect namespace-specific resources
 	if configmapFilename, err := fetchConfigMap(dir, namespace); err == nil {
 		files = append(files, configmapFilename)
-	} else {
-		log.Warn().Msg(L("cannot retrieve any configmap"))
 	}
 
 	if deploymentFilename, err := fetchDeployments(dir, namespace); err == nil {
 		files = append(files, deploymentFilename)
-	} else {
-		log.Warn().Msg(L("cannot retrieve deployments"))
 	}
 
 	if serviceFilename, err := fetchServices(dir, namespace); err == nil {
 		files = append(files, serviceFilename)
-	} else {
-		log.Warn().Msg(L("cannot retrieve services"))
 	}
 
 	if podFilenames, err := fetchPodYaml(dir, namespace, filter); err == nil {
 		files = append(files, podFilenames...)
-	} else {
-		log.Warn().Msg(L("cannot retrieve any pod"))
 	}
 
 	// Collect Helm release information
 	if helmFilename, err := fetchHelmReleases(dir, namespace); err == nil {
 		files = append(files, helmFilename)
-	} else {
-		log.Warn().Msg(L("cannot retrieve Helm releases"))
 	}
 
 	return files, nil
