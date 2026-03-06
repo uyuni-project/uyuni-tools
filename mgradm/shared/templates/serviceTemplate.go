@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -51,6 +51,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret {{ .CertSecret }},type=mount,target={{ .CertPath }} \
 	--secret {{ .KeySecret }},type=mount,target={{ .KeyPath }} \
 	--secret {{ .DBCaSecret }},type=mount,target={{ .DBCaPath }} \
+	--health-on-failure=stop \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 
 ExecStop=/usr/bin/podman exec \

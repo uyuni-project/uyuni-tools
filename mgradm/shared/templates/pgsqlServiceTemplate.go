@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -53,6 +53,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
         -v {{ .Name }}:{{ .MountPath }} \
         {{- end }}
 	--network {{ .Network }} \
+	--health-on-failure=stop \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 ExecStop=/usr/bin/podman stop \
 	--ignore -t 10 \
