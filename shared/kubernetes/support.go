@@ -236,7 +236,7 @@ func fetchHelmReleases(dir string, namespace string) (string, error) {
 		return "", utils.Errorf(err, L("cannot list Helm releases"))
 	}
 
-	_, err = helmFile.WriteString("==== Helm List ====\n" + string(out) + "\n")
+	_, err = helmFile.WriteString("Helm List\n" + string(out) + "\n")
 	if err != nil {
 		return "", err
 	}
@@ -249,7 +249,7 @@ func fetchHelmReleases(dir string, namespace string) (string, error) {
 			log.Warn().Msgf(L("cannot get values for Helm release %s"), release)
 			continue
 		}
-		_, err = helmFile.WriteString(fmt.Sprintf("==== Helm Values: %s ====\n%s\n", release, string(out)))
+		_, err = helmFile.WriteString(fmt.Sprintf("Helm Values: %s\n%s\n", release, string(out)))
 		if err != nil {
 			log.Warn().Msgf(L("cannot write values for Helm release %s"), release)
 			continue
