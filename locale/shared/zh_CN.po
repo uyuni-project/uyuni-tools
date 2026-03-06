@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-01 10:57+0100\n"
-"PO-Revision-Date: 2026-03-06 06:04+0000\n"
+"PO-Revision-Date: 2026-03-06 10:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -662,7 +662,7 @@ msgstr "无法重新加载 systemd 守护程序"
 #: shared/podman/systemd.go:141
 #, javascript-format
 msgid "failed to restart systemd %s.service"
-msgstr "无法重启动 systemd %s.service"
+msgstr "无法重启 systemd %s.service"
 
 #: shared/podman/systemd.go:149
 #, javascript-format
