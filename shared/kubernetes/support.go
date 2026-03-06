@@ -24,61 +24,37 @@ func RunSupportConfigOnKubernetesHost(dir string, namespace string, filter strin
 	}
 
 	// Collect cluster-wide information
-	clusterInfoFilename, err := fetchClusterInfo(dir)
-	if err != nil {
-		log.Warn().Msg(L("cannot retrieve cluster info"))
-	} else {
+	if clusterInfoFilename, err := fetchClusterInfo(dir); err == nil {
 		files = append(files, clusterInfoFilename)
 	}
 
-	nodeFilename, err := fetchNodeInfo(dir)
-	if err != nil {
-		log.Warn().Msg(L("cannot retrieve node information"))
-	} else {
+	if nodeFilename, err := fetchNodeInfo(dir); err == nil {
 		files = append(files, nodeFilename)
 	}
 
-	eventsFilename, err := fetchEvents(dir, namespace)
-	if err != nil {
-		log.Warn().Msg(L("cannot retrieve events"))
-	} else {
+	if eventsFilename, err := fetchEvents(dir, namespace); err == nil {
 		files = append(files, eventsFilename)
 	}
 
 	// Collect namespace-specific resources
-	configmapFilename, err := fetchConfigMap(dir, namespace)
-	if err != nil {
-		log.Warn().Msg(L("cannot retrieve any configmap"))
-	} else {
+	if configmapFilename, err := fetchConfigMap(dir, namespace); err == nil {
 		files = append(files, configmapFilename)
 	}
 
-	deploymentFilename, err := fetchDeployments(dir, namespace)
-	if err != nil {
-		log.Warn().Msg(L("cannot retrieve deployments"))
-	} else {
+	if deploymentFilename, err := fetchDeployments(dir, namespace); err == nil {
 		files = append(files, deploymentFilename)
 	}
 
-	serviceFilename, err := fetchServices(dir, namespace)
-	if err != nil {
-		log.Warn().Msg(L("cannot retrieve services"))
-	} else {
+	if serviceFilename, err := fetchServices(dir, namespace); err == nil {
 		files = append(files, serviceFilename)
 	}
 
-	podFilename, err := fetchPodYaml(dir, namespace, filter)
-	if err != nil {
-		log.Warn().Msg(L("cannot retrieve any pod"))
-	} else {
-		files = append(files, podFilename...)
+	if podFilenames, err := fetchPodYaml(dir, namespace, filter); err == nil {
+		files = append(files, podFilenames...)
 	}
 
 	// Collect Helm release information
-	helmFilename, err := fetchHelmReleases(dir, namespace)
-	if err != nil {
-		log.Warn().Msg(L("cannot retrieve Helm releases"))
-	} else {
+	if helmFilename, err := fetchHelmReleases(dir, namespace); err == nil {
 		files = append(files, helmFilename)
 	}
 
