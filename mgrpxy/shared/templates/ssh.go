@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -21,7 +21,7 @@ After=uyuni-proxy-pod.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-Restart=on-failure
+Restart=on-success
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-ssh.pid %t/uyuni-proxy-ssh.ctr-id
 
 ExecStart=/bin/sh -c '/usr/bin/podman run \
@@ -35,6 +35,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	-v {{ .HTTPProxyFile }}:{{ .HTTPProxyFile }}:ro \
 	{{- end }}
 	${SSH_EXTRA_CONF} --name uyuni-proxy-ssh \
+	--health-on-failure=stop \
 	${UYUNI_IMAGE}'
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/uyuni-proxy-ssh.ctr-id -t 10
