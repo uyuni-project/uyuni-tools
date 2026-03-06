@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-01 10:57+0100\n"
-"PO-Revision-Date: 2025-11-26 10:56+0000\n"
-"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
+"PO-Revision-Date: 2026-03-06 14:04+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.1\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -490,25 +490,20 @@ msgstr "イメージ %s の復元に失敗しました"
 
 #: shared/podman/login.go:28
 msgid "Registry is registry.suse.com. Using SCC credentials."
-msgstr ""
+msgstr "レジストリはregistry.suse.comです。SCC資格情報を使用します。"
 
 #: shared/podman/login.go:30
-#, fuzzy
-#| msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
 msgid "SCC credentials has been provided, SCChost credentials will be ignored."
-msgstr "SCC資格情報パラメータが使用されます。ホストからのSCC資格情報は無視されます。"
+msgstr "SCC資格情報が提供されているため、SCChost資格情報は無視されます。"
 
 #: shared/podman/login.go:35
-#, fuzzy
-#| msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
 msgid "Registry parameters will be used. SCC credentials from host will be ignored."
-msgstr "SCC資格情報パラメータが使用されます。ホストからのSCC資格情報は無視されます。"
+msgstr "レジストリパラメータが使用されます。ホストからのSCC資格情報は無視されます。"
 
 #: shared/podman/login.go:60 shared/podman/login.go:66
-#, fuzzy, javascript-format
-#| msgid "failed to get the status of %s pod"
+#, javascript-format
 msgid "failed to set authentication for %s"
-msgstr "%s ポッドのステータスを取得できませんでした"
+msgstr "%s の認証を設定できませんでした"
 
 #: shared/podman/login.go:72
 #, fuzzy, javascript-format
@@ -685,10 +680,8 @@ msgid "failed to enable %s systemd service"
 msgstr "%s systemdサービスを有効にできませんでした"
 
 #: shared/podman/systemd.go:181
-#, fuzzy
-#| msgid "failed to get the %s deployment revision"
 msgid "Failed to get the %[1]s property from %[2]s service"
-msgstr "%s 配備リビジョンを取得できませんでした"
+msgstr "%[2]s サービスから %[1]s プロパティを取得できませんでした"
 
 #: shared/podman/systemd.go:248
 #, javascript-format
@@ -829,10 +822,9 @@ msgid "failed to get %s systemd service definition"
 msgstr "%s systemdサービス定義の取得に失敗しました"
 
 #: shared/podman/utils.go:163
-#, fuzzy, javascript-format
-#| msgid "no UYUNI_IMAGE defined in %s systemd service"
+#, javascript-format
 msgid "no UYUNI.*_IMAGE defined in %s systemd service"
-msgstr "%s systemdサービスにUYUNI_IMAGEが定義されていません"
+msgstr "%s systemdサービスにUYUNI.*_IMAGEが定義されていません"
 
 #: shared/podman/utils.go:202
 #, javascript-format
@@ -866,7 +858,7 @@ msgstr "ボリューム %s のインポートに失敗しました"
 #: shared/podman/utils.go:267
 #, javascript-format
 msgid "Unable to restore selinux context for %s, manual action is required"
-msgstr ""
+msgstr "%s のselinuxコンテキストを復元できません。手動操作が必要です"
 
 #: shared/podman/utils.go:376 shared/podman/utils.go:399
 msgid "cannot inspect data"
@@ -1045,10 +1037,8 @@ msgid "failed to validate hostname %s"
 msgstr "%s への書き込みに失敗しました"
 
 #: shared/utils/cmd.go:119
-#, fuzzy
-#| msgid "cannot delete %s"
 msgid "cannot decode into Registry"
-msgstr "%s を削除できません"
+msgstr "レジストリにデコードできません"
 
 #: shared/utils/cmd.go:127
 msgid ""
@@ -1064,23 +1054,23 @@ msgstr "イメージをプルするかどうかを設定します。値は 「Ne
 
 #: shared/utils/cmd.go:147
 msgid "Specify a registry where to pull the images from"
-msgstr ""
+msgstr "イメージをプルするレジストリを指定します"
 
 #: shared/utils/cmd.go:150
 msgid "Specify a registry where to pull the images from. It will be concatenated with image name"
-msgstr ""
+msgstr "イメージをプルするレジストリを指定します。これはイメージ名と連結されます"
 
 #: shared/utils/cmd.go:151
 msgid "User if registry requires an authentication"
-msgstr ""
+msgstr "レジストリが認証を必要とする場合はユーザ名"
 
 #: shared/utils/cmd.go:152
 msgid "Password if registry requires an authentication"
-msgstr ""
+msgstr "レジストリが認証を必要とする場合はパスワード"
 
 #: shared/utils/cmd.go:154
 msgid "Registry Flags"
-msgstr ""
+msgstr "レジストリフラグ"
 
 #: shared/utils/cmd.go:162
 msgid "PTF ID"
@@ -1108,13 +1098,11 @@ msgstr "コンテナイメージも削除する"
 
 #: shared/utils/cmd.go:190 shared/utils/cmd.go:193
 msgid "application log level"
-msgstr ""
+msgstr "アプリケーションログレベル"
 
 #: shared/utils/cmd.go:196
-#, fuzzy
-#| msgid "Failed to find home directory"
 msgid "Failed to hide --loglevel parameter"
-msgstr "ホームディレクトリの検索に失敗しました"
+msgstr "--loglevelパラメータの非表示に失敗しました"
 
 #: shared/utils/cmd.go:202
 msgid "TFTPD"
@@ -1473,7 +1461,7 @@ msgstr "計算されたイメージ名は %s です"
 
 #: shared/utils/utils.go:265
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
-msgstr ""
+msgstr "イメージパス '%[1]s' はレジストリパス '%[2]s' で始まっていません"
 
 #: shared/utils/utils.go:275
 #, javascript-format
@@ -1528,10 +1516,8 @@ msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "ファイル %[1]s のチェックサムを %[2]s に書き込めませんでした"
 
 #: shared/utils/utils.go:512
-#, fuzzy
-#| msgid "Failed to calculate checksum of the file %s"
 msgid "Failed to read checksum of the file %[1]s"
-msgstr "ファイル %s のチェックサムの計算に失敗しました"
+msgstr "ファイル %[1]s のチェックサムの読み取りに失敗しました"
 
 #: shared/utils/utils.go:516
 #, javascript-format
