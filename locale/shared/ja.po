@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-01 10:57+0100\n"
-"PO-Revision-Date: 2026-03-06 14:04+0000\n"
+"PO-Revision-Date: 2026-03-07 12:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.16.1\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -1517,7 +1517,7 @@ msgstr "ファイル %[1]s のチェックサムを %[2]s に書き込めませ�
 
 #: shared/utils/utils.go:512
 msgid "Failed to read checksum of the file %[1]s"
-msgstr "ファイル %[1]s のチェックサムの読み取りに失敗しました"
+msgstr "ファイル %[1]s のチェックサムの読み込みに失敗しました"
 
 #: shared/utils/utils.go:516
 #, javascript-format
