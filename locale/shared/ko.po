@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-01 10:57+0100\n"
-"PO-Revision-Date: 2025-11-26 10:58+0000\n"
-"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
+"PO-Revision-Date: 2026-03-08 07:04+0000\n"
+"Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -122,6 +122,7 @@ msgid "no credentials loaded"
 msgstr "자격 증명이 로드되지 않음"
 
 #: shared/api/credentials.go:101
+#, fuzzy
 msgid "specified api server does not match with stored credentials"
 msgstr "지정된 API 서버가 저장된 자격 증명과 일치하지 않음"
 
@@ -489,26 +490,25 @@ msgid "Failed to restore image %s"
 msgstr "%s 이미지를 복원하지 못함"
 
 #: shared/podman/login.go:28
+#, fuzzy
 msgid "Registry is registry.suse.com. Using SCC credentials."
-msgstr ""
+msgstr "레지스트리는 registry.suse.com입니다. SCC 자격 증명을 사용합니다."
 
 #: shared/podman/login.go:30
 #, fuzzy
-#| msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
 msgid "SCC credentials has been provided, SCChost credentials will be ignored."
-msgstr "SCC 자격 증명 매개변수가 사용됩니다. 호스트의 SCC 자격 증명은 무시됩니다."
+msgstr "SCC 자격 증명이 제공되었습니다. SCC 호스트 자격 증명은 무시됩니다."
 
 #: shared/podman/login.go:35
 #, fuzzy
-#| msgid "SCC credentials parameters will be used. SCC credentials from host will be ignored."
 msgid "Registry parameters will be used. SCC credentials from host will be ignored."
-msgstr "SCC 자격 증명 매개변수가 사용됩니다. 호스트의 SCC 자격 증명은 무시됩니다."
+msgstr "레지스트리 매개변수가 사용됩니다. 호스트의 SCC 자격 증명은 무시됩니다."
 
 #: shared/podman/login.go:60 shared/podman/login.go:66
 #, fuzzy, javascript-format
 #| msgid "failed to get the status of %s pod"
 msgid "failed to set authentication for %s"
-msgstr "%s 포드에 대한 상태를 가져오지 못함"
+msgstr "%s에 대한 인증을 설정하지 못함"
 
 #: shared/podman/login.go:72
 #, fuzzy, javascript-format
@@ -686,9 +686,8 @@ msgstr "%s systemd service를 활성화하지 못함"
 
 #: shared/podman/systemd.go:181
 #, fuzzy
-#| msgid "failed to get the %s deployment revision"
 msgid "Failed to get the %[1]s property from %[2]s service"
-msgstr "%s 배포 개정 가져오기 실패"
+msgstr "%[2]s 서비스에서 %[1]s 등록정보를 가져오지 못함"
 
 #: shared/podman/systemd.go:248
 #, javascript-format
@@ -796,12 +795,14 @@ msgid "failed to run %s container"
 msgstr "%s 컨테이너를 실행하지 못함"
 
 #: shared/podman/utils.go:132
+#, fuzzy
 msgid "Would run podman kill %[1]s for container id %[2]s"
-msgstr "컨테이너 ID: %[2]s에 대해 podman kill %[1]s을(를) 실행하시겠습니까?"
+msgstr "컨테이너 ID %[2]s에 대해 podman kill %[1]s을(를) 실행하시겠습니까?"
 
 #: shared/podman/utils.go:133
+#, fuzzy
 msgid "Would run podman remove %[1]s for container id %[2]s"
-msgstr "컨테이너 ID: %[2]s에 대해 podman remove %[1]s을(를) 실행하시겠습니까?"
+msgstr "컨테이너 ID %[2]s에 대해 podman remove %[1]s을(를) 실행하시겠습니까?"
 
 #: shared/podman/utils.go:135
 msgid "Run podman kill %[1]s for container id %[2]s"
@@ -832,7 +833,7 @@ msgstr "%s systemd 서비스 정의를 가져오지 못함"
 #, fuzzy, javascript-format
 #| msgid "no UYUNI_IMAGE defined in %s systemd service"
 msgid "no UYUNI.*_IMAGE defined in %s systemd service"
-msgstr "%s systemd 서비스에 정의된 UYUNI_IMAGE 없음"
+msgstr "%s systemd 서비스에 정의된 UYUNI.*_IMAGE 없음"
 
 #: shared/podman/utils.go:202
 #, javascript-format
@@ -864,9 +865,9 @@ msgid "Failed to import volume %s"
 msgstr "%s 볼륨 가져오기 실패"
 
 #: shared/podman/utils.go:267
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Unable to restore selinux context for %s, manual action is required"
-msgstr ""
+msgstr "%s의 selinux 컨텍스트를 복원할 수 없습니다. 수동 작업이 필요합니다."
 
 #: shared/podman/utils.go:376 shared/podman/utils.go:399
 msgid "cannot inspect data"
@@ -1048,7 +1049,7 @@ msgstr "%s에 쓰기 실패"
 #, fuzzy
 #| msgid "cannot delete %s"
 msgid "cannot decode into Registry"
-msgstr "%s을(를) 삭제할 수 없음"
+msgstr "레지스트리로 디코딩할 수 없음"
 
 #: shared/utils/cmd.go:127
 msgid ""
@@ -1063,24 +1064,29 @@ msgid "set whether to pull the images or not. The value can be one of 'Never', '
 msgstr "이미지를 가져올지 여부를 설정합니다. 값은 'Never', 'IfNotPresent' 또는 'Always' 중 하나를 사용할 수 있습니다."
 
 #: shared/utils/cmd.go:147
+#, fuzzy
 msgid "Specify a registry where to pull the images from"
-msgstr ""
+msgstr "이미지를 가져올 레지스트리를 지정하십시오."
 
 #: shared/utils/cmd.go:150
+#, fuzzy
 msgid "Specify a registry where to pull the images from. It will be concatenated with image name"
-msgstr ""
+msgstr "이미지를 가져올 레지스트리를 지정하십시오. 이 레지스트리는 이미지 이름과 연결됩니다."
 
 #: shared/utils/cmd.go:151
+#, fuzzy
 msgid "User if registry requires an authentication"
-msgstr ""
+msgstr "레지스트리가 인증을 요구하는 경우의 사용자"
 
 #: shared/utils/cmd.go:152
+#, fuzzy
 msgid "Password if registry requires an authentication"
-msgstr ""
+msgstr "레지스트리가 인증을 요구하는 경우의 비밀번호"
 
 #: shared/utils/cmd.go:154
+#, fuzzy
 msgid "Registry Flags"
-msgstr ""
+msgstr "레지스트리 플래그"
 
 #: shared/utils/cmd.go:162
 msgid "PTF ID"
@@ -1107,14 +1113,15 @@ msgid "Also remove the container images"
 msgstr "컨테이너 이미지도 제거"
 
 #: shared/utils/cmd.go:190 shared/utils/cmd.go:193
+#, fuzzy
 msgid "application log level"
-msgstr ""
+msgstr "애플리케이션 로그 수준"
 
 #: shared/utils/cmd.go:196
 #, fuzzy
 #| msgid "Failed to find home directory"
 msgid "Failed to hide --loglevel parameter"
-msgstr "홈 디렉토리 찾기 실패"
+msgstr "--loglevel 매개변수를 숨기지 못함"
 
 #: shared/utils/cmd.go:202
 msgid "TFTPD"
@@ -1474,8 +1481,9 @@ msgid "Computed image name is %s"
 msgstr "계산된 이미지 이름: %s"
 
 #: shared/utils/utils.go:265
+#, fuzzy
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
-msgstr ""
+msgstr "이미지 경로 ''%[1]s''이(가) 레지스트리 경로 ''%[2]s''(으)로 시작하지 않습니다."
 
 #: shared/utils/utils.go:275
 #, javascript-format
@@ -1533,7 +1541,7 @@ msgstr "%[1] 파일의 체크섬을 %[2]에 쓰지 못함"
 #, fuzzy
 #| msgid "Failed to calculate checksum of the file %s"
 msgid "Failed to read checksum of the file %[1]s"
-msgstr "파일 %s의 체크섬을 계산하지 못함"
+msgstr "파일 %[1]s의 체크섬을 읽지 못함"
 
 #: shared/utils/utils.go:516
 #, javascript-format
