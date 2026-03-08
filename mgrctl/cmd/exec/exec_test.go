@@ -338,14 +338,43 @@ func TestRunRawCmd(t *testing.T) {
 	}
 }
 
+// containsAll checks if all expected items are present in the slice.
+func containsAll(t *testing.T, description string, slice, expected []string) {
+	t.Helper()
+	for _, exp := range expected {
+		found := false
+		for _, item := range slice {
+			if item == exp {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Errorf("%s: Expected '%s' not found in %v", description, exp, slice)
+		}
+	}
+}
+
+// containsNone checks if none of the forbidden items are present in the slice.
+func containsNone(t *testing.T, description string, slice []string, forbidden []string) {
+	t.Helper()
+	for _, forbiddenItem := range forbidden {
+		for _, item := range slice {
+			if strings.HasPrefix(item, forbiddenItem+"=") {
+				t.Errorf("%s: Item '%s' should not be in %v", description, forbiddenItem, slice)
+			}
+		}
+	}
+}
+
 func TestInteractiveTtyFlagHandling(t *testing.T) {
 	testCases := []struct {
-		name              string
-		interactive       bool
-		tty               bool
-		expectedArgs      []string
-		expectedEnvCount  int
-		description       string
+		name             string
+		interactive      bool
+		tty              bool
+		expectedArgs     []string
+		expectedEnvCount int
+		description      string
 	}{
 		{
 			name:             "no flags",
@@ -360,7 +389,7 @@ func TestInteractiveTtyFlagHandling(t *testing.T) {
 			interactive:      true,
 			tty:              false,
 			expectedArgs:     []string{"exec", "-i", "pod-name"},
-			expectedEnvCount: 1, // ENV=/etc/sh.shrc.local
+			expectedEnvCount: 1,
 			description:      "Should add -i flag and ENV env var when interactive is true",
 		},
 		{
@@ -368,7 +397,7 @@ func TestInteractiveTtyFlagHandling(t *testing.T) {
 			interactive:      false,
 			tty:              true,
 			expectedArgs:     []string{"exec", "-t", "pod-name"},
-			expectedEnvCount: -1, // -1 means we just check it adds env vars (GetEnvironmentVarsList)
+			expectedEnvCount: -1,
 			description:      "Should add -t flag and env vars when tty is true",
 		},
 		{
@@ -376,57 +405,42 @@ func TestInteractiveTtyFlagHandling(t *testing.T) {
 			interactive:      true,
 			tty:              true,
 			expectedArgs:     []string{"exec", "-i", "-t", "pod-name"},
-			expectedEnvCount: -1, // At least ENV + GetEnvironmentVarsList
+			expectedEnvCount: -1,
 			description:      "Should add both -i and -t flags with combined env vars",
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			// Build command args similar to run() function
-			commandArgs := []string{"exec"}
-			envs := []string{}
+			commandArgs, envs := buildCommandArgs(tc.interactive, tc.tty)
 
-			if tc.interactive {
-				commandArgs = append(commandArgs, "-i")
-				envs = append(envs, "ENV=/etc/sh.shrc.local")
-			}
-			if tc.tty {
-				commandArgs = append(commandArgs, "-t")
-				// Simulate GetEnvironmentVarsList() - returns some env vars
-				envs = append(envs, "TERM=xterm", "USER=test")
-			}
+			containsAll(t, tc.description, commandArgs, tc.expectedArgs)
 
-			commandArgs = append(commandArgs, "pod-name")
-
-			// Verify flags are added correctly
-			if len(tc.expectedArgs) > 0 {
-				// Check that expected args are present in commandArgs
-				for _, expectedArg := range tc.expectedArgs {
-					found := false
-					for _, arg := range commandArgs {
-						if arg == expectedArg {
-							found = true
-							break
-						}
-					}
-					if !found {
-						t.Errorf("%s: Expected arg '%s' not found in %v", tc.description, expectedArg, commandArgs)
-					}
-				}
-			}
-
-			// Verify env vars
 			if tc.expectedEnvCount >= 0 {
 				testutils.AssertEquals(t, tc.description, tc.expectedEnvCount, len(envs))
-			} else {
-				// Just check that envs were added
-				if len(envs) == 0 {
-					t.Errorf("%s: Expected env vars to be added", tc.description)
-				}
+			} else if len(envs) == 0 {
+				t.Errorf("%s: Expected env vars to be added", tc.description)
 			}
 		})
 	}
+}
+
+// buildCommandArgs builds command arguments simulating the run() function logic.
+func buildCommandArgs(interactive, tty bool) ([]string, []string) {
+	commandArgs := []string{"exec"}
+	envs := []string{}
+
+	if interactive {
+		commandArgs = append(commandArgs, "-i")
+		envs = append(envs, "ENV=/etc/sh.shrc.local")
+	}
+	if tty {
+		commandArgs = append(commandArgs, "-t")
+		envs = append(envs, "TERM=xterm", "USER=test")
+	}
+
+	commandArgs = append(commandArgs, "pod-name")
+	return commandArgs, envs
 }
 
 func TestKubectlBackendArgs(t *testing.T) {
@@ -462,46 +476,26 @@ func TestKubectlBackendArgs(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			commandArgs := []string{"exec"}
-			commandArgs = append(commandArgs, "pod-name")
-
-			if tc.command == "kubectl" {
-				commandArgs = append(commandArgs, "-n", tc.namespace, "-c", "uyuni", "--")
-			}
-
-			// Verify expected args are present
-			for _, expectedArg := range tc.expectedArgs {
-				found := false
-				for _, arg := range commandArgs {
-					if arg == expectedArg {
-						found = true
-						break
-					}
-				}
-				if !found {
-					t.Errorf("%s: Expected arg '%s' not found in %v", tc.description, expectedArg, commandArgs)
-				}
-			}
+			commandArgs := buildKubectlArgs(tc.command, tc.namespace)
+			containsAll(t, tc.description, commandArgs, tc.expectedArgs)
 		})
 	}
 }
 
-func TestEnvVarResolutionWithOsLookup(t *testing.T) {
-	// Save and restore environment
-	origEnv := os.Environ()
-	defer func() {
-		os.Clearenv()
-		for _, env := range origEnv {
-			parts := strings.SplitN(env, "=", 2)
-			if len(parts) == 2 {
-				os.Setenv(parts[0], parts[1])
-			}
-		}
-	}()
+// buildKubectlArgs builds arguments simulating kubectl vs podman backend logic.
+func buildKubectlArgs(command, namespace string) []string {
+	commandArgs := []string{"exec", "pod-name"}
 
-	os.Clearenv()
-	os.Setenv("MY_VAR", "my_value")
-	os.Setenv("PATH", "/usr/bin")
+	if command == "kubectl" {
+		commandArgs = append(commandArgs, "-n", namespace, "-c", "uyuni", "--")
+	}
+
+	return commandArgs
+}
+
+func TestEnvVarResolutionWithOsLookup(t *testing.T) {
+	origEnv := setupTestEnv()
+	defer restoreEnv(origEnv)
 
 	testCases := []struct {
 		name           string
@@ -543,29 +537,28 @@ func TestEnvVarResolutionWithOsLookup(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			result := resolveEnvVars(tc.inputEnvs)
-
-			// Check expected envs are present
-			for _, expected := range tc.expectedEnvs {
-				found := false
-				for _, res := range result {
-					if res == expected {
-						found = true
-						break
-					}
-				}
-				if !found {
-					t.Errorf("%s: Expected env '%s' not found in %v", tc.description, expected, result)
-				}
-			}
-
-			// Check non-existing vars are not present
-			for _, shouldNot := range tc.shouldNotExist {
-				for _, res := range result {
-					if strings.HasPrefix(res, shouldNot+"=") {
-						t.Errorf("%s: Env '%s' should not be in result %v", tc.description, shouldNot, result)
-					}
-				}
-			}
+			containsAll(t, tc.description, result, tc.expectedEnvs)
+			containsNone(t, tc.description, result, tc.shouldNotExist)
 		})
+	}
+}
+
+// setupTestEnv sets up a clean test environment and returns original env for restoration.
+func setupTestEnv() []string {
+	origEnv := os.Environ()
+	os.Clearenv()
+	os.Setenv("MY_VAR", "my_value")
+	os.Setenv("PATH", "/usr/bin")
+	return origEnv
+}
+
+// restoreEnv restores the original environment.
+func restoreEnv(origEnv []string) {
+	os.Clearenv()
+	for _, env := range origEnv {
+		parts := strings.SplitN(env, "=", 2)
+		if len(parts) == 2 {
+			os.Setenv(parts[0], parts[1])
+		}
 	}
 }
