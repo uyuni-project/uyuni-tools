@@ -102,12 +102,8 @@ func installForPodman(
 		return utils.Error(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
 
-	if path, err := exec.LookPath("uyuni-payg-extract-data"); err == nil {
-		// the binary is installed
-		err = utils.RunCmdStdMapping(zerolog.DebugLevel, path)
-		if err != nil {
-			return utils.Error(err, L("failed to extract payg data"))
-		}
+	if err := runPaygExtract(); err != nil {
+		return err
 	}
 
 	return utils.JoinErrors(
@@ -117,6 +113,16 @@ func installForPodman(
 		saline.SetupSalineContainer(systemd, authFile, flags.Image, flags.Saline, flags.Installation.TZ),
 		tftp.SetupTFTPContainer(systemd, authFile, flags.Image, flags.TFTPD, fqdn, false),
 	)
+}
+
+func runPaygExtract() error {
+	path, err := exec.LookPath("uyuni-payg-extract-data")
+	if err != nil {
+		// binary is not installed, skip
+		return nil
+	}
+	// the binary is installed
+	return utils.Error(utils.RunCmdStdMapping(zerolog.DebugLevel, path), L("failed to extract payg data"))
 }
 
 const (
