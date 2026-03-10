@@ -15,7 +15,6 @@ import (
 
 // CheckPodmanRunningContainers checks if there are running containers on the uyuni network.
 func CheckPodmanRunningContainers() error {
-	// Command: podman ps -q --filter network=uyuni
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "-q", "--filter", "network="+UyuniNetwork)
 	if err != nil {
 		return utils.Errorf(err, L("failed to check running podman containers"))
