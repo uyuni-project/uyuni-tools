@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-01 10:57+0100\n"
-"PO-Revision-Date: 2026-03-08 07:04+0000\n"
+"PO-Revision-Date: 2026-03-10 03:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
 "Language: ko\n"
@@ -108,7 +108,6 @@ msgid "failed to retrieve proxy config files"
 msgstr "프록시 구성 파일을 검색하지 못함"
 
 #: mgrpxy/cmd/install/utils.go:49 mgrpxy/shared/podman/podman.go:323
-#, fuzzy
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr "제공된 구성 파일의 시스템 ID를 사용하여 최신 시스템 ID를 가져올 수 없습니다."
 
@@ -313,7 +312,6 @@ msgid "Upgrade a proxy on podman"
 msgstr "podman에서 프록시 업그레이드"
 
 #: mgrpxy/cmd/upgrade/upgrade.go:23
-#, fuzzy
 msgid ""
 "Upgrade a proxy on podman\n"
 "\n"
@@ -326,7 +324,7 @@ msgid ""
 msgstr ""
 "podman에서 프록시 업그레이드\n"
 "\n"
-"업그레이드 podman 명령은 podman이 로컬로 업그레이드되었다고 가정합니다.\n"
+"upgrade podman 명령은 podman이 로컬로 업그레이드되었다고 가정합니다.\n"
 "\n"
 "사용 가능하고 해당 명령어 인수에 의해 재정의되지 않는 한,\n"
 "/etc/uyuni/proxy/apache.conf 및 /etc/uyuni/squid.conf 파일이 apache 및 squid에 대한 튜닝 파일로 사용됩니다.\n"
@@ -404,12 +402,10 @@ msgid "cannot find tftpd image: it will no be upgraded"
 msgstr "tftpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
 #: mgrpxy/shared/podman/podman.go:423
-#, fuzzy
 msgid "Not a system id event"
 msgstr "시스템 ID 이벤트 아님"
 
 #: mgrpxy/shared/podman/podman.go:432
-#, fuzzy
 msgid "System id not found in returned event"
 msgstr "반환된 이벤트에서 시스템 ID를 찾을 수 없음"
 
