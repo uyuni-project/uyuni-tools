@@ -40,6 +40,10 @@ func installForPodman(
 		return err
 	}
 
+	if err := checkPrerequisites(); err != nil {
+		return err
+	}
+
 	flags.Installation.CheckParameters(cmd, "podman")
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
@@ -111,6 +115,26 @@ func installForPodman(
 		saline.SetupSalineContainer(systemd, authFile, flags.Image, flags.Saline, flags.Installation.TZ),
 		tftp.SetupTFTPContainer(systemd, authFile, flags.Image, flags.TFTPD, fqdn),
 	)
+}
+
+func checkPrerequisites() error {
+	if err := utils.CheckMemory(8); err != nil {
+		return err
+	}
+	if err := utils.CheckStorage("/var/lib", 50); err != nil {
+		return err
+	}
+
+	for _, port := range []int{80, 443, 4505, 4506} {
+		if err := utils.CheckPort(port); err != nil {
+			return err
+		}
+	}
+
+	if err := shared_podman.CheckPodmanRunningContainers(); err != nil {
+		return err
+	}
+	return nil
 }
 
 func setupDatabase(dbFlags adm_utils.DBFlags, reportdbFlags adm_utils.DBFlags, preparedImage string) error {

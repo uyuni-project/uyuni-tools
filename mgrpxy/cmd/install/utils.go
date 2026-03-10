@@ -40,6 +40,10 @@ func installForPodman(
 		return err
 	}
 
+	if err := checkPrerequisites(); err != nil {
+		return err
+	}
+
 	// If we previously created systemid secret, remove it
 	shared_podman.DeleteSecret(podman.SystemIDSecret, false)
 
@@ -84,4 +88,24 @@ func installForPodman(
 	}
 
 	return podman.StartPod(systemd)
+}
+
+func checkPrerequisites() error {
+	if err := shared_utils.CheckMemory(4); err != nil {
+		return err
+	}
+	if err := shared_utils.CheckStorage("/var/lib", 10); err != nil {
+		return err
+	}
+
+	for _, port := range []int{80, 443, 8080} {
+		if err := shared_utils.CheckPort(port); err != nil {
+			return err
+		}
+	}
+
+	if err := shared_podman.CheckPodmanRunningContainers(); err != nil {
+		return err
+	}
+	return nil
 }
