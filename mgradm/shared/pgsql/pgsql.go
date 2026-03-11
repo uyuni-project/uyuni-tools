@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -119,7 +119,7 @@ func GeneratePgsqlSystemdService(
 
 	environment := fmt.Sprintf("Environment=UYUNI_IMAGE=%s\n", image)
 
-	if err := podman.GenerateSystemdConfFile(podman.DBService, "generated.conf", environment, true); err != nil {
+	if err := podman.GenerateSystemdConfFile(podman.DBService, podman.GeneratedConf, environment, true); err != nil {
 		return utils.Error(err, L("cannot generate systemd configuration file"))
 	}
 

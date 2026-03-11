@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -49,7 +49,7 @@ Environment="PODMAN_EXTRA_ARGS="
 		t.Errorf("unexpected error: %s", err)
 	}
 
-	actual := testutils.ReadFile(t, path.Join(serviceConfDir, "generated.conf"))
+	actual := testutils.ReadFile(t, path.Join(serviceConfDir, GeneratedConf))
 	testutils.AssertEquals(t, "invalid generated.conf file", generatedFile, actual)
 
 	actual = testutils.ReadFile(t, path.Join(serviceConfDir, CustomConf))
@@ -80,14 +80,14 @@ Environment="PODMAN_EXTRA_ARGS="
 
 	servicesPath = testDir
 
-	testutils.WriteFile(t, path.Join(serviceConfDir, "generated.conf"), generatedFile)
+	testutils.WriteFile(t, path.Join(serviceConfDir, GeneratedConf), generatedFile)
 	testutils.WriteFile(t, path.Join(serviceConfDir, CustomConf), customFile)
 
 	if err := CleanSystemdConfFile("uyuni-server"); err != nil {
 		t.Errorf("unexpected error: %s", err)
 	}
 
-	actual := testutils.ReadFile(t, path.Join(serviceConfDir, "generated.conf"))
+	actual := testutils.ReadFile(t, path.Join(serviceConfDir, GeneratedConf))
 	testutils.AssertEquals(t, "invalid generated.conf file", generatedFile, actual)
 
 	actual = testutils.ReadFile(t, path.Join(serviceConfDir, CustomConf))

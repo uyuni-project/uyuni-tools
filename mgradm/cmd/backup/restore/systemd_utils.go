@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -96,7 +97,7 @@ func restoreFileAttributes(filename string, th *tar.Header) error {
 	return e
 }
 
-func generateDefaltSystemdServices(flags *shared.Flagpole) error {
+func generateDefaultSystemdServices(flags *shared.Flagpole) error {
 	if flags.DryRun {
 		log.Info().Msg(L("Would generate default systemd services"))
 		return nil
@@ -109,7 +110,8 @@ func generateDefaltSystemdServices(flags *shared.Flagpole) error {
 		utils.PostgreSQLImage.Tag)
 
 	return utils.JoinErrors(
-		podman.GenerateSystemdService(systemd, "", serverImage, false, "", []string{}),
+		// TODO Extract the flags from the backup for the new unified setup
+		podman.GenerateSystemdService(systemd, serverImage, adm_utils.InstallationFlags{}, []string{}, "", ""),
 		pgsql.GeneratePgsqlSystemdService(systemd, dbImage),
 		systemd.ReloadDaemon(false),
 	)

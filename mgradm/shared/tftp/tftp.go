@@ -98,7 +98,7 @@ func generateTFTPSystemdService(systemd podman.Systemd, image string, fqdn strin
 
 	environment := fmt.Sprintf("Environment=UYUNI_TFTPD_IMAGE=%s", image)
 	if err := podman.GenerateSystemdConfFile(
-		podman.TFTPService, "generated.conf", environment, true,
+		podman.TFTPService, podman.GeneratedConf, environment, true,
 	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}

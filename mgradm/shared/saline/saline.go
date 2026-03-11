@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -93,7 +93,7 @@ func writeSalineServiceFiles(
 	environment := fmt.Sprintf(`Environment=UYUNI_SALINE_IMAGE=%s`, preparedImage)
 
 	if err := podman.GenerateSystemdConfFile(
-		podman.SalineService+"@", "generated.conf", environment, true,
+		podman.SalineService+"@", podman.GeneratedConf, environment, true,
 	); err != nil {
 		return utils.Error(err, L("cannot generate systemd conf file"))
 	}
