@@ -221,7 +221,7 @@ func AssertPgsqlFlag(t *testing.T, flags *types.PgsqlFlags) {
 }
 
 // AssertDBFlag asserts that all DB flags are parsed correctly.
-func AssertDBFlag(t *testing.T, flags *utils.DBFlags) {
+func AssertDBFlag(t *testing.T, flags *types.DBFlags) {
 	testutils.AssertEquals(t, "Error parsing --db-user", "dbuser", flags.User)
 	testutils.AssertEquals(t, "Error parsing --db-pass", "dbpass", flags.Password)
 	testutils.AssertEquals(t, "Error parsing --db-name", "dbname", flags.Name)
@@ -233,7 +233,7 @@ func AssertDBFlag(t *testing.T, flags *utils.DBFlags) {
 }
 
 // AssertReportDBFlag asserts that all ReportDB flags are parsed correctly.
-func AssertReportDBFlag(t *testing.T, flags *utils.DBFlags) {
+func AssertReportDBFlag(t *testing.T, flags *types.DBFlags) {
 	testutils.AssertEquals(t, "Error parsing --reportdb-user", "reportdbuser", flags.User)
 	testutils.AssertEquals(t, "Error parsing --reportdb-password", "reportdbpass", flags.Password)
 	testutils.AssertEquals(t, "Error parsing --reportdb-name", "reportdbname", flags.Name)

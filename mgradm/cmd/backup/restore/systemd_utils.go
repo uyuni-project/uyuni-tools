@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -109,7 +110,8 @@ func generateDefaultSystemdServices(flags *shared.Flagpole) error {
 		utils.PostgreSQLImage.Tag)
 
 	return utils.JoinErrors(
-		podman.GenerateSystemdService(systemd, "", serverImage, false, "", []string{}),
+		// TODO Extract the flags from the backup for the new unified setup
+		podman.GenerateSystemdService(systemd, serverImage, adm_utils.InstallationFlags{}, []string{}, "", ""),
 		pgsql.GeneratePgsqlSystemdService(systemd, dbImage),
 		systemd.ReloadDaemon(false),
 	)

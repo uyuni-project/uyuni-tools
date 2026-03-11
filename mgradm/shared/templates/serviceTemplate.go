@@ -8,6 +8,7 @@ import (
 	"io"
 	"text/template"
 
+	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -44,7 +45,27 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- end }}
 	-e TZ=${TZ} \
 	-e UYUNI_HOSTNAME=${UYUNI_HOSTNAME} \
+	-e MANAGER_ADMIN_EMAIL=${EMAIL} \
+	-e MANAGER_MAIL_FROM=${EMAILFROM} \
+	-e MANAGER_DB_NAME=${DB_NAME} \
+	-e MANAGER_DB_HOST=${DB_HOST} \
+	-e MANAGER_DB_PORT=${DB_PORT} \
+	-e REPORT_DB_NAME=${REPORTDB_NAME} \
+	-e REPORT_DB_HOST=${REPORTDB_HOST} \
+	-e REPORT_DB_PORT=${REPORTDB_PORT} \
+	-e EXTERNALDB_PROVIDER=${DB_PROVIDER} \
+	-e ISS_PARENT=${ISS_PARENT} \
+	-e DEBUG_JAVA=${DEBUG_JAVA} \
+	-e ORG_NAME=${ORGANIZATION} \
+	-e ADMIN_USER=${ADMIN_LOGIN} \
+	-e ADMIN_PASS=${ADMIN_PASSWORD} \
+	-e ADMIN_FIRST_NAME=${ADMIN_FIRSTNAME} \
+	-e ADMIN_LAST_NAME=${ADMIN_LASTNAME} \
 	--network {{ .Network }} \
+	--secret {{ .DBUserSecret }},type=env,target=MANAGER_USER \
+	--secret {{ .DBPassSecret }},type=env,target=MANAGER_PASS \
+	--secret {{ .ReportDBUserSecret }},type=env,target=REPORT_DB_USER \
+	--secret {{ .ReportDBPassSecret }},type=env,target=REPORT_DB_PASS \
 	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
 	--secret {{ .CaSecret }},type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT \
 	--secret {{ .CaSecret }},type=mount,target=/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
@@ -52,6 +73,10 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret {{ .KeySecret }},type=mount,target={{ .KeyPath }} \
 	--secret {{ .DBCaSecret }},type=mount,target={{ .DBCaPath }} \
 	--health-on-failure=stop \
+	--secret {{ .SCCUserSecret }},type=env,target=SCC_USER \
+	--secret {{ .SCCPassSecret }},type=env,target=SCC_PASS \
+	--secret {{ .AdminUserSecret }},type=env,target=ADMIN_USER \
+	--secret {{ .AdminPassSecret }},type=env,target=ADMIN_PASS \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 
 ExecStop=-/usr/bin/podman exec \
@@ -96,6 +121,16 @@ type PodmanServiceTemplateData struct {
 	ManagerPassword string
 	ReportUser      string
 	ReportPassword  string
+	Email           string
+	EmailFrom       string
+	DB              types.DBFlags
+	ReportDB        types.DBFlags
+	ISSParent       string
+	DebugJava       bool
+	OrgName         string
+	Admin           apiTypes.User
+	SCC             types.SCCCredentials
+	Mirror          string
 }
 
 // Render will create the systemd configuration file.

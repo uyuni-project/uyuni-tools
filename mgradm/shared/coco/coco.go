@@ -22,7 +22,7 @@ func Upgrade(
 	authFile string,
 	cocoFlags adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
-	db adm_utils.DBFlags,
+	db types.DBFlags,
 ) error {
 	if cocoFlags.Image.Name == "" {
 		log.Info().Msg(L("Not altering the confidential computing service"))
@@ -54,7 +54,7 @@ func writeCocoServiceFiles(
 	authFile string,
 	cocoFlags adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
-	db adm_utils.DBFlags,
+	db types.DBFlags,
 ) error {
 	image := cocoFlags.Image
 	currentReplicas := systemd.CurrentReplicaCount(podman.ServerAttestationService)
@@ -104,7 +104,7 @@ Environment=database_connection=jdbc:postgresql://%s:%d/%s
 `, preparedImage, db.Host, db.Port, db.Name)
 
 	if err := podman.GenerateSystemdConfFile(
-		podman.ServerAttestationService+"@", "generated.conf", environment, true,
+		podman.ServerAttestationService+"@", podman.GeneratedConf, environment, true,
 	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
@@ -121,7 +121,7 @@ func SetupCocoContainer(
 	authFile string,
 	coco adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
-	db adm_utils.DBFlags,
+	db types.DBFlags,
 ) error {
 	if err := writeCocoServiceFiles(
 		systemd, authFile, coco, baseImage, db,

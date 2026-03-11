@@ -206,7 +206,9 @@ func generateSystemdFile(template shared_utils.Template, service string, image s
 
 	if image != "" {
 		configBody := fmt.Sprintf("Environment=UYUNI_IMAGE=%s", image)
-		if err := podman.GenerateSystemdConfFile("uyuni-proxy-"+service, "generated.conf", configBody, true); err != nil {
+		if err := podman.GenerateSystemdConfFile(
+			"uyuni-proxy-"+service, podman.GeneratedConf, configBody, true,
+		); err != nil {
 			return shared_utils.Errorf(err, L("cannot generate systemd conf file"))
 		}
 	}
