@@ -24,20 +24,24 @@ func SetupTFTPContainer(
 	baseImage types.ImageFlags,
 	tftpFlags adm_utils.TFTPDFlags,
 	fqdn string,
+	hasTFTP bool,
 ) error {
-	if !tftpFlags.Enable && systemd.ServiceIsEnabled(podman.TFTPService) {
+	log.Debug().Msgf("TFTP server already enabled: %v", hasTFTP)
+	if hasTFTP && tftpFlags.IsChanged && !tftpFlags.Enable {
 		log.Debug().Msgf("The TFTP service is no longer requested")
 		if err := systemd.DisableService(podman.TFTPService); err != nil {
 			return err
 		}
 	}
 
+	enable := hasTFTP && !tftpFlags.IsChanged || tftpFlags.IsChanged && tftpFlags.Enable
+
 	tftpImage, err := utils.ComputeImage(baseImage.Registry.Host, baseImage.Tag, tftpFlags.Image)
 	if err != nil {
 		return utils.Errorf(err, L("failed to compute image URL"))
 	}
 
-	preparedImage, err := podman.PrepareImage(authFile, tftpImage, baseImage.PullPolicy, tftpFlags.Enable)
+	preparedImage, err := podman.PrepareImage(authFile, tftpImage, baseImage.PullPolicy, enable)
 	if err != nil {
 		return err
 	}
@@ -46,7 +50,7 @@ func SetupTFTPContainer(
 		return utils.Errorf(err, L("cannot generate systemd service"))
 	}
 
-	if tftpFlags.Enable {
+	if enable {
 		if err := systemd.EnableService(podman.TFTPService); err != nil {
 			return err
 		}
@@ -61,26 +65,21 @@ func Upgrade(
 	baseImage types.ImageFlags,
 	tftpFlags adm_utils.TFTPDFlags,
 	fqdn string,
+	hasTFTP bool,
 ) error {
 	if tftpFlags.Image.Name == "" {
 		// Don't touch the tftp service in ptf if not already present.
 		return nil
 	}
-	if err := SetupTFTPContainer(systemd, authFile, baseImage, tftpFlags, fqdn); err != nil {
+
+	if err := SetupTFTPContainer(systemd, authFile, baseImage, tftpFlags, fqdn, hasTFTP); err != nil {
 		return err
 	}
 
-	if err := systemd.ReloadDaemon(false); err != nil {
-		return err
-	}
-
-	if !tftpFlags.IsChanged {
-		return systemd.RestartInstantiated(podman.HubXmlrpcService)
-	}
 	if systemd.ServiceIsEnabled(podman.TFTPService) {
 		return systemd.RestartService(podman.TFTPService)
 	}
-	return systemd.EnableService(podman.TFTPService)
+	return nil
 }
 
 // generateTFTPSystemdService creates the TFTP systemd files.

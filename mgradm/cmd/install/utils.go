@@ -109,7 +109,7 @@ func installForPodman(
 		coco.SetupCocoContainer(systemd, authFile, flags.Coco, flags.Image, flags.Installation.DB),
 		hub.SetupHubXmlrpc(systemd, authFile, flags.Image, flags.HubXmlrpc),
 		saline.SetupSalineContainer(systemd, authFile, flags.Image, flags.Saline, flags.Installation.TZ),
-		tftp.SetupTFTPContainer(systemd, authFile, flags.Image, flags.TFTPD, fqdn),
+		tftp.SetupTFTPContainer(systemd, authFile, flags.Image, flags.TFTPD, fqdn, false),
 	)
 }
 

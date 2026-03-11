@@ -47,7 +47,6 @@ type InstallationFlags struct {
 	Email        string
 	EmailFrom    string
 	IssParent    string
-	Tftp         bool
 	DB           DBFlags
 	ReportDB     DBFlags
 	SSL          InstallSSLFlags

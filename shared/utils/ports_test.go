@@ -11,7 +11,7 @@ import (
 )
 
 func TestGetServerPorts(t *testing.T) {
-	allPorts := len(WebPorts) + len(SaltPorts) + len(CobblerPorts) +
+	allPorts := len(WebPorts) + len(SaltPorts) +
 		len(TaskoPorts) + len(TomcatPorts) + len(SearchPorts) + len(DBExporterPorts)
 
 	ports := GetServerPorts(false)

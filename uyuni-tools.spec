@@ -365,7 +365,7 @@ if test -n "${namespace}"; then
     GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultRegistry=${registry}"
 fi
 
-if test -n "${helm_registry}"; then
+if test -n "${helmregistry}"; then
     GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultHelmRegistry=${helmregistry}"
 fi
 
