@@ -83,11 +83,11 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 // GenerateSystemdService creates a server systemd file.
 func GenerateSystemdService(
 	systemd podman.Systemd,
-	tz string,
 	image string,
-	debug bool,
-	mirrorPath string,
+	flags adm_utils.InstallationFlags,
 	podmanArgs []string,
+	mirrorPath string,
+	fqdn string,
 ) error {
 	err := podman.SetupNetwork(false)
 	if err != nil {
@@ -95,22 +95,61 @@ func GenerateSystemdService(
 	}
 
 	log.Info().Msg(L("Enabling system service"))
-	if err := GenerateServerSystemdService(mirrorPath, debug); err != nil {
+	if err := GenerateServerSystemdService(mirrorPath, flags.Debug.Java); err != nil {
 		return err
 	}
 
-	if err := podman.GenerateSystemdConfFile("uyuni-server", "generated.conf",
+	if err := podman.GenerateSystemdConfFile(podman.ServerService, podman.GeneratedConf,
 		"Environment=UYUNI_IMAGE="+image, true,
 	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 
+	if mirrorPath != "" {
+		podmanArgs = append(podmanArgs, fmt.Sprintf("-e MIRROR_PATH=/mirror -v %s:/mirror ", mirrorPath))
+	}
+
 	config := fmt.Sprintf(`Environment=TZ=%s
 Environment="PODMAN_EXTRA_ARGS=%s"
-`, strings.TrimSpace(tz), strings.Join(podmanArgs, " "))
+Environment="UYUNI_HOSTNAME=%s"
+Environment="EMAIL=%s"
+Environment="EMAILFROM=%s"
+Environment="DB_NAME=%s"
+Environment="DB_HOST=%s"
+Environment="DB_PORT=%s"
+Environment="REPORTDB_NAME=%s"
+Environment="REPORTDB_HOST=%s"
+Environment="REPORTDB_PORT=%s"
+Environment="DB_PROVIDER=%s"
+Environment="ISS_PARENT=%s"
+Environment="DEBUG_JAVA=%s"
+Environment="ORGANIZATION=%s"
+Environment="ADMIN_FIRSTNAME=%s"
+Environment="ADMIN_LASTNAME=%s"
+`, strings.TrimSpace(flags.TZ), strings.Join(podmanArgs, " "), fqdn, flags.Email, flags.EmailFrom,
+		flags.DB.Name, flags.DB.Host, flags.DB.GetPort(), flags.ReportDB.Name, flags.ReportDB.Host,
+		flags.ReportDB.GetPort(), flags.DB.Provider, flags.IssParent,
+		strconv.FormatBool(flags.Debug.Java), flags.Organization, flags.Admin.FirstName,
+		flags.Admin.LastName,
+	)
 
-	if err := podman.GenerateSystemdConfFile("uyuni-server", podman.CustomConf, config, false); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd user configuration file"))
+	// Add the SCC and admin credentials as secrets
+	podman.CreateCredentialsSecretsIfMissing(
+		podman.AdminUserSecret, flags.Admin.Login, podman.AdminPassSecret, flags.Admin.Password,
+	)
+
+	podman.CreateCredentialsSecretsIfMissing(
+		podman.SCCUserSecret, flags.SCC.User, podman.SCCPassSecret, flags.SCC.Password,
+	)
+
+	if fqdn != "" {
+		config = fmt.Sprintf("%s\nEnvironment=UYUNI_HOSTNAME=%s", config, fqdn)
+	}
+
+	if !utils.FileExists(podman.GetServiceConfPath(podman.ServerService, podman.CustomConf)) {
+		if err := podman.GenerateSystemdConfFile(podman.ServerService, podman.CustomConf, config, false); err != nil {
+			return utils.Errorf(err, L("cannot generate systemd user configuration file"))
+		}
 	}
 	return systemd.ReloadDaemon(false)
 }
@@ -248,15 +287,14 @@ func RunPgsqlVersionUpgrade(
 }
 
 // RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
-func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, collationChange bool) error {
-	if !schemaUpdateRequired && !collationChange {
+func RunPgsqlFinalizeScript(serverImage string, collationChange bool) error {
+	if !collationChange {
 		log.Info().Msg(L("No need to run database finalization script"))
 		return nil
 	}
 
 	env := map[string]string{
-		"RUN_REINDEX":       strconv.FormatBool(collationChange),
-		"RUN_SCHEMA_UPDATE": strconv.FormatBool(schemaUpdateRequired),
+		"RUN_REINDEX": strconv.FormatBool(collationChange),
 	}
 
 	extraArgs := []string{
@@ -293,8 +331,8 @@ func RunPostUpgradeScript(serverImage string) error {
 func Upgrade(
 	systemd podman.Systemd,
 	authFile string,
-	db adm_utils.DBFlags,
-	reportdb adm_utils.DBFlags,
+	db types.DBFlags,
+	reportdb types.DBFlags,
 	ssl adm_utils.InstallSSLFlags,
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
@@ -424,25 +462,17 @@ func Upgrade(
 		return err
 	}
 
-	schemaUpdateRequired := oldPgVersion != newPgVersion
-	collationChange := inspectedValues.ServerInspectData.LibcVersion != inspectedValues.ContainerInspectData.LibcVersion
-	if err := RunPgsqlFinalizeScript(preparedServerImage, schemaUpdateRequired, collationChange); err != nil {
-		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
-	}
-
-	if err := RunPostUpgradeScript(preparedServerImage); err != nil {
-		return utils.Errorf(err, L("cannot run post upgrade script"))
-	}
-
-	if err := podman.CleanSystemdConfFile("uyuni-server"); err != nil {
+	if err := podman.CleanSystemdConfFile(podman.ServerService); err != nil {
 		return err
 	}
 
-	if err := podman.GenerateSystemdConfFile("uyuni-server", "generated.conf",
+	if err := podman.GenerateSystemdConfFile(podman.ServerService, podman.GeneratedConf,
 		"Environment=UYUNI_IMAGE="+preparedServerImage, true,
 	); err != nil {
 		return err
 	}
+
+	// TODO rebuild the config.conf missing values from the container if needed as a migration to the new unified setup
 
 	if err := systemd.ReloadDaemon(false); err != nil {
 		return err
@@ -466,7 +496,7 @@ func Upgrade(
 		log.Warn().Err(err)
 	}
 
-	inspectedDB := adm_utils.DBFlags{
+	inspectedDB := types.DBFlags{
 		Name:     inspectedValues.DBName,
 		Port:     inspectedValues.DBPort,
 		User:     inspectedValues.DBUser,
@@ -491,14 +521,8 @@ func WaitForSystemStart(
 	debug bool,
 	mirrorPath string,
 	podmanArgs []string,
+	fqdn string,
 ) error {
-	err := GenerateSystemdService(
-		systemd, tz, image, debug, mirrorPath, podmanArgs,
-	)
-	if err != nil {
-		return err
-	}
-
 	log.Info().Msg(L("Waiting for the server to start…"))
 	if err := systemd.EnableService(podman.ServerService); err != nil {
 		return utils.Error(err, L("cannot enable service"))
@@ -650,8 +674,8 @@ func configureDBContainer(
 	serverImage string,
 	pgsqlImage string,
 	systemd podman.Systemd,
-	db adm_utils.DBFlags,
-	reportdb adm_utils.DBFlags,
+	db types.DBFlags,
+	reportdb types.DBFlags,
 ) error {
 	if err := RunSplitContainerSettings(serverImage, "db", "reportdb"); err != nil {
 		return utils.Errorf(err, L("PostgreSQL migration failure"))

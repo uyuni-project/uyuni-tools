@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -249,7 +249,7 @@ func restoreSystemdConfig(inputDirectory string, flags *shared.Flagpole) error {
 	systemdConfigFile := path.Join(inputDirectory, shared.SystemdConfBackupFile)
 	if !utils.FileExists(systemdConfigFile) {
 		log.Warn().Msg(L("systemd backup not found in the backup location, generating defaults"))
-		return generateDefaltSystemdServices(flags)
+		return generateDefaultSystemdServices(flags)
 	}
 	if !flags.SkipVerify {
 		if err := utils.ValidateChecksum(systemdConfigFile); err != nil {
