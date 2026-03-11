@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,7 +22,7 @@ RequiresMountsFor=%t/containers
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-Restart=on-failure
+Restart=on-success
 ExecStartPre=/bin/rm -f %t/uyuni-server.pid %t/%n.ctr-id
 ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-server
 ExecStart=/bin/sh -c '/usr/bin/podman run \
@@ -51,6 +51,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret {{ .CertSecret }},type=mount,target={{ .CertPath }} \
 	--secret {{ .KeySecret }},type=mount,target={{ .KeyPath }} \
 	--secret {{ .DBCaSecret }},type=mount,target={{ .DBCaPath }} \
+	--health-on-failure=stop \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 
 ExecStop=/usr/bin/podman exec \
