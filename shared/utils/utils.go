@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -516,4 +517,18 @@ func ValidateChecksum(file string) error {
 		return fmt.Errorf(L("Checksum of %s does not match"), file)
 	}
 	return nil
+}
+
+// RandomHexString returns a cryptographically secure random hex string.
+func RandomHexString(nBytes int) (string, error) {
+	if nBytes <= 0 {
+		return "", errors.New(L("nBytes must be > 0"))
+	}
+
+	b := make([]byte, nBytes)
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+
+	return hex.EncodeToString(b), nil
 }

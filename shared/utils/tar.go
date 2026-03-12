@@ -10,6 +10,7 @@ import (
 	"errors"
 	"io"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 
@@ -102,20 +103,22 @@ func (t *TarGz) Close() {
 	t.fileWriter.Close()
 }
 
-// AddFile adds the file at filepath to the archive as entrypath.
-func (t *TarGz) AddFile(filepath string, entrypath string) error {
-	file, err := os.Open(filepath)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	info, err := file.Stat()
+// AddFile adds the file or directory entry at filepath to the archive as entrypath.
+func (t *TarGz) AddFile(sourcePath string, entrypath string) error {
+	info, err := os.Lstat(sourcePath)
 	if err != nil {
 		return err
 	}
 
-	header, err := tar.FileInfoHeader(info, info.Name())
+	link := ""
+	if info.Mode()&os.ModeSymlink != 0 {
+		link, err = os.Readlink(sourcePath)
+		if err != nil {
+			return err
+		}
+	}
+
+	header, err := tar.FileInfoHeader(info, link)
 	if err != nil {
 		return err
 	}
@@ -124,6 +127,33 @@ func (t *TarGz) AddFile(filepath string, entrypath string) error {
 	if err = t.tarWriter.WriteHeader(header); err != nil {
 		return err
 	}
+
+	if info.Mode()&os.ModeSymlink != 0 {
+		return nil
+	}
+
+	if info.IsDir() {
+		entries, err := os.ReadDir(sourcePath)
+		if err != nil {
+			return err
+		}
+
+		for _, entry := range entries {
+			childSourcePath := filepath.Join(sourcePath, entry.Name())
+			childEntryPath := path.Join(entrypath, entry.Name())
+			if err := t.AddFile(childSourcePath, childEntryPath); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	}
+
+	file, err := os.Open(sourcePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
 
 	if _, err = io.Copy(t.tarWriter, file); err != nil {
 		return err
