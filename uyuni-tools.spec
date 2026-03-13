@@ -52,7 +52,7 @@
 # 0%{?debian} || 0%{?ubuntu}
 
 Name:           %{project}
-Version:        5.2.4
+Version:        5.2.5
 Release:        0
 Summary:        Tools for managing %{productprettyname} container
 License:        Apache-2.0
@@ -365,7 +365,7 @@ if test -n "${namespace}"; then
     GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultRegistry=${registry}"
 fi
 
-if test -n "${helm_registry}"; then
+if test -n "${helmregistry}"; then
     GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultHelmRegistry=${helmregistry}"
 fi
 

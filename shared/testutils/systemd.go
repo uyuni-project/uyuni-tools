@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -43,6 +43,9 @@ type FakeSystemdDriver struct {
 
 	// ServiceProperties maps all the properties of each service.
 	ServiceProperties map[string]map[string]string
+
+	// ServiceCat maps the definition of each service.
+	ServiceCat map[string]string
 }
 
 // HasService returns if a systemd service is installed.
@@ -139,6 +142,16 @@ func (d *FakeSystemdDriver) GetServiceProperty(service string, property string) 
 		return "", errors.New("no such property")
 	}
 	return value, nil
+}
+
+// GetServiceDefinition gets the definition from the ServiceCat field.
+// An error is returned if the service doesn't exist.
+func (d *FakeSystemdDriver) GetServiceDefinition(service string) (string, error) {
+	cat, exists := d.ServiceCat[service]
+	if !exists {
+		return "", errors.New("no such service")
+	}
+	return cat, nil
 }
 
 // deleteItems removes all items equal to needle in the slice.

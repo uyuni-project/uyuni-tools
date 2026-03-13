@@ -1,2 +1,0 @@
-- Explicitly start proxy pods after operations
-  (bsc#1258015)

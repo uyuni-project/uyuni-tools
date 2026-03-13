@@ -13,8 +13,6 @@ const (
 	WebServiceName = "web"
 	// SaltServiceName is the name of the server salt service.
 	SaltServiceName = "salt"
-	// CobblerServiceName is the name of the server cobbler service.
-	CobblerServiceName = "cobbler"
 	// ReportdbServiceName is the name of the server report database service.
 	ReportdbServiceName = "reportdb"
 	// DBServiceName is the name of the server internal database service.
@@ -74,11 +72,6 @@ var SaltPorts = []types.PortMap{
 	NewPortMap(SaltServiceName, "request", 4506, 4506),
 }
 
-// CobblerPorts is the list of ports for the server cobbler service.
-var CobblerPorts = []types.PortMap{
-	NewPortMap(CobblerServiceName, "cobbler", 25151, 25151),
-}
-
 // TaskoPorts is the list of ports for the server taskomatic service.
 var TaskoPorts = []types.PortMap{
 	NewPortMap(TaskoServiceName, "jmx", 5556, 5556),
@@ -104,7 +97,6 @@ func GetServerPorts(debug bool) []types.PortMap {
 	ports := []types.PortMap{}
 	ports = appendPorts(ports, debug, WebPorts...)
 	ports = appendPorts(ports, debug, SaltPorts...)
-	ports = appendPorts(ports, debug, CobblerPorts...)
 	ports = appendPorts(ports, debug, TaskoPorts...)
 	ports = appendPorts(ports, debug, TomcatPorts...)
 	ports = appendPorts(ports, debug, SearchPorts...)

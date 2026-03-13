@@ -42,7 +42,7 @@ var DefaultImagePrefix = "uyuni"
 var DefaultImage = path.Join(DefaultImagePrefix, "server")
 
 // DefaultProxyChart represents the default proxy chart.
-var DefaultProxyChart = path.Join(DefaultHelmImagePrefix, "proxy-chart")
+var DefaultProxyChart = path.Join(DefaultHelmImagePrefix, "proxy-helm")
 
 // DefaultPullPolicy represents the default pull policy used for image.
 var DefaultPullPolicy = "Always"
@@ -53,14 +53,14 @@ var DefaultPullPolicy = "Always"
 var Version = "0.0.0"
 
 // CommandFunc is a function to be executed by a Cobra command.
-type CommandFunc[F interface{}] func(*types.GlobalFlags, *F, *cobra.Command, []string) error
+type CommandFunc[F any] func(*types.GlobalFlags, *F, *cobra.Command, []string) error
 
 // FlagsUpdaterFunc is a function to be executed to update the flags from the viper instance used to parsed the config.
 type FlagsUpdaterFunc func(*viper.Viper)
 
 // CommandHelper parses the configuration file into the flags and runs the fn function.
 // This function should be passed to Command's RunE.
-func CommandHelper[T interface{}](
+func CommandHelper[T any](
 	globalFlags *types.GlobalFlags,
 	cmd *cobra.Command,
 	args []string,
@@ -101,8 +101,8 @@ func StringToRegistryHook() mapstructure.DecodeHookFunc {
 	return func(
 		_ reflect.Type,
 		t reflect.Type,
-		data interface{},
-	) (interface{}, error) {
+		data any,
+	) (any, error) {
 		// Only intercept if the target is Registry
 		if t != reflect.TypeOf(types.Registry{}) {
 			return data, nil
@@ -112,7 +112,7 @@ func StringToRegistryHook() mapstructure.DecodeHookFunc {
 		case string:
 			// If Registry is a string, create Registry struct with Host = string
 			return types.Registry{Host: val}, nil
-		case map[string]interface{}:
+		case map[string]any:
 			// If it's a map, decode normally
 			return data, nil
 		default:
@@ -201,7 +201,7 @@ func AddLogLevelFlags(cmd *cobra.Command, logLevel *string) {
 func AddTFTPDFlags(cmd *cobra.Command, allowDisable bool, groupName string) {
 	AddContainerImageFlags(cmd, "tftpd", L("TFTPD"), groupName, "proxy-tftpd")
 	if allowDisable {
-		cmd.Flags().Bool("tftpd-enable", true, L("Start the TFTP server container"))
+		cmd.Flags().Bool("tftpd-enable", false, L("Start the TFTP server container"))
 		if groupName != "" {
 			_ = AddFlagToHelpGroupID(cmd, "tftpd-enable", groupName)
 		}

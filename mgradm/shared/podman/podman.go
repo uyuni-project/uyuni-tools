@@ -334,7 +334,11 @@ func Upgrade(
 		return err
 	}
 
+	hasTFTP := systemd.ServiceIsEnabled(podman.TFTPService)
 	if systemd.HasService(podman.ServerService) {
+		if !hasTFTP {
+			hasTFTP = serverExposesTFTP(systemd)
+		}
 		if err := systemd.StopService(podman.ServerService); err != nil {
 			return utils.Errorf(err, L("cannot stop service"))
 		}
@@ -478,9 +482,18 @@ func Upgrade(
 		coco.Upgrade(systemd, authFile, cocoFlags, image, inspectedDB),
 		hub.Upgrade(systemd, authFile, image, hubXmlrpcFlags),
 		saline.Upgrade(systemd, authFile, image, salineFlags, utils.GetLocalTimezone()),
-		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn),
+		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn, hasTFTP),
 		systemd.ReloadDaemon(false),
 	)
+}
+
+func serverExposesTFTP(systemd podman.Systemd) bool {
+	def, err := systemd.GetServiceDefinition(podman.ServerService)
+	if err != nil {
+		log.Error().Err(err).Msg(L("Failed to read server service definition to look for TFTP port"))
+		return false
+	}
+	return strings.Contains(def, "-p 69:69/udp")
 }
 
 func WaitForSystemStart(
