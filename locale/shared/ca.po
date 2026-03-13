@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-01 10:57+0100\n"
+"POT-Creation-Date: 2026-03-11 16:35+0100\n"
 "PO-Revision-Date: 2026-03-02 11:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
@@ -241,26 +241,38 @@ msgstr "no s'ha pogut determinar el dorsal adequat"
 msgid "no supported backend found"
 msgstr "no s'ha trobat cap dorsal compatible"
 
-#: shared/connection.go:498
-#, javascript-format
-msgid "Running supportconfig in  %s"
-msgstr "S'està executant supportconfig a %s"
-
-#: shared/connection.go:506
-msgid "failed to run supportconfig"
+#: shared/connection.go:504 shared/utils/support.go:102
+#, fuzzy
+#| msgid "failed to run supportconfig"
+msgid "failed to generate supportconfig suffix: %w"
 msgstr "no s'ha pogut executar supportconfig"
 
-#: shared/connection.go:510
-msgid "failed to find container supportconfig tarball from command output"
-msgstr "no s'ha pogut trobar el contenidor supportconfig tarball des de la sortida d'ordres"
+#: shared/connection.go:516 shared/utils/support.go:116
+#, fuzzy, javascript-format
+#| msgid "failed to run supportconfig on the host"
+msgid "failed to generate unique supportconfig batch name after %d attempts"
+msgstr "no s'ha pogut executar supportconfig a l'amfitrió"
 
-#: shared/connection.go:516
-msgid "cannot copy tarball"
-msgstr "no es pot copiar el fitxer tar"
+#: shared/connection.go:520
+#, fuzzy, javascript-format
+#| msgid "Running supportconfig in  %s"
+msgid "Running supportconfig in %s"
+msgstr "S'està executant supportconfig a %s"
 
-#: shared/connection.go:522
-#, javascript-format
-msgid "failed to remove %s file in the container"
+#: shared/connection.go:527 shared/utils/support.go:122
+msgid "Some parts of supportconfig were not successful"
+msgstr ""
+
+#: shared/connection.go:532
+#, fuzzy
+#| msgid "cannot read config"
+msgid "cannot copy support config"
+msgstr "no es pot llegir la configuració"
+
+#: shared/connection.go:538
+#, fuzzy, javascript-format
+#| msgid "failed to remove %s file in the container"
+msgid "failed to remove %s directory in the container"
 msgstr "no s'ha pogut eliminar el fitxer %s al contenidor"
 
 #: shared/kubernetes/kubernetes.go:52
@@ -456,8 +468,8 @@ msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 
 #: shared/podman/images.go:372 shared/podman/images.go:393
 #: shared/podman/images.go:413 shared/podman/network.go:108
-#: shared/podman/secret.go:146 shared/podman/systemd.go:251
-#: shared/podman/systemd.go:329 shared/podman/systemd.go:330
+#: shared/podman/secret.go:146 shared/podman/systemd.go:270
+#: shared/podman/systemd.go:348 shared/podman/systemd.go:349
 #: shared/podman/utils.go:188 shared/podman/utils.go:221
 #: shared/podman/utils.go:250
 #, javascript-format
@@ -642,129 +654,135 @@ msgstr "no s'ha pogut crear el fitxer %s"
 msgid "failed to run journalctl -u %s"
 msgstr "no s'ha pogut executar journalctl -u %s"
 
-#: shared/podman/systemd.go:110
+#: shared/podman/systemd.go:113
 #, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr "no s'ha pogut inhabilitar el servei systemd %s"
 
-#: shared/podman/systemd.go:120
+#: shared/podman/systemd.go:123
 msgid "failed to reset-failed systemd"
 msgstr "no s'ha pogut restablir el «systemd» fallit"
 
-#: shared/podman/systemd.go:124
+#: shared/podman/systemd.go:127
 msgid "failed to reload systemd daemon"
 msgstr "no s'ha pogut tornar a carregar el dimoni del systemd"
 
-#: shared/podman/systemd.go:141
+#: shared/podman/systemd.go:144
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "no s'ha pogut reiniciar systemd %s.service"
 
-#: shared/podman/systemd.go:149
+#: shared/podman/systemd.go:152
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "no s'ha pogut iniciar systemd %s.service"
 
-#: shared/podman/systemd.go:157
+#: shared/podman/systemd.go:160
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "no s'ha pogut aturar systemd %s.service"
 
-#: shared/podman/systemd.go:169
+#: shared/podman/systemd.go:172
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "no s'ha pogut habilitar el servei «systemd» de %s"
 
-#: shared/podman/systemd.go:181
+#: shared/podman/systemd.go:184
 msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "Ha fallat obtenir la propietat de %[1]s des del servei %[2]s"
 
-#: shared/podman/systemd.go:248
+#: shared/podman/systemd.go:196
+#, fuzzy
+#| msgid "Failed to get the %[1]s property from %[2]s service"
+msgid "Failed to get the definition from %[2]s service"
+msgstr "Ha fallat obtenir la propietat de %[1]s des del servei %[2]s"
+
+#: shared/podman/systemd.go:267
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "El Systemd no té %s.unitat de servei"
 
-#: shared/podman/systemd.go:253
+#: shared/podman/systemd.go:272
 #, javascript-format
 msgid "Disable %s service"
 msgstr "Desactiva el servei %s"
 
-#: shared/podman/systemd.go:268 shared/podman/systemd.go:285
+#: shared/podman/systemd.go:287 shared/podman/systemd.go:304
 #, javascript-format
 msgid "Would remove %s"
 msgstr "Eliminaria %s"
 
-#: shared/podman/systemd.go:271 shared/podman/systemd.go:287
+#: shared/podman/systemd.go:290 shared/podman/systemd.go:306
 #, javascript-format
 msgid "Remove %s"
 msgstr "Elimina %s"
 
-#: shared/podman/systemd.go:273
+#: shared/podman/systemd.go:292
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "No s'ha pogut eliminar el fitxer %s.service"
 
-#: shared/podman/systemd.go:289
+#: shared/podman/systemd.go:308
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "No s'ha pogut eliminar el fitxer %s"
 
-#: shared/podman/systemd.go:296
+#: shared/podman/systemd.go:315
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "Eliminaria %s si està buit"
 
-#: shared/podman/systemd.go:303
+#: shared/podman/systemd.go:322
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "La carpeta %s conté el fitxer creat per l'usuari. Si us plau, elimineu-los quan s'hagi completat la desinstal·lació."
 
-#: shared/podman/systemd.go:315
+#: shared/podman/systemd.go:334
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "S'escalaria %s a 0 rèpliques"
 
-#: shared/podman/systemd.go:318
+#: shared/podman/systemd.go:337
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "No s'ha pogut desactivar el servei %s"
 
-#: shared/podman/systemd.go:407
+#: shared/podman/systemd.go:426
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "El servei %[1]s ja té %[2]d rèpliques."
 
-#: shared/podman/systemd.go:410
+#: shared/podman/systemd.go:429
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "Escala %[1]s de %[2]d a %[3]d rèpliques."
 
-#: shared/podman/systemd.go:414
+#: shared/podman/systemd.go:433
 msgid "cannot enable service"
 msgstr "no es pot activar el servei"
 
-#: shared/podman/systemd.go:420
+#: shared/podman/systemd.go:439
 msgid "cannot disable service"
 msgstr "no es pot desactivar el servei"
 
-#: shared/podman/systemd.go:430
+#: shared/podman/systemd.go:449
 msgid "failed to show %[1]s property of %[2] systemd service"
 msgstr "No s'ha pogut mostrar la propietat %[1]s del servei systemd %[2]"
 
-#: shared/podman/systemd.go:447
+#: shared/podman/systemd.go:466
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "no s'ha pogut crear la carpeta %s"
 
-#: shared/podman/systemd.go:457
+#: shared/podman/systemd.go:476
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "no es pot escriure el fitxer %s"
 
-#: shared/podman/systemd.go:502
+#: shared/podman/systemd.go:521
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "no s'ha pogut escriure el fitxer %s"
 
-#: shared/podman/systemd.go:507
+#: shared/podman/systemd.go:526
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "no s'ha pogut eliminar l'antic fitxer de configuració del servei systemd %s"
@@ -1341,11 +1359,11 @@ msgstr "no s'ha pogut codificar l'esdeveniment de registre"
 msgid "Couldn't open %[1]s file for writing, writing log to %[2]s"
 msgstr "No s'ha pogut obrir el fitxer %[1]s per a escriptura, s'està escrivint el registre a %[2]s"
 
-#: shared/utils/support.go:32
+#: shared/utils/support.go:26
 msgid "Unable to detect hostname, using localhost"
 msgstr "No s'ha pogut detectar el nom de l'ordinador, s'està utilitzant el localhost"
 
-#: shared/utils/support.go:46
+#: shared/utils/support.go:40
 msgid "Preparing the tarball"
 msgstr "Preparant el tarball"
 
@@ -1354,19 +1372,32 @@ msgstr "Preparant el tarball"
 msgid "failed to add %s to tarball"
 msgstr "no s'ha pogut afegir %s a tarball"
 
-#: shared/utils/support.go:104
-msgid "failed to find host supportconfig tarball from command output"
+#: shared/utils/support.go:66
+#, javascript-format
+msgid "Support config tarball created at %s"
+msgstr ""
+
+#: shared/utils/support.go:119
+#, fuzzy
+#| msgid "Running supportconfig in  %s"
+msgid "Running supportconfig on the host"
+msgstr "S'està executant supportconfig a %s"
+
+#: shared/utils/support.go:129
+#, fuzzy
+#| msgid "failed to find host supportconfig tarball from command output"
+msgid "failed to find host supportconfig tarball"
 msgstr "no s'ha pogut trobar l'amfitrió supportconfig tarball des de la sortida de l'ordre"
 
-#: shared/utils/support.go:107
+#: shared/utils/support.go:132
 msgid "supportconfig is not available on the host, skipping it"
 msgstr "supportconfig no està disponible al servidor, s'ometrà"
 
-#: shared/utils/tar.go:48
+#: shared/utils/tar.go:49
 msgid "Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"
 msgstr "S'està ometent l'extracció de %[1]s al fitxer %[2]s mentre es resol fora del camí de destinació"
 
-#: shared/utils/tar.go:90
+#: shared/utils/tar.go:91
 #, javascript-format
 msgid "failed to write tar.gz to %s"
 msgstr "no s'ha pogut escriure tar.gz a %s"
@@ -1381,128 +1412,132 @@ msgstr "El fitxer %s ja està present, no se sobreescriu"
 msgid "failed to open %s for writing"
 msgstr "no s'ha pogut obrir %s per a escriptura"
 
-#: shared/utils/utils.go:58
+#: shared/utils/utils.go:59
 #, javascript-format
 msgid "Has to be more than %d character long"
 msgid_plural "Has to be more than %d characters long"
 msgstr[0] "Ha de tenir més d'%d caràcter"
 msgstr[1] "Ha de tenir més de %d caràcters"
 
-#: shared/utils/utils.go:62
+#: shared/utils/utils.go:63
 #, javascript-format
 msgid "Has to be less than %d character long"
 msgid_plural "Has to be less than %d characters long"
 msgstr[0] "Ha de tenir menys d'%d caràcter"
 msgstr[1] "Ha de tenir menys de %d caràcters"
 
-#: shared/utils/utils.go:73
+#: shared/utils/utils.go:74
 msgid "Failed to read password"
 msgstr "No s'ha pogut llegir la contrasenya"
 
-#: shared/utils/utils.go:87
+#: shared/utils/utils.go:88
 msgid "Cannot contain spaces or tabs"
 msgstr "No es poden contenir espais o pestanyes"
 
-#: shared/utils/utils.go:104 shared/utils/utils.go:127
-#: shared/utils/utils.go:140
+#: shared/utils/utils.go:105 shared/utils/utils.go:128
+#: shared/utils/utils.go:141
 msgid "not an interactive device, not asking for missing value"
 msgstr "no és un dispositiu interactiu, no es demana el valor que manca"
 
-#: shared/utils/utils.go:113
+#: shared/utils/utils.go:114
 msgid "Confirm the password"
 msgstr "Confirmeu la contrasenya"
 
-#: shared/utils/utils.go:115
+#: shared/utils/utils.go:116
 msgid "Two different passwords have been provided"
 msgstr "S'han proporcionat dues contrasenyes diferents"
 
-#: shared/utils/utils.go:149
+#: shared/utils/utils.go:150
 msgid "failed to read input"
 msgstr "no s'ha pogut llegir l'entrada"
 
-#: shared/utils/utils.go:157
+#: shared/utils/utils.go:158
 msgid "A value is required"
 msgstr "Es requereix un valor"
 
-#: shared/utils/utils.go:225 shared/utils/utils.go:247
+#: shared/utils/utils.go:226 shared/utils/utils.go:248
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "el nom de la imatge no és vàlid: %s"
 
-#: shared/utils/utils.go:229
+#: shared/utils/utils.go:230
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "falta l'etiqueta a %s"
 
-#: shared/utils/utils.go:234 shared/utils/utils.go:238
+#: shared/utils/utils.go:235 shared/utils/utils.go:239
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "El nom de la imatge calculada és %s"
 
-#: shared/utils/utils.go:265
+#: shared/utils/utils.go:266
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr "El camí de la imatge %[1]s no comença amb la ruta del registre %[2]s"
 
-#: shared/utils/utils.go:275
+#: shared/utils/utils.go:276
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "No s'ha pogut executar %s"
 
-#: shared/utils/utils.go:284
+#: shared/utils/utils.go:285
 msgid "Failed to read random data"
 msgstr "No s'han pogut llegir les dades aleatòries"
 
-#: shared/utils/utils.go:305
+#: shared/utils/utils.go:306
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "s'ha produït un error en baixar de %s"
 
-#: shared/utils/utils.go:311
+#: shared/utils/utils.go:312
 #, javascript-format
 msgid "bad status: %s"
 msgstr "estat incorrecte: %s"
 
-#: shared/utils/utils.go:424
+#: shared/utils/utils.go:425
 msgid "failed to compute server FQDN"
 msgstr "no s'ha pogut calcular el servidor FQDN"
 
-#: shared/utils/utils.go:438
+#: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s no és un FQDN vàlid"
 
-#: shared/utils/utils.go:442
+#: shared/utils/utils.go:443
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "no es pot resoldre %s"
 
-#: shared/utils/utils.go:473
+#: shared/utils/utils.go:474
 #, javascript-format
 msgid "error creating file %s"
 msgstr "s'ha produït un error en crear el fitxer %s"
 
-#: shared/utils/utils.go:478
+#: shared/utils/utils.go:479
 #, javascript-format
 msgid "error writing file %s"
 msgstr "s'ha produït un error en escriure el fitxer %s"
 
-#: shared/utils/utils.go:490 shared/utils/utils.go:505
+#: shared/utils/utils.go:491 shared/utils/utils.go:506
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "No s'ha pogut calcular la suma de verificació del fitxer %s"
 
-#: shared/utils/utils.go:495
+#: shared/utils/utils.go:496
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "No s'ha pogut escriure la suma de verificació del fitxer %[1]s a %[2]s"
 
-#: shared/utils/utils.go:512
+#: shared/utils/utils.go:513
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "No s'ha pogut llegir la suma de verificació del fitxer %[1]s"
 
-#: shared/utils/utils.go:516
+#: shared/utils/utils.go:517
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "La suma de verificació de %s no coincideix"
+
+#: shared/utils/utils.go:525
+msgid "nBytes must be > 0"
+msgstr ""
 
 #: shared/utils/uyuniservices.go:18
 msgid "Main service"
@@ -1527,6 +1562,12 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "Base de dades"
+
+#~ msgid "failed to find container supportconfig tarball from command output"
+#~ msgstr "no s'ha pogut trobar el contenidor supportconfig tarball des de la sortida d'ordres"
+
+#~ msgid "cannot copy tarball"
+#~ msgstr "no es pot copiar el fitxer tar"
 
 #, javascript-format
 #~ msgid "failed to create %s YAML file"
@@ -1741,9 +1782,6 @@ msgstr "Base de dades"
 
 #~ msgid "%[1]s pod failed to complete within %[2]d seconds"
 #~ msgstr "%[1]s pod no s'ha pogut completar en %[2]d segons"
-
-#~ msgid "failed to run supportconfig on the host"
-#~ msgstr "no s'ha pogut executar supportconfig a l'amfitrió"
 
 #~ msgid "No CA found"
 #~ msgstr "No s'ha trobat cap CA"

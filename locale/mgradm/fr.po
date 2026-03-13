@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-01 10:57+0100\n"
+"POT-Creation-Date: 2026-03-11 16:35+0100\n"
 "PO-Revision-Date: 2025-11-26 10:44+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/fr/>\n"
@@ -521,7 +521,7 @@ msgstr "impossible d'enregistrer la distribution. Un enregistrement manuel de la
 msgid "Distribution %s successfully registered"
 msgstr "Distribution %s enregistrée avec succès"
 
-#: mgradm/cmd/distro/cp.go:76 mgradm/cmd/support/sql/sql.go:34
+#: mgradm/cmd/distro/cp.go:76 mgradm/cmd/support/sql/sql.go:32
 #, javascript-format
 msgid "source %s does not exists"
 msgstr "la source %s n'existe pas"
@@ -762,60 +762,51 @@ msgstr "la commande inspect a échoué: %s"
 msgid "cannot print inspect result"
 msgstr "impossible d'afficher le résultat de l'inspection: %s"
 
-#: mgradm/cmd/install/flags.go:17
+#: mgradm/cmd/install/flags.go:16
 msgid "Time zone to set on the server. Defaults to the host timezone"
 msgstr "Zone horaire à définir pour le serveur. Celle de l'hôte par défaut"
 
-#: mgradm/cmd/install/flags.go:18
+#: mgradm/cmd/install/flags.go:17
 msgid "Administrator e-mail"
 msgstr "E-mail de l'administrateur"
 
-#: mgradm/cmd/install/flags.go:19
+#: mgradm/cmd/install/flags.go:18
 msgid "E-Mail sending the notifications"
 msgstr "E-mail pour l'envoi des notifications"
 
-#: mgradm/cmd/install/flags.go:20
+#: mgradm/cmd/install/flags.go:19
 msgid "InterServerSync v1 parent FQDN"
 msgstr "FQDN du parent InterServerSync v1"
 
-#: mgradm/cmd/install/flags.go:21
-msgid "Enable TFTP"
-msgstr "Activer TFTP"
-
 #: mgradm/cmd/install/flags.go:23
-#, fuzzy
-msgid "failed to mark tftp deprecated"
-msgstr "impossible de déterminer l'image: %s"
-
-#: mgradm/cmd/install/flags.go:28
 msgid "Enable tomcat and taskomatic remote debugging"
 msgstr "Activer le déboggage à distance de tomcat et taskomatic"
 
-#: mgradm/cmd/install/flags.go:36 mgradm/cmd/upgrade/flags.go:22
+#: mgradm/cmd/install/flags.go:31 mgradm/cmd/upgrade/flags.go:22
 msgid "TFTPD Flags"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:39
+#: mgradm/cmd/install/flags.go:34
 msgid "Administrator user name"
 msgstr "Nom d'utilisateur de l'administrateur"
 
-#: mgradm/cmd/install/flags.go:40
+#: mgradm/cmd/install/flags.go:35
 msgid "Administrator password"
 msgstr "Mot de passe de l'administrateur"
 
-#: mgradm/cmd/install/flags.go:41
+#: mgradm/cmd/install/flags.go:36
 msgid "First name of the administrator"
 msgstr "Prénom de l'administrateur"
 
-#: mgradm/cmd/install/flags.go:42
+#: mgradm/cmd/install/flags.go:37
 msgid "Last name of the administrator"
 msgstr "Nom de l'administrateur"
 
-#: mgradm/cmd/install/flags.go:43
+#: mgradm/cmd/install/flags.go:38
 msgid "First organization name"
 msgstr "Nom de la première organisation"
 
-#: mgradm/cmd/install/flags.go:45
+#: mgradm/cmd/install/flags.go:40
 msgid "First User Flags"
 msgstr ""
 
@@ -883,7 +874,7 @@ msgstr ""
 msgid "failed to extract payg data"
 msgstr "chemin vers lequel extraire les données"
 
-#: mgradm/cmd/install/utils.go:146 mgradm/shared/podman/podman.go:695
+#: mgradm/cmd/install/utils.go:146 mgradm/shared/podman/podman.go:708
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr ""
@@ -1077,10 +1068,6 @@ msgstr "impossible de déterminer l'image: %s"
 msgid "The %[1]s service image is %[2]s"
 msgstr "impossible de déterminer l'image: %s"
 
-#: mgradm/cmd/support/sql/sql.go:38
-msgid "unable to get random file prefix"
-msgstr ""
-
 #: mgradm/cmd/support/sql/sql.go:50
 msgid "unable to cleanup source file"
 msgstr ""
@@ -1207,18 +1194,18 @@ msgstr ""
 msgid "Upgrade a local server on podman"
 msgstr ""
 
-#: mgradm/cmd/upgrade/upgrade.go:51
+#: mgradm/cmd/upgrade/upgrade.go:52
 msgid "List available tags for an image"
 msgstr ""
 
-#: mgradm/cmd/upgrade/upgrade.go:63
+#: mgradm/cmd/upgrade/upgrade.go:64
 #, fuzzy
 msgid "failed to unmarshall configuration"
 msgstr "impossible d'exécuter le conteneur %s: %s"
 
 #: mgradm/shared/coco/coco.go:77 mgradm/shared/hub/xmlrpcapi.go:44
 #: mgradm/shared/pgsql/pgsql.go:28 mgradm/shared/podman/podman.go:236
-#: mgradm/shared/saline/saline.go:69 mgradm/shared/tftp/tftp.go:37
+#: mgradm/shared/saline/saline.go:69 mgradm/shared/tftp/tftp.go:41
 #, fuzzy
 msgid "failed to compute image URL"
 msgstr "impossible de calculer l'URL de l'image: %s"
@@ -1229,14 +1216,14 @@ msgstr ""
 
 #: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:116
 #: mgradm/shared/pgsql/pgsql.go:117 mgradm/shared/podman/podman.go:77
-#: mgradm/shared/saline/saline.go:90 mgradm/shared/tftp/tftp.go:96
+#: mgradm/shared/saline/saline.go:90 mgradm/shared/tftp/tftp.go:95
 #, fuzzy
 msgid "failed to generate systemd service unit file"
 msgstr "impossible de générer le fichier du service systemd: %s"
 
 #: mgradm/shared/coco/coco.go:109 mgradm/shared/hub/xmlrpcapi.go:123
 #: mgradm/shared/podman/podman.go:105 mgradm/shared/saline/saline.go:98
-#: mgradm/shared/tftp/tftp.go:103
+#: mgradm/shared/tftp/tftp.go:102
 msgid "cannot generate systemd conf file"
 msgstr "ne peut pas générer le fichier conf systemd"
 
@@ -1246,7 +1233,7 @@ msgid "No changes requested for hub. Keep %d replicas."
 msgstr ""
 
 #: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:44
-#: mgradm/shared/pgsql/pgsql.go:67 mgradm/shared/tftp/tftp.go:46
+#: mgradm/shared/pgsql/pgsql.go:67 mgradm/shared/tftp/tftp.go:50
 #, fuzzy
 msgid "cannot generate systemd service"
 msgstr "impossible de générer le fichier du service systemd: %s"
@@ -1255,7 +1242,7 @@ msgstr "impossible de générer le fichier du service systemd: %s"
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr ""
 
-#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:504
+#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:517
 #: mgradm/shared/saline/saline.go:140
 #, fuzzy
 msgid "cannot enable service"
@@ -1332,103 +1319,107 @@ msgstr "impossible de générer la définition de l'issuer: %s"
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "impossible d'exécuter le script de finalisation de PostgreSQL: %s"
 
-#: mgradm/shared/podman/podman.go:339 mgradm/shared/podman/podman.go:347
+#: mgradm/shared/podman/podman.go:343 mgradm/shared/podman/podman.go:351
 #, fuzzy
 msgid "cannot stop service"
 msgstr "impossible d'activer le service systemd: %s"
 
-#: mgradm/shared/podman/podman.go:358
+#: mgradm/shared/podman/podman.go:362
 msgid "Initiating PostgreSQL upgrade from version %[1]d to %[2]d"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:362
+#: mgradm/shared/podman/podman.go:366
 #, fuzzy, javascript-format
 msgid "cannot find volume %s"
 msgstr "impossible de supprimer le volue %s: %s"
 
-#: mgradm/shared/podman/podman.go:377
+#: mgradm/shared/podman/podman.go:381
 #, fuzzy, javascript-format
 msgid "cannot move %s"
 msgstr "impossible de copier %s: %s"
 
-#: mgradm/shared/podman/podman.go:393
+#: mgradm/shared/podman/podman.go:397
 #, fuzzy, javascript-format
 msgid "cannot mkdir %s"
 msgstr "impossible d'exécuter le déploiement: %s"
 
-#: mgradm/shared/podman/podman.go:396
+#: mgradm/shared/podman/podman.go:400
 msgid "Data will be copied during this process. Please ensure sufficient disk space is available."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:398
+#: mgradm/shared/podman/podman.go:402
 #, fuzzy
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "impossible d'exécuter le script de mise à jour de la version de PostgreSQL: %s"
 
-#: mgradm/shared/podman/podman.go:401
+#: mgradm/shared/podman/podman.go:405
 #, fuzzy
 msgid "Upgrading without changing PostgreSQL version"
 msgstr "impossible d'exécuter le script de mise à jour de la version de PostgreSQL: %s"
 
-#: mgradm/shared/podman/podman.go:404
+#: mgradm/shared/podman/podman.go:408
 msgid "trying to downgrade PostgreSQL from %[1]d to %[2]d"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:411
+#: mgradm/shared/podman/podman.go:415
 msgid "Configuring split PostgreSQL container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:420
+#: mgradm/shared/podman/podman.go:424
 #, fuzzy
 msgid "cannot configure db container"
 msgstr "impossible de lire les données du conteneur: %s"
 
-#: mgradm/shared/podman/podman.go:430
+#: mgradm/shared/podman/podman.go:434
 #, fuzzy
 msgid "cannot run PostgreSQL finalize script"
 msgstr "impossible d'exécuter le script de finalisation de PostgreSQL: %s"
 
-#: mgradm/shared/podman/podman.go:434
+#: mgradm/shared/podman/podman.go:438
 #, fuzzy
 msgid "cannot run post upgrade script"
 msgstr "impossible d'exécuter le script post mise à jour: %s"
 
-#: mgradm/shared/podman/podman.go:459 mgradm/shared/podman/podman.go:502
+#: mgradm/shared/podman/podman.go:463 mgradm/shared/podman/podman.go:515
 msgid "Waiting for the server to start…"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:462
+#: mgradm/shared/podman/podman.go:466
 #, fuzzy
 msgid "cannot start service"
 msgstr "impossible d'activer le service systemd: %s"
 
-#: mgradm/shared/podman/podman.go:545
+#: mgradm/shared/podman/podman.go:493
+msgid "Failed to read server service definition to look for TFTP port"
+msgstr ""
+
+#: mgradm/shared/podman/podman.go:558
 #, fuzzy
 msgid "failed to generate postgresql migration script"
 msgstr "impossible de générer le script de migration: %s"
 
-#: mgradm/shared/podman/podman.go:581
+#: mgradm/shared/podman/podman.go:594
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:611
+#: mgradm/shared/podman/podman.go:624
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr "SSH_AUTH_SOCK n'est pas défini, démarrer un agent SSH et réessayer"
 
-#: mgradm/shared/podman/podman.go:621
+#: mgradm/shared/podman/podman.go:634
 msgid "Failed to find home directory to look for SSH config"
 msgstr "Impossible de trouver le répertoire home pour chercher la configuration SSH"
 
-#: mgradm/shared/podman/podman.go:643
+#: mgradm/shared/podman/podman.go:656
 #, fuzzy
 msgid "cannot inspect podman values"
 msgstr "impossible d'inspecter les valeurs de l'hôte: %s"
 
-#: mgradm/shared/podman/podman.go:657
+#: mgradm/shared/podman/podman.go:670
 msgid "PostgreSQL migration failure"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:686
+#: mgradm/shared/podman/podman.go:699
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr ""
 
@@ -1805,13 +1796,20 @@ msgstr "impossible d'activer le service systemd: %s"
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/shared/utils/flags.go:156
+#: mgradm/shared/utils/flags.go:155
 msgid "Can only contain letters, digits . _ and -"
 msgstr "Ne peut contenir que des lettres, chiffres . _ et -"
 
-#: mgradm/shared/utils/flags.go:164
+#: mgradm/shared/utils/flags.go:163
 msgid "Not a valid email address"
 msgstr "Pas une adresse email valide"
+
+#~ msgid "Enable TFTP"
+#~ msgstr "Activer TFTP"
+
+#, fuzzy
+#~ msgid "failed to mark tftp deprecated"
+#~ msgstr "impossible de déterminer l'image: %s"
 
 #, fuzzy
 #~ msgid "failed to connect to the Hub server"
