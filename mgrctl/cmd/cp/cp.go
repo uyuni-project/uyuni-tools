@@ -25,11 +25,11 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	flags := &flagpole{}
 
 	cpCmd := &cobra.Command{
-		Use:   "cp [path/to/source.file] [path/to/destination.file]",
+		Use:   "cp [path/to/source1.file] [path/to/source2.file ...] [path/to/destination]",
 		Short: L("Copy files to and from the containers"),
 		Long: L(`Takes a source and destination parameters.
 	One of them can be prefixed with 'server:' to indicate the path is within the server pod.`),
-		Args: cobra.ExactArgs(2),
+		Args: cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			viper, err := utils.ReadConfig(cmd, utils.GlobalConfigFilename, globalFlags.ConfigPath)
 			if err != nil {
@@ -51,5 +51,11 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 
 func run(flags *flagpole, _ *cobra.Command, args []string) error {
 	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
-	return cnx.Copy(args[0], args[1], flags.User, flags.Group)
+	dst := args[len(args)-1]
+	for _, src := range args[:len(args)-1] {
+		if err := cnx.Copy(src, dst, flags.User, flags.Group); err != nil {
+			return err
+		}
+	}
+	return nil
 }
