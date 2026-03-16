@@ -83,19 +83,26 @@ func Restore(force bool) error {
 	}
 	recoverySignalPath := path.Join(mountPoint, "recovery.signal")
 
-	if _, err := os.Stat(recoverySignalPath); err == nil {
-		s := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
-		s.Suffix = L(" Database is still recovering...")
-		s.Start()
-		for {
-			if _, err := os.Stat(recoverySignalPath); os.IsNotExist(err) {
-				break
-			}
-			time.Sleep(2 * time.Second)
+	if _, err := os.Stat(recoverySignalPath); err != nil {
+		if os.IsNotExist(err) {
+			log.Info().Msg(L("Database is restored."))
+			return nil
 		}
-		s.Stop()
+		return utils.Error(err, L("failed to check database recovery status"))
 	}
 
-	log.Info().Msg(L("Database is restored."))
-	return nil
+	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
+	s.Suffix = L(" Database is recovering... (use Ctrl-C to interrupt waiting)")
+	s.Start()
+	for {
+		if _, err := os.Stat(recoverySignalPath); err != nil {
+			s.Stop()
+			if os.IsNotExist(err) {
+				log.Info().Msg(L("Database is restored."))
+				return nil
+			}
+			return utils.Error(err, L("error while waiting for database recovery to complete, check database logs"))
+		}
+		time.Sleep(2 * time.Second)
+	}
 }
