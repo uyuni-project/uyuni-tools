@@ -84,19 +84,18 @@ func Upgrade(
 ) error {
 	if hubXmlrpcFlags.Image.Name == "" {
 		// Don't touch the hub service in ptf if not already present.
-		return nil
-	}
-	if err := SetupHubXmlrpc(systemd, authFile, baseImage, hubXmlrpcFlags); err != nil {
-		return err
+		log.Info().Msg(L("Not altering the hub XML-RPC API service"))
+	} else {
+		if err := SetupHubXmlrpc(systemd, authFile, baseImage, hubXmlrpcFlags); err != nil {
+			return err
+		}
+
+		if err := systemd.ReloadDaemon(false); err != nil {
+			return err
+		}
 	}
 
-	if err := systemd.ReloadDaemon(false); err != nil {
-		return err
-	}
-
-	if !hubXmlrpcFlags.IsChanged {
-		return systemd.RestartInstantiated(podman.HubXmlrpcService)
-	}
+	// In some case we may loose the currently running instance. Restore the count we had before
 	return systemd.ScaleService(hubXmlrpcFlags.Replicas, podman.HubXmlrpcService)
 }
 

@@ -424,7 +424,7 @@ func (s SystemdImpl) ScaleService(replicas int, name string) error {
 	currentReplicas := s.CurrentReplicaCount(name)
 	if currentReplicas == replicas {
 		log.Info().Msgf(L("Service %[1]s already has %[2]d replicas."), name, currentReplicas)
-		return nil
+		return s.RestartInstantiated(name)
 	}
 	log.Info().Msgf(L("Scale %[1]s from %[2]d to %[3]d replicas."), name, currentReplicas, replicas)
 	for i := currentReplicas; i < replicas; i++ {

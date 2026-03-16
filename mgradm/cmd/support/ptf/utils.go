@@ -101,7 +101,7 @@ func (flags *podmanPTFFlags) checkParameters(authFile string) error {
 
 	images := map[string]*string{
 		podman_shared.ServerAttestationService + "@": &flags.Coco.Image.Name,
-		podman_shared.HubXmlrpcService:               &flags.HubXmlrpc.Image.Name,
+		podman_shared.HubXmlrpcService + "@":         &flags.HubXmlrpc.Image.Name,
 		podman_shared.SalineService + "@":            &flags.Saline.Image.Name,
 		podman_shared.DBService:                      &flags.Pgsql.Image.Name,
 		podman_shared.TFTPService:                    &flags.TFTPD.Image.Name,
@@ -119,7 +119,7 @@ func (flags *podmanPTFFlags) checkParameters(authFile string) error {
 			if hasRemoteImage(containerImage, authFile) {
 				*pointer = containerImage
 				log.Info().Msgf(L("The %[1]s service image is %[2]s"), service, *pointer)
-			} else {
+			} else if service == podman_shared.DBService {
 				log.Info().Msgf(L("Cannot find PTF for %s"), service)
 				*pointer = currentImage
 				log.Info().Msgf(L("The %[1]s service image is %[2]s"), service, *pointer)

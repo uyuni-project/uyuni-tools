@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -31,6 +31,9 @@ func Upgrade(
 		return err
 	}
 
+	if !salineFlags.IsChanged {
+		return systemd.RestartInstantiated(podman.SalineService)
+	}
 	return systemd.ScaleService(salineFlags.Replicas, podman.SalineService)
 }
 
@@ -42,9 +45,9 @@ func writeSalineServiceFiles(
 	tz string,
 ) error {
 	image := salineFlags.Image
-
-	if image.Name == "" {
+	if salineFlags.Image.Name == "" {
 		// Don't touch the saline service in ptf if not already present.
+		log.Info().Msg(L("Not altering the Saline service"))
 		return nil
 	}
 
