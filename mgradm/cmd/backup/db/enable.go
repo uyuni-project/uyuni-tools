@@ -71,17 +71,7 @@ func Enable(force bool) error {
 		return err
 	}
 
-	data := templates.EnablePostgresTemplateData{
-		BackupDir: utils.VarPgsqlBackupVolumeMount.MountPath,
-	}
-
-	scriptBuilder := new(strings.Builder)
-	if err := data.Render(scriptBuilder); err != nil {
-		return utils.Error(err, L("failed to generate postgresql backup script"))
-	}
-
-	// We need to exec enable script inside the database container
-	if _, err := cnx.ExecScript(scriptBuilder.String()); err != nil {
+	if err := RunBaseBackup(cnx); err != nil {
 		return err
 	}
 
@@ -95,5 +85,22 @@ func Enable(force bool) error {
 	log.Info().Msgf(L("Continuous Archiving backup configured. Backup target volume is '%s'"),
 		utils.VarPgsqlBackupVolumeMount.Name)
 
+	return nil
+}
+
+func RunBaseBackup(cnx *shared.Connection) error {
+	data := templates.EnablePostgresTemplateData{
+		BackupDir: utils.VarPgsqlBackupVolumeMount.MountPath,
+	}
+
+	scriptBuilder := new(strings.Builder)
+	if err := data.Render(scriptBuilder); err != nil {
+		return utils.Error(err, L("failed to generate postgresql backup script"))
+	}
+
+	// We need to exec enable script inside the database container
+	if _, err := cnx.ExecScript(scriptBuilder.String()); err != nil {
+		return err
+	}
 	return nil
 }

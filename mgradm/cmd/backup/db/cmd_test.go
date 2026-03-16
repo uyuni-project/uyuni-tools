@@ -34,6 +34,25 @@ func TestEnableParamsParsing(t *testing.T) {
 	}
 }
 
+func TestRebaseParamsParsing(t *testing.T) {
+	args := []string{}
+
+	// Test function asserting that the args are properly parsed
+	tester := func(_ *types.GlobalFlags, _ *Flagpole,
+		_ *cobra.Command, _ []string,
+	) error {
+		return nil
+	}
+
+	globalFlags := types.GlobalFlags{}
+	cmd := newDBRebaseCmd(&globalFlags, tester)
+
+	cmd.SetArgs(args)
+	if err := cmd.Execute(); err != nil {
+		t.Errorf("command failed with error: %s", err)
+	}
+}
+
 func TestDisableParamsParsing(t *testing.T) {
 	args := []string{"--force", "--purge-volume"}
 
@@ -61,7 +80,7 @@ func TestStatusParamsParsing(t *testing.T) {
 	args := []string{}
 
 	// Test function asserting that the args are properly parsed
-	tester := func(_ *types.GlobalFlags, flags *Flagpole,
+	tester := func(_ *types.GlobalFlags, _ *Flagpole,
 		_ *cobra.Command, _ []string,
 	) error {
 		return nil

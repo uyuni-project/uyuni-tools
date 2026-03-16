@@ -20,6 +20,7 @@ func NewDBCmd(globalFlags *types.GlobalFlags) *cobra.Command {
 		Long:  L("Tools for online database backup management"),
 	}
 	dbCmd.AddCommand(newDBEnableCmd(globalFlags, doDBEnable))
+	dbCmd.AddCommand(newDBRebaseCmd(globalFlags, doDBRebase))
 	dbCmd.AddCommand(newDBDisableCmd(globalFlags, doDBDisable))
 	dbCmd.AddCommand(newDBStatusCmd(globalFlags, doDBStatus))
 	dbCmd.AddCommand(newDBRestoreCmd(globalFlags, doDBRestore))
@@ -36,6 +37,19 @@ func newDBEnableCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[Flagpo
 		},
 	}
 	cmd.Flags().Bool("force", false, L("Reconfigure already configured backup"))
+
+	return cmd
+}
+
+func newDBRebaseCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[Flagpole]) *cobra.Command {
+	var flags Flagpole
+	cmd := &cobra.Command{
+		Use:   "rebase",
+		Short: L("Rebase continuous archiving backup"),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
+		},
+	}
 
 	return cmd
 }
@@ -89,6 +103,15 @@ func doDBEnable(
 	_ []string,
 ) error {
 	return Enable(flags.Force)
+}
+
+func doDBRebase(
+	_ *types.GlobalFlags,
+	_ *Flagpole,
+	_ *cobra.Command,
+	_ []string,
+) error {
+	return Rebase()
 }
 
 func doDBDisable(
