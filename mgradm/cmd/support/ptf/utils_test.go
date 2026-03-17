@@ -22,7 +22,7 @@ func TestCheckParameters(t *testing.T) {
 		return map[string]string{
 			podman.ServerService:                  image,
 			podman.ServerAttestationService + "@": cocoImage,
-			podman.HubXmlrpcService:               hubImage,
+			podman.HubXmlrpcService + "@":         hubImage,
 			podman.SalineService + "@":            salineImage,
 			podman.DBService:                      dbImage,
 			podman.TFTPService:                    tftpImage,

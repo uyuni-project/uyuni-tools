@@ -34,7 +34,7 @@ func AssertNoError(t *testing.T, message string, err error) {
 	}
 }
 
-// AssertError ensures error mesasge was produced.
+// AssertError ensures error message was produced.
 func AssertError(t *testing.T, message string, err error) {
 	t.Helper() // Important: Marks this function as a test helper
 

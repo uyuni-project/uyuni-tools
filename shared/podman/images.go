@@ -7,7 +7,6 @@ package podman
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/url"
@@ -34,10 +33,10 @@ var newRunner = utils.NewRunner
 func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled bool) (string, error) {
 	//image here should start with registry and end with tag
 	if !hasRegistry(image) {
-		return "", errors.New(L("Cannot prepare image %s because registry is missing"))
+		return "", fmt.Errorf(L("Cannot prepare image %s because registry is missing"), image)
 	}
 	if !hasTag(image) {
-		return "", errors.New(L("Cannot prepare image %s because tag is missing"))
+		return "", fmt.Errorf(L("Cannot prepare image %s because tag is missing"), image)
 	}
 
 	if strings.ToLower(pullPolicy) != "always" {
