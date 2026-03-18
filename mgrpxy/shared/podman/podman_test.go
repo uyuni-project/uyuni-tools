@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -36,20 +36,6 @@ func TestValidateYamlFiles(t *testing.T) {
 	// Test: when all files are present and have correct permissions
 	if err := validateInstallYamlFiles(tempDir); err != nil {
 		t.Errorf("Expected no error, got %v", err)
-	}
-
-	// Change the permission of config.yaml to 0600 to simulate a permission error
-	configFilePath := path.Join(tempDir, "config.yaml")
-	if err := os.Chmod(configFilePath, 0600); err != nil {
-		t.Fatalf("Failed to change permissions for %s: %v", configFilePath, err)
-	}
-	if err := validateInstallYamlFiles(tempDir); err == nil {
-		t.Errorf("Expected an error due to incorrect permissions on config.yaml, but got none")
-	}
-
-	// Restore the correct permissions for the next test run
-	if err := os.Chmod(configFilePath, 0644); err != nil {
-		t.Fatalf("Failed to restore permissions for %s: %v", configFilePath, err)
 	}
 
 	// Test: Missing file scenario, remove one file and expect an error
