@@ -5,6 +5,7 @@
 package ssl
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"path"
@@ -246,4 +247,14 @@ func TestSHA256Fingerprints(t *testing.T) {
 	testutils.AssertEquals(t, "Wrong second certificate fingerprint",
 		"7C:30:C7:12:03:64:D0:B3:FF:AA:B2:7C:1E:F1:E9:60:75:C8:A7:81:63:F0:6D:E9:EB:88:D6:2E:F2:32:B2:69",
 		fingerprints[1])
+}
+
+func TestStripTextFromCertificate(t *testing.T) {
+	cert := testutils.ReadFile(t, "testdata/chain2/spacewalk.crt")
+	actual := StripTextFromCertificate(cert)
+	testutils.AssertEquals(t, "Unexpected number of certificates starts",
+		3, bytes.Count(actual, []byte("-----BEGIN CERTIFICATE-----\n")))
+	testutils.AssertEquals(t, "Unexpected number of certificates ends",
+		3, bytes.Count(actual, []byte("\n-----END CERTIFICATE-----\n")))
+	testutils.AssertTrue(t, "The stripped cert shouldn't contain text", !bytes.Contains(actual, []byte("Data:")))
 }

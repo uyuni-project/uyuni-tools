@@ -1,0 +1,2 @@
+- Strip text from x509 certs before creating the secret
+  (bsc#1259720)

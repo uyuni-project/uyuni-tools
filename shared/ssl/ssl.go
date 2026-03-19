@@ -112,28 +112,58 @@ func findServerCert(certs []certificate) (*certificate, error) {
 	return nil, errors.New(L("expected to find a certificate, got none"))
 }
 
+// processOpenSSL is the generic core that handles the piping logic.
+func processOpenSSL(r io.Reader) ([][]byte, error) {
+	data, err := io.ReadAll(r)
+	if err != nil {
+		return nil, err
+	}
+
+	var results [][]byte
+	rest := data
+
+	for {
+		var block *pem.Block
+		block, rest = pem.Decode(rest)
+		if block == nil {
+			break // No more PEM blocks found
+		}
+
+		// Re-encode just this one block to pass to OpenSSL
+		singleCert := pem.EncodeToMemory(block)
+
+		cmd := exec.Command("openssl", "x509")
+		cmd.Stdin = bytes.NewReader(singleCert)
+		out, err := cmd.Output()
+		if err == nil && len(out) > 0 {
+			results = append(results, out)
+		}
+
+		if len(rest) == 0 {
+			break
+		}
+	}
+
+	return results, nil
+}
+
 func readCertificates(path string) ([]certificate, error) {
 	fd, err := os.Open(path)
 	if err != nil {
 		return []certificate{}, utils.Errorf(err, L("Failed to read certificate file %s"), path)
 	}
+	defer fd.Close()
 
-	certs := []certificate{}
-	for {
-		log.Debug().Msgf("Running openssl x509 on %s", path)
-		cmd := exec.Command("openssl", "x509")
-		cmd.Stdin = fd
-		out, err := cmd.Output()
+	rawCerts, err := processOpenSSL(fd)
+	if err != nil {
+		return nil, err
+	}
 
+	var certs []certificate
+	for _, raw := range rawCerts {
+		cert, err := extractCertificateData(raw)
 		if err != nil {
-			// openssl got an invalid certificate or the end of the file
-			break
-		}
-
-		// Extract data from the certificate
-		cert, err := extractCertificateData(out)
-		if err != nil {
-			return []certificate{}, err
+			return nil, err
 		}
 		certs = append(certs, cert)
 	}
@@ -336,19 +366,12 @@ func GetRsaKey(keyContent string, password string) []byte {
 
 // StripTextFromCertificate removes the optional text part of an x509 certificate.
 func StripTextFromCertificate(certContent string) []byte {
-	cmd := exec.Command("openssl", "x509")
-	stdin, err := cmd.StdinPipe()
-	if err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to open openssl x509 process input stream"))
+	reader := bytes.NewBufferString(certContent)
+	rawCerts, err := processOpenSSL(reader)
+	if err != nil || len(rawCerts) == 0 {
+		return nil
 	}
-	if _, err := io.WriteString(stdin, certContent); err != nil {
-		log.Fatal().Err(err).Msg(L("Failed to write SSL certificate to input stream"))
-	}
-	out, err := cmd.Output()
-	if err != nil {
-		log.Fatal().Err(err).Msg(L("failed to strip text part from CA certificate"))
-	}
-	return out
+	return bytes.Join(rawCerts, []byte(""))
 }
 
 var newRunner = utils.NewRunner

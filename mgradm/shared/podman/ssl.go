@@ -70,8 +70,8 @@ func prepareThirdPartyCertificate(
 
 	// Create secrets for CA
 	return shared_podman.CreateTLSSecrets(
-		caSecretName, path.Join(tempDir, "ca.crt"),
-		certSecretName, path.Join(tempDir, "server.crt"),
+		caSecretName, caPath,
+		certSecretName, serverCertPath,
 		keySecretName, pair.Key,
 	)
 }
@@ -468,6 +468,7 @@ func reuseExistingCertificatesFromMounts(
 		log.Info().Msgf(L("Certificate file %s not found."), crtCheckPath)
 		return false, nil
 	}
+	cert = ssl.StripTextFromCertificate(string(cert))
 	if err = os.WriteFile(serverCert, cert, 0444); err != nil {
 		return true, utils.Error(err, L("cannot write existing server certificate"))
 	}
