@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-11 16:35+0100\n"
-"PO-Revision-Date: 2026-03-02 11:04+0000\n"
+"PO-Revision-Date: 2026-03-24 13:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.1\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -242,38 +242,31 @@ msgid "no supported backend found"
 msgstr "no s'ha trobat cap dorsal compatible"
 
 #: shared/connection.go:504 shared/utils/support.go:102
-#, fuzzy
-#| msgid "failed to run supportconfig"
 msgid "failed to generate supportconfig suffix: %w"
-msgstr "no s'ha pogut executar supportconfig"
+msgstr "no s'ha pogut generar el sufix de configuració de suport: %w"
 
 #: shared/connection.go:516 shared/utils/support.go:116
-#, fuzzy, javascript-format
-#| msgid "failed to run supportconfig on the host"
+#, javascript-format
 msgid "failed to generate unique supportconfig batch name after %d attempts"
-msgstr "no s'ha pogut executar supportconfig a l'amfitrió"
+msgstr "no s'ha pogut generar un nom de lot de configuració de suport únic després de %d intents"
 
 #: shared/connection.go:520
-#, fuzzy, javascript-format
-#| msgid "Running supportconfig in  %s"
+#, javascript-format
 msgid "Running supportconfig in %s"
-msgstr "S'està executant supportconfig a %s"
+msgstr "S'executa supportconfig a %s"
 
 #: shared/connection.go:527 shared/utils/support.go:122
 msgid "Some parts of supportconfig were not successful"
-msgstr ""
+msgstr "Algunes parts de supportconfig no han funcionat correctament"
 
 #: shared/connection.go:532
-#, fuzzy
-#| msgid "cannot read config"
 msgid "cannot copy support config"
-msgstr "no es pot llegir la configuració"
+msgstr "no es pot copiar la configuració de suport"
 
 #: shared/connection.go:538
-#, fuzzy, javascript-format
-#| msgid "failed to remove %s file in the container"
+#, javascript-format
 msgid "failed to remove %s directory in the container"
-msgstr "no s'ha pogut eliminar el fitxer %s al contenidor"
+msgstr "no s'ha pogut suprimir el directori %s del contenidor"
 
 #: shared/kubernetes/kubernetes.go:52
 msgid "failed to get kubelet version"
@@ -692,10 +685,8 @@ msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "Ha fallat obtenir la propietat de %[1]s des del servei %[2]s"
 
 #: shared/podman/systemd.go:196
-#, fuzzy
-#| msgid "Failed to get the %[1]s property from %[2]s service"
 msgid "Failed to get the definition from %[2]s service"
-msgstr "Ha fallat obtenir la propietat de %[1]s des del servei %[2]s"
+msgstr "Ha fallat obtenir la definició del servei %[2]s"
 
 #: shared/podman/systemd.go:267
 #, javascript-format
@@ -1375,19 +1366,15 @@ msgstr "no s'ha pogut afegir %s a tarball"
 #: shared/utils/support.go:66
 #, javascript-format
 msgid "Support config tarball created at %s"
-msgstr ""
+msgstr "Fitxer tar de configuració de suport creat a %s"
 
 #: shared/utils/support.go:119
-#, fuzzy
-#| msgid "Running supportconfig in  %s"
 msgid "Running supportconfig on the host"
-msgstr "S'està executant supportconfig a %s"
+msgstr "S'executa supportconfig a l'amfitrió"
 
 #: shared/utils/support.go:129
-#, fuzzy
-#| msgid "failed to find host supportconfig tarball from command output"
 msgid "failed to find host supportconfig tarball"
-msgstr "no s'ha pogut trobar l'amfitrió supportconfig tarball des de la sortida de l'ordre"
+msgstr "no s'ha pogut trobar el fitxer tar de suport de l'amfitrió"
 
 #: shared/utils/support.go:132
 msgid "supportconfig is not available on the host, skipping it"
@@ -1537,7 +1524,7 @@ msgstr "La suma de verificació de %s no coincideix"
 
 #: shared/utils/utils.go:525
 msgid "nBytes must be > 0"
-msgstr ""
+msgstr "nBytes ha de ser > 0"
 
 #: shared/utils/uyuniservices.go:18
 msgid "Main service"
