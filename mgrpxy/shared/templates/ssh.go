@@ -21,7 +21,7 @@ After=uyuni-proxy-pod.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-Restart=on-success
+Restart=on-failure
 ExecStartPre=/bin/rm -f %t/uyuni-proxy-ssh.pid %t/uyuni-proxy-ssh.ctr-id
 
 ExecStart=/bin/sh -c '/usr/bin/podman run \
@@ -35,7 +35,6 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	-v {{ .HTTPProxyFile }}:{{ .HTTPProxyFile }}:ro \
 	{{- end }}
 	${SSH_EXTRA_CONF} --name uyuni-proxy-ssh \
-	--health-on-failure=stop \
 	${UYUNI_IMAGE}'
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/uyuni-proxy-ssh.ctr-id -t 10
