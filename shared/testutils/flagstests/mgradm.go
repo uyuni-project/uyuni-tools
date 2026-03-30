@@ -240,6 +240,21 @@ func AssertReportDBFlag(t *testing.T, flags *utils.DBFlags) {
 	testutils.AssertEquals(t, "Error parsing --reportdb-port", 5678, flags.Port)
 }
 
+// EventProcessorFlagsTestArgs is the expected values for AssertEventProcessorFlag.
+var EventProcessorFlagsTestArgs = []string{
+	"--eventprocessor-image", "procimg",
+	"--eventprocessor-tag", "proctag",
+	"--eventprocessor-replicas", "1",
+}
+
+// AssertEventProcessorFlag asserts that all Salt event processor flags are parsed correctly.
+func AssertEventProcessorFlag(t *testing.T, flags *utils.EventProcessorFlags) {
+	testutils.AssertEquals(t, "Error parsing --eventprocessor-image", "procimg", flags.Image.Name)
+	testutils.AssertEquals(t, "Error parsing --eventprocessor-tag", "proctag", flags.Image.Tag)
+	testutils.AssertEquals(t, "Error parsing --eventprocessor-replicas", 1, flags.Replicas)
+	testutils.AssertTrue(t, "Event processor should be changed", flags.IsChanged)
+}
+
 // TFTPDFlagsTestArgs is the expected values for AssertTFTPDFlag.
 var TFTPDFlagsTestArgs = []string{
 	"--tftpd-image", "tftpdimg",

@@ -7,6 +7,7 @@ package ptf
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -58,10 +59,21 @@ func ptfForPodman(
 		flags.Coco,
 		flags.HubXmlrpc,
 		flags.Saline,
+		flags.EventProcessor,
 		flags.Pgsql,
 		flags.TFTPD,
 		flags.Installation.TZ,
+		eventProcessorHasDebug(systemd),
 	)
+}
+
+func eventProcessorHasDebug(systemd podman_shared.Systemd) bool {
+	def, err := systemd.GetServiceDefinition(podman_shared.EventProcessorService + "@")
+	if err != nil {
+		log.Error().Err(err).Msg(L("Failed to read server service definition to look for the event processor"))
+		return false
+	}
+	return strings.Contains(def, "-Xrunjdwp")
 }
 
 // variables for unit testing.

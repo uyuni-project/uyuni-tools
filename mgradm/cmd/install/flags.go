@@ -31,6 +31,8 @@ func AddInstallFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "tftpd-container", Title: L("TFTPD Flags")})
 	utils.AddTFTPDFlags(cmd, true, "tftpd-container")
 
+	cmd_utils.AddEventProcessorFlag(cmd, false)
+
 	cmd.Flags().String("admin-login", "admin", L("Administrator user name"))
 	cmd.Flags().String("admin-password", "", L("Administrator password"))
 	cmd.Flags().String("admin-firstName", "Administrator", L("First name of the administrator"))
