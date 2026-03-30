@@ -1,6 +1,6 @@
 module github.com/uyuni-project/uyuni-tools
 
-go 1.21
+go 1.23.0
 
 require (
 	github.com/Netflix/go-expect v0.0.0-20220104043353-73e0943537d2
@@ -8,7 +8,7 @@ require (
 	github.com/chai2010/gettext-go v1.0.2
 	github.com/go-viper/mapstructure/v2 v2.4.0
 	github.com/spf13/cobra v1.8.0
-	golang.org/x/net v0.23.0
+	golang.org/x/net v0.38.0
 )
 
 require (
@@ -36,9 +36,9 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.7.0
 	github.com/subosito/gotenv v1.2.0 // indirect
-	golang.org/x/sys v0.18.0
-	golang.org/x/term v0.18.0
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/sys v0.31.0
+	golang.org/x/term v0.30.0
+	golang.org/x/text v0.23.0 // indirect
 	gopkg.in/ini.v1 v1.51.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v2 v2.4.0
