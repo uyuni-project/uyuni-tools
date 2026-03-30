@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2023-2024 SUSE LLC
+SPDX-FileCopyrightText: 2026 SUSE LLC
 
 SPDX-License-Identifier: Apache-2.0
 -->
@@ -117,13 +117,7 @@ Add the following import in the go file and then wrap all the strings that could
 **Global variables and constants are evaluated before running the main function and thus do not take the locale into account.**
 Move them in a function to work around this issue.
 
-### Generating the POT files
-
-In order to extract the strings from the code run the `extract_strings` script.
-One POT file for each tool and one for the `shared` folder will be generated in the `locale` directory.
-
 ### Translating
 
-The translation files should be named after the target language next to the corresponding PO file.
-The `.mo` files should not be committed in the source tree as they are build results.
-Those are generated using the `locale/build.sh` script.
+The translation takes place on [Weblate](https://l10n.opensuse.org/projects/uyuni/). Look for the `uyuni-tools-*` components there.
+The `pot` and `po` files should not be changed in PRs as the synchronization is part of a semi-automated workflow.
