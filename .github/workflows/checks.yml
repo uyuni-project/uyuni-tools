@@ -1,8 +1,8 @@
-# SPDX-FileCopyrightText: 2024 SUSE LLC
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
 
-name: l10n-check
+name: Checks
 on:
   push:
     branches:
@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  l10n-check:
+  l10n:
     name: localizable
     runs-on: ubuntu-latest
     steps:
@@ -25,3 +25,16 @@ jobs:
         name: Localizable strings linter
         with:
           keywords: L,NL,PL
+
+  copyrights:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+        with:
+          fetch-depth: 0
+      - name: Check copyright years
+        shell: sh -x {0}
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          ./update-copyright-year.sh $CHANGED_FILES
