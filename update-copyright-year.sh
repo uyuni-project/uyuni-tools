@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # SPDX-FileCopyrightText: 2026 SUSE LLC
 #
@@ -8,6 +8,13 @@ need_fix="n"
 changed="n"
 current_year=$(date +%Y)
 for changed_file in $@; do
+    case "$changed_file" in
+        uyuni-tools.changes.*)
+            continue
+            ;;
+    esac
+
+
     if ! grep -q "^[/#]\+ SPDX-FileCopyrightText: $current_year" $changed_file; then
         lines=`grep "^[/#]\+ SPDX-FileCopyrightText: " $changed_file | wc -l`
         if [ "z$lines" = "z1" ]; then
