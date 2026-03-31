@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-tools
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2026 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -49,7 +49,7 @@
 %else
 %define _zshdir %{_datarootdir}/zsh/site-functions
 %endif
-# 0%{?debian} || 0%{?ubuntu}
+# debian || ubuntu
 
 Name:           %{project}
 Version:        5.2.5
@@ -67,35 +67,35 @@ BuildRequires:  coreutils
 %if 0%{?debian} || 0%{?ubuntu}
 BuildRequires:  gettext
 %endif
-# 0%{?debian} || 0%{?ubuntu}
+# debian || ubuntu
 
 %if 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
 BuildRequires:  fish
 %endif
-# 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+# is_opensuse || fedora || debian || ubuntu
 
 BuildRequires:  zsh
 # Get the proper Go version on different distros
 %if 0%{?suse_version}
 BuildRequires:  golang(API) >= 1.25
 %endif
-# 0%{?suse_version}
+# suse_version
 
 %if 0%{?ubuntu}
 %define go_version      1.22
 BuildRequires:  golang-%{go_version}
 %endif
-# 0%{?ubuntu}
+# ubuntu
 
 %if 0%{?debian}
 BuildRequires:  golang >= 1.19
 %endif
-# 0%{?debian}
+# debian
 
 %if 0%{?fedora} || 0%{?rhel}
 BuildRequires:  golang >= 1.21
 %endif
-# 0%{?fedora} || 0%{?rhel}
+# fedora || rhel
 
 %description
 Tools for managing %{productprettyname} container.
@@ -107,7 +107,7 @@ Summary:        Command line tool to install and update %{productprettyname}
 Requires:       (aardvark-dns if podman)
 Requires:       (netavark if podman)
 %endif
-# 0%{?suse_version}
+# suse_version
 %if "%{_vendor}" != "debbuild"
 Requires:       (podman >= 4.5.0 if podman)
 %endif
@@ -123,7 +123,7 @@ Obsoletes:      uyuni-proxy-systemd-services
 Requires:       (aardvark-dns if podman)
 Requires:       (netavark if podman)
 %endif
-# 0%{?suse_version}
+# suse_version
 
 %description -n %{name_pxy}
 %{name_pxy} is a convenient tool to install and update %{productprettyname} proxy components as containers
@@ -134,12 +134,10 @@ Summary:        Bash Completion for %{name_adm}
 Group:          System/Shells
 Requires:       %{name_adm} = %{version}
 BuildArch:      noarch
-%if 0%{?suse_version} >= 150000
+%if 0%{?suse_version} >= 1500
 Supplements:    (%{name_adm} and bash-completion)
-%else
-Supplements:    bash-completion
 %endif
-# 0%{?suse_version} >= 150000
+# suse_version >= 1500
 
 %description -n %{name_adm}-bash-completion
 Bash command line completion support for %{name_adm}.
@@ -149,12 +147,10 @@ Summary:        Zsh Completion for %{name_adm}
 Group:          System/Shells
 Requires:       %{name_adm} = %{version}
 BuildArch:      noarch
-%if 0%{?suse_version} >= 150000
+%if 0%{?suse_version} >= 1500
 Supplements:    (%{name_adm} and zsh)
-%else
-Supplements:    zsh
 %endif
-# 0%{?suse_version} >= 150000
+# suse_version >= 1500
 
 %description -n %{name_adm}-zsh-completion
 Zsh command line completion support for %{name_adm}.
@@ -164,12 +160,10 @@ Summary:        Bash Completion for %{name_pxy}
 Group:          System/Shells
 Requires:       %{name_pxy} = %{version}
 BuildArch:      noarch
-%if 0%{?suse_version} >= 150000
+%if 0%{?suse_version} >= 1500
 Supplements:    (%{name_pxy} and bash-completion)
-%else
-Supplements:    bash-completion
 %endif
-# 0%{?suse_version} >= 150000
+# suse_version >= 1500
 
 %description -n %{name_pxy}-bash-completion
 Bash command line completion support for %{name_pxy}.
@@ -179,12 +173,10 @@ Summary:        Zsh Completion for %{name_pxy}
 Group:          System/Shells
 Requires:       %{name_pxy} = %{version}
 BuildArch:      noarch
-%if 0%{?suse_version} >= 150000
+%if 0%{?suse_version} >= 1500
 Supplements:    (%{name_pxy} and zsh)
-%else
-Supplements:    zsh
 %endif
-# 0%{?suse_version} >= 150000
+# suse_version >= 1500
 
 %description -n %{name_pxy}-zsh-completion
 Zsh command line completion support for %{name_pxy}.
@@ -195,12 +187,10 @@ Summary:        Fish Completion for %{name_adm}
 Group:          System/Shells
 Requires:       %{name_adm} = %{version}
 BuildArch:      noarch
-%if 0%{?suse_version} >= 150000
+%if 0%{?suse_version} >= 1500
 Supplements:    (%{name_adm} and fish)
-%else
-Supplements:    fish
 %endif
-# 0%{?suse_version} >= 150000
+# suse_version >= 1500
 
 %description -n %{name_adm}-fish-completion
 Fish command line completion support for %{name_adm}.
@@ -211,21 +201,19 @@ Summary:        Fish Completion for %{name_pxy}
 Group:          System/Shells
 Requires:       %{name_pxy} = %{version}
 BuildArch:      noarch
-%if 0%{?suse_version} >= 150000
+%if 0%{?suse_version} >= 1500
 Supplements:    (%{name_pxy} and fish)
-%else
-Supplements:    fish
 %endif
-# 0%{?suse_version} >= 150000
+# suse_version >= 1500
 
 %description -n %{name_pxy}-fish-completion
 Fish command line completion support for %{name_pxy}.
 
 %endif
-# 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+# is_opensuse || fedora || debian || ubuntu
 
 %endif
-# %{adm_build}
+# adm_build
 
 %package -n %{name_ctl}
 Summary:        Command line tool to perform day-to-day operations on %{productprettyname}
@@ -239,12 +227,10 @@ Summary:        Bash Completion for %{name_ctl}
 Group:          System/Shells
 Requires:       %{name_ctl} = %{version}
 BuildArch:      noarch
-%if 0%{?suse_version} >= 150000
+%if 0%{?suse_version} >= 1500
 Supplements:    (%{name_ctl} and bash-completion)
-%else
-Supplements:    bash-completion
 %endif
-# 0%{?suse_version} >= 150000
+# suse_version >= 1500
 
 %description -n %{name_ctl}-bash-completion
 Bash command line completion support for %{name_ctl}.
@@ -254,12 +240,10 @@ Summary:        Zsh Completion for %{name_ctl}
 Group:          System/Shells
 Requires:       %{name_ctl} = %{version}
 BuildArch:      noarch
-%if 0%{?suse_version} >= 150000
+%if 0%{?suse_version} >= 1500
 Supplements:    (%{name_ctl} and zsh)
-%else
-Supplements:    zsh
 %endif
-# 0%{?suse_version} >= 150000
+# suse_version >= 1500
 
 %description -n %{name_ctl}-zsh-completion
 Zsh command line completion support for %{name_ctl}.
@@ -270,17 +254,15 @@ Summary:        Fish Completion for %{name_ctl}
 Group:          System/Shells
 Requires:       %{name_ctl} = %{version}
 BuildArch:      noarch
-%if 0%{?suse_version} >= 150000
+%if 0%{?suse_version} >= 1500
 Supplements:    (%{name_ctl} and fish)
-%else
-Supplements:    fish
 %endif
-# 0%{?suse_version} >= 150000
+# suse_version >= 1500
 
 %description -n %{name_ctl}-fish-completion
 Fish command line completion support for %{name_ctl}.
 %endif
-# 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+# is_opensuse || fedora || debian || ubuntu
 
 # Only SUSE distros have a -lang packages, for the others they
 # will all be in the correspdonding tool package.
@@ -294,7 +276,7 @@ Fish command line completion support for %{name_ctl}.
 # %{adm_build}
 
 %endif
-# 0%{?suse_version} || 0%{?sle_version}
+# suse_version || sle_version
 
 %prep
 %autosetup
@@ -316,13 +298,13 @@ tag=%{!?_default_tag:latest}
 %if "%{?_default_tag}" != ""
     tag='%{_default_tag}'
 %endif
-# "%{?_default_tag}" != ""
+# "_default_tag" != ""
 
 pull_policy=%{!?_default_pull_policy:Always}
 %if "%{?_default_pull_policy}" != ""
     pull_policy='%{_default_pull_policy}'
 %endif
-# "%{?_default_pull_policy}" != ""
+# "_default_pull_policy" != ""
 
 namespace=%{namespace}
 helm_namespace=%{namespace}
@@ -338,7 +320,7 @@ go_tags=""
 %if "%{?_uyuni_tools_tags}" != ""
   go_tags="-tags %{_uyuni_tools_tags}"
 %endif
-# "%{?_uyuni_tools_tags}" != ""
+# "_uyuni_tools_tags" != ""
 
 go_path=""
 %if 0%{?ubuntu}
@@ -347,10 +329,10 @@ go_path=""
   %if "%{?_go_bin}" != ""
     go_path='%{_go_bin}/'
   %endif
-# "%{?_go_bin}" != ""
+# "_go_bin" != ""
 
 %endif
-# 0%{?ubuntu}
+# ubuntu
 
 registry="${namespace%%%%/*}"
 imageprefix="${namespace#*/}"
@@ -390,14 +372,14 @@ fi
 %if 0%{?rhel} >= 8 || 0%{?fedora} >= 38
 GOLD_FLAGS="-compressdwarf=false ${GOLD_FLAGS}"
 %endif
-# 0%{?rhel} >= 8 || 0%{?fedora} >= 38
+# rhel >= 8 || fedora >= 38
 
 # Workaround for missing build-id on Fedora
 # error: Missing build-id in [...]
 %if 0%{?fedora} >= 38
 GOLD_FLAGS="-B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \n') ${GOLD_FLAGS}"
 %endif
-# 0%{?fedora} >= 38
+# fedora >= 38
 
 ${go_path}go build ${go_tags} -ldflags "${GOLD_FLAGS}" -o ./bin ./...
 
@@ -405,7 +387,7 @@ ${go_path}go build ${go_tags} -ldflags "${GOLD_FLAGS}" -o ./bin ./...
 rm ./bin/%{name_adm}
 rm ./bin/%{name_pxy}
 %endif
-# ! %{adm_build}
+# ! adm_build
 
 %install
 install -m 0755 -vd %{buildroot}%{_bindir}
@@ -422,7 +404,7 @@ install -m 0755 -vp ./bin/* %{buildroot}%{_bindir}/
 rm %{buildroot}%{_datadir}/locale/*/LC_MESSAGES/%{name_adm}.mo
 rm %{buildroot}%{_datadir}/locale/*/LC_MESSAGES/%{name_pxy}.mo
 %endif
-# %{adm_build}
+# adm_build
 
 # Completion files
 mkdir -p %{buildroot}%{_datarootdir}/bash-completion/completions/
@@ -435,7 +417,7 @@ mkdir -p %{buildroot}%{_zshdir}
 mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %{buildroot}/%{_bindir}/%{name_ctl} completion fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/%{name_ctl}.fish
 %endif
-# 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+# is_opensuse || fedora || debian || ubuntu
 
 %if %{adm_build}
 
@@ -449,10 +431,10 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %{buildroot}/%{_bindir}/%{name_adm} completion fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/%{name_adm}.fish
 %{buildroot}/%{_bindir}/%{name_pxy} completion fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/%{name_pxy}.fish
 %endif
-# 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+# is_opensuse || fedora || debian || ubuntu
 
 %endif
-# %{adm_build}
+# adm_build
 
 %if %{adm_build}
 
@@ -466,7 +448,7 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %else
 %files -n %{name_adm} -f %{name_adm}.lang
 %endif
-# 0%{?suse_version} || 0%{?sle_version}
+# suse_version || sle_version
 
 %defattr(-,root,root)
 %doc README.md
@@ -483,7 +465,7 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %files -n %{name_adm}-fish-completion
 %{_datarootdir}/fish/vendor_completions.d/%{name_adm}.fish
 %endif
-# 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+# is_opensuse || fedora || debian || ubuntu
 
 
 # mgrpxy packages files
@@ -496,7 +478,7 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %else
 %files -n %{name_pxy} -f %{name_pxy}.lang
 %endif
-# 0%{?suse_version} || 0%{?sle_version}
+# suse_version || sle_version
 
 %defattr(-,root,root)
 %doc README.md
@@ -513,10 +495,10 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %files -n %{name_pxy}-fish-completion
 %{_datarootdir}/fish/vendor_completions.d/%{name_pxy}.fish
 %endif
-# 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+# is_opensuse || fedora || debian || ubuntu
 
 %endif
-# %{adm_build}
+# adm_build
 
 # mgrctl packages files
 
@@ -528,7 +510,7 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %else
 %files -n %{name_ctl} -f %{name_ctl}.lang
 %endif
-# 0%{?suse_version} || 0%{?sle_version}
+# suse_version || sle_version
 
 %defattr(-,root,root)
 %doc README.md
@@ -545,6 +527,6 @@ mkdir -p %{buildroot}%{_datarootdir}/fish/vendor_completions.d/
 %files -n %{name_ctl}-fish-completion
 %{_datarootdir}/fish/vendor_completions.d/%{name_ctl}.fish
 %endif
-# 0%{?is_opensuse} || 0%{?fedora} || 0%{?debian} || 0%{?ubuntu}
+# is_opensuse || fedora || debian || ubuntu
 
 %changelog
