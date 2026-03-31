@@ -68,6 +68,13 @@ func AssertHasAllFlags(t *testing.T, cmd *cobra.Command, args []string) {
 	AssertHasAllFlagsIgnores(t, cmd, args, []string{})
 }
 
+// AssertStringContains ensures a string contains the expected value.
+func AssertStringContains(t *testing.T, message string, actual string, expected string) {
+	if !strings.Contains(actual, expected) {
+		t.Errorf(message+"got '%v' expected to contain '%v'", actual, expected)
+	}
+}
+
 // AssertContains ensures a slice contains the expected value.
 func AssertContains(t *testing.T, message string, actual []string, expected string) {
 	if !contains(actual, expected) {

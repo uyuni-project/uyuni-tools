@@ -43,6 +43,7 @@ const (
 
 var contextRunner = shared_utils.NewRunnerWithContext
 var newRunner = shared_utils.NewRunner
+var systemdGenerator func(shared_utils.Template, string, string, string) error = generateSystemdFile
 
 // PodmanProxyFlags are the flags used by podman proxy install and upgrade command.
 type PodmanProxyFlags struct {
@@ -59,20 +60,10 @@ func GenerateSystemdService(
 	sshImage string,
 	tftpdImage string,
 	flags *PodmanProxyFlags,
+	ipv6Enabled bool,
+	httpProxyConfig string,
 ) error {
-	err := podman.SetupNetwork(true)
-	if err != nil {
-		return shared_utils.Errorf(err, L("cannot setup network"))
-	}
-
-	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
-
-	log.Info().Msg(L("Generating systemd services"))
-	httpProxyConfig := getHTTPProxyConfig()
-
-	ports := []types.PortMap{}
-	ports = append(ports, shared_utils.ProxyTCPPorts...)
-	ports = append(ports, shared_utils.ProxyPodmanPorts...)
+	ports := shared_utils.GetProxyPorts()
 
 	// Pod
 	dataPod := templates.PodTemplateData{
@@ -82,13 +73,11 @@ func GenerateSystemdService(
 		IPV6Enabled:   ipv6Enabled,
 	}
 	podEnv := fmt.Sprintf(`Environment="PODMAN_EXTRA_ARGS=%s"`, strings.Join(flags.Podman.Args, " "))
-	if err := generateSystemdFile(dataPod, "pod", "", podEnv); err != nil {
+	if err := systemdGenerator(dataPod, "pod", "", podEnv); err != nil {
 		return err
 	}
 
 	// Httpd
-	volumeOptions := ""
-
 	{
 		dataHttpd := templates.HttpdTemplateData{
 			Volumes:       shared_utils.ProxyHttpdVolumes,
@@ -106,11 +95,11 @@ func GenerateSystemdService(
 
 		if additionHTTPConfPath != "" {
 			additionHttpdTuningSettings = fmt.Sprintf(
-				`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro%s`,
-				additionHTTPConfPath, volumeOptions,
+				`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro`,
+				additionHTTPConfPath,
 			)
 		}
-		if err := generateSystemdFile(dataHttpd, "httpd", httpdImage, additionHttpdTuningSettings); err != nil {
+		if err := systemdGenerator(dataHttpd, "httpd", httpdImage, additionHttpdTuningSettings); err != nil {
 			return err
 		}
 	}
@@ -119,7 +108,7 @@ func GenerateSystemdService(
 		dataSaltBroker := templates.SaltBrokerTemplateData{
 			HTTPProxyFile: httpProxyConfig,
 		}
-		if err := generateSystemdFile(dataSaltBroker, "salt-broker", saltBrokerImage, ""); err != nil {
+		if err := systemdGenerator(dataSaltBroker, "salt-broker", saltBrokerImage, ""); err != nil {
 			return err
 		}
 	}
@@ -136,11 +125,11 @@ func GenerateSystemdService(
 		}
 		if additionSquidConfPath != "" {
 			additionSquidTuningSettings = fmt.Sprintf(
-				`Environment=SQUID_EXTRA_CONF=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro%s`,
-				additionSquidConfPath, volumeOptions,
+				`Environment=SQUID_EXTRA_CONF=-v%s:/etc/squid/conf.d/squid_tuning.conf:ro`,
+				additionSquidConfPath,
 			)
 		}
-		if err := generateSystemdFile(dataSquid, "squid", squidImage, additionSquidTuningSettings); err != nil {
+		if err := systemdGenerator(dataSquid, "squid", squidImage, additionSquidTuningSettings); err != nil {
 			return err
 		}
 	}
@@ -156,11 +145,11 @@ func GenerateSystemdService(
 		}
 		if additionSSHConfPath != "" {
 			additionSSHTuningSettings = fmt.Sprintf(
-				`Environment=SSH_EXTRA_CONF=-v%s:/etc/ssh/sshd_config.d/10-tuning.conf:ro%s`,
-				additionSSHConfPath, volumeOptions,
+				`Environment=SSH_EXTRA_CONF=-v%s:/etc/ssh/sshd_config.d/10-tuning.conf:ro`,
+				additionSSHConfPath,
 			)
 		}
-		if err := generateSystemdFile(dataSSH, "ssh", sshImage, additionSSHTuningSettings); err != nil {
+		if err := systemdGenerator(dataSSH, "ssh", sshImage, additionSSHTuningSettings); err != nil {
 			return err
 		}
 	}
@@ -170,7 +159,7 @@ func GenerateSystemdService(
 			Volumes:       shared_utils.ProxyTftpdVolumes,
 			HTTPProxyFile: httpProxyConfig,
 		}
-		if err := generateSystemdFile(dataTftpd, "tftpd", tftpdImage, ""); err != nil {
+		if err := systemdGenerator(dataTftpd, "tftpd", tftpdImage, ""); err != nil {
 			return err
 		}
 	}
@@ -216,7 +205,8 @@ func generateSystemdFile(template shared_utils.Template, service string, image s
 	return nil
 }
 
-func getHTTPProxyConfig() string {
+// GetHTTPProxyConfig returns the HTTP proxy configuration file to mount in containers if any.
+func GetHTTPProxyConfig() string {
 	const httpProxyConfigPath = "/etc/sysconfig/proxy"
 
 	// Only SUSE distros seem to have such a file for HTTP proxy settings
@@ -359,8 +349,14 @@ func Upgrade(
 		log.Warn().Msgf(L("cannot find tftpd image: it will no be upgraded"))
 	}
 
+	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
+
+	log.Info().Msg(L("Generating systemd services"))
+	httpProxyConfig := GetHTTPProxyConfig()
+
 	// Setup the systemd service configuration options
-	err = GenerateSystemdService(systemd, httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags)
+	err = GenerateSystemdService(systemd, httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags,
+		ipv6Enabled, httpProxyConfig)
 	if err != nil {
 		return err
 	}

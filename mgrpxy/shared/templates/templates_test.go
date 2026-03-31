@@ -28,7 +28,7 @@ func TestTemplatesRender(t *testing.T) {
 		{
 			name: "PodTemplateData",
 			template: PodTemplateData{
-				Ports:         []types.PortMap{utils.NewPortMap("tcp", "ssh", 8022, 22)},
+				Ports:         []types.PortMap{{Exposed: 8022, Port: 22}},
 				HTTPProxyFile: "/etc/sysconfig/proxy",
 				Network:       "uyuni-network",
 				IPV6Enabled:   true,

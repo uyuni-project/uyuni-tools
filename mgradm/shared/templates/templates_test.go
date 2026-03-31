@@ -31,7 +31,7 @@ func TestTemplatesRender(t *testing.T) {
 			template: HubXmlrpcServiceTemplateData{
 				CaSecret:   "ca-secret",
 				CaPath:     "/etc/pki/ca.crt",
-				Ports:      []types.PortMap{utils.NewPortMap("hub", "xmlrpc", 2830, 2830)},
+				Ports:      []types.PortMap{utils.NewPortMap(2830)},
 				NamePrefix: "uyuni",
 				Network:    "uyuni-network",
 				ServerHost: "uyuni-server",
@@ -42,7 +42,7 @@ func TestTemplatesRender(t *testing.T) {
 			template: PgsqlServiceTemplateData{
 				Volumes:         []types.VolumeMount{{Name: "var-pgsql", MountPath: "/var/lib/pgsql"}},
 				NamePrefix:      "uyuni",
-				Ports:           []types.PortMap{utils.NewPortMap("db", "pgsql", 5432, 5432)},
+				Ports:           []types.PortMap{utils.NewPortMap(5432)},
 				Network:         "uyuni-network",
 				IPV6Enabled:     false,
 				CaSecret:        "ca-secret",
@@ -77,7 +77,7 @@ func TestTemplatesRender(t *testing.T) {
 				Volumes:         []types.VolumeMount{{Name: "var-spacewalk", MountPath: "/var/spacewalk"}},
 				NamePrefix:      "uyuni",
 				Args:            "--arg value",
-				Ports:           []types.PortMap{utils.NewPortMap("http", "web", 80, 80)},
+				Ports:           []types.PortMap{utils.NewPortMap(80)},
 				Network:         "uyuni-network",
 				IPV6Enabled:     false,
 				CaSecret:        "ca-secret",
@@ -94,6 +94,14 @@ func TestTemplatesRender(t *testing.T) {
 				ManagerPassword: "manager-pass",
 				ReportUser:      "report-user",
 				ReportPassword:  "report-pass",
+			},
+		},
+		{
+			name: "TFTPDTemplateData",
+			template: TFTPDTemplateData{
+				Network:    "uyuni-network",
+				CaSecret:   "ca-secret",
+				ServerFQDN: "uyuni.test.org",
 			},
 		},
 	}
