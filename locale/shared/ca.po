@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-11 16:35+0100\n"
+"POT-Creation-Date: 2026-03-31 14:40+0200\n"
 "PO-Revision-Date: 2026-03-24 13:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
@@ -345,122 +345,122 @@ msgstr "no s'ha pogut executar l'script d'inspecció en el sistema amfitrió"
 msgid "cannot inspect host data"
 msgstr "no es poden inspeccionar les dades de l'amfitrió"
 
-#: shared/podman/images.go:37
+#: shared/podman/images.go:36
 #, javascript-format
 msgid "Cannot prepare image %s because registry is missing"
 msgstr "No es pot preparar la imatge %s perquè falta el registre."
 
-#: shared/podman/images.go:40
+#: shared/podman/images.go:39
 #, javascript-format
 msgid "Cannot prepare image %s because tag is missing"
 msgstr "No es pot preparar la imatge %s perquè falta l'etiqueta."
 
-#: shared/podman/images.go:44
+#: shared/podman/images.go:43
 #, javascript-format
 msgid "Ensure image %s is available"
 msgstr "Assegura que la imatge %s està disponible"
 
-#: shared/podman/images.go:58
+#: shared/podman/images.go:57
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
 msgstr "La política de pícnic és sempre. La presència de la imatge RPM es comprovarà i es retirarà del registre si no hi és"
 
-#: shared/podman/images.go:75
+#: shared/podman/images.go:74
 #, javascript-format
 msgid "image %s is missing and cannot be fetched"
 msgstr "manca la imatge %s i no es pot recuperar"
 
-#: shared/podman/images.go:82
+#: shared/podman/images.go:81
 #, javascript-format
 msgid "Cannot find RPM image for %s"
 msgstr "No s'ha pogut trobar la imatge RPM per a %s"
 
-#: shared/podman/images.go:90
+#: shared/podman/images.go:89
 #, javascript-format
 msgid "Cannot use RPM image for %s"
 msgstr "No es pot utilitzar la imatge RPM per a %s"
 
-#: shared/podman/images.go:94
+#: shared/podman/images.go:93
 msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
 msgstr "Utilitzant la imatge %[1]s carregada des del RPM en lloc de la seva versió en línia %[2]s"
 
-#: shared/podman/images.go:106
+#: shared/podman/images.go:105
 msgid "failed to determine image"
 msgstr "no s'ha pogut determinar la imatge"
 
-#: shared/podman/images.go:114
+#: shared/podman/images.go:113
 msgid "failed to find the image of the currently running server container"
 msgstr "no s'ha pogut trobar la imatge del contenidor del servidor actualment en execució"
 
-#: shared/podman/images.go:125
+#: shared/podman/images.go:124
 msgid "failed to determine pgsql image"
 msgstr "no s'ha pogut determinar la imatge pgsql"
 
-#: shared/podman/images.go:133
+#: shared/podman/images.go:132
 msgid "failed to find the image of the currently running db container"
 msgstr "no s'ha pogut trobar la imatge del contenidor de db en execució"
 
-#: shared/podman/images.go:158
+#: shared/podman/images.go:157
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
 msgstr "No es pot analitzar correctament el nom de la imatge «%s», no es pot utilitzar la imatge local"
 
-#: shared/podman/images.go:176
+#: shared/podman/images.go:175
 msgid "cannot unmarshal image RPM metadata"
 msgstr "no es poden desfer les metadades RPM de la imatge"
 
-#: shared/podman/images.go:195
+#: shared/podman/images.go:194
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
 msgstr "s'omet la càrrega de la imatge des de l'RPM perquè %s no existeix"
 
-#: shared/podman/images.go:225
+#: shared/podman/images.go:224
 #, javascript-format
 msgid "Cannot unmarshal metadata file %s"
 msgstr "No es pot desfer el fitxer de metadades %s"
 
-#: shared/podman/images.go:247
+#: shared/podman/images.go:246
 #, javascript-format
 msgid "error parsing: %s"
 msgstr "s'ha produït un error en analitzar: %s"
 
-#: shared/podman/images.go:255 shared/podman/images.go:269
-#: shared/podman/images.go:284
+#: shared/podman/images.go:254 shared/podman/images.go:268
+#: shared/podman/images.go:283
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
 msgstr "no s'ha pogut comprovar si la imatge %s ja s'ha tirat"
 
-#: shared/podman/images.go:291
+#: shared/podman/images.go:290
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
 msgstr "%s hauria de contenir només un caràcter en minúscula, en cas contrari l'estirada de podman fallaria"
 
-#: shared/podman/images.go:293
+#: shared/podman/images.go:292
 #, javascript-format
 msgid "Running podman pull %s"
 msgstr "S'està executant la podman pull %s"
 
-#: shared/podman/images.go:305
+#: shared/podman/images.go:304
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
 msgstr "S'està executant la cerca d'imatges de podman --list-tags %s --format.{{.Tag}}"
 
-#: shared/podman/images.go:319
+#: shared/podman/images.go:318
 #, javascript-format
 msgid "cannot find any tag for image %s"
 msgstr "no s'ha pogut trobar cap etiqueta per a la imatge %s"
 
-#: shared/podman/images.go:333
+#: shared/podman/images.go:332
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
 msgstr "S'està executant el podman ps --filter.name.%s --format.{{ .Imatge}}"
 
-#: shared/podman/images.go:339
+#: shared/podman/images.go:338
 #, javascript-format
 msgid "cannot find any running image for container %s"
 msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 
-#: shared/podman/images.go:372 shared/podman/images.go:393
-#: shared/podman/images.go:413 shared/podman/network.go:108
+#: shared/podman/images.go:371 shared/podman/images.go:392
+#: shared/podman/images.go:412 shared/podman/network.go:108
 #: shared/podman/secret.go:146 shared/podman/systemd.go:270
 #: shared/podman/systemd.go:348 shared/podman/systemd.go:349
 #: shared/podman/utils.go:188 shared/podman/utils.go:221
@@ -469,24 +469,24 @@ msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 msgid "Would run %s"
 msgstr "S'executaria %s"
 
-#: shared/podman/images.go:374 shared/podman/images.go:395
-#: shared/podman/images.go:415 shared/podman/utils.go:190
+#: shared/podman/images.go:373 shared/podman/images.go:394
+#: shared/podman/images.go:414 shared/podman/utils.go:190
 #: shared/podman/utils.go:224 shared/podman/utils.go:261
 #, javascript-format
 msgid "Run %s"
 msgstr "Executa %s"
 
-#: shared/podman/images.go:377
+#: shared/podman/images.go:376
 #, javascript-format
 msgid "Failed to remove image %s"
 msgstr "No s'ha pogut eliminar la imatge %s"
 
-#: shared/podman/images.go:398
+#: shared/podman/images.go:397
 #, javascript-format
 msgid "Failed to export image %s"
 msgstr "No s'ha pogut exportar la imatge %s"
 
-#: shared/podman/images.go:418
+#: shared/podman/images.go:417
 #, javascript-format
 msgid "Failed to restore image %s"
 msgstr "No s'ha pogut restaurar la imatge %s"

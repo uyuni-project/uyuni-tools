@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-09 15:30+0100\n"
+"POT-Creation-Date: 2026-03-31 14:40+0200\n"
 "PO-Revision-Date: 2026-03-10 03:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
@@ -99,7 +99,7 @@ msgstr ""
 "참고: 현재 원격 podman에 설치하는 기능은 지원되지 않습니다.\n"
 
 #: mgrpxy/cmd/install/utils.go:30 mgrpxy/cmd/support/ptf/utils.go:30
-#: mgrpxy/shared/podman/podman.go:307
+#: mgrpxy/shared/podman/podman.go:305
 msgid "install podman before running this command"
 msgstr "이 명령을 실행하기 전 podman 설치"
 
@@ -107,9 +107,18 @@ msgstr "이 명령을 실행하기 전 podman 설치"
 msgid "failed to retrieve proxy config files"
 msgstr "프록시 구성 파일을 검색하지 못함"
 
-#: mgrpxy/cmd/install/utils.go:49 mgrpxy/shared/podman/podman.go:323
+#: mgrpxy/cmd/install/utils.go:49 mgrpxy/shared/podman/podman.go:321
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr "제공된 구성 파일의 시스템 ID를 사용하여 최신 시스템 ID를 가져올 수 없습니다."
+
+#: mgrpxy/cmd/install/utils.go:82
+msgid "cannot setup network"
+msgstr "네트워크를 설정할 수 없음"
+
+#: mgrpxy/cmd/install/utils.go:87 mgrpxy/cmd/support/ptf/utils.go:60
+#: mgrpxy/shared/podman/podman.go:354
+msgid "Generating systemd services"
+msgstr "systemd 서비스 생성"
 
 #: mgrpxy/cmd/logs/kubernetes.go:29
 msgid "failed to find proxy pod"
@@ -236,24 +245,24 @@ msgstr ""
 "\n"
 "참고: 현재 원격 podman에 설치하는 기능은 지원되지 않습니다!\n"
 
-#: mgrpxy/cmd/support/ptf/utils.go:74
+#: mgrpxy/cmd/support/ptf/utils.go:79
 #, javascript-format
 msgid "cannot find %s image: it will no be upgraded"
 msgstr "%s 이미지를 찾을 수 없음: 업그레이드되지 않음"
 
-#: mgrpxy/cmd/support/ptf/utils.go:87
+#: mgrpxy/cmd/support/ptf/utils.go:92
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "ptf와 테스트 플래그를 동시에 설정할 수 없음 "
 
-#: mgrpxy/cmd/support/ptf/utils.go:90
+#: mgrpxy/cmd/support/ptf/utils.go:95
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptf와 테스트 플래그를 동시에 비워둘 수없음 "
 
-#: mgrpxy/cmd/support/ptf/utils.go:93
+#: mgrpxy/cmd/support/ptf/utils.go:98
 msgid "user flag cannot be empty"
 msgstr "사용자 플래그를 비워둘 수 없습니다."
 
-#: mgrpxy/cmd/support/ptf/utils.go:131
+#: mgrpxy/cmd/support/ptf/utils.go:136
 msgid "The %[1]s service image is %[2]s"
 msgstr "%[1]s 서비스 이미지는 %[2]s입니다."
 
@@ -331,81 +340,73 @@ msgstr ""
 "\n"
 "참고: 현재 원격 podman에서의 업그레이드는 지원되지 않습니다.\n"
 
-#: mgrpxy/shared/podman/podman.go:65
-msgid "cannot setup network"
-msgstr "네트워크를 설정할 수 없음"
-
-#: mgrpxy/shared/podman/podman.go:70
-msgid "Generating systemd services"
-msgstr "systemd 서비스 생성"
-
-#: mgrpxy/shared/podman/podman.go:201
+#: mgrpxy/shared/podman/podman.go:190
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "systemd 파일 '%s' 생성 실패"
 
-#: mgrpxy/shared/podman/podman.go:207
+#: mgrpxy/shared/podman/podman.go:196
 msgid "cannot generate systemd conf file"
 msgstr "systemd conf 파일을 생성할 수 없음"
 
-#: mgrpxy/shared/podman/podman.go:213
+#: mgrpxy/shared/podman/podman.go:202
 msgid "cannot generate systemd conf user configuration file"
 msgstr "systemd conf 사용자 구성 파일을 생성할 수 없음"
 
-#: mgrpxy/shared/podman/podman.go:256
+#: mgrpxy/shared/podman/podman.go:250
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "구성 %s(으)로 프록시 설정"
 
-#: mgrpxy/shared/podman/podman.go:258
+#: mgrpxy/shared/podman/podman.go:252
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "%s 파일에서 프록시 구성을 추출하지 못함"
 
-#: mgrpxy/shared/podman/podman.go:261
+#: mgrpxy/shared/podman/podman.go:255
 msgid "No tarball provided. Will check existing configuration files."
 msgstr "tarball이 제공되지 않았습니다. 기존 구성 파일을 확인합니다."
 
-#: mgrpxy/shared/podman/podman.go:275
+#: mgrpxy/shared/podman/podman.go:269
 #, javascript-format
 msgid "%s directory has no required permissions. Check your umask settings"
 msgstr "%s 디렉토리에 필수 권한이 없습니다. umask 설정을 확인하십시오."
 
-#: mgrpxy/shared/podman/podman.go:277
+#: mgrpxy/shared/podman/podman.go:271
 #, javascript-format
 msgid "%s file has no required permissions. Check your umask settings"
 msgstr "%s 파일에 필수 권한이 없습니다. umask 설정을 확인하십시오."
 
-#: mgrpxy/shared/podman/podman.go:290
+#: mgrpxy/shared/podman/podman.go:284
 #, javascript-format
 msgid "missing required configuration file: %s"
 msgstr "필수 구성 파일 누락: %s"
 
-#: mgrpxy/shared/podman/podman.go:335
+#: mgrpxy/shared/podman/podman.go:333
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr "httpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:339
+#: mgrpxy/shared/podman/podman.go:337
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr "salt-broker 이미지를 찾을 수 없음 : 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:343
+#: mgrpxy/shared/podman/podman.go:341
 msgid "cannot find squid image: it will no be upgraded"
 msgstr "squid 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:347
+#: mgrpxy/shared/podman/podman.go:345
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr "ssh 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:351
+#: mgrpxy/shared/podman/podman.go:349
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr "tftpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
-#: mgrpxy/shared/podman/podman.go:423
+#: mgrpxy/shared/podman/podman.go:427
 msgid "Not a system id event"
 msgstr "시스템 ID 이벤트 아님"
 
-#: mgrpxy/shared/podman/podman.go:432
+#: mgrpxy/shared/podman/podman.go:436
 msgid "System id not found in returned event"
 msgstr "반환된 이벤트에서 시스템 ID를 찾을 수 없음"
 
