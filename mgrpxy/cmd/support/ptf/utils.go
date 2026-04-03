@@ -55,9 +55,14 @@ func ptfForPodman(
 	sshImage := getImage(authFile, flags.UpgradeFlags.SSH.Name, pullPolicy)
 	tftpdImage := getImage(authFile, flags.UpgradeFlags.Tftpd.Name, pullPolicy)
 
+	ipv6Enabled := podman_shared.HasIpv6Enabled(podman_shared.UyuniNetwork)
+
+	log.Info().Msg(L("Generating systemd services"))
+	httpProxyConfig := podman.GetHTTPProxyConfig()
+
 	// Setup the systemd service configuration options
 	err = podman.GenerateSystemdService(systemd, httpdImage, saltBrokerImage, squidImage, sshImage,
-		tftpdImage, &flags.UpgradeFlags)
+		tftpdImage, &flags.UpgradeFlags, ipv6Enabled, httpProxyConfig)
 	if err != nil {
 		return err
 	}

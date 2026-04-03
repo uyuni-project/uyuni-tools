@@ -30,14 +30,7 @@ func podmanInspect(
 	if err != nil {
 		return err
 	}
-
 	defer cleaner()
-
-	log.Debug().Msgf("Wanted database image %[1]s", flags.Pgsql.Image.Name)
-	pgsqlImage, err := utils.ComputeImage("", utils.DefaultTag, flags.Pgsql.Image)
-	if err != nil && len(pgsqlImage) > 0 {
-		return utils.Errorf(err, L("failed to determine pgsql image"))
-	}
 
 	preparedServerImage, preparedDBImage, err := podman.PrepareImages(authFile, flags.Image, flags.Pgsql)
 	if err != nil {

@@ -33,10 +33,9 @@ import (
 
 var systemd podman.Systemd = podman.NewSystemd()
 
-// GetExposedPorts returns the port exposed.
-func GetExposedPorts(debug bool) []types.PortMap {
+// getExposedPorts returns the port exposed.
+func getExposedPorts(debug bool) []types.PortMap {
 	ports := utils.GetServerPorts(debug)
-	ports = append(ports, utils.NewPortMap(utils.WebServiceName, "https", 443, 443))
 	ports = append(ports, utils.TCPPodmanPorts...)
 	return ports
 }
@@ -51,9 +50,9 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 		args = append(args, "-v", mirrorPath+":/mirror")
 	}
 
-	ports := GetExposedPorts(debug)
+	ports := getExposedPorts(debug)
 	if _, err := exec.LookPath("csp-billing-adapter"); err == nil {
-		ports = append(ports, utils.NewPortMap("csp", "csp-billing", 18888, 18888))
+		ports = append(ports, utils.NewPortMap(18888))
 		args = append(args, "-e ISPAYG=1")
 	}
 

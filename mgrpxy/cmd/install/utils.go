@@ -77,8 +77,19 @@ func installForPodman(
 		return err
 	}
 
+	err = shared_podman.SetupNetwork(true)
+	if err != nil {
+		return shared_utils.Errorf(err, L("cannot setup network"))
+	}
+
+	ipv6Enabled := shared_podman.HasIpv6Enabled(shared_podman.UyuniNetwork)
+
+	log.Info().Msg(L("Generating systemd services"))
+	httpProxyConfig := podman.GetHTTPProxyConfig()
+
 	// Setup the systemd service configuration options
-	err = podman.GenerateSystemdService(systemd, httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage, flags)
+	err = podman.GenerateSystemdService(systemd, httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage,
+		flags, ipv6Enabled, httpProxyConfig)
 	if err != nil {
 		return err
 	}

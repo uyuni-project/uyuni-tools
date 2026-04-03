@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -97,7 +97,6 @@ func GeneratePgsqlSystemdService(
 		Ports:           utils.DBPorts,
 		NamePrefix:      "uyuni",
 		Network:         podman.UyuniNetwork,
-		Image:           image,
 		CaSecret:        podman.DBCASecret,
 		CaPath:          ssl.DBCAContainerPath,
 		CertSecret:      podman.DBSSLCertSecret,
