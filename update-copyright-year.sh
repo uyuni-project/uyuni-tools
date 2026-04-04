@@ -9,10 +9,15 @@ changed="n"
 current_year=$(date +%Y)
 for changed_file in $@; do
     case "$changed_file" in
+        # Changelogs
         uyuni-tools.changes.*)
             continue
             ;;
-    esac
+        # Translation files
+        *.po|*.pot)
+            continue
+            ;;
+     esac
 
 
     if ! grep -q "^[/# ]*SPDX-FileCopyrightText: $current_year" $changed_file; then

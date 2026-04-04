@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-11 16:35+0100\n"
+"POT-Creation-Date: 2026-03-31 14:40+0200\n"
 "PO-Revision-Date: 2026-01-21 03:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
@@ -274,7 +274,9 @@ msgid "Restoring podman network"
 msgstr "podman 네트워크 복원"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:143
-msgid "Unlable to create podman network"
+#, fuzzy
+#| msgid "Unlable to create podman network"
+msgid "Unable to create podman network"
 msgstr "podman 네트워크를 만들지 못함"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:160
@@ -747,15 +749,11 @@ msgstr "검사"
 msgid "Extract information from image and deployment"
 msgstr "이미지 및 배포에서 정보 추출"
 
-#: mgradm/cmd/inspect/podman.go:39
-msgid "failed to determine pgsql image"
-msgstr "pgsql 이미지를 확인하지 못함"
-
-#: mgradm/cmd/inspect/podman.go:48
+#: mgradm/cmd/inspect/podman.go:41
 msgid "inspect command failed"
 msgstr "검사 명령 실패"
 
-#: mgradm/cmd/inspect/podman.go:52
+#: mgradm/cmd/inspect/podman.go:45
 msgid "cannot print inspect result"
 msgstr "검사 결과를 인쇄하지 못함"
 
@@ -841,12 +839,12 @@ msgstr "서버가 이미 초기화되었습니다! 새 설치를 시도하기 �
 msgid "Setting up the server with the FQDN '%s'"
 msgstr "FQDN '%s'(으)로 서버 설정"
 
-#: mgradm/cmd/install/utils.go:67 mgradm/shared/podman/podman.go:329
+#: mgradm/cmd/install/utils.go:67 mgradm/shared/podman/podman.go:328
 msgid "cannot prepare images"
 msgstr "이미지를 준비할 수 없음"
 
-#: mgradm/cmd/install/utils.go:71 mgradm/shared/podman/podman.go:94
-#: mgradm/shared/podman/podman.go:319
+#: mgradm/cmd/install/utils.go:71 mgradm/shared/podman/podman.go:93
+#: mgradm/shared/podman/podman.go:318
 msgid "cannot setup network"
 msgstr "네트워크를 설정할 수 없음"
 
@@ -868,7 +866,7 @@ msgstr "SSL CA 인증서를 호스트의 신뢰할 수 있는 인증서에 추�
 msgid "failed to extract payg data"
 msgstr "payg 데이터를 추출하지 못함"
 
-#: mgradm/cmd/install/utils.go:146 mgradm/shared/podman/podman.go:708
+#: mgradm/cmd/install/utils.go:146 mgradm/shared/podman/podman.go:707
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr "외부 데이터베이스 %s을(를) 사용하기 위해 데이터베이스 컨테이너 설정 건너뛰기"
@@ -1053,13 +1051,20 @@ msgid "failed to find server image"
 msgstr "서버 이미지를 찾지 못함"
 
 #: mgradm/cmd/support/ptf/utils.go:100
-#, javascript-format
-msgid "The computed image is %s"
+#, fuzzy, javascript-format
+#| msgid "The computed image is %s"
+msgid "The computed PTF image is %s"
 msgstr "계산된 이미지는 %s입니다."
 
-#: mgradm/cmd/support/ptf/utils.go:120
+#: mgradm/cmd/support/ptf/utils.go:121 mgradm/cmd/support/ptf/utils.go:125
 msgid "The %[1]s service image is %[2]s"
 msgstr "%[1]s 서비스 이미지는 %[2]s입니다."
+
+#: mgradm/cmd/support/ptf/utils.go:123
+#, fuzzy, javascript-format
+#| msgid "cannot inspect volume %s"
+msgid "Cannot find PTF for %s"
+msgstr "%s 볼륨을 검사할 수 없음"
 
 #: mgradm/cmd/support/sql/sql.go:50
 msgid "unable to cleanup source file"
@@ -1206,9 +1211,15 @@ msgstr "이미지에 사용 가능한 태그 나열"
 msgid "failed to unmarshall configuration"
 msgstr "구성을 마샬링 해제하지 못했습니다."
 
-#: mgradm/shared/coco/coco.go:77 mgradm/shared/hub/xmlrpcapi.go:44
-#: mgradm/shared/pgsql/pgsql.go:28 mgradm/shared/podman/podman.go:236
-#: mgradm/shared/saline/saline.go:69 mgradm/shared/tftp/tftp.go:41
+#: mgradm/shared/coco/coco.go:28
+#, fuzzy
+#| msgid "error upgrading confidential computing service."
+msgid "Not altering the confidential computing service"
+msgstr "기밀 컴퓨팅 서비스를 업그레이드하는 중 오류가 발생했습니다."
+
+#: mgradm/shared/coco/coco.go:78 mgradm/shared/hub/xmlrpcapi.go:44
+#: mgradm/shared/pgsql/pgsql.go:28 mgradm/shared/podman/podman.go:235
+#: mgradm/shared/saline/saline.go:72 mgradm/shared/tftp/tftp.go:41
 msgid "failed to compute image URL"
 msgstr "이미지 URL을 계산하지 못함"
 
@@ -1216,14 +1227,14 @@ msgstr "이미지 URL을 계산하지 못함"
 msgid "Setting up confidential computing attestation service"
 msgstr "기밀 컴퓨팅 증명 서비스 설정"
 
-#: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:116
-#: mgradm/shared/pgsql/pgsql.go:117 mgradm/shared/podman/podman.go:77
-#: mgradm/shared/saline/saline.go:90 mgradm/shared/tftp/tftp.go:95
+#: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:115
+#: mgradm/shared/pgsql/pgsql.go:116 mgradm/shared/podman/podman.go:76
+#: mgradm/shared/saline/saline.go:92 mgradm/shared/tftp/tftp.go:95
 msgid "failed to generate systemd service unit file"
 msgstr "systemd 서비스 단위 파일을 생성하지 못함"
 
-#: mgradm/shared/coco/coco.go:109 mgradm/shared/hub/xmlrpcapi.go:123
-#: mgradm/shared/podman/podman.go:105 mgradm/shared/saline/saline.go:98
+#: mgradm/shared/coco/coco.go:109 mgradm/shared/hub/xmlrpcapi.go:122
+#: mgradm/shared/podman/podman.go:104 mgradm/shared/saline/saline.go:100
 #: mgradm/shared/tftp/tftp.go:102
 msgid "cannot generate systemd conf file"
 msgstr "systemd conf 파일을 생성할 수 없음"
@@ -1242,172 +1253,178 @@ msgstr "systemd 서비스를 생성할 수 없음"
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr "다중 Hub XML-RPC 컨테이너 복제본은 현재 지원되지 않습니다. 하나만 설정하십시오."
 
-#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:517
-#: mgradm/shared/saline/saline.go:140
+#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:516
+#: mgradm/shared/saline/saline.go:142
 msgid "cannot enable service"
 msgstr "서비스를 활성할 수 없음"
+
+#: mgradm/shared/hub/xmlrpcapi.go:87
+#, fuzzy
+#| msgid "Not starting Hub XML-RPC API service"
+msgid "Not altering the hub XML-RPC API service"
+msgstr "Hub XML-RPC API 서비스를 시작할 수 없음"
 
 #: mgradm/shared/pgsql/pgsql.go:55 mgradm/shared/pgsql/pgsql.go:84
 #, javascript-format
 msgid "%s fails healtcheck"
 msgstr "%s의 상태 검사 실패"
 
-#: mgradm/shared/pgsql/pgsql.go:123
+#: mgradm/shared/pgsql/pgsql.go:122
 msgid "cannot generate systemd configuration file"
 msgstr "systemd 구성 파일을 생성할 수 없음"
 
-#: mgradm/shared/podman/podman.go:97
+#: mgradm/shared/podman/podman.go:96
 msgid "Enabling system service"
 msgstr "시스템 서비스 활성화"
 
-#: mgradm/shared/podman/podman.go:113 mgradm/shared/saline/saline.go:106
+#: mgradm/shared/podman/podman.go:112 mgradm/shared/saline/saline.go:108
 msgid "cannot generate systemd user configuration file"
 msgstr "systemd 사용자 구성 파일을 생성할 수 없음"
 
-#: mgradm/shared/podman/podman.go:140
+#: mgradm/shared/podman/podman.go:139
 msgid "failed to generate SSL migration script"
 msgstr "SSL 마이그레이션 스크립트를 생성하지 못함"
 
-#: mgradm/shared/podman/podman.go:160
+#: mgradm/shared/podman/podman.go:159
 #, javascript-format
 msgid "Migrating SSL certificates from the source server %s"
 msgstr "소스 서버 %s에서 SSL 인증서 마이그레이션"
 
-#: mgradm/shared/podman/podman.go:163
+#: mgradm/shared/podman/podman.go:162
 msgid "cannot run uyuni SSL migration container"
 msgstr "uyuni SSL 마이그레이션 컨테이너를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:174
+#: mgradm/shared/podman/podman.go:173
 #, javascript-format
 msgid "Failed to read file %s"
 msgstr "%s 파일 읽기 실패"
 
-#: mgradm/shared/podman/podman.go:180
+#: mgradm/shared/podman/podman.go:179
 msgid "cannot read extracted data"
 msgstr "추출된 데이터를 읽을 수 없음"
 
-#: mgradm/shared/podman/podman.go:191
+#: mgradm/shared/podman/podman.go:190
 #, javascript-format
 msgid "cannot inspect volume %s"
 msgstr "%s 볼륨을 검사할 수 없음"
 
-#: mgradm/shared/podman/podman.go:194
+#: mgradm/shared/podman/podman.go:193
 #, javascript-format
 msgid "cannot restore %s SELinux permissions"
 msgstr "%s SELinux 권한을 복원할 수 없음"
 
-#: mgradm/shared/podman/podman.go:244
+#: mgradm/shared/podman/podman.go:243
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr "데이터베이스 업그레이드 이미지 %s 사용"
 
-#: mgradm/shared/podman/podman.go:253
+#: mgradm/shared/podman/podman.go:252
 msgid "No need to run database finalization script"
 msgstr "데이터베이스 마무리 스크립트를 실행할 필요 없음"
 
-#: mgradm/shared/podman/podman.go:285
+#: mgradm/shared/podman/podman.go:284
 msgid "cannot generate PostgreSQL finalization script"
 msgstr "PostgreSQL 마무리 스크립트를 생성할 수 없습니다."
 
-#: mgradm/shared/podman/podman.go:343 mgradm/shared/podman/podman.go:351
+#: mgradm/shared/podman/podman.go:342 mgradm/shared/podman/podman.go:350
 msgid "cannot stop service"
 msgstr "서비스를 중지하지 못함"
 
-#: mgradm/shared/podman/podman.go:362
+#: mgradm/shared/podman/podman.go:361
 #, fuzzy
 #| msgid "cannot downgrade from version %[1]s to %[2]s"
 msgid "Initiating PostgreSQL upgrade from version %[1]d to %[2]d"
 msgstr "버전 %[1]s에서 %[2]s(으)로 다운그레이드할 수 없습니다."
 
-#: mgradm/shared/podman/podman.go:366
+#: mgradm/shared/podman/podman.go:365
 #, fuzzy, javascript-format
 #| msgid "cannot inspect volume %s"
 msgid "cannot find volume %s"
 msgstr "%s 볼륨을 검사할 수 없음"
 
-#: mgradm/shared/podman/podman.go:381
+#: mgradm/shared/podman/podman.go:380
 #, fuzzy, javascript-format
 #| msgid "cannot copy %s"
 msgid "cannot move %s"
 msgstr "%s을(를) 복사할 수 없음"
 
-#: mgradm/shared/podman/podman.go:397
+#: mgradm/shared/podman/podman.go:396
 #, fuzzy, javascript-format
 #| msgid "cannot delete %s"
 msgid "cannot mkdir %s"
 msgstr "%s을(를) 삭제할 수 없음"
 
-#: mgradm/shared/podman/podman.go:400
+#: mgradm/shared/podman/podman.go:399
 msgid "Data will be copied during this process. Please ensure sufficient disk space is available."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:402
+#: mgradm/shared/podman/podman.go:401
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQL 버전 업그레이드 스크립트를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:405
+#: mgradm/shared/podman/podman.go:404
 msgid "Upgrading without changing PostgreSQL version"
 msgstr "PostgreSQL 버전을 변경하지 않고 업그레이드"
 
-#: mgradm/shared/podman/podman.go:408
+#: mgradm/shared/podman/podman.go:407
 #, fuzzy
 #| msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgid "trying to downgrade PostgreSQL from %[1]d to %[2]d"
 msgstr "PostgreSQL을 %[1]s에서 %[2]s(으)로 다운그레이드 시도 중"
 
-#: mgradm/shared/podman/podman.go:415
+#: mgradm/shared/podman/podman.go:414
 msgid "Configuring split PostgreSQL container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:424
+#: mgradm/shared/podman/podman.go:423
 msgid "cannot configure db container"
 msgstr "db 컨테이너를 구성할 수 없음"
 
-#: mgradm/shared/podman/podman.go:434
+#: mgradm/shared/podman/podman.go:433
 msgid "cannot run PostgreSQL finalize script"
 msgstr "PostgreSQL 최종 스크립트를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:438
+#: mgradm/shared/podman/podman.go:437
 msgid "cannot run post upgrade script"
 msgstr "업그레이드 후 스크립트를 실행할 수 없음"
 
-#: mgradm/shared/podman/podman.go:463 mgradm/shared/podman/podman.go:515
+#: mgradm/shared/podman/podman.go:462 mgradm/shared/podman/podman.go:514
 msgid "Waiting for the server to start…"
 msgstr "서버가 시작되기를 기다리는 중…"
 
-#: mgradm/shared/podman/podman.go:466
+#: mgradm/shared/podman/podman.go:465
 msgid "cannot start service"
 msgstr "서비스를 시작할 수 없음"
 
-#: mgradm/shared/podman/podman.go:493
+#: mgradm/shared/podman/podman.go:492
 msgid "Failed to read server service definition to look for TFTP port"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:558
+#: mgradm/shared/podman/podman.go:557
 msgid "failed to generate postgresql migration script"
 msgstr "postgresql 마이그레이션 스크립트를 생성하지 못함"
 
-#: mgradm/shared/podman/podman.go:594
+#: mgradm/shared/podman/podman.go:593
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr "위 오류는 공용 클라우드 공급자 레지스트리를 사용하는 경우에만 해당됩니다."
 
-#: mgradm/shared/podman/podman.go:624
+#: mgradm/shared/podman/podman.go:623
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr "SSH_AUTH_SOCK이 정의되지 않았습니다. SSH 에이전트를 시작하고 다시 시도하십시오."
 
-#: mgradm/shared/podman/podman.go:634
+#: mgradm/shared/podman/podman.go:633
 msgid "Failed to find home directory to look for SSH config"
 msgstr "SSH 구성을 찾을 홈 디렉토리를 찾지 못했습니다."
 
-#: mgradm/shared/podman/podman.go:656
+#: mgradm/shared/podman/podman.go:655
 msgid "cannot inspect podman values"
 msgstr "podman 값을 검사할 수 없음"
 
-#: mgradm/shared/podman/podman.go:670
+#: mgradm/shared/podman/podman.go:669
 msgid "PostgreSQL migration failure"
 msgstr "PostgreSQL 마이그레이션 실패"
 
-#: mgradm/shared/podman/podman.go:699
+#: mgradm/shared/podman/podman.go:698
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr ""
 
@@ -1522,11 +1539,17 @@ msgstr "데이터베이스 SSL 인증서를 생성하지 못함"
 msgid "Database SSL certificate generated"
 msgstr "데이터베이스 SSL 인증서 생성됨"
 
-#: mgradm/shared/saline/saline.go:63 mgradm/shared/saline/saline.go:134
+#: mgradm/shared/saline/saline.go:50
+#, fuzzy
+#| msgid "Setting up Saline service"
+msgid "Not altering the Saline service"
+msgstr "Saline 서비스 설정"
+
+#: mgradm/shared/saline/saline.go:66 mgradm/shared/saline/saline.go:136
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
 msgstr "다중 Saline 컨테이너 복제본은 현재 지원되지 않습니다. 하나만 설정합니다."
 
-#: mgradm/shared/saline/saline.go:86
+#: mgradm/shared/saline/saline.go:88
 msgid "Setting up Saline service"
 msgstr "Saline 서비스 설정"
 
@@ -1763,6 +1786,9 @@ msgstr "문자, 숫자 . _ 및 -만 포함할 수 있음"
 msgid "Not a valid email address"
 msgstr "유효한 전자 메일 주소 아님"
 
+#~ msgid "failed to determine pgsql image"
+#~ msgstr "pgsql 이미지를 확인하지 못함"
+
 #~ msgid "Enable TFTP"
 #~ msgstr "TFTP 활성화"
 
@@ -1881,9 +1907,6 @@ msgstr "유효한 전자 메일 주소 아님"
 
 #~ msgid "Configuring split PostgreSQL container. Image version: %[1]d, not migrated version: %[2]d"
 #~ msgstr "분할 PostgreSQL 컨테이너를 구성하는 중입니다. 이미지 버전: %[1]d, 마이그레이션되지 않은 버전: %[2]d"
-
-#~ msgid "error upgrading confidential computing service."
-#~ msgstr "기밀 컴퓨팅 서비스를 업그레이드하는 중 오류가 발생했습니다."
 
 #~ msgid "error upgrading saline service."
 #~ msgstr "Saline 서비스를 업그레이드하는 중 오류가 발생했습니다."
@@ -2565,9 +2588,6 @@ msgstr "유효한 전자 메일 주소 아님"
 #, fuzzy
 #~ msgid "cannot find either /etc/uyuni-release or /etc/susemanagere-release"
 #~ msgstr "etc/uyuni-release 또는 / etc/susemanagere-release를 찾을 수 없습니다."
-
-#~ msgid "Not starting Hub XML-RPC API service"
-#~ msgstr "Hub XML-RPC API 서비스를 시작할 수 없음"
 
 #, javascript-format
 #~ msgid "unable to remove temporary directory, leaving %s intact"
