@@ -77,7 +77,7 @@ BuildRequires:  fish
 BuildRequires:  zsh
 # Get the proper Go version on different distros
 %if 0%{?suse_version}
-BuildRequires:  golang(API) >= 1.24
+BuildRequires:  golang(API) >= 1.25
 %endif
 # 0%{?suse_version}
 
@@ -365,7 +365,7 @@ if test -n "${namespace}"; then
     GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultRegistry=${registry}"
 fi
 
-if test -n "${helm_registry}"; then
+if test -n "${helmregistry}"; then
     GOLD_FLAGS="${GOLD_FLAGS} -X ${UTILS_PATH}.DefaultHelmRegistry=${helmregistry}"
 fi
 

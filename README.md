@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2023-2024 SUSE LLC
+SPDX-FileCopyrightText: 2026 SUSE LLC
 
 SPDX-License-Identifier: Apache-2.0
 -->
@@ -16,31 +16,12 @@ SPDX-License-Identifier: Apache-2.0
 
 # Deployment rolling release
 
-## For Podman deployment
-Requirement:
-  - openSUSE Leap Micro 15.5
-  - Podman installed
+## For Podman deployment for the Server
 
-*Note that other distros with a recent Podman installed could work but they have not been tested.
-Please report issues if any arises on those distributions.*
+- Instructions for the Uyuni Stable version: https://www.uyuni-project.org/pages/stable-version.html
+- Instructions for the Uyuni Development/Master version: https://www.uyuni-project.org/pages/devel-version.html
 
-Add uyuni-tool repository:
-```
-zypper ar https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/ContainerUtils/openSUSE_Leap_Micro_5.5/ uyuni-container-utils
-```
-
-Install `mgradm` package: `transactional-update pkg install mgradm`
-
-Run `mgradm` command to install Uyuni server on Podman:
-```
-mgradm install podman
-```
-
-If you build `uyuni-tools` on your machine, add the `--image registry.opensuse.org/systemsmanagement/uyuni/stable/containers/uyuni/server` option to the install command.
-This is not needed when using the package from OBS as it defaulting with this image at build time.
-
-**NOTE**: rolling image url is: registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server
-
+**NOTE**: If you want to deploy Development/Master you need to specify `--image systemsmanagement/uyuni/master/containers/uyuni/server` for the server.
 
 Other sub-commands are also available. Explore the tool with the help command.
 
@@ -72,7 +53,13 @@ If you are not doing it already, check out the [GitHub documentation](https://do
 
 ## Building
 
+Create the bin directory if it does not exist:
+`mkdir bin`
+
+And then build:
 `go build -o ./bin ./...` will produce the binaries in the root folder with `0.0.0` as version.
+
+### Extras
 
 To produce shell completion scripts for a given shell you can run:
 
@@ -130,13 +117,7 @@ Add the following import in the go file and then wrap all the strings that could
 **Global variables and constants are evaluated before running the main function and thus do not take the locale into account.**
 Move them in a function to work around this issue.
 
-### Generating the POT files
-
-In order to extract the strings from the code run the `extract_strings` script.
-One POT file for each tool and one for the `shared` folder will be generated in the `locale` directory.
-
 ### Translating
 
-The translation files should be named after the target language next to the corresponding PO file.
-The `.mo` files should not be committed in the source tree as they are build results.
-Those are generated using the `locale/build.sh` script.
+The translation takes place on [Weblate](https://l10n.opensuse.org/projects/uyuni/). Look for the `uyuni-tools-*` components there.
+The `pot` and `po` files should not be changed in PRs as the synchronization is part of a semi-automated workflow.

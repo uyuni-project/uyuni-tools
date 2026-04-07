@@ -486,41 +486,57 @@ func ChooseObjPodmanOrKubernetes[T any](systemd podman.Systemd, podmanOption T, 
 
 // RunSupportConfig will run supportconfig command on given connection.
 func (c *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
-	var containerTarball string
 	var files []string
-	extensions := []string{"", ".md5"}
+	const sourceBaseDir = "/var/log"
+
 	containerName, err := c.GetPodName()
 	if err != nil {
 		return []string{}, err
 	}
 
+	// 10000 is what os.MkDirTemp uses
+	const maxBatchNameAttempts = 10000
+	batchName := ""
+	sourceDir := ""
+	for i := 0; i < maxBatchNameAttempts; i++ {
+		suffix, err := utils.RandomHexString(4) // 8 hex chars
+		if err != nil {
+			return []string{}, fmt.Errorf(L("failed to generate supportconfig suffix: %w"), err)
+		}
+
+		candidateBatchName := "uyuni-server-container-" + suffix
+		if !c.TestExistenceInPod(path.Join(sourceBaseDir, "scc_"+candidateBatchName)) {
+			batchName = candidateBatchName
+			sourceDir = path.Join(sourceBaseDir, "scc_"+candidateBatchName)
+			break
+		}
+	}
+	if batchName == "" {
+		return []string{},
+			fmt.Errorf(L("failed to generate unique supportconfig batch name after %d attempts"), maxBatchNameAttempts)
+	}
+
 	// Run supportconfig in the container if it's running
-	log.Info().Msgf(L("Running supportconfig in  %s"), containerName)
-	out, err := c.Exec("supportconfig")
-	if err != nil {
+	log.Info().Msgf(L("Running supportconfig in %s"), containerName)
+	if _, err = c.Exec("/sbin/supportconfig", "-B", batchName, "-t", sourceBaseDir); err != nil {
 		/* do not return here.
 		* supportconfig might return some error if some info is not generated
 		* but we need to raise an error only if tarball is not generated.
-		* In any case, show the error.
+		* In any case, show the error but as a warning and not as a failed run
 		 */
-		log.Error().Err(err).Msg(L("failed to run supportconfig"))
-	}
-	tarballPath := utils.GetSupportConfigPath(string(out))
-	if tarballPath == "" {
-		return []string{}, utils.Errorf(err, L("failed to find container supportconfig tarball from command output"))
+		log.Warn().Err(err).Msg(L("Some parts of supportconfig were not successful"))
 	}
 
-	for _, ext := range extensions {
-		containerTarball = path.Join(tmpDir, containerName+"-supportconfig.txz"+ext)
-		if err := c.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
-			return []string{}, utils.Errorf(err, L("cannot copy tarball"))
-		}
-		files = append(files, containerTarball)
-
-		// Remove the generated file in the container
-		if _, err := c.Exec("rm", tarballPath+ext); err != nil {
-			return []string{}, utils.Errorf(err, L("failed to remove %s file in the container"), tarballPath+ext)
-		}
+	targetDir := path.Join(tmpDir, batchName)
+	if err := c.Copy("server:"+sourceDir, targetDir, "", ""); err != nil {
+		return []string{}, utils.Errorf(err, L("cannot copy support config"))
 	}
+	files = append(files, targetDir)
+
+	// Remove the generated file in the container
+	if _, err := c.Exec("rm", "-r", sourceDir); err != nil {
+		return []string{}, utils.Errorf(err, L("failed to remove %s directory in the container"), sourceDir)
+	}
+
 	return files, nil
 }

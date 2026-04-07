@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2019 Brad Erickson
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #
 # SPDX-License-Identifier: MIT
 
@@ -11,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2.0.0
+    - uses: actions/checkout@722adc63f1aa60a57ec37892e133b1d319cae598 #v2.0.0
     - name: Block Fixup Commit Merge
-      uses: 13rac1/block-fixup-merge-action@v2.0.0
+      uses: 13rac1/block-fixup-merge-action@bd5504fb9ca0253e109d98eb86b7debc01970cdc #v2.0.0

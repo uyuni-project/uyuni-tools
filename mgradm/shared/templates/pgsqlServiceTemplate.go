@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,7 +22,7 @@ RequiresMountsFor=%t/containers
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-Restart=on-failure
+Restart=on-success
 ExecStartPre=/bin/rm -f %t/%n.pid %t/%n.ctr-id
 ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-db
 ExecStart=/bin/sh -c '/usr/bin/podman run \
@@ -53,6 +53,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
         -v {{ .Name }}:{{ .MountPath }} \
         {{- end }}
 	--network {{ .Network }} \
+	--health-on-failure=stop \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 ExecStop=/usr/bin/podman stop \
 	--ignore -t 10 \
@@ -76,7 +77,6 @@ type PgsqlServiceTemplateData struct {
 	Volumes         []types.VolumeMount
 	NamePrefix      string
 	Ports           []types.PortMap
-	Image           string
 	Network         string
 	IPV6Enabled     bool
 	CaSecret        string
