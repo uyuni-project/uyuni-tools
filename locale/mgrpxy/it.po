@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-31 14:40+0200\n"
-"PO-Revision-Date: 2025-11-26 10:50+0000\n"
-"Last-Translator: Antonio Gemelli <antonio.gemelli@suse.com>\n"
+"PO-Revision-Date: 2026-04-07 15:32+0000\n"
+"Last-Translator: Michele Bussolotto <michele.bussolotto@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -67,11 +67,11 @@ msgstr ""
 
 #: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
-msgstr ""
+msgstr "percorso del file di configuratione"
 
 #: mgrpxy/cmd/install/install.go:22
 msgid "Install a new proxy on podman"
-msgstr ""
+msgstr "Installa un nuovo proxy su podman"
 
 #: mgrpxy/cmd/install/install.go:23
 msgid ""
