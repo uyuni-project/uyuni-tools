@@ -30,7 +30,7 @@ func Restore(force bool) error {
 			return nil
 		}
 	}
-	log.Info().Msg(L("Stopping database service..."))
+	log.Info().Msg(L("Stopping database service…"))
 	if err := systemd.StopService(podman.DBService); err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func Restore(force bool) error {
 		return utils.Error(err, L("failed to generate postgresql restore script"))
 	}
 
-	log.Info().Msg(L("Restoring base backup..."))
+	log.Info().Msg(L("Restoring base backup…"))
 	if err := podman.RunContainer("uyuni-restore", image, volumes, []string{},
 		[]string{"bash", "-e", "-c", scriptBuilder.String()}); err != nil {
 		return err
@@ -70,7 +70,7 @@ func Restore(force bool) error {
 		return err
 	}
 
-	log.Info().Msg(L("Starting database service..."))
+	log.Info().Msg(L("Starting database service…"))
 	if err := systemd.StartService(podman.DBService); err != nil {
 		return err
 	}
@@ -92,7 +92,7 @@ func Restore(force bool) error {
 	}
 
 	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
-	s.Suffix = L(" Database is recovering... (use Ctrl-C to interrupt waiting)")
+	s.Suffix = L(" Database is recovering… (use Ctrl-C to interrupt waiting)")
 	s.Start()
 	for {
 		if _, err := os.Stat(recoverySignalPath); err != nil {

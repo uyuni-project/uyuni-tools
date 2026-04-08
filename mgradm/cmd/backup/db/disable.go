@@ -55,7 +55,7 @@ func Disable(flags *Flagpole) error {
 	}
 
 	if wasRunning {
-		log.Info().Msg(L("Starting database..."))
+		log.Info().Msg(L("Starting database…"))
 		if err := systemd.StartService(podman.DBService); err != nil {
 			return err
 		}

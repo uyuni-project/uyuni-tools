@@ -25,7 +25,7 @@ func Rebase() error {
 	wasRunning := isRunning != ""
 
 	if !wasRunning {
-		log.Info().Msg(L("Starting database..."))
+		log.Info().Msg(L("Starting database…"))
 		if err := systemd.StartService(podman.DBService); err != nil {
 			return err
 		}
@@ -39,7 +39,7 @@ func Rebase() error {
 	}
 
 	if !wasRunning {
-		log.Info().Msg(L("Stopping database..."))
+		log.Info().Msg(L("Stopping database…"))
 		if err := systemd.StopService(podman.DBService); err != nil {
 			log.Warn().Err(err).Send()
 		}

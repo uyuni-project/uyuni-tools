@@ -37,7 +37,7 @@ func Status() error {
 		}
 	}
 	if zerolog.GlobalLevel() < zerolog.WarnLevel {
-		log.Info().Err(err).Msgf(L("Database continuous backup is %s. Backup volume is %s"), status,
+		log.Info().Err(err).Msgf(L("Database continuous backup is %[1]s. Backup volume is %[2]s"), status,
 			utils.VarPgsqlBackupVolumeMount.Name)
 	} else {
 		// Assuming this is called by a script when logLevel is higher then info
