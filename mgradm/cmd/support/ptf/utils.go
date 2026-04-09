@@ -61,6 +61,7 @@ func ptfForPodman(
 		flags.Pgsql,
 		flags.TFTPD,
 		flags.Installation.TZ,
+		flags.Installation.Debug.Java,
 	)
 }
 

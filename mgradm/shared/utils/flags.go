@@ -31,6 +31,7 @@ type ServerFlags struct {
 	Saline         SalineFlags
 	Pgsql          types.PgsqlFlags
 	TFTPD          TFTPDFlags
+	Debug          DebugFlags
 }
 
 // MigrationFlags contains the parameters that are used only for migration.

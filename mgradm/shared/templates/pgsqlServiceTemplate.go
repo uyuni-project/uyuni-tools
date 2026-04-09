@@ -79,7 +79,6 @@ type PgsqlServiceTemplateData struct {
 	NamePrefix      string
 	Ports           []types.PortMap
 	Network         string
-	IPV6Enabled     bool
 	CaSecret        string
 	CaPath          string
 	CertSecret      string

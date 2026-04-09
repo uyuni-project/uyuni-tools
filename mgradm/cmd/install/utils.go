@@ -79,8 +79,13 @@ func installForPodman(
 		return err
 	}
 
+	// This creates installation values to be pass as envvars
+	if err := podman.GenerateServerEnvironmentFile(flags.Installation, fqdn, flags.Mirror != ""); err != nil {
+		return err
+	}
+
 	if err := podman.GenerateSystemdService(
-		systemd, preparedImage, flags.Installation, flags.Podman.Args, flags.Mirror, fqdn,
+		systemd, preparedImage, flags.Installation, flags.Podman.Args, flags.Mirror,
 	); err != nil {
 		return utils.Error(err, L("failed to generate server service"))
 	}

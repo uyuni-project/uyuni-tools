@@ -27,6 +27,7 @@ var ServerFlagsTestArgs = func() []string {
 	args = append(args, CocoFlagsTestArgs...)
 	args = append(args, HubXmlrpcFlagsTestArgs...)
 	args = append(args, TFTPDFlagsTestArgs...)
+	args = append(args, DebugFlagTestArgs...)
 	return args
 }
 
@@ -46,4 +47,5 @@ func AssertServerFlags(t *testing.T, flags *utils.ServerFlags) {
 	AssertInstallSSLFlag(t, &flags.Installation.SSL)
 	AssertSSLGenerationFlag(t, &flags.Installation.SSL.SSLCertGenerationFlags)
 	AssertTFTPDFlag(t, &flags.TFTPD)
+	AssertDebugFlag(t, &flags.Debug)
 }

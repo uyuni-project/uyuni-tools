@@ -111,7 +111,7 @@ func generateDefaultSystemdServices(flags *shared.Flagpole) error {
 
 	return utils.JoinErrors(
 		// TODO Extract the flags from the backup for the new unified setup
-		podman.GenerateSystemdService(systemd, serverImage, adm_utils.InstallationFlags{}, []string{}, "", ""),
+		podman.GenerateSystemdService(systemd, serverImage, adm_utils.InstallationFlags{}, []string{}, ""),
 		pgsql.GeneratePgsqlSystemdService(systemd, dbImage),
 		systemd.ReloadDaemon(false),
 	)

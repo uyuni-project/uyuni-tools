@@ -8,7 +8,6 @@ import (
 	"io"
 	"text/template"
 
-	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -43,22 +42,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- range .Volumes }}
 	-v {{ .Name }}:{{ .MountPath }} \
 	{{- end }}
-	-e TZ=${TZ} \
-	-e UYUNI_HOSTNAME=${UYUNI_HOSTNAME} \
-	-e MANAGER_ADMIN_EMAIL=${EMAIL} \
-	-e MANAGER_MAIL_FROM=${EMAILFROM} \
-	-e MANAGER_DB_NAME=${DB_NAME} \
-	-e MANAGER_DB_HOST=${DB_HOST} \
-	-e MANAGER_DB_PORT=${DB_PORT} \
-	-e REPORT_DB_NAME=${REPORTDB_NAME} \
-	-e REPORT_DB_HOST=${REPORTDB_HOST} \
-	-e REPORT_DB_PORT=${REPORTDB_PORT} \
-	-e EXTERNALDB_PROVIDER=${DB_PROVIDER} \
-	-e ISS_PARENT=${ISS_PARENT} \
-	-e DEBUG_JAVA=${DEBUG_JAVA} \
-	-e ORG_NAME=${ORGANIZATION} \
-	-e ADMIN_FIRST_NAME=${ADMIN_FIRSTNAME} \
-	-e ADMIN_LAST_NAME=${ADMIN_LASTNAME} \
+	--env-file={{ .ServerEnvFile }} \
 	--network {{ .Network }} \
 	--secret {{ .DBUserSecret }},type=env,target=MANAGER_USER \
 	--secret {{ .DBPassSecret }},type=env,target=MANAGER_PASS \
@@ -70,11 +54,11 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret {{ .CertSecret }},type=mount,target={{ .CertPath }} \
 	--secret {{ .KeySecret }},type=mount,target={{ .KeyPath }} \
 	--secret {{ .DBCaSecret }},type=mount,target={{ .DBCaPath }} \
-	--health-on-failure=stop \
 	--secret {{ .SCCUserSecret }},type=env,target=SCC_USER \
 	--secret {{ .SCCPassSecret }},type=env,target=SCC_PASS \
 	--secret {{ .AdminUserSecret }},type=env,target=ADMIN_USER \
 	--secret {{ .AdminPassSecret }},type=env,target=ADMIN_PASS \
+	--health-on-failure=stop \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 
 ExecStop=-/usr/bin/podman exec \
@@ -104,7 +88,6 @@ type PodmanServiceTemplateData struct {
 	Args               string
 	Ports              []types.PortMap
 	Network            string
-	IPV6Enabled        bool
 	CaSecret           string
 	CaPath             string
 	DBCaSecret         string
@@ -113,16 +96,6 @@ type PodmanServiceTemplateData struct {
 	CertPath           string
 	KeySecret          string
 	KeyPath            string
-	Email              string
-	EmailFrom          string
-	DB                 types.DBFlags
-	ReportDB           types.DBFlags
-	ISSParent          string
-	DebugJava          bool
-	OrgName            string
-	Admin              apiTypes.User
-	SCC                types.SCCCredentials
-	Mirror             string
 	DBUserSecret       string
 	DBPassSecret       string
 	ReportDBUserSecret string
@@ -131,6 +104,7 @@ type PodmanServiceTemplateData struct {
 	SCCPassSecret      string
 	AdminUserSecret    string
 	AdminPassSecret    string
+	ServerEnvFile      string
 }
 
 // Render will create the systemd configuration file.

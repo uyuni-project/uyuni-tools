@@ -22,11 +22,11 @@ type DBFlags struct {
 }
 
 // IsLocal indicates if the database is a local or a third party one.
-func (flags *DBFlags) IsLocal() bool {
+func (flags DBFlags) IsLocal() bool {
 	return flags.Host == "" || flags.Host == "db" || flags.Host == "reportdb"
 }
 
-func (flags *DBFlags) GetPort() string {
+func (flags DBFlags) GetPort() string {
 	port := "5432"
 	if flags.Port != 0 {
 		port = strconv.Itoa(flags.Port)
