@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -12,6 +12,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/create"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/db"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/restore"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -79,6 +80,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 	}
 	backupCmd.AddCommand(newCreateCmd(globalFlags, doBackup))
 	backupCmd.AddCommand(newRestoreCmd(globalFlags, doRestore))
+	backupCmd.AddCommand(db.NewDBCmd(globalFlags))
 	return backupCmd
 }
 

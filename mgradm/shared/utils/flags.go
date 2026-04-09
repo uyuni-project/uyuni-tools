@@ -134,6 +134,7 @@ type DBFlags struct {
 		User     string
 		Password string
 	}
+	Walbackup bool
 }
 
 // IsLocal indicates if the database is a local or a third party one.
