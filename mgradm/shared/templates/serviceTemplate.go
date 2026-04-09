@@ -57,8 +57,6 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	-e ISS_PARENT=${ISS_PARENT} \
 	-e DEBUG_JAVA=${DEBUG_JAVA} \
 	-e ORG_NAME=${ORGANIZATION} \
-	-e ADMIN_USER=${ADMIN_LOGIN} \
-	-e ADMIN_PASS=${ADMIN_PASSWORD} \
 	-e ADMIN_FIRST_NAME=${ADMIN_FIRSTNAME} \
 	-e ADMIN_LAST_NAME=${ADMIN_LASTNAME} \
 	--network {{ .Network }} \
@@ -101,36 +99,38 @@ WantedBy=multi-user.target default.target
 
 // PodmanServiceTemplateData POD information to create systemd file.
 type PodmanServiceTemplateData struct {
-	Volumes         []types.VolumeMount
-	NamePrefix      string
-	Args            string
-	Ports           []types.PortMap
-	Network         string
-	IPV6Enabled     bool
-	CaSecret        string
-	CaPath          string
-	DBCaSecret      string
-	DBCaPath        string
-	CertSecret      string
-	CertPath        string
-	KeySecret       string
-	KeyPath         string
-	AdminUser       string
-	AdminPassword   string
-	ManagerUser     string
-	ManagerPassword string
-	ReportUser      string
-	ReportPassword  string
-	Email           string
-	EmailFrom       string
-	DB              types.DBFlags
-	ReportDB        types.DBFlags
-	ISSParent       string
-	DebugJava       bool
-	OrgName         string
-	Admin           apiTypes.User
-	SCC             types.SCCCredentials
-	Mirror          string
+	Volumes            []types.VolumeMount
+	NamePrefix         string
+	Args               string
+	Ports              []types.PortMap
+	Network            string
+	IPV6Enabled        bool
+	CaSecret           string
+	CaPath             string
+	DBCaSecret         string
+	DBCaPath           string
+	CertSecret         string
+	CertPath           string
+	KeySecret          string
+	KeyPath            string
+	Email              string
+	EmailFrom          string
+	DB                 types.DBFlags
+	ReportDB           types.DBFlags
+	ISSParent          string
+	DebugJava          bool
+	OrgName            string
+	Admin              apiTypes.User
+	SCC                types.SCCCredentials
+	Mirror             string
+	DBUserSecret       string
+	DBPassSecret       string
+	ReportDBUserSecret string
+	ReportDBPassSecret string
+	SCCUserSecret      string
+	SCCPassSecret      string
+	AdminUserSecret    string
+	AdminPassSecret    string
 }
 
 // Render will create the systemd configuration file.

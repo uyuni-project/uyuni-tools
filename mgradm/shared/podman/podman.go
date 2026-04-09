@@ -57,20 +57,28 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 	}
 
 	data := templates.PodmanServiceTemplateData{
-		Volumes:     utils.ServerVolumeMounts,
-		NamePrefix:  "uyuni",
-		Args:        strings.Join(args, " "),
-		Ports:       ports,
-		Network:     podman.UyuniNetwork,
-		IPV6Enabled: ipv6Enabled,
-		CaSecret:    podman.CASecret,
-		CaPath:      ssl.CAContainerPath,
-		CertSecret:  podman.SSLCertSecret,
-		CertPath:    ssl.ServerCertPath,
-		KeySecret:   podman.SSLKeySecret,
-		KeyPath:     ssl.ServerCertKeyPath,
-		DBCaSecret:  podman.DBCASecret,
-		DBCaPath:    ssl.DBCAContainerPath,
+		Volumes:            utils.ServerVolumeMounts,
+		NamePrefix:         "uyuni",
+		Args:               strings.Join(args, " "),
+		Ports:              ports,
+		Network:            podman.UyuniNetwork,
+		IPV6Enabled:        ipv6Enabled,
+		CaSecret:           podman.CASecret,
+		CaPath:             ssl.CAContainerPath,
+		CertSecret:         podman.SSLCertSecret,
+		CertPath:           ssl.ServerCertPath,
+		KeySecret:          podman.SSLKeySecret,
+		KeyPath:            ssl.ServerCertKeyPath,
+		DBCaSecret:         podman.DBCASecret,
+		DBCaPath:           ssl.DBCAContainerPath,
+		AdminUserSecret:    podman.AdminUserSecret,
+		AdminPassSecret:    podman.AdminPassSecret,
+		DBUserSecret:       podman.DBUserSecret,
+		DBPassSecret:       podman.DBPassSecret,
+		ReportDBUserSecret: podman.ReportDBUserSecret,
+		ReportDBPassSecret: podman.ReportDBPassSecret,
+		SCCUserSecret:      podman.SCCUserSecret,
+		SCCPassSecret:      podman.SCCPassSecret,
 	}
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
@@ -115,10 +123,10 @@ Environment="EMAIL=%s"
 Environment="EMAILFROM=%s"
 Environment="DB_NAME=%s"
 Environment="DB_HOST=%s"
-Environment="DB_PORT=%s"
+Environment="DB_PORT=%d"
 Environment="REPORTDB_NAME=%s"
 Environment="REPORTDB_HOST=%s"
-Environment="REPORTDB_PORT=%s"
+Environment="REPORTDB_PORT=%d"
 Environment="DB_PROVIDER=%s"
 Environment="ISS_PARENT=%s"
 Environment="DEBUG_JAVA=%s"
@@ -126,20 +134,24 @@ Environment="ORGANIZATION=%s"
 Environment="ADMIN_FIRSTNAME=%s"
 Environment="ADMIN_LASTNAME=%s"
 `, strings.TrimSpace(flags.TZ), strings.Join(podmanArgs, " "), fqdn, flags.Email, flags.EmailFrom,
-		flags.DB.Name, flags.DB.Host, flags.DB.GetPort(), flags.ReportDB.Name, flags.ReportDB.Host,
-		flags.ReportDB.GetPort(), flags.DB.Provider, flags.IssParent,
+		flags.DB.Name, flags.DB.Host, flags.DB.Port, flags.ReportDB.Name, flags.ReportDB.Host,
+		flags.ReportDB.Port, flags.DB.Provider, flags.IssParent,
 		strconv.FormatBool(flags.Debug.Java), flags.Organization, flags.Admin.FirstName,
 		flags.Admin.LastName,
 	)
 
 	// Add the SCC and admin credentials as secrets
-	podman.CreateCredentialsSecretsIfMissing(
+	if err := podman.CreateCredentialsSecretsIfMissing(
 		podman.AdminUserSecret, flags.Admin.Login, podman.AdminPassSecret, flags.Admin.Password,
-	)
+	); err != nil {
+		return err
+	}
 
-	podman.CreateCredentialsSecretsIfMissing(
+	if err := podman.CreateCredentialsSecretsIfMissing(
 		podman.SCCUserSecret, flags.SCC.User, podman.SCCPassSecret, flags.SCC.Password,
-	)
+	); err != nil {
+		return err
+	}
 
 	if fqdn != "" {
 		config = fmt.Sprintf("%s\nEnvironment=UYUNI_HOSTNAME=%s", config, fqdn)
@@ -528,15 +540,12 @@ func serverExposesTFTP(systemd podman.Systemd) bool {
 func WaitForSystemStart(
 	systemd podman.Systemd,
 	cnx *shared.Connection,
-	image string,
-	tz string,
-	debug bool,
-	mirrorPath string,
-	podmanArgs []string,
-	fqdn string,
 ) error {
 	log.Info().Msg(L("Waiting for the server to start…"))
 	if err := systemd.EnableService(podman.ServerService); err != nil {
+		return utils.Error(err, L("cannot enable service"))
+	}
+	if err := systemd.StartService(podman.ServerService); err != nil {
 		return utils.Error(err, L("cannot enable service"))
 	}
 

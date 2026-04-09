@@ -86,8 +86,7 @@ func installForPodman(
 	}
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
-	if err := podman.WaitForSystemStart(systemd, cnx, preparedImage, flags.Installation.TZ,
-		flags.Installation.Debug.Java, flags.Mirror, flags.Podman.Args, fqdn); err != nil {
+	if err := podman.WaitForSystemStart(systemd, cnx); err != nil {
 		return utils.Error(err, L("cannot wait for system start"))
 	}
 	if err := cnx.CopyCaCertificate(fqdn); err != nil {
