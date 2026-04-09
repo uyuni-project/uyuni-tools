@@ -74,6 +74,7 @@ var DBFlagsTestArgs = []string{
 	"--db-admin-user", "dbadmin",
 	"--db-admin-password", "dbadminpass",
 	"--db-provider", "aws",
+	"--db-walbackup",
 }
 
 // ReportDBFlagsTestArgs is the expected values for ReportDBFlag.
