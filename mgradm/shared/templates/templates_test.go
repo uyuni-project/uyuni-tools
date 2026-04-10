@@ -8,6 +8,7 @@ import (
 	"io"
 	"testing"
 
+	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -59,10 +60,6 @@ func TestTemplatesRender(t *testing.T) {
 			},
 		},
 		{
-			name:     "PostUpgradeTemplateData",
-			template: PostUpgradeTemplateData{},
-		},
-		{
 			name: "SalineServiceTemplateData",
 			template: SalineServiceTemplateData{
 				NamePrefix: "uyuni",
@@ -102,6 +99,21 @@ func TestTemplatesRender(t *testing.T) {
 				Network:    "uyuni-network",
 				CaSecret:   "ca-secret",
 				ServerFQDN: "uyuni.test.org",
+			},
+		},
+		{
+			name: "ServerEnvironmentData",
+			template: PodmanServiceEnvironmentTemplateData{
+				TZ:        "GMT",
+				Fqdn:      "uyuni-server.example.com",
+				Email:     "admin@example.com",
+				EmailFrom: "notifications@example.com",
+				DB:        types.DBFlags{Host: "db", Name: "db", Port: 0},
+				ReportDB:  types.DBFlags{},
+				Debug:     false,
+				Org:       "Example.com",
+				Admin:     apiTypes.User{FirstName: "Test", LastName: "Admin"},
+				HasMirror: false,
 			},
 		},
 	}

@@ -311,47 +311,6 @@ func RunPgsqlVersionUpgrade(
 		[]string{})
 }
 
-// RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
-func RunPgsqlFinalizeScript(serverImage string, collationChange bool) error {
-	if !collationChange {
-		log.Info().Msg(L("No need to run database finalization script"))
-		return nil
-	}
-
-	env := map[string]string{
-		"RUN_REINDEX": strconv.FormatBool(collationChange),
-	}
-
-	extraArgs := []string{
-		"--security-opt", "label=disable",
-		"--network", podman.UyuniNetwork,
-	}
-
-	for key, value := range env {
-		extraArgs = append(extraArgs, "-e", fmt.Sprintf("%s=%s", key, value))
-	}
-
-	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
-
-	return podman.RunContainer(pgsqlFinalizeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
-		[]string{"/usr/bin/sh", "-e", "-c", "/docker-entrypoint-init.d/90-pgsqlFinalize.sh"})
-}
-
-// RunPostUpgradeScript run the script with the changes to apply after the upgrade.
-func RunPostUpgradeScript(serverImage string) error {
-	postUpgradeContainer := "uyuni-post-upgrade"
-	extraArgs := []string{
-		"--security-opt", "label=disable",
-	}
-	script, err := adm_utils.GeneratePostUpgradeScript()
-	if err != nil {
-		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
-	}
-	// Post upgrade script expects some commands to fail and checks their result, don't use sh -e.
-	return podman.RunContainer(postUpgradeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
-		[]string{"bash", "-c", script})
-}
-
 // Upgrade will upgrade server to the image given as attribute.
 func Upgrade(
 	systemd podman.Systemd,

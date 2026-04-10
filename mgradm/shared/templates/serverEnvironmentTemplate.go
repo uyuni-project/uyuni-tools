@@ -30,7 +30,7 @@ DB_NAME="{{ .DB.Name }}"
 DB_HOST="{{ .DB.Host }}"
 DB_PORT="{{ .DB.GetPort }}"
 {{ end }}
-{{ if .ReportDN }}
+{{ if .ReportDB }}
 REPORTDB_NAME="{{ .ReportDB.Name }}"
 REPORTDB_HOST="{{ .ReportDB.Host }}"
 REPORTDB_PORT="{{ .ReportDB.GetPort }}"
