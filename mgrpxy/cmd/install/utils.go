@@ -35,6 +35,10 @@ func installForPodman(
 		return shared_utils.Errorf(err, L("failed to retrieve proxy config files"))
 	}
 
+	if err := podman.ExtractSecrets(); err != nil {
+		return err
+	}
+
 	hostData, err := shared_podman.InspectHost()
 	if err != nil {
 		return err

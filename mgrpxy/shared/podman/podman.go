@@ -25,6 +25,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -85,6 +86,15 @@ func GenerateSystemdService(
 		}
 		if podman.HasSecret(SystemIDSecret) {
 			dataHttpd.SystemIDSecret = SystemIDSecret
+		}
+		if podman.HasSecret(podman.CASecret) {
+			dataHttpd.CaSecret = podman.CASecret
+		}
+		if podman.HasSecret(podman.ProxySSLCertSecret) {
+			dataHttpd.CertSecret = podman.ProxySSLCertSecret
+		}
+		if podman.HasSecret(podman.ProxySSLKeySecret) {
+			dataHttpd.KeySecret = podman.ProxySSLKeySecret
 		}
 
 		additionHttpdTuningSettings := ""
@@ -158,6 +168,9 @@ func GenerateSystemdService(
 		dataTftpd := templates.TFTPDTemplateData{
 			Volumes:       shared_utils.ProxyTftpdVolumes,
 			HTTPProxyFile: httpProxyConfig,
+		}
+		if podman.HasSecret(podman.CASecret) {
+			dataTftpd.CaSecret = podman.CASecret
 		}
 		if err := systemdGenerator(dataTftpd, "tftpd", tftpdImage, ""); err != nil {
 			return err
@@ -308,6 +321,10 @@ func Upgrade(
 		return err
 	}
 
+	if err := ExtractSecrets(); err != nil {
+		return err
+	}
+
 	hostData, err := podman.InspectHost()
 	if err != nil {
 		return err
@@ -451,4 +468,97 @@ func GetSystemID() error {
 	log.Trace().Msgf("SystemID: %s", systemid)
 
 	return podman.CreateSecret(SystemIDSecret, systemid)
+}
+
+// ExtractSecrets extracts certificates from YAML files and creates podman secrets.
+func ExtractSecrets() error {
+	const proxyConfigDir = "/etc/uyuni/proxy"
+	configPath := path.Join(proxyConfigDir, "config.yaml")
+	httpdPath := path.Join(proxyConfigDir, "httpd.yaml")
+
+	// Extract CA from config.yaml
+	if shared_utils.FileExists(configPath) {
+		data, err := os.ReadFile(configPath)
+		if err != nil {
+			return shared_utils.Errorf(err, L("failed to read %s"), configPath)
+		}
+
+		var config map[string]interface{}
+		if err := yaml.Unmarshal(data, &config); err != nil {
+			return shared_utils.Errorf(err, L("failed to unmarshal %s"), configPath)
+		}
+
+		if caCrt, ok := config["ca_crt"].(string); ok && caCrt != "" {
+			if err := podman.CreateSecret(podman.CASecret, caCrt); err != nil {
+				return shared_utils.Errorf(err, L("failed to create %s secret"), podman.CASecret)
+			}
+			delete(config, "ca_crt")
+
+			// Write back config.yaml
+			newData, err := yaml.Marshal(config)
+			if err != nil {
+				return shared_utils.Errorf(err, L("failed to marshal %s"), configPath)
+			}
+			if err := os.WriteFile(configPath, newData, 0644); err != nil {
+				return shared_utils.Errorf(err, L("failed to write %s"), configPath)
+			}
+		}
+	}
+
+	// Extract certificates from httpd.yaml
+	if shared_utils.FileExists(httpdPath) {
+		data, err := os.ReadFile(httpdPath)
+		if err != nil {
+			return shared_utils.Errorf(err, L("failed to read %s"), httpdPath)
+		}
+
+		var httpdConfig map[string]interface{}
+		if err := yaml.Unmarshal(data, &httpdConfig); err != nil {
+			return shared_utils.Errorf(err, L("failed to unmarshal %s"), httpdPath)
+		}
+
+		if httpd, ok := httpdConfig["httpd"]; ok {
+			updated := false
+			// Handle both map[string]interface{} and map[interface{}]interface{}
+			var httpdMap map[string]interface{}
+			if m, ok := httpd.(map[string]interface{}); ok {
+				httpdMap = m
+			} else if m, ok := httpd.(map[interface{}]interface{}); ok {
+				httpdMap = make(map[string]interface{})
+				for k, v := range m {
+					httpdMap[fmt.Sprintf("%v", k)] = v
+				}
+				httpdConfig["httpd"] = httpdMap
+			}
+
+			if httpdMap != nil {
+				if serverCrt, ok := httpdMap["server_crt"].(string); ok && serverCrt != "" {
+					if err := podman.CreateSecret(podman.ProxySSLCertSecret, serverCrt); err != nil {
+						return shared_utils.Errorf(err, L("failed to create %s secret"), podman.ProxySSLCertSecret)
+					}
+					delete(httpdMap, "server_crt")
+					updated = true
+				}
+				if serverKey, ok := httpdMap["server_key"].(string); ok && serverKey != "" {
+					if err := podman.CreateSecret(podman.ProxySSLKeySecret, serverKey); err != nil {
+						return shared_utils.Errorf(err, L("failed to create %s secret"), podman.ProxySSLKeySecret)
+					}
+					delete(httpdMap, "server_key")
+					updated = true
+				}
+			}
+
+			if updated {
+				// Write back httpd.yaml
+				newData, err := yaml.Marshal(httpdConfig)
+				if err != nil {
+					return shared_utils.Errorf(err, L("failed to marshal %s"), httpdPath)
+				}
+				if err := os.WriteFile(httpdPath, newData, 0644); err != nil {
+					return shared_utils.Errorf(err, L("failed to write %s"), httpdPath)
+				}
+			}
+		}
+	}
+	return nil
 }

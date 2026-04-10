@@ -40,6 +40,10 @@ const (
 	DBSSLCertSecret = "uyuni-db-cert"
 	// DBSSLKeySecret is the name of the podman secret containing the report database SSL certificate key.
 	DBSSLKeySecret = "uyuni-db-key"
+	// ProxySSLCertSecret is the name of the podman secret containing the proxy SSL certificate.
+	ProxySSLCertSecret = "uyuni-proxy-cert"
+	// ProxySSLKeySecret is the name of the podman secret containing the proxy SSL certificate key.
+	ProxySSLKeySecret = "uyuni-proxy-key"
 )
 
 // CreateCredentialsSecretsIfMissing creates the podman secrets, one for the user name and one for the password.

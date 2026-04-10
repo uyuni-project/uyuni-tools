@@ -36,6 +36,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- range .Volumes }}
 	-v {{ .Name }}:{{ .MountPath }} \
 	{{- end }}
+	{{- if .CaSecret }}
+	--secret {{ .CaSecret }},type=mount,mode=0444,target="/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT" \
+	{{- end }}
 	{{- if .HTTPProxyFile }}
 	-v {{ .HTTPProxyFile }}:{{ .HTTPProxyFile }}:ro \
 	{{- end }}
@@ -56,6 +59,7 @@ WantedBy=multi-user.target default.target
 type TFTPDTemplateData struct {
 	Volumes       []types.VolumeMount
 	HTTPProxyFile string
+	CaSecret      string
 }
 
 // Render will create the TFTPD systemd configuration file.

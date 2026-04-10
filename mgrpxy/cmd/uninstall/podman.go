@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -90,9 +90,10 @@ func uninstallForPodman(
 
 	podman.DeleteNetwork(dryRun)
 
-	if podman.HasSecret(pxy_podman.SystemIDSecret) {
-		podman.DeleteSecret(pxy_podman.SystemIDSecret, false)
-	}
+	podman.DeleteSecret(pxy_podman.SystemIDSecret, dryRun)
+	podman.DeleteSecret(podman.CASecret, dryRun)
+	podman.DeleteSecret(podman.ProxySSLCertSecret, dryRun)
+	podman.DeleteSecret(podman.ProxySSLKeySecret, dryRun)
 
 	err := systemd.ReloadDaemon(dryRun)
 
