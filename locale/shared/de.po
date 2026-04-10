@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-31 14:40+0200\n"
+"POT-Creation-Date: 2026-04-08 14:28+0200\n"
 "PO-Revision-Date: 2025-11-26 11:05+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/de/>\n"
@@ -155,116 +155,131 @@ msgstr ""
 msgid "cannot generate %s completion"
 msgstr ""
 
-#: shared/connection.go:64
+#: shared/connection.go:77
 #, javascript-format
 msgid "backend command not found in PATH: %s"
 msgstr ""
 
-#: shared/connection.go:79
+#: shared/connection.go:91
 msgid "kubectl not configured to connect to a cluster, ignoring"
 msgstr ""
 
-#: shared/connection.go:115
+#: shared/connection.go:128
 msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
 msgstr ""
 
-#: shared/connection.go:118
+#: shared/connection.go:131
 #, javascript-format
 msgid "unsupported backend %s"
 msgstr ""
 
-#: shared/connection.go:153
+#: shared/connection.go:166
 msgid "coundn't find app name"
 msgstr ""
 
-#: shared/connection.go:165
+#: shared/connection.go:176
 msgid "failed to guest namespace"
 msgstr ""
 
-#: shared/connection.go:188
+#: shared/connection.go:198
 #, javascript-format
 msgid "container %s is not running on podman"
 msgstr ""
 
-#: shared/connection.go:197
+#: shared/connection.go:207
 #, javascript-format
 msgid "container labeled %s is not running on kubectl"
 msgstr ""
 
-#: shared/connection.go:212
+#: shared/connection.go:222
 #, javascript-format
 msgid "%s command not executed:"
 msgstr "Befehl %s nicht ausgeführt:"
 
-#: shared/connection.go:224
+#: shared/connection.go:234
 msgid "failed to retrieve namespace "
 msgstr ""
 
-#: shared/connection.go:243
+#: shared/connection.go:253
+#, fuzzy
+msgid "failed to create temporary file"
+msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#: shared/connection.go:258
+#, fuzzy
+msgid "failed to write script to temporary file"
+msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#: shared/connection.go:266
+#, fuzzy
+msgid "failed to copy script to container"
+msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#: shared/connection.go:282
 msgid "Healthcheck not executed"
 msgstr ""
 
-#: shared/connection.go:282
+#: shared/connection.go:321
 msgid "container didn't start within 10s."
 msgstr ""
 
-#: shared/connection.go:297
+#: shared/connection.go:336
 msgid "container didn't start within 120s. Check for the service status"
 msgstr ""
 
-#: shared/connection.go:337 shared/connection.go:384
+#: shared/connection.go:376 shared/connection.go:424
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr ""
 
-#: shared/connection.go:379
+#: shared/connection.go:419
 #, fuzzy
 msgid "failed to detect the namespace"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/connection.go:395
+#: shared/connection.go:435
 msgid "Copying the SSL CA certificate to the host"
 msgstr ""
 
-#: shared/connection.go:414
+#: shared/connection.go:454
 msgid "Updating host trusted certificates"
 msgstr ""
 
-#: shared/connection.go:422
+#: shared/connection.go:465
 msgid "Unable to update host trusted certificates."
 msgstr ""
 
-#: shared/connection.go:463 shared/connection.go:484
+#: shared/connection.go:506 shared/connection.go:527
 msgid "failed to determine suitable backend"
 msgstr ""
 
-#: shared/connection.go:473
+#: shared/connection.go:516
 msgid "no supported backend found"
 msgstr ""
 
-#: shared/connection.go:504 shared/utils/support.go:102
+#: shared/connection.go:547 shared/utils/support.go:102
 msgid "failed to generate supportconfig suffix: %w"
 msgstr ""
 
-#: shared/connection.go:516 shared/utils/support.go:116
+#: shared/connection.go:559 shared/utils/support.go:116
 #, javascript-format
 msgid "failed to generate unique supportconfig batch name after %d attempts"
 msgstr ""
 
-#: shared/connection.go:520
+#: shared/connection.go:563
 #, javascript-format
 msgid "Running supportconfig in %s"
 msgstr ""
 
-#: shared/connection.go:527 shared/utils/support.go:122
+#: shared/connection.go:570 shared/utils/support.go:122
 msgid "Some parts of supportconfig were not successful"
 msgstr ""
 
-#: shared/connection.go:532
+#: shared/connection.go:575
 msgid "cannot copy support config"
 msgstr ""
 
-#: shared/connection.go:538
+#: shared/connection.go:581
 #, fuzzy, javascript-format
 msgid "failed to remove %s directory in the container"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
@@ -466,15 +481,15 @@ msgstr ""
 #: shared/podman/images.go:412 shared/podman/network.go:108
 #: shared/podman/secret.go:146 shared/podman/systemd.go:270
 #: shared/podman/systemd.go:348 shared/podman/systemd.go:349
-#: shared/podman/utils.go:188 shared/podman/utils.go:221
-#: shared/podman/utils.go:250
+#: shared/podman/utils.go:198 shared/podman/utils.go:231
+#: shared/podman/utils.go:260
 #, javascript-format
 msgid "Would run %s"
 msgstr ""
 
 #: shared/podman/images.go:373 shared/podman/images.go:394
-#: shared/podman/images.go:414 shared/podman/utils.go:190
-#: shared/podman/utils.go:224 shared/podman/utils.go:261
+#: shared/podman/images.go:414 shared/podman/utils.go:200
+#: shared/podman/utils.go:234 shared/podman/utils.go:271
 #, javascript-format
 msgid "Run %s"
 msgstr ""
@@ -784,92 +799,92 @@ msgstr ""
 msgid "failed to remove old %s systemd service configuration file"
 msgstr ""
 
-#: shared/podman/utils.go:64
+#: shared/podman/utils.go:74
 msgid "Extra arguments to pass to podman"
 msgstr ""
 
-#: shared/podman/utils.go:71
+#: shared/podman/utils.go:81
 msgid "failed to enable podman.socket unit"
 msgstr ""
 
-#: shared/podman/utils.go:92 shared/podman/utils.go:121
+#: shared/podman/utils.go:102 shared/podman/utils.go:131
 #, javascript-format
 msgid "failed to run %s container"
 msgstr ""
 
-#: shared/podman/utils.go:132
+#: shared/podman/utils.go:142
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:133
+#: shared/podman/utils.go:143
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:135
+#: shared/podman/utils.go:145
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:138
+#: shared/podman/utils.go:148
 msgid "Failed to kill the server"
 msgstr ""
 
-#: shared/podman/utils.go:140
+#: shared/podman/utils.go:150
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:143
+#: shared/podman/utils.go:153
 msgid "Error removing container"
 msgstr ""
 
-#: shared/podman/utils.go:148
+#: shared/podman/utils.go:158
 msgid "Container already removed"
 msgstr ""
 
-#: shared/podman/utils.go:156
+#: shared/podman/utils.go:166
 #, javascript-format
 msgid "failed to get %s systemd service definition"
 msgstr ""
 
-#: shared/podman/utils.go:163
+#: shared/podman/utils.go:173
 #, javascript-format
 msgid "no UYUNI.*_IMAGE defined in %s systemd service"
 msgstr ""
 
-#: shared/podman/utils.go:202
+#: shared/podman/utils.go:212
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr ""
 
-#: shared/podman/utils.go:226
+#: shared/podman/utils.go:236
 #, fuzzy, javascript-format
 msgid "Failed to export volume %s"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/podman/utils.go:229
+#: shared/podman/utils.go:239
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr ""
 
-#: shared/podman/utils.go:255
+#: shared/podman/utils.go:265
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr ""
 
-#: shared/podman/utils.go:259
+#: shared/podman/utils.go:269
 #, fuzzy, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/podman/utils.go:263
+#: shared/podman/utils.go:273
 #, fuzzy, javascript-format
 msgid "Failed to import volume %s"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/podman/utils.go:267
+#: shared/podman/utils.go:277
 #, javascript-format
 msgid "Unable to restore selinux context for %s, manual action is required"
 msgstr ""
 
-#: shared/podman/utils.go:376 shared/podman/utils.go:399
+#: shared/podman/utils.go:385 shared/podman/utils.go:408
 msgid "cannot inspect data"
 msgstr ""
 

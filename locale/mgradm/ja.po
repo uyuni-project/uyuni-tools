@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-31 14:40+0200\n"
+"POT-Creation-Date: 2026-04-08 15:36+0200\n"
 "PO-Revision-Date: 2026-01-19 09:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
@@ -18,108 +18,108 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.15.2\n"
 
-#: mgradm/cmd/backup/backup.go:28
+#: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
 msgstr "バックアップの作成"
 
-#: mgradm/cmd/backup/backup.go:29
+#: mgradm/cmd/backup/backup.go:30
 msgid "Create backup of the already configured Uyuni system"
 msgstr "すでに設定されているUyuniシステムのバックアップを作成する"
 
-#: mgradm/cmd/backup/backup.go:35
+#: mgradm/cmd/backup/backup.go:36
 msgid "Skip backup of selected volumes"
 msgstr "選択したボリュームのバックアップをスキップする"
 
-#: mgradm/cmd/backup/backup.go:36
+#: mgradm/cmd/backup/backup.go:37
 msgid "Backup additional volumes to the build-in ones"
 msgstr "内蔵ボリュームに追加ボリュームをバックアップする"
 
-#: mgradm/cmd/backup/backup.go:37
+#: mgradm/cmd/backup/backup.go:38
 msgid "Do not backup database volume, allow online backup."
 msgstr "データベースボリュームをバックアップせず、オンラインバックアップを許可します。"
 
-#: mgradm/cmd/backup/backup.go:38
+#: mgradm/cmd/backup/backup.go:39
 msgid "Do not backup container images"
 msgstr "コンテナイメージをバックアップしないでください"
 
-#: mgradm/cmd/backup/backup.go:39
+#: mgradm/cmd/backup/backup.go:40
 msgid "Do not backup podman configuration. On restore defaults will be used"
 msgstr "podmanの設定をバックアップしないでください。復元時にはデフォルトが使用されます"
 
-#: mgradm/cmd/backup/backup.go:40
+#: mgradm/cmd/backup/backup.go:41
 msgid "Do not restart services after backup is done"
 msgstr "バックアップが完了したらサービスを再起動しないでください"
 
-#: mgradm/cmd/backup/backup.go:41 mgradm/cmd/backup/backup.go:64
+#: mgradm/cmd/backup/backup.go:42 mgradm/cmd/backup/backup.go:65
 msgid "Print expected actions, but no action is done"
 msgstr "予期されるアクションをプリントしますが、アクションは実行されません"
 
-#: mgradm/cmd/backup/backup.go:52
+#: mgradm/cmd/backup/backup.go:53
 msgid "Restore backup from the directory"
 msgstr "ディレクトリからバックアップを復元する"
 
-#: mgradm/cmd/backup/backup.go:53
+#: mgradm/cmd/backup/backup.go:54
 msgid "Restore backup of the previously configured Uyuni system from a specified directory"
 msgstr "指定されたディレクトリから、以前に設定されたUyuniシステムのバックアップを復元する"
 
-#: mgradm/cmd/backup/backup.go:59
+#: mgradm/cmd/backup/backup.go:60
 msgid "Skip restore of selected volumes"
 msgstr "選択したボリュームの復元をスキップする"
 
-#: mgradm/cmd/backup/backup.go:60
+#: mgradm/cmd/backup/backup.go:61
 msgid "Do not restore database volume"
 msgstr "データベースボリュームを復元しないでください"
 
-#: mgradm/cmd/backup/backup.go:61
+#: mgradm/cmd/backup/backup.go:62
 msgid "Skip restore of container images"
 msgstr "コンテナイメージの復元をスキップする"
 
-#: mgradm/cmd/backup/backup.go:62
+#: mgradm/cmd/backup/backup.go:63
 msgid "Do not restore podman configuration. Defaults will be used"
 msgstr "podmanの設定を復元しないでください。デフォルトが使用されます"
 
-#: mgradm/cmd/backup/backup.go:63
+#: mgradm/cmd/backup/backup.go:64
 msgid "Restart service after restore is done"
 msgstr "復元が完了したらサービスを再起動する"
 
-#: mgradm/cmd/backup/backup.go:65
+#: mgradm/cmd/backup/backup.go:66
 msgid "Force overwrite of existing items"
 msgstr "既存の項目を強制的に上書きする"
 
-#: mgradm/cmd/backup/backup.go:66
+#: mgradm/cmd/backup/backup.go:67
 msgid "Skip existing items and restore the rest"
 msgstr "既存の項目をスキップして残りを復元する"
 
-#: mgradm/cmd/backup/backup.go:67
+#: mgradm/cmd/backup/backup.go:68
 msgid "Skip verification of the backup files"
 msgstr "バックアップファイルの検証をスキップする"
 
-#: mgradm/cmd/backup/backup.go:77
+#: mgradm/cmd/backup/backup.go:78
 msgid "Backup solution"
 msgstr "バックアップソリューション"
 
-#: mgradm/cmd/backup/backup.go:78
+#: mgradm/cmd/backup/backup.go:79
 msgid "Tools for local backup management"
 msgstr "ローカルバックアップ管理用ツール"
 
-#: mgradm/cmd/backup/backup.go:101
+#: mgradm/cmd/backup/backup.go:103
 #, javascript-format
 msgid "Backup aborted, partially backed up files remains in '%s'"
 msgstr "バックアップが中止されました。部分的にバックアップされたファイルが「%s」に残っています"
 
-#: mgradm/cmd/backup/backup.go:105
+#: mgradm/cmd/backup/backup.go:107
 msgid "Important data were backed up successfully, but errors were present. Restore will use default values where needed"
 msgstr "重要なデータは正常にバックアップされましたが、エラーが発生しました。復元では必要に応じてデフォルト値が使用されます"
 
-#: mgradm/cmd/backup/backup.go:125
+#: mgradm/cmd/backup/backup.go:127
 msgid "Encountered problems:"
 msgstr "発生した問題:"
 
-#: mgradm/cmd/backup/backup.go:127
+#: mgradm/cmd/backup/backup.go:129
 msgid "Restore aborted with partially restored files. Resolve the error and try again"
 msgstr "復元が中止され、一部のファイルが復元されました。エラーを解決して再試行してください"
 
-#: mgradm/cmd/backup/backup.go:130
+#: mgradm/cmd/backup/backup.go:132
 msgid "Important data were restored successfully, but with warnings"
 msgstr "重要なデータは正常に復元されましたが、警告が発生しました"
 
@@ -230,6 +230,221 @@ msgstr "%s をバックアップします"
 #: mgradm/cmd/backup/create/systemd_utils.go:35
 msgid "failed to create Systemd backup tarball: %w"
 msgstr "Systemdのバックアップtarballの作成に失敗しました: %w"
+
+#: mgradm/cmd/backup/db/cmd.go:19
+#, fuzzy
+#| msgid "Database name"
+msgid "Database backup management"
+msgstr "データベース名"
+
+#: mgradm/cmd/backup/db/cmd.go:20
+#, fuzzy
+#| msgid "Tools for local backup management"
+msgid "Tools for online database backup management"
+msgstr "ローカルバックアップ管理用ツール"
+
+#: mgradm/cmd/backup/db/cmd.go:34
+msgid "Enable continuous archiving backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:39
+msgid "Reconfigure already configured backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:48
+msgid "Rebase continuous archiving backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:61
+msgid "Disable continuous archiving backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:66
+msgid "Don't ask for confirmation when purging volume"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:67
+#, fuzzy
+#| msgid "Failed to remove volume %s"
+msgid "Also remove the volume"
+msgstr "ボリューム %s の削除に失敗しました"
+
+#: mgradm/cmd/backup/db/cmd.go:76
+msgid "Check WAL based database backup status"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:88
+#, fuzzy
+#| msgid "Report database name"
+msgid "Restore database backup"
+msgstr "レポートデータベース名"
+
+#: mgradm/cmd/backup/db/cmd.go:93
+#, fuzzy
+#| msgid "Import without asking confirmation"
+msgid "Don't ask for confirmation"
+msgstr "確認を求めずにインポートする"
+
+#: mgradm/cmd/backup/db/disable.go:17
+msgid "Disabling DB backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:34
+msgid "Database service needs to be restarted to reload backup configurations, continue"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:26
+#, fuzzy
+#| msgid "Backing up podman configuration"
+msgid "Backup reconfiguration aborted"
+msgstr "podman設定のバックアップ"
+
+#: mgradm/cmd/backup/db/disable.go:45
+msgid "Backup volume will be removed, continue?"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:47
+msgid "Aborting volume purge"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:54
+#, javascript-format
+msgid "Backup volume '%s' removed"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:66
+#: mgradm/cmd/backup/db/rebase.go:28
+#, fuzzy
+#| msgid "Starting %s"
+msgid "Starting database…"
+msgstr "%s を開始しています"
+
+#: mgradm/cmd/backup/db/enable.go:22
+#, fuzzy
+#| msgid "Create backup"
+msgid "Enable DB backup"
+msgstr "バックアップの作成"
+
+#: mgradm/cmd/backup/db/enable.go:25
+#, fuzzy
+#| msgid "server is already initialized. Use force to overwrite"
+msgid "backup is already configured. Use --force to reconfigure"
+msgstr "サーバはすでに初期化されています。強制的に上書きしてください"
+
+#: mgradm/cmd/backup/db/enable.go:36
+#, fuzzy
+#| msgid "Backing up podman configuration"
+msgid "Backup configuration aborted"
+msgstr "podman設定のバックアップ"
+
+#: mgradm/cmd/backup/db/enable.go:85
+#, javascript-format
+msgid "Continuous Archiving backup configured. Backup target volume is '%s'"
+msgstr ""
+
+#: mgradm/cmd/backup/db/enable.go:98
+#, fuzzy
+#| msgid "failed to generate postgresql migration script"
+msgid "failed to generate postgresql backup script"
+msgstr "postgresql移行スクリプトの生成に失敗しました"
+
+#: mgradm/cmd/backup/db/rebase.go:17
+msgid "Rebasing postgres WAL backup to new basebackup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/rebase.go:20
+msgid "database backup is not correctly configured: %w"
+msgstr ""
+
+#: mgradm/cmd/backup/db/rebase.go:42
+#, fuzzy
+#| msgid "Skipping database volume %s"
+msgid "Stopping database…"
+msgstr "データベースボリューム %s をスキップしています"
+
+#: mgradm/cmd/backup/db/restore.go:25
+msgid "Restoring DB backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:28
+msgid "Restoring from backup is a destructive operation. Proceed"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:29
+msgid "Aborting"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:33
+#, fuzzy
+#| msgid "Stopping server service"
+msgid "Stopping database service…"
+msgstr "サーバサービスの停止"
+
+#: mgradm/cmd/backup/db/restore.go:40
+#, fuzzy
+#| msgid "failed to determine server image"
+msgid "failed to determine database image"
+msgstr "サーバイメージの決定に失敗しました"
+
+#: mgradm/cmd/backup/db/restore.go:56
+#, fuzzy
+#| msgid "failed to generate postgresql migration script"
+msgid "failed to generate postgresql restore script"
+msgstr "postgresql移行スクリプトの生成に失敗しました"
+
+#: mgradm/cmd/backup/db/restore.go:59
+msgid "Restoring base backup…"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:73
+#, fuzzy
+#| msgid "Generating the database certificate…"
+msgid "Starting database service…"
+msgstr "データベース証明書を生成しています…"
+
+#: mgradm/cmd/backup/db/restore.go:78
+msgid "Base backup restore complete. Database is recovering."
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:88 mgradm/cmd/backup/db/restore.go:101
+#, fuzzy
+#| msgid "Database user"
+msgid "Database is restored."
+msgstr "データベースユーザ"
+
+#: mgradm/cmd/backup/db/restore.go:91
+#, fuzzy
+#| msgid "failed to inspect database container image"
+msgid "failed to check database recovery status"
+msgstr "データベースコンテナイメージの検査に失敗しました"
+
+#: mgradm/cmd/backup/db/restore.go:95
+msgid " Database is recovering… (use Ctrl-C to interrupt waiting)"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:104
+msgid "error while waiting for database recovery to complete, check database logs"
+msgstr ""
+
+#: mgradm/cmd/backup/db/status.go:24
+msgid "Checking DB backup status"
+msgstr ""
+
+#: mgradm/cmd/backup/db/status.go:40
+msgid "Database continuous backup is %[1]s. Backup volume is %[2]s"
+msgstr ""
+
+#: mgradm/cmd/backup/db/types.go:24
+msgid "archive_mode is off"
+msgstr ""
+
+#: mgradm/cmd/backup/db/types.go:25
+msgid "archive_command is misconfigured"
+msgstr ""
+
+#: mgradm/cmd/backup/db/types.go:26
+msgid "archive volume is not configured correctly"
+msgstr ""
 
 #: mgradm/cmd/backup/restore/podman_utils.go:47
 #, javascript-format
@@ -431,7 +646,7 @@ msgstr "ターゲット %s のストレージサイズを決定できません"
 msgid "insufficient space on target device"
 msgstr "ターゲットデバイスの空き容量が不足しています"
 
-#: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:45
+#: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:46
 #: mgradm/cmd/upgrade/utils.go:34
 msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
@@ -830,52 +1045,52 @@ msgstr ""
 "\n"
 "メモ: リモートのpodmanへのインストールはまだサポートされていません。\n"
 
-#: mgradm/cmd/install/utils.go:56
+#: mgradm/cmd/install/utils.go:57
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
 msgstr "サーバはすでに初期化されています。新規インストールを試みる前、またはアップグレードコマンドを使用する前にアンインストールします"
 
-#: mgradm/cmd/install/utils.go:63
+#: mgradm/cmd/install/utils.go:64
 #, javascript-format
 msgid "Setting up the server with the FQDN '%s'"
 msgstr "FQDN「%s」を使用してサーバを設定しています"
 
-#: mgradm/cmd/install/utils.go:67 mgradm/shared/podman/podman.go:328
+#: mgradm/cmd/install/utils.go:68 mgradm/shared/podman/podman.go:328
 msgid "cannot prepare images"
 msgstr "イメージを準備できません"
 
-#: mgradm/cmd/install/utils.go:71 mgradm/shared/podman/podman.go:93
+#: mgradm/cmd/install/utils.go:72 mgradm/shared/podman/podman.go:93
 #: mgradm/shared/podman/podman.go:318
 msgid "cannot setup network"
 msgstr "ネットワークを設定できません"
 
-#: mgradm/cmd/install/utils.go:84
+#: mgradm/cmd/install/utils.go:85
 #, fuzzy
 #| msgid "Run setup command in the container"
 msgid "Run setup command"
 msgstr "コンテナ内でsetupコマンドを実行する"
 
-#: mgradm/cmd/install/utils.go:93
+#: mgradm/cmd/install/utils.go:94
 msgid "cannot wait for system start"
 msgstr "システムの起動を待機できません"
 
-#: mgradm/cmd/install/utils.go:96
+#: mgradm/cmd/install/utils.go:97
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "SSL CA証明書をホストの信頼済み証明書に追加できませんでした"
 
-#: mgradm/cmd/install/utils.go:103
+#: mgradm/cmd/install/utils.go:104
 msgid "failed to extract payg data"
 msgstr "paygデータの抽出に失敗しました"
 
-#: mgradm/cmd/install/utils.go:146 mgradm/shared/podman/podman.go:707
+#: mgradm/cmd/install/utils.go:156 mgradm/shared/podman/podman.go:707
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr "外部データベース %s を使用するためにデータベースコンテナのセットアップをスキップしました"
 
-#: mgradm/cmd/install/utils.go:192
+#: mgradm/cmd/install/utils.go:202
 msgid "server setup failed"
 msgstr "サーバの設定に失敗しました"
 
-#: mgradm/cmd/install/utils.go:195
+#: mgradm/cmd/install/utils.go:205
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "サーバ設定、%[2]s ユーザでhttps://%[1]s にログイン"
 
@@ -969,7 +1184,7 @@ msgstr ""
 "名前変更中にuyuni-serverコンテナは停止され、\n"
 "各登録済みシステムのピラー更新がトリガされます。\n"
 
-#: mgradm/cmd/server/rename/rename.go:46 mgradm/shared/utils/cmd_utils.go:222
+#: mgradm/cmd/server/rename/rename.go:46 mgradm/shared/utils/cmd_utils.go:225
 msgid "Password for the CA key to generate"
 msgstr "生成するCAキーのパスワード"
 
@@ -1218,7 +1433,7 @@ msgid "Not altering the confidential computing service"
 msgstr "コンフィデンシャルコンピューティングサービスのアップグレード時のエラー"
 
 #: mgradm/shared/coco/coco.go:78 mgradm/shared/hub/xmlrpcapi.go:44
-#: mgradm/shared/pgsql/pgsql.go:28 mgradm/shared/podman/podman.go:235
+#: mgradm/shared/pgsql/pgsql.go:30 mgradm/shared/podman/podman.go:235
 #: mgradm/shared/saline/saline.go:72 mgradm/shared/tftp/tftp.go:41
 msgid "failed to compute image URL"
 msgstr "イメージURLの計算に失敗しました"
@@ -1228,7 +1443,7 @@ msgid "Setting up confidential computing attestation service"
 msgstr "コンフィデンシャルコンピューティング検証サービスの設定"
 
 #: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:115
-#: mgradm/shared/pgsql/pgsql.go:116 mgradm/shared/podman/podman.go:76
+#: mgradm/shared/pgsql/pgsql.go:118 mgradm/shared/podman/podman.go:76
 #: mgradm/shared/saline/saline.go:92 mgradm/shared/tftp/tftp.go:95
 msgid "failed to generate systemd service unit file"
 msgstr "systemdサービスユニットファイルの生成に失敗しました"
@@ -1244,8 +1459,8 @@ msgstr "systemd confファイルを生成できません"
 msgid "No changes requested for hub. Keep %d replicas."
 msgstr "ハブに対する変更は要求されていません。%d レプリカを維持します。"
 
-#: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:44
-#: mgradm/shared/pgsql/pgsql.go:67 mgradm/shared/tftp/tftp.go:50
+#: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:46
+#: mgradm/shared/pgsql/pgsql.go:69 mgradm/shared/tftp/tftp.go:50
 msgid "cannot generate systemd service"
 msgstr "systemdサービスを生成できません"
 
@@ -1264,12 +1479,12 @@ msgstr "サービスを有効にできません"
 msgid "Not altering the hub XML-RPC API service"
 msgstr "Hub XML-RPC APIサービスが起動しません"
 
-#: mgradm/shared/pgsql/pgsql.go:55 mgradm/shared/pgsql/pgsql.go:84
+#: mgradm/shared/pgsql/pgsql.go:57 mgradm/shared/pgsql/pgsql.go:86
 #, javascript-format
 msgid "%s fails healtcheck"
 msgstr "%s はヘルスチェックに失敗しました"
 
-#: mgradm/shared/pgsql/pgsql.go:122
+#: mgradm/shared/pgsql/pgsql.go:124 mgradm/shared/pgsql/pgsql.go:141
 msgid "cannot generate systemd configuration file"
 msgstr "systemd設定ファイルを生成できません"
 
@@ -1622,10 +1837,14 @@ msgid "External database provider. Possible values 'aws'"
 msgstr "外部データベースプロバイダ。指定可能な値「 aws」"
 
 #: mgradm/shared/utils/cmd_utils.go:89
+msgid "Setup continuous WAL backup"
+msgstr ""
+
+#: mgradm/shared/utils/cmd_utils.go:91
 msgid "Database Flags"
 msgstr "データベースフラグ"
 
-#: mgradm/shared/utils/cmd_utils.go:102
+#: mgradm/shared/utils/cmd_utils.go:105
 msgid ""
 "SUSE Customer Center username.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
@@ -1633,7 +1852,7 @@ msgstr ""
 "SUSEカスタマーセンターのユーザ名。 \n"
 "これは、製品の同期とSCCレジストリからのイメージの取得のためにSCC資格情報として使用されます"
 
-#: mgradm/shared/utils/cmd_utils.go:104
+#: mgradm/shared/utils/cmd_utils.go:107
 msgid ""
 "SUSE Customer Center password.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
@@ -1641,51 +1860,51 @@ msgstr ""
 "SUSEカスタマーセンターのパスワード。 \n"
 "これは、製品の同期とSCCレジストリからのイメージの取得のためにSCC資格情報として使用されます"
 
-#: mgradm/shared/utils/cmd_utils.go:106
+#: mgradm/shared/utils/cmd_utils.go:109
 msgid "SUSE Customer Center Flags"
 msgstr "SUSEカスタマーセンターのフラグ"
 
-#: mgradm/shared/utils/cmd_utils.go:113
+#: mgradm/shared/utils/cmd_utils.go:116
 msgid "Image"
 msgstr "イメージ"
 
-#: mgradm/shared/utils/cmd_utils.go:114
+#: mgradm/shared/utils/cmd_utils.go:117
 msgid "Tag Image"
 msgstr "タグイメージ"
 
-#: mgradm/shared/utils/cmd_utils.go:119
+#: mgradm/shared/utils/cmd_utils.go:122
 msgid "Image Flags"
 msgstr "イメージフラグ"
 
-#: mgradm/shared/utils/cmd_utils.go:130
+#: mgradm/shared/utils/cmd_utils.go:133
 msgid "Database upgrade image"
 msgstr "データベースのアップグレードイメージ"
 
-#: mgradm/shared/utils/cmd_utils.go:131
+#: mgradm/shared/utils/cmd_utils.go:134
 msgid "Database upgrade image tag, overrides the default value if set"
 msgstr "データベースアップグレードイメージタグ。設定されている場合はデフォルト値を上書きします"
 
-#: mgradm/shared/utils/cmd_utils.go:133
+#: mgradm/shared/utils/cmd_utils.go:136
 msgid "Database Upgrade Image Flags"
 msgstr "データベースアップグレードイメージのフラグ"
 
-#: mgradm/shared/utils/cmd_utils.go:140
+#: mgradm/shared/utils/cmd_utils.go:143
 msgid "Path to mirrored packages mounted on the host"
 msgstr "ホストにマウントされたミラーパッケージへのパス"
 
-#: mgradm/shared/utils/cmd_utils.go:145 mgradm/shared/utils/cmd_utils.go:154
+#: mgradm/shared/utils/cmd_utils.go:148 mgradm/shared/utils/cmd_utils.go:157
 msgid "Confidential Computing Flags"
 msgstr "コンフィデンシャルコンピューティングのフラグ"
 
-#: mgradm/shared/utils/cmd_utils.go:146 mgradm/shared/utils/cmd_utils.go:155
+#: mgradm/shared/utils/cmd_utils.go:149 mgradm/shared/utils/cmd_utils.go:158
 msgid "Confidential computing attestation"
 msgstr "コンフィデンシャルコンピューティング認証"
 
-#: mgradm/shared/utils/cmd_utils.go:148
+#: mgradm/shared/utils/cmd_utils.go:151
 msgid "How many replicas of the confidential computing container should be started"
 msgstr "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要があるか"
 
-#: mgradm/shared/utils/cmd_utils.go:157
+#: mgradm/shared/utils/cmd_utils.go:160
 msgid ""
 "How many replicas of the confidential computing container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
@@ -1693,16 +1912,16 @@ msgstr ""
 "コンフィデンシャルコンピューティングコンテナのレプリカをいくつ起動する必要があるか。\n"
 "以前のレプリカ数を維持する場合は、未設定のままにしておきます。"
 
-#: mgradm/shared/utils/cmd_utils.go:164 mgradm/shared/utils/cmd_utils.go:165
-#: mgradm/shared/utils/cmd_utils.go:174 mgradm/shared/utils/cmd_utils.go:175
+#: mgradm/shared/utils/cmd_utils.go:167 mgradm/shared/utils/cmd_utils.go:168
+#: mgradm/shared/utils/cmd_utils.go:177 mgradm/shared/utils/cmd_utils.go:178
 msgid "Hub XML-RPC API"
 msgstr "Hub XML-RPC API"
 
-#: mgradm/shared/utils/cmd_utils.go:167
+#: mgradm/shared/utils/cmd_utils.go:170
 msgid "How many replicas of the Hub XML-RPC API service container should be started."
 msgstr "Hub XML-RPC APIサービスコンテナのレプリカをいくつ起動する必要があるか。"
 
-#: mgradm/shared/utils/cmd_utils.go:177
+#: mgradm/shared/utils/cmd_utils.go:180
 msgid ""
 "How many replicas of the Hub XML-RPC API service container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
@@ -1710,15 +1929,15 @@ msgstr ""
 "Hub XML-RPC APIサービスコンテナのレプリカをいくつ起動する必要があるか。\n"
 "以前のレプリカ数を維持する場合は、未設定のままにしておきます。"
 
-#: mgradm/shared/utils/cmd_utils.go:184 mgradm/shared/utils/cmd_utils.go:195
+#: mgradm/shared/utils/cmd_utils.go:187 mgradm/shared/utils/cmd_utils.go:198
 msgid "Saline Flags"
 msgstr "Salineフラグ"
 
-#: mgradm/shared/utils/cmd_utils.go:185 mgradm/shared/utils/cmd_utils.go:196
+#: mgradm/shared/utils/cmd_utils.go:188 mgradm/shared/utils/cmd_utils.go:199
 msgid "Saline"
 msgstr "Saline"
 
-#: mgradm/shared/utils/cmd_utils.go:186
+#: mgradm/shared/utils/cmd_utils.go:189
 msgid ""
 "How many replicas of the Saline container should be started\n"
 "(only 0 or 1 supported for now)"
@@ -1726,11 +1945,11 @@ msgstr ""
 "Salineコンテナのレプリカをいくつ起動する必要があるか\n"
 "(現時点では0または1のみサポート)"
 
-#: mgradm/shared/utils/cmd_utils.go:188 mgradm/shared/utils/cmd_utils.go:200
+#: mgradm/shared/utils/cmd_utils.go:191 mgradm/shared/utils/cmd_utils.go:203
 msgid "Saline port"
 msgstr "Salineポート"
 
-#: mgradm/shared/utils/cmd_utils.go:197
+#: mgradm/shared/utils/cmd_utils.go:200
 msgid ""
 "How many replicas of the Saline container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas.\n"
@@ -1740,11 +1959,11 @@ msgstr ""
 "以前のレプリカ数を維持する場合は、未設定のままにしておきます。\n"
 "(現時点では0または1のみサポート）"
 
-#: mgradm/shared/utils/cmd_utils.go:207
+#: mgradm/shared/utils/cmd_utils.go:210
 msgid "PostgreSQL Database Container Flags"
 msgstr "PostgreSQLデータベースコンテナフラグ"
 
-#: mgradm/shared/utils/cmd_utils.go:208
+#: mgradm/shared/utils/cmd_utils.go:211
 msgid "PostgreSQL Database"
 msgstr "PostgreSQLデータベース"
 
@@ -1778,11 +1997,11 @@ msgstr "サーバイメージからリリースをフェッチできません"
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "バージョン %[1]s から %[2]s にダウングレードできません"
 
-#: mgradm/shared/utils/flags.go:155
+#: mgradm/shared/utils/flags.go:156
 msgid "Can only contain letters, digits . _ and -"
 msgstr "文字、数字 ._ -のみを含めることができます"
 
-#: mgradm/shared/utils/flags.go:163
+#: mgradm/shared/utils/flags.go:164
 msgid "Not a valid email address"
 msgstr "有効な電子メールアドレスではありません"
 
@@ -1843,9 +2062,6 @@ msgstr "有効な電子メールアドレスではありません"
 
 #~ msgid "Registered peripheral server: %[1]s, ID: %[2]d"
 #~ msgstr "登録された周辺機器サーバ: %[1]s、ID: %[2]d"
-
-#~ msgid "failed to determine server image"
-#~ msgstr "サーバイメージの決定に失敗しました"
 
 #~ msgid "failed to find the image of the currently running server container"
 #~ msgstr "現在実行中のサーバコンテナのイメージが見つかりませんでした"
@@ -1919,9 +2135,6 @@ msgstr "有効な電子メールアドレスではありません"
 
 #~ msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 #~ msgstr "移行の準備ができました。移行を完了するには、「--prepare」を指定せずに「migrate」コマンドを実行します。"
-
-#~ msgid "failed to inspect database container image"
-#~ msgstr "データベースコンテナイメージの検査に失敗しました"
 
 #~ msgid "cannot remove temporary etc-tls volume"
 #~ msgstr "一時的なetc-tlsボリュームを削除できません"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-31 14:40+0200\n"
+"POT-Creation-Date: 2026-04-08 15:36+0200\n"
 "PO-Revision-Date: 2026-01-21 03:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
@@ -18,108 +18,108 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.15.2\n"
 
-#: mgradm/cmd/backup/backup.go:28
+#: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
 msgstr "백업 만들기"
 
-#: mgradm/cmd/backup/backup.go:29
+#: mgradm/cmd/backup/backup.go:30
 msgid "Create backup of the already configured Uyuni system"
 msgstr "이미 구성된 Uyuni 시스템의 백업 만들기"
 
-#: mgradm/cmd/backup/backup.go:35
+#: mgradm/cmd/backup/backup.go:36
 msgid "Skip backup of selected volumes"
 msgstr "선택한 볼륨의 백업 건너뛰기"
 
-#: mgradm/cmd/backup/backup.go:36
+#: mgradm/cmd/backup/backup.go:37
 msgid "Backup additional volumes to the build-in ones"
 msgstr "기본 제공 볼륨에 대한 추가 볼륨 백업"
 
-#: mgradm/cmd/backup/backup.go:37
+#: mgradm/cmd/backup/backup.go:38
 msgid "Do not backup database volume, allow online backup."
 msgstr "데이터베이스 볼륨을 백업하지 말고 온라인 백업을 허용하십시오."
 
-#: mgradm/cmd/backup/backup.go:38
+#: mgradm/cmd/backup/backup.go:39
 msgid "Do not backup container images"
 msgstr "컨테이너 이미지 백업 안 함"
 
-#: mgradm/cmd/backup/backup.go:39
+#: mgradm/cmd/backup/backup.go:40
 msgid "Do not backup podman configuration. On restore defaults will be used"
 msgstr "podman 구성을 백업하지 마십시오. 복원 시 기본값이 사용됩니다."
 
-#: mgradm/cmd/backup/backup.go:40
+#: mgradm/cmd/backup/backup.go:41
 msgid "Do not restart services after backup is done"
 msgstr "백업이 완료된 후 서비스를 다시 시작하지 마십시오."
 
-#: mgradm/cmd/backup/backup.go:41 mgradm/cmd/backup/backup.go:64
+#: mgradm/cmd/backup/backup.go:42 mgradm/cmd/backup/backup.go:65
 msgid "Print expected actions, but no action is done"
 msgstr "필요한 작업을 인쇄하지만, 작업이 수행되지 않음"
 
-#: mgradm/cmd/backup/backup.go:52
+#: mgradm/cmd/backup/backup.go:53
 msgid "Restore backup from the directory"
 msgstr "디렉토리에서 백업 복원"
 
-#: mgradm/cmd/backup/backup.go:53
+#: mgradm/cmd/backup/backup.go:54
 msgid "Restore backup of the previously configured Uyuni system from a specified directory"
 msgstr "지정된 디렉토리에서 이전에 구성된 Uyuni 시스템의 백업 복원"
 
-#: mgradm/cmd/backup/backup.go:59
+#: mgradm/cmd/backup/backup.go:60
 msgid "Skip restore of selected volumes"
 msgstr "선택한 볼륨 복원 건너뛰기"
 
-#: mgradm/cmd/backup/backup.go:60
+#: mgradm/cmd/backup/backup.go:61
 msgid "Do not restore database volume"
 msgstr "데이터베이스 볼륨 복원 안 함"
 
-#: mgradm/cmd/backup/backup.go:61
+#: mgradm/cmd/backup/backup.go:62
 msgid "Skip restore of container images"
 msgstr "컨테이너 이미지 복원 건너뛰기"
 
-#: mgradm/cmd/backup/backup.go:62
+#: mgradm/cmd/backup/backup.go:63
 msgid "Do not restore podman configuration. Defaults will be used"
 msgstr "podman 구성을 복원하지 마십시오. 기본값이 사용됩니다."
 
-#: mgradm/cmd/backup/backup.go:63
+#: mgradm/cmd/backup/backup.go:64
 msgid "Restart service after restore is done"
 msgstr "복원 완료 후 서비스 다시 시작"
 
-#: mgradm/cmd/backup/backup.go:65
+#: mgradm/cmd/backup/backup.go:66
 msgid "Force overwrite of existing items"
 msgstr "기존 항목 강제 덮어쓰기"
 
-#: mgradm/cmd/backup/backup.go:66
+#: mgradm/cmd/backup/backup.go:67
 msgid "Skip existing items and restore the rest"
 msgstr "기존 항목을 건너뛰고 나머지 항목 복원"
 
-#: mgradm/cmd/backup/backup.go:67
+#: mgradm/cmd/backup/backup.go:68
 msgid "Skip verification of the backup files"
 msgstr "백업 파일 검증 건너뛰기"
 
-#: mgradm/cmd/backup/backup.go:77
+#: mgradm/cmd/backup/backup.go:78
 msgid "Backup solution"
 msgstr "솔루션 백업"
 
-#: mgradm/cmd/backup/backup.go:78
+#: mgradm/cmd/backup/backup.go:79
 msgid "Tools for local backup management"
 msgstr "로컬 백업 관리를 위한 도구"
 
-#: mgradm/cmd/backup/backup.go:101
+#: mgradm/cmd/backup/backup.go:103
 #, javascript-format
 msgid "Backup aborted, partially backed up files remains in '%s'"
 msgstr "백업이 중단되고 부분적으로 백업된 파일이 '%s'에 남아 있음"
 
-#: mgradm/cmd/backup/backup.go:105
+#: mgradm/cmd/backup/backup.go:107
 msgid "Important data were backed up successfully, but errors were present. Restore will use default values where needed"
 msgstr "중요한 데이터가 성공적으로 백업되었지만 오류가 발생했습니다. 필요한 경우 기본값을 사용하여 복원하십시오."
 
-#: mgradm/cmd/backup/backup.go:125
+#: mgradm/cmd/backup/backup.go:127
 msgid "Encountered problems:"
 msgstr "발생한 문제:"
 
-#: mgradm/cmd/backup/backup.go:127
+#: mgradm/cmd/backup/backup.go:129
 msgid "Restore aborted with partially restored files. Resolve the error and try again"
 msgstr "일부 파일이 복원된 상태에서 복원 작업이 중단되었습니다. 오류를 해결하고 다시 시도하십시오."
 
-#: mgradm/cmd/backup/backup.go:130
+#: mgradm/cmd/backup/backup.go:132
 msgid "Important data were restored successfully, but with warnings"
 msgstr "중요한 데이터가 성공적으로 복원되었지만, 경고가 발생했습니다."
 
@@ -230,6 +230,221 @@ msgstr "%s 백업"
 #: mgradm/cmd/backup/create/systemd_utils.go:35
 msgid "failed to create Systemd backup tarball: %w"
 msgstr "Systemd 백업 tarball을 만들지 못함: %w"
+
+#: mgradm/cmd/backup/db/cmd.go:19
+#, fuzzy
+#| msgid "Database name"
+msgid "Database backup management"
+msgstr "데이터베이스 이름"
+
+#: mgradm/cmd/backup/db/cmd.go:20
+#, fuzzy
+#| msgid "Tools for local backup management"
+msgid "Tools for online database backup management"
+msgstr "로컬 백업 관리를 위한 도구"
+
+#: mgradm/cmd/backup/db/cmd.go:34
+msgid "Enable continuous archiving backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:39
+msgid "Reconfigure already configured backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:48
+msgid "Rebase continuous archiving backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:61
+msgid "Disable continuous archiving backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:66
+msgid "Don't ask for confirmation when purging volume"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:67
+#, fuzzy
+#| msgid "Failed to remove volume %s"
+msgid "Also remove the volume"
+msgstr "%s 폴더 제거 실패"
+
+#: mgradm/cmd/backup/db/cmd.go:76
+msgid "Check WAL based database backup status"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:88
+#, fuzzy
+#| msgid "Report database name"
+msgid "Restore database backup"
+msgstr "데이터베이스 이름 보고"
+
+#: mgradm/cmd/backup/db/cmd.go:93
+#, fuzzy
+#| msgid "Import without asking confirmation"
+msgid "Don't ask for confirmation"
+msgstr "확인 요청 없이 가져오기"
+
+#: mgradm/cmd/backup/db/disable.go:17
+msgid "Disabling DB backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:34
+msgid "Database service needs to be restarted to reload backup configurations, continue"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:26
+#, fuzzy
+#| msgid "Backing up podman configuration"
+msgid "Backup reconfiguration aborted"
+msgstr "podman 구성을 백업하는 중"
+
+#: mgradm/cmd/backup/db/disable.go:45
+msgid "Backup volume will be removed, continue?"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:47
+msgid "Aborting volume purge"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:54
+#, javascript-format
+msgid "Backup volume '%s' removed"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:66
+#: mgradm/cmd/backup/db/rebase.go:28
+#, fuzzy
+#| msgid "Starting %s"
+msgid "Starting database…"
+msgstr "%s 시작"
+
+#: mgradm/cmd/backup/db/enable.go:22
+#, fuzzy
+#| msgid "Create backup"
+msgid "Enable DB backup"
+msgstr "백업 만들기"
+
+#: mgradm/cmd/backup/db/enable.go:25
+#, fuzzy
+#| msgid "server is already initialized. Use force to overwrite"
+msgid "backup is already configured. Use --force to reconfigure"
+msgstr "서버가 이미 초기화되어 있습니다. 강제 덮어쓰기를 사용하십시오."
+
+#: mgradm/cmd/backup/db/enable.go:36
+#, fuzzy
+#| msgid "Backing up podman configuration"
+msgid "Backup configuration aborted"
+msgstr "podman 구성을 백업하는 중"
+
+#: mgradm/cmd/backup/db/enable.go:85
+#, javascript-format
+msgid "Continuous Archiving backup configured. Backup target volume is '%s'"
+msgstr ""
+
+#: mgradm/cmd/backup/db/enable.go:98
+#, fuzzy
+#| msgid "failed to generate postgresql migration script"
+msgid "failed to generate postgresql backup script"
+msgstr "postgresql 마이그레이션 스크립트를 생성하지 못함"
+
+#: mgradm/cmd/backup/db/rebase.go:17
+msgid "Rebasing postgres WAL backup to new basebackup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/rebase.go:20
+msgid "database backup is not correctly configured: %w"
+msgstr ""
+
+#: mgradm/cmd/backup/db/rebase.go:42
+#, fuzzy
+#| msgid "Skipping database volume %s"
+msgid "Stopping database…"
+msgstr "데이터베이스 볼륨 %s 건너뛰기"
+
+#: mgradm/cmd/backup/db/restore.go:25
+msgid "Restoring DB backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:28
+msgid "Restoring from backup is a destructive operation. Proceed"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:29
+msgid "Aborting"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:33
+#, fuzzy
+#| msgid "Stopping server service"
+msgid "Stopping database service…"
+msgstr "서버 서비스를 중지하는 중"
+
+#: mgradm/cmd/backup/db/restore.go:40
+#, fuzzy
+#| msgid "failed to determine server image"
+msgid "failed to determine database image"
+msgstr "서버 이미지를 확인하지 못함"
+
+#: mgradm/cmd/backup/db/restore.go:56
+#, fuzzy
+#| msgid "failed to generate postgresql migration script"
+msgid "failed to generate postgresql restore script"
+msgstr "postgresql 마이그레이션 스크립트를 생성하지 못함"
+
+#: mgradm/cmd/backup/db/restore.go:59
+msgid "Restoring base backup…"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:73
+#, fuzzy
+#| msgid "Generating the database certificate…"
+msgid "Starting database service…"
+msgstr "데이터베이스 인증서 생성 중…"
+
+#: mgradm/cmd/backup/db/restore.go:78
+msgid "Base backup restore complete. Database is recovering."
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:88 mgradm/cmd/backup/db/restore.go:101
+#, fuzzy
+#| msgid "Database user"
+msgid "Database is restored."
+msgstr "데이터베이스 사용자"
+
+#: mgradm/cmd/backup/db/restore.go:91
+#, fuzzy
+#| msgid "failed to inspect database container image"
+msgid "failed to check database recovery status"
+msgstr "데이터베이스 컨테이너 이미지 검사 실패"
+
+#: mgradm/cmd/backup/db/restore.go:95
+msgid " Database is recovering… (use Ctrl-C to interrupt waiting)"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:104
+msgid "error while waiting for database recovery to complete, check database logs"
+msgstr ""
+
+#: mgradm/cmd/backup/db/status.go:24
+msgid "Checking DB backup status"
+msgstr ""
+
+#: mgradm/cmd/backup/db/status.go:40
+msgid "Database continuous backup is %[1]s. Backup volume is %[2]s"
+msgstr ""
+
+#: mgradm/cmd/backup/db/types.go:24
+msgid "archive_mode is off"
+msgstr ""
+
+#: mgradm/cmd/backup/db/types.go:25
+msgid "archive_command is misconfigured"
+msgstr ""
+
+#: mgradm/cmd/backup/db/types.go:26
+msgid "archive volume is not configured correctly"
+msgstr ""
 
 #: mgradm/cmd/backup/restore/podman_utils.go:47
 #, javascript-format
@@ -431,7 +646,7 @@ msgstr "대상 %s 스토리지 크기를 확인할 수 없음"
 msgid "insufficient space on target device"
 msgstr "대상 장치의 공간이 충분하지 않음"
 
-#: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:45
+#: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:46
 #: mgradm/cmd/upgrade/utils.go:34
 msgid "install podman before running this command"
 msgstr "이 명령을 실행하기 전 podman 설치"
@@ -830,52 +1045,52 @@ msgstr ""
 "\n"
 "참고: 원격 podman에 설치하는 기능은 아직 지원되지 않습니다!\n"
 
-#: mgradm/cmd/install/utils.go:56
+#: mgradm/cmd/install/utils.go:57
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
 msgstr "서버가 이미 초기화되었습니다! 새 설치를 시도하기 전 제거하거나 upgrade 명령을 사용하십시오."
 
-#: mgradm/cmd/install/utils.go:63
+#: mgradm/cmd/install/utils.go:64
 #, javascript-format
 msgid "Setting up the server with the FQDN '%s'"
 msgstr "FQDN '%s'(으)로 서버 설정"
 
-#: mgradm/cmd/install/utils.go:67 mgradm/shared/podman/podman.go:328
+#: mgradm/cmd/install/utils.go:68 mgradm/shared/podman/podman.go:328
 msgid "cannot prepare images"
 msgstr "이미지를 준비할 수 없음"
 
-#: mgradm/cmd/install/utils.go:71 mgradm/shared/podman/podman.go:93
+#: mgradm/cmd/install/utils.go:72 mgradm/shared/podman/podman.go:93
 #: mgradm/shared/podman/podman.go:318
 msgid "cannot setup network"
 msgstr "네트워크를 설정할 수 없음"
 
-#: mgradm/cmd/install/utils.go:84
+#: mgradm/cmd/install/utils.go:85
 #, fuzzy
 #| msgid "Run setup command in the container"
 msgid "Run setup command"
 msgstr "컨테이너에서 설정 명령 실행"
 
-#: mgradm/cmd/install/utils.go:93
+#: mgradm/cmd/install/utils.go:94
 msgid "cannot wait for system start"
 msgstr "시스템 시작을 기다릴 수 없음"
 
-#: mgradm/cmd/install/utils.go:96
+#: mgradm/cmd/install/utils.go:97
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "SSL CA 인증서를 호스트의 신뢰할 수 있는 인증서에 추가하지 못했습니다."
 
-#: mgradm/cmd/install/utils.go:103
+#: mgradm/cmd/install/utils.go:104
 msgid "failed to extract payg data"
 msgstr "payg 데이터를 추출하지 못함"
 
-#: mgradm/cmd/install/utils.go:146 mgradm/shared/podman/podman.go:707
+#: mgradm/cmd/install/utils.go:156 mgradm/shared/podman/podman.go:707
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr "외부 데이터베이스 %s을(를) 사용하기 위해 데이터베이스 컨테이너 설정 건너뛰기"
 
-#: mgradm/cmd/install/utils.go:192
+#: mgradm/cmd/install/utils.go:202
 msgid "server setup failed"
 msgstr "서버 설정 실패"
 
-#: mgradm/cmd/install/utils.go:195
+#: mgradm/cmd/install/utils.go:205
 msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr "서버 설정, https://%[1]s에 %[2]s 사용자로 로그인"
 
@@ -969,7 +1184,7 @@ msgstr ""
 "이름 변경 중에는 uyuni-서버 컨테이너가 중지되고\n"
 "등록된 각 시스템의 열이 새로 고쳐집니다.\n"
 
-#: mgradm/cmd/server/rename/rename.go:46 mgradm/shared/utils/cmd_utils.go:222
+#: mgradm/cmd/server/rename/rename.go:46 mgradm/shared/utils/cmd_utils.go:225
 msgid "Password for the CA key to generate"
 msgstr "생성할 CA 키의 비밀번호"
 
@@ -1218,7 +1433,7 @@ msgid "Not altering the confidential computing service"
 msgstr "기밀 컴퓨팅 서비스를 업그레이드하는 중 오류가 발생했습니다."
 
 #: mgradm/shared/coco/coco.go:78 mgradm/shared/hub/xmlrpcapi.go:44
-#: mgradm/shared/pgsql/pgsql.go:28 mgradm/shared/podman/podman.go:235
+#: mgradm/shared/pgsql/pgsql.go:30 mgradm/shared/podman/podman.go:235
 #: mgradm/shared/saline/saline.go:72 mgradm/shared/tftp/tftp.go:41
 msgid "failed to compute image URL"
 msgstr "이미지 URL을 계산하지 못함"
@@ -1228,7 +1443,7 @@ msgid "Setting up confidential computing attestation service"
 msgstr "기밀 컴퓨팅 증명 서비스 설정"
 
 #: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:115
-#: mgradm/shared/pgsql/pgsql.go:116 mgradm/shared/podman/podman.go:76
+#: mgradm/shared/pgsql/pgsql.go:118 mgradm/shared/podman/podman.go:76
 #: mgradm/shared/saline/saline.go:92 mgradm/shared/tftp/tftp.go:95
 msgid "failed to generate systemd service unit file"
 msgstr "systemd 서비스 단위 파일을 생성하지 못함"
@@ -1244,8 +1459,8 @@ msgstr "systemd conf 파일을 생성할 수 없음"
 msgid "No changes requested for hub. Keep %d replicas."
 msgstr "허브에 대한 변경 요청이 없습니다. %d 복제본을 유지하십시오."
 
-#: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:44
-#: mgradm/shared/pgsql/pgsql.go:67 mgradm/shared/tftp/tftp.go:50
+#: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:46
+#: mgradm/shared/pgsql/pgsql.go:69 mgradm/shared/tftp/tftp.go:50
 msgid "cannot generate systemd service"
 msgstr "systemd 서비스를 생성할 수 없음"
 
@@ -1264,12 +1479,12 @@ msgstr "서비스를 활성할 수 없음"
 msgid "Not altering the hub XML-RPC API service"
 msgstr "Hub XML-RPC API 서비스를 시작할 수 없음"
 
-#: mgradm/shared/pgsql/pgsql.go:55 mgradm/shared/pgsql/pgsql.go:84
+#: mgradm/shared/pgsql/pgsql.go:57 mgradm/shared/pgsql/pgsql.go:86
 #, javascript-format
 msgid "%s fails healtcheck"
 msgstr "%s의 상태 검사 실패"
 
-#: mgradm/shared/pgsql/pgsql.go:122
+#: mgradm/shared/pgsql/pgsql.go:124 mgradm/shared/pgsql/pgsql.go:141
 msgid "cannot generate systemd configuration file"
 msgstr "systemd 구성 파일을 생성할 수 없음"
 
@@ -1622,10 +1837,14 @@ msgid "External database provider. Possible values 'aws'"
 msgstr "외부 데이터베이스 공급자. 가능한 값 'aws'"
 
 #: mgradm/shared/utils/cmd_utils.go:89
+msgid "Setup continuous WAL backup"
+msgstr ""
+
+#: mgradm/shared/utils/cmd_utils.go:91
 msgid "Database Flags"
 msgstr "데이터베이스 플래그"
 
-#: mgradm/shared/utils/cmd_utils.go:102
+#: mgradm/shared/utils/cmd_utils.go:105
 msgid ""
 "SUSE Customer Center username.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
@@ -1633,7 +1852,7 @@ msgstr ""
 "SUSE 고객 센터 사용자 이름입니다.\n"
 "제품 동기화 및 registry.suse.com에서 이미지를 가져오기 위한 SCC 자격 증명으로 사용됩니다."
 
-#: mgradm/shared/utils/cmd_utils.go:104
+#: mgradm/shared/utils/cmd_utils.go:107
 msgid ""
 "SUSE Customer Center password.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
@@ -1641,51 +1860,51 @@ msgstr ""
 "SUSE 고객 센터 암호입니다.\n"
 "제품 동기화 및 SCC 레지스트리에서 이미지를 가져오기 위한 SCC 자격 증명으로 사용됩니다."
 
-#: mgradm/shared/utils/cmd_utils.go:106
+#: mgradm/shared/utils/cmd_utils.go:109
 msgid "SUSE Customer Center Flags"
 msgstr "SUSE 고객 센터 플래그"
 
-#: mgradm/shared/utils/cmd_utils.go:113
+#: mgradm/shared/utils/cmd_utils.go:116
 msgid "Image"
 msgstr "이미지"
 
-#: mgradm/shared/utils/cmd_utils.go:114
+#: mgradm/shared/utils/cmd_utils.go:117
 msgid "Tag Image"
 msgstr "태그 이미지"
 
-#: mgradm/shared/utils/cmd_utils.go:119
+#: mgradm/shared/utils/cmd_utils.go:122
 msgid "Image Flags"
 msgstr "이미지 플래그"
 
-#: mgradm/shared/utils/cmd_utils.go:130
+#: mgradm/shared/utils/cmd_utils.go:133
 msgid "Database upgrade image"
 msgstr "데이터베이스 업그레이드 이미지"
 
-#: mgradm/shared/utils/cmd_utils.go:131
+#: mgradm/shared/utils/cmd_utils.go:134
 msgid "Database upgrade image tag, overrides the default value if set"
 msgstr "데이터베이스 업그레이드 이미지 태그가 설정된 경우 기본값을 재정의합니다."
 
-#: mgradm/shared/utils/cmd_utils.go:133
+#: mgradm/shared/utils/cmd_utils.go:136
 msgid "Database Upgrade Image Flags"
 msgstr "데이터베이스 업그레이드 이미지 플래그"
 
-#: mgradm/shared/utils/cmd_utils.go:140
+#: mgradm/shared/utils/cmd_utils.go:143
 msgid "Path to mirrored packages mounted on the host"
 msgstr "호스트에 마운트된 미러링된 패키지의 경로"
 
-#: mgradm/shared/utils/cmd_utils.go:145 mgradm/shared/utils/cmd_utils.go:154
+#: mgradm/shared/utils/cmd_utils.go:148 mgradm/shared/utils/cmd_utils.go:157
 msgid "Confidential Computing Flags"
 msgstr "기밀 컴퓨팅 플래그"
 
-#: mgradm/shared/utils/cmd_utils.go:146 mgradm/shared/utils/cmd_utils.go:155
+#: mgradm/shared/utils/cmd_utils.go:149 mgradm/shared/utils/cmd_utils.go:158
 msgid "Confidential computing attestation"
 msgstr "기밀 컴퓨팅 증명"
 
-#: mgradm/shared/utils/cmd_utils.go:148
+#: mgradm/shared/utils/cmd_utils.go:151
 msgid "How many replicas of the confidential computing container should be started"
 msgstr "기밀 컴퓨팅 컨테이너를 시작해야 하는 복제본 수"
 
-#: mgradm/shared/utils/cmd_utils.go:157
+#: mgradm/shared/utils/cmd_utils.go:160
 msgid ""
 "How many replicas of the confidential computing container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
@@ -1693,16 +1912,16 @@ msgstr ""
 "기밀 컴퓨팅 컨테이너를 시작해야 하는 복제본 수.\n"
 "이전 복제본 수를 유지하려면 설정하지 않은 상태를 유지하십시오."
 
-#: mgradm/shared/utils/cmd_utils.go:164 mgradm/shared/utils/cmd_utils.go:165
-#: mgradm/shared/utils/cmd_utils.go:174 mgradm/shared/utils/cmd_utils.go:175
+#: mgradm/shared/utils/cmd_utils.go:167 mgradm/shared/utils/cmd_utils.go:168
+#: mgradm/shared/utils/cmd_utils.go:177 mgradm/shared/utils/cmd_utils.go:178
 msgid "Hub XML-RPC API"
 msgstr "Hub XML-RPC API"
 
-#: mgradm/shared/utils/cmd_utils.go:167
+#: mgradm/shared/utils/cmd_utils.go:170
 msgid "How many replicas of the Hub XML-RPC API service container should be started."
 msgstr "Hub XML-RPC API 서비스 컨테이너를 시작해야 하는 복제본 수."
 
-#: mgradm/shared/utils/cmd_utils.go:177
+#: mgradm/shared/utils/cmd_utils.go:180
 msgid ""
 "How many replicas of the Hub XML-RPC API service container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
@@ -1710,15 +1929,15 @@ msgstr ""
 "Hub XML-RPC API 서비스 컨테이너를 시작해야 하는 복제본 수.\n"
 "이전 복제본 수를 유지하려면 설정하지 않은 상태를 유지하십시오."
 
-#: mgradm/shared/utils/cmd_utils.go:184 mgradm/shared/utils/cmd_utils.go:195
+#: mgradm/shared/utils/cmd_utils.go:187 mgradm/shared/utils/cmd_utils.go:198
 msgid "Saline Flags"
 msgstr "Saline 플래그"
 
-#: mgradm/shared/utils/cmd_utils.go:185 mgradm/shared/utils/cmd_utils.go:196
+#: mgradm/shared/utils/cmd_utils.go:188 mgradm/shared/utils/cmd_utils.go:199
 msgid "Saline"
 msgstr "Saline"
 
-#: mgradm/shared/utils/cmd_utils.go:186
+#: mgradm/shared/utils/cmd_utils.go:189
 msgid ""
 "How many replicas of the Saline container should be started\n"
 "(only 0 or 1 supported for now)"
@@ -1726,11 +1945,11 @@ msgstr ""
 "시작해야 하는 Saline 컨테이너의 복제본 수.\n"
 "(현재는 0 또는 1만 지원됨)"
 
-#: mgradm/shared/utils/cmd_utils.go:188 mgradm/shared/utils/cmd_utils.go:200
+#: mgradm/shared/utils/cmd_utils.go:191 mgradm/shared/utils/cmd_utils.go:203
 msgid "Saline port"
 msgstr "Saline 포트"
 
-#: mgradm/shared/utils/cmd_utils.go:197
+#: mgradm/shared/utils/cmd_utils.go:200
 msgid ""
 "How many replicas of the Saline container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas.\n"
@@ -1740,11 +1959,11 @@ msgstr ""
 "이전 복제본 수를 유지하려면 설정하지 않고 그대로 둡니다.\n"
 "(현재는 0 또는 1만 지원됨)"
 
-#: mgradm/shared/utils/cmd_utils.go:207
+#: mgradm/shared/utils/cmd_utils.go:210
 msgid "PostgreSQL Database Container Flags"
 msgstr "PostgreSQL 데이터베이스 컨테이너 플래그"
 
-#: mgradm/shared/utils/cmd_utils.go:208
+#: mgradm/shared/utils/cmd_utils.go:211
 msgid "PostgreSQL Database"
 msgstr "PostgreSQL 데이터베이스"
 
@@ -1778,11 +1997,11 @@ msgstr "서버 이미지에서 릴리스를 가져올 수 없음"
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "버전 %[1]s에서 %[2]s(으)로 다운그레이드할 수 없습니다."
 
-#: mgradm/shared/utils/flags.go:155
+#: mgradm/shared/utils/flags.go:156
 msgid "Can only contain letters, digits . _ and -"
 msgstr "문자, 숫자 . _ 및 -만 포함할 수 있음"
 
-#: mgradm/shared/utils/flags.go:163
+#: mgradm/shared/utils/flags.go:164
 msgid "Not a valid email address"
 msgstr "유효한 전자 메일 주소 아님"
 
@@ -1843,9 +2062,6 @@ msgstr "유효한 전자 메일 주소 아님"
 
 #~ msgid "Registered peripheral server: %[1]s, ID: %[2]d"
 #~ msgstr "등록된 주변 장치 서버: %[1]s, ID: %[2]d"
-
-#~ msgid "failed to determine server image"
-#~ msgstr "서버 이미지를 확인하지 못함"
 
 #~ msgid "failed to find the image of the currently running server container"
 #~ msgstr "현재 실행 중인 서버 컨테이너의 이미지를 찾지 못함"
@@ -1919,9 +2135,6 @@ msgstr "유효한 전자 메일 주소 아님"
 
 #~ msgid "Migration prepared. Run the 'migrate' command without '--prepare' to finish the migration."
 #~ msgstr "마이그레이션이 준비되었습니다. 마이그레이션을 마치려면 ''--prepare''를 제외하고 ''migrate'' 명령을 실행하십시오."
-
-#~ msgid "failed to inspect database container image"
-#~ msgstr "데이터베이스 컨테이너 이미지 검사 실패"
 
 #~ msgid "cannot remove temporary etc-tls volume"
 #~ msgstr "임시 etc-tls 볼륨을 제거할 수 없음"
