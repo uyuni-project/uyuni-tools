@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-08 14:28+0200\n"
-"PO-Revision-Date: 2026-03-24 13:04+0000\n"
+"PO-Revision-Date: 2026-04-10 13:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -201,22 +201,16 @@ msgid "failed to retrieve namespace "
 msgstr "no s'ha pogut recuperar l'espai de noms "
 
 #: shared/connection.go:253
-#, fuzzy
-#| msgid "failed to create temporary directory"
 msgid "failed to create temporary file"
-msgstr "no s'ha pogut crear el directori temporal"
+msgstr "ha fallat crear el fitxer temporal"
 
 #: shared/connection.go:258
-#, fuzzy
-#| msgid "failed to write %s secret to file"
 msgid "failed to write script to temporary file"
-msgstr "no s'ha pogut escriure el secret %s al fitxer"
+msgstr "ha fallat escriure l'script al fitxer temporal"
 
 #: shared/connection.go:266
-#, fuzzy
-#| msgid "failed to run %s container"
 msgid "failed to copy script to container"
-msgstr "no s'ha pogut executar el contenidor %s"
+msgstr "ha fallat copiar l'script al contenidor"
 
 #: shared/connection.go:282
 msgid "Healthcheck not executed"
