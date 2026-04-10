@@ -18,14 +18,26 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// ServerImageFlags holds the server-specific image override flags.
+// Viper maps --server-image → server.image and --server-tag → server.tag.
+type ServerImageFlags struct {
+	// Image overrides the default server container image name.
+	Image string `mapstructure:"image"`
+	// Tag overrides the global --tag for the server container only.
+	// If not set, the global tag is used as fallback.
+	Tag string `mapstructure:"tag"`
+}
+
 // ServerFlags is a structure hosting the parameters for installation, migration and upgrade.
 type ServerFlags struct {
-	Image        types.ImageFlags `mapstructure:",squash"`
-	Coco         CocoFlags
-	Mirror       string
-	HubXmlrpc    HubXmlrpcFlags
-	Migration    MigrationFlags    `mapstructure:",squash"`
-	Installation InstallationFlags `mapstructure:",squash"`
+	Image types.ImageFlags `mapstructure:",squash"`
+	// Server holds the server-specific image overrides (--server-image, --server-tag).
+	Server         ServerImageFlags
+	Coco           CocoFlags
+	Mirror         string
+	HubXmlrpc      HubXmlrpcFlags
+	Migration      MigrationFlags    `mapstructure:",squash"`
+	Installation   InstallationFlags `mapstructure:",squash"`
 	// DBUpgradeImage is the image to use to perform the database upgrade.
 	DBUpgradeImage types.ImageFlags `mapstructure:"dbupgrade"`
 	Saline         SalineFlags

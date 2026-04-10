@@ -110,19 +110,27 @@ It will be used as SCC credentials for products synchronization and to pull imag
 
 // AddImageFlag add Image flags to a command.
 func AddImageFlag(cmd *cobra.Command) {
-    cmd.Flags().String("server-image", defaultImage, L("Image for uyuni server container"))
-    cmd.Flags().String("server-tag", "", L("Tag for uyuni server container. If empty, the global tag will be used"))
-    cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
+	cmd.Flags().String("image", defaultImage, L("Image"))
+	cmd.Flags().String("tag", utils.DefaultTag, L("Tag Image"))
 
-    utils.AddPullPolicyFlag(cmd)
-    utils.AddRegistryFlag(cmd)
+	utils.AddPullPolicyFlag(cmd)
+	utils.AddRegistryFlag(cmd)
 
-    _ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "image", Title: L("Image Flags")})
-    _ = utils.AddFlagToHelpGroupID(cmd, "server-image", "image")
-    _ = utils.AddFlagToHelpGroupID(cmd, "server-tag", "image")
-    _ = utils.AddFlagToHelpGroupID(cmd, "tag", "image")
-    _ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "")
-    _ = utils.AddFlagToHelpGroupID(cmd, "registry", "")
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "image", Title: L("Image Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "image", "image")
+	_ = utils.AddFlagToHelpGroupID(cmd, "tag", "image")
+	// without group, since this flag is applied to all the images
+	_ = utils.AddFlagToHelpGroupID(cmd, "pullPolicy", "")
+	_ = utils.AddFlagToHelpGroupID(cmd, "registry", "")
+}
+
+// AddServerImageFlags adds the server-specific image override flags to a command.
+func AddServerImageFlags(cmd *cobra.Command) {
+	cmd.Flags().String("server-image", defaultImage, L("Image for uyuni server container"))
+	cmd.Flags().String("server-tag", "", L("Tag for uyuni server container. If empty, the global tag will be used"))
+
+	_ = utils.AddFlagToHelpGroupID(cmd, "server-image", "image")
+	_ = utils.AddFlagToHelpGroupID(cmd, "server-tag", "image")
 }
 
 // AddDBUpgradeImageFlag add Database upgrade image flags to a command.
@@ -212,6 +220,7 @@ func AddPgsqlFlags(cmd *cobra.Command) {
 // AddServerFlags add flags common to install, upgrade and migration.
 func AddServerFlags(cmd *cobra.Command) {
 	AddImageFlag(cmd)
+	AddServerImageFlags(cmd)
 	AddSCCFlag(cmd)
 	AddPgsqlFlags(cmd)
 	AddDBFlags(cmd)
