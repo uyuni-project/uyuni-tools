@@ -23,11 +23,21 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
-// runCmd* are a function pointers to use for easies unit testing.
+// runCmd* are a function pointers to use for easier unit testing.
 var runCmdOutput = utils.RunCmdOutput
 var runCmd = utils.RunCmd
 
 var runner = utils.NewRunner
+
+// SetRunner allows mocking the runner for tests.
+func SetRunner(r func(command string, args ...string) types.Runner) {
+	runner = r
+}
+
+// ResetRunner resets the runner to the default implementation.
+func ResetRunner() {
+	runner = utils.NewRunner
+}
 
 const commonArgs = "--rm --cap-add NET_RAW"
 
@@ -271,13 +281,12 @@ func ImportVolume(name string, volumePath string, skipVerify bool, dryRun bool) 
 }
 
 func IsVolumePresent(volume string) bool {
-	var exitError *exec.ExitError
-	cmd := exec.Command("podman", "volume", "exists", volume)
-	if err := cmd.Run(); err != nil && errors.As(err, &exitError) {
-		log.Debug().Err(err).Msgf("podman volume exists %s", volume)
+	cmd := runner("podman", "volume", "exists", volume)
+	if _, err := cmd.Exec(); err != nil {
+		log.Debug().Err(err).Msgf("podman volume does not exists %s", volume)
 		return false
 	}
-	return cmd.ProcessState.Success()
+	return true
 }
 
 func isVolumePathMounted(volume string) bool {
@@ -311,7 +320,7 @@ func GetPodmanVolumeBasePath() (string, error) {
 // GetVolumeMountPoint returns the path to the volume mount point on the host system.
 // This shouldn't be confused with GetPodmanVolumeBasePath() that returns the path to the folder containing all volumes.
 func GetVolumeMountPoint(name string) (path string, err error) {
-	out, err := utils.NewRunner("podman", "volume", "inspect", "--format", "{{.Mountpoint}}", name).
+	out, err := runner("podman", "volume", "inspect", "--format", "{{.Mountpoint}}", name).
 		Log(zerolog.DebugLevel).
 		Exec()
 	if err != nil {

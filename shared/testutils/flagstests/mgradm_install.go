@@ -18,7 +18,6 @@ var InstallFlagsTestArgs = func() []string {
 		"--email", "admin@foo.bar",
 		"--emailfrom", "sender@foo.bar",
 		"--issParent", "parent.iss.com",
-		"--tftp=false",
 		"--reportdb-user", "reportdbuser",
 		"--reportdb-password", "reportdbpass",
 		"--reportdb-name", "reportdbname",
@@ -55,7 +54,6 @@ func AssertInstallFlags(t *testing.T, flags *utils.ServerFlags) {
 	testutils.AssertEquals(t, "Error parsing --email", "admin@foo.bar", flags.Installation.Email)
 	testutils.AssertEquals(t, "Error parsing --emailfrom", "sender@foo.bar", flags.Installation.EmailFrom)
 	testutils.AssertEquals(t, "Error parsing --issParent", "parent.iss.com", flags.Installation.IssParent)
-	testutils.AssertEquals(t, "Error parsing --tftp", false, flags.Installation.Tftp)
 	testutils.AssertTrue(t, "Error parsing --debug-java", flags.Installation.Debug.Java)
 	testutils.AssertEquals(t, "Error parsing --admin-login", "adminuser", flags.Installation.Admin.Login)
 	testutils.AssertEquals(t, "Error parsing --admin-password", "adminpass", flags.Installation.Admin.Password)

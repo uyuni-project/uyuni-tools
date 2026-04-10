@@ -44,6 +44,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeF
 				if flags.Server.Tag != "" {
 					flags.Image.Tag = flags.Server.Tag
 				}
+				flags.TFTPD.IsChanged = v.IsSet("tftpd.enable")
 			}
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, flagsUpdater, run)
 		},

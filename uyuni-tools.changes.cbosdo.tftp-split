@@ -1,1 +1,1 @@
-- Split the TFTP server into a separate container
+- Disable TFTP by default on the server

@@ -34,7 +34,7 @@ func AssertNoError(t *testing.T, message string, err error) {
 	}
 }
 
-// AssertError ensures error mesasge was produced.
+// AssertError ensures error message was produced.
 func AssertError(t *testing.T, message string, err error) {
 	t.Helper() // Important: Marks this function as a test helper
 
@@ -66,6 +66,13 @@ func AssertHasAllFlagsIgnores(t *testing.T, cmd *cobra.Command, args []string, i
 // AssertHasAllFlags ensures that all the flags of a command are present in the args slice.
 func AssertHasAllFlags(t *testing.T, cmd *cobra.Command, args []string) {
 	AssertHasAllFlagsIgnores(t, cmd, args, []string{})
+}
+
+// AssertStringContains ensures a string contains the expected value.
+func AssertStringContains(t *testing.T, message string, actual string, expected string) {
+	if !strings.Contains(actual, expected) {
+		t.Errorf(message+"got '%v' expected to contain '%v'", actual, expected)
+	}
 }
 
 // AssertContains ensures a slice contains the expected value.

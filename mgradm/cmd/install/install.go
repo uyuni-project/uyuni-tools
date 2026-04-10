@@ -62,6 +62,7 @@ func getFlagsUpdater(flags *podmanInstallFlags) utils.FlagsUpdaterFunc {
 		flags.Coco.IsChanged = v.IsSet("coco.replicas")
 		flags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
 		flags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
+		flags.TFTPD.IsChanged = v.IsSet("tftpd.enable")
 
 		if flags.Installation.SSL.Ca.IsThirdParty() && !flags.Installation.SSL.DB.CA.IsThirdParty() {
 			flags.Installation.SSL.DB.CA.Root = flags.Installation.SSL.Ca.Root

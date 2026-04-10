@@ -33,10 +33,9 @@ import (
 
 var systemd podman.Systemd = podman.NewSystemd()
 
-// GetExposedPorts returns the port exposed.
-func GetExposedPorts(debug bool) []types.PortMap {
+// getExposedPorts returns the port exposed.
+func getExposedPorts(debug bool) []types.PortMap {
 	ports := utils.GetServerPorts(debug)
-	ports = append(ports, utils.NewPortMap(utils.WebServiceName, "https", 443, 443))
 	ports = append(ports, utils.TCPPodmanPorts...)
 	return ports
 }
@@ -51,9 +50,9 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 		args = append(args, "-v", mirrorPath+":/mirror")
 	}
 
-	ports := GetExposedPorts(debug)
+	ports := getExposedPorts(debug)
 	if _, err := exec.LookPath("csp-billing-adapter"); err == nil {
-		ports = append(ports, utils.NewPortMap("csp", "csp-billing", 18888, 18888))
+		ports = append(ports, utils.NewPortMap(18888))
 		args = append(args, "-e ISPAYG=1")
 	}
 
@@ -334,7 +333,11 @@ func Upgrade(
 		return err
 	}
 
+	hasTFTP := systemd.ServiceIsEnabled(podman.TFTPService)
 	if systemd.HasService(podman.ServerService) {
+		if !hasTFTP {
+			hasTFTP = serverExposesTFTP(systemd)
+		}
 		if err := systemd.StopService(podman.ServerService); err != nil {
 			return utils.Errorf(err, L("cannot stop service"))
 		}
@@ -478,9 +481,18 @@ func Upgrade(
 		coco.Upgrade(systemd, authFile, cocoFlags, image, inspectedDB),
 		hub.Upgrade(systemd, authFile, image, hubXmlrpcFlags),
 		saline.Upgrade(systemd, authFile, image, salineFlags, utils.GetLocalTimezone()),
-		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn),
+		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn, hasTFTP),
 		systemd.ReloadDaemon(false),
 	)
+}
+
+func serverExposesTFTP(systemd podman.Systemd) bool {
+	def, err := systemd.GetServiceDefinition(podman.ServerService)
+	if err != nil {
+		log.Error().Err(err).Msg(L("Failed to read server service definition to look for TFTP port"))
+		return false
+	}
+	return strings.Contains(def, "-p 69:69/udp")
 }
 
 func WaitForSystemStart(

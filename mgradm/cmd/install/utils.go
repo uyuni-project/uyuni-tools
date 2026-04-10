@@ -12,6 +12,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/db"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
@@ -109,7 +110,7 @@ func installForPodman(
 		coco.SetupCocoContainer(systemd, authFile, flags.Coco, flags.Image, flags.Installation.DB),
 		hub.SetupHubXmlrpc(systemd, authFile, flags.Image, flags.HubXmlrpc),
 		saline.SetupSalineContainer(systemd, authFile, flags.Image, flags.Saline, flags.Installation.TZ),
-		tftp.SetupTFTPContainer(systemd, authFile, flags.Image, flags.TFTPD, fqdn),
+		tftp.SetupTFTPContainer(systemd, authFile, flags.Image, flags.TFTPD, fqdn, false),
 	)
 }
 
@@ -136,10 +137,19 @@ func setupDatabase(dbFlags adm_utils.DBFlags, reportdbFlags adm_utils.DBFlags, p
 		); err != nil {
 			return err
 		}
-
+		if dbFlags.Walbackup {
+			if err := pgsql.GenerateBackupVolumeConfig(systemd); err != nil {
+				return err
+			}
+		}
 		// Run the DB container setup if the user doesn't set a custom host name for it.
 		if err := pgsql.SetupPgsql(systemd, preparedImage); err != nil {
 			return err
+		}
+		if dbFlags.Walbackup {
+			if err := db.Enable(true); err != nil {
+				return err
+			}
 		}
 	} else {
 		log.Info().Msgf(

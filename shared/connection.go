@@ -21,8 +21,21 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
+
+var runner = utils.NewRunner
+
+// SetRunner allows mocking the runner for tests.
+func SetRunner(r func(command string, args ...string) types.Runner) {
+	runner = r
+}
+
+// ResetRunner resets the runner to the default implementation.
+func ResetRunner() {
+	runner = utils.NewRunner
+}
 
 // Connection contains information about how to connect to the server.
 type Connection struct {
@@ -72,10 +85,9 @@ func (c *Connection) GetCommand() (string, error) {
 			_, err = exec.LookPath("kubectl")
 			if err == nil {
 				hasKubectl = true
-				if out, err := utils.RunCmdOutput(
-					zerolog.DebugLevel, "kubectl", "--request-timeout=30s", "get", "deploy", c.kubernetesFilter,
+				if out, err := runner("kubectl", "--request-timeout=30s", "get", "deploy", c.kubernetesFilter,
 					"-A", "-o=jsonpath={.items[*].metadata.name}",
-				); err != nil {
+				).Log(zerolog.DebugLevel).Spinner("").Exec(); err != nil {
 					log.Info().Msg(L("kubectl not configured to connect to a cluster, ignoring"))
 				} else if len(bytes.TrimSpace(out)) != 0 {
 					c.command = "kubectl"
@@ -88,7 +100,8 @@ func (c *Connection) GetCommand() (string, error) {
 			for _, bin := range bins {
 				if _, err = exec.LookPath(bin); err == nil {
 					hasPodman = true
-					if checkErr := utils.RunCmd(bin, "inspect", c.container, "--format", "{{.Name}}"); checkErr == nil {
+					if _, checkErr := runner(bin, "inspect", c.container, "--format", "{{.Name}}").
+						Spinner("").Exec(); checkErr == nil {
 						c.command = bin
 						break
 					}
@@ -157,10 +170,8 @@ func (c *Connection) GetNamespace(appName string) (string, error) {
 	// retrieving namespace from the first installed object we can find matching the filter.
 	// This assumes that the server or proxy has been installed only in one namespace
 	// with the current cluster credentials.
-	out, err := utils.RunCmdOutput(
-		zerolog.DebugLevel, "kubectl", "get", "all", "-A", c.kubernetesFilter,
-		"-o", "jsonpath={.items[*].metadata.namespace}",
-	)
+	out, err := runner("kubectl", "get", "all", "-A", c.kubernetesFilter, "-o",
+		"jsonpath={.items[*].metadata.namespace}").Log(zerolog.DebugLevel).Spinner("").Exec()
 	if err != nil {
 		return "", utils.Errorf(err, L("failed to guest namespace"))
 	}
@@ -182,9 +193,8 @@ func (c *Connection) GetPodName() (string, error) {
 		case "podman-remote":
 			fallthrough
 		case "podman":
-			if out, _ := utils.RunCmdOutput(
-				zerolog.DebugLevel, c.command, "ps", "-q", "-f", "name="+c.container,
-			); len(out) == 0 {
+			if out, _ := runner(c.command, "ps", "-q", "-f", "name="+c.container).
+				Log(zerolog.DebugLevel).Spinner("").Exec(); len(out) == 0 {
 				err = fmt.Errorf(L("container %s is not running on podman"), c.container)
 			} else {
 				log.Trace().Msgf("Found container ID '%s'", out)
@@ -192,8 +202,8 @@ func (c *Connection) GetPodName() (string, error) {
 			}
 		case "kubectl":
 			// We try the first item on purpose to make the command fail if not available
-			if podName, _ := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", c.kubernetesFilter, "-A",
-				"-o=jsonpath={.items[0].metadata.name}"); len(podName) == 0 {
+			if podName, _ := runner("kubectl", "get", "pod", c.kubernetesFilter, "-A",
+				"-o=jsonpath={.items[0].metadata.name}").Log(zerolog.DebugLevel).Spinner("").Exec(); len(podName) == 0 {
 				err = fmt.Errorf(L("container labeled %s is not running on kubectl"), c.kubernetesFilter)
 			} else {
 				c.podName = string(podName[:])
@@ -233,7 +243,36 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 	shellArgs := append([]string{command}, args...)
 	cmdArgs = append(cmdArgs, shellArgs...)
 
-	return utils.RunCmdOutput(zerolog.DebugLevel, cmd, cmdArgs...)
+	return runner(cmd, cmdArgs...).Log(zerolog.DebugLevel).Spinner("").Exec()
+}
+
+// ExecScript runs the provided script inside the container.
+func (c *Connection) ExecScript(script string) ([]byte, error) {
+	tempFile, err := os.CreateTemp("", "uyuni-tools-script-*.sh")
+	if err != nil {
+		return nil, utils.Errorf(err, L("failed to create temporary file"))
+	}
+	defer os.Remove(tempFile.Name())
+
+	if _, err = tempFile.WriteString(script); err != nil {
+		return nil, utils.Errorf(err, L("failed to write script to temporary file"))
+	}
+	tempFile.Close()
+
+	remotePath := fmt.Sprintf("/tmp/script-%d.sh", time.Now().UnixNano())
+
+	// Copy localy created tempfile to container
+	if err := c.Copy(tempFile.Name(), "server:"+remotePath, "", ""); err != nil {
+		return nil, utils.Errorf(err, L("failed to copy script to container"))
+	}
+
+	defer func() {
+		if _, err := c.Exec("rm", "-f", remotePath); err != nil {
+			log.Debug().Err(err).Msgf("failed to remove %s", remotePath)
+		}
+	}()
+
+	return c.Exec("bash", remotePath)
 }
 
 // Healthcheck runs healthcheck command inside the container.
@@ -251,7 +290,7 @@ func (c *Connection) Healthcheck() ([]byte, error) {
 
 	cmdArgs := []string{"healthcheck", "run", c.podName}
 
-	return utils.RunCmdOutput(zerolog.DebugLevel, cmd, cmdArgs...)
+	return runner(cmd, cmdArgs...).Log(zerolog.DebugLevel).Spinner("").Exec()
 }
 
 // WaitForContainer waits up to 10 sec for the container to appear.
@@ -273,7 +312,7 @@ func (c *Connection) WaitForContainer() error {
 			args = append(args, "--")
 		}
 		args = append(args, "true")
-		err = utils.RunCmd(command, args...)
+		_, err = runner(command, args...).Spinner("").Exec()
 		if err == nil {
 			return nil
 		}
@@ -337,7 +376,7 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 		return fmt.Errorf(L("unknown container kind: %s"), command)
 	}
 
-	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, command, commandArgs...); err != nil {
+	if _, err := runner(command, commandArgs...).Log(zerolog.DebugLevel).StdMapping().Exec(); err != nil {
 		return err
 	}
 
@@ -352,7 +391,8 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 			owner = user + ":" + group
 		}
 		execArgs = append(execArgs, "chown", owner, strings.Replace(dst, "server:", "", 1))
-		return utils.RunCmdStdMapping(zerolog.DebugLevel, command, execArgs...)
+		_, err := runner(command, execArgs...).Log(zerolog.DebugLevel).StdMapping().Exec()
+		return err
 	}
 	return nil
 }
@@ -384,7 +424,7 @@ func (c *Connection) TestExistenceInPod(dstpath string) bool {
 		log.Fatal().Msgf(L("unknown container kind: %s"), command)
 	}
 
-	if _, err := utils.RunCmdOutput(zerolog.DebugLevel, command, commandArgs...); err != nil {
+	if _, err := runner(command, commandArgs...).Log(zerolog.DebugLevel).Spinner("").Exec(); err != nil {
 		return false
 	}
 	return true
@@ -413,11 +453,14 @@ func (c *Connection) CopyCaCertificate(fqdn string) error {
 
 	log.Info().Msg(L("Updating host trusted certificates"))
 	if utils.CommandExists("update-ca-certificates") {
-		return utils.RunCmdStdMapping(zerolog.DebugLevel, "update-ca-certificates") // openSUSE, Debian and Ubuntu
+		_, err := runner("update-ca-certificates").Log(zerolog.DebugLevel).StdMapping().Exec()
+		return err // openSUSE, Debian and Ubuntu
 	} else if utils.CommandExists("update-ca-trust") {
-		return utils.RunCmdStdMapping(zerolog.DebugLevel, "update-ca-trust") // RedHat
+		_, err := runner("update-ca-trust").Log(zerolog.DebugLevel).StdMapping().Exec()
+		return err // RedHat
 	} else if utils.CommandExists("trust") {
-		return utils.RunCmdStdMapping(zerolog.DebugLevel, "trust", "anchor", "--store", hostPath) // Fallback
+		_, err := runner("trust", "anchor", "--store", hostPath).Log(zerolog.DebugLevel).StdMapping().Exec()
+		return err // Fallback
 	}
 	return errors.New(L("Unable to update host trusted certificates."))
 }
@@ -486,41 +529,57 @@ func ChooseObjPodmanOrKubernetes[T any](systemd podman.Systemd, podmanOption T, 
 
 // RunSupportConfig will run supportconfig command on given connection.
 func (c *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
-	var containerTarball string
 	var files []string
-	extensions := []string{"", ".md5"}
+	const sourceBaseDir = "/var/log"
+
 	containerName, err := c.GetPodName()
 	if err != nil {
 		return []string{}, err
 	}
 
+	// 10000 is what os.MkDirTemp uses
+	const maxBatchNameAttempts = 10000
+	batchName := ""
+	sourceDir := ""
+	for i := 0; i < maxBatchNameAttempts; i++ {
+		suffix, err := utils.RandomHexString(4) // 8 hex chars
+		if err != nil {
+			return []string{}, fmt.Errorf(L("failed to generate supportconfig suffix: %w"), err)
+		}
+
+		candidateBatchName := "uyuni-server-container-" + suffix
+		if !c.TestExistenceInPod(path.Join(sourceBaseDir, "scc_"+candidateBatchName)) {
+			batchName = candidateBatchName
+			sourceDir = path.Join(sourceBaseDir, "scc_"+candidateBatchName)
+			break
+		}
+	}
+	if batchName == "" {
+		return []string{},
+			fmt.Errorf(L("failed to generate unique supportconfig batch name after %d attempts"), maxBatchNameAttempts)
+	}
+
 	// Run supportconfig in the container if it's running
-	log.Info().Msgf(L("Running supportconfig in  %s"), containerName)
-	out, err := c.Exec("supportconfig")
-	if err != nil {
+	log.Info().Msgf(L("Running supportconfig in %s"), containerName)
+	if _, err = c.Exec("/sbin/supportconfig", "-B", batchName, "-t", sourceBaseDir); err != nil {
 		/* do not return here.
 		* supportconfig might return some error if some info is not generated
 		* but we need to raise an error only if tarball is not generated.
-		* In any case, show the error.
+		* In any case, show the error but as a warning and not as a failed run
 		 */
-		log.Error().Err(err).Msg(L("failed to run supportconfig"))
-	}
-	tarballPath := utils.GetSupportConfigPath(string(out))
-	if tarballPath == "" {
-		return []string{}, utils.Errorf(err, L("failed to find container supportconfig tarball from command output"))
+		log.Warn().Err(err).Msg(L("Some parts of supportconfig were not successful"))
 	}
 
-	for _, ext := range extensions {
-		containerTarball = path.Join(tmpDir, containerName+"-supportconfig.txz"+ext)
-		if err := c.Copy("server:"+tarballPath+ext, containerTarball, "", ""); err != nil {
-			return []string{}, utils.Errorf(err, L("cannot copy tarball"))
-		}
-		files = append(files, containerTarball)
-
-		// Remove the generated file in the container
-		if _, err := c.Exec("rm", tarballPath+ext); err != nil {
-			return []string{}, utils.Errorf(err, L("failed to remove %s file in the container"), tarballPath+ext)
-		}
+	targetDir := path.Join(tmpDir, batchName)
+	if err := c.Copy("server:"+sourceDir, targetDir, "", ""); err != nil {
+		return []string{}, utils.Errorf(err, L("cannot copy support config"))
 	}
+	files = append(files, targetDir)
+
+	// Remove the generated file in the container
+	if _, err := c.Exec("rm", "-r", sourceDir); err != nil {
+		return []string{}, utils.Errorf(err, L("failed to remove %s directory in the container"), sourceDir)
+	}
+
 	return files, nil
 }

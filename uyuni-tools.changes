@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Mon Mar 02 16:08:55 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Remove migrate command
+  * Remove template script from mgradm: use the one in the image
+  * Split the TFTP server into a separate container
+  * Explicitly start proxy pods after operations
+    (bsc#1258015)
+  * Adjust mgrctl server filter to work with the new helm chart
+    labels
+  * Remove hub register command
+  * Remove the Kubernetes install and upgrade from mgrpxy
+  * Optimize postgres migration disk space usage (bsc#1257447)
+
+-------------------------------------------------------------------
 Tue Jan 27 10:49:03 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.4-0

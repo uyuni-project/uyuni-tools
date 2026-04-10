@@ -59,7 +59,6 @@ type InstallationFlags struct {
 	Email        string
 	EmailFrom    string
 	IssParent    string
-	Tftp         bool
 	DB           DBFlags
 	ReportDB     DBFlags
 	SSL          InstallSSLFlags
@@ -147,6 +146,7 @@ type DBFlags struct {
 		User     string
 		Password string
 	}
+	Walbackup bool
 }
 
 // IsLocal indicates if the database is a local or a third party one.

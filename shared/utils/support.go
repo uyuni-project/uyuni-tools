@@ -7,9 +7,9 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"path"
-	"regexp"
 	"strings"
 	"time"
 
@@ -17,12 +17,6 @@ import (
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
-
-// GetSupportConfigPath returns the support config tarball path.
-func GetSupportConfigPath(out string) string {
-	re := regexp.MustCompile(`/var/log/scc_(.*?)\.txz`)
-	return re.FindString(out)
-}
 
 // GetSupportConfigFileSaveName returns the support config file name.
 func GetSupportConfigFileSaveName() string {
@@ -45,6 +39,12 @@ func CreateSupportConfigTarball(outputFolder string, files []string) error {
 	// Pack it all into a tarball
 	log.Info().Msg(L("Preparing the tarball"))
 
+	if outputFolder == "" || outputFolder == "." {
+		// on error returns "", so behavior like before
+		outputFolder, _ = os.Getwd()
+	}
+	log.Debug().Msgf("Output folder %s", outputFolder)
+
 	supportFileName := GetSupportConfigFileSaveName()
 	supportFilePath := path.Join(outputFolder, fmt.Sprintf("%s.tar.gz", supportFileName))
 
@@ -63,6 +63,7 @@ func CreateSupportConfigTarball(outputFolder string, files []string) error {
 		}
 	}
 	tarball.Close()
+	log.Info().Msgf(L("Support config tarball created at %s"), supportFilePath)
 	return nil
 }
 
@@ -80,28 +81,52 @@ func GetContainersFromSystemdFiles(systemdFileList string) []string {
 	return trimmedContainers
 }
 
-var newRunner = NewRunner
-
 // RunSupportConfigOnHost will run supportconfig command on host machine.
 func RunSupportConfigOnHost() ([]string, error) {
 	var files []string
-	extensions := []string{"", ".md5"}
-
 	// Run supportconfig on the host if installed
-	if _, err := exec.LookPath("supportconfig"); err == nil {
-		out, err := newRunner("supportconfig").Spinner("").StdMapping().Exec()
+	if _, err := exec.LookPath("/sbin/supportconfig"); err == nil {
+		var sourceDir string
+		const sourceBaseDir = "/var/log"
+
 		if err != nil {
-			log.Error().Err(err)
+			return []string{}, err
 		}
-		tarballPath := GetSupportConfigPath(string(out))
+
+		// 10000 is what os.MkDirTemp uses
+		const maxBatchNameAttempts = 10000
+		batchName := ""
+		for i := 0; i < maxBatchNameAttempts; i++ {
+			suffix, err := RandomHexString(4) // 8 hex chars
+			if err != nil {
+				return []string{}, fmt.Errorf(L("failed to generate supportconfig suffix: %w"), err)
+			}
+
+			candidateBatchName := "host-support-config-" + suffix
+			candidateTarballPath := fmt.Sprintf("/var/log/scc_%s.txz", candidateBatchName)
+
+			if !FileExists(candidateTarballPath) {
+				batchName = candidateBatchName
+				sourceDir = path.Join(sourceBaseDir, "scc_"+candidateBatchName)
+				break
+			}
+		}
+		if batchName == "" {
+			return []string{},
+				fmt.Errorf(L("failed to generate unique supportconfig batch name after %d attempts"), maxBatchNameAttempts)
+		}
+
+		log.Info().Msg(L("Running supportconfig on the host"))
+		err = RunCmd("/sbin/supportconfig", "-B", batchName, "-t", sourceBaseDir)
+		if err != nil {
+			log.Info().Err(err).Msg(L("Some parts of supportconfig were not successful"))
+		}
 
 		// Look for the generated supportconfig file
-		if tarballPath != "" && FileExists(tarballPath) {
-			for _, ext := range extensions {
-				files = append(files, tarballPath+ext)
-			}
+		if FileExists(sourceDir) {
+			files = append(files, sourceDir)
 		} else {
-			return []string{}, errors.New(L("failed to find host supportconfig tarball from command output"))
+			return []string{}, errors.New(L("failed to find host supportconfig tarball"))
 		}
 	} else {
 		log.Warn().Msg(L("supportconfig is not available on the host, skipping it"))

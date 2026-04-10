@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -96,7 +96,7 @@ func restoreFileAttributes(filename string, th *tar.Header) error {
 	return e
 }
 
-func generateDefaltSystemdServices(flags *shared.Flagpole) error {
+func generateDefaultSystemdServices(flags *shared.Flagpole) error {
 	if flags.DryRun {
 		log.Info().Msg(L("Would generate default systemd services"))
 		return nil

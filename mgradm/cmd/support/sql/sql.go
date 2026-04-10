@@ -1,12 +1,10 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package sql
 
 import (
-	"crypto/rand"
-	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -33,11 +31,13 @@ func prepareSource(args []string, cnx *shared.Connection) (string, error) {
 		if !utils.FileExists(source) {
 			return "", fmt.Errorf(L("source %s does not exists"), source)
 		}
-		randBytes := make([]byte, 16)
-		if _, err := rand.Read(randBytes); err != nil {
-			return "", utils.Errorf(err, L("unable to get random file prefix"))
+
+		prefix, err := utils.RandomHexString(16)
+		if err != nil {
+			return "", err
 		}
-		target = hex.EncodeToString(randBytes) + target
+		target = prefix + target
+
 		if err := cnx.Copy(args[0], "server:"+target, "", ""); err != nil {
 			return "", err
 		}
