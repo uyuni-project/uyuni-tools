@@ -109,8 +109,11 @@ func generateDefaultSystemdServices(flags *shared.Flagpole) error {
 		utils.PostgreSQLImage.Name,
 		utils.PostgreSQLImage.Tag)
 
+	// Assumption is system is already configured when backup was taken.
+	// No need for server environment file and everything should just work.
+
 	return utils.JoinErrors(
-		// TODO Extract the flags from the backup for the new unified setup
+		podman.GenerateUpgradeServerEnvironmentFile(false),
 		podman.GenerateSystemdService(systemd, serverImage, adm_utils.InstallationFlags{}, []string{}, ""),
 		pgsql.GeneratePgsqlSystemdService(systemd, dbImage),
 		systemd.ReloadDaemon(false),

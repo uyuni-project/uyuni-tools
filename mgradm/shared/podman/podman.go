@@ -53,15 +53,15 @@ func GenerateServerEnvironmentFile(flags adm_utils.InstallationFlags, fqdn strin
 		Fqdn:      fqdn,
 		Email:     flags.Email,
 		EmailFrom: flags.EmailFrom,
-		DB:        flags.DB,
-		ReportDB:  flags.ReportDB,
+		DB:        &flags.DB,
+		ReportDB:  &flags.ReportDB,
 		Debug:     flags.Debug.Java,
 		Org:       flags.Organization,
-		Admin:     flags.Admin,
+		Admin:     &flags.Admin,
 		HasMirror: hasMirror,
 	}
 	if err := utils.WriteTemplateToFile(data, envfile, 0400, true); err != nil {
-		return utils.Errorf(err, L("failed to generate systemd service unit file"))
+		return utils.Errorf(err, L("failed to generate server environment file"))
 	}
 
 	return nil
@@ -72,16 +72,12 @@ func GenerateServerEnvironmentFile(flags adm_utils.InstallationFlags, fqdn strin
 func GenerateUpgradeServerEnvironmentFile(debug bool) error {
 	confDir := podman.GetServiceConfFolder(podman.ServerService)
 	envfile := filepath.Join(confDir, podman.ServerEnvironmentFile)
-	if !utils.FileExists(envfile) {
-		return nil
-	}
-
 	data := templates.PodmanServiceEnvironmentTemplateData{
 		Debug: debug,
 	}
 
 	if err := utils.WriteTemplateToFile(data, envfile, 0400, true); err != nil {
-		return utils.Errorf(err, L("failed to generate systemd service unit file"))
+		return utils.Errorf(err, L("failed to generate server environment file"))
 	}
 
 	return nil
@@ -122,10 +118,13 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 		DBPassSecret:       podman.DBPassSecret,
 		ReportDBUserSecret: podman.ReportDBUserSecret,
 		ReportDBPassSecret: podman.ReportDBPassSecret,
-		SCCUserSecret:      podman.SCCUserSecret,
-		SCCPassSecret:      podman.SCCPassSecret,
-		ServerEnvFile:      podman.ServerEnvironmentFile,
+		ServerEnvFile:      podman.GetServiceConfPath("uyuni-server", podman.ServerEnvironmentFile),
 	}
+	if podman.HasSecret(podman.SCCUserSecret) {
+		data.SCCUserSecret = podman.SCCUserSecret
+		data.SCCPassSecret = podman.SCCPassSecret
+	}
+
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0444, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
@@ -164,10 +163,12 @@ func GenerateSystemdService(
 		return err
 	}
 
-	if err := podman.CreateCredentialsSecretsIfMissing(
-		podman.SCCUserSecret, flags.SCC.User, podman.SCCPassSecret, flags.SCC.Password,
-	); err != nil {
-		return err
+	if flags.SCC.User != "" {
+		if err := podman.CreateCredentialsSecretsIfMissing(
+			podman.SCCUserSecret, flags.SCC.User, podman.SCCPassSecret, flags.SCC.Password,
+		); err != nil {
+			return err
+		}
 	}
 
 	config := fmt.Sprintf("Environment=\"PODMAN_EXTRA_ARGS=%s\"", strings.Join(podmanArgs, " "))

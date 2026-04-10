@@ -121,6 +121,10 @@ func (flags *InstallationFlags) CheckParameters(cmd *cobra.Command, command stri
 
 	flags.SSL.Email = flags.Email
 	flags.Admin.Email = flags.Email
+
+	if flags.SCC.User != "" {
+		utils.AskPasswordIfMissing(&flags.SCC.Password, cmd.Flag("scc-password").Usage, 5, 48)
+	}
 }
 
 // DebugFlags contains information about enabled/disabled debug.

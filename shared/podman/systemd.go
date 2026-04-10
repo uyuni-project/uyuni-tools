@@ -299,7 +299,8 @@ func uninstallServiceFiles(name string, dryRun bool) {
 	if utils.FileExists(serviceConfFolder) {
 		confPaths := []string{
 			GetServiceConfPath(name, GeneratedConf),
-			path.Join(serviceConfFolder, "Service.conf"),
+			GetServiceConfPath(name, ServerEnvironmentFile),
+			GetServiceConfPath(name, "Service.conf"),
 		}
 		for _, confPath := range confPaths {
 			if utils.FileExists(confPath) {

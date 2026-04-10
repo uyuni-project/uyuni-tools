@@ -79,7 +79,7 @@ func installForPodman(
 		return err
 	}
 
-	// This creates installation values to be pass as envvars
+	// This creates installation values to be passed as envvars
 	if err := podman.GenerateServerEnvironmentFile(flags.Installation, fqdn, flags.Mirror != ""); err != nil {
 		return err
 	}
@@ -130,33 +130,29 @@ func setupDatabase(dbFlags types.DBFlags, reportdbFlags types.DBFlags, preparedI
 		return err
 	}
 
-	if dbFlags.IsLocal() {
-		// The admin password is not needed for external databases
-		if err := shared_podman.CreateCredentialsSecrets(
-			shared_podman.DBAdminUserSecret, dbFlags.Admin.User,
-			shared_podman.DBAdminPassSecret, dbFlags.Admin.Password,
-		); err != nil {
-			return err
-		}
-		if dbFlags.Walbackup {
-			if err := pgsql.GenerateBackupVolumeConfig(systemd); err != nil {
-				return err
-			}
-		}
-		// Run the DB container setup if the user doesn't set a custom host name for it.
-		if err := pgsql.SetupPgsql(systemd, preparedImage); err != nil {
-			return err
-		}
-		if dbFlags.Walbackup {
-			if err := db.Enable(true); err != nil {
-				return err
-			}
-		}
-	} else {
+	if !dbFlags.IsLocal() {
 		log.Info().Msgf(
 			L("Skipped database container setup to use external database %s"),
 			dbFlags.Host,
 		)
+		return nil
+	}
+
+	// The admin password is not needed for external databases
+	if err := shared_podman.CreateCredentialsSecrets(
+		shared_podman.DBAdminUserSecret, dbFlags.Admin.User,
+		shared_podman.DBAdminPassSecret, dbFlags.Admin.Password,
+	); err != nil {
+		return err
+	}
+	// Run the DB container setup if the user doesn't set a custom host name for it.
+	if err := pgsql.SetupPgsql(systemd, preparedImage); err != nil {
+		return err
+	}
+	if dbFlags.Walbackup {
+		if err := db.Enable(true); err != nil {
+			return err
+		}
 	}
 	return nil
 }

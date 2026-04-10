@@ -54,10 +54,14 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret {{ .CertSecret }},type=mount,target={{ .CertPath }} \
 	--secret {{ .KeySecret }},type=mount,target={{ .KeyPath }} \
 	--secret {{ .DBCaSecret }},type=mount,target={{ .DBCaPath }} \
+	{{ if .SCCUserSecret }}
 	--secret {{ .SCCUserSecret }},type=env,target=SCC_USER \
 	--secret {{ .SCCPassSecret }},type=env,target=SCC_PASS \
+	{{ end }}
+	{{ if .AdminUserSecret }}
 	--secret {{ .AdminUserSecret }},type=env,target=ADMIN_USER \
 	--secret {{ .AdminPassSecret }},type=env,target=ADMIN_PASS \
+	{{ end }}
 	--health-on-failure=stop \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 

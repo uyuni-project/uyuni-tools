@@ -49,9 +49,9 @@ const (
 	// AdminPassSecret is the name of the podman secret containing the admin password.
 	AdminPassSecret = "uyuni-admin-pass"
 	// SCCUserSecret is the name of the podman secret containing the SCC username.
-	SCCUserSecret = "uyuni-SCC-user"
+	SCCUserSecret = "uyuni-scc-user"
 	// SCCPassSecret is the name of the podman secret containing the SCC password.
-	SCCPassSecret = "uyuni-SCC-pass"
+	SCCPassSecret = "uyuni-scc-pass"
 )
 
 // CreateCredentialsSecretsIfMissing creates the podman secrets, one for the user name and one for the password.
