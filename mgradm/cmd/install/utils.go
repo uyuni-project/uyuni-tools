@@ -41,6 +41,10 @@ func installForPodman(
 		return err
 	}
 
+	if err := checkPrerequisites(); err != nil {
+		return err
+	}
+
 	flags.Installation.CheckParameters(cmd, "podman")
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
@@ -97,12 +101,8 @@ func installForPodman(
 		return utils.Error(err, L("failed to add SSL CA certificate to host trusted certificates"))
 	}
 
-	if path, err := exec.LookPath("uyuni-payg-extract-data"); err == nil {
-		// the binary is installed
-		err = utils.RunCmdStdMapping(zerolog.DebugLevel, path)
-		if err != nil {
-			return utils.Error(err, L("failed to extract payg data"))
-		}
+	if err := runPaygExtract(); err != nil {
+		return err
 	}
 
 	return utils.JoinErrors(
@@ -112,6 +112,36 @@ func installForPodman(
 		saline.SetupSalineContainer(systemd, authFile, flags.Image, flags.Saline, flags.Installation.TZ),
 		tftp.SetupTFTPContainer(systemd, authFile, flags.Image, flags.TFTPD, fqdn, false),
 	)
+}
+
+func runPaygExtract() error {
+	path, err := exec.LookPath("uyuni-payg-extract-data")
+	if err != nil {
+		// binary is not installed, skip
+		return nil
+	}
+	// the binary is installed
+	return utils.Error(utils.RunCmdStdMapping(zerolog.DebugLevel, path), L("failed to extract payg data"))
+}
+
+func checkPrerequisites() error {
+	if err := utils.CheckMemory(8); err != nil {
+		return err
+	}
+	if err := utils.CheckStorage("/var/lib", 50); err != nil {
+		return err
+	}
+
+	for _, port := range []int{80, 443, 4505, 4506} {
+		if err := utils.CheckPort(port); err != nil {
+			return err
+		}
+	}
+
+	if err := shared_podman.CheckPodmanRunningContainers(); err != nil {
+		return err
+	}
+	return nil
 }
 
 func setupDatabase(dbFlags adm_utils.DBFlags, reportdbFlags adm_utils.DBFlags, preparedImage string) error {
