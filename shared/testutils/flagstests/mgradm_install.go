@@ -33,6 +33,7 @@ var InstallFlagsTestArgs = func() []string {
 
 	args = append(args, SCCFlagTestArgs...)
 	args = append(args, ImageFlagsTestArgs...)
+	args = append(args, ServerImageOnlyFlagsTestArgs...)
 	args = append(args, CocoFlagsTestArgs...)
 	args = append(args, HubXmlrpcFlagsTestArgs...)
 	args = append(args, SalineFlagsTestArgs...)
@@ -60,6 +61,7 @@ func AssertInstallFlags(t *testing.T, flags *utils.ServerFlags) {
 	testutils.AssertEquals(t, "Error parsing --admin-lastName", "adminlast", flags.Installation.Admin.LastName)
 	testutils.AssertEquals(t, "Error parsing --organization", "someorg", flags.Installation.Organization)
 	AssertSCCFlag(t, &flags.Installation.SCC)
+	AssertServerImageFlags(t, flags)
 	AssertImageFlag(t, &flags.Image)
 	AssertCocoFlag(t, &flags.Coco)
 	AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)

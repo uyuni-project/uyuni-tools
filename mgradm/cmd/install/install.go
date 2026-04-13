@@ -44,6 +44,7 @@ NOTE: installing on a remote podman is not supported yet!
 			if len(args) > 0 && args[0] == "podman" {
 				args = args[1:]
 			}
+
 			var flags podmanInstallFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, getFlagsUpdater(&flags), run)
 		},
@@ -70,6 +71,17 @@ func getFlagsUpdater(flags *podmanInstallFlags) utils.FlagsUpdaterFunc {
 		if flags.Installation.SSL.Server.IsDefined() && !flags.Installation.SSL.DB.IsDefined() {
 			flags.Installation.SSL.DB.Cert = flags.Installation.SSL.Server.Cert
 			flags.Installation.SSL.DB.Key = flags.Installation.SSL.Server.Key
+		}
+		if !flags.Installation.Tftp {
+			flags.TFTPD.Enable = false
+		}
+
+		// Override Image.Name/Tag with server-specific values if set.
+		if flags.Server.Image != "" {
+			flags.Image.Name = flags.Server.Image
+		}
+		if flags.Server.Tag != "" {
+			flags.Image.Tag = flags.Server.Tag
 		}
 	}
 }

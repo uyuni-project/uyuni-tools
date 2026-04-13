@@ -105,12 +105,19 @@ var InstallSSLFlagsTestArgs = []string{
 	"--ssl-server-key", "path/srv.key",
 }
 
-// ImageFlagsTestArgs is the expected values for AssertImageFlag.
+// ImageOnlyFlagsTestArgs are the expected values for the global image flags.
 var ImageOnlyFlagsTestArgs = []string{
 	"--image", "path/to/image",
 	"--registry", "myOldRegistry",
 	"--tag", "v1.2.3",
 	"--pullPolicy", "never",
+}
+
+// ServerImageOnlyFlagsTestArgs are the expected values for the server-specific image flags.
+// Uses distinct values from ImageOnlyFlagsTestArgs so the override chain can be verified.
+var ServerImageOnlyFlagsTestArgs = []string{
+	"--server-image", "custom/server-image",
+	"--server-tag", "server-tag-override",
 }
 
 // RegistryFlagsTestArgs is the expected values for AssertRegistryFlag.
@@ -122,13 +129,19 @@ var RegistryImageFlagsTestArgs = []string{
 
 var ImageFlagsTestArgs = append(ImageOnlyFlagsTestArgs, RegistryImageFlagsTestArgs...)
 
-// AssertImageFlag checks that all image flags are parsed correctly.
-func AssertImageFlag(t *testing.T, flags *types.ImageFlags) {
-	testutils.AssertEquals(t, "Error parsing --image", "path/to/image", flags.Name)
-	testutils.AssertEquals(t, "Error parsing --registry", "myOldRegistry", flags.Registry.Host)
-	testutils.AssertEquals(t, "Error parsing --tag", "v1.2.3", flags.Tag)
-	testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.PullPolicy)
+// AssertServerImageFlags checks that --server-image and --server-tag are
+// parsed into ServerFlags.Server and that the override is wired into flags.Image.
+func AssertServerImageFlags(t *testing.T, flags *utils.ServerFlags) {
+	testutils.AssertEquals(t, "Error parsing --server-image", "custom/server-image", flags.Server.Image)
+	testutils.AssertEquals(t, "Error parsing --server-tag", "server-tag-override", flags.Server.Tag)
+	testutils.AssertEquals(t, "Error applying --server-image override", "custom/server-image", flags.Image.Name)
+	testutils.AssertEquals(t, "Error applying --server-tag override", "server-tag-override", flags.Image.Tag)
+}
 
+// AssertImageFlag checks the pull policy and registry flags.
+// Name and Tag are not checked here as server commands override them via --server-image/--server-tag.
+func AssertImageFlag(t *testing.T, flags *types.ImageFlags) {
+	testutils.AssertEquals(t, "Error parsing --pullPolicy", "never", flags.PullPolicy)
 	AssertRegistryFlag(t, &flags.Registry)
 }
 

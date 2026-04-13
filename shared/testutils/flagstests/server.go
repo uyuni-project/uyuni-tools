@@ -22,6 +22,7 @@ var ServerFlagsTestArgs = func() []string {
 	args = append(args, SSLGenerationFlagsTestArgs...)
 	args = append(args, SalineFlagsTestArgs...)
 	args = append(args, ImageFlagsTestArgs...)
+	args = append(args, ServerImageOnlyFlagsTestArgs...)
 	args = append(args, RegistryImageFlagsTestArgs...)
 	args = append(args, DBUpdateImageFlagTestArgs...)
 	args = append(args, CocoFlagsTestArgs...)
@@ -32,6 +33,7 @@ var ServerFlagsTestArgs = func() []string {
 
 // AssertServerFlags checks that all the server-related common flags are parsed correctly.
 func AssertServerFlags(t *testing.T, flags *utils.ServerFlags) {
+	AssertServerImageFlags(t, flags)
 	AssertImageFlag(t, &flags.Image)
 	AssertRegistryFlag(t, &flags.Image.Registry)
 	AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
