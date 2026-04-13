@@ -45,6 +45,7 @@ const (
 var contextRunner = shared_utils.NewRunnerWithContext
 var newRunner = shared_utils.NewRunner
 var systemdGenerator func(shared_utils.Template, string, string, string) error = generateSystemdFile
+var createSecret = podman.CreateSecret
 
 // PodmanProxyFlags are the flags used by podman proxy install and upgrade command.
 type PodmanProxyFlags struct {
@@ -467,98 +468,114 @@ func GetSystemID() error {
 	}
 	log.Trace().Msgf("SystemID: %s", systemid)
 
-	return podman.CreateSecret(SystemIDSecret, systemid)
+	return createSecret(SystemIDSecret, systemid)
 }
+
+var proxyConfigDir = "/etc/uyuni/proxy"
 
 // ExtractSecrets extracts certificates from YAML files and creates podman secrets.
 func ExtractSecrets() error {
-	const proxyConfigDir = "/etc/uyuni/proxy"
-	configPath := path.Join(proxyConfigDir, "config.yaml")
-	httpdPath := path.Join(proxyConfigDir, "httpd.yaml")
+	if err := extractCASecret(path.Join(proxyConfigDir, "config.yaml")); err != nil {
+		return err
+	}
+	return extractHttpdSecrets(path.Join(proxyConfigDir, "httpd.yaml"))
+}
 
-	// Extract CA from config.yaml
-	if shared_utils.FileExists(configPath) {
-		data, err := os.ReadFile(configPath)
-		if err != nil {
-			return shared_utils.Errorf(err, L("failed to read %s"), configPath)
-		}
-
-		var config map[string]interface{}
-		if err := yaml.Unmarshal(data, &config); err != nil {
-			return shared_utils.Errorf(err, L("failed to unmarshal %s"), configPath)
-		}
-
-		if caCrt, ok := config["ca_crt"].(string); ok && caCrt != "" {
-			if err := podman.CreateSecret(podman.CASecret, caCrt); err != nil {
-				return shared_utils.Errorf(err, L("failed to create %s secret"), podman.CASecret)
-			}
-			delete(config, "ca_crt")
-
-			// Write back config.yaml
-			newData, err := yaml.Marshal(config)
-			if err != nil {
-				return shared_utils.Errorf(err, L("failed to marshal %s"), configPath)
-			}
-			if err := os.WriteFile(configPath, newData, 0644); err != nil {
-				return shared_utils.Errorf(err, L("failed to write %s"), configPath)
-			}
-		}
+func extractCASecret(configPath string) error {
+	config, err := loadYaml(configPath)
+	if err != nil || config == nil {
+		return err
 	}
 
-	// Extract certificates from httpd.yaml
-	if shared_utils.FileExists(httpdPath) {
-		data, err := os.ReadFile(httpdPath)
-		if err != nil {
-			return shared_utils.Errorf(err, L("failed to read %s"), httpdPath)
+	updated, err := extractKeyToSecret(config, "ca_crt", podman.CASecret)
+	if err != nil {
+		return err
+	}
+
+	if updated {
+		return saveYaml(configPath, config)
+	}
+	return nil
+}
+
+func extractHttpdSecrets(httpdPath string) error {
+	config, err := loadYaml(httpdPath)
+	if err != nil || config == nil {
+		return err
+	}
+
+	httpd, ok := config["httpd"]
+	if !ok {
+		return nil
+	}
+
+	httpdMap := ensureStringMap(httpd)
+	if httpdMap == nil {
+		return nil
+	}
+	config["httpd"] = httpdMap
+
+	updated1, err := extractKeyToSecret(httpdMap, "server_crt", podman.ProxySSLCertSecret)
+	if err != nil {
+		return err
+	}
+	updated2, err := extractKeyToSecret(httpdMap, "server_key", podman.ProxySSLKeySecret)
+	if err != nil {
+		return err
+	}
+
+	if updated1 || updated2 {
+		return saveYaml(httpdPath, config)
+	}
+	return nil
+}
+
+func loadYaml(filePath string) (map[string]interface{}, error) {
+	if !shared_utils.FileExists(filePath) {
+		return nil, nil
+	}
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, shared_utils.Errorf(err, L("failed to read %s"), filePath)
+	}
+	var config map[string]interface{}
+	if err := yaml.Unmarshal(data, &config); err != nil {
+		return nil, shared_utils.Errorf(err, L("failed to unmarshal %s"), filePath)
+	}
+	return config, nil
+}
+
+func saveYaml(filePath string, config map[string]interface{}) error {
+	newData, err := yaml.Marshal(config)
+	if err != nil {
+		return shared_utils.Errorf(err, L("failed to marshal %s"), filePath)
+	}
+	if err := os.WriteFile(filePath, newData, 0644); err != nil {
+		return shared_utils.Errorf(err, L("failed to write %s"), filePath)
+	}
+	return nil
+}
+
+func extractKeyToSecret(m map[string]interface{}, key string, secretName string) (bool, error) {
+	if val, ok := m[key].(string); ok && val != "" {
+		if err := createSecret(secretName, val); err != nil {
+			return false, shared_utils.Errorf(err, L("failed to create %s secret"), secretName)
 		}
+		delete(m, key)
+		return true, nil
+	}
+	return false, nil
+}
 
-		var httpdConfig map[string]interface{}
-		if err := yaml.Unmarshal(data, &httpdConfig); err != nil {
-			return shared_utils.Errorf(err, L("failed to unmarshal %s"), httpdPath)
+func ensureStringMap(data interface{}) map[string]interface{} {
+	if m, ok := data.(map[string]interface{}); ok {
+		return m
+	} else if m, ok := data.(map[interface{}]interface{}); ok {
+		res := make(map[string]interface{})
+		for k, v := range m {
+			res[fmt.Sprintf("%v", k)] = v
 		}
-
-		if httpd, ok := httpdConfig["httpd"]; ok {
-			updated := false
-			// Handle both map[string]interface{} and map[interface{}]interface{}
-			var httpdMap map[string]interface{}
-			if m, ok := httpd.(map[string]interface{}); ok {
-				httpdMap = m
-			} else if m, ok := httpd.(map[interface{}]interface{}); ok {
-				httpdMap = make(map[string]interface{})
-				for k, v := range m {
-					httpdMap[fmt.Sprintf("%v", k)] = v
-				}
-				httpdConfig["httpd"] = httpdMap
-			}
-
-			if httpdMap != nil {
-				if serverCrt, ok := httpdMap["server_crt"].(string); ok && serverCrt != "" {
-					if err := podman.CreateSecret(podman.ProxySSLCertSecret, serverCrt); err != nil {
-						return shared_utils.Errorf(err, L("failed to create %s secret"), podman.ProxySSLCertSecret)
-					}
-					delete(httpdMap, "server_crt")
-					updated = true
-				}
-				if serverKey, ok := httpdMap["server_key"].(string); ok && serverKey != "" {
-					if err := podman.CreateSecret(podman.ProxySSLKeySecret, serverKey); err != nil {
-						return shared_utils.Errorf(err, L("failed to create %s secret"), podman.ProxySSLKeySecret)
-					}
-					delete(httpdMap, "server_key")
-					updated = true
-				}
-			}
-
-			if updated {
-				// Write back httpd.yaml
-				newData, err := yaml.Marshal(httpdConfig)
-				if err != nil {
-					return shared_utils.Errorf(err, L("failed to marshal %s"), httpdPath)
-				}
-				if err := os.WriteFile(httpdPath, newData, 0644); err != nil {
-					return shared_utils.Errorf(err, L("failed to write %s"), httpdPath)
-				}
-			}
-		}
+		return res
 	}
 	return nil
 }
