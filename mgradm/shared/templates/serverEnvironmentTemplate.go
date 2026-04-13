@@ -34,9 +34,9 @@ EXTERNALDB_PROVIDER="{{ .DB.Provider }}"
 {{- end -}}
 {{- end -}}
 {{- if .ReportDB }}
-REPORTDB_NAME="{{ .ReportDB.Name }}"
-REPORTDB_HOST="{{ .ReportDB.Host }}"
-REPORTDB_PORT="{{ .ReportDB.GetPort }}"
+REPORT_DB_NAME="{{ .ReportDB.Name }}"
+REPORT_DB_HOST="{{ .ReportDB.Host }}"
+REPORT_DB_PORT="{{ .ReportDB.GetPort }}"
 {{- end -}}
 {{- if .Debug }}
 DEBUG_JAVA="{{ .Debug }}"
