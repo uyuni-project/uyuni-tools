@@ -32,6 +32,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--shm-size=0 \
 	--shm-size-systemd=0 \
 	--sdnotify=conmon \
+	--systemd=always \
 	-d \
 	--name {{ .NamePrefix }}-server \
 	--hostname {{ .NamePrefix }}-server.mgr.internal \
