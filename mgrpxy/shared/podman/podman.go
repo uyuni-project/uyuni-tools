@@ -25,6 +25,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	shared_utils "github.com/uyuni-project/uyuni-tools/shared/utils"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -44,6 +45,7 @@ const (
 var contextRunner = shared_utils.NewRunnerWithContext
 var newRunner = shared_utils.NewRunner
 var systemdGenerator func(shared_utils.Template, string, string, string) error = generateSystemdFile
+var createSecret = podman.CreateSecret
 
 // PodmanProxyFlags are the flags used by podman proxy install and upgrade command.
 type PodmanProxyFlags struct {
@@ -85,6 +87,15 @@ func GenerateSystemdService(
 		}
 		if podman.HasSecret(SystemIDSecret) {
 			dataHttpd.SystemIDSecret = SystemIDSecret
+		}
+		if podman.HasSecret(podman.CASecret) {
+			dataHttpd.CaSecret = podman.CASecret
+		}
+		if podman.HasSecret(podman.ProxySSLCertSecret) {
+			dataHttpd.CertSecret = podman.ProxySSLCertSecret
+		}
+		if podman.HasSecret(podman.ProxySSLKeySecret) {
+			dataHttpd.KeySecret = podman.ProxySSLKeySecret
 		}
 
 		additionHttpdTuningSettings := ""
@@ -158,6 +169,9 @@ func GenerateSystemdService(
 		dataTftpd := templates.TFTPDTemplateData{
 			Volumes:       shared_utils.ProxyTftpdVolumes,
 			HTTPProxyFile: httpProxyConfig,
+		}
+		if podman.HasSecret(podman.CASecret) {
+			dataTftpd.CaSecret = podman.CASecret
 		}
 		if err := systemdGenerator(dataTftpd, "tftpd", tftpdImage, ""); err != nil {
 			return err
@@ -308,6 +322,10 @@ func Upgrade(
 		return err
 	}
 
+	if err := ExtractSecrets(); err != nil {
+		return err
+	}
+
 	hostData, err := podman.InspectHost()
 	if err != nil {
 		return err
@@ -450,5 +468,114 @@ func GetSystemID() error {
 	}
 	log.Trace().Msgf("SystemID: %s", systemid)
 
-	return podman.CreateSecret(SystemIDSecret, systemid)
+	return createSecret(SystemIDSecret, systemid)
+}
+
+var proxyConfigDir = "/etc/uyuni/proxy"
+
+// ExtractSecrets extracts certificates from YAML files and creates podman secrets.
+func ExtractSecrets() error {
+	if err := extractCASecret(path.Join(proxyConfigDir, "config.yaml")); err != nil {
+		return err
+	}
+	return extractHttpdSecrets(path.Join(proxyConfigDir, "httpd.yaml"))
+}
+
+func extractCASecret(configPath string) error {
+	config, err := loadYaml(configPath)
+	if err != nil || config == nil {
+		return err
+	}
+
+	updated, err := extractKeyToSecret(config, "ca_crt", podman.CASecret)
+	if err != nil {
+		return err
+	}
+
+	if updated {
+		return saveYaml(configPath, config)
+	}
+	return nil
+}
+
+func extractHttpdSecrets(httpdPath string) error {
+	config, err := loadYaml(httpdPath)
+	if err != nil || config == nil {
+		return err
+	}
+
+	httpd, ok := config["httpd"]
+	if !ok {
+		return nil
+	}
+
+	httpdMap := ensureStringMap(httpd)
+	if httpdMap == nil {
+		return nil
+	}
+	config["httpd"] = httpdMap
+
+	updated1, err := extractKeyToSecret(httpdMap, "server_crt", podman.ProxySSLCertSecret)
+	if err != nil {
+		return err
+	}
+	updated2, err := extractKeyToSecret(httpdMap, "server_key", podman.ProxySSLKeySecret)
+	if err != nil {
+		return err
+	}
+
+	if updated1 || updated2 {
+		return saveYaml(httpdPath, config)
+	}
+	return nil
+}
+
+func loadYaml(filePath string) (map[string]interface{}, error) {
+	if !shared_utils.FileExists(filePath) {
+		return nil, nil
+	}
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, shared_utils.Errorf(err, L("failed to read %s"), filePath)
+	}
+	var config map[string]interface{}
+	if err := yaml.Unmarshal(data, &config); err != nil {
+		return nil, shared_utils.Errorf(err, L("failed to unmarshal %s"), filePath)
+	}
+	return config, nil
+}
+
+func saveYaml(filePath string, config map[string]interface{}) error {
+	newData, err := yaml.Marshal(config)
+	if err != nil {
+		return shared_utils.Errorf(err, L("failed to marshal %s"), filePath)
+	}
+	if err := os.WriteFile(filePath, newData, 0644); err != nil {
+		return shared_utils.Errorf(err, L("failed to write %s"), filePath)
+	}
+	return nil
+}
+
+func extractKeyToSecret(m map[string]interface{}, key string, secretName string) (bool, error) {
+	if val, ok := m[key].(string); ok && val != "" {
+		if err := createSecret(secretName, val); err != nil {
+			return false, shared_utils.Errorf(err, L("failed to create %s secret"), secretName)
+		}
+		delete(m, key)
+		return true, nil
+	}
+	return false, nil
+}
+
+func ensureStringMap(data interface{}) map[string]interface{} {
+	if m, ok := data.(map[string]interface{}); ok {
+		return m
+	} else if m, ok := data.(map[interface{}]interface{}); ok {
+		res := make(map[string]interface{})
+		for k, v := range m {
+			res[fmt.Sprintf("%v", k)] = v
+		}
+		return res
+	}
+	return nil
 }

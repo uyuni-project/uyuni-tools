@@ -23,6 +23,9 @@ func TestTemplatesRender(t *testing.T) {
 				Volumes:        []types.VolumeMount{{Name: "vol1", MountPath: "/mnt/vol1"}},
 				HTTPProxyFile:  "/etc/sysconfig/proxy",
 				SystemIDSecret: "system-id-secret",
+				CaSecret:       "ca-secret",
+				CertSecret:     "cert-secret",
+				KeySecret:      "key-secret",
 			},
 		},
 		{
@@ -58,6 +61,7 @@ func TestTemplatesRender(t *testing.T) {
 			template: TFTPDTemplateData{
 				Volumes:       []types.VolumeMount{{Name: "tftp-vol", MountPath: "/srv/tftpboot"}},
 				HTTPProxyFile: "/etc/sysconfig/proxy",
+				CaSecret:      "ca-secret",
 			},
 		},
 	}
