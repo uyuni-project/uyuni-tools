@@ -1,0 +1,2 @@
+- Fix db online backup with new pg_hba settings
+- mgrctl copy can now infer target name if not set
