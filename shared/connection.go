@@ -292,7 +292,7 @@ func (c *Connection) ExecScript(script string) ([]byte, error) {
 
 	remotePath := fmt.Sprintf("/tmp/script-%d.sh", time.Now().UnixNano())
 
-	// Copy localy created tempfile to container
+	// Copy locally created tempfile to container
 	if err := c.Copy(tempFile.Name(), "server:"+remotePath, c.user, ""); err != nil {
 		return nil, utils.Errorf(err, L("failed to copy script to container"))
 	}
@@ -320,7 +320,8 @@ func (c *Connection) Healthcheck() ([]byte, error) {
 	}
 
 	if cmd == "host" {
-		return nil, errors.New(L("healthcheck not supported on host"))
+		// Healthcheck not supported on host, always return nil
+		return nil, nil
 	}
 
 	cmdArgs := []string{"healthcheck", "run", c.podName}
@@ -399,7 +400,7 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 	}
 
 	srcPath := strings.Replace(src, "server:", "", 1)
-	// Assume the same name as the source if we use copy with just "server:""
+	// Assume the same name as the source if we use copy with just "server:"
 	// Similarly if we copy to the directory "something/"
 	if strings.HasSuffix(dst, ":") || strings.HasSuffix(dst, "/") {
 		dst += filepath.Base(srcPath)
@@ -438,7 +439,7 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 
 	// File is already copied over, we need to drop server prefix
 	dstPath := strings.Replace(dst, "server:", "", 1)
-	if user != "" && (strings.HasPrefix(dst, "server:") || command == "host") {
+	if user != "" && (strings.HasPrefix(dst, "server:") || c.backend == "host") {
 		owner := user
 		if group != "" {
 			owner = user + ":" + group
@@ -448,7 +449,7 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 		if command == "kubectl" {
 			execArgs = append(execArgs, "-n", namespace)
 		}
-		if command == "host" {
+		if c.backend == "host" {
 			execArgs = []string{owner, dstPath}
 			command = "chown"
 		} else {

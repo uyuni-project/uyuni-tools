@@ -161,6 +161,10 @@ func TestHostCopy(t *testing.T) {
 		t.Errorf("Expected command 'cp', got '%s'", capturedCommand)
 	}
 
+	if len(capturedArgs) < 2 {
+		t.Fatal("Unexpected number of captured args")
+	}
+
 	if capturedArgs[0] != "/etc/passwd" || capturedArgs[1] != "/tmp/passwd" {
 		t.Errorf("Expected args ['/etc/passwd', '/tmp/passwd'], got %v", capturedArgs)
 	}
@@ -190,6 +194,10 @@ func TestHostInferredCopy(t *testing.T) {
 		t.Errorf("Expected command 'cp', got '%s'", capturedCommand)
 	}
 
+	if len(capturedArgs) < 2 {
+		t.Fatal("Unexpected number of captured args")
+	}
+
 	if capturedArgs[0] != "/home/myfile" || capturedArgs[1] != "/tmp/myfile" {
 		t.Errorf("Expected args ['/home/myfile', '/tmp/myfile'], got %v", capturedArgs)
 	}
@@ -197,6 +205,10 @@ func TestHostInferredCopy(t *testing.T) {
 	err = cnx.Copy("/tmp/myanotherfile", "server:", "", "")
 	if err != nil {
 		t.Errorf("Copy returned error: %v", err)
+	}
+
+	if len(capturedArgs) < 2 {
+		t.Fatal("Unexpected number of captured args")
 	}
 
 	if capturedArgs[0] != "/tmp/myanotherfile" || capturedArgs[1] != "myanotherfile" {
