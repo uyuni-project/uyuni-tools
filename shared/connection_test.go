@@ -165,3 +165,104 @@ func TestHostCopy(t *testing.T) {
 		t.Errorf("Expected args ['/etc/passwd', '/tmp/passwd'], got %v", capturedArgs)
 	}
 }
+
+func TestHostUserExec(t *testing.T) {
+	originalRunner := runner
+	defer func() { runner = originalRunner }()
+
+	var capturedCommand string
+	var capturedArgs []string
+
+	runner = func(command string, args ...string) types.Runner {
+		capturedCommand = command
+		capturedArgs = args
+		return &mockRunner{output: []byte("host output")}
+	}
+
+	cnx := NewUserConnection("host", "", "", "postgres")
+	out, err := cnx.Exec("ls", "-la")
+
+	if err != nil {
+		t.Errorf("Exec returned error: %v", err)
+	}
+
+	if capturedCommand != "su" {
+		t.Errorf("Expected command 'su', got '%s'", capturedCommand)
+	}
+
+	expectedArgs := []string{"-", "postgres", "-c", "'ls' '-la'"}
+	if len(capturedArgs) != len(expectedArgs) {
+		t.Errorf("Expected %d args, got %d: %v", len(expectedArgs), len(capturedArgs), capturedArgs)
+	} else {
+		for i, arg := range capturedArgs {
+			if arg != expectedArgs[i] {
+				t.Errorf("Expected arg %d to be '%s', got '%s'", i, expectedArgs[i], arg)
+			}
+		}
+	}
+
+	if string(out) != "host output" {
+		t.Errorf("Expected output 'host output', got '%s'", string(out))
+	}
+}
+
+func TestPodmanUserExec(t *testing.T) {
+	originalRunner := runner
+	defer func() { runner = originalRunner }()
+
+	var capturedCommand string
+	var capturedArgs []string
+
+	runner = func(command string, args ...string) types.Runner {
+		capturedCommand = command
+		capturedArgs = args
+		return &mockRunner{output: []byte("podman output")}
+	}
+
+	cnx := NewUserConnection("podman", "uyuni-server", "", "postgres")
+	cnx.command = "podman"
+	cnx.podName = "uyuni-server"
+	out, err := cnx.Exec("psql", "-c", "SHOW archive_mode;")
+
+	if err != nil {
+		t.Errorf("Exec returned error: %v", err)
+	}
+
+	if capturedCommand != "podman" {
+		t.Errorf("Expected command 'podman', got '%s'", capturedCommand)
+	}
+
+	expectedArgs := []string{"exec", "uyuni-server", "su", "-", "postgres", "-c", "'psql' '-c' 'SHOW archive_mode;'"}
+	if len(capturedArgs) != len(expectedArgs) {
+		t.Errorf("Expected %d args, got %d: %v", len(expectedArgs), len(capturedArgs), capturedArgs)
+	} else {
+		for i, arg := range capturedArgs {
+			if arg != expectedArgs[i] {
+				t.Errorf("Expected arg %d to be '%s', got '%s'", i, expectedArgs[i], arg)
+			}
+		}
+	}
+
+	if string(out) != "podman output" {
+		t.Errorf("Expected output 'podman output', got '%s'", string(out))
+	}
+}
+
+func TestQuoteArgs(t *testing.T) {
+	tests := []struct {
+		args     []string
+		expected string
+	}{
+		{args: []string{"ls", "-la"}, expected: "'ls' '-la'"},
+		{args: []string{"echo", "hello world"}, expected: "'echo' 'hello world'"},
+		{args: []string{"psql", "-c", "SHOW archive_mode;"}, expected: "'psql' '-c' 'SHOW archive_mode;'"},
+		{args: []string{"sh", "-c", "echo 'hello'"}, expected: "'sh' '-c' 'echo '\\''hello'\\'''"},
+	}
+
+	for _, tt := range tests {
+		actual := quoteArgs(tt.args)
+		if actual != tt.expected {
+			t.Errorf("quoteArgs(%v) = %s, expected %s", tt.args, actual, tt.expected)
+		}
+	}
+}

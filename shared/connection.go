@@ -45,6 +45,7 @@ type Connection struct {
 	kubernetesFilter string
 	namespace        string
 	container        string
+	user             string
 	systemd          podman.Systemd
 }
 
@@ -55,9 +56,14 @@ type Connection struct {
 // container is the name of a container to look for when detecting the command.
 // kubernetesFilter is a filter parameter to use to match a pod.
 func NewConnection(backend string, container string, kubernetesFilter string) *Connection {
+	return NewUserConnection(backend, container, kubernetesFilter, "")
+}
+
+// NewUserConnection creates a new connection object with a specific user to run commands as.
+func NewUserConnection(backend string, container string, kubernetesFilter string, user string) *Connection {
 	systemd := podman.NewSystemd()
 	cnx := Connection{
-		backend: backend, container: container, kubernetesFilter: kubernetesFilter, systemd: systemd,
+		backend: backend, container: container, kubernetesFilter: kubernetesFilter, systemd: systemd, user: user,
 	}
 
 	return &cnx
@@ -233,6 +239,10 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 	}
 
 	if cmd == "host" {
+		if c.user != "" {
+			fullCommand := quoteArgs(append([]string{command}, args...))
+			return runner("su", "-", c.user, "-c", fullCommand).Log(zerolog.DebugLevel).Spinner("").Exec()
+		}
 		return runner(command, args...).Log(zerolog.DebugLevel).Spinner("").Exec()
 	}
 
@@ -248,10 +258,23 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 
 		cmdArgs = append(cmdArgs, "-n", c.namespace, "-c", c.container, "--")
 	}
+
 	shellArgs := append([]string{command}, args...)
+	if c.user != "" {
+		fullCommand := quoteArgs(shellArgs)
+		shellArgs = []string{"su", "-", c.user, "-c", fullCommand}
+	}
 	cmdArgs = append(cmdArgs, shellArgs...)
 
 	return runner(cmd, cmdArgs...).Log(zerolog.DebugLevel).Spinner("").Exec()
+}
+
+func quoteArgs(args []string) string {
+	quotedArgs := make([]string, len(args))
+	for i, arg := range args {
+		quotedArgs[i] = "'" + strings.ReplaceAll(arg, "'", "'\\''") + "'"
+	}
+	return strings.Join(quotedArgs, " ")
 }
 
 // ExecScript runs the provided script inside the container.
@@ -270,7 +293,7 @@ func (c *Connection) ExecScript(script string) ([]byte, error) {
 	remotePath := fmt.Sprintf("/tmp/script-%d.sh", time.Now().UnixNano())
 
 	// Copy localy created tempfile to container
-	if err := c.Copy(tempFile.Name(), "server:"+remotePath, "", ""); err != nil {
+	if err := c.Copy(tempFile.Name(), "server:"+remotePath, c.user, ""); err != nil {
 		return nil, utils.Errorf(err, L("failed to copy script to container"))
 	}
 
@@ -380,6 +403,11 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 	srcExpanded := strings.Replace(src, "server:", namespacePrefix+podName+":", 1)
 	dstExpanded := strings.Replace(dst, "server:", namespacePrefix+podName+":", 1)
 
+	// Use connection user if not set explicitly
+	if user == "" {
+		user = c.user
+	}
+
 	switch command {
 	case "podman-remote":
 		fallthrough
@@ -401,17 +429,26 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 		return err
 	}
 
-	if user != "" && strings.HasPrefix(dst, "server:") {
-		execArgs := []string{"exec", podName}
-		if command == "kubectl" {
-			execArgs = append(execArgs, "-n", namespace)
-		}
-		execArgs = append(execArgs, extraArgs...)
+	// File is already copied over, we need to drop server prefix
+	dstPath := strings.Replace(dst, "server:", "", 1)
+	if user != "" && (strings.HasPrefix(dst, "server:") || command == "host") {
 		owner := user
 		if group != "" {
 			owner = user + ":" + group
 		}
-		execArgs = append(execArgs, "chown", owner, strings.Replace(dst, "server:", "", 1))
+
+		execArgs := []string{"exec", podName}
+		if command == "kubectl" {
+			execArgs = append(execArgs, "-n", namespace)
+		}
+		if command == "host" {
+			execArgs = []string{owner, dstPath}
+			command = "chown"
+		} else {
+			execArgs = append(execArgs, extraArgs...)
+			execArgs = append(execArgs, "chown", owner, dstPath)
+		}
+
 		_, err := runner(command, execArgs...).Log(zerolog.DebugLevel).StdMapping().Exec()
 		return err
 	}
