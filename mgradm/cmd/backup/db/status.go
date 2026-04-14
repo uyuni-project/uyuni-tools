@@ -50,7 +50,7 @@ func Status() error {
 // Reports nil if backup is enabled and correctly configured. Otherwise reports an error.
 func CheckStatus() error {
 	log.Debug().Msg("Checking for the database configuration")
-	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
+	cnx := shared.NewUserConnection("podman", podman.DBContainerName, "", podman.DBRuntimeUser)
 	if _, err := cnx.GetPodName(); err == nil {
 		log.Debug().Msg("Checking for runtime config")
 		if err := checkStatusSQL(cnx); err != nil {
