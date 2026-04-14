@@ -17,7 +17,7 @@ func Disable(flags *Flagpole) error {
 	log.Info().Msg(L("Disabling DB backup"))
 
 	wasRunning := false
-	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
+	cnx := shared.NewUserConnection("podman", podman.DBContainerName, "", podman.DBRuntimeUser)
 	if _, err := cnx.GetPodName(); err == nil {
 		wasRunning = true
 		if !flags.Force {

@@ -50,6 +50,9 @@ const HubXmlrpcContainerName = "uyuni-hub-xmlrpc"
 // DBContainerName represents the database container name.
 const DBContainerName = "uyuni-db"
 
+// DBRuntimeUser represents the user under which database is running.
+const DBRuntimeUser = "postgres"
+
 // ProxyContainerNames represents all the proxy container names.
 var ProxyContainerNames = []string{
 	"uyuni-proxy-httpd",

@@ -20,6 +20,7 @@ func Rebase() error {
 		return fmt.Errorf(L("database backup is not correctly configured: %w"), err)
 	}
 
+	// This needs to be a root connection because of the basebackup script
 	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
 	isRunning, _ := cnx.GetPodName()
 	wasRunning := isRunning != ""

@@ -25,6 +25,7 @@ func Enable(force bool) error {
 		return errors.New(L("backup is already configured. Use --force to reconfigure"))
 	}
 
+	// This needs to be root connect because of basebackup script
 	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
 	isRunning, _ := cnx.GetPodName()
 	wasRunning := isRunning != ""
