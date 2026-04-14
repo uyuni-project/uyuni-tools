@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-08 14:28+0200\n"
+"POT-Creation-Date: 2026-04-14 11:22+0200\n"
 "PO-Revision-Date: 2026-04-10 13:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
@@ -473,17 +473,17 @@ msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 
 #: shared/podman/images.go:371 shared/podman/images.go:392
 #: shared/podman/images.go:412 shared/podman/network.go:108
-#: shared/podman/secret.go:146 shared/podman/systemd.go:270
-#: shared/podman/systemd.go:348 shared/podman/systemd.go:349
-#: shared/podman/utils.go:198 shared/podman/utils.go:231
-#: shared/podman/utils.go:260
+#: shared/podman/secret.go:158 shared/podman/systemd.go:273
+#: shared/podman/systemd.go:352 shared/podman/systemd.go:353
+#: shared/podman/utils.go:201 shared/podman/utils.go:234
+#: shared/podman/utils.go:263
 #, javascript-format
 msgid "Would run %s"
 msgstr "S'executaria %s"
 
 #: shared/podman/images.go:373 shared/podman/images.go:394
-#: shared/podman/images.go:414 shared/podman/utils.go:200
-#: shared/podman/utils.go:234 shared/podman/utils.go:271
+#: shared/podman/images.go:414 shared/podman/utils.go:203
+#: shared/podman/utils.go:237 shared/podman/utils.go:274
 #, javascript-format
 msgid "Run %s"
 msgstr "Executa %s"
@@ -572,32 +572,32 @@ msgstr "No s'ha pogut eliminar la xarxa %s"
 msgid "Network removed"
 msgstr "S'ha suprimit la xarxa"
 
-#: shared/podman/secret.go:56
+#: shared/podman/secret.go:68
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr "Els secrets %[1]s i %[2]s ja existeixen."
 
-#: shared/podman/secret.go:74 shared/podman/secret.go:86
-#: shared/podman/secret.go:90
+#: shared/podman/secret.go:86 shared/podman/secret.go:98
+#: shared/podman/secret.go:102
 #, javascript-format
 msgid "failed to create %s secret"
 msgstr "no s'ha pogut crear el següent: %s secret"
 
-#: shared/podman/secret.go:105
+#: shared/podman/secret.go:117
 #, javascript-format
 msgid "failed to write %s secret to file"
 msgstr "no s'ha pogut escriure el secret %s al fitxer"
 
-#: shared/podman/secret.go:120
+#: shared/podman/secret.go:132
 #, javascript-format
 msgid "failed to create podman secret %s"
 msgstr "no s'ha pogut crear el secret podman %s"
 
-#: shared/podman/secret.go:150
+#: shared/podman/secret.go:162
 #, javascript-format
 msgid "Failed to delete %s secret"
 msgstr "No s'ha pogut suprimir el secret %s"
 
-#: shared/podman/secret.go:161
+#: shared/podman/secret.go:173
 #, javascript-format
 msgid "failed to get the content of the %s secret"
 msgstr "No s'ha pogut obtenir el contingut del secret %s"
@@ -659,223 +659,223 @@ msgstr "no s'ha pogut crear el fitxer %s"
 msgid "failed to run journalctl -u %s"
 msgstr "no s'ha pogut executar journalctl -u %s"
 
-#: shared/podman/systemd.go:113
+#: shared/podman/systemd.go:116
 #, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr "no s'ha pogut inhabilitar el servei systemd %s"
 
-#: shared/podman/systemd.go:123
+#: shared/podman/systemd.go:126
 msgid "failed to reset-failed systemd"
 msgstr "no s'ha pogut restablir el «systemd» fallit"
 
-#: shared/podman/systemd.go:127
+#: shared/podman/systemd.go:130
 msgid "failed to reload systemd daemon"
 msgstr "no s'ha pogut tornar a carregar el dimoni del systemd"
 
-#: shared/podman/systemd.go:144
+#: shared/podman/systemd.go:147
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "no s'ha pogut reiniciar systemd %s.service"
 
-#: shared/podman/systemd.go:152
+#: shared/podman/systemd.go:155
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "no s'ha pogut iniciar systemd %s.service"
 
-#: shared/podman/systemd.go:160
+#: shared/podman/systemd.go:163
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "no s'ha pogut aturar systemd %s.service"
 
-#: shared/podman/systemd.go:172
+#: shared/podman/systemd.go:175
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "no s'ha pogut habilitar el servei «systemd» de %s"
 
-#: shared/podman/systemd.go:184
+#: shared/podman/systemd.go:187
 msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "Ha fallat obtenir la propietat de %[1]s des del servei %[2]s"
 
-#: shared/podman/systemd.go:196
+#: shared/podman/systemd.go:199
 msgid "Failed to get the definition from %[2]s service"
 msgstr "Ha fallat obtenir la definició del servei %[2]s"
 
-#: shared/podman/systemd.go:267
+#: shared/podman/systemd.go:270
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "El Systemd no té %s.unitat de servei"
 
-#: shared/podman/systemd.go:272
+#: shared/podman/systemd.go:275
 #, javascript-format
 msgid "Disable %s service"
 msgstr "Desactiva el servei %s"
 
-#: shared/podman/systemd.go:287 shared/podman/systemd.go:304
+#: shared/podman/systemd.go:290 shared/podman/systemd.go:308
 #, javascript-format
 msgid "Would remove %s"
 msgstr "Eliminaria %s"
 
-#: shared/podman/systemd.go:290 shared/podman/systemd.go:306
+#: shared/podman/systemd.go:293 shared/podman/systemd.go:310
 #, javascript-format
 msgid "Remove %s"
 msgstr "Elimina %s"
 
-#: shared/podman/systemd.go:292
+#: shared/podman/systemd.go:295
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "No s'ha pogut eliminar el fitxer %s.service"
 
-#: shared/podman/systemd.go:308
+#: shared/podman/systemd.go:312
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "No s'ha pogut eliminar el fitxer %s"
 
-#: shared/podman/systemd.go:315
+#: shared/podman/systemd.go:319
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "Eliminaria %s si està buit"
 
-#: shared/podman/systemd.go:322
+#: shared/podman/systemd.go:326
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "La carpeta %s conté el fitxer creat per l'usuari. Si us plau, elimineu-los quan s'hagi completat la desinstal·lació."
 
-#: shared/podman/systemd.go:334
+#: shared/podman/systemd.go:338
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "S'escalaria %s a 0 rèpliques"
 
-#: shared/podman/systemd.go:337
+#: shared/podman/systemd.go:341
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "No s'ha pogut desactivar el servei %s"
 
-#: shared/podman/systemd.go:426
+#: shared/podman/systemd.go:430
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "El servei %[1]s ja té %[2]d rèpliques."
 
-#: shared/podman/systemd.go:429
+#: shared/podman/systemd.go:433
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "Escala %[1]s de %[2]d a %[3]d rèpliques."
 
-#: shared/podman/systemd.go:433
+#: shared/podman/systemd.go:437
 msgid "cannot enable service"
 msgstr "no es pot activar el servei"
 
-#: shared/podman/systemd.go:439
+#: shared/podman/systemd.go:443
 msgid "cannot disable service"
 msgstr "no es pot desactivar el servei"
 
-#: shared/podman/systemd.go:449
+#: shared/podman/systemd.go:453
 msgid "failed to show %[1]s property of %[2] systemd service"
 msgstr "No s'ha pogut mostrar la propietat %[1]s del servei systemd %[2]"
 
-#: shared/podman/systemd.go:466
+#: shared/podman/systemd.go:468
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "no s'ha pogut crear la carpeta %s"
 
-#: shared/podman/systemd.go:476
+#: shared/podman/systemd.go:478
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "no es pot escriure el fitxer %s"
 
-#: shared/podman/systemd.go:521
+#: shared/podman/systemd.go:522
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "no s'ha pogut escriure el fitxer %s"
 
-#: shared/podman/systemd.go:526
+#: shared/podman/systemd.go:527
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "no s'ha pogut eliminar l'antic fitxer de configuració del servei systemd %s"
 
-#: shared/podman/utils.go:74
+#: shared/podman/utils.go:77
 msgid "Extra arguments to pass to podman"
 msgstr "Arguments addicionals a passar a podman"
 
-#: shared/podman/utils.go:81
+#: shared/podman/utils.go:84
 msgid "failed to enable podman.socket unit"
 msgstr "no s'ha pogut habilitar la unitat podman.socket"
 
-#: shared/podman/utils.go:102 shared/podman/utils.go:131
+#: shared/podman/utils.go:105 shared/podman/utils.go:134
 #, javascript-format
 msgid "failed to run %s container"
 msgstr "no s'ha pogut executar el contenidor %s"
 
-#: shared/podman/utils.go:142
+#: shared/podman/utils.go:145
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr "S'executaria podman kill %[1]s per a l'ID de contenidor %[2]s"
 
-#: shared/podman/utils.go:143
+#: shared/podman/utils.go:146
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr "S'executaria podman remove %[1]s per a l'ID de contenidor %[2]s"
 
-#: shared/podman/utils.go:145
+#: shared/podman/utils.go:148
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr "Executa podman kill %[1]s per a l'ID de contenidor %[2]s"
 
-#: shared/podman/utils.go:148
+#: shared/podman/utils.go:151
 msgid "Failed to kill the server"
 msgstr "No s'ha pogut matar el servidor"
 
-#: shared/podman/utils.go:150
+#: shared/podman/utils.go:153
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr "Executa podman remove %[1]s per a l'ID de contenidor %[2]s"
 
-#: shared/podman/utils.go:153
+#: shared/podman/utils.go:156
 msgid "Error removing container"
 msgstr "S'ha produït un error en eliminar el contenidor"
 
-#: shared/podman/utils.go:158
+#: shared/podman/utils.go:161
 msgid "Container already removed"
 msgstr "Contenidor ja eliminat"
 
-#: shared/podman/utils.go:166
+#: shared/podman/utils.go:169
 #, javascript-format
 msgid "failed to get %s systemd service definition"
 msgstr "no s'ha pogut obtenir la definició del servei systemd de %s"
 
-#: shared/podman/utils.go:173
+#: shared/podman/utils.go:176
 #, javascript-format
 msgid "no UYUNI.*_IMAGE defined in %s systemd service"
 msgstr "no hi ha UYUNI.*_IMAGE definit al servei de systemd %s"
 
-#: shared/podman/utils.go:212
+#: shared/podman/utils.go:215
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "El volum %s està muntat externament, no es pot eliminar el directori"
 
-#: shared/podman/utils.go:236
+#: shared/podman/utils.go:239
 #, javascript-format
 msgid "Failed to export volume %s"
 msgstr "No s'ha pogut exportar el volum %s"
 
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:242
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr "No s'ha pogut escriure la suma de verificació del volum %[1]s a %[2]s"
 
-#: shared/podman/utils.go:265
+#: shared/podman/utils.go:268
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr "La suma de verificació no coincideix per al volum %s"
 
-#: shared/podman/utils.go:269
+#: shared/podman/utils.go:272
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr "No s'ha pogut precrear el volum buit %s"
 
-#: shared/podman/utils.go:273
+#: shared/podman/utils.go:276
 #, javascript-format
 msgid "Failed to import volume %s"
 msgstr "No s'ha pogut importar el volum %s"
 
-#: shared/podman/utils.go:277
+#: shared/podman/utils.go:280
 #, javascript-format
 msgid "Unable to restore selinux context for %s, manual action is required"
 msgstr "No es pot restaurar el context de selinux per a %s, cal una acció manual."
 
-#: shared/podman/utils.go:385 shared/podman/utils.go:408
+#: shared/podman/utils.go:388 shared/podman/utils.go:411
 msgid "cannot inspect data"
 msgstr "no es poden inspeccionar les dades"
 

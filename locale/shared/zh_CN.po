@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-08 14:28+0200\n"
+"POT-Creation-Date: 2026-04-14 11:22+0200\n"
 "PO-Revision-Date: 2026-03-06 10:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -488,17 +488,17 @@ msgstr "未找到容器 %s 的任何运行中映像"
 
 #: shared/podman/images.go:371 shared/podman/images.go:392
 #: shared/podman/images.go:412 shared/podman/network.go:108
-#: shared/podman/secret.go:146 shared/podman/systemd.go:270
-#: shared/podman/systemd.go:348 shared/podman/systemd.go:349
-#: shared/podman/utils.go:198 shared/podman/utils.go:231
-#: shared/podman/utils.go:260
+#: shared/podman/secret.go:158 shared/podman/systemd.go:273
+#: shared/podman/systemd.go:352 shared/podman/systemd.go:353
+#: shared/podman/utils.go:201 shared/podman/utils.go:234
+#: shared/podman/utils.go:263
 #, javascript-format
 msgid "Would run %s"
 msgstr "将运行 %s"
 
 #: shared/podman/images.go:373 shared/podman/images.go:394
-#: shared/podman/images.go:414 shared/podman/utils.go:200
-#: shared/podman/utils.go:234 shared/podman/utils.go:271
+#: shared/podman/images.go:414 shared/podman/utils.go:203
+#: shared/podman/utils.go:237 shared/podman/utils.go:274
 #, javascript-format
 msgid "Run %s"
 msgstr "运行 %s"
@@ -588,32 +588,32 @@ msgstr "无法去除网络 %s"
 msgid "Network removed"
 msgstr "已去除网络"
 
-#: shared/podman/secret.go:56
+#: shared/podman/secret.go:68
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr ""
 
-#: shared/podman/secret.go:74 shared/podman/secret.go:86
-#: shared/podman/secret.go:90
+#: shared/podman/secret.go:86 shared/podman/secret.go:98
+#: shared/podman/secret.go:102
 #, javascript-format
 msgid "failed to create %s secret"
 msgstr "无法创建 %s 机密"
 
-#: shared/podman/secret.go:105
+#: shared/podman/secret.go:117
 #, javascript-format
 msgid "failed to write %s secret to file"
 msgstr "无法将 %s 机密写入文件"
 
-#: shared/podman/secret.go:120
+#: shared/podman/secret.go:132
 #, javascript-format
 msgid "failed to create podman secret %s"
 msgstr "无法创建 podman 机密 %s"
 
-#: shared/podman/secret.go:150
+#: shared/podman/secret.go:162
 #, javascript-format
 msgid "Failed to delete %s secret"
 msgstr "无法删除 %s 机密"
 
-#: shared/podman/secret.go:161
+#: shared/podman/secret.go:173
 #, fuzzy, javascript-format
 #| msgid "failed to connect to the server"
 msgid "failed to get the content of the %s secret"
@@ -676,227 +676,227 @@ msgstr "无法创建 %s 文件"
 msgid "failed to run journalctl -u %s"
 msgstr "无法运行 journalctl -u %s"
 
-#: shared/podman/systemd.go:113
+#: shared/podman/systemd.go:116
 #, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr "无法禁用 %s systemd 服务"
 
-#: shared/podman/systemd.go:123
+#: shared/podman/systemd.go:126
 msgid "failed to reset-failed systemd"
 msgstr "reset-failed systemd 失败"
 
-#: shared/podman/systemd.go:127
+#: shared/podman/systemd.go:130
 msgid "failed to reload systemd daemon"
 msgstr "无法重新加载 systemd 守护程序"
 
-#: shared/podman/systemd.go:144
+#: shared/podman/systemd.go:147
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "无法重启 systemd %s.service"
 
-#: shared/podman/systemd.go:152
+#: shared/podman/systemd.go:155
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "无法启动 systemd %s.service"
 
-#: shared/podman/systemd.go:160
+#: shared/podman/systemd.go:163
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "无法停止 systemd %s.service"
 
-#: shared/podman/systemd.go:172
+#: shared/podman/systemd.go:175
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "无法启用 %s systemd 服务"
 
-#: shared/podman/systemd.go:184
+#: shared/podman/systemd.go:187
 msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "无法从 %[2]s 服务获取 %[1]s 属性"
 
-#: shared/podman/systemd.go:196
+#: shared/podman/systemd.go:199
 #, fuzzy
 #| msgid "Failed to get the %[1]s property from %[2]s service"
 msgid "Failed to get the definition from %[2]s service"
 msgstr "无法从 %[2]s 服务获取 %[1]s 属性"
 
-#: shared/podman/systemd.go:267
+#: shared/podman/systemd.go:270
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "Systemd 没有 %s.service 单元"
 
-#: shared/podman/systemd.go:272
+#: shared/podman/systemd.go:275
 #, javascript-format
 msgid "Disable %s service"
 msgstr "禁用 %s 服务"
 
-#: shared/podman/systemd.go:287 shared/podman/systemd.go:304
+#: shared/podman/systemd.go:290 shared/podman/systemd.go:308
 #, javascript-format
 msgid "Would remove %s"
 msgstr "将去除 %s"
 
-#: shared/podman/systemd.go:290 shared/podman/systemd.go:306
+#: shared/podman/systemd.go:293 shared/podman/systemd.go:310
 #, javascript-format
 msgid "Remove %s"
 msgstr "去除 %s"
 
-#: shared/podman/systemd.go:292
+#: shared/podman/systemd.go:295
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "无法去除 %s.service 文件"
 
-#: shared/podman/systemd.go:308
+#: shared/podman/systemd.go:312
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "无法去除 %s 文件"
 
-#: shared/podman/systemd.go:315
+#: shared/podman/systemd.go:319
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "将去除 %s（如果为空）"
 
-#: shared/podman/systemd.go:322
+#: shared/podman/systemd.go:326
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "%s 文件夹包含该用户创建的文件。卸装完毕后，请去除这些文件。"
 
-#: shared/podman/systemd.go:334
+#: shared/podman/systemd.go:338
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "会将 %s 扩缩到 0 个复本"
 
-#: shared/podman/systemd.go:337
+#: shared/podman/systemd.go:341
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "无法禁用 %s 服务"
 
-#: shared/podman/systemd.go:426
+#: shared/podman/systemd.go:430
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "服务 %[1]s 已有 %[2]d 个复本。"
 
-#: shared/podman/systemd.go:429
+#: shared/podman/systemd.go:433
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "将 %[1]s 的复本数从 %[2]d 个扩缩到 %[3]d 个。"
 
-#: shared/podman/systemd.go:433
+#: shared/podman/systemd.go:437
 msgid "cannot enable service"
 msgstr "无法启用服务"
 
-#: shared/podman/systemd.go:439
+#: shared/podman/systemd.go:443
 msgid "cannot disable service"
 msgstr "无法禁用服务"
 
-#: shared/podman/systemd.go:449
+#: shared/podman/systemd.go:453
 #, fuzzy
 #| msgid "failed to get the %s deployment revision"
 msgid "failed to show %[1]s property of %[2] systemd service"
 msgstr "找不到 %s 部署修订版"
 
-#: shared/podman/systemd.go:466
+#: shared/podman/systemd.go:468
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "无法创建 %s 文件夹"
 
-#: shared/podman/systemd.go:476
+#: shared/podman/systemd.go:478
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "无法写入 %s 文件"
 
-#: shared/podman/systemd.go:521
+#: shared/podman/systemd.go:522
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "无法写入 %s 文件"
 
-#: shared/podman/systemd.go:526
+#: shared/podman/systemd.go:527
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "无法去除旧 %s systemd 服务配置文件"
 
-#: shared/podman/utils.go:74
+#: shared/podman/utils.go:77
 msgid "Extra arguments to pass to podman"
 msgstr "要传递给 podman 的额外参数"
 
-#: shared/podman/utils.go:81
+#: shared/podman/utils.go:84
 msgid "failed to enable podman.socket unit"
 msgstr "无法启用 podman.socket 单元"
 
-#: shared/podman/utils.go:102 shared/podman/utils.go:131
+#: shared/podman/utils.go:105 shared/podman/utils.go:134
 #, javascript-format
 msgid "failed to run %s container"
 msgstr "无法运行 %s 容器"
 
-#: shared/podman/utils.go:142
+#: shared/podman/utils.go:145
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr "将会针对 ID 为 %[2]s 的容器运行 podman kill %[1]s"
 
-#: shared/podman/utils.go:143
+#: shared/podman/utils.go:146
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr "将会针对 ID 为 %[2]s 容器运行 podman remove %[1]s"
 
-#: shared/podman/utils.go:145
+#: shared/podman/utils.go:148
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr "针对 ID 为 %[2]s 的容器运行 podman kill %[1]s"
 
-#: shared/podman/utils.go:148
+#: shared/podman/utils.go:151
 msgid "Failed to kill the server"
 msgstr "无法终止服务器"
 
-#: shared/podman/utils.go:150
+#: shared/podman/utils.go:153
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr "针对 ID 为 %[2]s 的容器运行 podman remove %[1]s"
 
-#: shared/podman/utils.go:153
+#: shared/podman/utils.go:156
 msgid "Error removing container"
 msgstr "去除容器时出错"
 
-#: shared/podman/utils.go:158
+#: shared/podman/utils.go:161
 msgid "Container already removed"
 msgstr "容器已去除"
 
-#: shared/podman/utils.go:166
+#: shared/podman/utils.go:169
 #, javascript-format
 msgid "failed to get %s systemd service definition"
 msgstr "无法获取 %s systemd 服务定义"
 
-#: shared/podman/utils.go:173
+#: shared/podman/utils.go:176
 #, javascript-format
 msgid "no UYUNI.*_IMAGE defined in %s systemd service"
 msgstr "%s systemd 服务中未定义 UYUNI.*_IMAGE"
 
-#: shared/podman/utils.go:212
+#: shared/podman/utils.go:215
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "卷 %s 挂载在外部,无法去除该目录"
 
-#: shared/podman/utils.go:236
+#: shared/podman/utils.go:239
 #, javascript-format
 msgid "Failed to export volume %s"
 msgstr "无法导出卷 %s"
 
-#: shared/podman/utils.go:239
+#: shared/podman/utils.go:242
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr "无法将卷 %[1]s 的校验和写入 %[2]s"
 
-#: shared/podman/utils.go:265
+#: shared/podman/utils.go:268
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr "校验和与卷 %s 不匹配"
 
-#: shared/podman/utils.go:269
+#: shared/podman/utils.go:272
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr "无法预先创建空卷 %s"
 
-#: shared/podman/utils.go:273
+#: shared/podman/utils.go:276
 #, javascript-format
 msgid "Failed to import volume %s"
 msgstr "无法导入卷 %s"
 
-#: shared/podman/utils.go:277
+#: shared/podman/utils.go:280
 #, javascript-format
 msgid "Unable to restore selinux context for %s, manual action is required"
 msgstr "无法恢复 %s 的 SELinux 上下文，需要手动采取措施"
 
-#: shared/podman/utils.go:385 shared/podman/utils.go:408
+#: shared/podman/utils.go:388 shared/podman/utils.go:411
 msgid "cannot inspect data"
 msgstr "无法检查数据"
 
