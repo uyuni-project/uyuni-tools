@@ -36,5 +36,5 @@ jobs:
         shell: sh -x {0}
         run: |
           git fetch origin ${{ github.base_ref }}
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          CHANGED_FILES=$(git diff --name-status origin/${{ github.base_ref }}...HEAD | grep -v "^D" | cut -f 2)
           ./update-copyright-year.sh $CHANGED_FILES

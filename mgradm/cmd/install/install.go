@@ -51,8 +51,8 @@ NOTE: installing on a remote podman is not supported yet!
 
 	adm_utils.AddMirrorFlag(cmd)
 	AddInstallFlags(cmd)
+	adm_utils.AddDebugFlags(cmd)
 	podman.AddPodmanArgFlag(cmd)
-
 	return cmd
 }
 

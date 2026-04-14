@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -108,8 +109,12 @@ func generateDefaultSystemdServices(flags *shared.Flagpole) error {
 		utils.PostgreSQLImage.Name,
 		utils.PostgreSQLImage.Tag)
 
+	// Assumption is system is already configured when backup was taken.
+	// No need for server environment file and everything should just work.
+
 	return utils.JoinErrors(
-		podman.GenerateSystemdService(systemd, "", serverImage, false, "", []string{}),
+		podman.GenerateUpgradeServerEnvironmentFile(false),
+		podman.GenerateSystemdService(systemd, serverImage, adm_utils.InstallationFlags{}, []string{}, ""),
 		pgsql.GeneratePgsqlSystemdService(systemd, dbImage),
 		systemd.ReloadDaemon(false),
 	)
