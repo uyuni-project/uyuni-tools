@@ -103,3 +103,65 @@ func TestExecScript(t *testing.T) {
 		t.Error("Did not find cleanup command")
 	}
 }
+
+func TestHostExec(t *testing.T) {
+	originalRunner := runner
+	defer func() { runner = originalRunner }()
+
+	var capturedCommand string
+	var capturedArgs []string
+
+	runner = func(command string, args ...string) types.Runner {
+		capturedCommand = command
+		capturedArgs = args
+		return &mockRunner{output: []byte("host output")}
+	}
+
+	cnx := NewConnection("host", "", "")
+	out, err := cnx.Exec("ls", "-la")
+
+	if err != nil {
+		t.Errorf("Exec returned error: %v", err)
+	}
+
+	if capturedCommand != "ls" {
+		t.Errorf("Expected command 'ls', got '%s'", capturedCommand)
+	}
+
+	if len(capturedArgs) != 1 || capturedArgs[0] != "-la" {
+		t.Errorf("Expected args ['-la'], got %v", capturedArgs)
+	}
+
+	if string(out) != "host output" {
+		t.Errorf("Expected output 'host output', got '%s'", string(out))
+	}
+}
+
+func TestHostCopy(t *testing.T) {
+	originalRunner := runner
+	defer func() { runner = originalRunner }()
+
+	var capturedCommand string
+	var capturedArgs []string
+
+	runner = func(command string, args ...string) types.Runner {
+		capturedCommand = command
+		capturedArgs = args
+		return &mockRunner{}
+	}
+
+	cnx := NewConnection("host", "", "")
+	err := cnx.Copy("server:/etc/passwd", "/tmp/passwd", "", "")
+
+	if err != nil {
+		t.Errorf("Copy returned error: %v", err)
+	}
+
+	if capturedCommand != "cp" {
+		t.Errorf("Expected command 'cp', got '%s'", capturedCommand)
+	}
+
+	if capturedArgs[0] != "/etc/passwd" || capturedArgs[1] != "/tmp/passwd" {
+		t.Errorf("Expected args ['/etc/passwd', '/tmp/passwd'], got %v", capturedArgs)
+	}
+}

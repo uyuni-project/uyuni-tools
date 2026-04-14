@@ -77,6 +77,8 @@ func (c *Connection) GetCommand() (string, error) {
 				err = fmt.Errorf(L("backend command not found in PATH: %s"), c.backend)
 			}
 			c.command = c.backend
+		case "host":
+			c.command = "host"
 		case "":
 			hasPodman := false
 			hasKubectl := false
@@ -208,6 +210,8 @@ func (c *Connection) GetPodName() (string, error) {
 			} else {
 				c.podName = string(podName[:])
 			}
+		case "host":
+			c.podName = "host"
 		}
 	}
 
@@ -226,6 +230,10 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 	cmd, cmdErr := c.GetCommand()
 	if cmdErr != nil {
 		return nil, cmdErr
+	}
+
+	if cmd == "host" {
+		return runner(command, args...).Log(zerolog.DebugLevel).Spinner("").Exec()
 	}
 
 	cmdArgs := []string{"exec", c.podName}
@@ -288,6 +296,10 @@ func (c *Connection) Healthcheck() ([]byte, error) {
 		return nil, cmdErr
 	}
 
+	if cmd == "host" {
+		return nil, errors.New(L("healthcheck not supported on host"))
+	}
+
 	cmdArgs := []string{"healthcheck", "run", c.podName}
 
 	return runner(cmd, cmdArgs...).Log(zerolog.DebugLevel).Spinner("").Exec()
@@ -306,6 +318,10 @@ func (c *Connection) WaitForContainer() error {
 		command, err := c.GetCommand()
 		if err != nil {
 			return err
+		}
+
+		if command == "host" {
+			return nil
 		}
 
 		if command == "kubectl" {
@@ -372,6 +388,11 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 	case "kubectl":
 		commandArgs = []string{"cp", "-c", "uyuni", "-n", namespace, srcExpanded, dstExpanded}
 		extraArgs = []string{"-c", "uyuni", "--"}
+	case "host":
+		srcExpanded = strings.Replace(src, "server:", "", 1)
+		dstExpanded = strings.Replace(dst, "server:", "", 1)
+		commandArgs = []string{srcExpanded, dstExpanded}
+		command = "cp"
 	default:
 		return fmt.Errorf(L("unknown container kind: %s"), command)
 	}
@@ -420,6 +441,8 @@ func (c *Connection) TestExistenceInPod(dstpath string) bool {
 		}
 		commandArgs = append(commandArgs, "-n", namespace)
 		commandArgs = append(commandArgs, "-c", "uyuni", "test", "-e", dstpath)
+	case "host":
+		return utils.FileExists(dstpath)
 	default:
 		log.Fatal().Msgf(L("unknown container kind: %s"), command)
 	}
