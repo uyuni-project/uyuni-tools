@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-28 15:48+0200\n"
-"PO-Revision-Date: 2026-04-07 15:32+0000\n"
-"Last-Translator: Michele Bussolotto <michele.bussolotto@suse.com>\n"
+"POT-Creation-Date: 2026-04-14 11:22+0200\n"
+"PO-Revision-Date: 2026-04-14 08:44+0000\n"
+"Last-Translator: Alessio Matozzi <alessio.matozzi@studenti.unipg.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -57,7 +57,7 @@ msgstr ""
 
 #: mgrctl/cmd/api/api.go:62
 msgid "Store login information for future API usage"
-msgstr ""
+msgstr "Memorizza le informazioni di accesso per l'utilizzo futuro dell'API"
 
 #: mgrctl/cmd/api/api.go:63
 msgid ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-08 15:36+0200\n"
+"POT-Creation-Date: 2026-04-14 11:22+0200\n"
 "PO-Revision-Date: 2026-04-07 15:32+0000\n"
 "Last-Translator: Michele Bussolotto <michele.bussolotto@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
@@ -587,44 +587,44 @@ msgstr ""
 msgid "Unable to validate systemd backup file"
 msgstr "impossibile abilitare il servizio: %s"
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:41
+#: mgradm/cmd/backup/restore/systemd_utils.go:42
 #, javascript-format
 msgid "Would restore %s"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:49
+#: mgradm/cmd/backup/restore/systemd_utils.go:50
 #, fuzzy, javascript-format
 #| msgid "failed to create temporary directory: %s"
 msgid "Unable to create directory %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:59
+#: mgradm/cmd/backup/restore/systemd_utils.go:60
 #, javascript-format
 msgid "Unknown filetype of %s"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:64
+#: mgradm/cmd/backup/restore/systemd_utils.go:65
 #, fuzzy, javascript-format
 msgid "Unable to restore file details for %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:74
+#: mgradm/cmd/backup/restore/systemd_utils.go:75
 #, fuzzy, javascript-format
 #| msgid "failed to create temporary directory: %s"
 msgid "Unable to create directories for %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:78
+#: mgradm/cmd/backup/restore/systemd_utils.go:79
 #, fuzzy, javascript-format
 msgid "Unable to create %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:82
+#: mgradm/cmd/backup/restore/systemd_utils.go:83
 #, javascript-format
 msgid "Unable to restore content of %s"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:101
+#: mgradm/cmd/backup/restore/systemd_utils.go:102
 #, fuzzy
 msgid "Would generate default systemd services"
 msgstr "impossibile abilitare il servizio: %s"
@@ -638,7 +638,7 @@ msgstr "mancata identificazione dell'immagine: %s"
 msgid "insufficient space on target device"
 msgstr ""
 
-#: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:46
+#: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:43
 #: mgradm/cmd/upgrade/utils.go:34
 msgid "install podman before running this command"
 msgstr "installare podman prima di eseguire questo comando"
@@ -947,35 +947,31 @@ msgstr ""
 msgid "InterServerSync v1 parent FQDN"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:23
-msgid "Enable tomcat and taskomatic remote debugging"
-msgstr ""
-
-#: mgradm/cmd/install/flags.go:31 mgradm/cmd/upgrade/flags.go:22
+#: mgradm/cmd/install/flags.go:29 mgradm/cmd/upgrade/flags.go:22
 msgid "TFTPD Flags"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:34
+#: mgradm/cmd/install/flags.go:32
 msgid "Administrator user name"
 msgstr "Nome utente amministratore"
 
-#: mgradm/cmd/install/flags.go:35
+#: mgradm/cmd/install/flags.go:33
 msgid "Administrator password"
 msgstr "Password amministratore"
 
-#: mgradm/cmd/install/flags.go:36
+#: mgradm/cmd/install/flags.go:34
 msgid "First name of the administrator"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:37
+#: mgradm/cmd/install/flags.go:35
 msgid "Last name of the administrator"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:38
+#: mgradm/cmd/install/flags.go:36
 msgid "First organization name"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:40
+#: mgradm/cmd/install/flags.go:38
 msgid "First User Flags"
 msgstr ""
 
@@ -992,56 +988,48 @@ msgid ""
 "NOTE: installing on a remote podman is not supported yet!\n"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:57
+#: mgradm/cmd/install/utils.go:54
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:64
+#: mgradm/cmd/install/utils.go:61
 #, javascript-format
 msgid "Setting up the server with the FQDN '%s'"
 msgstr "Configurazione del server con FQDN '%s'"
 
-#: mgradm/cmd/install/utils.go:68 mgradm/shared/podman/podman.go:328
+#: mgradm/cmd/install/utils.go:65 mgradm/shared/podman/podman.go:353
 #, fuzzy
 msgid "cannot prepare images"
 msgstr "impossibile aggiornare: %s"
 
-#: mgradm/cmd/install/utils.go:72 mgradm/shared/podman/podman.go:93
-#: mgradm/shared/podman/podman.go:318
+#: mgradm/cmd/install/utils.go:69 mgradm/shared/podman/podman.go:145
+#: mgradm/shared/podman/podman.go:343
 #, fuzzy
 msgid "cannot setup network"
 msgstr "impossibile impostare la rete: %s"
 
-#: mgradm/cmd/install/utils.go:85
+#: mgradm/cmd/install/utils.go:90
 #, fuzzy
-msgid "Run setup command"
-msgstr "comando ispezione fallito: %s"
+msgid "failed to generate server service"
+msgstr "connessione non riuscita al server Hub: %s"
 
-#: mgradm/cmd/install/utils.go:94
+#: mgradm/cmd/install/utils.go:95
 #, fuzzy
 msgid "cannot wait for system start"
 msgstr "impossibile abilitare il servizio: %s"
 
-#: mgradm/cmd/install/utils.go:97
+#: mgradm/cmd/install/utils.go:98
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:104
+#: mgradm/cmd/install/utils.go:105
 #, fuzzy
 msgid "failed to extract payg data"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgradm/cmd/install/utils.go:156 mgradm/shared/podman/podman.go:707
+#: mgradm/cmd/install/utils.go:135 mgradm/shared/podman/podman.go:718
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
-msgstr ""
-
-#: mgradm/cmd/install/utils.go:202
-msgid "server setup failed"
-msgstr ""
-
-#: mgradm/cmd/install/utils.go:205
-msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr ""
 
 #: mgradm/cmd/restart/restart.go:22 mgradm/cmd/restart/restart.go:23
@@ -1185,34 +1173,34 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/utils.go:73
+#: mgradm/cmd/support/ptf/utils.go:74
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr ""
 
-#: mgradm/cmd/support/ptf/utils.go:76
+#: mgradm/cmd/support/ptf/utils.go:77
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr ""
 
-#: mgradm/cmd/support/ptf/utils.go:79
+#: mgradm/cmd/support/ptf/utils.go:80
 msgid "user flag cannot be empty"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/utils.go:91
+#: mgradm/cmd/support/ptf/utils.go:92
 #, fuzzy
 msgid "failed to find server image"
 msgstr "mancata identificazione dell'immagine: %s"
 
-#: mgradm/cmd/support/ptf/utils.go:100
+#: mgradm/cmd/support/ptf/utils.go:101
 #, fuzzy, javascript-format
 msgid "The computed PTF image is %s"
 msgstr "impossibile determinare l'URL dell'immagine: %s"
 
-#: mgradm/cmd/support/ptf/utils.go:121 mgradm/cmd/support/ptf/utils.go:125
+#: mgradm/cmd/support/ptf/utils.go:122 mgradm/cmd/support/ptf/utils.go:126
 #, fuzzy
 msgid "The %[1]s service image is %[2]s"
 msgstr "impossibile determinare l'URL dell'immagine: %s"
 
-#: mgradm/cmd/support/ptf/utils.go:123
+#: mgradm/cmd/support/ptf/utils.go:124
 #, fuzzy, javascript-format
 msgid "Cannot find PTF for %s"
 msgstr "impossible eliminare il volume %s"
@@ -1337,11 +1325,11 @@ msgstr ""
 msgid "Upgrade a local server on podman"
 msgstr ""
 
-#: mgradm/cmd/upgrade/upgrade.go:52
+#: mgradm/cmd/upgrade/upgrade.go:53
 msgid "List available tags for an image"
 msgstr ""
 
-#: mgradm/cmd/upgrade/upgrade.go:64
+#: mgradm/cmd/upgrade/upgrade.go:65
 msgid "failed to unmarshall configuration"
 msgstr ""
 
@@ -1350,7 +1338,7 @@ msgid "Not altering the confidential computing service"
 msgstr ""
 
 #: mgradm/shared/coco/coco.go:78 mgradm/shared/hub/xmlrpcapi.go:44
-#: mgradm/shared/pgsql/pgsql.go:30 mgradm/shared/podman/podman.go:235
+#: mgradm/shared/pgsql/pgsql.go:30 mgradm/shared/podman/podman.go:301
 #: mgradm/shared/saline/saline.go:72 mgradm/shared/tftp/tftp.go:41
 msgid "failed to compute image URL"
 msgstr "impossibile determinare l'URL dell'immagine"
@@ -1360,14 +1348,14 @@ msgid "Setting up confidential computing attestation service"
 msgstr ""
 
 #: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:115
-#: mgradm/shared/pgsql/pgsql.go:118 mgradm/shared/podman/podman.go:76
+#: mgradm/shared/pgsql/pgsql.go:118 mgradm/shared/podman/podman.go:129
 #: mgradm/shared/saline/saline.go:92 mgradm/shared/tftp/tftp.go:95
 #, fuzzy
 msgid "failed to generate systemd service unit file"
 msgstr "impossibile abilitare il servizio: %s"
 
 #: mgradm/shared/coco/coco.go:109 mgradm/shared/hub/xmlrpcapi.go:122
-#: mgradm/shared/podman/podman.go:104 mgradm/shared/saline/saline.go:100
+#: mgradm/shared/podman/podman.go:156 mgradm/shared/saline/saline.go:100
 #: mgradm/shared/tftp/tftp.go:102
 #, fuzzy
 msgid "cannot generate systemd conf file"
@@ -1388,7 +1376,7 @@ msgstr "impossibile abilitare il servizio: %s"
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr ""
 
-#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:516
+#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:524
 #: mgradm/shared/saline/saline.go:142
 #, fuzzy
 msgid "cannot enable service"
@@ -1409,165 +1397,158 @@ msgstr ""
 msgid "cannot generate systemd configuration file"
 msgstr "impossibile abilitare il servizio: %s"
 
-#: mgradm/shared/podman/podman.go:96
+#: mgradm/shared/podman/podman.go:47
+#, fuzzy, javascript-format
+msgid "failed to create %s folder"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/shared/podman/podman.go:64 mgradm/shared/podman/podman.go:80
+#, fuzzy
+msgid "failed to generate server environment file"
+msgstr "impossibile abilitare il servizio: %s"
+
+#: mgradm/shared/podman/podman.go:148
 msgid "Enabling system service"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:112 mgradm/shared/saline/saline.go:108
+#: mgradm/shared/podman/podman.go:177 mgradm/shared/saline/saline.go:108
 #, fuzzy
 msgid "cannot generate systemd user configuration file"
 msgstr "impossibile abilitare il servizio: %s"
 
-#: mgradm/shared/podman/podman.go:139
+#: mgradm/shared/podman/podman.go:205
 #, fuzzy
 msgid "failed to generate SSL migration script"
 msgstr "mancata identificazione dell'immagine: %s"
 
-#: mgradm/shared/podman/podman.go:159
+#: mgradm/shared/podman/podman.go:225
 #, javascript-format
 msgid "Migrating SSL certificates from the source server %s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:162
+#: mgradm/shared/podman/podman.go:228
 #, fuzzy
 msgid "cannot run uyuni SSL migration container"
 msgstr "impossibile creare il percorso %s nel container: %s"
 
-#: mgradm/shared/podman/podman.go:173
+#: mgradm/shared/podman/podman.go:239
 #, fuzzy, javascript-format
 msgid "Failed to read file %s"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgradm/shared/podman/podman.go:179
+#: mgradm/shared/podman/podman.go:245
 #, fuzzy
 msgid "cannot read extracted data"
 msgstr "impossibile copiare: %s"
 
-#: mgradm/shared/podman/podman.go:190
+#: mgradm/shared/podman/podman.go:256
 #, fuzzy, javascript-format
 msgid "cannot inspect volume %s"
 msgstr "impossible eliminare il volume %s"
 
-#: mgradm/shared/podman/podman.go:193
+#: mgradm/shared/podman/podman.go:259
 #, javascript-format
 msgid "cannot restore %s SELinux permissions"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:243
+#: mgradm/shared/podman/podman.go:309
 #, fuzzy, javascript-format
 msgid "Using database upgrade image %s"
 msgstr "impossibile aggiornare: %s"
 
-#: mgradm/shared/podman/podman.go:252
-msgid "No need to run database finalization script"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:284
-msgid "cannot generate PostgreSQL finalization script"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:342 mgradm/shared/podman/podman.go:350
+#: mgradm/shared/podman/podman.go:367 mgradm/shared/podman/podman.go:375
 #, fuzzy
 msgid "cannot stop service"
 msgstr "impossibile abilitare il servizio: %s"
 
-#: mgradm/shared/podman/podman.go:361
+#: mgradm/shared/podman/podman.go:386
 msgid "Initiating PostgreSQL upgrade from version %[1]d to %[2]d"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:365
+#: mgradm/shared/podman/podman.go:390
 #, fuzzy, javascript-format
 msgid "cannot find volume %s"
 msgstr "impossible eliminare il volume %s"
 
-#: mgradm/shared/podman/podman.go:380
+#: mgradm/shared/podman/podman.go:405
 #, fuzzy, javascript-format
 #| msgid "cannot copy %s"
 msgid "cannot move %s"
 msgstr "impossibile copiare %s"
 
-#: mgradm/shared/podman/podman.go:396
+#: mgradm/shared/podman/podman.go:421
 #, fuzzy, javascript-format
 #| msgid "cannot delete %s"
 msgid "cannot mkdir %s"
 msgstr "impossible eliminare %s"
 
-#: mgradm/shared/podman/podman.go:399
+#: mgradm/shared/podman/podman.go:424
 msgid "Data will be copied during this process. Please ensure sufficient disk space is available."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:401
+#: mgradm/shared/podman/podman.go:426
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:404
+#: mgradm/shared/podman/podman.go:429
 #, fuzzy
 msgid "Upgrading without changing PostgreSQL version"
 msgstr "impossibile ispezionare il pod: %s"
 
-#: mgradm/shared/podman/podman.go:407
+#: mgradm/shared/podman/podman.go:432
 msgid "trying to downgrade PostgreSQL from %[1]d to %[2]d"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:414
+#: mgradm/shared/podman/podman.go:439
 msgid "Configuring split PostgreSQL container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:423
+#: mgradm/shared/podman/podman.go:448
 #, fuzzy
 msgid "cannot configure db container"
 msgstr "impossibile creare il percorso %s nel container: %s"
 
-#: mgradm/shared/podman/podman.go:433
-msgid "cannot run PostgreSQL finalize script"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:437
-#, fuzzy
-msgid "cannot run post upgrade script"
-msgstr "impossibile aggiornare: %s"
-
-#: mgradm/shared/podman/podman.go:462 mgradm/shared/podman/podman.go:514
+#: mgradm/shared/podman/podman.go:482 mgradm/shared/podman/podman.go:522
 #, fuzzy
 msgid "Waiting for the server to start…"
 msgstr "In attesa che il server si avvii…"
 
-#: mgradm/shared/podman/podman.go:465
+#: mgradm/shared/podman/podman.go:485 mgradm/shared/podman/podman.go:527
 #, fuzzy
 msgid "cannot start service"
 msgstr "impossibile abilitare il servizio: %s"
 
-#: mgradm/shared/podman/podman.go:492
+#: mgradm/shared/podman/podman.go:512
 msgid "Failed to read server service definition to look for TFTP port"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:557
+#: mgradm/shared/podman/podman.go:568
 #, fuzzy
 msgid "failed to generate postgresql migration script"
 msgstr "mancata identificazione dell'immagine: %s"
 
-#: mgradm/shared/podman/podman.go:593
+#: mgradm/shared/podman/podman.go:604
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:623
+#: mgradm/shared/podman/podman.go:634
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:633
+#: mgradm/shared/podman/podman.go:644
 msgid "Failed to find home directory to look for SSH config"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:655
+#: mgradm/shared/podman/podman.go:666
 #, fuzzy
 msgid "cannot inspect podman values"
 msgstr "impossibile ispezionare i valori dell'host: %s"
 
-#: mgradm/shared/podman/podman.go:669
+#: mgradm/shared/podman/podman.go:680
 msgid "PostgreSQL migration failure"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:698
+#: mgradm/shared/podman/podman.go:709
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr ""
 
@@ -1897,47 +1878,58 @@ msgstr ""
 msgid "PostgreSQL Database"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:25
+#: mgradm/shared/utils/cmd_utils.go:230
+msgid "Enable tomcat and taskomatic remote debugging"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:24
 #, fuzzy
 msgid "exec command failed"
 msgstr "Comando non riuscito"
 
-#: mgradm/shared/utils/exec.go:38
+#: mgradm/shared/utils/exec.go:37
 #, fuzzy
 msgid "failed retrieving namespace"
 msgstr "mancata identificazione dell'immagine: %s"
 
-#: mgradm/shared/utils/exec.go:58
-#, fuzzy
-msgid "failed to render database post upgrade script"
-msgstr "mancata identificazione dell'immagine: %s"
-
-#: mgradm/shared/utils/exec.go:76
+#: mgradm/shared/utils/exec.go:64
 #, javascript-format
 msgid "currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:83
+#: mgradm/shared/utils/exec.go:71
 #, javascript-format
 msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:92 mgradm/shared/utils/exec.go:105
+#: mgradm/shared/utils/exec.go:80 mgradm/shared/utils/exec.go:93
 #, fuzzy
 msgid "cannot fetch release from server image"
 msgstr "impossibile abilitare il servizio: %s"
 
-#: mgradm/shared/utils/exec.go:97 mgradm/shared/utils/exec.go:110
+#: mgradm/shared/utils/exec.go:85 mgradm/shared/utils/exec.go:98
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/shared/utils/flags.go:156
+#: mgradm/shared/utils/flags.go:141
 msgid "Can only contain letters, digits . _ and -"
 msgstr ""
 
-#: mgradm/shared/utils/flags.go:164
+#: mgradm/shared/utils/flags.go:149
 msgid "Not a valid email address"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Run setup command"
+#~ msgstr "comando ispezione fallito: %s"
+
+#, fuzzy
+#~ msgid "cannot run post upgrade script"
+#~ msgstr "impossibile aggiornare: %s"
+
+#, fuzzy
+#~ msgid "failed to render database post upgrade script"
+#~ msgstr "mancata identificazione dell'immagine: %s"
 
 #, fuzzy
 #~ msgid "failed to determine pgsql image"
@@ -2130,10 +2122,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "failed to get deployment status"
 #~ msgstr "mancata identificazione dell'immagine: %s"
-
-#, fuzzy
-#~ msgid "failed to delete server resources"
-#~ msgstr "connessione non riuscita al server Hub: %s"
 
 #, fuzzy, javascript-format
 #~ msgid "Failed to generate %s secret definition"
