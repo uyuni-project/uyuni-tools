@@ -95,7 +95,7 @@ func writeSalineServiceFiles(
 	environment := fmt.Sprintf(`Environment=UYUNI_SALINE_IMAGE=%s`, preparedImage)
 
 	if err := podman.GenerateSystemdConfFile(
-		podman.SalineService+"@", "generated.conf", environment, true,
+		podman.SalineService+"@", podman.GeneratedConf, environment, true,
 	); err != nil {
 		return utils.Error(err, L("cannot generate systemd conf file"))
 	}

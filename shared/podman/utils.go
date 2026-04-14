@@ -59,6 +59,9 @@ var ProxyContainerNames = []string{
 	"uyuni-proxy-tftpd",
 }
 
+// ServerEnvironmentFile is the name of server environment configuration file.
+const ServerEnvironmentFile = "server.env"
+
 // PodmanFlags stores the podman arguments.
 type PodmanFlags struct {
 	Args []string `mapstructure:"arg"`

@@ -225,3 +225,7 @@ func AddServerFlags(cmd *cobra.Command) {
 	cmd.Flags().String("ssl-password", "", L("Password for the CA key to generate"))
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", ssl.GeneratedFlagsGroup)
 }
+
+func AddDebugFlags(cmd *cobra.Command) {
+	cmd.Flags().Bool("debug-java", false, L("Enable tomcat and taskomatic remote debugging"))
+}

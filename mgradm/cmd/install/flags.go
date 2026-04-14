@@ -20,8 +20,6 @@ func AddInstallFlags(cmd *cobra.Command) {
 
 	cmd_utils.AddServerFlags(cmd)
 
-	cmd.Flags().Bool("debug-java", false, L("Enable tomcat and taskomatic remote debugging"))
-
 	cmd_utils.AddCocoFlag(cmd)
 
 	cmd_utils.AddHubXmlrpcFlags(cmd)

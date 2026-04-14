@@ -5,9 +5,10 @@
 package templates
 
 import (
-	"io"
+	"bytes"
 	"testing"
 
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -16,6 +17,7 @@ func TestTemplatesRender(t *testing.T) {
 	tests := []struct {
 		name     string
 		template utils.Template
+		expected string
 	}{
 		{
 			name: "HttpdTemplateData",
@@ -68,8 +70,14 @@ func TestTemplatesRender(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.template.Render(io.Discard); err != nil {
+			var buf bytes.Buffer
+			if err := tt.template.Render(&buf); err != nil {
 				t.Errorf("%s render failed: %v", tt.name, err)
+			}
+			actual := buf.String()
+			if tt.expected != "" && actual != tt.expected {
+				diff := testutils.DiffStrings(tt.expected, actual)
+				t.Errorf("%s render output mismatch:\n%s", tt.name, diff)
 			}
 		})
 	}
