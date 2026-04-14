@@ -166,6 +166,44 @@ func TestHostCopy(t *testing.T) {
 	}
 }
 
+func TestHostInferredCopy(t *testing.T) {
+	originalRunner := runner
+	defer func() { runner = originalRunner }()
+
+	var capturedCommand string
+	var capturedArgs []string
+
+	runner = func(command string, args ...string) types.Runner {
+		capturedCommand = command
+		capturedArgs = args
+		return &mockRunner{}
+	}
+
+	cnx := NewConnection("host", "", "")
+	err := cnx.Copy("server:/home/myfile", "/tmp/", "", "")
+
+	if err != nil {
+		t.Errorf("Copy returned error: %v", err)
+	}
+
+	if capturedCommand != "cp" {
+		t.Errorf("Expected command 'cp', got '%s'", capturedCommand)
+	}
+
+	if capturedArgs[0] != "/home/myfile" || capturedArgs[1] != "/tmp/myfile" {
+		t.Errorf("Expected args ['/home/myfile', '/tmp/myfile'], got %v", capturedArgs)
+	}
+
+	err = cnx.Copy("/tmp/myanotherfile", "server:", "", "")
+	if err != nil {
+		t.Errorf("Copy returned error: %v", err)
+	}
+
+	if capturedArgs[0] != "/tmp/myanotherfile" || capturedArgs[1] != "myanotherfile" {
+		t.Errorf("Expected args ['/tmp/myanotherfile', 'myanotherfile'], got %v", capturedArgs)
+	}
+}
+
 func TestHostUserExec(t *testing.T) {
 	originalRunner := runner
 	defer func() { runner = originalRunner }()

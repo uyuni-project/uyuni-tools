@@ -398,6 +398,13 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 		namespacePrefix = namespace + "/"
 	}
 
+	srcPath := strings.Replace(src, "server:", "", 1)
+	// Assume the same name as the source if we use copy with just "server:""
+	// Similarly if we copy to the directory "something/"
+	if strings.HasSuffix(dst, ":") || strings.HasSuffix(dst, "/") {
+		dst += filepath.Base(srcPath)
+	}
+
 	var commandArgs []string
 	extraArgs := []string{}
 	srcExpanded := strings.Replace(src, "server:", namespacePrefix+podName+":", 1)
