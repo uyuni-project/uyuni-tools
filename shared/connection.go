@@ -21,8 +21,21 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
+
+var runner = utils.NewRunner
+
+// SetRunner allows mocking the runner for tests.
+func SetRunner(r func(command string, args ...string) types.Runner) {
+	runner = r
+}
+
+// ResetRunner resets the runner to the default implementation.
+func ResetRunner() {
+	runner = utils.NewRunner
+}
 
 // Connection contains information about how to connect to the server.
 type Connection struct {
@@ -32,6 +45,7 @@ type Connection struct {
 	kubernetesFilter string
 	namespace        string
 	container        string
+	user             string
 	systemd          podman.Systemd
 }
 
@@ -42,9 +56,14 @@ type Connection struct {
 // container is the name of a container to look for when detecting the command.
 // kubernetesFilter is a filter parameter to use to match a pod.
 func NewConnection(backend string, container string, kubernetesFilter string) *Connection {
+	return NewUserConnection(backend, container, kubernetesFilter, "")
+}
+
+// NewUserConnection creates a new connection object with a specific user to run commands as.
+func NewUserConnection(backend string, container string, kubernetesFilter string, user string) *Connection {
 	systemd := podman.NewSystemd()
 	cnx := Connection{
-		backend: backend, container: container, kubernetesFilter: kubernetesFilter, systemd: systemd,
+		backend: backend, container: container, kubernetesFilter: kubernetesFilter, systemd: systemd, user: user,
 	}
 
 	return &cnx
@@ -64,6 +83,8 @@ func (c *Connection) GetCommand() (string, error) {
 				err = fmt.Errorf(L("backend command not found in PATH: %s"), c.backend)
 			}
 			c.command = c.backend
+		case "host":
+			c.command = "host"
 		case "":
 			hasPodman := false
 			hasKubectl := false
@@ -72,10 +93,9 @@ func (c *Connection) GetCommand() (string, error) {
 			_, err = exec.LookPath("kubectl")
 			if err == nil {
 				hasKubectl = true
-				if out, err := utils.RunCmdOutput(
-					zerolog.DebugLevel, "kubectl", "--request-timeout=30s", "get", "deploy", c.kubernetesFilter,
+				if out, err := runner("kubectl", "--request-timeout=30s", "get", "deploy", c.kubernetesFilter,
 					"-A", "-o=jsonpath={.items[*].metadata.name}",
-				); err != nil {
+				).Log(zerolog.DebugLevel).Spinner("").Exec(); err != nil {
 					log.Info().Msg(L("kubectl not configured to connect to a cluster, ignoring"))
 				} else if len(bytes.TrimSpace(out)) != 0 {
 					c.command = "kubectl"
@@ -88,7 +108,8 @@ func (c *Connection) GetCommand() (string, error) {
 			for _, bin := range bins {
 				if _, err = exec.LookPath(bin); err == nil {
 					hasPodman = true
-					if checkErr := utils.RunCmd(bin, "inspect", c.container, "--format", "{{.Name}}"); checkErr == nil {
+					if _, checkErr := runner(bin, "inspect", c.container, "--format", "{{.Name}}").
+						Spinner("").Exec(); checkErr == nil {
 						c.command = bin
 						break
 					}
@@ -157,10 +178,8 @@ func (c *Connection) GetNamespace(appName string) (string, error) {
 	// retrieving namespace from the first installed object we can find matching the filter.
 	// This assumes that the server or proxy has been installed only in one namespace
 	// with the current cluster credentials.
-	out, err := utils.RunCmdOutput(
-		zerolog.DebugLevel, "kubectl", "get", "all", "-A", c.kubernetesFilter,
-		"-o", "jsonpath={.items[*].metadata.namespace}",
-	)
+	out, err := runner("kubectl", "get", "all", "-A", c.kubernetesFilter, "-o",
+		"jsonpath={.items[*].metadata.namespace}").Log(zerolog.DebugLevel).Spinner("").Exec()
 	if err != nil {
 		return "", utils.Errorf(err, L("failed to guest namespace"))
 	}
@@ -182,9 +201,8 @@ func (c *Connection) GetPodName() (string, error) {
 		case "podman-remote":
 			fallthrough
 		case "podman":
-			if out, _ := utils.RunCmdOutput(
-				zerolog.DebugLevel, c.command, "ps", "-q", "-f", "name="+c.container,
-			); len(out) == 0 {
+			if out, _ := runner(c.command, "ps", "-q", "-f", "name="+c.container).
+				Log(zerolog.DebugLevel).Spinner("").Exec(); len(out) == 0 {
 				err = fmt.Errorf(L("container %s is not running on podman"), c.container)
 			} else {
 				log.Trace().Msgf("Found container ID '%s'", out)
@@ -192,12 +210,14 @@ func (c *Connection) GetPodName() (string, error) {
 			}
 		case "kubectl":
 			// We try the first item on purpose to make the command fail if not available
-			if podName, _ := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "pod", c.kubernetesFilter, "-A",
-				"-o=jsonpath={.items[0].metadata.name}"); len(podName) == 0 {
+			if podName, _ := runner("kubectl", "get", "pod", c.kubernetesFilter, "-A",
+				"-o=jsonpath={.items[0].metadata.name}").Log(zerolog.DebugLevel).Spinner("").Exec(); len(podName) == 0 {
 				err = fmt.Errorf(L("container labeled %s is not running on kubectl"), c.kubernetesFilter)
 			} else {
 				c.podName = string(podName[:])
 			}
+		case "host":
+			c.podName = "host"
 		}
 	}
 
@@ -218,6 +238,14 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 		return nil, cmdErr
 	}
 
+	if cmd == "host" {
+		if c.user != "" {
+			fullCommand := quoteArgs(append([]string{command}, args...))
+			return runner("su", "-", c.user, "-c", fullCommand).Log(zerolog.DebugLevel).Spinner("").Exec()
+		}
+		return runner(command, args...).Log(zerolog.DebugLevel).Spinner("").Exec()
+	}
+
 	cmdArgs := []string{"exec", c.podName}
 	if cmd == "kubectl" {
 		if _, err := c.GetNamespace(""); c.namespace == "" {
@@ -230,10 +258,52 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 
 		cmdArgs = append(cmdArgs, "-n", c.namespace, "-c", c.container, "--")
 	}
+
 	shellArgs := append([]string{command}, args...)
+	if c.user != "" {
+		fullCommand := quoteArgs(shellArgs)
+		shellArgs = []string{"su", "-", c.user, "-c", fullCommand}
+	}
 	cmdArgs = append(cmdArgs, shellArgs...)
 
-	return utils.RunCmdOutput(zerolog.DebugLevel, cmd, cmdArgs...)
+	return runner(cmd, cmdArgs...).Log(zerolog.DebugLevel).Spinner("").Exec()
+}
+
+func quoteArgs(args []string) string {
+	quotedArgs := make([]string, len(args))
+	for i, arg := range args {
+		quotedArgs[i] = "'" + strings.ReplaceAll(arg, "'", "'\\''") + "'"
+	}
+	return strings.Join(quotedArgs, " ")
+}
+
+// ExecScript runs the provided script inside the container.
+func (c *Connection) ExecScript(script string) ([]byte, error) {
+	tempFile, err := os.CreateTemp("", "uyuni-tools-script-*.sh")
+	if err != nil {
+		return nil, utils.Errorf(err, L("failed to create temporary file"))
+	}
+	defer os.Remove(tempFile.Name())
+
+	if _, err = tempFile.WriteString(script); err != nil {
+		return nil, utils.Errorf(err, L("failed to write script to temporary file"))
+	}
+	tempFile.Close()
+
+	remotePath := fmt.Sprintf("/tmp/script-%d.sh", time.Now().UnixNano())
+
+	// Copy locally created tempfile to container
+	if err := c.Copy(tempFile.Name(), "server:"+remotePath, c.user, ""); err != nil {
+		return nil, utils.Errorf(err, L("failed to copy script to container"))
+	}
+
+	defer func() {
+		if _, err := c.Exec("rm", "-f", remotePath); err != nil {
+			log.Debug().Err(err).Msgf("failed to remove %s", remotePath)
+		}
+	}()
+
+	return c.Exec("bash", remotePath)
 }
 
 // Healthcheck runs healthcheck command inside the container.
@@ -249,9 +319,14 @@ func (c *Connection) Healthcheck() ([]byte, error) {
 		return nil, cmdErr
 	}
 
+	if cmd == "host" {
+		// Healthcheck not supported on host, always return nil
+		return nil, nil
+	}
+
 	cmdArgs := []string{"healthcheck", "run", c.podName}
 
-	return utils.RunCmdOutput(zerolog.DebugLevel, cmd, cmdArgs...)
+	return runner(cmd, cmdArgs...).Log(zerolog.DebugLevel).Spinner("").Exec()
 }
 
 // WaitForContainer waits up to 10 sec for the container to appear.
@@ -269,11 +344,15 @@ func (c *Connection) WaitForContainer() error {
 			return err
 		}
 
+		if command == "host" {
+			return nil
+		}
+
 		if command == "kubectl" {
 			args = append(args, "--")
 		}
 		args = append(args, "true")
-		err = utils.RunCmd(command, args...)
+		_, err = runner(command, args...).Spinner("").Exec()
 		if err == nil {
 			return nil
 		}
@@ -320,10 +399,22 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 		namespacePrefix = namespace + "/"
 	}
 
+	srcPath := strings.Replace(src, "server:", "", 1)
+	// Assume the same name as the source if we use copy with just "server:"
+	// Similarly if we copy to the directory "something/"
+	if strings.HasSuffix(dst, ":") || strings.HasSuffix(dst, "/") {
+		dst += filepath.Base(srcPath)
+	}
+
 	var commandArgs []string
 	extraArgs := []string{}
 	srcExpanded := strings.Replace(src, "server:", namespacePrefix+podName+":", 1)
 	dstExpanded := strings.Replace(dst, "server:", namespacePrefix+podName+":", 1)
+
+	// Use connection user if not set explicitly
+	if user == "" {
+		user = c.user
+	}
 
 	switch command {
 	case "podman-remote":
@@ -333,26 +424,41 @@ func (c *Connection) Copy(src string, dst string, user string, group string) err
 	case "kubectl":
 		commandArgs = []string{"cp", "-c", "uyuni", "-n", namespace, srcExpanded, dstExpanded}
 		extraArgs = []string{"-c", "uyuni", "--"}
+	case "host":
+		srcExpanded = strings.Replace(src, "server:", "", 1)
+		dstExpanded = strings.Replace(dst, "server:", "", 1)
+		commandArgs = []string{srcExpanded, dstExpanded}
+		command = "cp"
 	default:
 		return fmt.Errorf(L("unknown container kind: %s"), command)
 	}
 
-	if err := utils.RunCmdStdMapping(zerolog.DebugLevel, command, commandArgs...); err != nil {
+	if _, err := runner(command, commandArgs...).Log(zerolog.DebugLevel).StdMapping().Exec(); err != nil {
 		return err
 	}
 
-	if user != "" && strings.HasPrefix(dst, "server:") {
-		execArgs := []string{"exec", podName}
-		if command == "kubectl" {
-			execArgs = append(execArgs, "-n", namespace)
-		}
-		execArgs = append(execArgs, extraArgs...)
+	// File is already copied over, we need to drop server prefix
+	dstPath := strings.Replace(dst, "server:", "", 1)
+	if user != "" && (strings.HasPrefix(dst, "server:") || c.backend == "host") {
 		owner := user
 		if group != "" {
 			owner = user + ":" + group
 		}
-		execArgs = append(execArgs, "chown", owner, strings.Replace(dst, "server:", "", 1))
-		return utils.RunCmdStdMapping(zerolog.DebugLevel, command, execArgs...)
+
+		execArgs := []string{"exec", podName}
+		if command == "kubectl" {
+			execArgs = append(execArgs, "-n", namespace)
+		}
+		if c.backend == "host" {
+			execArgs = []string{owner, dstPath}
+			command = "chown"
+		} else {
+			execArgs = append(execArgs, extraArgs...)
+			execArgs = append(execArgs, "chown", owner, dstPath)
+		}
+
+		_, err := runner(command, execArgs...).Log(zerolog.DebugLevel).StdMapping().Exec()
+		return err
 	}
 	return nil
 }
@@ -380,11 +486,13 @@ func (c *Connection) TestExistenceInPod(dstpath string) bool {
 		}
 		commandArgs = append(commandArgs, "-n", namespace)
 		commandArgs = append(commandArgs, "-c", "uyuni", "test", "-e", dstpath)
+	case "host":
+		return utils.FileExists(dstpath)
 	default:
 		log.Fatal().Msgf(L("unknown container kind: %s"), command)
 	}
 
-	if _, err := utils.RunCmdOutput(zerolog.DebugLevel, command, commandArgs...); err != nil {
+	if _, err := runner(command, commandArgs...).Log(zerolog.DebugLevel).Spinner("").Exec(); err != nil {
 		return false
 	}
 	return true
@@ -413,11 +521,14 @@ func (c *Connection) CopyCaCertificate(fqdn string) error {
 
 	log.Info().Msg(L("Updating host trusted certificates"))
 	if utils.CommandExists("update-ca-certificates") {
-		return utils.RunCmdStdMapping(zerolog.DebugLevel, "update-ca-certificates") // openSUSE, Debian and Ubuntu
+		_, err := runner("update-ca-certificates").Log(zerolog.DebugLevel).StdMapping().Exec()
+		return err // openSUSE, Debian and Ubuntu
 	} else if utils.CommandExists("update-ca-trust") {
-		return utils.RunCmdStdMapping(zerolog.DebugLevel, "update-ca-trust") // RedHat
+		_, err := runner("update-ca-trust").Log(zerolog.DebugLevel).StdMapping().Exec()
+		return err // RedHat
 	} else if utils.CommandExists("trust") {
-		return utils.RunCmdStdMapping(zerolog.DebugLevel, "trust", "anchor", "--store", hostPath) // Fallback
+		_, err := runner("trust", "anchor", "--store", hostPath).Log(zerolog.DebugLevel).StdMapping().Exec()
+		return err // Fallback
 	}
 	return errors.New(L("Unable to update host trusted certificates."))
 }

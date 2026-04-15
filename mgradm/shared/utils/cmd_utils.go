@@ -86,6 +86,8 @@ func AddDBFlags(cmd *cobra.Command) {
 	cmd.Flags().String("db-admin-password", "", L("Database admin password"))
 	cmd.Flags().String("db-provider", "", L("External database provider. Possible values 'aws'"))
 
+	cmd.Flags().Bool("db-walbackup", false, L("Setup continuous WAL backup"))
+
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "db", Title: L("Database Flags")})
 	_ = utils.AddFlagToHelpGroupID(cmd, "db-user", "db")
 	_ = utils.AddFlagToHelpGroupID(cmd, "db-password", "db")
@@ -95,6 +97,7 @@ func AddDBFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "db-admin-user", "db")
 	_ = utils.AddFlagToHelpGroupID(cmd, "db-admin-password", "db")
 	_ = utils.AddFlagToHelpGroupID(cmd, "db-provider", "db")
+	_ = utils.AddFlagToHelpGroupID(cmd, "db-walbackup", "db")
 }
 
 // AddSCCFlag add SCC flags to a command.
@@ -221,4 +224,8 @@ func AddServerFlags(cmd *cobra.Command) {
 
 	cmd.Flags().String("ssl-password", "", L("Password for the CA key to generate"))
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-password", ssl.GeneratedFlagsGroup)
+}
+
+func AddDebugFlags(cmd *cobra.Command) {
+	cmd.Flags().Bool("debug-java", false, L("Enable tomcat and taskomatic remote debugging"))
 }

@@ -23,6 +23,7 @@ RequiresMountsFor=%t/containers
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-success
+Environment=UYUNI_BACKUP_VOLUME=''
 ExecStartPre=/bin/rm -f %t/%n.pid %t/%n.ctr-id
 ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-db
 ExecStart=/bin/sh -c '/usr/bin/podman run \
@@ -54,7 +55,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
         {{- end }}
 	--network {{ .Network }} \
 	--health-on-failure=stop \
-	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
+	${UYUNI_BACKUP_VOLUME} ${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 ExecStop=/usr/bin/podman stop \
 	--ignore -t 10 \
 	--cidfile=%t/%n.ctr-id
@@ -78,7 +79,6 @@ type PgsqlServiceTemplateData struct {
 	NamePrefix      string
 	Ports           []types.PortMap
 	Network         string
-	IPV6Enabled     bool
 	CaSecret        string
 	CaPath          string
 	CertSecret      string

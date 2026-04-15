@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-31 14:40+0200\n"
+"POT-Creation-Date: 2026-04-14 11:22+0200\n"
 "PO-Revision-Date: 2026-03-07 12:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
@@ -98,7 +98,7 @@ msgstr ""
 "メモ: 現時点では、リモートpodmanへのインストールはサポートされていません。\n"
 
 #: mgrpxy/cmd/install/utils.go:30 mgrpxy/cmd/support/ptf/utils.go:30
-#: mgrpxy/shared/podman/podman.go:305
+#: mgrpxy/shared/podman/podman.go:321
 msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
 
@@ -106,16 +106,16 @@ msgstr "このコマンドを実行する前にpodmanをインストールする
 msgid "failed to retrieve proxy config files"
 msgstr "プロキシ設定ファイルの取得に失敗しました"
 
-#: mgrpxy/cmd/install/utils.go:49 mgrpxy/shared/podman/podman.go:321
+#: mgrpxy/cmd/install/utils.go:53 mgrpxy/shared/podman/podman.go:341
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr "最新のsystemidをフェッチできません。提供された設定ファイルから取得したsystemidを使用します"
 
-#: mgrpxy/cmd/install/utils.go:82
+#: mgrpxy/cmd/install/utils.go:86
 msgid "cannot setup network"
 msgstr "ネットワークを設定できません"
 
-#: mgrpxy/cmd/install/utils.go:87 mgrpxy/cmd/support/ptf/utils.go:60
-#: mgrpxy/shared/podman/podman.go:354
+#: mgrpxy/cmd/install/utils.go:91 mgrpxy/cmd/support/ptf/utils.go:60
+#: mgrpxy/shared/podman/podman.go:374
 msgid "Generating systemd services"
 msgstr "systemdサービスの生成"
 
@@ -295,11 +295,11 @@ msgstr "イメージ %s を削除できません"
 msgid "All images have been removed"
 msgstr "すべてのイメージが削除されました"
 
-#: mgrpxy/cmd/uninstall/podman.go:101
+#: mgrpxy/cmd/uninstall/podman.go:102
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr "何もアンインストールされていません。--forceと--purge-volumesを指定して実行して、データがアンインストールされてクリアされるようにしてください"
 
-#: mgrpxy/cmd/uninstall/podman.go:104
+#: mgrpxy/cmd/uninstall/podman.go:105
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr "データが保管されています。podmanボリュームコマンドを使用して、ボリュームをクリアしてください"
 
@@ -339,75 +339,105 @@ msgstr ""
 "\n"
 "メモ: 現時点では、リモートpodmanでのアップグレードはサポートされていません。\n"
 
-#: mgrpxy/shared/podman/podman.go:190
+#: mgrpxy/shared/podman/podman.go:204
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "systemdファイル「%s」の生成に失敗しました"
 
-#: mgrpxy/shared/podman/podman.go:196
+#: mgrpxy/shared/podman/podman.go:212
 msgid "cannot generate systemd conf file"
 msgstr "systemd confファイルを生成できません"
 
-#: mgrpxy/shared/podman/podman.go:202
+#: mgrpxy/shared/podman/podman.go:218
 msgid "cannot generate systemd conf user configuration file"
 msgstr "systemd confユーザ設定ファイルを生成できません"
 
-#: mgrpxy/shared/podman/podman.go:250
+#: mgrpxy/shared/podman/podman.go:266
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "設定 %s でプロキシを設定しています"
 
-#: mgrpxy/shared/podman/podman.go:252
+#: mgrpxy/shared/podman/podman.go:268
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "プロキシ設定を %s ファイルから抽出できませんでした"
 
-#: mgrpxy/shared/podman/podman.go:255
+#: mgrpxy/shared/podman/podman.go:271
 msgid "No tarball provided. Will check existing configuration files."
 msgstr "tarballは提供されていません。既存の設定ファイルを確認します。"
 
-#: mgrpxy/shared/podman/podman.go:269
+#: mgrpxy/shared/podman/podman.go:285
 #, javascript-format
 msgid "%s directory has no required permissions. Check your umask settings"
 msgstr "%s ディレクトリに必要な権限がありません。umask設定を確認してください"
 
-#: mgrpxy/shared/podman/podman.go:271
+#: mgrpxy/shared/podman/podman.go:287
 #, javascript-format
 msgid "%s file has no required permissions. Check your umask settings"
 msgstr "%s ファイルに必要な権限がありません。umask設定を確認してください"
 
-#: mgrpxy/shared/podman/podman.go:284
+#: mgrpxy/shared/podman/podman.go:300
 #, javascript-format
 msgid "missing required configuration file: %s"
 msgstr "必要な設定ファイルが見つかりません: %s"
 
-#: mgrpxy/shared/podman/podman.go:333
+#: mgrpxy/shared/podman/podman.go:353
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr "httpdイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:337
+#: mgrpxy/shared/podman/podman.go:357
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr "salt-brokerイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:341
+#: mgrpxy/shared/podman/podman.go:361
 msgid "cannot find squid image: it will no be upgraded"
 msgstr "squidイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:345
+#: mgrpxy/shared/podman/podman.go:365
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr "sshイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:349
+#: mgrpxy/shared/podman/podman.go:369
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr "tftpdイメージが見つかりません: アップグレードされません"
 
-#: mgrpxy/shared/podman/podman.go:427
+#: mgrpxy/shared/podman/podman.go:447
 msgid "Not a system id event"
 msgstr "システムIDイベントではありません"
 
-#: mgrpxy/shared/podman/podman.go:436
+#: mgrpxy/shared/podman/podman.go:456
 msgid "System id not found in returned event"
 msgstr "返されたイベントにシステムIDが見つかりません"
+
+#: mgrpxy/shared/podman/podman.go:541
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to read %s"
+msgstr "ファイル %s への書き込みに失敗しました"
+
+#: mgrpxy/shared/podman/podman.go:545
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to unmarshal %s"
+msgstr "ファイル %s への書き込みに失敗しました"
+
+#: mgrpxy/shared/podman/podman.go:553
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to marshal %s"
+msgstr "ファイル %s への書き込みに失敗しました"
+
+#: mgrpxy/shared/podman/podman.go:556
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to write %s"
+msgstr "ファイル %s への書き込みに失敗しました"
+
+#: mgrpxy/shared/podman/podman.go:564
+#, fuzzy, javascript-format
+#| msgid "failed to re-create the cache directories"
+msgid "failed to create %s secret"
+msgstr "キャッシュディレクトリを再作成できませんでした"
 
 #: mgrpxy/shared/utils/cmd.go:20
 #, javascript-format
@@ -561,10 +591,6 @@ msgstr "SSHサーバチューニング設定ファイル"
 #~ msgid "cannot run helm upgrade"
 #~ msgstr "helmアップグレードを実行できません"
 
-#, javascript-format
-#~ msgid "failed to write in file %s"
-#~ msgstr "ファイル %s への書き込みに失敗しました"
-
 #~ msgid "failed to scale replicas to 1"
 #~ msgstr "レプリカを1にスケールできませんでした"
 
@@ -575,9 +601,6 @@ msgstr "SSHサーバチューニング設定ファイル"
 #, javascript-format
 #~ msgid "Tag for %s container, overrides the global value if set"
 #~ msgstr "%s コンテナ用のタグ。設定されている場合はグローバル値を上書きします"
-
-#~ msgid "failed to re-create the cache directories"
-#~ msgstr "キャッシュディレクトリを再作成できませんでした"
 
 #~ msgid "failed to login to registry.suse.com"
 #~ msgstr "registry.suse.comへのログインに失敗しました"

@@ -16,6 +16,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+const BackupVolumeConfigName = "generated-backup-volume.conf"
+
 func PreparePgsqlImage(
 	authFile string,
 	pgsqlFlags *types.PgsqlFlags,
@@ -118,9 +120,25 @@ func GeneratePgsqlSystemdService(
 
 	environment := fmt.Sprintf("Environment=UYUNI_IMAGE=%s\n", image)
 
-	if err := podman.GenerateSystemdConfFile(podman.DBService, "generated.conf", environment, true); err != nil {
+	if err := podman.GenerateSystemdConfFile(podman.DBService, podman.GeneratedConf, environment, true); err != nil {
 		return utils.Error(err, L("cannot generate systemd configuration file"))
 	}
 
+	return systemd.ReloadDaemon(false)
+}
+
+// Returns string configuring UYUNI_BACKUP_VOLUME environment variable.
+func BackupVolumeConfig() string {
+	return fmt.Sprintf("Environment=UYUNI_BACKUP_VOLUME=\"-v %s:%s\"\n",
+		utils.VarPgsqlBackupVolumeMount.Name,
+		utils.VarPgsqlBackupVolumeMount.MountPath)
+}
+
+// Generates database service configuration for backup volume.
+func GenerateBackupVolumeConfig(systemd podman.Systemd) error {
+	data := BackupVolumeConfig()
+	if err := podman.GenerateSystemdConfFile(podman.DBService, BackupVolumeConfigName, data, true); err != nil {
+		return utils.Error(err, L("cannot generate systemd configuration file"))
+	}
 	return systemd.ReloadDaemon(false)
 }

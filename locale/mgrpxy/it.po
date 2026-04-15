@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-31 14:40+0200\n"
-"PO-Revision-Date: 2025-11-26 10:50+0000\n"
-"Last-Translator: Antonio Gemelli <antonio.gemelli@suse.com>\n"
+"POT-Creation-Date: 2026-04-14 11:22+0200\n"
+"PO-Revision-Date: 2026-04-07 15:32+0000\n"
+"Last-Translator: Michele Bussolotto <michele.bussolotto@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -67,11 +67,11 @@ msgstr ""
 
 #: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
-msgstr ""
+msgstr "percorso del file di configuratione"
 
 #: mgrpxy/cmd/install/install.go:22
 msgid "Install a new proxy on podman"
-msgstr ""
+msgstr "Installa un nuovo proxy su podman"
 
 #: mgrpxy/cmd/install/install.go:23
 msgid ""
@@ -89,7 +89,7 @@ msgid ""
 msgstr ""
 
 #: mgrpxy/cmd/install/utils.go:30 mgrpxy/cmd/support/ptf/utils.go:30
-#: mgrpxy/shared/podman/podman.go:305
+#: mgrpxy/shared/podman/podman.go:321
 msgid "install podman before running this command"
 msgstr "installare podman prima di eseguire questo comando"
 
@@ -98,18 +98,18 @@ msgstr "installare podman prima di eseguire questo comando"
 msgid "failed to retrieve proxy config files"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgrpxy/cmd/install/utils.go:49 mgrpxy/shared/podman/podman.go:321
+#: mgrpxy/cmd/install/utils.go:53 mgrpxy/shared/podman/podman.go:341
 #, fuzzy
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgrpxy/cmd/install/utils.go:82
+#: mgrpxy/cmd/install/utils.go:86
 #, fuzzy
 msgid "cannot setup network"
 msgstr "impossibile impostare la rete: %s"
 
-#: mgrpxy/cmd/install/utils.go:87 mgrpxy/cmd/support/ptf/utils.go:60
-#: mgrpxy/shared/podman/podman.go:354
+#: mgrpxy/cmd/install/utils.go:91 mgrpxy/cmd/support/ptf/utils.go:60
+#: mgrpxy/shared/podman/podman.go:374
 msgid "Generating systemd services"
 msgstr ""
 
@@ -275,11 +275,11 @@ msgstr "impossible eliminare il volume %s"
 msgid "All images have been removed"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/podman.go:101
+#: mgrpxy/cmd/uninstall/podman.go:102
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/podman.go:104
+#: mgrpxy/cmd/uninstall/podman.go:105
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr ""
 
@@ -309,77 +309,102 @@ msgid ""
 "NOTE: for now upgrading on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:190
+#: mgrpxy/shared/podman/podman.go:204
 #, fuzzy, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgrpxy/shared/podman/podman.go:196
+#: mgrpxy/shared/podman/podman.go:212
 #, fuzzy
 msgid "cannot generate systemd conf file"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgrpxy/shared/podman/podman.go:202
+#: mgrpxy/shared/podman/podman.go:218
 #, fuzzy
 msgid "cannot generate systemd conf user configuration file"
 msgstr "mancata creazione della directory temporanea: %s"
 
-#: mgrpxy/shared/podman/podman.go:250
+#: mgrpxy/shared/podman/podman.go:266
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:252
+#: mgrpxy/shared/podman/podman.go:268
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:255
+#: mgrpxy/shared/podman/podman.go:271
 msgid "No tarball provided. Will check existing configuration files."
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:269
+#: mgrpxy/shared/podman/podman.go:285
 #, javascript-format
 msgid "%s directory has no required permissions. Check your umask settings"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:271
+#: mgrpxy/shared/podman/podman.go:287
 #, javascript-format
 msgid "%s file has no required permissions. Check your umask settings"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:284
+#: mgrpxy/shared/podman/podman.go:300
 #, javascript-format
 msgid "missing required configuration file: %s"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:333
+#: mgrpxy/shared/podman/podman.go:353
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:337
+#: mgrpxy/shared/podman/podman.go:357
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:341
+#: mgrpxy/shared/podman/podman.go:361
 msgid "cannot find squid image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:345
+#: mgrpxy/shared/podman/podman.go:365
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:349
+#: mgrpxy/shared/podman/podman.go:369
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:427
+#: mgrpxy/shared/podman/podman.go:447
 msgid "Not a system id event"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:436
+#: mgrpxy/shared/podman/podman.go:456
 msgid "System id not found in returned event"
 msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:541
+#, fuzzy, javascript-format
+msgid "failed to read %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgrpxy/shared/podman/podman.go:545
+#, fuzzy, javascript-format
+msgid "failed to unmarshal %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgrpxy/shared/podman/podman.go:553
+#, fuzzy, javascript-format
+msgid "failed to marshal %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgrpxy/shared/podman/podman.go:556
+#, fuzzy, javascript-format
+msgid "failed to write %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgrpxy/shared/podman/podman.go:564
+#, fuzzy, javascript-format
+msgid "failed to create %s secret"
+msgstr "mancata creazione della directory temporanea: %s"
 
 #: mgrpxy/shared/utils/cmd.go:20
 #, javascript-format
@@ -427,16 +452,8 @@ msgstr ""
 #~ msgid "install %s before running this command"
 #~ msgstr "installare %s prima di eseguire questo comando"
 
-#, fuzzy, javascript-format
-#~ msgid "failed to write in file %s"
-#~ msgstr "mancata creazione della directory temporanea: %s"
-
 #, fuzzy
 #~ msgid "failed to scale replicas to 1"
-#~ msgstr "mancata creazione della directory temporanea: %s"
-
-#, fuzzy
-#~ msgid "failed to re-create the cache directories"
 #~ msgstr "mancata creazione della directory temporanea: %s"
 
 #, javascript-format

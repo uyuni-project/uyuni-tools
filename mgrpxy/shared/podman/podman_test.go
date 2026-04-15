@@ -17,6 +17,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
+	"gopkg.in/yaml.v2"
 )
 
 func TestCheckDirPermissions(t *testing.T) {
@@ -216,4 +217,67 @@ func TestGenerateSystemdService(t *testing.T) {
 
 	// Restore the mocked variables
 	systemdGenerator = generateSystemdFile
+}
+
+func TestExtractSecrets(t *testing.T) {
+	tempDir := t.TempDir()
+	oldProxyConfigDir := proxyConfigDir
+	proxyConfigDir = tempDir
+	defer func() { proxyConfigDir = oldProxyConfigDir }()
+
+	secrets := make(map[string]string)
+	oldCreateSecret := createSecret
+	createSecret = func(name string, value string) error {
+		secrets[name] = value
+		return nil
+	}
+	defer func() { createSecret = oldCreateSecret }()
+
+	configPath := path.Join(tempDir, "config.yaml")
+	configData := "ca_crt: CA_CERT_CONTENT\nother_key: other_value\n"
+	if err := os.WriteFile(configPath, []byte(configData), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	httpdPath := path.Join(tempDir, "httpd.yaml")
+	httpdData := "httpd:\n  server_crt: SERVER_CERT_CONTENT\n" +
+		"  server_key: SERVER_KEY_CONTENT\n  other_httpd_key: other_httpd_value\n"
+	if err := os.WriteFile(httpdPath, []byte(httpdData), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	if err := ExtractSecrets(); err != nil {
+		t.Errorf("ExtractSecrets failed: %v", err)
+	}
+
+	// Verify secrets
+	testutils.AssertEquals(t, "Wrong CA secret", "CA_CERT_CONTENT", secrets[podman.CASecret])
+	testutils.AssertEquals(t, "Wrong server cert secret", "SERVER_CERT_CONTENT", secrets[podman.ProxySSLCertSecret])
+	testutils.AssertEquals(t, "Wrong server key secret", "SERVER_KEY_CONTENT", secrets[podman.ProxySSLKeySecret])
+
+	// Verify files are updated (keys removed)
+	data, _ := os.ReadFile(configPath)
+	var config map[string]interface{}
+	if err := yaml.Unmarshal(data, &config); err != nil {
+		t.Fatalf("Failed to unmarshal config.yaml: %v", err)
+	}
+	if _, ok := config["ca_crt"]; ok {
+		t.Error("ca_crt was not removed from config.yaml")
+	}
+	testutils.AssertEquals(t, "other_key was modified", "other_value", config["other_key"])
+
+	data, _ = os.ReadFile(httpdPath)
+	var httpdConfig map[string]interface{}
+	if err := yaml.Unmarshal(data, &httpdConfig); err != nil {
+		t.Fatalf("Failed to unmarshal httpd.yaml: %v", err)
+	}
+
+	httpd := ensureStringMap(httpdConfig["httpd"])
+	if _, ok := httpd["server_crt"]; ok {
+		t.Error("server_crt was not removed from httpd.yaml")
+	}
+	if _, ok := httpd["server_key"]; ok {
+		t.Error("server_key was not removed from httpd.yaml")
+	}
+	testutils.AssertEquals(t, "other_httpd_key was modified", "other_httpd_value", httpd["other_httpd_key"])
 }
