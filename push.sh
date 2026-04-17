@@ -6,7 +6,7 @@
 
 # This script is called by push-packages-to-obs
 
-OSCAPI=$1
+PRODUCT=$1
 GIT_DIR=$2
 PKG_NAME=$3
 
@@ -17,7 +17,10 @@ REMOTE_BRANCH=$(git for-each-ref --format='%(upstream:lstrip=-1)' $(git rev-pars
 COMMIT_ID=$(git rev-parse --short HEAD)
 popd
 
-if [ "${OSCAPI}" == "https://api.suse.de" ]; then
+# convert legacy value
+test "${PRODUCT}" == "https://api.suse.de" && PRODUCT="MLM"
+
+if [ "${PRODUCT}" == "MLM" ]; then
   VERSION="HEAD"
   case ${REMOTE_BRANCH} in Manager-*)
     VERSION="${REMOTE_BRANCH#Manager-}"
