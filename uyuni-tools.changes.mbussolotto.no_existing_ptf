@@ -1,1 +1,0 @@
-- If PTF image doesn't exists, use the current service image (bsc#1258418)

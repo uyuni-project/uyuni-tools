@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Fri Apr 17 14:48:25 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.6-0
+  * Use podman secrets for SSL on proxy
+  * Fix default value for helm registry (bsc#1258927).
+  * Fix db online backup with new pg_hba settings
+  * mgrctl copy can now infer target name if not set
+  * Set proxy config file permissions (bsc#1257660)
+  * Fix applying PTF with images from RPMs (bsc#1252548)
+  * Bump golang to 1.25
+  * No need to expose the cobbler port
+  * Add the TFTP port back to the proxy (bsc#1260905)
+  * Fix the macros in the spec file (bsc#1229105)
+  * Disable TFTP by default on the server
+  * If PTF image doesn't exists, use the current service image (bsc#1258418)
+  * Bump zerolog to 1.34
+  * Ignore spacewalk-service stop return code.
+  * Use static supportconfig name to avoid dynamic search
+    (bsc#1257941)
+  * Do not nest multiple tarball files and instead collect
+    all files into one tarball (bsc#1252964)
+  * Show where final tarball was generated (bsc#1259208)
+  * Add continuous database backup support (bsc#1250367)
+  * Stop automatically unhealthy container
+  * Use container based server setup instead tools bundled one
+  * mgrpxy ssh tuning should happens before crypto policies (bsc#1254619)
+
+-------------------------------------------------------------------
 Mon Mar 02 16:08:55 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.5-0
