@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:22+0200\n"
-"PO-Revision-Date: 2026-01-12 20:04+0000\n"
+"PO-Revision-Date: 2026-04-17 09:26+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.17\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -411,34 +411,29 @@ msgid "System id not found in returned event"
 msgstr "No s'ha trobat l'ID del sistema a l'esdeveniment retornat"
 
 #: mgrpxy/shared/podman/podman.go:541
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to read %s"
-msgstr "no s'ha pogut escriure al fitxer %s"
+msgstr "no s'ha pogut llegir %s"
 
 #: mgrpxy/shared/podman/podman.go:545
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to unmarshal %s"
-msgstr "no s'ha pogut escriure al fitxer %s"
+msgstr "no s'ha pogut desestructurar %s"
 
 #: mgrpxy/shared/podman/podman.go:553
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to marshal %s"
-msgstr "no s'ha pogut escriure al fitxer %s"
+msgstr "no s'ha pogut estructurar %s"
 
 #: mgrpxy/shared/podman/podman.go:556
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to write %s"
-msgstr "no s'ha pogut escriure al fitxer %s"
+msgstr "no s'ha pogut escriure a %s"
 
 #: mgrpxy/shared/podman/podman.go:564
-#, fuzzy, javascript-format
-#| msgid "failed to re-create the cache directories"
+#, javascript-format
 msgid "failed to create %s secret"
-msgstr "no s'ha pogut tornar a crear els directoris de la memòria cau"
+msgstr "no s'ha pogut crear el secret %s"
 
 #: mgrpxy/shared/utils/cmd.go:20
 #, javascript-format
