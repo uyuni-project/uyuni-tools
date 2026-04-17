@@ -5,6 +5,7 @@
 package testutils
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 	"testing"
@@ -12,6 +13,39 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
+
+// DiffStrings returns a line-by-line diff of two strings.
+func DiffStrings(expected string, actual string) string {
+	expectedLines := strings.Split(expected, "\n")
+	actualLines := strings.Split(actual, "\n")
+
+	var diff strings.Builder
+	maxLines := len(expectedLines)
+	if len(actualLines) > maxLines {
+		maxLines = len(actualLines)
+	}
+
+	for i := 0; i < maxLines; i++ {
+		exp := ""
+		if i < len(expectedLines) {
+			exp = expectedLines[i]
+		}
+		act := ""
+		if i < len(actualLines) {
+			act = actualLines[i]
+		}
+
+		if exp != act {
+			if i < len(expectedLines) {
+				diff.WriteString(fmt.Sprintf("-%d: %s\n", i+1, exp))
+			}
+			if i < len(actualLines) {
+				diff.WriteString(fmt.Sprintf("+%d: %s\n", i+1, act))
+			}
+		}
+	}
+	return diff.String()
+}
 
 // AssertEquals ensures two values are equals and raises and error if not.
 func AssertEquals[T any](t *testing.T, message string, expected T, actual T) {
@@ -34,7 +68,7 @@ func AssertNoError(t *testing.T, message string, err error) {
 	}
 }
 
-// AssertError ensures error mesasge was produced.
+// AssertError ensures error message was produced.
 func AssertError(t *testing.T, message string, err error) {
 	t.Helper() // Important: Marks this function as a test helper
 
@@ -66,6 +100,13 @@ func AssertHasAllFlagsIgnores(t *testing.T, cmd *cobra.Command, args []string, i
 // AssertHasAllFlags ensures that all the flags of a command are present in the args slice.
 func AssertHasAllFlags(t *testing.T, cmd *cobra.Command, args []string) {
 	AssertHasAllFlagsIgnores(t, cmd, args, []string{})
+}
+
+// AssertStringContains ensures a string contains the expected value.
+func AssertStringContains(t *testing.T, message string, actual string, expected string) {
+	if !strings.Contains(actual, expected) {
+		t.Errorf(message+"got '%v' expected to contain '%v'", actual, expected)
+	}
 }
 
 // AssertContains ensures a slice contains the expected value.

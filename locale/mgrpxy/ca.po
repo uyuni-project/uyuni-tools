@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-01 10:57+0100\n"
+"POT-Creation-Date: 2026-04-14 11:22+0200\n"
 "PO-Revision-Date: 2026-01-12 20:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
@@ -99,7 +99,7 @@ msgstr ""
 "NOTA: per ara no s'admet la instal·lació en un podman remot!\n"
 
 #: mgrpxy/cmd/install/utils.go:30 mgrpxy/cmd/support/ptf/utils.go:30
-#: mgrpxy/shared/podman/podman.go:307
+#: mgrpxy/shared/podman/podman.go:321
 msgid "install podman before running this command"
 msgstr "instal·la podman abans d'executar aquesta ordre"
 
@@ -107,9 +107,18 @@ msgstr "instal·la podman abans d'executar aquesta ordre"
 msgid "failed to retrieve proxy config files"
 msgstr "no s'han pogut recuperar els fitxers de configuració del servidor intermediari"
 
-#: mgrpxy/cmd/install/utils.go:49 mgrpxy/shared/podman/podman.go:323
+#: mgrpxy/cmd/install/utils.go:53 mgrpxy/shared/podman/podman.go:341
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr "No s'ha pogut obtenir l'ID del sistema actualitzat, se n'usa un del fitxer de configuració proporcionat."
+
+#: mgrpxy/cmd/install/utils.go:86
+msgid "cannot setup network"
+msgstr "no s'ha pogut configurar la xarxa"
+
+#: mgrpxy/cmd/install/utils.go:91 mgrpxy/cmd/support/ptf/utils.go:60
+#: mgrpxy/shared/podman/podman.go:374
+msgid "Generating systemd services"
+msgstr "S'estan generant els serveis de systemd"
 
 #: mgrpxy/cmd/logs/kubernetes.go:29
 msgid "failed to find proxy pod"
@@ -236,24 +245,24 @@ msgstr ""
 "\n"
 "NOTA: per ara no s'admet la instal·lació en un podman remot!\n"
 
-#: mgrpxy/cmd/support/ptf/utils.go:74
+#: mgrpxy/cmd/support/ptf/utils.go:79
 #, javascript-format
 msgid "cannot find %s image: it will no be upgraded"
 msgstr "no es pot trobar la imatge %s: no s'actualitzarà"
 
-#: mgrpxy/cmd/support/ptf/utils.go:87
+#: mgrpxy/cmd/support/ptf/utils.go:92
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "ptf i indicadors de prova no es poden establir simultàniament "
 
-#: mgrpxy/cmd/support/ptf/utils.go:90
+#: mgrpxy/cmd/support/ptf/utils.go:95
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptf i les banderes de prova no poden estar buides simultàniament "
 
-#: mgrpxy/cmd/support/ptf/utils.go:93
+#: mgrpxy/cmd/support/ptf/utils.go:98
 msgid "user flag cannot be empty"
 msgstr "l'indicador d'usuari no pot estar buit"
 
-#: mgrpxy/cmd/support/ptf/utils.go:131
+#: mgrpxy/cmd/support/ptf/utils.go:136
 msgid "The %[1]s service image is %[2]s"
 msgstr "La imatge del servei %[1]s és %[2]s"
 
@@ -287,11 +296,11 @@ msgstr "no es pot suprimir la imatge %s"
 msgid "All images have been removed"
 msgstr "S'han eliminat totes les imatges"
 
-#: mgrpxy/cmd/uninstall/podman.go:101
+#: mgrpxy/cmd/uninstall/podman.go:102
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr "No s'ha desinstal·lat res, executeu amb --force i --purge-volumes per a desinstal·lar i netejar dades"
 
-#: mgrpxy/cmd/uninstall/podman.go:104
+#: mgrpxy/cmd/uninstall/podman.go:105
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr "S'han mantingut les dades, utilitzeu ordres de volum podman per netejar els volums"
 
@@ -331,83 +340,105 @@ msgstr ""
 "\n"
 "NOTA: per ara no s'admet l'actualització en un podman remot!\n"
 
-#: mgrpxy/shared/podman/podman.go:65
-msgid "cannot setup network"
-msgstr "no s'ha pogut configurar la xarxa"
-
-#: mgrpxy/shared/podman/podman.go:70
-msgid "Generating systemd services"
-msgstr "S'estan generant els serveis de systemd"
-
-#: mgrpxy/shared/podman/podman.go:201
+#: mgrpxy/shared/podman/podman.go:204
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "no s'ha pogut generar el fitxer de systemd «%s»"
 
-#: mgrpxy/shared/podman/podman.go:207
+#: mgrpxy/shared/podman/podman.go:212
 msgid "cannot generate systemd conf file"
 msgstr "no s'ha pogut generar el fitxer conf del systemd"
 
-#: mgrpxy/shared/podman/podman.go:213
+#: mgrpxy/shared/podman/podman.go:218
 msgid "cannot generate systemd conf user configuration file"
 msgstr "no s'ha pogut generar el fitxer de configuració de l'usuari «systemd conf»"
 
-#: mgrpxy/shared/podman/podman.go:256
+#: mgrpxy/shared/podman/podman.go:266
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "S'està configurant el servidor intermediari amb configuració %s"
 
-#: mgrpxy/shared/podman/podman.go:258
+#: mgrpxy/shared/podman/podman.go:268
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "no s'ha pogut extreure la configuració del servidor intermediari del fitxer %s"
 
-#: mgrpxy/shared/podman/podman.go:261
+#: mgrpxy/shared/podman/podman.go:271
 msgid "No tarball provided. Will check existing configuration files."
 msgstr "No s'ha proporcionat cap tarball. Comprovarà els fitxers de configuració existents."
 
-#: mgrpxy/shared/podman/podman.go:275
+#: mgrpxy/shared/podman/podman.go:285
 #, javascript-format
 msgid "%s directory has no required permissions. Check your umask settings"
 msgstr "El directori %s no té permisos necessaris. Comproveu la configuració de l'umask"
 
-#: mgrpxy/shared/podman/podman.go:277
+#: mgrpxy/shared/podman/podman.go:287
 #, javascript-format
 msgid "%s file has no required permissions. Check your umask settings"
 msgstr "El fitxer %s no té permisos necessaris. Comproveu la configuració de l'umask"
 
-#: mgrpxy/shared/podman/podman.go:290
+#: mgrpxy/shared/podman/podman.go:300
 #, javascript-format
 msgid "missing required configuration file: %s"
 msgstr "falta el fitxer de configuració requerit: %s"
 
-#: mgrpxy/shared/podman/podman.go:335
+#: mgrpxy/shared/podman/podman.go:353
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr "no es pot trobar la imatge httpd: no s'actualitzarà"
 
-#: mgrpxy/shared/podman/podman.go:339
+#: mgrpxy/shared/podman/podman.go:357
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr "no es pot trobar la imatge salt-broker: no es millorarà"
 
-#: mgrpxy/shared/podman/podman.go:343
+#: mgrpxy/shared/podman/podman.go:361
 msgid "cannot find squid image: it will no be upgraded"
 msgstr "no s'ha pogut trobar la imatge del calamar: no s'actualitzarà"
 
-#: mgrpxy/shared/podman/podman.go:347
+#: mgrpxy/shared/podman/podman.go:365
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr "no es pot trobar la imatge ssh: no s'actualitzarà"
 
-#: mgrpxy/shared/podman/podman.go:351
+#: mgrpxy/shared/podman/podman.go:369
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr "no es pot trobar la imatge tftpd: no s'actualitzarà"
 
-#: mgrpxy/shared/podman/podman.go:423
+#: mgrpxy/shared/podman/podman.go:447
 msgid "Not a system id event"
 msgstr "No és un esdeveniment d'ID del sistema"
 
-#: mgrpxy/shared/podman/podman.go:432
+#: mgrpxy/shared/podman/podman.go:456
 msgid "System id not found in returned event"
 msgstr "No s'ha trobat l'ID del sistema a l'esdeveniment retornat"
+
+#: mgrpxy/shared/podman/podman.go:541
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to read %s"
+msgstr "no s'ha pogut escriure al fitxer %s"
+
+#: mgrpxy/shared/podman/podman.go:545
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to unmarshal %s"
+msgstr "no s'ha pogut escriure al fitxer %s"
+
+#: mgrpxy/shared/podman/podman.go:553
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to marshal %s"
+msgstr "no s'ha pogut escriure al fitxer %s"
+
+#: mgrpxy/shared/podman/podman.go:556
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to write %s"
+msgstr "no s'ha pogut escriure al fitxer %s"
+
+#: mgrpxy/shared/podman/podman.go:564
+#, fuzzy, javascript-format
+#| msgid "failed to re-create the cache directories"
+msgid "failed to create %s secret"
+msgstr "no s'ha pogut tornar a crear els directoris de la memòria cau"
 
 #: mgrpxy/shared/utils/cmd.go:20
 #, javascript-format
@@ -562,10 +593,6 @@ msgstr "Fitxer de configuració d'afinació del servidor SSH"
 #~ msgid "cannot run helm upgrade"
 #~ msgstr "no es pot executar l'actualització del helm"
 
-#, javascript-format
-#~ msgid "failed to write in file %s"
-#~ msgstr "no s'ha pogut escriure al fitxer %s"
-
 #~ msgid "failed to scale replicas to 1"
 #~ msgstr "no s'ha pogut escalar les rèpliques a 1"
 
@@ -576,9 +603,6 @@ msgstr "Fitxer de configuració d'afinació del servidor SSH"
 #, javascript-format
 #~ msgid "Tag for %s container, overrides the global value if set"
 #~ msgstr "Etiqueta per al contenidor %s, anul·la el valor global si s'estableix"
-
-#~ msgid "failed to re-create the cache directories"
-#~ msgstr "no s'ha pogut tornar a crear els directoris de la memòria cau"
 
 #~ msgid "failed to login to registry.suse.com"
 #~ msgstr "no s'ha pogut iniciar la sessió a register.suse.com"

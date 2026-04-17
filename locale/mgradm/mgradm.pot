@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-01 10:57+0100\n"
+"POT-Creation-Date: 2026-04-14 11:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,108 +17,108 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: mgradm/cmd/backup/backup.go:28
+#: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:29
+#: mgradm/cmd/backup/backup.go:30
 msgid "Create backup of the already configured Uyuni system"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:35
+#: mgradm/cmd/backup/backup.go:36
 msgid "Skip backup of selected volumes"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:36
+#: mgradm/cmd/backup/backup.go:37
 msgid "Backup additional volumes to the build-in ones"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:37
+#: mgradm/cmd/backup/backup.go:38
 msgid "Do not backup database volume, allow online backup."
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:38
+#: mgradm/cmd/backup/backup.go:39
 msgid "Do not backup container images"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:39
+#: mgradm/cmd/backup/backup.go:40
 msgid "Do not backup podman configuration. On restore defaults will be used"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:40
+#: mgradm/cmd/backup/backup.go:41
 msgid "Do not restart services after backup is done"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:41 mgradm/cmd/backup/backup.go:64
+#: mgradm/cmd/backup/backup.go:42 mgradm/cmd/backup/backup.go:65
 msgid "Print expected actions, but no action is done"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:52
+#: mgradm/cmd/backup/backup.go:53
 msgid "Restore backup from the directory"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:53
+#: mgradm/cmd/backup/backup.go:54
 msgid "Restore backup of the previously configured Uyuni system from a specified directory"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:59
+#: mgradm/cmd/backup/backup.go:60
 msgid "Skip restore of selected volumes"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:60
+#: mgradm/cmd/backup/backup.go:61
 msgid "Do not restore database volume"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:61
+#: mgradm/cmd/backup/backup.go:62
 msgid "Skip restore of container images"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:62
+#: mgradm/cmd/backup/backup.go:63
 msgid "Do not restore podman configuration. Defaults will be used"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:63
+#: mgradm/cmd/backup/backup.go:64
 msgid "Restart service after restore is done"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:65
+#: mgradm/cmd/backup/backup.go:66
 msgid "Force overwrite of existing items"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:66
+#: mgradm/cmd/backup/backup.go:67
 msgid "Skip existing items and restore the rest"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:67
+#: mgradm/cmd/backup/backup.go:68
 msgid "Skip verification of the backup files"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:77
+#: mgradm/cmd/backup/backup.go:78
 msgid "Backup solution"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:78
+#: mgradm/cmd/backup/backup.go:79
 msgid "Tools for local backup management"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:101
+#: mgradm/cmd/backup/backup.go:103
 #, javascript-format
 msgid "Backup aborted, partially backed up files remains in '%s'"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:105
+#: mgradm/cmd/backup/backup.go:107
 msgid "Important data were backed up successfully, but errors were present. Restore will use default values where needed"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:125
+#: mgradm/cmd/backup/backup.go:127
 msgid "Encountered problems:"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:127
+#: mgradm/cmd/backup/backup.go:129
 msgid "Restore aborted with partially restored files. Resolve the error and try again"
 msgstr ""
 
-#: mgradm/cmd/backup/backup.go:130
+#: mgradm/cmd/backup/backup.go:132
 msgid "Important data were restored successfully, but with warnings"
 msgstr ""
 
@@ -230,6 +230,185 @@ msgstr ""
 msgid "failed to create Systemd backup tarball: %w"
 msgstr ""
 
+#: mgradm/cmd/backup/db/cmd.go:19
+msgid "Database backup management"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:20
+msgid "Tools for online database backup management"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:34
+msgid "Enable continuous archiving backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:39
+msgid "Reconfigure already configured backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:48
+msgid "Rebase continuous archiving backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:61
+msgid "Disable continuous archiving backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:66
+msgid "Don't ask for confirmation when purging volume"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:67
+msgid "Also remove the volume"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:76
+msgid "Check WAL based database backup status"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:88
+msgid "Restore database backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/cmd.go:93
+msgid "Don't ask for confirmation"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:17
+msgid "Disabling DB backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:34
+msgid "Database service needs to be restarted to reload backup configurations, continue"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:26
+msgid "Backup reconfiguration aborted"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:45
+msgid "Backup volume will be removed, continue?"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:47
+msgid "Aborting volume purge"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:54
+#, javascript-format
+msgid "Backup volume '%s' removed"
+msgstr ""
+
+#: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:66
+#: mgradm/cmd/backup/db/rebase.go:28
+msgid "Starting database…"
+msgstr ""
+
+#: mgradm/cmd/backup/db/enable.go:22
+msgid "Enable DB backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/enable.go:25
+msgid "backup is already configured. Use --force to reconfigure"
+msgstr ""
+
+#: mgradm/cmd/backup/db/enable.go:36
+msgid "Backup configuration aborted"
+msgstr ""
+
+#: mgradm/cmd/backup/db/enable.go:85
+#, javascript-format
+msgid "Continuous Archiving backup configured. Backup target volume is '%s'"
+msgstr ""
+
+#: mgradm/cmd/backup/db/enable.go:98
+msgid "failed to generate postgresql backup script"
+msgstr ""
+
+#: mgradm/cmd/backup/db/rebase.go:17
+msgid "Rebasing postgres WAL backup to new basebackup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/rebase.go:20
+msgid "database backup is not correctly configured: %w"
+msgstr ""
+
+#: mgradm/cmd/backup/db/rebase.go:42
+msgid "Stopping database…"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:25
+msgid "Restoring DB backup"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:28
+msgid "Restoring from backup is a destructive operation. Proceed"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:29
+msgid "Aborting"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:33
+msgid "Stopping database service…"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:40
+msgid "failed to determine database image"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:56
+msgid "failed to generate postgresql restore script"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:59
+msgid "Restoring base backup…"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:73
+msgid "Starting database service…"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:78
+msgid "Base backup restore complete. Database is recovering."
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:88 mgradm/cmd/backup/db/restore.go:101
+msgid "Database is restored."
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:91
+msgid "failed to check database recovery status"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:95
+msgid " Database is recovering… (use Ctrl-C to interrupt waiting)"
+msgstr ""
+
+#: mgradm/cmd/backup/db/restore.go:104
+msgid "error while waiting for database recovery to complete, check database logs"
+msgstr ""
+
+#: mgradm/cmd/backup/db/status.go:24
+msgid "Checking DB backup status"
+msgstr ""
+
+#: mgradm/cmd/backup/db/status.go:40
+msgid "Database continuous backup is %[1]s. Backup volume is %[2]s"
+msgstr ""
+
+#: mgradm/cmd/backup/db/types.go:24
+msgid "archive_mode is off"
+msgstr ""
+
+#: mgradm/cmd/backup/db/types.go:25
+msgid "archive_command is misconfigured"
+msgstr ""
+
+#: mgradm/cmd/backup/db/types.go:26
+msgid "archive volume is not configured correctly"
+msgstr ""
+
 #: mgradm/cmd/backup/restore/podman_utils.go:47
 #, javascript-format
 msgid "Ignoring unexpected file in the podman backup %s"
@@ -273,7 +452,7 @@ msgid "Restoring podman network"
 msgstr ""
 
 #: mgradm/cmd/backup/restore/podman_utils.go:143
-msgid "Unlable to create podman network"
+msgid "Unable to create podman network"
 msgstr ""
 
 #: mgradm/cmd/backup/restore/podman_utils.go:160
@@ -380,42 +559,42 @@ msgstr ""
 msgid "Unable to validate systemd backup file"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:41
+#: mgradm/cmd/backup/restore/systemd_utils.go:42
 #, javascript-format
 msgid "Would restore %s"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:49
+#: mgradm/cmd/backup/restore/systemd_utils.go:50
 #, javascript-format
 msgid "Unable to create directory %s"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:59
+#: mgradm/cmd/backup/restore/systemd_utils.go:60
 #, javascript-format
 msgid "Unknown filetype of %s"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:64
+#: mgradm/cmd/backup/restore/systemd_utils.go:65
 #, javascript-format
 msgid "Unable to restore file details for %s"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:74
+#: mgradm/cmd/backup/restore/systemd_utils.go:75
 #, javascript-format
 msgid "Unable to create directories for %s"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:78
+#: mgradm/cmd/backup/restore/systemd_utils.go:79
 #, javascript-format
 msgid "Unable to create %s"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:82
+#: mgradm/cmd/backup/restore/systemd_utils.go:83
 #, javascript-format
 msgid "Unable to restore content of %s"
 msgstr ""
 
-#: mgradm/cmd/backup/restore/systemd_utils.go:101
+#: mgradm/cmd/backup/restore/systemd_utils.go:102
 msgid "Would generate default systemd services"
 msgstr ""
 
@@ -428,7 +607,7 @@ msgstr ""
 msgid "insufficient space on target device"
 msgstr ""
 
-#: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:45
+#: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:43
 #: mgradm/cmd/upgrade/utils.go:34
 msgid "install podman before running this command"
 msgstr ""
@@ -484,7 +663,7 @@ msgstr ""
 msgid "Distribution %s successfully registered"
 msgstr ""
 
-#: mgradm/cmd/distro/cp.go:76 mgradm/cmd/support/sql/sql.go:34
+#: mgradm/cmd/distro/cp.go:76 mgradm/cmd/support/sql/sql.go:32
 #, javascript-format
 msgid "source %s does not exists"
 msgstr ""
@@ -703,71 +882,55 @@ msgstr ""
 msgid "Extract information from image and deployment"
 msgstr ""
 
-#: mgradm/cmd/inspect/podman.go:39
-msgid "failed to determine pgsql image"
-msgstr ""
-
-#: mgradm/cmd/inspect/podman.go:48
+#: mgradm/cmd/inspect/podman.go:41
 msgid "inspect command failed"
 msgstr ""
 
-#: mgradm/cmd/inspect/podman.go:52
+#: mgradm/cmd/inspect/podman.go:45
 msgid "cannot print inspect result"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:17
+#: mgradm/cmd/install/flags.go:16
 msgid "Time zone to set on the server. Defaults to the host timezone"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:18
+#: mgradm/cmd/install/flags.go:17
 msgid "Administrator e-mail"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:19
+#: mgradm/cmd/install/flags.go:18
 msgid "E-Mail sending the notifications"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:20
+#: mgradm/cmd/install/flags.go:19
 msgid "InterServerSync v1 parent FQDN"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:21
-msgid "Enable TFTP"
-msgstr ""
-
-#: mgradm/cmd/install/flags.go:23
-msgid "failed to mark tftp deprecated"
-msgstr ""
-
-#: mgradm/cmd/install/flags.go:28
-msgid "Enable tomcat and taskomatic remote debugging"
-msgstr ""
-
-#: mgradm/cmd/install/flags.go:36 mgradm/cmd/upgrade/flags.go:22
+#: mgradm/cmd/install/flags.go:29 mgradm/cmd/upgrade/flags.go:22
 msgid "TFTPD Flags"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:39
+#: mgradm/cmd/install/flags.go:32
 msgid "Administrator user name"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:40
+#: mgradm/cmd/install/flags.go:33
 msgid "Administrator password"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:41
+#: mgradm/cmd/install/flags.go:34
 msgid "First name of the administrator"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:42
+#: mgradm/cmd/install/flags.go:35
 msgid "Last name of the administrator"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:43
+#: mgradm/cmd/install/flags.go:36
 msgid "First organization name"
 msgstr ""
 
-#: mgradm/cmd/install/flags.go:45
+#: mgradm/cmd/install/flags.go:38
 msgid "First User Flags"
 msgstr ""
 
@@ -784,51 +947,43 @@ msgid ""
 "NOTE: installing on a remote podman is not supported yet!\n"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:56
+#: mgradm/cmd/install/utils.go:54
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:63
+#: mgradm/cmd/install/utils.go:61
 #, javascript-format
 msgid "Setting up the server with the FQDN '%s'"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:67 mgradm/shared/podman/podman.go:329
+#: mgradm/cmd/install/utils.go:65 mgradm/shared/podman/podman.go:353
 msgid "cannot prepare images"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:71 mgradm/shared/podman/podman.go:94
-#: mgradm/shared/podman/podman.go:319
+#: mgradm/cmd/install/utils.go:69 mgradm/shared/podman/podman.go:145
+#: mgradm/shared/podman/podman.go:343
 msgid "cannot setup network"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:84
-msgid "Run setup command"
+#: mgradm/cmd/install/utils.go:90
+msgid "failed to generate server service"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:93
+#: mgradm/cmd/install/utils.go:95
 msgid "cannot wait for system start"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:96
+#: mgradm/cmd/install/utils.go:98
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:103
+#: mgradm/cmd/install/utils.go:105
 msgid "failed to extract payg data"
 msgstr ""
 
-#: mgradm/cmd/install/utils.go:146 mgradm/shared/podman/podman.go:695
+#: mgradm/cmd/install/utils.go:135 mgradm/shared/podman/podman.go:718
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
-msgstr ""
-
-#: mgradm/cmd/install/utils.go:192
-msgid "server setup failed"
-msgstr ""
-
-#: mgradm/cmd/install/utils.go:195
-msgid "Server set up, login on https://%[1]s with %[2]s user"
 msgstr ""
 
 #: mgradm/cmd/restart/restart.go:22 mgradm/cmd/restart/restart.go:23
@@ -907,7 +1062,7 @@ msgid ""
 "a refresh of the pillars of each registered system will be triggered.\n"
 msgstr ""
 
-#: mgradm/cmd/server/rename/rename.go:46 mgradm/shared/utils/cmd_utils.go:222
+#: mgradm/cmd/server/rename/rename.go:46 mgradm/shared/utils/cmd_utils.go:225
 msgid "Password for the CA key to generate"
 msgstr ""
 
@@ -964,33 +1119,34 @@ msgid ""
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/utils.go:73
+#: mgradm/cmd/support/ptf/utils.go:74
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr ""
 
-#: mgradm/cmd/support/ptf/utils.go:76
+#: mgradm/cmd/support/ptf/utils.go:77
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr ""
 
-#: mgradm/cmd/support/ptf/utils.go:79
+#: mgradm/cmd/support/ptf/utils.go:80
 msgid "user flag cannot be empty"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/utils.go:91
+#: mgradm/cmd/support/ptf/utils.go:92
 msgid "failed to find server image"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/utils.go:100
+#: mgradm/cmd/support/ptf/utils.go:101
 #, javascript-format
-msgid "The computed image is %s"
+msgid "The computed PTF image is %s"
 msgstr ""
 
-#: mgradm/cmd/support/ptf/utils.go:120
+#: mgradm/cmd/support/ptf/utils.go:122 mgradm/cmd/support/ptf/utils.go:126
 msgid "The %[1]s service image is %[2]s"
 msgstr ""
 
-#: mgradm/cmd/support/sql/sql.go:38
-msgid "unable to get random file prefix"
+#: mgradm/cmd/support/ptf/utils.go:124
+#, javascript-format
+msgid "Cannot find PTF for %s"
 msgstr ""
 
 #: mgradm/cmd/support/sql/sql.go:50
@@ -1112,17 +1268,21 @@ msgstr ""
 msgid "Upgrade a local server on podman"
 msgstr ""
 
-#: mgradm/cmd/upgrade/upgrade.go:51
+#: mgradm/cmd/upgrade/upgrade.go:53
 msgid "List available tags for an image"
 msgstr ""
 
-#: mgradm/cmd/upgrade/upgrade.go:63
+#: mgradm/cmd/upgrade/upgrade.go:65
 msgid "failed to unmarshall configuration"
 msgstr ""
 
-#: mgradm/shared/coco/coco.go:77 mgradm/shared/hub/xmlrpcapi.go:44
-#: mgradm/shared/pgsql/pgsql.go:28 mgradm/shared/podman/podman.go:236
-#: mgradm/shared/saline/saline.go:69 mgradm/shared/tftp/tftp.go:37
+#: mgradm/shared/coco/coco.go:28
+msgid "Not altering the confidential computing service"
+msgstr ""
+
+#: mgradm/shared/coco/coco.go:78 mgradm/shared/hub/xmlrpcapi.go:44
+#: mgradm/shared/pgsql/pgsql.go:30 mgradm/shared/podman/podman.go:301
+#: mgradm/shared/saline/saline.go:72 mgradm/shared/tftp/tftp.go:41
 msgid "failed to compute image URL"
 msgstr ""
 
@@ -1130,15 +1290,15 @@ msgstr ""
 msgid "Setting up confidential computing attestation service"
 msgstr ""
 
-#: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:116
-#: mgradm/shared/pgsql/pgsql.go:117 mgradm/shared/podman/podman.go:77
-#: mgradm/shared/saline/saline.go:90 mgradm/shared/tftp/tftp.go:96
+#: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:115
+#: mgradm/shared/pgsql/pgsql.go:118 mgradm/shared/podman/podman.go:129
+#: mgradm/shared/saline/saline.go:92 mgradm/shared/tftp/tftp.go:95
 msgid "failed to generate systemd service unit file"
 msgstr ""
 
-#: mgradm/shared/coco/coco.go:109 mgradm/shared/hub/xmlrpcapi.go:123
-#: mgradm/shared/podman/podman.go:105 mgradm/shared/saline/saline.go:98
-#: mgradm/shared/tftp/tftp.go:103
+#: mgradm/shared/coco/coco.go:109 mgradm/shared/hub/xmlrpcapi.go:122
+#: mgradm/shared/podman/podman.go:156 mgradm/shared/saline/saline.go:100
+#: mgradm/shared/tftp/tftp.go:102
 msgid "cannot generate systemd conf file"
 msgstr ""
 
@@ -1147,8 +1307,8 @@ msgstr ""
 msgid "No changes requested for hub. Keep %d replicas."
 msgstr ""
 
-#: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:44
-#: mgradm/shared/pgsql/pgsql.go:67 mgradm/shared/tftp/tftp.go:46
+#: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:46
+#: mgradm/shared/pgsql/pgsql.go:69 mgradm/shared/tftp/tftp.go:50
 msgid "cannot generate systemd service"
 msgstr ""
 
@@ -1156,161 +1316,162 @@ msgstr ""
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr ""
 
-#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:504
-#: mgradm/shared/saline/saline.go:140
+#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:524
+#: mgradm/shared/saline/saline.go:142
 msgid "cannot enable service"
 msgstr ""
 
-#: mgradm/shared/pgsql/pgsql.go:55 mgradm/shared/pgsql/pgsql.go:84
+#: mgradm/shared/hub/xmlrpcapi.go:87
+msgid "Not altering the hub XML-RPC API service"
+msgstr ""
+
+#: mgradm/shared/pgsql/pgsql.go:57 mgradm/shared/pgsql/pgsql.go:86
 #, javascript-format
 msgid "%s fails healtcheck"
 msgstr ""
 
-#: mgradm/shared/pgsql/pgsql.go:123
+#: mgradm/shared/pgsql/pgsql.go:124 mgradm/shared/pgsql/pgsql.go:141
 msgid "cannot generate systemd configuration file"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:97
+#: mgradm/shared/podman/podman.go:47
+#, javascript-format
+msgid "failed to create %s folder"
+msgstr ""
+
+#: mgradm/shared/podman/podman.go:64 mgradm/shared/podman/podman.go:80
+msgid "failed to generate server environment file"
+msgstr ""
+
+#: mgradm/shared/podman/podman.go:148
 msgid "Enabling system service"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:113 mgradm/shared/saline/saline.go:106
+#: mgradm/shared/podman/podman.go:177 mgradm/shared/saline/saline.go:108
 msgid "cannot generate systemd user configuration file"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:140
+#: mgradm/shared/podman/podman.go:205
 msgid "failed to generate SSL migration script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:160
+#: mgradm/shared/podman/podman.go:225
 #, javascript-format
 msgid "Migrating SSL certificates from the source server %s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:163
+#: mgradm/shared/podman/podman.go:228
 msgid "cannot run uyuni SSL migration container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:174
+#: mgradm/shared/podman/podman.go:239
 #, javascript-format
 msgid "Failed to read file %s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:180
+#: mgradm/shared/podman/podman.go:245
 msgid "cannot read extracted data"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:191
+#: mgradm/shared/podman/podman.go:256
 #, javascript-format
 msgid "cannot inspect volume %s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:194
+#: mgradm/shared/podman/podman.go:259
 #, javascript-format
 msgid "cannot restore %s SELinux permissions"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:244
+#: mgradm/shared/podman/podman.go:309
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:253
-msgid "No need to run database finalization script"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:285
-msgid "cannot generate PostgreSQL finalization script"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:339 mgradm/shared/podman/podman.go:347
+#: mgradm/shared/podman/podman.go:367 mgradm/shared/podman/podman.go:375
 msgid "cannot stop service"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:358
+#: mgradm/shared/podman/podman.go:386
 msgid "Initiating PostgreSQL upgrade from version %[1]d to %[2]d"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:362
+#: mgradm/shared/podman/podman.go:390
 #, javascript-format
 msgid "cannot find volume %s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:377
+#: mgradm/shared/podman/podman.go:405
 #, javascript-format
 msgid "cannot move %s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:393
+#: mgradm/shared/podman/podman.go:421
 #, javascript-format
 msgid "cannot mkdir %s"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:396
+#: mgradm/shared/podman/podman.go:424
 msgid "Data will be copied during this process. Please ensure sufficient disk space is available."
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:398
+#: mgradm/shared/podman/podman.go:426
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:401
+#: mgradm/shared/podman/podman.go:429
 msgid "Upgrading without changing PostgreSQL version"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:404
+#: mgradm/shared/podman/podman.go:432
 msgid "trying to downgrade PostgreSQL from %[1]d to %[2]d"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:411
+#: mgradm/shared/podman/podman.go:439
 msgid "Configuring split PostgreSQL container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:420
+#: mgradm/shared/podman/podman.go:448
 msgid "cannot configure db container"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:430
-msgid "cannot run PostgreSQL finalize script"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:434
-msgid "cannot run post upgrade script"
-msgstr ""
-
-#: mgradm/shared/podman/podman.go:459 mgradm/shared/podman/podman.go:502
+#: mgradm/shared/podman/podman.go:482 mgradm/shared/podman/podman.go:522
 msgid "Waiting for the server to start…"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:462
+#: mgradm/shared/podman/podman.go:485 mgradm/shared/podman/podman.go:527
 msgid "cannot start service"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:545
+#: mgradm/shared/podman/podman.go:512
+msgid "Failed to read server service definition to look for TFTP port"
+msgstr ""
+
+#: mgradm/shared/podman/podman.go:568
 msgid "failed to generate postgresql migration script"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:581
+#: mgradm/shared/podman/podman.go:604
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:611
+#: mgradm/shared/podman/podman.go:634
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:621
+#: mgradm/shared/podman/podman.go:644
 msgid "Failed to find home directory to look for SSH config"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:643
+#: mgradm/shared/podman/podman.go:666
 msgid "cannot inspect podman values"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:657
+#: mgradm/shared/podman/podman.go:680
 msgid "PostgreSQL migration failure"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:686
+#: mgradm/shared/podman/podman.go:709
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr ""
 
@@ -1425,11 +1586,15 @@ msgstr ""
 msgid "Database SSL certificate generated"
 msgstr ""
 
-#: mgradm/shared/saline/saline.go:63 mgradm/shared/saline/saline.go:134
+#: mgradm/shared/saline/saline.go:50
+msgid "Not altering the Saline service"
+msgstr ""
+
+#: mgradm/shared/saline/saline.go:66 mgradm/shared/saline/saline.go:136
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
 msgstr ""
 
-#: mgradm/shared/saline/saline.go:86
+#: mgradm/shared/saline/saline.go:88
 msgid "Setting up Saline service"
 msgstr ""
 
@@ -1502,153 +1667,157 @@ msgid "External database provider. Possible values 'aws'"
 msgstr ""
 
 #: mgradm/shared/utils/cmd_utils.go:89
+msgid "Setup continuous WAL backup"
+msgstr ""
+
+#: mgradm/shared/utils/cmd_utils.go:91
 msgid "Database Flags"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:102
+#: mgradm/shared/utils/cmd_utils.go:105
 msgid ""
 "SUSE Customer Center username.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:104
+#: mgradm/shared/utils/cmd_utils.go:107
 msgid ""
 "SUSE Customer Center password.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:106
+#: mgradm/shared/utils/cmd_utils.go:109
 msgid "SUSE Customer Center Flags"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:113
+#: mgradm/shared/utils/cmd_utils.go:116
 msgid "Image"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:114
+#: mgradm/shared/utils/cmd_utils.go:117
 msgid "Tag Image"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:119
+#: mgradm/shared/utils/cmd_utils.go:122
 msgid "Image Flags"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:130
+#: mgradm/shared/utils/cmd_utils.go:133
 msgid "Database upgrade image"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:131
+#: mgradm/shared/utils/cmd_utils.go:134
 msgid "Database upgrade image tag, overrides the default value if set"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:133
+#: mgradm/shared/utils/cmd_utils.go:136
 msgid "Database Upgrade Image Flags"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:140
+#: mgradm/shared/utils/cmd_utils.go:143
 msgid "Path to mirrored packages mounted on the host"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:145 mgradm/shared/utils/cmd_utils.go:154
+#: mgradm/shared/utils/cmd_utils.go:148 mgradm/shared/utils/cmd_utils.go:157
 msgid "Confidential Computing Flags"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:146 mgradm/shared/utils/cmd_utils.go:155
+#: mgradm/shared/utils/cmd_utils.go:149 mgradm/shared/utils/cmd_utils.go:158
 msgid "Confidential computing attestation"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:148
+#: mgradm/shared/utils/cmd_utils.go:151
 msgid "How many replicas of the confidential computing container should be started"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:157
+#: mgradm/shared/utils/cmd_utils.go:160
 msgid ""
 "How many replicas of the confidential computing container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:164 mgradm/shared/utils/cmd_utils.go:165
-#: mgradm/shared/utils/cmd_utils.go:174 mgradm/shared/utils/cmd_utils.go:175
+#: mgradm/shared/utils/cmd_utils.go:167 mgradm/shared/utils/cmd_utils.go:168
+#: mgradm/shared/utils/cmd_utils.go:177 mgradm/shared/utils/cmd_utils.go:178
 msgid "Hub XML-RPC API"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:167
+#: mgradm/shared/utils/cmd_utils.go:170
 msgid "How many replicas of the Hub XML-RPC API service container should be started."
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:177
+#: mgradm/shared/utils/cmd_utils.go:180
 msgid ""
 "How many replicas of the Hub XML-RPC API service container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:184 mgradm/shared/utils/cmd_utils.go:195
+#: mgradm/shared/utils/cmd_utils.go:187 mgradm/shared/utils/cmd_utils.go:198
 msgid "Saline Flags"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:185 mgradm/shared/utils/cmd_utils.go:196
+#: mgradm/shared/utils/cmd_utils.go:188 mgradm/shared/utils/cmd_utils.go:199
 msgid "Saline"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:186
+#: mgradm/shared/utils/cmd_utils.go:189
 msgid ""
 "How many replicas of the Saline container should be started\n"
 "(only 0 or 1 supported for now)"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:188 mgradm/shared/utils/cmd_utils.go:200
+#: mgradm/shared/utils/cmd_utils.go:191 mgradm/shared/utils/cmd_utils.go:203
 msgid "Saline port"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:197
+#: mgradm/shared/utils/cmd_utils.go:200
 msgid ""
 "How many replicas of the Saline container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas.\n"
 "(only 0 or 1 supported for now)"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:207
+#: mgradm/shared/utils/cmd_utils.go:210
 msgid "PostgreSQL Database Container Flags"
 msgstr ""
 
-#: mgradm/shared/utils/cmd_utils.go:208
+#: mgradm/shared/utils/cmd_utils.go:211
 msgid "PostgreSQL Database"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:25
+#: mgradm/shared/utils/cmd_utils.go:230
+msgid "Enable tomcat and taskomatic remote debugging"
+msgstr ""
+
+#: mgradm/shared/utils/exec.go:24
 msgid "exec command failed"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:38
+#: mgradm/shared/utils/exec.go:37
 msgid "failed retrieving namespace"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:58
-msgid "failed to render database post upgrade script"
-msgstr ""
-
-#: mgradm/shared/utils/exec.go:76
+#: mgradm/shared/utils/exec.go:64
 #, javascript-format
 msgid "currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:83
+#: mgradm/shared/utils/exec.go:71
 #, javascript-format
 msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:92 mgradm/shared/utils/exec.go:105
+#: mgradm/shared/utils/exec.go:80 mgradm/shared/utils/exec.go:93
 msgid "cannot fetch release from server image"
 msgstr ""
 
-#: mgradm/shared/utils/exec.go:97 mgradm/shared/utils/exec.go:110
+#: mgradm/shared/utils/exec.go:85 mgradm/shared/utils/exec.go:98
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/shared/utils/flags.go:156
+#: mgradm/shared/utils/flags.go:141
 msgid "Can only contain letters, digits . _ and -"
 msgstr ""
 
-#: mgradm/shared/utils/flags.go:164
+#: mgradm/shared/utils/flags.go:149
 msgid "Not a valid email address"
 msgstr ""

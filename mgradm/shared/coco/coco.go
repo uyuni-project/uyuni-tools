@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,29 +22,30 @@ func Upgrade(
 	authFile string,
 	cocoFlags adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
-	db adm_utils.DBFlags,
+	db types.DBFlags,
 ) error {
 	if cocoFlags.Image.Name == "" {
+		log.Info().Msg(L("Not altering the confidential computing service"))
 		// Don't touch the coco service in ptf if not already present.
-		return nil
-	}
+	} else {
+		if err := podman.CreateCredentialsSecrets(
+			podman.DBUserSecret, db.User,
+			podman.DBPassSecret, db.Password,
+		); err != nil {
+			return err
+		}
 
-	if err := podman.CreateCredentialsSecrets(
-		podman.DBUserSecret, db.User,
-		podman.DBPassSecret, db.Password,
-	); err != nil {
-		return err
-	}
-
-	if err := writeCocoServiceFiles(
-		systemd, authFile, cocoFlags, baseImage, db,
-	); err != nil {
-		return err
+		if err := writeCocoServiceFiles(
+			systemd, authFile, cocoFlags, baseImage, db,
+		); err != nil {
+			return err
+		}
 	}
 
 	if !cocoFlags.IsChanged {
 		return systemd.RestartInstantiated(podman.ServerAttestationService)
 	}
+	// In some case we may loose the currently running instance. Restore the count we had before
 	return systemd.ScaleService(cocoFlags.Replicas, podman.ServerAttestationService)
 }
 
@@ -53,7 +54,7 @@ func writeCocoServiceFiles(
 	authFile string,
 	cocoFlags adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
-	db adm_utils.DBFlags,
+	db types.DBFlags,
 ) error {
 	image := cocoFlags.Image
 	currentReplicas := systemd.CurrentReplicaCount(podman.ServerAttestationService)
@@ -87,7 +88,6 @@ func writeCocoServiceFiles(
 	attestationData := templates.AttestationServiceTemplateData{
 		NamePrefix:   "uyuni",
 		Network:      podman.UyuniNetwork,
-		Image:        preparedImage,
 		DBUserSecret: podman.DBUserSecret,
 		DBPassSecret: podman.DBPassSecret,
 	}
@@ -104,7 +104,7 @@ Environment=database_connection=jdbc:postgresql://%s:%d/%s
 `, preparedImage, db.Host, db.Port, db.Name)
 
 	if err := podman.GenerateSystemdConfFile(
-		podman.ServerAttestationService+"@", "generated.conf", environment, true,
+		podman.ServerAttestationService+"@", podman.GeneratedConf, environment, true,
 	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
@@ -121,7 +121,7 @@ func SetupCocoContainer(
 	authFile string,
 	coco adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
-	db adm_utils.DBFlags,
+	db types.DBFlags,
 ) error {
 	if err := writeCocoServiceFiles(
 		systemd, authFile, coco, baseImage, db,

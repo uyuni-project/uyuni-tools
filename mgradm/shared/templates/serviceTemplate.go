@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,7 +22,7 @@ RequiresMountsFor=%t/containers
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
-Restart=on-failure
+Restart=on-success
 ExecStartPre=/bin/rm -f %t/uyuni-server.pid %t/%n.ctr-id
 ExecStartPre=/usr/bin/podman rm --ignore --force -t 10 {{ .NamePrefix }}-server
 ExecStart=/bin/sh -c '/usr/bin/podman run \
@@ -32,6 +32,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--shm-size=0 \
 	--shm-size-systemd=0 \
 	--sdnotify=conmon \
+	--systemd=always \
 	-d \
 	--name {{ .NamePrefix }}-server \
 	--hostname {{ .NamePrefix }}-server.mgr.internal \
@@ -42,18 +43,30 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- range .Volumes }}
 	-v {{ .Name }}:{{ .MountPath }} \
 	{{- end }}
-	-e TZ=${TZ} \
-	-e UYUNI_HOSTNAME=${UYUNI_HOSTNAME} \
+	--env-file={{ .ServerEnvFile }} \
 	--network {{ .Network }} \
+	--secret {{ .DBUserSecret }},type=env,target=MANAGER_USER \
+	--secret {{ .DBPassSecret }},type=env,target=MANAGER_PASS \
+	--secret {{ .ReportDBUserSecret }},type=env,target=REPORT_DB_USER \
+	--secret {{ .ReportDBPassSecret }},type=env,target=REPORT_DB_PASS \
 	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
 	--secret {{ .CaSecret }},type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT \
 	--secret {{ .CaSecret }},type=mount,target=/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
 	--secret {{ .CertSecret }},type=mount,target={{ .CertPath }} \
 	--secret {{ .KeySecret }},type=mount,target={{ .KeyPath }} \
 	--secret {{ .DBCaSecret }},type=mount,target={{ .DBCaPath }} \
+	{{- if .SCCUserSecret }}
+	--secret {{ .SCCUserSecret }},type=env,target=SCC_USER \
+	--secret {{ .SCCPassSecret }},type=env,target=SCC_PASS \
+	{{- end }}
+	{{- if .AdminUserSecret }}
+	--secret {{ .AdminUserSecret }},type=env,target=ADMIN_USER \
+	--secret {{ .AdminPassSecret }},type=env,target=ADMIN_PASS \
+	{{- end }}
+	--health-on-failure=stop \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 
-ExecStop=/usr/bin/podman exec \
+ExecStop=-/usr/bin/podman exec \
     uyuni-server \
     /bin/bash -c 'spacewalk-service stop'
 ExecStop=/usr/bin/podman stop \
@@ -75,27 +88,28 @@ WantedBy=multi-user.target default.target
 
 // PodmanServiceTemplateData POD information to create systemd file.
 type PodmanServiceTemplateData struct {
-	Volumes         []types.VolumeMount
-	NamePrefix      string
-	Args            string
-	Ports           []types.PortMap
-	Image           string
-	Network         string
-	IPV6Enabled     bool
-	CaSecret        string
-	CaPath          string
-	DBCaSecret      string
-	DBCaPath        string
-	CertSecret      string
-	CertPath        string
-	KeySecret       string
-	KeyPath         string
-	AdminUser       string
-	AdminPassword   string
-	ManagerUser     string
-	ManagerPassword string
-	ReportUser      string
-	ReportPassword  string
+	Volumes            []types.VolumeMount
+	NamePrefix         string
+	Args               string
+	Ports              []types.PortMap
+	Network            string
+	CaSecret           string
+	CaPath             string
+	DBCaSecret         string
+	DBCaPath           string
+	CertSecret         string
+	CertPath           string
+	KeySecret          string
+	KeyPath            string
+	DBUserSecret       string
+	DBPassSecret       string
+	ReportDBUserSecret string
+	ReportDBPassSecret string
+	SCCUserSecret      string
+	SCCPassSecret      string
+	AdminUserSecret    string
+	AdminPassSecret    string
+	ServerEnvFile      string
 }
 
 // Render will create the systemd configuration file.

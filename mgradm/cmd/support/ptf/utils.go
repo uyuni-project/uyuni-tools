@@ -41,8 +41,8 @@ func ptfForPodman(
 	//we don't want to perform a postgres version upgrade when installing a PTF.
 	//in that case, we can use the upgrade command.
 	dummyImage := types.ImageFlags{}
-	dummyDB := adm_utils.DBFlags{}
-	dummyReportDB := adm_utils.DBFlags{}
+	dummyDB := types.DBFlags{}
+	dummyReportDB := types.DBFlags{}
 	dummySSL := adm_utils.InstallSSLFlags{}
 
 	if err := flags.checkParameters(authFile); err != nil {
@@ -61,6 +61,7 @@ func ptfForPodman(
 		flags.Pgsql,
 		flags.TFTPD,
 		flags.Installation.TZ,
+		flags.Installation.Debug.Java,
 	)
 }
 
@@ -97,11 +98,11 @@ func (flags *podmanPTFFlags) checkParameters(authFile string) error {
 	if err != nil {
 		return err
 	}
-	log.Info().Msgf(L("The computed image is %s"), flags.Image.Name)
+	log.Info().Msgf(L("The computed PTF image is %s"), flags.Image.Name)
 
 	images := map[string]*string{
 		podman_shared.ServerAttestationService + "@": &flags.Coco.Image.Name,
-		podman_shared.HubXmlrpcService:               &flags.HubXmlrpc.Image.Name,
+		podman_shared.HubXmlrpcService + "@":         &flags.HubXmlrpc.Image.Name,
 		podman_shared.SalineService + "@":            &flags.Saline.Image.Name,
 		podman_shared.DBService:                      &flags.Pgsql.Image.Name,
 		podman_shared.TFTPService:                    &flags.TFTPD.Image.Name,
@@ -110,6 +111,7 @@ func (flags *podmanPTFFlags) checkParameters(authFile string) error {
 	for service, pointer := range images {
 		if containerImage := getServiceImage(service); containerImage != "" {
 			// If no image was found then skip it during the upgrade.
+			currentImage := containerImage
 			containerImage, err =
 				utils.ComputePTF(flags.Image.Registry.Host, flags.CustomerID, projectID, containerImage, suffix)
 			if err != nil {
@@ -118,9 +120,12 @@ func (flags *podmanPTFFlags) checkParameters(authFile string) error {
 			if hasRemoteImage(containerImage, authFile) {
 				*pointer = containerImage
 				log.Info().Msgf(L("The %[1]s service image is %[2]s"), service, *pointer)
+			} else if service == podman_shared.DBService {
+				log.Info().Msgf(L("Cannot find PTF for %s"), service)
+				*pointer = currentImage
+				log.Info().Msgf(L("The %[1]s service image is %[2]s"), service, *pointer)
 			}
 		}
 	}
-
 	return nil
 }

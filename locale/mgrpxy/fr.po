@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-01 10:57+0100\n"
+"POT-Creation-Date: 2026-04-14 11:22+0200\n"
 "PO-Revision-Date: 2025-11-26 10:45+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/fr/>\n"
@@ -106,7 +106,7 @@ msgstr ""
 "NOTE: pour l'instant l'installation sur un podman distant n'est pas supportée!\n"
 
 #: mgrpxy/cmd/install/utils.go:30 mgrpxy/cmd/support/ptf/utils.go:30
-#: mgrpxy/shared/podman/podman.go:307
+#: mgrpxy/shared/podman/podman.go:321
 msgid "install podman before running this command"
 msgstr "installer podman avant d'exécuter cette commande"
 
@@ -114,9 +114,18 @@ msgstr "installer podman avant d'exécuter cette commande"
 msgid "failed to retrieve proxy config files"
 msgstr "échoué à récupérer les fichiers de configuration proxy"
 
-#: mgrpxy/cmd/install/utils.go:49 mgrpxy/shared/podman/podman.go:323
+#: mgrpxy/cmd/install/utils.go:53 mgrpxy/shared/podman/podman.go:341
 msgid "Unable to fetch up to date systemid, using one from the provided configuration file"
 msgstr "Impossible de récupérer le systemid à jour, en utilise un depuis le fichier de configuration fourni"
+
+#: mgrpxy/cmd/install/utils.go:86
+msgid "cannot setup network"
+msgstr "échec à configurer le réseau"
+
+#: mgrpxy/cmd/install/utils.go:91 mgrpxy/cmd/support/ptf/utils.go:60
+#: mgrpxy/shared/podman/podman.go:374
+msgid "Generating systemd services"
+msgstr "Génération de services systemd"
 
 #: mgrpxy/cmd/logs/kubernetes.go:29
 msgid "failed to find proxy pod"
@@ -238,24 +247,24 @@ msgstr ""
 "\n"
 "REMARQUE : pour l’instant, installer sur un podman distant n’est pas pris en charge !\n"
 
-#: mgrpxy/cmd/support/ptf/utils.go:74
+#: mgrpxy/cmd/support/ptf/utils.go:79
 #, javascript-format
 msgid "cannot find %s image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/cmd/support/ptf/utils.go:87
+#: mgrpxy/cmd/support/ptf/utils.go:92
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr ""
 
-#: mgrpxy/cmd/support/ptf/utils.go:90
+#: mgrpxy/cmd/support/ptf/utils.go:95
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr ""
 
-#: mgrpxy/cmd/support/ptf/utils.go:93
+#: mgrpxy/cmd/support/ptf/utils.go:98
 msgid "user flag cannot be empty"
 msgstr ""
 
-#: mgrpxy/cmd/support/ptf/utils.go:131
+#: mgrpxy/cmd/support/ptf/utils.go:136
 msgid "The %[1]s service image is %[2]s"
 msgstr ""
 
@@ -290,11 +299,11 @@ msgstr "impossible de supprimer l'image %s"
 msgid "All images have been removed"
 msgstr "Tous les volumes ont été supprimés"
 
-#: mgrpxy/cmd/uninstall/podman.go:101
+#: mgrpxy/cmd/uninstall/podman.go:102
 msgid "Nothing has been uninstalled, run with --force and --purge-volumes to actually uninstall and clear data"
 msgstr ""
 
-#: mgrpxy/cmd/uninstall/podman.go:104
+#: mgrpxy/cmd/uninstall/podman.go:105
 msgid "Data have been kept, use podman volume commands to clear the volumes"
 msgstr ""
 
@@ -339,83 +348,105 @@ msgstr ""
 "\n"
 "REMARQUE : pour l’instant, la mise à niveau sur un podman distant n’est pas prise en charge !\n"
 
-#: mgrpxy/shared/podman/podman.go:65
-msgid "cannot setup network"
-msgstr "échec à configurer le réseau"
-
-#: mgrpxy/shared/podman/podman.go:70
-msgid "Generating systemd services"
-msgstr "Génération de services systemd"
-
-#: mgrpxy/shared/podman/podman.go:201
+#: mgrpxy/shared/podman/podman.go:204
 #, javascript-format
 msgid "failed to generate systemd file '%s'"
 msgstr "échec à générer le fichier systemd : '%s'"
 
-#: mgrpxy/shared/podman/podman.go:207
+#: mgrpxy/shared/podman/podman.go:212
 msgid "cannot generate systemd conf file"
 msgstr "ne peut pas générer le fichier conf systemd"
 
-#: mgrpxy/shared/podman/podman.go:213
+#: mgrpxy/shared/podman/podman.go:218
 msgid "cannot generate systemd conf user configuration file"
 msgstr "ne peut pas générer le fichier de configuration utilisateur de systemd"
 
-#: mgrpxy/shared/podman/podman.go:256
+#: mgrpxy/shared/podman/podman.go:266
 #, javascript-format
 msgid "Setting up proxy with configuration %s"
 msgstr "Installation du proxy avec la configuration %s"
 
-#: mgrpxy/shared/podman/podman.go:258
+#: mgrpxy/shared/podman/podman.go:268
 #, javascript-format
 msgid "failed to extract proxy config from %s file"
 msgstr "impossible d'extraire la configuration du proxy depuis le fichier %s"
 
-#: mgrpxy/shared/podman/podman.go:261
+#: mgrpxy/shared/podman/podman.go:271
 msgid "No tarball provided. Will check existing configuration files."
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:275
+#: mgrpxy/shared/podman/podman.go:285
 #, javascript-format
 msgid "%s directory has no required permissions. Check your umask settings"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:277
+#: mgrpxy/shared/podman/podman.go:287
 #, javascript-format
 msgid "%s file has no required permissions. Check your umask settings"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:290
+#: mgrpxy/shared/podman/podman.go:300
 #, javascript-format
 msgid "missing required configuration file: %s"
 msgstr "fichier de configuration requis manquant : %s"
 
-#: mgrpxy/shared/podman/podman.go:335
+#: mgrpxy/shared/podman/podman.go:353
 msgid "cannot find httpd image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:339
+#: mgrpxy/shared/podman/podman.go:357
 msgid "cannot find salt-broker image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:343
+#: mgrpxy/shared/podman/podman.go:361
 msgid "cannot find squid image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:347
+#: mgrpxy/shared/podman/podman.go:365
 msgid "cannot find ssh image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:351
+#: mgrpxy/shared/podman/podman.go:369
 msgid "cannot find tftpd image: it will no be upgraded"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:423
+#: mgrpxy/shared/podman/podman.go:447
 msgid "Not a system id event"
 msgstr ""
 
-#: mgrpxy/shared/podman/podman.go:432
+#: mgrpxy/shared/podman/podman.go:456
 msgid "System id not found in returned event"
 msgstr ""
+
+#: mgrpxy/shared/podman/podman.go:541
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to read %s"
+msgstr "échec de l’écriture dans le fichier %s"
+
+#: mgrpxy/shared/podman/podman.go:545
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to unmarshal %s"
+msgstr "échec de l’écriture dans le fichier %s"
+
+#: mgrpxy/shared/podman/podman.go:553
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to marshal %s"
+msgstr "échec de l’écriture dans le fichier %s"
+
+#: mgrpxy/shared/podman/podman.go:556
+#, fuzzy, javascript-format
+#| msgid "failed to write in file %s"
+msgid "failed to write %s"
+msgstr "échec de l’écriture dans le fichier %s"
+
+#: mgrpxy/shared/podman/podman.go:564
+#, fuzzy, javascript-format
+#| msgid "failed to re-create the cache directories"
+msgid "failed to create %s secret"
+msgstr "échoué à recréer les répertoires de cache"
 
 #: mgrpxy/shared/utils/cmd.go:20
 #, javascript-format
@@ -545,19 +576,12 @@ msgstr "chemin vers le fichier de configuration"
 #~ msgid "cannot run helm upgrade"
 #~ msgstr "ne peut pas exécuter helm upgrade"
 
-#, javascript-format
-#~ msgid "failed to write in file %s"
-#~ msgstr "échec de l’écriture dans le fichier %s"
-
 #~ msgid "failed to scale replicas to 1"
 #~ msgstr "échec à redimensionner les répliques à 1"
 
 #, javascript-format
 #~ msgid "Tag for %s container, overrides the global value if set"
 #~ msgstr "Tag pour le conteneur %sm remplace la valeur globale si définie"
-
-#~ msgid "failed to re-create the cache directories"
-#~ msgstr "échoué à recréer les répertoires de cache"
 
 #~ msgid "application log level"
 #~ msgstr "niveau de verbosité de l'application"

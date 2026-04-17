@@ -31,6 +31,7 @@ type ServerFlags struct {
 	Saline         SalineFlags
 	Pgsql          types.PgsqlFlags
 	TFTPD          TFTPDFlags
+	Debug          DebugFlags
 }
 
 // MigrationFlags contains the parameters that are used only for migration.
@@ -47,9 +48,8 @@ type InstallationFlags struct {
 	Email        string
 	EmailFrom    string
 	IssParent    string
-	Tftp         bool
-	DB           DBFlags
-	ReportDB     DBFlags
+	DB           types.DBFlags
+	ReportDB     types.DBFlags
 	SSL          InstallSSLFlags
 	SCC          types.SCCCredentials
 	Debug        DebugFlags
@@ -121,25 +121,10 @@ func (flags *InstallationFlags) CheckParameters(cmd *cobra.Command, command stri
 
 	flags.SSL.Email = flags.Email
 	flags.Admin.Email = flags.Email
-}
 
-// DBFlags can store all values required to connect to a database.
-type DBFlags struct {
-	Host     string
-	Name     string
-	Port     int
-	User     string
-	Password string
-	Provider string
-	Admin    struct {
-		User     string
-		Password string
+	if flags.SCC.User != "" {
+		utils.AskPasswordIfMissing(&flags.SCC.Password, cmd.Flag("scc-password").Usage, 5, 48)
 	}
-}
-
-// IsLocal indicates if the database is a local or a third party one.
-func (flags *DBFlags) IsLocal() bool {
-	return flags.Host == "" || flags.Host == "db" || flags.Host == "reportdb"
 }
 
 // DebugFlags contains information about enabled/disabled debug.

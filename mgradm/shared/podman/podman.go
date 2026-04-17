@@ -33,47 +33,99 @@ import (
 
 var systemd podman.Systemd = podman.NewSystemd()
 
-// GetExposedPorts returns the port exposed.
-func GetExposedPorts(debug bool) []types.PortMap {
+// getExposedPorts returns the port exposed.
+func getExposedPorts(debug bool) []types.PortMap {
 	ports := utils.GetServerPorts(debug)
-	ports = append(ports, utils.NewPortMap(utils.WebServiceName, "https", 443, 443))
 	ports = append(ports, utils.TCPPodmanPorts...)
 	return ports
 }
 
-// GenerateServerSystemdService creates the server systemd service file.
-func GenerateServerSystemdService(mirrorPath string, debug bool) error {
-	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)
+// GenerateServerEnvironmentFile generates envvars used for initial installation.
+func GenerateServerEnvironmentFile(flags adm_utils.InstallationFlags, fqdn string, hasMirror bool) error {
+	confDir := podman.GetServiceConfFolder(podman.ServerService)
+	if err := os.MkdirAll(confDir, 0755); err != nil {
+		return utils.Errorf(err, L("failed to create %s folder"), confDir)
+	}
+	envfile := filepath.Join(confDir, podman.ServerEnvironmentFile)
 
-	args := podman.GetCommonParams()
-
-	if mirrorPath != "" {
-		args = append(args, "-v", mirrorPath+":/mirror")
+	data := templates.PodmanServiceEnvironmentTemplateData{
+		TZ:        flags.TZ,
+		Fqdn:      fqdn,
+		Email:     flags.Email,
+		EmailFrom: flags.EmailFrom,
+		DB:        &flags.DB,
+		ReportDB:  &flags.ReportDB,
+		Debug:     flags.Debug.Java,
+		Org:       flags.Organization,
+		Admin:     &flags.Admin,
+		HasMirror: hasMirror,
+	}
+	if err := utils.WriteTemplateToFile(data, envfile, 0400, true); err != nil {
+		return utils.Errorf(err, L("failed to generate server environment file"))
 	}
 
-	ports := GetExposedPorts(debug)
+	return nil
+}
+
+// Generate new server environmentfile with only things useful for upgrade scenario.
+// Currently only debug. Needs changes on uyuni container side too.
+func GenerateUpgradeServerEnvironmentFile(debug bool) error {
+	confDir := podman.GetServiceConfFolder(podman.ServerService)
+	envfile := filepath.Join(confDir, podman.ServerEnvironmentFile)
+	data := templates.PodmanServiceEnvironmentTemplateData{
+		Debug: debug,
+	}
+
+	if err := utils.WriteTemplateToFile(data, envfile, 0400, true); err != nil {
+		return utils.Errorf(err, L("failed to generate server environment file"))
+	}
+
+	return nil
+}
+
+// GenerateServerSystemdService creates the server systemd service file.
+func GenerateServerSystemdService(mirrorPath string, debug bool) error {
+	args := podman.GetCommonParams()
+
+	volumes := utils.ServerVolumeMounts
+	if mirrorPath != "" {
+		volumes = append(volumes, types.VolumeMount{MountPath: "/mirror", Name: mirrorPath})
+	}
+
+	ports := getExposedPorts(debug)
 	if _, err := exec.LookPath("csp-billing-adapter"); err == nil {
-		ports = append(ports, utils.NewPortMap("csp", "csp-billing", 18888, 18888))
+		ports = append(ports, utils.NewPortMap(18888))
 		args = append(args, "-e ISPAYG=1")
 	}
 
 	data := templates.PodmanServiceTemplateData{
-		Volumes:     utils.ServerVolumeMounts,
-		NamePrefix:  "uyuni",
-		Args:        strings.Join(args, " "),
-		Ports:       ports,
-		Network:     podman.UyuniNetwork,
-		IPV6Enabled: ipv6Enabled,
-		CaSecret:    podman.CASecret,
-		CaPath:      ssl.CAContainerPath,
-		CertSecret:  podman.SSLCertSecret,
-		CertPath:    ssl.ServerCertPath,
-		KeySecret:   podman.SSLKeySecret,
-		KeyPath:     ssl.ServerCertKeyPath,
-		DBCaSecret:  podman.DBCASecret,
-		DBCaPath:    ssl.DBCAContainerPath,
+		Volumes:            volumes,
+		NamePrefix:         "uyuni",
+		Args:               strings.Join(args, " "),
+		Ports:              ports,
+		Network:            podman.UyuniNetwork,
+		CaSecret:           podman.CASecret,
+		CaPath:             ssl.CAContainerPath,
+		CertSecret:         podman.SSLCertSecret,
+		CertPath:           ssl.ServerCertPath,
+		KeySecret:          podman.SSLKeySecret,
+		KeyPath:            ssl.ServerCertKeyPath,
+		DBCaSecret:         podman.DBCASecret,
+		DBCaPath:           ssl.DBCAContainerPath,
+		AdminUserSecret:    podman.AdminUserSecret,
+		AdminPassSecret:    podman.AdminPassSecret,
+		DBUserSecret:       podman.DBUserSecret,
+		DBPassSecret:       podman.DBPassSecret,
+		ReportDBUserSecret: podman.ReportDBUserSecret,
+		ReportDBPassSecret: podman.ReportDBPassSecret,
+		ServerEnvFile:      podman.GetServiceConfPath("uyuni-server", podman.ServerEnvironmentFile),
 	}
-	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0555, true); err != nil {
+	if podman.HasSecret(podman.SCCUserSecret) {
+		data.SCCUserSecret = podman.SCCUserSecret
+		data.SCCPassSecret = podman.SCCPassSecret
+	}
+
+	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0444, true); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}
 
@@ -83,11 +135,10 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 // GenerateSystemdService creates a server systemd file.
 func GenerateSystemdService(
 	systemd podman.Systemd,
-	tz string,
 	image string,
-	debug bool,
-	mirrorPath string,
+	flags adm_utils.InstallationFlags,
 	podmanArgs []string,
+	mirrorPath string,
 ) error {
 	err := podman.SetupNetwork(false)
 	if err != nil {
@@ -95,22 +146,36 @@ func GenerateSystemdService(
 	}
 
 	log.Info().Msg(L("Enabling system service"))
-	if err := GenerateServerSystemdService(mirrorPath, debug); err != nil {
+	if err := GenerateServerSystemdService(mirrorPath, flags.Debug.Java); err != nil {
 		return err
 	}
 
-	if err := podman.GenerateSystemdConfFile("uyuni-server", "generated.conf",
+	if err := podman.GenerateSystemdConfFile(podman.ServerService, podman.GeneratedConf,
 		"Environment=UYUNI_IMAGE="+image, true,
 	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
 	}
 
-	config := fmt.Sprintf(`Environment=TZ=%s
-Environment="PODMAN_EXTRA_ARGS=%s"
-`, strings.TrimSpace(tz), strings.Join(podmanArgs, " "))
+	// Add the SCC and admin credentials as secrets
+	if err := podman.CreateCredentialsSecretsIfMissing(
+		podman.AdminUserSecret, flags.Admin.Login, podman.AdminPassSecret, flags.Admin.Password,
+	); err != nil {
+		return err
+	}
 
-	if err := podman.GenerateSystemdConfFile("uyuni-server", podman.CustomConf, config, false); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd user configuration file"))
+	if flags.SCC.User != "" {
+		if err := podman.CreateCredentialsSecretsIfMissing(
+			podman.SCCUserSecret, flags.SCC.User, podman.SCCPassSecret, flags.SCC.Password,
+		); err != nil {
+			return err
+		}
+	}
+
+	config := fmt.Sprintf("Environment=\"PODMAN_EXTRA_ARGS=%s\"", strings.Join(podmanArgs, " "))
+	if !utils.FileExists(podman.GetServiceConfPath(podman.ServerService, podman.CustomConf)) {
+		if err := podman.GenerateSystemdConfFile(podman.ServerService, podman.CustomConf, config, false); err != nil {
+			return utils.Errorf(err, L("cannot generate systemd user configuration file"))
+		}
 	}
 	return systemd.ReloadDaemon(false)
 }
@@ -247,54 +312,12 @@ func RunPgsqlVersionUpgrade(
 		[]string{})
 }
 
-// RunPgsqlFinalizeScript run the script with all the action required to a db after upgrade.
-func RunPgsqlFinalizeScript(serverImage string, schemaUpdateRequired bool, collationChange bool) error {
-	if !schemaUpdateRequired && !collationChange {
-		log.Info().Msg(L("No need to run database finalization script"))
-		return nil
-	}
-
-	env := map[string]string{
-		"RUN_REINDEX":       strconv.FormatBool(collationChange),
-		"RUN_SCHEMA_UPDATE": strconv.FormatBool(schemaUpdateRequired),
-	}
-
-	extraArgs := []string{
-		"--security-opt", "label=disable",
-		"--network", podman.UyuniNetwork,
-	}
-
-	for key, value := range env {
-		extraArgs = append(extraArgs, "-e", fmt.Sprintf("%s=%s", key, value))
-	}
-
-	pgsqlFinalizeContainer := "uyuni-finalize-pgsql"
-
-	return podman.RunContainer(pgsqlFinalizeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
-		[]string{"/usr/bin/sh", "-e", "-c", "/docker-entrypoint-init.d/90-pgsqlFinalize.sh"})
-}
-
-// RunPostUpgradeScript run the script with the changes to apply after the upgrade.
-func RunPostUpgradeScript(serverImage string) error {
-	postUpgradeContainer := "uyuni-post-upgrade"
-	extraArgs := []string{
-		"--security-opt", "label=disable",
-	}
-	script, err := adm_utils.GeneratePostUpgradeScript()
-	if err != nil {
-		return utils.Errorf(err, L("cannot generate PostgreSQL finalization script"))
-	}
-	// Post upgrade script expects some commands to fail and checks their result, don't use sh -e.
-	return podman.RunContainer(postUpgradeContainer, serverImage, utils.ServerVolumeMounts, extraArgs,
-		[]string{"bash", "-c", script})
-}
-
 // Upgrade will upgrade server to the image given as attribute.
 func Upgrade(
 	systemd podman.Systemd,
 	authFile string,
-	db adm_utils.DBFlags,
-	reportdb adm_utils.DBFlags,
+	db types.DBFlags,
+	reportdb types.DBFlags,
 	ssl adm_utils.InstallSSLFlags,
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
@@ -304,6 +327,7 @@ func Upgrade(
 	pgsqlFlags types.PgsqlFlags,
 	tftpdFlags adm_utils.TFTPDFlags,
 	tz string,
+	debug bool,
 ) error {
 	// Calling cloudguestregistryauth only makes sense if using the cloud provider registry.
 	// This check assumes users won't use custom registries that are not the cloud provider one on a cloud image.
@@ -334,7 +358,11 @@ func Upgrade(
 		return err
 	}
 
+	hasTFTP := systemd.ServiceIsEnabled(podman.TFTPService)
 	if systemd.HasService(podman.ServerService) {
+		if !hasTFTP {
+			hasTFTP = serverExposesTFTP(systemd)
+		}
 		if err := systemd.StopService(podman.ServerService); err != nil {
 			return utils.Errorf(err, L("cannot stop service"))
 		}
@@ -424,21 +452,16 @@ func Upgrade(
 		return err
 	}
 
-	schemaUpdateRequired := oldPgVersion != newPgVersion
-	collationChange := inspectedValues.ServerInspectData.LibcVersion != inspectedValues.ContainerInspectData.LibcVersion
-	if err := RunPgsqlFinalizeScript(preparedServerImage, schemaUpdateRequired, collationChange); err != nil {
-		return utils.Errorf(err, L("cannot run PostgreSQL finalize script"))
-	}
-
-	if err := RunPostUpgradeScript(preparedServerImage); err != nil {
-		return utils.Errorf(err, L("cannot run post upgrade script"))
-	}
-
-	if err := podman.CleanSystemdConfFile("uyuni-server"); err != nil {
+	if err := podman.CleanSystemdConfFile(podman.ServerService); err != nil {
 		return err
 	}
 
-	if err := podman.GenerateSystemdConfFile("uyuni-server", "generated.conf",
+	// Regenerate environment file. 00-mgrSetup will be skipped, but debug and other values can be changed
+	if err := GenerateUpgradeServerEnvironmentFile(debug); err != nil {
+		return err
+	}
+
+	if err := podman.GenerateSystemdConfFile(podman.ServerService, podman.GeneratedConf,
 		"Environment=UYUNI_IMAGE="+preparedServerImage, true,
 	); err != nil {
 		return err
@@ -466,7 +489,7 @@ func Upgrade(
 		log.Warn().Err(err)
 	}
 
-	inspectedDB := adm_utils.DBFlags{
+	inspectedDB := types.DBFlags{
 		Name:     inspectedValues.DBName,
 		Port:     inspectedValues.DBPort,
 		User:     inspectedValues.DBUser,
@@ -478,30 +501,30 @@ func Upgrade(
 		coco.Upgrade(systemd, authFile, cocoFlags, image, inspectedDB),
 		hub.Upgrade(systemd, authFile, image, hubXmlrpcFlags),
 		saline.Upgrade(systemd, authFile, image, salineFlags, utils.GetLocalTimezone()),
-		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn),
+		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn, hasTFTP),
 		systemd.ReloadDaemon(false),
 	)
+}
+
+func serverExposesTFTP(systemd podman.Systemd) bool {
+	def, err := systemd.GetServiceDefinition(podman.ServerService)
+	if err != nil {
+		log.Error().Err(err).Msg(L("Failed to read server service definition to look for TFTP port"))
+		return false
+	}
+	return strings.Contains(def, "-p 69:69/udp")
 }
 
 func WaitForSystemStart(
 	systemd podman.Systemd,
 	cnx *shared.Connection,
-	image string,
-	tz string,
-	debug bool,
-	mirrorPath string,
-	podmanArgs []string,
 ) error {
-	err := GenerateSystemdService(
-		systemd, tz, image, debug, mirrorPath, podmanArgs,
-	)
-	if err != nil {
-		return err
-	}
-
 	log.Info().Msg(L("Waiting for the server to start…"))
 	if err := systemd.EnableService(podman.ServerService); err != nil {
 		return utils.Error(err, L("cannot enable service"))
+	}
+	if err := systemd.StartService(podman.ServerService); err != nil {
+		return utils.Error(err, L("cannot start service"))
 	}
 
 	return cnx.WaitForHealthcheck()
@@ -650,8 +673,8 @@ func configureDBContainer(
 	serverImage string,
 	pgsqlImage string,
 	systemd podman.Systemd,
-	db adm_utils.DBFlags,
-	reportdb adm_utils.DBFlags,
+	db types.DBFlags,
+	reportdb types.DBFlags,
 ) error {
 	if err := RunSplitContainerSettings(serverImage, "db", "reportdb"); err != nil {
 		return utils.Errorf(err, L("PostgreSQL migration failure"))

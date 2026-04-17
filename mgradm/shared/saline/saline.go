@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -31,6 +31,9 @@ func Upgrade(
 		return err
 	}
 
+	if !salineFlags.IsChanged {
+		return systemd.RestartInstantiated(podman.SalineService)
+	}
 	return systemd.ScaleService(salineFlags.Replicas, podman.SalineService)
 }
 
@@ -42,9 +45,9 @@ func writeSalineServiceFiles(
 	tz string,
 ) error {
 	image := salineFlags.Image
-
-	if image.Name == "" {
+	if salineFlags.Image.Name == "" {
 		// Don't touch the saline service in ptf if not already present.
+		log.Info().Msg(L("Not altering the Saline service"))
 		return nil
 	}
 
@@ -80,7 +83,6 @@ func writeSalineServiceFiles(
 		NamePrefix: "uyuni",
 		Network:    podman.UyuniNetwork,
 		Volumes:    utils.SalineVolumeMounts,
-		Image:      preparedImage,
 	}
 
 	log.Info().Msg(L("Setting up Saline service"))
@@ -93,7 +95,7 @@ func writeSalineServiceFiles(
 	environment := fmt.Sprintf(`Environment=UYUNI_SALINE_IMAGE=%s`, preparedImage)
 
 	if err := podman.GenerateSystemdConfFile(
-		podman.SalineService+"@", "generated.conf", environment, true,
+		podman.SalineService+"@", podman.GeneratedConf, environment, true,
 	); err != nil {
 		return utils.Error(err, L("cannot generate systemd conf file"))
 	}

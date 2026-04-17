@@ -12,6 +12,10 @@ var EtcRhnVolumeMount = types.VolumeMount{MountPath: "/etc/rhn", Name: "etc-rhn"
 // VarPgsqlDataVolumeMount defines the /var/lib/pgsql/data volume mount.
 var VarPgsqlDataVolumeMount = types.VolumeMount{MountPath: "/var/lib/pgsql/data", Name: "var-pgsql", Size: "50Gi"}
 
+// VarPgsqlBackupVolumeMount defines the /var/lib/pgsql/backup volume mount used for WAL based backup.
+var VarPgsqlBackupVolumeMount = types.VolumeMount{
+	MountPath: "/var/lib/pgsql/backup", Name: "var-pgsql-walbackup", Size: "50Gi"}
+
 // RootVolumeMount defines the /root volume mount.
 var RootVolumeMount = types.VolumeMount{MountPath: "/root", Name: "root", Size: "1Mi"}
 

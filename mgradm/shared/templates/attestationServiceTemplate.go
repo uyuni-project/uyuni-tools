@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -48,7 +48,6 @@ WantedBy=multi-user.target default.target
 // AttestationServiceTemplateData holds information to create systemd file for coco container.
 type AttestationServiceTemplateData struct {
 	NamePrefix   string
-	Image        string
 	Network      string
 	DBUserSecret string
 	DBPassSecret string

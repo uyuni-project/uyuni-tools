@@ -12,7 +12,6 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -47,17 +46,6 @@ func ExecCommand(logLevel zerolog.Level, cnx *shared.Connection, args ...string)
 	runCmd.Stdout = logger
 	runCmd.Stderr = logger
 	return runCmd.Run()
-}
-
-// GeneratePostUpgradeScript generates the script to be run after upgrade.
-func GeneratePostUpgradeScript() (string, error) {
-	data := templates.PostUpgradeTemplateData{}
-
-	scriptBuilder := new(strings.Builder)
-	if err := data.Render(scriptBuilder); err != nil {
-		return "", utils.Error(err, L("failed to render database post upgrade script"))
-	}
-	return scriptBuilder.String(), nil
 }
 
 // SanityCheck verifies if an upgrade can be run.

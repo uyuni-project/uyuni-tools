@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -157,7 +158,7 @@ func TestPrepareImage(t *testing.T) {
 			res, err := PrepareImage("", tc.image, tc.pullPolicy, tc.pullEnabled)
 
 			if tc.expectError {
-				testutils.AssertError(t, tc.expectedMsg, err)
+				testutils.AssertError(t, fmt.Sprintf(tc.expectedMsg, tc.image), err)
 				return
 			}
 

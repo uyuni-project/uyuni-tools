@@ -51,8 +51,8 @@ NOTE: installing on a remote podman is not supported yet!
 
 	adm_utils.AddMirrorFlag(cmd)
 	AddInstallFlags(cmd)
+	adm_utils.AddDebugFlags(cmd)
 	podman.AddPodmanArgFlag(cmd)
-
 	return cmd
 }
 
@@ -61,6 +61,7 @@ func getFlagsUpdater(flags *podmanInstallFlags) utils.FlagsUpdaterFunc {
 		flags.Coco.IsChanged = v.IsSet("coco.replicas")
 		flags.HubXmlrpc.IsChanged = v.IsSet("hubxmlrpc.replicas")
 		flags.Saline.IsChanged = v.IsSet("saline.replicas") || v.IsSet("saline.port")
+		flags.TFTPD.IsChanged = v.IsSet("tftpd.enable")
 
 		if flags.Installation.SSL.Ca.IsThirdParty() && !flags.Installation.SSL.DB.CA.IsThirdParty() {
 			flags.Installation.SSL.DB.CA.Root = flags.Installation.SSL.Ca.Root
@@ -69,9 +70,6 @@ func getFlagsUpdater(flags *podmanInstallFlags) utils.FlagsUpdaterFunc {
 		if flags.Installation.SSL.Server.IsDefined() && !flags.Installation.SSL.DB.IsDefined() {
 			flags.Installation.SSL.DB.Cert = flags.Installation.SSL.Server.Cert
 			flags.Installation.SSL.DB.Key = flags.Installation.SSL.Server.Key
-		}
-		if !flags.Installation.Tftp {
-			flags.TFTPD.Enable = false
 		}
 	}
 }

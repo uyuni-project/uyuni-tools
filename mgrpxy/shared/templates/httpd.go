@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -39,6 +39,15 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- if .SystemIDSecret }}
 	--secret {{ .SystemIDSecret }},type=mount,mode=0444,target="/etc/sysconfig/rhn/systemid" \
 	{{- end }}
+	{{- if .CaSecret }}
+	--secret {{ .CaSecret }},type=mount,mode=0444,target="/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT" \
+	{{- end }}
+	{{- if .CertSecret }}
+	--secret {{ .CertSecret }},type=mount,mode=0444,target="/etc/apache2/ssl.crt/server.crt" \
+	{{- end }}
+	{{- if .KeySecret }}
+	--secret {{ .KeySecret }},type=mount,mode=0400,target="/etc/apache2/ssl.key/server.key" \
+	{{- end }}
 	{{- if .HTTPProxyFile }}
 	-v {{ .HTTPProxyFile }}:{{ .HTTPProxyFile }}:ro \
 	{{- end }}
@@ -60,6 +69,9 @@ type HttpdTemplateData struct {
 	Volumes        []types.VolumeMount
 	HTTPProxyFile  string
 	SystemIDSecret string
+	CaSecret       string
+	CertSecret     string
+	KeySecret      string
 }
 
 // Render will create the systemd configuration file.
