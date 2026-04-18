@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,6 +15,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/cp"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/exec"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/proxy"
+	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/ssh"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/term"
 	"github.com/uyuni-project/uyuni-tools/shared/completion"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -55,6 +56,7 @@ func NewUyunictlCommand() *cobra.Command {
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
 	rootCmd.AddCommand(proxy.NewCommand(globalFlags))
+	rootCmd.AddCommand(ssh.NewCommand(globalFlags))
 
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
 
