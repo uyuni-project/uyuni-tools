@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:22+0200\n"
-"PO-Revision-Date: 2026-03-06 10:04+0000\n"
+"PO-Revision-Date: 2026-04-20 11:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.16.1\n"
+"X-Generator: Weblate 5.17\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -262,38 +262,31 @@ msgid "no supported backend found"
 msgstr "未找到支持的后端"
 
 #: shared/connection.go:547 shared/utils/support.go:102
-#, fuzzy
-#| msgid "failed to run supportconfig"
 msgid "failed to generate supportconfig suffix: %w"
-msgstr "无法运行 supportconfig"
+msgstr "无法生成 supportconfig 后缀：%w"
 
 #: shared/connection.go:559 shared/utils/support.go:116
-#, fuzzy, javascript-format
-#| msgid "failed to run supportconfig on the host"
+#, javascript-format
 msgid "failed to generate unique supportconfig batch name after %d attempts"
-msgstr "无法在主机上运行 supportconfig"
+msgstr "已尝试 %d 次，仍无法生成唯一的 supportconfig 批次名称"
 
 #: shared/connection.go:563
-#, fuzzy, javascript-format
-#| msgid "Running supportconfig in  %s"
+#, javascript-format
 msgid "Running supportconfig in %s"
 msgstr "正在 %s 中运行 supportconfig"
 
 #: shared/connection.go:570 shared/utils/support.go:122
 msgid "Some parts of supportconfig were not successful"
-msgstr ""
+msgstr "supportconfig 的部分内容执行失败"
 
 #: shared/connection.go:575
-#, fuzzy
-#| msgid "cannot read config"
 msgid "cannot copy support config"
-msgstr "无法读取配置"
+msgstr "无法复制支持配置"
 
 #: shared/connection.go:581
-#, fuzzy, javascript-format
-#| msgid "failed to remove %s file in the container"
+#, javascript-format
 msgid "failed to remove %s directory in the container"
-msgstr "无法去除容器中的 %s 文件"
+msgstr "无法去除容器中的 %s 目录"
 
 #: shared/kubernetes/kubernetes.go:52
 msgid "failed to get kubelet version"
@@ -1417,19 +1410,15 @@ msgstr "无法将 %s 添加到 Tar 包"
 #: shared/utils/support.go:66
 #, javascript-format
 msgid "Support config tarball created at %s"
-msgstr ""
+msgstr "已在 %s 中创建支持配置 Tar 包"
 
 #: shared/utils/support.go:119
-#, fuzzy
-#| msgid "Running supportconfig in  %s"
 msgid "Running supportconfig on the host"
-msgstr "正在 %s 中运行 supportconfig"
+msgstr "正在主机上运行 supportconfig"
 
 #: shared/utils/support.go:129
-#, fuzzy
-#| msgid "failed to find host supportconfig tarball from command output"
 msgid "failed to find host supportconfig tarball"
-msgstr "在命令输出中找不到主机 supportconfig Tar 包"
+msgstr "找不到主机 supportconfig Tar 包"
 
 #: shared/utils/support.go:132
 msgid "supportconfig is not available on the host, skipping it"
@@ -1577,7 +1566,7 @@ msgstr "%s 的校验和不匹配"
 
 #: shared/utils/utils.go:525
 msgid "nBytes must be > 0"
-msgstr ""
+msgstr "nBytes 必须大于 0"
 
 #: shared/utils/uyuniservices.go:18
 msgid "Main service"
