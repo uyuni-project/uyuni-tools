@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:22+0200\n"
-"PO-Revision-Date: 2026-04-07 15:32+0000\n"
-"Last-Translator: Michele Bussolotto <michele.bussolotto@suse.com>\n"
+"PO-Revision-Date: 2026-04-20 19:04+0000\n"
+"Last-Translator: Alessio Matozzi <alessio.matozzi@studenti.unipg.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17\n"
 
 #: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
@@ -64,7 +64,7 @@ msgstr "Ripristina il backup del sistema Uyuni precedentemente configurato da un
 
 #: mgradm/cmd/backup/backup.go:60
 msgid "Skip restore of selected volumes"
-msgstr ""
+msgstr "Salta il ripristino dei volumi selezionati"
 
 #: mgradm/cmd/backup/backup.go:61
 msgid "Do not restore database volume"
@@ -228,32 +228,28 @@ msgid "Would backup %s"
 msgstr "Avvio del backup di %s"
 
 #: mgradm/cmd/backup/create/systemd_utils.go:35
-#, fuzzy
 msgid "failed to create Systemd backup tarball: %w"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare il tarball di backup di Systemd: %w"
 
 #: mgradm/cmd/backup/db/cmd.go:19
-#, fuzzy
 msgid "Database backup management"
-msgstr "impossibile aggiornare: %s"
+msgstr "Gestione del backup del database"
 
 #: mgradm/cmd/backup/db/cmd.go:20
-#, fuzzy
-#| msgid "Tools for local backup management"
 msgid "Tools for online database backup management"
-msgstr "Strumenti per gestire i backup locali"
+msgstr "Strumenti per gestire i backup online"
 
 #: mgradm/cmd/backup/db/cmd.go:34
 msgid "Enable continuous archiving backup"
-msgstr ""
+msgstr "Abilita il backup dell'archiviazione continua"
 
 #: mgradm/cmd/backup/db/cmd.go:39
 msgid "Reconfigure already configured backup"
-msgstr ""
+msgstr "Riconfigurare il backup già configurato"
 
 #: mgradm/cmd/backup/db/cmd.go:48
 msgid "Rebase continuous archiving backup"
-msgstr ""
+msgstr "Backup dell'archiviazione continua di Rebase"
 
 #: mgradm/cmd/backup/db/cmd.go:61
 msgid "Disable continuous archiving backup"
@@ -667,7 +663,7 @@ msgstr "Password amministratore"
 #: mgradm/cmd/cmd.go:66
 #, javascript-format
 msgid "Starting %s"
-msgstr ""
+msgstr "Inizio %s"
 
 #: mgradm/cmd/cmd.go:67
 msgid "Use of this software implies acceptance of the End User License Agreement."
@@ -881,7 +877,7 @@ msgstr "impossibile determinare l'URL dell'immagine: %s"
 #: mgradm/cmd/gpg/list/gpg.go:62 mgradm/cmd/support/sql/sql.go:188
 #, javascript-format
 msgid "Running %s"
-msgstr ""
+msgstr "Esecuzione %s"
 
 #: mgradm/cmd/gpg/add/gpg.go:130
 #, fuzzy
@@ -1233,9 +1229,8 @@ msgid "Result is stored in the file '%s'"
 msgstr ""
 
 #: mgradm/cmd/support/sql/sql.go:178
-#, fuzzy
 msgid "cannot write"
-msgstr "impossibile aggiornare: %s"
+msgstr "non posso scrivere"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:25
 msgid "Execute SQL query"
@@ -1331,7 +1326,7 @@ msgstr ""
 
 #: mgradm/cmd/upgrade/upgrade.go:65
 msgid "failed to unmarshall configuration"
-msgstr ""
+msgstr "impossibile eseguire l'unmarshall della configurazione"
 
 #: mgradm/shared/coco/coco.go:28
 msgid "Not altering the confidential computing service"
