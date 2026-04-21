@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:22+0200\n"
-"PO-Revision-Date: 2026-03-07 12:04+0000\n"
+"PO-Revision-Date: 2026-04-21 15:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -262,38 +262,31 @@ msgid "no supported backend found"
 msgstr "サポートされているバックエンドが見つかりません"
 
 #: shared/connection.go:547 shared/utils/support.go:102
-#, fuzzy
-#| msgid "failed to run supportconfig"
 msgid "failed to generate supportconfig suffix: %w"
-msgstr "supportconfigの実行に失敗しました"
+msgstr "supportconfigサフィックスの生成に失敗しました: %w"
 
 #: shared/connection.go:559 shared/utils/support.go:116
-#, fuzzy, javascript-format
-#| msgid "failed to run supportconfig on the host"
+#, javascript-format
 msgid "failed to generate unique supportconfig batch name after %d attempts"
-msgstr "ホスト上でsupportconfigを実行できませんでした"
+msgstr "%d 回の試行後、固有のsupportconfigバッチ名を生成できませんでした"
 
 #: shared/connection.go:563
-#, fuzzy, javascript-format
-#| msgid "Running supportconfig in  %s"
+#, javascript-format
 msgid "Running supportconfig in %s"
 msgstr "%s でsupportconfigを実行しています"
 
 #: shared/connection.go:570 shared/utils/support.go:122
 msgid "Some parts of supportconfig were not successful"
-msgstr ""
+msgstr "supportconfigの一部が正常に完了しませんでした"
 
 #: shared/connection.go:575
-#, fuzzy
-#| msgid "cannot read config"
 msgid "cannot copy support config"
-msgstr "設定を読み込めません"
+msgstr "サポート設定をコピーできません"
 
 #: shared/connection.go:581
-#, fuzzy, javascript-format
-#| msgid "failed to remove %s file in the container"
+#, javascript-format
 msgid "failed to remove %s directory in the container"
-msgstr "コンテナ内の %s ファイルの削除に失敗しました"
+msgstr "コンテナ内の %s ディレクトリの削除に失敗しました"
 
 #: shared/kubernetes/kubernetes.go:52
 msgid "failed to get kubelet version"
@@ -1415,19 +1408,15 @@ msgstr "%s をtarballに追加できませんでした"
 #: shared/utils/support.go:66
 #, javascript-format
 msgid "Support config tarball created at %s"
-msgstr ""
+msgstr "サポート設定tarballが %s に作成されました"
 
 #: shared/utils/support.go:119
-#, fuzzy
-#| msgid "Running supportconfig in  %s"
 msgid "Running supportconfig on the host"
-msgstr "%s でsupportconfigを実行しています"
+msgstr "ホストでsupportconfigを実行しています"
 
 #: shared/utils/support.go:129
-#, fuzzy
-#| msgid "failed to find host supportconfig tarball from command output"
 msgid "failed to find host supportconfig tarball"
-msgstr "コマンド出力からホストのsupportconfig tarballが見つかりませんでした"
+msgstr "ホストのsupportconfig tarballが見つかりませんでした"
 
 #: shared/utils/support.go:132
 msgid "supportconfig is not available on the host, skipping it"
@@ -1575,7 +1564,7 @@ msgstr "%s のチェックサムが一致しません"
 
 #: shared/utils/utils.go:525
 msgid "nBytes must be > 0"
-msgstr ""
+msgstr "nBytesは0より大きくなければなりません"
 
 #: shared/utils/uyuniservices.go:18
 msgid "Main service"
