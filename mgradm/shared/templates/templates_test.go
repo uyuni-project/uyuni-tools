@@ -125,6 +125,8 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	-v var-spacewalk:/var/spacewalk \
 	--env-file=/etc/systemd/system/uyuni-server.conf.d/server.env \
 	--network uyuni-network \
+	--secret uyuni-admin-user,type=env,target=ADMIN_USER \
+	--secret uyuni-admin-pass,type=env,target=ADMIN_PASS \
 	--secret uyuni-db-user,type=env,target=MANAGER_USER \
 	--secret uyuni-db-pass,type=env,target=MANAGER_PASS \
 	--secret uyuni-reportdb-user,type=env,target=REPORT_DB_USER \

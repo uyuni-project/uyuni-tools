@@ -45,6 +45,10 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- end }}
 	--env-file={{ .ServerEnvFile }} \
 	--network {{ .Network }} \
+	{{- if .AdminUserSecret }}
+	--secret {{ .AdminUserSecret }},type=env,target=ADMIN_USER \
+	--secret {{ .AdminPassSecret }},type=env,target=ADMIN_PASS \
+	{{- end }}
 	{{- if .DBUserSecret }}
 	--secret {{ .DBUserSecret }},type=env,target=MANAGER_USER \
 	--secret {{ .DBPassSecret }},type=env,target=MANAGER_PASS \
