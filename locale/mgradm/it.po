@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:22+0200\n"
-"PO-Revision-Date: 2026-04-20 19:04+0000\n"
+"PO-Revision-Date: 2026-04-21 18:04+0000\n"
 "Last-Translator: Alessio Matozzi <alessio.matozzi@studenti.unipg.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
 "Language: it\n"
@@ -431,44 +431,44 @@ msgstr ""
 #: mgradm/cmd/backup/restore/podman_utils.go:47
 #, javascript-format
 msgid "Ignoring unexpected file in the podman backup %s"
-msgstr ""
+msgstr "Ignorare il file imprevisto nel backup di Podman %s"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:58
 msgid "Unable to decode network data backup"
-msgstr ""
+msgstr "Impossibile decodificare il backup dei dati di rete"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:62
 msgid "Incorrect network data backup"
-msgstr ""
+msgstr "Backup errato dei dati di rete"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:96
 #: mgradm/cmd/backup/restore/podman_utils.go:129
 msgid "podman network already exists"
-msgstr ""
+msgstr "la rete podman già esiste"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:101
 msgid "Unable to create podman network! Check the error and create network manually before starting the service"
-msgstr ""
+msgstr "Creazione della rete podman disattivata! Controlla l'errore e crea manualmente una rete prima di avviare il servizio"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:109
 msgid "Would restore network configuration"
-msgstr ""
+msgstr "Ripristinerebbe la configurazione della rete"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:114
 msgid "Failed to read backed up network configuration, trying default"
-msgstr ""
+msgstr "Impossibile leggere la configurazione di rete sottoposta a backup, provando l'impostazione predefinita"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:120
 msgid "Failed to decode backed up network configuration, trying default"
-msgstr ""
+msgstr "Impossibile decodificare la configurazione di rete sottoposta a backup, provando l'impostazione predefinita"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:128
 msgid "Podman network already exists, not restoring unless forced"
-msgstr ""
+msgstr "La rete Podman esiste già, non viene ripristinata a meno che non sia forzata"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:141
 msgid "Restoring podman network"
-msgstr ""
+msgstr "Ripristino della rete podman"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:143
 #, fuzzy
@@ -478,157 +478,150 @@ msgstr "mancata creazione della directory temporanea: %s"
 #: mgradm/cmd/backup/restore/podman_utils.go:160
 #, javascript-format
 msgid "Unable to decode secret %s, using as is"
-msgstr ""
+msgstr "Impossibile decodificare il segreto %s, utilizzando così com'è"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:173
 msgid "Would restore podman secrets"
-msgstr ""
+msgstr "Ripristinerebbe i segreti di Podman"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:179
 msgid "Failed to read backed up podman secrets, no secrets were restored"
-msgstr ""
+msgstr "Impossibile leggere i segreti di Podman sottoposti a backup, nessun segreto è stato ripristinato"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:184
 msgid "Failed to decode backed up podman secrets, no secrets were restored"
-msgstr ""
+msgstr "Impossibile decodificare i segreti podman sottoposti a backup, nessun segreto è stato ripristinato"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:189
 msgid "Restoring podman secrets"
-msgstr ""
+msgstr "Ripristino segreti podman"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:196
 #, javascript-format
 msgid "Podman secret %s is already present, not restoring unless forced"
-msgstr ""
+msgstr "I segreti podman %s è già presente, non verrà ripristinato a meno che non venga forzato"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:202
-#, fuzzy
 msgid "Unable to create podman secret"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "Creazione segreti podman disattivata"
 
 #: mgradm/cmd/backup/restore/restore.go:106
-#, fuzzy, javascript-format
-#| msgid "source %s does not exists"
+#, javascript-format
 msgid "input directory %s does not exists"
-msgstr "la risorsa %s non esiste"
+msgstr "la risorsa input %s non esiste"
 
 #: mgradm/cmd/backup/restore/restore.go:116
 msgid "Restoring over already initialized server"
-msgstr ""
+msgstr "Ripristino su server già inizializzato"
 
 #: mgradm/cmd/backup/restore/restore.go:118
 msgid "server is already initialized. Use force to overwrite"
-msgstr ""
+msgstr "Server già inizializzato. Forzalo per sovrascriverlo"
 
 #: mgradm/cmd/backup/restore/restore.go:137
 msgid "No volumes found in the backup"
-msgstr ""
+msgstr "Nessun volume trovato nel backup"
 
 #: mgradm/cmd/backup/restore/restore.go:142
 msgid "Unable to read directory with the volumes"
-msgstr ""
+msgstr "Impossibile leggere la directory con i volumi"
 
 #: mgradm/cmd/backup/restore/restore.go:155
 #, javascript-format
 msgid "Skipping volume %s"
-msgstr ""
+msgstr "Saltare il volume %s"
 
 #: mgradm/cmd/backup/restore/restore.go:163
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Skipping database volume %s"
-msgstr "impossibile aggiornare: %s"
+msgstr "Saltare il volume del database %s"
 
 #: mgradm/cmd/backup/restore/restore.go:170
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Not restoring existing volume %s"
-msgstr "impossible eliminare il volume %s"
+msgstr "Non ripristinare il volume esistente %s"
 
 #: mgradm/cmd/backup/restore/restore.go:174
 #, javascript-format
 msgid "Not restoring existing volume %s unless forced"
-msgstr ""
+msgstr "Non ripristinare il volume esistente %s a meno che non siano forzate"
 
 #: mgradm/cmd/backup/restore/restore.go:176
 #, javascript-format
 msgid "Volume %s will be overwriten"
-msgstr ""
+msgstr "Il volume %s verrà sovrascritto"
 
 #: mgradm/cmd/backup/restore/restore.go:193
 msgid "No images found in the backup"
-msgstr ""
+msgstr "Nessun immagine trovata nel backup"
 
 #: mgradm/cmd/backup/restore/restore.go:197
 msgid "Unable to read directory with the images"
-msgstr ""
+msgstr "Disattivata la lettura della directory con le immagini"
 
 #: mgradm/cmd/backup/restore/restore.go:234
 msgid "podman config backup not found in the backup location, trying defaults"
-msgstr ""
+msgstr "backup della configurazione di Podman non trovato nella posizione di backup, si stanno provando le impostazioni predefinite"
 
 #: mgradm/cmd/backup/restore/restore.go:240
 msgid "Unable to validate podman backup file"
-msgstr ""
+msgstr "Validazione del file backup podman disattivato"
 
 #: mgradm/cmd/backup/restore/restore.go:248
-#, fuzzy
 msgid "Restoring systemd configuration"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "Ripristino configurazione del sistema"
 
 #: mgradm/cmd/backup/restore/restore.go:251
 msgid "systemd backup not found in the backup location, generating defaults"
-msgstr ""
+msgstr "backup systemd non trovato nella posizione di backup, generazione di valori predefiniti"
 
 #: mgradm/cmd/backup/restore/restore.go:256
-#, fuzzy
 msgid "Unable to validate systemd backup file"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "Impossibile convalidare il file di backup di systemd"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:42
 #, javascript-format
 msgid "Would restore %s"
-msgstr ""
+msgstr "Ripristinerebbe %s"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:50
-#, fuzzy, javascript-format
-#| msgid "failed to create temporary directory: %s"
+#, javascript-format
 msgid "Unable to create directory %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Creazione della directory disattivata %s"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:60
 #, javascript-format
 msgid "Unknown filetype of %s"
-msgstr ""
+msgstr "tipo di file sconosciuto %s"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:65
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Unable to restore file details for %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile ripristinare i dettagli del file per %s"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:75
-#, fuzzy, javascript-format
-#| msgid "failed to create temporary directory: %s"
+#, javascript-format
 msgid "Unable to create directories for %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile creare directory per %s"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:79
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Unable to create %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Creazione di %s disattivata"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:83
 #, javascript-format
 msgid "Unable to restore content of %s"
-msgstr ""
+msgstr "Impossibile ripristinare il contenuto di %s"
 
 #: mgradm/cmd/backup/restore/systemd_utils.go:102
-#, fuzzy
 msgid "Would generate default systemd services"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "Genererebbe servizi systemd predefiniti"
 
 #: mgradm/cmd/backup/shared/utils.go:31
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "unable to determine target %s storage size"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "impossibile determinare la dimensione di archiviazione target %s"
 
 #: mgradm/cmd/backup/shared/utils.go:61
 msgid "insufficient space on target device"
