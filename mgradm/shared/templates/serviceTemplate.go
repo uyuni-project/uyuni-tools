@@ -45,10 +45,14 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- end }}
 	--env-file={{ .ServerEnvFile }} \
 	--network {{ .Network }} \
+	{{- if .DBUserSecret }}
 	--secret {{ .DBUserSecret }},type=env,target=MANAGER_USER \
 	--secret {{ .DBPassSecret }},type=env,target=MANAGER_PASS \
+	{{- end }}
+	{{- if .ReportDBUserSecret }}
 	--secret {{ .ReportDBUserSecret }},type=env,target=REPORT_DB_USER \
 	--secret {{ .ReportDBPassSecret }},type=env,target=REPORT_DB_PASS \
+	{{- end }}
 	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
 	--secret {{ .CaSecret }},type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT \
 	--secret {{ .CaSecret }},type=mount,target=/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \

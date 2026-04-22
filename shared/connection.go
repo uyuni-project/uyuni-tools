@@ -361,10 +361,12 @@ func (c *Connection) WaitForContainer() error {
 	return errors.New(L("container didn't start within 10s."))
 }
 
-// WaitForHealthcheck waits at most 120s for healtcheck to succeed.
+// WaitForHealthcheck waits at most 180s for healtcheck to succeed.
 func (c *Connection) WaitForHealthcheck() error {
+	// On update consider healtcheck configuration in the container Dockerfile
+	const maxWaitTime = 180
 	// Wait for the system to be up
-	for i := 0; i < 120; i++ {
+	for i := 0; i < maxWaitTime; i++ {
 		_, err := c.Healthcheck()
 		if err != nil {
 			log.Debug().Err(err)
@@ -373,7 +375,7 @@ func (c *Connection) WaitForHealthcheck() error {
 		}
 		return nil
 	}
-	return errors.New(L("container didn't start within 120s. Check for the service status"))
+	return fmt.Errorf(L("container didn't start within %ds. Check for the service status"), maxWaitTime)
 }
 
 // Copy transfers a file to or from the container.

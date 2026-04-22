@@ -99,30 +99,39 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 	}
 
 	data := templates.PodmanServiceTemplateData{
-		Volumes:            volumes,
-		NamePrefix:         "uyuni",
-		Args:               strings.Join(args, " "),
-		Ports:              ports,
-		Network:            podman.UyuniNetwork,
-		CaSecret:           podman.CASecret,
-		CaPath:             ssl.CAContainerPath,
-		CertSecret:         podman.SSLCertSecret,
-		CertPath:           ssl.ServerCertPath,
-		KeySecret:          podman.SSLKeySecret,
-		KeyPath:            ssl.ServerCertKeyPath,
-		DBCaSecret:         podman.DBCASecret,
-		DBCaPath:           ssl.DBCAContainerPath,
-		AdminUserSecret:    podman.AdminUserSecret,
-		AdminPassSecret:    podman.AdminPassSecret,
-		DBUserSecret:       podman.DBUserSecret,
-		DBPassSecret:       podman.DBPassSecret,
-		ReportDBUserSecret: podman.ReportDBUserSecret,
-		ReportDBPassSecret: podman.ReportDBPassSecret,
-		ServerEnvFile:      podman.GetServiceConfPath("uyuni-server", podman.ServerEnvironmentFile),
+		Volumes:       volumes,
+		NamePrefix:    "uyuni",
+		Args:          strings.Join(args, " "),
+		Ports:         ports,
+		Network:       podman.UyuniNetwork,
+		CaSecret:      podman.CASecret,
+		CaPath:        ssl.CAContainerPath,
+		CertSecret:    podman.SSLCertSecret,
+		CertPath:      ssl.ServerCertPath,
+		KeySecret:     podman.SSLKeySecret,
+		KeyPath:       ssl.ServerCertKeyPath,
+		DBCaSecret:    podman.DBCASecret,
+		DBCaPath:      ssl.DBCAContainerPath,
+		ServerEnvFile: podman.GetServiceConfPath("uyuni-server", podman.ServerEnvironmentFile),
 	}
 	if podman.HasSecret(podman.SCCUserSecret) {
 		data.SCCUserSecret = podman.SCCUserSecret
 		data.SCCPassSecret = podman.SCCPassSecret
+	}
+
+	if podman.HasSecret(podman.AdminUserSecret) {
+		data.AdminUserSecret = podman.AdminUserSecret
+		data.AdminPassSecret = podman.AdminPassSecret
+	}
+
+	if podman.HasSecret(podman.DBUserSecret) {
+		data.DBUserSecret = podman.DBUserSecret
+		data.DBPassSecret = podman.DBPassSecret
+	}
+
+	if podman.HasSecret(podman.ReportDBUserSecret) {
+		data.ReportDBUserSecret = podman.ReportDBUserSecret
+		data.ReportDBPassSecret = podman.ReportDBPassSecret
 	}
 
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0444, true); err != nil {
@@ -145,6 +154,21 @@ func GenerateSystemdService(
 		return utils.Errorf(err, L("cannot setup network"))
 	}
 
+	// Add the SCC and admin credentials as secrets
+	if err := podman.CreateCredentialsSecrets(
+		podman.AdminUserSecret, flags.Admin.Login, podman.AdminPassSecret, flags.Admin.Password,
+	); err != nil {
+		return err
+	}
+
+	if flags.SCC.User != "" {
+		if err := podman.CreateCredentialsSecrets(
+			podman.SCCUserSecret, flags.SCC.User, podman.SCCPassSecret, flags.SCC.Password,
+		); err != nil {
+			return err
+		}
+	}
+
 	log.Info().Msg(L("Enabling system service"))
 	if err := GenerateServerSystemdService(mirrorPath, flags.Debug.Java); err != nil {
 		return err
@@ -154,21 +178,6 @@ func GenerateSystemdService(
 		"Environment=UYUNI_IMAGE="+image, true,
 	); err != nil {
 		return utils.Errorf(err, L("cannot generate systemd conf file"))
-	}
-
-	// Add the SCC and admin credentials as secrets
-	if err := podman.CreateCredentialsSecretsIfMissing(
-		podman.AdminUserSecret, flags.Admin.Login, podman.AdminPassSecret, flags.Admin.Password,
-	); err != nil {
-		return err
-	}
-
-	if flags.SCC.User != "" {
-		if err := podman.CreateCredentialsSecretsIfMissing(
-			podman.SCCUserSecret, flags.SCC.User, podman.SCCPassSecret, flags.SCC.Password,
-		); err != nil {
-			return err
-		}
 	}
 
 	config := fmt.Sprintf("Environment=\"PODMAN_EXTRA_ARGS=%s\"", strings.Join(podmanArgs, " "))
