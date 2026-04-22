@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:22+0200\n"
-"PO-Revision-Date: 2026-04-21 18:04+0000\n"
+"PO-Revision-Date: 2026-04-22 10:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
@@ -844,7 +844,6 @@ msgid "Tools for autoinstallation distributions management"
 msgstr "자동 설치 배포 관리를 위한 도구"
 
 #: mgradm/cmd/distro/distro.go:119
-#, fuzzy
 msgid "Copy distribution files from iso to the container"
 msgstr "ISO에서 컨테이너로 배포 파일 복사"
 
