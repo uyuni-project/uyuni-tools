@@ -129,11 +129,6 @@ func checkPrerequisites() error {
 			return err
 		}
 	}
-	for _, portMap := range shared_utils.ProxyPodmanPorts {
-		if err := shared_utils.CheckPort(portMap.Exposed); err != nil {
-			return err
-		}
-	}
 
 	if err := shared_podman.CheckPodmanRunningContainers(); err != nil {
 		return err
