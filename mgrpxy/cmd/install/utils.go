@@ -20,6 +20,11 @@ import (
 
 var systemd shared_podman.Systemd = shared_podman.NewSystemd()
 
+const (
+	minProxyMemoryGB  = 4  // Minimum memory in GB for proxy
+	minProxyStorageGB = 10 // Minimum storage in GB for proxy
+)
+
 func installForPodman(
 	_ *types.GlobalFlags,
 	flags *podman.PodmanProxyFlags,
@@ -106,15 +111,26 @@ func installForPodman(
 }
 
 func checkPrerequisites() error {
-	if err := shared_utils.CheckMemory(4); err != nil {
-		return err
-	}
-	if err := shared_utils.CheckStorage("/var/lib", 10); err != nil {
+	if err := shared_utils.CheckMemory(minProxyMemoryGB); err != nil {
 		return err
 	}
 
-	for _, port := range []int{80, 443, 8080} {
-		if err := shared_utils.CheckPort(port); err != nil {
+	storageRoot, err := shared_podman.GetPodmanVolumeBasePath()
+	if err != nil || storageRoot == "" {
+		storageRoot = "/var/lib" // fallback if detection fails
+	}
+	if err := shared_utils.CheckStorage(storageRoot, minProxyStorageGB); err != nil {
+		return err
+	}
+
+	// Check all required proxy ports (TCP, HTTP/S, and UDP)
+	for _, portMap := range shared_utils.GetProxyPorts() {
+		if err := shared_utils.CheckPort(portMap.Exposed); err != nil {
+			return err
+		}
+	}
+	for _, portMap := range shared_utils.ProxyPodmanPorts {
+		if err := shared_utils.CheckPort(portMap.Exposed); err != nil {
 			return err
 		}
 	}

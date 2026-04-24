@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -15,7 +15,9 @@ import (
 
 // CheckPodmanRunningContainers checks if there are running containers on the uyuni network.
 func CheckPodmanRunningContainers() error {
-	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "-q", "--filter", "network="+UyuniNetwork)
+	out, err := runner("podman", "ps", "-q", "--filter", "network="+UyuniNetwork).
+		Log(zerolog.DebugLevel).
+		Exec()
 	if err != nil {
 		return utils.Errorf(err, L("failed to check running podman containers"))
 	}

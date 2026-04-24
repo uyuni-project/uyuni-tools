@@ -1,23 +1,37 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package podman
 
 import (
-	"os/exec"
 	"testing"
+
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
-func TestCheckPodmanRunningContainers(t *testing.T) {
-	// Skip test if podman is not installed
-	if _, err := exec.LookPath("podman"); err != nil {
-		t.Skip("podman not installed, skipping test")
-	}
+func TestCheckPodmanRunningContainersNoContainers(t *testing.T) {
+	// Mock runner to simulate no running containers
+	oldRunner := runner
+	defer func() { runner = oldRunner }()
+
+	runner = testutils.FakeRunnerGenerator("", nil)
 
 	err := CheckPodmanRunningContainers()
-	// Should not error by default if there are no uyuni containers
 	if err != nil {
-		t.Logf("Expected no error or error if uyuni network has containers, got: %s", err)
+		t.Errorf("Expected no error when no containers are running, got: %v", err)
+	}
+}
+
+func TestCheckPodmanRunningContainersWithContainers(t *testing.T) {
+	// Mock runner to simulate running containers
+	oldRunner := runner
+	defer func() { runner = oldRunner }()
+
+	runner = testutils.FakeRunnerGenerator("abc123\n", nil)
+
+	err := CheckPodmanRunningContainers()
+	if err == nil {
+		t.Error("Expected error when containers are running, got nil")
 	}
 }
