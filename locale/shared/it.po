@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:22+0200\n"
-"PO-Revision-Date: 2026-04-20 19:04+0000\n"
+"PO-Revision-Date: 2026-04-27 19:04+0000\n"
 "Last-Translator: Alessio Matozzi <alessio.matozzi@studenti.unipg.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
 "Language: it\n"
@@ -597,9 +597,9 @@ msgstr ""
 
 #: shared/podman/secret.go:86 shared/podman/secret.go:98
 #: shared/podman/secret.go:102
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s secret"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare il segreto %s"
 
 #: shared/podman/secret.go:117
 #, fuzzy, javascript-format
