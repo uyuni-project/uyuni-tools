@@ -139,7 +139,10 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret uyuni-scc-pass,type=env,target=SCC_PASS \
 	--secret uyuni-admin-user,type=env,target=ADMIN_USER \
 	--secret uyuni-admin-pass,type=env,target=ADMIN_PASS \
-	--health-on-failure=none \
+	--health-on-failure=stop \
+	--health-cmd=/usr/bin/healthcheck.sh \
+	--health-startup-cmd=/usr/bin/startup-check.sh \
+	--health-startup-interval=10s \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 
 ExecStop=-/usr/bin/podman exec \
@@ -216,7 +219,10 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret cert-secret,type=mount,target=/etc/pki/tls.crt \
 	--secret key-secret,type=mount,target=/etc/pki/tls.key \
 	--secret db-ca-secret,type=mount,target=/etc/pki/db-ca.crt \
-	--health-on-failure=none \
+	--health-on-failure=stop \
+	--health-cmd=/usr/bin/healthcheck.sh \
+	--health-startup-cmd=/usr/bin/startup-check.sh \
+	--health-startup-interval=10s \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 
 ExecStop=-/usr/bin/podman exec \
