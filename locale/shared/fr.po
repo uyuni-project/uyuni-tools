@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:22+0200\n"
-"PO-Revision-Date: 2025-11-26 10:49+0000\n"
-"Last-Translator: David D <dadu042@mailo.com>\n"
+"PO-Revision-Date: 2026-04-29 10:04+0000\n"
+"Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.17\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -24,7 +24,7 @@ msgstr "FQDN du serveur à connecter à"
 
 #: shared/api/api.go:30
 msgid "API user username"
-msgstr ""
+msgstr "Nom d'utilisateur de l'API"
 
 #: shared/api/api.go:31
 msgid "Password for the API user"
