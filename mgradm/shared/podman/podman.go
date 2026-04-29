@@ -488,14 +488,15 @@ func Upgrade(
 		return err
 	}
 
-	log.Info().Msg(L("Waiting for the server to start…"))
+	log.Info().Msg(L("Waiting for server to start. This include service setup operations and can take a very long time."))
+	log.Info().Msg(L("Use `journalctl -f -u uyuni-server` for tracking progress"))
 	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
 	if err := systemd.StartService(podman.ServerService); err != nil {
 		return utils.Error(err, L("cannot start service"))
 	}
 
 	if err := cnx.WaitForHealthcheck(); err != nil {
-		log.Warn().Err(err)
+		return utils.Error(err, L("cannot wait for system start"))
 	}
 
 	inspectedDB := types.DBFlags{

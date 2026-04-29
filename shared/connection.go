@@ -361,12 +361,25 @@ func (c *Connection) WaitForContainer() error {
 	return errors.New(L("container didn't start within 10s."))
 }
 
-// WaitForHealthcheck waits at most 180s for healtcheck to succeed.
+// WaitForHealthcheck waits for healtcheck to succeed.
 func (c *Connection) WaitForHealthcheck() error {
-	// On update consider healtcheck configuration in the container Dockerfile
-	const maxWaitTime = 180
-	// Wait for the system to be up
-	for i := 0; i < maxWaitTime; i++ {
+	// This is a quick workaround for long startups
+	// Generally check is intentionally infinite, we guard only for 15s grace period for container to start
+	startupTimeout := 15
+
+	for {
+		c.podName = ""
+		if _, err := c.GetPodName(); err != nil {
+			// container did not yet start or is already stopped
+			startupTimeout--
+			if startupTimeout < 0 {
+				return errors.New(L("container didn't start within 15s or failed. Check the service status"))
+			}
+			time.Sleep(1 * time.Second)
+			continue
+		}
+		// once here, container started at least once, clear startupTimeout
+		startupTimeout = 0
 		_, err := c.Healthcheck()
 		if err != nil {
 			log.Debug().Err(err)
@@ -375,7 +388,6 @@ func (c *Connection) WaitForHealthcheck() error {
 		}
 		return nil
 	}
-	return fmt.Errorf(L("container didn't start within %ds. Check for the service status"), maxWaitTime)
 }
 
 // Copy transfers a file to or from the container.

@@ -90,6 +90,9 @@ func installForPodman(
 		return utils.Error(err, L("failed to generate server service"))
 	}
 
+	log.Info().Msg(L("Waiting for server to start. This include service setup operations and can take a very long time."))
+	log.Info().Msg(L("Use `journalctl -f -u uyuni-server` for tracking progress"))
+
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 	if err := podman.WaitForSystemStart(systemd, cnx); err != nil {
 		return utils.Error(err, L("cannot wait for system start"))

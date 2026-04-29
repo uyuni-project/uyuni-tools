@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Apr 29 14:10:57 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9-0
+  * Do not stop container on health check failure
+    Temporary workaround for bsc#1263157
+
+-------------------------------------------------------------------
 Tue Apr 21 13:40:30 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8-0
