@@ -100,8 +100,8 @@ func TestTemplatesRender(t *testing.T) {
 
 [Unit]
 Description=Uyuni server image container service
-Wants=network.target
-After=network-online.target
+Wants=network.target uyuni-db.service
+After=network-online.target uyuni-db.service
 RequiresMountsFor=%t/containers
 
 [Service]
@@ -188,8 +188,8 @@ WantedBy=multi-user.target default.target
 
 [Unit]
 Description=Uyuni server image container service
-Wants=network.target
-After=network-online.target
+Wants=network.target uyuni-db.service
+After=network-online.target uyuni-db.service
 RequiresMountsFor=%t/containers
 
 [Service]
