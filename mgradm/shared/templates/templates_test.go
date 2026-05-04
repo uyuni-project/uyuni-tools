@@ -102,7 +102,7 @@ func TestTemplatesRender(t *testing.T) {
 Description=Uyuni server image container service
 Wants=network.target uyuni-db.service
 After=network-online.target uyuni-db.service
-RequiresMountsFor=%t/containers
+RequiresMountsFor=%t/containers %S/containers/storage/volumes
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -190,7 +190,7 @@ WantedBy=multi-user.target default.target
 Description=Uyuni server image container service
 Wants=network.target uyuni-db.service
 After=network-online.target uyuni-db.service
-RequiresMountsFor=%t/containers
+RequiresMountsFor=%t/containers %S/containers/storage/volumes
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
