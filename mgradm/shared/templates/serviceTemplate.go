@@ -67,7 +67,10 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret {{ .AdminUserSecret }},type=env,target=ADMIN_USER \
 	--secret {{ .AdminPassSecret }},type=env,target=ADMIN_PASS \
 	{{- end }}
-	--health-on-failure=none \
+	--health-on-failure=stop \
+	--health-cmd=/usr/bin/healthcheck.sh \
+	--health-startup-cmd=/usr/bin/startup-check.sh \
+	--health-startup-interval=10s \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 
 ExecStop=-/usr/bin/podman exec \
