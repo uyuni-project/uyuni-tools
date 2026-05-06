@@ -83,7 +83,11 @@ BuildRequires:  golang(API) >= 1.25
 
 %if 0%{?ubuntu}
 %define go_version      1.22
+%if 0%{?ubuntu} >= 2604
 BuildRequires:  golang >= %{go_version}
+%else
+BuildRequires:  golang-%{go_version}
+%endif
 %endif
 # ubuntu
 
