@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:22+0200\n"
-"PO-Revision-Date: 2026-04-27 19:04+0000\n"
-"Last-Translator: Alessio Matozzi <alessio.matozzi@studenti.unipg.it>\n"
+"PO-Revision-Date: 2026-05-06 11:04+0000\n"
+"Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
@@ -253,38 +253,35 @@ msgstr "Backup dell'archiviazione continua di Rebase"
 
 #: mgradm/cmd/backup/db/cmd.go:61
 msgid "Disable continuous archiving backup"
-msgstr ""
+msgstr "Disattiva il backup continuo dell’archivio"
 
 #: mgradm/cmd/backup/db/cmd.go:66
 msgid "Don't ask for confirmation when purging volume"
-msgstr ""
+msgstr "Non chiedere conferma durante lo spurgo del volume"
 
 #: mgradm/cmd/backup/db/cmd.go:67
-#, fuzzy
 msgid "Also remove the volume"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Rimuovere anche il volume"
 
 #: mgradm/cmd/backup/db/cmd.go:76
 msgid "Check WAL based database backup status"
-msgstr ""
+msgstr "Controlla lo stato di backup del database basato su WAL"
 
 #: mgradm/cmd/backup/db/cmd.go:88
-#, fuzzy
-#| msgid "Create backup"
 msgid "Restore database backup"
-msgstr "Crea backup"
+msgstr "Ripristina il backup del database"
 
 #: mgradm/cmd/backup/db/cmd.go:93
 msgid "Don't ask for confirmation"
-msgstr ""
+msgstr "Non chiedere conferma"
 
 #: mgradm/cmd/backup/db/disable.go:17
 msgid "Disabling DB backup"
-msgstr ""
+msgstr "Disattivazione del backup del database"
 
 #: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:34
 msgid "Database service needs to be restarted to reload backup configurations, continue"
-msgstr ""
+msgstr "Il servizio del database deve essere riavviato per ricaricare le configurazioni di backup, continuare"
 
 #: mgradm/cmd/backup/db/disable.go:26
 #, fuzzy
@@ -294,7 +291,7 @@ msgstr "Backup della configurazione di Podman"
 
 #: mgradm/cmd/backup/db/disable.go:45
 msgid "Backup volume will be removed, continue?"
-msgstr ""
+msgstr "Il volume di backup verrà rimosso, continuare?"
 
 #: mgradm/cmd/backup/db/disable.go:47
 msgid "Aborting volume purge"
@@ -308,17 +305,15 @@ msgstr ""
 #: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:66
 #: mgradm/cmd/backup/db/rebase.go:28
 msgid "Starting database…"
-msgstr ""
+msgstr "Avvio del database…"
 
 #: mgradm/cmd/backup/db/enable.go:22
-#, fuzzy
-#| msgid "Create backup"
 msgid "Enable DB backup"
-msgstr "Crea backup"
+msgstr "Abilita il backup del DB"
 
 #: mgradm/cmd/backup/db/enable.go:25
 msgid "backup is already configured. Use --force to reconfigure"
-msgstr ""
+msgstr "Il backup è già configurato. Usa --force per riconfigurarlo"
 
 #: mgradm/cmd/backup/db/enable.go:36
 #, fuzzy
@@ -329,76 +324,67 @@ msgstr "Backup della configurazione di Podman"
 #: mgradm/cmd/backup/db/enable.go:85
 #, javascript-format
 msgid "Continuous Archiving backup configured. Backup target volume is '%s'"
-msgstr ""
+msgstr "Backup di archiviazione continua configurato. Il volume di destinazione del backup è"
 
 #: mgradm/cmd/backup/db/enable.go:98
-#, fuzzy
 msgid "failed to generate postgresql backup script"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "Impossibile generare lo script di backup postgresql"
 
 #: mgradm/cmd/backup/db/rebase.go:17
 msgid "Rebasing postgres WAL backup to new basebackup"
-msgstr ""
+msgstr "Ripristino del backup di Postgres WAL al nuovo backup di base"
 
 #: mgradm/cmd/backup/db/rebase.go:20
 msgid "database backup is not correctly configured: %w"
-msgstr ""
+msgstr "il backup del database non è configurato correttamente: %w"
 
 #: mgradm/cmd/backup/db/rebase.go:42
-#, fuzzy
 msgid "Stopping database…"
-msgstr "impossibile aggiornare: %s"
+msgstr "Arresto del database…"
 
 #: mgradm/cmd/backup/db/restore.go:25
 msgid "Restoring DB backup"
-msgstr ""
+msgstr "Ripristino del backup del DB"
 
 #: mgradm/cmd/backup/db/restore.go:28
 msgid "Restoring from backup is a destructive operation. Proceed"
-msgstr ""
+msgstr "Il ripristino da backup è un’operazione distruttiva. Procedere"
 
 #: mgradm/cmd/backup/db/restore.go:29
 msgid "Aborting"
-msgstr ""
+msgstr "Interruzione"
 
 #: mgradm/cmd/backup/db/restore.go:33
-#, fuzzy
-#| msgid "Stopping server service"
 msgid "Stopping database service…"
-msgstr "Interruzione del servizio server"
+msgstr "Arresto del servizio database…"
 
 #: mgradm/cmd/backup/db/restore.go:40
-#, fuzzy
 msgid "failed to determine database image"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "impossibile determinare l'immagine del database"
 
 #: mgradm/cmd/backup/db/restore.go:56
-#, fuzzy
 msgid "failed to generate postgresql restore script"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "impossibile generare lo script di ripristino postgresql"
 
 #: mgradm/cmd/backup/db/restore.go:59
 msgid "Restoring base backup…"
-msgstr ""
+msgstr "Ripristino del backup di base…"
 
 #: mgradm/cmd/backup/db/restore.go:73
-#, fuzzy
 msgid "Starting database service…"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "Avvio del servizio di database…"
 
 #: mgradm/cmd/backup/db/restore.go:78
 msgid "Base backup restore complete. Database is recovering."
-msgstr ""
+msgstr "Ripristino del backup di base completato. Il database è in fase di ripristino."
 
 #: mgradm/cmd/backup/db/restore.go:88 mgradm/cmd/backup/db/restore.go:101
-#, fuzzy
 msgid "Database is restored."
-msgstr "impossibile aggiornare: %s"
+msgstr "Il database è stato ripristinato."
 
 #: mgradm/cmd/backup/db/restore.go:91
-#, fuzzy
 msgid "failed to check database recovery status"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "impossibile controllare lo stato di ripristino del database"
 
 #: mgradm/cmd/backup/db/restore.go:95
 msgid " Database is recovering… (use Ctrl-C to interrupt waiting)"
@@ -406,11 +392,11 @@ msgstr ""
 
 #: mgradm/cmd/backup/db/restore.go:104
 msgid "error while waiting for database recovery to complete, check database logs"
-msgstr ""
+msgstr "errore durante l'attesa del completamento del ripristino del database, controllare i registri del database"
 
 #: mgradm/cmd/backup/db/status.go:24
 msgid "Checking DB backup status"
-msgstr ""
+msgstr "Controllo dello stato del backup del DB"
 
 #: mgradm/cmd/backup/db/status.go:40
 msgid "Database continuous backup is %[1]s. Backup volume is %[2]s"
@@ -418,15 +404,15 @@ msgstr ""
 
 #: mgradm/cmd/backup/db/types.go:24
 msgid "archive_mode is off"
-msgstr ""
+msgstr "archive_mode è disattivato"
 
 #: mgradm/cmd/backup/db/types.go:25
 msgid "archive_command is misconfigured"
-msgstr ""
+msgstr "archive_command è configurato in modo errato"
 
 #: mgradm/cmd/backup/db/types.go:26
 msgid "archive volume is not configured correctly"
-msgstr ""
+msgstr "il volume dell'archivio non è configurato correttamente"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:47
 #, javascript-format
@@ -471,9 +457,8 @@ msgid "Restoring podman network"
 msgstr "Ripristino della rete podman"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:143
-#, fuzzy
 msgid "Unable to create podman network"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile creare la rete podman"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:160
 #, javascript-format
@@ -625,7 +610,7 @@ msgstr "impossibile determinare la dimensione di archiviazione target %s"
 
 #: mgradm/cmd/backup/shared/utils.go:61
 msgid "insufficient space on target device"
-msgstr ""
+msgstr "spazio insufficiente sul dispositivo di destinazione"
 
 #: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:43
 #: mgradm/cmd/upgrade/utils.go:34
@@ -634,11 +619,11 @@ msgstr "installare podman prima di eseguire questo comando"
 
 #: mgradm/cmd/cmd.go:40
 msgid "Uyuni administration tool"
-msgstr ""
+msgstr "Strumento di amministrazione di Uyuni"
 
 #: mgradm/cmd/cmd.go:41
 msgid "Tool to help administering Uyuni servers in containers"
-msgstr ""
+msgstr "Strumento per aiutare ad amministrare i server Uyuni nei container"
 
 #: mgradm/cmd/cmd.go:48
 msgid "Server Deployment:"
@@ -671,14 +656,12 @@ msgid "Unable to unmount ISO image, leaving %s intact"
 msgstr "Impossibile smontare l'immagine ISO, %s è inalterata"
 
 #: mgradm/cmd/distro/cp.go:54
-#, fuzzy
 msgid "unable to login and register the distribution. Manual distro registration is required"
-msgstr "Impossibile effettuare il login e registrare la distribuzione. È richiesta la registrazione manuale della distribuzione: %s"
+msgstr "Impossibile effettuare l’accesso e registrare la distribuzione. È richiesta la registrazione manuale della distro"
 
 #: mgradm/cmd/distro/cp.go:66
-#, fuzzy
 msgid "unable to register the distribution. Manual distro registration is required"
-msgstr "impossibile registrare la distribuzione. È richiesta la registrazione manuale della distribuzione: %s"
+msgstr "Impossibile effettuare l’accesso e registrare la distribuzione. È richiesta la registrazione manuale della distribuzione"
 
 #: mgradm/cmd/distro/cp.go:68
 #, javascript-format
@@ -697,12 +680,12 @@ msgstr "impossibile montare l'immagine ISO: %s"
 
 #: mgradm/cmd/distro/cp.go:106
 msgid "Missing TreeLabel. Please specify distribution name"
-msgstr ""
+msgstr "TreeLabel mancante. Si prega di specificare il nome della distribuzione"
 
 #: mgradm/cmd/distro/cp.go:115
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "distribution with same name already exists: %s"
-msgstr "la distribuzione esiste già: %s"
+msgstr "esiste già una distribuzione con lo stesso nome"
 
 #: mgradm/cmd/distro/cp.go:119
 #, javascript-format
@@ -725,22 +708,21 @@ msgid "Distribution has been copied into %s"
 msgstr "La distribuzione è stata copiata in %s"
 
 #: mgradm/cmd/distro/cp.go:187
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Auto-detected distribution %s"
-msgstr "Copia della distribuzione %s\n"
+msgstr "Distribuzione rilevata automaticamente"
 
 #: mgradm/cmd/distro/cp.go:198
-#, fuzzy
 msgid "Continue by registering autoinstallation distribution"
-msgstr "Strumenti di autoinstallazione delle distribuzioni"
+msgstr "Continua registrando la distribuzione dell'installazione automatica"
 
 #: mgradm/cmd/distro/detect.go:113
 msgid "distribution not found in product map. Please update productmap or provide channel label"
-msgstr ""
+msgstr "distribuzione non trovata nella mappa del prodotto. Aggiorna la mappa del prodotto o fornisci l'etichetta del canale"
 
 #: mgradm/cmd/distro/detect.go:128
 msgid "unable to read distribution treeinfo. Please provide distribution details and/or channel label"
-msgstr ""
+msgstr "impossibile leggere le informazioni sull'albero di distribuzione. Si prega di fornire dettagli sulla distribuzione e/o etichetta del canale"
 
 #: mgradm/cmd/distro/detect.go:167
 #, javascript-format
@@ -795,7 +777,7 @@ msgstr "Strumenti di autoinstallazione delle distribuzioni"
 
 #: mgradm/cmd/distro/distro.go:119
 msgid "Copy distribution files from iso to the container"
-msgstr ""
+msgstr "Copia i file di distribuzione da iso al contenitore"
 
 #: mgradm/cmd/distro/distro.go:120
 msgid ""
@@ -809,37 +791,45 @@ msgid ""
 "\n"
 "Note: API details are required for auto registration."
 msgstr ""
+"Accetta un percorso verso un file ISO sorgente oppure una directory con l’ISO montata e lo copia nel container.\n"
+"\n"
+"I parametri opzionali distribution-name, version e arch consentono di specificare una distribuzione personalizzata.\n"
+"Se non vengono impostati, il nome della distribuzione viene rilevato automaticamente:\n"
+"\n"
+"- viene utilizzato il nome presente nel file .treeinfo, se esiste\n"
+"- viene utilizzato il nome dell’ISO o della directory passata\n"
+"\n"
+"Nota: i dettagli API sono necessari per la registrazione automatica."
 
 #: mgradm/cmd/distro/distro.go:134
 msgid "Set parent channel for the distribution."
-msgstr ""
+msgstr "Imposta il canale principale per la distribuzione."
 
 #: mgradm/cmd/distro/distro.go:138
 msgid "Show distribution product map"
-msgstr ""
+msgstr "Mostra la mappa dei prodotti di distribuzione"
 
 #: mgradm/cmd/distro/distro.go:150
-#, fuzzy
 msgid "failed to compute config help command"
-msgstr "impossibile determinare l'URL dell'immagine: %s"
+msgstr "impossibile calcolare il comando di aiuto alla configurazione"
 
 #: mgradm/cmd/gpg/add/gpg.go:36
 msgid "Add GPG keys for 3rd party repositories"
-msgstr ""
+msgstr "Aggiungi chiavi GPG per repository di terze parti"
 
 #: mgradm/cmd/gpg/add/gpg.go:44
 msgid "Import without asking confirmation"
-msgstr ""
+msgstr "Importa senza chiedere conferma"
 
 #: mgradm/cmd/gpg/add/gpg.go:60
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create folder %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare la cartella"
 
 #: mgradm/cmd/gpg/add/gpg.go:65
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create keyring %s"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "impossibile creare il portachiavi"
 
 #: mgradm/cmd/gpg/add/gpg.go:89
 #, javascript-format
@@ -854,11 +844,11 @@ msgstr ""
 #: mgradm/cmd/gpg/add/gpg.go:102
 #, javascript-format
 msgid "failed to show key %s"
-msgstr ""
+msgstr "impossibile mostrare la chiave%s"
 
 #: mgradm/cmd/gpg/add/gpg.go:106
 msgid "Do you really want to trust this key"
-msgstr ""
+msgstr "Vuoi davvero fidarti di questa chiave"
 
 #: mgradm/cmd/gpg/add/gpg.go:118
 #, fuzzy
@@ -872,34 +862,32 @@ msgid "Running %s"
 msgstr "Esecuzione %s"
 
 #: mgradm/cmd/gpg/add/gpg.go:130
-#, fuzzy
 msgid "failed to run import key"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "impossibile eseguire la chiave di importazione"
 
 #: mgradm/cmd/gpg/add/gpg.go:137
 msgid "failed to restart uyuni-update-config"
-msgstr ""
+msgstr "impossibile riavviare uyuni-update-config"
 
 #: mgradm/cmd/gpg/gpg.go:20
 msgid "Manage GPG keys for 3rd party repositories"
-msgstr ""
+msgstr "Gestisci le chiavi GPG per repository di terze parti"
 
 #: mgradm/cmd/gpg/list/gpg.go:33
 msgid "List GPG keys"
-msgstr ""
+msgstr "Elenco chiavi GPG"
 
 #: mgradm/cmd/gpg/list/gpg.go:34
 msgid "List GPG keys from custom keyring (default) or system keyring"
-msgstr ""
+msgstr "Elenca le chiavi GPG dal portachiavi personalizzato (predefinito) o dal portachiavi di sistema"
 
 #: mgradm/cmd/gpg/list/gpg.go:41
 msgid "List keys from system keyring"
-msgstr ""
+msgstr "Elenca le chiavi dal portachiavi di sistema"
 
 #: mgradm/cmd/gpg/list/gpg.go:66
-#, fuzzy
 msgid "failed to list keys in selected keyring"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "impossibile elencare le chiavi nel portachiavi selezionato"
 
 #: mgradm/cmd/inspect/inspect.go:27
 msgid "Inspect"
@@ -910,30 +898,28 @@ msgid "Extract information from image and deployment"
 msgstr "Estrazione informazioni dall'immagine e dalla distribuzione"
 
 #: mgradm/cmd/inspect/podman.go:41
-#, fuzzy
 msgid "inspect command failed"
-msgstr "comando ispezione fallito: %s"
+msgstr "comando di ispezione non riuscito"
 
 #: mgradm/cmd/inspect/podman.go:45
-#, fuzzy
 msgid "cannot print inspect result"
-msgstr "non è possibile visualizzare il risultato dell'ispezione: %s"
+msgstr "impossibile stampare il risultato dell'ispezione"
 
 #: mgradm/cmd/install/flags.go:16
 msgid "Time zone to set on the server. Defaults to the host timezone"
-msgstr ""
+msgstr "Fuso orario da impostare sul server. Impostazioni predefinite per il fuso orario host"
 
 #: mgradm/cmd/install/flags.go:17
 msgid "Administrator e-mail"
-msgstr ""
+msgstr "E-mail dell'amministratore"
 
 #: mgradm/cmd/install/flags.go:18
 msgid "E-Mail sending the notifications"
-msgstr ""
+msgstr "E-mail di invio delle notifiche"
 
 #: mgradm/cmd/install/flags.go:19
 msgid "InterServerSync v1 parent FQDN"
-msgstr ""
+msgstr "FQDN del server padre di InterServerSync v1"
 
 #: mgradm/cmd/install/flags.go:29 mgradm/cmd/upgrade/flags.go:22
 msgid "TFTPD Flags"
@@ -949,19 +935,19 @@ msgstr "Password amministratore"
 
 #: mgradm/cmd/install/flags.go:34
 msgid "First name of the administrator"
-msgstr ""
+msgstr "Nome dell'amministratore"
 
 #: mgradm/cmd/install/flags.go:35
 msgid "Last name of the administrator"
-msgstr ""
+msgstr "Cognome dell'amministratore"
 
 #: mgradm/cmd/install/flags.go:36
 msgid "First organization name"
-msgstr ""
+msgstr "Nome della prima organizzazione"
 
 #: mgradm/cmd/install/flags.go:38
 msgid "First User Flags"
-msgstr ""
+msgstr "Bandiere del primo utente"
 
 #: mgradm/cmd/install/install.go:27
 msgid "Install a new server on podman"
@@ -975,10 +961,15 @@ msgid ""
 "\n"
 "NOTE: installing on a remote podman is not supported yet!\n"
 msgstr ""
+"Installa un nuovo server su podman\n"
+"\n"
+"Il comando presuppone che podman sia installato localmente.\n"
+"\n"
+"NOTA: l’installazione su un podman remoto non è ancora supportata!\n"
 
 #: mgradm/cmd/install/utils.go:54
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
-msgstr ""
+msgstr "Il server è già inizializzato! Disinstallare prima di tentare una nuova installazione o utilizzare il comando di aggiornamento"
 
 #: mgradm/cmd/install/utils.go:61
 #, javascript-format
@@ -986,9 +977,8 @@ msgid "Setting up the server with the FQDN '%s'"
 msgstr "Configurazione del server con FQDN '%s'"
 
 #: mgradm/cmd/install/utils.go:65 mgradm/shared/podman/podman.go:353
-#, fuzzy
 msgid "cannot prepare images"
-msgstr "impossibile aggiornare: %s"
+msgstr "non è possibile preparare le immagini"
 
 #: mgradm/cmd/install/utils.go:69 mgradm/shared/podman/podman.go:145
 #: mgradm/shared/podman/podman.go:343
@@ -996,28 +986,25 @@ msgid "cannot setup network"
 msgstr "impossibile configurare la rete"
 
 #: mgradm/cmd/install/utils.go:90
-#, fuzzy
 msgid "failed to generate server service"
-msgstr "connessione non riuscita al server Hub: %s"
+msgstr "impossibile generare il servizio server"
 
 #: mgradm/cmd/install/utils.go:95
-#, fuzzy
 msgid "cannot wait for system start"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "non è possibile attendere l'avvio del sistema"
 
 #: mgradm/cmd/install/utils.go:98
 msgid "failed to add SSL CA certificate to host trusted certificates"
-msgstr ""
+msgstr "impossibile aggiungere il certificato SSL CA per ospitare certificati attendibili"
 
 #: mgradm/cmd/install/utils.go:105
-#, fuzzy
 msgid "failed to extract payg data"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile estrarre i dati payg"
 
 #: mgradm/cmd/install/utils.go:135 mgradm/shared/podman/podman.go:718
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
-msgstr ""
+msgstr "Configurazione del contenitore del database saltata per utilizzare del database esterno"
 
 #: mgradm/cmd/restart/restart.go:22 mgradm/cmd/restart/restart.go:23
 msgid "Restart the server"
