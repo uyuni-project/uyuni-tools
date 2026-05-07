@@ -82,13 +82,13 @@ BuildRequires:  golang(API) >= 1.25
 # suse_version
 
 %if 0%{?ubuntu}
-%if 0%{?ubuntu} >= 2404
-# Will use the default golang of the OS which is higher than minimal required go_version
-BuildRequires:  golang
-%else
-# Overwrite with new go version the OS default
 %define go_version      1.22
-BuildRequires:  golang-%{go_version}
+# On Ubuntu 22.04, the metapackage golang is too old (1.18) and
+# we must use the versioned package name specifically for this OS version.
+%if 0%{?ubuntu} == 2204
+BuildRequires:  golang-%{go_version}-go
+%else
+BuildRequires:  golang >= %{go_version}
 %endif
 %endif
 # ubuntu
@@ -330,15 +330,36 @@ go_tags=""
 
 go_path=""
 %if 0%{?ubuntu}
-  if test -d /usr/lib/go-%{go_version}/bin/; then
-    go_path=/usr/lib/go-%{go_version}/bin/
+  # Pinpoint the highest binary
+  go_path=$(find /usr/lib/go-*/bin/go 2>/dev/null | sort | tail -n 1)
+  [ -z "$go_path" ] && go_path="/usr/bin/go"
+
+  if [ -x "$go_path" ]; then
+    # Query GOVERSION
+    v_str=$("$go_path" env GOVERSION 2>/dev/null)
+    # Strip the leading 'go' prefix
+    v_str="${v_str#go}"
+    # Parse required and found versions
+    echo "%{go_version}" | { IFS="." read -r req_major req_minor req_patch;
+    echo "$v_str"        | { IFS="." read -r max_major max_minor max_patch;
+      # Fallbacks to guarantee whole integers if trailing elements are empty
+      [ -z "$max_patch" ] && max_patch=0
+      [ -z "$max_minor" ] && max_minor=0
+      if [ "$max_major" -lt "$req_major" ] || { [ "$max_major" -eq "$req_major" ] && [ "$max_minor" -lt "$req_minor" ]; }; then
+        echo "ERROR: Found Go version ${v_str} at ${go_path}, but version >= %{go_version} is required."
+        exit 1
+      fi
+    }; }
+    # Format the path variable suffix for the rest of the spec compilation steps
+    go_path="${go_path%go}"
+  else
+    echo "ERROR: No Go compiler found at ${go_path} or /usr/bin/go"
+    exit 1
   fi
 %else
   %if "%{?_go_bin}" != ""
     go_path='%{_go_bin}/'
   %endif
-# "_go_bin" != ""
-
 %endif
 # ubuntu
 
