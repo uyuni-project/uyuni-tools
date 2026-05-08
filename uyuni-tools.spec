@@ -52,7 +52,7 @@
 # debian || ubuntu
 
 Name:           %{project}
-Version:        5.2.5
+Version:        5.2.9
 Release:        0
 Summary:        Tools for managing %{productprettyname} container
 License:        Apache-2.0
@@ -83,7 +83,7 @@ BuildRequires:  golang(API) >= 1.25
 
 %if 0%{?ubuntu}
 %define go_version      1.22
-BuildRequires:  golang-%{go_version}
+BuildRequires:  golang >= %{go_version}
 %endif
 # ubuntu
 
@@ -324,7 +324,9 @@ go_tags=""
 
 go_path=""
 %if 0%{?ubuntu}
-  go_path=/usr/lib/go-%{go_version}/bin/
+  if test -d /usr/lib/go-%{go_version}/bin/; then
+    go_path=/usr/lib/go-%{go_version}/bin/
+  fi
 %else
   %if "%{?_go_bin}" != ""
     go_path='%{_go_bin}/'

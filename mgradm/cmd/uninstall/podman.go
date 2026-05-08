@@ -90,6 +90,8 @@ func uninstallForPodman(
 	podman.DeleteSecret(podman.CASecret, !flags.Force)
 	podman.DeleteSecret(podman.SSLCertSecret, !flags.Force)
 	podman.DeleteSecret(podman.SSLKeySecret, !flags.Force)
+	podman.DeleteSecret(podman.AdminUserSecret, !flags.Force)
+	podman.DeleteSecret(podman.AdminPassSecret, !flags.Force)
 
 	err := systemd.ReloadDaemon(!flags.Force)
 

@@ -45,10 +45,14 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- end }}
 	--env-file={{ .ServerEnvFile }} \
 	--network {{ .Network }} \
+	{{- if .DBUserSecret }}
 	--secret {{ .DBUserSecret }},type=env,target=MANAGER_USER \
 	--secret {{ .DBPassSecret }},type=env,target=MANAGER_PASS \
+	{{- end }}
+	{{- if .ReportDBUserSecret }}
 	--secret {{ .ReportDBUserSecret }},type=env,target=REPORT_DB_USER \
 	--secret {{ .ReportDBPassSecret }},type=env,target=REPORT_DB_PASS \
+	{{- end }}
 	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
 	--secret {{ .CaSecret }},type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT \
 	--secret {{ .CaSecret }},type=mount,target=/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
@@ -64,6 +68,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--secret {{ .AdminPassSecret }},type=env,target=ADMIN_PASS \
 	{{- end }}
 	--health-on-failure=stop \
+	--health-cmd=/usr/bin/healthcheck.sh \
+	--health-startup-cmd=/usr/bin/startup-check.sh \
+	--health-startup-interval=10s \
 	${PODMAN_EXTRA_ARGS} ${UYUNI_IMAGE}'
 
 ExecStop=-/usr/bin/podman exec \
