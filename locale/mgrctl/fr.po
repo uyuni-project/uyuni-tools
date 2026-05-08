@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-14 11:22+0200\n"
+"POT-Creation-Date: 2026-05-05 16:21+0200\n"
 "PO-Revision-Date: 2025-11-26 10:36+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/fr/>\n"
@@ -77,11 +77,13 @@ msgid "Logout removes stored login information."
 msgstr "La déconnexion supprime les informations de connexion stockées."
 
 #: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28
+#: mgrctl/cmd/ssh/knownhost/remove.go:64
 #, fuzzy
 msgid "unable to login to the server"
 msgstr "impossible de se connecter au serveur: %s"
 
 #: mgrctl/cmd/api/get.go:35 mgrctl/cmd/api/post.go:51
+#: mgrctl/cmd/ssh/knownhost/remove.go:29
 #, fuzzy, javascript-format
 msgid "error in query '%s'"
 msgstr "erreur dans la requête %s: %s"
@@ -102,19 +104,19 @@ msgstr ""
 msgid "Successfully logged out"
 msgstr ""
 
-#: mgrctl/cmd/cmd.go:31
+#: mgrctl/cmd/cmd.go:32
 msgid "Uyuni control tool"
 msgstr "Outil de contrôle d'Uyuni"
 
-#: mgrctl/cmd/cmd.go:32
+#: mgrctl/cmd/cmd.go:33
 msgid "Tool to help managing Uyuni servers mainly through their API"
 msgstr "Outil pour aider à gérer des serveurs Uyuni, principalement via leur API"
 
-#: mgrctl/cmd/cmd.go:39
+#: mgrctl/cmd/cmd.go:40
 msgid "configuration file path"
 msgstr "chemin vers le fichier de configuration"
 
-#: mgrctl/cmd/cmd.go:47
+#: mgrctl/cmd/cmd.go:48
 #, javascript-format
 msgid "Starting %s"
 msgstr ""
@@ -277,6 +279,42 @@ msgstr ""
 
 #: mgrctl/cmd/proxy/proxy.go:27 mgrctl/cmd/proxy/proxy.go:28
 msgid "Create proxy configurations"
+msgstr ""
+
+#: mgrctl/cmd/ssh/knownhost/knownhost.go:24
+msgid "SSH known_hosts file management"
+msgstr ""
+
+#: mgrctl/cmd/ssh/knownhost/knownhost.go:29
+msgid "Remove a SSH known host"
+msgstr ""
+
+#: mgrctl/cmd/ssh/knownhost/knownhost.go:30
+msgid ""
+"Removes a host from the list of Salt's SSH known_hosts.\n"
+"If no port is specified, it will default to 22."
+msgstr ""
+
+#: mgrctl/cmd/ssh/knownhost/remove.go:33
+#, fuzzy, javascript-format
+#| msgid "failed to connect to the server"
+msgid "failed to remove the host: %s"
+msgstr "impossible de se connecter au serveur"
+
+#: mgrctl/cmd/ssh/knownhost/remove.go:38
+msgid "unexpected server response '%v'"
+msgstr ""
+
+#: mgrctl/cmd/ssh/knownhost/remove.go:42
+msgid "successfully removed host"
+msgstr ""
+
+#: mgrctl/cmd/ssh/knownhost/remove.go:44
+msgid "unable to remove host, server returned an error"
+msgstr ""
+
+#: mgrctl/cmd/ssh/ssh.go:18
+msgid "SSH management commands"
 msgstr ""
 
 #: mgrctl/cmd/term/term.go:21
