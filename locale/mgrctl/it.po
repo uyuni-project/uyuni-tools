@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-14 11:22+0200\n"
-"PO-Revision-Date: 2026-04-14 08:44+0000\n"
-"Last-Translator: Alessio Matozzi <alessio.matozzi@studenti.unipg.it>\n"
+"POT-Creation-Date: 2026-05-05 16:21+0200\n"
+"PO-Revision-Date: 2026-05-08 13:30+0000\n"
+"Last-Translator: Thomas Florio <thomas.florio@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #: mgrctl/cmd/api/api.go:26
 msgid "JSON over HTTP API helper tool"
@@ -54,6 +54,15 @@ msgid ""
 "JSON example:\n"
 "# mgrctl api post user/create    '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
 msgstr ""
+"Prende un percorso API e parametri e quindi emette una richiesta POST con essi.\n"
+"\n"
+"I parametri possono essere stringhe codificate in JSON oppure una o più coppie chiave=valore.\n"
+"\n"
+"Esempio di coppie chiave=valore:\n"
+"# mgrctl api post utente/crea login=test password=testXX nome=F cognome=L email=test@localhost\n"
+"\n"
+"Esempio JSON:\n"
+"# mgrctl api post utente/crea '{\"login\":\"test\", \"password\":\"testXX\", \"firstName\":\"F\", \"lastName\":\"L\", \"email\":\"test@localhost\"}'\n"
 
 #: mgrctl/cmd/api/api.go:62
 msgid "Store login information for future API usage"
@@ -66,98 +75,106 @@ msgid ""
 "User name, password and remote host can be provided using flags or will be asked interactively.\n"
 "Environment variables are also supported."
 msgstr ""
+"Login memorizza le informazioni di accesso per le prossime chiamate API.\n"
+"\n"
+"Il nome utente, la password e l'host remoto possono essere forniti tramite flag oppure verranno richiesti in modo interattivo.\n"
+"Sono supportate anche le variabili ambientali."
 
 #: mgrctl/cmd/api/api.go:71
 msgid "Overwrite existing login if exists"
-msgstr ""
+msgstr "Sovrascrivi l'accesso esistente se esiste"
 
 #: mgrctl/cmd/api/api.go:75
 msgid "Remove stored login information"
-msgstr ""
+msgstr "Rimuovi le informazioni di accesso memorizzate"
 
 #: mgrctl/cmd/api/api.go:76
 msgid "Logout removes stored login information."
-msgstr ""
+msgstr "Logout rimuove le informazioni di accesso memorizzate."
 
 #: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28
+#: mgrctl/cmd/ssh/knownhost/remove.go:64
 msgid "unable to login to the server"
 msgstr "impossibile effettuare il login al server"
 
 #: mgrctl/cmd/api/get.go:35 mgrctl/cmd/api/post.go:51
+#: mgrctl/cmd/ssh/knownhost/remove.go:29
 #, javascript-format
 msgid "error in query '%s'"
-msgstr ""
+msgstr "errore nella query '%s'"
 
 #: mgrctl/cmd/api/login.go:23
 msgid "Refusing to overwrite existing login. Use --force to ignore this check."
-msgstr ""
+msgstr "Rifiuto di sovrascrivere l'accesso esistente. Utilizzare --force per ignorare questo controllo."
 
 #: mgrctl/cmd/api/login.go:35
 msgid "Failed to validate credentials."
-msgstr ""
+msgstr "Impossibile convalidare le credenziali."
 
 #: mgrctl/cmd/api/login.go:41
 msgid "Login credentials verified."
-msgstr ""
+msgstr "credenziali di login verificate."
 
 #: mgrctl/cmd/api/login.go:51
 msgid "Successfully logged out"
-msgstr ""
-
-#: mgrctl/cmd/cmd.go:31
-msgid "Uyuni control tool"
-msgstr ""
+msgstr "Disconnesso con successo"
 
 #: mgrctl/cmd/cmd.go:32
-msgid "Tool to help managing Uyuni servers mainly through their API"
-msgstr ""
+msgid "Uyuni control tool"
+msgstr "Strumento di controllo Uyuni"
 
-#: mgrctl/cmd/cmd.go:39
+#: mgrctl/cmd/cmd.go:33
+msgid "Tool to help managing Uyuni servers mainly through their API"
+msgstr "Strumento per aiutare a gestire i server Uyuni principalmente attraverso la loro API"
+
+#: mgrctl/cmd/cmd.go:40
 msgid "configuration file path"
 msgstr "percorso del file di configuratione"
 
-#: mgrctl/cmd/cmd.go:47
+#: mgrctl/cmd/cmd.go:48
 #, javascript-format
 msgid "Starting %s"
-msgstr ""
+msgstr "Inizio %s"
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
-msgstr ""
+msgstr "Copia i file da e verso i contenitori"
 
 #: mgrctl/cmd/cp/cp.go:30
 msgid ""
 "Takes a source and destination parameters.\n"
 "\tOne of them can be prefixed with 'server:' to indicate the path is within the server pod."
 msgstr ""
+"Accetta parametri di origine e destinazione.\n"
+"Uno di essi può essere preceduto dal prefisso 'server:' per indicare che il percorso si trova all'interno del pod del server."
 
 #: mgrctl/cmd/cp/cp.go:39
 msgid "failed to unmarshall configuration"
-msgstr ""
+msgstr "impossibile eseguire l'unmarshall della configurazione"
 
 #: mgrctl/cmd/cp/cp.go:45
 msgid "User or UID to set on the destination file"
-msgstr ""
+msgstr "Utente o UID da impostare sul file di destinazione"
 
 #: mgrctl/cmd/cp/cp.go:46
 msgid "Group or GID to set on the destination file"
-msgstr ""
+msgstr "Gruppo o GID da impostare sul file di destinazione"
 
 #: mgrctl/cmd/exec/exec.go:38
 msgid "Execute commands inside the uyuni containers using 'sh -c'"
-msgstr ""
+msgstr "Eseguito i comandi all'interno dei contenitori uyuni usando \"sh-c\""
 
 #: mgrctl/cmd/exec/exec.go:45
 msgid "environment variables to pass to the command, separated by commas"
-msgstr ""
+msgstr "variabili d'ambiente da passare al comando, separate da virgole"
 
 #: mgrctl/cmd/exec/exec.go:47
 msgid "Pass stdin to the container"
-msgstr ""
+msgstr "Passare stdin al contenitore"
 
 #: mgrctl/cmd/exec/exec.go:48
 msgid "Stdin is a TTY"
-msgstr ""
+msgstr "Stdin è un TTY"
 
 #: mgrctl/cmd/exec/exec.go:106
 msgid "Command failed"
@@ -165,120 +182,158 @@ msgstr "Comando non riuscito"
 
 #: mgrctl/cmd/exec/exec.go:110
 msgid "Command returned with exit code 0"
-msgstr ""
+msgstr "comando ritornato con codice d'uscita 0"
 
 #: mgrctl/cmd/exec/exec.go:124
 msgid "cannot write"
-msgstr ""
+msgstr "non posso scrivere"
 
 #: mgrctl/cmd/exec/exec.go:140
 #, javascript-format
 msgid "Running %s"
-msgstr ""
+msgstr "Esecuzione %s"
 
 #: mgrctl/cmd/proxy/config.go:72 mgrctl/cmd/proxy/config.go:73
 msgid "Create a proxy configuration file"
-msgstr ""
+msgstr "crea un file configurazione proxy"
 
 #: mgrctl/cmd/proxy/config.go:153
 msgid "Filename to write the configuration to (without extension)."
-msgstr ""
+msgstr "Nome file su cui scrivere la configurazione (senza estensione)."
 
 #: mgrctl/cmd/proxy/config.go:156
 msgid "Unique DNS-resolvable FQDN of this proxy."
-msgstr ""
+msgstr "FQDN unico risolvibile tramite DNS di questo proxy."
 
 #: mgrctl/cmd/proxy/config.go:157
 msgid "SSH port the proxy listens on."
-msgstr ""
+msgstr "Porta SSH su cui il proxy ascolta."
 
 #: mgrctl/cmd/proxy/config.go:158
 msgid "FQDN of the server to connect the proxy to."
-msgstr ""
+msgstr "FQDN del server a cui collegare il proxy."
 
 #: mgrctl/cmd/proxy/config.go:159
 msgid "Maximum cache size in MB."
-msgstr ""
+msgstr "Massima grandezza cache in MB."
 
 #: mgrctl/cmd/proxy/config.go:160
 msgid "Email of the proxy administrator"
-msgstr ""
+msgstr "email dell'amministratore proxy"
 
 #: mgrctl/cmd/proxy/config.go:161
 msgid "Path to the root CA certificate in PEM format."
-msgstr ""
+msgstr "Incolla al root il certificato CA nel formato PEM."
 
 #: mgrctl/cmd/proxy/config.go:164
 msgid "Path to the proxy certificate in PEM format."
-msgstr ""
+msgstr "Incolla il certificato proxy nel formato PEM."
 
 #: mgrctl/cmd/proxy/config.go:165
 msgid "Path to the proxy certificate private key in PEM format."
-msgstr ""
+msgstr "Percorso alla chiave privata del certificato proxy in formato PEM."
 
 #: mgrctl/cmd/proxy/config.go:167
 msgid ""
 "Path to an intermediate CA used to sign the proxy certicate in PEM format.\n"
 "May be provided multiple times or separated by commas."
 msgstr ""
+"Percorso verso una CA intermedia utilizzata per firmare il certificato proxy in formato PEM.\n"
+"Può essere fornito più volte o separato da virgole."
 
 #: mgrctl/cmd/proxy/config.go:173
 msgid "Email to set in the SSL certificate"
-msgstr ""
+msgstr "Email da impostare nel certificato SSL"
 
 #: mgrctl/cmd/proxy/config.go:175
 msgid "Path to the private key of the CA to use to generate a new proxy certificate."
-msgstr ""
+msgstr "Percorso alla chiave privata della CA da utilizzare per generare un nuovo certificato proxy."
 
 #: mgrctl/cmd/proxy/config.go:177
 msgid "Password of the CA private key, will be prompted if not passed."
-msgstr ""
+msgstr "Se non viene passata, verrà richiesta la password della chiave privata CA."
 
 #: mgrctl/cmd/proxy/config.go:187
 msgid "Common Flags"
-msgstr ""
+msgstr "Bandiere comuni"
 
 #: mgrctl/cmd/proxy/config.go:188
 msgid "Third party proxy certificates flags"
-msgstr ""
+msgstr "Flag dei certificati proxy di terze parti"
 
 #: mgrctl/cmd/proxy/config_do.go:41
-#, fuzzy
 msgid "failed to connect to the server"
-msgstr "impossibile effettuare il login al server"
+msgstr "impossibile connettersi al server"
 
 #: mgrctl/cmd/proxy/config_do.go:56
 msgid "failed to execute proxy configuration api request"
-msgstr ""
+msgstr "impossibile eseguire la richiesta api di configurazione proxy"
 
 #: mgrctl/cmd/proxy/config_do.go:61
 msgid "error saving binary data: %v"
-msgstr ""
+msgstr "errore nel salvataggio dei dati binari: %v"
 
 #: mgrctl/cmd/proxy/config_do.go:63
 #, javascript-format
 msgid "Proxy configuration file saved as %s"
-msgstr ""
+msgstr "File della configurazione proxy salvato come %s"
 
 #: mgrctl/cmd/proxy/config_do.go:77
 msgid "flag proxyKey is required when flag proxyCrt is provided"
-msgstr ""
+msgstr "flag proxyKey è richiesto quando viene fornito flag proxyCrt"
 
 #: mgrctl/cmd/proxy/config_do.go:118
 msgid "Please enter SSL CA password"
-msgstr ""
+msgstr "Per favore inserisci SSL CA password"
 
 #: mgrctl/cmd/proxy/proxy.go:18 mgrctl/cmd/proxy/proxy.go:19
 msgid "Manage proxy configurations"
-msgstr ""
+msgstr "Gestisci le configurazioni proxy"
 
 #: mgrctl/cmd/proxy/proxy.go:27 mgrctl/cmd/proxy/proxy.go:28
 msgid "Create proxy configurations"
+msgstr "Crea la configurazione proxy"
+
+#: mgrctl/cmd/ssh/knownhost/knownhost.go:24
+msgid "SSH known_hosts file management"
+msgstr "Gestione del file known_hosts di SSH"
+
+#: mgrctl/cmd/ssh/knownhost/knownhost.go:29
+msgid "Remove a SSH known host"
+msgstr "Rimuovi un host noto di SSH"
+
+#: mgrctl/cmd/ssh/knownhost/knownhost.go:30
+msgid ""
+"Removes a host from the list of Salt's SSH known_hosts.\n"
+"If no port is specified, it will default to 22."
 msgstr ""
+"Rimuovi un host dall'elenco known_hosts di Salt SSH\n"
+"Senza una porta specifica, il valore predefinito è 22."
+
+#: mgrctl/cmd/ssh/knownhost/remove.go:33
+#, javascript-format
+msgid "failed to remove the host: %s"
+msgstr "impossibile connettersi all'host: %s"
+
+#: mgrctl/cmd/ssh/knownhost/remove.go:38
+msgid "unexpected server response '%v'"
+msgstr "risposta del server inaspettata '%v'"
+
+#: mgrctl/cmd/ssh/knownhost/remove.go:42
+msgid "successfully removed host"
+msgstr "host rimosso con successo"
+
+#: mgrctl/cmd/ssh/knownhost/remove.go:44
+msgid "unable to remove host, server returned an error"
+msgstr "impossible rimuovere l'host, il server ha restituito un errore"
+
+#: mgrctl/cmd/ssh/ssh.go:18
+msgid "SSH management commands"
+msgstr "Gestione comandi SSH"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
-msgstr ""
+msgstr "Esegui il terminale nel contenitore del server"
 
 #, javascript-format
 #~ msgid "Welcome to %s"

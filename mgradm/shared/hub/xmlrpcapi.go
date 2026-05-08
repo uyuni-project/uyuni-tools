@@ -95,6 +95,10 @@ func Upgrade(
 		}
 	}
 
+	if !hubXmlrpcFlags.IsChanged {
+		return systemd.RestartInstantiated(podman.HubXmlrpcService)
+	}
+
 	// In some case we may loose the currently running instance. Restore the count we had before
 	return systemd.ScaleService(hubXmlrpcFlags.Replicas, podman.HubXmlrpcService)
 }
