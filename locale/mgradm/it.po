@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-07 19:56+0200\n"
-"PO-Revision-Date: 2026-05-06 11:04+0000\n"
-"Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
+"PO-Revision-Date: 2026-05-08 13:30+0000\n"
+"Last-Translator: Thomas Florio <thomas.florio@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -324,7 +324,7 @@ msgstr "Backup della configurazione di Podman"
 #: mgradm/cmd/backup/db/enable.go:86
 #, javascript-format
 msgid "Continuous Archiving backup configured. Backup target volume is '%s'"
-msgstr "Backup di archiviazione continua configurato. Il volume di destinazione del backup è"
+msgstr "Backup di archiviazione continua configurato. Il volume di destinazione del backup è '%s'"
 
 #: mgradm/cmd/backup/db/enable.go:99
 msgid "failed to generate postgresql backup script"
@@ -685,7 +685,7 @@ msgstr "TreeLabel mancante. Si prega di specificare il nome della distribuzione"
 #: mgradm/cmd/distro/cp.go:115
 #, javascript-format
 msgid "distribution with same name already exists: %s"
-msgstr "esiste già una distribuzione con lo stesso nome"
+msgstr "esiste già una distribuzione con lo stesso nome: '%s'"
 
 #: mgradm/cmd/distro/cp.go:119
 #, javascript-format
@@ -710,7 +710,7 @@ msgstr "La distribuzione è stata copiata in %s"
 #: mgradm/cmd/distro/cp.go:187
 #, javascript-format
 msgid "Auto-detected distribution %s"
-msgstr "Distribuzione rilevata automaticamente"
+msgstr "Distribuzione rilevata automaticamente %s"
 
 #: mgradm/cmd/distro/cp.go:198
 msgid "Continue by registering autoinstallation distribution"
@@ -824,12 +824,12 @@ msgstr "Importa senza chiedere conferma"
 #: mgradm/cmd/gpg/add/gpg.go:60
 #, javascript-format
 msgid "failed to create folder %s"
-msgstr "impossibile creare la cartella"
+msgstr "impossibile creare la cartella %s"
 
 #: mgradm/cmd/gpg/add/gpg.go:65
 #, javascript-format
 msgid "failed to create keyring %s"
-msgstr "impossibile creare il portachiavi"
+msgstr "impossibile creare il portachiavi %s"
 
 #: mgradm/cmd/gpg/add/gpg.go:89
 #, javascript-format
@@ -851,9 +851,8 @@ msgid "Do you really want to trust this key"
 msgstr "Vuoi davvero fidarti di questa chiave"
 
 #: mgradm/cmd/gpg/add/gpg.go:118
-#, fuzzy
 msgid "failed to copy %[1]s to %[2]s"
-msgstr "impossibile determinare l'URL dell'immagine: %s"
+msgstr "Copia di %[1]s in %[2]s non riuscita"
 
 #: mgradm/cmd/gpg/add/gpg.go:128 mgradm/cmd/gpg/add/gpg.go:135
 #: mgradm/cmd/gpg/list/gpg.go:62 mgradm/cmd/support/sql/sql.go:188
@@ -1012,7 +1011,7 @@ msgstr "impossibile estrarre i dati payg"
 #: mgradm/cmd/install/utils.go:138 mgradm/shared/podman/podman.go:728
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
-msgstr "Configurazione del contenitore del database saltata per utilizzare del database esterno"
+msgstr "Configurazione del contenitore del database saltata per utilizzare del database esterno %s"
 
 #: mgradm/cmd/restart/restart.go:22 mgradm/cmd/restart/restart.go:23
 msgid "Restart the server"
@@ -1049,9 +1048,8 @@ msgid "Preparing SSL certificates to match the new hostname"
 msgstr ""
 
 #: mgradm/cmd/server/rename/podman.go:40
-#, fuzzy
 msgid "Stopping the server container"
-msgstr "In attesa che il server si avvii…"
+msgstr "Arresto del container del server"
 
 #: mgradm/cmd/server/rename/podman.go:45
 #, javascript-format
@@ -1059,9 +1057,8 @@ msgid "Changing the UYUNI_HOSTNAME to %s"
 msgstr ""
 
 #: mgradm/cmd/server/rename/podman.go:56
-#, fuzzy
 msgid "Starting the server container"
-msgstr "In attesa che il server si avvii…"
+msgstr "Avvio del container del server"
 
 #: mgradm/cmd/server/rename/podman.go:62
 msgid ""
@@ -1070,9 +1067,8 @@ msgid ""
 msgstr ""
 
 #: mgradm/cmd/server/rename/podman.go:109
-#, fuzzy
 msgid "failed to write custom.conf with the new hostname"
-msgstr "impossibile determinare l'URL dell'immagine: %s"
+msgstr "impossibile scrivere custom.conf con il nuovo nome dell'host"
 
 #: mgradm/cmd/server/rename/podman.go:120
 #, fuzzy
@@ -1100,10 +1096,8 @@ msgid "Password for the CA key to generate"
 msgstr ""
 
 #: mgradm/cmd/server/server.go:19
-#, fuzzy
-#| msgid "Server Management:"
 msgid "Server management utilities"
-msgstr "Gestione del Server:"
+msgstr "Strumenti di gestione del server"
 
 #: mgradm/cmd/start/start.go:21 mgradm/cmd/start/start.go:22
 msgid "Start the server"
@@ -1629,9 +1623,8 @@ msgid "Cannot generate new certificates without a CA password. Please check inpu
 msgstr ""
 
 #: mgradm/shared/podman/ssl.go:400
-#, fuzzy
 msgid "Generating the server certificate…"
-msgstr "impossibile installare il certificato: %s"
+msgstr "Generazione del certificato del server…"
 
 #: mgradm/shared/podman/ssl.go:420
 msgid "Failed to generate server SSL certificate. Please check the input parameters."
@@ -1643,9 +1636,8 @@ msgid "Server SSL certificate generated"
 msgstr "impossibile installare il certificato: %s"
 
 #: mgradm/shared/podman/ssl.go:434
-#, fuzzy
 msgid "Generating the database certificate…"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "Generazione del certificato del database…"
 
 #: mgradm/shared/podman/ssl.go:453
 #, fuzzy
