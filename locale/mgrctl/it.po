@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-05 16:21+0200\n"
-"PO-Revision-Date: 2026-05-06 11:04+0000\n"
-"Last-Translator: Alessio Matozzi <alessio.matozzi@studenti.unipg.it>\n"
+"PO-Revision-Date: 2026-05-08 13:30+0000\n"
+"Last-Translator: Thomas Florio <thomas.florio@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -296,41 +296,40 @@ msgstr "Crea la configurazione proxy"
 
 #: mgrctl/cmd/ssh/knownhost/knownhost.go:24
 msgid "SSH known_hosts file management"
-msgstr ""
+msgstr "Gestione del file known_hosts di SSH"
 
 #: mgrctl/cmd/ssh/knownhost/knownhost.go:29
 msgid "Remove a SSH known host"
-msgstr ""
+msgstr "Rimuovi un host noto di SSH"
 
 #: mgrctl/cmd/ssh/knownhost/knownhost.go:30
 msgid ""
 "Removes a host from the list of Salt's SSH known_hosts.\n"
 "If no port is specified, it will default to 22."
 msgstr ""
+"Rimuovi un host dall'elenco known_hosts di Salt SSH\n"
+"Senza una porta specifica, il valore predefinito è 22."
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:33
-#, fuzzy, javascript-format
-#| msgid "failed to connect to the server"
+#, javascript-format
 msgid "failed to remove the host: %s"
-msgstr "impossibile connettersi al server"
+msgstr "impossibile connettersi all'host: %s"
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:38
 msgid "unexpected server response '%v'"
-msgstr ""
+msgstr "risposta del server inaspettata '%v'"
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:42
-#, fuzzy
-#| msgid "Successfully logged out"
 msgid "successfully removed host"
-msgstr "Disconnesso con successo"
+msgstr "host rimosso con successo"
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:44
 msgid "unable to remove host, server returned an error"
-msgstr ""
+msgstr "impossible rimuovere l'host, il server ha restituito un errore"
 
 #: mgrctl/cmd/ssh/ssh.go:18
 msgid "SSH management commands"
-msgstr ""
+msgstr "Gestione comandi SSH"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
