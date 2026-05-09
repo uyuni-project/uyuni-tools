@@ -82,12 +82,13 @@ BuildRequires:  golang(API) >= 1.25
 # suse_version
 
 %if 0%{?ubuntu}
-%define go_min_version      1.22
 %if 0%{?ubuntu} >= 2404
-# Will use the default golang of the OS which is higher than go_min_version
+# Will use the default golang of the OS which is higher than minimal required go_version
 BuildRequires:  golang
 %else
-BuildRequires:  golang-%{go_min_version}
+# Overwrite with new go version the OS default
+%define go_version      1.22
+BuildRequires:  golang-%{go_version}
 %endif
 %endif
 # ubuntu
