@@ -16,7 +16,7 @@ import (
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
-	"gopkg.in/yaml.v3"
+	"gopkg.in/yaml.v2"
 )
 
 func newSystemCommand(globalFlags *types.GlobalFlags, parentFlags *getFlags) *cobra.Command {
@@ -24,7 +24,7 @@ func newSystemCommand(globalFlags *types.GlobalFlags, parentFlags *getFlags) *co
 		Use:     "system [name/id]",
 		Aliases: []string{"systems"},
 		Short:   L("List or get details for registered systems"),
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			return runGetSystem(globalFlags, parentFlags, args)
 		},
 	}

@@ -26,7 +26,13 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		Long:  L("Prints tables, JSON, or YAML of Uyuni API resources. Modeled after kubectl get."),
 	}
 
-	getCmd.PersistentFlags().StringVarP(&flags.OutputFormat, "output", "o", "table", L("Output format. One of: table|json|yaml"))
+	getCmd.PersistentFlags().StringVarP(
+		&flags.OutputFormat,
+		"output",
+		"o",
+		"table",
+		L("Output format. One of: table|json|yaml"),
+	)
 
 	getCmd.AddCommand(newSystemCommand(globalFlags, &flags))
 
