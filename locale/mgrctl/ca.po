@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-05 16:21+0200\n"
-"PO-Revision-Date: 2026-05-10 22:04+0000\n"
+"PO-Revision-Date: 2026-05-11 11:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ca/>\n"
 "Language: ca\n"
@@ -311,28 +311,25 @@ msgstr ""
 "Si no s'especifica cap port, el valor per defecte serà el 22."
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:33
-#, fuzzy, javascript-format
-#| msgid "failed to connect to the server"
+#, javascript-format
 msgid "failed to remove the host: %s"
-msgstr "no s'ha pogut connectar al servidor"
+msgstr "no s'ha pogut suprimir l'amfitrió: %s"
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:38
 msgid "unexpected server response '%v'"
-msgstr ""
+msgstr "resposta inesperada del servidor %v"
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:42
-#, fuzzy
-#| msgid "Successfully logged out"
 msgid "successfully removed host"
-msgstr "Sessió tancada correctament"
+msgstr "amfitrió suprimit correctament"
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:44
 msgid "unable to remove host, server returned an error"
-msgstr ""
+msgstr "no es pot suprimir l'amfitrió, el servidor ha retornat un error"
 
 #: mgrctl/cmd/ssh/ssh.go:18
 msgid "SSH management commands"
-msgstr ""
+msgstr "Ordres de gestió SSH"
 
 #: mgrctl/cmd/term/term.go:21
 msgid "Run a terminal inside the server container"
