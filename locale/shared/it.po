@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-29 13:25+0200\n"
-"PO-Revision-Date: 2026-05-06 11:04+0000\n"
+"PO-Revision-Date: 2026-05-12 12:04+0000\n"
 "Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
 "Language: it\n"
@@ -412,9 +412,8 @@ msgid "Using the %[1]s image loaded from the RPM instead of its online version %
 msgstr ""
 
 #: shared/podman/images.go:105
-#, fuzzy
 msgid "failed to determine image"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "mancata identificazione dell'immagine:"
 
 #: shared/podman/images.go:113
 msgid "failed to find the image of the currently running server container"
@@ -782,9 +781,8 @@ msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr ""
 
 #: shared/podman/systemd.go:437
-#, fuzzy
 msgid "cannot enable service"
-msgstr "impossible eliminare %s"
+msgstr "impossibile abilitare il servizio"
 
 #: shared/podman/systemd.go:443
 #, fuzzy
@@ -797,9 +795,9 @@ msgid "failed to show %[1]s property of %[2] systemd service"
 msgstr "mancata creazione della directory temporanea: %s"
 
 #: shared/podman/systemd.go:468
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s folder"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare la cartella"
 
 #: shared/podman/systemd.go:478
 #, fuzzy, javascript-format
@@ -1259,7 +1257,7 @@ msgstr ""
 #: shared/utils/files.go:53
 #, javascript-format
 msgid "Failed to read file %s"
-msgstr ""
+msgstr "Impossibile leggere il file %s"
 
 #: shared/utils/files.go:69
 #, javascript-format
