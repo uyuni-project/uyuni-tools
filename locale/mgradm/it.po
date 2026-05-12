@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-07 19:56+0200\n"
-"PO-Revision-Date: 2026-05-12 12:04+0000\n"
-"Last-Translator: Alessio Matozzi <alessio.matozzi@studenti.unipg.it>\n"
+"PO-Revision-Date: 2026-05-12 12:05+0000\n"
+"Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -1773,19 +1773,23 @@ msgstr "Imposta il backup WAL continuo"
 
 #: mgradm/shared/utils/cmd_utils.go:91
 msgid "Database Flags"
-msgstr ""
+msgstr "Bandiere del database"
 
 #: mgradm/shared/utils/cmd_utils.go:105
 msgid ""
 "SUSE Customer Center username.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
 msgstr ""
+"Nome utente del Centro clienti SUSE.\n"
+"Verrà utilizzato come credenziali SCC per la sincronizzazione dei prodotti e per estrarre immagini dal registro SCC"
 
 #: mgradm/shared/utils/cmd_utils.go:107
 msgid ""
 "SUSE Customer Center password.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
 msgstr ""
+"Password del Centro Clienti SUSE.\n"
+"Verrà utilizzato come credenziali SCC per la sincronizzazione dei prodotti e per estrarre immagini dal registro SCC"
 
 #: mgradm/shared/utils/cmd_utils.go:109
 msgid "SUSE Customer Center Flags"
@@ -1793,79 +1797,84 @@ msgstr "Bandiere del centro clienti SUSE"
 
 #: mgradm/shared/utils/cmd_utils.go:116
 msgid "Image"
-msgstr ""
+msgstr "immagine"
 
 #: mgradm/shared/utils/cmd_utils.go:117
 msgid "Tag Image"
-msgstr ""
+msgstr "inserire immagini"
 
 #: mgradm/shared/utils/cmd_utils.go:122
 msgid "Image Flags"
-msgstr ""
+msgstr "Bandiere con immagini"
 
 #: mgradm/shared/utils/cmd_utils.go:133
-#, fuzzy
 msgid "Database upgrade image"
-msgstr "impossibile aggiornare: %s"
+msgstr "Immagine di aggiornamento del database"
 
 #: mgradm/shared/utils/cmd_utils.go:134
 msgid "Database upgrade image tag, overrides the default value if set"
-msgstr ""
+msgstr "Tag immagine di aggiornamento del database, sovrascrive il valore predefinito se impostato"
 
 #: mgradm/shared/utils/cmd_utils.go:136
 msgid "Database Upgrade Image Flags"
-msgstr ""
+msgstr "Bandiere di immagini per l'aggiornamento del database"
 
 #: mgradm/shared/utils/cmd_utils.go:143
 msgid "Path to mirrored packages mounted on the host"
-msgstr ""
+msgstr "Percorso ai pacchetti specchiati montati sull'host"
 
 #: mgradm/shared/utils/cmd_utils.go:148 mgradm/shared/utils/cmd_utils.go:157
 msgid "Confidential Computing Flags"
-msgstr ""
+msgstr "Bandiere informatiche riservate"
 
 #: mgradm/shared/utils/cmd_utils.go:149 mgradm/shared/utils/cmd_utils.go:158
 msgid "Confidential computing attestation"
-msgstr ""
+msgstr "Attestazione informatica riservata"
 
 #: mgradm/shared/utils/cmd_utils.go:151
 msgid "How many replicas of the confidential computing container should be started"
-msgstr ""
+msgstr "Quante repliche del contenitore di elaborazione confidenziale devono essere avviate"
 
 #: mgradm/shared/utils/cmd_utils.go:160
 msgid ""
 "How many replicas of the confidential computing container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
 msgstr ""
+"Quante repliche del contenitore di elaborazione confidenziale devono essere avviate.\n"
+"Lascialo non impostato se vuoi mantenere il numero precedente di repliche."
 
 #: mgradm/shared/utils/cmd_utils.go:167 mgradm/shared/utils/cmd_utils.go:168
 #: mgradm/shared/utils/cmd_utils.go:177 mgradm/shared/utils/cmd_utils.go:178
 msgid "Hub XML-RPC API"
-msgstr ""
+msgstr "API Hub XML-RPC"
 
 #: mgradm/shared/utils/cmd_utils.go:170
 msgid "How many replicas of the Hub XML-RPC API service container should be started."
-msgstr ""
+msgstr "Quante repliche del contenitore del servizio API Hub XML-RPC devono essere avviate."
 
 #: mgradm/shared/utils/cmd_utils.go:180
 msgid ""
 "How many replicas of the Hub XML-RPC API service container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
 msgstr ""
+"Quante repliche del contenitore del servizio API Hub XML-RPC devono essere avviate.\n"
+"Lascialo non impostato se vuoi mantenere il numero precedente di repliche."
 
 #: mgradm/shared/utils/cmd_utils.go:187 mgradm/shared/utils/cmd_utils.go:198
 msgid "Saline Flags"
-msgstr ""
+msgstr "Saline Flags"
 
 #: mgradm/shared/utils/cmd_utils.go:188 mgradm/shared/utils/cmd_utils.go:199
 msgid "Saline"
-msgstr ""
+msgstr "salino"
 
 #: mgradm/shared/utils/cmd_utils.go:189
 msgid ""
 "How many replicas of the Saline container should be started\n"
 "(only 0 or 1 supported for now)"
 msgstr ""
+"Quante repliche del contenitore Saline devono essere avviate\n"
+"(per ora sono supportati solo 0 o 1)"
 
 #: mgradm/shared/utils/cmd_utils.go:191 mgradm/shared/utils/cmd_utils.go:203
 msgid "Saline port"
@@ -1877,23 +1886,25 @@ msgid ""
 "Leave it unset if you want to keep the previous number of replicas.\n"
 "(only 0 or 1 supported for now)"
 msgstr ""
+"Quante repliche del contenitore Saline devono essere avviate.\n"
+"Lascialo non impostato se vuoi mantenere il numero precedente di repliche.\n"
+"(per ora sono supportati solo 0 o 1)"
 
 #: mgradm/shared/utils/cmd_utils.go:210
 msgid "PostgreSQL Database Container Flags"
-msgstr ""
+msgstr "Bandiere del contenitore del database PostgreSQL"
 
 #: mgradm/shared/utils/cmd_utils.go:211
 msgid "PostgreSQL Database"
-msgstr ""
+msgstr "database PostgreSQL"
 
 #: mgradm/shared/utils/cmd_utils.go:230
 msgid "Enable tomcat and taskomatic remote debugging"
 msgstr "Abilita il debug remoto di Tomcat e Taskomatic"
 
 #: mgradm/shared/utils/exec.go:24
-#, fuzzy
 msgid "exec command failed"
-msgstr "Comando non riuscito"
+msgstr "comando exec non riuscito"
 
 #: mgradm/shared/utils/exec.go:37
 msgid "failed retrieving namespace"
@@ -1902,29 +1913,28 @@ msgstr "recupero non riuscito dello spazio dei nomi"
 #: mgradm/shared/utils/exec.go:64
 #, javascript-format
 msgid "currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"
-msgstr ""
+msgstr "attualmente è installato SUSE Manager %s, invece l'immagine è Uyuni. L'aggiornamento non è supportato"
 
 #: mgradm/shared/utils/exec.go:71
 #, javascript-format
 msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"
-msgstr ""
+msgstr "attualmente è installato Uyuni %s, invece l'immagine è SUSE Manager. L'aggiornamento non è supportato"
 
 #: mgradm/shared/utils/exec.go:80 mgradm/shared/utils/exec.go:93
-#, fuzzy
 msgid "cannot fetch release from server image"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "impossibile recuperare il rilascio dall'immagine del server"
 
 #: mgradm/shared/utils/exec.go:85 mgradm/shared/utils/exec.go:98
 msgid "cannot downgrade from version %[1]s to %[2]s"
-msgstr ""
+msgstr "non è possibile effettuare il downgrade dalla versione %[1]s a %[2]s"
 
 #: mgradm/shared/utils/flags.go:141
 msgid "Can only contain letters, digits . _ and -"
-msgstr ""
+msgstr "Può contenere solo lettere, cifre . _ e -"
 
 #: mgradm/shared/utils/flags.go:149
 msgid "Not a valid email address"
-msgstr ""
+msgstr "Non è un indirizzo email valido"
 
 #, fuzzy
 #~ msgid "Run setup command"
