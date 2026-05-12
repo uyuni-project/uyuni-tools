@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-29 13:25+0200\n"
 "PO-Revision-Date: 2026-05-12 12:04+0000\n"
-"Last-Translator: Alessio Matozzi <alessio.matozzi@studenti.unipg.it>\n"
+"Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -1126,15 +1126,15 @@ msgstr "Tag per il contenitore %s, sovrascrive il valore globale se impostato"
 #: shared/utils/config.go:40
 #, javascript-format
 msgid "failed to parse configuration file %s"
-msgstr ""
+msgstr "impossibile analizzare il file di configurazione %s"
 
 #: shared/utils/config.go:54
 msgid "Failed to find home directory"
-msgstr ""
+msgstr "Impossibile trovare la directory home"
 
 #: shared/utils/config.go:101
 msgid "failed to bind %[1]s config to parameter %[2]s"
-msgstr ""
+msgstr "impossibile associare la configurazione di %[1]s al parametro %[2]s"
 
 #: shared/utils/config.go:116
 msgid ""
@@ -1168,6 +1168,35 @@ msgid ""
 "\n"
 "Use \"{{.CommandPath}} [command] --help\" for more information about a command.{{end}}\n"
 msgstr ""
+"Utilizzo:{{se .Eseguibile}}\n"
+"  {{.UseLine}}{{end}}{{if .Hasottocomandi disponibili}}\n"
+"  {{.CommandPath}} [comando]{{fine}}{{se gt (len .Alias) 0}}\n"
+"\n"
+"Alias:\n"
+"  {{.Nome e alias}}{{fine}}{{se .HasExample}}\n"
+"\n"
+"Esempi:\n"
+"{{.Esempio}}{{fine}}{{se .Ha sottocomandi disponibili}}{{$cmds := .Comandi}}{{se eq (len .Gruppi) 0}}\n"
+"\n"
+"Comandi disponibili:{{range $cmds}}{{if (or .IsAvailableCommand (eq.Nome \"aiuto\"))}}\n"
+"  {{rpad.Nome.NamePadding }} {{.Corto}}{{fine}}{{fine}}{{altro}}{{intervallo $gruppo:= .Gruppi}}\n"
+"\n"
+"{{.Titolo}}{{intervallo $cmds}}{{se (e (eq .GroupID $group.ID) (o .IsAvailableCommand (eq.Nome \"aiuto\")))}}\n"
+"  {{rpad.Nome.NamePadding }} {{.Corto}}{{fine}}{{fine}}{{fine}}{{se non .Tutti i comandi per bambini hanno gruppo}}\n"
+"\n"
+"Comandi aggiuntivi:{{range $cmds}}{{if (and (eq .GroupID \"\") (o .IsAvailableCommand (eq.Nome \"aiuto\")))}}\n"
+"  {{rpad.Nome.NamePadding }} {{.Corto}}{{fine}}{{fine}}{{fine}}{{fine}}{{fine}}{{se .Ha bandiere locali disponibili}}\n"
+"\n"
+"Bandiere:\n"
+"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}\n"
+"\n"
+"Bandiere globali:\n"
+"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}\n"
+"\n"
+"Argomenti di aiuto aggiuntivi:{{range .Comandi}}{{se .IsAdditionalHelpTopicCommand}}\n"
+"  {{rpad.Percorso di comando.CommandPathPadding}} {{.Corto}}{{fine}}{{fine}}{{fine}}{{se .Hasottocomandi disponibili}}\n"
+"\n"
+"Utilizzare \"{{.CommandPath}} [comando] --help\" per maggiori informazioni su un comando.{{end}}\n"
 
 #: shared/utils/config.go:150
 msgid ""
@@ -1205,29 +1234,62 @@ msgid ""
 "  For example the '--tz CEST' flag will be mapped to '{{ .EnvPrefix }}_TZ'\n"
 "  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD'\n"
 msgstr ""
+"\n"
+"Configurazione:\n"
+"\n"
+"  In alternativa, tutti i flag non globali possono essere passati come configurazione.\n"
+"\n"
+"  Il file di configurazione è un file YAML con voci corrispondenti al nome del flag.\n"
+"  Il nome di un flag è la parte dopo '--' del parametro della riga di comando.\n"
+"  Ogni carattere '_' nel nome del flag indica una proprietà annidata.\n"
+"\n"
+"  Ad esempio, '--tz CEST' e '--ssl-password secret' verranno mappati su\n"
+"  questa configurazione YAML:\n"
+"\n"
+"    tz: CEST\n"
+"    ssl:\n"
+"      password: segreta\n"
+"\n"
+"  La ricerca nel file di configurazione avverrà nei seguenti punti e nel seguente ordine:\n"
+"  · /etc/uyuni/uyuni-tools.yaml\n"
+"  · $XDG_CONFIG_HOME/{{ .Nome }}/{{ .ConfigFile }}\n"
+"  · $HOME/.config/{{ .Nome }}/{{ .ConfigFile }}\n"
+"  · $PWD/{{ .ConfigFile }}\n"
+"  · il valore del flag --config\n"
+"\n"
+"\n"
+"Variabili ambientali:\n"
+"\n"
+"  Tutti i flag non globali possono anche essere passati come variabili d'ambiente.\n"
+"\n"
+"  Il nome della variabile d'ambiente è il nome del flag con '-' sostituito da '_'\n"
+"  e il {{ .Prefisso EnvPrefix }}.\n"
+"\n"
+"  Ad esempio il flag '--tz CEST' verrà mappato su '{{ .EnvPrefix }}_TZ'\n"
+"  e i flag '--ssl-password' a '{{ .EnvPrefix }}_SSL_PASSWORD'\n"
 
 #: shared/utils/config.go:187
 msgid "Help on configuration file and environment variables"
-msgstr ""
+msgstr "Aiuto sul file di configurazione e sulle variabili d'ambiente"
 
 #: shared/utils/config.go:196
 msgid "failed to compute config help command"
 msgstr "impossibile calcolare il comando di aiuto alla configurazione"
 
 #: shared/utils/files.go:21
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot check content of %s"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "impossibile controllare il contenuto di %s"
 
 #: shared/utils/files.go:33
 #, javascript-format
 msgid "Cannot remove %s folder"
-msgstr ""
+msgstr "Impossibile rimuovere la cartella %s"
 
 #: shared/utils/files.go:44
 #, javascript-format
 msgid "Failed to get %s file informations"
-msgstr ""
+msgstr "Impossibile ottenere le informazioni sul file %s"
 
 #: shared/utils/files.go:53
 #, javascript-format
@@ -1237,22 +1299,21 @@ msgstr "Impossibile leggere il file %s"
 #: shared/utils/files.go:69
 #, javascript-format
 msgid "Would remove file %s"
-msgstr ""
+msgstr "Rimuoverebbe il file %s"
 
 #: shared/utils/files.go:71
 #, javascript-format
 msgid "Removing file %s"
-msgstr ""
+msgstr "Rimozione del file %s"
 
 #: shared/utils/files.go:73
 #, javascript-format
 msgid "Failed to remove file %s"
-msgstr ""
+msgstr "Impossibile rimuovere il file"
 
 #: shared/utils/files.go:83
-#, fuzzy
 msgid "failed to create temporary directory"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare una directory temporanea"
 
 #: shared/utils/files.go:87
 #, fuzzy
@@ -1260,107 +1321,103 @@ msgid "failed to remove temporary directory"
 msgstr "mancata creazione della directory temporanea: %s"
 
 #: shared/utils/files.go:97
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "fails to open %s file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "non riesce ad aprire il file %s"
 
 #: shared/utils/files.go:109
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to read %s file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile leggere il file %s"
 
 #: shared/utils/files.go:113
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to copy %s file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile copiare il file %s"
 
 #: shared/utils/flaggroups.go:56
 msgid "Flags:\n"
-msgstr ""
+msgstr "Bandiere:\n"
 
 #: shared/utils/flaggroups.go:108
 msgid "no such flag help group: %v"
-msgstr ""
+msgstr "nessun gruppo di aiuto per la segnalazione di questo tipo: %v"
 
 #: shared/utils/inspector.go:20
-#, fuzzy
 msgid "cannot read config"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "impossibile leggere la configurazione"
 
 #: shared/utils/inspector.go:25
 msgid "failed to unmarshal the inspected data"
-msgstr ""
+msgstr "non è riuscito a decomprimere i dati ispezionati"
 
 #: shared/utils/logUtils.go:69
-#, fuzzy
 msgid "failed to decode message to log"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile decodificare il messaggio nel registro"
 
 #: shared/utils/logUtils.go:77
-#, fuzzy
 msgid "failed to encode log event"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile codificare l'evento di registro"
 
 #: shared/utils/logUtils.go:108
 msgid "Couldn't open %[1]s file for writing, writing log to %[2]s"
-msgstr ""
+msgstr "Impossibile aprire il file %[1]s per la scrittura, scrivendo il registro in %[2]s"
 
 #: shared/utils/support.go:26
 msgid "Unable to detect hostname, using localhost"
-msgstr ""
+msgstr "Impossibile rilevare il nome host, utilizzando localhost"
 
 #: shared/utils/support.go:40
 msgid "Preparing the tarball"
-msgstr ""
+msgstr "Preparazione del tarball"
 
 #: shared/utils/support.go:62
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to add %s to tarball"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile aggiungere al tarball"
 
 #: shared/utils/support.go:66
 #, javascript-format
 msgid "Support config tarball created at %s"
-msgstr ""
+msgstr "Supporta il tarball di configurazione creato in %s"
 
 #: shared/utils/support.go:119
 msgid "Running supportconfig on the host"
-msgstr ""
+msgstr "Esecuzione di supportconfig sull'host"
 
 #: shared/utils/support.go:129
-#, fuzzy
 msgid "failed to find host supportconfig tarball"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile trovare il tarball host supportconfig"
 
 #: shared/utils/support.go:132
 msgid "supportconfig is not available on the host, skipping it"
-msgstr ""
+msgstr "supportconfig non è disponibile sull'host, saltandolo"
 
 #: shared/utils/tar.go:49
 msgid "Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"
-msgstr ""
+msgstr "Saltare l'estrazione di %[1]s nel file %[2]s quando si risolve al di fuori del percorso di destinazione"
 
 #: shared/utils/tar.go:91
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write tar.gz to %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile scrivere tar.gz su %s"
 
 #: shared/utils/template.go:25
 #, javascript-format
 msgid "%s file already present, not overwriting"
-msgstr ""
+msgstr "%s file già presente, non sovrascrivendo"
 
 #: shared/utils/template.go:32
 #, javascript-format
 msgid "failed to open %s for writing"
-msgstr ""
+msgstr "impossibile aprire %s per la scrittura"
 
 #: shared/utils/utils.go:59
 #, javascript-format
 msgid "Has to be more than %d character long"
 msgid_plural "Has to be more than %d characters long"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Deve essere lungo più di 1 carattere"
+msgstr[1] "Deve essere lungo più di n caratteri"
 
 #: shared/utils/utils.go:63
 #, javascript-format
@@ -1371,144 +1428,140 @@ msgstr[1] ""
 
 #: shared/utils/utils.go:74
 msgid "Failed to read password"
-msgstr ""
+msgstr "Impossibile leggere la password"
 
 #: shared/utils/utils.go:88
 msgid "Cannot contain spaces or tabs"
-msgstr ""
+msgstr "Impossibile contenere spazi o schede"
 
 #: shared/utils/utils.go:105 shared/utils/utils.go:128
 #: shared/utils/utils.go:141
 msgid "not an interactive device, not asking for missing value"
-msgstr ""
+msgstr "non è un dispositivo interattivo, non chiede valori mancanti"
 
 #: shared/utils/utils.go:114
 msgid "Confirm the password"
-msgstr ""
+msgstr "confermare la password"
 
 #: shared/utils/utils.go:116
 msgid "Two different passwords have been provided"
-msgstr ""
+msgstr "Sono state fornite due password diverse"
 
 #: shared/utils/utils.go:150
-#, fuzzy
 msgid "failed to read input"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile leggere l'input"
 
 #: shared/utils/utils.go:158
 msgid "A value is required"
-msgstr ""
+msgstr "Un valore è obbligatorio"
 
 #: shared/utils/utils.go:226 shared/utils/utils.go:248
 #, javascript-format
 msgid "invalid image name: %s"
-msgstr ""
+msgstr "nome immagine non valido: %s"
 
 #: shared/utils/utils.go:230
 #, javascript-format
 msgid "tag missing on %s"
-msgstr ""
+msgstr "tag mancante su %s"
 
 #: shared/utils/utils.go:235 shared/utils/utils.go:239
 #, javascript-format
 msgid "Computed image name is %s"
-msgstr ""
+msgstr "Il nome dell'immagine calcolata è %s"
 
 #: shared/utils/utils.go:266
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
-msgstr ""
+msgstr "il percorso dell'immagine '%[1]s' non inizia con il percorso del registro '%[2]s'"
 
 #: shared/utils/utils.go:276
 #, javascript-format
 msgid "Failed to run %s"
-msgstr ""
+msgstr "Impossibile eseguire %s"
 
 #: shared/utils/utils.go:285
 msgid "Failed to read random data"
-msgstr ""
+msgstr "Impossibile leggere i dati casuali"
 
 #: shared/utils/utils.go:306
 #, javascript-format
 msgid "error downloading from %s"
-msgstr ""
+msgstr "errore durante il download da %s"
 
 #: shared/utils/utils.go:312
 #, javascript-format
 msgid "bad status: %s"
-msgstr ""
+msgstr "cattivo stato:%s"
 
 #: shared/utils/utils.go:425
-#, fuzzy
 msgid "failed to compute server FQDN"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile calcolare il server FQDN"
 
 #: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
-msgstr ""
+msgstr "%s non è un FQDN valido"
 
 #: shared/utils/utils.go:443
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot resolve %s"
-msgstr "impossible eliminare %s"
+msgstr "impossibile risolvere %s"
 
 #: shared/utils/utils.go:474
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error creating file %s"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "errore durante la creazione del file %s"
 
 #: shared/utils/utils.go:479
 #, javascript-format
 msgid "error writing file %s"
-msgstr ""
+msgstr "errore durante la scrittura del file %s"
 
 #: shared/utils/utils.go:491 shared/utils/utils.go:506
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to calculate checksum of the file %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile calcolare il checksum del file %s"
 
 #: shared/utils/utils.go:496
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
-msgstr ""
+msgstr "Impossibile scrivere il checksum del file %[1]s in %[2]s"
 
 #: shared/utils/utils.go:513
-#, fuzzy
 msgid "Failed to read checksum of the file %[1]s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile leggere il checksum del file %[1]s"
 
 #: shared/utils/utils.go:517
 #, javascript-format
 msgid "Checksum of %s does not match"
-msgstr ""
+msgstr "Il checksum di %s non corrisponde"
 
 #: shared/utils/utils.go:525
 msgid "nBytes must be > 0"
-msgstr ""
+msgstr "nBytes deve essere > 0"
 
 #: shared/utils/uyuniservices.go:18
-#, fuzzy
 msgid "Main service"
-msgstr "impossible eliminare %s"
+msgstr "servizio principale"
 
 #: shared/utils/uyuniservices.go:24
 msgid "Migration helper"
-msgstr ""
+msgstr "Aiutante per la migrazione"
 
 #: shared/utils/uyuniservices.go:30
 msgid "Confidential computing attestation"
-msgstr ""
+msgstr "Attestazione informatica riservata"
 
 #: shared/utils/uyuniservices.go:36
 msgid "Hub XML-RPC API"
-msgstr ""
+msgstr "API Hub XML-RPC"
 
 #: shared/utils/uyuniservices.go:42
 msgid "Saline"
-msgstr ""
+msgstr "salino"
 
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
-msgstr ""
+msgstr "Basi di Dati"
 
 #, fuzzy
 #~ msgid "cannot copy tarball"
