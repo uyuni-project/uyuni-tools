@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-07 19:56+0200\n"
 "PO-Revision-Date: 2026-05-12 12:04+0000\n"
-"Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
+"Last-Translator: Alessio Matozzi <alessio.matozzi@studenti.unipg.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -1438,7 +1438,7 @@ msgstr "impossibile generare il file di configurazione systemd"
 #: mgradm/shared/podman/podman.go:47
 #, javascript-format
 msgid "failed to create %s folder"
-msgstr "impossibile creare la cartella"
+msgstr "impossibile creare la cartella %s"
 
 #: mgradm/shared/podman/podman.go:64 mgradm/shared/podman/podman.go:80
 msgid "failed to generate server environment file"
@@ -1574,7 +1574,7 @@ msgstr "Errore di migrazione di PostgreSQL"
 
 #: mgradm/shared/podman/podman.go:719
 msgid "Secrets %[1]s and %[2]s, already exists"
-msgstr ""
+msgstr "I segreti %[1]s e %[2]s esistono già"
 
 #: mgradm/shared/podman/ssl.go:87
 msgid "Using provided 3rd party server certificates"
