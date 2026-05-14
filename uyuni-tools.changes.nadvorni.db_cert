@@ -1,0 +1,2 @@
+- Internal SANs for db and reportdb are no longer required
+- Generate the same certificate for server and reportdb
