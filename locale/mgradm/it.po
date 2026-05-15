@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-07 19:56+0200\n"
-"PO-Revision-Date: 2026-05-08 13:30+0000\n"
-"Last-Translator: Thomas Florio <thomas.florio@suse.com>\n"
+"PO-Revision-Date: 2026-05-12 12:05+0000\n"
+"Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -295,12 +295,12 @@ msgstr "Il volume di backup verrà rimosso, continuare?"
 
 #: mgradm/cmd/backup/db/disable.go:47
 msgid "Aborting volume purge"
-msgstr ""
+msgstr "Interruzione dell'eliminazione del volume"
 
 #: mgradm/cmd/backup/db/disable.go:54
 #, javascript-format
 msgid "Backup volume '%s' removed"
-msgstr ""
+msgstr "Volume di backup rimosso"
 
 #: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:67
 #: mgradm/cmd/backup/db/rebase.go:29
@@ -388,7 +388,7 @@ msgstr "impossibile controllare lo stato di ripristino del database"
 
 #: mgradm/cmd/backup/db/restore.go:95
 msgid " Database is recovering… (use Ctrl-C to interrupt waiting)"
-msgstr ""
+msgstr " Il database si sta riprendendo… (usare Ctrl-C per interrompere l'attesa)"
 
 #: mgradm/cmd/backup/db/restore.go:104
 msgid "error while waiting for database recovery to complete, check database logs"
@@ -400,7 +400,7 @@ msgstr "Controllo dello stato del backup del DB"
 
 #: mgradm/cmd/backup/db/status.go:40
 msgid "Database continuous backup is %[1]s. Backup volume is %[2]s"
-msgstr ""
+msgstr "Il backup continuo del database è %[1]s. Il volume di backup è %[2]s"
 
 #: mgradm/cmd/backup/db/types.go:24
 msgid "archive_mode is off"
@@ -727,7 +727,7 @@ msgstr "impossibile leggere le informazioni sull'albero di distribuzione. Si pre
 #: mgradm/cmd/distro/detect.go:167
 #, javascript-format
 msgid "distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"
-msgstr ""
+msgstr "la distribuzione treeinfo non esiste. Si prega di fornire dettagli sulla distribuzione e/o etichetta del canale"
 
 #: mgradm/cmd/distro/distro.go:40
 msgid ""
@@ -766,6 +766,40 @@ msgid ""
 "\n"
 "{{ .DefaultProductMapRender }}\n"
 msgstr ""
+"Mappatura dei prodotti di distribuzione con installazione automatica.\n"
+"\n"
+"Affinché la distribuzione venga registrata dal server è importante mappare la distribuzione sul canale software corretto.\n"
+"\n"
+"I canali software possono essere denominati in modo diverso senza alcuna correlazione con il nome della distribuzione;\n"
+"è quindi necessario consentire il nome di distribuzione personalizzato per la mappatura dei canali software.\n"
+"\n"
+"Un modo per impostare il canale software è tramite flag --channel al comando di copia della distribuzione.\n"
+"\n"
+"Per un utilizzo frequente è possibile scrivere una mappatura personalizzata del prodotto nel file di configurazione mgradm come segue:\n"
+"\n"
+"Mappa del prodotto:\n"
+"  <nome della distribuzione>:\n"
+"    <versione di distribuzione>:\n"
+"      <architettura di distribuzione>:\n"
+"        ChannelLabel: <etichetta del canale>\n"
+"        Tipo di installazione: <uno tra rhel_7|rhel_8|rhel_9|sles12generic|sles15generic|generic_rpm>\n"
+"        TreeLabel: <nome distribuzione personalizzato>\n"
+"\n"
+"Dove\n"
+"* <nome distribuzione> è il nome della distribuzione, preso per impostazione predefinita dal file '.treeinfo' dal supporto.\n"
+"  Se '.treeinfo' non viene trovato o non è disponibile, è richiesta e utilizzata l'opzione della riga di comando.\n"
+"* <versione distribuzione> è la versione della distribuzione, presa per impostazione predefinita dal file '.treeinfo' dal supporto.\n"
+"  Se '.treeinfo' non viene trovato, è richiesta e utilizzata l'opzione della riga di comando.\n"
+"* <architettura di distribuzione> è l'architettura di distribuzione, presa per impostazione predefinita dal file '.treeinfo' dal supporto.\n"
+"  Se '.treeinfo' non viene trovato, è richiesta e utilizzata l'opzione della riga di comando.\n"
+"* ChannelLabel è l'etichetta del canale del server Uyuni e che deve essere utilizzata per questa distribuzione;\n"
+"  può essere sovrascritto dal flag della riga di comando.\n"
+"* InstallType viene utilizzato quando il programma di installazione è noto (per autoyast o kickstart) oppure quando si utilizza 'generic_rpm'.\n"
+"* TreeLabel è il modo in cui la distribuzione verrà presentata nell'interfaccia utente del server Uyuni. Se non impostato, viene utilizzato <nome distribuzione>.\n"
+"\n"
+"Mappa del prodotto integrata:\n"
+"\n"
+"{{ .DefaultProductMapRender }}\n"
 
 #: mgradm/cmd/distro/distro.go:112
 msgid "Distributions management"
@@ -834,12 +868,12 @@ msgstr "impossibile creare il portachiavi %s"
 #: mgradm/cmd/gpg/add/gpg.go:89
 #, javascript-format
 msgid "failed to parse %s"
-msgstr ""
+msgstr "impossibile analizzare %s"
 
 #: mgradm/cmd/gpg/add/gpg.go:96
 #, javascript-format
 msgid "failed to download %s"
-msgstr ""
+msgstr "impossibile scaricare %s"
 
 #: mgradm/cmd/gpg/add/gpg.go:102
 #, javascript-format
@@ -922,7 +956,7 @@ msgstr "FQDN del server padre di InterServerSync v1"
 
 #: mgradm/cmd/install/flags.go:29 mgradm/cmd/upgrade/flags.go:22
 msgid "TFTPD Flags"
-msgstr ""
+msgstr "Bandiere TFTPD"
 
 #: mgradm/cmd/install/flags.go:32
 msgid "Administrator user name"
@@ -990,11 +1024,11 @@ msgstr "impossibile generare il servizio server"
 
 #: mgradm/cmd/install/utils.go:93 mgradm/shared/podman/podman.go:491
 msgid "Waiting for server to start. This include service setup operations and can take a very long time."
-msgstr ""
+msgstr "In attesa dell'avvio del server. Ciò include operazioni di configurazione del servizio e può richiedere molto tempo."
 
 #: mgradm/cmd/install/utils.go:94 mgradm/shared/podman/podman.go:492
 msgid "Use `journalctl -f -u uyuni-server` for tracking progress"
-msgstr ""
+msgstr "Utilizzare `journalctl -f -u uyuni-server` per monitorare i progressi"
 
 #: mgradm/cmd/install/utils.go:98 mgradm/shared/podman/podman.go:499
 msgid "cannot wait for system start"
@@ -1015,24 +1049,24 @@ msgstr "Configurazione del contenitore del database saltata per utilizzare del d
 
 #: mgradm/cmd/restart/restart.go:22 mgradm/cmd/restart/restart.go:23
 msgid "Restart the server"
-msgstr ""
+msgstr "riavviare il server"
 
 #: mgradm/cmd/scale/podman.go:34
 msgid "Multiple container replicas are not currently supported."
-msgstr ""
+msgstr "Al momento non sono supportate repliche multiple di contenitori."
 
 #: mgradm/cmd/scale/podman.go:38
 #, javascript-format
 msgid "service not allowing to be scaled: %s"
-msgstr ""
+msgstr "servizio che non consente la scalabilità: %s"
 
 #: mgradm/cmd/scale/scale.go:19
 msgid "How many replicas of a service should be started."
-msgstr ""
+msgstr "Quante repliche di un servizio devono essere avviate."
 
 #: mgradm/cmd/scale/scale.go:26
 msgid "Adjust the replicas for services supporting it."
-msgstr ""
+msgstr "Adattare le repliche ai servizi che lo supportano."
 
 #: mgradm/cmd/scale/scale.go:27
 msgid ""
@@ -1042,10 +1076,15 @@ msgid ""
 "  - uyuni-saline\n"
 "  - uyuni-server-attestation\n"
 msgstr ""
+"Adattare le repliche ai servizi che lo supportano.\n"
+"Servizi supportati:\n"
+"  - uyuni-hub-xmlrpc\n"
+"  - uyuni-salina\n"
+"  - attestazione del server uyuni\n"
 
 #: mgradm/cmd/server/rename/podman.go:35
 msgid "Preparing SSL certificates to match the new hostname"
-msgstr ""
+msgstr "Preparazione dei certificati SSL in modo che corrispondano al nuovo nome host"
 
 #: mgradm/cmd/server/rename/podman.go:40
 msgid "Stopping the server container"
@@ -1054,7 +1093,7 @@ msgstr "Arresto del container del server"
 #: mgradm/cmd/server/rename/podman.go:45
 #, javascript-format
 msgid "Changing the UYUNI_HOSTNAME to %s"
-msgstr ""
+msgstr "Modifica di UYUNI_HOSTNAME in %s"
 
 #: mgradm/cmd/server/rename/podman.go:56
 msgid "Starting the server container"
@@ -1065,20 +1104,20 @@ msgid ""
 "The renaming continues inside the server container.\n"
 "The logs can be found in journalctl -u uyuni-config-update.service output."
 msgstr ""
+"La ridenominazione continua all'interno del contenitore del server.\n"
+"I registri possono essere trovati nell'output journalctl - u uyuni-config-update.service."
 
 #: mgradm/cmd/server/rename/podman.go:109
 msgid "failed to write custom.conf with the new hostname"
 msgstr "impossibile scrivere custom.conf con il nuovo nome dell'host"
 
 #: mgradm/cmd/server/rename/podman.go:120
-#, fuzzy
 msgid "failed to read the custom.conf file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile leggere il file custom.conf"
 
 #: mgradm/cmd/server/rename/rename.go:25
-#, fuzzy
 msgid "Change the host name of the server"
-msgstr "connessione non riuscita al server Hub: %s"
+msgstr "Modificare il nome host del server"
 
 #: mgradm/cmd/server/rename/rename.go:26
 msgid ""
@@ -1090,10 +1129,17 @@ msgid ""
 "The uyuni-server container will be stopped during the rename and\n"
 "a refresh of the pillars of each registered system will be triggered.\n"
 msgstr ""
+"Impostare l'FQDN del server su un nuovo valore.\n"
+"Se non viene passato alcun nome di dominio completamente qualificato, verrà utilizzato quello della macchina in esecuzione.\n"
+"\n"
+"La modifica del nome del server potrebbe comportare l'aggiornamento dei certificati SSL per adattarli al nuovo nome,\n"
+"ma anche modificando varie configurazioni all'interno dei contenitori.\n"
+"Il contenitore uyuni-server verrà arrestato durante la ridenominazione e\n"
+"verrà attivato un aggiornamento dei pilastri di ciascun sistema registrato.\n"
 
 #: mgradm/cmd/server/rename/rename.go:46 mgradm/shared/utils/cmd_utils.go:225
 msgid "Password for the CA key to generate"
-msgstr ""
+msgstr "Password per la chiave CA da generare"
 
 #: mgradm/cmd/server/server.go:19
 msgid "Server management utilities"
@@ -1101,19 +1147,19 @@ msgstr "Strumenti di gestione del server"
 
 #: mgradm/cmd/start/start.go:21 mgradm/cmd/start/start.go:22
 msgid "Start the server"
-msgstr ""
+msgstr "avviare il server"
 
 #: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
 msgid "Get the server status"
-msgstr ""
+msgstr "Ottieni lo stato del server"
 
 #: mgradm/cmd/status/status.go:46
 msgid "no installed server detected"
-msgstr ""
+msgstr "nessun server installato rilevato"
 
 #: mgradm/cmd/stop/stop.go:21 mgradm/cmd/stop/stop.go:22
 msgid "Stop the server"
-msgstr ""
+msgstr "arrestare il server"
 
 #: mgradm/cmd/support/config/config.go:22
 msgid "Extract configuration and logs"
@@ -1132,9 +1178,9 @@ msgid "path where to extract the data"
 msgstr "percorso in cui estrarre i dati"
 
 #: mgradm/cmd/support/config/extractor.go:29
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to remove %s temporary file"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "impossibile rimuovere il file temporaneo %s"
 
 #: mgradm/cmd/support/ptf/ptf.go:30
 msgid "Install a PTF or Test package on podman"
@@ -1149,6 +1195,12 @@ msgid ""
 "\n"
 "NOTE: for now installing on a remote podman is not supported!\n"
 msgstr ""
+"Installare un pacchetto PTF o Test su podman\n"
+"\n"
+"Il comando podman ptf di supporto presuppone che podman sia installato localmente e\n"
+"la macchina host è registrata su SCC.\n"
+"\n"
+"NOTA: per ora l'installazione su un podman remoto non è supportata!\n"
 
 #: mgradm/cmd/support/ptf/utils.go:74
 msgid "ptf and test flags cannot be set simultaneously "
@@ -1163,41 +1215,40 @@ msgid "user flag cannot be empty"
 msgstr "il flag utente non può essere vuoto"
 
 #: mgradm/cmd/support/ptf/utils.go:92
-#, fuzzy
 msgid "failed to find server image"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "impossibile trovare l'immagine del server"
 
 #: mgradm/cmd/support/ptf/utils.go:101
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The computed PTF image is %s"
-msgstr "impossibile determinare l'URL dell'immagine: %s"
+msgstr "L'immagine PTF calcolata è"
 
 #: mgradm/cmd/support/ptf/utils.go:122 mgradm/cmd/support/ptf/utils.go:126
 msgid "The %[1]s service image is %[2]s"
 msgstr "L'immagine del servizio %[1]s è %[2]s"
 
 #: mgradm/cmd/support/ptf/utils.go:124
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Cannot find PTF for %s"
-msgstr "impossible eliminare il volume %s"
+msgstr "Impossibile trovare PTF per %s"
 
 #: mgradm/cmd/support/sql/sql.go:50
 msgid "unable to cleanup source file"
-msgstr ""
+msgstr "impossibile pulire il file sorgente"
 
 #: mgradm/cmd/support/sql/sql.go:59
 #, javascript-format
 msgid "output file %s exists, use -f to force overwrite"
-msgstr ""
+msgstr "il file di output %s esiste, usa -f per forzare la sovrascrittura"
 
 #: mgradm/cmd/support/sql/sql.go:115
 msgid "interactive mode cannot work with a file output"
-msgstr ""
+msgstr "la modalità interattiva non può funzionare con un output di file"
 
 #: mgradm/cmd/support/sql/sql.go:145
 #, javascript-format
 msgid "unknown or unsupported database %s"
-msgstr ""
+msgstr "database sconosciuto o non supportato %s"
 
 #: mgradm/cmd/support/sql/sql.go:159
 msgid "Command failed"
@@ -1206,7 +1257,7 @@ msgstr "Comando non riuscito"
 #: mgradm/cmd/support/sql/sql.go:164
 #, javascript-format
 msgid "Result is stored in the file '%s'"
-msgstr ""
+msgstr "Il risultato viene memorizzato nel file '%s'"
 
 #: mgradm/cmd/support/sql/sql.go:178
 msgid "cannot write"
@@ -1214,7 +1265,7 @@ msgstr "non posso scrivere"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:25
 msgid "Execute SQL query"
-msgstr ""
+msgstr "Esegui query SQL"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:26
 msgid ""
@@ -1235,39 +1286,55 @@ msgid ""
 "  # mgradm support sql example.sql -o out.log\n"
 "\n"
 msgstr ""
+"Eseguire la query SQL fornita nel file sql o passata tramite input standard.\n"
+"\n"
+"Esempi:\n"
+"\n"
+"  Eseguire la query 'select hostname from rhnserver;' utilizzando echo:\n"
+"\n"
+"  # echo 'seleziona il nome host da rhnserver;' | mgradm supporta sql\n"
+"\n"
+"  Esegui in modalità interattiva:\n"
+"\n"
+"  # mgradm supporta sql -i\n"
+"\n"
+"  Esecuzione delle query SQL nel file example.sql e loro output nel file out.log\n"
+"\n"
+"  # mgradm supporta sql example.sql -o out.log\n"
+"\n"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:49
 msgid "Target database, can be 'reportdb' or 'productdb'"
-msgstr ""
+msgstr "Database di destinazione, può essere 'reportdb' o 'productdb'"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:50
 msgid "Start in interactive mode"
-msgstr ""
+msgstr "Inizia in modalità interattiva"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:51
 msgid "Force overwrite of output file if already exists"
-msgstr ""
+msgstr "Forza la sovrascrittura del file di output se già esiste"
 
 #: mgradm/cmd/support/sql/sql_cmd.go:52
 msgid "Write output to the file instead of standard output"
-msgstr ""
+msgstr "Scrivi l'output nel file invece dell'output standard"
 
 #: mgradm/cmd/support/support.go:21 mgradm/cmd/support/support.go:22
 msgid "Commands for support operations"
 msgstr "Comandi per operazioni di supporto"
 
 #: mgradm/cmd/uninstall/podman.go:57
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to remove volume %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile rimuovere il volume %s"
 
 #: mgradm/cmd/uninstall/podman.go:62
 msgid "All volumes have been removed"
-msgstr ""
+msgstr "Tutti i volumi sono stati rimossi"
 
 #: mgradm/cmd/uninstall/podman.go:64
 msgid "Some volumes have not been removed completely"
-msgstr ""
+msgstr "Alcuni volumi non sono stati rimossi completamente"
 
 #: mgradm/cmd/uninstall/podman.go:72
 #, javascript-format
@@ -1288,21 +1355,23 @@ msgstr "I dati sono stati conservati, utilizzare i comandi del volume podman per
 
 #: mgradm/cmd/uninstall/uninstall.go:18
 msgid "Uninstall a server"
-msgstr ""
+msgstr "Disinstallare un server"
 
 #: mgradm/cmd/uninstall/uninstall.go:19
 msgid ""
 "Uninstall a server and optionally the corresponding volumes.\n"
 "By default it will only print what would be done, use --force to actually remove."
 msgstr ""
+"Disinstallare un server e facoltativamente i volumi corrispondenti.\n"
+"Per impostazione predefinita stamperà solo ciò che verrebbe fatto, utilizzare - forza per rimuovere effettivamente."
 
 #: mgradm/cmd/upgrade/upgrade.go:26
 msgid "Upgrade a local server on podman"
-msgstr ""
+msgstr "Aggiorna un server locale su podman"
 
 #: mgradm/cmd/upgrade/upgrade.go:53
 msgid "List available tags for an image"
-msgstr ""
+msgstr "Elenca i tag disponibili per un'immagine"
 
 #: mgradm/cmd/upgrade/upgrade.go:65
 msgid "failed to unmarshall configuration"
@@ -1310,7 +1379,7 @@ msgstr "impossibile eseguire l'unmarshall della configurazione"
 
 #: mgradm/shared/coco/coco.go:28
 msgid "Not altering the confidential computing service"
-msgstr ""
+msgstr "Non alterare il servizio informatico confidenziale"
 
 #: mgradm/shared/coco/coco.go:78 mgradm/shared/hub/xmlrpcapi.go:44
 #: mgradm/shared/pgsql/pgsql.go:30 mgradm/shared/podman/podman.go:310
@@ -1320,14 +1389,13 @@ msgstr "impossibile determinare l'URL dell'immagine"
 
 #: mgradm/shared/coco/coco.go:95
 msgid "Setting up confidential computing attestation service"
-msgstr ""
+msgstr "Impostazione del servizio di attestazione informatica riservata"
 
 #: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:119
 #: mgradm/shared/pgsql/pgsql.go:118 mgradm/shared/podman/podman.go:138
 #: mgradm/shared/saline/saline.go:92 mgradm/shared/tftp/tftp.go:95
-#, fuzzy
 msgid "failed to generate systemd service unit file"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "impossibile generare il file dell'unità di servizio systemd"
 
 #: mgradm/shared/coco/coco.go:109 mgradm/shared/hub/xmlrpcapi.go:126
 #: mgradm/shared/podman/podman.go:180 mgradm/shared/saline/saline.go:100
@@ -1338,289 +1406,262 @@ msgstr "non è possibile generare il file conf systemd"
 #: mgradm/shared/hub/xmlrpcapi.go:36
 #, javascript-format
 msgid "No changes requested for hub. Keep %d replicas."
-msgstr ""
+msgstr "Nessuna modifica richiesta per hub. Mantieni le repliche %d."
 
 #: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:46
 #: mgradm/shared/pgsql/pgsql.go:69 mgradm/shared/tftp/tftp.go:50
-#, fuzzy
 msgid "cannot generate systemd service"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "non è possibile generare il servizio systemd"
 
 #: mgradm/shared/hub/xmlrpcapi.go:66
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
-msgstr ""
+msgstr "Al momento non sono supportate repliche multiple di contenitori XML-RPC Hub; è possibile configurarne solo una."
 
 #: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:534
 #: mgradm/shared/saline/saline.go:142
-#, fuzzy
 msgid "cannot enable service"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "impossibile abilitare il servizio"
 
 #: mgradm/shared/hub/xmlrpcapi.go:87
-#, fuzzy
 msgid "Not altering the hub XML-RPC API service"
-msgstr "connessione non riuscita al server Hub: %s"
+msgstr "Non alterare il servizio API XML-RPC dell'hub"
 
 #: mgradm/shared/pgsql/pgsql.go:57 mgradm/shared/pgsql/pgsql.go:86
 #, javascript-format
 msgid "%s fails healtcheck"
-msgstr ""
+msgstr "%s fallisce il controllo di salute"
 
 #: mgradm/shared/pgsql/pgsql.go:124 mgradm/shared/pgsql/pgsql.go:141
-#, fuzzy
 msgid "cannot generate systemd configuration file"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "impossibile generare il file di configurazione systemd"
 
 #: mgradm/shared/podman/podman.go:47
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s folder"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare la cartella %s"
 
 #: mgradm/shared/podman/podman.go:64 mgradm/shared/podman/podman.go:80
-#, fuzzy
 msgid "failed to generate server environment file"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "impossibile generare il file dell'ambiente server"
 
 #: mgradm/shared/podman/podman.go:172
 msgid "Enabling system service"
-msgstr ""
+msgstr "Abilitazione del servizio di sistema"
 
 #: mgradm/shared/podman/podman.go:186 mgradm/shared/saline/saline.go:108
-#, fuzzy
 msgid "cannot generate systemd user configuration file"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "non è possibile generare il file di configurazione utente systemd"
 
 #: mgradm/shared/podman/podman.go:214
-#, fuzzy
 msgid "failed to generate SSL migration script"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "impossibile generare lo script di migrazione SSL"
 
 #: mgradm/shared/podman/podman.go:234
 #, javascript-format
 msgid "Migrating SSL certificates from the source server %s"
-msgstr ""
+msgstr "Migrazione dei certificati SSL dal server di origine %s"
 
 #: mgradm/shared/podman/podman.go:237
-#, fuzzy
 msgid "cannot run uyuni SSL migration container"
-msgstr "impossibile creare il percorso %s nel container: %s"
+msgstr "impossibile eseguire il contenitore di migrazione SSL uyuni"
 
 #: mgradm/shared/podman/podman.go:248
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to read file %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile leggere il file %s"
 
 #: mgradm/shared/podman/podman.go:254
-#, fuzzy
 msgid "cannot read extracted data"
-msgstr "impossibile copiare: %s"
+msgstr "non è possibile leggere i dati estratti"
 
 #: mgradm/shared/podman/podman.go:265
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot inspect volume %s"
-msgstr "impossible eliminare il volume %s"
+msgstr "impossibile ispezionare il volume %s"
 
 #: mgradm/shared/podman/podman.go:268
 #, javascript-format
 msgid "cannot restore %s SELinux permissions"
-msgstr ""
+msgstr "impossibile ripristinare le autorizzazioni SELinux %s"
 
 #: mgradm/shared/podman/podman.go:318
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Using database upgrade image %s"
-msgstr "impossibile aggiornare: %s"
+msgstr "Utilizzo dell'immagine di aggiornamento del database %s"
 
 #: mgradm/shared/podman/podman.go:376 mgradm/shared/podman/podman.go:384
-#, fuzzy
 msgid "cannot stop service"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "non è possibile interrompere il servizio"
 
 #: mgradm/shared/podman/podman.go:395
 msgid "Initiating PostgreSQL upgrade from version %[1]d to %[2]d"
-msgstr ""
+msgstr "Avvio dell'aggiornamento di PostgreSQL dalla versione %[1]d a %[2]d"
 
 #: mgradm/shared/podman/podman.go:399
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot find volume %s"
-msgstr "impossible eliminare il volume %s"
+msgstr "impossibile trovare il volume %s"
 
 #: mgradm/shared/podman/podman.go:414
-#, fuzzy, javascript-format
-#| msgid "cannot copy %s"
+#, javascript-format
 msgid "cannot move %s"
-msgstr "impossibile copiare %s"
+msgstr "non è possibile spostare %s"
 
 #: mgradm/shared/podman/podman.go:430
-#, fuzzy, javascript-format
-#| msgid "cannot delete %s"
+#, javascript-format
 msgid "cannot mkdir %s"
-msgstr "impossible eliminare %s"
+msgstr "non è possibile mkdir %s"
 
 #: mgradm/shared/podman/podman.go:433
 msgid "Data will be copied during this process. Please ensure sufficient disk space is available."
-msgstr ""
+msgstr "I dati verranno copiati durante questo processo. Assicurati che sia disponibile spazio su disco sufficiente."
 
 #: mgradm/shared/podman/podman.go:435
 msgid "cannot run PostgreSQL version upgrade script"
-msgstr ""
+msgstr "impossibile eseguire lo script di aggiornamento della versione PostgreSQL"
 
 #: mgradm/shared/podman/podman.go:438
-#, fuzzy
 msgid "Upgrading without changing PostgreSQL version"
-msgstr "impossibile ispezionare il pod: %s"
+msgstr "Aggiornamento senza modificare la versione di PostgreSQL"
 
 #: mgradm/shared/podman/podman.go:441
 msgid "trying to downgrade PostgreSQL from %[1]d to %[2]d"
-msgstr ""
+msgstr "tentativo di eseguire il downgrade di PostgreSQL da %[1]d a %[2]d"
 
 #: mgradm/shared/podman/podman.go:448
 msgid "Configuring split PostgreSQL container"
-msgstr ""
+msgstr "Configurazione del contenitore PostgreSQL diviso"
 
 #: mgradm/shared/podman/podman.go:457
-#, fuzzy
 msgid "cannot configure db container"
-msgstr "impossibile creare il percorso %s nel container: %s"
+msgstr "impossibile configurare il contenitore db"
 
 #: mgradm/shared/podman/podman.go:495 mgradm/shared/podman/podman.go:537
-#, fuzzy
 msgid "cannot start service"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "impossibile avviare il servizio"
 
 #: mgradm/shared/podman/podman.go:522
 msgid "Failed to read server service definition to look for TFTP port"
-msgstr ""
+msgstr "Impossibile leggere la definizione del servizio server per cercare la porta TFTP"
 
 #: mgradm/shared/podman/podman.go:532
-#, fuzzy
 msgid "Waiting for the server to start…"
-msgstr "In attesa che il server si avvii…"
+msgstr "In attesa dell'avvio del server…"
 
 #: mgradm/shared/podman/podman.go:578
-#, fuzzy
 msgid "failed to generate postgresql migration script"
-msgstr "mancata identificazione dell'immagine: %s"
+msgstr "impossibile generare lo script di migrazione postgresql"
 
 #: mgradm/shared/podman/podman.go:614
 msgid "The above error is only relevant if using a public cloud provider registry"
-msgstr ""
+msgstr "L'errore di cui sopra è rilevante solo se si utilizza un registro del provider cloud pubblico"
 
 #: mgradm/shared/podman/podman.go:644
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
-msgstr ""
+msgstr "SSH_AUTH_SOCK non è definito, avvia un agente SSH e riprova"
 
 #: mgradm/shared/podman/podman.go:654
 msgid "Failed to find home directory to look for SSH config"
-msgstr ""
+msgstr "Impossibile trovare la directory home per cercare la configurazione SSH"
 
 #: mgradm/shared/podman/podman.go:676
-#, fuzzy
 msgid "cannot inspect podman values"
-msgstr "impossibile ispezionare i valori dell'host: %s"
+msgstr "non è possibile ispezionare i valori podman"
 
 #: mgradm/shared/podman/podman.go:690
 msgid "PostgreSQL migration failure"
-msgstr ""
+msgstr "Errore di migrazione di PostgreSQL"
 
 #: mgradm/shared/podman/podman.go:719
 msgid "Secrets %[1]s and %[2]s, already exists"
-msgstr ""
+msgstr "I segreti %[1]s e %[2]s esistono già"
 
 #: mgradm/shared/podman/ssl.go:87
 msgid "Using provided 3rd party server certificates"
-msgstr ""
+msgstr "Utilizzo dei certificati server di terze parti forniti"
 
 #: mgradm/shared/podman/ssl.go:97
 msgid "Using provided 3rd party database certificates"
-msgstr ""
+msgstr "Utilizzo dei certificati di database di terze parti forniti"
 
 #: mgradm/shared/podman/ssl.go:120
-#, fuzzy
 msgid "Failed to create secrets from the provided SSL arguments"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile creare segreti dagli argomenti SSL forniti"
 
 #: mgradm/shared/podman/ssl.go:143
-#, fuzzy
 msgid "Reusing the existing server and database certificates"
-msgstr "impossibile installare il certificato: %s"
+msgstr "Riutilizzo dei certificati server e database esistenti"
 
 #: mgradm/shared/podman/ssl.go:147
 msgid "Generating both the server and database certificates since one is missing"
-msgstr ""
+msgstr "Generazione sia dei certificati del server che del database poiché ne manca uno"
 
 #: mgradm/shared/podman/ssl.go:157
 msgid "Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."
-msgstr ""
+msgstr "Impossibile generare certificati poiché non è possibile trovare la chiave SSL CA. Si prega di impostare certificati di terze parti."
 
 #: mgradm/shared/podman/ssl.go:173
 msgid "Verifying the CA key password…"
-msgstr ""
+msgstr "Verifica della password della chiave CA…"
 
 #: mgradm/shared/podman/ssl.go:184
 msgid "Failed to verify the CA key password!"
-msgstr ""
+msgstr "Impossibile verificare la password della chiave CA!"
 
 #: mgradm/shared/podman/ssl.go:202
-#, fuzzy
 msgid "Reusing the existing server certificate secrets"
-msgstr "impossibile installare il certificato: %s"
+msgstr "Riutilizzo dei segreti del certificato del server esistente"
 
 #: mgradm/shared/podman/ssl.go:207
-#, fuzzy
 msgid "Reusing the existing database certificate secrets"
-msgstr "impossibile installare il certificato: %s"
+msgstr "Riutilizzo dei segreti dei certificati del database esistenti"
 
 #: mgradm/shared/podman/ssl.go:259
 msgid "Missing SANs or subjects in certificate of secret %[1]: %[2]s"
-msgstr ""
+msgstr "SAN o soggetti mancanti nel certificato segreto %[1]: %[2]s"
 
 #: mgradm/shared/podman/ssl.go:293
-#, fuzzy
 msgid "Reusing the existing server certificate files"
-msgstr "impossibile installare il certificato: %s"
+msgstr "Riutilizzo dei file di certificato del server esistenti"
 
 #: mgradm/shared/podman/ssl.go:305
-#, fuzzy
 msgid "Reusing the existing database certificate files"
-msgstr "impossibile installare il certificato: %s"
+msgstr "Riutilizzo dei file di certificati del database esistenti"
 
 #: mgradm/shared/podman/ssl.go:314
 #, javascript-format
 msgid "CA file %s not found."
-msgstr ""
+msgstr "File CA %s non trovato."
 
 #: mgradm/shared/podman/ssl.go:319
-#, fuzzy
 msgid "cannot write existing CA certificate"
-msgstr "impossibile installare il certificato: %s"
+msgstr "non è possibile scrivere il certificato CA esistente"
 
 #: mgradm/shared/podman/ssl.go:326
 #, javascript-format
 msgid "Certificate file %s not found."
-msgstr ""
+msgstr "File di certificato %s non trovato."
 
 #: mgradm/shared/podman/ssl.go:330
-#, fuzzy
 msgid "cannot write existing server certificate"
-msgstr "impossibile installare il certificato: %s"
+msgstr "impossibile scrivere il certificato del server esistente"
 
 #: mgradm/shared/podman/ssl.go:335
 msgid "Certificate file %[1]s doesn't match %[2]s FQDN."
-msgstr ""
+msgstr "Il file di certificato %[1]s non corrisponde a %[2]s FQDN."
 
 #: mgradm/shared/podman/ssl.go:343
 #, javascript-format
 msgid "Certificate key file %s not found."
-msgstr ""
+msgstr "File chiave del certificato %s non trovato."
 
 #: mgradm/shared/podman/ssl.go:347
-#, fuzzy
 msgid "cannot write existing server key"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "impossibile scrivere la chiave del server esistente"
 
 #: mgradm/shared/podman/ssl.go:398
 msgid "Cannot generate new certificates without a CA password. Please check input options"
-msgstr ""
+msgstr "Impossibile generare nuovi certificati senza una password CA. Si prega di controllare le opzioni di input"
 
 #: mgradm/shared/podman/ssl.go:400
 msgid "Generating the server certificate…"
@@ -1628,128 +1669,127 @@ msgstr "Generazione del certificato del server…"
 
 #: mgradm/shared/podman/ssl.go:420
 msgid "Failed to generate server SSL certificate. Please check the input parameters."
-msgstr ""
+msgstr "Impossibile generare il certificato SSL del server. Si prega di controllare i parametri di input."
 
 #: mgradm/shared/podman/ssl.go:423
-#, fuzzy
 msgid "Server SSL certificate generated"
-msgstr "impossibile installare il certificato: %s"
+msgstr "Certificato SSL del server generato"
 
 #: mgradm/shared/podman/ssl.go:434
 msgid "Generating the database certificate…"
 msgstr "Generazione del certificato del database…"
 
 #: mgradm/shared/podman/ssl.go:453
-#, fuzzy
 msgid "Failed to generate database SSL certificate"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "Impossibile generare il certificato SSL del database"
 
 #: mgradm/shared/podman/ssl.go:456
-#, fuzzy
 msgid "Database SSL certificate generated"
-msgstr "impossibile installare il certificato: %s"
+msgstr "Certificato SSL del database generato"
 
 #: mgradm/shared/saline/saline.go:50
-#, fuzzy
 msgid "Not altering the Saline service"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "Non alterare il servizio Saline"
 
 #: mgradm/shared/saline/saline.go:66 mgradm/shared/saline/saline.go:136
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
-msgstr ""
+msgstr "Al momento non sono supportate repliche multiple di contenitori salini; è possibile configurarne solo una."
 
 #: mgradm/shared/saline/saline.go:88
 msgid "Setting up Saline service"
-msgstr ""
+msgstr "Impostazione del servizio Saline"
 
 #: mgradm/shared/utils/cmd_utils.go:40
 msgid "Server certificate, key and root CA need to be all provided"
-msgstr ""
+msgstr "È necessario fornire il certificato del server, la chiave e la CA root"
 
 #: mgradm/shared/utils/cmd_utils.go:44 mgradm/shared/utils/cmd_utils.go:58
 msgid "Database certificate and key need to be provided"
-msgstr ""
+msgstr "È necessario fornire il certificato del database e la chiave"
 
 #: mgradm/shared/utils/cmd_utils.go:54
 msgid "DB certificate, key and root CA need to be all provided"
-msgstr ""
+msgstr "È necessario fornire il certificato DB, la chiave e la CA root"
 
 #: mgradm/shared/utils/cmd_utils.go:64
 msgid "Report database name"
-msgstr ""
+msgstr "Segnala nome database"
 
 #: mgradm/shared/utils/cmd_utils.go:65
 msgid "Report database host"
-msgstr ""
+msgstr "Segnala l'host del database"
 
 #: mgradm/shared/utils/cmd_utils.go:66
 msgid "Report database port"
-msgstr ""
+msgstr "Segnala la porta del database"
 
 #: mgradm/shared/utils/cmd_utils.go:67
 msgid "Report Database username"
-msgstr ""
+msgstr "Segnala il nome utente del database"
 
 #: mgradm/shared/utils/cmd_utils.go:68
 msgid "Report database password. Randomly generated by default"
-msgstr ""
+msgstr "Segnala la password del database. Generato casualmente per impostazione predefinita"
 
 #: mgradm/shared/utils/cmd_utils.go:70
 msgid "Report DB Flags"
-msgstr ""
+msgstr "Segnala bandiere DB"
 
 #: mgradm/shared/utils/cmd_utils.go:80
 msgid "Database user"
-msgstr ""
+msgstr "utente del database"
 
 #: mgradm/shared/utils/cmd_utils.go:81
 msgid "Database password. Randomly generated by default"
-msgstr ""
+msgstr "Password del database. Generato casualmente per impostazione predefinita"
 
 #: mgradm/shared/utils/cmd_utils.go:82
 msgid "Database name"
-msgstr ""
+msgstr "nome del database"
 
 #: mgradm/shared/utils/cmd_utils.go:83
 msgid "Database host"
-msgstr ""
+msgstr "Host del database"
 
 #: mgradm/shared/utils/cmd_utils.go:84
 msgid "Database port"
-msgstr ""
+msgstr "Porta del database"
 
 #: mgradm/shared/utils/cmd_utils.go:85
-#, fuzzy
 msgid "Database admin user name"
-msgstr "impossibile aggiornare: %s"
+msgstr "Nome utente amministratore del database"
 
 #: mgradm/shared/utils/cmd_utils.go:86
 msgid "Database admin password"
-msgstr ""
+msgstr "Password di amministratore del database"
 
 #: mgradm/shared/utils/cmd_utils.go:87
 msgid "External database provider. Possible values 'aws'"
-msgstr ""
+msgstr "Fornitore di database esterno. Possibili valori 'aws'"
 
 #: mgradm/shared/utils/cmd_utils.go:89
 msgid "Setup continuous WAL backup"
-msgstr ""
+msgstr "Imposta il backup WAL continuo"
 
 #: mgradm/shared/utils/cmd_utils.go:91
 msgid "Database Flags"
-msgstr ""
+msgstr "Bandiere del database"
 
 #: mgradm/shared/utils/cmd_utils.go:105
 msgid ""
 "SUSE Customer Center username.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
 msgstr ""
+"Nome utente del Centro clienti SUSE.\n"
+"Verrà utilizzato come credenziali SCC per la sincronizzazione dei prodotti e per estrarre immagini dal registro SCC"
 
 #: mgradm/shared/utils/cmd_utils.go:107
 msgid ""
 "SUSE Customer Center password.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
 msgstr ""
+"Password del Centro Clienti SUSE.\n"
+"Verrà utilizzato come credenziali SCC per la sincronizzazione dei prodotti e per estrarre immagini dal registro SCC"
 
 #: mgradm/shared/utils/cmd_utils.go:109
 msgid "SUSE Customer Center Flags"
@@ -1757,79 +1797,84 @@ msgstr "Bandiere del centro clienti SUSE"
 
 #: mgradm/shared/utils/cmd_utils.go:116
 msgid "Image"
-msgstr ""
+msgstr "immagine"
 
 #: mgradm/shared/utils/cmd_utils.go:117
 msgid "Tag Image"
-msgstr ""
+msgstr "inserire immagini"
 
 #: mgradm/shared/utils/cmd_utils.go:122
 msgid "Image Flags"
-msgstr ""
+msgstr "Bandiere con immagini"
 
 #: mgradm/shared/utils/cmd_utils.go:133
-#, fuzzy
 msgid "Database upgrade image"
-msgstr "impossibile aggiornare: %s"
+msgstr "Immagine di aggiornamento del database"
 
 #: mgradm/shared/utils/cmd_utils.go:134
 msgid "Database upgrade image tag, overrides the default value if set"
-msgstr ""
+msgstr "Tag immagine di aggiornamento del database, sovrascrive il valore predefinito se impostato"
 
 #: mgradm/shared/utils/cmd_utils.go:136
 msgid "Database Upgrade Image Flags"
-msgstr ""
+msgstr "Bandiere di immagini per l'aggiornamento del database"
 
 #: mgradm/shared/utils/cmd_utils.go:143
 msgid "Path to mirrored packages mounted on the host"
-msgstr ""
+msgstr "Percorso ai pacchetti specchiati montati sull'host"
 
 #: mgradm/shared/utils/cmd_utils.go:148 mgradm/shared/utils/cmd_utils.go:157
 msgid "Confidential Computing Flags"
-msgstr ""
+msgstr "Bandiere informatiche riservate"
 
 #: mgradm/shared/utils/cmd_utils.go:149 mgradm/shared/utils/cmd_utils.go:158
 msgid "Confidential computing attestation"
-msgstr ""
+msgstr "Attestazione informatica riservata"
 
 #: mgradm/shared/utils/cmd_utils.go:151
 msgid "How many replicas of the confidential computing container should be started"
-msgstr ""
+msgstr "Quante repliche del contenitore di elaborazione confidenziale devono essere avviate"
 
 #: mgradm/shared/utils/cmd_utils.go:160
 msgid ""
 "How many replicas of the confidential computing container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
 msgstr ""
+"Quante repliche del contenitore di elaborazione confidenziale devono essere avviate.\n"
+"Lascialo non impostato se vuoi mantenere il numero precedente di repliche."
 
 #: mgradm/shared/utils/cmd_utils.go:167 mgradm/shared/utils/cmd_utils.go:168
 #: mgradm/shared/utils/cmd_utils.go:177 mgradm/shared/utils/cmd_utils.go:178
 msgid "Hub XML-RPC API"
-msgstr ""
+msgstr "API Hub XML-RPC"
 
 #: mgradm/shared/utils/cmd_utils.go:170
 msgid "How many replicas of the Hub XML-RPC API service container should be started."
-msgstr ""
+msgstr "Quante repliche del contenitore del servizio API Hub XML-RPC devono essere avviate."
 
 #: mgradm/shared/utils/cmd_utils.go:180
 msgid ""
 "How many replicas of the Hub XML-RPC API service container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
 msgstr ""
+"Quante repliche del contenitore del servizio API Hub XML-RPC devono essere avviate.\n"
+"Lascialo non impostato se vuoi mantenere il numero precedente di repliche."
 
 #: mgradm/shared/utils/cmd_utils.go:187 mgradm/shared/utils/cmd_utils.go:198
 msgid "Saline Flags"
-msgstr ""
+msgstr "Saline Flags"
 
 #: mgradm/shared/utils/cmd_utils.go:188 mgradm/shared/utils/cmd_utils.go:199
 msgid "Saline"
-msgstr ""
+msgstr "salino"
 
 #: mgradm/shared/utils/cmd_utils.go:189
 msgid ""
 "How many replicas of the Saline container should be started\n"
 "(only 0 or 1 supported for now)"
 msgstr ""
+"Quante repliche del contenitore Saline devono essere avviate\n"
+"(per ora sono supportati solo 0 o 1)"
 
 #: mgradm/shared/utils/cmd_utils.go:191 mgradm/shared/utils/cmd_utils.go:203
 msgid "Saline port"
@@ -1841,23 +1886,25 @@ msgid ""
 "Leave it unset if you want to keep the previous number of replicas.\n"
 "(only 0 or 1 supported for now)"
 msgstr ""
+"Quante repliche del contenitore Saline devono essere avviate.\n"
+"Lascialo non impostato se vuoi mantenere il numero precedente di repliche.\n"
+"(per ora sono supportati solo 0 o 1)"
 
 #: mgradm/shared/utils/cmd_utils.go:210
 msgid "PostgreSQL Database Container Flags"
-msgstr ""
+msgstr "Bandiere del contenitore del database PostgreSQL"
 
 #: mgradm/shared/utils/cmd_utils.go:211
 msgid "PostgreSQL Database"
-msgstr ""
+msgstr "database PostgreSQL"
 
 #: mgradm/shared/utils/cmd_utils.go:230
 msgid "Enable tomcat and taskomatic remote debugging"
-msgstr ""
+msgstr "Abilita il debug remoto di Tomcat e Taskomatic"
 
 #: mgradm/shared/utils/exec.go:24
-#, fuzzy
 msgid "exec command failed"
-msgstr "Comando non riuscito"
+msgstr "comando exec non riuscito"
 
 #: mgradm/shared/utils/exec.go:37
 msgid "failed retrieving namespace"
@@ -1866,29 +1913,28 @@ msgstr "recupero non riuscito dello spazio dei nomi"
 #: mgradm/shared/utils/exec.go:64
 #, javascript-format
 msgid "currently SUSE Manager %s is installed, instead the image is Uyuni. Upgrade is not supported"
-msgstr ""
+msgstr "attualmente è installato SUSE Manager %s, invece l'immagine è Uyuni. L'aggiornamento non è supportato"
 
 #: mgradm/shared/utils/exec.go:71
 #, javascript-format
 msgid "currently Uyuni %s is installed, instead the image is SUSE Manager. Upgrade is not supported"
-msgstr ""
+msgstr "attualmente è installato Uyuni %s, invece l'immagine è SUSE Manager. L'aggiornamento non è supportato"
 
 #: mgradm/shared/utils/exec.go:80 mgradm/shared/utils/exec.go:93
-#, fuzzy
 msgid "cannot fetch release from server image"
-msgstr "impossibile abilitare il servizio: %s"
+msgstr "impossibile recuperare il rilascio dall'immagine del server"
 
 #: mgradm/shared/utils/exec.go:85 mgradm/shared/utils/exec.go:98
 msgid "cannot downgrade from version %[1]s to %[2]s"
-msgstr ""
+msgstr "non è possibile effettuare il downgrade dalla versione %[1]s a %[2]s"
 
 #: mgradm/shared/utils/flags.go:141
 msgid "Can only contain letters, digits . _ and -"
-msgstr ""
+msgstr "Può contenere solo lettere, cifre . _ e -"
 
 #: mgradm/shared/utils/flags.go:149
 msgid "Not a valid email address"
-msgstr ""
+msgstr "Non è un indirizzo email valido"
 
 #, fuzzy
 #~ msgid "Run setup command"

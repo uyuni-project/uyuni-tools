@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-29 13:25+0200\n"
-"PO-Revision-Date: 2026-05-06 11:04+0000\n"
+"PO-Revision-Date: 2026-05-12 12:04+0000\n"
 "Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
 "Language: it\n"
@@ -32,463 +32,444 @@ msgstr "Credenziali (password) dell’utente API"
 
 #: shared/api/api.go:32
 msgid "Path to a cert file of the CA"
-msgstr ""
+msgstr "Percorso verso un file di certificazione della CA"
 
 #: shared/api/api.go:33
 msgid "If set, server certificate will not be checked for validity"
-msgstr ""
+msgstr "Se impostato, il certificato del server non verrà controllato per verificarne la validità"
 
 #: shared/api/api.go:74
 msgid "401: unauthorized"
-msgstr ""
+msgstr "401: non autorizzato"
 
 #: shared/api/api.go:88
 #, javascript-format
 msgid "unknown error: %d"
-msgstr ""
+msgstr "errore sconosciuto: %d"
 
 #: shared/api/api.go:120
 msgid "server URL is not provided"
-msgstr ""
+msgstr "l'URL del server non è fornito"
 
 #: shared/api/api.go:152
 msgid "Cached session is expired."
-msgstr ""
+msgstr "La sessione memorizzata nella cache è scaduto."
 
 #: shared/api/api.go:154 shared/api/credentials.go:70
-#, fuzzy
 msgid "Failed to remove stored credentials!"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile rimuovere le credenziali memorizzate!"
 
 #: shared/api/api.go:172
 msgid "Unable to create login data"
-msgstr ""
+msgstr "Impossibile creare i dati di accesso"
 
 #: shared/api/api.go:202
 msgid "auth cookie not found in login response"
-msgstr ""
+msgstr "cookie di autenticazione non trovato nella risposta di accesso"
 
 #: shared/api/api.go:217
-#, fuzzy
 msgid "failed to logout from the server"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile disconnettersi dal server"
 
 #: shared/api/api.go:238
 msgid "Unable to convert data to JSON"
-msgstr ""
+msgstr "Impossibile convertire i dati in JSON"
 
 #: shared/api/credentials.go:21
 msgid "not logged in, session cookie is missing"
-msgstr ""
+msgstr "non hai effettuato l'accesso, manca il cookie di sessione"
 
 #: shared/api/credentials.go:34
 msgid "unable to create credentials json"
-msgstr ""
+msgstr "impossibile creare credenziali json"
 
 #: shared/api/credentials.go:39
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "unable to write credentials store %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile scrivere le credenziali memorizza %s"
 
 #: shared/api/credentials.go:53
 msgid "API server URL"
-msgstr ""
+msgstr "URL del server API"
 
 #: shared/api/credentials.go:54
 msgid "API server user"
-msgstr ""
+msgstr "Utente del server API"
 
 #: shared/api/credentials.go:55
 msgid "API server password"
-msgstr ""
+msgstr "Password del server API"
 
 #: shared/api/credentials.go:58
 msgid "No credentials provided"
-msgstr ""
+msgstr "Nessuna credenziale fornita"
 
 #: shared/api/credentials.go:68
 msgid "Cannot load stored credentials"
-msgstr ""
+msgstr "Impossibile caricare le credenziali memorizzate"
 
 #: shared/api/credentials.go:83
 #, javascript-format
 msgid "unable to read credentials file %s"
-msgstr ""
+msgstr "impossibile leggere il file delle credenziali %s"
 
 #: shared/api/credentials.go:88
 msgid "unable to decode credentials file"
-msgstr ""
+msgstr "impossibile decodificare il file delle credenziali"
 
 #: shared/api/credentials.go:92
 msgid "no credentials loaded"
-msgstr ""
+msgstr "nessuna credenziale caricata"
 
 #: shared/api/credentials.go:101
 msgid "specified api server does not match with stored credentials"
-msgstr ""
+msgstr "il server api specificato non corrisponde alle credenziali memorizzate"
 
 #: shared/api/org/createFirst.go:22
 msgid "unable to prepare API client"
-msgstr ""
+msgstr "impossibile preparare il client API"
 
 #: shared/api/org/createFirst.go:36
 msgid "failed to create first user and organization"
-msgstr ""
+msgstr "impossibile creare il primo utente e organizzazione"
 
 #: shared/api/org/getDetails.go:24
 msgid "failed to connect to the server"
 msgstr "impossibile connettersi al server"
 
 #: shared/api/org/getDetails.go:28
-#, fuzzy
 msgid "failed to get organization details"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "non è riuscito a ottenere i dettagli dell'organizzazione"
 
 #: shared/api/proxy/containerConfig.go:33
-#, fuzzy
 msgid "failed to create proxy configuration file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare il file di configurazione del proxy"
 
 #: shared/completion/completion.go:20 shared/completion/completion.go:21
 msgid "Generate shell completion script"
-msgstr ""
+msgstr "Genera script di completamento della shell"
 
 #: shared/completion/completion.go:30 shared/completion/completion.go:34
 #: shared/completion/completion.go:38
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot generate %s completion"
-msgstr "impossible eliminare %s: %s"
+msgstr "non è possibile generare il completamento di %s"
 
 #: shared/connection.go:83
 #, javascript-format
 msgid "backend command not found in PATH: %s"
-msgstr ""
+msgstr "comando backend non trovato in PATH: %s"
 
 #: shared/connection.go:99
 msgid "kubectl not configured to connect to a cluster, ignoring"
-msgstr ""
+msgstr "kubectl non configurato per connettersi a un cluster, ignorando"
 
 #: shared/connection.go:136
 msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
-msgstr ""
+msgstr "il contenitore uyuni non è accessibile con uno tra podman, podman-remote o kubectl"
 
 #: shared/connection.go:139
 #, javascript-format
 msgid "unsupported backend %s"
-msgstr ""
+msgstr "backend non supportato %s"
 
 #: shared/connection.go:174
 msgid "coundn't find app name"
-msgstr ""
+msgstr "non sono riuscito a trovare il nome dell'app"
 
 #: shared/connection.go:184
-#, fuzzy
 msgid "failed to guest namespace"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "non è riuscito a creare uno spazio dei nomi ospite"
 
 #: shared/connection.go:206
 #, javascript-format
 msgid "container %s is not running on podman"
-msgstr ""
+msgstr "il contenitore %s non è in esecuzione su podman"
 
 #: shared/connection.go:215
 #, javascript-format
 msgid "container labeled %s is not running on kubectl"
-msgstr ""
+msgstr "il contenitore etichettato %s non è in esecuzione su kubectl"
 
 #: shared/connection.go:232
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s command not executed:"
-msgstr "impossible eliminare %s: %s"
+msgstr "Comando %s non eseguito:"
 
 #: shared/connection.go:252
-#, fuzzy
 msgid "failed to retrieve namespace "
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile recuperare lo spazio dei nomi "
 
 #: shared/connection.go:284
-#, fuzzy
 msgid "failed to create temporary file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare il file temporaneo"
 
 #: shared/connection.go:289
-#, fuzzy
 msgid "failed to write script to temporary file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile scrivere lo script nel file temporaneo"
 
 #: shared/connection.go:297
-#, fuzzy
 msgid "failed to copy script to container"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile copiare lo script nel contenitore"
 
 #: shared/connection.go:313
 msgid "Healthcheck not executed"
-msgstr ""
+msgstr "Controllo sanitario non eseguito"
 
 #: shared/connection.go:361
 msgid "container didn't start within 10s."
-msgstr ""
+msgstr "il contenitore non si è avviato entro 10 secondi."
 
 #: shared/connection.go:376
 msgid "container didn't start within 15s or failed. Check the service status"
-msgstr ""
+msgstr "il contenitore non si è avviato entro 15 secondi oppure si è guastato. Controlla lo stato del servizio"
 
 #: shared/connection.go:447 shared/connection.go:506
 #, javascript-format
 msgid "unknown container kind: %s"
-msgstr ""
+msgstr "tipo di contenitore sconosciuto: %s"
 
 #: shared/connection.go:499
-#, fuzzy
 msgid "failed to detect the namespace"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile rilevare lo spazio dei nomi"
 
 #: shared/connection.go:517
 msgid "Copying the SSL CA certificate to the host"
-msgstr ""
+msgstr "Copia del certificato SSL CA sull'host"
 
 #: shared/connection.go:536
 msgid "Updating host trusted certificates"
-msgstr ""
+msgstr "Aggiornamento dei certificati attendibili dell'host"
 
 #: shared/connection.go:547
 msgid "Unable to update host trusted certificates."
-msgstr ""
+msgstr "Impossibile aggiornare i certificati attendibili dell'host."
 
 #: shared/connection.go:588 shared/connection.go:609
 msgid "failed to determine suitable backend"
-msgstr ""
+msgstr "non è riuscito a determinare il backend adatto"
 
 #: shared/connection.go:598
 msgid "no supported backend found"
-msgstr ""
+msgstr "nessun backend supportato trovato"
 
 #: shared/connection.go:629 shared/utils/support.go:102
-#, fuzzy
 msgid "failed to generate supportconfig suffix: %w"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile generare il suffisso supportconfig: %w"
 
 #: shared/connection.go:641 shared/utils/support.go:116
 #, javascript-format
 msgid "failed to generate unique supportconfig batch name after %d attempts"
-msgstr ""
+msgstr "impossibile generare un nome batch di supportconfig univoco dopo i tentativi %d"
 
 #: shared/connection.go:645
 #, javascript-format
 msgid "Running supportconfig in %s"
-msgstr ""
+msgstr "Esecuzione di supportconfig in %s"
 
 #: shared/connection.go:652 shared/utils/support.go:122
 msgid "Some parts of supportconfig were not successful"
-msgstr ""
+msgstr "Alcune parti di supportconfig non hanno avuto successo"
 
 #: shared/connection.go:657
-#, fuzzy
 msgid "cannot copy support config"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "impossibile copiare la configurazione del supporto"
 
 #: shared/connection.go:663
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to remove %s directory in the container"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile rimuovere la directory %s nel contenitore"
 
 #: shared/kubernetes/kubernetes.go:52
 msgid "failed to get kubelet version"
-msgstr ""
+msgstr "impossibile ottenere la versione kubelet"
 
 #: shared/kubernetes/kubernetes.go:67
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot stop %s"
-msgstr "impossible eliminare %s: %s"
+msgstr "non è possibile fermare %s"
 
 #: shared/kubernetes/support.go:27
-#, fuzzy
 msgid "cannot retrieve any configmap"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "non è possibile recuperare alcuna configmap"
 
 #: shared/kubernetes/support.go:34
-#, fuzzy
 msgid "cannot retrieve any pod"
-msgstr "impossible eliminare %s: %s"
+msgstr "non è possibile recuperare alcun pod"
 
 #: shared/kubernetes/support.go:45
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot create %s"
-msgstr "impossible eliminare %s"
+msgstr "non è possibile creare %s"
 
 #: shared/kubernetes/support.go:50
-#, fuzzy
 msgid "cannot fetch configmap"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "non è possibile recuperare configmap"
 
 #: shared/kubernetes/support.go:63
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot check for pods in %s"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "impossibile verificare la presenza di pod in % s"
 
 #: shared/kubernetes/support.go:70
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Errore creazione %s"
 
 #: shared/kubernetes/support.go:76
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to fetch info for pod %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile recuperare le informazioni per pod %s"
 
 #: shared/kubernetes/support.go:82
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write in %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile scrivere in %s"
 
 #: shared/kubernetes/utils.go:59
 msgid "failed to parse deployment status"
-msgstr ""
+msgstr "impossibile analizzare lo stato di distribuzione"
 
 #: shared/kubernetes/utils.go:71
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot run kubectl %s"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "impossibile eseguire kubectl %s"
 
 #: shared/kubernetes/utils.go:88 shared/kubernetes/utils.go:109
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot execute %s"
-msgstr "impossible eliminare %s: %s"
+msgstr "non è possibile eseguire %s"
 
 #: shared/kubernetes/utils.go:117
 msgid "invalid replicas result"
-msgstr ""
+msgstr "risultato repliche non valide"
 
 #: shared/kubernetes/utils.go:142
 #, javascript-format
 msgid "cannot find node name matching filter %s"
-msgstr ""
+msgstr "impossibile trovare il filtro corrispondente al nome del nodo %s"
 
 #: shared/podman/hostinspector.go:54
 msgid "failed to run inspect script in host system"
-msgstr ""
+msgstr "impossibile eseguire lo script di ispezione nel sistema host"
 
 #: shared/podman/hostinspector.go:59
-#, fuzzy
 msgid "cannot inspect host data"
-msgstr "impossibile ispezionare i valori dell'host: %s"
+msgstr "non è possibile ispezionare i dati host"
 
 #: shared/podman/images.go:36
 #, javascript-format
 msgid "Cannot prepare image %s because registry is missing"
-msgstr ""
+msgstr "Impossibile preparare l'immagine %s perché manca il registro"
 
 #: shared/podman/images.go:39
 #, javascript-format
 msgid "Cannot prepare image %s because tag is missing"
-msgstr ""
+msgstr "Impossibile preparare l'immagine %s perché manca il tag"
 
 #: shared/podman/images.go:43
 #, javascript-format
 msgid "Ensure image %s is available"
-msgstr ""
+msgstr "Assicurati che l'immagine %s sia disponibile"
 
 #: shared/podman/images.go:57
 msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
-msgstr ""
+msgstr "La politica di pull è sempre valida. La presenza dell'immagine RPM verrà controllata ed estratta dal registro se non presente"
 
 #: shared/podman/images.go:74
 #, javascript-format
 msgid "image %s is missing and cannot be fetched"
-msgstr ""
+msgstr "l'immagine %s è mancante e non può essere recuperata"
 
 #: shared/podman/images.go:81
 #, javascript-format
 msgid "Cannot find RPM image for %s"
-msgstr ""
+msgstr "Impossibile trovare l'immagine RPM per %s"
 
 #: shared/podman/images.go:89
 #, javascript-format
 msgid "Cannot use RPM image for %s"
-msgstr ""
+msgstr "Impossibile utilizzare l'immagine RPM per %s"
 
 #: shared/podman/images.go:93
 msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
-msgstr ""
+msgstr "Utilizzando l'immagine %[1]s caricata dall'RPM invece della sua versione online %[2]s"
 
 #: shared/podman/images.go:105
-#, fuzzy
 msgid "failed to determine image"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "mancata identificazione dell'immagine:"
 
 #: shared/podman/images.go:113
 msgid "failed to find the image of the currently running server container"
-msgstr ""
+msgstr "impossibile trovare l'immagine del contenitore del server attualmente in esecuzione"
 
 #: shared/podman/images.go:124
-#, fuzzy
 msgid "failed to determine pgsql image"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile determinare l'immagine pgsql"
 
 #: shared/podman/images.go:132
-#, fuzzy
 msgid "failed to find the image of the currently running db container"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile trovare l'immagine del contenitore db attualmente in esecuzione"
 
 #: shared/podman/images.go:157
 #, javascript-format
 msgid "Cannot correctly parse image name '%s', local image cannot be used"
-msgstr ""
+msgstr "Impossibile analizzare correttamente il nome dell'immagine '%s', l'immagine locale non può essere utilizzata"
 
 #: shared/podman/images.go:175
 msgid "cannot unmarshal image RPM metadata"
-msgstr ""
+msgstr "non è possibile decomprimere i metadati RPM dell'immagine"
 
 #: shared/podman/images.go:194
 #, javascript-format
 msgid "skipping loading image from RPM as %s doesn't exist"
-msgstr ""
+msgstr "saltare il caricamento dell'immagine da RPM poiché %s non esiste"
 
 #: shared/podman/images.go:224
 #, javascript-format
 msgid "Cannot unmarshal metadata file %s"
-msgstr ""
+msgstr "Impossibile eseguire l'unmarshalling del file di metadati %s"
 
 #: shared/podman/images.go:246
 #, javascript-format
 msgid "error parsing: %s"
-msgstr ""
+msgstr "analisi degli errori: %s"
 
 #: shared/podman/images.go:254 shared/podman/images.go:268
 #: shared/podman/images.go:283
 #, javascript-format
 msgid "failed to check if image %s has already been pulled"
-msgstr ""
+msgstr "impossibile verificare se l'immagine %s è già stata estratta"
 
 #: shared/podman/images.go:290
 #, javascript-format
 msgid "%s should contains just lower case character, otherwise podman pull would fails"
-msgstr ""
+msgstr "%s dovrebbe contenere solo caratteri minuscoli, altrimenti podman pull fallirebbe"
 
 #: shared/podman/images.go:292
 #, javascript-format
 msgid "Running podman pull %s"
-msgstr ""
+msgstr "Esecuzione di podman pull %s"
 
 #: shared/podman/images.go:304
 #, javascript-format
 msgid "Running podman image search --list-tags %s --format={{.Tag}}"
-msgstr ""
+msgstr "Esecuzione della ricerca immagini Podman --list-tags %s --format={{.Tag}}"
 
 #: shared/podman/images.go:318
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot find any tag for image %s"
-msgstr "impossibile trovare il nodo che ha in esecuzione uyuni: %s"
+msgstr "non riesco a trovare alcun tag per l'immagine %s"
 
 #: shared/podman/images.go:332
 #, javascript-format
 msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
-msgstr ""
+msgstr "Esecuzione di podman ps --filter=name=%s --format={{ .Immagine }}"
 
 #: shared/podman/images.go:338
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot find any running image for container %s"
-msgstr "impossibile trovare il nodo che ha in esecuzione uyuni: %s"
+msgstr "non riesco a trovare alcuna immagine in esecuzione per il contenitore %s"
 
 #: shared/podman/images.go:371 shared/podman/images.go:392
 #: shared/podman/images.go:412 shared/podman/network.go:108
@@ -505,95 +486,95 @@ msgstr "Preparazione all’esecuzione di %s"
 #: shared/podman/utils.go:240 shared/podman/utils.go:277
 #, javascript-format
 msgid "Run %s"
-msgstr ""
+msgstr "Esegui %s"
 
 #: shared/podman/images.go:376
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to remove image %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile rimuovere l'immagine %s"
 
 #: shared/podman/images.go:397
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to export image %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile esportare l'immagine %s"
 
 #: shared/podman/images.go:417
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to restore image %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile ripristinare l'immagine %s"
 
 #: shared/podman/login.go:28
 msgid "Registry is registry.suse.com. Using SCC credentials."
-msgstr ""
+msgstr "Il registro è registry.suse.com. Utilizzo delle credenziali SCC."
 
 #: shared/podman/login.go:30
 msgid "SCC credentials has been provided, SCChost credentials will be ignored."
-msgstr ""
+msgstr "Sono state fornite le credenziali SCC, le credenziali SCChost verranno ignorate."
 
 #: shared/podman/login.go:35
 msgid "Registry parameters will be used. SCC credentials from host will be ignored."
-msgstr ""
+msgstr "Verranno utilizzati i parametri del registro. Le credenziali SCC dell'host verranno ignorate."
 
 #: shared/podman/login.go:60 shared/podman/login.go:66
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to set authentication for %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile impostare l'autenticazione per %s"
 
 #: shared/podman/login.go:72
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to close the temporary auth file. Cannot set authentication for %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile chiudere il file di autenticazione temporaneo. Impossibile impostare l'autenticazione per %s"
 
 #: shared/podman/network.go:32
 #, javascript-format
 msgid "Setting up %s network"
-msgstr ""
+msgstr "Configurazione della rete %s"
 
 #: shared/podman/network.go:43
 #, javascript-format
 msgid "%s network doesn't have IPv6, deleting existing network to enable IPv6 on it"
-msgstr ""
+msgstr "La rete %s non ha IPv6, eliminando la rete esistente per abilitare IPv6 su di essa"
 
 #: shared/podman/network.go:47
 #, javascript-format
 msgid "failed to remove %s podman network"
-msgstr ""
+msgstr "impossibile rimuovere la rete podman %s"
 
 #: shared/podman/network.go:50
 #, javascript-format
 msgid "Reusing existing %s network"
-msgstr ""
+msgstr "Riutilizzo della rete %s esistente"
 
 #: shared/podman/network.go:66
 msgid "failed to find podman's network backend"
-msgstr ""
+msgstr "impossibile trovare il backend di rete di Podman"
 
 #: shared/podman/network.go:68
 msgid "Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"
-msgstr ""
+msgstr "Il backend di rete di Podman (%[1]s) non è netavark, saltando l'abilitazione IPv6 sulla rete %[2]s"
 
 #: shared/podman/network.go:77
 #, javascript-format
 msgid "failed to create %s network with IPv6 enabled"
-msgstr ""
+msgstr "impossibile creare la rete %s con IPv6 abilitato"
 
 #: shared/podman/network.go:105
 #, javascript-format
 msgid "Network %s already removed"
-msgstr ""
+msgstr "%s di rete già rimosse"
 
 #: shared/podman/network.go:112
 #, javascript-format
 msgid "Failed to remove network %s"
-msgstr ""
+msgstr "Impossibile rimuovere la rete %s"
 
 #: shared/podman/network.go:114
 msgid "Network removed"
-msgstr ""
+msgstr "Rete rimossa"
 
 #: shared/podman/secret.go:68
 msgid "Secrets %[1]s and %[2]s, already exists"
-msgstr ""
+msgstr "I segreti %[1]s e %[2]s esistono già"
 
 #: shared/podman/secret.go:86 shared/podman/secret.go:98
 #: shared/podman/secret.go:102
@@ -602,566 +583,558 @@ msgid "failed to create %s secret"
 msgstr "impossibile creare il segreto %s"
 
 #: shared/podman/secret.go:117
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write %s secret to file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile scrivere il segreto %s nel file"
 
 #: shared/podman/secret.go:132
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create podman secret %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare podman secret %s"
 
 #: shared/podman/secret.go:162
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to delete %s secret"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile eliminare il segreto %s"
 
 #: shared/podman/secret.go:173
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get the content of the %s secret"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "non è riuscito a ottenere il contenuto del segreto %s"
 
 #: shared/podman/support.go:26
 msgid "No logs file on host to add to the archive"
-msgstr ""
+msgstr "Nessun file di registro sull'host da aggiungere all'archivio"
 
 #: shared/podman/support.go:33
 msgid "No systemd file to add to the archive"
-msgstr ""
+msgstr "Nessun file systemd da aggiungere all'archivio"
 
 #: shared/podman/support.go:46 shared/podman/support.go:120
 #: shared/podman/support.go:150
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run podman inspect %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile eseguire podman inspect %s"
 
 #: shared/podman/support.go:52
 #, javascript-format
 msgid "failed to fetch the config files bound to container %s"
-msgstr ""
+msgstr "impossibile recuperare i file di configurazione associati al contenitore %s"
 
 #: shared/podman/support.go:58
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to run podman logs %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile eseguire i log di Podman %s"
 
 #: shared/podman/support.go:70 shared/podman/support.go:90
 #: shared/podman/support.go:115 shared/podman/support.go:138
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare il file %s"
 
 #: shared/podman/support.go:75
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to cat %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "non è riuscito a catturare %s"
 
 #: shared/podman/support.go:95
 msgid "failed to run systemctl cat uyuni-*"
-msgstr ""
+msgstr "impossibile eseguire systemctl cat uyuni-*"
 
 #: shared/podman/support.go:111
-#, fuzzy
 msgid "failed to close inspect dump file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile chiudere il file di dump di ispezione"
 
 #: shared/podman/support.go:134
-#, fuzzy
 msgid "failed to close bound files"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile chiudere i file associati"
 
 #: shared/podman/support.go:172
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed create %s file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "creazione non riuscita del file %s"
 
 #: shared/podman/support.go:177
 #, javascript-format
 msgid "failed to run journalctl -u %s"
-msgstr ""
+msgstr "impossibile eseguire journalctl -u %s"
 
 #: shared/podman/systemd.go:116
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to disable %s systemd service"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile disabilitare il servizio %s systemd"
 
 #: shared/podman/systemd.go:126
 msgid "failed to reset-failed systemd"
-msgstr ""
+msgstr "impossibile reimpostare - systemd non riuscito"
 
 #: shared/podman/systemd.go:130
 msgid "failed to reload systemd daemon"
-msgstr ""
+msgstr "impossibile ricaricare il demone systemd"
 
 #: shared/podman/systemd.go:147
 #, javascript-format
 msgid "failed to restart systemd %s.service"
-msgstr ""
+msgstr "impossibile riavviare systemd %s.service"
 
 #: shared/podman/systemd.go:155
 #, javascript-format
 msgid "failed to start systemd %s.service"
-msgstr ""
+msgstr "impossibile avviare systemd %s.service"
 
 #: shared/podman/systemd.go:163
 #, javascript-format
 msgid "failed to stop systemd %s.service"
-msgstr ""
+msgstr "impossibile arrestare systemd %s.service"
 
 #: shared/podman/systemd.go:175
 #, javascript-format
 msgid "failed to enable %s systemd service"
-msgstr ""
+msgstr "impossibile abilitare il servizio systemd %s"
 
 #: shared/podman/systemd.go:187
-#, fuzzy
 msgid "Failed to get the %[1]s property from %[2]s service"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile ottenere la proprietà %[1]s dal servizio %[2]s"
 
 #: shared/podman/systemd.go:199
-#, fuzzy
 msgid "Failed to get the definition from %[2]s service"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile ottenere la definizione dal servizio %[2]s"
 
 #: shared/podman/systemd.go:270
 #, javascript-format
 msgid "Systemd has no %s.service unit"
-msgstr ""
+msgstr "Systemd non ha unità %s.service"
 
 #: shared/podman/systemd.go:275
 #, javascript-format
 msgid "Disable %s service"
-msgstr ""
+msgstr "Disabilita il servizio %s"
 
 #: shared/podman/systemd.go:290 shared/podman/systemd.go:308
 #, javascript-format
 msgid "Would remove %s"
-msgstr ""
+msgstr "Rimuoverebbe %s"
 
 #: shared/podman/systemd.go:293 shared/podman/systemd.go:310
 #, javascript-format
 msgid "Remove %s"
-msgstr ""
+msgstr "Rimuovi %s"
 
 #: shared/podman/systemd.go:295
 #, javascript-format
 msgid "Failed to remove %s.service file"
-msgstr ""
+msgstr "Impossibile rimuovere il file %s.service"
 
 #: shared/podman/systemd.go:312
 #, javascript-format
 msgid "Failed to remove %s file"
-msgstr ""
+msgstr "Impossibile rimuovere il file %s"
 
 #: shared/podman/systemd.go:319
 #, javascript-format
 msgid "Would remove %s if empty"
-msgstr ""
+msgstr "Rimuoverebbe %s se vuoto"
 
 #: shared/podman/systemd.go:326
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
-msgstr ""
+msgstr "La cartella %s contiene il file creato dall'utente. Si prega di rimuoverli una volta completata la disinstallazione."
 
 #: shared/podman/systemd.go:338
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
-msgstr ""
+msgstr "Ridimensionerebbe %s a 0 repliche"
 
 #: shared/podman/systemd.go:341
 #, javascript-format
 msgid "Failed to disable %s service"
-msgstr ""
+msgstr "Impossibile disabilitare il servizio %s"
 
 #: shared/podman/systemd.go:430
 msgid "Service %[1]s already has %[2]d replicas."
-msgstr ""
+msgstr "Il servizio %[1]s ha già %[2]d repliche."
 
 #: shared/podman/systemd.go:433
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
-msgstr ""
+msgstr "Scala %[1]s da %[2]d a %[3]d repliche."
 
 #: shared/podman/systemd.go:437
-#, fuzzy
 msgid "cannot enable service"
-msgstr "impossible eliminare %s"
+msgstr "impossibile abilitare il servizio"
 
 #: shared/podman/systemd.go:443
-#, fuzzy
 msgid "cannot disable service"
-msgstr "impossible eliminare %s"
+msgstr "impossibile disabilitare il servizio"
 
 #: shared/podman/systemd.go:453
-#, fuzzy
 msgid "failed to show %[1]s property of %[2] systemd service"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile mostrare la proprietà %[1]s del servizio %[2] systemd"
 
 #: shared/podman/systemd.go:468
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s folder"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare la cartella %s"
 
 #: shared/podman/systemd.go:478
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot write %s file"
-msgstr "impossible eliminare %s: %s"
+msgstr "impossibile scrivere il file %s"
 
 #: shared/podman/systemd.go:522
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write %s file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile scrivere il file %s"
 
 #: shared/podman/systemd.go:527
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile rimuovere il vecchio file di configurazione del servizio systemd %s"
 
 #: shared/podman/utils.go:80
 msgid "Extra arguments to pass to podman"
-msgstr ""
+msgstr "Argomenti extra da passare a podman"
 
 #: shared/podman/utils.go:87
 msgid "failed to enable podman.socket unit"
-msgstr ""
+msgstr "impossibile abilitare l'unità podman.socket"
 
 #: shared/podman/utils.go:108 shared/podman/utils.go:137
 #, javascript-format
 msgid "failed to run %s container"
-msgstr ""
+msgstr "impossibile eseguire il contenitore %s"
 
 #: shared/podman/utils.go:148
 msgid "Would run podman kill %[1]s for container id %[2]s"
-msgstr ""
+msgstr "Esegui podman kill %[1]s per l'id contenitore %[2]s"
 
 #: shared/podman/utils.go:149
 msgid "Would run podman remove %[1]s for container id %[2]s"
-msgstr ""
+msgstr "Esegui podman remove %[1]s per l'id contenitore %[2]s"
 
 #: shared/podman/utils.go:151
 msgid "Run podman kill %[1]s for container id %[2]s"
-msgstr ""
+msgstr "Esegui podman kill %[1]s per l'id contenitore %[2]s"
 
 #: shared/podman/utils.go:154
 msgid "Failed to kill the server"
-msgstr ""
+msgstr "Impossibile uccidere il server"
 
 #: shared/podman/utils.go:156
 msgid "Run podman remove %[1]s for container id %[2]s"
-msgstr ""
+msgstr "Esegui podman remove %[1]s per l'id contenitore %[2]s"
 
 #: shared/podman/utils.go:159
 msgid "Error removing container"
-msgstr ""
+msgstr "Errore durante la rimozione del contenitore"
 
 #: shared/podman/utils.go:164
 msgid "Container already removed"
-msgstr ""
+msgstr "Contenitore già rimosso"
 
 #: shared/podman/utils.go:172
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to get %s systemd service definition"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile ottenere la definizione del servizio systemd %s"
 
 #: shared/podman/utils.go:179
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "no UYUNI.*_IMAGE defined in %s systemd service"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "niente UYUNI.*_IMMAGINE definita nel servizio systemd %s"
 
 #: shared/podman/utils.go:218
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
-msgstr ""
+msgstr "Il volume %s è montato esternamente, la directory non può essere rimossa"
 
 #: shared/podman/utils.go:242
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to export volume %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile esportare il volume %s"
 
 #: shared/podman/utils.go:245
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
-msgstr ""
+msgstr "Impossibile scrivere il checksum del volume %[1]s in %[2]s"
 
 #: shared/podman/utils.go:271
 #, javascript-format
 msgid "Checksum does not match for volume %s"
-msgstr ""
+msgstr "Il checksum non corrisponde alle %s del volume"
 
 #: shared/podman/utils.go:275
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to precreate empty volume %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile precreare il volume vuoto %s"
 
 #: shared/podman/utils.go:279
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to import volume %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile importare il volume %s"
 
 #: shared/podman/utils.go:283
 #, javascript-format
 msgid "Unable to restore selinux context for %s, manual action is required"
-msgstr ""
+msgstr "Impossibile ripristinare il contesto Selinux per %s, è necessaria un'azione manuale"
 
 #: shared/podman/utils.go:391 shared/podman/utils.go:414
-#, fuzzy
 msgid "cannot inspect data"
-msgstr "impossibile ispezionare i valori dell'host: %s"
+msgstr "impossibile ispezionare i dati"
 
 #: shared/ssl/flags.go:20
 msgid "SSL certificate cnames separated by commas"
-msgstr ""
+msgstr "Nomi dei certificati SSL separati da virgole"
 
 #: shared/ssl/flags.go:21
 msgid "SSL certificate country"
-msgstr ""
+msgstr "Paese del certificato SSL"
 
 #: shared/ssl/flags.go:22
 msgid "SSL certificate state"
-msgstr ""
+msgstr "Stato del certificato SSL"
 
 #: shared/ssl/flags.go:23
 msgid "SSL certificate city"
-msgstr ""
+msgstr "Città del certificato SSL"
 
 #: shared/ssl/flags.go:24
 msgid "SSL certificate organization"
-msgstr ""
+msgstr "Organizzazione dei certificati SSL"
 
 #: shared/ssl/flags.go:25
 msgid "SSL certificate organization unit"
-msgstr ""
+msgstr "Unità di organizzazione dei certificati SSL"
 
 #: shared/ssl/flags.go:27
 msgid "SSL Certificate Flags"
-msgstr ""
+msgstr "Bandiere del certificato SSL"
 
 #: shared/ssl/flags.go:38
 msgid "Intermediate CA certificate path"
-msgstr ""
+msgstr "Percorso del certificato CA intermedio"
 
 #: shared/ssl/flags.go:39
 msgid "Root CA certificate path"
-msgstr ""
+msgstr "Percorso del certificato CA radice"
 
 #: shared/ssl/flags.go:40
 msgid "Server certificate path"
-msgstr ""
+msgstr "Percorso del certificato del server"
 
 #: shared/ssl/flags.go:41
 msgid "Server key path"
-msgstr ""
+msgstr "Percorso chiave del server"
 
 #: shared/ssl/flags.go:43 shared/ssl/flags.go:59
 msgid "3rd Party SSL Certificate Flags"
-msgstr ""
+msgstr "Bandiere di certificati SSL di terze parti"
 
 #: shared/ssl/flags.go:53
 msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr ""
+msgstr "Percorso intermedio del certificato CA per il database se diverso da quello del server"
 
 #: shared/ssl/flags.go:55
 msgid "Root CA certificate path for the database if different from the server one"
-msgstr ""
+msgstr "Percorso del certificato CA root per il database se diverso da quello del server"
 
 #: shared/ssl/flags.go:56
 msgid "Database certificate path"
-msgstr ""
+msgstr "Percorso del certificato del database"
 
 #: shared/ssl/flags.go:57
 msgid "Database key path"
-msgstr ""
+msgstr "Percorso chiave del database"
 
 #: shared/ssl/ssl.go:69
 msgid "Failed to find a non-CA certificate"
-msgstr ""
+msgstr "Impossibile trovare un certificato non CA"
 
 #: shared/ssl/ssl.go:109
 msgid "expected to find a certificate, got none"
-msgstr ""
+msgstr "mi aspettavo di trovare un certificato, non ne ho ricevuto nessuno"
 
 #: shared/ssl/ssl.go:115
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to read certificate file %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile leggere il file del certificato %s"
 
 #: shared/ssl/ssl.go:154
-#, fuzzy, javascript-format
+#, javascript-format
 msgid ""
 "Failed to extract data from certificate:\n"
 "%s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr ""
+"Impossibile estrarre i dati dal certificato:\n"
+"%s"
 
 #: shared/ssl/ssl.go:175
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse start date: %s\n"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile analizzare la data di inizio: % s\n"
 
 #: shared/ssl/ssl.go:181
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to parse end date: %s\n"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile analizzare la data di fine: %s\n"
 
 #: shared/ssl/ssl.go:228
 msgid "no CA certificate found in the files"
-msgstr ""
+msgstr "nessun certificato CA trovato nei file"
 
 #: shared/ssl/ssl.go:237 shared/ssl/ssl.go:250
 msgid ""
 "please check the CA chain, including intermediate CA certificates provided.\n"
 "The chain is missing the CA with subject %[1]s (hash: %[2]s)"
 msgstr ""
+"si prega di controllare la catena CA, compresi i certificati CA intermedi forniti.\n"
+"Alla catena manca la CA con soggetto %[1]s (hash: %[2]s)"
 
 #: shared/ssl/ssl.go:280
 msgid "server certificate is required"
-msgstr ""
+msgstr "certificato del server richiesto"
 
 #: shared/ssl/ssl.go:283 shared/ssl/ssl.go:348
 msgid "server key is required"
-msgstr ""
+msgstr "chiave del server richiesta"
 
 #: shared/ssl/ssl.go:298
 #, javascript-format
 msgid "%s file is not accessible"
-msgstr ""
+msgstr "%s file non è accessibile"
 
 #: shared/ssl/ssl.go:307
 msgid "Source server SSL CA private key password"
-msgstr ""
+msgstr "Password della chiave privata SSL CA del server di origine"
 
 #: shared/ssl/ssl.go:313
 msgid "Failed to open openssl rsa process input stream"
-msgstr ""
+msgstr "Impossibile aprire il flusso di input del processo openssl rsa"
 
 #: shared/ssl/ssl.go:316
-#, fuzzy
 msgid "Failed to write openssl key content to input stream"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile scrivere il contenuto della chiave openssl nel flusso di input"
 
 #: shared/ssl/ssl.go:322
 msgid "Failed to convert CA private key to RSA"
-msgstr ""
+msgstr "Impossibile convertire la chiave privata CA in RSA"
 
 #: shared/ssl/ssl.go:332
 msgid "Failed to open openssl x509 process input stream"
-msgstr ""
+msgstr "Impossibile aprire il flusso di input del processo openssl x509"
 
 #: shared/ssl/ssl.go:335
-#, fuzzy
 msgid "Failed to write SSL certificate to input stream"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile scrivere il certificato SSL nel flusso di input"
 
 #: shared/ssl/ssl.go:339
-#, fuzzy
 msgid "failed to strip text part from CA certificate"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile rimuovere la parte di testo dal certificato CA"
 
 #: shared/ssl/ssl.go:354
 msgid "Invalid SSL key, it is probably encrypted"
-msgstr ""
+msgstr "Chiave SSL non valida, probabilmente è crittografata"
 
 #: shared/ssl/ssl.go:373
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to validate hostname %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile convalidare il nome host %s"
 
 #: shared/utils/cmd.go:119
-#, fuzzy
-#| msgid "cannot delete %s"
 msgid "cannot decode into Registry"
-msgstr "impossible eliminare %s"
+msgstr "non può decodificare nel Registro"
 
 #: shared/utils/cmd.go:127
 msgid ""
 "tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
 "Default guesses which to use."
 msgstr ""
+"strumento da utilizzare per raggiungere il contenitore. Valori possibili: 'podman', 'podman-remote', 'kubectl'.\n"
+"Ipotesi predefinite da utilizzare."
 
 #: shared/utils/cmd.go:143
 msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
-msgstr ""
+msgstr "imposta se estrarre o meno le immagini. Il valore può essere \"Mai\", \"Se non presente\" o \"Sempre\""
 
 #: shared/utils/cmd.go:147
 msgid "Specify a registry where to pull the images from"
-msgstr ""
+msgstr "Specificare un registro da cui estrarre le immagini"
 
 #: shared/utils/cmd.go:150
 msgid "Specify a registry where to pull the images from. It will be concatenated with image name"
-msgstr ""
+msgstr "Specificare un registro da cui estrarre le immagini. Verrà concatenato con il nome dell'immagine"
 
 #: shared/utils/cmd.go:151
 msgid "User if registry requires an authentication"
-msgstr ""
+msgstr "Utente se il registro richiede un'autenticazione"
 
 #: shared/utils/cmd.go:152
 msgid "Password if registry requires an authentication"
-msgstr ""
+msgstr "Password se il registro richiede un'autenticazione"
 
 #: shared/utils/cmd.go:154
 msgid "Registry Flags"
-msgstr ""
+msgstr "Bandiere del registro"
 
 #: shared/utils/cmd.go:162
 msgid "PTF ID"
-msgstr ""
+msgstr "PTF ID"
 
 #: shared/utils/cmd.go:163
 msgid "Test package ID"
-msgstr ""
+msgstr "ID del pacchetto di prova"
 
 #: shared/utils/cmd.go:164
 msgid "SCC user"
-msgstr ""
+msgstr "Utente SCC"
 
 #: shared/utils/cmd.go:182
 msgid "Actually remove the server"
-msgstr ""
+msgstr "Rimuovi effettivamente il server"
 
 #: shared/utils/cmd.go:183
 msgid "Also remove the volumes"
-msgstr ""
+msgstr "Rimuovere anche i volumi"
 
 #: shared/utils/cmd.go:184
 msgid "Also remove the container images"
-msgstr ""
+msgstr "Rimuovere anche le immagini del contenitore"
 
 #: shared/utils/cmd.go:190 shared/utils/cmd.go:193
 msgid "application log level"
-msgstr ""
+msgstr "livello di registro dell'applicazione"
 
 #: shared/utils/cmd.go:196
-#, fuzzy
 msgid "Failed to hide --loglevel parameter"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile nascondere il parametro --loglevel"
 
 #: shared/utils/cmd.go:202
 msgid "TFTPD"
-msgstr ""
+msgstr "TFTPD"
 
 #: shared/utils/cmd.go:204
 msgid "Start the TFTP server container"
-msgstr ""
+msgstr "Avviare il contenitore del server TFTP"
 
 #: shared/utils/cmd.go:221
 #, javascript-format
 msgid "Image for %s container"
-msgstr ""
+msgstr "Immagine per il contenitore %s"
 
 #: shared/utils/cmd.go:223
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
-msgstr ""
+msgstr "Tag per il contenitore %s, sovrascrive il valore globale se impostato"
 
 #: shared/utils/config.go:40
 #, javascript-format
 msgid "failed to parse configuration file %s"
-msgstr ""
+msgstr "impossibile analizzare il file di configurazione %s"
 
 #: shared/utils/config.go:54
 msgid "Failed to find home directory"
-msgstr ""
+msgstr "Impossibile trovare la directory home"
 
 #: shared/utils/config.go:101
 msgid "failed to bind %[1]s config to parameter %[2]s"
-msgstr ""
+msgstr "impossibile associare la configurazione di %[1]s al parametro %[2]s"
 
 #: shared/utils/config.go:116
 msgid ""
@@ -1195,6 +1168,35 @@ msgid ""
 "\n"
 "Use \"{{.CommandPath}} [command] --help\" for more information about a command.{{end}}\n"
 msgstr ""
+"Utilizzo:{{se .Eseguibile}}\n"
+"  {{.UseLine}}{{end}}{{if .Hasottocomandi disponibili}}\n"
+"  {{.CommandPath}} [comando]{{fine}}{{se gt (len .Alias) 0}}\n"
+"\n"
+"Alias:\n"
+"  {{.Nome e alias}}{{fine}}{{se .HasExample}}\n"
+"\n"
+"Esempi:\n"
+"{{.Esempio}}{{fine}}{{se .Ha sottocomandi disponibili}}{{$cmds := .Comandi}}{{se eq (len .Gruppi) 0}}\n"
+"\n"
+"Comandi disponibili:{{range $cmds}}{{if (or .IsAvailableCommand (eq.Nome \"aiuto\"))}}\n"
+"  {{rpad.Nome.NamePadding }} {{.Corto}}{{fine}}{{fine}}{{altro}}{{intervallo $gruppo:= .Gruppi}}\n"
+"\n"
+"{{.Titolo}}{{intervallo $cmds}}{{se (e (eq .GroupID $group.ID) (o .IsAvailableCommand (eq.Nome \"aiuto\")))}}\n"
+"  {{rpad.Nome.NamePadding }} {{.Corto}}{{fine}}{{fine}}{{fine}}{{se non .Tutti i comandi per bambini hanno gruppo}}\n"
+"\n"
+"Comandi aggiuntivi:{{range $cmds}}{{if (and (eq .GroupID \"\") (o .IsAvailableCommand (eq.Nome \"aiuto\")))}}\n"
+"  {{rpad.Nome.NamePadding }} {{.Corto}}{{fine}}{{fine}}{{fine}}{{fine}}{{fine}}{{se .Ha bandiere locali disponibili}}\n"
+"\n"
+"Bandiere:\n"
+"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}\n"
+"\n"
+"Bandiere globali:\n"
+"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}\n"
+"\n"
+"Argomenti di aiuto aggiuntivi:{{range .Comandi}}{{se .IsAdditionalHelpTopicCommand}}\n"
+"  {{rpad.Percorso di comando.CommandPathPadding}} {{.Corto}}{{fine}}{{fine}}{{fine}}{{se .Hasottocomandi disponibili}}\n"
+"\n"
+"Utilizzare \"{{.CommandPath}} [comando] --help\" per maggiori informazioni su un comando.{{end}}\n"
 
 #: shared/utils/config.go:150
 msgid ""
@@ -1232,54 +1234,86 @@ msgid ""
 "  For example the '--tz CEST' flag will be mapped to '{{ .EnvPrefix }}_TZ'\n"
 "  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD'\n"
 msgstr ""
+"\n"
+"Configurazione:\n"
+"\n"
+"  In alternativa, tutti i flag non globali possono essere passati come configurazione.\n"
+"\n"
+"  Il file di configurazione è un file YAML con voci corrispondenti al nome del flag.\n"
+"  Il nome di un flag è la parte dopo '--' del parametro della riga di comando.\n"
+"  Ogni carattere '_' nel nome del flag indica una proprietà annidata.\n"
+"\n"
+"  Ad esempio, '--tz CEST' e '--ssl-password secret' verranno mappati su\n"
+"  questa configurazione YAML:\n"
+"\n"
+"    tz: CEST\n"
+"    ssl:\n"
+"      password: segreta\n"
+"\n"
+"  La ricerca nel file di configurazione avverrà nei seguenti punti e nel seguente ordine:\n"
+"  · /etc/uyuni/uyuni-tools.yaml\n"
+"  · $XDG_CONFIG_HOME/{{ .Nome }}/{{ .ConfigFile }}\n"
+"  · $HOME/.config/{{ .Nome }}/{{ .ConfigFile }}\n"
+"  · $PWD/{{ .ConfigFile }}\n"
+"  · il valore del flag --config\n"
+"\n"
+"\n"
+"Variabili ambientali:\n"
+"\n"
+"  Tutti i flag non globali possono anche essere passati come variabili d'ambiente.\n"
+"\n"
+"  Il nome della variabile d'ambiente è il nome del flag con '-' sostituito da '_'\n"
+"  e il {{ .Prefisso EnvPrefix }}.\n"
+"\n"
+"  Ad esempio il flag '--tz CEST' verrà mappato su '{{ .EnvPrefix }}_TZ'\n"
+"  e i flag '--ssl-password' a '{{ .EnvPrefix }}_SSL_PASSWORD'\n"
 
 #: shared/utils/config.go:187
 msgid "Help on configuration file and environment variables"
-msgstr ""
+msgstr "Aiuto sul file di configurazione e sulle variabili d'ambiente"
 
 #: shared/utils/config.go:196
 msgid "failed to compute config help command"
 msgstr "impossibile calcolare il comando di aiuto alla configurazione"
 
 #: shared/utils/files.go:21
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot check content of %s"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "impossibile controllare il contenuto di %s"
 
 #: shared/utils/files.go:33
 #, javascript-format
 msgid "Cannot remove %s folder"
-msgstr ""
+msgstr "Impossibile rimuovere la cartella %s"
 
 #: shared/utils/files.go:44
 #, javascript-format
 msgid "Failed to get %s file informations"
-msgstr ""
+msgstr "Impossibile ottenere le informazioni sul file %s"
 
 #: shared/utils/files.go:53
 #, javascript-format
 msgid "Failed to read file %s"
-msgstr ""
+msgstr "Impossibile leggere il file %s"
 
 #: shared/utils/files.go:69
 #, javascript-format
 msgid "Would remove file %s"
-msgstr ""
+msgstr "Rimuoverebbe il file %s"
 
 #: shared/utils/files.go:71
 #, javascript-format
 msgid "Removing file %s"
-msgstr ""
+msgstr "Rimozione del file %s"
 
 #: shared/utils/files.go:73
 #, javascript-format
 msgid "Failed to remove file %s"
-msgstr ""
+msgstr "Impossibile rimuovere il file"
 
 #: shared/utils/files.go:83
-#, fuzzy
 msgid "failed to create temporary directory"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile creare una directory temporanea"
 
 #: shared/utils/files.go:87
 #, fuzzy
@@ -1287,107 +1321,103 @@ msgid "failed to remove temporary directory"
 msgstr "mancata creazione della directory temporanea: %s"
 
 #: shared/utils/files.go:97
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "fails to open %s file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "non riesce ad aprire il file %s"
 
 #: shared/utils/files.go:109
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to read %s file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile leggere il file %s"
 
 #: shared/utils/files.go:113
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to copy %s file"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile copiare il file %s"
 
 #: shared/utils/flaggroups.go:56
 msgid "Flags:\n"
-msgstr ""
+msgstr "Bandiere:\n"
 
 #: shared/utils/flaggroups.go:108
 msgid "no such flag help group: %v"
-msgstr ""
+msgstr "nessun gruppo di aiuto per la segnalazione di questo tipo: %v"
 
 #: shared/utils/inspector.go:20
-#, fuzzy
 msgid "cannot read config"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "impossibile leggere la configurazione"
 
 #: shared/utils/inspector.go:25
 msgid "failed to unmarshal the inspected data"
-msgstr ""
+msgstr "non è riuscito a decomprimere i dati ispezionati"
 
 #: shared/utils/logUtils.go:69
-#, fuzzy
 msgid "failed to decode message to log"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile decodificare il messaggio nel registro"
 
 #: shared/utils/logUtils.go:77
-#, fuzzy
 msgid "failed to encode log event"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile codificare l'evento di registro"
 
 #: shared/utils/logUtils.go:108
 msgid "Couldn't open %[1]s file for writing, writing log to %[2]s"
-msgstr ""
+msgstr "Impossibile aprire il file %[1]s per la scrittura, scrivendo il registro in %[2]s"
 
 #: shared/utils/support.go:26
 msgid "Unable to detect hostname, using localhost"
-msgstr ""
+msgstr "Impossibile rilevare il nome host, utilizzando localhost"
 
 #: shared/utils/support.go:40
 msgid "Preparing the tarball"
-msgstr ""
+msgstr "Preparazione del tarball"
 
 #: shared/utils/support.go:62
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to add %s to tarball"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile aggiungere al tarball"
 
 #: shared/utils/support.go:66
 #, javascript-format
 msgid "Support config tarball created at %s"
-msgstr ""
+msgstr "Supporta il tarball di configurazione creato in %s"
 
 #: shared/utils/support.go:119
 msgid "Running supportconfig on the host"
-msgstr ""
+msgstr "Esecuzione di supportconfig sull'host"
 
 #: shared/utils/support.go:129
-#, fuzzy
 msgid "failed to find host supportconfig tarball"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile trovare il tarball host supportconfig"
 
 #: shared/utils/support.go:132
 msgid "supportconfig is not available on the host, skipping it"
-msgstr ""
+msgstr "supportconfig non è disponibile sull'host, saltandolo"
 
 #: shared/utils/tar.go:49
 msgid "Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"
-msgstr ""
+msgstr "Saltare l'estrazione di %[1]s nel file %[2]s quando si risolve al di fuori del percorso di destinazione"
 
 #: shared/utils/tar.go:91
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to write tar.gz to %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile scrivere tar.gz su %s"
 
 #: shared/utils/template.go:25
 #, javascript-format
 msgid "%s file already present, not overwriting"
-msgstr ""
+msgstr "%s file già presente, non sovrascrivendo"
 
 #: shared/utils/template.go:32
 #, javascript-format
 msgid "failed to open %s for writing"
-msgstr ""
+msgstr "impossibile aprire %s per la scrittura"
 
 #: shared/utils/utils.go:59
 #, javascript-format
 msgid "Has to be more than %d character long"
 msgid_plural "Has to be more than %d characters long"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Deve essere lungo più di 1 carattere"
+msgstr[1] "Deve essere lungo più di n caratteri"
 
 #: shared/utils/utils.go:63
 #, javascript-format
@@ -1398,144 +1428,140 @@ msgstr[1] ""
 
 #: shared/utils/utils.go:74
 msgid "Failed to read password"
-msgstr ""
+msgstr "Impossibile leggere la password"
 
 #: shared/utils/utils.go:88
 msgid "Cannot contain spaces or tabs"
-msgstr ""
+msgstr "Impossibile contenere spazi o schede"
 
 #: shared/utils/utils.go:105 shared/utils/utils.go:128
 #: shared/utils/utils.go:141
 msgid "not an interactive device, not asking for missing value"
-msgstr ""
+msgstr "non è un dispositivo interattivo, non chiede valori mancanti"
 
 #: shared/utils/utils.go:114
 msgid "Confirm the password"
-msgstr ""
+msgstr "confermare la password"
 
 #: shared/utils/utils.go:116
 msgid "Two different passwords have been provided"
-msgstr ""
+msgstr "Sono state fornite due password diverse"
 
 #: shared/utils/utils.go:150
-#, fuzzy
 msgid "failed to read input"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile leggere l'input"
 
 #: shared/utils/utils.go:158
 msgid "A value is required"
-msgstr ""
+msgstr "Un valore è obbligatorio"
 
 #: shared/utils/utils.go:226 shared/utils/utils.go:248
 #, javascript-format
 msgid "invalid image name: %s"
-msgstr ""
+msgstr "nome immagine non valido: %s"
 
 #: shared/utils/utils.go:230
 #, javascript-format
 msgid "tag missing on %s"
-msgstr ""
+msgstr "tag mancante su %s"
 
 #: shared/utils/utils.go:235 shared/utils/utils.go:239
 #, javascript-format
 msgid "Computed image name is %s"
-msgstr ""
+msgstr "Il nome dell'immagine calcolata è %s"
 
 #: shared/utils/utils.go:266
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
-msgstr ""
+msgstr "il percorso dell'immagine '%[1]s' non inizia con il percorso del registro '%[2]s'"
 
 #: shared/utils/utils.go:276
 #, javascript-format
 msgid "Failed to run %s"
-msgstr ""
+msgstr "Impossibile eseguire %s"
 
 #: shared/utils/utils.go:285
 msgid "Failed to read random data"
-msgstr ""
+msgstr "Impossibile leggere i dati casuali"
 
 #: shared/utils/utils.go:306
 #, javascript-format
 msgid "error downloading from %s"
-msgstr ""
+msgstr "errore durante il download da %s"
 
 #: shared/utils/utils.go:312
 #, javascript-format
 msgid "bad status: %s"
-msgstr ""
+msgstr "cattivo stato:%s"
 
 #: shared/utils/utils.go:425
-#, fuzzy
 msgid "failed to compute server FQDN"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "impossibile calcolare il server FQDN"
 
 #: shared/utils/utils.go:439
 #, javascript-format
 msgid "%s is not a valid FQDN"
-msgstr ""
+msgstr "%s non è un FQDN valido"
 
 #: shared/utils/utils.go:443
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "cannot resolve %s"
-msgstr "impossible eliminare %s"
+msgstr "impossibile risolvere %s"
 
 #: shared/utils/utils.go:474
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "error creating file %s"
-msgstr "impossibile leggere la configurazione: %s"
+msgstr "errore durante la creazione del file %s"
 
 #: shared/utils/utils.go:479
 #, javascript-format
 msgid "error writing file %s"
-msgstr ""
+msgstr "errore durante la scrittura del file %s"
 
 #: shared/utils/utils.go:491 shared/utils/utils.go:506
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Failed to calculate checksum of the file %s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile calcolare il checksum del file %s"
 
 #: shared/utils/utils.go:496
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
-msgstr ""
+msgstr "Impossibile scrivere il checksum del file %[1]s in %[2]s"
 
 #: shared/utils/utils.go:513
-#, fuzzy
 msgid "Failed to read checksum of the file %[1]s"
-msgstr "mancata creazione della directory temporanea: %s"
+msgstr "Impossibile leggere il checksum del file %[1]s"
 
 #: shared/utils/utils.go:517
 #, javascript-format
 msgid "Checksum of %s does not match"
-msgstr ""
+msgstr "Il checksum di %s non corrisponde"
 
 #: shared/utils/utils.go:525
 msgid "nBytes must be > 0"
-msgstr ""
+msgstr "nBytes deve essere > 0"
 
 #: shared/utils/uyuniservices.go:18
-#, fuzzy
 msgid "Main service"
-msgstr "impossible eliminare %s"
+msgstr "servizio principale"
 
 #: shared/utils/uyuniservices.go:24
 msgid "Migration helper"
-msgstr ""
+msgstr "Aiutante per la migrazione"
 
 #: shared/utils/uyuniservices.go:30
 msgid "Confidential computing attestation"
-msgstr ""
+msgstr "Attestazione informatica riservata"
 
 #: shared/utils/uyuniservices.go:36
 msgid "Hub XML-RPC API"
-msgstr ""
+msgstr "API Hub XML-RPC"
 
 #: shared/utils/uyuniservices.go:42
 msgid "Saline"
-msgstr ""
+msgstr "salino"
 
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
-msgstr ""
+msgstr "Basi di Dati"
 
 #, fuzzy
 #~ msgid "cannot copy tarball"
