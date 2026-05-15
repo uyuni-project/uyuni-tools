@@ -14,8 +14,9 @@ const attestationServiceTemplate = `
 # Use an uyuni-server-attestation.service.d/local.conf file to override
 [Unit]
 Description=Uyuni server attestation container service
-Wants=network.target
-After=network-online.target
+Wants=network.target uyuni-db.service
+After=network-online.target uyuni-db.service
+
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
@@ -41,6 +42,7 @@ PIDFile=%t/uyuni-server-attestation-%i.pid
 TimeoutStopSec=60
 TimeoutStartSec=60
 Type=forking
+
 [Install]
 WantedBy=multi-user.target default.target
 `

@@ -19,6 +19,7 @@ Description=Uyuni database container service
 Wants=network.target
 After=network-online.target
 RequiresMountsFor=%t/containers
+RequiresMountsFor=%S/containers/storage/volumes/var-pgsql %S/containers/storage/volumes/var-pgsql-walbackup
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
