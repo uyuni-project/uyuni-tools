@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-29 13:25+0200\n"
-"PO-Revision-Date: 2026-05-12 12:04+0000\n"
-"Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
+"PO-Revision-Date: 2026-05-15 15:46+0000\n"
+"Last-Translator: Thomas Florio <thomas.florio@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.5\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -309,7 +309,7 @@ msgstr "non è possibile recuperare configmap"
 #: shared/kubernetes/support.go:63
 #, javascript-format
 msgid "cannot check for pods in %s"
-msgstr "impossibile verificare la presenza di pod in % s"
+msgstr "impossibile verificare la presenza di pod in %s"
 
 #: shared/kubernetes/support.go:70
 #, javascript-format
@@ -397,7 +397,7 @@ msgstr "Utilizzando l'immagine %[1]s caricata dall'RPM invece della sua versione
 
 #: shared/podman/images.go:105
 msgid "failed to determine image"
-msgstr "mancata identificazione dell'immagine:"
+msgstr "mancata identificazione dell'immagine"
 
 #: shared/podman/images.go:113
 msgid "failed to find the image of the currently running server container"
@@ -968,7 +968,7 @@ msgstr ""
 #: shared/ssl/ssl.go:175
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
-msgstr "Impossibile analizzare la data di inizio: % s\n"
+msgstr "Impossibile analizzare la data di inizio: %s\n"
 
 #: shared/ssl/ssl.go:181
 #, javascript-format
@@ -1309,7 +1309,7 @@ msgstr "Rimozione del file %s"
 #: shared/utils/files.go:73
 #, javascript-format
 msgid "Failed to remove file %s"
-msgstr "Impossibile rimuovere il file"
+msgstr "Impossibile rimuovere il file %s"
 
 #: shared/utils/files.go:83
 msgid "failed to create temporary directory"
@@ -1374,7 +1374,7 @@ msgstr "Preparazione del tarball"
 #: shared/utils/support.go:62
 #, javascript-format
 msgid "failed to add %s to tarball"
-msgstr "impossibile aggiungere al tarball"
+msgstr "impossibile aggiungere %s al tarball"
 
 #: shared/utils/support.go:66
 #, javascript-format
@@ -1416,8 +1416,8 @@ msgstr "impossibile aprire %s per la scrittura"
 #, javascript-format
 msgid "Has to be more than %d character long"
 msgid_plural "Has to be more than %d characters long"
-msgstr[0] "Deve essere lungo più di 1 carattere"
-msgstr[1] "Deve essere lungo più di n caratteri"
+msgstr[0] "Deve essere lungo più di %d carattere"
+msgstr[1] "Deve essere lungo più di %d caratteri"
 
 #: shared/utils/utils.go:63
 #, javascript-format
