@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-07 19:56+0200\n"
+"POT-Creation-Date: 2026-05-16 16:31+0200\n"
 "PO-Revision-Date: 2025-11-26 11:01+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/de/>\n"
@@ -1548,105 +1548,87 @@ msgstr ""
 msgid "Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:173
+#: mgradm/shared/podman/ssl.go:170
 msgid "Verifying the CA key password…"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:184
+#: mgradm/shared/podman/ssl.go:181
 msgid "Failed to verify the CA key password!"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:202
+#: mgradm/shared/podman/ssl.go:199
 msgid "Reusing the existing server certificate secrets"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:207
+#: mgradm/shared/podman/ssl.go:203
 #, fuzzy
 #| msgid "Server certificate path"
 msgid "Reusing the existing database certificate secrets"
 msgstr "Pfad des Serverzertifikats"
 
-#: mgradm/shared/podman/ssl.go:259
+#: mgradm/shared/podman/ssl.go:255
 msgid "Missing SANs or subjects in certificate of secret %[1]: %[2]s"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:293
+#: mgradm/shared/podman/ssl.go:289
 msgid "Reusing the existing server certificate files"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:305
+#: mgradm/shared/podman/ssl.go:301
 #, fuzzy
 #| msgid "Server certificate path"
 msgid "Reusing the existing database certificate files"
 msgstr "Pfad des Serverzertifikats"
 
-#: mgradm/shared/podman/ssl.go:314
+#: mgradm/shared/podman/ssl.go:310
 #, javascript-format
 msgid "CA file %s not found."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:319
+#: mgradm/shared/podman/ssl.go:315
 msgid "cannot write existing CA certificate"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:326
+#: mgradm/shared/podman/ssl.go:322
 #, javascript-format
 msgid "Certificate file %s not found."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:330
+#: mgradm/shared/podman/ssl.go:326
 msgid "cannot write existing server certificate"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:335
+#: mgradm/shared/podman/ssl.go:331
 msgid "Certificate file %[1]s doesn't match %[2]s FQDN."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:343
+#: mgradm/shared/podman/ssl.go:339
 #, javascript-format
 msgid "Certificate key file %s not found."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:347
+#: mgradm/shared/podman/ssl.go:343
 msgid "cannot write existing server key"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:398
+#: mgradm/shared/podman/ssl.go:394
 msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:400
+#: mgradm/shared/podman/ssl.go:396
 #, fuzzy
 #| msgid "Server certificate path"
 msgid "Generating the server certificate…"
 msgstr "Pfad des Serverzertifikats"
 
-#: mgradm/shared/podman/ssl.go:420
+#: mgradm/shared/podman/ssl.go:416
 msgid "Failed to generate server SSL certificate. Please check the input parameters."
 msgstr ""
 
-#: mgradm/shared/podman/ssl.go:423
+#: mgradm/shared/podman/ssl.go:419
 #, fuzzy
 #| msgid "Server certificate path"
 msgid "Server SSL certificate generated"
-msgstr "Pfad des Serverzertifikats"
-
-#: mgradm/shared/podman/ssl.go:434
-#, fuzzy
-#| msgid "Server certificate path"
-msgid "Generating the database certificate…"
-msgstr "Pfad des Serverzertifikats"
-
-#: mgradm/shared/podman/ssl.go:453
-#, fuzzy
-#| msgid "Server certificate path"
-msgid "Failed to generate database SSL certificate"
-msgstr "Pfad des Serverzertifikats"
-
-#: mgradm/shared/podman/ssl.go:456
-#, fuzzy
-#| msgid "Server certificate path"
-msgid "Database SSL certificate generated"
 msgstr "Pfad des Serverzertifikats"
 
 #: mgradm/shared/saline/saline.go:50
@@ -1886,6 +1868,21 @@ msgstr ""
 #: mgradm/shared/utils/flags.go:149
 msgid "Not a valid email address"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Server certificate path"
+#~ msgid "Generating the database certificate…"
+#~ msgstr "Pfad des Serverzertifikats"
+
+#, fuzzy
+#~| msgid "Server certificate path"
+#~ msgid "Failed to generate database SSL certificate"
+#~ msgstr "Pfad des Serverzertifikats"
+
+#, fuzzy
+#~| msgid "Server certificate path"
+#~ msgid "Database SSL certificate generated"
+#~ msgstr "Pfad des Serverzertifikats"
 
 #, fuzzy
 #~| msgid "failed to compute image URL"

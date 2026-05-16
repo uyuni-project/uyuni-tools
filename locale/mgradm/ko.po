@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-07 19:56+0200\n"
+"POT-Creation-Date: 2026-05-16 16:31+0200\n"
 "PO-Revision-Date: 2026-04-22 10:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
@@ -1659,92 +1659,80 @@ msgstr "서버 인증서 및 데이터베이스 인증서 중 하나가 누락�
 msgid "Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."
 msgstr "SSL CA 키를 찾을 수 없어 인증서를 생성할 수 없습니다. 타사 인증서를 설정하십시오."
 
-#: mgradm/shared/podman/ssl.go:173
+#: mgradm/shared/podman/ssl.go:170
 msgid "Verifying the CA key password…"
 msgstr "CA 키 비밀번호 확인 중…"
 
-#: mgradm/shared/podman/ssl.go:184
+#: mgradm/shared/podman/ssl.go:181
 msgid "Failed to verify the CA key password!"
 msgstr "CA 키 비밀번호를 확인하지 못했습니다!"
 
-#: mgradm/shared/podman/ssl.go:202
+#: mgradm/shared/podman/ssl.go:199
 msgid "Reusing the existing server certificate secrets"
 msgstr "기존 서버 인증서 시크릿 재사용"
 
-#: mgradm/shared/podman/ssl.go:207
+#: mgradm/shared/podman/ssl.go:203
 msgid "Reusing the existing database certificate secrets"
 msgstr "기존 데이터베이스 인증서 시크릿 재사용"
 
-#: mgradm/shared/podman/ssl.go:259
+#: mgradm/shared/podman/ssl.go:255
 msgid "Missing SANs or subjects in certificate of secret %[1]: %[2]s"
 msgstr "시크릿 %[1]의 인증서에 SAN 또는 주체 없음:"
 
-#: mgradm/shared/podman/ssl.go:293
+#: mgradm/shared/podman/ssl.go:289
 msgid "Reusing the existing server certificate files"
 msgstr "기존 서버 인증서 파일 재사용"
 
-#: mgradm/shared/podman/ssl.go:305
+#: mgradm/shared/podman/ssl.go:301
 msgid "Reusing the existing database certificate files"
 msgstr "기존 데이터베이스 인증서 파일 재사용"
 
-#: mgradm/shared/podman/ssl.go:314
+#: mgradm/shared/podman/ssl.go:310
 #, javascript-format
 msgid "CA file %s not found."
 msgstr "CA 파일 %s이(가) 없습니다."
 
-#: mgradm/shared/podman/ssl.go:319
+#: mgradm/shared/podman/ssl.go:315
 msgid "cannot write existing CA certificate"
 msgstr "기존 CA 인증서를 작성할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:326
+#: mgradm/shared/podman/ssl.go:322
 #, javascript-format
 msgid "Certificate file %s not found."
 msgstr "인증서 파일 %s이(가) 없습니다."
 
-#: mgradm/shared/podman/ssl.go:330
+#: mgradm/shared/podman/ssl.go:326
 msgid "cannot write existing server certificate"
 msgstr "기존 서버 인증서를 작성할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:335
+#: mgradm/shared/podman/ssl.go:331
 msgid "Certificate file %[1]s doesn't match %[2]s FQDN."
 msgstr "인증서 파일 %[1]이(가) %[2] FQDN과 일치하지 않습니다."
 
-#: mgradm/shared/podman/ssl.go:343
+#: mgradm/shared/podman/ssl.go:339
 #, javascript-format
 msgid "Certificate key file %s not found."
 msgstr "인증서 키 파일 %s이(가) 없습니다."
 
-#: mgradm/shared/podman/ssl.go:347
+#: mgradm/shared/podman/ssl.go:343
 msgid "cannot write existing server key"
 msgstr "기존 서버 키를 작성할 수 없음"
 
-#: mgradm/shared/podman/ssl.go:398
+#: mgradm/shared/podman/ssl.go:394
 msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgstr "CA 비밀번호가 없으면 새 인증서를 생성할 수 없습니다. 입력 옵션을 확인하십시오."
 
-#: mgradm/shared/podman/ssl.go:400
+#: mgradm/shared/podman/ssl.go:396
 msgid "Generating the server certificate…"
 msgstr "서버 인증서 생성 중…"
 
-#: mgradm/shared/podman/ssl.go:420
+#: mgradm/shared/podman/ssl.go:416
 msgid "Failed to generate server SSL certificate. Please check the input parameters."
 msgstr "서버 SSL 인증서를 생성하지 못했습니다. 입력 파라미터를 확인하십시오."
 
-#: mgradm/shared/podman/ssl.go:423
+#: mgradm/shared/podman/ssl.go:419
 msgid "Server SSL certificate generated"
 msgstr "서버 SSL 인증서 생성됨"
-
-#: mgradm/shared/podman/ssl.go:434
-msgid "Generating the database certificate…"
-msgstr "데이터베이스 인증서 생성 중…"
-
-#: mgradm/shared/podman/ssl.go:453
-msgid "Failed to generate database SSL certificate"
-msgstr "데이터베이스 SSL 인증서를 생성하지 못함"
-
-#: mgradm/shared/podman/ssl.go:456
-msgid "Database SSL certificate generated"
-msgstr "데이터베이스 SSL 인증서 생성됨"
 
 #: mgradm/shared/saline/saline.go:50
 #, fuzzy
@@ -1996,6 +1984,15 @@ msgstr "문자, 숫자 . _ 및 -만 포함할 수 있음"
 #: mgradm/shared/utils/flags.go:149
 msgid "Not a valid email address"
 msgstr "유효한 전자 메일 주소 아님"
+
+#~ msgid "Generating the database certificate…"
+#~ msgstr "데이터베이스 인증서 생성 중…"
+
+#~ msgid "Failed to generate database SSL certificate"
+#~ msgstr "데이터베이스 SSL 인증서를 생성하지 못함"
+
+#~ msgid "Database SSL certificate generated"
+#~ msgstr "데이터베이스 SSL 인증서 생성됨"
 
 #, fuzzy
 #~| msgid "Run setup command in the container"

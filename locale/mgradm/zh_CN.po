@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-07 19:56+0200\n"
+"POT-Creation-Date: 2026-05-16 16:31+0200\n"
 "PO-Revision-Date: 2026-01-19 09:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
@@ -1659,92 +1659,80 @@ msgstr "正在生成服务器和数据库证书，原因是缺少其中一个证
 msgid "Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."
 msgstr "未找到 SSL CA 密钥，无法生成证书。请设置第三方证书。"
 
-#: mgradm/shared/podman/ssl.go:173
+#: mgradm/shared/podman/ssl.go:170
 msgid "Verifying the CA key password…"
 msgstr "正在验证 CA 密钥口令…"
 
-#: mgradm/shared/podman/ssl.go:184
+#: mgradm/shared/podman/ssl.go:181
 msgid "Failed to verify the CA key password!"
 msgstr "CA 密钥口令验证失败！"
 
-#: mgradm/shared/podman/ssl.go:202
+#: mgradm/shared/podman/ssl.go:199
 msgid "Reusing the existing server certificate secrets"
 msgstr "正在重复使用现有服务器证书机密"
 
-#: mgradm/shared/podman/ssl.go:207
+#: mgradm/shared/podman/ssl.go:203
 msgid "Reusing the existing database certificate secrets"
 msgstr "正在重复使用现有数据库证书机密"
 
-#: mgradm/shared/podman/ssl.go:259
+#: mgradm/shared/podman/ssl.go:255
 msgid "Missing SANs or subjects in certificate of secret %[1]: %[2]s"
 msgstr "机密 %[1] 的证书中缺少 SAN 或主体：%[2]s"
 
-#: mgradm/shared/podman/ssl.go:293
+#: mgradm/shared/podman/ssl.go:289
 msgid "Reusing the existing server certificate files"
 msgstr "正在重复使用现有服务器证书文件"
 
-#: mgradm/shared/podman/ssl.go:305
+#: mgradm/shared/podman/ssl.go:301
 msgid "Reusing the existing database certificate files"
 msgstr "正在重复使用现有数据库证书文件"
 
-#: mgradm/shared/podman/ssl.go:314
+#: mgradm/shared/podman/ssl.go:310
 #, javascript-format
 msgid "CA file %s not found."
 msgstr "找不到 CA 文件 %s。"
 
-#: mgradm/shared/podman/ssl.go:319
+#: mgradm/shared/podman/ssl.go:315
 msgid "cannot write existing CA certificate"
 msgstr "无法写入现有 CA 证书"
 
-#: mgradm/shared/podman/ssl.go:326
+#: mgradm/shared/podman/ssl.go:322
 #, javascript-format
 msgid "Certificate file %s not found."
 msgstr "找不到证书文件 %s。"
 
-#: mgradm/shared/podman/ssl.go:330
+#: mgradm/shared/podman/ssl.go:326
 msgid "cannot write existing server certificate"
 msgstr "无法写入现有服务器证书"
 
-#: mgradm/shared/podman/ssl.go:335
+#: mgradm/shared/podman/ssl.go:331
 msgid "Certificate file %[1]s doesn't match %[2]s FQDN."
 msgstr "证书文件 %[1]s 与 %[2]s 的 FQDN 不匹配。"
 
-#: mgradm/shared/podman/ssl.go:343
+#: mgradm/shared/podman/ssl.go:339
 #, javascript-format
 msgid "Certificate key file %s not found."
 msgstr "找不到证书密钥文件 %s。"
 
-#: mgradm/shared/podman/ssl.go:347
+#: mgradm/shared/podman/ssl.go:343
 msgid "cannot write existing server key"
 msgstr "无法写入现有服务器密钥"
 
-#: mgradm/shared/podman/ssl.go:398
+#: mgradm/shared/podman/ssl.go:394
 msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgstr "无 CA 口令无法生成新证书，请检查输入选项"
 
-#: mgradm/shared/podman/ssl.go:400
+#: mgradm/shared/podman/ssl.go:396
 msgid "Generating the server certificate…"
 msgstr "正在生成服务器证书…"
 
-#: mgradm/shared/podman/ssl.go:420
+#: mgradm/shared/podman/ssl.go:416
 msgid "Failed to generate server SSL certificate. Please check the input parameters."
 msgstr "服务器 SSL 证书生成失败，请检查输入参数。"
 
-#: mgradm/shared/podman/ssl.go:423
+#: mgradm/shared/podman/ssl.go:419
 msgid "Server SSL certificate generated"
 msgstr "已生成服务器 SSL 证书"
-
-#: mgradm/shared/podman/ssl.go:434
-msgid "Generating the database certificate…"
-msgstr "正在生成数据库证书…"
-
-#: mgradm/shared/podman/ssl.go:453
-msgid "Failed to generate database SSL certificate"
-msgstr "数据库 SSL 证书生成失败"
-
-#: mgradm/shared/podman/ssl.go:456
-msgid "Database SSL certificate generated"
-msgstr "已生成数据库 SSL 证书"
 
 #: mgradm/shared/saline/saline.go:50
 #, fuzzy
@@ -1996,6 +1984,15 @@ msgstr "只能包含字母、数字 . _ 和 -"
 #: mgradm/shared/utils/flags.go:149
 msgid "Not a valid email address"
 msgstr "不是有效的电子邮件地址"
+
+#~ msgid "Generating the database certificate…"
+#~ msgstr "正在生成数据库证书…"
+
+#~ msgid "Failed to generate database SSL certificate"
+#~ msgstr "数据库 SSL 证书生成失败"
+
+#~ msgid "Database SSL certificate generated"
+#~ msgstr "已生成数据库 SSL 证书"
 
 #, fuzzy
 #~| msgid "Run setup command in the container"
