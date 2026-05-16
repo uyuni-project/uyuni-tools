@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-07 19:56+0200\n"
+"POT-Creation-Date: 2026-05-16 16:31+0200\n"
 "PO-Revision-Date: 2026-05-16 14:19+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
@@ -1600,92 +1600,80 @@ msgstr "Generazione sia dei certificati del server che del database poiché ne m
 msgid "Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."
 msgstr "Impossibile generare certificati poiché non è possibile trovare la chiave SSL CA. Si prega di impostare certificati di terze parti."
 
-#: mgradm/shared/podman/ssl.go:173
+#: mgradm/shared/podman/ssl.go:170
 msgid "Verifying the CA key password…"
 msgstr "Verifica della password della chiave CA…"
 
-#: mgradm/shared/podman/ssl.go:184
+#: mgradm/shared/podman/ssl.go:181
 msgid "Failed to verify the CA key password!"
 msgstr "Impossibile verificare la password della chiave CA!"
 
-#: mgradm/shared/podman/ssl.go:202
+#: mgradm/shared/podman/ssl.go:199
 msgid "Reusing the existing server certificate secrets"
 msgstr "Riutilizzo dei segreti del certificato del server esistente"
 
-#: mgradm/shared/podman/ssl.go:207
+#: mgradm/shared/podman/ssl.go:203
 msgid "Reusing the existing database certificate secrets"
 msgstr "Riutilizzo dei segreti dei certificati del database esistenti"
 
-#: mgradm/shared/podman/ssl.go:259
+#: mgradm/shared/podman/ssl.go:255
 msgid "Missing SANs or subjects in certificate of secret %[1]: %[2]s"
 msgstr "SAN o soggetti mancanti nel certificato segreto %[1]: %[2]s"
 
-#: mgradm/shared/podman/ssl.go:293
+#: mgradm/shared/podman/ssl.go:289
 msgid "Reusing the existing server certificate files"
 msgstr "Riutilizzo dei file di certificato del server esistenti"
 
-#: mgradm/shared/podman/ssl.go:305
+#: mgradm/shared/podman/ssl.go:301
 msgid "Reusing the existing database certificate files"
 msgstr "Riutilizzo dei file di certificati del database esistenti"
 
-#: mgradm/shared/podman/ssl.go:314
+#: mgradm/shared/podman/ssl.go:310
 #, javascript-format
 msgid "CA file %s not found."
 msgstr "File CA %s non trovato."
 
-#: mgradm/shared/podman/ssl.go:319
+#: mgradm/shared/podman/ssl.go:315
 msgid "cannot write existing CA certificate"
 msgstr "non è possibile scrivere il certificato CA esistente"
 
-#: mgradm/shared/podman/ssl.go:326
+#: mgradm/shared/podman/ssl.go:322
 #, javascript-format
 msgid "Certificate file %s not found."
 msgstr "File di certificato %s non trovato."
 
-#: mgradm/shared/podman/ssl.go:330
+#: mgradm/shared/podman/ssl.go:326
 msgid "cannot write existing server certificate"
 msgstr "impossibile scrivere il certificato del server esistente"
 
-#: mgradm/shared/podman/ssl.go:335
+#: mgradm/shared/podman/ssl.go:331
 msgid "Certificate file %[1]s doesn't match %[2]s FQDN."
 msgstr "Il file di certificato %[1]s non corrisponde a %[2]s FQDN."
 
-#: mgradm/shared/podman/ssl.go:343
+#: mgradm/shared/podman/ssl.go:339
 #, javascript-format
 msgid "Certificate key file %s not found."
 msgstr "File chiave del certificato %s non trovato."
 
-#: mgradm/shared/podman/ssl.go:347
+#: mgradm/shared/podman/ssl.go:343
 msgid "cannot write existing server key"
 msgstr "impossibile scrivere la chiave del server esistente"
 
-#: mgradm/shared/podman/ssl.go:398
+#: mgradm/shared/podman/ssl.go:394
 msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgstr "Impossibile generare nuovi certificati senza una password CA. Si prega di controllare le opzioni di input"
 
-#: mgradm/shared/podman/ssl.go:400
+#: mgradm/shared/podman/ssl.go:396
 msgid "Generating the server certificate…"
 msgstr "Generazione del certificato del server…"
 
-#: mgradm/shared/podman/ssl.go:420
+#: mgradm/shared/podman/ssl.go:416
 msgid "Failed to generate server SSL certificate. Please check the input parameters."
 msgstr "Impossibile generare il certificato SSL del server. Si prega di controllare i parametri di input."
 
-#: mgradm/shared/podman/ssl.go:423
+#: mgradm/shared/podman/ssl.go:419
 msgid "Server SSL certificate generated"
 msgstr "Certificato SSL del server generato"
-
-#: mgradm/shared/podman/ssl.go:434
-msgid "Generating the database certificate…"
-msgstr "Generazione del certificato del database…"
-
-#: mgradm/shared/podman/ssl.go:453
-msgid "Failed to generate database SSL certificate"
-msgstr "Impossibile generare il certificato SSL del database"
-
-#: mgradm/shared/podman/ssl.go:456
-msgid "Database SSL certificate generated"
-msgstr "Certificato SSL del database generato"
 
 #: mgradm/shared/saline/saline.go:50
 msgid "Not altering the Saline service"
@@ -1935,6 +1923,15 @@ msgstr "Può contenere solo lettere, cifre . _ e -"
 #: mgradm/shared/utils/flags.go:149
 msgid "Not a valid email address"
 msgstr "Non è un indirizzo email valido"
+
+#~ msgid "Generating the database certificate…"
+#~ msgstr "Generazione del certificato del database…"
+
+#~ msgid "Failed to generate database SSL certificate"
+#~ msgstr "Impossibile generare il certificato SSL del database"
+
+#~ msgid "Database SSL certificate generated"
+#~ msgstr "Certificato SSL del database generato"
 
 #, fuzzy
 #~ msgid "Run setup command"

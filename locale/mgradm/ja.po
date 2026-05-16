@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-07 19:56+0200\n"
+"POT-Creation-Date: 2026-05-16 16:31+0200\n"
 "PO-Revision-Date: 2026-01-19 09:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
@@ -1659,92 +1659,80 @@ msgstr "サーバ証明書とデータベース証明書の両方を生成する
 msgid "Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."
 msgstr "SSL CAキーが見つからないため、証明書を生成できません。サードパーティ証明書を設定してください。"
 
-#: mgradm/shared/podman/ssl.go:173
+#: mgradm/shared/podman/ssl.go:170
 msgid "Verifying the CA key password…"
 msgstr "CAキーのパスワードを検証中…"
 
-#: mgradm/shared/podman/ssl.go:184
+#: mgradm/shared/podman/ssl.go:181
 msgid "Failed to verify the CA key password!"
 msgstr "CAキーのパスワードの検証に失敗しました。"
 
-#: mgradm/shared/podman/ssl.go:202
+#: mgradm/shared/podman/ssl.go:199
 msgid "Reusing the existing server certificate secrets"
 msgstr "既存のサーバ証明書のシークレットを再利用する"
 
-#: mgradm/shared/podman/ssl.go:207
+#: mgradm/shared/podman/ssl.go:203
 msgid "Reusing the existing database certificate secrets"
 msgstr "既存のデータベース証明書のシークレットを再利用する"
 
-#: mgradm/shared/podman/ssl.go:259
+#: mgradm/shared/podman/ssl.go:255
 msgid "Missing SANs or subjects in certificate of secret %[1]: %[2]s"
 msgstr "シークレットの証明書 %[1] にSANまたはサブジェクトがありません: %[2]s"
 
-#: mgradm/shared/podman/ssl.go:293
+#: mgradm/shared/podman/ssl.go:289
 msgid "Reusing the existing server certificate files"
 msgstr "既存のサーバ証明書ファイルを再利用する"
 
-#: mgradm/shared/podman/ssl.go:305
+#: mgradm/shared/podman/ssl.go:301
 msgid "Reusing the existing database certificate files"
 msgstr "既存のデータベース証明書ファイルを再利用する"
 
-#: mgradm/shared/podman/ssl.go:314
+#: mgradm/shared/podman/ssl.go:310
 #, javascript-format
 msgid "CA file %s not found."
 msgstr "CAファイル %s が見つかりません。"
 
-#: mgradm/shared/podman/ssl.go:319
+#: mgradm/shared/podman/ssl.go:315
 msgid "cannot write existing CA certificate"
 msgstr "既存のCA証明書を書き込めません"
 
-#: mgradm/shared/podman/ssl.go:326
+#: mgradm/shared/podman/ssl.go:322
 #, javascript-format
 msgid "Certificate file %s not found."
 msgstr "証明書ファイル %s が見つかりません。"
 
-#: mgradm/shared/podman/ssl.go:330
+#: mgradm/shared/podman/ssl.go:326
 msgid "cannot write existing server certificate"
 msgstr "既存のサーバ証明書を書き込めません"
 
-#: mgradm/shared/podman/ssl.go:335
+#: mgradm/shared/podman/ssl.go:331
 msgid "Certificate file %[1]s doesn't match %[2]s FQDN."
 msgstr "証明書ファイル %[1]s が %[2]s のFQDNと一致しません。"
 
-#: mgradm/shared/podman/ssl.go:343
+#: mgradm/shared/podman/ssl.go:339
 #, javascript-format
 msgid "Certificate key file %s not found."
 msgstr "証明書キーファイル %s が見つかりません。"
 
-#: mgradm/shared/podman/ssl.go:347
+#: mgradm/shared/podman/ssl.go:343
 msgid "cannot write existing server key"
 msgstr "既存のサーバキーを書き込めません"
 
-#: mgradm/shared/podman/ssl.go:398
+#: mgradm/shared/podman/ssl.go:394
 msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgstr "CAパスワードがないと新しい証明書を生成できません。入力オプションを確認してください"
 
-#: mgradm/shared/podman/ssl.go:400
+#: mgradm/shared/podman/ssl.go:396
 msgid "Generating the server certificate…"
 msgstr "サーバ証明書を生成しています…"
 
-#: mgradm/shared/podman/ssl.go:420
+#: mgradm/shared/podman/ssl.go:416
 msgid "Failed to generate server SSL certificate. Please check the input parameters."
 msgstr "サーバSSL証明書の生成に失敗しました。入力パラメータを確認してください。"
 
-#: mgradm/shared/podman/ssl.go:423
+#: mgradm/shared/podman/ssl.go:419
 msgid "Server SSL certificate generated"
 msgstr "サーバSSL証明書が生成されました"
-
-#: mgradm/shared/podman/ssl.go:434
-msgid "Generating the database certificate…"
-msgstr "データベース証明書を生成しています…"
-
-#: mgradm/shared/podman/ssl.go:453
-msgid "Failed to generate database SSL certificate"
-msgstr "データベースSSL証明書を生成できませんでした"
-
-#: mgradm/shared/podman/ssl.go:456
-msgid "Database SSL certificate generated"
-msgstr "データベースSSL証明書が生成されました"
 
 #: mgradm/shared/saline/saline.go:50
 #, fuzzy
@@ -1996,6 +1984,15 @@ msgstr "文字、数字 ._ -のみを含めることができます"
 #: mgradm/shared/utils/flags.go:149
 msgid "Not a valid email address"
 msgstr "有効な電子メールアドレスではありません"
+
+#~ msgid "Generating the database certificate…"
+#~ msgstr "データベース証明書を生成しています…"
+
+#~ msgid "Failed to generate database SSL certificate"
+#~ msgstr "データベースSSL証明書を生成できませんでした"
+
+#~ msgid "Database SSL certificate generated"
+#~ msgstr "データベースSSL証明書が生成されました"
 
 #, fuzzy
 #~| msgid "Run setup command in the container"
