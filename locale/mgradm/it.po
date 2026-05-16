@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-07 19:56+0200\n"
-"PO-Revision-Date: 2026-05-12 12:05+0000\n"
-"Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
+"PO-Revision-Date: 2026-05-16 14:19+0000\n"
+"Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.5\n"
 
 #: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
@@ -298,9 +298,9 @@ msgid "Aborting volume purge"
 msgstr "Interruzione dell'eliminazione del volume"
 
 #: mgradm/cmd/backup/db/disable.go:54
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "Backup volume '%s' removed"
-msgstr "Volume di backup rimosso"
+msgstr "Volume di backup rimosso '%s'"
 
 #: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:67
 #: mgradm/cmd/backup/db/rebase.go:29
@@ -725,9 +725,9 @@ msgid "unable to read distribution treeinfo. Please provide distribution details
 msgstr "impossibile leggere le informazioni sull'albero di distribuzione. Si prega di fornire dettagli sulla distribuzione e/o etichetta del canale"
 
 #: mgradm/cmd/distro/detect.go:167
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "distribution treeinfo %s does not exists. Please provide distribution details and/or channel label"
-msgstr "la distribuzione treeinfo non esiste. Si prega di fornire dettagli sulla distribuzione e/o etichetta del canale"
+msgstr "la distribuzione treeinfo %s non esiste. Si prega di fornire dettagli sulla distribuzione e/o etichetta del canale"
 
 #: mgradm/cmd/distro/distro.go:40
 msgid ""
@@ -878,7 +878,7 @@ msgstr "impossibile scaricare %s"
 #: mgradm/cmd/gpg/add/gpg.go:102
 #, javascript-format
 msgid "failed to show key %s"
-msgstr "impossibile mostrare la chiave%s"
+msgstr "impossibile mostrare la chiave %s"
 
 #: mgradm/cmd/gpg/add/gpg.go:106
 msgid "Do you really want to trust this key"
@@ -1219,9 +1219,9 @@ msgid "failed to find server image"
 msgstr "impossibile trovare l'immagine del server"
 
 #: mgradm/cmd/support/ptf/utils.go:101
-#, javascript-format
+#, fuzzy, javascript-format
 msgid "The computed PTF image is %s"
-msgstr "L'immagine PTF calcolata è"
+msgstr "L'immagine PTF calcolata è %s"
 
 #: mgradm/cmd/support/ptf/utils.go:122 mgradm/cmd/support/ptf/utils.go:126
 msgid "The %[1]s service image is %[2]s"
