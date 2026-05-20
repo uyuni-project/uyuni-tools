@@ -54,6 +54,14 @@ func extract(_ *types.GlobalFlags, flags *configFlags, _ *cobra.Command, _ []str
 	var fileListHost []string
 	if systemd.HasService(podman.ServerService) {
 		fileListHost, err = podman.RunSupportConfigOnPodmanHost(systemd, tmpDir)
+	} else {
+		// Running on Kubernetes - collect cluster data
+		namespace, errNs := cnx.GetNamespace("")
+		if errNs != nil {
+			log.Warn().Err(errNs).Msg(L("failed to get namespace for Kubernetes support config"))
+		} else {
+			fileListHost, err = kubernetes.RunSupportConfigOnKubernetesHost(tmpDir, namespace, kubernetes.ServerFilter)
+		}
 	}
 	defer filesRemover(fileListHost)
 	if err != nil {

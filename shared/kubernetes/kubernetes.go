@@ -54,9 +54,6 @@ func CheckCluster() (*ClusterInfos, error) {
 
 	var infos ClusterInfos
 	infos.KubeletVersion = string(out)
-	if err != nil {
-		return nil, err
-	}
 
 	return &infos, nil
 }
