@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Thu May 21 17:17:40 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10-0
+  * Preserve hub replicas during upgrade (bsc#1262708)
+  * Add mgrctl commands "ssh" and "ssh remove_known_host"
+  * Use a startup check with no limit for the main server container
+    (bsc#1263157)
+  * Make uyuni-server service dependent on uyuni-db
+    (bsc#1263823)
+  * Internal SANs for db and reportdb are no longer required
+  * Generate the same certificate for server and reportdb
+  * Set the Go version as a minimum on Ubuntu
+  * Re-add changelogs from 5.1 lost due to change the base:
+    * Update the default tag to 5.1.3.1 (bsc#1262760)
+    * Remove waitForTraefik function (bsc#1261902)
+    * Fix inspect: missing registry for db image (bsc#1259739)
+    * Use correct CA for Report DB (bsc#1260806)
+
+-------------------------------------------------------------------
 Wed Apr 29 14:10:57 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.9-0
