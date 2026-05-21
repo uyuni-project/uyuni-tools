@@ -35,6 +35,7 @@ const (
 	defaultApacheConf     = "/etc/uyuni/proxy/apache.conf"
 	defaultSquidConf      = "/etc/uyuni/proxy/squid.conf"
 	defaultSSHConf        = "/etc/uyuni/proxy/ssh.conf"
+	defaultSaltBrokerConf = "/etc/uyuni/proxy/salt-broker.conf"
 	ServiceHTTPd          = "uyuni-proxy-httpd"
 	ServiceSSH            = "uyuni-proxy-ssh"
 	ServiceSquid          = "uyuni-proxy-squid"
@@ -119,7 +120,20 @@ func GenerateSystemdService(
 		dataSaltBroker := templates.SaltBrokerTemplateData{
 			HTTPProxyFile: httpProxyConfig,
 		}
-		if err := systemdGenerator(dataSaltBroker, "salt-broker", saltBrokerImage, ""); err != nil {
+		additionSaltBrokerTuningSettings := ""
+		additionSaltBrokerConfPath, err := getPathOrDefault(flags.Tuning.Salt, defaultSaltBrokerConf)
+		if err != nil {
+			return err
+		}
+		if additionSaltBrokerConfPath != "" {
+			additionSaltBrokerTuningSettings = fmt.Sprintf(
+				`Environment=SALT_BROKER_EXTRA_CONF=-v%s:/etc/salt/broker.d/50-tuning.yaml:ro`,
+				additionSaltBrokerConfPath,
+			)
+		}
+		if err := systemdGenerator(dataSaltBroker, "salt-broker", saltBrokerImage,
+			additionSaltBrokerTuningSettings,
+		); err != nil {
 			return err
 		}
 	}

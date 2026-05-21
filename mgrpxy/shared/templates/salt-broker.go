@@ -34,7 +34,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	{{- if .HTTPProxyFile }}
 	-v {{ .HTTPProxyFile }}:{{ .HTTPProxyFile }}:ro \
 	{{- end }}
-	--name uyuni-proxy-salt-broker \
+	${SALT_BROKER_EXTRA_CONF} --name uyuni-proxy-salt-broker \
 	${UYUNI_IMAGE}'
 
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/uyuni-proxy-salt-broker.ctr-id -t 10
