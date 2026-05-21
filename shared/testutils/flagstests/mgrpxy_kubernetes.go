@@ -29,6 +29,7 @@ var ImageProxyFlagsTestArgs = []string{
 	"--tuning-httpd", "path/to/httpd.conf",
 	"--tuning-squid", "path/to/squid.conf",
 	"--tuning-ssh", "path/to/ssh.conf",
+	"--tuning-saltbroker", "path/to/saltbroker.conf",
 	"--registry-host", "myregistry.com",
 	"--registry-user", "user",
 	"--registry-password", "password",
@@ -55,4 +56,5 @@ func AssertProxyImageFlags(t *testing.T, flags *utils.ProxyImageFlags) {
 	testutils.AssertEquals(t, "Error parsing --tuning-httpd", "path/to/httpd.conf", flags.Tuning.Httpd)
 	testutils.AssertEquals(t, "Error parsing --tuning-squid", "path/to/squid.conf", flags.Tuning.Squid)
 	testutils.AssertEquals(t, "Error parsing --tuning-ssh", "path/to/ssh.conf", flags.Tuning.SSH)
+	testutils.AssertEquals(t, "Error parsing --tuning-saltbroker", "path/to/saltbroker.conf", flags.Tuning.Salt)
 }
