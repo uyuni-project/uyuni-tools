@@ -307,26 +307,34 @@ func (c *Connection) ExecScript(script string) ([]byte, error) {
 }
 
 // Healthcheck runs healthcheck command inside the container.
-func (c *Connection) Healthcheck() ([]byte, error) {
+func (c *Connection) Healthcheck() error {
 	if c.podName == "" {
 		if _, err := c.GetPodName(); c.podName == "" {
-			return nil, utils.Errorf(err, L("Healthcheck not executed"))
+			return utils.Errorf(err, L("Healthcheck not executed"))
 		}
 	}
 
 	cmd, cmdErr := c.GetCommand()
 	if cmdErr != nil {
-		return nil, cmdErr
+		return cmdErr
 	}
 
 	if cmd == "host" {
 		// Healthcheck not supported on host, always return nil
-		return nil, nil
+		return nil
 	}
 
-	cmdArgs := []string{"healthcheck", "run", c.podName}
+	cmdArgs := []string{"inspect", "--format", "{{ .State.Health.Status }}", c.podName}
 
-	return runner(cmd, cmdArgs...).Log(zerolog.DebugLevel).Spinner("").Exec()
+	out, err := runner(cmd, cmdArgs...).Log(zerolog.DebugLevel).Spinner("").Exec()
+	if err != nil {
+		return err
+	}
+	outStr := strings.TrimSpace(string(out))
+	if outStr != "healthy" && outStr != "running" {
+		return errors.New(L("not healthy or running"))
+	}
+	return nil
 }
 
 // WaitForContainer waits up to 10 sec for the container to appear.
@@ -380,7 +388,7 @@ func (c *Connection) WaitForHealthcheck() error {
 		}
 		// once here, container started at least once, clear startupTimeout
 		startupTimeout = 0
-		_, err := c.Healthcheck()
+		err := c.Healthcheck()
 		if err != nil {
 			log.Debug().Err(err)
 			time.Sleep(1 * time.Second)
