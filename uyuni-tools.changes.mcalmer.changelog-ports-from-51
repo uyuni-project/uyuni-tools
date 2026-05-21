@@ -1,0 +1,5 @@
+- Re-add changelogs from 5.1 lost due to change the base:
+  * Update the default tag to 5.1.3.1 (bsc#1262760)
+  * Remove waitForTraefik function (bsc#1261902)
+  * Fix inspect: missing registry for db image (bsc#1259739)
+  * Use correct CA for Report DB (bsc#1260806)
