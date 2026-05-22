@@ -1,2 +1,0 @@
-- Do not call podman healthcheck run to wait for pods to be ready
-  (bsc#1266012)

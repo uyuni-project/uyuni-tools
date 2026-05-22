@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 22 16:32:18 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.11-0
+  * Do not call podman healthcheck run to wait for pods to be ready
+    (bsc#1266012)
+
+-------------------------------------------------------------------
 Thu May 21 17:17:40 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.10-0
