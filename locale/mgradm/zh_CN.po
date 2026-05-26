@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-16 16:31+0200\n"
-"PO-Revision-Date: 2026-01-19 09:04+0000\n"
-"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
+"PO-Revision-Date: 2026-05-26 05:12+0000\n"
+"Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 2026.5\n"
 
 #: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
@@ -232,219 +232,183 @@ msgid "failed to create Systemd backup tarball: %w"
 msgstr "无法创建 systemd 备份 Tar 包：%w"
 
 #: mgradm/cmd/backup/db/cmd.go:19
-#, fuzzy
-#| msgid "Database name"
 msgid "Database backup management"
-msgstr "数据库名称"
+msgstr "数据库备份管理"
 
 #: mgradm/cmd/backup/db/cmd.go:20
-#, fuzzy
-#| msgid "Tools for local backup management"
 msgid "Tools for online database backup management"
-msgstr "用于管理本地备份的工具"
+msgstr "用于在线管理数据库备份的工具"
 
 #: mgradm/cmd/backup/db/cmd.go:34
 msgid "Enable continuous archiving backup"
-msgstr ""
+msgstr "启用连续归档备份"
 
 #: mgradm/cmd/backup/db/cmd.go:39
 msgid "Reconfigure already configured backup"
-msgstr ""
+msgstr "重新配置已配置的备份"
 
 #: mgradm/cmd/backup/db/cmd.go:48
 msgid "Rebase continuous archiving backup"
-msgstr ""
+msgstr "重置连续归档备份的基准"
 
 #: mgradm/cmd/backup/db/cmd.go:61
 msgid "Disable continuous archiving backup"
-msgstr ""
+msgstr "禁用连续归档备份"
 
 #: mgradm/cmd/backup/db/cmd.go:66
 msgid "Don't ask for confirmation when purging volume"
-msgstr ""
+msgstr "清除卷时无需确认"
 
 #: mgradm/cmd/backup/db/cmd.go:67
-#, fuzzy
-#| msgid "Failed to remove volume %s"
 msgid "Also remove the volume"
-msgstr "无法去除卷 %s"
+msgstr "同时去除该卷"
 
 #: mgradm/cmd/backup/db/cmd.go:76
 msgid "Check WAL based database backup status"
-msgstr ""
+msgstr "检查基于 WAL 的数据库备份状态"
 
 #: mgradm/cmd/backup/db/cmd.go:88
-#, fuzzy
-#| msgid "Report database name"
 msgid "Restore database backup"
-msgstr "报告数据库名称"
+msgstr "恢复数据库备份"
 
 #: mgradm/cmd/backup/db/cmd.go:93
-#, fuzzy
-#| msgid "Import without asking confirmation"
 msgid "Don't ask for confirmation"
-msgstr "不要求确认即导入"
+msgstr "无需确认"
 
 #: mgradm/cmd/backup/db/disable.go:17
 msgid "Disabling DB backup"
-msgstr ""
+msgstr "正在禁用数据库备份"
 
 #: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:35
 msgid "Database service needs to be restarted to reload backup configurations, continue"
-msgstr ""
+msgstr "需要重启数据库服务以重新加载备份配置，是否继续？"
 
 #: mgradm/cmd/backup/db/disable.go:26
-#, fuzzy
-#| msgid "Backing up podman configuration"
 msgid "Backup reconfiguration aborted"
-msgstr "正在备份 podman 配置"
+msgstr "备份重新配置已中止"
 
 #: mgradm/cmd/backup/db/disable.go:45
 msgid "Backup volume will be removed, continue?"
-msgstr ""
+msgstr "即将去除备份卷，是否继续？"
 
 #: mgradm/cmd/backup/db/disable.go:47
 msgid "Aborting volume purge"
-msgstr ""
+msgstr "正在中止卷清除"
 
 #: mgradm/cmd/backup/db/disable.go:54
 #, javascript-format
 msgid "Backup volume '%s' removed"
-msgstr ""
+msgstr "已去除备份卷 '%s'"
 
 #: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:67
 #: mgradm/cmd/backup/db/rebase.go:29
-#, fuzzy
-#| msgid "Starting %s"
 msgid "Starting database…"
-msgstr "正在启动 %s"
+msgstr "正在启动数据库…"
 
 #: mgradm/cmd/backup/db/enable.go:22
-#, fuzzy
-#| msgid "Create backup"
 msgid "Enable DB backup"
-msgstr "创建备份"
+msgstr "启用数据库备份"
 
 #: mgradm/cmd/backup/db/enable.go:25
-#, fuzzy
-#| msgid "server is already initialized. Use force to overwrite"
 msgid "backup is already configured. Use --force to reconfigure"
-msgstr "服务器已初始化。使用强制选项将会重写"
+msgstr "备份已配置。请使用 --force 重新配置"
 
 #: mgradm/cmd/backup/db/enable.go:37
-#, fuzzy
-#| msgid "Backing up podman configuration"
 msgid "Backup configuration aborted"
-msgstr "正在备份 podman 配置"
+msgstr "备份配置已中止"
 
 #: mgradm/cmd/backup/db/enable.go:86
 #, javascript-format
 msgid "Continuous Archiving backup configured. Backup target volume is '%s'"
-msgstr ""
+msgstr "已配置连续归档备份。备份目标卷为 '%s'"
 
 #: mgradm/cmd/backup/db/enable.go:99
-#, fuzzy
-#| msgid "failed to generate postgresql migration script"
 msgid "failed to generate postgresql backup script"
-msgstr "无法生成 postgresql 迁移脚本"
+msgstr "生成 postgresql 备份脚本失败"
 
 #: mgradm/cmd/backup/db/rebase.go:17
 msgid "Rebasing postgres WAL backup to new basebackup"
-msgstr ""
+msgstr "正在将 postgres WAL 备份重置为新的基础备份"
 
 #: mgradm/cmd/backup/db/rebase.go:20
 msgid "database backup is not correctly configured: %w"
-msgstr ""
+msgstr "数据库备份配置不正确：%w"
 
 #: mgradm/cmd/backup/db/rebase.go:43
-#, fuzzy
-#| msgid "Skipping database volume %s"
 msgid "Stopping database…"
-msgstr "正在跳过数据库卷 %s"
+msgstr "正在停止数据库…"
 
 #: mgradm/cmd/backup/db/restore.go:25
 msgid "Restoring DB backup"
-msgstr ""
+msgstr "正在恢复数据库备份"
 
 #: mgradm/cmd/backup/db/restore.go:28
 msgid "Restoring from backup is a destructive operation. Proceed"
-msgstr ""
+msgstr "从备份恢复是破坏性操作。是否继续？"
 
 #: mgradm/cmd/backup/db/restore.go:29
 msgid "Aborting"
-msgstr ""
+msgstr "正在中止"
 
 #: mgradm/cmd/backup/db/restore.go:33
-#, fuzzy
-#| msgid "Stopping server service"
 msgid "Stopping database service…"
-msgstr "正在停止服务器服务"
+msgstr "正在停止数据库服务…"
 
 #: mgradm/cmd/backup/db/restore.go:40
-#, fuzzy
-#| msgid "failed to determine server image"
 msgid "failed to determine database image"
-msgstr "无法确定服务器映像"
+msgstr "确定数据库映像失败"
 
 #: mgradm/cmd/backup/db/restore.go:56
-#, fuzzy
-#| msgid "failed to generate postgresql migration script"
 msgid "failed to generate postgresql restore script"
-msgstr "无法生成 postgresql 迁移脚本"
+msgstr "生成 postgresql 恢复脚本失败"
 
 #: mgradm/cmd/backup/db/restore.go:59
 msgid "Restoring base backup…"
-msgstr ""
+msgstr "正在恢复基础备份…"
 
 #: mgradm/cmd/backup/db/restore.go:73
-#, fuzzy
-#| msgid "Generating the database certificate…"
 msgid "Starting database service…"
-msgstr "正在生成数据库证书…"
+msgstr "正在启动数据库服务…"
 
 #: mgradm/cmd/backup/db/restore.go:78
 msgid "Base backup restore complete. Database is recovering."
-msgstr ""
+msgstr "基础备份恢复完成。数据库正在恢复中。"
 
 #: mgradm/cmd/backup/db/restore.go:88 mgradm/cmd/backup/db/restore.go:101
-#, fuzzy
-#| msgid "Database user"
 msgid "Database is restored."
-msgstr "数据库用户"
+msgstr "数据库已恢复。"
 
 #: mgradm/cmd/backup/db/restore.go:91
-#, fuzzy
-#| msgid "failed to inspect database container image"
 msgid "failed to check database recovery status"
-msgstr "无法检查数据库容器映像"
+msgstr "检查数据库恢复状态失败"
 
 #: mgradm/cmd/backup/db/restore.go:95
 msgid " Database is recovering… (use Ctrl-C to interrupt waiting)"
-msgstr ""
+msgstr " 数据库正在恢复中…（按 Ctrl-C 可终止等待状态）"
 
 #: mgradm/cmd/backup/db/restore.go:104
 msgid "error while waiting for database recovery to complete, check database logs"
-msgstr ""
+msgstr "等待数据库恢复完成时出错，请检查数据库日志"
 
 #: mgradm/cmd/backup/db/status.go:24
 msgid "Checking DB backup status"
-msgstr ""
+msgstr "正在检查数据库备份状态"
 
 #: mgradm/cmd/backup/db/status.go:40
 msgid "Database continuous backup is %[1]s. Backup volume is %[2]s"
-msgstr ""
+msgstr "数据库连续备份状态为 %[1]s。备份卷为 %[2]s"
 
 #: mgradm/cmd/backup/db/types.go:24
 msgid "archive_mode is off"
-msgstr ""
+msgstr "archive_mode 已关闭"
 
 #: mgradm/cmd/backup/db/types.go:25
 msgid "archive_command is misconfigured"
-msgstr ""
+msgstr "archive_command 配置错误"
 
 #: mgradm/cmd/backup/db/types.go:26
 msgid "archive volume is not configured correctly"
-msgstr ""
+msgstr "归档卷配置不正确"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:47
 #, javascript-format
@@ -1262,20 +1226,18 @@ msgid "failed to find server image"
 msgstr "找不到服务器映像"
 
 #: mgradm/cmd/support/ptf/utils.go:101
-#, fuzzy, javascript-format
-#| msgid "The computed image is %s"
+#, javascript-format
 msgid "The computed PTF image is %s"
-msgstr "计算出的映像为 %s"
+msgstr "计算出的 PTF 映像为 %s"
 
 #: mgradm/cmd/support/ptf/utils.go:122 mgradm/cmd/support/ptf/utils.go:126
 msgid "The %[1]s service image is %[2]s"
 msgstr "%[1]s 服务映像版本为 %[2]s"
 
 #: mgradm/cmd/support/ptf/utils.go:124
-#, fuzzy, javascript-format
-#| msgid "cannot inspect volume %s"
+#, javascript-format
 msgid "Cannot find PTF for %s"
-msgstr "无法检查卷 %s"
+msgstr "找不到 %s 的 PTF"
 
 #: mgradm/cmd/support/sql/sql.go:50
 msgid "unable to cleanup source file"
@@ -1423,10 +1385,8 @@ msgid "failed to unmarshall configuration"
 msgstr "无法解组配置"
 
 #: mgradm/shared/coco/coco.go:28
-#, fuzzy
-#| msgid "error upgrading confidential computing service."
 msgid "Not altering the confidential computing service"
-msgstr "升级机密计算服务时出错。"
+msgstr "未修改机密计算服务"
 
 #: mgradm/shared/coco/coco.go:78 mgradm/shared/hub/xmlrpcapi.go:44
 #: mgradm/shared/pgsql/pgsql.go:30 mgradm/shared/podman/podman.go:310
@@ -1470,10 +1430,8 @@ msgid "cannot enable service"
 msgstr "无法启用服务"
 
 #: mgradm/shared/hub/xmlrpcapi.go:87
-#, fuzzy
-#| msgid "Not starting Hub XML-RPC API service"
 msgid "Not altering the hub XML-RPC API service"
-msgstr "不启动 Hub XML-RPC API 服务"
+msgstr "未修改 Hub XML-RPC API 服务"
 
 #: mgradm/shared/pgsql/pgsql.go:57 mgradm/shared/pgsql/pgsql.go:86
 #, javascript-format
@@ -1735,10 +1693,8 @@ msgid "Server SSL certificate generated"
 msgstr "已生成服务器 SSL 证书"
 
 #: mgradm/shared/saline/saline.go:50
-#, fuzzy
-#| msgid "Setting up Saline service"
 msgid "Not altering the Saline service"
-msgstr "正在设置 Saline 服务"
+msgstr "未修改 Saline 服务"
 
 #: mgradm/shared/saline/saline.go:66 mgradm/shared/saline/saline.go:136
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
@@ -1818,7 +1774,7 @@ msgstr "外部数据库提供商。可能的值为 \"aws\""
 
 #: mgradm/shared/utils/cmd_utils.go:89
 msgid "Setup continuous WAL backup"
-msgstr ""
+msgstr "设置连续 WAL 备份"
 
 #: mgradm/shared/utils/cmd_utils.go:91
 msgid "Database Flags"
