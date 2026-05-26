@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-16 16:31+0200\n"
-"PO-Revision-Date: 2026-01-19 09:04+0000\n"
+"PO-Revision-Date: 2026-05-26 17:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 2026.5\n"
 
 #: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
@@ -232,58 +232,48 @@ msgid "failed to create Systemd backup tarball: %w"
 msgstr "Systemdのバックアップtarballの作成に失敗しました: %w"
 
 #: mgradm/cmd/backup/db/cmd.go:19
-#, fuzzy
-#| msgid "Database name"
 msgid "Database backup management"
-msgstr "データベース名"
+msgstr "データベースバックアップ管理"
 
 #: mgradm/cmd/backup/db/cmd.go:20
-#, fuzzy
-#| msgid "Tools for local backup management"
 msgid "Tools for online database backup management"
-msgstr "ローカルバックアップ管理用ツール"
+msgstr "オンラインデータベースバックアップ管理用ツール"
 
 #: mgradm/cmd/backup/db/cmd.go:34
 msgid "Enable continuous archiving backup"
-msgstr ""
+msgstr "継続的アーカイブバックアップの有効化"
 
 #: mgradm/cmd/backup/db/cmd.go:39
 msgid "Reconfigure already configured backup"
-msgstr ""
+msgstr "すでに設定されているバックアップを再設定する"
 
 #: mgradm/cmd/backup/db/cmd.go:48
 msgid "Rebase continuous archiving backup"
-msgstr ""
+msgstr "継続的アーカイブバックアップのリベース"
 
 #: mgradm/cmd/backup/db/cmd.go:61
 msgid "Disable continuous archiving backup"
-msgstr ""
+msgstr "継続的アーカイブバックアップの無効化"
 
 #: mgradm/cmd/backup/db/cmd.go:66
 msgid "Don't ask for confirmation when purging volume"
 msgstr ""
 
 #: mgradm/cmd/backup/db/cmd.go:67
-#, fuzzy
-#| msgid "Failed to remove volume %s"
 msgid "Also remove the volume"
-msgstr "ボリューム %s の削除に失敗しました"
+msgstr "ボリュームも削除する"
 
 #: mgradm/cmd/backup/db/cmd.go:76
 msgid "Check WAL based database backup status"
 msgstr ""
 
 #: mgradm/cmd/backup/db/cmd.go:88
-#, fuzzy
-#| msgid "Report database name"
 msgid "Restore database backup"
-msgstr "レポートデータベース名"
+msgstr "データベースバックアップの復元"
 
 #: mgradm/cmd/backup/db/cmd.go:93
-#, fuzzy
-#| msgid "Import without asking confirmation"
 msgid "Don't ask for confirmation"
-msgstr "確認を求めずにインポートする"
+msgstr "確認を求めない"
 
 #: mgradm/cmd/backup/db/disable.go:17
 msgid "Disabling DB backup"
@@ -294,10 +284,8 @@ msgid "Database service needs to be restarted to reload backup configurations, c
 msgstr ""
 
 #: mgradm/cmd/backup/db/disable.go:26
-#, fuzzy
-#| msgid "Backing up podman configuration"
 msgid "Backup reconfiguration aborted"
-msgstr "podman設定のバックアップ"
+msgstr "バックアップの再設定が中止されました"
 
 #: mgradm/cmd/backup/db/disable.go:45
 msgid "Backup volume will be removed, continue?"
@@ -314,28 +302,20 @@ msgstr ""
 
 #: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:67
 #: mgradm/cmd/backup/db/rebase.go:29
-#, fuzzy
-#| msgid "Starting %s"
 msgid "Starting database…"
-msgstr "%s を開始しています"
+msgstr "データベースを開始しています…"
 
 #: mgradm/cmd/backup/db/enable.go:22
-#, fuzzy
-#| msgid "Create backup"
 msgid "Enable DB backup"
-msgstr "バックアップの作成"
+msgstr "DBバックアップの有効化"
 
 #: mgradm/cmd/backup/db/enable.go:25
-#, fuzzy
-#| msgid "server is already initialized. Use force to overwrite"
 msgid "backup is already configured. Use --force to reconfigure"
-msgstr "サーバはすでに初期化されています。強制的に上書きしてください"
+msgstr "バックアップはすでに設定されています。--forceを使用して再設定してください"
 
 #: mgradm/cmd/backup/db/enable.go:37
-#, fuzzy
-#| msgid "Backing up podman configuration"
 msgid "Backup configuration aborted"
-msgstr "podman設定のバックアップ"
+msgstr "バックアップ設定が中止されました"
 
 #: mgradm/cmd/backup/db/enable.go:86
 #, javascript-format
@@ -343,10 +323,8 @@ msgid "Continuous Archiving backup configured. Backup target volume is '%s'"
 msgstr ""
 
 #: mgradm/cmd/backup/db/enable.go:99
-#, fuzzy
-#| msgid "failed to generate postgresql migration script"
 msgid "failed to generate postgresql backup script"
-msgstr "postgresql移行スクリプトの生成に失敗しました"
+msgstr "postgresqlバックアップスクリプトの生成に失敗しました"
 
 #: mgradm/cmd/backup/db/rebase.go:17
 msgid "Rebasing postgres WAL backup to new basebackup"
@@ -357,10 +335,8 @@ msgid "database backup is not correctly configured: %w"
 msgstr ""
 
 #: mgradm/cmd/backup/db/rebase.go:43
-#, fuzzy
-#| msgid "Skipping database volume %s"
 msgid "Stopping database…"
-msgstr "データベースボリューム %s をスキップしています"
+msgstr "データベースを停止しています…"
 
 #: mgradm/cmd/backup/db/restore.go:25
 msgid "Restoring DB backup"
@@ -375,48 +351,36 @@ msgid "Aborting"
 msgstr ""
 
 #: mgradm/cmd/backup/db/restore.go:33
-#, fuzzy
-#| msgid "Stopping server service"
 msgid "Stopping database service…"
-msgstr "サーバサービスの停止"
+msgstr "データベースサービスを停止しています…"
 
 #: mgradm/cmd/backup/db/restore.go:40
-#, fuzzy
-#| msgid "failed to determine server image"
 msgid "failed to determine database image"
-msgstr "サーバイメージの決定に失敗しました"
+msgstr "データベースイメージの決定に失敗しました"
 
 #: mgradm/cmd/backup/db/restore.go:56
-#, fuzzy
-#| msgid "failed to generate postgresql migration script"
 msgid "failed to generate postgresql restore script"
-msgstr "postgresql移行スクリプトの生成に失敗しました"
+msgstr "postgresql復元スクリプトの生成に失敗しました"
 
 #: mgradm/cmd/backup/db/restore.go:59
 msgid "Restoring base backup…"
 msgstr ""
 
 #: mgradm/cmd/backup/db/restore.go:73
-#, fuzzy
-#| msgid "Generating the database certificate…"
 msgid "Starting database service…"
-msgstr "データベース証明書を生成しています…"
+msgstr "データベースサービスを開始しています…"
 
 #: mgradm/cmd/backup/db/restore.go:78
 msgid "Base backup restore complete. Database is recovering."
 msgstr ""
 
 #: mgradm/cmd/backup/db/restore.go:88 mgradm/cmd/backup/db/restore.go:101
-#, fuzzy
-#| msgid "Database user"
 msgid "Database is restored."
-msgstr "データベースユーザ"
+msgstr "データベースが復元されました。"
 
 #: mgradm/cmd/backup/db/restore.go:91
-#, fuzzy
-#| msgid "failed to inspect database container image"
 msgid "failed to check database recovery status"
-msgstr "データベースコンテナイメージの検査に失敗しました"
+msgstr "データベース復旧ステータスの確認に失敗しました"
 
 #: mgradm/cmd/backup/db/restore.go:95
 msgid " Database is recovering… (use Ctrl-C to interrupt waiting)"
@@ -1262,10 +1226,9 @@ msgid "failed to find server image"
 msgstr "サーバイメージが見つかりませんでした"
 
 #: mgradm/cmd/support/ptf/utils.go:101
-#, fuzzy, javascript-format
-#| msgid "The computed image is %s"
+#, javascript-format
 msgid "The computed PTF image is %s"
-msgstr "計算されたイメージは %s です"
+msgstr "計算されたPTFイメージは %s です"
 
 #: mgradm/cmd/support/ptf/utils.go:122 mgradm/cmd/support/ptf/utils.go:126
 msgid "The %[1]s service image is %[2]s"
@@ -1423,10 +1386,8 @@ msgid "failed to unmarshall configuration"
 msgstr "設定のアンマーシャルに失敗しました"
 
 #: mgradm/shared/coco/coco.go:28
-#, fuzzy
-#| msgid "error upgrading confidential computing service."
 msgid "Not altering the confidential computing service"
-msgstr "コンフィデンシャルコンピューティングサービスのアップグレード時のエラー"
+msgstr "コンフィデンシャルコンピューティングサービスを変更しない"
 
 #: mgradm/shared/coco/coco.go:78 mgradm/shared/hub/xmlrpcapi.go:44
 #: mgradm/shared/pgsql/pgsql.go:30 mgradm/shared/podman/podman.go:310
@@ -1470,10 +1431,8 @@ msgid "cannot enable service"
 msgstr "サービスを有効にできません"
 
 #: mgradm/shared/hub/xmlrpcapi.go:87
-#, fuzzy
-#| msgid "Not starting Hub XML-RPC API service"
 msgid "Not altering the hub XML-RPC API service"
-msgstr "Hub XML-RPC APIサービスが起動しません"
+msgstr "hub XML-RPC APIサービスを変更しない"
 
 #: mgradm/shared/pgsql/pgsql.go:57 mgradm/shared/pgsql/pgsql.go:86
 #, javascript-format
@@ -1735,10 +1694,8 @@ msgid "Server SSL certificate generated"
 msgstr "サーバSSL証明書が生成されました"
 
 #: mgradm/shared/saline/saline.go:50
-#, fuzzy
-#| msgid "Setting up Saline service"
 msgid "Not altering the Saline service"
-msgstr "Salineサービスを設定しています"
+msgstr "Salineサービスを変更しない"
 
 #: mgradm/shared/saline/saline.go:66 mgradm/shared/saline/saline.go:136
 msgid "Multiple Saline container replicas are not currently supported, setting up only one."
