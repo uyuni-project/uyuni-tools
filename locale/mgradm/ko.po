@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-16 16:31+0200\n"
-"PO-Revision-Date: 2026-05-26 14:12+0000\n"
+"PO-Revision-Date: 2026-05-27 07:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
@@ -232,62 +232,46 @@ msgid "failed to create Systemd backup tarball: %w"
 msgstr "Systemd 백업 tarball을 만들지 못함: %w"
 
 #: mgradm/cmd/backup/db/cmd.go:19
-#, fuzzy
-#| msgid "Database name"
 msgid "Database backup management"
 msgstr "데이터베이스 백업 관리"
 
 #: mgradm/cmd/backup/db/cmd.go:20
-#, fuzzy
-#| msgid "Tools for local backup management"
 msgid "Tools for online database backup management"
 msgstr "온라인 데이터베이스 백업 관리를 위한 도구"
 
 #: mgradm/cmd/backup/db/cmd.go:34
-#, fuzzy
 msgid "Enable continuous archiving backup"
 msgstr "지속적 아카이빙 백업 활성화"
 
 #: mgradm/cmd/backup/db/cmd.go:39
-#, fuzzy
 msgid "Reconfigure already configured backup"
 msgstr "이미 구성된 백업을 다시 구성합니다"
 
 #: mgradm/cmd/backup/db/cmd.go:48
-#, fuzzy
 msgid "Rebase continuous archiving backup"
 msgstr "지속적 아카이빙 백업 리베이스"
 
 #: mgradm/cmd/backup/db/cmd.go:61
-#, fuzzy
 msgid "Disable continuous archiving backup"
 msgstr "지속적 아카이빙 백업 비활성화"
 
 #: mgradm/cmd/backup/db/cmd.go:66
-#, fuzzy
 msgid "Don't ask for confirmation when purging volume"
 msgstr "볼륨을 삭제할 때 확인 요청 안 함"
 
 #: mgradm/cmd/backup/db/cmd.go:67
-#, fuzzy
-#| msgid "Failed to remove volume %s"
 msgid "Also remove the volume"
 msgstr "볼륨도 제거"
 
 #: mgradm/cmd/backup/db/cmd.go:76
-#, fuzzy
 msgid "Check WAL based database backup status"
 msgstr "WAL 기반 데이터베이스 백업 상태 확인"
 
 #: mgradm/cmd/backup/db/cmd.go:88
-#, fuzzy
-#| msgid "Report database name"
 msgid "Restore database backup"
 msgstr "데이터베이스 백업 복원"
 
 #: mgradm/cmd/backup/db/cmd.go:93
-#, fuzzy
-#| msgid "Import without asking confirmation"
 msgid "Don't ask for confirmation"
 msgstr "확인 요청 안 함"
 
@@ -296,13 +280,10 @@ msgid "Disabling DB backup"
 msgstr "DB 백업 비활성화"
 
 #: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:35
-#, fuzzy
 msgid "Database service needs to be restarted to reload backup configurations, continue"
 msgstr "백업 구성을 다시 로드하려면 데이터베이스 서비스를 다시 시작해야 합니다. 계속"
 
 #: mgradm/cmd/backup/db/disable.go:26
-#, fuzzy
-#| msgid "Backing up podman configuration"
 msgid "Backup reconfiguration aborted"
 msgstr "백업 재구성 중단됨"
 
@@ -311,158 +292,121 @@ msgid "Backup volume will be removed, continue?"
 msgstr "백업 볼륨이 제거됩니다. 계속하시겠습니까?"
 
 #: mgradm/cmd/backup/db/disable.go:47
-#, fuzzy
 msgid "Aborting volume purge"
 msgstr "볼륨 삭제 중단"
 
 #: mgradm/cmd/backup/db/disable.go:54
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Backup volume '%s' removed"
 msgstr "백업 볼륨 '%s' 제거됨"
 
 #: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:67
 #: mgradm/cmd/backup/db/rebase.go:29
-#, fuzzy
-#| msgid "Starting %s"
 msgid "Starting database…"
 msgstr "데이터베이스 시작 중…"
 
 #: mgradm/cmd/backup/db/enable.go:22
-#, fuzzy
-#| msgid "Create backup"
 msgid "Enable DB backup"
 msgstr "DB 백업 활성화"
 
 #: mgradm/cmd/backup/db/enable.go:25
-#, fuzzy
 msgid "backup is already configured. Use --force to reconfigure"
 msgstr "백업이 이미 구성되어 있습니다. 다시 구성하려면 --force를 사용하십시오."
 
 #: mgradm/cmd/backup/db/enable.go:37
-#, fuzzy
-#| msgid "Backing up podman configuration"
 msgid "Backup configuration aborted"
 msgstr "백업 구성 중단됨"
 
 #: mgradm/cmd/backup/db/enable.go:86
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Continuous Archiving backup configured. Backup target volume is '%s'"
-msgstr "지속적 아카이빌 백업이 구성되었습니다. 백업 대상 볼륨은 '%s'입니다."
+msgstr "지속적 아카이빙 백업이 구성되었습니다. 백업 대상 볼륨은 '%s'입니다."
 
 #: mgradm/cmd/backup/db/enable.go:99
-#, fuzzy
-#| msgid "failed to generate postgresql migration script"
 msgid "failed to generate postgresql backup script"
 msgstr "postgresql 백업 스크립트를 생성하지 못함"
 
 #: mgradm/cmd/backup/db/rebase.go:17
-#, fuzzy
 msgid "Rebasing postgres WAL backup to new basebackup"
 msgstr "postgres WAL 백업을 새 베이스백업으로 리베이스"
 
 #: mgradm/cmd/backup/db/rebase.go:20
-#, fuzzy
 msgid "database backup is not correctly configured: %w"
 msgstr "데이터베이스 백업이 잘못 구성됨: %w"
 
 #: mgradm/cmd/backup/db/rebase.go:43
-#, fuzzy
-#| msgid "Skipping database volume %s"
 msgid "Stopping database…"
 msgstr "데이터베이스를 중지하는 중…"
 
 #: mgradm/cmd/backup/db/restore.go:25
-#, fuzzy
 msgid "Restoring DB backup"
 msgstr "DB 백업 복원"
 
 #: mgradm/cmd/backup/db/restore.go:28
-#, fuzzy
 msgid "Restoring from backup is a destructive operation. Proceed"
 msgstr "백업에서 복원하면 기존 데이터가 삭제됩니다. 계속"
 
 #: mgradm/cmd/backup/db/restore.go:29
-#, fuzzy
 msgid "Aborting"
 msgstr "중단"
 
 #: mgradm/cmd/backup/db/restore.go:33
-#, fuzzy
-#| msgid "Stopping server service"
 msgid "Stopping database service…"
 msgstr "데이터베이스 서비스를 중지하는 중…"
 
 #: mgradm/cmd/backup/db/restore.go:40
-#, fuzzy
-#| msgid "failed to determine server image"
 msgid "failed to determine database image"
 msgstr "데이터베이스 이미지를 확인하지 못함"
 
 #: mgradm/cmd/backup/db/restore.go:56
-#, fuzzy
-#| msgid "failed to generate postgresql migration script"
 msgid "failed to generate postgresql restore script"
 msgstr "postgresql 복원 스크립트를 생성하지 못함"
 
 #: mgradm/cmd/backup/db/restore.go:59
-#, fuzzy
 msgid "Restoring base backup…"
 msgstr "베이스 백업 복원 중…"
 
 #: mgradm/cmd/backup/db/restore.go:73
-#, fuzzy
-#| msgid "Generating the database certificate…"
 msgid "Starting database service…"
 msgstr "데이터베이스 서비스를 시작하는 중…"
 
 #: mgradm/cmd/backup/db/restore.go:78
-#, fuzzy
 msgid "Base backup restore complete. Database is recovering."
 msgstr "베이스 백업 복원이 완료되었습니다. 데이터베이스를 복구하는 중입니다."
 
 #: mgradm/cmd/backup/db/restore.go:88 mgradm/cmd/backup/db/restore.go:101
-#, fuzzy
 msgid "Database is restored."
 msgstr "데이터베이스가 복원되었습니다."
 
 #: mgradm/cmd/backup/db/restore.go:91
-#, fuzzy
-#| msgid "failed to inspect database container image"
 msgid "failed to check database recovery status"
 msgstr "데이터베이스 복원 상태 검사 실패"
 
 #: mgradm/cmd/backup/db/restore.go:95
-#, fuzzy
 msgid " Database is recovering… (use Ctrl-C to interrupt waiting)"
 msgstr " 데이터베이스를 복구하는 중… (대기를 중단하려면 Ctrl+C 누르기)"
 
 #: mgradm/cmd/backup/db/restore.go:104
-#, fuzzy
 msgid "error while waiting for database recovery to complete, check database logs"
 msgstr "데이터베이스 복구 완료를 기다리는 중 오류가 발생했습니다. 데이터베이스 로그를 확인하십시오."
 
 #: mgradm/cmd/backup/db/status.go:24
-#, fuzzy
 msgid "Checking DB backup status"
 msgstr "DB 백업 상태 확인"
 
 #: mgradm/cmd/backup/db/status.go:40
-#, fuzzy
 msgid "Database continuous backup is %[1]s. Backup volume is %[2]s"
 msgstr "데이터베이스 지속적 백업은 %[1]s입니다. 백업 볼륨은 %[2]s입니다."
 
 #: mgradm/cmd/backup/db/types.go:24
-#, fuzzy
 msgid "archive_mode is off"
 msgstr "archive_mode 꺼짐"
 
 #: mgradm/cmd/backup/db/types.go:25
-#, fuzzy
 msgid "archive_command is misconfigured"
 msgstr "archive_command 잘못 구성됨"
 
 #: mgradm/cmd/backup/db/types.go:26
-#, fuzzy
 msgid "archive volume is not configured correctly"
 msgstr "아카이브 볼륨이 올바르게 구성되지 않음"
 
@@ -1282,8 +1226,7 @@ msgid "failed to find server image"
 msgstr "서버 이미지를 찾지 못함"
 
 #: mgradm/cmd/support/ptf/utils.go:101
-#, fuzzy, javascript-format
-#| msgid "The computed image is %s"
+#, javascript-format
 msgid "The computed PTF image is %s"
 msgstr "계산된 PTF 이미지는 %s입니다."
 
@@ -1292,7 +1235,7 @@ msgid "The %[1]s service image is %[2]s"
 msgstr "%[1]s 서비스 이미지는 %[2]s입니다."
 
 #: mgradm/cmd/support/ptf/utils.go:124
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Cannot find PTF for %s"
 msgstr "%s의 PTF를 찾지 못함"
 
@@ -1442,8 +1385,6 @@ msgid "failed to unmarshall configuration"
 msgstr "구성을 마샬링 해제하지 못했습니다."
 
 #: mgradm/shared/coco/coco.go:28
-#, fuzzy
-#| msgid "error upgrading confidential computing service."
 msgid "Not altering the confidential computing service"
 msgstr "기밀 컴퓨팅 서비스를 변경하지 않음"
 
@@ -1489,8 +1430,6 @@ msgid "cannot enable service"
 msgstr "서비스를 활성할 수 없음"
 
 #: mgradm/shared/hub/xmlrpcapi.go:87
-#, fuzzy
-#| msgid "Not starting Hub XML-RPC API service"
 msgid "Not altering the hub XML-RPC API service"
 msgstr "허브 XML-RPC API 서비스를 변경하지 않음"
 
@@ -1754,8 +1693,6 @@ msgid "Server SSL certificate generated"
 msgstr "서버 SSL 인증서 생성됨"
 
 #: mgradm/shared/saline/saline.go:50
-#, fuzzy
-#| msgid "Setting up Saline service"
 msgid "Not altering the Saline service"
 msgstr "Saline 서비스를 변경하지 않음"
 
@@ -1836,7 +1773,6 @@ msgid "External database provider. Possible values 'aws'"
 msgstr "외부 데이터베이스 공급자. 가능한 값 'aws'"
 
 #: mgradm/shared/utils/cmd_utils.go:89
-#, fuzzy
 msgid "Setup continuous WAL backup"
 msgstr "지속적 WAL 백업 설정"
 
