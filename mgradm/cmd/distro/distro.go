@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -107,11 +107,12 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[flagpole]) (*c
 	var flags flagpole
 
 	distroCmd := &cobra.Command{
-		Use:     "distribution",
-		GroupID: "tool",
-		Short:   L("Distributions management"),
-		Long:    L("Tools for autoinstallation distributions management"),
-		Aliases: []string{"distro"},
+		Use:        "distribution",
+		GroupID:    "tool",
+		Short:      L("Distributions management"),
+		Long:       L("Tools for autoinstallation distributions management"),
+		Aliases:    []string{"distro"},
+		Deprecated: "please use `mgrctl distro` instead",
 	}
 
 	cpCmd := &cobra.Command{
@@ -130,6 +131,7 @@ Note: API details are required for auto registration.`),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
+		Deprecated: "please use `mgrctl distro upload` instead",
 	}
 	cpCmd.Flags().String("channel", "", L("Set parent channel for the distribution."))
 
