@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -53,7 +53,9 @@ func logTraceHeader(v *http.Header) {
 
 func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 	log.Debug().Msgf("Sending %s request %s", req.Method, req.URL)
-	req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	if req.Header.Get("Content-Type") == "" {
+		req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	}
 	req.Header.Set("Accept", "application/json; charset=utf-8")
 	if c.AuthCookie != nil {
 		req.AddCookie(c.AuthCookie)
@@ -254,6 +256,25 @@ func (c *APIClient) Post(path string, data map[string]interface{}) (*http.Respon
 	return res, nil
 }
 
+// PostRaw issues a POST HTTP request to the API target using the provided body and content type.
+func (c *APIClient) PostRaw(path string, body io.Reader, contentType string) (*http.Response, error) {
+	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
+	req, err := http.NewRequest("POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+	if contentType != "" {
+		req.Header.Set("Content-Type", contentType)
+	}
+
+	res, err := c.sendRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
 // Get issues GET HTTP request to the API target
 //
 // `path` specifies API endpoint together with query options
@@ -296,6 +317,30 @@ func Post[T interface{}](client *APIClient, path string, data map[string]interfa
 	log.Trace().Msgf("response: %s", string(body))
 
 	if err = json.Unmarshal(body, &response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+// PostRaw issues a POST HTTP request to the API using the client and decodes the response.
+func PostRaw[T interface{}](client *APIClient, path string, body io.Reader, contentType string) (
+	*APIResponse[T], error) {
+	res, err := client.PostRaw(path, body, contentType)
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
+
+	var response APIResponse[T]
+	bodyBytes, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	log.Trace().Msgf("response: %s", string(bodyBytes))
+
+	if err = json.Unmarshal(bodyBytes, &response); err != nil {
 		return nil, err
 	}
 
