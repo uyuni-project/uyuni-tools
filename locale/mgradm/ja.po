@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-16 16:31+0200\n"
-"PO-Revision-Date: 2026-05-27 07:12+0000\n"
+"PO-Revision-Date: 2026-05-29 04:12+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -281,7 +281,7 @@ msgstr "DBバックアップの無効化"
 
 #: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:35
 msgid "Database service needs to be restarted to reload backup configurations, continue"
-msgstr "バックアップ設定を再読み込みするには、データベースサービスを再起動する必要があります。続行してください"
+msgstr "バックアップ設定を再読み込みするには、データベースサービスを再起動する必要があります。続行しますか"
 
 #: mgradm/cmd/backup/db/disable.go:26
 msgid "Backup reconfiguration aborted"
@@ -344,7 +344,7 @@ msgstr "DBバックアップを復元しています"
 
 #: mgradm/cmd/backup/db/restore.go:28
 msgid "Restoring from backup is a destructive operation. Proceed"
-msgstr "バックアップからの復元は、データを破壊する操作です。続行してください"
+msgstr "バックアップからの復元は、データを破壊する操作です。続行しますか"
 
 #: mgradm/cmd/backup/db/restore.go:29
 msgid "Aborting"
