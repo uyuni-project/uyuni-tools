@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-16 16:31+0200\n"
-"PO-Revision-Date: 2026-05-27 07:12+0000\n"
+"PO-Revision-Date: 2026-05-29 09:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
 "Language: ko\n"
@@ -281,7 +281,7 @@ msgstr "DB 백업 비활성화"
 
 #: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:35
 msgid "Database service needs to be restarted to reload backup configurations, continue"
-msgstr "백업 구성을 다시 로드하려면 데이터베이스 서비스를 다시 시작해야 합니다. 계속"
+msgstr "백업 구성을 다시 로드하려면 데이터베이스 서비스를 다시 시작해야 합니다. 계속하시겠습니까"
 
 #: mgradm/cmd/backup/db/disable.go:26
 msgid "Backup reconfiguration aborted"
@@ -344,7 +344,7 @@ msgstr "DB 백업 복원"
 
 #: mgradm/cmd/backup/db/restore.go:28
 msgid "Restoring from backup is a destructive operation. Proceed"
-msgstr "백업에서 복원하면 기존 데이터가 삭제됩니다. 계속"
+msgstr "백업에서 복원하면 기존 데이터가 삭제됩니다. 계속하시겠습니까"
 
 #: mgradm/cmd/backup/db/restore.go:29
 msgid "Aborting"
