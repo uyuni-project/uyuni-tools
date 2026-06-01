@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -225,7 +225,7 @@ func (c *APIClient) ValidateCreds() bool {
 	return err == nil
 }
 
-// Post issues a POST HTTP request to the API target
+// Post issues a POST HTTP request to the API target, without validating the endpoint.
 //
 // `path` specifies an API endpoint
 // `data` contains a map of values to add to the POST query. `data` are serialized to the JSON
@@ -252,6 +252,26 @@ func (c *APIClient) Post(path string, data map[string]interface{}) (*http.Respon
 	}
 
 	return res, nil
+}
+
+// PostChecked validates the API endpoint before issuing a POST request.
+func (c *APIClient) PostChecked(path string, endpoint string, data map[string]interface{}) (*http.Response, error) {
+	if err := c.validateEndpoint(endpoint); err != nil {
+		return nil, err
+	}
+	return c.Post(path, data)
+}
+
+// PostChecked issues a validated POST request to the API target using the client and decodes the response.
+func PostChecked[T interface{}](
+	client *APIClient, path string, namespace string, data map[string]interface{},
+) (*APIResponse[T], error) {
+	res, err := client.PostChecked(path, namespace, data)
+	if err != nil {
+		return nil, err
+	}
+
+	return decodeAPIResponse[T](res)
 }
 
 // Get issues GET HTTP request to the API target
@@ -313,10 +333,32 @@ func Get[T interface{}](client *APIClient, path string) (*APIResponse[T], error)
 		return nil, err
 	}
 
+	return decodeAPIResponse[T](res)
+}
+
+// GetChecked validates the API namespace before issuing a GET request.
+func (c *APIClient) GetChecked(path string, namespace string) (*http.Response, error) {
+	if err := c.validateEndpoint(namespace); err != nil {
+		return nil, err
+	}
+	return c.Get(path)
+}
+
+// GetChecked issues a validated GET request to the API using the client and decodes the response.
+func GetChecked[T interface{}](client *APIClient, path string, endpoint string) (*APIResponse[T], error) {
+	res, err := client.GetChecked(path, endpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return decodeAPIResponse[T](res)
+}
+
+func decodeAPIResponse[T interface{}](res *http.Response) (*APIResponse[T], error) {
 	defer res.Body.Close()
 
 	var response APIResponse[T]
-	if err = json.NewDecoder(res.Body).Decode(&response); err != nil {
+	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return nil, err
 	}
 

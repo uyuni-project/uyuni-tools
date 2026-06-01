@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -23,6 +23,16 @@ type APIClient struct {
 
 	// Connection details
 	Details *ConnectionDetails
+
+	// Valid API namespaces advertised by the server
+	validNamespaces map[string]struct{}
+}
+
+// NamespaceAccess describes an API namespace advertised by the server.
+type NamespaceAccess struct {
+	Namespace   string `json:"namespace"`
+	Description string `json:"description"`
+	AccessMode  string `json:"access_mode"`
 }
 
 // HTTPClient is a minimal HTTPClient interface primarily for unit testing.

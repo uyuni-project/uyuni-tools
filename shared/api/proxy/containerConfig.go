@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -14,6 +14,7 @@ import (
 )
 
 const containerConfigEndpoint = "proxy/containerConfig"
+const containerConfigAPIEndpoint = "api.proxy.container_config"
 
 // ContainerConfig computes and downloads the configuration file for proxy containers with generated certificates.
 func ContainerConfig(client *api.APIClient, request ProxyConfigRequest) (*[]int8, error) {
@@ -28,7 +29,7 @@ func ContainerConfigGenerate(client *api.APIClient, request ProxyConfigGenerateR
 // common method to execute the request.
 func executeRequest(client *api.APIClient, data map[string]interface{}) (*[]int8, error) {
 	log.Trace().Msgf("Creating proxy configuration file with data: %v...", data)
-	res, err := api.Post[[]int8](client, containerConfigEndpoint, data)
+	res, err := api.PostChecked[[]int8](client, containerConfigEndpoint, containerConfigAPIEndpoint, data)
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to create proxy configuration file"))
 	}

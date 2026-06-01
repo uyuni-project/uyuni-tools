@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -31,7 +31,7 @@ func CreateFirst(cnxDetails *api.ConnectionDetails, orgName string, admin *types
 		"email":         admin.Email,
 	}
 
-	res, err := api.Post[types.Organization](client, "org/createFirst", data)
+	res, err := api.PostChecked[types.Organization](client, "org/createFirst", "api.org.create_first", data)
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to create first user and organization"))
 	}
