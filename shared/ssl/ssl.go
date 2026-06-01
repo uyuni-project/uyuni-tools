@@ -192,6 +192,9 @@ func extractCertificateData(content []byte) (certificate, error) {
 			} else if nextVal == "authKeyId" && strings.HasPrefix(line, "    keyid:") {
 				cert.authKeyID = strings.ToUpper(strings.TrimSpace(strings.SplitN(line, ":", 2)[1]))
 			} else if nextVal == "basicConstraints" && strings.Contains(line, "CA:TRUE") {
+				if !strings.Contains(line, "critical") {
+					log.Error().Msg(L("CA basicConstraints section is not marked as 'critical'"))
+				}
 				cert.isCa = true
 			} else {
 				// Unhandled extension value
