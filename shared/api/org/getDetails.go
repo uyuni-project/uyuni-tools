@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -23,7 +23,9 @@ func GetOrganizationDetails(cnxDetails *api.ConnectionDetails, orgName string) (
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to connect to the server"))
 	}
-	res, err := api.Get[types.Organization](client, fmt.Sprintf("org/getDetails?name=%s", orgName))
+	res, err := api.GetChecked[types.Organization](
+		client, fmt.Sprintf("org/getDetails?name=%s", orgName), "api.org.get_details",
+	)
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to get organization details"))
 	}

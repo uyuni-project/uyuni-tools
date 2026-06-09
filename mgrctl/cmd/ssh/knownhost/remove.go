@@ -24,7 +24,7 @@ func removeKnownHost(client *api.APIClient, hostname string, port string) error 
 	path := "admin/ssh/removeKnownHost?" + params.Encode()
 
 	var data map[string]interface{}
-	res, err := api.Post[interface{}](client, path, data)
+	res, err := api.PostChecked[interface{}](client, path, "api.admin.ssh.remove_known_host", data)
 	if err != nil {
 		return utils.Errorf(err, L("error in query '%s'"), path)
 	}

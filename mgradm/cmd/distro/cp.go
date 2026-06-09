@@ -61,7 +61,7 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 		"installType":  distro.InstallType,
 	}
 
-	_, err = client.Post("kickstart/tree/create", data)
+	_, err = client.PostChecked("kickstart/tree/create", "api.kickstart.tree.create", data)
 	if err != nil {
 		return utils.Errorf(err, L("unable to register the distribution. Manual distro registration is required"))
 	}
