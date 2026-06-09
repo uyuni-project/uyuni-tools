@@ -11,14 +11,14 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
-type getFlags struct {
+type getOptions struct {
 	api.ConnectionDetails `mapstructure:"api"`
 	OutputFormat          string `mapstructure:"output"` // e.g., "json", "yaml", "table"
 }
 
 // NewCommand generates the 'mgrctl get' command root.
 func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
-	var flags getFlags
+	var flags getOptions
 
 	getCmd := &cobra.Command{
 		Use:   "get [resource] [options]",
@@ -34,6 +34,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 		L("Output format. One of: table|json|yaml"),
 	)
 
+	// passing the -o flag to the subcommands to be able to use it in the same way for all the resources
 	getCmd.AddCommand(newSystemCommand(globalFlags, &flags))
 
 	api.AddAPIFlags(getCmd)

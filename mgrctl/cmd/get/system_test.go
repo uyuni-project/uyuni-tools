@@ -52,7 +52,7 @@ func TestRunSystem_JSON(t *testing.T) {
 	mockHost := strings.TrimPrefix(ts.URL, "https://")
 
 	globalFlags := &types.GlobalFlags{}
-	flags := &getFlags{
+	flags := &getOptions{
 		ConnectionDetails: api.ConnectionDetails{
 			Server:   mockHost,
 			User:     "admin",
