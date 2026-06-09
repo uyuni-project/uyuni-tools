@@ -8,3 +8,4 @@ vendor.tar.gz
 __pycache__
 **/tags
 *.mo
+.DS_Store
