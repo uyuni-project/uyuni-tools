@@ -14,7 +14,7 @@ import (
 // InstallFlagsTestArgs is the slice of command parameters to use with AssertInstallFlags.
 var InstallFlagsTestArgs = func() []string {
 	args := []string{
-		"--tz", "CEST",
+		"--tz", "Europe/Berlin",
 		"--email", "admin@foo.bar",
 		"--emailfrom", "sender@foo.bar",
 		"--issParent", "parent.iss.com",
@@ -49,7 +49,7 @@ var InstallFlagsTestArgs = func() []string {
 
 // AssertInstallFlags checks that all the install flags are parsed correctly.
 func AssertInstallFlags(t *testing.T, flags *utils.ServerFlags) {
-	testutils.AssertEquals(t, "Error parsing --tz", "CEST", flags.Installation.TZ)
+	testutils.AssertEquals(t, "Error parsing --tz", "Europe/Berlin", flags.Installation.TZ)
 	testutils.AssertEquals(t, "Error parsing --email", "admin@foo.bar", flags.Installation.Email)
 	testutils.AssertEquals(t, "Error parsing --emailfrom", "sender@foo.bar", flags.Installation.EmailFrom)
 	testutils.AssertEquals(t, "Error parsing --issParent", "parent.iss.com", flags.Installation.IssParent)

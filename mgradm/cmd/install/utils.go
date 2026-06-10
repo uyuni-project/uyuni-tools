@@ -75,7 +75,9 @@ func installForPodman(
 	}
 
 	// Create all the database credentials secrets and setup the DB
-	if err := setupDatabase(flags.Installation.DB, flags.Installation.ReportDB, preparedPgsqlImage); err != nil {
+	if err := setupDatabase(
+		flags.Installation.DB, flags.Installation.ReportDB, preparedPgsqlImage, flags.Installation.TZ,
+	); err != nil {
 		return err
 	}
 
@@ -118,7 +120,7 @@ func installForPodman(
 	)
 }
 
-func setupDatabase(dbFlags types.DBFlags, reportdbFlags types.DBFlags, preparedImage string) error {
+func setupDatabase(dbFlags types.DBFlags, reportdbFlags types.DBFlags, preparedImage string, tz string) error {
 	if err := shared_podman.CreateCredentialsSecrets(
 		shared_podman.DBUserSecret, dbFlags.User,
 		shared_podman.DBPassSecret, dbFlags.Password,
@@ -149,7 +151,7 @@ func setupDatabase(dbFlags types.DBFlags, reportdbFlags types.DBFlags, preparedI
 		return err
 	}
 	// Run the DB container setup if the user doesn't set a custom host name for it.
-	if err := pgsql.SetupPgsql(systemd, preparedImage); err != nil {
+	if err := pgsql.SetupPgsql(systemd, preparedImage, tz); err != nil {
 		return err
 	}
 	if dbFlags.Walbackup {

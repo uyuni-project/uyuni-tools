@@ -115,6 +115,7 @@ func generateDefaultSystemdServices(flags *shared.Flagpole) error {
 	return utils.JoinErrors(
 		podman.GenerateUpgradeServerEnvironmentFile(false),
 		podman.GenerateSystemdService(systemd, serverImage, adm_utils.InstallationFlags{}, []string{}, ""),
+		pgsql.GenerateCustomConfig(""),
 		pgsql.GeneratePgsqlSystemdService(systemd, dbImage),
 		systemd.ReloadDaemon(false),
 	)

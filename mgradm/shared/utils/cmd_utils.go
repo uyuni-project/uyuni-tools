@@ -213,6 +213,7 @@ func AddPgsqlFlags(cmd *cobra.Command) {
 
 // AddServerFlags add flags common to install, upgrade and migration.
 func AddServerFlags(cmd *cobra.Command) {
+	cmd.Flags().String("tz", "", L("Time zone to set on the server. Defaults to the host timezone"))
 	AddImageFlag(cmd)
 	AddSCCFlag(cmd)
 	AddPgsqlFlags(cmd)
