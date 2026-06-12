@@ -15,10 +15,12 @@ set -e -x
 
 {{ if .ReportDBHost }}
 sed 's/^report_db_host = .*/report_db_host = {{ .ReportDBHost }}/' -i /etc/rhn/rhn.conf;
+sed 's/^report_db_ssl_enabled = .*/report_db_ssl_enabled = 0/' -i /etc/rhn/rhn.conf;
 {{ end }}
 
 {{ if .DBHost }}
 sed 's/^db_host = .*/db_host = {{ .DBHost }}/' -i /etc/rhn/rhn.conf;
+sed 's/^db_ssl_enabled = .*/db_ssl_enabled = 0/' -i /etc/rhn/rhn.conf;
 {{ end }}
 
 echo "DONE"`

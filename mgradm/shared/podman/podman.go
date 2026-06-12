@@ -585,22 +585,6 @@ func RunSplitContainerSettings(serverImage string, dbHost string, reportDBHost s
 		[]string{"bash", "-e", "-c", scriptBuilder.String()})
 }
 
-// RunConfigPgsl setup postgres container.
-func RunConfigPgsl(pgsqlImage string) error {
-	podmanArgs := []string{
-		"--security-opt", "label=disable",
-		"--secret", fmt.Sprintf("%s,type=mount,target=%s", podman.DBCASecret, ssl.DBCAContainerPath),
-		"--secret", fmt.Sprintf("%s,type=mount,uid=999,mode=0400,target=%s", podman.DBSSLKeySecret, ssl.DBCertKeyPath),
-		"--secret", fmt.Sprintf("%s,type=mount,target=%s", podman.DBSSLCertSecret, ssl.DBCertPath),
-		"--entrypoint", "/docker-entrypoint-initdb.d/uyuni-postgres-config.sh",
-	}
-	if err := podman.RunContainer("uyuni-db-config", pgsqlImage, utils.PgsqlRequiredVolumeMounts,
-		podmanArgs, []string{}); err != nil {
-		return err
-	}
-	return systemd.RestartService(podman.DBService)
-}
-
 // CallCloudGuestRegistryAuth calls cloudguestregistryauth if it is available.
 func CallCloudGuestRegistryAuth() error {
 	cloudguestregistryauth := "cloudguestregistryauth"
@@ -729,5 +713,5 @@ func configureDBContainer(
 			db.Host,
 		)
 	}
-	return RunConfigPgsl(pgsqlImage)
+	return nil
 }
