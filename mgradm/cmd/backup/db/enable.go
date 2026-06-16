@@ -58,17 +58,17 @@ func Enable(force bool) error {
 		return err
 	}
 
-	// Check if all is well configured
-	if err := CheckStatus(); err != nil {
-		return err
-	}
-
 	// Prepare initial snapshot. For this container either must be running or we need to start container database
 	log.Info().Msg(L("Starting database…"))
 	if err := systemd.StartService(podman.DBService); err != nil {
 		return err
 	}
 	if err := cnx.WaitForHealthcheck(); err != nil {
+		return err
+	}
+
+	// Check if all is well configured
+	if err := CheckStatus(); err != nil {
 		return err
 	}
 

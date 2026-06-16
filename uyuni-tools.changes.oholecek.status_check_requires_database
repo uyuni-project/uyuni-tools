@@ -1,0 +1,1 @@
+- Check backup status only after database is started (bsc#1262492)
