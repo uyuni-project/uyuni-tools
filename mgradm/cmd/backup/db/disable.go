@@ -59,6 +59,9 @@ func Disable(flags *Flagpole) error {
 		if err := systemd.StartService(podman.DBService); err != nil {
 			return err
 		}
+		if err := cnx.WaitForHealthcheck(); err != nil {
+			return err
+		}
 	}
 	return Status()
 }
