@@ -1,2 +1,0 @@
-- Make uyuni-server service dependent on uyuni-db
-  (bsc#1263823)

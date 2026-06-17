@@ -10,7 +10,7 @@ current_year=$(date +%Y)
 for changed_file in $@; do
     case "$changed_file" in
         # Changelogs
-        uyuni-tools.changes.*)
+        uyuni-tools.changes*)
             continue
             ;;
         # Translation files

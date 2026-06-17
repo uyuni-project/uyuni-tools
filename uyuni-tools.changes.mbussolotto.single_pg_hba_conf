@@ -1,0 +1,2 @@
+- Disable SSL on db during split (bsc#1267980).
+- Do not call uyuni-postgres-config.sh in mgradm (bsc#1267980).

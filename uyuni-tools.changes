@@ -1,4 +1,36 @@
 -------------------------------------------------------------------
+Tue May 26 10:27:26 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.12-0
+  * Change default tag to 5.2.0-rc
+
+-------------------------------------------------------------------
+Fri May 22 16:32:18 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.11-0
+  * Do not call podman healthcheck run to wait for pods to be ready
+    (bsc#1266012)
+
+-------------------------------------------------------------------
+Thu May 21 17:17:40 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10-0
+  * Preserve hub replicas during upgrade (bsc#1262708)
+  * Add mgrctl commands "ssh" and "ssh remove_known_host"
+  * Use a startup check with no limit for the main server container
+    (bsc#1263157)
+  * Make uyuni-server service dependent on uyuni-db
+    (bsc#1263823)
+  * Internal SANs for db and reportdb are no longer required
+  * Generate the same certificate for server and reportdb
+  * Set the Go version as a minimum on Ubuntu
+  * Re-add changelogs from 5.1 lost due to change the base:
+    * Update the default tag to 5.1.3.1 (bsc#1262760)
+    * Remove waitForTraefik function (bsc#1261902)
+    * Fix inspect: missing registry for db image (bsc#1259739)
+    * Use correct CA for Report DB (bsc#1260806)
+
+-------------------------------------------------------------------
 Wed Apr 29 14:10:57 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.9-0
@@ -68,7 +100,7 @@ Tue Jan 27 10:49:03 WET 2026 - psuarezhernandez@suse.com
   * Fix images handling in mgrpxy support ptf (bsc#1250940)
   * Ssl Key file can miss if CA password is blank (bsc#1254154)
   * Bump golang to 1.24
-  * Move the SSL checks at the begining of the migration
+  * Move the SSL checks at the begining of the migration
   * Support config command parse correctly supportconfig output (bsc#1255781)
   * Remove kubernetes code for the mgrdam
   * During migration, krb5.conf.d should be copied in /etc/rhn (bsc#1254478)

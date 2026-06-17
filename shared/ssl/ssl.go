@@ -97,6 +97,7 @@ type certificate struct {
 	subjectKeyID string
 	authKeyID    string
 	isCa         bool
+	isCritical   bool
 	isRoot       bool
 }
 
@@ -193,6 +194,8 @@ func extractCertificateData(content []byte) (certificate, error) {
 				cert.authKeyID = strings.ToUpper(strings.TrimSpace(strings.SplitN(line, ":", 2)[1]))
 			} else if nextVal == "basicConstraints" && strings.Contains(line, "CA:TRUE") {
 				cert.isCa = true
+			} else if nextVal == "basicConstraints" && strings.Contains(line, "critical") {
+				cert.isCritical = true
 			} else {
 				// Unhandled extension value
 				continue
@@ -204,6 +207,11 @@ func extractCertificateData(content []byte) (certificate, error) {
 			// second issue_hash without key to identify this value
 			cert.issuerHash = strings.TrimSpace(line)
 		}
+	}
+
+	// This configuration might not work anymore in the future.
+	if cert.isCa && !cert.isCritical {
+		log.Warn().Msgf(L("Basic constraints for CA should be marked as `%s`, could cause issues otherwise!"), "critical")
 	}
 
 	if cert.subject == cert.issuer {
