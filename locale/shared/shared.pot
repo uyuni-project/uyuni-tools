@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-16 16:31+0200\n"
+"POT-Creation-Date: 2026-06-17 09:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -137,11 +137,11 @@ msgstr ""
 msgid "failed to connect to the server"
 msgstr ""
 
-#: shared/api/org/getDetails.go:28
+#: shared/api/org/getDetails.go:30
 msgid "failed to get organization details"
 msgstr ""
 
-#: shared/api/proxy/containerConfig.go:33
+#: shared/api/proxy/containerConfig.go:34
 msgid "failed to create proxy configuration file"
 msgstr ""
 
@@ -216,66 +216,70 @@ msgstr ""
 msgid "Healthcheck not executed"
 msgstr ""
 
-#: shared/connection.go:361
+#: shared/connection.go:335
+msgid "not healthy or running"
+msgstr ""
+
+#: shared/connection.go:369
 msgid "container didn't start within 10s."
 msgstr ""
 
-#: shared/connection.go:376
+#: shared/connection.go:384
 msgid "container didn't start within 15s or failed. Check the service status"
 msgstr ""
 
-#: shared/connection.go:447 shared/connection.go:506
+#: shared/connection.go:455 shared/connection.go:514
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr ""
 
-#: shared/connection.go:499
+#: shared/connection.go:507
 msgid "failed to detect the namespace"
 msgstr ""
 
-#: shared/connection.go:517
+#: shared/connection.go:525
 msgid "Copying the SSL CA certificate to the host"
 msgstr ""
 
-#: shared/connection.go:536
+#: shared/connection.go:544
 msgid "Updating host trusted certificates"
 msgstr ""
 
-#: shared/connection.go:547
+#: shared/connection.go:555
 msgid "Unable to update host trusted certificates."
 msgstr ""
 
-#: shared/connection.go:588 shared/connection.go:609
+#: shared/connection.go:596 shared/connection.go:617
 msgid "failed to determine suitable backend"
 msgstr ""
 
-#: shared/connection.go:598
+#: shared/connection.go:606
 msgid "no supported backend found"
 msgstr ""
 
-#: shared/connection.go:629 shared/utils/support.go:102
+#: shared/connection.go:637 shared/utils/support.go:102
 msgid "failed to generate supportconfig suffix: %w"
 msgstr ""
 
-#: shared/connection.go:641 shared/utils/support.go:116
+#: shared/connection.go:649 shared/utils/support.go:116
 #, javascript-format
 msgid "failed to generate unique supportconfig batch name after %d attempts"
 msgstr ""
 
-#: shared/connection.go:645
+#: shared/connection.go:653
 #, javascript-format
 msgid "Running supportconfig in %s"
 msgstr ""
 
-#: shared/connection.go:652 shared/utils/support.go:122
+#: shared/connection.go:660 shared/utils/support.go:122
 msgid "Some parts of supportconfig were not successful"
 msgstr ""
 
-#: shared/connection.go:657
+#: shared/connection.go:665
 msgid "cannot copy support config"
 msgstr ""
 
-#: shared/connection.go:663
+#: shared/connection.go:671
 #, javascript-format
 msgid "failed to remove %s directory in the container"
 msgstr ""
@@ -947,88 +951,93 @@ msgstr ""
 msgid "Failed to find a non-CA certificate"
 msgstr ""
 
-#: shared/ssl/ssl.go:109
+#: shared/ssl/ssl.go:110
 msgid "expected to find a certificate, got none"
 msgstr ""
 
-#: shared/ssl/ssl.go:115
+#: shared/ssl/ssl.go:116
 #, javascript-format
 msgid "Failed to read certificate file %s"
 msgstr ""
 
-#: shared/ssl/ssl.go:154
+#: shared/ssl/ssl.go:155
 #, javascript-format
 msgid ""
 "Failed to extract data from certificate:\n"
 "%s"
 msgstr ""
 
-#: shared/ssl/ssl.go:175
+#: shared/ssl/ssl.go:176
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
 msgstr ""
 
-#: shared/ssl/ssl.go:181
+#: shared/ssl/ssl.go:182
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
 msgstr ""
 
-#: shared/ssl/ssl.go:228
+#: shared/ssl/ssl.go:214
+#, javascript-format
+msgid "Basic constraints for CA should be marked as `%s`, could cause issues otherwise!"
+msgstr ""
+
+#: shared/ssl/ssl.go:236
 msgid "no CA certificate found in the files"
 msgstr ""
 
-#: shared/ssl/ssl.go:237 shared/ssl/ssl.go:250
+#: shared/ssl/ssl.go:245 shared/ssl/ssl.go:258
 msgid ""
 "please check the CA chain, including intermediate CA certificates provided.\n"
 "The chain is missing the CA with subject %[1]s (hash: %[2]s)"
 msgstr ""
 
-#: shared/ssl/ssl.go:280
+#: shared/ssl/ssl.go:288
 msgid "server certificate is required"
 msgstr ""
 
-#: shared/ssl/ssl.go:283 shared/ssl/ssl.go:348
+#: shared/ssl/ssl.go:291 shared/ssl/ssl.go:356
 msgid "server key is required"
 msgstr ""
 
-#: shared/ssl/ssl.go:298
+#: shared/ssl/ssl.go:306
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr ""
 
-#: shared/ssl/ssl.go:307
+#: shared/ssl/ssl.go:315
 msgid "Source server SSL CA private key password"
 msgstr ""
 
-#: shared/ssl/ssl.go:313
+#: shared/ssl/ssl.go:321
 msgid "Failed to open openssl rsa process input stream"
 msgstr ""
 
-#: shared/ssl/ssl.go:316
+#: shared/ssl/ssl.go:324
 msgid "Failed to write openssl key content to input stream"
 msgstr ""
 
-#: shared/ssl/ssl.go:322
+#: shared/ssl/ssl.go:330
 msgid "Failed to convert CA private key to RSA"
 msgstr ""
 
-#: shared/ssl/ssl.go:332
+#: shared/ssl/ssl.go:340
 msgid "Failed to open openssl x509 process input stream"
 msgstr ""
 
-#: shared/ssl/ssl.go:335
+#: shared/ssl/ssl.go:343
 msgid "Failed to write SSL certificate to input stream"
 msgstr ""
 
-#: shared/ssl/ssl.go:339
+#: shared/ssl/ssl.go:347
 msgid "failed to strip text part from CA certificate"
 msgstr ""
 
-#: shared/ssl/ssl.go:354
+#: shared/ssl/ssl.go:362
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr ""
 
-#: shared/ssl/ssl.go:373
+#: shared/ssl/ssl.go:381
 #, javascript-format
 msgid "failed to validate hostname %s"
 msgstr ""

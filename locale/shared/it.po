@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-16 16:31+0200\n"
+"POT-Creation-Date: 2026-06-17 09:55+0200\n"
 "PO-Revision-Date: 2026-05-15 15:46+0000\n"
 "Last-Translator: Thomas Florio <thomas.florio@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
@@ -137,11 +137,11 @@ msgstr "impossibile creare il primo utente e organizzazione"
 msgid "failed to connect to the server"
 msgstr "impossibile connettersi al server"
 
-#: shared/api/org/getDetails.go:28
+#: shared/api/org/getDetails.go:30
 msgid "failed to get organization details"
 msgstr "non è riuscito a ottenere i dettagli dell'organizzazione"
 
-#: shared/api/proxy/containerConfig.go:33
+#: shared/api/proxy/containerConfig.go:34
 msgid "failed to create proxy configuration file"
 msgstr "impossibile creare il file di configurazione del proxy"
 
@@ -216,66 +216,70 @@ msgstr "impossibile copiare lo script nel contenitore"
 msgid "Healthcheck not executed"
 msgstr "Controllo sanitario non eseguito"
 
-#: shared/connection.go:361
+#: shared/connection.go:335
+msgid "not healthy or running"
+msgstr ""
+
+#: shared/connection.go:369
 msgid "container didn't start within 10s."
 msgstr "il contenitore non si è avviato entro 10 secondi."
 
-#: shared/connection.go:376
+#: shared/connection.go:384
 msgid "container didn't start within 15s or failed. Check the service status"
 msgstr "il contenitore non si è avviato entro 15 secondi oppure si è guastato. Controlla lo stato del servizio"
 
-#: shared/connection.go:447 shared/connection.go:506
+#: shared/connection.go:455 shared/connection.go:514
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr "tipo di contenitore sconosciuto: %s"
 
-#: shared/connection.go:499
+#: shared/connection.go:507
 msgid "failed to detect the namespace"
 msgstr "impossibile rilevare lo spazio dei nomi"
 
-#: shared/connection.go:517
+#: shared/connection.go:525
 msgid "Copying the SSL CA certificate to the host"
 msgstr "Copia del certificato SSL CA sull'host"
 
-#: shared/connection.go:536
+#: shared/connection.go:544
 msgid "Updating host trusted certificates"
 msgstr "Aggiornamento dei certificati attendibili dell'host"
 
-#: shared/connection.go:547
+#: shared/connection.go:555
 msgid "Unable to update host trusted certificates."
 msgstr "Impossibile aggiornare i certificati attendibili dell'host."
 
-#: shared/connection.go:588 shared/connection.go:609
+#: shared/connection.go:596 shared/connection.go:617
 msgid "failed to determine suitable backend"
 msgstr "non è riuscito a determinare il backend adatto"
 
-#: shared/connection.go:598
+#: shared/connection.go:606
 msgid "no supported backend found"
 msgstr "nessun backend supportato trovato"
 
-#: shared/connection.go:629 shared/utils/support.go:102
+#: shared/connection.go:637 shared/utils/support.go:102
 msgid "failed to generate supportconfig suffix: %w"
 msgstr "impossibile generare il suffisso supportconfig: %w"
 
-#: shared/connection.go:641 shared/utils/support.go:116
+#: shared/connection.go:649 shared/utils/support.go:116
 #, javascript-format
 msgid "failed to generate unique supportconfig batch name after %d attempts"
 msgstr "impossibile generare un nome batch di supportconfig univoco dopo i tentativi %d"
 
-#: shared/connection.go:645
+#: shared/connection.go:653
 #, javascript-format
 msgid "Running supportconfig in %s"
 msgstr "Esecuzione di supportconfig in %s"
 
-#: shared/connection.go:652 shared/utils/support.go:122
+#: shared/connection.go:660 shared/utils/support.go:122
 msgid "Some parts of supportconfig were not successful"
 msgstr "Alcune parti di supportconfig non hanno avuto successo"
 
-#: shared/connection.go:657
+#: shared/connection.go:665
 msgid "cannot copy support config"
 msgstr "impossibile copiare la configurazione del supporto"
 
-#: shared/connection.go:663
+#: shared/connection.go:671
 #, javascript-format
 msgid "failed to remove %s directory in the container"
 msgstr "impossibile rimuovere la directory %s nel contenitore"
@@ -947,16 +951,16 @@ msgstr "Percorso chiave del database"
 msgid "Failed to find a non-CA certificate"
 msgstr "Impossibile trovare un certificato non CA"
 
-#: shared/ssl/ssl.go:109
+#: shared/ssl/ssl.go:110
 msgid "expected to find a certificate, got none"
 msgstr "mi aspettavo di trovare un certificato, non ne ho ricevuto nessuno"
 
-#: shared/ssl/ssl.go:115
+#: shared/ssl/ssl.go:116
 #, javascript-format
 msgid "Failed to read certificate file %s"
 msgstr "Impossibile leggere il file del certificato %s"
 
-#: shared/ssl/ssl.go:154
+#: shared/ssl/ssl.go:155
 #, javascript-format
 msgid ""
 "Failed to extract data from certificate:\n"
@@ -965,21 +969,26 @@ msgstr ""
 "Impossibile estrarre i dati dal certificato:\n"
 "%s"
 
-#: shared/ssl/ssl.go:175
+#: shared/ssl/ssl.go:176
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
 msgstr "Impossibile analizzare la data di inizio: %s\n"
 
-#: shared/ssl/ssl.go:181
+#: shared/ssl/ssl.go:182
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
 msgstr "Impossibile analizzare la data di fine: %s\n"
 
-#: shared/ssl/ssl.go:228
+#: shared/ssl/ssl.go:214
+#, javascript-format
+msgid "Basic constraints for CA should be marked as `%s`, could cause issues otherwise!"
+msgstr ""
+
+#: shared/ssl/ssl.go:236
 msgid "no CA certificate found in the files"
 msgstr "nessun certificato CA trovato nei file"
 
-#: shared/ssl/ssl.go:237 shared/ssl/ssl.go:250
+#: shared/ssl/ssl.go:245 shared/ssl/ssl.go:258
 msgid ""
 "please check the CA chain, including intermediate CA certificates provided.\n"
 "The chain is missing the CA with subject %[1]s (hash: %[2]s)"
@@ -987,52 +996,52 @@ msgstr ""
 "si prega di controllare la catena CA, compresi i certificati CA intermedi forniti.\n"
 "Alla catena manca la CA con soggetto %[1]s (hash: %[2]s)"
 
-#: shared/ssl/ssl.go:280
+#: shared/ssl/ssl.go:288
 msgid "server certificate is required"
 msgstr "certificato del server richiesto"
 
-#: shared/ssl/ssl.go:283 shared/ssl/ssl.go:348
+#: shared/ssl/ssl.go:291 shared/ssl/ssl.go:356
 msgid "server key is required"
 msgstr "chiave del server richiesta"
 
-#: shared/ssl/ssl.go:298
+#: shared/ssl/ssl.go:306
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr "%s file non è accessibile"
 
-#: shared/ssl/ssl.go:307
+#: shared/ssl/ssl.go:315
 msgid "Source server SSL CA private key password"
 msgstr "Password della chiave privata SSL CA del server di origine"
 
-#: shared/ssl/ssl.go:313
+#: shared/ssl/ssl.go:321
 msgid "Failed to open openssl rsa process input stream"
 msgstr "Impossibile aprire il flusso di input del processo openssl rsa"
 
-#: shared/ssl/ssl.go:316
+#: shared/ssl/ssl.go:324
 msgid "Failed to write openssl key content to input stream"
 msgstr "Impossibile scrivere il contenuto della chiave openssl nel flusso di input"
 
-#: shared/ssl/ssl.go:322
+#: shared/ssl/ssl.go:330
 msgid "Failed to convert CA private key to RSA"
 msgstr "Impossibile convertire la chiave privata CA in RSA"
 
-#: shared/ssl/ssl.go:332
+#: shared/ssl/ssl.go:340
 msgid "Failed to open openssl x509 process input stream"
 msgstr "Impossibile aprire il flusso di input del processo openssl x509"
 
-#: shared/ssl/ssl.go:335
+#: shared/ssl/ssl.go:343
 msgid "Failed to write SSL certificate to input stream"
 msgstr "Impossibile scrivere il certificato SSL nel flusso di input"
 
-#: shared/ssl/ssl.go:339
+#: shared/ssl/ssl.go:347
 msgid "failed to strip text part from CA certificate"
 msgstr "impossibile rimuovere la parte di testo dal certificato CA"
 
-#: shared/ssl/ssl.go:354
+#: shared/ssl/ssl.go:362
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr "Chiave SSL non valida, probabilmente è crittografata"
 
-#: shared/ssl/ssl.go:373
+#: shared/ssl/ssl.go:381
 #, javascript-format
 msgid "failed to validate hostname %s"
 msgstr "impossibile convalidare il nome host %s"
