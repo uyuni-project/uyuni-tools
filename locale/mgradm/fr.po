@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-16 16:31+0200\n"
+"POT-Creation-Date: 2026-06-17 09:55+0200\n"
 "PO-Revision-Date: 2025-11-26 10:44+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/fr/>\n"
@@ -331,7 +331,7 @@ msgstr ""
 msgid "Backup volume '%s' removed"
 msgstr ""
 
-#: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:67
+#: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:62
 #: mgradm/cmd/backup/db/rebase.go:29
 msgid "Starting database…"
 msgstr ""
@@ -1072,7 +1072,7 @@ msgstr ""
 msgid "failed to extract payg data"
 msgstr "chemin vers lequel extraire les données"
 
-#: mgradm/cmd/install/utils.go:138 mgradm/shared/podman/podman.go:728
+#: mgradm/cmd/install/utils.go:138 mgradm/shared/podman/podman.go:712
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr ""
@@ -1590,28 +1590,28 @@ msgstr ""
 msgid "failed to generate postgresql migration script"
 msgstr "impossible de générer le script de migration: %s"
 
-#: mgradm/shared/podman/podman.go:614
+#: mgradm/shared/podman/podman.go:598
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:644
+#: mgradm/shared/podman/podman.go:628
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr "SSH_AUTH_SOCK n'est pas défini, démarrer un agent SSH et réessayer"
 
-#: mgradm/shared/podman/podman.go:654
+#: mgradm/shared/podman/podman.go:638
 msgid "Failed to find home directory to look for SSH config"
 msgstr "Impossible de trouver le répertoire home pour chercher la configuration SSH"
 
-#: mgradm/shared/podman/podman.go:676
+#: mgradm/shared/podman/podman.go:660
 #, fuzzy
 msgid "cannot inspect podman values"
 msgstr "impossible d'inspecter les valeurs de l'hôte: %s"
 
-#: mgradm/shared/podman/podman.go:690
+#: mgradm/shared/podman/podman.go:674
 msgid "PostgreSQL migration failure"
 msgstr ""
 
-#: mgradm/shared/podman/podman.go:719
+#: mgradm/shared/podman/podman.go:703
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr ""
 

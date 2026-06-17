@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-16 16:31+0200\n"
-"PO-Revision-Date: 2026-04-20 11:04+0000\n"
-"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
+"POT-Creation-Date: 2026-06-17 09:55+0200\n"
+"PO-Revision-Date: 2026-05-26 05:12+0000\n"
+"Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 2026.5\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -137,11 +137,11 @@ msgstr "无法创建第一个用户和组织"
 msgid "failed to connect to the server"
 msgstr "无法连接到服务器"
 
-#: shared/api/org/getDetails.go:28
+#: shared/api/org/getDetails.go:30
 msgid "failed to get organization details"
 msgstr "无法获取组织细节"
 
-#: shared/api/proxy/containerConfig.go:33
+#: shared/api/proxy/containerConfig.go:34
 msgid "failed to create proxy configuration file"
 msgstr "无法创建代理配置文件"
 
@@ -222,68 +222,72 @@ msgstr "无法运行 %s 容器"
 msgid "Healthcheck not executed"
 msgstr "未执行健康检查"
 
-#: shared/connection.go:361
+#: shared/connection.go:335
+msgid "not healthy or running"
+msgstr ""
+
+#: shared/connection.go:369
 msgid "container didn't start within 10s."
 msgstr "容器未在 10 秒内启动。"
 
-#: shared/connection.go:376
+#: shared/connection.go:384
 #, fuzzy
 #| msgid "container didn't start within 60s. Check for the service status"
 msgid "container didn't start within 15s or failed. Check the service status"
 msgstr "容器未在 60 秒内启动。请检查服务状态"
 
-#: shared/connection.go:447 shared/connection.go:506
+#: shared/connection.go:455 shared/connection.go:514
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr "容器类型未知：%s"
 
-#: shared/connection.go:499
+#: shared/connection.go:507
 msgid "failed to detect the namespace"
 msgstr "无法检测名称空间"
 
-#: shared/connection.go:517
+#: shared/connection.go:525
 msgid "Copying the SSL CA certificate to the host"
 msgstr "正在将 SSL CA 证书复制到主机"
 
-#: shared/connection.go:536
+#: shared/connection.go:544
 msgid "Updating host trusted certificates"
 msgstr "正在更新主机信任的证书"
 
-#: shared/connection.go:547
+#: shared/connection.go:555
 msgid "Unable to update host trusted certificates."
 msgstr "无法更新主机信任的证书。"
 
-#: shared/connection.go:588 shared/connection.go:609
+#: shared/connection.go:596 shared/connection.go:617
 msgid "failed to determine suitable backend"
 msgstr "无法确定合适的后端"
 
-#: shared/connection.go:598
+#: shared/connection.go:606
 msgid "no supported backend found"
 msgstr "未找到支持的后端"
 
-#: shared/connection.go:629 shared/utils/support.go:102
+#: shared/connection.go:637 shared/utils/support.go:102
 msgid "failed to generate supportconfig suffix: %w"
 msgstr "无法生成 supportconfig 后缀：%w"
 
-#: shared/connection.go:641 shared/utils/support.go:116
+#: shared/connection.go:649 shared/utils/support.go:116
 #, javascript-format
 msgid "failed to generate unique supportconfig batch name after %d attempts"
 msgstr "已尝试 %d 次，仍无法生成唯一的 supportconfig 批次名称"
 
-#: shared/connection.go:645
+#: shared/connection.go:653
 #, javascript-format
 msgid "Running supportconfig in %s"
 msgstr "正在 %s 中运行 supportconfig"
 
-#: shared/connection.go:652 shared/utils/support.go:122
+#: shared/connection.go:660 shared/utils/support.go:122
 msgid "Some parts of supportconfig were not successful"
 msgstr "supportconfig 的部分内容执行失败"
 
-#: shared/connection.go:657
+#: shared/connection.go:665
 msgid "cannot copy support config"
 msgstr "无法复制支持配置"
 
-#: shared/connection.go:663
+#: shared/connection.go:671
 #, javascript-format
 msgid "failed to remove %s directory in the container"
 msgstr "无法去除容器中的 %s 目录"
@@ -975,16 +979,16 @@ msgstr "数据库"
 msgid "Failed to find a non-CA certificate"
 msgstr "找不到非 CA 证书"
 
-#: shared/ssl/ssl.go:109
+#: shared/ssl/ssl.go:110
 msgid "expected to find a certificate, got none"
 msgstr "预期应找到一个证书，结果未找到任何证书"
 
-#: shared/ssl/ssl.go:115
+#: shared/ssl/ssl.go:116
 #, javascript-format
 msgid "Failed to read certificate file %s"
 msgstr "无法读取证书文件 %s"
 
-#: shared/ssl/ssl.go:154
+#: shared/ssl/ssl.go:155
 #, fuzzy, javascript-format
 #| msgid "Failed to extract data from certificate"
 msgid ""
@@ -992,74 +996,79 @@ msgid ""
 "%s"
 msgstr "无法从证书提取数据"
 
-#: shared/ssl/ssl.go:175
+#: shared/ssl/ssl.go:176
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
 msgstr "无法分析起始日期：%s\n"
 
-#: shared/ssl/ssl.go:181
+#: shared/ssl/ssl.go:182
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
 msgstr "无法分析终止日期：%s\n"
 
-#: shared/ssl/ssl.go:228
+#: shared/ssl/ssl.go:214
+#, javascript-format
+msgid "Basic constraints for CA should be marked as `%s`, could cause issues otherwise!"
+msgstr ""
+
+#: shared/ssl/ssl.go:236
 #, fuzzy
 #| msgid "SSL certificate state"
 msgid "no CA certificate found in the files"
 msgstr "SSL 证书州/省"
 
-#: shared/ssl/ssl.go:237 shared/ssl/ssl.go:250
+#: shared/ssl/ssl.go:245 shared/ssl/ssl.go:258
 msgid ""
 "please check the CA chain, including intermediate CA certificates provided.\n"
 "The chain is missing the CA with subject %[1]s (hash: %[2]s)"
 msgstr ""
 
-#: shared/ssl/ssl.go:280
+#: shared/ssl/ssl.go:288
 msgid "server certificate is required"
 msgstr "必须指定服务器证书"
 
-#: shared/ssl/ssl.go:283 shared/ssl/ssl.go:348
+#: shared/ssl/ssl.go:291 shared/ssl/ssl.go:356
 msgid "server key is required"
 msgstr "必须指定服务器密钥"
 
-#: shared/ssl/ssl.go:298
+#: shared/ssl/ssl.go:306
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr "%s 文件无法访问"
 
-#: shared/ssl/ssl.go:307
+#: shared/ssl/ssl.go:315
 msgid "Source server SSL CA private key password"
 msgstr "源服务器 SSL CA 私用密钥口令"
 
-#: shared/ssl/ssl.go:313
+#: shared/ssl/ssl.go:321
 msgid "Failed to open openssl rsa process input stream"
 msgstr "无法打开 openssl rsa 流程输入流"
 
-#: shared/ssl/ssl.go:316
+#: shared/ssl/ssl.go:324
 msgid "Failed to write openssl key content to input stream"
 msgstr "无法将 openssl 密钥内容写入输入流"
 
-#: shared/ssl/ssl.go:322
+#: shared/ssl/ssl.go:330
 msgid "Failed to convert CA private key to RSA"
 msgstr "无法将 CA 私用密钥转换为 RSA"
 
-#: shared/ssl/ssl.go:332
+#: shared/ssl/ssl.go:340
 msgid "Failed to open openssl x509 process input stream"
 msgstr "无法打开 openssl x509 流程输入流"
 
-#: shared/ssl/ssl.go:335
+#: shared/ssl/ssl.go:343
 msgid "Failed to write SSL certificate to input stream"
 msgstr "无法将 SSL 证书写入输入流"
 
-#: shared/ssl/ssl.go:339
+#: shared/ssl/ssl.go:347
 msgid "failed to strip text part from CA certificate"
 msgstr "无法剥离 CA 证书中的文本部分"
 
-#: shared/ssl/ssl.go:354
+#: shared/ssl/ssl.go:362
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr "SSL 密钥无效，它可能已加密"
 
-#: shared/ssl/ssl.go:373
+#: shared/ssl/ssl.go:381
 #, fuzzy, javascript-format
 #| msgid "failed to write in %s"
 msgid "failed to validate hostname %s"
