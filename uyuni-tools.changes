@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Jun 17 15:12:11 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.13-0
+  * Check and warn if CA certificate isn't marked as critical
+  * Disable SSL on db during split (bsc#1267980).
+  * Do not call uyuni-postgres-config.sh in mgradm (bsc#1267980).
+  * Validate the presence of all API functions before calling them
+  * Check backup status only after database is started (bsc#1262492)
+
+-------------------------------------------------------------------
 Tue May 26 10:27:26 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.12-0
