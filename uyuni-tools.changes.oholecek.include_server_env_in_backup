@@ -1,0 +1,2 @@
+- Include server environment file in the backup
+  (bsc#1268649)

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -6,6 +6,7 @@ package create
 
 import (
 	"archive/tar"
+	"encoding/csv"
 	"fmt"
 	"io"
 	"os"
@@ -91,9 +92,22 @@ func gatherSystemdItems() []string {
 		if err != nil {
 			log.Debug().Err(err).Msgf("failed to get the path to the %s service configuration files", serviceName)
 		} else {
-			dropIns := strings.Split(dropIns, " ")
-			result = append(result, filepath.Dir(dropIns[0]))
-			result = append(result, dropIns[:]...)
+			r := csv.NewReader(strings.NewReader(dropIns))
+			r.Comma = ' '
+			dropIns, err := r.Read()
+			if err != nil {
+				log.Debug().Err(err).Msgf("failed to parse the drop-in paths for %s service", serviceName)
+			}
+			if len(dropIns) > 0 {
+				result = append(result, filepath.Dir(dropIns[0]))
+				result = append(result, dropIns[:]...)
+			}
+		}
+
+		// Get the environment file
+		envFile := path.Join(servicePath+".d", podman.ServerEnvironmentFile)
+		if _, err := os.Stat(envFile); err == nil {
+			result = append(result, envFile)
 		}
 	}
 	return result
