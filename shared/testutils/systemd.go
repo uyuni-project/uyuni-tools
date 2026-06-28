@@ -137,10 +137,17 @@ func (d *FakeSystemdDriver) ScaleService(_ int, _ string) error { return nil }
 func (d *FakeSystemdDriver) CurrentReplicaCount(_ string) int { return 0 }
 
 // UninstallService is a no-op stub for tests.
-func (d *FakeSystemdDriver) UninstallService(_ string, _ bool) {}
+// The FakeSystemdDriver tracks installation state via the Installed slice;
+// uninstalling is not needed by any current test scenario.
+func (d *FakeSystemdDriver) UninstallService(_ string, _ bool) {
+	// intentionally empty: uninstall behaviour is not exercised in unit tests
+}
 
 // UninstallInstantiatedService is a no-op stub for tests.
-func (d *FakeSystemdDriver) UninstallInstantiatedService(_ string, _ bool) {}
+// Instantiated service lifecycle is not exercised in unit tests.
+func (d *FakeSystemdDriver) UninstallInstantiatedService(_ string, _ bool) {
+	// intentionally empty: uninstall behaviour is not exercised in unit tests
+}
 
 // StartInstantiated is a no-op stub for tests.
 func (d *FakeSystemdDriver) StartInstantiated(_ string) error { return nil }
