@@ -113,7 +113,7 @@ func GeneratePgsqlSystemdService(
 		ReportPassword:  podman.ReportDBPassSecret,
 	}
 	if err := utils.WriteTemplateToFile(
-		pgsqlData, podman.GetServicePath(podman.DBService), 0555, true,
+		pgsqlData, podman.GetServicePath(podman.DBService), 0444, true,
 	); err != nil {
 		return utils.Error(err, L("failed to generate systemd service unit file"))
 	}
