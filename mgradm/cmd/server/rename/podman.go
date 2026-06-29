@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,12 +9,10 @@ import (
 	"os"
 	"path"
 	"regexp"
-	"strings"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	adm_podman "github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
-	"github.com/uyuni-project/uyuni-tools/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -31,7 +29,7 @@ func renameForPodman(_ *types.GlobalFlags, flags *renameFlags, _ *cobra.Command,
 
 	// Regenerate Server SSL certificate if requested
 	image := podman.GetServiceImage(podman.ServerService)
-	tz := findTimezone("podman")
+	tz := adm_podman.GetContainerTimezone()
 	log.Info().Msg(L("Preparing SSL certificates to match the new hostname"))
 	if err := adm_podman.PrepareSSLCertificates(image, &flags.SSL, tz, fqdn); err != nil {
 		return err
@@ -62,31 +60,6 @@ func renameForPodman(_ *types.GlobalFlags, flags *renameFlags, _ *cobra.Command,
 	log.Info().Msg(L(`The renaming continues inside the server container.
 The logs can be found in journalctl -u uyuni-config-update.service output.`))
 	return nil
-}
-
-func findTimezone(backend string) string {
-	// If the container is running, call podman exec uyuni-server sh -c "echo $TZ".
-	cnx := shared.NewConnection(backend, podman.ServerContainerName, "")
-	out, err := cnx.Exec("echo", "$TZ")
-	if err == nil {
-		return strings.TrimSpace(string(out))
-	}
-
-	if backend == "podman" {
-		// Otherwise get the value from the uyuni-server.service.d/custom.conf file, in the 'Environment=TZ=' line.
-		// In theory users shouldn't remove this, but who knows what could happen?
-		log.Debug().Msg("Failed to get the timezone from the container, looking for it in systemd configuration file")
-		if env, err := systemd.Show(podman.ServerService, "Environment"); err == nil {
-			pattern := regexp.MustCompile("TZ=([^[:space]]*)")
-			matches := pattern.FindStringSubmatch(env)
-			if len(matches) == 1 {
-				return matches[0]
-			}
-		}
-	}
-
-	log.Debug().Msg("Failed to get the timezone from the configuration, getting the host one")
-	return utils.GetLocalTimezone()
 }
 
 // alterHostnameConfig changes the UYUNI_HOSTNAME value in the server systemd service or adds it if needed.

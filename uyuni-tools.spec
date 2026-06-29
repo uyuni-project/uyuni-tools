@@ -113,6 +113,7 @@ Summary:        Command line tool to install and update %{productprettyname}
 Requires:       (aardvark-dns if podman)
 Requires:       (netavark if podman)
 %endif
+Requires:       openssl
 # suse_version
 %if "%{_vendor}" != "debbuild"
 Requires:       (podman >= 4.5.0 if podman)
