@@ -33,6 +33,87 @@ import (
 
 var systemd podman.Systemd = podman.NewSystemd()
 
+// GetContainerTimezone returns the timezone of the running server container,
+// falling back to the systemd configuration and finally the host timezone when it cannot be determined.
+func GetContainerTimezone() string {
+	// If the container is running, read the TZ environment variable from it.
+	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
+	if out, err := cnx.Exec("sh", "-c", "echo \"$TZ\""); err == nil {
+		if tz := strings.TrimSpace(string(out)); tz != "" {
+			return tz
+		}
+	}
+
+	// Otherwise read it from the server.env environment file referenced by the systemd service.
+	log.Debug().Msg("Failed to get the timezone from the container, looking for it in the server environment file")
+	if tz := timezoneFromEnvironmentFile(); tz != "" {
+		return tz
+	}
+
+	log.Debug().Msg("Failed to get the timezone from the configuration, getting the host one")
+	return utils.GetLocalTimezone()
+}
+
+// timezoneFromEnvironmentFile returns the value of the TZ variable set in the server.env environment
+// file, or an empty string when it cannot be found.
+func timezoneFromEnvironmentFile() string {
+	envFile := path.Join(podman.GetServiceConfFolder(podman.ServerService), podman.ServerEnvironmentFile)
+	data, err := os.ReadFile(envFile)
+	if err != nil {
+		log.Debug().Err(err).Msgf("Failed to read the %s environment file", envFile)
+		return ""
+	}
+	for _, line := range strings.Split(string(data), "\n") {
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "TZ=") {
+			return strings.TrimSpace(strings.TrimPrefix(line, "TZ="))
+		}
+	}
+	return ""
+}
+
+// ApplyNewCertificates restarts the server and database containers so that they pick up the new
+// SSL certificates from the podman secrets, then re-adds the CA to the host trusted certificates.
+func ApplyNewCertificates(fqdn string) error {
+	log.Info().Msg(L("Restarting the services to apply the new certificates"))
+	if systemd.HasService(podman.DBService) {
+		if err := systemd.RestartService(podman.DBService); err != nil {
+			return err
+		}
+	}
+	if err := systemd.RestartService(podman.ServerService); err != nil {
+		return err
+	}
+
+	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
+	if err := cnx.WaitForContainer(); err != nil {
+		return utils.Error(err, L("cannot wait for the server container to start"))
+	}
+	if err := updateServerCATrust(cnx); err != nil {
+		return err
+	}
+	if err := cnx.CopyCaCertificate(fqdn); err != nil {
+		return utils.Error(err, L("failed to add SSL CA certificate to host trusted certificates"))
+	}
+	return nil
+}
+
+// updateServerCATrust refreshes the CA trust store inside the server container and propagates the
+// changed CA bundle to the database.
+func updateServerCATrust(cnx *shared.Connection) error {
+	commands := [][]string{
+		{"/usr/sbin/update-ca-certificates"},
+		{"/usr/bin/rhn-ssl-dbstore", "--ca-cert", ssl.CAContainerPath},
+	}
+	for _, command := range commands {
+		log.Info().Msgf(L("Running %s in the server container"), command[0])
+		if _, err := cnx.Exec(command[0], command[1:]...); err != nil {
+			return utils.Errorf(err, L("failed to run %s in the server container"), command[0])
+		}
+	}
+	return nil
+}
+
 // getExposedPorts returns the port exposed.
 func getExposedPorts(debug bool) []types.PortMap {
 	ports := utils.GetServerPorts(debug)
