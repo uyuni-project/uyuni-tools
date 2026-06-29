@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jun 29 15:36:09 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.14-0
+  * Include server environment file in the backup
+    (bsc#1268649)
+  * Add mgradm commands for SSL CA and certificate rotation
+
+-------------------------------------------------------------------
 Wed Jun 17 15:12:11 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.13-0
