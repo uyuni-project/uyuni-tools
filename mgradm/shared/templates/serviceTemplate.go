@@ -31,9 +31,8 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--cgroups=no-conmon \
 	--shm-size=0 \
 	--shm-size-systemd=0 \
-	--sdnotify=conmon \
+	--sdnotify=healthy \
 	--systemd=always \
-	-d \
 	--name {{ .NamePrefix }}-server \
 	--hostname {{ .NamePrefix }}-server.mgr.internal \
 	{{ .Args }} \
@@ -87,7 +86,8 @@ ExecStopPost=/usr/bin/podman rm \
 PIDFile=%t/uyuni-server.pid
 TimeoutStopSec=180
 TimeoutStartSec=900
-Type=forking
+Type=notify
+NotifyAccess=all
 
 [Install]
 WantedBy=multi-user.target default.target
