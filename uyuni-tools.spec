@@ -116,7 +116,7 @@ Requires:       (netavark if podman)
 Requires:       openssl
 # suse_version
 %if "%{_vendor}" != "debbuild"
-Requires:       (podman >= 4.5.0 if podman)
+Requires:       (podman >= 4.7.2 if podman)
 %endif
 
 %description -n %{name_adm}
