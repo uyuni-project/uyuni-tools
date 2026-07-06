@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jul 06 11:47:23 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.15-0
+  * Require at least podman v4.7.2
+  * Send READY notification to systemd only once healthy
+    (bsc#1263823)
+
+-------------------------------------------------------------------
 Mon Jun 29 15:36:09 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.14-0
