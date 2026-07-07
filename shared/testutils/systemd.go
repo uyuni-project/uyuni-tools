@@ -82,9 +82,9 @@ func (d *FakeSystemdDriver) EnableService(service string) error {
 	return err
 }
 
-// ReloadDaemon resets the failed state of services and reload the systemd daemon.
-// If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
-func (d *FakeSystemdDriver) ReloadDaemon() error {
+// ReloadDaemon resets the failed state of services and reloads the systemd daemon.
+// dryRun is ignored in the test implementation.
+func (d *FakeSystemdDriver) ReloadDaemon(_ bool) error {
 	return d.ReloadDaemonError
 }
 
@@ -118,7 +118,7 @@ func (d *FakeSystemdDriver) StartService(service string) error {
 	return err
 }
 
-// StopService starts the systemd service.
+// StopService stops the systemd service.
 func (d *FakeSystemdDriver) StopService(service string) error {
 	if !d.ServiceIsEnabled(service) {
 		return fmt.Errorf("%s service is not enabled", service)
@@ -129,6 +129,34 @@ func (d *FakeSystemdDriver) StopService(service string) error {
 	}
 	return err
 }
+
+// ScaleService is a no-op stub for tests.
+func (d *FakeSystemdDriver) ScaleService(_ int, _ string) error { return nil }
+
+// CurrentReplicaCount always returns 0 in tests.
+func (d *FakeSystemdDriver) CurrentReplicaCount(_ string) int { return 0 }
+
+// UninstallService is a no-op stub for tests.
+// The FakeSystemdDriver tracks installation state via the Installed slice;
+// uninstalling is not needed by any current test scenario.
+func (d *FakeSystemdDriver) UninstallService(_ string, _ bool) {
+	// intentionally empty: uninstall behaviour is not exercised in unit tests
+}
+
+// UninstallInstantiatedService is a no-op stub for tests.
+// Instantiated service lifecycle is not exercised in unit tests.
+func (d *FakeSystemdDriver) UninstallInstantiatedService(_ string, _ bool) {
+	// intentionally empty: uninstall behaviour is not exercised in unit tests
+}
+
+// StartInstantiated is a no-op stub for tests.
+func (d *FakeSystemdDriver) StartInstantiated(_ string) error { return nil }
+
+// RestartInstantiated is a no-op stub for tests.
+func (d *FakeSystemdDriver) RestartInstantiated(_ string) error { return nil }
+
+// StopInstantiated is a no-op stub for tests.
+func (d *FakeSystemdDriver) StopInstantiated(_ string) error { return nil }
 
 // GetServiceProperty gets the value from the ServiceProperties structure.
 // An error is returned if either the service or property doesn't exist.
@@ -142,6 +170,12 @@ func (d *FakeSystemdDriver) GetServiceProperty(service string, property string) 
 		return "", errors.New("no such property")
 	}
 	return value, nil
+}
+
+// Show delegates to GetServiceProperty so tests can satisfy the interface
+// through a single ServiceProperties map.
+func (d *FakeSystemdDriver) Show(service string, property string) (string, error) {
+	return d.GetServiceProperty(service, property)
 }
 
 // GetServiceDefinition gets the definition from the ServiceCat field.
@@ -163,4 +197,14 @@ func deleteItems(slice []string, needle string) []string {
 		}
 	}
 	return cleaned
+}
+
+// contains returns true when needle is present in slice.
+func contains(slice []string, needle string) bool {
+	for _, item := range slice {
+		if item == needle {
+			return true
+		}
+	}
+	return false
 }

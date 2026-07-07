@@ -5,11 +5,9 @@
 package shared
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"os"
-	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -18,6 +16,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
+	"github.com/uyuni-project/uyuni-tools/shared/backend"
 	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
@@ -47,6 +46,9 @@ type Connection struct {
 	container        string
 	user             string
 	systemd          podman.Systemd
+	// detector is the backend detection strategy.
+	// It is injectable so tests can swap in a stub without touching the OS.
+	detector backend.BackendDetector
 }
 
 // NewConnection creates a new connection object.
@@ -55,91 +57,61 @@ type Connection struct {
 // The empty strings means automatic detection of the backend where the uyuni container is running.
 // container is the name of a container to look for when detecting the command.
 // kubernetesFilter is a filter parameter to use to match a pod.
-func NewConnection(backend string, container string, kubernetesFilter string) *Connection {
-	return NewUserConnection(backend, container, kubernetesFilter, "")
+func NewConnection(bk string, container string, kubernetesFilter string) *Connection {
+	return NewUserConnection(bk, container, kubernetesFilter, "")
 }
 
 // NewUserConnection creates a new connection object with a specific user to run commands as.
-func NewUserConnection(backend string, container string, kubernetesFilter string, user string) *Connection {
-	systemd := podman.NewSystemd()
-	cnx := Connection{
-		backend: backend, container: container, kubernetesFilter: kubernetesFilter, systemd: systemd, user: user,
-	}
+func NewUserConnection(bk string, container string, kubernetesFilter string, user string) *Connection {
+	sd := podman.NewSystemd()
 
-	return &cnx
+	// Build the production detector wired to real system calls.
+	det := backend.NewSystemDetector(runner)
+	det.Systemd = sd
+
+	return &Connection{
+		backend:          bk,
+		container:        container,
+		kubernetesFilter: kubernetesFilter,
+		systemd:          sd,
+		user:             user,
+		detector:         det,
+	}
 }
 
-// GetCommand validates or guesses the connection backend command.
+// WithDetector replaces the backend detector on an existing Connection.
+// This is the primary hook for tests: callers create a Connection via
+// NewConnection and then swap in a stub detector before calling GetCommand.
+//
+//	cnx := shared.NewConnection("", "uyuni-server", filter)
+//	cnx.WithDetector(myFakeDetector)
+//	cmd, err := cnx.GetCommand()
+func (c *Connection) WithDetector(d backend.BackendDetector) *Connection {
+	c.detector = d
+	return c
+}
+
+// GetCommand validates or resolves the connection backend command.
+//
+// When a backend was set explicitly (via --backend flag or direct constructor
+// argument) the detector validates that the binary exists before returning it.
+// When the backend is empty the detector auto-detects using the documented
+// precedence order (see package backend).
+//
+// The resolved command is cached on the Connection so repeated calls are
+// free of I/O after the first resolution.
 func (c *Connection) GetCommand() (string, error) {
-	var err error
-	if c.command == "" {
-		switch c.backend {
-		case "podman":
-			fallthrough
-		case "podman-remote":
-			fallthrough
-		case "kubectl":
-			if _, err = exec.LookPath(c.backend); err != nil {
-				err = fmt.Errorf(L("backend command not found in PATH: %s"), c.backend)
-			}
-			c.command = c.backend
-		case "host":
-			c.command = "host"
-		case "":
-			hasPodman := false
-			hasKubectl := false
-
-			// Check kubectl with a timeout in case the configured cluster is not responding
-			_, err = exec.LookPath("kubectl")
-			if err == nil {
-				hasKubectl = true
-				if out, err := runner("kubectl", "--request-timeout=30s", "get", "deploy", c.kubernetesFilter,
-					"-A", "-o=jsonpath={.items[*].metadata.name}",
-				).Log(zerolog.DebugLevel).Spinner("").Exec(); err != nil {
-					log.Info().Msg(L("kubectl not configured to connect to a cluster, ignoring"))
-				} else if len(bytes.TrimSpace(out)) != 0 {
-					c.command = "kubectl"
-					return c.command, err
-				}
-			}
-
-			// Search for other backends
-			bins := []string{"podman", "podman-remote"}
-			for _, bin := range bins {
-				if _, err = exec.LookPath(bin); err == nil {
-					hasPodman = true
-					if _, checkErr := runner(bin, "inspect", c.container, "--format", "{{.Name}}").
-						Spinner("").Exec(); checkErr == nil {
-						c.command = bin
-						break
-					}
-				}
-			}
-			if c.command == "" {
-				// Check for uyuni-server.service or helm release
-				if hasPodman && (c.systemd.HasService(podman.ServerService) || c.systemd.HasService(podman.ProxyService)) {
-					c.command = "podman"
-					return c.command, nil
-				} else if hasKubectl {
-					clusterInfos, err := kubernetes.CheckCluster()
-					if err != nil {
-						return c.command, err
-					}
-					kubeconfig := clusterInfos.GetKubeconfig()
-					if kubernetes.HasHelmRelease("uyuni", kubeconfig) || kubernetes.HasHelmRelease("uyuni-proxy", kubeconfig) {
-						c.command = "kubectl"
-						return c.command, nil
-					}
-				}
-			}
-			if c.command == "" {
-				err = errors.New(L("uyuni container is not accessible with one of podman, podman-remote or kubectl"))
-			}
-		default:
-			err = fmt.Errorf(L("unsupported backend %s"), c.backend)
-		}
+	if c.command != "" {
+		// Already resolved – return cached value immediately.
+		return c.command, nil
 	}
-	return c.command, err
+
+	cmd, err := c.detector.Detect(c.backend, c.container, c.kubernetesFilter)
+	if err != nil {
+		return "", err
+	}
+	c.command = cmd
+	return c.command, nil
 }
 
 // GetNamespace finds the namespace of the running pod
@@ -564,13 +536,13 @@ func ChoosePodmanOrKubernetes[F interface{}](
 	podmanFn utils.CommandFunc[F],
 	kubernetesFn utils.CommandFunc[F],
 ) (utils.CommandFunc[F], error) {
-	backend := "podman"
+	bk := "podman"
 	runningBinary := filepath.Base(os.Args[0])
 	if runningBinary == "mgrpxy" {
-		backend, _ = flags.GetString("backend")
+		bk, _ = flags.GetString("backend")
 	}
 
-	cnx := NewConnection(backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	cnx := NewConnection(bk, podman.ServerContainerName, kubernetes.ServerFilter)
 	return chooseBackend(cnx, podmanFn, kubernetesFn)
 }
 
@@ -580,9 +552,9 @@ func ChooseProxyPodmanOrKubernetes[F interface{}](
 	podmanFn utils.CommandFunc[F],
 	kubernetesFn utils.CommandFunc[F],
 ) (utils.CommandFunc[F], error) {
-	backend, _ := flags.GetString("backend")
+	bk, _ := flags.GetString("backend")
 
-	cnx := NewConnection(backend, podman.ProxyContainerNames[0], kubernetes.ProxyFilter)
+	cnx := NewConnection(bk, podman.ProxyContainerNames[0], kubernetes.ProxyFilter)
 	return chooseBackend(cnx, podmanFn, kubernetesFn)
 }
 
