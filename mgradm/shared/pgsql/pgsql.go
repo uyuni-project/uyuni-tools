@@ -6,6 +6,7 @@ package pgsql
 
 import (
 	"fmt"
+	"path"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared"
@@ -37,11 +38,31 @@ func PreparePgsqlImage(
 	return preparedImage, err
 }
 
+func GenerateCustomConfig(tz string) error {
+	customConfFilePath := path.Join(podman.GetServiceConfFolder(podman.DBService), podman.CustomConf)
+	if !utils.FileExists(customConfFilePath) {
+		if tz == "" {
+			tz = "Etc/UTC"
+		}
+		environment := fmt.Sprintf("Environment=TZ=%s\n", tz)
+
+		if err := podman.GenerateSystemdConfFile(podman.DBService, podman.CustomConf, environment, true); err != nil {
+			return utils.Error(err, L("cannot generate systemd custom configuration file"))
+		}
+	}
+	return nil
+}
+
 // SetupPgsql prepares the systemd service and starts it if needed.
 func SetupPgsql(
 	systemd podman.Systemd,
 	pgsqlImage string,
+	tz string,
 ) error {
+	if err := GenerateCustomConfig(tz); err != nil {
+		return err
+	}
+
 	if err := GeneratePgsqlSystemdService(systemd, pgsqlImage); err != nil {
 		return utils.Error(err, L("cannot generate systemd service"))
 	}
@@ -64,7 +85,11 @@ func SetupPgsql(
 func Upgrade(
 	preparedImage string,
 	systemd podman.Systemd,
+	tz string,
 ) error {
+	if err := GenerateCustomConfig(tz); err != nil {
+		return err
+	}
 	if err := GeneratePgsqlSystemdService(systemd, preparedImage); err != nil {
 		return utils.Error(err, L("cannot generate systemd service"))
 	}

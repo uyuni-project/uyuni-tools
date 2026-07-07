@@ -1,0 +1,1 @@
+- Set the timezone on the database container too (bsc#1267871)
