@@ -22,6 +22,9 @@ func TestParamsParsing(t *testing.T) {
 
 	// Test function asserting that the args are properly parsed
 	tester := func(_ *types.GlobalFlags, flags *inspectFlags, _ *cobra.Command, _ []string) error {
+		// inspect uses only the global --image/--tag flags; no --server-image override applies here
+		testutils.AssertEquals(t, "Error parsing --image", "path/to/image", flags.Image.Name)
+		testutils.AssertEquals(t, "Error parsing --tag", "v1.2.3", flags.Image.Tag)
 		flagstests.AssertImageFlag(t, &flags.Image)
 		flagstests.AssertRegistryFlag(t, &flags.Image.Registry)
 		flagstests.AssertSCCFlag(t, &flags.SCC)

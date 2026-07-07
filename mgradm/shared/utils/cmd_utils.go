@@ -127,6 +127,15 @@ func AddImageFlag(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "registry", "")
 }
 
+// AddServerImageFlags adds the server-specific image override flags to a command.
+func AddServerImageFlags(cmd *cobra.Command) {
+	cmd.Flags().String("server-image", defaultImage, L("Image for uyuni server container"))
+	cmd.Flags().String("server-tag", "", L("Tag for uyuni server container. If empty, the global tag will be used"))
+
+	_ = utils.AddFlagToHelpGroupID(cmd, "server-image", "image")
+	_ = utils.AddFlagToHelpGroupID(cmd, "server-tag", "image")
+}
+
 // AddDBUpgradeImageFlag add Database upgrade image flags to a command.
 func AddDBUpgradeImageFlag(cmd *cobra.Command) {
 	defaultImage := path.Join(utils.DefaultImagePrefix, "server-database-migration")
@@ -214,6 +223,7 @@ func AddPgsqlFlags(cmd *cobra.Command) {
 // AddServerFlags add flags common to install, upgrade and migration.
 func AddServerFlags(cmd *cobra.Command) {
 	AddImageFlag(cmd)
+	AddServerImageFlags(cmd)
 	AddSCCFlag(cmd)
 	AddPgsqlFlags(cmd)
 	AddDBFlags(cmd)
