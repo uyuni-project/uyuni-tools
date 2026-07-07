@@ -17,6 +17,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/coco"
+	"github.com/uyuni-project/uyuni-tools/mgradm/shared/eventprocessor"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/hub"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/pgsql"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/saline"
@@ -414,6 +415,7 @@ func Upgrade(
 	cocoFlags adm_utils.CocoFlags,
 	hubXmlrpcFlags adm_utils.HubXmlrpcFlags,
 	salineFlags adm_utils.SalineFlags,
+	eventProcessorFlags adm_utils.EventProcessorFlags,
 	pgsqlFlags types.PgsqlFlags,
 	tftpdFlags adm_utils.TFTPDFlags,
 	tz string,
@@ -593,6 +595,7 @@ func Upgrade(
 		hub.Upgrade(systemd, authFile, image, hubXmlrpcFlags),
 		saline.Upgrade(systemd, authFile, image, salineFlags, utils.GetLocalTimezone()),
 		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn, hasTFTP),
+		eventprocessor.Upgrade(systemd, authFile, image, eventProcessorFlags, inspectedDB, debug),
 		systemd.ReloadDaemon(false),
 	)
 }
