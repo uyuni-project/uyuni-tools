@@ -1,0 +1,2 @@
+- Revert usage of sdnotify as it causes podman panic on SP7
+  (bsc#1270399, bsc#1270398)
