@@ -33,7 +33,8 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--cgroups=no-conmon \
 	--shm-size=0 \
 	--shm-size-systemd=0 \
-	--sdnotify=healthy \
+	--sdnotify=conmon \
+	-d \
 	--name {{ .NamePrefix }}-db \
 	--hostname {{ .NamePrefix }}-db.mgr.internal \
 	--network-alias db \
@@ -67,8 +68,7 @@ ExecStopPost=/usr/bin/podman rm \
 PIDFile=%t/%n.pid
 TimeoutStopSec=180
 TimeoutStartSec=900
-Type=notify
-NotifyAccess=all
+Type=forking
 
 [Install]
 WantedBy=multi-user.target default.target

@@ -115,8 +115,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--cgroups=no-conmon \
 	--shm-size=0 \
 	--shm-size-systemd=0 \
-	--sdnotify=healthy \
+	--sdnotify=conmon \
 	--systemd=always \
+	-d \
 	--name uyuni-server \
 	--hostname uyuni-server.mgr.internal \
 	--arg value \
@@ -158,8 +159,7 @@ ExecStopPost=/usr/bin/podman rm \
 PIDFile=%t/uyuni-server.pid
 TimeoutStopSec=180
 TimeoutStartSec=900
-Type=notify
-NotifyAccess=all
+Type=forking
 
 [Install]
 WantedBy=multi-user.target default.target
@@ -203,8 +203,9 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--cgroups=no-conmon \
 	--shm-size=0 \
 	--shm-size-systemd=0 \
-	--sdnotify=healthy \
+	--sdnotify=conmon \
 	--systemd=always \
+	-d \
 	--name uyuni-server \
 	--hostname uyuni-server.mgr.internal \
 	--arg value \
@@ -238,8 +239,7 @@ ExecStopPost=/usr/bin/podman rm \
 PIDFile=%t/uyuni-server.pid
 TimeoutStopSec=180
 TimeoutStartSec=900
-Type=notify
-NotifyAccess=all
+Type=forking
 
 [Install]
 WantedBy=multi-user.target default.target
