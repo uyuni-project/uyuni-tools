@@ -22,6 +22,7 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
+	"time"
 	"unicode"
 
 	"github.com/rs/zerolog"
@@ -301,7 +302,8 @@ func ContainsUpperCase(str string) bool {
 func GetURLBody(URL string) ([]byte, error) {
 	// Download the key from the URL
 	log.Debug().Msgf("Downloading %s", URL)
-	resp, err := http.Get(URL)
+	client := &http.Client{Timeout: time.Minute}
+	resp, err := client.Get(URL)
 	if err != nil {
 		return nil, Errorf(err, L("error downloading from %s"), URL)
 	}
