@@ -9,6 +9,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup"
@@ -62,7 +63,7 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, _ []string) {
 		// do not log if running the completion cmd as the output is redirected to create a file to source
 		if cmd.Name() != "completion" {
-			utils.LogInit(true)
+			utils.LogInit(shouldLogToConsole(cmd, globalFlags.LogLevel))
 			utils.SetLogLevel(globalFlags.LogLevel)
 			log.Info().Msgf(L("Starting %s"), strings.Join(os.Args, " "))
 			log.Info().Msgf(L("Use of this software implies acceptance of the End User License Agreement."))
@@ -98,4 +99,22 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
 
 	return rootCmd, err
+}
+
+func shouldLogToConsole(cmd *cobra.Command, logLevel string) bool {
+	if !isInteractiveSupportSQL(cmd) {
+		return true
+	}
+
+	level, err := zerolog.ParseLevel(logLevel)
+	return err != nil || level > zerolog.DebugLevel
+}
+
+func isInteractiveSupportSQL(cmd *cobra.Command) bool {
+	if cmd.Name() != "sql" || cmd.Parent() == nil || cmd.Parent().Name() != "support" {
+		return false
+	}
+
+	interactive, err := cmd.Flags().GetBool("interactive")
+	return err == nil && interactive
 }
