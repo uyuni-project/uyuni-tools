@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -231,4 +231,19 @@ func TestVerifyHostname(t *testing.T) {
 
 	err = VerifyHostname(tmpca, tmpcert, "test.example.com")
 	testutils.AssertEquals(t, "Unexpected error", nil, err)
+}
+
+func TestSHA256Fingerprints(t *testing.T) {
+	bundle, err := os.ReadFile("testdata/chain1/intermediate-ca.crt")
+	testutils.AssertEquals(t, "error reading the bundle", nil, err)
+
+	fingerprints, err := SHA256Fingerprints(bundle)
+	testutils.AssertEquals(t, "error not nil", nil, err)
+	testutils.AssertEquals(t, "Didn't get the expected fingerprint count", 2, len(fingerprints))
+	testutils.AssertEquals(t, "Wrong first certificate fingerprint",
+		"04:5B:D9:B7:4C:8A:B7:77:66:8E:53:1C:B2:5C:F3:64:55:51:41:30:5D:A3:A7:A8:54:86:23:BC:47:51:3E:27",
+		fingerprints[0])
+	testutils.AssertEquals(t, "Wrong second certificate fingerprint",
+		"7C:30:C7:12:03:64:D0:B3:FF:AA:B2:7C:1E:F1:E9:60:75:C8:A7:81:63:F0:6D:E9:EB:88:D6:2E:F2:32:B2:69",
+		fingerprints[1])
 }

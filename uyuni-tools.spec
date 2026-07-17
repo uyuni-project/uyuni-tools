@@ -52,7 +52,7 @@
 # debian || ubuntu
 
 Name:           %{project}
-Version:        5.2.13
+Version:        5.2.16
 Release:        0
 Summary:        Tools for managing %{productprettyname} container
 License:        Apache-2.0
@@ -113,6 +113,7 @@ Summary:        Command line tool to install and update %{productprettyname}
 Requires:       (aardvark-dns if podman)
 Requires:       (netavark if podman)
 %endif
+Requires:       openssl
 # suse_version
 %if "%{_vendor}" != "debbuild"
 Requires:       (podman >= 4.5.0 if podman)

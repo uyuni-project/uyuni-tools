@@ -20,6 +20,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/restart"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/scale"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/server"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/ssl"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/start"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/status"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/stop"
@@ -93,6 +94,7 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 	rootCmd.AddCommand(gpg.NewCommand(globalFlags))
 	rootCmd.AddCommand(backup.NewCommand(globalFlags))
 	rootCmd.AddCommand(server.NewCommand(globalFlags))
+	rootCmd.AddCommand(ssl.NewCommand(globalFlags))
 
 	rootCmd.AddCommand(utils.GetConfigHelpCommand())
 

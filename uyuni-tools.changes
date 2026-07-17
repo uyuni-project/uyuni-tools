@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Tue Jul 07 10:13:15 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.16-0
+  * Revert usage of sdnotify as it causes podman panic on SP7
+    (bsc#1270399, bsc#1270398)
+
+-------------------------------------------------------------------
+Mon Jul 06 11:47:23 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.15-0
+  * Require at least podman v4.7.2
+  * Send READY notification to systemd only once healthy
+    (bsc#1263823)
+
+-------------------------------------------------------------------
+Mon Jun 29 15:36:09 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.14-0
+  * Include server environment file in the backup
+    (bsc#1268649)
+  * Add mgradm commands for SSL CA and certificate rotation
+
+-------------------------------------------------------------------
 Wed Jun 17 15:12:11 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.13-0
