@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -6,10 +6,10 @@ package testutils
 
 import (
 	"bytes"
+	"context"
 
 	"github.com/rs/zerolog"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"golang.org/x/net/context"
 )
 
 type fakeRunner struct {
