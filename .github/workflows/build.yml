@@ -24,10 +24,10 @@ jobs:
           fetch-tags: true
           fetch-depth: 0
 
-      - name: Setup Go ${{ matrix.go-version }}
+      - name: Setup Go
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e #v7.0.0
         with:
-          go-version: '1.25.x'
+          go-version-file: 'go.mod'
 
       - name: Install dependencies
         run: |
