@@ -68,6 +68,29 @@ func GetResourceHelp() string {
 	return strings.Join(lines, "\n")
 }
 
+// ResourceInfo holds exported metadata about a registered resource.
+type ResourceInfo struct {
+	Name        string
+	Aliases     []string
+	Description string
+}
+
+// GetRegisteredResources returns a sorted list of all registered resources.
+func GetRegisteredResources() []ResourceInfo {
+	var resources []ResourceInfo
+	for name, res := range resourceTypes {
+		resources = append(resources, ResourceInfo{
+			Name:        name,
+			Aliases:     res.Aliases,
+			Description: res.Description,
+		})
+	}
+	sort.Slice(resources, func(i, j int) bool {
+		return resources[i].Name < resources[j].Name
+	})
+	return resources
+}
+
 func lookupFetcher(name string) (ResourceFetcher, error) {
 	if res, ok := resourceTypes[name]; ok {
 		return res.Fetcher, nil
