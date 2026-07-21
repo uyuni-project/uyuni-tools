@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -63,7 +63,7 @@ func gpgListKeys(_ *types.GlobalFlags, flags *gpgListFlags, _ *cobra.Command, _ 
 	if err := adm_utils.ExecCommand(
 		zerolog.InfoLevel, cnx, gpgListCmd...,
 	); err != nil {
-		return utils.Errorf(err, L("failed to list keys in selected keyring"))
+		return utils.Error(err, L("failed to list keys in selected keyring"))
 	}
 
 	return nil

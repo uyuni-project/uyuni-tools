@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -127,14 +127,14 @@ func gpgAddKeys(_ *types.GlobalFlags, flags *gpgAddFlags, _ *cobra.Command, args
 
 	log.Info().Msgf(L("Running %s"), strings.Join(gpgAddCmd, " "))
 	if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, gpgAddCmd...); err != nil {
-		return utils.Errorf(err, L("failed to run import key"))
+		return utils.Error(err, L("failed to run import key"))
 	}
 
 	// this is for running import-suma-build-keys, who import customer-build-keys.gpg
 	uyuniUpdateCmd := []string{"systemctl", "restart", "uyuni-update-config"}
 	log.Info().Msgf(L("Running %s"), strings.Join(uyuniUpdateCmd, " "))
 	if err := adm_utils.ExecCommand(zerolog.InfoLevel, cnx, uyuniUpdateCmd...); err != nil {
-		return utils.Errorf(err, L("failed to restart uyuni-update-config"))
+		return utils.Error(err, L("failed to restart uyuni-update-config"))
 	}
 	return err
 }

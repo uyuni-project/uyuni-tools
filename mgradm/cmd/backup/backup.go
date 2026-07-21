@@ -124,7 +124,7 @@ func doRestore(
 		var backupError *shared.BackupError
 		ok := errors.As(err, &backupError)
 		if ok {
-			log.Warn().Err(backupError).Msgf(L("Encountered problems:"))
+			log.Warn().Err(backupError).Msg(L("Encountered problems:"))
 			if backupError.Abort && backupError.DataRemains {
 				return errors.New(L("Restore aborted with partially restored files. Resolve the error and try again"))
 			}

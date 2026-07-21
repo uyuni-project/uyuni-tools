@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,11 +22,11 @@ func kubernetesCacheClear(
 	cnx := shared.NewConnection("kubectl", "squid", kubernetes.ProxyFilter)
 	namespace, err := cnx.GetNamespace("")
 	if err != nil {
-		return utils.Errorf(err, L("failed retrieving namespace"))
+		return utils.Error(err, L("failed retrieving namespace"))
 	}
 
 	if _, err := cnx.Exec("find", "/var/cache/squid", "-mindepth", "1", "-delete"); err != nil {
-		return utils.Errorf(err, L("failed to remove cached data"))
+		return utils.Error(err, L("failed to remove cached data"))
 	}
 
 	return kubernetes.Restart(namespace, kubernetes.ProxyApp)
