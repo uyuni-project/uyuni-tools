@@ -120,43 +120,21 @@ func installForPodman(
 
 func runPaygExtract() error {
 	path, err := exec.LookPath("uyuni-payg-extract-data")
-	if err != nil {
-		// binary is not installed, skip
-		return nil
+	if err == nil {
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, path); err != nil {
+			return utils.Error(err, L("failed to extract payg data"))
+		}
 	}
-	// the binary is installed
-	return utils.Error(utils.RunCmdStdMapping(zerolog.DebugLevel, path), L("failed to extract payg data"))
+	return nil
 }
 
 const (
-	minMemoryGB  = 16 // Minimum memory in GB for production
-	minStorageGB = 50 // Minimum storage in GB
+	minServerMemoryGB  = 16  // Minimum memory in GB for test or base installation
+	minServerStorageGB = 100 // Minimum podman storage root space in GB
 )
 
 func checkPrerequisites() error {
-	if err := utils.CheckMemory(minMemoryGB); err != nil {
-		return err
-	}
-
-	storageRoot, err := shared_podman.GetPodmanVolumeBasePath()
-	if err != nil || storageRoot == "" {
-		storageRoot = "/var/lib" // fallback if detection fails
-	}
-	if err := utils.CheckStorage(storageRoot, minStorageGB); err != nil {
-		return err
-	}
-
-	// Use all required ports for podman server (web, salt, etc.)
-	for _, portMap := range utils.GetServerPorts(false) {
-		if err := utils.CheckPort(portMap.Exposed); err != nil {
-			return err
-		}
-	}
-
-	if err := shared_podman.CheckPodmanRunningContainers(); err != nil {
-		return err
-	}
-	return nil
+	return shared_podman.CheckPrerequisites(minServerMemoryGB, minServerStorageGB, utils.GetServerPorts(false))
 }
 
 func setupDatabase(dbFlags types.DBFlags, reportdbFlags types.DBFlags, preparedImage string) error {

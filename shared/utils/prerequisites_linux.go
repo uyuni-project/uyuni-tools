@@ -26,7 +26,7 @@ func CheckStorage(path string, requiredMinGB uint64) error {
 
 	if freeSpace < requiredSpace {
 		return fmt.Errorf(
-			L("insufficient storage in %s: requires at least %d GB, but only %.2f GB available"),
+			L("insufficient storage in %[1]s: requires at least %[2]d GB, but only %[3].2f GB available"),
 			path,
 			requiredMinGB,
 			float64(freeSpace)/(1024*1024*1024),
@@ -47,7 +47,7 @@ func CheckMemory(requiredMinGB uint64) error {
 
 	if totalRAM < requiredRAM {
 		return fmt.Errorf(
-			L("insufficient memory: requires at least %d GB, but system has %.2f GB"),
+			L("insufficient memory: requires at least %[1]d GB, but system has %[2].2f GB"),
 			requiredMinGB,
 			float64(totalRAM)/(1024*1024*1024),
 		)
