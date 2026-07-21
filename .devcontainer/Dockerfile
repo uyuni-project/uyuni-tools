@@ -27,7 +27,7 @@ RUN set -euo pipefail; \
     uyuni-releng-tools \
     util-linux
 
-RUN curl -sSfL https://github.com/golangci/golangci-lint/releases/download/v2.12.2/golangci-lint-2.7.1-linux-amd64.tar.gz | tar -xz &&  \
+RUN curl --proto "=https" --tlsv1.2 -sSfL https://github.com/golangci/golangci-lint/releases/download/v2.12.2/golangci-lint-2.7.1-linux-amd64.tar.gz | tar -xz &&  \
     mv golangci-lint-2.12.2-linux-amd64/golangci-lint /usr/local/bin/ && \
     rm -rf golangci-lint-2.12.2-linux-amd64
 
