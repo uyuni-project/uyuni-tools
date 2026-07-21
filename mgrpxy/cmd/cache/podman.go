@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -24,7 +24,7 @@ func podmanCacheClear(
 	cnx := shared.NewConnection("podman", "uyuni-proxy-squid", "")
 
 	if _, err := cnx.Exec("sh", "-c", "rm -rf /var/cache/squid/*"); err != nil {
-		return utils.Errorf(err, L("failed to remove cached data"))
+		return utils.Error(err, L("failed to remove cached data"))
 	}
 
 	return systemd.RestartService(podman.ProxyService)

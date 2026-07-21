@@ -142,7 +142,7 @@ func GenerateServerEnvironmentFile(flags adm_utils.InstallationFlags, fqdn strin
 		HasMirror: hasMirror,
 	}
 	if err := utils.WriteTemplateToFile(data, envfile, 0400, true); err != nil {
-		return utils.Errorf(err, L("failed to generate server environment file"))
+		return utils.Error(err, L("failed to generate server environment file"))
 	}
 
 	return nil
@@ -158,7 +158,7 @@ func GenerateUpgradeServerEnvironmentFile(debug bool) error {
 	}
 
 	if err := utils.WriteTemplateToFile(data, envfile, 0400, true); err != nil {
-		return utils.Errorf(err, L("failed to generate server environment file"))
+		return utils.Error(err, L("failed to generate server environment file"))
 	}
 
 	return nil
@@ -216,7 +216,7 @@ func GenerateServerSystemdService(mirrorPath string, debug bool) error {
 	}
 
 	if err := utils.WriteTemplateToFile(data, podman.GetServicePath("uyuni-server"), 0444, true); err != nil {
-		return utils.Errorf(err, L("failed to generate systemd service unit file"))
+		return utils.Error(err, L("failed to generate systemd service unit file"))
 	}
 
 	return nil
@@ -232,7 +232,7 @@ func GenerateSystemdService(
 ) error {
 	err := podman.SetupNetwork(false)
 	if err != nil {
-		return utils.Errorf(err, L("cannot setup network"))
+		return utils.Error(err, L("cannot setup network"))
 	}
 
 	// Add the SCC and admin credentials as secrets
@@ -258,13 +258,13 @@ func GenerateSystemdService(
 	if err := podman.GenerateSystemdConfFile(podman.ServerService, podman.GeneratedConf,
 		"Environment=UYUNI_IMAGE="+image, true,
 	); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd conf file"))
+		return utils.Error(err, L("cannot generate systemd conf file"))
 	}
 
 	config := fmt.Sprintf("Environment=\"PODMAN_EXTRA_ARGS=%s\"", strings.Join(podmanArgs, " "))
 	if !utils.FileExists(podman.GetServiceConfPath(podman.ServerService, podman.CustomConf)) {
 		if err := podman.GenerateSystemdConfFile(podman.ServerService, podman.CustomConf, config, false); err != nil {
-			return utils.Errorf(err, L("cannot generate systemd user configuration file"))
+			return utils.Error(err, L("cannot generate systemd user configuration file"))
 		}
 	}
 	return systemd.ReloadDaemon(false)
@@ -315,7 +315,7 @@ func RunSSLMigration(
 	log.Info().Msgf(L("Migrating SSL certificates from the source server %s"), sourceFqdn)
 	if err := podman.RunContainer("uyuni-ssl-migration", preparedImage, utils.SSLMigrationVolumeMounts, extraArgs,
 		[]string{"bash", "-e", "-c", script}); err != nil {
-		return nil, utils.Errorf(err, L("cannot run uyuni SSL migration container"))
+		return nil, utils.Error(err, L("cannot run uyuni SSL migration container"))
 	}
 
 	// now that everything is migrated, we need to fix SELinux permission
@@ -332,7 +332,7 @@ func RunSSLMigration(
 	extractedData, err := utils.ReadInspectData[utils.InspectResult](data)
 
 	if err != nil {
-		return nil, utils.Errorf(err, L("cannot read extracted data"))
+		return nil, utils.Error(err, L("cannot read extracted data"))
 	}
 
 	return extractedData, nil
@@ -388,7 +388,7 @@ func RunPgsqlVersionUpgrade(
 
 	upgradeImageURL, err := utils.ComputeImage(image.Registry.Host, image.Tag, upgradeImage)
 	if err != nil {
-		return utils.Errorf(err, L("failed to compute image URL"))
+		return utils.Error(err, L("failed to compute image URL"))
 	}
 
 	preparedImage, err := prepareImage(authFile, upgradeImageURL, image.PullPolicy, true)
@@ -430,7 +430,7 @@ func Upgrade(
 	// Prepare Uyuni network, migration container needs to run in the same network as resulting image
 	err := podman.SetupNetwork(false)
 	if err != nil {
-		return utils.Errorf(err, L("cannot setup network"))
+		return utils.Error(err, L("cannot setup network"))
 	}
 
 	fqdn, err := utils.GetFqdn([]string{})
@@ -440,7 +440,7 @@ func Upgrade(
 
 	preparedServerImage, preparedPgsqlImage, err := podman.PrepareImages(authFile, image, pgsqlFlags)
 	if err != nil {
-		return utils.Errorf(err, L("cannot prepare images"))
+		return utils.Error(err, L("cannot prepare images"))
 	}
 
 	inspectedValues, err := prepareHost(preparedServerImage, preparedPgsqlImage)
@@ -454,7 +454,7 @@ func Upgrade(
 			hasTFTP = serverExposesTFTP(systemd)
 		}
 		if err := systemd.StopService(podman.ServerService); err != nil {
-			return utils.Errorf(err, L("cannot stop service"))
+			return utils.Error(err, L("cannot stop service"))
 		}
 		defer func() {
 			err = systemd.StartService(podman.ServerService)
@@ -462,7 +462,7 @@ func Upgrade(
 	}
 	if systemd.HasService(podman.DBService) {
 		if err := systemd.StopService(podman.DBService); err != nil {
-			return utils.Errorf(err, L("cannot stop service"))
+			return utils.Error(err, L("cannot stop service"))
 		}
 		defer func() {
 			err = systemd.StartService(podman.DBService)
@@ -513,7 +513,7 @@ func Upgrade(
 
 		log.Warn().Msg(L("Data will be copied during this process. Please ensure sufficient disk space is available."))
 		if err := RunPgsqlVersionUpgrade(authFile, image, upgradeImage, upgradeVolumeMounts); err != nil {
-			return utils.Errorf(err, L("cannot run PostgreSQL version upgrade script"))
+			return utils.Error(err, L("cannot run PostgreSQL version upgrade script"))
 		}
 	} else if newPgVersion == oldPgVersion {
 		log.Info().Msg(L("Upgrading without changing PostgreSQL version"))
@@ -526,7 +526,7 @@ func Upgrade(
 
 	if inspectedValues.DBHost == "localhost" ||
 		inspectedValues.ReportDBHost == "localhost" {
-		log.Info().Msgf(L("Configuring split PostgreSQL container"))
+		log.Info().Msg(L("Configuring split PostgreSQL container"))
 
 		if err := PrepareSSLCertificates(preparedServerImage, &ssl, tz, fqdn); err != nil {
 			return err
@@ -535,7 +535,7 @@ func Upgrade(
 
 	if err := configureDBContainer(
 		preparedServerImage, preparedPgsqlImage, systemd, db, reportdb); err != nil {
-		return utils.Errorf(err, L("cannot configure db container"))
+		return utils.Error(err, L("cannot configure db container"))
 	}
 
 	if err := pgsql.Upgrade(preparedPgsqlImage, systemd); err != nil {
@@ -738,7 +738,7 @@ func prepareHost(
 ) (*utils.InspectData, error) {
 	inspectedValues, err := podman.Inspect(preparedServerImage, preparedPgsqlImage)
 	if err != nil {
-		return nil, utils.Errorf(err, L("cannot inspect podman values"))
+		return nil, utils.Error(err, L("cannot inspect podman values"))
 	}
 
 	return inspectedValues, adm_utils.SanityCheck(inspectedValues)
@@ -752,7 +752,7 @@ func configureDBContainer(
 	reportdb types.DBFlags,
 ) error {
 	if err := RunSplitContainerSettings(serverImage, "db", "reportdb"); err != nil {
-		return utils.Errorf(err, L("PostgreSQL migration failure"))
+		return utils.Error(err, L("PostgreSQL migration failure"))
 	}
 
 	// Create all the database credentials secrets

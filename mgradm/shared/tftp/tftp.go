@@ -38,7 +38,7 @@ func SetupTFTPContainer(
 
 	tftpImage, err := utils.ComputeImage(baseImage.Registry.Host, baseImage.Tag, tftpFlags.Image)
 	if err != nil {
-		return utils.Errorf(err, L("failed to compute image URL"))
+		return utils.Error(err, L("failed to compute image URL"))
 	}
 
 	preparedImage, err := podman.PrepareImage(authFile, tftpImage, baseImage.PullPolicy, enable)
@@ -47,7 +47,7 @@ func SetupTFTPContainer(
 	}
 
 	if err := generateTFTPSystemdService(systemd, preparedImage, fqdn); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd service"))
+		return utils.Error(err, L("cannot generate systemd service"))
 	}
 
 	if enable {
@@ -92,14 +92,14 @@ func generateTFTPSystemdService(systemd podman.Systemd, image string, fqdn strin
 	if err := utils.WriteTemplateToFile(
 		tftpData, podman.GetServicePath(podman.TFTPService), 0555, true,
 	); err != nil {
-		return utils.Errorf(err, L("failed to generate systemd service unit file"))
+		return utils.Error(err, L("failed to generate systemd service unit file"))
 	}
 
 	environment := fmt.Sprintf("Environment=UYUNI_TFTPD_IMAGE=%s", image)
 	if err := podman.GenerateSystemdConfFile(
 		podman.TFTPService, podman.GeneratedConf, environment, true,
 	); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd conf file"))
+		return utils.Error(err, L("cannot generate systemd conf file"))
 	}
 
 	return systemd.ReloadDaemon(false)

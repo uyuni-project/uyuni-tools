@@ -434,13 +434,13 @@ func (s SystemdImpl) ScaleService(replicas int, name string) error {
 	for i := currentReplicas; i < replicas; i++ {
 		serviceName := fmt.Sprintf("%s@%d", name, i)
 		if err := s.EnableService(serviceName); err != nil {
-			return utils.Errorf(err, L("cannot enable service"))
+			return utils.Error(err, L("cannot enable service"))
 		}
 	}
 	for i := replicas; i < currentReplicas; i++ {
 		serviceName := fmt.Sprintf("%s@%d", name, i)
 		if err := s.DisableService(serviceName); err != nil {
-			return utils.Errorf(err, L("cannot disable service"))
+			return utils.Error(err, L("cannot disable service"))
 		}
 	}
 	return s.RestartInstantiated(name)

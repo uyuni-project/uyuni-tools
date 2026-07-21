@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -32,7 +32,7 @@ func runLogin(_ *types.GlobalFlags, flags *apiFlags, cmd *cobra.Command, _ []str
 		return err
 	}
 	if err := client.Login(); err != nil {
-		return utils.Errorf(err, L("Failed to validate credentials."))
+		return utils.Error(err, L("Failed to validate credentials."))
 	}
 	if err := api.StoreLoginCreds(client); err != nil {
 		return err

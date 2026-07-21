@@ -65,7 +65,7 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 			utils.LogInit(true)
 			utils.SetLogLevel(globalFlags.LogLevel)
 			log.Info().Msgf(L("Starting %s"), strings.Join(os.Args, " "))
-			log.Info().Msgf(L("Use of this software implies acceptance of the End User License Agreement."))
+			log.Info().Msg(L("Use of this software implies acceptance of the End User License Agreement."))
 		}
 	}
 

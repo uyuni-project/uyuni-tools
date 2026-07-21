@@ -92,7 +92,7 @@ func createSystemdDump(dir string) (string, error) {
 
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "systemctl", "cat", "uyuni-*")
 	if err != nil {
-		return "", utils.Errorf(err, L("failed to run systemctl cat uyuni-*"))
+		return "", utils.Error(err, L("failed to run systemctl cat uyuni-*"))
 	}
 	defer systemdSupportConfig.Close()
 
