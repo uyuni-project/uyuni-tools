@@ -62,7 +62,7 @@ func newListCmd(globalFlags *types.GlobalFlags, run func(*podmanUpgradeFlags) er
 
 			var flags podmanUpgradeFlags
 			if err := viper.Unmarshal(&flags); err != nil {
-				return utils.Errorf(err, L("failed to unmarshall configuration"))
+				return utils.Error(err, L("failed to unmarshall configuration"))
 			}
 			if err := run(&flags); err != nil {
 				return err

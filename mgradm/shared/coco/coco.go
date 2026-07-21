@@ -75,7 +75,7 @@ func writeCocoServiceFiles(
 
 	cocoImage, err := utils.ComputeImage(baseImage.Registry.Host, baseImage.Tag, image)
 	if err != nil {
-		return utils.Errorf(err, L("failed to compute image URL"))
+		return utils.Error(err, L("failed to compute image URL"))
 	}
 
 	pullEnabled := (cocoFlags.Replicas > 0 && cocoFlags.IsChanged) || (currentReplicas > 0 && !cocoFlags.IsChanged)
@@ -96,7 +96,7 @@ func writeCocoServiceFiles(
 
 	if err := utils.WriteTemplateToFile(attestationData,
 		podman.GetServicePath(podman.ServerAttestationService+"@"), 0555, true); err != nil {
-		return utils.Errorf(err, L("failed to generate systemd service unit file"))
+		return utils.Error(err, L("failed to generate systemd service unit file"))
 	}
 
 	environment := fmt.Sprintf(`Environment=UYUNI_SERVER_ATTESTATION_IMAGE=%s
@@ -106,7 +106,7 @@ Environment=database_connection=jdbc:postgresql://%s:%d/%s
 	if err := podman.GenerateSystemdConfFile(
 		podman.ServerAttestationService+"@", podman.GeneratedConf, environment, true,
 	); err != nil {
-		return utils.Errorf(err, L("cannot generate systemd conf file"))
+		return utils.Error(err, L("cannot generate systemd conf file"))
 	}
 
 	if err := systemd.ReloadDaemon(false); err != nil {

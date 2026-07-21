@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -47,7 +47,7 @@ func fetchConfigMap(dir string, namespace string) (string, error) {
 	defer configmapFile.Close()
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "configmap", "-o", "yaml", "-n", namespace)
 	if err != nil {
-		return "", utils.Errorf(err, L("cannot fetch configmap"))
+		return "", utils.Error(err, L("cannot fetch configmap"))
 	}
 
 	_, err = configmapFile.WriteString(string(out))

@@ -32,7 +32,7 @@ func installForPodman(
 
 	configPath := utils.GetConfigPath(args)
 	if err := podman.UnpackConfig(configPath); err != nil {
-		return shared_utils.Errorf(err, L("failed to retrieve proxy config files"))
+		return shared_utils.Error(err, L("failed to retrieve proxy config files"))
 	}
 
 	if err := podman.ExtractSecrets(); err != nil {
@@ -83,7 +83,7 @@ func installForPodman(
 
 	err = shared_podman.SetupNetwork(true)
 	if err != nil {
-		return shared_utils.Errorf(err, L("cannot setup network"))
+		return shared_utils.Error(err, L("cannot setup network"))
 	}
 
 	ipv6Enabled := shared_podman.HasIpv6Enabled(shared_podman.UyuniNetwork)

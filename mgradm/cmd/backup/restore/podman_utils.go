@@ -106,7 +106,7 @@ func defaultPodmanNetwork(flags *shared.Flagpole) error {
 
 func restorePodmanNetwork(header *tar.Header, tr *tar.Reader, flags *shared.Flagpole) error {
 	if flags.DryRun {
-		log.Info().Msgf(L("Would restore network configuration"))
+		log.Info().Msg(L("Would restore network configuration"))
 		return nil
 	}
 	data := make([]byte, header.Size)
@@ -170,7 +170,7 @@ func parseSecretsData(data []byte) ([]shared.BackupSecretMap, error) {
 
 func restorePodmanSecrets(header *tar.Header, tr *tar.Reader, flags *shared.Flagpole) error {
 	if flags.DryRun {
-		log.Info().Msgf(L("Would restore podman secrets"))
+		log.Info().Msg(L("Would restore podman secrets"))
 		return nil
 	}
 
