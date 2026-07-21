@@ -10,28 +10,40 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
-func TestCheckPodmanRunningContainersNoContainers(t *testing.T) {
-	// Mock runner to simulate no running containers
-	oldRunner := runner
-	defer func() { runner = oldRunner }()
-
-	runner = testutils.FakeRunnerGenerator("", nil)
-
-	err := CheckPodmanRunningContainers()
-	if err != nil {
-		t.Errorf("Expected no error when no containers are running, got: %v", err)
+func TestCheckPodmanRunningContainers(t *testing.T) {
+	type testCase struct {
+		name    string
+		output  string
+		err     error
+		wantErr bool
 	}
-}
 
-func TestCheckPodmanRunningContainersWithContainers(t *testing.T) {
-	// Mock runner to simulate running containers
-	oldRunner := runner
-	defer func() { runner = oldRunner }()
+	tests := []testCase{
+		{
+			name:    "no containers running",
+			output:  "",
+			err:     nil,
+			wantErr: false,
+		},
+		{
+			name:    "containers running",
+			output:  "abc123\n",
+			err:     nil,
+			wantErr: true,
+		},
+	}
 
-	runner = testutils.FakeRunnerGenerator("abc123\n", nil)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			oldRunner := runner
+			defer func() { runner = oldRunner }()
 
-	err := CheckPodmanRunningContainers()
-	if err == nil {
-		t.Error("Expected error when containers are running, got nil")
+			runner = testutils.FakeRunnerGenerator(tt.output, tt.err)
+
+			err := CheckPodmanRunningContainers()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("CheckPodmanRunningContainers() error = %v, wantErr = %v", err, tt.wantErr)
+			}
+		})
 	}
 }
