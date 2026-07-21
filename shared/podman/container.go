@@ -220,7 +220,7 @@ func GetContainerEvents(command string, container string, since time.Time) ([]Co
 		}
 		var event ContainerEvent
 		if err := json.Unmarshal([]byte(line), &event); err != nil {
-			return nil, utils.Errorf(err, L("failed to parse a podman event"))
+			return nil, utils.Error(err, L("failed to parse a podman event"))
 		}
 		if event.TimeNano < since.UnixNano() {
 			continue

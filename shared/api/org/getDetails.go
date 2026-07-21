@@ -21,11 +21,11 @@ func GetOrganizationDetails(cnxDetails *api.ConnectionDetails, orgName string) (
 		err = client.Login()
 	}
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to connect to the server"))
+		return nil, utils.Error(err, L("failed to connect to the server"))
 	}
 	res, err := api.GetChecked[types.Organization](client, fmt.Sprintf("org/getDetails?name=%s", orgName))
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to get organization details"))
+		return nil, utils.Error(err, L("failed to get organization details"))
 	}
 	if !res.Success {
 		return nil, errors.New(res.Message)

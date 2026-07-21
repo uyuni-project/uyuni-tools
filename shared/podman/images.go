@@ -53,7 +53,7 @@ func PrepareImage(authFile string, image string, pullPolicy string, pullEnabled 
 		}
 		log.Debug().Msgf("Image %s is missing", image)
 	} else {
-		log.Info().Msgf(
+		log.Info().Msg(
 			L("Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"),
 		)
 	}
@@ -172,7 +172,7 @@ func GetRpmImageName(image string) (rpmImageFile string, tag string) {
 func BuildRpmImagePath(byteValue []byte, rpmImageFile string, tag string) (string, error) {
 	var data types.Metadata
 	if err := json.Unmarshal(byteValue, &data); err != nil {
-		return "", utils.Errorf(err, L("cannot unmarshal image RPM metadata"))
+		return "", utils.Error(err, L("cannot unmarshal image RPM metadata"))
 	}
 	fullPathFile := rpmImageDir + data.Image.File
 	if data.Image.Name == rpmImageFile {

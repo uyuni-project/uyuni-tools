@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -38,7 +38,7 @@ func proxyCreateConfig(
 	}
 
 	if err != nil {
-		return utils.Errorf(err, L("failed to connect to the server"))
+		return utils.Error(err, L("failed to connect to the server"))
 	}
 
 	// handle CA certificate path
@@ -53,7 +53,7 @@ func proxyCreateConfig(
 	}
 
 	if err != nil {
-		return utils.Errorf(err, L("failed to execute proxy configuration api request"))
+		return utils.Error(err, L("failed to execute proxy configuration api request"))
 	}
 
 	filename := GetFilename(flags.Output, flags.Proxy.Name)
