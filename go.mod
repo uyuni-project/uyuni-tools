@@ -8,7 +8,6 @@ require (
 	github.com/chai2010/gettext-go v1.0.2
 	github.com/go-viper/mapstructure/v2 v2.4.0
 	github.com/spf13/cobra v1.8.0
-	golang.org/x/net v0.23.0
 )
 
 require (
