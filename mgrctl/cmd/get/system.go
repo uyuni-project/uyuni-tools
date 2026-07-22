@@ -16,13 +16,44 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+type System struct {
+	ID                        int      `json:"id"`
+	Name                      string   `json:"name"`
+	LastCheckin               string   `json:"last_checkin"`
+	Created                   string   `json:"created"`
+	GroupCount                int      `json:"group_count"`
+	SecurityErrata            int      `json:"security_errata"`
+	BugErrata                 int      `json:"bug_errata"`
+	EnhancementErrata         int      `json:"enhancement_errata"`
+	OutdatedPkgCount          int      `json:"outdated_pkg_count"`
+	ConfigFilesWithDifference int      `json:"config_files_with_difference"`
+	ChannelLabels             string   `json:"channel_labels"`
+	MgrServer                 bool     `json:"mgr_server"`
+	Proxy                     bool     `json:"proxy"`
+	Entitlement               []string `json:"entitlement"`
+	VirtualHost               bool     `json:"virtual_host"`
+	VirtualGuest              bool     `json:"virtual_guest"`
+	ExtraPkgCount             int      `json:"extra_pkg_count"`
+	RequiresReboot            bool     `json:"requires_reboot"`
+	LastBoot                  string   `json:"last_boot"`
+}
+
 func init() {
-	registerResource("system", systemFetcher{}, []string{"sys"}, L("List systems"))
+	registerResource("system", &systemFetcher{}, []string{"sys"}, L("List systems"))
 }
 
 type systemFetcher struct{}
 
-func (systemFetcher) List(client *api.APIClient, filter string, page, pageSize int) ([]map[string]any, int, error) {
+func (*systemFetcher) Columns() []utils.ColumnDef {
+	return []utils.ColumnDef{
+		{Header: "ID", Field: "ID"},
+		{Header: "NAME", Field: "Name"},
+		{Header: "LAST_CHECKIN", Field: "LastCheckin"},
+		{Header: "CREATED", Field: "Created"},
+	}
+}
+
+func (f *systemFetcher) List(client *api.APIClient, filter string, page, pageSize int) ([]System, int, error) {
 	filterKey, filterValue := "", ""
 	if filter != "" {
 		var err error
@@ -39,7 +70,7 @@ func (systemFetcher) List(client *api.APIClient, filter string, page, pageSize i
 	query.Set("pageSize", fmt.Sprintf("%d", pageSize))
 
 	path := fmt.Sprintf("system/listSystemsFiltered?%s", query.Encode())
-	res, err := api.GetChecked[apitypes.FilteredResponse[map[string]any]](client, path, "api.system.list_systems_filtered")
+	res, err := api.GetChecked[apitypes.FilteredResponse[System]](client, path, "api.system.list_systems_filtered")
 	if err != nil {
 		return nil, 0, err
 	}
@@ -73,13 +104,4 @@ func parseFilter(expr string) (string, string, error) {
 	}
 
 	return key, value, nil
-}
-
-func (systemFetcher) Columns() []utils.ColumnDef {
-	return []utils.ColumnDef{
-		{Header: "ID", Field: "id"},
-		{Header: "NAME", Field: "name"},
-		{Header: "LAST_CHECKIN", Field: "last_checkin"},
-		{Header: "CREATED", Field: "created"},
-	}
 }

@@ -10,6 +10,13 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+type SystemGroup struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	SystemCount string `json:"system_count"`
+}
+
 func init() {
 	registerResource("systemgroup", systemGroupFetcher{}, []string{"grp"}, L("List system groups"))
 }
@@ -26,9 +33,9 @@ func (systemGroupFetcher) List(client *api.APIClient, _ string, _, _ int) ([]map
 
 func (systemGroupFetcher) Columns() []utils.ColumnDef {
 	return []utils.ColumnDef{
-		{Header: "ID", Field: "id"},
-		{Header: "NAME", Field: "name"},
-		{Header: "DESCRIPTION", Field: "description"},
-		{Header: "SYSTEM_COUNT", Field: "system_count"},
+		{Header: "ID", Field: "ID"},
+		{Header: "NAME", Field: "Name"},
+		{Header: "DESCRIPTION", Field: "Description"},
+		{Header: "SYSTEM_COUNT", Field: "SystemCount"},
 	}
 }

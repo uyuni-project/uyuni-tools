@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"reflect"
 	"strings"
 	"text/tabwriter"
 
@@ -28,7 +29,7 @@ func AddOutputFlag(cmd *cobra.Command, outputFormat *string) {
 SPEC is a comma-separated list of HEADER:JSONPATH pairs (e.g. ID:.id,NAME:.name)`))
 }
 
-func PrintOutput(format string, items []map[string]any, cols []ColumnDef, out io.Writer) error {
+func PrintOutput[T any](format string, items []T, cols []ColumnDef, out io.Writer) error {
 	switch {
 	case format == "json":
 		return printJSON(items, out)
@@ -43,7 +44,7 @@ func PrintOutput(format string, items []map[string]any, cols []ColumnDef, out io
 	}
 }
 
-func printColumns(items []map[string]any, spec string, out io.Writer) error {
+func printColumns[T any](items []T, spec string, out io.Writer) error {
 	parsed := parseCustomColumns(spec)
 	if len(parsed) == 0 {
 		return fmt.Errorf("custom-columns format specified but no valid columns given")
@@ -51,7 +52,7 @@ func printColumns(items []map[string]any, spec string, out io.Writer) error {
 	return printTable(items, parsed, out)
 }
 
-func printColumnsFromFile(items []map[string]any, path string, out io.Writer) error {
+func printColumnsFromFile[T any](items []T, path string, out io.Writer) error {
 	fileCols, err := parseCustomColumnsFile(path)
 	if err != nil {
 		return err
@@ -59,7 +60,7 @@ func printColumnsFromFile(items []map[string]any, path string, out io.Writer) er
 	return printTable(items, fileCols, out)
 }
 
-func printJSON(items []map[string]any, out io.Writer) error {
+func printJSON[T any](items []T, out io.Writer) error {
 	data, err := json.MarshalIndent(items, "", "  ")
 	if err != nil {
 		return err
@@ -68,7 +69,7 @@ func printJSON(items []map[string]any, out io.Writer) error {
 	return err
 }
 
-func printYAML(items []map[string]any, out io.Writer) error {
+func printYAML[T any](items []T, out io.Writer) error {
 	data, err := yaml.Marshal(items)
 	if err != nil {
 		return err
@@ -77,7 +78,7 @@ func printYAML(items []map[string]any, out io.Writer) error {
 	return err
 }
 
-func printTable(items []map[string]any, cols []ColumnDef, out io.Writer) error {
+func printTable[T any](items []T, cols []ColumnDef, out io.Writer) error {
 	w := tabwriter.NewWriter(out, 0, 0, 4, ' ', 0)
 
 	for i, col := range cols {
@@ -146,26 +147,38 @@ func normalizeFieldPath(path string) string {
 	return strings.TrimPrefix(strings.TrimSpace(path), ".")
 }
 
-func fieldValue(item map[string]any, path string) (any, bool) {
-	if path == "" {
+func fieldValue[T any](item T, path string) (any, bool) {
+	parts := strings.Split(normalizeFieldPath(path), ".")
+	return resolveFieldPath(reflect.ValueOf(item), parts)
+}
+
+func resolveFieldPath(val reflect.Value, parts []string) (any, bool) {
+	// Unwrap pointers and interfaces automatically
+	if val.Kind() == reflect.Pointer || val.Kind() == reflect.Interface {
+		if val.IsNil() {
+			return nil, false
+		}
+		return resolveFieldPath(val.Elem(), parts)
+	}
+
+	// Base case: All path segments consumed
+	if len(parts) == 0 {
+		if !val.IsValid() {
+			return nil, false
+		}
+		return val.Interface(), true
+	}
+
+	if val.Kind() != reflect.Struct {
 		return nil, false
 	}
 
-	var current any = item
-	for _, part := range strings.Split(normalizeFieldPath(path), ".") {
-		if part == "" {
-			return nil, false
-		}
-
-		m, ok := current.(map[string]any)
-		if !ok {
-			return nil, false
-		}
-
-		current, ok = m[part]
-		if !ok {
-			return nil, false
-		}
+	// Direct case-sensitive Go field lookup
+	fieldVal := val.FieldByName(parts[0])
+	if !fieldVal.IsValid() {
+		return nil, false
 	}
-	return current, true
+
+	// Recurse down the remaining path
+	return resolveFieldPath(fieldVal, parts[1:])
 }

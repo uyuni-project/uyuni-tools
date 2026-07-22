@@ -71,7 +71,7 @@ func runGet(_ *types.GlobalFlags, flags *getFlags, _ *cobra.Command, args []stri
 	resourceType := args[0]
 	log.Debug().Msgf("Running get %s", resourceType)
 
-	fetcher, err := lookupFetcher(resourceType)
+	resource, err := lookupResource(resourceType)
 	if err != nil {
 		return err
 	}
@@ -83,14 +83,5 @@ func runGet(_ *types.GlobalFlags, flags *getFlags, _ *cobra.Command, args []stri
 		return utils.Errorf(err, L("unable to login to the server"))
 	}
 
-	items, total, err := fetcher.List(client, flags.Filter, flags.Page, flags.PageSize)
-	if err != nil {
-		return err
-	}
-
-	if total > 0 && flags.PageSize > 0 {
-		log.Info().Msgf("Fetched %d items out of %d total", len(items), total)
-	}
-
-	return utils.PrintOutput(flags.OutputFormat, items, fetcher.Columns(), os.Stdout)
+	return resource.ListAndPrint(client, flags.Filter, flags.Page, flags.PageSize, flags.OutputFormat, os.Stdout)
 }
