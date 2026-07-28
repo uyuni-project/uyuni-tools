@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-17 09:55+0200\n"
-"PO-Revision-Date: 2026-07-21 10:12+0000\n"
+"PO-Revision-Date: 2026-07-28 10:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -578,7 +578,7 @@ msgstr "S'ha suprimit la xarxa"
 
 #: shared/podman/secret.go:68
 msgid "Secrets %[1]s and %[2]s, already exists"
-msgstr "Els secrets %[1]s i %[2]s ja existeixen."
+msgstr "Secrets %[1]s i %[2]s, ja existeix"
 
 #: shared/podman/secret.go:86 shared/podman/secret.go:98
 #: shared/podman/secret.go:102
@@ -1557,11 +1557,11 @@ msgstr "Assistent de migració"
 
 #: shared/utils/uyuniservices.go:30
 msgid "Confidential computing attestation"
-msgstr "Certificació d'informàtica confidencial"
+msgstr "Acreditació de computació confidencial"
 
 #: shared/utils/uyuniservices.go:36
 msgid "Hub XML-RPC API"
-msgstr "API del concentrador XML-RPC"
+msgstr "API XML-RPC del Hub"
 
 #: shared/utils/uyuniservices.go:42
 msgid "Saline"
