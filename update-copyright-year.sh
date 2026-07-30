@@ -9,6 +9,9 @@ changed="n"
 current_year=$(date +%Y)
 for changed_file in $@; do
     case "$changed_file" in
+        go.mod|go.sum)
+            continue
+            ;;
         # Changelogs
         uyuni-tools.changes*)
             continue
