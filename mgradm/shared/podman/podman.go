@@ -538,7 +538,7 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot configure db container"))
 	}
 
-	if err := pgsql.Upgrade(preparedPgsqlImage, systemd); err != nil {
+	if err := pgsql.Upgrade(preparedPgsqlImage, systemd, tz); err != nil {
 		return err
 	}
 
@@ -591,7 +591,7 @@ func Upgrade(
 	return utils.JoinErrors(
 		coco.Upgrade(systemd, authFile, cocoFlags, image, inspectedDB),
 		hub.Upgrade(systemd, authFile, image, hubXmlrpcFlags),
-		saline.Upgrade(systemd, authFile, image, salineFlags, utils.GetLocalTimezone()),
+		saline.Upgrade(systemd, authFile, image, salineFlags, tz),
 		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn, hasTFTP),
 		systemd.ReloadDaemon(false),
 	)
@@ -785,7 +785,7 @@ func configureDBContainer(
 		}
 
 		// Run the DB container setup if the user doesn't set a custom host name for it.
-		if err := pgsql.SetupPgsql(systemd, pgsqlImage); err != nil {
+		if err := pgsql.SetupPgsql(systemd, pgsqlImage, ""); err != nil {
 			return err
 		}
 	} else {

@@ -39,6 +39,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	--hostname {{ .NamePrefix }}-db.mgr.internal \
 	--network-alias db \
 	--network-alias reportdb \
+	-e TZ=${TZ} \
 	--secret {{ .CaSecret }},type=mount,target={{ .CaPath }} \
 	--secret {{ .KeySecret }},type=mount,uid=999,mode=0400,target={{ .KeyPath }} \
 	--secret {{ .CertSecret }},type=mount,target={{ .CertPath }} \

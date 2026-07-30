@@ -8,11 +8,12 @@ import (
 	"testing"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 // ServerFlagsTestArgs is the slide of server-related command parameters to use with AssertServerFlags.
 var ServerFlagsTestArgs = func() []string {
-	args := []string{}
+	args := []string{"--tz", "Europe/Berlin"}
 	args = append(args, SCCFlagTestArgs...)
 	args = append(args, PgsqlFlagsTestArgs...)
 	args = append(args, DBFlagsTestArgs...)
@@ -33,6 +34,7 @@ var ServerFlagsTestArgs = func() []string {
 
 // AssertServerFlags checks that all the server-related common flags are parsed correctly.
 func AssertServerFlags(t *testing.T, flags *utils.ServerFlags) {
+	testutils.AssertEquals(t, "Error parsing --tz", "Europe/Berlin", flags.Installation.TZ)
 	AssertImageFlag(t, &flags.Image)
 	AssertRegistryFlag(t, &flags.Image.Registry)
 	AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
