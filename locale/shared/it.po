@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 09:55+0200\n"
+"POT-Creation-Date: 2026-07-30 12:49+0100\n"
 "PO-Revision-Date: 2026-05-15 15:46+0000\n"
 "Last-Translator: Thomas Florio <thomas.florio@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/it/>\n"
@@ -915,7 +915,7 @@ msgstr "Bandiere del certificato SSL"
 msgid "Intermediate CA certificate path"
 msgstr "Percorso del certificato CA intermedio"
 
-#: shared/ssl/flags.go:39
+#: shared/ssl/flags.go:39 shared/ssl/flags.go:53
 msgid "Root CA certificate path"
 msgstr "Percorso del certificato CA radice"
 
@@ -927,40 +927,40 @@ msgstr "Percorso del certificato del server"
 msgid "Server key path"
 msgstr "Percorso chiave del server"
 
-#: shared/ssl/flags.go:43 shared/ssl/flags.go:59
+#: shared/ssl/flags.go:43 shared/ssl/flags.go:57 shared/ssl/flags.go:71
 msgid "3rd Party SSL Certificate Flags"
 msgstr "Bandiere di certificati SSL di terze parti"
 
-#: shared/ssl/flags.go:53
-msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr "Percorso intermedio del certificato CA per il database se diverso da quello del server"
-
-#: shared/ssl/flags.go:55
+#: shared/ssl/flags.go:55 shared/ssl/flags.go:67
 msgid "Root CA certificate path for the database if different from the server one"
 msgstr "Percorso del certificato CA root per il database se diverso da quello del server"
 
-#: shared/ssl/flags.go:56
+#: shared/ssl/flags.go:65
+msgid "Intermediate CA certificate path for the database if different from the server one"
+msgstr "Percorso intermedio del certificato CA per il database se diverso da quello del server"
+
+#: shared/ssl/flags.go:68
 msgid "Database certificate path"
 msgstr "Percorso del certificato del database"
 
-#: shared/ssl/flags.go:57
+#: shared/ssl/flags.go:69
 msgid "Database key path"
 msgstr "Percorso chiave del database"
 
-#: shared/ssl/ssl.go:69
+#: shared/ssl/ssl.go:71
 msgid "Failed to find a non-CA certificate"
 msgstr "Impossibile trovare un certificato non CA"
 
-#: shared/ssl/ssl.go:110
+#: shared/ssl/ssl.go:112
 msgid "expected to find a certificate, got none"
 msgstr "mi aspettavo di trovare un certificato, non ne ho ricevuto nessuno"
 
-#: shared/ssl/ssl.go:116
+#: shared/ssl/ssl.go:118
 #, javascript-format
 msgid "Failed to read certificate file %s"
 msgstr "Impossibile leggere il file del certificato %s"
 
-#: shared/ssl/ssl.go:155
+#: shared/ssl/ssl.go:157
 #, javascript-format
 msgid ""
 "Failed to extract data from certificate:\n"
@@ -969,26 +969,26 @@ msgstr ""
 "Impossibile estrarre i dati dal certificato:\n"
 "%s"
 
-#: shared/ssl/ssl.go:176
+#: shared/ssl/ssl.go:178
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
 msgstr "Impossibile analizzare la data di inizio: %s\n"
 
-#: shared/ssl/ssl.go:182
+#: shared/ssl/ssl.go:184
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
 msgstr "Impossibile analizzare la data di fine: %s\n"
 
-#: shared/ssl/ssl.go:214
+#: shared/ssl/ssl.go:216
 #, javascript-format
 msgid "Basic constraints for CA should be marked as `%s`, could cause issues otherwise!"
 msgstr ""
 
-#: shared/ssl/ssl.go:236
+#: shared/ssl/ssl.go:238
 msgid "no CA certificate found in the files"
 msgstr "nessun certificato CA trovato nei file"
 
-#: shared/ssl/ssl.go:245 shared/ssl/ssl.go:258
+#: shared/ssl/ssl.go:247 shared/ssl/ssl.go:260
 msgid ""
 "please check the CA chain, including intermediate CA certificates provided.\n"
 "The chain is missing the CA with subject %[1]s (hash: %[2]s)"
@@ -996,52 +996,52 @@ msgstr ""
 "si prega di controllare la catena CA, compresi i certificati CA intermedi forniti.\n"
 "Alla catena manca la CA con soggetto %[1]s (hash: %[2]s)"
 
-#: shared/ssl/ssl.go:288
+#: shared/ssl/ssl.go:290
 msgid "server certificate is required"
 msgstr "certificato del server richiesto"
 
-#: shared/ssl/ssl.go:291 shared/ssl/ssl.go:356
+#: shared/ssl/ssl.go:293 shared/ssl/ssl.go:358
 msgid "server key is required"
 msgstr "chiave del server richiesta"
 
-#: shared/ssl/ssl.go:306
+#: shared/ssl/ssl.go:308
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr "%s file non è accessibile"
 
-#: shared/ssl/ssl.go:315
+#: shared/ssl/ssl.go:317
 msgid "Source server SSL CA private key password"
 msgstr "Password della chiave privata SSL CA del server di origine"
 
-#: shared/ssl/ssl.go:321
+#: shared/ssl/ssl.go:323
 msgid "Failed to open openssl rsa process input stream"
 msgstr "Impossibile aprire il flusso di input del processo openssl rsa"
 
-#: shared/ssl/ssl.go:324
+#: shared/ssl/ssl.go:326
 msgid "Failed to write openssl key content to input stream"
 msgstr "Impossibile scrivere il contenuto della chiave openssl nel flusso di input"
 
-#: shared/ssl/ssl.go:330
+#: shared/ssl/ssl.go:332
 msgid "Failed to convert CA private key to RSA"
 msgstr "Impossibile convertire la chiave privata CA in RSA"
 
-#: shared/ssl/ssl.go:340
+#: shared/ssl/ssl.go:342
 msgid "Failed to open openssl x509 process input stream"
 msgstr "Impossibile aprire il flusso di input del processo openssl x509"
 
-#: shared/ssl/ssl.go:343
+#: shared/ssl/ssl.go:345
 msgid "Failed to write SSL certificate to input stream"
 msgstr "Impossibile scrivere il certificato SSL nel flusso di input"
 
-#: shared/ssl/ssl.go:347
+#: shared/ssl/ssl.go:349
 msgid "failed to strip text part from CA certificate"
 msgstr "impossibile rimuovere la parte di testo dal certificato CA"
 
-#: shared/ssl/ssl.go:362
+#: shared/ssl/ssl.go:364
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr "Chiave SSL non valida, probabilmente è crittografata"
 
-#: shared/ssl/ssl.go:381
+#: shared/ssl/ssl.go:383
 #, javascript-format
 msgid "failed to validate hostname %s"
 msgstr "impossibile convalidare il nome host %s"
