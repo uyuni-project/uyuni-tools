@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 09:55+0200\n"
+"POT-Creation-Date: 2026-07-30 12:49+0100\n"
 "PO-Revision-Date: 2026-04-21 15:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
@@ -931,7 +931,7 @@ msgstr "SSL証明書フラグ"
 msgid "Intermediate CA certificate path"
 msgstr "SSL証明書の都道府県"
 
-#: shared/ssl/flags.go:39
+#: shared/ssl/flags.go:39 shared/ssl/flags.go:53
 #, fuzzy
 #| msgid "SSL certificate state"
 msgid "Root CA certificate path"
@@ -949,46 +949,46 @@ msgstr "SSL証明書の都道府県"
 msgid "Server key path"
 msgstr "データベース"
 
-#: shared/ssl/flags.go:43 shared/ssl/flags.go:59
+#: shared/ssl/flags.go:43 shared/ssl/flags.go:57 shared/ssl/flags.go:71
 #, fuzzy
 #| msgid "SSL Certificate Flags"
 msgid "3rd Party SSL Certificate Flags"
 msgstr "SSL証明書フラグ"
 
-#: shared/ssl/flags.go:53
-msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr ""
-
-#: shared/ssl/flags.go:55
+#: shared/ssl/flags.go:55 shared/ssl/flags.go:67
 msgid "Root CA certificate path for the database if different from the server one"
 msgstr ""
 
-#: shared/ssl/flags.go:56
+#: shared/ssl/flags.go:65
+msgid "Intermediate CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:68
 #, fuzzy
 #| msgid "SSL certificate state"
 msgid "Database certificate path"
 msgstr "SSL証明書の都道府県"
 
-#: shared/ssl/flags.go:57
+#: shared/ssl/flags.go:69
 #, fuzzy
 #| msgid "Database"
 msgid "Database key path"
 msgstr "データベース"
 
-#: shared/ssl/ssl.go:69
+#: shared/ssl/ssl.go:71
 msgid "Failed to find a non-CA certificate"
 msgstr "非CA証明書の検索に失敗しました"
 
-#: shared/ssl/ssl.go:110
+#: shared/ssl/ssl.go:112
 msgid "expected to find a certificate, got none"
 msgstr "証明書が見つかると予期していたが、何も見つかりませんでした"
 
-#: shared/ssl/ssl.go:116
+#: shared/ssl/ssl.go:118
 #, javascript-format
 msgid "Failed to read certificate file %s"
 msgstr "証明書ファイル %s の読み込みに失敗しました"
 
-#: shared/ssl/ssl.go:155
+#: shared/ssl/ssl.go:157
 #, fuzzy, javascript-format
 #| msgid "Failed to extract data from certificate"
 msgid ""
@@ -996,79 +996,79 @@ msgid ""
 "%s"
 msgstr "証明書からのデータ抽出に失敗しました"
 
-#: shared/ssl/ssl.go:176
+#: shared/ssl/ssl.go:178
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
 msgstr "開始日の解析に失敗しました: %s\n"
 
-#: shared/ssl/ssl.go:182
+#: shared/ssl/ssl.go:184
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
 msgstr "終了日の解析に失敗しました: %s\n"
 
-#: shared/ssl/ssl.go:214
+#: shared/ssl/ssl.go:216
 #, javascript-format
 msgid "Basic constraints for CA should be marked as `%s`, could cause issues otherwise!"
 msgstr ""
 
-#: shared/ssl/ssl.go:236
+#: shared/ssl/ssl.go:238
 #, fuzzy
 #| msgid "SSL certificate state"
 msgid "no CA certificate found in the files"
 msgstr "SSL証明書の都道府県"
 
-#: shared/ssl/ssl.go:245 shared/ssl/ssl.go:258
+#: shared/ssl/ssl.go:247 shared/ssl/ssl.go:260
 msgid ""
 "please check the CA chain, including intermediate CA certificates provided.\n"
 "The chain is missing the CA with subject %[1]s (hash: %[2]s)"
 msgstr ""
 
-#: shared/ssl/ssl.go:288
+#: shared/ssl/ssl.go:290
 msgid "server certificate is required"
 msgstr "サーバ証明書が必要です"
 
-#: shared/ssl/ssl.go:291 shared/ssl/ssl.go:356
+#: shared/ssl/ssl.go:293 shared/ssl/ssl.go:358
 msgid "server key is required"
 msgstr "サーバキーが必要です"
 
-#: shared/ssl/ssl.go:306
+#: shared/ssl/ssl.go:308
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr "%s ファイルにアクセスできません"
 
-#: shared/ssl/ssl.go:315
+#: shared/ssl/ssl.go:317
 msgid "Source server SSL CA private key password"
 msgstr "ソースサーバSSL CA機密鍵パスワード"
 
-#: shared/ssl/ssl.go:321
+#: shared/ssl/ssl.go:323
 msgid "Failed to open openssl rsa process input stream"
 msgstr "openssl rsaプロセス入力ストリームを開けませんでした"
 
-#: shared/ssl/ssl.go:324
+#: shared/ssl/ssl.go:326
 msgid "Failed to write openssl key content to input stream"
 msgstr "opensslキーコンテンツを入力ストリームに書き込めませんでした"
 
-#: shared/ssl/ssl.go:330
+#: shared/ssl/ssl.go:332
 msgid "Failed to convert CA private key to RSA"
 msgstr "CA機密鍵のRSAへの変換に失敗しました"
 
-#: shared/ssl/ssl.go:340
+#: shared/ssl/ssl.go:342
 msgid "Failed to open openssl x509 process input stream"
 msgstr "openssl x509プロセス入力ストリームを開けませんでした"
 
-#: shared/ssl/ssl.go:343
+#: shared/ssl/ssl.go:345
 msgid "Failed to write SSL certificate to input stream"
 msgstr "SSL証明書を入力ストリームに書き込めませんでした"
 
-#: shared/ssl/ssl.go:347
+#: shared/ssl/ssl.go:349
 msgid "failed to strip text part from CA certificate"
 msgstr "CA証明書からテキスト部分を削除できませんでした"
 
-#: shared/ssl/ssl.go:362
+#: shared/ssl/ssl.go:364
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr "SSLキーが無効です。暗号化されている可能性があります"
 
-#: shared/ssl/ssl.go:381
+#: shared/ssl/ssl.go:383
 #, fuzzy, javascript-format
 #| msgid "failed to write in %s"
 msgid "failed to validate hostname %s"
