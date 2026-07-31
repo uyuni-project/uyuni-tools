@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"os"
@@ -29,10 +30,10 @@ func prepareThirdPartyCertificate(
 	fqdns ...string,
 ) error {
 	tempDir, cleaner, err := utils.TempDir()
-	defer cleaner()
 	if err != nil {
 		return err
 	}
+	defer cleaner()
 
 	// OrderCas checks the chain of certificates to report problems early
 	// We also sort the certificates of the chain in a single blob for Apache and PostgreSQL
@@ -108,6 +109,151 @@ func prepareThirdPartyCertificates(
 	return
 }
 
+// SetThirdPartyCertificates validates the provided 3rd party certificates and stores them in the
+// podman secrets, replacing any existing server and/or database certificate secrets.
+func SetThirdPartyCertificates(sslFlags *adm_utils.InstallSSLFlags, fqdn string) error {
+	serverCertReady, dbCertReady, err := prepareThirdPartyCertificates(sslFlags, fqdn)
+	if err != nil {
+		return utils.Errorf(err, L("Failed to create secrets from the provided SSL arguments"))
+	}
+	if !serverCertReady && !dbCertReady {
+		return errors.New(L("No third-party certificate provided to import"))
+	}
+	return nil
+}
+
+// AddCA generates or imports a new root CA and appends it to the existing
+// server and database CA secrets without changing the served certificate.
+func AddCA(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+	tempDir, cleaner, err := utils.TempDir()
+	if err != nil {
+		return err
+	}
+	defer cleaner()
+
+	// Obtain the new root CA certificate in tempDir/ca.crt.
+	newCAPath := path.Join(tempDir, "ca.crt")
+	if sslFlags.Ca.IsThirdParty() {
+		log.Info().Msg(L("Adding the provided 3rd party root CA"))
+		caData, err := os.ReadFile(sslFlags.Ca.Root)
+		if err != nil {
+			return utils.Errorf(err, L("failed to read the provided root CA %s"), sslFlags.Ca.Root)
+		}
+		if err := os.WriteFile(newCAPath, caData, 0600); err != nil {
+			return err
+		}
+	} else {
+		if sslFlags.Password == "" {
+			return errors.New(L("Cannot generate a new CA without a CA password. Please check the input parameters."))
+		}
+		log.Info().Msg(L("Generating a new self-signed root CA"))
+		env := map[string]string{
+			"CERT_O":       sslFlags.Org,
+			"CERT_OU":      sslFlags.OU,
+			"CERT_CITY":    sslFlags.City,
+			"CERT_STATE":   sslFlags.State,
+			"CERT_COUNTRY": sslFlags.Country,
+			"CERT_PASS":    sslFlags.Password,
+			"HOSTNAME":     fqdn,
+		}
+		// The script writes the generated CA to /ssl/ca.crt (i.e. tempDir/ca.crt).
+		if err := runSSLContainer(sslGenCAScript, tempDir, image, tz, env); err != nil {
+			return utils.Error(err, L("Failed to generate the new SSL CA. Please check the input parameters."))
+		}
+	}
+
+	// Append the new CA to the existing server CA bundle.
+	if err := appendCAToSecret(shared_podman.CASecret, newCAPath, tempDir); err != nil {
+		return err
+	}
+
+	// The database may use a different root CA than the server.
+	// Fall back to the server CA when no dedicated database root CA is provided.
+	dbCAPath := newCAPath
+	if sslFlags.DB.CA.Root != "" && sslFlags.DB.CA.Root != sslFlags.Ca.Root {
+		log.Info().Msg(L("Adding the provided 3rd party database root CA"))
+		dbCAData, err := os.ReadFile(sslFlags.DB.CA.Root)
+		if err != nil {
+			return utils.Errorf(err, L("failed to read the provided database root CA %s"), sslFlags.DB.CA.Root)
+		}
+		dbCAPath = path.Join(tempDir, "db-ca.crt")
+		if err := os.WriteFile(dbCAPath, dbCAData, 0600); err != nil {
+			return err
+		}
+	}
+	return appendCAToSecret(shared_podman.DBCASecret, dbCAPath, tempDir)
+}
+
+// appendCAToSecret appends the CA at newCAPath to the bundle of the given secret,
+// creating or overwriting it. It is a no-op if the secret already contains the new CA.
+func appendCAToSecret(secretName string, newCAPath string, tempDir string) error {
+	newCA, err := os.ReadFile(newCAPath)
+	if err != nil {
+		return err
+	}
+
+	var bundle []byte
+	if shared_podman.HasSecret(secretName) {
+		existing, err := shared_podman.GetSecret(secretName)
+		if err != nil {
+			return err
+		}
+		bundle = []byte(existing)
+	}
+
+	if bytes.Contains(bundle, bytes.TrimSpace(newCA)) {
+		log.Info().Msgf(L("The new CA is already present in the %s secret"), secretName)
+		return nil
+	}
+
+	if len(bundle) > 0 && !bytes.HasSuffix(bundle, []byte("\n")) {
+		bundle = append(bundle, '\n')
+	}
+	bundle = append(bundle, newCA...)
+
+	bundlePath := path.Join(tempDir, secretName+"-bundle.crt")
+	if err := os.WriteFile(bundlePath, bundle, 0600); err != nil {
+		return err
+	}
+	return shared_podman.CreateCASecrets(secretName, bundlePath)
+}
+
+// RotateServerCertificate promotes the CA staged by AddCA to be the active one, issues a new
+// certificate signed by it, and resets the certificate secrets to that single CA.
+func RotateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+	return issueServerCertificate(sslRotateServerScript, image, sslFlags, tz, fqdn)
+}
+
+// RegenerateCAAndCertificate forces the generation of a new self-signed CA and a matching
+// server (and database) certificate, replacing the CA secrets with only the new CA.
+func RegenerateCAAndCertificate(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+	if sslFlags.Password == "" {
+		return errors.New(L("Cannot generate a new CA without a CA password. Please check input options"))
+	}
+
+	tempDir, cleaner, err := utils.TempDir()
+	if err != nil {
+		return err
+	}
+	defer cleaner()
+
+	log.Info().Msg(L("Generating a new self-signed root CA"))
+	env := map[string]string{
+		"CERT_O":       sslFlags.Org,
+		"CERT_OU":      sslFlags.OU,
+		"CERT_CITY":    sslFlags.City,
+		"CERT_STATE":   sslFlags.State,
+		"CERT_COUNTRY": sslFlags.Country,
+		"CERT_PASS":    sslFlags.Password,
+		"HOSTNAME":     fqdn,
+	}
+	if err := runSSLContainer(sslGenCAScript, tempDir, image, tz, env); err != nil {
+		return utils.Error(err, L("Failed to generate the new SSL CA. Please check the input parameters."))
+	}
+
+	return RotateServerCertificate(image, sslFlags, tz, fqdn)
+}
+
 // PrepareSSLCertificates prepares SSL environment for the server and database.
 // If 3rd party certificates are provided, it uses them, else new certificates are generated.
 // This function is called in both new installation and upgrade scenarios.
@@ -163,16 +309,16 @@ func PrepareSSLCertificates(image string, sslFlags *adm_utils.InstallSSLFlags, t
 	}
 
 	// Generate them all in order to have the same expiration date on both.
-	return generateServerCertificate(image, sslFlags, tz, fqdn)
+	return issueServerCertificate(sslSetupServerScript, image, sslFlags, tz, fqdn)
 }
 
 func validateCA(image string, sslFlags *adm_utils.InstallSSLFlags, tz string) error {
 	log.Info().Msg(L("Verifying the CA key password…"))
 	tempDir, cleaner, err := utils.TempDir()
-	defer cleaner()
 	if err != nil {
 		return err
 	}
+	defer cleaner()
 	env := map[string]string{
 		"CERT_PASS": sslFlags.Password,
 	}
@@ -186,10 +332,10 @@ func validateCA(image string, sslFlags *adm_utils.InstallSSLFlags, tz string) er
 func reuseExistingCertificates(image string, fqdn string, isDatabaseCheck bool) (reused bool, err error) {
 	// Write the ordered cert and Root CA to temp files
 	tempDir, cleaner, err := utils.TempDir()
-	defer cleaner()
 	if err != nil {
 		return
 	}
+	defer cleaner()
 
 	// Upgrading from 5.1+ with all certificates as secrets
 	if reuseExistingCertificatesFromSecrets(isDatabaseCheck) {
@@ -221,11 +367,11 @@ func isFQDNMatchingCertificateSecret(secretName string, caSecretName string, fqd
 	}
 
 	tmpDir, cleaner, err := utils.TempDir()
-	defer cleaner()
 	if err != nil {
 		log.Error().Err(err).Send()
 		return false
 	}
+	defer cleaner()
 	caPath := path.Join(tmpDir, "ca.crt")
 	certPath := path.Join(tmpDir, "toverify.crt")
 
@@ -386,7 +532,11 @@ func runSSLContainer(script string, workdir string, image string, tz string, env
 	return err
 }
 
-func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string) error {
+// issueServerCertificate runs the given script in the SSL container and stores
+// the resulting CA, server certificate and key in the server and database secrets.
+func issueServerCertificate(
+	script string, image string, sslFlags *adm_utils.InstallSSLFlags, tz string, fqdn string,
+) error {
 	// This generally should not happen, otherwise we would ask for CA password in parameters check.
 	// However there are some paths, e.g. upgrade reusing existing certs and db provided 3rd party certs where we
 	// do not check for the password, but on existing certs check we can fail and drop here.
@@ -396,10 +546,10 @@ func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags
 	log.Info().Msg(L("Generating the server certificate…"))
 
 	tempDir, cleaner, err := utils.TempDir()
-	defer cleaner()
 	if err != nil {
 		return err
 	}
+	defer cleaner()
 
 	env := map[string]string{
 		"CERT_O":       sslFlags.Org,
@@ -412,7 +562,7 @@ func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags
 		"CERT_PASS":    sslFlags.Password,
 		"HOSTNAME":     fqdn,
 	}
-	if err := runSSLContainer(sslSetupServerScript, tempDir, image, tz, env); err != nil {
+	if err := runSSLContainer(script, tempDir, image, tz, env); err != nil {
 		return utils.Error(err, L("Failed to generate server SSL certificate. Please check the input parameters."))
 	}
 
@@ -435,7 +585,20 @@ func generateServerCertificate(image string, sslFlags *adm_utils.InstallSSLFlags
 	)
 }
 
-const sslSetupServerScript = `
+const sslGenCAScript = `
+	rm -rf /root/ssl-build-rotation
+	mkdir -p /root/ssl-build-rotation
+	echo "Generating a new self-signed SSL CA..."
+	rhn-ssl-tool --gen-ca --force --dir /root/ssl-build-rotation \
+		--password "$CERT_PASS" \
+		--set-country "$CERT_COUNTRY" --set-state "$CERT_STATE" --set-city "$CERT_CITY" \
+		--set-org "$CERT_O" --set-org-unit "$CERT_OU" \
+		--set-common-name "$HOSTNAME" --cert-expiration 3650
+
+	cp /root/ssl-build-rotation/RHN-ORG-TRUSTED-SSL-CERT /ssl/ca.crt
+`
+
+const sslMachineNameFunction = `
 	getMachineName() {
 	  hostname="$1"
 
@@ -454,7 +617,41 @@ const sslSetupServerScript = `
 
 	  echo "$result"
 	}
+`
 
+const sslGenServerCertScript = `	echo "Generate apache certificate..."
+	cert_args=""
+	for CERT_CNAME in $CERT_CNAMES; do
+		cert_args="$cert_args --set-cname $CERT_CNAME"
+	done
+
+	rhn-ssl-tool --gen-server --cert-expiration 3650 \
+		--dir /root/ssl-build --password "$CERT_PASS" \
+		--set-country "$CERT_COUNTRY" --set-state "$CERT_STATE" --set-city "$CERT_CITY" \
+		--set-org "$CERT_O" --set-org-unit "$CERT_OU" \
+		--set-hostname "$HOSTNAME" --cert-expiration 3650 --set-email "$CERT_EMAIL" \
+		$cert_args
+
+	MACHINE_NAME=$(getMachineName "$HOSTNAME")
+	cp "/root/ssl-build/$MACHINE_NAME/server.crt" /ssl/server.crt
+	cp "/root/ssl-build/$MACHINE_NAME/server.key" /ssl/server.key
+`
+
+const sslRotateServerScript = sslMachineNameFunction + `
+	if ! test -e /root/ssl-build-rotation/RHN-ORG-TRUSTED-SSL-CERT; then
+		echo "No staged CA found. Run 'mgradm ssl add-ca' first." 1>&2
+		exit 1
+	fi
+
+	# Promote the staged CA to become the active one.
+	rm -rf /root/ssl-build
+	mv /root/ssl-build-rotation /root/ssl-build
+
+	cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /ssl/ca.crt
+
+` + sslGenServerCertScript
+
+const sslSetupServerScript = sslMachineNameFunction + `
 	# Only generate a CA is we don't have it yet, like for install
 	if ! test -e /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT; then
 		echo "Generating the self-signed SSL CA..."
@@ -468,23 +665,7 @@ const sslSetupServerScript = `
 
 	cp /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT /ssl/ca.crt
 
-	echo "Generate apache certificate..."
-	cert_args=""
-	for CERT_CNAME in $CERT_CNAMES; do
-		cert_args="$cert_args --set-cname $CERT_CNAME"
-	done
-
-	rhn-ssl-tool --gen-server --cert-expiration 3650 \
-		--dir /root/ssl-build --password "$CERT_PASS" \
-		--set-country "$CERT_COUNTRY" --set-state "$CERT_STATE" --set-city "$CERT_CITY" \
-	    --set-org "$CERT_O" --set-org-unit "$CERT_OU" \
-	    --set-hostname "$HOSTNAME" --cert-expiration 3650 --set-email "$CERT_EMAIL" \
-		$cert_args
-
-	MACHINE_NAME=$(getMachineName "$HOSTNAME")
-	cp "/root/ssl-build/$MACHINE_NAME/server.crt" /ssl/server.crt
-	cp "/root/ssl-build/$MACHINE_NAME/server.key" /ssl/server.key
-`
+` + sslGenServerCertScript
 
 const sslValidateCA = `
 	CA_KEY=/root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY

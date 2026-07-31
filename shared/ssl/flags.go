@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -45,6 +45,18 @@ func AddSSLThirdPartyFlags(cmd *cobra.Command) {
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-ca-root", ThirdPartyFlagsGroup)
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-server-cert", ThirdPartyFlagsGroup)
 	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-server-key", ThirdPartyFlagsGroup)
+}
+
+// AddSSLCARootFlags adds the command flags to pass third party root CA certificates without a server
+// certificate, for both the server and the (optionally different) database root CA.
+func AddSSLCARootFlags(cmd *cobra.Command) {
+	cmd.Flags().String("ssl-ca-root", "", L("Root CA certificate path"))
+	cmd.Flags().String("ssl-db-ca-root", "",
+		L("Root CA certificate path for the database if different from the server one"))
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: ThirdPartyFlagsGroup, Title: L("3rd Party SSL Certificate Flags")})
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-ca-root", ThirdPartyFlagsGroup)
+	_ = utils.AddFlagToHelpGroupID(cmd, "ssl-db-ca-root", ThirdPartyFlagsGroup)
 }
 
 // AddSSLDBThirdPartyFlags adds the command flags to pass database third party SSL certificates.

@@ -6,6 +6,8 @@ package ssl
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"encoding/pem"
 	"errors"
 	"fmt"
 	"io"
@@ -381,4 +383,33 @@ func VerifyHostname(caPath string, certPath string, hostname string) error {
 		return utils.Errorf(err, L("failed to validate hostname %s"), hostname)
 	}
 	return nil
+}
+
+// SHA256Fingerprints returns the SHA-256 fingerprints of every certificate contained in the PEM
+// bundle, in the order they appear.
+func SHA256Fingerprints(bundle []byte) ([]string, error) {
+	var fingerprints []string
+	rest := bundle
+	for {
+		var block *pem.Block
+		block, rest = pem.Decode(rest)
+		if block == nil {
+			break
+		}
+		if block.Type != "CERTIFICATE" {
+			continue
+		}
+		fingerprints = append(fingerprints, sha256Fingerprint(block.Bytes))
+	}
+	return fingerprints, nil
+}
+
+// sha256Fingerprint returns the SHA-256 fingerprint of a DER-encoded certificate.
+func sha256Fingerprint(der []byte) string {
+	sum := sha256.Sum256(der)
+	parts := make([]string, len(sum))
+	for i, b := range sum {
+		parts[i] = fmt.Sprintf("%02X", b)
+	}
+	return strings.Join(parts, ":")
 }
