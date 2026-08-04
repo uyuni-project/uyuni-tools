@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Aug 04 17:31:30 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.1-0
+  * CVE-2026-39821: Drop the direct dependency on golang.org/x/net (bsc#1266481)
+  * Set the timezone on the database container too (bsc#1267871)
+  * Reload systemd daemon before restarting services (bsc#1270033)
+  * Check all supported locations for CA file in rotation check script
+
+-------------------------------------------------------------------
 Tue Jul 07 10:13:15 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.16-0
