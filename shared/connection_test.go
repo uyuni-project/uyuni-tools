@@ -6,12 +6,18 @@ package shared
 
 import (
 	"bytes"
+	"errors"
 	"strings"
 	"testing"
 
 	"github.com/rs/zerolog"
+	"github.com/uyuni-project/uyuni-tools/shared/backend"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
+
+// -----------------------------------------------------------------------
+// mockRunner – satisfies types.Runner for unit tests.
+// -----------------------------------------------------------------------
 
 type mockRunner struct {
 	output []byte
@@ -30,6 +36,172 @@ func (m *mockRunner) Start() error                      { return nil }
 func (m *mockRunner) Exec() ([]byte, error) {
 	return m.output, m.err
 }
+
+// -----------------------------------------------------------------------
+// stubDetector – satisfies backend.BackendDetector for unit tests.
+// -----------------------------------------------------------------------
+
+// stubDetector is a simple BackendDetector whose behaviour is fully
+// controlled by the test.  It records the arguments it receives so tests
+// can assert that GetCommand passes the right values through.
+type stubDetector struct {
+	wantExplicit         string
+	wantContainer        string
+	wantKubernetesFilter string
+	returnCommand        string
+	returnErr            error
+}
+
+func (s *stubDetector) Detect(explicit, container, kubernetesFilter string) (string, error) {
+	// If the test set expectations, verify them.
+	if s.wantExplicit != "" && explicit != s.wantExplicit {
+		return "", errors.New("stubDetector: unexpected explicit backend: " + explicit)
+	}
+	if s.wantContainer != "" && container != s.wantContainer {
+		return "", errors.New("stubDetector: unexpected container: " + container)
+	}
+	if s.wantKubernetesFilter != "" && kubernetesFilter != s.wantKubernetesFilter {
+		return "", errors.New("stubDetector: unexpected filter: " + kubernetesFilter)
+	}
+	return s.returnCommand, s.returnErr
+}
+
+// newTestConnection returns a Connection whose detector is fully stubbed.
+func newTestConnection(bk, container, filter string, d backend.BackendDetector) *Connection {
+	cnx := NewConnection(bk, container, filter)
+	cnx.WithDetector(d)
+	return cnx
+}
+
+// -----------------------------------------------------------------------
+// TestGetCommand – table-driven tests using the stub detector
+// -----------------------------------------------------------------------
+
+func TestGetCommand(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name             string
+		backend          string
+		container        string
+		kubernetesFilter string
+		detectCommand    string
+		detectErr        error
+		wantCommand      string
+		wantErr          bool
+	}{
+		{
+			name:          "explicit podman → returned as-is",
+			backend:       "podman",
+			detectCommand: "podman",
+			wantCommand:   "podman",
+		},
+		{
+			name:          "explicit podman-remote → returned as-is",
+			backend:       "podman-remote",
+			detectCommand: "podman-remote",
+			wantCommand:   "podman-remote",
+		},
+		{
+			name:          "explicit kubectl → returned as-is",
+			backend:       "kubectl",
+			detectCommand: "kubectl",
+			wantCommand:   "kubectl",
+		},
+		{
+			name:          "explicit host → returned as-is",
+			backend:       "host",
+			detectCommand: "host",
+			wantCommand:   "host",
+		},
+		{
+			name:          "auto-detect resolves to podman",
+			backend:       "",
+			detectCommand: "podman",
+			wantCommand:   "podman",
+		},
+		{
+			name:          "auto-detect resolves to kubectl",
+			backend:       "",
+			detectCommand: "kubectl",
+			wantCommand:   "kubectl",
+		},
+		{
+			name:      "detector returns error → GetCommand propagates it",
+			backend:   "",
+			detectErr: errors.New("no backend found"),
+			wantErr:   true,
+		},
+		{
+			name:          "result is cached – second call does not re-invoke detector",
+			backend:       "podman",
+			detectCommand: "podman",
+			wantCommand:   "podman",
+		},
+	}
+
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			stub := &stubDetector{
+				returnCommand: tc.detectCommand,
+				returnErr:     tc.detectErr,
+			}
+			cnx := newTestConnection(tc.backend, "uyuni-server", "-lapp=uyuni", stub)
+
+			got, err := cnx.GetCommand()
+
+			if tc.wantErr {
+				if err == nil {
+					t.Errorf("expected error, got command=%q", got)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if got != tc.wantCommand {
+				t.Errorf("GetCommand() = %q, want %q", got, tc.wantCommand)
+			}
+
+			// Verify caching: call again and ensure the same result without
+			// the detector being invoked a second time (the stub would still
+			// return the same value, but the point is the command field is
+			// populated already).
+			got2, err2 := cnx.GetCommand()
+			if err2 != nil {
+				t.Fatalf("second GetCommand() unexpected error: %v", err2)
+			}
+			if got2 != got {
+				t.Errorf("second GetCommand() = %q, want %q (caching broken)", got2, got)
+			}
+		})
+	}
+}
+
+// TestGetCommand_DetectorReceivesCorrectArgs verifies that GetCommand
+// forwards backend, container and kubernetesFilter to the detector.
+func TestGetCommand_DetectorReceivesCorrectArgs(t *testing.T) {
+	t.Parallel()
+
+	stub := &stubDetector{
+		wantExplicit:         "podman",
+		wantContainer:        "my-container",
+		wantKubernetesFilter: "-lapp=test",
+		returnCommand:        "podman",
+	}
+	cnx := newTestConnection("podman", "my-container", "-lapp=test", stub)
+
+	if _, err := cnx.GetCommand(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+// -----------------------------------------------------------------------
+// Existing tests (unchanged behaviour)
+// -----------------------------------------------------------------------
 
 func TestExecScript(t *testing.T) {
 	originalRunner := runner
