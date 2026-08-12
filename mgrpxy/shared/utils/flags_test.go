@@ -19,7 +19,7 @@ func TestGetContainerImage(t *testing.T) {
 		expectedResult string
 		description    string
 	}{
-		// Defaults and overiding values
+		// Defaults and overriding values
 		{
 			name: "no image details",
 			proxyFlags: ProxyImageFlags{
