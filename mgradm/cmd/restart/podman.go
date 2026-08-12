@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -20,6 +20,7 @@ func podmanRestart(
 	_ []string,
 ) error {
 	return utils.JoinErrors(
+		systemd.ReloadDaemon(false),
 		systemd.RestartService(podman.DBService),
 		systemd.RestartService(podman.ServerService),
 		systemd.RestartInstantiated(podman.ServerAttestationService),

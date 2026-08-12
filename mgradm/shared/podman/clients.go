@@ -132,22 +132,28 @@ func parseClientTrustResults(saltOutput []byte, unreachable map[string]bool) (
 // CA file holds a certificate matching a given SHA-256 fingerprint.
 // It prints "OK" on a match and "MISSING" otherwise.
 const clientTrustCheckScript = `
-caFile="/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT"
-
-# Without the managed CA file the minion cannot trust the new CA yet.
-[ -f "$caFile" ] || { echo MISSING; exit 0; }
-
-# Split the (possibly multi-cert) CA file into one file per certificate.
-d=$(mktemp -d)
-trap 'rm -rf "$d"' EXIT
-csplit -z -s -f "$d/cert-" "$caFile" '/-----BEGIN CERTIFICATE-----/' '{*}' 2>/dev/null
-
-# Report OK as soon as one of the certificates matches the expected fingerprint.
 found=MISSING
-for cert in "$d"/cert-*; do
-	fp=$(openssl x509 -in "$cert" -noout -fingerprint -sha256 2>/dev/null | cut -d= -f2)
-	[ "$fp" = "%[1]s" ] && found=OK
+
+for caFile in \
+	/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT \
+	/etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT \
+	/usr/local/share/ca-certificates/RHN-ORG-TRUSTED-SSL-CERT.crt; do
+	# Skip the locations that do not apply to this minion's OS.
+	[ -f "$caFile" ] || continue
+
+	# Split the (possibly multi-cert) CA file into one file per certificate.
+	d=$(mktemp -d)
+	csplit -z -s -f "$d/cert-" "$caFile" '/-----BEGIN CERTIFICATE-----/' '{*}' 2>/dev/null
+
+	# Report OK as soon as one of the certificates matches the expected fingerprint.
+	for cert in "$d"/cert-*; do
+		fp=$(openssl x509 -in "$cert" -noout -fingerprint -sha256 2>/dev/null | cut -d= -f2)
+		[ "$fp" = "%[1]s" ] && found=OK
+	done
+
+	rm -rf "$d"
 done
+
 echo "$found"
 `
 

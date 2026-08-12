@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 09:55+0200\n"
-"PO-Revision-Date: 2026-04-17 09:26+0000\n"
+"POT-Creation-Date: 2026-04-13 17:19+0100\n"
+"PO-Revision-Date: 2026-07-28 10:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -58,11 +58,11 @@ msgstr "Eines de l'administrador:"
 #: mgrpxy/cmd/cmd.go:62
 #, javascript-format
 msgid "Starting %s"
-msgstr "S'inicia %s"
+msgstr "S'està iniciant %s"
 
 #: mgrpxy/cmd/cmd.go:63
 msgid "Use of this software implies acceptance of the End User License Agreement."
-msgstr "L'ús d'aquest programari implica l'acceptació de l'Acord de llicència d'usuari final."
+msgstr "L'ús d'aquest programari implica l'acceptació de l'acord de llicència d'usuari final."
 
 #: mgrpxy/cmd/cmd.go:67
 msgid "configuration file path"
@@ -264,7 +264,7 @@ msgstr "l'indicador d'usuari no pot estar buit"
 
 #: mgrpxy/cmd/support/ptf/utils.go:136
 msgid "The %[1]s service image is %[2]s"
-msgstr "La imatge del servei %[1]s és %[2]s"
+msgstr "La imatge de servei %[1]s és %[2]s"
 
 #: mgrpxy/cmd/support/support.go:20 mgrpxy/cmd/support/support.go:21
 msgid "Commands for support operations"

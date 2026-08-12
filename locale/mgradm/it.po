@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 09:55+0200\n"
+"POT-Creation-Date: 2026-07-30 12:46+0100\n"
 "PO-Revision-Date: 2026-05-16 14:19+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
@@ -222,12 +222,12 @@ msgstr "Impossibile decodificare i dati sensibili di Podman"
 msgid "Unable to encode secrets backup"
 msgstr "Impossibile completare la codifica del backup dei dati sensibili di Podman"
 
-#: mgradm/cmd/backup/create/systemd_utils.go:29
+#: mgradm/cmd/backup/create/systemd_utils.go:30
 #, javascript-format
 msgid "Would backup %s"
 msgstr "Avvio del backup di %s"
 
-#: mgradm/cmd/backup/create/systemd_utils.go:35
+#: mgradm/cmd/backup/create/systemd_utils.go:36
 msgid "failed to create Systemd backup tarball: %w"
 msgstr "impossibile creare il tarball di backup di Systemd: %w"
 
@@ -617,36 +617,36 @@ msgstr "spazio insufficiente sul dispositivo di destinazione"
 msgid "install podman before running this command"
 msgstr "installare podman prima di eseguire questo comando"
 
-#: mgradm/cmd/cmd.go:40
+#: mgradm/cmd/cmd.go:41
 msgid "Uyuni administration tool"
 msgstr "Strumento di amministrazione di Uyuni"
 
-#: mgradm/cmd/cmd.go:41
+#: mgradm/cmd/cmd.go:42
 msgid "Tool to help administering Uyuni servers in containers"
 msgstr "Strumento per aiutare ad amministrare i server Uyuni nei container"
 
-#: mgradm/cmd/cmd.go:48
+#: mgradm/cmd/cmd.go:49
 msgid "Server Deployment:"
 msgstr "Distribuzione del server:"
 
-#: mgradm/cmd/cmd.go:52
+#: mgradm/cmd/cmd.go:53
 msgid "Server Management:"
 msgstr "Gestione del server:"
 
-#: mgradm/cmd/cmd.go:56
+#: mgradm/cmd/cmd.go:57
 msgid "Administrator tools:"
 msgstr "Strumenti di amministrazione:"
 
-#: mgradm/cmd/cmd.go:66
+#: mgradm/cmd/cmd.go:67
 #, javascript-format
 msgid "Starting %s"
 msgstr "Inizio %s"
 
-#: mgradm/cmd/cmd.go:67
+#: mgradm/cmd/cmd.go:68
 msgid "Use of this software implies acceptance of the End User License Agreement."
 msgstr "L'utilizzo di questo software implica l'accettazione del Contratto di licenza con l'utente finale."
 
-#: mgradm/cmd/cmd.go:71
+#: mgradm/cmd/cmd.go:72
 msgid "configuration file path"
 msgstr "percorso del file di configuratione"
 
@@ -939,46 +939,42 @@ msgid "cannot print inspect result"
 msgstr "impossibile stampare il risultato dell'ispezione"
 
 #: mgradm/cmd/install/flags.go:16
-msgid "Time zone to set on the server. Defaults to the host timezone"
-msgstr "Fuso orario da impostare sul server. Impostazioni predefinite per il fuso orario host"
-
-#: mgradm/cmd/install/flags.go:17
 msgid "Administrator e-mail"
 msgstr "E-mail dell'amministratore"
 
-#: mgradm/cmd/install/flags.go:18
+#: mgradm/cmd/install/flags.go:17
 msgid "E-Mail sending the notifications"
 msgstr "E-mail di invio delle notifiche"
 
-#: mgradm/cmd/install/flags.go:19
+#: mgradm/cmd/install/flags.go:18
 msgid "InterServerSync v1 parent FQDN"
 msgstr "FQDN del server padre di InterServerSync v1"
 
-#: mgradm/cmd/install/flags.go:29 mgradm/cmd/upgrade/flags.go:22
+#: mgradm/cmd/install/flags.go:28 mgradm/cmd/upgrade/flags.go:22
 msgid "TFTPD Flags"
 msgstr "Bandiere TFTPD"
 
-#: mgradm/cmd/install/flags.go:32
+#: mgradm/cmd/install/flags.go:31
 msgid "Administrator user name"
 msgstr "Nome utente amministratore"
 
-#: mgradm/cmd/install/flags.go:33
+#: mgradm/cmd/install/flags.go:32
 msgid "Administrator password"
 msgstr "Password amministratore"
 
-#: mgradm/cmd/install/flags.go:34
+#: mgradm/cmd/install/flags.go:33
 msgid "First name of the administrator"
 msgstr "Nome dell'amministratore"
 
-#: mgradm/cmd/install/flags.go:35
+#: mgradm/cmd/install/flags.go:34
 msgid "Last name of the administrator"
 msgstr "Cognome dell'amministratore"
 
-#: mgradm/cmd/install/flags.go:36
+#: mgradm/cmd/install/flags.go:35
 msgid "First organization name"
 msgstr "Nome della prima organizzazione"
 
-#: mgradm/cmd/install/flags.go:38
+#: mgradm/cmd/install/flags.go:37
 msgid "First User Flags"
 msgstr "Bandiere del primo utente"
 
@@ -1009,40 +1005,40 @@ msgstr "Il server è già inizializzato! Disinstallare prima di tentare una nuov
 msgid "Setting up the server with the FQDN '%s'"
 msgstr "Configurazione del server con FQDN '%s'"
 
-#: mgradm/cmd/install/utils.go:65 mgradm/shared/podman/podman.go:362
+#: mgradm/cmd/install/utils.go:65 mgradm/shared/podman/podman.go:443
 msgid "cannot prepare images"
 msgstr "non è possibile preparare le immagini"
 
-#: mgradm/cmd/install/utils.go:69 mgradm/shared/podman/podman.go:154
-#: mgradm/shared/podman/podman.go:352
+#: mgradm/cmd/install/utils.go:69 mgradm/shared/podman/podman.go:235
+#: mgradm/shared/podman/podman.go:433
 msgid "cannot setup network"
 msgstr "impossibile configurare la rete"
 
-#: mgradm/cmd/install/utils.go:90
+#: mgradm/cmd/install/utils.go:92
 msgid "failed to generate server service"
 msgstr "impossibile generare il servizio server"
 
-#: mgradm/cmd/install/utils.go:93 mgradm/shared/podman/podman.go:491
+#: mgradm/cmd/install/utils.go:95 mgradm/shared/podman/podman.go:572
 msgid "Waiting for server to start. This include service setup operations and can take a very long time."
 msgstr "In attesa dell'avvio del server. Ciò include operazioni di configurazione del servizio e può richiedere molto tempo."
 
-#: mgradm/cmd/install/utils.go:94 mgradm/shared/podman/podman.go:492
+#: mgradm/cmd/install/utils.go:96 mgradm/shared/podman/podman.go:573
 msgid "Use `journalctl -f -u uyuni-server` for tracking progress"
 msgstr "Utilizzare `journalctl -f -u uyuni-server` per monitorare i progressi"
 
-#: mgradm/cmd/install/utils.go:98 mgradm/shared/podman/podman.go:499
+#: mgradm/cmd/install/utils.go:100 mgradm/shared/podman/podman.go:580
 msgid "cannot wait for system start"
 msgstr "non è possibile attendere l'avvio del sistema"
 
-#: mgradm/cmd/install/utils.go:101
+#: mgradm/cmd/install/utils.go:103 mgradm/shared/podman/podman.go:96
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "impossibile aggiungere il certificato SSL CA per ospitare certificati attendibili"
 
-#: mgradm/cmd/install/utils.go:108
+#: mgradm/cmd/install/utils.go:110
 msgid "failed to extract payg data"
 msgstr "impossibile estrarre i dati payg"
 
-#: mgradm/cmd/install/utils.go:138 mgradm/shared/podman/podman.go:712
+#: mgradm/cmd/install/utils.go:140 mgradm/shared/podman/podman.go:793
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr "Configurazione del contenitore del database saltata per utilizzare del database esterno %s"
@@ -1082,24 +1078,24 @@ msgstr ""
 "  - uyuni-salina\n"
 "  - attestazione del server uyuni\n"
 
-#: mgradm/cmd/server/rename/podman.go:35
+#: mgradm/cmd/server/rename/podman.go:33
 msgid "Preparing SSL certificates to match the new hostname"
 msgstr "Preparazione dei certificati SSL in modo che corrispondano al nuovo nome host"
 
-#: mgradm/cmd/server/rename/podman.go:40
+#: mgradm/cmd/server/rename/podman.go:38
 msgid "Stopping the server container"
 msgstr "Arresto del container del server"
 
-#: mgradm/cmd/server/rename/podman.go:45
+#: mgradm/cmd/server/rename/podman.go:43
 #, javascript-format
 msgid "Changing the UYUNI_HOSTNAME to %s"
 msgstr "Modifica di UYUNI_HOSTNAME in %s"
 
-#: mgradm/cmd/server/rename/podman.go:56
+#: mgradm/cmd/server/rename/podman.go:54
 msgid "Starting the server container"
 msgstr "Avvio del container del server"
 
-#: mgradm/cmd/server/rename/podman.go:62
+#: mgradm/cmd/server/rename/podman.go:60
 msgid ""
 "The renaming continues inside the server container.\n"
 "The logs can be found in journalctl -u uyuni-config-update.service output."
@@ -1107,11 +1103,11 @@ msgstr ""
 "La ridenominazione continua all'interno del contenitore del server.\n"
 "I registri possono essere trovati nell'output journalctl - u uyuni-config-update.service."
 
-#: mgradm/cmd/server/rename/podman.go:109
+#: mgradm/cmd/server/rename/podman.go:82
 msgid "failed to write custom.conf with the new hostname"
 msgstr "impossibile scrivere custom.conf con il nuovo nome dell'host"
 
-#: mgradm/cmd/server/rename/podman.go:120
+#: mgradm/cmd/server/rename/podman.go:93
 msgid "failed to read the custom.conf file"
 msgstr "impossibile leggere il file custom.conf"
 
@@ -1137,13 +1133,141 @@ msgstr ""
 "Il contenitore uyuni-server verrà arrestato durante la ridenominazione e\n"
 "verrà attivato un aggiornamento dei pilastri di ciascun sistema registrato.\n"
 
-#: mgradm/cmd/server/rename/rename.go:46 mgradm/shared/utils/cmd_utils.go:225
+#: mgradm/cmd/server/rename/rename.go:46 mgradm/cmd/ssl/addca/addca.go:37
+#: mgradm/shared/utils/cmd_utils.go:226
 msgid "Password for the CA key to generate"
 msgstr "Password per la chiave CA da generare"
 
 #: mgradm/cmd/server/server.go:19
 msgid "Server management utilities"
 msgstr "Strumenti di gestione del server"
+
+#: mgradm/cmd/ssl/addca/addca.go:26
+msgid "Add a new root CA (phase 1 of an SSL CA rotation)"
+msgstr ""
+
+#: mgradm/cmd/ssl/addca/addca.go:27
+msgid "Add a new root CA to the trusted CA bundle without switching the server certificate."
+msgstr ""
+
+#: mgradm/cmd/ssl/addca/podman.go:28
+#, fuzzy
+#| msgid "Password for the CA key to generate"
+msgid "a password for the new CA key is required"
+msgstr "Password per la chiave CA da generare"
+
+#: mgradm/cmd/ssl/addca/podman.go:44
+msgid "Could not read the new CA fingerprint"
+msgstr ""
+
+#: mgradm/cmd/ssl/addca/podman.go:46
+#, javascript-format
+msgid "The new root CA (SHA-256 fingerprint %s) has been added to the trusted bundle."
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/podman.go:54
+msgid "--check-only is ignored with --emergency! Proceeding with the emergency rotation"
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/podman.go:66
+#, fuzzy
+#| msgid "Server certificate, key and root CA need to be all provided"
+msgid "the server certificate, key and root CA need to be all provided"
+msgstr "È necessario fornire il certificato del server, la chiave e la CA root"
+
+#: mgradm/cmd/ssl/rotate/podman.go:68
+#, fuzzy
+#| msgid "Using provided 3rd party server certificates"
+msgid "Installing the provided 3rd party server certificate"
+msgstr "Utilizzo dei certificati server di terze parti forniti"
+
+#: mgradm/cmd/ssl/rotate/podman.go:74
+#, fuzzy
+#| msgid "Verifying the CA key password…"
+msgid "the CA key password is required"
+msgstr "Verifica della password della chiave CA…"
+
+#: mgradm/cmd/ssl/rotate/podman.go:80
+#, fuzzy
+#| msgid "Generating the server certificate…"
+msgid "Generating a new CA and server certificate"
+msgstr "Generazione del certificato del server…"
+
+#: mgradm/cmd/ssl/rotate/podman.go:83
+#, fuzzy
+#| msgid "Generating the server certificate…"
+msgid "Generating a new server certificate signed by the new CA"
+msgstr "Generazione del certificato del server…"
+
+#: mgradm/cmd/ssl/rotate/podman.go:89
+msgid "Skipping the client CA trust check as --force was set"
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/podman.go:95
+msgid "failed to verify client readiness, rerun with --force to rotate without checking"
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/podman.go:101
+msgid "some clients do not trust the new CA yet! Distribute it and retry, or use --force to skip this check"
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/podman.go:108
+#, javascript-format
+msgid "Clients trusting the new CA: %d"
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/podman.go:110
+msgid "Clients not yet trusting the new CA (%[1]d): %[2]s"
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/podman.go:114
+msgid "Unreachable minions (%[1]d): %[2]s"
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/podman.go:117
+msgid "Only Salt-managed clients are checked! Non-managed systems and proxy configurations are not verified and must be handled manually."
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/rotate.go:26
+msgid "Switch to a server certificate signed by the new CA, then drop the old CA"
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/rotate.go:27
+msgid ""
+"Second phase of an SSL CA rotation, to run after 'mgradm ssl addca' has added the new CA and the\n"
+"clients trust it: issue a new server (and database) certificate signed by the new CA, switch the\n"
+"services to it, and drop the old CA from the trusted bundle so only the new CA is left."
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/rotate.go:40
+#, fuzzy
+#| msgid "Password for the CA key to generate"
+msgid "Password for the CA key"
+msgstr "Password per la chiave CA da generare"
+
+#: mgradm/cmd/ssl/rotate/rotate.go:42
+msgid "Rotate even if some clients do not trust the new CA yet"
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/rotate.go:43
+msgid "Only report client readiness, without rotating"
+msgstr ""
+
+#: mgradm/cmd/ssl/rotate/rotate.go:45
+msgid "Generate a new CA and drop the old one immediately without an overlap period (e.g. for compromised CAs)"
+msgstr ""
+
+#: mgradm/cmd/ssl/ssl.go:20
+#, fuzzy
+#| msgid "Generating the server certificate…"
+msgid "Rotate the server SSL CA and certificates"
+msgstr "Generazione del certificato del server…"
+
+#: mgradm/cmd/ssl/ssl.go:21
+#, fuzzy
+#| msgid "Reusing the existing server and database certificates"
+msgid "Rotate the server and database SSL CA and certificates."
+msgstr "Riutilizzo dei certificati server e database esistenti"
 
 #: mgradm/cmd/start/start.go:21 mgradm/cmd/start/start.go:22
 msgid "Start the server"
@@ -1382,7 +1506,7 @@ msgid "Not altering the confidential computing service"
 msgstr "Non alterare il servizio informatico confidenziale"
 
 #: mgradm/shared/coco/coco.go:78 mgradm/shared/hub/xmlrpcapi.go:44
-#: mgradm/shared/pgsql/pgsql.go:30 mgradm/shared/podman/podman.go:310
+#: mgradm/shared/pgsql/pgsql.go:31 mgradm/shared/podman/podman.go:391
 #: mgradm/shared/saline/saline.go:72 mgradm/shared/tftp/tftp.go:41
 msgid "failed to compute image URL"
 msgstr "impossibile determinare l'URL dell'immagine"
@@ -1392,13 +1516,13 @@ msgid "Setting up confidential computing attestation service"
 msgstr "Impostazione del servizio di attestazione informatica riservata"
 
 #: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:119
-#: mgradm/shared/pgsql/pgsql.go:118 mgradm/shared/podman/podman.go:138
+#: mgradm/shared/pgsql/pgsql.go:143 mgradm/shared/podman/podman.go:219
 #: mgradm/shared/saline/saline.go:92 mgradm/shared/tftp/tftp.go:95
 msgid "failed to generate systemd service unit file"
 msgstr "impossibile generare il file dell'unità di servizio systemd"
 
 #: mgradm/shared/coco/coco.go:109 mgradm/shared/hub/xmlrpcapi.go:126
-#: mgradm/shared/podman/podman.go:180 mgradm/shared/saline/saline.go:100
+#: mgradm/shared/podman/podman.go:261 mgradm/shared/saline/saline.go:100
 #: mgradm/shared/tftp/tftp.go:102
 msgid "cannot generate systemd conf file"
 msgstr "non è possibile generare il file conf systemd"
@@ -1408,8 +1532,8 @@ msgstr "non è possibile generare il file conf systemd"
 msgid "No changes requested for hub. Keep %d replicas."
 msgstr "Nessuna modifica richiesta per hub. Mantieni le repliche %d."
 
-#: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:46
-#: mgradm/shared/pgsql/pgsql.go:69 mgradm/shared/tftp/tftp.go:50
+#: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:67
+#: mgradm/shared/pgsql/pgsql.go:94 mgradm/shared/tftp/tftp.go:50
 msgid "cannot generate systemd service"
 msgstr "non è possibile generare il servizio systemd"
 
@@ -1417,7 +1541,7 @@ msgstr "non è possibile generare il servizio systemd"
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr "Al momento non sono supportate repliche multiple di contenitori XML-RPC Hub; è possibile configurarne solo una."
 
-#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:534
+#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:615
 #: mgradm/shared/saline/saline.go:142
 msgid "cannot enable service"
 msgstr "impossibile abilitare il servizio"
@@ -1426,252 +1550,374 @@ msgstr "impossibile abilitare il servizio"
 msgid "Not altering the hub XML-RPC API service"
 msgstr "Non alterare il servizio API XML-RPC dell'hub"
 
-#: mgradm/shared/pgsql/pgsql.go:57 mgradm/shared/pgsql/pgsql.go:86
+#: mgradm/shared/pgsql/pgsql.go:50
+#, fuzzy
+#| msgid "cannot generate systemd user configuration file"
+msgid "cannot generate systemd custom configuration file"
+msgstr "non è possibile generare il file di configurazione utente systemd"
+
+#: mgradm/shared/pgsql/pgsql.go:78 mgradm/shared/pgsql/pgsql.go:111
 #, javascript-format
 msgid "%s fails healtcheck"
 msgstr "%s fallisce il controllo di salute"
 
-#: mgradm/shared/pgsql/pgsql.go:124 mgradm/shared/pgsql/pgsql.go:141
+#: mgradm/shared/pgsql/pgsql.go:149 mgradm/shared/pgsql/pgsql.go:166
 msgid "cannot generate systemd configuration file"
 msgstr "impossibile generare il file di configurazione systemd"
 
-#: mgradm/shared/podman/podman.go:47
+#: mgradm/shared/podman/clients.go:26
+#, fuzzy
+msgid "failed to read the CA bundle secret"
+msgstr "mancata identificazione dell'immagine: %s"
+
+#: mgradm/shared/podman/clients.go:31
+#, fuzzy
+msgid "failed to compute the CA fingerprints"
+msgstr "mancata identificazione dell'immagine: %s"
+
+#: mgradm/shared/podman/clients.go:36
+msgid "no newly added CA found in the CA bundle; run 'mgradm ssl addca' first"
+msgstr ""
+
+#: mgradm/shared/podman/clients.go:66
+msgid "Checking whether the clients trust the new CA over Salt; this can take a moment…"
+msgstr ""
+
+#: mgradm/shared/podman/clients.go:75
+msgid "failed to list the minions status; is Salt available on the server?"
+msgstr ""
+
+#: mgradm/shared/podman/clients.go:82
+#, fuzzy, javascript-format
+msgid "failed to parse the minions status: %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/shared/podman/clients.go:99
+#, fuzzy
+#| msgid "failed to generate postgresql restore script"
+msgid "failed to query the minions trust stores over Salt"
+msgstr "impossibile generare lo script di ripristino postgresql"
+
+#: mgradm/shared/podman/clients.go:114
+#, fuzzy, javascript-format
+msgid "failed to parse the minions response: %s"
+msgstr "mancata identificazione dell'immagine: %s"
+
+#: mgradm/shared/podman/podman.go:78
+#, fuzzy
+#| msgid "Reusing the existing server and database certificates"
+msgid "Restarting the services to apply the new certificates"
+msgstr "Riutilizzo dei certificati server e database esistenti"
+
+#: mgradm/shared/podman/podman.go:90
+#, fuzzy
+#| msgid "cannot wait for system start"
+msgid "cannot wait for the server container to start"
+msgstr "non è possibile attendere l'avvio del sistema"
+
+#: mgradm/shared/podman/podman.go:109
+#, fuzzy, javascript-format
+#| msgid "Stopping the server container"
+msgid "Running %s in the server container"
+msgstr "Arresto del container del server"
+
+#: mgradm/shared/podman/podman.go:111
+#, fuzzy, javascript-format
+#| msgid "Stopping the server container"
+msgid "failed to run %s in the server container"
+msgstr "Arresto del container del server"
+
+#: mgradm/shared/podman/podman.go:128
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "impossibile creare la cartella %s"
 
-#: mgradm/shared/podman/podman.go:64 mgradm/shared/podman/podman.go:80
+#: mgradm/shared/podman/podman.go:145 mgradm/shared/podman/podman.go:161
 msgid "failed to generate server environment file"
 msgstr "impossibile generare il file dell'ambiente server"
 
-#: mgradm/shared/podman/podman.go:172
+#: mgradm/shared/podman/podman.go:253
 msgid "Enabling system service"
 msgstr "Abilitazione del servizio di sistema"
 
-#: mgradm/shared/podman/podman.go:186 mgradm/shared/saline/saline.go:108
+#: mgradm/shared/podman/podman.go:267 mgradm/shared/saline/saline.go:108
 msgid "cannot generate systemd user configuration file"
 msgstr "non è possibile generare il file di configurazione utente systemd"
 
-#: mgradm/shared/podman/podman.go:214
+#: mgradm/shared/podman/podman.go:295
 msgid "failed to generate SSL migration script"
 msgstr "impossibile generare lo script di migrazione SSL"
 
-#: mgradm/shared/podman/podman.go:234
+#: mgradm/shared/podman/podman.go:315
 #, javascript-format
 msgid "Migrating SSL certificates from the source server %s"
 msgstr "Migrazione dei certificati SSL dal server di origine %s"
 
-#: mgradm/shared/podman/podman.go:237
+#: mgradm/shared/podman/podman.go:318
 msgid "cannot run uyuni SSL migration container"
 msgstr "impossibile eseguire il contenitore di migrazione SSL uyuni"
 
-#: mgradm/shared/podman/podman.go:248
+#: mgradm/shared/podman/podman.go:329
 #, javascript-format
 msgid "Failed to read file %s"
 msgstr "Impossibile leggere il file %s"
 
-#: mgradm/shared/podman/podman.go:254
+#: mgradm/shared/podman/podman.go:335
 msgid "cannot read extracted data"
 msgstr "non è possibile leggere i dati estratti"
 
-#: mgradm/shared/podman/podman.go:265
+#: mgradm/shared/podman/podman.go:346
 #, javascript-format
 msgid "cannot inspect volume %s"
 msgstr "impossibile ispezionare il volume %s"
 
-#: mgradm/shared/podman/podman.go:268
+#: mgradm/shared/podman/podman.go:349
 #, javascript-format
 msgid "cannot restore %s SELinux permissions"
 msgstr "impossibile ripristinare le autorizzazioni SELinux %s"
 
-#: mgradm/shared/podman/podman.go:318
+#: mgradm/shared/podman/podman.go:399
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr "Utilizzo dell'immagine di aggiornamento del database %s"
 
-#: mgradm/shared/podman/podman.go:376 mgradm/shared/podman/podman.go:384
+#: mgradm/shared/podman/podman.go:457 mgradm/shared/podman/podman.go:465
 msgid "cannot stop service"
 msgstr "non è possibile interrompere il servizio"
 
-#: mgradm/shared/podman/podman.go:395
+#: mgradm/shared/podman/podman.go:476
 msgid "Initiating PostgreSQL upgrade from version %[1]d to %[2]d"
 msgstr "Avvio dell'aggiornamento di PostgreSQL dalla versione %[1]d a %[2]d"
 
-#: mgradm/shared/podman/podman.go:399
+#: mgradm/shared/podman/podman.go:480
 #, javascript-format
 msgid "cannot find volume %s"
 msgstr "impossibile trovare il volume %s"
 
-#: mgradm/shared/podman/podman.go:414
+#: mgradm/shared/podman/podman.go:495
 #, javascript-format
 msgid "cannot move %s"
 msgstr "non è possibile spostare %s"
 
-#: mgradm/shared/podman/podman.go:430
+#: mgradm/shared/podman/podman.go:511
 #, javascript-format
 msgid "cannot mkdir %s"
 msgstr "non è possibile mkdir %s"
 
-#: mgradm/shared/podman/podman.go:433
+#: mgradm/shared/podman/podman.go:514
 msgid "Data will be copied during this process. Please ensure sufficient disk space is available."
 msgstr "I dati verranno copiati durante questo processo. Assicurati che sia disponibile spazio su disco sufficiente."
 
-#: mgradm/shared/podman/podman.go:435
+#: mgradm/shared/podman/podman.go:516
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "impossibile eseguire lo script di aggiornamento della versione PostgreSQL"
 
-#: mgradm/shared/podman/podman.go:438
+#: mgradm/shared/podman/podman.go:519
 msgid "Upgrading without changing PostgreSQL version"
 msgstr "Aggiornamento senza modificare la versione di PostgreSQL"
 
-#: mgradm/shared/podman/podman.go:441
+#: mgradm/shared/podman/podman.go:522
 msgid "trying to downgrade PostgreSQL from %[1]d to %[2]d"
 msgstr "tentativo di eseguire il downgrade di PostgreSQL da %[1]d a %[2]d"
 
-#: mgradm/shared/podman/podman.go:448
+#: mgradm/shared/podman/podman.go:529
 msgid "Configuring split PostgreSQL container"
 msgstr "Configurazione del contenitore PostgreSQL diviso"
 
-#: mgradm/shared/podman/podman.go:457
+#: mgradm/shared/podman/podman.go:538
 msgid "cannot configure db container"
 msgstr "impossibile configurare il contenitore db"
 
-#: mgradm/shared/podman/podman.go:495 mgradm/shared/podman/podman.go:537
+#: mgradm/shared/podman/podman.go:576 mgradm/shared/podman/podman.go:618
 msgid "cannot start service"
 msgstr "impossibile avviare il servizio"
 
-#: mgradm/shared/podman/podman.go:522
+#: mgradm/shared/podman/podman.go:603
 msgid "Failed to read server service definition to look for TFTP port"
 msgstr "Impossibile leggere la definizione del servizio server per cercare la porta TFTP"
 
-#: mgradm/shared/podman/podman.go:532
+#: mgradm/shared/podman/podman.go:613
 msgid "Waiting for the server to start…"
 msgstr "In attesa dell'avvio del server…"
 
-#: mgradm/shared/podman/podman.go:578
+#: mgradm/shared/podman/podman.go:659
 msgid "failed to generate postgresql migration script"
 msgstr "impossibile generare lo script di migrazione postgresql"
 
-#: mgradm/shared/podman/podman.go:598
+#: mgradm/shared/podman/podman.go:679
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr "L'errore di cui sopra è rilevante solo se si utilizza un registro del provider cloud pubblico"
 
-#: mgradm/shared/podman/podman.go:628
+#: mgradm/shared/podman/podman.go:709
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr "SSH_AUTH_SOCK non è definito, avvia un agente SSH e riprova"
 
-#: mgradm/shared/podman/podman.go:638
+#: mgradm/shared/podman/podman.go:719
 msgid "Failed to find home directory to look for SSH config"
 msgstr "Impossibile trovare la directory home per cercare la configurazione SSH"
 
-#: mgradm/shared/podman/podman.go:660
+#: mgradm/shared/podman/podman.go:741
 msgid "cannot inspect podman values"
 msgstr "non è possibile ispezionare i valori podman"
 
-#: mgradm/shared/podman/podman.go:674
+#: mgradm/shared/podman/podman.go:755
 msgid "PostgreSQL migration failure"
 msgstr "Errore di migrazione di PostgreSQL"
 
-#: mgradm/shared/podman/podman.go:703
+#: mgradm/shared/podman/podman.go:784
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr "I segreti %[1]s e %[2]s esistono già"
 
-#: mgradm/shared/podman/ssl.go:87
+#: mgradm/shared/podman/ssl.go:88
 msgid "Using provided 3rd party server certificates"
 msgstr "Utilizzo dei certificati server di terze parti forniti"
 
-#: mgradm/shared/podman/ssl.go:97
+#: mgradm/shared/podman/ssl.go:98
 msgid "Using provided 3rd party database certificates"
 msgstr "Utilizzo dei certificati di database di terze parti forniti"
 
-#: mgradm/shared/podman/ssl.go:120
+#: mgradm/shared/podman/ssl.go:117 mgradm/shared/podman/ssl.go:266
 msgid "Failed to create secrets from the provided SSL arguments"
 msgstr "Impossibile creare segreti dagli argomenti SSL forniti"
 
-#: mgradm/shared/podman/ssl.go:143
+#: mgradm/shared/podman/ssl.go:120
+msgid "No third-party certificate provided to import"
+msgstr ""
+
+#: mgradm/shared/podman/ssl.go:137
+#, fuzzy
+#| msgid "Using provided 3rd party server certificates"
+msgid "Adding the provided 3rd party root CA"
+msgstr "Utilizzo dei certificati server di terze parti forniti"
+
+#: mgradm/shared/podman/ssl.go:140
+#, fuzzy, javascript-format
+#| msgid "failed to create folder %s"
+msgid "failed to read the provided root CA %s"
+msgstr "impossibile creare la cartella %s"
+
+#: mgradm/shared/podman/ssl.go:147
+#, fuzzy
+#| msgid "Cannot generate new certificates without a CA password. Please check input options"
+msgid "Cannot generate a new CA without a CA password. Please check the input parameters."
+msgstr "Impossibile generare nuovi certificati senza una password CA. Si prega di controllare le opzioni di input"
+
+#: mgradm/shared/podman/ssl.go:149 mgradm/shared/podman/ssl.go:240
+msgid "Generating a new self-signed root CA"
+msgstr ""
+
+#: mgradm/shared/podman/ssl.go:161 mgradm/shared/podman/ssl.go:251
+#, fuzzy
+#| msgid "Failed to generate server SSL certificate. Please check the input parameters."
+msgid "Failed to generate the new SSL CA. Please check the input parameters."
+msgstr "Impossibile generare il certificato SSL del server. Si prega di controllare i parametri di input."
+
+#: mgradm/shared/podman/ssl.go:174
+#, fuzzy
+#| msgid "Using provided 3rd party database certificates"
+msgid "Adding the provided 3rd party database root CA"
+msgstr "Utilizzo dei certificati di database di terze parti forniti"
+
+#: mgradm/shared/podman/ssl.go:177
+#, fuzzy, javascript-format
+msgid "failed to read the provided database root CA %s"
+msgstr "mancata creazione della directory temporanea: %s"
+
+#: mgradm/shared/podman/ssl.go:205
+#, javascript-format
+msgid "The new CA is already present in the %s secret"
+msgstr ""
+
+#: mgradm/shared/podman/ssl.go:231
+#, fuzzy
+#| msgid "Cannot generate new certificates without a CA password. Please check input options"
+msgid "Cannot generate a new CA without a CA password. Please check input options"
+msgstr "Impossibile generare nuovi certificati senza una password CA. Si prega di controllare le opzioni di input"
+
+#: mgradm/shared/podman/ssl.go:289
 msgid "Reusing the existing server and database certificates"
 msgstr "Riutilizzo dei certificati server e database esistenti"
 
-#: mgradm/shared/podman/ssl.go:147
+#: mgradm/shared/podman/ssl.go:293
 msgid "Generating both the server and database certificates since one is missing"
 msgstr "Generazione sia dei certificati del server che del database poiché ne manca uno"
 
-#: mgradm/shared/podman/ssl.go:157
+#: mgradm/shared/podman/ssl.go:303
 msgid "Cannot generate certificates as the SSL CA key cannot be found. Please set up third-party certificates."
 msgstr "Impossibile generare certificati poiché non è possibile trovare la chiave SSL CA. Si prega di impostare certificati di terze parti."
 
-#: mgradm/shared/podman/ssl.go:170
+#: mgradm/shared/podman/ssl.go:316
 msgid "Verifying the CA key password…"
 msgstr "Verifica della password della chiave CA…"
 
-#: mgradm/shared/podman/ssl.go:181
+#: mgradm/shared/podman/ssl.go:327
 msgid "Failed to verify the CA key password!"
 msgstr "Impossibile verificare la password della chiave CA!"
 
-#: mgradm/shared/podman/ssl.go:199
+#: mgradm/shared/podman/ssl.go:345
 msgid "Reusing the existing server certificate secrets"
 msgstr "Riutilizzo dei segreti del certificato del server esistente"
 
-#: mgradm/shared/podman/ssl.go:203
+#: mgradm/shared/podman/ssl.go:349
 msgid "Reusing the existing database certificate secrets"
 msgstr "Riutilizzo dei segreti dei certificati del database esistenti"
 
-#: mgradm/shared/podman/ssl.go:255
+#: mgradm/shared/podman/ssl.go:401
 msgid "Missing SANs or subjects in certificate of secret %[1]: %[2]s"
 msgstr "SAN o soggetti mancanti nel certificato segreto %[1]: %[2]s"
 
-#: mgradm/shared/podman/ssl.go:289
+#: mgradm/shared/podman/ssl.go:435
 msgid "Reusing the existing server certificate files"
 msgstr "Riutilizzo dei file di certificato del server esistenti"
 
-#: mgradm/shared/podman/ssl.go:301
+#: mgradm/shared/podman/ssl.go:447
 msgid "Reusing the existing database certificate files"
 msgstr "Riutilizzo dei file di certificati del database esistenti"
 
-#: mgradm/shared/podman/ssl.go:310
+#: mgradm/shared/podman/ssl.go:456
 #, javascript-format
 msgid "CA file %s not found."
 msgstr "File CA %s non trovato."
 
-#: mgradm/shared/podman/ssl.go:315
+#: mgradm/shared/podman/ssl.go:461
 msgid "cannot write existing CA certificate"
 msgstr "non è possibile scrivere il certificato CA esistente"
 
-#: mgradm/shared/podman/ssl.go:322
+#: mgradm/shared/podman/ssl.go:468
 #, javascript-format
 msgid "Certificate file %s not found."
 msgstr "File di certificato %s non trovato."
 
-#: mgradm/shared/podman/ssl.go:326
+#: mgradm/shared/podman/ssl.go:472
 msgid "cannot write existing server certificate"
 msgstr "impossibile scrivere il certificato del server esistente"
 
-#: mgradm/shared/podman/ssl.go:331
+#: mgradm/shared/podman/ssl.go:477
 msgid "Certificate file %[1]s doesn't match %[2]s FQDN."
 msgstr "Il file di certificato %[1]s non corrisponde a %[2]s FQDN."
 
-#: mgradm/shared/podman/ssl.go:339
+#: mgradm/shared/podman/ssl.go:485
 #, javascript-format
 msgid "Certificate key file %s not found."
 msgstr "File chiave del certificato %s non trovato."
 
-#: mgradm/shared/podman/ssl.go:343
+#: mgradm/shared/podman/ssl.go:489
 msgid "cannot write existing server key"
 msgstr "impossibile scrivere la chiave del server esistente"
 
-#: mgradm/shared/podman/ssl.go:394
+#: mgradm/shared/podman/ssl.go:544
 msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgstr "Impossibile generare nuovi certificati senza una password CA. Si prega di controllare le opzioni di input"
 
-#: mgradm/shared/podman/ssl.go:396
+#: mgradm/shared/podman/ssl.go:546
 msgid "Generating the server certificate…"
 msgstr "Generazione del certificato del server…"
 
-#: mgradm/shared/podman/ssl.go:416
+#: mgradm/shared/podman/ssl.go:566
 msgid "Failed to generate server SSL certificate. Please check the input parameters."
 msgstr "Impossibile generare il certificato SSL del server. Si prega di controllare i parametri di input."
 
-#: mgradm/shared/podman/ssl.go:419
+#: mgradm/shared/podman/ssl.go:569
 msgid "Server SSL certificate generated"
 msgstr "Certificato SSL del server generato"
 
@@ -1886,7 +2132,11 @@ msgstr "Bandiere del contenitore del database PostgreSQL"
 msgid "PostgreSQL Database"
 msgstr "database PostgreSQL"
 
-#: mgradm/shared/utils/cmd_utils.go:230
+#: mgradm/shared/utils/cmd_utils.go:216
+msgid "Time zone to set on the server. Defaults to the host timezone"
+msgstr "Fuso orario da impostare sul server. Impostazioni predefinite per il fuso orario host"
+
+#: mgradm/shared/utils/cmd_utils.go:231
 msgid "Enable tomcat and taskomatic remote debugging"
 msgstr "Abilita il debug remoto di Tomcat e Taskomatic"
 
@@ -2086,10 +2336,6 @@ msgstr "Non è un indirizzo email valido"
 #~ msgstr "mancata creazione della directory temporanea: %s"
 
 #, fuzzy
-#~ msgid "failed to parse migration data file"
-#~ msgstr "mancata creazione della directory temporanea: %s"
-
-#, fuzzy
 #~ msgid "Path to the SSH public key to use to connect to the source server"
 #~ msgstr "connessione non riuscita al server Hub: %s"
 
@@ -2166,23 +2412,11 @@ msgstr "Non è un indirizzo email valido"
 #~ msgstr "mancata identificazione dell'immagine: %s"
 
 #, fuzzy
-#~ msgid "failed to create the secret"
-#~ msgstr "mancata identificazione dell'immagine: %s"
-
-#, fuzzy
-#~ msgid "failed to create the database deployment"
-#~ msgstr "mancata creazione della directory temporanea: %s"
-
-#, fuzzy
 #~ msgid "failed to create the server deployment"
 #~ msgstr "mancata creazione della directory temporanea: %s"
 
 #, fuzzy
 #~ msgid "failed to create the hub API deployment"
-#~ msgstr "mancata identificazione dell'immagine: %s"
-
-#, fuzzy
-#~ msgid "failed to create the ingresses"
 #~ msgstr "mancata identificazione dell'immagine: %s"
 
 #, fuzzy

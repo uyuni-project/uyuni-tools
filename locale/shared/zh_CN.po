@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 09:55+0200\n"
+"POT-Creation-Date: 2026-07-30 12:49+0100\n"
 "PO-Revision-Date: 2026-05-26 05:12+0000\n"
 "Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -931,7 +931,7 @@ msgstr "SSL 证书标志"
 msgid "Intermediate CA certificate path"
 msgstr "SSL 证书州/省"
 
-#: shared/ssl/flags.go:39
+#: shared/ssl/flags.go:39 shared/ssl/flags.go:53
 #, fuzzy
 #| msgid "SSL certificate state"
 msgid "Root CA certificate path"
@@ -949,46 +949,46 @@ msgstr "SSL 证书州/省"
 msgid "Server key path"
 msgstr "数据库"
 
-#: shared/ssl/flags.go:43 shared/ssl/flags.go:59
+#: shared/ssl/flags.go:43 shared/ssl/flags.go:57 shared/ssl/flags.go:71
 #, fuzzy
 #| msgid "SSL Certificate Flags"
 msgid "3rd Party SSL Certificate Flags"
 msgstr "SSL 证书标志"
 
-#: shared/ssl/flags.go:53
-msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr ""
-
-#: shared/ssl/flags.go:55
+#: shared/ssl/flags.go:55 shared/ssl/flags.go:67
 msgid "Root CA certificate path for the database if different from the server one"
 msgstr ""
 
-#: shared/ssl/flags.go:56
+#: shared/ssl/flags.go:65
+msgid "Intermediate CA certificate path for the database if different from the server one"
+msgstr ""
+
+#: shared/ssl/flags.go:68
 #, fuzzy
 #| msgid "SSL certificate state"
 msgid "Database certificate path"
 msgstr "SSL 证书州/省"
 
-#: shared/ssl/flags.go:57
+#: shared/ssl/flags.go:69
 #, fuzzy
 #| msgid "Database"
 msgid "Database key path"
 msgstr "数据库"
 
-#: shared/ssl/ssl.go:69
+#: shared/ssl/ssl.go:71
 msgid "Failed to find a non-CA certificate"
 msgstr "找不到非 CA 证书"
 
-#: shared/ssl/ssl.go:110
+#: shared/ssl/ssl.go:112
 msgid "expected to find a certificate, got none"
 msgstr "预期应找到一个证书，结果未找到任何证书"
 
-#: shared/ssl/ssl.go:116
+#: shared/ssl/ssl.go:118
 #, javascript-format
 msgid "Failed to read certificate file %s"
 msgstr "无法读取证书文件 %s"
 
-#: shared/ssl/ssl.go:155
+#: shared/ssl/ssl.go:157
 #, fuzzy, javascript-format
 #| msgid "Failed to extract data from certificate"
 msgid ""
@@ -996,79 +996,79 @@ msgid ""
 "%s"
 msgstr "无法从证书提取数据"
 
-#: shared/ssl/ssl.go:176
+#: shared/ssl/ssl.go:178
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
 msgstr "无法分析起始日期：%s\n"
 
-#: shared/ssl/ssl.go:182
+#: shared/ssl/ssl.go:184
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
 msgstr "无法分析终止日期：%s\n"
 
-#: shared/ssl/ssl.go:214
+#: shared/ssl/ssl.go:216
 #, javascript-format
 msgid "Basic constraints for CA should be marked as `%s`, could cause issues otherwise!"
 msgstr ""
 
-#: shared/ssl/ssl.go:236
+#: shared/ssl/ssl.go:238
 #, fuzzy
 #| msgid "SSL certificate state"
 msgid "no CA certificate found in the files"
 msgstr "SSL 证书州/省"
 
-#: shared/ssl/ssl.go:245 shared/ssl/ssl.go:258
+#: shared/ssl/ssl.go:247 shared/ssl/ssl.go:260
 msgid ""
 "please check the CA chain, including intermediate CA certificates provided.\n"
 "The chain is missing the CA with subject %[1]s (hash: %[2]s)"
 msgstr ""
 
-#: shared/ssl/ssl.go:288
+#: shared/ssl/ssl.go:290
 msgid "server certificate is required"
 msgstr "必须指定服务器证书"
 
-#: shared/ssl/ssl.go:291 shared/ssl/ssl.go:356
+#: shared/ssl/ssl.go:293 shared/ssl/ssl.go:358
 msgid "server key is required"
 msgstr "必须指定服务器密钥"
 
-#: shared/ssl/ssl.go:306
+#: shared/ssl/ssl.go:308
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr "%s 文件无法访问"
 
-#: shared/ssl/ssl.go:315
+#: shared/ssl/ssl.go:317
 msgid "Source server SSL CA private key password"
 msgstr "源服务器 SSL CA 私用密钥口令"
 
-#: shared/ssl/ssl.go:321
+#: shared/ssl/ssl.go:323
 msgid "Failed to open openssl rsa process input stream"
 msgstr "无法打开 openssl rsa 流程输入流"
 
-#: shared/ssl/ssl.go:324
+#: shared/ssl/ssl.go:326
 msgid "Failed to write openssl key content to input stream"
 msgstr "无法将 openssl 密钥内容写入输入流"
 
-#: shared/ssl/ssl.go:330
+#: shared/ssl/ssl.go:332
 msgid "Failed to convert CA private key to RSA"
 msgstr "无法将 CA 私用密钥转换为 RSA"
 
-#: shared/ssl/ssl.go:340
+#: shared/ssl/ssl.go:342
 msgid "Failed to open openssl x509 process input stream"
 msgstr "无法打开 openssl x509 流程输入流"
 
-#: shared/ssl/ssl.go:343
+#: shared/ssl/ssl.go:345
 msgid "Failed to write SSL certificate to input stream"
 msgstr "无法将 SSL 证书写入输入流"
 
-#: shared/ssl/ssl.go:347
+#: shared/ssl/ssl.go:349
 msgid "failed to strip text part from CA certificate"
 msgstr "无法剥离 CA 证书中的文本部分"
 
-#: shared/ssl/ssl.go:362
+#: shared/ssl/ssl.go:364
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr "SSL 密钥无效，它可能已加密"
 
-#: shared/ssl/ssl.go:381
+#: shared/ssl/ssl.go:383
 #, fuzzy, javascript-format
 #| msgid "failed to write in %s"
 msgid "failed to validate hostname %s"

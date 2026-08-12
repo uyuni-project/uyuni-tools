@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 09:55+0200\n"
-"PO-Revision-Date: 2026-05-11 11:04+0000\n"
+"POT-Creation-Date: 2026-06-01 14:35+0100\n"
+"PO-Revision-Date: 2026-07-28 10:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 #: mgrctl/cmd/api/api.go:26
 msgid "JSON over HTTP API helper tool"
@@ -134,7 +134,7 @@ msgstr "camí del fitxer de configuració"
 #: mgrctl/cmd/cmd.go:48
 #, javascript-format
 msgid "Starting %s"
-msgstr "S'inicia %s"
+msgstr "S'està iniciant %s"
 
 #: mgrctl/cmd/cp/cp.go:29
 msgid "Copy files to and from the containers"
