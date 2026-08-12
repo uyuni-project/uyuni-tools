@@ -4,7 +4,7 @@
 
 package types
 
-// SSLCertGenerationFlags stores informations to generate an SSL Certificate.
+// SSLCertGenerationFlags stores information to generate an SSL Certificate.
 type SSLCertGenerationFlags struct {
 	Cnames   []string `mapstructure:"cname"`
 	Country  string
