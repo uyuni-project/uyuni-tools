@@ -33,6 +33,7 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
 	}
+	podman.WarnIfServicesDisabled(systemd)
 
 	return podman.Upgrade(
 		systemd, authFile,
