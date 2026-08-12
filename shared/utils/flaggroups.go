@@ -70,7 +70,7 @@ func usageFunc(cmd *cobra.Command) error {
 	return origUsageFunc(cmd)
 }
 
-// ContainsGroup checks if the command alrady has a group with the same ID.
+// ContainsGroup checks if the command already has a group with the same ID.
 func ContainsGroup(cmd *cobra.Command, groupID string) bool {
 	for _, grp := range commandGroups[cmd] {
 		if grp.ID == groupID {
