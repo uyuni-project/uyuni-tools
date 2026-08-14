@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-30 12:46+0100\n"
-"PO-Revision-Date: 2026-05-26 05:12+0000\n"
-"Last-Translator: Emily Dong <Emily.Dong@excel-gits.com>\n"
+"PO-Revision-Date: 2026-08-11 09:13+0000\n"
+"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
@@ -453,8 +453,6 @@ msgid "Restoring podman network"
 msgstr "正在恢复 podman 网络"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:143
-#, fuzzy
-#| msgid "Unlable to create podman network"
 msgid "Unable to create podman network"
 msgstr "无法创建 podman 网络"
 
@@ -950,7 +948,7 @@ msgstr "InterServerSync v1 父 FQDN"
 
 #: mgradm/cmd/install/flags.go:28 mgradm/cmd/upgrade/flags.go:22
 msgid "TFTPD Flags"
-msgstr ""
+msgstr "TFTPD 标志"
 
 #: mgradm/cmd/install/flags.go:31
 msgid "Administrator user name"
@@ -981,13 +979,6 @@ msgid "Install a new server on podman"
 msgstr "在 podman 上安装新服务器"
 
 #: mgradm/cmd/install/install.go:28
-#, fuzzy
-#| msgid ""
-#| "Install a new server on podman\n"
-#| "\n"
-#| "The install podman command assumes podman is installed locally.\n"
-#| "\n"
-#| "NOTE: installing on a remote podman is not supported yet!\n"
 msgid ""
 "Install a new server on podman\n"
 "\n"
@@ -997,9 +988,9 @@ msgid ""
 msgstr ""
 "在 podman 上安装新服务器\n"
 "\n"
-"install podman 命令假定本地已安装 podman。\n"
+"该命令假定本地已安装 podman。\n"
 "\n"
-"注意：目前不支持在远程 podman 上安装！\n"
+"注意：目前不支持在远程 podman 上执行安装！\n"
 
 #: mgradm/cmd/install/utils.go:54
 msgid "Server is already initialized! Uninstall before attempting new installation or use upgrade command"
@@ -1020,18 +1011,16 @@ msgid "cannot setup network"
 msgstr "无法设置网络"
 
 #: mgradm/cmd/install/utils.go:92
-#, fuzzy
-#| msgid "failed to delete server resources"
 msgid "failed to generate server service"
-msgstr "无法删除服务器资源"
+msgstr "生成服务器服务失败"
 
 #: mgradm/cmd/install/utils.go:95 mgradm/shared/podman/podman.go:572
 msgid "Waiting for server to start. This include service setup operations and can take a very long time."
-msgstr ""
+msgstr "正在等待服务器启动。此过程包含服务设置操作，可能需要较长时间。"
 
 #: mgradm/cmd/install/utils.go:96 mgradm/shared/podman/podman.go:573
 msgid "Use `journalctl -f -u uyuni-server` for tracking progress"
-msgstr ""
+msgstr "使用 `journalctl -f -u uyuni-server` 可跟踪进度"
 
 #: mgradm/cmd/install/utils.go:100 mgradm/shared/podman/podman.go:580
 msgid "cannot wait for system start"
@@ -1151,93 +1140,81 @@ msgstr "服务器管理实用程序"
 
 #: mgradm/cmd/ssl/addca/addca.go:26
 msgid "Add a new root CA (phase 1 of an SSL CA rotation)"
-msgstr ""
+msgstr "添加新的根 CA（SSL CA 轮换的第 1 阶段）"
 
 #: mgradm/cmd/ssl/addca/addca.go:27
 msgid "Add a new root CA to the trusted CA bundle without switching the server certificate."
-msgstr ""
+msgstr "向受信任 CA 捆绑包添加新的根 CA，且不切换服务器证书。"
 
 #: mgradm/cmd/ssl/addca/podman.go:28
-#, fuzzy
-#| msgid "Password for the CA key to generate"
 msgid "a password for the new CA key is required"
-msgstr "要生成的 CA 密钥的口令"
+msgstr "必须提供新 CA 密钥的口令"
 
 #: mgradm/cmd/ssl/addca/podman.go:44
 msgid "Could not read the new CA fingerprint"
-msgstr ""
+msgstr "无法读取新 CA 指纹"
 
 #: mgradm/cmd/ssl/addca/podman.go:46
 #, javascript-format
 msgid "The new root CA (SHA-256 fingerprint %s) has been added to the trusted bundle."
-msgstr ""
+msgstr "新根 CA（SHA‑256 指纹 %s）已添加到受信任捆绑包。"
 
 #: mgradm/cmd/ssl/rotate/podman.go:54
 msgid "--check-only is ignored with --emergency! Proceeding with the emergency rotation"
-msgstr ""
+msgstr "使用 --emergency 时将忽略 --check‑only！将执行紧急轮换"
 
 #: mgradm/cmd/ssl/rotate/podman.go:66
-#, fuzzy
-#| msgid "Server certificate, key and root CA need to be all provided"
 msgid "the server certificate, key and root CA need to be all provided"
-msgstr "服务器证书、密钥和根 CA 必须全部提供"
+msgstr "必须同时提供服务器证书、密钥以及根 CA"
 
 #: mgradm/cmd/ssl/rotate/podman.go:68
-#, fuzzy
-#| msgid "Using provided 3rd party server certificates"
 msgid "Installing the provided 3rd party server certificate"
-msgstr "正在使用提供的第三方服务器证书"
+msgstr "正在安装所提供的第三方服务器证书"
 
 #: mgradm/cmd/ssl/rotate/podman.go:74
-#, fuzzy
-#| msgid "server key is required"
 msgid "the CA key password is required"
-msgstr "必须指定服务器密钥"
+msgstr "必须提供 CA 密钥口令"
 
 #: mgradm/cmd/ssl/rotate/podman.go:80
-#, fuzzy
-#| msgid "Generating the server certificate…"
 msgid "Generating a new CA and server certificate"
-msgstr "正在生成服务器证书…"
+msgstr "正在生成新 CA 和服务器证书"
 
 #: mgradm/cmd/ssl/rotate/podman.go:83
-#, fuzzy
-#| msgid "Generating the server certificate…"
 msgid "Generating a new server certificate signed by the new CA"
-msgstr "正在生成服务器证书…"
+msgstr "正在生成由新 CA 签名的新服务器证书"
 
 #: mgradm/cmd/ssl/rotate/podman.go:89
 msgid "Skipping the client CA trust check as --force was set"
-msgstr ""
+msgstr "因为设置了 --force，将跳过客户端 CA 信任检查"
 
 #: mgradm/cmd/ssl/rotate/podman.go:95
 msgid "failed to verify client readiness, rerun with --force to rotate without checking"
-msgstr ""
+msgstr "验证客户端就绪状态失败，请使用 --force 重新运行，即可无需检查直接执行轮换"
 
 #: mgradm/cmd/ssl/rotate/podman.go:101
 msgid "some clients do not trust the new CA yet! Distribute it and retry, or use --force to skip this check"
-msgstr ""
+msgstr "部分客户端尚未信任新 CA！请分发该 CA 后重试，或使用 --force 跳过此项检查"
 
 #: mgradm/cmd/ssl/rotate/podman.go:108
 #, javascript-format
 msgid "Clients trusting the new CA: %d"
-msgstr ""
+msgstr "信任新 CA 的客户端：%d"
 
 #: mgradm/cmd/ssl/rotate/podman.go:110
 msgid "Clients not yet trusting the new CA (%[1]d): %[2]s"
-msgstr ""
+msgstr "尚未信任新 CA 的客户端 (%[1]d)：%[2]s"
 
 #: mgradm/cmd/ssl/rotate/podman.go:114
 msgid "Unreachable minions (%[1]d): %[2]s"
-msgstr ""
+msgstr "无法访问的受控端 (%[1]d)：%[2]s"
 
 #: mgradm/cmd/ssl/rotate/podman.go:117
 msgid "Only Salt-managed clients are checked! Non-managed systems and proxy configurations are not verified and must be handled manually."
-msgstr ""
+msgstr "仅会检查由 Salt 管理的客户端！非受管系统与代理配置不会经过验证，必须手动处理。"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:26
 msgid "Switch to a server certificate signed by the new CA, then drop the old CA"
-msgstr ""
+msgstr "切换到由新 CA 签名的服务器证书，随后去除旧 CA"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:27
 msgid ""
@@ -1245,36 +1222,33 @@ msgid ""
 "clients trust it: issue a new server (and database) certificate signed by the new CA, switch the\n"
 "services to it, and drop the old CA from the trusted bundle so only the new CA is left."
 msgstr ""
+"SSL CA 轮换的第 2 阶段，需在执行 'mgradm ssl addca' 添加新 CA 且\n"
+"客户端信任该 CA 之后运行：颁发由新 CA 签名的新服务器（以及数据库）证书，\n"
+"将服务切换到该证书，并从受信任捆绑包中去除旧 CA，以便仅保留新 CA。"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:40
-#, fuzzy
-#| msgid "Password for the CA key to generate"
 msgid "Password for the CA key"
-msgstr "要生成的 CA 密钥的口令"
+msgstr "CA 密钥的口令"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:42
 msgid "Rotate even if some clients do not trust the new CA yet"
-msgstr ""
+msgstr "即使部分客户端尚未信任新 CA，仍执行轮换"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:43
 msgid "Only report client readiness, without rotating"
-msgstr ""
+msgstr "仅报告客户端就绪状态，不执行轮换"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:45
 msgid "Generate a new CA and drop the old one immediately without an overlap period (e.g. for compromised CAs)"
-msgstr ""
+msgstr "生成新 CA 并立即去除旧 CA，不设置重叠期（适用于 CA 遭到泄露等场景）"
 
 #: mgradm/cmd/ssl/ssl.go:20
-#, fuzzy
-#| msgid "Generating the server certificate…"
 msgid "Rotate the server SSL CA and certificates"
-msgstr "正在生成服务器证书…"
+msgstr "轮换服务器 SSL CA 及证书"
 
 #: mgradm/cmd/ssl/ssl.go:21
-#, fuzzy
-#| msgid "Reusing the existing server and database certificates"
 msgid "Rotate the server and database SSL CA and certificates."
-msgstr "正在重复使用现有服务器和数据库证书"
+msgstr "轮换服务器与数据库的 SSL CA 及证书。"
 
 #: mgradm/cmd/start/start.go:21 mgradm/cmd/start/start.go:22
 msgid "Start the server"
@@ -1506,7 +1480,7 @@ msgstr "列出映像的可用标记"
 
 #: mgradm/cmd/upgrade/upgrade.go:65
 msgid "failed to unmarshall configuration"
-msgstr "无法解组配置"
+msgstr "无法反序列化配置"
 
 #: mgradm/shared/coco/coco.go:28
 msgid "Not altering the confidential computing service"
@@ -1537,7 +1511,7 @@ msgstr "无法生成 systemd 配置文件"
 #: mgradm/shared/hub/xmlrpcapi.go:36
 #, javascript-format
 msgid "No changes requested for hub. Keep %d replicas."
-msgstr "未针对 Hub 请求更改。保留 %d 个复本。"
+msgstr "未针对中心请求更改。保留 %d 个复本。"
 
 #: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:67
 #: mgradm/shared/pgsql/pgsql.go:94 mgradm/shared/tftp/tftp.go:50
@@ -1546,7 +1520,7 @@ msgstr "无法生成 systemd 服务"
 
 #: mgradm/shared/hub/xmlrpcapi.go:66
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
-msgstr "目前不支持多个 Hub XML-RPC 容器复本，将仅设置一个复本。"
+msgstr "目前不支持多个中心 XML-RPC 容器复本，将仅设置一个复本。"
 
 #: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:615
 #: mgradm/shared/saline/saline.go:142
@@ -1573,82 +1547,65 @@ msgid "cannot generate systemd configuration file"
 msgstr "无法生成 systemd 配置文件"
 
 #: mgradm/shared/podman/clients.go:26
-#, fuzzy
-#| msgid "failed to create the secret"
 msgid "failed to read the CA bundle secret"
-msgstr "无法创建机密"
+msgstr "读取 CA 捆绑包机密失败"
 
 #: mgradm/shared/podman/clients.go:31
-#, fuzzy
-#| msgid "failed to create the ingresses"
 msgid "failed to compute the CA fingerprints"
-msgstr "无法创建入口"
+msgstr "计算 CA 指纹失败"
 
 #: mgradm/shared/podman/clients.go:36
 msgid "no newly added CA found in the CA bundle; run 'mgradm ssl addca' first"
-msgstr ""
+msgstr "在 CA 捆绑包中未找到新增 CA；请先运行 'mgradm ssl addca'"
 
 #: mgradm/shared/podman/clients.go:66
 msgid "Checking whether the clients trust the new CA over Salt; this can take a moment…"
-msgstr ""
+msgstr "正在通过 Salt 检查客户端是否信任新 CA，该操作可能需要一些时间…"
 
 #: mgradm/shared/podman/clients.go:75
 msgid "failed to list the minions status; is Salt available on the server?"
-msgstr ""
+msgstr "列出受控端状态失败；服务器上的 Salt 是否可用？"
 
 #: mgradm/shared/podman/clients.go:82
-#, fuzzy, javascript-format
-#| msgid "failed to parse migration data file"
+#, javascript-format
 msgid "failed to parse the minions status: %s"
-msgstr "无法解析迁移数据文件"
+msgstr "解析受控端状态失败：%s"
 
 #: mgradm/shared/podman/clients.go:99
-#, fuzzy
-#| msgid "failed to generate postgresql restore script"
 msgid "failed to query the minions trust stores over Salt"
-msgstr "生成 postgresql 恢复脚本失败"
+msgstr "通过 Salt 查询受控端信任存储区失败"
 
 #: mgradm/shared/podman/clients.go:114
-#, fuzzy, javascript-format
-#| msgid "failed to create the ingresses"
+#, javascript-format
 msgid "failed to parse the minions response: %s"
-msgstr "无法创建入口"
+msgstr "解析受控端响应失败：%s"
 
 #: mgradm/shared/podman/podman.go:78
-#, fuzzy
-#| msgid "Reusing the existing server and database certificates"
 msgid "Restarting the services to apply the new certificates"
-msgstr "正在重复使用现有服务器和数据库证书"
+msgstr "正在重新启动服务以应用新证书"
 
 #: mgradm/shared/podman/podman.go:90
-#, fuzzy
-#| msgid "cannot wait for system start"
 msgid "cannot wait for the server container to start"
-msgstr "无法等待系统启动"
+msgstr "无法等待服务器容器完成启动"
 
 #: mgradm/shared/podman/podman.go:109
-#, fuzzy, javascript-format
-#| msgid "Stopping the server container"
+#, javascript-format
 msgid "Running %s in the server container"
-msgstr "正在停止服务器容器"
+msgstr "正在服务器容器内运行 %s"
 
 #: mgradm/shared/podman/podman.go:111
-#, fuzzy, javascript-format
-#| msgid "failed to remove %s file in the container"
+#, javascript-format
 msgid "failed to run %s in the server container"
-msgstr "无法去除容器中的 %s 文件"
+msgstr "在服务器容器内运行 %s 失败"
 
 #: mgradm/shared/podman/podman.go:128
-#, fuzzy, javascript-format
-#| msgid "failed to create folder %s"
+#, javascript-format
 msgid "failed to create %s folder"
-msgstr "无法创建文件夹 %s"
+msgstr "创建文件夹 %s 失败"
 
 #: mgradm/shared/podman/podman.go:145 mgradm/shared/podman/podman.go:161
-#, fuzzy
-#| msgid "failed to generate systemd service unit file"
 msgid "failed to generate server environment file"
-msgstr "无法生成 systemd 服务单元文件"
+msgstr "生成服务器环境文件失败"
 
 #: mgradm/shared/podman/podman.go:253
 msgid "Enabling system service"
@@ -1700,32 +1657,27 @@ msgid "cannot stop service"
 msgstr "无法停止服务"
 
 #: mgradm/shared/podman/podman.go:476
-#, fuzzy
-#| msgid "cannot downgrade from version %[1]s to %[2]s"
 msgid "Initiating PostgreSQL upgrade from version %[1]d to %[2]d"
-msgstr "无法从版本 %[1]s 降级到 %[2]s"
+msgstr "正在开始将 PostgreSQL 从版本 %[1]d 升级至 %[2]d"
 
 #: mgradm/shared/podman/podman.go:480
-#, fuzzy, javascript-format
-#| msgid "cannot inspect volume %s"
+#, javascript-format
 msgid "cannot find volume %s"
-msgstr "无法检查卷 %s"
+msgstr "找不到卷 %s"
 
 #: mgradm/shared/podman/podman.go:495
-#, fuzzy, javascript-format
-#| msgid "cannot copy %s"
+#, javascript-format
 msgid "cannot move %s"
-msgstr "无法复制 %s"
+msgstr "无法移动 %s"
 
 #: mgradm/shared/podman/podman.go:511
-#, fuzzy, javascript-format
-#| msgid "cannot delete %s"
+#, javascript-format
 msgid "cannot mkdir %s"
-msgstr "无法删除 %s"
+msgstr "无法创建目录 %s"
 
 #: mgradm/shared/podman/podman.go:514
 msgid "Data will be copied during this process. Please ensure sufficient disk space is available."
-msgstr ""
+msgstr "执行该过程期间将复制数据。请确保磁盘有充足的可用空间。"
 
 #: mgradm/shared/podman/podman.go:516
 msgid "cannot run PostgreSQL version upgrade script"
@@ -1736,14 +1688,12 @@ msgid "Upgrading without changing PostgreSQL version"
 msgstr "正在升级，PostgreSQL 版本将不更改"
 
 #: mgradm/shared/podman/podman.go:522
-#, fuzzy
-#| msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgid "trying to downgrade PostgreSQL from %[1]d to %[2]d"
-msgstr "正在尝试将 PostgreSQL 从 %[1]s 降级到 %[2]s"
+msgstr "正在尝试将 PostgreSQL 从 %[1]d 降级至 %[2]d"
 
 #: mgradm/shared/podman/podman.go:529
 msgid "Configuring split PostgreSQL container"
-msgstr ""
+msgstr "正在配置分离式 PostgreSQL 容器"
 
 #: mgradm/shared/podman/podman.go:538
 msgid "cannot configure db container"
@@ -1755,7 +1705,7 @@ msgstr "无法启动服务"
 
 #: mgradm/shared/podman/podman.go:603
 msgid "Failed to read server service definition to look for TFTP port"
-msgstr ""
+msgstr "读取服务器服务定义以查找 TFTP 端口失败"
 
 #: mgradm/shared/podman/podman.go:613
 msgid "Waiting for the server to start…"
@@ -1787,7 +1737,7 @@ msgstr "PostgreSQL 迁移失败"
 
 #: mgradm/shared/podman/podman.go:784
 msgid "Secrets %[1]s and %[2]s, already exists"
-msgstr ""
+msgstr "机密 %[1]s 和 %[2]s 已存在"
 
 #: mgradm/shared/podman/ssl.go:88
 msgid "Using provided 3rd party server certificates"
@@ -1803,58 +1753,46 @@ msgstr "无法通过提供的 SSL 参数创建机密"
 
 #: mgradm/shared/podman/ssl.go:120
 msgid "No third-party certificate provided to import"
-msgstr ""
+msgstr "未提供要导入的第三方证书"
 
 #: mgradm/shared/podman/ssl.go:137
-#, fuzzy
-#| msgid "Using provided 3rd party server certificates"
 msgid "Adding the provided 3rd party root CA"
-msgstr "正在使用提供的第三方服务器证书"
+msgstr "正在添加所提供的第三方根 CA"
 
 #: mgradm/shared/podman/ssl.go:140
-#, fuzzy, javascript-format
-#| msgid "failed to create folder %s"
+#, javascript-format
 msgid "failed to read the provided root CA %s"
-msgstr "无法创建文件夹 %s"
+msgstr "读取所提供的根 CA %s 失败"
 
 #: mgradm/shared/podman/ssl.go:147
-#, fuzzy
-#| msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgid "Cannot generate a new CA without a CA password. Please check the input parameters."
-msgstr "无 CA 口令无法生成新证书，请检查输入选项"
+msgstr "缺少 CA 口令，无法生成新 CA。请检查输入参数。"
 
 #: mgradm/shared/podman/ssl.go:149 mgradm/shared/podman/ssl.go:240
 msgid "Generating a new self-signed root CA"
-msgstr ""
+msgstr "正在生成新的自我签名根 CA"
 
 #: mgradm/shared/podman/ssl.go:161 mgradm/shared/podman/ssl.go:251
-#, fuzzy
-#| msgid "Failed to generate server SSL certificate. Please check the input parameters."
 msgid "Failed to generate the new SSL CA. Please check the input parameters."
-msgstr "服务器 SSL 证书生成失败，请检查输入参数。"
+msgstr "生成新 SSL CA 失败。请检查输入参数。"
 
 #: mgradm/shared/podman/ssl.go:174
-#, fuzzy
-#| msgid "Using provided 3rd party database certificates"
 msgid "Adding the provided 3rd party database root CA"
-msgstr "正在使用提供的第三方数据库证书"
+msgstr "正在添加所提供的第三方数据库根 CA"
 
 #: mgradm/shared/podman/ssl.go:177
-#, fuzzy, javascript-format
-#| msgid "failed to create the database deployment"
+#, javascript-format
 msgid "failed to read the provided database root CA %s"
-msgstr "无法创建数据库部署"
+msgstr "读取所提供的数据库根 CA %s 失败"
 
 #: mgradm/shared/podman/ssl.go:205
 #, javascript-format
 msgid "The new CA is already present in the %s secret"
-msgstr ""
+msgstr "%s 机密中已存在此新 CA"
 
 #: mgradm/shared/podman/ssl.go:231
-#, fuzzy
-#| msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgid "Cannot generate a new CA without a CA password. Please check input options"
-msgstr "无 CA 口令无法生成新证书，请检查输入选项"
+msgstr "缺少 CA 口令，无法生成新 CA。请检查输入选项"
 
 #: mgradm/shared/podman/ssl.go:289
 msgid "Reusing the existing server and database certificates"
