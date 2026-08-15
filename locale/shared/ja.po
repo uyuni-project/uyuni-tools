@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-30 12:49+0100\n"
-"PO-Revision-Date: 2026-04-21 15:04+0000\n"
+"PO-Revision-Date: 2026-08-15 13:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -201,22 +201,16 @@ msgid "failed to retrieve namespace "
 msgstr "ネームスペースを取得できませんでした "
 
 #: shared/connection.go:284
-#, fuzzy
-#| msgid "failed to create temporary directory"
 msgid "failed to create temporary file"
-msgstr "一時ディレクトリの作成に失敗しました"
+msgstr "一時ファイルの作成に失敗しました"
 
 #: shared/connection.go:289
-#, fuzzy
-#| msgid "failed to write %s secret to file"
 msgid "failed to write script to temporary file"
-msgstr "%s シークレットのファイルへの書き込みに失敗しました"
+msgstr "一時ファイルへのスクリプトの書き込みに失敗しました"
 
 #: shared/connection.go:297
-#, fuzzy
-#| msgid "failed to run %s container"
 msgid "failed to copy script to container"
-msgstr "%s コンテナの実行に失敗しました"
+msgstr "スクリプトをコンテナにコピーできませんでした"
 
 #: shared/connection.go:313
 msgid "Healthcheck not executed"
@@ -224,17 +218,15 @@ msgstr "ヘルスチェックは実行されませんでした"
 
 #: shared/connection.go:335
 msgid "not healthy or running"
-msgstr ""
+msgstr "正常ではない、または稼働していない"
 
 #: shared/connection.go:369
 msgid "container didn't start within 10s."
 msgstr "コンテナが10秒以内に起動しませんでした。"
 
 #: shared/connection.go:384
-#, fuzzy
-#| msgid "container didn't start within 60s. Check for the service status"
 msgid "container didn't start within 15s or failed. Check the service status"
-msgstr "コンテナが60秒以内に起動しませんでした。サービスステータスを確認します"
+msgstr "コンテナが15秒以内に起動しませんでした。サービスステータスを確認します"
 
 #: shared/connection.go:455 shared/connection.go:514
 #, javascript-format
@@ -372,12 +364,12 @@ msgstr "ホストデータを検査できません"
 #: shared/podman/images.go:36
 #, javascript-format
 msgid "Cannot prepare image %s because registry is missing"
-msgstr ""
+msgstr "レジストリが見つからないため、イメージ %s を準備できません"
 
 #: shared/podman/images.go:39
 #, javascript-format
 msgid "Cannot prepare image %s because tag is missing"
-msgstr ""
+msgstr "タグが見つからないため、イメージ %s を準備できません"
 
 #: shared/podman/images.go:43
 #, javascript-format
@@ -533,10 +525,9 @@ msgid "failed to set authentication for %s"
 msgstr "%s の認証を設定できませんでした"
 
 #: shared/podman/login.go:72
-#, fuzzy, javascript-format
-#| msgid "failed to close the temporary auth file"
+#, javascript-format
 msgid "failed to close the temporary auth file. Cannot set authentication for %s"
-msgstr "一時認証ファイルを閉じることができませんでした"
+msgstr "一時認証ファイルを閉じることができませんでした。%s の認証を設定できません"
 
 #: shared/podman/network.go:32
 #, javascript-format
@@ -587,7 +578,7 @@ msgstr "ネットワークが削除されました"
 
 #: shared/podman/secret.go:68
 msgid "Secrets %[1]s and %[2]s, already exists"
-msgstr ""
+msgstr "シークレット %[1]s と %[2]s はすでに存在します"
 
 #: shared/podman/secret.go:86 shared/podman/secret.go:98
 #: shared/podman/secret.go:102
@@ -611,10 +602,9 @@ msgid "Failed to delete %s secret"
 msgstr "%s シークレットの削除に失敗しました"
 
 #: shared/podman/secret.go:173
-#, fuzzy, javascript-format
-#| msgid "failed to connect to the server"
+#, javascript-format
 msgid "failed to get the content of the %s secret"
-msgstr "サーバへの接続に失敗しました"
+msgstr "%s シークレットのコンテンツの取得に失敗しました"
 
 #: shared/podman/support.go:26
 msgid "No logs file on host to add to the archive"
@@ -711,10 +701,8 @@ msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "%[2]s サービスから %[1]s プロパティを取得できませんでした"
 
 #: shared/podman/systemd.go:199
-#, fuzzy
-#| msgid "Failed to get the %[1]s property from %[2]s service"
 msgid "Failed to get the definition from %[2]s service"
-msgstr "%[2]s サービスから %[1]s プロパティを取得できませんでした"
+msgstr "%[2]s サービスから定義を取得できませんでした"
 
 #: shared/podman/systemd.go:270
 #, javascript-format
@@ -783,10 +771,8 @@ msgid "cannot disable service"
 msgstr "サービスを無効にできませんでした"
 
 #: shared/podman/systemd.go:453
-#, fuzzy
-#| msgid "failed to get the %s deployment revision"
 msgid "failed to show %[1]s property of %[2] systemd service"
-msgstr "%s 配備リビジョンを取得できませんでした"
+msgstr "%[2] systemdサービスの %[1]s プロパティを表示できませんでした"
 
 #: shared/podman/systemd.go:468
 #, javascript-format
@@ -926,54 +912,40 @@ msgid "SSL Certificate Flags"
 msgstr "SSL証明書フラグ"
 
 #: shared/ssl/flags.go:38
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "Intermediate CA certificate path"
-msgstr "SSL証明書の都道府県"
+msgstr "中間CA証明書のパス"
 
 #: shared/ssl/flags.go:39 shared/ssl/flags.go:53
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "Root CA certificate path"
-msgstr "SSL証明書の都道府県"
+msgstr "ルートCA証明書のパス"
 
 #: shared/ssl/flags.go:40
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "Server certificate path"
-msgstr "SSL証明書の都道府県"
+msgstr "サーバ証明書のパス"
 
 #: shared/ssl/flags.go:41
-#, fuzzy
-#| msgid "Database"
 msgid "Server key path"
-msgstr "データベース"
+msgstr "サーバキーのパス"
 
 #: shared/ssl/flags.go:43 shared/ssl/flags.go:57 shared/ssl/flags.go:71
-#, fuzzy
-#| msgid "SSL Certificate Flags"
 msgid "3rd Party SSL Certificate Flags"
-msgstr "SSL証明書フラグ"
+msgstr "サードパーティSSL証明書フラグ"
 
 #: shared/ssl/flags.go:55 shared/ssl/flags.go:67
 msgid "Root CA certificate path for the database if different from the server one"
-msgstr ""
+msgstr "サーバのものとは異なる場合の、データベースのルートCA証明書のパス"
 
 #: shared/ssl/flags.go:65
 msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr ""
+msgstr "サーバのものとは異なる場合、データベースの中間CA証明書のパス"
 
 #: shared/ssl/flags.go:68
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "Database certificate path"
-msgstr "SSL証明書の都道府県"
+msgstr "データベース証明書のパス"
 
 #: shared/ssl/flags.go:69
-#, fuzzy
-#| msgid "Database"
 msgid "Database key path"
-msgstr "データベース"
+msgstr "データベースのキーパス"
 
 #: shared/ssl/ssl.go:71
 msgid "Failed to find a non-CA certificate"
@@ -989,12 +961,13 @@ msgid "Failed to read certificate file %s"
 msgstr "証明書ファイル %s の読み込みに失敗しました"
 
 #: shared/ssl/ssl.go:157
-#, fuzzy, javascript-format
-#| msgid "Failed to extract data from certificate"
+#, javascript-format
 msgid ""
 "Failed to extract data from certificate:\n"
 "%s"
-msgstr "証明書からのデータ抽出に失敗しました"
+msgstr ""
+"証明書からのデータ抽出に失敗しました:\n"
+"%s"
 
 #: shared/ssl/ssl.go:178
 #, javascript-format
@@ -1009,19 +982,19 @@ msgstr "終了日の解析に失敗しました: %s\n"
 #: shared/ssl/ssl.go:216
 #, javascript-format
 msgid "Basic constraints for CA should be marked as `%s`, could cause issues otherwise!"
-msgstr ""
+msgstr "CAの基本制約は「%s 」とマークする必要があります。そうしないと問題を引き起こす可能性があります。"
 
 #: shared/ssl/ssl.go:238
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "no CA certificate found in the files"
-msgstr "SSL証明書の都道府県"
+msgstr "ファイル内にCA証明書が見つかりませんでした"
 
 #: shared/ssl/ssl.go:247 shared/ssl/ssl.go:260
 msgid ""
 "please check the CA chain, including intermediate CA certificates provided.\n"
 "The chain is missing the CA with subject %[1]s (hash: %[2]s)"
 msgstr ""
+"提供された中間CA証明書を含む、CAチェーンを確認してください。\n"
+"このチェーンには、サブジェクトが %[1]s (ハッシュ: %[2]s)のCAが不足しています"
 
 #: shared/ssl/ssl.go:290
 msgid "server certificate is required"
@@ -1069,10 +1042,9 @@ msgid "Invalid SSL key, it is probably encrypted"
 msgstr "SSLキーが無効です。暗号化されている可能性があります"
 
 #: shared/ssl/ssl.go:383
-#, fuzzy, javascript-format
-#| msgid "failed to write in %s"
+#, javascript-format
 msgid "failed to validate hostname %s"
-msgstr "%s への書き込みに失敗しました"
+msgstr "ホスト名 %s の検証に失敗しました"
 
 #: shared/utils/cmd.go:119
 msgid "cannot decode into Registry"
@@ -1144,22 +1116,21 @@ msgstr "--loglevelパラメータの非表示に失敗しました"
 
 #: shared/utils/cmd.go:202
 msgid "TFTPD"
-msgstr ""
+msgstr "TFTPD"
 
 #: shared/utils/cmd.go:204
 msgid "Start the TFTP server container"
-msgstr ""
+msgstr "TFTPサーバコンテナを起動する"
 
 #: shared/utils/cmd.go:221
-#, fuzzy, javascript-format
-#| msgid "failed to run %s container"
+#, javascript-format
 msgid "Image for %s container"
-msgstr "%s コンテナの実行に失敗しました"
+msgstr "%s コンテナのイメージ"
 
 #: shared/utils/cmd.go:223
 #, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
-msgstr ""
+msgstr "%s コンテナのタグ。設定されている場合はグローバル値を上書きする"
 
 #: shared/utils/config.go:40
 #, javascript-format
@@ -1387,15 +1358,12 @@ msgid "failed to unmarshal the inspected data"
 msgstr "検査データのアンマーシャルに失敗しました"
 
 #: shared/utils/logUtils.go:69
-#, fuzzy
-#| msgid "failed to get the %s pod logs"
 msgid "failed to decode message to log"
-msgstr "%s ポッドログの取得に失敗しました"
+msgstr "ログへのメッセージのデコードに失敗しました"
 
 #: shared/utils/logUtils.go:77
-#, fuzzy
 msgid "failed to encode log event"
-msgstr "%s サービスを無効にできませんでした"
+msgstr "ログイベントのエンコードに失敗しました"
 
 #: shared/utils/logUtils.go:108
 msgid "Couldn't open %[1]s file for writing, writing log to %[2]s"
