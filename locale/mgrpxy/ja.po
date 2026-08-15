@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-13 17:19+0100\n"
-"PO-Revision-Date: 2026-03-07 12:04+0000\n"
+"PO-Revision-Date: 2026-08-15 13:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -410,34 +410,29 @@ msgid "System id not found in returned event"
 msgstr "返されたイベントにシステムIDが見つかりません"
 
 #: mgrpxy/shared/podman/podman.go:541
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to read %s"
-msgstr "ファイル %s への書き込みに失敗しました"
+msgstr "%s の読み込みに失敗しました"
 
 #: mgrpxy/shared/podman/podman.go:545
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to unmarshal %s"
-msgstr "ファイル %s への書き込みに失敗しました"
+msgstr "%s のアンマーシャルに失敗しました"
 
 #: mgrpxy/shared/podman/podman.go:553
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to marshal %s"
-msgstr "ファイル %s への書き込みに失敗しました"
+msgstr "ファイル %s のマーシャルに失敗しました"
 
 #: mgrpxy/shared/podman/podman.go:556
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to write %s"
-msgstr "ファイル %s への書き込みに失敗しました"
+msgstr "%s の書き込みに失敗しました"
 
 #: mgrpxy/shared/podman/podman.go:564
-#, fuzzy, javascript-format
-#| msgid "failed to re-create the cache directories"
+#, javascript-format
 msgid "failed to create %s secret"
-msgstr "キャッシュディレクトリを再作成できませんでした"
+msgstr "%s シークレットの作成に失敗しました"
 
 #: mgrpxy/shared/utils/cmd.go:20
 #, javascript-format
