@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-30 12:46+0100\n"
-"PO-Revision-Date: 2026-08-15 10:13+0000\n"
+"PO-Revision-Date: 2026-08-15 13:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -1020,7 +1020,7 @@ msgstr "サーバの起動を待機しています。これにはサービスの
 
 #: mgradm/cmd/install/utils.go:96 mgradm/shared/podman/podman.go:573
 msgid "Use `journalctl -f -u uyuni-server` for tracking progress"
-msgstr ""
+msgstr "進捗状況を追跡するには、`journalctl -f -u uyuni-server`を使用します"
 
 #: mgradm/cmd/install/utils.go:100 mgradm/shared/podman/podman.go:580
 msgid "cannot wait for system start"
@@ -1140,11 +1140,11 @@ msgstr "サーバ管理ユーティリティ"
 
 #: mgradm/cmd/ssl/addca/addca.go:26
 msgid "Add a new root CA (phase 1 of an SSL CA rotation)"
-msgstr ""
+msgstr "新しいルートCAを追加する(SSL CAローテーションのフェーズ1）"
 
 #: mgradm/cmd/ssl/addca/addca.go:27
 msgid "Add a new root CA to the trusted CA bundle without switching the server certificate."
-msgstr ""
+msgstr "サーバ証明書を切り替えずに、新しいルートCAを信頼されたCAバンドルに追加します。"
 
 #: mgradm/cmd/ssl/addca/podman.go:28
 msgid "a password for the new CA key is required"
@@ -1152,16 +1152,16 @@ msgstr "新しいCAキーのパスワードが必要です"
 
 #: mgradm/cmd/ssl/addca/podman.go:44
 msgid "Could not read the new CA fingerprint"
-msgstr ""
+msgstr "新しいCAフィンガープリントを読み込めませんでした"
 
 #: mgradm/cmd/ssl/addca/podman.go:46
 #, javascript-format
 msgid "The new root CA (SHA-256 fingerprint %s) has been added to the trusted bundle."
-msgstr ""
+msgstr "新しいルートCA (SHA-256フィンガープリント %s)が、信頼されたバンドルに追加されました。"
 
 #: mgradm/cmd/ssl/rotate/podman.go:54
 msgid "--check-only is ignored with --emergency! Proceeding with the emergency rotation"
-msgstr ""
+msgstr "--emergency が指定されたため、--check-only は無視されます。緊急ローテーションに進みます"
 
 #: mgradm/cmd/ssl/rotate/podman.go:66
 msgid "the server certificate, key and root CA need to be all provided"
@@ -1185,43 +1185,43 @@ msgstr "新しいCAで署名された新しいサーバ証明書を生成する"
 
 #: mgradm/cmd/ssl/rotate/podman.go:89
 msgid "Skipping the client CA trust check as --force was set"
-msgstr ""
+msgstr "--force が指定されたため、クライアントCAの信頼チェックを飛ばします"
 
 #: mgradm/cmd/ssl/rotate/podman.go:95
 msgid "failed to verify client readiness, rerun with --force to rotate without checking"
-msgstr ""
+msgstr "クライアントの準備状況の確認に失敗しました。チェックを行わずにローテーションするには--forceを指定して再実行します"
 
 #: mgradm/cmd/ssl/rotate/podman.go:101
 msgid "some clients do not trust the new CA yet! Distribute it and retry, or use --force to skip this check"
-msgstr ""
+msgstr "一部のクライアントが新しいCAをまだ信頼していません。CAを配布して再試行するか、--forceを使用してこのチェックをスキップしてください"
 
 #: mgradm/cmd/ssl/rotate/podman.go:108
 #, javascript-format
 msgid "Clients trusting the new CA: %d"
-msgstr ""
+msgstr "新しいCAを信頼しているクライアント: %d"
 
 #: mgradm/cmd/ssl/rotate/podman.go:110
 msgid "Clients not yet trusting the new CA (%[1]d): %[2]s"
-msgstr ""
+msgstr "新しいCAをまだ信頼していないクライアント (%[1]d): %[2]s"
 
 #: mgradm/cmd/ssl/rotate/podman.go:114
 msgid "Unreachable minions (%[1]d): %[2]s"
-msgstr ""
+msgstr "到達不能なminion (%[1]d): %[2]s"
 
 #: mgradm/cmd/ssl/rotate/podman.go:117
 msgid "Only Salt-managed clients are checked! Non-managed systems and proxy configurations are not verified and must be handled manually."
-msgstr ""
+msgstr "Saltで管理されているクライアントのみがチェックされます。管理対象外のシステムやプロキシ設定は検証されないため、手動で処理する必要があります。"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:26
 msgid "Switch to a server certificate signed by the new CA, then drop the old CA"
-msgstr ""
+msgstr "新しいCAによって署名されたサーバ証明書に切り替えてから、古いCAを削除する"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:27
 msgid ""
 "Second phase of an SSL CA rotation, to run after 'mgradm ssl addca' has added the new CA and the\n"
 "clients trust it: issue a new server (and database) certificate signed by the new CA, switch the\n"
 "services to it, and drop the old CA from the trusted bundle so only the new CA is left."
-msgstr ""
+msgstr "SSL CAローテーションの第2フェーズで、「mgradm ssl addca」で新しいCAを追加してクライアントがそれを信頼した後に実行する処理として、新しいCAで署名された新しいサーバ(およびデータベース)証明書の発行、サービスのその新しい証明書への切り替え、および信頼されたバンドルからの古いCAの削除(新しいCAのみが残る)を行います。"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:40
 msgid "Password for the CA key"
@@ -1229,15 +1229,15 @@ msgstr "CAキーのパスワード"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:42
 msgid "Rotate even if some clients do not trust the new CA yet"
-msgstr ""
+msgstr "一部のクライアントがまだ新しCAを信頼していない場合でもローテーションする"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:43
 msgid "Only report client readiness, without rotating"
-msgstr ""
+msgstr "ローテーションせずに、クライアントの準備状況のみを報告する"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:45
 msgid "Generate a new CA and drop the old one immediately without an overlap period (e.g. for compromised CAs)"
-msgstr ""
+msgstr "新しいCAを生成し、古いCAを(CAの侵害などの理由により)重複期間を設けずに直ちに破棄する"
 
 #: mgradm/cmd/ssl/ssl.go:20
 msgid "Rotate the server SSL CA and certificates"
@@ -1553,15 +1553,15 @@ msgstr "CAフィンガープリントの計算に失敗しました"
 
 #: mgradm/shared/podman/clients.go:36
 msgid "no newly added CA found in the CA bundle; run 'mgradm ssl addca' first"
-msgstr ""
+msgstr "CAバンドルに新しく追加されたCAが見つかりませんでした。最初に「mgradm ssl addca」を実行してください"
 
 #: mgradm/shared/podman/clients.go:66
 msgid "Checking whether the clients trust the new CA over Salt; this can take a moment…"
-msgstr ""
+msgstr "クライアントがSaltよりも新しいCAを信頼しているか確認しています。これには少し時間がかかる場合があります…"
 
 #: mgradm/shared/podman/clients.go:75
 msgid "failed to list the minions status; is Salt available on the server?"
-msgstr ""
+msgstr "minionの状態を一覧表示できませんでした。サーバでSaltは利用可能ですか?"
 
 #: mgradm/shared/podman/clients.go:82
 #, javascript-format
@@ -1674,7 +1674,7 @@ msgstr "%s のディレクトリを作成できません"
 
 #: mgradm/shared/podman/podman.go:514
 msgid "Data will be copied during this process. Please ensure sufficient disk space is available."
-msgstr ""
+msgstr "この処理の実行中にデータがコピーされます。十分な空きディスク容量があることを確認してください。"
 
 #: mgradm/shared/podman/podman.go:516
 msgid "cannot run PostgreSQL version upgrade script"
@@ -1690,7 +1690,7 @@ msgstr "PostgreSQLを %[1]d から %[2]d にダウングレードしようとし
 
 #: mgradm/shared/podman/podman.go:529
 msgid "Configuring split PostgreSQL container"
-msgstr ""
+msgstr "分割されたPostgreSQLコンテナの設定"
 
 #: mgradm/shared/podman/podman.go:538
 msgid "cannot configure db container"
@@ -1702,7 +1702,7 @@ msgstr "サービスを開始できません"
 
 #: mgradm/shared/podman/podman.go:603
 msgid "Failed to read server service definition to look for TFTP port"
-msgstr ""
+msgstr "TFTPポートを検索するためのサーバサービス定義の読み込みに失敗しました"
 
 #: mgradm/shared/podman/podman.go:613
 msgid "Waiting for the server to start…"
@@ -1734,7 +1734,7 @@ msgstr "PostgreSQL移行の失敗"
 
 #: mgradm/shared/podman/podman.go:784
 msgid "Secrets %[1]s and %[2]s, already exists"
-msgstr ""
+msgstr "シークレット %[1]s と %[2]s はすでに存在します"
 
 #: mgradm/shared/podman/ssl.go:88
 msgid "Using provided 3rd party server certificates"
@@ -1750,7 +1750,7 @@ msgstr "指定されたSSL引数からシークレットを作成できません
 
 #: mgradm/shared/podman/ssl.go:120
 msgid "No third-party certificate provided to import"
-msgstr ""
+msgstr "インポートするためのサードパーティ証明書が提供されていません"
 
 #: mgradm/shared/podman/ssl.go:137
 msgid "Adding the provided 3rd party root CA"
@@ -1767,7 +1767,7 @@ msgstr "CAパスワードがないと新しいCAを生成できません。入�
 
 #: mgradm/shared/podman/ssl.go:149 mgradm/shared/podman/ssl.go:240
 msgid "Generating a new self-signed root CA"
-msgstr ""
+msgstr "新しい自己署名ルートCAの生成"
 
 #: mgradm/shared/podman/ssl.go:161 mgradm/shared/podman/ssl.go:251
 msgid "Failed to generate the new SSL CA. Please check the input parameters."
@@ -1785,7 +1785,7 @@ msgstr "提供されたデータベースのルートCA %s の読み込みに失
 #: mgradm/shared/podman/ssl.go:205
 #, javascript-format
 msgid "The new CA is already present in the %s secret"
-msgstr ""
+msgstr "新しいCAはすでに %s シークレットに存在します"
 
 #: mgradm/shared/podman/ssl.go:231
 msgid "Cannot generate a new CA without a CA password. Please check input options"
