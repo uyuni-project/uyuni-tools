@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-30 12:49+0100\n"
-"PO-Revision-Date: 2026-08-15 13:13+0000\n"
+"PO-Revision-Date: 2026-08-16 11:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
 "Language: ja\n"
@@ -226,7 +226,7 @@ msgstr "コンテナが10秒以内に起動しませんでした。"
 
 #: shared/connection.go:384
 msgid "container didn't start within 15s or failed. Check the service status"
-msgstr "コンテナが15秒以内に起動しませんでした。サービスステータスを確認します"
+msgstr "コンテナが15秒以内に起動しなかったか、起動に失敗しました。サービスステータスを確認してください"
 
 #: shared/connection.go:455 shared/connection.go:514
 #, javascript-format
