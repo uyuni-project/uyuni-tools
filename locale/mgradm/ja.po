@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-30 12:46+0100\n"
-"PO-Revision-Date: 2026-08-15 13:13+0000\n"
+"PO-Revision-Date: 2026-08-16 11:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -988,7 +988,7 @@ msgid ""
 msgstr ""
 "podmanに新しいサーバをインストールする\n"
 "\n"
-"コマンドはpodman がローカルにインストールされていることを前提としています。\n"
+"コマンドはpodmanがローカルにインストールされていることを前提としています。\n"
 "\n"
 "メモ: リモートのpodmanへのインストールはまだサポートされていません。\n"
 
@@ -1020,7 +1020,7 @@ msgstr "サーバの起動を待機しています。これにはサービスの
 
 #: mgradm/cmd/install/utils.go:96 mgradm/shared/podman/podman.go:573
 msgid "Use `journalctl -f -u uyuni-server` for tracking progress"
-msgstr "進捗状況を追跡するには、`journalctl -f -u uyuni-server`を使用します"
+msgstr "進捗状況を追跡するには、「journalctl -f -u uyuni-server」を使用します"
 
 #: mgradm/cmd/install/utils.go:100 mgradm/shared/podman/podman.go:580
 msgid "cannot wait for system start"
@@ -1140,7 +1140,7 @@ msgstr "サーバ管理ユーティリティ"
 
 #: mgradm/cmd/ssl/addca/addca.go:26
 msgid "Add a new root CA (phase 1 of an SSL CA rotation)"
-msgstr "新しいルートCAを追加する(SSL CAローテーションのフェーズ1）"
+msgstr "新しいルートCAを追加する(SSL CAローテーションの第1フェーズ)"
 
 #: mgradm/cmd/ssl/addca/addca.go:27
 msgid "Add a new root CA to the trusted CA bundle without switching the server certificate."
@@ -1161,7 +1161,7 @@ msgstr "新しいルートCA (SHA-256フィンガープリント %s)が、信頼
 
 #: mgradm/cmd/ssl/rotate/podman.go:54
 msgid "--check-only is ignored with --emergency! Proceeding with the emergency rotation"
-msgstr "--emergency が指定されたため、--check-only は無視されます。緊急ローテーションに進みます"
+msgstr "--emergencyが指定されたため、--check-only は無視されます。緊急ローテーションに進みます"
 
 #: mgradm/cmd/ssl/rotate/podman.go:66
 msgid "the server certificate, key and root CA need to be all provided"
@@ -1185,7 +1185,7 @@ msgstr "新しいCAで署名された新しいサーバ証明書を生成する"
 
 #: mgradm/cmd/ssl/rotate/podman.go:89
 msgid "Skipping the client CA trust check as --force was set"
-msgstr "--force が指定されたため、クライアントCAの信頼チェックを飛ばします"
+msgstr "--forceが設定されたため、クライアントCAの信頼チェックをスキップします"
 
 #: mgradm/cmd/ssl/rotate/podman.go:95
 msgid "failed to verify client readiness, rerun with --force to rotate without checking"
@@ -1566,7 +1566,7 @@ msgstr "minionの状態を一覧表示できませんでした。サーバでSal
 #: mgradm/shared/podman/clients.go:82
 #, javascript-format
 msgid "failed to parse the minions status: %s"
-msgstr "minionステータスの解析に失敗しました: %s"
+msgstr "minionの状態の解析に失敗しました: %s"
 
 #: mgradm/shared/podman/clients.go:99
 msgid "failed to query the minions trust stores over Salt"
@@ -1763,7 +1763,7 @@ msgstr "提供されたルートCA %s の読み込みに失敗しました"
 
 #: mgradm/shared/podman/ssl.go:147
 msgid "Cannot generate a new CA without a CA password. Please check the input parameters."
-msgstr "CAパスワードがないと新しいCAを生成できません。入力パラメータを確認してください"
+msgstr "CAパスワードがないと新しいCAを生成できません。入力パラメータを確認してください。"
 
 #: mgradm/shared/podman/ssl.go:149 mgradm/shared/podman/ssl.go:240
 msgid "Generating a new self-signed root CA"
