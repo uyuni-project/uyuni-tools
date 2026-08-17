@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-30 12:46+0100\n"
-"PO-Revision-Date: 2026-08-16 11:13+0000\n"
+"PO-Revision-Date: 2026-08-17 04:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -1593,7 +1593,7 @@ msgstr "サーバコンテナで %s を実行中"
 #: mgradm/shared/podman/podman.go:111
 #, javascript-format
 msgid "failed to run %s in the server container"
-msgstr "サーバコンテナ内で %s の実行に失敗しました"
+msgstr "サーバコンテナで %s の実行に失敗しました"
 
 #: mgradm/shared/podman/podman.go:128
 #, javascript-format
