@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-30 12:49+0100\n"
-"PO-Revision-Date: 2026-08-14 03:13+0000\n"
+"PO-Revision-Date: 2026-08-18 08:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
 "Language: ko\n"
@@ -201,20 +201,14 @@ msgid "failed to retrieve namespace "
 msgstr "네임스페이스 가져오기 실패 "
 
 #: shared/connection.go:284
-#, fuzzy
-#| msgid "failed to create temporary directory"
 msgid "failed to create temporary file"
-msgstr "임시 디렉토리를 만들지 못함"
+msgstr "임시 파일을 만들지 못함"
 
 #: shared/connection.go:289
-#, fuzzy
-#| msgid "failed to write %s secret to file"
 msgid "failed to write script to temporary file"
 msgstr "스크립트를 임시 파일에 쓰기 실패"
 
 #: shared/connection.go:297
-#, fuzzy
-#| msgid "failed to run %s container"
 msgid "failed to copy script to container"
 msgstr "스크립트를 컨테이너로 복사 실패"
 
@@ -223,7 +217,6 @@ msgid "Healthcheck not executed"
 msgstr "상태 확인이 실행되지 않음"
 
 #: shared/connection.go:335
-#, fuzzy
 msgid "not healthy or running"
 msgstr "상태가 양호하지 않거나 실행 중이 아님"
 
@@ -232,8 +225,6 @@ msgid "container didn't start within 10s."
 msgstr "컨테이너가 10초 이내에 시작되지 않았습니다."
 
 #: shared/connection.go:384
-#, fuzzy
-#| msgid "container didn't start within 60s. Check for the service status"
 msgid "container didn't start within 15s or failed. Check the service status"
 msgstr "컨테이너가 15초 이내에 시작되지 않았거나 시작에 실패했습니다. 서비스 상태를 확인하십시오."
 
@@ -371,12 +362,12 @@ msgid "cannot inspect host data"
 msgstr "호스트 데이터를 검사할 수 없음"
 
 #: shared/podman/images.go:36
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Cannot prepare image %s because registry is missing"
 msgstr "레지스트리가 누락되어 %s 이미지를 준비할 수 없습니다."
 
 #: shared/podman/images.go:39
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Cannot prepare image %s because tag is missing"
 msgstr "태그가 누락되어 %s 이미지를 준비할 수 없습니다."
 
@@ -534,8 +525,7 @@ msgid "failed to set authentication for %s"
 msgstr "%s에 대한 인증을 설정하지 못함"
 
 #: shared/podman/login.go:72
-#, fuzzy, javascript-format
-#| msgid "failed to close the temporary auth file"
+#, javascript-format
 msgid "failed to close the temporary auth file. Cannot set authentication for %s"
 msgstr "임시 인증 파일을 닫지 못했습니다. %s에 대한 인증을 설정할 수 없습니다."
 
@@ -612,8 +602,7 @@ msgid "Failed to delete %s secret"
 msgstr "%s 시크릿 삭제 실패"
 
 #: shared/podman/secret.go:173
-#, fuzzy, javascript-format
-#| msgid "failed to connect to the server"
+#, javascript-format
 msgid "failed to get the content of the %s secret"
 msgstr "%s 시크릿의 컨텐트를 가져오지 못했습니다."
 
@@ -712,8 +701,6 @@ msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "%[2]s 서비스에서 %[1]s 등록정보를 가져오지 못함"
 
 #: shared/podman/systemd.go:199
-#, fuzzy
-#| msgid "Failed to get the %[1]s property from %[2]s service"
 msgid "Failed to get the definition from %[2]s service"
 msgstr "%[2]s 서비스에서 정의를 가져오지 못했습니다."
 
@@ -784,13 +771,11 @@ msgid "cannot disable service"
 msgstr "서비스 비활성화 실패"
 
 #: shared/podman/systemd.go:453
-#, fuzzy
-#| msgid "failed to get the %s deployment revision"
 msgid "failed to show %[1]s property of %[2] systemd service"
 msgstr "%[2] systemd 서비스의 %[1]s 속성을 표시하지 못했습니다."
 
 #: shared/podman/systemd.go:468
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "failed to create %s folder"
 msgstr "%s 폴더를 생성하지 못함"
 
@@ -927,54 +912,38 @@ msgid "SSL Certificate Flags"
 msgstr "SSL 인증서 플래그"
 
 #: shared/ssl/flags.go:38
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "Intermediate CA certificate path"
 msgstr "임시 CA 인증서 경로"
 
 #: shared/ssl/flags.go:39 shared/ssl/flags.go:53
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "Root CA certificate path"
 msgstr "루트 CA 인증서 경로"
 
 #: shared/ssl/flags.go:40
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "Server certificate path"
 msgstr "서버 인증서 경로"
 
 #: shared/ssl/flags.go:41
-#, fuzzy
-#| msgid "Database"
 msgid "Server key path"
 msgstr "서버 키 경로"
 
 #: shared/ssl/flags.go:43 shared/ssl/flags.go:57 shared/ssl/flags.go:71
-#, fuzzy
-#| msgid "SSL Certificate Flags"
 msgid "3rd Party SSL Certificate Flags"
 msgstr "타사 SSL 인증서 플래그"
 
 #: shared/ssl/flags.go:55 shared/ssl/flags.go:67
-#, fuzzy
 msgid "Root CA certificate path for the database if different from the server one"
 msgstr "서버의 루트 CA 인증서 경로와 다른 경우, 데이터베이스의 루트 CA 인증서 경로"
 
 #: shared/ssl/flags.go:65
-#, fuzzy
 msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr "서버의 CA 인증서 경로와 다른 경우, 데이터베이스의 임시 CA 인증서 경로"
+msgstr "서버의 CA 인증서 경로와 다른 경우, 데이터베이스의 중간 CA 인증서 경로"
 
 #: shared/ssl/flags.go:68
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "Database certificate path"
 msgstr "데이터베이스 인증서 경로"
 
 #: shared/ssl/flags.go:69
-#, fuzzy
-#| msgid "Database"
 msgid "Database key path"
 msgstr "데이터베이스 키 경로"
 
@@ -992,8 +961,7 @@ msgid "Failed to read certificate file %s"
 msgstr "인증서 파일 %s을(를) 읽지 못했습니다."
 
 #: shared/ssl/ssl.go:157
-#, fuzzy, javascript-format
-#| msgid "Failed to extract data from certificate"
+#, javascript-format
 msgid ""
 "Failed to extract data from certificate:\n"
 "%s"
@@ -1012,24 +980,20 @@ msgid "Failed to parse end date: %s\n"
 msgstr "종료 날짜를 구문 분석하지 못함: %s\n"
 
 #: shared/ssl/ssl.go:216
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Basic constraints for CA should be marked as `%s`, could cause issues otherwise!"
 msgstr "CA에 대한 기본 제약 조건은 `%s`(으)로 표시해야 하며, 그렇지 않으면 문제가 발생할 수 있습니다!"
 
 #: shared/ssl/ssl.go:238
-#, fuzzy
-#| msgid "SSL certificate state"
 msgid "no CA certificate found in the files"
 msgstr "파일에 CA 인증서 없음"
 
 #: shared/ssl/ssl.go:247 shared/ssl/ssl.go:260
-#, fuzzy
 msgid ""
 "please check the CA chain, including intermediate CA certificates provided.\n"
 "The chain is missing the CA with subject %[1]s (hash: %[2]s)"
 msgstr ""
 "제공된 중간 CA 인증서를 포함하여 CA 체인을 확인하십시오.\n"
-"\n"
 "체인에서 주체가 %[1]s(해시: %[2]s)인 CA가 누락되었습니다."
 
 #: shared/ssl/ssl.go:290
@@ -1078,8 +1042,7 @@ msgid "Invalid SSL key, it is probably encrypted"
 msgstr "유효하지 않은 SSL 키, 암호화되었을 수 있습니다."
 
 #: shared/ssl/ssl.go:383
-#, fuzzy, javascript-format
-#| msgid "failed to write in %s"
+#, javascript-format
 msgid "failed to validate hostname %s"
 msgstr "호스트 이름 %s 확인 실패"
 
@@ -1152,23 +1115,20 @@ msgid "Failed to hide --loglevel parameter"
 msgstr "--loglevel 매개변수를 숨기지 못함"
 
 #: shared/utils/cmd.go:202
-#, fuzzy
 msgid "TFTPD"
 msgstr "TFTPD"
 
 #: shared/utils/cmd.go:204
-#, fuzzy
 msgid "Start the TFTP server container"
 msgstr "TFTP 서버 컨테이너 시작"
 
 #: shared/utils/cmd.go:221
-#, fuzzy, javascript-format
-#| msgid "failed to run %s container"
+#, javascript-format
 msgid "Image for %s container"
 msgstr "%s 컨테이너의 이미지"
 
 #: shared/utils/cmd.go:223
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Tag for %s container, overrides the global value if set"
 msgstr "%s 컨테이너의 태그로, 설정된 경우 전역 값을 재정의합니다."
 
@@ -1400,13 +1360,10 @@ msgid "failed to unmarshal the inspected data"
 msgstr "검사 데이터의 마샬링 취소 실패"
 
 #: shared/utils/logUtils.go:69
-#, fuzzy
-#| msgid "failed to get the %s pod logs"
 msgid "failed to decode message to log"
 msgstr "로그에 기록할 메시지 디코딩 실패"
 
 #: shared/utils/logUtils.go:77
-#, fuzzy
 msgid "failed to encode log event"
 msgstr "로그 이벤트 인코딩 실패"
 
