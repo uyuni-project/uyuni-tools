@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-01 14:35+0100\n"
-"PO-Revision-Date: 2026-08-14 03:13+0000\n"
+"PO-Revision-Date: 2026-08-18 08:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ko/>\n"
 "Language: ko\n"
@@ -295,49 +295,39 @@ msgid "Create proxy configurations"
 msgstr "프록시 구성 생성"
 
 #: mgrctl/cmd/ssh/knownhost/knownhost.go:24
-#, fuzzy
 msgid "SSH known_hosts file management"
 msgstr "SSH known_hosts 파일 관리"
 
 #: mgrctl/cmd/ssh/knownhost/knownhost.go:29
-#, fuzzy
 msgid "Remove a SSH known host"
 msgstr "SSH 알려진 호스트 제거"
 
 #: mgrctl/cmd/ssh/knownhost/knownhost.go:30
-#, fuzzy
 msgid ""
 "Removes a host from the list of Salt's SSH known_hosts.\n"
 "If no port is specified, it will default to 22."
 msgstr ""
 "Salt의 SSH known_hosts 목록에서 호스트를 제거합니다.\n"
-"\n"
 "포트가 지정되지 않으면 기본값 22가 사용됩니다."
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:33
-#, fuzzy, javascript-format
-#| msgid "failed to connect to the server"
+#, javascript-format
 msgid "failed to remove the host: %s"
 msgstr "호스트를 제거할 수 없음: %s"
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:38
-#, fuzzy
 msgid "unexpected server response '%v'"
 msgstr "예기치 않은 서버 응답 '%v'"
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:42
-#, fuzzy
-#| msgid "Successfully logged out"
 msgid "successfully removed host"
 msgstr "호스트 제거됨"
 
 #: mgrctl/cmd/ssh/knownhost/remove.go:44
-#, fuzzy
 msgid "unable to remove host, server returned an error"
-msgstr "호스트를 제거할 수 없습니다. 서버가 오류가 반환했습니다."
+msgstr "호스트를 제거할 수 없습니다. 서버에서 오류를 반환했습니다."
 
 #: mgrctl/cmd/ssh/ssh.go:18
-#, fuzzy
 msgid "SSH management commands"
 msgstr "SSH 관리 명령"
 
