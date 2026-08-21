@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 12:46+0100\n"
-"PO-Revision-Date: 2026-05-29 04:12+0000\n"
+"POT-Creation-Date: 2026-08-14 16:27+0200\n"
+"PO-Revision-Date: 2026-08-17 04:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
@@ -453,8 +453,6 @@ msgid "Restoring podman network"
 msgstr "podmanネットワークの復元"
 
 #: mgradm/cmd/backup/restore/podman_utils.go:143
-#, fuzzy
-#| msgid "Unlable to create podman network"
 msgid "Unable to create podman network"
 msgstr "podmanのネットワークを作成できません"
 
@@ -611,42 +609,52 @@ msgid "insufficient space on target device"
 msgstr "ターゲットデバイスの空き容量が不足しています"
 
 #: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:43
-#: mgradm/cmd/upgrade/utils.go:34
+#: mgradm/cmd/upgrade/utils.go:74
 msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
 
-#: mgradm/cmd/cmd.go:41
+#: mgradm/cmd/cmd.go:43
 msgid "Uyuni administration tool"
 msgstr "Uyuni管理ツール"
 
-#: mgradm/cmd/cmd.go:42
+#: mgradm/cmd/cmd.go:44
 msgid "Tool to help administering Uyuni servers in containers"
 msgstr "Uyuniサーバのコンテナ管理を支援するツール"
 
-#: mgradm/cmd/cmd.go:49
+#: mgradm/cmd/cmd.go:51
 msgid "Server Deployment:"
 msgstr "サーバ配備:"
 
-#: mgradm/cmd/cmd.go:53
+#: mgradm/cmd/cmd.go:55
 msgid "Server Management:"
 msgstr "サーバ管理:"
 
-#: mgradm/cmd/cmd.go:57
+#: mgradm/cmd/cmd.go:59
 msgid "Administrator tools:"
 msgstr "管理者ツール:"
 
-#: mgradm/cmd/cmd.go:67
+#: mgradm/cmd/cmd.go:69
 #, javascript-format
 msgid "Starting %s"
 msgstr "%s を開始しています"
 
-#: mgradm/cmd/cmd.go:68
+#: mgradm/cmd/cmd.go:70
 msgid "Use of this software implies acceptance of the End User License Agreement."
 msgstr "このソフトウェアを使用すると、エンドユーザライセンス契約に同意したことになります。"
 
-#: mgradm/cmd/cmd.go:72
+#: mgradm/cmd/cmd.go:74
 msgid "configuration file path"
 msgstr "設定ファイルパス"
+
+#: mgradm/cmd/disable/disable.go:34
+#, fuzzy
+#| msgid "Restarting server service"
+msgid "Disable server services at boot"
+msgstr "サーバサービスの再起動"
+
+#: mgradm/cmd/disable/disable.go:35
+msgid "Disable server services at boot without stopping them"
+msgstr ""
 
 #: mgradm/cmd/distro/cp.go:38
 #, javascript-format
@@ -845,6 +853,16 @@ msgstr "ディストリビューション製品マップを表示する"
 msgid "failed to compute config help command"
 msgstr "config helpコマンドの計算に失敗しました"
 
+#: mgradm/cmd/enable/enable.go:34
+#, fuzzy
+#| msgid "Stopping server service"
+msgid "Enable server services at boot"
+msgstr "サーバサービスの停止"
+
+#: mgradm/cmd/enable/enable.go:35
+msgid "Enable server services at boot without starting them"
+msgstr ""
+
 #: mgradm/cmd/gpg/add/gpg.go:36
 msgid "Add GPG keys for 3rd party repositories"
 msgstr "サードパーティリポジトリ用のGPGキーを追加する"
@@ -950,7 +968,7 @@ msgstr "InterServerSync v1の親FQDN"
 
 #: mgradm/cmd/install/flags.go:28 mgradm/cmd/upgrade/flags.go:22
 msgid "TFTPD Flags"
-msgstr ""
+msgstr "TFTPDフラグ"
 
 #: mgradm/cmd/install/flags.go:31
 msgid "Administrator user name"
@@ -981,13 +999,6 @@ msgid "Install a new server on podman"
 msgstr "podmanに新しいサーバをインストールする"
 
 #: mgradm/cmd/install/install.go:28
-#, fuzzy
-#| msgid ""
-#| "Install a new server on podman\n"
-#| "\n"
-#| "The install podman command assumes podman is installed locally.\n"
-#| "\n"
-#| "NOTE: installing on a remote podman is not supported yet!\n"
 msgid ""
 "Install a new server on podman\n"
 "\n"
@@ -997,7 +1008,7 @@ msgid ""
 msgstr ""
 "podmanに新しいサーバをインストールする\n"
 "\n"
-"install podmanコマンドはpodman がローカルにインストールされていることを前提としています。\n"
+"コマンドはpodmanがローカルにインストールされていることを前提としています。\n"
 "\n"
 "メモ: リモートのpodmanへのインストールはまだサポートされていません。\n"
 
@@ -1020,18 +1031,16 @@ msgid "cannot setup network"
 msgstr "ネットワークを設定できません"
 
 #: mgradm/cmd/install/utils.go:92
-#, fuzzy
-#| msgid "failed to delete server resources"
 msgid "failed to generate server service"
-msgstr "サーバリソースの削除に失敗しました"
+msgstr "サーバサービスの生成に失敗しました"
 
 #: mgradm/cmd/install/utils.go:95 mgradm/shared/podman/podman.go:572
 msgid "Waiting for server to start. This include service setup operations and can take a very long time."
-msgstr ""
+msgstr "サーバの起動を待機しています。これにはサービスのセットアップ操作が含まれるため、非常に時間がかかることがあります。"
 
 #: mgradm/cmd/install/utils.go:96 mgradm/shared/podman/podman.go:573
 msgid "Use `journalctl -f -u uyuni-server` for tracking progress"
-msgstr ""
+msgstr "進捗状況を追跡するには、「journalctl -f -u uyuni-server」を使用します"
 
 #: mgradm/cmd/install/utils.go:100 mgradm/shared/podman/podman.go:580
 msgid "cannot wait for system start"
@@ -1151,140 +1160,135 @@ msgstr "サーバ管理ユーティリティ"
 
 #: mgradm/cmd/ssl/addca/addca.go:26
 msgid "Add a new root CA (phase 1 of an SSL CA rotation)"
-msgstr ""
+msgstr "新しいルートCAを追加する(SSL CAローテーションの第1フェーズ)"
 
 #: mgradm/cmd/ssl/addca/addca.go:27
 msgid "Add a new root CA to the trusted CA bundle without switching the server certificate."
-msgstr ""
+msgstr "サーバ証明書を切り替えずに、新しいルートCAを信頼されたCAバンドルに追加します。"
 
 #: mgradm/cmd/ssl/addca/podman.go:28
-#, fuzzy
-#| msgid "Password for the CA key to generate"
 msgid "a password for the new CA key is required"
-msgstr "生成するCAキーのパスワード"
+msgstr "新しいCAキーのパスワードが必要です"
 
 #: mgradm/cmd/ssl/addca/podman.go:44
 msgid "Could not read the new CA fingerprint"
-msgstr ""
+msgstr "新しいCAフィンガープリントを読み込めませんでした"
 
 #: mgradm/cmd/ssl/addca/podman.go:46
 #, javascript-format
 msgid "The new root CA (SHA-256 fingerprint %s) has been added to the trusted bundle."
-msgstr ""
+msgstr "新しいルートCA (SHA-256フィンガープリント %s)が、信頼されたバンドルに追加されました。"
 
 #: mgradm/cmd/ssl/rotate/podman.go:54
 msgid "--check-only is ignored with --emergency! Proceeding with the emergency rotation"
-msgstr ""
+msgstr "--emergencyが指定されたため、--check-only は無視されます。緊急ローテーションに進みます"
 
 #: mgradm/cmd/ssl/rotate/podman.go:66
-#, fuzzy
-#| msgid "Server certificate, key and root CA need to be all provided"
 msgid "the server certificate, key and root CA need to be all provided"
 msgstr "サーバ証明書、キー、ルートCAをすべて提供する必要があります"
 
 #: mgradm/cmd/ssl/rotate/podman.go:68
-#, fuzzy
-#| msgid "Using provided 3rd party server certificates"
 msgid "Installing the provided 3rd party server certificate"
-msgstr "提供されたサードパーティのサーバ証明書を使用する"
+msgstr "提供されたサードパーティのサーバ証明書をインストールする"
 
 #: mgradm/cmd/ssl/rotate/podman.go:74
-#, fuzzy
-#| msgid "server key is required"
 msgid "the CA key password is required"
-msgstr "サーバキーが必要です"
+msgstr "CAキーパスワードが必要です"
 
 #: mgradm/cmd/ssl/rotate/podman.go:80
-#, fuzzy
-#| msgid "Generating the server certificate…"
 msgid "Generating a new CA and server certificate"
-msgstr "サーバ証明書を生成しています…"
+msgstr "新しいCAとサーバ証明書を生成する"
 
 #: mgradm/cmd/ssl/rotate/podman.go:83
-#, fuzzy
-#| msgid "Generating the server certificate…"
 msgid "Generating a new server certificate signed by the new CA"
-msgstr "サーバ証明書を生成しています…"
+msgstr "新しいCAで署名された新しいサーバ証明書を生成する"
 
 #: mgradm/cmd/ssl/rotate/podman.go:89
 msgid "Skipping the client CA trust check as --force was set"
-msgstr ""
+msgstr "--forceが設定されたため、クライアントCAの信頼チェックをスキップします"
 
 #: mgradm/cmd/ssl/rotate/podman.go:95
 msgid "failed to verify client readiness, rerun with --force to rotate without checking"
-msgstr ""
+msgstr "クライアントの準備状況の確認に失敗しました。チェックを行わずにローテーションするには--forceを指定して再実行します"
 
 #: mgradm/cmd/ssl/rotate/podman.go:101
 msgid "some clients do not trust the new CA yet! Distribute it and retry, or use --force to skip this check"
-msgstr ""
+msgstr "一部のクライアントが新しいCAをまだ信頼していません。CAを配布して再試行するか、--forceを使用してこのチェックをスキップしてください"
 
 #: mgradm/cmd/ssl/rotate/podman.go:108
 #, javascript-format
 msgid "Clients trusting the new CA: %d"
-msgstr ""
+msgstr "新しいCAを信頼しているクライアント: %d"
 
 #: mgradm/cmd/ssl/rotate/podman.go:110
 msgid "Clients not yet trusting the new CA (%[1]d): %[2]s"
-msgstr ""
+msgstr "新しいCAをまだ信頼していないクライアント (%[1]d): %[2]s"
 
 #: mgradm/cmd/ssl/rotate/podman.go:114
 msgid "Unreachable minions (%[1]d): %[2]s"
-msgstr ""
+msgstr "到達不能なminion (%[1]d): %[2]s"
 
 #: mgradm/cmd/ssl/rotate/podman.go:117
 msgid "Only Salt-managed clients are checked! Non-managed systems and proxy configurations are not verified and must be handled manually."
-msgstr ""
+msgstr "Saltで管理されているクライアントのみがチェックされます。管理対象外のシステムやプロキシ設定は検証されないため、手動で処理する必要があります。"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:26
 msgid "Switch to a server certificate signed by the new CA, then drop the old CA"
-msgstr ""
+msgstr "新しいCAによって署名されたサーバ証明書に切り替えてから、古いCAを削除する"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:27
 msgid ""
 "Second phase of an SSL CA rotation, to run after 'mgradm ssl addca' has added the new CA and the\n"
 "clients trust it: issue a new server (and database) certificate signed by the new CA, switch the\n"
 "services to it, and drop the old CA from the trusted bundle so only the new CA is left."
-msgstr ""
+msgstr "SSL CAローテーションの第2フェーズで、「mgradm ssl addca」で新しいCAを追加してクライアントがそれを信頼した後に実行する処理として、新しいCAで署名された新しいサーバ(およびデータベース)証明書の発行、サービスのその新しい証明書への切り替え、および信頼されたバンドルからの古いCAの削除(新しいCAのみが残る)を行います。"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:40
-#, fuzzy
-#| msgid "Password for the CA key to generate"
 msgid "Password for the CA key"
-msgstr "生成するCAキーのパスワード"
+msgstr "CAキーのパスワード"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:42
 msgid "Rotate even if some clients do not trust the new CA yet"
-msgstr ""
+msgstr "一部のクライアントがまだ新しCAを信頼していない場合でもローテーションする"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:43
 msgid "Only report client readiness, without rotating"
-msgstr ""
+msgstr "ローテーションせずに、クライアントの準備状況のみを報告する"
 
 #: mgradm/cmd/ssl/rotate/rotate.go:45
 msgid "Generate a new CA and drop the old one immediately without an overlap period (e.g. for compromised CAs)"
-msgstr ""
+msgstr "新しいCAを生成し、古いCAを(CAの侵害などの理由により)重複期間を設けずに直ちに破棄する"
 
 #: mgradm/cmd/ssl/ssl.go:20
-#, fuzzy
-#| msgid "Generating the server certificate…"
 msgid "Rotate the server SSL CA and certificates"
-msgstr "サーバ証明書を生成しています…"
+msgstr "サーバSSL CAと証明書のローテーション"
 
 #: mgradm/cmd/ssl/ssl.go:21
-#, fuzzy
-#| msgid "Reusing the existing server and database certificates"
 msgid "Rotate the server and database SSL CA and certificates."
-msgstr "既存のサーバ証明書とデータベース証明書を再利用する"
+msgstr "サーバおよびデータベースのSSL CAと証明書をローテンションします。"
 
 #: mgradm/cmd/start/start.go:21 mgradm/cmd/start/start.go:22
 msgid "Start the server"
 msgstr "サーバの起動"
 
+#: mgradm/cmd/status/podman.go:26
+#, fuzzy
+#| msgid "Server SSL certificate generated"
+msgid "Server services are enabled"
+msgstr "サーバSSL証明書が生成されました"
+
+#: mgradm/cmd/status/podman.go:28
+#, fuzzy
+#| msgid "server certificate is required"
+msgid "Server services are disabled"
+msgstr "サーバ証明書が必要です"
+
 #: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
 msgid "Get the server status"
 msgstr "サーバステータスの取得"
 
-#: mgradm/cmd/status/status.go:46
+#: mgradm/cmd/status/status.go:46 mgradm/shared/podman/services.go:50
+#: mgradm/shared/podman/services.go:65
 msgid "no installed server detected"
 msgstr "インストールされたサーバが検出されませんでした"
 
@@ -1508,6 +1512,28 @@ msgstr "イメージに使用可能なタグを一覧にする"
 msgid "failed to unmarshall configuration"
 msgstr "設定のアンマーシャルに失敗しました"
 
+#: mgradm/cmd/upgrade/utils.go:32
+#, fuzzy, javascript-format
+#| msgid "failed to parse %s"
+msgid "failed to read %s"
+msgstr "%s の解析に失敗しました"
+
+#: mgradm/cmd/upgrade/utils.go:45
+#, fuzzy, javascript-format
+#| msgid "failed to create keyring %s"
+msgid "failed to change permissions for %s"
+msgstr "キーリング %s の作成に失敗しました"
+
+#: mgradm/cmd/upgrade/utils.go:49
+#, fuzzy, javascript-format
+#| msgid "failed to parse %s"
+msgid "failed to write %s"
+msgstr "%s の解析に失敗しました"
+
+#: mgradm/cmd/upgrade/utils.go:52
+msgid "Legacy dual-stack IPv6 port bindings have been removed from uyuni-server.service. Please reboot the host and then run the upgrade command again"
+msgstr ""
+
 #: mgradm/shared/coco/coco.go:28
 msgid "Not altering the confidential computing service"
 msgstr "コンフィデンシャルコンピューティングサービスを変更しない"
@@ -1573,82 +1599,65 @@ msgid "cannot generate systemd configuration file"
 msgstr "systemd設定ファイルを生成できません"
 
 #: mgradm/shared/podman/clients.go:26
-#, fuzzy
-#| msgid "failed to create the secret"
 msgid "failed to read the CA bundle secret"
-msgstr "シークレットの作成に失敗しました"
+msgstr "CAバンドルシークレットの読み込みに失敗しました"
 
 #: mgradm/shared/podman/clients.go:31
-#, fuzzy
-#| msgid "failed to create the ingresses"
 msgid "failed to compute the CA fingerprints"
-msgstr "Ingressの作成に失敗しました"
+msgstr "CAフィンガープリントの計算に失敗しました"
 
 #: mgradm/shared/podman/clients.go:36
 msgid "no newly added CA found in the CA bundle; run 'mgradm ssl addca' first"
-msgstr ""
+msgstr "CAバンドルに新しく追加されたCAが見つかりませんでした。最初に「mgradm ssl addca」を実行してください"
 
 #: mgradm/shared/podman/clients.go:66
 msgid "Checking whether the clients trust the new CA over Salt; this can take a moment…"
-msgstr ""
+msgstr "クライアントがSaltよりも新しいCAを信頼しているか確認しています。これには少し時間がかかる場合があります…"
 
 #: mgradm/shared/podman/clients.go:75
 msgid "failed to list the minions status; is Salt available on the server?"
-msgstr ""
+msgstr "minionの状態を一覧表示できませんでした。サーバでSaltは利用可能ですか?"
 
 #: mgradm/shared/podman/clients.go:82
-#, fuzzy, javascript-format
-#| msgid "failed to parse migration data file"
+#, javascript-format
 msgid "failed to parse the minions status: %s"
-msgstr "移行データファイルの解析に失敗しました"
+msgstr "minionの状態の解析に失敗しました: %s"
 
 #: mgradm/shared/podman/clients.go:99
-#, fuzzy
-#| msgid "failed to generate postgresql restore script"
 msgid "failed to query the minions trust stores over Salt"
-msgstr "postgresql復元スクリプトの生成に失敗しました"
+msgstr "Saltを経由したminionトラストストアの照会に失敗しました"
 
 #: mgradm/shared/podman/clients.go:114
-#, fuzzy, javascript-format
-#| msgid "failed to create the ingresses"
+#, javascript-format
 msgid "failed to parse the minions response: %s"
-msgstr "Ingressの作成に失敗しました"
+msgstr "minion応答の解析に失敗しました: %s"
 
 #: mgradm/shared/podman/podman.go:78
-#, fuzzy
-#| msgid "Reusing the existing server and database certificates"
 msgid "Restarting the services to apply the new certificates"
-msgstr "既存のサーバ証明書とデータベース証明書を再利用する"
+msgstr "新しい証明書を適用するためにサービスを再起動する"
 
 #: mgradm/shared/podman/podman.go:90
-#, fuzzy
-#| msgid "cannot wait for system start"
 msgid "cannot wait for the server container to start"
-msgstr "システムの起動を待機できません"
+msgstr "サーバコンテナの起動を待機できません"
 
 #: mgradm/shared/podman/podman.go:109
-#, fuzzy, javascript-format
-#| msgid "Stopping the server container"
+#, javascript-format
 msgid "Running %s in the server container"
-msgstr "サーバコンテナを停止しています"
+msgstr "サーバコンテナで %s を実行中"
 
 #: mgradm/shared/podman/podman.go:111
-#, fuzzy, javascript-format
-#| msgid "failed to remove %s file in the container"
+#, javascript-format
 msgid "failed to run %s in the server container"
-msgstr "コンテナ内の %s ファイルの削除に失敗しました"
+msgstr "サーバコンテナで %s の実行に失敗しました"
 
 #: mgradm/shared/podman/podman.go:128
-#, fuzzy, javascript-format
-#| msgid "failed to create folder %s"
+#, javascript-format
 msgid "failed to create %s folder"
-msgstr "フォルダ %s の作成に失敗しました"
+msgstr "%s フォルダの作成に失敗しました"
 
 #: mgradm/shared/podman/podman.go:145 mgradm/shared/podman/podman.go:161
-#, fuzzy
-#| msgid "failed to generate systemd service unit file"
 msgid "failed to generate server environment file"
-msgstr "systemdサービスユニットファイルの生成に失敗しました"
+msgstr "サーバ環境ファイルの生成に失敗しました"
 
 #: mgradm/shared/podman/podman.go:253
 msgid "Enabling system service"
@@ -1700,32 +1709,27 @@ msgid "cannot stop service"
 msgstr "サービスを停止できません"
 
 #: mgradm/shared/podman/podman.go:476
-#, fuzzy
-#| msgid "cannot downgrade from version %[1]s to %[2]s"
 msgid "Initiating PostgreSQL upgrade from version %[1]d to %[2]d"
-msgstr "バージョン %[1]s から %[2]s にダウングレードできません"
+msgstr "PostgreSQLのバージョン %[1]d から %[2]d へのアップグレードを開始しています"
 
 #: mgradm/shared/podman/podman.go:480
-#, fuzzy, javascript-format
-#| msgid "cannot inspect volume %s"
+#, javascript-format
 msgid "cannot find volume %s"
-msgstr "ボリューム %s を検査できません"
+msgstr "ボリューム %s が見つかりません"
 
 #: mgradm/shared/podman/podman.go:495
-#, fuzzy, javascript-format
-#| msgid "cannot copy %s"
+#, javascript-format
 msgid "cannot move %s"
-msgstr "%s をコピーできません"
+msgstr "%s を移動できません"
 
 #: mgradm/shared/podman/podman.go:511
-#, fuzzy, javascript-format
-#| msgid "cannot delete %s"
+#, javascript-format
 msgid "cannot mkdir %s"
-msgstr "%s を削除できません"
+msgstr "%s のディレクトリを作成できません"
 
 #: mgradm/shared/podman/podman.go:514
 msgid "Data will be copied during this process. Please ensure sufficient disk space is available."
-msgstr ""
+msgstr "この処理の実行中にデータがコピーされます。十分な空きディスク容量があることを確認してください。"
 
 #: mgradm/shared/podman/podman.go:516
 msgid "cannot run PostgreSQL version upgrade script"
@@ -1736,14 +1740,12 @@ msgid "Upgrading without changing PostgreSQL version"
 msgstr "PostgreSQLバージョンを変更せずにアップグレードしています"
 
 #: mgradm/shared/podman/podman.go:522
-#, fuzzy
-#| msgid "trying to downgrade PostgreSQL from %[1]s to %[2]s"
 msgid "trying to downgrade PostgreSQL from %[1]d to %[2]d"
-msgstr "PostgreSQLを %[1]s から %[2]s にダウングレードしようとしています"
+msgstr "PostgreSQLを %[1]d から %[2]d にダウングレードしようとしています"
 
 #: mgradm/shared/podman/podman.go:529
 msgid "Configuring split PostgreSQL container"
-msgstr ""
+msgstr "分割されたPostgreSQLコンテナの設定"
 
 #: mgradm/shared/podman/podman.go:538
 msgid "cannot configure db container"
@@ -1755,7 +1757,7 @@ msgstr "サービスを開始できません"
 
 #: mgradm/shared/podman/podman.go:603
 msgid "Failed to read server service definition to look for TFTP port"
-msgstr ""
+msgstr "TFTPポートを検索するためのサーバサービス定義の読み込みに失敗しました"
 
 #: mgradm/shared/podman/podman.go:613
 msgid "Waiting for the server to start…"
@@ -1787,6 +1789,10 @@ msgstr "PostgreSQL移行の失敗"
 
 #: mgradm/shared/podman/podman.go:784
 msgid "Secrets %[1]s and %[2]s, already exists"
+msgstr "シークレット %[1]s と %[2]s はすでに存在します"
+
+#: mgradm/shared/podman/services.go:85
+msgid "Server services are disabled and will not start automatically at boot"
 msgstr ""
 
 #: mgradm/shared/podman/ssl.go:88
@@ -1803,58 +1809,46 @@ msgstr "指定されたSSL引数からシークレットを作成できません
 
 #: mgradm/shared/podman/ssl.go:120
 msgid "No third-party certificate provided to import"
-msgstr ""
+msgstr "インポートするためのサードパーティ証明書が提供されていません"
 
 #: mgradm/shared/podman/ssl.go:137
-#, fuzzy
-#| msgid "Using provided 3rd party server certificates"
 msgid "Adding the provided 3rd party root CA"
-msgstr "提供されたサードパーティのサーバ証明書を使用する"
+msgstr "提供されたサードパーティのルートCAを追加する"
 
 #: mgradm/shared/podman/ssl.go:140
-#, fuzzy, javascript-format
-#| msgid "failed to create folder %s"
+#, javascript-format
 msgid "failed to read the provided root CA %s"
-msgstr "フォルダ %s の作成に失敗しました"
+msgstr "提供されたルートCA %s の読み込みに失敗しました"
 
 #: mgradm/shared/podman/ssl.go:147
-#, fuzzy
-#| msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgid "Cannot generate a new CA without a CA password. Please check the input parameters."
-msgstr "CAパスワードがないと新しい証明書を生成できません。入力オプションを確認してください"
+msgstr "CAパスワードがないと新しいCAを生成できません。入力パラメータを確認してください。"
 
 #: mgradm/shared/podman/ssl.go:149 mgradm/shared/podman/ssl.go:240
 msgid "Generating a new self-signed root CA"
-msgstr ""
+msgstr "新しい自己署名ルートCAの生成"
 
 #: mgradm/shared/podman/ssl.go:161 mgradm/shared/podman/ssl.go:251
-#, fuzzy
-#| msgid "Failed to generate server SSL certificate. Please check the input parameters."
 msgid "Failed to generate the new SSL CA. Please check the input parameters."
-msgstr "サーバSSL証明書の生成に失敗しました。入力パラメータを確認してください。"
+msgstr "新しいSSL CAの生成に失敗しました。入力パラメータを確認してください。"
 
 #: mgradm/shared/podman/ssl.go:174
-#, fuzzy
-#| msgid "Using provided 3rd party database certificates"
 msgid "Adding the provided 3rd party database root CA"
-msgstr "提供されたサードパーティのデータベース証明書を使用する"
+msgstr "提供されたサードパーティデータベースのルートCAを追加する"
 
 #: mgradm/shared/podman/ssl.go:177
-#, fuzzy, javascript-format
-#| msgid "failed to create the database deployment"
+#, javascript-format
 msgid "failed to read the provided database root CA %s"
-msgstr "データベース配備の作成に失敗しました"
+msgstr "提供されたデータベースのルートCA %s の読み込みに失敗しました"
 
 #: mgradm/shared/podman/ssl.go:205
 #, javascript-format
 msgid "The new CA is already present in the %s secret"
-msgstr ""
+msgstr "新しいCAはすでに %s シークレットに存在します"
 
 #: mgradm/shared/podman/ssl.go:231
-#, fuzzy
-#| msgid "Cannot generate new certificates without a CA password. Please check input options"
 msgid "Cannot generate a new CA without a CA password. Please check input options"
-msgstr "CAパスワードがないと新しい証明書を生成できません。入力オプションを確認してください"
+msgstr "CAパスワードがないと新しいCAを生成できません。入力オプションを確認してください"
 
 #: mgradm/shared/podman/ssl.go:289
 msgid "Reusing the existing server and database certificates"
@@ -3056,9 +3050,6 @@ msgstr "有効な電子メールアドレスではありません"
 #, javascript-format
 #~ msgid "Missing CA with subject hash %s"
 #~ msgstr "件名ハッシュ %s のCAが見つかりません"
-
-#~ msgid "server certificate is required"
-#~ msgstr "サーバ証明書が必要です"
 
 #, javascript-format
 #~ msgid "%s file is not accessible"

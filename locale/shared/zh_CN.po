@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 12:49+0100\n"
+"POT-Creation-Date: 2026-08-14 13:27+0200\n"
 "PO-Revision-Date: 2026-08-11 09:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -477,8 +477,8 @@ msgstr "未找到容器 %s 的任何运行中映像"
 
 #: shared/podman/images.go:371 shared/podman/images.go:392
 #: shared/podman/images.go:412 shared/podman/network.go:108
-#: shared/podman/secret.go:158 shared/podman/systemd.go:273
-#: shared/podman/systemd.go:352 shared/podman/systemd.go:353
+#: shared/podman/secret.go:158 shared/podman/systemd.go:303
+#: shared/podman/systemd.go:382 shared/podman/systemd.go:383
 #: shared/podman/utils.go:204 shared/podman/utils.go:237
 #: shared/podman/utils.go:266
 #, javascript-format
@@ -663,133 +663,145 @@ msgstr "无法创建 %s 文件"
 msgid "failed to run journalctl -u %s"
 msgstr "无法运行 journalctl -u %s"
 
-#: shared/podman/systemd.go:116
+#: shared/podman/systemd.go:122
 #, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr "无法禁用 %s systemd 服务"
 
-#: shared/podman/systemd.go:126
+#: shared/podman/systemd.go:132
 msgid "failed to reset-failed systemd"
 msgstr "reset-failed systemd 失败"
 
-#: shared/podman/systemd.go:130
+#: shared/podman/systemd.go:136
 msgid "failed to reload systemd daemon"
 msgstr "无法重新加载 systemd 守护程序"
 
-#: shared/podman/systemd.go:147
+#: shared/podman/systemd.go:153
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "无法重启 systemd %s.service"
 
-#: shared/podman/systemd.go:155
+#: shared/podman/systemd.go:161
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "无法启动 systemd %s.service"
 
-#: shared/podman/systemd.go:163
+#: shared/podman/systemd.go:169
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "无法停止 systemd %s.service"
 
-#: shared/podman/systemd.go:175
+#: shared/podman/systemd.go:181
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "无法启用 %s systemd 服务"
 
-#: shared/podman/systemd.go:187
+#: shared/podman/systemd.go:193
+#, fuzzy, javascript-format
+#| msgid "failed to enable %s systemd service"
+msgid "failed to enable %s systemd unit"
+msgstr "无法启用 %s systemd 服务"
+
+#: shared/podman/systemd.go:205
+#, fuzzy, javascript-format
+#| msgid "failed to disable %s systemd service"
+msgid "failed to disable %s systemd unit"
+msgstr "无法禁用 %s systemd 服务"
+
+#: shared/podman/systemd.go:217
 msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "无法从 %[2]s 服务获取 %[1]s 属性"
 
-#: shared/podman/systemd.go:199
+#: shared/podman/systemd.go:229
 msgid "Failed to get the definition from %[2]s service"
 msgstr "从 %[2]s 服务获取定义失败"
 
-#: shared/podman/systemd.go:270
+#: shared/podman/systemd.go:300
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "Systemd 没有 %s.service 单元"
 
-#: shared/podman/systemd.go:275
+#: shared/podman/systemd.go:305
 #, javascript-format
 msgid "Disable %s service"
 msgstr "禁用 %s 服务"
 
-#: shared/podman/systemd.go:290 shared/podman/systemd.go:308
+#: shared/podman/systemd.go:320 shared/podman/systemd.go:338
 #, javascript-format
 msgid "Would remove %s"
 msgstr "将去除 %s"
 
-#: shared/podman/systemd.go:293 shared/podman/systemd.go:310
+#: shared/podman/systemd.go:323 shared/podman/systemd.go:340
 #, javascript-format
 msgid "Remove %s"
 msgstr "去除 %s"
 
-#: shared/podman/systemd.go:295
+#: shared/podman/systemd.go:325
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "无法去除 %s.service 文件"
 
-#: shared/podman/systemd.go:312
+#: shared/podman/systemd.go:342
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "无法去除 %s 文件"
 
-#: shared/podman/systemd.go:319
+#: shared/podman/systemd.go:349
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "将去除 %s（如果为空）"
 
-#: shared/podman/systemd.go:326
+#: shared/podman/systemd.go:356
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "%s 文件夹包含该用户创建的文件。卸装完毕后，请去除这些文件。"
 
-#: shared/podman/systemd.go:338
+#: shared/podman/systemd.go:368
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "会将 %s 扩缩到 0 个复本"
 
-#: shared/podman/systemd.go:341
+#: shared/podman/systemd.go:371
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "无法禁用 %s 服务"
 
-#: shared/podman/systemd.go:430
+#: shared/podman/systemd.go:470
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "服务 %[1]s 已有 %[2]d 个复本。"
 
-#: shared/podman/systemd.go:433
+#: shared/podman/systemd.go:473
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "将 %[1]s 的复本数从 %[2]d 个扩缩到 %[3]d 个。"
 
-#: shared/podman/systemd.go:437
+#: shared/podman/systemd.go:477
 msgid "cannot enable service"
 msgstr "无法启用服务"
 
-#: shared/podman/systemd.go:443
+#: shared/podman/systemd.go:483
 msgid "cannot disable service"
 msgstr "无法禁用服务"
 
-#: shared/podman/systemd.go:453
+#: shared/podman/systemd.go:493
 msgid "failed to show %[1]s property of %[2] systemd service"
 msgstr "显示 %[2] systemd 服务的 %[1]s 属性失败"
 
-#: shared/podman/systemd.go:468
+#: shared/podman/systemd.go:508
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "创建文件夹 %s 失败"
 
-#: shared/podman/systemd.go:478
+#: shared/podman/systemd.go:518
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "无法写入 %s 文件"
 
-#: shared/podman/systemd.go:522
+#: shared/podman/systemd.go:562
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "无法写入 %s 文件"
 
-#: shared/podman/systemd.go:527
+#: shared/podman/systemd.go:567
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "无法去除旧 %s systemd 服务配置文件"

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-13 17:19+0100\n"
-"PO-Revision-Date: 2026-08-14 03:13+0000\n"
+"POT-Creation-Date: 2026-04-13 18:19+0200\n"
+"PO-Revision-Date: 2026-08-18 08:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
 "Language: ko\n"
@@ -388,7 +388,7 @@ msgstr "httpd 이미지를 찾을 수 없음: 업그레이드되지 않습니다
 
 #: mgrpxy/shared/podman/podman.go:357
 msgid "cannot find salt-broker image: it will no be upgraded"
-msgstr "salt-broker 이미지를 찾을 수 없음 : 업그레이드되지 않습니다."
+msgstr "salt-broker 이미지를 찾을 수 없음: 업그레이드되지 않습니다."
 
 #: mgrpxy/shared/podman/podman.go:361
 msgid "cannot find squid image: it will no be upgraded"
@@ -411,26 +411,22 @@ msgid "System id not found in returned event"
 msgstr "반환된 이벤트에서 시스템 ID를 찾을 수 없음"
 
 #: mgrpxy/shared/podman/podman.go:541
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to read %s"
 msgstr "%s 읽기 실패"
 
 #: mgrpxy/shared/podman/podman.go:545
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to unmarshal %s"
-msgstr "%s 마샬링 취소 실패"
+msgstr "%s 언마샬링 실패"
 
 #: mgrpxy/shared/podman/podman.go:553
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to marshal %s"
-msgstr "%s 마샬링 실패"
+msgstr "%s 언마샬링 실패"
 
 #: mgrpxy/shared/podman/podman.go:556
-#, fuzzy, javascript-format
-#| msgid "failed to write in file %s"
+#, javascript-format
 msgid "failed to write %s"
 msgstr "%s 쓰기 실패"
 
