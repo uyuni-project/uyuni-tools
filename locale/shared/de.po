@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 12:49+0100\n"
+"POT-Creation-Date: 2026-08-14 13:27+0200\n"
 "PO-Revision-Date: 2025-11-26 11:05+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/de/>\n"
@@ -483,8 +483,8 @@ msgstr ""
 
 #: shared/podman/images.go:371 shared/podman/images.go:392
 #: shared/podman/images.go:412 shared/podman/network.go:108
-#: shared/podman/secret.go:158 shared/podman/systemd.go:273
-#: shared/podman/systemd.go:352 shared/podman/systemd.go:353
+#: shared/podman/secret.go:158 shared/podman/systemd.go:303
+#: shared/podman/systemd.go:382 shared/podman/systemd.go:383
 #: shared/podman/utils.go:204 shared/podman/utils.go:237
 #: shared/podman/utils.go:266
 #, javascript-format
@@ -669,136 +669,146 @@ msgstr ""
 msgid "failed to run journalctl -u %s"
 msgstr ""
 
-#: shared/podman/systemd.go:116
+#: shared/podman/systemd.go:122
 #, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr ""
 
-#: shared/podman/systemd.go:126
+#: shared/podman/systemd.go:132
 msgid "failed to reset-failed systemd"
 msgstr ""
 
-#: shared/podman/systemd.go:130
+#: shared/podman/systemd.go:136
 msgid "failed to reload systemd daemon"
 msgstr ""
 
-#: shared/podman/systemd.go:147
+#: shared/podman/systemd.go:153
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:155
+#: shared/podman/systemd.go:161
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:163
+#: shared/podman/systemd.go:169
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr ""
 
-#: shared/podman/systemd.go:175
+#: shared/podman/systemd.go:181
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr ""
 
-#: shared/podman/systemd.go:187
+#: shared/podman/systemd.go:193
+#, fuzzy, javascript-format
+msgid "failed to enable %s systemd unit"
+msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#: shared/podman/systemd.go:205
+#, fuzzy, javascript-format
+msgid "failed to disable %s systemd unit"
+msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
+
+#: shared/podman/systemd.go:217
 #, fuzzy
 msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/podman/systemd.go:199
+#: shared/podman/systemd.go:229
 #, fuzzy
 msgid "Failed to get the definition from %[2]s service"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/podman/systemd.go:270
+#: shared/podman/systemd.go:300
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr ""
 
-#: shared/podman/systemd.go:275
+#: shared/podman/systemd.go:305
 #, javascript-format
 msgid "Disable %s service"
 msgstr ""
 
-#: shared/podman/systemd.go:290 shared/podman/systemd.go:308
+#: shared/podman/systemd.go:320 shared/podman/systemd.go:338
 #, javascript-format
 msgid "Would remove %s"
 msgstr ""
 
-#: shared/podman/systemd.go:293 shared/podman/systemd.go:310
+#: shared/podman/systemd.go:323 shared/podman/systemd.go:340
 #, javascript-format
 msgid "Remove %s"
 msgstr ""
 
-#: shared/podman/systemd.go:295
+#: shared/podman/systemd.go:325
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr ""
 
-#: shared/podman/systemd.go:312
+#: shared/podman/systemd.go:342
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr ""
 
-#: shared/podman/systemd.go:319
+#: shared/podman/systemd.go:349
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr ""
 
-#: shared/podman/systemd.go:326
+#: shared/podman/systemd.go:356
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr ""
 
-#: shared/podman/systemd.go:338
+#: shared/podman/systemd.go:368
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr ""
 
-#: shared/podman/systemd.go:341
+#: shared/podman/systemd.go:371
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr ""
 
-#: shared/podman/systemd.go:430
+#: shared/podman/systemd.go:470
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr ""
 
-#: shared/podman/systemd.go:433
+#: shared/podman/systemd.go:473
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr ""
 
-#: shared/podman/systemd.go:437
+#: shared/podman/systemd.go:477
 msgid "cannot enable service"
 msgstr ""
 
-#: shared/podman/systemd.go:443
+#: shared/podman/systemd.go:483
 msgid "cannot disable service"
 msgstr ""
 
-#: shared/podman/systemd.go:453
+#: shared/podman/systemd.go:493
 #, fuzzy
 msgid "failed to show %[1]s property of %[2] systemd service"
 msgstr "Gespeicherte Anmeldeinformationen konnten nicht entfernt werden!"
 
-#: shared/podman/systemd.go:468
+#: shared/podman/systemd.go:508
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr ""
 
-#: shared/podman/systemd.go:478
+#: shared/podman/systemd.go:518
 #, javascript-format
 msgid "cannot write %s file"
 msgstr ""
 
-#: shared/podman/systemd.go:522
+#: shared/podman/systemd.go:562
 #, javascript-format
 msgid "failed to write %s file"
 msgstr ""
 
-#: shared/podman/systemd.go:527
+#: shared/podman/systemd.go:567
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr ""

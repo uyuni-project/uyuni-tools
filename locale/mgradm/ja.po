@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 12:46+0100\n"
+"POT-Creation-Date: 2026-08-14 16:27+0200\n"
 "PO-Revision-Date: 2026-08-17 04:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
@@ -609,42 +609,52 @@ msgid "insufficient space on target device"
 msgstr "ターゲットデバイスの空き容量が不足しています"
 
 #: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:43
-#: mgradm/cmd/upgrade/utils.go:34
+#: mgradm/cmd/upgrade/utils.go:74
 msgid "install podman before running this command"
 msgstr "このコマンドを実行する前にpodmanをインストールする"
 
-#: mgradm/cmd/cmd.go:41
+#: mgradm/cmd/cmd.go:43
 msgid "Uyuni administration tool"
 msgstr "Uyuni管理ツール"
 
-#: mgradm/cmd/cmd.go:42
+#: mgradm/cmd/cmd.go:44
 msgid "Tool to help administering Uyuni servers in containers"
 msgstr "Uyuniサーバのコンテナ管理を支援するツール"
 
-#: mgradm/cmd/cmd.go:49
+#: mgradm/cmd/cmd.go:51
 msgid "Server Deployment:"
 msgstr "サーバ配備:"
 
-#: mgradm/cmd/cmd.go:53
+#: mgradm/cmd/cmd.go:55
 msgid "Server Management:"
 msgstr "サーバ管理:"
 
-#: mgradm/cmd/cmd.go:57
+#: mgradm/cmd/cmd.go:59
 msgid "Administrator tools:"
 msgstr "管理者ツール:"
 
-#: mgradm/cmd/cmd.go:67
+#: mgradm/cmd/cmd.go:69
 #, javascript-format
 msgid "Starting %s"
 msgstr "%s を開始しています"
 
-#: mgradm/cmd/cmd.go:68
+#: mgradm/cmd/cmd.go:70
 msgid "Use of this software implies acceptance of the End User License Agreement."
 msgstr "このソフトウェアを使用すると、エンドユーザライセンス契約に同意したことになります。"
 
-#: mgradm/cmd/cmd.go:72
+#: mgradm/cmd/cmd.go:74
 msgid "configuration file path"
 msgstr "設定ファイルパス"
+
+#: mgradm/cmd/disable/disable.go:34
+#, fuzzy
+#| msgid "Restarting server service"
+msgid "Disable server services at boot"
+msgstr "サーバサービスの再起動"
+
+#: mgradm/cmd/disable/disable.go:35
+msgid "Disable server services at boot without stopping them"
+msgstr ""
 
 #: mgradm/cmd/distro/cp.go:38
 #, javascript-format
@@ -842,6 +852,16 @@ msgstr "ディストリビューション製品マップを表示する"
 #: mgradm/cmd/distro/distro.go:150
 msgid "failed to compute config help command"
 msgstr "config helpコマンドの計算に失敗しました"
+
+#: mgradm/cmd/enable/enable.go:34
+#, fuzzy
+#| msgid "Stopping server service"
+msgid "Enable server services at boot"
+msgstr "サーバサービスの停止"
+
+#: mgradm/cmd/enable/enable.go:35
+msgid "Enable server services at boot without starting them"
+msgstr ""
 
 #: mgradm/cmd/gpg/add/gpg.go:36
 msgid "Add GPG keys for 3rd party repositories"
@@ -1251,11 +1271,24 @@ msgstr "サーバおよびデータベースのSSL CAと証明書をローテン
 msgid "Start the server"
 msgstr "サーバの起動"
 
+#: mgradm/cmd/status/podman.go:26
+#, fuzzy
+#| msgid "Server SSL certificate generated"
+msgid "Server services are enabled"
+msgstr "サーバSSL証明書が生成されました"
+
+#: mgradm/cmd/status/podman.go:28
+#, fuzzy
+#| msgid "server certificate is required"
+msgid "Server services are disabled"
+msgstr "サーバ証明書が必要です"
+
 #: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
 msgid "Get the server status"
 msgstr "サーバステータスの取得"
 
-#: mgradm/cmd/status/status.go:46
+#: mgradm/cmd/status/status.go:46 mgradm/shared/podman/services.go:50
+#: mgradm/shared/podman/services.go:65
 msgid "no installed server detected"
 msgstr "インストールされたサーバが検出されませんでした"
 
@@ -1478,6 +1511,28 @@ msgstr "イメージに使用可能なタグを一覧にする"
 #: mgradm/cmd/upgrade/upgrade.go:65
 msgid "failed to unmarshall configuration"
 msgstr "設定のアンマーシャルに失敗しました"
+
+#: mgradm/cmd/upgrade/utils.go:32
+#, fuzzy, javascript-format
+#| msgid "failed to parse %s"
+msgid "failed to read %s"
+msgstr "%s の解析に失敗しました"
+
+#: mgradm/cmd/upgrade/utils.go:45
+#, fuzzy, javascript-format
+#| msgid "failed to create keyring %s"
+msgid "failed to change permissions for %s"
+msgstr "キーリング %s の作成に失敗しました"
+
+#: mgradm/cmd/upgrade/utils.go:49
+#, fuzzy, javascript-format
+#| msgid "failed to parse %s"
+msgid "failed to write %s"
+msgstr "%s の解析に失敗しました"
+
+#: mgradm/cmd/upgrade/utils.go:52
+msgid "Legacy dual-stack IPv6 port bindings have been removed from uyuni-server.service. Please reboot the host and then run the upgrade command again"
+msgstr ""
 
 #: mgradm/shared/coco/coco.go:28
 msgid "Not altering the confidential computing service"
@@ -1735,6 +1790,10 @@ msgstr "PostgreSQL移行の失敗"
 #: mgradm/shared/podman/podman.go:784
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr "シークレット %[1]s と %[2]s はすでに存在します"
+
+#: mgradm/shared/podman/services.go:85
+msgid "Server services are disabled and will not start automatically at boot"
+msgstr ""
 
 #: mgradm/shared/podman/ssl.go:88
 msgid "Using provided 3rd party server certificates"
@@ -2991,9 +3050,6 @@ msgstr "有効な電子メールアドレスではありません"
 #, javascript-format
 #~ msgid "Missing CA with subject hash %s"
 #~ msgstr "件名ハッシュ %s のCAが見つかりません"
-
-#~ msgid "server certificate is required"
-#~ msgstr "サーバ証明書が必要です"
 
 #, javascript-format
 #~ msgid "%s file is not accessible"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 12:46+0100\n"
+"POT-Creation-Date: 2026-08-14 16:27+0200\n"
 "PO-Revision-Date: 2026-08-11 09:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
@@ -609,42 +609,52 @@ msgid "insufficient space on target device"
 msgstr "目标设备上的空间不足"
 
 #: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:43
-#: mgradm/cmd/upgrade/utils.go:34
+#: mgradm/cmd/upgrade/utils.go:74
 msgid "install podman before running this command"
 msgstr "在运行此命令前安装 podman"
 
-#: mgradm/cmd/cmd.go:41
+#: mgradm/cmd/cmd.go:43
 msgid "Uyuni administration tool"
 msgstr "Uyuni 管理工具"
 
-#: mgradm/cmd/cmd.go:42
+#: mgradm/cmd/cmd.go:44
 msgid "Tool to help administering Uyuni servers in containers"
 msgstr "用于帮助管理容器中的 Uyuni 服务器的工具"
 
-#: mgradm/cmd/cmd.go:49
+#: mgradm/cmd/cmd.go:51
 msgid "Server Deployment:"
 msgstr "服务器部署："
 
-#: mgradm/cmd/cmd.go:53
+#: mgradm/cmd/cmd.go:55
 msgid "Server Management:"
 msgstr "服务器管理："
 
-#: mgradm/cmd/cmd.go:57
+#: mgradm/cmd/cmd.go:59
 msgid "Administrator tools:"
 msgstr "管理员工具："
 
-#: mgradm/cmd/cmd.go:67
+#: mgradm/cmd/cmd.go:69
 #, javascript-format
 msgid "Starting %s"
 msgstr "正在启动 %s"
 
-#: mgradm/cmd/cmd.go:68
+#: mgradm/cmd/cmd.go:70
 msgid "Use of this software implies acceptance of the End User License Agreement."
 msgstr "使用此软件即表示您接受本《最终用户许可协议》。"
 
-#: mgradm/cmd/cmd.go:72
+#: mgradm/cmd/cmd.go:74
 msgid "configuration file path"
 msgstr "配置文件路径"
+
+#: mgradm/cmd/disable/disable.go:34
+#, fuzzy
+#| msgid "Restarting server service"
+msgid "Disable server services at boot"
+msgstr "正在重启服务器服务"
+
+#: mgradm/cmd/disable/disable.go:35
+msgid "Disable server services at boot without stopping them"
+msgstr ""
 
 #: mgradm/cmd/distro/cp.go:38
 #, javascript-format
@@ -842,6 +852,16 @@ msgstr "显示发行套件产品映射"
 #: mgradm/cmd/distro/distro.go:150
 msgid "failed to compute config help command"
 msgstr "compute config 帮助命令失败"
+
+#: mgradm/cmd/enable/enable.go:34
+#, fuzzy
+#| msgid "Stopping server service"
+msgid "Enable server services at boot"
+msgstr "正在停止服务器服务"
+
+#: mgradm/cmd/enable/enable.go:35
+msgid "Enable server services at boot without starting them"
+msgstr ""
 
 #: mgradm/cmd/gpg/add/gpg.go:36
 msgid "Add GPG keys for 3rd party repositories"
@@ -1254,11 +1274,24 @@ msgstr "轮换服务器与数据库的 SSL CA 及证书。"
 msgid "Start the server"
 msgstr "启动服务器"
 
+#: mgradm/cmd/status/podman.go:26
+#, fuzzy
+#| msgid "Server SSL certificate generated"
+msgid "Server services are enabled"
+msgstr "已生成服务器 SSL 证书"
+
+#: mgradm/cmd/status/podman.go:28
+#, fuzzy
+#| msgid "server certificate is required"
+msgid "Server services are disabled"
+msgstr "必须指定服务器证书"
+
 #: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
 msgid "Get the server status"
 msgstr "获取服务器状态"
 
-#: mgradm/cmd/status/status.go:46
+#: mgradm/cmd/status/status.go:46 mgradm/shared/podman/services.go:50
+#: mgradm/shared/podman/services.go:65
 msgid "no installed server detected"
 msgstr "未检测到任何已安装的服务器"
 
@@ -1481,6 +1514,28 @@ msgstr "列出映像的可用标记"
 #: mgradm/cmd/upgrade/upgrade.go:65
 msgid "failed to unmarshall configuration"
 msgstr "无法反序列化配置"
+
+#: mgradm/cmd/upgrade/utils.go:32
+#, fuzzy, javascript-format
+#| msgid "failed to parse %s"
+msgid "failed to read %s"
+msgstr "无法解析 %s"
+
+#: mgradm/cmd/upgrade/utils.go:45
+#, fuzzy, javascript-format
+#| msgid "failed to create keyring %s"
+msgid "failed to change permissions for %s"
+msgstr "无法创建密钥环 %s"
+
+#: mgradm/cmd/upgrade/utils.go:49
+#, fuzzy, javascript-format
+#| msgid "failed to parse %s"
+msgid "failed to write %s"
+msgstr "无法解析 %s"
+
+#: mgradm/cmd/upgrade/utils.go:52
+msgid "Legacy dual-stack IPv6 port bindings have been removed from uyuni-server.service. Please reboot the host and then run the upgrade command again"
+msgstr ""
 
 #: mgradm/shared/coco/coco.go:28
 msgid "Not altering the confidential computing service"
@@ -1738,6 +1793,10 @@ msgstr "PostgreSQL 迁移失败"
 #: mgradm/shared/podman/podman.go:784
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr "机密 %[1]s 和 %[2]s 已存在"
+
+#: mgradm/shared/podman/services.go:85
+msgid "Server services are disabled and will not start automatically at boot"
+msgstr ""
 
 #: mgradm/shared/podman/ssl.go:88
 msgid "Using provided 3rd party server certificates"
@@ -2994,9 +3053,6 @@ msgstr "不是有效的电子邮件地址"
 #, javascript-format
 #~ msgid "Missing CA with subject hash %s"
 #~ msgstr "缺少主体哈希为 %s 的 CA"
-
-#~ msgid "server certificate is required"
-#~ msgstr "必须指定服务器证书"
 
 #, javascript-format
 #~ msgid "%s file is not accessible"

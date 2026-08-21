@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 12:46+0100\n"
+"POT-Creation-Date: 2026-08-14 16:27+0200\n"
 "PO-Revision-Date: 2026-05-22 00:12+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/de/>\n"
@@ -631,42 +631,50 @@ msgid "insufficient space on target device"
 msgstr ""
 
 #: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:43
-#: mgradm/cmd/upgrade/utils.go:34
+#: mgradm/cmd/upgrade/utils.go:74
 msgid "install podman before running this command"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:41
+#: mgradm/cmd/cmd.go:43
 msgid "Uyuni administration tool"
 msgstr "Uyuni Administrationswerkzeug"
 
-#: mgradm/cmd/cmd.go:42
+#: mgradm/cmd/cmd.go:44
 msgid "Tool to help administering Uyuni servers in containers"
 msgstr "Werkzeug für die Verwaltung von Uyuni-Servern in Containern"
 
-#: mgradm/cmd/cmd.go:49
+#: mgradm/cmd/cmd.go:51
 msgid "Server Deployment:"
 msgstr "Server-Bereitstellung:"
 
-#: mgradm/cmd/cmd.go:53
+#: mgradm/cmd/cmd.go:55
 msgid "Server Management:"
 msgstr "Serververwaltung:"
 
-#: mgradm/cmd/cmd.go:57
+#: mgradm/cmd/cmd.go:59
 msgid "Administrator tools:"
 msgstr "Administratorwerkzeuge:"
 
-#: mgradm/cmd/cmd.go:67
+#: mgradm/cmd/cmd.go:69
 #, javascript-format
 msgid "Starting %s"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:68
+#: mgradm/cmd/cmd.go:70
 msgid "Use of this software implies acceptance of the End User License Agreement."
 msgstr ""
 
-#: mgradm/cmd/cmd.go:72
+#: mgradm/cmd/cmd.go:74
 msgid "configuration file path"
 msgstr "Konfigurationsdateipfad"
+
+#: mgradm/cmd/disable/disable.go:34
+msgid "Disable server services at boot"
+msgstr ""
+
+#: mgradm/cmd/disable/disable.go:35
+msgid "Disable server services at boot without stopping them"
+msgstr ""
 
 #: mgradm/cmd/distro/cp.go:38
 #, javascript-format
@@ -820,6 +828,14 @@ msgstr ""
 
 #: mgradm/cmd/distro/distro.go:150
 msgid "failed to compute config help command"
+msgstr ""
+
+#: mgradm/cmd/enable/enable.go:34
+msgid "Enable server services at boot"
+msgstr ""
+
+#: mgradm/cmd/enable/enable.go:35
+msgid "Enable server services at boot without starting them"
 msgstr ""
 
 #: mgradm/cmd/gpg/add/gpg.go:36
@@ -1229,11 +1245,22 @@ msgstr "Pfad des Serverzertifikats"
 msgid "Start the server"
 msgstr ""
 
+#: mgradm/cmd/status/podman.go:26
+#, fuzzy
+#| msgid "Server certificate path"
+msgid "Server services are enabled"
+msgstr "Pfad des Serverzertifikats"
+
+#: mgradm/cmd/status/podman.go:28
+msgid "Server services are disabled"
+msgstr ""
+
 #: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
 msgid "Get the server status"
 msgstr ""
 
-#: mgradm/cmd/status/status.go:46
+#: mgradm/cmd/status/status.go:46 mgradm/shared/podman/services.go:50
+#: mgradm/shared/podman/services.go:65
 msgid "no installed server detected"
 msgstr ""
 
@@ -1430,6 +1457,28 @@ msgstr ""
 
 #: mgradm/cmd/upgrade/upgrade.go:65
 msgid "failed to unmarshall configuration"
+msgstr ""
+
+#: mgradm/cmd/upgrade/utils.go:32
+#, fuzzy, javascript-format
+#| msgid "failed to compute image URL"
+msgid "failed to read %s"
+msgstr "Abbild-URL konnte nicht berechnet werden"
+
+#: mgradm/cmd/upgrade/utils.go:45
+#, fuzzy, javascript-format
+#| msgid "failed to compute image URL"
+msgid "failed to change permissions for %s"
+msgstr "Abbild-URL konnte nicht berechnet werden"
+
+#: mgradm/cmd/upgrade/utils.go:49
+#, fuzzy, javascript-format
+#| msgid "failed to compute image URL"
+msgid "failed to write %s"
+msgstr "Abbild-URL konnte nicht berechnet werden"
+
+#: mgradm/cmd/upgrade/utils.go:52
+msgid "Legacy dual-stack IPv6 port bindings have been removed from uyuni-server.service. Please reboot the host and then run the upgrade command again"
 msgstr ""
 
 #: mgradm/shared/coco/coco.go:28
@@ -1697,6 +1746,10 @@ msgstr ""
 
 #: mgradm/shared/podman/podman.go:784
 msgid "Secrets %[1]s and %[2]s, already exists"
+msgstr ""
+
+#: mgradm/shared/podman/services.go:85
+msgid "Server services are disabled and will not start automatically at boot"
 msgstr ""
 
 #: mgradm/shared/podman/ssl.go:88
@@ -2128,11 +2181,6 @@ msgstr ""
 #, javascript-format
 #~ msgid "invalid line format: %s"
 #~ msgstr "ungültiges Zeilenformat: %s"
-
-#, fuzzy, javascript-format
-#~| msgid "failed to compute image URL"
-#~ msgid "failed to login to %s"
-#~ msgstr "Abbild-URL konnte nicht berechnet werden"
 
 #, fuzzy
 #~ msgid "Volumes Configuration Flags"

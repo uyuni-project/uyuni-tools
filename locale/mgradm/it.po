@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 12:46+0100\n"
+"POT-Creation-Date: 2026-08-14 16:27+0200\n"
 "PO-Revision-Date: 2026-05-16 14:19+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
@@ -613,42 +613,52 @@ msgid "insufficient space on target device"
 msgstr "spazio insufficiente sul dispositivo di destinazione"
 
 #: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:43
-#: mgradm/cmd/upgrade/utils.go:34
+#: mgradm/cmd/upgrade/utils.go:74
 msgid "install podman before running this command"
 msgstr "installare podman prima di eseguire questo comando"
 
-#: mgradm/cmd/cmd.go:41
+#: mgradm/cmd/cmd.go:43
 msgid "Uyuni administration tool"
 msgstr "Strumento di amministrazione di Uyuni"
 
-#: mgradm/cmd/cmd.go:42
+#: mgradm/cmd/cmd.go:44
 msgid "Tool to help administering Uyuni servers in containers"
 msgstr "Strumento per aiutare ad amministrare i server Uyuni nei container"
 
-#: mgradm/cmd/cmd.go:49
+#: mgradm/cmd/cmd.go:51
 msgid "Server Deployment:"
 msgstr "Distribuzione del server:"
 
-#: mgradm/cmd/cmd.go:53
+#: mgradm/cmd/cmd.go:55
 msgid "Server Management:"
 msgstr "Gestione del server:"
 
-#: mgradm/cmd/cmd.go:57
+#: mgradm/cmd/cmd.go:59
 msgid "Administrator tools:"
 msgstr "Strumenti di amministrazione:"
 
-#: mgradm/cmd/cmd.go:67
+#: mgradm/cmd/cmd.go:69
 #, javascript-format
 msgid "Starting %s"
 msgstr "Inizio %s"
 
-#: mgradm/cmd/cmd.go:68
+#: mgradm/cmd/cmd.go:70
 msgid "Use of this software implies acceptance of the End User License Agreement."
 msgstr "L'utilizzo di questo software implica l'accettazione del Contratto di licenza con l'utente finale."
 
-#: mgradm/cmd/cmd.go:72
+#: mgradm/cmd/cmd.go:74
 msgid "configuration file path"
 msgstr "percorso del file di configuratione"
+
+#: mgradm/cmd/disable/disable.go:34
+#, fuzzy
+#| msgid "Restarting server service"
+msgid "Disable server services at boot"
+msgstr "Riavvio del servizio server in corso"
+
+#: mgradm/cmd/disable/disable.go:35
+msgid "Disable server services at boot without stopping them"
+msgstr ""
 
 #: mgradm/cmd/distro/cp.go:38
 #, javascript-format
@@ -846,6 +856,16 @@ msgstr "Mostra la mappa dei prodotti di distribuzione"
 #: mgradm/cmd/distro/distro.go:150
 msgid "failed to compute config help command"
 msgstr "impossibile calcolare il comando di aiuto alla configurazione"
+
+#: mgradm/cmd/enable/enable.go:34
+#, fuzzy
+#| msgid "Stopping server service"
+msgid "Enable server services at boot"
+msgstr "Interruzione del servizio server"
+
+#: mgradm/cmd/enable/enable.go:35
+msgid "Enable server services at boot without starting them"
+msgstr ""
 
 #: mgradm/cmd/gpg/add/gpg.go:36
 msgid "Add GPG keys for 3rd party repositories"
@@ -1273,11 +1293,22 @@ msgstr "Riutilizzo dei certificati server e database esistenti"
 msgid "Start the server"
 msgstr "avviare il server"
 
+#: mgradm/cmd/status/podman.go:26
+#, fuzzy
+#| msgid "Server SSL certificate generated"
+msgid "Server services are enabled"
+msgstr "Certificato SSL del server generato"
+
+#: mgradm/cmd/status/podman.go:28
+msgid "Server services are disabled"
+msgstr ""
+
 #: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
 msgid "Get the server status"
 msgstr "Ottieni lo stato del server"
 
-#: mgradm/cmd/status/status.go:46
+#: mgradm/cmd/status/status.go:46 mgradm/shared/podman/services.go:50
+#: mgradm/shared/podman/services.go:65
 msgid "no installed server detected"
 msgstr "nessun server installato rilevato"
 
@@ -1500,6 +1531,28 @@ msgstr "Elenca i tag disponibili per un'immagine"
 #: mgradm/cmd/upgrade/upgrade.go:65
 msgid "failed to unmarshall configuration"
 msgstr "impossibile eseguire l'unmarshall della configurazione"
+
+#: mgradm/cmd/upgrade/utils.go:32
+#, fuzzy, javascript-format
+#| msgid "failed to parse %s"
+msgid "failed to read %s"
+msgstr "impossibile analizzare %s"
+
+#: mgradm/cmd/upgrade/utils.go:45
+#, fuzzy, javascript-format
+#| msgid "failed to create keyring %s"
+msgid "failed to change permissions for %s"
+msgstr "impossibile creare il portachiavi %s"
+
+#: mgradm/cmd/upgrade/utils.go:49
+#, fuzzy, javascript-format
+#| msgid "failed to parse %s"
+msgid "failed to write %s"
+msgstr "impossibile analizzare %s"
+
+#: mgradm/cmd/upgrade/utils.go:52
+msgid "Legacy dual-stack IPv6 port bindings have been removed from uyuni-server.service. Please reboot the host and then run the upgrade command again"
+msgstr ""
 
 #: mgradm/shared/coco/coco.go:28
 msgid "Not altering the confidential computing service"
@@ -1767,6 +1820,10 @@ msgstr "Errore di migrazione di PostgreSQL"
 #: mgradm/shared/podman/podman.go:784
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr "I segreti %[1]s e %[2]s esistono già"
+
+#: mgradm/shared/podman/services.go:85
+msgid "Server services are disabled and will not start automatically at boot"
+msgstr ""
 
 #: mgradm/shared/podman/ssl.go:88
 msgid "Using provided 3rd party server certificates"
