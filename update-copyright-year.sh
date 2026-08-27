@@ -9,6 +9,9 @@ changed="n"
 current_year=$(date +%Y)
 for changed_file in $@; do
     case "$changed_file" in
+        .tito/packages/*)
+            continue
+            ;;
         go.mod|go.sum)
             continue
             ;;
