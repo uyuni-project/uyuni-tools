@@ -38,15 +38,15 @@ func podmanInspect(
 	}
 	inspectResult, err := podman.Inspect(preparedServerImage, preparedDBImage)
 	if err != nil {
-		return utils.Errorf(err, L("inspect command failed"))
+		return utils.Error(err, L("inspect command failed"))
 	}
 	prettyInspectOutput, err := json.MarshalIndent(inspectResult, "", "  ")
 	if err != nil {
-		return utils.Errorf(err, L("cannot print inspect result"))
+		return utils.Error(err, L("cannot print inspect result"))
 	}
 
 	outputString := "\n" + string(prettyInspectOutput)
-	log.Info().Msgf(outputString)
+	log.Info().Msg(outputString)
 
 	return nil
 }

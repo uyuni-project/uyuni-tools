@@ -51,7 +51,7 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 		err = client.Login()
 	}
 	if err != nil {
-		return utils.Errorf(err, L("unable to login and register the distribution. Manual distro registration is required"))
+		return utils.Error(err, L("unable to login and register the distribution. Manual distro registration is required"))
 	}
 
 	data := map[string]interface{}{
@@ -63,7 +63,7 @@ func registerDistro(connection *api.ConnectionDetails, distro *types.Distributio
 
 	_, err = client.PostChecked("kickstart/tree/create", "api.kickstart.tree.create", data)
 	if err != nil {
-		return utils.Errorf(err, L("unable to register the distribution. Manual distro registration is required"))
+		return utils.Error(err, L("unable to register the distribution. Manual distro registration is required"))
 	}
 	log.Info().Msgf(L("Distribution %s successfully registered"), distro.TreeLabel)
 	return nil
@@ -195,6 +195,6 @@ func distroCp(
 		return registerDistro(&flags.ConnectionDetails, &distribution, flags)
 	}
 
-	log.Info().Msgf(L("Continue by registering autoinstallation distribution"))
+	log.Info().Msg(L("Continue by registering autoinstallation distribution"))
 	return nil
 }
