@@ -164,7 +164,8 @@ func AskIfMissing(value *string, prompt string, minValue int, maxValue int, chec
 func YesNo(question string) (bool, error) {
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Printf("%s [y/N]?", question)
+		// Translators: This is appended to the end of a question. Choices are short for `yes` and `no`.
+		fmt.Printf(L("%s [y/N]"), question)
 
 		response, err := reader.ReadString('\n')
 		if err != nil {
@@ -173,10 +174,14 @@ func YesNo(question string) (bool, error) {
 
 		response = strings.ToLower(strings.TrimSpace(response))
 
-		if strings.ToLower(response) == "y" || strings.ToLower(response) == "yes" {
+		// Empty responses imply `no`.
+		if len(response) == 0 {
+			return false, nil
+		}
+		if strings.HasPrefix(L("yes"), response) {
 			return true, nil
 		}
-		if strings.ToLower(response) == "n" || strings.ToLower(response) == "no" {
+		if strings.HasPrefix(L("no"), response) {
 			return false, nil
 		}
 	}

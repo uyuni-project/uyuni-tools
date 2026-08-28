@@ -104,7 +104,7 @@ func gpgAddKeys(_ *types.GlobalFlags, flags *gpgAddFlags, _ *cobra.Command, args
 			continue
 		}
 		if !flags.Force {
-			ret, err := utils.YesNo(L("Do you really want to trust this key"))
+			ret, err := utils.YesNo(L("Do you really want to trust this key?"))
 			if err != nil {
 				return err
 			}

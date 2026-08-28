@@ -21,7 +21,7 @@ func Disable(flags *Flagpole) error {
 	if _, err := cnx.GetPodName(); err == nil {
 		wasRunning = true
 		if !flags.Force {
-			res, err := utils.YesNo(L("Database service needs to be restarted to reload backup configurations, continue"))
+			res, err := utils.YesNo(L("Database service needs to be restarted to reload backup configurations, continue?"))
 			if err != nil || !res {
 				log.Info().Msg(L("Backup reconfiguration aborted"))
 				return nil
