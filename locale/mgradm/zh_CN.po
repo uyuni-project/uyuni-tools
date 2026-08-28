@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-14 16:27+0200\n"
+"POT-Creation-Date: 2026-08-28 09:44+0200\n"
 "PO-Revision-Date: 2026-08-11 09:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
@@ -867,54 +867,54 @@ msgstr ""
 msgid "Add GPG keys for 3rd party repositories"
 msgstr "添加第三方储存库的 GPG 密钥"
 
-#: mgradm/cmd/gpg/add/gpg.go:44
+#: mgradm/cmd/gpg/add/gpg.go:45
 msgid "Import without asking confirmation"
 msgstr "不要求确认即导入"
 
-#: mgradm/cmd/gpg/add/gpg.go:60
+#: mgradm/cmd/gpg/add/gpg.go:61
 #, javascript-format
 msgid "failed to create folder %s"
 msgstr "无法创建文件夹 %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:65
+#: mgradm/cmd/gpg/add/gpg.go:66
 #, javascript-format
 msgid "failed to create keyring %s"
 msgstr "无法创建密钥环 %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:89
+#: mgradm/cmd/gpg/add/gpg.go:90
 #, javascript-format
 msgid "failed to parse %s"
 msgstr "无法解析 %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:96
+#: mgradm/cmd/gpg/add/gpg.go:97
 #, javascript-format
 msgid "failed to download %s"
 msgstr "无法下载 %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:102
+#: mgradm/cmd/gpg/add/gpg.go:103
 #, javascript-format
 msgid "failed to show key %s"
 msgstr "无法显示密钥 %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:106
+#: mgradm/cmd/gpg/add/gpg.go:107
 msgid "Do you really want to trust this key"
 msgstr "确实要信任此密钥吗"
 
-#: mgradm/cmd/gpg/add/gpg.go:118
+#: mgradm/cmd/gpg/add/gpg.go:119
 msgid "failed to copy %[1]s to %[2]s"
 msgstr "无法将 %[1]s 复制到 %[2]s"
 
-#: mgradm/cmd/gpg/add/gpg.go:128 mgradm/cmd/gpg/add/gpg.go:135
-#: mgradm/cmd/gpg/list/gpg.go:62 mgradm/cmd/support/sql/sql.go:188
+#: mgradm/cmd/gpg/add/gpg.go:129 mgradm/cmd/gpg/add/gpg.go:136
+#: mgradm/cmd/gpg/list/gpg.go:63 mgradm/cmd/support/sql/sql.go:188
 #, javascript-format
 msgid "Running %s"
 msgstr "正在运行 %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:130
+#: mgradm/cmd/gpg/add/gpg.go:131
 msgid "failed to run import key"
 msgstr "无法运行导入密钥"
 
-#: mgradm/cmd/gpg/add/gpg.go:137
+#: mgradm/cmd/gpg/add/gpg.go:138
 msgid "failed to restart uyuni-update-config"
 msgstr "无法重启 uyuni-update-config"
 
@@ -930,11 +930,11 @@ msgstr "列出 GPG 密钥"
 msgid "List GPG keys from custom keyring (default) or system keyring"
 msgstr "列出自定义密钥环（默认）或系统密钥环中的 GPG 密钥"
 
-#: mgradm/cmd/gpg/list/gpg.go:41
+#: mgradm/cmd/gpg/list/gpg.go:42
 msgid "List keys from system keyring"
 msgstr "列出系统密钥环中的密钥"
 
-#: mgradm/cmd/gpg/list/gpg.go:66
+#: mgradm/cmd/gpg/list/gpg.go:67
 msgid "failed to list keys in selected keyring"
 msgstr "无法列出所选密钥环中的密钥"
 

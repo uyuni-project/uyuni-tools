@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 15:35+0200\n"
+"POT-Creation-Date: 2026-08-28 09:44+0200\n"
 "PO-Revision-Date: 2026-05-12 12:04+0000\n"
 "Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/it/>\n"
@@ -92,7 +92,8 @@ msgstr "Rimuovi le informazioni di accesso memorizzate"
 msgid "Logout removes stored login information."
 msgstr "Logout rimuove le informazioni di accesso memorizzate."
 
-#: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28
+#: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28 mgrctl/cmd/gpg/list.go:84
+#: mgrctl/cmd/gpg/remove.go:55 mgrctl/cmd/gpg/upload.go:91
 #: mgrctl/cmd/ssh/knownhost/remove.go:64
 msgid "unable to login to the server"
 msgstr "impossibile effettuare il login al server"
@@ -119,19 +120,19 @@ msgstr "credenziali di login verificate."
 msgid "Successfully logged out"
 msgstr "Disconnesso con successo"
 
-#: mgrctl/cmd/cmd.go:32
+#: mgrctl/cmd/cmd.go:33
 msgid "Uyuni control tool"
 msgstr "Strumento di controllo Uyuni"
 
-#: mgrctl/cmd/cmd.go:33
+#: mgrctl/cmd/cmd.go:34
 msgid "Tool to help managing Uyuni servers mainly through their API"
 msgstr "Strumento per aiutare a gestire i server Uyuni principalmente attraverso la loro API"
 
-#: mgrctl/cmd/cmd.go:40
+#: mgrctl/cmd/cmd.go:41
 msgid "configuration file path"
 msgstr "percorso del file di configuratione"
 
-#: mgrctl/cmd/cmd.go:48
+#: mgrctl/cmd/cmd.go:49
 #, javascript-format
 msgid "Starting %s"
 msgstr "Inizio %s"
@@ -192,6 +193,107 @@ msgstr "non posso scrivere"
 #, javascript-format
 msgid "Running %s"
 msgstr "Esecuzione %s"
+
+#: mgrctl/cmd/gpg/gpg.go:24
+#, fuzzy
+#| msgid "SSH management commands"
+msgid "GPG key management commands"
+msgstr "Gestione comandi SSH"
+
+#: mgrctl/cmd/gpg/gpg.go:29
+#, fuzzy
+#| msgid "failed to connect to the server"
+msgid "Upload a GPG key to the server"
+msgstr "impossibile connettersi al server"
+
+#: mgrctl/cmd/gpg/gpg.go:30
+msgid "Uploads an armored GPG key to the server from a local file or a remote URL."
+msgstr ""
+
+#: mgrctl/cmd/gpg/gpg.go:39
+msgid "List all GPG keys on the server"
+msgstr ""
+
+#: mgrctl/cmd/gpg/gpg.go:40
+msgid "Retrieves a list of registered and/or previously uploaded GPG keys."
+msgstr ""
+
+#: mgrctl/cmd/gpg/gpg.go:48
+msgid "Remove a GPG key from the server"
+msgstr ""
+
+#: mgrctl/cmd/gpg/gpg.go:49
+msgid "Removes a key identified by its fingerprint from the server's GPG keyring."
+msgstr ""
+
+#: mgrctl/cmd/gpg/list.go:33
+msgid "error listing GPG keys"
+msgstr ""
+
+#: mgrctl/cmd/gpg/list.go:37
+#, fuzzy, javascript-format
+#| msgid "failed to remove the host: %s"
+msgid "failed to list GPG keys: %s"
+msgstr "impossibile connettersi all'host: %s"
+
+#: mgrctl/cmd/gpg/remove.go:29
+msgid "error removing GPG key"
+msgstr ""
+
+#: mgrctl/cmd/gpg/remove.go:33
+#, fuzzy, javascript-format
+#| msgid "failed to remove the host: %s"
+msgid "failed to remove GPG key: %s"
+msgstr "impossibile connettersi all'host: %s"
+
+#: mgrctl/cmd/gpg/remove.go:37
+#, fuzzy
+#| msgid "successfully removed host"
+msgid "GPG key successfully removed"
+msgstr "host rimosso con successo"
+
+#: mgrctl/cmd/gpg/remove.go:39
+#, fuzzy
+#| msgid "unable to remove host, server returned an error"
+msgid "unable to remove GPG key, server returned an error"
+msgstr "impossible rimuovere l'host, il server ha restituito un errore"
+
+#: mgrctl/cmd/gpg/upload.go:34
+msgid "error uploading GPG key"
+msgstr ""
+
+#: mgrctl/cmd/gpg/upload.go:38
+#, javascript-format
+msgid "failed to upload GPG key: %s"
+msgstr ""
+
+#: mgrctl/cmd/gpg/upload.go:42
+#, fuzzy
+#| msgid "Successfully logged out"
+msgid "GPG key successfully uploaded"
+msgstr "Disconnesso con successo"
+
+#: mgrctl/cmd/gpg/upload.go:44
+#, fuzzy
+#| msgid "unable to remove host, server returned an error"
+msgid "unable to upload GPG key, server returned an error"
+msgstr "impossible rimuovere l'host, il server ha restituito un errore"
+
+#: mgrctl/cmd/gpg/upload.go:58
+#, fuzzy, javascript-format
+#| msgid "failed to remove the host: %s"
+msgid "failed to read key file %s"
+msgstr "impossibile connettersi all'host: %s"
+
+#: mgrctl/cmd/gpg/upload.go:64
+#, fuzzy, javascript-format
+#| msgid "failed to remove the host: %s"
+msgid "failed to download key from %s"
+msgstr "impossibile connettersi all'host: %s"
+
+#: mgrctl/cmd/gpg/upload.go:71
+msgid "the provided key is not an armored GPG key"
+msgstr ""
 
 #: mgrctl/cmd/proxy/config.go:72 mgrctl/cmd/proxy/config.go:73
 msgid "Create a proxy configuration file"

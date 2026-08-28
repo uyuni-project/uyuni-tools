@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-14 16:27+0200\n"
+"POT-Creation-Date: 2026-08-28 09:44+0200\n"
 "PO-Revision-Date: 2026-05-16 14:19+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
@@ -871,54 +871,54 @@ msgstr ""
 msgid "Add GPG keys for 3rd party repositories"
 msgstr "Aggiungi chiavi GPG per repository di terze parti"
 
-#: mgradm/cmd/gpg/add/gpg.go:44
+#: mgradm/cmd/gpg/add/gpg.go:45
 msgid "Import without asking confirmation"
 msgstr "Importa senza chiedere conferma"
 
-#: mgradm/cmd/gpg/add/gpg.go:60
+#: mgradm/cmd/gpg/add/gpg.go:61
 #, javascript-format
 msgid "failed to create folder %s"
 msgstr "impossibile creare la cartella %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:65
+#: mgradm/cmd/gpg/add/gpg.go:66
 #, javascript-format
 msgid "failed to create keyring %s"
 msgstr "impossibile creare il portachiavi %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:89
+#: mgradm/cmd/gpg/add/gpg.go:90
 #, javascript-format
 msgid "failed to parse %s"
 msgstr "impossibile analizzare %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:96
+#: mgradm/cmd/gpg/add/gpg.go:97
 #, javascript-format
 msgid "failed to download %s"
 msgstr "impossibile scaricare %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:102
+#: mgradm/cmd/gpg/add/gpg.go:103
 #, javascript-format
 msgid "failed to show key %s"
 msgstr "impossibile mostrare la chiave %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:106
+#: mgradm/cmd/gpg/add/gpg.go:107
 msgid "Do you really want to trust this key"
 msgstr "Vuoi davvero fidarti di questa chiave"
 
-#: mgradm/cmd/gpg/add/gpg.go:118
+#: mgradm/cmd/gpg/add/gpg.go:119
 msgid "failed to copy %[1]s to %[2]s"
 msgstr "Copia di %[1]s in %[2]s non riuscita"
 
-#: mgradm/cmd/gpg/add/gpg.go:128 mgradm/cmd/gpg/add/gpg.go:135
-#: mgradm/cmd/gpg/list/gpg.go:62 mgradm/cmd/support/sql/sql.go:188
+#: mgradm/cmd/gpg/add/gpg.go:129 mgradm/cmd/gpg/add/gpg.go:136
+#: mgradm/cmd/gpg/list/gpg.go:63 mgradm/cmd/support/sql/sql.go:188
 #, javascript-format
 msgid "Running %s"
 msgstr "Esecuzione %s"
 
-#: mgradm/cmd/gpg/add/gpg.go:130
+#: mgradm/cmd/gpg/add/gpg.go:131
 msgid "failed to run import key"
 msgstr "impossibile eseguire la chiave di importazione"
 
-#: mgradm/cmd/gpg/add/gpg.go:137
+#: mgradm/cmd/gpg/add/gpg.go:138
 msgid "failed to restart uyuni-update-config"
 msgstr "impossibile riavviare uyuni-update-config"
 
@@ -934,11 +934,11 @@ msgstr "Elenco chiavi GPG"
 msgid "List GPG keys from custom keyring (default) or system keyring"
 msgstr "Elenca le chiavi GPG dal portachiavi personalizzato (predefinito) o dal portachiavi di sistema"
 
-#: mgradm/cmd/gpg/list/gpg.go:41
+#: mgradm/cmd/gpg/list/gpg.go:42
 msgid "List keys from system keyring"
 msgstr "Elenca le chiavi dal portachiavi di sistema"
 
-#: mgradm/cmd/gpg/list/gpg.go:66
+#: mgradm/cmd/gpg/list/gpg.go:67
 msgid "failed to list keys in selected keyring"
 msgstr "impossibile elencare le chiavi nel portachiavi selezionato"
 
