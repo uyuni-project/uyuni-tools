@@ -18,6 +18,7 @@ func AddUpgradeFlags(cmd *cobra.Command) {
 	adm_utils.AddDBUpgradeImageFlag(cmd)
 	adm_utils.AddUpgradeCocoFlag(cmd)
 	adm_utils.AddUpgradeHubXmlrpcFlags(cmd)
+	adm_utils.AddEventProcessorFlag(cmd, true)
 	adm_utils.AddUpgradeSalineFlag(cmd)
 	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "tftpd-container", Title: L("TFTPD Flags")})
 	utils.AddTFTPDFlags(cmd, true, "tftpd-container")

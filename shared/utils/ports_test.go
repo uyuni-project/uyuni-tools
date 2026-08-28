@@ -12,10 +12,10 @@ import (
 
 func TestGetServerPorts(t *testing.T) {
 	allPorts := len(WebPorts) + len(SaltPorts) +
-		len(TaskoPorts) + len(TomcatPorts) + len(SearchPorts) + len(DBExporterPorts)
+		len(TaskoPorts) + len(TomcatPorts) + len(SearchPorts) + len(DBExporterPorts) + len(EventProcessorPorts)
 
 	ports := GetServerPorts(false)
-	testutils.AssertEquals(t, "Wrong number of ports without debug ones", allPorts-3, len(ports))
+	testutils.AssertEquals(t, "Wrong number of ports without debug ones", allPorts-4, len(ports))
 
 	ports = GetServerPorts(true)
 	testutils.AssertEquals(t, "Wrong number of ports with debug ones", allPorts, len(ports))

@@ -70,8 +70,12 @@ var TftpPorts = []types.PortMap{
 	},
 }
 
+var EventProcessorPorts = []types.PortMap{
+	NewPortMap(8004),
+}
+
 const debugPortsStart = 8001
-const debugPortsEnd = 8003
+const debugPortsEnd = 8004
 
 // GetServerPorts returns all the server container ports.
 //
@@ -84,6 +88,7 @@ func GetServerPorts(debug bool) []types.PortMap {
 	ports = appendPorts(ports, debug, TomcatPorts...)
 	ports = appendPorts(ports, debug, SearchPorts...)
 	ports = appendPorts(ports, debug, DBExporterPorts...)
+	ports = appendPorts(ports, debug, EventProcessorPorts...)
 
 	return ports
 }
