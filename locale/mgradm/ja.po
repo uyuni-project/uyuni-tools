@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-14 16:27+0200\n"
+"POT-Creation-Date: 2026-08-28 09:44+0200\n"
 "PO-Revision-Date: 2026-08-17 04:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
@@ -867,54 +867,54 @@ msgstr ""
 msgid "Add GPG keys for 3rd party repositories"
 msgstr "サードパーティリポジトリ用のGPGキーを追加する"
 
-#: mgradm/cmd/gpg/add/gpg.go:44
+#: mgradm/cmd/gpg/add/gpg.go:45
 msgid "Import without asking confirmation"
 msgstr "確認を求めずにインポートする"
 
-#: mgradm/cmd/gpg/add/gpg.go:60
+#: mgradm/cmd/gpg/add/gpg.go:61
 #, javascript-format
 msgid "failed to create folder %s"
 msgstr "フォルダ %s の作成に失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:65
+#: mgradm/cmd/gpg/add/gpg.go:66
 #, javascript-format
 msgid "failed to create keyring %s"
 msgstr "キーリング %s の作成に失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:89
+#: mgradm/cmd/gpg/add/gpg.go:90
 #, javascript-format
 msgid "failed to parse %s"
 msgstr "%s の解析に失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:96
+#: mgradm/cmd/gpg/add/gpg.go:97
 #, javascript-format
 msgid "failed to download %s"
 msgstr "%s のダウンロードに失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:102
+#: mgradm/cmd/gpg/add/gpg.go:103
 #, javascript-format
 msgid "failed to show key %s"
 msgstr "キー %s の表示に失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:106
+#: mgradm/cmd/gpg/add/gpg.go:107
 msgid "Do you really want to trust this key"
 msgstr "このキーを本当に信頼しますか"
 
-#: mgradm/cmd/gpg/add/gpg.go:118
+#: mgradm/cmd/gpg/add/gpg.go:119
 msgid "failed to copy %[1]s to %[2]s"
 msgstr "%[1]s を %[2]s にコピーできませんでした"
 
-#: mgradm/cmd/gpg/add/gpg.go:128 mgradm/cmd/gpg/add/gpg.go:135
-#: mgradm/cmd/gpg/list/gpg.go:62 mgradm/cmd/support/sql/sql.go:188
+#: mgradm/cmd/gpg/add/gpg.go:129 mgradm/cmd/gpg/add/gpg.go:136
+#: mgradm/cmd/gpg/list/gpg.go:63 mgradm/cmd/support/sql/sql.go:188
 #, javascript-format
 msgid "Running %s"
 msgstr "%s を実行中"
 
-#: mgradm/cmd/gpg/add/gpg.go:130
+#: mgradm/cmd/gpg/add/gpg.go:131
 msgid "failed to run import key"
 msgstr "インポートキーの実行に失敗しました"
 
-#: mgradm/cmd/gpg/add/gpg.go:137
+#: mgradm/cmd/gpg/add/gpg.go:138
 msgid "failed to restart uyuni-update-config"
 msgstr "uyuni-update-configの再起動に失敗しました"
 
@@ -930,11 +930,11 @@ msgstr "GPGキーを一覧にする"
 msgid "List GPG keys from custom keyring (default) or system keyring"
 msgstr "カスタムキーリング(デフォルト)またはシステムキーリングからのGPGキーを一覧にする"
 
-#: mgradm/cmd/gpg/list/gpg.go:41
+#: mgradm/cmd/gpg/list/gpg.go:42
 msgid "List keys from system keyring"
 msgstr "システムキーリングからのキーを一覧にする"
 
-#: mgradm/cmd/gpg/list/gpg.go:66
+#: mgradm/cmd/gpg/list/gpg.go:67
 msgid "failed to list keys in selected keyring"
 msgstr "選択したキーリングのキーを一覧にできませんでした"
 
