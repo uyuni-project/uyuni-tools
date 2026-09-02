@@ -1,0 +1,1 @@
+- Require running Uyuni services before mgradm upgrade (gh#12520)
