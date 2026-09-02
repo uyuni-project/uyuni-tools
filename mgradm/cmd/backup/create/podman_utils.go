@@ -110,7 +110,7 @@ func backupPodmanSecrets(dryRun bool) ([]byte, error) {
 	secretMappings := []SecretMap{}
 	for _, v := range strings.Split(string(output), ",") {
 		tmp := strings.SplitN(v, ":", 2)
-		// Ignore different length, usually last emptry string
+		// Ignore different length, usually last empty string
 		if len(tmp) == 2 {
 			secretMappings = append(secretMappings, SecretMap{Name: tmp[0], ID: tmp[1]})
 		}
