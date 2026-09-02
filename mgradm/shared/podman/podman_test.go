@@ -5,12 +5,60 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
+	"strings"
 	"testing"
 
+	sharedPodman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
+
+func TestPrepareHostPreservesInspectionErrors(t *testing.T) {
+	originalInspect := inspect
+	t.Cleanup(func() { inspect = originalInspect })
+	inspect = func(_, _ string) (*utils.InspectData, error) {
+		return nil, errors.New("database inspection failed")
+	}
+
+	_, err := prepareHost("server-image", "postgres-image")
+	if err == nil {
+		t.Fatal("expected prepareHost to return an error")
+	}
+	if !strings.Contains(err.Error(), "cannot inspect podman values: database inspection failed") {
+		t.Fatalf("expected the original inspection error, got: %v", err)
+	}
+}
+
+func TestEnsureServicesRunning(t *testing.T) {
+	cases := []struct {
+		name    string
+		running []string
+		wantErr bool
+	}{
+		{name: "both services running", running: []string{sharedPodman.ServerService, sharedPodman.DBService}},
+		{name: "server stopped", running: []string{sharedPodman.DBService}, wantErr: true},
+		{name: "database stopped", running: []string{sharedPodman.ServerService}, wantErr: true},
+	}
+
+	for _, testCase := range cases {
+		t.Run(testCase.name, func(t *testing.T) {
+			systemd := sharedPodman.NewSystemdWithDriver(&testutils.FakeSystemdDriver{Running: testCase.running})
+			err := ensureServicesRunning(systemd)
+			if testCase.wantErr && err == nil {
+				t.Fatal("expected an error")
+			}
+			if !testCase.wantErr && err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if testCase.wantErr && !strings.Contains(err.Error(), "Uyuni server and database services must be running") {
+				t.Fatalf("expected an actionable error message, got: %v", err)
+			}
+		})
+	}
+}
 
 func TestHasDebugPorts(t *testing.T) {
 	data := map[string]bool{
