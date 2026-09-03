@@ -5,8 +5,30 @@
 package utils
 
 import (
+	"fmt"
+	"net"
+
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
+
+// CheckPort checks whether a container port can be bound on the host.
+func CheckPort(port types.PortMap) error {
+	address := fmt.Sprintf(":%d", port.Exposed)
+	if port.Protocol == "udp" {
+		listener, err := net.ListenPacket("udp", address)
+		if err != nil {
+			return Errorf(err, L("port %[1]d/%[2]s is already in use"), port.Exposed, port.Protocol)
+		}
+		return listener.Close()
+	}
+
+	listener, err := net.Listen("tcp", address)
+	if err != nil {
+		return Errorf(err, L("port %d/tcp is already in use"), port.Exposed)
+	}
+	return listener.Close()
+}
 
 // NewPortMap is a constructor for PortMap type.
 func NewPortMap(port int) types.PortMap {
