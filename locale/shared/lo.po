@@ -1,0 +1,1580 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-28 09:44+0200\n"
+"PO-Revision-Date: 2026-08-28 16:13+0000\n"
+"Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
+"Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/lo/>\n"
+"Language: lo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2026.8.1\n"
+
+#: shared/api/api.go:29
+msgid "FQDN of the server to connect to"
+msgstr "FQDN ຂອງເຊີເວີທີ່ຈະເຊື່ອມຕໍ່"
+
+#: shared/api/api.go:30
+msgid "API user username"
+msgstr "ຊື່ຜູ້ໃຊ້ຂອງ API"
+
+#: shared/api/api.go:31
+msgid "Password for the API user"
+msgstr "ລະຫັດຜ່ານສຳລັບຜູ້ໃຊ້ API"
+
+#: shared/api/api.go:32
+msgid "Path to a cert file of the CA"
+msgstr "ເສັ້ນທາງໄປຫາໄຟລ໌ໃບຢັ້ງຢືນຂອງ CA"
+
+#: shared/api/api.go:33
+msgid "If set, server certificate will not be checked for validity"
+msgstr "ຫາກຕັ້ງໄວ້, ໃບຢັ້ງຢືນຂອງເຊີເວີຈະບໍ່ຖືກກວດສອບຄວາມຖືກຕ້ອງ"
+
+#: shared/api/api.go:74
+msgid "401: unauthorized"
+msgstr "401: ບໍ່ໄດ້ຮັບອະນຸຍາດ"
+
+#: shared/api/api.go:88
+#, javascript-format
+msgid "unknown error: %d"
+msgstr "ເກີດຂໍ້ຜິດພາດທີ່ບໍ່ຮູ້ຈັກ: %d"
+
+#: shared/api/api.go:120
+msgid "server URL is not provided"
+msgstr "ບໍ່ໄດ້ລະບຸ URL ຂອງເຊີເວີ"
+
+#: shared/api/api.go:152
+msgid "Cached session is expired."
+msgstr "ເຊດຊັນທີ່ບັນທຶກໄວ້ໝົດອາຍຸແລ້ວ."
+
+#: shared/api/api.go:154 shared/api/credentials.go:70
+msgid "Failed to remove stored credentials!"
+msgstr "ລຶບຂໍ້ມູນການເຂົ້າລະບົບທີ່ບັນທຶກໄວ້ບໍ່ສຳເລັດ!"
+
+#: shared/api/api.go:172
+msgid "Unable to create login data"
+msgstr "ບໍ່ສາມາດສ້າງຂໍ້ມູນການເຂົ້າລະບົບໄດ້"
+
+#: shared/api/api.go:202
+msgid "auth cookie not found in login response"
+msgstr "ບໍ່ພົບ auth cookie ໃນການຕອບສະໜອງການເຂົ້າລະບົບ"
+
+#: shared/api/api.go:217
+msgid "failed to logout from the server"
+msgstr "ອອກຈາກລະບົບເຊີເວີບໍ່ສຳເລັດ"
+
+#: shared/api/api.go:238
+msgid "Unable to convert data to JSON"
+msgstr "ບໍ່ສາມາດແປງຂໍ້ມູນເປັນ JSON ໄດ້"
+
+#: shared/api/credentials.go:21
+msgid "not logged in, session cookie is missing"
+msgstr "ບໍ່ໄດ້ເຂົ້າລະບົບ, ຄຸກກີ້ເຊດຊັນຫາຍໄປ"
+
+#: shared/api/credentials.go:34
+msgid "unable to create credentials json"
+msgstr "ບໍ່ສາມາດສ້າງ json ຂໍ້ມູນການເຂົ້າລະບົບໄດ້"
+
+#: shared/api/credentials.go:39
+#, javascript-format
+msgid "unable to write credentials store %s"
+msgstr "ບໍ່ສາມາດຂຽນບ່ອນເກັບຂໍ້ມູນການເຂົ້າລະບົບ %s"
+
+#: shared/api/credentials.go:53
+msgid "API server URL"
+msgstr "URL ຂອງເຊີເວີ API"
+
+#: shared/api/credentials.go:54
+msgid "API server user"
+msgstr "ຜູ້ໃຊ້ເຊີເວີ API"
+
+#: shared/api/credentials.go:55
+msgid "API server password"
+msgstr "ລະຫັດຜ່ານເຊີເວີ API"
+
+#: shared/api/credentials.go:58
+msgid "No credentials provided"
+msgstr "ບໍ່ມີການລະບຸຂໍ້ມູນການເຂົ້າລະບົບ"
+
+#: shared/api/credentials.go:68
+msgid "Cannot load stored credentials"
+msgstr "ບໍ່ສາມາດໂຫຼດຂໍ້ມູນການເຂົ້າລະບົບທີ່ບັນທຶກໄວ້ໄດ້"
+
+#: shared/api/credentials.go:83
+#, javascript-format
+msgid "unable to read credentials file %s"
+msgstr "ບໍ່ສາມາດອ່ານໄຟລ໌ຂໍ້ມູນການເຂົ້າລະບົບ %s"
+
+#: shared/api/credentials.go:88
+msgid "unable to decode credentials file"
+msgstr "ບໍ່ສາມາດຖອດລະຫັດໄຟລ໌ຂໍ້ມູນການເຂົ້າລະບົບໄດ້"
+
+#: shared/api/credentials.go:92
+msgid "no credentials loaded"
+msgstr "ບໍ່ມີຂໍ້ມູນການເຂົ້າລະບົບທີ່ຖືກໂຫຼດ"
+
+#: shared/api/credentials.go:101
+msgid "specified api server does not match with stored credentials"
+msgstr "ເຊີເວີ api ທີ່ລະບຸບໍ່ກົງກັບຂໍ້ມູນການເຂົ້າລະບົບທີ່ບັນທຶກໄວ້"
+
+#: shared/api/org/createFirst.go:22
+msgid "unable to prepare API client"
+msgstr "ບໍ່ສາມາດກຽມ API client ໄດ້"
+
+#: shared/api/org/createFirst.go:36
+msgid "failed to create first user and organization"
+msgstr "ສ້າງຜູ້ໃຊ້ ແລະ ອົງກອນທຳອິດບໍ່ສຳເລັດ"
+
+#: shared/api/org/getDetails.go:24
+msgid "failed to connect to the server"
+msgstr "ເຊື່ອມຕໍ່ຫາເຊີເວີບໍ່ສຳເລັດ"
+
+#: shared/api/org/getDetails.go:30
+msgid "failed to get organization details"
+msgstr "ດຶງຂໍ້ມູນລາຍລະອຽດຂອງອົງກອນບໍ່ສຳເລັດ"
+
+#: shared/api/proxy/containerConfig.go:34
+msgid "failed to create proxy configuration file"
+msgstr "ສ້າງໄຟລ໌ການຕັ້ງຄ່າພຣັອກຊີບໍ່ສຳເລັດ"
+
+#: shared/completion/completion.go:20 shared/completion/completion.go:21
+msgid "Generate shell completion script"
+msgstr "ສ້າງສະຄຣິບ shell completion"
+
+#: shared/completion/completion.go:30 shared/completion/completion.go:34
+#: shared/completion/completion.go:38
+#, javascript-format
+msgid "cannot generate %s completion"
+msgstr "ບໍ່ສາມາດສ້າງ %s completion ໄດ້"
+
+#: shared/connection.go:83
+#, javascript-format
+msgid "backend command not found in PATH: %s"
+msgstr "ບໍ່ພົບຄຳສັ່ງ backend ໃນ PATH: %s"
+
+#: shared/connection.go:99
+msgid "kubectl not configured to connect to a cluster, ignoring"
+msgstr "kubectl ບໍ່ໄດ້ຖືກຕັ້ງຄ່າໃຫ້ເຊື່ອມຕໍ່ກັບຄລັສເຕີ, ກຳລັງຂ້າມໄປ"
+
+#: shared/connection.go:136
+msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
+msgstr "ບໍ່ສາມາດເຂົ້າເຖິງຄອນເທນເນີ uyuni ດ້ວຍ podman, podman-remote ຫຼື kubectl"
+
+#: shared/connection.go:139
+#, javascript-format
+msgid "unsupported backend %s"
+msgstr "ບໍ່ຮອງຮັບ backend %s"
+
+#: shared/connection.go:174
+msgid "coundn't find app name"
+msgstr "ບໍ່ພົບຊື່ແອັບພລິເຄຊັນ"
+
+#: shared/connection.go:184
+msgid "failed to guest namespace"
+msgstr "ຄາດເດົາ namespace ບໍ່ສຳເລັດ"
+
+#: shared/connection.go:206
+#, javascript-format
+msgid "container %s is not running on podman"
+msgstr "ຄອນເທນເນີ %s ບໍ່ໄດ້ເຮັດວຽກຢູ່ໃນ podman"
+
+#: shared/connection.go:215
+#, javascript-format
+msgid "container labeled %s is not running on kubectl"
+msgstr "ຄອນເທນເນີທີ່ມີປ້າຍກຳກັບ %s ບໍ່ໄດ້ເຮັດວຽກຢູ່ໃນ kubectl"
+
+#: shared/connection.go:232
+#, javascript-format
+msgid "%s command not executed:"
+msgstr "ຄຳສັ່ງ %s ບໍ່ໄດ້ຖືກດຳເນີນການ:"
+
+#: shared/connection.go:252
+msgid "failed to retrieve namespace "
+msgstr "ດຶງຂໍ້ມູນ namespace ບໍ່ສຳເລັດ "
+
+#: shared/connection.go:284
+msgid "failed to create temporary file"
+msgstr "ສ້າງໄຟລ໌ຊົ່ວຄາວບໍ່ສຳເລັດ"
+
+#: shared/connection.go:289
+msgid "failed to write script to temporary file"
+msgstr "ຂຽນສະຄຣິບລົງໄຟລ໌ຊົ່ວຄາວບໍ່ສຳເລັດ"
+
+#: shared/connection.go:297
+msgid "failed to copy script to container"
+msgstr "ຄັດລອກສະຄຣິບໄປຍັງຄອນເທນເນີບໍ່ສຳເລັດ"
+
+#: shared/connection.go:313
+msgid "Healthcheck not executed"
+msgstr "ບໍ່ໄດ້ດຳເນີນການກວດສອບສະຖານະ (Healthcheck)"
+
+#: shared/connection.go:335
+msgid "not healthy or running"
+msgstr "ສະຖານະບໍ່ປົກກະຕິ ຫຼື ບໍ່ໄດ້ເຮັດວຽກຢູ່"
+
+#: shared/connection.go:369
+msgid "container didn't start within 10s."
+msgstr "ຄອນເທນເນີບໍ່ເລີ່ມຕົ້ນພາຍໃນ 10 ວິນາທີ."
+
+#: shared/connection.go:384
+msgid "container didn't start within 15s or failed. Check the service status"
+msgstr "ຄອນເທນເນີບໍ່ເລີ່ມຕົ້ນພາຍໃນ 15 ວິນາທີ ຫຼື ຜິດພາດ. ກະລຸນາກວດສອບສະຖານະການບໍລິການ"
+
+#: shared/connection.go:455 shared/connection.go:514
+#, javascript-format
+msgid "unknown container kind: %s"
+msgstr "ບໍ່ຮູ້ຈັກປະເພດຄອນເທນເນີ: %s"
+
+#: shared/connection.go:507
+msgid "failed to detect the namespace"
+msgstr "ກວດຫາ namespace ບໍ່ສຳເລັດ"
+
+#: shared/connection.go:525
+msgid "Copying the SSL CA certificate to the host"
+msgstr "ກຳລັງຄັດລອກໃບຢັ້ງຢືນ SSL CA ໄປຍັງໂຮສຕ໌"
+
+#: shared/connection.go:544
+msgid "Updating host trusted certificates"
+msgstr "ກຳລັງອັບເດດໃບຢັ້ງຢືນທີ່ເຊື່ອຖືໄດ້ຂອງໂຮສຕ໌"
+
+#: shared/connection.go:555
+msgid "Unable to update host trusted certificates."
+msgstr "ບໍ່ສາມາດອັບເດດໃບຢັ້ງຢືນທີ່ເຊື່ອຖືໄດ້ຂອງໂຮສຕ໌."
+
+#: shared/connection.go:596 shared/connection.go:617
+msgid "failed to determine suitable backend"
+msgstr "ກວດຫາ backend ທີ່ເໝາະສົມບໍ່ສຳເລັດ"
+
+#: shared/connection.go:606
+msgid "no supported backend found"
+msgstr "ບໍ່ພົບ backend ທີ່ຮອງຮັບ"
+
+#: shared/connection.go:637 shared/utils/support.go:102
+msgid "failed to generate supportconfig suffix: %w"
+msgstr "ສ້າງນາມສະກຸນ supportconfig ບໍ່ສຳເລັດ: %w"
+
+#: shared/connection.go:649 shared/utils/support.go:116
+#, javascript-format
+msgid "failed to generate unique supportconfig batch name after %d attempts"
+msgstr "ສ້າງຊື່ຊຸດ supportconfig ທີ່ບໍ່ຊໍ້າກັນບໍ່ສຳເລັດ ຫຼັງຈາກພະຍາຍາມ %d ຄັ້ງ"
+
+#: shared/connection.go:653
+#, javascript-format
+msgid "Running supportconfig in %s"
+msgstr "ກຳລັງລັນ supportconfig ໃນ %s"
+
+#: shared/connection.go:660 shared/utils/support.go:122
+msgid "Some parts of supportconfig were not successful"
+msgstr "ບາງສ່ວນຂອງ supportconfig ບໍ່ສຳເລັດ"
+
+#: shared/connection.go:665
+msgid "cannot copy support config"
+msgstr "ບໍ່ສາມາດຄັດລອກ support config ໄດ້"
+
+#: shared/connection.go:671
+#, javascript-format
+msgid "failed to remove %s directory in the container"
+msgstr "ລຶບໄດເຣັກທໍຣີ %s ໃນຄອນເທນເນີບໍ່ສຳເລັດ"
+
+#: shared/kubernetes/kubernetes.go:52
+msgid "failed to get kubelet version"
+msgstr "ດຶງຂໍ້ມູນເວີຊັນຂອງ kubelet ບໍ່ສຳເລັດ"
+
+#: shared/kubernetes/kubernetes.go:67
+#, javascript-format
+msgid "cannot stop %s"
+msgstr "ບໍ່ສາມາດຢຸດ %s ໄດ້"
+
+#: shared/kubernetes/support.go:27
+msgid "cannot retrieve any configmap"
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນ configmap ໃດໆໄດ້"
+
+#: shared/kubernetes/support.go:34
+msgid "cannot retrieve any pod"
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນ pod ໃດໆໄດ້"
+
+#: shared/kubernetes/support.go:45
+#, javascript-format
+msgid "cannot create %s"
+msgstr "ບໍ່ສາມາດສ້າງ %s ໄດ້"
+
+#: shared/kubernetes/support.go:50
+msgid "cannot fetch configmap"
+msgstr "ບໍ່ສາມາດດຶງຂໍ້ມູນ configmap ໄດ້"
+
+#: shared/kubernetes/support.go:63
+#, javascript-format
+msgid "cannot check for pods in %s"
+msgstr "ບໍ່ສາມາດກວດສອບ pod ໃນ %s ໄດ້"
+
+#: shared/kubernetes/support.go:70
+#, javascript-format
+msgid "failed to create %s"
+msgstr "ສ້າງ %s ບໍ່ສຳເລັດ"
+
+#: shared/kubernetes/support.go:76
+#, javascript-format
+msgid "failed to fetch info for pod %s"
+msgstr "ດຶງຂໍ້ມູນສຳລັບ pod %s ບໍ່ສຳເລັດ"
+
+#: shared/kubernetes/support.go:82
+#, javascript-format
+msgid "failed to write in %s"
+msgstr "ຂຽນລົງໃນ %s ບໍ່ສຳເລັດ"
+
+#: shared/kubernetes/utils.go:59
+msgid "failed to parse deployment status"
+msgstr "ແປຄວາມໝາຍສະຖານະການ deployment ບໍ່ສຳເລັດ"
+
+#: shared/kubernetes/utils.go:71
+#, javascript-format
+msgid "cannot run kubectl %s"
+msgstr "ບໍ່ສາມາດລັນ kubectl %s ໄດ້"
+
+#: shared/kubernetes/utils.go:88 shared/kubernetes/utils.go:109
+#, javascript-format
+msgid "cannot execute %s"
+msgstr "ບໍ່ສາມາດດຳເນີນການ %s ໄດ້"
+
+#: shared/kubernetes/utils.go:117
+msgid "invalid replicas result"
+msgstr "ຜົນລັບ replicas ບໍ່ຖືກຕ້ອງ"
+
+#: shared/kubernetes/utils.go:142
+#, javascript-format
+msgid "cannot find node name matching filter %s"
+msgstr "ບໍ່ພົບຊື່ node ທີ່ກົງກັບຕົວຕອງ %s"
+
+#: shared/podman/hostinspector.go:54
+msgid "failed to run inspect script in host system"
+msgstr "ລັນສະຄຣິບກວດສອບໃນລະບົບໂຮສຕ໌ບໍ່ສຳເລັດ"
+
+#: shared/podman/hostinspector.go:59
+msgid "cannot inspect host data"
+msgstr "ບໍ່ສາມາດກວດສອບຂໍ້ມູນໂຮສຕ໌ໄດ້"
+
+#: shared/podman/images.go:36
+#, javascript-format
+msgid "Cannot prepare image %s because registry is missing"
+msgstr "ບໍ່ສາມາດກຽມອິເມຈ %s ໄດ້ເນື່ອງຈາກບໍ່ພົບເລຈິດສະຕຣີ"
+
+#: shared/podman/images.go:39
+#, javascript-format
+msgid "Cannot prepare image %s because tag is missing"
+msgstr "ບໍ່ສາມາດກຽມອິເມຈ %s ໄດ້ເນື່ອງຈາກບໍ່ພົບແທັກ (tag)"
+
+#: shared/podman/images.go:43
+#, javascript-format
+msgid "Ensure image %s is available"
+msgstr "ກວດສອບໃຫ້ແນ່ໃຈວ່າອິເມຈ %s ພ້ອມໃຊ້ງານ"
+
+#: shared/podman/images.go:57
+msgid "Pull Policy is always. Presence of RPM image will be checked and pulled from registry if not present"
+msgstr "ນະໂຍບາຍການດຶງຂໍ້ມູນແມ່ນ Always. ຈະກວດສອບອິເມຈ RPM ແລະ ດຶງຈາກເລຈິດສະຕຣີຫາກບໍ່ມີຢູ່"
+
+#: shared/podman/images.go:74
+#, javascript-format
+msgid "image %s is missing and cannot be fetched"
+msgstr "ບໍ່ພົບອິເມຈ %s ແລະ ບໍ່ສາມາດດຶງຂໍ້ມູນໄດ້"
+
+#: shared/podman/images.go:81
+#, javascript-format
+msgid "Cannot find RPM image for %s"
+msgstr "ບໍ່ພົບອິເມຈ RPM ສຳລັບ %s"
+
+#: shared/podman/images.go:89
+#, javascript-format
+msgid "Cannot use RPM image for %s"
+msgstr "ບໍ່ສາມາດໃຊ້ງານອິເມຈ RPM ສຳລັບ %s ໄດ້"
+
+#: shared/podman/images.go:93
+msgid "Using the %[1]s image loaded from the RPM instead of its online version %[2]s"
+msgstr "ກຳລັງໃຊ້ງານອິເມຈ %[1]s ທີ່ໂຫຼດຈາກ RPM ແທນເວີຊັນອອນລາຍ %[2]s"
+
+#: shared/podman/images.go:105
+msgid "failed to determine image"
+msgstr "ລະບຸອິເມຈບໍ່ສຳເລັດ"
+
+#: shared/podman/images.go:113
+msgid "failed to find the image of the currently running server container"
+msgstr "ບໍ່ພົບອິເມຈຂອງຄອນເທນເນີເຊີເວີທີ່ກຳລັງເຮັດວຽກຢູ່"
+
+#: shared/podman/images.go:124
+msgid "failed to determine pgsql image"
+msgstr "ລະບຸອິເມຈ pgsql ບໍ່ສຳເລັດ"
+
+#: shared/podman/images.go:132
+msgid "failed to find the image of the currently running db container"
+msgstr "ບໍ່ພົບອິເມຈຂອງຄອນເທນເນີຖານຂໍ້ມູນທີ່ກຳລັງເຮັດວຽກຢູ່"
+
+#: shared/podman/images.go:157
+#, javascript-format
+msgid "Cannot correctly parse image name '%s', local image cannot be used"
+msgstr "ບໍ່ສາມາດອ່ານຊື່ອິເມຈ '%s' ໄດ້ຖືກຕ້ອງ, ບໍ່ສາມາດໃຊ້ອິເມຈພາຍໃນເຄື່ອງໄດ້"
+
+#: shared/podman/images.go:175
+msgid "cannot unmarshal image RPM metadata"
+msgstr "ບໍ່ສາມາດອ່ານ metadata ຂອງອິເມຈ RPM ໄດ້"
+
+#: shared/podman/images.go:194
+#, javascript-format
+msgid "skipping loading image from RPM as %s doesn't exist"
+msgstr "ຂ້າມການໂຫຼດອິເມຈຈາກ RPM ເນື່ອງຈາກ %s ບໍ່ມີຢູ່"
+
+#: shared/podman/images.go:224
+#, javascript-format
+msgid "Cannot unmarshal metadata file %s"
+msgstr "ບໍ່ສາມາດອ່ານໄຟລ໌ metadata %s ໄດ້"
+
+#: shared/podman/images.go:246
+#, javascript-format
+msgid "error parsing: %s"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການອ່ານ: %s"
+
+#: shared/podman/images.go:254 shared/podman/images.go:268
+#: shared/podman/images.go:283
+#, javascript-format
+msgid "failed to check if image %s has already been pulled"
+msgstr "ກວດສອບບໍ່ສຳເລັດວ່າອິເມຈ %s ຖືກດຶງມາແລ້ວຫຼືບໍ່"
+
+#: shared/podman/images.go:290
+#, javascript-format
+msgid "%s should contains just lower case character, otherwise podman pull would fails"
+msgstr "%s ຄວນມີແຕ່ຕົວອັກສອນພິມນ້ອຍເທົ່ານັ້ນ, ບໍ່ດັ່ງນັ້ນ podman pull ຈະຜິດພາດ"
+
+#: shared/podman/images.go:292
+#, javascript-format
+msgid "Running podman pull %s"
+msgstr "ກຳລັງລັນ podman pull %s"
+
+#: shared/podman/images.go:304
+#, javascript-format
+msgid "Running podman image search --list-tags %s --format={{.Tag}}"
+msgstr "ກຳລັງລັນ podman image search --list-tags %s"
+
+#: shared/podman/images.go:318
+#, javascript-format
+msgid "cannot find any tag for image %s"
+msgstr "ບໍ່ພົບແທັກ (tag) ໃດໆສຳລັບອິເມຈ %s"
+
+#: shared/podman/images.go:332
+#, javascript-format
+msgid "Running podman ps --filter=name=%s --format={{ .Image }}"
+msgstr "ກຳລັງລັນ podman ps ເພື່ອຫາອິເມຈຂອງ %s"
+
+#: shared/podman/images.go:338
+#, javascript-format
+msgid "cannot find any running image for container %s"
+msgstr "ບໍ່ພົບອິເມຈທີ່ກຳລັງເຮັດວຽກສຳລັບຄອນເທນເນີ %s"
+
+#: shared/podman/images.go:371 shared/podman/images.go:392
+#: shared/podman/images.go:412 shared/podman/network.go:108
+#: shared/podman/secret.go:158 shared/podman/systemd.go:303
+#: shared/podman/systemd.go:382 shared/podman/systemd.go:383
+#: shared/podman/utils.go:204 shared/podman/utils.go:237
+#: shared/podman/utils.go:266
+#, javascript-format
+msgid "Would run %s"
+msgstr "ຈະດຳເນີນການ %s"
+
+#: shared/podman/images.go:373 shared/podman/images.go:394
+#: shared/podman/images.go:414 shared/podman/utils.go:206
+#: shared/podman/utils.go:240 shared/podman/utils.go:277
+#, javascript-format
+msgid "Run %s"
+msgstr "ລັນ %s"
+
+#: shared/podman/images.go:376
+#, javascript-format
+msgid "Failed to remove image %s"
+msgstr "ລຶບອິເມຈ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/images.go:397
+#, javascript-format
+msgid "Failed to export image %s"
+msgstr "ສົ່ງອອກອິເມຈ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/images.go:417
+#, javascript-format
+msgid "Failed to restore image %s"
+msgstr "ກູ້ຄືນອິເມຈ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/login.go:28
+msgid "Registry is registry.suse.com. Using SCC credentials."
+msgstr "ເລຈິດສະຕຣີແມ່ນ registry.suse.com. ກຳລັງໃຊ້ຂໍ້ມູນການເຂົ້າລະບົບ SCC."
+
+#: shared/podman/login.go:30
+msgid "SCC credentials has been provided, SCChost credentials will be ignored."
+msgstr "ມີການລະບຸຂໍ້ມູນ SCC ແລ້ວ, ຈະຂ້າມຂໍ້ມູນ SCChost ໄປ."
+
+#: shared/podman/login.go:35
+msgid "Registry parameters will be used. SCC credentials from host will be ignored."
+msgstr "ຈະໃຊ້ພະລາມິເຕີຂອງເລຈິດສະຕຣີ. ຈະຂ້າມຂໍ້ມູນ SCC ຈາກໂຮສຕ໌."
+
+#: shared/podman/login.go:60 shared/podman/login.go:66
+#, javascript-format
+msgid "failed to set authentication for %s"
+msgstr "ຕັ້ງຄ່າການຢືນຢັນຕົວຕົນສຳລັບ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/login.go:72
+#, javascript-format
+msgid "failed to close the temporary auth file. Cannot set authentication for %s"
+msgstr "ປິດໄຟລ໌ຢືນຢັນຕົວຕົນຊົ່ວຄາວບໍ່ສຳເລັດ. ບໍ່ສາມາດຕັ້ງຄ່າການຢືນຢັນຕົວຕົນສຳລັບ %s"
+
+#: shared/podman/network.go:32
+#, javascript-format
+msgid "Setting up %s network"
+msgstr "ກຳລັງຕັ້ງຄ່າເຄືອຂ່າຍ %s"
+
+#: shared/podman/network.go:43
+#, javascript-format
+msgid "%s network doesn't have IPv6, deleting existing network to enable IPv6 on it"
+msgstr "ເຄືອຂ່າຍ %s ບໍ່ມີ IPv6, ກຳລັງລຶບເຄືອຂ່າຍເກົ່າເພື່ອເປີດໃຊ້ IPv6"
+
+#: shared/podman/network.go:47
+#, javascript-format
+msgid "failed to remove %s podman network"
+msgstr "ລຶບເຄືອຂ່າຍ podman %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/network.go:50
+#, javascript-format
+msgid "Reusing existing %s network"
+msgstr "ກຳລັງໃຊ້ເຄືອຂ່າຍ %s ທີ່ມີຢູ່ຄືນໃໝ່"
+
+#: shared/podman/network.go:66
+msgid "failed to find podman's network backend"
+msgstr "ບໍ່ພົບ network backend ຂອງ podman"
+
+#: shared/podman/network.go:68
+msgid "Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"
+msgstr "network backend ຂອງ Podman (%[1]s) ບໍ່ແມ່ນ netavark, ກຳລັງຂ້າມການເປີດໃຊ້ IPv6 ໃນເຄືອຂ່າຍ %[2]s"
+
+#: shared/podman/network.go:77
+#, javascript-format
+msgid "failed to create %s network with IPv6 enabled"
+msgstr "ສ້າງເຄືອຂ່າຍ %s ພ້ອມເປີດໃຊ້ IPv6 ບໍ່ສຳເລັດ"
+
+#: shared/podman/network.go:105
+#, javascript-format
+msgid "Network %s already removed"
+msgstr "ເຄືອຂ່າຍ %s ຖືກລຶບອອກແລ້ວ"
+
+#: shared/podman/network.go:112
+#, javascript-format
+msgid "Failed to remove network %s"
+msgstr "ລຶບເຄືອຂ່າຍ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/network.go:114
+msgid "Network removed"
+msgstr "ລຶບເຄືອຂ່າຍອອກແລ້ວ"
+
+#: shared/podman/secret.go:68
+msgid "Secrets %[1]s and %[2]s, already exists"
+msgstr "ຄວາມລັບ (Secrets) %[1]s ແລະ %[2]s ມີຢູ່ແລ້ວ"
+
+#: shared/podman/secret.go:86 shared/podman/secret.go:98
+#: shared/podman/secret.go:102
+#, javascript-format
+msgid "failed to create %s secret"
+msgstr "ສ້າງຄວາມລັບ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/secret.go:117
+#, javascript-format
+msgid "failed to write %s secret to file"
+msgstr "ຂຽນຄວາມລັບ %s ລົງໄຟລ໌ບໍ່ສຳເລັດ"
+
+#: shared/podman/secret.go:132
+#, javascript-format
+msgid "failed to create podman secret %s"
+msgstr "ສ້າງ podman secret %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/secret.go:162
+#, javascript-format
+msgid "Failed to delete %s secret"
+msgstr "ລຶບຄວາມລັບ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/secret.go:173
+#, javascript-format
+msgid "failed to get the content of the %s secret"
+msgstr "ດຶງຂໍ້ມູນເນື້ອໃນຂອງຄວາມລັບ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/support.go:26
+msgid "No logs file on host to add to the archive"
+msgstr "ບໍ່ພົບໄຟລ໌ບັນທຶກ (logs) ໃນໂຮສຕ໌ເພື່ອເພີ່ມເຂົ້າໃນໄຟລ໌ຈັດເກັບ"
+
+#: shared/podman/support.go:33
+msgid "No systemd file to add to the archive"
+msgstr "ບໍ່ພົບໄຟລ໌ systemd ເພື່ອເພີ່ມເຂົ້າໃນໄຟລ໌ຈັດເກັບ"
+
+#: shared/podman/support.go:46 shared/podman/support.go:120
+#: shared/podman/support.go:150
+#, javascript-format
+msgid "failed to run podman inspect %s"
+msgstr "ລັນ podman inspect %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/support.go:52
+#, javascript-format
+msgid "failed to fetch the config files bound to container %s"
+msgstr "ດຶງໄຟລ໌ການຕັ້ງຄ່າທີ່ຜູກກັບຄອນເທນເນີ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/support.go:58
+#, javascript-format
+msgid "failed to run podman logs %s"
+msgstr "ລັນ podman logs %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/support.go:70 shared/podman/support.go:90
+#: shared/podman/support.go:115 shared/podman/support.go:138
+#, javascript-format
+msgid "failed to create %s file"
+msgstr "ສ້າງໄຟລ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/support.go:75
+#, javascript-format
+msgid "failed to cat %s"
+msgstr "ສະແດງເນື້ອໃນ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/support.go:95
+msgid "failed to run systemctl cat uyuni-*"
+msgstr "ລັນ systemctl cat uyuni-* ບໍ່ສຳເລັດ"
+
+#: shared/podman/support.go:111
+msgid "failed to close inspect dump file"
+msgstr "ປິດໄຟລ໌ inspect dump ບໍ່ສຳເລັດ"
+
+#: shared/podman/support.go:134
+msgid "failed to close bound files"
+msgstr "ປິດໄຟລ໌ທີ່ຜູກໄວ້ບໍ່ສຳເລັດ"
+
+#: shared/podman/support.go:172
+#, javascript-format
+msgid "failed create %s file"
+msgstr "ສ້າງໄຟລ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/support.go:177
+#, javascript-format
+msgid "failed to run journalctl -u %s"
+msgstr "ລັນ journalctl -u %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:122
+#, javascript-format
+msgid "failed to disable %s systemd service"
+msgstr "ປິດການໃຊ້ງານ systemd service %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:132
+msgid "failed to reset-failed systemd"
+msgstr "ລ້າງສະຖານະຜິດພາດຂອງ systemd ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:136
+msgid "failed to reload systemd daemon"
+msgstr "ໂຫຼດ systemd daemon ຄືນໃໝ່ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:153
+#, javascript-format
+msgid "failed to restart systemd %s.service"
+msgstr "ເລີ່ມຕົ້ນ systemd %s.service ໃໝ່ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:161
+#, javascript-format
+msgid "failed to start systemd %s.service"
+msgstr "ເລີ່ມ systemd %s.service ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:169
+#, javascript-format
+msgid "failed to stop systemd %s.service"
+msgstr "ຢຸດ systemd %s.service ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:181
+#, javascript-format
+msgid "failed to enable %s systemd service"
+msgstr "ເປີດໃຊ້ງານ systemd service %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:193
+#, javascript-format
+msgid "failed to enable %s systemd unit"
+msgstr ""
+
+#: shared/podman/systemd.go:205
+#, javascript-format
+msgid "failed to disable %s systemd unit"
+msgstr ""
+
+#: shared/podman/systemd.go:217
+msgid "Failed to get the %[1]s property from %[2]s service"
+msgstr "ດຶງຄຸນສົມບັດ %[1]s ຈາກການບໍລິການ %[2]s ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:229
+msgid "Failed to get the definition from %[2]s service"
+msgstr "ດຶງຄຳນິຍາມຈາກການບໍລິການ %[2]s ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:300
+#, javascript-format
+msgid "Systemd has no %s.service unit"
+msgstr "Systemd ບໍ່ມີ unit %s.service"
+
+#: shared/podman/systemd.go:305
+#, javascript-format
+msgid "Disable %s service"
+msgstr "ປິດການບໍລິການ %s"
+
+#: shared/podman/systemd.go:320 shared/podman/systemd.go:338
+#, javascript-format
+msgid "Would remove %s"
+msgstr "ຈະລຶບ %s"
+
+#: shared/podman/systemd.go:323 shared/podman/systemd.go:340
+#, javascript-format
+msgid "Remove %s"
+msgstr "ລຶບ %s"
+
+#: shared/podman/systemd.go:325
+#, javascript-format
+msgid "Failed to remove %s.service file"
+msgstr "ລຶບໄຟລ໌ %s.service ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:342
+#, javascript-format
+msgid "Failed to remove %s file"
+msgstr "ລຶບໄຟລ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:349
+#, javascript-format
+msgid "Would remove %s if empty"
+msgstr "ຈະລຶບ %s ຫາກເປັນໂຟນເດີຫວ່າງ"
+
+#: shared/podman/systemd.go:356
+#, javascript-format
+msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
+msgstr "ໂຟນເດີ %s ມີໄຟລ໌ທີ່ສ້າງໂດຍຜູ້ໃຊ້. ກະລຸນາລຶບອອກເມື່ອການຖອນການຕິດຕັ້ງສຳເລັດ."
+
+#: shared/podman/systemd.go:368
+#, javascript-format
+msgid "Would scale %s to 0 replicas"
+msgstr "ຈະປັບຂະໜາດ %s ເປັນ 0 replica"
+
+#: shared/podman/systemd.go:371
+#, javascript-format
+msgid "Failed to disable %s service"
+msgstr "ປິດການບໍລິການ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:470
+msgid "Service %[1]s already has %[2]d replicas."
+msgstr "ການບໍລິການ %[1]s ມີ %[2]d replica ແລ້ວ."
+
+#: shared/podman/systemd.go:473
+msgid "Scale %[1]s from %[2]d to %[3]d replicas."
+msgstr "ປັບຂະໜາດ %[1]s ຈາກ %[2]d ເປັນ %[3]d replica."
+
+#: shared/podman/systemd.go:477
+msgid "cannot enable service"
+msgstr "ບໍ່ສາມາດເປີດໃຊ້ການບໍລິການໄດ້"
+
+#: shared/podman/systemd.go:483
+msgid "cannot disable service"
+msgstr "ບໍ່ສາມາດປິດການບໍລິການໄດ້"
+
+#: shared/podman/systemd.go:493
+msgid "failed to show %[1]s property of %[2] systemd service"
+msgstr "ສະແດງຄຸນສົມບັດ %[1]s ຂອງ systemd service %[2] ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:508
+#, javascript-format
+msgid "failed to create %s folder"
+msgstr "ສ້າງໂຟນເດີ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:518
+#, javascript-format
+msgid "cannot write %s file"
+msgstr "ບໍ່ສາມາດຂຽນໄຟລ໌ %s ໄດ້"
+
+#: shared/podman/systemd.go:562
+#, javascript-format
+msgid "failed to write %s file"
+msgstr "ຂຽນໄຟລ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:567
+#, javascript-format
+msgid "failed to remove old %s systemd service configuration file"
+msgstr "ລຶບໄຟລ໌ການຕັ້ງຄ່າ systemd service %s ເກົ່າບໍ່ສຳເລັດ"
+
+#: shared/podman/utils.go:80
+msgid "Extra arguments to pass to podman"
+msgstr "ພະລາມິເຕີເພີ່ມເຕີມທີ່ຈະສົ່ງໃຫ້ podman"
+
+#: shared/podman/utils.go:87
+msgid "failed to enable podman.socket unit"
+msgstr "ເປີດໃຊ້ງານ podman.socket ບໍ່ສຳເລັດ"
+
+#: shared/podman/utils.go:108 shared/podman/utils.go:137
+#, javascript-format
+msgid "failed to run %s container"
+msgstr "ລັນຄອນເທນເນີ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/utils.go:148
+msgid "Would run podman kill %[1]s for container id %[2]s"
+msgstr "ຈະລັນ podman kill %[1]s ສຳລັບໄອດີ ຄອນເທນເນີ %[2]s"
+
+#: shared/podman/utils.go:149
+msgid "Would run podman remove %[1]s for container id %[2]s"
+msgstr "ຈະລັນ podman remove %[1]s ສຳລັບໄອດີ ຄອນເທນເນີ %[2]s"
+
+#: shared/podman/utils.go:151
+msgid "Run podman kill %[1]s for container id %[2]s"
+msgstr "ລັນ podman kill %[1]s ສຳລັບໄອດີ ຄອນເທນເນີ %[2]s"
+
+#: shared/podman/utils.go:154
+msgid "Failed to kill the server"
+msgstr "ຢຸດການເຮັດວຽກຂອງເຊີເວີແບບບັງຄັບບໍ່ສຳເລັດ"
+
+#: shared/podman/utils.go:156
+msgid "Run podman remove %[1]s for container id %[2]s"
+msgstr "ລັນ podman remove %[1]s ສຳລັບໄອດີ ຄອນເທນເນີ %[2]s"
+
+#: shared/podman/utils.go:159
+msgid "Error removing container"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການລຶບຄອນເທນເນີ"
+
+#: shared/podman/utils.go:164
+msgid "Container already removed"
+msgstr "ຄອນເທນເນີຖືກລຶບອອກແລ້ວ"
+
+#: shared/podman/utils.go:172
+#, javascript-format
+msgid "failed to get %s systemd service definition"
+msgstr "ດຶງຄຳນິຍາມ systemd service %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/utils.go:179
+#, javascript-format
+msgid "no UYUNI.*_IMAGE defined in %s systemd service"
+msgstr "ບໍ່ມີການກຳນົດ UYUNI.*_IMAGE ໃນ systemd service %s"
+
+#: shared/podman/utils.go:218
+#, javascript-format
+msgid "Volume %s is externally mounted, directory cannot be removed"
+msgstr "ໂວນລຸມ %s ຖືກເຊື່ອມຕໍ່ຈາກພາຍນອກ, ບໍ່ສາມາດລຶບໄດເຣັກທໍຣີໄດ້"
+
+#: shared/podman/utils.go:242
+#, javascript-format
+msgid "Failed to export volume %s"
+msgstr "ສົ່ງອອກໂວນລຸມ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/utils.go:245
+msgid "Failed to write checksum of volume %[1]s to the %[2]s"
+msgstr "ຂຽນຄ່າກວດສອບ (checksum) ຂອງໂວນລຸມ %[1]s ລົງໃນ %[2]s ບໍ່ສຳເລັດ"
+
+#: shared/podman/utils.go:271
+#, javascript-format
+msgid "Checksum does not match for volume %s"
+msgstr "ຄ່າກວດສອບບໍ່ກົງກັນສຳລັບໂວນລຸມ %s"
+
+#: shared/podman/utils.go:275
+#, javascript-format
+msgid "Failed to precreate empty volume %s"
+msgstr "ສ້າງໂວນລຸມຫວ່າງເປົ່າ %s ລ່ວງໜ້າບໍ່ສຳເລັດ"
+
+#: shared/podman/utils.go:279
+#, javascript-format
+msgid "Failed to import volume %s"
+msgstr "ນຳເຂົ້າໂວນລຸມ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/utils.go:283
+#, javascript-format
+msgid "Unable to restore selinux context for %s, manual action is required"
+msgstr "ບໍ່ສາມາດກູ້ຄືນ selinux context ສຳລັບ %s ໄດ້, ຕ້ອງໄດ້ດຳເນີນການດ້ວຍຕົນເອງ"
+
+#: shared/podman/utils.go:391 shared/podman/utils.go:414
+msgid "cannot inspect data"
+msgstr "ບໍ່ສາມາດກວດສອບຂໍ້ມູນໄດ້"
+
+#: shared/ssl/flags.go:20
+msgid "SSL certificate cnames separated by commas"
+msgstr "cnames ຂອງໃບຢັ້ງຢືນ SSL ແຍກດ້ວຍຈຸດ"
+
+#: shared/ssl/flags.go:21
+msgid "SSL certificate country"
+msgstr "ປະເທດໃນໃບຢັ້ງຢືນ SSL"
+
+#: shared/ssl/flags.go:22
+msgid "SSL certificate state"
+msgstr "ແຂວງ/ລັດ ໃນໃບຢັ້ງຢືນ SSL"
+
+#: shared/ssl/flags.go:23
+msgid "SSL certificate city"
+msgstr "ເມືອງ ໃນໃບຢັ້ງຢືນ SSL"
+
+#: shared/ssl/flags.go:24
+msgid "SSL certificate organization"
+msgstr "ອົງກອນ ໃນໃບຢັ້ງຢືນ SSL"
+
+#: shared/ssl/flags.go:25
+msgid "SSL certificate organization unit"
+msgstr "ໜ່ວຍງານໃນອົງກອນ ໃນໃບຢັ້ງຢືນ SSL"
+
+#: shared/ssl/flags.go:27
+msgid "SSL Certificate Flags"
+msgstr "Flags ຂອງໃບຢັ້ງຢືນ SSL"
+
+#: shared/ssl/flags.go:38
+msgid "Intermediate CA certificate path"
+msgstr "ເສັ້ນທາງໄຟລ໌ໃບຢັ້ງຢືນ Intermediate CA"
+
+#: shared/ssl/flags.go:39 shared/ssl/flags.go:53
+msgid "Root CA certificate path"
+msgstr "ເສັ້ນທາງໄຟລ໌ໃບຢັ້ງຢືນ Root CA"
+
+#: shared/ssl/flags.go:40
+msgid "Server certificate path"
+msgstr "ເສັ້ນທາງໄຟລ໌ໃບຢັ້ງຢືນເຊີເວີ"
+
+#: shared/ssl/flags.go:41
+msgid "Server key path"
+msgstr "ເສັ້ນທາງໄຟລ໌ຄີ (key) ຂອງເຊີເວີ"
+
+#: shared/ssl/flags.go:43 shared/ssl/flags.go:57 shared/ssl/flags.go:71
+msgid "3rd Party SSL Certificate Flags"
+msgstr "Flags ຂອງໃບຢັ້ງຢືນ SSL ຈາກພາຍນອກ"
+
+#: shared/ssl/flags.go:55 shared/ssl/flags.go:67
+msgid "Root CA certificate path for the database if different from the server one"
+msgstr "ເສັ້ນທາງໃບຢັ້ງຢືນ Root CA ສຳລັບຖານຂໍ້ມູນ ຫາກຕ່າງຈາກຂອງເຊີເວີ"
+
+#: shared/ssl/flags.go:65
+msgid "Intermediate CA certificate path for the database if different from the server one"
+msgstr "ເສັ້ນທາງໃບຢັ້ງຢືນ Intermediate CA ສຳລັບຖານຂໍ້ມູນ ຫາກຕ່າງຈາກຂອງເຊີເວີ"
+
+#: shared/ssl/flags.go:68
+msgid "Database certificate path"
+msgstr "ເສັ້ນທາງໄຟລ໌ໃບຢັ້ງຢືນຖານຂໍ້ມູນ"
+
+#: shared/ssl/flags.go:69
+msgid "Database key path"
+msgstr "ເສັ້ນທາງໄຟລ໌ຄີ (key) ຂອງຖານຂໍ້ມູນ"
+
+#: shared/ssl/ssl.go:71
+msgid "Failed to find a non-CA certificate"
+msgstr "ບໍ່ພົບໃບຢັ້ງຢືນທີ່ບໍ່ແມ່ນ CA"
+
+#: shared/ssl/ssl.go:112
+msgid "expected to find a certificate, got none"
+msgstr "ບໍ່ພົບໃບຢັ້ງຢືນຕາມທີ່ຄາດໄວ້"
+
+#: shared/ssl/ssl.go:118
+#, javascript-format
+msgid "Failed to read certificate file %s"
+msgstr "ອ່ານໄຟລ໌ໃບຢັ້ງຢືນ %s ບໍ່ສຳເລັດ"
+
+#: shared/ssl/ssl.go:157
+#, javascript-format
+msgid ""
+"Failed to extract data from certificate:\n"
+"%s"
+msgstr ""
+"ດຶງຂໍ້ມູນຈາກໃບຢັ້ງຢືນບໍ່ສຳເລັດ:\n"
+"%s"
+
+#: shared/ssl/ssl.go:178
+#, javascript-format
+msgid "Failed to parse start date: %s\n"
+msgstr "ອ່ານວັນທີເລີ່ມຕົ້ນບໍ່ສຳເລັດ: %s\n"
+
+#: shared/ssl/ssl.go:184
+#, javascript-format
+msgid "Failed to parse end date: %s\n"
+msgstr "ອ່ານວັນທີໝົດອາຍຸບໍ່ສຳເລັດ: %s\n"
+
+#: shared/ssl/ssl.go:216
+#, javascript-format
+msgid "Basic constraints for CA should be marked as `%s`, could cause issues otherwise!"
+msgstr "Basic constraints ສຳລັບ CA ຄວນຖືກລະບຸເປັນ `%s`, ບໍ່ດັ່ງນັ້ນອາດເກີດບັນຫາໄດ້!"
+
+#: shared/ssl/ssl.go:238
+msgid "no CA certificate found in the files"
+msgstr "ບໍ່ພົບໃບຢັ້ງຢືນ CA ໃນໄຟລ໌"
+
+#: shared/ssl/ssl.go:247 shared/ssl/ssl.go:260
+msgid ""
+"please check the CA chain, including intermediate CA certificates provided.\n"
+"The chain is missing the CA with subject %[1]s (hash: %[2]s)"
+msgstr ""
+"ກະລຸນາກວດສອບ CA chain, ລວມທັງໃບຢັ້ງຢືນ intermediate CA ທີ່ລະບຸ.\n"
+"ໃນ chain ຍັງຂາດ CA ທີ່ມີຫົວຂໍ້ %[1]s (hash: %[2]s)"
+
+#: shared/ssl/ssl.go:290
+msgid "server certificate is required"
+msgstr "ຈຳເປັນຕ້ອງມີໃບຢັ້ງຢືນເຊີເວີ"
+
+#: shared/ssl/ssl.go:293 shared/ssl/ssl.go:358
+msgid "server key is required"
+msgstr "ຈຳເປັນຕ້ອງມີຄີ (key) ເຊີເວີ"
+
+#: shared/ssl/ssl.go:308
+#, javascript-format
+msgid "%s file is not accessible"
+msgstr "ບໍ່ສາມາດເຂົ້າເຖິງໄຟລ໌ %s ໄດ້"
+
+#: shared/ssl/ssl.go:317
+msgid "Source server SSL CA private key password"
+msgstr "ລະຫັດຜ່ານ private key ຂອງ SSL CA ຂອງເຊີເວີຕົ້ນທາງ"
+
+#: shared/ssl/ssl.go:323
+msgid "Failed to open openssl rsa process input stream"
+msgstr "ເປີດ input stream ຂອງຂະບວນການ openssl rsa ບໍ່ສຳເລັດ"
+
+#: shared/ssl/ssl.go:326
+msgid "Failed to write openssl key content to input stream"
+msgstr "ຂຽນເນື້ອໃນຄີ openssl ລົງໃນ input stream ບໍ່ສຳເລັດ"
+
+#: shared/ssl/ssl.go:332
+msgid "Failed to convert CA private key to RSA"
+msgstr "ແປງ CA private key ເປັນ RSA ບໍ່ສຳເລັດ"
+
+#: shared/ssl/ssl.go:342
+msgid "Failed to open openssl x509 process input stream"
+msgstr "ເປີດ input stream ຂອງຂະບວນການ openssl x509 ບໍ່ສຳເລັດ"
+
+#: shared/ssl/ssl.go:345
+msgid "Failed to write SSL certificate to input stream"
+msgstr "ຂຽນໃບຢັ້ງຢືນ SSL ລົງໃນ input stream ບໍ່ສຳເລັດ"
+
+#: shared/ssl/ssl.go:349
+msgid "failed to strip text part from CA certificate"
+msgstr "ລຶບສ່ວນຂໍ້ຄວາມອອກຈາກໃບຢັ້ງຢືນ CA ບໍ່ສຳເລັດ"
+
+#: shared/ssl/ssl.go:364
+msgid "Invalid SSL key, it is probably encrypted"
+msgstr "ຄີ SSL ບໍ່ຖືກຕ້ອງ, ອາດຈະຖືກເຂົ້າລະຫັດໄວ້"
+
+#: shared/ssl/ssl.go:383
+#, javascript-format
+msgid "failed to validate hostname %s"
+msgstr "ກວດສອບຄວາມຖືກຕ້ອງຂອງຊື່ໂຮສຕ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/utils/cmd.go:119
+msgid "cannot decode into Registry"
+msgstr "ບໍ່ສາມາດຖອດລະຫັດເຂົ້າໃນເລຈິດສະຕຣີໄດ້"
+
+#: shared/utils/cmd.go:127
+msgid ""
+"tool to use to reach the container. Possible values: 'podman', 'podman-remote', 'kubectl'.\n"
+"Default guesses which to use."
+msgstr ""
+"ເຄື່ອງມືທີ່ໃຊ້ເພື່ອເຂົ້າເຖິງຄອນເທນເນີ. ຄ່າທີ່ເປັນໄປໄດ້: 'podman', 'podman-remote', 'kubectl'.\n"
+"ໂດຍເລີ່ມຕົ້ນຈະຄາດເດົາເຄື່ອງມືທີ່ຈະໃຊ້ເອງ."
+
+#: shared/utils/cmd.go:143
+msgid "set whether to pull the images or not. The value can be one of 'Never', 'IfNotPresent' or 'Always'"
+msgstr "ຕັ້ງຄ່າວ່າຈະດຶງອິເມຈມາຫຼືບໍ່. ຄ່າສາມາດເປັນ 'Never', 'IfNotPresent' ຫຼື 'Always'"
+
+#: shared/utils/cmd.go:147
+msgid "Specify a registry where to pull the images from"
+msgstr "ລະບຸເລຈິດສະຕຣີທີ່ຈະດຶງອິເມຈມາ"
+
+#: shared/utils/cmd.go:150
+msgid "Specify a registry where to pull the images from. It will be concatenated with image name"
+msgstr "ລະບຸເລຈິດສະຕຣີທີ່ຈະດຶງອິເມຈມາ. ມັນຈະຖືກຕໍ່ເຂົ້າກັບຊື່ອິເມຈ"
+
+#: shared/utils/cmd.go:151
+msgid "User if registry requires an authentication"
+msgstr "ຊື່ຜູ້ໃຊ້ ຫາກເລຈິດສະຕຣີຕ້ອງການການຢືນຢັນຕົວຕົນ"
+
+#: shared/utils/cmd.go:152
+msgid "Password if registry requires an authentication"
+msgstr "ລະຫັດຜ່ານ ຫາກເລຈິດສະຕຣີຕ້ອງການການຢືນຢັນຕົວຕົນ"
+
+#: shared/utils/cmd.go:154
+msgid "Registry Flags"
+msgstr "Flags ຂອງເລຈິດສະຕຣີ"
+
+#: shared/utils/cmd.go:162
+msgid "PTF ID"
+msgstr "PTF ID"
+
+#: shared/utils/cmd.go:163
+msgid "Test package ID"
+msgstr "ID ຂອງແພັກເກັດທົດສອບ"
+
+#: shared/utils/cmd.go:164
+msgid "SCC user"
+msgstr "ຜູ້ໃຊ້ SCC"
+
+#: shared/utils/cmd.go:182
+msgid "Actually remove the server"
+msgstr "ລຶບເຊີເວີອອກແທ້ໆ"
+
+#: shared/utils/cmd.go:183
+msgid "Also remove the volumes"
+msgstr "ລຶບໂວນລຸມ (volumes) ນຳ"
+
+#: shared/utils/cmd.go:184
+msgid "Also remove the container images"
+msgstr "ລຶບອິເມຈຂອງຄອນເທນເນີນຳ"
+
+#: shared/utils/cmd.go:190 shared/utils/cmd.go:193
+msgid "application log level"
+msgstr "ລະດັບການບັນທຶກ (log) ຂອງແອັບພລິເຄຊັນ"
+
+#: shared/utils/cmd.go:196
+msgid "Failed to hide --loglevel parameter"
+msgstr "ເຊື່ອງພະລາມິເຕີ --loglevel ບໍ່ສຳເລັດ"
+
+#: shared/utils/cmd.go:202
+msgid "TFTPD"
+msgstr "TFTPD"
+
+#: shared/utils/cmd.go:204
+msgid "Start the TFTP server container"
+msgstr "ເລີ່ມຕົ້ນຄອນເທນເນີເຊີເວີ TFTP"
+
+#: shared/utils/cmd.go:221
+#, javascript-format
+msgid "Image for %s container"
+msgstr "ອິເມຈສຳລັບຄອນເທນເນີ %s"
+
+#: shared/utils/cmd.go:223
+#, javascript-format
+msgid "Tag for %s container, overrides the global value if set"
+msgstr "ແທັກສຳລັບຄອນເທນເນີ %s, ຈະຂຽນທັບຄ່າສ່ວນກາງຫາກມີການຕັ້ງໄວ້"
+
+#: shared/utils/config.go:40
+#, javascript-format
+msgid "failed to parse configuration file %s"
+msgstr "ອ່ານໄຟລ໌ການຕັ້ງຄ່າ %s ບໍ່ສຳເລັດ"
+
+#: shared/utils/config.go:54
+msgid "Failed to find home directory"
+msgstr "ບໍ່ພົບ home directory"
+
+#: shared/utils/config.go:101
+msgid "failed to bind %[1]s config to parameter %[2]s"
+msgstr "ຜູກການຕັ້ງຄ່າ %[1]s ກັບພະລາມິເຕີ %[2]s ບໍ່ສຳເລັດ"
+
+#: shared/utils/config.go:116
+msgid ""
+"Usage:{{if .Runnable}}\n"
+"  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}\n"
+"  {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}\n"
+"\n"
+"Aliases:\n"
+"  {{.NameAndAliases}}{{end}}{{if .HasExample}}\n"
+"\n"
+"Examples:\n"
+"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if eq (len .Groups) 0}}\n"
+"\n"
+"Available Commands:{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name \"help\"))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{else}}{{range $group := .Groups}}\n"
+"\n"
+"{{.Title}}{{range $cmds}}{{if (and (eq .GroupID $group.ID) (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if not .AllChildCommandsHaveGroup}}\n"
+"\n"
+"Additional Commands:{{range $cmds}}{{if (and (eq .GroupID \"\") (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
+"\n"
+"Flags:\n"
+"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}\n"
+"\n"
+"Global Flags:\n"
+"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}\n"
+"\n"
+"Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}\n"
+"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}\n"
+"\n"
+"Use \"{{.CommandPath}} [command] --help\" for more information about a command.{{end}}\n"
+msgstr ""
+"ວິທີໃຊ້:{{if .Runnable}}\n"
+"  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}\n"
+"  {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}\n"
+"\n"
+"ຊື່ອື່ນ (Aliases):\n"
+"  {{.NameAndAliases}}{{end}}{{if .HasExample}}\n"
+"\n"
+"ຕົວຢ່າງ:\n"
+"{{.Example}}{{end}}{{if .HasAvailableSubCommands}}{{$cmds := .Commands}}{{if eq (len .Groups) 0}}\n"
+"\n"
+"ຄຳສັ່ງທີ່ມີໃຫ້ໃຊ້:{{range $cmds}}{{if (or .IsAvailableCommand (eq .Name \"help\"))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{else}}{{range $group := .Groups}}\n"
+"\n"
+"{{.Title}}{{range $cmds}}{{if (and (eq .GroupID $group.ID) (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if not .AllChildCommandsHaveGroup}}\n"
+"\n"
+"ຄຳສັ່ງເພີ່ມເຕີມ:{{range $cmds}}{{if (and (eq .GroupID \"\") (or .IsAvailableCommand (eq .Name \"help\")))}}\n"
+"  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}\n"
+"\n"
+"Flags:\n"
+"{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}\n"
+"\n"
+"Global Flags:\n"
+"{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}\n"
+"\n"
+"ຫົວຂໍ້ຊ່ວຍເຫຼືອເພີ່ມເຕີມ:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}\n"
+"  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}\n"
+"\n"
+"ໃຊ້ \"{{.CommandPath}} [command] --help\" ສຳລັບຂໍ້ມູນເພີ່ມເຕີມກ່ຽວກັບຄຳສັ່ງ.{{end}}\n"
+
+#: shared/utils/config.go:150
+msgid ""
+"\n"
+"Configuration:\n"
+"\n"
+"  All the non-global flags can alternatively be passed as configuration.\n"
+"\n"
+"  The configuration file is a YAML file with entries matching the flag name.\n"
+"  The name of a flag is the part after the '--' of the command line parameter.\n"
+"  Every '_' character in the flag name means a nested property.\n"
+"\n"
+"  For instance the '--tz CEST' and '--ssl-password secret' will be mapped to\n"
+"  this YAML configuration:\n"
+"\n"
+"    tz: CEST\n"
+"    ssl:\n"
+"      password: secret\n"
+"\n"
+"  The configuration file will be searched in the following places and order:\n"
+"  · /etc/uyuni/uyuni-tools.yaml\n"
+"  · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}\n"
+"  · $HOME/.config/{{ .Name }}/{{ .ConfigFile }}\n"
+"  · $PWD/{{ .ConfigFile }}\n"
+"  · the value of the --config flag\n"
+"\n"
+"\n"
+"Environment variables:\n"
+"\n"
+"  All the non-global flags can also be passed as environment variables.\n"
+"\n"
+"  The environment variable name is the flag name with '-' replaced by with '_'\n"
+"  and the {{ .EnvPrefix }} prefix.\n"
+"\n"
+"  For example the '--tz CEST' flag will be mapped to '{{ .EnvPrefix }}_TZ'\n"
+"  and '--ssl-password' flags to '{{ .EnvPrefix }}_SSL_PASSWORD'\n"
+msgstr ""
+"\n"
+"ການຕັ້ງຄ່າ:\n"
+"\n"
+"  flags ທີ່ບໍ່ແມ່ນ global ທັງໝົດສາມາດສົ່ງເປັນການຕັ້ງຄ່າໄດ້.\n"
+"\n"
+"  ໄຟລ໌ການຕັ້ງຄ່າແມ່ນໄຟລ໌ YAML ທີ່ມີລາຍການກົງກັບຊື່ flag.\n"
+"  ຊື່ຂອງ flag ແມ່ນສ່ວນທີ່ຢູ່ຫຼັງຈາກ '--' ຂອງພະລາມິເຕີ.\n"
+"  ທຸກໆຕົວອັກສອນ '_' ໃນຊື່ flag ໝາຍເຖິງຄຸນສົມບັດຍ່ອຍ (nested property).\n"
+"\n"
+"  ຕົວຢ່າງ: '--tz CEST' ແລະ '--ssl-password secret' ຈະຖືກຈັບຄູ່ກັບ\n"
+"  ການຕັ້ງຄ່າ YAML ນີ້:\n"
+"\n"
+"    tz: CEST\n"
+"    ssl:\n"
+"      password: secret\n"
+"\n"
+"  ລະບົບຈະຄົ້ນຫາໄຟລ໌ການຕັ້ງຄ່າໃນສະຖານທີ່ ແລະ ຕາມລໍາດັບດັ່ງນີ້:\n"
+"  · /etc/uyuni/uyuni-tools.yaml\n"
+"  · $XDG_CONFIG_HOME/{{ .Name }}/{{ .ConfigFile }}\n"
+"  · $HOME/.config/{{ .Name }}/{{ .ConfigFile }}\n"
+"  · $PWD/{{ .ConfigFile }}\n"
+"  · ຄ່າຂອງ flag --config\n"
+"\n"
+"\n"
+"ຕົວປ່ຽນສະພາບແວດລ້ອມ (Environment variables):\n"
+"\n"
+"  flags ທີ່ບໍ່ແມ່ນ global ທັງໝົດສາມາດສົ່ງຜ່ານ environment variables ໄດ້ເຊັ່ນກັນ.\n"
+"\n"
+"  ຊື່ຂອງ environment variable ແມ່ນຊື່ flag ທີ່ປ່ຽນ '-' ເປັນ '_'\n"
+"  ແລະ ໃສ່ຄຳນຳໜ້າ {{ .EnvPrefix }}.\n"
+"\n"
+"  ຕົວຢ່າງ: flag '--tz CEST' ຈະຖືກຈັບຄູ່ກັບ '{{ .EnvPrefix }}_TZ'\n"
+"  ແລະ flag '--ssl-password' ຈະຖືກຈັບຄູ່ກັບ '{{ .EnvPrefix }}_SSL_PASSWORD'\n"
+
+#: shared/utils/config.go:187
+msgid "Help on configuration file and environment variables"
+msgstr "ວິທີໃຊ້ກ່ຽວກັບໄຟລ໌ການຕັ້ງຄ່າ ແລະ ຕົວປ່ຽນສະພາບແວດລ້ອມ"
+
+#: shared/utils/config.go:196
+msgid "failed to compute config help command"
+msgstr "ປະມວນຜົນຄຳສັ່ງຊ່ວຍເຫຼືອການຕັ້ງຄ່າບໍ່ສຳເລັດ"
+
+#: shared/utils/files.go:21
+#, javascript-format
+msgid "cannot check content of %s"
+msgstr "ບໍ່ສາມາດກວດສອບເນື້ອໃນຂອງ %s ໄດ້"
+
+#: shared/utils/files.go:33
+#, javascript-format
+msgid "Cannot remove %s folder"
+msgstr "ບໍ່ສາມາດລຶບໂຟນເດີ %s ໄດ້"
+
+#: shared/utils/files.go:44
+#, javascript-format
+msgid "Failed to get %s file informations"
+msgstr "ດຶງຂໍ້ມູນໄຟລ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/utils/files.go:53
+#, javascript-format
+msgid "Failed to read file %s"
+msgstr "ອ່ານໄຟລ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/utils/files.go:69
+#, javascript-format
+msgid "Would remove file %s"
+msgstr "ຈະລຶບໄຟລ໌ %s"
+
+#: shared/utils/files.go:71
+#, javascript-format
+msgid "Removing file %s"
+msgstr "ກຳລັງລຶບໄຟລ໌ %s"
+
+#: shared/utils/files.go:73
+#, javascript-format
+msgid "Failed to remove file %s"
+msgstr "ລຶບໄຟລ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/utils/files.go:83
+msgid "failed to create temporary directory"
+msgstr "ສ້າງໄດເຣັກທໍຣີຊົ່ວຄາວບໍ່ສຳເລັດ"
+
+#: shared/utils/files.go:87
+msgid "failed to remove temporary directory"
+msgstr "ລຶບໄດເຣັກທໍຣີຊົ່ວຄາວບໍ່ສຳເລັດ"
+
+#: shared/utils/files.go:97
+#, javascript-format
+msgid "fails to open %s file"
+msgstr "ເປີດໄຟລ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/utils/files.go:109
+#, javascript-format
+msgid "failed to read %s file"
+msgstr "ອ່ານໄຟລ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/utils/files.go:113
+#, javascript-format
+msgid "failed to copy %s file"
+msgstr "ຄັດລອກໄຟລ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/utils/flaggroups.go:56
+msgid "Flags:\n"
+msgstr "Flags:\n"
+
+#: shared/utils/flaggroups.go:108
+msgid "no such flag help group: %v"
+msgstr "ບໍ່ມີກຸ່ມຊ່ວຍເຫຼືອ flag: %v"
+
+#: shared/utils/inspector.go:20
+msgid "cannot read config"
+msgstr "ບໍ່ສາມາດອ່ານການຕັ້ງຄ່າໄດ້"
+
+#: shared/utils/inspector.go:25
+msgid "failed to unmarshal the inspected data"
+msgstr "ອ່ານຂໍ້ມູນທີ່ກວດສອບແລ້ວບໍ່ສຳເລັດ"
+
+#: shared/utils/logUtils.go:69
+msgid "failed to decode message to log"
+msgstr "ຖອດລະຫັດຂໍ້ຄວາມເພື່ອບັນທຶກ log ບໍ່ສຳເລັດ"
+
+#: shared/utils/logUtils.go:77
+msgid "failed to encode log event"
+msgstr "ເຂົ້າລະຫັດເຫດການ log ບໍ່ສຳເລັດ"
+
+#: shared/utils/logUtils.go:108
+msgid "Couldn't open %[1]s file for writing, writing log to %[2]s"
+msgstr "ບໍ່ສາມາດເປີດໄຟລ໌ %[1]s ເພື່ອຂຽນ, ກຳລັງຂຽນ log ລົງໃນ %[2]s ແທນ"
+
+#: shared/utils/support.go:26
+msgid "Unable to detect hostname, using localhost"
+msgstr "ບໍ່ສາມາດກວດຫາຊື່ໂຮສຕ໌ໄດ້, ກຳລັງໃຊ້ localhost"
+
+#: shared/utils/support.go:40
+msgid "Preparing the tarball"
+msgstr "ກຳລັງກຽມໄຟລ໌ຈັດເກັບ (tarball)"
+
+#: shared/utils/support.go:62
+#, javascript-format
+msgid "failed to add %s to tarball"
+msgstr "ເພີ່ມ %s ເຂົ້າໃນໄຟລ໌ຈັດເກັບບໍ່ສຳເລັດ"
+
+#: shared/utils/support.go:66
+#, javascript-format
+msgid "Support config tarball created at %s"
+msgstr "ໄຟລ໌ Support config ຖືກສ້າງໄວ້ທີ່ %s"
+
+#: shared/utils/support.go:119
+msgid "Running supportconfig on the host"
+msgstr "ກຳລັງລັນ supportconfig ໃນໂຮສຕ໌"
+
+#: shared/utils/support.go:129
+msgid "failed to find host supportconfig tarball"
+msgstr "ບໍ່ພົບໄຟລ໌ supportconfig ຂອງໂຮສຕ໌"
+
+#: shared/utils/support.go:132
+msgid "supportconfig is not available on the host, skipping it"
+msgstr "supportconfig ບໍ່ພ້ອມໃຊ້ງານໃນໂຮສຕ໌, ກຳລັງຂ້າມໄປ"
+
+#: shared/utils/tar.go:49
+msgid "Skipping extraction of %[1]s in %[2]s file as it resolves outside the target path"
+msgstr "ຂ້າມການແຍກ %[1]s ໃນໄຟລ໌ %[2]s ເນື່ອງຈາກມັນຢູ່ນອກເສັ້ນທາງເປົ້າໝາຍ"
+
+#: shared/utils/tar.go:91
+#, javascript-format
+msgid "failed to write tar.gz to %s"
+msgstr "ຂຽນໄຟລ໌ tar.gz ລົງໃນ %s ບໍ່ສຳເລັດ"
+
+#: shared/utils/template.go:25
+#, javascript-format
+msgid "%s file already present, not overwriting"
+msgstr "ມີໄຟລ໌ %s ຢູ່ແລ້ວ, ຈະບໍ່ຂຽນທັບ"
+
+#: shared/utils/template.go:32
+#, javascript-format
+msgid "failed to open %s for writing"
+msgstr "ເປີດ %s ເພື່ອຂຽນບໍ່ສຳເລັດ"
+
+#: shared/utils/utils.go:59
+#, javascript-format
+msgid "Has to be more than %d character long"
+msgid_plural "Has to be more than %d characters long"
+msgstr[0] "ຕ້ອງຍາວກວ່າ %d ຕົວອັກສອນ"
+
+#: shared/utils/utils.go:63
+#, javascript-format
+msgid "Has to be less than %d character long"
+msgid_plural "Has to be less than %d characters long"
+msgstr[0] "ຕ້ອງສັ້ນກວ່າ %d ຕົວອັກສອນ"
+
+#: shared/utils/utils.go:74
+msgid "Failed to read password"
+msgstr "ອ່ານລະຫັດຜ່ານບໍ່ສຳເລັດ"
+
+#: shared/utils/utils.go:88
+msgid "Cannot contain spaces or tabs"
+msgstr "ຫ້າມມີຍະຫວ່າງ ຫຼື ແທັບ"
+
+#: shared/utils/utils.go:105 shared/utils/utils.go:128
+#: shared/utils/utils.go:141
+msgid "not an interactive device, not asking for missing value"
+msgstr "ບໍ່ແມ່ນອຸປະກອນແບບໂຕ້ຕອບ, ຈະບໍ່ຖາມຫາຄ່າທີ່ຂາດຫາຍໄປ"
+
+#: shared/utils/utils.go:114
+msgid "Confirm the password"
+msgstr "ຢືນຢັນລະຫັດຜ່ານ"
+
+#: shared/utils/utils.go:116
+msgid "Two different passwords have been provided"
+msgstr "ລະຫັດຜ່ານສອງຄັ້ງທີ່ລະບຸບໍ່ກົງກັນ"
+
+#: shared/utils/utils.go:150
+msgid "failed to read input"
+msgstr "ອ່ານຂໍ້ມູນນຳເຂົ້າບໍ່ສຳເລັດ"
+
+#: shared/utils/utils.go:158
+msgid "A value is required"
+msgstr "ຈຳເປັນຕ້ອງລະບຸຄ່າ"
+
+#: shared/utils/utils.go:226 shared/utils/utils.go:248
+#, javascript-format
+msgid "invalid image name: %s"
+msgstr "ຊື່ອິເມຈບໍ່ຖືກຕ້ອງ: %s"
+
+#: shared/utils/utils.go:230
+#, javascript-format
+msgid "tag missing on %s"
+msgstr "ຂາດແທັກ (tag) ໃນ %s"
+
+#: shared/utils/utils.go:235 shared/utils/utils.go:239
+#, javascript-format
+msgid "Computed image name is %s"
+msgstr "ຊື່ອິເມຈທີ່ປະມວນຜົນໄດ້ແມ່ນ %s"
+
+#: shared/utils/utils.go:266
+msgid "image path '%[1]s' does not start with registry path '%[2]s'"
+msgstr "ເສັ້ນທາງອິເມຈ '%[1]s' ບໍ່ໄດ້ເລີ່ມຕົ້ນດ້ວຍເສັ້ນທາງເລຈິດສະຕຣີ '%[2]s'"
+
+#: shared/utils/utils.go:276
+#, javascript-format
+msgid "Failed to run %s"
+msgstr "ລັນ %s ບໍ່ສຳເລັດ"
+
+#: shared/utils/utils.go:285
+msgid "Failed to read random data"
+msgstr "ອ່ານຂໍ້ມູນສຸ່ມບໍ່ສຳເລັດ"
+
+#: shared/utils/utils.go:306
+#, javascript-format
+msgid "error downloading from %s"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການດາວໂຫຼດຈາກ %s"
+
+#: shared/utils/utils.go:312
+#, javascript-format
+msgid "bad status: %s"
+msgstr "ສະຖານະບໍ່ຖືກຕ້ອງ: %s"
+
+#: shared/utils/utils.go:425
+msgid "failed to compute server FQDN"
+msgstr "ປະມວນຜົນ FQDN ຂອງເຊີເວີບໍ່ສຳເລັດ"
+
+#: shared/utils/utils.go:439
+#, javascript-format
+msgid "%s is not a valid FQDN"
+msgstr "%s ບໍ່ແມ່ນ FQDN ທີ່ຖືກຕ້ອງ"
+
+#: shared/utils/utils.go:443
+#, javascript-format
+msgid "cannot resolve %s"
+msgstr "ບໍ່ສາມາດຫາທີ່ຢູ່ (resolve) %s ໄດ້"
+
+#: shared/utils/utils.go:474
+#, javascript-format
+msgid "error creating file %s"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງໄຟລ໌ %s"
+
+#: shared/utils/utils.go:479
+#, javascript-format
+msgid "error writing file %s"
+msgstr "ເກີດຂໍ້ຜິດພາດໃນການຂຽນໄຟລ໌ %s"
+
+#: shared/utils/utils.go:491 shared/utils/utils.go:506
+#, javascript-format
+msgid "Failed to calculate checksum of the file %s"
+msgstr "ຄຳນວນຄ່າກວດສອບ (checksum) ຂອງໄຟລ໌ %s ບໍ່ສຳເລັດ"
+
+#: shared/utils/utils.go:496
+msgid "Failed to write checksum of the file %[1]s to the %[2]s"
+msgstr "ຂຽນຄ່າກວດສອບຂອງໄຟລ໌ %[1]s ລົງໃນ %[2]s ບໍ່ສຳເລັດ"
+
+#: shared/utils/utils.go:513
+msgid "Failed to read checksum of the file %[1]s"
+msgstr "ອ່ານຄ່າກວດສອບຂອງໄຟລ໌ %[1]s ບໍ່ສຳເລັດ"
+
+#: shared/utils/utils.go:517
+#, javascript-format
+msgid "Checksum of %s does not match"
+msgstr "ຄ່າກວດສອບຂອງ %s ບໍ່ກົງກັນ"
+
+#: shared/utils/utils.go:525
+msgid "nBytes must be > 0"
+msgstr "nBytes ຕ້ອງມີຄ່າຫຼາຍກວ່າ 0"
+
+#: shared/utils/uyuniservices.go:18
+msgid "Main service"
+msgstr "ການບໍລິການຫຼັກ"
+
+#: shared/utils/uyuniservices.go:24
+msgid "Migration helper"
+msgstr "ເຄື່ອງມືຊ່ວຍໃນການຍ້າຍລະບົບ (Migration)"
+
+#: shared/utils/uyuniservices.go:30
+msgid "Confidential computing attestation"
+msgstr "ການຢັ້ງຢືນການປະມວນຜົນແບບລັບ (Confidential computing)"
+
+#: shared/utils/uyuniservices.go:36
+msgid "Hub XML-RPC API"
+msgstr "Hub XML-RPC API"
+
+#: shared/utils/uyuniservices.go:42
+msgid "Saline"
+msgstr "Saline"
+
+#: shared/utils/uyuniservices.go:46
+msgid "Database"
+msgstr "ຖານຂໍ້ມູນ"
