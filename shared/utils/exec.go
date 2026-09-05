@@ -49,7 +49,7 @@ func NewRunner(command string, args ...string) types.Runner {
 }
 
 // NewRunnerWithContext creates a new runner instance for the command,
-// interuptable based on provided context.
+// interruptible based on provided context.
 func NewRunnerWithContext(ctx context.Context, command string, args ...string) types.Runner {
 	runner := runnerImpl{logger: log.Logger}
 	runner.cmd = exec.CommandContext(ctx, command, args...)
