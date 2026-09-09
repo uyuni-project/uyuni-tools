@@ -38,6 +38,9 @@ const SalineService = "uyuni-saline"
 // TFTPService is the name of the systemd service for the TFTP container.
 const TFTPService = "uyuni-tftp"
 
+// EventProcessorService is the name of the systemd service for the Salt Event Processor container.
+const EventProcessorService = "uyuni-event-processor"
+
 // ProxyService is the name of the systemd service for the proxy.
 const ProxyService = "uyuni-proxy-pod"
 
