@@ -149,11 +149,15 @@ func GenerateServerEnvironmentFile(flags adm_utils.InstallationFlags, fqdn strin
 }
 
 // Generate new server environmentfile with only things useful for upgrade scenario.
-// Currently only debug. Needs changes on uyuni container side too.
+// Currently only debug and the timezone. Needs changes on uyuni container side too.
 func GenerateUpgradeServerEnvironmentFile(debug bool) error {
 	confDir := podman.GetServiceConfFolder(podman.ServerService)
 	envfile := filepath.Join(confDir, podman.ServerEnvironmentFile)
+
+	// Preserve the timezone already configured for the server as rewriting the file from scratch
+	// would otherwise drop it and make the container fall back to UTC.
 	data := templates.PodmanServiceEnvironmentTemplateData{
+		TZ:    timezoneFromEnvironmentFile(),
 		Debug: debug,
 	}
 
