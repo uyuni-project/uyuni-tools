@@ -19,11 +19,11 @@ TZ={{ .TZ }}
 {{- if .Fqdn }}
 UYUNI_HOSTNAME={{ .Fqdn }}
 {{- end -}}
-{{- if .Email }}
-EMAIL={{ .Email }}
+{{- if .Admin }}
+MANAGER_ADMIN_EMAIL={{ .Admin.Email }}
 {{- end -}}
 {{- if .EmailFrom }}
-EMAILFROM={{ .EmailFrom }}
+MANAGER_MAIL_FROM={{ .EmailFrom }}
 {{- end -}}
 {{- if .DB }}
 MANAGER_DB_NAME={{ .DB.Name }}
@@ -42,11 +42,11 @@ REPORT_DB_PORT={{ .ReportDB.GetPort }}
 DEBUG_JAVA={{ .Debug }}
 {{- end -}}
 {{- if .Org }}
-ORGANIZATION={{ .Org }}
+ORG_NAME={{ .Org }}
 {{- end -}}
 {{- if .Admin }}
-ADMIN_FIRSTNAME={{ .Admin.FirstName }}
-ADMIN_LASTNAME={{ .Admin.LastName }}
+ADMIN_FIRST_NAME={{ .Admin.FirstName }}
+ADMIN_LAST_NAME={{ .Admin.LastName }}
 {{- end -}}
 {{ if .HasMirror }}
 MIRROR_PATH=/mirror
