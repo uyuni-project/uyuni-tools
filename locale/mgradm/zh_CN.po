@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 09:44+0200\n"
+"POT-Creation-Date: 2026-09-11 09:38+0200\n"
 "PO-Revision-Date: 2026-08-11 09:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
@@ -280,7 +280,9 @@ msgid "Disabling DB backup"
 msgstr "正在禁用数据库备份"
 
 #: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:35
-msgid "Database service needs to be restarted to reload backup configurations, continue"
+#, fuzzy
+#| msgid "Database service needs to be restarted to reload backup configurations, continue"
+msgid "Database service needs to be restarted to reload backup configurations, continue?"
 msgstr "需要重启数据库服务以重新加载备份配置，是否继续？"
 
 #: mgradm/cmd/backup/db/disable.go:26
@@ -343,7 +345,9 @@ msgid "Restoring DB backup"
 msgstr "正在恢复数据库备份"
 
 #: mgradm/cmd/backup/db/restore.go:28
-msgid "Restoring from backup is a destructive operation. Proceed"
+#, fuzzy
+#| msgid "Restoring from backup is a destructive operation. Proceed"
+msgid "Restoring from backup is a destructive operation. Proceed?"
 msgstr "从备份恢复是破坏性操作。是否继续？"
 
 #: mgradm/cmd/backup/db/restore.go:29
@@ -897,7 +901,9 @@ msgid "failed to show key %s"
 msgstr "无法显示密钥 %s"
 
 #: mgradm/cmd/gpg/add/gpg.go:107
-msgid "Do you really want to trust this key"
+#, fuzzy
+#| msgid "Do you really want to trust this key"
+msgid "Do you really want to trust this key?"
 msgstr "确实要信任此密钥吗"
 
 #: mgradm/cmd/gpg/add/gpg.go:119

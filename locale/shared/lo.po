@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 09:44+0200\n"
+"POT-Creation-Date: 2026-09-11 09:38+0200\n"
 "PO-Revision-Date: 2026-08-28 16:13+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/lo/>\n"
@@ -1430,128 +1430,137 @@ msgstr "ມີໄຟລ໌ %s ຢູ່ແລ້ວ, ຈະບໍ່ຂຽນທ
 msgid "failed to open %s for writing"
 msgstr "ເປີດ %s ເພື່ອຂຽນບໍ່ສຳເລັດ"
 
-#: shared/utils/utils.go:59
-#, javascript-format
-msgid "Has to be more than %d character long"
-msgid_plural "Has to be more than %d characters long"
-msgstr[0] "ຕ້ອງຍາວກວ່າ %d ຕົວອັກສອນ"
+#: shared/utils/utils.go:60
+#, fuzzy
+#| msgid "Has to be more than %d character long"
+#| msgid_plural "Has to be more than %d characters long"
+msgid "Has to be between %[1]d and %[2]d characters long"
+msgstr "ຕ້ອງຍາວກວ່າ %d ຕົວອັກສອນ"
 
-#: shared/utils/utils.go:63
-#, javascript-format
-msgid "Has to be less than %d character long"
-msgid_plural "Has to be less than %d characters long"
-msgstr[0] "ຕ້ອງສັ້ນກວ່າ %d ຕົວອັກສອນ"
-
-#: shared/utils/utils.go:74
+#: shared/utils/utils.go:71
 msgid "Failed to read password"
 msgstr "ອ່ານລະຫັດຜ່ານບໍ່ສຳເລັດ"
 
-#: shared/utils/utils.go:88
+#: shared/utils/utils.go:85
 msgid "Cannot contain spaces or tabs"
 msgstr "ຫ້າມມີຍະຫວ່າງ ຫຼື ແທັບ"
 
-#: shared/utils/utils.go:105 shared/utils/utils.go:128
-#: shared/utils/utils.go:141
+#: shared/utils/utils.go:102 shared/utils/utils.go:125
+#: shared/utils/utils.go:138
 msgid "not an interactive device, not asking for missing value"
 msgstr "ບໍ່ແມ່ນອຸປະກອນແບບໂຕ້ຕອບ, ຈະບໍ່ຖາມຫາຄ່າທີ່ຂາດຫາຍໄປ"
 
-#: shared/utils/utils.go:114
+#: shared/utils/utils.go:111
 msgid "Confirm the password"
 msgstr "ຢືນຢັນລະຫັດຜ່ານ"
 
-#: shared/utils/utils.go:116
+#: shared/utils/utils.go:113
 msgid "Two different passwords have been provided"
 msgstr "ລະຫັດຜ່ານສອງຄັ້ງທີ່ລະບຸບໍ່ກົງກັນ"
 
-#: shared/utils/utils.go:150
+#: shared/utils/utils.go:147
 msgid "failed to read input"
 msgstr "ອ່ານຂໍ້ມູນນຳເຂົ້າບໍ່ສຳເລັດ"
 
-#: shared/utils/utils.go:158
+#: shared/utils/utils.go:155
 msgid "A value is required"
 msgstr "ຈຳເປັນຕ້ອງລະບຸຄ່າ"
 
-#: shared/utils/utils.go:226 shared/utils/utils.go:248
+#. Translators: This is appended to the end of a question. Choices are short for `yes` and `no`.
+#: shared/utils/utils.go:165
+#, javascript-format
+msgid "%s [y/N]"
+msgstr ""
+
+#: shared/utils/utils.go:178
+msgid "yes"
+msgstr ""
+
+#: shared/utils/utils.go:181
+msgid "no"
+msgstr ""
+
+#: shared/utils/utils.go:228 shared/utils/utils.go:250
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "ຊື່ອິເມຈບໍ່ຖືກຕ້ອງ: %s"
 
-#: shared/utils/utils.go:230
+#: shared/utils/utils.go:232
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "ຂາດແທັກ (tag) ໃນ %s"
 
-#: shared/utils/utils.go:235 shared/utils/utils.go:239
+#: shared/utils/utils.go:237 shared/utils/utils.go:241
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "ຊື່ອິເມຈທີ່ປະມວນຜົນໄດ້ແມ່ນ %s"
 
-#: shared/utils/utils.go:266
+#: shared/utils/utils.go:268
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr "ເສັ້ນທາງອິເມຈ '%[1]s' ບໍ່ໄດ້ເລີ່ມຕົ້ນດ້ວຍເສັ້ນທາງເລຈິດສະຕຣີ '%[2]s'"
 
-#: shared/utils/utils.go:276
+#: shared/utils/utils.go:278
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "ລັນ %s ບໍ່ສຳເລັດ"
 
-#: shared/utils/utils.go:285
+#: shared/utils/utils.go:287
 msgid "Failed to read random data"
 msgstr "ອ່ານຂໍ້ມູນສຸ່ມບໍ່ສຳເລັດ"
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:308
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "ເກີດຂໍ້ຜິດພາດໃນການດາວໂຫຼດຈາກ %s"
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:314
 #, javascript-format
 msgid "bad status: %s"
 msgstr "ສະຖານະບໍ່ຖືກຕ້ອງ: %s"
 
-#: shared/utils/utils.go:425
+#: shared/utils/utils.go:427
 msgid "failed to compute server FQDN"
 msgstr "ປະມວນຜົນ FQDN ຂອງເຊີເວີບໍ່ສຳເລັດ"
 
-#: shared/utils/utils.go:439
+#: shared/utils/utils.go:441
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s ບໍ່ແມ່ນ FQDN ທີ່ຖືກຕ້ອງ"
 
-#: shared/utils/utils.go:443
+#: shared/utils/utils.go:445
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "ບໍ່ສາມາດຫາທີ່ຢູ່ (resolve) %s ໄດ້"
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:476
 #, javascript-format
 msgid "error creating file %s"
 msgstr "ເກີດຂໍ້ຜິດພາດໃນການສ້າງໄຟລ໌ %s"
 
-#: shared/utils/utils.go:479
+#: shared/utils/utils.go:481
 #, javascript-format
 msgid "error writing file %s"
 msgstr "ເກີດຂໍ້ຜິດພາດໃນການຂຽນໄຟລ໌ %s"
 
-#: shared/utils/utils.go:491 shared/utils/utils.go:506
+#: shared/utils/utils.go:493 shared/utils/utils.go:508
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "ຄຳນວນຄ່າກວດສອບ (checksum) ຂອງໄຟລ໌ %s ບໍ່ສຳເລັດ"
 
-#: shared/utils/utils.go:496
+#: shared/utils/utils.go:498
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "ຂຽນຄ່າກວດສອບຂອງໄຟລ໌ %[1]s ລົງໃນ %[2]s ບໍ່ສຳເລັດ"
 
-#: shared/utils/utils.go:513
+#: shared/utils/utils.go:515
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "ອ່ານຄ່າກວດສອບຂອງໄຟລ໌ %[1]s ບໍ່ສຳເລັດ"
 
-#: shared/utils/utils.go:517
+#: shared/utils/utils.go:519
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "ຄ່າກວດສອບຂອງ %s ບໍ່ກົງກັນ"
 
-#: shared/utils/utils.go:525
+#: shared/utils/utils.go:527
 msgid "nBytes must be > 0"
 msgstr "nBytes ຕ້ອງມີຄ່າຫຼາຍກວ່າ 0"
 
@@ -1578,3 +1587,8 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "ຖານຂໍ້ມູນ"
+
+#, javascript-format
+#~ msgid "Has to be less than %d character long"
+#~ msgid_plural "Has to be less than %d characters long"
+#~ msgstr[0] "ຕ້ອງສັ້ນກວ່າ %d ຕົວອັກສອນ"

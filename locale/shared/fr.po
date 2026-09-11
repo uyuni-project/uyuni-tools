@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 09:44+0200\n"
+"POT-Creation-Date: 2026-09-11 09:38+0200\n"
 "PO-Revision-Date: 2026-04-29 10:04+0000\n"
 "Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/fr/>\n"
@@ -1468,137 +1468,142 @@ msgstr "Fichier %s déjà présent, pas remplacé"
 msgid "failed to open %s for writing"
 msgstr "impossible d'ouvrir %s en écriture: %s"
 
-#: shared/utils/utils.go:59
-#, fuzzy, javascript-format
-msgid "Has to be more than %d character long"
-msgid_plural "Has to be more than %d characters long"
-msgstr[0] "Doit contenir plus de %d caractère"
-msgstr[1] "Doit contenir plus de %d caractères"
+#: shared/utils/utils.go:60
+#, fuzzy
+msgid "Has to be between %[1]d and %[2]d characters long"
+msgstr "Doit contenir plus de %d caractère"
 
-#: shared/utils/utils.go:63
-#, javascript-format
-msgid "Has to be less than %d character long"
-msgid_plural "Has to be less than %d characters long"
-msgstr[0] "Doit contenir moins de %d caractère"
-msgstr[1] "Doit contenir moins de %d caractères"
-
-#: shared/utils/utils.go:74
+#: shared/utils/utils.go:71
 msgid "Failed to read password"
 msgstr "Impossible de lecture du mot de passe"
 
-#: shared/utils/utils.go:88
+#: shared/utils/utils.go:85
 msgid "Cannot contain spaces or tabs"
 msgstr "Ne peut contenir d'espace ou de tabulation"
 
-#: shared/utils/utils.go:105 shared/utils/utils.go:128
-#: shared/utils/utils.go:141
+#: shared/utils/utils.go:102 shared/utils/utils.go:125
+#: shared/utils/utils.go:138
 msgid "not an interactive device, not asking for missing value"
 msgstr ""
 
-#: shared/utils/utils.go:114
+#: shared/utils/utils.go:111
 #, fuzzy
 msgid "Confirm the password"
 msgstr "Impossible de lecture du mot de passe"
 
-#: shared/utils/utils.go:116
+#: shared/utils/utils.go:113
 msgid "Two different passwords have been provided"
 msgstr ""
 
-#: shared/utils/utils.go:150
+#: shared/utils/utils.go:147
 #, fuzzy
 msgid "failed to read input"
 msgstr "Impossible de lire la saisie"
 
-#: shared/utils/utils.go:158
+#: shared/utils/utils.go:155
 msgid "A value is required"
 msgstr "Une valeur est requise"
 
-#: shared/utils/utils.go:226 shared/utils/utils.go:248
+#. Translators: This is appended to the end of a question. Choices are short for `yes` and `no`.
+#: shared/utils/utils.go:165
+#, javascript-format
+msgid "%s [y/N]"
+msgstr ""
+
+#: shared/utils/utils.go:178
+msgid "yes"
+msgstr ""
+
+#: shared/utils/utils.go:181
+msgid "no"
+msgstr ""
+
+#: shared/utils/utils.go:228 shared/utils/utils.go:250
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "nom d'image invalid: %s"
 
-#: shared/utils/utils.go:230
+#: shared/utils/utils.go:232
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "tag missing dans %s"
 
-#: shared/utils/utils.go:235 shared/utils/utils.go:239
+#: shared/utils/utils.go:237 shared/utils/utils.go:241
 #, fuzzy, javascript-format
 msgid "Computed image name is %s"
 msgstr "nom d'image invalid: %s"
 
-#: shared/utils/utils.go:266
+#: shared/utils/utils.go:268
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr ""
 
-#: shared/utils/utils.go:276
+#: shared/utils/utils.go:278
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "Erreur lors de l'exécution de %s"
 
-#: shared/utils/utils.go:285
+#: shared/utils/utils.go:287
 msgid "Failed to read random data"
 msgstr "Impossible de lire des données aléatoires"
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:308
 #, javascript-format
 msgid "error downloading from %s"
 msgstr ""
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:314
 #, javascript-format
 msgid "bad status: %s"
 msgstr ""
 
-#: shared/utils/utils.go:425
+#: shared/utils/utils.go:427
 #, fuzzy
 msgid "failed to compute server FQDN"
 msgstr "impossible de se connecter au serveur: %s"
 
-#: shared/utils/utils.go:439
+#: shared/utils/utils.go:441
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr ""
 
-#: shared/utils/utils.go:443
+#: shared/utils/utils.go:445
 #, fuzzy, javascript-format
 msgid "cannot resolve %s"
 msgstr "erreur d'analyse du fichier de configuration %s: %s"
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:476
 #, fuzzy, javascript-format
 msgid "error creating file %s"
 msgstr "Suppression du fichier %s"
 
-#: shared/utils/utils.go:479
+#: shared/utils/utils.go:481
 #, fuzzy, javascript-format
 msgid "error writing file %s"
 msgstr "Suppression du fichier %s"
 
-#: shared/utils/utils.go:491 shared/utils/utils.go:506
+#: shared/utils/utils.go:493 shared/utils/utils.go:508
 #, fuzzy, javascript-format
 #| msgid "Failed to remove file %s"
 msgid "Failed to calculate checksum of the file %s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/utils/utils.go:496
+#: shared/utils/utils.go:498
 #, fuzzy
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "impossible de lier le répertoire du volume %s vers %s: %s"
 
-#: shared/utils/utils.go:513
+#: shared/utils/utils.go:515
 #, fuzzy
 #| msgid "Failed to remove file %s"
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "Impossible de supprimer le fichier %s"
 
-#: shared/utils/utils.go:517
+#: shared/utils/utils.go:519
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr ""
 
-#: shared/utils/utils.go:525
+#: shared/utils/utils.go:527
 msgid "nBytes must be > 0"
 msgstr ""
 
@@ -1626,6 +1631,12 @@ msgstr ""
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr ""
+
+#, javascript-format
+#~ msgid "Has to be less than %d character long"
+#~ msgid_plural "Has to be less than %d characters long"
+#~ msgstr[0] "Doit contenir moins de %d caractère"
+#~ msgstr[1] "Doit contenir moins de %d caractères"
 
 #, fuzzy
 #~ msgid "failed to find container supportconfig tarball from command output"

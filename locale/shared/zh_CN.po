@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 09:44+0200\n"
+"POT-Creation-Date: 2026-09-11 09:38+0200\n"
 "PO-Revision-Date: 2026-08-11 09:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -1432,128 +1432,137 @@ msgstr "%s 文件已存在，将不重写"
 msgid "failed to open %s for writing"
 msgstr "无法打开 %s 以写入数据"
 
-#: shared/utils/utils.go:59
-#, javascript-format
-msgid "Has to be more than %d character long"
-msgid_plural "Has to be more than %d characters long"
-msgstr[0] "包含的字符数必须大于 %d"
+#: shared/utils/utils.go:60
+#, fuzzy
+#| msgid "Has to be more than %d character long"
+#| msgid_plural "Has to be more than %d characters long"
+msgid "Has to be between %[1]d and %[2]d characters long"
+msgstr "包含的字符数必须大于 %d"
 
-#: shared/utils/utils.go:63
-#, javascript-format
-msgid "Has to be less than %d character long"
-msgid_plural "Has to be less than %d characters long"
-msgstr[0] "包含的字符数必须小于 %d"
-
-#: shared/utils/utils.go:74
+#: shared/utils/utils.go:71
 msgid "Failed to read password"
 msgstr "无法读取口令"
 
-#: shared/utils/utils.go:88
+#: shared/utils/utils.go:85
 msgid "Cannot contain spaces or tabs"
 msgstr "不得包含空格或制表符"
 
-#: shared/utils/utils.go:105 shared/utils/utils.go:128
-#: shared/utils/utils.go:141
+#: shared/utils/utils.go:102 shared/utils/utils.go:125
+#: shared/utils/utils.go:138
 msgid "not an interactive device, not asking for missing value"
 msgstr "不是交互设备，不提示提供缺少的值"
 
-#: shared/utils/utils.go:114
+#: shared/utils/utils.go:111
 msgid "Confirm the password"
 msgstr "确认口令"
 
-#: shared/utils/utils.go:116
+#: shared/utils/utils.go:113
 msgid "Two different passwords have been provided"
 msgstr "两次提供的口令不相同"
 
-#: shared/utils/utils.go:150
+#: shared/utils/utils.go:147
 msgid "failed to read input"
 msgstr "无法读取输入"
 
-#: shared/utils/utils.go:158
+#: shared/utils/utils.go:155
 msgid "A value is required"
 msgstr "必须提供值"
 
-#: shared/utils/utils.go:226 shared/utils/utils.go:248
+#. Translators: This is appended to the end of a question. Choices are short for `yes` and `no`.
+#: shared/utils/utils.go:165
+#, javascript-format
+msgid "%s [y/N]"
+msgstr ""
+
+#: shared/utils/utils.go:178
+msgid "yes"
+msgstr ""
+
+#: shared/utils/utils.go:181
+msgid "no"
+msgstr ""
+
+#: shared/utils/utils.go:228 shared/utils/utils.go:250
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "映像名称无效：%s"
 
-#: shared/utils/utils.go:230
+#: shared/utils/utils.go:232
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "%s 缺少标记"
 
-#: shared/utils/utils.go:235 shared/utils/utils.go:239
+#: shared/utils/utils.go:237 shared/utils/utils.go:241
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "计算的映像名称为 %s"
 
-#: shared/utils/utils.go:266
+#: shared/utils/utils.go:268
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr "映像路径 '%[1]s' 并非以仓库路径 '%[2]s' 开头"
 
-#: shared/utils/utils.go:276
+#: shared/utils/utils.go:278
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "无法运行 %s"
 
-#: shared/utils/utils.go:285
+#: shared/utils/utils.go:287
 msgid "Failed to read random data"
 msgstr "无法读取随机数据"
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:308
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "从 %s 下载时出错"
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:314
 #, javascript-format
 msgid "bad status: %s"
 msgstr "不良状态：%s"
 
-#: shared/utils/utils.go:425
+#: shared/utils/utils.go:427
 msgid "failed to compute server FQDN"
 msgstr "无法计算服务器 FQDN"
 
-#: shared/utils/utils.go:439
+#: shared/utils/utils.go:441
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s 不是有效 FQDN"
 
-#: shared/utils/utils.go:443
+#: shared/utils/utils.go:445
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "无法解析 %s"
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:476
 #, javascript-format
 msgid "error creating file %s"
 msgstr "创建文件 %s 时出错"
 
-#: shared/utils/utils.go:479
+#: shared/utils/utils.go:481
 #, javascript-format
 msgid "error writing file %s"
 msgstr "写入文件 %s 时出错"
 
-#: shared/utils/utils.go:491 shared/utils/utils.go:506
+#: shared/utils/utils.go:493 shared/utils/utils.go:508
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "无法计算文件 %s 的校验和"
 
-#: shared/utils/utils.go:496
+#: shared/utils/utils.go:498
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "无法将文件 %[1]s 的校验和写入 %[2]s"
 
-#: shared/utils/utils.go:513
+#: shared/utils/utils.go:515
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "无法读取文件 %[1]s 的校验和"
 
-#: shared/utils/utils.go:517
+#: shared/utils/utils.go:519
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "%s 的校验和不匹配"
 
-#: shared/utils/utils.go:525
+#: shared/utils/utils.go:527
 msgid "nBytes must be > 0"
 msgstr "nBytes 必须大于 0"
 
@@ -1580,6 +1589,11 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "数据库"
+
+#, javascript-format
+#~ msgid "Has to be less than %d character long"
+#~ msgid_plural "Has to be less than %d characters long"
+#~ msgstr[0] "包含的字符数必须小于 %d"
 
 #~ msgid "failed to find container supportconfig tarball from command output"
 #~ msgstr "在命令输出中找不到容器 supportconfig Tar 包"
