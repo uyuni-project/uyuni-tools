@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 09:44+0200\n"
+"POT-Creation-Date: 2026-09-11 09:38+0200\n"
 "PO-Revision-Date: 2026-05-16 14:19+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
@@ -280,7 +280,9 @@ msgid "Disabling DB backup"
 msgstr "Disattivazione del backup del database"
 
 #: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:35
-msgid "Database service needs to be restarted to reload backup configurations, continue"
+#, fuzzy
+#| msgid "Database service needs to be restarted to reload backup configurations, continue"
+msgid "Database service needs to be restarted to reload backup configurations, continue?"
 msgstr "Il servizio del database deve essere riavviato per ricaricare le configurazioni di backup, continuare"
 
 #: mgradm/cmd/backup/db/disable.go:26
@@ -347,7 +349,9 @@ msgid "Restoring DB backup"
 msgstr "Ripristino del backup del DB"
 
 #: mgradm/cmd/backup/db/restore.go:28
-msgid "Restoring from backup is a destructive operation. Proceed"
+#, fuzzy
+#| msgid "Restoring from backup is a destructive operation. Proceed"
+msgid "Restoring from backup is a destructive operation. Proceed?"
 msgstr "Il ripristino da backup è un’operazione distruttiva. Procedere"
 
 #: mgradm/cmd/backup/db/restore.go:29
@@ -901,7 +905,9 @@ msgid "failed to show key %s"
 msgstr "impossibile mostrare la chiave %s"
 
 #: mgradm/cmd/gpg/add/gpg.go:107
-msgid "Do you really want to trust this key"
+#, fuzzy
+#| msgid "Do you really want to trust this key"
+msgid "Do you really want to trust this key?"
 msgstr "Vuoi davvero fidarti di questa chiave"
 
 #: mgradm/cmd/gpg/add/gpg.go:119
