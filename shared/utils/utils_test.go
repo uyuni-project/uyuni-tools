@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -69,8 +69,8 @@ func TestAskIfMissing(t *testing.T) {
 
 	data := []askTestData{
 		{value: "\n", expectedMessage: "A value is required", min: 1, max: 5},
-		{value: "superlong\n", expectedMessage: "Has to be less than 5 characters long", min: 1, max: 5},
-		{value: "a\n", expectedMessage: "Has to be more than 2 characters long", min: 2, max: 5},
+		{value: "superlong\n", expectedMessage: "Has to be between 1 and 5 characters long", min: 1, max: 5},
+		{value: "a\n", expectedMessage: "Has to be between 2 and 5 characters long", min: 2, max: 5},
 		{value: "booh\n", expectedMessage: "Has to contain an 'f'", min: 0, max: 0, checker: fChecker},
 	}
 
@@ -95,8 +95,8 @@ func TestCheckValidPassword(t *testing.T) {
 
 	data := []askTestData{
 		{value: "\n", expectedMessage: "A value is required", min: 1, max: 5},
-		{value: "superlong\n", expectedMessage: "Has to be less than 5 characters long", min: 1, max: 5},
-		{value: "a\n", expectedMessage: "Has to be more than 2 characters long", min: 2, max: 5},
+		{value: "superlong\n", expectedMessage: "Has to be between 1 and 5 characters long", min: 1, max: 5},
+		{value: "a\n", expectedMessage: "Has to be between 2 and 5 characters long", min: 2, max: 5},
 	}
 
 	for i, testCase := range data {

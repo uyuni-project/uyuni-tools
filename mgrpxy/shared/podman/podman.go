@@ -106,7 +106,7 @@ func GenerateSystemdService(
 
 		if additionHTTPConfPath != "" {
 			additionHttpdTuningSettings = fmt.Sprintf(
-				`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/apache_tuning.conf:ro`,
+				`Environment=HTTPD_EXTRA_CONF=-v%s:/etc/apache2/conf.d/zz_apache_tuning.conf:ro`,
 				additionHTTPConfPath,
 			)
 		}

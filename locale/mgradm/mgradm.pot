@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 12:46+0100\n"
+"POT-Creation-Date: 2026-09-11 09:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -279,7 +279,7 @@ msgid "Disabling DB backup"
 msgstr ""
 
 #: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:35
-msgid "Database service needs to be restarted to reload backup configurations, continue"
+msgid "Database service needs to be restarted to reload backup configurations, continue?"
 msgstr ""
 
 #: mgradm/cmd/backup/db/disable.go:26
@@ -342,7 +342,7 @@ msgid "Restoring DB backup"
 msgstr ""
 
 #: mgradm/cmd/backup/db/restore.go:28
-msgid "Restoring from backup is a destructive operation. Proceed"
+msgid "Restoring from backup is a destructive operation. Proceed?"
 msgstr ""
 
 #: mgradm/cmd/backup/db/restore.go:29
@@ -608,41 +608,49 @@ msgid "insufficient space on target device"
 msgstr ""
 
 #: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:43
-#: mgradm/cmd/upgrade/utils.go:34
+#: mgradm/cmd/upgrade/utils.go:74
 msgid "install podman before running this command"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:41
+#: mgradm/cmd/cmd.go:43
 msgid "Uyuni administration tool"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:42
+#: mgradm/cmd/cmd.go:44
 msgid "Tool to help administering Uyuni servers in containers"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:49
+#: mgradm/cmd/cmd.go:51
 msgid "Server Deployment:"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:53
+#: mgradm/cmd/cmd.go:55
 msgid "Server Management:"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:57
+#: mgradm/cmd/cmd.go:59
 msgid "Administrator tools:"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:67
+#: mgradm/cmd/cmd.go:69
 #, javascript-format
 msgid "Starting %s"
 msgstr ""
 
-#: mgradm/cmd/cmd.go:68
+#: mgradm/cmd/cmd.go:70
 msgid "Use of this software implies acceptance of the End User License Agreement."
 msgstr ""
 
-#: mgradm/cmd/cmd.go:72
+#: mgradm/cmd/cmd.go:74
 msgid "configuration file path"
+msgstr ""
+
+#: mgradm/cmd/disable/disable.go:34
+msgid "Disable server services at boot"
+msgstr ""
+
+#: mgradm/cmd/disable/disable.go:35
+msgid "Disable server services at boot without stopping them"
 msgstr ""
 
 #: mgradm/cmd/distro/cp.go:38
@@ -799,58 +807,66 @@ msgstr ""
 msgid "failed to compute config help command"
 msgstr ""
 
+#: mgradm/cmd/enable/enable.go:34
+msgid "Enable server services at boot"
+msgstr ""
+
+#: mgradm/cmd/enable/enable.go:35
+msgid "Enable server services at boot without starting them"
+msgstr ""
+
 #: mgradm/cmd/gpg/add/gpg.go:36
 msgid "Add GPG keys for 3rd party repositories"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:44
+#: mgradm/cmd/gpg/add/gpg.go:45
 msgid "Import without asking confirmation"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:60
+#: mgradm/cmd/gpg/add/gpg.go:61
 #, javascript-format
 msgid "failed to create folder %s"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:65
+#: mgradm/cmd/gpg/add/gpg.go:66
 #, javascript-format
 msgid "failed to create keyring %s"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:89
+#: mgradm/cmd/gpg/add/gpg.go:90
 #, javascript-format
 msgid "failed to parse %s"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:96
+#: mgradm/cmd/gpg/add/gpg.go:97
 #, javascript-format
 msgid "failed to download %s"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:102
+#: mgradm/cmd/gpg/add/gpg.go:103
 #, javascript-format
 msgid "failed to show key %s"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:106
-msgid "Do you really want to trust this key"
+#: mgradm/cmd/gpg/add/gpg.go:107
+msgid "Do you really want to trust this key?"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:118
+#: mgradm/cmd/gpg/add/gpg.go:119
 msgid "failed to copy %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:128 mgradm/cmd/gpg/add/gpg.go:135
-#: mgradm/cmd/gpg/list/gpg.go:62 mgradm/cmd/support/sql/sql.go:188
+#: mgradm/cmd/gpg/add/gpg.go:129 mgradm/cmd/gpg/add/gpg.go:136
+#: mgradm/cmd/gpg/list/gpg.go:63 mgradm/cmd/support/sql/sql.go:188
 #, javascript-format
 msgid "Running %s"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:130
+#: mgradm/cmd/gpg/add/gpg.go:131
 msgid "failed to run import key"
 msgstr ""
 
-#: mgradm/cmd/gpg/add/gpg.go:137
+#: mgradm/cmd/gpg/add/gpg.go:138
 msgid "failed to restart uyuni-update-config"
 msgstr ""
 
@@ -866,11 +882,11 @@ msgstr ""
 msgid "List GPG keys from custom keyring (default) or system keyring"
 msgstr ""
 
-#: mgradm/cmd/gpg/list/gpg.go:41
+#: mgradm/cmd/gpg/list/gpg.go:42
 msgid "List keys from system keyring"
 msgstr ""
 
-#: mgradm/cmd/gpg/list/gpg.go:66
+#: mgradm/cmd/gpg/list/gpg.go:67
 msgid "failed to list keys in selected keyring"
 msgstr ""
 
@@ -1188,11 +1204,20 @@ msgstr ""
 msgid "Start the server"
 msgstr ""
 
+#: mgradm/cmd/status/podman.go:26
+msgid "Server services are enabled"
+msgstr ""
+
+#: mgradm/cmd/status/podman.go:28
+msgid "Server services are disabled"
+msgstr ""
+
 #: mgradm/cmd/status/status.go:24 mgradm/cmd/status/status.go:25
 msgid "Get the server status"
 msgstr ""
 
-#: mgradm/cmd/status/status.go:46
+#: mgradm/cmd/status/status.go:46 mgradm/shared/podman/services.go:50
+#: mgradm/shared/podman/services.go:65
 msgid "no installed server detected"
 msgstr ""
 
@@ -1388,6 +1413,25 @@ msgstr ""
 
 #: mgradm/cmd/upgrade/upgrade.go:65
 msgid "failed to unmarshall configuration"
+msgstr ""
+
+#: mgradm/cmd/upgrade/utils.go:32
+#, javascript-format
+msgid "failed to read %s"
+msgstr ""
+
+#: mgradm/cmd/upgrade/utils.go:45
+#, javascript-format
+msgid "failed to change permissions for %s"
+msgstr ""
+
+#: mgradm/cmd/upgrade/utils.go:49
+#, javascript-format
+msgid "failed to write %s"
+msgstr ""
+
+#: mgradm/cmd/upgrade/utils.go:52
+msgid "Legacy dual-stack IPv6 port bindings have been removed from uyuni-server.service. Please reboot the host and then run the upgrade command again"
 msgstr ""
 
 #: mgradm/shared/coco/coco.go:28
@@ -1643,6 +1687,10 @@ msgstr ""
 
 #: mgradm/shared/podman/podman.go:784
 msgid "Secrets %[1]s and %[2]s, already exists"
+msgstr ""
+
+#: mgradm/shared/podman/services.go:85
+msgid "Server services are disabled and will not start automatically at boot"
 msgstr ""
 
 #: mgradm/shared/podman/ssl.go:88
