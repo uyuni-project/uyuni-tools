@@ -5,12 +5,66 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
+	"strings"
 	"testing"
 
+	sharedPodman "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
+
+func TestPrepareHostPreservesInspectionErrors(t *testing.T) {
+	originalInspect := inspect
+	t.Cleanup(func() { inspect = originalInspect })
+	inspect = func(_, _ string) (*utils.InspectData, error) {
+		return nil, errors.New("database inspection failed")
+	}
+
+	_, err := prepareHost("server-image", "postgres-image")
+	if err == nil {
+		t.Fatal("expected prepareHost to return an error")
+	}
+	if !strings.Contains(err.Error(), "cannot inspect podman values: database inspection failed") {
+		t.Fatalf("expected the original inspection error, got: %v", err)
+	}
+}
+
+func TestEnsureServicesRunning(t *testing.T) {
+	cases := []struct {
+		name        string
+		running     []string
+		expectedErr string
+	}{
+		{name: "both services running", running: []string{sharedPodman.ServerService, sharedPodman.DBService}},
+		{name: "server stopped", running: []string{sharedPodman.DBService}, expectedErr: "uyuni-server"},
+		{name: "database stopped", running: []string{sharedPodman.ServerService}, expectedErr: "uyuni-db"},
+		{name: "both services stopped", expectedErr: "uyuni-server, uyuni-db"},
+	}
+
+	for _, testCase := range cases {
+		t.Run(testCase.name, func(t *testing.T) {
+			systemd := sharedPodman.NewSystemdWithDriver(&testutils.FakeSystemdDriver{Running: testCase.running})
+			err := ensureServicesRunning(systemd)
+			if testCase.expectedErr != "" && err == nil {
+				t.Fatal("expected an error")
+			}
+			if testCase.expectedErr == "" && err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if testCase.expectedErr != "" {
+				if !strings.Contains(err.Error(), testCase.expectedErr) {
+					t.Fatalf("expected stopped services in error, got: %v", err)
+				}
+				if !strings.Contains(err.Error(), "mgradm start") {
+					t.Fatalf("expected recovery command in error, got: %v", err)
+				}
+			}
+		})
+	}
+}
 
 func TestHasDebugPorts(t *testing.T) {
 	data := map[string]bool{
