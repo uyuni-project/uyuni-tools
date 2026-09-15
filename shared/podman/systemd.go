@@ -81,6 +81,12 @@ type SystemdDriver interface {
 	// EnableService enables and starts a systemd service.
 	EnableService(service string) error
 
+	// EnableServiceAtBoot enables a systemd unit without starting it.
+	EnableServiceAtBoot(service string) error
+
+	// DisableServiceAtBoot disables a systemd unit without stopping it.
+	DisableServiceAtBoot(service string) error
+
 	// GetServiceProperty returns the value of a systemd service property.
 	GetServiceProperty(service string, property string) (string, error)
 
@@ -173,6 +179,30 @@ func (d *systemdDriverImpl) EnableService(service string) error {
 	}
 	if err := utils.RunCmd("systemctl", "enable", "--now", service); err != nil {
 		return utils.Errorf(err, L("failed to enable %s systemd service"), service)
+	}
+	return nil
+}
+
+// EnableServiceAtBoot enables a systemd unit without starting it.
+func (d *systemdDriverImpl) EnableServiceAtBoot(service string) error {
+	if d.ServiceIsEnabled(service) {
+		log.Debug().Msgf("%s is already enabled.", service)
+		return nil
+	}
+	if err := utils.RunCmd("systemctl", "enable", service); err != nil {
+		return utils.Errorf(err, L("failed to enable %s systemd unit"), service)
+	}
+	return nil
+}
+
+// DisableServiceAtBoot disables a systemd unit without stopping it.
+func (d *systemdDriverImpl) DisableServiceAtBoot(service string) error {
+	if !d.ServiceIsEnabled(service) {
+		log.Debug().Msgf("%s is already disabled.", service)
+		return nil
+	}
+	if err := utils.RunCmd("systemctl", "disable", service); err != nil {
+		return utils.Errorf(err, L("failed to disable %s systemd unit"), service)
 	}
 	return nil
 }
@@ -380,6 +410,16 @@ func (s SystemdImpl) StopService(service string) error {
 // EnableService enables and starts a systemd service.
 func (s SystemdImpl) EnableService(service string) error {
 	return s.driver.EnableService(service)
+}
+
+// EnableServiceAtBoot enables a systemd unit without starting it.
+func (s SystemdImpl) EnableServiceAtBoot(service string) error {
+	return s.driver.EnableServiceAtBoot(service)
+}
+
+// DisableServiceAtBoot disables a systemd unit without stopping it.
+func (s SystemdImpl) DisableServiceAtBoot(service string) error {
+	return s.driver.DisableServiceAtBoot(service)
 }
 
 // StartInstantiated starts all replicas.

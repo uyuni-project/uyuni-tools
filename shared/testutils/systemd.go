@@ -82,6 +82,20 @@ func (d *FakeSystemdDriver) EnableService(service string) error {
 	return err
 }
 
+// EnableServiceAtBoot enables a systemd unit without starting it.
+func (d *FakeSystemdDriver) EnableServiceAtBoot(service string) error {
+	return d.EnableService(service)
+}
+
+// DisableServiceAtBoot disables a systemd unit without stopping it.
+func (d *FakeSystemdDriver) DisableServiceAtBoot(service string) error {
+	err := d.DisableServiceErrors[service]
+	if err == nil {
+		d.Enabled = deleteItems(d.Enabled, service)
+	}
+	return err
+}
+
 // ReloadDaemon resets the failed state of services and reload the systemd daemon.
 // If dryRun is set to true, nothing happens but messages are logged to explain what would be done.
 func (d *FakeSystemdDriver) ReloadDaemon() error {
@@ -108,9 +122,6 @@ func (d *FakeSystemdDriver) RestartService(service string) error {
 
 // StartService starts the systemd service.
 func (d *FakeSystemdDriver) StartService(service string) error {
-	if !d.ServiceIsEnabled(service) {
-		return fmt.Errorf("%s service is not enabled", service)
-	}
 	err := d.StartServiceErrors[service]
 	if err == nil && !contains(d.Running, service) {
 		d.Running = append(d.Running, service)
@@ -120,9 +131,6 @@ func (d *FakeSystemdDriver) StartService(service string) error {
 
 // StopService starts the systemd service.
 func (d *FakeSystemdDriver) StopService(service string) error {
-	if !d.ServiceIsEnabled(service) {
-		return fmt.Errorf("%s service is not enabled", service)
-	}
 	err := d.StopServiceErrors[service]
 	if err == nil {
 		d.Running = deleteItems(d.Running, service)

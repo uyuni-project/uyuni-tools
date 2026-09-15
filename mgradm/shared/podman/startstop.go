@@ -10,6 +10,8 @@ import (
 )
 
 func StartServices() error {
+	WarnIfServicesDisabled(systemd)
+
 	var dbErr error
 	if systemd.HasService(podman.DBService) {
 		dbErr = systemd.StartService(podman.DBService)
@@ -34,6 +36,8 @@ func StartServices() error {
 }
 
 func StopServices() error {
+	WarnIfServicesDisabled(systemd)
+
 	errs := utils.JoinErrors(
 		systemd.StopInstantiated(podman.ServerAttestationService),
 		systemd.StopInstantiated(podman.HubXmlrpcService),
