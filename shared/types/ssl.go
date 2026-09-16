@@ -1,10 +1,10 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package types
 
-// SSLCertGenerationFlags stores informations to generate an SSL Certificate.
+// SSLCertGenerationFlags stores information to generate an SSL Certificate.
 type SSLCertGenerationFlags struct {
 	Cnames   []string `mapstructure:"cname"`
 	Country  string
