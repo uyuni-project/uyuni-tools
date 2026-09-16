@@ -54,22 +54,32 @@ func GetContainerTimezone() string {
 	return utils.GetLocalTimezone()
 }
 
-// timezoneFromEnvironmentFile returns the value of the TZ variable set in the server.env environment
-// file, or an empty string when it cannot be found.
-func timezoneFromEnvironmentFile() string {
-	envFile := path.Join(podman.GetServiceConfFolder(podman.ServerService), podman.ServerEnvironmentFile)
-	data, err := os.ReadFile(envFile)
+// serverEnvironmentFile returns the path of the server.env environment file.
+func serverEnvironmentFile() string {
+	return path.Join(podman.GetServiceConfFolder(podman.ServerService), podman.ServerEnvironmentFile)
+}
+
+// envVarFromEnvironmentFile returns the value of the given KEY=VALUE variable read from the file at
+// path, or an empty string when the variable cannot be found.
+func envVarFromEnvironmentFile(fileName string, name string) string {
+	data, err := os.ReadFile(fileName)
 	if err != nil {
-		log.Debug().Err(err).Msgf("Failed to read the %s environment file", envFile)
+		log.Debug().Err(err).Msgf("Failed to read the %s environment file", fileName)
 		return ""
 	}
 	for _, line := range strings.Split(string(data), "\n") {
 		line = strings.TrimSpace(line)
-		if strings.HasPrefix(line, "TZ=") {
-			return strings.TrimSpace(strings.TrimPrefix(line, "TZ="))
+		if strings.HasPrefix(line, name+"=") {
+			return strings.TrimSpace(strings.TrimPrefix(line, name+"="))
 		}
 	}
 	return ""
+}
+
+// timezoneFromEnvironmentFile returns the value of the TZ variable set in the server.env environment
+// file, or an empty string when it cannot be found.
+func timezoneFromEnvironmentFile() string {
+	return envVarFromEnvironmentFile(serverEnvironmentFile(), "TZ")
 }
 
 // ApplyNewCertificates restarts the server and database containers so that they pick up the new
@@ -149,16 +159,18 @@ func GenerateServerEnvironmentFile(flags adm_utils.InstallationFlags, fqdn strin
 }
 
 // Generate new server environmentfile with only things useful for upgrade scenario.
-// Currently only debug and the timezone. Needs changes on uyuni container side too.
+// Currently only debug, the timezone and the mirror path. Needs changes on uyuni container side too.
 func GenerateUpgradeServerEnvironmentFile(debug bool) error {
 	confDir := podman.GetServiceConfFolder(podman.ServerService)
 	envfile := filepath.Join(confDir, podman.ServerEnvironmentFile)
 
-	// Preserve the timezone already configured for the server as rewriting the file from scratch
-	// would otherwise drop it and make the container fall back to UTC.
+	// Preserve the values already configured for the server as rewriting the file from scratch
+	// would otherwise drop them: the timezone would make the container fall back to UTC and the
+	// mirror path would make the container stop using the configured mirror.
 	data := templates.PodmanServiceEnvironmentTemplateData{
-		TZ:    timezoneFromEnvironmentFile(),
-		Debug: debug,
+		TZ:        envVarFromEnvironmentFile(envfile, "TZ"),
+		HasMirror: envVarFromEnvironmentFile(envfile, "MIRROR_PATH") != "",
+		Debug:     debug,
 	}
 
 	if err := utils.WriteTemplateToFile(data, envfile, 0400, true); err != nil {
