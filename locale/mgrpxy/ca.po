@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-09 11:21+0200\n"
-"PO-Revision-Date: 2026-07-28 10:12+0000\n"
+"PO-Revision-Date: 2026-09-18 13:13+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -413,7 +413,7 @@ msgstr "No s'ha trobat l'ID del sistema a l'esdeveniment retornat"
 #: mgrpxy/shared/podman/podman.go:541
 #, javascript-format
 msgid "failed to read %s"
-msgstr "no s'ha pogut llegir %s"
+msgstr "ha fallat llegir %s"
 
 #: mgrpxy/shared/podman/podman.go:545
 #, javascript-format
@@ -428,7 +428,7 @@ msgstr "no s'ha pogut estructurar %s"
 #: mgrpxy/shared/podman/podman.go:556
 #, javascript-format
 msgid "failed to write %s"
-msgstr "no s'ha pogut escriure a %s"
+msgstr "ha fallat escriure %s"
 
 #: mgrpxy/shared/podman/podman.go:564
 #, javascript-format
