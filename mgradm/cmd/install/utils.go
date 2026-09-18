@@ -33,15 +33,25 @@ func installForPodman(
 	cmd *cobra.Command,
 	args []string,
 ) error {
+	if _, err := exec.LookPath("podman"); err != nil {
+		return errors.New(L("install podman before running this command"))
+	}
+
 	hostData, err := shared_podman.InspectHost()
 	if err != nil {
 		return err
 	}
 
-	flags.Installation.CheckParameters(cmd, "podman")
-	if _, err := exec.LookPath("podman"); err != nil {
-		return errors.New(L("install podman before running this command"))
+	if err := shared_podman.CheckPrerequisites(
+		minServerMemoryGB,
+		minServerStorageGB,
+		utils.GetServerPorts(false),
+		shared_podman.UyuniNetwork,
+	); err != nil {
+		return err
 	}
+
+	flags.Installation.CheckParameters(cmd, "podman")
 
 	authFile, cleaner, err := shared_podman.PodmanLogin(hostData, flags.Image.Registry, flags.Installation.SCC)
 	if err != nil {
@@ -104,9 +114,7 @@ func installForPodman(
 	}
 
 	if path, err := exec.LookPath("uyuni-payg-extract-data"); err == nil {
-		// the binary is installed
-		err = utils.RunCmdStdMapping(zerolog.DebugLevel, path)
-		if err != nil {
+		if err := utils.RunCmdStdMapping(zerolog.DebugLevel, path); err != nil {
 			return utils.Error(err, L("failed to extract payg data"))
 		}
 	}
@@ -119,6 +127,11 @@ func installForPodman(
 		tftp.SetupTFTPContainer(systemd, authFile, flags.Image, flags.TFTPD, fqdn, false),
 	)
 }
+
+const (
+	minServerMemoryGB  = 16
+	minServerStorageGB = 100
+)
 
 func setupDatabase(dbFlags types.DBFlags, reportdbFlags types.DBFlags, preparedImage string, tz string) error {
 	if err := shared_podman.CreateCredentialsSecrets(

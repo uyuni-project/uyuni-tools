@@ -44,6 +44,15 @@ func installForPodman(
 		return err
 	}
 
+	if err := shared_podman.CheckPrerequisites(
+		minProxyMemoryGB,
+		minProxyStorageGB,
+		shared_utils.GetProxyPorts(),
+		shared_podman.UyuniNetwork,
+	); err != nil {
+		return err
+	}
+
 	// If we previously created systemid secret, remove it
 	shared_podman.DeleteSecret(podman.SystemIDSecret, false)
 
@@ -100,3 +109,8 @@ func installForPodman(
 
 	return podman.StartPod(systemd)
 }
+
+const (
+	minProxyMemoryGB  = 2
+	minProxyStorageGB = 100
+)
