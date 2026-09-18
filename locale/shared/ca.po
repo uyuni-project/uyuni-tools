@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-09 10:54+0200\n"
-"PO-Revision-Date: 2026-07-28 10:12+0000\n"
+"PO-Revision-Date: 2026-09-18 13:13+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -697,16 +697,14 @@ msgid "failed to enable %s systemd service"
 msgstr "no s'ha pogut habilitar el servei «systemd» de %s"
 
 #: shared/podman/systemd.go:193
-#, fuzzy, javascript-format
-#| msgid "failed to enable %s systemd service"
+#, javascript-format
 msgid "failed to enable %s systemd unit"
-msgstr "no s'ha pogut habilitar el servei «systemd» de %s"
+msgstr "no s'ha pogut habilitar la unitat de systemd %s"
 
 #: shared/podman/systemd.go:205
-#, fuzzy, javascript-format
-#| msgid "failed to disable %s systemd service"
+#, javascript-format
 msgid "failed to disable %s systemd unit"
-msgstr "no s'ha pogut inhabilitar el servei systemd %s"
+msgstr "no s'ha pogut desactivar la unitat de systemd %s"
 
 #: shared/podman/systemd.go:217
 msgid "Failed to get the %[1]s property from %[2]s service"
@@ -1433,11 +1431,8 @@ msgid "failed to open %s for writing"
 msgstr "no s'ha pogut obrir %s per a escriptura"
 
 #: shared/utils/utils.go:60
-#, fuzzy
-#| msgid "Has to be more than %d character long"
-#| msgid_plural "Has to be more than %d characters long"
 msgid "Has to be between %[1]d and %[2]d characters long"
-msgstr "Ha de tenir més d'%d caràcter"
+msgstr "Ha de tenir una longitud d'entre %[1]d i %[2]d caràcters"
 
 #: shared/utils/utils.go:71
 msgid "Failed to read password"
@@ -1472,15 +1467,15 @@ msgstr "Es requereix un valor"
 #: shared/utils/utils.go:165
 #, javascript-format
 msgid "%s [y/N]"
-msgstr ""
+msgstr "%s [s/N]"
 
 #: shared/utils/utils.go:178
 msgid "yes"
-msgstr ""
+msgstr "sí"
 
 #: shared/utils/utils.go:181
 msgid "no"
-msgstr ""
+msgstr "no"
 
 #: shared/utils/utils.go:228 shared/utils/utils.go:250
 #, javascript-format
