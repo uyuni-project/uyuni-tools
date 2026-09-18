@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 09:38+0200\n"
+"POT-Creation-Date: 2026-09-11 13:01+0200\n"
 "PO-Revision-Date: 2026-08-18 08:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ko/>\n"
@@ -2191,11 +2191,11 @@ msgstr "서버 이미지에서 릴리스를 가져올 수 없음"
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "버전 %[1]s에서 %[2]s(으)로 다운그레이드할 수 없습니다."
 
-#: mgradm/shared/utils/flags.go:141
+#: mgradm/shared/utils/flags.go:144
 msgid "Can only contain letters, digits . _ and -"
 msgstr "문자, 숫자 . _ 및 -만 포함할 수 있음"
 
-#: mgradm/shared/utils/flags.go:149
+#: mgradm/shared/utils/flags.go:152
 msgid "Not a valid email address"
 msgstr "유효한 전자 메일 주소 아님"
 
