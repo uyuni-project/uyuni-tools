@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -25,7 +25,7 @@ func runGet(_ *types.GlobalFlags, flags *apiFlags, _ *cobra.Command, args []stri
 		err = client.Login()
 	}
 	if err != nil {
-		return utils.Errorf(err, L("unable to login to the server"))
+		return utils.Error(err, L("unable to login to the server"))
 	}
 	path := args[0]
 	options := args[1:]

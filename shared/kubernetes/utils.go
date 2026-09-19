@@ -56,7 +56,7 @@ func GetDeploymentStatus(namespace string, name string) (*DeploymentStatus, erro
 
 	var status DeploymentStatus
 	if err = json.Unmarshal(out, &status); err != nil {
-		return nil, utils.Errorf(err, L("failed to parse deployment status"))
+		return nil, utils.Error(err, L("failed to parse deployment status"))
 	}
 	return &status, nil
 }
@@ -114,7 +114,7 @@ func waitForReplicas(namespace string, name string, replicas uint) error {
 			var err error
 			readyReplicas, err = strconv.ParseUint(outStr, 10, 8)
 			if err != nil {
-				return utils.Errorf(err, L("invalid replicas result"))
+				return utils.Error(err, L("invalid replicas result"))
 			}
 		}
 		if uint(readyReplicas) == replicas {

@@ -83,6 +83,9 @@ BuildRequires:  golang(API) >= 1.25
 
 %if 0%{?ubuntu}
 %define go_version      1.22
+%if 0%{?ubuntu} >= 2604
+%define go_version      1.26
+%endif
 # On Ubuntu 22.04, the metapackage golang is too old (1.18) and
 # we must use the versioned package name specifically for this OS version.
 %if 0%{?ubuntu} == 2204
@@ -95,13 +98,24 @@ BuildRequires:  golang >= %{go_version}
 
 %if 0%{?debian}
 BuildRequires:  golang >= 1.19
+%define go_version 1.19
 %endif
 # debian
 
-%if 0%{?fedora} || 0%{?rhel}
+%if 0%{?fedora}
+%if 0%{?fedora} >= 43
+BuildRequires:  golang >= 1.25
+%else
 BuildRequires:  golang >= 1.21
+%define go_version      1.21
 %endif
-# fedora || rhel
+%endif
+# fedora
+
+%if 0%{?rhel}
+BuildRequires:  golang >= 1.25
+%endif
+# rhel
 
 %description
 Tools for managing %{productprettyname} container.
@@ -328,6 +342,12 @@ go_tags=""
   go_tags="-tags %{_uyuni_tools_tags}"
 %endif
 # "_uyuni_tools_tags" != ""
+
+case "%{go_version}" in
+    1.1* | 1.21 | 1.22)
+        sed -i "s/go [0-9.]\+/go %{go_version}/" go.mod
+        ;;
+esac
 
 go_path=""
 %if 0%{?ubuntu}

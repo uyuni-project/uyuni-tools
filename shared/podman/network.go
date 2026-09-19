@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -63,7 +63,7 @@ func SetupNetwork(isProxy bool) error {
 		out, err := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "info", "--format", "{{.Host.NetworkBackend}}")
 		backend := strings.Trim(string(out), "\n")
 		if err != nil {
-			return utils.Errorf(err, L("failed to find podman's network backend"))
+			return utils.Error(err, L("failed to find podman's network backend"))
 		} else if backend != "netavark" {
 			log.Info().Msgf(L("Podman's network backend (%[1]s) is not netavark, skipping IPv6 enabling on %[2]s network"),
 				backend, UyuniNetwork)

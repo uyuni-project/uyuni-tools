@@ -114,7 +114,7 @@ func prepareThirdPartyCertificates(
 func SetThirdPartyCertificates(sslFlags *adm_utils.InstallSSLFlags, fqdn string) error {
 	serverCertReady, dbCertReady, err := prepareThirdPartyCertificates(sslFlags, fqdn)
 	if err != nil {
-		return utils.Errorf(err, L("Failed to create secrets from the provided SSL arguments"))
+		return utils.Error(err, L("Failed to create secrets from the provided SSL arguments"))
 	}
 	if !serverCertReady && !dbCertReady {
 		return errors.New(L("No third-party certificate provided to import"))
@@ -263,7 +263,7 @@ func PrepareSSLCertificates(image string, sslFlags *adm_utils.InstallSSLFlags, t
 
 	serverCertReady, dbCertReady, err := prepareThirdPartyCertificates(sslFlags, fqdn)
 	if err != nil {
-		return utils.Errorf(err, L("Failed to create secrets from the provided SSL arguments"))
+		return utils.Error(err, L("Failed to create secrets from the provided SSL arguments"))
 	}
 
 	// Do we have secrets or certificates from volumes to reuse?

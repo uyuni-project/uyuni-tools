@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -51,12 +51,12 @@ func InspectHost() (*HostInspectData, error) {
 
 	out, err := newRunner("bash", "-c", script).Log(zerolog.DebugLevel).Exec()
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to run inspect script in host system"))
+		return nil, utils.Error(err, L("failed to run inspect script in host system"))
 	}
 
 	inspectResult, err := utils.ReadInspectData[HostInspectData](out)
 	if err != nil {
-		return nil, utils.Errorf(err, L("cannot inspect host data"))
+		return nil, utils.Error(err, L("cannot inspect host data"))
 	}
 
 	return inspectResult, err

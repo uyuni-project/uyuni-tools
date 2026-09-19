@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -22,7 +22,7 @@ func kubernetesStop(
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ProxyFilter)
 	namespace, err := cnx.GetNamespace("")
 	if err != nil {
-		return utils.Errorf(err, L("failed retrieving namespace"))
+		return utils.Error(err, L("failed retrieving namespace"))
 	}
 	return kubernetes.Stop(namespace, kubernetes.ProxyApp)
 }

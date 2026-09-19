@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2024 SUSE LLC
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -27,9 +27,9 @@ RUN set -euo pipefail; \
     uyuni-releng-tools \
     util-linux
 
-RUN curl -sSfL https://github.com/golangci/golangci-lint/releases/download/v2.7.1/golangci-lint-2.7.1-linux-amd64.tar.gz | tar -xz &&  \
-    mv golangci-lint-2.7.1-linux-amd64/golangci-lint /usr/local/bin/ && \
-    rm -rf golangci-lint-2.7.1-linux-amd64
+RUN curl --proto "=https" --tlsv1.2 -sSfL https://github.com/golangci/golangci-lint/releases/download/v2.12.2/golangci-lint-2.7.1-linux-amd64.tar.gz | tar -xz &&  \
+    mv golangci-lint-2.12.2-linux-amd64/golangci-lint /usr/local/bin/ && \
+    rm -rf golangci-lint-2.12.2-linux-amd64
 
 RUN set -euo pipefail; zypper -n clean -a; \
     rm -rf {/target,}/var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}

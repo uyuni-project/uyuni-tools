@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -36,7 +36,7 @@ func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
 				return err
 			}
 			if err := viper.Unmarshal(&flags); err != nil {
-				return utils.Errorf(err, L("failed to unmarshall configuration"))
+				return utils.Error(err, L("failed to unmarshall configuration"))
 			}
 			return run(flags, cmd, args)
 		},
