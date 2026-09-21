@@ -97,7 +97,7 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 // Provided connectionDetails must have Server specified with FQDN to the
 // target host.
 //
-// Optionaly connectionDetails can have user name and password set and Init
+// Optionally connectionDetails can have user name and password set and Init
 // will try to login to the host.
 // caCert can be set to use custom CA certificate to validate target host.
 func Init(conn *ConnectionDetails) (*APIClient, error) {
@@ -211,7 +211,7 @@ func (c *APIClient) sessionValidity() error {
 	return err
 }
 
-// Logout from the server and remove localy stored session key.
+// Logout from the server and remove locally stored session key.
 func (c *APIClient) Logout() error {
 	if _, err := c.Post("auth/logout", nil); err != nil {
 		return utils.Errorf(err, L("failed to logout from the server"))

@@ -100,7 +100,7 @@ func checkStatusFile() error {
 	}
 	if val, ok := config["archive_command"]; !ok || val != ArchiveCommand() {
 		log.Trace().Msgf("archive_command: \"%s\"", config["archive_command"])
-		log.Trace().Msgf("expectd_command: \"%s\"", ArchiveCommand())
+		log.Trace().Msgf("expected_command: \"%s\"", ArchiveCommand())
 		return ErrArchiveCommandMisconfigured
 	}
 	return nil
