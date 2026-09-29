@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -96,6 +96,11 @@ func bindFlags(cmd *cobra.Command, v *viper.Viper) error {
 		// Retrocompatibility: --registry maps to registry-host
 		if configName == "registry" {
 			configName = "registry.host"
+		}
+		// --page would claim the "page" key as a scalar and shadow the
+		// "page.size" key coming from --page-size, so map it to page.number.
+		if configName == "page" {
+			configName = "page.number"
 		}
 		if err := v.BindPFlag(configName, f); err != nil {
 			errors = append(errors, Errorf(err, L("failed to bind %[1]s config to parameter %[2]s"), configName, f.Name))
