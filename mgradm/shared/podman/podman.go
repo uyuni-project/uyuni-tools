@@ -355,6 +355,7 @@ func restoreSELinuxContext(volumes []types.VolumeMount) error {
 
 var prepareImage = podman.PrepareImage
 var runContainer = podman.RunContainer
+var inspect = podman.Inspect
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
 func RunPgsqlVersionUpgrade(
@@ -425,6 +426,10 @@ func Upgrade(
 		if err := CallCloudGuestRegistryAuth(); err != nil {
 			return err
 		}
+	}
+
+	if err := ensureServicesRunning(systemd); err != nil {
+		return err
 	}
 
 	// Prepare Uyuni network, migration container needs to run in the same network as resulting image
@@ -736,12 +741,28 @@ func prepareHost(
 	preparedServerImage string,
 	preparedPgsqlImage string,
 ) (*utils.InspectData, error) {
-	inspectedValues, err := podman.Inspect(preparedServerImage, preparedPgsqlImage)
+	inspectedValues, err := inspect(preparedServerImage, preparedPgsqlImage)
 	if err != nil {
 		return nil, utils.Errorf(err, L("cannot inspect podman values"))
 	}
 
 	return inspectedValues, adm_utils.SanityCheck(inspectedValues)
+}
+
+func ensureServicesRunning(systemd podman.Systemd) error {
+	stoppedServices := []string{}
+	for _, service := range []string{podman.ServerService, podman.DBService} {
+		if !systemd.IsServiceRunning(service) {
+			stoppedServices = append(stoppedServices, service)
+		}
+	}
+
+	if len(stoppedServices) == 0 {
+		return nil
+	}
+
+	return fmt.Errorf(L("Cannot upgrade because the following services are not running: %s. Run 'mgradm start' and try again"),
+		strings.Join(stoppedServices, ", "))
 }
 
 func configureDBContainer(
