@@ -1,0 +1,2 @@
+- Fix organization and admin details ignored during installation
+  (bsc#1279047)

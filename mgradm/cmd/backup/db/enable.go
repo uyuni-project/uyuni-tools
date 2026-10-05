@@ -32,7 +32,7 @@ func Enable(force bool) error {
 
 	if wasRunning {
 		if !force {
-			res, err := utils.YesNo(L("Database service needs to be restarted to reload backup configurations, continue"))
+			res, err := utils.YesNo(L("Database service needs to be restarted to reload backup configurations, continue?"))
 			if err != nil || !res {
 				log.Info().Msg(L("Backup configuration aborted"))
 				return nil

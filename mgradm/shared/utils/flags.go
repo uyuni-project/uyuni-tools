@@ -120,7 +120,10 @@ func (flags *InstallationFlags) CheckParameters(cmd *cobra.Command, command stri
 	utils.AskIfMissing(&flags.Organization, cmd.Flag("organization").Usage, 3, 128, nil)
 
 	flags.SSL.Email = flags.Email
-	flags.Admin.Email = flags.Email
+	// Default the administrator email to the general one, but keep it if the user set it explicitly.
+	if flags.Admin.Email == "" {
+		flags.Admin.Email = flags.Email
+	}
 
 	if flags.SCC.User != "" {
 		utils.AskPasswordIfMissing(&flags.SCC.Password, cmd.Flag("scc-password").Usage, 5, 48)

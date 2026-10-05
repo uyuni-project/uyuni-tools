@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 14:35+0100\n"
-"PO-Revision-Date: 2026-07-28 10:12+0000\n"
+"POT-Creation-Date: 2026-08-27 10:29+0200\n"
+"PO-Revision-Date: 2026-09-18 13:13+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: mgrctl/cmd/api/api.go:26
 msgid "JSON over HTTP API helper tool"
@@ -92,7 +92,8 @@ msgstr "Suprimeix la informació d'inici de sessió desada"
 msgid "Logout removes stored login information."
 msgstr "Tancar la sessió suprimeix la informació d'inici de sessió desada."
 
-#: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28
+#: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28 mgrctl/cmd/gpg/list.go:84
+#: mgrctl/cmd/gpg/remove.go:55 mgrctl/cmd/gpg/upload.go:91
 #: mgrctl/cmd/ssh/knownhost/remove.go:64
 msgid "unable to login to the server"
 msgstr "no es pot iniciar sessió al servidor"
@@ -119,19 +120,19 @@ msgstr "S'han verificat les credencials d'inici de sessió."
 msgid "Successfully logged out"
 msgstr "Sessió tancada correctament"
 
-#: mgrctl/cmd/cmd.go:32
+#: mgrctl/cmd/cmd.go:33
 msgid "Uyuni control tool"
 msgstr "Eina de control d'Uyuni"
 
-#: mgrctl/cmd/cmd.go:33
+#: mgrctl/cmd/cmd.go:34
 msgid "Tool to help managing Uyuni servers mainly through their API"
 msgstr "Eina per ajudar a gestionar els servidors d'Uyuni principalment a través de l'API"
 
-#: mgrctl/cmd/cmd.go:40
+#: mgrctl/cmd/cmd.go:41
 msgid "configuration file path"
 msgstr "camí del fitxer de configuració"
 
-#: mgrctl/cmd/cmd.go:48
+#: mgrctl/cmd/cmd.go:49
 #, javascript-format
 msgid "Starting %s"
 msgstr "S'està iniciant %s"
@@ -192,6 +193,91 @@ msgstr "no es pot escriure"
 #, javascript-format
 msgid "Running %s"
 msgstr "S'està executant %s"
+
+#: mgrctl/cmd/gpg/gpg.go:24
+msgid "GPG key management commands"
+msgstr "Ordres de gestió SSH"
+
+#: mgrctl/cmd/gpg/gpg.go:29
+msgid "Upload a GPG key to the server"
+msgstr "no s'ha pogut connectar al servidor"
+
+#: mgrctl/cmd/gpg/gpg.go:30
+msgid "Uploads an armored GPG key to the server from a local file or a remote URL."
+msgstr "Puja una clau GPG blindada al servidor des d'un fitxer local o un URL remot."
+
+#: mgrctl/cmd/gpg/gpg.go:39
+msgid "List all GPG keys on the server"
+msgstr "Llista totes les claus GPG al servidor"
+
+#: mgrctl/cmd/gpg/gpg.go:40
+msgid "Retrieves a list of registered and/or previously uploaded GPG keys."
+msgstr "Recupera una llista de claus GPG registrades i/o prèviament penjades."
+
+#: mgrctl/cmd/gpg/gpg.go:48
+msgid "Remove a GPG key from the server"
+msgstr "Elimina una clau GPG del servidor"
+
+#: mgrctl/cmd/gpg/gpg.go:49
+msgid "Removes a key identified by its fingerprint from the server's GPG keyring."
+msgstr "Elimina una clau identificada per la seva empremta digital de l'anell de claus GPG del servidor."
+
+#: mgrctl/cmd/gpg/list.go:33
+msgid "error listing GPG keys"
+msgstr "s'ha produït un error en llistar les claus GPG"
+
+#: mgrctl/cmd/gpg/list.go:37
+#, javascript-format
+msgid "failed to list GPG keys: %s"
+msgstr "no s'ha pogut suprimir l'amfitrió: %s"
+
+#: mgrctl/cmd/gpg/remove.go:29
+msgid "error removing GPG key"
+msgstr "s'ha produït un error en suprimir la clau GPG"
+
+#: mgrctl/cmd/gpg/remove.go:33
+#, javascript-format
+msgid "failed to remove GPG key: %s"
+msgstr "no s'ha pogut suprimir l'amfitrió: %s"
+
+#: mgrctl/cmd/gpg/remove.go:37
+msgid "GPG key successfully removed"
+msgstr "amfitrió suprimit correctament"
+
+#: mgrctl/cmd/gpg/remove.go:39
+msgid "unable to remove GPG key, server returned an error"
+msgstr "no es pot suprimir l'amfitrió, el servidor ha retornat un error"
+
+#: mgrctl/cmd/gpg/upload.go:34
+msgid "error uploading GPG key"
+msgstr "s'ha produït un error en carregar la clau GPG"
+
+#: mgrctl/cmd/gpg/upload.go:38
+#, javascript-format
+msgid "failed to upload GPG key: %s"
+msgstr "no s'ha pogut carregar la clau GPG: %s"
+
+#: mgrctl/cmd/gpg/upload.go:42
+msgid "GPG key successfully uploaded"
+msgstr "Sessió tancada correctament"
+
+#: mgrctl/cmd/gpg/upload.go:44
+msgid "unable to upload GPG key, server returned an error"
+msgstr "no es pot suprimir l'amfitrió, el servidor ha retornat un error"
+
+#: mgrctl/cmd/gpg/upload.go:58
+#, javascript-format
+msgid "failed to read key file %s"
+msgstr "no s'ha pogut suprimir l'amfitrió: %s"
+
+#: mgrctl/cmd/gpg/upload.go:64
+#, javascript-format
+msgid "failed to download key from %s"
+msgstr "no s'ha pogut suprimir l'amfitrió: %s"
+
+#: mgrctl/cmd/gpg/upload.go:71
+msgid "the provided key is not an armored GPG key"
+msgstr "la clau proporcionada no és una clau GPG blindada"
 
 #: mgrctl/cmd/proxy/config.go:72 mgrctl/cmd/proxy/config.go:73
 msgid "Create a proxy configuration file"

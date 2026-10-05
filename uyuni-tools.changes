@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Aug 24 16:28:45 CEST 2026 - antonio.garofalo@suse.com
+
+- version 5.3.2-0
+  * Add mgradm commands to enable or disable services at boot
+  * Detect and fix legacy service file (bsc#1268755)
+  * Use healthcheck cmd from the image (bsc#1273144)
+  * Create service files with only read permissions
+
+-------------------------------------------------------------------
 Tue Aug 04 17:31:30 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.1-0

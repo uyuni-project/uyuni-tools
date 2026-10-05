@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -36,6 +36,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[gpgListFlags])
 			var flags gpgListFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
+		Deprecated: "please use `mgrctl gpg list` instead",
 	}
 
 	gpgListKeyCmd.Flags().BoolP("system", "s", false, L("List keys from system keyring"))

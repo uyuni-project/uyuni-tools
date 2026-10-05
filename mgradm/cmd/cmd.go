@@ -12,7 +12,9 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/disable"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/distro"
+	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/enable"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/gpg"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/inspect"
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd/install"
@@ -84,6 +86,8 @@ func NewUyuniadmCommand() (*cobra.Command, error) {
 	rootCmd.AddCommand(completion.NewCommand(globalFlags))
 	rootCmd.AddCommand(support.NewCommand(globalFlags))
 	rootCmd.AddCommand(start.NewCommand(globalFlags))
+	rootCmd.AddCommand(enable.NewCommand(globalFlags))
+	rootCmd.AddCommand(disable.NewCommand(globalFlags))
 	rootCmd.AddCommand(scale.NewCommand(globalFlags))
 	rootCmd.AddCommand(restart.NewCommand(globalFlags))
 	rootCmd.AddCommand(stop.NewCommand(globalFlags))
