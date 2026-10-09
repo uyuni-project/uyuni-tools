@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 13:01+0200\n"
+"POT-Creation-Date: 2026-10-05 09:19+0100\n"
 "PO-Revision-Date: 2026-05-16 14:19+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
@@ -179,7 +179,7 @@ msgstr "Backup della configurazione di Podman"
 msgid "output directory %s already exists and is not empty"
 msgstr "La directory di destinazione %s esiste già e non è vuota"
 
-#: mgradm/cmd/backup/create/create.go:245
+#: mgradm/cmd/backup/create/create.go:245 mgradm/cmd/inspect/podman.go:37
 msgid "server is not initialized."
 msgstr "Server non inizializzato."
 
@@ -956,11 +956,11 @@ msgstr "Ispeziona"
 msgid "Extract information from image and deployment"
 msgstr "Estrazione informazioni dall'immagine e dalla distribuzione"
 
-#: mgradm/cmd/inspect/podman.go:41
+#: mgradm/cmd/inspect/podman.go:52
 msgid "inspect command failed"
 msgstr "comando di ispezione non riuscito"
 
-#: mgradm/cmd/inspect/podman.go:45
+#: mgradm/cmd/inspect/podman.go:56
 msgid "cannot print inspect result"
 msgstr "impossibile stampare il risultato dell'ispezione"
 

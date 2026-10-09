@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 13:01+0200\n"
+"POT-Creation-Date: 2026-10-05 09:19+0100\n"
 "PO-Revision-Date: 2026-08-17 04:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
@@ -179,7 +179,7 @@ msgstr "podman設定のバックアップ"
 msgid "output directory %s already exists and is not empty"
 msgstr "出力ディレクトリ %s はすでに存在し、空ではありません"
 
-#: mgradm/cmd/backup/create/create.go:245
+#: mgradm/cmd/backup/create/create.go:245 mgradm/cmd/inspect/podman.go:37
 msgid "server is not initialized."
 msgstr "サーバが初期化されていません。"
 
@@ -952,11 +952,11 @@ msgstr "検査"
 msgid "Extract information from image and deployment"
 msgstr "イメージと配備から情報を抽出する"
 
-#: mgradm/cmd/inspect/podman.go:41
+#: mgradm/cmd/inspect/podman.go:52
 msgid "inspect command failed"
 msgstr "検査コマンドが失敗しました"
 
-#: mgradm/cmd/inspect/podman.go:45
+#: mgradm/cmd/inspect/podman.go:56
 msgid "cannot print inspect result"
 msgstr "検査結果を出力できません"
 

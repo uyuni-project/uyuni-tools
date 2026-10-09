@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 13:01+0200\n"
+"POT-Creation-Date: 2026-10-05 09:19+0100\n"
 "PO-Revision-Date: 2025-11-26 10:44+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/fr/>\n"
@@ -191,7 +191,7 @@ msgstr "impossible d'exécuter le conteneur %s: %s"
 msgid "output directory %s already exists and is not empty"
 msgstr ""
 
-#: mgradm/cmd/backup/create/create.go:245
+#: mgradm/cmd/backup/create/create.go:245 mgradm/cmd/inspect/podman.go:37
 #, fuzzy
 #| msgid "Server set up"
 msgid "server is not initialized."
@@ -967,12 +967,12 @@ msgstr "Inspecter"
 msgid "Extract information from image and deployment"
 msgstr "Extrait des informations sur l'image et le déploiement"
 
-#: mgradm/cmd/inspect/podman.go:41
+#: mgradm/cmd/inspect/podman.go:52
 #, fuzzy
 msgid "inspect command failed"
 msgstr "la commande inspect a échoué: %s"
 
-#: mgradm/cmd/inspect/podman.go:45
+#: mgradm/cmd/inspect/podman.go:56
 #, fuzzy
 msgid "cannot print inspect result"
 msgstr "impossible d'afficher le résultat de l'inspection: %s"
