@@ -3,6 +3,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 name: 'pre-built devcontainer'
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
 on:
   push:
     branches:
@@ -11,10 +17,6 @@ on:
 jobs:
   devcontainer-build-and-push:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      packages: write
     steps:
       - name: Checkout
         id: checkout
