@@ -1,0 +1,1 @@
+- Add memory, disk and ports pre-installation sanity checks as well as conflicting running containers.
