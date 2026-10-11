@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
@@ -125,5 +126,48 @@ func TestRunPgsqlVersionUpgrade(t *testing.T) {
 			return nil
 		}
 		_ = RunPgsqlVersionUpgrade(expectedAuthfile, testCase.image, testCase.upgradeImage, []types.VolumeMount{})
+	}
+}
+
+func TestEnsureServicesRunning(t *testing.T) {
+	cases := []struct {
+		name            string
+		runningServices []string
+		expectedError   string
+	}{
+		{
+			name:            "both services running",
+			runningServices: []string{podman.ServerService, podman.DBService},
+			expectedError:   "",
+		},
+		{
+			name:            "server stopped",
+			runningServices: []string{podman.DBService},
+			expectedError:   "cannot upgrade because the following services are not running: uyuni-server. Run 'mgradm start' and try again",
+		},
+		{
+			name:            "db stopped",
+			runningServices: []string{podman.ServerService},
+			expectedError:   "cannot upgrade because the following services are not running: uyuni-db. Run 'mgradm start' and try again",
+		},
+		{
+			name:            "both services stopped",
+			runningServices: []string{},
+			expectedError:   "cannot upgrade because the following services are not running: uyuni-server, uyuni-db. Run 'mgradm start' and try again",
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			mockSystemd := &testutils.FakeSystemdDriver{
+				Running: tc.runningServices,
+			}
+			err := ensureServicesRunning(mockSystemd)
+			if tc.expectedError == "" {
+				testutils.AssertNoError(t, "unexpected error", err)
+			} else {
+				testutils.AssertError(t, tc.expectedError, err)
+			}
+		})
 	}
 }

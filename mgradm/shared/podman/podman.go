@@ -402,6 +402,29 @@ func RunPgsqlVersionUpgrade(
 		[]string{})
 }
 
+type serviceStatusChecker interface {
+	IsServiceRunning(service string) bool
+}
+
+func ensureServicesRunning(systemd serviceStatusChecker) error {
+	stoppedServices := []string{}
+
+	for _, service := range []string{podman.ServerService, podman.DBService} {
+		if !systemd.IsServiceRunning(service) {
+			stoppedServices = append(stoppedServices, service)
+		}
+	}
+
+	if len(stoppedServices) == 0 {
+		return nil
+	}
+
+	return fmt.Errorf(
+		L("cannot upgrade because the following services are not running: %s. Run 'mgradm start' and try again"),
+		strings.Join(stoppedServices, ", "),
+	)
+}
+
 // Upgrade will upgrade server to the image given as attribute.
 func Upgrade(
 	systemd podman.Systemd,
@@ -419,6 +442,10 @@ func Upgrade(
 	tz string,
 	debug bool,
 ) error {
+	if err := ensureServicesRunning(systemd); err != nil {
+		return err
+	}
+
 	// Calling cloudguestregistryauth only makes sense if using the cloud provider registry.
 	// This check assumes users won't use custom registries that are not the cloud provider one on a cloud image.
 	if !strings.HasPrefix(image.Registry.Host, "registry.suse.com") {
