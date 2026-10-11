@@ -5,6 +5,9 @@
 package install
 
 import (
+	"fmt"
+	"os/exec"
+
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/mgrpxy/shared/utils"
@@ -38,6 +41,12 @@ NOTE: for now installing on a remote podman is not supported!
 				return cobra.MaximumNArgs(2)(cmd, args)
 			}
 			return cobra.MaximumNArgs(1)(cmd, args)
+		},
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			if _, err := exec.LookPath("podman"); err != nil {
+				return fmt.Errorf("podman not found in PATH: please install podman before running this command")
+			}
+			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// If the alias "install podman" is used, "podman" will be the first arg.
