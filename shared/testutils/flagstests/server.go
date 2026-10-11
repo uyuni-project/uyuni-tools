@@ -27,6 +27,7 @@ var ServerFlagsTestArgs = func() []string {
 	args = append(args, DBUpdateImageFlagTestArgs...)
 	args = append(args, CocoFlagsTestArgs...)
 	args = append(args, HubXmlrpcFlagsTestArgs...)
+	args = append(args, EventProcessorFlagsTestArgs...)
 	args = append(args, TFTPDFlagsTestArgs...)
 	args = append(args, DebugFlagTestArgs...)
 	return args
@@ -40,6 +41,7 @@ func AssertServerFlags(t *testing.T, flags *utils.ServerFlags) {
 	AssertDBUpgradeImageFlag(t, &flags.DBUpgradeImage)
 	AssertCocoFlag(t, &flags.Coco)
 	AssertHubXmlrpcFlag(t, &flags.HubXmlrpc)
+	AssertEventProcessorFlag(t, &flags.EventProcessor)
 	AssertSalineFlag(t, &flags.Saline)
 	AssertSCCFlag(t, &flags.Installation.SCC)
 	AssertPgsqlFlag(t, &flags.Pgsql)
