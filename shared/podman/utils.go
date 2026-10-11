@@ -225,7 +225,7 @@ func DeleteVolume(name string, dryRun bool) error {
 	return nil
 }
 
-// ExportVolume exports a podman volume based on its name to the specified targed directory.
+// ExportVolume exports a podman volume based on its name to the specified target directory.
 // outputDir option expects already existing directory.
 // If dryRun is set to true, only messages will be logged to explain what would happen.
 func ExportVolume(name string, outputDir string, dryRun bool) error {

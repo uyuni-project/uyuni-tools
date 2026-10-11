@@ -35,7 +35,7 @@ const (
 	ServerCertKeyPath = "/etc/pki/tls/private/spacewalk.key"
 	// DBCertPath is the path to the database certificate in the database container.
 	DBCertPath = "/etc/pki/tls/certs/spacewalk.crt"
-	// DBCertKeyPaht is the path to the database certificate in the database container.
+	// DBCertKeyPath is the path to the database certificate in the database container.
 	DBCertKeyPath = "/etc/pki/tls/private/pg-spacewalk.key"
 )
 

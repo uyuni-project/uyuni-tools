@@ -51,7 +51,7 @@ func restorePodmanConfiguration(podmanBackupFile string, flags *shared.Flagpole)
 }
 
 // parseNetworkData decodes stored podman network inspect result.
-// We are not interested in all data, so selectively decode intereting bits.
+// We are not interested in all data, so selectively decode interesting bits.
 func parseNetworkData(data []byte) (networkDetails shared.PodmanNetworkConfigData, err error) {
 	var networkData []map[string]json.RawMessage
 	if err = json.Unmarshal(data, &networkData); err != nil {

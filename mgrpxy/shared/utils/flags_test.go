@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -19,7 +19,7 @@ func TestGetContainerImage(t *testing.T) {
 		expectedResult string
 		description    string
 	}{
-		// Defaults and overiding values
+		// Defaults and overriding values
 		{
 			name: "no image details",
 			proxyFlags: ProxyImageFlags{
