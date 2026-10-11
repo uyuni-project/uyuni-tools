@@ -181,7 +181,7 @@ func (c *Connection) GetNamespace(appName string) (string, error) {
 	out, err := runner("kubectl", "get", "all", "-A", c.kubernetesFilter, "-o",
 		"jsonpath={.items[*].metadata.namespace}").Log(zerolog.DebugLevel).Spinner("").Exec()
 	if err != nil {
-		return "", utils.Errorf(err, L("failed to guest namespace"))
+		return "", utils.Error(err, L("failed to guest namespace"))
 	}
 	c.namespace = strings.TrimSpace(strings.Split(string(out), " ")[0])
 	return c.namespace, nil
@@ -249,7 +249,7 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 	cmdArgs := []string{"exec", c.podName}
 	if cmd == "kubectl" {
 		if _, err := c.GetNamespace(""); c.namespace == "" {
-			return nil, utils.Errorf(err, L("failed to retrieve namespace "))
+			return nil, utils.Error(err, L("failed to retrieve namespace"))
 		}
 
 		if c.container == "" {
@@ -281,12 +281,12 @@ func quoteArgs(args []string) string {
 func (c *Connection) ExecScript(script string) ([]byte, error) {
 	tempFile, err := os.CreateTemp("", "uyuni-tools-script-*.sh")
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to create temporary file"))
+		return nil, utils.Error(err, L("failed to create temporary file"))
 	}
 	defer os.Remove(tempFile.Name())
 
 	if _, err = tempFile.WriteString(script); err != nil {
-		return nil, utils.Errorf(err, L("failed to write script to temporary file"))
+		return nil, utils.Error(err, L("failed to write script to temporary file"))
 	}
 	tempFile.Close()
 
@@ -294,7 +294,7 @@ func (c *Connection) ExecScript(script string) ([]byte, error) {
 
 	// Copy locally created tempfile to container
 	if err := c.Copy(tempFile.Name(), "server:"+remotePath, c.user, ""); err != nil {
-		return nil, utils.Errorf(err, L("failed to copy script to container"))
+		return nil, utils.Error(err, L("failed to copy script to container"))
 	}
 
 	defer func() {
@@ -310,7 +310,7 @@ func (c *Connection) ExecScript(script string) ([]byte, error) {
 func (c *Connection) Healthcheck() error {
 	if c.podName == "" {
 		if _, err := c.GetPodName(); c.podName == "" {
-			return utils.Errorf(err, L("Healthcheck not executed"))
+			return utils.Error(err, L("Healthcheck not executed"))
 		}
 	}
 
@@ -662,7 +662,7 @@ func (c *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 
 	targetDir := path.Join(tmpDir, batchName)
 	if err := c.Copy("server:"+sourceDir, targetDir, "", ""); err != nil {
-		return []string{}, utils.Errorf(err, L("cannot copy support config"))
+		return []string{}, utils.Error(err, L("cannot copy support config"))
 	}
 	files = append(files, targetDir)
 

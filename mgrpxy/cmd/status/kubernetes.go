@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -31,7 +31,7 @@ func kubernetesStatus(
 	// Is the pod running? Do we have all the replicas?
 	status, err := kubernetes.GetDeploymentStatus(namespace, kubernetes.ProxyApp)
 	if err != nil {
-		return utils.Errorf(err, L("failed to get deployment status"))
+		return utils.Error(err, L("failed to get deployment status"))
 	}
 	if status.Replicas != status.ReadyReplicas {
 		log.Warn().Msgf(L("Some replicas are not ready: %[1]d / %[2]d"), status.ReadyReplicas, status.Replicas)

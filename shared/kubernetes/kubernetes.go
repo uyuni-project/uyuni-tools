@@ -49,7 +49,7 @@ func CheckCluster() (*ClusterInfos, error) {
 	out, err := utils.RunCmdOutput(zerolog.DebugLevel, "kubectl", "get", "node",
 		"-o", "jsonpath={.items[0].status.nodeInfo.kubeletVersion}")
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to get kubelet version"))
+		return nil, utils.Error(err, L("failed to get kubelet version"))
 	}
 
 	var infos ClusterInfos

@@ -19,7 +19,7 @@ import (
 func CreateFirst(cnxDetails *api.ConnectionDetails, orgName string, admin *types.User) (*types.Organization, error) {
 	client, err := api.Init(cnxDetails)
 	if err != nil {
-		return nil, utils.Errorf(err, L("unable to prepare API client"))
+		return nil, utils.Error(err, L("unable to prepare API client"))
 	}
 
 	data := map[string]interface{}{
@@ -33,7 +33,7 @@ func CreateFirst(cnxDetails *api.ConnectionDetails, orgName string, admin *types
 
 	res, err := api.PostChecked[types.Organization](client, "org/createFirst", "api.org.create_first", data)
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to create first user and organization"))
+		return nil, utils.Error(err, L("failed to create first user and organization"))
 	}
 
 	if !res.Success {

@@ -62,7 +62,7 @@ func installForPodman(
 
 	preparedImage, preparedPgsqlImage, err := shared_podman.PrepareImages(authFile, flags.Image, flags.Pgsql)
 	if err != nil {
-		return utils.Errorf(err, L("cannot prepare images"))
+		return utils.Error(err, L("cannot prepare images"))
 	}
 
 	if err := shared_podman.SetupNetwork(false); err != nil {
