@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-05 09:19+0100\n"
-"PO-Revision-Date: 2026-08-17 04:13+0000\n"
+"PO-Revision-Date: 2026-10-13 06:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
@@ -1590,10 +1590,8 @@ msgid "Not altering the hub XML-RPC API service"
 msgstr "hub XML-RPC APIサービスを変更しない"
 
 #: mgradm/shared/pgsql/pgsql.go:50
-#, fuzzy
-#| msgid "cannot generate systemd user configuration file"
 msgid "cannot generate systemd custom configuration file"
-msgstr "systemdユーザ設定ファイルを生成できません"
+msgstr "systemdカスタム設定ファイルを生成できません"
 
 #: mgradm/shared/pgsql/pgsql.go:78 mgradm/shared/pgsql/pgsql.go:111
 #, javascript-format
