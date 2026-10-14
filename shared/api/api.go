@@ -255,8 +255,8 @@ func (c *APIClient) Post(path string, data map[string]interface{}) (*http.Respon
 }
 
 // PostChecked validates the API endpoint before issuing a POST request.
-func (c *APIClient) PostChecked(path string, endpoint string, data map[string]interface{}) (*http.Response, error) {
-	if err := c.validateEndpoint(endpoint); err != nil {
+func (c *APIClient) PostChecked(path string, data map[string]interface{}) (*http.Response, error) {
+	if err := c.validateEndpoint(path); err != nil {
 		return nil, err
 	}
 	return c.Post(path, data)
@@ -264,9 +264,9 @@ func (c *APIClient) PostChecked(path string, endpoint string, data map[string]in
 
 // PostChecked issues a validated POST request to the API target using the client and decodes the response.
 func PostChecked[T interface{}](
-	client *APIClient, path string, namespace string, data map[string]interface{},
+	client *APIClient, path string, data map[string]interface{},
 ) (*APIResponse[T], error) {
-	res, err := client.PostChecked(path, namespace, data)
+	res, err := client.PostChecked(path, data)
 	if err != nil {
 		return nil, err
 	}
@@ -337,16 +337,16 @@ func Get[T interface{}](client *APIClient, path string) (*APIResponse[T], error)
 }
 
 // GetChecked validates the API namespace before issuing a GET request.
-func (c *APIClient) GetChecked(path string, namespace string) (*http.Response, error) {
-	if err := c.validateEndpoint(namespace); err != nil {
+func (c *APIClient) GetChecked(path string) (*http.Response, error) {
+	if err := c.validateEndpoint(path); err != nil {
 		return nil, err
 	}
 	return c.Get(path)
 }
 
 // GetChecked issues a validated GET request to the API using the client and decodes the response.
-func GetChecked[T interface{}](client *APIClient, path string, endpoint string) (*APIResponse[T], error) {
-	res, err := client.GetChecked(path, endpoint)
+func GetChecked[T interface{}](client *APIClient, path string) (*APIResponse[T], error) {
+	res, err := client.GetChecked(path)
 	if err != nil {
 		return nil, err
 	}
