@@ -12,10 +12,72 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
-const removeKnownHostNamespace = "api.admin.ssh.remove_known_host"
+const sshNamespace = "admin.ssh"
+const removeKnownHostEndpoint = "removeKnownHost"
 
-func namespaceListResponse(namespace string) string {
-	return `{"success":true,"result":[{"namespace":"` + namespace + `","access_mode":"W"}]}`
+func getAPICallListResponse(namespace string, endpoint string) string {
+	return `{
+		"success":true,
+		"result":{
+			"` + namespace + `": {
+				"endpointid": {
+					"name": "` + endpoint + `",
+					"parameters": [],
+					"exceptions": [],
+					"return": "int"
+				}
+			}
+		}
+	}`
+}
+
+func TestValidateEndpoint(t *testing.T) {
+	tests := []struct {
+		name        string
+		path        string
+		expectedErr string
+	}{
+		{
+			name:        "Matching path only",
+			path:        "admin/ssh/removeKnownHost",
+			expectedErr: "",
+		},
+		{
+			name:        "Matching path with parameters",
+			path:        "admin/ssh/removeKnownHost?key=val",
+			expectedErr: "",
+		},
+		{
+			name:        "Non matching path",
+			path:        "foo/bar",
+			expectedErr: "This function is currently not supported by the server",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			client, err := Init(&ConnectionDetails{Server: "testServer", Cookie: "testCookie"})
+			if err != nil {
+				t.FailNow()
+			}
+			client.Client = &mocks.MockClient{DoFunc: func(req *http.Request) (*http.Response, error) {
+				switch req.URL.Path {
+				case "/rhn/manager/api/api/getApiCallList":
+					return testutils.GetResponse(200, getAPICallListResponse(sshNamespace, removeKnownHostEndpoint))
+				default:
+					t.Errorf("Unexpected API path %s", req.URL.Path)
+					return testutils.GetResponse(404, `{}`)
+				}
+			}}
+
+			err = client.validateEndpoint(tt.path)
+			if tt.expectedErr == "" {
+				testutils.AssertNoError(t, "Shouldn't have failed", err)
+			} else {
+				testutils.AssertError(t, tt.expectedErr, err)
+			}
+		})
+	}
 }
 
 func TestPostChecked(t *testing.T) {
@@ -30,15 +92,13 @@ func TestPostChecked(t *testing.T) {
 		{
 			name:         "Test advertised endpoint",
 			path:         "admin/ssh/removeKnownHost",
-			endpoint:     removeKnownHostNamespace,
 			apiPath:      "/rhn/manager/api/admin/ssh/removeKnownHost",
 			targetCalled: true,
 		},
 		{
 			name:          "Test unsupported endpoint",
-			path:          "admin/ssh/removeUnknownHost",
-			endpoint:      "api.admin.ssh.remove_unknown_host",
-			apiPath:       "/rhn/manager/api/admin/ssh/removeUnknownHost",
+			path:          "admin/ssh/invalidCall",
+			apiPath:       "/rhn/manager/api/admin/ssh/invalidCall",
 			expectedError: unsupportedFunctionError,
 		},
 	}
@@ -53,8 +113,8 @@ func TestPostChecked(t *testing.T) {
 			targetCalled := false
 			client.Client = &mocks.MockClient{DoFunc: func(req *http.Request) (*http.Response, error) {
 				switch req.URL.Path {
-				case "/rhn/manager/api/access/listNamespaces":
-					return testutils.GetResponse(200, namespaceListResponse(removeKnownHostNamespace))
+				case "/rhn/manager/api/api/getApiCallList":
+					return testutils.GetResponse(200, getAPICallListResponse(sshNamespace, removeKnownHostEndpoint))
 				case tt.apiPath:
 					targetCalled = true
 					return testutils.GetResponse(200, `{"success":true,"result":true}`)
@@ -65,7 +125,7 @@ func TestPostChecked(t *testing.T) {
 			}}
 
 			errorMessage := ""
-			if _, err := client.PostChecked(tt.path, tt.endpoint, nil); err != nil {
+			if _, err := client.PostChecked(tt.path, nil); err != nil {
 				errorMessage = err.Error()
 			}
 
@@ -87,14 +147,12 @@ func TestGetChecked(t *testing.T) {
 		{
 			name:         "Test advertised endpoint",
 			path:         "org/getDetails?name=admin",
-			endpoint:     "api.org.get_details",
 			apiPath:      "/rhn/manager/api/org/getDetails",
 			targetCalled: true,
 		},
 		{
 			name:          "Test unsupported endpoint",
 			path:          "org/getUnknownDetails?name=admin",
-			endpoint:      "api.org.get_unknown_details",
 			apiPath:       "/rhn/manager/api/org/getUnknownDetails",
 			expectedError: unsupportedFunctionError,
 		},
@@ -110,8 +168,8 @@ func TestGetChecked(t *testing.T) {
 			targetCalled := false
 			client.Client = &mocks.MockClient{DoFunc: func(req *http.Request) (*http.Response, error) {
 				switch req.URL.Path {
-				case "/rhn/manager/api/access/listNamespaces":
-					return testutils.GetResponse(200, namespaceListResponse("api.org.get_details"))
+				case "/rhn/manager/api/api/getApiCallList":
+					return testutils.GetResponse(200, getAPICallListResponse("org", "getDetails"))
 				case tt.apiPath:
 					targetCalled = true
 					return testutils.GetResponse(200, `{"success":true,"result":true}`)
@@ -122,7 +180,7 @@ func TestGetChecked(t *testing.T) {
 			}}
 
 			errorMessage := ""
-			if _, err := client.GetChecked(tt.path, tt.endpoint); err != nil {
+			if _, err := client.GetChecked(tt.path); err != nil {
 				errorMessage = err.Error()
 			}
 

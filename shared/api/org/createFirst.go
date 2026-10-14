@@ -31,7 +31,7 @@ func CreateFirst(cnxDetails *api.ConnectionDetails, orgName string, admin *types
 		"email":         admin.Email,
 	}
 
-	res, err := api.PostChecked[types.Organization](client, "org/createFirst", "api.org.create_first", data)
+	res, err := api.PostChecked[types.Organization](client, "org/createFirst", data)
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to create first user and organization"))
 	}
