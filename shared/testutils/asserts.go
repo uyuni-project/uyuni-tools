@@ -37,10 +37,10 @@ func DiffStrings(expected string, actual string) string {
 
 		if exp != act {
 			if i < len(expectedLines) {
-				diff.WriteString(fmt.Sprintf("-%d: %s\n", i+1, exp))
+				fmt.Fprintf(&diff, "-%d: %s\n", i+1, exp)
 			}
 			if i < len(actualLines) {
-				diff.WriteString(fmt.Sprintf("+%d: %s\n", i+1, act))
+				fmt.Fprintf(&diff, "+%d: %s\n", i+1, act)
 			}
 		}
 	}
