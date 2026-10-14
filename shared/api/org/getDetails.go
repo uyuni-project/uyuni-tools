@@ -23,9 +23,7 @@ func GetOrganizationDetails(cnxDetails *api.ConnectionDetails, orgName string) (
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to connect to the server"))
 	}
-	res, err := api.GetChecked[types.Organization](
-		client, fmt.Sprintf("org/getDetails?name=%s", orgName), "api.org.get_details",
-	)
+	res, err := api.GetChecked[types.Organization](client, fmt.Sprintf("org/getDetails?name=%s", orgName))
 	if err != nil {
 		return nil, utils.Errorf(err, L("failed to get organization details"))
 	}

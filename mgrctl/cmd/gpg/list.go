@@ -26,7 +26,6 @@ func gpgKeyList(client *api.APIClient) error {
 	response, err := api.GetChecked[[]ListGpgKeysResponse](
 		client,
 		"admin/gpg/listGpgKeys",
-		"api.admin.gpg.list_gpg_keys",
 	)
 
 	if err != nil {
