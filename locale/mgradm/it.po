@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 09:38+0200\n"
+"POT-Creation-Date: 2026-09-11 13:01+0200\n"
 "PO-Revision-Date: 2026-05-16 14:19+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/it/>\n"
@@ -2229,11 +2229,11 @@ msgstr "impossibile recuperare il rilascio dall'immagine del server"
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "non è possibile effettuare il downgrade dalla versione %[1]s a %[2]s"
 
-#: mgradm/shared/utils/flags.go:141
+#: mgradm/shared/utils/flags.go:144
 msgid "Can only contain letters, digits . _ and -"
 msgstr "Può contenere solo lettere, cifre . _ e -"
 
-#: mgradm/shared/utils/flags.go:149
+#: mgradm/shared/utils/flags.go:152
 msgid "Not a valid email address"
 msgstr "Non è un indirizzo email valido"
 

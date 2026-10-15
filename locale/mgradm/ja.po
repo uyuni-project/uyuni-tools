@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 09:38+0200\n"
+"POT-Creation-Date: 2026-09-11 13:01+0200\n"
 "PO-Revision-Date: 2026-08-17 04:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
@@ -2188,11 +2188,11 @@ msgstr "サーバイメージからリリースをフェッチできません"
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "バージョン %[1]s から %[2]s にダウングレードできません"
 
-#: mgradm/shared/utils/flags.go:141
+#: mgradm/shared/utils/flags.go:144
 msgid "Can only contain letters, digits . _ and -"
 msgstr "文字、数字 ._ -のみを含めることができます"
 
-#: mgradm/shared/utils/flags.go:149
+#: mgradm/shared/utils/flags.go:152
 msgid "Not a valid email address"
 msgstr "有効な電子メールアドレスではありません"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 09:38+0200\n"
+"POT-Creation-Date: 2026-09-11 13:01+0200\n"
 "PO-Revision-Date: 2026-05-22 00:12+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/de/>\n"
@@ -2142,11 +2142,11 @@ msgstr "Abbild-URL konnte nicht berechnet werden"
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/shared/utils/flags.go:141
+#: mgradm/shared/utils/flags.go:144
 msgid "Can only contain letters, digits . _ and -"
 msgstr ""
 
-#: mgradm/shared/utils/flags.go:149
+#: mgradm/shared/utils/flags.go:152
 msgid "Not a valid email address"
 msgstr ""
 

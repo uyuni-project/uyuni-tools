@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Oct 07 17:53:40 CEST 2026 - marina.latini@suse.com
+
+- version 5.3.3-0
+  * Mount --tuning-httpd file as zz_apache_tuning conf so it
+    overrides the vendor spacewalk-proxy conf MPM settings
+    (bsc#1277719)
+  * Fix organization and admin details ignored during installation
+    (bsc#1279047)
+  * Add mgrctl commands for GPG key management
+  * Fix the wording of the password length error message
+
+-------------------------------------------------------------------
 Mon Aug 24 16:28:45 CEST 2026 - antonio.garofalo@suse.com
 
 - version 5.3.2-0

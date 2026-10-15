@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 09:38+0200\n"
+"POT-Creation-Date: 2026-09-11 13:01+0200\n"
 "PO-Revision-Date: 2025-11-26 10:44+0000\n"
 "Last-Translator: David D <dadu042@mailo.com>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/fr/>\n"
@@ -2276,11 +2276,11 @@ msgstr "impossible d'activer le service systemd: %s"
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr ""
 
-#: mgradm/shared/utils/flags.go:141
+#: mgradm/shared/utils/flags.go:144
 msgid "Can only contain letters, digits . _ and -"
 msgstr "Ne peut contenir que des lettres, chiffres . _ et -"
 
-#: mgradm/shared/utils/flags.go:149
+#: mgradm/shared/utils/flags.go:152
 msgid "Not a valid email address"
 msgstr "Pas une adresse email valide"
 
