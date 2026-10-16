@@ -43,7 +43,7 @@ func NewUyunictlCommand() *cobra.Command {
 
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, _ []string) {
 		// do not log if running the completion cmd as the output is redirect to create a file to source
-		if cmd.Name() != "completion" {
+		if cmd.Name() != "completion" && cmd.Name() != "__complete" {
 			utils.LogInit((cmd.Name() != "exec" && cmd.Name() != "term") || globalFlags.LogLevel == "trace")
 			utils.SetLogLevel(globalFlags.LogLevel)
 			log.Info().Msgf(L("Starting %s"), strings.Join(os.Args, " "))
