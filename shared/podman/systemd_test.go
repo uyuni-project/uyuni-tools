@@ -10,8 +10,10 @@ import (
 	"path"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
@@ -110,4 +112,50 @@ func TestGetServicePropertyError(t *testing.T) {
 	testutils.AssertTrue(t, "Unexpected error description",
 		strings.Contains(err.Error(), "Failed to get the TestProperty property from myservice service"))
 	testutils.AssertEquals(t, "Wrong expected property", "", actual)
+}
+
+func TestShowServiceLogs(t *testing.T) {
+	var actualArgs []string
+	SetRunner(func(command string, args ...string) types.Runner {
+		actualArgs = append([]string{command}, args...)
+		return testutils.FakeRunnerGenerator("some log line", nil)(command, args...)
+	})
+	t.Cleanup(ResetRunner)
+
+	ShowServiceLogs("uyuni-server", time.Date(2026, 10, 26, 10, 0, 0, 0, time.UTC))
+
+	expectedArgs := []string{
+		"journalctl", "-u", "uyuni-server",
+		"--since", "2026-10-26 10:00:00",
+		"--no-pager", "-n", "100",
+	}
+	testutils.AssertEquals(t, "Wrong journalctl arguments", expectedArgs, actualArgs)
+}
+
+func TestShowServiceLogsFailure(t *testing.T) {
+	SetRunner(testutils.FakeRunnerGenerator("", errors.New("no journal")))
+	t.Cleanup(ResetRunner)
+
+	// A failure to read the logs should not prevent reporting the service start failure.
+	ShowServiceLogs("uyuni-server", time.Now())
+}
+
+func TestFormatServiceLogs(t *testing.T) {
+	testutils.AssertEquals(t, "empty input should produce empty output", "", formatServiceLogs("myservice", ""))
+	testutils.AssertEquals(t, "whitespace input should produce empty output", "",
+		formatServiceLogs("myservice", "   \n\t  "))
+
+	shortLog := "Started service successfully."
+	expectedShort := "-------------------- [myservice] --------------------\n" +
+		"  Started service successfully.\n" +
+		"-----------------------------------------------------"
+	testutils.AssertEquals(t, "short line format", expectedShort, formatServiceLogs("myservice", shortLog))
+
+	longLine := strings.Repeat("x", maxJournalLineLength+50)
+	formatted := formatServiceLogs("myservice", longLine)
+	expectedTruncated := strings.Repeat("x", maxJournalLineLength-3) + "..."
+	expectedLong := "-------------------- [myservice] --------------------\n" +
+		"  " + expectedTruncated + "\n" +
+		"-----------------------------------------------------"
+	testutils.AssertEquals(t, "long line format with truncation", expectedLong, formatted)
 }
