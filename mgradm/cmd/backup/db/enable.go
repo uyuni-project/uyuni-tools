@@ -7,6 +7,7 @@ package db
 import (
 	"errors"
 	"strings"
+	"time"
 
 	"github.com/rs/zerolog/log"
 
@@ -27,8 +28,7 @@ func Enable(force bool) error {
 
 	// This needs to be root connect because of basebackup script
 	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
-	isRunning, _ := cnx.GetPodName()
-	wasRunning := isRunning != ""
+	wasRunning := systemd.IsServiceRunning(podman.DBService)
 
 	if wasRunning {
 		if !force {
@@ -60,10 +60,12 @@ func Enable(force bool) error {
 
 	// Prepare initial snapshot. For this container either must be running or we need to start container database
 	log.Info().Msg(L("Starting database…"))
+	startAttempt := time.Now()
 	if err := systemd.StartService(podman.DBService); err != nil {
 		return err
 	}
-	if err := cnx.WaitForHealthcheck(); err != nil {
+	if err := cnx.WaitForHealthcheck(startAttempt); err != nil {
+		podman.ShowServiceLogs(podman.DBService, startAttempt)
 		return err
 	}
 

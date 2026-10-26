@@ -97,7 +97,7 @@ func installForPodman(
 
 	cnx := shared.NewConnection("podman", shared_podman.ServerContainerName, "")
 	if err := podman.WaitForSystemStart(systemd, cnx); err != nil {
-		return utils.Error(err, L("cannot wait for system start"))
+		return err
 	}
 	if err := cnx.CopyCaCertificate(fqdn); err != nil {
 		return utils.Error(err, L("failed to add SSL CA certificate to host trusted certificates"))
