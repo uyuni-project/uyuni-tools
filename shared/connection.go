@@ -12,6 +12,7 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 
@@ -201,8 +202,11 @@ func (c *Connection) GetPodName() (string, error) {
 		case "podman-remote":
 			fallthrough
 		case "podman":
-			if out, _ := runner(c.command, "ps", "-q", "-f", "name="+c.container).
-				Log(zerolog.DebugLevel).Spinner("").Exec(); len(out) == 0 {
+			// Use an anchored filter: podman matches names as regular expressions,
+			// so a plain "name=uyuni-server" also matches "uyuni-server-attestation-0".
+			filter := "name=^" + regexp.QuoteMeta(c.container) + "$"
+			if out, _ := runner(c.command, "ps", "-q", "-f", filter).
+				Log(zerolog.DebugLevel).Spinner("").Exec(); len(bytes.TrimSpace(out)) == 0 {
 				err = fmt.Errorf(L("container %s is not running on podman"), c.container)
 			} else {
 				log.Trace().Msgf("Found container ID '%s'", out)
@@ -306,39 +310,86 @@ func (c *Connection) ExecScript(script string) ([]byte, error) {
 	return c.Exec("bash", remotePath)
 }
 
-// Healthcheck runs healthcheck command inside the container.
-func (c *Connection) Healthcheck() error {
-	if c.podName == "" {
-		if _, err := c.GetPodName(); c.podName == "" {
-			return utils.Errorf(err, L("Healthcheck not executed"))
-		}
-	}
+// These are variables to allow shortening them in the tests.
+var (
+	// containerAppearanceTimeout is how long to wait for a container that at least
+	// got created by podman to start.
+	containerAppearanceTimeout = 10 * time.Minute
+	// containerNoEventTimeout is how long to wait when podman did not report any
+	// create or start event at all: the service most likely failed before running
+	// the container, so there is no point in waiting for the full timeout.
+	containerNoEventTimeout = 1 * time.Minute
+	healthcheckPollInterval = 2 * time.Second
+)
 
-	cmd, cmdErr := c.GetCommand()
-	if cmdErr != nil {
-		return cmdErr
-	}
-
-	if cmd == "host" {
-		// Healthcheck not supported on host, always return nil
-		return nil
-	}
-
-	cmdArgs := []string{"inspect", "--format", "{{ .State.Health.Status }}", c.podName}
-
-	out, err := runner(cmd, cmdArgs...).Log(zerolog.DebugLevel).Spinner("").Exec()
+// WaitForContainer waits for the container to be running.
+//
+// startAttempt is the time at which the container start was requested. It must be
+// captured just before systemd.StartService()/RestartService() or the podman run
+// command, and is used to detect failed or repeated starts through podman events.
+// The kubectl backend keeps its previous exec-based polling.
+func (c *Connection) WaitForContainer(startAttempt time.Time) error {
+	cmd, err := c.GetCommand()
 	if err != nil {
 		return err
 	}
-	outStr := strings.TrimSpace(string(out))
-	if outStr != "healthy" && outStr != "running" {
-		return errors.New(L("not healthy or running"))
+
+	switch cmd {
+	case "host":
+		return nil
+	case "kubectl":
+		return c.waitForContainerExec(cmd)
 	}
-	return nil
+
+	if startAttempt.IsZero() {
+		startAttempt = time.Now()
+	}
+	appearanceDeadline := startAttempt.Add(containerAppearanceTimeout)
+	noEventDeadline := startAttempt.Add(containerNoEventTimeout)
+
+	for {
+		now := time.Now()
+
+		events, err := podman.GetContainerEvents(cmd, c.container, startAttempt)
+		if err != nil {
+			return utils.Errorf(err, L("cannot read the startup events of container %s"), c.container)
+		}
+		start, err := podman.AnalyzeContainerEvents(events)
+		if err != nil {
+			return utils.Errorf(err, L("container %s failed during startup"), c.container)
+		}
+
+		status, statusErr := podman.GetContainerStatus(cmd, c.container)
+		if statusErr == nil && status.Running {
+			return nil
+		}
+		if statusErr == nil && status.State != "created" {
+			return fmt.Errorf(L("container %[1]s is not running (state: %[2]s, exit code: %[3]d)"),
+				c.container, status.State, status.ExitCode)
+		}
+
+		// Without any create or start event podman never got to run the container:
+		// the service failed, don't wait for the full appearance timeout.
+		if statusErr != nil && !start.Created && !start.Started && now.After(noEventDeadline) {
+			return utils.Errorf(statusErr,
+				L("container %[1]s did not appear within %[2]s, "+
+					"the service probably failed to start it; check `journalctl -u %[3]s`"),
+				c.container, containerNoEventTimeout, c.container)
+		}
+
+		if now.After(appearanceDeadline) {
+			if statusErr != nil {
+				return utils.Errorf(statusErr, L("container %[1]s did not appear within %[2]s"),
+					c.container, containerAppearanceTimeout)
+			}
+			return fmt.Errorf(L("container %[1]s did not start within %[2]s"),
+				c.container, containerAppearanceTimeout)
+		}
+		time.Sleep(healthcheckPollInterval)
+	}
 }
 
-// WaitForContainer waits up to 10 sec for the container to appear.
-func (c *Connection) WaitForContainer() error {
+func (c *Connection) waitForContainerExec(cmd string) error {
 	for i := 0; i < 10; i++ {
 		podName, err := c.GetPodName()
 		if err != nil {
@@ -346,22 +397,8 @@ func (c *Connection) WaitForContainer() error {
 			time.Sleep(1 * time.Second)
 			continue
 		}
-		args := []string{"exec", podName}
-		command, err := c.GetCommand()
-		if err != nil {
-			return err
-		}
 
-		if command == "host" {
-			return nil
-		}
-
-		if command == "kubectl" {
-			args = append(args, "--")
-		}
-		args = append(args, "true")
-		_, err = runner(command, args...).Spinner("").Exec()
-		if err == nil {
+		if _, err := runner(cmd, "exec", podName, "--", "true").Spinner("").Exec(); err == nil {
 			return nil
 		}
 		time.Sleep(1 * time.Second)
@@ -369,32 +406,95 @@ func (c *Connection) WaitForContainer() error {
 	return errors.New(L("container didn't start within 10s."))
 }
 
-// WaitForHealthcheck waits for healtcheck to succeed.
-func (c *Connection) WaitForHealthcheck() error {
-	// This is a quick workaround for long startups
-	// Generally check is intentionally infinite, we guard only for 15s grace period for container to start
-	startupTimeout := 15
+// WaitForHealthcheck waits for the container healthcheck to succeed.
+// The container must have a healthcheck configured.
+//
+// startAttempt is the time at which the container start was requested. It must be
+// captured just before systemd.StartService() or the podman run command, and is used
+// to select the podman events belonging to this start attempt.
+func (c *Connection) WaitForHealthcheck(startAttempt time.Time) error {
+	cmd, err := c.GetCommand()
+	if err != nil {
+		return err
+	}
+
+	switch cmd {
+	case "host":
+		return nil
+	case "kubectl":
+		return errors.New(L("waiting for a healthcheck is not supported on the Kubernetes backend"))
+	}
+
+	if err := c.WaitForContainer(startAttempt); err != nil {
+		return err
+	}
+
+	if startAttempt.IsZero() {
+		startAttempt = time.Now()
+	}
+
+	var firstStart time.Time
+	lastHealth := ""
 
 	for {
-		c.podName = ""
-		if _, err := c.GetPodName(); err != nil {
-			// container did not yet start or is already stopped
-			startupTimeout--
-			if startupTimeout < 0 {
-				return errors.New(L("container didn't start within 15s or failed. Check the service status"))
-			}
-			time.Sleep(1 * time.Second)
-			continue
-		}
-		// once here, container started at least once, clear startupTimeout
-		startupTimeout = 0
-		err := c.Healthcheck()
+		now := time.Now()
+
+		events, err := podman.GetContainerEvents(cmd, c.container, startAttempt)
 		if err != nil {
-			log.Debug().Err(err)
-			time.Sleep(1 * time.Second)
-			continue
+			return utils.Errorf(err, L("cannot read the startup events of container %s"), c.container)
 		}
-		return nil
+		start, err := podman.AnalyzeContainerEvents(events)
+		if err != nil {
+			return utils.Errorf(err, L("container %s failed during startup"), c.container)
+		}
+		if !start.FirstStart.IsZero() {
+			firstStart = start.FirstStart
+		} else if firstStart.IsZero() {
+			firstStart = now
+		}
+
+		status, statusErr := podman.GetContainerStatus(cmd, c.container)
+		if statusErr != nil {
+			return utils.Errorf(statusErr, L("container %s is no longer available"), c.container)
+		}
+
+		if !status.Running {
+			return fmt.Errorf(
+				L("container %[1]s is not running (state: %[2]s, exit code: %[3]d, restarts: %[4]d); check `journalctl -u %[5]s`"),
+				c.container, status.State, status.ExitCode, status.RestartCount, c.container,
+			)
+		}
+
+		switch status.Health {
+		case "healthy":
+			return nil
+		case "none":
+			return fmt.Errorf(
+				L("container %s has no healthcheck configured; WaitForHealthcheck must only be used with healthchecked containers"),
+				c.container,
+			)
+		case "unhealthy":
+			return fmt.Errorf(L("container %[1]s is unhealthy (%[2]d consecutive failures): %[3]s"),
+				c.container, status.FailingStreak, status.HealthLog)
+		case "starting", "":
+			// Keep waiting, the healthcheck configuration bounds this.
+		default:
+			return fmt.Errorf(L("container %[1]s has an unexpected health state: %[2]s"), c.container, status.Health)
+		}
+
+		if status.Health != lastHealth {
+			log.Info().Msgf(L("Waiting for %[1]s to become healthy (current health: %[2]s)"),
+				c.container, status.Health)
+			lastHealth = status.Health
+		}
+		if status.HealthcheckTimeout > 0 && !now.Before(firstStart.Add(status.HealthcheckTimeout)) {
+			return fmt.Errorf(
+				L("container %[1]s did not become healthy within its healthcheck window (last health: %[2]s)"),
+				c.container, status.Health,
+			)
+		}
+
+		time.Sleep(healthcheckPollInterval)
 	}
 }
 

@@ -13,6 +13,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -81,13 +82,15 @@ func ApplyNewCertificates(fqdn string) error {
 			return err
 		}
 	}
+	startAttempt := time.Now()
 	if err := systemd.RestartService(podman.ServerService); err != nil {
 		return err
 	}
 
 	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
-	if err := cnx.WaitForContainer(); err != nil {
-		return utils.Error(err, L("cannot wait for the server container to start"))
+	if err := cnx.WaitForContainer(startAttempt); err != nil {
+		podman.ShowServiceLogs(podman.ServerService, startAttempt)
+		return utils.Error(err, L("server container failed to start"))
 	}
 	if err := updateServerCATrust(cnx); err != nil {
 		return err
@@ -572,12 +575,14 @@ func Upgrade(
 	log.Info().Msg(L("Waiting for server to start. This include service setup operations and can take a very long time."))
 	log.Info().Msg(L("Use `journalctl -f -u uyuni-server` for tracking progress"))
 	cnx := shared.NewConnection("podman", podman.ServerContainerName, "")
+	startAttempt := time.Now()
 	if err := systemd.StartService(podman.ServerService); err != nil {
 		return utils.Error(err, L("cannot start service"))
 	}
 
-	if err := cnx.WaitForHealthcheck(); err != nil {
-		return utils.Error(err, L("cannot wait for system start"))
+	if err := cnx.WaitForHealthcheck(startAttempt); err != nil {
+		podman.ShowServiceLogs(podman.ServerService, startAttempt)
+		return utils.Error(err, L("server container failed to start"))
 	}
 
 	inspectedDB := types.DBFlags{
@@ -611,14 +616,19 @@ func WaitForSystemStart(
 	cnx *shared.Connection,
 ) error {
 	log.Info().Msg(L("Waiting for the server to start…"))
-	if err := systemd.EnableService(podman.ServerService); err != nil {
+	startAttempt := time.Now()
+	if err := systemd.EnableServiceAtBoot(podman.ServerService); err != nil {
 		return utils.Error(err, L("cannot enable service"))
 	}
 	if err := systemd.StartService(podman.ServerService); err != nil {
 		return utils.Error(err, L("cannot start service"))
 	}
 
-	return cnx.WaitForHealthcheck()
+	if err := cnx.WaitForHealthcheck(startAttempt); err != nil {
+		podman.ShowServiceLogs(podman.ServerService, startAttempt)
+		return utils.Error(err, L("server container failed to start"))
+	}
+	return nil
 }
 
 var runCmdOutput = utils.RunCmdOutput
