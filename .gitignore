@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023 SUSE LLC
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -8,3 +8,4 @@ vendor.tar.gz
 __pycache__
 **/tags
 *.mo
+*-uyuni-tools-uyunitools-main

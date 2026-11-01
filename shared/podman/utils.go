@@ -84,7 +84,7 @@ func AddPodmanArgFlag(cmd *cobra.Command) {
 func EnablePodmanSocket() error {
 	err := utils.RunCmd("systemctl", "enable", "--now", "podman.socket")
 	if err != nil {
-		return utils.Errorf(err, L("failed to enable podman.socket unit"))
+		return utils.Error(err, L("failed to enable podman.socket unit"))
 	}
 	return err
 }
@@ -388,7 +388,7 @@ func ImageInspect[T any](
 
 	inspectResult, err := utils.ReadInspectData[T](out)
 	if err != nil {
-		return nil, utils.Errorf(err, L("cannot inspect data"))
+		return nil, utils.Error(err, L("cannot inspect data"))
 	}
 
 	return inspectResult, nil
@@ -411,7 +411,7 @@ func RunningContainerInspect[T any](
 
 	inspectResult, err := utils.ReadInspectData[T](out)
 	if err != nil {
-		return nil, utils.Errorf(err, L("cannot inspect data"))
+		return nil, utils.Error(err, L("cannot inspect data"))
 	}
 
 	return inspectResult, nil

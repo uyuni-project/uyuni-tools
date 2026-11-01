@@ -187,7 +187,7 @@ func (c *APIClient) login() error {
 		return err
 	}
 	if !response["success"].(bool) {
-		return fmt.Errorf(response["message"].(string))
+		return errors.New(response["message"].(string))
 	}
 
 	cookies := res.Cookies()
@@ -214,7 +214,7 @@ func (c *APIClient) sessionValidity() error {
 // Logout from the server and remove localy stored session key.
 func (c *APIClient) Logout() error {
 	if _, err := c.Post("auth/logout", nil); err != nil {
-		return utils.Errorf(err, L("failed to logout from the server"))
+		return utils.Error(err, L("failed to logout from the server"))
 	}
 	return RemoveLoginCreds()
 }

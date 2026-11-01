@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -31,7 +31,7 @@ func StoreLoginCreds(client *APIClient) error {
 
 	authData, err := json.Marshal(auth)
 	if err != nil {
-		return utils.Errorf(err, L("unable to create credentials json"))
+		return utils.Error(err, L("unable to create credentials json"))
 	}
 
 	err = os.WriteFile(getAPICredsFile(), authData, 0600)
@@ -85,7 +85,7 @@ func loadLoginCreds(connection *ConnectionDetails) error {
 	authStore := []authStorage{}
 	err = json.Unmarshal(data, &authStore)
 	if err != nil {
-		return utils.Errorf(err, L("unable to decode credentials file"))
+		return utils.Error(err, L("unable to decode credentials file"))
 	}
 
 	if len(authStore) == 0 {

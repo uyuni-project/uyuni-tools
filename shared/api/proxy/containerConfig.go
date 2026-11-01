@@ -31,7 +31,7 @@ func executeRequest(client *api.APIClient, data map[string]interface{}) (*[]int8
 	log.Trace().Msgf("Creating proxy configuration file with data: %v...", data)
 	res, err := api.PostChecked[[]int8](client, containerConfigEndpoint, containerConfigAPIEndpoint, data)
 	if err != nil {
-		return nil, utils.Errorf(err, L("failed to create proxy configuration file"))
+		return nil, utils.Error(err, L("failed to create proxy configuration file"))
 	}
 	if !res.Success {
 		return nil, errors.New(res.Message)
