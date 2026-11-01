@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-05 09:19+0100\n"
+"POT-Creation-Date: 2026-11-01 11:59+0100\n"
 "PO-Revision-Date: 2026-10-13 06:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
@@ -1027,12 +1027,12 @@ msgstr "サーバはすでに初期化されています。新規インストー
 msgid "Setting up the server with the FQDN '%s'"
 msgstr "FQDN「%s」を使用してサーバを設定しています"
 
-#: mgradm/cmd/install/utils.go:65 mgradm/shared/podman/podman.go:443
+#: mgradm/cmd/install/utils.go:65 mgradm/shared/podman/podman.go:459
 msgid "cannot prepare images"
 msgstr "イメージを準備できません"
 
-#: mgradm/cmd/install/utils.go:69 mgradm/shared/podman/podman.go:235
-#: mgradm/shared/podman/podman.go:433
+#: mgradm/cmd/install/utils.go:69 mgradm/shared/podman/podman.go:251
+#: mgradm/shared/podman/podman.go:449
 msgid "cannot setup network"
 msgstr "ネットワークを設定できません"
 
@@ -1040,19 +1040,19 @@ msgstr "ネットワークを設定できません"
 msgid "failed to generate server service"
 msgstr "サーバサービスの生成に失敗しました"
 
-#: mgradm/cmd/install/utils.go:95 mgradm/shared/podman/podman.go:572
+#: mgradm/cmd/install/utils.go:95 mgradm/shared/podman/podman.go:588
 msgid "Waiting for server to start. This include service setup operations and can take a very long time."
 msgstr "サーバの起動を待機しています。これにはサービスのセットアップ操作が含まれるため、非常に時間がかかることがあります。"
 
-#: mgradm/cmd/install/utils.go:96 mgradm/shared/podman/podman.go:573
+#: mgradm/cmd/install/utils.go:96 mgradm/shared/podman/podman.go:589
 msgid "Use `journalctl -f -u uyuni-server` for tracking progress"
 msgstr "進捗状況を追跡するには、「journalctl -f -u uyuni-server」を使用します"
 
-#: mgradm/cmd/install/utils.go:100 mgradm/shared/podman/podman.go:580
+#: mgradm/cmd/install/utils.go:100 mgradm/shared/podman/podman.go:596
 msgid "cannot wait for system start"
 msgstr "システムの起動を待機できません"
 
-#: mgradm/cmd/install/utils.go:103 mgradm/shared/podman/podman.go:96
+#: mgradm/cmd/install/utils.go:103 mgradm/shared/podman/podman.go:106
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "SSL CA証明書をホストの信頼済み証明書に追加できませんでした"
 
@@ -1060,7 +1060,7 @@ msgstr "SSL CA証明書をホストの信頼済み証明書に追加できませ
 msgid "failed to extract payg data"
 msgstr "paygデータの抽出に失敗しました"
 
-#: mgradm/cmd/install/utils.go:140 mgradm/shared/podman/podman.go:793
+#: mgradm/cmd/install/utils.go:140 mgradm/shared/podman/podman.go:809
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr "外部データベース %s を使用するためにデータベースコンテナのセットアップをスキップしました"
@@ -1545,7 +1545,7 @@ msgid "Not altering the confidential computing service"
 msgstr "コンフィデンシャルコンピューティングサービスを変更しない"
 
 #: mgradm/shared/coco/coco.go:78 mgradm/shared/hub/xmlrpcapi.go:44
-#: mgradm/shared/pgsql/pgsql.go:31 mgradm/shared/podman/podman.go:391
+#: mgradm/shared/pgsql/pgsql.go:31 mgradm/shared/podman/podman.go:407
 #: mgradm/shared/saline/saline.go:72 mgradm/shared/tftp/tftp.go:41
 msgid "failed to compute image URL"
 msgstr "イメージURLの計算に失敗しました"
@@ -1555,13 +1555,13 @@ msgid "Setting up confidential computing attestation service"
 msgstr "コンフィデンシャルコンピューティング検証サービスの設定"
 
 #: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:119
-#: mgradm/shared/pgsql/pgsql.go:143 mgradm/shared/podman/podman.go:219
+#: mgradm/shared/pgsql/pgsql.go:143 mgradm/shared/podman/podman.go:235
 #: mgradm/shared/saline/saline.go:92 mgradm/shared/tftp/tftp.go:95
 msgid "failed to generate systemd service unit file"
 msgstr "systemdサービスユニットファイルの生成に失敗しました"
 
 #: mgradm/shared/coco/coco.go:109 mgradm/shared/hub/xmlrpcapi.go:126
-#: mgradm/shared/podman/podman.go:261 mgradm/shared/saline/saline.go:100
+#: mgradm/shared/podman/podman.go:277 mgradm/shared/saline/saline.go:100
 #: mgradm/shared/tftp/tftp.go:102
 msgid "cannot generate systemd conf file"
 msgstr "systemd confファイルを生成できません"
@@ -1580,7 +1580,7 @@ msgstr "systemdサービスを生成できません"
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr "現在、複数のHub XML-RPCコンテナレプリカはサポートされておらず、1つだけ設定できます。"
 
-#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:615
+#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:631
 #: mgradm/shared/saline/saline.go:142
 msgid "cannot enable service"
 msgstr "サービスを有効にできません"
@@ -1636,162 +1636,162 @@ msgstr "Saltを経由したminionトラストストアの照会に失敗しま�
 msgid "failed to parse the minions response: %s"
 msgstr "minion応答の解析に失敗しました: %s"
 
-#: mgradm/shared/podman/podman.go:78
+#: mgradm/shared/podman/podman.go:88
 msgid "Restarting the services to apply the new certificates"
 msgstr "新しい証明書を適用するためにサービスを再起動する"
 
-#: mgradm/shared/podman/podman.go:90
+#: mgradm/shared/podman/podman.go:100
 msgid "cannot wait for the server container to start"
 msgstr "サーバコンテナの起動を待機できません"
 
-#: mgradm/shared/podman/podman.go:109
+#: mgradm/shared/podman/podman.go:119
 #, javascript-format
 msgid "Running %s in the server container"
 msgstr "サーバコンテナで %s を実行中"
 
-#: mgradm/shared/podman/podman.go:111
+#: mgradm/shared/podman/podman.go:121
 #, javascript-format
 msgid "failed to run %s in the server container"
 msgstr "サーバコンテナで %s の実行に失敗しました"
 
-#: mgradm/shared/podman/podman.go:128
+#: mgradm/shared/podman/podman.go:138
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "%s フォルダの作成に失敗しました"
 
-#: mgradm/shared/podman/podman.go:145 mgradm/shared/podman/podman.go:161
+#: mgradm/shared/podman/podman.go:155 mgradm/shared/podman/podman.go:177
 msgid "failed to generate server environment file"
 msgstr "サーバ環境ファイルの生成に失敗しました"
 
-#: mgradm/shared/podman/podman.go:253
+#: mgradm/shared/podman/podman.go:269
 msgid "Enabling system service"
 msgstr "システムサービスの有効化"
 
-#: mgradm/shared/podman/podman.go:267 mgradm/shared/saline/saline.go:108
+#: mgradm/shared/podman/podman.go:283 mgradm/shared/saline/saline.go:108
 msgid "cannot generate systemd user configuration file"
 msgstr "systemdユーザ設定ファイルを生成できません"
 
-#: mgradm/shared/podman/podman.go:295
+#: mgradm/shared/podman/podman.go:311
 msgid "failed to generate SSL migration script"
 msgstr "SSL移行スクリプトの生成に失敗しました"
 
-#: mgradm/shared/podman/podman.go:315
+#: mgradm/shared/podman/podman.go:331
 #, javascript-format
 msgid "Migrating SSL certificates from the source server %s"
 msgstr "ソースサーバ %s からSSL証明書を移行しています"
 
-#: mgradm/shared/podman/podman.go:318
+#: mgradm/shared/podman/podman.go:334
 msgid "cannot run uyuni SSL migration container"
 msgstr "uyuni SSL移行コンテナを実行できません"
 
-#: mgradm/shared/podman/podman.go:329
+#: mgradm/shared/podman/podman.go:345
 #, javascript-format
 msgid "Failed to read file %s"
 msgstr "ファイル %s の読み込みに失敗しました"
 
-#: mgradm/shared/podman/podman.go:335
+#: mgradm/shared/podman/podman.go:351
 msgid "cannot read extracted data"
 msgstr "抽出されたデータを読み込めません"
 
-#: mgradm/shared/podman/podman.go:346
+#: mgradm/shared/podman/podman.go:362
 #, javascript-format
 msgid "cannot inspect volume %s"
 msgstr "ボリューム %s を検査できません"
 
-#: mgradm/shared/podman/podman.go:349
+#: mgradm/shared/podman/podman.go:365
 #, javascript-format
 msgid "cannot restore %s SELinux permissions"
 msgstr "%s SELinuxパーミッションを復元できません"
 
-#: mgradm/shared/podman/podman.go:399
+#: mgradm/shared/podman/podman.go:415
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr "データベースのアップグレードイメージ %s を使用しています"
 
-#: mgradm/shared/podman/podman.go:457 mgradm/shared/podman/podman.go:465
+#: mgradm/shared/podman/podman.go:473 mgradm/shared/podman/podman.go:481
 msgid "cannot stop service"
 msgstr "サービスを停止できません"
 
-#: mgradm/shared/podman/podman.go:476
+#: mgradm/shared/podman/podman.go:492
 msgid "Initiating PostgreSQL upgrade from version %[1]d to %[2]d"
 msgstr "PostgreSQLのバージョン %[1]d から %[2]d へのアップグレードを開始しています"
 
-#: mgradm/shared/podman/podman.go:480
+#: mgradm/shared/podman/podman.go:496
 #, javascript-format
 msgid "cannot find volume %s"
 msgstr "ボリューム %s が見つかりません"
 
-#: mgradm/shared/podman/podman.go:495
+#: mgradm/shared/podman/podman.go:511
 #, javascript-format
 msgid "cannot move %s"
 msgstr "%s を移動できません"
 
-#: mgradm/shared/podman/podman.go:511
+#: mgradm/shared/podman/podman.go:527
 #, javascript-format
 msgid "cannot mkdir %s"
 msgstr "%s のディレクトリを作成できません"
 
-#: mgradm/shared/podman/podman.go:514
+#: mgradm/shared/podman/podman.go:530
 msgid "Data will be copied during this process. Please ensure sufficient disk space is available."
 msgstr "この処理の実行中にデータがコピーされます。十分な空きディスク容量があることを確認してください。"
 
-#: mgradm/shared/podman/podman.go:516
+#: mgradm/shared/podman/podman.go:532
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "PostgreSQLバージョンアップグレードスクリプトを実行できません"
 
-#: mgradm/shared/podman/podman.go:519
+#: mgradm/shared/podman/podman.go:535
 msgid "Upgrading without changing PostgreSQL version"
 msgstr "PostgreSQLバージョンを変更せずにアップグレードしています"
 
-#: mgradm/shared/podman/podman.go:522
+#: mgradm/shared/podman/podman.go:538
 msgid "trying to downgrade PostgreSQL from %[1]d to %[2]d"
 msgstr "PostgreSQLを %[1]d から %[2]d にダウングレードしようとしています"
 
-#: mgradm/shared/podman/podman.go:529
+#: mgradm/shared/podman/podman.go:545
 msgid "Configuring split PostgreSQL container"
 msgstr "分割されたPostgreSQLコンテナの設定"
 
-#: mgradm/shared/podman/podman.go:538
+#: mgradm/shared/podman/podman.go:554
 msgid "cannot configure db container"
 msgstr "dbコンテナを設定できません"
 
-#: mgradm/shared/podman/podman.go:576 mgradm/shared/podman/podman.go:618
+#: mgradm/shared/podman/podman.go:592 mgradm/shared/podman/podman.go:634
 msgid "cannot start service"
 msgstr "サービスを開始できません"
 
-#: mgradm/shared/podman/podman.go:603
+#: mgradm/shared/podman/podman.go:619
 msgid "Failed to read server service definition to look for TFTP port"
 msgstr "TFTPポートを検索するためのサーバサービス定義の読み込みに失敗しました"
 
-#: mgradm/shared/podman/podman.go:613
+#: mgradm/shared/podman/podman.go:629
 msgid "Waiting for the server to start…"
 msgstr "サーバが起動するのを待機中…"
 
-#: mgradm/shared/podman/podman.go:659
+#: mgradm/shared/podman/podman.go:675
 msgid "failed to generate postgresql migration script"
 msgstr "postgresql移行スクリプトの生成に失敗しました"
 
-#: mgradm/shared/podman/podman.go:679
+#: mgradm/shared/podman/podman.go:695
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr "上記のエラーは、パブリッククラウドプロバイダのレジストリを使用している場合のみ関係します"
 
-#: mgradm/shared/podman/podman.go:709
+#: mgradm/shared/podman/podman.go:725
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr "SSH_AUTH_SOCKが定義されていません。SSHエージェントを起動して再試行してください"
 
-#: mgradm/shared/podman/podman.go:719
+#: mgradm/shared/podman/podman.go:735
 msgid "Failed to find home directory to look for SSH config"
 msgstr "SSH設定を検索するホームディレクトリが見つかりませんでした"
 
-#: mgradm/shared/podman/podman.go:741
+#: mgradm/shared/podman/podman.go:757
 msgid "cannot inspect podman values"
 msgstr "podman値を検査できません"
 
-#: mgradm/shared/podman/podman.go:755
+#: mgradm/shared/podman/podman.go:771
 msgid "PostgreSQL migration failure"
 msgstr "PostgreSQL移行の失敗"
 
-#: mgradm/shared/podman/podman.go:784
+#: mgradm/shared/podman/podman.go:800
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr "シークレット %[1]s と %[2]s はすでに存在します"
 
