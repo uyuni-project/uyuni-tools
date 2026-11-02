@@ -93,7 +93,7 @@ func (*systemFetcher) List(client *api.APIClient, opts ListOptions) ([]System, i
 	query.Set("sortDescending", fmt.Sprintf("%t", opts.SortDescending))
 
 	path := fmt.Sprintf("system/listSystemsFiltered?%s", query.Encode())
-	res, err := api.GetChecked[apitypes.FilteredResponse[System]](client, path, "api.system.list_systems_filtered")
+	res, err := api.GetChecked[apitypes.FilteredResponse[System]](client, path)
 	if err != nil {
 		return nil, 0, err
 	}

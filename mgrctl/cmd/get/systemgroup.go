@@ -80,7 +80,7 @@ func (*systemGroupFetcher) List(client *api.APIClient, opts ListOptions) ([]Syst
 		return nil, 0, err
 	}
 
-	res, err := api.GetChecked[[]SystemGroup](client, "systemgroup/listAllGroups", "api.systemgroup.list_all_groups")
+	res, err := api.GetChecked[[]SystemGroup](client, "systemgroup/listAllGroups")
 	if err != nil {
 		return nil, 0, err
 	}
