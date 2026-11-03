@@ -5,6 +5,8 @@
 package db
 
 import (
+	"time"
+
 	"github.com/rs/zerolog/log"
 
 	"github.com/uyuni-project/uyuni-tools/shared"
@@ -16,10 +18,9 @@ import (
 func Disable(flags *Flagpole) error {
 	log.Info().Msg(L("Disabling DB backup"))
 
-	wasRunning := false
+	wasRunning := systemd.IsServiceRunning(podman.DBService)
 	cnx := shared.NewUserConnection("podman", podman.DBContainerName, "", podman.DBRuntimeUser)
-	if _, err := cnx.GetPodName(); err == nil {
-		wasRunning = true
+	if wasRunning {
 		if !flags.Force {
 			res, err := utils.YesNo(L("Database service needs to be restarted to reload backup configurations, continue?"))
 			if err != nil || !res {
@@ -56,10 +57,12 @@ func Disable(flags *Flagpole) error {
 
 	if wasRunning {
 		log.Info().Msg(L("Starting database…"))
+		startAttempt := time.Now()
 		if err := systemd.StartService(podman.DBService); err != nil {
 			return err
 		}
-		if err := cnx.WaitForHealthcheck(); err != nil {
+		if err := cnx.WaitForHealthcheck(startAttempt); err != nil {
+			podman.ShowServiceLogs(podman.DBService, startAttempt)
 			return err
 		}
 	}

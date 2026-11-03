@@ -143,7 +143,8 @@ func RunContainer(name string, image string, volumes []types.VolumeMount, extraA
 // DeleteContainer deletes a container based on its name.
 // If dryRun is set to true, nothing will be done, only messages logged to explain what would happen.
 func DeleteContainer(name string, dryRun bool) {
-	if out, _ := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "-a", "-q", "-f", "name="+name); len(out) > 0 {
+	filter := "name=^" + regexp.QuoteMeta(name) + "$"
+	if out, _ := utils.RunCmdOutput(zerolog.DebugLevel, "podman", "ps", "-a", "-q", "-f", filter); len(out) > 0 {
 		if dryRun {
 			log.Info().Msgf(L("Would run podman kill %[1]s for container id %[2]s"), name, out)
 			log.Info().Msgf(L("Would run podman remove %[1]s for container id %[2]s"), name, out)
