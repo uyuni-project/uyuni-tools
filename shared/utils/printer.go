@@ -157,7 +157,19 @@ func printJSON[T any](items []T, out io.Writer) error {
 }
 
 func printYAML[T any](items []T, out io.Writer) error {
-	data, err := yaml.Marshal(items)
+	jsonSerialized, err := json.Marshal(items)
+	if err != nil {
+		return err
+	}
+
+	// Yaml unmarshal into generic container
+	var intermediate any
+	if err := yaml.Unmarshal(jsonSerialized, &intermediate); err != nil {
+		return err
+	}
+
+	// Marshal to YAML
+	data, err := yaml.Marshal(intermediate)
 	if err != nil {
 		return err
 	}
