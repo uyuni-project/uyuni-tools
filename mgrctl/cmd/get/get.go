@@ -52,8 +52,8 @@ Supported Resources:
 %[1]s
 
 Filtering:
-  Filtering is supported by resources whose API provides it. Currently,
-  system supports server-side filtering; systemgroup does not.
+  Filtering is supported by all resources. system filters on the server
+  side; systemgroup filters the fetched groups client-side.
 
   --filter takes a KEY OPERATOR VALUE expression, where OPERATOR is one of
   =, !=, >, <, >=, <=. The available keys depend on the resource type and are

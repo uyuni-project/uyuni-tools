@@ -18,7 +18,8 @@ import (
 
 // ListOptions holds everything a resource needs to fetch a listing and render it.
 type ListOptions struct {
-	// Resources whose API supports neither filtering nor pagination ignore these.
+	// Resources decide per option whether it applies: systemgroup filters
+	// client-side and ignores pagination.
 	Filter         string
 	PageNumber     int
 	PageSize       int

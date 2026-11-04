@@ -151,7 +151,7 @@ func TestResourceHelpSections(t *testing.T) {
 	}
 	details := []string{
 		"Systems support server-side filtering, sorting, and pagination.",
-		"System groups support client-side sorting by:",
+		"System groups support client-side filtering and sorting by:",
 	}
 	for _, expected := range details {
 		testutils.AssertStringContains(t, "missing resource details", getResourceHelpDetails(), expected)
@@ -159,6 +159,7 @@ func TestResourceHelpSections(t *testing.T) {
 	examples := []string{
 		"mgrctl get system --page 0 --page-size 10",
 		"mgrctl get systemgroup --sort-by=name",
+		"mgrctl get systemgroup --filter 'system_count>=10'",
 	}
 	for _, expected := range examples {
 		testutils.AssertStringContains(t, "missing resource example", getResourceHelpExamples(), expected)
