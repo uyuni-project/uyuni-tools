@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -126,4 +127,41 @@ func TestRunPgsqlVersionUpgrade(t *testing.T) {
 		}
 		_ = RunPgsqlVersionUpgrade(expectedAuthfile, testCase.image, testCase.upgradeImage, []types.VolumeMount{})
 	}
+}
+
+func TestGetUpgradeFqdn(t *testing.T) {
+	cases := []struct {
+		inspectedFqdn string
+		expectedArgs  []string
+		expectedFqdn  string
+	}{
+		// The FQDN configured in the server has to be used rather than the host one
+		{"server.example.com", []string{"server.example.com"}, "server.example.com"},
+		// Fall back to the host FQDN if it could not be found in the server
+		{"", []string{}, "host.example.com"},
+	}
+
+	oldGetFqdn := getFqdn
+	t.Cleanup(func() {
+		getFqdn = oldGetFqdn
+	})
+
+	for i, testCase := range cases {
+		getFqdn = func(args []string) (string, error) {
+			testutils.AssertEquals(t, fmt.Sprintf("case %d: wrong arguments", i), testCase.expectedArgs, args)
+			if len(args) == 1 {
+				return args[0], nil
+			}
+			return "host.example.com", nil
+		}
+		fqdn, err := getUpgradeFqdn(testCase.inspectedFqdn)
+		testutils.AssertNoError(t, fmt.Sprintf("case %d: unexpected error: ", i), err)
+		testutils.AssertEquals(t, fmt.Sprintf("case %d: wrong FQDN", i), testCase.expectedFqdn, fqdn)
+	}
+
+	getFqdn = func(_ []string) (string, error) {
+		return "", errors.New("invalid FQDN")
+	}
+	_, err := getUpgradeFqdn("server.example.com")
+	testutils.AssertError(t, "invalid FQDN", err)
 }

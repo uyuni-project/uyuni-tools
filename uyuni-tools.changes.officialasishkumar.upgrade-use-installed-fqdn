@@ -1,0 +1,2 @@
+- Use the FQDN configured in the server when upgrading instead of
+  the host one (bsc#1262113)
