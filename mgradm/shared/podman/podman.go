@@ -371,6 +371,7 @@ func restoreSELinuxContext(volumes []types.VolumeMount) error {
 
 var prepareImage = podman.PrepareImage
 var runContainer = podman.RunContainer
+var getFqdn = utils.GetFqdn
 
 // RunPgsqlVersionUpgrade perform a PostgreSQL major upgrade.
 func RunPgsqlVersionUpgrade(
@@ -449,17 +450,17 @@ func Upgrade(
 		return utils.Errorf(err, L("cannot setup network"))
 	}
 
-	fqdn, err := utils.GetFqdn([]string{})
-	if err != nil {
-		return err
-	}
-
 	preparedServerImage, preparedPgsqlImage, err := podman.PrepareImages(authFile, image, pgsqlFlags)
 	if err != nil {
 		return utils.Errorf(err, L("cannot prepare images"))
 	}
 
 	inspectedValues, err := prepareHost(preparedServerImage, preparedPgsqlImage)
+	if err != nil {
+		return err
+	}
+
+	fqdn, err := getUpgradeFqdn(inspectedValues.Fqdn)
 	if err != nil {
 		return err
 	}
@@ -611,6 +612,17 @@ func Upgrade(
 		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn, hasTFTP),
 		systemd.ReloadDaemon(false),
 	)
+}
+
+// getUpgradeFqdn returns the FQDN the server was installed with, as found in its rhn.conf.
+//
+// The host FQDN is only used as a fallback since it may differ from the one the server is configured with.
+func getUpgradeFqdn(inspectedFqdn string) (string, error) {
+	if inspectedFqdn == "" {
+		log.Warn().Msg(L("Cannot find the FQDN configured in the server, using the host one"))
+		return getFqdn([]string{})
+	}
+	return getFqdn([]string{inspectedFqdn})
 }
 
 func serverExposesTFTP(systemd podman.Systemd) bool {
