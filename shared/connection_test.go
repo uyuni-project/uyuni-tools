@@ -14,6 +14,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -466,14 +467,10 @@ func TestWaitForHealthcheck(t *testing.T) {
 
 			err := cnx.WaitForHealthcheck(now)
 			if tt.wantErr == "" {
-				if err != nil {
-					t.Fatalf("unexpected error: %v", err)
-				}
+				testutils.AssertNoError(t, "unexpected error: ", err)
 				return
 			}
-			if err == nil || !strings.Contains(err.Error(), tt.wantErr) {
-				t.Fatalf("expected an error containing %q, got: %v", tt.wantErr, err)
-			}
+			testutils.AssertError(t, tt.wantErr, err)
 		})
 	}
 }
@@ -482,19 +479,14 @@ func TestWaitForHealthcheckKubernetesUnsupported(t *testing.T) {
 	cnx := NewConnection("kubectl", "uyuni-server", "")
 	cnx.command = "kubectl"
 
-	err := cnx.WaitForHealthcheck(time.Now())
-	if err == nil || !strings.Contains(err.Error(), "not supported") {
-		t.Fatalf("expected a not supported error, got: %v", err)
-	}
+	testutils.AssertError(t, "not supported", cnx.WaitForHealthcheck(time.Now()))
 }
 
 func TestWaitForHealthcheckHost(t *testing.T) {
 	cnx := NewConnection("host", "", "")
 	cnx.command = "host"
 
-	if err := cnx.WaitForHealthcheck(time.Now()); err != nil {
-		t.Fatalf("unexpected error for the host backend: %v", err)
-	}
+	testutils.AssertNoError(t, "unexpected error for the host backend: ", cnx.WaitForHealthcheck(time.Now()))
 }
 
 func TestWaitForHealthcheckNoEventsTimeout(t *testing.T) {
@@ -505,14 +497,11 @@ func TestWaitForHealthcheckNoEventsTimeout(t *testing.T) {
 	cnx.command = "podman"
 
 	start := time.Now()
-	err := cnx.WaitForHealthcheck(start)
-	if err == nil || !strings.Contains(err.Error(), "probably failed to start it") {
-		t.Fatalf("expected a failed to start error, got: %v", err)
-	}
+	testutils.AssertError(t, "probably failed to start it", cnx.WaitForHealthcheck(start))
 	// The no event timeout must be used instead of the longer appearance timeout.
-	if elapsed := time.Since(start); elapsed > time.Second {
-		t.Fatalf("expected the no event timeout to be used, waited %s", elapsed)
-	}
+	elapsed := time.Since(start)
+	testutils.AssertTrue(t, fmt.Sprintf("expected the no event timeout to be used, waited %s", elapsed),
+		elapsed <= time.Second)
 }
 
 func TestWaitForHealthcheckAppearanceTimeout(t *testing.T) {
@@ -525,10 +514,7 @@ func TestWaitForHealthcheckAppearanceTimeout(t *testing.T) {
 	cnx := NewConnection("podman", "uyuni-server", "")
 	cnx.command = "podman"
 
-	err := cnx.WaitForHealthcheck(now)
-	if err == nil || !strings.Contains(err.Error(), "did not appear") {
-		t.Fatalf("expected a did not appear error, got: %v", err)
-	}
+	testutils.AssertError(t, "did not appear", cnx.WaitForHealthcheck(now))
 }
 
 func TestWaitForHealthcheckCreatedButNotStarted(t *testing.T) {
@@ -541,10 +527,7 @@ func TestWaitForHealthcheckCreatedButNotStarted(t *testing.T) {
 	cnx := NewConnection("podman", "uyuni-server", "")
 	cnx.command = "podman"
 
-	err := cnx.WaitForHealthcheck(now)
-	if err == nil || !strings.Contains(err.Error(), "did not start") {
-		t.Fatalf("expected a did not start error, got: %v", err)
-	}
+	testutils.AssertError(t, "did not start", cnx.WaitForHealthcheck(now))
 }
 
 func TestWaitForHealthcheckEventsUnavailable(t *testing.T) {
@@ -553,10 +536,7 @@ func TestWaitForHealthcheckEventsUnavailable(t *testing.T) {
 	cnx := NewConnection("podman", "uyuni-server", "")
 	cnx.command = "podman"
 
-	err := cnx.WaitForHealthcheck(time.Now())
-	if err == nil || !strings.Contains(err.Error(), "cannot read the startup events") {
-		t.Fatalf("expected an events error, got: %v", err)
-	}
+	testutils.AssertError(t, "cannot read the startup events", cnx.WaitForHealthcheck(time.Now()))
 }
 
 func TestGetPodNameUsesExactFilter(t *testing.T) {
@@ -572,12 +552,9 @@ func TestGetPodNameUsesExactFilter(t *testing.T) {
 	cnx := NewConnection("podman", "uyuni-server", "")
 	cnx.command = "podman"
 
-	if _, err := cnx.GetPodName(); err != nil {
-		t.Fatalf("GetPodName returned an error: %v", err)
-	}
-	if filter != "name=^uyuni-server$" {
-		t.Fatalf("unexpected name filter: %s", filter)
-	}
+	_, err := cnx.GetPodName()
+	testutils.AssertNoError(t, "GetPodName failed: ", err)
+	testutils.AssertEquals(t, "Unexpected pod name filter", "name=^uyuni-server$", filter)
 }
 
 func TestWaitForContainer(t *testing.T) {
@@ -647,14 +624,10 @@ func TestWaitForContainer(t *testing.T) {
 
 			err := cnx.WaitForContainer(now)
 			if tt.wantErr == "" {
-				if err != nil {
-					t.Fatalf("unexpected error: %v", err)
-				}
+				testutils.AssertNoError(t, "unexpected error: ", err)
 				return
 			}
-			if err == nil || !strings.Contains(err.Error(), tt.wantErr) {
-				t.Fatalf("expected an error containing %q, got: %v", tt.wantErr, err)
-			}
+			testutils.AssertError(t, tt.wantErr, err)
 		})
 	}
 }
@@ -667,13 +640,11 @@ func TestWaitForContainerNoEventsTimeout(t *testing.T) {
 	cnx.command = "podman"
 
 	start := time.Now()
-	err := cnx.WaitForContainer(start)
-	if err == nil || !strings.Contains(err.Error(), "probably failed to start it") {
-		t.Fatalf("expected a failed to start error, got: %v", err)
-	}
-	if elapsed := time.Since(start); elapsed > time.Second {
-		t.Fatalf("expected the no event timeout to be used, waited %s", elapsed)
-	}
+	testutils.AssertError(t, "probably failed to start it", cnx.WaitForContainer(start))
+	// The no event timeout must be used instead of the longer appearance timeout.
+	elapsed := time.Since(start)
+	testutils.AssertTrue(t, fmt.Sprintf("expected the no event timeout to be used, waited %s", elapsed),
+		elapsed <= time.Second)
 }
 
 func TestWaitForContainerAppearanceTimeout(t *testing.T) {
@@ -686,8 +657,5 @@ func TestWaitForContainerAppearanceTimeout(t *testing.T) {
 	cnx := NewConnection("podman", "uyuni-server", "")
 	cnx.command = "podman"
 
-	err := cnx.WaitForContainer(now)
-	if err == nil || !strings.Contains(err.Error(), "did not appear") {
-		t.Fatalf("expected a did not appear error, got: %v", err)
-	}
+	testutils.AssertError(t, "did not appear", cnx.WaitForContainer(now))
 }
