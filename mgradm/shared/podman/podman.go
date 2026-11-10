@@ -434,7 +434,6 @@ func RunPgsqlVersionUpgrade(
 func Upgrade(
 	systemd podman.Systemd,
 	authFile string,
-	ssl adm_utils.InstallSSLFlags,
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
 	cocoFlags adm_utils.CocoFlags,
@@ -561,7 +560,7 @@ func Upgrade(
 		inspectedValues.ReportDBHost == "localhost" {
 		log.Info().Msgf(L("Configuring split PostgreSQL container"))
 
-		if err := PrepareSSLCertificates(preparedServerImage, &ssl, env.TZ, fqdn); err != nil {
+		if err := PrepareSSLCertificates(preparedServerImage, &adm_utils.InstallSSLFlags{}, env.TZ, fqdn); err != nil {
 			return err
 		}
 	}

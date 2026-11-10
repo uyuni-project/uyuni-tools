@@ -45,20 +45,6 @@ func (f *InstallSSLFlags) CheckParameters(localDB bool) {
 	}
 }
 
-// CheckUpgradeParameters checks that all the required flags are passed if using 3rd party certificates.
-//
-// localDB indicates whether the SSL certificates for the database need to be checked.
-// Those are not needed for external databases.
-func (f *InstallSSLFlags) CheckUpgradeParameters(localDB bool) {
-	if !f.UseProvidedDB() && (f.DB.Cert != "" || f.DB.Key != "" || f.DB.IsDefined()) {
-		log.Fatal().Msg(L("DB certificate, key and root CA need to be all provided"))
-	}
-
-	if f.UseProvided() && localDB && !f.DB.IsDefined() {
-		log.Fatal().Msg(L("Database certificate and key need to be provided"))
-	}
-}
-
 // addReportDBFlags add ReportDB flags to a command.
 func AddReportDBFlags(cmd *cobra.Command) {
 	cmd.Flags().String("reportdb-name", "reportdb", L("Report database name"))
