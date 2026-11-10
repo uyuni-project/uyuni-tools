@@ -14,7 +14,7 @@ import (
 )
 
 func TestParamsParsing(t *testing.T) {
-	args := flagstests.ServerFlagsTestArgs()
+	args := flagstests.UpgradeFlagsTestArgs()
 	args = append(args, flagstests.PodmanFlagsTestArgs...)
 
 	// Test function asserting that the args are properly parsed
@@ -22,7 +22,7 @@ func TestParamsParsing(t *testing.T) {
 		_ *cobra.Command, _ []string,
 	) error {
 		flagstests.AssertPodmanInstallFlags(t, &flags.Podman)
-		flagstests.AssertServerFlags(t, &flags.ServerFlags)
+		flagstests.AssertUpgradeFlags(t, &flags.ServerFlags)
 		return nil
 	}
 
