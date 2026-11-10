@@ -136,30 +136,60 @@ func GenerateServerEnvironmentFile(flags adm_utils.InstallationFlags, fqdn strin
 	return nil
 }
 
-// Generate new server environmentfile with only things useful for upgrade scenario.
-// Currently only debug, the timezone, the hostname, the mirror path and the database settings.
-func GenerateUpgradeServerEnvironmentFile(debug bool) error {
-	confDir := podman.GetServiceConfFolder(podman.ServerService)
-	envfile := filepath.Join(confDir, podman.ServerEnvironmentFile)
-
-	// Preserve the values already configured for the server as rewriting the file from scratch
-	// would otherwise drop them: the timezone would make the container fall back to UTC and the
-	// mirror path would make the container stop using the configured mirror.
-	data := templates.PodmanServiceEnvironmentTemplateData{
+// serverEnvironmentFromFile reads the values to preserve from the server environment file.
+func serverEnvironmentFromFile(envfile string) templates.PodmanServiceEnvironmentTemplateData {
+	db := podman.DBFlagsFromEnvironmentFile(envfile)
+	return templates.PodmanServiceEnvironmentTemplateData{
 		TZ:        podman.EnvVarFromEnvironmentFile(envfile, "TZ"),
 		HasMirror: podman.EnvVarFromEnvironmentFile(envfile, "MIRROR_PATH") != "",
 		Fqdn:      podman.EnvVarFromEnvironmentFile(envfile, "UYUNI_HOSTNAME"),
-		Debug:     debug,
+		Debug:     podman.EnvVarFromEnvironmentFile(envfile, "DEBUG_JAVA") == "true",
+		DB:        &db,
 	}
-	if db := podman.DBFlagsFromEnvironmentFile(envfile); db.Name != "" {
-		data.DB = &db
-	}
+}
 
+// serverEnvironmentFromInstallation returns the server environment of the current installation:
+// the values of the environment file, completed with the inspected ones for those missing.
+func serverEnvironmentFromInstallation(
+	envfile string, inspectedValues *utils.InspectData,
+) templates.PodmanServiceEnvironmentTemplateData {
+	data := serverEnvironmentFromFile(envfile)
+	if data.TZ == "" {
+		data.TZ = GetContainerTimezone()
+	}
+	if data.Fqdn == "" {
+		data.Fqdn = inspectedValues.Fqdn
+	}
+	if data.DB.Name == "" {
+		data.DB.Name = inspectedValues.DBName
+	}
+	if data.DB.Host == "" {
+		data.DB.Host = getDBHost(inspectedValues)
+	}
+	if data.DB.Port == 0 {
+		data.DB.Port = inspectedValues.DBPort
+	}
+	return data
+}
+
+func writeServerEnvironmentFile(envfile string, data templates.PodmanServiceEnvironmentTemplateData) error {
+	if data.DB != nil && data.DB.Name == "" {
+		data.DB = nil
+	}
+	if err := os.MkdirAll(filepath.Dir(envfile), 0755); err != nil {
+		return utils.Errorf(err, L("failed to create %s folder"), filepath.Dir(envfile))
+	}
 	if err := utils.WriteTemplateToFile(data, envfile, 0400, true); err != nil {
 		return utils.Errorf(err, L("failed to generate server environment file"))
 	}
-
 	return nil
+}
+
+// Generate new server environmentfile with only things useful for upgrade scenario.
+// Currently only debug, the timezone, the hostname, the mirror path and the database settings.
+func GenerateUpgradeServerEnvironmentFile() error {
+	envfile := podman.GetServerEnvironmentFile()
+	return writeServerEnvironmentFile(envfile, serverEnvironmentFromFile(envfile))
 }
 
 // GenerateServerSystemdService creates the server systemd service file.
@@ -404,7 +434,6 @@ func RunPgsqlVersionUpgrade(
 func Upgrade(
 	systemd podman.Systemd,
 	authFile string,
-	db types.DBFlags,
 	ssl adm_utils.InstallSSLFlags,
 	image types.ImageFlags,
 	upgradeImage types.ImageFlags,
@@ -413,8 +442,6 @@ func Upgrade(
 	salineFlags adm_utils.SalineFlags,
 	pgsqlFlags types.PgsqlFlags,
 	tftpdFlags adm_utils.TFTPDFlags,
-	tz string,
-	debug bool,
 ) error {
 	// Calling cloudguestregistryauth only makes sense if using the cloud provider registry.
 	// This check assumes users won't use custom registries that are not the cloud provider one on a cloud image.
@@ -445,7 +472,12 @@ func Upgrade(
 		return err
 	}
 
-	if err := setServerEnvVars(inspectedValues, db); err != nil {
+	if err := createDBSecrets(inspectedValues); err != nil {
+		return err
+	}
+	envfile := podman.GetServerEnvironmentFile()
+	env := serverEnvironmentFromInstallation(envfile, inspectedValues)
+	if err := writeServerEnvironmentFile(envfile, env); err != nil {
 		return err
 	}
 
@@ -529,26 +561,21 @@ func Upgrade(
 		inspectedValues.ReportDBHost == "localhost" {
 		log.Info().Msgf(L("Configuring split PostgreSQL container"))
 
-		if err := PrepareSSLCertificates(preparedServerImage, &ssl, tz, fqdn); err != nil {
+		if err := PrepareSSLCertificates(preparedServerImage, &ssl, env.TZ, fqdn); err != nil {
 			return err
 		}
 	}
 
 	if err := configureDBContainer(
-		preparedServerImage, preparedPgsqlImage, systemd, db); err != nil {
+		preparedServerImage, preparedPgsqlImage, systemd, *env.DB, env.TZ); err != nil {
 		return utils.Errorf(err, L("cannot configure db container"))
 	}
 
-	if err := pgsql.Upgrade(preparedPgsqlImage, systemd, tz); err != nil {
+	if err := pgsql.Upgrade(preparedPgsqlImage, systemd, env.TZ); err != nil {
 		return err
 	}
 
 	if err := podman.CleanSystemdConfFile(podman.ServerService); err != nil {
-		return err
-	}
-
-	// Regenerate environment file. 00-mgrSetup will be skipped, but debug and other values can be changed
-	if err := GenerateUpgradeServerEnvironmentFile(debug); err != nil {
 		return err
 	}
 
@@ -584,7 +611,7 @@ func Upgrade(
 	return utils.JoinErrors(
 		coco.Upgrade(systemd, authFile, cocoFlags, image),
 		hub.Upgrade(systemd, authFile, image, hubXmlrpcFlags),
-		saline.Upgrade(systemd, authFile, image, salineFlags, tz),
+		saline.Upgrade(systemd, authFile, image, salineFlags, env.TZ),
 		tftp.Upgrade(systemd, authFile, image, tftpdFlags, fqdn, hasTFTP),
 		systemd.ReloadDaemon(false),
 	)
@@ -737,52 +764,26 @@ func prepareHost(
 	return inspectedValues, adm_utils.SanityCheck(inspectedValues)
 }
 
-// setServerEnvVars sets the secrets and the server.env variables from the inspected values.
-func setServerEnvVars(inspectedValues *utils.InspectData, db types.DBFlags) error {
+// createDBSecrets creates the database secrets from the inspected values when missing.
+func createDBSecrets(inspectedValues *utils.InspectData) error {
 	if err := podman.CreateCredentialsSecretsIfMissing(
 		podman.DBUserSecret, inspectedValues.DBUser,
 		podman.DBPassSecret, inspectedValues.DBPassword,
 	); err != nil {
 		return err
 	}
-	if err := podman.CreateCredentialsSecretsIfMissing(
+	return podman.CreateCredentialsSecretsIfMissing(
 		podman.ReportDBUserSecret, inspectedValues.ReportDBUser,
 		podman.ReportDBPassSecret, inspectedValues.ReportDBPassword,
-	); err != nil {
-		return err
-	}
-
-	inspectedDB := types.DBFlags{Port: inspectedValues.DBPort}
-	return setServerEnvVarsIfMissing(podman.GetServerEnvironmentFile(), [][2]string{
-		{"UYUNI_HOSTNAME", inspectedValues.Fqdn},
-		{"MANAGER_DB_NAME", inspectedValues.DBName},
-		{"MANAGER_DB_HOST", db.Host},
-		{"MANAGER_DB_PORT", inspectedDB.GetPort()},
-	})
+	)
 }
 
-// setServerEnvVarsIfMissing adds the variables not yet defined in the server env file.
-func setServerEnvVarsIfMissing(envfile string, vars [][2]string) error {
-	content, err := os.ReadFile(envfile)
-	if err != nil && !os.IsNotExist(err) {
-		return utils.Errorf(err, L("failed to read %s"), envfile)
+// getDBHost returns the database host, db for a native installation running it on localhost.
+func getDBHost(inspectedValues *utils.InspectData) string {
+	if host := inspectedValues.DBHost; host != "" && host != "localhost" {
+		return host
 	}
-	lines := strings.TrimRight(string(content), "\n")
-
-	for _, v := range vars {
-		if v[1] == "" || podman.EnvVarFromEnvironmentFile(envfile, v[0]) != "" {
-			continue
-		}
-		lines += fmt.Sprintf("\n%s=%s", v[0], v[1])
-	}
-
-	if err := os.MkdirAll(filepath.Dir(envfile), 0755); err != nil {
-		return utils.Errorf(err, L("failed to create %s folder"), filepath.Dir(envfile))
-	}
-	if err := os.WriteFile(envfile, []byte(strings.TrimLeft(lines, "\n")+"\n"), 0400); err != nil {
-		return utils.Errorf(err, L("failed to write %s"), envfile)
-	}
-	return nil
+	return "db"
 }
 
 func configureDBContainer(
@@ -790,6 +791,7 @@ func configureDBContainer(
 	pgsqlImage string,
 	systemd podman.Systemd,
 	db types.DBFlags,
+	tz string,
 ) error {
 	if err := RunSplitContainerSettings(serverImage, "db", "reportdb"); err != nil {
 		return utils.Errorf(err, L("PostgreSQL migration failure"))
@@ -799,8 +801,8 @@ func configureDBContainer(
 		if !podman.HasSecret(podman.DBAdminUserSecret) && !podman.HasSecret(podman.DBAdminPassSecret) {
 			// The admin password is not needed for external databases
 			if err := podman.CreateCredentialsSecrets(
-				podman.DBAdminUserSecret, db.Admin.User,
-				podman.DBAdminPassSecret, db.Admin.Password,
+				podman.DBAdminUserSecret, podman.DBRuntimeUser,
+				podman.DBAdminPassSecret, utils.GetRandomBase64(30),
 			); err != nil {
 				return err
 			}
@@ -810,7 +812,7 @@ func configureDBContainer(
 		}
 
 		// Run the DB container setup if the user doesn't set a custom host name for it.
-		if err := pgsql.SetupPgsql(systemd, pgsqlImage, ""); err != nil {
+		if err := pgsql.SetupPgsql(systemd, pgsqlImage, tz); err != nil {
 			return err
 		}
 	} else {

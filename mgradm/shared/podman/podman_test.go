@@ -12,6 +12,7 @@ import (
 
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func TestHasDebugPorts(t *testing.T) {
@@ -71,22 +72,42 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 	}
 }
 
-func TestSetServerEnvVarsIfMissing(t *testing.T) {
-	envfile := filepath.Join(t.TempDir(), "conf.d", "server.env")
+func TestServerEnvironmentFromInstallation(t *testing.T) {
+	envfile := filepath.Join(t.TempDir(), "server.env")
+	content := "TZ=Europe/Berlin\nMANAGER_DB_NAME=susemanager\nMIRROR_PATH=/mirror\n"
+	testutils.AssertEquals(t, "unexpected error", nil, os.WriteFile(envfile, []byte(content), 0600))
 
-	err := setServerEnvVarsIfMissing(envfile, [][2]string{{"MANAGER_DB_NAME", "uyuni"}, {"MANAGER_DB_HOST", ""}})
-	testutils.AssertEquals(t, "unexpected error", nil, err)
-	content, _ := os.ReadFile(envfile)
-	testutils.AssertEquals(t, "unexpected new file content", "MANAGER_DB_NAME=uyuni\n", string(content))
+	values := &utils.InspectData{}
+	values.Fqdn = "uyuni.example.com"
+	values.DBName = "uyuni"
+	values.DBHost = "localhost"
+	values.DBPort = 5433
 
-	// A missing trailing newline must not merge the lines
-	_ = os.Chmod(envfile, 0600)
-	_ = os.WriteFile(envfile, []byte("TZ=GMT\nMANAGER_DB_NAME=susemanager"), 0400)
-	err = setServerEnvVarsIfMissing(envfile, [][2]string{{"MANAGER_DB_NAME", "uyuni"}, {"MANAGER_DB_PORT", "5432"}})
-	testutils.AssertEquals(t, "unexpected error", nil, err)
-	content, _ = os.ReadFile(envfile)
-	testutils.AssertEquals(t, "unexpected updated file content",
-		"TZ=GMT\nMANAGER_DB_NAME=susemanager\nMANAGER_DB_PORT=5432\n", string(content))
+	data := serverEnvironmentFromInstallation(envfile, values)
+
+	// The file wins and the missing values come from the inspection
+	testutils.AssertEquals(t, "wrong TZ", "Europe/Berlin", data.TZ)
+	testutils.AssertEquals(t, "wrong DB name", "susemanager", data.DB.Name)
+	testutils.AssertTrue(t, "mirror should be preserved", data.HasMirror)
+	testutils.AssertEquals(t, "wrong hostname", "uyuni.example.com", data.Fqdn)
+	testutils.AssertEquals(t, "wrong DB host", "db", data.DB.Host)
+	testutils.AssertEquals(t, "wrong DB port", 5433, data.DB.Port)
+}
+
+func TestGetDBHost(t *testing.T) {
+	data := map[string]string{
+		"":                   "db",
+		"localhost":          "db",
+		"db":                 "db",
+		"db.example.com":     "db.example.com",
+		"external-db.domain": "external-db.domain",
+	}
+
+	for inspected, expected := range data {
+		values := &utils.InspectData{}
+		values.DBHost = inspected
+		testutils.AssertEquals(t, "Unexpected host for '"+inspected+"'", expected, getDBHost(values))
+	}
 }
 
 func TestRunPgsqlVersionUpgrade(t *testing.T) {

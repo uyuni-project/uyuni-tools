@@ -77,7 +77,6 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 
 	return podman.Upgrade(
 		systemd, authFile,
-		flags.Installation.DB,
 		flags.Installation.SSL,
 		flags.Image,
 		flags.DBUpgradeImage,
@@ -86,7 +85,5 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 		flags.Saline,
 		flags.Pgsql,
 		flags.TFTPD,
-		flags.Installation.TZ,
-		flags.Installation.Debug.Java,
 	)
 }
