@@ -41,7 +41,6 @@ func ptfForPodman(
 	//we don't want to perform a postgres version upgrade when installing a PTF.
 	//in that case, we can use the upgrade command.
 	dummyImage := types.ImageFlags{}
-	dummyDB := types.DBFlags{}
 	dummySSL := adm_utils.InstallSSLFlags{}
 
 	if err := flags.checkParameters(authFile); err != nil {
@@ -49,7 +48,6 @@ func ptfForPodman(
 	}
 
 	return podman.Upgrade(systemd, authFile,
-		dummyDB,
 		dummySSL,
 		flags.Image,
 		dummyImage,
@@ -58,8 +56,6 @@ func ptfForPodman(
 		flags.Saline,
 		flags.Pgsql,
 		flags.TFTPD,
-		flags.Installation.TZ,
-		flags.Installation.Debug.Java,
 	)
 }
 
