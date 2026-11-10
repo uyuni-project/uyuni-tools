@@ -42,7 +42,6 @@ func ptfForPodman(
 	//in that case, we can use the upgrade command.
 	dummyImage := types.ImageFlags{}
 	dummyDB := types.DBFlags{}
-	dummyReportDB := types.DBFlags{}
 	dummySSL := adm_utils.InstallSSLFlags{}
 
 	if err := flags.checkParameters(authFile); err != nil {
@@ -51,7 +50,6 @@ func ptfForPodman(
 
 	return podman.Upgrade(systemd, authFile,
 		dummyDB,
-		dummyReportDB,
 		dummySSL,
 		flags.Image,
 		dummyImage,

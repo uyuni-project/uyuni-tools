@@ -6,6 +6,8 @@ package podman
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
@@ -67,6 +69,24 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 		actual := getMirrorPath([]byte(definition))
 		testutils.AssertEquals(t, "Unexpected result for "+definition, expected, actual)
 	}
+}
+
+func TestSetServerEnvVarsIfMissing(t *testing.T) {
+	envfile := filepath.Join(t.TempDir(), "conf.d", "server.env")
+
+	err := setServerEnvVarsIfMissing(envfile, [][2]string{{"MANAGER_DB_NAME", "uyuni"}, {"MANAGER_DB_HOST", ""}})
+	testutils.AssertEquals(t, "unexpected error", nil, err)
+	content, _ := os.ReadFile(envfile)
+	testutils.AssertEquals(t, "unexpected new file content", "MANAGER_DB_NAME=uyuni\n", string(content))
+
+	// A missing trailing newline must not merge the lines
+	_ = os.Chmod(envfile, 0600)
+	_ = os.WriteFile(envfile, []byte("TZ=GMT\nMANAGER_DB_NAME=susemanager"), 0400)
+	err = setServerEnvVarsIfMissing(envfile, [][2]string{{"MANAGER_DB_NAME", "uyuni"}, {"MANAGER_DB_PORT", "5432"}})
+	testutils.AssertEquals(t, "unexpected error", nil, err)
+	content, _ = os.ReadFile(envfile)
+	testutils.AssertEquals(t, "unexpected updated file content",
+		"TZ=GMT\nMANAGER_DB_NAME=susemanager\nMANAGER_DB_PORT=5432\n", string(content))
 }
 
 func TestRunPgsqlVersionUpgrade(t *testing.T) {
