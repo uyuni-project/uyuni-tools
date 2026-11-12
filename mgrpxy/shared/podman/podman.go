@@ -209,13 +209,13 @@ func generateSystemdFile(template shared_utils.Template, service string, image s
 		if err := podman.GenerateSystemdConfFile(
 			"uyuni-proxy-"+service, podman.GeneratedConf, configBody, true,
 		); err != nil {
-			return shared_utils.Errorf(err, L("cannot generate systemd conf file"))
+			return shared_utils.Error(err, L("cannot generate systemd conf file"))
 		}
 	}
 
 	if config != "" {
 		if err := podman.GenerateSystemdConfFile("uyuni-proxy-"+service, podman.CustomConf, config, false); err != nil {
-			return shared_utils.Errorf(err, L("cannot generate systemd conf user configuration file"))
+			return shared_utils.Error(err, L("cannot generate systemd conf user configuration file"))
 		}
 	}
 	return nil
@@ -350,23 +350,23 @@ func Upgrade(
 
 	httpdImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "httpd")
 	if err != nil {
-		log.Warn().Msgf(L("cannot find httpd image: it will no be upgraded"))
+		log.Warn().Msg(L("cannot find httpd image: it will no be upgraded"))
 	}
 	saltBrokerImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "salt-broker")
 	if err != nil {
-		log.Warn().Msgf(L("cannot find salt-broker image: it will no be upgraded"))
+		log.Warn().Msg(L("cannot find salt-broker image: it will no be upgraded"))
 	}
 	squidImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "squid")
 	if err != nil {
-		log.Warn().Msgf(L("cannot find squid image: it will no be upgraded"))
+		log.Warn().Msg(L("cannot find squid image: it will no be upgraded"))
 	}
 	sshImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "ssh")
 	if err != nil {
-		log.Warn().Msgf(L("cannot find ssh image: it will no be upgraded"))
+		log.Warn().Msg(L("cannot find ssh image: it will no be upgraded"))
 	}
 	tftpdImage, err := GetContainerImage(authFile, &flags.ProxyImageFlags, "tftpd")
 	if err != nil {
-		log.Warn().Msgf(L("cannot find tftpd image: it will no be upgraded"))
+		log.Warn().Msg(L("cannot find tftpd image: it will no be upgraded"))
 	}
 
 	ipv6Enabled := podman.HasIpv6Enabled(podman.UyuniNetwork)

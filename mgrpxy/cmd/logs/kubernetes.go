@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -26,11 +26,11 @@ func kubernetesLogs(
 	cnx := shared.NewConnection("kubectl", "", kubernetes.ProxyFilter)
 	podName, err := cnx.GetPodName()
 	if err != nil {
-		return utils.Errorf(err, L("failed to find proxy pod"))
+		return utils.Error(err, L("failed to find proxy pod"))
 	}
 	namespace, errNamespace := cnx.GetNamespace("")
 	if errNamespace != nil {
-		return utils.Errorf(err, L("failed to find proxy deployment namespace"))
+		return utils.Error(err, L("failed to find proxy deployment namespace"))
 	}
 
 	commandArgs := []string{"logs", "-n", namespace}

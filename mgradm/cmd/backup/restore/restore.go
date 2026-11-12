@@ -245,7 +245,7 @@ func restorePodmanConfig(inputDirectory string, flags *shared.Flagpole) error {
 }
 
 func restoreSystemdConfig(inputDirectory string, flags *shared.Flagpole) error {
-	log.Info().Msgf(L("Restoring systemd configuration"))
+	log.Info().Msg(L("Restoring systemd configuration"))
 	systemdConfigFile := path.Join(inputDirectory, shared.SystemdConfBackupFile)
 	if !utils.FileExists(systemdConfigFile) {
 		log.Warn().Msg(L("systemd backup not found in the backup location, generating defaults"))
