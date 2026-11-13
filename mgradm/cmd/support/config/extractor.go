@@ -10,7 +10,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
-	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -32,12 +31,10 @@ func filesRemover(files []string) {
 }
 
 func extract(_ *types.GlobalFlags, flags *configFlags, _ *cobra.Command, _ []string) error {
-	containerName, err := shared.ChooseObjPodmanOrKubernetes(systemd, podman.ServerContainerName, kubernetes.ServerApp)
+	cnx, err := shared.NewServerConnection(flags.Backend)
 	if err != nil {
 		return err
 	}
-
-	cnx := shared.NewConnection(flags.Backend, containerName, kubernetes.ServerFilter)
 
 	// Copy the generated file locally
 	tmpDir, cleaner, err := utils.TempDir()

@@ -617,6 +617,17 @@ func ChooseObjPodmanOrKubernetes[T any](systemd podman.Systemd, podmanOption T, 
 	return res, errors.New(L("failed to determine suitable backend"))
 }
 
+// NewServerConnection creates a connection to the server container.
+func NewServerConnection(backend string) (*Connection, error) {
+	containerName, err := ChooseObjPodmanOrKubernetes(
+		podman.NewSystemd(), podman.ServerContainerName, kubernetes.ServerApp,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return NewConnection(backend, containerName, kubernetes.ServerFilter), nil
+}
+
 // RunSupportConfig will run supportconfig command on given connection.
 func (c *Connection) RunSupportConfig(tmpDir string) ([]string, error) {
 	var files []string

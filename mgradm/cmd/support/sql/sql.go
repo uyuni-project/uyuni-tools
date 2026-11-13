@@ -16,9 +16,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
-	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -115,7 +113,10 @@ func doSQL(_ *types.GlobalFlags, flags *sqlFlags, _ *cobra.Command, args []strin
 		return errors.New(L("interactive mode cannot work with a file output"))
 	}
 
-	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	cnx, err := shared.NewServerConnection(flags.Backend)
+	if err != nil {
+		return err
+	}
 
 	// Validate options
 	source, err := prepareSource(args, cnx)
