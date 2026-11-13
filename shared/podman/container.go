@@ -26,6 +26,16 @@ type ContainerStatus struct {
 	FailingStreak      int
 	HealthLog          string
 	HealthcheckTimeout time.Duration
+	// StartupHealthcheck is true when the container has a startup healthcheck
+	// configured (podman --health-startup-cmd). While it has not passed, the
+	// regular healthcheck does not run at all.
+	StartupHealthcheck bool
+	// StartupHealthcheckTimeout bounds the startup healthcheck phase, based on
+	// its --health-startup-retries setting. It is 0 when the startup phase is
+	// unbounded: with the podman default retries=0 the container is neither
+	// marked unhealthy nor restarted while the startup healthcheck keeps
+	// failing, so it can legitimately take arbitrarily long.
+	StartupHealthcheckTimeout time.Duration
 }
 
 type containerInspect struct {
@@ -37,6 +47,12 @@ type containerInspect struct {
 			Timeout     time.Duration `json:"Timeout"`
 			Retries     int           `json:"Retries"`
 		} `json:"Healthcheck"`
+		StartupHealthCheck *struct {
+			StartInterval time.Duration `json:"StartInterval"`
+			Interval      time.Duration `json:"Interval"`
+			Timeout       time.Duration `json:"Timeout"`
+			Retries       int           `json:"Retries"`
+		} `json:"StartupHealthCheck"`
 	} `json:"Config"`
 	State struct {
 		Status   string `json:"Status"`
@@ -80,6 +96,24 @@ func GetContainerStatus(command string, container string) (ContainerStatus, erro
 				retries = 1
 			}
 			status.HealthcheckTimeout = hc.StartPeriod + time.Duration(retries+1)*(hc.Interval+hc.Timeout)
+		}
+	}
+	if shc := inspect.Config.StartupHealthCheck; shc != nil {
+		status.StartupHealthcheck = true
+		if shc.Retries > 0 {
+			// The startup healthcheck runs every StartInterval, falling back to
+			// Interval on older podman versions.
+			interval := shc.StartInterval
+			if interval == 0 {
+				interval = shc.Interval
+			}
+			// Podman runs the startup healthcheck exec with the regular
+			// healthcheck timeout, so take the larger of the two.
+			timeout := shc.Timeout
+			if inspect.Config.Healthcheck != nil && inspect.Config.Healthcheck.Timeout > timeout {
+				timeout = inspect.Config.Healthcheck.Timeout
+			}
+			status.StartupHealthcheckTimeout = time.Duration(shc.Retries) * (interval + timeout)
 		}
 	}
 	if health := inspect.State.Health; health != nil {
