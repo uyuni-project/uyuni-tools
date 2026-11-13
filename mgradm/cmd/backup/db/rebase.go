@@ -6,6 +6,7 @@ package db
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared"
@@ -22,17 +23,18 @@ func Rebase() error {
 
 	// This needs to be a root connection because of the basebackup script
 	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
-	isRunning, _ := cnx.GetPodName()
-	wasRunning := isRunning != ""
+	wasRunning := systemd.IsServiceRunning(podman.DBService)
 
 	if !wasRunning {
 		log.Info().Msg(L("Starting database…"))
+		startAttempt := time.Now()
 		if err := systemd.StartService(podman.DBService); err != nil {
 			return err
 		}
-	}
-	if err := cnx.WaitForHealthcheck(); err != nil {
-		return err
+		if err := cnx.WaitForHealthcheck(startAttempt); err != nil {
+			podman.ShowServiceLogs(podman.DBService, startAttempt)
+			return err
+		}
 	}
 
 	if err := RunBaseBackup(cnx); err != nil {

@@ -6,10 +6,16 @@ package shared
 
 import (
 	"bytes"
+	"errors"
+	"fmt"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+	"github.com/uyuni-project/uyuni-tools/shared/podman"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -315,4 +321,559 @@ func TestQuoteArgs(t *testing.T) {
 			t.Errorf("quoteArgs(%v) = %s, expected %s", tt.args, actual, tt.expected)
 		}
 	}
+}
+
+const testHealthcheckConfig = `{"StartPeriod":600000000000,"Interval":10000000000,"Timeout":120000000000,"Retries":1}`
+
+func setRunnerHandler(t *testing.T, handler func(command string, args ...string) ([]byte, error)) {
+	t.Helper()
+	originalRunner := runner
+	t.Cleanup(func() { runner = originalRunner })
+
+	runner = func(command string, args ...string) types.Runner {
+		output, err := handler(command, args...)
+		return &mockRunner{output: output, err: err}
+	}
+	podman.SetRunner(runner)
+	t.Cleanup(podman.ResetRunner)
+}
+
+func setShortWaitTimeouts(t *testing.T) {
+	t.Helper()
+	appearanceTimeout := containerAppearanceTimeout
+	noEventTimeout := containerNoEventTimeout
+	pollInterval := healthcheckPollInterval
+	progressInterval := healthcheckProgressInterval
+	healthyMinWait := healthyMessageMinWait
+	containerAppearanceTimeout = 5 * time.Millisecond
+	containerNoEventTimeout = 2 * time.Millisecond
+	healthcheckPollInterval = time.Millisecond
+	t.Cleanup(func() {
+		containerAppearanceTimeout = appearanceTimeout
+		containerNoEventTimeout = noEventTimeout
+		healthcheckPollInterval = pollInterval
+		healthcheckProgressInterval = progressInterval
+		healthyMessageMinWait = healthyMinWait
+	})
+}
+
+func testEvent(id string, status string, timeNano int64, exitCode int) string {
+	return fmt.Sprintf(`{"ID":%q,"Status":%q,"timeNano":%d,"ContainerExitCode":%d}`,
+		id, status, timeNano, exitCode)
+}
+
+func testEvents(events ...string) []byte {
+	return []byte(strings.Join(events, "\n"))
+}
+
+func testInspectOutput(
+	state string, running bool, exitCode int, health string, failingStreak int, healthLog string,
+) []byte {
+	return testInspectOutputWithConfig(testHealthcheckConfig, "", state, running, exitCode,
+		health, failingStreak, healthLog)
+}
+
+// testInspectOutputWithConfig builds a podman inspect output. startupHealthcheck is the JSON
+// of the startup healthcheck configuration, empty for a container without one.
+func testInspectOutputWithConfig(
+	healthcheck string, startupHealthcheck string, state string, running bool, exitCode int,
+	health string, failingStreak int, healthLog string,
+) []byte {
+	healthJSON := "null"
+	if health != "" {
+		healthJSON = fmt.Sprintf(`{"Status":%q,"FailingStreak":%d,"Log":[{"ExitCode":0,"Output":%q}]}`,
+			health, failingStreak, healthLog)
+	}
+
+	startupJSON := ""
+	if startupHealthcheck != "" {
+		startupJSON = `,"StartupHealthCheck":` + startupHealthcheck
+	}
+
+	return []byte(fmt.Sprintf(
+		`{"RestartCount":0,"Config":{"Healthcheck":%s%s},`+
+			`"State":{"Status":%q,"Running":%t,"ExitCode":%d,`+
+			`"StartedAt":"2026-10-23T12:00:00Z","Health":%s}}`,
+		healthcheck, startupJSON, state, running, exitCode, healthJSON,
+	))
+}
+
+func testRunner(
+	events []byte, eventsErr error, inspect []byte, inspectErr error,
+) func(command string, args ...string) ([]byte, error) {
+	return func(command string, args ...string) ([]byte, error) {
+		if len(args) == 0 {
+			return nil, fmt.Errorf("unexpected command: %s", command)
+		}
+		switch args[0] {
+		case "events":
+			return events, eventsErr
+		case "inspect":
+			return inspect, inspectErr
+		default:
+			return nil, fmt.Errorf("unexpected command: %s %v", command, args)
+		}
+	}
+}
+
+func TestWaitForHealthcheck(t *testing.T) {
+	now := time.Now()
+	healthyEvents := testEvents(
+		testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0),
+		testEvent("container-id", "start", now.Add(2*time.Millisecond).UnixNano(), 0),
+	)
+	healthyInspect := testInspectOutput("running", true, 0, "healthy", 0, "")
+
+	tests := []struct {
+		name       string
+		events     []byte
+		inspect    []byte
+		inspectErr error
+		wantErr    string
+	}{
+		{
+			name:    "healthy",
+			events:  healthyEvents,
+			inspect: healthyInspect,
+		},
+		{
+			name: "multiple starts",
+			events: testEvents(
+				testEvent("container-id-1", "start", now.Add(time.Millisecond).UnixNano(), 0),
+				testEvent("container-id-2", "start", now.Add(2*time.Millisecond).UnixNano(), 0),
+			),
+			inspect: healthyInspect,
+			wantErr: "more than once",
+		},
+		{
+			name: "exited",
+			events: testEvents(
+				testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0),
+				testEvent("container-id", "start", now.Add(2*time.Millisecond).UnixNano(), 0),
+				testEvent("container-id", "died", now.Add(3*time.Millisecond).UnixNano(), 42),
+			),
+			inspectErr: errors.New("no such object"),
+			wantErr:    "exit code 42",
+		},
+		{
+			name: "removed before start",
+			events: testEvents(
+				testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0),
+				testEvent("container-id", "remove", now.Add(2*time.Millisecond).UnixNano(), 0),
+			),
+			inspectErr: errors.New("no such object"),
+			wantErr:    "before it started",
+		},
+		{
+			name:    "no healthcheck",
+			events:  healthyEvents,
+			inspect: testInspectOutput("running", true, 0, "", 0, ""),
+			wantErr: "no healthcheck",
+		},
+		{
+			name:    "unhealthy",
+			events:  healthyEvents,
+			inspect: testInspectOutput("running", true, 0, "unhealthy", 3, "healthcheck failed"),
+			wantErr: "healthcheck failed",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			setRunnerHandler(t, testRunner(tt.events, nil, tt.inspect, tt.inspectErr))
+
+			cnx := NewConnection("podman", "uyuni-server", "")
+			cnx.command = "podman"
+
+			err := cnx.WaitForHealthcheck(now)
+			if tt.wantErr == "" {
+				testutils.AssertNoError(t, "unexpected error: ", err)
+				return
+			}
+			testutils.AssertError(t, tt.wantErr, err)
+		})
+	}
+}
+
+func TestWaitForHealthcheckKubernetesUnsupported(t *testing.T) {
+	cnx := NewConnection("kubectl", "uyuni-server", "")
+	cnx.command = "kubectl"
+
+	testutils.AssertError(t, "not supported", cnx.WaitForHealthcheck(time.Now()))
+}
+
+func TestWaitForHealthcheckStartupPhaseIgnoresRegularTimeout(t *testing.T) {
+	setShortWaitTimeouts(t)
+	now := time.Now()
+	events := testEvents(
+		testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0),
+		testEvent("container-id", "start", now.Add(2*time.Millisecond).UnixNano(), 0),
+	)
+	// Regular healthcheck timeout of ~3ms, startup healthcheck unbounded (retries=0).
+	healthcheck := `{"StartPeriod":1000000,"Interval":1000000,"Timeout":1000000,"Retries":0}`
+	startupHealthcheck := `{"Test":["CMD-SHELL","/usr/bin/startup-check.sh"],"Interval":1000000,"Retries":0}`
+
+	polls := 0
+	setRunnerHandler(t, func(_ string, args ...string) ([]byte, error) {
+		switch args[0] {
+		case "events":
+			return events, nil
+		case "inspect":
+			polls++
+			health := "starting"
+			if polls > 20 {
+				health = "healthy"
+			}
+			return testInspectOutputWithConfig(
+				healthcheck, startupHealthcheck, "running", true, 0, health, 0, "",
+			), nil
+		default:
+			return nil, fmt.Errorf("unexpected command: %v", args)
+		}
+	})
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	// The startup phase must not be cut off by the regular healthcheck timeout:
+	// podman keeps the health on "starting" as long as startup-check.sh keeps
+	// failing.
+	testutils.AssertNoError(t, "unexpected error: ", cnx.WaitForHealthcheck(now))
+	testutils.AssertTrue(t, fmt.Sprintf("expected more than 20 polls, got %d", polls), polls > 20)
+}
+
+func TestWaitForHealthcheckStartupTimeout(t *testing.T) {
+	setShortWaitTimeouts(t)
+	now := time.Now()
+	events := testEvents(
+		testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0),
+		testEvent("container-id", "start", now.Add(2*time.Millisecond).UnixNano(), 0),
+	)
+	// Startup healthcheck with retries=1 and a 2ms per-failure cycle bounds the
+	// startup phase to ~2ms. The regular healthcheck also needs a tiny timeout,
+	// as podman uses it for the startup healthcheck exec.
+	healthcheck := `{"Interval":1000000,"Timeout":1000000,"Retries":1}`
+	startupHealthcheck := `{"Test":["CMD-SHELL","/usr/bin/startup-check.sh"],` +
+		`"Interval":1000000,"Timeout":1000000,"Retries":1}`
+	inspect := testInspectOutputWithConfig(
+		healthcheck, startupHealthcheck, "running", true, 0, "starting", 0, "Initialization in progress",
+	)
+	setRunnerHandler(t, testRunner(events, nil, inspect, nil))
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	testutils.AssertError(t, "did not become healthy within its healthcheck timeout", cnx.WaitForHealthcheck(now))
+}
+
+const testStartupHealthcheck = `{"Test":["CMD-SHELL","/usr/bin/startup-check.sh"],"Interval":1000000,"Retries":0}`
+
+func testStartupEvents(now time.Time) []byte {
+	return testEvents(
+		testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0),
+		testEvent("container-id", "start", now.Add(2*time.Millisecond).UnixNano(), 0),
+	)
+}
+
+func TestWaitForHealthcheckStartupThenUnhealthy(t *testing.T) {
+	setShortWaitTimeouts(t)
+	now := time.Now()
+	events := testStartupEvents(now)
+	healthcheck := `{"StartPeriod":1000000,"Interval":1000000,"Timeout":1000000,"Retries":1}`
+
+	// The startup phase lasts far longer than the regular timeout, then the regular
+	// healthcheck reports the container unhealthy: this must be reported as such
+	// and not as a timeout.
+	polls := 0
+	setRunnerHandler(t, func(_ string, args ...string) ([]byte, error) {
+		if args[0] == "events" {
+			return events, nil
+		}
+		polls++
+		health, streak := "starting", 0
+		if polls > 20 {
+			health, streak = "unhealthy", 2
+		}
+		return testInspectOutputWithConfig(
+			healthcheck, testStartupHealthcheck, "running", true, 0, health, streak, "login page down",
+		), nil
+	})
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	err := cnx.WaitForHealthcheck(now)
+	testutils.AssertError(t, "is unhealthy (2 consecutive failures): login page down", err)
+}
+
+func TestWaitForHealthcheckContainerRemoved(t *testing.T) {
+	setShortWaitTimeouts(t)
+	now := time.Now()
+	events := testStartupEvents(now)
+
+	// The container is stopped and removed (--health-on-failure=stop) while waiting:
+	// the error must tell the last known health.
+	polls := 0
+	setRunnerHandler(t, func(_ string, args ...string) ([]byte, error) {
+		if args[0] == "events" {
+			return events, nil
+		}
+		polls++
+		if polls > 5 {
+			return nil, errors.New(`Error: no such object: "uyuni-server"`)
+		}
+		return testInspectOutputWithConfig(
+			testHealthcheckConfig, testStartupHealthcheck, "running", true, 0, "starting", 1,
+			"Initialization in progress",
+		), nil
+	})
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	err := cnx.WaitForHealthcheck(now)
+	testutils.AssertError(t, "no longer available", err)
+	testutils.AssertError(t, "last health: starting, 1 consecutive failures", err)
+	testutils.AssertError(t, "Initialization in progress", err)
+	testutils.AssertError(t, "stopped after failing its healthcheck", err)
+}
+
+func TestWaitForHealthcheckLogsProgress(t *testing.T) {
+	setShortWaitTimeouts(t)
+	healthcheckProgressInterval = time.Millisecond
+	healthyMessageMinWait = time.Millisecond
+
+	var logs bytes.Buffer
+	originalLogger := log.Logger
+	log.Logger = zerolog.New(&logs)
+	t.Cleanup(func() { log.Logger = originalLogger })
+
+	now := time.Now()
+	events := testStartupEvents(now)
+	healthcheck := `{"StartPeriod":1000000,"Interval":1000000,"Timeout":1000000,"Retries":0}`
+
+	polls := 0
+	setRunnerHandler(t, func(_ string, args ...string) ([]byte, error) {
+		if args[0] == "events" {
+			return events, nil
+		}
+		polls++
+		health := "starting"
+		if polls > 20 {
+			health = "healthy"
+		}
+		return testInspectOutputWithConfig(
+			healthcheck, testStartupHealthcheck, "running", true, 0, health, 0, "Initialization in progress",
+		), nil
+	})
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	testutils.AssertNoError(t, "unexpected error: ", cnx.WaitForHealthcheck(now))
+	output := logs.String()
+	testutils.AssertTrue(t, "expected a progress message, got: "+output,
+		strings.Contains(output, "Still waiting for uyuni-server to become healthy"))
+	testutils.AssertTrue(t, "expected the final healthy message, got: "+output,
+		strings.Contains(output, "Container uyuni-server is healthy after"))
+	testutils.AssertTrue(t, "expected the last healthcheck output, got: "+output,
+		strings.Contains(output, "last healthcheck output: Initialization in progress"))
+}
+
+func TestWaitForHealthcheckHost(t *testing.T) {
+	cnx := NewConnection("host", "", "")
+	cnx.command = "host"
+
+	testutils.AssertNoError(t, "unexpected error for the host backend: ", cnx.WaitForHealthcheck(time.Now()))
+}
+
+func TestWaitForHealthcheckNoEventsTimeout(t *testing.T) {
+	setShortWaitTimeouts(t)
+	setRunnerHandler(t, testRunner(nil, nil, nil, errors.New("no such object")))
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	start := time.Now()
+	testutils.AssertError(t, "probably failed to start it", cnx.WaitForHealthcheck(start))
+	// The no event timeout must be used instead of the longer appearance timeout.
+	elapsed := time.Since(start)
+	testutils.AssertTrue(t, fmt.Sprintf("expected the no event timeout to be used, waited %s", elapsed),
+		elapsed <= time.Second)
+}
+
+func TestWaitForHealthcheckAppearanceTimeout(t *testing.T) {
+	setShortWaitTimeouts(t)
+	now := time.Now()
+	// The container got created but never became inspectable.
+	events := testEvents(testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0))
+	setRunnerHandler(t, testRunner(events, nil, nil, errors.New("no such object")))
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	testutils.AssertError(t, "did not appear", cnx.WaitForHealthcheck(now))
+}
+
+func TestWaitForHealthcheckCreatedButNotStarted(t *testing.T) {
+	setShortWaitTimeouts(t)
+	now := time.Now()
+	createEvent := testEvents(testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0))
+	inspect := testInspectOutput("created", false, 0, "starting", 0, "")
+	setRunnerHandler(t, testRunner(createEvent, nil, inspect, nil))
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	testutils.AssertError(t, "did not start", cnx.WaitForHealthcheck(now))
+}
+
+func TestWaitForHealthcheckEventsUnavailable(t *testing.T) {
+	setRunnerHandler(t, testRunner(nil, errors.New("events unavailable"), nil, nil))
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	testutils.AssertError(t, "cannot read the startup events", cnx.WaitForHealthcheck(time.Now()))
+}
+
+func TestGetPodNameUsesExactFilter(t *testing.T) {
+	var filter string
+	setRunnerHandler(t, func(_ string, args ...string) ([]byte, error) {
+		if len(args) >= 4 && args[0] == "ps" {
+			filter = args[3]
+			return []byte("container-id\n"), nil
+		}
+		return nil, fmt.Errorf("unexpected command: %v", args)
+	})
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	_, err := cnx.GetPodName()
+	testutils.AssertNoError(t, "GetPodName failed: ", err)
+	testutils.AssertEquals(t, "Unexpected pod name filter", "name=^uyuni-server$", filter)
+}
+
+func TestWaitForContainer(t *testing.T) {
+	now := time.Now()
+	runningInspect := testInspectOutput("running", true, 0, "healthy", 0, "")
+	healthyEvents := testEvents(
+		testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0),
+		testEvent("container-id", "start", now.Add(2*time.Millisecond).UnixNano(), 0),
+	)
+
+	tests := []struct {
+		name       string
+		events     []byte
+		inspect    []byte
+		inspectErr error
+		wantErr    string
+	}{
+		{
+			name:    "running",
+			events:  healthyEvents,
+			inspect: runningInspect,
+		},
+		{
+			name: "old container death ignored on restart",
+			events: testEvents(
+				testEvent("old-id", "died", now.Add(time.Millisecond).UnixNano(), 0),
+				testEvent("old-id", "remove", now.Add(2*time.Millisecond).UnixNano(), 0),
+				testEvent("new-id", "create", now.Add(3*time.Millisecond).UnixNano(), 0),
+				testEvent("new-id", "start", now.Add(4*time.Millisecond).UnixNano(), 0),
+			),
+			inspect: runningInspect,
+		},
+		{
+			name: "multiple starts",
+			events: testEvents(
+				testEvent("container-id-1", "create", now.Add(time.Millisecond).UnixNano(), 0),
+				testEvent("container-id-1", "start", now.Add(2*time.Millisecond).UnixNano(), 0),
+				testEvent("container-id-2", "create", now.Add(3*time.Millisecond).UnixNano(), 0),
+				testEvent("container-id-2", "start", now.Add(4*time.Millisecond).UnixNano(), 0),
+			),
+			inspect: runningInspect,
+			wantErr: "more than once",
+		},
+		{
+			name: "new container died",
+			events: testEvents(
+				testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0),
+				testEvent("container-id", "start", now.Add(2*time.Millisecond).UnixNano(), 0),
+				testEvent("container-id", "died", now.Add(3*time.Millisecond).UnixNano(), 42),
+			),
+			inspectErr: errors.New("no such object"),
+			wantErr:    "exit code 42",
+		},
+		{
+			name:    "exited",
+			inspect: testInspectOutput("exited", false, 1, "starting", 0, ""),
+			wantErr: "not running",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			setRunnerHandler(t, testRunner(tt.events, nil, tt.inspect, tt.inspectErr))
+
+			cnx := NewConnection("podman", "uyuni-server", "")
+			cnx.command = "podman"
+
+			err := cnx.WaitForContainer(now)
+			if tt.wantErr == "" {
+				testutils.AssertNoError(t, "unexpected error: ", err)
+				return
+			}
+			testutils.AssertError(t, tt.wantErr, err)
+		})
+	}
+}
+
+func TestWaitForContainerNoEventsTimeout(t *testing.T) {
+	setShortWaitTimeouts(t)
+	setRunnerHandler(t, testRunner(nil, nil, nil, errors.New("no such object")))
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	start := time.Now()
+	testutils.AssertError(t, "probably failed to start it", cnx.WaitForContainer(start))
+	// The no event timeout must be used instead of the longer appearance timeout.
+	elapsed := time.Since(start)
+	testutils.AssertTrue(t, fmt.Sprintf("expected the no event timeout to be used, waited %s", elapsed),
+		elapsed <= time.Second)
+}
+
+func TestWaitForContainerAppearanceTimeout(t *testing.T) {
+	setShortWaitTimeouts(t)
+	now := time.Now()
+	// The container got created but never became inspectable.
+	events := testEvents(testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0))
+	setRunnerHandler(t, testRunner(events, nil, nil, errors.New("no such object")))
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	testutils.AssertError(t, "did not appear", cnx.WaitForContainer(now))
+}
+
+func TestWaitForHealthcheckNoHealthyMessageForShortWait(t *testing.T) {
+	setShortWaitTimeouts(t)
+
+	var logs bytes.Buffer
+	originalLogger := log.Logger
+	log.Logger = zerolog.New(&logs)
+	t.Cleanup(func() { log.Logger = originalLogger })
+
+	now := time.Now()
+	setRunnerHandler(t, testRunner(testStartupEvents(now), nil,
+		testInspectOutput("running", true, 0, "healthy", 0, ""), nil))
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	testutils.AssertNoError(t, "unexpected error: ", cnx.WaitForHealthcheck(now))
+	testutils.AssertTrue(t, "unexpected healthy message for a short wait: "+logs.String(),
+		!strings.Contains(logs.String(), "is healthy after"))
 }
