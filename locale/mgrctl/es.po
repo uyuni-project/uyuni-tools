@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-27 10:29+0200\n"
+"POT-Creation-Date: 2026-11-04 09:14+0000\n"
 "PO-Revision-Date: 2025-11-26 11:05+0000\n"
 "Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/es/>\n"
@@ -75,8 +75,8 @@ msgstr ""
 msgid "Logout removes stored login information."
 msgstr ""
 
-#: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28 mgrctl/cmd/gpg/list.go:84
-#: mgrctl/cmd/gpg/remove.go:55 mgrctl/cmd/gpg/upload.go:91
+#: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28 mgrctl/cmd/gpg/list.go:83
+#: mgrctl/cmd/gpg/remove.go:54 mgrctl/cmd/gpg/upload.go:90
 #: mgrctl/cmd/ssh/knownhost/remove.go:64
 msgid "unable to login to the server"
 msgstr ""
@@ -203,60 +203,60 @@ msgstr ""
 msgid "Removes a key identified by its fingerprint from the server's GPG keyring."
 msgstr ""
 
-#: mgrctl/cmd/gpg/list.go:33
+#: mgrctl/cmd/gpg/list.go:32
 msgid "error listing GPG keys"
 msgstr ""
 
-#: mgrctl/cmd/gpg/list.go:37
+#: mgrctl/cmd/gpg/list.go:36
 #, javascript-format
 msgid "failed to list GPG keys: %s"
 msgstr ""
 
-#: mgrctl/cmd/gpg/remove.go:29
+#: mgrctl/cmd/gpg/remove.go:28
 msgid "error removing GPG key"
 msgstr ""
 
-#: mgrctl/cmd/gpg/remove.go:33
+#: mgrctl/cmd/gpg/remove.go:32
 #, javascript-format
 msgid "failed to remove GPG key: %s"
 msgstr ""
 
-#: mgrctl/cmd/gpg/remove.go:37
+#: mgrctl/cmd/gpg/remove.go:36
 msgid "GPG key successfully removed"
 msgstr ""
 
-#: mgrctl/cmd/gpg/remove.go:39
+#: mgrctl/cmd/gpg/remove.go:38
 msgid "unable to remove GPG key, server returned an error"
 msgstr ""
 
-#: mgrctl/cmd/gpg/upload.go:34
+#: mgrctl/cmd/gpg/upload.go:33
 msgid "error uploading GPG key"
 msgstr ""
 
-#: mgrctl/cmd/gpg/upload.go:38
+#: mgrctl/cmd/gpg/upload.go:37
 #, javascript-format
 msgid "failed to upload GPG key: %s"
 msgstr ""
 
-#: mgrctl/cmd/gpg/upload.go:42
+#: mgrctl/cmd/gpg/upload.go:41
 msgid "GPG key successfully uploaded"
 msgstr ""
 
-#: mgrctl/cmd/gpg/upload.go:44
+#: mgrctl/cmd/gpg/upload.go:43
 msgid "unable to upload GPG key, server returned an error"
 msgstr ""
 
-#: mgrctl/cmd/gpg/upload.go:58
+#: mgrctl/cmd/gpg/upload.go:57
 #, javascript-format
 msgid "failed to read key file %s"
 msgstr ""
 
-#: mgrctl/cmd/gpg/upload.go:64
+#: mgrctl/cmd/gpg/upload.go:63
 #, javascript-format
 msgid "failed to download key from %s"
 msgstr ""
 
-#: mgrctl/cmd/gpg/upload.go:71
+#: mgrctl/cmd/gpg/upload.go:70
 msgid "the provided key is not an armored GPG key"
 msgstr ""
 

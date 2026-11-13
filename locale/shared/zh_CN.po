@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-09 10:54+0200\n"
+"POT-Creation-Date: 2026-11-02 14:00+0000\n"
 "PO-Revision-Date: 2026-08-11 09:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/zh_CN/>\n"
@@ -137,11 +137,11 @@ msgstr "无法创建第一个用户和组织"
 msgid "failed to connect to the server"
 msgstr "无法连接到服务器"
 
-#: shared/api/org/getDetails.go:30
+#: shared/api/org/getDetails.go:28
 msgid "failed to get organization details"
 msgstr "无法获取组织细节"
 
-#: shared/api/proxy/containerConfig.go:34
+#: shared/api/proxy/containerConfig.go:33
 msgid "failed to create proxy configuration file"
 msgstr "无法创建代理配置文件"
 

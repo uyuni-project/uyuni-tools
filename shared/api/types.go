@@ -28,11 +28,12 @@ type APIClient struct {
 	validNamespaces map[string]struct{}
 }
 
-// NamespaceAccess describes an API namespace advertised by the server.
-type NamespaceAccess struct {
-	Namespace   string `json:"namespace"`
-	Description string `json:"description"`
-	AccessMode  string `json:"access_mode"`
+// Endpoint describes an API calls advertised by the server.
+type Endpoint struct {
+	Name       string   `json:"name"`
+	Parameters []string `json:"parameters"`
+	Exceptions []string `json:"exceptions"`
+	Return     string   `json:"return"`
 }
 
 // HTTPClient is a minimal HTTPClient interface primarily for unit testing.

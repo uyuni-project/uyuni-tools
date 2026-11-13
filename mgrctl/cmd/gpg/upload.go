@@ -24,7 +24,6 @@ func gpgKeyUpload(client *api.APIClient, key string) error {
 	response, err := api.PostChecked[float64](
 		client,
 		"admin/gpg/uploadGpgKey",
-		"api.admin.gpg.upload_gpg_key",
 		map[string]interface{}{
 			"gpgKey": key,
 		},

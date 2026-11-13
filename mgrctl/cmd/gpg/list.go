@@ -16,17 +16,16 @@ import (
 )
 
 type ListGpgKeysResponse struct {
-	KeyType     int64    `mapstructure:"keyType"`
-	KeySize     int64    `mapstructure:"keySize"`
-	Fingerprint string   `mapstructure:"fingerprint"`
-	Names       []string `mapstructure:"names"`
+	KeyType     int64
+	KeySize     int64
+	Fingerprint string
+	Names       []string
 }
 
 func gpgKeyList(client *api.APIClient) error {
 	response, err := api.GetChecked[[]ListGpgKeysResponse](
 		client,
 		"admin/gpg/listGpgKeys",
-		"api.admin.gpg.list_gpg_keys",
 	)
 
 	if err != nil {
