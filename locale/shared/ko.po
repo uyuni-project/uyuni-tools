@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:59+0100\n"
+"POT-Creation-Date: 2026-11-02 14:00+0000\n"
 "PO-Revision-Date: 2026-08-18 08:13+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ko/>\n"
@@ -137,11 +137,11 @@ msgstr "첫 번째 사용자 및 조직을 만들지 못함"
 msgid "failed to connect to the server"
 msgstr "서버에 연결하지 못함"
 
-#: shared/api/org/getDetails.go:30
+#: shared/api/org/getDetails.go:28
 msgid "failed to get organization details"
 msgstr "조직 세부 정보 가져오기 실패"
 
-#: shared/api/proxy/containerConfig.go:34
+#: shared/api/proxy/containerConfig.go:33
 msgid "failed to create proxy configuration file"
 msgstr "프록시 구성 파일을 생성하지 못함"
 

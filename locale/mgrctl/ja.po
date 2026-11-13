@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:59+0100\n"
+"POT-Creation-Date: 2026-11-04 09:14+0000\n"
 "PO-Revision-Date: 2026-08-15 13:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrctl/ja/>\n"
@@ -92,8 +92,8 @@ msgstr "保存されているログイン情報を削除する"
 msgid "Logout removes stored login information."
 msgstr "ログアウトすると、保存されているログイン情報が削除されます。"
 
-#: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28 mgrctl/cmd/gpg/list.go:84
-#: mgrctl/cmd/gpg/remove.go:55 mgrctl/cmd/gpg/upload.go:91
+#: mgrctl/cmd/api/get.go:28 mgrctl/cmd/api/post.go:28 mgrctl/cmd/gpg/list.go:83
+#: mgrctl/cmd/gpg/remove.go:54 mgrctl/cmd/gpg/upload.go:90
 #: mgrctl/cmd/ssh/knownhost/remove.go:64
 msgid "unable to login to the server"
 msgstr "サーバにログインできません"
@@ -226,72 +226,72 @@ msgstr ""
 msgid "Removes a key identified by its fingerprint from the server's GPG keyring."
 msgstr ""
 
-#: mgrctl/cmd/gpg/list.go:33
+#: mgrctl/cmd/gpg/list.go:32
 msgid "error listing GPG keys"
 msgstr ""
 
-#: mgrctl/cmd/gpg/list.go:37
+#: mgrctl/cmd/gpg/list.go:36
 #, fuzzy, javascript-format
 #| msgid "failed to remove the host: %s"
 msgid "failed to list GPG keys: %s"
 msgstr "ホストの削除に失敗しました: %s"
 
-#: mgrctl/cmd/gpg/remove.go:29
+#: mgrctl/cmd/gpg/remove.go:28
 msgid "error removing GPG key"
 msgstr ""
 
-#: mgrctl/cmd/gpg/remove.go:33
+#: mgrctl/cmd/gpg/remove.go:32
 #, fuzzy, javascript-format
 #| msgid "failed to remove the host: %s"
 msgid "failed to remove GPG key: %s"
 msgstr "ホストの削除に失敗しました: %s"
 
-#: mgrctl/cmd/gpg/remove.go:37
+#: mgrctl/cmd/gpg/remove.go:36
 #, fuzzy
 #| msgid "successfully removed host"
 msgid "GPG key successfully removed"
 msgstr "ホストを正常に削除しました"
 
-#: mgrctl/cmd/gpg/remove.go:39
+#: mgrctl/cmd/gpg/remove.go:38
 #, fuzzy
 #| msgid "unable to remove host, server returned an error"
 msgid "unable to remove GPG key, server returned an error"
 msgstr "ホストを削除できません。サーバからエラーが返されました"
 
-#: mgrctl/cmd/gpg/upload.go:34
+#: mgrctl/cmd/gpg/upload.go:33
 msgid "error uploading GPG key"
 msgstr ""
 
-#: mgrctl/cmd/gpg/upload.go:38
+#: mgrctl/cmd/gpg/upload.go:37
 #, javascript-format
 msgid "failed to upload GPG key: %s"
 msgstr ""
 
-#: mgrctl/cmd/gpg/upload.go:42
+#: mgrctl/cmd/gpg/upload.go:41
 #, fuzzy
 #| msgid "Successfully logged out"
 msgid "GPG key successfully uploaded"
 msgstr "正常にログアウトしました"
 
-#: mgrctl/cmd/gpg/upload.go:44
+#: mgrctl/cmd/gpg/upload.go:43
 #, fuzzy
 #| msgid "unable to remove host, server returned an error"
 msgid "unable to upload GPG key, server returned an error"
 msgstr "ホストを削除できません。サーバからエラーが返されました"
 
-#: mgrctl/cmd/gpg/upload.go:58
+#: mgrctl/cmd/gpg/upload.go:57
 #, fuzzy, javascript-format
 #| msgid "failed to remove the host: %s"
 msgid "failed to read key file %s"
 msgstr "ホストの削除に失敗しました: %s"
 
-#: mgrctl/cmd/gpg/upload.go:64
+#: mgrctl/cmd/gpg/upload.go:63
 #, fuzzy, javascript-format
 #| msgid "failed to remove the host: %s"
 msgid "failed to download key from %s"
 msgstr "ホストの削除に失敗しました: %s"
 
-#: mgrctl/cmd/gpg/upload.go:71
+#: mgrctl/cmd/gpg/upload.go:70
 msgid "the provided key is not an armored GPG key"
 msgstr ""
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:59+0100\n"
+"POT-Creation-Date: 2026-11-02 14:00+0000\n"
 "PO-Revision-Date: 2026-08-16 11:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ja/>\n"
@@ -137,11 +137,11 @@ msgstr "最初のユーザと組織の作成に失敗しました"
 msgid "failed to connect to the server"
 msgstr "サーバへの接続に失敗しました"
 
-#: shared/api/org/getDetails.go:30
+#: shared/api/org/getDetails.go:28
 msgid "failed to get organization details"
 msgstr "組織の詳細の取得に失敗しました"
 
-#: shared/api/proxy/containerConfig.go:34
+#: shared/api/proxy/containerConfig.go:33
 msgid "failed to create proxy configuration file"
 msgstr "プロキシ設定ファイル の作成に失敗しました"
 
