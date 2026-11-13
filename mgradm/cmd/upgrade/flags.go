@@ -13,7 +13,9 @@ import (
 
 // AddUpgradeFlags add upgrade flags to a command.
 func AddUpgradeFlags(cmd *cobra.Command) {
-	adm_utils.AddServerFlags(cmd)
+	adm_utils.AddImageFlag(cmd)
+	adm_utils.AddSCCFlag(cmd)
+	adm_utils.AddPgsqlFlags(cmd)
 
 	adm_utils.AddDBUpgradeImageFlag(cmd)
 	adm_utils.AddUpgradeCocoFlag(cmd)
