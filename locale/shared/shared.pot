@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-01 11:59+0100\n"
+"POT-Creation-Date: 2026-11-02 14:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -136,11 +136,11 @@ msgstr ""
 msgid "failed to connect to the server"
 msgstr ""
 
-#: shared/api/org/getDetails.go:30
+#: shared/api/org/getDetails.go:28
 msgid "failed to get organization details"
 msgstr ""
 
-#: shared/api/proxy/containerConfig.go:34
+#: shared/api/proxy/containerConfig.go:33
 msgid "failed to create proxy configuration file"
 msgstr ""
 
