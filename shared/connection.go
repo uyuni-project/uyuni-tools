@@ -323,6 +323,9 @@ var (
 	// healthcheckProgressInterval is how often a progress message is logged while
 	// waiting for a container that is still starting.
 	healthcheckProgressInterval = 1 * time.Minute
+	// healthyMessageMinWait is the minimum wait after which the final "healthy"
+	// message is logged. Shorter waits are not worth a message.
+	healthyMessageMinWait = 10 * time.Second
 )
 
 // WaitForContainer waits for the container to be running.
@@ -415,7 +418,7 @@ func (c *Connection) waitForContainerExec(cmd string) error {
 // A container with a startup healthcheck (podman --health-startup-cmd, e.g.
 // startup-check.sh on the Uyuni server) is waited for until the startup
 // healthcheck passes, even if that takes longer than the regular healthcheck
-// window: podman keeps the health state on "starting" and does not bound the
+// timeout: podman keeps the health state on "starting" and does not bound the
 // startup phase when the startup healthcheck is configured without
 // --health-startup-retries.
 //
@@ -444,7 +447,7 @@ func (c *Connection) WaitForHealthcheck(startAttempt time.Time) error {
 	}
 
 	var firstStart time.Time
-	lastHealth := ""
+	var lastHealth podman.HealthState
 	waitStart := time.Now()
 	lastProgress := waitStart
 	// lastStatus is the last status successfully read: it explains the failure when
@@ -475,7 +478,7 @@ func (c *Connection) WaitForHealthcheck(startAttempt time.Time) error {
 					L("container %[1]s is no longer available (last health: %[2]s, "+
 						"%[3]d consecutive failures, last healthcheck output: %[4]q); "+
 						"it was probably stopped after failing its healthcheck"),
-					c.container, lastStatus.Health, lastStatus.FailingStreak, lastStatus.HealthLog)
+					c.container, lastStatus.Health.State, lastStatus.Health.FailingStreak, lastStatus.Health.LastOutput)
 			}
 			return utils.Errorf(statusErr, L("container %s is no longer available"), c.container)
 		}
@@ -488,53 +491,48 @@ func (c *Connection) WaitForHealthcheck(startAttempt time.Time) error {
 			)
 		}
 
-		switch status.Health {
-		case "healthy":
-			log.Info().Msgf(L("Container %[1]s is healthy after %[2]s"),
-				c.container, time.Since(waitStart).Round(time.Second))
+		switch status.Health.State {
+		case podman.HealthHealthy:
+			// Only report waits that were long enough to be worth a message.
+			if waited := time.Since(waitStart); waited >= healthyMessageMinWait {
+				log.Info().Msgf(L("Container %[1]s is healthy after %[2]s"),
+					c.container, waited.Round(time.Second))
+			}
 			return nil
-		case "none":
+		case podman.HealthNone:
 			return fmt.Errorf(
 				L("container %s has no healthcheck configured; WaitForHealthcheck must only be used with healthchecked containers"),
 				c.container,
 			)
-		case "unhealthy":
+		case podman.HealthUnhealthy:
 			return fmt.Errorf(L("container %[1]s is unhealthy (%[2]d consecutive failures): %[3]s"),
-				c.container, status.FailingStreak, status.HealthLog)
-		case "starting", "":
+				c.container, status.Health.FailingStreak, status.Health.LastOutput)
+		case podman.HealthStarting:
 			// Keep waiting while the health is not final: either the startup
 			// healthcheck (e.g. startup-check.sh) is still deciding on
 			// readiness, or the regular healthcheck is within its start period.
 		default:
-			return fmt.Errorf(L("container %[1]s has an unexpected health state: %[2]s"), c.container, status.Health)
+			return fmt.Errorf(L("container %[1]s has an unexpected health state: %[2]s"), c.container, status.Health.State)
 		}
 
-		if status.Health != lastHealth {
+		if status.Health.State != lastHealth {
 			log.Info().Msgf(L("Waiting for %[1]s to become healthy (current health: %[2]s)"),
-				c.container, status.Health)
-			lastHealth = status.Health
+				c.container, status.Health.State)
+			lastHealth = status.Health.State
 		}
 		if now.Sub(lastProgress) >= healthcheckProgressInterval {
 			lastProgress = now
 			msg := L("Still waiting for %[1]s to become healthy after %[2]s (current health: %[3]s)")
-			if status.HealthLog != "" {
-				msg += L(", last healthcheck output: ") + status.HealthLog
+			if status.Health.LastOutput != "" {
+				msg += L(", last healthcheck output: ") + status.Health.LastOutput
 			}
-			log.Info().Msgf(msg, c.container, now.Sub(waitStart).Round(time.Second), status.Health)
+			log.Info().Msgf(msg, c.container, now.Sub(waitStart).Round(time.Second), status.Health.State)
 		}
-		window := status.HealthcheckTimeout
-		if status.StartupHealthcheck && (status.Health == "starting" || status.Health == "") {
-			// While the startup healthcheck is deciding on readiness, the regular
-			// healthcheck does not run yet, so its window does not apply. With
-			// --health-startup-retries=0 (the default) podman neither marks the
-			// container unhealthy nor restarts it while the startup healthcheck
-			// keeps failing, so the startup phase can take arbitrarily long.
-			window = status.StartupHealthcheckTimeout
-		}
-		if window > 0 && !now.Before(firstStart.Add(window)) {
+		if timeout := status.Timeouts.WaitTimeout(status.Health.State); timeout > 0 &&
+			!now.Before(firstStart.Add(timeout)) {
 			return fmt.Errorf(
-				L("container %[1]s did not become healthy within its healthcheck window (last health: %[2]s)"),
-				c.container, status.Health,
+				L("container %[1]s did not become healthy within its healthcheck timeout (last health: %[2]s)"),
+				c.container, status.Health.State,
 			)
 		}
 

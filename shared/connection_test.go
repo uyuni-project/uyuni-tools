@@ -344,6 +344,7 @@ func setShortWaitTimeouts(t *testing.T) {
 	noEventTimeout := containerNoEventTimeout
 	pollInterval := healthcheckPollInterval
 	progressInterval := healthcheckProgressInterval
+	healthyMinWait := healthyMessageMinWait
 	containerAppearanceTimeout = 5 * time.Millisecond
 	containerNoEventTimeout = 2 * time.Millisecond
 	healthcheckPollInterval = time.Millisecond
@@ -352,6 +353,7 @@ func setShortWaitTimeouts(t *testing.T) {
 		containerNoEventTimeout = noEventTimeout
 		healthcheckPollInterval = pollInterval
 		healthcheckProgressInterval = progressInterval
+		healthyMessageMinWait = healthyMinWait
 	})
 }
 
@@ -366,15 +368,16 @@ func testEvents(events ...string) []byte {
 
 func testInspectOutput(
 	state string, running bool, exitCode int, health string, failingStreak int, healthLog string,
-	startupHealthcheck ...string,
 ) []byte {
-	return testInspectOutputWithConfig(testHealthcheckConfig, state, running, exitCode,
-		health, failingStreak, healthLog, startupHealthcheck...)
+	return testInspectOutputWithConfig(testHealthcheckConfig, "", state, running, exitCode,
+		health, failingStreak, healthLog)
 }
 
+// testInspectOutputWithConfig builds a podman inspect output. startupHealthcheck is the JSON
+// of the startup healthcheck configuration, empty for a container without one.
 func testInspectOutputWithConfig(
-	healthcheck string, state string, running bool, exitCode int, health string, failingStreak int,
-	healthLog string, startupHealthcheck ...string,
+	healthcheck string, startupHealthcheck string, state string, running bool, exitCode int,
+	health string, failingStreak int, healthLog string,
 ) []byte {
 	healthJSON := "null"
 	if health != "" {
@@ -383,8 +386,8 @@ func testInspectOutputWithConfig(
 	}
 
 	startupJSON := ""
-	if len(startupHealthcheck) > 0 {
-		startupJSON = `,"StartupHealthCheck":` + startupHealthcheck[0]
+	if startupHealthcheck != "" {
+		startupJSON = `,"StartupHealthCheck":` + startupHealthcheck
 	}
 
 	return []byte(fmt.Sprintf(
@@ -499,14 +502,14 @@ func TestWaitForHealthcheckKubernetesUnsupported(t *testing.T) {
 	testutils.AssertError(t, "not supported", cnx.WaitForHealthcheck(time.Now()))
 }
 
-func TestWaitForHealthcheckStartupPhaseIgnoresRegularWindow(t *testing.T) {
+func TestWaitForHealthcheckStartupPhaseIgnoresRegularTimeout(t *testing.T) {
 	setShortWaitTimeouts(t)
 	now := time.Now()
 	events := testEvents(
 		testEvent("container-id", "create", now.Add(time.Millisecond).UnixNano(), 0),
 		testEvent("container-id", "start", now.Add(2*time.Millisecond).UnixNano(), 0),
 	)
-	// Regular healthcheck window of ~3ms, startup healthcheck unbounded (retries=0).
+	// Regular healthcheck timeout of ~3ms, startup healthcheck unbounded (retries=0).
 	healthcheck := `{"StartPeriod":1000000,"Interval":1000000,"Timeout":1000000,"Retries":0}`
 	startupHealthcheck := `{"Test":["CMD-SHELL","/usr/bin/startup-check.sh"],"Interval":1000000,"Retries":0}`
 
@@ -522,7 +525,7 @@ func TestWaitForHealthcheckStartupPhaseIgnoresRegularWindow(t *testing.T) {
 				health = "healthy"
 			}
 			return testInspectOutputWithConfig(
-				healthcheck, "running", true, 0, health, 0, "", startupHealthcheck,
+				healthcheck, startupHealthcheck, "running", true, 0, health, 0, "",
 			), nil
 		default:
 			return nil, fmt.Errorf("unexpected command: %v", args)
@@ -532,14 +535,14 @@ func TestWaitForHealthcheckStartupPhaseIgnoresRegularWindow(t *testing.T) {
 	cnx := NewConnection("podman", "uyuni-server", "")
 	cnx.command = "podman"
 
-	// The startup phase must not be cut off by the regular healthcheck window:
+	// The startup phase must not be cut off by the regular healthcheck timeout:
 	// podman keeps the health on "starting" as long as startup-check.sh keeps
 	// failing.
 	testutils.AssertNoError(t, "unexpected error: ", cnx.WaitForHealthcheck(now))
 	testutils.AssertTrue(t, fmt.Sprintf("expected more than 20 polls, got %d", polls), polls > 20)
 }
 
-func TestWaitForHealthcheckStartupWindow(t *testing.T) {
+func TestWaitForHealthcheckStartupTimeout(t *testing.T) {
 	setShortWaitTimeouts(t)
 	now := time.Now()
 	events := testEvents(
@@ -553,14 +556,14 @@ func TestWaitForHealthcheckStartupWindow(t *testing.T) {
 	startupHealthcheck := `{"Test":["CMD-SHELL","/usr/bin/startup-check.sh"],` +
 		`"Interval":1000000,"Timeout":1000000,"Retries":1}`
 	inspect := testInspectOutputWithConfig(
-		healthcheck, "running", true, 0, "starting", 0, "Initialization in progress", startupHealthcheck,
+		healthcheck, startupHealthcheck, "running", true, 0, "starting", 0, "Initialization in progress",
 	)
 	setRunnerHandler(t, testRunner(events, nil, inspect, nil))
 
 	cnx := NewConnection("podman", "uyuni-server", "")
 	cnx.command = "podman"
 
-	testutils.AssertError(t, "did not become healthy within its healthcheck window", cnx.WaitForHealthcheck(now))
+	testutils.AssertError(t, "did not become healthy within its healthcheck timeout", cnx.WaitForHealthcheck(now))
 }
 
 const testStartupHealthcheck = `{"Test":["CMD-SHELL","/usr/bin/startup-check.sh"],"Interval":1000000,"Retries":0}`
@@ -578,7 +581,7 @@ func TestWaitForHealthcheckStartupThenUnhealthy(t *testing.T) {
 	events := testStartupEvents(now)
 	healthcheck := `{"StartPeriod":1000000,"Interval":1000000,"Timeout":1000000,"Retries":1}`
 
-	// The startup phase lasts far longer than the regular window, then the regular
+	// The startup phase lasts far longer than the regular timeout, then the regular
 	// healthcheck reports the container unhealthy: this must be reported as such
 	// and not as a timeout.
 	polls := 0
@@ -592,7 +595,7 @@ func TestWaitForHealthcheckStartupThenUnhealthy(t *testing.T) {
 			health, streak = "unhealthy", 2
 		}
 		return testInspectOutputWithConfig(
-			healthcheck, "running", true, 0, health, streak, "login page down", testStartupHealthcheck,
+			healthcheck, testStartupHealthcheck, "running", true, 0, health, streak, "login page down",
 		), nil
 	})
 
@@ -620,8 +623,8 @@ func TestWaitForHealthcheckContainerRemoved(t *testing.T) {
 			return nil, errors.New(`Error: no such object: "uyuni-server"`)
 		}
 		return testInspectOutputWithConfig(
-			testHealthcheckConfig, "running", true, 0, "starting", 1, "Initialization in progress",
-			testStartupHealthcheck,
+			testHealthcheckConfig, testStartupHealthcheck, "running", true, 0, "starting", 1,
+			"Initialization in progress",
 		), nil
 	})
 
@@ -638,6 +641,7 @@ func TestWaitForHealthcheckContainerRemoved(t *testing.T) {
 func TestWaitForHealthcheckLogsProgress(t *testing.T) {
 	setShortWaitTimeouts(t)
 	healthcheckProgressInterval = time.Millisecond
+	healthyMessageMinWait = time.Millisecond
 
 	var logs bytes.Buffer
 	originalLogger := log.Logger
@@ -659,7 +663,7 @@ func TestWaitForHealthcheckLogsProgress(t *testing.T) {
 			health = "healthy"
 		}
 		return testInspectOutputWithConfig(
-			healthcheck, "running", true, 0, health, 0, "Initialization in progress", testStartupHealthcheck,
+			healthcheck, testStartupHealthcheck, "running", true, 0, health, 0, "Initialization in progress",
 		), nil
 	})
 
@@ -852,4 +856,24 @@ func TestWaitForContainerAppearanceTimeout(t *testing.T) {
 	cnx.command = "podman"
 
 	testutils.AssertError(t, "did not appear", cnx.WaitForContainer(now))
+}
+
+func TestWaitForHealthcheckNoHealthyMessageForShortWait(t *testing.T) {
+	setShortWaitTimeouts(t)
+
+	var logs bytes.Buffer
+	originalLogger := log.Logger
+	log.Logger = zerolog.New(&logs)
+	t.Cleanup(func() { log.Logger = originalLogger })
+
+	now := time.Now()
+	setRunnerHandler(t, testRunner(testStartupEvents(now), nil,
+		testInspectOutput("running", true, 0, "healthy", 0, ""), nil))
+
+	cnx := NewConnection("podman", "uyuni-server", "")
+	cnx.command = "podman"
+
+	testutils.AssertNoError(t, "unexpected error: ", cnx.WaitForHealthcheck(now))
+	testutils.AssertTrue(t, "unexpected healthy message for a short wait: "+logs.String(),
+		!strings.Contains(logs.String(), "is healthy after"))
 }
