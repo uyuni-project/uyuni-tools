@@ -1,0 +1,1 @@
+- Fix the container name in the server pod on Kubernetes (bsc#1290253)

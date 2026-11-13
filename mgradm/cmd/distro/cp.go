@@ -15,9 +15,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared"
 	"github.com/uyuni-project/uyuni-tools/shared/api"
-	"github.com/uyuni-project/uyuni-tools/shared/kubernetes"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
-	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
@@ -106,7 +104,10 @@ func copyDistro(srcdir string, distro *types.Distribution, flags *flagpole) erro
 		return errors.New(L("Missing TreeLabel. Please specify distribution name"))
 	}
 
-	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	cnx, err := shared.NewServerConnection(flags.Backend)
+	if err != nil {
+		return err
+	}
 
 	const distrosPath = "/srv/www/distributions/"
 	dstpath := distrosPath + distro.TreeLabel
@@ -128,7 +129,10 @@ func copyDistro(srcdir string, distro *types.Distribution, flags *flagpole) erro
 }
 
 func getServerFqdn(flags *flagpole) (string, error) {
-	cnx := shared.NewConnection(flags.Backend, podman.ServerContainerName, kubernetes.ServerFilter)
+	cnx, err := shared.NewServerConnection(flags.Backend)
+	if err != nil {
+		return "", err
+	}
 	fqdn, err := cnx.Exec("sh", "-c", "cat /etc/rhn/rhn.conf 2>/dev/null | grep 'java.hostname' | cut -d' ' -f3")
 	return strings.TrimSuffix(string(fqdn), "\n"), err
 }
