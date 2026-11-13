@@ -12,47 +12,127 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+// HealthState is the health state of a container as reported by podman.
+type HealthState string
+
+const (
+	// HealthStarting means that the health is not final yet: the startup healthcheck
+	// has not passed or the regular healthcheck did not report a result yet.
+	HealthStarting HealthState = "starting"
+	// HealthHealthy means that the healthcheck passed.
+	HealthHealthy HealthState = "healthy"
+	// HealthUnhealthy means that the healthcheck failed more than its retries.
+	HealthUnhealthy HealthState = "unhealthy"
+	// HealthNone means that the container has no healthcheck configured.
+	HealthNone HealthState = "none"
+)
+
+// HealthStatus is the current health of a container.
+type HealthStatus struct {
+	// State is the health state. Podman reports an empty state before the first
+	// healthcheck run: this is mapped to HealthStarting. Any value that is not
+	// one of the constants above is kept as is.
+	State         HealthState
+	FailingStreak int
+	// LastOutput is the trimmed output of the last healthcheck run.
+	LastOutput string
+}
+
+// HealthcheckTimeouts describes how long podman can legitimately take to report a final
+// health, based on the healthcheck configuration of the container.
+type HealthcheckTimeouts struct {
+	// Regular bounds the regular healthcheck: the container is expected to be healthy
+	// or unhealthy after it. 0 when there is no bound or no healthcheck.
+	Regular time.Duration
+	// HasStartup is true when a startup healthcheck (podman --health-startup-cmd) is
+	// configured. It has to pass before the regular healthcheck even starts.
+	HasStartup bool
+	// Startup bounds the startup healthcheck, based on its
+	// --health-startup-retries. It is only meaningful when HasStartup is true.
+	// 0 means that the startup phase is unbounded: with the podman default
+	// --health-startup-retries=0 the container is neither marked unhealthy nor
+	// restarted while the startup healthcheck keeps failing, so it can
+	// legitimately take arbitrarily long.
+	Startup time.Duration
+}
+
+// WaitTimeout returns how long a container with the given health can be waited for
+// before concluding that it will not become healthy. 0 means that there is no bound.
+//
+// While the startup healthcheck is deciding on readiness the regular healthcheck does
+// not run yet, so its timeout does not apply.
+func (c HealthcheckTimeouts) WaitTimeout(state HealthState) time.Duration {
+	if c.HasStartup && state == HealthStarting {
+		return c.Startup
+	}
+	return c.Regular
+}
+
 // ContainerStatus is the part of the container state relevant to startup checks.
 type ContainerStatus struct {
-	State              string
-	Running            bool
-	ExitCode           int
-	RestartCount       int
-	Health             string // starting, healthy, unhealthy, or none
-	FailingStreak      int
-	HealthLog          string
-	HealthcheckTimeout time.Duration
-	// StartupHealthcheck is true when the container has a startup healthcheck
-	// configured (podman --health-startup-cmd). While it has not passed, the
-	// regular healthcheck does not run at all.
-	StartupHealthcheck bool
-	// StartupHealthcheckTimeout bounds the startup healthcheck phase, based on
-	// its --health-startup-retries setting. It is 0 when the startup phase is
-	// unbounded: with the podman default retries=0 the container is neither
-	// marked unhealthy nor restarted while the startup healthcheck keeps
-	// failing, so it can legitimately take arbitrarily long.
-	StartupHealthcheckTimeout time.Duration
+	State        string
+	Running      bool
+	ExitCode     int
+	RestartCount int
+	Health       HealthStatus
+	Timeouts     HealthcheckTimeouts
+}
+
+// inspectHealthcheck is the healthcheck configuration in the podman inspect output.
+// Durations are in nanoseconds, as time.Duration.
+type inspectHealthcheck struct {
+	StartPeriod time.Duration `json:"StartPeriod"`
+	Interval    time.Duration `json:"Interval"`
+	Timeout     time.Duration `json:"Timeout"`
+	Retries     int           `json:"Retries"`
+	// StartInterval is the interval of the checks during the start period.
+	StartInterval time.Duration `json:"StartInterval"`
+}
+
+// regularTimeout computes the time after which podman reports the container unhealthy.
+func (h *inspectHealthcheck) regularTimeout() time.Duration {
+	if h == nil || (h.StartPeriod == 0 && h.Interval == 0 && h.Timeout == 0) {
+		return 0
+	}
+	retries := h.Retries
+	if retries < 1 {
+		retries = 1
+	}
+	return h.StartPeriod + time.Duration(retries+1)*(h.Interval+h.Timeout)
+}
+
+// startupTimeout computes the time after which podman reports the container unhealthy
+// because of its startup healthcheck, or 0 if the startup phase is unbounded.
+// regular is the regular healthcheck configuration and can be nil.
+func (h *inspectHealthcheck) startupTimeout(regular *inspectHealthcheck) time.Duration {
+	if h.Retries <= 0 {
+		return 0
+	}
+	// The startup healthcheck runs every StartInterval, falling back to Interval
+	// on older podman versions.
+	interval := h.StartInterval
+	if interval == 0 {
+		interval = h.Interval
+	}
+	// Podman runs the startup healthcheck exec with the regular healthcheck timeout,
+	// so take the larger of the two.
+	timeout := h.Timeout
+	if regular != nil && regular.Timeout > timeout {
+		timeout = regular.Timeout
+	}
+	return time.Duration(h.Retries) * (interval + timeout)
 }
 
 type containerInspect struct {
 	RestartCount int `json:"RestartCount"`
 	Config       struct {
-		Healthcheck *struct {
-			StartPeriod time.Duration `json:"StartPeriod"`
-			Interval    time.Duration `json:"Interval"`
-			Timeout     time.Duration `json:"Timeout"`
-			Retries     int           `json:"Retries"`
-		} `json:"Healthcheck"`
-		StartupHealthCheck *struct {
-			StartInterval time.Duration `json:"StartInterval"`
-			Interval      time.Duration `json:"Interval"`
-			Timeout       time.Duration `json:"Timeout"`
-			Retries       int           `json:"Retries"`
-		} `json:"StartupHealthCheck"`
+		Healthcheck        *inspectHealthcheck `json:"Healthcheck"`
+		StartupHealthCheck *inspectHealthcheck `json:"StartupHealthCheck"`
 	} `json:"Config"`
 	State struct {
 		Status   string `json:"Status"`
@@ -87,40 +167,21 @@ func GetContainerStatus(command string, container string) (ContainerStatus, erro
 		Running:      inspect.State.Running,
 		ExitCode:     inspect.State.ExitCode,
 		RestartCount: inspect.RestartCount,
-		Health:       "none",
-	}
-	if hc := inspect.Config.Healthcheck; hc != nil {
-		if hc.StartPeriod != 0 || hc.Interval != 0 || hc.Timeout != 0 {
-			retries := hc.Retries
-			if retries < 1 {
-				retries = 1
-			}
-			status.HealthcheckTimeout = hc.StartPeriod + time.Duration(retries+1)*(hc.Interval+hc.Timeout)
-		}
+		Health:       HealthStatus{State: HealthNone},
+		Timeouts:     HealthcheckTimeouts{Regular: inspect.Config.Healthcheck.regularTimeout()},
 	}
 	if shc := inspect.Config.StartupHealthCheck; shc != nil {
-		status.StartupHealthcheck = true
-		if shc.Retries > 0 {
-			// The startup healthcheck runs every StartInterval, falling back to
-			// Interval on older podman versions.
-			interval := shc.StartInterval
-			if interval == 0 {
-				interval = shc.Interval
-			}
-			// Podman runs the startup healthcheck exec with the regular
-			// healthcheck timeout, so take the larger of the two.
-			timeout := shc.Timeout
-			if inspect.Config.Healthcheck != nil && inspect.Config.Healthcheck.Timeout > timeout {
-				timeout = inspect.Config.Healthcheck.Timeout
-			}
-			status.StartupHealthcheckTimeout = time.Duration(shc.Retries) * (interval + timeout)
-		}
+		status.Timeouts.HasStartup = true
+		status.Timeouts.Startup = shc.startupTimeout(inspect.Config.Healthcheck)
 	}
 	if health := inspect.State.Health; health != nil {
-		status.Health = health.Status
-		status.FailingStreak = health.FailingStreak
+		status.Health.State = HealthState(health.Status)
+		if status.Health.State == "" {
+			status.Health.State = HealthStarting
+		}
+		status.Health.FailingStreak = health.FailingStreak
 		if len(health.Log) > 0 {
-			status.HealthLog = strings.TrimSpace(health.Log[len(health.Log)-1].Output)
+			status.Health.LastOutput = strings.TrimSpace(health.Log[len(health.Log)-1].Output)
 		}
 	}
 
@@ -205,6 +266,10 @@ func AnalyzeContainerEvents(events []ContainerEvent) (ContainerStartState, error
 			if _, created := creates[event.ID]; created && starts == 0 {
 				return state, errors.New(L("container was removed before it started"))
 			}
+		default:
+			// GetContainerEvents only asks podman for the events handled above:
+			// anything else is not relevant to the startup.
+			log.Debug().Msgf("ignoring unexpected podman event %q of container %s", event.Status, event.ID)
 		}
 	}
 
