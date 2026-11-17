@@ -42,7 +42,6 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[podmanUpgradeF
 		},
 	}
 	AddUpgradeFlags(cmd)
-	cmd_utils.AddDebugFlags(cmd)
 	podman.AddPodmanArgFlag(cmd)
 	return cmd
 }

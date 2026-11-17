@@ -11,7 +11,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
-	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	podman_shared "github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
@@ -41,18 +40,12 @@ func ptfForPodman(
 	//we don't want to perform a postgres version upgrade when installing a PTF.
 	//in that case, we can use the upgrade command.
 	dummyImage := types.ImageFlags{}
-	dummyDB := types.DBFlags{}
-	dummyReportDB := types.DBFlags{}
-	dummySSL := adm_utils.InstallSSLFlags{}
 
 	if err := flags.checkParameters(authFile); err != nil {
 		return err
 	}
 
 	return podman.Upgrade(systemd, authFile,
-		dummyDB,
-		dummyReportDB,
-		dummySSL,
 		flags.Image,
 		dummyImage,
 		flags.Coco,
@@ -60,8 +53,6 @@ func ptfForPodman(
 		flags.Saline,
 		flags.Pgsql,
 		flags.TFTPD,
-		flags.Installation.TZ,
-		flags.Installation.Debug.Java,
 	)
 }
 
