@@ -252,11 +252,15 @@ func (c *Connection) Exec(command string, args ...string) ([]byte, error) {
 			return nil, utils.Errorf(err, L("failed to retrieve namespace "))
 		}
 
-		if c.container == "" {
-			c.container = "uyuni"
+		// The container name inside the pod differs from the podman one for the server.
+		container := c.container
+		if c.kubernetesFilter == kubernetes.ServerFilter {
+			container = kubernetes.ServerApp
+		} else if container == "" {
+			container = "uyuni"
 		}
 
-		cmdArgs = append(cmdArgs, "-n", c.namespace, "-c", c.container, "--")
+		cmdArgs = append(cmdArgs, "-n", c.namespace, "-c", container, "--")
 	}
 
 	shellArgs := append([]string{command}, args...)
