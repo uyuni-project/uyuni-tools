@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-02 14:00+0000\n"
-"PO-Revision-Date: 2026-10-13 06:13+0000\n"
+"PO-Revision-Date: 2026-11-18 04:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/ja/>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.10.1\n"
+"X-Generator: Weblate 2026.11.2\n"
 
 #: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
@@ -1519,26 +1519,23 @@ msgid "failed to unmarshall configuration"
 msgstr "設定のアンマーシャルに失敗しました"
 
 #: mgradm/cmd/upgrade/utils.go:32
-#, fuzzy, javascript-format
-#| msgid "failed to parse %s"
+#, javascript-format
 msgid "failed to read %s"
-msgstr "%s の解析に失敗しました"
+msgstr "%s の読み込みに失敗しました"
 
 #: mgradm/cmd/upgrade/utils.go:45
-#, fuzzy, javascript-format
-#| msgid "failed to create keyring %s"
+#, javascript-format
 msgid "failed to change permissions for %s"
-msgstr "キーリング %s の作成に失敗しました"
+msgstr "%s のパーミッションの変更に失敗しました"
 
 #: mgradm/cmd/upgrade/utils.go:49
-#, fuzzy, javascript-format
-#| msgid "failed to parse %s"
+#, javascript-format
 msgid "failed to write %s"
-msgstr "%s の解析に失敗しました"
+msgstr "%s の書き込みに失敗しました"
 
 #: mgradm/cmd/upgrade/utils.go:52
 msgid "Legacy dual-stack IPv6 port bindings have been removed from uyuni-server.service. Please reboot the host and then run the upgrade command again"
-msgstr ""
+msgstr "レガシのデュアルスタックIPv6ポートバインディングがuyuni-server.serviceから削除されました。ホストを再起動してから、アップグレードコマンドを再度実行してください"
 
 #: mgradm/shared/coco/coco.go:28
 msgid "Not altering the confidential computing service"
