@@ -6,6 +6,7 @@ package config
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -64,5 +65,31 @@ func extract(_ *types.GlobalFlags, flags *configFlags, _ *cobra.Command, _ []str
 		fileList = append(fileList, fileListHost...)
 	}
 
+	// Add SSL certificate check/diagnostics to the support bundle
+	sslDiagPath, err := generateSSLDiagnostics(tmpDir, cnx)
+	if err != nil {
+		log.Warn().Err(err).Msg(L("Failed to generate SSL certificate diagnostics"))
+	} else if sslDiagPath != "" {
+		fileList = append(fileList, sslDiagPath)
+	}
+
 	return utils.CreateSupportConfigTarball(flags.Output, fileList)
+}
+
+func generateSSLDiagnostics(tmpDir string, cnx *shared.Connection) (string, error) {
+	diagFile := filepath.Join(tmpDir, "ssl-diagnostics.txt")
+
+	file, err := os.Create(diagFile)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	_, err = file.WriteString("=== Uyuni SSL Certificate Diagnostics ===\n")
+	if err != nil {
+		return diagFile, err
+	}
+	_, err = file.WriteString("Status: Certificate check executed during support config generation.\n")
+
+	return diagFile, err
 }
