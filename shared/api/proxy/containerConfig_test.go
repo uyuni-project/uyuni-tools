@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -16,9 +16,6 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/api/proxy"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
-
-// global access to the testing object.
-var globalT *testing.T
 
 // ProxyConfigGenerateRequestBodyData is the data structure for the body of the ContainerConfigGenerate API request.
 type ProxyConfigGenerateRequestBodyData struct {
@@ -184,15 +181,15 @@ func TestSuccessfulContainerConfigWhenAllParametersAreProvided(t *testing.T) {
 				return nil, err
 			}
 
-			testutils.AssertEquals(globalT, "ProxyName doesn't match", expectedProxyName, data.ProxyName)
-			testutils.AssertEquals(globalT, "ProxyPort doesn't match", expectedProxyPort, data.ProxyPort)
-			testutils.AssertEquals(globalT, "Server doesn't match", expectedServer, data.Server)
-			testutils.AssertEquals(globalT, "MaxCache doesn't match", expectedMaxCache, data.MaxCache)
-			testutils.AssertEquals(globalT, "Email doesn't match", expectedEmail, data.Email)
-			testutils.AssertEquals(globalT, "RootCA doesn't match", expectedRootCA, data.RootCA)
-			testutils.AssertEquals(globalT, "ProxyCrt doesn't match", expectedProxyCrt, data.ProxyCrt)
-			testutils.AssertEquals(globalT, "ProxyKey doesn't match", expectedProxyKey, data.ProxyKey)
-			testutils.AssertEquals(globalT, "intermediateCas don't match",
+			testutils.AssertEquals(t, "ProxyName doesn't match", expectedProxyName, data.ProxyName)
+			testutils.AssertEquals(t, "ProxyPort doesn't match", expectedProxyPort, data.ProxyPort)
+			testutils.AssertEquals(t, "Server doesn't match", expectedServer, data.Server)
+			testutils.AssertEquals(t, "MaxCache doesn't match", expectedMaxCache, data.MaxCache)
+			testutils.AssertEquals(t, "Email doesn't match", expectedEmail, data.Email)
+			testutils.AssertEquals(t, "RootCA doesn't match", expectedRootCA, data.RootCA)
+			testutils.AssertEquals(t, "ProxyCrt doesn't match", expectedProxyCrt, data.ProxyCrt)
+			testutils.AssertEquals(t, "ProxyKey doesn't match", expectedProxyKey, data.ProxyKey)
+			testutils.AssertEquals(t, "intermediateCas don't match",
 				fmt.Sprintf("%v", expectedIntermediateCAs),
 				fmt.Sprintf("%v", data.IntermediateCAs))
 
@@ -281,24 +278,24 @@ func TestSuccessfulContainerConfigGenerateWhenAllParametersAreProvided(t *testin
 				return nil, err
 			}
 
-			testutils.AssertEquals(globalT, "ProxyName doesn't match", expectedProxyName, data.ProxyName)
-			testutils.AssertEquals(globalT, "ProxyPort doesn't match", expectedProxyPort, data.ProxyPort)
-			testutils.AssertEquals(globalT, "Server doesn't match", expectedServer, data.Server)
-			testutils.AssertEquals(globalT, "MaxCache doesn't match", expectedMaxCache, data.MaxCache)
-			testutils.AssertEquals(globalT, "Email doesn't match", expectedEmail, data.Email)
+			testutils.AssertEquals(t, "ProxyName doesn't match", expectedProxyName, data.ProxyName)
+			testutils.AssertEquals(t, "ProxyPort doesn't match", expectedProxyPort, data.ProxyPort)
+			testutils.AssertEquals(t, "Server doesn't match", expectedServer, data.Server)
+			testutils.AssertEquals(t, "MaxCache doesn't match", expectedMaxCache, data.MaxCache)
+			testutils.AssertEquals(t, "Email doesn't match", expectedEmail, data.Email)
 
-			testutils.AssertEquals(globalT, "CaCertificate doesn't match", expectedCaCrt, data.CaCrt)
-			testutils.AssertEquals(globalT, "CaKey doesn't match", expectedCaKey, data.CaKey)
-			testutils.AssertEquals(globalT, "CaPassword doesn't match", expectedCaPassword, data.CaPassword)
+			testutils.AssertEquals(t, "CaCertificate doesn't match", expectedCaCrt, data.CaCrt)
+			testutils.AssertEquals(t, "CaKey doesn't match", expectedCaKey, data.CaKey)
+			testutils.AssertEquals(t, "CaPassword doesn't match", expectedCaPassword, data.CaPassword)
 			testutils.AssertEquals(
-				globalT, "Cnames don't match", fmt.Sprintf("%v", expectedCnames), fmt.Sprintf("%v", data.Cnames),
+				t, "Cnames don't match", fmt.Sprintf("%v", expectedCnames), fmt.Sprintf("%v", data.Cnames),
 			)
-			testutils.AssertEquals(globalT, "Country doesn't match", expectedCountry, data.Country)
-			testutils.AssertEquals(globalT, "State doesn't match", expectedState, data.State)
-			testutils.AssertEquals(globalT, "City doesn't match", expectedCity, data.City)
-			testutils.AssertEquals(globalT, "Org doesn't match", expectedOrg, data.Org)
-			testutils.AssertEquals(globalT, "OrgUnit doesn't match", expectedOrgUnit, data.OrgUnit)
-			testutils.AssertEquals(globalT, "SSLEmail doesn't match", expectedSSLEmail, data.SSLEmail)
+			testutils.AssertEquals(t, "Country doesn't match", expectedCountry, data.Country)
+			testutils.AssertEquals(t, "State doesn't match", expectedState, data.State)
+			testutils.AssertEquals(t, "City doesn't match", expectedCity, data.City)
+			testutils.AssertEquals(t, "Org doesn't match", expectedOrg, data.Org)
+			testutils.AssertEquals(t, "OrgUnit doesn't match", expectedOrgUnit, data.OrgUnit)
+			testutils.AssertEquals(t, "SSLEmail doesn't match", expectedSSLEmail, data.SSLEmail)
 
 			// mock response
 			return testutils.GetResponse(200, `{"success": true, "result": [1, 2, 3, 4, 5]}`)

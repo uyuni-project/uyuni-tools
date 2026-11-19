@@ -37,6 +37,11 @@ func NewContainerInspector() templates.InspectTemplateData {
 				`sed -n '/^db_host/{s/^db_host[[:space:]]*=[[:space:]]*\(.*\)/\1/;p}' /etc/rhn/rhn.conf || true`),
 			types.NewInspectData("report_db_host",
 				`sed -n '/^report_db_host/{s/^report_db_host[[:space:]]*=[[:space:]]*\(.*\)/\1/;p}' /etc/rhn/rhn.conf || true`),
+			types.NewInspectData("report_db_user",
+				`sed -n '/^report_db_user/{s/^report_db_user[[:space:]]*=[[:space:]]*\(.*\)/\1/;p}' /etc/rhn/rhn.conf || true`),
+			types.NewInspectData("report_db_password",
+				`sed -n '/^report_db_password/{s/^report_db_password[[:space:]]*=[[:space:]]*\(.*\)/\1/;p}' `+
+					`/etc/rhn/rhn.conf || true`),
 		},
 	}
 }

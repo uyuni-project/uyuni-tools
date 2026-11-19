@@ -113,7 +113,7 @@ func generateDefaultSystemdServices(flags *shared.Flagpole) error {
 	// No need for server environment file and everything should just work.
 
 	return utils.JoinErrors(
-		podman.GenerateUpgradeServerEnvironmentFile(false),
+		podman.GenerateUpgradeServerEnvironmentFile(),
 		podman.GenerateSystemdService(systemd, serverImage, adm_utils.InstallationFlags{}, []string{}, ""),
 		pgsql.GenerateCustomConfig(""),
 		pgsql.GeneratePgsqlSystemdService(systemd, dbImage),

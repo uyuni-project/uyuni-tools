@@ -19,7 +19,6 @@ func gpgKeyRemove(client *api.APIClient, fingerprint string) error {
 	response, err := api.PostChecked[float64](
 		client,
 		"admin/gpg/removeGpgKey",
-		"api.admin.gpg.remove_gpg_key",
 		map[string]interface{}{
 			"fingerprint": fingerprint,
 		},

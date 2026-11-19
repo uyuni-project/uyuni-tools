@@ -7,6 +7,8 @@ package api
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"strings"
 
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 )
@@ -27,10 +29,11 @@ func ValidateNamespace(client *APIClient, namespace string) error {
 	return errors.New(L(unsupportedFunctionError))
 }
 
-func (c *APIClient) validateEndpoint(endpoint string) error {
-	if c.AuthCookie == nil || endpoint == "" {
+func (c *APIClient) validateEndpoint(path string) error {
+	if c.AuthCookie == nil || path == "" {
 		return nil
 	}
+	endpoint, _, _ := strings.Cut(path, "?")
 	return ValidateNamespace(c, endpoint)
 }
 
@@ -39,13 +42,13 @@ func (c *APIClient) loadValidNamespaces() error {
 		return nil
 	}
 
-	res, err := c.Get("access/listNamespaces")
+	res, err := c.Get("api/getApiCallList")
 	if err != nil {
 		return err
 	}
 	defer res.Body.Close()
 
-	var response APIResponse[[]NamespaceAccess]
+	var response APIResponse[map[string]map[string]Endpoint]
 	if err = json.NewDecoder(res.Body).Decode(&response); err != nil {
 		return err
 	}
@@ -54,9 +57,9 @@ func (c *APIClient) loadValidNamespaces() error {
 	}
 
 	c.validNamespaces = map[string]struct{}{}
-	for _, namespace := range response.Result {
-		if namespace.Namespace != "" {
-			c.validNamespaces[namespace.Namespace] = struct{}{}
+	for namespace, endpoints := range response.Result {
+		for _, endpoint := range endpoints {
+			c.validNamespaces[fmt.Sprintf("%s/%s", strings.ReplaceAll(namespace, ".", "/"), endpoint.Name)] = struct{}{}
 		}
 	}
 	return nil
