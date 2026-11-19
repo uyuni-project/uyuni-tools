@@ -97,7 +97,7 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 // Provided connectionDetails must have Server specified with FQDN to the
 // target host.
 //
-// Optionaly connectionDetails can have user name and password set and Init
+// Optionally connectionDetails can have user name and password set and Init
 // will try to login to the host.
 // caCert can be set to use custom CA certificate to validate target host.
 func Init(conn *ConnectionDetails) (*APIClient, error) {
@@ -211,7 +211,7 @@ func (c *APIClient) sessionValidity() error {
 	return err
 }
 
-// Logout from the server and remove localy stored session key.
+// Logout from the server and remove locally stored session key.
 func (c *APIClient) Logout() error {
 	if _, err := c.Post("auth/logout", nil); err != nil {
 		return utils.Errorf(err, L("failed to logout from the server"))
@@ -255,8 +255,8 @@ func (c *APIClient) Post(path string, data map[string]interface{}) (*http.Respon
 }
 
 // PostChecked validates the API endpoint before issuing a POST request.
-func (c *APIClient) PostChecked(path string, endpoint string, data map[string]interface{}) (*http.Response, error) {
-	if err := c.validateEndpoint(endpoint); err != nil {
+func (c *APIClient) PostChecked(path string, data map[string]interface{}) (*http.Response, error) {
+	if err := c.validateEndpoint(path); err != nil {
 		return nil, err
 	}
 	return c.Post(path, data)
@@ -264,9 +264,9 @@ func (c *APIClient) PostChecked(path string, endpoint string, data map[string]in
 
 // PostChecked issues a validated POST request to the API target using the client and decodes the response.
 func PostChecked[T interface{}](
-	client *APIClient, path string, namespace string, data map[string]interface{},
+	client *APIClient, path string, data map[string]interface{},
 ) (*APIResponse[T], error) {
-	res, err := client.PostChecked(path, namespace, data)
+	res, err := client.PostChecked(path, data)
 	if err != nil {
 		return nil, err
 	}
@@ -337,16 +337,16 @@ func Get[T interface{}](client *APIClient, path string) (*APIResponse[T], error)
 }
 
 // GetChecked validates the API namespace before issuing a GET request.
-func (c *APIClient) GetChecked(path string, namespace string) (*http.Response, error) {
-	if err := c.validateEndpoint(namespace); err != nil {
+func (c *APIClient) GetChecked(path string) (*http.Response, error) {
+	if err := c.validateEndpoint(path); err != nil {
 		return nil, err
 	}
 	return c.Get(path)
 }
 
 // GetChecked issues a validated GET request to the API using the client and decodes the response.
-func GetChecked[T interface{}](client *APIClient, path string, endpoint string) (*APIResponse[T], error) {
-	res, err := client.GetChecked(path, endpoint)
+func GetChecked[T interface{}](client *APIClient, path string) (*APIResponse[T], error) {
+	res, err := client.GetChecked(path)
 	if err != nil {
 		return nil, err
 	}

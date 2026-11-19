@@ -101,7 +101,7 @@ func TestGenerateSystemdService(t *testing.T) {
 		case "httpd":
 			testutils.AssertEquals(t, "Wrong httpd image", "fake/httpd:latest", image)
 			testutils.AssertStringContains(t, "Missing httpd tuning configuration", config,
-				"Environment=HTTPD_EXTRA_CONF=-v/my/apache.conf:/etc/apache2/conf.d/apache_tuning.conf:ro",
+				"Environment=HTTPD_EXTRA_CONF=-v/my/apache.conf:/etc/apache2/conf.d/zz_apache_tuning.conf:ro",
 			)
 			httpTemplate, ok := template.(templates.HttpdTemplateData)
 			testutils.AssertTrue(t, "httpd template of unexpected type", ok)

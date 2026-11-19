@@ -90,7 +90,7 @@ func generateTFTPSystemdService(systemd podman.Systemd, image string, fqdn strin
 		ServerFQDN: fqdn,
 	}
 	if err := utils.WriteTemplateToFile(
-		tftpData, podman.GetServicePath(podman.TFTPService), 0555, true,
+		tftpData, podman.GetServicePath(podman.TFTPService), 0444, true,
 	); err != nil {
 		return utils.Errorf(err, L("failed to generate systemd service unit file"))
 	}

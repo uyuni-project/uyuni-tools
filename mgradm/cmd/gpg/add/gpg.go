@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -39,6 +39,7 @@ func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[gpgAddFlags]) 
 			var flags gpgAddFlags
 			return utils.CommandHelper(globalFlags, cmd, args, &flags, nil, run)
 		},
+		Deprecated: "please use `mgrctl gpg upload` instead",
 	}
 
 	gpgAddKeyCmd.Flags().BoolP("force", "f", false, L("Import without asking confirmation"))
@@ -103,7 +104,7 @@ func gpgAddKeys(_ *types.GlobalFlags, flags *gpgAddFlags, _ *cobra.Command, args
 			continue
 		}
 		if !flags.Force {
-			ret, err := utils.YesNo(L("Do you really want to trust this key"))
+			ret, err := utils.YesNo(L("Do you really want to trust this key?"))
 			if err != nil {
 				return err
 			}

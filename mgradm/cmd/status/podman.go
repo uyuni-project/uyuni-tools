@@ -8,9 +8,12 @@ import (
 	"fmt"
 
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	admPodman "github.com/uyuni-project/uyuni-tools/mgradm/shared/podman"
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	"github.com/uyuni-project/uyuni-tools/shared"
+	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -18,12 +21,22 @@ import (
 
 var systemd podman.Systemd = podman.NewSystemd()
 
+func logServerServicesState(systemd podman.Systemd) {
+	if admPodman.ServerServicesEnabled(systemd) {
+		log.Info().Msg(L("Server services are enabled"))
+	} else {
+		log.Info().Msg(L("Server services are disabled"))
+	}
+}
+
 func podmanStatus(
 	_ *types.GlobalFlags,
 	_ *statusFlags,
 	_ *cobra.Command,
 	_ []string,
 ) error {
+	logServerServicesState(systemd)
+
 	if systemd.HasService(podman.DBService) {
 		_ = utils.RunCmdStdMapping(zerolog.DebugLevel, "systemctl", "status", "--no-pager", podman.DBService)
 	}

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 09:55+0200\n"
-"PO-Revision-Date: 2026-05-10 22:04+0000\n"
+"POT-Creation-Date: 2026-11-02 14:00+0000\n"
+"PO-Revision-Date: 2026-09-18 13:13+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/ca/>\n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: shared/api/api.go:29
 msgid "FQDN of the server to connect to"
@@ -137,11 +137,11 @@ msgstr "no s'ha pogut crear el primer usuari i organització"
 msgid "failed to connect to the server"
 msgstr "no s'ha pogut connectar al servidor"
 
-#: shared/api/org/getDetails.go:30
+#: shared/api/org/getDetails.go:28
 msgid "failed to get organization details"
 msgstr "no s'han pogut obtenir els detalls de l'organització"
 
-#: shared/api/proxy/containerConfig.go:34
+#: shared/api/proxy/containerConfig.go:33
 msgid "failed to create proxy configuration file"
 msgstr "ha fallat en crear el fitxer de configuració del servidor intermediari"
 
@@ -218,7 +218,7 @@ msgstr "Comprovació de salut no executada"
 
 #: shared/connection.go:335
 msgid "not healthy or running"
-msgstr ""
+msgstr "no està bé o no s'executa"
 
 #: shared/connection.go:369
 msgid "container didn't start within 10s."
@@ -477,8 +477,8 @@ msgstr "no s'ha pogut trobar cap imatge en execució per al contenidor %s"
 
 #: shared/podman/images.go:371 shared/podman/images.go:392
 #: shared/podman/images.go:412 shared/podman/network.go:108
-#: shared/podman/secret.go:158 shared/podman/systemd.go:273
-#: shared/podman/systemd.go:352 shared/podman/systemd.go:353
+#: shared/podman/secret.go:158 shared/podman/systemd.go:303
+#: shared/podman/systemd.go:382 shared/podman/systemd.go:383
 #: shared/podman/utils.go:204 shared/podman/utils.go:237
 #: shared/podman/utils.go:266
 #, javascript-format
@@ -578,7 +578,7 @@ msgstr "S'ha suprimit la xarxa"
 
 #: shared/podman/secret.go:68
 msgid "Secrets %[1]s and %[2]s, already exists"
-msgstr "Els secrets %[1]s i %[2]s ja existeixen."
+msgstr "Secrets %[1]s i %[2]s, ja existeix"
 
 #: shared/podman/secret.go:86 shared/podman/secret.go:98
 #: shared/podman/secret.go:102
@@ -663,133 +663,143 @@ msgstr "no s'ha pogut crear el fitxer %s"
 msgid "failed to run journalctl -u %s"
 msgstr "no s'ha pogut executar journalctl -u %s"
 
-#: shared/podman/systemd.go:116
+#: shared/podman/systemd.go:122
 #, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr "no s'ha pogut inhabilitar el servei systemd %s"
 
-#: shared/podman/systemd.go:126
+#: shared/podman/systemd.go:132
 msgid "failed to reset-failed systemd"
 msgstr "no s'ha pogut restablir el «systemd» fallit"
 
-#: shared/podman/systemd.go:130
+#: shared/podman/systemd.go:136
 msgid "failed to reload systemd daemon"
 msgstr "no s'ha pogut tornar a carregar el dimoni del systemd"
 
-#: shared/podman/systemd.go:147
+#: shared/podman/systemd.go:153
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "no s'ha pogut reiniciar systemd %s.service"
 
-#: shared/podman/systemd.go:155
+#: shared/podman/systemd.go:161
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "no s'ha pogut iniciar systemd %s.service"
 
-#: shared/podman/systemd.go:163
+#: shared/podman/systemd.go:169
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "no s'ha pogut aturar systemd %s.service"
 
-#: shared/podman/systemd.go:175
+#: shared/podman/systemd.go:181
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "no s'ha pogut habilitar el servei «systemd» de %s"
 
-#: shared/podman/systemd.go:187
+#: shared/podman/systemd.go:193
+#, javascript-format
+msgid "failed to enable %s systemd unit"
+msgstr "no s'ha pogut habilitar la unitat de systemd %s"
+
+#: shared/podman/systemd.go:205
+#, javascript-format
+msgid "failed to disable %s systemd unit"
+msgstr "no s'ha pogut desactivar la unitat de systemd %s"
+
+#: shared/podman/systemd.go:217
 msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "Ha fallat obtenir la propietat de %[1]s des del servei %[2]s"
 
-#: shared/podman/systemd.go:199
+#: shared/podman/systemd.go:229
 msgid "Failed to get the definition from %[2]s service"
 msgstr "Ha fallat obtenir la definició del servei %[2]s"
 
-#: shared/podman/systemd.go:270
+#: shared/podman/systemd.go:300
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "El Systemd no té %s.unitat de servei"
 
-#: shared/podman/systemd.go:275
+#: shared/podman/systemd.go:305
 #, javascript-format
 msgid "Disable %s service"
 msgstr "Desactiva el servei %s"
 
-#: shared/podman/systemd.go:290 shared/podman/systemd.go:308
+#: shared/podman/systemd.go:320 shared/podman/systemd.go:338
 #, javascript-format
 msgid "Would remove %s"
 msgstr "Eliminaria %s"
 
-#: shared/podman/systemd.go:293 shared/podman/systemd.go:310
+#: shared/podman/systemd.go:323 shared/podman/systemd.go:340
 #, javascript-format
 msgid "Remove %s"
 msgstr "Elimina %s"
 
-#: shared/podman/systemd.go:295
+#: shared/podman/systemd.go:325
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "No s'ha pogut eliminar el fitxer %s.service"
 
-#: shared/podman/systemd.go:312
+#: shared/podman/systemd.go:342
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "No s'ha pogut eliminar el fitxer %s"
 
-#: shared/podman/systemd.go:319
+#: shared/podman/systemd.go:349
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "Eliminaria %s si està buit"
 
-#: shared/podman/systemd.go:326
+#: shared/podman/systemd.go:356
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "La carpeta %s conté el fitxer creat per l'usuari. Si us plau, elimineu-los quan s'hagi completat la desinstal·lació."
 
-#: shared/podman/systemd.go:338
+#: shared/podman/systemd.go:368
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "S'escalaria %s a 0 rèpliques"
 
-#: shared/podman/systemd.go:341
+#: shared/podman/systemd.go:371
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "No s'ha pogut desactivar el servei %s"
 
-#: shared/podman/systemd.go:430
+#: shared/podman/systemd.go:470
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "El servei %[1]s ja té %[2]d rèpliques."
 
-#: shared/podman/systemd.go:433
+#: shared/podman/systemd.go:473
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "Escala %[1]s de %[2]d a %[3]d rèpliques."
 
-#: shared/podman/systemd.go:437
+#: shared/podman/systemd.go:477
 msgid "cannot enable service"
 msgstr "no es pot activar el servei"
 
-#: shared/podman/systemd.go:443
+#: shared/podman/systemd.go:483
 msgid "cannot disable service"
 msgstr "no es pot desactivar el servei"
 
-#: shared/podman/systemd.go:453
+#: shared/podman/systemd.go:493
 msgid "failed to show %[1]s property of %[2] systemd service"
 msgstr "No s'ha pogut mostrar la propietat %[1]s del servei systemd %[2]"
 
-#: shared/podman/systemd.go:468
+#: shared/podman/systemd.go:508
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "no s'ha pogut crear la carpeta %s"
 
-#: shared/podman/systemd.go:478
+#: shared/podman/systemd.go:518
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "no es pot escriure el fitxer %s"
 
-#: shared/podman/systemd.go:522
+#: shared/podman/systemd.go:562
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "no s'ha pogut escriure el fitxer %s"
 
-#: shared/podman/systemd.go:527
+#: shared/podman/systemd.go:567
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "no s'ha pogut eliminar l'antic fitxer de configuració del servei systemd %s"
@@ -915,7 +925,7 @@ msgstr "Banderes de certificat SSL"
 msgid "Intermediate CA certificate path"
 msgstr "Camí intermedi del certificat de CA"
 
-#: shared/ssl/flags.go:39
+#: shared/ssl/flags.go:39 shared/ssl/flags.go:53
 msgid "Root CA certificate path"
 msgstr "Camí del certificat CA d'arrel"
 
@@ -927,40 +937,40 @@ msgstr "Camí del certificat del servidor"
 msgid "Server key path"
 msgstr "Camí de la clau del servidor"
 
-#: shared/ssl/flags.go:43 shared/ssl/flags.go:59
+#: shared/ssl/flags.go:43 shared/ssl/flags.go:57 shared/ssl/flags.go:71
 msgid "3rd Party SSL Certificate Flags"
 msgstr "Banderes del certificat SSL de tercers"
 
-#: shared/ssl/flags.go:53
-msgid "Intermediate CA certificate path for the database if different from the server one"
-msgstr "Camí del certificat CA intermedi per a la base de dades si és diferent de la del servidor"
-
-#: shared/ssl/flags.go:55
+#: shared/ssl/flags.go:55 shared/ssl/flags.go:67
 msgid "Root CA certificate path for the database if different from the server one"
 msgstr "Camí del certificat CA d'arrel per a la base de dades si és diferent de la del servidor"
 
-#: shared/ssl/flags.go:56
+#: shared/ssl/flags.go:65
+msgid "Intermediate CA certificate path for the database if different from the server one"
+msgstr "Camí del certificat CA intermedi per a la base de dades si és diferent de la del servidor"
+
+#: shared/ssl/flags.go:68
 msgid "Database certificate path"
 msgstr "Camí del certificat de la base de dades"
 
-#: shared/ssl/flags.go:57
+#: shared/ssl/flags.go:69
 msgid "Database key path"
 msgstr "Camí de la clau de la base de dades"
 
-#: shared/ssl/ssl.go:69
+#: shared/ssl/ssl.go:71
 msgid "Failed to find a non-CA certificate"
 msgstr "No s'ha pogut trobar un certificat que no sigui de l'AC"
 
-#: shared/ssl/ssl.go:110
+#: shared/ssl/ssl.go:112
 msgid "expected to find a certificate, got none"
 msgstr "s'esperava trobar un certificat, no s'ha obtingut"
 
-#: shared/ssl/ssl.go:116
+#: shared/ssl/ssl.go:118
 #, javascript-format
 msgid "Failed to read certificate file %s"
 msgstr "No s'ha pogut llegir el fitxer de certificat %s"
 
-#: shared/ssl/ssl.go:155
+#: shared/ssl/ssl.go:157
 #, javascript-format
 msgid ""
 "Failed to extract data from certificate:\n"
@@ -969,26 +979,26 @@ msgstr ""
 "No s'han pogut extreure les dades del certificat:\n"
 "%s"
 
-#: shared/ssl/ssl.go:176
+#: shared/ssl/ssl.go:178
 #, javascript-format
 msgid "Failed to parse start date: %s\n"
 msgstr "No s'ha pogut analitzar la data d'inici: %s\n"
 
-#: shared/ssl/ssl.go:182
+#: shared/ssl/ssl.go:184
 #, javascript-format
 msgid "Failed to parse end date: %s\n"
 msgstr "No s'ha pogut analitzar la data de finalització: %s\n"
 
-#: shared/ssl/ssl.go:214
+#: shared/ssl/ssl.go:216
 #, javascript-format
 msgid "Basic constraints for CA should be marked as `%s`, could cause issues otherwise!"
-msgstr ""
+msgstr "Les restriccions bàsiques per a la CA s'han de marcar com a %s; en cas contrari, podrien causar problemes!"
 
-#: shared/ssl/ssl.go:236
+#: shared/ssl/ssl.go:238
 msgid "no CA certificate found in the files"
 msgstr "no s'ha trobat cap certificat de CA als fitxers"
 
-#: shared/ssl/ssl.go:245 shared/ssl/ssl.go:258
+#: shared/ssl/ssl.go:247 shared/ssl/ssl.go:260
 msgid ""
 "please check the CA chain, including intermediate CA certificates provided.\n"
 "The chain is missing the CA with subject %[1]s (hash: %[2]s)"
@@ -996,52 +1006,52 @@ msgstr ""
 "Si us plau, comproveu la cadena de CA, inclosos els certificats de CA intermedis proporcionats.\n"
 "A la cadena li falta el CA amb l'assumpte %[1]s (hash: %[2]s)"
 
-#: shared/ssl/ssl.go:288
+#: shared/ssl/ssl.go:290
 msgid "server certificate is required"
 msgstr "es requereix el certificat del servidor"
 
-#: shared/ssl/ssl.go:291 shared/ssl/ssl.go:356
+#: shared/ssl/ssl.go:293 shared/ssl/ssl.go:358
 msgid "server key is required"
 msgstr "es requereix la clau del servidor"
 
-#: shared/ssl/ssl.go:306
+#: shared/ssl/ssl.go:308
 #, javascript-format
 msgid "%s file is not accessible"
 msgstr "El fitxer %s no és accessible"
 
-#: shared/ssl/ssl.go:315
+#: shared/ssl/ssl.go:317
 msgid "Source server SSL CA private key password"
 msgstr "Contrasenya de la clau privada de la CA del servidor d'origen"
 
-#: shared/ssl/ssl.go:321
+#: shared/ssl/ssl.go:323
 msgid "Failed to open openssl rsa process input stream"
 msgstr "No s'ha pogut obrir el flux d'entrada del procés opensl rsa"
 
-#: shared/ssl/ssl.go:324
+#: shared/ssl/ssl.go:326
 msgid "Failed to write openssl key content to input stream"
 msgstr "No s'ha pogut escriure el contingut de la clau opensl al flux d'entrada"
 
-#: shared/ssl/ssl.go:330
+#: shared/ssl/ssl.go:332
 msgid "Failed to convert CA private key to RSA"
 msgstr "No s'ha pogut convertir la clau privada CA a RSA"
 
-#: shared/ssl/ssl.go:340
+#: shared/ssl/ssl.go:342
 msgid "Failed to open openssl x509 process input stream"
 msgstr "No s'ha pogut obrir el flux d'entrada del procés openssl x509"
 
-#: shared/ssl/ssl.go:343
+#: shared/ssl/ssl.go:345
 msgid "Failed to write SSL certificate to input stream"
 msgstr "No s'ha pogut escriure el certificat SSL al flux d'entrada"
 
-#: shared/ssl/ssl.go:347
+#: shared/ssl/ssl.go:349
 msgid "failed to strip text part from CA certificate"
 msgstr "no s'ha pogut suprimir la part de text del certificat de la CA"
 
-#: shared/ssl/ssl.go:362
+#: shared/ssl/ssl.go:364
 msgid "Invalid SSL key, it is probably encrypted"
 msgstr "Clau SSL no vàlida, probablement està encriptada"
 
-#: shared/ssl/ssl.go:381
+#: shared/ssl/ssl.go:383
 #, javascript-format
 msgid "failed to validate hostname %s"
 msgstr "no s'ha pogut validar el nom d'amfitrió %s"
@@ -1420,130 +1430,134 @@ msgstr "El fitxer %s ja està present, no se sobreescriu"
 msgid "failed to open %s for writing"
 msgstr "no s'ha pogut obrir %s per a escriptura"
 
-#: shared/utils/utils.go:59
-#, javascript-format
-msgid "Has to be more than %d character long"
-msgid_plural "Has to be more than %d characters long"
-msgstr[0] "Ha de tenir més d'%d caràcter"
-msgstr[1] "Ha de tenir més de %d caràcters"
+#: shared/utils/utils.go:60
+msgid "Has to be between %[1]d and %[2]d characters long"
+msgstr "Ha de tenir una longitud d'entre %[1]d i %[2]d caràcters"
 
-#: shared/utils/utils.go:63
-#, javascript-format
-msgid "Has to be less than %d character long"
-msgid_plural "Has to be less than %d characters long"
-msgstr[0] "Ha de tenir menys d'%d caràcter"
-msgstr[1] "Ha de tenir menys de %d caràcters"
-
-#: shared/utils/utils.go:74
+#: shared/utils/utils.go:71
 msgid "Failed to read password"
 msgstr "No s'ha pogut llegir la contrasenya"
 
-#: shared/utils/utils.go:88
+#: shared/utils/utils.go:85
 msgid "Cannot contain spaces or tabs"
 msgstr "No es poden contenir espais o pestanyes"
 
-#: shared/utils/utils.go:105 shared/utils/utils.go:128
-#: shared/utils/utils.go:141
+#: shared/utils/utils.go:102 shared/utils/utils.go:125
+#: shared/utils/utils.go:138
 msgid "not an interactive device, not asking for missing value"
 msgstr "no és un dispositiu interactiu, no es demana el valor que manca"
 
-#: shared/utils/utils.go:114
+#: shared/utils/utils.go:111
 msgid "Confirm the password"
 msgstr "Confirmeu la contrasenya"
 
-#: shared/utils/utils.go:116
+#: shared/utils/utils.go:113
 msgid "Two different passwords have been provided"
 msgstr "S'han proporcionat dues contrasenyes diferents"
 
-#: shared/utils/utils.go:150
+#: shared/utils/utils.go:147
 msgid "failed to read input"
 msgstr "no s'ha pogut llegir l'entrada"
 
-#: shared/utils/utils.go:158
+#: shared/utils/utils.go:155
 msgid "A value is required"
 msgstr "Es requereix un valor"
 
-#: shared/utils/utils.go:226 shared/utils/utils.go:248
+#. Translators: This is appended to the end of a question. Choices are short for `yes` and `no`.
+#: shared/utils/utils.go:165
+#, javascript-format
+msgid "%s [y/N]"
+msgstr "%s [s/N]"
+
+#: shared/utils/utils.go:178
+msgid "yes"
+msgstr "sí"
+
+#: shared/utils/utils.go:181
+msgid "no"
+msgstr "no"
+
+#: shared/utils/utils.go:228 shared/utils/utils.go:250
 #, javascript-format
 msgid "invalid image name: %s"
 msgstr "el nom de la imatge no és vàlid: %s"
 
-#: shared/utils/utils.go:230
+#: shared/utils/utils.go:232
 #, javascript-format
 msgid "tag missing on %s"
 msgstr "falta l'etiqueta a %s"
 
-#: shared/utils/utils.go:235 shared/utils/utils.go:239
+#: shared/utils/utils.go:237 shared/utils/utils.go:241
 #, javascript-format
 msgid "Computed image name is %s"
 msgstr "El nom de la imatge calculada és %s"
 
-#: shared/utils/utils.go:266
+#: shared/utils/utils.go:268
 msgid "image path '%[1]s' does not start with registry path '%[2]s'"
 msgstr "El camí de la imatge %[1]s no comença amb la ruta del registre %[2]s"
 
-#: shared/utils/utils.go:276
+#: shared/utils/utils.go:278
 #, javascript-format
 msgid "Failed to run %s"
 msgstr "No s'ha pogut executar %s"
 
-#: shared/utils/utils.go:285
+#: shared/utils/utils.go:287
 msgid "Failed to read random data"
 msgstr "No s'han pogut llegir les dades aleatòries"
 
-#: shared/utils/utils.go:306
+#: shared/utils/utils.go:308
 #, javascript-format
 msgid "error downloading from %s"
 msgstr "s'ha produït un error en baixar de %s"
 
-#: shared/utils/utils.go:312
+#: shared/utils/utils.go:314
 #, javascript-format
 msgid "bad status: %s"
 msgstr "estat incorrecte: %s"
 
-#: shared/utils/utils.go:425
+#: shared/utils/utils.go:427
 msgid "failed to compute server FQDN"
 msgstr "no s'ha pogut calcular el servidor FQDN"
 
-#: shared/utils/utils.go:439
+#: shared/utils/utils.go:441
 #, javascript-format
 msgid "%s is not a valid FQDN"
 msgstr "%s no és un FQDN vàlid"
 
-#: shared/utils/utils.go:443
+#: shared/utils/utils.go:445
 #, javascript-format
 msgid "cannot resolve %s"
 msgstr "no es pot resoldre %s"
 
-#: shared/utils/utils.go:474
+#: shared/utils/utils.go:476
 #, javascript-format
 msgid "error creating file %s"
 msgstr "s'ha produït un error en crear el fitxer %s"
 
-#: shared/utils/utils.go:479
+#: shared/utils/utils.go:481
 #, javascript-format
 msgid "error writing file %s"
 msgstr "s'ha produït un error en escriure el fitxer %s"
 
-#: shared/utils/utils.go:491 shared/utils/utils.go:506
+#: shared/utils/utils.go:493 shared/utils/utils.go:508
 #, javascript-format
 msgid "Failed to calculate checksum of the file %s"
 msgstr "No s'ha pogut calcular la suma de verificació del fitxer %s"
 
-#: shared/utils/utils.go:496
+#: shared/utils/utils.go:498
 msgid "Failed to write checksum of the file %[1]s to the %[2]s"
 msgstr "No s'ha pogut escriure la suma de verificació del fitxer %[1]s a %[2]s"
 
-#: shared/utils/utils.go:513
+#: shared/utils/utils.go:515
 msgid "Failed to read checksum of the file %[1]s"
 msgstr "No s'ha pogut llegir la suma de verificació del fitxer %[1]s"
 
-#: shared/utils/utils.go:517
+#: shared/utils/utils.go:519
 #, javascript-format
 msgid "Checksum of %s does not match"
 msgstr "La suma de verificació de %s no coincideix"
 
-#: shared/utils/utils.go:525
+#: shared/utils/utils.go:527
 msgid "nBytes must be > 0"
 msgstr "nBytes ha de ser > 0"
 
@@ -1557,11 +1571,11 @@ msgstr "Assistent de migració"
 
 #: shared/utils/uyuniservices.go:30
 msgid "Confidential computing attestation"
-msgstr "Certificació d'informàtica confidencial"
+msgstr "Acreditació de computació confidencial"
 
 #: shared/utils/uyuniservices.go:36
 msgid "Hub XML-RPC API"
-msgstr "API del concentrador XML-RPC"
+msgstr "API XML-RPC del Hub"
 
 #: shared/utils/uyuniservices.go:42
 msgid "Saline"
@@ -1570,6 +1584,12 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "Base de dades"
+
+#, javascript-format
+#~ msgid "Has to be less than %d character long"
+#~ msgid_plural "Has to be less than %d characters long"
+#~ msgstr[0] "Ha de tenir menys d'%d caràcter"
+#~ msgstr[1] "Ha de tenir menys de %d caràcters"
 
 #~ msgid "failed to find container supportconfig tarball from command output"
 #~ msgstr "no s'ha pogut trobar el contenidor supportconfig tarball des de la sortida d'ordres"

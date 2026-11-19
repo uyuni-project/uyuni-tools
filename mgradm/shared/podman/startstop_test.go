@@ -5,10 +5,14 @@
 package podman
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"strings"
 	"testing"
 
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
@@ -19,6 +23,27 @@ var allServices = []string{
 	podman.SalineService + "@",
 	podman.ServerAttestationService + "@",
 	podman.HubXmlrpcService + "@",
+}
+
+func TestStartStopWarnWhenServicesDisabled(t *testing.T) {
+	driver := testutils.FakeSystemdDriver{
+		Installed: []string{podman.ServerService, podman.DBService},
+	}
+	systemd = podman.NewSystemdWithDriver(&driver)
+	var output bytes.Buffer
+	oldLogger := log.Logger
+	log.Logger = zerolog.New(&output)
+	t.Cleanup(func() {
+		log.Logger = oldLogger
+	})
+
+	testutils.AssertNoError(t, "start failed: ", StartServices())
+	testutils.AssertNoError(t, "stop failed: ", StopServices())
+	if count := strings.Count(output.String(),
+		"Server services are disabled and will not start automatically at boot"); count != 2 {
+		t.Errorf("expected start and stop warnings, got %d", count)
+	}
+	testutils.AssertEquals(t, "start or stop changed boot enablement", 0, len(driver.Enabled))
 }
 
 func TestStartServices(t *testing.T) {

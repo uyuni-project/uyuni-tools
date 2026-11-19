@@ -26,9 +26,15 @@ type Systemd interface {
 	// EnableService enables and starts a systemd service.
 	EnableService(name string) error
 
+	// EnableServiceAtBoot enables a systemd unit without starting it.
+	EnableServiceAtBoot(name string) error
+
 	// DisableService disables a service.
 	// name is the name of the service without the '.service' part.
 	DisableService(name string) error
+
+	// DisableServiceAtBoot disables a systemd unit without stopping it.
+	DisableServiceAtBoot(name string) error
 
 	// UninstallService stops and remove a systemd service.
 	// If dryRun is set to true, nothing happens but messages are logged to explain what would be done.

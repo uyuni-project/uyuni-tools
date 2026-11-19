@@ -25,7 +25,7 @@ func Restore(force bool) error {
 	log.Info().Msg(L("Restoring DB backup"))
 
 	if !force {
-		if res, err := utils.YesNo(L("Restoring from backup is a destructive operation. Proceed")); err != nil || !res {
+		if res, err := utils.YesNo(L("Restoring from backup is a destructive operation. Proceed?")); err != nil || !res {
 			log.Info().Msg(L("Aborting"))
 			return nil
 		}
