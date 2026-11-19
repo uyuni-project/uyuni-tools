@@ -7,6 +7,7 @@ package pgsql
 import (
 	"fmt"
 	"path"
+	"time"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/shared/templates"
 	"github.com/uyuni-project/uyuni-tools/shared"
@@ -67,15 +68,17 @@ func SetupPgsql(
 		return utils.Error(err, L("cannot generate systemd service"))
 	}
 
-	if err := systemd.EnableService(podman.DBService); err != nil {
+	startAttempt := time.Now()
+	if err := systemd.EnableServiceAtBoot(podman.DBService); err != nil {
 		return err
 	}
 	if err := systemd.StartService(podman.DBService); err != nil {
 		return err
 	}
 	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
-	if err := cnx.WaitForHealthcheck(); err != nil {
-		return utils.Errorf(err, L("%s fails healtcheck"), podman.DBContainerName)
+	if err := cnx.WaitForHealthcheck(startAttempt); err != nil {
+		podman.ShowServiceLogs(podman.DBService, startAttempt)
+		return utils.Error(err, L("database container failed to start"))
 	}
 
 	return nil
@@ -98,7 +101,8 @@ func Upgrade(
 		return err
 	}
 
-	if err := systemd.EnableService(podman.DBService); err != nil {
+	startAttempt := time.Now()
+	if err := systemd.EnableServiceAtBoot(podman.DBService); err != nil {
 		return err
 	}
 
@@ -107,8 +111,9 @@ func Upgrade(
 	}
 
 	cnx := shared.NewConnection("podman", podman.DBContainerName, "")
-	if err := cnx.WaitForHealthcheck(); err != nil {
-		return utils.Errorf(err, L("%s fails healtcheck"), podman.DBContainerName)
+	if err := cnx.WaitForHealthcheck(startAttempt); err != nil {
+		podman.ShowServiceLogs(podman.DBService, startAttempt)
+		return utils.Error(err, L("database container failed to start"))
 	}
 
 	return nil
