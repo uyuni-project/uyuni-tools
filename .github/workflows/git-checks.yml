@@ -12,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@722adc63f1aa60a57ec37892e133b1d319cae598 #v2.0.0
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
     - name: Block Fixup Commit Merge
       uses: 13rac1/block-fixup-merge-action@bd5504fb9ca0253e109d98eb86b7debc01970cdc #v2.0.0
