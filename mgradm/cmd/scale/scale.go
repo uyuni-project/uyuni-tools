@@ -6,6 +6,7 @@ package scale
 
 import (
 	"github.com/spf13/cobra"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
@@ -13,10 +14,15 @@ import (
 
 type scaleFlags struct {
 	Replicas int
+	Image    types.ImageFlags     `mapstructure:",squash"`
+	SCC      types.SCCCredentials `mapstructure:"scc"`
 }
 
 func addScaleFlags(cmd *cobra.Command) {
 	cmd.Flags().Int("replicas", 0, L("How many replicas of a service should be started."))
+	utils.AddPullPolicyFlag(cmd)
+	utils.AddRegistryFlag(cmd)
+	adm_utils.AddSCCFlag(cmd)
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[scaleFlags]) *cobra.Command {

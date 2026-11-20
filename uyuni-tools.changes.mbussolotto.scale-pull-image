@@ -1,0 +1,2 @@
+- Fix mgradm scale failing to pull images requiring authentication
+  (bsc#1271165)
