@@ -22,18 +22,12 @@ func Upgrade(
 	authFile string,
 	cocoFlags adm_utils.CocoFlags,
 	baseImage types.ImageFlags,
-	db types.DBFlags,
 ) error {
 	if cocoFlags.Image.Name == "" {
 		log.Info().Msg(L("Not altering the confidential computing service"))
 		// Don't touch the coco service in ptf if not already present.
 	} else {
-		if err := podman.CreateCredentialsSecrets(
-			podman.DBUserSecret, db.User,
-			podman.DBPassSecret, db.Password,
-		); err != nil {
-			return err
-		}
+		db := podman.DBFlagsFromEnvironmentFile(podman.GetServerEnvironmentFile())
 
 		if err := writeCocoServiceFiles(
 			systemd, authFile, cocoFlags, baseImage, db,

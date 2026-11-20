@@ -53,7 +53,7 @@ func checkAndCleanIPv6PortBindings() error {
 		"Please reboot the host and then run the upgrade command again"))
 }
 
-func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.Command, _ []string) error {
+func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, _ *cobra.Command, _ []string) error {
 	if err := checkAndCleanIPv6PortBindings(); err != nil {
 		return err
 	}
@@ -69,7 +69,6 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 	}
 	defer cleaner()
 
-	flags.Installation.CheckUpgradeParameters(cmd, "podman")
 	if _, err := exec.LookPath("podman"); err != nil {
 		return errors.New(L("install podman before running this command"))
 	}
@@ -77,9 +76,6 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 
 	return podman.Upgrade(
 		systemd, authFile,
-		flags.Installation.DB,
-		flags.Installation.ReportDB,
-		flags.Installation.SSL,
 		flags.Image,
 		flags.DBUpgradeImage,
 		flags.Coco,
@@ -87,7 +83,5 @@ func upgradePodman(_ *types.GlobalFlags, flags *podmanUpgradeFlags, cmd *cobra.C
 		flags.Saline,
 		flags.Pgsql,
 		flags.TFTPD,
-		flags.Installation.TZ,
-		flags.Installation.Debug.Java,
 	)
 }
