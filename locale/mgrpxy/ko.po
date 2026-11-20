@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-09 10:21+0100\n"
-"PO-Revision-Date: 2026-08-18 08:13+0000\n"
+"PO-Revision-Date: 2026-11-20 08:14+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgrpxy/ko/>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.8.1\n"
+"X-Generator: Weblate 2026.11.2\n"
 
 #: mgrpxy/cmd/cache/clear.go:22 mgrpxy/cmd/cache/clear.go:23
 msgid "Clear the cache"
@@ -413,7 +413,7 @@ msgstr "반환된 이벤트에서 시스템 ID를 찾을 수 없음"
 #: mgrpxy/shared/podman/podman.go:541
 #, javascript-format
 msgid "failed to read %s"
-msgstr "%s 읽기 실패"
+msgstr "%s을(를) 읽을 수 없습니다."
 
 #: mgrpxy/shared/podman/podman.go:545
 #, javascript-format
@@ -428,7 +428,7 @@ msgstr "%s 언마샬링 실패"
 #: mgrpxy/shared/podman/podman.go:556
 #, javascript-format
 msgid "failed to write %s"
-msgstr "%s 쓰기 실패"
+msgstr "%s을(를) 기록하지 못했습니다."
 
 #: mgrpxy/shared/podman/podman.go:564
 #, javascript-format
