@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 14:00+0000\n"
+"POT-Creation-Date: 2026-11-20 13:29+0100\n"
 "PO-Revision-Date: 2026-08-28 16:13+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-shared/lo/>\n"
@@ -155,131 +155,203 @@ msgstr "ສ້າງສະຄຣິບ shell completion"
 msgid "cannot generate %s completion"
 msgstr "ບໍ່ສາມາດສ້າງ %s completion ໄດ້"
 
-#: shared/connection.go:83
+#: shared/connection.go:84
 #, javascript-format
 msgid "backend command not found in PATH: %s"
 msgstr "ບໍ່ພົບຄຳສັ່ງ backend ໃນ PATH: %s"
 
-#: shared/connection.go:99
+#: shared/connection.go:100
 msgid "kubectl not configured to connect to a cluster, ignoring"
 msgstr "kubectl ບໍ່ໄດ້ຖືກຕັ້ງຄ່າໃຫ້ເຊື່ອມຕໍ່ກັບຄລັສເຕີ, ກຳລັງຂ້າມໄປ"
 
-#: shared/connection.go:136
+#: shared/connection.go:137
 msgid "uyuni container is not accessible with one of podman, podman-remote or kubectl"
 msgstr "ບໍ່ສາມາດເຂົ້າເຖິງຄອນເທນເນີ uyuni ດ້ວຍ podman, podman-remote ຫຼື kubectl"
 
-#: shared/connection.go:139
+#: shared/connection.go:140
 #, javascript-format
 msgid "unsupported backend %s"
 msgstr "ບໍ່ຮອງຮັບ backend %s"
 
-#: shared/connection.go:174
+#: shared/connection.go:175
 msgid "coundn't find app name"
 msgstr "ບໍ່ພົບຊື່ແອັບພລິເຄຊັນ"
 
-#: shared/connection.go:184
+#: shared/connection.go:185
 msgid "failed to guest namespace"
 msgstr "ຄາດເດົາ namespace ບໍ່ສຳເລັດ"
 
-#: shared/connection.go:206
+#: shared/connection.go:210
 #, javascript-format
 msgid "container %s is not running on podman"
 msgstr "ຄອນເທນເນີ %s ບໍ່ໄດ້ເຮັດວຽກຢູ່ໃນ podman"
 
-#: shared/connection.go:215
+#: shared/connection.go:219
 #, javascript-format
 msgid "container labeled %s is not running on kubectl"
 msgstr "ຄອນເທນເນີທີ່ມີປ້າຍກຳກັບ %s ບໍ່ໄດ້ເຮັດວຽກຢູ່ໃນ kubectl"
 
-#: shared/connection.go:232
+#: shared/connection.go:236
 #, javascript-format
 msgid "%s command not executed:"
 msgstr "ຄຳສັ່ງ %s ບໍ່ໄດ້ຖືກດຳເນີນການ:"
 
-#: shared/connection.go:252
+#: shared/connection.go:256
 msgid "failed to retrieve namespace "
 msgstr "ດຶງຂໍ້ມູນ namespace ບໍ່ສຳເລັດ "
 
-#: shared/connection.go:284
+#: shared/connection.go:292
 msgid "failed to create temporary file"
 msgstr "ສ້າງໄຟລ໌ຊົ່ວຄາວບໍ່ສຳເລັດ"
 
-#: shared/connection.go:289
+#: shared/connection.go:297
 msgid "failed to write script to temporary file"
 msgstr "ຂຽນສະຄຣິບລົງໄຟລ໌ຊົ່ວຄາວບໍ່ສຳເລັດ"
 
-#: shared/connection.go:297
+#: shared/connection.go:305
 msgid "failed to copy script to container"
 msgstr "ຄັດລອກສະຄຣິບໄປຍັງຄອນເທນເນີບໍ່ສຳເລັດ"
 
-#: shared/connection.go:313
-msgid "Healthcheck not executed"
-msgstr "ບໍ່ໄດ້ດຳເນີນການກວດສອບສະຖານະ (Healthcheck)"
+#: shared/connection.go:365 shared/connection.go:466
+#, fuzzy, javascript-format
+#| msgid "cannot find any running image for container %s"
+msgid "cannot read the startup events of container %s"
+msgstr "ບໍ່ພົບອິເມຈທີ່ກຳລັງເຮັດວຽກສຳລັບຄອນເທນເນີ %s"
 
-#: shared/connection.go:335
-msgid "not healthy or running"
-msgstr "ສະຖານະບໍ່ປົກກະຕິ ຫຼື ບໍ່ໄດ້ເຮັດວຽກຢູ່"
+#: shared/connection.go:369 shared/connection.go:470
+#, javascript-format
+msgid "container %s failed during startup"
+msgstr ""
 
-#: shared/connection.go:369
+#: shared/connection.go:377
+#, fuzzy
+#| msgid "container %s is not running on podman"
+msgid "container %[1]s is not running (state: %[2]s, exit code: %[3]d)"
+msgstr "ຄອນເທນເນີ %s ບໍ່ໄດ້ເຮັດວຽກຢູ່ໃນ podman"
+
+#: shared/connection.go:385
+msgid "container %[1]s did not appear within %[2]s, the service probably failed to start it; check `journalctl -u %[3]s`"
+msgstr ""
+
+#: shared/connection.go:392
+#, fuzzy
+#| msgid "container didn't start within 10s."
+msgid "container %[1]s did not appear within %[2]s"
+msgstr "ຄອນເທນເນີບໍ່ເລີ່ມຕົ້ນພາຍໃນ 10 ວິນາທີ."
+
+#: shared/connection.go:395
+#, fuzzy
+#| msgid "container didn't start within 10s."
+msgid "container %[1]s did not start within %[2]s"
+msgstr "ຄອນເທນເນີບໍ່ເລີ່ມຕົ້ນພາຍໃນ 10 ວິນາທີ."
+
+#: shared/connection.go:416
 msgid "container didn't start within 10s."
 msgstr "ຄອນເທນເນີບໍ່ເລີ່ມຕົ້ນພາຍໃນ 10 ວິນາທີ."
 
-#: shared/connection.go:384
-msgid "container didn't start within 15s or failed. Check the service status"
-msgstr "ຄອນເທນເນີບໍ່ເລີ່ມຕົ້ນພາຍໃນ 15 ວິນາທີ ຫຼື ຜິດພາດ. ກະລຸນາກວດສອບສະຖານະການບໍລິການ"
+#: shared/connection.go:442
+msgid "waiting for a healthcheck is not supported on the Kubernetes backend"
+msgstr ""
 
-#: shared/connection.go:455 shared/connection.go:514
+#: shared/connection.go:482
+msgid "container %[1]s is no longer available (last health: %[2]s, %[3]d consecutive failures, last healthcheck output: %[4]q); it was probably stopped after failing its healthcheck"
+msgstr ""
+
+#: shared/connection.go:487
+#, fuzzy, javascript-format
+#| msgid "container %s is not running on podman"
+msgid "container %s is no longer available"
+msgstr "ຄອນເທນເນີ %s ບໍ່ໄດ້ເຮັດວຽກຢູ່ໃນ podman"
+
+#: shared/connection.go:493
+msgid "container %[1]s is not running (state: %[2]s, exit code: %[3]d, restarts: %[4]d); check `journalctl -u %[5]s`"
+msgstr ""
+
+#: shared/connection.go:502
+msgid "Container %[1]s is healthy after %[2]s"
+msgstr ""
+
+#: shared/connection.go:508
+#, javascript-format
+msgid "container %s has no healthcheck configured; WaitForHealthcheck must only be used with healthchecked containers"
+msgstr ""
+
+#: shared/connection.go:512
+msgid "container %[1]s is unhealthy (%[2]d consecutive failures): %[3]s"
+msgstr ""
+
+#: shared/connection.go:519
+msgid "container %[1]s has an unexpected health state: %[2]s"
+msgstr ""
+
+#: shared/connection.go:523
+msgid "Waiting for %[1]s to become healthy (current health: %[2]s)"
+msgstr ""
+
+#: shared/connection.go:529
+msgid "Still waiting for %[1]s to become healthy after %[2]s (current health: %[3]s)"
+msgstr ""
+
+#: shared/connection.go:531
+msgid ", last healthcheck output: "
+msgstr ""
+
+#: shared/connection.go:538
+msgid "container %[1]s did not become healthy within its healthcheck timeout (last health: %[2]s)"
+msgstr ""
+
+#: shared/connection.go:601 shared/connection.go:660
 #, javascript-format
 msgid "unknown container kind: %s"
 msgstr "ບໍ່ຮູ້ຈັກປະເພດຄອນເທນເນີ: %s"
 
-#: shared/connection.go:507
+#: shared/connection.go:653
 msgid "failed to detect the namespace"
 msgstr "ກວດຫາ namespace ບໍ່ສຳເລັດ"
 
-#: shared/connection.go:525
+#: shared/connection.go:671
 msgid "Copying the SSL CA certificate to the host"
 msgstr "ກຳລັງຄັດລອກໃບຢັ້ງຢືນ SSL CA ໄປຍັງໂຮສຕ໌"
 
-#: shared/connection.go:544
+#: shared/connection.go:690
 msgid "Updating host trusted certificates"
 msgstr "ກຳລັງອັບເດດໃບຢັ້ງຢືນທີ່ເຊື່ອຖືໄດ້ຂອງໂຮສຕ໌"
 
-#: shared/connection.go:555
+#: shared/connection.go:701
 msgid "Unable to update host trusted certificates."
 msgstr "ບໍ່ສາມາດອັບເດດໃບຢັ້ງຢືນທີ່ເຊື່ອຖືໄດ້ຂອງໂຮສຕ໌."
 
-#: shared/connection.go:596 shared/connection.go:617
+#: shared/connection.go:742 shared/connection.go:763
 msgid "failed to determine suitable backend"
 msgstr "ກວດຫາ backend ທີ່ເໝາະສົມບໍ່ສຳເລັດ"
 
-#: shared/connection.go:606
+#: shared/connection.go:752
 msgid "no supported backend found"
 msgstr "ບໍ່ພົບ backend ທີ່ຮອງຮັບ"
 
-#: shared/connection.go:637 shared/utils/support.go:102
+#: shared/connection.go:783 shared/utils/support.go:102
 msgid "failed to generate supportconfig suffix: %w"
 msgstr "ສ້າງນາມສະກຸນ supportconfig ບໍ່ສຳເລັດ: %w"
 
-#: shared/connection.go:649 shared/utils/support.go:116
+#: shared/connection.go:795 shared/utils/support.go:116
 #, javascript-format
 msgid "failed to generate unique supportconfig batch name after %d attempts"
 msgstr "ສ້າງຊື່ຊຸດ supportconfig ທີ່ບໍ່ຊໍ້າກັນບໍ່ສຳເລັດ ຫຼັງຈາກພະຍາຍາມ %d ຄັ້ງ"
 
-#: shared/connection.go:653
+#: shared/connection.go:799
 #, javascript-format
 msgid "Running supportconfig in %s"
 msgstr "ກຳລັງລັນ supportconfig ໃນ %s"
 
-#: shared/connection.go:660 shared/utils/support.go:122
+#: shared/connection.go:806 shared/utils/support.go:122
 msgid "Some parts of supportconfig were not successful"
 msgstr "ບາງສ່ວນຂອງ supportconfig ບໍ່ສຳເລັດ"
 
-#: shared/connection.go:665
+#: shared/connection.go:811
 msgid "cannot copy support config"
 msgstr "ບໍ່ສາມາດຄັດລອກ support config ໄດ້"
 
-#: shared/connection.go:671
+#: shared/connection.go:817
 #, javascript-format
 msgid "failed to remove %s directory in the container"
 msgstr "ລຶບໄດເຣັກທໍຣີ %s ໃນຄອນເທນເນີບໍ່ສຳເລັດ"
@@ -352,6 +424,38 @@ msgstr "ຜົນລັບ replicas ບໍ່ຖືກຕ້ອງ"
 #, javascript-format
 msgid "cannot find node name matching filter %s"
 msgstr "ບໍ່ພົບຊື່ node ທີ່ກົງກັບຕົວຕອງ %s"
+
+#: shared/podman/container.go:157
+#, fuzzy, javascript-format
+#| msgid "cannot inspect data"
+msgid "cannot inspect container %s"
+msgstr "ບໍ່ສາມາດກວດສອບຂໍ້ມູນໄດ້"
+
+#: shared/podman/container.go:162
+#, fuzzy, javascript-format
+#| msgid "Failed to parse start date: %s\n"
+msgid "failed to parse the state of container %s"
+msgstr "ອ່ານວັນທີເລີ່ມຕົ້ນບໍ່ສຳເລັດ: %s\n"
+
+#: shared/podman/container.go:223
+#, fuzzy
+#| msgid "failed to create podman secret %s"
+msgid "failed to parse a podman event"
+msgstr "ສ້າງ podman secret %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/container.go:262
+#, fuzzy, javascript-format
+#| msgid "container didn't start within 10s."
+msgid "container exited during startup with exit code %d"
+msgstr "ຄອນເທນເນີບໍ່ເລີ່ມຕົ້ນພາຍໃນ 10 ວິນາທີ."
+
+#: shared/podman/container.go:267
+msgid "container was removed before it started"
+msgstr ""
+
+#: shared/podman/container.go:281
+msgid "container was started more than once during startup, this indicates a crash or an unexpected restart"
+msgstr ""
 
 #: shared/podman/hostinspector.go:54
 msgid "failed to run inspect script in host system"
@@ -477,17 +581,17 @@ msgstr "ບໍ່ພົບອິເມຈທີ່ກຳລັງເຮັດວ
 
 #: shared/podman/images.go:371 shared/podman/images.go:392
 #: shared/podman/images.go:412 shared/podman/network.go:108
-#: shared/podman/secret.go:158 shared/podman/systemd.go:303
-#: shared/podman/systemd.go:382 shared/podman/systemd.go:383
-#: shared/podman/utils.go:204 shared/podman/utils.go:237
-#: shared/podman/utils.go:266
+#: shared/podman/secret.go:158 shared/podman/systemd.go:305
+#: shared/podman/systemd.go:384 shared/podman/systemd.go:385
+#: shared/podman/utils.go:205 shared/podman/utils.go:238
+#: shared/podman/utils.go:267
 #, javascript-format
 msgid "Would run %s"
 msgstr "ຈະດຳເນີນການ %s"
 
 #: shared/podman/images.go:373 shared/podman/images.go:394
-#: shared/podman/images.go:414 shared/podman/utils.go:206
-#: shared/podman/utils.go:240 shared/podman/utils.go:277
+#: shared/podman/images.go:414 shared/podman/utils.go:207
+#: shared/podman/utils.go:241 shared/podman/utils.go:278
 #, javascript-format
 msgid "Run %s"
 msgstr "ລັນ %s"
@@ -663,143 +767,153 @@ msgstr "ສ້າງໄຟລ໌ %s ບໍ່ສຳເລັດ"
 msgid "failed to run journalctl -u %s"
 msgstr "ລັນ journalctl -u %s ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:122
+#: shared/podman/systemd.go:124
 #, javascript-format
 msgid "failed to disable %s systemd service"
 msgstr "ປິດການໃຊ້ງານ systemd service %s ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:132
+#: shared/podman/systemd.go:134
 msgid "failed to reset-failed systemd"
 msgstr "ລ້າງສະຖານະຜິດພາດຂອງ systemd ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:136
+#: shared/podman/systemd.go:138
 msgid "failed to reload systemd daemon"
 msgstr "ໂຫຼດ systemd daemon ຄືນໃໝ່ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:153
+#: shared/podman/systemd.go:155
 #, javascript-format
 msgid "failed to restart systemd %s.service"
 msgstr "ເລີ່ມຕົ້ນ systemd %s.service ໃໝ່ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:161
+#: shared/podman/systemd.go:163
 #, javascript-format
 msgid "failed to start systemd %s.service"
 msgstr "ເລີ່ມ systemd %s.service ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:169
+#: shared/podman/systemd.go:171
 #, javascript-format
 msgid "failed to stop systemd %s.service"
 msgstr "ຢຸດ systemd %s.service ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:181
+#: shared/podman/systemd.go:183
 #, javascript-format
 msgid "failed to enable %s systemd service"
 msgstr "ເປີດໃຊ້ງານ systemd service %s ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:193
+#: shared/podman/systemd.go:195
 #, javascript-format
 msgid "failed to enable %s systemd unit"
 msgstr ""
 
-#: shared/podman/systemd.go:205
+#: shared/podman/systemd.go:207
 #, javascript-format
 msgid "failed to disable %s systemd unit"
 msgstr ""
 
-#: shared/podman/systemd.go:217
+#: shared/podman/systemd.go:219
 msgid "Failed to get the %[1]s property from %[2]s service"
 msgstr "ດຶງຄຸນສົມບັດ %[1]s ຈາກການບໍລິການ %[2]s ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:229
+#: shared/podman/systemd.go:231
 msgid "Failed to get the definition from %[2]s service"
 msgstr "ດຶງຄຳນິຍາມຈາກການບໍລິການ %[2]s ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:300
+#: shared/podman/systemd.go:302
 #, javascript-format
 msgid "Systemd has no %s.service unit"
 msgstr "Systemd ບໍ່ມີ unit %s.service"
 
-#: shared/podman/systemd.go:305
+#: shared/podman/systemd.go:307
 #, javascript-format
 msgid "Disable %s service"
 msgstr "ປິດການບໍລິການ %s"
 
-#: shared/podman/systemd.go:320 shared/podman/systemd.go:338
+#: shared/podman/systemd.go:322 shared/podman/systemd.go:340
 #, javascript-format
 msgid "Would remove %s"
 msgstr "ຈະລຶບ %s"
 
-#: shared/podman/systemd.go:323 shared/podman/systemd.go:340
+#: shared/podman/systemd.go:325 shared/podman/systemd.go:342
 #, javascript-format
 msgid "Remove %s"
 msgstr "ລຶບ %s"
 
-#: shared/podman/systemd.go:325
+#: shared/podman/systemd.go:327
 #, javascript-format
 msgid "Failed to remove %s.service file"
 msgstr "ລຶບໄຟລ໌ %s.service ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:342
+#: shared/podman/systemd.go:344
 #, javascript-format
 msgid "Failed to remove %s file"
 msgstr "ລຶບໄຟລ໌ %s ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:349
+#: shared/podman/systemd.go:351
 #, javascript-format
 msgid "Would remove %s if empty"
 msgstr "ຈະລຶບ %s ຫາກເປັນໂຟນເດີຫວ່າງ"
 
-#: shared/podman/systemd.go:356
+#: shared/podman/systemd.go:358
 #, javascript-format
 msgid "%s folder contains file created by the user. Please remove them when uninstallation is completed."
 msgstr "ໂຟນເດີ %s ມີໄຟລ໌ທີ່ສ້າງໂດຍຜູ້ໃຊ້. ກະລຸນາລຶບອອກເມື່ອການຖອນການຕິດຕັ້ງສຳເລັດ."
 
-#: shared/podman/systemd.go:368
+#: shared/podman/systemd.go:370
 #, javascript-format
 msgid "Would scale %s to 0 replicas"
 msgstr "ຈະປັບຂະໜາດ %s ເປັນ 0 replica"
 
-#: shared/podman/systemd.go:371
+#: shared/podman/systemd.go:373
 #, javascript-format
 msgid "Failed to disable %s service"
 msgstr "ປິດການບໍລິການ %s ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:470
+#: shared/podman/systemd.go:472
 msgid "Service %[1]s already has %[2]d replicas."
 msgstr "ການບໍລິການ %[1]s ມີ %[2]d replica ແລ້ວ."
 
-#: shared/podman/systemd.go:473
+#: shared/podman/systemd.go:475
 msgid "Scale %[1]s from %[2]d to %[3]d replicas."
 msgstr "ປັບຂະໜາດ %[1]s ຈາກ %[2]d ເປັນ %[3]d replica."
 
-#: shared/podman/systemd.go:477
+#: shared/podman/systemd.go:479
 msgid "cannot enable service"
 msgstr "ບໍ່ສາມາດເປີດໃຊ້ການບໍລິການໄດ້"
 
-#: shared/podman/systemd.go:483
+#: shared/podman/systemd.go:485
 msgid "cannot disable service"
 msgstr "ບໍ່ສາມາດປິດການບໍລິການໄດ້"
 
-#: shared/podman/systemd.go:493
+#: shared/podman/systemd.go:495
 msgid "failed to show %[1]s property of %[2] systemd service"
 msgstr "ສະແດງຄຸນສົມບັດ %[1]s ຂອງ systemd service %[2] ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:508
+#: shared/podman/systemd.go:535
+msgid "Displaying the %[1]s service logs since %[2]s"
+msgstr ""
+
+#: shared/podman/systemd.go:544
+#, fuzzy, javascript-format
+#| msgid "failed to create %s secret"
+msgid "failed to read the %s service logs"
+msgstr "ສ້າງຄວາມລັບ %s ບໍ່ສຳເລັດ"
+
+#: shared/podman/systemd.go:563
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "ສ້າງໂຟນເດີ %s ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:518
+#: shared/podman/systemd.go:573
 #, javascript-format
 msgid "cannot write %s file"
 msgstr "ບໍ່ສາມາດຂຽນໄຟລ໌ %s ໄດ້"
 
-#: shared/podman/systemd.go:562
+#: shared/podman/systemd.go:617
 #, javascript-format
 msgid "failed to write %s file"
 msgstr "ຂຽນໄຟລ໌ %s ບໍ່ສຳເລັດ"
 
-#: shared/podman/systemd.go:567
+#: shared/podman/systemd.go:622
 #, javascript-format
 msgid "failed to remove old %s systemd service configuration file"
 msgstr "ລຶບໄຟລ໌ການຕັ້ງຄ່າ systemd service %s ເກົ່າບໍ່ສຳເລັດ"
@@ -817,79 +931,79 @@ msgstr "ເປີດໃຊ້ງານ podman.socket ບໍ່ສຳເລັດ
 msgid "failed to run %s container"
 msgstr "ລັນຄອນເທນເນີ %s ບໍ່ສຳເລັດ"
 
-#: shared/podman/utils.go:148
+#: shared/podman/utils.go:149
 msgid "Would run podman kill %[1]s for container id %[2]s"
 msgstr "ຈະລັນ podman kill %[1]s ສຳລັບໄອດີ ຄອນເທນເນີ %[2]s"
 
-#: shared/podman/utils.go:149
+#: shared/podman/utils.go:150
 msgid "Would run podman remove %[1]s for container id %[2]s"
 msgstr "ຈະລັນ podman remove %[1]s ສຳລັບໄອດີ ຄອນເທນເນີ %[2]s"
 
-#: shared/podman/utils.go:151
+#: shared/podman/utils.go:152
 msgid "Run podman kill %[1]s for container id %[2]s"
 msgstr "ລັນ podman kill %[1]s ສຳລັບໄອດີ ຄອນເທນເນີ %[2]s"
 
-#: shared/podman/utils.go:154
+#: shared/podman/utils.go:155
 msgid "Failed to kill the server"
 msgstr "ຢຸດການເຮັດວຽກຂອງເຊີເວີແບບບັງຄັບບໍ່ສຳເລັດ"
 
-#: shared/podman/utils.go:156
+#: shared/podman/utils.go:157
 msgid "Run podman remove %[1]s for container id %[2]s"
 msgstr "ລັນ podman remove %[1]s ສຳລັບໄອດີ ຄອນເທນເນີ %[2]s"
 
-#: shared/podman/utils.go:159
+#: shared/podman/utils.go:160
 msgid "Error removing container"
 msgstr "ເກີດຂໍ້ຜິດພາດໃນການລຶບຄອນເທນເນີ"
 
-#: shared/podman/utils.go:164
+#: shared/podman/utils.go:165
 msgid "Container already removed"
 msgstr "ຄອນເທນເນີຖືກລຶບອອກແລ້ວ"
 
-#: shared/podman/utils.go:172
+#: shared/podman/utils.go:173
 #, javascript-format
 msgid "failed to get %s systemd service definition"
 msgstr "ດຶງຄຳນິຍາມ systemd service %s ບໍ່ສຳເລັດ"
 
-#: shared/podman/utils.go:179
+#: shared/podman/utils.go:180
 #, javascript-format
 msgid "no UYUNI.*_IMAGE defined in %s systemd service"
 msgstr "ບໍ່ມີການກຳນົດ UYUNI.*_IMAGE ໃນ systemd service %s"
 
-#: shared/podman/utils.go:218
+#: shared/podman/utils.go:219
 #, javascript-format
 msgid "Volume %s is externally mounted, directory cannot be removed"
 msgstr "ໂວນລຸມ %s ຖືກເຊື່ອມຕໍ່ຈາກພາຍນອກ, ບໍ່ສາມາດລຶບໄດເຣັກທໍຣີໄດ້"
 
-#: shared/podman/utils.go:242
+#: shared/podman/utils.go:243
 #, javascript-format
 msgid "Failed to export volume %s"
 msgstr "ສົ່ງອອກໂວນລຸມ %s ບໍ່ສຳເລັດ"
 
-#: shared/podman/utils.go:245
+#: shared/podman/utils.go:246
 msgid "Failed to write checksum of volume %[1]s to the %[2]s"
 msgstr "ຂຽນຄ່າກວດສອບ (checksum) ຂອງໂວນລຸມ %[1]s ລົງໃນ %[2]s ບໍ່ສຳເລັດ"
 
-#: shared/podman/utils.go:271
+#: shared/podman/utils.go:272
 #, javascript-format
 msgid "Checksum does not match for volume %s"
 msgstr "ຄ່າກວດສອບບໍ່ກົງກັນສຳລັບໂວນລຸມ %s"
 
-#: shared/podman/utils.go:275
+#: shared/podman/utils.go:276
 #, javascript-format
 msgid "Failed to precreate empty volume %s"
 msgstr "ສ້າງໂວນລຸມຫວ່າງເປົ່າ %s ລ່ວງໜ້າບໍ່ສຳເລັດ"
 
-#: shared/podman/utils.go:279
+#: shared/podman/utils.go:280
 #, javascript-format
 msgid "Failed to import volume %s"
 msgstr "ນຳເຂົ້າໂວນລຸມ %s ບໍ່ສຳເລັດ"
 
-#: shared/podman/utils.go:283
+#: shared/podman/utils.go:284
 #, javascript-format
 msgid "Unable to restore selinux context for %s, manual action is required"
 msgstr "ບໍ່ສາມາດກູ້ຄືນ selinux context ສຳລັບ %s ໄດ້, ຕ້ອງໄດ້ດຳເນີນການດ້ວຍຕົນເອງ"
 
-#: shared/podman/utils.go:391 shared/podman/utils.go:414
+#: shared/podman/utils.go:392 shared/podman/utils.go:415
 msgid "cannot inspect data"
 msgstr "ບໍ່ສາມາດກວດສອບຂໍ້ມູນໄດ້"
 
@@ -1587,6 +1701,15 @@ msgstr "Saline"
 #: shared/utils/uyuniservices.go:46
 msgid "Database"
 msgstr "ຖານຂໍ້ມູນ"
+
+#~ msgid "Healthcheck not executed"
+#~ msgstr "ບໍ່ໄດ້ດຳເນີນການກວດສອບສະຖານະ (Healthcheck)"
+
+#~ msgid "not healthy or running"
+#~ msgstr "ສະຖານະບໍ່ປົກກະຕິ ຫຼື ບໍ່ໄດ້ເຮັດວຽກຢູ່"
+
+#~ msgid "container didn't start within 15s or failed. Check the service status"
+#~ msgstr "ຄອນເທນເນີບໍ່ເລີ່ມຕົ້ນພາຍໃນ 15 ວິນາທີ ຫຼື ຜິດພາດ. ກະລຸນາກວດສອບສະຖານະການບໍລິການ"
 
 #, javascript-format
 #~ msgid "Has to be less than %d character long"
