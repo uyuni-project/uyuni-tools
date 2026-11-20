@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2024 SUSE LLC
+SPDX-FileCopyrightText: 2026 SUSE LLC
 
 SPDX-License-Identifier: Apache-2.0
 -->
@@ -36,7 +36,7 @@ If you don't need a changelog check, please mark this checkbox:
 
 - [ ] No changelog needed
 
-If you uncheck the checkbox after the PR is created, you will need to re-run `changelog_test` (see below)
+The changelog check is re-run automatically when the PR description is edited.
 
 # Before you merge
 

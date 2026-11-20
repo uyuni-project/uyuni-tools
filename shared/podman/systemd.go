@@ -10,7 +10,9 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -493,6 +495,59 @@ func (s SystemdImpl) Show(service string, property string) (string, error) {
 		return "", utils.Errorf(err, L("failed to show %[1]s property of %[2] systemd service"), property, service)
 	}
 	return strings.TrimSpace(string(out)), nil
+}
+
+// journalLogEntries is the maximum number of journal entries shown for a failed service start.
+const journalLogEntries = 100
+
+// maxJournalLineLength is the maximum character length for a single log line before truncation.
+const maxJournalLineLength = 200
+
+// formatServiceLogs formats raw service log lines into a clean delimited block, trimming long lines.
+func formatServiceLogs(service string, rawLogs string) string {
+	trimmed := strings.TrimSpace(rawLogs)
+	if trimmed == "" {
+		return ""
+	}
+
+	lines := strings.Split(trimmed, "\n")
+	var b strings.Builder
+	header := fmt.Sprintf("-------------------- [%s] --------------------", service)
+	b.WriteString(header)
+	b.WriteString("\n")
+	for _, line := range lines {
+		line = strings.TrimRight(line, "\r ")
+		if len(line) > maxJournalLineLength {
+			line = line[:maxJournalLineLength-3] + "..."
+		}
+		b.WriteString("  ")
+		b.WriteString(line)
+		b.WriteString("\n")
+	}
+	b.WriteString(strings.Repeat("-", len(header)))
+	return b.String()
+}
+
+// ShowServiceLogs displays the journal of a systemd service since the given time.
+//
+// It is meant to be called when the service failed to start, to help with the diagnosis.
+func ShowServiceLogs(service string, since time.Time) {
+	log.Info().Msgf(L("Displaying the %[1]s service logs since %[2]s"),
+		service, since.Format("2006-01-02 15:04:05"))
+
+	out, err := runner("journalctl", "-u", service,
+		"--since", since.Format("2006-01-02 15:04:05"),
+		"--no-pager",
+		"-n", strconv.Itoa(journalLogEntries),
+	).Log(zerolog.DebugLevel).Exec()
+	if err != nil {
+		log.Warn().Err(err).Msgf(L("failed to read the %s service logs"), service)
+		return
+	}
+
+	if formatted := formatServiceLogs(service, string(out)); formatted != "" {
+		log.Info().Msg(formatted)
+	}
 }
 
 // confHeader is the header for the generated systemd configuration files.
