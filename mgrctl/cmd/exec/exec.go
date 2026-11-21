@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -21,6 +21,8 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
+
+var runRawCmd = RunRawCmd
 
 type flagpole struct {
 	Envs        []string `mapstructure:"env"`
@@ -78,8 +80,11 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, args []string)
 
 	if command == "kubectl" {
 		namespace, err := cnx.GetNamespace("")
+		if err != nil {
+			return utils.Error(err, L("failed retrieving namespace"))
+		}
 		if namespace == "" {
-			log.Fatal().Err(err)
+			return errors.New(L("failed retrieving namespace"))
 		}
 		commandArgs = append(commandArgs, "-n", namespace, "-c", "uyuni", "--")
 	}
@@ -99,13 +104,14 @@ func run(_ *types.GlobalFlags, flags *flagpole, _ *cobra.Command, args []string)
 		commandArgs = append(commandArgs, newEnv...)
 	}
 	commandArgs = append(commandArgs, "sh", "-c", strings.Join(args, " "))
-	err = RunRawCmd(command, commandArgs)
+	err = runRawCmd(command, commandArgs)
 	if err != nil {
 		var exitErr *exec.ExitError
 		if errors.As(err, &exitErr) {
 			log.Info().Err(err).Msg(L("Command failed"))
 			os.Exit(exitErr.ExitCode())
 		}
+		return utils.Errorf(err, L("cannot execute %s"), command)
 	}
 	log.Info().Msg(L("Command returned with exit code 0"))
 

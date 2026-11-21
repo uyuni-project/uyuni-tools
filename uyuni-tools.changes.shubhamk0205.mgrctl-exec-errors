@@ -1,0 +1,1 @@
+- Report mgrctl exec errors instead of exiting silently
