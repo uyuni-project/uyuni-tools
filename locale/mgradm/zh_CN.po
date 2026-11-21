@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 14:00+0000\n"
-"PO-Revision-Date: 2026-10-10 12:13+0000\n"
+"POT-Creation-Date: 2026-11-20 13:29+0100\n"
+"PO-Revision-Date: 2026-11-18 12:13+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/uyuni-tools-mgradm/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.10.1\n"
+"X-Generator: Weblate 2026.11.2\n"
 
 #: mgradm/cmd/backup/backup.go:29
 msgid "Create backup"
@@ -275,43 +275,43 @@ msgstr "恢复数据库备份"
 msgid "Don't ask for confirmation"
 msgstr "无需确认"
 
-#: mgradm/cmd/backup/db/disable.go:17
+#: mgradm/cmd/backup/db/disable.go:19
 msgid "Disabling DB backup"
 msgstr "正在禁用数据库备份"
 
-#: mgradm/cmd/backup/db/disable.go:24 mgradm/cmd/backup/db/enable.go:35
+#: mgradm/cmd/backup/db/disable.go:25 mgradm/cmd/backup/db/enable.go:35
 #, fuzzy
 #| msgid "Database service needs to be restarted to reload backup configurations, continue"
 msgid "Database service needs to be restarted to reload backup configurations, continue?"
 msgstr "需要重启数据库服务以重新加载备份配置，是否继续？"
 
-#: mgradm/cmd/backup/db/disable.go:26
+#: mgradm/cmd/backup/db/disable.go:27
 msgid "Backup reconfiguration aborted"
 msgstr "备份重新配置已中止"
 
-#: mgradm/cmd/backup/db/disable.go:45
+#: mgradm/cmd/backup/db/disable.go:46
 msgid "Backup volume will be removed, continue?"
 msgstr "即将去除备份卷，是否继续？"
 
-#: mgradm/cmd/backup/db/disable.go:47
+#: mgradm/cmd/backup/db/disable.go:48
 msgid "Aborting volume purge"
 msgstr "正在中止卷清除"
 
-#: mgradm/cmd/backup/db/disable.go:54
+#: mgradm/cmd/backup/db/disable.go:55
 #, javascript-format
 msgid "Backup volume '%s' removed"
 msgstr "已去除备份卷 '%s'"
 
-#: mgradm/cmd/backup/db/disable.go:58 mgradm/cmd/backup/db/enable.go:62
+#: mgradm/cmd/backup/db/disable.go:59 mgradm/cmd/backup/db/enable.go:62
 #: mgradm/cmd/backup/db/rebase.go:29
 msgid "Starting database…"
 msgstr "正在启动数据库…"
 
-#: mgradm/cmd/backup/db/enable.go:22
+#: mgradm/cmd/backup/db/enable.go:23
 msgid "Enable DB backup"
 msgstr "启用数据库备份"
 
-#: mgradm/cmd/backup/db/enable.go:25
+#: mgradm/cmd/backup/db/enable.go:26
 msgid "backup is already configured. Use --force to reconfigure"
 msgstr "备份已配置。请使用 --force 重新配置"
 
@@ -319,24 +319,24 @@ msgstr "备份已配置。请使用 --force 重新配置"
 msgid "Backup configuration aborted"
 msgstr "备份配置已中止"
 
-#: mgradm/cmd/backup/db/enable.go:86
+#: mgradm/cmd/backup/db/enable.go:88
 #, javascript-format
 msgid "Continuous Archiving backup configured. Backup target volume is '%s'"
 msgstr "已配置连续归档备份。备份目标卷为 '%s'"
 
-#: mgradm/cmd/backup/db/enable.go:99
+#: mgradm/cmd/backup/db/enable.go:101
 msgid "failed to generate postgresql backup script"
 msgstr "生成 postgresql 备份脚本失败"
 
-#: mgradm/cmd/backup/db/rebase.go:17
+#: mgradm/cmd/backup/db/rebase.go:18
 msgid "Rebasing postgres WAL backup to new basebackup"
 msgstr "正在将 postgres WAL 备份重置为新的基础备份"
 
-#: mgradm/cmd/backup/db/rebase.go:20
+#: mgradm/cmd/backup/db/rebase.go:21
 msgid "database backup is not correctly configured: %w"
 msgstr "数据库备份配置不正确：%w"
 
-#: mgradm/cmd/backup/db/rebase.go:43
+#: mgradm/cmd/backup/db/rebase.go:45
 msgid "Stopping database…"
 msgstr "正在停止数据库…"
 
@@ -613,7 +613,7 @@ msgid "insufficient space on target device"
 msgstr "目标设备上的空间不足"
 
 #: mgradm/cmd/backup/shared/utils.go:68 mgradm/cmd/install/utils.go:43
-#: mgradm/cmd/upgrade/utils.go:74
+#: mgradm/cmd/upgrade/utils.go:73
 msgid "install podman before running this command"
 msgstr "在运行此命令前安装 podman"
 
@@ -972,7 +972,7 @@ msgstr "发送通知的电子邮件地址"
 msgid "InterServerSync v1 parent FQDN"
 msgstr "InterServerSync v1 父 FQDN"
 
-#: mgradm/cmd/install/flags.go:28 mgradm/cmd/upgrade/flags.go:22
+#: mgradm/cmd/install/flags.go:28 mgradm/cmd/upgrade/flags.go:24
 msgid "TFTPD Flags"
 msgstr "TFTPD 标志"
 
@@ -1027,12 +1027,12 @@ msgstr "服务器已初始化！请先将其卸装，再尝试进行全新安装
 msgid "Setting up the server with the FQDN '%s'"
 msgstr "正在使用 FQDN '%s' 设置服务器"
 
-#: mgradm/cmd/install/utils.go:65 mgradm/shared/podman/podman.go:459
+#: mgradm/cmd/install/utils.go:65 mgradm/shared/podman/podman.go:469
 msgid "cannot prepare images"
 msgstr "无法准备映像"
 
-#: mgradm/cmd/install/utils.go:69 mgradm/shared/podman/podman.go:251
-#: mgradm/shared/podman/podman.go:449
+#: mgradm/cmd/install/utils.go:69 mgradm/shared/podman/podman.go:266
+#: mgradm/shared/podman/podman.go:459
 msgid "cannot setup network"
 msgstr "无法设置网络"
 
@@ -1040,19 +1040,15 @@ msgstr "无法设置网络"
 msgid "failed to generate server service"
 msgstr "生成服务器服务失败"
 
-#: mgradm/cmd/install/utils.go:95 mgradm/shared/podman/podman.go:588
+#: mgradm/cmd/install/utils.go:95 mgradm/shared/podman/podman.go:602
 msgid "Waiting for server to start. This include service setup operations and can take a very long time."
 msgstr "正在等待服务器启动。此过程包含服务设置操作，可能需要较长时间。"
 
-#: mgradm/cmd/install/utils.go:96 mgradm/shared/podman/podman.go:589
+#: mgradm/cmd/install/utils.go:96 mgradm/shared/podman/podman.go:603
 msgid "Use `journalctl -f -u uyuni-server` for tracking progress"
 msgstr "使用 `journalctl -f -u uyuni-server` 可跟踪进度"
 
-#: mgradm/cmd/install/utils.go:100 mgradm/shared/podman/podman.go:596
-msgid "cannot wait for system start"
-msgstr "无法等待系统启动"
-
-#: mgradm/cmd/install/utils.go:103 mgradm/shared/podman/podman.go:106
+#: mgradm/cmd/install/utils.go:103 mgradm/shared/podman/podman.go:87
 msgid "failed to add SSL CA certificate to host trusted certificates"
 msgstr "无法将 SSL CA 证书添加到主机信任的证书列表中"
 
@@ -1060,7 +1056,7 @@ msgstr "无法将 SSL CA 证书添加到主机信任的证书列表中"
 msgid "failed to extract payg data"
 msgstr "无法提取 payg 数据"
 
-#: mgradm/cmd/install/utils.go:140 mgradm/shared/podman/podman.go:809
+#: mgradm/cmd/install/utils.go:140 mgradm/shared/podman/podman.go:829
 #, javascript-format
 msgid "Skipped database container setup to use external database %s"
 msgstr "已跳过数据库容器设置步骤，将使用外部数据库 %s"
@@ -1156,7 +1152,7 @@ msgstr ""
 "并触发所有已注册系统的 Pillar 信息刷新。\n"
 
 #: mgradm/cmd/server/rename/rename.go:46 mgradm/cmd/ssl/addca/addca.go:37
-#: mgradm/shared/utils/cmd_utils.go:226
+#: mgradm/shared/utils/cmd_utils.go:212
 msgid "Password for the CA key to generate"
 msgstr "要生成的 CA 密钥的口令"
 
@@ -1346,32 +1342,32 @@ msgstr ""
 "\n"
 "注意：目前不支持在远程 podman 上安装！\n"
 
-#: mgradm/cmd/support/ptf/utils.go:74
+#: mgradm/cmd/support/ptf/utils.go:65
 msgid "ptf and test flags cannot be set simultaneously "
 msgstr "不能同时设置 ptf 和 test 标志 "
 
-#: mgradm/cmd/support/ptf/utils.go:77
+#: mgradm/cmd/support/ptf/utils.go:68
 msgid "ptf and test flags cannot be empty simultaneously "
 msgstr "ptf 和 test 标志不能同时为空 "
 
-#: mgradm/cmd/support/ptf/utils.go:80
+#: mgradm/cmd/support/ptf/utils.go:71
 msgid "user flag cannot be empty"
 msgstr "user 标志不能为空"
 
-#: mgradm/cmd/support/ptf/utils.go:92
+#: mgradm/cmd/support/ptf/utils.go:83
 msgid "failed to find server image"
 msgstr "找不到服务器映像"
 
-#: mgradm/cmd/support/ptf/utils.go:101
+#: mgradm/cmd/support/ptf/utils.go:92
 #, javascript-format
 msgid "The computed PTF image is %s"
 msgstr "计算出的 PTF 映像为 %s"
 
-#: mgradm/cmd/support/ptf/utils.go:122 mgradm/cmd/support/ptf/utils.go:126
+#: mgradm/cmd/support/ptf/utils.go:113 mgradm/cmd/support/ptf/utils.go:117
 msgid "The %[1]s service image is %[2]s"
 msgstr "%[1]s 服务映像版本为 %[2]s"
 
-#: mgradm/cmd/support/ptf/utils.go:124
+#: mgradm/cmd/support/ptf/utils.go:115
 #, javascript-format
 msgid "Cannot find PTF for %s"
 msgstr "找不到 %s 的 PTF"
@@ -1513,58 +1509,55 @@ msgstr ""
 msgid "Upgrade a local server on podman"
 msgstr "在 podman 上升级本地服务器"
 
-#: mgradm/cmd/upgrade/upgrade.go:53
+#: mgradm/cmd/upgrade/upgrade.go:52
 msgid "List available tags for an image"
 msgstr "列出映像的可用标记"
 
-#: mgradm/cmd/upgrade/upgrade.go:65
+#: mgradm/cmd/upgrade/upgrade.go:64
 msgid "failed to unmarshall configuration"
 msgstr "无法反序列化配置"
 
 #: mgradm/cmd/upgrade/utils.go:32
-#, fuzzy, javascript-format
-#| msgid "failed to parse %s"
+#, javascript-format
 msgid "failed to read %s"
-msgstr "无法解析 %s"
+msgstr "读取 %s 失败"
 
 #: mgradm/cmd/upgrade/utils.go:45
-#, fuzzy, javascript-format
-#| msgid "failed to create keyring %s"
+#, javascript-format
 msgid "failed to change permissions for %s"
-msgstr "无法创建密钥环 %s"
+msgstr "更改 %s 的权限失败"
 
 #: mgradm/cmd/upgrade/utils.go:49
-#, fuzzy, javascript-format
-#| msgid "failed to parse %s"
+#, javascript-format
 msgid "failed to write %s"
-msgstr "无法解析 %s"
+msgstr "写入 %s 失败"
 
 #: mgradm/cmd/upgrade/utils.go:52
 msgid "Legacy dual-stack IPv6 port bindings have been removed from uyuni-server.service. Please reboot the host and then run the upgrade command again"
-msgstr ""
+msgstr "已从 uyuni-server.service 去除旧版双栈 IPv6 端口绑定。请重引导主机，然后重新运行升级命令"
 
-#: mgradm/shared/coco/coco.go:28
+#: mgradm/shared/coco/coco.go:27
 msgid "Not altering the confidential computing service"
 msgstr "未修改机密计算服务"
 
-#: mgradm/shared/coco/coco.go:78 mgradm/shared/hub/xmlrpcapi.go:44
-#: mgradm/shared/pgsql/pgsql.go:31 mgradm/shared/podman/podman.go:407
+#: mgradm/shared/coco/coco.go:72 mgradm/shared/hub/xmlrpcapi.go:44
+#: mgradm/shared/pgsql/pgsql.go:32 mgradm/shared/podman/podman.go:422
 #: mgradm/shared/saline/saline.go:72 mgradm/shared/tftp/tftp.go:41
 msgid "failed to compute image URL"
 msgstr "无法计算映像 URL"
 
-#: mgradm/shared/coco/coco.go:95
+#: mgradm/shared/coco/coco.go:89
 msgid "Setting up confidential computing attestation service"
 msgstr "设置机密计算认证服务"
 
-#: mgradm/shared/coco/coco.go:99 mgradm/shared/hub/xmlrpcapi.go:119
-#: mgradm/shared/pgsql/pgsql.go:143 mgradm/shared/podman/podman.go:235
+#: mgradm/shared/coco/coco.go:93 mgradm/shared/hub/xmlrpcapi.go:119
+#: mgradm/shared/pgsql/pgsql.go:148 mgradm/shared/podman/podman.go:250
 #: mgradm/shared/saline/saline.go:92 mgradm/shared/tftp/tftp.go:95
 msgid "failed to generate systemd service unit file"
 msgstr "无法生成 systemd 服务单元文件"
 
-#: mgradm/shared/coco/coco.go:109 mgradm/shared/hub/xmlrpcapi.go:126
-#: mgradm/shared/podman/podman.go:277 mgradm/shared/saline/saline.go:100
+#: mgradm/shared/coco/coco.go:103 mgradm/shared/hub/xmlrpcapi.go:126
+#: mgradm/shared/podman/podman.go:292 mgradm/shared/saline/saline.go:100
 #: mgradm/shared/tftp/tftp.go:102
 msgid "cannot generate systemd conf file"
 msgstr "无法生成 systemd 配置文件"
@@ -1574,8 +1567,8 @@ msgstr "无法生成 systemd 配置文件"
 msgid "No changes requested for hub. Keep %d replicas."
 msgstr "未针对中心请求更改。保留 %d 个复本。"
 
-#: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:67
-#: mgradm/shared/pgsql/pgsql.go:94 mgradm/shared/tftp/tftp.go:50
+#: mgradm/shared/hub/xmlrpcapi.go:53 mgradm/shared/pgsql/pgsql.go:68
+#: mgradm/shared/pgsql/pgsql.go:97 mgradm/shared/tftp/tftp.go:50
 msgid "cannot generate systemd service"
 msgstr "无法生成 systemd 服务"
 
@@ -1583,7 +1576,7 @@ msgstr "无法生成 systemd 服务"
 msgid "Multiple Hub XML-RPC container replicas are not currently supported, setting up only one."
 msgstr "目前不支持多个中心 XML-RPC 容器复本，将仅设置一个复本。"
 
-#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:631
+#: mgradm/shared/hub/xmlrpcapi.go:72 mgradm/shared/podman/podman.go:640
 #: mgradm/shared/saline/saline.go:142
 msgid "cannot enable service"
 msgstr "无法启用服务"
@@ -1592,16 +1585,17 @@ msgstr "无法启用服务"
 msgid "Not altering the hub XML-RPC API service"
 msgstr "未修改 Hub XML-RPC API 服务"
 
-#: mgradm/shared/pgsql/pgsql.go:50
+#: mgradm/shared/pgsql/pgsql.go:51
 msgid "cannot generate systemd custom configuration file"
 msgstr "无法生成 systemd 自定义配置文件"
 
-#: mgradm/shared/pgsql/pgsql.go:78 mgradm/shared/pgsql/pgsql.go:111
-#, javascript-format
-msgid "%s fails healtcheck"
-msgstr "%s 健康检查失败"
+#: mgradm/shared/pgsql/pgsql.go:81 mgradm/shared/pgsql/pgsql.go:116
+#, fuzzy
+#| msgid "cannot wait for the server container to start"
+msgid "database container failed to start"
+msgstr "无法等待服务器容器完成启动"
 
-#: mgradm/shared/pgsql/pgsql.go:149 mgradm/shared/pgsql/pgsql.go:166
+#: mgradm/shared/pgsql/pgsql.go:154 mgradm/shared/pgsql/pgsql.go:171
 msgid "cannot generate systemd configuration file"
 msgstr "无法生成 systemd 配置文件"
 
@@ -1639,162 +1633,165 @@ msgstr "通过 Salt 查询受控端信任存储区失败"
 msgid "failed to parse the minions response: %s"
 msgstr "解析受控端响应失败：%s"
 
-#: mgradm/shared/podman/podman.go:88
+#: mgradm/shared/podman/podman.go:67
 msgid "Restarting the services to apply the new certificates"
 msgstr "正在重新启动服务以应用新证书"
 
-#: mgradm/shared/podman/podman.go:100
-msgid "cannot wait for the server container to start"
+#: mgradm/shared/podman/podman.go:81 mgradm/shared/podman/podman.go:612
+#: mgradm/shared/podman/podman.go:648
+#, fuzzy
+#| msgid "cannot wait for the server container to start"
+msgid "server container failed to start"
 msgstr "无法等待服务器容器完成启动"
 
-#: mgradm/shared/podman/podman.go:119
+#: mgradm/shared/podman/podman.go:100
 #, javascript-format
 msgid "Running %s in the server container"
 msgstr "正在服务器容器内运行 %s"
 
-#: mgradm/shared/podman/podman.go:121
+#: mgradm/shared/podman/podman.go:102
 #, javascript-format
 msgid "failed to run %s in the server container"
 msgstr "在服务器容器内运行 %s 失败"
 
-#: mgradm/shared/podman/podman.go:138
+#: mgradm/shared/podman/podman.go:119 mgradm/shared/podman/podman.go:183
 #, javascript-format
 msgid "failed to create %s folder"
 msgstr "创建文件夹 %s 失败"
 
-#: mgradm/shared/podman/podman.go:155 mgradm/shared/podman/podman.go:177
+#: mgradm/shared/podman/podman.go:136 mgradm/shared/podman/podman.go:186
 msgid "failed to generate server environment file"
 msgstr "生成服务器环境文件失败"
 
-#: mgradm/shared/podman/podman.go:269
+#: mgradm/shared/podman/podman.go:284
 msgid "Enabling system service"
 msgstr "正在启用系统服务"
 
-#: mgradm/shared/podman/podman.go:283 mgradm/shared/saline/saline.go:108
+#: mgradm/shared/podman/podman.go:298 mgradm/shared/saline/saline.go:108
 msgid "cannot generate systemd user configuration file"
 msgstr "无法生成 systemd 用户配置文件"
 
-#: mgradm/shared/podman/podman.go:311
+#: mgradm/shared/podman/podman.go:326
 msgid "failed to generate SSL migration script"
 msgstr "SSL 迁移脚本生成失败"
 
-#: mgradm/shared/podman/podman.go:331
+#: mgradm/shared/podman/podman.go:346
 #, javascript-format
 msgid "Migrating SSL certificates from the source server %s"
 msgstr "正在从源服务器 %s 迁移 SSL 证书"
 
-#: mgradm/shared/podman/podman.go:334
+#: mgradm/shared/podman/podman.go:349
 msgid "cannot run uyuni SSL migration container"
 msgstr "无法运行 uyuni SSL 迁移容器"
 
-#: mgradm/shared/podman/podman.go:345
+#: mgradm/shared/podman/podman.go:360
 #, javascript-format
 msgid "Failed to read file %s"
 msgstr "无法读取文件 %s"
 
-#: mgradm/shared/podman/podman.go:351
+#: mgradm/shared/podman/podman.go:366
 msgid "cannot read extracted data"
 msgstr "无法读取提取的数据"
 
-#: mgradm/shared/podman/podman.go:362
+#: mgradm/shared/podman/podman.go:377
 #, javascript-format
 msgid "cannot inspect volume %s"
 msgstr "无法检查卷 %s"
 
-#: mgradm/shared/podman/podman.go:365
+#: mgradm/shared/podman/podman.go:380
 #, javascript-format
 msgid "cannot restore %s SELinux permissions"
 msgstr "无法恢复 %s SELinux 权限"
 
-#: mgradm/shared/podman/podman.go:415
+#: mgradm/shared/podman/podman.go:430
 #, javascript-format
 msgid "Using database upgrade image %s"
 msgstr "正在使用数据库升级映像 %s"
 
-#: mgradm/shared/podman/podman.go:473 mgradm/shared/podman/podman.go:481
+#: mgradm/shared/podman/podman.go:492 mgradm/shared/podman/podman.go:500
 msgid "cannot stop service"
 msgstr "无法停止服务"
 
-#: mgradm/shared/podman/podman.go:492
+#: mgradm/shared/podman/podman.go:511
 msgid "Initiating PostgreSQL upgrade from version %[1]d to %[2]d"
 msgstr "正在开始将 PostgreSQL 从版本 %[1]d 升级至 %[2]d"
 
-#: mgradm/shared/podman/podman.go:496
+#: mgradm/shared/podman/podman.go:515
 #, javascript-format
 msgid "cannot find volume %s"
 msgstr "找不到卷 %s"
 
-#: mgradm/shared/podman/podman.go:511
+#: mgradm/shared/podman/podman.go:530
 #, javascript-format
 msgid "cannot move %s"
 msgstr "无法移动 %s"
 
-#: mgradm/shared/podman/podman.go:527
+#: mgradm/shared/podman/podman.go:546
 #, javascript-format
 msgid "cannot mkdir %s"
 msgstr "无法创建目录 %s"
 
-#: mgradm/shared/podman/podman.go:530
+#: mgradm/shared/podman/podman.go:549
 msgid "Data will be copied during this process. Please ensure sufficient disk space is available."
 msgstr "执行该过程期间将复制数据。请确保磁盘有充足的可用空间。"
 
-#: mgradm/shared/podman/podman.go:532
+#: mgradm/shared/podman/podman.go:551
 msgid "cannot run PostgreSQL version upgrade script"
 msgstr "无法运行 PostgreSQL 版本升级脚本"
 
-#: mgradm/shared/podman/podman.go:535
+#: mgradm/shared/podman/podman.go:554
 msgid "Upgrading without changing PostgreSQL version"
 msgstr "正在升级，PostgreSQL 版本将不更改"
 
-#: mgradm/shared/podman/podman.go:538
+#: mgradm/shared/podman/podman.go:557
 msgid "trying to downgrade PostgreSQL from %[1]d to %[2]d"
 msgstr "正在尝试将 PostgreSQL 从 %[1]d 降级至 %[2]d"
 
-#: mgradm/shared/podman/podman.go:545
+#: mgradm/shared/podman/podman.go:564
 msgid "Configuring split PostgreSQL container"
 msgstr "正在配置分离式 PostgreSQL 容器"
 
-#: mgradm/shared/podman/podman.go:554
+#: mgradm/shared/podman/podman.go:573
 msgid "cannot configure db container"
 msgstr "无法配置数据库容器"
 
-#: mgradm/shared/podman/podman.go:592 mgradm/shared/podman/podman.go:634
+#: mgradm/shared/podman/podman.go:607 mgradm/shared/podman/podman.go:643
 msgid "cannot start service"
 msgstr "无法启动服务"
 
-#: mgradm/shared/podman/podman.go:619
+#: mgradm/shared/podman/podman.go:627
 msgid "Failed to read server service definition to look for TFTP port"
 msgstr "读取服务器服务定义以查找 TFTP 端口失败"
 
-#: mgradm/shared/podman/podman.go:629
+#: mgradm/shared/podman/podman.go:637
 msgid "Waiting for the server to start…"
 msgstr "正在等待服务器启动…"
 
-#: mgradm/shared/podman/podman.go:675
+#: mgradm/shared/podman/podman.go:688
 msgid "failed to generate postgresql migration script"
 msgstr "无法生成 postgresql 迁移脚本"
 
-#: mgradm/shared/podman/podman.go:695
+#: mgradm/shared/podman/podman.go:708
 msgid "The above error is only relevant if using a public cloud provider registry"
 msgstr "仅当使用公有云提供商仓库时，才会出现上述错误"
 
-#: mgradm/shared/podman/podman.go:725
+#: mgradm/shared/podman/podman.go:738
 msgid "SSH_AUTH_SOCK is not defined, start an SSH agent and try again"
 msgstr "未定义 SSH_AUTH_SOCK，请启动 SSH 代理，然后重试"
 
-#: mgradm/shared/podman/podman.go:735
+#: mgradm/shared/podman/podman.go:748
 msgid "Failed to find home directory to look for SSH config"
 msgstr "找不到可查找 SSH 配置的主目录"
 
-#: mgradm/shared/podman/podman.go:757
+#: mgradm/shared/podman/podman.go:770
 msgid "cannot inspect podman values"
 msgstr "无法检查 podman 值"
 
-#: mgradm/shared/podman/podman.go:771
+#: mgradm/shared/podman/podman.go:806
 msgid "PostgreSQL migration failure"
 msgstr "PostgreSQL 迁移失败"
 
-#: mgradm/shared/podman/podman.go:800
+#: mgradm/shared/podman/podman.go:820
 msgid "Secrets %[1]s and %[2]s, already exists"
 msgstr "机密 %[1]s 和 %[2]s 已存在"
 
@@ -1960,79 +1957,75 @@ msgstr "正在设置 Saline 服务"
 msgid "Server certificate, key and root CA need to be all provided"
 msgstr "服务器证书、密钥和根 CA 必须全部提供"
 
-#: mgradm/shared/utils/cmd_utils.go:44 mgradm/shared/utils/cmd_utils.go:58
+#: mgradm/shared/utils/cmd_utils.go:44
 msgid "Database certificate and key need to be provided"
 msgstr "需要提供数据库证书和密钥"
 
-#: mgradm/shared/utils/cmd_utils.go:54
-msgid "DB certificate, key and root CA need to be all provided"
-msgstr "数据库证书、密钥和根 CA 必须全部提供"
-
-#: mgradm/shared/utils/cmd_utils.go:64
+#: mgradm/shared/utils/cmd_utils.go:50
 msgid "Report database name"
 msgstr "报告数据库名称"
 
-#: mgradm/shared/utils/cmd_utils.go:65
+#: mgradm/shared/utils/cmd_utils.go:51
 msgid "Report database host"
 msgstr "报告数据库主机"
 
-#: mgradm/shared/utils/cmd_utils.go:66
+#: mgradm/shared/utils/cmd_utils.go:52
 msgid "Report database port"
 msgstr "报告数据库端口"
 
-#: mgradm/shared/utils/cmd_utils.go:67
+#: mgradm/shared/utils/cmd_utils.go:53
 msgid "Report Database username"
 msgstr "报告数据库用户名"
 
-#: mgradm/shared/utils/cmd_utils.go:68
+#: mgradm/shared/utils/cmd_utils.go:54
 msgid "Report database password. Randomly generated by default"
 msgstr "报告数据库口令。默认会随机生成"
 
-#: mgradm/shared/utils/cmd_utils.go:70
+#: mgradm/shared/utils/cmd_utils.go:56
 msgid "Report DB Flags"
 msgstr "报告数据库标志"
 
-#: mgradm/shared/utils/cmd_utils.go:80
+#: mgradm/shared/utils/cmd_utils.go:66
 msgid "Database user"
 msgstr "数据库用户"
 
-#: mgradm/shared/utils/cmd_utils.go:81
+#: mgradm/shared/utils/cmd_utils.go:67
 msgid "Database password. Randomly generated by default"
 msgstr "数据库口令。默认会随机生成"
 
-#: mgradm/shared/utils/cmd_utils.go:82
+#: mgradm/shared/utils/cmd_utils.go:68
 msgid "Database name"
 msgstr "数据库名称"
 
-#: mgradm/shared/utils/cmd_utils.go:83
+#: mgradm/shared/utils/cmd_utils.go:69
 msgid "Database host"
 msgstr "数据库主机"
 
-#: mgradm/shared/utils/cmd_utils.go:84
+#: mgradm/shared/utils/cmd_utils.go:70
 msgid "Database port"
 msgstr "数据库端口"
 
-#: mgradm/shared/utils/cmd_utils.go:85
+#: mgradm/shared/utils/cmd_utils.go:71
 msgid "Database admin user name"
 msgstr "数据库管理员用户名"
 
-#: mgradm/shared/utils/cmd_utils.go:86
+#: mgradm/shared/utils/cmd_utils.go:72
 msgid "Database admin password"
 msgstr "数据库管理员口令"
 
-#: mgradm/shared/utils/cmd_utils.go:87
+#: mgradm/shared/utils/cmd_utils.go:73
 msgid "External database provider. Possible values 'aws'"
 msgstr "外部数据库提供商。可能的值为 \"aws\""
 
-#: mgradm/shared/utils/cmd_utils.go:89
+#: mgradm/shared/utils/cmd_utils.go:75
 msgid "Setup continuous WAL backup"
 msgstr "设置连续 WAL 备份"
 
-#: mgradm/shared/utils/cmd_utils.go:91
+#: mgradm/shared/utils/cmd_utils.go:77
 msgid "Database Flags"
 msgstr "数据库标志"
 
-#: mgradm/shared/utils/cmd_utils.go:105
+#: mgradm/shared/utils/cmd_utils.go:91
 msgid ""
 "SUSE Customer Center username.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
@@ -2040,7 +2033,7 @@ msgstr ""
 "SUSE Customer Center 用户名。\n"
 "将用作 SCC 身份凭证进行产品同步以及从 SCC 仓库拉取映像"
 
-#: mgradm/shared/utils/cmd_utils.go:107
+#: mgradm/shared/utils/cmd_utils.go:93
 msgid ""
 "SUSE Customer Center password.\n"
 "It will be used as SCC credentials for products synchronization and to pull images from SCC registry"
@@ -2048,51 +2041,51 @@ msgstr ""
 "SUSE Customer Center 口令。\n"
 "将用作 SCC 身份凭证进行产品同步以及从 SCC 仓库拉取映像"
 
-#: mgradm/shared/utils/cmd_utils.go:109
+#: mgradm/shared/utils/cmd_utils.go:95
 msgid "SUSE Customer Center Flags"
 msgstr "SUSE Customer Center 标志"
 
-#: mgradm/shared/utils/cmd_utils.go:116
+#: mgradm/shared/utils/cmd_utils.go:102
 msgid "Image"
 msgstr "映像"
 
-#: mgradm/shared/utils/cmd_utils.go:117
+#: mgradm/shared/utils/cmd_utils.go:103
 msgid "Tag Image"
 msgstr "标记映像"
 
-#: mgradm/shared/utils/cmd_utils.go:122
+#: mgradm/shared/utils/cmd_utils.go:108
 msgid "Image Flags"
 msgstr "映像标志"
 
-#: mgradm/shared/utils/cmd_utils.go:133
+#: mgradm/shared/utils/cmd_utils.go:119
 msgid "Database upgrade image"
 msgstr "数据库升级映像"
 
-#: mgradm/shared/utils/cmd_utils.go:134
+#: mgradm/shared/utils/cmd_utils.go:120
 msgid "Database upgrade image tag, overrides the default value if set"
 msgstr "数据库升级映像标记，如果设置将覆盖默认值"
 
-#: mgradm/shared/utils/cmd_utils.go:136
+#: mgradm/shared/utils/cmd_utils.go:122
 msgid "Database Upgrade Image Flags"
 msgstr "数据库升级映像标志"
 
-#: mgradm/shared/utils/cmd_utils.go:143
+#: mgradm/shared/utils/cmd_utils.go:129
 msgid "Path to mirrored packages mounted on the host"
 msgstr "主机上所挂载的已镜像软件包的路径"
 
-#: mgradm/shared/utils/cmd_utils.go:148 mgradm/shared/utils/cmd_utils.go:157
+#: mgradm/shared/utils/cmd_utils.go:134 mgradm/shared/utils/cmd_utils.go:143
 msgid "Confidential Computing Flags"
 msgstr "机密计算标志"
 
-#: mgradm/shared/utils/cmd_utils.go:149 mgradm/shared/utils/cmd_utils.go:158
+#: mgradm/shared/utils/cmd_utils.go:135 mgradm/shared/utils/cmd_utils.go:144
 msgid "Confidential computing attestation"
 msgstr "机密计算认证"
 
-#: mgradm/shared/utils/cmd_utils.go:151
+#: mgradm/shared/utils/cmd_utils.go:137
 msgid "How many replicas of the confidential computing container should be started"
 msgstr "应启动机密计算容器的多少复本"
 
-#: mgradm/shared/utils/cmd_utils.go:160
+#: mgradm/shared/utils/cmd_utils.go:146
 msgid ""
 "How many replicas of the confidential computing container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
@@ -2100,16 +2093,16 @@ msgstr ""
 "应启动机密计算容器的多少复本。\n"
 "如果您希望保留之前的复本数，请勿设置该项。"
 
-#: mgradm/shared/utils/cmd_utils.go:167 mgradm/shared/utils/cmd_utils.go:168
-#: mgradm/shared/utils/cmd_utils.go:177 mgradm/shared/utils/cmd_utils.go:178
+#: mgradm/shared/utils/cmd_utils.go:153 mgradm/shared/utils/cmd_utils.go:154
+#: mgradm/shared/utils/cmd_utils.go:163 mgradm/shared/utils/cmd_utils.go:164
 msgid "Hub XML-RPC API"
 msgstr "Hub XML-RPC API"
 
-#: mgradm/shared/utils/cmd_utils.go:170
+#: mgradm/shared/utils/cmd_utils.go:156
 msgid "How many replicas of the Hub XML-RPC API service container should be started."
 msgstr "应启动 Hub XML-RPC API 服务容器的多少复本。"
 
-#: mgradm/shared/utils/cmd_utils.go:180
+#: mgradm/shared/utils/cmd_utils.go:166
 msgid ""
 "How many replicas of the Hub XML-RPC API service container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas."
@@ -2117,15 +2110,15 @@ msgstr ""
 "应启动 Hub XML-RPC API 服务容器的多少复本。\n"
 "如果您希望保留之前的复本数，请勿设置该项。"
 
-#: mgradm/shared/utils/cmd_utils.go:187 mgradm/shared/utils/cmd_utils.go:198
+#: mgradm/shared/utils/cmd_utils.go:173 mgradm/shared/utils/cmd_utils.go:184
 msgid "Saline Flags"
 msgstr "Saline 标志"
 
-#: mgradm/shared/utils/cmd_utils.go:188 mgradm/shared/utils/cmd_utils.go:199
+#: mgradm/shared/utils/cmd_utils.go:174 mgradm/shared/utils/cmd_utils.go:185
 msgid "Saline"
 msgstr "Saline"
 
-#: mgradm/shared/utils/cmd_utils.go:189
+#: mgradm/shared/utils/cmd_utils.go:175
 msgid ""
 "How many replicas of the Saline container should be started\n"
 "(only 0 or 1 supported for now)"
@@ -2133,11 +2126,11 @@ msgstr ""
 "应启动 Saline 容器的多少复本\n"
 "（目前仅支持 0 或 1 个）"
 
-#: mgradm/shared/utils/cmd_utils.go:191 mgradm/shared/utils/cmd_utils.go:203
+#: mgradm/shared/utils/cmd_utils.go:177 mgradm/shared/utils/cmd_utils.go:189
 msgid "Saline port"
 msgstr "Saline 端口"
 
-#: mgradm/shared/utils/cmd_utils.go:200
+#: mgradm/shared/utils/cmd_utils.go:186
 msgid ""
 "How many replicas of the Saline container should be started.\n"
 "Leave it unset if you want to keep the previous number of replicas.\n"
@@ -2147,19 +2140,19 @@ msgstr ""
 "如果您希望保留之前的复本数，请勿设置该项。\n"
 "（目前仅支持 0 或 1 个）"
 
-#: mgradm/shared/utils/cmd_utils.go:210
+#: mgradm/shared/utils/cmd_utils.go:196
 msgid "PostgreSQL Database Container Flags"
 msgstr "PostgreSQL 数据库容器标志"
 
-#: mgradm/shared/utils/cmd_utils.go:211
+#: mgradm/shared/utils/cmd_utils.go:197
 msgid "PostgreSQL Database"
 msgstr "PostgreSQL 数据库"
 
-#: mgradm/shared/utils/cmd_utils.go:216
+#: mgradm/shared/utils/cmd_utils.go:202
 msgid "Time zone to set on the server. Defaults to the host timezone"
 msgstr "要在服务器上设置的时区。默认设为主机时区"
 
-#: mgradm/shared/utils/cmd_utils.go:231
+#: mgradm/shared/utils/cmd_utils.go:217
 msgid "Enable tomcat and taskomatic remote debugging"
 msgstr "启用 tomcat 和 taskomatic 远程调试"
 
@@ -2189,13 +2182,23 @@ msgstr "无法从服务器映像提取版本信息"
 msgid "cannot downgrade from version %[1]s to %[2]s"
 msgstr "无法从版本 %[1]s 降级到 %[2]s"
 
-#: mgradm/shared/utils/flags.go:144
+#: mgradm/shared/utils/flags.go:124
 msgid "Can only contain letters, digits . _ and -"
 msgstr "只能包含字母、数字 . _ 和 -"
 
-#: mgradm/shared/utils/flags.go:152
+#: mgradm/shared/utils/flags.go:132
 msgid "Not a valid email address"
 msgstr "不是有效的电子邮件地址"
+
+#~ msgid "cannot wait for system start"
+#~ msgstr "无法等待系统启动"
+
+#, javascript-format
+#~ msgid "%s fails healtcheck"
+#~ msgstr "%s 健康检查失败"
+
+#~ msgid "DB certificate, key and root CA need to be all provided"
+#~ msgstr "数据库证书、密钥和根 CA 必须全部提供"
 
 #~ msgid "Generating the database certificate…"
 #~ msgstr "正在生成数据库证书…"
