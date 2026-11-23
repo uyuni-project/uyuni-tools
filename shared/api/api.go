@@ -52,8 +52,25 @@ func logTraceHeader(v *http.Header) {
 }
 
 func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
+	return c.sendRequestWith(c.Client, req)
+}
+
+// clientWithoutTimeout returns an HTTP client without overall request timeout.
+// This is needed for requests sending or receiving large amounts of data.
+func (c *APIClient) clientWithoutTimeout() HTTPClient {
+	if httpClient, ok := c.Client.(*http.Client); ok {
+		noTimeoutClient := *httpClient
+		noTimeoutClient.Timeout = 0
+		return &noTimeoutClient
+	}
+	return c.Client
+}
+
+func (c *APIClient) sendRequestWith(client HTTPClient, req *http.Request) (*http.Response, error) {
 	log.Debug().Msgf("Sending %s request %s", req.Method, req.URL)
-	req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	if req.Header.Get("Content-Type") == "" {
+		req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	}
 	req.Header.Set("Accept", "application/json; charset=utf-8")
 	if c.AuthCookie != nil {
 		req.AddCookie(c.AuthCookie)
@@ -61,7 +78,7 @@ func (c *APIClient) sendRequest(req *http.Request) (*http.Response, error) {
 
 	logTraceHeader(&req.Header)
 
-	res, err := c.Client.Do(req)
+	res, err := client.Do(req)
 	if err != nil {
 		log.Trace().Err(err).Msgf("Request failed")
 		return nil, err
@@ -254,6 +271,33 @@ func (c *APIClient) Post(path string, data map[string]interface{}) (*http.Respon
 	return res, nil
 }
 
+// PostRaw issues a POST HTTP request to the API target using the provided body and content type.
+//
+// `contentLength` is the size of the body in bytes, or -1 if unknown.
+func (c *APIClient) PostRaw(path string, body io.Reader, contentLength int64, contentType string) (
+	*http.Response, error) {
+	url := fmt.Sprintf("%s/%s", c.BaseURL, path)
+	req, err := http.NewRequest("POST", url, body)
+	if err != nil {
+		return nil, err
+	}
+	req.ContentLength = contentLength
+	if contentType != "" {
+		req.Header.Set("Content-Type", contentType)
+	}
+
+	return c.sendRequestWith(c.clientWithoutTimeout(), req)
+}
+
+// PostRawChecked validates the API endpoint before issuing a raw POST request.
+func (c *APIClient) PostRawChecked(path string, body io.Reader, contentLength int64, contentType string) (
+	*http.Response, error) {
+	if err := c.validateEndpoint(path); err != nil {
+		return nil, err
+	}
+	return c.PostRaw(path, body, contentLength, contentType)
+}
+
 // PostChecked validates the API endpoint before issuing a POST request.
 func (c *APIClient) PostChecked(path string, data map[string]interface{}) (*http.Response, error) {
 	if err := c.validateEndpoint(path); err != nil {
@@ -320,6 +364,18 @@ func Post[T interface{}](client *APIClient, path string, data map[string]interfa
 	}
 
 	return &response, nil
+}
+
+// PostRawChecked issues a validated raw POST request to the API using the client and decodes the response.
+func PostRawChecked[T interface{}](
+	client *APIClient, path string, body io.Reader, contentLength int64, contentType string,
+) (*APIResponse[T], error) {
+	res, err := client.PostRawChecked(path, body, contentLength, contentType)
+	if err != nil {
+		return nil, err
+	}
+
+	return decodeAPIResponse[T](res)
 }
 
 // Get issues an HTTP GET request to the API using the client and decodes the response.
