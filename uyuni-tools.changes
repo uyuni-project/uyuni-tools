@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Nov 24 14:31:47 CET 2026 - antonio.garofalo@suse.com
+
+- version 5.3.4-0
+  * Use the api.getApiCallList to check for API availability
+  * Preserve the configured timezone during upgrade (bsc#1278137)
+  * Use the settings of the current installation and deployment on upgrade
+  * Fix the container name in the server pod on Kubernetes (bsc#1290253)
+Better monitoring of container startup (bsc#1280530)
+
+-------------------------------------------------------------------
 Wed Oct 07 17:53:40 CEST 2026 - marina.latini@suse.com
 
 - version 5.3.3-0

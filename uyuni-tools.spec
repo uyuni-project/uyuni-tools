@@ -52,7 +52,7 @@
 # debian || ubuntu
 
 Name:           %{project}
-Version:        5.3.3
+Version:        5.3.4
 Release:        0
 Summary:        Tools for managing %{productprettyname} container
 License:        Apache-2.0
