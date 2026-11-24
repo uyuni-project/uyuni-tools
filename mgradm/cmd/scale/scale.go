@@ -6,17 +6,34 @@ package scale
 
 import (
 	"github.com/spf13/cobra"
+	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 type scaleFlags struct {
-	Replicas int
+	Replicas  int
+	Image     types.ImageFlags     `mapstructure:",squash"`
+	SCC       types.SCCCredentials `mapstructure:"scc"`
+	Coco      adm_utils.CocoFlags
+	HubXmlrpc adm_utils.HubXmlrpcFlags
+	Saline    adm_utils.SalineFlags
 }
 
 func addScaleFlags(cmd *cobra.Command) {
 	cmd.Flags().Int("replicas", 0, L("How many replicas of a service should be started."))
+	utils.AddPullPolicyFlag(cmd)
+	utils.AddRegistryFlag(cmd)
+	adm_utils.AddSCCFlag(cmd)
+
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "coco-container", Title: L("Confidential Computing Flags")})
+	utils.AddContainerImageFlags(cmd, "coco", L("Confidential computing attestation"),
+		"coco-container", "server-attestation")
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "hubxmlrpc-container", Title: L("Hub XML-RPC API")})
+	utils.AddContainerImageFlags(cmd, "hubxmlrpc", L("Hub XML-RPC API"), "hubxmlrpc-container", "server-hub-xmlrpc-api")
+	_ = utils.AddFlagHelpGroup(cmd, &utils.Group{ID: "saline-container", Title: L("Saline Flags")})
+	utils.AddContainerImageFlags(cmd, "saline", L("Saline"), "saline-container", "server-saline")
 }
 
 func newCmd(globalFlags *types.GlobalFlags, run utils.CommandFunc[scaleFlags]) *cobra.Command {
@@ -29,6 +46,8 @@ Supported services:
   - uyuni-hub-xmlrpc
   - uyuni-saline
   - uyuni-server-attestation
+
+The current image of the service is kept, unless its image or tag flag is passed.
 `),
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
