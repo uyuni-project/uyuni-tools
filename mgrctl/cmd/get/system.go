@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
-	"unicode"
 
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	apitypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
@@ -66,17 +65,16 @@ func (*systemFetcher) Help() ResourceHelp {
 }
 
 func (*systemFetcher) List(client *api.APIClient, opts ListOptions) ([]System, int, error) {
-	filterKey, filterValue := "", ""
-	if opts.Filter != "" {
-		var err error
-		filterKey, filterValue, err = parseFilter(opts.Filter)
-		if err != nil {
-			return nil, 0, err
+	filterValue := ""
+	if opts.hasFilter() {
+		// The listSystemsFiltered API takes the value without any operator (or simply !) for matches.
+		if opts.FilterOperator == "~" || opts.FilterOperator == "!~" {
+			filterValue = strings.Replace(opts.FilterOperator, "~", "", 1) + opts.FilterValue
 		}
 	}
 
 	query := url.Values{}
-	query.Set("filterKey", filterKey)
+	query.Set("filterKey", opts.FilterKey)
 	query.Set("filterValue", filterValue)
 	query.Set("page", fmt.Sprintf("%d", opts.PageNumber))
 	query.Set("pageSize", fmt.Sprintf("%d", opts.PageSize))
@@ -89,36 +87,4 @@ func (*systemFetcher) List(client *api.APIClient, opts ListOptions) ([]System, i
 		return nil, 0, err
 	}
 	return res.Result.Data, res.Result.Total, nil
-}
-
-func parseFilter(expr string) (string, string, error) {
-	var key, value string
-	found := false
-	for _, op := range []string{">=", "<=", "!=", "=", ">", "<"} {
-		if i := strings.Index(expr, op); i >= 0 {
-			key = strings.TrimSpace(expr[:i])
-			value = strings.TrimSpace(expr[i:])
-			found = true
-			break
-		}
-	}
-
-	if !found {
-		key = strings.TrimSpace(expr)
-	}
-
-	if key == "" {
-		return "", "", fmt.Errorf(L("filter key cannot be empty in %q"), expr)
-	}
-
-	for _, c := range key {
-		if !unicode.IsLetter(c) && !unicode.IsDigit(c) && c != '_' && c != '-' {
-			return "", "", fmt.Errorf(
-				L("invalid filter key %q: only letters, digits, underscores and dashes are allowed"),
-				key,
-			)
-		}
-	}
-
-	return key, value, nil
 }

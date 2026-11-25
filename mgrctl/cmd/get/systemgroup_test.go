@@ -68,7 +68,9 @@ func TestSystemGroupListValidatesSortBeforeRequest(t *testing.T) {
 }
 
 func TestSystemGroupListRejectsFilterBeforeRequest(t *testing.T) {
-	_, _, err := (&systemGroupFetcher{}).List(nil, ListOptions{Filter: "name=example"})
+	_, _, err := (&systemGroupFetcher{}).List(nil, ListOptions{
+		FilterKey: "name", FilterOperator: "=", FilterValue: "value",
+	})
 	testutils.AssertError(t, "filtering is not supported", err)
 }
 

@@ -7,6 +7,8 @@ package get
 import (
 	"fmt"
 	"os"
+	"strings"
+	"unicode"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -56,8 +58,9 @@ Filtering:
   system supports server-side filtering; systemgroup does not.
 
   --filter takes a KEY OPERATOR VALUE expression, where OPERATOR is one of
-  =, !=, >, <, >=, <=. The available keys depend on the resource type and are
-  documented at https://www.uyuni-project.org/uyuni-docs-api/uyuni/index.html
+  =, !=, ~, !~, >, <, >=, <=. The ~ and !~ operators look for the term
+  in the value and can only be used on string values.
+  The available keys are the field names in the JSON output of the resource.
 
 Field names:
   custom-columns uses the Go field names, such as Name or Status.State, while
@@ -129,8 +132,19 @@ func runGet(_ *types.GlobalFlags, flags *getFlags, _ *cobra.Command, args []stri
 		}
 	}
 
+	filterKey, filterOperator, filterValue := "", "", ""
+	if flags.Filter != "" {
+		var err error
+		filterKey, filterOperator, filterValue, err = parseFilter(flags.Filter)
+		if err != nil {
+			return err
+		}
+	}
+
 	return resource.ListAndPrint(client, ListOptions{
-		Filter:         flags.Filter,
+		FilterKey:      filterKey,
+		FilterOperator: filterOperator,
+		FilterValue:    filterValue,
 		SortBy:         flags.Sort.By,
 		SortDescending: flags.Sort.Descending,
 		PageNumber:     flags.Page.Number,
@@ -138,4 +152,40 @@ func runGet(_ *types.GlobalFlags, flags *getFlags, _ *cobra.Command, args []stri
 		OutputFormat:   flags.OutputFormat,
 		Out:            os.Stdout,
 	})
+}
+
+// parseFilter validates and splits the filter string into key, operator and value.
+func parseFilter(expr string) (key string, operator string, value string, err error) {
+	found := false
+	for _, op := range []string{">=", "<=", "!=", "=", ">", "<", "!~", "~"} {
+		if i := strings.Index(expr, op); i >= 0 {
+			key = strings.TrimSpace(expr[:i])
+			valueStart := i + len(op)
+			value = expr[valueStart:]
+			operator = op
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		key = strings.TrimSpace(expr)
+	}
+
+	if key == "" {
+		err = fmt.Errorf(L("filter key cannot be empty in %q"), expr)
+		return
+	}
+
+	for _, c := range key {
+		if !unicode.IsLetter(c) && !unicode.IsDigit(c) && c != '_' && c != '-' {
+			err = fmt.Errorf(
+				L("invalid filter key %q: only letters, digits, underscores and dashes are allowed"),
+				key,
+			)
+			return
+		}
+	}
+
+	return
 }

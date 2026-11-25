@@ -71,7 +71,7 @@ func init() {
 type systemGroupFetcher struct{}
 
 func (*systemGroupFetcher) List(client *api.APIClient, opts ListOptions) ([]SystemGroup, int, error) {
-	if opts.Filter != "" {
+	if opts.hasFilter() {
 		return nil, 0, errors.New(L("filtering is not supported for system groups"))
 	}
 

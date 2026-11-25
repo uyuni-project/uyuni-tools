@@ -19,7 +19,9 @@ import (
 // ListOptions holds everything a resource needs to fetch a listing and render it.
 type ListOptions struct {
 	// Resources whose API supports neither filtering nor pagination ignore these.
-	Filter         string
+	FilterKey      string
+	FilterOperator string
+	FilterValue    string
 	PageNumber     int
 	PageSize       int
 	SortBy         string
@@ -27,6 +29,11 @@ type ListOptions struct {
 
 	OutputFormat string
 	Out          io.Writer // rendered items go here; tests pass a buffer
+}
+
+// hasFilter returns whether to apply filtering or not.
+func (o ListOptions) hasFilter() bool {
+	return o.FilterKey != "" && o.FilterValue != ""
 }
 
 // ResourceFetcher is the strongly typed interface to implement for each resource.
