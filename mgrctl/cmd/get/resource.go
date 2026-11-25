@@ -36,6 +36,16 @@ func (o ListOptions) hasFilter() bool {
 	return o.FilterKey != "" && o.FilterValue != ""
 }
 
+// hasPagination returns whether results are paginated or not. A page size below one means no pagination.
+func (o ListOptions) hasPagination() bool {
+	return o.PageSize > 0
+}
+
+// pageCount returns the number of pages needed to hold total items, rounding up the last partial page.
+func pageCount(total int, pageSize int) int {
+	return (total + pageSize - 1) / pageSize
+}
+
 // ResourceFetcher is the strongly typed interface to implement for each resource.
 type ResourceFetcher[R any] interface {
 	List(client *api.APIClient, opts ListOptions) ([]R, int, error)
@@ -74,8 +84,10 @@ func registerResource[R any](name string, fetcher ResourceFetcher[R], aliases []
 				return err
 			}
 
-			if total > 0 && opts.PageSize > 0 {
-				log.Info().Msgf(L("Fetched %[1]d items out of %[2]d total"), len(items), total)
+			if total > 0 && opts.hasPagination() {
+				pages := pageCount(total, opts.PageSize)
+				log.Info().Msgf(L("Fetched %[1]d items out of %[2]d total. Page %[3]d/%[4]d"),
+					len(items), total, opts.PageNumber+1, pages) // User wants to see page numbers starting at 1
 			}
 			return utils.PrintOutput(opts.OutputFormat, items, fetcher.Columns(), opts.Out)
 		},

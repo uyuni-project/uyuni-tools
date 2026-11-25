@@ -5,6 +5,7 @@
 package get
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -103,18 +104,36 @@ Resource details:
 		L("Field to sort results by; supported fields depend on the resource type"))
 	cmd.Flags().BoolVar(&flags.Sort.Descending, "sort-descending", false,
 		L("Sort in descending order"))
-	cmd.Flags().IntVar(&flags.Page.Number, "page", 0,
-		L("Page number for paginated results (0-indexed). "+
+	cmd.Flags().IntVar(&flags.Page.Number, "page", 1,
+		L("Page number for paginated results, starting at 1. "+
 			"May be ignored, depending on the resource type and its API"))
 	cmd.Flags().IntVar(&flags.Page.Size, "page-size", 50,
-		L("Number of items per page. "+
+		L("Number of items per page, 0 for no paging. "+
 			"May be ignored, depending on the resource type and its API"))
 
 	api.AddAPIFlags(cmd)
 	return cmd
 }
 
+func validateFlags(flags *getFlags) error {
+	return errors.Join(
+		validateIntMin(flags.Page.Number, 1, errors.New(L("page number has to be greater or equal to 1"))),
+		validateIntMin(flags.Page.Size, 0, errors.New(L("page size has to be greater or equal to 0"))),
+	)
+}
+
+func validateIntMin(value int, minimum int, err error) error {
+	if value < minimum {
+		return err
+	}
+	return nil
+}
+
 func runGet(_ *types.GlobalFlags, flags *getFlags, _ *cobra.Command, args []string) error {
+	if err := validateFlags(flags); err != nil {
+		return err
+	}
+
 	resourceType := args[0]
 	log.Debug().Msgf("Running get %s", resourceType)
 
@@ -147,7 +166,7 @@ func runGet(_ *types.GlobalFlags, flags *getFlags, _ *cobra.Command, args []stri
 		FilterValue:    filterValue,
 		SortBy:         flags.Sort.By,
 		SortDescending: flags.Sort.Descending,
-		PageNumber:     flags.Page.Number,
+		PageNumber:     flags.Page.Number - 1, // Users see pages starting at one, API not
 		PageSize:       flags.Page.Size,
 		OutputFormat:   flags.OutputFormat,
 		Out:            os.Stdout,

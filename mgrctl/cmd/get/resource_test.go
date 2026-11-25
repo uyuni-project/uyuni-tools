@@ -15,6 +15,13 @@ import (
 	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
+func TestPageCount(t *testing.T) {
+	testutils.AssertEquals(t, "exact division", 2, pageCount(20, 10))
+	testutils.AssertEquals(t, "partial last page", 3, pageCount(25, 10))
+	testutils.AssertEquals(t, "single partial page", 1, pageCount(3, 10))
+	testutils.AssertEquals(t, "single full page", 1, pageCount(10, 10))
+}
+
 func TestSortByFlagConfiguration(t *testing.T) {
 	const expected = "system_count"
 
@@ -120,7 +127,7 @@ func TestResourceHelpSections(t *testing.T) {
 		testutils.AssertStringContains(t, "missing resource details", getResourceHelpDetails(), expected)
 	}
 	examples := []string{
-		"mgrctl get system --page 0 --page-size 10",
+		"mgrctl get system --page 1 --page-size 10",
 		"mgrctl get systemgroup --sort-by=name",
 	}
 	for _, expected := range examples {

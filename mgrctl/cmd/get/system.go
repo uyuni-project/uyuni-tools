@@ -60,7 +60,7 @@ func (*systemFetcher) Help() ResourceHelp {
   mgrctl get system --filter "extra_pkg_count>0"
 
   # Show the first page of ten systems
-  mgrctl get system --page 0 --page-size 10`),
+  mgrctl get system --page 1 --page-size 10`),
 	}
 }
 
