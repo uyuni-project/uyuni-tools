@@ -5,6 +5,7 @@
 package get
 
 import (
+	"errors"
 	"fmt"
 	"net/url"
 	"strings"
@@ -18,15 +19,16 @@ import (
 type System struct {
 	ID                        int      `json:"id"`
 	Name                      string   `json:"name"`
-	LastCheckin               string   `json:"last_checkin"`
-	Created                   string   `json:"created"`
 	GroupCount                int      `json:"group_count"`
 	SecurityErrata            int      `json:"security_errata"`
 	BugErrata                 int      `json:"bug_errata"`
 	EnhancementErrata         int      `json:"enhancement_errata"`
-	OutdatedPkgCount          int      `json:"outdated_pkg_count"`
+	OutdatedPackages          int      `json:"outdated_packages"`
+	TotalErrataCount          int      `json:"total_errata_count"`
 	ConfigFilesWithDifference int      `json:"config_files_with_difference"`
 	ChannelLabels             string   `json:"channel_labels"`
+	LastCheckin               string   `json:"last_checkin"`
+	LastCheckinDays           int      `json:"last_checkin_days"`
 	MgrServer                 bool     `json:"mgr_server"`
 	Proxy                     bool     `json:"proxy"`
 	Entitlement               []string `json:"entitlement"`
@@ -34,7 +36,13 @@ type System struct {
 	VirtualGuest              bool     `json:"virtual_guest"`
 	ExtraPkgCount             int      `json:"extra_pkg_count"`
 	RequiresReboot            bool     `json:"requires_reboot"`
-	LastBoot                  string   `json:"last_boot"`
+	ActionsCount              int      `json:"actions_count"`
+	Kickstarting              bool     `json:"kickstarting"`
+	UnscheduledErrataCount    int      `json:"unscheduled_errata_count"`
+	CreatorName               string   `json:"creator_name"`
+	Created                   string   `json:"created"`
+	CreatedDays               int      `json:"created_days"`
+	StatusType                string   `json:"status_type"`
 }
 
 func init() {
@@ -85,6 +93,9 @@ func (*systemFetcher) List(client *api.APIClient, opts ListOptions) ([]System, i
 	res, err := api.GetChecked[apitypes.FilteredResponse[System]](client, path)
 	if err != nil {
 		return nil, 0, err
+	}
+	if !res.Success {
+		return nil, 0, utils.Error(errors.New(res.Message), L("failed to get the systems"))
 	}
 	return res.Result.Data, res.Result.Total, nil
 }
