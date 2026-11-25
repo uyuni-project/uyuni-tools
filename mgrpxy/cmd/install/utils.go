@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2026 SUSE LLC
+// SPDX-FileCopyrightText: 2026 Jay Prakash katara <katarajayprakash@icloud.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -41,6 +42,15 @@ func installForPodman(
 
 	hostData, err := shared_podman.InspectHost()
 	if err != nil {
+		return err
+	}
+
+	if err := shared_podman.CheckPrerequisites(
+		minProxyMemoryGB,
+		minProxyStorageGB,
+		shared_utils.GetProxyPorts(),
+		shared_podman.UyuniNetwork,
+	); err != nil {
 		return err
 	}
 
@@ -100,3 +110,8 @@ func installForPodman(
 
 	return podman.StartPod(systemd)
 }
+
+const (
+	minProxyMemoryGB  = 2
+	minProxyStorageGB = 100
+)
