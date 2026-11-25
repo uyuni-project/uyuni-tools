@@ -63,13 +63,19 @@ Filtering:
   in the value and can only be used on string values.
   The available keys are the field names in the JSON output of the resource.
 
+  Date fields like need to be filtered using a date or timestamp in
+  ISO-8601 format like '2026-11-23' or '2026-11-23T12:34:56'.
+  Timestamps can have an optional timezone offset or the 'Z' letter
+  indicating UTC.
+
+  Boolean fields need to be filtered with a case insensitive 'true' or 'false'.
+
 Field names:
   custom-columns uses the Go field names, such as Name or Status.State, while
   jsonpath and go-template use the JSON field names, such as name or
   status.state.
 
-Resource details:
-%[2]s`), getResourceHelpSummaries(), getResourceHelpDetails()),
+`), getResourceHelpSummaries()),
 		Example: fmt.Sprintf(L(`  # Print complete objects as JSON or YAML
   mgrctl get system -o json
   mgrctl get system -o yaml
@@ -100,16 +106,12 @@ Resource details:
 
 	utils.AddOutputFlag(cmd, &flags.OutputFormat)
 	cmd.Flags().StringVar(&flags.Filter, "filter", "", L("Filter expression, e.g. extra_pkg_count>0"))
-	cmd.Flags().StringVar(&flags.Sort.By, "sort-by", "",
-		L("Field to sort results by; supported fields depend on the resource type"))
+	cmd.Flags().StringVar(&flags.Sort.By, "sort-by", "", L("Field to sort results by"))
 	cmd.Flags().BoolVar(&flags.Sort.Descending, "sort-descending", false,
 		L("Sort in descending order"))
 	cmd.Flags().IntVar(&flags.Page.Number, "page", 1,
-		L("Page number for paginated results, starting at 1. "+
-			"May be ignored, depending on the resource type and its API"))
-	cmd.Flags().IntVar(&flags.Page.Size, "page-size", 50,
-		L("Number of items per page, 0 for no paging. "+
-			"May be ignored, depending on the resource type and its API"))
+		L("Page number for paginated results, starting at 1"))
+	cmd.Flags().IntVar(&flags.Page.Size, "page-size", 50, L("Number of items per page, 0 for no paging"))
 
 	api.AddAPIFlags(cmd)
 	return cmd

@@ -46,7 +46,7 @@ type System struct {
 }
 
 func init() {
-	registerResource("system", &systemFetcher{}, []string{"sys"})
+	registerResource("system", &systemFetcher{}, []string{"sys"}, true, true)
 }
 
 type systemFetcher struct{}
@@ -63,7 +63,6 @@ func (*systemFetcher) Columns() []utils.ColumnDef {
 func (*systemFetcher) Help() ResourceHelp {
 	return ResourceHelp{
 		Summary: L("List systems"),
-		Details: L("Systems support server-side filtering, sorting, and pagination."),
 		Examples: L(`  # List systems that have extra packages installed
   mgrctl get system --filter "extra_pkg_count>0"
 

@@ -54,10 +54,9 @@ type ResourceFetcher[R any] interface {
 }
 
 // ResourceHelp describes a resource in command help and resource listings.
-// Details and Examples are optional so simple resources only need a summary.
+// Examples are optional so simple resources only need a summary.
 type ResourceHelp struct {
 	Summary  string
-	Details  string
 	Examples string
 }
 
@@ -73,7 +72,10 @@ var resourceTypes = make(map[string]resource)
 // registerResource adds a resource type to the global lookup table.
 // Called from each resource file's init() so that adding a resource
 // only requires creating a new file with no changes to resource.go.
-func registerResource[R any](name string, fetcher ResourceFetcher[R], aliases []string) {
+//
+// If canSort is set to true, the sort will need to happen in the List() of the fetcher,
+// otherwise, it will be performed on the fetched data. The same applies to canFilter.
+func registerResource[R any](name string, fetcher ResourceFetcher[R], aliases []string, canSort bool, canFilter bool) {
 	resourceTypes[name] = resource{
 		Columns: fetcher.Columns,
 		Help:    fetcher.Help,
@@ -82,6 +84,20 @@ func registerResource[R any](name string, fetcher ResourceFetcher[R], aliases []
 			items, total, err := fetcher.List(client, opts)
 			if err != nil {
 				return err
+			}
+
+			if !canSort || !canFilter {
+				processor := NewDataProcessor(items, opts)
+				if !canSort {
+					processor = processor.Sort()
+				}
+				if !canFilter {
+					processor = processor.Filter()
+				}
+				items, err = processor.Get()
+				if err != nil {
+					return err
+				}
 			}
 
 			if total > 0 && opts.hasPagination() {
@@ -157,21 +173,6 @@ func getResourceHelpSummaries() string {
 		summaries = append(summaries, fmt.Sprintf("  %s\n    %s", formatResourceHeading(resource), resource.Help.Summary))
 	}
 	return strings.Join(summaries, "\n")
-}
-
-func getResourceHelpDetails() string {
-	var details []string
-	for _, resource := range GetRegisteredResources() {
-		if resource.Help.Details == "" {
-			continue
-		}
-		details = append(details, fmt.Sprintf(
-			"  %s\n    %s",
-			resource.Name,
-			strings.ReplaceAll(resource.Help.Details, "\n", "\n    "),
-		))
-	}
-	return strings.Join(details, "\n\n")
 }
 
 func getResourceHelpExamples() string {

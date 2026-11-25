@@ -5,6 +5,7 @@
 package get
 
 import (
+	"bytes"
 	"fmt"
 	"testing"
 
@@ -67,7 +68,13 @@ type lookupTestItem struct {
 type lookupTestFetcher struct{}
 
 func (*lookupTestFetcher) List(*api.APIClient, ListOptions) ([]lookupTestItem, int, error) {
-	return []lookupTestItem{{ID: 1, Name: "one"}}, 1, nil
+	data := []lookupTestItem{
+		{ID: 1, Name: "zulu"},
+		{ID: 3, Name: "bravo"},
+		{ID: 4, Name: "charlie"},
+		{ID: 2, Name: "alpha"},
+	}
+	return data, len(data), nil
 }
 
 func (*lookupTestFetcher) Columns() []utils.ColumnDef {
@@ -77,7 +84,6 @@ func (*lookupTestFetcher) Columns() []utils.ColumnDef {
 func (*lookupTestFetcher) Help() ResourceHelp {
 	return ResourceHelp{
 		Summary:  "test resource help",
-		Details:  "test resource details",
 		Examples: "  mgrctl get lookuptest",
 	}
 }
@@ -89,7 +95,7 @@ func TestRegisterAndLookupResource(t *testing.T) {
 	wantColumns := []utils.ColumnDef{{Header: "ID", Field: "ID"}}
 	wantHelp := (&lookupTestFetcher{}).Help()
 
-	registerResource(name, &lookupTestFetcher{}, aliases)
+	registerResource(name, &lookupTestFetcher{}, aliases, false, false)
 	t.Cleanup(func() { delete(resourceTypes, name) })
 
 	for _, input := range append([]string{name}, aliases...) {
@@ -102,11 +108,61 @@ func TestRegisterAndLookupResource(t *testing.T) {
 	}
 
 	testutils.AssertStringContains(t, "missing resource summary", getResourceHelpSummaries(), wantHelp.Summary)
-	testutils.AssertStringContains(t, "missing resource details", getResourceHelpDetails(), wantHelp.Details)
 	testutils.AssertStringContains(t, "missing resource examples", getResourceHelpExamples(), wantHelp.Examples)
-
 	_, err := lookupResource("not-a-lookuptest")
 	testutils.AssertError(t, "unknown resource type", err)
+}
+
+// TestListAndPrint tests that ListAndPrint sorts and filters when asked to..
+func TestListAndPrint(t *testing.T) {
+	cases := []struct {
+		name      string
+		canSort   bool
+		canFilter bool
+		pageStart int
+		pageSize  int
+		wantOut   string
+		wantErr   string
+	}{
+		{"sort and filter by the server", true, true, 0, 0, "1 3 4 2", ""},
+		{"filter by the server", false, true, 0, 0, "2 3 4 1", ""},
+		{"sort by the server", true, false, 0, 0, "1 4 2", ""},
+		{"no sort, no filter by the server", false, false, 0, 0, "2 4 1", ""},
+		{"no sort, no filter by the server and paging", false, false, 1, 2, "1", ""},
+	}
+	// Check the returned data in lookupTestFetcher.List()
+
+	opts := ListOptions{
+		SortBy:    "Name",
+		FilterKey: "Name", FilterOperator: "!=", FilterValue: "bravo",
+		OutputFormat: "jsonpath={.items[*].ID}",
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			const name = "lookuptest"
+			aliases := []string{"lt", "lookup-test"}
+
+			registerResource(name, &lookupTestFetcher{}, aliases, c.canSort, c.canFilter)
+			t.Cleanup(func() { delete(resourceTypes, name) })
+
+			resource, err := lookupResource(name)
+			testutils.AssertNoError(t, "Unexpected error looking up for test resource", err)
+
+			opts.PageNumber = c.pageStart
+			opts.PageSize = c.pageSize
+
+			var buf bytes.Buffer
+			opts.Out = &buf
+			err = resource.ListAndPrint(nil, opts)
+			if c.wantErr == "" {
+				testutils.AssertNoError(t, "unexpected ListAndPrint error", err)
+			} else {
+				testutils.AssertError(t, c.wantErr, err)
+			}
+			testutils.AssertEquals(t, "unexpected printed output", c.wantOut, buf.String())
+		})
+	}
 }
 
 func TestResourceHelpSections(t *testing.T) {
@@ -118,13 +174,6 @@ func TestResourceHelpSections(t *testing.T) {
 	}
 	for _, expected := range summaries {
 		testutils.AssertStringContains(t, "missing resource summary", getResourceHelpSummaries(), expected)
-	}
-	details := []string{
-		"Systems support server-side filtering, sorting, and pagination.",
-		"System groups support client-side sorting by:",
-	}
-	for _, expected := range details {
-		testutils.AssertStringContains(t, "missing resource details", getResourceHelpDetails(), expected)
 	}
 	examples := []string{
 		"mgrctl get system --page 1 --page-size 10",

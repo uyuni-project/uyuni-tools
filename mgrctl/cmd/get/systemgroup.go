@@ -6,9 +6,6 @@ package get
 
 import (
 	"errors"
-	"fmt"
-	"sort"
-	"strings"
 
 	"github.com/uyuni-project/uyuni-tools/shared/api"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
@@ -23,75 +20,19 @@ type SystemGroup struct {
 	SystemCount int    `json:"system_count"`
 }
 
-var systemGroupSortFields = []string{
-	"id",
-	"name",
-	"description",
-	"org_id",
-	"system_count",
-}
-
-func systemGroupComparator(sortBy string) (func(a, b SystemGroup) bool, error) {
-	switch sortBy {
-	case "":
-		return nil, nil
-	case "id":
-		return func(a, b SystemGroup) bool {
-			return a.ID < b.ID
-		}, nil
-	case "name":
-		return func(a, b SystemGroup) bool {
-			return a.Name < b.Name
-		}, nil
-	case "description":
-		return func(a, b SystemGroup) bool {
-			return a.Description < b.Description
-		}, nil
-	case "org_id":
-		return func(a, b SystemGroup) bool {
-			return a.OrgID < b.OrgID
-		}, nil
-	case "system_count":
-		return func(a, b SystemGroup) bool {
-			return a.SystemCount < b.SystemCount
-		}, nil
-	default:
-		return nil, fmt.Errorf(
-			L("unsupported sort field %[1]q for system groups; supported fields: %[2]s"),
-			sortBy,
-			strings.Join(systemGroupSortFields, ", "),
-		)
-	}
-}
-
 func init() {
-	registerResource("systemgroup", &systemGroupFetcher{}, []string{"grp"})
+	registerResource("systemgroup", &systemGroupFetcher{}, []string{"grp"}, false, false)
 }
 
 type systemGroupFetcher struct{}
 
-func (*systemGroupFetcher) List(client *api.APIClient, opts ListOptions) ([]SystemGroup, int, error) {
-	if opts.hasFilter() {
-		return nil, 0, errors.New(L("filtering is not supported for system groups"))
-	}
-
-	compare, err := systemGroupComparator(opts.SortBy)
-	if err != nil {
-		return nil, 0, err
-	}
-
+func (*systemGroupFetcher) List(client *api.APIClient, _ ListOptions) ([]SystemGroup, int, error) {
 	res, err := api.GetChecked[[]SystemGroup](client, "systemgroup/listAllGroups")
 	if err != nil {
 		return nil, 0, err
 	}
-
-	if compare != nil {
-		sort.SliceStable(res.Result, func(i, j int) bool {
-			if opts.SortDescending {
-				return compare(res.Result[j], res.Result[i])
-			}
-			return compare(res.Result[i], res.Result[j])
-		})
+	if !res.Success {
+		return nil, 0, utils.Error(errors.New(res.Message), L("failed to get the system groups"))
 	}
 
 	return res.Result, len(res.Result), nil
@@ -110,10 +51,6 @@ func (*systemGroupFetcher) Columns() []utils.ColumnDef {
 func (*systemGroupFetcher) Help() ResourceHelp {
 	return ResourceHelp{
 		Summary: L("List system groups"),
-		Details: fmt.Sprintf(
-			L("System groups support client-side sorting by:\n  %s"),
-			strings.Join(systemGroupSortFields, ", "),
-		),
 		Examples: L(`  # List all system groups
   mgrctl get systemgroup
 
