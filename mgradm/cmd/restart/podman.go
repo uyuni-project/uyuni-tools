@@ -5,10 +5,11 @@
 package restart
 
 import (
+	"errors"
+
 	"github.com/spf13/cobra"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 var systemd podman.Systemd = podman.NewSystemd()
@@ -19,7 +20,7 @@ func podmanRestart(
 	_ *cobra.Command,
 	_ []string,
 ) error {
-	return utils.JoinErrors(
+	return errors.Join(
 		systemd.ReloadDaemon(false),
 		systemd.RestartService(podman.DBService),
 		systemd.RestartService(podman.ServerService),

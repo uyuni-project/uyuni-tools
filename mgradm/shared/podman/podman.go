@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -612,7 +613,7 @@ func Upgrade(
 		return utils.Error(err, L("server container failed to start"))
 	}
 
-	return utils.JoinErrors(
+	return errors.Join(
 		coco.Upgrade(systemd, authFile, cocoFlags, image),
 		hub.Upgrade(systemd, authFile, image, hubXmlrpcFlags),
 		saline.Upgrade(systemd, authFile, image, salineFlags, env.TZ),

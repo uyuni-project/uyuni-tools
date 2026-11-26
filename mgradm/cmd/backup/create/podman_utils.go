@@ -7,6 +7,7 @@ package create
 import (
 	"archive/tar"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -18,7 +19,6 @@ import (
 	backup "github.com/uyuni-project/uyuni-tools/mgradm/cmd/backup/shared"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 // ExportConfiguration creates a tarball with podman network and secrets configuration.
@@ -54,7 +54,7 @@ func exportPodmanConfiguration(outputDir string, dryRun bool) error {
 			hasError = err
 		}
 		if _, err := tw.Write(network); err != nil {
-			hasError = utils.JoinErrors(hasError, err)
+			hasError = errors.Join(hasError, err)
 		}
 	}
 
@@ -67,10 +67,10 @@ func exportPodmanConfiguration(outputDir string, dryRun bool) error {
 			Size: int64(len(secrets)),
 		}
 		if err := tw.WriteHeader(header); err != nil {
-			hasError = utils.JoinErrors(hasError, err)
+			hasError = errors.Join(hasError, err)
 		}
 		if _, err := tw.Write(secrets); err != nil {
-			hasError = utils.JoinErrors(hasError, err)
+			hasError = errors.Join(hasError, err)
 		}
 	}
 	return hasError

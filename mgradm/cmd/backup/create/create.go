@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"slices"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -72,15 +73,15 @@ func Create(
 	hasError := backupContainerImages(images, imagesBackupPath, dryRun)
 
 	// systemd configuration backup is optional as we have defaults to use
-	hasError = utils.JoinErrors(hasError, backupSystemdServices(outputDirectory, dryRun))
+	hasError = errors.Join(hasError, backupSystemdServices(outputDirectory, dryRun))
 
 	// podman configuration backup is optional as we have defaults to use
-	hasError = utils.JoinErrors(hasError, backupPodmanConfiguration(outputDirectory, dryRun))
+	hasError = errors.Join(hasError, backupPodmanConfiguration(outputDirectory, dryRun))
 
 	// start service if it was stopped before
 	if serviceStopped && !flags.NoRestart && !dryRun {
 		log.Info().Msg(L("Restarting server service"))
-		hasError = utils.JoinErrors(hasError, podman_mgradm.StartServices())
+		hasError = errors.Join(hasError, podman_mgradm.StartServices())
 	}
 
 	log.Info().Msgf(L("Backup finished into %s"), outputDirectory)
@@ -130,7 +131,7 @@ func gatherVolumesToBackup(extraVolumes []string, skipVolumes []string, skipData
 
 	// Add other server volumes and skip if needed
 	for _, volume := range utils.ServerVolumeMounts {
-		if !utils.Contains(skipVolumes, volume.Name) {
+		if !slices.Contains(skipVolumes, volume.Name) {
 			volumes = append(volumes, volume.Name)
 		}
 	}
@@ -138,7 +139,7 @@ func gatherVolumesToBackup(extraVolumes []string, skipVolumes []string, skipData
 	// Remove duplicates
 	var uniqueVolumes []string
 	for _, volume := range volumes {
-		if !utils.Contains(uniqueVolumes, volume) {
+		if !slices.Contains(uniqueVolumes, volume) {
 			uniqueVolumes = append(uniqueVolumes, volume)
 		}
 	}
@@ -184,7 +185,7 @@ func backupContainerImages(images []string, outputDirectory string, dryRun bool)
 		log.Debug().Msgf("Backing up image %s", image)
 		if err := podman.ExportImage(image, outputDirectory, dryRun); err != nil {
 			log.Warn().Err(err).Msgf(L("Not backing up image %s"), image)
-			hasError = utils.JoinErrors(hasError, err)
+			hasError = errors.Join(hasError, err)
 		}
 	}
 	return hasError

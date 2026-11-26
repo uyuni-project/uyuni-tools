@@ -5,6 +5,7 @@
 package podman
 
 import (
+	"errors"
 	"os"
 	"path"
 	"strings"
@@ -158,7 +159,7 @@ func fetchBoundFileCommand(dir string, container string) (string, error) {
 		}
 		if stat, err := os.Stat(boundFile); err == nil && stat.Mode().IsRegular() {
 			_, err = boundFilesDump.WriteString("====" + boundFile + "====" + "\n")
-			if allErrors := utils.JoinErrors(err, utils.CopyFile(boundFile, boundFilesDump)); allErrors != nil {
+			if allErrors := errors.Join(err, utils.CopyFile(boundFile, boundFilesDump)); allErrors != nil {
 				return "", allErrors
 			}
 		}

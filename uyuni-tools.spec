@@ -26,7 +26,7 @@
 %global namespace       registry.opensuse.org/uyuni
 
 %if "%{productprettyname}" == "Uyuni"
-%if 0%{?suse_version} >= 1600 || 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 12 || 0%{?ubuntu} >= 2004
+%if 0%{?suse_version} >= 1600 || 0%{?sle_version} >= 150400 || 0%{?rhel} >= 8 || 0%{?fedora} >= 37 || 0%{?debian} >= 13 || 0%{?ubuntu} >= 2004
 %define adm_build    1
 %else
 %define adm_build    0
@@ -94,12 +94,12 @@ BuildRequires:  golang >= %{go_version}
 # ubuntu
 
 %if 0%{?debian}
-BuildRequires:  golang >= 1.19
+BuildRequires:  golang >= 1.24
 %endif
 # debian
 
 %if 0%{?fedora} || 0%{?rhel}
-BuildRequires:  golang >= 1.21
+BuildRequires:  golang >= 1.22
 %endif
 # fedora || rhel
 

@@ -6,6 +6,7 @@ package restore
 
 import (
 	"archive/tar"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -48,12 +49,12 @@ func restoreSystemdConfiguration(backupSource string, flags *shared.Flagpole) er
 		case tar.TypeDir:
 			if err := os.MkdirAll(header.Name, header.FileInfo().Mode()); err != nil {
 				log.Warn().Msgf(L("Unable to create directory %s"), header.Name)
-				hasError = utils.JoinErrors(hasError, err)
+				hasError = errors.Join(hasError, err)
 				continue
 			}
 		case tar.TypeReg:
 			if err := restoreSystemdFile(header, tr); err != nil {
-				hasError = utils.JoinErrors(hasError, err)
+				hasError = errors.Join(hasError, err)
 				continue
 			}
 		default:
@@ -63,7 +64,7 @@ func restoreSystemdConfiguration(backupSource string, flags *shared.Flagpole) er
 
 		if err := restoreFileAttributes(header.Name, header); err != nil {
 			log.Warn().Err(err).Msgf(L("Unable to restore file details for %s"), header.Name)
-			hasError = utils.JoinErrors(hasError, err)
+			hasError = errors.Join(hasError, err)
 		}
 	}
 	return hasError
@@ -91,9 +92,9 @@ func restoreSystemdFile(header *tar.Header, tr *tar.Reader) error {
 
 func restoreFileAttributes(filename string, th *tar.Header) error {
 	var e error
-	e = utils.JoinErrors(e, os.Chmod(filename, th.FileInfo().Mode()))
-	e = utils.JoinErrors(e, os.Chown(filename, th.Uid, th.Gid))
-	e = utils.JoinErrors(e, os.Chtimes(filename, th.AccessTime, th.ModTime))
+	e = errors.Join(e, os.Chmod(filename, th.FileInfo().Mode()))
+	e = errors.Join(e, os.Chown(filename, th.Uid, th.Gid))
+	e = errors.Join(e, os.Chtimes(filename, th.AccessTime, th.ModTime))
 	return e
 }
 
@@ -112,7 +113,7 @@ func generateDefaultSystemdServices(flags *shared.Flagpole) error {
 	// Assumption is system is already configured when backup was taken.
 	// No need for server environment file and everything should just work.
 
-	return utils.JoinErrors(
+	return errors.Join(
 		podman.GenerateUpgradeServerEnvironmentFile(),
 		podman.GenerateSystemdService(systemd, serverImage, adm_utils.InstallationFlags{}, []string{}, ""),
 		pgsql.GenerateCustomConfig(""),

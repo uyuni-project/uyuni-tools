@@ -400,22 +400,6 @@ func Error(err error, message string) error {
 	return fmt.Errorf("%s: %w", message, err)
 }
 
-// JoinErrors aggregate multiple multiple errors into one.
-//
-// Replacement for errors.Join which is not available in go 1.19.
-func JoinErrors(errs ...error) error {
-	var messages []string
-	for _, err := range errs {
-		if err != nil {
-			messages = append(messages, err.Error())
-		}
-	}
-	if len(messages) == 0 {
-		return nil
-	}
-	return errors.New(strings.Join(messages, "; "))
-}
-
 // GetFqdn returns and checks the FQDN of the host system.
 func GetFqdn(args []string) (string, error) {
 	var fqdn string

@@ -58,12 +58,12 @@ func prepareThirdPartyCertificate(
 		return err
 	}
 
-	errors := []error{}
+	errs := []error{}
 	for _, fqdn := range fqdns {
-		errors = append(errors, ssl.VerifyHostname(caPath, serverCertPath, fqdn))
+		errs = append(errs, ssl.VerifyHostname(caPath, serverCertPath, fqdn))
 	}
 
-	err = utils.JoinErrors(errors...)
+	err = errors.Join(errs...)
 	if err != nil {
 		return err
 	}
@@ -105,7 +105,7 @@ func prepareThirdPartyCertificates(
 		dbCertReady = true
 	}
 
-	err = utils.JoinErrors(errs...)
+	err = errors.Join(errs...)
 	return
 }
 

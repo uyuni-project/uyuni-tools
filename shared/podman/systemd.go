@@ -431,7 +431,7 @@ func (s SystemdImpl) StartInstantiated(service string) error {
 		err := s.StartService(fmt.Sprintf("%s@%d", service, i))
 		errList = append(errList, err)
 	}
-	return utils.JoinErrors(errList...)
+	return errors.Join(errList...)
 }
 
 // RestartInstantiated restarts all replicas.
@@ -441,7 +441,7 @@ func (s SystemdImpl) RestartInstantiated(service string) error {
 		err := s.RestartService(fmt.Sprintf("%s@%d", service, i))
 		errList = append(errList, err)
 	}
-	return utils.JoinErrors(errList...)
+	return errors.Join(errList...)
 }
 
 // StopInstantiated stops all replicas.
@@ -451,7 +451,7 @@ func (s SystemdImpl) StopInstantiated(service string) error {
 		err := s.StopService(fmt.Sprintf("%s@%d", service, i))
 		errList = append(errList, err)
 	}
-	return utils.JoinErrors(errList...)
+	return errors.Join(errList...)
 }
 
 // CurrentReplicaCount returns the current enabled replica count for a template service

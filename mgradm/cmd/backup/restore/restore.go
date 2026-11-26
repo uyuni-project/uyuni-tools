@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"slices"
 	"strings"
 
 	"github.com/rs/zerolog/log"
@@ -70,11 +71,11 @@ func Restore(
 
 	// Restore podman config or generate defaults
 	if err := restorePodmanConfig(inputDirectory, flags); err != nil {
-		hasError = utils.JoinErrors(hasError, err)
+		hasError = errors.Join(hasError, err)
 	}
 	// Restore systemd config or generate defaults
 	if err := restoreSystemdConfig(inputDirectory, flags); err != nil {
-		hasError = utils.JoinErrors(hasError, err)
+		hasError = errors.Join(hasError, err)
 	}
 
 	if flags.Restart {
@@ -151,7 +152,7 @@ func gatherVolumesToRestore(source string, flags *shared.Flagpole) ([]string, er
 		volName := strings.TrimSuffix(v.Name(), ".tar")
 
 		// Skip volumes set as skipvolume option
-		if utils.Contains(skipVolumes, volName) {
+		if slices.Contains(skipVolumes, volName) {
 			log.Info().Msgf(L("Skipping volume %s"), volName)
 			continue
 		}
@@ -222,7 +223,7 @@ func restoreImages(images []string, dryRun bool) error {
 	var hasErrors error
 	for _, image := range images {
 		if err := podman.RestoreImage(image, dryRun); err != nil {
-			hasErrors = utils.JoinErrors(hasErrors, err)
+			hasErrors = errors.Join(hasErrors, err)
 		}
 	}
 	return hasErrors
@@ -237,7 +238,7 @@ func restorePodmanConfig(inputDirectory string, flags *shared.Flagpole) error {
 
 	if !flags.SkipVerify {
 		if err := utils.ValidateChecksum(podmanConfigFile); err != nil {
-			return utils.JoinErrors(err, errors.New(L("Unable to validate podman backup file")))
+			return errors.Join(err, errors.New(L("Unable to validate podman backup file")))
 		}
 	}
 
@@ -253,7 +254,7 @@ func restoreSystemdConfig(inputDirectory string, flags *shared.Flagpole) error {
 	}
 	if !flags.SkipVerify {
 		if err := utils.ValidateChecksum(systemdConfigFile); err != nil {
-			return utils.JoinErrors(err, errors.New(L("Unable to validate systemd backup file")))
+			return errors.Join(err, errors.New(L("Unable to validate systemd backup file")))
 		}
 	}
 

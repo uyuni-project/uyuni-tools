@@ -101,7 +101,7 @@ func TestStartServices(t *testing.T) {
 				podman.ServerService: errors.New("failed to start server"),
 				podman.DBService:     errors.New("failed to start DB"),
 			},
-			err: "failed to start DB; failed to start server",
+			err: "failed to start DB\nfailed to start server",
 		},
 	}
 
@@ -187,7 +187,7 @@ func TestStopServices(t *testing.T) {
 				podman.ServerService: errors.New("failed to stop server"),
 				podman.DBService:     errors.New("failed to stop DB"),
 			},
-			err: "failed to stop server; failed to stop DB",
+			err: "failed to stop server\nfailed to stop DB",
 		},
 	}
 

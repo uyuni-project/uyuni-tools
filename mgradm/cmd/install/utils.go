@@ -111,7 +111,7 @@ func installForPodman(
 		}
 	}
 
-	return utils.JoinErrors(
+	return errors.Join(
 		shared_podman.EnablePodmanSocket(),
 		coco.SetupCocoContainer(systemd, authFile, flags.Coco, flags.Image, flags.Installation.DB),
 		hub.SetupHubXmlrpc(systemd, authFile, flags.Image, flags.HubXmlrpc),

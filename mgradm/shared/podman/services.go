@@ -11,7 +11,6 @@ import (
 	"github.com/rs/zerolog/log"
 	. "github.com/uyuni-project/uyuni-tools/shared/l10n"
 	sharedPodman "github.com/uyuni-project/uyuni-tools/shared/podman"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 var replicatedServerServices = []string{
@@ -56,7 +55,7 @@ func EnableServices(systemd sharedPodman.Systemd) error {
 			errs = append(errs, systemd.EnableServiceAtBoot(service))
 		}
 	}
-	return utils.JoinErrors(errs...)
+	return errors.Join(errs...)
 }
 
 // DisableServices disables automatic startup of all currently enabled server services without stopping them.
@@ -76,7 +75,7 @@ func DisableServices(systemd sharedPodman.Systemd) error {
 	for _, service := range services {
 		errs = append(errs, systemd.DisableServiceAtBoot(service))
 	}
-	return utils.JoinErrors(errs...)
+	return errors.Join(errs...)
 }
 
 // WarnIfServicesDisabled warns that the server stack will not start automatically at boot.

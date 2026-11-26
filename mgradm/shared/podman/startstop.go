@@ -5,8 +5,9 @@
 package podman
 
 import (
+	"errors"
+
 	"github.com/uyuni-project/uyuni-tools/shared/podman"
-	"github.com/uyuni-project/uyuni-tools/shared/utils"
 )
 
 func StartServices() error {
@@ -16,7 +17,7 @@ func StartServices() error {
 	if systemd.HasService(podman.DBService) {
 		dbErr = systemd.StartService(podman.DBService)
 	}
-	errs := utils.JoinErrors(
+	errs := errors.Join(
 		dbErr,
 		systemd.StartInstantiated(podman.ServerAttestationService),
 		systemd.StartInstantiated(podman.HubXmlrpcService),
@@ -25,11 +26,11 @@ func StartServices() error {
 	)
 
 	if systemd.ServiceIsEnabled(podman.TFTPService) {
-		errs = utils.JoinErrors(errs, systemd.StartService(podman.TFTPService))
+		errs = errors.Join(errs, systemd.StartService(podman.TFTPService))
 	}
 
 	if systemd.HasService(podman.SalineService + "@") {
-		errs = utils.JoinErrors(errs, systemd.StartInstantiated(podman.SalineService))
+		errs = errors.Join(errs, systemd.StartInstantiated(podman.SalineService))
 	}
 
 	return errs
@@ -38,7 +39,7 @@ func StartServices() error {
 func StopServices() error {
 	WarnIfServicesDisabled(systemd)
 
-	errs := utils.JoinErrors(
+	errs := errors.Join(
 		systemd.StopInstantiated(podman.ServerAttestationService),
 		systemd.StopInstantiated(podman.HubXmlrpcService),
 		systemd.StopInstantiated(podman.SalineService),
@@ -46,15 +47,15 @@ func StopServices() error {
 	)
 
 	if systemd.HasService(podman.DBService) {
-		errs = utils.JoinErrors(errs, systemd.StopService(podman.DBService))
+		errs = errors.Join(errs, systemd.StopService(podman.DBService))
 	}
 
 	if systemd.HasService(podman.SalineService + "@") {
-		errs = utils.JoinErrors(errs, systemd.StopInstantiated(podman.SalineService))
+		errs = errors.Join(errs, systemd.StopInstantiated(podman.SalineService))
 	}
 
 	if systemd.ServiceIsEnabled(podman.TFTPService) {
-		errs = utils.JoinErrors(errs, systemd.StopService(podman.TFTPService))
+		errs = errors.Join(errs, systemd.StopService(podman.TFTPService))
 	}
 	return errs
 }
