@@ -70,13 +70,18 @@ func AssertNoError(t *testing.T, message string, err error) {
 	t.Helper() // Important: Marks this function as a test helper
 
 	if err != nil {
-		t.Errorf(message+"err: %v", err)
+		t.Errorf(message+": %v", err)
 	}
 }
 
 // AssertError ensures error message was produced.
 func AssertError(t *testing.T, message string, err error) {
 	t.Helper() // Important: Marks this function as a test helper
+
+	if message == "" {
+		AssertNoError(t, "unexpected error", err)
+		return
+	}
 
 	if err == nil {
 		t.Fatal("Expected error but got success")

@@ -37,29 +37,25 @@ func TestUpdateParametersValidation(t *testing.T) {
 		ptfID        string
 		testID       string
 		customerID   string
-		expectError  bool
 		errorMessage string
 	}{
 		{
-			name:        "Success_PTF",
-			ptfID:       "ptf123",
-			testID:      "",
-			customerID:  "sccuser",
-			expectError: false,
+			name:       "Success_PTF",
+			ptfID:      "ptf123",
+			testID:     "",
+			customerID: "sccuser",
 		},
 		{
-			name:        "Success_Test",
-			ptfID:       "",
-			testID:      "test123",
-			customerID:  "sccuser",
-			expectError: false,
+			name:       "Success_Test",
+			ptfID:      "",
+			testID:     "test123",
+			customerID: "sccuser",
 		},
 		{
 			name:         "Error_BothSet",
 			ptfID:        "ptf123",
 			testID:       "test123",
 			customerID:   "sccuser",
-			expectError:  true,
 			errorMessage: "ptf and test flags cannot be set simultaneously",
 		},
 		{
@@ -67,7 +63,6 @@ func TestUpdateParametersValidation(t *testing.T) {
 			ptfID:        "",
 			testID:       "",
 			customerID:   "sccuser",
-			expectError:  true,
 			errorMessage: "ptf and test flags cannot be empty simultaneously",
 		},
 		{
@@ -75,7 +70,6 @@ func TestUpdateParametersValidation(t *testing.T) {
 			ptfID:        "ptf123",
 			testID:       "",
 			customerID:   "",
-			expectError:  true,
 			errorMessage: "user flag cannot be empty",
 		},
 		{
@@ -83,7 +77,6 @@ func TestUpdateParametersValidation(t *testing.T) {
 			ptfID:        "",
 			testID:       "test123",
 			customerID:   "",
-			expectError:  true,
 			errorMessage: "user flag cannot be empty",
 		},
 	}
@@ -104,19 +97,7 @@ func TestUpdateParametersValidation(t *testing.T) {
 			}
 
 			err := updateParameters(&flags, "")
-
-			if tt.expectError {
-				if err == nil {
-					t.Errorf("updateParameters() expected an error, but got nil")
-				} else if !strings.Contains(err.Error(), tt.errorMessage) {
-					// Check if the error message contains the expected string part
-					t.Errorf("updateParameters() got error: %q, want error containing: %q", err.Error(), tt.errorMessage)
-				}
-			} else {
-				if err != nil {
-					t.Errorf("updateParameters() got an unexpected error: %s", err)
-				}
-			}
+			testutils.AssertError(t, tt.errorMessage, err)
 		})
 	}
 }
@@ -185,10 +166,7 @@ func TestUpdateParametersImageLogicOverrideOneImage(t *testing.T) {
 			}
 
 			err := updateParameters(&flags, "")
-
-			if err != nil {
-				t.Fatalf("updateParameters() failed with unexpected error: %s", err)
-			}
+			testutils.AssertNoError(t, "updateParameters() failed with unexpected error", err)
 
 			for checkService, imageFlag := range imageFlagsMap(&flags) {
 				if checkService == service {
@@ -245,10 +223,7 @@ func TestUpdateParametersImageLogicNoRemoteImage(t *testing.T) {
 		}
 
 		err := updateParameters(&flags, "")
-
-		if err != nil {
-			t.Fatalf("updateParameters() failed with unexpected error: %s", err)
-		}
+		testutils.AssertNoError(t, "updateParameters() failed with unexpected error", err)
 
 		for checkService, imageFlag := range imageFlagsMap(&flags) {
 			actual := imageFlag.Name

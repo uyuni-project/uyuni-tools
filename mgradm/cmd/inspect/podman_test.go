@@ -51,7 +51,7 @@ func TestPodmanInspectServerNotInitialized(t *testing.T) {
 
 	err := podmanInspect(&types.GlobalFlags{}, &inspectFlags{}, nil, nil)
 
-	testutils.AssertError(t, "", err)
+	testutils.AssertError(t, "server is not initialized", err)
 	testutils.AssertEquals(t, "wrong error", "server is not initialized.", err.Error())
 	testutils.AssertTrue(t, "podman login should not be called", !loginCalled)
 	testutils.AssertTrue(t, "image preparation should not be called", !prepareCalled)

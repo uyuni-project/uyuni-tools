@@ -53,7 +53,7 @@ func TestStartServices(t *testing.T) {
 		expectedStarted    []string
 		expectedNotStarted []string
 		startErrors        map[string]error
-		err                error
+		err                string
 	}{
 		// Regular case with only server and DB containers
 		{
@@ -101,7 +101,7 @@ func TestStartServices(t *testing.T) {
 				podman.ServerService: errors.New("failed to start server"),
 				podman.DBService:     errors.New("failed to start DB"),
 			},
-			err: errors.New("failed to start DB; failed to start server"),
+			err: "failed to start DB; failed to start server",
 		},
 	}
 
@@ -123,7 +123,7 @@ func TestStartServices(t *testing.T) {
 		for _, service := range testCase.expectedNotStarted {
 			testutils.AssertNotContains(t, fmt.Sprintf("%s%s has been started", prefix, service), driver.Running, service)
 		}
-		testutils.AssertEquals(t, prefix+"unexpected error returned", testCase.err, err)
+		testutils.AssertError(t, testCase.err, err)
 	}
 }
 
@@ -135,7 +135,7 @@ func TestStopServices(t *testing.T) {
 		expectedStarted    []string
 		expectedNotStarted []string
 		stopErrors         map[string]error
-		err                error
+		err                string
 	}{
 		// Regular case with only server and DB containers
 		{
@@ -187,7 +187,7 @@ func TestStopServices(t *testing.T) {
 				podman.ServerService: errors.New("failed to stop server"),
 				podman.DBService:     errors.New("failed to stop DB"),
 			},
-			err: errors.New("failed to stop server; failed to stop DB"),
+			err: "failed to stop server; failed to stop DB",
 		},
 	}
 
@@ -210,6 +210,6 @@ func TestStopServices(t *testing.T) {
 		for _, service := range testCase.expectedNotStarted {
 			testutils.AssertNotContains(t, fmt.Sprintf("%s%s has not been stopped", prefix, service), driver.Running, service)
 		}
-		testutils.AssertEquals(t, prefix+"unexpected error returned", testCase.err, err)
+		testutils.AssertError(t, testCase.err, err)
 	}
 }

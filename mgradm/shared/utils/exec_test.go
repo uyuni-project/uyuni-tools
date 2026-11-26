@@ -5,8 +5,6 @@
 package utils
 
 import (
-	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/uyuni-project/uyuni-tools/shared/testutils"
@@ -44,7 +42,7 @@ func TestSanityCheck(t *testing.T) {
 		},
 	}
 
-	for i, test := range data {
+	for _, test := range data {
 		// newValues represents the data inspected from the new image/server
 		newValues := utils.InspectData{
 			ServerInspectData: utils.ServerInspectData{
@@ -64,17 +62,6 @@ func TestSanityCheck(t *testing.T) {
 		// Ensure SanityCheck signature accepts (*ContainerInspectData, *InspectData)
 		err := SanityCheck(&newValues)
 
-		if test.errorPart != "" {
-			if err != nil {
-				testutils.AssertTrue(
-					t, fmt.Sprintf("test %d: Unexpected error message: %s", i+1, err),
-					strings.Contains(err.Error(), test.errorPart),
-				)
-			} else {
-				t.Errorf("test %d: expected an error, got none", i+1)
-			}
-		} else {
-			testutils.AssertEquals(t, fmt.Sprintf("test %d: unexpected error", i+1), nil, err)
-		}
+		testutils.AssertError(t, test.errorPart, err)
 	}
 }

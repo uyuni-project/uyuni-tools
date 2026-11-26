@@ -75,7 +75,7 @@ ExecStart=/bin/sh -c '/usr/bin/podman run \
 func TestServerEnvironmentFromInstallation(t *testing.T) {
 	envfile := filepath.Join(t.TempDir(), "server.env")
 	content := "TZ=Europe/Berlin\nMANAGER_DB_NAME=susemanager\nMIRROR_PATH=/mirror\n"
-	testutils.AssertEquals(t, "unexpected error", nil, os.WriteFile(envfile, []byte(content), 0600))
+	testutils.AssertNoError(t, "unexpected error", os.WriteFile(envfile, []byte(content), 0600))
 
 	values := &utils.InspectData{}
 	values.Fqdn = "uyuni.example.com"

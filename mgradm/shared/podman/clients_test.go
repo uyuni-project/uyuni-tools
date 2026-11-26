@@ -16,7 +16,7 @@ func TestParseClientTrustResults(t *testing.T) {
 	unreachable := map[string]bool{"down.example.com": true}
 
 	migrated, notMigrated, err := parseClientTrustResults(saltOutput, unreachable)
-	testutils.AssertEquals(t, "unexpected error", nil, err)
+	testutils.AssertNoError(t, "unexpected error", err)
 
 	sort.Strings(migrated)
 	sort.Strings(notMigrated)
@@ -26,7 +26,7 @@ func TestParseClientTrustResults(t *testing.T) {
 
 func TestParseClientTrustResultsEmpty(t *testing.T) {
 	migrated, notMigrated, err := parseClientTrustResults([]byte("  "), nil)
-	testutils.AssertEquals(t, "unexpected error", nil, err)
+	testutils.AssertNoError(t, "unexpected error", err)
 	testutils.AssertEquals(t, "expected no migrated minion", 0, len(migrated))
 	testutils.AssertEquals(t, "expected no not-migrated minion", 0, len(notMigrated))
 }

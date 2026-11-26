@@ -47,9 +47,8 @@ Environment="PODMAN_EXTRA_ARGS="
 
 	testutils.WriteFile(t, path.Join(serviceConfDir, "Service.conf"), currentFile)
 
-	if err := CleanSystemdConfFile("uyuni-server"); err != nil {
-		t.Errorf("unexpected error: %s", err)
-	}
+	err := CleanSystemdConfFile("uyuni-server")
+	testutils.AssertNoError(t, "unexpected error", err)
 
 	actual := testutils.ReadFile(t, path.Join(serviceConfDir, GeneratedConf))
 	testutils.AssertEquals(t, "invalid generated.conf file", generatedFile, actual)
@@ -85,9 +84,8 @@ Environment="PODMAN_EXTRA_ARGS="
 	testutils.WriteFile(t, path.Join(serviceConfDir, GeneratedConf), generatedFile)
 	testutils.WriteFile(t, path.Join(serviceConfDir, CustomConf), customFile)
 
-	if err := CleanSystemdConfFile("uyuni-server"); err != nil {
-		t.Errorf("unexpected error: %s", err)
-	}
+	err := CleanSystemdConfFile("uyuni-server")
+	testutils.AssertNoError(t, "unexpected error", err)
 
 	actual := testutils.ReadFile(t, path.Join(serviceConfDir, GeneratedConf))
 	testutils.AssertEquals(t, "invalid generated.conf file", generatedFile, actual)

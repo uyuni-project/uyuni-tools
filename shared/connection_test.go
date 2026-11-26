@@ -486,10 +486,6 @@ func TestWaitForHealthcheck(t *testing.T) {
 			cnx.command = "podman"
 
 			err := cnx.WaitForHealthcheck(now)
-			if tt.wantErr == "" {
-				testutils.AssertNoError(t, "unexpected error: ", err)
-				return
-			}
 			testutils.AssertError(t, tt.wantErr, err)
 		})
 	}
@@ -821,10 +817,6 @@ func TestWaitForContainer(t *testing.T) {
 			cnx.command = "podman"
 
 			err := cnx.WaitForContainer(now)
-			if tt.wantErr == "" {
-				testutils.AssertNoError(t, "unexpected error: ", err)
-				return
-			}
 			testutils.AssertError(t, tt.wantErr, err)
 		})
 	}
