@@ -14,6 +14,7 @@ import (
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/api"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/cp"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/exec"
+	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/get"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/gpg"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/proxy"
 	"github.com/uyuni-project/uyuni-tools/mgrctl/cmd/ssh"
@@ -44,14 +45,16 @@ func NewUyunictlCommand() *cobra.Command {
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, _ []string) {
 		// do not log if running the completion cmd as the output is redirect to create a file to source
 		if cmd.Name() != "completion" {
-			utils.LogInit((cmd.Name() != "exec" && cmd.Name() != "term") || globalFlags.LogLevel == "trace")
-			utils.SetLogLevel(globalFlags.LogLevel)
+			utils.LogInit(
+				(cmd.Name() != "exec" && cmd.Name() != "term") || globalFlags.LogLevel == "trace",
+				globalFlags.LogLevel)
 			log.Info().Msgf(L("Starting %s"), strings.Join(os.Args, " "))
 		}
 	}
 
 	apiCmd := api.NewCommand(globalFlags)
 	rootCmd.AddCommand(apiCmd)
+	rootCmd.AddCommand(get.NewCommand(globalFlags))
 	rootCmd.AddCommand(exec.NewCommand(globalFlags))
 	rootCmd.AddCommand(term.NewCommand(globalFlags))
 	rootCmd.AddCommand(cp.NewCommand(globalFlags))

@@ -70,7 +70,7 @@ func AssertNoError(t *testing.T, message string, err error) {
 	t.Helper() // Important: Marks this function as a test helper
 
 	if err != nil {
-		t.Errorf(message+"err: %v", err)
+		t.Errorf(message+" err: %v", err)
 	}
 }
 

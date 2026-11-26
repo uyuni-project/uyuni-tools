@@ -85,14 +85,15 @@ func redact(line string) string {
 }
 
 // LogInit initialize logs.
-func LogInit(logToConsole bool) {
+func LogInit(logToConsole bool, logLevel string) {
 	zerolog.CallerMarshalFunc = logCallerMarshalFunction
-	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	SetLogLevel(logLevel)
 
 	fileWriter := getFileWriter()
 	writers := []io.Writer{fileWriter}
 	if logToConsole {
 		consoleWriter := zerolog.NewConsoleWriter()
+		consoleWriter.Out = os.Stderr
 		consoleWriter.NoColor = !term.IsTerminal(int(os.Stdout.Fd()))
 		uyuniConsoleWriter := UyuniConsoleWriter{
 			consoleWriter: consoleWriter,
