@@ -48,6 +48,7 @@ func TestStartStopWarnWhenServicesDisabled(t *testing.T) {
 
 func TestStartServices(t *testing.T) {
 	cases := []struct {
+		name               string
 		installed          []string
 		enabled            []string
 		expectedStarted    []string
@@ -55,8 +56,8 @@ func TestStartServices(t *testing.T) {
 		startErrors        map[string]error
 		err                string
 	}{
-		// Regular case with only server and DB containers
 		{
+			name:            "only server and DB containers",
 			installed:       allServices,
 			enabled:         []string{podman.ServerService, podman.DBService},
 			expectedStarted: []string{podman.ServerService, podman.DBService},
@@ -65,8 +66,8 @@ func TestStartServices(t *testing.T) {
 				podman.SalineService + "@", podman.TFTPService,
 			},
 		},
-		// Regular case with an instance of all services.
 		{
+			name:      "an instance of all services",
 			installed: allServices,
 			enabled: []string{
 				podman.ServerService, podman.DBService, podman.TFTPService,
@@ -78,8 +79,8 @@ func TestStartServices(t *testing.T) {
 			},
 			expectedNotStarted: []string{},
 		},
-		// In a migration from non-split DB to split DB we have no DB container yet
 		{
+			name: "disabled services",
 			installed: []string{
 				podman.ServerService, podman.HubXmlrpcService + "@", podman.ServerAttestationService + "@",
 			},
@@ -89,8 +90,8 @@ func TestStartServices(t *testing.T) {
 				podman.HubXmlrpcService + "@", podman.ServerAttestationService + "@", podman.DBService, podman.TFTPService,
 			},
 		},
-		// Error case where both the server and the DB service fail to start
 		{
+			name:      "error when both server and DB service fail to start",
 			installed: allServices,
 			enabled:   []string{podman.ServerService, podman.DBService},
 			expectedNotStarted: []string{
@@ -105,50 +106,52 @@ func TestStartServices(t *testing.T) {
 		},
 	}
 
-	for i, testCase := range cases {
-		driver := testutils.FakeSystemdDriver{
-			Installed:          testCase.installed,
-			Enabled:            testCase.enabled,
-			StartServiceErrors: testCase.startErrors,
-		}
+	for _, testCase := range cases {
+		t.Run(testCase.name, func(t *testing.T) {
+			driver := testutils.FakeSystemdDriver{
+				Installed:          testCase.installed,
+				Enabled:            testCase.enabled,
+				StartServiceErrors: testCase.startErrors,
+			}
 
-		systemd = podman.NewSystemdWithDriver(&driver)
+			systemd = podman.NewSystemdWithDriver(&driver)
 
-		err := StartServices()
+			err := StartServices()
 
-		prefix := fmt.Sprintf("case %d - ", i+1)
-		for _, service := range testCase.expectedStarted {
-			testutils.AssertContains(t, fmt.Sprintf("%s%s not started", prefix, service), driver.Running, service)
-		}
-		for _, service := range testCase.expectedNotStarted {
-			testutils.AssertNotContains(t, fmt.Sprintf("%s%s has been started", prefix, service), driver.Running, service)
-		}
-		testutils.AssertError(t, testCase.err, err)
+			for _, service := range testCase.expectedStarted {
+				testutils.AssertContains(t, fmt.Sprintf("%s not started", service), driver.Running, service)
+			}
+			for _, service := range testCase.expectedNotStarted {
+				testutils.AssertNotContains(t, fmt.Sprintf("%s has been started", service), driver.Running, service)
+			}
+			testutils.AssertError(t, testCase.err, err)
+		})
 	}
 }
 
 func TestStopServices(t *testing.T) {
 	cases := []struct {
+		name               string
 		installed          []string
 		enabled            []string
 		started            []string
-		expectedStarted    []string
-		expectedNotStarted []string
+		expectedStopped    []string
+		expectedNotStopped []string
 		stopErrors         map[string]error
 		err                string
 	}{
-		// Regular case with only server and DB containers
 		{
+			name:      "only server and DB containers",
 			installed: allServices,
 			enabled:   []string{podman.ServerService, podman.DBService},
 			started:   []string{podman.ServerService, podman.DBService},
-			expectedNotStarted: []string{
+			expectedNotStopped: []string{
 				podman.ServerService, podman.DBService, podman.HubXmlrpcService + "@",
 				podman.ServerAttestationService + "@", podman.SalineService + "@", podman.TFTPService,
 			},
 		},
-		// Regular case with an instance of all services.
 		{
+			name:      "an instance of all services",
 			installed: allServices,
 			enabled: []string{
 				podman.ServerService, podman.DBService, podman.TFTPService,
@@ -158,28 +161,28 @@ func TestStopServices(t *testing.T) {
 				podman.ServerService, podman.DBService, podman.TFTPService,
 				podman.HubXmlrpcService + "@0", podman.ServerAttestationService + "@0", podman.SalineService + "@0",
 			},
-			expectedNotStarted: []string{
+			expectedNotStopped: []string{
 				podman.ServerService, podman.DBService, podman.TFTPService,
 				podman.HubXmlrpcService + "@0", podman.ServerAttestationService + "@0", podman.SalineService + "@0",
 			},
 		},
-		// In a migration from non-split DB to split DB we have no DB container yet
 		{
+			name:      "disabled services",
 			installed: []string{podman.ServerService, podman.HubXmlrpcService + "@", podman.ServerAttestationService + "@"},
 			enabled:   []string{podman.ServerService},
 			started:   []string{podman.ServerService},
-			expectedNotStarted: []string{
+			expectedNotStopped: []string{
 				podman.ServerService, podman.HubXmlrpcService + "@", podman.ServerAttestationService + "@", podman.DBService,
 				podman.TFTPService,
 			},
 		},
-		// Error case where both the server and the DB service fail to start
 		{
+			name:            "error when both server and DB service fail to stop",
 			installed:       allServices,
 			enabled:         []string{podman.ServerService, podman.DBService},
 			started:         []string{podman.ServerService, podman.DBService},
-			expectedStarted: []string{podman.ServerService, podman.DBService},
-			expectedNotStarted: []string{
+			expectedStopped: []string{podman.ServerService, podman.DBService},
+			expectedNotStopped: []string{
 				podman.HubXmlrpcService + "@",
 				podman.ServerAttestationService + "@", podman.SalineService + "@", podman.TFTPService,
 			},
@@ -191,25 +194,26 @@ func TestStopServices(t *testing.T) {
 		},
 	}
 
-	for i, testCase := range cases {
-		driver := testutils.FakeSystemdDriver{
-			Installed:         testCase.installed,
-			Enabled:           testCase.enabled,
-			Running:           testCase.started,
-			StopServiceErrors: testCase.stopErrors,
-		}
+	for _, testCase := range cases {
+		t.Run(testCase.name, func(t *testing.T) {
+			driver := testutils.FakeSystemdDriver{
+				Installed:         testCase.installed,
+				Enabled:           testCase.enabled,
+				Running:           testCase.started,
+				StopServiceErrors: testCase.stopErrors,
+			}
 
-		systemd = podman.NewSystemdWithDriver(&driver)
+			systemd = podman.NewSystemdWithDriver(&driver)
 
-		err := StopServices()
+			err := StopServices()
 
-		prefix := fmt.Sprintf("case %d - ", i+1)
-		for _, service := range testCase.expectedStarted {
-			testutils.AssertContains(t, fmt.Sprintf("%s%s has been stopped", prefix, service), driver.Running, service)
-		}
-		for _, service := range testCase.expectedNotStarted {
-			testutils.AssertNotContains(t, fmt.Sprintf("%s%s has not been stopped", prefix, service), driver.Running, service)
-		}
-		testutils.AssertError(t, testCase.err, err)
+			for _, service := range testCase.expectedStopped {
+				testutils.AssertContains(t, fmt.Sprintf("%s has been stopped", service), driver.Running, service)
+			}
+			for _, service := range testCase.expectedNotStopped {
+				testutils.AssertNotContains(t, fmt.Sprintf("%s has not been stopped", service), driver.Running, service)
+			}
+			testutils.AssertError(t, testCase.err, err)
+		})
 	}
 }

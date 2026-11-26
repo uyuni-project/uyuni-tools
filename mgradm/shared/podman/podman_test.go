@@ -5,7 +5,6 @@
 package podman
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -112,15 +111,16 @@ func TestGetDBHost(t *testing.T) {
 
 func TestRunPgsqlVersionUpgrade(t *testing.T) {
 	cases := []struct {
+		name          string
 		registry      string
 		image         types.ImageFlags
 		upgradeImage  types.ImageFlags
 		expectedImage string
 	}{
-		// Default Uyuni case with global tag set
 		{
-			"registry.opensuse.org",
-			types.ImageFlags{
+			name:     "default Uyuni image",
+			registry: "registry.opensuse.org",
+			image: types.ImageFlags{
 				Name: "uyuni/server",
 				Registry: types.Registry{
 					Host: "registry.opensuse.org",
@@ -128,15 +128,15 @@ func TestRunPgsqlVersionUpgrade(t *testing.T) {
 				Tag:        "2025.08",
 				PullPolicy: "ifnotpresent",
 			},
-			types.ImageFlags{
+			upgradeImage: types.ImageFlags{
 				Name: "uyuni/server-database-migration",
 			},
-			"registry.opensuse.org/uyuni/server-database-migration:2025.08",
+			expectedImage: "registry.opensuse.org/uyuni/server-database-migration:2025.08",
 		},
-		// own registry case with a special image for the main server but not upgrade
 		{
-			"registry.example.com/product",
-			types.ImageFlags{
+			name:     "upgrade image configured",
+			registry: "registry.example.com/product",
+			image: types.ImageFlags{
 				Name: "registry.example.com/product/server",
 				Registry: types.Registry{
 					Host: "registry.opensuse.org/uyuni",
@@ -144,27 +144,29 @@ func TestRunPgsqlVersionUpgrade(t *testing.T) {
 				Tag:        "fix-123",
 				PullPolicy: "always",
 			},
-			types.ImageFlags{
+			upgradeImage: types.ImageFlags{
 				Name: "registry.example.com/product/server-database-migration",
 				Tag:  "4.5.2",
 			},
-			"registry.example.com/product/server-database-migration:4.5.2",
+			expectedImage: "registry.example.com/product/server-database-migration:4.5.2",
 		},
 	}
 
 	expectedAuthfile := "authfile to pass"
-	for i, testCase := range cases {
-		prepareImage = func(authFile string, image string, pullPolicy string, _ bool) (string, error) {
-			// test that the image computation
-			testutils.AssertEquals(t, "auth file not passed down", expectedAuthfile, authFile)
-			testutils.AssertEquals(t, fmt.Sprintf("case %d: wrong image", i), testCase.expectedImage, image)
-			testutils.AssertEquals(t, fmt.Sprintf("case %d: wrong pull policy", i), testCase.image.PullPolicy, pullPolicy)
-			return image, nil
-		}
-		runContainer = func(_ string, image string, _ []types.VolumeMount, _ []string, _ []string) error {
-			testutils.AssertEquals(t, fmt.Sprintf("case %d: wrong image used for container", i), testCase.expectedImage, image)
-			return nil
-		}
-		_ = RunPgsqlVersionUpgrade(expectedAuthfile, testCase.image, testCase.upgradeImage, []types.VolumeMount{})
+	for _, testCase := range cases {
+		t.Run(testCase.name, func(t *testing.T) {
+			prepareImage = func(authFile string, image string, pullPolicy string, _ bool) (string, error) {
+				// test that the image computation
+				testutils.AssertEquals(t, "auth file not passed down", expectedAuthfile, authFile)
+				testutils.AssertEquals(t, "wrong image", testCase.expectedImage, image)
+				testutils.AssertEquals(t, "wrong pull policy", testCase.image.PullPolicy, pullPolicy)
+				return image, nil
+			}
+			runContainer = func(_ string, image string, _ []types.VolumeMount, _ []string, _ []string) error {
+				testutils.AssertEquals(t, "wrong image used for container", testCase.expectedImage, image)
+				return nil
+			}
+			_ = RunPgsqlVersionUpgrade(expectedAuthfile, testCase.image, testCase.upgradeImage, []types.VolumeMount{})
+		})
 	}
 }

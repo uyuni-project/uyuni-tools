@@ -14,49 +14,61 @@ import (
 )
 
 func TestGetRpmImageName(t *testing.T) {
-	data := [][]string{
+	data := []struct {
+		name         string
+		wantRPMImage string
+		wantTag      string
+		image        string
+	}{
 		{
-			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
-			"latest",
-			"registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql"},
-		{
-			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
-			"latest",
-			"registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:latest"},
-		{
-			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
-			"5.1.0",
-			"http://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
+			name:         "registry without tag",
+			wantRPMImage: "suse-multi-linux-manager-5.1-x86_64-server-postgresql",
+			wantTag:      "latest",
+			image:        "registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql",
 		},
 		{
-			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
-			"5.1.0",
-			"https://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
+			name:         "registry with latest tag",
+			wantRPMImage: "suse-multi-linux-manager-5.1-x86_64-server-postgresql",
+			wantTag:      "latest",
+			image:        "registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:latest",
 		},
 		{
-			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
-			"5.1.0",
-			"docker://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
+			name:         "http registry with version tag",
+			wantRPMImage: "suse-multi-linux-manager-5.1-x86_64-server-postgresql",
+			wantTag:      "5.1.0",
+			image:        "http://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
 		},
 		{
-			"suse-multi-linux-manager-5.1-x86_64-server-postgresql",
-			"latest",
-			"oci://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql"},
+			name:         "https registry with version tag",
+			wantRPMImage: "suse-multi-linux-manager-5.1-x86_64-server-postgresql",
+			wantTag:      "5.1.0",
+			image:        "https://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
+		},
+		{
+			name:         "docker registry with version tag",
+			wantRPMImage: "suse-multi-linux-manager-5.1-x86_64-server-postgresql",
+			wantTag:      "5.1.0",
+			image:        "docker://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql:5.1.0",
+		},
+		{
+			name:         "oci registry without tag",
+			wantRPMImage: "suse-multi-linux-manager-5.1-x86_64-server-postgresql",
+			wantTag:      "latest",
+			image:        "oci://registry.suse.com/suse/multi-linux-manager/5.1/x86_64/server-postgresql",
+		},
 	}
 
-	for i, testCase := range data {
-		rpmImage := testCase[0]
-		tag := testCase[1]
-		image := testCase[2]
+	for _, tt := range data {
+		t.Run(tt.name, func(t *testing.T) {
+			rpmImageResult, tagResult := GetRpmImageName(tt.image)
 
-		rpmImageResult, tagResult := GetRpmImageName(image)
-
-		if rpmImage != rpmImageResult {
-			t.Errorf("Testcase %d: Expected %s got %s when computing RPM for image %s", i, rpmImage, rpmImageResult, image)
-		}
-		if tag != tagResult {
-			t.Errorf("Testcase %d: Expected %s got %s when computing RPM for image %s", i, tag, tagResult, image)
-		}
+			if tt.wantRPMImage != rpmImageResult {
+				t.Errorf("Expected %s got %s when computing RPM for image %s", tt.wantRPMImage, rpmImageResult, tt.image)
+			}
+			if tt.wantTag != tagResult {
+				t.Errorf("Expected %s got %s when computing RPM for image %s", tt.wantTag, tagResult, tt.image)
+			}
+		})
 	}
 }
 
@@ -70,35 +82,55 @@ func TestMatchingMetadata(t *testing.T) {
 }
 `)
 
-	data := [][]string{
+	data := []struct {
+		name           string
+		expectedResult string
+		rpmImage       string
+		tag            string
+	}{
 		{
-			"/usr/share/suse-docker-images/native/multi-linux-manager-5.1-x86_64-server-5.1.0-beta1.x86_64-12.55.tar",
-			"multi-linux-manager-5.1-x86_64-server",
-			"5.1.0-beta1.12.55",
+			name:           "matching beta build tag",
+			expectedResult: "/usr/share/suse-docker-images/native/multi-linux-manager-5.1-x86_64-server-5.1.0-beta1.x86_64-12.55.tar",
+			rpmImage:       "multi-linux-manager-5.1-x86_64-server",
+			tag:            "5.1.0-beta1.12.55",
 		},
 		{
-			"/usr/share/suse-docker-images/native/multi-linux-manager-5.1-x86_64-server-5.1.0-beta1.x86_64-12.55.tar",
-			"multi-linux-manager-5.1-x86_64-server",
-			"latest",
+			name:           "matching latest tag",
+			expectedResult: "/usr/share/suse-docker-images/native/multi-linux-manager-5.1-x86_64-server-5.1.0-beta1.x86_64-12.55.tar",
+			rpmImage:       "multi-linux-manager-5.1-x86_64-server",
+			tag:            "latest",
 		},
-		{"", "multi-linux-manager-5.1-x86_64-server", "missing_tag"},
-		{"", "missing_image", "missing_tag"},
-		{"", "missing_image", "latest"},
+		{
+			name:           "missing tag",
+			expectedResult: "",
+			rpmImage:       "multi-linux-manager-5.1-x86_64-server",
+			tag:            "missing_tag",
+		},
+		{
+			name:           "missing image and missing tag",
+			expectedResult: "",
+			rpmImage:       "missing_image",
+			tag:            "missing_tag",
+		},
+		{
+			name:           "missing image with latest tag",
+			expectedResult: "",
+			rpmImage:       "missing_image",
+			tag:            "latest",
+		},
 	}
 
-	for i, testCase := range data {
-		expectedResult := testCase[0]
-		rpmImage := testCase[1]
-		tag := testCase[2]
+	for _, tt := range data {
+		t.Run(tt.name, func(t *testing.T) {
+			testResult, err := BuildRpmImagePath(jsonData, tt.rpmImage, tt.tag)
 
-		testResult, err := BuildRpmImagePath(jsonData, rpmImage, tag)
-
-		if err != nil && expectedResult != testResult {
-			t.Errorf(
-				"Testcase %d: Expected %s got %s when computing RPM for image %s with tag %s",
-				i, expectedResult, testResult, rpmImage, tag,
-			)
-		}
+			if err != nil && tt.expectedResult != testResult {
+				t.Errorf(
+					"Expected %s got %s when computing RPM for image %s with tag %s",
+					tt.expectedResult, testResult, tt.rpmImage, tt.tag,
+				)
+			}
+		})
 	}
 
 	jsonDataInvalidWithTypo := []byte(`{

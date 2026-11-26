@@ -5,7 +5,6 @@
 package ssl
 
 import (
-	"fmt"
 	"os"
 	"path"
 	"strings"
@@ -181,24 +180,35 @@ func TestGetRsaKey(t *testing.T) {
 
 func TestCheckKey(t *testing.T) {
 	type testData struct {
+		name string
 		file string
 		err  string
 	}
 
 	testCases := []testData{
-		{"testdata/RootCA.key", "Invalid SSL key, it is probably encrypted"},
-		{"testdata/chain1/server.key", ""},
+		{
+			name: "encrypted RootCA key",
+			file: "testdata/RootCA.key",
+			err:  "Invalid SSL key, it is probably encrypted",
+		},
+		{
+			name: "valid server key",
+			file: "testdata/chain1/server.key",
+			err:  "",
+		},
 	}
 
-	for i, testCase := range testCases {
-		err := CheckKey(testCase.file)
-		if testCase.err == "" {
-			testutils.AssertEquals(t, fmt.Sprintf("case %d: expected no error", i+1), nil, err)
-		} else {
-			testutils.AssertTrue(t, "Error message should state the key is probably encrypted",
-				strings.Contains(err.Error(), testCase.err),
-			)
-		}
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			err := CheckKey(testCase.file)
+			if testCase.err == "" {
+				testutils.AssertEquals(t, "expected no error", nil, err)
+			} else {
+				testutils.AssertTrue(t, "Error message should state the key is probably encrypted",
+					strings.Contains(err.Error(), testCase.err),
+				)
+			}
+		})
 	}
 }
 

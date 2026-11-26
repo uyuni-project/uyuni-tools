@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,43 +9,53 @@ import (
 )
 
 func TestRedact(t *testing.T) {
-	data := [][]string{
+	data := []struct {
+		name     string
+		input    string
+		expected string
+	}{
 		{
-			`{"level":"info","time":"2024-04-29T15:23:39+02:00","message":"Running /usr/bin/uyuni-setup-reportdb create ` +
+			name: "reportdb password in log file",
+			input: `{"level":"info","time":"2024-04-29T15:23:39+02:00",
+				"message":"Running /usr/bin/uyuni-setup-reportdb create ` +
 				`--db reportdb --user pythia_susemanager --host localhost --address * --remote 0.0.0.0/0,::/0 --password ` +
 				`/z4FffHC2HxaagBeIXFzshxtNUfbqm5Zwv/EgvxT"}`,
-			`{"level":"info","time":"2024-04-29T15:23:39+02:00","message":"Running /usr/bin/uyuni-setup-reportdb create ` +
+			expected: `{"level":"info","time":"2024-04-29T15:23:39+02:00",
+				"message":"Running /usr/bin/uyuni-setup-reportdb create ` +
 				`--db reportdb --user pythia_susemanager --host localhost --address * --remote 0.0.0.0/0,::/0 --password ` +
 				`<REDACTED>"}`,
 		},
 		{
-			`Running /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --host localhost --address *` +
-				` --remote 0.0.0.0/0,::/0 --password iVgQsuPDGxwKhFc5bfk4IjpVBbqrbyRDYKEsww+Y`,
-			`Running /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --host localhost --address *` +
-				` --remote 0.0.0.0/0,::/0 --password <REDACTED>`,
+			name: "reportdb password in log output",
+			input: `Running /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --host localhost ` +
+				`--address * --remote 0.0.0.0/0,::/0 --password iVgQsuPDGxwKhFc5bfk4IjpVBbqrbyRDYKEsww+Y`,
+			expected: `Running /usr/bin/uyuni-setup-reportdb create --db reportdb --user pythia_susemanager --host localhost ` +
+				`--address * --remote 0.0.0.0/0,::/0 --password <REDACTED>`,
 		},
 		{
-			`{"adminLogin":"admin","adminPassword":"secret","email":"no@email.com"}`,
-			`{"adminLogin":"admin","adminPassword":"<REDACTED>","email":"no@email.com"}`,
+			name:     "password in json",
+			input:    `{"adminLogin":"admin","adminPassword":"secret","email":"no@email.com"}`,
+			expected: `{"adminLogin":"admin","adminPassword":"<REDACTED>","email":"no@email.com"}`,
 		},
 		{
-			`password\n`,
-			`password\n`,
+			name:     "word password followed by a newline",
+			input:    `password\n`,
+			expected: `password\n`,
 		},
 		{
-			`\"password\": \"foo\"`,
-			`\"password\": \"<REDACTED>\"`,
+			name:     "escaped json password",
+			input:    `\"password\": \"foo\"`,
+			expected: `\"password\": \"<REDACTED>\"`,
 		},
 	}
 
-	for i, testCase := range data {
-		input := testCase[0]
-		expected := testCase[1]
+	for _, tt := range data {
+		t.Run(tt.name, func(t *testing.T) {
+			actual := redact(tt.input)
 
-		actual := redact(input)
-
-		if actual != expected {
-			t.Errorf("Testcase %d: Expected %s got %s when redacting  %s", i, expected, actual, input)
-		}
+			if actual != tt.expected {
+				t.Errorf("Expected %s got %s when redacting %s", tt.expected, actual, tt.input)
+			}
+		})
 	}
 }

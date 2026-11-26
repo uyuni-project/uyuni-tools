@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -6,7 +6,6 @@ package podman
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"github.com/rs/zerolog"
@@ -15,20 +14,30 @@ import (
 
 func TestIsSELinuxEnabled(t *testing.T) {
 	type testType struct {
+		name     string
 		err      error
 		expected bool
 	}
 
 	cases := []testType{
-		{nil, true},
-		{errors.New("no such program selinuxenabled"), false},
+		{
+			name:     "selinux enabled",
+			err:      nil,
+			expected: true,
+		},
+		{
+			name:     "selinux not enabled",
+			err:      errors.New("no such program selinuxenabled"),
+			expected: false,
+		},
 	}
 
-	for i, testCase := range cases {
-		runCmdOutput = func(_ zerolog.Level, _ string, _ ...string) ([]byte, error) {
-			return []byte(""), testCase.err
-		}
-		caseString := fmt.Sprintf("case %d: ", i)
-		testutils.AssertEquals(t, caseString+"unexpected return value", testCase.expected, IsSELinuxEnabled())
+	for _, testCase := range cases {
+		t.Run(testCase.name, func(t *testing.T) {
+			runCmdOutput = func(_ zerolog.Level, _ string, _ ...string) ([]byte, error) {
+				return []byte(""), testCase.err
+			}
+			testutils.AssertEquals(t, "unexpected return value", testCase.expected, IsSELinuxEnabled())
+		})
 	}
 }

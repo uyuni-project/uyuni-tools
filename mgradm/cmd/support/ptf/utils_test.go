@@ -6,7 +6,6 @@
 package ptf
 
 import (
-	"fmt"
 	"testing"
 
 	adm_utils "github.com/uyuni-project/uyuni-tools/mgradm/shared/utils"
@@ -29,6 +28,7 @@ func TestCheckParameters(t *testing.T) {
 		}
 	}
 	type testData struct {
+		name                string
 		serviceImages       map[string]string
 		hasRemoteImages     map[string]bool
 		expectedImage       string
@@ -42,18 +42,22 @@ func TestCheckParameters(t *testing.T) {
 
 	data := []testData{
 		{
-			createServiceImages("registry.suse.com/suse/manager/5.0/x86_64/server:5.0.0", "", "", "", "", ""),
-			map[string]bool{},
-			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server:latest-ptf-5678",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
+			name: "server PTF only",
+			serviceImages: createServiceImages(
+				"registry.suse.com/suse/manager/5.0/x86_64/server:5.0.0", "", "", "", "", "",
+			),
+			hasRemoteImages:     map[string]bool{},
+			expectedImage:       "registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server:latest-ptf-5678",
+			expectedCocoImage:   "",
+			expectedHubImage:    "",
+			expectedSalineImage: "",
+			expectedDBImage:     "",
+			expectedTFTPImage:   "",
+			expectedError:       "",
 		},
 		{
-			createServiceImages(
+			name: "PTF for all services",
+			serviceImages: createServiceImages(
 				"registry.suse.com/suse/manager/5.0/x86_64/server:5.0.0",
 				"registry.suse.com/suse/manager/5.0/x86_64/server-attestation:5.0.0",
 				"registry.suse.com/suse/manager/5.0/x86_64/server-hub-xmlrpc-api:5.0.0",
@@ -61,23 +65,24 @@ func TestCheckParameters(t *testing.T) {
 				"registry.suse.com/suse/manager/5.0/x86_64/server-postgresql:5.0.0",
 				"registry.suse.com/suse/manager/5.0/x86_64/proxy-tftpd:5.0.0",
 			),
-			map[string]bool{
+			hasRemoteImages: map[string]bool{
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-attestation:latest-ptf-5678":    true,
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-hub-xmlrpc-api:latest-ptf-5678": true,
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-saline:latest-ptf-5678":         true,
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-postgresql:latest-ptf-5678":     true,
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/proxy-tftpd:latest-ptf-5678":           true,
 			},
-			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server:latest-ptf-5678",
-			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-attestation:latest-ptf-5678",
-			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-hub-xmlrpc-api:latest-ptf-5678",
-			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-saline:latest-ptf-5678",
-			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-postgresql:latest-ptf-5678",
-			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/proxy-tftpd:latest-ptf-5678",
-			"",
+			expectedImage:       "registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server:latest-ptf-5678",
+			expectedCocoImage:   "registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-attestation:latest-ptf-5678",
+			expectedHubImage:    "registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-hub-xmlrpc-api:latest-ptf-5678",
+			expectedSalineImage: "registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-saline:latest-ptf-5678",
+			expectedDBImage:     "registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-postgresql:latest-ptf-5678",
+			expectedTFTPImage:   "registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/proxy-tftpd:latest-ptf-5678",
+			expectedError:       "",
 		},
 		{
-			createServiceImages(
+			name: "server only PTF and other services running",
+			serviceImages: createServiceImages(
 				"registry.suse.com/suse/manager/5.0/x86_64/server:5.0.0",
 				"registry.suse.com/suse/manager/5.0/x86_64/server-attestation:5.0.0",
 				"",
@@ -85,20 +90,21 @@ func TestCheckParameters(t *testing.T) {
 				"",
 				"",
 			),
-			map[string]bool{
+			hasRemoteImages: map[string]bool{
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server:latest-ptf-5678":             true,
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-attestation:latest-ptf-5678": false,
 			},
-			"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server:latest-ptf-5678",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
+			expectedImage:       "registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server:latest-ptf-5678",
+			expectedCocoImage:   "",
+			expectedHubImage:    "",
+			expectedSalineImage: "",
+			expectedDBImage:     "",
+			expectedTFTPImage:   "",
+			expectedError:       "",
 		},
 		{
-			createServiceImages(
+			name: "missing server service",
+			serviceImages: createServiceImages(
 				"",
 				"",
 				"registry.suse.com/suse/manager/5.0/x86_64/server-hub-xmlrpc-api:5.0.0",
@@ -106,51 +112,52 @@ func TestCheckParameters(t *testing.T) {
 				"",
 				"",
 			),
-			map[string]bool{
+			hasRemoteImages: map[string]bool{
 				"registry.suse.com/a/1234/5678/suse/manager/5.0/x86_64/server-hub-xmlrpc-api:latest-ptf-5678": true,
 			},
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"failed to find server image",
+			expectedImage:       "",
+			expectedCocoImage:   "",
+			expectedHubImage:    "",
+			expectedSalineImage: "",
+			expectedDBImage:     "",
+			expectedTFTPImage:   "",
+			expectedError:       "failed to find server image",
 		},
 	}
 
-	for i, test := range data {
-		getServiceImage = func(service string) string {
-			return test.serviceImages[service]
-		}
-		hasRemoteImage = func(image string, _ string) bool {
-			return test.hasRemoteImages[image]
-		}
+	for _, test := range data {
+		t.Run(test.name, func(t *testing.T) {
+			getServiceImage = func(service string) string {
+				return test.serviceImages[service]
+			}
+			hasRemoteImage = func(image string, _ string) bool {
+				return test.hasRemoteImages[image]
+			}
 
-		flags := podmanPTFFlags{
-			PTFId:      "5678",
-			CustomerID: "1234",
-			ServerFlags: adm_utils.ServerFlags{
-				Image: types.ImageFlags{
-					Registry: types.Registry{
-						Host: "registry.suse.com/suse/manager/5.0/x86_64/",
+			flags := podmanPTFFlags{
+				PTFId:      "5678",
+				CustomerID: "1234",
+				ServerFlags: adm_utils.ServerFlags{
+					Image: types.ImageFlags{
+						Registry: types.Registry{
+							Host: "registry.suse.com/suse/manager/5.0/x86_64/",
+						},
 					},
 				},
-			},
-		}
-		testCase := fmt.Sprintf("case #%d - ", i+1)
-		actualError := flags.checkParameters("")
-		errMessage := ""
-		if actualError != nil {
-			errMessage = actualError.Error()
-		}
-		testutils.AssertEquals(t, testCase+"error didn't match the expected behavior",
-			test.expectedError, errMessage,
-		)
-		testutils.AssertEquals(t, testCase+"unexpected image", test.expectedImage, flags.Image.Name)
-		testutils.AssertEquals(t, testCase+"unexpected coco image", test.expectedCocoImage, flags.Coco.Image.Name)
-		testutils.AssertEquals(t, testCase+"unexpected hub image", test.expectedHubImage, flags.HubXmlrpc.Image.Name)
-		testutils.AssertEquals(t, testCase+"unexpected saline image", test.expectedSalineImage, flags.Saline.Image.Name)
-		testutils.AssertEquals(t, testCase+"unexpected db image", test.expectedDBImage, flags.Pgsql.Image.Name)
+			}
+			actualError := flags.checkParameters("")
+			errMessage := ""
+			if actualError != nil {
+				errMessage = actualError.Error()
+			}
+			testutils.AssertEquals(t, "error didn't match the expected behavior",
+				test.expectedError, errMessage,
+			)
+			testutils.AssertEquals(t, "unexpected image", test.expectedImage, flags.Image.Name)
+			testutils.AssertEquals(t, "unexpected coco image", test.expectedCocoImage, flags.Coco.Image.Name)
+			testutils.AssertEquals(t, "unexpected hub image", test.expectedHubImage, flags.HubXmlrpc.Image.Name)
+			testutils.AssertEquals(t, "unexpected saline image", test.expectedSalineImage, flags.Saline.Image.Name)
+			testutils.AssertEquals(t, "unexpected db image", test.expectedDBImage, flags.Pgsql.Image.Name)
+		})
 	}
 }

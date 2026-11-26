@@ -22,6 +22,7 @@ import (
 )
 
 type askTestData struct {
+	name            string
 	value           string
 	expectedMessage string
 	min             int
@@ -68,24 +69,39 @@ func TestAskIfMissing(t *testing.T) {
 	}
 
 	data := []askTestData{
-		{value: "\n", expectedMessage: "A value is required", min: 1, max: 5},
-		{value: "superlong\n", expectedMessage: "Has to be between 1 and 5 characters long", min: 1, max: 5},
-		{value: "a\n", expectedMessage: "Has to be between 2 and 5 characters long", min: 2, max: 5},
-		{value: "booh\n", expectedMessage: "Has to contain an 'f'", min: 0, max: 0, checker: fChecker},
+		{name: "empty value", value: "\n", expectedMessage: "A value is required", min: 1, max: 5},
+		{
+			name:            "too long value",
+			value:           "superlong\n",
+			expectedMessage: "Has to be between 1 and 5 characters long",
+			min:             1,
+			max:             5,
+		},
+		{name: "too short value", value: "a\n", expectedMessage: "Has to be between 2 and 5 characters long", min: 2, max: 5},
+		{
+			name:            "checker failure",
+			value:           "booh\n",
+			expectedMessage: "Has to contain an 'f'",
+			min:             0,
+			max:             0,
+			checker:         fChecker,
+		},
 	}
 
-	for i, testCase := range data {
-		go func() {
-			sendInput(t, i, c, "Prompted value:", testCase.value, testCase.expectedMessage)
-			// Send a good value
-			sendInput(t, i, c, "Prompted value:", "foo\n", "")
-		}()
+	for _, testCase := range data {
+		t.Run(testCase.name, func(t *testing.T) {
+			go func() {
+				sendInput(t, c, "Prompted value:", testCase.value, testCase.expectedMessage)
+				// Send a good value
+				sendInput(t, c, "Prompted value:", "foo\n", "")
+			}()
 
-		var value string
-		AskIfMissing(&value, "Prompted value", testCase.min, testCase.max, testCase.checker)
-		if value != "foo" {
-			t.Errorf("Testcase %d: Expected 'foo', got '%s' value", i, value)
-		}
+			var value string
+			AskIfMissing(&value, "Prompted value", testCase.min, testCase.max, testCase.checker)
+			if value != "foo" {
+				t.Errorf("Expected 'foo', got '%s' value", value)
+			}
+		})
 	}
 }
 
@@ -94,24 +110,38 @@ func TestCheckValidPassword(t *testing.T) {
 	defer teardown()
 
 	data := []askTestData{
-		{value: "\n", expectedMessage: "A value is required", min: 1, max: 5},
-		{value: "superlong\n", expectedMessage: "Has to be between 1 and 5 characters long", min: 1, max: 5},
-		{value: "a\n", expectedMessage: "Has to be between 2 and 5 characters long", min: 2, max: 5},
+		{name: "empty password", value: "\n", expectedMessage: "A value is required", min: 1, max: 5},
+		{
+			name:            "too long password",
+			value:           "superlong\n",
+			expectedMessage: "Has to be between 1 and 5 characters long",
+			min:             1,
+			max:             5,
+		},
+		{
+			name:            "too short password",
+			value:           "a\n",
+			expectedMessage: "Has to be between 2 and 5 characters long",
+			min:             2,
+			max:             5,
+		},
 	}
 
-	for i, testCase := range data {
-		go func() {
-			sendInput(t, i, c, "Prompted password:", testCase.value, testCase.expectedMessage)
-			// Send a good password
-			sendInput(t, i, c, "Prompted password: ", "foo\n", "")
-			sendInput(t, i, c, "Confirm the password: ", "foo\n", "")
-		}()
+	for _, testCase := range data {
+		t.Run(testCase.name, func(t *testing.T) {
+			go func() {
+				sendInput(t, c, "Prompted password:", testCase.value, testCase.expectedMessage)
+				// Send a good password
+				sendInput(t, c, "Prompted password: ", "foo\n", "")
+				sendInput(t, c, "Confirm the password: ", "foo\n", "")
+			}()
 
-		var value string
-		AskPasswordIfMissing(&value, "Prompted password", testCase.min, testCase.max)
-		if value != "foo" {
-			t.Errorf("Testcase %d: Expected 'foo', got '%s' value", i, value)
-		}
+			var value string
+			AskPasswordIfMissing(&value, "Prompted password", testCase.min, testCase.max)
+			if value != "foo" {
+				t.Errorf("Expected 'foo', got '%s' value", value)
+			}
+		})
 	}
 }
 
@@ -120,16 +150,16 @@ func TestPasswordMismatch(t *testing.T) {
 	defer teardown()
 
 	go func() {
-		sendInput(t, 1, c, "Prompted password: ", "password1\n", "")
-		sendInput(t, 1, c, "Confirm the password: ", "password2\n", "")
+		sendInput(t, c, "Prompted password: ", "password1\n", "")
+		sendInput(t, c, "Confirm the password: ", "password2\n", "")
 
 		if _, err := c.ExpectString("Two different passwords have been provided"); err != nil {
 			t.Errorf("Expected message error: %s", err)
 		}
 
 		// Send a good password
-		sendInput(t, 1, c, "Prompted password: ", "foo\n", "")
-		sendInput(t, 1, c, "Confirm the password: ", "foo\n", "")
+		sendInput(t, c, "Prompted password: ", "foo\n", "")
+		sendInput(t, c, "Confirm the password: ", "foo\n", "")
 	}()
 
 	var value string
@@ -141,17 +171,16 @@ func TestPasswordMismatch(t *testing.T) {
 
 func sendInput(
 	t *testing.T,
-	testcase int,
 	c *expect.Console,
 	expectedPrompt string,
 	value string,
 	expectedMessage string,
 ) {
 	if _, err := c.ExpectString(expectedPrompt); err != nil {
-		t.Errorf("Testcase %d: Expected prompt error: %s", testcase, err)
+		t.Errorf("Expected prompt error: %s", err)
 	}
 	if _, err := c.Send(value); err != nil {
-		t.Errorf("Testcase %d: Failed to send value to fake console: %s", testcase, err)
+		t.Errorf("Failed to send value to fake console: %s", err)
 	}
 	t.Logf("Value sent: '%s'", value)
 	if expectedMessage == "" {
@@ -159,7 +188,7 @@ func sendInput(
 	}
 
 	if _, err := c.Expect(expect.Regexp(regexp.MustCompile(expectedMessage))); err != nil {
-		t.Errorf("Testcase %d: Expected '%s' message: %s", testcase, expectedMessage, err)
+		t.Errorf("Expected '%s' message: %s", expectedMessage, err)
 	}
 	if expectedMessage == "" {
 		return
@@ -291,172 +320,175 @@ func TestComputePTF(t *testing.T) {
 
 func TestComputeImage(t *testing.T) {
 	tests := []struct {
-		expected string
-		name     string
-		tag      string
-		registry string
+		name      string
+		expected  string
+		imageName string
+		tag       string
+		registry  string
 	}{
 		{
-			expected: "registry:5000/path/to/image:foo",
-			name:     "REGISTRY:5000/path/to/image:foo",
-			tag:      "bar",
-			registry: "",
+			name:      "uppercase registry path and image tag",
+			expected:  "registry:5000/path/to/image:foo",
+			imageName: "REGISTRY:5000/path/to/image:foo",
+			tag:       "bar",
+			registry:  "",
 		},
 		{
-			expected: "registry:5000/path/to/image:foo",
-			name:     "REGISTRY:5000/path/to/image:foo",
-			tag:      "BAR",
-			registry: "",
+			name:      "registry path and uppercase tag",
+			expected:  "registry:5000/path/to/image:foo",
+			imageName: "REGISTRY:5000/path/to/image:foo",
+			tag:       "BAR",
+			registry:  "",
 		},
 		{
-			expected: "registry:5000/path/to/image:bar",
-			name:     "registry:5000/path/to/image",
-			tag:      "bar",
-			registry: "",
+			name:      "registry path without tag",
+			expected:  "registry:5000/path/to/image:bar",
+			imageName: "registry:5000/path/to/image",
+			tag:       "bar",
+			registry:  "",
 		},
 		{
-			expected: "registry/path/to/image:foo",
-			name:     "registry/path/to/image:foo",
-			tag:      "bar",
-			registry: "",
+			name:      "registry path without port with image tag",
+			expected:  "registry/path/to/image:foo",
+			imageName: "registry/path/to/image:foo",
+			tag:       "bar",
+			registry:  "",
 		},
 		{
-			expected: "registry/path/to/image:bar",
-			name:     "registry/path/to/image",
-			tag:      "bar",
-			registry: "",
+			name:      "registry path without tag and port",
+			expected:  "registry/path/to/image:bar",
+			imageName: "registry/path/to/image",
+			tag:       "bar",
+			registry:  "",
 		},
 		{
-			expected: "registry/path/to/image:bar",
-			name:     "path/to/image",
-			tag:      "bar",
-			registry: "registry",
+			name:      "image path with custom registry",
+			expected:  "registry/path/to/image:bar",
+			imageName: "path/to/image",
+			tag:       "bar",
+			registry:  "registry",
 		},
 		{
-			expected: "registry:5000/path/to/image:foo",
-			name:     "path/to/image:foo",
-			tag:      "BAR",
-			registry: "REGISTRY:5000",
+			name:      "image path with uppercase registry and tag",
+			expected:  "registry:5000/path/to/image:foo",
+			imageName: "path/to/image:foo",
+			tag:       "BAR",
+			registry:  "REGISTRY:5000",
 		},
 		{
-			expected: "registry:5000/path/to/image-migration-14-16:foo",
-			name:     "registry:5000/path/to/image-migration-14-16:foo",
-			tag:      "bar",
-			registry: "",
+			name:      "migration image name with tag not overwritten",
+			expected:  "registry:5000/path/to/image-migration-14-16:foo",
+			imageName: "registry:5000/path/to/image-migration-14-16:foo",
+			tag:       "bar",
+			registry:  "",
 		},
 		{
-			expected: "registry:5000/path/to/image-migration-14-16:bar",
-			name:     "registry:5000/path/to/image-migration-14-16",
-			tag:      "bar",
-			registry: "",
+			name:      "migration image with port without tag",
+			expected:  "registry:5000/path/to/image-migration-14-16:bar",
+			imageName: "registry:5000/path/to/image-migration-14-16",
+			tag:       "bar",
+			registry:  "",
 		},
 		{
-			expected: "registry/path/to/image-migration-14-16:foo",
-			name:     "registry/path/to/image-migration-14-16:foo",
-			tag:      "bar",
-			registry: "",
+			name:      "migration image name with tag not overwritten (no port)",
+			expected:  "registry/path/to/image-migration-14-16:foo",
+			imageName: "registry/path/to/image-migration-14-16:foo",
+			tag:       "bar",
+			registry:  "",
 		},
 		{
-			expected: "registry/path/to/image-migration-14-16:bar",
-			name:     "registry/path/to/image-migration-14-16",
-			tag:      "bar",
-			registry: "",
+			name:      "migration image with path without tag",
+			expected:  "registry/path/to/image-migration-14-16:bar",
+			imageName: "registry/path/to/image-migration-14-16",
+			tag:       "bar",
+			registry:  "",
 		},
 		{
-			expected: "registry/path/to/image-migration-14-16:bar",
-			name:     "path/to/image-migration-14-16",
-			tag:      "bar",
-			registry: "registry",
+			name:      "migration image with custom registry and tag",
+			expected:  "registry/path/to/image-migration-14-16:bar",
+			imageName: "path/to/image-migration-14-16",
+			tag:       "bar",
+			registry:  "registry",
 		},
 		{
+			name: "registry parameter with a path",
 			expected: "registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile/" +
 				"suse/manager/5.0/x86_64/server:bar",
-			name:     "suse/manager/5.0/x86_64/server",
-			tag:      "bar",
-			registry: "registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile",
+			imageName: "suse/manager/5.0/x86_64/server",
+			tag:       "bar",
+			registry:  "registry.suse.de/suse/sle-15-sp6/update/products/manager50/containerfile",
 		},
 		{
-			expected: "cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
-			name:     "/suse/manager/5.0/x86_64/server",
-			tag:      "5.0.0",
-			registry: "cloud.com",
+			name:      "leading slash in image name",
+			expected:  "cloud.com/suse/manager/5.0/x86_64/server:5.0.0",
+			imageName: "/suse/manager/5.0/x86_64/server",
+			tag:       "5.0.0",
+			registry:  "cloud.com",
 		},
-		// ignore registry if name contains fqdn
 		{
-			expected: "cloud.com/my/path/server:5.0.0",
-			name:     "cloud.com/my/path/server:5.0.0",
-			tag:      "5.0.0",
-			registry: "registy.suse.com",
+			name:      "ignore registry if name contains fqdn",
+			expected:  "cloud.com/my/path/server:5.0.0",
+			imageName: "cloud.com/my/path/server:5.0.0",
+			tag:       "5.0.0",
+			registry:  "registy.suse.com",
 		},
 	}
 
-	for i, testCase := range tests {
-		image := types.ImageFlags{
-			Name: testCase.name,
-			Tag:  testCase.tag,
-		}
+	for _, testCase := range tests {
+		t.Run(testCase.name, func(t *testing.T) {
+			image := types.ImageFlags{
+				Name: testCase.imageName,
+				Tag:  testCase.tag,
+			}
 
-		actual, err := ComputeImage(testCase.registry, "defaulttag", image)
-
-		if err != nil {
-			t.Errorf(
-				"Testcase %d: Unexpected error while computing image with %s, %s, %s: %s",
-				i, testCase.registry, image.Name, image.Tag, err,
-			)
-		}
-		if actual != testCase.expected {
-			t.Errorf(
-				"Testcase %d: Expected %s got %s when computing image with %s, %s, %s",
-				i, testCase.expected, actual, testCase.registry, image.Name, image.Tag,
-			)
-		}
+			actual, err := ComputeImage(testCase.registry, "defaulttag", image)
+			testutils.AssertNoError(t, "Unexpected error while computing image", err)
+			testutils.AssertEquals(t, "Unexpected computed image", testCase.expected, actual)
+		})
 	}
 }
 
 func TestIsWellFormedFQDN(t *testing.T) {
-	data := []string{
-		"manager.mgr.suse.de",
-		"suma50.suse.de",
+	tests := []struct {
+		fqdn  string
+		valid bool
+	}{
+		{fqdn: "manager.mgr.suse.de", valid: true},
+		{fqdn: "suma50.suse.de", valid: true},
+		{fqdn: "manager", valid: false},
+		{fqdn: "suma50", valid: false},
+		{fqdn: "test24.example24.com..", valid: false},
+		{fqdn: "127.0.0.1", valid: false},
 	}
 
-	for i, testCase := range data {
-		if !IsWellFormedFQDN(testCase) {
-			t.Errorf("Testcase %d: Unexpected failure while validating FQDN with %s", i, testCase)
-		}
-	}
-	wrongData := []string{
-		"manager",
-		"suma50",
-		"test24.example24.com..",
-		"127.0.0.1",
-	}
-
-	for i, testCase := range wrongData {
-		if IsWellFormedFQDN(testCase) {
-			t.Errorf("Testcase %d: Unexpected success while validating FQDN with %s", i, testCase)
-		}
+	for _, tt := range tests {
+		t.Run(tt.fqdn, func(t *testing.T) {
+			if IsWellFormedFQDN(tt.fqdn) != tt.valid {
+				if tt.valid {
+					t.Errorf("Unexpected failure while validating FQDN with %s", tt.fqdn)
+				} else {
+					t.Errorf("Unexpected success while validating FQDN with %s", tt.fqdn)
+				}
+			}
+		})
 	}
 }
 func TestComputeImageError(t *testing.T) {
-	data := [][]string{
-		{"registry:path/to/image:tag:tag", "bar"},
+	image := types.ImageFlags{
+		Name: "registry:path/to/image:tag:tag",
+		Tag:  "bar",
 	}
 
-	for _, testCase := range data {
-		image := types.ImageFlags{
-			Name: testCase[0],
-			Tag:  testCase[1],
-		}
-
-		_, err := ComputeImage("defaultregistry", "defaulttag", image)
-		if err == nil {
-			t.Errorf("Expected error for %s with tag %s, got none", image.Name, image.Tag)
-		}
-	}
+	_, err := ComputeImage("defaultregistry", "defaulttag", image)
+	testutils.AssertError(t, "invalid image name: defaultregistry/registry:path/to/image:tag:tag", err)
 }
 
 func TestSplitRegistryHostAndPath(t *testing.T) {
-	data := [][]string{
+	data := []struct {
+		input string
+		host  string
+		path  string
+	}{
 		{"registry.suse.com", "registry.suse.com", ""},
 		{"registry.suse.com/suse", "registry.suse.com", "suse"},
 		{"registry.suse.com/suse/multi", "registry.suse.com", "suse/multi"},
@@ -466,18 +498,11 @@ func TestSplitRegistryHostAndPath(t *testing.T) {
 	}
 
 	for _, testCase := range data {
-		input := testCase[0]
-		host := testCase[1]
-		path := testCase[2]
-
-		resultHost, resultPath := SplitRegistryHostAndPath(input)
-		if resultHost != host {
-			t.Errorf("Expected host for %s is %s, got %s ", input, host, resultHost)
-		}
-
-		if resultPath != path {
-			t.Errorf("Expected path for %s is %s, got %s ", input, path, resultPath)
-		}
+		t.Run(testCase.input, func(t *testing.T) {
+			resultHost, resultPath := SplitRegistryHostAndPath(testCase.input)
+			testutils.AssertEquals(t, "unexpected host", testCase.host, resultHost)
+			testutils.AssertEquals(t, "unexpected path", testCase.path, resultPath)
+		})
 	}
 }
 
