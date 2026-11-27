@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
 	"testing"
 
 	"github.com/uyuni-project/uyuni-tools/shared/api"
@@ -120,9 +119,7 @@ func TestFailContainerConfigWhenPostRequestFails(t *testing.T) {
 
 	// Mock client
 	client, err := api.Init(connectionDetails)
-	if err != nil {
-		t.FailNow()
-	}
+	testutils.AssertNoError(t, "api.Init failed", err)
 	client.Client = &mocks.MockClient{
 		DoFunc: func(_ *http.Request) (*http.Response, error) {
 			return testutils.GetResponse(404, `{}`)
@@ -133,8 +130,7 @@ func TestFailContainerConfigWhenPostRequestFails(t *testing.T) {
 	result, err := proxy.ContainerConfig(client, proxyConfigRequest)
 
 	// Assertions
-	testutils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
-	testutils.AssertTrue(t, "ContainerConfigGenerate error message", strings.Contains(err.Error(), expectedErrorMessage))
+	testutils.AssertError(t, expectedErrorMessage, err)
 	testutils.AssertTrue(t, "Result data should be nil", result == nil)
 }
 
@@ -145,9 +141,7 @@ func TestFailContainerConfigWhenPostIsUnsuccessful(t *testing.T) {
 
 	// Mock client
 	client, err := api.Init(connectionDetails)
-	if err != nil {
-		t.FailNow()
-	}
+	testutils.AssertNoError(t, "api.Init failed", err)
 	client.Client = &mocks.MockClient{
 		DoFunc: func(_ *http.Request) (*http.Response, error) {
 			return testutils.GetResponse(200, `{"success": false, "message": "some error message"}`)
@@ -158,8 +152,7 @@ func TestFailContainerConfigWhenPostIsUnsuccessful(t *testing.T) {
 	result, err := proxy.ContainerConfig(client, proxyConfigRequest)
 
 	// Assertions
-	testutils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
-	testutils.AssertTrue(t, "ContainerConfigGenerate error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
+	testutils.AssertError(t, expectedErrorMessage, err)
 	testutils.AssertTrue(t, "Result data should be nil", result == nil)
 }
 
@@ -170,9 +163,7 @@ func TestSuccessfulContainerConfigWhenAllParametersAreProvided(t *testing.T) {
 
 	// Mock client
 	client, err := api.Init(connectionDetails)
-	if err != nil {
-		t.FailNow()
-	}
+	testutils.AssertNoError(t, "api.Init failed", err)
 	client.Client = &mocks.MockClient{
 		DoFunc: func(req *http.Request) (*http.Response, error) {
 			// asserts request body contents
@@ -202,7 +193,7 @@ func TestSuccessfulContainerConfigWhenAllParametersAreProvided(t *testing.T) {
 	result, err := proxy.ContainerConfig(client, proxyConfigRequest)
 
 	// Assertions
-	testutils.AssertTrue(t, "Unexpected error executing ContainerConfigGenerate", err == nil)
+	testutils.AssertNoError(t, "Unexpected error executing ContainerConfig", err)
 	testutils.AssertTrue(t, "Result should not be empty", result != nil)
 	testutils.AssertEquals(
 		t, "Result configuration binary doesn't match",
@@ -217,9 +208,7 @@ func TestFailContainerConfigGenerateWhenPostRequestFails(t *testing.T) {
 
 	// Mock client
 	client, err := api.Init(connectionDetails)
-	if err != nil {
-		t.FailNow()
-	}
+	testutils.AssertNoError(t, "api.Init failed", err)
 	client.Client = &mocks.MockClient{
 		DoFunc: func(_ *http.Request) (*http.Response, error) {
 			return testutils.GetResponse(404, `{}`)
@@ -230,8 +219,7 @@ func TestFailContainerConfigGenerateWhenPostRequestFails(t *testing.T) {
 	result, err := proxy.ContainerConfigGenerate(client, proxyConfigGenerateRequest)
 
 	// Assertions
-	testutils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
-	testutils.AssertTrue(t, "ContainerConfigGenerate error message", strings.Contains(err.Error(), expectedErrorMessage))
+	testutils.AssertError(t, expectedErrorMessage, err)
 	testutils.AssertTrue(t, "Result data should be nil", result == nil)
 }
 
@@ -242,9 +230,7 @@ func TestFailContainerConfigGenerateWhenPostIsUnsuccessful(t *testing.T) {
 
 	// Mock client
 	client, err := api.Init(connectionDetails)
-	if err != nil {
-		t.FailNow()
-	}
+	testutils.AssertNoError(t, "api.Init failed", err)
 	client.Client = &mocks.MockClient{
 		DoFunc: func(_ *http.Request) (*http.Response, error) {
 			return testutils.GetResponse(200, `{"success": false, "message": "some error message"}`)
@@ -255,8 +241,7 @@ func TestFailContainerConfigGenerateWhenPostIsUnsuccessful(t *testing.T) {
 	result, err := proxy.ContainerConfigGenerate(client, proxyConfigGenerateRequest)
 
 	// Assertions
-	testutils.AssertTrue(t, "Unexpected successful ContainerConfigGenerate call", err != nil)
-	testutils.AssertTrue(t, "ContainerConfigGenerate error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
+	testutils.AssertError(t, expectedErrorMessage, err)
 	testutils.AssertTrue(t, "Result data should be nil", result == nil)
 }
 
@@ -267,9 +252,7 @@ func TestSuccessfulContainerConfigGenerateWhenAllParametersAreProvided(t *testin
 
 	// Mock client
 	client, err := api.Init(connectionDetails)
-	if err != nil {
-		t.FailNow()
-	}
+	testutils.AssertNoError(t, "api.Init failed", err)
 	client.Client = &mocks.MockClient{
 		DoFunc: func(req *http.Request) (*http.Response, error) {
 			// asserts request body contents
@@ -306,7 +289,7 @@ func TestSuccessfulContainerConfigGenerateWhenAllParametersAreProvided(t *testin
 	result, err := proxy.ContainerConfigGenerate(client, proxyConfigGenerateRequest)
 
 	// Assertions
-	testutils.AssertTrue(t, "Unexpected error executing ContainerConfigGenerate", err == nil)
+	testutils.AssertNoError(t, "Unexpected error executing ContainerConfigGenerate", err)
 	testutils.AssertTrue(t, "Result should not be empty", result != nil)
 	testutils.AssertEquals(
 		t, "Result configuration binary doesn't match",

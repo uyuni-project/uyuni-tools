@@ -34,7 +34,5 @@ func TestParamsParsing(t *testing.T) {
 	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed: ", cmd.Execute())
 }

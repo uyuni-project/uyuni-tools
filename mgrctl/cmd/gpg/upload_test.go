@@ -66,9 +66,7 @@ func TestGpgKeyUpload(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			client, err := api.Init(connectionDetails)
-			if err != nil {
-				t.FailNow()
-			}
+			testutils.AssertNoError(t, "Failed to initialize API client", err)
 
 			client.Client = &mocks.MockClient{
 				DoFunc: func(req *http.Request) (*http.Response, error) {
@@ -76,9 +74,7 @@ func TestGpgKeyUpload(t *testing.T) {
 					testutils.AssertEquals(t, "Wrong content type", req.Header.Get("Content-Type"), "application/json; charset=utf-8")
 
 					var data gpgKeyUploadRequest
-					if err := json.NewDecoder(req.Body).Decode(&data); err != nil {
-						t.Fatalf("Failed to decode JSON body: %v", err)
-					}
+					testutils.AssertNoError(t, "Failed to decode JSON body", json.NewDecoder(req.Body).Decode(&data))
 					testutils.AssertEquals(t, "The key is not properly passed", tt.key, data.Key)
 
 					return testutils.GetResponse(tt.statusCode, tt.body)

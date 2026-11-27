@@ -1,10 +1,14 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package utils
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
+)
 
 func TestIdChecker(t *testing.T) {
 	data := map[string]bool{
@@ -22,9 +26,7 @@ func TestIdChecker(t *testing.T) {
 	}
 	for value, expected := range data {
 		actual := idChecker(value)
-		if actual != expected {
-			t.Errorf("%s: expected %v got %v", value, expected, actual)
-		}
+		testutils.AssertEquals(t, value, expected, actual)
 	}
 }
 
@@ -37,8 +39,6 @@ func TestEmailChecker(t *testing.T) {
 	}
 	for value, expected := range data {
 		actual := emailChecker(value)
-		if actual != expected {
-			t.Errorf("%s: expected %v got %v", value, expected, actual)
-		}
+		testutils.AssertEquals(t, value, expected, actual)
 	}
 }

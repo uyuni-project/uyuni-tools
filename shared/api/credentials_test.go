@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -13,8 +13,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/rs/zerolog/log"
 	"github.com/uyuni-project/uyuni-tools/shared/api/mocks"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 const user = "mytestuser"
@@ -31,150 +31,89 @@ func TestCredentialsStore(t *testing.T) {
 		Server:   server,
 	}
 	client, err := Init(&connection)
-	if err != nil {
-		t.FailNow()
-	}
+	testutils.AssertNoError(t, "api.Init failed", err)
 
 	client.Client = &mocks.MockClient{
 		DoFunc: loginTestDo,
 	}
 
-	if err := client.Login(); err != nil {
-		t.FailNow()
-	}
-	err = StoreLoginCreds(client)
-	if err != nil {
-		t.Fail()
-	}
+	testutils.AssertNoError(t, "client.Login failed", client.Login())
+	testutils.AssertNoError(t, "StoreLoginCreds failed", StoreLoginCreds(client))
 
 	connection2 := ConnectionDetails{}
-	if err := loadLoginCreds(&connection2); err != nil {
-		t.Fail()
-	}
-	if connection2.Server != server {
-		log.Error().Msg("server does not match")
-		t.Fail()
-	}
-	if connection2.Cookie != cookie {
-		log.Error().Msg("cookie does not match")
-		t.Fail()
-	}
+	testutils.AssertNoError(t, "loadLoginCreds failed", loadLoginCreds(&connection2))
+	testutils.AssertEquals(t, "server does not match", server, connection2.Server)
+	testutils.AssertEquals(t, "cookie does not match", cookie, connection2.Cookie)
 }
 
 // Test credentials are cleaned-up after logout.
 func TestCredentialsCleanup(t *testing.T) {
 	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
 	err := storeTestCredentials()
-	if err != nil {
-		log.Error().Err(err).Msg("failed to store creds")
-		t.Fail()
-	}
+	testutils.AssertNoError(t, "failed to store creds", err)
 
-	if err != nil {
-		t.Fail()
-	}
-	if err := RemoveLoginCreds(); err != nil {
-		t.Fail()
-	}
+	testutils.AssertNoError(t, "RemoveLoginCreds failed", RemoveLoginCreds())
 
 	connection2 := ConnectionDetails{
 		Server: server,
 	}
 	err = loadLoginCreds(&connection2)
-	if err == nil {
-		t.Fail()
-	}
-	if connection2.User != "" {
-		t.Fail()
-	}
+	testutils.AssertError(t, "unable to read credentials file", err)
+	testutils.AssertEquals(t, "expected empty user", "", connection2.User)
 }
 
 // Write malformed credentials file to check autocleanup of wrong credentials.
 func TestAutocleanup(t *testing.T) {
 	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
 	err := os.WriteFile(getAPICredsFile(), []byte(""), 0600)
-	if err != nil {
-		t.Fail()
-	}
+	testutils.AssertNoError(t, "WriteFile failed", err)
 	connection := ConnectionDetails{
 		Server: server,
 	}
 	getStoredConnectionDetails(&connection)
-	if connection.InSession {
-		t.Fail()
-	}
+	testutils.AssertTrue(t, "connection InSession should not be set", !connection.InSession)
 	_, err = os.Stat(getAPICredsFile())
-	if err == nil {
-		t.Fail()
-	}
+	testutils.AssertError(t, "no such file or directory", err)
 }
 
 // Test login using cached credentials.
 func TestCredentialValidation(t *testing.T) {
 	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
 	err := storeTestCredentials()
-	if err != nil {
-		log.Error().Err(err).Msg("failed to store creds")
-		t.Fail()
-	}
+	testutils.AssertNoError(t, "failed to store creds", err)
 
 	connection := ConnectionDetails{}
 	client, err := Init(&connection)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to init connection")
-		t.Fail()
-	}
-
-	if !client.Details.InSession {
-		log.Error().Msg("Credentials are not marked as cached")
-		t.Fail()
-	}
+	testutils.AssertNoError(t, "failed to init connection", err)
+	testutils.AssertTrue(t, "Credentials are not marked as cached", client.Details.InSession)
 
 	client.Client = &mocks.MockClient{
 		DoFunc: userListRolesDo,
 	}
 
-	if err := client.Login(); err != nil {
-		log.Trace().Err(err).Msg("failed")
-		t.Fail()
-	}
+	testutils.AssertNoError(t, "client.Login failed", client.Login())
 }
 
 func TestWrongCredentials(t *testing.T) {
 	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
 	err := storeWrongTestCredentials()
-	if err != nil {
-		log.Error().Err(err).Msg("failed to store creds")
-		t.Fail()
-	}
+	testutils.AssertNoError(t, "failed to store creds", err)
 
 	connection := ConnectionDetails{}
 	client, err := Init(&connection)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to init connection")
-		t.Fail()
-	}
-
-	if !client.Details.InSession {
-		log.Error().Msg("Credentials are not marked as cached")
-		t.Fail()
-	}
+	testutils.AssertNoError(t, "failed to init connection", err)
+	testutils.AssertTrue(t, "Credentials are not marked as cached", client.Details.InSession)
 
 	client.Client = &mocks.MockClient{
 		DoFunc: userListRolesDo,
 	}
 
 	err = client.Login()
-	if err == nil {
-		log.Error().Err(err).Msg("login was successful even when should not have been")
-		t.Fail()
-	}
+	testutils.AssertError(t, "No credentials provided", err)
 
 	// Test that wrong login will remove auth file
 	_, err = os.Stat(getAPICredsFile())
-	if err == nil {
-		t.Fail()
-	}
+	testutils.AssertError(t, "no such file or directory", err)
 }
 
 // helper storing valid credentials.

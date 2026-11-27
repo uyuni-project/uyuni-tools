@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -73,9 +73,7 @@ func TestParamsParsingGeneratedCert(t *testing.T) {
 
 	t.Logf("flags: %s", strings.Join(args, " "))
 	cmd.SetArgs(args)
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed with error", cmd.Execute())
 }
 
 func TestParamsParsingProvidedCert(t *testing.T) {
@@ -118,7 +116,5 @@ func TestParamsParsingProvidedCert(t *testing.T) {
 
 	t.Logf("flags: %s", strings.Join(args, " "))
 	cmd.SetArgs(args)
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed with error", cmd.Execute())
 }

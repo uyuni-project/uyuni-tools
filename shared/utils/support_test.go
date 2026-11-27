@@ -5,8 +5,9 @@
 package utils
 
 import (
-	"strings"
 	"testing"
+
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestHostedContainers(t *testing.T) {
@@ -19,7 +20,5 @@ func TestHostedContainers(t *testing.T) {
 
 	actual := GetContainersFromSystemdFiles(data)
 
-	if strings.Join(actual, " ") != strings.Join(expected, " ") {
-		t.Errorf("Testcase: Expected %s got %s ", expected, actual)
-	}
+	testutils.AssertEquals(t, "Unexpected containers", expected, actual)
 }

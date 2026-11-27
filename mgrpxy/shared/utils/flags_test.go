@@ -7,6 +7,7 @@ package utils
 import (
 	"testing"
 
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -98,10 +99,7 @@ func TestGetContainerImage(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			actual := tt.proxyFlags.GetContainerImage("httpd")
-
-			if actual != tt.expectedResult {
-				t.Errorf("GetContainerImage('httpd') = %s, expected: %s", actual, tt.expectedResult)
-			}
+			testutils.AssertEquals(t, "GetContainerImage('httpd')", tt.expectedResult, actual)
 		})
 	}
 }

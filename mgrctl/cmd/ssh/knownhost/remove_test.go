@@ -58,9 +58,7 @@ func TestRemoveKnownHost(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			client, err := api.Init(connectionDetails)
-			if err != nil {
-				t.FailNow()
-			}
+			testutils.AssertNoError(t, "Failed to initialize API client", err)
 
 			client.Client = &mocks.MockClient{
 				DoFunc: func(req *http.Request) (*http.Response, error) {

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 	"github.com/uyuni-project/uyuni-tools/shared/types"
 )
 
@@ -113,8 +114,6 @@ func TestGeneratePodmanLoginContent(t *testing.T) {
 
 	for _, tt := range tests {
 		actual := GeneratePodmanLoginContent(tt.hostData, tt.registry, tt.scc)
-		if actual != tt.expected {
-			t.Errorf("PodmanLogin error:\n actual:\n %s \n expected:\n %s", actual, tt.expected)
-		}
+		testutils.AssertEquals(t, "PodmanLogin error", tt.expected, actual)
 	}
 }

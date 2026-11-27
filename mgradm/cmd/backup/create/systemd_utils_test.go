@@ -133,15 +133,10 @@ func TestGatherSystemdItems(t *testing.T) {
 	// Service exists, FragmentPath succeeds, DropInPaths succeeds, and env file exists
 	serviceDir := servicePath + ".d"
 	err := os.MkdirAll(serviceDir, 0755)
-	if err != nil {
-		t.Fatal(err)
-	}
+	testutils.AssertNoError(t, "failed to create service directory", err)
 
 	envFile := filepath.Join(serviceDir, podman.ServerEnvironmentFile)
-	err = os.WriteFile(envFile, []byte("some env"), 0644)
-	if err != nil {
-		t.Fatal(err)
-	}
+	testutils.WriteFile(t, envFile, "some env")
 
 	dropIn1 := filepath.Join(serviceDir, "10-test.conf")
 	dropIn2 := filepath.Join(serviceDir, "20-test.conf")
@@ -183,30 +178,19 @@ func TestExportSystemdConfiguration(t *testing.T) {
 
 	serviceFile := filepath.Join(tempDir, "fake-service.service")
 	serviceContent := "[Service]\nExecStart=/usr/bin/fake"
-	err := os.WriteFile(serviceFile, []byte(serviceContent), 0644)
-	if err != nil {
-		t.Fatal(err)
-	}
+	testutils.WriteFile(t, serviceFile, serviceContent)
 
 	serviceDir := serviceFile + ".d"
-	err = os.MkdirAll(serviceDir, 0755)
-	if err != nil {
-		t.Fatal(err)
-	}
+	err := os.MkdirAll(serviceDir, 0755)
+	testutils.AssertNoError(t, "failed to create service directory", err)
 
 	dropInFile := filepath.Join(serviceDir, "custom.conf")
 	dropInContent := "[Service]\nEnvironment=FOO=bar"
-	err = os.WriteFile(dropInFile, []byte(dropInContent), 0644)
-	if err != nil {
-		t.Fatal(err)
-	}
+	testutils.WriteFile(t, dropInFile, dropInContent)
 
 	dropInWhiteSpaceFile := filepath.Join(serviceDir, "with space test.conf")
 	dropInWhiteSpaceContent := "[Service]\nEnvironment=BAR=foo"
-	err = os.WriteFile(dropInWhiteSpaceFile, []byte(dropInWhiteSpaceContent), 0644)
-	if err != nil {
-		t.Fatal(err)
-	}
+	testutils.WriteFile(t, dropInWhiteSpaceFile, dropInWhiteSpaceContent)
 
 	dropInPaths := dropInFile + " " + "\"" + dropInWhiteSpaceFile + "\""
 
@@ -216,10 +200,7 @@ func TestExportSystemdConfiguration(t *testing.T) {
 
 	envFileContent := "SOME_ENV=1"
 	envFile := filepath.Join(serviceDir, podman.ServerEnvironmentFile)
-	err = os.WriteFile(envFile, []byte(envFileContent), 0644)
-	if err != nil {
-		t.Fatal(err)
-	}
+	testutils.WriteFile(t, envFile, envFileContent)
 
 	systemd = podman.NewSystemdWithDriver(&testutils.FakeSystemdDriver{
 		Installed: []string{"fake-service"},
@@ -238,22 +219,16 @@ func TestExportSystemdConfiguration(t *testing.T) {
 	testutils.AssertNoError(t, "exportSystemdConfiguration with dryRun=true failed", err)
 
 	backupFilePath := filepath.Join(outputDir, "systemdBackup.tar")
-	if _, err := os.Stat(backupFilePath); err == nil {
-		t.Error("backup file should not have been created on dryRun=true")
-	}
+	testutils.AssertTrue(t, "backup file should not have been created on dryRun=true", !utils.FileExists(backupFilePath))
 
 	// dryRun = false
 	err = exportSystemdConfiguration(outputDir, false)
 	testutils.AssertNoError(t, "exportSystemdConfiguration with dryRun=false failed", err)
 
-	if _, err := os.Stat(backupFilePath); os.IsNotExist(err) {
-		t.Fatal("backup file was not created on dryRun=false")
-	}
+	testutils.AssertTrue(t, "backup file was not created on dryRun=false", utils.FileExists(backupFilePath))
 
 	tarFile, err := os.Open(backupFilePath)
-	if err != nil {
-		t.Fatal(err)
-	}
+	testutils.AssertNoError(t, "Open backup file failed", err)
 	defer tarFile.Close()
 
 	tr := tar.NewReader(tarFile)
@@ -264,17 +239,13 @@ func TestExportSystemdConfiguration(t *testing.T) {
 		if err == io.EOF {
 			break
 		}
-		if err != nil {
-			t.Fatal(err)
-		}
+		testutils.AssertNoError(t, "tar next failed", err)
 
 		if header.FileInfo().IsDir() {
 			foundFiles[header.Name] = "dir"
 		} else {
 			content, err := io.ReadAll(tr)
-			if err != nil {
-				t.Fatal(err)
-			}
+			testutils.AssertNoError(t, "failed to read tar entry", err)
 			foundFiles[header.Name] = string(content)
 		}
 	}

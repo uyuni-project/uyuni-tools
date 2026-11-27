@@ -16,31 +16,27 @@ import (
 
 func TestReadCertificatesRootCa(t *testing.T) {
 	actual, err := readCertificates("testdata/chain1/root-ca.crt")
-	testutils.AssertEquals(t, "error not nil", nil, err)
+	testutils.AssertNoError(t, "error not nil", err)
 	testutils.AssertEquals(t, "Didn't get the expected certificates count", 1, len(actual))
 	testutils.AssertTrue(t, "CA should be root", actual[0].isRoot)
 }
 
 func TestReadCertificatesNoCa(t *testing.T) {
 	actual, err := readCertificates("testdata/chain1/server.crt")
-	testutils.AssertEquals(t, "error not nil", nil, err)
+	testutils.AssertNoError(t, "error not nil", err)
 	testutils.AssertEquals(t, "Didn't get the expected certificates count", 1, len(actual))
 	testutils.AssertTrue(t, "Shouldn't be a CA certificate", !actual[0].isCa)
 }
 
 func TestReadCertificatesMultiple(t *testing.T) {
 	actual, err := readCertificates("testdata/chain1/intermediate-ca.crt")
-	testutils.AssertEquals(t, "error not nil", nil, err)
+	testutils.AssertNoError(t, "error not nil", err)
 	testutils.AssertEquals(t, "Didn't get the expected certificates count", 2, len(actual))
-	if len(actual) != 2 {
-		t.Errorf("readCertificates got %d certificates; want 2", len(actual))
-	}
 
 	content := string(actual[0].content)
-	if !strings.HasPrefix(content, "-----BEGIN CERTIFICATE-----\nMIIEXjCCA0agA") ||
-		!strings.HasSuffix(content, "nrUN5m7Y0taw4qrOVOZRmGXu\n-----END CERTIFICATE-----\n") {
-		t.Errorf("Wrong certificate content:\n%s", content)
-	}
+	testutils.AssertTrue(t, "Wrong certificate content:\n"+content,
+		strings.HasPrefix(content, "-----BEGIN CERTIFICATE-----\nMIIEXjCCA0agA") &&
+			strings.HasSuffix(content, "nrUN5m7Y0taw4qrOVOZRmGXu\n-----END CERTIFICATE-----\n"))
 
 	testutils.AssertEquals(t, "Wrong certificate subject",
 		"C=DE, ST=STATE, O=ORG, OU=ORGUNIT, CN=TeamCA",
@@ -80,7 +76,7 @@ func TestOrderCas(t *testing.T) {
 	server := types.SSLPair{Cert: "testdata/chain1/server.crt", Key: "testdata/chain1/server.key"}
 
 	certs, rootCa, err := OrderCas(&chain, &server)
-	testutils.AssertEquals(t, "error not nil", nil, err)
+	testutils.AssertNoError(t, "error not nil", err)
 	ordered := strings.Split(string(certs), "-----BEGIN CERTIFICATE-----\n")
 
 	testutils.AssertEquals(t, "Found unknown content before first certificate", "", ordered[0])
@@ -99,26 +95,24 @@ func TestOrderCas(t *testing.T) {
 	testutils.AssertEquals(t, "Wrong number of certificates in the chain", len(expected), len(onlyCerts))
 
 	for i, data := range expected {
-		if !strings.HasPrefix(onlyCerts[i], data.Begin) ||
-			!strings.HasSuffix(onlyCerts[i], data.End+"\n-----END CERTIFICATE-----\n") {
-			t.Errorf("Invalid certificate #%d, got:\n:%s", i, onlyCerts[i])
-		}
+		testutils.AssertTrue(t, "Invalid certificate #"+string(rune('0'+i)),
+			strings.HasPrefix(onlyCerts[i], data.Begin) &&
+				strings.HasSuffix(onlyCerts[i], data.End+"\n-----END CERTIFICATE-----\n"))
 	}
 
 	rootCert := string(rootCa)
-	if !strings.HasPrefix(rootCert, "-----BEGIN CERTIFICATE-----\nMIIEVjCCAz6gAwIBAgIUSZYESIXLDe") ||
-		!strings.HasSuffix(rootCert, "5c7cfxV\nkABuj9PJxnNnFQ==\n-----END CERTIFICATE-----\n") {
-		t.Errorf("Invalid root CA certificate, got:\n:%s", rootCert)
-	}
+	testutils.AssertTrue(t, "Invalid root CA certificate",
+		strings.HasPrefix(rootCert, "-----BEGIN CERTIFICATE-----\nMIIEVjCCAz6gAwIBAgIUSZYESIXLDe") &&
+			strings.HasSuffix(rootCert, "5c7cfxV\nkABuj9PJxnNnFQ==\n-----END CERTIFICATE-----\n"))
 }
 
 func TestFindServerCertificate(t *testing.T) {
 	certsList, err := readCertificates("testdata/chain2/spacewalk.crt")
-	testutils.AssertEquals(t, "error not nil", nil, err)
+	testutils.AssertNoError(t, "error not nil", err)
 
 	actual, err := findServerCert(certsList)
 
-	testutils.AssertEquals(t, "Expected to find a certificate, got none", nil, err)
+	testutils.AssertNoError(t, "Expected to find a certificate", err)
 	testutils.AssertEquals(t, "Wrong subject hash", "78b716a6", actual.subjectHash)
 }
 
@@ -128,7 +122,7 @@ func TestOrderCasChain2(t *testing.T) {
 	server := types.SSLPair{Cert: "testdata/chain2/spacewalk.crt", Key: "testdata/chain2/spacewalk.key"}
 
 	certs, rootCa, err := OrderCas(&chain, &server)
-	testutils.AssertEquals(t, "error not nil", nil, err)
+	testutils.AssertNoError(t, "error not nil", err)
 
 	ordered := strings.Split(string(certs), "-----BEGIN CERTIFICATE-----\n")
 
@@ -148,17 +142,15 @@ func TestOrderCasChain2(t *testing.T) {
 	testutils.AssertEquals(t, "Wrong number of certificates in the chain", len(expected), len(onlyCerts))
 
 	for i, data := range expected {
-		if !strings.HasPrefix(onlyCerts[i], data.Begin) ||
-			!strings.HasSuffix(onlyCerts[i], data.End+"\n-----END CERTIFICATE-----\n") {
-			t.Errorf("Invalid certificate #%d, got:\n:%s", i, onlyCerts[i])
-		}
+		testutils.AssertTrue(t, "Invalid certificate #"+string(rune('0'+i)),
+			strings.HasPrefix(onlyCerts[i], data.Begin) &&
+				strings.HasSuffix(onlyCerts[i], data.End+"\n-----END CERTIFICATE-----\n"))
 	}
 
 	rootCert := string(rootCa)
-	if !strings.HasPrefix(rootCert, "-----BEGIN CERTIFICATE-----\nMIIEVjCCAz6gAwIBAgIUA12e94NK") ||
-		!strings.HasSuffix(rootCert, "AQKotV5y5qBInw==\n-----END CERTIFICATE-----\n") {
-		t.Errorf("Invalid root CA certificate, got:\n:%s", rootCert)
-	}
+	testutils.AssertTrue(t, "Invalid root CA certificate",
+		strings.HasPrefix(rootCert, "-----BEGIN CERTIFICATE-----\nMIIEVjCCAz6gAwIBAgIUA12e94NK") &&
+			strings.HasSuffix(rootCert, "AQKotV5y5qBInw==\n-----END CERTIFICATE-----\n"))
 }
 
 func TestGetRsaKey(t *testing.T) {
@@ -173,9 +165,7 @@ func TestGetRsaKey(t *testing.T) {
 	matchingPKCS1 := strings.HasPrefix(actual, "-----BEGIN RSA PRIVATE KEY-----\nMIIEoAIBAAKCAQEArqQvTR0") &&
 		strings.HasSuffix(actual, "+3i4RXV4XtWHzmQymPUplukA/kScGzHOD\n-----END RSA PRIVATE KEY-----\n")
 
-	if !matchingPKCS1 && !matchingPKCS8 {
-		t.Errorf("Unexpected generated RSA key: %s", actual)
-	}
+	testutils.AssertTrue(t, "Unexpected generated RSA key: "+actual, matchingPKCS1 || matchingPKCS8)
 }
 
 func TestCheckKey(t *testing.T) {
@@ -201,13 +191,7 @@ func TestCheckKey(t *testing.T) {
 	for _, testCase := range testCases {
 		t.Run(testCase.name, func(t *testing.T) {
 			err := CheckKey(testCase.file)
-			if testCase.err == "" {
-				testutils.AssertEquals(t, "expected no error", nil, err)
-			} else {
-				testutils.AssertTrue(t, "Error message should state the key is probably encrypted",
-					strings.Contains(err.Error(), testCase.err),
-				)
-			}
+			testutils.AssertError(t, testCase.err, err)
 		})
 	}
 }
@@ -220,13 +204,13 @@ func TestVerifyHostname(t *testing.T) {
 	server := types.SSLPair{Cert: "testdata/chain1/server.crt", Key: "testdata/chain1/server.key"}
 
 	certs, rootCa, err := OrderCas(&chain, &server)
-	testutils.AssertEquals(t, "Ordering certificate chain shouldn't have raised an error", nil, err)
+	testutils.AssertNoError(t, "Ordering certificate chain shouldn't have raised an error", err)
 
 	dir, err := os.MkdirTemp("", "tools-tests")
 	defer func() {
 		os.RemoveAll(dir)
 	}()
-	testutils.AssertEquals(t, "Creating a temporary directory shouldn't fail", nil, err)
+	testutils.AssertNoError(t, "Creating a temporary directory shouldn't fail", err)
 
 	tmpca := path.Join(dir, "ca.crt")
 	tmpcert := path.Join(dir, "srv.crt")
@@ -237,18 +221,18 @@ func TestVerifyHostname(t *testing.T) {
 	// openssl verifies time by default and our test certificates are never updated and expired.
 	nochecktime = true
 	err = VerifyHostname(tmpca, tmpcert, "failed.fqdn")
-	testutils.AssertTrue(t, "Unexpected error message", strings.Contains(err.Error(), "hostname mismatch"))
+	testutils.AssertError(t, "hostname mismatch", err)
 
 	err = VerifyHostname(tmpca, tmpcert, "test.example.com")
-	testutils.AssertEquals(t, "Unexpected error", nil, err)
+	testutils.AssertNoError(t, "Unexpected error", err)
 }
 
 func TestSHA256Fingerprints(t *testing.T) {
 	bundle, err := os.ReadFile("testdata/chain1/intermediate-ca.crt")
-	testutils.AssertEquals(t, "error reading the bundle", nil, err)
+	testutils.AssertNoError(t, "error reading the bundle", err)
 
 	fingerprints, err := SHA256Fingerprints(bundle)
-	testutils.AssertEquals(t, "error not nil", nil, err)
+	testutils.AssertNoError(t, "error not nil", err)
 	testutils.AssertEquals(t, "Didn't get the expected fingerprint count", 2, len(fingerprints))
 	testutils.AssertEquals(t, "Wrong first certificate fingerprint",
 		"04:5B:D9:B7:4C:8A:B7:77:66:8E:53:1C:B2:5C:F3:64:55:51:41:30:5D:A3:A7:A8:54:86:23:BC:47:51:3E:27",

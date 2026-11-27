@@ -47,9 +47,9 @@ func TestRunner(t *testing.T) {
 
 			// Check the returned error
 			if test.exit == 0 {
-				testutils.AssertEquals(t, "Unexpected error", nil, err)
+				testutils.AssertNoError(t, "Unexpected error", err)
 			} else {
-				testutils.AssertEquals(t, "Unexpected error", "error message", string(err.Error()))
+				testutils.AssertError(t, "error message", err)
 				var cmdErr *CmdError
 				if errors.As(err, &cmdErr) {
 					testutils.AssertEquals(t, "Unexpected exit code", test.exit, cmdErr.ExitCode())
@@ -62,13 +62,13 @@ func TestRunner(t *testing.T) {
 			logContent := logWriter.String()
 			t.Logf("log: %s", logContent)
 			if test.logLevel == zerolog.TraceLevel {
-				testutils.AssertTrue(t, "missing trace log entry", strings.Contains(logContent, "Command output:"))
+				testutils.AssertStringContains(t, "missing trace log entry", logContent, "Command output:")
 			} else {
 				testutils.AssertTrue(t, "unexpected trace log entry", !strings.Contains(logContent, `"level":"trace"`))
 			}
 
 			if test.logLevel <= zerolog.DebugLevel {
-				testutils.AssertTrue(t, "missing debug log entry", strings.Contains(logContent, "Running:"))
+				testutils.AssertStringContains(t, "missing debug log entry", logContent, "Running:")
 			} else {
 				testutils.AssertTrue(t, "unexpected debug log entry", !strings.Contains(logContent, `"level":"debug"`))
 			}
@@ -97,9 +97,9 @@ func TestContextRunner(t *testing.T) {
 	runner := NewRunnerWithContext(ctx, "sh", "-c", fmt.Sprintf(`echo -n "%s"`, testData))
 	var out bytes.Buffer
 	err := runner.Std(&out).Start()
-	testutils.AssertTrue(t, "Unexpected start failure", err == nil)
+	testutils.AssertNoError(t, "Unexpected start failure", err)
 	err = runner.Wait()
-	testutils.AssertTrue(t, "Unexpected wait failure", err == nil)
+	testutils.AssertNoError(t, "Unexpected wait failure", err)
 
 	testutils.AssertEquals(t, "Output does not match", out.Bytes(), testData)
 }

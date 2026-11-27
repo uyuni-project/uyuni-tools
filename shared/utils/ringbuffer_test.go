@@ -5,8 +5,9 @@
 package utils
 
 import (
-	"bytes"
 	"testing"
+
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestRingBuffer(t *testing.T) {
@@ -54,14 +55,10 @@ func TestRingBuffer(t *testing.T) {
 
 			for _, w := range tt.writes {
 				_, err := rb.Write([]byte(w))
-				if err != nil {
-					t.Fatalf("Write failed: %v", err)
-				}
+				testutils.AssertNoError(t, "Write failed", err)
 			}
 
-			if !bytes.Equal(rb.Bytes(), []byte(tt.expected)) {
-				t.Errorf("Bytes() = %s, want %s", rb.Bytes(), tt.expected)
-			}
+			testutils.AssertEquals(t, "Bytes() mismatch", tt.expected, string(rb.Bytes()))
 		})
 	}
 }

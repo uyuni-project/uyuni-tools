@@ -57,9 +57,7 @@ func TestValidateEndpoint(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			client, err := Init(&ConnectionDetails{Server: "testServer", Cookie: "testCookie"})
-			if err != nil {
-				t.FailNow()
-			}
+			testutils.AssertNoError(t, "api.Init failed", err)
 			client.Client = &mocks.MockClient{DoFunc: func(req *http.Request) (*http.Response, error) {
 				switch req.URL.Path {
 				case "/rhn/manager/api/api/getApiCallList":
@@ -106,9 +104,7 @@ func TestPostChecked(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			client, err := Init(&ConnectionDetails{Server: "testServer", Cookie: "testCookie"})
-			if err != nil {
-				t.FailNow()
-			}
+			testutils.AssertNoError(t, "api.Init failed", err)
 
 			targetCalled := false
 			client.Client = &mocks.MockClient{DoFunc: func(req *http.Request) (*http.Response, error) {
@@ -161,9 +157,7 @@ func TestGetChecked(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			client, err := Init(&ConnectionDetails{Server: "testServer", Cookie: "testCookie"})
-			if err != nil {
-				t.FailNow()
-			}
+			testutils.AssertNoError(t, "api.Init failed", err)
 
 			targetCalled := false
 			client.Client = &mocks.MockClient{DoFunc: func(req *http.Request) (*http.Response, error) {
@@ -192,9 +186,7 @@ func TestGetChecked(t *testing.T) {
 
 func TestRawPostDoesNotValidateEndpoint(t *testing.T) {
 	client, err := Init(&ConnectionDetails{Server: "testServer", Cookie: "testCookie"})
-	if err != nil {
-		t.FailNow()
-	}
+	testutils.AssertNoError(t, "api.Init failed", err)
 
 	targetCalled := false
 	client.Client = &mocks.MockClient{DoFunc: func(req *http.Request) (*http.Response, error) {
@@ -203,8 +195,7 @@ func TestRawPostDoesNotValidateEndpoint(t *testing.T) {
 		return testutils.GetResponse(200, `{"success":true,"result":true}`)
 	}}
 
-	if _, err := client.Post("org/createFirst", nil); err != nil {
-		t.Fatalf("Expected raw POST request to bypass endpoint validation: %v", err)
-	}
+	_, err = client.Post("org/createFirst", nil)
+	testutils.AssertNoError(t, "Expected raw POST request to bypass endpoint validation", err)
 	testutils.AssertTrue(t, "Expected raw target endpoint to be called", targetCalled)
 }

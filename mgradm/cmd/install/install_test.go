@@ -5,7 +5,6 @@
 package install
 
 import (
-	"os"
 	"path"
 	"testing"
 
@@ -38,9 +37,7 @@ func TestParamsParsing(t *testing.T) {
 	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed: ", cmd.Execute())
 }
 
 func TestParamsChangedConfig(t *testing.T) {
@@ -56,9 +53,7 @@ saline:
 
 	dir := t.TempDir()
 	configPath := path.Join(dir, "config.yaml")
-	if err := os.WriteFile(configPath, []byte(config), 0600); err != nil {
-		t.Fatalf("Failed to write config file: %s", err)
-	}
+	testutils.WriteFile(t, configPath, config)
 
 	tester := func(_ *types.GlobalFlags, flags *podmanInstallFlags,
 		_ *cobra.Command, _ []string,
@@ -77,9 +72,7 @@ saline:
 	cmd := newCmd(&globalFlags, tester)
 
 	cmd.SetArgs([]string{"srv.fq.dn"})
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed: ", cmd.Execute())
 }
 
 func TestParamsNoConfig(t *testing.T) {
@@ -100,9 +93,7 @@ func TestParamsNoConfig(t *testing.T) {
 	cmd := newCmd(&globalFlags, tester)
 
 	cmd.SetArgs([]string{"srv.fq.dn"})
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed: ", cmd.Execute())
 }
 
 func TestSSLCAParams(t *testing.T) {
@@ -127,7 +118,5 @@ func TestSSLCAParams(t *testing.T) {
 		"--ssl-server-cert", "path/to/srv.crt",
 		"--ssl-server-key", "path/to/srv.key",
 	})
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed: ", cmd.Execute())
 }

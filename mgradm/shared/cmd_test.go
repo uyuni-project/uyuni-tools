@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -8,11 +8,10 @@ import (
 	"testing"
 
 	"github.com/uyuni-project/uyuni-tools/mgradm/cmd"
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestSubCommandsHaveGroup(t *testing.T) {
 	mgradmCmd, _ := cmd.NewUyuniadmCommand()
-	if !mgradmCmd.AllChildCommandsHaveGroup() {
-		t.Errorf("There's at least one mgradm subcommand without group")
-	}
+	testutils.AssertTrue(t, "There's at least one mgradm subcommand without group", mgradmCmd.AllChildCommandsHaveGroup())
 }

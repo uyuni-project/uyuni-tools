@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"path"
-	"strings"
 	"testing"
 
 	"github.com/uyuni-project/uyuni-tools/shared/api"
@@ -89,8 +88,7 @@ func TestFailProxyCreateConfigWhenNoConnectionDetailsAreProvided(t *testing.T) {
 	err := proxyCreateConfig(flags, api.Init, proxyApi.ContainerConfig, proxyApi.ContainerConfigGenerate)
 
 	// Assertions
-	testutils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
-	testutils.AssertTrue(t, "ProxyCreateConfig error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
+	testutils.AssertError(t, expectedErrorMessage, err)
 	testutils.AssertTrue(t, "File configuration file stored", !utils.FileExists(expectedOutputFilePath))
 }
 
@@ -118,8 +116,7 @@ func TestFailProxyCreateConfigWhenLoginFails(t *testing.T) {
 	err := proxyCreateConfig(flags, mockAPIFunc, proxyApi.ContainerConfig, proxyApi.ContainerConfigGenerate)
 
 	// Assertions
-	testutils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
-	testutils.AssertTrue(t, "ProxyCreateConfig error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
+	testutils.AssertError(t, expectedErrorMessage, err)
 	testutils.AssertTrue(t, "File configuration file stored", !utils.FileExists(expectedOutputFilePath))
 }
 
@@ -144,8 +141,7 @@ func TestFailProxyCreateConfigWhenProxyCrtIsProvidedButProxyKeyIsMissing(t *test
 	err := proxyCreateConfig(flags, mockSuccessfulLoginAPICall(), nil, nil)
 
 	// Assertions
-	testutils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
-	testutils.AssertTrue(t, "ProxyCreateConfig error message", strings.HasSuffix(err.Error(), expectedErrorMessage))
+	testutils.AssertError(t, expectedErrorMessage, err)
 	testutils.AssertTrue(t, "File configuration file stored", !utils.FileExists(testFiles.OutputFilePath))
 }
 
@@ -195,8 +191,7 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	)
 
 	// Assertions providing certs call
-	testutils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
-	testutils.AssertTrue(t, "API proxy config return message", strings.HasSuffix(err.Error(), expectedReturnMessage))
+	testutils.AssertError(t, expectedReturnMessage, err)
 	testutils.AssertTrue(t, "File configuration file stored", !utils.FileExists(testFiles.OutputFilePath))
 
 	// Execute generate certs
@@ -205,8 +200,7 @@ func TestFailProxyCreateConfigWhenProxyConfigApiRequestFails(t *testing.T) {
 	)
 
 	// Assertions generate certs call
-	testutils.AssertTrue(t, "Unexpected success execution of ProxyCreateConfig", err != nil)
-	testutils.AssertTrue(t, "API proxy config return message", strings.HasSuffix(err.Error(), expectedReturnMessage))
+	testutils.AssertError(t, expectedReturnMessage, err)
 	testutils.AssertTrue(t, "File configuration file stored", !utils.FileExists(testFiles.OutputFilePath))
 }
 
@@ -263,7 +257,7 @@ func TestSuccessProxyCreateConfigWhenAllParamsProvidedSuccess(t *testing.T) {
 	err := proxyCreateConfig(flags, mockSuccessfulLoginAPICall(), mockContainerConfig, nil)
 
 	// Assertions
-	testutils.AssertTrue(t, "Unexpected error executing ProxyCreateConfig", err == nil)
+	testutils.AssertNoError(t, "Unexpected error executing ProxyCreateConfig", err)
 	testutils.AssertTrue(t, "File configuration file was not stored", utils.FileExists(expectedOutputFilePath))
 
 	storedConfigFile := testutils.ReadFileAsBinary(t, expectedOutputFilePath)
@@ -337,7 +331,7 @@ func TestSuccessProxyCreateConfigGenerateWhenAllParamsProvidedSuccess(t *testing
 	err := proxyCreateConfig(flags, mockSuccessfulLoginAPICall(), nil, mockCreateConfigGenerate)
 
 	// Assertions
-	testutils.AssertTrue(t, "Unexpected error executing ProxyCreateConfigGenerate", err == nil)
+	testutils.AssertNoError(t, "Unexpected error executing ProxyCreateConfigGenerate", err)
 	testutils.AssertTrue(t, "File configuration file was not stored", utils.FileExists(expectedOutputFilePath))
 
 	storedConfigFile := testutils.ReadFileAsBinary(t, expectedOutputFilePath)

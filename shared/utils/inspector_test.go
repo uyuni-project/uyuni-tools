@@ -26,9 +26,7 @@ has_hubxmlrpc=true
 
 	// Use utils.InspectData as the target type
 	actual, err := ReadInspectData[InspectResult]([]byte(content))
-	if err != nil {
-		t.Fatalf("Unexpected failure: %s", err)
-	}
+	testutils.AssertNoError(t, "Unexpected failure", err)
 
 	// Assuming Timezone is part of the struct (via squash)
 	testutils.AssertEquals(t, "Invalid timezone", "Europe/Berlin", actual.Timezone)

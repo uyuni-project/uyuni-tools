@@ -5,7 +5,6 @@
 package podman
 
 import (
-	"fmt"
 	"os"
 	"path"
 	"strconv"
@@ -22,12 +21,10 @@ import (
 
 func TestCheckDirPermissions(t *testing.T) {
 	tempDir := t.TempDir()
-	if err := os.MkdirAll(tempDir, 0755); err != nil {
-		t.Fatal(err)
-	}
-	if err := checkPermissions(tempDir, 0005|0050|0500); err != nil {
-		t.Errorf("Expected no error, got %v", err)
-	}
+	err := os.MkdirAll(tempDir, 0755)
+	testutils.AssertNoError(t, "failed to make temporary directory", err)
+	err = checkPermissions(tempDir, 0005|0050|0500)
+	testutils.AssertNoError(t, "failed to check permissions", err)
 }
 
 func TestValidateYamlFiles(t *testing.T) {
@@ -35,21 +32,16 @@ func TestValidateYamlFiles(t *testing.T) {
 	testFiles := []string{"httpd.yaml", "ssh.yaml", "config.yaml"}
 	for _, file := range testFiles {
 		filePath := path.Join(tempDir, file)
-		if _, err := os.Create(filePath); err != nil {
-			t.Fatalf("Failed to create test file %s: %v", filePath, err)
-		}
+		_, err := os.Create(filePath)
+		testutils.AssertNoError(t, "Failed to create test file "+filePath, err)
 	}
 
 	// Test: when all files are present and have correct permissions
-	if err := validateInstallYamlFiles(tempDir); err != nil {
-		t.Errorf("Expected no error, got %v", err)
-	}
+	testutils.AssertNoError(t, "Expected no error", validateInstallYamlFiles(tempDir))
 
 	// Test: Missing file scenario, remove one file and expect an error
 	os.Remove(path.Join(tempDir, "httpd.yaml"))
-	if err := validateInstallYamlFiles(tempDir); err == nil {
-		t.Errorf("Expected an error due to missing httpd.yaml, but got none")
-	}
+	testutils.AssertError(t, "missing required configuration file:", validateInstallYamlFiles(tempDir))
 }
 
 func TestGetSystemID(t *testing.T) {
@@ -212,7 +204,7 @@ func TestGenerateSystemdService(t *testing.T) {
 			},
 		},
 		ipv6, httpProxyConfig)
-	testutils.AssertTrue(t, fmt.Sprintf("Unexpected error: %v", err), err == nil)
+	testutils.AssertNoError(t, "Unexpected error", err)
 	testutils.AssertEquals(t, "Unexpected number of services generated", 6, callsCount)
 
 	// Restore the mocked variables
@@ -235,20 +227,14 @@ func TestExtractSecrets(t *testing.T) {
 
 	configPath := path.Join(tempDir, "config.yaml")
 	configData := "ca_crt: CA_CERT_CONTENT\nother_key: other_value\n"
-	if err := os.WriteFile(configPath, []byte(configData), 0644); err != nil {
-		t.Fatal(err)
-	}
+	testutils.WriteFile(t, configPath, configData)
 
 	httpdPath := path.Join(tempDir, "httpd.yaml")
 	httpdData := "httpd:\n  server_crt: SERVER_CERT_CONTENT\n" +
 		"  server_key: SERVER_KEY_CONTENT\n  other_httpd_key: other_httpd_value\n"
-	if err := os.WriteFile(httpdPath, []byte(httpdData), 0644); err != nil {
-		t.Fatal(err)
-	}
+	testutils.WriteFile(t, httpdPath, httpdData)
 
-	if err := ExtractSecrets(); err != nil {
-		t.Errorf("ExtractSecrets failed: %v", err)
-	}
+	testutils.AssertNoError(t, "ExtractSecrets failed", ExtractSecrets())
 
 	// Verify secrets
 	testutils.AssertEquals(t, "Wrong CA secret", "CA_CERT_CONTENT", secrets[podman.CASecret])
@@ -258,26 +244,21 @@ func TestExtractSecrets(t *testing.T) {
 	// Verify files are updated (keys removed)
 	data, _ := os.ReadFile(configPath)
 	var config map[string]interface{}
-	if err := yaml.Unmarshal(data, &config); err != nil {
-		t.Fatalf("Failed to unmarshal config.yaml: %v", err)
-	}
-	if _, ok := config["ca_crt"]; ok {
-		t.Error("ca_crt was not removed from config.yaml")
-	}
+	err := yaml.Unmarshal(data, &config)
+	testutils.AssertNoError(t, "Failed to unmarshal config.yaml", err)
+	_, ok := config["ca_crt"]
+	testutils.AssertTrue(t, "ca_crt was not removed from config.yaml", !ok)
 	testutils.AssertEquals(t, "other_key was modified", "other_value", config["other_key"])
 
 	data, _ = os.ReadFile(httpdPath)
 	var httpdConfig map[string]interface{}
-	if err := yaml.Unmarshal(data, &httpdConfig); err != nil {
-		t.Fatalf("Failed to unmarshal httpd.yaml: %v", err)
-	}
+	err = yaml.Unmarshal(data, &httpdConfig)
+	testutils.AssertNoError(t, "Failed to unmarshal httpd.yaml", err)
 
 	httpd := ensureStringMap(httpdConfig["httpd"])
-	if _, ok := httpd["server_crt"]; ok {
-		t.Error("server_crt was not removed from httpd.yaml")
-	}
-	if _, ok := httpd["server_key"]; ok {
-		t.Error("server_key was not removed from httpd.yaml")
-	}
+	_, ok = httpd["server_crt"]
+	testutils.AssertTrue(t, "server_crt was not removed from httpd.yaml", !ok)
+	_, ok = httpd["server_key"]
+	testutils.AssertTrue(t, "server_key was not removed from httpd.yaml", !ok)
 	testutils.AssertEquals(t, "other_httpd_key was modified", "other_httpd_value", httpd["other_httpd_key"])
 }

@@ -39,10 +39,8 @@ func TestStartStopWarnWhenServicesDisabled(t *testing.T) {
 
 	testutils.AssertNoError(t, "start failed: ", StartServices())
 	testutils.AssertNoError(t, "stop failed: ", StopServices())
-	if count := strings.Count(output.String(),
-		"Server services are disabled and will not start automatically at boot"); count != 2 {
-		t.Errorf("expected start and stop warnings, got %d", count)
-	}
+	testutils.AssertEquals(t, "expected start and stop warnings", 2, strings.Count(output.String(),
+		"Server services are disabled and will not start automatically at boot"))
 	testutils.AssertEquals(t, "start or stop changed boot enablement", 0, len(driver.Enabled))
 }
 

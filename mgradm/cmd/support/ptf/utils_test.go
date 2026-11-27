@@ -146,13 +146,7 @@ func TestCheckParameters(t *testing.T) {
 				},
 			}
 			actualError := flags.checkParameters("")
-			errMessage := ""
-			if actualError != nil {
-				errMessage = actualError.Error()
-			}
-			testutils.AssertEquals(t, "error didn't match the expected behavior",
-				test.expectedError, errMessage,
-			)
+			testutils.AssertError(t, test.expectedError, actualError)
 			testutils.AssertEquals(t, "unexpected image", test.expectedImage, flags.Image.Name)
 			testutils.AssertEquals(t, "unexpected coco image", test.expectedCocoImage, flags.Coco.Image.Name)
 			testutils.AssertEquals(t, "unexpected hub image", test.expectedHubImage, flags.HubXmlrpc.Image.Name)

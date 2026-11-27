@@ -4,7 +4,11 @@
 
 package api
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
+)
 
 func TestRedactHeaders(t *testing.T) {
 	data := []struct {
@@ -27,10 +31,7 @@ func TestRedactHeaders(t *testing.T) {
 	for _, tt := range data {
 		t.Run(tt.name, func(t *testing.T) {
 			actual := redactHeaders(tt.input)
-
-			if actual != tt.expected {
-				t.Errorf("Expected %s got %s when redacting %s", tt.expected, actual, tt.input)
-			}
+			testutils.AssertEquals(t, "Redact failed", tt.expected, actual)
 		})
 	}
 }

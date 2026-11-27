@@ -39,15 +39,14 @@ Environment="PODMAN_EXTRA_ARGS="
 	testDir := t.TempDir()
 
 	serviceConfDir := path.Join(testDir, "uyuni-server.service.d")
-	if err := os.Mkdir(serviceConfDir, 0750); err != nil {
-		t.Fatalf("failed to create fake service configuration directory: %s", err)
-	}
+	err := os.Mkdir(serviceConfDir, 0750)
+	testutils.AssertNoError(t, "failed to create fake service configuration directory", err)
 
 	servicesPath = testDir
 
 	testutils.WriteFile(t, path.Join(serviceConfDir, "Service.conf"), currentFile)
 
-	err := CleanSystemdConfFile("uyuni-server")
+	err = CleanSystemdConfFile("uyuni-server")
 	testutils.AssertNoError(t, "unexpected error", err)
 
 	actual := testutils.ReadFile(t, path.Join(serviceConfDir, GeneratedConf))
@@ -56,9 +55,9 @@ Environment="PODMAN_EXTRA_ARGS="
 	actual = testutils.ReadFile(t, path.Join(serviceConfDir, CustomConf))
 	testutils.AssertEquals(t, "invalid custom.conf file", customFile, actual)
 
-	if utils.FileExists(path.Join(serviceConfDir, "Service.conf")) {
-		t.Error("the old Service.conf file is not removed")
-	}
+	testutils.AssertTrue(
+		t, "the old Service.conf file is not removed", !utils.FileExists(path.Join(serviceConfDir, "Service.conf")),
+	)
 }
 
 func TestCleanSystemdConfFileNoop(t *testing.T) {
@@ -75,16 +74,15 @@ Environment="PODMAN_EXTRA_ARGS="
 	testDir := t.TempDir()
 
 	serviceConfDir := path.Join(testDir, "uyuni-server.service.d")
-	if err := os.Mkdir(serviceConfDir, 0750); err != nil {
-		t.Fatalf("failed to create fake service configuration directory: %s", err)
-	}
+	err := os.Mkdir(serviceConfDir, 0750)
+	testutils.AssertNoError(t, "failed to create fake service configuration directory", err)
 
 	servicesPath = testDir
 
 	testutils.WriteFile(t, path.Join(serviceConfDir, GeneratedConf), generatedFile)
 	testutils.WriteFile(t, path.Join(serviceConfDir, CustomConf), customFile)
 
-	err := CleanSystemdConfFile("uyuni-server")
+	err = CleanSystemdConfFile("uyuni-server")
 	testutils.AssertNoError(t, "unexpected error", err)
 
 	actual := testutils.ReadFile(t, path.Join(serviceConfDir, GeneratedConf))
@@ -98,7 +96,7 @@ func TestGetServiceProperty(t *testing.T) {
 	newRunner = testutils.FakeRunnerGenerator("TestProperty=foo bar\n", nil)
 	tested := NewSystemd()
 	actual, err := tested.GetServiceProperty("myservice", "TestProperty")
-	testutils.AssertTrue(t, "No error expected", err == nil)
+	testutils.AssertNoError(t, "No error expected", err)
 	testutils.AssertEquals(t, "Wrong expected property", "foo bar", actual)
 }
 
@@ -106,9 +104,8 @@ func TestGetServicePropertyError(t *testing.T) {
 	newRunner = testutils.FakeRunnerGenerator("", errors.New("Test error"))
 	tested := NewSystemd()
 	actual, err := tested.GetServiceProperty("myservice", "TestProperty")
-	testutils.AssertTrue(t, "Error message missing the root error message", strings.Contains(err.Error(), "Test error"))
-	testutils.AssertTrue(t, "Unexpected error description",
-		strings.Contains(err.Error(), "Failed to get the TestProperty property from myservice service"))
+	testutils.AssertError(t, "Failed to get the TestProperty property from myservice service", err)
+	testutils.AssertStringContains(t, "Error message missing the root error message", err.Error(), "Test error")
 	testutils.AssertEquals(t, "Wrong expected property", "", actual)
 }
 

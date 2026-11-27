@@ -5,8 +5,6 @@
 package db
 
 import (
-	"errors"
-	"os"
 	"os/exec"
 	"path"
 	"strings"
@@ -23,11 +21,7 @@ func TestStatus(t *testing.T) {
 	defer func() { shared.ResetRunner() }()
 
 	// Create a temp dir for postgres config
-	tmpDir, err := os.MkdirTemp("", "status_test")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.RemoveAll(tmpDir)
+	tmpDir := t.TempDir()
 
 	configPath := path.Join(tmpDir, "postgresql.conf")
 	systemdDropin := path.Join(tmpDir, pgsql.BackupVolumeConfigName)
@@ -40,7 +34,7 @@ func TestStatus(t *testing.T) {
 		mountConfig    string
 		volumePresent  bool
 		runnerOutput   map[string][]string
-		expectError    error
+		expectError    string
 	}
 
 	cases := []testCase{
@@ -53,7 +47,6 @@ func TestStatus(t *testing.T) {
 			runnerOutput: map[string][]string{
 				"psql": {"on", strings.Trim(ArchiveCommand(), "'")},
 			},
-			expectError: nil,
 		},
 		{
 			name:           "Disabled",
@@ -64,7 +57,7 @@ func TestStatus(t *testing.T) {
 			runnerOutput: map[string][]string{
 				"psql": {"off", strings.Trim(ArchiveCommand(), "'")},
 			},
-			expectError: ErrArchiveModeOff,
+			expectError: ErrArchiveModeOff.Error(),
 		},
 		{
 			name:           "MisconfiguredCommand",
@@ -75,7 +68,7 @@ func TestStatus(t *testing.T) {
 			runnerOutput: map[string][]string{
 				"psql": {"on", "/bin/false"},
 			},
-			expectError: ErrArchiveCommandMisconfigured,
+			expectError: ErrArchiveCommandMisconfigured.Error(),
 		},
 		{
 			name:           "MissingVolume",
@@ -86,7 +79,7 @@ func TestStatus(t *testing.T) {
 			runnerOutput: map[string][]string{
 				"psql": {"on", strings.Trim(ArchiveCommand(), "'")},
 			},
-			expectError: ErrArchiveMountMisconfigured,
+			expectError: ErrArchiveMountMisconfigured.Error(),
 		},
 		{
 			name:           "MissingMount",
@@ -97,7 +90,7 @@ func TestStatus(t *testing.T) {
 			runnerOutput: map[string][]string{
 				"psql": {"on", strings.Trim(ArchiveCommand(), "'")},
 			},
-			expectError: ErrArchiveMountMisconfigured,
+			expectError: ErrArchiveMountMisconfigured.Error(),
 		},
 		{
 			name:           "MisconfiguredMount",
@@ -109,7 +102,7 @@ func TestStatus(t *testing.T) {
 			runnerOutput: map[string][]string{
 				"psql": {"on", strings.Trim(ArchiveCommand(), "'")},
 			},
-			expectError: ErrArchiveMountMisconfigured,
+			expectError: ErrArchiveMountMisconfigured.Error(),
 		},
 	}
 
@@ -190,32 +183,16 @@ func TestStatus(t *testing.T) {
 				"archive_mode = " + tc.archiveMode,
 				"archive_command = " + tc.archiveCommand,
 			}
-			if err := os.WriteFile(configPath, []byte(strings.Join(configContent, "\n")), 0644); err != nil {
-				t.Fatal(err)
-			}
+			testutils.WriteFile(t, configPath, strings.Join(configContent, "\n"))
 
 			mountConfig := pgsql.BackupVolumeConfig()
 			if tc.mountConfig != "" {
 				mountConfig = tc.mountConfig
 			}
-			if err := os.WriteFile(systemdDropin, []byte(mountConfig), 0600); err != nil {
-				t.Fatal(err)
-			}
+			testutils.WriteFile(t, systemdDropin, mountConfig)
 
 			// Run CheckStatus
-			err = CheckStatus()
-
-			if tc.expectError != nil {
-				if err == nil {
-					t.Errorf("Expected error %v, got nil", tc.expectError)
-				} else if !errors.Is(err, tc.expectError) {
-					t.Errorf("Expected error %v, got %v", tc.expectError, err)
-				}
-			} else {
-				if err != nil {
-					t.Errorf("Expected nil error, got %v", err)
-				}
-			}
+			testutils.AssertError(t, tc.expectError, CheckStatus())
 		})
 	}
 }

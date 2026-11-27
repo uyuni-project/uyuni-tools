@@ -13,9 +13,7 @@ import (
 func TestServerInspectorGenerate(t *testing.T) {
 	inspector := NewServerInspector()
 	script, err := inspector.GenerateScript()
-	if err != nil {
-		t.Errorf("Unexpected error %s", err)
-	}
+	testutils.AssertNoError(t, "Unexpected error", err)
 
 	//nolint:lll
 	expected := `
@@ -35,9 +33,7 @@ uyuni_release=2024.5
 suse_manager_release=5.0.0
 `
 	actual, err := ReadInspectData[ServerInspectData]([]byte(content))
-	if err != nil {
-		t.Fatalf("Unexpected error: %s", err)
-	}
+	testutils.AssertNoError(t, "Unexpected error", err)
 
 	testutils.AssertEquals(t, "Invalid uyuni release", "2024.5", actual.UyuniRelease)
 	testutils.AssertEquals(t, "Invalid SUSE Manager release", "5.0.0", actual.SuseManagerRelease)

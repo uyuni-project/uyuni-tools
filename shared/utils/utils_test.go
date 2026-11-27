@@ -36,9 +36,7 @@ func setupConsole(t *testing.T) (*expect.Console, func()) {
 	gettext.SetLanguage("en")
 
 	c, err := expect.NewConsole(expect.WithStdout(os.Stdout))
-	if err != nil {
-		t.Errorf("Failed to create fake console")
-	}
+	testutils.AssertNoError(t, "Failed to create fake console", err)
 
 	origStdin := syscall.Stdin
 	origOsStdin := os.Stdin
@@ -98,9 +96,7 @@ func TestAskIfMissing(t *testing.T) {
 
 			var value string
 			AskIfMissing(&value, "Prompted value", testCase.min, testCase.max, testCase.checker)
-			if value != "foo" {
-				t.Errorf("Expected 'foo', got '%s' value", value)
-			}
+			testutils.AssertEquals(t, "Wrong value read", "foo", value)
 		})
 	}
 }
@@ -138,9 +134,7 @@ func TestCheckValidPassword(t *testing.T) {
 
 			var value string
 			AskPasswordIfMissing(&value, "Prompted password", testCase.min, testCase.max)
-			if value != "foo" {
-				t.Errorf("Expected 'foo', got '%s' value", value)
-			}
+			testutils.AssertEquals(t, "Wrong password read", "foo", value)
 		})
 	}
 }
@@ -153,9 +147,8 @@ func TestPasswordMismatch(t *testing.T) {
 		sendInput(t, c, "Prompted password: ", "password1\n", "")
 		sendInput(t, c, "Confirm the password: ", "password2\n", "")
 
-		if _, err := c.ExpectString("Two different passwords have been provided"); err != nil {
-			t.Errorf("Expected message error: %s", err)
-		}
+		_, err := c.ExpectString("Two different passwords have been provided")
+		testutils.AssertNoError(t, "Expected prompt message error", err)
 
 		// Send a good password
 		sendInput(t, c, "Prompted password: ", "foo\n", "")
@@ -164,9 +157,7 @@ func TestPasswordMismatch(t *testing.T) {
 
 	var value string
 	AskPasswordIfMissing(&value, "Prompted password", 1, 20)
-	if value != "foo" {
-		t.Errorf("Expected 'foo', got '%s' value", value)
-	}
+	testutils.AssertEquals(t, "Wrong password read", "foo", value)
 }
 
 func sendInput(
@@ -176,20 +167,17 @@ func sendInput(
 	value string,
 	expectedMessage string,
 ) {
-	if _, err := c.ExpectString(expectedPrompt); err != nil {
-		t.Errorf("Expected prompt error: %s", err)
-	}
-	if _, err := c.Send(value); err != nil {
-		t.Errorf("Failed to send value to fake console: %s", err)
-	}
+	_, err := c.ExpectString(expectedPrompt)
+	testutils.AssertNoError(t, "Expected prompt message error", err)
+	_, err = c.Send(value)
+	testutils.AssertNoError(t, "Failed to send value to fake console", err)
 	t.Logf("Value sent: '%s'", value)
 	if expectedMessage == "" {
 		return
 	}
 
-	if _, err := c.Expect(expect.Regexp(regexp.MustCompile(expectedMessage))); err != nil {
-		t.Errorf("Expected '%s' message: %s", expectedMessage, err)
-	}
+	_, err = c.Expect(expect.Regexp(regexp.MustCompile(expectedMessage)))
+	testutils.AssertNoError(t, fmt.Sprintf("Expected '%s' message", expectedMessage), err)
 	if expectedMessage == "" {
 		return
 	}
@@ -302,18 +290,8 @@ func TestComputePTF(t *testing.T) {
 			}
 
 			actual, err := ComputePTF(tt.registry, user, ptfID, tt.fullImage, suffix)
-			if err != nil {
-				if tt.expectedErrorMessage == "" {
-					t.Errorf("Unexpected error while executing ComputePTF('%s', '%s', '%s', '%s', '%s'): %s",
-						tt.registry, tt.user, tt.ptfID, tt.fullImage, tt.suffix, err)
-				} else if !strings.Contains(err.Error(), tt.expectedErrorMessage) {
-					t.Errorf("Expected error message to contain '%s', but got: %s",
-						tt.expectedErrorMessage, err.Error())
-				}
-			} else if actual != tt.expected {
-				t.Errorf("ComputePTF('%s', '%s', '%s', '%s', '%s') = %s\nexpected: %s",
-					tt.registry, tt.user, tt.ptfID, tt.fullImage, tt.suffix, actual, tt.expected)
-			}
+			testutils.AssertError(t, tt.expectedErrorMessage, err)
+			testutils.AssertEquals(t, "ComputePTF mismatch", tt.expected, actual)
 		})
 	}
 }
@@ -463,13 +441,7 @@ func TestIsWellFormedFQDN(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.fqdn, func(t *testing.T) {
-			if IsWellFormedFQDN(tt.fqdn) != tt.valid {
-				if tt.valid {
-					t.Errorf("Unexpected failure while validating FQDN with %s", tt.fqdn)
-				} else {
-					t.Errorf("Unexpected success while validating FQDN with %s", tt.fqdn)
-				}
-			}
+			testutils.AssertEquals(t, "Validating FQDN "+tt.fqdn, tt.valid, IsWellFormedFQDN(tt.fqdn))
 		})
 	}
 }
@@ -532,26 +504,16 @@ func TestConfig(t *testing.T) {
 	fakeCmd.Flags().String("fourthConf", "hardcodedDefault", "")
 
 	viper, err := ReadConfig(fakeCmd, "conf_test/firstConfFile.yaml", "conf_test/secondConfFile.yaml")
-	if err != nil {
-		t.Errorf("Unexpected error while reading configuration files: %s", err)
-	}
+	testutils.AssertNoError(t, "Unexpected error while reading configuration files", err)
 
 	//This value is not set by conf file, so it should be the hardcoded default value
-	if viper.Get("firstConf") != "hardcodedDefault" {
-		t.Errorf("firstConf is %s, instead of hardcodedDefault", viper.Get("firstConf"))
-	}
+	testutils.AssertEquals(t, "firstConf mismatch", "hardcodedDefault", viper.Get("firstConf"))
 	//This value is set by firstConfFile.yaml
-	if viper.Get("secondConf") != "firstConfFile" {
-		t.Errorf("secondConf is %s, instead of firstConfFile", viper.Get("secondConf"))
-	}
+	testutils.AssertEquals(t, "secondConf mismatch", "firstConfFile", viper.Get("secondConf"))
 	//This value is as first set by firstConfFile.yaml, but then overwritten by secondConfFile.yaml
-	if viper.Get("thirdConf") != "SecondConfFile" {
-		t.Errorf("thirdConf is %s, instead of SecondConfFile", viper.Get("thirdConf"))
-	}
+	testutils.AssertEquals(t, "thirdConf mismatch", "SecondConfFile", viper.Get("thirdConf"))
 	//This value is set by secondConfFile.yaml
-	if viper.Get("fourthconf") != "SecondConfFile" {
-		t.Errorf("fourthconf is %s, instead of SecondConfFile", viper.Get("fourthconf"))
-	}
+	testutils.AssertEquals(t, "fourthconf mismatch", "SecondConfFile", viper.Get("fourthconf"))
 }
 
 func TestCompareVersion(t *testing.T) {
@@ -570,13 +532,13 @@ func TestCreatingChecksumFile(t *testing.T) {
 	filepath := path.Join(testDir, "testfile")
 
 	err := os.WriteFile(filepath, []byte("testfiledata"), 0666)
-	testutils.AssertTrue(t, "Failed to prepare test data file", err == nil)
+	testutils.AssertNoError(t, "Failed to prepare test data file", err)
 
 	err = CreateChecksum(filepath)
-	testutils.AssertTrue(t, "Failed to calculate checksum", err == nil)
+	testutils.AssertNoError(t, "Failed to calculate checksum", err)
 
 	out, err := os.ReadFile(filepath + ".sha256sum")
-	testutils.AssertTrue(t, "Failed to read checksum file", err == nil)
+	testutils.AssertNoError(t, "Failed to read checksum file", err)
 
 	testutils.AssertEquals(t, "Checksum does not match", out,
 		[]byte("886d35a29af629be5c45ff24320dd4d48ee8860b25a9a724f8ac88cf15755a22"))
@@ -587,13 +549,13 @@ func TestValidatingChecksumFile(t *testing.T) {
 	filepath := path.Join(testDir, "testfile")
 
 	err := os.WriteFile(filepath, []byte("testfiledata"), 0666)
-	testutils.AssertTrue(t, "Failed to prepare test data file", err == nil)
+	testutils.AssertNoError(t, "Failed to prepare test data file", err)
 
 	err = CreateChecksum(filepath)
-	testutils.AssertTrue(t, "Failed to calculate checksum", err == nil)
+	testutils.AssertNoError(t, "Failed to calculate checksum", err)
 
 	err = ValidateChecksum(filepath)
-	testutils.AssertTrue(t, "Failed to validate checksum", err == nil)
+	testutils.AssertNoError(t, "Failed to validate checksum", err)
 }
 
 func TestFailedValidation(t *testing.T) {
@@ -601,13 +563,13 @@ func TestFailedValidation(t *testing.T) {
 	filepath := path.Join(testDir, "testfile")
 
 	err := os.WriteFile(filepath, []byte("testfiledata"), 0666)
-	testutils.AssertTrue(t, "Failed to prepare test data file", err == nil)
+	testutils.AssertNoError(t, "Failed to prepare test data file", err)
 
 	err = os.WriteFile(filepath+".sha256sum", []byte("wrongchecksum"), 0666)
-	testutils.AssertTrue(t, "Failed to write checksum file", err == nil)
+	testutils.AssertNoError(t, "Failed to write checksum file", err)
 
 	err = ValidateChecksum(filepath)
-	testutils.AssertTrue(t, "Checksum validation passed when should have not", err != nil)
+	testutils.AssertError(t, "does not match", err)
 }
 
 func TestValidationInDifferentDir(t *testing.T) {
@@ -615,35 +577,35 @@ func TestValidationInDifferentDir(t *testing.T) {
 	filepath := path.Join(testDir, "testfile")
 
 	err := os.WriteFile(filepath, []byte("testfiledata"), 0666)
-	testutils.AssertTrue(t, "Failed to prepare test data file", err == nil)
+	testutils.AssertNoError(t, "Failed to prepare test data file", err)
 
 	err = CreateChecksum(filepath)
-	testutils.AssertTrue(t, "Failed to calculate checksum", err == nil)
+	testutils.AssertNoError(t, "Failed to calculate checksum", err)
 
 	testDir2 := t.TempDir()
 
 	filepath2 := path.Join(testDir2, "testfile")
 	fh, err := os.OpenFile(filepath2, os.O_CREATE|os.O_WRONLY, 0666)
-	testutils.AssertTrue(t, "Could not create new file", err == nil)
+	testutils.AssertNoError(t, "Could not create new file", err)
 	err = CopyFile(filepath, fh)
-	testutils.AssertTrue(t, "Could not copy test file", err == nil)
+	testutils.AssertNoError(t, "Could not copy test file", err)
 	err = fh.Close()
-	testutils.AssertTrue(t, "Could not close new file", err == nil)
+	testutils.AssertNoError(t, "Could not close new file", err)
 
 	fh, err = os.OpenFile(filepath2+".sha256sum", os.O_CREATE|os.O_WRONLY, 0666)
-	testutils.AssertTrue(t, "Could not create new file", err == nil)
+	testutils.AssertNoError(t, "Could not create new file", err)
 	err = CopyFile(filepath+".sha256sum", fh)
-	testutils.AssertTrue(t, "Could not copy test file", err == nil)
+	testutils.AssertNoError(t, "Could not copy test file", err)
 	err = fh.Close()
-	testutils.AssertTrue(t, "Could not close new file", err == nil)
+	testutils.AssertNoError(t, "Could not close new file", err)
 
 	err = os.Remove(filepath)
-	testutils.AssertTrue(t, "Could not remove original file", err == nil)
+	testutils.AssertNoError(t, "Could not remove original file", err)
 	err = os.Remove(filepath + ".sha256sum")
-	testutils.AssertTrue(t, "Could not remove original checksum file", err == nil)
+	testutils.AssertNoError(t, "Could not remove original checksum file", err)
 
 	err = ValidateChecksum(filepath2)
-	testutils.AssertTrue(t, "Failed to validate checksum", err == nil)
+	testutils.AssertNoError(t, "Failed to validate checksum", err)
 }
 
 func TestValidatingOlderChecksumFile(t *testing.T) {
@@ -651,12 +613,12 @@ func TestValidatingOlderChecksumFile(t *testing.T) {
 	filepath := path.Join(testDir, "testfile")
 
 	err := os.WriteFile(filepath, []byte("testfiledata"), 0666)
-	testutils.AssertTrue(t, "Failed to prepare test data file", err == nil)
+	testutils.AssertNoError(t, "Failed to prepare test data file", err)
 
 	err = os.WriteFile(filepath+".sha256sum",
 		[]byte("886d35a29af629be5c45ff24320dd4d48ee8860b25a9a724f8ac88cf15755a22 /path/to/testfile"), 0666)
-	testutils.AssertTrue(t, "Failed to write test data checksum", err == nil)
+	testutils.AssertNoError(t, "Failed to write test data checksum", err)
 
 	err = ValidateChecksum(filepath)
-	testutils.AssertTrue(t, "Failed to validate checksum", err == nil)
+	testutils.AssertNoError(t, "Failed to validate checksum", err)
 }

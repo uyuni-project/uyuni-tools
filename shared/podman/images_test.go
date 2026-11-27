@@ -62,12 +62,8 @@ func TestGetRpmImageName(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			rpmImageResult, tagResult := GetRpmImageName(tt.image)
 
-			if tt.wantRPMImage != rpmImageResult {
-				t.Errorf("Expected %s got %s when computing RPM for image %s", tt.wantRPMImage, rpmImageResult, tt.image)
-			}
-			if tt.wantTag != tagResult {
-				t.Errorf("Expected %s got %s when computing RPM for image %s", tt.wantTag, tagResult, tt.image)
-			}
+			testutils.AssertEquals(t, "unexpected RPM image", tt.wantRPMImage, rpmImageResult)
+			testutils.AssertEquals(t, "unexpected tag", tt.wantTag, tagResult)
 		})
 	}
 }
@@ -89,16 +85,18 @@ func TestMatchingMetadata(t *testing.T) {
 		tag            string
 	}{
 		{
-			name:           "matching beta build tag",
-			expectedResult: "/usr/share/suse-docker-images/native/multi-linux-manager-5.1-x86_64-server-5.1.0-beta1.x86_64-12.55.tar",
-			rpmImage:       "multi-linux-manager-5.1-x86_64-server",
-			tag:            "5.1.0-beta1.12.55",
+			name: "matching beta build tag",
+			expectedResult: "/usr/share/suse-docker-images/native/" +
+				"multi-linux-manager-5.1-x86_64-server-5.1.0-beta1.x86_64-12.55.tar",
+			rpmImage: "multi-linux-manager-5.1-x86_64-server",
+			tag:      "5.1.0-beta1.12.55",
 		},
 		{
-			name:           "matching latest tag",
-			expectedResult: "/usr/share/suse-docker-images/native/multi-linux-manager-5.1-x86_64-server-5.1.0-beta1.x86_64-12.55.tar",
-			rpmImage:       "multi-linux-manager-5.1-x86_64-server",
-			tag:            "latest",
+			name: "matching latest tag",
+			expectedResult: "/usr/share/suse-docker-images/native/" +
+				"multi-linux-manager-5.1-x86_64-server-5.1.0-beta1.x86_64-12.55.tar",
+			rpmImage: "multi-linux-manager-5.1-x86_64-server",
+			tag:      "latest",
 		},
 		{
 			name:           "missing tag",
@@ -123,13 +121,8 @@ func TestMatchingMetadata(t *testing.T) {
 	for _, tt := range data {
 		t.Run(tt.name, func(t *testing.T) {
 			testResult, err := BuildRpmImagePath(jsonData, tt.rpmImage, tt.tag)
-
-			if err != nil && tt.expectedResult != testResult {
-				t.Errorf(
-					"Expected %s got %s when computing RPM for image %s with tag %s",
-					tt.expectedResult, testResult, tt.rpmImage, tt.tag,
-				)
-			}
+			testutils.AssertNoError(t, "BuildRpmImagePath failed", err)
+			testutils.AssertEquals(t, "unexpected RPM image path", tt.expectedResult, testResult)
 		})
 	}
 
@@ -142,9 +135,7 @@ func TestMatchingMetadata(t *testing.T) {
 	}`)
 
 	_, err := BuildRpmImagePath(jsonDataInvalidWithTypo, "", "")
-	if err == nil {
-		t.Error("typo in json: this should fail")
-	}
+	testutils.AssertError(t, "cannot unmarshal image RPM metadata", err)
 }
 
 func TestPrepareImage(t *testing.T) {
@@ -200,18 +191,12 @@ func TestPrepareImage(t *testing.T) {
 }
 
 func assertSuccess(t *testing.T, gotResult string, expectedResult string, err error) {
-	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
-	}
+	testutils.AssertNoError(t, "Unexpected error", err)
 
 	if expectedResult != "" {
-		if gotResult != expectedResult {
-			t.Errorf("Expected %q, got %q", expectedResult, gotResult)
-		}
+		testutils.AssertEquals(t, "unexpected result", expectedResult, gotResult)
 		return
 	}
 
-	if gotResult == "" {
-		t.Errorf("Expected a valid image path, got empty string")
-	}
+	testutils.AssertTrue(t, "Expected a valid image path, got empty string", gotResult != "")
 }

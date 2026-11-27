@@ -6,6 +6,8 @@ package utils
 
 import (
 	"testing"
+
+	"github.com/uyuni-project/uyuni-tools/shared/testutils"
 )
 
 func TestRedact(t *testing.T) {
@@ -52,10 +54,7 @@ func TestRedact(t *testing.T) {
 	for _, tt := range data {
 		t.Run(tt.name, func(t *testing.T) {
 			actual := redact(tt.input)
-
-			if actual != tt.expected {
-				t.Errorf("Expected %s got %s when redacting %s", tt.expected, actual, tt.input)
-			}
+			testutils.AssertEquals(t, "Redact failed", tt.expected, actual)
 		})
 	}
 }

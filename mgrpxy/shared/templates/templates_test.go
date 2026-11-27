@@ -71,9 +71,7 @@ func TestTemplatesRender(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var buf bytes.Buffer
-			if err := tt.template.Render(&buf); err != nil {
-				t.Errorf("%s render failed: %v", tt.name, err)
-			}
+			testutils.AssertNoError(t, tt.name+" render failed", tt.template.Render(&buf))
 			actual := buf.String()
 			if tt.expected != "" && actual != tt.expected {
 				diff := testutils.DiffStrings(tt.expected, actual)

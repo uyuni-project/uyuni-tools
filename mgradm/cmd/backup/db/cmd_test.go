@@ -29,9 +29,7 @@ func TestEnableParamsParsing(t *testing.T) {
 	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed: ", cmd.Execute())
 }
 
 func TestRebaseParamsParsing(t *testing.T) {
@@ -48,9 +46,7 @@ func TestRebaseParamsParsing(t *testing.T) {
 	cmd := newDBRebaseCmd(&globalFlags, tester)
 
 	cmd.SetArgs(args)
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed: ", cmd.Execute())
 }
 
 func TestDisableParamsParsing(t *testing.T) {
@@ -71,9 +67,7 @@ func TestDisableParamsParsing(t *testing.T) {
 	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed: ", cmd.Execute())
 }
 
 func TestStatusParamsParsing(t *testing.T) {
@@ -90,9 +84,7 @@ func TestStatusParamsParsing(t *testing.T) {
 	cmd := newDBStatusCmd(&globalFlags, tester)
 
 	cmd.SetArgs(args)
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed: ", cmd.Execute())
 }
 
 func TestRestoreParamsParsing(t *testing.T) {
@@ -112,7 +104,5 @@ func TestRestoreParamsParsing(t *testing.T) {
 	testutils.AssertHasAllFlags(t, cmd, args)
 
 	cmd.SetArgs(args)
-	if err := cmd.Execute(); err != nil {
-		t.Errorf("command failed with error: %s", err)
-	}
+	testutils.AssertNoError(t, "command failed: ", cmd.Execute())
 }

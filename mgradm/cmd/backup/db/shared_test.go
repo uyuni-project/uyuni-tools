@@ -5,9 +5,7 @@
 package db
 
 import (
-	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"testing"
 
@@ -17,11 +15,7 @@ import (
 )
 
 func TestParsePostgresConfig(t *testing.T) {
-	tmpDir, err := os.MkdirTemp("", "shared_test")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.RemoveAll(tmpDir)
+	tmpDir := t.TempDir()
 
 	configPath := filepath.Join(tmpDir, "postgresql.conf")
 	content := `
@@ -34,9 +28,7 @@ archive_mode = on
 archive_command = '/usr/bin/smdba-pgarchive --source "%p" --destination "/var/lib/pgsql/backup/%f"'
 restore_command = '/usr/bin/cp /var/lib/pgsql/backup/%f %p'
 `
-	if err := os.WriteFile(configPath, []byte(content), 0644); err != nil {
-		t.Fatal(err)
-	}
+	testutils.WriteFile(t, configPath, content)
 
 	podman.SetRunner(func(command string, args ...string) types.Runner {
 		if command == "podman" && args[0] == "volume" && args[1] == "inspect" {
@@ -47,9 +39,7 @@ restore_command = '/usr/bin/cp /var/lib/pgsql/backup/%f %p'
 	defer podman.ResetRunner()
 
 	config, err := ParsePostgresConfig()
-	if err != nil {
-		t.Fatalf("ParsePostgresConfig failed: %v", err)
-	}
+	testutils.AssertNoError(t, "ParsePostgresConfig failed", err)
 
 	expected := map[string]string{
 		"listen_addresses": "'*'",
@@ -60,26 +50,18 @@ restore_command = '/usr/bin/cp /var/lib/pgsql/backup/%f %p'
 		"restore_command":  "'/usr/bin/cp /var/lib/pgsql/backup/%f %p'",
 	}
 
-	if !reflect.DeepEqual(config, expected) {
-		t.Errorf("Expected %v, got %v", expected, config)
-	}
+	testutils.AssertEquals(t, "config mismatch", expected, config)
 }
 
 func TestUpdatePostgresConfig(t *testing.T) {
-	tmpDir, err := os.MkdirTemp("", "shared_test_update")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.RemoveAll(tmpDir)
+	tmpDir := t.TempDir()
 
 	configPath := filepath.Join(tmpDir, "postgresql.conf")
 	initialContent := `# Initial config
 listen_addresses = '*'
 port = 5432
 `
-	if err := os.WriteFile(configPath, []byte(initialContent), 0644); err != nil {
-		t.Fatal(err)
-	}
+	testutils.WriteFile(t, configPath, initialContent)
 
 	podman.SetRunner(func(command string, args ...string) types.Runner {
 		if command == "podman" && args[0] == "volume" && args[1] == "inspect" {
@@ -95,15 +77,12 @@ port = 5432
 		"archive_command": "'/usr/bin/smdba-pgarchive --source \"%p\" --destination \"/var/lib/pgsql/backup/%f\"'",
 	}
 
-	if err := UpdatePostgresConfig(updates); err != nil {
-		t.Fatalf("UpdatePostgresConfig failed: %v", err)
-	}
+	err := UpdatePostgresConfig(updates)
+	testutils.AssertNoError(t, "UpdatePostgresConfig failed", err)
 
 	// Verify the file content indirectly via ParsePostgresConfig
 	config, err := ParsePostgresConfig()
-	if err != nil {
-		t.Fatalf("ParsePostgresConfig failed: %v", err)
-	}
+	testutils.AssertNoError(t, "ParsePostgresConfig failed", err)
 
 	expected := map[string]string{
 		"listen_addresses": "'*'",
@@ -112,24 +91,18 @@ port = 5432
 		"archive_command":  "'/usr/bin/smdba-pgarchive --source \"%p\" --destination \"/var/lib/pgsql/backup/%f\"'",
 	}
 
-	if !reflect.DeepEqual(config, expected) {
-		t.Errorf("Expected %v, got %v", expected, config)
-	}
+	testutils.AssertEquals(t, "config mismatch", expected, config)
 
 	// Verify that comments are preserved and format is correct
-	updatedContent, err := os.ReadFile(configPath)
-	if err != nil {
-		t.Fatal(err)
-	}
+	updatedContent := testutils.ReadFile(t, configPath)
 	expectedFileContent := `# Initial config
 listen_addresses = '*'
 port = 5433
 archive_mode = on
 archive_command = '/usr/bin/smdba-pgarchive --source "%p" --destination "/var/lib/pgsql/backup/%f"'
 `
-	if !areStringsSame(string(updatedContent), expectedFileContent) {
-		t.Errorf("Unexpected updated content:\nGot:\n%s\nExpected:\n%s", string(updatedContent), expectedFileContent)
-	}
+	testutils.AssertTrue(t, "Unexpected updated content:\n"+testutils.DiffStrings(expectedFileContent, updatedContent),
+		areStringsSame(updatedContent, expectedFileContent))
 }
 
 func areStringsSame(s1, s2 string) bool {

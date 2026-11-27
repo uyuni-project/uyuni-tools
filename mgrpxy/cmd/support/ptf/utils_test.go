@@ -172,8 +172,8 @@ func TestUpdateParametersImageLogicOverrideOneImage(t *testing.T) {
 				if checkService == service {
 					// The image that SHOULD be overridden: must be set to the PTF image.
 					actual := imageFlag.Name
-					testutils.AssertTrue(t, fmt.Sprintf("Expected the PTF image for service %s, got %s", service, actual),
-						strings.Contains(actual, "ptf999"))
+					testutils.AssertStringContains(t, fmt.Sprintf("Expected the PTF image for service %s", service),
+						actual, "ptf999")
 				} else {
 					actual := imageFlag.Name
 					testutils.AssertEquals(

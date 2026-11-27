@@ -61,13 +61,8 @@ func TestExecScript(t *testing.T) {
 	scriptContent := "echo 'hello'"
 	out, err := cnx.ExecScript(scriptContent)
 
-	if err != nil {
-		t.Errorf("ExecScript returned error: %v", err)
-	}
-
-	if string(out) != "script output" {
-		t.Errorf("Expected output 'script output', got '%s'", string(out))
-	}
+	testutils.AssertNoError(t, "ExecScript returned error", err)
+	testutils.AssertEquals(t, "script output", "script output", string(out))
 
 	foundCp := false
 	foundExec := false
@@ -82,9 +77,7 @@ func TestExecScript(t *testing.T) {
 			switch cmd[1] {
 			case "cp":
 				foundCp = true
-				if !strings.Contains(cmd[3], "server:/tmp/script-") {
-					t.Errorf("Unexpected cp destination: %s", cmd[3])
-				}
+				testutils.AssertStringContains(t, "Unexpected cp destination: ", cmd[3], "server:/tmp/script-")
 			case "exec":
 				// cmd[2] is a container name
 				// Check if it is the bash execution
@@ -99,15 +92,9 @@ func TestExecScript(t *testing.T) {
 		}
 	}
 
-	if !foundCp {
-		t.Error("Did not find copy command")
-	}
-	if !foundExec {
-		t.Error("Did not find execution command")
-	}
-	if !foundRm {
-		t.Error("Did not find cleanup command")
-	}
+	testutils.AssertTrue(t, "Did not find copy command", foundCp)
+	testutils.AssertTrue(t, "Did not find execution command", foundExec)
+	testutils.AssertTrue(t, "Did not find cleanup command", foundRm)
 }
 
 func TestHostExec(t *testing.T) {
@@ -126,21 +113,10 @@ func TestHostExec(t *testing.T) {
 	cnx := NewConnection("host", "", "")
 	out, err := cnx.Exec("ls", "-la")
 
-	if err != nil {
-		t.Errorf("Exec returned error: %v", err)
-	}
-
-	if capturedCommand != "ls" {
-		t.Errorf("Expected command 'ls', got '%s'", capturedCommand)
-	}
-
-	if len(capturedArgs) != 1 || capturedArgs[0] != "-la" {
-		t.Errorf("Expected args ['-la'], got %v", capturedArgs)
-	}
-
-	if string(out) != "host output" {
-		t.Errorf("Expected output 'host output', got '%s'", string(out))
-	}
+	testutils.AssertNoError(t, "Exec returned error", err)
+	testutils.AssertEquals(t, "Expected command", "ls", capturedCommand)
+	testutils.AssertEquals(t, "Expected args", []string{"-la"}, capturedArgs)
+	testutils.AssertEquals(t, "Expected output", "host output", string(out))
 }
 
 func TestHostCopy(t *testing.T) {
@@ -159,21 +135,9 @@ func TestHostCopy(t *testing.T) {
 	cnx := NewConnection("host", "", "")
 	err := cnx.Copy("server:/etc/passwd", "/tmp/passwd", "", "")
 
-	if err != nil {
-		t.Errorf("Copy returned error: %v", err)
-	}
-
-	if capturedCommand != "cp" {
-		t.Errorf("Expected command 'cp', got '%s'", capturedCommand)
-	}
-
-	if len(capturedArgs) < 2 {
-		t.Fatal("Unexpected number of captured args")
-	}
-
-	if capturedArgs[0] != "/etc/passwd" || capturedArgs[1] != "/tmp/passwd" {
-		t.Errorf("Expected args ['/etc/passwd', '/tmp/passwd'], got %v", capturedArgs)
-	}
+	testutils.AssertNoError(t, "Copy returned error", err)
+	testutils.AssertEquals(t, "Expected command", "cp", capturedCommand)
+	testutils.AssertEquals(t, "Expected args", []string{"/etc/passwd", "/tmp/passwd"}, capturedArgs)
 }
 
 func TestHostInferredCopy(t *testing.T) {
@@ -192,34 +156,13 @@ func TestHostInferredCopy(t *testing.T) {
 	cnx := NewConnection("host", "", "")
 	err := cnx.Copy("server:/home/myfile", "/tmp/", "", "")
 
-	if err != nil {
-		t.Errorf("Copy returned error: %v", err)
-	}
-
-	if capturedCommand != "cp" {
-		t.Errorf("Expected command 'cp', got '%s'", capturedCommand)
-	}
-
-	if len(capturedArgs) < 2 {
-		t.Fatal("Unexpected number of captured args")
-	}
-
-	if capturedArgs[0] != "/home/myfile" || capturedArgs[1] != "/tmp/myfile" {
-		t.Errorf("Expected args ['/home/myfile', '/tmp/myfile'], got %v", capturedArgs)
-	}
+	testutils.AssertNoError(t, "Copy returned error", err)
+	testutils.AssertEquals(t, "Expected command", "cp", capturedCommand)
+	testutils.AssertEquals(t, "Expected args", []string{"/home/myfile", "/tmp/myfile"}, capturedArgs)
 
 	err = cnx.Copy("/tmp/myanotherfile", "server:", "", "")
-	if err != nil {
-		t.Errorf("Copy returned error: %v", err)
-	}
-
-	if len(capturedArgs) < 2 {
-		t.Fatal("Unexpected number of captured args")
-	}
-
-	if capturedArgs[0] != "/tmp/myanotherfile" || capturedArgs[1] != "myanotherfile" {
-		t.Errorf("Expected args ['/tmp/myanotherfile', 'myanotherfile'], got %v", capturedArgs)
-	}
+	testutils.AssertNoError(t, "Copy returned error", err)
+	testutils.AssertEquals(t, "Expected args", []string{"/tmp/myanotherfile", "myanotherfile"}, capturedArgs)
 }
 
 func TestHostUserExec(t *testing.T) {
@@ -238,28 +181,12 @@ func TestHostUserExec(t *testing.T) {
 	cnx := NewUserConnection("host", "", "", "postgres")
 	out, err := cnx.Exec("ls", "-la")
 
-	if err != nil {
-		t.Errorf("Exec returned error: %v", err)
-	}
-
-	if capturedCommand != "su" {
-		t.Errorf("Expected command 'su', got '%s'", capturedCommand)
-	}
+	testutils.AssertNoError(t, "Exec returned error", err)
+	testutils.AssertEquals(t, "Expected command", "su", capturedCommand)
 
 	expectedArgs := []string{"-", "postgres", "-c", "'ls' '-la'"}
-	if len(capturedArgs) != len(expectedArgs) {
-		t.Errorf("Expected %d args, got %d: %v", len(expectedArgs), len(capturedArgs), capturedArgs)
-	} else {
-		for i, arg := range capturedArgs {
-			if arg != expectedArgs[i] {
-				t.Errorf("Expected arg %d to be '%s', got '%s'", i, expectedArgs[i], arg)
-			}
-		}
-	}
-
-	if string(out) != "host output" {
-		t.Errorf("Expected output 'host output', got '%s'", string(out))
-	}
+	testutils.AssertEquals(t, "Expected args", expectedArgs, capturedArgs)
+	testutils.AssertEquals(t, "Expected output", "host output", string(out))
 }
 
 func TestPodmanUserExec(t *testing.T) {
@@ -280,28 +207,12 @@ func TestPodmanUserExec(t *testing.T) {
 	cnx.podName = "uyuni-server"
 	out, err := cnx.Exec("psql", "-c", "SHOW archive_mode;")
 
-	if err != nil {
-		t.Errorf("Exec returned error: %v", err)
-	}
-
-	if capturedCommand != "podman" {
-		t.Errorf("Expected command 'podman', got '%s'", capturedCommand)
-	}
+	testutils.AssertNoError(t, "Exec returned error", err)
+	testutils.AssertEquals(t, "Expected command", "podman", capturedCommand)
 
 	expectedArgs := []string{"exec", "uyuni-server", "su", "-", "postgres", "-c", "'psql' '-c' 'SHOW archive_mode;'"}
-	if len(capturedArgs) != len(expectedArgs) {
-		t.Errorf("Expected %d args, got %d: %v", len(expectedArgs), len(capturedArgs), capturedArgs)
-	} else {
-		for i, arg := range capturedArgs {
-			if arg != expectedArgs[i] {
-				t.Errorf("Expected arg %d to be '%s', got '%s'", i, expectedArgs[i], arg)
-			}
-		}
-	}
-
-	if string(out) != "podman output" {
-		t.Errorf("Expected output 'podman output', got '%s'", string(out))
-	}
+	testutils.AssertEquals(t, "Expected args", expectedArgs, capturedArgs)
+	testutils.AssertEquals(t, "Expected output", "podman output", string(out))
 }
 
 func TestQuoteArgs(t *testing.T) {
@@ -317,9 +228,7 @@ func TestQuoteArgs(t *testing.T) {
 
 	for _, tt := range tests {
 		actual := quoteArgs(tt.args)
-		if actual != tt.expected {
-			t.Errorf("quoteArgs(%v) = %s, expected %s", tt.args, actual, tt.expected)
-		}
+		testutils.AssertEquals(t, "quoteArgs mismatch", tt.expected, actual)
 	}
 }
 
@@ -668,12 +577,12 @@ func TestWaitForHealthcheckLogsProgress(t *testing.T) {
 
 	testutils.AssertNoError(t, "unexpected error: ", cnx.WaitForHealthcheck(now))
 	output := logs.String()
-	testutils.AssertTrue(t, "expected a progress message, got: "+output,
-		strings.Contains(output, "Still waiting for uyuni-server to become healthy"))
-	testutils.AssertTrue(t, "expected the final healthy message, got: "+output,
-		strings.Contains(output, "Container uyuni-server is healthy after"))
-	testutils.AssertTrue(t, "expected the last healthcheck output, got: "+output,
-		strings.Contains(output, "last healthcheck output: Initialization in progress"))
+	testutils.AssertStringContains(t, "expected a progress message", output,
+		"Still waiting for uyuni-server to become healthy")
+	testutils.AssertStringContains(t, "expected the final healthy message", output,
+		"Container uyuni-server is healthy after")
+	testutils.AssertStringContains(t, "expected the last healthcheck output", output,
+		"last healthcheck output: Initialization in progress")
 }
 
 func TestWaitForHealthcheckHost(t *testing.T) {
