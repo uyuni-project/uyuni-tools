@@ -61,7 +61,7 @@ func runRemoveKnownHost(_ *types.GlobalFlags, flags *apiFlags, _ *cobra.Command,
 		err = client.Login()
 	}
 	if err != nil {
-		return utils.Errorf(err, L("unable to login to the server"))
+		return utils.Error(err, L("unable to login to the server"))
 	}
 
 	return removeKnownHost(client, hostname, port)

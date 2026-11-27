@@ -139,7 +139,7 @@ func EnableSaline(systemd podman.Systemd, replicas int) error {
 
 	if replicas > 0 {
 		if err := systemd.ScaleService(replicas, podman.SalineService); err != nil {
-			return utils.Errorf(err, L("cannot enable service"))
+			return utils.Error(err, L("cannot enable service"))
 		}
 	}
 	return nil

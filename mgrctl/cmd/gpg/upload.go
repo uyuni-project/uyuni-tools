@@ -30,7 +30,7 @@ func gpgKeyUpload(client *api.APIClient, key string) error {
 	)
 
 	if err != nil {
-		return utils.Errorf(err, L("error uploading GPG key"))
+		return utils.Error(err, L("error uploading GPG key"))
 	}
 
 	if !response.Success {
@@ -87,7 +87,7 @@ func runGpgKeyUpload(_ *types.GlobalFlags, flags *apiFlags, _ *cobra.Command, ar
 		err = client.Login()
 	}
 	if err != nil {
-		return utils.Errorf(err, L("unable to login to the server"))
+		return utils.Error(err, L("unable to login to the server"))
 	}
 
 	return gpgKeyUpload(client, key)

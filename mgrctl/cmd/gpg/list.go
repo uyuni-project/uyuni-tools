@@ -29,7 +29,7 @@ func gpgKeyList(client *api.APIClient) error {
 	)
 
 	if err != nil {
-		return utils.Errorf(err, L("error listing GPG keys"))
+		return utils.Error(err, L("error listing GPG keys"))
 	}
 
 	if !response.Success {
@@ -80,7 +80,7 @@ func runGpgKeyList(_ *types.GlobalFlags, flags *apiFlags, _ *cobra.Command, _ []
 		err = client.Login()
 	}
 	if err != nil {
-		return utils.Errorf(err, L("unable to login to the server"))
+		return utils.Error(err, L("unable to login to the server"))
 	}
 
 	return gpgKeyList(client)
