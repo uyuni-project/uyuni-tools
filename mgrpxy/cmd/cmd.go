@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 SUSE LLC
+// SPDX-FileCopyrightText: 2026 SUSE LLC
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -57,8 +57,7 @@ func NewUyuniproxyCommand() (*cobra.Command, error) {
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, _ []string) {
 		// do not log if running the completion cmd as the output is redirected to create a file to source
 		if cmd.Name() != "completion" && cmd.Name() != "__complete" {
-			utils.LogInit(true)
-			utils.SetLogLevel(globalFlags.LogLevel)
+			utils.LogInit(true, globalFlags.LogLevel)
 			log.Info().Msgf(L("Starting %s"), strings.Join(os.Args, " "))
 			log.Info().Msgf(L("Use of this software implies acceptance of the End User License Agreement."))
 		}
